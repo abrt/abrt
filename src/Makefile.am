@@ -1,0 +1,1 @@
+SUBDIRS = Hooks Daemon Applet

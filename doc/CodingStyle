@@ -1,0 +1,64 @@
+Coding style used in CrashCatcher
+=================================
+
+1. Class
+--------
+1.1 Class has to start with 'C'
+
+1.2 Method
+-----------
+1.2.1 method starts witch a capital letter
+1.2.2 method name can contain only letters 
+1.2.3 parameter of a method has to start with the letter 'p'
+
+1.3 Attribute
+-------------
+1.3.1 non-float attribute has to start with "m_n"
+1.3.2 float attribute has to start with "m_f"
+1.3.3 double attribute has to start with "m_d"
+1.3.4 bool attribute has to start with "m_b"
+1.3.5 string/char attribute has to start with "m_s"
+1.3.6 pointer attribute has to start with "m_p"
+1.3.7 template attribute has to start with a template name "m_map"
+1.3.8 otherwise "m_"
+
+2. Type
+-------
+2.1 every type has to end with "_t"
+2.2 types created from templates has to start with a template name
+2.3 words in a type has to be separated with "_"
+
+3. Statement
+------------
+3.1 "if", "while" and "for" has to have {} every time.
+3.2 { is on the new line every time
+
+4. Example
+----------
+
+typedef std::map<int, int> map_new_type_t;
+
+class CAwesomeClass
+{
+	private:
+		map_new_type_t m_NewType;
+		std::string m_sName;
+		COtherClass* m_pOtherClass;
+		void PrivateFunction(int pParameter);
+	public:
+		CAwesomeClass(std::string pName) : 
+		    m_sName(pName), m_pOtherClass(NULL) 
+		{}
+};
+
+void CAwesomeClass::PrivateFunction(int pParameter)
+{
+	if (pParameter != "")
+	{
+		// do something
+	}
+	else
+	{
+		// do something else
+	}
+}
