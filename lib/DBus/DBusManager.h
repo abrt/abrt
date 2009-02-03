@@ -50,6 +50,10 @@ class CDBusManager
         void LoopSend();
         void Unregister();
         void RegisterToMessage(const std::string& pMessage, GCallback handler, void * data, GClosureNotify free_data_func);
+        /** TODO
+        //tries to reconnect after daemon failure
+        void Reconnect();
+        */
 };
 
 #endif /*DBUS_H_*/

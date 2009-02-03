@@ -18,15 +18,32 @@
     */
 
 #include "CCApplet.h"
+#include <iostream>
 
 CApplet::CApplet()
 {
-      m_nStatusIcon = Gtk::StatusIcon::create(Gtk::Stock::DIALOG_WARNING);
-      m_nStatusIcon->set_visible(false);
+    
+    m_nStatusIcon = Gtk::StatusIcon::create(Gtk::Stock::DIALOG_WARNING);
+    m_nStatusIcon->set_visible(false);
+    // LTM click
+    m_nStatusIcon->signal_activate().connect(sigc::mem_fun(*this, &CApplet::OnAppletActivate_CB));
+    SetIconToolip("Pending events:");
 }
 
 CApplet::~CApplet()
 {
+}
+
+void CApplet::SetIconToolip(const Glib::ustring& tip)
+{
+      m_nStatusIcon->set_tooltip(tip);
+}
+
+void CApplet::OnAppletActivate_CB()
+{
+    m_nStatusIcon->set_visible(false);
+    //std::cout << "Activate" << std::endl;
+    
 }
 
 void CApplet::ShowIcon()

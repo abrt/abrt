@@ -26,12 +26,20 @@ class CApplet
 {
     private:
         Glib::RefPtr<Gtk::StatusIcon> m_nStatusIcon;
+        int m_iPendingEvents;
 	public:
         CApplet();
         ~CApplet();
         void ShowIcon();
         void HideIcon();
+        //void DisableIcon();
         void BlinkIcon(bool pBlink);
+        void SetIconToolip(const Glib::ustring& tip);
+    protected:
+        void OnAppletActivate_CB();
+        Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+        Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+        Gtk::Menu* m_pMenuPopup;
 };
 
 #endif /*CC_APPLET_H_*/
