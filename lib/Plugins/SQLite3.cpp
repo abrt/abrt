@@ -28,13 +28,13 @@
 #define TABLE_NAME "CrashCatcher"
 
 CSQLite3::CSQLite3() :
-	m_sDBPath(""),
-	m_pDB(NULL)
+    m_sDBPath(""),
+    m_pDB(NULL)
 {}
 
 bool CSQLite3::IsReported(const std::string& pUUID)
 {
-	vector_database_rows_t table;
+    vector_database_rows_t table;
     GetTable("SELECT "DATABASE_COLUMN_REPORTED" FROM "TABLE_NAME" WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';", table);
     if(table.empty())
     {
@@ -68,41 +68,41 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
         int ii;
         for (ii = 0; ii < nrow; ii++)
         {
-        	int jj;
-        	database_row_t row;
-        	for (jj = 0; jj < ncol; jj++)
-        	{
-        		switch(jj)
-        		{
-					case 0: row.m_sUUID = table[jj + ncol];
-						break;
-					case 1: row.m_sDebugDumpPath = table[jj + ncol];
-						break;
-					case 2: row.m_sArchitecture = table[jj + ncol];
-						break;
-					case 3: row.m_sKernel = table[jj + ncol];
-						break;
-					case 4: row.m_sExecutable = table[jj + ncol];
-						break;
-					case 5: row.m_sPackage = table[jj + ncol];
-						break;
-					case 6: row.m_sUID = table[jj + ncol];
-						break;
-					case 7: row.m_sTime = table[jj + ncol];
-						break;
-					case 8: row.m_sCount = table[jj + ncol];
-						break;
-					case 9: row.m_sReported = table[jj + ncol];
-						break;
-					case 10: row.m_sBackTrace = table[jj + ncol];
-						break;
-					case 11: row.m_sTextData1 = table[jj + ncol];
-						break;
-					default:
-						break;
-        		}
-        	}
-        	pTable.push_back(row);
+            int jj;
+            database_row_t row;
+            for (jj = 0; jj < ncol; jj++)
+            {
+                switch(jj)
+                {
+                    case 0: row.m_sUUID = table[jj + ncol];
+                        break;
+                    case 1: row.m_sDebugDumpPath = table[jj + ncol];
+                        break;
+                    case 2: row.m_sArchitecture = table[jj + ncol];
+                        break;
+                    case 3: row.m_sKernel = table[jj + ncol];
+                        break;
+                    case 4: row.m_sExecutable = table[jj + ncol];
+                        break;
+                    case 5: row.m_sPackage = table[jj + ncol];
+                        break;
+                    case 6: row.m_sUID = table[jj + ncol];
+                        break;
+                    case 7: row.m_sTime = table[jj + ncol];
+                        break;
+                    case 8: row.m_sCount = table[jj + ncol];
+                        break;
+                    case 9: row.m_sReported = table[jj + ncol];
+                        break;
+                    case 10: row.m_sBackTrace = table[jj + ncol];
+                        break;
+                    case 11: row.m_sTextData1 = table[jj + ncol];
+                        break;
+                    default:
+                        break;
+                }
+            }
+            pTable.push_back(row);
         }
         sqlite3_free_table(table);
 }
@@ -111,13 +111,13 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
 void CSQLite3::Connect()
 {
     int ret = sqlite3_open_v2(m_sDBPath.c_str(),
-    		                  &m_pDB,
-    		                  SQLITE_OPEN_READWRITE,
-    		                  NULL);
+                              &m_pDB,
+                              SQLITE_OPEN_READWRITE,
+                              NULL);
 
     if(ret == SQLITE_CANTOPEN)
     {
-    	Create();
+        Create();
     }
     else if (ret != SQLITE_OK)
     {
@@ -147,45 +147,45 @@ void CSQLite3::Create()
          DATABASE_COLUMN_TIME" VARCHAR(32) NOT NULL,"
          DATABASE_COLUMN_COUNT" INT(10) NOT NULL DEFAULT 1,"
          DATABASE_COLUMN_REPORTED" INT(10) NOT NULL DEFAULT 0,"
-		 DATABASE_COLUMN_BACKTRACE" VARCHAR DEFAULT \"\","
-		 DATABASE_COLUMN_TEXTDATA1" VARCHAR DEFAULT \"\""
-		 ");");
+         DATABASE_COLUMN_BACKTRACE" VARCHAR DEFAULT \"\","
+         DATABASE_COLUMN_TEXTDATA1" VARCHAR DEFAULT \"\""
+         ");");
 }
 
 void CSQLite3::DisConnect()
 {
-	sqlite3_close(m_pDB);
+    sqlite3_close(m_pDB);
 }
 
 void CSQLite3::Insert(const std::string& pUUID,
-					  const std::string& pDebugDumpPath,
-					  const std::string& pArch,
-					  const std::string& pKernel,
-					  const std::string& pExecutable,
-					  const std::string& pPackage,
-					  const std::string& pUID,
-					  const std::string& pTime)
+                      const std::string& pDebugDumpPath,
+                      const std::string& pArch,
+                      const std::string& pKernel,
+                      const std::string& pExecutable,
+                      const std::string& pPackage,
+                      const std::string& pUID,
+                      const std::string& pTime)
 {
     if (!IsReported(pUUID))
     {
             Exec("INSERT INTO "TABLE_NAME"("
-				 DATABASE_COLUMN_UUID","
-				 DATABASE_COLUMN_DEBUG_DUMP_PATH","
-				 DATABASE_COLUMN_ARCHITECTURE","
-				 DATABASE_COLUMN_KERNEL","
-				 DATABASE_COLUMN_EXECUTABLE","
-				 DATABASE_COLUMN_PACKAGE","
-				 DATABASE_COLUMN_UID","
-				 DATABASE_COLUMN_TIME")"
-           		" VALUES ('"+pUUID+"'"
-						  "'"+pDebugDumpPath+"'"
-						  "'"+pArch+"'"
-						  "'"+pKernel+"'"
-						  "'"+pExecutable+"'"
-						  "'"+pPackage+"'"
-						  "'"+pUID+"'"
-						  "'"+pTime+"'"
-						  ");");
+                 DATABASE_COLUMN_UUID","
+                 DATABASE_COLUMN_DEBUG_DUMP_PATH","
+                 DATABASE_COLUMN_ARCHITECTURE","
+                 DATABASE_COLUMN_KERNEL","
+                 DATABASE_COLUMN_EXECUTABLE","
+                 DATABASE_COLUMN_PACKAGE","
+                 DATABASE_COLUMN_UID","
+                 DATABASE_COLUMN_TIME")"
+                   " VALUES ('"+pUUID+"',"
+                          "'"+pDebugDumpPath+"',"
+                          "'"+pArch+"',"
+                          "'"+pKernel+"',"
+                          "'"+pExecutable+"',"
+                          "'"+pPackage+"',"
+                          "'"+pUID+"',"
+                          "'"+pTime+"'"
+                          ");");
     }
     else
     {
@@ -200,56 +200,74 @@ void CSQLite3::Delete(const std::string& pUUID)
     if (IsReported(pUUID))
     {
             Exec("DELETE FROM "TABLE_NAME
-            	 " WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+                 " WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
     }
 }
 
 void CSQLite3::InsertBackTrace(const std::string& pUUID,
-					 const std::string& pBackTrace)
+                     const std::string& pBackTrace)
 {
-	if (IsReported(pUUID))
-	{
-		Exec("UPDATE "TABLE_NAME
-			 "SET "DATABASE_COLUMN_BACKTRACE" = "+pBackTrace+
-			 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
-	}
+    if (IsReported(pUUID))
+    {
+        Exec("UPDATE "TABLE_NAME
+             "SET "DATABASE_COLUMN_BACKTRACE" = "+pBackTrace+
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+    }
 }
 
 void CSQLite3::InsertTextData1(const std::string& pUUID,
-					 const std::string& pData)
+                     const std::string& pData)
 {
-	if (IsReported(pUUID))
-	{
-		Exec("UPDATE "TABLE_NAME
-			 "SET "DATABASE_COLUMN_TEXTDATA1" = "+pData+
-			 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
-	}
+    if (IsReported(pUUID))
+    {
+        Exec("UPDATE "TABLE_NAME
+             "SET "DATABASE_COLUMN_TEXTDATA1" = "+pData+
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+    }
 }
 
 const vector_database_rows_t CSQLite3::GetUIDData(const std::string& pUID)
 {
-	vector_database_rows_t table;
-	if (pUID == "0")
-	{
-		GetTable("SELECT * FROM "TABLE_NAME";", table);
-		Exec("UPDATE "TABLE_NAME" SET "DATABASE_COLUMN_REPORTED" = 1;");
-	}
-	else
-	{
-		GetTable("SELECT * FROM "TABLE_NAME
-				 " WHERE "DATABASE_COLUMN_UID" = '"+pUID+"';",
-				 table);
-		Exec("UPDATE "TABLE_NAME
-			 " SET "DATABASE_COLUMN_REPORTED" = 1 "
-			 " WHERE "DATABASE_COLUMN_UID" = '"+pUID+"';");
-	}
-	return table;
+    vector_database_rows_t table;
+    if (pUID == "0")
+    {
+        GetTable("SELECT * FROM "TABLE_NAME";", table);
+        Exec("UPDATE "TABLE_NAME" SET "DATABASE_COLUMN_REPORTED" = 1;");
+    }
+    else
+    {
+        GetTable("SELECT * FROM "TABLE_NAME
+                 " WHERE "DATABASE_COLUMN_UID" = '"+pUID+"';",
+                 table);
+        Exec("UPDATE "TABLE_NAME
+             " SET "DATABASE_COLUMN_REPORTED" = 1 "
+             " WHERE "DATABASE_COLUMN_UID" = '"+pUID+"';");
+    }
+    return table;
 }
 
-void CSQLite3::Init(const map_settings_t& pSettings)
+const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID)
 {
-	if (pSettings.find("DBPath")!= pSettings.end())
-	{
-		m_sDBPath = pSettings.find("DBPath")->second;
-	}
+    vector_database_rows_t table;
+
+    GetTable("SELECT * FROM "TABLE_NAME
+             " WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';",
+             table);
+    Exec("UPDATE "TABLE_NAME
+         " SET "DATABASE_COLUMN_REPORTED" = 1 "
+         " WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+
+    if (table.size() == 0)
+    {
+        return database_row_t();
+    }
+    return table[0];
+}
+
+void CSQLite3::SetSettings(const map_settings_t& pSettings)
+{
+    if (pSettings.find("DBPath")!= pSettings.end())
+    {
+        m_sDBPath = pSettings.find("DBPath")->second;
+    }
 }

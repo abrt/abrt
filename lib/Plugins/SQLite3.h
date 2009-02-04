@@ -28,52 +28,54 @@
 
 class CSQLite3 : public CDatabase
 {
-	private:
+    private:
 
-		std::string m_sDBPath;
-		sqlite3* m_pDB;
+        std::string m_sDBPath;
+        sqlite3* m_pDB;
 
-		void Create();
-		void Exec(const std::string& pCommand);
-		void GetTable(const std::string& pCommand, vector_database_rows_t& pTable);
-		bool IsReported(const std::string& pUUID);
+        void Create();
+        void Exec(const std::string& pCommand);
+        void GetTable(const std::string& pCommand, vector_database_rows_t& pTable);
+        bool IsReported(const std::string& pUUID);
 
-	public:
-		CSQLite3();
-		virtual ~CSQLite3() {}
+    public:
+        CSQLite3();
+        virtual ~CSQLite3() {}
 
-		void Connect();
-		void DisConnect();
+        void Connect();
+        void DisConnect();
 
-		void Insert(const std::string& pUUID,
-					const std::string& pDebugDumpPath,
-					const std::string& pArch,
-					const std::string& pKernel,
-					const std::string& pExecutable,
-					const std::string& pPackage,
-					const std::string& pUID,
-					const std::string& pTime);
+        void Insert(const std::string& pUUID,
+                    const std::string& pDebugDumpPath,
+                    const std::string& pArch,
+                    const std::string& pKernel,
+                    const std::string& pExecutable,
+                    const std::string& pPackage,
+                    const std::string& pUID,
+                    const std::string& pTime);
 
-		void InsertBackTrace(const std::string& pUUID,
-							 const std::string& pBackTrace);
+        void InsertBackTrace(const std::string& pUUID,
+                             const std::string& pBackTrace);
 
-		void InsertTextData1(const std::string& pUUID,
-							 const std::string& pData);
+        void InsertTextData1(const std::string& pUUID,
+                             const std::string& pData);
 
-		void Delete(const std::string& pUUID);
+        void Delete(const std::string& pUUID);
 
-		const vector_database_rows_t GetUIDData(const std::string& pUID);
+        const vector_database_rows_t GetUIDData(const std::string& pUID);
+        const database_row_t GetUUIDData(const std::string& pUUID);
 
-		void Init(const map_settings_t& pSettings);
-		void DeInit() {}
+        void Init() {}
+        void DeInit() {}
+        void SetSettings(const map_settings_t& pSettings);
 };
 
 PLUGIN_INFO(DATABASE,
-		    "SQLite3",
-		    "0.0.1",
-		    "SQLite3 database plugin.",
-		    "zprikryl@redhat.com",
-		    "https://fedorahosted.org/crash-catcher/wiki");
+            "SQLite3",
+            "0.0.1",
+            "SQLite3 database plugin.",
+            "zprikryl@redhat.com",
+            "https://fedorahosted.org/crash-catcher/wiki");
 
 PLUGIN_INIT(CSQLite3);
 
