@@ -29,28 +29,30 @@
 
 class CMailx : public CReporter
 {
-	private:
-		std::string m_sEmailFrom;
-		std::string m_sEmailTo;
-		std::string m_sParameters;
+    private:
+        std::string m_sEmailFrom;
+        std::string m_sEmailTo;
+        std::string m_sParameters;
 
-		void SendEmail(const std::string& pText);
+        void SendEmail(const std::string& pText);
 
-	public:
-		CMailx();
-		virtual ~CMailx() {}
-		void Init(const map_settings_t& pSettings);
-		void DeInit() {}
-		void Report(const std::string& pDebugDumpPath);
+    public:
+        CMailx();
+        virtual ~CMailx() {}
+        void Init() {}
+        void DeInit() {}
+        void SetSettings(const map_settings_t& pSettings);
+
+        void Report(const std::string& pDebugDumpPath);
 };
 
 
 PLUGIN_INFO(REPORTER,
-		    "Mailx",
-		    "0.0.1",
-		    "Sends an email with a report via mailx command",
-		    "zprikryl@redhat.com",
-		    "https://fedorahosted.org/crash-catcher/wiki");
+            "Mailx",
+            "0.0.1",
+            "Sends an email with a report via mailx command",
+            "zprikryl@redhat.com",
+            "https://fedorahosted.org/crash-catcher/wiki");
 
 PLUGIN_INIT(CMailx);
 

@@ -26,49 +26,49 @@
 #define MAILX_SUBJECT "CrashCatcher automated bug report"
 
 CMailx::CMailx() :
-	m_sEmailFrom(""),
-	m_sEmailTo(""),
-	m_sParameters()
+    m_sEmailFrom(""),
+    m_sEmailTo(""),
+    m_sParameters()
 {}
 
 
 void CMailx::SendEmail(const std::string& pText)
 {
-	FILE* command;
-	std::string mailx_command = MAILX_COMMAND + m_sParameters +
-								" -s " + MAILX_SUBJECT +
-	                            " -r " + m_sEmailTo + " " + m_sEmailFrom;
+    FILE* command;
+    std::string mailx_command = MAILX_COMMAND + m_sParameters +
+                                " -s " + MAILX_SUBJECT +
+                                " -r " + m_sEmailTo + " " + m_sEmailFrom;
 
-	command = popen(mailx_command.c_str(), "w");
-	if (!command)
-	{
-		throw std::string("CMailx::SendEmail: Can not execute mailx.");
-	}
-	if (fputs(pText.c_str(), command) == -1)
-	{
-		throw std::string("CMailx::SendEmail: Can not send data.");
-	}
-	pclose(command);
+    command = popen(mailx_command.c_str(), "w");
+    if (!command)
+    {
+        throw std::string("CMailx::SendEmail: Can not execute mailx.");
+    }
+    if (fputs(pText.c_str(), command) == -1)
+    {
+        throw std::string("CMailx::SendEmail: Can not send data.");
+    }
+    pclose(command);
 }
 
 
 void CMailx::Report(const std::string& pDebugDumpPath)
 {
-	SendEmail("Nejakej zbesilej report.");
+    SendEmail("Nejakej zbesilej report.");
 }
 
-void CMailx::Init(const map_settings_t& pSettings)
+void CMailx::SetSettings(const map_settings_t& pSettings)
 {
-	if (pSettings.find("Email_From")!= pSettings.end())
-	{
-		m_sEmailFrom = pSettings.find("Email_From")->second;
-	}
-	if (pSettings.find("Email_To")!= pSettings.end())
-	{
-		m_sEmailFrom = pSettings.find("Email_To")->second;
-	}
-	if (pSettings.find("Parameters")!= pSettings.end())
-	{
-		m_sParameters = pSettings.find("Parameters")->second;
-	}
+    if (pSettings.find("Email_From")!= pSettings.end())
+    {
+        m_sEmailFrom = pSettings.find("Email_From")->second;
+    }
+    if (pSettings.find("Email_To")!= pSettings.end())
+    {
+        m_sEmailFrom = pSettings.find("Email_To")->second;
+    }
+    if (pSettings.find("Parameters")!= pSettings.end())
+    {
+        m_sParameters = pSettings.find("Parameters")->second;
+    }
 }
