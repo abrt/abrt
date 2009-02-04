@@ -52,7 +52,6 @@ class CCrashCatcherPlugin
         const plugin_type_t GetType();
 
         CPlugin* PluginNew();
-        const map_settings_t& GetSettings();
 };
 
 #endif /*CRASHCATCHERPLUGIN_H_*/
