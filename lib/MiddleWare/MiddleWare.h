@@ -28,24 +28,31 @@
 
 class CMiddleWare
 {
-	private:
+    private:
 
-		CPluginManager* m_PluginManager;
+        CPluginManager* m_pPluginManager;
+        std::string m_sBlackList;
+        std::string m_sDatabase;
 
-	public:
-		CMiddleWare(const std::string& pPlugisConfDir,
-				    const std::string& pPlugisLibDir);
+        std::string GetLocalUUIDLanguage(const std::string& pLanguage,
+                                         const std::string& pDebugDumpDir);
+        std::string GetLocalUUIDApplication(const std::string& pApplication,
+                                            const std::string& pDebugDumpPath);
+        void LoadSettings(const std::string& pPath);
+    public:
+        CMiddleWare(const std::string& pPlugisConfDir,
+                    const std::string& pPlugisLibDir,
+                    const std::string& pMiddleWareConfFile);
 
-		~CMiddleWare();
+        ~CMiddleWare();
 
-		void LoadPlugins();
-		void LoadPlugin(const std::string& pName);
-		void UnLoadPlugin(const std::string& pName);
+        void RegisterPlugin(const std::string& pName);
+        void UnRegisterPlugin(const std::string& pName);
 
-		std::string GetUUID(const std::string& pLanguage, void* pData);
-		std::string GetReport(const std::string& pLanguage, void* pData);
-		int Report(const std::string& pReporter, const std::string& pDebugDumpPath);
-		//void SaveDebugDumpToDataBase(const std::string& pPath);
+        void GetReport(const std::string& pUUID);
+        int Report(const std::string& pReport);
+        void SaveDebugDumpToDatabase(const std::string& pDebugDumpPath);
+        vector_database_rows_t GetDebugDumps(const std::string& pUID);
 };
 
 #endif /*MIDDLEWARE_H_*/
