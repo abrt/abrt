@@ -58,7 +58,7 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
     }
     else
     {
-        throw std::string("No database plugin is loaded.");
+        throw std::string("No database plugin is selected.");
     }
 }
 
