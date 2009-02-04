@@ -33,211 +33,207 @@
 #include <ctype.h>
 
 CDebugDump::CDebugDump() :
-	m_sDebugDumpDir("")
+    m_sDebugDumpDir("")
 {}
 
-void CDebugDump::Open(const std::string& pDebugDumpDir, const mode_t pMode)
+void CDebugDump::Open(const std::string& pDir)
 {
-	m_sDebugDumpDir = pDebugDumpDir;
-	if (pMode == CREATE)
-	{
-		Delete(pDebugDumpDir);
-		Create(pDebugDumpDir);
-		SaveEnvironment();
-	}
-	if (!Exist(pDebugDumpDir))
-	{
-		throw "CDebugDump::CDebugDump(): "+pDebugDumpDir+" does not exist.";
-	}
+    m_sDebugDumpDir = pDir;
+    if (!Exist(pDir))
+    {
+        throw "CDebugDump::CDebugDump(): "+pDir+" does not exist.";
+    }
 }
 
-bool CDebugDump::Exist(const std::string& pDir)
+bool CDebugDump::Exist(const std::string& pPath)
 {
-	struct stat buf;
-	if (stat(pDir.c_str(), &buf) == 0)
-	{
-		if (S_ISDIR(buf.st_mode))
-		{
-			return true;
-		}
-	}
-	return false;
+    struct stat buf;
+    if (stat(pPath.c_str(), &buf) == 0)
+    {
+        if (S_ISDIR(buf.st_mode) || S_ISREG(buf.st_mode))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 void CDebugDump::Create(const std::string& pDir)
 {
-	if (mkdir(pDir.c_str(), 0755) == -1)
-	{
-		throw "CDebugDump::Create(): Cannot create dir: " + pDir;
-	}
+    m_sDebugDumpDir = pDir;
+    Delete(pDir);
+    if (mkdir(pDir.c_str(), 0755) == -1)
+    {
+        throw "CDebugDump::Create(): Cannot create dir: " + pDir;
+    }
 }
 
 void CDebugDump::Delete(const std::string& pDir)
 {
-	if (!Exist(pDir))
-	{
-		return;
-	}
+    if (!Exist(pDir))
+    {
+        return;
+    }
 
-	DIR *dir = opendir(pDir.c_str());
-	std::string fullPath;
-	struct dirent *dent = NULL;
-	if (dir != NULL)
-	{
-		while ((dent = readdir(dir)) != NULL)
-		{
-			if (std::string(dent->d_name) != "." && std::string(dent->d_name) != "..")
-			{
-				fullPath = pDir + "/" + dent->d_name;
-				if (dent->d_type == DT_DIR)
-				{
-					Delete(fullPath);
-				}
-				if (remove(fullPath.c_str()) == -1)
-				{
-					throw "CDebugDump::DeleteDir(): Cannot remove file: " + fullPath;
-				}
-			}
-		}
-		closedir(dir);
-		if (remove(pDir.c_str()) == -1)
-		{
-			throw "CDebugDump::DeleteDir(): Cannot remove dir: " + fullPath;
-		}
-	}
+    DIR *dir = opendir(pDir.c_str());
+    std::string fullPath;
+    struct dirent *dent = NULL;
+    if (dir != NULL)
+    {
+        while ((dent = readdir(dir)) != NULL)
+        {
+            if (std::string(dent->d_name) != "." && std::string(dent->d_name) != "..")
+            {
+                fullPath = pDir + "/" + dent->d_name;
+                if (dent->d_type == DT_DIR)
+                {
+                    Delete(fullPath);
+                }
+                if (remove(fullPath.c_str()) == -1)
+                {
+                    throw "CDebugDump::DeleteDir(): Cannot remove file: " + fullPath;
+                }
+            }
+        }
+        closedir(dir);
+        if (remove(pDir.c_str()) == -1)
+        {
+            throw "CDebugDump::DeleteDir(): Cannot remove dir: " + fullPath;
+        }
+    }
 }
 
 void CDebugDump::SaveEnvironment()
 {
-	struct utsname buf;
-	if (uname(&buf) == 0)
-	{
-		SaveText(FILENAME_KERNEL, buf.release);
-		SaveText(FILENAME_ARCHITECTURE, buf.machine);
-	}
+    struct utsname buf;
+    if (uname(&buf) == 0)
+    {
+        SaveText(FILENAME_KERNEL, buf.release);
+        SaveText(FILENAME_ARCHITECTURE, buf.machine);
+    }
 }
 
 void CDebugDump::LoadTextFile(const std::string& pPath, std::string& pData)
 {
-	std::ifstream fIn;
-	pData = "";
-	fIn.open(pPath.c_str());
-	if (fIn.is_open())
-	{
-		std::string line;
-		while (!fIn.eof())
-		{
-			 getline (fIn,line);
-			 pData += line;
-		}
-		fIn.close();
-	}
-	else
-	{
-		throw "CDebugDump: LoadTextFile(): Cannot open file " + pPath;
-	}
+    std::ifstream fIn;
+    pData = "";
+    fIn.open(pPath.c_str());
+    if (fIn.is_open())
+    {
+        std::string line;
+        while (!fIn.eof())
+        {
+             getline (fIn,line);
+             pData += line;
+        }
+        fIn.close();
+    }
+    else
+    {
+        throw "CDebugDump: LoadTextFile(): Cannot open file " + pPath;
+    }
 }
 
 void CDebugDump::LoadBinaryFile(const std::string& pPath, char** pData, unsigned int* pSize)
 {
-	std::ifstream fIn;
-	fIn.open(pPath.c_str(), std::ios::binary | std::ios::ate);
-	unsigned int size;
-	if (fIn.is_open())
-	{
-		size = fIn.tellg();
-		char *data = new char [size];
-		fIn.read(data, size);
+    std::ifstream fIn;
+    fIn.open(pPath.c_str(), std::ios::binary | std::ios::ate);
+    unsigned int size;
+    if (fIn.is_open())
+    {
+        size = fIn.tellg();
+        char *data = new char [size];
+        fIn.read(data, size);
 
-		*pData = data;
-		*pSize = size;
+        *pData = data;
+        *pSize = size;
 
-		fIn.close();
-	}
-	else
-	{
-		throw "CDebugDump: LoadBinaryFile(): Cannot open file " + pPath;
-	}
+        fIn.close();
+    }
+    else
+    {
+        throw "CDebugDump: LoadBinaryFile(): Cannot open file " + pPath;
+    }
 }
 
 
 void CDebugDump::SaveTextFile(const std::string& pPath, const std::string& pData)
 {
-	std::ofstream fOut;
-	fOut.open(pPath.c_str());
-	if (fOut.is_open())
-	{
-		fOut << pData;
-		fOut.close();
-	}
-	else
-	{
-		throw "CDebugDump: SaveTextFile(): Cannot open file " + pPath;
-	}
+    std::ofstream fOut;
+    fOut.open(pPath.c_str());
+    if (fOut.is_open())
+    {
+        fOut << pData;
+        fOut.close();
+    }
+    else
+    {
+        throw "CDebugDump: SaveTextFile(): Cannot open file " + pPath;
+    }
 }
 
 void CDebugDump::SaveBinaryFile(const std::string& pPath, const char* pData, const unsigned pSize)
 {
-	std::ofstream fOut;
-	fOut.open(pPath.c_str(), std::ios::binary);
-	if (fOut.is_open())
-	{
-		fOut.write(pData, pSize);
-		fOut.close();
-	}
-	else
-	{
-		throw "CDebugDump: SaveBinaryFile(): Cannot open file " + pPath;
-	}
+    std::ofstream fOut;
+    fOut.open(pPath.c_str(), std::ios::binary);
+    if (fOut.is_open())
+    {
+        fOut.write(pData, pSize);
+        fOut.close();
+    }
+    else
+    {
+        throw "CDebugDump: SaveBinaryFile(): Cannot open file " + pPath;
+    }
 }
 
 void CDebugDump::LoadText(const std::string& pName, std::string& pData)
 {
-	std::string fullPath = m_sDebugDumpDir + "/" + pName;
-	LoadTextFile(fullPath, pData);
+    std::string fullPath = m_sDebugDumpDir + "/" + pName;
+    LoadTextFile(fullPath, pData);
 }
 void CDebugDump::LoadBinary(const std::string& pName, char** pData, unsigned int* pSize)
 {
-	std::string fullPath = m_sDebugDumpDir + "/" + pName;
-	LoadBinaryFile(fullPath, pData, pSize);
+    std::string fullPath = m_sDebugDumpDir + "/" + pName;
+    LoadBinaryFile(fullPath, pData, pSize);
 }
 
 void CDebugDump::SaveText(const std::string& pName, const std::string& pData)
 {
-	std::string fullPath = m_sDebugDumpDir + "/" + pName;
-	SaveTextFile(fullPath, pData);
+    std::string fullPath = m_sDebugDumpDir + "/" + pName;
+    SaveTextFile(fullPath, pData);
 }
 void CDebugDump::SaveBinary(const std::string& pName, const char* pData, const unsigned int pSize)
 {
-	std::string fullPath = m_sDebugDumpDir + "/" + pName;
-	SaveBinaryFile(fullPath, pData, pSize);
+    std::string fullPath = m_sDebugDumpDir + "/" + pName;
+    SaveBinaryFile(fullPath, pData, pSize);
 }
 
 
 void CDebugDump::SaveProc(const std::string& pPID)
 {
-	std::string path = "/proc/"+pPID+"/exe";
-	std::string data;
+    std::string path = "/proc/"+pPID+"/exe";
+    std::string data;
     char executable[PATH_MAX];
 
     if (readlink(path.c_str(), executable, PATH_MAX) == 0)
     {
-    	SaveText(FILENAME_EXECUTABLE, executable);
+        SaveText(FILENAME_EXECUTABLE, executable);
     }
 
-	path = "/proc/"+pPID+"/status";
-	std::string uid = "0";
-	int ii = 0;
+    path = "/proc/"+pPID+"/status";
+    std::string uid = "0";
+    int ii = 0;
 
-	LoadTextFile(path, data);
-	data = data.substr(data.find("Uid:")+5);
+    LoadTextFile(path, data);
+    data = data.substr(data.find("Uid:")+5);
 
-	while (!isspace(data[ii]))
-	{
-		uid += data[ii];
-		ii++;
-	}
-	SaveText(FILENAME_USER, uid);
+    while (!isspace(data[ii]))
+    {
+        uid += data[ii];
+        ii++;
+    }
+    SaveText(FILENAME_UID, uid);
 
     // TODO: Use packagekit
 }
