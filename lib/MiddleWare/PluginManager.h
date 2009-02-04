@@ -36,27 +36,14 @@ class CPluginManager
 {
 	private:
 		typedef std::map<std::string, CCrashCatcherPlugin*> map_crash_catcher_plugins_t;
-		typedef std::map<std::string, CLanguage*> map_languages_t;
-		typedef std::map<std::string, CReporter*> map_reporters_t;
-		typedef std::map<std::string, CApplication*> map_applications_t;
-		typedef std::map<std::string, CDatabase*> map_databases_t;
+		typedef std::map<std::string, CPlugin*> map_plugins_t;
 
 
 		map_crash_catcher_plugins_t m_mapCrashCatcherPlugins;
-		map_languages_t m_mapLanguages;
-		map_reporters_t m_mapReporters;
-		map_applications_t m_mapApplications;
-		map_databases_t m_mapDatabases;
+		map_plugins_t m_mapPlugins;
 
 		std::string m_sPlugisConfDir;
 		std::string m_sPlugisLibDir;
-
-		void RegisterPlugin(CPlugin* pPlugin,
-				            const std::string pName,
-				            const plugin_type_t& pPluginType);
-
-		void UnRegisterPlugin(const std::string pName,
-				              const plugin_type_t& pPluginType);
 
 	public:
 		CPluginManager(const std::string& pPlugisConfDir,
@@ -65,8 +52,12 @@ class CPluginManager
 		~CPluginManager();
 
 		void LoadPlugins();
+		void UnLoadPlugins();
+
 		void LoadPlugin(const std::string& pName);
 		void UnLoadPlugin(const std::string& pName);
+        void RegisterPlugin(const std::string& pName);
+        void UnRegisterPlugin(const std::string& pName);
 
 		CLanguage* GetLanguage(const std::string& pName);
 		CReporter* GetReporter(const std::string& pName);

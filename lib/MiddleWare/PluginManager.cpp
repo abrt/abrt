@@ -24,6 +24,7 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include "Settings.h"
 
 CPluginManager::CPluginManager(const std::string& pPlugisConfDir,
 							   const std::string& pPlugisLibDir) :
@@ -32,14 +33,7 @@ CPluginManager::CPluginManager(const std::string& pPlugisConfDir,
 {}
 
 CPluginManager::~CPluginManager()
-{
-	map_crash_catcher_plugins_t::iterator it_p;
-	while ((it_p = m_mapCrashCatcherPlugins.begin()) != m_mapCrashCatcherPlugins.end())
-	{
-		std::string pluginName = it_p->first;
-		UnLoadPlugin(pluginName);
-	}
-}
+{}
 
 void CPluginManager::LoadPlugins()
 {
@@ -64,44 +58,38 @@ void CPluginManager::LoadPlugins()
 	}
 }
 
+void CPluginManager::UnLoadPlugins()
+{
+    map_crash_catcher_plugins_t::iterator it_p;
+      while ((it_p = m_mapCrashCatcherPlugins.begin()) != m_mapCrashCatcherPlugins.end())
+      {
+          std::string pluginName = it_p->first;
+          UnLoadPlugin(pluginName);
+      }
+}
+
 void CPluginManager::LoadPlugin(const std::string& pName)
 {
 	if (m_mapCrashCatcherPlugins.find(pName) == m_mapCrashCatcherPlugins.end())
 	{
 		CCrashCatcherPlugin* crashCatcherPlugin = NULL;
-		CPlugin* plugin = NULL;
 		try
 		{
 			std::string libPath = m_sPlugisLibDir + "/lib" + pName + "." + PLUGINS_LIB_EXTENSIONS;
 			crashCatcherPlugin = new CCrashCatcherPlugin(libPath);
-			if (crashCatcherPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER)
+			if (crashCatcherPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
+			    (crashCatcherPlugin->GetType() < LANGUAGE && crashCatcherPlugin->GetType() > DATABASE))
 			{
 				throw std::string("non-compatible plugin");
 			}
-			crashCatcherPlugin->LoadSettings(m_sPlugisConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION);
-			std::cerr << "Loaded Plugin " << pName << " (" << crashCatcherPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
-			std::cerr << "	Description: " << crashCatcherPlugin->GetDescription() << std::endl;
-			std::cerr << "	Email: " << crashCatcherPlugin->GetEmail() << std::endl;
-			std::cerr << "	WWW: " << crashCatcherPlugin->GetWWW() << std::endl;
+			std::cerr << "Plugin " << pName << " (" << crashCatcherPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
 			m_mapCrashCatcherPlugins[pName] = crashCatcherPlugin;
-
-			if (crashCatcherPlugin->IsEnabled())
-			{
-				plugin = crashCatcherPlugin->PluginNew();
-				plugin->Init(crashCatcherPlugin->GetSettings());
-				RegisterPlugin(plugin, pName, crashCatcherPlugin->GetType());
-			}
-
 		}
 		catch (std::string sError)
 		{
-			if (plugin != NULL)
-			{
-				delete plugin;
-			}
 			if (crashCatcherPlugin != NULL)
 			{
-				delete plugin;
+				delete crashCatcherPlugin;
 			}
 			std::cerr << "Failed to load plugin " << pName << " (" << sError << ")." << std::endl;
 		}
@@ -112,7 +100,7 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
 {
 	if (m_mapCrashCatcherPlugins.find(pName) != m_mapCrashCatcherPlugins.end())
 	{
-		UnRegisterPlugin(pName, m_mapCrashCatcherPlugins[pName]->GetType());
+		UnRegisterPlugin(pName);
 		delete m_mapCrashCatcherPlugins[pName];
 		m_mapCrashCatcherPlugins.erase(pName);
 		std::cerr << "Plugin " << pName << " sucessfully unloaded." << std::endl;
@@ -120,135 +108,79 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
 }
 
 
-void CPluginManager::RegisterPlugin(CPlugin* pPlugin,
-		                            const std::string pName,
-		                            const plugin_type_t& pPluginType)
+void CPluginManager::RegisterPlugin(const std::string& pName)
 {
-	switch (pPluginType)
-	{
-		case LANGUAGE:
-			{
-				m_mapLanguages[pName] = (CLanguage*)pPlugin;
-				std::cerr << "Registred Language plugin " << pName << std::endl;
-			}
-			break;
-		case REPORTER:
-			{
-				m_mapReporters[pName] = (CReporter*)pPlugin;
-				std::cerr << "Registred Reporter plugin " << pName << std::endl;
-			}
-			break;
-		case APPLICATION:
-			{
-				m_mapApplications[pName] = (CApplication*)pPlugin;
-				std::cerr << "Registred Application plugin " << pName << std::endl;
-			}
-			break;
-		case DATABASE:
-			{
-				m_mapDatabases[pName] = (CDatabase*)pPlugin;
-				std::cerr << "Registred Database plugin " << pName << std::endl;
-			}
-			break;
-		default:
-			{
-				std::cerr << "Trying to register unknown type of plugin." << std::endl;
-			}
-			break;
-	}
+    if (m_mapCrashCatcherPlugins.find(pName) != m_mapCrashCatcherPlugins.end())
+    {
+        if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+        {
+            map_settings_t settings;
+            std::string path = m_sPlugisConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
+            load_settings(path, settings);
+            CPlugin* plugin = m_mapCrashCatcherPlugins[pName]->PluginNew();
+            plugin->Init();
+            plugin->SetSettings(settings);
+            m_mapPlugins[pName] = plugin;
+            std::cerr << "Registred plugin " << pName << "("
+                      << plugin_type_str_t[m_mapCrashCatcherPlugins[pName]->GetType()]
+                      << ")" << std::endl;
+        }
+    }
 }
 
-void CPluginManager::UnRegisterPlugin(const std::string pName, const plugin_type_t& pPluginType)
+void CPluginManager::UnRegisterPlugin(const std::string& pName)
 {
-	switch (pPluginType)
-	{
-		case LANGUAGE:
-			{
-				if (m_mapLanguages.find(pName) != m_mapLanguages.end())
-				{
-					m_mapLanguages[pName]->DeInit();
-					delete m_mapLanguages[pName];
-					m_mapLanguages.erase(pName);
-					std::cerr << "UnRegistred Language plugin " << pName << std::endl;
-				}
-			}
-			break;
-		case REPORTER:
-			{
-				if (m_mapReporters.find(pName) != m_mapReporters.end())
-				{
-					m_mapReporters[pName]->DeInit();
-					delete m_mapReporters[pName];
-					m_mapReporters.erase(pName);
-					std::cerr << "UnRegistred Reporter plugin " << pName << std::endl;
-				}
-			}
-			break;
-		case APPLICATION:
-			{
-				if (m_mapApplications.find(pName) != m_mapApplications.end())
-				{
-					m_mapApplications[pName]->DeInit();
-					delete m_mapApplications[pName];
-					m_mapApplications.erase(pName);
-					std::cerr << "UnRegistred Application plugin " << pName << std::endl;
-				}
-			}
-			break;
-		case DATABASE:
-			{
-				if (m_mapDatabases.find(pName) != m_mapDatabases.end())
-				{
-					m_mapDatabases[pName]->DeInit();
-					delete m_mapDatabases[pName];
-					m_mapDatabases.erase(pName);
-					std::cerr << "UnRegistred Database plugin " << pName << std::endl;
-				}
-			}
-			break;
-		default:
-			std::cerr << "Trying to unregister unknown type of plugin." << std::endl;
-			break;
-	}
+    if (m_mapCrashCatcherPlugins.find(pName) != m_mapCrashCatcherPlugins.end())
+    {
+        if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+        {
+            m_mapPlugins[pName]->DeInit();
+            delete m_mapPlugins[pName];
+            m_mapPlugins.erase(pName);
+            std::cerr << "UnRegistred plugin " << pName << "("
+                      << plugin_type_str_t[m_mapCrashCatcherPlugins[pName]->GetType()]
+                      << ")" << std::endl;
+        }
+    }
 }
 
 CLanguage* CPluginManager::GetLanguage(const std::string& pName)
 {
-	if (m_mapLanguages.find(pName) != m_mapLanguages.end())
+	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
 	{
-		return m_mapLanguages[pName];
+		throw std::string("CPluginManager::GetLanguage():"
+				          "Language plugin: '"+pName+"' is not loaded.");
 	}
-
-	return NULL;
+	return (CLanguage*) m_mapPlugins[pName];
 }
 
 CReporter* CPluginManager::GetReporter(const std::string& pName)
 {
-	if (m_mapReporters.find(pName) != m_mapReporters.end())
+	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
 	{
-		return m_mapReporters[pName];
+		throw std::string("CPluginManager::GetReporter():"
+				          "Reporter plugin: '"+pName+"' is not loaded.");
 	}
-
-	return NULL;
+	return (CReporter*) m_mapPlugins[pName];
 }
 
 CApplication* CPluginManager::GetApplication(const std::string& pName)
 {
-	if (m_mapApplications.find(pName) != m_mapApplications.end())
+	if (m_mapPlugins.find(pName) != m_mapPlugins.end())
 	{
-		return m_mapApplications[pName];
+		throw std::string("CPluginManager::GetApplication():"
+				          "Application plugin: '"+pName+"' is not loaded.");
 	}
-
-	return NULL;
+	return (CApplication*) m_mapPlugins[pName];
 }
 
 CDatabase* CPluginManager::GetDatabase(const std::string& pName)
 {
-	if (m_mapDatabases.find(pName) != m_mapDatabases.end())
+	if (m_mapPlugins.find(pName) != m_mapPlugins.end())
 	{
-		return m_mapDatabases[pName];
+		throw std::string("CPluginManager::GetDatabase():"
+				          "Database plugin: '"+pName+"' is not loaded.");
 	}
-
-	return NULL;
+	return (CDatabase*) m_mapPlugins[pName];
 }
 
