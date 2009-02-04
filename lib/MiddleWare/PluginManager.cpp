@@ -166,7 +166,7 @@ CReporter* CPluginManager::GetReporter(const std::string& pName)
 
 CApplication* CPluginManager::GetApplication(const std::string& pName)
 {
-	if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
 	{
 		throw std::string("CPluginManager::GetApplication():"
 				          "Application plugin: '"+pName+"' is not loaded.");
@@ -176,7 +176,7 @@ CApplication* CPluginManager::GetApplication(const std::string& pName)
 
 CDatabase* CPluginManager::GetDatabase(const std::string& pName)
 {
-	if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
 	{
 		throw std::string("CPluginManager::GetDatabase():"
 				          "Database plugin: '"+pName+"' is not loaded.");
