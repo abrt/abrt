@@ -30,65 +30,65 @@
 
 int main(int argc, char** argv)
 {
-	const char* program_name = argv[0];
-	if (argc < 4)
-	{
-		fprintf(stderr, "Usage: %s: <pid> <time> <signal>\n",
-				program_name);
-		return -1;
-	}
-	const char* pid = argv[1];
-	const char* time = argv[2];
-	const char* signal = argv[3];
+    const char* program_name = argv[0];
+    if (argc < 4)
+    {
+        fprintf(stderr, "Usage: %s: <pid> <time> <signal>\n",
+                program_name);
+        return -1;
+    }
+    const char* pid = argv[1];
+    const char* time = argv[2];
+    const char* signal = argv[3];
 
-	if (strcmp(signal, "11") != 0)
-	{
-		return 0;
-	}
+    if (strcmp(signal, "11") != 0)
+    {
+        return 0;
+    }
 
-	char path[PATH_MAX];
-	CDebugDump dd;
-	snprintf(path, sizeof(path), "%s/%s%s", DEBUG_DUMPS_DIR, time, pid);
-	try
-	{
-		dd.Open(path, CDebugDump::CREATE);
-		dd.SaveText(FILENAME_TIME, time);
-		dd.SaveText(FILENAME_LANGUAGE, "CCpp");
-		dd.SaveProc(pid);
+    char path[PATH_MAX];
+    CDebugDump dd;
+    snprintf(path, sizeof(path), "%s/%s%s", DEBUG_DUMPS_DIR, time, pid);
+    try
+    {
+        dd.Create(path);
+        dd.SaveText(FILENAME_TIME, time);
+        dd.SaveText(FILENAME_LANGUAGE, "CCpp");
+        dd.SaveProc(pid);
 
-		int size = CORESTEP*sizeof(char);
-		int ii = 0;
-		int data = 0;
-		char* core = NULL;
-		if ((core = (char*)malloc(size)) == NULL)
-		{
-			fprintf(stderr, "%s: not enaught memory.\n", program_name);
-			perror("");
-			return -3;
-		}
-		while ((data = getc(stdin)) != EOF)
-		{
-			if (ii >= size)
-			{
-				size *= CORESTEP*sizeof(char);
-				if ((core = (char*)realloc(core, size)) == NULL)
-				{
-					fprintf(stderr, "%s: not enaught memory.\n", program_name);
-					perror("");
-					return -3;
-				}
-			}
-			core[ii] = data;
-			ii++;
-		}
-		dd.SaveBinary(FILENAME_BINARY_FILE1, core, ii);
-		free(core);
-	}
-	catch (std::string sError)
-	{
-		fprintf(stderr, "%s: %s\n", program_name, sError.c_str());
-		return -2;
-	}
+        int size = CORESTEP*sizeof(char);
+        int ii = 0;
+        int data = 0;
+        char* core = NULL;
+        if ((core = (char*)malloc(size)) == NULL)
+        {
+            fprintf(stderr, "%s: not enaught memory.\n", program_name);
+            perror("");
+            return -3;
+        }
+        while ((data = getc(stdin)) != EOF)
+        {
+            if (ii >= size)
+            {
+                size *= CORESTEP*sizeof(char);
+                if ((core = (char*)realloc(core, size)) == NULL)
+                {
+                    fprintf(stderr, "%s: not enaught memory.\n", program_name);
+                    perror("");
+                    return -3;
+                }
+            }
+            core[ii] = data;
+            ii++;
+        }
+        dd.SaveBinary(FILENAME_BINARYDATA1, core, ii);
+        free(core);
+    }
+    catch (std::string sError)
+    {
+        fprintf(stderr, "%s: %s\n", program_name, sError.c_str());
+        return -2;
+    }
 
-	return 0;
+    return 0;
 }
