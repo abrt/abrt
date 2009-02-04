@@ -22,6 +22,8 @@
 #include "CCpp.h"
 #include <fstream>
 #include <ctype.h>
+#include "DebugDump.h"
+#include <sstream>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN CCPP_HOOK_PATH" %p %t %s"
@@ -30,20 +32,28 @@ CLanguageCCpp::CLanguageCCpp() :
 	m_bMemoryMap(false)
 {}
 
-std::string CLanguageCCpp::GetUUID(void* pData)
+std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpPath)
 {
-	if (m_bMemoryMap)
-		return "UUID a memory map";
-	else
-		return "UUID bez memory map";
+	std::stringstream ss;
+	char* core;
+	unsigned int size;
+	CDebugDump dd;
+	dd.Open(pDebugDumpPath);
+	dd.LoadBinary(FILENAME_BINARYDATA1, &core, &size);
+
+	// TODO: write proper handler
+	ss << size;
+	return ss.str();
 }
 
-std::string CLanguageCCpp::GetReport(void* pData)
+std::string CLanguageCCpp::GetReport(const std::string& pDebugDumpPath)
 {
-	return "reportuju jak blazen";
+	// TODO: install or mount debug-infos
+	// TODO:
+	return "report";
 }
 
-void CLanguageCCpp::Init(const map_settings_t& pSettings)
+void CLanguageCCpp::Init()
 {
 	std::ifstream fInCorePattern;
 	fInCorePattern.open(CORE_PATTERN_IFACE);
@@ -59,12 +69,6 @@ void CLanguageCCpp::Init(const map_settings_t& pSettings)
 		fOutCorePattern << CORE_PATTERN << std::endl;
 		fOutCorePattern.close();
 	}
-
-	if (pSettings.find("MemoryMap")!= pSettings.end())
-	{
-		m_bMemoryMap = pSettings.find("MemoryMap")->second == "yes";
-	}
-
 }
 
 
@@ -77,4 +81,12 @@ void CLanguageCCpp::DeInit()
 		fOutCorePattern << m_sOldCorePattern << std::endl;
 		fOutCorePattern.close();
 	}
+}
+
+void CLanguageCCpp::SetSettings(const map_settings_t& pSettings)
+{
+    if (pSettings.find("MemoryMap")!= pSettings.end())
+      {
+          m_bMemoryMap = pSettings.find("MemoryMap")->second == "yes";
+      }
 }

@@ -35,10 +35,11 @@ class CLanguageCCpp : public CLanguage
 	public:
 		CLanguageCCpp();
 		virtual ~CLanguageCCpp() {}
-		std::string GetUUID(void* pData);
-		std::string GetReport(void* pData);
-		void Init(const map_settings_t& pSettings);
+		std::string GetLocalUUID(const std::string& pDebugDumpPath);
+		std::string GetReport(const std::string& pDebugDumpPath);
+		void Init();
 		void DeInit();
+		void SetSettings(const map_settings_t& pSettings);
 };
 
 
