@@ -30,34 +30,29 @@
 
 class CCrashCatcherPlugin
 {
-	private:
+    private:
 
-		typedef const plugin_info_t* p_plugin_info_t;
-		typedef CPlugin* (*p_fn_plugin_new_t)();
+        typedef const plugin_info_t* p_plugin_info_t;
+        typedef CPlugin* (*p_fn_plugin_new_t)();
 
-		CDynamicLibrary* m_pDynamicLibrary;
-		p_plugin_info_t m_pPluginInfo;
-		p_fn_plugin_new_t m_pFnPluginNew;
+        CDynamicLibrary* m_pDynamicLibrary;
+        p_plugin_info_t m_pPluginInfo;
+        p_fn_plugin_new_t m_pFnPluginNew;
 
-		bool m_bEnabled;
+    public:
+        CCrashCatcherPlugin(const std::string& pLibPath);
+        ~CCrashCatcherPlugin();
 
-		map_settings_t m_mapSettings;
-	public:
-		CCrashCatcherPlugin(const std::string& pLibPath);
-		~CCrashCatcherPlugin();
+        const std::string& GetVersion();
+        const int GetMagicNumber();
+        const std::string& GetName();
+        const std::string& GetDescription();
+        const std::string& GetEmail();
+        const std::string& GetWWW();
+        const plugin_type_t GetType();
 
-		void LoadSettings(const std::string& pPath);
-		const bool IsEnabled();
-		const std::string& GetVersion();
-		const int GetMagicNumber();
-		const std::string& GetName();
-		const std::string& GetDescription();
-		const std::string& GetEmail();
-		const std::string& GetWWW();
-		const plugin_type_t GetType();
-
-		CPlugin* PluginNew();
-		const map_settings_t& GetSettings();
+        CPlugin* PluginNew();
+        const map_settings_t& GetSettings();
 };
 
 #endif /*CRASHCATCHERPLUGIN_H_*/
