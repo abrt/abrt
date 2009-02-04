@@ -27,9 +27,9 @@
 
 class CReporter : public CPlugin
 {
-	public:
-		virtual ~CReporter() {}
-		virtual void Report(const std::string& pDebugDumpPath) = 0;
+    public:
+        virtual ~CReporter() {}
+        virtual void Report(const std::string& pDebugDumpPath) = 0;
 };
 
 #endif /* REPORTER_H_ */

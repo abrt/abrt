@@ -25,62 +25,61 @@
 
 #include <string>
 #include <map>
-#include <fstream>
+#include "Settings.h"
 
 #define PLUGINS_MAGIC_NUMBER 1
 
 #define PLUGINS_CONF_EXTENSION "conf"
 #define PLUGINS_LIB_EXTENSIONS "so"
 
-typedef std::map<std::string, std::string> map_settings_t;
-
 class CPlugin
 {
-	public:
-		virtual ~CPlugin() {}
+    public:
+        virtual ~CPlugin() {}
 
-		virtual void Init(const map_settings_t& pSettings) = 0;
-		virtual void DeInit() = 0;
+        virtual void Init() = 0;
+        virtual void DeInit() = 0;
+        virtual void SetSettings(const map_settings_t& pSettings) = 0;
 };
 
 typedef enum { LANGUAGE, REPORTER, APPLICATION, DATABASE } plugin_type_t;
+const char* const plugin_type_str_t[] = {"Language", "Reporter", "Application", "Database"};
 
 typedef struct SPluginInfo
 {
-	const plugin_type_t m_Type;
-	const std::string m_sName;
-	const std::string m_sVersion;
-	const std::string m_sDescription;
-	const std::string m_sEmail;
-	const std::string m_sWWW;
-	const int m_nMagicNumber;
+    const plugin_type_t m_Type;
+    const std::string m_sName;
+    const std::string m_sVersion;
+    const std::string m_sDescription;
+    const std::string m_sEmail;
+    const std::string m_sWWW;
+    const int m_nMagicNumber;
 } plugin_info_t;
 
 #define PLUGIN_IFACE extern "C"
 
 #define PLUGIN_INIT(plugin_class)\
-	PLUGIN_IFACE CPlugin* plugin_new()\
-	{\
-		plugin_class* plugin = new plugin_class();\
-		if (plugin == NULL)\
-		{\
-			throw std::string("Not enought memory");\
-		}\
-		return plugin;\
-	}\
+    PLUGIN_IFACE CPlugin* plugin_new()\
+    {\
+        plugin_class* plugin = new plugin_class();\
+        if (plugin == NULL)\
+        {\
+            throw std::string("Not enought memory");\
+        }\
+        return plugin;\
+    }\
 
 
-#define PLUGIN_INFO(type, name, version,\
-                    description, email, www)\
-	PLUGIN_IFACE const plugin_info_t plugin_info =\
-	{\
-		type,\
-		name,\
-		version,\
-		description,\
-		email,\
-		www,\
-		PLUGINS_MAGIC_NUMBER,\
-	};
+#define PLUGIN_INFO(type, name, version, description, email, www)\
+    PLUGIN_IFACE const plugin_info_t plugin_info =\
+    {\
+        type,\
+        name,\
+        version,\
+        description,\
+        email,\
+        www,\
+        PLUGINS_MAGIC_NUMBER,\
+    };
 
 #endif /* PLUGIN_H_ */

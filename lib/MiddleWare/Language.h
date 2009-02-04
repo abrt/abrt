@@ -27,10 +27,10 @@
 
 class CLanguage : public CPlugin
 {
-	public:
-		virtual ~CLanguage() {}
-		virtual std::string GetUUID(void* pData) = 0;
-		virtual std::string GetReport(void* pData) = 0;
+    public:
+        virtual ~CLanguage() {}
+        virtual std::string GetLocalUUID(const std::string& pDebugDumpPath) = 0;
+        virtual std::string GetReport(const std::string& pDebugDumpPath) = 0;
 };
 
 #endif /*LANGUAGE_H_*/
