@@ -39,13 +39,20 @@ CDebugDump::CDebugDump() :
 void CDebugDump::Open(const std::string& pDir)
 {
     m_sDebugDumpDir = pDir;
-    if (!Exist(pDir))
+    if (!ExistFileDir(pDir))
     {
         throw "CDebugDump::CDebugDump(): "+pDir+" does not exist.";
     }
 }
 
 bool CDebugDump::Exist(const std::string& pPath)
+{
+    std::string fullPath = m_sDebugDumpDir + "/" + pPath;
+    return ExistFileDir(fullPath);
+}
+
+
+bool CDebugDump::ExistFileDir(const std::string& pPath)
 {
     struct stat buf;
     if (stat(pPath.c_str(), &buf) == 0)
@@ -66,11 +73,12 @@ void CDebugDump::Create(const std::string& pDir)
     {
         throw "CDebugDump::Create(): Cannot create dir: " + pDir;
     }
+    SaveEnvironment();
 }
 
 void CDebugDump::Delete(const std::string& pDir)
 {
-    if (!Exist(pDir))
+    if (!ExistFileDir(pDir))
     {
         return;
     }

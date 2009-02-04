@@ -50,7 +50,7 @@ class CDebugDump
 
         void SaveTextFile(const std::string& pName, const std::string& pData);
         void SaveBinaryFile(const std::string& pName, const char* pData, const unsigned int pSize);
-
+        bool ExistFileDir(const std::string& pPath);
 
     public:
 
@@ -58,7 +58,6 @@ class CDebugDump
         void Open(const std::string& pDir);
         void Create(const std::string& pDir);
         void Delete(const std::string& pDir);
-
         bool Exist(const std::string& pPath);
 
         void LoadText(const std::string& pName, std::string& pData);
