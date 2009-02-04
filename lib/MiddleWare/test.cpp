@@ -30,29 +30,32 @@ int main(int argc, char** argv)
 {
 
 
-	try
-	{
-		CMiddleWare middleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
-		CDebugDump* dd;
+    try
+    {
+        CMiddleWare middleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR, "CrashCatcher.conf");
+        CDebugDump dd;
 
-		middleWare.LoadPlugins();
-		middleWare.UnLoadPlugin("Mailx");
+        middleWare.RegisterPlugin("CCpp");
+        middleWare.RegisterPlugin("SQLite3");
 
-		dd = new CDebugDump(DEBUG_DUMPS_DIR);
+        char pid[100];
+        sprintf(pid, "%d", getpid());
 
-		dd->Delete();
-		dd->Create();
-		dd->SaveTextFile("UUID", middleWare.GetUUID("CCpp", (void*)"data"));
-		char pid[100];
-		sprintf(pid, "%d", getpid());
-		dd->SaveProc(pid);
+        dd.Create(std::string(DEBUG_DUMPS_DIR)+"/"+pid);
+        dd.SaveProc(pid);
+        dd.SaveText(FILENAME_LANGUAGE, "CCpp");
+        dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
+        dd.SaveText(FILENAME_TIME, "1111111111");
+        dd.SaveText(FILENAME_EXECUTABLE, "test");
+        dd.SaveText(FILENAME_PACKAGE, "test-1.0-1.f10");
 
-		delete dd;
-	}
-	catch (std::string sError)
-	{
-		std::cerr << sError << std::endl;
-	}
+        middleWare.SaveDebugDumpToDatabase(std::string(DEBUG_DUMPS_DIR)+"/"+pid);
 
-	return 0;
+    }
+    catch (std::string sError)
+    {
+        std::cerr << sError << std::endl;
+    }
+
+    return 0;
 }
