@@ -23,35 +23,35 @@
 #include <iostream>
 
 CDynamicLibrary::CDynamicLibrary(const std::string& pPath) :
-	m_pHandle(NULL)
+    m_pHandle(NULL)
 {
-	Load(pPath);
+    Load(pPath);
 }
 
 CDynamicLibrary::~CDynamicLibrary()
 {
-	if (m_pHandle != NULL)
-	{
-		dlclose(m_pHandle);
-		m_pHandle = NULL;
-	}
+    if (m_pHandle != NULL)
+    {
+        dlclose(m_pHandle);
+        m_pHandle = NULL;
+    }
 }
 
 void CDynamicLibrary::Load(const std::string& pPath)
 {
-	m_pHandle = dlopen(pPath.c_str(), RTLD_NOW);
-	if (m_pHandle == NULL)
-	{
-		throw "CDynamicLibrary::Load(): Cannot load " + pPath + " : " + std::string(dlerror());
-	}
+    m_pHandle = dlopen(pPath.c_str(), RTLD_NOW);
+    if (m_pHandle == NULL)
+    {
+        throw "CDynamicLibrary::Load(): Cannot load " + pPath + " : " + std::string(dlerror());
+    }
 }
 
 void* CDynamicLibrary::FindSymbol(const std::string& pName)
 {
-	void* sym = dlsym(m_pHandle, pName.c_str());
-	if (sym == NULL)
-	{
-		throw "CDynamicLibrary::Load(): Cannot find symbol '" + pName + "'";
-	}
-	return sym;
+    void* sym = dlsym(m_pHandle, pName.c_str());
+    if (sym == NULL)
+    {
+        throw "CDynamicLibrary::Load(): Cannot find symbol '" + pName + "'";
+    }
+    return sym;
 }

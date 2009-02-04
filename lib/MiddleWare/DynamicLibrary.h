@@ -28,15 +28,15 @@
 
 class CDynamicLibrary
 {
-	private:
-		void* m_pHandle;
+    private:
+        void* m_pHandle;
 
-		void Load(const std::string& pPath);
-	public:
-		CDynamicLibrary(const std::string& pPath);
-		~CDynamicLibrary();
+        void Load(const std::string& pPath);
+    public:
+        CDynamicLibrary(const std::string& pPath);
+        ~CDynamicLibrary();
 
-		void* FindSymbol(const std::string& pName);
+        void* FindSymbol(const std::string& pName);
 };
 
 #endif /*DYNAMICLIBRARYH_*/
