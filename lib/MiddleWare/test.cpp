@@ -35,9 +35,6 @@ int main(int argc, char** argv)
         CMiddleWare middleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR, "CrashCatcher.conf");
         CDebugDump dd;
 
-        middleWare.RegisterPlugin("CCpp");
-        middleWare.RegisterPlugin("SQLite3");
-
         char pid[100];
         sprintf(pid, "%d", getpid());
 
