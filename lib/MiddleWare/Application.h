@@ -27,9 +27,10 @@
 
 class CApplication : public CPlugin
 {
-	public:
-		virtual ~CApplication() {}
-		virtual std::string GetReport(void* pData) = 0;
+    public:
+        virtual ~CApplication() {}
+        virtual std::string GetLocalUUID(const std::string& pDebugDumpPath) = 0;
+        virtual std::string GetReport(const std::string& pDebugDumpPath) = 0;
 };
 
 #endif /*APPLICATION_H_*/
