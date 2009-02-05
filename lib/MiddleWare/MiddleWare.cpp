@@ -35,6 +35,12 @@ CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
     }
     m_pPluginManager->LoadPlugins();
     LoadSettings(pMiddleWareConfFile);
+
+    set_enabled_plugins_t::iterator it_p;
+    for (it_p = m_setEnabledPlugins.begin(); it_p != m_setEnabledPlugins.end(); it_p++)
+    {
+        m_pPluginManager->RegisterPlugin(*it_p);
+    }
 }
 
 CMiddleWare::~CMiddleWare()
@@ -50,11 +56,37 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
     load_settings(pPath, settings);
     if (settings.find("BlackList") != settings.end())
     {
-        m_sBlackList = settings["BlackList"];
+        std::string blackList = settings["BlackList"];
+        std::string::size_type ii_old = 0, ii_new = 0;
+        ii_new = blackList.find(",");
+        while (ii_new != std::string::npos)
+        {
+            m_setBlackList.insert(blackList.substr(ii_old, ii_new - ii_old));
+            ii_old = ii_new + 1;
+            ii_new = blackList.find(",",ii_old);
+        }
+        m_setBlackList.insert(blackList.substr(ii_old));
+    }
+    if (settings.find("EnabledPlugins") != settings.end())
+    {
+         std::string enabledPlugins = settings["EnabledPlugins"];
+         std::string::size_type ii_old = 0, ii_new = 0;
+         ii_new = enabledPlugins.find(",");
+         while (ii_new != std::string::npos)
+         {
+             m_setEnabledPlugins.insert(enabledPlugins.substr(ii_old, ii_new - ii_old));
+             ii_old = ii_new + 1;
+             ii_new = enabledPlugins.find(",",ii_old);
+         }
+         m_setEnabledPlugins.insert(enabledPlugins.substr(ii_old));
     }
     if (settings.find("Database") != settings.end())
     {
         m_sDatabase = settings["Database"];
+        if (m_setEnabledPlugins.find(m_sDatabase) == m_setEnabledPlugins.end())
+        {
+            throw std::string("Database plugin '"+m_sDatabase+"' isn't enabled.");
+        }
     }
     else
     {
