@@ -10,6 +10,7 @@ AC_PROG_CXX
 PKG_CHECK_MODULES([DBUS_GLIB], [dbus-glib-1])
 PKG_CHECK_MODULES([SQLITE3], [sqlite3])
 PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4])
+PKG_CHECK_MODULES([PACKAGEKIT_GLIB], [packagekit-glib])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build CrashCatcher])])
