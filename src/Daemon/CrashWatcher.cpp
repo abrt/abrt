@@ -36,7 +36,7 @@ void terminate(int signal)
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
     GIOError err;
     char buf[INOTIFY_BUFF_SIZE];
-    guint len;
+    gsize len;
     int i = 0;
     err = g_io_channel_read (gio, buf, INOTIFY_BUFF_SIZE, &len);
     if (err != G_IO_ERROR_NONE) {
