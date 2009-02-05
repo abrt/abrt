@@ -14,27 +14,20 @@ PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4])
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build CrashCatcher])])
 
-PLUGINS_CONF_DIR='${libdir}/${PACKAGE_NAME}'
-AC_ARG_WITH(pluginsconfdir, 
-            [AS_HELP_STRING([--with-pluginsconfdir=[DIR]],
-                           [Directory where plugin's configuration files are])],
-            [PLUGINS_CONF_DIR=$withval])
-AC_SUBST(PLUGINS_CONF_DIR)
-
+CONF_DIR='${prefix}/etc/${PACKAGE_NAME}'
+PLUGINS_CONF_DIR='${prefix}/etc/${PACKAGE_NAME}/Plugins'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
-AC_ARG_WITH(pluginslibdir, 
-            [AS_HELP_STRING([--with-pluginslibdir=DIR],
-                           [Directory where plugin's libraries are])],
-            [PLUGINS_LIB_DIR=$withval])
-AC_SUBST(PLUGINS_LIB_DIR)
 
 DEBUG_DUMPS_DIR='${prefix}/var/cache/${PACKAGE_NAME}'
 AC_ARG_WITH(debugdumpsdir, 
             [AS_HELP_STRING([--with-debugdumpdir=DIR],
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
-AC_SUBST(DEBUG_DUMPS_DIR)
 
+AC_SUBST(CONF_DIR)
+AC_SUBST(PLUGINS_CONF_DIR)
+AC_SUBST(PLUGINS_LIB_DIR)
+AC_SUBST(DEBUG_DUMPS_DIR)
 AC_SUBST(DL_LIBS, -ldl)
 
 AC_CONFIG_HEADERS([config.h])
