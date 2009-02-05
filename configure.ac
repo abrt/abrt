@@ -14,8 +14,8 @@ PKG_CHECK_MODULES([GTKMM], [gtkmm-2.4])
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build CrashCatcher])])
 
-CONF_DIR='${prefix}/etc/${PACKAGE_NAME}'
-PLUGINS_CONF_DIR='${prefix}/etc/${PACKAGE_NAME}/Plugins'
+CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
+PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/Plugins'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 
 DEBUG_DUMPS_DIR='${prefix}/var/cache/${PACKAGE_NAME}'
