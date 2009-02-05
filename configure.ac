@@ -43,7 +43,7 @@ AC_CONFIG_FILES([
 	Makefile
 	lib/Makefile
 	lib/DBus/Makefile
-	lib/DebugDump/Makefile
+	lib/Utils/Makefile
 	lib/MiddleWare/Makefile
 	lib/Plugins/Makefile
 	src/Makefile

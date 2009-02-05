@@ -1,1 +1,1 @@
-SUBDIRS = DebugDump MiddleWare Plugins DBus
+SUBDIRS = Utils MiddleWare Plugins DBus
