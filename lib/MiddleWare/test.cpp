@@ -32,11 +32,10 @@ int main(int argc, char** argv)
 
     try
     {
-        CMiddleWare middleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR, "CrashCatcher.conf");
+        CMiddleWare middleWare(PLUGINS_CONF_DIR,
+                               PLUGINS_LIB_DIR,
+                               std::string(CONF_DIR) + "/CrashCatcher.conf");
         CDebugDump dd;
-
-        middleWare.RegisterPlugin("CCpp");
-        middleWare.RegisterPlugin("SQLite3");
 
         char pid[100];
         sprintf(pid, "%d", getpid());

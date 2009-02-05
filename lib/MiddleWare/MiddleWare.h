@@ -25,13 +25,18 @@
 #define MIDDLEWARE_H_
 
 #include "PluginManager.h"
+#include <set>
 
 class CMiddleWare
 {
     private:
 
+        typedef std::set<std::string> set_blacklist_t;
+        typedef std::set<std::string> set_enabled_plugins_t;
+
         CPluginManager* m_pPluginManager;
-        std::string m_sBlackList;
+        set_blacklist_t m_setBlackList;
+        set_enabled_plugins_t m_setEnabledPlugins;
         std::string m_sDatabase;
 
         std::string GetLocalUUIDLanguage(const std::string& pLanguage,
