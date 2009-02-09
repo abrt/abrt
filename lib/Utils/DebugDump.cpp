@@ -20,6 +20,7 @@
     */
 
 #include "DebugDump.h"
+#include "Packages.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -223,11 +224,19 @@ void CDebugDump::SaveProc(const std::string& pPID)
     std::string path = "/proc/"+pPID+"/exe";
     std::string data;
     char executable[PATH_MAX];
+    int len;
 
-    if (readlink(path.c_str(), executable, PATH_MAX) == 0)
+    if ((len = readlink(path.c_str(), executable, PATH_MAX)) != -1)
     {
+        executable[len] = '\0';
         SaveText(FILENAME_EXECUTABLE, executable);
     }
+
+    CPackages packages;
+    while (!packages.SearchFile(executable)) {}
+    while (!packages.GetStatus()) {}
+    std::string package = packages.GetSearchFileReply();
+    SaveText(FILENAME_PACKAGE, package);
 
     path = "/proc/"+pPID+"/status";
     std::string uid = "0";
@@ -242,6 +251,4 @@ void CDebugDump::SaveProc(const std::string& pPID)
         ii++;
     }
     SaveText(FILENAME_UID, uid);
-
-    // TODO: Use packagekit
 }

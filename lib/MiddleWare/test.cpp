@@ -45,8 +45,6 @@ int main(int argc, char** argv)
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
         dd.SaveText(FILENAME_TIME, "1111111111");
-        dd.SaveText(FILENAME_EXECUTABLE, "test");
-        dd.SaveText(FILENAME_PACKAGE, "test-1.0-1.f10");
 
         middleWare.SaveDebugDumpToDatabase(std::string(DEBUG_DUMPS_DIR)+"/"+pid);
 
