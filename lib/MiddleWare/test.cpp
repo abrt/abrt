@@ -45,13 +45,15 @@ int main(int argc, char** argv)
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
 
         CMiddleWare::crash_info_t info;
-        middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, info);
+        if (middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, info))
+        {
+            std::cout << "Application Crashed! " <<
+                         "(" << info.m_sTime << " [" << info.m_sCount << "]) " <<
+                         info.m_sPackage << ": " <<
+                         info.m_sExecutable << std::endl;
 
-        std::cout << "Application Crashed! " <<
-                     info.m_sPackage << ": " <<
-                     info.m_sExecutable << "(" <<
-                     info.m_sCount << ")" << std::endl;
-
+            middleWare.Report(info.m_sUUID, info.m_sUID);
+        }
     }
     catch (std::string sError)
     {
