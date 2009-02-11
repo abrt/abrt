@@ -118,12 +118,12 @@ std::string CMiddleWare::GetLocalUUIDApplication(const std::string& pApplication
 }
 
 
-void CMiddleWare::GetReport(const std::string& pUUID)
+void CMiddleWare::GetReport(const std::string& pUUID, const std::string& pUID)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
     database->Connect();
-    row = database->GetUUIDData(pUUID);
+    row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
     if (row.m_sUUID != pUUID)
     {
@@ -137,25 +137,26 @@ int CMiddleWare::Report(const std::string& pReport)
     // TODO: write this
 }
 
-void CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpPath)
+int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
 
     std::string UUID;
-    std::string architecture;
-    std::string kernel;
-    std::string executable;
-    std::string package;
     std::string UID;
-    std::string time;
-    std::string textData1;
+    std::string package;
+    std::string executable;
 
     CDebugDump dd;
-
     dd.Open(pDebugDumpPath);
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
 
-    // TODO: blacklist
+    dd.LoadText(FILENAME_PACKAGE, package);
+
+    if (package == "" ||
+        m_setBlackList.find(package.substr(0, package.find("-"))) != m_setBlackList.end())
+    {
+        dd.Delete(pDebugDumpPath);
+        return 0;
+    }
 
     if (dd.Exist(FILENAME_LANGUAGE))
     {
@@ -176,36 +177,62 @@ void CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpPath)
         throw std::string("CMiddleWare::SaveDebugDumpToDataBase(): Wrong UUID.");
     }
 
-    dd.LoadText(FILENAME_ARCHITECTURE, architecture);
-    dd.LoadText(FILENAME_KERNEL, kernel);
-    dd.LoadText(FILENAME_PACKAGE, package);
     dd.LoadText(FILENAME_UID, UID);
-    dd.LoadText(FILENAME_TIME, time);
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
 
+    database_row_t row;
     database->Connect();
-    database->Insert(UUID,
-                     pDebugDumpPath,
-                     architecture,
-                     kernel,
-                     executable,
-                     package,
-                     UID,
-                     time);
-
-    if (dd.Exist(FILENAME_TEXTDATA1))
-    {
-        dd.LoadText(FILENAME_TEXTDATA1, textData1);
-        database->InsertTextData1(UUID, textData1);
-    }
+    database->Insert(UUID, UID, pDebugDumpPath);
+    row = database->GetUUIDData(UUID, UID);
     database->DisConnect();
+
+    if (row.m_sReported == "1")
+    {
+        dd.Delete(pDebugDumpPath);
+        return 0;
+    }
+    if (row.m_sCount != "1")
+    {
+        dd.Delete(pDebugDumpPath);
+    }
+
+    pCrashInfo.m_sUUID = UUID;
+    pCrashInfo.m_sUID = UID;
+    pCrashInfo.m_sCount = row.m_sCount;
+    pCrashInfo.m_sExecutable = executable;
+    pCrashInfo.m_sPackage = package;
+
+    return 1;
 }
 
-vector_database_rows_t CMiddleWare::GetDebugDumps(const std::string& pUID)
+CMiddleWare::vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     vector_database_rows_t rows;
     database->Connect();
     rows = database->GetUIDData(pUID);
     database->DisConnect();
-    return rows;
+
+    vector_crash_infos_t infos;
+    std::string data;
+    int ii;
+    for (ii = 0; ii < rows.size(); ii++)
+    {
+        crash_info_t info;
+        CDebugDump dd;
+        info.m_sUUID = rows[ii].m_sUUID;
+        info.m_sUID = rows[ii].m_sUID;
+        info.m_sCount = rows[ii].m_sCount;
+
+        dd.Open(rows[ii].m_sDebugDumpPath);
+        dd.LoadText(FILENAME_EXECUTABLE, data);
+        info.m_sExecutable = data;
+        dd.LoadText(FILENAME_PACKAGE, data);
+        info.m_sPackage = data;
+
+        infos.push_back(info);
+    }
+
+    return infos;
 }
+

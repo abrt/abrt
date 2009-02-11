@@ -26,6 +26,8 @@
 
 #include "PluginManager.h"
 #include <set>
+#include <string>
+
 
 class CMiddleWare
 {
@@ -45,6 +47,18 @@ class CMiddleWare
                                             const std::string& pDebugDumpPath);
         void LoadSettings(const std::string& pPath);
     public:
+
+        typedef struct SCrashInfo
+        {
+            std::string m_sUUID;
+            std::string m_sUID;
+            std::string m_sCount;
+            std::string m_sExecutable;
+            std::string m_sPackage;
+        } crash_info_t;
+
+        typedef std::vector<crash_info_t> vector_crash_infos_t;
+
         CMiddleWare(const std::string& pPlugisConfDir,
                     const std::string& pPlugisLibDir,
                     const std::string& pMiddleWareConfFile);
@@ -54,10 +68,12 @@ class CMiddleWare
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
-        void GetReport(const std::string& pUUID);
+        void GetReport(const std::string& pUUID, const std::string& pUID);
         int Report(const std::string& pReport);
-        void SaveDebugDumpToDatabase(const std::string& pDebugDumpPath);
-        vector_database_rows_t GetDebugDumps(const std::string& pUID);
+
+        int SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo);
+
+        vector_crash_infos_t GetCrashInfos(const std::string& pUID);
 };
 
 #endif /*MIDDLEWARE_H_*/
