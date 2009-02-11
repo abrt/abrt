@@ -31,11 +31,12 @@
 #define FILENAME_TIME               "time"
 #define FILENAME_UID                "uid"
 #define FILENAME_PACKAGE            "package"
-#define FILENAME_HASH               "hash"
 #define FILENAME_LANGUAGE           "language"
 #define FILENAME_APPLICATION        "application"
 #define FILENAME_TEXTDATA1          "text_data1"
+#define FILENAME_TEXTDATA2          "text_data2"
 #define FILENAME_BINARYDATA1        "binary_data1"
+#define FILENAME_BINARYDATA2        "binary_data2"
 
 class CDebugDump
 {
@@ -59,6 +60,7 @@ class CDebugDump
         void Open(const std::string& pDir);
         void Create(const std::string& pDir);
         void Create(const std::string& pDir, const std::string& pPID);
+
         void Delete(const std::string& pDir);
         bool Exist(const std::string& pFileName);
 
