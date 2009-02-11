@@ -25,10 +25,13 @@
 #include "Settings.h"
 #include <string>
 #include <map>
+#include <set>
 
 typedef std::map<std::string, std::string> map_settings_t;
+typedef std::set<std::string> set_settings_t;
 
 void load_settings(const std::string& path, map_settings_t& settings);
 void save_settings(const std::string& path, const map_settings_t& settings);
+void parse_settings(const std::string& pLine, set_settings_t& settings);
 
 #endif /* SETTINGSFUNC_H_ */
