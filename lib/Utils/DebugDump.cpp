@@ -32,6 +32,7 @@
 #include <fcntl.h>
 #include <sys/procfs.h>
 #include <ctype.h>
+#include <time.h>
 
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir("")
@@ -75,7 +76,15 @@ void CDebugDump::Create(const std::string& pDir)
         throw "CDebugDump::Create(): Cannot create dir: " + pDir;
     }
     SaveEnvironment();
+    SaveTime();
 }
+
+void CDebugDump::Create(const std::string& pDir, const std::string& pPID)
+{
+    Create(pDir);
+    SaveProc(pPID);
+}
+
 
 void CDebugDump::Delete(const std::string& pDir)
 {
@@ -120,6 +129,18 @@ void CDebugDump::SaveEnvironment()
         SaveText(FILENAME_KERNEL, buf.release);
         SaveText(FILENAME_ARCHITECTURE, buf.machine);
     }
+}
+
+void CDebugDump::SaveTime()
+{
+    std::stringstream ss;
+    time_t t = time(NULL);
+    if (((time_t) -1) == t)
+    {
+        throw std::string("CDebugDump::SaveTime(): Cannot get local time.");
+    }
+    ss << t;
+    SaveText(FILENAME_TIME, ss.str());
 }
 
 void CDebugDump::LoadTextFile(const std::string& pPath, std::string& pData)
@@ -236,10 +257,11 @@ void CDebugDump::SaveProc(const std::string& pPID)
     while (!packages.SearchFile(executable)) {}
     while (!packages.GetStatus()) {}
     std::string package = packages.GetSearchFileReply();
+
     SaveText(FILENAME_PACKAGE, package);
 
     path = "/proc/"+pPID+"/status";
-    std::string uid = "0";
+    std::string uid = "";
     int ii = 0;
 
     LoadTextFile(path, data);
