@@ -85,6 +85,8 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
                         break;
                     case 4: row.m_sReported = table[jj + ncol];
                         break;
+                    case 5: row.m_sTime = table[jj + ncol];
+                        break;
                     default:
                         break;
                 }
@@ -125,11 +127,12 @@ void CSQLite3::Create()
 
     Exec("CREATE TABLE "TABLE_NAME" ("
          DATABASE_COLUMN_UUID" VARCHAR NOT NULL,"
-         DATABASE_COLUMN_UID" VARCHAR(64) NOT NULL,"
+         DATABASE_COLUMN_UID" VARCHAR NOT NULL,"
          DATABASE_COLUMN_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
-         DATABASE_COLUMN_COUNT" INT(10) NOT NULL DEFAULT 1,"
-         DATABASE_COLUMN_REPORTED" INT(10) NOT NULL DEFAULT 0,"
-         "PRIMARY KEY (UUID, UID));");
+         DATABASE_COLUMN_COUNT" INT NOT NULL DEFAULT 1,"
+         DATABASE_COLUMN_REPORTED" INT NOT NULL DEFAULT 0,"
+         DATABASE_COLUMN_TIME" VARCHAR NOT NULL DEFAULT 0,"
+         "PRIMARY KEY ("DATABASE_COLUMN_UUID","DATABASE_COLUMN_UID"));");
 }
 
 void CSQLite3::DisConnect()
@@ -139,23 +142,27 @@ void CSQLite3::DisConnect()
 
 void CSQLite3::Insert(const std::string& pUUID,
                       const std::string& pUID,
-                      const std::string& pDebugDumpPath)
+                      const std::string& pDebugDumpPath,
+                      const std::string& pTime)
 {
     if (!Exist(pUUID, pUID))
     {
             Exec("INSERT INTO "TABLE_NAME"("
                  DATABASE_COLUMN_UUID","
                  DATABASE_COLUMN_UID","
-                 DATABASE_COLUMN_DEBUG_DUMP_PATH")"
+                 DATABASE_COLUMN_DEBUG_DUMP_PATH","
+                 DATABASE_COLUMN_TIME")"
                    " VALUES ('"+pUUID+"',"
                              "'"+pUID+"',"
-                             "'"+pDebugDumpPath+"'"
+                             "'"+pDebugDumpPath+"',"
+                             "'"+pTime+"'"
                            ");");
     }
     else
     {
             Exec("UPDATE "TABLE_NAME" "
-                 "SET "DATABASE_COLUMN_COUNT" = "DATABASE_COLUMN_COUNT" + 1 "
+                 "SET "DATABASE_COLUMN_COUNT" = "DATABASE_COLUMN_COUNT" + 1, "
+                       DATABASE_COLUMN_TIME" = '"+pTime+"' "
                  "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
                  "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }

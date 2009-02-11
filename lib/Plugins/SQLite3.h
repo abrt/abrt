@@ -47,7 +47,8 @@ class CSQLite3 : public CDatabase
 
         void Insert(const std::string& pUUID,
                     const std::string& pUID,
-                    const std::string& pDebugDumpPath);
+                    const std::string& pDebugDumpPath,
+                    const std::string& pTime);
 
         void Delete(const std::string& pUUID, const std::string& pUID);
         void SetReported(const std::string& pUUID, const std::string& pUID);
