@@ -50,14 +50,7 @@ int main(int argc, char** argv)
     {
         char path[PATH_MAX];
         CDebugDump dd;
-        time_t t = time(NULL);
-        if (((time_t) -1) == t)
-        {
-            fprintf(stderr, "%s: cannot get local time.\n", program_name);
-            perror("");
-            return -4;
-        }
-        snprintf(path, sizeof(path), "%s/ccpp-%d-%s", DEBUG_DUMPS_DIR, t, pid);
+        snprintf(path, sizeof(path), "%s/ccpp-%ld-%s", DEBUG_DUMPS_DIR, time(NULL), pid);
 
         dd.Create(path, pid);
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
@@ -68,7 +61,7 @@ int main(int argc, char** argv)
         char* core = NULL;
         if ((core = (char*)malloc(size)) == NULL)
         {
-            fprintf(stderr, "%s: not enaught memory.\n", program_name);
+            fprintf(stderr, "%s: not enough memory.\n", program_name);
             perror("");
             return -3;
         }
@@ -79,7 +72,7 @@ int main(int argc, char** argv)
                 size *= CORESTEP*sizeof(char);
                 if ((core = (char*)realloc(core, size)) == NULL)
                 {
-                    fprintf(stderr, "%s: not enaught memory.\n", program_name);
+                    fprintf(stderr, "%s: not enough memory.\n", program_name);
                     perror("");
                     return -3;
                 }
