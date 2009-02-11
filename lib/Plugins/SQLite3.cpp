@@ -32,10 +32,12 @@ CSQLite3::CSQLite3() :
     m_pDB(NULL)
 {}
 
-bool CSQLite3::IsReported(const std::string& pUUID)
+bool CSQLite3::Exist(const std::string& pUUID, const std::string& pUID)
 {
     vector_database_rows_t table;
-    GetTable("SELECT "DATABASE_COLUMN_REPORTED" FROM "TABLE_NAME" WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';", table);
+    GetTable("SELECT "DATABASE_COLUMN_REPORTED" FROM "TABLE_NAME" WHERE "
+             DATABASE_COLUMN_UUID" = '"+pUUID+"' AND "
+             DATABASE_COLUMN_UID" = '"+pUID+"';", table);
     if(table.empty())
     {
             return false;
@@ -55,7 +57,6 @@ void CSQLite3::Exec(const std::string& pCommand)
 
 void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTable)
 {
-
         char **table;
         int ncol, nrow;
         char *err;
@@ -76,27 +77,13 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
                 {
                     case 0: row.m_sUUID = table[jj + ncol];
                         break;
-                    case 1: row.m_sDebugDumpPath = table[jj + ncol];
+                    case 1: row.m_sUID = table[jj + ncol];
                         break;
-                    case 2: row.m_sArchitecture = table[jj + ncol];
+                    case 2: row.m_sDebugDumpPath = table[jj + ncol];
                         break;
-                    case 3: row.m_sKernel = table[jj + ncol];
+                    case 3: row.m_sCount = table[jj + ncol];
                         break;
-                    case 4: row.m_sExecutable = table[jj + ncol];
-                        break;
-                    case 5: row.m_sPackage = table[jj + ncol];
-                        break;
-                    case 6: row.m_sUID = table[jj + ncol];
-                        break;
-                    case 7: row.m_sTime = table[jj + ncol];
-                        break;
-                    case 8: row.m_sCount = table[jj + ncol];
-                        break;
-                    case 9: row.m_sReported = table[jj + ncol];
-                        break;
-                    case 10: row.m_sBackTrace = table[jj + ncol];
-                        break;
-                    case 11: row.m_sTextData1 = table[jj + ncol];
+                    case 4: row.m_sReported = table[jj + ncol];
                         break;
                     default:
                         break;
@@ -136,20 +123,13 @@ void CSQLite3::Create()
         throw std::string("SQLite3::Create(): Could not create database.") + sqlite3_errmsg(m_pDB);
     }
 
-    Exec("CREATE TABLE "TABLE_NAME"("
-         DATABASE_COLUMN_UUID" VARCHAR NOT NULL PRIMARY KEY,"
-         DATABASE_COLUMN_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
-         DATABASE_COLUMN_ARCHITECTURE" VARCHAR(16) NOT NULL,"
-         DATABASE_COLUMN_KERNEL" VARCHAR(32) NOT NULL,"
-         DATABASE_COLUMN_EXECUTABLE" VARCHAR NOT NULL,"
-         DATABASE_COLUMN_PACKAGE" VARCHAR(64) NOT NULL,"
+    Exec("CREATE TABLE "TABLE_NAME" ("
+         DATABASE_COLUMN_UUID" VARCHAR NOT NULL,"
          DATABASE_COLUMN_UID" VARCHAR(64) NOT NULL,"
-         DATABASE_COLUMN_TIME" VARCHAR(32) NOT NULL,"
+         DATABASE_COLUMN_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
          DATABASE_COLUMN_COUNT" INT(10) NOT NULL DEFAULT 1,"
          DATABASE_COLUMN_REPORTED" INT(10) NOT NULL DEFAULT 0,"
-         DATABASE_COLUMN_BACKTRACE" VARCHAR DEFAULT \"\","
-         DATABASE_COLUMN_TEXTDATA1" VARCHAR DEFAULT \"\""
-         ");");
+         "PRIMARY KEY (UUID, UID));");
 }
 
 void CSQLite3::DisConnect()
@@ -158,71 +138,47 @@ void CSQLite3::DisConnect()
 }
 
 void CSQLite3::Insert(const std::string& pUUID,
-                      const std::string& pDebugDumpPath,
-                      const std::string& pArch,
-                      const std::string& pKernel,
-                      const std::string& pExecutable,
-                      const std::string& pPackage,
                       const std::string& pUID,
-                      const std::string& pTime)
+                      const std::string& pDebugDumpPath)
 {
-    if (!IsReported(pUUID))
+    if (!Exist(pUUID, pUID))
     {
             Exec("INSERT INTO "TABLE_NAME"("
                  DATABASE_COLUMN_UUID","
-                 DATABASE_COLUMN_DEBUG_DUMP_PATH","
-                 DATABASE_COLUMN_ARCHITECTURE","
-                 DATABASE_COLUMN_KERNEL","
-                 DATABASE_COLUMN_EXECUTABLE","
-                 DATABASE_COLUMN_PACKAGE","
                  DATABASE_COLUMN_UID","
-                 DATABASE_COLUMN_TIME")"
+                 DATABASE_COLUMN_DEBUG_DUMP_PATH")"
                    " VALUES ('"+pUUID+"',"
-                          "'"+pDebugDumpPath+"',"
-                          "'"+pArch+"',"
-                          "'"+pKernel+"',"
-                          "'"+pExecutable+"',"
-                          "'"+pPackage+"',"
-                          "'"+pUID+"',"
-                          "'"+pTime+"'"
-                          ");");
+                             "'"+pUID+"',"
+                             "'"+pDebugDumpPath+"'"
+                           ");");
     }
     else
     {
             Exec("UPDATE "TABLE_NAME" "
                  "SET "DATABASE_COLUMN_COUNT" = "DATABASE_COLUMN_COUNT" + 1 "
-                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
 }
 
-void CSQLite3::Delete(const std::string& pUUID)
+void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
 {
-    if (IsReported(pUUID))
+    if (Exist(pUUID, pUID))
     {
-            Exec("DELETE FROM "TABLE_NAME
-                 " WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+            Exec("DELETE FROM "TABLE_NAME" "
+                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
 }
 
-void CSQLite3::InsertBackTrace(const std::string& pUUID,
-                     const std::string& pBackTrace)
+void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID)
 {
-    if (IsReported(pUUID))
+    if (Exist(pUUID, pUID))
     {
-        Exec("UPDATE "TABLE_NAME
-             "SET "DATABASE_COLUMN_BACKTRACE" = "+pBackTrace+
-             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
-    }
-}
-
-void CSQLite3::InsertTextData1(const std::string& pUUID,
-                     const std::string& pData)
-{
-    if (IsReported(pUUID))
-    {
-        Exec("UPDATE "TABLE_NAME
-             "SET "DATABASE_COLUMN_TEXTDATA1" = "+pData+
-             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+            Exec("UPDATE "TABLE_NAME" "
+                 "SET "DATABASE_COLUMN_REPORTED" = 1 "
+                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
 }
 
@@ -232,30 +188,24 @@ const vector_database_rows_t CSQLite3::GetUIDData(const std::string& pUID)
     if (pUID == "0")
     {
         GetTable("SELECT * FROM "TABLE_NAME";", table);
-        Exec("UPDATE "TABLE_NAME" SET "DATABASE_COLUMN_REPORTED" = 1;");
     }
     else
     {
         GetTable("SELECT * FROM "TABLE_NAME
                  " WHERE "DATABASE_COLUMN_UID" = '"+pUID+"';",
                  table);
-        Exec("UPDATE "TABLE_NAME
-             " SET "DATABASE_COLUMN_REPORTED" = 1 "
-             " WHERE "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
     return table;
 }
 
-const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID)
+const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::string& pUID)
 {
     vector_database_rows_t table;
 
-    GetTable("SELECT * FROM "TABLE_NAME
-             " WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';",
+    GetTable("SELECT * FROM "TABLE_NAME" "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+             "AND "DATABASE_COLUMN_UID" = '"+pUID+"';",
              table);
-    Exec("UPDATE "TABLE_NAME
-         " SET "DATABASE_COLUMN_REPORTED" = 1 "
-         " WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
 
     if (table.size() == 0)
     {
