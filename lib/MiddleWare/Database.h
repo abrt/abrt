@@ -40,6 +40,7 @@
 #define DATABASE_COLUMN_DEBUG_DUMP_PATH "DebugDumpPath"
 #define DATABASE_COLUMN_COUNT           "Count"
 #define DATABASE_COLUMN_REPORTED        "Reported"
+#define DATABASE_COLUMN_TIME            "Time"
 
 typedef struct SDatabaseRow
 {
@@ -48,6 +49,7 @@ typedef struct SDatabaseRow
     std::string m_sDebugDumpPath;
     std::string m_sCount;
     std::string m_sReported;
+    std::string m_sTime;
 } database_row_t;
 
 // <column_name, <array of values in all selected rows> >
@@ -62,7 +64,8 @@ class CDatabase : public CPlugin
         virtual void DisConnect() = 0;
         virtual void Insert(const std::string& pUUID,
                             const std::string& pUID,
-                            const std::string& pDebugDumpPath) = 0;
+                            const std::string& pDebugDumpPath,
+                            const std::string& pTime) = 0;
 
         virtual void Delete(const std::string& pUUID, const std::string& pUID) = 0;
 
