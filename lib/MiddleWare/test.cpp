@@ -40,13 +40,17 @@ int main(int argc, char** argv)
         char pid[100];
         sprintf(pid, "%d", getpid());
 
-        dd.Create(std::string(DEBUG_DUMPS_DIR)+"/"+pid);
-        dd.SaveProc(pid);
+        dd.Create(std::string(DEBUG_DUMPS_DIR)+"/"+pid, pid);
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
-        dd.SaveText(FILENAME_TIME, "1111111111");
 
-        middleWare.SaveDebugDumpToDatabase(std::string(DEBUG_DUMPS_DIR)+"/"+pid);
+        CMiddleWare::crash_info_t info;
+        middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, info);
+
+        std::cout << "Application Crashed! " <<
+                     info.m_sPackage << ": " <<
+                     info.m_sExecutable << "(" <<
+                     info.m_sCount << ")" << std::endl;
 
     }
     catch (std::string sError)

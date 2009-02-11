@@ -43,7 +43,8 @@ class CDebugDump
         std::string m_sDebugDumpDir;
 
         void SaveEnvironment();
-
+        void SaveTime();
+        void SaveProc(const std::string& pPID);
 
         void LoadTextFile(const std::string& pName, std::string& pData);
         void LoadBinaryFile(const std::string& pName, char** pData, unsigned int* pSize);
@@ -57,16 +58,15 @@ class CDebugDump
         CDebugDump();
         void Open(const std::string& pDir);
         void Create(const std::string& pDir);
+        void Create(const std::string& pDir, const std::string& pPID);
         void Delete(const std::string& pDir);
-        bool Exist(const std::string& pPath);
+        bool Exist(const std::string& pFileName);
 
         void LoadText(const std::string& pName, std::string& pData);
         void LoadBinary(const std::string& pName, char** pData, unsigned int* pSize);
 
         void SaveText(const std::string& pName, const std::string& pData);
         void SaveBinary(const std::string& pName, const char* pData, const unsigned int pSize);
-
-        void SaveProc(const std::string& pPID);
 };
 
 #endif /*DEBUGDUMP_H_*/

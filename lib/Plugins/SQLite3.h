@@ -36,7 +36,7 @@ class CSQLite3 : public CDatabase
         void Create();
         void Exec(const std::string& pCommand);
         void GetTable(const std::string& pCommand, vector_database_rows_t& pTable);
-        bool IsReported(const std::string& pUUID);
+        bool Exist(const std::string& pUUID, const std::string& pUID);
 
     public:
         CSQLite3();
@@ -46,24 +46,13 @@ class CSQLite3 : public CDatabase
         void DisConnect();
 
         void Insert(const std::string& pUUID,
-                    const std::string& pDebugDumpPath,
-                    const std::string& pArch,
-                    const std::string& pKernel,
-                    const std::string& pExecutable,
-                    const std::string& pPackage,
                     const std::string& pUID,
-                    const std::string& pTime);
+                    const std::string& pDebugDumpPath);
 
-        void InsertBackTrace(const std::string& pUUID,
-                             const std::string& pBackTrace);
-
-        void InsertTextData1(const std::string& pUUID,
-                             const std::string& pData);
-
-        void Delete(const std::string& pUUID);
-
+        void Delete(const std::string& pUUID, const std::string& pUID);
+        void SetReported(const std::string& pUUID, const std::string& pUID);
         const vector_database_rows_t GetUIDData(const std::string& pUID);
-        const database_row_t GetUUIDData(const std::string& pUUID);
+        const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
 
         void Init() {}
         void DeInit() {}
