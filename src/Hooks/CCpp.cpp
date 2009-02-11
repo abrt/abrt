@@ -25,36 +25,42 @@
 #include <limits.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <time.h>
 
 #define CORESTEP (1024)
 
 int main(int argc, char** argv)
 {
     const char* program_name = argv[0];
-    if (argc < 4)
+    if (argc < 3)
     {
-        fprintf(stderr, "Usage: %s: <pid> <time> <signal>\n",
+        fprintf(stderr, "Usage: %s: <pid> <signal>\n",
                 program_name);
         return -1;
     }
     const char* pid = argv[1];
-    const char* time = argv[2];
-    const char* signal = argv[3];
+    const char* signal = argv[2];
 
     if (strcmp(signal, "11") != 0)
     {
         return 0;
     }
 
-    char path[PATH_MAX];
-    CDebugDump dd;
-    snprintf(path, sizeof(path), "%s/%s%s", DEBUG_DUMPS_DIR, time, pid);
     try
     {
-        dd.Create(path);
-        dd.SaveText(FILENAME_TIME, time);
+        char path[PATH_MAX];
+        CDebugDump dd;
+        time_t t = time(NULL);
+        if (((time_t) -1) == t)
+        {
+            fprintf(stderr, "%s: cannot get local time.\n", program_name);
+            perror("");
+            return -4;
+        }
+        snprintf(path, sizeof(path), "%s/ccpp-%d-%s", DEBUG_DUMPS_DIR, t, pid);
+
+        dd.Create(path, pid);
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
-        dd.SaveProc(pid);
 
         int size = CORESTEP*sizeof(char);
         int ii = 0;
