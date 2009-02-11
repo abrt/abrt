@@ -32,20 +32,31 @@
 class CMiddleWare
 {
     private:
-
-        typedef std::set<std::string> set_blacklist_t;
-        typedef std::set<std::string> set_enabled_plugins_t;
+        typedef set_settings_t set_blacklist_t;
+        typedef set_settings_t set_enabled_plugins_t;
+        typedef set_settings_t set_reporters_t;
+        typedef std::map<std::string, set_reporters_t> map_plugin2reporters_t;
 
         CPluginManager* m_pPluginManager;
         set_blacklist_t m_setBlackList;
         set_enabled_plugins_t m_setEnabledPlugins;
         std::string m_sDatabase;
+        map_plugin2reporters_t m_mapPlugin2Reporters;
+
 
         std::string GetLocalUUIDLanguage(const std::string& pLanguage,
                                          const std::string& pDebugDumpDir);
+        void CreateReportLanguage(const std::string& pLanguage,
+                                     const std::string& pDebugDumpDir);
         std::string GetLocalUUIDApplication(const std::string& pApplication,
-                                            const std::string& pDebugDumpPath);
+                                            const std::string& pDebugDumpDir);
+        void CreateReportApplication(const std::string& pApplication,
+                                     const std::string& pDebugDumpDir);
+
         void LoadSettings(const std::string& pPath);
+
+        void CreateReport(const std::string& pDebugDumpDir);
+        void SendReport(const std::string& pDebugDumpDir);
     public:
 
         typedef struct SCrashInfo
@@ -55,6 +66,7 @@ class CMiddleWare
             std::string m_sCount;
             std::string m_sExecutable;
             std::string m_sPackage;
+            std::string m_sTime;
         } crash_info_t;
 
         typedef std::vector<crash_info_t> vector_crash_infos_t;
@@ -68,11 +80,9 @@ class CMiddleWare
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
-        void GetReport(const std::string& pUUID, const std::string& pUID);
-        int Report(const std::string& pReport);
+        void Report(const std::string& pUUID, const std::string& pUID);
 
         int SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo);
-
         vector_crash_infos_t GetCrashInfos(const std::string& pUID);
 };
 

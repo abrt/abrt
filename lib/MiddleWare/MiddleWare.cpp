@@ -49,36 +49,17 @@ CMiddleWare::~CMiddleWare()
     delete m_pPluginManager;
 }
 
-
 void CMiddleWare::LoadSettings(const std::string& pPath)
 {
     map_settings_t settings;
     load_settings(pPath, settings);
     if (settings.find("BlackList") != settings.end())
     {
-        std::string blackList = settings["BlackList"];
-        std::string::size_type ii_old = 0, ii_new = 0;
-        ii_new = blackList.find(",");
-        while (ii_new != std::string::npos)
-        {
-            m_setBlackList.insert(blackList.substr(ii_old, ii_new - ii_old));
-            ii_old = ii_new + 1;
-            ii_new = blackList.find(",",ii_old);
-        }
-        m_setBlackList.insert(blackList.substr(ii_old));
+        parse_settings(settings["BlackList"], m_setBlackList);
     }
     if (settings.find("EnabledPlugins") != settings.end())
     {
-         std::string enabledPlugins = settings["EnabledPlugins"];
-         std::string::size_type ii_old = 0, ii_new = 0;
-         ii_new = enabledPlugins.find(",");
-         while (ii_new != std::string::npos)
-         {
-             m_setEnabledPlugins.insert(enabledPlugins.substr(ii_old, ii_new - ii_old));
-             ii_old = ii_new + 1;
-             ii_new = enabledPlugins.find(",",ii_old);
-         }
-         m_setEnabledPlugins.insert(enabledPlugins.substr(ii_old));
+        parse_settings(settings["EnabledPlugins"], m_setEnabledPlugins);
     }
     if (settings.find("Database") != settings.end())
     {
@@ -91,6 +72,16 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
     else
     {
         throw std::string("No database plugin is selected.");
+    }
+    set_enabled_plugins_t::iterator it_p;
+    for (it_p = m_setEnabledPlugins.begin(); it_p != m_setEnabledPlugins.end(); it_p++)
+    {
+        if (settings.find(*it_p) != settings.end())
+        {
+            set_reporters_t reporters;
+            parse_settings(settings[*it_p], reporters);
+            m_mapPlugin2Reporters[*it_p] = reporters;
+        }
     }
 }
 
@@ -105,20 +96,82 @@ void CMiddleWare::UnRegisterPlugin(const std::string& pName)
 }
 
 
-std::string CMiddleWare::GetLocalUUIDLanguage(const std::string& pLanguage, const std::string& pDebugDumpPath)
+std::string CMiddleWare::GetLocalUUIDLanguage(const std::string& pLanguage,
+                                              const std::string& pDebugDumpDir)
 {
     CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
-    return language->GetLocalUUID(pDebugDumpPath);
+    return language->GetLocalUUID(pDebugDumpDir);
 }
 
-std::string CMiddleWare::GetLocalUUIDApplication(const std::string& pApplication, const std::string& pDebugDumpPath)
+std::string CMiddleWare::GetLocalUUIDApplication(const std::string& pApplication,
+                                                 const std::string& pDebugDumpDir)
 {
     CApplication* application = m_pPluginManager->GetApplication(pApplication);
-    return application->GetLocalUUID(pDebugDumpPath);
+    return application->GetLocalUUID(pDebugDumpDir);
 }
 
 
-void CMiddleWare::GetReport(const std::string& pUUID, const std::string& pUID)
+void CMiddleWare::CreateReportLanguage(const std::string& pLanguage,
+                                       const std::string& pDebugDumpDir)
+{
+    CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
+    return language->CreateReport(pDebugDumpDir);
+}
+
+void CMiddleWare::CreateReportApplication(const std::string& pApplication,
+                                          const std::string& pDebugDumpDir)
+{
+    CApplication* application = m_pPluginManager->GetApplication(pApplication);
+    return application->CreateReport(pDebugDumpDir);
+}
+
+
+void CMiddleWare::CreateReport(const std::string& pDebugDumpDir)
+{
+    CDebugDump dd;
+    dd.Open(pDebugDumpDir);
+    if (dd.Exist(FILENAME_APPLICATION))
+    {
+        std::string application;
+        dd.LoadText(FILENAME_APPLICATION, application);
+        CreateReportApplication(application, pDebugDumpDir);
+    }
+    if (dd.Exist(FILENAME_LANGUAGE))
+    {
+        std::string language;
+        dd.LoadText(FILENAME_LANGUAGE, language);
+        CreateReportLanguage(language, pDebugDumpDir);
+    }
+}
+
+void CMiddleWare::SendReport(const std::string& pDebugDumpDir)
+{
+    std::string pluginName;
+    CDebugDump dd;
+    dd.Open(pDebugDumpDir);
+    if (dd.Exist(FILENAME_APPLICATION))
+    {
+        dd.LoadText(FILENAME_APPLICATION, pluginName);
+    }
+    if (dd.Exist(FILENAME_LANGUAGE))
+    {
+        dd.LoadText(FILENAME_LANGUAGE, pluginName);
+    }
+    if (m_mapPlugin2Reporters.find(pluginName) != m_mapPlugin2Reporters.end())
+    {
+        set_reporters_t::iterator it_r;
+        for (it_r = m_mapPlugin2Reporters[pluginName].begin();
+             it_r != m_mapPlugin2Reporters[pluginName].end();
+             it_r++)
+        {
+            CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
+            reporter->Report(pDebugDumpDir);
+        }
+    }
+}
+
+
+void CMiddleWare::Report(const std::string& pUUID, const std::string& pUID)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
@@ -129,12 +182,9 @@ void CMiddleWare::GetReport(const std::string& pUUID, const std::string& pUID)
     {
         throw std::string("CMiddleWare::GetReport(): UUID '"+pUUID+"' is not in database.");
     }
-    // TODO: finish this
-}
 
-int CMiddleWare::Report(const std::string& pReport)
-{
-    // TODO: write this
+    CreateReport(row.m_sDebugDumpPath);
+    SendReport(row.m_sDebugDumpPath);
 }
 
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo)
@@ -145,11 +195,13 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
     std::string UID;
     std::string package;
     std::string executable;
+    std::string time;
 
     CDebugDump dd;
     dd.Open(pDebugDumpPath);
 
     dd.LoadText(FILENAME_PACKAGE, package);
+    dd.LoadText(FILENAME_TIME, time);
 
     if (package == "" ||
         m_setBlackList.find(package.substr(0, package.find("-"))) != m_setBlackList.end())
@@ -158,19 +210,17 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
         return 0;
     }
 
+    if (dd.Exist(FILENAME_APPLICATION))
+    {
+        std::string application;
+        dd.LoadText(FILENAME_APPLICATION, application);
+        UUID = GetLocalUUIDApplication(application, pDebugDumpPath);
+    }
     if (dd.Exist(FILENAME_LANGUAGE))
     {
         std::string language;
         dd.LoadText(FILENAME_LANGUAGE, language);
         UUID = GetLocalUUIDLanguage(language, pDebugDumpPath);
-    }
-    else if (0)
-    {
-        // TODO: how to get UUID from app?
-    }
-    else
-    {
-        throw std::string("CMiddleWare::SaveDebugDumpToDataBase(): Can not get UUID.");
     }
     if (UUID == "")
     {
@@ -182,7 +232,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
 
     database_row_t row;
     database->Connect();
-    database->Insert(UUID, UID, pDebugDumpPath);
+    database->Insert(UUID, UID, pDebugDumpPath, time);
     row = database->GetUUIDData(UUID, UID);
     database->DisConnect();
 
@@ -201,6 +251,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
     pCrashInfo.m_sCount = row.m_sCount;
     pCrashInfo.m_sExecutable = executable;
     pCrashInfo.m_sPackage = package;
+    pCrashInfo.m_sTime = row.m_sTime;
 
     return 1;
 }
