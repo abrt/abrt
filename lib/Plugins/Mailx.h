@@ -33,6 +33,7 @@ class CMailx : public CReporter
         std::string m_sEmailFrom;
         std::string m_sEmailTo;
         std::string m_sParameters;
+        std::string m_sAttachments;
 
         void SendEmail(const std::string& pText);
 
@@ -43,7 +44,7 @@ class CMailx : public CReporter
         void DeInit() {}
         void SetSettings(const map_settings_t& pSettings);
 
-        void Report(const std::string& pDebugDumpPath);
+        void Report(const std::string& pDebugDumpDir);
 };
 
 
