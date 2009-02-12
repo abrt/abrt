@@ -56,6 +56,13 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         std::cout << "Created file: " << name << std::endl;
 #endif /*DEBUG*/
      
+//HACK!!!
+        std::string sName = name;
+        if (sName.find(".lock") != std::string::npos)
+        {
+            return TRUE;
+        }
+        std::cout << "kuk" << std::endl;
         CCrashWatcher *cc = (CCrashWatcher*)daemon;
         CMiddleWare::crash_info_t crashinfo;
         if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
@@ -63,6 +70,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
             /* send message to dbus */
             cc->m_pDbusServer->Crash(crashinfo.m_sPackage);
         }
+        std::cout << "kuk2" << std::endl;
     }
     return TRUE;
 }
