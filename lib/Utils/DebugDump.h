@@ -44,6 +44,7 @@ class CDebugDump
     private:
         std::string m_sDebugDumpDir;
 
+        int m_nFD;
         void SaveEnvironment();
         void SaveTime();
 
@@ -59,10 +60,12 @@ class CDebugDump
         CDebugDump();
         void Open(const std::string& pDir);
         void Create(const std::string& pDir);
+        void Delete(const std::string& pDir);
+        void Close();
+
         void SaveProc(const std::string& pPID);
         void SavePackage();
 
-        void Delete(const std::string& pDir);
         bool Exist(const std::string& pFileName);
 
         void LoadText(const std::string& pName, std::string& pData);

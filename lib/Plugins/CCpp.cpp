@@ -40,7 +40,7 @@ std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 	CDebugDump dd;
 	dd.Open(pDebugDumpDir);
 	dd.LoadBinary(FILENAME_BINARYDATA1, &core, &size);
-
+	dd.Close();
 	// TODO: compute local UUID
 	ss << size;
 	return ss.str();
@@ -52,7 +52,7 @@ std::string CLanguageCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
     std::string backtrace;
     dd.Open(pDebugDumpDir);
     dd.LoadText(FILENAME_TEXTDATA1, backtrace);
-
+    dd.Close();
     // TODO: compute global UUID
     ss << backtrace.length();
     return ss.str();
@@ -69,6 +69,7 @@ void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
     {
         dd.SaveText(FILENAME_TEXTDATA2, "memory map of the crashed C/C++ application");
     }
+    dd.Close();
 }
 
 void CLanguageCCpp::Init()

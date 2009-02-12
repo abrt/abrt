@@ -83,6 +83,7 @@ int main(int argc, char** argv)
             ii++;
         }
         dd.SaveBinary(FILENAME_BINARYDATA1, core, ii);
+        dd.Close();
         free(core);
     }
     catch (std::string sError)

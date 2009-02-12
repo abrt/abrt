@@ -111,6 +111,7 @@ void CMiddleWare::DebugDump2Report(const std::string& pDebugDumpDir, CReporter::
     {
         pReport.m_bBinaryData2 = pDebugDumpDir + "/" + FILENAME_BINARYDATA2;
     }
+    dd.Close();
 }
 
 void CMiddleWare::RegisterPlugin(const std::string& pName)
@@ -174,6 +175,7 @@ void CMiddleWare::CreateReport(const std::string& pDebugDumpDir,
         CreateReportLanguage(language, pDebugDumpDir);
     }
     DebugDump2Report(pDebugDumpDir, pCrashReport.m_Report);
+    dd.Close();
 }
 
 void CMiddleWare::CreateReport(const std::string& pUUID,
@@ -273,6 +275,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
     {
         dd.Delete(pDebugDumpPath);
     }
+    dd.Close();
 
     pCrashInfo.m_sUUID = UUID;
     pCrashInfo.m_sUID = UID;
@@ -308,6 +311,7 @@ CMiddleWare::vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& 
         info.m_sExecutable = data;
         dd.LoadText(FILENAME_PACKAGE, data);
         info.m_sPackage = data;
+        dd.Close();
 
         infos.push_back(info);
     }

@@ -33,6 +33,8 @@
 #include <sys/procfs.h>
 #include <ctype.h>
 #include <time.h>
+#include <unistd.h>
+#include <stdio.h>
 
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir("")
@@ -40,10 +42,20 @@ CDebugDump::CDebugDump() :
 
 void CDebugDump::Open(const std::string& pDir)
 {
+    int fd;
     m_sDebugDumpDir = pDir;
+    std::string lockPath = m_sDebugDumpDir + "/.lock";
     if (!ExistFileDir(pDir))
     {
         throw "CDebugDump::CDebugDump(): "+pDir+" does not exist.";
+    }
+    if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
+    {
+        throw std::string("CDebugDump::Open(): can not create lock file");
+    }
+    if (lockf(m_nFD,F_LOCK, 0) < 0)
+    {
+        throw std::string("CDebugDump::Open(): cannot lock DebugDump");
     }
 }
 
@@ -69,12 +81,11 @@ bool CDebugDump::ExistFileDir(const std::string& pPath)
 
 void CDebugDump::Create(const std::string& pDir)
 {
-    m_sDebugDumpDir = pDir;
-    Delete(pDir);
     if (mkdir(pDir.c_str(), 0755) == -1)
     {
         throw "CDebugDump::Create(): Cannot create dir: " + pDir;
     }
+    Open(pDir);
     SaveEnvironment();
     SaveTime();
 }
@@ -85,7 +96,7 @@ void CDebugDump::Delete(const std::string& pDir)
     {
         return;
     }
-
+    Open(pDir);
     DIR *dir = opendir(pDir.c_str());
     std::string fullPath;
     struct dirent *dent = NULL;
@@ -112,6 +123,15 @@ void CDebugDump::Delete(const std::string& pDir)
             throw "CDebugDump::DeleteDir(): Cannot remove dir: " + fullPath;
         }
     }
+    Close();
+}
+
+void CDebugDump::Close()
+{
+    std::string lockPath = m_sDebugDumpDir + "/.lock";
+    lockf(m_nFD,F_ULOCK, 0);
+    close(m_nFD);
+    remove(lockPath.c_str());
 }
 
 void CDebugDump::SaveEnvironment()
@@ -274,7 +294,7 @@ void CDebugDump::SavePackage()
     {
         CPackages packages;
         LoadText(FILENAME_EXECUTABLE, executable);
-        package = packages.SearchFile(executable);
+        package = packages.SearchFile("/usr/sbin/acpid");
     }
     SaveText(FILENAME_PACKAGE, package);
 }
