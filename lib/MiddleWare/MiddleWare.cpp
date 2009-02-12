@@ -188,7 +188,8 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
     {
         throw std::string("CMiddleWare::GetReport(): UUID '"+pUUID+"' is not in database.");
     }
-
+    pCrashReport.m_sUUID = pUUID;
+    pCrashReport.m_sUID = pUID;
     CreateReport(row.m_sDebugDumpPath, pCrashReport);
 }
 
@@ -206,6 +207,11 @@ void CMiddleWare::Report(const crash_report_t& pCrashReport)
             reporter->Report(pCrashReport.m_Report);
         }
     }
+
+    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    database->Connect();
+    database->SetReported(pCrashReport.m_sUUID, pCrashReport.m_sUID);
+    database->DisConnect();
 }
 
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo)
