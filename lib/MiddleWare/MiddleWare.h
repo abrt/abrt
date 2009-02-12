@@ -31,6 +31,28 @@
 
 class CMiddleWare
 {
+    public:
+
+        typedef struct SCrashInfo
+        {
+            std::string m_sUUID;
+            std::string m_sUID;
+            std::string m_sCount;
+            std::string m_sExecutable;
+            std::string m_sPackage;
+            std::string m_sTime;
+        } crash_info_t;
+
+        typedef struct SCrashReport
+        {
+            std::string m_sUUID;
+            std::string m_sUID;
+            std::string m_sPlugin2ReportersName;
+            CReporter::report_t m_Report;
+        } crash_report_t;
+
+        typedef std::vector<crash_info_t> vector_crash_infos_t;
+
     private:
         typedef set_settings_t set_blacklist_t;
         typedef set_settings_t set_enabled_plugins_t;
@@ -61,24 +83,6 @@ class CMiddleWare
                           crash_report_t& pReport);
 
     public:
-
-        typedef struct SCrashInfo
-        {
-            std::string m_sUUID;
-            std::string m_sUID;
-            std::string m_sCount;
-            std::string m_sExecutable;
-            std::string m_sPackage;
-            std::string m_sTime;
-        } crash_info_t;
-
-        typedef struct SCrashReport
-        {
-            std::string m_sPlugin2ReportersName;
-            CReporter::report_t m_Report;
-        } crash_report_t;
-
-        typedef std::vector<crash_info_t> vector_crash_infos_t;
 
         CMiddleWare(const std::string& pPlugisConfDir,
                     const std::string& pPlugisLibDir,
