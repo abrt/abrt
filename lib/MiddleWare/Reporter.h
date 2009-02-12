@@ -33,6 +33,7 @@ class CReporter : public CPlugin
             std::string m_sArchitecture;
             std::string m_sKernel;
             std::string m_sExecutable;
+            std::string m_sCmdLine;
             std::string m_sPackage;
             std::string m_sTextData1;
             std::string m_sTextData2;

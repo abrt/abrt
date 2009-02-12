@@ -74,6 +74,9 @@ void CMailx::Report(const report_t& pReport)
     ss << "Executable" << std::endl;
     ss << "----------" << std::endl;
     ss << pReport.m_sExecutable << std::endl << std::endl;
+    ss << "CmdLine" << std::endl;
+    ss << "----------" << std::endl;
+    ss << pReport.m_sCmdLine << std::endl << std::endl;
     ss << "Created report" << std::endl;
     ss << "==============" << std::endl;
     ss << "Text reports" << std::endl;

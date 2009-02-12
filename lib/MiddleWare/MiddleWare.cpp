@@ -93,6 +93,7 @@ void CMiddleWare::DebugDump2Report(const std::string& pDebugDumpDir, CReporter::
     dd.LoadText(FILENAME_KERNEL, pReport.m_sKernel);
     dd.LoadText(FILENAME_PACKAGE, pReport.m_sPackage);
     dd.LoadText(FILENAME_EXECUTABLE, pReport.m_sExecutable);
+    dd.LoadText(FILENAME_CMDLINE, pReport.m_sCmdLine);
 
     if (dd.Exist(FILENAME_TEXTDATA1))
     {
