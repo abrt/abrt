@@ -35,15 +35,15 @@ int main(int argc, char** argv)
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
                                PLUGINS_LIB_DIR,
                                std::string(CONF_DIR) + "/CrashCatcher.conf");
+        /* Create DebugDump */
         CDebugDump dd;
-
         char pid[100];
         sprintf(pid, "%d", getpid());
-
         dd.Create(std::string(DEBUG_DUMPS_DIR)+"/"+pid, pid);
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
 
+        /* Try to save it into DB */
         CMiddleWare::crash_info_t info;
         if (middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, info))
         {
@@ -52,7 +52,18 @@ int main(int argc, char** argv)
                          info.m_sPackage << ": " <<
                          info.m_sExecutable << std::endl;
 
-            middleWare.Report(info.m_sUUID, info.m_sUID);
+            /* Get Report, so user can change data (remove private stuff)
+             *
+             * If we want to send report immediately after DebugDump was created,
+             * we can use:
+             *              middleWare.CreateReport(debugDumpDir, crashReport);
+             * and after that it can be easily reported by:
+             *              middleWare.Report(crashReport);
+             */
+            CMiddleWare::crash_report_t crashReport;
+            middleWare.CreateReport(info.m_sUUID, info.m_sUID, crashReport);
+            /* Report crash */
+            middleWare.Report(crashReport);
         }
     }
     catch (std::string sError)
