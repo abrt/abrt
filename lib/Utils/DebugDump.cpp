@@ -38,7 +38,7 @@
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
     m_nFD(0),
-    m_bLockCreated(false)
+    m_bUnlock(true)
 {}
 
 void CDebugDump::Open(const std::string& pDir)
@@ -77,35 +77,48 @@ void CDebugDump::Lock()
     std::string lockPath = m_sDebugDumpDir + ".lock";
     if (ExistFileDir(lockPath))
     {
-        if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
+        int res;
+        if ((m_nFD = open(lockPath.c_str(), O_RDWR)) < 0)
         {
-            throw std::string("CDebugDump::Create(): can not create lock file");
+            throw std::string("CDebugDump::Lock(): can not create lock file");
         }
-        m_bLockCreated = false;
+        res = lockf(m_nFD, F_TEST, 0);
+        if (res < 0)
+        {
+            throw std::string("CDebugDump::Lock(): cannot lock DebugDump");
+        }
+        else if (res == 0)
+        {
+            close(m_nFD);
+            m_bUnlock = false;
+            return;
+        }
+        while (ExistFileDir(lockPath))
+        {
+            std::cerr << "CDebugDump::Lock(): waiting..." << std::endl;
+            usleep(10);
+        }
     }
-    else
+
+    if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
     {
-        if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
-        {
-            throw std::string("CDebugDump::Create(): can not create lock file");
-        }
-        m_bLockCreated = true;
+        throw std::string("CDebugDump::Lock(): can not create lock file");
     }
     if (lockf(m_nFD,F_LOCK, 0) < 0)
     {
-        throw std::string("CDebugDump::Create(): cannot lock DebugDump");
+        throw std::string("CDebugDump::Lock(): cannot lock DebugDump");
     }
 }
 
 void CDebugDump::UnLock()
 {
     std::string lockPath = m_sDebugDumpDir + ".lock";
-    lockf(m_nFD,F_ULOCK, 0);
-    close(m_nFD);
-    if (m_bLockCreated)
+    if (m_bUnlock)
     {
+        lockf(m_nFD,F_ULOCK, 0);
+        close(m_nFD);
         remove(lockPath.c_str());
-        m_bLockCreated = false;
+        m_bUnlock = true;
     }
 }
 

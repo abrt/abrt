@@ -44,7 +44,7 @@ class CDebugDump
     private:
         std::string m_sDebugDumpDir;
         int m_nFD;
-        bool m_bLockCreated;
+        bool m_bUnlock;
 
         void SaveEnvironment();
         void SaveTime();
