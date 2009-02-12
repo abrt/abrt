@@ -43,8 +43,9 @@ class CDebugDump
 {
     private:
         std::string m_sDebugDumpDir;
-
         int m_nFD;
+        bool m_bLockCreated;
+
         void SaveEnvironment();
         void SaveTime();
 
@@ -54,6 +55,9 @@ class CDebugDump
         void SaveTextFile(const std::string& pName, const std::string& pData);
         void SaveBinaryFile(const std::string& pName, const char* pData, const unsigned int pSize);
         bool ExistFileDir(const std::string& pPath);
+
+        void Lock();
+        void UnLock();
 
     public:
 

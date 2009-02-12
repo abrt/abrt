@@ -34,29 +34,22 @@
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
-#include <stdio.h>
 
 CDebugDump::CDebugDump() :
-    m_sDebugDumpDir("")
+    m_sDebugDumpDir(""),
+    m_nFD(0),
+    m_bLockCreated(false)
 {}
 
 void CDebugDump::Open(const std::string& pDir)
 {
-    int fd;
     m_sDebugDumpDir = pDir;
     std::string lockPath = m_sDebugDumpDir + "/.lock";
     if (!ExistFileDir(pDir))
     {
         throw "CDebugDump::CDebugDump(): "+pDir+" does not exist.";
     }
-    if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
-    {
-        throw std::string("CDebugDump::Open(): can not create lock file");
-    }
-    if (lockf(m_nFD,F_LOCK, 0) < 0)
-    {
-        throw std::string("CDebugDump::Open(): cannot lock DebugDump");
-    }
+    Lock();
 }
 
 bool CDebugDump::Exist(const std::string& pPath)
@@ -79,13 +72,59 @@ bool CDebugDump::ExistFileDir(const std::string& pPath)
     return false;
 }
 
+void CDebugDump::Lock()
+{
+    std::string lockPath = m_sDebugDumpDir + ".lock";
+    if (ExistFileDir(lockPath))
+    {
+        if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
+        {
+            throw std::string("CDebugDump::Create(): can not create lock file");
+        }
+        m_bLockCreated = false;
+    }
+    else
+    {
+        if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
+        {
+            throw std::string("CDebugDump::Create(): can not create lock file");
+        }
+        m_bLockCreated = true;
+    }
+    if (lockf(m_nFD,F_LOCK, 0) < 0)
+    {
+        throw std::string("CDebugDump::Create(): cannot lock DebugDump");
+    }
+}
+
+void CDebugDump::UnLock()
+{
+    std::string lockPath = m_sDebugDumpDir + ".lock";
+    lockf(m_nFD,F_ULOCK, 0);
+    close(m_nFD);
+    if (m_bLockCreated)
+    {
+        remove(lockPath.c_str());
+        m_bLockCreated = false;
+    }
+}
+
 void CDebugDump::Create(const std::string& pDir)
 {
+    m_sDebugDumpDir = pDir;
+    std::string lockPath = pDir + ".lock";
+    if (ExistFileDir(pDir))
+    {
+        throw "CDebugDump::CDebugDump(): "+pDir+" already exists.";
+    }
+
+    Lock();
+
     if (mkdir(pDir.c_str(), 0755) == -1)
     {
         throw "CDebugDump::Create(): Cannot create dir: " + pDir;
     }
-    Open(pDir);
+
     SaveEnvironment();
     SaveTime();
 }
@@ -96,7 +135,7 @@ void CDebugDump::Delete(const std::string& pDir)
     {
         return;
     }
-    Open(pDir);
+    Lock();
     DIR *dir = opendir(pDir.c_str());
     std::string fullPath;
     struct dirent *dent = NULL;
@@ -123,15 +162,12 @@ void CDebugDump::Delete(const std::string& pDir)
             throw "CDebugDump::DeleteDir(): Cannot remove dir: " + fullPath;
         }
     }
-    Close();
+    UnLock();
 }
 
 void CDebugDump::Close()
 {
-    std::string lockPath = m_sDebugDumpDir + "/.lock";
-    lockf(m_nFD,F_ULOCK, 0);
-    close(m_nFD);
-    remove(lockPath.c_str());
+    UnLock();
 }
 
 void CDebugDump::SaveEnvironment()
