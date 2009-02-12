@@ -55,7 +55,10 @@ class CMiddleWare
 
         void LoadSettings(const std::string& pPath);
 
-        void DebugDump2Report(const std::string& pDebugDumpDir, CReporter::report_t& pReport);
+        void DebugDump2Report(const std::string& pDebugDumpDir,
+                              CReporter::report_t& pReport);
+        void CreateReport(const std::string& pDebugDumpDir,
+                          crash_report_t& pReport);
 
     public:
 
@@ -86,8 +89,6 @@ class CMiddleWare
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
-        void CreateReport(const std::string& pDebugDumpDir,
-                          crash_report_t& pReport);
         void CreateReport(const std::string& pUUID,
                           const std::string& pUID,
                           crash_report_t& pReport);

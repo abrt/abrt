@@ -53,12 +53,7 @@ int main(int argc, char** argv)
                          info.m_sExecutable << std::endl;
 
             /* Get Report, so user can change data (remove private stuff)
-             *
-             * If we want to send report immediately after DebugDump was created,
-             * we can use:
-             *              middleWare.CreateReport(debugDumpDir, crashReport);
-             * and after that it can be easily reported by:
-             *              middleWare.Report(crashReport);
+             * If we do not want user interaction, just send data immediately
              */
             CMiddleWare::crash_report_t crashReport;
             middleWare.CreateReport(info.m_sUUID, info.m_sUID, crashReport);
