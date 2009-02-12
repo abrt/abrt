@@ -52,8 +52,10 @@ int main(int argc, char** argv)
         CDebugDump dd;
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%s", DEBUG_DUMPS_DIR, time(NULL), pid);
 
-        dd.Create(path, pid);
+        dd.Create(path);
+        dd.SaveProc(pid);
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
+        dd.SavePackage();
 
         int size = CORESTEP*sizeof(char);
         int ii = 0;
