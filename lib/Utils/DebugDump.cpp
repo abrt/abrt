@@ -79,13 +79,6 @@ void CDebugDump::Create(const std::string& pDir)
     SaveTime();
 }
 
-void CDebugDump::Create(const std::string& pDir, const std::string& pPID)
-{
-    Create(pDir);
-    SaveProc(pPID);
-}
-
-
 void CDebugDump::Delete(const std::string& pDir)
 {
     if (!ExistFileDir(pDir))
@@ -253,12 +246,6 @@ void CDebugDump::SaveProc(const std::string& pPID)
         SaveText(FILENAME_EXECUTABLE, executable);
     }
 
-    CPackages packages;
-    while (!packages.SearchFile(executable)) {}
-    while (!packages.GetStatus()) {}
-    std::string package = packages.GetSearchFileReply();
-
-    SaveText(FILENAME_PACKAGE, package);
 
     path = "/proc/"+pPID+"/status";
     std::string uid = "";
@@ -273,4 +260,21 @@ void CDebugDump::SaveProc(const std::string& pPID)
         ii++;
     }
     SaveText(FILENAME_UID, uid);
+
+    path = "/proc/"+pPID+"/cmdline";
+    LoadTextFile(path, data);
+    SaveText(FILENAME_CMDLINE, data);
+}
+
+void CDebugDump::SavePackage()
+{
+    std::string executable;
+    std::string package = "";
+    if (Exist(FILENAME_EXECUTABLE))
+    {
+        CPackages packages;
+        LoadText(FILENAME_EXECUTABLE, executable);
+        package = packages.SearchFile("/usr/sbin/acpid");
+    }
+    SaveText(FILENAME_PACKAGE, package);
 }

@@ -28,6 +28,7 @@
 #define FILENAME_ARCHITECTURE       "architecture"
 #define FILENAME_KERNEL             "kernel"
 #define FILENAME_EXECUTABLE         "executable"
+#define FILENAME_CMDLINE            "cmdline"
 #define FILENAME_TIME               "time"
 #define FILENAME_UID                "uid"
 #define FILENAME_PACKAGE            "package"
@@ -45,7 +46,6 @@ class CDebugDump
 
         void SaveEnvironment();
         void SaveTime();
-        void SaveProc(const std::string& pPID);
 
         void LoadTextFile(const std::string& pName, std::string& pData);
         void LoadBinaryFile(const std::string& pName, char** pData, unsigned int* pSize);
@@ -59,7 +59,8 @@ class CDebugDump
         CDebugDump();
         void Open(const std::string& pDir);
         void Create(const std::string& pDir);
-        void Create(const std::string& pDir, const std::string& pPID);
+        void SaveProc(const std::string& pPID);
+        void SavePackage();
 
         void Delete(const std::string& pDir);
         bool Exist(const std::string& pFileName);
