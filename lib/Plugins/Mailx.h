@@ -44,7 +44,7 @@ class CMailx : public CReporter
         void DeInit() {}
         void SetSettings(const map_settings_t& pSettings);
 
-        void Report(const std::string& pDebugDumpDir);
+        void Report(const report_t& pReport);
 };
 
 

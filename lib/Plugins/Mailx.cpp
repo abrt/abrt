@@ -56,60 +56,51 @@ void CMailx::SendEmail(const std::string& pText)
 }
 
 
-void CMailx::Report(const std::string& pDebugDumpDir)
+void CMailx::Report(const report_t& pReport)
 {
     std::stringstream ss;
-    std::string data;
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
 
     ss << "Common information" << std::endl;
     ss << "==================" << std::endl << std::endl;
-    dd.LoadText(FILENAME_ARCHITECTURE, data);
     ss << "Architecture" << std::endl;
     ss << "------------" << std::endl;
-    ss << data << std::endl << std::endl;
-    dd.LoadText(FILENAME_KERNEL, data);
+    ss << pReport.m_sArchitecture << std::endl << std::endl;
     ss << "Kernel version" << std::endl;
     ss << "--------------" << std::endl;
-    ss << data << std::endl << std::endl;
-    dd.LoadText(FILENAME_PACKAGE, data);
+    ss << pReport.m_sKernel << std::endl << std::endl;
     ss << "Package" << std::endl;
     ss << "-------" << std::endl;
-    ss << data << std::endl << std::endl;
-    dd.LoadText(FILENAME_EXECUTABLE, data);
+    ss << pReport.m_sPackage << std::endl << std::endl;
     ss << "Executable" << std::endl;
     ss << "----------" << std::endl;
-    ss << data << std::endl << std::endl;
+    ss << pReport.m_sExecutable << std::endl << std::endl;
     ss << "Created report" << std::endl;
     ss << "==============" << std::endl;
     ss << "Text reports" << std::endl;
     ss << "==============" << std::endl;
-    if (dd.Exist(FILENAME_TEXTDATA1))
+    if (pReport.m_sTextData1 != "")
     {
-        dd.LoadText(FILENAME_TEXTDATA1, data);
         ss << "Text Data 1" << std::endl;
         ss << "-----------" << std::endl;
-        ss << data << std::endl << std::endl;
+        ss << pReport.m_sTextData1 << std::endl << std::endl;
     }
-    if (dd.Exist(FILENAME_TEXTDATA2))
+    if (pReport.m_sTextData2 != "")
     {
-        dd.LoadText(FILENAME_TEXTDATA2, data);
         ss << "Text Data 2" << std::endl;
         ss << "-----------" << std::endl;
-        ss << data << std::endl << std::endl;
+        ss << pReport.m_sTextData2 << std::endl << std::endl;
     }
     ss << "Binary reports" << std::endl;
     ss << "==============" << std::endl;
     ss << "See the attachment[s]" << std::endl;
 
-    if (dd.Exist(FILENAME_BINARYDATA1))
+    if (pReport.m_bBinaryData1 != "")
     {
-        m_sAttachments = " -a " + pDebugDumpDir + "/" + FILENAME_BINARYDATA1;
+        m_sAttachments = " -a " + pReport.m_bBinaryData1;
     }
-    if (dd.Exist(FILENAME_BINARYDATA2))
+    if (pReport.m_bBinaryData2 != "")
     {
-        m_sAttachments = " -a " + pDebugDumpDir + "/" + FILENAME_BINARYDATA2;
+        m_sAttachments = " -a " + pReport.m_bBinaryData2;
     }
 
     SendEmail(ss.str());
