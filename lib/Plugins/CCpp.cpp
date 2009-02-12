@@ -26,7 +26,7 @@
 #include <sstream>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN CCPP_HOOK_PATH" %p %s"
+#define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s"
 
 CLanguageCCpp::CLanguageCCpp() :
 	m_bMemoryMap(false)
