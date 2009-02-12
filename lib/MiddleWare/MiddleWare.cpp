@@ -217,7 +217,7 @@ void CMiddleWare::Report(const crash_report_t& pCrashReport)
     database->DisConnect();
 }
 
-int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo)
+int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
 
@@ -228,7 +228,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
     std::string time;
 
     CDebugDump dd;
-    dd.Open(pDebugDumpPath);
+    dd.Open(pDebugDumpDir);
 
     dd.LoadText(FILENAME_PACKAGE, package);
     dd.LoadText(FILENAME_TIME, time);
@@ -236,7 +236,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
     if (package == "" ||
         m_setBlackList.find(package.substr(0, package.find("-"))) != m_setBlackList.end())
     {
-        dd.Delete(pDebugDumpPath);
+        dd.Delete(pDebugDumpDir);
         return 0;
     }
 
@@ -244,13 +244,13 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
     {
         std::string application;
         dd.LoadText(FILENAME_APPLICATION, application);
-        UUID = GetLocalUUIDApplication(application, pDebugDumpPath);
+        UUID = GetLocalUUIDApplication(application, pDebugDumpDir);
     }
     if (dd.Exist(FILENAME_LANGUAGE))
     {
         std::string language;
         dd.LoadText(FILENAME_LANGUAGE, language);
-        UUID = GetLocalUUIDLanguage(language, pDebugDumpPath);
+        UUID = GetLocalUUIDLanguage(language, pDebugDumpDir);
     }
     if (UUID == "")
     {
@@ -262,18 +262,18 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& 
 
     database_row_t row;
     database->Connect();
-    database->Insert(UUID, UID, pDebugDumpPath, time);
+    database->Insert(UUID, UID, pDebugDumpDir, time);
     row = database->GetUUIDData(UUID, UID);
     database->DisConnect();
 
     if (row.m_sReported == "1")
     {
-        dd.Delete(pDebugDumpPath);
+        dd.Delete(pDebugDumpDir);
         return 0;
     }
     if (row.m_sCount != "1")
     {
-        dd.Delete(pDebugDumpPath);
+        dd.Delete(pDebugDumpDir);
     }
     dd.Close();
 

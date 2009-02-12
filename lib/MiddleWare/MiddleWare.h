@@ -98,7 +98,7 @@ class CMiddleWare
                           crash_report_t& pReport);
         void Report(const crash_report_t& pReport);
 
-        int SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo);
+        int SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo);
         vector_crash_infos_t GetCrashInfos(const std::string& pUID);
 };
 
