@@ -20,6 +20,11 @@
     */
 
 #include "Packages.h"
+#include <rpm/rpmts.h>
+#include <rpm/rpmds.h>
+#include <rpm/rpmcli.h>
+#include <sstream>
+
 
 CPackages::CPackages() :
     m_pPkClient(NULL),
@@ -35,26 +40,33 @@ CPackages::~CPackages()
     g_object_unref(m_pPkClient);
 }
 
-bool CPackages::SearchFile(const std::string& pPath)
+std::string CPackages::SearchFile(const std::string& pPath)
 {
-    if (m_bBusy)
+    std::stringstream ss;
+    char *argv[] = {(char*)""};
+    poptContext context = rpmcliInit(0, argv, NULL);
+    rpmts ts = rpmtsCreate();
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, "/usr/sbin/acpid", 0);
+    Header header;
+    char* nerv = NULL;
+
+    if ((header = rpmdbNextIterator(iter)) != NULL)
     {
-        return false;
+        nerv = headerGetNEVR(header, NULL);
     }
-    m_bBusy = true;
-    GError *error = NULL;
-    gboolean ret = pk_client_search_file (m_pPkClient,
-                                          pk_bitfield_value (PK_FILTER_ENUM_INSTALLED),
-                                          pPath.c_str(),
-                                          &error);
-    if (ret == FALSE)
+
+    headerFree(header);
+    rpmcliFini(context);
+    rpmtsFree(ts);
+
+    if (nerv != NULL)
     {
-        std::string err = error->message;
-        g_error_free(error);
-        error = NULL;
-        throw std::string("CPackages::SearchFile(): ") + err;
+        std::string ret = nerv;
+        free(nerv);
+        return ret;
     }
-    return true;
+
+    return "";
 }
 
 bool CPackages::Install(const std::string& pPackage)
@@ -63,7 +75,7 @@ bool CPackages::Install(const std::string& pPackage)
 }
 
 
-bool CPackages::GetStatus()
+bool CPackages::GetInstallationStatus()
 {
     GError *error = NULL;
     PkStatusEnum status;
@@ -80,33 +92,4 @@ bool CPackages::GetStatus()
         return false;
     }
     return true;
-}
-
-std::string CPackages::GetSearchFileReply()
-{
-    GError *error = NULL;
-    std::string packageName = "";
-    gchar *package;
-    gboolean ret = pk_client_get_package (m_pPkClient, &package, &error);
-    if (ret == FALSE)
-    {
-        std::string err = error->message;
-        g_error_free(error);
-        if (err == "No package data available")
-        {
-            return "";
-        }
-        throw std::string("CPackages::SearchFile(): ") + err;
-    }
-    packageName = package;
-    packageName[packageName.find(";")] = '-';
-    packageName = packageName.substr(0, packageName.find(";"));
-
-    m_bBusy = false;
-    return packageName;
-}
-
-bool CPackages::GetInstallReply()
-{
-    // TODO: write this
 }

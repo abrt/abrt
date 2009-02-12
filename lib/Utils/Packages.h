@@ -36,13 +36,10 @@ class CPackages
     public:
         CPackages();
         ~CPackages();
-        bool SearchFile(const std::string& pPath);
+        std::string SearchFile(const std::string& pPath);
+
         bool Install(const std::string& pPackage);
-        bool GetStatus();
-
-        std::string GetSearchFileReply();
-        bool GetInstallReply();
-
+        bool GetInstallationStatus();
 };
 
 #endif /* PACKAGES_H_ */
