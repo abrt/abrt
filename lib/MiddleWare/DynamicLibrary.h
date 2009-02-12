@@ -24,7 +24,6 @@
 #define DYNAMICLIBRARYH_
 
 #include <string>
-#include <dlfcn.h>
 
 class CDynamicLibrary
 {

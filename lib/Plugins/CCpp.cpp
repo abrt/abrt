@@ -26,31 +26,49 @@
 #include <sstream>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN CCPP_HOOK_PATH" %p %t %s"
+#define CORE_PATTERN CCPP_HOOK_PATH" %p %s"
 
 CLanguageCCpp::CLanguageCCpp() :
 	m_bMemoryMap(false)
 {}
 
-std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpPath)
+std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
 	std::stringstream ss;
 	char* core;
 	unsigned int size;
 	CDebugDump dd;
-	dd.Open(pDebugDumpPath);
+	dd.Open(pDebugDumpDir);
 	dd.LoadBinary(FILENAME_BINARYDATA1, &core, &size);
 
-	// TODO: write proper handler
+	// TODO: compute local UUID
 	ss << size;
 	return ss.str();
 }
-
-std::string CLanguageCCpp::GetReport(const std::string& pDebugDumpPath)
+std::string CLanguageCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-	// TODO: install or mount debug-infos
-	// TODO:
-	return "report";
+    std::stringstream ss;
+    CDebugDump dd;
+    std::string backtrace;
+    dd.Open(pDebugDumpDir);
+    dd.LoadText(FILENAME_TEXTDATA1, backtrace);
+
+    // TODO: compute global UUID
+    ss << backtrace.length();
+    return ss.str();
+}
+
+void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
+{
+    CDebugDump dd;
+    dd.Open(pDebugDumpDir);
+
+    // TODO: install or mount debug-infos, gun gdb/archer and get backtrace
+    dd.SaveText(FILENAME_TEXTDATA1, "backtrace of the crashed C/C++ application");
+    if (m_bMemoryMap)
+    {
+        dd.SaveText(FILENAME_TEXTDATA2, "memory map of the crashed C/C++ application");
+    }
 }
 
 void CLanguageCCpp::Init()

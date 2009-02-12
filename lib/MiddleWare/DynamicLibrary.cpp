@@ -21,6 +21,7 @@
 
 #include "DynamicLibrary.h"
 #include <iostream>
+#include <dlfcn.h>
 
 CDynamicLibrary::CDynamicLibrary(const std::string& pPath) :
     m_pHandle(NULL)

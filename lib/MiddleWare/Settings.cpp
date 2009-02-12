@@ -97,3 +97,16 @@ void save_settings(const std::string& path, const map_settings_t& settings)
         throw std::string("save_settings():  Cannot write configuration file '"+path+"'.");
     }
 }
+
+void parse_settings(const std::string& pLine, set_settings_t& settings)
+{
+    std::string::size_type ii_old = 0, ii_new = 0;
+    ii_new = pLine.find(",");
+    while (ii_new != std::string::npos)
+    {
+        settings.insert(pLine.substr(ii_old, ii_new - ii_old));
+        ii_old = ii_new + 1;
+        ii_new = pLine.find(",",ii_old);
+    }
+    settings.insert(pLine.substr(ii_old));
+}

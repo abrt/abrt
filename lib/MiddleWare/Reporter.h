@@ -28,8 +28,21 @@
 class CReporter : public CPlugin
 {
     public:
+        typedef struct SReport
+        {
+            std::string m_sArchitecture;
+            std::string m_sKernel;
+            std::string m_sExecutable;
+            std::string m_sCmdLine;
+            std::string m_sPackage;
+            std::string m_sTextData1;
+            std::string m_sTextData2;
+            std::string m_bBinaryData1;
+            std::string m_bBinaryData2;
+        } report_t;
+
         virtual ~CReporter() {}
-        virtual void Report(const std::string& pDebugDumpPath) = 0;
+        virtual void Report(const report_t& pReport) = 0;
 };
 
 #endif /* REPORTER_H_ */
