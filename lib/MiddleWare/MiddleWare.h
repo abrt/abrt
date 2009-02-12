@@ -55,8 +55,8 @@ class CMiddleWare
 
         void LoadSettings(const std::string& pPath);
 
-        void CreateReport(const std::string& pDebugDumpDir);
-        void SendReport(const std::string& pDebugDumpDir);
+        void DebugDump2Report(const std::string& pDebugDumpDir, CReporter::report_t& pReport);
+
     public:
 
         typedef struct SCrashInfo
@@ -69,6 +69,12 @@ class CMiddleWare
             std::string m_sTime;
         } crash_info_t;
 
+        typedef struct SCrashReport
+        {
+            std::string m_sPlugin2ReportersName;
+            CReporter::report_t m_Report;
+        } crash_report_t;
+
         typedef std::vector<crash_info_t> vector_crash_infos_t;
 
         CMiddleWare(const std::string& pPlugisConfDir,
@@ -80,7 +86,12 @@ class CMiddleWare
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
-        void Report(const std::string& pUUID, const std::string& pUID);
+        void CreateReport(const std::string& pDebugDumpDir,
+                          crash_report_t& pReport);
+        void CreateReport(const std::string& pUUID,
+                          const std::string& pUID,
+                          crash_report_t& pReport);
+        void Report(const crash_report_t& pReport);
 
         int SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo);
         vector_crash_infos_t GetCrashInfos(const std::string& pUID);

@@ -85,6 +85,33 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
     }
 }
 
+void CMiddleWare::DebugDump2Report(const std::string& pDebugDumpDir, CReporter::report_t& pReport)
+{
+    CDebugDump dd;
+    dd.Open(pDebugDumpDir);
+    dd.LoadText(FILENAME_ARCHITECTURE, pReport.m_sArchitecture);
+    dd.LoadText(FILENAME_KERNEL, pReport.m_sKernel);
+    dd.LoadText(FILENAME_PACKAGE, pReport.m_sPackage);
+    dd.LoadText(FILENAME_EXECUTABLE, pReport.m_sExecutable);
+
+    if (dd.Exist(FILENAME_TEXTDATA1))
+    {
+        dd.LoadText(FILENAME_TEXTDATA1, pReport.m_sTextData1);
+    }
+    if (dd.Exist(FILENAME_TEXTDATA2))
+    {
+        dd.LoadText(FILENAME_TEXTDATA2, pReport.m_sTextData2);
+    }
+    if (dd.Exist(FILENAME_BINARYDATA1))
+    {
+        pReport.m_bBinaryData1 = pDebugDumpDir + "/" + FILENAME_BINARYDATA1;
+    }
+    if (dd.Exist(FILENAME_BINARYDATA2))
+    {
+        pReport.m_bBinaryData2 = pDebugDumpDir + "/" + FILENAME_BINARYDATA2;
+    }
+}
+
 void CMiddleWare::RegisterPlugin(const std::string& pName)
 {
     m_pPluginManager->RegisterPlugin(pName);
@@ -126,7 +153,8 @@ void CMiddleWare::CreateReportApplication(const std::string& pApplication,
 }
 
 
-void CMiddleWare::CreateReport(const std::string& pDebugDumpDir)
+void CMiddleWare::CreateReport(const std::string& pDebugDumpDir,
+                               crash_report_t& pCrashReport)
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
@@ -134,44 +162,22 @@ void CMiddleWare::CreateReport(const std::string& pDebugDumpDir)
     {
         std::string application;
         dd.LoadText(FILENAME_APPLICATION, application);
+        pCrashReport.m_sPlugin2ReportersName = application;
         CreateReportApplication(application, pDebugDumpDir);
     }
     if (dd.Exist(FILENAME_LANGUAGE))
     {
         std::string language;
         dd.LoadText(FILENAME_LANGUAGE, language);
+        pCrashReport.m_sPlugin2ReportersName = language;
         CreateReportLanguage(language, pDebugDumpDir);
     }
+    DebugDump2Report(pDebugDumpDir, pCrashReport.m_Report);
 }
 
-void CMiddleWare::SendReport(const std::string& pDebugDumpDir)
-{
-    std::string pluginName;
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    if (dd.Exist(FILENAME_APPLICATION))
-    {
-        dd.LoadText(FILENAME_APPLICATION, pluginName);
-    }
-    if (dd.Exist(FILENAME_LANGUAGE))
-    {
-        dd.LoadText(FILENAME_LANGUAGE, pluginName);
-    }
-    if (m_mapPlugin2Reporters.find(pluginName) != m_mapPlugin2Reporters.end())
-    {
-        set_reporters_t::iterator it_r;
-        for (it_r = m_mapPlugin2Reporters[pluginName].begin();
-             it_r != m_mapPlugin2Reporters[pluginName].end();
-             it_r++)
-        {
-            CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
-            reporter->Report(pDebugDumpDir);
-        }
-    }
-}
-
-
-void CMiddleWare::Report(const std::string& pUUID, const std::string& pUID)
+void CMiddleWare::CreateReport(const std::string& pUUID,
+                               const std::string& pUID,
+                               crash_report_t& pCrashReport)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
@@ -183,8 +189,23 @@ void CMiddleWare::Report(const std::string& pUUID, const std::string& pUID)
         throw std::string("CMiddleWare::GetReport(): UUID '"+pUUID+"' is not in database.");
     }
 
-    CreateReport(row.m_sDebugDumpPath);
-    SendReport(row.m_sDebugDumpPath);
+    CreateReport(row.m_sDebugDumpPath, pCrashReport);
+}
+
+void CMiddleWare::Report(const crash_report_t& pCrashReport)
+{
+    std::string plugin2ReportersName = pCrashReport.m_sPlugin2ReportersName;
+    if (m_mapPlugin2Reporters.find(plugin2ReportersName) != m_mapPlugin2Reporters.end())
+    {
+        set_reporters_t::iterator it_r;
+        for (it_r = m_mapPlugin2Reporters[plugin2ReportersName].begin();
+             it_r != m_mapPlugin2Reporters[plugin2ReportersName].end();
+             it_r++)
+        {
+            CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
+            reporter->Report(pCrashReport.m_Report);
+        }
+    }
 }
 
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo)
