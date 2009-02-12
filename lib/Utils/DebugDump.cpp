@@ -274,7 +274,7 @@ void CDebugDump::SavePackage()
     {
         CPackages packages;
         LoadText(FILENAME_EXECUTABLE, executable);
-        package = packages.SearchFile("/usr/sbin/acpid");
+        package = packages.SearchFile(executable);
     }
     SaveText(FILENAME_PACKAGE, package);
 }
