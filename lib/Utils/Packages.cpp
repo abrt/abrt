@@ -46,7 +46,7 @@ std::string CPackages::SearchFile(const std::string& pPath)
     char *argv[] = {(char*)""};
     poptContext context = rpmcliInit(0, argv, NULL);
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, "/usr/sbin/acpid", 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pPath.c_str(), 0);
     Header header;
     char* nerv = NULL;
 
