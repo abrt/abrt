@@ -21,7 +21,7 @@
 
 #include "Packages.h"
 #include <rpm/rpmts.h>
-#include <rpm/rpmds.h>
+#include <rpm/rpmdb.h>
 #include <rpm/rpmcli.h>
 #include <sstream>
 
