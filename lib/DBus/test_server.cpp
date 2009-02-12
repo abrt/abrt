@@ -15,39 +15,31 @@
     You should have received a copy of the GNU General Public License along 
     with this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
-    */
+*/
     
-#ifndef DBUS_H_
-#define DBUS_H_
+#include "DBusServer.h"
+#include <iostream>
+#include <signal.h>
 
-#include <string>
-#include <dbus/dbus.h>
-//#include <glibmm.h>
-#include <dbus-c++/glib-integration.h>
-#include <dbus-c++/dbus.h>
+DBus::BusDispatcher dispatcher;
 
-#define CC_DBUS_NAME "com.redhat.CrashCatcher"
-#define CC_DBUS_PATH "/com/redhat/CrashCatcher"
-#define CC_DBUS_IFACE "com.redhat.CrashCatcher"
-#define DBUS_BUS DBUS_BUS_SYSTEM
-#define CC_DBUS_PATH_NOTIFIER "/com/redhat/CrashCatcher/Crash"
-
-
-
-class CDBusManager
+void niam(int sig)
 {
-    private:
-        DBus::Glib::BusDispatcher *m_pDispatcher;
-        DBus::Connection *m_pConn;
-	public:
-        CDBusManager();
-        ~CDBusManager();
-        void RegisterService();
-        bool SendMessage(const std::string& pMessage, const std::string& pMessParam);
-       /** TODO
-        //tries to reconnect after daemon failure
-        void Reconnect();
-        */
-};
+	dispatcher.leave();
+}
 
-#endif /*DBUS_H_*/
+int main()
+{
+	signal(SIGTERM, niam);
+	signal(SIGINT, niam);
+
+	DBus::default_dispatcher = &dispatcher;
+
+	DBus::Connection conn = DBus::Connection::SessionBus();
+
+    CDBusServer server(conn, CC_DBUS_PATH);
+    conn.request_name(CC_DBUS_NAME);
+	dispatcher.enter();
+
+	return 0;
+}

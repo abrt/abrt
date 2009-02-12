@@ -22,19 +22,28 @@
 #include <iostream>
 #include <climits>
 #include <stdlib.h>
-
-static void
-print_cb(DBusGProxy *proxy, char* progname, gpointer user_data)
-{
-    DBusError error;
-    dbus_error_init (&error);
-    std::cerr << "Application " << progname << " has crashed!" << std::endl;
-}
+#include <unistd.h>
 
 int main(int argc, char** argv){
     GMainLoop *mainloop;
     mainloop = g_main_loop_new(NULL, FALSE);
-    
+    CDBusManager dm;
+    try
+    {
+        dm.RegisterService();
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+        return -1;
+    }
+    while(1)
+    {
+        dm.SendMessage("Crash","Svete");
+        sleep(1);
+    }
+    g_main_loop_run(mainloop);
+    /*
     //no sanity check, it's just a testing program!
     if (argc < 2){
         std::cout << "Usage: " << argv[0] << " {s|c}" << std::endl;
@@ -72,5 +81,6 @@ int main(int argc, char** argv){
         dm.RegisterToMessage("Crash",G_CALLBACK(print_cb),NULL,NULL);
         g_main_loop_run(mainloop);
     }
+    */
     return 0;
 }

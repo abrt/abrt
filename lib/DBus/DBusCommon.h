@@ -16,38 +16,13 @@
     with this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
     */
+
+/* we need this to know the data structures */
+#include "MiddleWare.h"
     
-#ifndef DBUS_H_
-#define DBUS_H_
-
-#include <string>
-#include <dbus/dbus.h>
-//#include <glibmm.h>
-#include <dbus-c++/glib-integration.h>
-#include <dbus-c++/dbus.h>
-
 #define CC_DBUS_NAME "com.redhat.CrashCatcher"
 #define CC_DBUS_PATH "/com/redhat/CrashCatcher"
 #define CC_DBUS_IFACE "com.redhat.CrashCatcher"
-#define DBUS_BUS DBUS_BUS_SYSTEM
-#define CC_DBUS_PATH_NOTIFIER "/com/redhat/CrashCatcher/Crash"
 
-
-
-class CDBusManager
-{
-    private:
-        DBus::Glib::BusDispatcher *m_pDispatcher;
-        DBus::Connection *m_pConn;
-	public:
-        CDBusManager();
-        ~CDBusManager();
-        void RegisterService();
-        bool SendMessage(const std::string& pMessage, const std::string& pMessParam);
-       /** TODO
-        //tries to reconnect after daemon failure
-        void Reconnect();
-        */
-};
-
-#endif /*DBUS_H_*/
+//typedef std::vector<crash_info_t> vector_crash_infos_t;
+typedef std::vector< std::vector<std::string> > dbus_vector_crash_infos_t;

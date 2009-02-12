@@ -17,37 +17,35 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
     */
     
-#ifndef DBUS_H_
-#define DBUS_H_
+#include "DBusClient.h"
+#include <iostream>
 
-#include <string>
-#include <dbus/dbus.h>
-//#include <glibmm.h>
-#include <dbus-c++/glib-integration.h>
-#include <dbus-c++/dbus.h>
-
-#define CC_DBUS_NAME "com.redhat.CrashCatcher"
-#define CC_DBUS_PATH "/com/redhat/CrashCatcher"
-#define CC_DBUS_IFACE "com.redhat.CrashCatcher"
-#define DBUS_BUS DBUS_BUS_SYSTEM
-#define CC_DBUS_PATH_NOTIFIER "/com/redhat/CrashCatcher/Crash"
-
-
-
-class CDBusManager
+CDBusClient::CDBusClient(DBus::Connection &connection, const char *path, const char *name)
+: DBus::ObjectProxy(connection, path, name)
 {
-    private:
-        DBus::Glib::BusDispatcher *m_pDispatcher;
-        DBus::Connection *m_pConn;
-	public:
-        CDBusManager();
-        ~CDBusManager();
-        void RegisterService();
-        bool SendMessage(const std::string& pMessage, const std::string& pMessParam);
-       /** TODO
-        //tries to reconnect after daemon failure
-        void Reconnect();
-        */
-};
+    m_pCrashHandler = NULL;
+    std::cerr << "Client created" << std::endl;
+}
 
-#endif /*DBUS_H_*/
+CDBusClient::~CDBusClient()
+{
+    //clean
+}
+
+void CDBusClient::Crash(std::string &value)
+{
+    if(m_pCrashHandler)
+    {
+        m_pCrashHandler(value.c_str());
+    }
+    else
+    {
+        std::cout << "This is default handler, you should register your own with ConnectCrashHandler" << std::endl;
+        std::cout.flush();
+    }
+}
+
+void CDBusClient::ConnectCrashHandler(void (*pCrashHandler)(const char *progname))
+{
+    m_pCrashHandler = pCrashHandler;
+}

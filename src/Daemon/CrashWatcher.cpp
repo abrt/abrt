@@ -36,7 +36,7 @@ void terminate(int signal)
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
     GIOError err;
     char buf[INOTIFY_BUFF_SIZE];
-    guint len;
+    gsize len;
     int i = 0;
     err = g_io_channel_read (gio, buf, INOTIFY_BUFF_SIZE, &len);
     if (err != G_IO_ERROR_NONE) {
@@ -55,9 +55,14 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
 #ifdef DEBUG
         std::cout << "Created file: " << name << std::endl;
 #endif /*DEBUG*/
-        /* send message to dbus */
+     
         CCrashWatcher *cc = (CCrashWatcher*)daemon;
-        cc->m_nDbus_manager.SendMessage("Crash", name);
+        CMiddleWare::crash_info_t crashinfo;
+        if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+        {
+            /* send message to dbus */
+            cc->m_pDbusServer->Crash(crashinfo.m_sPackage);
+        }
     }
     return TRUE;
 }
@@ -66,9 +71,18 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 {
     int watch = 0;
     m_sTarget = pPath;
+    // middleware object
+    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/CrashCatcher.conf");
     m_nMainloop = g_main_loop_new(NULL,FALSE);
     /* register on dbus */
-    m_nDbus_manager.RegisterService();
+    DBus::Glib::BusDispatcher *dispatcher;
+    dispatcher = new DBus::Glib::BusDispatcher();
+    dispatcher->attach(NULL);
+    DBus::default_dispatcher = dispatcher;
+	DBus::Connection conn = DBus::Connection::SystemBus();
+    
+    m_pDbusServer = new CDBusServer(conn,CC_DBUS_PATH);
+    conn.request_name(CC_DBUS_NAME);
     if((m_nFd = inotify_init()) == -1){
         throw std::string("Init Failed");
         //std::cerr << "Init Failed" << std::endl;
@@ -76,23 +90,22 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
     }
     if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
         throw std::string("Add watch failed");
-        //std::cerr << "Add watch failed: " << pPath << std::endl;
-        exit(-1);
     }
     m_nGio = g_io_channel_unix_new(m_nFd);
 }
 
 CCrashWatcher::~CCrashWatcher()
 {
+     //delete dispatcher, connection, etc..
 }
 
 void CCrashWatcher::Lock()
 {
     int lfp = open("crashcatcher.lock",O_RDWR|O_CREAT,0640);
 	if (lfp < 0) 
-        throw "CCrashWatcher.cpp:can not open lock file";
+        throw std::string("CCrashWatcher.cpp:can not open lock file");
 	if (lockf(lfp,F_TLOCK,0) < 0)
-        throw "CCrashWatcher.cpp:Lock:cannot create lock on lockfile";
+        throw std::string("CCrashWatcher.cpp:Lock:cannot create lock on lockfile");
 	/* only first instance continues */
 	//sprintf(str,"%d\n",getpid());
 	//write(lfp,str,strlen(str)); /* record pid to lockfile */

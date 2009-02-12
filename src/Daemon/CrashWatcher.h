@@ -24,7 +24,8 @@
 #include <sys/inotify.h>
 #include <sys/inotify.h>
 #include <glib.h>
-#include "DBusManager.h"
+//#include "DBusManager.h"
+#include "DBusServer.h"
 #include "MiddleWare.h"
 
 // 1024 simultaneous actions
@@ -40,11 +41,13 @@ class CCrashWatcher
         void GStartWatch();
         void Lock();
 
-        CDBusManager m_nDbus_manager;
+        //CDBusManager m_nDbus_manager;
+        CDBusServer *m_pDbusServer;
         int m_nFd;
         GIOChannel* m_nGio;
         GMainLoop *m_nMainloop;
         std::string m_sTarget;
+        CMiddleWare *m_pMW;
 	public:
         CCrashWatcher(const std::string& pPath);
         //CCrashWatcher();
