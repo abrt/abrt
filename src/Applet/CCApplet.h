@@ -26,7 +26,7 @@ class CApplet
 {
     private:
         Glib::RefPtr<Gtk::StatusIcon> m_nStatusIcon;
-        int m_iPendingEvents;
+        std::map<int, std::string > m_mapEvents;
 	public:
         CApplet();
         ~CApplet();
@@ -34,9 +34,18 @@ class CApplet
         void HideIcon();
         //void DisableIcon();
         void BlinkIcon(bool pBlink);
-        void SetIconToolip(const Glib::ustring& tip);
+        void SetIconTooltip(const char *format, ...);
+        // create some event storage, to let user choose
+        // or ask the daemon every time?
+        // maybe just events which occured during current session
+        // map::
+        int AddEvent(int pUUID, const std::string& pProgname);
+        int RemoveEvent(int pUUID);
     protected:
+        //@@TODO applet menus
         void OnAppletActivate_CB();
+        void OnMenuPopup_cb(guint button, guint32 activate_time);
+        //menu
         Glib::RefPtr<Gtk::UIManager> m_refUIManager;
         Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
         Gtk::Menu* m_pMenuPopup;

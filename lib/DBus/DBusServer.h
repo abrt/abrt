@@ -17,37 +17,18 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
     */
     
-#ifndef DBUS_H_
-#define DBUS_H_
-
-#include <string>
-#include <dbus/dbus.h>
-//#include <glibmm.h>
-#include <dbus-c++/glib-integration.h>
 #include <dbus-c++/dbus.h>
+#include "DBusServerProxy.h"
 
-#define CC_DBUS_NAME "com.redhat.CrashCatcher"
-#define CC_DBUS_PATH "/com/redhat/CrashCatcher"
-#define CC_DBUS_IFACE "com.redhat.CrashCatcher"
-#define DBUS_BUS DBUS_BUS_SYSTEM
-#define CC_DBUS_PATH_NOTIFIER "/com/redhat/CrashCatcher/Crash"
-
-
-
-class CDBusManager
+class CDBusServer
+: public CDBusServer_adaptor,
+  public DBus::IntrospectableAdaptor,
+  public DBus::ObjectAdaptor
 {
-    private:
-        DBus::Glib::BusDispatcher *m_pDispatcher;
-        DBus::Connection *m_pConn;
-	public:
-        CDBusManager();
-        ~CDBusManager();
-        void RegisterService();
-        bool SendMessage(const std::string& pMessage, const std::string& pMessParam);
-       /** TODO
-        //tries to reconnect after daemon failure
-        void Reconnect();
-        */
+public:
+    CDBusServer(DBus::Connection& connection, const std::string& pServerPath);
+    ~CDBusServer();
+	int32_t Sum(const std::vector<int32_t> & ints);
+    dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID);
 };
 
-#endif /*DBUS_H_*/
