@@ -62,6 +62,7 @@ int main(int argc, char** argv)
             /* Report crash */
             middleWare.Report(crashReport);
         }
+        dd.Close();
     }
     catch (std::string sError)
     {
