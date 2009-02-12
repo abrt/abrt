@@ -24,10 +24,17 @@
 #include <string.h>
 #include <limits.h>
 #include <stdio.h>
+#include <sys/types.h>
 #include <unistd.h>
 #include <time.h>
+#include <syslog.h>
 
 #define CORESTEP (1024)
+
+static void write_log(const char* pid)
+{
+    syslog(LOG_WARNING, "CrashCatcher: CCpp Language Hook: Crashed pid: %s", pid);
+}
 
 int main(int argc, char** argv)
 {
@@ -85,12 +92,12 @@ int main(int argc, char** argv)
         dd.SaveBinary(FILENAME_BINARYDATA1, core, ii);
         dd.Close();
         free(core);
+        write_log(pid);
     }
     catch (std::string sError)
     {
         fprintf(stderr, "%s: %s\n", program_name, sError.c_str());
         return -2;
     }
-
     return 0;
 }
