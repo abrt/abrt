@@ -43,7 +43,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
             g_warning ("Error reading inotify fd: %d\n", err);
             return FALSE;
     }
-    /* reconstruct each event and send to the user's callback */
+    /* reconstruct each event and send message to the dbus */
     while (i < len) {
         const char *name;
         struct inotify_event *event;
@@ -56,21 +56,24 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         std::cout << "Created file: " << name << std::endl;
 #endif /*DEBUG*/
      
-//HACK!!!
-        std::string sName = name;
-        if (sName.find(".lock") != std::string::npos)
+        /* we want to ignore the lock files */
+        if(event->mask & IN_ISDIR)
         {
-            return TRUE;
+            std::string sName = name;
+            CCrashWatcher *cc = (CCrashWatcher*)daemon;
+            CMiddleWare::crash_info_t crashinfo;
+            if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+            {
+                /* send message to dbus */
+                cc->m_pDbusServer->Crash(crashinfo.m_sPackage);
+            }
         }
-        std::cout << "kuk" << std::endl;
-        CCrashWatcher *cc = (CCrashWatcher*)daemon;
-        CMiddleWare::crash_info_t crashinfo;
-        if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+#ifdef DEBUG
+        else
         {
-            /* send message to dbus */
-            cc->m_pDbusServer->Crash(crashinfo.m_sPackage);
+            std::cerr << "Some file created, ignoring.." << std::endl;
         }
-        std::cout << "kuk2" << std::endl;
+#endif /*DEBUG*/
     }
     return TRUE;
 }
