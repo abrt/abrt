@@ -21,6 +21,7 @@
 
 #include "MiddleWare.h"
 #include "DebugDump.h"
+#include "CrashTypes.h"
 #include <iostream>
 #include <sys/types.h>
 #include <unistd.h>
@@ -44,9 +45,9 @@ int main(int argc, char** argv)
         dd.SavePackage();
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
-
+        dd.SaveText(FILENAME_PACKAGE, "xxx-1.0-1.f11");
         /* Try to save it into DB */
-        CMiddleWare::crash_info_t info;
+        crash_info_t info;
         if (middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, info))
         {
             std::cout << "Application Crashed! " <<
@@ -57,10 +58,11 @@ int main(int argc, char** argv)
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */
-            CMiddleWare::crash_report_t crashReport;
-            middleWare.CreateReport(info.m_sUUID, info.m_sUID, crashReport);
+            crash_context_t crashContext;
+            crash_report_t crashReport;
+            middleWare.CreateReport(info.m_sUUID, info.m_sUID, crashContext, crashReport);
             /* Report crash */
-            middleWare.Report(crashReport);
+            middleWare.Report(crashContext, crashReport);
         }
         dd.Close();
     }
