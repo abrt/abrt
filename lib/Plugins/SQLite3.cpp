@@ -28,7 +28,7 @@
 #define TABLE_NAME "CrashCatcher"
 
 CSQLite3::CSQLite3() :
-    m_sDBPath(""),
+    m_sDBPath("/tmp/CCDB"),
     m_pDB(NULL)
 {}
 
@@ -79,7 +79,7 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
                         break;
                     case 1: row.m_sUID = table[jj + ncol];
                         break;
-                    case 2: row.m_sDebugDumpPath = table[jj + ncol];
+                    case 2: row.m_sDebugDumpDir = table[jj + ncol];
                         break;
                     case 3: row.m_sCount = table[jj + ncol];
                         break;

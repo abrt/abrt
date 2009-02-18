@@ -28,8 +28,8 @@
 #define MAILX_SUBJECT "\"CrashCatcher automated bug report\""
 
 CMailx::CMailx() :
-    m_sEmailFrom(""),
-    m_sEmailTo(""),
+    m_sEmailFrom("user@localhost"),
+    m_sEmailTo("root@localhost"),
     m_sParameters(""),
     m_sAttachments("")
 {}
@@ -56,7 +56,7 @@ void CMailx::SendEmail(const std::string& pText)
 }
 
 
-void CMailx::Report(const report_t& pReport)
+void CMailx::Report(const crash_report_t& pReport)
 {
     std::stringstream ss;
 
@@ -97,13 +97,13 @@ void CMailx::Report(const report_t& pReport)
     ss << "==============" << std::endl;
     ss << "See the attachment[s]" << std::endl;
 
-    if (pReport.m_bBinaryData1 != "")
+    if (pReport.m_sBinaryData1 != "")
     {
-        m_sAttachments = " -a " + pReport.m_bBinaryData1;
+        m_sAttachments = " -a " + pReport.m_sBinaryData1;
     }
-    if (pReport.m_bBinaryData2 != "")
+    if (pReport.m_sBinaryData2 != "")
     {
-        m_sAttachments = " -a " + pReport.m_bBinaryData2;
+        m_sAttachments = " -a " + pReport.m_sBinaryData2;
     }
 
     SendEmail(ss.str());
