@@ -25,38 +25,15 @@
 #define MIDDLEWARE_H_
 
 #include "PluginManager.h"
-#include <set>
-#include <string>
-
+#include "CrashTypes.h"
+#include "MiddleWareTypes.h"
 
 class CMiddleWare
 {
-    public:
-
-        typedef struct SCrashInfo
-        {
-            std::string m_sUUID;
-            std::string m_sUID;
-            std::string m_sCount;
-            std::string m_sExecutable;
-            std::string m_sPackage;
-            std::string m_sTime;
-        } crash_info_t;
-
-        typedef struct SCrashReport
-        {
-            std::string m_sUUID;
-            std::string m_sUID;
-            std::string m_sPlugin2ReportersName;
-            CReporter::report_t m_Report;
-        } crash_report_t;
-
-        typedef std::vector<crash_info_t> vector_crash_infos_t;
-
     private:
-        typedef set_settings_t set_blacklist_t;
-        typedef set_settings_t set_enabled_plugins_t;
-        typedef set_settings_t set_reporters_t;
+        typedef set_strings_t set_blacklist_t;
+        typedef set_strings_t set_enabled_plugins_t;
+        typedef set_strings_t set_reporters_t;
         typedef std::map<std::string, set_reporters_t> map_plugin2reporters_t;
 
         CPluginManager* m_pPluginManager;
@@ -78,9 +55,7 @@ class CMiddleWare
         void LoadSettings(const std::string& pPath);
 
         void DebugDump2Report(const std::string& pDebugDumpDir,
-                              CReporter::report_t& pReport);
-        void CreateReport(const std::string& pDebugDumpDir,
-                          crash_report_t& pReport);
+                              crash_report_t& pCrashReport);
 
     public:
 
@@ -95,10 +70,13 @@ class CMiddleWare
 
         void CreateReport(const std::string& pUUID,
                           const std::string& pUID,
-                          crash_report_t& pReport);
-        void Report(const crash_report_t& pReport);
+                          crash_context_t& pCrashContext,
+                          crash_report_t& pCrashReport);
 
-        int SaveDebugDump(const std::string& pDebugDumpPath, crash_info_t& pCrashInfo);
+        void Report(const crash_context_t& pCrashContext,
+                    const crash_report_t& pCrashReport);
+
+        int SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo);
         vector_crash_infos_t GetCrashInfos(const std::string& pUID);
 };
 

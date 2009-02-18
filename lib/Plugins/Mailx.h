@@ -44,7 +44,7 @@ class CMailx : public CReporter
         void DeInit() {}
         void SetSettings(const map_settings_t& pSettings);
 
-        void Report(const report_t& pReport);
+        void Report(const crash_report_t& pReport);
 };
 
 

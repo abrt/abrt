@@ -22,13 +22,10 @@
 #ifndef SETTINGSFUNC_H_
 #define SETTINGSFUNC_H_
 
-#include "Settings.h"
-#include <string>
-#include <map>
-#include <set>
+#include "MiddleWareTypes.h"
 
-typedef std::map<std::string, std::string> map_settings_t;
-typedef std::set<std::string> set_settings_t;
+typedef map_string_string_t map_settings_t;
+typedef set_strings_t set_settings_t;
 
 void load_settings(const std::string& path, map_settings_t& settings);
 void save_settings(const std::string& path, const map_settings_t& settings);

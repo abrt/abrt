@@ -20,10 +20,8 @@
     */
 
 #include "Packages.h"
-#include <rpm/rpmts.h>
-#include <rpm/rpmdb.h>
 #include <rpm/rpmcli.h>
-#include <sstream>
+#include <iostream>
 
 
 CPackages::CPackages() :
@@ -32,7 +30,29 @@ CPackages::CPackages() :
 {
     g_type_init();
     m_pPkClient = pk_client_new();
-//    pk_client_set_synchronous (m_pPkClient, TRUE, NULL);
+
+    uint8_t* pkt = NULL;
+    size_t pklen;
+    pgpKeyID_t keyID;
+    char *argv[] = {(char*)""};
+    poptContext context = rpmcliInit(0, argv, NULL);
+
+    // TODO: make this configurable
+
+    pgpReadPkts("/etc/pki/rpm-gpg/RPM-GPG-KEY-fedora", &pkt, &pklen);
+    if (pgpPubkeyFingerprint(pkt, pklen, keyID) == 0)
+    {
+        char* fedoraFingerprint = pgpHexStr(keyID, sizeof(keyID));
+        if (fedoraFingerprint != NULL)
+        {
+            m_setFingerprints.insert(fedoraFingerprint);
+        }
+    }
+    if (pkt)
+    {
+        free(pkt);
+    }
+    rpmcliFini(context);
 }
 
 CPackages::~CPackages()
@@ -40,33 +60,88 @@ CPackages::~CPackages()
     g_object_unref(m_pPkClient);
 }
 
+bool CPackages::CheckFingerprint(const Header& pHeader)
+{
+    if (!headerIsEntry(pHeader, RPMTAG_SIGGPG))
+    {
+        return false;
+    }
+    std::cout << "aaa" << std::endl;
+    char* headerFingerprint;
+    rpmtd td = rpmtdNew();
+    headerGet(pHeader, RPMTAG_SIGGPG, td, HEADERGET_DEFAULT);
+    headerFingerprint = pgpHexStr((const uint8_t*)td->data + 9, sizeof(pgpKeyID_t));
+    rpmtdFree(td);
+    if (headerFingerprint != NULL)
+    {
+        if (m_setFingerprints.find(headerFingerprint) == m_setFingerprints.end())
+        {
+            free(headerFingerprint);
+            return false;
+        }
+        free(headerFingerprint);
+        return true;
+    }
+    return false;
+}
+
+bool CPackages::CheckHash(const Header& pHeader, const rpmts& pTs, const std::string&pPath)
+{
+    rpmfi fi = rpmfiNew(pTs, pHeader, RPMTAG_BASENAMES, 0);
+    pgpHashAlgo hashAlgo;
+    std::string headerHash;
+    char computedHash[1024] = "";
+
+    while(rpmfiNext(fi) != -1)
+    {
+        if (pPath == rpmfiFN(fi))
+        {
+            headerHash = rpmfiFDigestHex(fi, &hashAlgo);
+        }
+    }
+    rpmfiFree(fi);
+
+    rpmDoDigest(hashAlgo, pPath.c_str(), 1, (unsigned char*) computedHash, NULL);
+
+    if (headerHash == "" || std::string(computedHash) == "")
+    {
+        return false;
+    }
+    else if (headerHash == computedHash)
+    {
+        return true;
+    }
+    return false;
+}
+
 std::string CPackages::SearchFile(const std::string& pPath)
 {
-    std::stringstream ss;
+    std::string ret = "";
     char *argv[] = {(char*)""};
     poptContext context = rpmcliInit(0, argv, NULL);
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pPath.c_str(), 0);
     Header header;
-    char* nerv = NULL;
-
     if ((header = rpmdbNextIterator(iter)) != NULL)
     {
-        nerv = headerGetNEVR(header, NULL);
+        if (CheckFingerprint(header))
+        {
+            char* nerv = headerGetNEVR(header, NULL);
+            if (nerv != NULL)
+            {
+                if (CheckHash(header, ts, pPath))
+                {
+                    ret = nerv;
+                    free(nerv);
+                }
+            }
+        }
     }
 
-    headerFree(header);
-    rpmcliFini(context);
+    rpmdbFreeIterator(iter);
     rpmtsFree(ts);
-
-    if (nerv != NULL)
-    {
-        std::string ret = nerv;
-        free(nerv);
-        return ret;
-    }
-
-    return "";
+    rpmcliFini(context);
+    return ret;
 }
 
 bool CPackages::Install(const std::string& pPackage)

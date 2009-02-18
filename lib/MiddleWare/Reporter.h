@@ -24,25 +24,14 @@
 
 #include <string>
 #include "Plugin.h"
+#include "CrashTypes.h"
 
 class CReporter : public CPlugin
 {
     public:
-        typedef struct SReport
-        {
-            std::string m_sArchitecture;
-            std::string m_sKernel;
-            std::string m_sExecutable;
-            std::string m_sCmdLine;
-            std::string m_sPackage;
-            std::string m_sTextData1;
-            std::string m_sTextData2;
-            std::string m_bBinaryData1;
-            std::string m_bBinaryData2;
-        } report_t;
 
         virtual ~CReporter() {}
-        virtual void Report(const report_t& pReport) = 0;
+        virtual void Report(const crash_report_t& pReport) = 0;
 };
 
 #endif /* REPORTER_H_ */
