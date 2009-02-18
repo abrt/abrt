@@ -93,11 +93,12 @@ void CDebugDump::Lock()
             m_bUnlock = false;
             return;
         }
-        while (ExistFileDir(lockPath))
-        {
-            std::cerr << "CDebugDump::Lock(): waiting..." << std::endl;
-            usleep(10);
-        }
+    }
+
+    while (ExistFileDir(lockPath))
+    {
+        std::cerr << "CDebugDump::Lock(): waiting..." << std::endl;
+        usleep(10);
     }
 
     if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
@@ -106,6 +107,7 @@ void CDebugDump::Lock()
     }
     if (lockf(m_nFD,F_LOCK, 0) < 0)
     {
+        remove(lockPath.c_str());
         throw std::string("CDebugDump::Lock(): cannot lock DebugDump");
     }
 }
@@ -333,17 +335,4 @@ void CDebugDump::SaveProc(const std::string& pPID)
     path = "/proc/"+pPID+"/cmdline";
     LoadTextFile(path, data);
     SaveText(FILENAME_CMDLINE, data);
-}
-
-void CDebugDump::SavePackage()
-{
-    std::string executable;
-    std::string package = "";
-    if (Exist(FILENAME_EXECUTABLE))
-    {
-        CPackages packages;
-        LoadText(FILENAME_EXECUTABLE, executable);
-        package = packages.SearchFile(executable);
-    }
-    SaveText(FILENAME_PACKAGE, package);
 }

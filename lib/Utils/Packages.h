@@ -25,28 +25,19 @@
 #include <glib.h>
 #include <packagekit-glib/packagekit.h>
 #include <string>
-#include <set>
-#include <rpm/rpmts.h>
-#include <rpm/rpmdb.h>
+
 
 class CPackages
 {
     private:
-        typedef std::set<std::string> set_fingerprints_t;
+
 
         PkClient *m_pPkClient;
         bool m_bBusy;
 
-        set_fingerprints_t m_setFingerprints;
-
-
-        bool CheckFingerprint(const Header& pHeader);
-        bool CheckHash(const Header& pHeader, const rpmts& pTs, const std::string&pPath);
-
     public:
         CPackages();
         ~CPackages();
-        std::string SearchFile(const std::string& pPath);
 
         bool Install(const std::string& pPackage);
         bool GetInstallationStatus();

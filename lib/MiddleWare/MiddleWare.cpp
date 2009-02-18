@@ -61,6 +61,15 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
     {
         parse_settings(settings["EnabledPlugins"], m_setEnabledPlugins);
     }
+    if (settings.find("OpenGPGPublicKeys") != settings.end())
+    {
+        parse_settings(settings["OpenGPGPublicKeys"], m_setOpenGPGKeys);
+        set_opengpg_keys_t::iterator it_k;
+        for (it_k = m_setOpenGPGKeys.begin(); it_k != m_setOpenGPGKeys.end(); it_k++)
+        {
+            m_RPMInfo.LoadOpenGPGPublicKey(*it_k);
+        }
+    }
     if (settings.find("Database") != settings.end())
     {
         m_sDatabase = settings["Database"];
@@ -225,15 +234,17 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
 
-    dd.LoadText(FILENAME_PACKAGE, package);
-    dd.LoadText(FILENAME_TIME, time);
 
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
+    package = m_RPMInfo.GetPackage(executable);
     if (package == "" ||
-        m_setBlackList.find(package.substr(0, package.find("-"))) != m_setBlackList.end())
+       !m_RPMInfo.CheckFingerprint(package) || !m_RPMInfo.CheckHash(package, executable) ||
+       (m_setBlackList.find(package.substr(0, package.find("-"))) != m_setBlackList.end()))
     {
         dd.Delete(pDebugDumpDir);
         return 0;
     }
+    dd.SaveText(FILENAME_PACKAGE, package);
 
     if (dd.Exist(FILENAME_APPLICATION))
     {
@@ -252,8 +263,8 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
         throw std::string("CMiddleWare::SaveDebugDumpToDataBase(): Wrong UUID.");
     }
 
+    dd.LoadText(FILENAME_TIME, time);
     dd.LoadText(FILENAME_UID, UID);
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
 
     database_row_t row;
     database->Connect();
@@ -300,6 +311,7 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
         info.m_sUUID = rows[ii].m_sUUID;
         info.m_sUID = rows[ii].m_sUID;
         info.m_sCount = rows[ii].m_sCount;
+        info.m_sTime = rows[ii].m_sTime;
 
         dd.Open(rows[ii].m_sDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, data);

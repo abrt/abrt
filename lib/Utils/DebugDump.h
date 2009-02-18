@@ -68,7 +68,6 @@ class CDebugDump
         void Close();
 
         void SaveProc(const std::string& pPID);
-        void SavePackage();
 
         bool Exist(const std::string& pFileName);
 
