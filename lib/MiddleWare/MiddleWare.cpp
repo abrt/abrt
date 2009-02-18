@@ -237,9 +237,10 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
 
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     package = m_RPMInfo.GetPackage(executable);
+    std::string packageName = package.substr(0, package.find("-"));
     if (package == "" ||
-       !m_RPMInfo.CheckFingerprint(package) || !m_RPMInfo.CheckHash(package, executable) ||
-       (m_setBlackList.find(package.substr(0, package.find("-"))) != m_setBlackList.end()))
+       !m_RPMInfo.CheckFingerprint(packageName) || !m_RPMInfo.CheckHash(packageName, executable) ||
+       (m_setBlackList.find(packageName) != m_setBlackList.end()))
     {
         dd.Delete(pDebugDumpDir);
         return 0;

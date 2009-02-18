@@ -36,7 +36,7 @@ bool CRPMInfo::CheckFingerprint(const std::string& pPackage)
 {
     bool ret = false;
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.substr(0, pPackage.find("-")).c_str(), 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.c_str(), 0);
     Header header;
     if ((header = rpmdbNextIterator(iter)) != NULL)
     {
@@ -66,7 +66,7 @@ bool CRPMInfo::CheckHash(const std::string& pPackage, const std::string& pPath)
 {
     bool ret = false;
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.substr(0, pPackage.find("-")).c_str(), 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.c_str(), 0);
     Header header;
     if ((header = rpmdbNextIterator(iter)) != NULL)
     {
