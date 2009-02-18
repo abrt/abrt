@@ -46,7 +46,7 @@ typedef struct SDatabaseRow
 {
     std::string m_sUUID;
     std::string m_sUID;
-    std::string m_sDebugDumpPath;
+    std::string m_sDebugDumpDir;
     std::string m_sCount;
     std::string m_sReported;
     std::string m_sTime;
