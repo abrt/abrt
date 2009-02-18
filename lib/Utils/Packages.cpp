@@ -31,7 +31,7 @@ CPackages::CPackages() :
     g_type_init();
     m_pPkClient = pk_client_new();
 
-    uint8_t* pkt;
+    uint8_t* pkt = NULL;
     size_t pklen;
     pgpKeyID_t keyID;
     char *argv[] = {(char*)""};
@@ -47,6 +47,9 @@ CPackages::CPackages() :
         {
             m_setFingerprints.insert(fedoraFingerprint);
         }
+    }
+    if (pkt)
+    {
         free(pkt);
     }
     rpmcliFini(context);
@@ -165,118 +168,3 @@ bool CPackages::GetInstallationStatus()
     }
     return true;
 }
-
-
-
-
-/*
- *
- *
- *
- * std::string CPackages::SearchFile(const std::string& pPath)
-{
-    std::stringstream ss;
-    char *argv[] = {(char*)""};
-    poptContext context = rpmcliInit(0, argv, NULL);
-    if (context == NULL)
-    {
-        return "";
-    }
-    rpmts ts = rpmtsCreate();
-    if (ts == NULL)
-    {
-        rpmcliFini(context);
-        return "";
-    }
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pPath.c_str(), 0);
-    if (iter == NULL)
-    {
-        rpmtsFree(ts);
-        rpmcliFini(context);
-        return "";
-    }
-    Header header;
-    char* nerv = NULL;
-
-    if ((header = rpmdbNextIterator(iter)) != NULL)
-    {
-        if (!headerIsEntry(header, RPMTAG_SIGGPG))
-        {
-            headerFree(header);
-            rpmdbFreeIterator(iter);
-            rpmtsFree(ts);
-            rpmcliFini(context);
-            return "";
-        }
-        char* headerFingerprint;
-        rpmtd td = rpmtdNew();
-        headerGet(header, RPMTAG_SIGGPG, td, HEADERGET_DEFAULT);
-        headerFingerprint =  pgpHexStr((const uint8_t*)td->data + 9, sizeof(pgpKeyId_t));
-        rpmtdFree(td);
-
-        if (m_setFingerprints.find(headerFingerprint) == m_setFingerprints.end())
-        {
-            free(headerFingerprint);
-            headerFree(header);
-            rpmdbFreeIterator(iter);
-            rpmtsFree(ts);
-            rpmcliFini(context);
-            return "";
-        }
-        free(headerFingerprint);
-        nerv = headerGetNEVR(header, NULL);
-        if (nerv == NULL)
-        {
-            headerFree(header);
-            rpmdbFreeIterator(iter);
-            rpmcliFini(context);
-            rpmtsFree(ts);
-            return "";
-        }
-
-        td = rpmtdNew();
-        rpmfi fi = rpmfiNew(ts, header, RPMTAG_BASENAMES, 0);
-        pgpHashAlgo hashAlgo;
-        std::string headerHash;
-        char computedHash[1024] = "";
-
-        while(rpmfiNext(fi) != -1)
-        {
-            if (pPath == rpmfiFN(fi))
-            {
-                headerHash = rpmfiFDigestHex(fi, &hashAlgo);
-            }
-        }
-
-        rpmDoDigest(hashAlgo, pPath.c_str(), 1, (unsigned char*) computedHash, NULL);
-
-        if (headerHash == "" || std::string(computedHash) == "")
-        {
-            free(nerv);
-            rpmtdFree(td);
-            rpmfiFree(fi);
-            headerFree(header);
-            rpmdbFreeIterator(iter);
-            rpmcliFini(context);
-            rpmtsFree(ts);
-            return "";
-        }
-
-        std::string ret = nerv;
-        free(nerv);
-        rpmtdFree(td);
-        rpmfiFree(fi);
-        headerFree(header);
-        rpmdbFreeIterator(iter);
-        rpmcliFini(context);
-        rpmtsFree(ts);
-        return ret;
-    }
-
-    rpmdbFreeIterator(iter);
-    rpmcliFini(context);
-    rpmtsFree(ts);
-    return "";
-}
- */
-
