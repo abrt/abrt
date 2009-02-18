@@ -45,7 +45,7 @@ int main(int argc, char** argv)
         dd.SavePackage();
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
-        dd.SaveText(FILENAME_PACKAGE, "xxx-1.0-1.f11");
+
         /* Try to save it into DB */
         crash_info_t info;
         if (middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, info))
