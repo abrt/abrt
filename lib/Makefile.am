@@ -1,1 +1,1 @@
-SUBDIRS = Utils MiddleWare Plugins DBus
+SUBDIRS = Utils MiddleWare Plugins
