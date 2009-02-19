@@ -27,10 +27,20 @@
 #include <fcntl.h>
 #include <cstring>
 #include <csignal>
+#include <sstream>
 
 void terminate(int signal)
 {
     exit(0);
+}
+/* just a helper function */
+template< class T >
+std::string
+to_string( T x )
+{
+    std::ostringstream o;
+    o << x;
+    return o.str();
 }
 
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
@@ -61,11 +71,11 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         {
             std::string sName = name;
             CCrashWatcher *cc = (CCrashWatcher*)daemon;
-            CMiddleWare::crash_info_t crashinfo;
+            crash_info_t crashinfo;
             if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
             {
                 /* send message to dbus */
-                cc->m_pDbusServer->Crash(crashinfo.m_sPackage);
+                cc->Crash(crashinfo.m_sPackage);
             }
         }
 #ifdef DEBUG
@@ -78,22 +88,16 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     return TRUE;
 }
 
-CCrashWatcher::CCrashWatcher(const std::string& pPath)
+CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connection)
+: DBus::ObjectAdaptor(connection, CC_DBUS_PATH)
 {
+    m_pConn = &connection;
     int watch = 0;
     m_sTarget = pPath;
     // middleware object
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/CrashCatcher.conf");
     m_nMainloop = g_main_loop_new(NULL,FALSE);
-    /* register on dbus */
-    DBus::Glib::BusDispatcher *dispatcher;
-    dispatcher = new DBus::Glib::BusDispatcher();
-    dispatcher->attach(NULL);
-    DBus::default_dispatcher = dispatcher;
-	DBus::Connection conn = DBus::Connection::SystemBus();
-    
-    m_pDbusServer = new CDBusServer(conn,CC_DBUS_PATH);
-    conn.request_name(CC_DBUS_NAME);
+    connection.request_name(CC_DBUS_NAME);
     if((m_nFd = inotify_init()) == -1){
         throw std::string("Init Failed");
         //std::cerr << "Init Failed" << std::endl;
@@ -108,6 +112,34 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 CCrashWatcher::~CCrashWatcher()
 {
      //delete dispatcher, connection, etc..
+}
+
+dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
+{
+    dbus_vector_crash_infos_t retval;
+    vector_crash_infos_t crash_info; 
+    m_pMW->GetCrashInfos("501");
+    for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
+        std::cerr << it->m_sExecutable << std::endl;
+    }
+	return retval;
+}
+
+dbus_vector_map_crash_infos_t CCrashWatcher::GetCrashInfosMap(const std::string &pUID)
+{
+    dbus_vector_map_crash_infos_t retval;
+    vector_crash_infos_t crash_info;
+    std::cerr << pUID << std::endl;
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pUID.c_str());
+    std::cerr << "Run by user with uid: " << unix_uid << std::endl;
+    crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
+    for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
+        /* push the map with DB row into retval */
+        map_crash_t tmp = it->GetMap(); 
+        std::cout << "Time:" << tmp["Time"] << std::endl;
+        retval.push_back(it->GetMap());
+    }
+	return retval;
 }
 
 void CCrashWatcher::Lock()

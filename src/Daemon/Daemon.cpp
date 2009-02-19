@@ -19,12 +19,20 @@
     
 #include "CrashWatcher.h"
 #include <iostream>
+#include <cstdio>
 
 #define daemonize 0
 
 int main(int argc, char** argv){
+    /* connect to dbus */
+    DBus::Glib::BusDispatcher *dispatcher;
+    dispatcher = new DBus::Glib::BusDispatcher();
+    dispatcher->attach(NULL);
+    DBus::default_dispatcher = dispatcher;
+	DBus::Connection conn = DBus::Connection::SystemBus();
+    
     try{
-    CCrashWatcher daemon(DEBUG_DUMPS_DIR);
+    CCrashWatcher daemon(DEBUG_DUMPS_DIR, conn);
     //if (argc > 1){
     //    if (strcmp(argv[1], "-d") == 0){
     //        daemonize = 0;

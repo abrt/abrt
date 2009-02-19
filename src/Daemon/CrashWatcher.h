@@ -25,7 +25,7 @@
 #include <sys/inotify.h>
 #include <glib.h>
 //#include "DBusManager.h"
-#include "DBusServer.h"
+#include "DBusServerProxy.h"
 #include "MiddleWare.h"
 
 // 1024 simultaneous actions
@@ -33,6 +33,9 @@
 
 
 class CCrashWatcher
+: public CDBusServer_adaptor,
+  public DBus::IntrospectableAdaptor,
+  public DBus::ObjectAdaptor
 {
     private:
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
@@ -41,21 +44,25 @@ class CCrashWatcher
         void GStartWatch();
         void Lock();
 
-        //CDBusManager m_nDbus_manager;
-        CDBusServer *m_pDbusServer;
         int m_nFd;
         GIOChannel* m_nGio;
         GMainLoop *m_nMainloop;
         std::string m_sTarget;
         CMiddleWare *m_pMW;
+        DBus::Connection *m_pConn;
 	public:
-        CCrashWatcher(const std::string& pPath);
-        //CCrashWatcher();
+        CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
 		~CCrashWatcher();
         //run as daemon
         void Daemonize();
         //don't go background - for debug
         void Run();
+        
+    /* methods exported on dbus */
+    public:
+        dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID);
+        dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pUID);
+        
 };
 
 #endif /*CRASHWATCHER_H_*/
