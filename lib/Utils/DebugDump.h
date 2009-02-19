@@ -59,16 +59,17 @@ class CDebugDump
         void Lock();
         void UnLock();
 
+        void DeleteFileDir(const std::string& pDir);
+
     public:
 
         CDebugDump();
         void Open(const std::string& pDir);
         void Create(const std::string& pDir);
-        void Delete(const std::string& pDir);
+        void Delete();
         void Close();
 
         void SaveProc(const std::string& pPID);
-        void SavePackage();
 
         bool Exist(const std::string& pFileName);
 

@@ -35,14 +35,13 @@ int main(int argc, char** argv)
     {
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
                                PLUGINS_LIB_DIR,
-                               std::string(CONF_DIR) + "/CrashCatcher.conf");
+                               std::string(CONF_DIR) + "/crash-catcher.conf");
         /* Create DebugDump */
         CDebugDump dd;
         char pid[100];
         sprintf(pid, "%d", getpid());
         dd.Create(std::string(DEBUG_DUMPS_DIR)+"/"+pid);
         dd.SaveProc(pid);
-        dd.SavePackage();
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
 

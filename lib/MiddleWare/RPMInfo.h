@@ -1,5 +1,6 @@
 /*
-    Packages.h - PackageKit wrapper
+    RPMInfo.h - header file for rpm database
+              - it implements query for local rpm database
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -19,37 +20,33 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#ifndef PACKAGES_H_
-#define PACKAGES_H_
+#ifndef RPMINFO_H_
+#define RPMINFO_H_
 
-#include <glib.h>
-#include <packagekit-glib/packagekit.h>
-#include <string>
-#include <set>
+#include "MiddleWareTypes.h"
+
+#include <rpm/rpmcli.h>
 #include <rpm/rpmts.h>
 #include <rpm/rpmdb.h>
 
-class CPackages
+class CRPMInfo
 {
     private:
-        typedef std::set<std::string> set_fingerprints_t;
 
-        PkClient *m_pPkClient;
-        bool m_bBusy;
+        typedef set_strings_t set_fingerprints_t;
 
+        poptContext m_poptContext;
         set_fingerprints_t m_setFingerprints;
 
-
-        bool CheckFingerprint(const Header& pHeader);
-        bool CheckHash(const Header& pHeader, const rpmts& pTs, const std::string&pPath);
-
     public:
-        CPackages();
-        ~CPackages();
-        std::string SearchFile(const std::string& pPath);
+        CRPMInfo();
+        ~CRPMInfo();
 
-        bool Install(const std::string& pPackage);
-        bool GetInstallationStatus();
+        void LoadOpenGPGPublicKey(const std::string& pFileName);
+
+        bool CheckFingerprint(const std::string& pPackage);
+        bool CheckHash(const std::string& pPackage, const std::string&pPath);
+        std::string GetPackage(const std::string& pFileName);
 };
 
-#endif /* PACKAGES_H_ */
+#endif /* RPMINFO_H_ */

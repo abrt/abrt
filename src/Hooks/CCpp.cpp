@@ -62,7 +62,6 @@ int main(int argc, char** argv)
         dd.Create(path);
         dd.SaveProc(pid);
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
-        dd.SavePackage();
 
         int size = CORESTEP*sizeof(char);
         int ii = 0;

@@ -27,6 +27,7 @@
 #include "PluginManager.h"
 #include "CrashTypes.h"
 #include "MiddleWareTypes.h"
+#include "RPMInfo.h"
 
 class CMiddleWare
 {
@@ -34,14 +35,18 @@ class CMiddleWare
         typedef set_strings_t set_blacklist_t;
         typedef set_strings_t set_enabled_plugins_t;
         typedef set_strings_t set_reporters_t;
+        typedef set_strings_t set_opengpg_keys_t;
         typedef std::map<std::string, set_reporters_t> map_plugin2reporters_t;
 
         CPluginManager* m_pPluginManager;
+        CRPMInfo m_RPMInfo;
         set_blacklist_t m_setBlackList;
         set_enabled_plugins_t m_setEnabledPlugins;
+        set_opengpg_keys_t m_setOpenGPGKeys;
         std::string m_sDatabase;
         map_plugin2reporters_t m_mapPlugin2Reporters;
 
+        bool m_bOpenGPGCheck;
 
         std::string GetLocalUUIDLanguage(const std::string& pLanguage,
                                          const std::string& pDebugDumpDir);

@@ -24,13 +24,50 @@
 #include <ctype.h>
 #include "DebugDump.h"
 #include <sstream>
+#include <iostream>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s"
 
+#define DEBUGINFO_INSTALL "debuginfo-install -y "
+
 CLanguageCCpp::CLanguageCCpp() :
 	m_bMemoryMap(false)
 {}
+
+void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
+{
+    char line[1024];
+    std::string command = DEBUGINFO_INSTALL + pPackage;
+    std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-") - 1));
+    std::string packageERV = pPackage.substr(packageName.length());
+    std::string installed = "Package "+packageName+"-debuginfo"+packageERV+" already installed and latest version";
+    std::string canNotInstall = "No debuginfo packages available to install";
+    FILE *fp = popen(command.c_str(), "r");
+    if (fp == NULL)
+    {
+        throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage ;
+    }
+    while (fgets(line, sizeof(line), fp))
+    {
+        std::string text = line;
+        std::cerr << text;
+        if (text.find(installed) != std::string::npos)
+        {
+            pclose(fp);
+            return;
+        }
+        if (text.find(canNotInstall) != std::string::npos)
+        {
+            pclose(fp);
+            throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage ;
+        }
+    }
+    if (pclose(fp) != 0)
+    {
+        throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage ;
+    }
+}
 
 std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
@@ -60,10 +97,13 @@ std::string CLanguageCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
+    std::string package;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
+    dd.LoadText(FILENAME_PACKAGE, package);
 
-    // TODO: install or mount debug-infos, gun gdb/archer and get backtrace
+    InstallDebugInfos(package);
+
     dd.SaveText(FILENAME_TEXTDATA1, "backtrace of the crashed C/C++ application");
     if (m_bMemoryMap)
     {

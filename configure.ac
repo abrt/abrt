@@ -1,4 +1,4 @@
-AC_INIT([CrashCatcher], [0.0.1], [jmoskovc@redhat.com, zprikryl@redhat.com])
+AC_INIT([crash-catcher], [0.0.1], [jmoskovc@redhat.com, zprikryl@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -12,14 +12,13 @@ PKG_CHECK_MODULES([SQLITE3], [sqlite3])
 PKG_CHECK_MODULES([GTK], [gtk+-2.0])
 PKG_CHECK_MODULES([GLIBMM], [glibmm-2.4])
 PKG_CHECK_MODULES([DBUSCPP], [dbus-c++-1])
-PKG_CHECK_MODULES([PACKAGEKIT_GLIB], [packagekit-glib])
 PKG_CHECK_MODULES([RPM], [rpm])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build CrashCatcher])])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
-PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/Plugins'
+PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 
 DEBUG_DUMPS_DIR='${prefix}/var/cache/${PACKAGE_NAME}'

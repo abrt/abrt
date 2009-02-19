@@ -20,7 +20,6 @@
     */
 
 #include "DebugDump.h"
-#include "Packages.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -30,7 +29,6 @@
 #include <sys/utsname.h>
 #include <limits.h>
 #include <fcntl.h>
-#include <sys/procfs.h>
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
@@ -93,11 +91,12 @@ void CDebugDump::Lock()
             m_bUnlock = false;
             return;
         }
-        while (ExistFileDir(lockPath))
-        {
-            std::cerr << "CDebugDump::Lock(): waiting..." << std::endl;
-            usleep(10);
-        }
+    }
+
+    while (ExistFileDir(lockPath))
+    {
+        std::cerr << "CDebugDump::Lock(): waiting..." << std::endl;
+        usleep(10);
     }
 
     if ((m_nFD = open(lockPath.c_str(), O_RDWR | O_CREAT, 0640)) < 0)
@@ -106,6 +105,7 @@ void CDebugDump::Lock()
     }
     if (lockf(m_nFD,F_LOCK, 0) < 0)
     {
+        remove(lockPath.c_str());
         throw std::string("CDebugDump::Lock(): cannot lock DebugDump");
     }
 }
@@ -142,13 +142,12 @@ void CDebugDump::Create(const std::string& pDir)
     SaveTime();
 }
 
-void CDebugDump::Delete(const std::string& pDir)
+void CDebugDump::DeleteFileDir(const std::string& pDir)
 {
     if (!ExistFileDir(pDir))
     {
         return;
     }
-    Lock();
     DIR *dir = opendir(pDir.c_str());
     std::string fullPath;
     struct dirent *dent = NULL;
@@ -161,20 +160,30 @@ void CDebugDump::Delete(const std::string& pDir)
                 fullPath = pDir + "/" + dent->d_name;
                 if (dent->d_type == DT_DIR)
                 {
-                    Delete(fullPath);
+                    DeleteFileDir(fullPath);
                 }
                 if (remove(fullPath.c_str()) == -1)
                 {
-                    throw "CDebugDump::DeleteDir(): Cannot remove file: " + fullPath;
+                    throw "CDebugDump::DeleteFileDir(): Cannot remove file: " + fullPath;
                 }
             }
         }
         closedir(dir);
         if (remove(pDir.c_str()) == -1)
         {
-            throw "CDebugDump::DeleteDir(): Cannot remove dir: " + fullPath;
+            throw "CDebugDump::DeleteFileDir(): Cannot remove dir: " + fullPath;
         }
     }
+}
+
+void CDebugDump::Delete()
+{
+    if (!ExistFileDir(m_sDebugDumpDir))
+    {
+        return;
+    }
+    Lock();
+    DeleteFileDir(m_sDebugDumpDir);
     UnLock();
 }
 
@@ -333,17 +342,4 @@ void CDebugDump::SaveProc(const std::string& pPID)
     path = "/proc/"+pPID+"/cmdline";
     LoadTextFile(path, data);
     SaveText(FILENAME_CMDLINE, data);
-}
-
-void CDebugDump::SavePackage()
-{
-    std::string executable;
-    std::string package = "";
-    if (Exist(FILENAME_EXECUTABLE))
-    {
-        CPackages packages;
-        LoadText(FILENAME_EXECUTABLE, executable);
-        package = packages.SearchFile(executable);
-    }
-    SaveText(FILENAME_PACKAGE, package);
 }

@@ -111,13 +111,13 @@ void CMailx::Report(const crash_report_t& pReport)
 
 void CMailx::SetSettings(const map_settings_t& pSettings)
 {
-    if (pSettings.find("Email_From")!= pSettings.end())
+    if (pSettings.find("EmailFrom")!= pSettings.end())
     {
-        m_sEmailFrom = pSettings.find("Email_From")->second;
+        m_sEmailFrom = pSettings.find("EmailFrom")->second;
     }
-    if (pSettings.find("Email_To")!= pSettings.end())
+    if (pSettings.find("EmailTo")!= pSettings.end())
     {
-        m_sEmailTo = pSettings.find("Email_To")->second;
+        m_sEmailTo = pSettings.find("EmailTo")->second;
     }
     if (pSettings.find("Parameters")!= pSettings.end())
     {

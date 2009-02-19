@@ -26,7 +26,8 @@
 CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
                          const std::string& pPlugisLibDir,
                          const std::string& pMiddleWareConfFile) :
-    m_pPluginManager(NULL)
+    m_pPluginManager(NULL),
+    m_bOpenGPGCheck(true)
 {
     m_pPluginManager = new CPluginManager(pPlugisConfDir, pPlugisLibDir);
     if (m_pPluginManager == NULL)
@@ -60,6 +61,19 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
     if (settings.find("EnabledPlugins") != settings.end())
     {
         parse_settings(settings["EnabledPlugins"], m_setEnabledPlugins);
+    }
+    if (settings.find("OpenGPGPublicKeys") != settings.end())
+    {
+        parse_settings(settings["OpenGPGPublicKeys"], m_setOpenGPGKeys);
+        set_opengpg_keys_t::iterator it_k;
+        for (it_k = m_setOpenGPGKeys.begin(); it_k != m_setOpenGPGKeys.end(); it_k++)
+        {
+            m_RPMInfo.LoadOpenGPGPublicKey(*it_k);
+        }
+    }
+    if (settings.find("EnableOpenGPG") != settings.end())
+    {
+        m_bOpenGPGCheck = settings["EnableOpenGPG"] == "yes";
     }
     if (settings.find("Database") != settings.end())
     {
@@ -211,7 +225,7 @@ void CMiddleWare::Report(const crash_context_t& pCrashContext,
     database->SetReported(pCrashContext.m_sUUID, pCrashContext.m_sUID);
     database->DisConnect();
 }
-
+#include <iostream>
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
@@ -225,15 +239,25 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
 
-    dd.LoadText(FILENAME_PACKAGE, package);
-    dd.LoadText(FILENAME_TIME, time);
-
-    if (package == "" ||
-        m_setBlackList.find(package.substr(0, package.find("-"))) != m_setBlackList.end())
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
+    package = m_RPMInfo.GetPackage(executable);
+    std::string packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
+    if (packageName == "" ||
+       (m_setBlackList.find(packageName) != m_setBlackList.end()))
     {
-        dd.Delete(pDebugDumpDir);
+        dd.Delete();
         return 0;
     }
+    if (m_bOpenGPGCheck)
+    {
+        if (!m_RPMInfo.CheckFingerprint(packageName) ||
+            !m_RPMInfo.CheckHash(packageName, executable))
+        {
+            dd.Delete();
+            return 0;
+        }
+    }
+    dd.SaveText(FILENAME_PACKAGE, package);
 
     if (dd.Exist(FILENAME_APPLICATION))
     {
@@ -252,8 +276,8 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
         throw std::string("CMiddleWare::SaveDebugDumpToDataBase(): Wrong UUID.");
     }
 
+    dd.LoadText(FILENAME_TIME, time);
     dd.LoadText(FILENAME_UID, UID);
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
 
     database_row_t row;
     database->Connect();
@@ -263,12 +287,12 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
 
     if (row.m_sReported == "1")
     {
-        dd.Delete(pDebugDumpDir);
+        dd.Delete();
         return 0;
     }
     if (row.m_sCount != "1")
     {
-        dd.Delete(pDebugDumpDir);
+        dd.Delete();
     }
     dd.Close();
 
@@ -300,6 +324,7 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
         info.m_sUUID = rows[ii].m_sUUID;
         info.m_sUID = rows[ii].m_sUID;
         info.m_sCount = rows[ii].m_sCount;
+        info.m_sTime = rows[ii].m_sTime;
 
         dd.Open(rows[ii].m_sDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, data);

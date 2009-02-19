@@ -3,7 +3,7 @@ pluginslibdir=$(PLUGINS_LIB_DIR)
 pluginslib_LTLIBRARIES = libCCpp.la libMailx.la libSQLite3.la libLogger.la
 
 pluginsconfdir=$(PLUGINS_CONF_DIR)
-pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf
+dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf
 
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h
