@@ -43,7 +43,7 @@ class CDebugDump
 {
     private:
         std::string m_sDebugDumpDir;
-        int m_nFD;
+        bool m_bOpened;
         bool m_bUnlock;
 
         void SaveEnvironment();
@@ -57,6 +57,7 @@ class CDebugDump
         bool ExistFileDir(const std::string& pPath);
 
         void Lock();
+        bool GetAndSetLock(const std::string& pLockFile, const std::string& pPID);
         void UnLock();
 
         void DeleteFileDir(const std::string& pDir);
