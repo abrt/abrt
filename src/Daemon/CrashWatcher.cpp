@@ -95,7 +95,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
     int watch = 0;
     m_sTarget = pPath;
     // middleware object
-    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/CrashCatcher.conf");
+    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/crash-catcher.conf");
     m_nMainloop = g_main_loop_new(NULL,FALSE);
     connection.request_name(CC_DBUS_NAME);
     if((m_nFd = inotify_init()) == -1){
