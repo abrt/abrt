@@ -32,6 +32,8 @@ class CLanguageCCpp : public CLanguage
 	private:
 		bool m_bMemoryMap;
 		std::string m_sOldCorePattern;
+		void InstallDebugInfos(const std::string& pPackage);
+
 	public:
 		CLanguageCCpp();
 		virtual ~CLanguageCCpp() {}
