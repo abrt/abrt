@@ -33,7 +33,9 @@
 
 static void write_log(const char* pid)
 {
-    syslog(LOG_WARNING, "CrashCatcher: CCpp Language Hook: Crashed pid: %s", pid);
+    openlog("crash-catcher", 0, LOG_DAEMON);
+    syslog(LOG_WARNING, "CCpp Language Hook: Crashed pid: %s", pid);
+    closelog();
 }
 
 int main(int argc, char** argv)
