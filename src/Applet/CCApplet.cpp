@@ -24,11 +24,12 @@
 
 CApplet::CApplet()
 {
-    m_nStatusIcon = Gtk::StatusIcon::create(Gtk::Stock::DIALOG_WARNING);
-    m_nStatusIcon->set_visible(false);
+    m_pStatusIcon =  gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
+    gtk_status_icon_set_visible(m_pStatusIcon,FALSE);
     // LMB click
-    m_nStatusIcon->signal_activate().connect(sigc::mem_fun(*this, &CApplet::OnAppletActivate_CB));
-    m_nStatusIcon->signal_popup_menu().connect(sigc::mem_fun(*this, &CApplet::OnMenuPopup_cb));
+    //TODO add some actions!
+    //gtk_signal_connect(m_pStatusIcon,"activate",CApplet::OnAppletActivate_CB, this);
+    //gtk_signal_connect(m_pStatusIcon,"popup_menu",CApplet::OnMenuPopup_cb, this);
     SetIconTooltip("Pending events: %i",m_mapEvents.size());
 
 }
@@ -41,7 +42,7 @@ void CApplet::SetIconTooltip(const char *format, ...)
 {
     va_list args;
     // change to smth sane like MAX_TOOLTIP length or rewrite this whole sh*t
-    size_t n,size = 10; 
+    size_t n,size = 30;
     char *buf = new char[size];
     va_start (args, format);
     while((n = vsnprintf (buf, size, format, args)) > size)
@@ -55,38 +56,35 @@ void CApplet::SetIconTooltip(const char *format, ...)
     va_end (args);
     if (n != -1)
     {
-        m_nStatusIcon->set_tooltip(Glib::ustring((const char*)buf));
+        gtk_status_icon_set_tooltip(m_pStatusIcon,buf);
     }
     else
     {
-        m_nStatusIcon->set_tooltip("Error while setting tooltip!");
+        gtk_status_icon_set_tooltip(m_pStatusIcon,"Error while setting tooltip!");
     }
     delete[] buf;
+    
 }
 
 void CApplet::OnAppletActivate_CB()
 {
-    m_nStatusIcon->set_visible(false);
-    //std::cout << "Activate" << std::endl;
-    //if(m_pMenuPopup)
-      //m_pMenuPopup->show();
-    
+    gtk_status_icon_set_visible(m_pStatusIcon,false);
 }
 
 void CApplet::OnMenuPopup_cb(guint button, guint32 activate_time)
 {
     /* for now just hide the icon on RMB */
-    m_nStatusIcon->set_blinking(false);
+    gtk_status_icon_set_blinking(m_pStatusIcon, false);
 }
 
 void CApplet::ShowIcon()
 {
-    m_nStatusIcon->set_visible(true);
+    gtk_status_icon_set_visible(m_pStatusIcon,true);
 }
 
 void CApplet::HideIcon()
 {
-    m_nStatusIcon->set_visible(false);
+    gtk_status_icon_set_visible(m_pStatusIcon,false);
 }
 
 int CApplet::AddEvent(int pUUID, const std::string& pProgname)
@@ -101,5 +99,5 @@ int CApplet::RemoveEvent(int pUUID)
 }
 void CApplet::BlinkIcon(bool pBlink)
 {
-    m_nStatusIcon->set_blinking(pBlink);
+    gtk_status_icon_set_blinking(m_pStatusIcon,pBlink);
 }

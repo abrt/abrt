@@ -20,12 +20,15 @@
 #ifndef CC_APPLET_H_
 #define CC_APPLET_H_
 
-#include <gtkmm.h>
+#include <gtk/gtk.h>
+#include <map>
+#include <string>
 
 class CApplet
 {
     private:
-        Glib::RefPtr<Gtk::StatusIcon> m_nStatusIcon;
+        //Glib::RefPtr<Gtk::StatusIcon> m_nStatusIcon;
+        GtkStatusIcon* m_pStatusIcon;
         std::map<int, std::string > m_mapEvents;
 	public:
         CApplet();
@@ -46,9 +49,9 @@ class CApplet
         void OnAppletActivate_CB();
         void OnMenuPopup_cb(guint button, guint32 activate_time);
         //menu
-        Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-        Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-        Gtk::Menu* m_pMenuPopup;
+        //Glib::RefPtr<Gtk::UIManager> m_refUIManager;
+        //Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
+        //Gtk::Menu* m_pMenuPopup;
 };
 
 #endif /*CC_APPLET_H_*/

@@ -38,7 +38,11 @@ crash_notify_cb(const char* progname)
 
 int main(int argc, char **argv)
 {
-    Gtk::Main kit(argc, argv);
+    /* need to be thread safe */
+    g_thread_init(NULL);
+    gdk_threads_init();
+    gdk_threads_enter();
+    gtk_init(&argc,&argv);
     applet = new CApplet();
     /* move to the DBusClient::connect */
     DBus::Glib::BusDispatcher dispatcher;
@@ -49,6 +53,7 @@ int main(int argc, char **argv)
 	DBus::Connection conn = DBus::Connection::SystemBus();
     CDBusClient client(conn, CC_DBUS_PATH, CC_DBUS_NAME);
     client.ConnectCrashHandler(crash_notify_cb);
-    Gtk::Main::run();
+    gtk_main();
+    gdk_threads_leave();
     return 0;
 }
