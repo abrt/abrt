@@ -1,10 +1,14 @@
 lib_LTLIBRARIES = libDBus.la
 libDBus_la_SOURCES = DBusManager.cpp DBusManager.h DBusClient.h DBusClient.cpp \
-                    DBusClientProxy.h DBusServer.cpp DBusServer.h DBusServerProxy.h
+                    DBusClientProxy.h DBusServer.cpp DBusServer.h DBusServerProxy.h \
+                    marshal.h DBusCommon.h
 libDBus_la_LDFLAGS = -version-info 0:1:0
 libDBus_la_LIBADD = $(DBUS_GLIB_LIBS) $(GLIBMM_LIBS) $(DBUSCPP_LIBS)
 libDBus_la_CPPFLAGS = $(DBUS_GLIB_CFLAGS) $(GLIBMM_CFLAGS) $(DBUSCPP_CFLAGS) \
                         -I../../lib/MiddleWare
+
+dbuscrashcatcherdir = ${sysconfdir}/dbus-1/system.d
+dist_dbuscrashcatcher_DATA = dbus-crash-catcher.conf
 
 #BUILT_SOURCES = crashcatcher-glue.h
 
