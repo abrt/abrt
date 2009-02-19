@@ -7,3 +7,6 @@ crash_catcher_CPPFLAGS = -I../../lib/MiddleWare\
                         -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
                         -DCONF_DIR=\"$(CONF_DIR)\"
 crash_catcher_LDADD = ../../lib/MiddleWare/libMiddleWare.la $(DL_LIBS) $(DBUSCPP_LIBS) $(RPM_LIBS)
+
+dbuscrashcatcherconfdir = ${sysconfdir}/dbus-1/system.d/
+dist_dbuscrashcatcherconf_DATA = dbus-crash-catcher.conf
