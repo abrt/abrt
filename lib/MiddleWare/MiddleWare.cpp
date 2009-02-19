@@ -246,6 +246,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
        (m_setBlackList.find(packageName) != m_setBlackList.end()))
     {
         dd.Delete();
+        dd.Close();
         return 0;
     }
     if (m_bOpenGPGCheck)
@@ -254,6 +255,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
             !m_RPMInfo.CheckHash(packageName, executable))
         {
             dd.Delete();
+            dd.Close();
             return 0;
         }
     }
@@ -288,6 +290,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     if (row.m_sReported == "1")
     {
         dd.Delete();
+        dd.Close();
         return 0;
     }
     if (row.m_sCount != "1")
