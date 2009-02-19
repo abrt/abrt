@@ -22,7 +22,8 @@
 #include <cstdarg>
 #include <sstream>
 
-CApplet::CApplet()
+CApplet::CApplet(DBus::Connection &connection, const char *path, const char *name)
+: DBus::ObjectProxy(connection, path, name)
 {
     m_pStatusIcon =  gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
     gtk_status_icon_set_visible(m_pStatusIcon,FALSE);
@@ -37,7 +38,25 @@ CApplet::CApplet()
 CApplet::~CApplet()
 {
 }
+/* dbus related */
+void CApplet::Crash(std::string &value)
+{
+    if(m_pCrashHandler)
+    {
+        m_pCrashHandler(value.c_str());
+    }
+    else
+    {
+        std::cout << "This is default handler, you should register your own with ConnectCrashHandler" << std::endl;
+        std::cout.flush();
+    }
+}
 
+void CApplet::ConnectCrashHandler(void (*pCrashHandler)(const char *progname))
+{
+    m_pCrashHandler = pCrashHandler;
+}
+/* --- */
 void CApplet::SetIconTooltip(const char *format, ...)
 {
     va_list args;

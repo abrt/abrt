@@ -23,15 +23,19 @@
 #include <gtk/gtk.h>
 #include <map>
 #include <string>
+#include <DBusClientProxy.h>
 
 class CApplet
+: public CDBusClient_proxy,
+  public DBus::IntrospectableProxy,
+  public DBus::ObjectProxy
 {
     private:
         //Glib::RefPtr<Gtk::StatusIcon> m_nStatusIcon;
         GtkStatusIcon* m_pStatusIcon;
         std::map<int, std::string > m_mapEvents;
 	public:
-        CApplet();
+        CApplet(DBus::Connection &connection, const char *path, const char *name);
         ~CApplet();
         void ShowIcon();
         void HideIcon();
@@ -44,6 +48,8 @@ class CApplet
         // map::
         int AddEvent(int pUUID, const std::string& pProgname);
         int RemoveEvent(int pUUID);
+        void ConnectCrashHandler(void (*pCrashHandler)(const char *progname));
+        void Crash(std::string &value);
     protected:
         //@@TODO applet menus
         void OnAppletActivate_CB();
@@ -52,6 +58,9 @@ class CApplet
         //Glib::RefPtr<Gtk::UIManager> m_refUIManager;
         //Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
         //Gtk::Menu* m_pMenuPopup;
+    private:
+    /* the real signal handler called to handle the signal */
+    void (*m_pCrashHandler)(const char *progname);
 };
 
 #endif /*CC_APPLET_H_*/

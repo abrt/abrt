@@ -18,7 +18,6 @@
     */
     
 #include "CCApplet.h"
-#include "DBusClient.h"
 #include <iostream>
 
 //@@global applet object
@@ -43,7 +42,6 @@ int main(int argc, char **argv)
     gdk_threads_init();
     gdk_threads_enter();
     gtk_init(&argc,&argv);
-    applet = new CApplet();
     /* move to the DBusClient::connect */
     DBus::Glib::BusDispatcher dispatcher;
     /* this should bind the dispatcher with mainloop */
@@ -51,8 +49,9 @@ int main(int argc, char **argv)
     DBus::default_dispatcher = &dispatcher;
 
 	DBus::Connection conn = DBus::Connection::SystemBus();
-    CDBusClient client(conn, CC_DBUS_PATH, CC_DBUS_NAME);
-    client.ConnectCrashHandler(crash_notify_cb);
+    //CDBusClient client(conn, CC_DBUS_PATH, CC_DBUS_NAME);
+    applet = new CApplet(conn, CC_DBUS_PATH, CC_DBUS_NAME);
+    applet->ConnectCrashHandler(crash_notify_cb);
     gtk_main();
     gdk_threads_leave();
     return 0;
