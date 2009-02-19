@@ -46,6 +46,7 @@ class CMiddleWare
         std::string m_sDatabase;
         map_plugin2reporters_t m_mapPlugin2Reporters;
 
+        bool m_bOpenGPGCheck;
 
         std::string GetLocalUUIDLanguage(const std::string& pLanguage,
                                          const std::string& pDebugDumpDir);

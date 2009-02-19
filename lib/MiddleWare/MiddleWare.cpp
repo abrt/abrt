@@ -26,7 +26,8 @@
 CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
                          const std::string& pPlugisLibDir,
                          const std::string& pMiddleWareConfFile) :
-    m_pPluginManager(NULL)
+    m_pPluginManager(NULL),
+    m_bOpenGPGCheck(true)
 {
     m_pPluginManager = new CPluginManager(pPlugisConfDir, pPlugisLibDir);
     if (m_pPluginManager == NULL)
@@ -69,6 +70,10 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
         {
             m_RPMInfo.LoadOpenGPGPublicKey(*it_k);
         }
+    }
+    if (settings.find("EnableOpenGPG") != settings.end())
+    {
+        m_bOpenGPGCheck = settings["EnableOpenGPG"] == "yes";
     }
     if (settings.find("Database") != settings.end())
     {
@@ -220,7 +225,7 @@ void CMiddleWare::Report(const crash_context_t& pCrashContext,
     database->SetReported(pCrashContext.m_sUUID, pCrashContext.m_sUID);
     database->DisConnect();
 }
-
+#include <iostream>
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
@@ -234,16 +239,23 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
 
-
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     package = m_RPMInfo.GetPackage(executable);
-    std::string packageName = package.substr(0, package.find("-"));
-    if (package == "" ||
-       !m_RPMInfo.CheckFingerprint(packageName) || !m_RPMInfo.CheckHash(packageName, executable) ||
+    std::string packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
+    if (packageName == "" ||
        (m_setBlackList.find(packageName) != m_setBlackList.end()))
     {
-        dd.Delete(pDebugDumpDir);
+        dd.Delete();
         return 0;
+    }
+    if (m_bOpenGPGCheck)
+    {
+        if (!m_RPMInfo.CheckFingerprint(packageName) ||
+            !m_RPMInfo.CheckHash(packageName, executable))
+        {
+            dd.Delete();
+            return 0;
+        }
     }
     dd.SaveText(FILENAME_PACKAGE, package);
 
@@ -275,12 +287,12 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
 
     if (row.m_sReported == "1")
     {
-        dd.Delete(pDebugDumpDir);
+        dd.Delete();
         return 0;
     }
     if (row.m_sCount != "1")
     {
-        dd.Delete(pDebugDumpDir);
+        dd.Delete();
     }
     dd.Close();
 
