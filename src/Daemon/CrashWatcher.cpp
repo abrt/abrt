@@ -131,12 +131,8 @@ dbus_vector_map_crash_infos_t CCrashWatcher::GetCrashInfosMap(const std::string 
     vector_crash_infos_t crash_info;
     std::cerr << pUID << std::endl;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pUID.c_str());
-    std::cerr << "Run by user with uid: " << unix_uid << std::endl;
     crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
     for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
-        /* push the map with DB row into retval */
-        map_crash_t tmp = it->GetMap(); 
-        std::cout << "Time:" << tmp["Time"] << std::endl;
         retval.push_back(it->GetMap());
     }
 	return retval;
