@@ -52,8 +52,11 @@ class CApplet
         void Crash(std::string &value);
     protected:
         //@@TODO applet menus
-        void OnAppletActivate_CB();
-        void OnMenuPopup_cb(guint button, guint32 activate_time);
+        static void OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data);
+        static void OnMenuPopup_cb(GtkStatusIcon *status_icon,
+                            guint          button,
+                            guint          activate_time,
+                            gpointer       user_data);
         //menu
         //Glib::RefPtr<Gtk::UIManager> m_refUIManager;
         //Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;

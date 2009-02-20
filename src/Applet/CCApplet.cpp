@@ -29,8 +29,8 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
     gtk_status_icon_set_visible(m_pStatusIcon,FALSE);
     // LMB click
     //TODO add some actions!
-    //gtk_signal_connect(m_pStatusIcon,"activate",CApplet::OnAppletActivate_CB, this);
-    //gtk_signal_connect(m_pStatusIcon,"popup_menu",CApplet::OnMenuPopup_cb, this);
+    g_signal_connect(G_OBJECT(m_pStatusIcon),"activate",GTK_SIGNAL_FUNC(CApplet::OnAppletActivate_CB), this);
+    g_signal_connect(G_OBJECT(m_pStatusIcon),"popup_menu",GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
     SetIconTooltip("Pending events: %i",m_mapEvents.size());
 
 }
@@ -85,15 +85,19 @@ void CApplet::SetIconTooltip(const char *format, ...)
     
 }
 
-void CApplet::OnAppletActivate_CB()
+void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
 {
-    gtk_status_icon_set_visible(m_pStatusIcon,false);
+    CApplet *applet = (CApplet *)user_data;
+    gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
 }
 
-void CApplet::OnMenuPopup_cb(guint button, guint32 activate_time)
+void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
+                            guint          button,
+                            guint          activate_time,
+                            gpointer       user_data)
 {
     /* for now just hide the icon on RMB */
-    gtk_status_icon_set_blinking(m_pStatusIcon, false);
+    gtk_status_icon_set_blinking(((CApplet *)user_data)->m_pStatusIcon, false);
 }
 
 void CApplet::ShowIcon()
