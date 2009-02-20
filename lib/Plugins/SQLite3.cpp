@@ -23,6 +23,7 @@
 #include <sqlite3.h>
 #include "SQLite3.h"
 #include <string>
+#include <iostream>
 
 
 #define TABLE_NAME "CrashCatcher"
@@ -75,23 +76,24 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
             {
                 switch(jj)
                 {
-                    case 0: row.m_sUUID = table[jj + ncol];
+                    case 0: row.m_sUUID = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 1: row.m_sUID = table[jj + ncol];
+                    case 1: row.m_sUID = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 2: row.m_sDebugDumpDir = table[jj + ncol];
+                    case 2: row.m_sDebugDumpDir = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 3: row.m_sCount = table[jj + ncol];
+                    case 3: row.m_sCount = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 4: row.m_sReported = table[jj + ncol];
+                    case 4: row.m_sReported = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 5: row.m_sTime = table[jj + ncol];
+                    case 5: row.m_sTime = table[jj +(ncol*ii) + ncol];
                         break;
                     default:
                         break;
                 }
             }
             pTable.push_back(row);
+            
         }
         sqlite3_free_table(table);
 }

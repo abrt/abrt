@@ -64,7 +64,7 @@ PLUGIN_INFO(DATABASE,
             "SQLite3",
             "0.0.1",
             "SQLite3 database plugin.",
-            "zprikryl@redhat.com",
+            "zprikryl@redhat.com,jmoskovc@redhat.com",
             "https://fedorahosted.org/crash-catcher/wiki");
 
 PLUGIN_INIT(CSQLite3);
