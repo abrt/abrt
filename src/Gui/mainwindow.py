@@ -5,17 +5,26 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 import gtk.glade
-import CCGuiDbusBackend
-from datetime import datetime
+import CCDBusBackend
+import sys
+from CC_gui_functions import *
+from CCDumpList import getDumpList, DumpList
+from CCReporterDialog import ReporterDialog
 
 def cb(self, *args):
     pass
 
-class CCMainWindow():
+class MainWindow():
     """This is an Hello World GTK application"""
 
     def __init__(self):
-        self.ccdaemon = CCGuiDbusBackend.DBusManager()
+        try:
+            self.ccdaemon = CCDBusBackend.DBusManager()
+        except Exception, e:
+            # show error message if connection fails
+            # FIXME add an option to start the daemon
+            gui_error_message(e.message)
+            sys.exit()
         #Set the Glade file
         self.gladefile = "ccgui.glade"  
         self.wTree = gtk.glade.XML(self.gladefile) 
@@ -26,13 +35,15 @@ class CCMainWindow():
         if (self.window):
             self.window.connect("destroy", gtk.main_quit)
         
+        self.appBar = self.wTree.get_widget("appBar")
+        
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
         columns = [None]*2
         columns[0] = gtk.TreeViewColumn('Date')
-        columns[1] = gtk.TreeViewColumn('package')
+        columns[1] = gtk.TreeViewColumn('Package')
         # create list
-        self.dumpsListStore = gtk.ListStore(str, str, int)
+        self.dumpsListStore = gtk.ListStore(str, str, object)
         # set filter
         self.modelfilter = self.dumpsListStore.filter_new()
         self.modelfilter.set_visible_func(self.filter_dumps, None)
@@ -49,7 +60,29 @@ class CCMainWindow():
         self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked)
         self.wTree.get_widget("bNext").connect("clicked", self.on_bNext_clicked)
         self.wTree.get_widget("bQuit").connect("clicked", self.on_bQuit_clicked)
+        self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         
+        # load data
+        self.load()
+    
+    def load(self):
+        self.appBar.push(0,"Loading dumps...")
+        self.loadDumpList()
+        self.appBar.pop(0)
+        
+    def loadDumpList(self):
+        #dumplist = getDumpList(dbmanager=self.ccdaemon)
+        pass
+    
+    def on_data_changed_cb(self, *args):
+        ret = gui_info_dialog("Another crash detected, do you want to refresh the data?",self.window)
+        if ret == gtk.RESPONSE_YES:
+            self.hydrate()
+        else:
+            pass
+        #print "got another crash, refresh gui?"
+    
+    
     def filter_dumps(self, model, miter, data):
         # this could be use for filtering the dumps
         return True
@@ -58,45 +91,50 @@ class CCMainWindow():
         self.window.show()
     
     def hydrate(self):
-        self.rows = self.ccdaemon.getDumps()
-        row_c = 0
-        for row in self.rows:
-            self.dumpsListStore.append([row["Time"], row["Package"], row_c])
-            row_c += 1
+        self.dumpsListStore.clear()
+        dumplist = getDumpList(self.ccdaemon, refresh=True)
+        #self.rows = self.ccdaemon.getDumps()
+        #row_c = 0
+        for entry in dumplist:
+            self.dumpsListStore.append([entry.getTime("%Y:%m:%d"),entry.getPackage(),entry])
+            #row_c += 1
     
     def on_tvDumps_cursor_changed(self,treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
             return
 
-        # rewrite this OO
-        #DumpList class
-        row = self.rows[dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), 2)]
+        # this should work until we keep the row object in the last position
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(dumpsListStore))
         
         lDate = self.wTree.get_widget("lDate")
         #move this to Dump class
-        t = datetime.fromtimestamp(int(row["Time"]))
-        date = t.strftime("%Y-%m-%d %H:%M:%S")
-        lDate.set_label(date)
+        lDate.set_label(dump.getTime("%Y.%m.%d %H:%M:%S"))
         lPackage = self.wTree.get_widget("lPackage")
-        lPackage.set_label(row["Package"])
-        self.wTree.get_widget("lExecutable").set_label(row["Executable"])
-        self.wTree.get_widget("lCRate").set_label(row["Count"])
+        lPackage.set_label(dump.getPackage())
+        self.wTree.get_widget("lExecutable").set_label(dump.getExecutable())
+        self.wTree.get_widget("lCRate").set_label(dump.getCount())
         #print self.rows[row]
         
     def on_bDelete_clicked(self, button):
         print "Delete"
         
     def on_bNext_clicked(self, button):
-        print "Next"
+        # FIXME don't duplicate the code, move to function
+        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        if not path:
+            return
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(dumpsListStore))
+        # show the report window with selected dump
+        report_dialog = ReporterDialog(dump)
+        report_dialog.run()
     
     def on_bQuit_clicked(self, button):
-        print "Quit"
         gtk.main_quit()
     
 
 if __name__ == "__main__":
-    cc = CCMainWindow()
+    cc = MainWindow()
     cc.hydrate()
     cc.show()
     gtk.main()

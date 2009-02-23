@@ -14,10 +14,12 @@ class DBusManager(gobject.GObject):
     # and later with policyKit
     def __init__(self):
         gobject.GObject.__init__(self)
+        # signal emited when new crash is detected
+        gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
         self.proxy = None
-        self.connect()
+        self.connect_to_daemon()
         if self.proxy:
             self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
             #intr = dbus.Interface(proxy, dbus_interface='org.freedesktop.DBus.Introspectable')
@@ -30,29 +32,28 @@ class DBusManager(gobject.GObject):
         print "disconnect"
     
     def crash_cb(self,*args):
-        print "got another crash while in gui!"
-        for arg in args:
-            print arg
+        #FIXME "got another crash, gui should reload!"
+        #for arg in args:
+        #    print arg
         #emit a signal
+        #print "crash"
+        self.emit("crash")
         
-    def connect(self):
+    def connect_to_daemon(self):
         bus = dbus.SystemBus()
         if not bus:
             raise Exception("Can't connect to dbus")
         try:
             self.proxy = bus.get_object(CC_IFACE, CC_PATH)
         except Exception, e:
-            print "Error while creating the proxy"
-            print e
+            raise Exception(e.message + "\nPlease check if crash-catcher daemon is running.")
 
     def getDumps(self):
         row_dict = None
         rows = []
         for row in self.cc.GetCrashInfosMap(""):
-#            print row
             row_dict = {}
             for column in row:
                 row_dict[column] = row[column]
-              #  print "%s:%s" % (column, row[column])
             rows.append(row_dict);
         return rows

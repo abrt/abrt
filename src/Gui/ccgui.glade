@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Feb 20 16:42:05 2009 -->
+<!--Generated with glade3 3.4.5 on Mon Feb 23 15:20:47 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window">
     <property name="default_width">640</property>
@@ -336,7 +336,7 @@
           </packing>
         </child>
         <child>
-          <widget class="GtkStatusbar" id="statusbar1">
+          <widget class="GtkStatusbar" id="appBar">
             <property name="visible">True</property>
             <property name="spacing">2</property>
           </widget>
@@ -348,7 +348,7 @@
       </widget>
     </child>
   </widget>
-  <widget class="GtkDialog" id="dialog1">
+  <widget class="GtkDialog" id="reporter_dialog">
     <property name="border_width">5</property>
     <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
     <property name="default_width">400</property>
@@ -365,14 +365,14 @@
             <child>
               <widget class="GtkLabel" id="label10">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">label</property>
+                <property name="label" translatable="yes">Report</property>
               </widget>
               <packing>
                 <property name="expand">False</property>
               </packing>
             </child>
             <child>
-              <widget class="GtkTreeView" id="treeview1">
+              <widget class="GtkTreeView" id="tvReport">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
               </widget>
@@ -390,7 +390,7 @@
             <property name="visible">True</property>
             <property name="layout_style">GTK_BUTTONBOX_END</property>
             <child>
-              <widget class="GtkButton" id="button4">
+              <widget class="GtkButton" id="bApply">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -400,7 +400,7 @@
               </widget>
             </child>
             <child>
-              <widget class="GtkButton" id="button5">
+              <widget class="GtkButton" id="bCancel">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -459,53 +459,6 @@
                   <placeholder/>
                 </child>
                 <child>
-                  <widget class="GtkLabel" id="label14">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">BlackList</property>
-                  </widget>
-                </child>
-                <child>
-                  <widget class="GtkEntry" id="entry1">
-                    <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label15">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Database Plugin</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkComboBox" id="combobox1">
-                    <property name="visible">True</property>
-                  </widget>
-                  <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <widget class="GtkLabel" id="label16">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">OpenPGP Public Keys</property>
-                  </widget>
-                  <packing>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                  </packing>
-                </child>
-                <child>
                   <widget class="GtkHBox" id="hbox7">
                     <property name="visible">True</property>
                     <child>
@@ -552,6 +505,53 @@
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                   </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label16">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">OpenPGP Public Keys</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkComboBox" id="combobox1">
+                    <property name="visible">True</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label15">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Database Plugin</property>
+                  </widget>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkEntry" id="entry1">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                  </widget>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <widget class="GtkLabel" id="label14">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">BlackList</property>
+                  </widget>
                 </child>
               </widget>
             </child>
