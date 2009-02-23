@@ -34,13 +34,18 @@ class ReporterDialog():
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Value', renderer, text=1, editable=2)
         self.tvReport.append_column(column)
-        
+        renderer.connect('edited',self.column_edited,self.reportListStore)
         
         # connect the signals
         self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
         
         self.hydrate()
 
+    def column_edited(self, cell, path, new_text, model):
+        # 1 means the second cell
+        model[path][1] = new_text
+        return
+        
     def on_apply_clicked(self, button, treeview):
         #print treeview
         self.window.hide()
