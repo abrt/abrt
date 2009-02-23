@@ -21,6 +21,7 @@
 #include <iostream>
 #include <cstdarg>
 #include <sstream>
+#include <cstdio>
 
 CApplet::CApplet(DBus::Connection &connection, const char *path, const char *name)
 : DBus::ObjectProxy(connection, path, name)
@@ -88,7 +89,34 @@ void CApplet::SetIconTooltip(const char *format, ...)
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
 {
     CApplet *applet = (CApplet *)user_data;
-    gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
+    //FIXME
+    char cwd[1024];
+    //gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
+    GtkWidget *dialog = NULL;
+    dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL, 
+                                          GTK_MESSAGE_QUESTION,
+                                          GTK_BUTTONS_YES_NO,
+                                          "Do you want to file a report now?");
+    gint result = gtk_dialog_run(GTK_DIALOG(dialog));
+    switch (result)
+    {
+        case GTK_RESPONSE_YES:
+            //FIXME - use fork+exec and absolute paths?
+            getcwd(cwd,1024);
+            if(chdir("../Gui") != -1){
+                popen("./mainwindow.py","r");
+                chdir(cwd);
+            }
+            else{
+                std::cerr << "error changing directory" << std::endl;
+            }
+            gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
+            break;
+        default:
+            gtk_status_icon_set_blinking(applet->m_pStatusIcon,false);
+            break;
+    }
+    gtk_widget_destroy (dialog);
 }
 
 void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
