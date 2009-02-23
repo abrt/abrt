@@ -29,10 +29,6 @@
 #include <csignal>
 #include <sstream>
 
-void terminate(int signal)
-{
-    exit(0);
-}
 /* just a helper function */
 template< class T >
 std::string
@@ -129,7 +125,6 @@ dbus_vector_map_crash_infos_t CCrashWatcher::GetCrashInfosMap(const std::string 
 {
     dbus_vector_map_crash_infos_t retval;
     vector_crash_infos_t crash_info;
-    std::cerr << pUID << std::endl;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pUID.c_str());
     crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
     for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
@@ -190,10 +185,6 @@ void CCrashWatcher::GStartWatch()
     delete[] buff;
 }
 
-void CCrashWatcher::RegisterSignals()
-{
-    signal(SIGTERM, terminate);
-}
 
 void CCrashWatcher::Daemonize()
 {

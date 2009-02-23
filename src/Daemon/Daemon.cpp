@@ -22,17 +22,31 @@
 #include <cstdio>
 
 #define daemonize 0
+CCrashWatcher *ccdaemon;
+DBus::Glib::BusDispatcher *dispatcher;
+
+void terminate(int signal)
+{
+    fprintf(stderr, "Got SIGINT/SIGTERM, cleaning up..\n");
+    delete ccdaemon;
+    delete dispatcher;
+    exit(0);
+}
 
 int main(int argc, char** argv){
+    /*signal handlers */
+    signal(SIGTERM, terminate);
+    signal(SIGINT, terminate);
     /* connect to dbus */
-    DBus::Glib::BusDispatcher *dispatcher;
+    //DBus::Glib::BusDispatcher *dispatcher;
     dispatcher = new DBus::Glib::BusDispatcher();
     dispatcher->attach(NULL);
     DBus::default_dispatcher = dispatcher;
 	DBus::Connection conn = DBus::Connection::SystemBus();
     
     try{
-    CCrashWatcher daemon(DEBUG_DUMPS_DIR, conn);
+    //CCrashWatcher daemon(DEBUG_DUMPS_DIR, conn);
+    ccdaemon = new CCrashWatcher(DEBUG_DUMPS_DIR, conn);
     //if (argc > 1){
     //    if (strcmp(argv[1], "-d") == 0){
     //        daemonize = 0;
@@ -40,7 +54,7 @@ int main(int argc, char** argv){
     // }
     if(daemonize){
             try{
-                daemon.Daemonize();
+                ccdaemon->Daemonize();
             }
             catch(std::string err)
             {
@@ -55,7 +69,7 @@ int main(int argc, char** argv){
             #ifdef DEBUG
                 std::cerr << "trying to run" << std::endl;
             #endif  /*DEBUG*/
-                daemon.Run();
+                ccdaemon->Run();
             }
             catch(std::string err)
             {

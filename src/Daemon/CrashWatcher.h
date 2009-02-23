@@ -39,7 +39,6 @@ class CCrashWatcher
 {
     private:
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
-        void RegisterSignals();
         void StartWatch();
         void GStartWatch();
         void Lock();
