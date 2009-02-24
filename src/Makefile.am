@@ -1,1 +1,1 @@
-SUBDIRS = Hooks Daemon Applet
+SUBDIRS = Hooks Daemon Applet Gui

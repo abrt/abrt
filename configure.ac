@@ -7,6 +7,12 @@ AC_PROG_LIBTOOL
 
 AC_PROG_CXX
 
+AM_PATH_PYTHON
+if test -z "$PYTHON"; then
+    echo "*** Essential program python not found" 1>&2
+    exit 1
+fi
+    
 PKG_CHECK_MODULES([DBUS_GLIB], [dbus-glib-1])
 PKG_CHECK_MODULES([SQLITE3], [sqlite3])
 PKG_CHECK_MODULES([GTK], [gtk+-2.0])
@@ -45,6 +51,7 @@ AC_CONFIG_FILES([
 	src/Daemon/Makefile
 	src/Hooks/Makefile
 	src/Applet/Makefile
+	src/Gui/Makefile
 ])
 
 AC_OUTPUT
