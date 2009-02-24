@@ -15,8 +15,6 @@ def cb(self, *args):
     pass
 
 class MainWindow():
-    """This is an Hello World GTK application"""
-
     def __init__(self):
         try:
             self.ccdaemon = CCDBusBackend.DBusManager()
@@ -105,7 +103,7 @@ class MainWindow():
             return
 
         # this should work until we keep the row object in the last position
-        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(dumpsListStore))
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
         
         lDate = self.wTree.get_widget("lDate")
         #move this to Dump class
@@ -124,7 +122,7 @@ class MainWindow():
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
             return
-        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(dumpsListStore))
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
         # show the report window with selected dump
         report_dialog = ReporterDialog(dump)
         report_dialog.run()
