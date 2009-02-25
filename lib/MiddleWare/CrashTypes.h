@@ -33,16 +33,9 @@ typedef struct SCrashInfo
 
 typedef std::vector<crash_info_t> vector_crash_infos_t;
 
-typedef struct SCrashContex
-{
-    std::string m_sUUID;
-    std::string m_sUID;
-    std::string m_sLanAppPlugin;
-} crash_context_t;
-
-
 typedef struct SCrashReport
 {
+    std::string m_sMWID;
     std::string m_sUUID;
     std::string m_sArchitecture;
     std::string m_sKernel;
@@ -58,6 +51,7 @@ typedef struct SCrashReport
     const map_crash_t GetMap()
     {
         map_crash_t mci;
+        mci["MWID"] = m_sMWID;
         mci["UUID"] = m_sUUID;
         mci["Architecture"] = m_sArchitecture;
         mci["Kernel"] = m_sKernel;
