@@ -48,9 +48,16 @@ class DBusManager(gobject.GObject):
         except Exception, e:
             raise Exception(e.message + "\nPlease check if crash-catcher daemon is running.")
 
+    def getReport(self, UUID):
+        return self.cc.CreateReport(UUID)
+    
+    def Report(self,report):
+        return self.cc.Report(report)
+
     def getDumps(self):
         row_dict = None
         rows = []
+        # FIXME check the arguments
         for row in self.cc.GetCrashInfosMap(""):
             row_dict = {}
             for column in row:

@@ -10,6 +10,7 @@ import sys
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
+from CCReport import Report
 
 def cb(self, *args):
     pass
@@ -95,7 +96,7 @@ class MainWindow():
         #self.rows = self.ccdaemon.getDumps()
         #row_c = 0
         for entry in dumplist:
-            self.dumpsListStore.append([entry.getTime("%Y:%m:%d"),entry.getPackage(),entry])
+            self.dumpsListStore.append([entry.getTime("%m.%d."),entry.getPackage(),entry])
             #row_c += 1
     
     def on_tvDumps_cursor_changed(self,treeview):
@@ -125,8 +126,13 @@ class MainWindow():
             return
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
         # show the report window with selected dump
-        report_dialog = ReporterDialog(dump)
-        report_dialog.run()
+        report = self.ccdaemon.getReport(dump.getUUID())
+        report_dialog = ReporterDialog(report)
+        result = report_dialog.run()
+        if result == -1:
+            pass
+        else:
+            self.ccdaemon.Report(result)
     
     def on_bQuit_clicked(self, button):
         gtk.main_quit()
