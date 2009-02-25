@@ -15,6 +15,7 @@ typedef struct SCrashInfo
     std::string m_sPackage;
     std::string m_sDescription;
     std::string m_sTime;
+    std::string m_sReported;
 
     const map_crash_t GetMap()
     {
@@ -26,6 +27,7 @@ typedef struct SCrashInfo
         mci["Package"] = m_sPackage;
         mci["Description"] = m_sDescription;
         mci["Time"] = m_sTime;
+        mci["Reported"] =  m_sReported;
 
         return mci;
     }

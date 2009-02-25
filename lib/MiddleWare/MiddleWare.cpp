@@ -347,6 +347,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     pCrashInfo.m_sExecutable = executable;
     pCrashInfo.m_sPackage = package;
     pCrashInfo.m_sTime = row.m_sTime;
+    pCrashInfo.m_sReported = "0";
 
     return 1;
 }
@@ -370,6 +371,7 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
         info.m_sUID = rows[ii].m_sUID;
         info.m_sCount = rows[ii].m_sCount;
         info.m_sTime = rows[ii].m_sTime;
+        info.m_sReported = rows[ii].m_sReported;
 
         dd.Open(rows[ii].m_sDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, data);
