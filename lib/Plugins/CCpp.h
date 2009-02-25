@@ -33,6 +33,9 @@ class CLanguageCCpp : public CLanguage
 		bool m_bMemoryMap;
 		std::string m_sOldCorePattern;
 		void InstallDebugInfos(const std::string& pPackage);
+		void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
+		void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace);
+		void RunCommand(const std::string&pCommand, std::string& pOutput);
 
 	public:
 		CLanguageCCpp();

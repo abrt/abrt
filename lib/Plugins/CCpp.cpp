@@ -25,11 +25,13 @@
 #include "DebugDump.h"
 #include <sstream>
 #include <iostream>
+#include <hash_map>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s"
 
-#define DEBUGINFO_INSTALL "debuginfo-install -y "
+#define DEBUGINFO_COMMAND "debuginfo-install -y "
+#define GDB_COMMAND "gdb -batch -x "
 
 CLanguageCCpp::CLanguageCCpp() :
 	m_bMemoryMap(false)
@@ -38,21 +40,24 @@ CLanguageCCpp::CLanguageCCpp() :
 void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
 {
     char line[1024];
-    std::string command = DEBUGINFO_INSTALL + pPackage;
+    std::string command = DEBUGINFO_COMMAND + pPackage;
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-") - 1));
     std::string packageERV = pPackage.substr(packageName.length());
-    std::string installed = "Package "+packageName+"-debuginfo"+packageERV+" already installed and latest version";
+    std::string packageDebuginfo = packageName+"-debuginfo"+packageERV;
+    std::string installed = "already installed and latest version";
     std::string canNotInstall = "No debuginfo packages available to install";
     FILE *fp = popen(command.c_str(), "r");
+    std::cout << installed << std::endl;
     if (fp == NULL)
     {
-        throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage ;
+        throw "CLanguageCCpp::InstallDebugInfos(): cannot execute " + command ;
     }
     while (fgets(line, sizeof(line), fp))
     {
         std::string text = line;
         std::cerr << text;
-        if (text.find(installed) != std::string::npos)
+        if (text.find(packageDebuginfo) != std::string::npos &&
+            text.find(installed) != std::string::npos)
         {
             pclose(fp);
             return;
@@ -60,7 +65,7 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
         if (text.find(canNotInstall) != std::string::npos)
         {
             pclose(fp);
-            throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage ;
+            throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage + " (" + canNotInstall + ")" ;
         }
     }
     if (pclose(fp) != 0)
@@ -69,45 +74,145 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
     }
 }
 
+void CLanguageCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
+{
+    std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
+    std::ofstream fTmp;
+    fTmp.open(tmpFile.c_str());
+    if (fTmp.is_open())
+    {
+        std::string executable;
+        CDebugDump dd;
+        dd.Open(pDebugDumpDir);
+        dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.Close();
+        fTmp << "file " << executable << std::endl;
+        fTmp << "core " << pDebugDumpDir << "/" << FILENAME_BINARYDATA1 << std::endl;
+        fTmp << "bt full" << std::endl;
+        fTmp << "q" << std::endl;
+        fTmp.close();
+    }
+    else
+    {
+        throw "CLanguageCCpp::GetBacktrace(): cannot create gdb script " + tmpFile ;
+    }
+    std::string command = GDB_COMMAND + tmpFile;
+    RunCommand(command, pBacktrace);
+}
+
+void CLanguageCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
+{
+    int ii = 0;
+    std::cout << pBacktrace << std::endl;
+    while (ii < pBacktrace.length())
+    {
+        std::string line = "";
+        int jj = 0;
+
+        while (pBacktrace[ii] != '\n' && ii < pBacktrace.length())
+        {
+            line += pBacktrace[ii];
+            ii++;
+        }
+        while (isspace(line[jj]))
+        {
+            jj++;
+        }
+        if (line[jj] == '#')
+        {
+            // "#0  0x080483a8 in main () at sigsegv.c:6
+            while(!isspace(line[jj]))
+            {
+                jj++;
+            }
+            // "  0x080483a8 in main () at sigsegv.c:6
+            while (isspace(line[jj]))
+            {
+                jj++;
+            }
+            // "0x080483a8 in main () at sigsegv.c:6
+            while (isalnum(line[jj]))
+            {
+                jj++;
+            }
+            // " in main () at sigsegv.c:6
+            while (jj < line.length())
+            {
+                pIndependentBacktrace += line[jj];
+                jj++;
+            }
+        }
+        ii++;
+    }
+}
+
+void CLanguageCCpp::RunCommand(const std::string& pCommand, std::string& pOutput)
+{
+    char line[1024];
+
+    FILE *fp = popen(pCommand.c_str(), "r");
+    if (fp == NULL)
+    {
+        throw "CLanguageCCpp::GetBacktrace(): cannot execute " + pCommand ;
+    }
+    pOutput = "";
+    while (fgets(line, sizeof(line), fp))
+    {
+        pOutput += line;
+    }
+    pclose(fp);
+}
+
 std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
 	std::stringstream ss;
 	char* core;
 	unsigned int size;
+	std::string executable;
 	CDebugDump dd;
+
 	dd.Open(pDebugDumpDir);
 	dd.LoadBinary(FILENAME_BINARYDATA1, &core, &size);
+	dd.LoadText(FILENAME_EXECUTABLE, executable);
 	dd.Close();
-	// TODO: compute local UUID
-	ss << size;
+	// TODO: compute local UUID, remove this hack
+	ss << executable << "_" << size;
 	return ss.str();
 }
 std::string CLanguageCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
     std::stringstream ss;
-    CDebugDump dd;
     std::string backtrace;
+    std::string independentBacktrace;
+    __gnu_cxx::hash<const char*> hash;
+
+    CDebugDump dd;
     dd.Open(pDebugDumpDir);
     dd.LoadText(FILENAME_TEXTDATA1, backtrace);
     dd.Close();
-    // TODO: compute global UUID
-    ss << backtrace.length();
+    GetIndependentBacktrace(backtrace, independentBacktrace);
+    // TODO: compute global UUID, remove this hack
+    ss << hash(independentBacktrace.c_str());
     return ss.str();
 }
 
 void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
     std::string package;
+    std::string backtrace;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
     dd.LoadText(FILENAME_PACKAGE, package);
 
     InstallDebugInfos(package);
+    GetBacktrace(pDebugDumpDir, backtrace);
 
-    dd.SaveText(FILENAME_TEXTDATA1, "backtrace of the crashed C/C++ application");
+    dd.SaveText(FILENAME_TEXTDATA1, backtrace);
+    dd.LoadText(FILENAME_TEXTDATA1, package);
+    std::cout << "XXX" << package << std::endl;
     if (m_bMemoryMap)
     {
-        dd.SaveText(FILENAME_TEXTDATA2, "memory map of the crashed C/C++ application");
+        dd.SaveText(FILENAME_TEXTDATA2, "memory map of the crashed C/C++ application, not implemented yet");
     }
     dd.Close();
 }
