@@ -79,11 +79,12 @@ class CMiddleWare
 
         void CreateReport(const std::string& pUUID,
                           const std::string& pUID,
-                          crash_context_t& pCrashContext,
                           crash_report_t& pCrashReport);
 
-        void Report(const crash_context_t& pCrashContext,
-                    const crash_report_t& pCrashReport);
+        void Report(const crash_report_t& pCrashReport);
+
+        void DeleteDebugDump(const std::string& pUUID,
+                             const std::string& pUID);
 
         int SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo);
         vector_crash_infos_t GetCrashInfos(const std::string& pUID);

@@ -118,26 +118,24 @@ void CLanguageCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
         }
         if (line[jj] == '#')
         {
-            // "#0  0x080483a8 in main () at sigsegv.c:6
-            while(!isspace(line[jj]))
+            while(jj < line.length())
             {
-                jj++;
-            }
-            // "  0x080483a8 in main () at sigsegv.c:6
-            while (isspace(line[jj]))
-            {
-                jj++;
-            }
-            // "0x080483a8 in main () at sigsegv.c:6
-            while (isalnum(line[jj]))
-            {
-                jj++;
-            }
-            // " in main () at sigsegv.c:6
-            while (jj < line.length())
-            {
-                pIndependentBacktrace += line[jj];
-                jj++;
+                if (isspace(line[jj]))
+                {
+                    jj++;
+                }
+                else if (line[jj] == '0' && line[jj+1] == 'x')
+                {
+                    while (isalnum(line[jj]))
+                    {
+                        jj++;
+                    }
+                }
+                else
+                {
+                    pIndependentBacktrace += line[jj];
+                    jj++;
+                }
             }
         }
         ii++;

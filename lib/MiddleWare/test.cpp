@@ -57,11 +57,10 @@ int main(int argc, char** argv)
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */
-            crash_context_t crashContext;
             crash_report_t crashReport;
-            middleWare.CreateReport(crashInfo.m_sUUID, crashInfo.m_sUID, crashContext, crashReport);
+            middleWare.CreateReport(crashInfo.m_sUUID, crashInfo.m_sUID, crashReport);
             /* Report crash */
-            middleWare.Report(crashContext, crashReport);
+            middleWare.Report(crashReport);
         }
         dd.Close();
     }

@@ -109,6 +109,7 @@ void CMiddleWare::DebugDump2Report(const std::string& pDebugDumpDir, crash_repor
     dd.LoadText(FILENAME_PACKAGE, pCrashReport.m_sPackage);
     dd.LoadText(FILENAME_EXECUTABLE, pCrashReport.m_sExecutable);
     dd.LoadText(FILENAME_CMDLINE, pCrashReport.m_sCmdLine);
+    dd.LoadText(FILENAME_RELEASE, pCrashReport.m_sRelease);
 
     if (dd.Exist(FILENAME_TEXTDATA1))
     {
@@ -184,7 +185,6 @@ void CMiddleWare::CreateReportApplication(const std::string& pApplication,
 
 void CMiddleWare::CreateReport(const std::string& pUUID,
                                const std::string& pUID,
-                               crash_context_t& pCrashContext,
                                crash_report_t& pCrashReport)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
@@ -193,7 +193,7 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
     row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
 
-    if (row.m_sUUID != pUUID)
+    if (pUUID == "" || row.m_sUUID != pUUID)
     {
         throw std::string("CMiddleWare::CreateReport(): UUID '"+pUUID+"' is not in database.");
     }
@@ -219,15 +219,25 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
 
     DebugDump2Report(row.m_sDebugDumpDir, pCrashReport);
 
-    pCrashContext.m_sLanAppPlugin = appLan;
-    pCrashContext.m_sUUID = pUUID;
-    pCrashContext.m_sUID = pUID;
+    pCrashReport.m_sMWID =  appLan + ";" + pUID + ";" + pUUID  ;
 }
 
-void CMiddleWare::Report(const crash_context_t& pCrashContext,
-                         const crash_report_t& pCrashReport)
+void CMiddleWare::Report(const crash_report_t& pCrashReport)
 {
-    std::string lanAppPlugin = pCrashContext.m_sLanAppPlugin;
+    std::string::size_type pos1 = 0;
+    std::string::size_type pos2 = pCrashReport.m_sMWID.find(";", pos1);
+    std::string lanAppPlugin = pCrashReport.m_sMWID.substr(pos1, pos2);
+    pos1 = pos2 + 1;
+    pos2 = pCrashReport.m_sMWID.find(";", pos1);
+    std::string UID = pCrashReport.m_sMWID.substr(pos1, pos2);
+    pos1 = pos2 + 1;
+    std::string UUID = pCrashReport.m_sMWID.substr(pos1);;
+
+    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    database->Connect();
+    database->SetReported(UUID, UID);
+    database->DisConnect();
+
     if (m_mapPlugin2Reporters.find(lanAppPlugin) != m_mapPlugin2Reporters.end())
     {
         set_reporters_t::iterator it_r;
@@ -239,13 +249,23 @@ void CMiddleWare::Report(const crash_context_t& pCrashContext,
             reporter->Report(pCrashReport);
         }
     }
+}
 
+void CMiddleWare::DeleteDebugDump(const std::string& pUUID,
+                                  const std::string& pUID)
+{
+    database_row_t row;
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database->Connect();
-    database->SetReported(pCrashContext.m_sUUID, pCrashContext.m_sUID);
+    row = database->GetUUIDData(pUUID, pUID);
+    database->Delete(pUUID, pUID);
     database->DisConnect();
+    CDebugDump dd;
+    dd.Open(row.m_sDebugDumpDir);
+    dd.Delete();
+    dd.Close();
 }
-#include <iostream>
+
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);

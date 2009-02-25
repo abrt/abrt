@@ -178,6 +178,10 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
                  "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
                  "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
+    else
+    {
+        throw std::string("CSQLite3::SetReported(): UUID is not found in DB.");
+    }
 }
 
 void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID)
@@ -188,6 +192,10 @@ void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID)
                  "SET "DATABASE_COLUMN_REPORTED" = 1 "
                  "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
                  "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
+    }
+    else
+    {
+        throw std::string("CSQLite3::SetReported(): UUID is not found in DB.");
     }
 }
 
