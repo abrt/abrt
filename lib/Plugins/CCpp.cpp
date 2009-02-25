@@ -55,7 +55,6 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
     while (fgets(line, sizeof(line), fp))
     {
         std::string text = line;
-        std::cerr << text;
         if (text.find(packageDebuginfo) != std::string::npos &&
             text.find(installed) != std::string::npos)
         {
@@ -103,7 +102,6 @@ void CLanguageCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
 void CLanguageCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
 {
     int ii = 0;
-    std::cout << pBacktrace << std::endl;
     while (ii < pBacktrace.length())
     {
         std::string line = "";
@@ -208,8 +206,6 @@ void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.SaveText(FILENAME_TEXTDATA1, backtrace);
-    dd.LoadText(FILENAME_TEXTDATA1, package);
-    std::cout << "XXX" << package << std::endl;
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_TEXTDATA2, "memory map of the crashed C/C++ application, not implemented yet");
