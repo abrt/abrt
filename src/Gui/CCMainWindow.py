@@ -24,7 +24,8 @@ class MainWindow():
             gui_error_message(e.message)
             sys.exit()
         #Set the Glade file
-        self.gladefile = "ccgui.glade"  
+        # FIXME add to PATH
+        self.gladefile = "../share/crash-catcher/ccgui.glade"  
         self.wTree = gtk.glade.XML(self.gladefile) 
         
         #Get the Main Window, and connect the "destroy" event

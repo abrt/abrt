@@ -80,7 +80,7 @@ void CApplet::SetIconTooltip(const char *format, ...)
     }
     else
     {
-        gtk_status_icon_set_tooltip(m_pStatusIcon,"Error while setting tooltip!");
+        gtk_status_icon_set_tooltip(m_pStatusIcon,"Error while setting the tooltip!");
     }
     delete[] buf;
     
@@ -103,12 +103,15 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
         case GTK_RESPONSE_YES:
             //FIXME - use fork+exec and absolute paths?
             getcwd(cwd,1024);
-            if(chdir("../Gui") != -1){
-                popen("./mainwindow.py","r");
-                chdir(cwd);
+            if(chdir("../bin") != -1){
+                popen("./cc-gui","r");
+                if(chdir(cwd) == -1)
+                {
+                    std::cerr << "error changing the directory" << std::endl;
+                }
             }
             else{
-                std::cerr << "error changing directory" << std::endl;
+                std::cerr << "error changing the directory" << std::endl;
             }
             gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
             break;
