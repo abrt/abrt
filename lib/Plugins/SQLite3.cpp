@@ -26,7 +26,7 @@
 #include <iostream>
 
 
-#define TABLE_NAME "CrashCatcher"
+#define TABLE_NAME "crash_catcher"
 
 CSQLite3::CSQLite3() :
     m_sDBPath("/tmp/CCDB"),
@@ -93,7 +93,7 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
                 }
             }
             pTable.push_back(row);
-            
+
         }
         sqlite3_free_table(table);
 }
