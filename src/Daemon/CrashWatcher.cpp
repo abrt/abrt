@@ -100,7 +100,8 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
         exit(-1);
     }
     if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
-        throw std::string("Add watch failed");
+        
+        throw std::string("Add watch failed:") + pPath.c_str();
     }
     m_nGio = g_io_channel_unix_new(m_nFd);
 }
@@ -139,17 +140,15 @@ dbus_map_report_info_t CCrashWatcher::CreateReport(const std::string &pUUID,cons
     dbus_map_report_info_t retval;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
     std::cerr << pUUID << ":" << unix_uid << std::endl;
-    crash_context_t crashContext;
     crash_report_t crashReport;
     std::cerr << "Creating report" << std::endl;
-    m_pMW->CreateReport(pUUID,to_string(unix_uid),crashContext, crashReport);
+    m_pMW->CreateReport(pUUID,to_string(unix_uid), crashReport);
     retval = crashReport.GetMap();
     return retval;
 }
 
 bool CCrashWatcher::Report(dbus_map_report_info_t pReport)
 {
-    crash_context_t crashContext;
     crash_report_t crashReport;
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];
@@ -158,12 +157,9 @@ bool CCrashWatcher::Report(dbus_map_report_info_t pReport)
     //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
     //     std::cerr << it->second << std::endl;
     //}
-    crashContext.m_sUUID = "1234";
-    crashContext.m_sUID = "12345";
-    crashContext.m_sLanAppPlugin = "CCpp";
-    crashReport.setFromMap(pReport);
+    crashReport.SetFromMap(pReport);
     std::cerr << crashReport.m_sPackage << std::endl;
-    m_pMW->Report(crashContext, crashReport);
+    m_pMW->Report(crashReport);
     return true;
 }
 
