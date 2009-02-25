@@ -13,6 +13,7 @@ typedef struct SCrashInfo
     std::string m_sCount;
     std::string m_sExecutable;
     std::string m_sPackage;
+    std::string m_sDescription;
     std::string m_sTime;
 
     const map_crash_t GetMap()
@@ -23,6 +24,7 @@ typedef struct SCrashInfo
         mci["Count"] = m_sCount;
         mci["Executable"] = m_sExecutable;
         mci["Package"] = m_sPackage;
+        mci["Description"] = m_sDescription;
         mci["Time"] = m_sTime;
 
         return mci;
@@ -41,8 +43,10 @@ typedef struct SCrashContex
 
 typedef struct SCrashReport
 {
+    std::string m_sUUID;
     std::string m_sArchitecture;
     std::string m_sKernel;
+    std::string m_sRelease;
     std::string m_sExecutable;
     std::string m_sCmdLine;
     std::string m_sPackage;
@@ -54,8 +58,10 @@ typedef struct SCrashReport
     const map_crash_t GetMap()
     {
         map_crash_t mci;
+        mci["UUID"] = m_sUUID;
         mci["Architecture"] = m_sArchitecture;
         mci["Kernel"] = m_sKernel;
+        mci["Release"] = m_sRelease;
         mci["Executable"] = m_sExecutable;
         mci["CmdLine"] = m_sCmdLine;
         mci["Package"] = m_sPackage;
