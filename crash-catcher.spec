@@ -82,6 +82,7 @@ The simple reporter plugin, which sends a report via mailx to a specified email.
 %setup -q
 
 %build
+autoreconf --install --force
 %configure
 make
 

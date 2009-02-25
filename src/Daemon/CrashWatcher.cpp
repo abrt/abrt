@@ -230,7 +230,7 @@ void CCrashWatcher::Daemonize()
     if(sid == -1){
         throw "CCrashWatcher.cpp:Daemonize:setsid failed";
     }
-    Lock();
+    //Lock();
     GStartWatch();
 }
 
