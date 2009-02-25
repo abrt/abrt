@@ -66,20 +66,20 @@ typedef struct SCrashReport
 
         return mci;
     }
-    void SetFromMap(const map_crash_t& mci)
+    void SetFromMap(const map_crash_t& pMcr)
     {
-        m_sMWID = mci["MWID"];
-        m_sUUID = mci["UUID"];
-        m_sArchitecture = mci["Architecture"];
-        m_sKernel = mci["Kernel"];
-        m_sRelease = mci["Release"];
-        m_sExecutable = mci["Executable"];
-        m_sCmdLine = mci["CmdLine"];
-        m_sPackage = mci["Package"];
-        m_sTextData1 = mci["TextData1"];
-        m_sTextData2 = mci["TextData2"];
-        m_sBinaryData1 = mci["BinaryData1"];
-        m_sBinaryData2 = mci["BinaryData2"];
+        m_sMWID = pMcr.find("MWID")->second;
+        m_sUUID = pMcr.find("UUID")->second;
+        m_sArchitecture = pMcr.find("Architecture")->second;
+        m_sKernel = pMcr.find("Kernel")->second;
+        m_sRelease = pMcr.find("Release")->second;
+        m_sExecutable = pMcr.find("Executable")->second;
+        m_sCmdLine = pMcr.find("CmdLine")->second;
+        m_sPackage = pMcr.find("Package")->second;
+        m_sTextData1 = pMcr.find("TextData1")->second;
+        m_sTextData2 = pMcr.find("TextData2")->second;
+        m_sBinaryData1 = pMcr.find("BinaryData1")->second;
+        m_sBinaryData2 = pMcr.find("BinaryData2")->second;
     }
 } crash_report_t;
 
