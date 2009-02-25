@@ -47,7 +47,7 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
     std::string installed = "already installed and latest version";
     std::string canNotInstall = "No debuginfo packages available to install";
     FILE *fp = popen(command.c_str(), "r");
-    std::cout << installed << std::endl;
+
     if (fp == NULL)
     {
         throw "CLanguageCCpp::InstallDebugInfos(): cannot execute " + command ;
@@ -55,6 +55,7 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
     while (fgets(line, sizeof(line), fp))
     {
         std::string text = line;
+        std::cout << text;
         if (text.find(packageDebuginfo) != std::string::npos &&
             text.find(installed) != std::string::npos)
         {
