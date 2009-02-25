@@ -60,6 +60,11 @@ void CMailx::Report(const crash_report_t& pReport)
 {
     std::stringstream ss;
 
+    ss << "Duplicity check" << std::endl;
+    ss << "==================" << std::endl << std::endl;
+    ss << "UUID" << std::endl;
+    ss << "------------" << std::endl;
+    ss << pReport.m_sUUID << std::endl << std::endl;
     ss << "Common information" << std::endl;
     ss << "==================" << std::endl << std::endl;
     ss << "Architecture" << std::endl;
