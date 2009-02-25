@@ -87,10 +87,13 @@ make
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
+
 rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
 rm -rf $RPM_BUILD_ROOT/%{_libdir}/crash-catcher/lib*.la
 mkdir -p ${RPM_BUILD_ROOT}/etc/rc.d/init.d
 install -m 755 $RPM_SOURCE_DIR/crash-catcher.init ${RPM_BUILD_ROOT}/etc/rc.d/init.d/crash-catcher
+mkdir -p $RPM_BUILD_ROOT/var/cache/crash-catcher
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -105,6 +108,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_libdir}/lib*.so*
 %{_sysconfdir}/dbus-1/system.d/dbus-crash-catcher.conf
 %config /etc/rc.d/init.d/crash-catcher
+%dir /var/cache/crash-catcher
 
 %files applet
 %{_bindir}/cc-applet

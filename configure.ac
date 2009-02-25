@@ -27,7 +27,7 @@ CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 
-DEBUG_DUMPS_DIR='${prefix}/var/cache/${PACKAGE_NAME}'
+DEBUG_DUMPS_DIR='${localstatedir}/cache/${PACKAGE_NAME}'
 AC_ARG_WITH(debugdumpsdir, 
             [AS_HELP_STRING([--with-debugdumpdir=DIR],
                            [Directory where debugdumps are created])],
