@@ -25,13 +25,16 @@
 
 #include <string>
 
+#define FILENAME_UUID               "uuid"
 #define FILENAME_ARCHITECTURE       "architecture"
 #define FILENAME_KERNEL             "kernel"
+#define FILENAME_RELEASE            "release"
 #define FILENAME_EXECUTABLE         "executable"
 #define FILENAME_CMDLINE            "cmdline"
 #define FILENAME_TIME               "time"
 #define FILENAME_UID                "uid"
 #define FILENAME_PACKAGE            "package"
+#define FILENAME_DESCRIPTION        "decsription"
 #define FILENAME_LANGUAGE           "language"
 #define FILENAME_APPLICATION        "application"
 #define FILENAME_TEXTDATA1          "text_data1"

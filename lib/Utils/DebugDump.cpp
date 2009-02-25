@@ -207,6 +207,9 @@ void CDebugDump::SaveEnvironment()
         SaveText(FILENAME_KERNEL, buf.release);
         SaveText(FILENAME_ARCHITECTURE, buf.machine);
     }
+    std::string release;
+    LoadTextFile("/etc/redhat-release", release);
+    SaveText(FILENAME_RELEASE, release);
 }
 
 void CDebugDump::SaveTime()
@@ -232,6 +235,11 @@ void CDebugDump::LoadTextFile(const std::string& pPath, std::string& pData)
         while (!fIn.eof())
         {
              getline (fIn,line);
+             // TODO: remove this hack
+             if (pData != "")
+             {
+                 pData += "\n";
+             }
              pData += line;
         }
         fIn.close();
