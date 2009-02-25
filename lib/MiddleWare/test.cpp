@@ -46,20 +46,20 @@ int main(int argc, char** argv)
         dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
 
         /* Try to save it into DB */
-        crash_info_t info;
-        if (middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, info))
+        crash_info_t crashInfo;
+        if (middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, crashInfo))
         {
             std::cout << "Application Crashed! " <<
-                         "(" << info.m_sTime << " [" << info.m_sCount << "]) " <<
-                         info.m_sPackage << ": " <<
-                         info.m_sExecutable << std::endl;
+                         "(" << crashInfo.m_sTime << " [" << crashInfo.m_sCount << "]) " <<
+                         crashInfo.m_sPackage << ": " <<
+                         crashInfo.m_sExecutable << std::endl;
 
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */
             crash_context_t crashContext;
             crash_report_t crashReport;
-            middleWare.CreateReport(info.m_sUUID, info.m_sUID, crashContext, crashReport);
+            middleWare.CreateReport(crashInfo.m_sUUID, crashInfo.m_sUID, crashContext, crashReport);
             /* Report crash */
             middleWare.Report(crashContext, crashReport);
         }
