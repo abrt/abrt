@@ -103,6 +103,7 @@ void CMiddleWare::DebugDump2Report(const std::string& pDebugDumpDir, crash_repor
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
+    dd.LoadText(FILENAME_UUID, pCrashReport.m_sUUID);
     dd.LoadText(FILENAME_ARCHITECTURE, pCrashReport.m_sArchitecture);
     dd.LoadText(FILENAME_KERNEL, pCrashReport.m_sKernel);
     dd.LoadText(FILENAME_PACKAGE, pCrashReport.m_sPackage);
@@ -146,6 +147,20 @@ std::string CMiddleWare::GetLocalUUIDLanguage(const std::string& pLanguage,
     return language->GetLocalUUID(pDebugDumpDir);
 }
 
+std::string CMiddleWare::GetGlobalUUIDLanguage(const std::string& pLanguage,
+                                               const std::string& pDebugDumpDir)
+{
+    CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
+    return language->GetGlobalUUID(pDebugDumpDir);
+}
+
+void CMiddleWare::CreateReportLanguage(const std::string& pLanguage,
+                                       const std::string& pDebugDumpDir)
+{
+    CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
+    return language->CreateReport(pDebugDumpDir);
+}
+
 std::string CMiddleWare::GetLocalUUIDApplication(const std::string& pApplication,
                                                  const std::string& pDebugDumpDir)
 {
@@ -153,12 +168,11 @@ std::string CMiddleWare::GetLocalUUIDApplication(const std::string& pApplication
     return application->GetLocalUUID(pDebugDumpDir);
 }
 
-
-void CMiddleWare::CreateReportLanguage(const std::string& pLanguage,
-                                       const std::string& pDebugDumpDir)
+std::string CMiddleWare::GetGlobalUUIDApplication(const std::string& pApplication,
+                                                  const std::string& pDebugDumpDir)
 {
-    CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
-    return language->CreateReport(pDebugDumpDir);
+    CApplication* application = m_pPluginManager->GetApplication(pApplication);
+    return application->GetGlobalUUID(pDebugDumpDir);
 }
 
 void CMiddleWare::CreateReportApplication(const std::string& pApplication,
@@ -181,24 +195,30 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
 
     if (row.m_sUUID != pUUID)
     {
-        throw std::string("CMiddleWare::GetReport(): UUID '"+pUUID+"' is not in database.");
+        throw std::string("CMiddleWare::CreateReport(): UUID '"+pUUID+"' is not in database.");
     }
 
     std::string appLan;
+    std::string UUID;
     CDebugDump dd;
     dd.Open(row.m_sDebugDumpDir);
     if (dd.Exist(FILENAME_APPLICATION))
     {
         dd.LoadText(FILENAME_APPLICATION, appLan);
         CreateReportApplication(appLan, row.m_sDebugDumpDir);
+        UUID = GetGlobalUUIDApplication(appLan, row.m_sDebugDumpDir);
     }
     if (dd.Exist(FILENAME_LANGUAGE))
     {
         dd.LoadText(FILENAME_LANGUAGE, appLan);
         CreateReportLanguage(appLan, row.m_sDebugDumpDir);
+        UUID = GetGlobalUUIDLanguage(appLan, row.m_sDebugDumpDir);
     }
-    DebugDump2Report(row.m_sDebugDumpDir, pCrashReport);
+    dd.SaveText(FILENAME_UUID, UUID);
     dd.Close();
+
+    DebugDump2Report(row.m_sDebugDumpDir, pCrashReport);
+
     pCrashContext.m_sLanAppPlugin = appLan;
     pCrashContext.m_sUUID = pUUID;
     pCrashContext.m_sUID = pUID;
@@ -233,6 +253,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     std::string UUID;
     std::string UID;
     std::string package;
+    std::string description;
     std::string executable;
     std::string time;
 
@@ -240,7 +261,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     dd.Open(pDebugDumpDir);
 
     dd.LoadText(FILENAME_EXECUTABLE, executable);
-    package = m_RPMInfo.GetPackage(executable);
+    package = m_RPMInfo.GetPackage(executable, description);
     std::string packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
     if (packageName == "" ||
        (m_setBlackList.find(packageName) != m_setBlackList.end()))
@@ -260,6 +281,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
         }
     }
     dd.SaveText(FILENAME_PACKAGE, package);
+    dd.SaveText(FILENAME_DESCRIPTION, description);
 
     if (dd.Exist(FILENAME_APPLICATION))
     {
@@ -334,6 +356,8 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
         info.m_sExecutable = data;
         dd.LoadText(FILENAME_PACKAGE, data);
         info.m_sPackage = data;
+        dd.LoadText(FILENAME_DESCRIPTION, data);
+        info.m_sDescription = data;
         dd.Close();
 
         infos.push_back(info);

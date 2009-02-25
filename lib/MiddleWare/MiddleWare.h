@@ -50,10 +50,14 @@ class CMiddleWare
 
         std::string GetLocalUUIDLanguage(const std::string& pLanguage,
                                          const std::string& pDebugDumpDir);
+        std::string GetGlobalUUIDLanguage(const std::string& pLanguage,
+                                          const std::string& pDebugDumpDir);
         void CreateReportLanguage(const std::string& pLanguage,
                                      const std::string& pDebugDumpDir);
         std::string GetLocalUUIDApplication(const std::string& pApplication,
                                             const std::string& pDebugDumpDir);
+        std::string GetGlobalUUIDApplication(const std::string& pApplication,
+                                             const std::string& pDebugDumpDir);
         void CreateReportApplication(const std::string& pApplication,
                                      const std::string& pDebugDumpDir);
 
