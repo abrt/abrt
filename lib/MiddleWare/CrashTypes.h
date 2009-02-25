@@ -40,9 +40,17 @@ typedef struct SCrashContex
     std::string m_sLanAppPlugin;
 } crash_context_t;
 
-
+/*
+#define ALL_CRASH_REPORT_FIELDS\
+    FIELD (UUID)\
+    FIELD (Architecture)\
+    FIELD (...)\
+*/
 typedef struct SCrashReport
 {
+    //#define FIELD(X) std::string m_s##X
+    //ALL_CRASH_REPORT_FIELDS
+    //#undef FIELD
     std::string m_sUUID;
     std::string m_sArchitecture;
     std::string m_sKernel;
@@ -71,6 +79,20 @@ typedef struct SCrashReport
         mci["BinaryData2"] = m_sBinaryData2;
 
         return mci;
+    }
+    void setFromMap(map_crash_t mci)
+    {
+        m_sUUID = mci["UUID"];
+        m_sArchitecture = mci["Architecture"];
+        m_sKernel = mci["Kernel"];
+        m_sRelease = mci["Release"];
+        m_sExecutable = mci["Executable"];
+        m_sCmdLine = mci["CmdLine"];
+        m_sPackage = mci["Package"];
+        m_sTextData1 = mci["TextData1"];
+        m_sTextData2 = mci["TextData2"];
+        m_sBinaryData1 = mci["BinaryData1"];
+        m_sBinaryData2 = mci["BinaryData2"];
     }
 } crash_report_t;
 
