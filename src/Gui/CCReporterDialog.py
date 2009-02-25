@@ -13,7 +13,7 @@ class ReporterDialog():
         self.report = report
         #Set the Glade file
         # FIXME add to path
-        self.gladefile = "../share/crash-catcher/ccgui.glade"  
+        self.gladefile = "/usr/share/crash-catcher/ccgui.glade"  
         self.wTree = gtk.glade.XML(self.gladefile) 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("reporter_dialog")
@@ -58,18 +58,19 @@ class ReporterDialog():
     def on_cancel_clicked(self, button, treeview):
         #print treeview
         #self.window.destroy();
-        return -1
+        return gtk.RESPONSE_CANCEL
     
     def hydrate(self):
+        editable = ["Comment", "TextData1", "TextData2"]
         for item in self.report:
-            self.reportListStore.append([item, self.report[item], False])
-        self.reportListStore.append(["Comment","", True])
+            self.reportListStore.append([item, self.report[item], item in editable])
+        #self.reportListStore.append(["Comment","", True])
     
     def run(self):
         result = self.window.run()
-        if result == -1:
+        if result == gtk.RESPONSE_CANCEL:
             self.window.destroy()
-            return -1
+            return result
         else:
             self.window.destroy()
             return self.report

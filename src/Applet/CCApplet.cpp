@@ -90,7 +90,6 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
 {
     CApplet *applet = (CApplet *)user_data;
     //FIXME
-    char cwd[1024];
     //gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
     GtkWidget *dialog = NULL;
     dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL, 
@@ -102,17 +101,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
     {
         case GTK_RESPONSE_YES:
             //FIXME - use fork+exec and absolute paths?
-            getcwd(cwd,1024);
-            if(chdir("../bin") != -1){
-                popen("./cc-gui","r");
-                if(chdir(cwd) == -1)
-                {
-                    std::cerr << "error changing the directory" << std::endl;
-                }
-            }
-            else{
-                std::cerr << "error changing the directory" << std::endl;
-            }
+            popen("/usr/bin/cc-gui","r");
             gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
             break;
         default:

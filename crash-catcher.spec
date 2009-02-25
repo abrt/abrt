@@ -6,6 +6,7 @@ License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
 Source: crash-catcher-0.0.1.tar.gz
+Source1: crash-catcher.init
 BuildRequires: dbus-c++-devel
 BuildRequires: gtkmm24-devel
 BuildRequires: glib2-devel
@@ -91,47 +92,61 @@ make install DESTDIR=$RPM_BUILD_ROOT
 rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
 rm -rf $RPM_BUILD_ROOT/%{_libdir}/crash-catcher/lib*.la
 mkdir -p ${RPM_BUILD_ROOT}/etc/rc.d/init.d
-install -m 755 $RPM_SOURCE_DIR/crash-catcher.init ${RPM_BUILD_ROOT}/etc/rc.d/init.d/crash-catcher
+install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/etc/rc.d/init.d/crash-catcher
 mkdir -p $RPM_BUILD_ROOT/var/cache/crash-catcher
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post -p /sbin/ldconfig
+%post 
+/sbin/ldconfig
+/sbin/chkconfig --add crash-catcher
+
+%preun
+if [ "$1" = 0 ] ; then
+  service rarpd stop >/dev/null 2>&1
+  /sbin/chkconfig --del rarpd
+fi
 
 %postun -p /sbin/ldconfig
 
 %files
 %defattr(-,root,root,-)
-%{_bindir}/crash-catcher
+%{_sbindir}/crash-catcher
 %config(noreplace) %{_sysconfdir}/crash-catcher/crash-catcher.conf
 %{_libdir}/lib*.so*
-%{_sysconfdir}/dbus-1/system.d/dbus-crash-catcher.conf
+%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-crash-catcher.conf
 %config /etc/rc.d/init.d/crash-catcher
 %dir /var/cache/crash-catcher
 
 %files applet
+%defattr(-,root,root,-)
 %{_bindir}/cc-applet
 
 %files gui
+%defattr(-,root,root,-)
 %{_bindir}/cc-gui
 %{_datadir}/crash-catcher/*.py*
 %{_datadir}/crash-catcher/*.glade
 
 %files addon-ccpp
+%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/crash-catcher/plugins/CCpp.conf
 %{_libdir}/crash-catcher/libCCpp.so*
 %{_libexecdir}/hookCCpp
 
 %files plugin-sqlite3
+%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/crash-catcher/plugins/SQLite3.conf
 %{_libdir}/crash-catcher/libSQLite3.so*
 
 %files plugin-logger
+%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/crash-catcher/plugins/Logger.conf
 %{_libdir}/crash-catcher/libLogger.so*
 
 %files plugin-mailx
+%defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/crash-catcher/plugins/Mailx.conf
 %{_libdir}/crash-catcher/libMailx.so*
 

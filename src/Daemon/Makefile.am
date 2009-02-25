@@ -1,4 +1,4 @@
-bin_PROGRAMS = crash-catcher
+sbin_PROGRAMS = crash-catcher
 crash_catcher_SOURCES = CrashWatcher.cpp CrashWatcher.h Daemon.cpp DBusServerProxy.h \
                         DBusCommon.h
 crash_catcher_CPPFLAGS = -I../../lib/MiddleWare\
