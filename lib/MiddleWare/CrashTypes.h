@@ -47,6 +47,7 @@ typedef struct SCrashReport
     std::string m_sTextData2;
     std::string m_sBinaryData1;
     std::string m_sBinaryData2;
+    std::string m_sComment;
 
     const map_crash_t GetMap()
     {
@@ -63,6 +64,7 @@ typedef struct SCrashReport
         mci["TextData2"] = m_sTextData2;
         mci["BinaryData1"] = m_sBinaryData1;
         mci["BinaryData2"] = m_sBinaryData2;
+        mci["Comment"] = m_sComment;
 
         return mci;
     }
@@ -80,6 +82,7 @@ typedef struct SCrashReport
         m_sTextData2 = pMcr.find("TextData2")->second;
         m_sBinaryData1 = pMcr.find("BinaryData1")->second;
         m_sBinaryData2 = pMcr.find("BinaryData2")->second;
+        m_sComment = pMcr.find("Comment")->second;
     }
 } crash_report_t;
 
