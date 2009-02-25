@@ -221,7 +221,7 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
 
     pCrashReport.m_sMWID =  appLan + ";" + pUID + ";" + pUUID  ;
 }
-
+#include <iostream>
 void CMiddleWare::Report(const crash_report_t& pCrashReport)
 {
     std::string::size_type pos1 = 0;
@@ -229,7 +229,7 @@ void CMiddleWare::Report(const crash_report_t& pCrashReport)
     std::string lanAppPlugin = pCrashReport.m_sMWID.substr(pos1, pos2);
     pos1 = pos2 + 1;
     pos2 = pCrashReport.m_sMWID.find(";", pos1);
-    std::string UID = pCrashReport.m_sMWID.substr(pos1, pos2);
+    std::string UID = pCrashReport.m_sMWID.substr(pos1, pos2 - pos1);
     pos1 = pos2 + 1;
     std::string UUID = pCrashReport.m_sMWID.substr(pos1);;
 
