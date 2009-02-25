@@ -31,6 +31,8 @@ public:
     {
         register_method(CDBusServer_adaptor, GetCrashInfos, _GetCrashInfos_stub);
         register_method(CDBusServer_adaptor, GetCrashInfosMap, _GetCrashInfosMap_stub);
+        register_method(CDBusServer_adaptor, CreateReport, _CreateReport_stub);
+        register_method(CDBusServer_adaptor, Report, _Report_stub);
     }
 /* reveal Interface introspection when we stabilize the API */
 /*
@@ -85,7 +87,9 @@ public:
      * you will have to implement them in your ObjectAdaptor
      */
      virtual dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID) = 0;
-     virtual dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pUID) = 0;
+     virtual dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender) = 0;
+     virtual dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender) = 0;
+     virtual bool Report(dbus_map_report_info_t pReport) = 0;
 
 public:
 
@@ -116,12 +120,36 @@ private:
         return reply;
     }
     
-    DBus::Message _GetCrashInfosMap_stub(const DBus::CallMessage &call)
+    DBus::Message _CreateReport_stub(const DBus::CallMessage &call)
     {
         DBus::MessageIter ri = call.reader();
         
         std::string argin1; ri >> argin1;
+        dbus_map_report_info_t argout1 = CreateReport(argin1,call.sender());
+        DBus::ReturnMessage reply(call);
+        DBus::MessageIter wi = reply.writer();
+        wi << argout1;
+        return reply;
+    }
+    
+    DBus::Message _GetCrashInfosMap_stub(const DBus::CallMessage &call)
+    {
+        DBus::MessageIter ri = call.reader();
+        
+        //std::string argin1; ri >> argin1;
         dbus_vector_map_crash_infos_t argout1 = GetCrashInfosMap(call.sender());
+        DBus::ReturnMessage reply(call);
+        DBus::MessageIter wi = reply.writer();
+        wi << argout1;
+        return reply;
+    }
+    
+    DBus::Message _Report_stub(const DBus::CallMessage &call)
+    {
+        DBus::MessageIter ri = call.reader();
+        
+        dbus_map_report_info_t argin1; ri >> argin1;
+        bool argout1 = Report(argin1);
         DBus::ReturnMessage reply(call);
         DBus::MessageIter wi = reply.writer();
         wi << argout1;

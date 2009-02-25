@@ -21,7 +21,6 @@
 #include <iostream>
 #include <cstdio>
 
-#define daemonize 0
 CCrashWatcher *ccdaemon;
 DBus::Glib::BusDispatcher *dispatcher;
 
@@ -34,6 +33,7 @@ void terminate(int signal)
 }
 
 int main(int argc, char** argv){
+    int daemonize = 1;
     /*signal handlers */
     signal(SIGTERM, terminate);
     signal(SIGINT, terminate);
@@ -45,13 +45,12 @@ int main(int argc, char** argv){
 	DBus::Connection conn = DBus::Connection::SystemBus();
     
     try{
-    //CCrashWatcher daemon(DEBUG_DUMPS_DIR, conn);
     ccdaemon = new CCrashWatcher(DEBUG_DUMPS_DIR, conn);
-    //if (argc > 1){
-    //    if (strcmp(argv[1], "-d") == 0){
-    //        daemonize = 0;
-    //    }
-    // }
+    if (argc > 1){
+        if (strcmp(argv[1], "-d") == 0){
+            daemonize = 0;
+        }
+    }
     if(daemonize){
             try{
                 ccdaemon->Daemonize();

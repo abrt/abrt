@@ -108,6 +108,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
 CCrashWatcher::~CCrashWatcher()
 {
      //delete dispatcher, connection, etc..
+     delete m_pMW;
 }
 
 dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
@@ -121,16 +122,49 @@ dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 	return retval;
 }
 
-dbus_vector_map_crash_infos_t CCrashWatcher::GetCrashInfosMap(const std::string &pUID)
+dbus_vector_map_crash_infos_t CCrashWatcher::GetCrashInfosMap(const std::string &pDBusSender)
 {
     dbus_vector_map_crash_infos_t retval;
     vector_crash_infos_t crash_info;
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pUID.c_str());
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
     crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
     for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
         retval.push_back(it->GetMap());
     }
 	return retval;
+}
+
+dbus_map_report_info_t CCrashWatcher::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
+{
+    dbus_map_report_info_t retval;
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
+    std::cerr << pUUID << ":" << unix_uid << std::endl;
+    crash_context_t crashContext;
+    crash_report_t crashReport;
+    std::cerr << "Creating report" << std::endl;
+    m_pMW->CreateReport(pUUID,to_string(unix_uid),crashContext, crashReport);
+    retval = crashReport.GetMap();
+    return retval;
+}
+
+bool CCrashWatcher::Report(dbus_map_report_info_t pReport)
+{
+    crash_context_t crashContext;
+    crash_report_t crashReport;
+    //#define FIELD(X) crashReport.m_s##X = pReport[#X];
+    //crashReport.m_sUUID = pReport["UUID"];
+    //ALL_CRASH_REPORT_FIELDS;
+    //#undef FIELD
+    //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
+    //     std::cerr << it->second << std::endl;
+    //}
+    crashContext.m_sUUID = "1234";
+    crashContext.m_sUID = "12345";
+    crashContext.m_sLanAppPlugin = "CCpp";
+    crashReport.setFromMap(pReport);
+    std::cerr << crashReport.m_sPackage << std::endl;
+    m_pMW->Report(crashContext, crashReport);
+    return true;
 }
 
 void CCrashWatcher::Lock()
@@ -174,15 +208,11 @@ void CCrashWatcher::StartWatch()
 /* daemon loop with glib */
 void CCrashWatcher::GStartWatch()
 {
-    char *buff = new char[INOTIFY_BUFF_SIZE];
-    int len = 0;
-    int i = 0;
     char action[FILENAME_MAX];
     struct inotify_event *pevent;
     g_io_add_watch (m_nGio, G_IO_IN, handle_event_cb, this);
     //enter the event loop
     g_main_run (m_nMainloop);
-    delete[] buff;
 }
 
 

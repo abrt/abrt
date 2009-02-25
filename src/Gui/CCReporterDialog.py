@@ -4,12 +4,13 @@ import gtk
 import gtk.glade
 import sys
 from CC_gui_functions import *
-from CCDumpList import getDumpList, DumpList
+from CCReport import Report
+#from CCDumpList import getDumpList, DumpList
 
 class ReporterDialog():
     """Reporter window"""
-    def __init__(self, dump):
-        self.dump = dump
+    def __init__(self, report):
+        self.report = report
         #Set the Glade file
         # FIXME add to path
         self.gladefile = "../share/crash-catcher/ccgui.glade"  
@@ -17,7 +18,7 @@ class ReporterDialog():
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("reporter_dialog")
         
-        #init the dumps treeview
+        #init the reports treeview
         self.tvReport = self.wTree.get_widget("tvReport")
         columns = [None]*2
         columns[0] = gtk.TreeViewColumn('Item')
@@ -26,7 +27,7 @@ class ReporterDialog():
         self.reportListStore = gtk.ListStore(str, str, bool)
         # set filter
         #self.modelfilter = self.reportListStore.filter_new()
-        #self.modelfilter.set_visible_func(self.filter_dumps, None)
+        #self.modelfilter.set_visible_func(self.filter_reports, None)
         self.tvReport.set_model(self.reportListStore)
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Item', renderer, text=0)
@@ -39,6 +40,7 @@ class ReporterDialog():
         
         # connect the signals
         self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
+        self.wTree.get_widget("bCancel").connect("clicked", self.on_cancel_clicked, self.tvReport)
         
         self.hydrate()
 
@@ -49,14 +51,26 @@ class ReporterDialog():
         
     def on_apply_clicked(self, button, treeview):
         #print treeview
-        self.window.hide()
+        #self.window.destroy();
+        print self.report
+        return self.report
         
+    def on_cancel_clicked(self, button, treeview):
+        #print treeview
+        #self.window.destroy();
+        return -1
+    
     def hydrate(self):
-        for item in self.dump.__dict__:
-            self.reportListStore.append([item, self.dump.__dict__[item], False])
+        for item in self.report:
+            self.reportListStore.append([item, self.report[item], False])
         self.reportListStore.append(["Comment","", True])
     
     def run(self):
-        self.window.show()
-    
+        result = self.window.run()
+        if result == -1:
+            self.window.destroy()
+            return -1
+        else:
+            self.window.destroy()
+            return self.report
     
