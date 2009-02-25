@@ -23,7 +23,7 @@ It uses plugin system to extend its functionality.
 Summary: CrashCatcher's applet
 Group: User Interface/Desktops
 License: GPLv2+
-Requires: crashcatcher = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description applet
 Simple systray applet to notify user about new events detected by crash-catcher 
@@ -33,7 +33,7 @@ daemon
 Summary: CrashCatcher's gui
 Group: User Interface/Desktops
 License: GPLv2+
-Requires: crashcatcher = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -42,7 +42,7 @@ GTK+ wizard for convenient bug reporting.
 Summary: CrashCatcher's C/C++ addon
 Group: System Environment/Libraries
 License: GPLv2+
-Requires: crashcatcher = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and CrashCatcher's C/C++ 
@@ -52,7 +52,7 @@ language plugin.
 Summary: CrashCatcher's SQLite3 database plugin
 Group: System Environment/Libraries
 License: GPLv2+
-Requires: crashcatcher = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description plugin-sqlite3
 This package contains SQLite3 database plugin. It is used for storing the data 
@@ -62,7 +62,7 @@ required for creating a bug report.
 Summary: CrashCatcher's logger reporter plugin
 Group: System Environment/Libraries
 License: GPLv2+
-Requires: crashcatcher = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 
 %description plugin-logger
 The simple reporter plugin, which writes a report to a specified file.
@@ -71,7 +71,7 @@ The simple reporter plugin, which writes a report to a specified file.
 Summary: CrashCatcher's mailx reporter plugin
 Group: System Environment/Libraries
 License: GPLv2+
-Requires: crashcatcher = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
 Requires: mailx
 
 %description plugin-mailx
