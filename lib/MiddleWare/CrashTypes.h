@@ -66,6 +66,21 @@ typedef struct SCrashReport
 
         return mci;
     }
+    void SetFromMap(const map_crash_t& mci)
+    {
+        m_sMWID = mci["MWID"];
+        m_sUUID = mci["UUID"];
+        m_sArchitecture = mci["Architecture"];
+        m_sKernel = mci["Kernel"];
+        m_sRelease = mci["Release"];
+        m_sExecutable = mci["Executable"];
+        m_sCmdLine = mci["CmdLine"];
+        m_sPackage = mci["Package"];
+        m_sTextData1 = mci["TextData1"];
+        m_sTextData2 = mci["TextData2"];
+        m_sBinaryData1 = mci["BinaryData1"];
+        m_sBinaryData2 = mci["BinaryData2"];
+    }
 } crash_report_t;
 
 #endif /* CRASHTYPES_H_ */
