@@ -96,7 +96,7 @@ bool CRPMInfo::CheckHash(const std::string& pPackage, const std::string& pPath)
     return ret;
 }
 
-std::string CRPMInfo::GetPackage(const std::string& pFileName)
+std::string CRPMInfo::GetPackage(const std::string& pFileName, std::string& pDescription)
 {
     std::string ret = "";
     rpmts ts = rpmtsCreate();
@@ -110,6 +110,13 @@ std::string CRPMInfo::GetPackage(const std::string& pFileName)
             ret = nerv;
             free(nerv);
         }
+        rpmtd td = rpmtdNew();
+        headerGet(header, RPMTAG_SUMMARY, td, HEADERGET_DEFAULT);
+        const char* summary = rpmtdGetString(td);
+        headerGet(header, RPMTAG_DESCRIPTION, td, HEADERGET_DEFAULT);
+        const char* description = rpmtdGetString(td);
+        pDescription = summary + std::string("\n\n") + description;
+        rpmtdFree(td);
     }
 
     rpmdbFreeIterator(iter);

@@ -46,7 +46,7 @@ class CRPMInfo
 
         bool CheckFingerprint(const std::string& pPackage);
         bool CheckHash(const std::string& pPackage, const std::string&pPath);
-        std::string GetPackage(const std::string& pFileName);
+        std::string GetPackage(const std::string& pFileName, std::string& pDescription);
 };
 
 #endif /* RPMINFO_H_ */
