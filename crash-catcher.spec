@@ -108,7 +108,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_bindir}/cc-applet
 
 %files gui
-%{_bindir}/crash-catcher-gui
+%{_bindir}/cc-gui
 %{_datadir}/crash-catcher/*.py*
 %{_datadir}/crash-catcher/*.glade
 

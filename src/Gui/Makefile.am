@@ -6,7 +6,7 @@ PYTHON_FILES = CCDBusBackend.py  CCDumpList.py  CCDump.py  CC_gui_functions.py  
 
 GLADE_FILES = ccgui.glade
 
-EXTRA_DIST = $(PYTHON_FILES) $(GLADE_FILES)
+EXTRA_DIST = $(PYTHON_FILES) $(GLADE_FILES) cc-gui
 
 #ccguidir = $(pkgdatadir)
 pkgdata_PYTHON = $(PYTHON_FILES)
