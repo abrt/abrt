@@ -50,7 +50,11 @@ int main(int argc, char** argv)
     const char* pid = argv[1];
     const char* signal = argv[2];
 
-    if (strcmp(signal, "11") != 0)
+    if (strcmp(signal, "3") != 0 &&     // SIGQUIT
+        strcmp(signal, "4") != 0 &&     // SIGILL
+        strcmp(signal, "6") != 0 &&     // SIGABRT
+        strcmp(signal, "8") != 0 &&     // SIGFPE
+        strcmp(signal, "11") != 0)      // SIGSEGV
     {
         return 0;
     }
