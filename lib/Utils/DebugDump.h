@@ -34,7 +34,7 @@
 #define FILENAME_TIME               "time"
 #define FILENAME_UID                "uid"
 #define FILENAME_PACKAGE            "package"
-#define FILENAME_DESCRIPTION        "decsription"
+#define FILENAME_DESCRIPTION        "description"
 #define FILENAME_LANGUAGE           "language"
 #define FILENAME_APPLICATION        "application"
 #define FILENAME_TEXTDATA1          "text_data1"
