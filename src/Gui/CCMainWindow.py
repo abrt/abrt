@@ -130,6 +130,7 @@ class MainWindow():
             report = self.ccdaemon.getReport(dump.getUUID())
         except Exception,e:
             # FIXME #3	dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
+            # do this async and wait for yum to end with debuginfoinstal
             gui_error_message("Operation taking too long - \nPlease try again after debuginfo is installed")
             return
             
@@ -138,7 +139,7 @@ class MainWindow():
             return
         report_dialog = ReporterDialog(report)
         result = report_dialog.run()
-        if result == -1:
+        if result == gtk.RESPONSE_CANCEL:
             pass
         else:
             self.ccdaemon.Report(result)

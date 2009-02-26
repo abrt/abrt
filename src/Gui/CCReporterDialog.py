@@ -39,8 +39,8 @@ class ReporterDialog():
         renderer.connect('edited',self.column_edited,self.reportListStore)
         
         # connect the signals
-        self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
-        self.wTree.get_widget("bCancel").connect("clicked", self.on_cancel_clicked, self.tvReport)
+        #self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
+        #self.wTree.get_widget("bCancel").connect("clicked", self.on_cancel_clicked, self.tvReport)
         
         self.hydrate()
 
@@ -50,15 +50,10 @@ class ReporterDialog():
         return
         
     def on_apply_clicked(self, button, treeview):
-        #print treeview
-        #self.window.destroy();
-        print self.report
-        return self.report
+        pass
         
     def on_cancel_clicked(self, button, treeview):
-        #print treeview
-        #self.window.destroy();
-        return gtk.RESPONSE_CANCEL
+        pass
     
     def hydrate(self):
         editable = ["Comment", "TextData1", "TextData2"]

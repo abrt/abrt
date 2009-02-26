@@ -8,7 +8,7 @@ class DumpList(list):
     
     def load(self):
         if self.dm:
-            print "loading DumpList"
+            #print "loading DumpList"
             try:
                 rows = self.dm.getDumps()
                 #print rows

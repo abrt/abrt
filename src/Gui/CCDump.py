@@ -9,6 +9,7 @@ class Dump():
         self.Executable = None
         self.Package = None
         self.Time = None
+        self.Description = None
     
     def getUUID(self):
         return self.UUID
