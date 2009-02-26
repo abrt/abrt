@@ -126,7 +126,13 @@ class MainWindow():
             return
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
         # show the report window with selected dump
-        report = self.ccdaemon.getReport(dump.getUUID())
+        try:
+            report = self.ccdaemon.getReport(dump.getUUID())
+        except Exception,e:
+            # FIXME #3	dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
+            gui_error_message("Operation taking too long - \nPlease try again after debuginfo is installed")
+            return
+            
         if not report:
             gui_error_message("Unable to get report! Debuginfo missing?")
             return
