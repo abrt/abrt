@@ -17,6 +17,7 @@ class ReporterDialog():
         self.wTree = gtk.glade.XML(self.gladefile) 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("reporter_dialog")
+        self.window.set_default_size(640, 480)
         
         #init the reports treeview
         self.tvReport = self.wTree.get_widget("tvReport")
