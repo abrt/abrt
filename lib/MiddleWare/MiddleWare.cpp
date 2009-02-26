@@ -183,10 +183,13 @@ void CMiddleWare::CreateReportApplication(const std::string& pApplication,
     return application->CreateReport(pDebugDumpDir);
 }
 
+#include <iostream>
+#include <stdio.h>
 void CMiddleWare::CreateReport(const std::string& pUUID,
                                const std::string& pUID,
                                crash_report_t& pCrashReport)
 {
+    std::cout << "CMiddleWare::CreateReport() s" << std::endl;
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
     database->Connect();
@@ -216,14 +219,27 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
     }
     dd.SaveText(FILENAME_UUID, UUID);
     dd.Close();
+    fflush(stdout);
+    fflush(stderr);
+    std::cerr << "CMiddleWare::CreateReport() e1" << std::endl;
+    fflush(stdout);
+    fflush(stderr);
 
     DebugDump2Report(row.m_sDebugDumpDir, pCrashReport);
+    fflush(stdout);
+    fflush(stderr);
 
+    std::cerr << "CMiddleWare::CreateReport() e2" << std::endl;
     pCrashReport.m_sMWID =  appLan + ";" + pUID + ";" + pUUID  ;
+    fflush(stdout);
+    fflush(stderr);
+
+    std::cerr << "CMiddleWare::CreateReport() e3" << std::endl;
 }
-#include <iostream>
+
 void CMiddleWare::Report(const crash_report_t& pCrashReport)
 {
+    std::cout << "CMiddleWare::Report() s" << std::endl;
     std::string::size_type pos1 = 0;
     std::string::size_type pos2 = pCrashReport.m_sMWID.find(";", pos1);
     std::string lanAppPlugin = pCrashReport.m_sMWID.substr(pos1, pos2);
@@ -249,6 +265,7 @@ void CMiddleWare::Report(const crash_report_t& pCrashReport)
             reporter->Report(pCrashReport);
         }
     }
+    std::cout << "CMiddleWare::Report() e" << std::endl;
 }
 
 void CMiddleWare::DeleteDebugDump(const std::string& pUUID,

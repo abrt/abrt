@@ -88,7 +88,7 @@ void CLanguageCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
         dd.Close();
         fTmp << "file " << executable << std::endl;
         fTmp << "core " << pDebugDumpDir << "/" << FILENAME_BINARYDATA1 << std::endl;
-        fTmp << "bt full" << std::endl;
+        fTmp << "bt" << std::endl;
         fTmp << "q" << std::endl;
         fTmp.close();
     }
@@ -146,22 +146,26 @@ void CLanguageCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
 void CLanguageCCpp::RunCommand(const std::string& pCommand, std::string& pOutput)
 {
     char line[1024];
-
+    std::string output;
     FILE *fp = popen(pCommand.c_str(), "r");
     if (fp == NULL)
     {
         throw "CLanguageCCpp::GetBacktrace(): cannot execute " + pCommand ;
     }
     pOutput = "";
-    while (fgets(line, sizeof(line), fp))
+    while (fgets(line, 1024, fp) != NULL)
     {
-        pOutput += line;
+        output += line;
     }
+
+    pOutput = output;
+
     pclose(fp);
 }
 
 std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
+
 	std::stringstream ss;
 	char* core;
 	unsigned int size;
@@ -174,6 +178,7 @@ std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 	dd.Close();
 	// TODO: compute local UUID, remove this hack
 	ss << executable << "_" << size;
+
 	return ss.str();
 }
 std::string CLanguageCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
@@ -203,7 +208,6 @@ void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
 
     InstallDebugInfos(package);
     GetBacktrace(pDebugDumpDir, backtrace);
-
     dd.SaveText(FILENAME_TEXTDATA1, backtrace);
     if (m_bMemoryMap)
     {
