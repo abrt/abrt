@@ -1,7 +1,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: crash-catcher
 Version: 0.0.1
-Release: 3%{?dist}
+Release: 5%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -152,6 +152,14 @@ fi
 %{_libdir}/crash-catcher/libMailx.so*
 
 %changelog
+* Thu Feb 26 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-5
+- fixed catching debuinfo install exceptions
+- some gui fixes
+- added check for GPGP public key
+
+* Thu Feb 26 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-4
+- changed from full bt to simple bt
+
 * Thu Feb 26 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-3
 - spec file cleanups
 - changed default paths to crash DB and log DB

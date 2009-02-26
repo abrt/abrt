@@ -127,6 +127,9 @@ class MainWindow():
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
         # show the report window with selected dump
         report = self.ccdaemon.getReport(dump.getUUID())
+        if not report:
+            gui_error_message("Unable to get report! Debuginfo missing?")
+            return
         report_dialog = ReporterDialog(report)
         result = report_dialog.run()
         if result == -1:
