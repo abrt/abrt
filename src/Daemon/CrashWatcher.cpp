@@ -141,11 +141,18 @@ dbus_map_report_info_t CCrashWatcher::CreateReport(const std::string &pUUID,cons
 {
     dbus_map_report_info_t retval;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
-    std::cerr << pUUID << ":" << unix_uid << std::endl;
+    //std::cerr << pUUID << ":" << unix_uid << std::endl;
     crash_report_t crashReport;
     std::cerr << "Creating report" << std::endl;
-    m_pMW->CreateReport(pUUID,to_string(unix_uid), crashReport);
-    retval = crashReport.GetMap();
+    try
+    {
+        m_pMW->CreateReport(pUUID,to_string(unix_uid), crashReport);
+        retval = crashReport.GetMap();
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+    }
     return retval;
 }
 
@@ -161,7 +168,14 @@ bool CCrashWatcher::Report(dbus_map_report_info_t pReport)
     //}
     crashReport.SetFromMap(pReport);
     std::cerr << crashReport.m_sPackage << std::endl;
-    m_pMW->Report(crashReport);
+    try
+    {
+        m_pMW->Report(crashReport);
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+    }
     return true;
 }
 
