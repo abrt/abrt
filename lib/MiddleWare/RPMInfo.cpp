@@ -20,7 +20,7 @@ void CRPMInfo::LoadOpenGPGPublicKey(const std::string& pFileName)
     if (pgpReadPkts(pFileName.c_str(), &pkt, &pklen) != PGPARMOR_PUBKEY)
     {
         free(pkt);
-        std::cerr << "CRPMInfo::LoadOpenGPGPublicKey(): Can not load publick key " + pFileName << std::endl;
+        std::cerr << "CRPMInfo::LoadOpenGPGPublicKey(): Can not load public key " + pFileName << std::endl;
         return;
     }
     if (pgpPubkeyFingerprint(pkt, pklen, keyID) == 0)

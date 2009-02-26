@@ -34,6 +34,7 @@ class CMailx : public CReporter
         std::string m_sEmailTo;
         std::string m_sParameters;
         std::string m_sAttachments;
+        bool m_bSendBinaryData;
 
         void SendEmail(const std::string& pText);
 

@@ -31,7 +31,8 @@ CMailx::CMailx() :
     m_sEmailFrom("user@localhost"),
     m_sEmailTo("root@localhost"),
     m_sParameters(""),
-    m_sAttachments("")
+    m_sAttachments(""),
+    m_bSendBinaryData(false)
 {}
 
 
@@ -102,13 +103,16 @@ void CMailx::Report(const crash_report_t& pReport)
     ss << "==============" << std::endl;
     ss << "See the attachment[s]" << std::endl;
 
-    if (pReport.m_sBinaryData1 != "")
+    if (m_bSendBinaryData)
     {
-        m_sAttachments = " -a " + pReport.m_sBinaryData1;
-    }
-    if (pReport.m_sBinaryData2 != "")
-    {
-        m_sAttachments = " -a " + pReport.m_sBinaryData2;
+        if (pReport.m_sBinaryData1 != "")
+        {
+            m_sAttachments = " -a " + pReport.m_sBinaryData1;
+        }
+        if (pReport.m_sBinaryData2 != "")
+        {
+            m_sAttachments = " -a " + pReport.m_sBinaryData2;
+        }
     }
 
     SendEmail(ss.str());
@@ -127,5 +131,9 @@ void CMailx::SetSettings(const map_settings_t& pSettings)
     if (pSettings.find("Parameters")!= pSettings.end())
     {
         m_sParameters = pSettings.find("Parameters")->second;
+    }
+    if (pSettings.find("SendBinaryData")!= pSettings.end())
+    {
+        m_bSendBinaryData = pSettings.find("SendBinaryData")->second == "yes";
     }
 }
