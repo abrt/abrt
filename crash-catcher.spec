@@ -1,7 +1,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: crash-catcher
 Version: 0.0.1
-Release: 5%{?dist}
+Release: 7%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -152,6 +152,16 @@ fi
 %{_libdir}/crash-catcher/libMailx.so*
 
 %changelog
+* Thu Feb 26 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-7
+- Fixed cancel button behaviour in reporter
+- disabled core file sending
+- removed some debug messages
+
+* Thu Feb 26 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-6
+- fixed DB path
+- added new signals to handler
+- gui should survive the dbus timeout
+
 * Thu Feb 26 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-5
 - fixed catching debuinfo install exceptions
 - some gui fixes
