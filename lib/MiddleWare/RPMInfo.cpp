@@ -17,7 +17,12 @@ void CRPMInfo::LoadOpenGPGPublicKey(const std::string& pFileName)
     uint8_t* pkt = NULL;
     size_t pklen;
     pgpKeyID_t keyID;
-    pgpReadPkts(pFileName.c_str(), &pkt, &pklen);
+    if (pgpReadPkts(pFileName.c_str(), &pkt, &pklen) != PGPARMOR_PUBKEY)
+    {
+        free(pkt);
+        std::cerr << "CRPMInfo::LoadOpenGPGPublicKey(): Can not load publick key " + pFileName << std::endl;
+        return;
+    }
     if (pgpPubkeyFingerprint(pkt, pklen, keyID) == 0)
     {
         char* fedoraFingerprint = pgpHexStr(keyID, sizeof(keyID));
@@ -26,10 +31,7 @@ void CRPMInfo::LoadOpenGPGPublicKey(const std::string& pFileName)
             m_setFingerprints.insert(fedoraFingerprint);
         }
     }
-    if (pkt)
-    {
-        free(pkt);
-    }
+    free(pkt);
 }
 
 bool CRPMInfo::CheckFingerprint(const std::string& pPackage)
