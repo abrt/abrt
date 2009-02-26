@@ -1,7 +1,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: crash-catcher
 Version: 0.0.1
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -43,6 +43,7 @@ GTK+ wizard for convenient bug reporting.
 Summary: CrashCatcher's C/C++ addon
 Group: System Environment/Libraries
 License: GPLv2+
+Requires: gdb
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
@@ -82,7 +83,6 @@ The simple reporter plugin, which sends a report via mailx to a specified email.
 %setup -q
 
 %build
-autoreconf --install --force
 %configure
 make
 
@@ -105,8 +105,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %preun
 if [ "$1" = 0 ] ; then
-  service rarpd stop >/dev/null 2>&1
-  /sbin/chkconfig --del rarpd
+  service crash-catcher stop >/dev/null 2>&1
+  /sbin/chkconfig --del crash-catcher
 fi
 
 %postun -p /sbin/ldconfig
@@ -152,6 +152,11 @@ fi
 %{_libdir}/crash-catcher/libMailx.so*
 
 %changelog
+* Thu Feb 26 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-3
+- spec file cleanups
+- changed default paths to crash DB and log DB
+- fixed some memory leaks
+
 * Tue Feb 24 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-2
 - spec cleanup
 - added new subpackage gui

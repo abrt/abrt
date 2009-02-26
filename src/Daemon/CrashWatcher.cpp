@@ -41,7 +41,8 @@ to_string( T x )
 
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
     GIOError err;
-    char buf[INOTIFY_BUFF_SIZE];
+    //char *buf = malloc(INOTIFY_BUFF_SIZE;
+    char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
     int i = 0;
     err = g_io_channel_read (gio, buf, INOTIFY_BUFF_SIZE, &len);
@@ -81,6 +82,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         }
 #endif /*DEBUG*/
     }
+    delete[] buf;
     return TRUE;
 }
 
