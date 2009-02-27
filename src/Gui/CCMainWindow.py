@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 import sys
 import pygtk
 pygtk.require("2.0")
@@ -14,7 +12,6 @@ from CCReport import Report
 
 def cb(self, *args):
     pass
-
 class MainWindow():
     def __init__(self):
         try:
@@ -146,8 +143,7 @@ class MainWindow():
     
     def on_bQuit_clicked(self, button):
         gtk.main_quit()
-    
-
+        
 if __name__ == "__main__":
     cc = MainWindow()
     cc.hydrate()

@@ -1,7 +1,7 @@
 sbin_PROGRAMS = crash-catcher
 crash_catcher_SOURCES = CrashWatcher.cpp CrashWatcher.h Daemon.cpp DBusServerProxy.h \
                         DBusCommon.h
-crash_catcher_CPPFLAGS = -I../../lib/MiddleWare\
+crash_catcher_CPPFLAGS = -Wall -Werror -I../../lib/MiddleWare\
                         -I../../lib/DBus \
                         -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(DBUS_GLIB_CFLAGS) $(DBUSCPP_CFLAGS) \
                         -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \

@@ -7,19 +7,19 @@ dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf
 
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h
-libCCpp_la_LDFLAGS = -version-info 0:1:0
+libCCpp_la_LDFLAGS = -avoid-version
 libCCpp_la_CPPFLAGS = -I$(srcdir)/../MiddleWare  -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\"
 
 # Mailx
 libMailx_la_SOURCES = Mailx.cpp Mailx.h
-libMailx_la_LDFLAGS = -version-info 0:1:0
+libMailx_la_LDFLAGS = -avoid-version
 
 # SQLite3
 libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
-libSQLite3_la_LDFLAGS = -version-info 0:1:0
+libSQLite3_la_LDFLAGS = -avoid-version
 libSQLite3_la_LIBADD = $(SQLITE3_LIBS)
 libSQLite3_la_CPPFLAGS = -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(SQLITE3_CFLAGS)
 
 # Logger
 libLogger_la_SOURCES = Logger.cpp Logger.h
-libLogger_la_LDFLAGS = -version-info 0:1:0
+libLogger_la_LDFLAGS = -avoid-version

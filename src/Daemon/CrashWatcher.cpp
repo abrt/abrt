@@ -44,7 +44,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     //char *buf = malloc(INOTIFY_BUFF_SIZE;
     char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
-    int i = 0;
+    gsize i = 0;
     err = g_io_channel_read (gio, buf, INOTIFY_BUFF_SIZE, &len);
     if (err != G_IO_ERROR_NONE) {
             g_warning ("Error reading inotify fd: %d\n", err);
@@ -52,7 +52,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     }
     /* reconstruct each event and send message to the dbus */
     while (i < len) {
-        const char *name;
+        const char *name = NULL;
         struct inotify_event *event;
 
         event = (struct inotify_event *) &buf[i];
@@ -220,8 +220,6 @@ void CCrashWatcher::StartWatch()
 /* daemon loop with glib */
 void CCrashWatcher::GStartWatch()
 {
-    char action[FILENAME_MAX];
-    struct inotify_event *pevent;
     g_io_add_watch (m_nGio, G_IO_IN, handle_event_cb, this);
     //enter the event loop
     g_main_run (m_nMainloop);

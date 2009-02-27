@@ -1,6 +1,6 @@
 import pygtk
 pygtk.require("2.0")
-import gtk
+import gtk #, pango
 import gtk.glade
 import sys
 from CC_gui_functions import *
@@ -35,6 +35,8 @@ class ReporterDialog():
         self.tvReport.append_column(column)
         
         renderer = gtk.CellRendererText()
+        #renderer.props.wrap_mode = pango.WRAP_WORD
+        #renderer.props.wrap_width = 600
         column = gtk.TreeViewColumn('Value', renderer, text=1, editable=2)
         self.tvReport.append_column(column)
         renderer.connect('edited',self.column_edited,self.reportListStore)
@@ -43,8 +45,15 @@ class ReporterDialog():
         #self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
         #self.wTree.get_widget("bCancel").connect("clicked", self.on_cancel_clicked, self.tvReport)
         
+        self.tvReport.connect_after("size-allocate", self.on_window_resize)
+        
         self.hydrate()
-
+    
+    def on_window_resize(self, treeview, allocation):
+        # multine support
+        pass
+        #print allocation
+    
     def column_edited(self, cell, path, new_text, model):
         # 1 means the second cell
         model[path][1] = new_text
