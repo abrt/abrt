@@ -28,6 +28,7 @@
 #include <unistd.h>
 #include <time.h>
 #include <syslog.h>
+#include <string>
 
 #define CORESTEP (1024)
 
@@ -61,48 +62,49 @@ int main(int argc, char** argv)
 
     try
     {
-        char path[PATH_MAX];
+        FILE* fp;
         CDebugDump dd;
-        snprintf(path, sizeof(path), "%s/ccpp-%ld-%s", DEBUG_DUMPS_DIR, time(NULL), pid);
+        int byte;
+        char dd_path[PATH_MAX] = DEBUG_DUMPS_DIR;
+        char cd_path[PATH_MAX];
 
-        dd.Create(path);
+        snprintf(dd_path, sizeof(dd_path), "%s/ccpp-%ld-%s",
+                                            DEBUG_DUMPS_DIR, time(NULL), pid);
+        snprintf(cd_path, sizeof(cd_path), "%s/%s",
+                                           dd_path, FILENAME_BINARYDATA1);
+
+        dd.Create(dd_path);
         dd.SaveProc(pid);
         dd.SaveText(FILENAME_LANGUAGE, "CCpp");
-
-        int size = CORESTEP*sizeof(char);
-        int ii = 0;
-        int data = 0;
-        char* core = NULL;
-        if ((core = (char*)malloc(size)) == NULL)
+        if ((fp = fopen(cd_path, "w")) == NULL)
         {
-            fprintf(stderr, "%s: not enough memory.\n", program_name);
-            perror("");
-            return -3;
+            fprintf(stderr, "%s: Can not open the file %s.\n",
+                            program_name, cd_path);
+            dd.Delete();
+            dd.Close();
+            return -2;
         }
-        while ((data = getc(stdin)) != EOF)
+        // TODO: rewrite this
+        while ((byte = getc(stdin)) != EOF)
         {
-            if (ii >= size)
+            if (putc(byte, fp) == EOF)
             {
-                size *= CORESTEP*sizeof(char);
-                if ((core = (char*)realloc(core, size)) == NULL)
-                {
-                    fprintf(stderr, "%s: not enough memory.\n", program_name);
-                    perror("");
-                    return -3;
-                }
+                fprintf(stderr, "%s: Can not write to the file %s.\n",
+                                program_name, cd_path);
+                fclose(fp);
+                dd.Delete();
+                dd.Close();
+                return -3;
             }
-            core[ii] = data;
-            ii++;
         }
-        dd.SaveBinary(FILENAME_BINARYDATA1, core, ii);
+        fclose(fp);
         dd.Close();
-        free(core);
         write_log(pid);
     }
     catch (std::string sError)
     {
         fprintf(stderr, "%s: %s\n", program_name, sError.c_str());
-        return -2;
+        return -4;
     }
     return 0;
 }

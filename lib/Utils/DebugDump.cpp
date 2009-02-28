@@ -108,11 +108,13 @@ void CDebugDump::Lock()
     pid_t nPID = getpid();
     std::stringstream ss;
     ss << nPID;
+    std::cerr << "CDebugDump::Lock(): waiting...";
     while (!GetAndSetLock(lockPath, ss.str()))
     {
-        std::cerr << "CDebugDump::Lock(): waiting..." << std::endl;
-        usleep(100);
+        std::cerr << ".";
+        usleep(5000);
     }
+    std::cerr << "done." << std::endl;
 }
 
 void CDebugDump::UnLock()
