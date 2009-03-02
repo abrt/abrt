@@ -172,7 +172,12 @@ void CSQLite3::Insert(const std::string& pUUID,
 
 void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
 {
-    if (Exist(pUUID, pUID))
+    if (pUID == "0")
+    {
+           Exec("DELETE FROM "TABLE_NAME" "
+                "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+    }
+    else if (Exist(pUUID, pUID))
     {
             Exec("DELETE FROM "TABLE_NAME" "
                  "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
@@ -180,7 +185,7 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
     }
     else
     {
-        throw std::string("CSQLite3::SetReported(): UUID is not found in DB.");
+        throw std::string("CSQLite3::Delete(): UUID is not found in DB.");
     }
 }
 
@@ -219,10 +224,19 @@ const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::
 {
     vector_database_rows_t table;
 
-    GetTable("SELECT * FROM "TABLE_NAME" "
-             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
-             "AND "DATABASE_COLUMN_UID" = '"+pUID+"';",
-             table);
+    if (pUID == "0")
+    {
+        GetTable("SELECT * FROM "TABLE_NAME" "
+                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';",
+                 table);
+    }
+    else
+    {
+        GetTable("SELECT * FROM "TABLE_NAME" "
+                "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+                "AND "DATABASE_COLUMN_UID" = '"+pUID+"';",
+                table);
+    }
 
     if (table.size() == 0)
     {
