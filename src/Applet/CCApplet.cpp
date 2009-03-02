@@ -62,10 +62,11 @@ void CApplet::SetIconTooltip(const char *format, ...)
 {
     va_list args;
     // change to smth sane like MAX_TOOLTIP length or rewrite this whole sh*t
-    size_t n,size = 30;
+    int n;
+    size_t size = 30;
     char *buf = new char[size];
     va_start (args, format);
-    while((n = vsnprintf (buf, size, format, args)) > size)
+    while((n = vsnprintf (buf, size, format, args)) > (int)size)
     {
         // string was larger than our buffer
         // alloc larger buffer
@@ -89,19 +90,20 @@ void CApplet::SetIconTooltip(const char *format, ...)
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
 {
     CApplet *applet = (CApplet *)user_data;
+    FILE *gui = NULL;
     //FIXME
     //gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
     GtkWidget *dialog = NULL;
     dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL, 
                                           GTK_MESSAGE_QUESTION,
                                           GTK_BUTTONS_YES_NO,
-                                          "Do you want to file a report now?");
+                                          "CC has detected a crash.\nDo you want to open the crash analyzer and create a report?");
     gint result = gtk_dialog_run(GTK_DIALOG(dialog));
     switch (result)
     {
         case GTK_RESPONSE_YES:
             //FIXME - use fork+exec and absolute paths?
-            popen("/usr/bin/cc-gui","r");
+            gui = popen("/usr/bin/cc-gui","r");
             gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
             break;
         default:
@@ -134,11 +136,13 @@ int CApplet::AddEvent(int pUUID, const std::string& pProgname)
 {
     m_mapEvents[pUUID] = "pProgname";
     SetIconTooltip("Pending events: %i",m_mapEvents.size());
+    return 0;
 }
 
 int CApplet::RemoveEvent(int pUUID)
 {
      m_mapEvents.erase(pUUID);
+     return 0;
 }
 void CApplet::BlinkIcon(bool pBlink)
 {
