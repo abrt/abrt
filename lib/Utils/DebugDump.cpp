@@ -92,11 +92,19 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
     else
     {
         std::string line;
+        std::stringstream ss;
         getline(fIn, line);
         if (line == pPID)
         {
             m_bUnlock = false;
             return true;
+        }
+        ss << "/proc/" << line << "/";
+        if (!ExistFileDir(ss.str()))
+        {
+            remove(pLockFile.c_str());
+            Delete();
+            throw std::string("CDebugDump::GetAndSetLock(): dead lock found");
         }
         return false;
     }
