@@ -26,13 +26,17 @@ class DBusManager(gobject.GObject):
             # new crash notify
             self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
             # BT extracting complete
-            self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
+            #self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception("Proxy object doesn't exist!")
 
     # disconnect callback
     def disconnected(*args):
         print "disconnect"
+    
+    def error_handler(self,*args):
+        for arg in args:
+            print "error %s" % arg
     
     def crash_cb(self,*args):
         #FIXME "got another crash, gui should reload!"
@@ -60,7 +64,9 @@ class DBusManager(gobject.GObject):
 
     def getReport(self, UUID):
         try:
-            return self.cc.CreateReport(UUID)
+            #return self.cc.CreateReport(UUID)
+            # let's try it async
+            self.cc.CreateReport(UUID, reply_handler=self.analyze_complete_cb, error_handler=self.error_handler)
         except dbus.exceptions.DBusException, e:
             raise Exception(e.message)
     

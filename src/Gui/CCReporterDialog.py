@@ -75,7 +75,7 @@ class ReporterDialog():
         result = self.window.run()
         if result == gtk.RESPONSE_CANCEL:
             self.window.destroy()
-            return result
+            return None
         else:
             self.window.destroy()
             return self.report

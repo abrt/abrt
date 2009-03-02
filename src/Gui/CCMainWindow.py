@@ -9,10 +9,13 @@ from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
 from CCReport import Report
+from exception import installExceptionHandler, handleMyException
 try:
     import rpm
 except:
     rpm = None
+
+installExceptionHandler("cc-gui", "0.0.1")
 
 class MainWindow():
     def __init__(self):
@@ -80,9 +83,15 @@ class MainWindow():
     def hydrate(self):
         self.dumpsListStore.clear()
         self.rows = self.ccdaemon.getDumps()
-        dumplist = getDumpList(self.ccdaemon, refresh=True)
+        try:
+            dumplist = getDumpList(self.ccdaemon, refresh=True)
+        except Exception, e:
+            gui_error_message("Error while loading the dumplist, please check if crash-catcher daemon is running\n %s" % e.message)
         for entry in dumplist:
-            icon = get_icon_for_package(self.theme,entry.getPackageName())
+            try:
+                icon = get_icon_for_package(self.theme,entry.getPackageName())
+            except:
+                icon = None
             self.dumpsListStore.append([icon, entry.getPackage(),entry.getExecutable(), entry.getTime("%Y.%m.%d %H:%M:%S"),entry.getCount(), entry])
             
     def filter_dumps(self, model, miter, data):
@@ -128,12 +137,20 @@ class MainWindow():
             pass
         #print "got another crash, refresh gui?"
     
-    def on_analyze_complete_cb(self, daemon, UUID):
+    def on_analyze_complete_cb(self, daemon, report):
         dumplist = getDumpList(self.ccdaemon)
-        entry = dumplist.ddict[UUID]
-        print "GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID)
+        #entry = dumplist.ddict[UUID]
+        # tady asi nedostanem UUID, ale vysledek nasi volane metody
+        #print report
+        #print "GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID)
         print "We should refresh the UI ..."
-        
+        if not report:
+            gui_error_message("Unable to get report! Debuginfo missing?")
+            return
+        report_dialog = ReporterDialog(report)
+        result = report_dialog.run()
+        if result:
+            self.ccdaemon.Report(result)
         #ret = gui_question_dialog("GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID),self.window)
         #if ret == gtk.RESPONSE_YES:
         #    self.hydrate()
@@ -156,13 +173,13 @@ class MainWindow():
             # do this async and wait for yum to end with debuginfoinstal
             gui_error_message("Error getting the report: %s" % e.message)
             return
-            
+        return
         if not report:
             gui_error_message("Unable to get report! Debuginfo missing?")
             return
         report_dialog = ReporterDialog(report)
         result = report_dialog.run()
-        if result == gtk.RESPONSE_APPLY:
+        if result:
             self.ccdaemon.Report(result)
 
 
