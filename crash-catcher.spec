@@ -1,7 +1,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: crash-catcher
 Version: 0.0.1
-Release: 9%{?dist}
+Release: 11%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -107,6 +107,9 @@ mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/crash-catcher
 mkdir -p $RPM_BUILD_ROOT/var/cache/crash-catcher
 
+desktop-file-install --vendor fedora \
+        --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
+        src/Gui/crash-catcher.desktop
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -133,9 +136,11 @@ fi
 %dir /var/cache/crash-catcher
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
+%{_libdir}/%{name}
 
 %files libs
 %defattr(-,root,root,-)
+%{_libdir}/%{name}
 %{_libdir}/lib*.so.*
 
 %files devel
@@ -150,6 +155,7 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/cc-gui
 %{_datadir}/%{name}
+%{_datadir}/applications/fedora-crash-catcher.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)
@@ -173,6 +179,21 @@ fi
 %{_libdir}/crash-catcher/libMailx.so*
 
 %changelog
+* Mon Mar  2 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-11
+- more spec file fixes according to review
+- async dbus method calls, added exception handler
+- avoid deadlocks (zprikryl)
+- root is god (zprikryl)
+- create bt only once (zprikryl)
+
+* Sat Feb 28 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-10
+- New gui
+- Added new method DeleteDebugDump to daemon
+- Removed gcc warnings from applet
+- Rewritten CCpp hook and removed dealock in DebugDumps lib (zprikryl)
+- fixed few gcc warnings
+- DBusBackend improvements
+
 * Fri Feb 27 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-9
 - fixed few gcc warnings
 - added scrolled window for long reports
