@@ -148,6 +148,8 @@ dbus_map_report_info_t CCrashWatcher::CreateReport(const std::string &pUUID,cons
     {
         m_pMW->CreateReport(pUUID,to_string(unix_uid), crashReport);
         retval = crashReport.GetMap();
+        //send out the message about completed analyze
+        AnalyzeComplete(pUUID);
     }
     catch(std::string err)
     {
@@ -167,7 +169,6 @@ bool CCrashWatcher::Report(dbus_map_report_info_t pReport)
     //     std::cerr << it->second << std::endl;
     //}
     crashReport.SetFromMap(pReport);
-    std::cerr << crashReport.m_sPackage << std::endl;
     try
     {
         m_pMW->Report(crashReport);
@@ -175,10 +176,26 @@ bool CCrashWatcher::Report(dbus_map_report_info_t pReport)
     catch(std::string err)
     {
         std::cerr << err << std::endl;
+        return false;
     }
     return true;
 }
 
+bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender)
+{
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
+    try
+    {
+        //std::cerr << "DeleteDebugDump(" << pUUID << "," << unix_uid << ")" << std::endl;
+        m_pMW->DeleteDebugDump(pUUID,to_string(unix_uid));
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+        return false;
+    }
+    return true;
+}
 void CCrashWatcher::Lock()
 {
     int lfp = open("crashcatcher.lock",O_RDWR|O_CREAT,0640);

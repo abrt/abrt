@@ -33,6 +33,7 @@ public:
         register_method(CDBusServer_adaptor, GetCrashInfosMap, _GetCrashInfosMap_stub);
         register_method(CDBusServer_adaptor, CreateReport, _CreateReport_stub);
         register_method(CDBusServer_adaptor, Report, _Report_stub);
+        register_method(CDBusServer_adaptor, DeleteDebugDump, _DeleteDebugDump_stub);
     }
 /* reveal Interface introspection when we stabilize the API */
 /*
@@ -90,14 +91,24 @@ public:
      virtual dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender) = 0;
      virtual dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender) = 0;
      virtual bool Report(dbus_map_report_info_t pReport) = 0;
+     virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
 
 public:
 
     /* signal emitters for this interface
      */
+    /* Notify the clients (UI) about a new crash */
     void Crash(const std::string& arg1)
     {
         ::DBus::SignalMessage sig("Crash");
+        ::DBus::MessageIter wi = sig.writer();
+        wi << arg1;
+        emit_signal(sig);
+    }
+    /* Notify the clients that creating a report has finished */
+    void AnalyzeComplete(const std::string& arg1)
+    {
+        ::DBus::SignalMessage sig("AnalyzeComplete");
         ::DBus::MessageIter wi = sig.writer();
         wi << arg1;
         emit_signal(sig);
@@ -150,6 +161,18 @@ private:
         
         dbus_map_report_info_t argin1; ri >> argin1;
         bool argout1 = Report(argin1);
+        DBus::ReturnMessage reply(call);
+        DBus::MessageIter wi = reply.writer();
+        wi << argout1;
+        return reply;
+    }
+    
+    DBus::Message _DeleteDebugDump_stub(const DBus::CallMessage &call)
+    {
+        DBus::MessageIter ri = call.reader();
+        
+        std::string argin1; ri >> argin1;
+        bool argout1 = DeleteDebugDump(argin1,call.sender());
         DBus::ReturnMessage reply(call);
         DBus::MessageIter wi = reply.writer();
         wi << argout1;

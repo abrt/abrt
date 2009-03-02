@@ -63,6 +63,7 @@ class CCrashWatcher
         dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender);
         dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender);
         bool Report(dbus_map_report_info_t pReport);
+        bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender);
         
 };
 
