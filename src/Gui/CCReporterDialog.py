@@ -13,7 +13,7 @@ class ReporterDialog():
         self.report = report
         #Set the Glade file
         # FIXME add to path
-        self.gladefile = "/usr/share/crash-catcher/ccgui.glade"  
+        self.gladefile = "/usr/share/crash-catcher/report.glade"  
         self.wTree = gtk.glade.XML(self.gladefile) 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("reporter_dialog")

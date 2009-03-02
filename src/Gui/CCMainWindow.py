@@ -9,11 +9,14 @@ from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
 from CCReport import Report
+try:
+    import rpm
+except:
+    rpm = None
 
-def cb(self, *args):
-    pass
 class MainWindow():
     def __init__(self):
+        self.theme = theme = gtk.icon_theme_get_default()
         try:
             self.ccdaemon = CCDBusBackend.DBusManager()
         except Exception, e:
@@ -27,96 +30,119 @@ class MainWindow():
         self.wTree = gtk.glade.XML(self.gladefile) 
         
         #Get the Main Window, and connect the "destroy" event
-        self.window = self.wTree.get_widget("main_window")
-    #    self.window.set_default_size(640, 480)
+        self.window = self.wTree.get_widget("main_window2")
+        self.window.set_default_size(700, 480)
         if (self.window):
-            self.window.connect("destroy", gtk.main_quit)
+            self.window.connect("delete_event", self.delete_event_cb)
+            self.window.connect("destroy", self.destroy)
         
         self.appBar = self.wTree.get_widget("appBar")
         
+        # set colours for descritpion heading
+        self.wTree.get_widget("evDescription").modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
+        
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
-        columns = [None]*2
-        columns[0] = gtk.TreeViewColumn('Date')
-        columns[1] = gtk.TreeViewColumn('Package')
-        # create list
-        self.dumpsListStore = gtk.ListStore(str, str, object)
+        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str, object)
         # set filter
         self.modelfilter = self.dumpsListStore.filter_new()
         self.modelfilter.set_visible_func(self.filter_dumps, None)
         self.dlist.set_model(self.modelfilter)
+        # add pixbuff separatelly
+        icon_column = gtk.TreeViewColumn('Icon')
+        icon_column.cell = gtk.CellRendererPixbuf()
+        n = self.dlist.append_column(icon_column)
+        icon_column.pack_start(icon_column.cell, False)
+        icon_column.set_attributes(icon_column.cell, pixbuf=(n-1))
+        # ===============================================
+        columns = [None]*4
+        columns[0] = gtk.TreeViewColumn('Package')
+        columns[1] = gtk.TreeViewColumn('Application')
+        columns[2] = gtk.TreeViewColumn('Date')
+        columns[3] = gtk.TreeViewColumn('Crash Rate')
+        # create list
         for column in columns:
             n = self.dlist.append_column(column)
             column.cell = gtk.CellRendererText()
             column.pack_start(column.cell, False)
             column.set_attributes(column.cell, text=(n-1))
             column.set_resizable(True)
-        
         #connect signals
         self.dlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
-        self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked)
-        self.wTree.get_widget("bNext").connect("clicked", self.on_bNext_clicked)
+        self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked, self.dlist)
+        self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("bQuit").connect("clicked", self.on_bQuit_clicked)
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
+        self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb)
         
         # load data
-        self.load()
-    
-    def load(self):
-        self.appBar.push(0,"Loading dumps...")
-        self.loadDumpList()
-        self.appBar.pop(0)
+        #self.load()
+    def hydrate(self):
+        self.dumpsListStore.clear()
+        self.rows = self.ccdaemon.getDumps()
+        dumplist = getDumpList(self.ccdaemon, refresh=True)
+        for entry in dumplist:
+            icon = get_icon_for_package(self.theme,entry.getPackageName())
+            self.dumpsListStore.append([icon, entry.getPackage(),entry.getExecutable(), entry.getTime("%Y.%m.%d %H:%M:%S"),entry.getCount(), entry])
+            
+    def filter_dumps(self, model, miter, data):
+        # for later..
+        return True
+
+    def on_tvDumps_cursor_changed(self,treeview):
+        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        if not path:
+            self.wTree.get_widget("lDescription").set_label("")
+            return
+        # this should work until we keep the row object in the last position
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
         
-    def loadDumpList(self):
-        #dumplist = getDumpList(dbmanager=self.ccdaemon)
-        pass
+        #move this to Dump class
+        lPackage = self.wTree.get_widget("lPackage")
+        self.wTree.get_widget("lDescription").set_label(dump.getDescription())
+        #print self.rows[row]
+    def on_bDelete_clicked(self, button, treeview):
+        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        if not path:
+            return
+        # this should work until we keep the row object in the last position
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
+        try:
+            if self.ccdaemon.DeleteDebugDump(dump.UUID):
+                self.hydrate()
+                treeview.emit("cursor-changed")
+            else:
+                print "Couldn't delete"
+        except Exception, e:
+            print e
+    
+    def destroy(self, widget, data=None):
+        print "destroy signal occurred"
+        gtk.main_quit()
     
     def on_data_changed_cb(self, *args):
-        ret = gui_info_dialog("Another crash detected, do you want to refresh the data?",self.window)
+        ret = gui_question_dialog("Another crash detected, do you want to refresh the data?",self.window)
         if ret == gtk.RESPONSE_YES:
             self.hydrate()
         else:
             pass
         #print "got another crash, refresh gui?"
     
+    def on_analyze_complete_cb(self, daemon, UUID):
+        dumplist = getDumpList(self.ccdaemon)
+        entry = dumplist.ddict[UUID]
+        print "GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID)
+        print "We should refresh the UI ..."
+        
+        #ret = gui_question_dialog("GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID),self.window)
+        #if ret == gtk.RESPONSE_YES:
+        #    self.hydrate()
+        #else:
+        #    pass
+        #print "got another crash, refresh gui?"
     
-    def filter_dumps(self, model, miter, data):
-        # this could be use for filtering the dumps
-        return True
-        
-    def show(self):
-        self.window.show()
     
-    def hydrate(self):
-        self.dumpsListStore.clear()
-        dumplist = getDumpList(self.ccdaemon, refresh=True)
-        #self.rows = self.ccdaemon.getDumps()
-        #row_c = 0
-        for entry in dumplist:
-            self.dumpsListStore.append([entry.getTime("%m.%d."),entry.getPackage(),entry])
-            #row_c += 1
-    
-    def on_tvDumps_cursor_changed(self,treeview):
-        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
-        if not path:
-            return
-
-        # this should work until we keep the row object in the last position
-        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
-        
-        lDate = self.wTree.get_widget("lDate")
-        #move this to Dump class
-        lDate.set_label(dump.getTime("%Y.%m.%d %H:%M:%S"))
-        lPackage = self.wTree.get_widget("lPackage")
-        lPackage.set_label(dump.getPackage())
-        self.wTree.get_widget("lExecutable").set_label(dump.getExecutable())
-        self.wTree.get_widget("lCRate").set_label(dump.getCount())
-        #print self.rows[row]
-        
-    def on_bDelete_clicked(self, button):
-        print "Delete"
-        
-    def on_bNext_clicked(self, button):
+    def on_bReport_clicked(self, button):
         # FIXME don't duplicate the code, move to function
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
@@ -125,10 +151,10 @@ class MainWindow():
         # show the report window with selected dump
         try:
             report = self.ccdaemon.getReport(dump.getUUID())
-        except Exception,e:
+        except Exception, e:
             # FIXME #3	dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
-            gui_error_message("Operation taking too long - \nPlease try again after debuginfo is installed")
+            gui_error_message("Error getting the report: %s" % e.message)
             return
             
         if not report:
@@ -136,14 +162,25 @@ class MainWindow():
             return
         report_dialog = ReporterDialog(report)
         result = report_dialog.run()
-        if result == gtk.RESPONSE_CANCEL:
-            pass
-        else:
+        if result == gtk.RESPONSE_APPLY:
             self.ccdaemon.Report(result)
-    
-    def on_bQuit_clicked(self, button):
-        gtk.main_quit()
+
+
+    def delete_event_cb(self, widget, event, data=None):
+        # Change FALSE to TRUE and the main window will not be destroyed
+        # with a "delete_event".
+        return self.on_bQuit_clicked(widget)
         
+    def on_bQuit_clicked(self, widget):
+        ret = gui_question_dialog("Do you really want to quit?",self.window)
+        if ret == gtk.RESPONSE_YES:
+            gtk.main_quit()
+        return True
+            
+    def show(self):
+        self.window.show()
+    
+
 if __name__ == "__main__":
     cc = MainWindow()
     cc.hydrate()

@@ -34,3 +34,9 @@ class Dump():
             except Exception, e:
                 print e
         return int(self.Time)
+        
+    def getPackageName(self):
+        return self.Package[:self.Package.find("-")]
+        
+    def getDescription(self):
+        return self.Description

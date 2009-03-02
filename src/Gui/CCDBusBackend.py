@@ -14,6 +14,8 @@ class DBusManager(gobject.GObject):
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
         gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
+        # signal emited when new analyze is complete
+        gobject.signal_new ("analyze-complete", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
         self.proxy = None
@@ -21,7 +23,10 @@ class DBusManager(gobject.GObject):
         if self.proxy:
             self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
             #intr = dbus.Interface(proxy, dbus_interface='org.freedesktop.DBus.Introspectable')
+            # new crash notify
             self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
+            # BT extracting complete
+            self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception("Proxy object doesn't exist!")
 
@@ -37,6 +42,13 @@ class DBusManager(gobject.GObject):
         #print "crash"
         self.emit("crash")
         
+    def analyze_complete_cb(self,*args):
+        for arg in args:
+            print "Analyze complete for: %s" % arg
+        # emit signal to let clients know that analyze has been completed
+        # maybe rewrite this with async method call?
+        self.emit("analyze-complete", arg)
+    
     def connect_to_daemon(self):
         bus = dbus.SystemBus()
         if not bus:
@@ -47,11 +59,17 @@ class DBusManager(gobject.GObject):
             raise Exception(e.message + "\nPlease check if crash-catcher daemon is running.")
 
     def getReport(self, UUID):
-        return self.cc.CreateReport(UUID)
+        try:
+            return self.cc.CreateReport(UUID)
+        except dbus.exceptions.DBusException, e:
+            raise Exception(e.message)
     
     def Report(self,report):
         return self.cc.Report(report)
-
+    
+    def DeleteDebugDump(self,UUID):
+        return self.cc.DeleteDebugDump(UUID)
+    
     def getDumps(self):
         row_dict = None
         rows = []

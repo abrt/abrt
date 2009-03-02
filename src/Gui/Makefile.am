@@ -2,7 +2,7 @@
 
 bin_SCRIPTS = cc-gui
 
-PYTHON_FILES = CCDBusBackend.py  CCDumpList.py  CCDump.py  CC_gui_functions.py  ccgui.glade  CCReporterDialog.py CCReport.py CCMainWindow.py
+PYTHON_FILES = CCDBusBackend.py  CCDumpList.py  CCDump.py  CC_gui_functions.py  ccgui.glade report.glade CCReporterDialog.py CCReport.py CCMainWindow.py
 
 GLADE_FILES = ccgui.glade
 
