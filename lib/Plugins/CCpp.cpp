@@ -204,6 +204,11 @@ void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
     std::string backtrace;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
+    if (dd.Exist(FILENAME_TEXTDATA1))
+    {
+        dd.Close();
+        return;
+    }
     dd.LoadText(FILENAME_PACKAGE, package);
 
     InstallDebugInfos(package);
