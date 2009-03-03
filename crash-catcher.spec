@@ -1,7 +1,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: crash-catcher
 Version: 0.0.1
-Release: 11%{?dist}
+Release: 12%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -12,6 +12,7 @@ BuildRequires: gtkmm24-devel
 BuildRequires: dbus-glib-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: sqlite-devel > 3.0
+BuildRequires: desktop-file-utils
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -40,7 +41,7 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 
 %description applet
-Simple systray applet to notify user about new events detected by crash-catcher 
+Simple systray applet to notify user about new events detected by %{name} 
 daemon.
 
 %package gui
@@ -102,26 +103,26 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
 rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
-rm -rf $RPM_BUILD_ROOT/%{_libdir}/crash-catcher/lib*.la
+rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
-install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/crash-catcher
-mkdir -p $RPM_BUILD_ROOT/var/cache/crash-catcher
+install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/%{name}
+mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
 
 desktop-file-install --vendor fedora \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-        src/Gui/crash-catcher.desktop
+        src/Gui/%{name}.desktop
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/sbin/chkconfig --add crash-catcher
+/sbin/chkconfig --add %{name}
 
 %post libs -p /sbin/ldconfig
 
 %preun
 if [ "$1" = 0 ] ; then
-  service crash-catcher stop >/dev/null 2>&1
-  /sbin/chkconfig --del crash-catcher
+  service %{name} stop >/dev/null 2>&1
+  /sbin/chkconfig --del %{name}
 fi
 
 %postun libs -p /sbin/ldconfig
@@ -129,14 +130,14 @@ fi
 %files
 %defattr(-,root,root,-)
 %doc README COPYING
-%{_sbindir}/crash-catcher
-%config(noreplace) %{_sysconfdir}/crash-catcher/crash-catcher.conf
-%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-crash-catcher.conf
-%{_initrddir}/crash-catcher
-%dir /var/cache/crash-catcher
+%{_sbindir}/%{name}
+%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
+%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
+%{_initrddir}/%{name}
+%dir /var/cache/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
-%{_libdir}/%{name}
+%dir %{_libdir}/%{name}
 
 %files libs
 %defattr(-,root,root,-)
@@ -155,30 +156,34 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/cc-gui
 %{_datadir}/%{name}
-%{_datadir}/applications/fedora-crash-catcher.desktop
+%{_datadir}/applications/fedora-%{name}.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/crash-catcher/plugins/CCpp.conf
-%{_libdir}/crash-catcher/libCCpp.so*
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
+%{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/hookCCpp
 
 %files plugin-sqlite3
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/crash-catcher/plugins/SQLite3.conf
-%{_libdir}/crash-catcher/libSQLite3.so*
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/SQLite3.conf
+%{_libdir}/%{name}/libSQLite3.so*
 
 %files plugin-logger
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/crash-catcher/plugins/Logger.conf
-%{_libdir}/crash-catcher/libLogger.so*
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
+%{_libdir}/%{name}/libLogger.so*
 
 %files plugin-mailx
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/crash-catcher/plugins/Mailx.conf
-%{_libdir}/crash-catcher/libMailx.so*
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
+%{_libdir}/%{name}/libMailx.so*
 
 %changelog
+* Tue Mar  3 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-12
+- added desktop-file-utils to BR
+- changed crash-catcher to %%{name}
+
 * Mon Mar  2 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-11
 - more spec file fixes according to review
 - async dbus method calls, added exception handler
