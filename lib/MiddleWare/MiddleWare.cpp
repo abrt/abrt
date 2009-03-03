@@ -282,23 +282,36 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
 
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     package = m_RPMInfo.GetPackage(executable, description);
-    std::string packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
-    if (packageName == "" ||
-       (m_setBlackList.find(packageName) != m_setBlackList.end()))
+    if (executable != "kernel")
     {
-        dd.Delete();
-        dd.Close();
-        return 0;
-    }
-    if (m_bOpenGPGCheck)
-    {
-        if (!m_RPMInfo.CheckFingerprint(packageName) ||
-            !m_RPMInfo.CheckHash(packageName, executable))
+        std::string packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
+        if (packageName == "" ||
+            (m_setBlackList.find(packageName) != m_setBlackList.end()))
         {
             dd.Delete();
             dd.Close();
             return 0;
         }
+        if (m_bOpenGPGCheck)
+        {
+            if (!m_RPMInfo.CheckFingerprint(packageName) ||
+                !m_RPMInfo.CheckHash(packageName, executable))
+            {
+                dd.Delete();
+                dd.Close();
+                return 0;
+            }
+        }
+    }
+    else
+    {
+        package = "kernel";
+        description = "The Linux kernel"
+        description += "\n\n";
+        description += "The kernel contains the Linux kernel (vmlinuz), the core of any"
+                       "Linux operating system. The kernel handles the basic functions"
+                       "of the operating system: memory allocation, process allocation, device"
+                       "input and output, etc."
     }
     dd.SaveText(FILENAME_PACKAGE, package);
     dd.SaveText(FILENAME_DESCRIPTION, description);
