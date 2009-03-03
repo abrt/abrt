@@ -306,12 +306,12 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     else
     {
         package = "kernel";
-        description = "The Linux kernel"
+        description = "The Linux kernel";
         description += "\n\n";
         description += "The kernel contains the Linux kernel (vmlinuz), the core of any"
                        "Linux operating system. The kernel handles the basic functions"
                        "of the operating system: memory allocation, process allocation, device"
-                       "input and output, etc."
+                       "input and output, etc.";
     }
     dd.SaveText(FILENAME_PACKAGE, package);
     dd.SaveText(FILENAME_DESCRIPTION, description);
