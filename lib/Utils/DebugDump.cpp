@@ -43,7 +43,7 @@ void CDebugDump::Open(const std::string& pDir)
 {
     if (m_bOpened)
     {
-        throw "CDebugDump::CDebugDump(): DebugDump is already opened.";
+        throw std::string("CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
     m_sDebugDumpDir = pDir;
     std::string lockPath = m_sDebugDumpDir + "/.lock";
@@ -138,7 +138,7 @@ void CDebugDump::Create(const std::string& pDir)
 {
     if (m_bOpened)
     {
-        throw "CDebugDump::CDebugDump(): DebugDump is already opened.";
+        throw std::string("CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
 
     m_sDebugDumpDir = pDir;
