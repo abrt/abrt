@@ -143,7 +143,7 @@ class MainWindow():
         # tady asi nedostanem UUID, ale vysledek nasi volane metody
         #print report
         #print "GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID)
-        print "We should refresh the UI ..."
+        #print "We should refresh the UI ..."
         if not report:
             gui_error_message("Unable to get report! Debuginfo missing?")
             return

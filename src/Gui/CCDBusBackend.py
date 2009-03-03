@@ -46,12 +46,12 @@ class DBusManager(gobject.GObject):
         #print "crash"
         self.emit("crash")
         
-    def analyze_complete_cb(self,*args):
-        for arg in args:
-            print "Analyze complete for: %s" % arg
+    def analyze_complete_cb(self,dump):
+        #for arg in args:
+        #    print "Analyze complete for: %s" % arg
         # emit signal to let clients know that analyze has been completed
         # maybe rewrite this with async method call?
-        self.emit("analyze-complete", arg)
+        self.emit("analyze-complete", dump)
     
     def connect_to_daemon(self):
         bus = dbus.SystemBus()
