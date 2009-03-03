@@ -1,12 +1,12 @@
 Summary: Automatic bug detection and reporting tool
-Name: crash-catcher
+Name: abrt
 Version: 0.0.1
 Release: 12%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
 Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
-Source1: crash-catcher.init
+Source1: abrt.init
 BuildRequires: dbus-c++-devel
 BuildRequires: gtkmm24-devel
 BuildRequires: dbus-glib-devel
@@ -16,27 +16,27 @@ BuildRequires: desktop-file-utils
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
-CrashCatcher is a tool to help users to detect defects in applications and 
+%{name} is a tool to help users to detect defects in applications and 
 to create a bug report with all informations needed by maintainer to fix it. 
 It uses plugin system to extend its functionality.
 
 %package libs
-Summary: Libraries for CrashCatcher
+Summary: Libraries for %{name}
 Group: System Environment/Libraries
 
 %description libs
-Libraries for CrashCatcher.
+Libraries for %{name}.
 
 %package devel
-Summary: Development libraries for CrashCatcher
+Summary: Development libraries for %{name}
 Group: Development/Libraries
 Requires: %{name}-libs = %{version}-%{release}
 
 %description devel
-Development libraries and headers for CrashCatcher.
+Development libraries and headers for %{name}.
 
 %package applet
-Summary: CrashCatcher's applet
+Summary: %{name}'s applet
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 
@@ -45,7 +45,7 @@ Simple systray applet to notify user about new events detected by %{name}
 daemon.
 
 %package gui
-Summary: CrashCatcher's gui
+Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 
@@ -53,17 +53,17 @@ Requires: %{name} = %{version}-%{release}
 GTK+ wizard for convenient bug reporting.
 
 %package addon-ccpp
-Summary: CrashCatcher's C/C++ addon
+Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
 Requires: gdb
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
-This package contains hook for C/C++ crashed programs and CrashCatcher's C/C++ 
+This package contains hook for C/C++ crashed programs and %{name}'s C/C++ 
 language plugin.
 
 %package plugin-sqlite3
-Summary: CrashCatcher's SQLite3 database plugin
+Summary: %{name}'s SQLite3 database plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
@@ -72,7 +72,7 @@ This package contains SQLite3 database plugin. It is used for storing the data
 required for creating a bug report.
 
 %package plugin-logger
-Summary: CrashCatcher's logger reporter plugin
+Summary: %{name}'s logger reporter plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
@@ -80,7 +80,7 @@ Requires: %{name} = %{version}-%{release}
 The simple reporter plugin, which writes a report to a specified file.
 
 %package plugin-mailx
-Summary: CrashCatcher's mailx reporter plugin
+Summary: %{name}'s mailx reporter plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Requires: mailx
@@ -108,7 +108,7 @@ mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/%{name}
 mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
 
-desktop-file-install --vendor fedora \
+desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
         src/Gui/%{name}.desktop
 %clean
@@ -153,9 +153,9 @@ fi
 
 %files gui
 %defattr(-,root,root,-)
-%{_bindir}/cc-gui
+%{_bindir}/%{name}-gui
 %{_datadir}/%{name}
-%{_datadir}/applications/fedora-%{name}.desktop
+%{_datadir}/applications/%{name}.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)

@@ -1,4 +1,4 @@
-AC_INIT([crash-catcher], [0.0.1], [jmoskovc@redhat.com, zprikryl@redhat.com])
+AC_INIT([abrt], [0.0.1], [jmoskovc@redhat.com, zprikryl@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -21,7 +21,7 @@ PKG_CHECK_MODULES([DBUSCPP], [dbus-c++-1])
 PKG_CHECK_MODULES([RPM], [rpm])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
-   [AC_MSG_ERROR([sys/inotify.h is needed to build CrashCatcher])])
+   [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'

@@ -29,7 +29,7 @@ class MainWindow():
             sys.exit()
         #Set the Glade file
         # FIXME add to PATH
-        self.gladefile = "/usr/share/crash-catcher/ccgui.glade"  
+        self.gladefile = "/usr/share/abrt/ccgui.glade"  
         self.wTree = gtk.glade.XML(self.gladefile) 
         
         #Get the Main Window, and connect the "destroy" event

@@ -69,10 +69,17 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
             std::string sName = name;
             CCrashWatcher *cc = (CCrashWatcher*)daemon;
             crash_info_t crashinfo;
-            if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+            try
             {
-                /* send message to dbus */
-                cc->Crash(crashinfo.m_sPackage);
+                if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+                {
+                    /* send message to dbus */
+                    cc->Crash(crashinfo.m_sPackage);
+                }
+            }
+            catch(std::string err)
+            {
+                std::cerr << err << std::endl;
             }
         }
 #ifdef DEBUG
@@ -93,8 +100,8 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
     int watch = 0;
     m_sTarget = pPath;
     // middleware object
-    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/crash-catcher.conf");
-    m_nMainloop = g_main_loop_new(NULL,FALSE);
+    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/abrt.conf");
+    m_pMainloop = g_main_loop_new(NULL,FALSE);
     connection.request_name(CC_DBUS_NAME);
     if((m_nFd = inotify_init()) == -1){
         throw std::string("Init Failed");
@@ -105,13 +112,15 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
         
         throw std::string("Add watch failed:") + pPath.c_str();
     }
-    m_nGio = g_io_channel_unix_new(m_nFd);
+    m_pGio = g_io_channel_unix_new(m_nFd);
 }
 
 CCrashWatcher::~CCrashWatcher()
 {
      //delete dispatcher, connection, etc..
      delete m_pMW;
+     g_io_channel_unref(m_pGio);
+     g_main_loop_unref(m_pMainloop);
 }
 
 dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
@@ -130,7 +139,14 @@ dbus_vector_map_crash_infos_t CCrashWatcher::GetCrashInfosMap(const std::string 
     dbus_vector_map_crash_infos_t retval;
     vector_crash_infos_t crash_info;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
-    crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
+    try
+    {
+        crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+    }
     for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
         retval.push_back(it->GetMap());
     }
@@ -237,9 +253,9 @@ void CCrashWatcher::StartWatch()
 /* daemon loop with glib */
 void CCrashWatcher::GStartWatch()
 {
-    g_io_add_watch (m_nGio, G_IO_IN, handle_event_cb, this);
+    g_io_add_watch (m_pGio, G_IO_IN, handle_event_cb, this);
     //enter the event loop
-    g_main_run (m_nMainloop);
+    g_main_run (m_pMainloop);
 }
 
 

@@ -106,6 +106,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
             Delete();
             throw std::string("CDebugDump::GetAndSetLock(): dead lock found");
         }
+        fIn.close();
         return false;
     }
 }

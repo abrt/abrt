@@ -44,8 +44,8 @@ class CCrashWatcher
         void Lock();
 
         int m_nFd;
-        GIOChannel* m_nGio;
-        GMainLoop *m_nMainloop;
+        GIOChannel* m_pGio;
+        GMainLoop *m_pMainloop;
         std::string m_sTarget;
         CMiddleWare *m_pMW;
         DBus::Connection *m_pConn;

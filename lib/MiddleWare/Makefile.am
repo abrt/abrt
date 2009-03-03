@@ -11,7 +11,7 @@ libMiddleWare_la_LDFLAGS = -version-info 0:1:0
 libMiddleWare_la_CPPFLAGS = -I$(srcdir)/../Utils  $(RPM_CFLAGS)
 
 middlewareconfdir = $(CONF_DIR)
-dist_middlewareconf_DATA = crash-catcher.conf
+dist_middlewareconf_DATA = abrt.conf
 
 check_PROGRAMS = test
 test_SOURCES = test.cpp
