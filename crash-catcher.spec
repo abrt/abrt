@@ -5,7 +5,7 @@ Release: 12%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
-Source: crash-catcher-0.0.1.tar.gz
+Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
 Source1: crash-catcher.init
 BuildRequires: dbus-c++-devel
 BuildRequires: gtkmm24-devel
@@ -141,7 +141,6 @@ fi
 
 %files libs
 %defattr(-,root,root,-)
-%{_libdir}/%{name}
 %{_libdir}/lib*.so.*
 
 %files devel
@@ -181,6 +180,7 @@ fi
 
 %changelog
 * Tue Mar  3 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-12
+- changed SOURCE url
 - added desktop-file-utils to BR
 - changed crash-catcher to %%{name}
 
