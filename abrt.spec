@@ -8,7 +8,7 @@ URL: https://fedorahosted.org/crash-catcher/
 Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
 Source1: abrt.init
 BuildRequires: dbus-c++-devel
-BuildRequires: gtkmm24-devel
+BuildRequires: gtk2-devel
 BuildRequires: dbus-glib-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: sqlite-devel > 3.0
@@ -180,6 +180,7 @@ fi
 
 %changelog
 * Tue Mar  3 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-12
+- initial fedora release
 - changed SOURCE url
 - added desktop-file-utils to BR
 - changed crash-catcher to %%{name}
