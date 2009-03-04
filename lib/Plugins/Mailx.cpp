@@ -99,6 +99,12 @@ void CMailx::Report(const crash_report_t& pReport)
         ss << "-----------" << std::endl;
         ss << pReport.m_sTextData2 << std::endl << std::endl;
     }
+    if (pReport.m_sComment != "")
+    {
+        ss << "User Comments" << std::endl;
+        ss << "-----------" << std::endl;
+        ss << pReport.m_sComment << std::endl << std::endl;
+    }
     ss << "Binary reports" << std::endl;
     ss << "==============" << std::endl;
     ss << "See the attachment[s]" << std::endl;

@@ -23,7 +23,7 @@
 #include <fstream>
 
 CLogger::CLogger() :
-    m_sLogPath("/tmp/CCLogger"),
+    m_sLogPath("/var/log/abrt-logger"),
     m_bAppendLogs(true)
 {}
 
@@ -89,6 +89,12 @@ void CLogger::Report(const crash_report_t& pReport)
             fOut << "Text Data 2" << std::endl;
             fOut << "-----------" << std::endl;
             fOut << pReport.m_sTextData2 << std::endl << std::endl;
+        }
+        if (pReport.m_sComment != "")
+        {
+            fOut << "User Comments" << std::endl;
+            fOut << "-----------" << std::endl;
+            fOut << pReport.m_sComment << std::endl << std::endl;
         }
         fOut << "Binary reports" << std::endl;
         fOut << "==============" << std::endl;
