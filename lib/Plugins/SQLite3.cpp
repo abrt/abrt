@@ -26,7 +26,7 @@
 #include <iostream>
 
 
-#define TABLE_NAME "crash_catcher"
+#define TABLE_NAME "abrt"
 
 CSQLite3::CSQLite3() :
     m_sDBPath("/tmp/CCDB"),

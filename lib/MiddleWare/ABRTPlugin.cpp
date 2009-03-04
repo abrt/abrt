@@ -1,5 +1,5 @@
 /*
-    CrashCatcherPlugin.cpp
+    ABRTPlugin.cpp
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -19,9 +19,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "CrashCatcherPlugin.h"
+#include "ABRTPlugin.h"
 
-CCrashCatcherPlugin::CCrashCatcherPlugin(const std::string& pLibPath) :
+CABRTPlugin::CABRTPlugin(const std::string& pLibPath) :
     m_pDynamicLibrary(NULL),
     m_pPluginInfo(NULL),
     m_pFnPluginNew(NULL)
@@ -42,7 +42,7 @@ CCrashCatcherPlugin::CCrashCatcherPlugin(const std::string& pLibPath) :
     }
 }
 
-CCrashCatcherPlugin::~CCrashCatcherPlugin()
+CABRTPlugin::~CABRTPlugin()
 {
     if (m_pDynamicLibrary != NULL)
     {
@@ -50,42 +50,42 @@ CCrashCatcherPlugin::~CCrashCatcherPlugin()
     }
 }
 
-const std::string& CCrashCatcherPlugin::GetVersion()
+const std::string& CABRTPlugin::GetVersion()
 {
     return m_pPluginInfo->m_sVersion;
 }
 
-const int CCrashCatcherPlugin::GetMagicNumber()
+const int CABRTPlugin::GetMagicNumber()
 {
     return m_pPluginInfo->m_nMagicNumber;
 }
 
-const std::string& CCrashCatcherPlugin::GetName()
+const std::string& CABRTPlugin::GetName()
 {
     return m_pPluginInfo->m_sName;
 }
 
-const std::string& CCrashCatcherPlugin::GetDescription()
+const std::string& CABRTPlugin::GetDescription()
 {
     return m_pPluginInfo->m_sDescription;
 }
 
-const std::string& CCrashCatcherPlugin::GetEmail()
+const std::string& CABRTPlugin::GetEmail()
 {
     return m_pPluginInfo->m_sEmail;
 }
 
-const std::string& CCrashCatcherPlugin::GetWWW()
+const std::string& CABRTPlugin::GetWWW()
 {
     return m_pPluginInfo->m_sWWW;
 }
 
-const plugin_type_t CCrashCatcherPlugin::GetType()
+const plugin_type_t CABRTPlugin::GetType()
 {
     return m_pPluginInfo->m_Type;
 }
 
-CPlugin* CCrashCatcherPlugin::PluginNew()
+CPlugin* CABRTPlugin::PluginNew()
 {
     return m_pFnPluginNew();
 }

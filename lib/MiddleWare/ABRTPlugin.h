@@ -1,5 +1,5 @@
 /*
-    CrashCatcherPlugin.h - header file for CrashCatcher plugin. It takes care
+    ABRTPlugin.h - header file for abrt plugin. It takes care
                            of reporting thinks which has loaded plugin.
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
@@ -21,14 +21,14 @@
     */
 
 
-#ifndef CRASHCATCHERPLUGIN_H_
-#define CRASHCATCHERPLUGIN_H_
+#ifndef ABRTPLUGIN_H_
+#define ABRTPLUGIN_H_
 
 #include <string>
 #include "DynamicLibrary.h"
 #include "Plugin.h"
 
-class CCrashCatcherPlugin
+class CABRTPlugin
 {
     private:
 
@@ -40,8 +40,8 @@ class CCrashCatcherPlugin
         p_fn_plugin_new_t m_pFnPluginNew;
 
     public:
-        CCrashCatcherPlugin(const std::string& pLibPath);
-        ~CCrashCatcherPlugin();
+        CABRTPlugin(const std::string& pLibPath);
+        ~CABRTPlugin();
 
         const std::string& GetVersion();
         const int GetMagicNumber();
@@ -54,4 +54,4 @@ class CCrashCatcherPlugin
         CPlugin* PluginNew();
 };
 
-#endif /*CRASHCATCHERPLUGIN_H_*/
+#endif /*ABRTPLUGIN_H_*/

@@ -60,8 +60,8 @@ void CPluginManager::LoadPlugins()
 
 void CPluginManager::UnLoadPlugins()
 {
-    map_crash_catcher_plugins_t::iterator it_p;
-      while ((it_p = m_mapCrashCatcherPlugins.begin()) != m_mapCrashCatcherPlugins.end())
+    map_abrt_plugins_t::iterator it_p;
+      while ((it_p = m_mapABRTPlugins.begin()) != m_mapABRTPlugins.end())
       {
           std::string pluginName = it_p->first;
           UnLoadPlugin(pluginName);
@@ -70,26 +70,26 @@ void CPluginManager::UnLoadPlugins()
 
 void CPluginManager::LoadPlugin(const std::string& pName)
 {
-	if (m_mapCrashCatcherPlugins.find(pName) == m_mapCrashCatcherPlugins.end())
+	if (m_mapABRTPlugins.find(pName) == m_mapABRTPlugins.end())
 	{
-		CCrashCatcherPlugin* crashCatcherPlugin = NULL;
+		CABRTPlugin* abrtPlugin = NULL;
 		try
 		{
 			std::string libPath = m_sPlugisLibDir + "/lib" + pName + "." + PLUGINS_LIB_EXTENSIONS;
-			crashCatcherPlugin = new CCrashCatcherPlugin(libPath);
-			if (crashCatcherPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
-			    (crashCatcherPlugin->GetType() < LANGUAGE && crashCatcherPlugin->GetType() > DATABASE))
+			abrtPlugin = new CABRTPlugin(libPath);
+			if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
+			    (abrtPlugin->GetType() < LANGUAGE && abrtPlugin->GetType() > DATABASE))
 			{
 				throw std::string("non-compatible plugin");
 			}
-			std::cerr << "Plugin " << pName << " (" << crashCatcherPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
-			m_mapCrashCatcherPlugins[pName] = crashCatcherPlugin;
+			std::cerr << "Plugin " << pName << " (" << abrtPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
+			m_mapABRTPlugins[pName] = abrtPlugin;
 		}
 		catch (std::string sError)
 		{
-			if (crashCatcherPlugin != NULL)
+			if (abrtPlugin != NULL)
 			{
-				delete crashCatcherPlugin;
+				delete abrtPlugin;
 			}
 			std::cerr << "Failed to load plugin " << pName << " (" << sError << ")." << std::endl;
 		}
@@ -98,11 +98,11 @@ void CPluginManager::LoadPlugin(const std::string& pName)
 
 void CPluginManager::UnLoadPlugin(const std::string& pName)
 {
-	if (m_mapCrashCatcherPlugins.find(pName) != m_mapCrashCatcherPlugins.end())
+	if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
 	{
 		UnRegisterPlugin(pName);
-		delete m_mapCrashCatcherPlugins[pName];
-		m_mapCrashCatcherPlugins.erase(pName);
+		delete m_mapABRTPlugins[pName];
+		m_mapABRTPlugins.erase(pName);
 		std::cerr << "Plugin " << pName << " sucessfully unloaded." << std::endl;
 	}
 }
@@ -110,19 +110,19 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
 
 void CPluginManager::RegisterPlugin(const std::string& pName)
 {
-    if (m_mapCrashCatcherPlugins.find(pName) != m_mapCrashCatcherPlugins.end())
+    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
     {
         if (m_mapPlugins.find(pName) == m_mapPlugins.end())
         {
             map_settings_t settings;
             std::string path = m_sPlugisConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
             load_settings(path, settings);
-            CPlugin* plugin = m_mapCrashCatcherPlugins[pName]->PluginNew();
+            CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
             plugin->Init();
             plugin->SetSettings(settings);
             m_mapPlugins[pName] = plugin;
             std::cerr << "Registred plugin " << pName << "("
-                      << plugin_type_str_t[m_mapCrashCatcherPlugins[pName]->GetType()]
+                      << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]
                       << ")" << std::endl;
         }
     }
@@ -130,7 +130,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
 
 void CPluginManager::UnRegisterPlugin(const std::string& pName)
 {
-    if (m_mapCrashCatcherPlugins.find(pName) != m_mapCrashCatcherPlugins.end())
+    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
     {
         if (m_mapPlugins.find(pName) != m_mapPlugins.end())
         {
@@ -138,7 +138,7 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
             delete m_mapPlugins[pName];
             m_mapPlugins.erase(pName);
             std::cerr << "UnRegistred plugin " << pName << "("
-                      << plugin_type_str_t[m_mapCrashCatcherPlugins[pName]->GetType()]
+                      << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]
                       << ")" << std::endl;
         }
     }

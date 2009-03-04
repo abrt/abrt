@@ -1,22 +1,22 @@
-/* 
-    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com) 
-    Copyright (C) 2009  RedHat inc. 
- 
-    This program is free software; you can redistribute it and/or modify 
-    it under the terms of the GNU General Public License as published by 
-    the Free Software Foundation; either version 2 of the License, or 
-    (at your option) any later version. 
- 
-    This program is distributed in the hope that it will be useful, 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-    GNU General Public License for more details. 
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+/*
+    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com)
+    Copyright (C) 2009  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
-    
+
 #include "CrashWatcher.h"
 #include <unistd.h>
 #include <iostream>
@@ -62,7 +62,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
 #ifdef DEBUG
         std::cout << "Created file: " << name << std::endl;
 #endif /*DEBUG*/
-     
+
         /* we want to ignore the lock files */
         if(event->mask & IN_ISDIR)
         {
@@ -109,7 +109,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
         exit(-1);
     }
     if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
-        
+
         throw std::string("Add watch failed:") + pPath.c_str();
     }
     m_pGio = g_io_channel_unix_new(m_nFd);
@@ -126,7 +126,7 @@ CCrashWatcher::~CCrashWatcher()
 dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 {
     dbus_vector_crash_infos_t retval;
-    vector_crash_infos_t crash_info; 
+    vector_crash_infos_t crash_info;
     m_pMW->GetCrashInfos("501");
     for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
         std::cerr << it->m_sExecutable << std::endl;
@@ -214,8 +214,8 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
 }
 void CCrashWatcher::Lock()
 {
-    int lfp = open("crashcatcher.lock",O_RDWR|O_CREAT,0640);
-	if (lfp < 0) 
+    int lfp = open("abrt.lock",O_RDWR|O_CREAT,0640);
+	if (lfp < 0)
         throw std::string("CCrashWatcher.cpp:can not open lock file");
 	if (lockf(lfp,F_TLOCK,0) < 0)
         throw std::string("CCrashWatcher.cpp:Lock:cannot create lock on lockfile");
@@ -237,7 +237,7 @@ void CCrashWatcher::StartWatch()
         len = read(m_nFd,buff,INOTIFY_BUFF_SIZE);
         while(i < len){
             pevent = (struct inotify_event *)&buff[i];
-            if (pevent->len) 
+            if (pevent->len)
                 std::strcpy(action, pevent->name);
             else
                 std::strcpy(action, m_sTarget.c_str());
