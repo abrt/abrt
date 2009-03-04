@@ -1,7 +1,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.1
-Release: 12%{?dist}
+Release: 13%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -179,6 +179,15 @@ fi
 %{_libdir}/%{name}/libMailx.so*
 
 %changelog
+* Wed Mar  4 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-13
+- More renaming issues fixed..
+- Changed BR from gtkmm24 to gtk2
+- Fixed saving of user comment
+- Added a progress bar, new Comment entry for user comments..
+- FILENAME_CMDLINE and FILENAME_RELEASE are optional
+- new default path to DB
+- Rename to abrt
+
 * Tue Mar  3 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-12
 - initial fedora release
 - changed SOURCE url
