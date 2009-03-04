@@ -29,7 +29,7 @@
 #define TABLE_NAME "abrt"
 
 CSQLite3::CSQLite3() :
-    m_sDBPath("/tmp/CCDB"),
+    m_sDBPath("/var/cache/abrt/abrt-db"),
     m_pDB(NULL)
 {}
 
