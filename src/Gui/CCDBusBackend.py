@@ -50,7 +50,6 @@ class DBusManager(gobject.GObject):
         #for arg in args:
         #    print "Analyze complete for: %s" % arg
         # emit signal to let clients know that analyze has been completed
-        # maybe rewrite this with async method call?
         self.emit("analyze-complete", dump)
     
     def connect_to_daemon(self):

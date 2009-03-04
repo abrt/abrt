@@ -13,12 +13,19 @@ class ReporterDialog():
         self.report = report
         #Set the Glade file
         # FIXME add to path
-        self.gladefile = "/usr/share/abrt/report.glade"  
+        self.gladefile = "%s%sreport.glade" % (sys.path[0],"/")  
         self.wTree = gtk.glade.XML(self.gladefile) 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("reporter_dialog")
         self.window.set_default_size(640, 480)
         
+        # comment textview
+        self.tvComment = self.wTree.get_widget("tvComment")
+        self.tvComment.connect("focus-in-event", self.on_comment_focus_cb)
+        self.comment_changed = False
+        
+        #user editable info in report
+        self.editable = ["Comment", "TextData1", "TextData2"]
         #init the reports treeview
         self.tvReport = self.wTree.get_widget("tvReport")
         columns = [None]*2
@@ -42,12 +49,17 @@ class ReporterDialog():
         renderer.connect('edited',self.column_edited,self.reportListStore)
         
         # connect the signals
-        #self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
+        self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
         #self.wTree.get_widget("bCancel").connect("clicked", self.on_cancel_clicked, self.tvReport)
         
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
         
         self.hydrate()
+        
+    def on_comment_focus_cb(self, widget, event):
+        if not self.comment_changed:
+            widget.set_buffer(None)
+            self.comment_changed = True
     
     def on_window_resize(self, treeview, allocation):
         # multine support
@@ -60,23 +72,29 @@ class ReporterDialog():
         return
         
     def on_apply_clicked(self, button, treeview):
-        pass
+        #fill the report with user changed values and return it..
+        #user changed the comment, so we want to save it
+        for item in self.editable:
+            if item == "Comment" and self.comment_changed:
+                buff = self.tvComment.get_buffer()
+                self.report[item] = buff.get_text(buff.get_start_iter(),buff.get_end_iter())
         
     def on_cancel_clicked(self, button, treeview):
         pass
     
     def hydrate(self):
-        editable = ["Comment", "TextData1", "TextData2"]
         for item in self.report:
-            self.reportListStore.append([item, self.report[item], item in editable])
-        #self.reportListStore.append(["Comment","", True])
+            if item == "Comment":
+                buff = gtk.TextBuffer()
+                buff.set_text("Brief description how to reproduce this or what you did...")
+                self.tvComment.set_buffer(buff)
+                continue
+            self.reportListStore.append([item, self.report[item], item in self.editable])
     
     def run(self):
         result = self.window.run()
-        if result == gtk.RESPONSE_CANCEL:
-            self.window.destroy()
-            return None
-        else:
-            self.window.destroy()
-            return self.report
-    
+        if result != gtk.RESPONSE_APPLY:
+            self.report = None
+        self.window.destroy()
+        return self.report
+            

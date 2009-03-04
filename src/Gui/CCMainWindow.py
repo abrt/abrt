@@ -32,7 +32,7 @@ class MainWindow():
         # FIXME add to PATH
         # FIXME remove!
         
-        self.gladefile = "%s/ccgui.glade" % sys.path[0]
+        self.gladefile = "%s%sccgui.glade" % (sys.path[0],"/")
         self.wTree = gtk.glade.XML(self.gladefile)
         
         #Get the Main Window, and connect the "destroy" event
@@ -45,7 +45,7 @@ class MainWindow():
         self.appBar = self.wTree.get_widget("appBar")
         # pregress bar window to show while bt is being extracted
         self.pBarWindow = self.wTree.get_widget("pBarWindow")
-        print self.pBarWindow
+        self.pBarWindow.set_transient_for(self.window)
         self.pBar = self.wTree.get_widget("pBar")
         
         # set colours for descritpion heading
@@ -87,6 +87,8 @@ class MainWindow():
         
         # load data
         #self.load()
+        
+    # call to update the progressbar
     def progress_update_cb(self, *args):
         self.pBar.pulse()
         return True
@@ -149,18 +151,14 @@ class MainWindow():
         #print "got another crash, refresh gui?"
     
     def on_analyze_complete_cb(self, daemon, report, pBarWindow):
+        gobject.source_remove(self.timer)
+        self.pBarWindow.hide()
         try:
             dumplist = getDumpList(self.ccdaemon)
         except Exception, e:
             print e
-        #pBarWindow.destroy()
-        #entry = dumplist.ddict[UUID]
-        # tady asi nedostanem UUID, ale vysledek nasi volane metody
-        #print report
-        #print "GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID)
-        #print "We should refresh the UI ..."
         if not report:
-            gui_error_message("Unable to get report! Debuginfo missing?")
+            gui_error_message("Unable to get report!\nDebuginfo is missing?")
             return
         report_dialog = ReporterDialog(report)
         result = report_dialog.run()
@@ -179,6 +177,8 @@ class MainWindow():
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
             return
+        self.update_pBar = False
+        self.pBar.show()
         self.pBarWindow.show()
         self.timer = gobject.timeout_add (100,self.progress_update_cb)
         
@@ -190,16 +190,7 @@ class MainWindow():
             # FIXME #3	dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
             gui_error_message("Error getting the report: %s" % e.message)
-            return
         return
-        if not report:
-            gui_error_message("Unable to get report! Debuginfo missing?")
-            return
-        report_dialog = ReporterDialog(report)
-        result = report_dialog.run()
-        if result:
-            self.ccdaemon.Report(result)
-
 
     def delete_event_cb(self, widget, event, data=None):
         # Change FALSE to TRUE and the main window will not be destroyed
