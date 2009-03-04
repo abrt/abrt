@@ -108,9 +108,15 @@ void CMiddleWare::DebugDump2Report(const std::string& pDebugDumpDir, crash_repor
     dd.LoadText(FILENAME_KERNEL, pCrashReport.m_sKernel);
     dd.LoadText(FILENAME_PACKAGE, pCrashReport.m_sPackage);
     dd.LoadText(FILENAME_EXECUTABLE, pCrashReport.m_sExecutable);
-    dd.LoadText(FILENAME_CMDLINE, pCrashReport.m_sCmdLine);
-    dd.LoadText(FILENAME_RELEASE, pCrashReport.m_sRelease);
 
+    if (dd.Exist(FILENAME_CMDLINE))
+    {
+        dd.LoadText(FILENAME_CMDLINE, pCrashReport.m_sCmdLine);
+    }
+    if (dd.Exist(FILENAME_RELEASE))
+    {
+        dd.LoadText(FILENAME_RELEASE, pCrashReport.m_sRelease);
+    }
     if (dd.Exist(FILENAME_TEXTDATA1))
     {
         dd.LoadText(FILENAME_TEXTDATA1, pCrashReport.m_sTextData1);
