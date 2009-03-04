@@ -3,8 +3,8 @@ import gobject
 from dbus.mainloop.glib import DBusGMainLoop
 import gtk
 
-CC_IFACE = 'com.redhat.crash_catcher'
-CC_PATH = '/com/redhat/crash_catcher'
+CC_IFACE = 'com.redhat.abrt'
+CC_PATH = '/com/redhat/abrt'
         
 
 class DBusManager(gobject.GObject):
@@ -60,7 +60,7 @@ class DBusManager(gobject.GObject):
         try:
             self.proxy = bus.get_object(CC_IFACE, CC_PATH)
         except Exception, e:
-            raise Exception(e.message + "\nPlease check if crash-catcher daemon is running.")
+            raise Exception(e.message + "\nPlease check if abrt daemon is running.")
 
     def getReport(self, UUID):
         try:

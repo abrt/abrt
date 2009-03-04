@@ -1,9 +1,9 @@
 lib_LTLIBRARIES = libMiddleWare.la
 libMiddleWare_la_SOURCES = MiddleWare.cpp MiddleWare.h PluginManager.cpp \
-                           PluginManager.h CrashCatcherPlugin.cpp \
-                           CrashCatcherPlugin.h DynamicLibrary.cpp \
+                           PluginManager.h ABRTPlugin.cpp \
+                           ABRTPlugin.h DynamicLibrary.cpp \
                            DynamicLibrary.h Settings.h Settings.cpp \
-                           RPMInfo.cpp RPMInfo.h Plugin.h CrashTypes.h \
+                           RPM.cpp RPM.h Plugin.h CrashTypes.h \
                            MiddleWareTypes.h Application.h Database.h \
                            Reporter.h Language.h
 libMiddleWare_la_LIBADD = $(DL_LIBS) ../Utils/libUtils.la  $(RPM_LIBS)

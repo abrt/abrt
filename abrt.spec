@@ -149,7 +149,7 @@ fi
 
 %files applet
 %defattr(-,root,root,-)
-%{_bindir}/cc-applet
+%{_bindir}/%{name}-applet
 
 %files gui
 %defattr(-,root,root,-)

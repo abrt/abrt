@@ -17,9 +17,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#define CC_DBUS_NAME "com.redhat.crash_catcher"
-#define CC_DBUS_PATH "/com/redhat/crash_catcher"
-#define CC_DBUS_IFACE "com.redhat.crash_catcher"
+#define CC_DBUS_NAME "com.redhat.abrt"
+#define CC_DBUS_PATH "/com/redhat/abrt"
+#define CC_DBUS_IFACE "com.redhat.abrt"
 
 //typedef std::vector<crash_info_t> vector_crash_infos_t;
 typedef std::vector< std::vector<std::string> > dbus_vector_crash_infos_t;

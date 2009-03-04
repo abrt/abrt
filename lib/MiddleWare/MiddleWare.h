@@ -27,7 +27,7 @@
 #include "PluginManager.h"
 #include "CrashTypes.h"
 #include "MiddleWareTypes.h"
-#include "RPMInfo.h"
+#include "RPM.h"
 
 class CMiddleWare
 {
@@ -39,7 +39,7 @@ class CMiddleWare
         typedef std::map<std::string, set_reporters_t> map_plugin2reporters_t;
 
         CPluginManager* m_pPluginManager;
-        CRPMInfo m_RPMInfo;
+        CRPM m_RPM;
         set_blacklist_t m_setBlackList;
         set_enabled_plugins_t m_setEnabledPlugins;
         set_opengpg_keys_t m_setOpenGPGKeys;

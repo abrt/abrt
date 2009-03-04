@@ -25,7 +25,7 @@
 
 #include <map>
 #include <string>
-#include "CrashCatcherPlugin.h"
+#include "ABRTPlugin.h"
 #include "Plugin.h"
 #include "Language.h"
 #include "Reporter.h"
@@ -35,11 +35,11 @@
 class CPluginManager
 {
 	private:
-		typedef std::map<std::string, CCrashCatcherPlugin*> map_crash_catcher_plugins_t;
+		typedef std::map<std::string, CABRTPlugin*> map_abrt_plugins_t;
 		typedef std::map<std::string, CPlugin*> map_plugins_t;
 
 
-		map_crash_catcher_plugins_t m_mapCrashCatcherPlugins;
+		map_abrt_plugins_t m_mapABRTPlugins;
 		map_plugins_t m_mapPlugins;
 
 		std::string m_sPlugisConfDir;

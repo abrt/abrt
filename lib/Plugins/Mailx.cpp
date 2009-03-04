@@ -25,7 +25,7 @@
 #include "DebugDump.h"
 
 #define MAILX_COMMAND "/bin/mailx"
-#define MAILX_SUBJECT "\"CrashCatcher automated bug report\""
+#define MAILX_SUBJECT "\"abrt automated bug report\""
 
 CMailx::CMailx() :
     m_sEmailFrom("user@localhost"),

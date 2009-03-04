@@ -35,7 +35,7 @@ int main(int argc, char** argv)
     {
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
                                PLUGINS_LIB_DIR,
-                               std::string(CONF_DIR) + "/crash-catcher.conf");
+                               std::string(CONF_DIR) + "/abrt.conf");
         /* Create DebugDump */
         CDebugDump dd;
         char pid[100];
