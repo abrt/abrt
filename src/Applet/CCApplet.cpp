@@ -97,13 +97,13 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
     dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL, 
                                           GTK_MESSAGE_QUESTION,
                                           GTK_BUTTONS_YES_NO,
-                                          "CC has detected a crash.\nDo you want to open the crash analyzer and create a report?");
+                                          "ABRT has detected a crash.\nDo you want to open the crash analyzer and create a report?");
     gint result = gtk_dialog_run(GTK_DIALOG(dialog));
     switch (result)
     {
         case GTK_RESPONSE_YES:
             //FIXME - use fork+exec and absolute paths?
-            gui = popen("/usr/bin/cc-gui","r");
+            gui = popen("/usr/bin/abrt-gui","r");
             gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
             break;
         default:
