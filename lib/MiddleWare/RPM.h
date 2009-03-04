@@ -29,7 +29,7 @@
 #include <rpm/rpmts.h>
 #include <rpm/rpmdb.h>
 
-class CRPMInfo
+class CRPM
 {
     private:
 
@@ -39,14 +39,15 @@ class CRPMInfo
         set_fingerprints_t m_setFingerprints;
 
     public:
-        CRPMInfo();
-        ~CRPMInfo();
+        CRPM();
+        ~CRPM();
 
         void LoadOpenGPGPublicKey(const std::string& pFileName);
 
         bool CheckFingerprint(const std::string& pPackage);
         bool CheckHash(const std::string& pPackage, const std::string&pPath);
-        std::string GetPackage(const std::string& pFileName, std::string& pDescription);
+        std::string GetDescription(const std::string& pPackage);
+        std::string GetPackage(const std::string& pFileName);
 };
 
 #endif /* RPMINFO_H_ */

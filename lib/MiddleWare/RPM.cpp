@@ -1,18 +1,18 @@
-#include "RPMInfo.h"
+#include "RPM.h"
 #include <iostream>
 
-CRPMInfo::CRPMInfo()
+CRPM::CRPM()
 {
     char *argv[] = {(char*)""};
     m_poptContext = rpmcliInit(0, argv, NULL);
 }
 
-CRPMInfo::~CRPMInfo()
+CRPM::~CRPM()
 {
     rpmcliFini(m_poptContext);
 }
 
-void CRPMInfo::LoadOpenGPGPublicKey(const std::string& pFileName)
+void CRPM::LoadOpenGPGPublicKey(const std::string& pFileName)
 {
     uint8_t* pkt = NULL;
     size_t pklen;
@@ -20,7 +20,7 @@ void CRPMInfo::LoadOpenGPGPublicKey(const std::string& pFileName)
     if (pgpReadPkts(pFileName.c_str(), &pkt, &pklen) != PGPARMOR_PUBKEY)
     {
         free(pkt);
-        std::cerr << "CRPMInfo::LoadOpenGPGPublicKey(): Can not load public key " + pFileName << std::endl;
+        std::cerr << "CRPM::LoadOpenGPGPublicKey(): Can not load public key " + pFileName << std::endl;
         return;
     }
     if (pgpPubkeyFingerprint(pkt, pklen, keyID) == 0)
@@ -34,7 +34,7 @@ void CRPMInfo::LoadOpenGPGPublicKey(const std::string& pFileName)
     free(pkt);
 }
 
-bool CRPMInfo::CheckFingerprint(const std::string& pPackage)
+bool CRPM::CheckFingerprint(const std::string& pPackage)
 {
     bool ret = false;
     rpmts ts = rpmtsCreate();
@@ -64,7 +64,7 @@ bool CRPMInfo::CheckFingerprint(const std::string& pPackage)
     return ret;
 }
 
-bool CRPMInfo::CheckHash(const std::string& pPackage, const std::string& pPath)
+bool CRPM::CheckHash(const std::string& pPackage, const std::string& pPath)
 {
     bool ret = false;
     rpmts ts = rpmtsCreate();
@@ -98,7 +98,29 @@ bool CRPMInfo::CheckHash(const std::string& pPackage, const std::string& pPath)
     return ret;
 }
 
-std::string CRPMInfo::GetPackage(const std::string& pFileName, std::string& pDescription)
+std::string CRPM::GetDescription(const std::string& pPackage)
+{
+    std::string pDescription = "";
+    rpmts ts = rpmtsCreate();
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.c_str(), 0);
+    Header header;
+    if ((header = rpmdbNextIterator(iter)) != NULL)
+    {
+        rpmtd td = rpmtdNew();
+        headerGet(header, RPMTAG_SUMMARY, td, HEADERGET_DEFAULT);
+        const char* summary = rpmtdGetString(td);
+        headerGet(header, RPMTAG_DESCRIPTION, td, HEADERGET_DEFAULT);
+        const char* description = rpmtdGetString(td);
+        pDescription = summary + std::string("\n\n") + description;
+        rpmtdFree(td);
+
+    }
+    rpmdbFreeIterator(iter);
+    rpmtsFree(ts);
+    return pDescription;
+}
+
+std::string CRPM::GetPackage(const std::string& pFileName)
 {
     std::string ret = "";
     rpmts ts = rpmtsCreate();
@@ -112,13 +134,6 @@ std::string CRPMInfo::GetPackage(const std::string& pFileName, std::string& pDes
             ret = nerv;
             free(nerv);
         }
-        rpmtd td = rpmtdNew();
-        headerGet(header, RPMTAG_SUMMARY, td, HEADERGET_DEFAULT);
-        const char* summary = rpmtdGetString(td);
-        headerGet(header, RPMTAG_DESCRIPTION, td, HEADERGET_DEFAULT);
-        const char* description = rpmtdGetString(td);
-        pDescription = summary + std::string("\n\n") + description;
-        rpmtdFree(td);
     }
 
     rpmdbFreeIterator(iter);

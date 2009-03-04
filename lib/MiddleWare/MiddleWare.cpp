@@ -68,7 +68,7 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
         set_opengpg_keys_t::iterator it_k;
         for (it_k = m_setOpenGPGKeys.begin(); it_k != m_setOpenGPGKeys.end(); it_k++)
         {
-            m_RPMInfo.LoadOpenGPGPublicKey(*it_k);
+            m_RPM.LoadOpenGPGPublicKey(*it_k);
         }
     }
     if (settings.find("EnableOpenGPG") != settings.end())
@@ -281,10 +281,16 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     dd.Open(pDebugDumpDir);
 
     dd.LoadText(FILENAME_EXECUTABLE, executable);
-    package = m_RPMInfo.GetPackage(executable, description);
-    if (executable != "kernel")
+    if (executable == "kernel")
     {
+        package = "kernel";
+        description = m_RPM.GetDescription(executable);
+    }
+    else
+    {
+        package = m_RPM.GetPackage(executable);
         std::string packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
+        description = m_RPM.GetDescription(executable);
         if (packageName == "" ||
             (m_setBlackList.find(packageName) != m_setBlackList.end()))
         {
@@ -294,24 +300,14 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
         }
         if (m_bOpenGPGCheck)
         {
-            if (!m_RPMInfo.CheckFingerprint(packageName) ||
-                !m_RPMInfo.CheckHash(packageName, executable))
+            if (!m_RPM.CheckFingerprint(packageName) ||
+                !m_RPM.CheckHash(packageName, executable))
             {
                 dd.Delete();
                 dd.Close();
                 return 0;
             }
         }
-    }
-    else
-    {
-        package = "kernel";
-        description = "The Linux kernel";
-        description += "\n\n";
-        description += "The kernel contains the Linux kernel (vmlinuz), the core of any"
-                       "Linux operating system. The kernel handles the basic functions"
-                       "of the operating system: memory allocation, process allocation, device"
-                       "input and output, etc.";
     }
     dd.SaveText(FILENAME_PACKAGE, package);
     dd.SaveText(FILENAME_DESCRIPTION, description);
