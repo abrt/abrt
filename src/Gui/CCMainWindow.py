@@ -1,6 +1,7 @@
 import sys
 import pygtk
 pygtk.require("2.0")
+import gobject
 import gtk
 import gtk.glade
 import CCDBusBackend
@@ -29,8 +30,10 @@ class MainWindow():
             sys.exit()
         #Set the Glade file
         # FIXME add to PATH
-        self.gladefile = "/usr/share/abrt/ccgui.glade"  
-        self.wTree = gtk.glade.XML(self.gladefile) 
+        # FIXME remove!
+        
+        self.gladefile = "%s/ccgui.glade" % sys.path[0]
+        self.wTree = gtk.glade.XML(self.gladefile)
         
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window2")
@@ -40,6 +43,10 @@ class MainWindow():
             self.window.connect("destroy", self.destroy)
         
         self.appBar = self.wTree.get_widget("appBar")
+        # pregress bar window to show while bt is being extracted
+        self.pBarWindow = self.wTree.get_widget("pBarWindow")
+        print self.pBarWindow
+        self.pBar = self.wTree.get_widget("pBar")
         
         # set colours for descritpion heading
         self.wTree.get_widget("evDescription").modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
@@ -76,17 +83,21 @@ class MainWindow():
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("bQuit").connect("clicked", self.on_bQuit_clicked)
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
-        self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb)
+        self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         
         # load data
         #self.load()
+    def progress_update_cb(self, *args):
+        self.pBar.pulse()
+        return True
+        
     def hydrate(self):
         self.dumpsListStore.clear()
         self.rows = self.ccdaemon.getDumps()
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
         except Exception, e:
-            gui_error_message("Error while loading the dumplist, please check if crash-catcher daemon is running\n %s" % e.message)
+            gui_error_message("Error while loading the dumplist, please check if abrt daemon is running\n %s" % e.message)
         for entry in dumplist:
             try:
                 icon = get_icon_for_package(self.theme,entry.getPackageName())
@@ -137,8 +148,12 @@ class MainWindow():
             pass
         #print "got another crash, refresh gui?"
     
-    def on_analyze_complete_cb(self, daemon, report):
-        dumplist = getDumpList(self.ccdaemon)
+    def on_analyze_complete_cb(self, daemon, report, pBarWindow):
+        try:
+            dumplist = getDumpList(self.ccdaemon)
+        except Exception, e:
+            print e
+        #pBarWindow.destroy()
         #entry = dumplist.ddict[UUID]
         # tady asi nedostanem UUID, ale vysledek nasi volane metody
         #print report
@@ -164,6 +179,9 @@ class MainWindow():
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
             return
+        self.pBarWindow.show()
+        self.timer = gobject.timeout_add (100,self.progress_update_cb)
+        
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
         # show the report window with selected dump
         try:
