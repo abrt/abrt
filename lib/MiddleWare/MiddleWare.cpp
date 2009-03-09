@@ -290,13 +290,13 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     if (executable == "kernel")
     {
         package = "kernel";
-        description = m_RPM.GetDescription(executable);
+        description = m_RPM.GetDescription(package);
     }
     else
     {
         package = m_RPM.GetPackage(executable);
         std::string packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
-        description = m_RPM.GetDescription(executable);
+        description = m_RPM.GetDescription(packageName);
         if (packageName == "" ||
             (m_setBlackList.find(packageName) != m_setBlackList.end()))
         {
