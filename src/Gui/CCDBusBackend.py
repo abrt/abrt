@@ -26,7 +26,7 @@ class DBusManager(gobject.GObject):
             # new crash notify
             self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
             # BT extracting complete
-            #self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
+            #self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception("Proxy object doesn't exist!")
 
@@ -63,9 +63,9 @@ class DBusManager(gobject.GObject):
 
     def getReport(self, UUID):
         try:
-            #return self.cc.CreateReport(UUID)
             # let's try it async
-            self.cc.CreateReport(UUID, reply_handler=self.analyze_complete_cb, error_handler=self.error_handler)
+            # even if it's async it timeouts, so let's try to set the timeout to 60sec
+            self.cc.CreateReport(UUID, reply_handler=self.analyze_complete_cb, error_handler=self.error_handler, timeout=60)
         except dbus.exceptions.DBusException, e:
             raise Exception(e.message)
     

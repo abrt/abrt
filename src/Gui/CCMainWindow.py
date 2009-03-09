@@ -5,7 +5,6 @@ import gobject
 import gtk
 import gtk.glade
 import CCDBusBackend
-import sys
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
@@ -13,7 +12,7 @@ from CCReport import Report
 from exception import installExceptionHandler, handleMyException
 try:
     import rpm
-except:
+except Exception, ex:
     rpm = None
 
 installExceptionHandler("cc-gui", "0.0.1")
@@ -95,17 +94,17 @@ class MainWindow():
         
     def hydrate(self):
         self.dumpsListStore.clear()
-        self.rows = self.ccdaemon.getDumps()
+        #self.rows = self.ccdaemon.getDumps()
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
         except Exception, e:
             gui_error_message("Error while loading the dumplist, please check if abrt daemon is running\n %s" % e.message)
         for entry in dumplist:
             try:
-                icon = get_icon_for_package(self.theme,entry.getPackageName())
+                icon = get_icon_for_package(self.theme, entry.getPackageName())
             except:
                 icon = None
-            self.dumpsListStore.append([icon, entry.getPackage(),entry.getExecutable(), entry.getTime("%Y.%m.%d %H:%M:%S"),entry.getCount(), entry])
+            self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry])
             
     def filter_dumps(self, model, miter, data):
         # for later..
@@ -153,10 +152,11 @@ class MainWindow():
     def on_analyze_complete_cb(self, daemon, report, pBarWindow):
         gobject.source_remove(self.timer)
         self.pBarWindow.hide()
-        try:
-            dumplist = getDumpList(self.ccdaemon)
-        except Exception, e:
-            print e
+#FIXME - why we need this?? -> timeout warnings
+#        try:
+#            dumplist = getDumpList(self.ccdaemon)
+#        except Exception, e:
+#            print e
         if not report:
             gui_error_message("Unable to get report!\nDebuginfo is missing?")
             return
