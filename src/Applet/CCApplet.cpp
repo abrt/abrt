@@ -68,11 +68,13 @@ void CApplet::SetIconTooltip(const char *format, ...)
     va_start (args, format);
     while((n = vsnprintf (buf, size, format, args)) > (int)size)
     {
+        va_end (args);
         // string was larger than our buffer
         // alloc larger buffer
         size = n+1;
         delete[] buf;
         buf = new char[size];
+        va_start (args, format);
     }
     va_end (args);
     if (n != -1)
