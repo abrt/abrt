@@ -165,7 +165,7 @@ dbus_map_report_info_t CCrashWatcher::CreateReport(const std::string &pUUID,cons
         m_pMW->CreateReport(pUUID,to_string(unix_uid), crashReport);
         retval = crashReport.GetMap();
         //send out the message about completed analyze
-        AnalyzeComplete(pUUID);
+        AnalyzeComplete(retval);
     }
     catch(std::string err)
     {
@@ -286,7 +286,7 @@ void CCrashWatcher::Run()
 #ifdef DEBUG
     std::cout << "Run" << std::endl;
 #endif
-    Lock();
+    //Lock();
     GStartWatch();
 }
 

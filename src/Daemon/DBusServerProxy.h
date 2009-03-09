@@ -106,7 +106,7 @@ public:
         emit_signal(sig);
     }
     /* Notify the clients that creating a report has finished */
-    void AnalyzeComplete(const std::string& arg1)
+    void AnalyzeComplete(dbus_map_report_info_t arg1)
     {
         ::DBus::SignalMessage sig("AnalyzeComplete");
         ::DBus::MessageIter wi = sig.writer();
