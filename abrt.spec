@@ -9,6 +9,7 @@ Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
 Source1: abrt.init
 BuildRequires: dbus-c++-devel
 BuildRequires: gtk2-devel
+BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: sqlite-devel > 3.0
 BuildRequires: desktop-file-utils
@@ -61,6 +62,26 @@ Requires: %{name} = %{version}-%{release}
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++ 
 language plugin.
+
+%package addon-kerneloops
+Summary: %{name}'s kerneloops addon
+Group: System Environment/Libraries
+Requires: %{name}-plugin-kerneloopsreporter = %{version}-%{release}
+Requires: %{name} = %{version}-%{release}
+
+%description addon-kerneloops
+This package contains hook for kernel crashes information collecting.
+Application plugin.
+
+%package plugin-kerneloopsreporter
+Summary: %{name}'s kerneloops reporter plugin
+Group: System Environment/Libraries
+Requires: curl
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-kerneloopsreporter
+This package contains reporter plugin, that sends, collected by %{name}'s kerneloops
+addon, information about kernel crashes to specified server, e.g. kerneloops.org.
 
 %package plugin-sqlite3
 Summary: %{name}'s SQLite3 database plugin
@@ -162,6 +183,28 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/hookCCpp
+
+%files addon-kerneloops
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
+%{_libdir}/%{name}/libKerneloops.so*
+%{_libexecdir}/hookKerneloops
+
+%files plugin-kerneloopsreporter
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsReporter.conf
+%{_libdir}/%{name}/libKerneloopsReporter.so*
+
+%files addon-kerneloops
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
+%{_libdir}/%{name}/libKerneloops.so*
+%{_libexecdir}/hookKerneloops
+
+%files plugin-kerneloopsreporter
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsReporter.conf
+%{_libdir}/%{name}/libKerneloopsReporter.so*
 
 %files plugin-sqlite3
 %defattr(-,root,root,-)
