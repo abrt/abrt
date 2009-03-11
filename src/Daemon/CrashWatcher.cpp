@@ -118,6 +118,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
 CCrashWatcher::~CCrashWatcher()
 {
      //delete dispatcher, connection, etc..
+     m_pConn->disconnect();
      delete m_pMW;
      g_io_channel_unref(m_pGio);
      g_main_loop_unref(m_pMainloop);
@@ -277,6 +278,9 @@ void CCrashWatcher::Daemonize()
     if(sid == -1){
         throw "CCrashWatcher.cpp:Daemonize:setsid failed";
     }
+    close(STDIN_FILENO);
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
     //Lock();
     GStartWatch();
 }
