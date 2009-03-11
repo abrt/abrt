@@ -28,8 +28,6 @@ crash_notify_cb(const char* progname)
 #ifdef DEBUG
     std::cerr << "Application " << progname << " has crashed!" << std::endl;
 #endif
-    /* smth happend, show the blinking icon */
-    applet->BlinkIcon(true);
     applet->ShowIcon();
     //applet->AddEvent(uid, std::string(progname));
     applet->SetIconTooltip("A crash in package %s has been detected!", progname);

@@ -93,26 +93,9 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
 {
     CApplet *applet = (CApplet *)user_data;
     FILE *gui = NULL;
-    //FIXME
-    //gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
-    GtkWidget *dialog = NULL;
-    dialog = gtk_message_dialog_new(NULL, GTK_DIALOG_MODAL, 
-                                          GTK_MESSAGE_QUESTION,
-                                          GTK_BUTTONS_YES_NO,
-                                          "ABRT has detected a crash.\nDo you want to open the crash analyzer and create a report?");
-    gint result = gtk_dialog_run(GTK_DIALOG(dialog));
-    switch (result)
-    {
-        case GTK_RESPONSE_YES:
-            //FIXME - use fork+exec and absolute paths?
-            gui = popen("/usr/bin/abrt-gui","r");
-            gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
-            break;
-        default:
-            gtk_status_icon_set_blinking(applet->m_pStatusIcon,false);
-            break;
-    }
-    gtk_widget_destroy (dialog);
+    //FIXME - use fork+exec and absolute paths?
+    gui = popen("/usr/bin/abrt-gui","r");
+    gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
 }
 
 void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
@@ -120,8 +103,7 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          activate_time,
                             gpointer       user_data)
 {
-    /* for now just hide the icon on RMB */
-    gtk_status_icon_set_blinking(((CApplet *)user_data)->m_pStatusIcon, false);
+    //gtk_status_icon_set_blinking(((CApplet *)user_data)->m_pStatusIcon, false);
 }
 
 void CApplet::ShowIcon()
