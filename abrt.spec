@@ -1,7 +1,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.1
-Release: 13%{?dist}
+Version: 0.0.2
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -195,17 +195,6 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsReporter.conf
 %{_libdir}/%{name}/libKerneloopsReporter.so*
 
-%files addon-kerneloops
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
-%{_libdir}/%{name}/libKerneloops.so*
-%{_libexecdir}/hookKerneloops
-
-%files plugin-kerneloopsreporter
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsReporter.conf
-%{_libdir}/%{name}/libKerneloopsReporter.so*
-
 %files plugin-sqlite3
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/SQLite3.conf
@@ -222,6 +211,19 @@ fi
 %{_libdir}/%{name}/libMailx.so*
 
 %changelog
+* Wed Mar 11 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.2-1
+- added kerneloops addon to rpm (aarapov)
+- added kerneloops addon and plugin (aarapov)
+- Made Crash() private
+- Applet requires gui, removed dbus-glib deps
+- Closing stdout in daemon rhbz#489622
+- Changed applet behaviour according to rhbz#489624
+- Changed gui according to rhbz#489624, fixed dbus timeouts
+- Increased timeout for async dbus calls to 60sec
+- deps cleanup, signal AnalyzeComplete has the crashreport as an argument.
+- Fixed empty package Description.
+- Fixed problem with applet tooltip on x86_64
+
 * Wed Mar  4 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.1-13
 - More renaming issues fixed..
 - Changed BR from gtkmm24 to gtk2
