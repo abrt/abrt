@@ -31,7 +31,6 @@ class CApplet
   public DBus::ObjectProxy
 {
     private:
-        //Glib::RefPtr<Gtk::StatusIcon> m_nStatusIcon;
         GtkStatusIcon* m_pStatusIcon;
         std::map<int, std::string > m_mapEvents;
 	public:
@@ -49,7 +48,6 @@ class CApplet
         int AddEvent(int pUUID, const std::string& pProgname);
         int RemoveEvent(int pUUID);
         void ConnectCrashHandler(void (*pCrashHandler)(const char *progname));
-        void Crash(std::string &value);
     protected:
         //@@TODO applet menus
         static void OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data);
@@ -57,10 +55,9 @@ class CApplet
                             guint          button,
                             guint          activate_time,
                             gpointer       user_data);
-        //menu
-        //Glib::RefPtr<Gtk::UIManager> m_refUIManager;
-        //Glib::RefPtr<Gtk::ActionGroup> m_refActionGroup;
-        //Gtk::Menu* m_pMenuPopup;
+    private:
+    /* dbus stuff */
+            void Crash(std::string &value);
     private:
     /* the real signal handler called to handle the signal */
     void (*m_pCrashHandler)(const char *progname);
