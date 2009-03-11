@@ -9,7 +9,6 @@ Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
 Source1: abrt.init
 BuildRequires: dbus-c++-devel
 BuildRequires: gtk2-devel
-BuildRequires: dbus-glib-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: sqlite-devel > 3.0
 BuildRequires: desktop-file-utils
@@ -39,6 +38,7 @@ Development libraries and headers for %{name}.
 Summary: %{name}'s applet
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
+Requires: %{name}-gui
 
 %description applet
 Simple systray applet to notify user about new events detected by %{name} 
