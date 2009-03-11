@@ -80,7 +80,7 @@ class MainWindow():
         self.dlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
         self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked, self.dlist)
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
-        self.wTree.get_widget("bQuit").connect("clicked", self.on_bQuit_clicked)
+        self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         
@@ -138,7 +138,7 @@ class MainWindow():
             print e
     
     def destroy(self, widget, data=None):
-        print "destroy signal occurred"
+        #print "destroy signal occurred"
         gtk.main_quit()
     
     def on_data_changed_cb(self, *args):
@@ -195,13 +195,15 @@ class MainWindow():
     def delete_event_cb(self, widget, event, data=None):
         # Change FALSE to TRUE and the main window will not be destroyed
         # with a "delete_event".
-        return self.on_bQuit_clicked(widget)
+        #return self.on_bQuit_clicked(widget)
+        gtk.main_quit()
         
     def on_bQuit_clicked(self, widget):
-        ret = gui_question_dialog("Do you really want to quit?",self.window)
-        if ret == gtk.RESPONSE_YES:
-            gtk.main_quit()
-        return True
+        # quit dialog seems to be anoying...
+        #ret = gui_question_dialog("Do you really want to quit?",self.window)
+        #if ret == gtk.RESPONSE_YES:
+        gtk.main_quit()
+        #        return True
             
     def show(self):
         self.window.show()

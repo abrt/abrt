@@ -26,7 +26,7 @@ class DBusManager(gobject.GObject):
             # new crash notify
             self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
             # BT extracting complete
-            #self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
+            self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception("Proxy object doesn't exist!")
 
@@ -35,8 +35,13 @@ class DBusManager(gobject.GObject):
         print "disconnect"
     
     def error_handler(self,*args):
-        for arg in args:
-            print "error %s" % arg
+        print "Error"
+        #for arg in args:
+        #    print "error %s" % arg
+    
+    def dummy(*args):
+        # dummy function for async method call to workaround the timeout
+        pass
     
     def crash_cb(self,*args):
         #FIXME "got another crash, gui should reload!"
@@ -65,7 +70,7 @@ class DBusManager(gobject.GObject):
         try:
             # let's try it async
             # even if it's async it timeouts, so let's try to set the timeout to 60sec
-            self.cc.CreateReport(UUID, reply_handler=self.analyze_complete_cb, error_handler=self.error_handler, timeout=60)
+            self.cc.CreateReport(UUID, reply_handler=self.dummy, error_handler=self.error_handler, timeout=60)
         except dbus.exceptions.DBusException, e:
             raise Exception(e.message)
     
