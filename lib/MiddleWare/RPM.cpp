@@ -72,7 +72,7 @@ bool CRPM::CheckHash(const std::string& pPackage, const std::string& pPath)
     Header header;
     if ((header = rpmdbNextIterator(iter)) != NULL)
     {
-        rpmfi fi = rpmfiNew(ts, header, RPMTAG_BASENAMES, 0);
+        rpmfi fi = rpmfiNew(ts, header, RPMTAG_BASENAMES, RPMFI_NOHEADER);
         pgpHashAlgo hashAlgo;
         std::string headerHash;
         char computedHash[1024] = "";
