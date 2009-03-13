@@ -110,6 +110,7 @@ class MainWindow():
         return True
         
     def hydrate(self):
+        n = None
         self.dumpsListStore.clear()
         #self.rows = self.ccdaemon.getDumps()
         try:
@@ -121,7 +122,10 @@ class MainWindow():
                 icon = get_icon_for_package(self.theme, entry.getPackageName())
             except:
                 icon = None
-            self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry])
+            n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry])
+        # activate the last row if any..
+        if n:
+            self.dlist.set_cursor(self.dumpsListStore.get_path(n))
             
     def filter_dumps(self, model, miter, data):
         # for later..
@@ -142,6 +146,7 @@ class MainWindow():
         lPackage = self.wTree.get_widget("lPackage")
         self.wTree.get_widget("lDescription").set_label(dump.getDescription())
         #print self.rows[row]
+        
     def on_bDelete_clicked(self, button, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:

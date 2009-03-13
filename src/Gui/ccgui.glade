@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Fri Mar 13 13:37:58 2009 -->
+<!--Generated with glade3 3.4.5 on Fri Mar 13 14:32:54 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window2">
     <property name="title" translatable="yes">Automatic Bug Reporting Tool</property>
@@ -62,6 +62,7 @@
             <child>
               <widget class="GtkToolButton" id="bDelete">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="label" translatable="yes">Delete</property>
                 <property name="stock_id">gtk-delete</property>
               </widget>
@@ -72,6 +73,7 @@
             <child>
               <widget class="GtkToolButton" id="bReport">
                 <property name="visible">True</property>
+                <property name="sensitive">False</property>
                 <property name="label" translatable="yes">Report</property>
                 <property name="stock_id">gtk-save</property>
               </widget>
