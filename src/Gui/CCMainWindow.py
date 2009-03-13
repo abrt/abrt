@@ -95,7 +95,6 @@ class MainWindow():
         result = dialog.run()
         dialog.hide()
         
-    
     def error_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
         try:
@@ -131,11 +130,14 @@ class MainWindow():
     def on_tvDumps_cursor_changed(self,treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
+            self.wTree.get_widget("bDelete").set_sensitive(False)
+            self.wTree.get_widget("bReport").set_sensitive(False)
             self.wTree.get_widget("lDescription").set_label("")
             return
+        self.wTree.get_widget("bDelete").set_sensitive(True)
+        self.wTree.get_widget("bReport").set_sensitive(True)
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
-        
         #move this to Dump class
         lPackage = self.wTree.get_widget("lPackage")
         self.wTree.get_widget("lDescription").set_label(dump.getDescription())
