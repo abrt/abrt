@@ -81,11 +81,29 @@ class MainWindow():
         self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked, self.dlist)
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
+        self.wTree.get_widget("miAbout").connect("activate", self.on_miAbout_clicked)
+        # connect handlers for daemon signals
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
+        self.ccdaemon.connect("error", self.error_cb)
         
         # load data
         #self.load()
+    
+    def on_miAbout_clicked(self, widget):
+        dialog = self.wTree.get_widget("about")
+        result = dialog.run()
+        dialog.hide()
+        
+    
+    def error_cb(self, daemon, message=None):
+        # try to hide the progressbar, we dont really care if it was visible ..
+        try:
+            gobject.source_remove(self.timer)
+            self.pBarWindow.hide()
+        except Exception, e:
+            pass
+        gui_error_message("Unable to get report!\n%s" % message)
         
     # call to update the progressbar
     def progress_update_cb(self, *args):

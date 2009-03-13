@@ -113,6 +113,14 @@ public:
         wi << arg1;
         emit_signal(sig);
     }
+    
+    void Error(const std::string& arg1)
+    {
+        ::DBus::SignalMessage sig("Error");
+        ::DBus::MessageIter wi = sig.writer();
+        wi << arg1;
+        emit_signal(sig);
+    }
 
 
 private:

@@ -16,6 +16,8 @@ class DBusManager(gobject.GObject):
         gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
         # signal emited when new analyze is complete
         gobject.signal_new ("analyze-complete", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        # signal emited when smth fails
+        gobject.signal_new ("error", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
         self.proxy = None
@@ -27,6 +29,8 @@ class DBusManager(gobject.GObject):
             self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
             # BT extracting complete
             self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
+            # Catch Errors
+            self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception("Proxy object doesn't exist!")
 
@@ -34,10 +38,12 @@ class DBusManager(gobject.GObject):
     def disconnected(*args):
         print "disconnect"
     
-    def error_handler(self,*args):
-        print "Error"
-        #for arg in args:
-        #    print "error %s" % arg
+    def error_handler_cb(self,arg):
+        self.emit("error",arg)
+    
+    def error_handler(self,arg):
+        # used to silently ingore dbus timeouts
+        pass
     
     def dummy(*args):
         # dummy function for async method call to workaround the timeout

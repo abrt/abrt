@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Wed Mar 11 11:27:03 2009 -->
+<!--Generated with glade3 3.4.5 on Fri Mar 13 13:37:58 2009 -->
 <glade-interface>
   <widget class="GtkWindow" id="main_window2">
     <property name="title" translatable="yes">Automatic Bug Reporting Tool</property>
@@ -40,7 +40,7 @@
                   <widget class="GtkMenu" id="menu6">
                     <property name="visible">True</property>
                     <child>
-                      <widget class="GtkImageMenuItem" id="imagemenuitem20">
+                      <widget class="GtkImageMenuItem" id="miAbout">
                         <property name="visible">True</property>
                         <property name="label" translatable="yes">gtk-about</property>
                         <property name="use_underline">True</property>
@@ -200,6 +200,44 @@
           <packing>
             <property name="expand">False</property>
             <property name="position">2</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkAboutDialog" id="about">
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">About ABRT</property>
+    <property name="resizable">False</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ON_PARENT</property>
+    <property name="type_hint">GDK_WINDOW_TYPE_HINT_DIALOG</property>
+    <property name="has_separator">False</property>
+    <property name="program_name">ABRT</property>
+    <property name="copyright" translatable="yes">(C) 2009 Red Hat, Inc.</property>
+    <property name="license" translatable="yes">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</property>
+    <property name="authors">Anton Arapov &lt;aarapov@redhat.com&gt;
+Jiri Moskovcak &lt;jmoskovc@redhat.com&gt;
+Zdenek Prikryl &lt;zprikryl@redhat.com&gt;</property>
+    <property name="wrap_license">True</property>
+    <child internal-child="vbox">
+      <widget class="GtkVBox" id="dialog-vbox3">
+        <property name="visible">True</property>
+        <property name="spacing">2</property>
+        <child>
+          <placeholder/>
+        </child>
+        <child internal-child="action_area">
+          <widget class="GtkHButtonBox" id="dialog-action_area3">
+            <property name="visible">True</property>
+            <property name="layout_style">GTK_BUTTONBOX_END</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="pack_type">GTK_PACK_END</property>
           </packing>
         </child>
       </widget>

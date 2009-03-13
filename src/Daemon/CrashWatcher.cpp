@@ -170,6 +170,7 @@ dbus_map_report_info_t CCrashWatcher::CreateReport(const std::string &pUUID,cons
     }
     catch(std::string err)
     {
+        Error(err);
         std::cerr << err << std::endl;
     }
     return retval;
