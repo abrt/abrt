@@ -160,12 +160,13 @@ class MainWindow():
         gtk.main_quit()
     
     def on_data_changed_cb(self, *args):
-        ret = gui_question_dialog("Another crash detected, do you want to refresh the data?",self.window)
-        if ret == gtk.RESPONSE_YES:
-            self.hydrate()
-        else:
-            pass
-        #print "got another crash, refresh gui?"
+        # FIXME mark the new entry somehow....
+        # remember the selected row
+        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        self.hydrate()
+        if not path:
+            return
+        self.dlist.set_cursor(path[0])
     
     def on_analyze_complete_cb(self, daemon, report, pBarWindow):
         gobject.source_remove(self.timer)
