@@ -1,4 +1,6 @@
 import sys
+import os
+import pwd
 import pygtk
 pygtk.require("2.0")
 import gobject
@@ -15,7 +17,7 @@ try:
 except Exception, ex:
     rpm = None
 
-installExceptionHandler("cc-gui", "0.0.1")
+installExceptionHandler("abrt-gui", "0.0.2")
 
 class MainWindow():
     def __init__(self):
@@ -52,7 +54,11 @@ class MainWindow():
         
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
-        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str, object)
+        if os.getuid() == 0:
+            # root
+            self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str, object)
+        else:
+            self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str, object)
         # set filter
         self.modelfilter = self.dumpsListStore.filter_new()
         self.modelfilter.set_visible_func(self.filter_dumps, None)
@@ -69,6 +75,9 @@ class MainWindow():
         columns[1] = gtk.TreeViewColumn('Application')
         columns[2] = gtk.TreeViewColumn('Date')
         columns[3] = gtk.TreeViewColumn('Crash Rate')
+        if os.getuid() == 0:
+            column = gtk.TreeViewColumn('User')
+            columns.append(column)
         # create list
         for column in columns:
             n = self.dlist.append_column(column)
@@ -122,7 +131,12 @@ class MainWindow():
                 icon = get_icon_for_package(self.theme, entry.getPackageName())
             except:
                 icon = None
-            n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry])
+            if os.getuid() == 0:
+                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), 
+                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), pwd.getpwuid(int(entry.UID))[0], entry])
+            else:
+                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), 
+                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry])
         # activate the last row if any..
         if n:
             self.dlist.set_cursor(self.dumpsListStore.get_path(n))
@@ -141,7 +155,7 @@ class MainWindow():
         self.wTree.get_widget("bDelete").set_sensitive(True)
         self.wTree.get_widget("bReport").set_sensitive(True)
         # this should work until we keep the row object in the last position
-        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         #move this to Dump class
         lPackage = self.wTree.get_widget("lPackage")
         self.wTree.get_widget("lDescription").set_label(dump.getDescription())
@@ -152,7 +166,7 @@ class MainWindow():
         if not path:
             return
         # this should work until we keep the row object in the last position
-        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         try:
             if self.ccdaemon.DeleteDebugDump(dump.UUID):
                 self.hydrate()
@@ -208,7 +222,7 @@ class MainWindow():
         self.pBarWindow.show()
         self.timer = gobject.timeout_add (100,self.progress_update_cb)
         
-        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), len(self.dlist.get_columns()))
+        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         # show the report window with selected dump
         try:
             report = self.ccdaemon.getReport(dump.getUUID())
