@@ -37,7 +37,7 @@ CPluginManager::~CPluginManager()
 
 void CPluginManager::LoadPlugins()
 {
-	DIR *dir = opendir(m_sPlugisConfDir.c_str());
+	DIR *dir = opendir(m_sPlugisLibDir.c_str());
 	struct dirent *dent = NULL;
 	if (dir != NULL)
 	{
@@ -46,10 +46,11 @@ void CPluginManager::LoadPlugins()
 			if (dent->d_type == DT_REG)
 			{
 				std::string name = dent->d_name;
-				std::string extension = name.substr(name.length()-sizeof(PLUGINS_CONF_EXTENSION)+1);
-				if (extension == PLUGINS_CONF_EXTENSION)
+				std::string extension = name.substr(name.length()-sizeof(PLUGINS_LIB_EXTENSION)+1);
+				if (extension == PLUGINS_LIB_EXTENSION)
 				{
-					name.erase(name.length()-sizeof(PLUGINS_CONF_EXTENSION));
+				    name.erase(0, sizeof(PLUGINS_LIB_PREFIX) - 1);
+					name.erase(name.length() - sizeof(PLUGINS_LIB_EXTENSION));
 					LoadPlugin(name);
 				}
 			}
@@ -75,7 +76,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
 		CABRTPlugin* abrtPlugin = NULL;
 		try
 		{
-			std::string libPath = m_sPlugisLibDir + "/lib" + pName + "." + PLUGINS_LIB_EXTENSIONS;
+			std::string libPath = m_sPlugisLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
 			abrtPlugin = new CABRTPlugin(libPath);
 			if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
 			    (abrtPlugin->GetType() < LANGUAGE && abrtPlugin->GetType() > DATABASE))

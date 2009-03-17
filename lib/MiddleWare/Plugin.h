@@ -30,7 +30,8 @@
 #define PLUGINS_MAGIC_NUMBER 1
 
 #define PLUGINS_CONF_EXTENSION "conf"
-#define PLUGINS_LIB_EXTENSIONS "so"
+#define PLUGINS_LIB_EXTENSION "so"
+#define PLUGINS_LIB_PREFIX "lib"
 
 class CPlugin
 {
