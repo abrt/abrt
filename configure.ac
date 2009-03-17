@@ -18,6 +18,7 @@ PKG_CHECK_MODULES([GTK], [gtk+-2.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0])
 PKG_CHECK_MODULES([DBUSCPP], [dbus-c++-1])
 PKG_CHECK_MODULES([RPM], [rpm])
+PKG_CHECK_MODULES([CURL], [libcurl])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])

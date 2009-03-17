@@ -18,7 +18,8 @@ libKerneloops_la_CPPFLAGS = -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -DDEB
 # KerneloopsReporter
 libKerneloopsReporter_la_SOURCES = KerneloopsReporter.cpp KerneloopsReporter.h
 libKerneloopsReporter_la_LDFLAGS = -avoid-version
-libKerneloopsReporter_la_LIBADD = -lcurl
+libKerneloopsReporter_la_LIBADD = $(CURL_LIBS)
+libKerneloopsReporter_la_CPPFLAGS = -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(CURL_CFLAGS)
 
 # Mailx
 libMailx_la_SOURCES = Mailx.cpp Mailx.h
