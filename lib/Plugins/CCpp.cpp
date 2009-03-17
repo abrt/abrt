@@ -50,7 +50,7 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
 
     if (fp == NULL)
     {
-        throw "CLanguageCCpp::InstallDebugInfos(): cannot execute " + command ;
+        throw std::string("CLanguageCCpp::InstallDebugInfos(): cannot execute " + command) ;
     }
     while (fgets(line, sizeof(line), fp))
     {
@@ -65,12 +65,12 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
         if (text.find(canNotInstall) != std::string::npos)
         {
             pclose(fp);
-            throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage + " (" + canNotInstall + ")" ;
+            throw std::string("CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage + " (" + canNotInstall + ")") ;
         }
     }
     if (pclose(fp) != 0)
     {
-        throw "CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage ;
+        throw std::string("CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage) ;
     }
 }
 
@@ -210,8 +210,21 @@ void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
         return;
     }
     dd.LoadText(FILENAME_PACKAGE, package);
-
-    InstallDebugInfos(package);
+    try
+    {
+        InstallDebugInfos(package);
+    }
+    catch(std::string& err)
+    {
+        dd.Close();
+        throw err;
+    }
+    catch(...)
+    {
+        std::cerr << "generic catch..." << std::endl;
+        dd.Close();
+        throw std::string("error");
+    }
     GetBacktrace(pDebugDumpDir, backtrace);
     dd.SaveText(FILENAME_TEXTDATA1, backtrace);
     if (m_bMemoryMap)
