@@ -33,7 +33,10 @@ class CSQLite3 : public CDatabase
         std::string m_sDBPath;
         sqlite3* m_pDB;
 
-        void Create();
+        bool OpenDB();
+        bool CheckTable();
+        void CreateDB();
+        void CreateTable();
         void Exec(const std::string& pCommand);
         void GetTable(const std::string& pCommand, vector_database_rows_t& pTable);
         bool Exist(const std::string& pUUID, const std::string& pUID);
