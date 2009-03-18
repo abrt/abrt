@@ -66,6 +66,13 @@ class CMiddleWare
         void DebugDump2Report(const std::string& pDebugDumpDir,
                               crash_report_t& pCrashReport);
 
+        bool IsDebugDumpSaved(const std::string& pDebugDumpDir);
+        int SavePackageDescriptionToDebugDump(const std::string& pDebugDumpDir);
+        int SaveUUIDToDebugDump(const std::string& pDebugDumpDir);
+        int SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo);
+        crash_info_t GetCrashInfo(const std::string& pUUID,
+                                  const std::string& pUID);
+
     public:
 
         CMiddleWare(const std::string& pPlugisConfDir,
@@ -83,10 +90,14 @@ class CMiddleWare
 
         void Report(const crash_report_t& pCrashReport);
 
-        void DeleteDebugDump(const std::string& pUUID,
-                             const std::string& pUID);
+        void DeleteCrashInfo(const std::string& pUUID,
+                             const std::string& pUID,
+                             const bool bWithDebugDump = true);
 
+
+        int SaveDebugDump(const std::string& pDebugDumpDir);
         int SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo);
+
         vector_crash_infos_t GetCrashInfos(const std::string& pUID);
 };
 
