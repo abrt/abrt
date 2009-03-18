@@ -382,13 +382,16 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
     {
         crash_info_t info;
         CDebugDump dd;
-        info.m_sUUID = rows[ii].m_sUUID;
-        info.m_sUID = rows[ii].m_sUID;
-        info.m_sCount = rows[ii].m_sCount;
-        info.m_sTime = rows[ii].m_sTime;
-        info.m_sReported = rows[ii].m_sReported;
+        try
+        {
+            dd.Open(rows[ii].m_sDebugDumpDir);
+        }
+        catch (std::string sErr)
+        {
+            DeleteDebugDump(rows[ii].m_sUUID, rows[ii].m_sUID);
+            continue;
+        }
 
-        dd.Open(rows[ii].m_sDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, data);
         info.m_sExecutable = data;
         dd.LoadText(FILENAME_PACKAGE, data);
@@ -397,6 +400,11 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
         info.m_sDescription = data;
         dd.Close();
 
+        info.m_sUUID = rows[ii].m_sUUID;
+        info.m_sUID = rows[ii].m_sUID;
+        info.m_sCount = rows[ii].m_sCount;
+        info.m_sTime = rows[ii].m_sTime;
+        info.m_sReported = rows[ii].m_sReported;
         infos.push_back(info);
     }
 
