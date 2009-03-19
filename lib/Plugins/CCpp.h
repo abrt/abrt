@@ -35,7 +35,7 @@ class CAnalyzerCCpp : public CAnalyzer
 		void InstallDebugInfos(const std::string& pPackage);
 		void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
 		void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace);
-		void RunCommand(const std::string&pCommand, std::string& pOutput);
+		void RunGdb(const std::string& pScript, const std::string pUID, std::string& pOutput);
 
 	public:
 	    CAnalyzerCCpp();

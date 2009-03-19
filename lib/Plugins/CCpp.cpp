@@ -21,18 +21,21 @@
 
 #include "CCpp.h"
 #include <fstream>
-#include <ctype.h>
 #include "DebugDump.h"
 #include "Settings.h"
 #include <sstream>
 #include <iostream>
 #include <hash_map>
+#include <ctype.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <fcntl.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s"
-
-#define DEBUGINFO_COMMAND "debuginfo-install -y "
-#define GDB_COMMAND "gdb -batch -x "
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
 	m_bMemoryMap(false)
@@ -40,45 +43,107 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
 
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
-    char line[1024];
-    std::string command = DEBUGINFO_COMMAND + pPackage;
-    std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-") - 1));
-    std::string packageERV = pPackage.substr(packageName.length());
-    std::string packageDebuginfo = packageName+"-debuginfo"+packageERV;
-    std::string installed = "already installed and latest version";
-    std::string canNotInstall = "No debuginfo packages available to install";
-    FILE *fp = popen(command.c_str(), "r");
+    char buff[1024];
+    int pipein[2], pipeout[2];
+    struct timeval delay;
+    fd_set rsfd;
+    pid_t child;
 
-    if (fp == NULL)
+    pipe(pipein);
+    pipe(pipeout);
+
+    fcntl(pipein[0], F_SETFD, FD_CLOEXEC);
+    fcntl(pipeout[1], F_SETFD, FD_CLOEXEC);
+
+    child = fork();
+    if (child < 0)
     {
-        throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot execute " + command) ;
+        throw std::string("CAnalyzerCCpp::RunGdb():  fork failed.");
     }
-    while (fgets(line, sizeof(line), fp))
+    if (child == 0)
     {
-        std::string text = line;
-        std::cout << text;
-        if (text.find(packageDebuginfo) != std::string::npos &&
-            text.find(installed) != std::string::npos)
+        close(STDIN_FILENO);
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+
+        dup2(pipein[0], STDIN_FILENO);
+        close(pipein[0]);
+        dup2(pipeout[1], STDOUT_FILENO);
+        close(pipeout[1]);
+
+        setsid();
+        execlp("debuginfo-install", "debuginfo-install", pPackage.c_str(), NULL);
+        exit(0);
+    }
+
+    close(pipein[0]);
+    close(pipeout[1]);
+
+    bool quit = false;
+
+    while(!quit)
+    {
+        FD_ZERO(&rsfd);
+
+        FD_SET(pipeout[0], &rsfd);
+
+        delay.tv_sec = 1;
+        delay.tv_usec = 0;
+
+        if(select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) > 0)
         {
-            pclose(fp);
-            return;
-        }
-        if (text.find(canNotInstall) != std::string::npos)
-        {
-            pclose(fp);
-            throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage + " (" + canNotInstall + ")") ;
+            if(FD_ISSET(pipeout[0], &rsfd))
+            {
+                int r = read(pipeout[0], buff, sizeof(buff));
+                if (r <= 0)
+                {
+                    quit = true;
+                }
+                else
+                {
+                    buff[r] = '\0';
+                    std::cerr << buff;
+                    if (strstr(buff, "already installed and latest version") != NULL)
+                    {
+                        break;
+                    }
+                    if (strstr(buff, "No debuginfo packages available to install") != NULL ||
+                        strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
+                        strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL)
+                    {
+                        close(pipein[1]);
+                        close(pipeout[0]);
+                        kill(child, SIGTERM);
+                        wait(NULL);
+                        throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for ") + pPackage;
+                    }
+                    if (strstr(buff, "Total download size") != NULL)
+                    {
+                        int r =  write(pipein[1], "y\n", sizeof("y\n"));
+                        if (r != sizeof("y\n"))
+                        {
+                            close(pipein[1]);
+                            close(pipeout[0]);
+                            kill(child, SIGTERM);
+                            wait(NULL);
+                            throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for ") + pPackage;
+                        }
+                    }
+                }
+            }
         }
     }
-    if (pclose(fp) != 0)
-    {
-        throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage) ;
-    }
+    close(pipein[1]);
+    close(pipeout[0]);
+
+    wait(NULL);
 }
 
 void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
+    std::string UID;
     fTmp.open(tmpFile.c_str());
     if (fTmp.is_open())
     {
@@ -86,6 +151,7 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.LoadText(FILENAME_UID, UID);
         dd.Close();
         fTmp << "file " << executable << std::endl;
         fTmp << "core " << pDebugDumpDir << "/" << FILENAME_BINARYDATA1 << std::endl;
@@ -97,8 +163,8 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
     {
         throw "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile ;
     }
-    std::string command = GDB_COMMAND + tmpFile;
-    RunCommand(command, pBacktrace);
+
+    RunGdb(tmpFile, UID, pBacktrace);
 }
 
 void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
@@ -144,24 +210,70 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
     }
 }
 
-void CAnalyzerCCpp::RunCommand(const std::string& pCommand, std::string& pOutput)
+void CAnalyzerCCpp::RunGdb(const std::string& pScript, const std::string pUID, std::string& pOutput)
 {
-    char line[1024];
-    std::string output;
-    FILE *fp = popen(pCommand.c_str(), "r");
-    if (fp == NULL)
+    int pipeout[2];
+    char buff[1024];
+    struct timeval delay;
+    fd_set rsfd;
+    pid_t child;
+
+    pipe(pipeout);
+    fcntl(pipeout[1], F_SETFD, FD_CLOEXEC);
+
+    child = fork();
+    if (child == -1)
     {
-        throw "CAnalyzerCCpp::GetBacktrace(): cannot execute " + pCommand ;
+        throw std::string("CAnalyzerCCpp::RunGdb():  fork failed.");
     }
-    pOutput = "";
-    while (fgets(line, 1024, fp) != NULL)
+    if(child == 0)
     {
-        output += line;
+        close(STDIN_FILENO);
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+
+        dup2(pipeout[1], STDOUT_FILENO);
+        close(pipeout[1]);
+
+        setuid(atoi(pUID.c_str()));
+        seteuid(atoi(pUID.c_str()));
+        setsid();
+
+        execlp("gdb", "gdb","-batch", "-x", pScript.c_str(), NULL);
+        exit(0);
     }
 
-    pOutput = output;
+    close(pipeout[1]);
 
-    pclose(fp);
+    bool quit = false;
+
+    while(!quit)
+    {
+        FD_ZERO(&rsfd);
+        FD_SET(pipeout[0], &rsfd);
+
+        delay.tv_sec = 1;
+        delay.tv_usec = 0;
+
+        if(select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) > 0)
+        {
+            if(FD_ISSET(pipeout[0], &rsfd))
+            {
+                int r = read(pipeout[0], buff, sizeof(buff));
+                if (r <= 0)
+                {
+                    quit = true;
+                }
+                else
+                {
+                    buff[r] = '\0';
+                    pOutput += buff;
+                }
+            }
+        }
+    }
+    close(pipeout[0]);
+    wait(NULL);
 }
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
@@ -211,22 +323,13 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
         return;
     }
     dd.LoadText(FILENAME_PACKAGE, package);
-    try
-    {
-        InstallDebugInfos(package);
-    }
-    catch(std::string& err)
-    {
-        dd.Close();
-        throw err;
-    }
-    catch(...)
-    {
-        std::cerr << "generic catch..." << std::endl;
-        dd.Close();
-        throw std::string("error");
-    }
+    dd.Close();
+
+    InstallDebugInfos(package);
+
     GetBacktrace(pDebugDumpDir, backtrace);
+
+    dd.Open(pDebugDumpDir);
     dd.SaveText(FILENAME_TEXTDATA1, backtrace);
     if (m_bMemoryMap)
     {

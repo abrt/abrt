@@ -189,7 +189,15 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
     dd.Open(row.m_sDebugDumpDir);
 
     dd.LoadText(FILENAME_ANALYZER, analyzer);
-    CreateReport(analyzer, row.m_sDebugDumpDir);
+    try
+    {
+        CreateReport(analyzer, row.m_sDebugDumpDir);
+    }
+    catch (...)
+    {
+        dd.Close();
+        throw;
+    }
     UUID = GetGlobalUUID(analyzer, row.m_sDebugDumpDir);
 
     dd.SaveText(FILENAME_UUID, UUID);
