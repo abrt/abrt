@@ -376,7 +376,7 @@ int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, crash
         dd.Close();
         return 2;
     }
-
+    dd.Close();
     return 1;
 }
 
