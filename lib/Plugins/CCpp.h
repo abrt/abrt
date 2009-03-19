@@ -1,5 +1,5 @@
 /*
-    CCpp.h - header file for C/C++ language plugin
+    CCpp.h - header file for C/C++ analyzer plugin
            - it can ger UUID and memory maps from core files
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
@@ -25,9 +25,9 @@
 
 #include <string>
 #include "Plugin.h"
-#include "Language.h"
+#include "Analyzer.h"
 
-class CLanguageCCpp : public CLanguage
+class CAnalyzerCCpp : public CAnalyzer
 {
 	private:
 		bool m_bMemoryMap;
@@ -38,24 +38,23 @@ class CLanguageCCpp : public CLanguage
 		void RunCommand(const std::string&pCommand, std::string& pOutput);
 
 	public:
-		CLanguageCCpp();
-		virtual ~CLanguageCCpp() {}
+	    CAnalyzerCCpp();
+		virtual ~CAnalyzerCCpp() {}
 		std::string GetLocalUUID(const std::string& pDebugDumpDir);
 		std::string GetGlobalUUID(const std::string& pDebugDumpDir);
 		void CreateReport(const std::string& pDebugDumpDir);
 		void Init();
 		void DeInit();
-		void SetSettings(const map_settings_t& pSettings);
+		void LoadSettings(const std::string& pPath);
 };
 
 
-PLUGIN_INFO(LANGUAGE,
+PLUGIN_INFO(ANALYZER,
+            CAnalyzerCCpp,
 			"CCpp",
 			"0.0.1",
-		    "Simple C/C++ language plugin.",
+		    "Simple C/C++ analuzer plugin.",
 		    "zprikryl@redhat.com",
 		    "https://fedorahosted.org/crash-catcher/wiki");
-
-PLUGIN_INIT(CLanguageCCpp);
 
 #endif /* CCPP */

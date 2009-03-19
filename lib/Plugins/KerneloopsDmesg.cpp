@@ -183,7 +183,7 @@ static void fill_linepointers(char *buffer, int remove_syslog)
 static inline int extract_version(char *linepointer, char *version)
 {
 	int ret;
-	
+
 	ret = 0;
 	if ((strstr(linepointer, "Pid") != NULL) ||
 		(strstr(linepointer, "comm") != NULL) ||
@@ -526,7 +526,7 @@ int scan_logs()
 		try
 		{
 			dd.Create(path);
-			dd.SaveText(FILENAME_APPLICATION, "Kerneloops");
+			dd.SaveText(FILENAME_ANALYZER, "Kerneloops");
 			dd.SaveText(FILENAME_UID, "0");
 			dd.SaveText(FILENAME_EXECUTABLE, "kernel");
 			dd.SaveText(FILENAME_KERNEL, oops->version);

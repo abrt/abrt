@@ -25,7 +25,6 @@
 
 #include <string>
 #include <map>
-#include "Settings.h"
 
 #define PLUGINS_MAGIC_NUMBER 1
 
@@ -38,13 +37,13 @@ class CPlugin
     public:
         virtual ~CPlugin() {}
 
-        virtual void Init() = 0;
-        virtual void DeInit() = 0;
-        virtual void SetSettings(const map_settings_t& pSettings) = 0;
+        virtual void Init() {}
+        virtual void DeInit() {}
+        virtual void LoadSettings(const std::string& pPath) {}
 };
 
-typedef enum { LANGUAGE, REPORTER, APPLICATION, DATABASE } plugin_type_t;
-const char* const plugin_type_str_t[] = {"Language", "Reporter", "Application", "Database"};
+typedef enum { ANALYZER, ACTION, REPORTER, DATABASE } plugin_type_t;
+const char* const plugin_type_str_t[] = {"Analyzer", "Action", "Reporter", "Database"};
 
 typedef struct SPluginInfo
 {
@@ -59,19 +58,11 @@ typedef struct SPluginInfo
 
 #define PLUGIN_IFACE extern "C"
 
-#define PLUGIN_INIT(plugin_class)\
+#define PLUGIN_INFO(type, plugin_class, name, version, description, email, www)\
     PLUGIN_IFACE CPlugin* plugin_new()\
     {\
-        plugin_class* plugin = new plugin_class();\
-        if (plugin == NULL)\
-        {\
-            throw std::string("Not enought memory");\
-        }\
-        return plugin;\
+        return new plugin_class();\
     }\
-
-
-#define PLUGIN_INFO(type, name, version, description, email, www)\
     PLUGIN_IFACE const plugin_info_t plugin_info =\
     {\
         type,\

@@ -41,22 +41,18 @@ class CMailx : public CReporter
     public:
         CMailx();
         virtual ~CMailx() {}
-        void Init() {}
-        void DeInit() {}
-        void SetSettings(const map_settings_t& pSettings);
 
+        void LoadSettings(const std::string& pPath);
         void Report(const crash_report_t& pReport);
 };
 
 
 PLUGIN_INFO(REPORTER,
+            CMailx,
             "Mailx",
             "0.0.1",
             "Sends an email with a report via mailx command",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/crash-catcher/wiki");
-
-PLUGIN_INIT(CMailx);
-
 
 #endif /* MAILX_H_ */

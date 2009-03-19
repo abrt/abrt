@@ -21,21 +21,25 @@
 
 #include "Logger.h"
 #include <fstream>
+#include "Settings.h"
 
 CLogger::CLogger() :
     m_sLogPath("/var/log/abrt-logger"),
     m_bAppendLogs(true)
 {}
 
-void CLogger::SetSettings(const map_settings_t& pSettings)
+void CLogger::LoadSettings(const std::string& pPath)
 {
-    if (pSettings.find("LogPath")!= pSettings.end())
+    map_settings_t settings;
+    load_settings(pPath, settings);
+
+    if (settings.find("LogPath")!= settings.end())
     {
-        m_sLogPath = pSettings.find("LogPath")->second;
+        m_sLogPath = settings["LogPath"];
     }
-    if (pSettings.find("AppendLogs")!= pSettings.end())
+    if (settings.find("AppendLogs")!= settings.end())
     {
-        m_bAppendLogs = pSettings.find("AppendLogs")->second == "yes";
+        m_bAppendLogs = settings["AppendLogs"] == "yes";
     }
 }
 

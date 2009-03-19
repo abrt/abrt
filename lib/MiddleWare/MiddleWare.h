@@ -48,18 +48,12 @@ class CMiddleWare
 
         bool m_bOpenGPGCheck;
 
-        std::string GetLocalUUIDLanguage(const std::string& pLanguage,
-                                         const std::string& pDebugDumpDir);
-        std::string GetGlobalUUIDLanguage(const std::string& pLanguage,
-                                          const std::string& pDebugDumpDir);
-        void CreateReportLanguage(const std::string& pLanguage,
-                                     const std::string& pDebugDumpDir);
-        std::string GetLocalUUIDApplication(const std::string& pApplication,
-                                            const std::string& pDebugDumpDir);
-        std::string GetGlobalUUIDApplication(const std::string& pApplication,
-                                             const std::string& pDebugDumpDir);
-        void CreateReportApplication(const std::string& pApplication,
-                                     const std::string& pDebugDumpDir);
+        std::string GetLocalUUID(const std::string& pAnalyzer,
+                                 const std::string& pDebugDumpDir);
+        std::string GetGlobalUUID(const std::string& pAnalyzer,
+                                  const std::string& pDebugDumpDir);
+        void CreateReport(const std::string& pAnalyzer,
+                          const std::string& pDebugDumpDir);
 
         void LoadSettings(const std::string& pPath);
 

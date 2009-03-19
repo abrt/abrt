@@ -61,7 +61,7 @@ Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++ 
-language plugin.
+analyzer plugin.
 
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
@@ -71,7 +71,7 @@ Requires: %{name} = %{version}-%{release}
 
 %description addon-kerneloops
 This package contains hook for kernel crashes information collecting.
-Application plugin.
+analyzer plugin.
 
 %package plugin-kerneloopsreporter
 Summary: %{name}'s kerneloops reporter plugin

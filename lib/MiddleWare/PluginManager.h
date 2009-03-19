@@ -27,10 +27,10 @@
 #include <string>
 #include "ABRTPlugin.h"
 #include "Plugin.h"
-#include "Language.h"
+#include "Analyzer.h"
 #include "Reporter.h"
 #include "Database.h"
-#include "Application.h"
+#include "Action.h"
 
 class CPluginManager
 {
@@ -59,9 +59,9 @@ class CPluginManager
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
-		CLanguage* GetLanguage(const std::string& pName);
+		CAnalyzer* GetAnalyzer(const std::string& pName);
 		CReporter* GetReporter(const std::string& pName);
-		CApplication* GetApplication(const std::string& pName);
+		CAction* GetAction(const std::string& pName);
 		CDatabase* GetDatabase(const std::string& pName);
 
 };

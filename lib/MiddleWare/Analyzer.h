@@ -1,5 +1,5 @@
 /*
-    Language.h - header file for language plugin
+    Analyzer.h - header file for analyzer plugin
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -19,19 +19,19 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#ifndef LANGUAGE_H_
-#define LANGUAGE_H_
+#ifndef ANALYZER_H_
+#define ANALYZER_H_
 
 #include <string>
 #include "Plugin.h"
 
-class CLanguage : public CPlugin
+class CAnalyzer : public CPlugin
 {
     public:
-        virtual ~CLanguage() {}
+        virtual ~CAnalyzer() {}
         virtual std::string GetLocalUUID(const std::string& pDebugDumpPath) = 0;
         virtual std::string GetGlobalUUID(const std::string& pDebugDumpPath) = 0;
         virtual void CreateReport(const std::string& pDebugDumpPath) = 0;
 };
 
-#endif /*LANGUAGE_H_*/
+#endif /*ANALYZER_H_*/

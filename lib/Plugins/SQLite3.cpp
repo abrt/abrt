@@ -24,6 +24,7 @@
 #include "SQLite3.h"
 #include <string>
 #include <iostream>
+#include "Settings.h"
 
 
 #define ABRT_TABLE "abrt"
@@ -267,10 +268,13 @@ const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::
     return table[0];
 }
 
-void CSQLite3::SetSettings(const map_settings_t& pSettings)
+void CSQLite3::LoadSettings(const std::string& pPath)
 {
-    if (pSettings.find("DBPath")!= pSettings.end())
+    map_settings_t settings;
+    load_settings(pPath, settings);
+
+    if (settings.find("DBPath")!= settings.end())
     {
-        m_sDBPath = pSettings.find("DBPath")->second;
+        m_sDBPath = settings["DBPath"];
     }
 }

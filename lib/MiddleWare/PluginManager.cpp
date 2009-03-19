@@ -79,7 +79,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
 			std::string libPath = m_sPlugisLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
 			abrtPlugin = new CABRTPlugin(libPath);
 			if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
-			    (abrtPlugin->GetType() < LANGUAGE && abrtPlugin->GetType() > DATABASE))
+			    (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
 			{
 				throw std::string("non-compatible plugin");
 			}
@@ -117,10 +117,9 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
         {
             map_settings_t settings;
             std::string path = m_sPlugisConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
-            load_settings(path, settings);
             CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
             plugin->Init();
-            plugin->SetSettings(settings);
+            plugin->LoadSettings(path);
             m_mapPlugins[pName] = plugin;
             std::cerr << "Registred plugin " << pName << "("
                       << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]
@@ -145,14 +144,14 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
     }
 }
 
-CLanguage* CPluginManager::GetLanguage(const std::string& pName)
+CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
 {
 	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
 	{
-		throw std::string("CPluginManager::GetLanguage():"
-				          "Language plugin: '"+pName+"' is not loaded.");
+		throw std::string("CPluginManager::GetAnalyzer():"
+				          "Analyzer plugin: '"+pName+"' is not loaded.");
 	}
-	return (CLanguage*) m_mapPlugins[pName];
+	return dynamic_cast<CAnalyzer*>(m_mapPlugins[pName]);
 }
 
 CReporter* CPluginManager::GetReporter(const std::string& pName)
@@ -162,17 +161,17 @@ CReporter* CPluginManager::GetReporter(const std::string& pName)
 		throw std::string("CPluginManager::GetReporter():"
 				          "Reporter plugin: '"+pName+"' is not loaded.");
 	}
-	return (CReporter*) m_mapPlugins[pName];
+	return dynamic_cast<CReporter*>(m_mapPlugins[pName]);
 }
 
-CApplication* CPluginManager::GetApplication(const std::string& pName)
+CAction* CPluginManager::GetAction(const std::string& pName)
 {
 	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
 	{
-		throw std::string("CPluginManager::GetApplication():"
-				          "Application plugin: '"+pName+"' is not loaded.");
+		throw std::string("CPluginManager::GetAction():"
+				          "Action plugin: '"+pName+"' is not loaded.");
 	}
-	return (CApplication*) m_mapPlugins[pName];
+	return dynamic_cast<CAction*>(m_mapPlugins[pName]);
 }
 
 CDatabase* CPluginManager::GetDatabase(const std::string& pName)
@@ -182,6 +181,6 @@ CDatabase* CPluginManager::GetDatabase(const std::string& pName)
 		throw std::string("CPluginManager::GetDatabase():"
 				          "Database plugin: '"+pName+"' is not loaded.");
 	}
-	return (CDatabase*) m_mapPlugins[pName];
+	return dynamic_cast<CDatabase*>(m_mapPlugins[pName]);
 }
 

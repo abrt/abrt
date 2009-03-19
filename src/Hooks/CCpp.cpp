@@ -75,7 +75,7 @@ int main(int argc, char** argv)
 
         dd.Create(dd_path);
         dd.SaveProc(pid);
-        dd.SaveText(FILENAME_LANGUAGE, "CCpp");
+        dd.SaveText(FILENAME_ANALYZER, "CCpp");
         if ((fp = fopen(cd_path, "w")) == NULL)
         {
             fprintf(stderr, "%s: Can not open the file %s.\n",

@@ -1,5 +1,5 @@
 /*
-    DebugDump.cpp
+    CCpp.cpp
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -23,6 +23,7 @@
 #include <fstream>
 #include <ctype.h>
 #include "DebugDump.h"
+#include "Settings.h"
 #include <sstream>
 #include <iostream>
 #include <hash_map>
@@ -33,11 +34,11 @@
 #define DEBUGINFO_COMMAND "debuginfo-install -y "
 #define GDB_COMMAND "gdb -batch -x "
 
-CLanguageCCpp::CLanguageCCpp() :
+CAnalyzerCCpp::CAnalyzerCCpp() :
 	m_bMemoryMap(false)
 {}
 
-void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
+void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
     char line[1024];
     std::string command = DEBUGINFO_COMMAND + pPackage;
@@ -50,7 +51,7 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
 
     if (fp == NULL)
     {
-        throw std::string("CLanguageCCpp::InstallDebugInfos(): cannot execute " + command) ;
+        throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot execute " + command) ;
     }
     while (fgets(line, sizeof(line), fp))
     {
@@ -65,16 +66,16 @@ void CLanguageCCpp::InstallDebugInfos(const std::string& pPackage)
         if (text.find(canNotInstall) != std::string::npos)
         {
             pclose(fp);
-            throw std::string("CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage + " (" + canNotInstall + ")") ;
+            throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage + " (" + canNotInstall + ")") ;
         }
     }
     if (pclose(fp) != 0)
     {
-        throw std::string("CLanguageCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage) ;
+        throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage) ;
     }
 }
 
-void CLanguageCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
+void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
@@ -94,13 +95,13 @@ void CLanguageCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
     }
     else
     {
-        throw "CLanguageCCpp::GetBacktrace(): cannot create gdb script " + tmpFile ;
+        throw "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile ;
     }
     std::string command = GDB_COMMAND + tmpFile;
     RunCommand(command, pBacktrace);
 }
 
-void CLanguageCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
+void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
 {
     int ii = 0;
     while (ii < pBacktrace.length())
@@ -143,14 +144,14 @@ void CLanguageCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
     }
 }
 
-void CLanguageCCpp::RunCommand(const std::string& pCommand, std::string& pOutput)
+void CAnalyzerCCpp::RunCommand(const std::string& pCommand, std::string& pOutput)
 {
     char line[1024];
     std::string output;
     FILE *fp = popen(pCommand.c_str(), "r");
     if (fp == NULL)
     {
-        throw "CLanguageCCpp::GetBacktrace(): cannot execute " + pCommand ;
+        throw "CAnalyzerCCpp::GetBacktrace(): cannot execute " + pCommand ;
     }
     pOutput = "";
     while (fgets(line, 1024, fp) != NULL)
@@ -163,7 +164,7 @@ void CLanguageCCpp::RunCommand(const std::string& pCommand, std::string& pOutput
     pclose(fp);
 }
 
-std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
 
 	std::stringstream ss;
@@ -181,7 +182,7 @@ std::string CLanguageCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 
 	return ss.str();
 }
-std::string CLanguageCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
     std::stringstream ss;
     std::string backtrace;
@@ -198,7 +199,7 @@ std::string CLanguageCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
     return ss.str();
 }
 
-void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
+void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
     std::string package;
     std::string backtrace;
@@ -234,7 +235,7 @@ void CLanguageCCpp::CreateReport(const std::string& pDebugDumpDir)
     dd.Close();
 }
 
-void CLanguageCCpp::Init()
+void CAnalyzerCCpp::Init()
 {
 	std::ifstream fInCorePattern;
 	fInCorePattern.open(CORE_PATTERN_IFACE);
@@ -253,7 +254,7 @@ void CLanguageCCpp::Init()
 }
 
 
-void CLanguageCCpp::DeInit()
+void CAnalyzerCCpp::DeInit()
 {
 	std::ofstream fOutCorePattern;
 	fOutCorePattern.open(CORE_PATTERN_IFACE);
@@ -264,10 +265,13 @@ void CLanguageCCpp::DeInit()
 	}
 }
 
-void CLanguageCCpp::SetSettings(const map_settings_t& pSettings)
+void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
 {
-    if (pSettings.find("MemoryMap")!= pSettings.end())
+    map_settings_t settings;
+    load_settings(pPath, settings);
+
+    if (settings.find("MemoryMap")!= settings.end())
       {
-          m_bMemoryMap = pSettings.find("MemoryMap")->second == "yes";
+          m_bMemoryMap = settings["MemoryMap"] == "yes";
       }
 }

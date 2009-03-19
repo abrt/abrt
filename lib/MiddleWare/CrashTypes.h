@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 typedef std::map<std::string, std::string> map_crash_t;
 

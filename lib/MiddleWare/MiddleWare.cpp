@@ -147,46 +147,25 @@ void CMiddleWare::UnRegisterPlugin(const std::string& pName)
 }
 
 
-std::string CMiddleWare::GetLocalUUIDLanguage(const std::string& pLanguage,
-                                              const std::string& pDebugDumpDir)
+std::string CMiddleWare::GetLocalUUID(const std::string& pAnalyzer,
+                                      const std::string& pDebugDumpDir)
 {
-    CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
-    return language->GetLocalUUID(pDebugDumpDir);
+    CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
+    return analyzer->GetLocalUUID(pDebugDumpDir);
 }
 
-std::string CMiddleWare::GetGlobalUUIDLanguage(const std::string& pLanguage,
-                                               const std::string& pDebugDumpDir)
-{
-    CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
-    return language->GetGlobalUUID(pDebugDumpDir);
-}
-
-void CMiddleWare::CreateReportLanguage(const std::string& pLanguage,
+std::string CMiddleWare::GetGlobalUUID(const std::string& pAnalyzer,
                                        const std::string& pDebugDumpDir)
 {
-    CLanguage* language = m_pPluginManager->GetLanguage(pLanguage);
-    return language->CreateReport(pDebugDumpDir);
+    CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
+    return analyzer->GetGlobalUUID(pDebugDumpDir);
 }
 
-std::string CMiddleWare::GetLocalUUIDApplication(const std::string& pApplication,
-                                                 const std::string& pDebugDumpDir)
+void CMiddleWare::CreateReport(const std::string& pAnalyzer,
+                               const std::string& pDebugDumpDir)
 {
-    CApplication* application = m_pPluginManager->GetApplication(pApplication);
-    return application->GetLocalUUID(pDebugDumpDir);
-}
-
-std::string CMiddleWare::GetGlobalUUIDApplication(const std::string& pApplication,
-                                                  const std::string& pDebugDumpDir)
-{
-    CApplication* application = m_pPluginManager->GetApplication(pApplication);
-    return application->GetGlobalUUID(pDebugDumpDir);
-}
-
-void CMiddleWare::CreateReportApplication(const std::string& pApplication,
-                                          const std::string& pDebugDumpDir)
-{
-    CApplication* application = m_pPluginManager->GetApplication(pApplication);
-    return application->CreateReport(pDebugDumpDir);
+    CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
+    return analyzer->CreateReport(pDebugDumpDir);
 }
 
 void CMiddleWare::CreateReport(const std::string& pUUID,
@@ -204,28 +183,21 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
         throw std::string("CMiddleWare::CreateReport(): UUID '"+pUUID+"' is not in database.");
     }
 
-    std::string appLan;
+    std::string analyzer;
     std::string UUID;
     CDebugDump dd;
     dd.Open(row.m_sDebugDumpDir);
-    if (dd.Exist(FILENAME_APPLICATION))
-    {
-        dd.LoadText(FILENAME_APPLICATION, appLan);
-        CreateReportApplication(appLan, row.m_sDebugDumpDir);
-        UUID = GetGlobalUUIDApplication(appLan, row.m_sDebugDumpDir);
-    }
-    if (dd.Exist(FILENAME_LANGUAGE))
-    {
-        dd.LoadText(FILENAME_LANGUAGE, appLan);
-        CreateReportLanguage(appLan, row.m_sDebugDumpDir);
-        UUID = GetGlobalUUIDLanguage(appLan, row.m_sDebugDumpDir);
-    }
+
+    dd.LoadText(FILENAME_ANALYZER, analyzer);
+    CreateReport(analyzer, row.m_sDebugDumpDir);
+    UUID = GetGlobalUUID(analyzer, row.m_sDebugDumpDir);
+
     dd.SaveText(FILENAME_UUID, UUID);
     dd.Close();
 
     DebugDump2Report(row.m_sDebugDumpDir, pCrashReport);
 
-    pCrashReport.m_sMWID =  appLan + ";" + pUID + ";" + pUUID  ;
+    pCrashReport.m_sMWID =  analyzer + ";" + pUID + ";" + pUUID  ;
 }
 
 void CMiddleWare::Report(const crash_report_t& pCrashReport)
@@ -317,8 +289,7 @@ int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pDebugDump
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     if (executable == "kernel")
     {
-        package = "kernel";
-        packageName = package;
+        packageName = package = "kernel";
     }
     else
     {
@@ -354,28 +325,15 @@ int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pDebugDump
 
 int CMiddleWare::SaveUUIDToDebugDump(const std::string& pDebugDumpDir)
 {
+    std::string analyzer;
     std::string UUID;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
 
-    if (dd.Exist(FILENAME_APPLICATION))
-    {
-        std::string application;
-        dd.LoadText(FILENAME_APPLICATION, application);
-        UUID = GetLocalUUIDApplication(application, pDebugDumpDir);
-    }
-    if (dd.Exist(FILENAME_LANGUAGE))
-    {
-        std::string language;
-        dd.LoadText(FILENAME_LANGUAGE, language);
-        UUID = GetLocalUUIDLanguage(language, pDebugDumpDir);
-    }
-    if (UUID == "")
-    {
-        dd.Delete();
-        dd.Close();
-        return 0;
-    }
+
+    dd.LoadText(FILENAME_ANALYZER, analyzer);
+    UUID = GetLocalUUID(analyzer, pDebugDumpDir);
+
     dd.SaveText(FILENAME_UUID, UUID);
     dd.Close();
 

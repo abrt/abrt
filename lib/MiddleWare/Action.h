@@ -1,5 +1,5 @@
 /*
-    Application.h - header file for application plugin
+    Action.h - header file for action plugin
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -19,19 +19,18 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#ifndef APPLICATION_H_
-#define APPLICATION_H_
+#ifndef ACTION_H_
+#define ACTION_H_
 
 #include <string>
 #include "Plugin.h"
 
-class CApplication : public CPlugin
+class CAction : public CPlugin
 {
     public:
-        virtual ~CApplication() {}
-        virtual std::string GetLocalUUID(const std::string& pDebugDumpPath) = 0;
-        virtual std::string GetGlobalUUID(const std::string& pDebugDumpPath) = 0;
-        virtual void CreateReport(const std::string& pDebugDumpPath) = 0;
+        virtual ~CAction() {}
+        virtual void Run(const std::string& pDebugDumpDir,
+                         const std::string& pArgs) = 0;
 };
 
-#endif /*APPLICATION_H_*/
+#endif /*ACTION_H_*/

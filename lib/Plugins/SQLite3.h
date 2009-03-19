@@ -58,18 +58,15 @@ class CSQLite3 : public CDatabase
         const vector_database_rows_t GetUIDData(const std::string& pUID);
         const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
 
-        void Init() {}
-        void DeInit() {}
-        void SetSettings(const map_settings_t& pSettings);
+        void LoadSettings(const std::string& pPath);
 };
 
 PLUGIN_INFO(DATABASE,
+            CSQLite3,
             "SQLite3",
             "0.0.1",
             "SQLite3 database plugin.",
             "zprikryl@redhat.com,jmoskovc@redhat.com",
             "https://fedorahosted.org/crash-catcher/wiki");
-
-PLUGIN_INIT(CSQLite3);
 
 #endif /* SQLITE3_H_ */

@@ -26,30 +26,26 @@
 #define __INCLUDE_GUARD_KERNELOOPS_H_
 
 #include "Plugin.h"
-#include "Application.h"
+#include "Analyzer.h"
 
 #include <string>
 
-class CApplicationKerneloops : public CApplication
+class CAnalyzerKerneloops : public CAnalyzer
 {
 	public:
-		CApplicationKerneloops() {}
-		virtual ~CApplicationKerneloops() {}
+		virtual ~CAnalyzerKerneloops() {}
 		std::string GetLocalUUID(const std::string& pDebugDumpDir);
 		std::string GetGlobalUUID(const std::string& pDebugDumpDir);
 		void CreateReport(const std::string& pDebugDumpDir) {}
 		void Init();
-		void DeInit() {}
-		void SetSettings(const map_settings_t& pSettings) {}
 };
 
-PLUGIN_INFO(APPLICATION,
+PLUGIN_INFO(ANALYZER,
+            CAnalyzerKerneloops,
 			"Kerneloops",
 			"0.0.1",
 			"Abrt's Kerneloops plugin.",
 			"anton@redhat.com",
 			"https://people.redhat.com/aarapov");
-
-PLUGIN_INIT(CApplicationKerneloops);
 
 #endif

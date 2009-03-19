@@ -31,7 +31,7 @@
 #include "Kerneloops.h"
 #include "KerneloopsDmesg.h"
 
-std::string CApplicationKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
 {
 	std::string m_sOops;
 	std::stringstream m_sHash;
@@ -53,12 +53,12 @@ std::string CApplicationKerneloops::GetLocalUUID(const std::string& pDebugDumpDi
 	return m_sHash.str();
 }
 
-std::string CApplicationKerneloops::GetGlobalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerKerneloops::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
 	return GetLocalUUID(pDebugDumpDir);
 }
 
-void CApplicationKerneloops::Init()
+void CAnalyzerKerneloops::Init()
 {
 	scan_logs();
 }

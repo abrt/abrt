@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <sstream>
 #include "DebugDump.h"
+#include "Settings.h"
 
 #define MAILX_COMMAND "/bin/mailx"
 #define MAILX_SUBJECT "\"abrt automated bug report\""
@@ -124,22 +125,25 @@ void CMailx::Report(const crash_report_t& pReport)
     SendEmail(ss.str());
 }
 
-void CMailx::SetSettings(const map_settings_t& pSettings)
+void CMailx::LoadSettings(const std::string& pPath)
 {
-    if (pSettings.find("EmailFrom")!= pSettings.end())
+    map_settings_t settings;
+    load_settings(pPath, settings);
+
+    if (settings.find("EmailFrom")!= settings.end())
     {
-        m_sEmailFrom = pSettings.find("EmailFrom")->second;
+        m_sEmailFrom = settings["EmailFrom"];
     }
-    if (pSettings.find("EmailTo")!= pSettings.end())
+    if (settings.find("EmailTo")!= settings.end())
     {
-        m_sEmailTo = pSettings.find("EmailTo")->second;
+        m_sEmailTo = settings["EmailTo"];
     }
-    if (pSettings.find("Parameters")!= pSettings.end())
+    if (settings.find("Parameters")!= settings.end())
     {
-        m_sParameters = pSettings.find("Parameters")->second;
+        m_sParameters = settings["Parameters"];
     }
-    if (pSettings.find("SendBinaryData")!= pSettings.end())
+    if (settings.find("SendBinaryData")!= settings.end())
     {
-        m_bSendBinaryData = pSettings.find("SendBinaryData")->second == "yes";
+        m_bSendBinaryData = settings["SendBinaryData"] == "yes";
     }
 }

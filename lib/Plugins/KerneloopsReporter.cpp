@@ -25,6 +25,7 @@
  */
 
 #include "DebugDump.h"
+#include "Settings.h"
 #include "KerneloopsReporter.h"
 
 #include <sstream>
@@ -87,10 +88,13 @@ void CKerneloopsReporter::Report(const crash_report_t& pReport)
 	curl_easy_cleanup(handle);
 }
 
-void CKerneloopsReporter::SetSettings(const map_settings_t& pSettings)
+void CKerneloopsReporter::LoadSettings(const std::string& pPath)
 {
-	if (pSettings.find("SubmitURL") != pSettings.end())
+    map_settings_t settings;
+    load_settings(pPath, settings);
+
+	if (settings.find("SubmitURL") != settings.end())
 	{
-		m_sSubmitURL = pSettings.find("SubmitURL")->second;
+		m_sSubmitURL = settings["SubmitURL"];
 	}
 }

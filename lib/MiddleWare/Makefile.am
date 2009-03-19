@@ -2,10 +2,10 @@ lib_LTLIBRARIES = libMiddleWare.la
 libMiddleWare_la_SOURCES = MiddleWare.cpp MiddleWare.h PluginManager.cpp \
                            PluginManager.h ABRTPlugin.cpp \
                            ABRTPlugin.h DynamicLibrary.cpp \
-                           DynamicLibrary.h Settings.h Settings.cpp \
+                           DynamicLibrary.h \
                            RPM.cpp RPM.h Plugin.h CrashTypes.h \
-                           MiddleWareTypes.h Application.h Database.h \
-                           Reporter.h Language.h
+                           MiddleWareTypes.h Action.h Database.h \
+                           Reporter.h Analyzer.h
 libMiddleWare_la_LIBADD = $(DL_LIBS) ../Utils/libUtils.la  $(RPM_LIBS)
 libMiddleWare_la_LDFLAGS = -version-info 0:1:0
 libMiddleWare_la_CPPFLAGS = -I$(srcdir)/../Utils  $(RPM_CFLAGS)

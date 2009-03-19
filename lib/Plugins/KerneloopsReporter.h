@@ -37,19 +37,17 @@ class CKerneloopsReporter : public CReporter
 	public:
 		CKerneloopsReporter();
 		virtual ~CKerneloopsReporter() {}
-		void Init() {}
-		void DeInit() {}
-		void SetSettings(const map_settings_t& pSettings);
+
+		void LoadSettings(const std::string& pPath);
 		void Report(const crash_report_t& pReport);
 };
 
 PLUGIN_INFO(REPORTER,
-		"KerneloopsReporter",
-		"0.0.1",
-		"Sends the Kerneloops crash information to Kerneloopsoops.org",
-		"anton@redhat.com",
-		"http://people.redhat.com/aarapov");
-
-PLUGIN_INIT(CKerneloopsReporter);
+            CKerneloopsReporter,
+            "KerneloopsReporter",
+            "0.0.1",
+            "Sends the Kerneloops crash information to Kerneloopsoops.org",
+            "anton@redhat.com",
+            "http://people.redhat.com/aarapov");
 
 #endif

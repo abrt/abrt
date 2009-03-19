@@ -1,7 +1,13 @@
 AM_CPPFLAGS = -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
 pluginslibdir=$(PLUGINS_LIB_DIR)
-pluginslib_LTLIBRARIES = libCCpp.la libMailx.la libSQLite3.la libLogger.la libKerneloopsReporter.la libKerneloops.la
-
+pluginslib_LTLIBRARIES = libCCpp.la \
+                         libMailx.la \
+                         libSQLite3.la \
+                         libLogger.la \
+                         libKerneloopsReporter.la\
+                         libKerneloops.la \
+                         libRunApp.la
+                          
 pluginsconfdir=$(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsReporter.conf
 
@@ -34,3 +40,7 @@ libSQLite3_la_CPPFLAGS = -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(SQLITE
 # Logger
 libLogger_la_SOURCES = Logger.cpp Logger.h
 libLogger_la_LDFLAGS = -avoid-version
+
+# RunApp
+libRunApp_la_SOURCES = RunApp.h RunApp.cpp
+libRunApp_la_LDFLAGS = -avoid-version
