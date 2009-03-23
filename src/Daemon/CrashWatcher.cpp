@@ -28,6 +28,8 @@
 #include <cstring>
 #include <csignal>
 #include <sstream>
+#include <dirent.h>
+#include <cstring>
 
 /* just a helper function */
 template< class T >
@@ -101,6 +103,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
     m_sTarget = pPath;
     // middleware object
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/abrt.conf");
+    FindNewDumps(pPath);
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     connection.request_name(CC_DBUS_NAME);
     if((m_nFd = inotify_init()) == -1){
@@ -123,7 +126,50 @@ CCrashWatcher::~CCrashWatcher()
      g_io_channel_unref(m_pGio);
      g_main_loop_unref(m_pMainloop);
 }
+void CCrashWatcher::FindNewDumps(const std::string& pPath)
+{
+    std::cerr << "Scanning for unsaved entries" << std::endl;
+    struct dirent *ep;
+    struct stat stats;
+    DIR *dp;
+    std::vector<std::string> dirs;
+    std::string dname;
+    // get potencial unsaved debugdumps
+    dp = opendir (pPath.c_str());
+    if (dp != NULL)
+    {
+        while ((ep = readdir (dp))){
+            if(strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0){
+                dname = pPath + "/" + ep->d_name;
+                std::cerr << dname << std::endl;
+                lstat (dname.c_str(), &stats);
+                if(S_ISDIR (stats.st_mode)){
+                    std::cerr << ep->d_name << std::endl;
+                    dirs.push_back(dname);
+                }
+            }
+        }
+        (void) closedir (dp);
+    }
+    else
+        perror ("Couldn't open the directory");
 
+    for (std::vector<std::string>::iterator itt = dirs.begin(); itt != dirs.end(); ++itt){
+        crash_info_t crashinfo;
+        std::cerr << "Saving debugdeump: " << *itt << std::endl;
+        try
+        {
+            if(m_pMW->SaveDebugDump(*itt, crashinfo))
+            {
+                std::cerr << "Saved new entry: " << *itt << std::endl;
+            }
+        }
+        catch(std::string err)
+        {
+            std::cerr << err << std::endl;
+        }
+    }
+}
 dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 {
     dbus_vector_crash_infos_t retval;
@@ -205,7 +251,7 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     try
     {
         //std::cerr << "DeleteDebugDump(" << pUUID << "," << unix_uid << ")" << std::endl;
-        m_pMW->DeleteDebugDump(pUUID,to_string(unix_uid));
+        m_pMW->DeleteCrashInfo(pUUID,to_string(unix_uid), true);
     }
     catch(std::string err)
     {

@@ -42,7 +42,9 @@ class CCrashWatcher
         void StartWatch();
         void GStartWatch();
         void Lock();
-
+        /* finds dumps created when daemon wasn't running */
+        void FindNewDumps(const std::string& pPath);
+        
         int m_nFd;
         GIOChannel* m_pGio;
         GMainLoop *m_pMainloop;

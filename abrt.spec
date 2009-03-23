@@ -110,6 +110,14 @@ Requires: mailx
 The simple reporter plugin, which sends a report via mailx to a specified
 email. 
 
+%package plugin-runapp
+Summary: %{name}'s runapp plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-runapp
+Plugin to run external programs.
+
 %prep
 %setup -q
 
@@ -186,7 +194,6 @@ fi
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libexecdir}/hookKerneloops
 
@@ -209,6 +216,10 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_libdir}/%{name}/libMailx.so*
+
+%files plugin-runapp
+%defattr(-,root,root,-)
+%{_libdir}/%{name}/libRunApp.so*
 
 %changelog
 * Wed Mar 11 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.2-1

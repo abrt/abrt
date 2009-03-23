@@ -81,6 +81,7 @@ class DBusManager(gobject.GObject):
             raise Exception(e.message)
     
     def Report(self,report):
+        # FIXME async
         return self.cc.Report(report)
     
     def DeleteDebugDump(self,UUID):
