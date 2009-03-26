@@ -24,13 +24,33 @@
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
-#ifndef __INCLUDE_GUARD_KERNELOOPSLIB_H_
-#define __INCLUDE_GUARD_KERNELOOPSLIB_H_
+#ifndef __INCLUDE_GUARD_KERNELOOPSSYSLOG_H_
+#define __INCLUDE_GUARD_KERNELOOPSSYSLOG_H_
 
-/* borrowed from the kernel */
-#define barrier() __asm__ __volatile__("": : :"memory")
-#define __unused  __attribute__ ((__unused__))
+#include <string>
+#include <list>
 
-extern int scan_logs();
+class COops
+{
+	public:
+		std::string m_sData;
+		std::string m_sVersion;
+};
+
+class CSysLog
+{
+	private:
+		void QueueOops(char *data, char *version);
+		int ExtractVersion(char *linepointer, char *version);
+		void FillLinePointers(char *buffer, int remove_syslog);
+		std::list<COops> m_OopsQueue;
+		int m_nFoundOopses;
+
+	public:
+		CSysLog();
+		std::list<COops> GetOopsList();
+		void ClearOopsList();
+		int ExtractOops(char *buffer, size_t buflen, int remove_syslog);
+};
 
 #endif

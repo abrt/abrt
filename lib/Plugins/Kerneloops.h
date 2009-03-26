@@ -30,14 +30,26 @@
 
 #include <string>
 
+#include "KerneloopsSysLog.h"
+
 class CAnalyzerKerneloops : public CAnalyzer
 {
+	private:
+		void WriteSysLog(int m_nCount);
+		void Report();
+		std::string m_sSysLogFile;
+		CSysLog m_pSysLog;
+
 	public:
+		CAnalyzerKerneloops();
 		virtual ~CAnalyzerKerneloops() {}
 		std::string GetLocalUUID(const std::string& pDebugDumpDir);
 		std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-		void CreateReport(const std::string& pDebugDumpDir) {}
 		void Init();
+		void CreateReport(const std::string& pDebugDumpDir) {}
+		void LoadSettings(const std::string& pPath);
+		void ScanDmesg();
+		void ScanSysLogFile(const char *filename, int issyslog);
 };
 
 PLUGIN_INFO(ANALYZER,
