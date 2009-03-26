@@ -28,13 +28,8 @@
 #include "DebugDump.h"
 #include "Settings.h"
 
-#include <sstream>
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
-#include <assert.h>
-#include <sys/stat.h>
 #include <curl/curl.h>
 
 CKerneloopsReporter::CKerneloopsReporter() :
