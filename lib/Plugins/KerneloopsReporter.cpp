@@ -24,12 +24,11 @@
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
+#include "KerneloopsReporter.h"
 #include "DebugDump.h"
 #include "Settings.h"
-#include "KerneloopsReporter.h"
 
 #include <sstream>
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -90,8 +89,8 @@ void CKerneloopsReporter::Report(const crash_report_t& pReport)
 
 void CKerneloopsReporter::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
-    load_settings(pPath, settings);
+	map_settings_t settings;
+	load_settings(pPath, settings);
 
 	if (settings.find("SubmitURL") != settings.end())
 	{

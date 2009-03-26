@@ -25,9 +25,10 @@
 #ifndef __INCLUDE_GUARD_KERNELOOPSREPORTER_H_
 #define __INCLUDE_GUARD_KERNELOOPSREPORTER_H_
 
-#include <string>
 #include "Plugin.h"
 #include "Reporter.h"
+
+#include <string>
 
 class CKerneloopsReporter : public CReporter
 {
