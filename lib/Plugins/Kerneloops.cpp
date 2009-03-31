@@ -1,7 +1,8 @@
 /*
+ * Copyright 2007, Intel Corporation
  * Copyright 2009, Red Hat Inc.
  *
- * This file is part of %TBD%
+ * This file is part of Abrt.
  *
  * This program file is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,6 +21,7 @@
  *
  * Authors:
  *      Anton Arapov <anton@redhat.com>
+ *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
 #include "Kerneloops.h"
