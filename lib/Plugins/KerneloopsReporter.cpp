@@ -55,7 +55,7 @@ size_t writefunction(void *ptr, size_t size, size_t nmemb, void __attribute((unu
 	return size * nmemb;
 }
 
-void CKerneloopsReporter::Report(const crash_report_t& pReport)
+void CKerneloopsReporter::Report(const crash_report_t& pCrashReport)
 {
 	CURL *handle;
 	struct curl_httppost *post = NULL;
@@ -66,7 +66,7 @@ void CKerneloopsReporter::Report(const crash_report_t& pReport)
 
 	curl_formadd(&post, &last,
 		CURLFORM_COPYNAME, "oopsdata",
-		CURLFORM_COPYCONTENTS, pReport.m_sTextData1.c_str(),
+		CURLFORM_COPYCONTENTS, pCrashReport.find(FILENAME_TEXTDATA1)->second.m_sContent.c_str(),
 		CURLFORM_END);
 	curl_formadd(&post, &last,
 		CURLFORM_COPYNAME, "pass_on_allowed",
