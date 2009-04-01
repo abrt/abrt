@@ -90,9 +90,7 @@ void CAnalyzerKerneloops::Report()
 	time_t t = time(NULL);
 	if (((time_t) -1) == t)
 	{
-		fprintf(stderr, "Kerneloops: cannot get local time.\n");
-		perror("");
-		// TODO: throw -4
+		throw std::string("CAnalyzerKerneloops::Report(): cannot get local time.");
 	}
 
 	m_pOopsList = m_pSysLog.GetOopsList();
@@ -117,8 +115,7 @@ void CAnalyzerKerneloops::Report()
 		}
 		catch (std::string sError)
 		{
-			fprintf(stderr, "Kerneloops: %s\n", sError.c_str());
-			// TODO: throw -2
+			throw std::string("CAnalyzerKerneloops::Report(): ") + sError.c_str();
 		}
 		m_pOopsList.pop_back();
 	}
@@ -126,11 +123,14 @@ void CAnalyzerKerneloops::Report()
 
 void CAnalyzerKerneloops::Init()
 {
-	/* hack: release Init() */
+	/* daemonize */
 	pid_t pid = fork();
+	if (pid < 0)
+		throw std::string("CAnalyzerKerneloops::Init(): fork failed.");
+
+	/* hack: release Init() */
 	if (pid)
 		return;
-	// TODO: throw if we can't fork()
 
 	sched_yield();
 
