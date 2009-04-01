@@ -2,7 +2,7 @@
  * Copyright 2007, Intel Corporation
  * Copyright 2009, Red Hat Inc.
  *
- * This file is part of %TBD%
+ * This file is part of Abrt.
  *
  * This program file is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,18 +24,12 @@
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
+#include "KerneloopsReporter.h"
 #include "DebugDump.h"
 #include "Settings.h"
-#include "KerneloopsReporter.h"
 
-#include <sstream>
-
-#include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <string.h>
-#include <assert.h>
-#include <sys/stat.h>
 #include <curl/curl.h>
 
 CKerneloopsReporter::CKerneloopsReporter() :
@@ -90,8 +84,8 @@ void CKerneloopsReporter::Report(const crash_report_t& pReport)
 
 void CKerneloopsReporter::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
-    load_settings(pPath, settings);
+	map_settings_t settings;
+	load_settings(pPath, settings);
 
 	if (settings.find("SubmitURL") != settings.end())
 	{

@@ -1,7 +1,8 @@
 /*
+ * Copyright 2007, Intel Corporation
  * Copyright 2009, Red Hat Inc.
  *
- * This file is part of %TBD%
+ * This file is part of Abrt.
  *
  * This program file is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,16 +21,36 @@
  *
  * Authors:
  *      Anton Arapov <anton@redhat.com>
+ *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
-#include "KerneloopsDmesg.h"
+#ifndef __INCLUDE_GUARD_KERNELOOPSSYSLOG_H_
+#define __INCLUDE_GUARD_KERNELOOPSSYSLOG_H_
 
-int main()
+#include <string>
+#include <list>
+
+class COops
 {
-	int ret;
+	public:
+		std::string m_sData;
+		std::string m_sVersion;
+};
 
-	// reuses the code of Kerneloop Plugin
-	ret = scan_logs();
+class CSysLog
+{
+	private:
+		void QueueOops(char *data, char *version);
+		int ExtractVersion(char *linepointer, char *version);
+		void FillLinePointers(char *buffer, int remove_syslog);
+		std::list<COops> m_OopsQueue;
+		int m_nFoundOopses;
 
-	return ret;
-}
+	public:
+		CSysLog();
+		std::list<COops> GetOopsList();
+		void ClearOopsList();
+		int ExtractOops(char *buffer, size_t buflen, int remove_syslog);
+};
+
+#endif

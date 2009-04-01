@@ -1,7 +1,8 @@
 /*
+ * Copyright 2007, Intel Corporation
  * Copyright 2009, Red Hat Inc.
  *
- * This file is part of %TBD%
+ * This file is part of Abrt.
  *
  * This program file is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -20,6 +21,7 @@
  *
  * Authors:
  *      Anton Arapov <anton@redhat.com>
+ *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
 #ifndef __INCLUDE_GUARD_KERNELOOPS_H_
@@ -30,14 +32,26 @@
 
 #include <string>
 
+#include "KerneloopsSysLog.h"
+
 class CAnalyzerKerneloops : public CAnalyzer
 {
+	private:
+		void WriteSysLog(int m_nCount);
+		void Report();
+		std::string m_sSysLogFile;
+		CSysLog m_pSysLog;
+
 	public:
+		CAnalyzerKerneloops();
 		virtual ~CAnalyzerKerneloops() {}
 		std::string GetLocalUUID(const std::string& pDebugDumpDir);
 		std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-		void CreateReport(const std::string& pDebugDumpDir) {}
 		void Init();
+		void CreateReport(const std::string& pDebugDumpDir) {}
+		void LoadSettings(const std::string& pPath);
+		void ScanDmesg();
+		void ScanSysLogFile(const char *filename, int issyslog);
 };
 
 PLUGIN_INFO(ANALYZER,

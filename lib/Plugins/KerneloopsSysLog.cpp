@@ -2,7 +2,7 @@
  * Copyright 2007, Intel Corporation
  * Copyright 2009, Red Hat Inc.
  *
- * This file is part of %TBD%
+ * This file is part of Abrt.
  *
  * This program file is free software; you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the
@@ -24,22 +24,11 @@
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
-#include <unistd.h>
+#include "KerneloopsSysLog.h"
+
+#include <list>
 #include <stdlib.h>
-#include <stdio.h>
 #include <string.h>
-#include <assert.h>
-#include <syslog.h>
-#include <limits.h>
-#include <asm/unistd.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
-#include "DebugDump.h"
-#include "KerneloopsDmesg.h"
-
-
-#define MAX(A,B) ((A) > (B) ? (A) : (B))
 
 /*
  * This limits the number of oopses we'll submit per session;
@@ -48,47 +37,37 @@
  */
 #define MAX_OOPS 16
 
-
-struct oops {
-	struct oops *next;
-	char *text;
-	char *version;
-};
-
-/* we queue up oopses, and then submit in a batch.
- * This is useful to be able to cancel all submissions, in case
- * we later find our marker indicating we submitted everything so far already
- * previously.
- */
-static struct oops *queued_oopses;
-static int submitted;
-
 static char **linepointer;
 
 static char *linelevel;
 static int linecount;
 
-void queue_oops(char *oops, char *version)
-{
-	struct oops *newoops;
+CSysLog::CSysLog() :
+	m_nFoundOopses(0)
+{}
 
-	if (submitted > MAX_OOPS)
+void CSysLog::QueueOops(char *data, char *version)
+{
+	COops m_NewOops;
+
+	if (m_nFoundOopses > MAX_OOPS)
 		return;
 
-	newoops = (struct oops*)malloc(sizeof(struct oops));
-	memset(newoops, 0, sizeof(struct oops));
-	newoops->next = queued_oopses;
-	newoops->text = strdup(oops);
-	newoops->version = strdup(version);
-	queued_oopses = newoops;
-	submitted++;
+	m_NewOops.m_sData = strdup(data);
+	m_NewOops.m_sVersion = strdup(version);
+
+	m_OopsQueue.push_back(m_NewOops);
+	m_nFoundOopses++;
 }
 
-static void write_logfile(int count)
+void CSysLog::ClearOopsList()
 {
-	openlog("abrt", 0, LOG_KERN);
-	syslog(LOG_WARNING, "Kerneloops hook: Reported %i kernel oopses to Abrt", count);
-	closelog();
+	m_OopsQueue.clear();
+}
+
+std::list<COops> CSysLog::GetOopsList()
+{
+	return m_OopsQueue;
 }
 
 /*
@@ -96,7 +75,7 @@ static void write_logfile(int count)
  * (null terminated). The linepointer array is assumed to be
  * allocated already.
  */
-static void fill_linepointers(char *buffer, int remove_syslog)
+void CSysLog::FillLinePointers(char *buffer, int remove_syslog)
 {
 	char *c;
 	linecount = 0;
@@ -180,7 +159,7 @@ static void fill_linepointers(char *buffer, int remove_syslog)
 /*
  * extract_version tries to find the kernel version in given data
  */
-static inline int extract_version(char *linepointer, char *version)
+int CSysLog::ExtractVersion(char *linepointer, char *version)
 {
 	int ret;
 
@@ -211,25 +190,26 @@ static inline int extract_version(char *linepointer, char *version)
 /*
  * extract_oops tries to find oops signatures in a log
  */
-static void extract_oops(char *buffer, size_t buflen, int remove_syslog)
+int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 {
 	int i;
 	char prevlevel = 0;
 	int oopsstart = -1;
 	int oopsend;
 	int inbacktrace = 0;
+	int oopsesfound = 0;
 
 	linepointer = (char**)calloc(buflen+1, sizeof(char*));
 	if (!linepointer)
-		return;
+		return 0;
 	linelevel = (char*)calloc(buflen+1, sizeof(char));
 	if (!linelevel) {
 		free(linepointer);
 		linepointer = NULL;
-		return;
+		return 0;
 	}
 
-	fill_linepointers(buffer, remove_syslog);
+	FillLinePointers(buffer, remove_syslog);
 
 	oopsend = linecount;
 
@@ -278,7 +258,7 @@ static void extract_oops(char *buffer, size_t buflen, int remove_syslog)
 				oopsstart = i;
 			if (strstr(c, "Oops:") && i >= 3)
 				oopsstart = i-3;
-#if 0
+#if DEBUG
 			/* debug information */
 			if (oopsstart >= 0) {
 				printf("Found start of oops at line %i\n", oopsstart);
@@ -369,13 +349,15 @@ static void extract_oops(char *buffer, size_t buflen, int remove_syslog)
 				is_version = 0;
 				for (q = oopsstart; q <= oopsend; q++) {
 					if (!is_version)
-						is_version = extract_version(linepointer[q], version);
+						is_version = ExtractVersion(linepointer[q], version);
 					strcat(oops, linepointer[q]);
 					strcat(oops, "\n");
 				}
 				/* too short oopses are invalid */
-				if (strlen(oops) > 100)
-					queue_oops(oops, version);
+				if (strlen(oops) > 100) {
+					QueueOops(oops, version);
+					oopsesfound++;
+				}
 				oopsstart = -1;
 				inbacktrace = 0;
 				oopsend = linecount;
@@ -417,13 +399,15 @@ static void extract_oops(char *buffer, size_t buflen, int remove_syslog)
 		is_version = 0;
 		for (q = oopsstart; q <= oopsend; q++) {
 			if (!is_version)
-				is_version = extract_version(linepointer[q], version);
+				is_version = ExtractVersion(linepointer[q], version);
 			strcat(oops, linepointer[q]);
 			strcat(oops, "\n");
 		}
 		/* too short oopses are invalid */
-		if (strlen(oops) > 100)
-			queue_oops(oops, version);
+		if (strlen(oops) > 100) {
+			QueueOops(oops, version);
+			oopsesfound++;
+		}
 		oopsstart = -1;
 		inbacktrace = 0;
 		oopsend = linecount;
@@ -434,121 +418,6 @@ static void extract_oops(char *buffer, size_t buflen, int remove_syslog)
 	free(linelevel);
 	linepointer = NULL;
 	linelevel = NULL;
-}
 
-void scan_dmesg(void __unused *unused)
-{
-	char *buffer;
-
-	buffer = (char*)calloc(getpagesize()+1, 1);
-
-	syscall(__NR_syslog, 3, buffer, getpagesize());
-	extract_oops(buffer, strlen(buffer), 0);
-	free(buffer);
-}
-
-void scan_filename(char *filename, int issyslog)
-{
-	char *buffer;
-	struct stat statb;
-	FILE *file;
-	int ret;
-	size_t buflen;
-
-	memset(&statb, 0, sizeof(statb));
-
-	ret = stat(filename, &statb);
-
-	if (statb.st_size < 1 || ret != 0)
-		return;
-
-	/*
-	 * in theory there's a race here, since someone could spew
-	 * to /var/log/messages before we read it in... we try to
-	 * deal with it by reading at most 1023 bytes extra. If there's
-	 * more than that.. any oops will be in dmesg anyway.
-	 * Do not try to allocate an absurt amount of memory; ignore
-	 * older log messages because they are unlikely to have
-	 * sufficiently recent data to be useful.  32MB is more
-	 * than enough; it's not worth looping through more log
-	 * if the log is larger than that.
-	 */
-	buflen = MAX(statb.st_size+1024, 32*1024*1024);
-	buffer = (char*)calloc(buflen, 1);
-	assert(buffer != NULL);
-
-	file = fopen(filename, "rm");
-	if (!file) {
-		free(buffer);
-		return;
-	}
-	fseek(file, -buflen, SEEK_END);
-	ret = fread(buffer, 1, buflen-1, file);
-	fclose(file);
-
-	if (ret > 0)
-		extract_oops(buffer, buflen-1, issyslog);
-	free(buffer);
-}
-
-int scan_logs()
-{
-	int ret;
-	struct oops *oops;
-	struct oops *queue;
-	char path[PATH_MAX];
-	int count;
-
-	ret = 0;
-
-	time_t t = time(NULL);
-	if (((time_t) -1) == t)
-	{
-		fprintf(stderr, "Kerneloops: cannot get local time.\n");
-		perror("");
-		return -4;
-	}
-
-	/* scan dmesg and messages for oopses */
-	scan_dmesg(NULL);
-	scan_filename("/var/log/messages", 1);
-
-	CDebugDump dd;
-	queue = queued_oopses;
-	queued_oopses = NULL;
-	barrier();
-	oops = queue;
-	count = 0;
-	while (oops) {
-		struct oops *next;
-
-		snprintf(path, sizeof(path), "%s/kerneloops-%d-%d", DEBUG_DUMPS_DIR, t, count);
-		try
-		{
-			dd.Create(path);
-			dd.SaveText(FILENAME_ANALYZER, "Kerneloops");
-			dd.SaveText(FILENAME_UID, "0");
-			dd.SaveText(FILENAME_EXECUTABLE, "kernel");
-			dd.SaveText(FILENAME_KERNEL, oops->version);
-			dd.SaveText(FILENAME_PACKAGE, "not_applicable");
-			dd.SaveText(FILENAME_TEXTDATA1, oops->text);
-			count++;
-			dd.Close();
-		}
-		catch (std::string sError)
-		{
-			fprintf(stderr, "Kerneloops: %s\n", sError.c_str());
-			ret = -2;
-		}
-		next = oops->next;
-		free(oops->text);
-		free(oops->version);
-		free(oops);
-		oops = next;
-	}
-
-	if (ret == 0)
-		write_logfile(count);
-
-	return ret;
+	return oopsesfound;
 }

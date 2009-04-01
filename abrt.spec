@@ -63,14 +63,14 @@ Requires: %{name} = %{version}-%{release}
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++ 
 analyzer plugin.
 
-%package addon-kerneloops
-Summary: %{name}'s kerneloops addon
+%package plugin-kerneloops
+Summary: %{name}'s kerneloops plugin
 Group: System Environment/Libraries
 Requires: %{name}-plugin-kerneloopsreporter = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 
-%description addon-kerneloops
-This package contains hook for kernel crashes information collecting.
+%description plugin-kerneloops
+This package contains plugin for kernel crashes information collecting.
 analyzer plugin.
 
 %package plugin-kerneloopsreporter
@@ -192,10 +192,10 @@ fi
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/hookCCpp
 
-%files addon-kerneloops
+%files plugin-kerneloops
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_libdir}/%{name}/libKerneloops.so*
-%{_libexecdir}/hookKerneloops
 
 %files plugin-kerneloopsreporter
 %defattr(-,root,root,-)
