@@ -38,11 +38,23 @@
 #define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s %u"
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
-	m_bMemoryMap(false)
+	m_bMemoryMap(false),
+	m_Pid(0)
 {}
+
+CAnalyzerCCpp::~CAnalyzerCCpp()
+{
+    if (m_Pid)
+    {
+        kill(m_Pid, SIGTERM);
+        wait(NULL);
+    }
+}
 
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
+    std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
+    std::cerr << packageName << std::endl;
     char buff[1024];
     int pipein[2], pipeout[2];
     struct timeval delay;
@@ -56,6 +68,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     fcntl(pipeout[1], F_SETFD, FD_CLOEXEC);
 
     child = fork();
+    m_Pid = child;
     if (child < 0)
     {
         throw std::string("CAnalyzerCCpp::RunGdb():  fork failed.");
@@ -103,7 +116,8 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
                 {
                     buff[r] = '\0';
                     std::cerr << buff;
-                    if (strstr(buff, "already installed and latest version") != NULL)
+                    if (strstr(buff, packageName.c_str()) != NULL &&
+                        strstr(buff, "already installed and latest version") != NULL)
                     {
                         break;
                     }
@@ -137,6 +151,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     close(pipeout[0]);
 
     wait(NULL);
+    m_Pid = 0;
 }
 
 void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
@@ -222,6 +237,7 @@ void CAnalyzerCCpp::RunGdb(const std::string& pScript, const std::string pUID, s
     fcntl(pipeout[1], F_SETFD, FD_CLOEXEC);
 
     child = fork();
+    m_Pid = child;
     if (child == -1)
     {
         throw std::string("CAnalyzerCCpp::RunGdb():  fork failed.");
@@ -274,6 +290,7 @@ void CAnalyzerCCpp::RunGdb(const std::string& pScript, const std::string pUID, s
     }
     close(pipeout[0]);
     wait(NULL);
+    m_Pid = 0;
 }
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)

@@ -31,6 +31,7 @@ class CAnalyzerCCpp : public CAnalyzer
 {
 	private:
 		bool m_bMemoryMap;
+		pid_t m_Pid;
 		std::string m_sOldCorePattern;
 		void InstallDebugInfos(const std::string& pPackage);
 		void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
@@ -39,7 +40,7 @@ class CAnalyzerCCpp : public CAnalyzer
 
 	public:
 	    CAnalyzerCCpp();
-		virtual ~CAnalyzerCCpp() {}
+		virtual ~CAnalyzerCCpp();
 		std::string GetLocalUUID(const std::string& pDebugDumpDir);
 		std::string GetGlobalUUID(const std::string& pDebugDumpDir);
 		void CreateReport(const std::string& pDebugDumpDir);
