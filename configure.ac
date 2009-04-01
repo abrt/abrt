@@ -46,6 +46,7 @@ AC_CONFIG_FILES([
 	lib/Makefile
 	lib/Utils/Makefile
 	lib/MiddleWare/Makefile
+	lib/CommLayer/Makefile
 	lib/Plugins/Makefile
 	src/Makefile
 	src/Daemon/Makefile

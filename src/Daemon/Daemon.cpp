@@ -28,7 +28,7 @@ void terminate(int signal)
 {
     fprintf(stderr, "Got SIGINT/SIGTERM, cleaning up..\n");
     delete ccdaemon;
-    delete dispatcher;
+    //delete dispatcher;
     exit(0);
 }
 
@@ -37,15 +37,15 @@ int main(int argc, char** argv){
     /*signal handlers */
     signal(SIGTERM, terminate);
     signal(SIGINT, terminate);
-    /* connect to dbus */
+    /* connect to dbus
     //DBus::Glib::BusDispatcher *dispatcher;
     dispatcher = new DBus::Glib::BusDispatcher();
     dispatcher->attach(NULL);
     DBus::default_dispatcher = dispatcher;
 	DBus::Connection conn = DBus::Connection::SystemBus();
-    
+    */
     try{
-    ccdaemon = new CCrashWatcher(DEBUG_DUMPS_DIR, conn);
+    ccdaemon = new CCrashWatcher(DEBUG_DUMPS_DIR);
     if (argc > 1){
         if (strcmp(argv[1], "-d") == 0){
             daemonize = 0;

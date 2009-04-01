@@ -1,1 +1,1 @@
-SUBDIRS = Utils MiddleWare Plugins
+SUBDIRS = Utils MiddleWare Plugins CommLayer

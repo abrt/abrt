@@ -25,17 +25,25 @@
 #include <sys/inotify.h>
 #include <glib.h>
 //#include "DBusManager.h"
-#include "DBusServerProxy.h"
+//#include "DBusServerProxy.h"
 #include "MiddleWare.h"
+
+#include "CommLayerServerDBus.h"
+#ifdef HAVE_DBUS
+    #include "CommLayerServerDBus.h"
+#elif HAVE_SOCKET
+    #include "CommLayerServerSocket.h"
+#endif
 
 // 1024 simultaneous actions
 #define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event)+FILENAME_MAX)*1024)
 
 
 class CCrashWatcher
-: public CDBusServer_adaptor,
-  public DBus::IntrospectableAdaptor,
-  public DBus::ObjectAdaptor
+//: public CDBusServer_adaptor,
+//  public DBus::IntrospectableAdaptor,
+//  public DBus::ObjectAdaptor,
+:  public CObserver
 {
     private:
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
@@ -50,9 +58,13 @@ class CCrashWatcher
         GMainLoop *m_pMainloop;
         std::string m_sTarget;
         CMiddleWare *m_pMW;
-        DBus::Connection *m_pConn;
+        CCommLayerServer *m_pCommLayer;
+        /*FIXME not needed */
+        //DBus::Connection *m_pConn;
+        
 	public:
-        CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
+        //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
+        CCrashWatcher(const std::string& pPath);
 		~CCrashWatcher();
         //run as daemon
         void Daemonize();
@@ -66,7 +78,9 @@ class CCrashWatcher
         dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender);
         bool Report(dbus_map_report_info_t pReport);
         bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender);
-        
+    public:
+        /* Observer methods */
+        void Update(const std::string&) {}
 };
 
 #endif /*CRASHWATCHER_H_*/

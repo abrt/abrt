@@ -31,7 +31,7 @@
 #include <dirent.h>
 #include <cstring>
 
-/* just a helper function */
+/* just a helper function 
 template< class T >
 std::string
 to_string( T x )
@@ -40,6 +40,7 @@ to_string( T x )
     o << x;
     return o.str();
 }
+*/
 
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
     GIOError err;
@@ -76,7 +77,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
                 {
                     /* send message to dbus */
-                    cc->Crash(crashinfo.m_sPackage);
+                    cc->m_pCommLayer->Crash(crashinfo.m_sPackage);
                 }
             }
             catch(std::string err)
@@ -94,7 +95,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     delete[] buf;
     return TRUE;
 }
-
+/*
 CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connection)
 : DBus::ObjectAdaptor(connection, CC_DBUS_PATH)
 {
@@ -117,11 +118,39 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
     }
     m_pGio = g_io_channel_unix_new(m_nFd);
 }
+*/
+CCrashWatcher::CCrashWatcher(const std::string& pPath)
+{
+    int watch = 0;
+    m_sTarget = pPath;
+    // middleware object
+    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/abrt.conf");
+    FindNewDumps(pPath);
+    m_pMainloop = g_main_loop_new(NULL,FALSE);
+#ifdef HAVE_DBUS
+    m_pCommLayer = new CCommLayerServerDBus(m_pMW);
+#elif HAVE_SOCKET
+    m_pCommLayer = new CCommLayerServerSocket(m_pMW);
+#endif
+    m_pCommLayer = new CCommLayerServerDBus(m_pMW);
+    m_pCommLayer->Attach(this);
+
+    if((m_nFd = inotify_init()) == -1){
+        throw std::string("Init Failed");
+        //std::cerr << "Init Failed" << std::endl;
+        exit(-1);
+    }
+    if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
+
+        throw std::string("Add watch failed:") + pPath.c_str();
+    }
+    m_pGio = g_io_channel_unix_new(m_nFd);
+}
 
 CCrashWatcher::~CCrashWatcher()
 {
      //delete dispatcher, connection, etc..
-     m_pConn->disconnect();
+     //m_pConn->disconnect();
      delete m_pMW;
      g_io_channel_unref(m_pGio);
      g_main_loop_unref(m_pMainloop);
@@ -170,6 +199,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         }
     }
 }
+/*
 dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 {
     dbus_vector_crash_infos_t retval;
@@ -260,6 +290,7 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     }
     return true;
 }
+*/
 void CCrashWatcher::Lock()
 {
     int lfp = open("abrt.lock",O_RDWR|O_CREAT,0640);
