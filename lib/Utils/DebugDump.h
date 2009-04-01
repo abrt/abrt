@@ -24,22 +24,23 @@
 #define DEBUGDUMP_H_
 
 #include <string>
+#include <dirent.h>
 
 #define FILENAME_UUID               "uuid"
 #define FILENAME_ARCHITECTURE       "architecture"
 #define FILENAME_KERNEL             "kernel"
-#define FILENAME_RELEASE            "release"
-#define FILENAME_EXECUTABLE         "executable"
-#define FILENAME_CMDLINE            "cmdline"
 #define FILENAME_TIME               "time"
 #define FILENAME_UID                "uid"
 #define FILENAME_PACKAGE            "package"
 #define FILENAME_DESCRIPTION        "description"
 #define FILENAME_ANALYZER           "analyzer"
-#define FILENAME_TEXTDATA1          "text_data1"
-#define FILENAME_TEXTDATA2          "text_data2"
-#define FILENAME_BINARYDATA1        "binary_data1"
-#define FILENAME_BINARYDATA2        "binary_data2"
+#define FILENAME_RELEASE            "release"
+#define FILENAME_EXECUTABLE         "executable"
+#define FILENAME_CMDLINE            "cmdline"
+#define FILENAME_TEXTDATA1          "text_data_1"
+#define FILENAME_TEXTDATA2          "text_data_2"
+#define FILENAME_BINARYDATA1        "binary_data_1"
+#define FILENAME_BINARYDATA2        "binary_data_1"
 
 class CDebugDump
 {
@@ -47,8 +48,9 @@ class CDebugDump
         std::string m_sDebugDumpDir;
         bool m_bOpened;
         bool m_bUnlock;
+        DIR* m_pGetNextFileDir;
 
-        void SaveEnvironment();
+        void SaveKernelArchitectureRelease();
         void SaveTime();
 
         void LoadTextFile(const std::string& pName, std::string& pData);
@@ -64,6 +66,8 @@ class CDebugDump
 
         void DeleteFileDir(const std::string& pDir);
 
+        bool IsTextFile(const std::string& pName);
+
     public:
 
         CDebugDump();
@@ -72,8 +76,6 @@ class CDebugDump
         void Delete();
         void Close();
 
-        void SaveProc(const std::string& pPID);
-
         bool Exist(const std::string& pFileName);
 
         void LoadText(const std::string& pName, std::string& pData);
@@ -81,6 +83,9 @@ class CDebugDump
 
         void SaveText(const std::string& pName, const std::string& pData);
         void SaveBinary(const std::string& pName, const char* pData, const unsigned int pSize);
+
+        void InitGetNextFile();
+        bool GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile);
 };
 
 #endif /*DEBUGDUMP_H_*/

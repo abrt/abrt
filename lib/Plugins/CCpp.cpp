@@ -35,7 +35,7 @@
 #include <string.h>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s"
+#define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s %u"
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
 	m_bMemoryMap(false)

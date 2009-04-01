@@ -90,8 +90,8 @@ public:
      */
      virtual dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID) = 0;
      virtual dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender) = 0;
-     virtual dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender) = 0;
-     virtual bool Report(dbus_map_report_info_t pReport) = 0;
+     virtual dbus_vector_crash_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender) = 0;
+     virtual bool Report(dbus_vector_crash_report_info_t pReport) = 0;
      virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
 
 public:
@@ -106,14 +106,14 @@ public:
         emit_signal(sig);
     }
     /* Notify the clients that creating a report has finished */
-    void AnalyzeComplete(dbus_map_report_info_t arg1)
+    void AnalyzeComplete(dbus_vector_crash_report_info_t arg1)
     {
         ::DBus::SignalMessage sig("AnalyzeComplete");
         ::DBus::MessageIter wi = sig.writer();
         wi << arg1;
         emit_signal(sig);
     }
-    
+
     void Error(const std::string& arg1)
     {
         ::DBus::SignalMessage sig("Error");
@@ -143,7 +143,7 @@ private:
         DBus::MessageIter ri = call.reader();
 
         std::string argin1; ri >> argin1;
-        dbus_map_report_info_t argout1 = CreateReport(argin1,call.sender());
+        dbus_vector_crash_report_info_t argout1 = CreateReport(argin1,call.sender());
         DBus::ReturnMessage reply(call);
         DBus::MessageIter wi = reply.writer();
         wi << argout1;
@@ -166,7 +166,7 @@ private:
     {
         DBus::MessageIter ri = call.reader();
 
-        dbus_map_report_info_t argin1; ri >> argin1;
+        dbus_vector_crash_report_info_t argin1; ri >> argin1;
         bool argout1 = Report(argin1);
         DBus::ReturnMessage reply(call);
         DBus::MessageIter wi = reply.writer();

@@ -99,39 +99,34 @@ void CMiddleWare::LoadSettings(const std::string& pPath)
     }
 }
 
-void CMiddleWare::DebugDump2Report(const std::string& pDebugDumpDir, crash_report_t& pCrashReport)
+void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, crash_report_t& pCrashReport)
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    dd.LoadText(FILENAME_UUID, pCrashReport.m_sUUID);
-    dd.LoadText(FILENAME_ARCHITECTURE, pCrashReport.m_sArchitecture);
-    dd.LoadText(FILENAME_KERNEL, pCrashReport.m_sKernel);
-    dd.LoadText(FILENAME_PACKAGE, pCrashReport.m_sPackage);
-    dd.LoadText(FILENAME_EXECUTABLE, pCrashReport.m_sExecutable);
+    std::string fileName, content;
+    bool isTextFile;
 
-    if (dd.Exist(FILENAME_CMDLINE))
+    if (!dd.Exist(FILENAME_UUID) ||
+        !dd.Exist(FILENAME_ARCHITECTURE) ||
+        !dd.Exist(FILENAME_KERNEL) ||
+        !dd.Exist(FILENAME_PACKAGE))
     {
-        dd.LoadText(FILENAME_CMDLINE, pCrashReport.m_sCmdLine);
+        dd.Close();
+        throw std::string("CMiddleWare::DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
     }
-    if (dd.Exist(FILENAME_RELEASE))
+    pCrashReport.clear();
+    dd.InitGetNextFile();
+    while (dd.GetNextFile(fileName, content, isTextFile))
     {
-        dd.LoadText(FILENAME_RELEASE, pCrashReport.m_sRelease);
-    }
-    if (dd.Exist(FILENAME_TEXTDATA1))
-    {
-        dd.LoadText(FILENAME_TEXTDATA1, pCrashReport.m_sTextData1);
-    }
-    if (dd.Exist(FILENAME_TEXTDATA2))
-    {
-        dd.LoadText(FILENAME_TEXTDATA2, pCrashReport.m_sTextData2);
-    }
-    if (dd.Exist(FILENAME_BINARYDATA1))
-    {
-        pCrashReport.m_sBinaryData1 = pDebugDumpDir + "/" + FILENAME_BINARYDATA1;
-    }
-    if (dd.Exist(FILENAME_BINARYDATA2))
-    {
-        pCrashReport.m_sBinaryData2 = pDebugDumpDir + "/" + FILENAME_BINARYDATA2;
+        crash_file_t crashFile;
+        crashFile.m_sType = TYPE_TXT;
+        if (!isTextFile)
+        {
+            crashFile.m_sType = TYPE_BIN;
+            content = pDebugDumpDir + "/" + fileName;
+        }
+        crashFile.m_sContent = content;
+        pCrashReport[fileName] = crashFile;
     }
     dd.Close();
 }
@@ -168,9 +163,9 @@ void CMiddleWare::CreateReport(const std::string& pAnalyzer,
     return analyzer->CreateReport(pDebugDumpDir);
 }
 
-void CMiddleWare::CreateReport(const std::string& pUUID,
-                               const std::string& pUID,
-                               crash_report_t& pCrashReport)
+void CMiddleWare::CreateCrashReport(const std::string& pUUID,
+                                    const std::string& pUID,
+                                    crash_report_t& pCrashReport)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
@@ -180,7 +175,7 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
 
     if (pUUID == "" || row.m_sUUID != pUUID)
     {
-        throw std::string("CMiddleWare::CreateReport(): UUID '"+pUUID+"' is not in database.");
+        throw std::string("CMiddleWare::CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
     }
 
     std::string analyzer;
@@ -203,38 +198,46 @@ void CMiddleWare::CreateReport(const std::string& pUUID,
     dd.SaveText(FILENAME_UUID, UUID);
     dd.Close();
 
-    DebugDump2Report(row.m_sDebugDumpDir, pCrashReport);
+    DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
 
-    pCrashReport.m_sMWID =  analyzer + ";" + pUID + ";" + pUUID  ;
+    crash_file_t file;
+    file.m_sType = TYPE_SYS;
+    file.m_sContent = analyzer;
+    pCrashReport["_MWAnalyzer"] = file;
+    file.m_sContent = pUID;
+    pCrashReport["_MWUID"] = file;
+    file.m_sContent = pUUID;
+    pCrashReport["_MWUUID"] = file;
 }
 
 void CMiddleWare::Report(const crash_report_t& pCrashReport)
 {
-    std::string::size_type pos1 = 0;
-    std::string::size_type pos2 = pCrashReport.m_sMWID.find(";", pos1);
-    std::string lanAppPlugin = pCrashReport.m_sMWID.substr(pos1, pos2);
-    pos1 = pos2 + 1;
-    pos2 = pCrashReport.m_sMWID.find(";", pos1);
-    std::string UID = pCrashReport.m_sMWID.substr(pos1, pos2 - pos1);
-    pos1 = pos2 + 1;
-    std::string UUID = pCrashReport.m_sMWID.substr(pos1);;
+    if (pCrashReport.find("_MWAnalyzer") == pCrashReport.end() ||
+        pCrashReport.find("_MWUID") == pCrashReport.end() ||
+        pCrashReport.find("_MWUUID") == pCrashReport.end())
+    {
+        throw std::string("CMiddleWare::Report(): Important data are missing.");
+    }
+    std::string analyzer = pCrashReport.find("_MWAnalyzer")->second.m_sContent;
+    std::string UID = pCrashReport.find("_MWUID")->second.m_sContent;
+    std::string UUID = pCrashReport.find("_MWUUID")->second.m_sContent;;
 
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
-    database->Connect();
-    database->SetReported(UUID, UID);
-    database->DisConnect();
-
-    if (m_mapPlugin2Reporters.find(lanAppPlugin) != m_mapPlugin2Reporters.end())
+    if (m_mapPlugin2Reporters.find(analyzer) != m_mapPlugin2Reporters.end())
     {
         set_reporters_t::iterator it_r;
-        for (it_r = m_mapPlugin2Reporters[lanAppPlugin].begin();
-             it_r != m_mapPlugin2Reporters[lanAppPlugin].end();
+        for (it_r = m_mapPlugin2Reporters[analyzer].begin();
+             it_r != m_mapPlugin2Reporters[analyzer].end();
              it_r++)
         {
             CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
             reporter->Report(pCrashReport);
         }
     }
+
+    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    database->Connect();
+    database->SetReported(UUID, UID);
+    database->DisConnect();
 }
 
 void CMiddleWare::DeleteCrashInfo(const std::string& pUUID,

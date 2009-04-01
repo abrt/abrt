@@ -22,6 +22,8 @@
 #include "Logger.h"
 #include <fstream>
 #include "Settings.h"
+#include <sstream>
+#include "DebugDump.h"
 
 CLogger::CLogger() :
     m_sLogPath("/var/log/abrt-logger"),
@@ -43,9 +45,47 @@ void CLogger::LoadSettings(const std::string& pPath)
     }
 }
 
-void CLogger::Report(const crash_report_t& pReport)
+void CLogger::Report(const crash_report_t& pCrashReport)
 {
+    std::stringstream binaryFiles, commonFiles, additionalFiles, UUIDFile;
     std::ofstream fOut;
+
+    crash_report_t::const_iterator it;
+    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    {
+        if (it->second.m_sType == TYPE_TXT)
+        {
+            if (it->first !=  FILENAME_UUID &&
+                it->first !=  FILENAME_ARCHITECTURE &&
+                it->first !=  FILENAME_KERNEL &&
+                it->first !=  FILENAME_PACKAGE)
+            {
+                additionalFiles << it->first << std::endl;
+                additionalFiles << "-----" << std::endl;
+                additionalFiles << it->second.m_sContent << std::endl << std::endl;
+            }
+            else if (it->first == FILENAME_UUID)
+            {
+                UUIDFile << it->first << std::endl;
+                UUIDFile << "-----" << std::endl;
+                UUIDFile << it->second.m_sContent << std::endl << std::endl;
+            }
+            else
+            {
+                commonFiles << it->first << std::endl;
+                commonFiles << "-----" << std::endl;
+                commonFiles << it->second.m_sContent << std::endl << std::endl;
+            }
+        }
+        if (it->second.m_sType == TYPE_BIN)
+        {
+            binaryFiles << it->first << std::endl;
+            binaryFiles << "-----" << std::endl;
+            binaryFiles << it->second.m_sContent << std::endl << std::endl;
+        }
+    }
+
+
     if (m_bAppendLogs)
     {
         fOut.open(m_sLogPath.c_str(), std::ios::app);
@@ -56,60 +96,19 @@ void CLogger::Report(const crash_report_t& pReport)
     }
     if (fOut.is_open())
     {
+
         fOut << "Duplicity check" << std::endl;
-        fOut << "==================" << std::endl << std::endl;
-        fOut << "UUID" << std::endl;
-        fOut << "------------" << std::endl;
-        fOut << pReport.m_sUUID << std::endl << std::endl;
+        fOut << "======" << std::endl << std::endl;
+        fOut << UUIDFile.str() << std::endl;
         fOut << "Common information" << std::endl;
-        fOut << "==================" << std::endl << std::endl;
-        fOut << "Architecture" << std::endl;
-        fOut << "------------" << std::endl;
-        fOut << pReport.m_sArchitecture << std::endl << std::endl;
-        fOut << "Kernel version" << std::endl;
-        fOut << "--------------" << std::endl;
-        fOut << pReport.m_sKernel << std::endl << std::endl;
-        fOut << "Package" << std::endl;
-        fOut << "-------" << std::endl;
-        fOut << pReport.m_sPackage << std::endl << std::endl;
-        fOut << "Executable" << std::endl;
-        fOut << "----------" << std::endl;
-        fOut << pReport.m_sExecutable << std::endl << std::endl;
-        fOut << "CmdLine" << std::endl;
-        fOut << "----------" << std::endl;
-        fOut << pReport.m_sCmdLine << std::endl << std::endl;
-        fOut << "Created report" << std::endl;
-        fOut << "==============" << std::endl;
-        fOut << "Text reports" << std::endl;
-        fOut << "==============" << std::endl;
-        if (pReport.m_sTextData1 != "")
-        {
-            fOut << "Text Data 1" << std::endl;
-            fOut << "-----------" << std::endl;
-            fOut << pReport.m_sTextData1 << std::endl << std::endl;
-        }
-        if (pReport.m_sTextData2 != "")
-        {
-            fOut << "Text Data 2" << std::endl;
-            fOut << "-----------" << std::endl;
-            fOut << pReport.m_sTextData2 << std::endl << std::endl;
-        }
-        if (pReport.m_sComment != "")
-        {
-            fOut << "User Comments" << std::endl;
-            fOut << "-----------" << std::endl;
-            fOut << pReport.m_sComment << std::endl << std::endl;
-        }
-        fOut << "Binary reports" << std::endl;
-        fOut << "==============" << std::endl;
-        if (pReport.m_sBinaryData1 != "")
-        {
-            fOut << "1. " <<  pReport.m_sBinaryData1 << std::endl;
-        }
-        if (pReport.m_sBinaryData2 != "")
-        {
-            fOut << "2. " <<  pReport.m_sBinaryData2 << std::endl;
-        }
+        fOut << "======" << std::endl << std::endl;
+        fOut << commonFiles.str() << std::endl;
+        fOut << "Additional information" << std::endl;
+        fOut << "======" << std::endl << std::endl;
+        fOut << additionalFiles.str() << std::endl;
+        fOut << "Binary files" << std::endl;
+        fOut << "======" << std::endl;
+        fOut << binaryFiles.str() << std::endl;
         fOut << std::endl;
         fOut.close();
     }

@@ -32,11 +32,14 @@
 #include <ctype.h>
 #include <time.h>
 #include <unistd.h>
+#include <magic.h>
+#include <string.h>
 
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
     m_bOpened(false),
-    m_bUnlock(true)
+    m_bUnlock(true),
+    m_pGetNextFileDir(NULL)
 {}
 
 void CDebugDump::Open(const std::string& pDir)
@@ -157,7 +160,7 @@ void CDebugDump::Create(const std::string& pDir)
         throw "CDebugDump::Create(): Cannot create dir: " + pDir;
     }
 
-    SaveEnvironment();
+    SaveKernelArchitectureRelease();
     SaveTime();
 }
 
@@ -195,6 +198,39 @@ void CDebugDump::DeleteFileDir(const std::string& pDir)
     }
 }
 
+bool CDebugDump::IsTextFile(const std::string& pName)
+{
+    bool isText = false;
+    magic_t m = magic_open(MAGIC_MIME);
+
+    if (m == NULL)
+    {
+        throw std::string("CDebugDump::IsTextFile(): Cannot open magic cookie: ") + magic_error(m);
+    }
+
+    int r = magic_load(m,NULL);
+
+    if (r == -1)
+    {
+        throw std::string("CDebugDump::IsTextFile(): Cannot load magic db: ") + magic_error(m);
+    }
+
+    char* ch = (char *) magic_file(m, pName.c_str());
+
+    if (ch == NULL)
+    {
+        throw std::string("CDebugDump::IsTextFile(): Cannot determine file type: ") + magic_error(m);
+    }
+
+    if (!strncmp(ch, "text", 4))
+    {
+        isText = true;
+    }
+
+    magic_close(m);
+    return isText;
+}
+
 void CDebugDump::Delete()
 {
     if (!ExistFileDir(m_sDebugDumpDir))
@@ -210,7 +246,7 @@ void CDebugDump::Close()
     m_bOpened = false;
 }
 
-void CDebugDump::SaveEnvironment()
+void CDebugDump::SaveKernelArchitectureRelease()
 {
     struct utsname buf;
     if (uname(&buf) == 0)
@@ -242,16 +278,18 @@ void CDebugDump::LoadTextFile(const std::string& pPath, std::string& pData)
     fIn.open(pPath.c_str());
     if (fIn.is_open())
     {
-        std::string line;
-        while (!fIn.eof())
+        // TODO: rewrite this
+        int ch;
+        while ((ch = fIn.get())!= EOF)
         {
-             getline (fIn,line);
-             // TODO: remove this hack
-             if (pData != "")
-             {
-                 pData += "\n";
-             }
-             pData += line;
+            if (ch == 0)
+            {
+                pData += " ";
+            }
+            else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
+            {
+                pData += ch;
+            }
         }
         fIn.close();
     }
@@ -291,6 +329,10 @@ void CDebugDump::SaveTextFile(const std::string& pPath, const std::string& pData
     if (fOut.is_open())
     {
         fOut << pData;
+        if (!fOut.good())
+        {
+            throw "CDebugDump: SaveTextFile(): Cannot save file " + pPath;
+        }
         fOut.close();
     }
     else
@@ -306,6 +348,10 @@ void CDebugDump::SaveBinaryFile(const std::string& pPath, const char* pData, con
     if (fOut.is_open())
     {
         fOut.write(pData, pSize);
+        if (!fOut.good())
+        {
+            throw "CDebugDump: SaveBinaryFile(): Cannot save file " + pPath;
+        }
         fOut.close();
     }
     else
@@ -336,36 +382,46 @@ void CDebugDump::SaveBinary(const std::string& pName, const char* pData, const u
     SaveBinaryFile(fullPath, pData, pSize);
 }
 
-
-void CDebugDump::SaveProc(const std::string& pPID)
+void CDebugDump::InitGetNextFile()
 {
-    std::string path = "/proc/"+pPID+"/exe";
-    std::string data;
-    char executable[PATH_MAX];
-    int len;
-
-    if ((len = readlink(path.c_str(), executable, PATH_MAX)) != -1)
+    if (m_pGetNextFileDir != NULL)
     {
-        executable[len] = '\0';
-        SaveText(FILENAME_EXECUTABLE, executable);
+        closedir(m_pGetNextFileDir);
+        m_pGetNextFileDir= NULL;
     }
-
-
-    path = "/proc/"+pPID+"/status";
-    std::string uid = "";
-    int ii = 0;
-
-    LoadTextFile(path, data);
-    data = data.substr(data.find("Uid:")+5);
-
-    while (!isspace(data[ii]))
+    m_pGetNextFileDir = opendir(m_sDebugDumpDir.c_str());
+    if (m_pGetNextFileDir == NULL)
     {
-        uid += data[ii];
-        ii++;
+        throw "CDebugDump::InitGetNextFile(): Cannot open dir " + m_sDebugDumpDir;
     }
-    SaveText(FILENAME_UID, uid);
-
-    path = "/proc/"+pPID+"/cmdline";
-    LoadTextFile(path, data);
-    SaveText(FILENAME_CMDLINE, data);
 }
+
+bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile)
+{
+    static struct dirent *dent = NULL;
+
+    if (m_pGetNextFileDir == NULL)
+    {
+        false;
+    }
+    while ((dent = readdir(m_pGetNextFileDir)) != NULL)
+    {
+        if (dent->d_type == DT_REG)
+        {
+            pFileName = dent->d_name;
+            if (IsTextFile(m_sDebugDumpDir + "/" + pFileName))
+            {
+                LoadText(pFileName, pContent);
+                pIsTextFile = true;
+            }
+            else
+            {
+                pContent = "";
+                pIsTextFile = false;
+            }
+            return true;
+        }
+    }
+    return false;
+}
+

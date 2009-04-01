@@ -17,7 +17,7 @@ CCommLayerServerDBus::CCommLayerServerDBus(CMiddleWare *pMW)
 {
     std::cerr << "CCommLayerDBus init.." << std::endl;
     m_pConn->request_name(CC_DBUS_NAME);
-    
+
 }
 
 CCommLayerServerDBus::~CCommLayerServerDBus()
@@ -58,17 +58,17 @@ dbus_vector_map_crash_infos_t CCommLayerServerDBus::GetCrashInfosMap(const std::
 	return retval;
 }
 
-dbus_map_report_info_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
+dbus_vector_crash_report_info_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
 {
-    dbus_map_report_info_t retval;
+    dbus_vector_crash_report_info_t retval;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
     //std::cerr << pUUID << ":" << unix_uid << std::endl;
     crash_report_t crashReport;
     std::cerr << "Creating report" << std::endl;
     try
     {
-        m_pMW->CreateReport(pUUID,to_string(unix_uid), crashReport);
-        retval = crashReport.GetMap();
+        m_pMW->CreateCrashReport(pUUID,to_string(unix_uid), crashReport);
+        retval = crash_report_to_vector_strings(crashReport);
         //send out the message about completed analyze
         CDBusServer_adaptor::AnalyzeComplete(retval);
     }
@@ -80,9 +80,9 @@ dbus_map_report_info_t CCommLayerServerDBus::CreateReport(const std::string &pUU
     return retval;
 }
 
-bool CCommLayerServerDBus::Report(dbus_map_report_info_t pReport)
+bool CCommLayerServerDBus::Report(dbus_vector_crash_report_info_t pReport)
 {
-    crash_report_t crashReport;
+    crash_report_t crashReport = vector_strings_to_crash_report(pReport);
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];
     //ALL_CRASH_REPORT_FIELDS;
@@ -90,7 +90,6 @@ bool CCommLayerServerDBus::Report(dbus_map_report_info_t pReport)
     //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
     //     std::cerr << it->second << std::endl;
     //}
-    crashReport.SetFromMap(pReport);
     try
     {
         m_pMW->Report(crashReport);

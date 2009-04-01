@@ -17,11 +17,11 @@ class CCommLayerServerDBus
     public:
         CCommLayerServerDBus(CMiddleWare *m_pMW);
         ~CCommLayerServerDBus();
-        
+
         virtual dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID);
         virtual dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender);
-        virtual dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender);
-        virtual bool Report(dbus_map_report_info_t pReport);
+        virtual dbus_vector_crash_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender);
+        virtual bool Report(dbus_vector_crash_report_info_t pReport);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender);
 };
 

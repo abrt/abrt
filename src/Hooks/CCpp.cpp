@@ -30,7 +30,8 @@
 #include <syslog.h>
 #include <string>
 
-#define CORESTEP (1024)
+#define FILENAME_EXECUTABLE     "executable"
+#define FILENAME_CMDLINE        "cmdline"
 
 static void write_log(const char* pid)
 {
@@ -39,17 +40,61 @@ static void write_log(const char* pid)
     closelog();
 }
 
+char* get_executable(const char* pid)
+{
+    char path[PATH_MAX];
+    char executable[PATH_MAX];
+    int len;
+
+    snprintf(path, sizeof(path), "/proc/%s/exe", pid);
+    if ((len = readlink(path, executable, PATH_MAX)) != -1)
+    {
+        executable[len] = '\0';
+        return strdup(executable);
+    }
+    return NULL;
+}
+
+// taken from kernel
+#define COMMAND_LINE_SIZE 2048
+
+char* get_cmdline(const char* pid)
+{
+    char path[PATH_MAX];
+    char cmdline[COMMAND_LINE_SIZE];
+    snprintf(path, sizeof(path), "/proc/%s/cmdline", pid);
+    FILE* fp = fopen(path, "r");
+    int ch;
+    int ii = 0;
+    while ((ch = fgetc(fp)) != EOF)
+    {
+        if (ch == 0)
+        {
+            cmdline[ii] = ' ';
+        }
+        else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
+        {
+            cmdline[ii] = ch;
+        }
+        ii++;
+    }
+    cmdline[ii] = '\0';
+    fclose(fp);
+    return strdup(cmdline);
+}
+
 int main(int argc, char** argv)
 {
     const char* program_name = argv[0];
     if (argc < 3)
     {
-        fprintf(stderr, "Usage: %s: <pid> <signal>\n",
+        fprintf(stderr, "Usage: %s: <pid> <signal> <uid>\n",
                 program_name);
         return -1;
     }
     const char* pid = argv[1];
     const char* signal = argv[2];
+    const char* uid = argv[3];
 
     if (strcmp(signal, "3") != 0 &&     // SIGQUIT
         strcmp(signal, "4") != 0 &&     // SIGILL
@@ -65,38 +110,52 @@ int main(int argc, char** argv)
         FILE* fp;
         CDebugDump dd;
         int byte;
-        char dd_path[PATH_MAX] = DEBUG_DUMPS_DIR;
-        char cd_path[PATH_MAX];
+        char path[PATH_MAX];
+        char* executable = NULL;
+        char* cmdline = NULL;
 
-        snprintf(dd_path, sizeof(dd_path), "%s/ccpp-%ld-%s",
-                                            DEBUG_DUMPS_DIR, time(NULL), pid);
-        snprintf(cd_path, sizeof(cd_path), "%s/%s",
-                                           dd_path, FILENAME_BINARYDATA1);
+        executable = get_executable(pid);
+        cmdline = get_cmdline(pid);
 
-        dd.Create(dd_path);
-        dd.SaveProc(pid);
-        dd.SaveText(FILENAME_ANALYZER, "CCpp");
-        if ((fp = fopen(cd_path, "w")) == NULL)
+        if (executable == NULL ||
+            cmdline == NULL)
         {
-            fprintf(stderr, "%s: Can not open the file %s.\n",
-                            program_name, cd_path);
+            free(executable);
+            free(cmdline);
+            throw std::string("Can not get proc info.");
+        }
+
+        snprintf(path, sizeof(path), "%s/ccpp-%ld-%s",
+                                      DEBUG_DUMPS_DIR, time(NULL), pid);
+        dd.Create(path);
+        dd.SaveText(FILENAME_ANALYZER, "CCpp");
+        dd.SaveText(FILENAME_EXECUTABLE, executable);
+        dd.SaveText(FILENAME_UID, uid);
+        dd.SaveText(FILENAME_CMDLINE, cmdline);
+
+        snprintf(path + strlen(path), sizeof(path), "/%s",
+                                                    FILENAME_BINARYDATA1);
+
+        if ((fp = fopen(path, "w")) == NULL)
+        {
             dd.Delete();
             dd.Close();
-            return -2;
+            throw std::string("Can not open the file ") + path;
         }
         // TODO: rewrite this
         while ((byte = getc(stdin)) != EOF)
         {
             if (putc(byte, fp) == EOF)
             {
-                fprintf(stderr, "%s: Can not write to the file %s.\n",
-                                program_name, cd_path);
                 fclose(fp);
                 dd.Delete();
                 dd.Close();
-                return -3;
+                throw std::string("Can not write to the file %s.");
             }
         }
+
+        free(executable);
+        free(cmdline);
         fclose(fp);
         dd.Close();
         write_log(pid);
@@ -104,7 +163,7 @@ int main(int argc, char** argv)
     catch (std::string sError)
     {
         fprintf(stderr, "%s: %s\n", program_name, sError.c_str());
-        return -4;
+        return -2;
     }
     return 0;
 }

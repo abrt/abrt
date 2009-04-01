@@ -25,29 +25,25 @@
 #include <iostream>
 #include <sys/types.h>
 #include <unistd.h>
+#include <iostream>
 
 
 int main(int argc, char** argv)
 {
 
-
+    if (argc < 2)
+    {
+        std::cerr << "Usage: " << argv[0] << " <DebugDumpDir>" << std::endl;
+    }
     try
     {
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
                                PLUGINS_LIB_DIR,
                                std::string(CONF_DIR) + "/abrt.conf");
         /* Create DebugDump */
-        CDebugDump dd;
-        char pid[100];
-        sprintf(pid, "%d", getpid());
-        dd.Create(std::string(DEBUG_DUMPS_DIR)+"/"+pid);
-        dd.SaveProc(pid);
-        dd.SaveText(FILENAME_ANALYZER, "CCpp");
-        dd.SaveBinary(FILENAME_BINARYDATA1, "ass0-9as", sizeof("ass0-9as"));
-
         /* Try to save it into DB */
         crash_info_t crashInfo;
-        if (middleWare.SaveDebugDump(std::string(DEBUG_DUMPS_DIR)+"/"+pid, crashInfo))
+        if (middleWare.SaveDebugDump(argv[1], crashInfo))
         {
             std::cout << "Application Crashed! " <<
                          "(" << crashInfo.m_sTime << " [" << crashInfo.m_sCount << "]) " <<
@@ -58,11 +54,10 @@ int main(int argc, char** argv)
              * If we do not want user interaction, just send data immediately
              */
             crash_report_t crashReport;
-            middleWare.CreateReport(crashInfo.m_sUUID, crashInfo.m_sUID, crashReport);
+            middleWare.CreateCrashReport(crashInfo.m_sUUID, crashInfo.m_sUID, crashReport);
             /* Report crash */
             middleWare.Report(crashReport);
         }
-        dd.Close();
     }
     catch (std::string sError)
     {

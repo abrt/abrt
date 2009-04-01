@@ -35,7 +35,7 @@ class CActionRunApp : public CAction
     public:
         virtual ~CActionRunApp() {}
         virtual void Run(const std::string& pDebugDumpDir,
-                         const std::string& pParams);
+                         const std::string& pArgs);
 };
 
 PLUGIN_INFO(ACTION,

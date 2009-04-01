@@ -36,7 +36,7 @@ class CLogger : public CReporter
         virtual ~CLogger() {}
 
         void LoadSettings(const std::string& pPath);
-        void Report(const crash_report_t& pReport);
+        void Report(const crash_report_t& pCrashReport);
 };
 
 

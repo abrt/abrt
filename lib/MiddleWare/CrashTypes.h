@@ -36,57 +36,45 @@ typedef struct SCrashInfo
 
 typedef std::vector<crash_info_t> vector_crash_infos_t;
 
-typedef struct SCrashReport
+#define TYPE_TXT "t"
+#define TYPE_BIN "b"
+#define TYPE_SYS "s"
+
+typedef struct CCrashFile
 {
-    std::string m_sMWID;
-    std::string m_sUUID;
-    std::string m_sArchitecture;
-    std::string m_sKernel;
-    std::string m_sRelease;
-    std::string m_sExecutable;
-    std::string m_sCmdLine;
-    std::string m_sPackage;
-    std::string m_sTextData1;
-    std::string m_sTextData2;
-    std::string m_sBinaryData1;
-    std::string m_sBinaryData2;
-    std::string m_sComment;
+    std::string m_sType;
+    std::string m_sContent;
+} crash_file_t;
 
-    const map_crash_t GetMap()
-    {
-        map_crash_t mci;
-        mci["MWID"] = m_sMWID;
-        mci["UUID"] = m_sUUID;
-        mci["Architecture"] = m_sArchitecture;
-        mci["Kernel"] = m_sKernel;
-        mci["Release"] = m_sRelease;
-        mci["Executable"] = m_sExecutable;
-        mci["CmdLine"] = m_sCmdLine;
-        mci["Package"] = m_sPackage;
-        mci["TextData1"] = m_sTextData1;
-        mci["TextData2"] = m_sTextData2;
-        mci["BinaryData1"] = m_sBinaryData1;
-        mci["BinaryData2"] = m_sBinaryData2;
-        mci["Comment"] = m_sComment;
+typedef std::vector<std::string> vector_strings_t;
+typedef std::map<std::string, crash_file_t> crash_report_t;
 
-        return mci;
-    }
-    void SetFromMap(const map_crash_t& pMcr)
+inline vector_strings_t crash_report_to_vector_strings(const crash_report_t& pCrashReport)
+{
+    vector_strings_t vec;
+    crash_report_t::const_iterator it;
+    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
-        m_sMWID = pMcr.find("MWID")->second;
-        m_sUUID = pMcr.find("UUID")->second;
-        m_sArchitecture = pMcr.find("Architecture")->second;
-        m_sKernel = pMcr.find("Kernel")->second;
-        m_sRelease = pMcr.find("Release")->second;
-        m_sExecutable = pMcr.find("Executable")->second;
-        m_sCmdLine = pMcr.find("CmdLine")->second;
-        m_sPackage = pMcr.find("Package")->second;
-        m_sTextData1 = pMcr.find("TextData1")->second;
-        m_sTextData2 = pMcr.find("TextData2")->second;
-        m_sBinaryData1 = pMcr.find("BinaryData1")->second;
-        m_sBinaryData2 = pMcr.find("BinaryData2")->second;
-        m_sComment = pMcr.find("Comment")->second;
+        vec.push_back(it->first);
+        vec.push_back(it->second.m_sType);
+        vec.push_back(it->second.m_sContent);
     }
-} crash_report_t;
+    return vec;
+}
+
+inline crash_report_t vector_strings_to_crash_report(const vector_strings_t& pVectorStrings)
+{
+    unsigned int ii;
+    crash_report_t crashReport;
+    for (ii = 0; ii < pVectorStrings.size(); ii += 3)
+    {
+        crash_file_t crashFile;
+        std::string fileName = pVectorStrings[ii];
+        crashFile.m_sType = pVectorStrings[ii + 1];
+        crashFile.m_sContent = pVectorStrings[ii + 2];
+        crashReport[fileName] = crashFile;
+    }
+    return crashReport;
+}
 
 #endif /* CRASHTYPES_H_ */

@@ -58,71 +58,69 @@ void CMailx::SendEmail(const std::string& pText)
 }
 
 
-void CMailx::Report(const crash_report_t& pReport)
+void CMailx::Report(const crash_report_t& pCrashReport)
 {
-    std::stringstream ss;
+    std::stringstream emailBody;
+    std::stringstream binaryFiles, commonFiles, additionalFiles, UUIDFile;
 
-    ss << "Duplicity check" << std::endl;
-    ss << "==================" << std::endl << std::endl;
-    ss << "UUID" << std::endl;
-    ss << "------------" << std::endl;
-    ss << pReport.m_sUUID << std::endl << std::endl;
-    ss << "Common information" << std::endl;
-    ss << "==================" << std::endl << std::endl;
-    ss << "Architecture" << std::endl;
-    ss << "------------" << std::endl;
-    ss << pReport.m_sArchitecture << std::endl << std::endl;
-    ss << "Kernel version" << std::endl;
-    ss << "--------------" << std::endl;
-    ss << pReport.m_sKernel << std::endl << std::endl;
-    ss << "Package" << std::endl;
-    ss << "-------" << std::endl;
-    ss << pReport.m_sPackage << std::endl << std::endl;
-    ss << "Executable" << std::endl;
-    ss << "----------" << std::endl;
-    ss << pReport.m_sExecutable << std::endl << std::endl;
-    ss << "CmdLine" << std::endl;
-    ss << "----------" << std::endl;
-    ss << pReport.m_sCmdLine << std::endl << std::endl;
-    ss << "Created report" << std::endl;
-    ss << "==============" << std::endl;
-    ss << "Text reports" << std::endl;
-    ss << "==============" << std::endl;
-    if (pReport.m_sTextData1 != "")
+    crash_report_t::const_iterator it;
+    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
-        ss << "Text Data 1" << std::endl;
-        ss << "-----------" << std::endl;
-        ss << pReport.m_sTextData1 << std::endl << std::endl;
+        if (it->second.m_sType == TYPE_TXT)
+        {
+            if (it->first !=  FILENAME_UUID &&
+                it->first !=  FILENAME_ARCHITECTURE &&
+                it->first !=  FILENAME_KERNEL &&
+                it->first !=  FILENAME_PACKAGE)
+            {
+                additionalFiles << it->first << std::endl;
+                additionalFiles << "-----" << std::endl;
+                additionalFiles << it->second.m_sContent << std::endl;
+            }
+            else if (it->first == FILENAME_UUID)
+            {
+                UUIDFile << it->first << std::endl;
+                UUIDFile << "-----" << std::endl;
+                UUIDFile << it->second.m_sContent << std::endl;
+            }
+            else
+            {
+                commonFiles << it->first << std::endl;
+                commonFiles << "-----" << std::endl;
+                commonFiles << it->second.m_sContent << std::endl;
+            }
+        }
+        if (it->second.m_sType == TYPE_BIN)
+        {
+            binaryFiles << " -a " << it->second.m_sContent;
+        }
     }
-    if (pReport.m_sTextData2 != "")
-    {
-        ss << "Text Data 2" << std::endl;
-        ss << "-----------" << std::endl;
-        ss << pReport.m_sTextData2 << std::endl << std::endl;
-    }
-    if (pReport.m_sComment != "")
-    {
-        ss << "User Comments" << std::endl;
-        ss << "-----------" << std::endl;
-        ss << pReport.m_sComment << std::endl << std::endl;
-    }
-    ss << "Binary reports" << std::endl;
-    ss << "==============" << std::endl;
-    ss << "See the attachment[s]" << std::endl;
+
+
+
+    emailBody << "Duplicity check" << std::endl;
+    emailBody << "=====" << std::endl << std::endl;
+    emailBody << UUIDFile.str() << std::endl;
+    emailBody << "Common information" << std::endl;
+    emailBody << "=====" << std::endl << std::endl;
+    emailBody << commonFiles.str() << std::endl;
+    emailBody << "Additional information" << std::endl;
+    emailBody << "=====" << std::endl << std::endl;
+    emailBody << additionalFiles.str() << std::endl;
+    emailBody << "Binary file[s]" << std::endl;
+    emailBody << "=====" << std::endl;
 
     if (m_bSendBinaryData)
     {
-        if (pReport.m_sBinaryData1 != "")
-        {
-            m_sAttachments = " -a " + pReport.m_sBinaryData1;
-        }
-        if (pReport.m_sBinaryData2 != "")
-        {
-            m_sAttachments = " -a " + pReport.m_sBinaryData2;
-        }
+        emailBody << "See the attachment[s]" << std::endl;
+        m_sAttachments = binaryFiles.str();
+    }
+    else
+    {
+        emailBody << "Do not send them." << std::endl;
     }
 
-    SendEmail(ss.str());
+    SendEmail(emailBody.str());
 }
 
 void CMailx::LoadSettings(const std::string& pPath)
@@ -144,6 +142,6 @@ void CMailx::LoadSettings(const std::string& pPath)
     }
     if (settings.find("SendBinaryData")!= settings.end())
     {
-        m_bSendBinaryData = settings["SendBinaryData"] == "yes";
+        m_bSendBinaryData = settings["SendBinaryData"] == "no";
     }
 }
