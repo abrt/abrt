@@ -137,7 +137,7 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
     dd.SaveText(FILENAME_UUID, UUID);
     dd.Close();
 
-    //RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
+    RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
     DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
 
     crash_file_t file;
@@ -293,6 +293,17 @@ int CMiddleWare::SaveUUIDToDebugDump(const std::string& pDebugDumpDir)
 
 void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
 {
+    if (m_mapAnalyzerActions.find(pAnalyzer) != m_mapAnalyzerActions.end())
+    {
+        set_actions_t::iterator it_a;
+        for (it_a = m_mapAnalyzerActions[pAnalyzer].begin();
+             it_a != m_mapAnalyzerActions[pAnalyzer].end();
+             it_a++)
+        {
+            CAction* action = m_pPluginManager->GetAction((*it_a).first);
+            action->Run(pDebugDumpDir, (*it_a).second);
+        }
+    }
 }
 
 int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
