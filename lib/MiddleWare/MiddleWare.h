@@ -98,7 +98,8 @@ class CMiddleWare
         void AddAnalyzerReporter(const std::string& pAnalyzer,
                                  const std::string& pReporter);
         void AddAnalyzerAction(const std::string& pAnalyzer,
-                               const set_actions_t& pActions);
+                               const std::string& pAction,
+                               const std::string& pArgs);
 };
 
 #endif /*MIDDLEWARE_H_*/

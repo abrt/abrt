@@ -156,7 +156,11 @@ void CCrashWatcher::SetUpMW()
     CSettings::map_analyzer_actions_t::iterator it_pa;
     for (it_pa = actions.begin(); it_pa != actions.end(); it_pa++)
     {
-        m_pMW->AddAnalyzerAction(it_pa->first, it_pa->second);
+        CSettings::set_actions_t::iterator it_a;
+        for (it_a = it_pa->second.begin(); it_a != it_pa->second.end(); it_a++)
+        {
+            m_pMW->AddAnalyzerAction(it_pa->first, (*it_a).first, (*it_a).second);
+        }
     }
 }
 

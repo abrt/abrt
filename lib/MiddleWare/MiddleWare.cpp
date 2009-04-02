@@ -448,7 +448,8 @@ void CMiddleWare::AddAnalyzerReporter(const std::string& pAnalyzer,
 }
 
 void CMiddleWare::AddAnalyzerAction(const std::string& pAnalyzer,
-                                    const set_actions_t& pActions)
+                                    const std::string& pAction,
+                                    const std::string& pArgs)
 {
-    m_mapAnalyzerActions[pAnalyzer] = pActions;
+    m_mapAnalyzerActions[pAnalyzer].insert(make_pair(pAction, pArgs));
 }
