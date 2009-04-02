@@ -129,7 +129,7 @@ void CSettings::ParseActions()
     for (it = m_mapSettingsActions.begin(); it != m_mapSettingsActions.end(); it++)
     {
         set_strings_t keys = ParseActionKey(it->first);
-        set_single_actions_t singleActions = ParseActionValue(it->second);
+        set_actions_t singleActions = ParseActionValue(it->second);
         set_strings_t::iterator it_keys;
         for (it_keys = keys.begin(); it_keys != keys.end(); it_keys++)
         {
@@ -161,7 +161,7 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
         }
         else if ((pValue[ii] == ',' || pValue[ii] == ')') && !is_quote && is_arg)
         {
-            singleActions.isert(make_pair(action, item));
+            //singleActions.isert(make_pair(action, item));
             item = "";
             if (pValue[ii] == ')')
             {
@@ -173,7 +173,7 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
         {
         if (item != "")
             {
-                singleActions.isert(make_pair(item, ""));
+                //singleActions.isert(make_pair(item, ""));
                 item = "";
             }
         }
@@ -184,7 +184,7 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
     }
     if (item != "")
     {
-    singleActions.insert(make_pair(item, ""));
+    //singleActions.insert(make_pair(item, ""));
     action = "";
     }
     return singleActions;

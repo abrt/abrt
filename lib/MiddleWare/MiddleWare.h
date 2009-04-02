@@ -36,8 +36,8 @@ class CMiddleWare
         typedef set_strings_t set_enabled_plugins_t;
         typedef set_strings_t set_reporters_t;
         typedef std::map<std::string, set_reporters_t> map_reporter_associations_t;
-        typedef std::map<std::string, vector_strings_t> map_single_actions_t;
-        typedef std::map<std::string, map_single_actions_t> map_action_associations_t;
+        typedef std::set<pair_string_string_t> set_actions_t;
+        typedef std::map<std::string, set_actions_t> map_action_associations_t;
 
         CPluginManager* m_pPluginManager;
         CRPM m_RPM;
@@ -54,7 +54,7 @@ class CMiddleWare
                                   const std::string& pDebugDumpDir);
         void CreateReport(const std::string& pAnalyzer,
                           const std::string& pDebugDumpDir);
-
+        void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
         void DebugDumpToCrashReport(const std::string& pDebugDumpDir,
                                     crash_report_t& pCrashReport);
 
@@ -98,8 +98,7 @@ class CMiddleWare
         void AddAnalyzerReporter(const std::string& pAnalyzer,
                                  const std::string& pReporter);
         void AddAnalyzerAction(const std::string& pAnalyzer,
-                               const std::string& pAction,
-                               const vector_strings_t& pArgs);
+                               const set_actions_t& pActions);
 };
 
 #endif /*MIDDLEWARE_H_*/

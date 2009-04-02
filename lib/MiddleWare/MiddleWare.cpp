@@ -137,6 +137,7 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
     dd.SaveText(FILENAME_UUID, UUID);
     dd.Close();
 
+    //RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
     DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
 
     crash_file_t file;
@@ -288,6 +289,10 @@ int CMiddleWare::SaveUUIDToDebugDump(const std::string& pDebugDumpDir)
     dd.Close();
 
     return 1;
+}
+
+void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
+{
 }
 
 int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
@@ -443,8 +448,7 @@ void CMiddleWare::AddAnalyzerReporter(const std::string& pAnalyzer,
 }
 
 void CMiddleWare::AddAnalyzerAction(const std::string& pAnalyzer,
-                                    const std::string& pAction,
-                                    const vector_strings_t& pArgs)
+                                    const set_actions_t& pActions)
 {
-    m_mapAnalyzerActions[pAnalyzer][pAction] = pArgs;
+    m_mapAnalyzerActions[pAnalyzer] = pActions;
 }
