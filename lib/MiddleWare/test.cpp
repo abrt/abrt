@@ -37,24 +37,35 @@ int main(int argc, char** argv)
     }
     try
     {
+        //std::string(CONF_DIR) + "/abrt.conf"
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
-                               PLUGINS_LIB_DIR,
-                               std::string(CONF_DIR) + "/abrt.conf");
+                               PLUGINS_LIB_DIR);
         /* Create DebugDump */
         /* Try to save it into DB */
-        crash_info_t crashInfo;
+        middleWare.RegisterPlugin("CCpp");
+        middleWare.RegisterPlugin("Logger");
+        middleWare.RegisterPlugin("RunApp");
+        middleWare.RegisterPlugin("SQLite3");
+        middleWare.SetDatabase("SQLite3");
+        middleWare.SetOpenGPGCheck(false);
+        middleWare.AddAnalyzerReporter("CCpp", "Logger");
+        middleWare.AddAnalyzerAction("CCpp", "RunApp", "date,action_date");
+        std::cout << "sasas" <<std::endl;
+        map_crash_info_t crashInfo;
         if (middleWare.SaveDebugDump(argv[1], crashInfo))
         {
             std::cout << "Application Crashed! " <<
-                         "(" << crashInfo.m_sTime << " [" << crashInfo.m_sCount << "]) " <<
-                         crashInfo.m_sPackage << ": " <<
-                         crashInfo.m_sExecutable << std::endl;
+                         crashInfo[item_crash_into_t_str[CI_PACKAGE]][CD_CONTENT] << ", " <<
+                         crashInfo[item_crash_into_t_str[CI_EXECUTABLE]][CD_CONTENT] << ", " <<
+                         crashInfo[item_crash_into_t_str[CI_COUNT]][CD_CONTENT] << ", " << std::endl;
 
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */
-            crash_report_t crashReport;
-            middleWare.CreateCrashReport(crashInfo.m_sUUID, crashInfo.m_sUID, crashReport);
+            map_crash_report_t crashReport;
+            middleWare.CreateCrashReport(crashInfo[item_crash_into_t_str[CI_UUID]][CD_CONTENT],
+                                         crashInfo[item_crash_into_t_str[CI_UID]][CD_CONTENT],
+                                         crashReport);
             /* Report crash */
             middleWare.Report(crashReport);
         }

@@ -51,8 +51,8 @@ inline void add_crash_data_to_crash_info(map_crash_info_t& pCrashInfo,
                                          const content_crash_data_t& pType,
                                          const std::string& pContent)
 {
-    pCrashInfo[type_crash_data_t_str[pItem]].push_back(type_crash_data_t_str[pType]);
-    pCrashInfo[type_crash_data_t_str[pItem]].push_back(pContent);
+    pCrashInfo[item_crash_into_t_str[pItem]].push_back(type_crash_data_t_str[pType]);
+    pCrashInfo[item_crash_into_t_str[pItem]].push_back(pContent);
 }
 
 inline void add_crash_data_to_crash_report(map_crash_report_t& pCrashReport,
