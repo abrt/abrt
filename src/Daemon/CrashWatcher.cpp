@@ -71,13 +71,13 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         {
             std::string sName = name;
             CCrashWatcher *cc = (CCrashWatcher*)daemon;
-            crash_info_t crashinfo;
+            map_crash_info_t crashinfo;
             try
             {
                 if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
                 {
                     /* send message to dbus */
-                    cc->m_pCommLayer->Crash(crashinfo.m_sPackage);
+                    cc->m_pCommLayer->Crash(crashinfo[item_crash_into_t_str[CI_PACKAGE]][CD_CONTENT]);
                 }
             }
             catch(std::string err)
@@ -236,7 +236,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         perror ("Couldn't open the directory");
 
     for (std::vector<std::string>::iterator itt = dirs.begin(); itt != dirs.end(); ++itt){
-        crash_info_t crashinfo;
+        map_crash_info_t crashinfo;
         std::cerr << "Saving debugdeump: " << *itt << std::endl;
         try
         {

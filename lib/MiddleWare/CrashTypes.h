@@ -5,80 +5,64 @@
 #include <map>
 #include <vector>
 
-typedef std::map<std::string, std::string> map_crash_t;
+// SYS - system value, should not be displayed
+// BIN - binary value, should be displayed
+// TXT = text value, should be displayed
+typedef enum { CD_SYS, CD_BIN, CD_TXT } content_crash_data_t;
 
-typedef struct SCrashInfo
-{
-    std::string m_sUUID;
-    std::string m_sUID;
-    std::string m_sCount;
-    std::string m_sExecutable;
-    std::string m_sPackage;
-    std::string m_sDescription;
-    std::string m_sTime;
-    std::string m_sReported;
+const char* const type_crash_data_t_str[] = { "s", "b", "t" };
 
-    const map_crash_t GetMap()
-    {
-        map_crash_t mci;
-        mci["UUID"] = m_sUUID;
-        mci["UID"] = m_sUID;
-        mci["Count"] = m_sCount;
-        mci["Executable"] = m_sExecutable;
-        mci["Package"] = m_sPackage;
-        mci["Description"] = m_sDescription;
-        mci["Time"] = m_sTime;
-        mci["Reported"] =  m_sReported;
+typedef enum { CI_UUID,
+               CI_UID,
+               CI_COUNT,
+               CI_EXECUTABLE,
+               CI_PACKAGE,
+               CI_DESCRIPTION,
+               CI_TIME,
+               CI_REPORTED,
+               CI_MWANALYZER,
+               CI_MWUID,
+               CI_MWUUID } item_crash_into_t;
 
-        return mci;
-    }
-} crash_info_t;
+const char* const item_crash_into_t_str[] = { "UUID",
+                                              "UID",
+                                              "Count",
+                                              "Executable",
+                                              "Package",
+                                              "Time",
+                                              "Reported",
+                                              "_MWAnalyzer",
+                                              "_MWUID",
+                                              "_MWUUID" };
 
-typedef std::vector<crash_info_t> vector_crash_infos_t;
+typedef enum { CD_TYPE, CD_CONTENT } item_crash_data_t;
 
-// text value, should be displayed
-#define TYPE_TXT "t"
-// binary value, should be displayed
-#define TYPE_BIN "b"
-// system value, should not be displayed
-#define TYPE_SYS "s"
-
-typedef struct CCrashFile
-{
-    std::string m_sType;
-    std::string m_sContent;
-} crash_file_t;
-
-// < key, type, value, key, type, value, ....>
+// now, size of a vecor is always 2 -> <type, content>
 typedef std::vector<std::string> vector_strings_t;
-typedef std::map<std::string, crash_file_t> crash_report_t;
+// <key, data>
+typedef std::map<std::string, vector_strings_t> map_crash_data_t;
 
-inline vector_strings_t crash_report_to_vector_strings(const crash_report_t& pCrashReport)
+typedef map_crash_data_t map_crash_info_t;
+typedef std::vector<map_crash_info_t> vector_crash_infos_t;
+typedef map_crash_data_t map_crash_report_t;
+
+inline void add_crash_data_to_crash_info(map_crash_info_t& pCrashInfo,
+                                         const item_crash_into_t& pItem,
+                                         const content_crash_data_t& pType,
+                                         const std::string& pContent)
 {
-    vector_strings_t vec;
-    crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
-    {
-        vec.push_back(it->first);
-        vec.push_back(it->second.m_sType);
-        vec.push_back(it->second.m_sContent);
-    }
-    return vec;
+    pCrashInfo[type_crash_data_t_str[pItem]].push_back(type_crash_data_t_str[pType]);
+    pCrashInfo[type_crash_data_t_str[pItem]].push_back(pContent);
 }
 
-inline crash_report_t vector_strings_to_crash_report(const vector_strings_t& pVectorStrings)
+inline void add_crash_data_to_crash_report(map_crash_report_t& pCrashReport,
+                                           const std::string& pFileName,
+                                           const content_crash_data_t& pType,
+                                           const std::string& pContent)
 {
-    unsigned int ii;
-    crash_report_t crashReport;
-    for (ii = 0; ii < pVectorStrings.size(); ii += 3)
-    {
-        crash_file_t crashFile;
-        std::string fileName = pVectorStrings[ii];
-        crashFile.m_sType = pVectorStrings[ii + 1];
-        crashFile.m_sContent = pVectorStrings[ii + 2];
-        crashReport[fileName] = crashFile;
-    }
-    return crashReport;
+    pCrashReport[pFileName].push_back(type_crash_data_t_str[pType]);
+    pCrashReport[pFileName].push_back(pContent);
 }
+
 
 #endif /* CRASHTYPES_H_ */

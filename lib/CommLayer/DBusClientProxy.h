@@ -50,7 +50,7 @@ public:
       ...
       >
       */
-    dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID)
+    vector_crash_infos_t GetCrashInfos(const std::string &pUID)
     {
         DBus::CallMessage call;
         
@@ -61,7 +61,7 @@ public:
         DBus::Message ret = invoke_method(call);
         DBus::MessageIter ri = ret.reader();
 
-        dbus_vector_crash_infos_t argout;
+        vector_crash_infos_t argout;
         ri >> argout;
         return argout;
     }

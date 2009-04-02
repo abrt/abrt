@@ -26,21 +26,21 @@ CCommLayerServerDBus::~CCommLayerServerDBus()
     delete m_pDispatcher;
 }
 
-dbus_vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pUID)
+vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pUID)
 {
-    dbus_vector_crash_infos_t retval;
-    vector_crash_infos_t crash_info;
+    vector_crash_infos_t retval;
+    /*   vector_crash_infos_t crash_info;
     m_pMW->GetCrashInfos("501");
     for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
         std::cerr << it->m_sExecutable << std::endl;
-    }
+    }*/
 	return retval;
 }
 
 dbus_vector_map_crash_infos_t CCommLayerServerDBus::GetCrashInfosMap(const std::string &pDBusSender)
 {
     dbus_vector_map_crash_infos_t retval;
-    vector_crash_infos_t crash_info;
+    /*vector_crash_infos_t crash_info;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
     try
     {
@@ -54,35 +54,32 @@ dbus_vector_map_crash_infos_t CCommLayerServerDBus::GetCrashInfosMap(const std::
         std::cerr << it->m_sExecutable << std::endl;
         retval.push_back(it->GetMap());
     }
-    Notify("Sent crash info");
+    Notify("Sent crash info");*/
 	return retval;
 }
 
-dbus_vector_crash_report_info_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
+map_crash_report_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
 {
-    dbus_vector_crash_report_info_t retval;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
     //std::cerr << pUUID << ":" << unix_uid << std::endl;
-    crash_report_t crashReport;
+    map_crash_report_t crashReport;
     std::cerr << "Creating report" << std::endl;
     try
     {
         m_pMW->CreateCrashReport(pUUID,to_string(unix_uid), crashReport);
-        retval = crash_report_to_vector_strings(crashReport);
         //send out the message about completed analyze
-        CDBusServer_adaptor::AnalyzeComplete(retval);
+        CDBusServer_adaptor::AnalyzeComplete(crashReport);
     }
     catch(std::string err)
     {
         CDBusServer_adaptor::Error(err);
         std::cerr << err << std::endl;
     }
-    return retval;
+    return crashReport;
 }
 
-bool CCommLayerServerDBus::Report(dbus_vector_crash_report_info_t pReport)
+bool CCommLayerServerDBus::Report(map_crash_report_t pReport)
 {
-    crash_report_t crashReport = vector_strings_to_crash_report(pReport);
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];
     //ALL_CRASH_REPORT_FIELDS;
@@ -92,7 +89,7 @@ bool CCommLayerServerDBus::Report(dbus_vector_crash_report_info_t pReport)
     //}
     try
     {
-        m_pMW->Report(crashReport);
+        m_pMW->Report(pReport);
     }
     catch(std::string err)
     {

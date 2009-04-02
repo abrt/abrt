@@ -37,7 +37,7 @@ CMiddleWare::~CMiddleWare()
     delete m_pPluginManager;
 }
 
-void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, crash_report_t& pCrashReport)
+void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_report_t& pCrashReport)
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
@@ -57,15 +57,14 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, crash
     dd.InitGetNextFile();
     while (dd.GetNextFile(fileName, content, isTextFile))
     {
-        crash_file_t crashFile;
-        crashFile.m_sType = TYPE_TXT;
         if (!isTextFile)
         {
-            crashFile.m_sType = TYPE_BIN;
-            content = pDebugDumpDir + "/" + fileName;
+            add_crash_data_to_crash_report(pCrashReport, fileName, CD_BIN, pDebugDumpDir + "/" + fileName);
         }
-        crashFile.m_sContent = content;
-        pCrashReport[fileName] = crashFile;
+        else
+        {
+            add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, content);
+        }
     }
     dd.Close();
 }
@@ -104,7 +103,7 @@ void CMiddleWare::CreateReport(const std::string& pAnalyzer,
 
 void CMiddleWare::CreateCrashReport(const std::string& pUUID,
                                     const std::string& pUID,
-                                    crash_report_t& pCrashReport)
+                                    map_crash_report_t& pCrashReport)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
@@ -140,27 +139,22 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
     RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
     DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
 
-    crash_file_t file;
-    file.m_sType = TYPE_SYS;
-    file.m_sContent = analyzer;
-    pCrashReport["_MWAnalyzer"] = file;
-    file.m_sContent = pUID;
-    pCrashReport["_MWUID"] = file;
-    file.m_sContent = pUUID;
-    pCrashReport["_MWUUID"] = file;
+    add_crash_data_to_crash_report(pCrashReport, item_crash_into_t_str[CI_MWANALYZER], CD_SYS, analyzer);
+    add_crash_data_to_crash_report(pCrashReport, item_crash_into_t_str[CI_MWUID], CD_SYS, pUID);
+    add_crash_data_to_crash_report(pCrashReport, item_crash_into_t_str[CI_MWUUID], CD_SYS, pUUID);
 }
 
-void CMiddleWare::Report(const crash_report_t& pCrashReport)
+void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
 {
-    if (pCrashReport.find("_MWAnalyzer") == pCrashReport.end() ||
-        pCrashReport.find("_MWUID") == pCrashReport.end() ||
-        pCrashReport.find("_MWUUID") == pCrashReport.end())
+    if (pCrashReport.find(item_crash_into_t_str[CI_MWANALYZER]) == pCrashReport.end() ||
+        pCrashReport.find(item_crash_into_t_str[CI_MWUID]) == pCrashReport.end() ||
+        pCrashReport.find(item_crash_into_t_str[CI_MWUUID]) == pCrashReport.end())
     {
         throw std::string("CMiddleWare::Report(): Important data are missing.");
     }
-    std::string analyzer = pCrashReport.find("_MWAnalyzer")->second.m_sContent;
-    std::string UID = pCrashReport.find("_MWUID")->second.m_sContent;
-    std::string UUID = pCrashReport.find("_MWUUID")->second.m_sContent;;
+    std::string analyzer = pCrashReport.find(item_crash_into_t_str[CI_MWANALYZER])->second[CD_CONTENT];
+    std::string UID = pCrashReport.find(item_crash_into_t_str[CI_MWUID])->second[CD_CONTENT];
+    std::string UUID = pCrashReport.find(item_crash_into_t_str[CI_MWUUID])->second[CD_CONTENT];
 
     if (m_mapAnalyzerReporters.find(analyzer) != m_mapAnalyzerReporters.end())
     {
@@ -306,7 +300,7 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
     }
 }
 
-int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
+int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, map_crash_info_t& pCrashInfo)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
 
@@ -348,11 +342,11 @@ int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, crash
 
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir)
 {
-    crash_info_t info;
+    map_crash_info_t info;
     return SaveDebugDump(pDebugDumpDir, info);
 }
 
-int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo)
+int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, map_crash_info_t& pCrashInfo)
 {
     if (IsDebugDumpSaved(pDebugDumpDir))
     {
@@ -370,10 +364,10 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& p
     return SaveDebugDumpToDatabase(pDebugDumpDir, pCrashInfo);
 }
 
-crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
+map_crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
                                        const std::string& pUID)
 {
-    crash_info_t info;
+    map_crash_info_t crashInfo;
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
     database->Connect();
@@ -388,25 +382,25 @@ crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     catch (std::string sErr)
     {
         DeleteCrashInfo(row.m_sUUID, row.m_sUID, false);
-        return info;
+        return crashInfo;
     }
 
     std::string data;
     dd.LoadText(FILENAME_EXECUTABLE, data);
-    info.m_sExecutable = data;
+    add_crash_data_to_crash_info(crashInfo, CI_EXECUTABLE, CD_TXT, data);
     dd.LoadText(FILENAME_PACKAGE, data);
-    info.m_sPackage = data;
+    add_crash_data_to_crash_info(crashInfo, CI_PACKAGE, CD_TXT, data);
     dd.LoadText(FILENAME_DESCRIPTION, data);
-    info.m_sDescription = data;
+    add_crash_data_to_crash_info(crashInfo, CI_DESCRIPTION, CD_TXT, data);
     dd.Close();
 
-    info.m_sUUID = row.m_sUUID;
-    info.m_sUID = row.m_sUID;
-    info.m_sCount = row.m_sCount;
-    info.m_sTime = row.m_sTime;
-    info.m_sReported = row.m_sReported;
+    add_crash_data_to_crash_info(crashInfo, CI_UUID, CD_TXT, row.m_sUUID);
+    add_crash_data_to_crash_info(crashInfo, CI_UID, CD_TXT, row.m_sUID);
+    add_crash_data_to_crash_info(crashInfo, CI_COUNT, CD_TXT, row.m_sCount);
+    add_crash_data_to_crash_info(crashInfo, CI_TIME, CD_TXT, row.m_sTime);
+    add_crash_data_to_crash_info(crashInfo, CI_REPORTED, CD_TXT, row.m_sReported);
 
-    return info;
+    return crashInfo;
 }
 
 vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
@@ -422,11 +416,8 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
     int ii;
     for (ii = 0; ii < rows.size(); ii++)
     {
-        crash_info_t info = GetCrashInfo(rows[ii].m_sUUID, rows[ii].m_sUID);
-        if (info.m_sUUID == rows[ii].m_sUUID)
-        {
-            infos.push_back(info);
-        }
+        map_crash_info_t info = GetCrashInfo(rows[ii].m_sUUID, rows[ii].m_sUID);
+        infos.push_back(info);
     }
 
     return infos;

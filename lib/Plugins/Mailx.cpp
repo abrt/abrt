@@ -58,15 +58,15 @@ void CMailx::SendEmail(const std::string& pText)
 }
 
 
-void CMailx::Report(const crash_report_t& pCrashReport)
+void CMailx::Report(const map_crash_report_t& pCrashReport)
 {
     std::stringstream emailBody;
     std::stringstream binaryFiles, commonFiles, additionalFiles, UUIDFile;
 
-    crash_report_t::const_iterator it;
+    map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
-        if (it->second.m_sType == TYPE_TXT)
+        if (it->second[CD_TYPE] == type_crash_data_t_str[CD_TXT])
         {
             if (it->first !=  FILENAME_UUID &&
                 it->first !=  FILENAME_ARCHITECTURE &&
@@ -75,24 +75,24 @@ void CMailx::Report(const crash_report_t& pCrashReport)
             {
                 additionalFiles << it->first << std::endl;
                 additionalFiles << "-----" << std::endl;
-                additionalFiles << it->second.m_sContent << std::endl;
+                additionalFiles << it->second[CD_CONTENT] << std::endl;
             }
             else if (it->first == FILENAME_UUID)
             {
                 UUIDFile << it->first << std::endl;
                 UUIDFile << "-----" << std::endl;
-                UUIDFile << it->second.m_sContent << std::endl;
+                UUIDFile << it->second[CD_CONTENT] << std::endl;
             }
             else
             {
                 commonFiles << it->first << std::endl;
                 commonFiles << "-----" << std::endl;
-                commonFiles << it->second.m_sContent << std::endl;
+                commonFiles << it->second[CD_CONTENT] << std::endl;
             }
         }
-        if (it->second.m_sType == TYPE_BIN)
+        if (it->second[CD_TYPE] == type_crash_data_t_str[CD_BIN])
         {
-            binaryFiles << " -a " << it->second.m_sContent;
+            binaryFiles << " -a " << it->second[CD_CONTENT];
         }
     }
 

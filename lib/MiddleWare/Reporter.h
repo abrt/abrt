@@ -31,7 +31,7 @@ class CReporter : public CPlugin
     public:
 
         virtual ~CReporter() {}
-        virtual void Report(const crash_report_t& pCrashReport) = 0;
+        virtual void Report(const map_crash_report_t& pCrashReport) = 0;
 };
 
 #endif /* REPORTER_H_ */

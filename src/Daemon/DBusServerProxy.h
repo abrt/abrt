@@ -87,7 +87,7 @@ public:
     /* methods exported by this interface,
      * you will have to implement them in your ObjectAdaptor
      */
-     virtual dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID) = 0;
+     virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID) = 0;
      virtual dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender) = 0;
      virtual dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender) = 0;
      virtual bool Report(dbus_map_report_info_t pReport) = 0;
@@ -132,7 +132,7 @@ private:
         DBus::MessageIter ri = call.reader();
 
         std::string argin1; ri >> argin1;
-        dbus_vector_crash_infos_t argout1 = GetCrashInfos(argin1);
+        vector_crash_infos_t argout1 = GetCrashInfos(argin1);
         DBus::ReturnMessage reply(call);
         DBus::MessageIter wi = reply.writer();
         wi << argout1;

@@ -42,7 +42,7 @@ class CKerneloopsReporter : public CReporter
 		virtual ~CKerneloopsReporter() {}
 
 		void LoadSettings(const std::string& pPath);
-		void Report(const crash_report_t& pCrashReport);
+		void Report(const map_crash_report_t& pCrashReport);
 };
 
 PLUGIN_INFO(REPORTER,
