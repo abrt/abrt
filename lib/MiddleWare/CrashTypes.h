@@ -36,8 +36,11 @@ typedef struct SCrashInfo
 
 typedef std::vector<crash_info_t> vector_crash_infos_t;
 
+// text value, should be displayed
 #define TYPE_TXT "t"
+// binary value, should be displayed
 #define TYPE_BIN "b"
+// system value, should not be displayed
 #define TYPE_SYS "s"
 
 typedef struct CCrashFile
@@ -46,6 +49,7 @@ typedef struct CCrashFile
     std::string m_sContent;
 } crash_file_t;
 
+// < key, type, value, key, type, value, ....>
 typedef std::vector<std::string> vector_strings_t;
 typedef std::map<std::string, crash_file_t> crash_report_t;
 
