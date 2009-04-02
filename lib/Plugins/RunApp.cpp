@@ -24,20 +24,34 @@
 #include <stdio.h>
 #include "DebugDump.h"
 
-#define COMMAND 0
-#define FILENAME 1
+#define COMMAND     0
+#define FILENAME    1
 
 void CActionRunApp::ParseArgs(const std::string& psArgs, vector_args_t& pArgs)
 {
-    std::string::size_type ii_old = 0, ii_new = 0;
-    ii_new = psArgs.find(",");
-    while (ii_new != std::string::npos)
+    unsigned int ii;
+    bool is_quote = false;
+    std::string item = "";
+    for (ii = 0; ii < psArgs.length(); ii++)
     {
-        pArgs.push_back(psArgs.substr(ii_old, ii_new - ii_old));
-        ii_old = ii_new + 1;
-        ii_new = psArgs.find(",",ii_old);
+        if (psArgs[ii] == '\"')
+        {
+            is_quote = is_quote == true ? false : true;
+        }
+        else if (psArgs[ii] == ',' && !is_quote)
+        {
+            pArgs.push_back(item);
+            item = "";
+        }
+        else
+        {
+            item += psArgs[ii];
+        }
     }
-    pArgs.push_back(psArgs.substr(ii_old));
+    if (item != "")
+    {
+        pArgs.push_back(item);
+    }
 }
 
 void CActionRunApp::Run(const std::string& pDebugDumpDir,
@@ -47,6 +61,8 @@ void CActionRunApp::Run(const std::string& pDebugDumpDir,
     std::string output = "";
 
     vector_args_t args;
+
+    ParseArgs(pArgs, args);
 
     FILE *fp = popen(args[COMMAND].c_str(), "r");
     if (fp == NULL)

@@ -152,6 +152,7 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
         if (pValue[ii] == '\"')
         {
             is_quote = is_quote == true ? false : true;
+            item += pValue[ii];
         }
         else if (pValue[ii] == '(' && !is_quote)
         {
@@ -159,15 +160,12 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
             item = "";
             is_arg = true;
         }
-        else if ((pValue[ii] == ',' || pValue[ii] == ')') && !is_quote && is_arg)
+        else if (pValue[ii] == ')' && is_arg && !is_quote)
         {
             singleActions.insert(make_pair(action, item));
             item = "";
-            if (pValue[ii] == ')')
-            {
-                is_arg = false;
-                action = "";
-            }
+            is_arg = false;
+            action = "";
         }
         else if (pValue[ii] == ',' && !is_quote && !is_arg)
         {
@@ -185,7 +183,6 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
     if (item != "")
     {
         singleActions.insert(make_pair(item, ""));
-        action = "";
     }
     return singleActions;
 }
