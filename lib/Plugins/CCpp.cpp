@@ -22,7 +22,7 @@
 #include "CCpp.h"
 #include <fstream>
 #include "DebugDump.h"
-#include "Settings.h"
+#include "PluginSettings.h"
 #include <sstream>
 #include <iostream>
 #include <hash_map>
@@ -388,7 +388,7 @@ void CAnalyzerCCpp::DeInit()
 void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
 {
     map_settings_t settings;
-    load_settings(pPath, settings);
+    plugin_load_settings(pPath, settings);
 
     if (settings.find("MemoryMap")!= settings.end())
       {

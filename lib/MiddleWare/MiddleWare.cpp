@@ -21,82 +21,20 @@
 
 #include "MiddleWare.h"
 #include "DebugDump.h"
-#include "Settings.h"
 
 CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
-                         const std::string& pPlugisLibDir,
-                         const std::string& pMiddleWareConfFile) :
+                         const std::string& pPlugisLibDir) :
     m_pPluginManager(NULL),
     m_bOpenGPGCheck(true)
 {
     m_pPluginManager = new CPluginManager(pPlugisConfDir, pPlugisLibDir);
-    if (m_pPluginManager == NULL)
-    {
-        throw std::string("Not enought memory.");
-    }
     m_pPluginManager->LoadPlugins();
-    LoadSettings(pMiddleWareConfFile);
-
-    set_enabled_plugins_t::iterator it_p;
-    for (it_p = m_setEnabledPlugins.begin(); it_p != m_setEnabledPlugins.end(); it_p++)
-    {
-        m_pPluginManager->RegisterPlugin(*it_p);
-    }
 }
 
 CMiddleWare::~CMiddleWare()
 {
     m_pPluginManager->UnLoadPlugins();
     delete m_pPluginManager;
-}
-
-void CMiddleWare::LoadSettings(const std::string& pPath)
-{
-    map_settings_t settings;
-    load_settings(pPath, settings);
-    if (settings.find("BlackList") != settings.end())
-    {
-        parse_settings(settings["BlackList"], m_setBlackList);
-    }
-    if (settings.find("EnabledPlugins") != settings.end())
-    {
-        parse_settings(settings["EnabledPlugins"], m_setEnabledPlugins);
-    }
-    if (settings.find("OpenGPGPublicKeys") != settings.end())
-    {
-        parse_settings(settings["OpenGPGPublicKeys"], m_setOpenGPGKeys);
-        set_opengpg_keys_t::iterator it_k;
-        for (it_k = m_setOpenGPGKeys.begin(); it_k != m_setOpenGPGKeys.end(); it_k++)
-        {
-            m_RPM.LoadOpenGPGPublicKey(*it_k);
-        }
-    }
-    if (settings.find("EnableOpenGPG") != settings.end())
-    {
-        m_bOpenGPGCheck = settings["EnableOpenGPG"] == "yes";
-    }
-    if (settings.find("Database") != settings.end())
-    {
-        m_sDatabase = settings["Database"];
-        if (m_setEnabledPlugins.find(m_sDatabase) == m_setEnabledPlugins.end())
-        {
-            throw std::string("Database plugin '"+m_sDatabase+"' isn't enabled.");
-        }
-    }
-    else
-    {
-        throw std::string("No database plugin is selected.");
-    }
-    set_enabled_plugins_t::iterator it_p;
-    for (it_p = m_setEnabledPlugins.begin(); it_p != m_setEnabledPlugins.end(); it_p++)
-    {
-        if (settings.find(*it_p) != settings.end())
-        {
-            set_reporters_t reporters;
-            parse_settings(settings[*it_p], reporters);
-            m_mapPlugin2Reporters[*it_p] = reporters;
-        }
-    }
 }
 
 void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, crash_report_t& pCrashReport)
@@ -109,7 +47,8 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, crash
     if (!dd.Exist(FILENAME_UUID) ||
         !dd.Exist(FILENAME_ARCHITECTURE) ||
         !dd.Exist(FILENAME_KERNEL) ||
-        !dd.Exist(FILENAME_PACKAGE))
+        !dd.Exist(FILENAME_PACKAGE) ||
+        !dd.Exist(FILENAME_EXECUTABLE))
     {
         dd.Close();
         throw std::string("CMiddleWare::DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
@@ -222,11 +161,11 @@ void CMiddleWare::Report(const crash_report_t& pCrashReport)
     std::string UID = pCrashReport.find("_MWUID")->second.m_sContent;
     std::string UUID = pCrashReport.find("_MWUUID")->second.m_sContent;;
 
-    if (m_mapPlugin2Reporters.find(analyzer) != m_mapPlugin2Reporters.end())
+    if (m_mapAnalyzerReporters.find(analyzer) != m_mapAnalyzerReporters.end())
     {
         set_reporters_t::iterator it_r;
-        for (it_r = m_mapPlugin2Reporters[analyzer].begin();
-             it_r != m_mapPlugin2Reporters[analyzer].end();
+        for (it_r = m_mapAnalyzerReporters[analyzer].begin();
+             it_r != m_mapAnalyzerReporters[analyzer].end();
              it_r++)
         {
             CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
@@ -477,3 +416,35 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
     return infos;
 }
 
+void CMiddleWare::SetOpenGPGCheck(const bool& pCheck)
+{
+    m_bOpenGPGCheck = pCheck;
+}
+
+void CMiddleWare::SetDatabase(const std::string& pDatabase)
+{
+    m_sDatabase = pDatabase;
+}
+
+void CMiddleWare::AddOpenGPGPublicKey(const std::string& pKey)
+{
+    m_RPM.LoadOpenGPGPublicKey(pKey);
+}
+
+void CMiddleWare::AddBlackListedPackage(const std::string& pPackage)
+{
+    m_setBlackList.insert(pPackage);
+}
+
+void CMiddleWare::AddAnalyzerReporter(const std::string& pAnalyzer,
+                                      const std::string& pReporter)
+{
+    m_mapAnalyzerReporters[pAnalyzer].insert(pReporter);
+}
+
+void CMiddleWare::AddAnalyzerAction(const std::string& pAnalyzer,
+                                    const std::string& pAction,
+                                    const vector_strings_t& pArgs)
+{
+    m_mapAnalyzerActions[pAnalyzer][pAction] = pArgs;
+}

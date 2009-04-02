@@ -12,11 +12,11 @@ class CCommLayerServerDBus
 {
     private:
         DBus::Connection *m_pConn;
-        DBus::Glib::BusDispatcher *dispatcher;
+        DBus::Glib::BusDispatcher *m_pDispatcher;
         static DBus::Connection *init_dbus(CCommLayerServerDBus *self);
     public:
         CCommLayerServerDBus(CMiddleWare *m_pMW);
-        ~CCommLayerServerDBus();
+        virtual ~CCommLayerServerDBus();
 
         virtual dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID);
         virtual dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender);

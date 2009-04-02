@@ -31,7 +31,7 @@
 #include <dirent.h>
 #include <cstring>
 
-/* just a helper function 
+/* just a helper function
 template< class T >
 std::string
 to_string( T x )
@@ -119,12 +119,60 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connecti
     m_pGio = g_io_channel_unix_new(m_nFd);
 }
 */
+
+void CCrashWatcher::SetUpMW()
+{
+    m_pMW->SetOpenGPGCheck(m_pSettings->GetOpenGPGCheck());
+    m_pMW->SetDatabase(m_pSettings->GetDatabase());
+    CSettings::set_strings_t openGPGPublicKeys = m_pSettings->GetOpenGPGPublicKeys();
+    CSettings::set_strings_t::iterator it_k;
+    for (it_k = openGPGPublicKeys.begin(); it_k != openGPGPublicKeys.end(); it_k++)
+    {
+        m_pMW->AddOpenGPGPublicKey(*it_k);
+    }
+    CSettings::set_strings_t blackList = m_pSettings->GetBlackList();
+    CSettings::set_strings_t::iterator it_b;
+    for (it_b = blackList.begin(); it_b != blackList.end(); it_b++)
+    {
+        m_pMW->AddBlackListedPackage(*it_b);
+    }
+    CSettings::set_strings_t enabledPlugins = m_pSettings->GetEnabledPlugins();
+    CSettings::set_strings_t::iterator it_p;
+    for (it_p = enabledPlugins.begin(); it_p != enabledPlugins.end(); it_p++)
+    {
+        m_pMW->RegisterPlugin(*it_p);
+    }
+    CSettings::map_reporters_t reporters = m_pSettings->GetReporters();
+    CSettings::map_reporters_t::iterator it_pr;
+    for (it_pr = reporters.begin(); it_pr != reporters.end(); it_pr++)
+    {
+        CSettings::set_strings_t::iterator it_r;
+        for (it_r = it_pr->second.begin(); it_r != it_pr->second.end(); it_r++)
+        {
+            m_pMW->AddAnalyzerReporter(it_pr->first, *it_r);
+        }
+    }
+    CSettings::map_actions_t actions = m_pSettings->GetActions();
+    CSettings::map_actions_t::iterator it_pa;
+    for (it_pa = actions.begin(); it_pa != actions.end(); it_pa++)
+    {
+        CSettings::map_single_actions_t::iterator it_sa;
+        for (it_sa = it_pa->second.begin(); it_sa != it_pa->second.end(); it_sa++)
+        {
+            m_pMW->AddAnalyzerAction(it_pa->first, it_sa->first, it_sa->second);
+        }
+    }
+}
+
 CCrashWatcher::CCrashWatcher(const std::string& pPath)
 {
     int watch = 0;
     m_sTarget = pPath;
     // middleware object
-    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/abrt.conf");
+    m_pSettings = new CSettings();
+    m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
+    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
+    SetUpMW();
     FindNewDumps(pPath);
     m_pMainloop = g_main_loop_new(NULL,FALSE);
 #ifdef HAVE_DBUS
@@ -149,11 +197,15 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 
 CCrashWatcher::~CCrashWatcher()
 {
-     //delete dispatcher, connection, etc..
-     //m_pConn->disconnect();
-     delete m_pMW;
-     g_io_channel_unref(m_pGio);
-     g_main_loop_unref(m_pMainloop);
+    //delete dispatcher, connection, etc..
+    //m_pConn->disconnect();
+
+    g_io_channel_unref(m_pGio);
+    g_main_loop_unref(m_pMainloop);
+
+    delete m_pCommLayer;
+    delete m_pMW;
+    delete m_pSettings;
 }
 void CCrashWatcher::FindNewDumps(const std::string& pPath)
 {

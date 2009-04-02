@@ -10,9 +10,6 @@ libMiddleWare_la_LIBADD = $(DL_LIBS) ../Utils/libUtils.la  $(RPM_LIBS)
 libMiddleWare_la_LDFLAGS = -version-info 0:1:0
 libMiddleWare_la_CPPFLAGS = -I$(srcdir)/../Utils  $(RPM_CFLAGS)
 
-middlewareconfdir = $(CONF_DIR)
-dist_middlewareconf_DATA = abrt.conf
-
 check_PROGRAMS = test
 test_SOURCES = test.cpp
 test_LDADD = ../Utils/libUtils.la libMiddleWare.la $(DL_LIBS) $(RPM_LIBS)

@@ -26,7 +26,7 @@
 
 #include "KerneloopsReporter.h"
 #include "DebugDump.h"
-#include "Settings.h"
+#include "PluginSettings.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -85,7 +85,7 @@ void CKerneloopsReporter::Report(const crash_report_t& pCrashReport)
 void CKerneloopsReporter::LoadSettings(const std::string& pPath)
 {
 	map_settings_t settings;
-	load_settings(pPath, settings);
+	plugin_load_settings(pPath, settings);
 
 	if (settings.find("SubmitURL") != settings.end())
 	{

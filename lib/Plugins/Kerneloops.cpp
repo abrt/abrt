@@ -27,7 +27,7 @@
 #include "Kerneloops.h"
 #include "KerneloopsSysLog.h"
 #include "DebugDump.h"
-#include "Settings.h"
+#include "PluginSettings.h"
 
 #include <sstream>
 #include <assert.h>
@@ -221,7 +221,7 @@ void CAnalyzerKerneloops::ScanSysLogFile(const char *filename, int issyslog)
 void CAnalyzerKerneloops::LoadSettings(const std::string& pPath)
 {
 	map_settings_t settings;
-	load_settings(pPath, settings);
+	plugin_load_settings(pPath, settings);
 
 	if (settings.find("SysLogFile")!= settings.end())
 	{

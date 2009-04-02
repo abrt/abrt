@@ -27,6 +27,7 @@
 //#include "DBusManager.h"
 //#include "DBusServerProxy.h"
 #include "MiddleWare.h"
+#include "Settings.h"
 
 #include "CommLayerServerDBus.h"
 #ifdef HAVE_DBUS
@@ -50,9 +51,10 @@ class CCrashWatcher
         void StartWatch();
         void GStartWatch();
         void Lock();
+        void SetUpMW();
         /* finds dumps created when daemon wasn't running */
         void FindNewDumps(const std::string& pPath);
-        
+
         int m_nFd;
         GIOChannel* m_pGio;
         GMainLoop *m_pMainloop;
@@ -61,16 +63,16 @@ class CCrashWatcher
         CCommLayerServer *m_pCommLayer;
         /*FIXME not needed */
         //DBus::Connection *m_pConn;
-        
+        CSettings *m_pSettings;
 	public:
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
         CCrashWatcher(const std::string& pPath);
-		~CCrashWatcher();
+		virtual ~CCrashWatcher();
         //run as daemon
         void Daemonize();
         //don't go background - for debug
         void Run();
-        
+
     /* methods exported on dbus */
     public:
         dbus_vector_crash_infos_t GetCrashInfos(const std::string &pUID);

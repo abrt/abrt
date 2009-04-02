@@ -23,7 +23,7 @@
 #include <stdio.h>
 #include <sstream>
 #include "DebugDump.h"
-#include "Settings.h"
+#include "PluginSettings.h"
 
 #define MAILX_COMMAND "/bin/mailx"
 #define MAILX_SUBJECT "\"abrt automated bug report\""
@@ -126,7 +126,7 @@ void CMailx::Report(const crash_report_t& pCrashReport)
 void CMailx::LoadSettings(const std::string& pPath)
 {
     map_settings_t settings;
-    load_settings(pPath, settings);
+    plugin_load_settings(pPath, settings);
 
     if (settings.find("EmailFrom")!= settings.end())
     {

@@ -35,16 +35,16 @@ class CMiddleWare
         typedef set_strings_t set_blacklist_t;
         typedef set_strings_t set_enabled_plugins_t;
         typedef set_strings_t set_reporters_t;
-        typedef set_strings_t set_opengpg_keys_t;
-        typedef std::map<std::string, set_reporters_t> map_plugin2reporters_t;
+        typedef std::map<std::string, set_reporters_t> map_reporter_associations_t;
+        typedef std::map<std::string, vector_strings_t> map_single_actions_t;
+        typedef std::map<std::string, map_single_actions_t> map_action_associations_t;
 
         CPluginManager* m_pPluginManager;
         CRPM m_RPM;
         set_blacklist_t m_setBlackList;
-        set_enabled_plugins_t m_setEnabledPlugins;
-        set_opengpg_keys_t m_setOpenGPGKeys;
         std::string m_sDatabase;
-        map_plugin2reporters_t m_mapPlugin2Reporters;
+        map_reporter_associations_t m_mapAnalyzerReporters;
+        map_action_associations_t m_mapAnalyzerActions;
 
         bool m_bOpenGPGCheck;
 
@@ -54,8 +54,6 @@ class CMiddleWare
                                   const std::string& pDebugDumpDir);
         void CreateReport(const std::string& pAnalyzer,
                           const std::string& pDebugDumpDir);
-
-        void LoadSettings(const std::string& pPath);
 
         void DebugDumpToCrashReport(const std::string& pDebugDumpDir,
                                     crash_report_t& pCrashReport);
@@ -70,8 +68,7 @@ class CMiddleWare
     public:
 
         CMiddleWare(const std::string& pPlugisConfDir,
-                    const std::string& pPlugisLibDir,
-                    const std::string& pMiddleWareConfFile);
+                    const std::string& pPlugisLibDir);
 
         ~CMiddleWare();
 
@@ -93,6 +90,16 @@ class CMiddleWare
         int SaveDebugDump(const std::string& pDebugDumpDir, crash_info_t& pCrashInfo);
 
         vector_crash_infos_t GetCrashInfos(const std::string& pUID);
+
+        void SetOpenGPGCheck(const bool& pCheck);
+        void SetDatabase(const std::string& pDatabase);
+        void AddOpenGPGPublicKey(const std::string& pKey);
+        void AddBlackListedPackage(const std::string& pPackage);
+        void AddAnalyzerReporter(const std::string& pAnalyzer,
+                                 const std::string& pReporter);
+        void AddAnalyzerAction(const std::string& pAnalyzer,
+                               const std::string& pAction,
+                               const vector_strings_t& pArgs);
 };
 
 #endif /*MIDDLEWARE_H_*/

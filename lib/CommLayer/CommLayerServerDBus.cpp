@@ -4,9 +4,9 @@
 DBus::Connection *CCommLayerServerDBus::init_dbus(CCommLayerServerDBus *self)
 {
     CCommLayerServerDBus *server = (CCommLayerServerDBus*) self;
-    server->dispatcher = new DBus::Glib::BusDispatcher();
-    server->dispatcher->attach(NULL);
-    DBus::default_dispatcher = self->dispatcher;
+    server->m_pDispatcher = new DBus::Glib::BusDispatcher();
+    server->m_pDispatcher->attach(NULL);
+    DBus::default_dispatcher = self->m_pDispatcher;
 	server->m_pConn = new DBus::Connection(DBus::Connection::SystemBus());
     return server->m_pConn;
 }
@@ -23,7 +23,7 @@ CCommLayerServerDBus::CCommLayerServerDBus(CMiddleWare *pMW)
 CCommLayerServerDBus::~CCommLayerServerDBus()
 {
     std::cout << "Cleaning up dbus" << std::endl;
-    delete dispatcher;
+    delete m_pDispatcher;
 }
 
 dbus_vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pUID)

@@ -24,7 +24,6 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <sys/types.h>
-#include "Settings.h"
 
 CPluginManager::CPluginManager(const std::string& pPlugisConfDir,
 							   const std::string& pPlugisLibDir) :
@@ -115,7 +114,6 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
     {
         if (m_mapPlugins.find(pName) == m_mapPlugins.end())
         {
-            map_settings_t settings;
             std::string path = m_sPlugisConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
             CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
             plugin->Init();

@@ -29,7 +29,7 @@ class CCommLayerServer{
     public:
         CMiddleWare *m_pMW;
         CCommLayerServer(CMiddleWare *pMW);
-        ~CCommLayerServer();
+        virtual ~CCommLayerServer();
         /* observer */
         void Attach(CObserver *pObs);
         void Detach(CObserver *pObs);
