@@ -28,9 +28,9 @@ crash_notify_cb(const char* progname)
 #ifdef DEBUG
     std::cerr << "Application " << progname << " has crashed!" << std::endl;
 #endif
-    applet->ShowIcon();
     //applet->AddEvent(uid, std::string(progname));
     applet->SetIconTooltip("A crash in package %s has been detected!", progname);
+    applet->ShowIcon();
 }
 
 int main(int argc, char **argv)

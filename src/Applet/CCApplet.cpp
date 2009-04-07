@@ -27,13 +27,17 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
 : DBus::ObjectProxy(connection, path, name)
 {
     m_pStatusIcon =  gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
+    char notify_title[5] = "ABRT";
+    notify_init(notify_title);
+    m_pNotification =  notify_notification_new_with_status_icon("Warning!",NULL, NULL,m_pStatusIcon);
+    notify_notification_set_urgency (m_pNotification,NOTIFY_URGENCY_CRITICAL);
+    notify_notification_set_timeout(m_pNotification, 5000);
     gtk_status_icon_set_visible(m_pStatusIcon,FALSE);
     // LMB click
     //TODO add some actions!
     g_signal_connect(G_OBJECT(m_pStatusIcon),"activate",GTK_SIGNAL_FUNC(CApplet::OnAppletActivate_CB), this);
     g_signal_connect(G_OBJECT(m_pStatusIcon),"popup_menu",GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
     SetIconTooltip("Pending events: %i",m_mapEvents.size());
-
 }
 
 CApplet::~CApplet()
@@ -79,6 +83,7 @@ void CApplet::SetIconTooltip(const char *format, ...)
     va_end (args);
     if (n != -1)
     {
+        notify_notification_update (m_pNotification, "Warning!",buf, NULL);
         gtk_status_icon_set_tooltip(m_pStatusIcon,buf);
     }
     else
@@ -109,6 +114,7 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
 void CApplet::ShowIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon,true);
+    notify_notification_show(m_pNotification,NULL);
 }
 
 void CApplet::HideIcon()

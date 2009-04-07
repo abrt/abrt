@@ -24,6 +24,7 @@
 #include <map>
 #include <string>
 #include <DBusClientProxy.h>
+#include<libnotify/notify.h>
 
 class CApplet
 : public CDBusClient_proxy,
@@ -32,6 +33,7 @@ class CApplet
 {
     private:
         GtkStatusIcon* m_pStatusIcon;
+        NotifyNotification *m_pNotification;
         std::map<int, std::string > m_mapEvents;
 	public:
         CApplet(DBus::Connection &connection, const char *path, const char *name);
