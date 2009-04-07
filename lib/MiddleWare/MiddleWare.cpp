@@ -157,6 +157,7 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
     add_crash_data_to_crash_report(pCrashReport, CI_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
     add_crash_data_to_crash_report(pCrashReport, CI_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
     add_crash_data_to_crash_report(pCrashReport, CI_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
+    add_crash_data_to_crash_report(pCrashReport, CI_COMMENT, CD_TXT, CD_ISEDITABLE, "");
 }
 
 void CMiddleWare::Report(const map_crash_report_t& pCrashReport)

@@ -27,6 +27,7 @@
 #define CI_DESCRIPTION  "Description"
 #define CI_TIME         "Time"
 #define CI_REPORTED     "Reported"
+#define CI_COMMENT      "Comment"
 #define CI_MWANALYZER   "_MWAnalyzer"
 #define CI_MWUID        "_MWUID"
 #define CI_MWUUID       "_MWUUID"
