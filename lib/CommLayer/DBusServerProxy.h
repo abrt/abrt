@@ -131,7 +131,7 @@ private:
         DBus::MessageIter ri = call.reader();
 
         std::string argin1; ri >> argin1;
-        vector_crash_infos_t argout1 = GetCrashInfos(argin1);
+        vector_crash_infos_t argout1 = GetCrashInfos(call.sender());
         DBus::ReturnMessage reply(call);
         DBus::MessageIter wi = reply.writer();
         wi << argout1;

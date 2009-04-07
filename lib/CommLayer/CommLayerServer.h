@@ -2,6 +2,7 @@
 #include <map>
 #include <string>
 #include <sstream>
+#include <iostream>
 #include "MiddleWare.h"
 #include "Observer.h"
 
@@ -37,7 +38,7 @@ class CCommLayerServer{
      */
     public:
     /* just stubs to be called when not implemented in specific comm layer */
-        void Crash(const std::string& arg1) {}
-        void AnalyzeComplete(map_crash_report_t arg1) {}
-        void Error(const std::string& arg1) {}
+        virtual void Crash(const std::string& arg1) {}
+        virtual void AnalyzeComplete(map_crash_report_t arg1) {}
+        virtual void Error(const std::string& arg1) {}
 };

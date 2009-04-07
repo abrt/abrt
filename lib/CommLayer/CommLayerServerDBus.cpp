@@ -26,14 +26,19 @@ CCommLayerServerDBus::~CCommLayerServerDBus()
     delete m_pDispatcher;
 }
 
-vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pUID)
+vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pDBusSender)
 {
     vector_crash_infos_t retval;
-    /*   vector_crash_infos_t crash_info;
-    m_pMW->GetCrashInfos("501");
-    for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
-        std::cerr << it->m_sExecutable << std::endl;
-    }*/
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
+    try
+    {
+        retval = m_pMW->GetCrashInfos(to_string(unix_uid));
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+    }
+    Notify("Sent crash info");
 	return retval;
 }
 
@@ -113,4 +118,19 @@ bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::
         return false;
     }
     return true;
+}
+
+void CCommLayerServerDBus::Crash(const std::string& arg)
+{
+    CDBusServer_adaptor::Crash(arg);
+}
+
+void CCommLayerServerDBus::AnalyzeComplete(map_crash_report_t arg1)
+{
+    CDBusServer_adaptor::AnalyzeComplete(arg1);
+}
+
+void CCommLayerServerDBus::Error(const std::string& arg1)
+{
+    CDBusServer_adaptor::Error(arg1);
 }
