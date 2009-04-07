@@ -53,7 +53,7 @@ void CLogger::Report(const map_crash_report_t& pCrashReport)
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
-        if (it->second[CD_TYPE] == type_crash_data_t_str[CD_TXT])
+        if (it->second[CD_TYPE] == CD_TXT)
         {
             if (it->first !=  FILENAME_UUID &&
                 it->first !=  FILENAME_ARCHITECTURE &&
@@ -77,7 +77,7 @@ void CLogger::Report(const map_crash_report_t& pCrashReport)
                 commonFiles << it->second[CD_CONTENT] << std::endl << std::endl;
             }
         }
-        if (it->second[CD_TYPE] == type_crash_data_t_str[CD_BIN])
+        if (it->second[CD_TYPE] == CD_BIN)
         {
             binaryFiles << it->first << std::endl;
             binaryFiles << "-----" << std::endl;

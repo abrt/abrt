@@ -59,11 +59,26 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
     {
         if (!isTextFile)
         {
-            add_crash_data_to_crash_report(pCrashReport, fileName, CD_BIN, pDebugDumpDir + "/" + fileName);
+            add_crash_data_to_crash_report(pCrashReport,
+                                           fileName,
+                                           CD_BIN,
+                                           CD_ISNOTEDITABLE,
+                                           pDebugDumpDir + "/" + fileName);
         }
         else
         {
-            add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, content);
+            if (fileName == FILENAME_UUID ||
+                fileName == FILENAME_ARCHITECTURE ||
+                fileName == FILENAME_KERNEL ||
+                fileName == FILENAME_PACKAGE ||
+                fileName == FILENAME_EXECUTABLE)
+            {
+                add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISNOTEDITABLE, content);
+            }
+            else
+            {
+                add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISEDITABLE, content);
+            }
         }
     }
     dd.Close();
@@ -139,22 +154,22 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
     RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
     DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
 
-    add_crash_data_to_crash_report(pCrashReport, item_crash_into_t_str[CI_MWANALYZER], CD_SYS, analyzer);
-    add_crash_data_to_crash_report(pCrashReport, item_crash_into_t_str[CI_MWUID], CD_SYS, pUID);
-    add_crash_data_to_crash_report(pCrashReport, item_crash_into_t_str[CI_MWUUID], CD_SYS, pUUID);
+    add_crash_data_to_crash_report(pCrashReport, CI_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
+    add_crash_data_to_crash_report(pCrashReport, CI_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
+    add_crash_data_to_crash_report(pCrashReport, CI_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
 }
 
 void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
 {
-    if (pCrashReport.find(item_crash_into_t_str[CI_MWANALYZER]) == pCrashReport.end() ||
-        pCrashReport.find(item_crash_into_t_str[CI_MWUID]) == pCrashReport.end() ||
-        pCrashReport.find(item_crash_into_t_str[CI_MWUUID]) == pCrashReport.end())
+    if (pCrashReport.find(CI_MWANALYZER) == pCrashReport.end() ||
+        pCrashReport.find(CI_MWUID) == pCrashReport.end() ||
+        pCrashReport.find(CI_MWUUID) == pCrashReport.end())
     {
         throw std::string("CMiddleWare::Report(): Important data are missing.");
     }
-    std::string analyzer = pCrashReport.find(item_crash_into_t_str[CI_MWANALYZER])->second[CD_CONTENT];
-    std::string UID = pCrashReport.find(item_crash_into_t_str[CI_MWUID])->second[CD_CONTENT];
-    std::string UUID = pCrashReport.find(item_crash_into_t_str[CI_MWUUID])->second[CD_CONTENT];
+    std::string analyzer = pCrashReport.find(CI_MWANALYZER)->second[CD_CONTENT];
+    std::string UID = pCrashReport.find(CI_MWUID)->second[CD_CONTENT];
+    std::string UUID = pCrashReport.find(CI_MWUUID)->second[CD_CONTENT];
 
     if (m_mapAnalyzerReporters.find(analyzer) != m_mapAnalyzerReporters.end())
     {
@@ -337,6 +352,7 @@ int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, map_c
         return 2;
     }
     dd.Close();
+
     return 1;
 }
 
@@ -360,7 +376,6 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, map_crash_info_
     {
         return 0;
     }
-
     return SaveDebugDumpToDatabase(pDebugDumpDir, pCrashInfo);
 }
 
@@ -393,7 +408,6 @@ map_crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     dd.LoadText(FILENAME_DESCRIPTION, data);
     add_crash_data_to_crash_info(crashInfo, CI_DESCRIPTION, CD_TXT, data);
     dd.Close();
-
     add_crash_data_to_crash_info(crashInfo, CI_UUID, CD_TXT, row.m_sUUID);
     add_crash_data_to_crash_info(crashInfo, CI_UID, CD_TXT, row.m_sUID);
     add_crash_data_to_crash_info(crashInfo, CI_COUNT, CD_TXT, row.m_sCount);
