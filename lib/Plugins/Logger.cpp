@@ -47,7 +47,7 @@ void CLogger::LoadSettings(const std::string& pPath)
 
 void CLogger::Report(const map_crash_report_t& pCrashReport)
 {
-    std::stringstream binaryFiles, commonFiles, additionalFiles, UUIDFile;
+    std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
     std::ofstream fOut;
 
     map_crash_report_t::const_iterator it;
@@ -76,6 +76,12 @@ void CLogger::Report(const map_crash_report_t& pCrashReport)
                 commonFiles << "-----" << std::endl;
                 commonFiles << it->second[CD_CONTENT] << std::endl << std::endl;
             }
+        }
+        if (it->second[CD_TYPE] == CD_ATT)
+        {
+            bigTextFiles << it->first << std::endl;
+            bigTextFiles << "-----" << std::endl;
+            bigTextFiles << it->second[CD_CONTENT] << std::endl << std::endl;
         }
         if (it->second[CD_TYPE] == CD_BIN)
         {
@@ -106,6 +112,9 @@ void CLogger::Report(const map_crash_report_t& pCrashReport)
         fOut << "Additional information" << std::endl;
         fOut << "======" << std::endl << std::endl;
         fOut << additionalFiles.str() << std::endl;
+        fOut << "Big Text Files" << std::endl;
+        fOut << "======" << std::endl;
+        fOut << bigTextFiles.str() << std::endl;
         fOut << "Binary files" << std::endl;
         fOut << "======" << std::endl;
         fOut << binaryFiles.str() << std::endl;

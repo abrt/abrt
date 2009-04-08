@@ -61,7 +61,7 @@ void CMailx::SendEmail(const std::string& pText)
 void CMailx::Report(const map_crash_report_t& pCrashReport)
 {
     std::stringstream emailBody;
-    std::stringstream binaryFiles, commonFiles, additionalFiles, UUIDFile;
+    std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
 
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
@@ -75,20 +75,24 @@ void CMailx::Report(const map_crash_report_t& pCrashReport)
             {
                 additionalFiles << it->first << std::endl;
                 additionalFiles << "-----" << std::endl;
-                additionalFiles << it->second[CD_CONTENT] << std::endl;
+                additionalFiles << it->second[CD_CONTENT] << std::endl << std::endl;
             }
             else if (it->first == FILENAME_UUID)
             {
                 UUIDFile << it->first << std::endl;
                 UUIDFile << "-----" << std::endl;
-                UUIDFile << it->second[CD_CONTENT] << std::endl;
+                UUIDFile << it->second[CD_CONTENT] << std::endl << std::endl;
             }
             else
             {
                 commonFiles << it->first << std::endl;
                 commonFiles << "-----" << std::endl;
-                commonFiles << it->second[CD_CONTENT] << std::endl;
+                commonFiles << it->second[CD_CONTENT] << std::endl << std::endl;
             }
+        }
+        if (it->second[CD_TYPE] == CD_ATT)
+        {
+            bigTextFiles << " -a " << it->second[CD_CONTENT];
         }
         if (it->second[CD_TYPE] == CD_BIN)
         {
@@ -107,17 +111,11 @@ void CMailx::Report(const map_crash_report_t& pCrashReport)
     emailBody << "Additional information" << std::endl;
     emailBody << "=====" << std::endl << std::endl;
     emailBody << additionalFiles.str() << std::endl;
-    emailBody << "Binary file[s]" << std::endl;
-    emailBody << "=====" << std::endl;
+    m_sAttachments = bigTextFiles.str();
 
     if (m_bSendBinaryData)
     {
-        emailBody << "See the attachment[s]" << std::endl;
-        m_sAttachments = binaryFiles.str();
-    }
-    else
-    {
-        emailBody << "Do not send them." << std::endl;
+        m_sAttachments += binaryFiles.str();
     }
 
     SendEmail(emailBody.str());

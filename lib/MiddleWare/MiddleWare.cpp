@@ -48,6 +48,7 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
         !dd.Exist(FILENAME_ARCHITECTURE) ||
         !dd.Exist(FILENAME_KERNEL) ||
         !dd.Exist(FILENAME_PACKAGE) ||
+        !dd.Exist(FILENAME_RELEASE) ||
         !dd.Exist(FILENAME_EXECUTABLE))
     {
         dd.Close();
@@ -71,13 +72,24 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
                 fileName == FILENAME_ARCHITECTURE ||
                 fileName == FILENAME_KERNEL ||
                 fileName == FILENAME_PACKAGE ||
+                fileName == FILENAME_RELEASE ||
                 fileName == FILENAME_EXECUTABLE)
             {
                 add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISNOTEDITABLE, content);
             }
-            else if (fileName != FILENAME_UID)
+            else if (fileName != FILENAME_UID &&
+                     fileName != FILENAME_ANALYZER &&
+                     fileName != FILENAME_TIME &&
+                     fileName != FILENAME_DESCRIPTION )
             {
-                add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISEDITABLE, content);
+                if (content.length() < CD_ATT_SIZE)
+                {
+                    add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISEDITABLE, content);
+                }
+                else
+                {
+                    add_crash_data_to_crash_report(pCrashReport, fileName, CD_ATT, CD_ISEDITABLE, content);
+                }
             }
         }
     }

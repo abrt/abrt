@@ -7,10 +7,14 @@
 
 // SYS - system value, should not be displayed
 // BIN - binary value, should be displayed
-// TXT = text value, should be displayed
+// TXT - text value, should be displayed
+// ATT - text value which can be sent as attachment via reporters
 #define CD_SYS          "s"
 #define CD_BIN          "b"
 #define CD_TXT          "t"
+#define CD_ATT          "a"
+
+#define CD_ATT_SIZE     (256)
 
 #define CD_ISEDITABLE       "y"
 #define CD_ISNOTEDITABLE    "n"
