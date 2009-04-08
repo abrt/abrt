@@ -126,6 +126,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     close(pipeout[1]);
 
     bool quit = false;
+    bool already_installed = false;
 
     while(!quit)
     {
@@ -152,11 +153,12 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
                     if (strstr(buff, packageName.c_str()) != NULL &&
                         strstr(buff, "already installed and latest version") != NULL)
                     {
-                        break;
+                        already_installed = true;
                     }
-                    if (strstr(buff, "No debuginfo packages available to install") != NULL ||
-                        strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
-                        strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL)
+                    if (already_installed == false &&
+                        (strstr(buff, "No debuginfo packages available to install") != NULL ||
+                         strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
+                         strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL))
                     {
                         close(pipein[1]);
                         close(pipeout[0]);

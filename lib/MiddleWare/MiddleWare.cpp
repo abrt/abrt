@@ -115,7 +115,7 @@ void CMiddleWare::CreateReport(const std::string& pAnalyzer,
     CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->CreateReport(pDebugDumpDir);
 }
-#include <iostream>
+
 void CMiddleWare::CreateCrashReport(const std::string& pUUID,
                                     const std::string& pUID,
                                     map_crash_report_t& pCrashReport)
