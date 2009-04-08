@@ -295,14 +295,17 @@ void CAnalyzerCCpp::GetIndependentBuldIdPC(const std::string& pBuildIdPC, std::s
             line += pBuildIdPC[ii];
             ii++;
         }
-        while (!isspace(line[jj]) && jj < line.length())
+        while (line[jj] != '+' && jj < line.length())
         {
             jj++;
         }
         jj++;
-        while (!isspace(line[jj]) && jj < line.length())
+        while (line[jj] != '@' && jj < line.length())
         {
-            pIndependentBuildIdPC += line[jj];
+            if (!isspace(line[jj]))
+            {
+                pIndependentBuildIdPC += line[jj];
+            }
             jj++;
         }
         ii++;
