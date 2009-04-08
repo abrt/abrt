@@ -19,18 +19,19 @@
 #define CD_EDITABLE     (1)
 #define CD_CONTENT      (2)
 
-#define CI_UUID         "UUID"
-#define CI_UID          "UID"
-#define CI_COUNT        "Count"
-#define CI_EXECUTABLE   "Executable"
-#define CI_PACKAGE      "Package"
-#define CI_DESCRIPTION  "Description"
-#define CI_TIME         "Time"
-#define CI_REPORTED     "Reported"
-#define CI_COMMENT      "Comment"
-#define CI_MWANALYZER   "_MWAnalyzer"
-#define CI_MWUID        "_MWUID"
-#define CI_MWUUID       "_MWUUID"
+#define CD_UUID         "UUID"
+#define CD_UID          "UID"
+#define CD_COUNT        "Count"
+#define CD_EXECUTABLE   "Executable"
+#define CD_PACKAGE      "Package"
+#define CD_DESCRIPTION  "Description"
+#define CD_TIME         "Time"
+#define CD_REPORTED     "Reported"
+#define CD_COMMENT      "Comment"
+#define CD_REPRODUCE    "How to reproduce"
+#define CD_MWANALYZER   "_MWAnalyzer"
+#define CD_MWUID        "_MWUID"
+#define CD_MWUUID       "_MWUUID"
 
 // now, size of a vecor is always 3 -> <type, editable, content>
 typedef std::vector<std::string> vector_strings_t;
@@ -43,10 +44,9 @@ typedef map_crash_data_t map_crash_report_t;
 
 inline void add_crash_data_to_crash_info(map_crash_info_t& pCrashInfo,
                                          const std::string& pItem,
-                                         const std::string& pType,
                                          const std::string& pContent)
 {
-    pCrashInfo[pItem].push_back(pType);
+    pCrashInfo[pItem].push_back(CD_TXT);
     pCrashInfo[pItem].push_back(CD_ISNOTEDITABLE);
     pCrashInfo[pItem].push_back(pContent);
 }

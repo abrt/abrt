@@ -50,21 +50,20 @@ int main(int argc, char** argv)
         middleWare.SetOpenGPGCheck(false);
         middleWare.AddAnalyzerReporter("CCpp", "Logger");
         middleWare.AddAnalyzerAction("CCpp", "RunApp", "date,action_date");
-        std::cout << "sasas" <<std::endl;
         map_crash_info_t crashInfo;
         if (middleWare.SaveDebugDump(argv[1], crashInfo))
         {
             std::cout << "Application Crashed! " <<
-                         crashInfo[item_crash_into_t_str[CI_PACKAGE]][CD_CONTENT] << ", " <<
-                         crashInfo[item_crash_into_t_str[CI_EXECUTABLE]][CD_CONTENT] << ", " <<
-                         crashInfo[item_crash_into_t_str[CI_COUNT]][CD_CONTENT] << ", " << std::endl;
+                         crashInfo[CD_PACKAGE][CD_CONTENT] << ", " <<
+                         crashInfo[CD_EXECUTABLE][CD_CONTENT] << ", " <<
+                         crashInfo[CD_COUNT][CD_CONTENT] << ", " << std::endl;
 
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */
             map_crash_report_t crashReport;
-            middleWare.CreateCrashReport(crashInfo[item_crash_into_t_str[CI_UUID]][CD_CONTENT],
-                                         crashInfo[item_crash_into_t_str[CI_UID]][CD_CONTENT],
+            middleWare.CreateCrashReport(crashInfo[CD_UUID][CD_CONTENT],
+                                         crashInfo[CD_UID][CD_CONTENT],
                                          crashReport);
             /* Report crash */
             middleWare.Report(crashReport);

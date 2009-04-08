@@ -32,13 +32,22 @@
 
 #define FILENAME_EXECUTABLE     "executable"
 #define FILENAME_CMDLINE        "cmdline"
+#define FILENAME_COREDUMP       "coredump"
 
-static void write_log(const char* pid)
+static void write_success_log(const char* pid)
 {
     openlog("abrt", 0, LOG_DAEMON);
     syslog(LOG_WARNING, "CCpp Language Hook: Crashed pid: %s", pid);
     closelog();
 }
+
+static void write_faliure_log(const char* msg)
+{
+    openlog("abrt", 0, LOG_DAEMON);
+    syslog(LOG_WARNING, "CCpp Language Hook: Exception occur: %s", msg);
+    closelog();
+}
+
 
 char* get_executable(const char* pid)
 {
@@ -88,13 +97,14 @@ int main(int argc, char** argv)
     const char* program_name = argv[0];
     if (argc < 3)
     {
-        fprintf(stderr, "Usage: %s: <pid> <signal> <uid>\n",
+        fprintf(stderr, "Usage: %s: <dddir> <pid> <signal> <uid>\n",
                 program_name);
         return -1;
     }
-    const char* pid = argv[1];
-    const char* signal = argv[2];
-    const char* uid = argv[3];
+    const char* dddir = argv[1];
+    const char* pid = argv[2];
+    const char* signal = argv[3];
+    const char* uid = argv[4];
 
     if (strcmp(signal, "3") != 0 &&     // SIGQUIT
         strcmp(signal, "4") != 0 &&     // SIGILL
@@ -125,16 +135,14 @@ int main(int argc, char** argv)
             throw std::string("Can not get proc info.");
         }
 
-        snprintf(path, sizeof(path), "%s/ccpp-%ld-%s",
-                                      DEBUG_DUMPS_DIR, time(NULL), pid);
+        snprintf(path, sizeof(path), "%s/ccpp-%ld-%s", dddir, time(NULL), pid);
         dd.Create(path);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_UID, uid);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
 
-        snprintf(path + strlen(path), sizeof(path), "/%s",
-                                                    FILENAME_BINARYDATA1);
+        snprintf(path + strlen(path), sizeof(path), "/%s", FILENAME_COREDUMP);
 
         if ((fp = fopen(path, "w")) == NULL)
         {
@@ -158,11 +166,12 @@ int main(int argc, char** argv)
         free(cmdline);
         fclose(fp);
         dd.Close();
-        write_log(pid);
+        write_success_log(pid);
     }
     catch (std::string sError)
     {
         fprintf(stderr, "%s: %s\n", program_name, sError.c_str());
+        write_faliure_log(sError.c_str());
         return -2;
     }
     return 0;

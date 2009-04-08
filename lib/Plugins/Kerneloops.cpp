@@ -40,6 +40,7 @@
 #include <asm/unistd.h>
 
 #define MAX(A,B) ((A) > (B) ? (A) : (B))
+#define FILENAME_KERNELOOPS  "kerneloops"
 
 CAnalyzerKerneloops::CAnalyzerKerneloops() :
 	m_sSysLogFile("/var/log/messages")
@@ -60,7 +61,7 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
 	std::stringstream m_sHash;
 	CDebugDump m_pDebugDump;
 	m_pDebugDump.Open(pDebugDumpDir);
-	m_pDebugDump.LoadText(FILENAME_TEXTDATA1, m_sOops);
+	m_pDebugDump.LoadText(FILENAME_KERNELOOPS, m_sOops);
 
 	/* An algorithm proposed by Donald E. Knuth in The Art Of Computer
 	 * Programming Volume 3, under the topic of sorting and search
@@ -110,7 +111,7 @@ void CAnalyzerKerneloops::Report()
 			m_pDebugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
 			m_pDebugDump.SaveText(FILENAME_KERNEL, m_pOops.m_sVersion);
 			m_pDebugDump.SaveText(FILENAME_PACKAGE, "not_applicable");
-			m_pDebugDump.SaveText(FILENAME_TEXTDATA1, m_pOops.m_sData);
+			m_pDebugDump.SaveText(FILENAME_KERNELOOPS, m_pOops.m_sData);
 			m_pDebugDump.Close();
 		}
 		catch (std::string sError)

@@ -14,7 +14,8 @@ dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf Kerneloops
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h PluginSettings.h
 libCCpp_la_LDFLAGS = -avoid-version
-libCCpp_la_CPPFLAGS = -I$(srcdir)/../MiddleWare  -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\"
+libCCpp_la_LIBADD = $(NSS_LIBS)
+libCCpp_la_CPPFLAGS = -I$(srcdir)/../MiddleWare  -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(NSS_CFLAGS)
 
 # Kerneloops
 libKerneloops_la_SOURCES = Kerneloops.cpp Kerneloops.h KerneloopsSysLog.cpp KerneloopsSysLog.h PluginSettings.h

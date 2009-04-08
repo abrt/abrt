@@ -77,7 +77,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
                 {
                     /* send message to dbus */
-                    cc->m_pCommLayer->Crash(crashinfo[CI_PACKAGE][CD_CONTENT]);
+                    cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                 }
             }
             catch(std::string err)

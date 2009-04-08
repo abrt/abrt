@@ -75,7 +75,7 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
             {
                 add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISNOTEDITABLE, content);
             }
-            else
+            else if (fileName != FILENAME_UID)
             {
                 add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISEDITABLE, content);
             }
@@ -115,7 +115,7 @@ void CMiddleWare::CreateReport(const std::string& pAnalyzer,
     CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->CreateReport(pDebugDumpDir);
 }
-
+#include <iostream>
 void CMiddleWare::CreateCrashReport(const std::string& pUUID,
                                     const std::string& pUID,
                                     map_crash_report_t& pCrashReport)
@@ -154,23 +154,24 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
     RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
     DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
 
-    add_crash_data_to_crash_report(pCrashReport, CI_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
-    add_crash_data_to_crash_report(pCrashReport, CI_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
-    add_crash_data_to_crash_report(pCrashReport, CI_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
-    add_crash_data_to_crash_report(pCrashReport, CI_COMMENT, CD_TXT, CD_ISEDITABLE, "");
+    add_crash_data_to_crash_report(pCrashReport, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
+    add_crash_data_to_crash_report(pCrashReport, CD_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
+    add_crash_data_to_crash_report(pCrashReport, CD_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
+    add_crash_data_to_crash_report(pCrashReport, CD_COMMENT, CD_TXT, CD_ISEDITABLE, "");
+    add_crash_data_to_crash_report(pCrashReport, CD_REPRODUCE, CD_TXT, CD_ISEDITABLE, "1.\n2.\n3.\n");
 }
 
 void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
 {
-    if (pCrashReport.find(CI_MWANALYZER) == pCrashReport.end() ||
-        pCrashReport.find(CI_MWUID) == pCrashReport.end() ||
-        pCrashReport.find(CI_MWUUID) == pCrashReport.end())
+    if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
+        pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
+        pCrashReport.find(CD_MWUUID) == pCrashReport.end())
     {
         throw std::string("CMiddleWare::Report(): Important data are missing.");
     }
-    std::string analyzer = pCrashReport.find(CI_MWANALYZER)->second[CD_CONTENT];
-    std::string UID = pCrashReport.find(CI_MWUID)->second[CD_CONTENT];
-    std::string UUID = pCrashReport.find(CI_MWUUID)->second[CD_CONTENT];
+    std::string analyzer = pCrashReport.find(CD_MWANALYZER)->second[CD_CONTENT];
+    std::string UID = pCrashReport.find(CD_MWUID)->second[CD_CONTENT];
+    std::string UUID = pCrashReport.find(CD_MWUUID)->second[CD_CONTENT];
 
     if (m_mapAnalyzerReporters.find(analyzer) != m_mapAnalyzerReporters.end())
     {
@@ -403,17 +404,17 @@ map_crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
 
     std::string data;
     dd.LoadText(FILENAME_EXECUTABLE, data);
-    add_crash_data_to_crash_info(crashInfo, CI_EXECUTABLE, CD_TXT, data);
+    add_crash_data_to_crash_info(crashInfo, CD_EXECUTABLE, data);
     dd.LoadText(FILENAME_PACKAGE, data);
-    add_crash_data_to_crash_info(crashInfo, CI_PACKAGE, CD_TXT, data);
+    add_crash_data_to_crash_info(crashInfo, CD_PACKAGE, data);
     dd.LoadText(FILENAME_DESCRIPTION, data);
-    add_crash_data_to_crash_info(crashInfo, CI_DESCRIPTION, CD_TXT, data);
+    add_crash_data_to_crash_info(crashInfo, CD_DESCRIPTION, data);
     dd.Close();
-    add_crash_data_to_crash_info(crashInfo, CI_UUID, CD_TXT, row.m_sUUID);
-    add_crash_data_to_crash_info(crashInfo, CI_UID, CD_TXT, row.m_sUID);
-    add_crash_data_to_crash_info(crashInfo, CI_COUNT, CD_TXT, row.m_sCount);
-    add_crash_data_to_crash_info(crashInfo, CI_TIME, CD_TXT, row.m_sTime);
-    add_crash_data_to_crash_info(crashInfo, CI_REPORTED, CD_TXT, row.m_sReported);
+    add_crash_data_to_crash_info(crashInfo, CD_UUID, row.m_sUUID);
+    add_crash_data_to_crash_info(crashInfo, CD_UID, row.m_sUID);
+    add_crash_data_to_crash_info(crashInfo, CD_COUNT, row.m_sCount);
+    add_crash_data_to_crash_info(crashInfo, CD_TIME, row.m_sTime);
+    add_crash_data_to_crash_info(crashInfo, CD_REPORTED, row.m_sReported);
 
     return crashInfo;
 }

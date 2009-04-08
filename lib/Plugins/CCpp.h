@@ -36,8 +36,9 @@ class CAnalyzerCCpp : public CAnalyzer
 		void InstallDebugInfos(const std::string& pPackage);
 		void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
 		void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace);
-		void RunGdb(const std::string& pScript, const std::string pUID, std::string& pOutput);
-
+		void GetIndependentBuldIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC);
+		void ExecVP(const char* pCommand, char* const pArgs[], const std::string& pUID, std::string& pOutput);
+		std::string CreateHash(const std::string& pInput);
 	public:
 	    CAnalyzerCCpp();
 		virtual ~CAnalyzerCCpp();

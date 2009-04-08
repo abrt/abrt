@@ -1,18 +1,18 @@
-lib_LTLIBRARIES = libMiddleWare.la
-libMiddleWare_la_SOURCES = MiddleWare.cpp MiddleWare.h PluginManager.cpp \
+lib_LTLIBRARIES = libABRTMiddleWare.la
+libABRTMiddleWare_la_SOURCES = MiddleWare.cpp MiddleWare.h PluginManager.cpp \
                            PluginManager.h ABRTPlugin.cpp \
                            ABRTPlugin.h DynamicLibrary.cpp \
                            DynamicLibrary.h \
                            RPM.cpp RPM.h Plugin.h CrashTypes.h \
                            MiddleWareTypes.h Action.h Database.h \
                            Reporter.h Analyzer.h
-libMiddleWare_la_LIBADD = $(DL_LIBS) ../Utils/libUtils.la  $(RPM_LIBS)
-libMiddleWare_la_LDFLAGS = -version-info 0:1:0
-libMiddleWare_la_CPPFLAGS = -I$(srcdir)/../Utils  $(RPM_CFLAGS)
+libABRTMiddleWare_la_LIBADD = $(DL_LIBS) ../Utils/libABRTUtils.la  $(RPM_LIBS)
+libABRTMiddleWare_la_LDFLAGS = -version-info 0:1:0
+libABRTMiddleWare_la_CPPFLAGS = -I$(srcdir)/../Utils  $(RPM_CFLAGS)
 
 check_PROGRAMS = test
 test_SOURCES = test.cpp
-test_LDADD = ../Utils/libUtils.la libMiddleWare.la $(DL_LIBS) $(RPM_LIBS)
+test_LDADD = ../Utils/libABRTUtils.la libABRTMiddleWare.la $(DL_LIBS) $(RPM_LIBS)
 test_CPPFLAGS = -I$(srcdir)/../Utils \
                 -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
                 -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \

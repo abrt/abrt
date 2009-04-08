@@ -20,9 +20,13 @@ PKG_CHECK_MODULES([DBUSCPP], [dbus-c++-1])
 PKG_CHECK_MODULES([RPM], [rpm])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
+PKG_CHECK_MODULES([NSS], [nss])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
+
+AC_CHECK_HEADER([magic.h], [],
+   [AC_MSG_ERROR([magic.h is needed to build abrt])])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'

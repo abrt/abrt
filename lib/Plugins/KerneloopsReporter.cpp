@@ -32,6 +32,8 @@
 #include <string.h>
 #include <curl/curl.h>
 
+#define FILENAME_KERNELOOPS "kerneloops"
+
 CKerneloopsReporter::CKerneloopsReporter() :
     m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
 {}
@@ -66,7 +68,7 @@ void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport)
 
 	curl_formadd(&post, &last,
 		CURLFORM_COPYNAME, "oopsdata",
-		CURLFORM_COPYCONTENTS, pCrashReport.find(FILENAME_TEXTDATA1)->second[CD_CONTENT].c_str(),
+		CURLFORM_COPYCONTENTS, pCrashReport.find(FILENAME_KERNELOOPS)->second[CD_CONTENT].c_str(),
 		CURLFORM_END);
 	curl_formadd(&post, &last,
 		CURLFORM_COPYNAME, "pass_on_allowed",

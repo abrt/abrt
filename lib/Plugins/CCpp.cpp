@@ -25,7 +25,6 @@
 #include "PluginSettings.h"
 #include <sstream>
 #include <iostream>
-#include <hash_map>
 #include <ctype.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -33,9 +32,19 @@
 #include <fcntl.h>
 #include <stdlib.h>
 #include <string.h>
+#include <iomanip>
+
+#include <nss.h>
+#include <sechash.h>
+#include <prinit.h>
+
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN "|"CCPP_HOOK_PATH" %p %s %u"
+#define CORE_PATTERN "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
+
+#define FILENAME_COREDUMP       "coredump"
+#define FILENAME_BACKTRACE      "backtrace"
+#define FILENAME_MEMORYMAP      "memorymap"
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
 	m_bMemoryMap(false),
@@ -51,10 +60,34 @@ CAnalyzerCCpp::~CAnalyzerCCpp()
     }
 }
 
+std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
+{
+    std::string ret = "";
+    HASHContext* hc;
+    unsigned char hash[SHA1_LENGTH];
+    unsigned int len;
+
+    hc = HASH_Create(HASH_AlgSHA1);
+    if (!hc)
+    {
+        throw std::string("CAnalyzerCCpp::CreateHash(): cannot initialize hash.");
+    }
+    HASH_Begin(hc);
+    HASH_Update(hc, reinterpret_cast<const unsigned char*>(pInput.c_str()), pInput.length());
+    HASH_End(hc, hash, &len, sizeof(hash));
+    HASH_Destroy(hc);
+
+    unsigned int ii;
+    std::stringstream ss;
+    for (ii = 0; ii < len; ii++)
+        ss <<  std::setw(2) << std::setfill('0') << std::hex << (hash[ii]&0xff);
+
+    return ss.str();
+}
+
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
-    std::cerr << packageName << std::endl;
     char buff[1024];
     int pipein[2], pipeout[2];
     struct timeval delay;
@@ -169,8 +202,8 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
         dd.LoadText(FILENAME_UID, UID);
         dd.Close();
         fTmp << "file " << executable << std::endl;
-        fTmp << "core " << pDebugDumpDir << "/" << FILENAME_BINARYDATA1 << std::endl;
-        fTmp << "bt" << std::endl;
+        fTmp << "core " << pDebugDumpDir << "/" << FILENAME_COREDUMP << std::endl;
+        fTmp << "bt full" << std::endl;
         fTmp << "q" << std::endl;
         fTmp.close();
     }
@@ -178,8 +211,11 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
     {
         throw "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile ;
     }
-
-    RunGdb(tmpFile, UID, pBacktrace);
+    char* command = (char*)"gdb";
+    char* args[5] = { (char*)"gdb", (char*)"-batch", (char*)"-x", NULL, NULL };
+    args[3] = strdup(tmpFile.c_str());
+    ExecVP(command, args, UID, pBacktrace);
+    free(args[3]);
 }
 
 void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
@@ -189,13 +225,22 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
     {
         std::string line = "";
         int jj = 0;
+        bool in_bracket = false;
 
-        while (pBacktrace[ii] != '\n' && ii < pBacktrace.length())
+        while ((pBacktrace[ii] != '\n' || in_bracket) && ii < pBacktrace.length())
         {
+            if (pBacktrace[ii] == '(')
+            {
+                in_bracket = true;
+            }
+            else if (pBacktrace[ii] == ')')
+            {
+                in_bracket = false;
+            }
             line += pBacktrace[ii];
             ii++;
         }
-        while (isspace(line[jj]))
+        while (isspace(line[jj]) && jj < line.length())
         {
             jj++;
         }
@@ -203,13 +248,23 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
         {
             while(jj < line.length())
             {
-                if (isspace(line[jj]))
+                if (isspace(line[jj]) && jj < line.length())
                 {
                     jj++;
                 }
-                else if (line[jj] == '0' && line[jj+1] == 'x')
+                else if (line[jj] == '\"')
                 {
-                    while (isalnum(line[jj]))
+                    jj++;
+                    while (line[jj] != '\"' && jj < line.length())
+                    {
+                        jj++;
+                    }
+                }
+                else if ((line[jj] == '=' && isdigit(line[jj+1])) ||
+                         (line[jj] == '0' && line[jj+1] == 'x') )
+                {
+                    jj += 2;
+                    while (isalnum(line[jj]) && jj < line.length())
                     {
                         jj++;
                     }
@@ -225,7 +280,34 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
     }
 }
 
-void CAnalyzerCCpp::RunGdb(const std::string& pScript, const std::string pUID, std::string& pOutput)
+void CAnalyzerCCpp::GetIndependentBuldIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
+{
+    int ii = 0;
+    while (ii < pBuildIdPC.length())
+    {
+        std::string line = "";
+        int jj = 0;
+
+        while (pBuildIdPC[ii] != '\n' && ii < pBuildIdPC.length())
+        {
+            line += pBuildIdPC[ii];
+            ii++;
+        }
+        while (!isspace(line[jj]) && jj < line.length())
+        {
+            jj++;
+        }
+        jj++;
+        while (!isspace(line[jj]) && jj < line.length())
+        {
+            pIndependentBuildIdPC += line[jj];
+            jj++;
+        }
+        ii++;
+    }
+}
+
+void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std::string& pUID, std::string& pOutput)
 {
     int pipeout[2];
     char buff[1024];
@@ -255,7 +337,7 @@ void CAnalyzerCCpp::RunGdb(const std::string& pScript, const std::string pUID, s
         seteuid(atoi(pUID.c_str()));
         setsid();
 
-        execlp("gdb", "gdb","-batch", "-x", pScript.c_str(), NULL);
+        execvp(pCommand, pArgs);
         exit(0);
     }
 
@@ -295,37 +377,40 @@ void CAnalyzerCCpp::RunGdb(const std::string& pScript, const std::string pUID, s
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-
-	std::stringstream ss;
-	char* core;
-	unsigned int size;
-	std::string executable;
 	CDebugDump dd;
-
+	std::string UID;
+	std::string executable;
+	std::string package;
+	std::string buildIdPC;
+	std::string independentBuildIdPC;
+	std::string core = "--core="+ pDebugDumpDir + "/" +FILENAME_COREDUMP;
+	char* command = (char*)"eu-unstrip";
+	char* args[4] = { (char*)"eu-unstrip", NULL, (char*)"-n", NULL };
+	args[1] = strdup(core.c_str());
 	dd.Open(pDebugDumpDir);
-	dd.LoadBinary(FILENAME_BINARYDATA1, &core, &size);
+	dd.LoadText(FILENAME_UID, UID);
 	dd.LoadText(FILENAME_EXECUTABLE, executable);
+	dd.LoadText(FILENAME_PACKAGE, package);
+	ExecVP(command, args, UID, buildIdPC);
 	dd.Close();
-	// TODO: compute local UUID, remove this hack
-	ss << executable << "_" << size;
-
-	return ss.str();
+	free(args[1]);
+	GetIndependentBuldIdPC(buildIdPC, independentBuildIdPC);
+    return CreateHash(package + executable + independentBuildIdPC);
 }
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-    std::stringstream ss;
     std::string backtrace;
+    std::string executable;
+    std::string package;
     std::string independentBacktrace;
-    __gnu_cxx::hash<const char*> hash;
-
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    dd.LoadText(FILENAME_TEXTDATA1, backtrace);
+    dd.LoadText(FILENAME_BACKTRACE, backtrace);
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
+    dd.LoadText(FILENAME_PACKAGE, package);
     dd.Close();
     GetIndependentBacktrace(backtrace, independentBacktrace);
-    // TODO: compute global UUID, remove this hack
-    ss << hash(independentBacktrace.c_str());
-    return ss.str();
+    return CreateHash(package + executable + independentBacktrace);
 }
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
@@ -334,7 +419,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     std::string backtrace;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    if (dd.Exist(FILENAME_TEXTDATA1))
+    if (dd.Exist(FILENAME_BACKTRACE))
     {
         dd.Close();
         return;
@@ -347,10 +432,10 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
-    dd.SaveText(FILENAME_TEXTDATA1, backtrace);
+    dd.SaveText(FILENAME_BACKTRACE, backtrace);
     if (m_bMemoryMap)
     {
-        dd.SaveText(FILENAME_TEXTDATA2, "memory map of the crashed C/C++ application, not implemented yet");
+        dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
     dd.Close();
 }
@@ -371,6 +456,10 @@ void CAnalyzerCCpp::Init()
 		fOutCorePattern << CORE_PATTERN << std::endl;
 		fOutCorePattern.close();
 	}
+    if (NSS_NoDB_Init(NULL) != SECSuccess)
+    {
+        throw std::string("CAnalyzerCCpp::CreateHash(): cannot initialize NSS library.");
+    }
 }
 
 
@@ -383,6 +472,7 @@ void CAnalyzerCCpp::DeInit()
 		fOutCorePattern << m_sOldCorePattern << std::endl;
 		fOutCorePattern.close();
 	}
+    NSS_Shutdown();
 }
 
 void CAnalyzerCCpp::LoadSettings(const std::string& pPath)

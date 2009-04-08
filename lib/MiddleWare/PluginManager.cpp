@@ -116,8 +116,19 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
         {
             std::string path = m_sPlugisConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
             CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
-            plugin->Init();
-            plugin->LoadSettings(path);
+            try
+            {
+                plugin->Init();
+                plugin->LoadSettings(path);
+            }
+            catch (std::string sError)
+            {
+                std::cerr << "Can not initialize plugin " << pName << "("
+                          << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]
+                          << ")" << std::endl;
+                UnLoadPlugin(pName);
+                return;
+            }
             m_mapPlugins[pName] = plugin;
             std::cerr << "Registred plugin " << pName << "("
                       << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]

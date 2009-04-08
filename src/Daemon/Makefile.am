@@ -7,7 +7,7 @@ abrt_CPPFLAGS = -Wall -Werror -I../../lib/MiddleWare -I../../lib/CommLayer\
                         -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
                         -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
                         -DCONF_DIR=\"$(CONF_DIR)\"
-abrt_LDADD = ../../lib/MiddleWare/libMiddleWare.la ../../lib/CommLayer/libABRTCommLayer.la $(DL_LIBS) $(DBUSCPP_LIBS) $(RPM_LIBS)
+abrt_LDADD = ../../lib/MiddleWare/libABRTMiddleWare.la ../../lib/CommLayer/libABRTCommLayer.la $(DL_LIBS) $(DBUSCPP_LIBS) $(RPM_LIBS)
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf

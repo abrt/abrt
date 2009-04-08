@@ -36,11 +36,6 @@
 #define FILENAME_ANALYZER           "analyzer"
 #define FILENAME_RELEASE            "release"
 #define FILENAME_EXECUTABLE         "executable"
-#define FILENAME_CMDLINE            "cmdline"
-#define FILENAME_TEXTDATA1          "text_data_1"
-#define FILENAME_TEXTDATA2          "text_data_2"
-#define FILENAME_BINARYDATA1        "binary_data_1"
-#define FILENAME_BINARYDATA2        "binary_data_1"
 
 class CDebugDump
 {
