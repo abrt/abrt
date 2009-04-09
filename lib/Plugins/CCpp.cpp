@@ -223,62 +223,105 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
 void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
 {
     int ii = 0;
+    std::string line;
+    std::string header;
+    int jj = 0;
+    bool in_bracket = false;
+    bool in_quote = false;
+    bool in_header = false;
+    bool in_digit = false;
+    bool in_arg = false;
+    bool has_at = false;
+    bool has_filename = false;
+    bool has_bracket = false;
+    std::set<std::string> set_headers;
+
     while (ii < pBacktrace.length())
     {
-        std::string line = "";
-        int jj = 0;
-        bool in_bracket = false;
-
-        while ((pBacktrace[ii] != '\n' || in_bracket) && ii < pBacktrace.length())
+        if (pBacktrace[ii] == '#' && !in_quote)
         {
-            if (pBacktrace[ii] == '(')
+            if (in_header && !has_filename)
+            {
+                header = "";
+            }
+            in_header = true;
+        }
+        if (in_header)
+        {
+            if (isdigit(pBacktrace[ii]) && !in_quote && !has_at)
+            {
+                in_digit = true;
+            }
+            else if (pBacktrace[ii] == '=' && !in_quote && in_header)
+            {
+                in_arg = true;
+                header += '=';
+            }
+            else if (pBacktrace[ii] == '\\' && pBacktrace[ii + 1] == '\"')
+            {
+                ii++;
+            }
+            else if (pBacktrace[ii] == '\"')
+            {
+                in_quote = in_quote == true ? false : true;
+            }
+            else if (pBacktrace[ii] == '(' && !in_quote)
             {
                 in_bracket = true;
+                in_digit = false;
+                header += '(';
             }
-            else if (pBacktrace[ii] == ')')
+            else if (pBacktrace[ii] == ')' && !in_quote)
             {
                 in_bracket = false;
+                has_bracket = true;
+                in_arg = false;
+                in_digit = false;
+                header += ')';
             }
-            line += pBacktrace[ii];
-            ii++;
-        }
-        while (isspace(line[jj]) && jj < line.length())
-        {
-            jj++;
-        }
-        if (line[jj] == '#')
-        {
-            while(jj < line.length())
+            else if (pBacktrace[ii] == '\n' && has_filename)
             {
-                if (isspace(line[jj]) && jj < line.length())
-                {
-                    jj++;
-                }
-                else if (line[jj] == '\"')
-                {
-                    jj++;
-                    while (line[jj] != '\"' && jj < line.length())
-                    {
-                        jj++;
-                    }
-                }
-                else if ((line[jj] == '=' && isdigit(line[jj+1])) ||
-                         (line[jj] == '0' && line[jj+1] == 'x') )
-                {
-                    jj += 2;
-                    while (isalnum(line[jj]) && jj < line.length())
-                    {
-                        jj++;
-                    }
-                }
-                else
-                {
-                    pIndependentBacktrace += line[jj];
-                    jj++;
-                }
+                set_headers.insert(header);
+                in_bracket = false;
+                in_quote = false;
+                in_header = false;
+                in_digit = false;
+                in_arg = false;
+                has_at = false;
+                has_filename = false;
+                has_bracket = false;
+                header = "";
+            }
+            else if (pBacktrace[ii] == ',' && !in_quote)
+            {
+                in_digit = false;
+                in_arg = false;
+            }
+            else if (isspace(pBacktrace[ii]) && !in_quote)
+            {
+                in_digit = false;
+            }
+            else if (pBacktrace[ii] == 'a' && pBacktrace[ii + 1] == 't' && has_bracket && !in_quote)
+            {
+                has_at = true;
+                header += 'a';
+            }
+            else if (pBacktrace[ii] == ':' && has_at && isdigit(pBacktrace[ii + 1]) && !in_quote)
+            {
+                has_filename = true;
+            }
+            else if (in_header && !in_digit && !in_quote && !in_arg)
+            {
+                header += pBacktrace[ii];
             }
         }
         ii++;
+    }
+    pIndependentBacktrace = "";
+    std::set<std::string>::iterator it;
+    for (it = set_headers.begin(); it != set_headers.end(); it++)
+    {
+        pIndependentBacktrace += *it;
     }
 }
 
