@@ -230,7 +230,6 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
     bool in_quote = false;
     bool in_header = false;
     bool in_digit = false;
-    bool in_arg = false;
     bool has_at = false;
     bool has_filename = false;
     bool has_bracket = false;
@@ -252,11 +251,6 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
             {
                 in_digit = true;
             }
-            else if (pBacktrace[ii] == '=' && !in_quote && in_header)
-            {
-                in_arg = true;
-                header += '=';
-            }
             else if (pBacktrace[ii] == '\\' && pBacktrace[ii + 1] == '\"')
             {
                 ii++;
@@ -275,7 +269,6 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
             {
                 in_bracket = false;
                 has_bracket = true;
-                in_arg = false;
                 in_digit = false;
                 header += ')';
             }
@@ -286,7 +279,6 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
                 in_quote = false;
                 in_header = false;
                 in_digit = false;
-                in_arg = false;
                 has_at = false;
                 has_filename = false;
                 has_bracket = false;
@@ -295,7 +287,6 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
             else if (pBacktrace[ii] == ',' && !in_quote)
             {
                 in_digit = false;
-                in_arg = false;
             }
             else if (isspace(pBacktrace[ii]) && !in_quote)
             {
@@ -310,7 +301,7 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
             {
                 has_filename = true;
             }
-            else if (in_header && !in_digit && !in_quote && !in_arg)
+            else if (in_header && !in_digit && !in_quote && !in_bracket)
             {
                 header += pBacktrace[ii];
             }
