@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import sys
 import os
 import pwd
@@ -30,9 +31,6 @@ class MainWindow():
             gui_error_message(e.message)
             sys.exit()
         #Set the Glade file
-        # FIXME add to PATH
-        # FIXME remove!
-        
         self.gladefile = "%s%sccgui.glade" % (sys.path[0],"/")
         self.wTree = gtk.glade.XML(self.gladefile)
         
@@ -121,7 +119,6 @@ class MainWindow():
     def hydrate(self):
         n = None
         self.dumpsListStore.clear()
-        #self.rows = self.ccdaemon.getDumps()
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
         except Exception, e:
@@ -133,7 +130,7 @@ class MainWindow():
                 icon = None
             if os.getuid() == 0:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), 
-                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), pwd.getpwuid(int(entry.UID))[0], entry])
+                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), pwd.getpwuid(int(entry.getUID()))[0], entry])
             else:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), 
                                                 entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry])
@@ -159,7 +156,6 @@ class MainWindow():
         #move this to Dump class
         lPackage = self.wTree.get_widget("lPackage")
         self.wTree.get_widget("lDescription").set_label(dump.getDescription())
-        #print self.rows[row]
         
     def on_bDelete_clicked(self, button, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
@@ -168,7 +164,7 @@ class MainWindow():
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         try:
-            if self.ccdaemon.DeleteDebugDump(dump.UUID):
+            if self.ccdaemon.DeleteDebugDump(dump.getUUID()):
                 self.hydrate()
                 treeview.emit("cursor-changed")
             else:
@@ -177,7 +173,6 @@ class MainWindow():
             print e
     
     def destroy(self, widget, data=None):
-        #print "destroy signal occurred"
         gtk.main_quit()
     
     def on_data_changed_cb(self, *args):
@@ -233,17 +228,10 @@ class MainWindow():
         return
 
     def delete_event_cb(self, widget, event, data=None):
-        # Change FALSE to TRUE and the main window will not be destroyed
-        # with a "delete_event".
-        #return self.on_bQuit_clicked(widget)
         gtk.main_quit()
         
     def on_bQuit_clicked(self, widget):
-        # quit dialog seems to be anoying...
-        #ret = gui_question_dialog("Do you really want to quit?",self.window)
-        #if ret == gtk.RESPONSE_YES:
         gtk.main_quit()
-        #        return True
             
     def show(self):
         self.window.show()

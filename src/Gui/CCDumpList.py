@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import CCDBusBackend
 from CCDump import Dump
 
@@ -19,7 +20,7 @@ class DumpList(list):
                         #print "DumpList adding %s:%s" % (column,row[column])
                         entry.__dict__[column] = row[column]
                     self.append(entry)
-                    self.ddict[entry.UUID] = entry
+                    self.ddict[entry.getUUID()] = entry
             except Exception, e:
                 print e
                 return

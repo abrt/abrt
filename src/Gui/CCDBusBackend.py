@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import dbus
 import gobject
 from dbus.mainloop.glib import DBusGMainLoop
@@ -61,6 +62,7 @@ class DBusManager(gobject.GObject):
         #for arg in args:
         #    print "Analyze complete for: %s" % arg
         # emit signal to let clients know that analyze has been completed
+        # FIXME - rewrite with CCReport class
         self.emit("analyze-complete", dump)
     
     def connect_to_daemon(self):
@@ -91,7 +93,7 @@ class DBusManager(gobject.GObject):
         row_dict = None
         rows = []
         # FIXME check the arguments
-        for row in self.cc.GetCrashInfosMap(""):
+        for row in self.cc.GetCrashInfos(""):
             row_dict = {}
             for column in row:
                 row_dict[column] = row[column]

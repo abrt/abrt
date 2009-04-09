@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gtk
 try:
     # we don't want to add dependency to rpm, but if we have it, we can use it
