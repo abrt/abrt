@@ -42,27 +42,6 @@ vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pDBu
 	return retval;
 }
 
-dbus_vector_map_crash_infos_t CCommLayerServerDBus::GetCrashInfosMap(const std::string &pDBusSender)
-{
-    dbus_vector_map_crash_infos_t retval;
-    /*vector_crash_infos_t crash_info;
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
-    try
-    {
-        crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
-    }
-    catch(std::string err)
-    {
-        std::cerr << err << std::endl;
-    }
-    for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
-        std::cerr << it->m_sExecutable << std::endl;
-        retval.push_back(it->GetMap());
-    }
-    Notify("Sent crash info");*/
-	return retval;
-}
-
 map_crash_report_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
