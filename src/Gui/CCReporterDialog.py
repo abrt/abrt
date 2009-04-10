@@ -53,7 +53,6 @@ class ReporterDialog():
         #renderer.props.wrap_mode = pango.WRAP_WORD
         #renderer.props.wrap_width = 600
         column = gtk.TreeViewColumn('Value', renderer, text=1, editable=2)
-        column.props.max_width = 10
         self.tvReport.append_column(column)
         renderer.connect('edited',self.column_edited,self.reportListStore)
         # toggle
