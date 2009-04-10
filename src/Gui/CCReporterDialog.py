@@ -3,6 +3,7 @@ import pygtk
 pygtk.require("2.0")
 import gtk #, pango
 import gtk.glade
+import pango
 import sys
 from CC_gui_functions import *
 from CCReport import Report
@@ -46,9 +47,13 @@ class ReporterDialog():
         
         renderer = CellRenderers.MultilineCellRenderer()
         renderer.props.editable = True
+        renderer.props.wrap_mode = pango.WRAP_WORD
+        renderer.props.wrap_width = 800
+        
         #renderer.props.wrap_mode = pango.WRAP_WORD
         #renderer.props.wrap_width = 600
         column = gtk.TreeViewColumn('Value', renderer, text=1, editable=2)
+        column.props.max_width = 10
         self.tvReport.append_column(column)
         renderer.connect('edited',self.column_edited,self.reportListStore)
         # toggle
@@ -58,7 +63,7 @@ class ReporterDialog():
         column = gtk.TreeViewColumn('Send', toggle_renderer)
         column.add_attribute( toggle_renderer, "active", 3)
         column.add_attribute( toggle_renderer, "visible", 4)
-        self.tvReport.append_column(column)
+        self.tvReport.insert_column(column,0)
         # connect the signals
         self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
         #self.wTree.get_widget("bCancel").connect("clicked", self.on_cancel_clicked, self.tvReport)
@@ -118,10 +123,12 @@ class ReporterDialog():
                 self.report[rowe["item"]][CONTENT] = rowe["content"]
             else:
                 del self.report[rowe["item"]]
-            if self.comment_changed:
-                buff = self.tvComment.get_buffer()
-                self.report["Comment"] = ['t', 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
-    
+        if self.comment_changed:
+            buff = self.tvComment.get_buffer()
+            self.report["Comment"] = ['t', 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
+        else:
+            del self.report["Comment"]
+
     def run(self):
         result = self.window.run()
         if result != gtk.RESPONSE_APPLY:
