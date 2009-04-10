@@ -69,20 +69,33 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         /* we want to ignore the lock files */
         if(event->mask & IN_ISDIR)
         {
-            std::string sName = name;
             CCrashWatcher *cc = (CCrashWatcher*)daemon;
-            map_crash_info_t crashinfo;
-            try
-            {
-                if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+#ifdef DEBUG
+            std::cerr << cc->GetDirSize(DEBUG_DUMPS_DIR)/(1024*1024.0) << std::endl;
+            std::cerr << cc->m_pSettings->GetMaxCrashReportsSize() << std::endl;
+#endif /*DEBUG*/
+            if(cc->GetDirSize(DEBUG_DUMPS_DIR)/(1024*1024.0) < cc->m_pSettings->GetMaxCrashReportsSize()){
+                //std::string sName = name;
+                map_crash_info_t crashinfo;
+                try
                 {
-                    /* send message to dbus */
-                    cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                    if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+                    {
+                        /* send message to dbus */
+                        cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                    }
+                }
+                catch(std::string err)
+                {
+                    std::cerr << err << std::endl;
                 }
             }
-            catch(std::string err)
+            else
             {
-                std::cerr << err << std::endl;
+#ifdef DEBUG
+                std::cout << "DebugDumps size has exceeded the limit, deleting the last dump." << name << std::endl;
+#endif /*DEBUG*/
+                cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             }
         }
 #ifdef DEBUG
@@ -95,30 +108,6 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     delete[] buf;
     return TRUE;
 }
-/*
-CCrashWatcher::CCrashWatcher(const std::string& pPath,DBus::Connection &connection)
-: DBus::ObjectAdaptor(connection, CC_DBUS_PATH)
-{
-    m_pConn = &connection;
-    int watch = 0;
-    m_sTarget = pPath;
-    // middleware object
-    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR, std::string(CONF_DIR) + "/abrt.conf");
-    FindNewDumps(pPath);
-    m_pMainloop = g_main_loop_new(NULL,FALSE);
-    connection.request_name(CC_DBUS_NAME);
-    if((m_nFd = inotify_init()) == -1){
-        throw std::string("Init Failed");
-        //std::cerr << "Init Failed" << std::endl;
-        exit(-1);
-    }
-    if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
-
-        throw std::string("Add watch failed:") + pPath.c_str();
-    }
-    m_pGio = g_io_channel_unix_new(m_nFd);
-}
-*/
 
 void CCrashWatcher::SetUpMW()
 {
@@ -162,6 +151,36 @@ void CCrashWatcher::SetUpMW()
             m_pMW->AddAnalyzerAction(it_pa->first, (*it_a).first, (*it_a).second);
         }
     }
+}
+
+double CCrashWatcher::GetDirSize(const std::string &pPath)
+{
+    double size = 0;
+    int stat(const char *path, struct stat *buf);
+    struct dirent *ep;
+    struct stat stats;
+    DIR *dp;
+    std::string dname;
+    dp = opendir (pPath.c_str());
+    if (dp != NULL)
+    {
+        while ((ep = readdir (dp))){
+            if(strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0){
+                dname = pPath + "/" + ep->d_name;
+                lstat (dname.c_str(), &stats);
+                if(S_ISDIR (stats.st_mode)){
+                    size += GetDirSize(dname);
+                }
+                else if(S_ISREG(stats.st_mode)){
+                    size += stats.st_size;
+                }
+            }
+        }
+        (void) closedir (dp);
+    }
+    else
+        throw std::string("Init Failed");
+    return size;
 }
 
 CCrashWatcher::CCrashWatcher(const std::string& pPath)
@@ -251,98 +270,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         }
     }
 }
-/*
-dbus_vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
-{
-    dbus_vector_crash_infos_t retval;
-    vector_crash_infos_t crash_info;
-    m_pMW->GetCrashInfos("501");
-    for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
-        std::cerr << it->m_sExecutable << std::endl;
-    }
-	return retval;
-}
 
-dbus_vector_map_crash_infos_t CCrashWatcher::GetCrashInfosMap(const std::string &pDBusSender)
-{
-    dbus_vector_map_crash_infos_t retval;
-    vector_crash_infos_t crash_info;
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
-    try
-    {
-        crash_info = m_pMW->GetCrashInfos(to_string(unix_uid));
-    }
-    catch(std::string err)
-    {
-        std::cerr << err << std::endl;
-    }
-    for (vector_crash_infos_t::iterator it = crash_info.begin(); it!=crash_info.end(); ++it) {
-        retval.push_back(it->GetMap());
-    }
-	return retval;
-}
-
-dbus_map_report_info_t CCrashWatcher::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
-{
-    dbus_map_report_info_t retval;
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
-    //std::cerr << pUUID << ":" << unix_uid << std::endl;
-    crash_report_t crashReport;
-    std::cerr << "Creating report" << std::endl;
-    try
-    {
-        m_pMW->CreateReport(pUUID,to_string(unix_uid), crashReport);
-        retval = crashReport.GetMap();
-        //send out the message about completed analyze
-        AnalyzeComplete(retval);
-    }
-    catch(std::string err)
-    {
-        Error(err);
-        std::cerr << err << std::endl;
-    }
-    return retval;
-}
-
-bool CCrashWatcher::Report(dbus_map_report_info_t pReport)
-{
-    crash_report_t crashReport;
-    //#define FIELD(X) crashReport.m_s##X = pReport[#X];
-    //crashReport.m_sUUID = pReport["UUID"];
-    //ALL_CRASH_REPORT_FIELDS;
-    //#undef FIELD
-    //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
-    //     std::cerr << it->second << std::endl;
-    //}
-    crashReport.SetFromMap(pReport);
-    try
-    {
-        m_pMW->Report(crashReport);
-    }
-    catch(std::string err)
-    {
-        std::cerr << err << std::endl;
-        return false;
-    }
-    return true;
-}
-
-bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender)
-{
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
-    try
-    {
-        //std::cerr << "DeleteDebugDump(" << pUUID << "," << unix_uid << ")" << std::endl;
-        m_pMW->DeleteCrashInfo(pUUID,to_string(unix_uid), true);
-    }
-    catch(std::string err)
-    {
-        std::cerr << err << std::endl;
-        return false;
-    }
-    return true;
-}
-*/
 void CCrashWatcher::Lock()
 {
     int lfp = open("abrt.lock",O_RDWR|O_CREAT,0640);

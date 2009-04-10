@@ -203,6 +203,14 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
     database->DisConnect();
 }
 
+void CMiddleWare::DeleteDebugDumpDir(const std::string& pDebugDumpDir)
+{
+    CDebugDump dd;
+    dd.Open(pDebugDumpDir);
+    dd.Delete();
+    dd.Close();
+}
+
 void CMiddleWare::DeleteCrashInfo(const std::string& pUUID,
                                   const std::string& pUID,
                                   const bool bWithDebugDump)
@@ -216,10 +224,7 @@ void CMiddleWare::DeleteCrashInfo(const std::string& pUUID,
 
     if (bWithDebugDump)
     {
-        CDebugDump dd;
-        dd.Open(row.m_sDebugDumpDir);
-        dd.Delete();
-        dd.Close();
+        DeleteDebugDumpDir(row.m_sDebugDumpDir);
     }
 }
 

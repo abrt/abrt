@@ -54,6 +54,7 @@ class CCrashWatcher
         void SetUpMW();
         /* finds dumps created when daemon wasn't running */
         void FindNewDumps(const std::string& pPath);
+        double GetDirSize(const std::string &pPath);
 
         int m_nFd;
         GIOChannel* m_pGio;

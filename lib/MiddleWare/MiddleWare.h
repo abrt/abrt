@@ -80,7 +80,7 @@ class CMiddleWare
                                map_crash_report_t& pCrashReport);
 
         void Report(const map_crash_report_t& pCrashReport);
-
+        void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
         void DeleteCrashInfo(const std::string& pUUID,
                              const std::string& pUID,
                              const bool bWithDebugDump = true);
