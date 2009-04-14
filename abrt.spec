@@ -15,6 +15,7 @@ BuildRequires: sqlite-devel > 3.0
 BuildRequires: desktop-file-utils
 BuildRequires: nss-devel
 BuildRequires: libnotify-devel
+BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
@@ -121,6 +122,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-runapp
 Plugin to run external programs.
 
+%package plugin-bugzilla
+Summary: %{name}'s bugzilla plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-bugzilla
+Plugin to report bugs into the bugzilla.
+
 %prep
 %setup -q
 
@@ -223,6 +232,11 @@ fi
 %files plugin-runapp
 %defattr(-,root,root,-)
 %{_libdir}/%{name}/libRunApp.so*
+
+%files plugin-bugzilla
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
+%{_libdir}/%{name}/libBugzilla.so*
 
 %changelog
 * Fri Apr 10 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.3-1
