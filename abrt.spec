@@ -1,6 +1,6 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.2
+Version: 0.0.3
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -13,6 +13,9 @@ BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: sqlite-devel > 3.0
 BuildRequires: desktop-file-utils
+BuildRequires: nss-devel
+BuildRequires: libnotify-devel
+BuildRequires: file-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -222,6 +225,37 @@ fi
 %{_libdir}/%{name}/libRunApp.so*
 
 %changelog
+* Fri Apr 10 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.3-1
+- new version
+- minor fix in reporter gui
+- Configurable max size of debugdump storage rhbz#490889
+- Wrap lines in report to keep the window sane sized
+- Fixed gui for new daemon API
+- removed unneeded code
+- removed dependency on args
+- new guuid hash creating
+- fixed local UUID
+- fixed debuginfo-install checks
+- renamed MW library
+- Added notification thru libnotify
+- fixed parsing settings of action plugins
+- added support for action plugins
+- kerneloops - plugin: fail gracefully.
+- Added commlayer to make dbus optional
+- a lot of kerneloops fixes
+- new approach for getting debuginfos and backtraces
+- fixed unlocking of a debugdump
+- replaced language and application plugins by analyzer plugin
+- more excetpion handling
+- conf file isn't needed
+- Plugin's configuration file is optional
+- Add curl dependency
+- Added column 'user' to the gui
+- Gui: set the newest entry as active (ticket#23)
+- Delete and Report button are no longer active if no entry is selected (ticket#41)
+- Gui refreshes silently (ticket#36)
+- Added error reporting over dbus to daemon, error handling in gui, about dialog
+
 * Wed Mar 11 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.2-1
 - added kerneloops addon to rpm (aarapov)
 - added kerneloops addon and plugin (aarapov)
