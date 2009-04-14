@@ -21,6 +21,8 @@ PKG_CHECK_MODULES([RPM], [rpm])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
+PKG_CHECK_MODULES([XMLRPC_CPP], [xmlrpc++])
+PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [xmlrpc_client++])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])

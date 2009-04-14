@@ -6,10 +6,11 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libLogger.la \
                          libKerneloopsReporter.la\
                          libKerneloops.la \
-                         libRunApp.la
+                         libRunApp.la \
+                         libBugzilla.la
                           
 pluginsconfdir=$(PLUGINS_CONF_DIR)
-dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf Kerneloops.conf KerneloopsReporter.conf
+dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf Kerneloops.conf KerneloopsReporter.conf Bugzilla.conf
 
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h PluginSettings.h
@@ -45,3 +46,9 @@ libLogger_la_LDFLAGS = -avoid-version
 # RunApp
 libRunApp_la_SOURCES = RunApp.h RunApp.cpp
 libRunApp_la_LDFLAGS = -avoid-version
+
+# Bugzilla
+libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
+libBugzilla_la_LIBADD = $(XMLRPC_CPP_LIBS) $(XMLRPC_CLIENT_CPP_LIBS)
+libBugzilla_la_LDFLAGS = -avoid-version
+libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
