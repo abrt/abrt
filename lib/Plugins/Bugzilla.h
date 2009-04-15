@@ -12,7 +12,7 @@ class CReporterBugzilla : public CReporter
 
         void Login();
         void Logout();
-        bool CheckUUIDInBugzilla(const std::string& pUUID);
+        bool CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID);
         void NewBug(const map_crash_report_t& pCrashReport);
         void CreateNewBugDescription(const map_crash_report_t& pCrashReport,
                                      std::string& pDescription);

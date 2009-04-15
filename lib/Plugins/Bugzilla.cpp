@@ -55,12 +55,12 @@ void CReporterBugzilla::Logout()
     }
 }
 
-bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pUUID)
+bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID)
 {
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t searchParams;
     map_xmlrpc_params_t ret;
-    std::string quicksearch = "component:\"abrt\" statuswhiteboard:\""+ pUUID + "\"";
+    std::string quicksearch = "component:\""+ pComponent +"\" statuswhiteboard:\""+ pUUID + "\"";
     searchParams["quicksearch"] = xmlrpc_c::value_string(quicksearch.c_str());
     paramList.add(xmlrpc_c::value_struct(searchParams));
     xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.search", paramList));
@@ -142,7 +142,7 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     bugParams["product"] = xmlrpc_c::value_string(product);
     bugParams["component"] =  xmlrpc_c::value_string(component);
     bugParams["version"] =  xmlrpc_c::value_string(version);
-    bugParams["summary"] = xmlrpc_c::value_string("TEST [abrt] crash detected in " + component);
+    bugParams["summary"] = xmlrpc_c::value_string("[abrt] crash detected in " + component);
     bugParams["description"] = xmlrpc_c::value_string(description);
     bugParams["status_whiteboard"] = xmlrpc_c::value_string("abrt_hash:" + pCrashReport.find(FILENAME_UUID)->second[CD_CONTENT]);
     bugParams["platform"] = xmlrpc_c::value_string(pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT]);
@@ -164,8 +164,11 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
 
 void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport)
 {
+    std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+    std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
+    std::string uuid = pCrashReport.find(FILENAME_UUID)->second[CD_CONTENT];
     Login();
-    if (!CheckUUIDInBugzilla(pCrashReport.find(FILENAME_UUID)->second[CD_CONTENT]))
+    if (!CheckUUIDInBugzilla(component, uuid))
     {
         NewBug(pCrashReport);
     }
