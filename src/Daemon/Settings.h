@@ -24,6 +24,7 @@ class CSettings
         set_strings_t m_setOpenGPGPublicKeys;
         set_strings_t m_setBlackList;
         set_strings_t m_setEnabledPlugins;
+        set_strings_t m_setReporters;
         std::string m_sDatabase;
         bool m_bOpenGPGCheck;
         unsigned int m_nMaxCrashReportsSize;
@@ -43,10 +44,11 @@ class CSettings
         const set_strings_t& GetEnabledPlugins();
         const set_strings_t& GetOpenGPGPublicKeys();
         const bool& GetOpenGPGCheck();
-        const map_analyzer_reporters_t& GetReporters();
-        const map_analyzer_actions_t& GetActions();
+        const map_analyzer_reporters_t& GetAnalyzerReporters();
+        const map_analyzer_actions_t& GetAnalyzerActions();
         const unsigned int& GetMaxCrashReportsSize();
         const std::string& GetDatabase();
+        const set_strings_t& GetReporters();
 };
 
 #endif

@@ -173,6 +173,20 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
     add_crash_data_to_crash_report(pCrashReport, CD_REPRODUCE, CD_TXT, CD_ISEDITABLE, "1.\n2.\n3.\n");
 }
 
+void CMiddleWare::Report(const std::string& pDebugDumpDir)
+{
+    map_crash_report_t crashReport;
+
+    DebugDumpToCrashReport(pDebugDumpDir, crashReport);
+
+    set_reporters_t::iterator it_r;
+    for (it_r = m_setReporters.begin(); it_r != m_setReporters.end(); it_r++)
+    {
+        CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
+        reporter->Report(crashReport);
+    }
+}
+
 void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
 {
     if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
@@ -487,4 +501,9 @@ void CMiddleWare::AddAnalyzerAction(const std::string& pAnalyzer,
                                     const std::string& pArgs)
 {
     m_mapAnalyzerActions[pAnalyzer].insert(make_pair(pAction, pArgs));
+}
+
+void CMiddleWare::AddReporter(const std::string& pReporter)
+{
+    m_setReporters.insert(pReporter);
 }

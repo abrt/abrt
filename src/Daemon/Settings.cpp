@@ -112,6 +112,11 @@ void CSettings::ParseCommon()
     {
         m_nMaxCrashReportsSize =  atoi(m_mapSettingsCommon["MaxCrashReportsSize"].c_str());
     }
+    if (m_mapSettingsCommon.find("Reporters") != m_mapSettingsCommon.end())
+    {
+        m_setReporters =  ParseList(m_mapSettingsCommon["Reporters"]);
+    }
+
 }
 
 void  CSettings::ParseReporters()
@@ -267,12 +272,12 @@ const bool& CSettings::GetOpenGPGCheck()
     return m_bOpenGPGCheck;
 }
 
-const CSettings::map_analyzer_reporters_t& CSettings::GetReporters()
+const CSettings::map_analyzer_reporters_t& CSettings::GetAnalyzerReporters()
 {
     return m_mapAnalyzerReporters;
 }
 
-const CSettings::map_analyzer_actions_t& CSettings::GetActions()
+const CSettings::map_analyzer_actions_t& CSettings::GetAnalyzerActions()
 {
     return m_mapAnalyzerActions;
 }
@@ -284,4 +289,8 @@ const unsigned int& CSettings::GetMaxCrashReportsSize()
 const std::string& CSettings::GetDatabase()
 {
     return m_sDatabase;
+}
+const CSettings::set_strings_t& CSettings::GetReporters()
+{
+    return m_setReporters;
 }

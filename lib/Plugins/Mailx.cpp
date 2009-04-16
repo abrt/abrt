@@ -140,6 +140,6 @@ void CMailx::LoadSettings(const std::string& pPath)
     }
     if (settings.find("SendBinaryData")!= settings.end())
     {
-        m_bSendBinaryData = settings["SendBinaryData"] == "no";
+        m_bSendBinaryData = settings["SendBinaryData"] == "yes";
     }
 }

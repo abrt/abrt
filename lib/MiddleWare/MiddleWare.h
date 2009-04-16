@@ -45,6 +45,7 @@ class CMiddleWare
         std::string m_sDatabase;
         map_reporter_associations_t m_mapAnalyzerReporters;
         map_action_associations_t m_mapAnalyzerActions;
+        set_reporters_t m_setReporters;
 
         bool m_bOpenGPGCheck;
 
@@ -79,6 +80,7 @@ class CMiddleWare
                                const std::string& pUID,
                                map_crash_report_t& pCrashReport);
 
+        void Report(const std::string& pDebugDumpDir);
         void Report(const map_crash_report_t& pCrashReport);
         void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
         void DeleteCrashInfo(const std::string& pUUID,
@@ -100,6 +102,7 @@ class CMiddleWare
         void AddAnalyzerAction(const std::string& pAnalyzer,
                                const std::string& pAction,
                                const std::string& pArgs);
+        void AddReporter(const std::string& pReporter);
 };
 
 #endif /*MIDDLEWARE_H_*/

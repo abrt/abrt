@@ -81,6 +81,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 {
                     if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
                     {
+                        cc->m_pMW->Report(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                         /* send message to dbus */
                         cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                     }
@@ -131,9 +132,15 @@ void CCrashWatcher::SetUpMW()
     {
         m_pMW->RegisterPlugin(*it_p);
     }
-    CSettings::map_analyzer_reporters_t reporters = m_pSettings->GetReporters();
+    CSettings::set_strings_t reporters = m_pSettings->GetReporters();
+    CSettings::set_strings_t::iterator it_r;
+    for (it_r = reporters.begin(); it_r != reporters.end(); it_r++)
+    {
+        m_pMW->AddReporter(*it_r);
+    }
+    CSettings::map_analyzer_reporters_t analyzer_reporters = m_pSettings->GetAnalyzerReporters();
     CSettings::map_analyzer_reporters_t::iterator it_pr;
-    for (it_pr = reporters.begin(); it_pr != reporters.end(); it_pr++)
+    for (it_pr = analyzer_reporters.begin(); it_pr != analyzer_reporters.end(); it_pr++)
     {
         CSettings::set_strings_t::iterator it_r;
         for (it_r = it_pr->second.begin(); it_r != it_pr->second.end(); it_r++)
@@ -141,9 +148,9 @@ void CCrashWatcher::SetUpMW()
             m_pMW->AddAnalyzerReporter(it_pr->first, *it_r);
         }
     }
-    CSettings::map_analyzer_actions_t actions = m_pSettings->GetActions();
+    CSettings::map_analyzer_actions_t analyser_actions = m_pSettings->GetAnalyzerActions();
     CSettings::map_analyzer_actions_t::iterator it_pa;
-    for (it_pa = actions.begin(); it_pa != actions.end(); it_pa++)
+    for (it_pa = analyser_actions.begin(); it_pa != analyser_actions.end(); it_pa++)
     {
         CSettings::set_actions_t::iterator it_a;
         for (it_a = it_pa->second.begin(); it_a != it_pa->second.end(); it_a++)
@@ -262,6 +269,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
             if(m_pMW->SaveDebugDump(*itt, crashinfo))
             {
                 std::cerr << "Saved new entry: " << *itt << std::endl;
+                m_pMW->Report(*itt);
             }
         }
         catch(std::string err)
