@@ -45,7 +45,7 @@ void CLogger::LoadSettings(const std::string& pPath)
     }
 }
 
-void CLogger::Report(const map_crash_report_t& pCrashReport)
+void CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
     std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
     std::ofstream fOut;

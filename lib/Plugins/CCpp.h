@@ -42,12 +42,12 @@ class CAnalyzerCCpp : public CAnalyzer
 	public:
 	    CAnalyzerCCpp();
 		virtual ~CAnalyzerCCpp();
-		std::string GetLocalUUID(const std::string& pDebugDumpDir);
-		std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-		void CreateReport(const std::string& pDebugDumpDir);
-		void Init();
-		void DeInit();
-		void LoadSettings(const std::string& pPath);
+		virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
+		virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
+		virtual void CreateReport(const std::string& pDebugDumpDir);
+		virtual void Init();
+		virtual void DeInit();
+		virtual void LoadSettings(const std::string& pPath);
 };
 
 

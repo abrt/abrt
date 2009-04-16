@@ -132,27 +132,27 @@ void CCrashWatcher::SetUpMW()
     {
         m_pMW->RegisterPlugin(*it_p);
     }
-    CSettings::set_strings_t reporters = m_pSettings->GetReporters();
-    CSettings::set_strings_t::iterator it_r;
+    CSettings::set_pair_strings_t reporters = m_pSettings->GetReporters();
+    CSettings::set_pair_strings_t::iterator it_r;
     for (it_r = reporters.begin(); it_r != reporters.end(); it_r++)
     {
-        m_pMW->AddReporter(*it_r);
+        m_pMW->AddReporter((*it_r).first, (*it_r).second);
     }
     CSettings::map_analyzer_reporters_t analyzer_reporters = m_pSettings->GetAnalyzerReporters();
     CSettings::map_analyzer_reporters_t::iterator it_pr;
     for (it_pr = analyzer_reporters.begin(); it_pr != analyzer_reporters.end(); it_pr++)
     {
-        CSettings::set_strings_t::iterator it_r;
+        CSettings::set_pair_strings_t::iterator it_r;
         for (it_r = it_pr->second.begin(); it_r != it_pr->second.end(); it_r++)
         {
-            m_pMW->AddAnalyzerReporter(it_pr->first, *it_r);
+            m_pMW->AddAnalyzerReporter(it_pr->first, (*it_r).first, (*it_r).second);
         }
     }
     CSettings::map_analyzer_actions_t analyser_actions = m_pSettings->GetAnalyzerActions();
     CSettings::map_analyzer_actions_t::iterator it_pa;
     for (it_pa = analyser_actions.begin(); it_pa != analyser_actions.end(); it_pa++)
     {
-        CSettings::set_actions_t::iterator it_a;
+        CSettings::set_pair_strings_t::iterator it_a;
         for (it_a = it_pa->second.begin(); it_a != it_pa->second.end(); it_a++)
         {
             m_pMW->AddAnalyzerAction(it_pa->first, (*it_a).first, (*it_a).second);

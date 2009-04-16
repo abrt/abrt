@@ -162,7 +162,7 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
 
 }
 
-void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport)
+void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));

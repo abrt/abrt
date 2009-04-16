@@ -45,11 +45,11 @@ class CAnalyzerKerneloops : public CAnalyzer
 	public:
 		CAnalyzerKerneloops();
 		virtual ~CAnalyzerKerneloops() {}
-		std::string GetLocalUUID(const std::string& pDebugDumpDir);
-		std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-		void Init();
-		void CreateReport(const std::string& pDebugDumpDir) {}
-		void LoadSettings(const std::string& pPath);
+		virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
+		virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
+		virtual void Init();
+		virtual void CreateReport(const std::string& pDebugDumpDir) {}
+		virtual void LoadSettings(const std::string& pPath);
 		void ScanDmesg();
 		void ScanSysLogFile(const char *filename, int issyslog);
 };

@@ -43,23 +43,28 @@ inline void plugin_load_settings(const std::string& path, map_settings_t& settin
             int ii;
             bool is_value = false;
             bool valid = false;
+            bool in_quote = false;
             std::string key = "";
             std::string value = "";
             for (ii = 0; ii < line.length(); ii++)
             {
-                if (isspace(line[ii]))
+                if (line[ii] == '\"')
+                {
+                    in_quote = in_quote == true ? false : true;
+                }
+                if (isspace(line[ii]) && !in_quote)
                 {
                     continue;
                 }
-                if (line[ii] == '#')
+                if (line[ii] == '#' && !in_quote)
                 {
                     break;
                 }
-                else if (line[ii] == '=')
+                else if (line[ii] == '=' && !in_quote)
                 {
                     is_value = true;
                 }
-                else if (line[ii] == '=' && is_value)
+                else if (line[ii] == '=' && is_value && !in_quote)
                 {
                     key = "";
                     value = "";
@@ -75,7 +80,7 @@ inline void plugin_load_settings(const std::string& path, map_settings_t& settin
                     value += line[ii];
                 }
             }
-            if (valid)
+            if (valid && !in_quote)
             {
                 settings[key] = value;
             }

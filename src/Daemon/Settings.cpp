@@ -3,8 +3,8 @@
 #include <stdlib.h>
 
 #define SECTION_COMMON      "Common"
-#define SECTION_REPORTERS   "Reporters"
-#define SECTION_ACTIONS     "Actions"
+#define SECTION_REPORTERS   "AnalyzerReporters"
+#define SECTION_ACTIONS     "AnalyzerActions"
 
 void CSettings::LoadSettings(const std::string& pPath)
 {
@@ -30,11 +30,11 @@ void CSettings::LoadSettings(const std::string& pPath)
                 {
                     continue;
                 }
-                else if (line[ii] == '#')
+                else if (line[ii] == '#' && !is_quote)
                 {
                     break;
                 }
-                else if (line[ii] == '[')
+                else if (line[ii] == '[' && !is_quote)
                 {
                     is_section = true;
                     section = "";
@@ -52,7 +52,7 @@ void CSettings::LoadSettings(const std::string& pPath)
                     }
                     section += line[ii];
                 }
-                else if (line[ii] == '=')
+                else if (line[ii] == '=' && !is_quote)
                 {
                     is_key = false;
                     key = value;
@@ -63,7 +63,7 @@ void CSettings::LoadSettings(const std::string& pPath)
                     value += line[ii];
                 }
             }
-            if (!is_key)
+            if (!is_key && !is_quote)
             {
                 if (section == SECTION_COMMON)
                 {
@@ -100,13 +100,13 @@ void CSettings::ParseCommon()
     {
         m_setBlackList = ParseList(m_mapSettingsCommon["BlackList"]);
     }
+    if (m_mapSettingsCommon.find("Database") != m_mapSettingsCommon.end())
+    {
+        m_sDatabase =m_mapSettingsCommon["Database"];
+    }
     if (m_mapSettingsCommon.find("EnabledPlugins") != m_mapSettingsCommon.end())
     {
         m_setEnabledPlugins = ParseList(m_mapSettingsCommon["EnabledPlugins"]);
-    }
-    if (m_mapSettingsCommon.find("Database") != m_mapSettingsCommon.end())
-    {
-        m_sDatabase =  m_mapSettingsCommon["Database"];
     }
     if (m_mapSettingsCommon.find("MaxCrashReportsSize") != m_mapSettingsCommon.end())
     {
@@ -114,7 +114,7 @@ void CSettings::ParseCommon()
     }
     if (m_mapSettingsCommon.find("Reporters") != m_mapSettingsCommon.end())
     {
-        m_setReporters =  ParseList(m_mapSettingsCommon["Reporters"]);
+        m_setReporters =  ParseListWithArgs(m_mapSettingsCommon["Reporters"]);
     }
 
 }
@@ -124,7 +124,7 @@ void  CSettings::ParseReporters()
     map_settings_t::iterator it;
     for (it = m_mapSettingsReporters.begin(); it != m_mapSettingsReporters.end(); it++)
     {
-        m_mapAnalyzerReporters[it->first] = ParseList(it->second);
+        m_mapAnalyzerReporters[it->first] = ParseListWithArgs(it->second);
     }
 }
 
@@ -133,8 +133,8 @@ void CSettings::ParseActions()
     map_settings_t::iterator it;
     for (it = m_mapSettingsActions.begin(); it != m_mapSettingsActions.end(); it++)
     {
-        set_strings_t keys = ParseActionKey(it->first);
-        set_actions_t singleActions = ParseActionValue(it->second);
+        set_strings_t keys = ParseKey(it->first);
+        set_pair_strings_t singleActions = ParseListWithArgs(it->second);
         set_strings_t::iterator it_keys;
         for (it_keys = keys.begin(); it_keys != keys.end(); it_keys++)
         {
@@ -144,9 +144,9 @@ void CSettings::ParseActions()
 }
 
 
-CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
+CSettings::set_pair_strings_t CSettings::ParseListWithArgs(const std::string& pValue)
 {
-    set_actions_t singleActions;
+    set_pair_strings_t pluginArgs;
     unsigned int ii;
     std::string item = "";
     std::string action = "";
@@ -167,7 +167,7 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
         }
         else if (pValue[ii] == ')' && is_arg && !is_quote)
         {
-            singleActions.insert(make_pair(action, item));
+            pluginArgs.insert(make_pair(action, item));
             item = "";
             is_arg = false;
             action = "";
@@ -176,7 +176,7 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
         {
             if (item != "")
             {
-                singleActions.insert(make_pair(item, ""));
+                pluginArgs.insert(make_pair(item, ""));
                 item = "";
             }
         }
@@ -187,12 +187,12 @@ CSettings::set_actions_t CSettings::ParseActionValue(const std::string& pValue)
     }
     if (item != "")
     {
-        singleActions.insert(make_pair(item, ""));
+        pluginArgs.insert(make_pair(item, ""));
     }
-    return singleActions;
+    return pluginArgs;
 }
 
-CSettings::set_strings_t CSettings::ParseActionKey(const std::string& Key)
+CSettings::set_strings_t CSettings::ParseKey(const std::string& Key)
 {
    unsigned int ii;
    std::string item  = "";
@@ -205,12 +205,12 @@ CSettings::set_strings_t CSettings::ParseActionKey(const std::string& Key)
        {
           is_quote = is_quote == true ? false : true;
        }
-       else if (Key[ii] == '(' && !is_quote)
+       else if (Key[ii] == ':' && !is_quote)
        {
            key = item;
            item = "";
        }
-       else if ((Key[ii] == ',' || Key[ii] == ')') && !is_quote)
+       else if ((Key[ii] == ',') && !is_quote)
        {
            set.insert(key + ":" + item);
            item = "";
@@ -222,7 +222,14 @@ CSettings::set_strings_t CSettings::ParseActionKey(const std::string& Key)
     }
     if (item != "" && !is_quote)
     {
-        set.insert(item);
+        if (key == "")
+        {
+            set.insert(item);
+        }
+        else
+        {
+            set.insert(key + ":" + item);
+        }
     }
     return set;
 }
@@ -286,11 +293,12 @@ const unsigned int& CSettings::GetMaxCrashReportsSize()
     return m_nMaxCrashReportsSize;
 }
 
+const CSettings::set_pair_strings_t& CSettings::GetReporters()
+{
+    return m_setReporters;
+}
+
 const std::string& CSettings::GetDatabase()
 {
     return m_sDatabase;
-}
-const CSettings::set_strings_t& CSettings::GetReporters()
-{
-    return m_setReporters;
 }

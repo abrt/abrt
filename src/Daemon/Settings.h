@@ -12,9 +12,9 @@ class CSettings
         typedef std::map<std::string, std::string> map_settings_t;
         typedef std::set<std::string> set_strings_t;
         typedef std::pair<std::string, std::string> pair_string_string_t;
-        typedef std::map<std::string, set_strings_t> map_analyzer_reporters_t;
-        typedef std::set<pair_string_string_t> set_actions_t;
-        typedef std::map<std::string, set_actions_t> map_analyzer_actions_t;
+        typedef std::set<pair_string_string_t> set_pair_strings_t;
+        typedef std::map<std::string, set_pair_strings_t> map_analyzer_reporters_t;
+        typedef std::map<std::string, set_pair_strings_t> map_analyzer_actions_t;
 
     private:
         map_settings_t m_mapSettingsCommon;
@@ -24,8 +24,8 @@ class CSettings
         set_strings_t m_setOpenGPGPublicKeys;
         set_strings_t m_setBlackList;
         set_strings_t m_setEnabledPlugins;
-        set_strings_t m_setReporters;
         std::string m_sDatabase;
+        set_pair_strings_t m_setReporters;
         bool m_bOpenGPGCheck;
         unsigned int m_nMaxCrashReportsSize;
         map_analyzer_reporters_t m_mapAnalyzerReporters;
@@ -35,8 +35,8 @@ class CSettings
         void ParseReporters();
         void ParseActions();
         set_strings_t ParseList(const std::string& pList);
-        set_strings_t ParseActionKey(const std::string& pKey);
-        set_actions_t ParseActionValue(const std::string& pValue);
+        set_pair_strings_t ParseListWithArgs(const std::string& pList);
+        set_strings_t ParseKey(const std::string& pKey);
 
     public:
         void LoadSettings(const std::string& pPath);
@@ -47,8 +47,8 @@ class CSettings
         const map_analyzer_reporters_t& GetAnalyzerReporters();
         const map_analyzer_actions_t& GetAnalyzerActions();
         const unsigned int& GetMaxCrashReportsSize();
+        const set_pair_strings_t& GetReporters();
         const std::string& GetDatabase();
-        const set_strings_t& GetReporters();
 };
 
 #endif

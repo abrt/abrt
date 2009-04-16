@@ -26,23 +26,23 @@
 #include "PluginSettings.h"
 
 #define MAILX_COMMAND "/bin/mailx"
-#define MAILX_SUBJECT "\"abrt automated bug report\""
 
 CMailx::CMailx() :
     m_sEmailFrom("user@localhost"),
     m_sEmailTo("root@localhost"),
     m_sParameters(""),
     m_sAttachments(""),
+    m_sSubject("[abrt] full crash report"),
     m_bSendBinaryData(false)
 {}
 
 
-void CMailx::SendEmail(const std::string& pText)
+void CMailx::SendEmail(const std::string& pSubject, const std::string& pText)
 {
     FILE* command;
     std::string mailx_command = MAILX_COMMAND + m_sAttachments +
                                 " " + m_sParameters +
-                                " -s " + MAILX_SUBJECT +
+                                " -s " + pSubject +
                                 " -r " + m_sEmailFrom + " " + m_sEmailTo;
 
     command = popen(mailx_command.c_str(), "w");
@@ -58,7 +58,7 @@ void CMailx::SendEmail(const std::string& pText)
 }
 
 
-void CMailx::Report(const map_crash_report_t& pCrashReport)
+void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
     std::stringstream emailBody;
     std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
@@ -118,7 +118,14 @@ void CMailx::Report(const map_crash_report_t& pCrashReport)
         m_sAttachments += binaryFiles.str();
     }
 
-    SendEmail(emailBody.str());
+    if (pArgs != "")
+    {
+        SendEmail(pArgs, emailBody.str());
+    }
+    else
+    {
+        SendEmail(m_sSubject, emailBody.str());
+    }
 }
 
 void CMailx::LoadSettings(const std::string& pPath)
@@ -126,6 +133,10 @@ void CMailx::LoadSettings(const std::string& pPath)
     map_settings_t settings;
     plugin_load_settings(pPath, settings);
 
+    if (settings.find("Subject")!= settings.end())
+    {
+        m_sSubject = settings["Subject"];
+    }
     if (settings.find("EmailFrom")!= settings.end())
     {
         m_sEmailFrom = settings["EmailFrom"];

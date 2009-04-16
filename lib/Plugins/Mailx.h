@@ -34,23 +34,24 @@ class CMailx : public CReporter
         std::string m_sEmailTo;
         std::string m_sParameters;
         std::string m_sAttachments;
+        std::string m_sSubject;
         bool m_bSendBinaryData;
 
-        void SendEmail(const std::string& pText);
+        void SendEmail(const std::string& pSubject, const std::string& pText);
 
     public:
         CMailx();
         virtual ~CMailx() {}
 
-        void LoadSettings(const std::string& pPath);
-        void Report(const map_crash_report_t& pCrashReport);
+        virtual void LoadSettings(const std::string& pPath);
+        virtual void Report(const map_crash_report_t& pCrashReport, const std::string& pArgs);
 };
 
 
 PLUGIN_INFO(REPORTER,
             CMailx,
             "Mailx",
-            "0.0.1",
+            "0.0.2",
             "Sends an email with a report via mailx command",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/crash-catcher/wiki");

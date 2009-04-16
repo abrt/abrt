@@ -45,20 +45,20 @@ class CSQLite3 : public CDatabase
         CSQLite3();
         virtual ~CSQLite3() {}
 
-        void Connect();
-        void DisConnect();
+        virtual void Connect();
+        virtual void DisConnect();
 
-        void Insert(const std::string& pUUID,
-                    const std::string& pUID,
-                    const std::string& pDebugDumpPath,
-                    const std::string& pTime);
+        virtual void Insert(const std::string& pUUID,
+                            const std::string& pUID,
+                            const std::string& pDebugDumpPath,
+                            const std::string& pTime);
 
-        void Delete(const std::string& pUUID, const std::string& pUID);
-        void SetReported(const std::string& pUUID, const std::string& pUID);
-        const vector_database_rows_t GetUIDData(const std::string& pUID);
-        const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
+        virtual void Delete(const std::string& pUUID, const std::string& pUID);
+        virtual void SetReported(const std::string& pUUID, const std::string& pUID);
+        virtual const vector_database_rows_t GetUIDData(const std::string& pUID);
+        virtual const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
 
-        void LoadSettings(const std::string& pPath);
+        virtual void LoadSettings(const std::string& pPath);
 };
 
 PLUGIN_INFO(DATABASE,

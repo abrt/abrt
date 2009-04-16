@@ -31,7 +31,8 @@ class CReporterBugzilla : public CReporter
         CReporterBugzilla();
         virtual ~CReporterBugzilla();
         virtual void LoadSettings(const std::string& pPath);
-        virtual void Report(const map_crash_report_t& pCrashReport);
+        virtual void Report(const map_crash_report_t& pCrashReport,
+                            const std::string& pArgs);
 };
 
 PLUGIN_INFO(REPORTER,

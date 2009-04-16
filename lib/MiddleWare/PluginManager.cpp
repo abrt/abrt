@@ -27,8 +27,8 @@
 
 CPluginManager::CPluginManager(const std::string& pPlugisConfDir,
 							   const std::string& pPlugisLibDir) :
-	m_sPlugisConfDir(pPlugisConfDir),
-	m_sPlugisLibDir(pPlugisLibDir)
+    m_sPlugisConfDir(pPlugisConfDir),
+    m_sPlugisLibDir(pPlugisLibDir)
 {}
 
 CPluginManager::~CPluginManager()
@@ -36,26 +36,26 @@ CPluginManager::~CPluginManager()
 
 void CPluginManager::LoadPlugins()
 {
-	DIR *dir = opendir(m_sPlugisLibDir.c_str());
-	struct dirent *dent = NULL;
-	if (dir != NULL)
-	{
-		while ((dent = readdir(dir)) != NULL)
-		{
-			if (dent->d_type == DT_REG)
-			{
-				std::string name = dent->d_name;
-				std::string extension = name.substr(name.length()-sizeof(PLUGINS_LIB_EXTENSION)+1);
-				if (extension == PLUGINS_LIB_EXTENSION)
-				{
-				    name.erase(0, sizeof(PLUGINS_LIB_PREFIX) - 1);
-					name.erase(name.length() - sizeof(PLUGINS_LIB_EXTENSION));
-					LoadPlugin(name);
-				}
-			}
-		}
-		closedir(dir);
-	}
+    DIR *dir = opendir(m_sPlugisLibDir.c_str());
+    struct dirent *dent = NULL;
+    if (dir != NULL)
+    {
+        while ((dent = readdir(dir)) != NULL)
+        {
+            if (dent->d_type == DT_REG)
+            {
+                std::string name = dent->d_name;
+                std::string extension = name.substr(name.length()-sizeof(PLUGINS_LIB_EXTENSION)+1);
+                if (extension == PLUGINS_LIB_EXTENSION)
+                {
+                    name.erase(0, sizeof(PLUGINS_LIB_PREFIX) - 1);
+                    name.erase(name.length() - sizeof(PLUGINS_LIB_EXTENSION));
+                    LoadPlugin(name);
+                }
+            }
+        }
+        closedir(dir);
+    }
 }
 
 void CPluginManager::UnLoadPlugins()
@@ -70,41 +70,41 @@ void CPluginManager::UnLoadPlugins()
 
 void CPluginManager::LoadPlugin(const std::string& pName)
 {
-	if (m_mapABRTPlugins.find(pName) == m_mapABRTPlugins.end())
-	{
-		CABRTPlugin* abrtPlugin = NULL;
-		try
-		{
-			std::string libPath = m_sPlugisLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
-			abrtPlugin = new CABRTPlugin(libPath);
-			if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
-			    (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
-			{
-				throw std::string("non-compatible plugin");
-			}
-			std::cerr << "Plugin " << pName << " (" << abrtPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
-			m_mapABRTPlugins[pName] = abrtPlugin;
-		}
-		catch (std::string sError)
-		{
-			if (abrtPlugin != NULL)
-			{
-				delete abrtPlugin;
-			}
-			std::cerr << "Failed to load plugin " << pName << " (" << sError << ")." << std::endl;
-		}
-	}
+    if (m_mapABRTPlugins.find(pName) == m_mapABRTPlugins.end())
+    {
+        CABRTPlugin* abrtPlugin = NULL;
+        try
+        {
+            std::string libPath = m_sPlugisLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
+            abrtPlugin = new CABRTPlugin(libPath);
+            if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
+                (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
+            {
+                throw std::string("non-compatible plugin");
+            }
+            std::cerr << "Plugin " << pName << " (" << abrtPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
+            m_mapABRTPlugins[pName] = abrtPlugin;
+        }
+        catch (std::string sError)
+        {
+            if (abrtPlugin != NULL)
+            {
+                delete abrtPlugin;
+            }
+            std::cerr << "Failed to load plugin " << pName << " (" << sError << ")." << std::endl;
+        }
+    }
 }
 
 void CPluginManager::UnLoadPlugin(const std::string& pName)
 {
-	if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
-	{
-		UnRegisterPlugin(pName);
-		delete m_mapABRTPlugins[pName];
-		m_mapABRTPlugins.erase(pName);
-		std::cerr << "Plugin " << pName << " sucessfully unloaded." << std::endl;
-	}
+    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    {
+        UnRegisterPlugin(pName);
+        delete m_mapABRTPlugins[pName];
+        m_mapABRTPlugins.erase(pName);
+        std::cerr << "Plugin " << pName << " sucessfully unloaded." << std::endl;
+    }
 }
 
 
@@ -155,41 +155,41 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
 
 CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
 {
-	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
-	{
-		throw std::string("CPluginManager::GetAnalyzer():"
-				          "Analyzer plugin: '"+pName+"' is not loaded.");
-	}
-	return dynamic_cast<CAnalyzer*>(m_mapPlugins[pName]);
+    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    {
+        throw std::string("CPluginManager::GetAnalyzer():"
+                          "Analyzer plugin: '"+pName+"' is not loaded.");
+    }
+    return dynamic_cast<CAnalyzer*>(m_mapPlugins[pName]);
 }
 
 CReporter* CPluginManager::GetReporter(const std::string& pName)
 {
-	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
-	{
-		throw std::string("CPluginManager::GetReporter():"
-				          "Reporter plugin: '"+pName+"' is not loaded.");
-	}
-	return dynamic_cast<CReporter*>(m_mapPlugins[pName]);
+    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    {
+        throw std::string("CPluginManager::GetReporter():"
+                          "Reporter plugin: '"+pName+"' is not loaded.");
+    }
+    return dynamic_cast<CReporter*>(m_mapPlugins[pName]);
 }
 
 CAction* CPluginManager::GetAction(const std::string& pName)
 {
-	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
-	{
-		throw std::string("CPluginManager::GetAction():"
-				          "Action plugin: '"+pName+"' is not loaded.");
-	}
-	return dynamic_cast<CAction*>(m_mapPlugins[pName]);
+    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    {
+        throw std::string("CPluginManager::GetAction():"
+                          "Action plugin: '"+pName+"' is not loaded.");
+    }
+    return dynamic_cast<CAction*>(m_mapPlugins[pName]);
 }
 
 CDatabase* CPluginManager::GetDatabase(const std::string& pName)
 {
-	if (m_mapPlugins.find(pName) == m_mapPlugins.end())
-	{
-		throw std::string("CPluginManager::GetDatabase():"
-				          "Database plugin: '"+pName+"' is not loaded.");
-	}
-	return dynamic_cast<CDatabase*>(m_mapPlugins[pName]);
+    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    {
+        throw std::string("CPluginManager::GetDatabase():"
+                          "Database plugin: '"+pName+"' is not loaded.");
+    }
+    return dynamic_cast<CDatabase*>(m_mapPlugins[pName]);
 }
 

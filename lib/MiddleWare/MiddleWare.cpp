@@ -182,8 +182,8 @@ void CMiddleWare::Report(const std::string& pDebugDumpDir)
     set_reporters_t::iterator it_r;
     for (it_r = m_setReporters.begin(); it_r != m_setReporters.end(); it_r++)
     {
-        CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
-        reporter->Report(crashReport);
+        CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+        reporter->Report(crashReport, (*it_r).second);
     }
 }
 
@@ -206,8 +206,8 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
              it_r != m_mapAnalyzerReporters[analyzer].end();
              it_r++)
         {
-            CReporter* reporter = m_pPluginManager->GetReporter(*it_r);
-            reporter->Report(pCrashReport);
+            CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+            reporter->Report(pCrashReport, (*it_r).second);
         }
     }
 
@@ -337,7 +337,7 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
 {
     if (m_mapAnalyzerActions.find(pAnalyzer) != m_mapAnalyzerActions.end())
     {
-        set_actions_t::iterator it_a;
+        set_pairt_strings_t::iterator it_a;
         for (it_a = m_mapAnalyzerActions[pAnalyzer].begin();
              it_a != m_mapAnalyzerActions[pAnalyzer].end();
              it_a++)
@@ -491,9 +491,10 @@ void CMiddleWare::AddBlackListedPackage(const std::string& pPackage)
 }
 
 void CMiddleWare::AddAnalyzerReporter(const std::string& pAnalyzer,
-                                      const std::string& pReporter)
+                                      const std::string& pReporter,
+                                      const std::string& pArgs)
 {
-    m_mapAnalyzerReporters[pAnalyzer].insert(pReporter);
+    m_mapAnalyzerReporters[pAnalyzer].insert(make_pair(pReporter, pArgs));
 }
 
 void CMiddleWare::AddAnalyzerAction(const std::string& pAnalyzer,
@@ -503,7 +504,8 @@ void CMiddleWare::AddAnalyzerAction(const std::string& pAnalyzer,
     m_mapAnalyzerActions[pAnalyzer].insert(make_pair(pAction, pArgs));
 }
 
-void CMiddleWare::AddReporter(const std::string& pReporter)
+void CMiddleWare::AddReporter(const std::string& pReporter,
+                              const std::string& pArgs)
 {
-    m_setReporters.insert(pReporter);
+    m_setReporters.insert(make_pair(pReporter, pArgs));
 }

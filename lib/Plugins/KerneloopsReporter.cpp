@@ -57,7 +57,7 @@ size_t writefunction(void *ptr, size_t size, size_t nmemb, void __attribute((unu
 	return size * nmemb;
 }
 
-void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport)
+void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
 	CURL *handle;
 	struct curl_httppost *post = NULL;

@@ -34,10 +34,11 @@ class CMiddleWare
     private:
         typedef set_strings_t set_blacklist_t;
         typedef set_strings_t set_enabled_plugins_t;
-        typedef set_strings_t set_reporters_t;
-        typedef std::map<std::string, set_reporters_t> map_reporter_associations_t;
-        typedef std::set<pair_string_string_t> set_actions_t;
-        typedef std::map<std::string, set_actions_t> map_action_associations_t;
+
+        typedef std::set<pair_string_string_t> set_pairt_strings_t;
+        typedef std::map<std::string, set_pairt_strings_t> map_reporter_associations_t;
+        typedef std::map<std::string, set_pairt_strings_t> map_action_associations_t;
+        typedef set_pairt_strings_t set_reporters_t;
 
         CPluginManager* m_pPluginManager;
         CRPM m_RPM;
@@ -98,11 +99,13 @@ class CMiddleWare
         void AddOpenGPGPublicKey(const std::string& pKey);
         void AddBlackListedPackage(const std::string& pPackage);
         void AddAnalyzerReporter(const std::string& pAnalyzer,
-                                 const std::string& pReporter);
+                                 const std::string& pReporter,
+                                 const std::string& pArgs);
         void AddAnalyzerAction(const std::string& pAnalyzer,
                                const std::string& pAction,
                                const std::string& pArgs);
-        void AddReporter(const std::string& pReporter);
+        void AddReporter(const std::string& pReporter,
+                         const std::string& pArgs);
 };
 
 #endif /*MIDDLEWARE_H_*/
