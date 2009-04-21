@@ -60,7 +60,7 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t searchParams;
     map_xmlrpc_params_t ret;
-    std::string quicksearch = "component:\""+ pComponent +"\" statuswhiteboard:\""+ pUUID + "\"";
+    std::string quicksearch = "ALL component:\""+ pComponent +"\" statuswhiteboard:\""+ pUUID + "\"";
     searchParams["quicksearch"] = xmlrpc_c::value_string(quicksearch.c_str());
     paramList.add(xmlrpc_c::value_struct(searchParams));
     xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.search", paramList));
