@@ -5,6 +5,6 @@ class CCommLayerServerSocket
 {
     private:
     public:
-        CCommLayerServerSocket(CMiddleWare *pMW);
+        CCommLayerServerSocket();
         ~CCommLayerServerSocket();
 };

@@ -28,7 +28,9 @@
 //#include "DBusServerProxy.h"
 #include "MiddleWare.h"
 #include "Settings.h"
+#include "CommLayerInner.h"
 
+//FIXME remove when it gets to autoconf
 #include "CommLayerServerDBus.h"
 #ifdef HAVE_DBUS
     #include "CommLayerServerDBus.h"
@@ -76,16 +78,15 @@ class CCrashWatcher
 
     /* methods exported on dbus */
     public:
-        /*
-        vector_crash_infos_t GetCrashInfos(const std::string &pUID);
-        dbus_vector_map_crash_infos_t GetCrashInfosMap(const std::string &pDBusSender);
-        dbus_map_report_info_t CreateReport(const std::string &pUUID,const std::string &pDBusSender);
-        bool Report(dbus_map_report_info_t pReport);
-        bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender);
-         */
+        virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
+        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID);
+        virtual bool Report(map_crash_report_t pReport);
+        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
     public:
         /* Observer methods */
-        void Update(const std::string&) {}
+        void StatusUpdate(const std::string& pMessage);
+        void Debug(const std::string& pMessage);
+        void Warning(const std::string& pMessage);
 };
 
 #endif /*CRASHWATCHER_H_*/

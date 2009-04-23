@@ -2,8 +2,8 @@
 #include <iostream>
 
 
-CCommLayerServerSocket::CCommLayerServerSocket(CMiddleWare *pMW)
-: CCommLayerServer(pMW)
+CCommLayerServerSocket::CCommLayerServerSocket()
+: CCommLayerServer()
 {
     std::cout << "CCommLayerServerSocket init" << std::endl;
 }

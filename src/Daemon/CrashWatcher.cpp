@@ -30,6 +30,7 @@
 #include <sstream>
 #include <dirent.h>
 #include <cstring>
+#include "CommLayer.h"
 
 /* just a helper function
 template< class T >
@@ -41,6 +42,14 @@ to_string( T x )
     return o.str();
 }
 */
+
+CCommLayerInner* pCommLayerInner;
+CCommLayerInner* get_commlayer()
+{
+    std::cerr << "get_commlayer" << std::endl;
+    return pCommLayerInner;
+}
+
 
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
     GIOError err;
@@ -160,6 +169,22 @@ void CCrashWatcher::SetUpMW()
     }
 }
 
+void CCrashWatcher::StatusUpdate(const std::string& pMessage)
+{
+    std::cout << "UPDATE: " << pMessage << std::endl;
+}
+
+void CCrashWatcher::Warning(const std::string& pMessage)
+{
+    std::cout << "WW: " << pMessage << std::endl;
+}
+
+void CCrashWatcher::Debug(const std::string& pMessage)
+{
+    //some logic to add logging levels?
+    std::cout << "DEBUG: " << pMessage << std::endl;
+}
+
 double CCrashWatcher::GetDirSize(const std::string &pPath)
 {
     double size = 0;
@@ -194,21 +219,24 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 {
     int watch = 0;
     m_sTarget = pPath;
-    // middleware object
+// create inner commlayer
+pCommLayerInner = new CCommLayerInner(this);
+//middleware object
     m_pSettings = new CSettings();
     m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
+    m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
     SetUpMW();
     FindNewDumps(pPath);
-    m_pMainloop = g_main_loop_new(NULL,FALSE);
+//first init commlayer
 #ifdef HAVE_DBUS
-    m_pCommLayer = new CCommLayerServerDBus(m_pMW);
+    m_pCommLayer = new CCommLayerServerDBus();
 #elif HAVE_SOCKET
-    m_pCommLayer = new CCommLayerServerSocket(m_pMW);
+    m_pCommLayer = new CCommLayerServerSocket();
 #endif
-    m_pCommLayer = new CCommLayerServerDBus(m_pMW);
+    m_pCommLayer = new CCommLayerServerDBus();
     m_pCommLayer->Attach(this);
-
+    
     if((m_nFd = inotify_init()) == -1){
         throw std::string("Init Failed");
         //std::cerr << "Init Failed" << std::endl;
@@ -266,7 +294,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         std::cerr << "Saving debugdeump: " << *itt << std::endl;
         try
         {
-            if(m_pMW->SaveDebugDump(*itt, crashinfo))
+            if(m_pMW->SaveDebugDump(*itt, crashinfo) == 0)
             {
                 std::cerr << "Saved new entry: " << *itt << std::endl;
                 m_pMW->Report(*itt);
@@ -360,3 +388,69 @@ void CCrashWatcher::Run()
     GStartWatch();
 }
 
+vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
+{
+    vector_crash_infos_t retval;
+    std::cerr << "CCommLayerServerDBus::GetCrashInfos" << std::endl;
+    try
+    {
+        retval = m_pMW->GetCrashInfos(pUID);
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+    }
+    //Notify("Sent crash info");
+	return retval;
+}
+
+map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const std::string &pUID)
+{
+    map_crash_report_t crashReport;
+    std::cerr << "Creating report" << std::endl;
+    try
+    {
+        m_pMW->CreateCrashReport(pUUID,pUID,crashReport);
+        m_pCommLayer->AnalyzeComplete(crashReport);
+    }
+    catch(std::string err)
+    {
+        m_pCommLayer->Error(err);
+    }
+    return crashReport;
+}
+
+bool CCrashWatcher::Report(map_crash_report_t pReport)
+{
+    //#define FIELD(X) crashReport.m_s##X = pReport[#X];
+    //crashReport.m_sUUID = pReport["UUID"];
+    //ALL_CRASH_REPORT_FIELDS;
+    //#undef FIELD
+    //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
+    //     std::cerr << it->second << std::endl;
+    //}
+    try
+    {
+        m_pMW->Report(pReport);
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+        return false;
+    }
+    return true;
+}
+
+bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
+{
+    try
+    {
+        m_pMW->DeleteCrashInfo(pUUID,pUID, true);
+    }
+    catch(std::string err)
+    {
+        std::cerr << err << std::endl;
+        return false;
+    }
+    return true;
+}
