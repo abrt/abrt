@@ -7,7 +7,8 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libKerneloopsReporter.la\
                          libKerneloops.la \
                          libRunApp.la \
-                         libBugzilla.la
+                         libBugzilla.la \
+                         libPython.la
                           
 pluginsconfdir=$(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf Kerneloops.conf KerneloopsReporter.conf Bugzilla.conf
@@ -16,7 +17,7 @@ dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf Kerneloops
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h PluginSettings.h
 libCCpp_la_LDFLAGS = -avoid-version
 libCCpp_la_LIBADD = $(NSS_LIBS)
-libCCpp_la_CPPFLAGS = -I$(srcdir)/../MiddleWare  -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(NSS_CFLAGS)
+libCCpp_la_CPPFLAGS = -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(NSS_CFLAGS)
 
 # Kerneloops
 libKerneloops_la_SOURCES = Kerneloops.cpp Kerneloops.h KerneloopsSysLog.cpp KerneloopsSysLog.h PluginSettings.h
@@ -52,3 +53,10 @@ libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
 libBugzilla_la_LIBADD = $(XMLRPC_CPP_LIBS) $(XMLRPC_CLIENT_CPP_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
 libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
+
+# Python
+libPython_la_SOURCES = Python.h Python.cpp
+#libPython_la_LIBADD = $(NSS_LIBS)
+libPython_la_LDFLAGS = -avoid-version
+libPython_la_CPPFLAGS = $(NSS_CFLAGS) -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
+

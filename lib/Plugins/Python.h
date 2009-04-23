@@ -14,6 +14,7 @@ class CAnalyzerPython : public CAnalyzer
         virtual void CreateReport(const std::string& pDebugDumpDir) {}
         virtual void Init();
         virtual void DeInit();
+        virtual std::string CreateHash(const std::string& pInput);
 };
 
 

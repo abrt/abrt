@@ -1,6 +1,7 @@
-#include "Pyhon.h"
+#include "Python.h"
 #include "DebugDump.h"
 #include <sstream>
+#include <iomanip>
 
 #include <nss.h>
 #include <sechash.h>
