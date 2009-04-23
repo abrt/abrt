@@ -241,6 +241,7 @@ fi
 %changelog
 * Fri Apr 10 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.3-1
 - new version
+- added bz plugin
 - minor fix in reporter gui
 - Configurable max size of debugdump storage rhbz#490889
 - Wrap lines in report to keep the window sane sized
