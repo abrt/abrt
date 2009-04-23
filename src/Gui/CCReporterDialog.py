@@ -76,7 +76,7 @@ class ReporterDialog():
         
     def on_comment_focus_cb(self, widget, event):
         if not self.comment_changed:
-            widget.set_buffer(None)
+            widget.set_buffer(gtk.TextBuffer())
             self.comment_changed = True
     
     def on_window_resize(self, treeview, allocation):
