@@ -3,6 +3,7 @@
 #include "CrashTypes.h"
 #include "PluginSettings.h"
 #include "DebugDump.h"
+#include "ABRTException.h"
 #include <iostream>
 
 CReporterBugzilla::CReporterBugzilla() :
@@ -17,6 +18,7 @@ CReporterBugzilla::~CReporterBugzilla()
 {
     delete m_pXmlrpcTransport;
     delete m_pXmlrpcClient;
+    delete m_pCarriageParm;
 }
 
 void CReporterBugzilla::Login()
@@ -36,7 +38,7 @@ void CReporterBugzilla::Login()
     }
     catch (std::exception& e)
     {
-        throw std::string(e.what());
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Login(): ") + e.what());
     }
 }
 
@@ -51,7 +53,7 @@ void CReporterBugzilla::Logout()
     }
     catch (std::exception& e)
     {
-        throw std::string(e.what());
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Logout(): ") + e.what());
     }
 }
 
@@ -70,7 +72,7 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
     }
     catch (std::exception& e)
     {
-        throw std::string(e.what());
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::CheckUUIDInBugzilla(): ") + e.what());
     }
     ret = xmlrpc_c::value_struct(rpc->getResult());
     std::vector<xmlrpc_c::value> bugs = xmlrpc_c::value_array(ret["bugs"]).vectorValueValue();
@@ -96,7 +98,7 @@ void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrash
     {
         if (it->second[CD_TYPE] == CD_TXT || it->second[CD_TYPE] == CD_ATT)
         {
-            if (it->first !=  FILENAME_UUID &&
+            if (it->first !=  CD_UUID &&
                 it->first !=  FILENAME_ARCHITECTURE &&
                 it->first !=  FILENAME_RELEASE &&
                 it->first !=  CD_REPRODUCE &&
@@ -144,7 +146,7 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     bugParams["version"] =  xmlrpc_c::value_string(version);
     bugParams["summary"] = xmlrpc_c::value_string("[abrt] crash detected in " + component);
     bugParams["description"] = xmlrpc_c::value_string(description);
-    bugParams["status_whiteboard"] = xmlrpc_c::value_string("abrt_hash:" + pCrashReport.find(FILENAME_UUID)->second[CD_CONTENT]);
+    bugParams["status_whiteboard"] = xmlrpc_c::value_string("abrt_hash:" + pCrashReport.find(CD_UUID)->second[CD_CONTENT]);
     bugParams["platform"] = xmlrpc_c::value_string(pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT]);
     paramList.add(xmlrpc_c::value_struct(bugParams));
 
@@ -157,7 +159,7 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     }
     catch (std::exception& e)
     {
-        throw std::string(e.what());
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::NewBug(): ") + e.what());
     }
 
 }
@@ -166,7 +168,7 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
 {
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
-    std::string uuid = pCrashReport.find(FILENAME_UUID)->second[CD_CONTENT];
+    std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
     Login();
     if (!CheckUUIDInBugzilla(component, uuid))
     {

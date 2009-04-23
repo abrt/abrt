@@ -20,6 +20,7 @@
     */
 
 #include "DebugDump.h"
+#include "ABRTException.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -46,13 +47,13 @@ void CDebugDump::Open(const std::string& pDir)
 {
     if (m_bOpened)
     {
-        throw std::string("CDebugDump::CDebugDump(): DebugDump is already opened.");
+        throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
     m_sDebugDumpDir = pDir;
     std::string lockPath = m_sDebugDumpDir + "/.lock";
     if (!ExistFileDir(pDir))
     {
-        throw "CDebugDump::CDebugDump(): "+pDir+" does not exist.";
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+pDir+" does not exist.");
     }
     Lock();
     m_bOpened = true;
@@ -107,7 +108,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         {
             remove(pLockFile.c_str());
             Delete();
-            throw std::string("CDebugDump::GetAndSetLock(): dead lock found");
+            throw CABRTException(EXCEP_ERROR, "CDebugDump::GetAndSetLock(): dead lock found");
         }
         fIn.close();
         return false;
@@ -142,14 +143,14 @@ void CDebugDump::Create(const std::string& pDir)
 {
     if (m_bOpened)
     {
-        throw std::string("CDebugDump::CDebugDump(): DebugDump is already opened.");
+        throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
 
     m_sDebugDumpDir = pDir;
     std::string lockPath = pDir + ".lock";
     if (ExistFileDir(pDir))
     {
-        throw "CDebugDump::CDebugDump(): "+pDir+" already exists.";
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+pDir+" already exists.");
     }
 
     Lock();
@@ -157,7 +158,7 @@ void CDebugDump::Create(const std::string& pDir)
 
     if (mkdir(pDir.c_str(), 0755) == -1)
     {
-        throw "CDebugDump::Create(): Cannot create dir: " + pDir;
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot create dir: " + pDir);
     }
 
     SaveKernelArchitectureRelease();
@@ -186,14 +187,14 @@ void CDebugDump::DeleteFileDir(const std::string& pDir)
                 }
                 if (remove(fullPath.c_str()) == -1)
                 {
-                    throw "CDebugDump::DeleteFileDir(): Cannot remove file: " + fullPath;
+                    throw CABRTException(EXCEP_DD_DELETE, "CDebugDump::DeleteFileDir(): Cannot remove file: " + fullPath);
                 }
             }
         }
         closedir(dir);
         if (remove(pDir.c_str()) == -1)
         {
-            throw "CDebugDump::DeleteFileDir(): Cannot remove dir: " + fullPath;
+            throw CABRTException(EXCEP_DD_DELETE, "CDebugDump::DeleteFileDir(): Cannot remove dir: " + fullPath);
         }
     }
 }
@@ -205,21 +206,21 @@ bool CDebugDump::IsTextFile(const std::string& pName)
 
     if (m == NULL)
     {
-        throw std::string("CDebugDump::IsTextFile(): Cannot open magic cookie: ") + magic_error(m);
+        throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot open magic cookie: ") + magic_error(m));
     }
 
     int r = magic_load(m,NULL);
 
     if (r == -1)
     {
-        throw std::string("CDebugDump::IsTextFile(): Cannot load magic db: ") + magic_error(m);
+        throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot load magic db: ") + magic_error(m));
     }
 
     char* ch = (char *) magic_file(m, pName.c_str());
 
     if (ch == NULL)
     {
-        throw std::string("CDebugDump::IsTextFile(): Cannot determine file type: ") + magic_error(m);
+        throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot determine file type: ") + magic_error(m));
     }
 
     if (!strncmp(ch, "text", 4))
@@ -265,7 +266,7 @@ void CDebugDump::SaveTime()
     time_t t = time(NULL);
     if (((time_t) -1) == t)
     {
-        throw std::string("CDebugDump::SaveTime(): Cannot get local time.");
+        throw CABRTException(EXCEP_ERROR, "CDebugDump::SaveTime(): Cannot get local time.");
     }
     ss << t;
     SaveText(FILENAME_TIME, ss.str());
@@ -295,7 +296,7 @@ void CDebugDump::LoadTextFile(const std::string& pPath, std::string& pData)
     }
     else
     {
-        throw "CDebugDump: LoadTextFile(): Cannot open file " + pPath;
+        throw CABRTException(EXCEP_DD_LOAD, "CDebugDump: LoadTextFile(): Cannot open file " + pPath);
     }
 }
 
@@ -317,7 +318,7 @@ void CDebugDump::LoadBinaryFile(const std::string& pPath, char** pData, unsigned
     }
     else
     {
-        throw "CDebugDump: LoadBinaryFile(): Cannot open file " + pPath;
+        throw CABRTException(EXCEP_DD_LOAD, "CDebugDump: LoadBinaryFile(): Cannot open file " + pPath);
     }
 }
 
@@ -331,13 +332,13 @@ void CDebugDump::SaveTextFile(const std::string& pPath, const std::string& pData
         fOut << pData;
         if (!fOut.good())
         {
-            throw "CDebugDump: SaveTextFile(): Cannot save file " + pPath;
+            throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveTextFile(): Cannot save file " + pPath);
         }
         fOut.close();
     }
     else
     {
-        throw "CDebugDump: SaveTextFile(): Cannot open file " + pPath;
+        throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveTextFile(): Cannot open file " + pPath);
     }
 }
 
@@ -350,13 +351,13 @@ void CDebugDump::SaveBinaryFile(const std::string& pPath, const char* pData, con
         fOut.write(pData, pSize);
         if (!fOut.good())
         {
-            throw "CDebugDump: SaveBinaryFile(): Cannot save file " + pPath;
+            throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveBinaryFile(): Cannot save file " + pPath);
         }
         fOut.close();
     }
     else
     {
-        throw "CDebugDump: SaveBinaryFile(): Cannot open file " + pPath;
+        throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveBinaryFile(): Cannot open file " + pPath);
     }
 }
 
@@ -392,7 +393,7 @@ void CDebugDump::InitGetNextFile()
     m_pGetNextFileDir = opendir(m_sDebugDumpDir.c_str());
     if (m_pGetNextFileDir == NULL)
     {
-        throw "CDebugDump::InitGetNextFile(): Cannot open dir " + m_sDebugDumpDir;
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::InitGetNextFile(): Cannot open dir " + m_sDebugDumpDir);
     }
 }
 

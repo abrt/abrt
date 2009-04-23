@@ -26,7 +26,6 @@
 #include <string>
 #include <dirent.h>
 
-#define FILENAME_UUID               "uuid"
 #define FILENAME_ARCHITECTURE       "architecture"
 #define FILENAME_KERNEL             "kernel"
 #define FILENAME_TIME               "time"

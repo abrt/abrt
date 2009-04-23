@@ -25,7 +25,7 @@
 #include <string>
 #include <iostream>
 #include "PluginSettings.h"
-
+#include "ABRTException.h"
 
 #define ABRT_TABLE "abrt"
 #define SQLITE3_MASTER_TABLE "sqlite_master"
@@ -54,7 +54,7 @@ void CSQLite3::Exec(const std::string& pCommand)
     int ret = sqlite3_exec(m_pDB, pCommand.c_str(), 0, 0, &err);
     if (ret != SQLITE_OK)
     {
-            throw std::string("SQLite3::Exec(): Error on: " + pCommand + " " + err);
+            throw CABRTException(EXCEP_PLUGIN, "SQLite3::Exec(): Error on: " + pCommand + " " + err);
     }
 }
 
@@ -66,7 +66,7 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
         int ret = sqlite3_get_table(m_pDB, pCommand.c_str(), &table, &nrow, &ncol, &err);
         if (ret != SQLITE_OK)
         {
-                throw std::string("SQLite3::GetTable(): Error on: " + pCommand + " " + err);
+                throw CABRTException(EXCEP_PLUGIN, "SQLite3::GetTable(): Error on: " + pCommand + " " + err);
         }
         pTable.clear();
         int ii;
@@ -122,7 +122,7 @@ bool CSQLite3::OpenDB()
 
     if (ret != SQLITE_OK && ret != SQLITE_CANTOPEN)
     {
-        throw std::string("SQLite3::CheckDB(): Could not open database. ") + sqlite3_errmsg(m_pDB);
+        throw CABRTException(EXCEP_PLUGIN, std::string("SQLite3::CheckDB(): Could not open database. ") + sqlite3_errmsg(m_pDB));
     }
     return ret == SQLITE_OK;
 }
@@ -135,7 +135,7 @@ void CSQLite3::CreateDB()
                               NULL);
     if(ret != SQLITE_OK)
     {
-        throw std::string("SQLite3::Create(): Could not create database. ") + sqlite3_errmsg(m_pDB);
+        throw CABRTException(EXCEP_PLUGIN, std::string("SQLite3::Create(): Could not create database. ") + sqlite3_errmsg(m_pDB));
     }
 }
 
@@ -208,7 +208,7 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
     }
     else
     {
-        throw std::string("CSQLite3::Delete(): UUID is not found in DB.");
+        throw CABRTException(EXCEP_PLUGIN, "CSQLite3::Delete(): UUID is not found in DB.");
     }
 }
 
@@ -223,7 +223,7 @@ void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID)
     }
     else
     {
-        throw std::string("CSQLite3::SetReported(): UUID is not found in DB.");
+        throw CABRTException(EXCEP_PLUGIN, "CSQLite3::SetReported(): UUID is not found in DB.");
     }
 }
 

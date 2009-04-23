@@ -21,6 +21,7 @@
 
 #include <iostream>
 #include "PluginManager.h"
+#include <ABRTException.h>
 #include <dirent.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -80,18 +81,19 @@ void CPluginManager::LoadPlugin(const std::string& pName)
             if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
                 (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
             {
-                throw std::string("non-compatible plugin");
+                throw CABRTException(EXCEP_PLUGIN, "CPluginManager::LoadPlugin(): non-compatible plugin");
             }
             std::cerr << "Plugin " << pName << " (" << abrtPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
             m_mapABRTPlugins[pName] = abrtPlugin;
         }
-        catch (std::string sError)
+        catch (CABRTException& e)
         {
             if (abrtPlugin != NULL)
             {
                 delete abrtPlugin;
             }
-            std::cerr << "Failed to load plugin " << pName << " (" << sError << ")." << std::endl;
+            std::cerr << e.what() << std::endl;
+            std::cerr << "Failed to load plugin " << pName << std::endl;
         }
     }
 }

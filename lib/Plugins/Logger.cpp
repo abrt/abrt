@@ -55,7 +55,7 @@ void CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& 
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {
-            if (it->first !=  FILENAME_UUID &&
+            if (it->first !=  CD_UUID &&
                 it->first !=  FILENAME_ARCHITECTURE &&
                 it->first !=  FILENAME_KERNEL &&
                 it->first !=  FILENAME_PACKAGE)
@@ -64,7 +64,7 @@ void CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& 
                 additionalFiles << "-----" << std::endl;
                 additionalFiles << it->second[CD_CONTENT] << std::endl << std::endl;
             }
-            else if (it->first == FILENAME_UUID)
+            else if (it->first == CD_UUID)
             {
                 UUIDFile << it->first << std::endl;
                 UUIDFile << "-----" << std::endl;

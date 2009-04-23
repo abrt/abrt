@@ -36,6 +36,7 @@
 #define CD_MWANALYZER   "_MWAnalyzer"
 #define CD_MWUID        "_MWUID"
 #define CD_MWUUID       "_MWUUID"
+#define CD_MWDDD        "_MWDDD"
 
 // now, size of a vecor is always 3 -> <type, editable, content>
 typedef std::vector<std::string> vector_strings_t;

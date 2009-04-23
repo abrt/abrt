@@ -26,20 +26,9 @@ CABRTPlugin::CABRTPlugin(const std::string& pLibPath) :
     m_pPluginInfo(NULL),
     m_pFnPluginNew(NULL)
 {
-    try
-    {
-        m_pDynamicLibrary = new CDynamicLibrary(pLibPath);
-        if (m_pDynamicLibrary == NULL)
-        {
-            throw std::string("Not enought memory.");
-        }
-        m_pPluginInfo = (p_plugin_info_t) m_pDynamicLibrary->FindSymbol("plugin_info");
-        m_pFnPluginNew = (p_fn_plugin_new_t) m_pDynamicLibrary->FindSymbol("plugin_new");
-    }
-    catch (...)
-    {
-        throw;
-    }
+    m_pDynamicLibrary = new CDynamicLibrary(pLibPath);
+    m_pPluginInfo = reinterpret_cast<p_plugin_info_t>(m_pDynamicLibrary->FindSymbol("plugin_info"));
+    m_pFnPluginNew = reinterpret_cast<p_fn_plugin_new_t>(m_pDynamicLibrary->FindSymbol("plugin_new"));
 }
 
 CABRTPlugin::~CABRTPlugin()

@@ -20,6 +20,7 @@
     */
 
 #include "DynamicLibrary.h"
+#include "ABRTException.h"
 #include <iostream>
 #include <dlfcn.h>
 
@@ -43,7 +44,7 @@ void CDynamicLibrary::Load(const std::string& pPath)
     m_pHandle = dlopen(pPath.c_str(), RTLD_NOW);
     if (m_pHandle == NULL)
     {
-        throw "CDynamicLibrary::Load(): Cannot load " + pPath + " : " + std::string(dlerror());
+        throw CABRTException(EXCEP_DL, "CDynamicLibrary::Load(): Cannot load " + pPath + " : " + std::string(dlerror()));
     }
 }
 
@@ -52,7 +53,7 @@ void* CDynamicLibrary::FindSymbol(const std::string& pName)
     void* sym = dlsym(m_pHandle, pName.c_str());
     if (sym == NULL)
     {
-        throw "CDynamicLibrary::Load(): Cannot find symbol '" + pName + "'";
+        throw CABRTException(EXCEP_DL, "CDynamicLibrary::Load(): Cannot find symbol '" + pName + "'");
     }
     return sym;
 }

@@ -28,6 +28,7 @@
 #include "KerneloopsSysLog.h"
 #include "DebugDump.h"
 #include "PluginSettings.h"
+#include "ABRTException.h"
 
 #include <sstream>
 #include <assert.h>
@@ -91,7 +92,7 @@ void CAnalyzerKerneloops::Report()
 	time_t t = time(NULL);
 	if (((time_t) -1) == t)
 	{
-		throw std::string("CAnalyzerKerneloops::Report(): cannot get local time.");
+		throw CABRTException(EXCEP_PLUGIN, "CAnalyzerKerneloops::Report(): cannot get local time.");
 	}
 
 	m_pOopsList = m_pSysLog.GetOopsList();
@@ -114,9 +115,9 @@ void CAnalyzerKerneloops::Report()
 			m_pDebugDump.SaveText(FILENAME_KERNELOOPS, m_pOops.m_sData);
 			m_pDebugDump.Close();
 		}
-		catch (std::string sError)
+		catch (CABRTException& e)
 		{
-			throw std::string("CAnalyzerKerneloops::Report(): ") + sError.c_str();
+			throw CABRTException(EXCEP_PLUGIN, "CAnalyzerKerneloops::Report(): " + e.what());
 		}
 		m_pOopsList.pop_back();
 	}
@@ -127,7 +128,7 @@ void CAnalyzerKerneloops::Init()
 	/* daemonize */
 	pid_t pid = fork();
 	if (pid < 0)
-		throw std::string("CAnalyzerKerneloops::Init(): fork failed.");
+		throw CABRTException(EXCEP_PLUGIN, "CAnalyzerKerneloops::Init(): fork failed.");
 
 	/* hack: release Init() */
 	if (pid)

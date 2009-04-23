@@ -23,6 +23,7 @@
 #include "RunApp.h"
 #include <stdio.h>
 #include "DebugDump.h"
+#include "ABRTException.h"
 
 #define COMMAND     0
 #define FILENAME    1
@@ -67,7 +68,7 @@ void CActionRunApp::Run(const std::string& pDebugDumpDir,
     FILE *fp = popen(args[COMMAND].c_str(), "r");
     if (fp == NULL)
     {
-        throw "CActionRunApp::Run(): cannot execute " + args[COMMAND];
+        throw CABRTException(EXCEP_PLUGIN, "CActionRunApp::Run(): cannot execute " + args[COMMAND]);
     }
     while (fgets(line, 1024, fp) != NULL)
     {

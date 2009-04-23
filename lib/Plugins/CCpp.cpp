@@ -20,9 +20,10 @@
     */
 
 #include "CCpp.h"
-#include <fstream>
+#include "ABRTException.h"
 #include "DebugDump.h"
 #include "PluginSettings.h"
+#include <fstream>
 #include <sstream>
 #include <iostream>
 #include <ctype.h>
@@ -70,7 +71,7 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
     hc = HASH_Create(HASH_AlgSHA1);
     if (!hc)
     {
-        throw std::string("CAnalyzerCCpp::CreateHash(): cannot initialize hash.");
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::CreateHash(): cannot initialize hash.");
     }
     HASH_Begin(hc);
     HASH_Update(hc, reinterpret_cast<const unsigned char*>(pInput.c_str()), pInput.length());
@@ -104,7 +105,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     m_Pid = child;
     if (child < 0)
     {
-        throw std::string("CAnalyzerCCpp::RunGdb():  fork failed.");
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::RunGdb():  fork failed.");
     }
     if (child == 0)
     {
@@ -164,7 +165,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
                         close(pipeout[0]);
                         kill(child, SIGTERM);
                         wait(NULL);
-                        throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for ") + pPackage;
+                        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
                     }
                     if (strstr(buff, "Total download size") != NULL)
                     {
@@ -175,7 +176,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
                             close(pipeout[0]);
                             kill(child, SIGTERM);
                             wait(NULL);
-                            throw std::string("CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for ") + pPackage;
+                            throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
                         }
                     }
                 }
@@ -211,7 +212,7 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
     }
     else
     {
-        throw "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile ;
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile);
     }
     char* command = (char*)"gdb";
     char* args[5] = { (char*)"gdb", (char*)"-batch", (char*)"-x", NULL, NULL };
@@ -361,7 +362,7 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     m_Pid = child;
     if (child == -1)
     {
-        throw std::string("CAnalyzerCCpp::RunGdb():  fork failed.");
+        CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::RunGdb():  fork failed.");
     }
     if(child == 0)
     {
@@ -497,7 +498,7 @@ void CAnalyzerCCpp::Init()
 	}
     if (NSS_NoDB_Init(NULL) != SECSuccess)
     {
-        throw std::string("CAnalyzerCCpp::CreateHash(): cannot initialize NSS library.");
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::CreateHash(): cannot initialize NSS library.");
     }
 }
 

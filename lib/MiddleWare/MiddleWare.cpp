@@ -21,6 +21,8 @@
 
 #include "MiddleWare.h"
 #include "DebugDump.h"
+#include "ABRTException.h"
+#include <iostream>
 
 CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
                          const std::string& pPlugisLibDir) :
@@ -39,20 +41,21 @@ CMiddleWare::~CMiddleWare()
 
 void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_report_t& pCrashReport)
 {
+    std::string fileName;
+    std::string content;
+    bool isTextFile;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    std::string fileName, content;
-    bool isTextFile;
 
-    if (!dd.Exist(FILENAME_UUID) ||
-        !dd.Exist(FILENAME_ARCHITECTURE) ||
+    if (!dd.Exist(FILENAME_ARCHITECTURE) ||
         !dd.Exist(FILENAME_KERNEL) ||
         !dd.Exist(FILENAME_PACKAGE) ||
         !dd.Exist(FILENAME_RELEASE) ||
         !dd.Exist(FILENAME_EXECUTABLE))
     {
+        dd.Delete();
         dd.Close();
-        throw std::string("CMiddleWare::DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
+        throw CABRTException(EXCEP_ERROR, "CMiddleWare::DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
     }
     pCrashReport.clear();
     dd.InitGetNextFile();
@@ -68,8 +71,7 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
         }
         else
         {
-            if (fileName == FILENAME_UUID ||
-                fileName == FILENAME_ARCHITECTURE ||
+            if (fileName == FILENAME_ARCHITECTURE ||
                 fileName == FILENAME_KERNEL ||
                 fileName == FILENAME_PACKAGE ||
                 fileName == FILENAME_RELEASE ||
@@ -128,9 +130,9 @@ void CMiddleWare::CreateReport(const std::string& pAnalyzer,
     return analyzer->CreateReport(pDebugDumpDir);
 }
 
-void CMiddleWare::CreateCrashReport(const std::string& pUUID,
-                                    const std::string& pUID,
-                                    map_crash_report_t& pCrashReport)
+int CMiddleWare::CreateCrashReport(const std::string& pUUID,
+                                   const std::string& pUID,
+                                   map_crash_report_t& pCrashReport)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
@@ -140,50 +142,74 @@ void CMiddleWare::CreateCrashReport(const std::string& pUUID,
 
     if (pUUID == "" || row.m_sUUID != pUUID)
     {
-        throw std::string("CMiddleWare::CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
+        throw CABRTException(EXCEP_ERROR, "CMiddleWare::CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
     }
 
-    std::string analyzer;
-    std::string UUID;
-    CDebugDump dd;
-    dd.Open(row.m_sDebugDumpDir);
-
-    dd.LoadText(FILENAME_ANALYZER, analyzer);
     try
     {
-        CreateReport(analyzer, row.m_sDebugDumpDir);
-    }
-    catch (...)
-    {
+        std::string analyzer;
+        std::string gUUID;
+        CDebugDump dd;
+        dd.Open(row.m_sDebugDumpDir);
+        dd.LoadText(FILENAME_ANALYZER, analyzer);
         dd.Close();
-        throw;
+
+        CreateReport(analyzer, row.m_sDebugDumpDir);
+
+        gUUID = GetGlobalUUID(analyzer, row.m_sDebugDumpDir);
+
+        RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
+        DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
+
+        add_crash_data_to_crash_report(pCrashReport, CD_UUID, CD_TXT, CD_ISNOTEDITABLE, gUUID);
+        add_crash_data_to_crash_report(pCrashReport, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
+        add_crash_data_to_crash_report(pCrashReport, CD_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
+        add_crash_data_to_crash_report(pCrashReport, CD_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
+        add_crash_data_to_crash_report(pCrashReport, CD_COMMENT, CD_TXT, CD_ISEDITABLE, "");
+        add_crash_data_to_crash_report(pCrashReport, CD_REPRODUCE, CD_TXT, CD_ISEDITABLE, "1.\n2.\n3.\n");
     }
-    UUID = GetGlobalUUID(analyzer, row.m_sDebugDumpDir);
+    catch (CABRTException& e)
+    {
+        if (e.type() == EXCEP_DD_LOAD)
+        {
+            DeleteCrashInfo(row.m_sUID, row.m_sUUID, true);
+        }
+        else if (e.type() == EXCEP_DD_OPEN)
+        {
+            DeleteCrashInfo(row.m_sUUID, row.m_sUID, false);
+        }
+        std::cerr << "CMiddleWare::CreateCrashReport(): " << e.what() << std::endl;
+        return 0;
+    }
 
-    dd.SaveText(FILENAME_UUID, UUID);
-    dd.Close();
-
-    RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
-    DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
-
-    add_crash_data_to_crash_report(pCrashReport, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
-    add_crash_data_to_crash_report(pCrashReport, CD_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
-    add_crash_data_to_crash_report(pCrashReport, CD_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
-    add_crash_data_to_crash_report(pCrashReport, CD_COMMENT, CD_TXT, CD_ISEDITABLE, "");
-    add_crash_data_to_crash_report(pCrashReport, CD_REPRODUCE, CD_TXT, CD_ISEDITABLE, "1.\n2.\n3.\n");
+    return 1;
 }
 
 void CMiddleWare::Report(const std::string& pDebugDumpDir)
 {
     map_crash_report_t crashReport;
 
-    DebugDumpToCrashReport(pDebugDumpDir, crashReport);
+    try
+    {
+        DebugDumpToCrashReport(pDebugDumpDir, crashReport);
+    }
+    catch (CABRTException& e)
+    {
+        std::cerr << "CMiddleWare::Report(): " << e.what() << std::endl;
+    }
 
     set_reporters_t::iterator it_r;
     for (it_r = m_setReporters.begin(); it_r != m_setReporters.end(); it_r++)
     {
-        CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
-        reporter->Report(crashReport, (*it_r).second);
+        try
+        {
+            CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+            reporter->Report(crashReport, (*it_r).second);
+        }
+        catch (CABRTException& e)
+        {
+            std::cerr << "CMiddleWare::Report(): " << e.what() << std::endl;
+        }
     }
 }
 
@@ -193,7 +219,7 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
         pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUUID) == pCrashReport.end())
     {
-        throw std::string("CMiddleWare::Report(): Important data are missing.");
+        throw CABRTException(EXCEP_ERROR, "CMiddleWare::Report(): System data are missing in crash report.");
     }
     std::string analyzer = pCrashReport.find(CD_MWANALYZER)->second[CD_CONTENT];
     std::string UID = pCrashReport.find(CD_MWUID)->second[CD_CONTENT];
@@ -206,8 +232,15 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
              it_r != m_mapAnalyzerReporters[analyzer].end();
              it_r++)
         {
-            CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
-            reporter->Report(pCrashReport, (*it_r).second);
+            try
+            {
+                CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+                reporter->Report(pCrashReport, (*it_r).second);
+            }
+            catch (CABRTException& e)
+            {
+                std::cerr << "CMiddleWare::Report(): " << e.what() << std::endl;
+            }
         }
     }
 
@@ -243,18 +276,13 @@ void CMiddleWare::DeleteCrashInfo(const std::string& pUUID,
 }
 
 
-bool CMiddleWare::IsDebugDumpSaved(const std::string& pDebugDumpDir)
+bool CMiddleWare::IsDebugDumpSaved(const std::string& pUID,
+                                   const std::string& pDebugDumpDir)
 {
-    std::string UID;
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    dd.LoadText(FILENAME_UID, UID);
-    dd.Close();
-
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     vector_database_rows_t rows;
     database->Connect();
-    rows = database->GetUIDData(UID);
+    rows = database->GetUIDData(pUID);
     database->DisConnect();
 
     int ii;
@@ -271,37 +299,32 @@ bool CMiddleWare::IsDebugDumpSaved(const std::string& pDebugDumpDir)
     return found;
 }
 
-int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pDebugDumpDir)
+int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutable,
+                                                   const std::string& pDebugDumpDir)
 {
     std::string package;
     std::string packageName;
-    std::string executable;
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
 
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
-    if (executable == "kernel")
+    if (pExecutable == "kernel")
     {
         packageName = package = "kernel";
     }
     else
     {
-        package = m_RPM.GetPackage(executable);
+        package = m_RPM.GetPackage(pExecutable);
         packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
         if (packageName == "" ||
             (m_setBlackList.find(packageName) != m_setBlackList.end()))
         {
-            dd.Delete();
-            dd.Close();
+            DeleteDebugDumpDir(pDebugDumpDir);
             return 0;
         }
         if (m_bOpenGPGCheck)
         {
             if (!m_RPM.CheckFingerprint(packageName) ||
-                !m_RPM.CheckHash(packageName, executable))
+                !m_RPM.CheckHash(packageName, pExecutable))
             {
-                dd.Delete();
-                dd.Close();
+                DeleteDebugDumpDir(pDebugDumpDir);
                 return 0;
             }
         }
@@ -309,25 +332,10 @@ int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pDebugDump
 
     std::string description = m_RPM.GetDescription(packageName);
 
-    dd.SaveText(FILENAME_PACKAGE, package);
-    dd.SaveText(FILENAME_DESCRIPTION, description);
-    dd.Close();
-
-    return 1;
-}
-
-int CMiddleWare::SaveUUIDToDebugDump(const std::string& pDebugDumpDir)
-{
-    std::string analyzer;
-    std::string UUID;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-
-
-    dd.LoadText(FILENAME_ANALYZER, analyzer);
-    UUID = GetLocalUUID(analyzer, pDebugDumpDir);
-
-    dd.SaveText(FILENAME_UUID, UUID);
+    dd.SaveText(FILENAME_PACKAGE, package);
+    dd.SaveText(FILENAME_DESCRIPTION, description);
     dd.Close();
 
     return 1;
@@ -342,50 +350,44 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
              it_a != m_mapAnalyzerActions[pAnalyzer].end();
              it_a++)
         {
-            CAction* action = m_pPluginManager->GetAction((*it_a).first);
-            action->Run(pDebugDumpDir, (*it_a).second);
+            try
+            {
+                CAction* action = m_pPluginManager->GetAction((*it_a).first);
+                action->Run(pDebugDumpDir, (*it_a).second);
+            }
+            catch (CABRTException& e)
+            {
+                std::cerr << "CMiddleWare::RunAnalyzerActions(): " << e.what() << std::endl;
+            }
         }
     }
 }
 
-int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, map_crash_info_t& pCrashInfo)
+int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pUUID,
+                                         const std::string& pUID,
+                                         const std::string& pTime,
+                                         const std::string& pDebugDumpDir,
+                                         map_crash_info_t& pCrashInfo)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
 
-    std::string UUID;
-    std::string UID;
-    std::string time;
-
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-
-    dd.LoadText(FILENAME_TIME, time);
-    dd.LoadText(FILENAME_UID, UID);
-    dd.LoadText(FILENAME_UUID, UUID);
-
     database_row_t row;
     database->Connect();
-    database->Insert(UUID, UID, pDebugDumpDir, time);
-    row = database->GetUUIDData(UUID, UID);
+    database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
+    row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
-
     if (row.m_sReported == "1")
     {
-        dd.Delete();
-        dd.Close();
+        DeleteDebugDumpDir(pDebugDumpDir);
         return 0;
     }
 
-    pCrashInfo = GetCrashInfo(UUID, UID);
-
+    pCrashInfo = GetCrashInfo(pUUID, pUID);
     if (row.m_sCount != "1")
     {
-        dd.Delete();
-        dd.Close();
+        DeleteDebugDumpDir(pDebugDumpDir);
         return 2;
     }
-    dd.Close();
-
     return 1;
 }
 
@@ -397,23 +399,49 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir)
 
 int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, map_crash_info_t& pCrashInfo)
 {
-    if (IsDebugDumpSaved(pDebugDumpDir))
+    std::string lUUID;
+    std::string UID;
+    std::string time;
+    std::string analyzer;
+    std::string executable;
+    CDebugDump dd;
+
+    try
     {
+        dd.Open(pDebugDumpDir);
+        dd.LoadText(FILENAME_TIME, time);
+        dd.LoadText(FILENAME_UID, UID);
+        dd.LoadText(FILENAME_ANALYZER, analyzer);
+        dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.Close();
+
+        if (IsDebugDumpSaved(UID, pDebugDumpDir))
+        {
+            return 0;
+        }
+        if (!SavePackageDescriptionToDebugDump(executable, pDebugDumpDir))
+        {
+            return 0;
+        }
+
+        lUUID = GetLocalUUID(analyzer, pDebugDumpDir);
+
+        return SaveDebugDumpToDatabase(lUUID, UID, time, pDebugDumpDir, pCrashInfo);
+    }
+    catch (CABRTException& e)
+    {
+        if (e.type() == EXCEP_DD_LOAD ||
+            e.type() == EXCEP_DD_SAVE)
+        {
+            DeleteDebugDumpDir(pDebugDumpDir);
+        }
+        std::cerr << "CMiddleWare::SaveDebugDump(): " << e.what() << std::endl;
         return 0;
     }
-    if (!SavePackageDescriptionToDebugDump(pDebugDumpDir))
-    {
-        return 0;
-    }
-    if (!SaveUUIDToDebugDump(pDebugDumpDir))
-    {
-        return 0;
-    }
-    return SaveDebugDumpToDatabase(pDebugDumpDir, pCrashInfo);
 }
 
 map_crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
-                                       const std::string& pUID)
+                                           const std::string& pUID)
 {
     map_crash_info_t crashInfo;
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
@@ -427,9 +455,13 @@ map_crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     {
         dd.Open(row.m_sDebugDumpDir);
     }
-    catch (std::string sErr)
+    catch (CABRTException& e)
     {
-        DeleteCrashInfo(row.m_sUUID, row.m_sUID, false);
+        if (e.type() == EXCEP_DD_OPEN)
+        {
+            DeleteCrashInfo(row.m_sUUID, row.m_sUID, false);
+        }
+        std::cerr << "CMiddleWare::GetCrashInfo(): " << e.what() << std::endl;
         return crashInfo;
     }
 
@@ -446,6 +478,7 @@ map_crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     add_crash_data_to_crash_info(crashInfo, CD_COUNT, row.m_sCount);
     add_crash_data_to_crash_info(crashInfo, CD_TIME, row.m_sTime);
     add_crash_data_to_crash_info(crashInfo, CD_REPORTED, row.m_sReported);
+    add_crash_data_to_crash_info(crashInfo, CD_MWDDD, row.m_sDebugDumpDir);
 
     return crashInfo;
 }
@@ -464,7 +497,10 @@ vector_crash_infos_t CMiddleWare::GetCrashInfos(const std::string& pUID)
     for (ii = 0; ii < rows.size(); ii++)
     {
         map_crash_info_t info = GetCrashInfo(rows[ii].m_sUUID, rows[ii].m_sUID);
-        infos.push_back(info);
+        if (info[CD_UUID][CD_CONTENT] != "")
+        {
+            infos.push_back(info);
+        }
     }
 
     return infos;

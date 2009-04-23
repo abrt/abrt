@@ -55,15 +55,17 @@ class CMiddleWare
         std::string GetGlobalUUID(const std::string& pAnalyzer,
                                   const std::string& pDebugDumpDir);
         void CreateReport(const std::string& pAnalyzer,
-                          const std::string& pDebugDumpDir);
+                         const std::string& pDebugDumpDir);
         void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
         void DebugDumpToCrashReport(const std::string& pDebugDumpDir,
                                     map_crash_report_t& pCrashReport);
-
-        bool IsDebugDumpSaved(const std::string& pDebugDumpDir);
-        int SavePackageDescriptionToDebugDump(const std::string& pDebugDumpDir);
-        int SaveUUIDToDebugDump(const std::string& pDebugDumpDir);
-        int SaveDebugDumpToDatabase(const std::string& pDebugDumpDir, map_crash_info_t& pCrashInfo);
+        bool IsDebugDumpSaved(const std::string& pUID, const std::string& pDebugDumpDir);
+        int SavePackageDescriptionToDebugDump(const std::string& pExecutable, const std::string& pDebugDumpDir);
+        int SaveDebugDumpToDatabase(const std::string& pUUID,
+                                    const std::string& pUID,
+                                    const std::string& pTime,
+                                    const std::string& pDebugDumpDir,
+                                    map_crash_info_t& pCrashInfo);
         map_crash_info_t GetCrashInfo(const std::string& pUUID,
                                       const std::string& pUID);
 
@@ -77,9 +79,9 @@ class CMiddleWare
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
-        void CreateCrashReport(const std::string& pUUID,
-                               const std::string& pUID,
-                               map_crash_report_t& pCrashReport);
+        int CreateCrashReport(const std::string& pUUID,
+                              const std::string& pUID,
+                              map_crash_report_t& pCrashReport);
 
         void Report(const std::string& pDebugDumpDir);
         void Report(const map_crash_report_t& pCrashReport);

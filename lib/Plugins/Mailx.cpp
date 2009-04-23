@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <sstream>
 #include "DebugDump.h"
+#include "ABRTException.h"
 #include "PluginSettings.h"
 
 #define MAILX_COMMAND "/bin/mailx"
@@ -48,11 +49,11 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText)
     command = popen(mailx_command.c_str(), "w");
     if (!command)
     {
-        throw std::string("CMailx::SendEmail: Can not execute mailx.");
+        throw CABRTException(EXCEP_PLUGIN, "CMailx::SendEmail(): Can not execute mailx.");
     }
     if (fputs(pText.c_str(), command) == -1)
     {
-        throw std::string("CMailx::SendEmail: Can not send data.");
+        throw CABRTException(EXCEP_PLUGIN, "CMailx::SendEmail(): Can not send data.");
     }
     pclose(command);
 }
@@ -68,7 +69,7 @@ void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& p
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {
-            if (it->first !=  FILENAME_UUID &&
+            if (it->first !=  CD_UUID &&
                 it->first !=  FILENAME_ARCHITECTURE &&
                 it->first !=  FILENAME_KERNEL &&
                 it->first !=  FILENAME_PACKAGE)
@@ -77,7 +78,7 @@ void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& p
                 additionalFiles << "-----" << std::endl;
                 additionalFiles << it->second[CD_CONTENT] << std::endl << std::endl;
             }
-            else if (it->first == FILENAME_UUID)
+            else if (it->first == CD_UUID)
             {
                 UUIDFile << it->first << std::endl;
                 UUIDFile << "-----" << std::endl;

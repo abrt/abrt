@@ -90,7 +90,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 {
                     if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
                     {
-                        cc->m_pMW->Report(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                        cc->m_pMW->Report(crashinfo[CD_MWDDD][CD_CONTENT]);
                         /* send message to dbus */
                         cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                     }
@@ -236,7 +236,7 @@ pCommLayerInner = new CCommLayerInner(this);
 #endif
     m_pCommLayer = new CCommLayerServerDBus();
     m_pCommLayer->Attach(this);
-    
+
     if((m_nFd = inotify_init()) == -1){
         throw std::string("Init Failed");
         //std::cerr << "Init Failed" << std::endl;
