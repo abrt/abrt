@@ -37,19 +37,19 @@ int main(int argc, char** argv)
     }
     try
     {
-        //std::string(CONF_DIR) + "/abrt.conf"
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
                                PLUGINS_LIB_DIR);
-        /* Create DebugDump */
-        /* Try to save it into DB */
         middleWare.RegisterPlugin("CCpp");
+        middleWare.RegisterPlugin("Mailx");
         middleWare.RegisterPlugin("Logger");
         middleWare.RegisterPlugin("RunApp");
         middleWare.RegisterPlugin("SQLite3");
         middleWare.SetDatabase("SQLite3");
         middleWare.SetOpenGPGCheck(false);
-        middleWare.AddAnalyzerReporter("CCpp", "Logger");
-        middleWare.AddAnalyzerAction("CCpp", "RunApp", "date,action_date");
+        middleWare.AddReporter("Logger");
+        middleWare.AddAnalyzerReporter("CCpp", "Mailx");
+        middleWare.AddAnalyzerAction("CCpp", "RunApp", "date");
+        /* Try to save it into DB */
         map_crash_info_t crashInfo;
         if (middleWare.SaveDebugDump(argv[1], crashInfo))
         {
@@ -58,6 +58,7 @@ int main(int argc, char** argv)
                          crashInfo[CD_EXECUTABLE][CD_CONTENT] << ", " <<
                          crashInfo[CD_COUNT][CD_CONTENT] << ", " << std::endl;
 
+            middleWare.Report(argv[1]);
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */

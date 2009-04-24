@@ -2,6 +2,6 @@
 #define COMMLAYER_H_
 
 #include "CommLayerInner.h"
-extern "C" CCommLayerInner* get_commlayer();
+//extern "C" CCommLayerInner* get_commlayer();
 
 #endif /* COMMLAYER_H_ */

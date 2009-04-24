@@ -13,12 +13,13 @@ typedef enum {EXCEP_UNKNOW,
               EXCEP_ERROR,
               EXCEP_FATAL} abrt_exception_t;
 
-class CABRTException
+class CABRTException : public std::exception
 {
     private:
         std::string m_sWhat;
         abrt_exception_t m_Type;
     public:
+        virtual ~CABRTException() throw() {}
         CABRTException(const abrt_exception_t& pType, const char* pWhat) :
             m_sWhat(pWhat),
             m_Type(pType)

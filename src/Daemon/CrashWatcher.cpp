@@ -31,6 +31,7 @@
 #include <dirent.h>
 #include <cstring>
 #include "CommLayer.h"
+#include "ABRTException.h"
 
 /* just a helper function
 template< class T >
@@ -43,17 +44,8 @@ to_string( T x )
 }
 */
 
-CCommLayerInner* pCommLayerInner;
-CCommLayerInner* get_commlayer()
-{
-    std::cerr << "get_commlayer" << std::endl;
-    return pCommLayerInner;
-}
-
-
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
     GIOError err;
-    //char *buf = malloc(INOTIFY_BUFF_SIZE;
     char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
     gsize i = 0;
@@ -169,20 +161,20 @@ void CCrashWatcher::SetUpMW()
     }
 }
 
-void CCrashWatcher::StatusUpdate(const std::string& pMessage)
+void CCrashWatcher::Status(const std::string& pMessage)
 {
-    std::cout << "UPDATE: " << pMessage << std::endl;
+    std::cout << "Update: " << pMessage << std::endl;
 }
 
 void CCrashWatcher::Warning(const std::string& pMessage)
 {
-    std::cout << "WW: " << pMessage << std::endl;
+    std::cerr << "Warning: " << pMessage << std::endl;
 }
 
 void CCrashWatcher::Debug(const std::string& pMessage)
 {
     //some logic to add logging levels?
-    std::cout << "DEBUG: " << pMessage << std::endl;
+    std::cout << "Debug: " << pMessage << std::endl;
 }
 
 double CCrashWatcher::GetDirSize(const std::string &pPath)
@@ -219,16 +211,19 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 {
     int watch = 0;
     m_sTarget = pPath;
-// create inner commlayer
-pCommLayerInner = new CCommLayerInner(this);
-//middleware object
+
+    // TODO: initialize object according parameters -w -i
+    // status has to be always created.
+    CommLayerInner::init_status(this);
+    CommLayerInner::init_warning(this);
+    CommLayerInner::init_debug(this);
+
     m_pSettings = new CSettings();
     m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
     SetUpMW();
     FindNewDumps(pPath);
-//first init commlayer
 #ifdef HAVE_DBUS
     m_pCommLayer = new CCommLayerServerDBus();
 #elif HAVE_SOCKET

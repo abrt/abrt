@@ -82,9 +82,9 @@ class CCrashWatcher
         virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID);
         virtual bool Report(map_crash_report_t pReport);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
-    public:
+
         /* Observer methods */
-        void StatusUpdate(const std::string& pMessage);
+        void Status(const std::string& pMessage);
         void Debug(const std::string& pMessage);
         void Warning(const std::string& pMessage);
 };

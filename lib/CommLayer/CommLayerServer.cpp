@@ -20,5 +20,5 @@ void CCommLayerServer::Detach(CObserver *pObs)
 void CCommLayerServer::Notify(const std::string& pMessage)
 {
     if(m_pObserver)
-        m_pObserver->StatusUpdate(pMessage);
+        m_pObserver->Status(pMessage);
 }

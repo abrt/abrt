@@ -21,7 +21,8 @@
 
 #include <iostream>
 #include "PluginManager.h"
-#include <ABRTException.h>
+#include "ABRTException.h"
+#include "CommLayer.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -83,7 +84,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
             {
                 throw CABRTException(EXCEP_PLUGIN, "CPluginManager::LoadPlugin(): non-compatible plugin");
             }
-            std::cerr << "Plugin " << pName << " (" << abrtPlugin->GetVersion() << ") " << "succesfully loaded." << std::endl;
+            CommLayerInner::debug("Plugin " + pName + " (" + abrtPlugin->GetVersion() + ") succesfully loaded.");
             m_mapABRTPlugins[pName] = abrtPlugin;
         }
         catch (CABRTException& e)
@@ -92,8 +93,8 @@ void CPluginManager::LoadPlugin(const std::string& pName)
             {
                 delete abrtPlugin;
             }
-            std::cerr << e.what() << std::endl;
-            std::cerr << "Failed to load plugin " << pName << std::endl;
+            CommLayerInner::debug("CPluginManager::LoadPlugin(): " + e.what());
+            CommLayerInner::debug("Failed to load plugin " + pName);
         }
     }
 }
@@ -105,7 +106,7 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
         UnRegisterPlugin(pName);
         delete m_mapABRTPlugins[pName];
         m_mapABRTPlugins.erase(pName);
-        std::cerr << "Plugin " << pName << " sucessfully unloaded." << std::endl;
+        CommLayerInner::debug("Plugin " + pName + " sucessfully unloaded.");
     }
 }
 
@@ -125,16 +126,16 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             }
             catch (std::string sError)
             {
-                std::cerr << "Can not initialize plugin " << pName << "("
-                          << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]
-                          << ")" << std::endl;
+                CommLayerInner::debug("Can not initialize plugin " + pName + "("
+                                      + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
+                                      + ")");
                 UnLoadPlugin(pName);
                 return;
             }
             m_mapPlugins[pName] = plugin;
-            std::cerr << "Registred plugin " << pName << "("
-                      << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]
-                      << ")" << std::endl;
+            CommLayerInner::debug("Registred plugin " + pName + "("
+                                  + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
+                                  + ")");
         }
     }
 }
@@ -148,9 +149,9 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
             m_mapPlugins[pName]->DeInit();
             delete m_mapPlugins[pName];
             m_mapPlugins.erase(pName);
-            std::cerr << "UnRegistred plugin " << pName << "("
-                      << plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()]
-                      << ")" << std::endl;
+            CommLayerInner::debug("UnRegistred plugin " + pName + "("
+                                  + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
+                                  + ")");
         }
     }
 }

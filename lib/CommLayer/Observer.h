@@ -7,7 +7,7 @@ class CObserver {
     public:
         //CObserver();
         virtual ~CObserver() {}
-        virtual void StatusUpdate(const std::string& pMessage) = 0;
+        virtual void Status(const std::string& pMessage) = 0;
         virtual void Debug(const std::string& pMessage) = 0;
         virtual void Warning(const std::string& pMessage) = 0;
 /* this should be implemented in daemon */

@@ -21,18 +21,19 @@
 #include <iostream>
 #include <cstdio>
 
-CCrashWatcher *ccdaemon;
-DBus::Glib::BusDispatcher *dispatcher;
+CCrashWatcher *g_pCrashWatcher;
+//DBus::Glib::BusDispatcher *dispatcher;
 
 void terminate(int signal)
 {
     fprintf(stderr, "Got SIGINT/SIGTERM, cleaning up..\n");
-    delete ccdaemon;
+    delete g_pCrashWatcher;
     //delete dispatcher;
     exit(0);
 }
 
-int main(int argc, char** argv){
+int main(int argc, char** argv)
+{
     int daemonize = 1;
     /*signal handlers */
     signal(SIGTERM, terminate);
@@ -44,44 +45,29 @@ int main(int argc, char** argv){
     DBus::default_dispatcher = dispatcher;
 	DBus::Connection conn = DBus::Connection::SystemBus();
     */
-    try{
-    ccdaemon = new CCrashWatcher(DEBUG_DUMPS_DIR);
-    if (argc > 1){
-        if (strcmp(argv[1], "-d") == 0){
-            daemonize = 0;
-        }
-    }
-    if(daemonize){
-            try{
-                ccdaemon->Daemonize();
-            }
-            catch(std::string err)
-            {
-                std::cerr << err << std::endl;
-            }
-            catch(...){
-                std::cerr << "daemon.cpp:Daemonize" << std::endl;
-            }
-        }
-        else{
-            try{
-            #ifdef DEBUG
-                std::cerr << "trying to run" << std::endl;
-            #endif  /*DEBUG*/
-                ccdaemon->Run();
-            }
-            catch(std::string err)
-            {
-                std::cerr << err << std::endl;
-            }
-            catch(...){
-                std::cerr << "daemon.cpp:Run" << std::endl;
-            }
-        }
-    }
-    catch(std::string err)
+    try
     {
-        std::cerr << "Cannot create daemon: " << err << std::endl;
+        g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
+
+        if (argc > 1)
+        {
+            if (strcmp(argv[1], "-d") == 0)
+            {
+                daemonize = 0;
+            }
+        }
+        if(daemonize)
+        {
+            g_pCrashWatcher->Daemonize();
+        }
+        else
+        {
+            g_pCrashWatcher->Run();
+        }
+    }
+    catch(std::exception& e)
+    {
+        std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
 }
 

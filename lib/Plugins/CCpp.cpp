@@ -23,6 +23,7 @@
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "PluginSettings.h"
+#include "CommLayer.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -88,6 +89,8 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
 
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
+    CommLayerInner::status("Installing debug infos...");
+
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
     char buff[1024];
     int pipein[2], pipeout[2];
@@ -192,6 +195,8 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 
 void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
+    CommLayerInner::status("Getting backtrace...");
+
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
     std::string UID;
@@ -417,6 +422,8 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
+    CommLayerInner::status("Getting global universal unique identification...");
+
 	CDebugDump dd;
 	std::string UID;
 	std::string executable;
@@ -439,6 +446,8 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 }
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
+    CommLayerInner::status("Getting local universal unique identification...");
+
     std::string backtrace;
     std::string executable;
     std::string package;
@@ -455,9 +464,12 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
+    CommLayerInner::status("Starting report creation...");
+
     std::string package;
     std::string backtrace;
     CDebugDump dd;
+
     dd.Open(pDebugDumpDir);
     if (dd.Exist(FILENAME_BACKTRACE))
     {
