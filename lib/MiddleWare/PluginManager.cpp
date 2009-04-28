@@ -22,7 +22,7 @@
 #include <iostream>
 #include "PluginManager.h"
 #include "ABRTException.h"
-#include "CommLayer.h"
+#include "ABRTCommLayer.h"
 #include <dirent.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -84,7 +84,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
             {
                 throw CABRTException(EXCEP_PLUGIN, "CPluginManager::LoadPlugin(): non-compatible plugin");
             }
-            CommLayerInner::debug("Plugin " + pName + " (" + abrtPlugin->GetVersion() + ") succesfully loaded.");
+            ABRTCommLayer::debug("Plugin " + pName + " (" + abrtPlugin->GetVersion() + ") succesfully loaded.");
             m_mapABRTPlugins[pName] = abrtPlugin;
         }
         catch (CABRTException& e)
@@ -93,8 +93,8 @@ void CPluginManager::LoadPlugin(const std::string& pName)
             {
                 delete abrtPlugin;
             }
-            CommLayerInner::debug("CPluginManager::LoadPlugin(): " + e.what());
-            CommLayerInner::debug("Failed to load plugin " + pName);
+            ABRTCommLayer::warning("CPluginManager::LoadPlugin(): " + e.what());
+            ABRTCommLayer::warning("Failed to load plugin " + pName);
         }
     }
 }
@@ -106,7 +106,7 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
         UnRegisterPlugin(pName);
         delete m_mapABRTPlugins[pName];
         m_mapABRTPlugins.erase(pName);
-        CommLayerInner::debug("Plugin " + pName + " sucessfully unloaded.");
+        ABRTCommLayer::debug("Plugin " + pName + " sucessfully unloaded.");
     }
 }
 
@@ -126,14 +126,14 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             }
             catch (std::string sError)
             {
-                CommLayerInner::debug("Can not initialize plugin " + pName + "("
-                                      + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
-                                      + ")");
+                ABRTCommLayer::warning("Can not initialize plugin " + pName + "("
+                                        + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
+                                        + ")");
                 UnLoadPlugin(pName);
                 return;
             }
             m_mapPlugins[pName] = plugin;
-            CommLayerInner::debug("Registred plugin " + pName + "("
+            ABRTCommLayer::debug("Registred plugin " + pName + "("
                                   + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
                                   + ")");
         }
@@ -149,7 +149,7 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
             m_mapPlugins[pName]->DeInit();
             delete m_mapPlugins[pName];
             m_mapPlugins.erase(pName);
-            CommLayerInner::debug("UnRegistred plugin " + pName + "("
+            ABRTCommLayer::debug("UnRegistred plugin " + pName + "("
                                   + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
                                   + ")");
         }
@@ -160,8 +160,8 @@ CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
 {
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
-        throw std::string("CPluginManager::GetAnalyzer():"
-                          "Analyzer plugin: '"+pName+"' is not loaded.");
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAnalyzer():"
+                                            "Analyzer plugin: '"+pName+"' is not loaded.");
     }
     return dynamic_cast<CAnalyzer*>(m_mapPlugins[pName]);
 }
@@ -170,8 +170,8 @@ CReporter* CPluginManager::GetReporter(const std::string& pName)
 {
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
-        throw std::string("CPluginManager::GetReporter():"
-                          "Reporter plugin: '"+pName+"' is not loaded.");
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetReporter():"
+                                           "Reporter plugin: '"+pName+"' is not loaded.");
     }
     return dynamic_cast<CReporter*>(m_mapPlugins[pName]);
 }
@@ -180,8 +180,8 @@ CAction* CPluginManager::GetAction(const std::string& pName)
 {
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
-        throw std::string("CPluginManager::GetAction():"
-                          "Action plugin: '"+pName+"' is not loaded.");
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAction():"
+                                           "Action plugin: '"+pName+"' is not loaded.");
     }
     return dynamic_cast<CAction*>(m_mapPlugins[pName]);
 }
@@ -190,8 +190,8 @@ CDatabase* CPluginManager::GetDatabase(const std::string& pName)
 {
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
-        throw std::string("CPluginManager::GetDatabase():"
-                          "Database plugin: '"+pName+"' is not loaded.");
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetDatabase():"
+                                           "Database plugin: '"+pName+"' is not loaded.");
     }
     return dynamic_cast<CDatabase*>(m_mapPlugins[pName]);
 }

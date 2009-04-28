@@ -24,6 +24,7 @@
 #include <stdio.h>
 #include "DebugDump.h"
 #include "ABRTException.h"
+#include "ABRTCommLayer.h"
 
 #define COMMAND     0
 #define FILENAME    1
@@ -58,6 +59,8 @@ void CActionRunApp::ParseArgs(const std::string& psArgs, vector_args_t& pArgs)
 void CActionRunApp::Run(const std::string& pDebugDumpDir,
                         const std::string& pArgs)
 {
+    ABRTCommLayer::status("Executing RunApp plugin...");
+
     char line[1024];
     std::string output = "";
 

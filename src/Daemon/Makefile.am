@@ -1,8 +1,8 @@
 sbin_PROGRAMS = abrt
 abrt_SOURCES = CrashWatcher.cpp CrashWatcher.h Daemon.cpp DBusServerProxy.h \
                         DBusCommon.h Settings.h Settings.cpp
-abrt_CPPFLAGS = -Wall -Werror -rdynamic -I../../lib/MiddleWare -I../../lib/CommLayer\
-                        -I../../lib/DBus -I../../lib/Utils\
+abrt_CPPFLAGS = -Wall -Werror -rdynamic -I$(srcdir)/../../lib/MiddleWare -I$(srcdir)/../../lib/CommLayer\
+                        -I$(srcdir)/../../inc -I$(srcdir)/../../lib/Utils\
                         -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(GLIB_CFLAGS) $(DBUSCPP_CFLAGS) \
                         -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
                         -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \

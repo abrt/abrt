@@ -100,12 +100,14 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         getline(fIn, line);
         if (line == pPID)
         {
+            fIn.close();
             m_bUnlock = false;
             return true;
         }
         ss << "/proc/" << line << "/";
         if (!ExistFileDir(ss.str()))
         {
+            fIn.close();
             remove(pLockFile.c_str());
             Delete();
             throw CABRTException(EXCEP_ERROR, "CDebugDump::GetAndSetLock(): dead lock found");
@@ -117,17 +119,21 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
 
 void CDebugDump::Lock()
 {
-    std::string lockPath = m_sDebugDumpDir + ".lock";
+    int ii = 0;
+    std::string lockFile = m_sDebugDumpDir + ".lock";
     pid_t nPID = getpid();
     std::stringstream ss;
     ss << nPID;
-    std::cerr << "CDebugDump::Lock(): waiting...";
-    while (!GetAndSetLock(lockPath, ss.str()))
+    while (!GetAndSetLock(lockFile, ss.str()))
     {
-        std::cerr << ".";
         usleep(5000);
+        // 40000 is about 20s, that should be enough.
+        if (ii > 40000)
+        {
+            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Lock(): timeout occurs when opening '"+m_sDebugDumpDir+"'");
+        }
+        ii++;
     }
-    std::cerr << "done." << std::endl;
 }
 
 void CDebugDump::UnLock()

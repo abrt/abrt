@@ -4,62 +4,102 @@
 #include <iostream>
 #include "Observer.h"
 
-namespace CommLayerInner
+class CDebugCommLayer
 {
-
-    class CDebug
-    {
-        private:
-            CObserver *m_pObs;
-        public:
-            CDebug(CObserver *pObs) :
-                m_pObs(pObs)
-            {}
-            void Message(const std::string& pMsg)
+    private:
+        CObserver *m_pObserver;
+    public:
+        CDebugCommLayer(CObserver *pObs) :
+            m_pObserver(pObs)
+        {}
+        void Message(const std::string& pMsg)
+            {
+                if(m_pObserver)
                 {
-                    if(m_pObs)
-                        m_pObs->Debug(pMsg);
+                    m_pObserver->Debug(pMsg);
                 }
-    };
+            }
+};
 
-    class CWarning
-    {
-        private:
-            CObserver *m_pObs;
-        public:
-            CWarning(CObserver *pObs) :
-                m_pObs(pObs)
-            {}
-            void Message(const std::string& pMsg)
+class CWarningCommLayer
+{
+    private:
+        CObserver *m_pObserver;
+    public:
+        CWarningCommLayer(CObserver *pObs) :
+            m_pObserver(pObs)
+        {}
+        void Message(const std::string& pMsg)
+            {
+                if(m_pObserver)
                 {
-                    if(m_pObs)
-                        m_pObs->Warning(pMsg);
+                    m_pObserver->Warning(pMsg);
                 }
-    };
+            }
+};
 
-    class CStatus
-    {
-        private:
-            CObserver *m_pObs;
-        public:
-            CStatus(CObserver *pObs) :
-                m_pObs(pObs)
-            {}
-            void Message(const std::string& pMsg)
+class CStatusCommLayer
+{
+    private:
+        CObserver *m_pObserver;
+    public:
+        CStatusCommLayer(CObserver *pObs) :
+            m_pObserver(pObs)
+        {}
+        void Message(const std::string& pMsg)
+            {
+                if(m_pObserver)
                 {
-                    if(m_pObs)
-                        m_pObs->Status(pMsg);
+                    m_pObserver->Status(pMsg);
                 }
-    };
+            }
+};
 
-
-    void init_debug(CObserver* pObserver);
-    void init_warning(CObserver* pObserver);
-    void init_status(CObserver* pObserver);
-
-    void debug(const std::string& pMessage);
-    void warning(const std::string& pMessage);
-    void status(const std::string& pMessage);
+class CCommLayerInner
+{
+    private:
+        CDebugCommLayer* m_pDebugCommLayer;
+        CWarningCommLayer* m_pWarningCommLayer;
+        CStatusCommLayer* m_pStatusCommLayer;
+    public:
+        CDebugCommLayer* GetDebugCommLayer()
+            {
+                return m_pDebugCommLayer;
+            }
+        CWarningCommLayer* GetWarningCommLayer()
+            {
+                return m_pWarningCommLayer;
+            }
+        CStatusCommLayer* GetStatusCommLayer()
+            {
+                return m_pStatusCommLayer;
+            }
+        CCommLayerInner(CObserver *pObs, const bool& pDebug, const bool pWarning)
+            {
+                m_pDebugCommLayer = NULL;
+                m_pWarningCommLayer = NULL;
+                if (pDebug)
+                {
+                    m_pDebugCommLayer = new CDebugCommLayer(pObs);
+                }
+                if (pWarning)
+                {
+                    m_pWarningCommLayer = new CWarningCommLayer(pObs);
+                }
+                m_pStatusCommLayer = new CStatusCommLayer(pObs);
+            }
+        ~CCommLayerInner()
+            {
+                if (m_pDebugCommLayer)
+                {
+                    delete m_pDebugCommLayer;
+                }
+                if (m_pWarningCommLayer)
+                {
+                    delete m_pWarningCommLayer;
+                }
+                delete m_pStatusCommLayer;
+            }
 };
 
 #endif /* COMMLAYERINNER_H_ */

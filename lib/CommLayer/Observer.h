@@ -2,6 +2,7 @@
 #define OBSERVER_H_
 
 #include "CrashTypes.h"
+#include <string>
 
 class CObserver {
     public:

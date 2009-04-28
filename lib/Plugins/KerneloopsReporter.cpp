@@ -25,8 +25,8 @@
  */
 
 #include "KerneloopsReporter.h"
-#include "DebugDump.h"
 #include "PluginSettings.h"
+#include "ABRTCommLayer.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -59,6 +59,8 @@ size_t writefunction(void *ptr, size_t size, size_t nmemb, void __attribute((unu
 
 void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
+    ABRTCommLayer::status("Creating and submitting a report...");
+
 	CURL *handle;
 	struct curl_httppost *post = NULL;
 	struct curl_httppost *last = NULL;

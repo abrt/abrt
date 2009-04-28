@@ -23,7 +23,7 @@
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "PluginSettings.h"
-#include "CommLayer.h"
+#include "ABRTCommLayer.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -89,7 +89,7 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
 
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
-    CommLayerInner::status("Installing debug infos...");
+    ABRTCommLayer::status("Installing debug infos...");
 
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
     char buff[1024];
@@ -195,7 +195,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 
 void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
-    CommLayerInner::status("Getting backtrace...");
+    ABRTCommLayer::status("Getting backtrace...");
 
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
@@ -422,7 +422,7 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-    CommLayerInner::status("Getting global universal unique identification...");
+    ABRTCommLayer::status("Getting local universal unique identification...");
 
 	CDebugDump dd;
 	std::string UID;
@@ -446,7 +446,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 }
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-    CommLayerInner::status("Getting local universal unique identification...");
+    ABRTCommLayer::status("Getting global universal unique identification...");
 
     std::string backtrace;
     std::string executable;
@@ -464,7 +464,7 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
-    CommLayerInner::status("Starting report creation...");
+    ABRTCommLayer::status("Starting report creation...");
 
     std::string package;
     std::string backtrace;

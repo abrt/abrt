@@ -28,7 +28,6 @@
 //#include "DBusServerProxy.h"
 #include "MiddleWare.h"
 #include "Settings.h"
-#include "CommLayerInner.h"
 
 //FIXME remove when it gets to autoconf
 #include "CommLayerServerDBus.h"
@@ -37,10 +36,10 @@
 #elif HAVE_SOCKET
     #include "CommLayerServerSocket.h"
 #endif
+#include "CommLayerInner.h"
 
 // 1024 simultaneous actions
 #define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event)+FILENAME_MAX)*1024)
-
 
 class CCrashWatcher
 //: public CDBusServer_adaptor,
@@ -64,6 +63,7 @@ class CCrashWatcher
         std::string m_sTarget;
         CMiddleWare *m_pMW;
         CCommLayerServer *m_pCommLayer;
+        CCommLayerInner *m_pCommLayerInner;
         /*FIXME not needed */
         //DBus::Connection *m_pConn;
         CSettings *m_pSettings;

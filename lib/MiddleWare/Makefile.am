@@ -3,12 +3,12 @@ libABRTMiddleWare_la_SOURCES = MiddleWare.cpp MiddleWare.h PluginManager.cpp \
                            PluginManager.h ABRTPlugin.cpp \
                            ABRTPlugin.h DynamicLibrary.cpp \
                            DynamicLibrary.h \
-                           RPM.cpp RPM.h Plugin.h CrashTypes.h \
+                           RPM.cpp RPM.h Plugin.h \
                            MiddleWareTypes.h Action.h Database.h \
                            Reporter.h Analyzer.h
 libABRTMiddleWare_la_LIBADD = $(DL_LIBS) ../Utils/libABRTUtils.la  $(RPM_LIBS)
 libABRTMiddleWare_la_LDFLAGS = -version-info 0:1:0
-libABRTMiddleWare_la_CPPFLAGS = -I$(srcdir)/../Utils -I$(srcdir)/../CommLayer  $(RPM_CFLAGS)
+libABRTMiddleWare_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(RPM_CFLAGS)
 
 check_PROGRAMS = test
 test_SOURCES = test.cpp

@@ -20,6 +20,7 @@
     */
 
 #include "DebugDump.h"
+#include "ABRTException.h"
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
@@ -132,7 +133,7 @@ int main(int argc, char** argv)
         {
             free(executable);
             free(cmdline);
-            throw std::string("Can not get proc info.");
+            throw CABRTException(EXCEP_FATAL, "Can not get proc info.");
         }
 
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%s", dddir, time(NULL), pid);
@@ -148,7 +149,7 @@ int main(int argc, char** argv)
         {
             dd.Delete();
             dd.Close();
-            throw std::string("Can not open the file ") + path;
+            throw CABRTException(EXCEP_FATAL, std::string("Can not open the file ") + path);
         }
         // TODO: rewrite this
         while ((byte = getc(stdin)) != EOF)
@@ -158,7 +159,7 @@ int main(int argc, char** argv)
                 fclose(fp);
                 dd.Delete();
                 dd.Close();
-                throw std::string("Can not write to the file %s.");
+                throw CABRTException(EXCEP_FATAL, "Can not write to the file %s.");
             }
         }
 
@@ -168,10 +169,10 @@ int main(int argc, char** argv)
         dd.Close();
         write_success_log(pid);
     }
-    catch (std::string sError)
+    catch (std::exception& e)
     {
-        fprintf(stderr, "%s: %s\n", program_name, sError.c_str());
-        write_faliure_log(sError.c_str());
+        fprintf(stderr, "%s: %s\n", program_name, e.what());
+        write_faliure_log(e.what());
         return -2;
     }
     return 0;
