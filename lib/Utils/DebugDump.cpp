@@ -37,6 +37,14 @@
 #include <magic.h>
 #include <string.h>
 
+#include "CommLayerInner.h"
+#pragma weak comm_layer_inner_debug
+#define comm_layer_inner_debug(msg) ({\
+    if (comm_layer_inner_debug)\
+    {\
+        comm_layer_inner_debug(msg);\
+    }})
+
 #define PID_STR_MAX 16
 
 CDebugDump::CDebugDump() :
@@ -103,16 +111,17 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         {
             close(fd);
             m_bUnlock = false;
+            comm_layer_inner_debug("Lock file '"+pLockFile+"' is locked by same process");
             return true;
         }
         if (lockf(fd, F_TEST, 0) == 0)
         {
-            std::cerr << lockf(fd, F_TEST, 0) << std::endl;
             close(fd);
             remove(pLockFile.c_str());
             Delete();
             throw CABRTException(EXCEP_ERROR, "CDebugDump::GetAndSetLock(): dead lock found");
         }
+        comm_layer_inner_debug("Lock file '"+pLockFile+"' is locked by another process");
         close(fd);
         return false;
     }
@@ -135,6 +144,9 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
     }
     m_nFD = fd;
     m_bUnlock = true;
+
+    comm_layer_inner_debug("Locking '"+pLockFile+"'...");
+
     return true;
 }
 
@@ -155,6 +167,7 @@ void CDebugDump::UnLock()
     std::string lockFile = m_sDebugDumpDir + ".lock";
     if (m_bUnlock)
     {
+        comm_layer_inner_debug("UnLocking '"+lockFile+"'...");
         close(m_nFD);
         m_nFD = -1;
         remove(lockFile.c_str());
