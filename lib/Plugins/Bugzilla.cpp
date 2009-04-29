@@ -89,10 +89,10 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
 void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
     pDescription = "\nabrt detected crash.\n"
-                   "\nHow to reproduce\n"
+                   "\n\nHow to reproduce\n"
                    "-----\n" +
                    pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT] +
-                   "\nCommnet\n"
+                   "\n\nCommnet\n"
                    "-----\n" +
                    pCrashReport.find(CD_COMMENT)->second[CD_CONTENT] +
                    "\n\nAdditional information\n"
@@ -121,13 +121,30 @@ void CReporterBugzilla::GetProductAndVersion(const std::string& pRelease,
                                              std::string& pProduct,
                                              std::string& pVersion)
 {
-    // pattern: Fedora release version (codename)
-    // TODO: Consider other distribution
-    pProduct = pRelease.substr(0, pRelease.find(" "));
-    pVersion = pRelease.substr(pRelease.find(" ", pRelease.find(" ") + 1) + 1, 2);
-    if (pVersion == "")
+    if (pRelease.find("Rawhide") != std::string::npos)
     {
+        pProduct = "Fedora";
         pVersion = "rawhide";
+        return;
+    }
+    if (pRelease.find("Fedora") != std::string::npos)
+    {
+        pProduct = "Fedora";
+    }
+    else if (pRelease.find("Red Hat Enterprise Linux") != std::string::npos)
+    {
+        pProduct = "Red Hat Enterprise Linux ";
+    }
+    std::string::size_type pos = pRelease.find("release");
+    pos = pRelease.find(" ", pos) + 1;
+    while (pRelease[pos] != ' ')
+    {
+        pVersion += pRelease[pos];
+        if (pProduct == "Red Hat Enterprise Linux ")
+        {
+            pProduct += pRelease[pos];
+        }
+        pos++;
     }
 }
 
