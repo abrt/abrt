@@ -5,7 +5,7 @@
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
-#include <iostream>
+#include <sstream>
 
 CReporterBugzilla::CReporterBugzilla() :
     m_sBugzillaURL("https://bugzilla.redhat.com/xmlrpc.cgi")
@@ -35,7 +35,9 @@ void CReporterBugzilla::Login()
     {
         rpc->call(m_pXmlrpcClient, m_pCarriageParm);
         ret =  xmlrpc_c::value_struct(rpc->getResult());
-        comm_layer_inner_debug("Login id: " + xmlrpc_c::value_int(ret["id"]));
+        std::stringstream ss;
+        ss << xmlrpc_c::value_int(ret["id"]);
+        comm_layer_inner_debug("Login id: " + ss.str());
     }
     catch (std::exception& e)
     {
@@ -87,11 +89,13 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
 void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
     pDescription = "\nabrt detected crash.\n"
-                   "\nHow to reproduce\n" +
+                   "\nHow to reproduce\n"
+                   "-----\n" +
                    pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT] +
-                   "\nCommnet\n" +
+                   "\nCommnet\n"
+                   "-----\n" +
                    pCrashReport.find(CD_COMMENT)->second[CD_CONTENT] +
-                   "\nAdditional information\n"
+                   "\n\nAdditional information\n"
                    "======\n";
 
     map_crash_report_t::const_iterator it;
@@ -156,7 +160,9 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     {
         rpc->call(m_pXmlrpcClient, m_pCarriageParm);
         ret =  xmlrpc_c::value_struct(rpc->getResult());
-        comm_layer_inner_debug("New bug id: " + xmlrpc_c::value_int(ret["id"]));
+        std::stringstream ss;
+        ss << xmlrpc_c::value_int(ret["id"]);
+        comm_layer_inner_debug("New bug id: " + ss.str());
     }
     catch (std::exception& e)
     {
