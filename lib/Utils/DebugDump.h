@@ -43,6 +43,7 @@ class CDebugDump
         bool m_bOpened;
         bool m_bUnlock;
         DIR* m_pGetNextFileDir;
+        int m_nFD;
 
         void SaveKernelArchitectureRelease();
         void SaveTime();

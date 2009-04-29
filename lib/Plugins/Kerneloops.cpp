@@ -29,7 +29,7 @@
 #include "DebugDump.h"
 #include "PluginSettings.h"
 #include "ABRTException.h"
-#include "ABRTCommLayer.h"
+#include "CommLayerInner.h"
 
 #include <sstream>
 #include <assert.h>
@@ -59,7 +59,7 @@ void CAnalyzerKerneloops::WriteSysLog(int m_nCount)
 
 std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-    ABRTCommLayer::status("Getting local/global universal unique identification...");
+    comm_layer_inner_status("Getting local/global universal unique identification...");
 
 	std::string m_sOops;
 	std::stringstream m_sHash;
@@ -88,7 +88,7 @@ std::string CAnalyzerKerneloops::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 void CAnalyzerKerneloops::Report()
 {
-    ABRTCommLayer::status("Creating crash reports...");
+    comm_layer_inner_status("Creating crash reports...");
 
 	CDebugDump m_pDebugDump;
 	char m_sPath[PATH_MAX];
@@ -162,7 +162,7 @@ void CAnalyzerKerneloops::Init()
 
 void CAnalyzerKerneloops::ScanDmesg()
 {
-    ABRTCommLayer::debug("Scanning dmesg...");
+    comm_layer_inner_debug("Scanning dmesg...");
 
 	int m_nFoundOopses;
 	char *buffer;
@@ -179,7 +179,7 @@ void CAnalyzerKerneloops::ScanDmesg()
 
 void CAnalyzerKerneloops::ScanSysLogFile(const char *filename, int issyslog)
 {
-    ABRTCommLayer::debug("Scanning syslog...");
+    comm_layer_inner_debug("Scanning syslog...");
 
 	char *buffer;
 	struct stat statb;

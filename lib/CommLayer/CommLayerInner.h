@@ -102,4 +102,9 @@ class CCommLayerInner
             }
 };
 
+void comm_layer_inner_init(CCommLayerInner *pCommLayerInner);
+void comm_layer_inner_debug(const std::string& pMessage);
+void comm_layer_inner_warning(const std::string& pMessage);
+void comm_layer_inner_status(const std::string& pMessage);
+
 #endif /* COMMLAYERINNER_H_ */

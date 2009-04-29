@@ -24,7 +24,7 @@
 #include "PluginSettings.h"
 #include <sstream>
 #include "DebugDump.h"
-#include "ABRTCommLayer.h"
+#include "CommLayerInner.h"
 
 CLogger::CLogger() :
     m_sLogPath("/var/log/abrt-logger"),
@@ -48,7 +48,7 @@ void CLogger::LoadSettings(const std::string& pPath)
 
 void CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
-    ABRTCommLayer::status("Creating a report...");
+    comm_layer_inner_status("Creating a report...");
 
     std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
     std::ofstream fOut;

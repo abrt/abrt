@@ -4,7 +4,7 @@
 #include "PluginSettings.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
-#include "ABRTCommLayer.h"
+#include "CommLayerInner.h"
 #include <iostream>
 
 CReporterBugzilla::CReporterBugzilla() :
@@ -35,7 +35,7 @@ void CReporterBugzilla::Login()
     {
         rpc->call(m_pXmlrpcClient, m_pCarriageParm);
         ret =  xmlrpc_c::value_struct(rpc->getResult());
-        ABRTCommLayer::debug("Login id: " + xmlrpc_c::value_int(ret["id"]));
+        comm_layer_inner_debug("Login id: " + xmlrpc_c::value_int(ret["id"]));
     }
     catch (std::exception& e)
     {
@@ -156,7 +156,7 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     {
         rpc->call(m_pXmlrpcClient, m_pCarriageParm);
         ret =  xmlrpc_c::value_struct(rpc->getResult());
-        ABRTCommLayer::debug("New bug id: " + xmlrpc_c::value_int(ret["id"]));
+        comm_layer_inner_debug("New bug id: " + xmlrpc_c::value_int(ret["id"]));
     }
     catch (std::exception& e)
     {
@@ -170,15 +170,15 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
-    ABRTCommLayer::status("Logging into bugzilla...");
+    comm_layer_inner_status("Logging into bugzilla...");
     Login();
-    ABRTCommLayer::status("Checking for duplicates...");
+    comm_layer_inner_status("Checking for duplicates...");
     if (!CheckUUIDInBugzilla(component, uuid))
     {
-        ABRTCommLayer::status("Creating new bug...");
+        comm_layer_inner_status("Creating new bug...");
         NewBug(pCrashReport);
     }
-    ABRTCommLayer::status("Logging out...");
+    comm_layer_inner_status("Logging out...");
     Logout();
 }
 

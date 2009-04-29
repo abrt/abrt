@@ -24,6 +24,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <cerrno>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <dirent.h>
@@ -36,11 +37,14 @@
 #include <magic.h>
 #include <string.h>
 
+#define PID_STR_MAX 16
+
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
     m_bOpened(false),
     m_bUnlock(true),
-    m_pGetNextFileDir(NULL)
+    m_pGetNextFileDir(NULL),
+    m_nFD(-1)
 {}
 
 void CDebugDump::Open(const std::string& pDir)
@@ -81,67 +85,79 @@ bool CDebugDump::ExistFileDir(const std::string& pPath)
 
 bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& pPID)
 {
-    std::ifstream fIn;
-    std::ofstream fOut;
-
-    fIn.open(pLockFile.c_str());
-    if (!fIn.is_open())
+    int fd = open(pLockFile.c_str(), O_WRONLY | O_CREAT | O_EXCL, 0640);
+    if (fd == -1 && errno == EEXIST)
     {
-        fOut.open(pLockFile.c_str());
-        fOut << pPID;
-        fOut.close();
-        m_bUnlock = true;
-        return true;
-    }
-    else
-    {
-        std::string line;
-        std::stringstream ss;
-        getline(fIn, line);
-        if (line == pPID)
+        char pid[PID_STR_MAX + 1];
+        if ((fd = open(pLockFile.c_str(), O_RDONLY)) == -1)
         {
-            fIn.close();
+            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock status");
+        }
+        int r = read(fd, pid, sizeof(pid));
+        if (r == -1)
+        {
+            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get a pid");
+        }
+        pid[r > PID_STR_MAX ? PID_STR_MAX : r] = '\0';
+        if (pid == pPID)
+        {
+            close(fd);
             m_bUnlock = false;
             return true;
         }
-        ss << "/proc/" << line << "/";
-        if (!ExistFileDir(ss.str()))
+        if (lockf(fd, F_TEST, 0) == 0)
         {
-            fIn.close();
+            std::cerr << lockf(fd, F_TEST, 0) << std::endl;
+            close(fd);
             remove(pLockFile.c_str());
             Delete();
             throw CABRTException(EXCEP_ERROR, "CDebugDump::GetAndSetLock(): dead lock found");
         }
-        fIn.close();
+        close(fd);
         return false;
     }
+    else if (fd == -1)
+    {
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot create lock file");
+    }
+
+    if (write(fd, pPID.c_str(), pPID.length()) !=  pPID.length())
+    {
+        close(fd);
+        remove(pLockFile.c_str());
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot write a pid");
+    }
+    if (lockf(fd, F_LOCK, 0) == -1)
+    {
+        close(fd);
+        remove(pLockFile.c_str());
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock file");
+    }
+    m_nFD = fd;
+    m_bUnlock = true;
+    return true;
 }
 
 void CDebugDump::Lock()
 {
-    int ii = 0;
     std::string lockFile = m_sDebugDumpDir + ".lock";
     pid_t nPID = getpid();
     std::stringstream ss;
     ss << nPID;
     while (!GetAndSetLock(lockFile, ss.str()))
     {
-        usleep(5000);
-        // 40000 is about 20s, that should be enough.
-        if (ii > 40000)
-        {
-            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Lock(): timeout occurs when opening '"+m_sDebugDumpDir+"'");
-        }
-        ii++;
+        usleep(500000);
     }
 }
 
 void CDebugDump::UnLock()
 {
-    std::string lockPath = m_sDebugDumpDir + ".lock";
+    std::string lockFile = m_sDebugDumpDir + ".lock";
     if (m_bUnlock)
     {
-        remove(lockPath.c_str());
+        close(m_nFD);
+        m_nFD = -1;
+        remove(lockFile.c_str());
     }
 }
 
@@ -164,6 +180,7 @@ void CDebugDump::Create(const std::string& pDir)
 
     if (mkdir(pDir.c_str(), 0755) == -1)
     {
+        UnLock();
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot create dir: " + pDir);
     }
 

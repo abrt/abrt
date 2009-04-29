@@ -22,7 +22,7 @@
 #include "MiddleWare.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
-#include <iostream>
+#include "CommLayerInner.h"
 
 CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
                          const std::string& pPlugisLibDir) :
@@ -178,7 +178,7 @@ int CMiddleWare::CreateCrashReport(const std::string& pUUID,
         {
             DeleteCrashInfo(row.m_sUUID, row.m_sUID, false);
         }
-        std::cerr << "CMiddleWare::CreateCrashReport(): " << e.what() << std::endl;
+        comm_layer_inner_warning("CMiddleWare::CreateCrashReport(): " + e.what());
         return 0;
     }
 
@@ -189,14 +189,7 @@ void CMiddleWare::Report(const std::string& pDebugDumpDir)
 {
     map_crash_report_t crashReport;
 
-    try
-    {
-        DebugDumpToCrashReport(pDebugDumpDir, crashReport);
-    }
-    catch (CABRTException& e)
-    {
-        std::cerr << "CMiddleWare::Report(): " << e.what() << std::endl;
-    }
+    DebugDumpToCrashReport(pDebugDumpDir, crashReport);
 
     set_reporters_t::iterator it_r;
     for (it_r = m_setReporters.begin(); it_r != m_setReporters.end(); it_r++)
@@ -208,7 +201,8 @@ void CMiddleWare::Report(const std::string& pDebugDumpDir)
         }
         catch (CABRTException& e)
         {
-            std::cerr << "CMiddleWare::Report(): " << e.what() << std::endl;
+            comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
+            comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
         }
     }
 }
@@ -239,7 +233,8 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
             }
             catch (CABRTException& e)
             {
-                std::cerr << "CMiddleWare::Report(): " << e.what() << std::endl;
+                comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
+                comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
             }
         }
     }
@@ -357,7 +352,8 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
             }
             catch (CABRTException& e)
             {
-                std::cerr << "CMiddleWare::RunAnalyzerActions(): " << e.what() << std::endl;
+                comm_layer_inner_warning("CMiddleWare::RunAnalyzerActions(): " + e.what());
+                comm_layer_inner_status("Action performed by '"+(*it_a).first+"' was not successful: " + e.what());
             }
         }
     }
@@ -435,7 +431,7 @@ int CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir, map_crash_info_
         {
             DeleteDebugDumpDir(pDebugDumpDir);
         }
-        std::cerr << "CMiddleWare::SaveDebugDump(): " << e.what() << std::endl;
+        comm_layer_inner_warning("CMiddleWare::SaveDebugDump(): " + e.what());
         return 0;
     }
 }
@@ -461,7 +457,7 @@ map_crash_info_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
         {
             DeleteCrashInfo(row.m_sUUID, row.m_sUID, false);
         }
-        std::cerr << "CMiddleWare::GetCrashInfo(): " << e.what() << std::endl;
+        comm_layer_inner_warning("CMiddleWare::GetCrashInfo(): " + e.what());
         return crashInfo;
     }
 

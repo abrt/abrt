@@ -25,7 +25,7 @@
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "PluginSettings.h"
-#include "ABRTCommLayer.h"
+#include "CommLayerInner.h"
 
 #define MAILX_COMMAND "/bin/mailx"
 
@@ -41,7 +41,7 @@ CMailx::CMailx() :
 
 void CMailx::SendEmail(const std::string& pSubject, const std::string& pText)
 {
-    ABRTCommLayer::status("Sending an email...");
+    comm_layer_inner_status("Sending an email...");
 
     FILE* command;
     std::string mailx_command = MAILX_COMMAND + m_sAttachments +
@@ -64,7 +64,7 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText)
 
 void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
-    ABRTCommLayer::status("Creating a report...");
+    comm_layer_inner_status("Creating a report...");
 
     std::stringstream emailBody;
     std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;

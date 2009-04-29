@@ -30,7 +30,7 @@
 #include <sstream>
 #include <dirent.h>
 #include <cstring>
-#include "ABRTCommLayer.h"
+#include "CommLayerInner.h"
 #include "ABRTException.h"
 
 /* just a helper function
@@ -215,7 +215,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
     // TODO: initialize object according parameters -w -d
     // status has to be always created.
     m_pCommLayerInner = new CCommLayerInner(this, true, true);
-    ABRTCommLayer::init_comm_layer_inner(m_pCommLayerInner);
+    comm_layer_inner_init(m_pCommLayerInner);
 
     m_pSettings = new CSettings();
     m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
@@ -289,7 +289,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         std::cerr << "Saving debugdeump: " << *itt << std::endl;
         try
         {
-            if(m_pMW->SaveDebugDump(*itt, crashinfo) == 0)
+            if(m_pMW->SaveDebugDump(*itt, crashinfo))
             {
                 std::cerr << "Saved new entry: " << *itt << std::endl;
                 m_pMW->Report(*itt);

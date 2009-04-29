@@ -23,10 +23,9 @@
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "PluginSettings.h"
-#include "ABRTCommLayer.h"
+#include "CommLayerInner.h"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 #include <ctype.h>
 #include <unistd.h>
 #include <sys/types.h>
@@ -86,10 +85,10 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
 
     return ss.str();
 }
-
+#include <iostream>
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
-    ABRTCommLayer::status("Installing debug infos...");
+    comm_layer_inner_status("Installing debug infos...");
 
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
     char buff[1024];
@@ -153,11 +152,18 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
                 else
                 {
                     buff[r] = '\0';
-                    std::cerr << buff;
+                    comm_layer_inner_debug(buff);
                     if (strstr(buff, packageName.c_str()) != NULL &&
                         strstr(buff, "already installed and latest version") != NULL)
                     {
-                        already_installed = true;
+                        char* ii = strstr(buff, packageName.c_str());
+                        char* jj = strstr(ii, "\n");
+                        char* kk = strstr(ii, "already installed and latest version");
+
+                        if (jj > kk)
+                        {
+                            already_installed = true;
+                        }
                     }
                     if (already_installed == false &&
                         (strstr(buff, "No debuginfo packages available to install") != NULL ||
@@ -195,7 +201,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 
 void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
-    ABRTCommLayer::status("Getting backtrace...");
+    comm_layer_inner_status("Getting backtrace...");
 
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
@@ -422,7 +428,7 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-    ABRTCommLayer::status("Getting local universal unique identification...");
+    comm_layer_inner_status("Getting local universal unique identification...");
 
 	CDebugDump dd;
 	std::string UID;
@@ -446,7 +452,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 }
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-    ABRTCommLayer::status("Getting global universal unique identification...");
+    comm_layer_inner_status("Getting global universal unique identification...");
 
     std::string backtrace;
     std::string executable;
@@ -464,7 +470,7 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
-    ABRTCommLayer::status("Starting report creation...");
+    comm_layer_inner_status("Starting report creation...");
 
     std::string package;
     std::string backtrace;
