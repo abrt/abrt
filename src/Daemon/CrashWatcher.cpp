@@ -87,9 +87,13 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                         cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                     }
                 }
-                catch(std::string err)
+                catch (CABRTException& e)
                 {
-                    std::cerr << err << std::endl;
+                    std::cerr << e.what() << std::endl;
+                    if (e.type() == EXCEP_ERROR)
+                    {
+                        return -1;
+                    }
                 }
             }
             else
@@ -295,9 +299,13 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
                 m_pMW->Report(*itt);
             }
         }
-        catch(std::string err)
+        catch (CABRTException& e)
         {
-            std::cerr << err << std::endl;
+            std::cerr << e.what() << std::endl;
+            if (e.type() == EXCEP_ERROR)
+            {
+                exit(-1);
+            }
         }
     }
 }
@@ -391,9 +399,14 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     {
         retval = m_pMW->GetCrashInfos(pUID);
     }
-    catch(std::string err)
+    catch (CABRTException& e)
     {
-        std::cerr << err << std::endl;
+        std::cerr << e.what() << std::endl;
+        m_pCommLayer->Error(e.what());
+        if (e.type() == EXCEP_ERROR)
+        {
+            exit(-1);
+        }
     }
     //Notify("Sent crash info");
 	return retval;
@@ -408,9 +421,14 @@ map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const st
         m_pMW->CreateCrashReport(pUUID,pUID,crashReport);
         m_pCommLayer->AnalyzeComplete(crashReport);
     }
-    catch(std::string err)
+    catch (CABRTException& e)
     {
-        m_pCommLayer->Error(err);
+        std::cerr << e.what() << std::endl;
+        m_pCommLayer->Error(e.what());
+        if (e.type() == EXCEP_ERROR)
+        {
+            exit(-1);
+        }
     }
     return crashReport;
 }
@@ -428,9 +446,14 @@ bool CCrashWatcher::Report(map_crash_report_t pReport)
     {
         m_pMW->Report(pReport);
     }
-    catch(std::string err)
+    catch (CABRTException& e)
     {
-        std::cerr << err << std::endl;
+        std::cerr << e.what() << std::endl;
+        m_pCommLayer->Error(e.what());
+        if (e.type() == EXCEP_ERROR)
+        {
+            exit(-1);
+        }
         return false;
     }
     return true;
@@ -442,9 +465,14 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     {
         m_pMW->DeleteCrashInfo(pUUID,pUID, true);
     }
-    catch(std::string err)
+    catch (CABRTException& e)
     {
-        std::cerr << err << std::endl;
+        std::cerr << e.what() << std::endl;
+        m_pCommLayer->Error(e.what());
+        if (e.type() == EXCEP_ERROR)
+        {
+            return -1;
+        }
         return false;
     }
     return true;
