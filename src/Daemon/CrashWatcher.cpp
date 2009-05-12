@@ -82,7 +82,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 {
                     if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
                     {
-                        cc->m_pMW->Report(crashinfo[CD_MWDDD][CD_CONTENT]);
+                        cc->m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                         /* send message to dbus */
                         cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                     }
@@ -111,6 +111,49 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     return TRUE;
 }
 
+gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
+{
+    cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
+    std::cerr << "Activating plugin: " << cronPeriodicCallbackData->m_sPluginName << std::endl;
+    cronPeriodicCallbackData->m_pCrashWatcher->m_pMW->RunAction(cronPeriodicCallbackData->m_pCrashWatcher->m_sTarget,
+                                                                cronPeriodicCallbackData->m_sPluginName,
+                                                                cronPeriodicCallbackData->m_sPluginArgs);
+    return TRUE;
+}
+gboolean CCrashWatcher::cron_activation_one_cb(gpointer data)
+{
+    cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
+    std::cerr << "Activating plugin: " << cronOneCallbackData->m_sPluginName << std::endl;
+    cronOneCallbackData->m_pCrashWatcher->m_pMW->RunAction(cronOneCallbackData->m_pCrashWatcher->m_sTarget,
+                                                           cronOneCallbackData->m_sPluginName,
+                                                           cronOneCallbackData->m_sPluginArgs);
+    return FALSE;
+}
+gboolean CCrashWatcher::cron_activation_reshedule_cb(gpointer data)
+{
+    cron_callback_data_t* cronResheduleCallbackData = static_cast<cron_callback_data_t*>(data);
+    std::cerr << "Rescheduling plugin: " << cronResheduleCallbackData->m_sPluginName << std::endl;
+
+    cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(cronResheduleCallbackData->m_pCrashWatcher,
+                                                                              cronResheduleCallbackData->m_sPluginName,
+                                                                              cronResheduleCallbackData->m_sPluginArgs,
+                                                                              cronResheduleCallbackData->m_nTimeout);
+    g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
+                               cronPeriodicCallbackData->m_nTimeout,
+                               cron_activation_periodic_cb,
+                               static_cast<gpointer>(cronPeriodicCallbackData),
+                               cron_delete_callback_data_cb);
+
+
+    return FALSE;
+}
+
+void CCrashWatcher::cron_delete_callback_data_cb(gpointer data)
+{
+    cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
+    delete cronDeleteCallbackData;
+}
+
 void CCrashWatcher::SetUpMW()
 {
     m_pMW->SetOpenGPGCheck(m_pSettings->GetOpenGPGCheck());
@@ -133,30 +176,112 @@ void CCrashWatcher::SetUpMW()
     {
         m_pMW->RegisterPlugin(*it_p);
     }
-    CSettings::set_pair_strings_t reporters = m_pSettings->GetReporters();
-    CSettings::set_pair_strings_t::iterator it_r;
-    for (it_r = reporters.begin(); it_r != reporters.end(); it_r++)
+    CSettings::vector_pair_strings_t actionsAndReporters = m_pSettings->GetActionsAndReporters();
+    CSettings::vector_pair_strings_t::iterator it_ar;
+    for (it_ar = actionsAndReporters.begin(); it_ar != actionsAndReporters.end(); it_ar++)
     {
-        m_pMW->AddReporter((*it_r).first, (*it_r).second);
+        m_pMW->AddActionOrReporter((*it_ar).first, (*it_ar).second);
     }
-    CSettings::map_analyzer_reporters_t analyzer_reporters = m_pSettings->GetAnalyzerReporters();
-    CSettings::map_analyzer_reporters_t::iterator it_pr;
-    for (it_pr = analyzer_reporters.begin(); it_pr != analyzer_reporters.end(); it_pr++)
+
+    CSettings::map_analyzer_actions_and_reporters_t analyzerActionsAndReporters = m_pSettings->GetAnalyzerActionsAndReporters();
+    CSettings::map_analyzer_actions_and_reporters_t::iterator it_aar;
+    for (it_aar = analyzerActionsAndReporters.begin(); it_aar != analyzerActionsAndReporters.end(); it_aar++)
     {
-        CSettings::set_pair_strings_t::iterator it_r;
-        for (it_r = it_pr->second.begin(); it_r != it_pr->second.end(); it_r++)
+        CSettings::vector_pair_strings_t::iterator it_ar;
+        for (it_ar = it_aar->second.begin(); it_ar != it_aar->second.end(); it_ar++)
         {
-            m_pMW->AddAnalyzerReporter(it_pr->first, (*it_r).first, (*it_r).second);
+            m_pMW->AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
         }
     }
-    CSettings::map_analyzer_actions_t analyser_actions = m_pSettings->GetAnalyzerActions();
-    CSettings::map_analyzer_actions_t::iterator it_pa;
-    for (it_pa = analyser_actions.begin(); it_pa != analyser_actions.end(); it_pa++)
+}
+
+void CCrashWatcher::SetUpCron()
+{
+    CSettings::map_cron_t cron = m_pSettings->GetCron();
+    CSettings::map_cron_t::iterator it_c;
+    for (it_c = cron.begin(); it_c != cron.end(); it_c++)
     {
-        CSettings::set_pair_strings_t::iterator it_a;
-        for (it_a = it_pa->second.begin(); it_a != it_pa->second.end(); it_a++)
+        std::string::size_type pos = it_c->first.find(":");
+        std::string sH = it_c->first;
+        std::string sM = "";
+        int nH = -1;
+        int nM = -1;
+        time_t actTime = time(NULL);
+        if (pos != std::string::npos)
         {
-            m_pMW->AddAnalyzerAction(it_pa->first, (*it_a).first, (*it_a).second);
+            sH = it_c->first.substr(0, pos);
+            sM = it_c->first.substr(pos + 1);
+        }
+        int timeout = 0;
+        if (sH != "*")
+        {
+            nH = atoi(sH.c_str());
+            timeout = nH * 60 * 60;
+        }
+        if (sM != "*")
+        {
+            nM = atoi(sM.c_str());
+            timeout = nM * 60;
+        }
+        if (nH == -1 || nM == -1)
+        {
+            CSettings::vector_pair_strings_t::iterator it_ar;
+            for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
+            {
+
+                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(this, (*it_ar).first, (*it_ar).second, timeout);
+                g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
+                                           timeout ,
+                                           cron_activation_periodic_cb,
+                                           static_cast<gpointer>(cronPeriodicCallbackData),
+                                           cron_delete_callback_data_cb);
+            }
+        }
+        else
+        {
+            time_t actTime = time(NULL);
+            if (actTime == ((time_t)-1))
+            {
+                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::SetUpCron(): Cannot get time.");
+            }
+            struct tm locTime;
+            if (localtime_r(&actTime, &locTime) == NULL)
+            {
+                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::SetUpCron(): Cannot get local time.");
+            }
+            locTime.tm_hour = nH;
+            locTime.tm_min = nM;
+            locTime.tm_sec = 0;
+            time_t nextTime = mktime(&locTime);
+            if (nextTime == ((time_t)-1))
+            {
+                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::SetUpCron(): Cannot set up time.");
+            }
+            if (actTime > nextTime)
+            {
+                timeout = 24*60*60 + (nextTime - actTime);
+            }
+            else
+            {
+                timeout = nextTime - actTime;
+            }
+            CSettings::vector_pair_strings_t::iterator it_ar;
+            for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
+            {
+
+                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t(this, (*it_ar).first, (*it_ar).second, timeout);
+                g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
+                                           timeout,
+                                           cron_activation_one_cb,
+                                           static_cast<gpointer>(cronOneCallbackData),
+                                           cron_delete_callback_data_cb);
+                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t(this, (*it_ar).first, (*it_ar).second, 24 * 60 * 60);
+                g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
+                                           timeout,
+                                           cron_activation_reshedule_cb,
+                                           static_cast<gpointer>(cronResheduleCallbackData),
+                                           cron_delete_callback_data_cb);
+            }
         }
     }
 }
@@ -222,6 +347,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
     SetUpMW();
+    SetUpCron();
     FindNewDumps(pPath);
 #ifdef HAVE_DBUS
     m_pCommLayer = new CCommLayerServerDBus();
@@ -292,7 +418,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
             if(m_pMW->SaveDebugDump(*itt, crashinfo))
             {
                 std::cerr << "Saved new entry: " << *itt << std::endl;
-                m_pMW->Report(*itt);
+                m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
             }
         }
         catch(std::string err)

@@ -185,24 +185,58 @@ int CMiddleWare::CreateCrashReport(const std::string& pUUID,
     return 1;
 }
 
-void CMiddleWare::Report(const std::string& pDebugDumpDir)
+void CMiddleWare::RunAction(const std::string& pActionDir,
+                            const std::string& pPluginName,
+                            const std::string& pPluginArgs)
 {
-    map_crash_report_t crashReport;
+    try
+    {
+        CAction* action = m_pPluginManager->GetAction(pPluginName);
+        if (action)
+        {
+            action->Run(pActionDir, pPluginArgs);
+        }
+        else
+        {
+            throw CABRTException(EXCEP_ERROR, "Plugin '"+pPluginName+"' is not registered.");
+        }
+    }
+    catch (CABRTException& e)
+    {
+        comm_layer_inner_warning("CMiddleWare::RunAction(): " + e.what());
+        comm_layer_inner_status("Execution of '"+pPluginName+"' was not successful: " + e.what());
+    }
 
-    DebugDumpToCrashReport(pDebugDumpDir, crashReport);
+}
 
-    set_reporters_t::iterator it_r;
-    for (it_r = m_setReporters.begin(); it_r != m_setReporters.end(); it_r++)
+void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
+{
+    vector_actions_and_reporters_t::iterator it_ar;
+    for (it_ar = m_vectorActionsAndReporters.begin(); it_ar != m_vectorActionsAndReporters.end(); it_ar++)
     {
         try
         {
-            CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
-            reporter->Report(crashReport, (*it_r).second);
+            CReporter* reporter = m_pPluginManager->GetReporter((*it_ar).first);
+            CAction* action = m_pPluginManager->GetAction((*it_ar).first);
+            if (reporter)
+            {
+                map_crash_report_t crashReport;
+                DebugDumpToCrashReport(pDebugDumpDir, crashReport);
+                reporter->Report(crashReport, (*it_ar).second);
+            }
+            else if (action)
+            {
+                action->Run(pDebugDumpDir, (*it_ar).second);
+            }
+            else
+            {
+                throw CABRTException(EXCEP_ERROR, "Plugin '"+(*it_ar).first+"' is not registered.");
+            }
         }
         catch (CABRTException& e)
         {
-            comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
-            comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
+            comm_layer_inner_warning("CMiddleWare::RunActionsAndReporters(): " + e.what());
+            comm_layer_inner_status("Reporting via '"+(*it_ar).first+"' was not successful: " + e.what());
         }
     }
 }
@@ -219,17 +253,24 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
     std::string UID = pCrashReport.find(CD_MWUID)->second[CD_CONTENT];
     std::string UUID = pCrashReport.find(CD_MWUUID)->second[CD_CONTENT];
 
-    if (m_mapAnalyzerReporters.find(analyzer) != m_mapAnalyzerReporters.end())
+    if (m_mapAnalyzerActionsAndReporters.find(analyzer) != m_mapAnalyzerActionsAndReporters.end())
     {
-        set_reporters_t::iterator it_r;
-        for (it_r = m_mapAnalyzerReporters[analyzer].begin();
-             it_r != m_mapAnalyzerReporters[analyzer].end();
+        vector_actions_and_reporters_t::iterator it_r;
+        for (it_r = m_mapAnalyzerActionsAndReporters[analyzer].begin();
+             it_r != m_mapAnalyzerActionsAndReporters[analyzer].end();
              it_r++)
         {
             try
             {
                 CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
-                reporter->Report(pCrashReport, (*it_r).second);
+                if (reporter)
+                {
+                    reporter->Report(pCrashReport, (*it_r).second);
+                }
+                else
+                {
+                    throw CABRTException(EXCEP_ERROR, "Plugin '"+(*it_r).first+"' is not registered.");
+                }
             }
             catch (CABRTException& e)
             {
@@ -338,17 +379,24 @@ int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutabl
 
 void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
 {
-    if (m_mapAnalyzerActions.find(pAnalyzer) != m_mapAnalyzerActions.end())
+    if (m_mapAnalyzerActionsAndReporters.find(pAnalyzer) != m_mapAnalyzerActionsAndReporters.end())
     {
-        set_pairt_strings_t::iterator it_a;
-        for (it_a = m_mapAnalyzerActions[pAnalyzer].begin();
-             it_a != m_mapAnalyzerActions[pAnalyzer].end();
+        vector_actions_and_reporters_t::iterator it_a;
+        for (it_a = m_mapAnalyzerActionsAndReporters[pAnalyzer].begin();
+             it_a != m_mapAnalyzerActionsAndReporters[pAnalyzer].end();
              it_a++)
         {
             try
             {
                 CAction* action = m_pPluginManager->GetAction((*it_a).first);
-                action->Run(pDebugDumpDir, (*it_a).second);
+                if (action)
+                {
+                    action->Run(pDebugDumpDir, (*it_a).second);
+                }
+                else if (m_pPluginManager->GetReporter((*it_a).first) == NULL)
+                {
+                    throw CABRTException(EXCEP_ERROR, "Plugin '"+(*it_a).first+"' is not registered.");
+                }
             }
             catch (CABRTException& e)
             {
@@ -522,22 +570,15 @@ void CMiddleWare::AddBlackListedPackage(const std::string& pPackage)
     m_setBlackList.insert(pPackage);
 }
 
-void CMiddleWare::AddAnalyzerReporter(const std::string& pAnalyzer,
-                                      const std::string& pReporter,
+void CMiddleWare::AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
+                                              const std::string& pAnalyzerOrReporter,
+                                              const std::string& pArgs)
+{
+    m_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(pAnalyzerOrReporter, pArgs));
+}
+
+void CMiddleWare::AddActionOrReporter(const std::string& pActionOrReporter,
                                       const std::string& pArgs)
 {
-    m_mapAnalyzerReporters[pAnalyzer].insert(make_pair(pReporter, pArgs));
-}
-
-void CMiddleWare::AddAnalyzerAction(const std::string& pAnalyzer,
-                                    const std::string& pAction,
-                                    const std::string& pArgs)
-{
-    m_mapAnalyzerActions[pAnalyzer].insert(make_pair(pAction, pArgs));
-}
-
-void CMiddleWare::AddReporter(const std::string& pReporter,
-                              const std::string& pArgs)
-{
-    m_setReporters.insert(make_pair(pReporter, pArgs));
+    m_vectorActionsAndReporters.push_back(make_pair(pActionOrReporter, pArgs));
 }

@@ -12,30 +12,33 @@ class CSettings
         typedef std::map<std::string, std::string> map_settings_t;
         typedef std::set<std::string> set_strings_t;
         typedef std::pair<std::string, std::string> pair_string_string_t;
-        typedef std::set<pair_string_string_t> set_pair_strings_t;
-        typedef std::map<std::string, set_pair_strings_t> map_analyzer_reporters_t;
-        typedef std::map<std::string, set_pair_strings_t> map_analyzer_actions_t;
+        typedef std::vector<pair_string_string_t> vector_pair_strings_t;
+        typedef vector_pair_strings_t vector_actions_and_reporters_t;
+        typedef std::map<std::string, vector_pair_strings_t> map_analyzer_actions_and_reporters_t;
+        typedef std::map<std::string, vector_pair_strings_t> map_cron_t;
 
     private:
         map_settings_t m_mapSettingsCommon;
-        map_settings_t m_mapSettingsReporters;
-        map_settings_t m_mapSettingsActions;
+        map_settings_t m_mapSettingsAnalyzerActionsAndReporters;
+        map_settings_t m_mapSettingsCron;
 
         set_strings_t m_setOpenGPGPublicKeys;
         set_strings_t m_setBlackList;
         set_strings_t m_setEnabledPlugins;
         std::string m_sDatabase;
-        set_pair_strings_t m_setReporters;
+        vector_actions_and_reporters_t m_vectorActionsAndReporters;
+        map_cron_t m_mapCron;
+
         bool m_bOpenGPGCheck;
         unsigned int m_nMaxCrashReportsSize;
-        map_analyzer_reporters_t m_mapAnalyzerReporters;
-        map_analyzer_actions_t m_mapAnalyzerActions;
+        map_analyzer_actions_and_reporters_t m_mapAnalyzerActionsAndReporters;
 
         void ParseCommon();
-        void ParseReporters();
-        void ParseActions();
+        void ParseAnalyzerActionsAndReporters();
+    void ParseCron();
+
         set_strings_t ParseList(const std::string& pList);
-        set_pair_strings_t ParseListWithArgs(const std::string& pList);
+        vector_pair_strings_t ParseListWithArgs(const std::string& pList);
         set_strings_t ParseKey(const std::string& pKey);
 
     public:
@@ -44,11 +47,11 @@ class CSettings
         const set_strings_t& GetEnabledPlugins();
         const set_strings_t& GetOpenGPGPublicKeys();
         const bool& GetOpenGPGCheck();
-        const map_analyzer_reporters_t& GetAnalyzerReporters();
-        const map_analyzer_actions_t& GetAnalyzerActions();
+        const map_analyzer_actions_and_reporters_t& GetAnalyzerActionsAndReporters();
         const unsigned int& GetMaxCrashReportsSize();
-        const set_pair_strings_t& GetReporters();
+        const vector_pair_strings_t& GetActionsAndReporters();
         const std::string& GetDatabase();
+        const map_cron_t& GetCron();
 };
 
 #endif

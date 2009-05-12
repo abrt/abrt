@@ -56,7 +56,7 @@ void CActionRunApp::ParseArgs(const std::string& psArgs, vector_args_t& pArgs)
     }
 }
 
-void CActionRunApp::Run(const std::string& pDebugDumpDir,
+void CActionRunApp::Run(const std::string& pActionDir,
                         const std::string& pArgs)
 {
     comm_layer_inner_status("Executing RunApp plugin...");
@@ -82,7 +82,7 @@ void CActionRunApp::Run(const std::string& pDebugDumpDir,
     if (args.size() > 1)
     {
         CDebugDump dd;
-        dd.Open(pDebugDumpDir);
+        dd.Open(pActionDir);
         dd.SaveText(args[FILENAME], output);
         dd.Close();
     }

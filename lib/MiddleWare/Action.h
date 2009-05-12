@@ -29,7 +29,7 @@ class CAction : public CPlugin
 {
     public:
         virtual ~CAction() {}
-        virtual void Run(const std::string& pDebugDumpDir,
+        virtual void Run(const std::string& pActionDir,
                          const std::string& pArgs) = 0;
 };
 

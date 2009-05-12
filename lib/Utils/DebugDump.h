@@ -35,6 +35,8 @@
 #define FILENAME_ANALYZER           "analyzer"
 #define FILENAME_RELEASE            "release"
 #define FILENAME_EXECUTABLE         "executable"
+#define FILENAME_REASON             "reason"
+
 
 class CDebugDump
 {

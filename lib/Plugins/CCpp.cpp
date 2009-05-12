@@ -85,7 +85,7 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
 
     return ss.str();
 }
-#include <iostream>
+
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
     comm_layer_inner_status("Installing debug infos...");

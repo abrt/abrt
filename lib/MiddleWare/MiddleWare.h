@@ -35,18 +35,16 @@ class CMiddleWare
         typedef set_strings_t set_blacklist_t;
         typedef set_strings_t set_enabled_plugins_t;
 
-        typedef std::set<pair_string_string_t> set_pairt_strings_t;
-        typedef std::map<std::string, set_pairt_strings_t> map_reporter_associations_t;
-        typedef std::map<std::string, set_pairt_strings_t> map_action_associations_t;
-        typedef set_pairt_strings_t set_reporters_t;
+        typedef std::vector<pair_string_string_t> vector_pairt_strings_t;
+        typedef vector_pairt_strings_t vector_actions_and_reporters_t;
+        typedef std::map<std::string, vector_actions_and_reporters_t> map_analyzer_actions_and_reporters_t;
 
         CPluginManager* m_pPluginManager;
         CRPM m_RPM;
         set_blacklist_t m_setBlackList;
         std::string m_sDatabase;
-        map_reporter_associations_t m_mapAnalyzerReporters;
-        map_action_associations_t m_mapAnalyzerActions;
-        set_reporters_t m_setReporters;
+        map_analyzer_actions_and_reporters_t m_mapAnalyzerActionsAndReporters;
+        vector_actions_and_reporters_t m_vectorActionsAndReporters;
 
         bool m_bOpenGPGCheck;
 
@@ -83,7 +81,11 @@ class CMiddleWare
                               const std::string& pUID,
                               map_crash_report_t& pCrashReport);
 
-        void Report(const std::string& pDebugDumpDir);
+        void RunAction(const std::string& pActionDir,
+                       const std::string& pPluginName,
+                       const std::string& pPluginArgs);
+        void RunActionsAndReporters(const std::string& pDebugDumpDir);
+
         void Report(const map_crash_report_t& pCrashReport);
         void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
         void DeleteCrashInfo(const std::string& pUUID,
@@ -100,14 +102,11 @@ class CMiddleWare
         void SetDatabase(const std::string& pDatabase);
         void AddOpenGPGPublicKey(const std::string& pKey);
         void AddBlackListedPackage(const std::string& pPackage);
-        void AddAnalyzerReporter(const std::string& pAnalyzer,
-                                 const std::string& pReporter,
+        void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
+                                         const std::string& pActionOrReporter,
+                                         const std::string& pArgs);
+        void AddActionOrReporter(const std::string& pActionOrReporter,
                                  const std::string& pArgs);
-        void AddAnalyzerAction(const std::string& pAnalyzer,
-                               const std::string& pAction,
-                               const std::string& pArgs);
-        void AddReporter(const std::string& pReporter,
-                         const std::string& pArgs);
 };
 
 #endif /*MIDDLEWARE_H_*/
