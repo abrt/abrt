@@ -352,6 +352,7 @@ int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutabl
         if (packageName == "" ||
             (m_setBlackList.find(packageName) != m_setBlackList.end()))
         {
+            comm_layer_inner_debug("Blacklisted package - deleting debug dump...");
             DeleteDebugDumpDir(pDebugDumpDir);
             return 0;
         }
@@ -360,6 +361,7 @@ int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutabl
             if (!m_RPM.CheckFingerprint(packageName) ||
                 !m_RPM.CheckHash(packageName, pExecutable))
             {
+                comm_layer_inner_debug("Can not find package - deleting debug dump...");
                 DeleteDebugDumpDir(pDebugDumpDir);
                 return 0;
             }
@@ -422,6 +424,7 @@ int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pUUID,
     database->DisConnect();
     if (row.m_sReported == "1")
     {
+        comm_layer_inner_debug("Crash is already reported - deleting debug dump...");
         DeleteDebugDumpDir(pDebugDumpDir);
         return 0;
     }
@@ -429,6 +432,7 @@ int CMiddleWare::SaveDebugDumpToDatabase(const std::string& pUUID,
     pCrashInfo = GetCrashInfo(pUUID, pUID);
     if (row.m_sCount != "1")
     {
+        comm_layer_inner_debug("Crash is in database already - deleting debug dump...");
         DeleteDebugDumpDir(pDebugDumpDir);
         return 2;
     }

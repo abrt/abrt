@@ -50,12 +50,15 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     gsize len;
     gsize i = 0;
     err = g_io_channel_read (gio, buf, INOTIFY_BUFF_SIZE, &len);
-    if (err != G_IO_ERROR_NONE) {
+    CCrashWatcher *cc = (CCrashWatcher*)daemon;
+    if (err != G_IO_ERROR_NONE)
+    {
             g_warning ("Error reading inotify fd: %d\n", err);
             return FALSE;
     }
     /* reconstruct each event and send message to the dbus */
-    while (i < len) {
+    while (i < len)
+    {
         const char *name = NULL;
         struct inotify_event *event;
 
@@ -63,18 +66,12 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         if (event->len)
                 name = &buf[i] + sizeof (struct inotify_event);
         i += sizeof (struct inotify_event) + event->len;
-#ifdef DEBUG
-        std::cout << "Created file: " << name << std::endl;
-#endif /*DEBUG*/
+
+        cc->Debug(std::string("Created file: ") + name);
 
         /* we want to ignore the lock files */
         if(event->mask & IN_ISDIR)
         {
-            CCrashWatcher *cc = (CCrashWatcher*)daemon;
-#ifdef DEBUG
-            std::cerr << cc->GetDirSize(DEBUG_DUMPS_DIR)/(1024*1024.0) << std::endl;
-            std::cerr << cc->m_pSettings->GetMaxCrashReportsSize() << std::endl;
-#endif /*DEBUG*/
             if(cc->GetDirSize(DEBUG_DUMPS_DIR)/(1024*1024.0) < cc->m_pSettings->GetMaxCrashReportsSize()){
                 //std::string sName = name;
                 map_crash_info_t crashinfo;
@@ -90,7 +87,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 catch (CABRTException& e)
                 {
                     std::cerr << e.what() << std::endl;
-                    if (e.type() == EXCEP_ERROR)
+                    if (e.type() == EXCEP_FATAL)
                     {
                         return -1;
                     }
@@ -98,18 +95,14 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
             }
             else
             {
-#ifdef DEBUG
-                std::cout << "DebugDumps size has exceeded the limit, deleting the last dump." << name << std::endl;
-#endif /*DEBUG*/
+                cc->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
                 cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             }
         }
-#ifdef DEBUG
         else
         {
-            std::cerr << "Some file created, ignoring.." << std::endl;
+            cc->Debug("Some file created, ignoring...");
         }
-#endif /*DEBUG*/
     }
     delete[] buf;
     return TRUE;
@@ -118,7 +111,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
 gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
-    std::cerr << "Activating plugin: " << cronPeriodicCallbackData->m_sPluginName << std::endl;
+    cronPeriodicCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
     cronPeriodicCallbackData->m_pCrashWatcher->m_pMW->RunAction(cronPeriodicCallbackData->m_pCrashWatcher->m_sTarget,
                                                                 cronPeriodicCallbackData->m_sPluginName,
                                                                 cronPeriodicCallbackData->m_sPluginArgs);
@@ -127,7 +120,7 @@ gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
 gboolean CCrashWatcher::cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
-    std::cerr << "Activating plugin: " << cronOneCallbackData->m_sPluginName << std::endl;
+    cronOneCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
     cronOneCallbackData->m_pCrashWatcher->m_pMW->RunAction(cronOneCallbackData->m_pCrashWatcher->m_sTarget,
                                                            cronOneCallbackData->m_sPluginName,
                                                            cronOneCallbackData->m_sPluginArgs);
@@ -136,8 +129,7 @@ gboolean CCrashWatcher::cron_activation_one_cb(gpointer data)
 gboolean CCrashWatcher::cron_activation_reshedule_cb(gpointer data)
 {
     cron_callback_data_t* cronResheduleCallbackData = static_cast<cron_callback_data_t*>(data);
-    std::cerr << "Rescheduling plugin: " << cronResheduleCallbackData->m_sPluginName << std::endl;
-
+    cronResheduleCallbackData->m_pCrashWatcher->Debug("Rescheduling plugin: " + cronResheduleCallbackData->m_sPluginName);
     cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(cronResheduleCallbackData->m_pCrashWatcher,
                                                                               cronResheduleCallbackData->m_sPluginName,
                                                                               cronResheduleCallbackData->m_sPluginArgs,
@@ -292,18 +284,18 @@ void CCrashWatcher::SetUpCron()
 
 void CCrashWatcher::Status(const std::string& pMessage)
 {
-    std::cout << "Update: " << pMessage << std::endl;
+    std::cout << "Update: " + pMessage << std::endl;
 }
 
 void CCrashWatcher::Warning(const std::string& pMessage)
 {
-    std::cerr << "Warning: " << pMessage << std::endl;
+    std::cerr << "Warning: " + pMessage << std::endl;
 }
 
 void CCrashWatcher::Debug(const std::string& pMessage)
 {
     //some logic to add logging levels?
-    std::cout << "Debug: " << pMessage << std::endl;
+    std::cout << "Debug: " + pMessage << std::endl;
 }
 
 double CCrashWatcher::GetDirSize(const std::string &pPath)
@@ -332,7 +324,9 @@ double CCrashWatcher::GetDirSize(const std::string &pPath)
         (void) closedir (dp);
     }
     else
-        throw std::string("Init Failed");
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::GetDirSize(): Init Failed");
+    }
     return size;
 }
 
@@ -348,6 +342,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 
     m_pSettings = new CSettings();
     m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
+
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
     SetUpMW();
@@ -361,14 +356,13 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
     m_pCommLayer = new CCommLayerServerDBus();
     m_pCommLayer->Attach(this);
 
-    if((m_nFd = inotify_init()) == -1){
-        throw std::string("Init Failed");
-        //std::cerr << "Init Failed" << std::endl;
-        exit(-1);
+    if((m_nFd = inotify_init()) == -1)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
     }
     if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
 
-        throw std::string("Add watch failed:") + pPath.c_str();
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
     }
     m_pGio = g_io_channel_unix_new(m_nFd);
 }
@@ -388,7 +382,7 @@ CCrashWatcher::~CCrashWatcher()
 }
 void CCrashWatcher::FindNewDumps(const std::string& pPath)
 {
-    std::cerr << "Scanning for unsaved entries" << std::endl;
+    Debug("Scanning for unsaved entries...");
     struct dirent *ep;
     struct stat stats;
     DIR *dp;
@@ -398,13 +392,14 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
     dp = opendir (pPath.c_str());
     if (dp != NULL)
     {
-        while ((ep = readdir (dp))){
-            if(strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0){
+        while ((ep = readdir (dp)))
+        {
+            if(strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0)
+            {
                 dname = pPath + "/" + ep->d_name;
-                std::cerr << dname << std::endl;
                 lstat (dname.c_str(), &stats);
-                if(S_ISDIR (stats.st_mode)){
-                    std::cerr << ep->d_name << std::endl;
+                if(S_ISDIR (stats.st_mode))
+                {
                     dirs.push_back(dname);
                 }
             }
@@ -412,23 +407,24 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         (void) closedir (dp);
     }
     else
-        perror ("Couldn't open the directory");
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::FindNewDumps(): Couldn't open the directory:" + pPath);
+    }
 
     for (std::vector<std::string>::iterator itt = dirs.begin(); itt != dirs.end(); ++itt){
         map_crash_info_t crashinfo;
-        std::cerr << "Saving debugdeump: " << *itt << std::endl;
         try
         {
             if(m_pMW->SaveDebugDump(*itt, crashinfo))
             {
-                std::cerr << "Saved new entry: " << *itt << std::endl;
+                Debug("Saved new entry: " + *itt);
                 m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
             }
         }
         catch (CABRTException& e)
         {
             std::cerr << e.what() << std::endl;
-            if (e.type() == EXCEP_ERROR)
+            if (e.type() == EXCEP_FATAL)
             {
                 exit(-1);
             }
@@ -440,9 +436,13 @@ void CCrashWatcher::Lock()
 {
     int lfp = open("abrt.lock",O_RDWR|O_CREAT,0640);
 	if (lfp < 0)
-        throw std::string("CCrashWatcher.cpp:can not open lock file");
+	{
+	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
+	}
 	if (lockf(lfp,F_TLOCK,0) < 0)
-        throw std::string("CCrashWatcher.cpp:Lock:cannot create lock on lockfile");
+	{
+	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
+	}
 	/* only first instance continues */
 	//sprintf(str,"%d\n",getpid());
 	//write(lfp,str,strlen(str)); /* record pid to lockfile */
@@ -456,19 +456,24 @@ void CCrashWatcher::StartWatch()
     char action[FILENAME_MAX];
     struct inotify_event *pevent;
     //run forever
-    while(1){
+    while(1)
+    {
         i = 0;
         len = read(m_nFd,buff,INOTIFY_BUFF_SIZE);
-        while(i < len){
+        while(i < len)
+        {
             pevent = (struct inotify_event *)&buff[i];
             if (pevent->len)
+            {
                 std::strcpy(action, pevent->name);
+            }
             else
+            {
                 std::strcpy(action, m_sTarget.c_str());
+            }
+
             i += sizeof(struct inotify_event) + pevent->len;
-#ifdef DEBUG
-            std::cout << "Created file: " << action << std::endl;
-#endif /*DEBUG*/
+            Debug(std::string("Created file: ") + action);
         }
     }
     delete[] buff;
@@ -485,21 +490,21 @@ void CCrashWatcher::GStartWatch()
 
 void CCrashWatcher::Daemonize()
 {
-#ifdef DEBUG
-    std::cout << "Daemonize" << std::endl;
-#endif
+
+    Debug("Daemonize...");
     // forking to background
     pid_t pid = fork();
 	if (pid < 0)
     {
-        throw "CCrashWatcher.cpp:Daemonize:Fork error";
+	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): Fork error");
     }
     /* parent exits */
 	if (pid > 0) _exit(0);
 	/* child (daemon) continues */
     pid_t sid = setsid();
-    if(sid == -1){
-        throw "CCrashWatcher.cpp:Daemonize:setsid failed";
+    if(sid == -1)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): setsid failed");
     }
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
@@ -510,9 +515,7 @@ void CCrashWatcher::Daemonize()
 
 void CCrashWatcher::Run()
 {
-#ifdef DEBUG
-    std::cout << "Run" << std::endl;
-#endif
+    Debug("Runnig...");
     //Lock();
     GStartWatch();
 }
@@ -520,7 +523,7 @@ void CCrashWatcher::Run()
 vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 {
     vector_crash_infos_t retval;
-    std::cerr << "CCommLayerServerDBus::GetCrashInfos" << std::endl;
+    Debug("Getting crash infos...");
     try
     {
         retval = m_pMW->GetCrashInfos(pUID);
@@ -529,7 +532,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     {
         std::cerr << e.what() << std::endl;
         m_pCommLayer->Error(e.what());
-        if (e.type() == EXCEP_ERROR)
+        if (e.type() == EXCEP_FATAL)
         {
             exit(-1);
         }
@@ -541,7 +544,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const std::string &pUID)
 {
     map_crash_report_t crashReport;
-    std::cerr << "Creating report" << std::endl;
+    Debug("Creating report...");
     try
     {
         m_pMW->CreateCrashReport(pUUID,pUID,crashReport);
@@ -551,7 +554,7 @@ map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const st
     {
         std::cerr << e.what() << std::endl;
         m_pCommLayer->Error(e.what());
-        if (e.type() == EXCEP_ERROR)
+        if (e.type() == EXCEP_FATAL)
         {
             exit(-1);
         }
@@ -576,7 +579,7 @@ bool CCrashWatcher::Report(map_crash_report_t pReport)
     {
         std::cerr << e.what() << std::endl;
         m_pCommLayer->Error(e.what());
-        if (e.type() == EXCEP_ERROR)
+        if (e.type() == EXCEP_FATAL)
         {
             exit(-1);
         }
@@ -595,7 +598,7 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     {
         std::cerr << e.what() << std::endl;
         m_pCommLayer->Error(e.what());
-        if (e.type() == EXCEP_ERROR)
+        if (e.type() == EXCEP_FATAL)
         {
             return -1;
         }
