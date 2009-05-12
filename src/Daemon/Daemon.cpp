@@ -22,14 +22,17 @@
 #include <cstdio>
 
 CCrashWatcher *g_pCrashWatcher;
-//DBus::Glib::BusDispatcher *dispatcher;
 
 void terminate(int signal)
 {
     fprintf(stderr, "Got SIGINT/SIGTERM, cleaning up..\n");
     delete g_pCrashWatcher;
-    //delete dispatcher;
     exit(0);
+}
+
+void print_help()
+{
+    
 }
 
 int main(int argc, char** argv)
@@ -38,13 +41,6 @@ int main(int argc, char** argv)
     /*signal handlers */
     signal(SIGTERM, terminate);
     signal(SIGINT, terminate);
-    /* connect to dbus
-    //DBus::Glib::BusDispatcher *dispatcher;
-    dispatcher = new DBus::Glib::BusDispatcher();
-    dispatcher->attach(NULL);
-    DBus::default_dispatcher = dispatcher;
-	DBus::Connection conn = DBus::Connection::SystemBus();
-    */
     try
     {
         g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
