@@ -36,28 +36,17 @@
 
 class CAnalyzerKerneloops : public CAnalyzer
 {
-	private:
-		void WriteSysLog(int m_nCount);
-		void Report();
-		std::string m_sSysLogFile;
-		CSysLog m_pSysLog;
-
 	public:
-		CAnalyzerKerneloops();
 		virtual ~CAnalyzerKerneloops() {}
 		virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
 		virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-		virtual void Init();
 		virtual void CreateReport(const std::string& pDebugDumpDir) {}
-		virtual void LoadSettings(const std::string& pPath);
-		void ScanDmesg();
-		void ScanSysLogFile(const char *filename, int issyslog);
 };
 
 PLUGIN_INFO(ANALYZER,
             CAnalyzerKerneloops,
 			"Kerneloops",
-			"0.0.1",
+			"0.0.2",
 			"Abrt's Kerneloops plugin.",
 			"anton@redhat.com",
 			"https://people.redhat.com/aarapov");
