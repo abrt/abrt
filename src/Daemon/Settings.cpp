@@ -3,9 +3,10 @@
 #include <stdlib.h>
 
 #define SECTION_COMMON      "Common"
-#define SECTION_REPORTERS   "AnalyzerReporters"
-#define SECTION_ACTIONS     "AnalyzerActions"
+#define SECTION_ANALYZER_ACTIONS_AND_REPORTERS   "AnalyzerActionsAndReporters"
+#define SECTION_CRON        "Cron"
 
+#include <iostream>
 void CSettings::LoadSettings(const std::string& pPath)
 {
     std::ifstream fIn;
@@ -67,23 +68,35 @@ void CSettings::LoadSettings(const std::string& pPath)
             {
                 if (section == SECTION_COMMON)
                 {
-                    m_mapSettingsCommon[key] = value;
+                    if (m_mapSettingsCommon[key] != "")
+                    {
+                        m_mapSettingsCommon[key] += ",";
+                    }
+                    m_mapSettingsCommon[key] += value;
                 }
-                else if (section == SECTION_REPORTERS)
+                else if (section == SECTION_ANALYZER_ACTIONS_AND_REPORTERS)
                 {
-                    m_mapSettingsReporters[key] = value;
+                    if (m_mapSettingsAnalyzerActionsAndReporters[key] != "")
+                    {
+                        m_mapSettingsAnalyzerActionsAndReporters[key] += ",";
+                    }
+                    m_mapSettingsAnalyzerActionsAndReporters[key] += value;
                 }
-                else if (section == SECTION_ACTIONS)
+                else if (section == SECTION_CRON)
                 {
-                    m_mapSettingsActions[key] = value;
+                    if (m_mapSettingsCron[key] != "")
+                    {
+                        m_mapSettingsCron[key] += ",";
+                    }
+                    m_mapSettingsCron[key] += value;
                 }
             }
         }
         fIn.close();
     }
     ParseCommon();
-    ParseReporters();
-    ParseActions();
+    ParseAnalyzerActionsAndReporters();
+    ParseCron();
 }
 
 void CSettings::ParseCommon()
@@ -112,41 +125,40 @@ void CSettings::ParseCommon()
     {
         m_nMaxCrashReportsSize =  atoi(m_mapSettingsCommon["MaxCrashReportsSize"].c_str());
     }
-    if (m_mapSettingsCommon.find("Reporters") != m_mapSettingsCommon.end())
+    if (m_mapSettingsCommon.find("ActionsAndReporters") != m_mapSettingsCommon.end())
     {
-        m_setReporters =  ParseListWithArgs(m_mapSettingsCommon["Reporters"]);
-    }
-
-}
-
-void  CSettings::ParseReporters()
-{
-    map_settings_t::iterator it;
-    for (it = m_mapSettingsReporters.begin(); it != m_mapSettingsReporters.end(); it++)
-    {
-        m_mapAnalyzerReporters[it->first] = ParseListWithArgs(it->second);
+        m_vectorActionsAndReporters =  ParseListWithArgs(m_mapSettingsCommon["ActionsAndReporters"]);
     }
 }
 
-void CSettings::ParseActions()
+void CSettings::ParseAnalyzerActionsAndReporters()
 {
     map_settings_t::iterator it;
-    for (it = m_mapSettingsActions.begin(); it != m_mapSettingsActions.end(); it++)
+    for (it = m_mapSettingsAnalyzerActionsAndReporters.begin(); it != m_mapSettingsAnalyzerActionsAndReporters.end(); it++)
     {
         set_strings_t keys = ParseKey(it->first);
-        set_pair_strings_t singleActions = ParseListWithArgs(it->second);
+        vector_pair_strings_t actionsAndReporters = ParseListWithArgs(it->second);
         set_strings_t::iterator it_keys;
         for (it_keys = keys.begin(); it_keys != keys.end(); it_keys++)
         {
-            m_mapAnalyzerActions[*it_keys] = singleActions;
+            m_mapAnalyzerActionsAndReporters[*it_keys] = actionsAndReporters;
         }
     }
 }
 
-
-CSettings::set_pair_strings_t CSettings::ParseListWithArgs(const std::string& pValue)
+void CSettings::ParseCron()
 {
-    set_pair_strings_t pluginArgs;
+    map_settings_t::iterator it;
+    for (it = m_mapSettingsCron.begin(); it != m_mapSettingsCron.end(); it++)
+    {
+        vector_pair_strings_t actionsAndReporters = ParseListWithArgs(it->second);
+    m_mapCron[it->first] = actionsAndReporters;
+    }
+}
+
+CSettings::vector_pair_strings_t CSettings::ParseListWithArgs(const std::string& pValue)
+{
+    vector_pair_strings_t pluginsWithArgs;
     unsigned int ii;
     std::string item = "";
     std::string action = "";
@@ -167,7 +179,7 @@ CSettings::set_pair_strings_t CSettings::ParseListWithArgs(const std::string& pV
         }
         else if (pValue[ii] == ')' && is_arg && !is_quote)
         {
-            pluginArgs.insert(make_pair(action, item));
+            pluginsWithArgs.push_back(make_pair(action, item));
             item = "";
             is_arg = false;
             action = "";
@@ -176,7 +188,7 @@ CSettings::set_pair_strings_t CSettings::ParseListWithArgs(const std::string& pV
         {
             if (item != "")
             {
-                pluginArgs.insert(make_pair(item, ""));
+                pluginsWithArgs.push_back(make_pair(item, ""));
                 item = "";
             }
         }
@@ -187,9 +199,9 @@ CSettings::set_pair_strings_t CSettings::ParseListWithArgs(const std::string& pV
     }
     if (item != "")
     {
-        pluginArgs.insert(make_pair(item, ""));
+        pluginsWithArgs.push_back(make_pair(item, ""));
     }
-    return pluginArgs;
+    return pluginsWithArgs;
 }
 
 CSettings::set_strings_t CSettings::ParseKey(const std::string& Key)
@@ -279,26 +291,27 @@ const bool& CSettings::GetOpenGPGCheck()
     return m_bOpenGPGCheck;
 }
 
-const CSettings::map_analyzer_reporters_t& CSettings::GetAnalyzerReporters()
+const CSettings::map_analyzer_actions_and_reporters_t& CSettings::GetAnalyzerActionsAndReporters()
 {
-    return m_mapAnalyzerReporters;
+    return m_mapAnalyzerActionsAndReporters;
 }
 
-const CSettings::map_analyzer_actions_t& CSettings::GetAnalyzerActions()
-{
-    return m_mapAnalyzerActions;
-}
 const unsigned int& CSettings::GetMaxCrashReportsSize()
 {
     return m_nMaxCrashReportsSize;
 }
 
-const CSettings::set_pair_strings_t& CSettings::GetReporters()
+const CSettings::vector_pair_strings_t& CSettings::GetActionsAndReporters()
 {
-    return m_setReporters;
+    return m_vectorActionsAndReporters;
 }
 
 const std::string& CSettings::GetDatabase()
 {
     return m_sDatabase;
+}
+
+const CSettings::map_cron_t& CSettings::GetCron()
+{
+    return m_mapCron;
 }

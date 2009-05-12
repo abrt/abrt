@@ -34,7 +34,7 @@ class CActionRunApp : public CAction
 
     public:
         virtual ~CActionRunApp() {}
-        virtual void Run(const std::string& pDebugDumpDir,
+        virtual void Run(const std::string& pActionDir,
                          const std::string& pArgs);
 };
 

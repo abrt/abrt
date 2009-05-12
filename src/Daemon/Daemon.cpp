@@ -21,7 +21,7 @@
 #include <iostream>
 #include <cstdio>
 
-CCrashWatcher *g_pCrashWatcher;
+CCrashWatcher *g_pCrashWatcher = NULL;
 
 void terminate(int signal)
 {

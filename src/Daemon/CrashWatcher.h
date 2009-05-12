@@ -48,11 +48,37 @@ class CCrashWatcher
 :  public CObserver
 {
     private:
+
+        typedef struct SCronCallbackData
+        {
+            CCrashWatcher* m_pCrashWatcher;
+            std::string m_sPluginName;
+            std::string m_sPluginArgs;
+            unsigned int m_nTimeout;
+
+            SCronCallbackData(CCrashWatcher* pCrashWatcher,
+                              const std::string& pPluginName,
+                              const std::string& pPluginArgs,
+                              const unsigned int& pTimeout) :
+                m_pCrashWatcher(pCrashWatcher),
+                m_sPluginName(pPluginName),
+                m_sPluginArgs(pPluginArgs),
+                m_nTimeout(pTimeout)
+           {}
+
+        } cron_callback_data_t;
+
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
+        static gboolean cron_activation_periodic_cb(gpointer data);
+        static gboolean cron_activation_one_cb(gpointer data);
+        static gboolean cron_activation_reshedule_cb(gpointer data);
+        static void cron_delete_callback_data_cb(gpointer data);
+
         void StartWatch();
         void GStartWatch();
         void Lock();
         void SetUpMW();
+        void SetUpCron();
         /* finds dumps created when daemon wasn't running */
         void FindNewDumps(const std::string& pPath);
         double GetDirSize(const std::string &pPath);
