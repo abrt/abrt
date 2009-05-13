@@ -198,28 +198,38 @@ void CCrashWatcher::SetUpCron()
     for (it_c = cron.begin(); it_c != cron.end(); it_c++)
     {
         std::string::size_type pos = it_c->first.find(":");
-        std::string sH = it_c->first;
-        std::string sM = "";
+        int timeout = 0;
         int nH = -1;
         int nM = -1;
+        int nS = -1;
         time_t actTime = time(NULL);
         if (pos != std::string::npos)
         {
+            std::string sH = "";
+            std::string sM = "";
+
             sH = it_c->first.substr(0, pos);
-            sM = it_c->first.substr(pos + 1);
-        }
-        int timeout = 0;
-        if (sH != "*")
-        {
             nH = atoi(sH.c_str());
-            timeout = nH * 60 * 60;
-        }
-        if (sM != "*")
-        {
+            nH = nH > 23 ? 23 : nH;
+            nH = nH < 0 ? 0 : nH;
+            nM = nM > 59 ? 59 : nM;
+            nM = nM < 0 ? 0 : nM;
+            timeout += nH * 60 * 60;
+            sM = it_c->first.substr(pos + 1);
             nM = atoi(sM.c_str());
-            timeout = nM * 60;
+            timeout += nM * 60;
         }
-        if (nH == -1 || nM == -1)
+        else
+        {
+            std::string sS = "";
+
+            sS = it_c->first;
+            nS = atoi(sS.c_str());
+            nS = nS < 0 ? 0 : nS;
+            timeout = nS;
+        }
+
+        if (nS != -1)
         {
             CSettings::vector_pair_strings_t::iterator it_ar;
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
