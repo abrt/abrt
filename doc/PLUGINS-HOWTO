@@ -1,0 +1,136 @@
+This document describes how to create your own plugin for abrt.
+
+There is a base abstract class CPlugin, but you can't inherit
+directly from that: you have to use one of the four subclasses,
+depending on what is your plugin supposed to do.
+
+These are the subclasses:
+    * Action plugin (CAction)
+    * Analyzer plugin (CAnalyzer)
+    * Reporter plugin (CReporter)
+    * Database plugin (CDatabase)
+
+Each of them requires you to override different set of methods.
+
+One very common parameter of the methods is called 
+pDebugDumpDir: it specifies the directory, 
+which is created to gather information of this specific crash:
+the files (such as core dumps) that were created when the application
+crashed are all stored here. In addition, the plugins can write
+their output files there, if any.
+
+Let's discuss the plugin types in detail:
+
+Action Plugin
+-------------
+This type of plugin is used, when you need some action to be
+performed in the case the crash is encountered.
+you have to override one method:
+
+virtual void Run(const std::string& pActiveDir,
+                 const std::string& pArgs) = 0; 
+-This method runs the specified action.		 
+ The first argument is an directory name. It can be either current debug
+ dump dir or directory which contains all debug dumps.
+ The second argument is a string with arguments specified for the action.
+ 
+Analyzer Plugin
+---------------
+This plugin has to compute the UUID of the crash: crashes in kernel,
+in userspace binary, in python script etc. differ, so you have to have
+plugin for each type of application, that you want "abrt" to handle.
+
+you have to override these methods:
+
+virtual std::string GetLocalUUID(const std::string& pDebugDumpPath) = 0;
+- This method computes the local UUID of the crash.
+
+virtual std::string GetGlobalUUID(const std::string& pDebugDumpPath) = 0;
+- This method computes the global UUID of the crash.
+
+NOTE:The difference between local and global UUID is, that the local UUID
+is specific for the machine architecture, on which the crash is encountered.
+When the crash is reported, abrt has to use the "-debuginfo" packages
+to render a global UUID, which should be independent of the specific
+system (the same crash on different architectures/configurations can
+yield different local UUIDs but has to have the same global UUID).
+
+virtual void CreateReport(const std::string& pDebugDumpPath) = 0;
+- This method creates the report about the crash and stores it
+  in the crash's directory.
+
+Reporter Plugin
+---------------
+This plugin receives the entire finished crash report and
+posts/reports it somewhere (e.g. logs it, mails it, posts
+it on some web tool...)
+
+you have to override this method:
+
+virtual void Report(const crash_report_t& pCrashReport,
+                    const std::string& pArgs) = 0;
+-It's self-explanatory, that this method takes the report
+ and presents it somewhere to the world.
+ The second argument is a string with arguments specified for the retorter.
+
+
+Database Plugin
+---------------
+This plugin is used to store the metadata about the crash:
+they have to be in the database in order to distinguish,
+whether the current crash is or is not the same as some
+crash before. The database can be local, or in some
+centralized location on the network.
+
+you have to override these methods:
+virtual void Connect() = 0;
+virtual void DisConnect() = 0;
+- connect and disconnect from the database
+
+virtual void Insert(const std::string& pUUID,
+                    const std::string& pUID,
+                    const std::string& pDebugDumpPath,
+                    const std::string& pTime) = 0;
+- insert an entry to the database: you use both UID (user ID) and UUID 
+  (ID of the crash)
+
+virtual void Delete(const std::string& pUUID, const std::string& pUID) = 0;
+- delete an entry
+
+virtual void SetReported(const std::string& pUUID, const std::string& pUID) = 0;
+- insert to the database the information, that this bug was already
+  reported (so for example the report plugins won't run several times
+  for the same bug)
+
+virtual const vector_database_rows_t GetUIDData(const std::string& pUID) = 0;
+- get database rows for the specified user ID
+
+virtual const database_row_t GetUUIDData(const std::string& pUUID, const
+ std::string& pUID) = 0;
+- get a database row for the specified user ID and UUID 
+
+
+The macro PLUGIN_INFO
+---------------------
+It is required, in order for your subclass to be properly registered 
+and treated as a plugin, to use the macro PLUGIN_INFO in your plugin's 
+header file. 
+This sets up all the lower-level and administrative details to fit your 
+class into the plugin infrastructure. The syntax is this:
+
+PLUGIN_INFO(type, plugin_class, name, version, description, email, www)
+- "type" is one of ANALYZER, ACTION, REPORTER, or DATABASE 
+- "plugin_class" is the identifier of the class
+- "name" is a string with the name of the plugin
+- "version" is a string with the version of the plugin
+- "description" is a string with the summary of what the plugin does
+- "email" and "www" are strings with the contact info for the author
+
+for example:
+PLUGIN_INFO(REPORTER,
+            CMailx,
+            "Mailx",
+            "0.0.1",
+            "Sends an email with a report via mailx command",
+            "zprikryl@redhat.com",
+            "https://fedorahosted.org/crash-catcher/wiki");
