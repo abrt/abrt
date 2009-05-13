@@ -352,7 +352,14 @@ int CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutabl
         if (packageName == "" ||
             (m_setBlackList.find(packageName) != m_setBlackList.end()))
         {
-            comm_layer_inner_debug("Blacklisted package - deleting debug dump...");
+            if (packageName == "")
+            {
+                comm_layer_inner_debug("Executable doesn't belong to any package - deleting debug dump...");
+            }
+            else
+            {
+                comm_layer_inner_debug("Blacklisted package - deleting debug dump...");
+            }
             DeleteDebugDumpDir(pDebugDumpDir);
             return 0;
         }

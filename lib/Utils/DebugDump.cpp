@@ -399,28 +399,48 @@ void CDebugDump::SaveBinaryFile(const std::string& pPath, const char* pData, con
 
 void CDebugDump::LoadText(const std::string& pName, std::string& pData)
 {
+    if (!m_bOpened)
+    {
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::LoadText(): DebugDump is not opened.");
+    }
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
     LoadTextFile(fullPath, pData);
 }
 void CDebugDump::LoadBinary(const std::string& pName, char** pData, unsigned int* pSize)
 {
+    if (!m_bOpened)
+    {
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::LoadBinary(): DebugDump is not opened.");
+    }
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
     LoadBinaryFile(fullPath, pData, pSize);
 }
 
 void CDebugDump::SaveText(const std::string& pName, const std::string& pData)
 {
+    if (!m_bOpened)
+    {
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::SaveText(): DebugDump is not opened.");
+    }
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
     SaveTextFile(fullPath, pData);
 }
 void CDebugDump::SaveBinary(const std::string& pName, const char* pData, const unsigned int pSize)
 {
+    if (!m_bOpened)
+    {
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::SaveBinary(): DebugDump is not opened.");
+    }
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
     SaveBinaryFile(fullPath, pData, pSize);
 }
 
 void CDebugDump::InitGetNextFile()
 {
+    if (!m_bOpened)
+    {
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::InitGetNextFile(): DebugDump is not opened.");
+    }
     if (m_pGetNextFileDir != NULL)
     {
         closedir(m_pGetNextFileDir);

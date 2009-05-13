@@ -142,6 +142,7 @@ int main(int argc, char** argv)
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_UID, uid);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
+        dd.SaveText(FILENAME_REASON, std::string("Process was terminated by signal ") + signal);
 
         snprintf(path + strlen(path), sizeof(path), "/%s", FILENAME_COREDUMP);
 

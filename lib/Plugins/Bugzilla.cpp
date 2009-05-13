@@ -6,6 +6,7 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 #include <sstream>
+#include <string.h>
 
 CReporterBugzilla::CReporterBugzilla() :
     m_sBugzillaURL("https://bugzilla.redhat.com/xmlrpc.cgi")
@@ -21,6 +22,14 @@ CReporterBugzilla::~CReporterBugzilla()
     delete m_pXmlrpcClient;
     delete m_pCarriageParm;
 }
+
+PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
+{
+    CReporterBugzilla* bz = static_cast<CReporterBugzilla*>(arg);
+    bz->m_sAttchmentInBase64 += obuf;
+    return 1;
+}
+
 
 void CReporterBugzilla::Login()
 {
@@ -101,7 +110,7 @@ void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrash
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
-        if (it->second[CD_TYPE] == CD_TXT || it->second[CD_TYPE] == CD_ATT)
+        if (it->second[CD_TYPE] == CD_TXT)
         {
             if (it->first !=  CD_UUID &&
                 it->first !=  FILENAME_ARCHITECTURE &&
@@ -109,10 +118,21 @@ void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrash
                 it->first !=  CD_REPRODUCE &&
                 it->first !=  CD_COMMENT)
             {
-                pDescription += it->first + "\n";
+                pDescription += "\n" + it->first + "\n";
                 pDescription += "-----\n";
                 pDescription += it->second[CD_CONTENT] + "\n\n";
             }
+        }
+        else if (it->second[CD_TYPE] == CD_ATT)
+        {
+            pDescription += "\n\nAttached files\n"
+                            "----\n";
+            pDescription += it->first + "\n";
+        }
+        else if (it->second[CD_TYPE] == CD_BIN)
+        {
+            comm_layer_inner_warning("Binary file "+it->first+" will not be reported.");
+            comm_layer_inner_status("Binary file "+it->first+" will not be reported.");
         }
     }
 }
@@ -166,6 +186,7 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     bugParams["product"] = xmlrpc_c::value_string(product);
     bugParams["component"] =  xmlrpc_c::value_string(component);
     bugParams["version"] =  xmlrpc_c::value_string(version);
+    //bugParams["op_sys"] =  xmlrpc_c::value_string("Linux");
     bugParams["summary"] = xmlrpc_c::value_string("[abrt] crash detected in " + component);
     bugParams["description"] = xmlrpc_c::value_string(description);
     bugParams["status_whiteboard"] = xmlrpc_c::value_string("abrt_hash:" + pCrashReport.find(CD_UUID)->second[CD_CONTENT]);
@@ -180,12 +201,62 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
         std::stringstream ss;
         ss << xmlrpc_c::value_int(ret["id"]);
         comm_layer_inner_debug("New bug id: " + ss.str());
+        AddAttachments(ss.str(), pCrashReport);
     }
     catch (std::exception& e)
     {
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::NewBug(): ") + e.what());
     }
 
+}
+
+void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
+{
+    xmlrpc_c::paramList paramList;
+    map_xmlrpc_params_t attachmentParams;
+    std::vector<xmlrpc_c::value> ret;
+    NSSBase64Encoder* base64;
+    std::string::size_type pos;
+
+    map_crash_report_t::const_iterator it;
+    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    {
+        if (it->second[CD_TYPE] == CD_ATT)
+        {
+            base64 = NSSBase64Encoder_Create(Base64Encode_cb, this);
+            NSSBase64Encoder_Update(base64,
+                                    reinterpret_cast<const unsigned char*>(it->second[CD_CONTENT].c_str()),
+                                    it->second[CD_CONTENT].length());
+            NSSBase64Encoder_Destroy(base64, PR_FALSE);
+            std::string attchmentInBase64Printable = "";
+            for(unsigned int ii = 0; ii < m_sAttchmentInBase64.length(); ii++)
+            {
+                if (isprint(m_sAttchmentInBase64[ii]))
+                {
+                    attchmentInBase64Printable +=  m_sAttchmentInBase64[ii];
+                }
+            }
+            paramList.add(xmlrpc_c::value_string(pBugId));
+            attachmentParams["description"] = xmlrpc_c::value_string("File: " + it->first);
+            attachmentParams["filename"] = xmlrpc_c::value_string(it->first);
+            attachmentParams["contenttype"] = xmlrpc_c::value_string("text/plain");
+            attachmentParams["data"] = xmlrpc_c::value_string(attchmentInBase64Printable);
+            paramList.add(xmlrpc_c::value_struct(attachmentParams));
+            xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("bugzilla.addAttachment", paramList));
+            try
+            {
+                rpc->call(m_pXmlrpcClient, m_pCarriageParm);
+                ret =  xmlrpc_c::value_array(rpc->getResult()).vectorValueValue();
+                std::stringstream ss;
+                ss << xmlrpc_c::value_int(ret[0]);
+                comm_layer_inner_debug("New attachment id: " + ss.str());
+            }
+            catch (std::exception& e)
+            {
+                throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::AddAttachemnt(): ") + e.what());
+            }
+        }
+    }
 }
 
 void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
