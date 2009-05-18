@@ -98,7 +98,9 @@ void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& p
         }
         if (it->second[CD_TYPE] == CD_ATT)
         {
-            bigTextFiles << " -a " << it->second[CD_CONTENT];
+            bigTextFiles << it->first << std::endl;
+            bigTextFiles << "-----" << std::endl;
+            bigTextFiles << it->second[CD_CONTENT] << std::endl << std::endl;
         }
         if (it->second[CD_TYPE] == CD_BIN)
         {
@@ -117,7 +119,9 @@ void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& p
     emailBody << "Additional information" << std::endl;
     emailBody << "=====" << std::endl << std::endl;
     emailBody << additionalFiles.str() << std::endl;
-    m_sAttachments = bigTextFiles.str();
+    emailBody << "Other information" << std::endl;
+    emailBody << "=====" << std::endl << std::endl;
+    emailBody << bigTextFiles << std::endl;
 
     if (m_bSendBinaryData)
     {
