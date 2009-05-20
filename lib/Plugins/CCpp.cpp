@@ -217,7 +217,7 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
         dd.Close();
         fTmp << "file " << executable << std::endl;
         fTmp << "core " << pDebugDumpDir << "/" << FILENAME_COREDUMP << std::endl;
-        fTmp << "bt full" << std::endl;
+        fTmp << "thread apply all backtrace full" << std::endl;
         fTmp << "q" << std::endl;
         fTmp.close();
     }
