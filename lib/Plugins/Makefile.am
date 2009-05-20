@@ -9,10 +9,11 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libKerneloops.la \
                          libRunApp.la \
                          libBugzilla.la \
-                         libPython.la
+                         libPython.la \
+                         libFileTransfer.la
                           
 pluginsconfdir=$(PLUGINS_CONF_DIR)
-dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf
+dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf FileTransfer.conf
 
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h PluginSettings.h
@@ -55,7 +56,7 @@ libRunApp_la_SOURCES = RunApp.h RunApp.cpp
 libRunApp_la_LDFLAGS = -avoid-version
 
 # Bugzilla
-libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
+libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp PluginSettings.h
 libBugzilla_la_LIBADD = $(XMLRPC_CPP_LIBS) $(XMLRPC_CLIENT_CPP_LIBS) $(NSS_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
 libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) $(NSS_CFLAGS) -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
@@ -66,3 +67,7 @@ libPython_la_SOURCES = Python.h Python.cpp
 libPython_la_LDFLAGS = -avoid-version
 libPython_la_CPPFLAGS = $(NSS_CFLAGS) -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
 
+libFileTransfer_la_SOURCES = FileTransfer.cpp FileTransfer.h PluginSettings.h
+libFileTransfer_la_LDFLAGS = -avoid-version
+libFileTransfer_la_LIBADD = $(CURL_LIBS)
+libFileTransfer_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(CURL_CFLAGS) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"
