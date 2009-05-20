@@ -130,6 +130,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
+%package plugin-filetransfer
+Summary: %{name}'s File Transfer plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-filetransfer
+Plugin to uploading files to a server.
+
 %prep
 %setup -q
 
@@ -238,6 +246,11 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_libdir}/%{name}/libBugzilla.so*
+
+%files plugin-filetransfer
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/FileTransfer.conf
+%{_libdir}/%{name}/libFileTransfer.so*
 
 %changelog
 * Fri Apr 10 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.3-1
