@@ -34,12 +34,12 @@ class CCommLayerServer{
         void Attach(CObserver *pObs);
         void Detach(CObserver *pObs);
         void Notify(const std::string& pMessage);
-     
-        virtual vector_crash_infos_t GetCrashInfos(const std::string &pDBusSender) = 0;
-        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pDBusSender) = 0;
+
+        virtual vector_crash_infos_t GetCrashInfos(const std::string &pSender) = 0;
+        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pSender) = 0;
         virtual bool Report(map_crash_report_t pReport) = 0;
-        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
-     
+        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender) = 0;
+
     public:
     /* just stubs to be called when not implemented in specific comm layer */
         virtual void Crash(const std::string& arg1) {}

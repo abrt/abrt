@@ -12,7 +12,7 @@ libABRTCommLayer_la_CPPFLAGS = -Wall -Werror -I$(srcdir)/../../lib/MiddleWare\
                         -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(GLIB_CFLAGS) $(DBUSCPP_CFLAGS) \
                         -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
                         -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-                        -DCONF_DIR=\"$(CONF_DIR)\"
+                        -DCONF_DIR=\"$(CONF_DIR)\" -D_GNU_SOURCE
 
 #check_PROGRAMS = test
 #test_SOURCES = test.cpp

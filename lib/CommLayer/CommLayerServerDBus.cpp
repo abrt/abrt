@@ -31,17 +31,17 @@ CCommLayerServerDBus::~CCommLayerServerDBus()
     delete m_pDispatcher;
 }
 
-vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pDBusSender)
+vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSender)
 {
     vector_crash_infos_t crashInfos;
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     crashInfos = m_pObserver->GetCrashInfos(to_string(unix_uid));
 	return crashInfos;
 }
 
-map_crash_report_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pDBusSender)
+map_crash_report_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pSender)
 {
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     map_crash_report_t crashReport;
     crashReport = m_pObserver->CreateReport(pUUID, to_string(unix_uid));
     return crashReport;
@@ -53,9 +53,9 @@ bool CCommLayerServerDBus::Report(map_crash_report_t pReport)
     return true;
 }
 
-bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender)
+bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::string& pSender)
 {
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pDBusSender.c_str());
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     m_pObserver->DeleteDebugDump(pUUID,to_string(unix_uid));
     return true;
 }
