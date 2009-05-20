@@ -246,7 +246,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
             try
             {
                 rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-                ret =  xmlrpc_c::value_array(rpc->getResult()).vectorValueValue();
+                ret = xmlrpc_c::value_array(rpc->getResult()).vectorValueValue();
                 std::stringstream ss;
                 ss << xmlrpc_c::value_int(ret[0]);
                 comm_layer_inner_debug("New attachment id: " + ss.str());

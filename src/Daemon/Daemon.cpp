@@ -18,6 +18,7 @@
     */
 
 #include "CrashWatcher.h"
+#include "ABRTException.h"
 #include <iostream>
 #include <cstdio>
 
@@ -60,6 +61,10 @@ int main(int argc, char** argv)
         {
             g_pCrashWatcher->Run();
         }
+    }
+    catch(CABRTException& e)
+    {
+        std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
     catch(std::exception& e)
     {
