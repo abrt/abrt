@@ -31,6 +31,20 @@
 
 class CMiddleWare
 {
+    public:
+
+        typedef enum { MW_ERROR,
+                       MW_OK,
+                       MW_BLACKLISTED,
+                       MW_CORRUPTED,
+                       MW_PACKAGE_ERROR,
+                       MW_GPG_ERROR,
+                       MW_REPORTED,
+                       MW_OCCURED,
+                       MW_IN_DB,
+                       MW_IN_DB_ERROR,
+                       MW_FILE_ERROR } mw_result_t;
+
     private:
         typedef set_strings_t set_blacklist_t;
         typedef set_strings_t set_enabled_plugins_t;
@@ -58,14 +72,12 @@ class CMiddleWare
         void DebugDumpToCrashReport(const std::string& pDebugDumpDir,
                                     map_crash_report_t& pCrashReport);
         bool IsDebugDumpSaved(const std::string& pUID, const std::string& pDebugDumpDir);
-        int SavePackageDescriptionToDebugDump(const std::string& pExecutable, const std::string& pDebugDumpDir);
-        int SaveDebugDumpToDatabase(const std::string& pUUID,
-                                    const std::string& pUID,
-                                    const std::string& pTime,
-                                    const std::string& pDebugDumpDir,
-                                    map_crash_info_t& pCrashInfo);
-        map_crash_info_t GetCrashInfo(const std::string& pUUID,
-                                      const std::string& pUID);
+        mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable, const std::string& pDebugDumpDir);
+        mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
+                                            const std::string& pUID,
+                                            const std::string& pTime,
+                                            const std::string& pDebugDumpDir,
+                                            map_crash_info_t& pCrashInfo);
 
     public:
 
@@ -77,9 +89,9 @@ class CMiddleWare
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
-        int CreateCrashReport(const std::string& pUUID,
-                              const std::string& pUID,
-                              map_crash_report_t& pCrashReport);
+        mw_result_t CreateCrashReport(const std::string& pUUID,
+                                      const std::string& pUID,
+                                      map_crash_report_t& pCrashReport);
 
         void RunAction(const std::string& pActionDir,
                        const std::string& pPluginName,
@@ -88,15 +100,18 @@ class CMiddleWare
 
         void Report(const map_crash_report_t& pCrashReport);
         void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
-        void DeleteCrashInfo(const std::string& pUUID,
-                             const std::string& pUID,
-                             const bool bWithDebugDump = true);
+        std::string DeleteCrashInfo(const std::string& pUUID,
+                                    const std::string& pUID);
 
 
-        int SaveDebugDump(const std::string& pDebugDumpDir);
-        int SaveDebugDump(const std::string& pDebugDumpDir, map_crash_info_t& pCrashInfo);
+        mw_result_t SaveDebugDump(const std::string& pDebugDumpDir);
+        mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
+                                  map_crash_info_t& pCrashInfo);
 
-        vector_crash_infos_t GetCrashInfos(const std::string& pUID);
+        mw_result_t GetCrashInfo(const std::string& pUUID,
+                                 const std::string& pUID,
+                                 map_crash_info_t& pCrashInfo);
+        vector_strings_t GetUUIDsOfCrash(const std::string& pUID);
 
         void SetOpenGPGCheck(const bool& pCheck);
         void SetDatabase(const std::string& pDatabase);
