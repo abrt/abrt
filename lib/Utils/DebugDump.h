@@ -65,6 +65,8 @@ class CDebugDump
 
         bool IsTextFile(const std::string& pName);
 
+        std::string RemoveBackSlashes(const std::string& pDir);
+
     public:
 
         CDebugDump();

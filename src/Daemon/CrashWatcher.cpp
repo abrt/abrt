@@ -53,7 +53,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     CCrashWatcher *cc = (CCrashWatcher*)daemon;
     if (err != G_IO_ERROR_NONE)
     {
-            g_warning ("Error reading inotify fd: %d\n", err);
+            cc->Warning("Error reading inotify fd.");
             return FALSE;
     }
     /* reconstruct each event and send message to the dbus */
@@ -77,11 +77,26 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 map_crash_info_t crashinfo;
                 try
                 {
-                    if(cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo))
+                    CMiddleWare::mw_result_t res;
+                    res = cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+                    switch (res)
                     {
-                        cc->m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
-                        /* send message to dbus */
-                        cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                        case CMiddleWare::MW_OK:
+                            cc->m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                            /* send message to dbus */
+                            cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            break;
+                        case CMiddleWare::MW_BLACKLISTED:
+                        case CMiddleWare::MW_CORRUPTED:
+                        case CMiddleWare::MW_PACKAGE_ERROR:
+                        case CMiddleWare::MW_GPG_ERROR:
+                        case CMiddleWare::MW_REPORTED:
+                        case CMiddleWare::MW_IN_DB:
+                        case CMiddleWare::MW_FILE_ERROR:
+                        default:
+                            cc->Warning("Corrupted, bad or already saved crash, deleting");
+                            cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            break;
                     }
                 }
                 catch (CABRTException& e)
@@ -202,7 +217,7 @@ void CCrashWatcher::SetUpCron()
         int nH = -1;
         int nM = -1;
         int nS = -1;
-        time_t actTime = time(NULL);
+
         if (pos != std::string::npos)
         {
             std::string sH = "";
@@ -364,6 +379,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
     m_pCommLayer = new CCommLayerServerSocket();
 #endif
     m_pCommLayer = new CCommLayerServerDBus();
+//    m_pCommLayer = new CCommLayerServerSocket();
     m_pCommLayer->Attach(this);
 
     if((m_nFd = inotify_init()) == -1)
@@ -425,19 +441,37 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         map_crash_info_t crashinfo;
         try
         {
-            if(m_pMW->SaveDebugDump(*itt, crashinfo))
+            CMiddleWare::mw_result_t res;
+            res = m_pMW->SaveDebugDump(*itt, crashinfo);
+            switch (res)
             {
-                Debug("Saved new entry: " + *itt);
-                m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                case CMiddleWare::MW_OK:
+                    Debug("Saving into database (" + *itt + ").");
+                    m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                    break;
+                case CMiddleWare::MW_IN_DB:
+                    Debug("Already saved in database (" + *itt + ").");
+                    break;
+                case CMiddleWare::MW_REPORTED:
+                case CMiddleWare::MW_OCCURED:
+                case CMiddleWare::MW_BLACKLISTED:
+                case CMiddleWare::MW_CORRUPTED:
+                case CMiddleWare::MW_PACKAGE_ERROR:
+                case CMiddleWare::MW_GPG_ERROR:
+                case CMiddleWare::MW_FILE_ERROR:
+                default:
+                    Warning("Corrupted, bad or already saved crash, deleting.");
+                    m_pMW->DeleteDebugDumpDir(*itt);
+                    break;
             }
         }
         catch (CABRTException& e)
         {
-            std::cerr << e.what() << std::endl;
             if (e.type() == EXCEP_FATAL)
             {
-                exit(-1);
+                throw e;
             }
+            Warning(e.what());
         }
     }
 }
@@ -536,17 +570,51 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     Debug("Getting crash infos...");
     try
     {
-        retval = m_pMW->GetCrashInfos(pUID);
+        vector_strings_t UUIDs;
+        UUIDs = m_pMW->GetUUIDsOfCrash(pUID);
+
+        unsigned int ii;
+        for (ii = 0; ii < UUIDs.size(); ii++)
+        {
+            CMiddleWare::mw_result_t res;
+            map_crash_info_t info;
+
+            res = m_pMW->GetCrashInfo(UUIDs[ii], pUID, info);
+            switch(res)
+            {
+                case CMiddleWare::MW_OK:
+                    retval.push_back(info);
+                    break;
+                case CMiddleWare::MW_ERROR:
+                    Warning("Can not find debug dump directory for UUID: " + UUIDs[ii] + ", deleting from database");
+                    Status("Can not find debug dump directory for UUID: " + UUIDs[ii] + ", deleting from database");
+                    m_pMW->DeleteCrashInfo(UUIDs[ii], pUID);
+                    break;
+                case CMiddleWare::MW_FILE_ERROR:
+                    {
+                        std::string debugDumpDir;
+                        Warning("Can not open file in debug dump directory for UUID: " + UUIDs[ii] + ", deleting ");
+                        Status("Can not open file in debug dump directory for UUID: " + UUIDs[ii] + ", deleting ");
+                        debugDumpDir = m_pMW->DeleteCrashInfo(UUIDs[ii], pUID);
+                        m_pMW->DeleteDebugDumpDir(debugDumpDir);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
     catch (CABRTException& e)
     {
-        std::cerr << e.what() << std::endl;
-        m_pCommLayer->Error(e.what());
         if (e.type() == EXCEP_FATAL)
         {
-            exit(-1);
+            throw e;
         }
+        Warning(e.what());
+        Status(e.what());
     }
+
+    //retval = m_pMW->GetCrashInfos(pUID);
     //Notify("Sent crash info");
 	return retval;
 }
@@ -557,17 +625,38 @@ map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const st
     Debug("Creating report...");
     try
     {
-        m_pMW->CreateCrashReport(pUUID,pUID,crashReport);
+        CMiddleWare::mw_result_t res;
+        res = m_pMW->CreateCrashReport(pUUID,pUID,crashReport);
+        switch (res)
+        {
+            case CMiddleWare::MW_OK:
+                break;
+            case CMiddleWare::MW_IN_DB_ERROR:
+                Warning("Did not find crash with UUID "+pUUID+" in database.");
+                Status("Did not find crash with UUID "+pUUID+" in database.");
+                break;
+            case CMiddleWare::MW_CORRUPTED:
+            case CMiddleWare::MW_FILE_ERROR:
+            default:
+                {
+                    std::string debugDumpDir;
+                    Warning("Corrupted crash with UUID "+pUUID+", deleting.");
+                    Status("Corrupted crash with UUID "+pUUID+", deleting.");
+                    debugDumpDir = m_pMW->DeleteCrashInfo(pUUID, pUID);
+                    m_pMW->DeleteDebugDumpDir(debugDumpDir);
+                }
+                break;
+        }
         m_pCommLayer->AnalyzeComplete(crashReport);
     }
     catch (CABRTException& e)
     {
-        std::cerr << e.what() << std::endl;
-        m_pCommLayer->Error(e.what());
         if (e.type() == EXCEP_FATAL)
         {
-            exit(-1);
+            throw e;
         }
+        Warning(e.what());
+        Status(e.what());
     }
     return crashReport;
 }
@@ -587,12 +676,12 @@ bool CCrashWatcher::Report(map_crash_report_t pReport)
     }
     catch (CABRTException& e)
     {
-        std::cerr << e.what() << std::endl;
-        m_pCommLayer->Error(e.what());
         if (e.type() == EXCEP_FATAL)
         {
-            exit(-1);
+            throw e;
         }
+        Warning(e.what());
+        Status(e.what());
         return false;
     }
     return true;
@@ -602,16 +691,18 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
 {
     try
     {
-        m_pMW->DeleteCrashInfo(pUUID,pUID, true);
+        std::string debugDumpDir;
+        debugDumpDir = m_pMW->DeleteCrashInfo(pUUID,pUID);
+        m_pMW->DeleteDebugDumpDir(debugDumpDir);
     }
     catch (CABRTException& e)
     {
-        std::cerr << e.what() << std::endl;
-        m_pCommLayer->Error(e.what());
         if (e.type() == EXCEP_FATAL)
         {
-            return -1;
+            throw e;
         }
+        Warning(e.what());
+        Status(e.what());
         return false;
     }
     return true;
