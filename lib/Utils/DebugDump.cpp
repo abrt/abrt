@@ -61,11 +61,11 @@ void CDebugDump::Open(const std::string& pDir)
     {
         throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
-    m_sDebugDumpDir = pDir;
+    m_sDebugDumpDir = RemoveBackSlashes(pDir);
     std::string lockPath = m_sDebugDumpDir + "/.lock";
-    if (!ExistFileDir(pDir))
+    if (!ExistFileDir(m_sDebugDumpDir))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+pDir+" does not exist.");
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" does not exist.");
     }
     Lock();
     m_bOpened = true;
@@ -181,20 +181,20 @@ void CDebugDump::Create(const std::string& pDir)
         throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
 
-    m_sDebugDumpDir = pDir;
-    std::string lockPath = pDir + ".lock";
-    if (ExistFileDir(pDir))
+    m_sDebugDumpDir = RemoveBackSlashes(pDir);
+    std::string lockPath = m_sDebugDumpDir + ".lock";
+    if (ExistFileDir(m_sDebugDumpDir))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+pDir+" already exists.");
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" already exists.");
     }
 
     Lock();
     m_bOpened = true;
 
-    if (mkdir(pDir.c_str(), 0755) == -1)
+    if (mkdir(m_sDebugDumpDir.c_str(), 0755) == -1)
     {
         UnLock();
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot create dir: " + pDir);
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create():m_sDebugDumpDir Cannot create dir: " + pDir);
     }
 
     SaveKernelArchitectureRelease();
@@ -266,6 +266,16 @@ bool CDebugDump::IsTextFile(const std::string& pName)
 
     magic_close(m);
     return isText;
+}
+
+std::string CDebugDump::RemoveBackSlashes(const std::string& pDir)
+{
+    std::string ret = pDir;
+    while (ret[ret.length() - 1] == '/')
+    {
+        ret = ret.substr(0, ret.length() - 2);
+    }
+    return ret;
 }
 
 void CDebugDump::Delete()
