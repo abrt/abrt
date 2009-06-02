@@ -55,6 +55,7 @@ AC_CONFIG_FILES([
 	lib/MiddleWare/Makefile
 	lib/CommLayer/Makefile
 	lib/Plugins/Makefile
+	lib/Python/Makefile
 	src/Makefile
 	src/Daemon/Makefile
 	src/Hooks/Makefile
