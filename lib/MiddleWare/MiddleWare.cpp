@@ -351,7 +351,7 @@ CMiddleWare::mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const st
         {
             if (packageName == "")
             {
-                comm_layer_inner_debug("Executable doesn't belong to any package - deleting debug dump...");
+                comm_layer_inner_debug("Executable doesn't belong to any package");
                 return MW_PACKAGE_ERROR;
             }
             comm_layer_inner_debug("Blacklisted package");
