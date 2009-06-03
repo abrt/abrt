@@ -13,3 +13,5 @@ dist_dbusabrtconf_DATA = dbus-abrt.conf
 
 daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = abrt.conf
+
+man_MANS = abrt.8 abrt.conf.5

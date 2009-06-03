@@ -15,6 +15,8 @@ pluginslib_LTLIBRARIES = libCCpp.la \
 pluginsconfdir=$(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf FileTransfer.conf
 
+man_MANS = abrt-FileTransfer.7
+
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h PluginSettings.h
 libCCpp_la_LDFLAGS = -avoid-version
@@ -67,6 +69,7 @@ libPython_la_SOURCES = Python.h Python.cpp
 libPython_la_LDFLAGS = -avoid-version
 libPython_la_CPPFLAGS = $(NSS_CFLAGS) -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
 
+# FileTrasfer
 libFileTransfer_la_SOURCES = FileTransfer.cpp FileTransfer.h PluginSettings.h
 libFileTransfer_la_LDFLAGS = -avoid-version
 libFileTransfer_la_LIBADD = $(CURL_LIBS)
