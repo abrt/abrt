@@ -1,0 +1,76 @@
+.TH "abrt.conf" "5" "28 May 2009" ""
+.SH NAME
+abrt.conf \- configuration file for abrt
+.SH DESCRIPTION
+The configuration file consists of sections, each section contains 
+several items in a format "Option = Value". The description of each
+section follows:
+.SS [Common]
+.TP
+.B EnableOpenGPG =  \fIyes\fP | \fIno\fP
+When set to "yes",
+.I abrt
+will report crashes only in GPG signed packages. When set to "no",
+it will report crashes also in unsigned packages.
+.TP
+.B OpenGPGPublicKeys =  \fIfilename\fP , \fIfilename\fP ...
+This is the place, where you specify the trusted GPG keys, with
+which the packages have to be signed for "EnableOpenGPG = yes".
+.TP
+.B BlackList = \fIpackageName\fP, \fIpackageName\fP ...
+Packages in this list will be ignored (i.e. their crashes will
+not be handled by
+.I abrt
+).
+.TP
+.B EnabledPlugins = \fIplugin\fP, \fIplugin\fP ...
+Only plugins in EnabledPlugins are loaded.
+.TP
+.B Database = \fIdatabasePlugin\fP
+This specifies which database plugin is used to store
+the metadata about the crash.
+.TP
+.B MaxCrashReportsSize = \fInumber\fP
+You can specify here, how much disk space will maximally be
+used for all the crash dumps, to ensure
+that the crash dumps won't take
+all the HDD space. The number is specified in megabytes.
+.TP
+.B ActionsAndReporters = \fIplugin\fP, \fIplugin(parameters)\fP
+List of reporter and action plugins, which will be
+run at crash time.
+.SS [ AnalyzerActionsAndReporters ]
+This section contains associations between analyzers and action
+or reporter plugins.
+.TP
+.B CCpp = \fIplugin\fP
+This plugin will be used when a C/C++ program crashes.
+You can specify a plugin for specific program, for example
+.br
+CCpp:bind = Mailx("[abrt] Bind crashed")
+.br
+The Mailx plugin will run, when bind crashes, instead of the plugin specified for
+all the C/C++ programs.
+.TP
+.B Kerneloops = \fIplugin\fP
+This plugin will be used in the case of kernel crashes.
+.SS [ Cron ]
+This section specifies tasks, which will be run at some time. You can specify
+either a time of the day in the format
+.br
+.B hh:mm = \fIplugin\fP
+.br
+or an interval
+.br
+.B ss = \fIplugin2\fP
+.br
+in this case, \fIplugin2\fP will be run every \fIss\fP seconds (this number
+can be greater than 60).
+.SH "SEE ALSO"
+.IR abrt(8)
+.SH AUTHOR
+Written by Zdeněk Přikryl <zprikryl@redhat.com> and
+Jiří Moskovčák <jmoskovc@redhat.com>. Manual page written by Daniel
+Novotný <dnovotny@redhat.com>.
+
+
