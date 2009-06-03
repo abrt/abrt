@@ -435,12 +435,12 @@ CMiddleWare::mw_result_t CMiddleWare::SaveDebugDumpToDatabase(const std::string&
     database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
     row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
+    res = GetCrashInfo(pUUID, pUID, pCrashInfo);
     if (row.m_sReported == "1")
     {
         comm_layer_inner_debug("Crash is already reported");
         return MW_REPORTED;
     }
-    res = GetCrashInfo(pUUID, pUID, pCrashInfo);
     if (row.m_sCount != "1")
     {
         comm_layer_inner_debug("Crash is in database already");

@@ -82,19 +82,26 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                     switch (res)
                     {
                         case CMiddleWare::MW_OK:
+                            cc->Warning("New crash, saving...");
                             cc->m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
                             cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            break;
+                        case CMiddleWare::MW_REPORTED:
+                        case CMiddleWare::MW_OCCURED:
+                            /* send message to dbus */
+                            cc->Warning("Already saved crash, deleting...");
+                            cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                         case CMiddleWare::MW_BLACKLISTED:
                         case CMiddleWare::MW_CORRUPTED:
                         case CMiddleWare::MW_PACKAGE_ERROR:
                         case CMiddleWare::MW_GPG_ERROR:
-                        case CMiddleWare::MW_REPORTED:
                         case CMiddleWare::MW_IN_DB:
                         case CMiddleWare::MW_FILE_ERROR:
                         default:
-                            cc->Warning("Corrupted, bad or already saved crash, deleting");
+                            cc->Warning("Corrupted or bad crash, deleting...");
                             cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                     }
