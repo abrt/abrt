@@ -111,7 +111,7 @@ void CFileTransfer::SendFile(const std::string& pURL,
         fclose(f);
     }
     /*retry the upload if not succesful, wait a bit before next try*/
-    while( result!=0 && count-- != 0 && (sleep(20),1) );
+    while( result!=0 && count-- != 0 && (sleep(m_nRetryDelay),1) );
 
 }
 
@@ -240,6 +240,11 @@ void CFileTransfer::LoadSettings(const std::string& pPath)
     if (settings.find("RetryCount")!= settings.end())
     {
         m_nRetryCount = atoi(settings["RetryCount"].c_str());
+    }
+    
+    if (settings.find("RetryDelay")!= settings.end())
+    {
+        m_nRetryDelay = atoi(settings["RetryDelay"].c_str());
     }
 
     if (settings.find("ArchiveType")!= settings.end())

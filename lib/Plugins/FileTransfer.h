@@ -33,6 +33,7 @@ class CFileTransfer : public CAction
         std::string m_sURL;
         std::string m_sArchiveType;
         int m_nRetryCount;
+        int m_nRetryDelay;
 
         void CreateArchive(const std::string& pArchiveName,
                            const std::string& pDir);
@@ -44,6 +45,7 @@ class CFileTransfer : public CAction
     public:
         CFileTransfer() :
             m_nRetryCount(3),
+            m_nRetryDelay(20),
             m_sArchiveType(".tar.gz")
         {}
         virtual ~CFileTransfer() {}
@@ -57,7 +59,7 @@ class CFileTransfer : public CAction
 PLUGIN_INFO(ACTION,
             CFileTransfer,
             "FileTransfer",
-            "0.0.5",
+            "0.0.6",
             "Sends a report via FTP or SCTP",
             "dnovotny@redhat.com",
             "https://fedorahosted.org/crash-catcher/wiki");
