@@ -21,7 +21,7 @@ class CCommLayerServerDBus
 
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pSender);
         virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pSender);
-        virtual bool Report(map_crash_report_t pReport);
+        virtual bool Report(map_crash_report_t pReport,const std::string &pSender);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
 
         virtual void Crash(const std::string& arg1);

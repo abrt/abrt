@@ -2,11 +2,7 @@
 #include <glib.h>
 
 #define SOCKET_PATH "/tmp/abrt.socket"
-
-#define MESSAGE_DELETE_DEBUG_DUMP   "(DELETE_DEBUG_DUMP)"
-#define MESSAGE_GET_CRASH_INFOS     "(GET_CRASH_INFOS)"
-#define MESSAGE_REPORT              "(REPORT)"
-#define MESSAGE_CREATE_REPORT       "(CREATE_REPORT)"
+#define SOCKET_PERMISSION 0666
 
 class CCommLayerServerSocket : public CCommLayerServer
 {
@@ -29,10 +25,10 @@ class CCommLayerServerSocket : public CCommLayerServer
         CCommLayerServerSocket();
         virtual ~CCommLayerServerSocket();
 
-        virtual vector_crash_infos_t GetCrashInfos(const std::string &pDBusSender);
-        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pDBusSender);
-        virtual bool Report(map_crash_report_t pReport);
-        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender);
+        virtual vector_crash_infos_t GetCrashInfos(const std::string &pSender);
+        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pSender);
+        virtual bool Report(map_crash_report_t pReport, const std::string& pSender);
+        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
 
         virtual void Crash(const std::string& arg1);
         virtual void AnalyzeComplete(map_crash_report_t arg1);

@@ -47,9 +47,10 @@ map_crash_report_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,c
     return crashReport;
 }
 
-bool CCommLayerServerDBus::Report(map_crash_report_t pReport)
+bool CCommLayerServerDBus::Report(map_crash_report_t pReport,const std::string &pSender)
 {
-    m_pObserver->Report(pReport);
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
+    m_pObserver->Report(pReport, to_string(unix_uid));
     return true;
 }
 

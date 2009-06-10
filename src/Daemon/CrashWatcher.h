@@ -31,6 +31,7 @@
 
 //FIXME remove when it gets to autoconf
 #include "CommLayerServerDBus.h"
+//#include "CommLayerServerSocket.h"
 #ifdef HAVE_DBUS
     #include "CommLayerServerDBus.h"
 #elif HAVE_SOCKET
@@ -106,7 +107,7 @@ class CCrashWatcher
     public:
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
         virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID);
-        virtual bool Report(map_crash_report_t pReport);
+        virtual bool Report(map_crash_report_t pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
 
         /* Observer methods */

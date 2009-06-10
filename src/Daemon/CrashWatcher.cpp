@@ -23,6 +23,7 @@
 #include <climits>
 #include <cstdlib>
 #include <sys/types.h>
+#include <pwd.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <cstring>
@@ -668,7 +669,7 @@ map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const st
     return crashReport;
 }
 
-bool CCrashWatcher::Report(map_crash_report_t pReport)
+bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
 {
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];
@@ -679,7 +680,24 @@ bool CCrashWatcher::Report(map_crash_report_t pReport)
     //}
     try
     {
-        m_pMW->Report(pReport);
+        std::string home = "";
+        struct passwd* pw;
+        while (( pw = getpwent()) != NULL)
+        {
+            if (pw->pw_uid == atoi(pUID.c_str()))
+            {
+                home = pw->pw_dir;
+            }
+        }
+        setpwent();
+        if (home != "")
+        {
+            m_pMW->Report(pReport, home + "/.abrt/");
+        }
+        else
+        {
+            m_pMW->Report(pReport);
+        }
     }
     catch (CABRTException& e)
     {

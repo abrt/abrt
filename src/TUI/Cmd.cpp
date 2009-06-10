@@ -4,7 +4,6 @@
 
 #include <string.h>
 
-
 #define SOCKET_PATH "/tmp/abrt.socket"
 
 typedef enum {HELP,
@@ -12,11 +11,11 @@ typedef enum {HELP,
               GET_LIST_FULL,
               REPORT,
               REPORT_ALWAYS,
-              DELETE} mode_t;
+              DELETE} param_mode_t;
 
 typedef struct param_s
 {
-    mode_t m_Mode;
+    param_mode_t m_Mode;
     char* m_sUUID;
 } param_t;
 
@@ -82,7 +81,7 @@ void parse_args(int argc, char** argv, param_t& param)
 }
 
 void print_crash_infos(const vector_crash_infos_t& pCrashInfos,
-                       const mode_t& pMode)
+                       const param_mode_t& pMode)
 {
     unsigned int ii;
     for (ii = 0; ii < pCrashInfos.size(); ii++)

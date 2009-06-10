@@ -27,7 +27,8 @@
 CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
                          const std::string& pPlugisLibDir) :
     m_pPluginManager(NULL),
-    m_bOpenGPGCheck(true)
+    m_bOpenGPGCheck(true),
+    m_sPluginsConfDir(pPlugisConfDir)
 {
     m_pPluginManager = new CPluginManager(pPlugisConfDir, pPlugisLibDir);
     m_pPluginManager->LoadPlugins();
@@ -193,14 +194,8 @@ void CMiddleWare::RunAction(const std::string& pActionDir,
     try
     {
         CAction* action = m_pPluginManager->GetAction(pPluginName);
-        if (action)
-        {
-            action->Run(pActionDir, pPluginArgs);
-        }
-        else
-        {
-            throw CABRTException(EXCEP_ERROR, "Plugin '"+pPluginName+"' is not registered.");
-        }
+
+        action->Run(pActionDir, pPluginArgs);
     }
     catch (CABRTException& e)
     {
@@ -217,32 +212,35 @@ void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
     {
         try
         {
-            CReporter* reporter = m_pPluginManager->GetReporter((*it_ar).first);
-            CAction* action = m_pPluginManager->GetAction((*it_ar).first);
-            if (reporter)
+            if (m_pPluginManager->GetPluginType((*it_ar).first) == REPORTER)
             {
+                CReporter* reporter = m_pPluginManager->GetReporter((*it_ar).first);
+
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
                 reporter->Report(crashReport, (*it_ar).second);
             }
-            else if (action)
+            else if (m_pPluginManager->GetPluginType((*it_ar).first) == ACTION)
             {
+                CAction* action = m_pPluginManager->GetAction((*it_ar).first);
                 action->Run(pDebugDumpDir, (*it_ar).second);
-            }
-            else
-            {
-                throw CABRTException(EXCEP_ERROR, "Plugin '"+(*it_ar).first+"' is not registered.");
             }
         }
         catch (CABRTException& e)
         {
             comm_layer_inner_warning("CMiddleWare::RunActionsAndReporters(): " + e.what());
-            comm_layer_inner_status("Reporting via '"+(*it_ar).first+"' was not successful: " + e.what());
+            comm_layer_inner_status("Activation of plugin '"+(*it_ar).first+"' was not successful: " + e.what());
         }
     }
 }
 
 void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
+{
+    Report(pCrashReport, m_sPluginsConfDir);
+}
+
+void CMiddleWare::Report(const map_crash_report_t& pCrashReport,
+                         const std::string& pPluginsConfDir)
 {
     if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
@@ -263,14 +261,20 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
         {
             try
             {
-                CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
-                if (reporter)
+                if (m_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
                 {
-                    reporter->Report(pCrashReport, (*it_r).second);
-                }
-                else
-                {
-                    throw CABRTException(EXCEP_ERROR, "Plugin '"+(*it_r).first+"' is not registered.");
+                    CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+
+                    if (pPluginsConfDir == m_sPluginsConfDir)
+                    {
+                        reporter->Report(pCrashReport, (*it_r).second);
+                    }
+                    else
+                    {
+                        reporter->LoadSettings(pPluginsConfDir + "/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION);
+                        reporter->Report(pCrashReport, (*it_r).second);
+                        reporter->LoadSettings(m_sPluginsConfDir + "/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION);
+                    }
                 }
             }
             catch (CABRTException& e)
@@ -403,14 +407,11 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
         {
             try
             {
-                CAction* action = m_pPluginManager->GetAction((*it_a).first);
-                if (action)
+                if (m_pPluginManager->GetPluginType((*it_a).first) == ACTION)
                 {
+                    CAction* action = m_pPluginManager->GetAction((*it_a).first);
+
                     action->Run(pDebugDumpDir, (*it_a).second);
-                }
-                else if (m_pPluginManager->GetReporter((*it_a).first) == NULL)
-                {
-                    throw CABRTException(EXCEP_ERROR, "Plugin '"+(*it_a).first+"' is not registered.");
                 }
             }
             catch (CABRTException& e)

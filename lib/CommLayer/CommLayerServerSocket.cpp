@@ -1,26 +1,29 @@
 #include "CommLayerServerSocket.h"
 #include "CommLayerInner.h"
 #include "ABRTException.h"
-#include "SocketCrashTypes.h"
+#include "CrashTypesSocket.h"
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <iostream>
 #include <sstream>
-
+#include <sys/stat.h>
+#include <unistd.h>
+#include <fcntl.h>
 
 void CCommLayerServerSocket::Send(const std::string& pData, GIOChannel *pDestination)
 {
     ssize_t ret = -1;
-    gsize len = 0;
+    gsize len = pData.length();
     int offset = 0;
     GError *err = NULL;
-    gchar* message = new gchar[ pData.length() + 3 ];
-    memcpy(message, pData.c_str(), pData.length());
-    message[pData.length()] = ' ';
-    message[pData.length() + 1] = '\n';
-    message[pData.length() + 2] = '\0';
+    gchar* message = new gchar[len + 3];
+    memcpy(message, pData.c_str(), len);
+    message[len] = MESSAGE_END_MARKER;
+    message[len + 1] = '\n';
+    message[len + 2] = '\0';
 
+    len = 0;
     while (len != strlen(message + offset))
     {
         offset += len;
@@ -80,10 +83,12 @@ gboolean CCommLayerServerSocket::client_socket_cb(GIOChannel *source, GIOConditi
         }
         message += buff[0];
 
-        if (message.length() > 2 && /*message[message.length() - 2] == 23 &&*/ message[message.length() - 1] == '\n')
+        if (message.length() > 2 &&
+            message[message.length() - 2] == MESSAGE_END_MARKER &&
+            message[message.length() - 1] == '\n')
         {
             receivingMessage = false;
-            message = message.substr(0, message.length() - 1);
+            message = message.substr(0, message.length() - 2);
         }
     }
 
@@ -111,7 +116,7 @@ gboolean CCommLayerServerSocket::server_socket_cb(GIOChannel *source, GIOConditi
         comm_layer_inner_warning("Server can not accept client.");
         return TRUE;
     }
-    comm_layer_inner_debug("New socket klinet connected.");
+    comm_layer_inner_debug("New socket client connected.");
     GIOChannel* gSocket = g_io_channel_unix_new(socket);
     if (!g_io_add_watch(gSocket,
                         static_cast<GIOCondition>(G_IO_IN |G_IO_PRI| G_IO_ERR | G_IO_HUP | G_IO_NVAL),
@@ -128,7 +133,7 @@ gboolean CCommLayerServerSocket::server_socket_cb(GIOChannel *source, GIOConditi
 void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChannel *pSource)
 {
     std::string UID = GetSenderUID(g_io_channel_unix_get_fd(pSource));
-    //TODO: rewrite to .compare()
+
     if (!strncmp(pMessage.c_str(), MESSAGE_GET_CRASH_INFOS, sizeof(MESSAGE_GET_CRASH_INFOS) - 1))
     {
         vector_crash_infos_t crashInfos = GetCrashInfos(UID);
@@ -137,8 +142,9 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     }
     else if (!strncmp(pMessage.c_str(), MESSAGE_REPORT, sizeof(MESSAGE_REPORT) - 1))
     {
-        map_crash_report_t report = string_to_crash_report(pMessage);
-        Report(report);
+        std::string message = pMessage.substr(sizeof(MESSAGE_REPORT) - 1);
+        map_crash_report_t report = string_to_crash_report(message);
+        Report(report, UID);
     }
     else if (!strncmp(pMessage.c_str(), MESSAGE_CREATE_REPORT, sizeof(MESSAGE_CREATE_REPORT) - 1))
     {
@@ -154,7 +160,7 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     }
     else
     {
-        comm_layer_inner_warning(" Received unknown message type.");
+        comm_layer_inner_warning("Received unknown message type.");
     }
 }
 
@@ -168,7 +174,6 @@ CCommLayerServerSocket::CCommLayerServerSocket()
     {
         throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not create socket.");
     }
-
     local.sun_family = AF_UNIX;
     strcpy(local.sun_path, SOCKET_PATH);
     unlink(local.sun_path);
@@ -181,6 +186,9 @@ CCommLayerServerSocket::CCommLayerServerSocket()
     {
         throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not listen on the socket.");
     }
+
+    fcntl(m_nSocket, F_SETFD, FD_CLOEXEC);
+    fchmod(m_nSocket, SOCKET_PERMISSION);
 
     m_pGSocket = g_io_channel_unix_new(m_nSocket);
     if (!g_io_add_watch(m_pGSocket,
@@ -212,9 +220,9 @@ map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID
     return crashReport;
 }
 
-bool CCommLayerServerSocket::Report(map_crash_report_t pReport)
+bool CCommLayerServerSocket::Report(map_crash_report_t pReport, const std::string& pSender)
 {
-    m_pObserver->Report(pReport);
+    m_pObserver->Report(pReport, pSender);
     return true;
 }
 

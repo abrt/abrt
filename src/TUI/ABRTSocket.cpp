@@ -1,6 +1,6 @@
 #include "ABRTSocket.h"
 #include "ABRTException.h"
-#include "SocketCrashTypes.h"
+#include "CrashTypesSocket.h"
 
 #include <string.h>
 #include <sys/types.h>
@@ -16,7 +16,7 @@ CABRTSocket::~CABRTSocket()
 {
     DisConnect();
 }
-#include <iostream>
+
 void CABRTSocket::Send(const std::string& pMessage)
 {
     int ret = 0;

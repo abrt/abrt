@@ -59,7 +59,7 @@ class CMiddleWare
         std::string m_sDatabase;
         map_analyzer_actions_and_reporters_t m_mapAnalyzerActionsAndReporters;
         vector_actions_and_reporters_t m_vectorActionsAndReporters;
-
+        std::string m_sPluginsConfDir;
         bool m_bOpenGPGCheck;
 
         std::string GetLocalUUID(const std::string& pAnalyzer,
@@ -68,11 +68,14 @@ class CMiddleWare
                                   const std::string& pDebugDumpDir);
         void CreateReport(const std::string& pAnalyzer,
                          const std::string& pDebugDumpDir);
-        void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
+        void RunAnalyzerActions(const std::string& pAnalyzer,
+                                const std::string& pDebugDumpDir);
         void DebugDumpToCrashReport(const std::string& pDebugDumpDir,
                                     map_crash_report_t& pCrashReport);
-        bool IsDebugDumpSaved(const std::string& pUID, const std::string& pDebugDumpDir);
-        mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable, const std::string& pDebugDumpDir);
+        bool IsDebugDumpSaved(const std::string& pUID,
+                              const std::string& pDebugDumpDir);
+        mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable,
+                                                      const std::string& pDebugDumpDir);
         mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
                                             const std::string& pUID,
                                             const std::string& pTime,
@@ -99,6 +102,8 @@ class CMiddleWare
         void RunActionsAndReporters(const std::string& pDebugDumpDir);
 
         void Report(const map_crash_report_t& pCrashReport);
+        void Report(const map_crash_report_t& pCrashReport,
+                    const std::string& pSettingsPath);
         void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
         std::string DeleteCrashInfo(const std::string& pUUID,
                                     const std::string& pUID);
