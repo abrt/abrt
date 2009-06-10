@@ -61,6 +61,7 @@ AC_CONFIG_FILES([
 	src/Hooks/Makefile
 	src/Applet/Makefile
 	src/Gui/Makefile
+	src/TUI/Makefile
 ])
 
 AC_OUTPUT
