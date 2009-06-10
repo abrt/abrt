@@ -63,6 +63,7 @@ class CPluginManager
 		CReporter* GetReporter(const std::string& pName);
 		CAction* GetAction(const std::string& pName);
 		CDatabase* GetDatabase(const std::string& pName);
+		plugin_type_t GetPluginType(const std::string& pName);
 
 };
 

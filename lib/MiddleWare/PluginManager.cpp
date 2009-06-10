@@ -161,7 +161,12 @@ CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAnalyzer():"
-                                            "Analyzer plugin: '"+pName+"' is not loaded.");
+                                            "Analyzer plugin: '"+pName+"' is not registered.");
+    }
+    if (m_mapABRTPlugins[pName]->GetType() != ANALYZER)
+    {
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAnalyzer():"
+                                            "Plugin: '"+pName+"' is not analyzer plugin.");
     }
     return dynamic_cast<CAnalyzer*>(m_mapPlugins[pName]);
 }
@@ -171,7 +176,12 @@ CReporter* CPluginManager::GetReporter(const std::string& pName)
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetReporter():"
-                                           "Reporter plugin: '"+pName+"' is not loaded.");
+                                           "Reporter plugin: '"+pName+"' is not registered.");
+    }
+    if (m_mapABRTPlugins[pName]->GetType() != REPORTER)
+    {
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetReporter():"
+                                            "Plugin: '"+pName+"' is not reporter plugin.");
     }
     return dynamic_cast<CReporter*>(m_mapPlugins[pName]);
 }
@@ -181,7 +191,12 @@ CAction* CPluginManager::GetAction(const std::string& pName)
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAction():"
-                                           "Action plugin: '"+pName+"' is not loaded.");
+                                           "Action plugin: '"+pName+"' is not registered.");
+    }
+    if (m_mapABRTPlugins[pName]->GetType() != ACTION)
+    {
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAction():"
+                                            "Plugin: '"+pName+"' is not action plugin.");
     }
     return dynamic_cast<CAction*>(m_mapPlugins[pName]);
 }
@@ -191,8 +206,23 @@ CDatabase* CPluginManager::GetDatabase(const std::string& pName)
     if (m_mapPlugins.find(pName) == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetDatabase():"
-                                           "Database plugin: '"+pName+"' is not loaded.");
+                                           "Database plugin: '"+pName+"' is not registered.");
+    }
+    if (m_mapABRTPlugins[pName]->GetType() != DATABASE)
+    {
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetDatabase():"
+                                            "Plugin: '"+pName+"' is not database plugin.");
     }
     return dynamic_cast<CDatabase*>(m_mapPlugins[pName]);
+}
+
+plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
+{
+    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    {
+        throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetPluginType():"
+                                           "Plugin: '"+pName+"' is not registered.");
+    }
+    return m_mapABRTPlugins[pName]->GetType();
 }
 
