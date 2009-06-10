@@ -5,6 +5,13 @@
 #include <sstream>
 #include <stdlib.h>
 
+
+#define MESSAGE_DELETE_DEBUG_DUMP   "(DELETE_DEBUG_DUMP)"
+#define MESSAGE_GET_CRASH_INFOS     "(GET_CRASH_INFOS)"
+#define MESSAGE_REPORT              "(REPORT)"
+#define MESSAGE_CREATE_REPORT       "(CREATE_REPORT)"
+#define MESSAGE_END_MARKER          23
+
 inline std::string crash_data_to_string(const map_crash_data_t& pCrashData)
 {
     std::stringstream sCD;
@@ -110,12 +117,6 @@ inline vector_crash_infos_t string_to_crash_infos(const std::string& pMessage)
     vector_crash_infos_t vci;
     std::string message = pMessage;
     int len;
-
-    if (!message.compare(0, sizeof("(CRASH_INFOS)"), "(CRASH_INFOS)"))
-    {
-        return vci;
-    }
-    message.erase(0, sizeof("(CRASH_INFOS)") - 1);
 
     while (message != "")
     {
