@@ -381,13 +381,13 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
     SetUpMW();
     SetUpCron();
     FindNewDumps(pPath);
-#ifdef HAVE_DBUS
+#ifdef ENABLE_DBUS
     m_pCommLayer = new CCommLayerServerDBus();
-#elif HAVE_SOCKET
+#elif ENABLE_SOCKET
     m_pCommLayer = new CCommLayerServerSocket();
 #endif
-    m_pCommLayer = new CCommLayerServerDBus();
-//    m_pCommLayer = new CCommLayerServerSocket();
+//  m_pCommLayer = new CCommLayerServerDBus();
+//  m_pCommLayer = new CCommLayerServerSocket();
     m_pCommLayer->Attach(this);
 
     if((m_nFd = inotify_init()) == -1)

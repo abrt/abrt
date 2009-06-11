@@ -33,6 +33,7 @@ AC_CHECK_HEADER([magic.h], [],
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
+ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 
 DEBUG_DUMPS_DIR='${localstatedir}/cache/${PACKAGE_NAME}'
 AC_ARG_WITH(debugdumpsdir, 
@@ -40,6 +41,17 @@ AC_ARG_WITH(debugdumpsdir,
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
 
+AC_ARG_ENABLE(socket,
+              [AC_HELP_STRING([--enable-socket], 
+                             [Enable socket communication. Disable DBus communication])],
+              [ENABLE_SOCKET_OR_DBUS='-DENABLE_SOCKET=1'])
+
+AC_ARG_ENABLE(dbus,
+              [AC_HELP_STRING([--enable-dbus], 
+                             [Enable DBus communication. Disable socket communication @<:@default@:>@])],
+              [ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'])
+                
+AC_SUBST(ENABLE_SOCKET_OR_DBUS)  
 AC_SUBST(CONF_DIR)
 AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(PLUGINS_LIB_DIR)

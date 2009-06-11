@@ -30,11 +30,11 @@
 #include "Settings.h"
 
 //FIXME remove when it gets to autoconf
-#include "CommLayerServerDBus.h"
+//#include "CommLayerServerDBus.h"
 //#include "CommLayerServerSocket.h"
-#ifdef HAVE_DBUS
+#ifdef ENABLE_DBUS
     #include "CommLayerServerDBus.h"
-#elif HAVE_SOCKET
+#elif ENABLE_SOCKET
     #include "CommLayerServerSocket.h"
 #endif
 #include "CommLayerInner.h"
