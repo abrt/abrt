@@ -8,6 +8,8 @@ hookCCpp_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../../lib/Utils \
                     
 python_PYTHON = sitecustomize.py abrt_exception_handler.py
 
+EXTRA_DIST = abrt_exception_handler.py.in
+
 pyhookconfdir = $(CONF_DIR)
 dist_pyhookconf_DATA = pyhook.conf
 

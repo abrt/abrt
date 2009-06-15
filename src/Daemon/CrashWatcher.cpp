@@ -31,7 +31,6 @@
 #include <sstream>
 #include <dirent.h>
 #include <cstring>
-#include "CommLayerInner.h"
 #include "ABRTException.h"
 
 /* just a helper function

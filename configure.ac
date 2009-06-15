@@ -1,4 +1,4 @@
-AC_INIT([abrt], [0.0.3], [jmoskovc@redhat.com, zprikryl@redhat.com])
+AC_INIT([abrt], [0.0.4], [jmoskovc@redhat.com, zprikryl@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -74,6 +74,7 @@ AC_CONFIG_FILES([
 	src/Applet/Makefile
 	src/Gui/Makefile
 	src/TUI/Makefile
+	inc/Makefile
 ])
 
 AC_OUTPUT

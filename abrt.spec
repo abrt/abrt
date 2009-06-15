@@ -1,6 +1,9 @@
+%{!?python_site: %define python_site %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
+# platform-dependent
+%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.3
+Version: 0.0.4
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -17,6 +20,7 @@ BuildRequires: nss-devel
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
+BuildRequires: python-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
@@ -138,6 +142,24 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-filetransfer
 Plugin to uploading files to a server.
 
+%package addon-python
+Summary: %{name}'s addon for catching and analyzing Python exceptions
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description addon-python
+This package contains python hook and python analyzer plugin for hadnling
+uncaught exception in python programs.
+
+%package cli
+Summary: %{name}'s command line interface
+Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
+
+%description cli
+This package contains simple command line client for controling abrt daemon over
+the sockets.
+
 %prep
 %setup -q
 
@@ -149,10 +171,12 @@ make %{?_smp_mflags}
 
 %install
 rm -rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 
-rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
-rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
+#rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
+#rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
+# remove all .la and .a files
+find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/%{name}
 mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
@@ -187,6 +211,8 @@ fi
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_libdir}/%{name}
+%{_mandir}/man8/%{name}.8.gz
+%{_mandir}/man5/%{name}.conf.5.gz
 
 %files libs
 %defattr(-,root,root,-)
@@ -251,8 +277,26 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/FileTransfer.conf
 %{_libdir}/%{name}/libFileTransfer.so*
+%{_mandir}/man7/%{name}-FileTransfer.7.gz
+
+%files addon-python
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/pyhook.conf
+%{python_sitearch}/ABRTUtils.so
+%{_libdir}/%{name}/libPython.so*
+%{python_site}/*.py*
+
+%files cli
+%defattr(-,root,root,-)
+%{_bindir}/abrt-cmd
 
 %changelog
+* Mon Jun 15 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.4-1
+- new version
+- added cli (only supports sockets)
+- added python hook
+- many fixes
+
 * Fri Apr 10 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.3-1
 - new version
 - added bz plugin
