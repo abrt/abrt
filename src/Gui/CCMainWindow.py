@@ -28,7 +28,7 @@ class MainWindow():
         except Exception, e:
             # show error message if connection fails
             # FIXME add an option to start the daemon
-            gui_error_message(e.message)
+            gui_error_message("%s" % e)
             sys.exit()
         #Set the Glade file
         self.gladefile = "%s%sccgui.glade" % (sys.path[0],"/")

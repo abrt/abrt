@@ -4,14 +4,19 @@ import gobject
 from dbus.mainloop.glib import DBusGMainLoop
 import gtk
 
+CC_NAME = 'com.redhat.abrt'
 CC_IFACE = 'com.redhat.abrt'
 CC_PATH = '/com/redhat/abrt'
+APP_NAME = 'com.redhat.abrt.gui'
         
 
 class DBusManager(gobject.GObject):
     """ Class to provide communication with daemon over dbus """
     # and later with policyKit
     def __init__(self):
+        session = dbus.SessionBus()
+        if session.request_name(APP_NAME, dbus.bus.NAME_FLAG_DO_NOT_QUEUE) != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER:
+            raise Exception("Name %s is taken,\nanother instance is already running." % APP_NAME)
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
         gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
@@ -22,7 +27,7 @@ class DBusManager(gobject.GObject):
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
         self.proxy = None
-        self.connect_to_daemon()
+        self.proxy = self.connect_to_daemon()
         if self.proxy:
             self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
             #intr = dbus.Interface(proxy, dbus_interface='org.freedesktop.DBus.Introspectable')
@@ -33,7 +38,7 @@ class DBusManager(gobject.GObject):
             # Catch Errors
             self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
         else:
-            raise Exception("Proxy object doesn't exist!")
+            raise Exception("Please check if abrt daemon is running.")
 
     # disconnect callback
     def disconnected(*args):
@@ -70,9 +75,11 @@ class DBusManager(gobject.GObject):
         if not bus:
             raise Exception("Can't connect to dbus")
         try:
-            self.proxy = bus.get_object(CC_IFACE, CC_PATH)
+            if bus.name_has_owner(CC_NAME):
+                return bus.get_object(CC_IFACE, CC_PATH)
+            return None
         except Exception, e:
-            raise Exception(e.message + "\nPlease check if abrt daemon is running.")
+            raise Exception(e.message + "\nCannot create a proxy object!")
 
     def getReport(self, UUID):
         try:
