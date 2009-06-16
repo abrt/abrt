@@ -1,0 +1,40 @@
+.TH abrt "7" "1 Jun 2009" ""
+.SH NAME
+KerneloopsReporter plugin for abrt(8)
+.SH DESCRIPTION
+.P
+.I abrt
+is a daemon which watches for application crashes. When a crash occurs,
+it collects the crash data and performs some actions according to 
+the configuration. This manual page describes the \fIKerneloopsReporter\fP 
+plugin for \fIabrt\fP.
+.P
+This plugin is used to report the crash to the Kerneloops tracker.
+.SH INVOCATION
+The plugin is invoked in the \fIabrt.conf\fP configuration file. 
+No parameters are necessary.
+.SH CONFIGURATION
+The \fIKerneloopsReporter.conf\fP configuration file contains one entry:
+.SS SubmitURL
+The URL of the kerneloops tracker, the default is
+.br
+SubmitURL = http://submit.kerneloops.org/submitoops.php
+.SH EXAMPLES
+.P
+This is a snippet from the \fIabrt.conf\fP configuration file.
+Each time a kernel oops is detected, run KerneloopsReporter:
+.P
+[common]
+.br
+ActionsAndReporters = Kerneloops, KerneloopsReporter
+.br
+[AnalyzerActionsAndReporters]
+.br
+Kerneloops = KerneloopsReporter
+.SH "SEE ALSO"
+.IR abrt (8),
+.IR abrt.conf (5),
+.IR abrt-plugins (7)
+.SH AUTHOR
+Written by Anton Arapov <anton@redhat.com>. Manual
+page by Daniel Novotny <dnovotny@redhat.com>.

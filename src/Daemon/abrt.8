@@ -7,7 +7,7 @@ abrt \- an automated bug-reporting tool
 .I abrt
 is a daemon which watches for application crashes. When a crash occurs,
 it collects the crash data (core file, application's command line etc.)
-and does some actions according to the type of application that
+and performs some actions according to the type of application that
 crashed and according to configuration in the
 .I abrt.conf
 config file. There are plugins for various actions: for example reporting
@@ -24,7 +24,8 @@ This option causes
 .I abrt
 to print some more debugging information, when the daemon is started.
 .SH "SEE ALSO"
-.IR abrt.conf(5)
+.IR abrt.conf (5),
+.IR abrt-plugins (7)
 .SH AUTHOR
 Written by Zdeněk Přikryl <zprikryl@redhat.com> and
 Jiří Moskovčák <jmoskovc@redhat.com>. Manual page written by Daniel

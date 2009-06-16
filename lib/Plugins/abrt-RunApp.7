@@ -1,0 +1,43 @@
+.TH abrt "7" "1 Jun 2009" ""
+.SH NAME
+RunApp plugin for abrt(8)
+.SH DESCRIPTION
+.P
+.I abrt
+is a daemon which watches for application crashes. When a crash occurs,
+it collects the crash data and performs some actions according to 
+the configuration. This manual page describes the \fIRunApp\fP plugin 
+for \fIabrt\fP.
+.P
+This plugin is used to run an arbitrary application, when the crash occurs.
+.SH INVOCATION
+The plugin is invoked in the \fIabrt.conf\fP configuration file. 
+The first parameter is the command to run, the second, optional
+parameter specifies an output file, to which the standard
+output of the program is saved.
+.SH CONFIGURATION
+There is no configuration file, the plugin parameters are
+sufficient.
+.SH EXAMPLES
+.P
+These are snippets from the \fIabrt.conf\fP configuration file.
+.P
+1) each time something crashes, print (and save in a text file)
+which processes are running on the system.
+.PP
+[common]
+.br
+ActionsAndReporters = RunApp("ps ax","processes.txt")
+.P
+2) When proftpd crashes, restart it.
+.PP
+[AnalyzerActionsAndReporters]
+.br
+CCpp:proftpd = RunApp("/etc/init.d/proftpd restart")
+.SH "SEE ALSO"
+.IR abrt (8),
+.IR abrt.conf (5),
+.IR abrt-plugins (7)
+.SH AUTHOR
+Written by Zdenek Prikryl <zprikryl@redhat.com>. Manual
+page by Daniel Novotny <dnovotny@redhat.com>.

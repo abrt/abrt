@@ -5,7 +5,7 @@ FileTransfer plugin for abrt(8)
 .P
 .I abrt
 is a daemon which watches for application crashes. When a crash occurs,
-it collects the crash data and does some actions according to 
+it collects the crash data and performs some actions according to 
 the configuration. This manual page describes the \fIFileTransfer\fP plugin 
 for \fIabrt\fP.
 .P
@@ -31,7 +31,8 @@ sent in the time the machine is busy working, you want
 to send everything in some more quiet time (at night, perhaps)
 and schedule this in the \fI[cron]\fP section of \fIabrt.conf\fP.
 .SH CONFIGURATION
-The \fIFileTransfer.conf\fP configuration file contains the following:
+The \fIFileTransfer.conf\fP configuration file contains 
+several entries in a format "Option = Value". The options are:
 .SS URL
 The URL of the server, where the crash should
 be transfered, specifying the protocol, the path,
@@ -60,10 +61,11 @@ option specifies the time in seconds. The default is
 .br
 RetryDelay = 20
 .SH EXAMPLES
+.P
 Typical configuration in \fIabrt.conf\fP. The crash is stored
 each time it happens and on midnight, all the crash data
 is transferred to a central server.
-.br
+.P
 [common]
 .br
 ActionsAndReporters = FileTransfer("store")
@@ -77,4 +79,3 @@ ActionsAndReporters = FileTransfer("store")
 .IR abrt-plugins (7)
 .SH AUTHOR
 Written by Daniel Novotny <dnovotny@redhat.com>.
-

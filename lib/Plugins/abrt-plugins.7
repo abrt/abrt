@@ -1,0 +1,44 @@
+.TH abrt "8" "28 May 2009" ""
+.SH NAME
+abrt-plugins \- plugins for the abrt crash reporter program
+.SH DESCRIPTION
+.P
+.I abrt
+is a daemon which watches for application crashes. When a crash occurs,
+it collects the crash data (core file, application's command line etc.)
+and performs some actions according to the type of application that
+crashed and according to configuration in the
+.I abrt.conf
+configuration file. 
+.P
+There are plugins for various actions: for example reporting
+the crash to Bugzilla, mailing the report, transfering the
+report via FTP or SCP, or running an arbitrary program.
+.P
+This manual page provides a list of all manual pages of
+the plugins.
+.P
+If you want to create your own plugin, there's a PLUGINS-HOWTO
+file in the documentation directory.
+.SH INVOCATION
+Each plugin is invoked in the \fIabrt.conf\fP configuration
+file, in the section, which is appropriate to what you
+want to do.
+.SH CONFIGURATION
+Almost each plugin has its configuration file,
+stored in the \fI/etc/abrt/plugins\fP directory.
+.SH "SEE ALSO"
+.IR abrt (8),
+.IR abrt.conf (5),
+.IR abrt-Bugzilla (7),
+.IR abrt-FileTransfer (7),
+.IR abrt-KerneloopsReporter (7),
+.IR abrt-KerneloopsScanner (7),
+.IR abrt-Logger (7),
+.IR abrt-Mailx (7),
+.IR abrt-RunApp (7),
+.IR abrt-SQLite3 (7)
+.SH AUTHOR
+\fIabrt\fP written by Zdeněk Přikryl <zprikryl@redhat.com> and
+Jiří Moskovčák <jmoskovc@redhat.com>. Manual page written by Daniel
+Novotný <dnovotny@redhat.com>.

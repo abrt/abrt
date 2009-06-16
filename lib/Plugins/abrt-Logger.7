@@ -1,0 +1,44 @@
+.TH abrt "7" "1 Jun 2009" ""
+.SH NAME
+Logger plugin for abrt(8)
+.SH DESCRIPTION
+.P
+.I abrt
+is a daemon which watches for application crashes. When a crash occurs,
+it collects the crash data and performs some actions according to 
+the configuration. This manual page describes the \fILogger\fP plugin 
+for \fIabrt\fP.
+.P
+This plugin is used to log the crash to a file.
+.P
+The log will contain all the file names as well as their
+content. It also contains "duplicity check": the ID
+of the crash, which is used to tell, if the same
+crash already happened.
+.SH INVOCATION
+The plugin is invoked in the \fIabrt.conf\fP configuration file. 
+No parameters are necessary.
+.SH CONFIGURATION
+The \fILogger.conf\fP configuration file contains
+several entries in a format "Option = Value". The options are:
+.SS LogPath
+The path to the log file.
+.SS AppendLogs
+If set to "yes", which is the default, \fILogger\fP will append
+the report to the file, otherwise it will overwrite the file (so
+only the last crash will be stored).
+.SH EXAMPLES
+.P
+This is a snippet from the \fIabrt.conf\fP configuration file.
+Log all the C/C++ application crashes:
+.P
+[AnalyzerActionsAndReporters]
+.br
+CCpp = Logger
+.SH "SEE ALSO"
+.IR abrt (8),
+.IR abrt.conf (5),
+.IR abrt-plugins (7)
+.SH AUTHOR
+Written by Zdenek Prikryl <zprikryl@redhat.com>. Manual
+page by Daniel Novotny <dnovotny@redhat.com>.
