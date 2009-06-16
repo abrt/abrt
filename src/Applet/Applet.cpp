@@ -19,9 +19,11 @@
     
 #include "CCApplet.h"
 #include <iostream>
+#include <dbus/dbus-shared.h>
 
 //@@global applet object
 CApplet *applet;
+
 static void
 crash_notify_cb(const char* progname)
 {
@@ -45,11 +47,25 @@ int main(int argc, char **argv)
     /* this should bind the dispatcher with mainloop */
     dispatcher.attach(NULL);
     DBus::default_dispatcher = &dispatcher;
-
+    DBus::Connection session = DBus::Connection::SessionBus();
+    //FIXME: possible race, but the dbus-c++ API won't let us check return value of request_name :(
+    if(session.has_name("com.redhat.abrt.applet"))
+    {
+        //applet is already running
+        std::cerr << "Applet is already running." << std::endl;
+        return -1;
+    }
+    else
+    {
+        //applet is not running, so claim the name on the session bus
+        session.request_name("com.redhat.abrt.applet");
+    }
+    
 	DBus::Connection conn = DBus::Connection::SystemBus();
     //CDBusClient client(conn, CC_DBUS_PATH, CC_DBUS_NAME);
     applet = new CApplet(conn, CC_DBUS_PATH, CC_DBUS_NAME);
     applet->ConnectCrashHandler(crash_notify_cb);
+    gtk_main();
     gtk_main();
     gdk_threads_leave();
     return 0;
