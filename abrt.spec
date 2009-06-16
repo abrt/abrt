@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.4
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/crash-catcher/
@@ -213,6 +213,7 @@ fi
 %dir %{_libdir}/%{name}
 %{_mandir}/man8/%{name}.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
+%{_mandir}/man7/%{name}-plugins.7.gz
 
 %files libs
 %defattr(-,root,root,-)
@@ -243,35 +244,42 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsScanner.conf
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
+%{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
 
 %files plugin-kerneloopsreporter
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsReporter.conf
 %{_libdir}/%{name}/libKerneloopsReporter.so*
+%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
 
 %files plugin-sqlite3
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/SQLite3.conf
 %{_libdir}/%{name}/libSQLite3.so*
+%{_mandir}/man7/%{name}-SQLite3.7.gz
 
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_libdir}/%{name}/libLogger.so*
+%{_mandir}/man7/%{name}-Logger.7.gz
 
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_libdir}/%{name}/libMailx.so*
+%{_mandir}/man7/%{name}-Mailx.7.gz
 
 %files plugin-runapp
 %defattr(-,root,root,-)
 %{_libdir}/%{name}/libRunApp.so*
+%{_mandir}/man7/%{name}-RunApp.7.gz
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_libdir}/%{name}/libBugzilla.so*
+%{_mandir}/man7/%{name}-Bugzilla.7.gz
 
 %files plugin-filetransfer
 %defattr(-,root,root,-)
@@ -291,6 +299,9 @@ fi
 %{_bindir}/abrt-cmd
 
 %changelog
+* Tue Jun 16 2009 Daniel Novotny <dnovotny@redhat.com> 0.0.4-2
+- added manual pages (also for plugins)
+
 * Mon Jun 15 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.4-1
 - new version
 - added cli (only supports sockets)
