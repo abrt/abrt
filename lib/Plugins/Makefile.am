@@ -15,7 +15,10 @@ pluginslib_LTLIBRARIES = libCCpp.la \
 pluginsconfdir=$(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf FileTransfer.conf
 
-man_MANS = abrt-FileTransfer.7
+man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7\
+           abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7\
+           abrt-SQLite3.7  abrt-RunApp.7
+
 EXTRA_DIST = $(man_MANS)
 
 # CCpp
