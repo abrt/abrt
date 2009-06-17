@@ -26,6 +26,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <unistd.h>
 #include <time.h>
 #include <syslog.h>
@@ -34,6 +35,8 @@
 #define FILENAME_EXECUTABLE     "executable"
 #define FILENAME_CMDLINE        "cmdline"
 #define FILENAME_COREDUMP       "coredump"
+
+#define VAR_RUN_PID_FILE         VAR_RUN"/abrt.pid"
 
 static void write_success_log(const char* pid)
 {
@@ -93,6 +96,34 @@ char* get_cmdline(const char* pid)
     return strdup(cmdline);
 }
 
+#define PID_MAX                 16
+
+int daemon_is_ok()
+{
+    char pid[PID_MAX];
+    char path[PATH_MAX];
+    struct stat buff;
+    FILE* fp;
+    if ((fp = fopen(VAR_RUN_PID_FILE, "r")) == NULL)
+    {
+        return 0;
+    }
+    fgets(pid, sizeof(pid), fp);
+    if (strrchr(pid, '\n') != NULL)
+    {
+        char* newline = strrchr(pid, '\n');
+        *newline = '\0';
+    }
+    snprintf(path, sizeof(path), "/proc/%s/stat", pid);
+    if (stat(path, &buff) == -1)
+    {
+        return 0;
+    }
+    fclose(fp);
+
+    return 1;
+}
+
 int main(int argc, char** argv)
 {
     const char* program_name = argv[0];
@@ -112,6 +143,10 @@ int main(int argc, char** argv)
         strcmp(signal, "6") != 0 &&     // SIGABRT
         strcmp(signal, "8") != 0 &&     // SIGFPE
         strcmp(signal, "11") != 0)      // SIGSEGV
+    {
+        return 0;
+    }
+    if (!daemon_is_ok())
     {
         return 0;
     }
@@ -169,6 +204,12 @@ int main(int argc, char** argv)
         fclose(fp);
         dd.Close();
         write_success_log(pid);
+    }
+    catch (CABRTException& e)
+    {
+        fprintf(stderr, "%s: %s\n", program_name, e.what().c_str());
+        write_faliure_log(e.what().c_str());
+        return -2;
     }
     catch (std::exception& e)
     {
