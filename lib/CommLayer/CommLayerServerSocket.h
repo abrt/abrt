@@ -1,7 +1,7 @@
 #include "CommLayerServer.h"
 #include <glib.h>
 
-#define SOCKET_PATH "/tmp/abrt.socket"
+#define SOCKET_FILE VAR_RUN"/abrt.socket"
 #define SOCKET_PERMISSION 0666
 
 class CCommLayerServerSocket : public CCommLayerServer

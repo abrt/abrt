@@ -4,7 +4,7 @@
 
 #include <string.h>
 
-#define SOCKET_PATH "/tmp/abrt.socket"
+#define SOCKET_FILE VAR_RUN"/abrt.socket"
 
 typedef enum {HELP,
               GET_LIST,
@@ -131,7 +131,7 @@ int main(int argc, char** argv)
 
     try
     {
-        ABRTSocket.Connect(SOCKET_PATH);
+        ABRTSocket.Connect(SOCKET_FILE);
 
         switch (param.m_Mode)
         {

@@ -170,14 +170,14 @@ CCommLayerServerSocket::CCommLayerServerSocket()
     int len;
     struct sockaddr_un local;
 
-    unlink(SOCKET_PATH);
+    unlink(SOCKET_FILE);
     if ((m_nSocket = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
     {
         throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not create socket.");
     }
     fcntl(m_nSocket, F_SETFD, FD_CLOEXEC);
     local.sun_family = AF_UNIX;
-    strcpy(local.sun_path, SOCKET_PATH);
+    strcpy(local.sun_path, SOCKET_FILE);
     len = strlen(local.sun_path) + sizeof(local.sun_family);
     if (bind(m_nSocket, (struct sockaddr *)&local, len) == -1)
     {
@@ -187,7 +187,7 @@ CCommLayerServerSocket::CCommLayerServerSocket()
     {
         throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not listen on the socket.");
     }
-    chmod(SOCKET_PATH, SOCKET_PERMISSION);
+    chmod(SOCKET_FILE, SOCKET_PERMISSION);
 
     m_pGSocket = g_io_channel_unix_new(m_nSocket);
     if (!g_io_add_watch(m_pGSocket,
