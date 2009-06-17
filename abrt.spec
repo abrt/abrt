@@ -298,7 +298,7 @@ fi
 
 %files cli
 %defattr(-,root,root,-)
-%{_bindir}/abrt-cmd
+%{_bindir}/abrt-cli
 
 %changelog
 * Tue Jun 16 2009 Daniel Novotny <dnovotny@redhat.com> 0.0.4-2
