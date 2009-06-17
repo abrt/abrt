@@ -485,7 +485,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
 
 void CCrashWatcher::Lock()
 {
-    int lfp = open("abrt.lock",O_RDWR|O_CREAT,0640);
+    int lfp = open("/var/run/abrt.lock",O_RDWR|O_CREAT,0640);
 	if (lfp < 0)
 	{
 	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
@@ -560,14 +560,14 @@ void CCrashWatcher::Daemonize()
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
-    //Lock();
+    Lock();
     GStartWatch();
 }
 
 void CCrashWatcher::Run()
 {
     Debug("Runnig...");
-    //Lock();
+    Lock();
     GStartWatch();
 }
 
