@@ -22,6 +22,8 @@ BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+# gui requirements
+Requires: dbus-python, rhpl, pygtk2, pygtk2-libglade
 
 %description
 %{name} is a tool to help users to detect defects in applications and 
