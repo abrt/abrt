@@ -31,6 +31,7 @@ AC_CHECK_HEADER([magic.h], [],
    [AC_MSG_ERROR([magic.h is needed to build abrt])])
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
+VAR_RUN = '${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
