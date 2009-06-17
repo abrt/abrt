@@ -73,7 +73,7 @@ AC_CONFIG_FILES([
 	src/Hooks/Makefile
 	src/Applet/Makefile
 	src/Gui/Makefile
-	src/TUI/Makefile
+	src/CLI/Makefile
 	inc/Makefile
 ])
 
