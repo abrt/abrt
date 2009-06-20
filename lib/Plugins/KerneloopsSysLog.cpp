@@ -29,6 +29,7 @@
 #include <list>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 /*
  * This limits the number of oopses we'll submit per session;
@@ -97,86 +98,82 @@ std::list<COops> CSysLog::GetOopsList()
  * This function splits the dmesg buffer data into lines
  * (null terminated).
  */
-int CSysLog::FillLinePointers(char *buffer, int remove_syslog)
+int CSysLog::FillLinePointers(char *buffer, size_t buflen, int remove_syslog)
 {
 	char *c, *linepointer, linelevel;
 	linecount = 0;
+	if (!buflen)
+		return 0;
+	buffer[buflen - 1] = '\n';  /* the buffer usually ends with \n, but let's make sure */
 	c = buffer;
-	while (c) {
+	while (c < buffer + buflen) {
 		int len = 0;
 		char *c9;
 
-		c9 = strchr(c, '\n');
-		if (c9)
-			len = c9 - c;
+		c9 = (char*)memchr(c, '\n', buffer + buflen - c); /* a \n will always be found */
+		assert(c9);
+		len = c9 - c;
 
 		/* in /var/log/messages, we need to strip the first part off, upto the 3rd ':' */
 		if (remove_syslog) {
 			char *c2;
+			int i;
 
 			/* skip non-kernel lines */
 			c2 = (char*)memmem(c, len, "kernel:", 7);
 			if (!c2)
 				c2 = (char*)memmem(c, len, "abrt:", 5);
-			if (!c2) {
-				c2 = c9;
-				if (c2) {
-					c = c2 + 1;
-					continue;
-				} else
-					break;
-			}
-			c = strchr(c, ':');
-			if (!c)
-				break;
-			c++;
-			c = strchr(c, ':');
-			if (!c)
-				break;
-			c++;
-			c = strchr(c, ':');
-			if (!c)
-				break;
-			c++;
-			if (*c)
+			if (!c2)
+				goto next_line;
+
+			/* skip to message in "Jan 01 01:23:45 hostname kernel: message" */
+			for (i = 0; i < 3; i++) {
+				c = (char*)memchr(c, ':', len);
+				if (!c)
+					goto next_line;
 				c++;
+				len = c9 - c;
+			}
+			c++;
+			len--;
 		}
 
 		linepointer = c;
 		linelevel = 0;
 		/* store and remove kernel log level */
-		if (*c == '<' && *(c+2) == '>') {
+		if (len >= 3 && *c == '<' && *(c+2) == '>') {
 			linelevel = *(c+1);
-			c = c + 3;
+			c += 3;
+			len -= 3;
 			linepointer = c;
 		}
 		/* remove jiffies time stamp counter if present */
 		if (*c == '[') {
 			char *c2, *c3;
-			c2 = strchr(c, '.');
-			c3 = strchr(c, ']');
+			c2 = (char*)memchr(c, '.', len);
+			c3 = (char*)memchr(c, ']', len);
 			if (c2 && c3 && (c2 < c3) && (c3-c) < 14 && (c2-c) < 8) {
-				c = c3+1;
+				c = c3 + 1;
 				if (*c == ' ')
 					c++;
+				len = c9 - c;
 				linepointer = c;
 			}
 		}
 
-		c = strchr(c, '\n'); /* turn the \n into a string termination */
-		if (c) {
-			*c = 0;
-			c = c+1;
-		}
+		assert(c + len == c9);
+		*c9 = '\0'; /* turn the \n into a string termination */
 
 		/* if we see our own marker, we know we submitted everything upto here already */
-		if (strstr(linepointer, "Abrt")) {
+		if (memmem(linepointer, len, "Abrt", 4)) {
 			linecount = 0;
 			lines_info[0].ptr = NULL;
 		}
 		if (set_line_info(linecount, linepointer, linelevel) < 0)
 			return -1;
 		linecount++;
+next_line:
+		c = c9 + 1;
 	}
 	return 0;
 }
@@ -227,7 +224,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 	lines_info = NULL;
 	lines_info_alloc = 0;
 
-	if (FillLinePointers(buffer, remove_syslog) < 0);
+	if (FillLinePointers(buffer, buflen, remove_syslog) < 0);
 		goto fail;
 
 	oopsend = linecount;

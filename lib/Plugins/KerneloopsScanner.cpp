@@ -104,7 +104,7 @@ void CKerneloopsScanner::ScanSysLogFile(const char *filename, int issyslog)
     FILE *file;
     int ret;
     int m_nFoundOopses;
-    size_t buflen;
+    size_t buflen, nread;
 
     memset(&statb, 0, sizeof(statb));
 
@@ -134,11 +134,11 @@ void CKerneloopsScanner::ScanSysLogFile(const char *filename, int issyslog)
         return;
     }
     fseek(file, -buflen, SEEK_END);
-    ret = fread(buffer, 1, buflen-1, file);
+    nread = fread(buffer, 1, buflen, file);
     fclose(file);
 
-    if (ret > 0)
-        m_nFoundOopses = m_pSysLog.ExtractOops(buffer, buflen-1, issyslog);
+    if (nread > 0)
+        m_nFoundOopses = m_pSysLog.ExtractOops(buffer, nread, issyslog);
     free(buffer);
 
     if (m_nFoundOopses > 0) {
