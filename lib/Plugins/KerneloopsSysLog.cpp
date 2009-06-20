@@ -37,10 +37,33 @@
  */
 #define MAX_OOPS 16
 
-static char **linepointer;
+struct line_info {
+	char *ptr;
+	char level;
+};
 
-static char *linelevel;
+static struct line_info *lines_info;
+static int lines_info_alloc;
 static int linecount;
+
+#define REALLOC_CHUNK 1000
+
+static int set_line_info(int index, char *linepointer, char linelevel)
+{
+	if (index >= lines_info_alloc) {
+		struct line_info *new_info;
+		new_info = (line_info*)realloc(lines_info,
+				(lines_info_alloc + REALLOC_CHUNK) * sizeof(struct line_info));
+		if (!new_info)
+			return -1;
+		lines_info_alloc += REALLOC_CHUNK;
+		lines_info = new_info;
+	}
+
+	lines_info[index].ptr = linepointer;
+	lines_info[index].level = linelevel;
+	return 0;
+}
 
 CSysLog::CSysLog() :
 	m_nFoundOopses(0)
@@ -72,12 +95,11 @@ std::list<COops> CSysLog::GetOopsList()
 
 /*
  * This function splits the dmesg buffer data into lines
- * (null terminated). The linepointer array is assumed to be
- * allocated already.
+ * (null terminated).
  */
-void CSysLog::FillLinePointers(char *buffer, int remove_syslog)
+int CSysLog::FillLinePointers(char *buffer, int remove_syslog)
 {
-	char *c;
+	char *c, *linepointer, linelevel;
 	linecount = 0;
 	c = buffer;
 	while (c) {
@@ -120,13 +142,13 @@ void CSysLog::FillLinePointers(char *buffer, int remove_syslog)
 				c++;
 		}
 
-		linepointer[linecount] = c;
-		linelevel[linecount] = 0;
+		linepointer = c;
+		linelevel = 0;
 		/* store and remove kernel log level */
 		if (*c == '<' && *(c+2) == '>') {
-			linelevel[linecount] = *(c+1);
+			linelevel = *(c+1);
 			c = c + 3;
-			linepointer[linecount] = c;
+			linepointer = c;
 		}
 		/* remove jiffies time stamp counter if present */
 		if (*c == '[') {
@@ -137,7 +159,7 @@ void CSysLog::FillLinePointers(char *buffer, int remove_syslog)
 				c = c3+1;
 				if (*c == ' ')
 					c++;
-				linepointer[linecount] = c;
+				linepointer = c;
 			}
 		}
 
@@ -148,12 +170,15 @@ void CSysLog::FillLinePointers(char *buffer, int remove_syslog)
 		}
 
 		/* if we see our own marker, we know we submitted everything upto here already */
-		if (strstr(linepointer[linecount], "Abrt")) {
+		if (strstr(linepointer, "Abrt")) {
 			linecount = 0;
-			linepointer[0] = NULL;
+			lines_info[0].ptr = NULL;
 		}
+		if (set_line_info(linecount, linepointer, linelevel) < 0)
+			return -1;
 		linecount++;
 	}
+	return 0;
 }
 
 /*
@@ -199,23 +224,17 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 	int inbacktrace = 0;
 	int oopsesfound = 0;
 
-	linepointer = (char**)calloc(buflen+1, sizeof(char*));
-	if (!linepointer)
-		return 0;
-	linelevel = (char*)calloc(buflen+1, sizeof(char));
-	if (!linelevel) {
-		free(linepointer);
-		linepointer = NULL;
-		return 0;
-	}
+	lines_info = NULL;
+	lines_info_alloc = 0;
 
-	FillLinePointers(buffer, remove_syslog);
+	if (FillLinePointers(buffer, remove_syslog) < 0);
+		goto fail;
 
 	oopsend = linecount;
 
 	i = 0;
 	while (i < linecount) {
-		char *c = linepointer[i];
+		char *c = lines_info[i].ptr;
 
 		if (c == NULL) {
 			i++;
@@ -262,7 +281,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 			/* debug information */
 			if (oopsstart >= 0) {
 				printf("Found start of oops at line %i\n", oopsstart);
-				printf("    start line is -%s-\n", linepointer[oopsstart]);
+				printf("    start line is -%s-\n", lines_info[oopsstart].ptr);
 				if (oopsstart != i)
 					printf("    trigger line is -%s-\n", c);
 			}
@@ -272,7 +291,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 				int i2;
 				i2 = i+1;
 				while (i2 < linecount && i2 < (i+50)) {
-					if (strstr(linepointer[i2], "---[ end trace")) {
+					if (strstr(lines_info[i2].ptr, "---[ end trace")) {
 						inbacktrace = 1;
 						i = i2;
 						break;
@@ -283,53 +302,53 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 		}
 
 		/* a calltrace starts with "Call Trace:" or with the " [<.......>] function+0xFF/0xAA" pattern */
-		if (oopsstart >= 0 && strstr(linepointer[i], "Call Trace:"))
+		if (oopsstart >= 0 && strstr(lines_info[i].ptr, "Call Trace:"))
 			inbacktrace = 1;
 
-		else if (oopsstart >= 0 && inbacktrace == 0 && strlen(linepointer[i]) > 8) {
+		else if (oopsstart >= 0 && inbacktrace == 0 && strlen(lines_info[i].ptr) > 8) {
 			char *c1, *c2, *c3;
-			c1 = strstr(linepointer[i], ">]");
-			c2 = strstr(linepointer[i], "+0x");
-			c3 = strstr(linepointer[i], "/0x");
-			if (linepointer[i][0] == ' ' && linepointer[i][1] == '[' && linepointer[i][2] == '<' && c1 && c2 && c3)
+			c1 = strstr(lines_info[i].ptr, ">]");
+			c2 = strstr(lines_info[i].ptr, "+0x");
+			c3 = strstr(lines_info[i].ptr, "/0x");
+			if (lines_info[i].ptr[0] == ' ' && lines_info[i].ptr[1] == '[' && lines_info[i].ptr[2] == '<' && c1 && c2 && c3)
 				inbacktrace = 1;
 		} else
 
 		/* try to see if we're at the end of an oops */
 		if (oopsstart >= 0 && inbacktrace > 0) {
 			char c2, c3;
-			c2 = linepointer[i][0];
-			c3 = linepointer[i][1];
+			c2 = lines_info[i].ptr[0];
+			c3 = lines_info[i].ptr[1];
 
 			/* line needs to start with " [" or have "] ["*/
 			if ((c2 != ' ' || c3 != '[') &&
-				strstr(linepointer[i], "] [") == NULL &&
-				strstr(linepointer[i], "--- Exception") == NULL &&
-				strstr(linepointer[i], "    LR =") == NULL &&
-				strstr(linepointer[i], "<#DF>") == NULL &&
-				strstr(linepointer[i], "<IRQ>") == NULL &&
-				strstr(linepointer[i], "<EOI>") == NULL &&
-				strstr(linepointer[i], "<<EOE>>") == NULL)
+				strstr(lines_info[i].ptr, "] [") == NULL &&
+				strstr(lines_info[i].ptr, "--- Exception") == NULL &&
+				strstr(lines_info[i].ptr, "    LR =") == NULL &&
+				strstr(lines_info[i].ptr, "<#DF>") == NULL &&
+				strstr(lines_info[i].ptr, "<IRQ>") == NULL &&
+				strstr(lines_info[i].ptr, "<EOI>") == NULL &&
+				strstr(lines_info[i].ptr, "<<EOE>>") == NULL)
 				oopsend = i-1;
 
 			/* oops lines are always more than 8 long */
-			if (strlen(linepointer[i]) < 8)
+			if (strlen(lines_info[i].ptr) < 8)
 				oopsend = i-1;
 			/* single oopses are of the same loglevel */
-			if (linelevel[i] != prevlevel)
+			if (lines_info[i].level != prevlevel)
 				oopsend = i-1;
 			/* The Code: line means we're done with the backtrace */
-			if (strstr(linepointer[i], "Code:") != NULL)
+			if (strstr(lines_info[i].ptr, "Code:") != NULL)
 				oopsend = i;
-			if (strstr(linepointer[i], "Instruction dump::") != NULL)
+			if (strstr(lines_info[i].ptr, "Instruction dump::") != NULL)
 				oopsend = i;
 			/* if a new oops starts, this one has ended */
-			if (strstr(linepointer[i], "WARNING:") != NULL && oopsstart != i)
+			if (strstr(lines_info[i].ptr, "WARNING:") != NULL && oopsstart != i)
 				oopsend = i-1;
-			if (strstr(linepointer[i], "Unable to handle") != NULL && oopsstart != i)
+			if (strstr(lines_info[i].ptr, "Unable to handle") != NULL && oopsstart != i)
 				oopsend = i-1;
 			/* kernel end-of-oops marker */
-			if (strstr(linepointer[i], "---[ end trace") != NULL)
+			if (strstr(lines_info[i].ptr, "---[ end trace") != NULL)
 				oopsend = i;
 
 			if (oopsend <= i) {
@@ -341,7 +360,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 
 				len = 2;
 				for (q = oopsstart; q <= oopsend; q++)
-					len += strlen(linepointer[q])+1;
+					len += strlen(lines_info[q].ptr)+1;
 
 				oops = (char*)calloc(len, 1);
 				version = (char*)calloc(len, 1);
@@ -349,8 +368,8 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 				is_version = 0;
 				for (q = oopsstart; q <= oopsend; q++) {
 					if (!is_version)
-						is_version = ExtractVersion(linepointer[q], version);
-					strcat(oops, linepointer[q]);
+						is_version = ExtractVersion(lines_info[q].ptr, version);
+					strcat(oops, lines_info[q].ptr);
 					strcat(oops, "\n");
 				}
 				/* too short oopses are invalid */
@@ -365,7 +384,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 				free(version);
 			}
 		}
-		prevlevel = linelevel[i];
+		prevlevel = lines_info[i].level;
 		i++;
 		if (oopsstart > 0 && i-oopsstart > 50) {
 			oopsstart = -1;
@@ -388,10 +407,10 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 		oopsend = i-1;
 
 		len = 2;
-		while (oopsend > 0 && linepointer[oopsend] == NULL)
+		while (oopsend > 0 && lines_info[oopsend].ptr == NULL)
 			oopsend--;
 		for (q = oopsstart; q <= oopsend; q++)
-			len += strlen(linepointer[q])+1;
+			len += strlen(lines_info[q].ptr)+1;
 
 		oops = (char*)calloc(len, 1);
 		version = (char*)calloc(len, 1);
@@ -399,8 +418,8 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 		is_version = 0;
 		for (q = oopsstart; q <= oopsend; q++) {
 			if (!is_version)
-				is_version = ExtractVersion(linepointer[q], version);
-			strcat(oops, linepointer[q]);
+				is_version = ExtractVersion(lines_info[q].ptr, version);
+			strcat(oops, lines_info[q].ptr);
 			strcat(oops, "\n");
 		}
 		/* too short oopses are invalid */
@@ -414,10 +433,8 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 		free(oops);
 		free(version);
 	}
-	free(linepointer);
-	free(linelevel);
-	linepointer = NULL;
-	linelevel = NULL;
-
+fail:
+	free(lines_info);
+	lines_info = NULL;
 	return oopsesfound;
 }
