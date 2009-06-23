@@ -34,7 +34,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <iomanip>
-
+#include <grp.h>
 #include <nss.h>
 #include <sechash.h>
 #include <prinit.h>
@@ -144,7 +144,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
         {
             if(FD_ISSET(pipeout[0], &rsfd))
             {
-                int r = read(pipeout[0], buff, sizeof(buff));
+                int r = read(pipeout[0], buff, sizeof(buff) - 1);
                 if (r <= 0)
                 {
                     quit = true;
@@ -377,6 +377,9 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     }
     if(child == 0)
     {
+        gid_t GID[1];
+        GID[0] = atoi(pUID.c_str());
+
         close(STDIN_FILENO);
         close(STDOUT_FILENO);
         close(STDERR_FILENO);
@@ -384,8 +387,9 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
         dup2(pipeout[1], STDOUT_FILENO);
         close(pipeout[1]);
 
-        setuid(atoi(pUID.c_str()));
-        seteuid(atoi(pUID.c_str()));
+        setgroups(1, GID);
+        setregid(atoi(pUID.c_str()), atoi(pUID.c_str()));
+        setreuid(atoi(pUID.c_str()), atoi(pUID.c_str()));
         setsid();
 
         execvp(pCommand, pArgs);
@@ -408,7 +412,7 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
         {
             if(FD_ISSET(pipeout[0], &rsfd))
             {
-                int r = read(pipeout[0], buff, sizeof(buff));
+                int r = read(pipeout[0], buff, sizeof(buff) - 1);
                 if (r <= 0)
                 {
                     quit = true;
