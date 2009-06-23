@@ -575,7 +575,6 @@ void CCrashWatcher::GStartWatch()
 void CCrashWatcher::Daemonize()
 {
     Lock();
-    CreatePidFile();
     Debug("Daemonize...");
     // forking to background
     pid_t pid = fork();
@@ -594,6 +593,8 @@ void CCrashWatcher::Daemonize()
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
+    /* we need a pid file for the child process */
+    CreatePidFile();
     GStartWatch();
 }
 
