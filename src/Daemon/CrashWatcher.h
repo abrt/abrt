@@ -77,10 +77,12 @@ class CCrashWatcher
 
         void StartWatch();
         void GStartWatch();
+        void CreatePidFile();
         void Lock();
         void SetUpMW();
         void SetUpCron();
         /* finds dumps created when daemon wasn't running */
+        // FIXME: how to catch abrt itself without this?
         void FindNewDumps(const std::string& pPath);
         double GetDirSize(const std::string &pPath);
 

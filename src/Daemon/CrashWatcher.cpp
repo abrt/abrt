@@ -34,6 +34,7 @@
 #include "ABRTException.h"
 
 #define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
+#define VAR_RUN_PIDFILE   VAR_RUN"/abrt.pid"
 
 /* just a helper function
 template< class T >
@@ -414,6 +415,10 @@ CCrashWatcher::~CCrashWatcher()
     delete m_pMW;
     delete m_pSettings;
     delete m_pCommLayerInner;
+    /* delete pid file */
+    unlink(VAR_RUN_PIDFILE);
+    /* delete lock file */
+    unlink(VAR_RUN_LOCK_FILE);
 }
 void CCrashWatcher::FindNewDumps(const std::string& pPath)
 {
@@ -484,6 +489,32 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
         }
     }
 }
+void CCrashWatcher::CreatePidFile()
+{
+    int fd;
+
+    /* JIC */
+    unlink(VAR_RUN_PIDFILE);
+
+    /* open the pidfile */
+    fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT|O_EXCL, 0644);
+    if (fd >= 0) {
+            FILE *f;
+
+            /* write our pid to it */
+            f = fdopen(fd, "w");
+            if (f != NULL) {
+                    fprintf(f, "%d\n", getpid());
+                    fclose(f);
+                    /* leave the fd open */
+                    return;
+            }
+            close(fd);
+    }
+            
+    /* something went wrong */
+    CABRTException(EXCEP_FATAL, "CCrashWatcher::CreatePidFile(): can not open pid file");
+}
 
 void CCrashWatcher::Lock()
 {
@@ -543,7 +574,8 @@ void CCrashWatcher::GStartWatch()
 
 void CCrashWatcher::Daemonize()
 {
-
+    Lock();
+    CreatePidFile();
     Debug("Daemonize...");
     // forking to background
     pid_t pid = fork();
@@ -562,14 +594,14 @@ void CCrashWatcher::Daemonize()
     close(STDIN_FILENO);
     close(STDOUT_FILENO);
     close(STDERR_FILENO);
-    Lock();
     GStartWatch();
 }
 
 void CCrashWatcher::Run()
 {
-    Debug("Runnig...");
     Lock();
+    CreatePidFile();
+    Debug("Runnig...");
     GStartWatch();
 }
 
