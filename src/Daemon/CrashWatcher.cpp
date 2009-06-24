@@ -111,7 +111,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                 }
                 catch (CABRTException& e)
                 {
-                    std::cerr << e.what() << std::endl;
+                    cc->Warning(e.what());
                     if (e.type() == EXCEP_FATAL)
                     {
                         return -1;
@@ -511,7 +511,7 @@ void CCrashWatcher::CreatePidFile()
             }
             close(fd);
     }
-            
+
     /* something went wrong */
     CABRTException(EXCEP_FATAL, "CCrashWatcher::CreatePidFile(): can not open pid file");
 }
