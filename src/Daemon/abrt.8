@@ -23,6 +23,12 @@ respective plugins.
 This option causes
 .I abrt
 to print some more debugging information, when the daemon is started.
+.SH CAVEATS
+When you use some other crash catching tool, specific for an aplication
+or an application type (for example BugBuddy for GNOME applications),
+the crashes of this type will be handled by this application and
+not \fIabrt\fP. If you don't want this behavior, turn the higher-level crash
+catching application off: the crashes will be handled by \fIabrt\fP then.
 .SH "SEE ALSO"
 .IR abrt.conf (5),
 .IR abrt-plugins (7)
