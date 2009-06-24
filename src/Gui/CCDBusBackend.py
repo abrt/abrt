@@ -14,9 +14,16 @@ class DBusManager(gobject.GObject):
     """ Class to provide communication with daemon over dbus """
     # and later with policyKit
     def __init__(self):
-        session = dbus.SessionBus()
-        if session.request_name(APP_NAME, dbus.bus.NAME_FLAG_DO_NOT_QUEUE) != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER:
-            raise Exception("Name %s is taken,\nanother instance is already running." % APP_NAME)
+        session = None
+        try:
+            session = dbus.SessionBus()
+        except:
+            # FIXME: root doesn't have SessionBus
+            pass
+        if session:
+            if session.request_name(APP_NAME, dbus.bus.NAME_FLAG_DO_NOT_QUEUE) != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER:
+                raise Exception("Name %s is taken,\nanother instance is already running." % APP_NAME)
+                
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
         gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
