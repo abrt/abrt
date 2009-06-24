@@ -7,7 +7,7 @@ Version: 0.0.4
 Release: 2%{?dist}
 License: GPLv2+
 Group: Applications/System
-URL: https://fedorahosted.org/crash-catcher/
+URL: https://fedorahosted.org/abrt/
 Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
 Source1: abrt.init
 BuildRequires: dbus-c++-devel
