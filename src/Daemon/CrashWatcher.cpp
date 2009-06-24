@@ -571,38 +571,11 @@ void CCrashWatcher::GStartWatch()
     g_main_run (m_pMainloop);
 }
 
-
-void CCrashWatcher::Daemonize()
-{
-    Lock();
-    Debug("Daemonize...");
-    // forking to background
-    pid_t pid = fork();
-	if (pid < 0)
-    {
-	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): Fork error");
-    }
-    /* parent exits */
-	if (pid > 0) _exit(0);
-	/* child (daemon) continues */
-    pid_t sid = setsid();
-    if(sid == -1)
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): setsid failed");
-    }
-    close(STDIN_FILENO);
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
-    /* we need a pid file for the child process */
-    CreatePidFile();
-    GStartWatch();
-}
-
 void CCrashWatcher::Run()
 {
+    Debug("Runnig...");
     Lock();
     CreatePidFile();
-    Debug("Runnig...");
     GStartWatch();
 }
 

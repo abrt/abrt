@@ -100,9 +100,6 @@ class CCrashWatcher
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
         CCrashWatcher(const std::string& pPath);
 		virtual ~CCrashWatcher();
-        //run as daemon
-        void Daemonize();
-        //don't go background - for debug
         void Run();
 
     /* methods exported on dbus */

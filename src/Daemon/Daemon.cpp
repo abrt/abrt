@@ -33,7 +33,7 @@ void terminate(int signal)
 
 void print_help()
 {
-    
+
 }
 
 int main(int argc, char** argv)
@@ -44,7 +44,6 @@ int main(int argc, char** argv)
     signal(SIGINT, terminate);
     try
     {
-        g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
 
         if (argc > 1)
         {
@@ -55,12 +54,26 @@ int main(int argc, char** argv)
         }
         if(daemonize)
         {
-            g_pCrashWatcher->Daemonize();
+            // forking to background
+            pid_t pid = fork();
+            if (pid < 0)
+            {
+                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): Fork error");
+            }
+            /* parent exits */
+            if (pid > 0) _exit(0);
+            /* child (daemon) continues */
+            pid_t sid = setsid();
+            if(sid == -1)
+            {
+                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): setsid failed");
+            }
+            close(STDIN_FILENO);
+            close(STDOUT_FILENO);
+            close(STDERR_FILENO);
         }
-        else
-        {
-            g_pCrashWatcher->Run();
-        }
+        g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
+        g_pCrashWatcher->Run();
     }
     catch(CABRTException& e)
     {
