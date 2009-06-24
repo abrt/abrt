@@ -35,10 +35,9 @@
 #include <string.h>
 #include <iomanip>
 #include <grp.h>
+
 #include <nss.h>
 #include <sechash.h>
-#include <prinit.h>
-
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
@@ -63,6 +62,7 @@ CAnalyzerCCpp::~CAnalyzerCCpp()
 
 std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
 {
+
     std::string ret = "";
     HASHContext* hc;
     unsigned char hash[SHA1_LENGTH];
@@ -518,10 +518,6 @@ void CAnalyzerCCpp::Init()
 		fOutCorePattern << CORE_PATTERN << std::endl;
 		fOutCorePattern.close();
 	}
-    if (NSS_NoDB_Init(NULL) != SECSuccess)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::CreateHash(): cannot initialize NSS library.");
-    }
 }
 
 
@@ -534,7 +530,6 @@ void CAnalyzerCCpp::DeInit()
 		fOutCorePattern << m_sOldCorePattern << std::endl;
 		fOutCorePattern.close();
 	}
-    NSS_Shutdown();
 }
 
 void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
