@@ -224,6 +224,10 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
         if (it->second[CD_TYPE] == CD_ATT)
         {
             base64 = NSSBase64Encoder_Create(Base64Encode_cb, this);
+            if (!base64)
+            {
+                throw CABRTException(EXCEP_PLUGIN, "CReporterBugzilla::AddAttachemnt(): cannot initialize base64.");
+            }
             NSSBase64Encoder_Update(base64,
                                     reinterpret_cast<const unsigned char*>(it->second[CD_CONTENT].c_str()),
                                     it->second[CD_CONTENT].length());
