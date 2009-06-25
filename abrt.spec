@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.4
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -22,8 +22,6 @@ BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
-# gui requirements
-Requires: dbus-python, rhpl, pygtk2, pygtk2-libglade
 
 %description
 %{name} is a tool to help users to detect defects in applications and 
@@ -59,6 +57,7 @@ daemon.
 Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
+Requires: dbus-python, rhpl, pygtk2, pygtk2-libglade
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -79,6 +78,7 @@ Group: System Environment/Libraries
 Requires: %{name}-plugin-kerneloopsreporter = %{version}-%{release}
 Requires: %{name} = %{version}-%{release}
 Conflicts: kerneloops
+Obsoletes: abrt-plugin-kerneloops
 
 %description addon-kerneloops
 This package contains plugins for kernel crashes information collecting.
@@ -301,6 +301,9 @@ fi
 %{_bindir}/abrt-cli
 
 %changelog
+* Thu Jun 25 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.4-3
+- fixed dependencies in spec file
+
 * Tue Jun 16 2009 Daniel Novotny <dnovotny@redhat.com> 0.0.4-2
 - added manual pages (also for plugins)
 
