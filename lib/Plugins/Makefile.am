@@ -8,6 +8,7 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libKerneloopsReporter.la\
                          libKerneloops.la \
                          libRunApp.la \
+                         libSOSreport.la \
                          libBugzilla.la \
                          libPython.la \
                          libFileTransfer.la
@@ -60,6 +61,10 @@ libLogger_la_LDFLAGS = -avoid-version
 # RunApp
 libRunApp_la_SOURCES = RunApp.h RunApp.cpp
 libRunApp_la_LDFLAGS = -avoid-version
+
+# SOSreport
+libSOSreport_la_SOURCES = SOSreport.cpp SOSreport.h
+libSOSreport_la_LDFLAGS = -avoid-version
 
 # Bugzilla
 libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp PluginSettings.h
