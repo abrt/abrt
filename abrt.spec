@@ -128,6 +128,15 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-runapp
 Plugin to run external programs.
 
+%package plugin-sosreport
+Summary: %{name}'s sosreport plugin
+Group: System Environment/Libraries
+Requires: sos
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-sosreport
+Plugin to include an sosreport in an abrt report.
+
 %package plugin-bugzilla
 Summary: %{name}'s bugzilla plugin
 Group: System Environment/Libraries
@@ -276,6 +285,10 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/%{name}/libRunApp.so*
 %{_mandir}/man7/%{name}-RunApp.7.gz
+
+%files plugin-sosreport
+%defattr(-,root,root,-)
+%{_libdir}/%{name}/libSOSreport.so*
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)
