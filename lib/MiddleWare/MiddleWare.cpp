@@ -127,7 +127,7 @@ void CMiddleWare::CreateReport(const std::string& pAnalyzer,
                                const std::string& pDebugDumpDir)
 {
     CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
-    return analyzer->CreateReport(pDebugDumpDir);
+    analyzer->CreateReport(pDebugDumpDir);
 }
 
 CMiddleWare::mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID,
@@ -548,7 +548,7 @@ CMiddleWare::mw_result_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     return MW_OK;
 }
 
-vector_strings_t CMiddleWare::GetUUIDsOfCrash(const std::string& pUID)
+vector_pair_string_string_t CMiddleWare::GetUUIDsOfCrash(const std::string& pUID)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     vector_database_rows_t rows;
@@ -556,14 +556,14 @@ vector_strings_t CMiddleWare::GetUUIDsOfCrash(const std::string& pUID)
     rows = database->GetUIDData(pUID);
     database->DisConnect();
 
-    vector_strings_t UUIDs;
+    vector_pair_string_string_t UUIDsUIDs;
     int ii;
     for (ii = 0; ii < rows.size(); ii++)
     {
-        UUIDs.push_back(rows[ii].m_sUUID);
+        UUIDsUIDs.push_back(make_pair(rows[ii].m_sUUID, rows[ii].m_sUID));
     }
 
-    return UUIDs;
+    return UUIDsUIDs;
 }
 
 void CMiddleWare::SetOpenGPGCheck(const bool& pCheck)

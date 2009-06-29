@@ -585,32 +585,32 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     Debug("Getting crash infos...");
     try
     {
-        vector_strings_t UUIDs;
-        UUIDs = m_pMW->GetUUIDsOfCrash(pUID);
+        vector_pair_string_string_t UUIDsUIDs;
+        UUIDsUIDs = m_pMW->GetUUIDsOfCrash(pUID);
 
         unsigned int ii;
-        for (ii = 0; ii < UUIDs.size(); ii++)
+        for (ii = 0; ii < UUIDsUIDs.size(); ii++)
         {
             CMiddleWare::mw_result_t res;
             map_crash_info_t info;
 
-            res = m_pMW->GetCrashInfo(UUIDs[ii], pUID, info);
+            res = m_pMW->GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
             switch(res)
             {
                 case CMiddleWare::MW_OK:
                     retval.push_back(info);
                     break;
                 case CMiddleWare::MW_ERROR:
-                    Warning("Can not find debug dump directory for UUID: " + UUIDs[ii] + ", deleting from database");
-                    Status("Can not find debug dump directory for UUID: " + UUIDs[ii] + ", deleting from database");
-                    m_pMW->DeleteCrashInfo(UUIDs[ii], pUID);
+                    Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
+                    Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
+                    m_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                     break;
                 case CMiddleWare::MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
-                        Warning("Can not open file in debug dump directory for UUID: " + UUIDs[ii] + ", deleting ");
-                        Status("Can not open file in debug dump directory for UUID: " + UUIDs[ii] + ", deleting ");
-                        debugDumpDir = m_pMW->DeleteCrashInfo(UUIDs[ii], pUID);
+                        Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
+                        Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
+                        debugDumpDir = m_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                         m_pMW->DeleteDebugDumpDir(debugDumpDir);
                     }
                     break;
