@@ -25,16 +25,37 @@
 
 #include <string>
 
+/**
+ * A class. It contains one dynamic library.
+ */
 class CDynamicLibrary
 {
     private:
+        /**
+         * A pointer to library.
+         */
         void* m_pHandle;
-
+        /**
+         * A method, which loads a library.
+         * @param pPath A path to the library.
+         */
         void Load(const std::string& pPath);
     public:
+        /**
+         * A constructor.
+         * @param pPath A path to the library.
+         */
         CDynamicLibrary(const std::string& pPath);
+        /**
+         * A destructor.
+         */
         ~CDynamicLibrary();
-
+        /**
+         * A method, which tries to find a symbol in a library. If it successes
+         * then a non-NULL pointer is returned, otherwise NULL is returned.
+         * @param pName A symbol name.
+         * @return A pointer where a symbol name is loaded.
+         */
         void* FindSymbol(const std::string& pName);
 };
 

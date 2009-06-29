@@ -32,28 +32,56 @@
 #define PLUGINS_LIB_EXTENSION "so"
 #define PLUGINS_LIB_PREFIX "lib"
 
+/**
+ * An abstract class. The class defines a common plugin interface.
+ */
 class CPlugin
 {
     public:
+        /**
+         * A destructor.
+         */
         virtual ~CPlugin() {}
-
+        /**
+         * A method, which initializes a plugin. It is not mandatory method.
+         */
         virtual void Init() {}
+        /**
+         * A method, which deinitializes a plugin. It is not mandatory method.
+         */
         virtual void DeInit() {}
+        /**
+         * A method, which loads a plugin settings. It is not mandatory method.
+         * @param pPath A path to plugin configuration file.
+         */
         virtual void LoadSettings(const std::string& pPath) {}
 };
 
-typedef enum { ANALYZER, ACTION, REPORTER, DATABASE } plugin_type_t;
+/**
+ * An emun of plugin types.
+ */
+typedef enum { ANALYZER,    /**< An analyzer plugin*/
+               ACTION,      /**< An action plugin*/
+               REPORTER,    /**< A reporter plugin*/
+               DATABASE     /**< A database plugin*/
+             } plugin_type_t;
+/**
+ * Text reprezentation of plugin types.
+ */
 const char* const plugin_type_str_t[] = {"Analyzer", "Action", "Reporter", "Database"};
 
+/**
+ * A struct contains all needed data about particular plugin.
+ */
 typedef struct SPluginInfo
 {
-    const plugin_type_t m_Type;
-    const std::string m_sName;
-    const std::string m_sVersion;
-    const std::string m_sDescription;
-    const std::string m_sEmail;
-    const std::string m_sWWW;
-    const int m_nMagicNumber;
+    const plugin_type_t m_Type;         /**< Plugin type.*/
+    const std::string m_sName;          /**< Plugin name.*/
+    const std::string m_sVersion;       /**< Plugin version.*/
+    const std::string m_sDescription;   /**< Plugin description.*/
+    const std::string m_sEmail;         /**< Plugin author's email.*/
+    const std::string m_sWWW;           /**< Plugin's home page.*/
+    const int m_nMagicNumber;           /**< Plugin magical number.*/
 } plugin_info_t;
 
 #define PLUGIN_IFACE extern "C"

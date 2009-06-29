@@ -27,7 +27,7 @@
 #include <vector>
 #include "Plugin.h"
 
-/*
+/**
  * Table
  * =====
  * UUID | UID| DebugDumpPath | Count | Reported
@@ -42,36 +42,84 @@
 #define DATABASE_COLUMN_REPORTED        "Reported"
 #define DATABASE_COLUMN_TIME            "Time"
 
+/**
+ * A struct contains one database row.
+ */
 typedef struct SDatabaseRow
 {
-    std::string m_sUUID;
-    std::string m_sUID;
-    std::string m_sDebugDumpDir;
-    std::string m_sCount;
-    std::string m_sReported;
-    std::string m_sTime;
+    std::string m_sUUID; /**< A local UUID.*/
+    std::string m_sUID; /**< An UID of an user.*/
+    std::string m_sDebugDumpDir; /**< A debugdump directory of a crash.*/
+    std::string m_sCount; /**< Crash rate.*/
+    std::string m_sReported; /**< Is a row reported?*/
+    std::string m_sTime; /**< Time of last occurred crash with same local UUID*/
 } database_row_t;
 
-// <column_name, <array of values in all selected rows> >
+/**
+ * A vector contains one or more database rows.
+ */
 typedef std::vector<database_row_t> vector_database_rows_t;
 
+/**
+ * An abstract class. The class defines a database plugin interface.
+ */
 class CDatabase : public CPlugin
 {
     public:
+        /**
+         * A destructor.
+         */
         virtual ~CDatabase() {}
-
+        /**
+         * A method, which connects to a database.
+         */
         virtual void Connect() = 0;
+        /**
+         * A method, which disconnects from a database.
+         */
         virtual void DisConnect() = 0;
+        /**
+         * A method, which inserts one row to a database.
+         * @param pUUID A local UUID of a crash.
+         * @param pUID An UID of an user.
+         * @param pDebugDumpPath A debugdump path.
+         * @param pTime Time when a crash occurs.
+         */
         virtual void Insert(const std::string& pUUID,
                             const std::string& pUID,
                             const std::string& pDebugDumpPath,
                             const std::string& pTime) = 0;
-
-        virtual void Delete(const std::string& pUUID, const std::string& pUID) = 0;
-
-        virtual void SetReported(const std::string& pUUID, const std::string& pUID) = 0;
+        /**
+         * A method, which deletes one row in a database.
+         * @param pUUID A lodal UUID of a crash.
+         * @param pUID An UID of an user.
+         */
+        virtual void Delete(const std::string& pUUID,
+                            const std::string& pUID) = 0;
+        /**
+         * A method, which sets that particular row was reported.
+         * @param pUUID A local UUID of a crash.
+         * @param pUID An UID of an user.
+         */
+        virtual void SetReported(const std::string& pUUID,
+                                 const std::string& pUID) = 0;
+        /**
+         * A method, which gets all rows which belongs to particular user.
+         * If the user is root, then all rows are returned. If there are no
+         * rows, empty vector is returned.
+         * @param pUID An UID of an user.
+         * @return A vector of matched rows.
+         */
         virtual const vector_database_rows_t GetUIDData(const std::string& pUID) = 0;
-        virtual const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID) = 0;
+        /**
+         * A method, which returns one row accordind to UUID of a crash and
+         * UID of an user. If there are no row, empty row is returned.
+         * @param pUUID A UUID of a crash.
+         * @param pUID An UID of an user.
+         * @return A matched row.
+         */
+        virtual const database_row_t GetUUIDData(const std::string& pUUID,
+                                                 const std::string& pUID) = 0;
 };
 
 #endif /* DATABASE_H_ */

@@ -26,10 +26,23 @@
 #include "Plugin.h"
 #include "CrashTypes.h"
 
+/**
+ * An abstract class. The class defines a reporter plugin interface.
+ */
 class CReporter : public CPlugin
 {
     public:
+        /**
+         * A destructor.
+         */
         virtual ~CReporter() {}
+        /**
+         * A method, which reports a crash report to particular receiver.
+         * The plugin can takes arguments, but the plugin  has to parse them
+         * by itself.
+         * @param pCrashReport A crash report.
+         * @param pArgs Plugin's arguments.
+         */
         virtual void Report(const map_crash_report_t& pCrashReport,
                             const std::string& pArgs) = 0;
 };

@@ -25,10 +25,25 @@
 #include <string>
 #include "Plugin.h"
 
+/**
+ * An abstract class. The class defines an action plugin interface.
+ */
 class CAction : public CPlugin
 {
     public:
+        /**
+         * A destructor.
+         */
         virtual ~CAction() {}
+        /**
+         * A Method which performs particular action. As the first parameter it
+         * takes an action directory. It could be either a directory of actual
+         * crash or it could be a directory contains all crashes. It depends on
+         * who call the plugin. The plugin can takes arguments, but the plugin
+         * has to parse them by itself.
+         * @param pActionDir An actual directory.
+         * @param pArgs Plugin's arguments.
+         */
         virtual void Run(const std::string& pActionDir,
                          const std::string& pArgs) = 0;
 };

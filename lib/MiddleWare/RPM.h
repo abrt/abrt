@@ -29,24 +29,63 @@
 #include <rpm/rpmts.h>
 #include <rpm/rpmdb.h>
 
+/**
+ * A class. It is used for additional checks of package, which contains
+ * crashed application.
+ */
 class CRPM
 {
     private:
 
         typedef set_strings_t set_fingerprints_t;
 
+        /**
+         * A context for librpm library.
+         */
         poptContext m_poptContext;
+        /**
+         * A set, which contains finger prints.
+         */
         set_fingerprints_t m_setFingerprints;
 
     public:
+        /**
+         * A constructior.
+         */
         CRPM();
+        /**
+         * A destructor.
+         */
         ~CRPM();
-
+        /**
+         * A method, which loads one GPG public key.
+         * @param pFileName A path to the public key.
+         */
         void LoadOpenGPGPublicKey(const std::string& pFileName);
-
+        /**
+         * A method, which checks if package's finger print is valid.
+         * @param pPackage A package name.
+         */
         bool CheckFingerprint(const std::string& pPackage);
-        bool CheckHash(const std::string& pPackage, const std::string&pPath);
+        /**
+         * A method, which checks if an application is modified by thir party.
+         * @param pPackage A package name. The package contains the application.
+         * @param pPath A path to the application.
+         */
+        bool CheckHash(const std::string& pPackage, const std::string& pPath);
+        /**
+         * A method, which gets a package description.
+         * @param pPackage A package name.
+         * @return A package description.
+         */
         std::string GetDescription(const std::string& pPackage);
+        /**
+         * A method, which gets a package name. This package contains particular
+         * file. If the file doesn't belong to any package, empty string is
+         * returned.
+         * @param pFileName A file name.
+         * @return A package name.
+         */
         std::string GetPackage(const std::string& pFileName);
 };
 
