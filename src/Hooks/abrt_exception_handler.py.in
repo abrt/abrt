@@ -114,7 +114,7 @@ def write_dump(pid, tb_uuid, tb):
     dd = ABRTUtils.CDebugDump()
     try:
         #os.mkdir(dir_name)
-        dd.Create(dir_name)
+        dd.Create(dir_name, str(os.getuid()))
     except Exception, e:
         syslog.syslog("abrt: Cannot create dir %s" % dir_name)
         return
@@ -261,10 +261,8 @@ def installExceptionHandler(debug = 1):
     version  - the version of the application
     debug    - show the full traceback (with "Save to file" in GUI)
     """
-    # FIXME: only root can write ddump :(
-    if os.getuid() == 0:
-        sys.excepthook = lambda etype, value, tb: \
-            handleMyException((etype, value, tb))
+    sys.excepthook = lambda etype, value, tb: \
+        handleMyException((etype, value, tb))
 
 if __name__ == '__main__':
     def _exception_function():
