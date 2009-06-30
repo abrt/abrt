@@ -60,9 +60,8 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 
         try
         {
-            m_pDebugDump.Create(m_sPath);
+            m_pDebugDump.Create(m_sPath, "0");
             m_pDebugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
-            m_pDebugDump.SaveText(FILENAME_UID, "0");
             m_pDebugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
             m_pDebugDump.SaveText(FILENAME_KERNEL, m_pOops.m_sVersion);
             m_pDebugDump.SaveText(FILENAME_PACKAGE, "not_applicable");

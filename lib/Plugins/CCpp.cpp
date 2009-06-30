@@ -35,6 +35,7 @@
 #include <string.h>
 #include <iomanip>
 #include <grp.h>
+#include <pwd.h>
 
 #include <nss.h>
 #include <sechash.h>
@@ -358,6 +359,22 @@ void CAnalyzerCCpp::GetIndependentBuldIdPC(const std::string& pBuildIdPC, std::s
     }
 }
 
+gid_t CAnalyzerCCpp::GetGIDFromUID(const std::string& pUID)
+{
+    struct passwd* pw;
+
+    while (( pw = getpwent()) != NULL)
+    {
+        if (pw->pw_uid == atoi(pUID.c_str()))
+        {
+            setpwent();
+            return pw->pw_gid;
+        }
+    }
+    setpwent();
+    return -1;
+}
+
 void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std::string& pUID, std::string& pOutput)
 {
     int pipeout[2];
@@ -365,7 +382,12 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     struct timeval delay;
     fd_set rsfd;
     pid_t child;
+    gid_t GID[1];
 
+    if ((GID[0] = GetGIDFromUID(pUID)) == -1)
+    {
+        CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): cannot get GUI for UID.");
+    }
     pipe(pipeout);
     fcntl(pipeout[1], F_SETFD, FD_CLOEXEC);
 
@@ -373,13 +395,10 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     m_Pid = child;
     if (child == -1)
     {
-        CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::RunGdb():  fork failed.");
+        CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): fork failed.");
     }
     if(child == 0)
     {
-        gid_t GID[1];
-        GID[0] = atoi(pUID.c_str());
-
         close(STDIN_FILENO);
         close(STDOUT_FILENO);
         close(STDERR_FILENO);

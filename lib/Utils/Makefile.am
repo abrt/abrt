@@ -6,3 +6,4 @@ libABRTUtils_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../../lib/CommLayer
 
 install-data-local:
 	$(mkdir_p) '$(DESTDIR)/$(DEBUG_DUMPS_DIR)'
+	chmod 1777 '$(DESTDIR)/$(DEBUG_DUMPS_DIR)'

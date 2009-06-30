@@ -127,7 +127,7 @@ int daemon_is_ok()
 int main(int argc, char** argv)
 {
     const char* program_name = argv[0];
-    if (argc < 3)
+    if (argc < 4)
     {
         fprintf(stderr, "Usage: %s: <dddir> <pid> <signal> <uid>\n",
                 program_name);
@@ -172,10 +172,9 @@ int main(int argc, char** argv)
         }
 
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%s", dddir, time(NULL), pid);
-        dd.Create(path);
+        dd.Create(path, uid);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
-        dd.SaveText(FILENAME_UID, uid);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
         dd.SaveText(FILENAME_REASON, std::string("Process was terminated by signal ") + signal);
 

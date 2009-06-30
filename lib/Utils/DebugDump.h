@@ -66,12 +66,12 @@ class CDebugDump
         bool IsTextFile(const std::string& pName);
 
         std::string RemoveBackSlashes(const std::string& pDir);
-
+        std::string GetGIDFromUID(const std::string& pUID);
     public:
 
         CDebugDump();
         void Open(const std::string& pDir);
-        void Create(const std::string& pDir);
+        void Create(const std::string& pDir, const std::string& pUID);
         void Delete();
         void Close();
 

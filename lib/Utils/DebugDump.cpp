@@ -36,6 +36,8 @@
 #include <unistd.h>
 #include <magic.h>
 #include <string.h>
+#include <pwd.h>
+#include <stdlib.h>
 
 #include "CommLayerInner.h"
 #pragma weak comm_layer_inner_debug
@@ -174,7 +176,26 @@ void CDebugDump::UnLock()
     }
 }
 
-void CDebugDump::Create(const std::string& pDir)
+std::string CDebugDump::GetGIDFromUID(const std::string& pUID)
+{
+    std::stringstream ret;
+    struct passwd* pw;
+    while (( pw = getpwent()) != NULL)
+    {
+        if (pw->pw_uid == atoi(pUID.c_str()))
+        {
+            ret << pw->pw_gid;
+        }
+    }
+    setpwent();
+    if (ret.str() == "")
+    {
+        ret << "-1";
+    }
+    return ret.str();
+}
+
+void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
 {
     if (m_bOpened)
     {
@@ -182,7 +203,6 @@ void CDebugDump::Create(const std::string& pDir)
     }
 
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
-    std::string lockPath = m_sDebugDumpDir + ".lock";
     if (ExistFileDir(m_sDebugDumpDir))
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" already exists.");
@@ -191,12 +211,27 @@ void CDebugDump::Create(const std::string& pDir)
     Lock();
     m_bOpened = true;
 
-    if (mkdir(m_sDebugDumpDir.c_str(), 0755) == -1)
+    if (mkdir(m_sDebugDumpDir.c_str(), 0700) == -1)
     {
         UnLock();
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create():m_sDebugDumpDir Cannot create dir: " + pDir);
+        m_bOpened = false;
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot create dir: " + pDir);
+    }
+    if (chmod(m_sDebugDumpDir.c_str(), 0700) == -1)
+    {
+        UnLock();
+        m_bOpened = false;
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot change permissions, dir: " + pDir);
+    }
+    std::string GID = GetGIDFromUID(pUID);
+    if (chown(m_sDebugDumpDir.c_str(), atoi(pUID.c_str()), atoi(GID.c_str())) == -1)
+    {
+        UnLock();
+        m_bOpened = false;
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot change ownership, dir: " + pDir);
     }
 
+    SaveText(FILENAME_UID, pUID);
     SaveKernelArchitectureRelease();
     SaveTime();
 }

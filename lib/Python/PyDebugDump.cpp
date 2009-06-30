@@ -59,7 +59,7 @@ typedef struct {
     PyObject_HEAD
     CDebugDump *obj;
 } PyCDebugDump;
-    
+
 
 extern PyTypeObject PyCDebugDump_Type;
 
@@ -74,7 +74,7 @@ static int
 _wrap_PyCDebugDump__tp_init(PyCDebugDump *self, PyObject *args, PyObject *kwargs)
 {
     const char *keywords[] = {NULL};
-    
+
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "", (char **) keywords)) {
         return -1;
     }
@@ -87,7 +87,7 @@ PyObject *
 _wrap_PyCDebugDump_Close(PyCDebugDump *self)
 {
     PyObject *py_retval;
-    
+
     self->obj->Close();
     Py_INCREF(Py_None);
     py_retval = Py_None;
@@ -100,12 +100,13 @@ _wrap_PyCDebugDump_Create(PyCDebugDump *self, PyObject *args, PyObject *kwargs)
 {
     PyObject *py_retval;
     char *pFilename2;
-    const char *keywords[] = {"pFilename", NULL};
-    
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "s", (char **) keywords, &pFilename2)) {
+    char *pUID2;
+    const char *keywords[] = {"pFilename", "pUID", NULL};
+
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "ss", (char **) keywords, &pFilename2, &pUID2)) {
         return NULL;
     }
-    self->obj->Create(pFilename2);
+    self->obj->Create(pFilename2, pUID2);
     Py_INCREF(Py_None);
     py_retval = Py_None;
     return py_retval;
@@ -119,7 +120,7 @@ _wrap_PyCDebugDump_SaveText(PyCDebugDump *self, PyObject *args, PyObject *kwargs
     char *pName2;
     char *pData2;
     const char *keywords[] = {"pName", "pData", NULL};
-    
+
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "ss", (char **) keywords, &pName2, &pData2)) {
         return NULL;
     }
@@ -148,7 +149,7 @@ _wrap_PyCDebugDump__tp_dealloc(PyCDebugDump *self)
 static PyObject*
 _wrap_PyCDebugDump__tp_richcompare (PyCDebugDump *self, PyCDebugDump *other, int opid)
 {
-    
+
     if (!PyObject_IsInstance((PyObject*) other, (PyObject*) &PyCDebugDump_Type)) {
         Py_INCREF(Py_NotImplemented);
         return Py_NotImplemented;

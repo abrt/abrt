@@ -37,6 +37,7 @@ class CAnalyzerCCpp : public CAnalyzer
 		void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
 		void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace);
 		void GetIndependentBuldIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC);
+		gid_t GetGIDFromUID(const std::string& pUID);
 		void ExecVP(const char* pCommand, char* const pArgs[], const std::string& pUID, std::string& pOutput);
 		std::string CreateHash(const std::string& pInput);
 	public:
