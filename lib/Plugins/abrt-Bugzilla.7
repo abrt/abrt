@@ -4,22 +4,22 @@ Bugzilla plugin for abrt(8)
 .SH DESCRIPTION
 .P
 .I abrt
-is a daemon which watches for application crashes. When a crash occurs,
-it collects the crash data and performs some actions according to 
-the configuration. This manual page describes the \fIBugzilla\fP plugin 
+is a daemon that watches for application crashes. When a crash occurs,
+it collects the crash data and takes action according to 
+its configuration. This manual page describes the \fIBugzilla\fP plugin 
 for \fIabrt\fP.
 .P
-This plugin is used to report the crash to the Bugzilla. The plugin
-will determine the package name and distribution version. The crash
-data is attached to the bug report.
+This plugin is used to report the crash to a Bugzilla instance. The 
+plugin will determine the package name and distribution version. The 
+crash data is attached to the bug report.
 .SH INVOCATION
 The plugin is invoked in the \fIabrt.conf\fP configuration file. 
 No parameters are necessary.
 .SH CONFIGURATION
 The \fIBugzilla.conf\fP configuration file contains several
-entries in a format "Option = Value". The options are:
+entries in the format "Option = Value". The options are:
 .SS BugzillaURL
-The URL of the Bugzilla instance you want to use, including the
+The URL of the Bugzilla instance that you want to use, including the
 path to the xmlrpc. The default is https://bugzilla.redhat.com/xmlrpc.cgi
 .SS Login
 Your Bugzilla login. If you have no Bugzilla account, you cannot

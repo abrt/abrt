@@ -4,58 +4,59 @@ FileTransfer plugin for abrt(8)
 .SH DESCRIPTION
 .P
 .I abrt
-is a daemon which watches for application crashes. When a crash occurs,
-it collects the crash data and performs some actions according to 
-the configuration. This manual page describes the \fIFileTransfer\fP plugin 
+is a daemon that watches for application crashes. When a crash occurs,
+it collects the crash data and takes action according to 
+its configuration. This manual page describes the \fIFileTransfer\fP plugin 
 for \fIabrt\fP.
 .P
 This plugin is used to transfer the crash report to another
-machine via some file transfer protocol. Supported protocols
-are FTP, FTPS, HTTP, HTTPS, SCP, SFTP and TFTP. 
+machine using a file transfer protocol. The protocols supported
+are FTP, FTPS, HTTP, HTTPS, SCP, SFTP, and TFTP. 
 .SH INVOCATION
 .P
 The plugin is invoked in the \fIabrt.conf\fP file, usually in the
 \fIActionsAndReporters\fP option and/or the \fI[cron]\fP section.
-There are two modes of invocation: either you use the parameter
-\fI"store"\fP: in this case, the plugin stores the information,
-that the crash occurs, in its internal list.
+There are two modes of invocation: 
 .P
-If you use some other parameter, or no parameter at all, the
+* If you use the parameter
+\fI"store"\fP, the plugin stores a record of the occurrence of
+the crash in its internal list.
+.P
+* If you use some other parameter, or no parameter at all, the
 plugin will iterate through the internal list and will send
 every recorded crash to the server specified in the \fIFileTransfer.conf\fP
 configuration file. After that, the internal list is cleared.
 .P
-The rationale of this behavior is this: on a production
-machine, you probably don't want the crash data to be
-sent in the time the machine is busy working, you want
-to send everything in some more quiet time (at night, perhaps)
-and schedule this in the \fI[cron]\fP section of \fIabrt.conf\fP.
+On a production machine, you probably do not want the daemon to send crash 
+data at times that the machine is busy working. This second mode allows you
+to send crash reports at a quieter time (at night, perhaps) that you 
+schedule in the \fI[cron]\fP section of \fIabrt.conf\fP.
 .SH CONFIGURATION
 The \fIFileTransfer.conf\fP configuration file contains 
-several entries in a format "Option = Value". The options are:
+several entries in the format "Option = Value". The options are:
 .SS URL
 The URL of the server, where the crash should
 be transfered, specifying the protocol, the path,
-the user name and the password, for example
+the user name and the password, for example:
 .br
 URL = ftp://user:passwd@server.com/path
 .SS ArchiveType
-The type of the archive, where the crash data will be packed. 
-Currently supporting \fI.tar.gz\fP, \fI.tar.bz2\fP and \fI.zip\fP
+The type of the archive in which to pack the crash data. 
+Currently, \fI.tar.gz\fP, \fI.tar.bz2\fP and \fI.zip\fP are supported.
 The plugin currently relies on external file archiving
 commandline utilities, which will create the archive.
 The default is
 .br
 ArchiveType = .tar.gz
 .SS RetryCount
-This specifies, how many times will the plugin try to resend
-the file in the case the transfer was not succesful. The plugin
+This specifies how many times the plugin will try to resend
+the file if the transfer was not succesful. The plugin
 waits a while before it retries the transfer: see \fIRetryDelay\fP
 The default is
 .br
 RetryCount = 3
 .SS RetryDelay
-In the case the transfer was not succesful, the plugin will
+If the transfer was not succesful, the plugin will
 wait some time before sending the file again. This configuration
 option specifies the time in seconds. The default is
 .br
@@ -63,7 +64,7 @@ RetryDelay = 20
 .SH EXAMPLES
 .P
 Typical configuration in \fIabrt.conf\fP. The crash is stored
-each time it happens and on midnight, all the crash data
+each time it happens and at midnight, all the crash data
 is transferred to a central server.
 .P
 [common]

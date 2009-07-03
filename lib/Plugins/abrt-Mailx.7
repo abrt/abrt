@@ -4,9 +4,9 @@ Mailx plugin for abrt(8)
 .SH DESCRIPTION
 .P
 .I abrt
-is a daemon which watches for application crashes. When a crash occurs,
-it collects the crash data and performs some actions according to 
-the configuration. This manual page describes the \fIMailx\fP plugin 
+is a daemon that watches for application crashes. When a crash occurs,
+it collects the crash data and takes action according to 
+its configuration. This manual page describes the \fIMailx\fP plugin 
 for \fIabrt\fP.
 .P
 This plugin is used to mail the data about the crash
@@ -25,13 +25,13 @@ The \fIMailx\fP plugin executes the external "mailx" command to
 send the mail. This option defines some additional command line
 parameters, which should be added to the program invocation, if any.
 .SS EmailFrom
-The address, from which the e-mail is sent.
+The address from which the email is sent.
 .SS EmailTo
-The address, to which the e-mail is sent.
+The address to which the email is sent.
 .SS SendBinaryData
-Can be "yes" or "no". If set to "yes", the e-mail will contain
-also the binary files associated with the crash. Warning:
-this can cause the e-mails to be large! (several MB)
+Can be "yes" or "no". If set to "yes", the email will also
+contain the binary files associated with the crash. Warning:
+this can cause the emails to be large! (several MB)
 .SH EXAMPLES
 .P
 These are snippets from the \fIabrt.conf\fP configuration file.

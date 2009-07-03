@@ -4,13 +4,13 @@ abrt.conf \- configuration file for abrt
 .SH DESCRIPTION
 .P
 .I abrt
-is a daemon which watches for application crashes. When a crash occurs,
-it collects the crash data and performs some actions according to 
-the configuration. This manual page describes \fIabrt\fP's configuration
+is a daemon that watches for application crashes. When a crash occurs,
+it collects the crash data and takes action according to 
+its configuration. This manual page describes \fIabrt\fP's configuration
 file.
 .P
 The configuration file consists of sections, each section contains 
-several items in a format "Option = Value". The description of each
+several items in the format "Option = Value". A description of each
 section follows:
 .SS [Common]
 .TP
@@ -21,49 +21,52 @@ will report crashes only in GPG signed packages. When set to "no",
 it will report crashes also in unsigned packages.
 .TP
 .B OpenGPGPublicKeys =  \fIfilename\fP , \fIfilename\fP ...
-This is the place, where you specify the trusted GPG keys, with
-which the packages have to be signed for "EnableOpenGPG = yes".
+These are the trusted GPG keys with which packages have to be 
+signed for
+.I abrt
+to report them if "EnableOpenGPG = yes".
 .TP
 .B BlackList = \fIpackageName\fP, \fIpackageName\fP ...
-Packages in this list will be ignored (i.e. their crashes will
-not be handled by
 .I abrt
-).
+will ignore packages in this list and will not handle their crashes.
 .TP
 .B EnabledPlugins = \fIplugin\fP, \fIplugin\fP ...
-Only plugins in EnabledPlugins are loaded.
+.I abrt
+will only load plugins in this list.
 .TP
 .B Database = \fIdatabasePlugin\fP
-This specifies which database plugin is used to store
-the metadata about the crash.
+This specifies which database plugin 
+.I abrt
+uses to store metadata about the crash.
 .TP
 .B MaxCrashReportsSize = \fInumber\fP
-You can specify here, how much disk space will maximally be
-used for all the crash dumps, to ensure
-that the crash dumps won't take
-all the HDD space. The number is specified in megabytes.
+The maximum disk space (specified in megabytes) that
+.I abrt
+will use for all the crash dumps. Specify a value here to ensure
+that the crash dumps will not fill all available storage space.
 .TP
 .B ActionsAndReporters = \fIplugin\fP, \fIplugin(parameters)\fP
-List of reporter and action plugins, which will be
+List of reporter and action plugins which will be
 run at crash time.
 .SS [ AnalyzerActionsAndReporters ]
 This section contains associations between analyzers and action
 or reporter plugins.
 .TP
 .B CCpp = \fIplugin\fP
-This plugin will be used when a C/C++ program crashes.
+.I abrt
+will use this plugin when a C/C++ program crashes.
 You can specify a plugin for specific program, for example
 .br
 CCpp:bind = Mailx("[abrt] Bind crashed")
 .br
-The Mailx plugin will run, when bind crashes, instead of the plugin specified for
+The Mailx plugin will run when bind crashes, instead of the plugin specified for
 all the C/C++ programs.
 .TP
 .B Kerneloops = \fIplugin\fP
 This plugin will be used in the case of kernel crashes.
 .SS [ Cron ]
-This section specifies tasks, which will be run at some time. You can specify
-either a time of the day in the format
+This section specifies tasks that will be run at some specified time. You can specify
+either a time of day in the format
 .br
 .B hh:mm = \fIplugin\fP
 .br

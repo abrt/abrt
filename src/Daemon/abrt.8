@@ -5,13 +5,13 @@ abrt \- an automated bug-reporting tool
 .B abrt [ -d ]
 .SH DESCRIPTION
 .I abrt
-is a daemon which watches for application crashes. When a crash occurs,
+is a daemon that watches for application crashes. When a crash occurs,
 it collects the crash data (core file, application's command line etc.)
-and performs some actions according to the type of application that
-crashed and according to configuration in the
+and takes action according to the type of application that
+crashed and according to the configuration in the
 .I abrt.conf
-config file. There are plugins for various actions: for example reporting
-the crash to Bugzilla, mailing the report, transfering the
+config file. There are plugins for various actions: for example to report
+the crash to Bugzilla, to mail the report, or to transfer the
 report via FTP or SCP. See the manual pages for the
 respective plugins.
 .SH OPTIONS
@@ -22,13 +22,13 @@ respective plugins.
 
 This option causes
 .I abrt
-to print some more debugging information, when the daemon is started.
+to print more debugging information when the daemon is started.
 .SH CAVEATS
-When you use some other crash catching tool, specific for an aplication
+When you use some other crash-catching tool, specific for an application
 or an application type (for example BugBuddy for GNOME applications),
-the crashes of this type will be handled by this application and
-not \fIabrt\fP. If you don't want this behavior, turn the higher-level crash
-catching application off: the crashes will be handled by \fIabrt\fP then.
+crashes of this type will be handled by that tool and
+not by \fIabrt\fP. If you want \fIabrt\fP to handle these crashes, 
+turn off the higher-level crash-catching tool.
 .SH "SEE ALSO"
 .IR abrt.conf (5),
 .IR abrt-plugins (7)

@@ -4,15 +4,15 @@ SQLite3 database plugin for abrt(8)
 .SH DESCRIPTION
 .P
 .I abrt
-is a daemon which watches for application crashes. When a crash occurs,
-it collects the crash data and performs some actions according to 
-the configuration. This manual page describes the \fISQLite3\fP database plugin 
+is a daemon that watches for application crashes. When a crash occurs,
+it collects the crash data and takes action according to 
+its configuration. This manual page describes the \fISQLite3\fP database plugin 
 for \fIabrt\fP.
 .P
-This is a database plugin: \fIabrt\fP needs some database to store
-its metadata. You can choose which one, specifying "Database" in
+This is a database plugin: \fIabrt\fP needs a database in which to store
+its metadata. You can choose one by specifying "Database" in
 the \fIabrt.conf\fP configuration file. Currently SQLite3 is
-the only choice.
+the only choice supported.
 .SH INVOCATION
 The plugin is invoked in the \fIabrt.conf\fP configuration file, like
 this:
