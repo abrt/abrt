@@ -1,5 +1,6 @@
 #include "CommLayerServerDBus.h"
 #include <iostream>
+#include "ABRTException.h"
 
 DBus::Connection *CCommLayerServerDBus::init_dbus(CCommLayerServerDBus *self)
 {
@@ -21,7 +22,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     }
     catch(DBus::Error err)
     {
-        throw std::string("Error while requesting dbus name - have you reloaded the dbus settings?");
+        throw CABRTException(EXCEP_FATAL, "CCommLayerServerDBus::CCommLayerServerDBus(): Error while requesting dbus name - have you reloaded the dbus settings?");
     }
 
 }
