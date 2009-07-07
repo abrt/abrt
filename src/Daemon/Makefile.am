@@ -1,5 +1,5 @@
 sbin_PROGRAMS = abrt
-abrt_SOURCES = CrashWatcher.cpp CrashWatcher.h Daemon.cpp DBusServerProxy.h \
+abrt_SOURCES = CrashWatcher.cpp CrashWatcher.h Daemon.cpp \
                         DBusCommon.h Settings.h Settings.cpp
 abrt_CPPFLAGS = -I$(srcdir)/../../lib/MiddleWare -I$(srcdir)/../../lib/CommLayer\
                         -I$(srcdir)/../../inc -I$(srcdir)/../../lib/Utils \
