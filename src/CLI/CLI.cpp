@@ -1,7 +1,8 @@
+#include "ABRTException.h"
 #include "ABRTSocket.h"
 #include "ABRTException.h"
 #include <iostream>
-
+#include <CommLayerClientDBus.h>
 #include <string.h>
 
 #define SOCKET_FILE VAR_RUN"/abrt.socket"
@@ -115,7 +116,6 @@ void print_crash_report(const map_crash_report_t& pCrashReport)
 
 int main(int argc, char** argv)
 {
-    CABRTSocket ABRTSocket;
     vector_crash_infos_t ci;
     map_crash_report_t cr;
     param_t param;
@@ -128,50 +128,65 @@ int main(int argc, char** argv)
         print_usage(argv[0]);
         return 1;
     }
-
     try
     {
-        ABRTSocket.Connect(SOCKET_FILE);
-
+#ifdef ENABLE_DBUS
+        DBus::Glib::BusDispatcher dispatcher;
+        /* this should bind the dispatcher with mainloop */
+        dispatcher.attach(NULL);
+        DBus::default_dispatcher = &dispatcher;
+        DBus::Connection conn = DBus::Connection::SystemBus();
+        CCommLayerClientDBus ABRTDaemon(conn, CC_DBUS_PATH, CC_DBUS_NAME); 
+        if(!conn.has_name(CC_DBUS_NAME)){
+            std::cout << "Daemon is not running!" << std::endl;
+            return -1;
+        }
+#elif ENABLE_SOCKET
+        CABRTSocket ABRTDaemon;
+        ABRTDaemon.Connect(SOCKET_FILE);
+#endif
         switch (param.m_Mode)
         {
             case GET_LIST:
-                ci = ABRTSocket.GetCrashInfos();
+                ci = ABRTDaemon.GetCrashInfos();
                 print_crash_infos(ci, GET_LIST);
                 break;
             case GET_LIST_FULL:
-                ci = ABRTSocket.GetCrashInfos();
+                ci = ABRTDaemon.GetCrashInfos();
                 print_crash_infos(ci, GET_LIST_FULL);
                 break;
             case REPORT:
-                cr = ABRTSocket.CreateReport(param.m_sUUID);
+                cr = ABRTDaemon.CreateReport(param.m_sUUID);
                 print_crash_report(cr);
                 std::cout << std::endl << "Do you want to send the report? [y/n]: ";
                 std::flush(std::cout);
                 std::cin >> answer;
                 if (answer == "Y" || answer == "y")
                 {
-                    ABRTSocket.Report(cr);
+                    ABRTDaemon.Report(cr);
                 }
                 break;
             case REPORT_ALWAYS:
-                cr = ABRTSocket.CreateReport(param.m_sUUID);
-                ABRTSocket.Report(cr);
+                cr = ABRTDaemon.CreateReport(param.m_sUUID);
+                ABRTDaemon.Report(cr);
                 break;
             case DELETE:
-                ABRTSocket.DeleteDebugDump(param.m_sUUID);
+                ABRTDaemon.DeleteDebugDump(param.m_sUUID);
                 break;
             default:
                 print_usage(argv[0]);
                 break;
         }
+#ifdef ENABLE_DBUS
+;
+#elif ENABLE_SOCKET
+        ABRTDaemon.DisConnect();
+#endif
 
-        ABRTSocket.DisConnect();
     }
     catch (CABRTException& e)
     {
         std::cout << e.what() << std::endl;
     }
-
     return 0;
 }
