@@ -107,7 +107,7 @@ class DBusManager(gobject.GObject):
         row_dict = None
         rows = []
         # FIXME check the arguments
-        for row in self.cc.GetCrashInfos(""):
+        for row in self.cc.GetCrashInfos():
             row_dict = {}
             for column in row:
                 row_dict[column] = row[column]
