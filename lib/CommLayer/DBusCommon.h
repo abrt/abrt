@@ -21,6 +21,4 @@
 #define CC_DBUS_PATH "/com/redhat/abrt"
 #define CC_DBUS_IFACE "com.redhat.abrt"
 
-typedef std::vector< std::map<std::string, std::string> > dbus_vector_map_crash_infos_t;
-
 #include "CrashTypes.h"

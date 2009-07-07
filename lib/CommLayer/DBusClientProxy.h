@@ -35,9 +35,6 @@ public:
 
 public:
 
-    /* properties exported by this interface */
-public:
-
     /* methods exported by this interface,
      * this functions will invoke the corresponding methods on the remote objects
      */
@@ -50,13 +47,12 @@ public:
       ...
       >
       */
-    vector_crash_infos_t GetCrashInfos(const std::string &pUID)
+    vector_crash_infos_t GetCrashInfos()
     {
         DBus::CallMessage call;
         
         DBus::MessageIter wi = call.writer();
 
-        wi << pUID;
         call.member("GetCrashInfos");
         DBus::Message ret = invoke_method(call);
         DBus::MessageIter ri = ret.reader();
@@ -65,6 +61,51 @@ public:
         ri >> argout;
         return argout;
     }
+    
+    bool DeleteDebugDump(const std::string& pUUID)
+    {
+        DBus::CallMessage call;
+        
+        DBus::MessageIter wi = call.writer();
+
+        wi << pUUID;
+        call.member("DeleteDebugDump");
+        DBus::Message ret = invoke_method(call);
+        DBus::MessageIter ri = ret.reader();
+
+        bool argout;
+        ri >> argout;
+        return argout;
+    }
+    
+    map_crash_report_t CreateReport(const std::string& pUUID)
+    {
+        DBus::CallMessage call;
+        
+        DBus::MessageIter wi = call.writer();
+
+        wi << pUUID;
+        call.member("CreateReport");
+        DBus::Message ret = invoke_method(call);
+        DBus::MessageIter ri = ret.reader();
+
+        map_crash_report_t argout;
+        ri >> argout;
+        return argout;
+    };
+    
+    void Report(map_crash_report_t pReport)
+    {
+        DBus::CallMessage call;
+        
+        DBus::MessageIter wi = call.writer();
+
+        wi << pReport;
+        call.member("Report");
+        DBus::Message ret = invoke_method(call);
+        DBus::MessageIter ri = ret.reader();
+    }
+    
 public:
 
     /* signal handlers for this interface
