@@ -195,6 +195,11 @@ mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
         src/Gui/%{name}.desktop
+
+desktop-file-install \
+        --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
+        src/Applet/%{name}-applet.desktop
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
@@ -237,7 +242,7 @@ fi
 %files applet
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-applet
-%{_sysconfdir}/xdg/autostart/abrt-applet.desktop
+%{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 
 %files gui
 %defattr(-,root,root,-)
