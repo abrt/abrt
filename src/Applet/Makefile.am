@@ -1,5 +1,5 @@
 bin_PROGRAMS = abrt-applet
-abrt_applet_SOURCES = Applet.cpp  CCApplet.cpp  CCApplet.h DBusClientProxy.h
+abrt_applet_SOURCES = Applet.cpp  CCApplet.cpp  CCApplet.h
 abrt_applet_CPPFLAGS = -Wall -Werror -I../Daemon/ \
                        -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
                        $(DBUS_GLIB_CFLAGS) $(GTK_CFLAGS) $(DBUSCPP_CFLAGS) $(LIBNOTIFY_CFLAGS)\
