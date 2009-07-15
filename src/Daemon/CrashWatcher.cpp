@@ -380,27 +380,38 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
-    SetUpMW();
-    SetUpCron();
-    FindNewDumps(pPath);
-#ifdef ENABLE_DBUS
-    m_pCommLayer = new CCommLayerServerDBus();
-#elif ENABLE_SOCKET
-    m_pCommLayer = new CCommLayerServerSocket();
-#endif
-//  m_pCommLayer = new CCommLayerServerDBus();
-//  m_pCommLayer = new CCommLayerServerSocket();
-    m_pCommLayer->Attach(this);
 
-    if((m_nFd = inotify_init()) == -1)
+    try
     {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
-    }
-    if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
+        SetUpMW();
+        SetUpCron();
+        FindNewDumps(pPath);
+#ifdef ENABLE_DBUS
+        m_pCommLayer = new CCommLayerServerDBus();
+#elif ENABLE_SOCKET
+        m_pCommLayer = new CCommLayerServerSocket();
+#endif
+//      m_pCommLayer = new CCommLayerServerDBus();
+//      m_pCommLayer = new CCommLayerServerSocket();
+        m_pCommLayer->Attach(this);
 
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
+        if((m_nFd = inotify_init()) == -1)
+        {
+    	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
+        }
+        if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1)
+        {
+    	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
+        }
+        m_pGio = g_io_channel_unix_new(m_nFd);
     }
-    m_pGio = g_io_channel_unix_new(m_nFd);
+    catch (...)
+    {
+        /* This restores /proc/sys/kernel/core_pattern, among other things */
+        delete m_pMW;
+        //too? delete m_pCommLayer;
+        throw;
+    }
 }
 
 CCrashWatcher::~CCrashWatcher()
@@ -519,17 +530,17 @@ void CCrashWatcher::CreatePidFile()
 void CCrashWatcher::Lock()
 {
     int lfp = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT,0640);
-	if (lfp < 0)
-	{
-	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
-	}
-	if (lockf(lfp,F_TLOCK,0) < 0)
-	{
-	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
-	}
-	/* only first instance continues */
-	//sprintf(str,"%d\n",getpid());
-	//write(lfp,str,strlen(str)); /* record pid to lockfile */
+        if (lfp < 0)
+        {
+            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
+        }
+        if (lockf(lfp,F_TLOCK,0) < 0)
+        {
+            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
+        }
+        /* only first instance continues */
+        //sprintf(str,"%d\n",getpid());
+        //write(lfp,str,strlen(str)); /* record pid to lockfile */
 }
 
 void CCrashWatcher::StartWatch()
@@ -573,7 +584,7 @@ void CCrashWatcher::GStartWatch()
 
 void CCrashWatcher::Run()
 {
-    Debug("Runnig...");
+    Debug("Running...");
     Lock();
     CreatePidFile();
     GStartWatch();
@@ -631,7 +642,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 
     //retval = m_pMW->GetCrashInfos(pUID);
     //Notify("Sent crash info");
-	return retval;
+        return retval;
 }
 
 map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const std::string &pUID)

@@ -133,7 +133,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
                 return;
             }
             m_mapPlugins[pName] = plugin;
-            comm_layer_inner_debug("Registred plugin " + pName + "("
+            comm_layer_inner_debug("Registered plugin " + pName + "("
                                   + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
                                   + ")");
         }

@@ -21,6 +21,9 @@
 #include "ABRTException.h"
 #include <iostream>
 #include <cstdio>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
 
 CCrashWatcher *g_pCrashWatcher = NULL;
 
@@ -54,7 +57,15 @@ int main(int argc, char** argv)
         }
         if(daemonize)
         {
-            // forking to background
+            /* Open stdin to /dev/null. We do it before forking
+             * in order to emit useful exitcode to the parent
+	     * if open fails */
+            close(STDIN_FILENO);
+            if (open("/dev/null", O_RDWR))
+            {
+                throw CABRTException(EXCEP_FATAL, "Can't open /dev/null");
+            }
+    	    /* forking to background */
             pid_t pid = fork();
             if (pid < 0)
             {
@@ -68,9 +79,12 @@ int main(int argc, char** argv)
             {
                 throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): setsid failed");
             }
-            close(STDIN_FILENO);
+            /* We must not leave fds 0,1,2 closed.
+             * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
             close(STDOUT_FILENO);
             close(STDERR_FILENO);
+            dup(0);
+            dup(0);
         }
         g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
         g_pCrashWatcher->Run();
@@ -83,5 +97,7 @@ int main(int argc, char** argv)
     {
         std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
+    //do we need this? delete g_pCrashWatcher;
+    return 1; /* Any exit is a failure. Normally we don't exit at all */
 }
 
