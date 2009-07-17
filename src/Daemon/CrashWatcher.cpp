@@ -509,18 +509,14 @@ void CCrashWatcher::CreatePidFile()
 
     /* open the pidfile */
     fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT|O_EXCL, 0644);
-    if (fd >= 0) {
-            FILE *f;
-
-            /* write our pid to it */
-            f = fdopen(fd, "w");
-            if (f != NULL) {
-                    fprintf(f, "%d\n", getpid());
-                    fclose(f);
-                    /* leave the fd open */
-                    return;
-            }
-            close(fd);
+    if (fd >= 0)
+    {
+        /* write our pid to it */
+        char buf[sizeof(int)*3 + 2];
+        int len = sprintf(buf, "%u\n", (unsigned)getpid());
+        write(fd, buf, len);
+        close(fd);
+        return;
     }
 
     /* something went wrong */
@@ -530,17 +526,17 @@ void CCrashWatcher::CreatePidFile()
 void CCrashWatcher::Lock()
 {
     int lfp = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT,0640);
-        if (lfp < 0)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
-        }
-        if (lockf(lfp,F_TLOCK,0) < 0)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
-        }
-        /* only first instance continues */
-        //sprintf(str,"%d\n",getpid());
-        //write(lfp,str,strlen(str)); /* record pid to lockfile */
+    if (lfp < 0)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
+    }
+    if (lockf(lfp,F_TLOCK,0) < 0)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
+    }
+    /* only first instance continues */
+    //sprintf(str,"%d\n",getpid());
+    //write(lfp,str,strlen(str)); /* record pid to lockfile */
 }
 
 void CCrashWatcher::StartWatch()
