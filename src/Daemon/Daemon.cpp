@@ -42,13 +42,14 @@ void print_help()
 int main(int argc, char** argv)
 {
     int daemonize = 1;
-    /*signal handlers */
+
+    /* signal handlers */
     signal(SIGTERM, handle_fatal_signal);
     signal(SIGINT, handle_fatal_signal);
+
     try
     {
-
-        if (argc > 1)
+        if (argv[1])
         {
             if (strcmp(argv[1], "-d") == 0)
             {
@@ -97,7 +98,14 @@ int main(int argc, char** argv)
     {
         std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
-    delete g_pCrashWatcher;
-    return 1; /* Any exit is a failure. Normally we don't exit at all */
-}
 
+    delete g_pCrashWatcher;
+
+    /* Take care to emit correct exit status */
+    if (sig_caught) {
+        signal(sig_caught, SIG_DFL);
+        raise(sig_caught);
+    }
+    /* I think we never end up here */
+    return 0;
+}
