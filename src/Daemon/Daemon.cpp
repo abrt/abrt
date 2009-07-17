@@ -25,14 +25,14 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-CCrashWatcher *g_pCrashWatcher = NULL;
+uint8_t sig_caught;
 
-void terminate(int signal)
+static void handle_fatal_signal(int signal)
 {
-    fprintf(stderr, "Got SIGINT/SIGTERM, cleaning up..\n");
-    delete g_pCrashWatcher;
-    exit(0);
+    sig_caught = signal;
 }
+
+CCrashWatcher *g_pCrashWatcher = NULL;
 
 void print_help()
 {
@@ -43,8 +43,8 @@ int main(int argc, char** argv)
 {
     int daemonize = 1;
     /*signal handlers */
-    signal(SIGTERM, terminate);
-    signal(SIGINT, terminate);
+    signal(SIGTERM, handle_fatal_signal);
+    signal(SIGINT, handle_fatal_signal);
     try
     {
 
@@ -97,7 +97,7 @@ int main(int argc, char** argv)
     {
         std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
-    //do we need this? delete g_pCrashWatcher;
+    delete g_pCrashWatcher;
     return 1; /* Any exit is a failure. Normally we don't exit at all */
 }
 

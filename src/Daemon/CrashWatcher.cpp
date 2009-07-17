@@ -578,12 +578,63 @@ void CCrashWatcher::StartWatch()
     delete[] buff;
 }
 
+extern uint8_t sig_caught;
+//prepare()
+//If the source can determine that it is ready here (without waiting
+//for the results of the poll() call) it should return TRUE. It can also
+//return a timeout_ value which should be the maximum timeout (in milliseconds)
+//which should be passed to the poll() call.
+//check()
+//Called after all the file descriptors are polled. The source should
+//return TRUE if it is ready to be dispatched.
+//dispatch()
+//Called to dispatch the event source, after it has returned TRUE
+//in either its prepare or its check function. The dispatch function
+//is passed in a callback function and data. The callback function
+//may be NULL if the source was never connected to a callback using
+//g_source_set_callback(). The dispatch function should
+//call the callback function with user_data and whatever additional
+//parameters are needed for this type of event source.
+typedef struct SignalSource
+{
+    GSource src;
+    CCrashWatcher* watcher;
+} SignalSource;
+static gboolean waitsignal_prepare(GSource *source, gint *timeout_)
+{
+    /* We depend on the fact that in Unix, poll() is interrupted
+     * by caught signals (returns EINTR). Thus we do not need to set
+     * a small timeout here: infinite timeout (-1) works too */
+    *timeout_ = -1;
+    return sig_caught != 0;
+}
+static gboolean waitsignal_check(GSource *source)
+{
+    return sig_caught != 0;
+}
+static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
+{
+    SignalSource *ssrc = (SignalSource*) source;
+    ssrc->watcher->StopRun();
+}
+
 /* daemon loop with glib */
 void CCrashWatcher::GStartWatch()
 {
-    g_io_add_watch (m_pGio, G_IO_IN, handle_event_cb, this);
+    g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, this);
+
+    GSourceFuncs waitsignal_funcs;
+    memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
+    waitsignal_funcs.prepare  = waitsignal_prepare;
+    waitsignal_funcs.check    = waitsignal_check;
+    waitsignal_funcs.dispatch = waitsignal_dispatch;
+    //waitsignal_funcs.finalize = NULL; - already done
+    SignalSource *waitsignal_src = (SignalSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
+    waitsignal_src->watcher = this;
+    g_source_attach(&waitsignal_src->src, g_main_context_default());
+
     //enter the event loop
-    g_main_run (m_pMainloop);
+    g_main_run(m_pMainloop);
 }
 
 void CCrashWatcher::Run()
@@ -592,6 +643,11 @@ void CCrashWatcher::Run()
     Lock();
     CreatePidFile();
     GStartWatch();
+}
+
+void CCrashWatcher::StopRun()
+{
+    g_main_quit(m_pMainloop);
 }
 
 vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
