@@ -47,7 +47,8 @@ to_string( T x )
 }
 */
 
-gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
+gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon)
+{
     GIOError err;
     char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
@@ -56,8 +57,9 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     CCrashWatcher *cc = (CCrashWatcher*)daemon;
     if (err != G_IO_ERROR_NONE)
     {
-            cc->Warning("Error reading inotify fd.");
-            return FALSE;
+        cc->Warning("Error reading inotify fd.");
+        delete[] buf;
+        return FALSE;
     }
     /* reconstruct each event and send message to the dbus */
     while (i < len)
@@ -67,7 +69,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
 
         event = (struct inotify_event *) &buf[i];
         if (event->len)
-                name = &buf[i] + sizeof (struct inotify_event);
+            name = &buf[i] + sizeof (struct inotify_event);
         i += sizeof (struct inotify_event) + event->len;
 
         cc->Debug(std::string("Created file: ") + name);
@@ -114,8 +116,14 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                     cc->Warning(e.what());
                     if (e.type() == EXCEP_FATAL)
                     {
+                        delete[] buf;
                         return -1;
                     }
+                }
+                catch (...)
+                {
+                    delete[] buf;
+                    throw;
                 }
             }
             else
