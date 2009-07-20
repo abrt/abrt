@@ -13,6 +13,8 @@ APP_NAME = 'com.redhat.abrt.gui'
 class DBusManager(gobject.GObject):
     """ Class to provide communication with daemon over dbus """
     # and later with policyKit
+    uniq_name = None
+    pending_jobs = []
     def __init__(self):
         session = None
         try:
@@ -23,7 +25,7 @@ class DBusManager(gobject.GObject):
         if session:
             if session.request_name(APP_NAME, dbus.bus.NAME_FLAG_DO_NOT_QUEUE) != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER:
                 raise Exception("Name %s is taken,\nanother instance is already running." % APP_NAME)
-                
+        
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
         gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
@@ -31,6 +33,8 @@ class DBusManager(gobject.GObject):
         gobject.signal_new ("analyze-complete", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited when smth fails
         gobject.signal_new ("error", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        # signal emited to update gui with current status
+        gobject.signal_new ("update", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
         self.proxy = None
@@ -44,6 +48,10 @@ class DBusManager(gobject.GObject):
             self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
             # Catch Errors
             self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
+            # watch for updates
+            self.acconnection = self.proxy.connect_to_signal("Update",self.update_cb,dbus_interface=CC_IFACE)
+            # watch for job-done signals
+            self.acconnection = self.proxy.connect_to_signal("JobDone",self.jobdone_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception("Please check if abrt daemon is running.")
 
@@ -69,16 +77,23 @@ class DBusManager(gobject.GObject):
         #emit a signal
         #print "crash"
         self.emit("crash")
+    
+    def update_cb(self, dest, message):
+        # FIXME: use dest instead of 0 once we implement it in daemon
+        #if self.uniq_name == dest:
+        self.emit("update", message)
         
     def analyze_complete_cb(self,dump):
         #for arg in args:
         #    print "Analyze complete for: %s" % arg
         # emit signal to let clients know that analyze has been completed
         # FIXME - rewrite with CCReport class
-        self.emit("analyze-complete", dump)
-    
+    #    self.emit("analyze-complete", dump)
+        pass
+        
     def connect_to_daemon(self):
         bus = dbus.SystemBus()
+        self.uniq_name = bus.get_unique_name()
         if not bus:
             raise Exception("Can't connect to dbus")
         try:
@@ -88,11 +103,25 @@ class DBusManager(gobject.GObject):
         except Exception, e:
             raise Exception(e.message + "\nCannot create a proxy object!")
 
+    def addJob(self, job_id):
+        self.pending_jobs.append(job_id)
+        
+    def jobdone_cb(self, job_id):
+        #if self.uniq_name == client_id:
+        try:
+            self.pending_jobs.index(job_id)
+        except:
+            return
+        dump = self.cc.GetJobResult(job_id)
+        if dump:
+            self.emit("analyze-complete", dump)
+        
     def getReport(self, UUID):
         try:
             # let's try it async
             # even if it's async it timeouts, so let's try to set the timeout to 60sec
-            self.cc.CreateReport(UUID, reply_handler=self.dummy, error_handler=self.error_handler, timeout=60)
+            #self.cc.CreateReport(UUID, reply_handler=self.addJob, error_handler=self.error_handler, timeout=60)
+            self.addJob(self.cc.CreateReport(UUID, timeout=60))
         except dbus.exceptions.DBusException, e:
             raise Exception(e.message)
     

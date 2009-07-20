@@ -39,13 +39,22 @@ vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSen
     crashInfos = m_pObserver->GetCrashInfos(to_string(unix_uid));
 	return crashInfos;
 }
-
+//FIXME: fix CLI and remove this
+/*
 map_crash_report_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     map_crash_report_t crashReport;
     crashReport = m_pObserver->CreateReport(pUUID, to_string(unix_uid));
     return crashReport;
+}
+*/
+uint64_t CCommLayerServerDBus::CreateReport_t(const std::string &pUUID,const std::string &pSender)
+{
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
+    map_crash_report_t crashReport;
+    uint64_t job_id = m_pObserver->CreateReport_t(pUUID, to_string(unix_uid));
+    return job_id;
 }
 
 bool CCommLayerServerDBus::Report(map_crash_report_t pReport,const std::string &pSender)
@@ -62,6 +71,14 @@ bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::
     return true;
 }
 
+map_crash_report_t CCommLayerServerDBus::GetJobResult(uint64_t pJobID, const std::string& pSender)
+{
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
+    map_crash_report_t crashReport;
+    crashReport = m_pObserver->GetJobResult(pJobID,to_string(unix_uid));
+    return crashReport;
+}
+
 void CCommLayerServerDBus::Crash(const std::string& arg)
 {
     CDBusServer_adaptor::Crash(arg);
@@ -75,4 +92,14 @@ void CCommLayerServerDBus::AnalyzeComplete(map_crash_report_t arg1)
 void CCommLayerServerDBus::Error(const std::string& arg1)
 {
     CDBusServer_adaptor::Error(arg1);
+}
+
+void CCommLayerServerDBus::Update(const std::string& pDest, const std::string& pMessage)
+{
+    CDBusServer_adaptor::Update(pDest, pMessage);
+}
+
+void CCommLayerServerDBus::JobDone(uint64_t pJobID)
+{
+    CDBusServer_adaptor::JobDone(pJobID);
 }

@@ -93,6 +93,7 @@ class MainWindow():
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.ccdaemon.connect("error", self.error_cb)
+        self.ccdaemon.connect("update", self.update_cb)
         
         # load data
         #self.load()
@@ -110,12 +111,15 @@ class MainWindow():
         except Exception, e:
             pass
         gui_error_message("Unable to get report!\n%s" % message)
+    
+    def update_cb(self, daemon, message):
+        self.wTree.get_widget("lStatus").set_text(message)
         
     # call to update the progressbar
     def progress_update_cb(self, *args):
         self.pBar.pulse()
         return True
-        
+    
     def hydrate(self):
         n = None
         self.dumpsListStore.clear()
@@ -185,7 +189,10 @@ class MainWindow():
         self.dlist.set_cursor(path[0])
     
     def on_analyze_complete_cb(self, daemon, report, pBarWindow):
-        gobject.source_remove(self.timer)
+        try:
+            gobject.source_remove(self.timer)
+        except:
+            pass
         self.pBarWindow.hide()
 #FIXME - why we need this?? -> timeout warnings
 #        try:
@@ -213,8 +220,8 @@ class MainWindow():
         if not path:
             return
         self.update_pBar = False
-        self.pBar.show()
-        self.pBarWindow.show()
+        #self.pBar.show()
+        self.pBarWindow.show_all()
         self.timer = gobject.timeout_add (100,self.progress_update_cb)
         
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)

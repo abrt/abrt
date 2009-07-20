@@ -24,6 +24,7 @@
 #include <sys/inotify.h>
 #include <sys/inotify.h>
 #include <glib.h>
+#include <pthread.h>
 //#include "DBusManager.h"
 //#include "DBusServerProxy.h"
 #include "MiddleWare.h"
@@ -49,7 +50,7 @@ class CCrashWatcher
 :  public CObserver
 {
     private:
-
+        //FIXME: add some struct to be able to join all threads!
         typedef struct SCronCallbackData
         {
             CCrashWatcher* m_pCrashWatcher;
@@ -68,8 +69,18 @@ class CCrashWatcher
            {}
 
         } cron_callback_data_t;
+        
+        typedef struct SThreadData{
+           pthread_t  thread_id;
+           char* UUID;
+           char* UID;
+           CCrashWatcher *daemon;
+        } thread_data_t;
+        
+        std::map <int, map_crash_report_t> pending_jobs;
 
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
+        static void *CreateReport_t(void *arg);
         static gboolean cron_activation_periodic_cb(gpointer data);
         static gboolean cron_activation_one_cb(gpointer data);
         static gboolean cron_activation_reshedule_cb(gpointer data);
@@ -105,9 +116,12 @@ class CCrashWatcher
     /* methods exported on dbus */
     public:
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
-        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID);
+        /*FIXME: fix CLI and remove this stub*/
+        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID){map_crash_report_t retval; return retval;};
+        uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID);
         virtual bool Report(map_crash_report_t pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
+        virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender);
 
         /* Observer methods */
         void Status(const std::string& pMessage);

@@ -45,6 +45,8 @@ class CCommLayerServer{
         virtual void Crash(const std::string& arg1) {}
         virtual void AnalyzeComplete(map_crash_report_t arg1) {}
         virtual void Error(const std::string& arg1) {}
+        virtual void Update(const std::string& pDest, const std::string& pMessage) {};
+        virtual void JobDone(uint64_t pJobID) {};
 };
 
 #endif //COMMLAYERSERVER_H_

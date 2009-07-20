@@ -133,6 +133,60 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     return TRUE;
 }
 
+void *CCrashWatcher::CreateReport_t(void *arg){
+    thread_data_t *thread_data = (thread_data_t *) arg;
+    map_crash_info_t crashReport;
+    thread_data->daemon->Debug("Creating report...");
+    try
+    {
+        CMiddleWare::mw_result_t res;
+        res = thread_data->daemon->m_pMW->CreateCrashReport(thread_data->UUID,thread_data->UID,crashReport);
+        switch (res)
+        {
+            case CMiddleWare::MW_OK:
+                break;
+            case CMiddleWare::MW_IN_DB_ERROR:
+                thread_data->daemon->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
+                thread_data->daemon->Status(std::string("Did not find crash with UUID ")+thread_data->UUID+" in database.");
+                break;
+            case CMiddleWare::MW_CORRUPTED:
+            case CMiddleWare::MW_FILE_ERROR:
+            default:
+                {
+                    std::string debugDumpDir;
+                    thread_data->daemon->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
+                    thread_data->daemon->Status(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
+                    debugDumpDir = thread_data->daemon->m_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
+                    thread_data->daemon->m_pMW->DeleteDebugDumpDir(debugDumpDir);
+                }
+                break;
+        }
+        thread_data->daemon->pending_jobs[thread_data->thread_id] = crashReport;
+        thread_data->daemon->m_pCommLayer->JobDone(thread_data->thread_id);
+    }
+    catch (CABRTException& e)
+    {
+        if (e.type() == EXCEP_FATAL)
+        {
+            /* free strduped strings */
+            free(thread_data->UUID);
+            free(thread_data->UID);
+            free(thread_data);
+            throw e;
+        }
+        /* free strduped strings */
+        free(thread_data->UUID);
+        free(thread_data->UID);
+        free(thread_data);
+        thread_data->daemon->Warning(e.what());
+        thread_data->daemon->Status(e.what());
+    }
+    /* free strduped strings */
+    free(thread_data->UUID);
+    free(thread_data->UID);
+    free(thread_data);
+}
+
 gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
@@ -320,6 +374,9 @@ void CCrashWatcher::SetUpCron()
 void CCrashWatcher::Status(const std::string& pMessage)
 {
     std::cout << "Update: " + pMessage << std::endl;
+    //FIXME: add some ID
+    if(m_pCommLayer != NULL)
+        m_pCommLayer->Update("0",pMessage);
 }
 
 void CCrashWatcher::Warning(const std::string& pMessage)
@@ -372,6 +429,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 
     // TODO: initialize object according parameters -w -d
     // status has to be always created.
+    m_pCommLayer = NULL;
     m_pCommLayerInner = new CCommLayerInner(this, true, true);
     comm_layer_inner_init(m_pCommLayerInner);
 
@@ -634,46 +692,14 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 	return retval;
 }
 
-map_crash_report_t CCrashWatcher::CreateReport(const std::string &pUUID,const std::string &pUID)
+uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID)
 {
-    map_crash_report_t crashReport;
-    Debug("Creating report...");
-    try
-    {
-        CMiddleWare::mw_result_t res;
-        res = m_pMW->CreateCrashReport(pUUID,pUID,crashReport);
-        switch (res)
-        {
-            case CMiddleWare::MW_OK:
-                break;
-            case CMiddleWare::MW_IN_DB_ERROR:
-                Warning("Did not find crash with UUID "+pUUID+" in database.");
-                Status("Did not find crash with UUID "+pUUID+" in database.");
-                break;
-            case CMiddleWare::MW_CORRUPTED:
-            case CMiddleWare::MW_FILE_ERROR:
-            default:
-                {
-                    std::string debugDumpDir;
-                    Warning("Corrupted crash with UUID "+pUUID+", deleting.");
-                    Status("Corrupted crash with UUID "+pUUID+", deleting.");
-                    debugDumpDir = m_pMW->DeleteCrashInfo(pUUID, pUID);
-                    m_pMW->DeleteDebugDumpDir(debugDumpDir);
-                }
-                break;
-        }
-        m_pCommLayer->AnalyzeComplete(crashReport);
-    }
-    catch (CABRTException& e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-        Status(e.what());
-    }
-    return crashReport;
+    thread_data_t * thread_data = (thread_data_t *)calloc(1, sizeof(thread_data_t));
+    thread_data->UUID = strdup(pUUID.c_str());
+    thread_data->UID = strdup(pUID.c_str());
+    thread_data->daemon = this;
+    pthread_create(&(thread_data->thread_id), NULL, CreateReport_t, (void *)thread_data);
+    return (uint64_t) thread_data->thread_id;
 }
 
 bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
@@ -738,4 +764,9 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
         return false;
     }
     return true;
+}
+
+map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::string& pDBusSender)
+{
+    return pending_jobs[pJobID];
 }
