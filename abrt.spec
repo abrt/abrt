@@ -57,7 +57,7 @@ daemon.
 Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: dbus-python, rhpl, pygtk2, pygtk2-libglade
+Requires: dbus-python, pygtk2, pygtk2-libglade
 
 %description gui
 GTK+ wizard for convenient bug reporting.

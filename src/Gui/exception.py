@@ -41,10 +41,16 @@ def exception_function():
         raise
 
 """
+
+PROGNAME = "abrt"
+
 import sys
-
-from rhpl.translate import _
-
+import gettext
+import locale
+locale.setlocale(locale.LC_ALL, "")
+gettext.textdomain(PROGNAME)
+gettext.bind_textdomain_codeset(PROGNAME, locale.nl_langinfo(locale.CODESET))
+_ = gettext.lgettext
 
 __DUMPHASH = {}
 # FIXME: do length limits on obj dumps.
