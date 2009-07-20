@@ -15,3 +15,8 @@ pkgdata_PYTHON = $(PYTHON_FILES)
 pkgdata_DATA = $(GLADE_FILES)
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
+
+install-exec-hook:
+	for b in $(bin_SCRIPTS); do \
+	    sed 's:/usr/share:$(datadir):g' -i $(DESTDIR)$(bindir)/$$b || exit $$?; \
+	done

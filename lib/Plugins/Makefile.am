@@ -12,7 +12,7 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libBugzilla.la \
                          libPython.la \
                          libFileTransfer.la
-                          
+
 pluginsconfdir=$(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf FileTransfer.conf
 
@@ -21,6 +21,11 @@ man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7\
            abrt-SQLite3.7  abrt-RunApp.7
 
 EXTRA_DIST = $(man_MANS)
+
+install-data-hook:
+	sed 's: = /var/: = $(localstatedir)/:g' -i \
+	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf \
+	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
 
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h PluginSettings.h
@@ -52,7 +57,7 @@ libMailx_la_LDFLAGS = -avoid-version
 libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h PluginSettings.h
 libSQLite3_la_LDFLAGS = -avoid-version
 libSQLite3_la_LIBADD = $(SQLITE3_LIBS)
-libSQLite3_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(SQLITE3_CFLAGS)
+libSQLite3_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"'
 
 # Logger
 libLogger_la_SOURCES = Logger.cpp Logger.h PluginSettings.h

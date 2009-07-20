@@ -31,7 +31,7 @@
 #define SQLITE3_MASTER_TABLE "sqlite_master"
 
 CSQLite3::CSQLite3() :
-    m_sDBPath("/var/cache/abrt/abrt-db"),
+    m_sDBPath(LOCALSTATEDIR "/cache/abrt/abrt-db"),
     m_pDB(NULL)
 {}
 
