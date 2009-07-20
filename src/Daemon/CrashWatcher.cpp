@@ -47,7 +47,8 @@ to_string( T x )
 }
 */
 
-gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon){
+gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon)
+{
     GIOError err;
     char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
@@ -56,8 +57,9 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     CCrashWatcher *cc = (CCrashWatcher*)daemon;
     if (err != G_IO_ERROR_NONE)
     {
-            cc->Warning("Error reading inotify fd.");
-            return FALSE;
+        cc->Warning("Error reading inotify fd.");
+        delete[] buf;
+        return FALSE;
     }
     /* reconstruct each event and send message to the dbus */
     while (i < len)
@@ -67,7 +69,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
 
         event = (struct inotify_event *) &buf[i];
         if (event->len)
-                name = &buf[i] + sizeof (struct inotify_event);
+            name = &buf[i] + sizeof (struct inotify_event);
         i += sizeof (struct inotify_event) + event->len;
 
         cc->Debug(std::string("Created file: ") + name);
@@ -114,8 +116,14 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                     cc->Warning(e.what());
                     if (e.type() == EXCEP_FATAL)
                     {
+                        delete[] buf;
                         return -1;
                     }
+                }
+                catch (...)
+                {
+                    delete[] buf;
+                    throw;
                 }
             }
             else
@@ -438,27 +446,38 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
-    SetUpMW();
-    SetUpCron();
-    FindNewDumps(pPath);
-#ifdef ENABLE_DBUS
-    m_pCommLayer = new CCommLayerServerDBus();
-#elif ENABLE_SOCKET
-    m_pCommLayer = new CCommLayerServerSocket();
-#endif
-//  m_pCommLayer = new CCommLayerServerDBus();
-//  m_pCommLayer = new CCommLayerServerSocket();
-    m_pCommLayer->Attach(this);
 
-    if((m_nFd = inotify_init()) == -1)
+    try
     {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
-    }
-    if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1){
+        SetUpMW();
+        SetUpCron();
+        FindNewDumps(pPath);
+#ifdef ENABLE_DBUS
+        m_pCommLayer = new CCommLayerServerDBus();
+#elif ENABLE_SOCKET
+        m_pCommLayer = new CCommLayerServerSocket();
+#endif
+//      m_pCommLayer = new CCommLayerServerDBus();
+//      m_pCommLayer = new CCommLayerServerSocket();
+        m_pCommLayer->Attach(this);
 
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
+        if((m_nFd = inotify_init()) == -1)
+        {
+    	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
+        }
+        if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1)
+        {
+    	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
+        }
+        m_pGio = g_io_channel_unix_new(m_nFd);
     }
-    m_pGio = g_io_channel_unix_new(m_nFd);
+    catch (...)
+    {
+        /* This restores /proc/sys/kernel/core_pattern, among other things */
+        delete m_pMW;
+        //too? delete m_pCommLayer;
+        throw;
+    }
 }
 
 CCrashWatcher::~CCrashWatcher()
@@ -556,18 +575,14 @@ void CCrashWatcher::CreatePidFile()
 
     /* open the pidfile */
     fd = open(VAR_RUN_PIDFILE, O_WRONLY|O_CREAT|O_EXCL, 0644);
-    if (fd >= 0) {
-            FILE *f;
-
-            /* write our pid to it */
-            f = fdopen(fd, "w");
-            if (f != NULL) {
-                    fprintf(f, "%d\n", getpid());
-                    fclose(f);
-                    /* leave the fd open */
-                    return;
-            }
-            close(fd);
+    if (fd >= 0)
+    {
+        /* write our pid to it */
+        char buf[sizeof(int)*3 + 2];
+        int len = sprintf(buf, "%u\n", (unsigned)getpid());
+        write(fd, buf, len);
+        close(fd);
+        return;
     }
 
     /* something went wrong */
@@ -577,17 +592,17 @@ void CCrashWatcher::CreatePidFile()
 void CCrashWatcher::Lock()
 {
     int lfp = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT,0640);
-	if (lfp < 0)
-	{
-	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
-	}
-	if (lockf(lfp,F_TLOCK,0) < 0)
-	{
-	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
-	}
-	/* only first instance continues */
-	//sprintf(str,"%d\n",getpid());
-	//write(lfp,str,strlen(str)); /* record pid to lockfile */
+    if (lfp < 0)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
+    }
+    if (lockf(lfp,F_TLOCK,0) < 0)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
+    }
+    /* only first instance continues */
+    //sprintf(str,"%d\n",getpid());
+    //write(lfp,str,strlen(str)); /* record pid to lockfile */
 }
 
 void CCrashWatcher::StartWatch()
@@ -621,20 +636,76 @@ void CCrashWatcher::StartWatch()
     delete[] buff;
 }
 
+extern uint8_t sig_caught;
+//prepare()
+//If the source can determine that it is ready here (without waiting
+//for the results of the poll() call) it should return TRUE. It can also
+//return a timeout_ value which should be the maximum timeout (in milliseconds)
+//which should be passed to the poll() call.
+//check()
+//Called after all the file descriptors are polled. The source should
+//return TRUE if it is ready to be dispatched.
+//dispatch()
+//Called to dispatch the event source, after it has returned TRUE
+//in either its prepare or its check function. The dispatch function
+//is passed in a callback function and data. The callback function
+//may be NULL if the source was never connected to a callback using
+//g_source_set_callback(). The dispatch function should
+//call the callback function with user_data and whatever additional
+//parameters are needed for this type of event source.
+typedef struct SignalSource
+{
+    GSource src;
+    CCrashWatcher* watcher;
+} SignalSource;
+static gboolean waitsignal_prepare(GSource *source, gint *timeout_)
+{
+    /* We depend on the fact that in Unix, poll() is interrupted
+     * by caught signals (returns EINTR). Thus we do not need to set
+     * a small timeout here: infinite timeout (-1) works too */
+    *timeout_ = -1;
+    return sig_caught != 0;
+}
+static gboolean waitsignal_check(GSource *source)
+{
+    return sig_caught != 0;
+}
+static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
+{
+    SignalSource *ssrc = (SignalSource*) source;
+    ssrc->watcher->StopRun();
+}
+
 /* daemon loop with glib */
 void CCrashWatcher::GStartWatch()
 {
-    g_io_add_watch (m_pGio, G_IO_IN, handle_event_cb, this);
+    g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, this);
+
+    GSourceFuncs waitsignal_funcs;
+    memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
+    waitsignal_funcs.prepare  = waitsignal_prepare;
+    waitsignal_funcs.check    = waitsignal_check;
+    waitsignal_funcs.dispatch = waitsignal_dispatch;
+    //waitsignal_funcs.finalize = NULL; - already done
+    SignalSource *waitsignal_src = (SignalSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
+    waitsignal_src->watcher = this;
+    g_source_attach(&waitsignal_src->src, g_main_context_default());
+
     //enter the event loop
-    g_main_run (m_pMainloop);
+    g_main_run(m_pMainloop);
 }
 
 void CCrashWatcher::Run()
 {
-    Debug("Runnig...");
+    Debug("Running...");
     Lock();
     CreatePidFile();
     GStartWatch();
+}
+
+void CCrashWatcher::StopRun()
+{
+    g_main_quit(m_pMainloop);
 }
 
 vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
@@ -689,7 +760,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 
     //retval = m_pMW->GetCrashInfos(pUID);
     //Notify("Sent crash info");
-	return retval;
+        return retval;
 }
 
 uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID)

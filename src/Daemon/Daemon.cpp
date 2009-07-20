@@ -21,15 +21,18 @@
 #include "ABRTException.h"
 #include <iostream>
 #include <cstdio>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+uint8_t sig_caught;
+
+static void handle_fatal_signal(int signal)
+{
+    sig_caught = signal;
+}
 
 CCrashWatcher *g_pCrashWatcher = NULL;
-
-void terminate(int signal)
-{
-    fprintf(stderr, "Got SIGINT/SIGTERM, cleaning up..\n");
-    delete g_pCrashWatcher;
-    exit(0);
-}
 
 void print_help()
 {
@@ -39,13 +42,14 @@ void print_help()
 int main(int argc, char** argv)
 {
     int daemonize = 1;
-    /*signal handlers */
-    signal(SIGTERM, terminate);
-    signal(SIGINT, terminate);
+
+    /* signal handlers */
+    signal(SIGTERM, handle_fatal_signal);
+    signal(SIGINT, handle_fatal_signal);
+
     try
     {
-
-        if (argc > 1)
+        if (argv[1])
         {
             if (strcmp(argv[1], "-d") == 0)
             {
@@ -54,7 +58,15 @@ int main(int argc, char** argv)
         }
         if(daemonize)
         {
-            // forking to background
+            /* Open stdin to /dev/null. We do it before forking
+             * in order to emit useful exitcode to the parent
+	     * if open fails */
+            close(STDIN_FILENO);
+            if (open("/dev/null", O_RDWR))
+            {
+                throw CABRTException(EXCEP_FATAL, "Can't open /dev/null");
+            }
+    	    /* forking to background */
             pid_t pid = fork();
             if (pid < 0)
             {
@@ -68,9 +80,12 @@ int main(int argc, char** argv)
             {
                 throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): setsid failed");
             }
-            close(STDIN_FILENO);
+            /* We must not leave fds 0,1,2 closed.
+             * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
             close(STDOUT_FILENO);
             close(STDERR_FILENO);
+            dup(0);
+            dup(0);
         }
         g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
         g_pCrashWatcher->Run();
@@ -83,5 +98,14 @@ int main(int argc, char** argv)
     {
         std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
-}
 
+    delete g_pCrashWatcher;
+
+    /* Take care to emit correct exit status */
+    if (sig_caught) {
+        signal(sig_caught, SIG_DFL);
+        raise(sig_caught);
+    }
+    /* I think we never end up here */
+    return 0;
+}

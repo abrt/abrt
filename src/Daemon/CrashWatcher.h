@@ -107,11 +107,12 @@ class CCrashWatcher
         /*FIXME not needed */
         //DBus::Connection *m_pConn;
         CSettings *m_pSettings;
-	public:
+        public:
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
         CCrashWatcher(const std::string& pPath);
-		virtual ~CCrashWatcher();
+        virtual ~CCrashWatcher();
         void Run();
+        void StopRun();
 
     /* methods exported on dbus */
     public:
