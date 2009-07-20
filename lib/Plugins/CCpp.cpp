@@ -89,7 +89,7 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
 
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 {
-    comm_layer_inner_status("Installing debug infos...");
+    comm_layer_inner_status("Searching for debug-info packages...");
 
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
     char buff[1024];
@@ -108,7 +108,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     m_Pid = child;
     if (child < 0)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::RunGdb():  fork failed.");
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos():  fork failed.");
     }
     if (child == 0)
     {
@@ -188,6 +188,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
                             wait(NULL);
                             throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
                         }
+                        comm_layer_inner_status("Downloading and installing debug-info packages...");
                     }
                 }
             }
