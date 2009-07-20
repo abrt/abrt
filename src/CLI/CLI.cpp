@@ -177,9 +177,7 @@ int main(int argc, char** argv)
                 print_usage(argv[0]);
                 break;
         }
-#ifdef ENABLE_DBUS
-;
-#elif ENABLE_SOCKET
+#if ENABLE_SOCKET
         ABRTDaemon.DisConnect();
 #endif
 
