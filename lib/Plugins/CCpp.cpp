@@ -48,8 +48,8 @@
 #define FILENAME_MEMORYMAP      "memorymap"
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
-	m_bMemoryMap(false),
-	m_Pid(0)
+        m_bMemoryMap(false),
+        m_Pid(0)
 {}
 
 CAnalyzerCCpp::~CAnalyzerCCpp()
@@ -63,7 +63,6 @@ CAnalyzerCCpp::~CAnalyzerCCpp()
 
 std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
 {
-
     std::string ret = "";
     HASHContext* hc;
     unsigned char hash[SHA1_LENGTH];
@@ -95,31 +94,33 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     char buff[1024];
     int pipein[2], pipeout[2];
     struct timeval delay;
-    fd_set rsfd;
     pid_t child;
 
-    pipe(pipein);
+    pipe(pipein); /* error check? */
     pipe(pipeout);
-
-    fcntl(pipein[0], F_SETFD, FD_CLOEXEC);
-    fcntl(pipeout[1], F_SETFD, FD_CLOEXEC);
 
     child = fork();
     m_Pid = child;
     if (child < 0)
     {
+        close(pipein[0]); close(pipeout[0]);
+        close(pipein[1]); close(pipeout[1]);
         throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos():  fork failed.");
     }
     if (child == 0)
     {
-        close(STDIN_FILENO);
-        close(STDOUT_FILENO);
-        close(STDERR_FILENO);
-
-        dup2(pipein[0], STDIN_FILENO);
-        close(pipein[0]);
-        dup2(pipeout[1], STDOUT_FILENO);
-        close(pipeout[1]);
+        if (pipein[0] != STDIN_FILENO)
+        {
+            dup2(pipein[0], STDIN_FILENO);
+            close(pipein[0]);
+        }
+        if (pipeout[1] != STDOUT_FILENO)
+        {
+            dup2(pipeout[1], STDOUT_FILENO);
+            close(pipeout[1]);
+        }
+        /* Not a good idea, we won't see any error messages */
+        /*close(STDERR_FILENO);*/
 
         setsid();
         execlp("debuginfo-install", "debuginfo-install", pPackage.c_str(), NULL);
@@ -129,11 +130,12 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     close(pipein[0]);
     close(pipeout[1]);
 
-    bool quit = false;
     bool already_installed = false;
 
-    while(!quit)
+    while (1)
     {
+/* Does not seem to be needed
+	fd_set rsfd;
         FD_ZERO(&rsfd);
 
         FD_SET(pipeout[0], &rsfd);
@@ -141,57 +143,52 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
         delay.tv_sec = 1;
         delay.tv_usec = 0;
 
-        if(select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) > 0)
-        {
-            if(FD_ISSET(pipeout[0], &rsfd))
-            {
-                int r = read(pipeout[0], buff, sizeof(buff) - 1);
-                if (r <= 0)
-                {
-                    quit = true;
-                }
-                else
-                {
-                    buff[r] = '\0';
-                    comm_layer_inner_debug(buff);
-                    if (strstr(buff, packageName.c_str()) != NULL &&
-                        strstr(buff, "already installed and latest version") != NULL)
-                    {
-                        char* ii = strstr(buff, packageName.c_str());
-                        char* jj = strstr(ii, "\n");
-                        char* kk = strstr(ii, "already installed and latest version");
+        if (select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) <= 0)
+            continue;
+        if (!FD_ISSET(pipeout[0], &rsfd))
+            continue;
+*/
+        int r = read(pipeout[0], buff, sizeof(buff) - 1);
+        if (r <= 0)
+            break;
 
-                        if (jj > kk)
-                        {
-                            already_installed = true;
-                        }
-                    }
-                    if (already_installed == false &&
-                        (strstr(buff, "No debuginfo packages available to install") != NULL ||
-                         strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
-                         strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL))
-                    {
-                        close(pipein[1]);
-                        close(pipeout[0]);
-                        kill(child, SIGTERM);
-                        wait(NULL);
-                        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
-                    }
-                    if (strstr(buff, "Total download size") != NULL)
-                    {
-                        int r =  write(pipein[1], "y\n", sizeof("y\n"));
-                        if (r != sizeof("y\n"))
-                        {
-                            close(pipein[1]);
-                            close(pipeout[0]);
-                            kill(child, SIGTERM);
-                            wait(NULL);
-                            throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
-                        }
-                        comm_layer_inner_status("Downloading and installing debug-info packages...");
-                    }
-                }
+        buff[r] = '\0';
+        comm_layer_inner_debug(buff);
+        if (strstr(buff, packageName.c_str()) != NULL &&
+            strstr(buff, "already installed and latest version") != NULL)
+        {
+            char* ii = strstr(buff, packageName.c_str());
+            char* jj = strstr(ii, "\n");
+            char* kk = strstr(ii, "already installed and latest version");
+
+            if (jj > kk)
+            {
+                already_installed = true;
             }
+        }
+        if (already_installed == false &&
+            (strstr(buff, "No debuginfo packages available to install") != NULL ||
+             strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
+             strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL))
+        {
+            close(pipein[1]);
+            close(pipeout[0]);
+            kill(child, SIGTERM);
+            wait(NULL);
+            throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
+        }
+        if (strstr(buff, "Total download size") != NULL)
+        {
+            int r = write(pipein[1], "y\n", sizeof("y\n"));
+            if (r != sizeof("y\n"))
+            {
+                close(pipein[1]);
+                close(pipeout[0]);
+                kill(child, SIGTERM);
+                wait(NULL);
+                throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
+            }
+            comm_layer_inner_status("Downloading and installing debug-info packages...");
         }
     }
     close(pipein[1]);
@@ -381,7 +378,6 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     int pipeout[2];
     char buff[1024];
     struct timeval delay;
-    fd_set rsfd;
     pid_t child;
     gid_t GID[1];
 
@@ -389,23 +385,31 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     {
         CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): cannot get GUI for UID.");
     }
-    pipe(pipeout);
-    fcntl(pipeout[1], F_SETFD, FD_CLOEXEC);
 
+    pipe(pipeout);  /* error check? */
     child = fork();
     m_Pid = child;
     if (child == -1)
     {
+        close(pipeout[0]);
+        close(pipeout[1]);
         CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): fork failed.");
     }
-    if(child == 0)
+    if (child == 0)
     {
+        close(pipeout[0]); /* read side of the pipe */
+        if (pipeout[1] != STDOUT_FILENO)
+        {
+            dup2(pipeout[1], STDOUT_FILENO);
+            close(pipeout[1]);
+        }
+        /* Make sure stdin is safely open to nothing */
         close(STDIN_FILENO);
-        close(STDOUT_FILENO);
-        close(STDERR_FILENO);
-
-        dup2(pipeout[1], STDOUT_FILENO);
-        close(pipeout[1]);
+        if (open("/dev/null", O_RDONLY))
+                if (open("/", O_RDONLY))
+                        abort(); /* never happens */
+        /* Not a good idea, we won't see any error messages */
+        /* close(STDERR_FILENO); */
 
         setgroups(1, GID);
         setregid(atoi(pUID.c_str()), atoi(pUID.c_str()));
@@ -416,21 +420,23 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
         exit(0);
     }
 
-    close(pipeout[1]);
+    close(pipeout[1]); /* write side of the pipe */
 
+/*
     bool quit = false;
 
-    while(!quit)
+    while (!quit)
     {
+        fd_set rsfd;
         FD_ZERO(&rsfd);
         FD_SET(pipeout[0], &rsfd);
 
         delay.tv_sec = 1;
         delay.tv_usec = 0;
 
-        if(select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) > 0)
+        if (select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) > 0)
         {
-            if(FD_ISSET(pipeout[0], &rsfd))
+            if (FD_ISSET(pipeout[0], &rsfd))
             {
                 int r = read(pipeout[0], buff, sizeof(buff) - 1);
                 if (r <= 0)
@@ -445,8 +451,17 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
             }
         }
     }
+I think the below code has absolutely the same effect:
+*/
+    int r;
+    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+    {
+        buff[r] = '\0';
+        pOutput += buff;
+    }
+
     close(pipeout[0]);
-    wait(NULL);
+    wait(NULL); /* why? */
     m_Pid = 0;
 }
 
@@ -454,24 +469,24 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
     comm_layer_inner_status("Getting local universal unique identification...");
 
-	CDebugDump dd;
-	std::string UID;
-	std::string executable;
-	std::string package;
-	std::string buildIdPC;
-	std::string independentBuildIdPC;
-	std::string core = "--core="+ pDebugDumpDir + "/" +FILENAME_COREDUMP;
-	char* command = (char*)"eu-unstrip";
-	char* args[4] = { (char*)"eu-unstrip", NULL, (char*)"-n", NULL };
-	args[1] = strdup(core.c_str());
-	dd.Open(pDebugDumpDir);
-	dd.LoadText(FILENAME_UID, UID);
-	dd.LoadText(FILENAME_EXECUTABLE, executable);
-	dd.LoadText(FILENAME_PACKAGE, package);
-	ExecVP(command, args, UID, buildIdPC);
-	dd.Close();
-	free(args[1]);
-	GetIndependentBuldIdPC(buildIdPC, independentBuildIdPC);
+    CDebugDump dd;
+    std::string UID;
+    std::string executable;
+    std::string package;
+    std::string buildIdPC;
+    std::string independentBuildIdPC;
+    std::string core = "--core="+ pDebugDumpDir + "/" +FILENAME_COREDUMP;
+    char* command = (char*)"eu-unstrip";
+    char* args[4] = { (char*)"eu-unstrip", NULL, (char*)"-n", NULL };
+    args[1] = strdup(core.c_str());
+    dd.Open(pDebugDumpDir);
+    dd.LoadText(FILENAME_UID, UID);
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
+    dd.LoadText(FILENAME_PACKAGE, package);
+    ExecVP(command, args, UID, buildIdPC);
+    dd.Close();
+    free(args[1]);
+    GetIndependentBuldIdPC(buildIdPC, independentBuildIdPC);
     return CreateHash(package + executable + independentBuildIdPC);
 }
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
@@ -524,32 +539,32 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 
 void CAnalyzerCCpp::Init()
 {
-	std::ifstream fInCorePattern;
-	fInCorePattern.open(CORE_PATTERN_IFACE);
-	if (fInCorePattern.is_open())
-	{
-		getline(fInCorePattern, m_sOldCorePattern);
-		fInCorePattern.close();
-	}
-	std::ofstream fOutCorePattern;
-	fOutCorePattern.open(CORE_PATTERN_IFACE);
-	if (fOutCorePattern.is_open())
-	{
-		fOutCorePattern << CORE_PATTERN << std::endl;
-		fOutCorePattern.close();
-	}
+    std::ifstream fInCorePattern;
+    fInCorePattern.open(CORE_PATTERN_IFACE);
+    if (fInCorePattern.is_open())
+    {
+        getline(fInCorePattern, m_sOldCorePattern);
+        fInCorePattern.close();
+    }
+    std::ofstream fOutCorePattern;
+    fOutCorePattern.open(CORE_PATTERN_IFACE);
+    if (fOutCorePattern.is_open())
+    {
+        fOutCorePattern << CORE_PATTERN << std::endl;
+        fOutCorePattern.close();
+    }
 }
 
 
 void CAnalyzerCCpp::DeInit()
 {
-	std::ofstream fOutCorePattern;
-	fOutCorePattern.open(CORE_PATTERN_IFACE);
-	if (fOutCorePattern.is_open())
-	{
-		fOutCorePattern << m_sOldCorePattern << std::endl;
-		fOutCorePattern.close();
-	}
+    std::ofstream fOutCorePattern;
+    fOutCorePattern.open(CORE_PATTERN_IFACE);
+    if (fOutCorePattern.is_open())
+    {
+        fOutCorePattern << m_sOldCorePattern << std::endl;
+        fOutCorePattern.close();
+    }
 }
 
 void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
@@ -558,7 +573,7 @@ void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
     plugin_load_settings(pPath, settings);
 
     if (settings.find("MemoryMap")!= settings.end())
-      {
-          m_bMemoryMap = settings["MemoryMap"] == "yes";
-      }
+    {
+        m_bMemoryMap = settings["MemoryMap"] == "yes";
+    }
 }
