@@ -1,14 +1,19 @@
 # -*- coding: utf-8 -*-
 import dbus
+import dbus.service
 import gobject
 from dbus.mainloop.glib import DBusGMainLoop
 import gtk
+from dbus.exceptions import *
+import ABRTExceptions
 
 CC_NAME = 'com.redhat.abrt'
 CC_IFACE = 'com.redhat.abrt'
 CC_PATH = '/com/redhat/abrt'
+
 APP_NAME = 'com.redhat.abrt.gui'
-        
+APP_PATH = '/com/redhat/abrt/gui'
+APP_IFACE = 'com.redhat.abrt.gui'
 
 class DBusManager(gobject.GObject):
     """ Class to provide communication with daemon over dbus """
@@ -17,6 +22,32 @@ class DBusManager(gobject.GObject):
     pending_jobs = []
     def __init__(self):
         session = None
+        # binds the dbus to glib mainloop
+        DBusGMainLoop(set_as_default=True)
+        class DBusInterface(dbus.service.Object):
+            def __init__(self, dbusmanager):
+                self.dbusmanager = dbusmanager
+                dbus.service.Object.__init__(self, dbus.SessionBus(), APP_PATH)
+    
+            @dbus.service.method(dbus_interface=APP_IFACE)
+            def show(self):
+                self.dbusmanager.emit("show")
+        try:
+            session = dbus.SessionBus()
+        except Exception, e:
+            print e
+        
+        try:
+            app_proxy = session.get_object(APP_NAME,APP_PATH)
+            app_iface = dbus.Interface(app_proxy, dbus_interface=APP_IFACE)
+            # app is running, so make it show it self
+            app_iface.show()
+            raise ABRTExceptions.IsRunning()
+        except DBusException, e:
+            # cannot create proxy or call the method => gui is not running
+            pass
+        
+        """    
         try:
             session = dbus.SessionBus()
         except:
@@ -25,7 +56,7 @@ class DBusManager(gobject.GObject):
         if session:
             if session.request_name(APP_NAME, dbus.bus.NAME_FLAG_DO_NOT_QUEUE) != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER:
                 raise Exception("Name %s is taken,\nanother instance is already running." % APP_NAME)
-        
+        """
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
         gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
@@ -35,8 +66,14 @@ class DBusManager(gobject.GObject):
         gobject.signal_new ("error", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited to update gui with current status
         gobject.signal_new ("update", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
-        # binds the dbus to glib mainloop
-        DBusGMainLoop(set_as_default=True)
+        # signal emited to show gui if user try to run it again
+        gobject.signal_new ("show", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
+        
+        # export the app dbus interface
+        if session:
+            session.request_name(APP_NAME)
+        iface = DBusInterface(self)
+        
         self.proxy = None
         self.proxy = self.connect_to_daemon()
         if self.proxy:
@@ -123,7 +160,7 @@ class DBusManager(gobject.GObject):
             #self.cc.CreateReport(UUID, reply_handler=self.addJob, error_handler=self.error_handler, timeout=60)
             self.addJob(self.cc.CreateReport(UUID, timeout=60))
         except dbus.exceptions.DBusException, e:
-            raise Exception(e.message)
+            raise Exception(e)
     
     def Report(self,report):
         # FIXME async

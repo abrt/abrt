@@ -13,18 +13,24 @@ from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
 from CCReport import Report
 from exception import installExceptionHandler, handleMyException
+import ABRTExceptions
+
 try:
     import rpm
 except Exception, ex:
     rpm = None
 
-installExceptionHandler("abrt-gui", "0.0.2")
+#installExceptionHandler("abrt-gui", "0.0.4")
 
 class MainWindow():
+    ccdaemon = None
     def __init__(self):
-        self.theme = theme = gtk.icon_theme_get_default()
+        self.theme = gtk.icon_theme_get_default()
         try:
             self.ccdaemon = CCDBusBackend.DBusManager()
+        except ABRTExceptions.IsRunning, e:
+            # another instance is running, so exit quietly
+            sys.exit()
         except Exception, e:
             # show error message if connection fails
             # FIXME add an option to start the daemon
@@ -40,6 +46,11 @@ class MainWindow():
         if (self.window):
             self.window.connect("delete_event", self.delete_event_cb)
             self.window.connect("destroy", self.destroy)
+            self.window.connect("focus-in-event", self.focus_in_cb)
+        
+        self.statusWindow = self.wTree.get_widget("pBarWindow")
+        if self.statusWindow:
+            self.statusWindow.connect("delete_event", self.sw_delete_event_cb)
         
         self.appBar = self.wTree.get_widget("appBar")
         # pregress bar window to show while bt is being extracted
@@ -94,6 +105,7 @@ class MainWindow():
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.ccdaemon.connect("error", self.error_cb)
         self.ccdaemon.connect("update", self.update_cb)
+        self.ccdaemon.connect("show", self.show_cb)
         
         # load data
         #self.load()
@@ -231,18 +243,34 @@ class MainWindow():
         except Exception, e:
             # FIXME #3	dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
-            gui_error_message("Error getting the report: %s" % e.message)
+            if self.timer:
+                gobject.source_remove(self.timer)
+            self.pBarWindow.hide()
+            gui_error_message("Error getting the report: %s" % e)
         return
-
+    def sw_delete_event_cb(self, widget, event, data=None):
+        if self.timer:
+            gobject.source_remove(self.timer)
+        widget.hide()
+        return True
+    
     def delete_event_cb(self, widget, event, data=None):
         gtk.main_quit()
-        
+    
+    def focus_in_cb(self, widget, event, data=None):
+        self.window.set_urgency_hint(False)
+    
     def on_bQuit_clicked(self, widget):
         gtk.main_quit()
             
     def show(self):
         self.window.show()
-    
+        
+    def show_cb(self, daemon):
+        if self.window:
+            if self.window.is_active():
+                return
+            self.window.set_urgency_hint(True)
 
 if __name__ == "__main__":
     cc = MainWindow()

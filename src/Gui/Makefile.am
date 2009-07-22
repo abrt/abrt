@@ -4,7 +4,7 @@ bin_SCRIPTS = abrt-gui
 
 PYTHON_FILES = CCDBusBackend.py  CCDumpList.py  CCDump.py  CC_gui_functions.py \
                ccgui.glade report.glade CCReporterDialog.py CCReport.py \
-               CCMainWindow.py exception.py CellRenderers.py
+               CCMainWindow.py exception.py CellRenderers.py ABRTExceptions.py
 
 GLADE_FILES = ccgui.glade report.glade
 
