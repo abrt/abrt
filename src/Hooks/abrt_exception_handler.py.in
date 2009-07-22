@@ -247,7 +247,6 @@ def handleMyException((etype, value, tb)):
         pass
 
     # add coredump saving
-    print text
     write_dump(os.getpid(), tb_uuid, text)
     sys.exit(__EXITCODE)
 
