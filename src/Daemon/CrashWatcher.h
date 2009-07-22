@@ -78,9 +78,10 @@ class CCrashWatcher
         } thread_data_t;
         
         std::map <int, map_crash_report_t> pending_jobs;
+        pthread_mutex_t m_pJobsMutex;
 
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
-        static void *CreateReport_t(void *arg);
+        static void *create_report(void *arg);
         static gboolean cron_activation_periodic_cb(gpointer data);
         static gboolean cron_activation_one_cb(gpointer data);
         static gboolean cron_activation_reshedule_cb(gpointer data);

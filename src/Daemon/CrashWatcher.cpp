@@ -141,7 +141,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     return TRUE;
 }
 
-void *CCrashWatcher::CreateReport_t(void *arg){
+void *CCrashWatcher::create_report(void *arg){
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
     thread_data->daemon->Debug("Creating report...");
@@ -155,7 +155,6 @@ void *CCrashWatcher::CreateReport_t(void *arg){
                 break;
             case CMiddleWare::MW_IN_DB_ERROR:
                 thread_data->daemon->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
-                thread_data->daemon->Status(std::string("Did not find crash with UUID ")+thread_data->UUID+" in database.");
                 break;
             case CMiddleWare::MW_CORRUPTED:
             case CMiddleWare::MW_FILE_ERROR:
@@ -163,13 +162,15 @@ void *CCrashWatcher::CreateReport_t(void *arg){
                 {
                     std::string debugDumpDir;
                     thread_data->daemon->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
-                    thread_data->daemon->Status(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
                     debugDumpDir = thread_data->daemon->m_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
                     thread_data->daemon->m_pMW->DeleteDebugDumpDir(debugDumpDir);
                 }
                 break;
         }
-        thread_data->daemon->pending_jobs[thread_data->thread_id] = crashReport;
+        /* only one thread can write */
+        pthread_mutex_lock(&(thread_data->daemon->m_pJobsMutex));
+            thread_data->daemon->pending_jobs[thread_data->thread_id] = crashReport;
+        pthread_mutex_unlock(&(thread_data->daemon->m_pJobsMutex));
         thread_data->daemon->m_pCommLayer->JobDone(thread_data->thread_id);
     }
     catch (CABRTException& e)
@@ -182,12 +183,7 @@ void *CCrashWatcher::CreateReport_t(void *arg){
             free(thread_data);
             throw e;
         }
-        /* free strduped strings */
-        free(thread_data->UUID);
-        free(thread_data->UID);
-        free(thread_data);
         thread_data->daemon->Warning(e.what());
-        thread_data->daemon->Status(e.what());
     }
     /* free strduped strings */
     free(thread_data->UUID);
@@ -382,7 +378,7 @@ void CCrashWatcher::SetUpCron()
 void CCrashWatcher::Status(const std::string& pMessage)
 {
     std::cout << "Update: " + pMessage << std::endl;
-    //FIXME: add some ID
+    //FIXME: send updates only to job owner
     if(m_pCommLayer != NULL)
         m_pCommLayer->Update("0",pMessage);
 }
@@ -390,6 +386,8 @@ void CCrashWatcher::Status(const std::string& pMessage)
 void CCrashWatcher::Warning(const std::string& pMessage)
 {
     std::cerr << "Warning: " + pMessage << std::endl;
+    if(m_pCommLayer != NULL)
+        m_pCommLayer->Warning("0",pMessage);
 }
 
 void CCrashWatcher::Debug(const std::string& pMessage)
@@ -446,7 +444,10 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
-
+    if(pthread_mutex_init(&m_pJobsMutex, NULL) != 0)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't init mutex!");
+    }
     try
     {
         SetUpMW();
@@ -492,6 +493,10 @@ CCrashWatcher::~CCrashWatcher()
     delete m_pMW;
     delete m_pSettings;
     delete m_pCommLayerInner;
+    if(pthread_mutex_destroy(&m_pJobsMutex) != 0)
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't destroy mutex!");
+    }
     /* delete pid file */
     unlink(VAR_RUN_PIDFILE);
     /* delete lock file */
@@ -766,10 +771,20 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID)
 {
     thread_data_t * thread_data = (thread_data_t *)calloc(1, sizeof(thread_data_t));
-    thread_data->UUID = strdup(pUUID.c_str());
-    thread_data->UID = strdup(pUID.c_str());
-    thread_data->daemon = this;
-    pthread_create(&(thread_data->thread_id), NULL, CreateReport_t, (void *)thread_data);
+    if(thread_data != NULL)
+    {
+        thread_data->UUID = strdup(pUUID.c_str());
+        thread_data->UID = strdup(pUID.c_str());
+        thread_data->daemon = this;
+        if(pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
+        {
+            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
+        }
+    }
+    else
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot allocate memory!");
+    }
     return (uint64_t) thread_data->thread_id;
 }
 
