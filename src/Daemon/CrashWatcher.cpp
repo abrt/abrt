@@ -591,7 +591,7 @@ void CCrashWatcher::CreatePidFile()
     }
 
     /* something went wrong */
-    CABRTException(EXCEP_FATAL, "CCrashWatcher::CreatePidFile(): can not open pid file");
+    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreatePidFile(): can not open pid file");
 }
 
 void CCrashWatcher::Lock()

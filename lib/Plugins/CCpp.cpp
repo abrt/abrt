@@ -135,7 +135,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     while (1)
     {
 /* Does not seem to be needed
-	fd_set rsfd;
+        fd_set rsfd;
         FD_ZERO(&rsfd);
 
         FD_SET(pipeout[0], &rsfd);
@@ -383,7 +383,7 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
 
     if ((GID[0] = GetGIDFromUID(pUID)) == -1)
     {
-        CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): cannot get GUI for UID.");
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): cannot get GUI for UID.");
     }
 
     pipe(pipeout);  /* error check? */
@@ -393,7 +393,7 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     {
         close(pipeout[0]);
         close(pipeout[1]);
-        CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): fork failed.");
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): fork failed.");
     }
     if (child == 0)
     {
