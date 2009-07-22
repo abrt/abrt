@@ -142,6 +142,14 @@ public:
         wi << pMessage;
         emit_signal(sig);
     }
+    
+    void Warning(const std::string& arg1)
+    {
+        ::DBus::SignalMessage sig("Warning");
+        ::DBus::MessageIter wi = sig.writer();
+        wi << arg1;
+        emit_signal(sig);
+    }
 
 private:
 
