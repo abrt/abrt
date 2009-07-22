@@ -504,7 +504,7 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
 
     if (m_pGetNextFileDir == NULL)
     {
-        false;
+        return false;
     }
     while ((dent = readdir(m_pGetNextFileDir)) != NULL)
     {
