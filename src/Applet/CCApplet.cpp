@@ -98,8 +98,8 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
 {
     CApplet *applet = (CApplet *)user_data;
     FILE *gui = NULL;
-    //FIXME - use fork+exec and absolute paths?
-    gui = popen("/usr/bin/abrt-gui","r");
+    //FIXME - use fork+exec and absolute paths? or dbus?
+    gui = popen((std::string(BIN_DIR) + "/abrt-gui").c_str(),"r");
     gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
 }
 

@@ -26,6 +26,10 @@
 #include <DBusClientProxy.h>
 #include<libnotify/notify.h>
 
+#ifndef BIN_DIR
+    #define BIN_DIR "/usr/bin"
+#endif
+
 class CApplet
 : public CDBusClient_proxy,
   public DBus::IntrospectableProxy,
