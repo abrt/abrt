@@ -43,16 +43,6 @@ Requires: %{name}-libs = %{version}-%{release}
 %description devel
 Development libraries and headers for %{name}.
 
-%package applet
-Summary: %{name}'s applet
-Group: User Interface/Desktops
-Requires: %{name} = %{version}-%{release}
-Requires: %{name}-gui
-
-%description applet
-Simple systray applet to notify user about new events detected by %{name} 
-daemon.
-
 %package gui
 Summary: %{name}'s gui
 Group: User Interface/Desktops
@@ -171,6 +161,17 @@ Requires: %{name} = %{version}-%{release}
 This package contains simple command line client for controling abrt daemon over
 the sockets.
 
+%package desktop
+Summary: Virtual package to install all necessary packages for usage from desktop environment
+Group: User Interface/Desktops
+Requires: %{name} = %{version}-%{release}
+Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla
+Requires: %{name}-gui, %{name}-addon-kerneloops
+Requires: %{name}-addon-ccpp, %{name}-addon-python
+
+%description desktop
+Virtual package to make easy default instalation on desktop environments.
+
 %prep
 %setup -q
 
@@ -239,16 +240,13 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/lib*.so
 
-%files applet
-%defattr(-,root,root,-)
-%{_bindir}/%{name}-applet
-%{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
-
 %files gui
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-gui
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
+%{_bindir}/%{name}-applet
+%{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)
@@ -318,6 +316,9 @@ fi
 %files cli
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
+
+%files desktop
+%defattr(-,root,root,-)
 
 %changelog
 * Thu Jun 25 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.4-3
