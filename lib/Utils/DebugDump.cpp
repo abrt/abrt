@@ -96,19 +96,25 @@ bool CDebugDump::ExistFileDir(const std::string& pPath)
 bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& pPID)
 {
     int fd = open(pLockFile.c_str(), O_WRONLY | O_CREAT | O_EXCL, 0640);
-    if (fd == -1 && errno == EEXIST)
+    if (fd == -1)
     {
-        char pid[PID_STR_MAX + 1];
-        if ((fd = open(pLockFile.c_str(), O_RDONLY)) == -1)
+        if (errno != EEXIST)
+        {
+    	    throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot create lock file");
+        }
+        fd = open(pLockFile.c_str(), O_RDONLY);
+        if (fd == -1)
         {
             throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock status");
         }
-        int r = read(fd, pid, sizeof(pid));
+        char pid[PID_STR_MAX + 1];
+        int r = read(fd, pid, sizeof(pid) - 1);
         if (r == -1)
         {
+    	    close(fd);
             throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get a pid");
         }
-        pid[r > PID_STR_MAX ? PID_STR_MAX : r] = '\0';
+        pid[r] = '\0';
         if (pid == pPID)
         {
             close(fd);
@@ -127,12 +133,8 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         close(fd);
         return false;
     }
-    else if (fd == -1)
-    {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot create lock file");
-    }
 
-    if (write(fd, pPID.c_str(), pPID.length()) !=  pPID.length())
+    if (write(fd, pPID.c_str(), pPID.length()) != pPID.length())
     {
         close(fd);
         remove(pLockFile.c_str());
@@ -244,9 +246,9 @@ void CDebugDump::DeleteFileDir(const std::string& pDir)
     }
     DIR *dir = opendir(pDir.c_str());
     std::string fullPath;
-    struct dirent *dent = NULL;
     if (dir != NULL)
     {
+        struct dirent *dent;
         while ((dent = readdir(dir)) != NULL)
         {
             if (std::string(dent->d_name) != "." && std::string(dent->d_name) != "..")
@@ -258,6 +260,7 @@ void CDebugDump::DeleteFileDir(const std::string& pDir)
                 }
                 if (remove(fullPath.c_str()) == -1)
                 {
+    		    closedir(dir);
                     throw CABRTException(EXCEP_DD_DELETE, "CDebugDump::DeleteFileDir(): Cannot remove file: " + fullPath);
                 }
             }
@@ -280,14 +283,16 @@ bool CDebugDump::IsTextFile(const std::string& pName)
         throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot open magic cookie: ") + magic_error(m));
     }
 
-    int r = magic_load(m,NULL);
+    int r = magic_load(m, NULL);
 
     if (r == -1)
     {
+        magic_close(m);
         throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot load magic db: ") + magic_error(m));
     }
 
     char* ch = (char *) magic_file(m, pName.c_str());
+    magic_close(m);
 
     if (ch == NULL)
     {
@@ -299,7 +304,6 @@ bool CDebugDump::IsTextFile(const std::string& pName)
         isText = true;
     }
 
-    magic_close(m);
     return isText;
 }
 
@@ -345,7 +349,7 @@ void CDebugDump::SaveTime()
 {
     std::stringstream ss;
     time_t t = time(NULL);
-    if (((time_t) -1) == t)
+    if (((time_t) -1) == t) /* isn't it a bit TOO paranoid? :) */
     {
         throw CABRTException(EXCEP_ERROR, "CDebugDump::SaveTime(): Cannot get local time.");
     }
@@ -500,7 +504,7 @@ void CDebugDump::InitGetNextFile()
 
 bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile)
 {
-    static struct dirent *dent = NULL;
+    struct dirent *dent;
 
     if (m_pGetNextFileDir == NULL)
     {

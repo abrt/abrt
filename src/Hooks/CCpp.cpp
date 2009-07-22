@@ -79,20 +79,23 @@ char* get_cmdline(const char* pid)
     FILE* fp = fopen(path, "r");
     int ch;
     int ii = 0;
-    while ((ch = fgetc(fp)) != EOF)
+    if (fp)
     {
-        if (ch == 0)
+        while ((ch = fgetc(fp)) != EOF && ii < COMMAND_LINE_SIZE-1)
         {
-            cmdline[ii] = ' ';
+            if (ch == 0)
+            {
+                cmdline[ii] = ' ';
+            }
+            else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
+            {
+                cmdline[ii] = ch;
+            }
+            ii++;
         }
-        else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
-        {
-            cmdline[ii] = ch;
-        }
-        ii++;
+        fclose(fp);
     }
     cmdline[ii] = '\0';
-    fclose(fp);
     return strdup(cmdline);
 }
 
@@ -103,23 +106,19 @@ int daemon_is_ok()
     char pid[PID_MAX];
     char path[PATH_MAX];
     struct stat buff;
-    FILE* fp;
-    if ((fp = fopen(VAR_RUN_PID_FILE, "r")) == NULL)
+    FILE* fp = fopen(VAR_RUN_PID_FILE, "r");
+    if (fp == NULL)
     {
         return 0;
     }
     fgets(pid, sizeof(pid), fp);
-    if (strrchr(pid, '\n') != NULL)
-    {
-        char* newline = strrchr(pid, '\n');
-        *newline = '\0';
-    }
+    fclose(fp);
+    *strchrnul(pid, '\n') = '\0';
     snprintf(path, sizeof(path), "/proc/%s/stat", pid);
     if (stat(path, &buff) == -1)
     {
         return 0;
     }
-    fclose(fp);
 
     return 1;
 }
