@@ -132,9 +132,10 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
 
     bool already_installed = false;
 
-    while (1)
+    int r;
+    while (r = read(pipeout[0], buff, sizeof(buff) - 1) > 0)
     {
-/* Does not seem to be needed
+/* Was before read, does not seem to be needed
         fd_set rsfd;
         FD_ZERO(&rsfd);
 
@@ -148,10 +149,6 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
         if (!FD_ISSET(pipeout[0], &rsfd))
             continue;
 */
-        int r = read(pipeout[0], buff, sizeof(buff) - 1);
-        if (r <= 0)
-            break;
-
         buff[r] = '\0';
         comm_layer_inner_debug(buff);
         if (strstr(buff, packageName.c_str()) != NULL &&
