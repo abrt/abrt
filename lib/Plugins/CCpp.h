@@ -29,35 +29,35 @@
 
 class CAnalyzerCCpp : public CAnalyzer
 {
-	private:
-		bool m_bMemoryMap;
-		pid_t m_Pid;
-		std::string m_sOldCorePattern;
-		void InstallDebugInfos(const std::string& pPackage);
-		void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
-		void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace);
-		void GetIndependentBuldIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC);
-		gid_t GetGIDFromUID(const std::string& pUID);
-		void ExecVP(const char* pCommand, char* const pArgs[], const std::string& pUID, std::string& pOutput);
-		std::string CreateHash(const std::string& pInput);
-	public:
-	    CAnalyzerCCpp();
-		virtual ~CAnalyzerCCpp();
-		virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
-		virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-		virtual void CreateReport(const std::string& pDebugDumpDir);
-		virtual void Init();
-		virtual void DeInit();
-		virtual void LoadSettings(const std::string& pPath);
+    private:
+        bool m_bMemoryMap;
+        pid_t m_Pid;
+        std::string m_sOldCorePattern;
+        void InstallDebugInfos(const std::string& pPackage);
+        void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
+        void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace);
+        void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC);
+        gid_t GetGIDFromUID(const std::string& pUID);
+        void ExecVP(const char* pCommand, char* const pArgs[], const std::string& pUID, std::string& pOutput);
+        std::string CreateHash(const std::string& pInput);
+    public:
+        CAnalyzerCCpp();
+        virtual ~CAnalyzerCCpp();
+        virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
+        virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
+        virtual void CreateReport(const std::string& pDebugDumpDir);
+        virtual void Init();
+        virtual void DeInit();
+        virtual void LoadSettings(const std::string& pPath);
 };
 
 
 PLUGIN_INFO(ANALYZER,
             CAnalyzerCCpp,
-			"CCpp",
-			"0.0.1",
-		    "Simple C/C++ analuzer plugin.",
-		    "zprikryl@redhat.com",
-		    "https://fedorahosted.org/crash-catcher/wiki");
+            "CCpp",
+            "0.0.1",
+            "Simple C/C++ analyzer plugin.",
+            "zprikryl@redhat.com",
+            "https://fedorahosted.org/crash-catcher/wiki");
 
 #endif /* CCPP */

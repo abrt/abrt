@@ -327,7 +327,7 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
     }
 }
 
-void CAnalyzerCCpp::GetIndependentBuldIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
+void CAnalyzerCCpp::GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
 {
     int ii = 0;
     while (ii < pBuildIdPC.length())
@@ -486,7 +486,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
     ExecVP(command, args, UID, buildIdPC);
     dd.Close();
     free(args[1]);
-    GetIndependentBuldIdPC(buildIdPC, independentBuildIdPC);
+    GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
     return CreateHash(package + executable + independentBuildIdPC);
 }
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
@@ -555,7 +555,6 @@ void CAnalyzerCCpp::Init()
     }
 }
 
-
 void CAnalyzerCCpp::DeInit()
 {
     std::ofstream fOutCorePattern;
@@ -572,7 +571,7 @@ void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
     map_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("MemoryMap")!= settings.end())
+    if (settings.find("MemoryMap") != settings.end())
     {
         m_bMemoryMap = settings["MemoryMap"] == "yes";
     }
