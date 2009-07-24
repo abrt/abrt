@@ -178,25 +178,6 @@ void CDebugDump::UnLock()
     }
 }
 
-std::string CDebugDump::GetGIDFromUID(const std::string& pUID)
-{
-    std::stringstream ret;
-    struct passwd* pw;
-    while (( pw = getpwent()) != NULL)
-    {
-        if (pw->pw_uid == atoi(pUID.c_str()))
-        {
-            ret << pw->pw_gid;
-        }
-    }
-    setpwent();
-    if (ret.str() == "")
-    {
-        ret << "-1";
-    }
-    return ret.str();
-}
-
 void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
 {
     if (m_bOpened)
@@ -225,8 +206,9 @@ void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot change permissions, dir: " + pDir);
     }
-    std::string GID = GetGIDFromUID(pUID);
-    if (chown(m_sDebugDumpDir.c_str(), atoi(pUID.c_str()), atoi(GID.c_str())) == -1)
+    uid_t uid = atoi(pUID.c_str());
+    struct passwd* pw = getpwuid(uid);
+    if (chown(m_sDebugDumpDir.c_str(), uid, pw ? pw->pw_gid : uid) == -1)
     {
         UnLock();
         m_bOpened = false;
