@@ -44,6 +44,7 @@ PLUGIN_INFO(ACTION,
             "0.0.2",
             "Run sosreport, save the output in the crash dump",
             "gavin@redhat.com",
-            "https://fedorahosted.org/abrt/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            "");
 
 #endif

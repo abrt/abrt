@@ -12,8 +12,8 @@ libABRTMiddleWare_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -I$(s
 
 check_PROGRAMS = test
 test_SOURCES = test.cpp
-test_LDADD = ../Utils/libABRTUtils.la libABRTMiddleWare.la $(DL_LIBS) $(RPM_LIBS)
-test_CPPFLAGS = -I$(srcdir)/../Utils \
+test_LDADD = ../Utils/libABRTUtils.la libABRTMiddleWare.la $(DL_LIBS) $(RPM_LIBS) ../CommLayer/libABRTCommLayer.la
+test_CPPFLAGS = -I$(srcdir)/../Utils -I$(srcdir)/../../inc -I$(srcdir)/../CommLayer\
                 -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
                 -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
                 -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \

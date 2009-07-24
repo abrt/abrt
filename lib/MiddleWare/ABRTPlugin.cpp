@@ -69,6 +69,12 @@ const std::string& CABRTPlugin::GetWWW()
     return m_pPluginInfo->m_sWWW;
 }
 
+const std::string& CABRTPlugin::GetGTKBuilder()
+{
+    return m_pPluginInfo->m_sGTKBuilder;
+}
+
+
 const plugin_type_t CABRTPlugin::GetType()
 {
     return m_pPluginInfo->m_Type;

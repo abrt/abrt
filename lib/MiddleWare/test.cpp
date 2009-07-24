@@ -34,6 +34,7 @@ int main(int argc, char** argv)
     if (argc < 2)
     {
         std::cerr << "Usage: " << argv[0] << " <DebugDumpDir>" << std::endl;
+        return -1;
     }
     try
     {
@@ -46,9 +47,11 @@ int main(int argc, char** argv)
         middleWare.RegisterPlugin("SQLite3");
         middleWare.SetDatabase("SQLite3");
         middleWare.SetOpenGPGCheck(false);
-        middleWare.AddReporter("Logger");
-        middleWare.AddAnalyzerReporter("CCpp", "Mailx");
-        middleWare.AddAnalyzerAction("CCpp", "RunApp", "date");
+        middleWare.AddActionOrReporter("Logger", "");
+        middleWare.AddAnalyzerActionOrReporter("CCpp", "Mailx", "");
+        middleWare.AddAnalyzerActionOrReporter("CCpp", "RunApp", "date");
+
+        std::cout << "Mailx GTKBuilder path: " << middleWare.GetPluginInfo("Mailx")["GTKBuilder"];
         /* Try to save it into DB */
         map_crash_info_t crashInfo;
         if (middleWare.SaveDebugDump(argv[1], crashInfo))
@@ -58,7 +61,6 @@ int main(int argc, char** argv)
                          crashInfo[CD_EXECUTABLE][CD_CONTENT] << ", " <<
                          crashInfo[CD_COUNT][CD_CONTENT] << ", " << std::endl;
 
-            middleWare.Report(argv[1]);
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */

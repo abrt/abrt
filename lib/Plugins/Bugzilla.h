@@ -47,7 +47,8 @@ PLUGIN_INFO(REPORTER,
             "Check if a bug isn't already reported in a bugzilla "
             "and if not, report it.",
             "zprikryl@redhat.com",
-            "https://fedorahosted.org/abrt/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            PLUGINS_LIB_DIR"/Bugzilla.GTKBuilder");
 
 
 #endif /* BUGZILLA_H_ */

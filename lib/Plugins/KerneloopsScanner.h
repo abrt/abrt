@@ -33,6 +33,7 @@ PLUGIN_INFO(ACTION,
             "0.0.1",
             "Save new Kerneloops crashes into debug dump dir",
             "anton@redhat.com",
-            "http://people.redhat.com/aarapov");
+            "http://people.redhat.com/aarapov",
+            "");
 
 #endif /* KERNELOOPSSCANNER_H_ */

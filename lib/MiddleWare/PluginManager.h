@@ -31,6 +31,7 @@
 #include "Reporter.h"
 #include "Database.h"
 #include "Action.h"
+#include "MiddleWareTypes.h"
 
 /**
  * A class. It takes care of loading, registering and manipulating with
@@ -130,6 +131,13 @@ class CPluginManager
 		 * @return A plugin type.
 		 */
 		plugin_type_t GetPluginType(const std::string& pName);
+        /**
+         * A method, which gets all needed plugin info. It can be send via DBus
+         * to GUI and displayed to an user.
+         * @param pName A Name of plugin.
+         * @return A map <key, vaule>
+         */
+        map_string_string_t GetPluginInfo(const std::string& pName);
 };
 
 #endif /*PLUGINMANAGER_H_*/

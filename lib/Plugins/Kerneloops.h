@@ -49,6 +49,7 @@ PLUGIN_INFO(ANALYZER,
 			"0.0.2",
 			"Abrt's Kerneloops plugin.",
 			"anton@redhat.com",
-			"https://people.redhat.com/aarapov");
+			"https://people.redhat.com/aarapov",
+			"");
 
 #endif

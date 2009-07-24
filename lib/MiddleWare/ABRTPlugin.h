@@ -93,6 +93,11 @@ class CABRTPlugin
          */
         const std::string& GetWWW();
         /**
+         * It is used for getting a path to gui description.
+         * @return home page
+         */
+        const std::string& GetGTKBuilder();
+        /**
          * It is used for getting loaded plugin's type.
          * @return type
          */

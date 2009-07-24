@@ -287,7 +287,13 @@ class CMiddleWare
          * @return A vector of pairs  (local UUID, UID).
          */
         vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
-
+        /**
+         * A method, which gets all needed plugin info. It can be send via DBus
+         * to GUI and displayed to an user.
+         * @param pName A Name of plugin.
+         * @return A map <key, vaule>
+         */
+        map_string_string_t GetPluginInfo(const std::string& pName);
         /**
          * A method, which set a GPG finger print check.
          * @param pCheck Is it enabled?

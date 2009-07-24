@@ -26,7 +26,7 @@
 #include <string>
 #include <map>
 
-#define PLUGINS_MAGIC_NUMBER 2
+#define PLUGINS_MAGIC_NUMBER 3
 
 #define PLUGINS_CONF_EXTENSION "conf"
 #define PLUGINS_LIB_EXTENSION "so"
@@ -81,12 +81,13 @@ typedef struct SPluginInfo
     const std::string m_sDescription;   /**< Plugin description.*/
     const std::string m_sEmail;         /**< Plugin author's email.*/
     const std::string m_sWWW;           /**< Plugin's home page.*/
+    const std::string m_sGTKBuilder;    /**< Plugin's gui description.*/
     const int m_nMagicNumber;           /**< Plugin magical number.*/
 } plugin_info_t;
 
 #define PLUGIN_IFACE extern "C"
 
-#define PLUGIN_INFO(type, plugin_class, name, version, description, email, www)\
+#define PLUGIN_INFO(type, plugin_class, name, version, description, email, www, gtk_builder)\
     PLUGIN_IFACE CPlugin* plugin_new()\
     {\
         return new plugin_class();\
@@ -99,6 +100,7 @@ typedef struct SPluginInfo
         description,\
         email,\
         www,\
+        gtk_builder,\
         PLUGINS_MAGIC_NUMBER,\
     };
 

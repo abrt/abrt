@@ -67,6 +67,7 @@ PLUGIN_INFO(DATABASE,
             "0.0.1",
             "SQLite3 database plugin.",
             "zprikryl@redhat.com,jmoskovc@redhat.com",
-            "https://fedorahosted.org/crash-catcher/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            "");
 
 #endif /* SQLITE3_H_ */

@@ -46,6 +46,7 @@ PLUGIN_INFO(REPORTER,
             "0.0.1",
             "Write a report to a specific file",
             "zprikryl@redhat.com",
-            "https://fedorahosted.org/crash-catcher/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            PLUGINS_LIB_DIR"/Logger.GTKBuilder");
 
 #endif /* LOGGER_H_ */

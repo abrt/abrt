@@ -24,7 +24,8 @@ PLUGIN_INFO(ANALYZER,
             "0.0.1",
             "Simple Python analyzer plugin.",
             "zprikryl@redhat.com, jmoskovc@redhat.com",
-            "https://fedorahosted.org/abrt/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            "");
 
 
 #endif /* PYTHON_H_ */

@@ -45,6 +45,7 @@ PLUGIN_INFO(ACTION,
             "Simple action plugin which runs a command "
             "and it can save command's output",
             "zprikryl@redhat.com",
-            "https://fedorahosted.org/crash-catcher/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            "");
 
 #endif

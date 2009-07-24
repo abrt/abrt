@@ -58,6 +58,7 @@ PLUGIN_INFO(ANALYZER,
             "0.0.1",
             "Simple C/C++ analyzer plugin.",
             "zprikryl@redhat.com",
-            "https://fedorahosted.org/crash-catcher/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            "");
 
 #endif /* CCPP */

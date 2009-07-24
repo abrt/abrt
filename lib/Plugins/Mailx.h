@@ -54,6 +54,7 @@ PLUGIN_INFO(REPORTER,
             "0.0.2",
             "Sends an email with a report via mailx command",
             "zprikryl@redhat.com",
-            "https://fedorahosted.org/crash-catcher/wiki");
+            "https://fedorahosted.org/abrt/wiki",
+            PLUGINS_LIB_DIR"/Mailx.GTKBuilder");
 
 #endif /* MAILX_H_ */

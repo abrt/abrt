@@ -566,6 +566,11 @@ vector_pair_string_string_t CMiddleWare::GetUUIDsOfCrash(const std::string& pUID
     return UUIDsUIDs;
 }
 
+map_string_string_t CMiddleWare::GetPluginInfo(const std::string& pName)
+{
+    return m_pPluginManager->GetPluginInfo(pName);
+}
+
 void CMiddleWare::SetOpenGPGCheck(const bool& pCheck)
 {
     m_bOpenGPGCheck = pCheck;

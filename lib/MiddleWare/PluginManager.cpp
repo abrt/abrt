@@ -226,3 +226,19 @@ plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
     return m_mapABRTPlugins[pName]->GetType();
 }
 
+map_string_string_t CPluginManager::GetPluginInfo(const std::string& pName)
+{
+    map_string_string_t ret;
+    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    {
+        ret["Type"] = plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()];
+        ret["Name"] = m_mapABRTPlugins[pName]->GetName();
+        ret["Version"] = m_mapABRTPlugins[pName]->GetVersion();
+        ret["Description"] = m_mapABRTPlugins[pName]->GetDescription();
+        ret["Email"] = m_mapABRTPlugins[pName]->GetEmail();
+        ret["WWW"] = m_mapABRTPlugins[pName]->GetWWW();
+        ret["GTKBuilder"] = m_mapABRTPlugins[pName]->GetGTKBuilder();
+    }
+    return ret;
+}
+

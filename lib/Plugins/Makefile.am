@@ -13,8 +13,11 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libPython.la \
                          libFileTransfer.la
 
+dist_pluginslib_DATA = KerneloopsReporter.GTKBuilder Logger.GTKBuilder Mailx.GTKBuilder Bugzilla.GTKBuilder
+
 pluginsconfdir=$(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf FileTransfer.conf
+
 
 man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7\
            abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7\
@@ -42,7 +45,7 @@ libKerneloops_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(s
 libKerneloopsReporter_la_SOURCES = KerneloopsReporter.cpp KerneloopsReporter.h PluginSettings.h
 libKerneloopsReporter_la_LDFLAGS = -avoid-version
 libKerneloopsReporter_la_LIBADD = $(CURL_LIBS)
-libKerneloopsReporter_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare $(CURL_CFLAGS)
+libKerneloopsReporter_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # KerneloopsScanner
 libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h PluginSettings.h
@@ -52,6 +55,7 @@ libKerneloopsScanner_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../in
 # Mailx
 libMailx_la_SOURCES = Mailx.cpp Mailx.h PluginSettings.h
 libMailx_la_LDFLAGS = -avoid-version
+libMailx_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -I$(srcdir)/../CommLayer -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # SQLite3
 libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h PluginSettings.h
@@ -62,6 +66,7 @@ libSQLite3_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcd
 # Logger
 libLogger_la_SOURCES = Logger.cpp Logger.h PluginSettings.h
 libLogger_la_LDFLAGS = -avoid-version
+libLogger_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -I$(srcdir)/../CommLayer -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # RunApp
 libRunApp_la_SOURCES = RunApp.h RunApp.cpp
@@ -75,7 +80,7 @@ libSOSreport_la_LDFLAGS = -avoid-version
 libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp PluginSettings.h
 libBugzilla_la_LIBADD = $(XMLRPC_CPP_LIBS) $(XMLRPC_CLIENT_CPP_LIBS) $(NSS_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
-libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) $(NSS_CFLAGS) -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
+libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) $(NSS_CFLAGS) -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # Python
 libPython_la_SOURCES = Python.h Python.cpp
