@@ -13,14 +13,12 @@ CReporterBugzilla::CReporterBugzilla() :
 {
     m_pXmlrpcTransport = new xmlrpc_c::clientXmlTransport_curl();
     m_pXmlrpcClient = new xmlrpc_c::client_xml(m_pXmlrpcTransport);
-    m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaURL);
 }
 
 CReporterBugzilla::~CReporterBugzilla()
 {
     delete m_pXmlrpcTransport;
     delete m_pXmlrpcClient;
-    delete m_pCarriageParm;
 }
 
 PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
@@ -269,15 +267,26 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
     std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
     comm_layer_inner_status("Logging into bugzilla...");
-    Login();
-    comm_layer_inner_status("Checking for duplicates...");
-    if (!CheckUUIDInBugzilla(component, uuid))
+    m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaURL);
+    try
     {
-        comm_layer_inner_status("Creating new bug...");
-        NewBug(pCrashReport);
+        Login();
+        comm_layer_inner_status("Checking for duplicates...");
+        if (!CheckUUIDInBugzilla(component, uuid))
+        {
+            comm_layer_inner_status("Creating new bug...");
+            NewBug(pCrashReport);
+        }
+        comm_layer_inner_status("Logging out...");
+        Logout();
     }
-    comm_layer_inner_status("Logging out...");
-    Logout();
+    catch (CABRTException& e)
+    {
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+        delete m_pCarriageParm;
+        throw e;
+    }
+    delete m_pCarriageParm;
 }
 
 void CReporterBugzilla::LoadSettings(const std::string& pPath)
