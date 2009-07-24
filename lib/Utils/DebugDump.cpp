@@ -276,7 +276,7 @@ void CDebugDump::DeleteFileDir(const std::string& pDir)
 bool CDebugDump::IsTextFile(const std::string& pName)
 {
     bool isText = false;
-    magic_t m = magic_open(MAGIC_MIME);
+    magic_t m = magic_open(MAGIC_MIME_TYPE);
 
     if (m == NULL)
     {
@@ -292,7 +292,6 @@ bool CDebugDump::IsTextFile(const std::string& pName)
     }
 
     char* ch = (char *) magic_file(m, pName.c_str());
-    magic_close(m);
 
     if (ch == NULL)
     {
@@ -303,6 +302,7 @@ bool CDebugDump::IsTextFile(const std::string& pName)
     {
         isText = true;
     }
+    magic_close(m);
 
     return isText;
 }
