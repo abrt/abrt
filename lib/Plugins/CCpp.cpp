@@ -133,7 +133,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     bool already_installed = false;
 
     int r;
-    while (r = read(pipeout[0], buff, sizeof(buff) - 1) > 0)
+    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
     {
 /* Was before read, does not seem to be needed
         fd_set rsfd;
