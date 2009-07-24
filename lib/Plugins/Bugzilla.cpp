@@ -282,9 +282,8 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
     }
     catch (CABRTException& e)
     {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
         delete m_pCarriageParm;
-        throw e;
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
     }
     delete m_pCarriageParm;
 }
