@@ -230,9 +230,8 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
     }
     char* command = (char*)"gdb";
     char* args[5] = { (char*)"gdb", (char*)"-batch", (char*)"-x", NULL, NULL };
-    args[3] = strdup(tmpFile.c_str());
-    ExecVP(command, args, UID, pBacktrace);
-    free(args[3]);
+    args[3] = (char*) tmpFile.c_str();
+    ExecVP(command, args, atoi(UID.c_str()), pBacktrace);
 }
 
 void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
