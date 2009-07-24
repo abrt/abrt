@@ -78,12 +78,19 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
     HASH_End(hc, hash, &len, sizeof(hash));
     HASH_Destroy(hc);
 
-    unsigned int ii;
-    std::stringstream ss;
-    for (ii = 0; ii < len; ii++)
-        ss <<  std::setw(2) << std::setfill('0') << std::hex << (hash[ii]&0xff);
+    char hash_str[SHA1_LENGTH*2 + 1];
+    char *d = hash_str;
+    unsigned char *s = hash;
+    while (len)
+    {
+        *d++ = "0123456789abcdef"[*s >> 4];
+        *d++ = "0123456789abcdef"[*s & 0xf];
+        s++;
+        len--;
+    }
+    *d = '\0';
 
-    return ss.str();
+    return hash_str;
 }
 
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
