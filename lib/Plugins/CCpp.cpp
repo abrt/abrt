@@ -78,12 +78,19 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
     HASH_End(hc, hash, &len, sizeof(hash));
     HASH_Destroy(hc);
 
-    unsigned int ii;
-    std::stringstream ss;
-    for (ii = 0; ii < len; ii++)
-        ss <<  std::setw(2) << std::setfill('0') << std::hex << (hash[ii]&0xff);
+    char hash_str[SHA1_LENGTH*2 + 1];
+    char *d = hash_str;
+    unsigned char *s = hash;
+    while (len)
+    {
+        *d++ = "0123456789abcdef"[*s >> 4];
+        *d++ = "0123456789abcdef"[*s & 0xf];
+        s++;
+        len--;
+    }
+    *d = '\0';
 
-    return ss.str();
+    return hash_str;
 }
 
 void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
@@ -223,9 +230,8 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
     }
     char* command = (char*)"gdb";
     char* args[5] = { (char*)"gdb", (char*)"-batch", (char*)"-x", NULL, NULL };
-    args[3] = strdup(tmpFile.c_str());
-    ExecVP(command, args, UID, pBacktrace);
-    free(args[3]);
+    args[3] = (char*) tmpFile.c_str();
+    ExecVP(command, args, atoi(UID.c_str()), pBacktrace);
 }
 
 void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
@@ -354,23 +360,7 @@ void CAnalyzerCCpp::GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::
     }
 }
 
-gid_t CAnalyzerCCpp::GetGIDFromUID(const std::string& pUID)
-{
-    struct passwd* pw;
-
-    while (( pw = getpwent()) != NULL)
-    {
-        if (pw->pw_uid == atoi(pUID.c_str()))
-        {
-            setpwent();
-            return pw->pw_gid;
-        }
-    }
-    setpwent();
-    return -1;
-}
-
-void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std::string& pUID, std::string& pOutput)
+void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
     char buff[1024];
@@ -378,9 +368,10 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
     pid_t child;
     gid_t GID[1];
 
-    if ((GID[0] = GetGIDFromUID(pUID)) == -1)
+    struct passwd* pw = getpwuid(uid);
+    if (!pw)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): cannot get GUI for UID.");
+        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): cannot get GID for UID.");
     }
 
     pipe(pipeout);  /* error check? */
@@ -408,9 +399,9 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], const std:
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
-        setgroups(1, GID);
-        setregid(atoi(pUID.c_str()), atoi(pUID.c_str()));
-        setreuid(atoi(pUID.c_str()), atoi(pUID.c_str()));
+        setgroups(1, &pw->pw_gid);
+        setregid(pw->pw_gid, pw->pw_gid);
+        setreuid(uid, uid);
         setsid();
 
         execvp(pCommand, pArgs);
@@ -480,7 +471,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
     dd.LoadText(FILENAME_UID, UID);
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     dd.LoadText(FILENAME_PACKAGE, package);
-    ExecVP(command, args, UID, buildIdPC);
+    ExecVP(command, args, atoi(UID.c_str()), buildIdPC);
     dd.Close();
     free(args[1]);
     GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
