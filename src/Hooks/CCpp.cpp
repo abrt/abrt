@@ -147,6 +147,10 @@ int main(int argc, char** argv)
     }
     if (!daemon_is_ok())
     {
+        fprintf(stderr, "abrt daemon is not running. If it crashed, "
+            "/proc/sys/kernel/core_pattern contains a stale value, "
+            "consider resetting it to 'core'\n"
+        );
         return 0;
     }
 

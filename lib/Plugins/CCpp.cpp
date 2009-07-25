@@ -534,6 +534,23 @@ void CAnalyzerCCpp::Init()
         getline(fInCorePattern, m_sOldCorePattern);
         fInCorePattern.close();
     }
+    if (m_sOldCorePattern[0] == '|')
+    {
+	if (m_sOldCorePattern == CORE_PATTERN)
+	{
+	    fprintf(stderr, "warning: %s already contains %s, "
+		"did abrt daemon crash recently?\n",
+		CORE_PATTERN_IFACE, CORE_PATTERN);
+	    /* There is no point in "restoring" CORE_PATTERN_IFACE
+	     * to CORE_PATTERN on exit. Will restore to a default value:
+	     */
+	    m_sOldCorePattern = "core";
+	}
+	fprintf(stderr, "warning: %s was already set to run a crash analyser (%s), "
+	    "abrt may interfere with it\b",
+	    CORE_PATTERN_IFACE, CORE_PATTERN);
+    }
+
     std::ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);
     if (fOutCorePattern.is_open())
