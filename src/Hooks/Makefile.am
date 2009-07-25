@@ -6,7 +6,7 @@ hookCCpp_LDADD = ../../lib/Utils/libABRTUtils.la
 hookCCpp_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../../lib/Utils \
                     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
                     -DVAR_RUN=\"$(VAR_RUN)\"
-                    
+
 python_PYTHON = sitecustomize.py abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in
 
@@ -17,7 +17,7 @@ CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wild
 
 abrt_exception_handler.py:
 	sed s,@DEBUG_DUMP_DIR@,$(DEBUG_DUMPS_DIR),g abrt_exception_handler.py.in  > abrt_exception_handler.py
-    
+
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
 	sed s,@DEBUG_DUMP_DIR@,$(DEBUG_DUMPS_DIR),g abrt_exception_handler.py.in  > abrt_exception_handler.py
