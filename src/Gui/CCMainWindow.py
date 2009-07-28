@@ -106,9 +106,16 @@ class MainWindow():
         self.ccdaemon.connect("error", self.error_cb)
         self.ccdaemon.connect("update", self.update_cb)
         self.ccdaemon.connect("show", self.show_cb)
+        self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         
         # load data
         #self.load()
+    def on_daemon_state_changed_cb(self, widget, state):
+        if state == "up":
+            self.hydrate()
+            self.window.set_sensitive(True)
+        elif state == "down":
+            self.window.set_sensitive(False)
     
     def on_miAbout_clicked(self, widget):
         dialog = self.wTree.get_widget("about")

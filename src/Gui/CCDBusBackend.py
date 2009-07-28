@@ -18,6 +18,7 @@ APP_IFACE = 'com.redhat.abrt.gui'
 class DBusManager(gobject.GObject):
     """ Class to provide communication with daemon over dbus """
     # and later with policyKit
+    bus = None
     uniq_name = None
     pending_jobs = []
     def __init__(self):
@@ -68,29 +69,15 @@ class DBusManager(gobject.GObject):
         gobject.signal_new ("update", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited to show gui if user try to run it again
         gobject.signal_new ("show", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
+        # signal emited to show gui if user try to run it again
+        gobject.signal_new ("daemon-state-changed", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         
         # export the app dbus interface
         if session:
             session.request_name(APP_NAME)
-        iface = DBusInterface(self)
-        
-        self.proxy = None
-        self.proxy = self.connect_to_daemon()
-        if self.proxy:
-            self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
-            #intr = dbus.Interface(proxy, dbus_interface='org.freedesktop.DBus.Introspectable')
-            # new crash notify
-            self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
-            # BT extracting complete
-            self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
-            # Catch Errors
-            self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
-            # watch for updates
-            self.acconnection = self.proxy.connect_to_signal("Update",self.update_cb,dbus_interface=CC_IFACE)
-            # watch for job-done signals
-            self.acconnection = self.proxy.connect_to_signal("JobDone",self.jobdone_cb,dbus_interface=CC_IFACE)
-        else:
-            raise Exception("Please check if abrt daemon is running.")
+            iface = DBusInterface(self)
+
+        self.connect_to_daemon()
 
     # disconnect callback
     def disconnected(*args):
@@ -127,18 +114,43 @@ class DBusManager(gobject.GObject):
         # FIXME - rewrite with CCReport class
     #    self.emit("analyze-complete", dump)
         pass
-        
+    
+    def owner_changed_cb(self,name, old_owner, new_owner):
+        if(name == CC_NAME and new_owner):
+            self.proxy = self.connect_to_daemon()
+            self.emit("daemon-state-changed", "up")
+        if(name == CC_NAME and not(new_owner)):
+            self.proxy = None
+            self.emit("daemon-state-changed", "down")
+            
+    
     def connect_to_daemon(self):
-        bus = dbus.SystemBus()
-        self.uniq_name = bus.get_unique_name()
-        if not bus:
+        if not self.bus:
+            self.bus = dbus.SystemBus()
+            self.bus.add_signal_receiver(self.owner_changed_cb,"NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
+        #self.uniq_name = bus.get_unique_name()
+        if not self.bus:
             raise Exception("Can't connect to dbus")
-        try:
-            if bus.name_has_owner(CC_NAME):
-                return bus.get_object(CC_IFACE, CC_PATH)
-            return None
-        except Exception, e:
-            raise Exception(e.message + "\nCannot create a proxy object!")
+        if self.bus.name_has_owner(CC_NAME):
+            self.proxy = self.bus.get_object(CC_IFACE, CC_PATH)
+        else:
+            raise Exception("Please check if abrt daemon is running.")
+            
+        if self.proxy:
+            self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
+            #intr = dbus.Interface(proxy, dbus_interface='org.freedesktop.DBus.Introspectable')
+            # new crash notify
+            self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
+            # BT extracting complete
+            self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
+            # Catch Errors
+            self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
+            # watch for updates
+            self.acconnection = self.proxy.connect_to_signal("Update",self.update_cb,dbus_interface=CC_IFACE)
+            # watch for job-done signals
+            self.acconnection = self.proxy.connect_to_signal("JobDone",self.jobdone_cb,dbus_interface=CC_IFACE)
+        else:
+            raise Exception("Please check if abrt daemon is running.")
 
     def addJob(self, job_id):
         self.pending_jobs.append(job_id)
