@@ -61,12 +61,16 @@ int main(int argc, char **argv)
         session.request_name("com.redhat.abrt.applet");
     }
     
-	DBus::Connection conn = DBus::Connection::SystemBus();
-    //CDBusClient client(conn, CC_DBUS_PATH, CC_DBUS_NAME);
+    DBus::Connection conn = DBus::Connection::SystemBus();
     applet = new CApplet(conn, CC_DBUS_PATH, CC_DBUS_NAME);
     applet->ConnectCrashHandler(crash_notify_cb);
-    gtk_main();
+    if(!conn.has_name(CC_DBUS_NAME))
+    {
+        std::cout << "Daemon is not running" << std::endl;
+        applet->Disable("Daemon is not running");
+    }
     gtk_main();
     gdk_threads_leave();
+    delete applet;
     return 0;
 }

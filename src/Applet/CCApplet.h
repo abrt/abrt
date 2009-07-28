@@ -39,6 +39,8 @@ class CApplet
         GtkStatusIcon* m_pStatusIcon;
         NotifyNotification *m_pNotification;
         std::map<int, std::string > m_mapEvents;
+        DaemonWatcher *m_pDaemonWatcher;
+        bool m_bDaemonRunning;
 	public:
         CApplet(DBus::Connection &connection, const char *path, const char *name);
         ~CApplet();
@@ -47,6 +49,8 @@ class CApplet
         //void DisableIcon();
         void BlinkIcon(bool pBlink);
         void SetIconTooltip(const char *format, ...);
+        void Disable(const char *reason);
+        void Enable(const char *reason);
         // create some event storage, to let user choose
         // or ask the daemon every time?
         // maybe just events which occured during current session
@@ -54,6 +58,8 @@ class CApplet
         int AddEvent(int pUUID, const std::string& pProgname);
         int RemoveEvent(int pUUID);
         void ConnectCrashHandler(void (*pCrashHandler)(const char *progname));
+        static void DaemonStateChange_cb(bool running, void* data);
+        
     protected:
         //@@TODO applet menus
         static void OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data);

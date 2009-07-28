@@ -23,14 +23,20 @@
 #include <sstream>
 #include <cstdio>
 
+static const char *DBUS_SERVICE_NAME = "org.freedesktop.DBus";
+static const char *DBUS_SERVICE_PATH = "/org/freedesktop/DBus";
+
 CApplet::CApplet(DBus::Connection &connection, const char *path, const char *name)
 : DBus::ObjectProxy(connection, path, name)
 {
+    m_pDaemonWatcher = new DaemonWatcher(connection, DBUS_SERVICE_PATH, DBUS_SERVICE_NAME);
+    m_pDaemonWatcher->ConnectStateChangeHandler(DaemonStateChange_cb,this);
     m_pStatusIcon =  gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
+    m_bDaemonRunning = true;
     char notify_title[5] = "ABRT";
     notify_init(notify_title);
     m_pNotification =  notify_notification_new_with_status_icon("Warning!",NULL, NULL,m_pStatusIcon);
-    notify_notification_set_urgency (m_pNotification,NOTIFY_URGENCY_CRITICAL);
+    notify_notification_set_urgency(m_pNotification,NOTIFY_URGENCY_CRITICAL);
     notify_notification_set_timeout(m_pNotification, 5000);
     gtk_status_icon_set_visible(m_pStatusIcon,FALSE);
     // LMB click
@@ -42,6 +48,7 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
 
 CApplet::~CApplet()
 {
+    delete m_pDaemonWatcher;
 }
 /* dbus related */
 void CApplet::Crash(std::string &value)
@@ -54,6 +61,19 @@ void CApplet::Crash(std::string &value)
     {
         std::cout << "This is default handler, you should register your own with ConnectCrashHandler" << std::endl;
         std::cout.flush();
+    }
+}
+
+void CApplet::DaemonStateChange_cb(bool running, void* data)
+{
+    CApplet *applet = (CApplet *)data;
+    if(!running)
+    {
+        applet->Disable("ABRT service is not running!");
+    }
+    else
+    {
+        applet->Enable("ABRT service has been started!");
     }
 }
 
@@ -83,12 +103,12 @@ void CApplet::SetIconTooltip(const char *format, ...)
     va_end (args);
     if (n != -1)
     {
-        notify_notification_update (m_pNotification, "Warning!",buf, NULL);
-        gtk_status_icon_set_tooltip(m_pStatusIcon,buf);
+        notify_notification_update(m_pNotification, "Warning!",buf, NULL);
+        gtk_status_icon_set_tooltip_text(m_pStatusIcon,buf);
     }
     else
     {
-        gtk_status_icon_set_tooltip(m_pStatusIcon,"Error while setting the tooltip!");
+        gtk_status_icon_set_tooltip_text(m_pStatusIcon,"Error while setting the tooltip!");
     }
     delete[] buf;
     
@@ -99,8 +119,11 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
     CApplet *applet = (CApplet *)user_data;
     FILE *gui = NULL;
     //FIXME - use fork+exec and absolute paths? or dbus?
-    gui = popen((std::string(BIN_DIR) + "/abrt-gui").c_str(),"r");
-    gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
+    if(applet->m_bDaemonRunning)
+    {
+        gui = popen((std::string(BIN_DIR) + "/abrt-gui").c_str(),"r");
+        gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
+    }
 }
 
 void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
@@ -108,7 +131,7 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          activate_time,
                             gpointer       user_data)
 {
-    //gtk_status_icon_set_blinking(((CApplet *)user_data)->m_pStatusIcon, false);
+    gtk_status_icon_set_visible(((CApplet *)user_data)->m_pStatusIcon, false);
 }
 
 void CApplet::ShowIcon()
@@ -120,6 +143,33 @@ void CApplet::ShowIcon()
 void CApplet::HideIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon,false);
+}
+void CApplet::Disable(const char *reason)
+{
+    /*
+        FIXME: once we have our icon
+    */
+    m_bDaemonRunning = false;
+    GdkPixbuf *gray_scaled;
+    GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), GTK_STOCK_DIALOG_WARNING, 24, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+    gray_scaled = gdk_pixbuf_copy(pixbuf);
+    if(pixbuf){
+        gdk_pixbuf_saturate_and_pixelate(pixbuf, gray_scaled, 0.0, NULL);
+        gtk_status_icon_set_from_pixbuf(m_pStatusIcon, gray_scaled);
+    }
+    else
+        std::cerr << "Cannot load icon!" << std::endl;
+    SetIconTooltip(reason);
+    ShowIcon();
+}
+
+void CApplet::Enable(const char *reason)
+{
+    /* restore the original icon*/
+    m_bDaemonRunning = true;
+    SetIconTooltip(reason);
+    gtk_status_icon_set_from_stock(m_pStatusIcon,GTK_STOCK_DIALOG_WARNING);
+    ShowIcon();
 }
 
 int CApplet::AddEvent(int pUUID, const std::string& pProgname)
