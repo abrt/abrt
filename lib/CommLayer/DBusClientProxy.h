@@ -20,6 +20,94 @@
 #include <dbus-c++/dbus.h>
 #include <dbus-c++/glib-integration.h>
 #include "DBusCommon.h"
+#include <iostream>
+#define ABRT_NOT_RUNNING 0
+#define ABRT_RUNNING 1
+
+namespace org {
+namespace freedesktop {
+namespace DBus {
+
+class DaemonWatcher_proxy
+ : public ::DBus::InterfaceProxy
+{
+private:
+    void *m_pStateChangeHandler_cb_data;
+    void (*m_pStateChangeHandler)(bool running, void* data);
+public:
+
+    DaemonWatcher_proxy()
+    : ::DBus::InterfaceProxy("org.freedesktop.DBus")
+    {
+        m_pStateChangeHandler_cb_data = NULL;
+        m_pStateChangeHandler = NULL;
+        connect_signal(DaemonWatcher_proxy, NameOwnerChanged , _DaemonStateChanged);
+    }
+
+    void ConnectStateChangeHandler(void (*pStateChangeHandler)(bool running, void* data), void *cb_data)
+    {
+        m_pStateChangeHandler_cb_data = cb_data;
+        m_pStateChangeHandler = pStateChangeHandler;
+    }
+private:
+
+    /* unmarshalers (to unpack the DBus message before calling the actual signal handler)
+     */
+    void _DaemonStateChanged(const ::DBus::SignalMessage &sig)
+    {
+        ::DBus::MessageIter ri = sig.reader();
+        std::string name;
+        std::string old_owner;
+        std::string new_owner;
+        ri >> name;
+        ri >> old_owner;
+        ri >> new_owner;
+        if(name.compare("com.redhat.abrt") == 0){ 
+            if(new_owner.length() > 0)
+            {
+                if(m_pStateChangeHandler)
+                {
+                    m_pStateChangeHandler(true,m_pStateChangeHandler_cb_data);
+                }
+                else
+                {
+                    std::cout << "Daemon appeared!" << std::endl;
+                }
+            }
+            if(new_owner.length() == 0)
+            {
+                if(m_pStateChangeHandler)
+                {
+                    m_pStateChangeHandler(false, m_pStateChangeHandler_cb_data);
+                }
+                else
+                {
+                    std::cout << "Daemon dissapeared!" << std::endl;
+                }
+            }
+        }
+    }
+};
+
+} } }
+
+class DaemonWatcher
+: public org::freedesktop::DBus::DaemonWatcher_proxy,
+  public DBus::IntrospectableProxy,
+  public DBus::ObjectProxy
+{
+public:
+
+    DaemonWatcher(DBus::Connection &connection, const char *path, const char *name)
+    : ::DBus::ObjectProxy(connection, path, name)
+    {
+    }
+    ~DaemonWatcher()
+    {
+        std::cout << "~DaemonWatcher" << std::endl;
+    }
+};
+        
 
 class CDBusClient_proxy
  : public DBus::InterfaceProxy
