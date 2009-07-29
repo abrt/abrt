@@ -183,8 +183,8 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
         }
         if (strstr(buff, "Total download size") != NULL)
         {
-            int r = write(pipein[1], "y\n", sizeof("y\n"));
-            if (r != sizeof("y\n"))
+            int r = write(pipein[1], "y\n", sizeof("y\n")-1);
+            if (r != sizeof("y\n")-1)
             {
                 close(pipein[1]);
                 close(pipeout[0]);
@@ -466,14 +466,13 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
     std::string core = "--core="+ pDebugDumpDir + "/" +FILENAME_COREDUMP;
     char* command = (char*)"eu-unstrip";
     char* args[4] = { (char*)"eu-unstrip", NULL, (char*)"-n", NULL };
-    args[1] = strdup(core.c_str());
+    args[1] = (char*)core.c_str();
     dd.Open(pDebugDumpDir);
     dd.LoadText(FILENAME_UID, UID);
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     dd.LoadText(FILENAME_PACKAGE, package);
     ExecVP(command, args, atoi(UID.c_str()), buildIdPC);
     dd.Close();
-    free(args[1]);
     GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
     return CreateHash(package + executable + independentBuildIdPC);
 }
