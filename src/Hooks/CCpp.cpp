@@ -64,7 +64,7 @@ char* get_executable(const char* pid)
     if ((len = readlink(path, executable, PATH_MAX)) != -1)
     {
         executable[len] = '\0';
-        return strdup(executable);
+        return xstrdup(executable);
     }
     return NULL;
 }
@@ -97,7 +97,7 @@ char* get_cmdline(const char* pid)
         fclose(fp);
     }
     cmdline[ii] = '\0';
-    return strdup(cmdline);
+    return xstrdup(cmdline);
 }
 
 #define PID_MAX                 16

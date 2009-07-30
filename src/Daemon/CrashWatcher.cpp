@@ -16,25 +16,25 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
-
+#include "abrtlib.h"
 #include "CrashWatcher.h"
-#include <unistd.h>
+//#include <unistd.h>
 #include <iostream>
 #include <climits>
 #include <cstdlib>
-#include <sys/types.h>
-#include <pwd.h>
-#include <sys/stat.h>
-#include <fcntl.h>
+//#include <sys/types.h>
+//#include <pwd.h>
+//#include <sys/stat.h>
+//#include <fcntl.h>
 #include <cstring>
 #include <csignal>
 #include <sstream>
-#include <dirent.h>
+//#include <dirent.h>
 #include <cstring>
 #include "ABRTException.h"
 
 #define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
-#define VAR_RUN_PIDFILE   VAR_RUN"/abrt.pid"
+#define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
 
 /* just a helper function
 template< class T >
@@ -399,7 +399,6 @@ void CCrashWatcher::Debug(const std::string& pMessage)
 double CCrashWatcher::GetDirSize(const std::string &pPath)
 {
     double size = 0;
-    int stat(const char *path, struct stat *buf);
     struct dirent *ep;
     struct stat stats;
     DIR *dp;
@@ -774,20 +773,13 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 
 uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID)
 {
-    thread_data_t * thread_data = (thread_data_t *)calloc(1, sizeof(thread_data_t));
-    if(thread_data != NULL)
+    thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
+    thread_data->UUID = xstrdup(pUUID.c_str());
+    thread_data->UID = xstrdup(pUID.c_str());
+    thread_data->daemon = this;
+    if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
     {
-        thread_data->UUID = strdup(pUUID.c_str());
-        thread_data->UID = strdup(pUID.c_str());
-        thread_data->daemon = this;
-        if(pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
-        }
-    }
-    else
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot allocate memory!");
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
     }
     return (uint64_t) thread_data->thread_id;
 }

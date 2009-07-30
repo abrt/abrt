@@ -23,12 +23,12 @@
  *      Anton Arapov <anton@redhat.com>
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
-
+#include "abrtlib.h"
 #include "KerneloopsSysLog.h"
 
 #include <list>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdlib.h>
+//#include <string.h>
 #include <assert.h>
 
 /*
@@ -77,8 +77,8 @@ void CSysLog::QueueOops(char *data, char *version)
 	if (m_nFoundOopses > MAX_OOPS)
 		return;
 
-	m_NewOops.m_sData = strdup(data);
-	m_NewOops.m_sVersion = strdup(version);
+	m_NewOops.m_sData = xstrdup(data);
+	m_NewOops.m_sVersion = xstrdup(version);
 
 	m_OopsQueue.push_back(m_NewOops);
 	m_nFoundOopses++;
