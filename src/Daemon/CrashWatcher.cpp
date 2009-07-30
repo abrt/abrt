@@ -53,7 +53,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
     gsize i = 0;
-    err = g_io_channel_read (gio, buf, INOTIFY_BUFF_SIZE, &len);
+    err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
     CCrashWatcher *cc = (CCrashWatcher*)daemon;
     if (err != G_IO_ERROR_NONE)
     {
@@ -75,9 +75,9 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         cc->Debug(std::string("Created file: ") + name);
 
         /* we want to ignore the lock files */
-        if(event->mask & IN_ISDIR)
+        if (event->mask & IN_ISDIR)
         {
-            if(cc->GetDirSize(DEBUG_DUMPS_DIR)/(1024*1024.0) < cc->m_pSettings->GetMaxCrashReportsSize()){
+            if (cc->GetDirSize(DEBUG_DUMPS_DIR)/(1024*1024.0) < cc->m_pSettings->GetMaxCrashReportsSize()){
                 //std::string sName = name;
                 map_crash_info_t crashinfo;
                 try
@@ -169,7 +169,7 @@ void *CCrashWatcher::create_report(void *arg){
         }
         /* only one thread can write */
         pthread_mutex_lock(&(thread_data->daemon->m_pJobsMutex));
-            thread_data->daemon->pending_jobs[thread_data->thread_id] = crashReport;
+        thread_data->daemon->pending_jobs[thread_data->thread_id] = crashReport;
         pthread_mutex_unlock(&(thread_data->daemon->m_pJobsMutex));
         thread_data->daemon->m_pCommLayer->JobDone(thread_data->thread_id);
     }
@@ -379,14 +379,14 @@ void CCrashWatcher::Status(const std::string& pMessage)
 {
     std::cout << "Update: " + pMessage << std::endl;
     //FIXME: send updates only to job owner
-    if(m_pCommLayer != NULL)
+    if (m_pCommLayer != NULL)
         m_pCommLayer->Update("0",pMessage);
 }
 
 void CCrashWatcher::Warning(const std::string& pMessage)
 {
     std::cerr << "Warning: " + pMessage << std::endl;
-    if(m_pCommLayer != NULL)
+    if (m_pCommLayer != NULL)
         m_pCommLayer->Warning("0",pMessage);
 }
 
@@ -404,22 +404,26 @@ double CCrashWatcher::GetDirSize(const std::string &pPath)
     struct stat stats;
     DIR *dp;
     std::string dname;
-    dp = opendir (pPath.c_str());
+    dp = opendir(pPath.c_str());
     if (dp != NULL)
     {
-        while ((ep = readdir (dp))){
-            if(strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0){
+        while ((ep = readdir(dp)))
+        {
+            if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0)
+            {
                 dname = pPath + "/" + ep->d_name;
-                lstat (dname.c_str(), &stats);
-                if(S_ISDIR (stats.st_mode)){
+                lstat(dname.c_str(), &stats);
+                if (S_ISDIR(stats.st_mode))
+                {
                     size += GetDirSize(dname);
                 }
-                else if(S_ISREG(stats.st_mode)){
+                else if (S_ISREG(stats.st_mode))
+                {
                     size += stats.st_size;
                 }
             }
         }
-        (void) closedir (dp);
+        (void) closedir(dp);
     }
     else
     {
@@ -444,7 +448,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 
     m_pMainloop = g_main_loop_new(NULL,FALSE);
     m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
-    if(pthread_mutex_init(&m_pJobsMutex, NULL) != 0)
+    if (pthread_mutex_init(&m_pJobsMutex, NULL) != 0)
     {
         throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't init mutex!");
     }
@@ -462,13 +466,13 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
 //      m_pCommLayer = new CCommLayerServerSocket();
         m_pCommLayer->Attach(this);
 
-        if((m_nFd = inotify_init()) == -1)
+        if ((m_nFd = inotify_init()) == -1)
         {
-    	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
+            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
         }
-        if((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1)
+        if ((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1)
         {
-    	    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
+            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
         }
         m_pGio = g_io_channel_unix_new(m_nFd);
     }
@@ -493,7 +497,7 @@ CCrashWatcher::~CCrashWatcher()
     delete m_pMW;
     delete m_pSettings;
     delete m_pCommLayerInner;
-    if(pthread_mutex_destroy(&m_pJobsMutex) != 0)
+    if (pthread_mutex_destroy(&m_pJobsMutex) != 0)
     {
         throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't destroy mutex!");
     }
@@ -511,22 +515,22 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
     std::vector<std::string> dirs;
     std::string dname;
     // get potencial unsaved debugdumps
-    dp = opendir (pPath.c_str());
+    dp = opendir(pPath.c_str());
     if (dp != NULL)
     {
-        while ((ep = readdir (dp)))
+        while ((ep = readdir(dp)))
         {
             if(strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0)
             {
                 dname = pPath + "/" + ep->d_name;
-                lstat (dname.c_str(), &stats);
-                if(S_ISDIR (stats.st_mode))
+                lstat(dname.c_str(), &stats);
+                if (S_ISDIR(stats.st_mode))
                 {
                     dirs.push_back(dname);
                 }
             }
         }
-        (void) closedir (dp);
+        (void) closedir(dp);
     }
     else
     {
@@ -596,12 +600,12 @@ void CCrashWatcher::CreatePidFile()
 
 void CCrashWatcher::Lock()
 {
-    int lfp = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT,0640);
+    int lfp = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT, 0640);
     if (lfp < 0)
     {
         throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
     }
-    if (lockf(lfp,F_TLOCK,0) < 0)
+    if (lockf(lfp, F_TLOCK, 0) < 0)
     {
         throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
     }
@@ -618,11 +622,11 @@ void CCrashWatcher::StartWatch()
     char action[FILENAME_MAX];
     struct inotify_event *pevent;
     //run forever
-    while(1)
+    while (1)
     {
         i = 0;
         len = read(m_nFd,buff,INOTIFY_BUFF_SIZE);
-        while(i < len)
+        while (i < len)
         {
             pevent = (struct inotify_event *)&buff[i];
             if (pevent->len)
@@ -729,7 +733,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
             map_crash_info_t info;
 
             res = m_pMW->GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
-            switch(res)
+            switch (res)
             {
                 case CMiddleWare::MW_OK:
                     retval.push_back(info);
@@ -765,7 +769,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 
     //retval = m_pMW->GetCrashInfos(pUID);
     //Notify("Sent crash info");
-        return retval;
+    return retval;
 }
 
 uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID)
@@ -799,16 +803,8 @@ bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
     //}
     try
     {
-        std::string home = "";
-        struct passwd* pw;
-        while (( pw = getpwent()) != NULL)
-        {
-            if (pw->pw_uid == atoi(pUID.c_str()))
-            {
-                home = pw->pw_dir;
-            }
-        }
-        setpwent();
+        struct passwd* pw = getpwuid(atoi(pUID.c_str()));
+        std::string home = pw ? pw->pw_dir : "";
         if (home != "")
         {
             m_pMW->Report(pReport, home + "/.abrt/");
