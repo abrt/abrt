@@ -18,17 +18,18 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
+#include "abrtlib.h"
 
 #include "DebugDump.h"
 #include "ABRTException.h"
-#include <stdlib.h>
-#include <string.h>
-#include <limits.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <time.h>
+//#include <stdlib.h>
+//#include <string.h>
+//#include <limits.h>
+//#include <stdio.h>
+//#include <sys/types.h>
+//#include <sys/stat.h>
+//#include <unistd.h>
+//#include <time.h>
 #include <syslog.h>
 #include <string>
 
@@ -132,6 +133,8 @@ int main(int argc, char** argv)
                 program_name);
         return -1;
     }
+    logmode = LOGMODE_SYSLOG;
+
     const char* dddir = argv[1];
     const char* pid = argv[2];
     const char* signal = argv[3];
@@ -147,9 +150,9 @@ int main(int argc, char** argv)
     }
     if (!daemon_is_ok())
     {
-        fprintf(stderr, "abrt daemon is not running. If it crashed, "
+        log("abrt daemon is not running. If it crashed, "
             "/proc/sys/kernel/core_pattern contains a stale value, "
-            "consider resetting it to 'core'\n"
+            "consider resetting it to 'core'"
         );
         return 0;
     }

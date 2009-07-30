@@ -18,6 +18,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
+#include "abrtlib.h"
 
 #include "CCpp.h"
 #include "ABRTException.h"
@@ -26,16 +27,16 @@
 #include "CommLayerInner.h"
 #include <fstream>
 #include <sstream>
-#include <ctype.h>
-#include <unistd.h>
-#include <sys/types.h>
-#include <sys/wait.h>
-#include <fcntl.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <ctype.h>
+//#include <unistd.h>
+//#include <sys/types.h>
+//#include <sys/wait.h>
+//#include <fcntl.h>
+//#include <stdlib.h>
+//#include <string.h>
 #include <iomanip>
-#include <grp.h>
-#include <pwd.h>
+//#include <grp.h>
+//#include <pwd.h>
 
 #include <nss.h>
 #include <sechash.h>
@@ -537,16 +538,16 @@ void CAnalyzerCCpp::Init()
     {
 	if (m_sOldCorePattern == CORE_PATTERN)
 	{
-	    fprintf(stderr, "warning: %s already contains %s, "
-		"did abrt daemon crash recently?\n",
+	    log("warning: %s already contains %s, "
+		"did abrt daemon crash recently?",
 		CORE_PATTERN_IFACE, CORE_PATTERN);
 	    /* There is no point in "restoring" CORE_PATTERN_IFACE
 	     * to CORE_PATTERN on exit. Will restore to a default value:
 	     */
 	    m_sOldCorePattern = "core";
 	}
-	fprintf(stderr, "warning: %s was already set to run a crash analyser (%s), "
-	    "abrt may interfere with it\b",
+	log("warning: %s was already set to run a crash analyser (%s), "
+	    "abrt may interfere with it",
 	    CORE_PATTERN_IFACE, CORE_PATTERN);
     }
 
