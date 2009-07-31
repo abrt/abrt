@@ -3,6 +3,9 @@
  *
  * Licensed under GPLv2, see file COPYING in this tarball for details.
  */
+#ifndef ABRTLIB_H_
+#define ABRTLIB_H_
+
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
@@ -100,3 +103,5 @@ void xstat(const char *name, struct stat *stat_buf);
 
 void xmove_fd(int from, int to);
 char* xasprintf(const char *format, ...);
+
+#endif

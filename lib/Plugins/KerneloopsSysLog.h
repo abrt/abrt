@@ -48,7 +48,7 @@ class CSysLog
 
 	public:
 		CSysLog();
-		std::list<COops> GetOopsList();
+		const std::list<COops>& GetOopsList();
 		void ClearOopsList();
 		int ExtractOops(char *buffer, size_t buflen, int remove_syslog);
 };

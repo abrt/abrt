@@ -35,17 +35,16 @@
 
 #define FILENAME_KERNELOOPS "kerneloops"
 
-CKerneloopsReporter::CKerneloopsReporter() :
-	m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
-{}
+/* helpers */
 
-size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
+static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 {
 	char *c, *c1, *c2;
 
-	c = (char*)xzalloc(size*nmemb + 1);
-	memcpy(c, ptr, size*nmemb);
-	printf("received %s \n", c);
+	size *= nmemb;
+/*	log("received: '%*.*s'\n", (int)size, (int)size, (char*)ptr);
+	c = (char*)xzalloc(size + 1);
+	memcpy(c, ptr, size);
 	c1 = strstr(c, "201 ");
 	if (c1) {
 		c1 += 4;
@@ -53,24 +52,27 @@ size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 		if (c2)
 			*c2 = 0;
 	}
+	free(c);
+*/
 
-	return size * nmemb;
+	return size;
 }
 
-void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+/* Send oops data to kerneloops.org-style site, using HTTP POST */
+/* Returns 0 on success */
+static int http_post_to_kerneloops_site(const char *url, const char *oopsdata)
 {
-	comm_layer_inner_status("Creating and submitting a report...");
-
+	CURLcode ret;
 	CURL *handle;
 	struct curl_httppost *post = NULL;
 	struct curl_httppost *last = NULL;
 
 	handle = curl_easy_init();
-	curl_easy_setopt(handle, CURLOPT_URL, m_sSubmitURL.c_str());
+	curl_easy_setopt(handle, CURLOPT_URL, url);
 
 	curl_formadd(&post, &last,
 		CURLFORM_COPYNAME, "oopsdata",
-		CURLFORM_COPYCONTENTS, pCrashReport.find(FILENAME_KERNELOOPS)->second[CD_CONTENT].c_str(),
+		CURLFORM_COPYCONTENTS, oopsdata,
 		CURLFORM_END);
 	curl_formadd(&post, &last,
 		CURLFORM_COPYNAME, "pass_on_allowed",
@@ -80,10 +82,30 @@ void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const s
 	curl_easy_setopt(handle, CURLOPT_HTTPPOST, post);
 	curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, writefunction);
 
-	curl_easy_perform(handle);
+	ret = curl_easy_perform(handle);
 
 	curl_formfree(post);
 	curl_easy_cleanup(handle);
+
+	return ret != 0;
+}
+
+
+/* class CKerneloopsReporter */
+
+CKerneloopsReporter::CKerneloopsReporter() :
+	m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
+{}
+
+void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+{
+	comm_layer_inner_status("Creating and submitting a report...");
+
+	/* TODO: react on errorcode (!0 -> error) */
+	http_post_to_kerneloops_site(
+		m_sSubmitURL.c_str(),
+		pCrashReport.find(FILENAME_KERNELOOPS)->second[CD_CONTENT].c_str()
+	);
 }
 
 void CKerneloopsReporter::LoadSettings(const std::string& pPath)

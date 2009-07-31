@@ -6,7 +6,7 @@ abrt_applet_CPPFLAGS = -Wall -Werror -I../Daemon/ \
                        $(DBUS_GLIB_CFLAGS) $(GTK_CFLAGS) $(DBUSCPP_CFLAGS) $(LIBNOTIFY_CFLAGS)\
                        -I$(srcdir)/../../inc -I../../lib/CommLayer \
                        -I../../lib/MiddleWare -I/usr/include/glib-2.0 -I/usr/lib/glib-2.0/include
-                  
+
 abrt_applet_LDADD = $(DL_LIBS) $(GTK_LIBS) -lglib-2.0 -lgthread-2.0 $(DBUSCPP_LIBS) $(LIBNOTIFY_LIBS)
 
 EXTRA_DIST = abrt-applet.desktop

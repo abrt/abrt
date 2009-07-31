@@ -89,7 +89,7 @@ void CSysLog::ClearOopsList()
 	m_OopsQueue.clear();
 }
 
-std::list<COops> CSysLog::GetOopsList()
+const std::list<COops>& CSysLog::GetOopsList()
 {
 	return m_OopsQueue;
 }

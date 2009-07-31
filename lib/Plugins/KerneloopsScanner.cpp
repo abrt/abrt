@@ -21,17 +21,25 @@ void CKerneloopsScanner::Run(const std::string& pActionDir,
 {
     int cnt_FoundOopses;
 
+    /* Scan syslog file, on first call only */
     if (!m_bSysLogFileScanned)
     {
-        cnt_FoundOopses = ScanSysLogFile(m_sSysLogFile.c_str(), 1);
+        cnt_FoundOopses = ScanSysLogFile(m_sSysLogFile.c_str());
         if (cnt_FoundOopses > 0) {
             SaveOopsToDebugDump();
+            /*
+             * This marker in syslog file prevents us from re-parsing
+             * old oopses (any oops before it is ignored by ScanSysLogFile()).
+             * The only problem is that we can't be sure here
+             * that m_sSysLogFile is the file where syslog(xxx) stuff ends up.
+             */
             openlog("abrt", 0, LOG_KERN);
             syslog(LOG_WARNING, "Kerneloops: Reported %u kernel oopses to Abrt", cnt_FoundOopses);
             closelog();
         }
         m_bSysLogFileScanned = true;
     }
+    /* Scan kernel's log buffer */
     cnt_FoundOopses = ScanDmesg();
     if (cnt_FoundOopses > 0)
         SaveOopsToDebugDump();
@@ -41,16 +49,14 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 {
     comm_layer_inner_status("Creating kernel oops crash reports...");
 
-    CDebugDump debugDump;
-    char path[PATH_MAX];
-    std::list<COops> oopsList;
-
     time_t t = time(NULL);
-
-    oopsList = m_pSysLog.GetOopsList();
+    CDebugDump debugDump;
+    std::list<COops> oopsList = m_pSysLog.GetOopsList();
     m_pSysLog.ClearOopsList();
+
     while (!oopsList.empty())
     {
+        char path[PATH_MAX];
         snprintf(path, sizeof(path), "%s/kerneloops-%lu-%lu", DEBUG_DUMPS_DIR, (long)t, (long)oopsList.size());
 
         COops oops = oopsList.back();
@@ -79,17 +85,18 @@ int CKerneloopsScanner::ScanDmesg()
 
     int cnt_FoundOopses;
     char *buffer;
+    int pagesz = getpagesize();
 
-    buffer = (char*)xzalloc(getpagesize()+1);
+    buffer = (char*)xzalloc(pagesz + 1);
 
-    syscall(__NR_syslog, 3, buffer, getpagesize());
+    syscall(__NR_syslog, 3, buffer, pagesz);
     cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, strlen(buffer), 0);
     free(buffer);
 
     return cnt_FoundOopses;
 }
 
-int CKerneloopsScanner::ScanSysLogFile(const char *filename, int issyslog)
+int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 {
     comm_layer_inner_debug("Scanning syslog...");
 
@@ -128,7 +135,7 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename, int issyslog)
 
     cnt_FoundOopses = 0;
     if (sz > 0)
-        cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, sz, issyslog);
+        cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, sz, 1);
     free(buffer);
 
     return cnt_FoundOopses;

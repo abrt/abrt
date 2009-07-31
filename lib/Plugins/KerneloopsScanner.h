@@ -12,10 +12,13 @@ class CKerneloopsScanner : public CAction
         CSysLog m_pSysLog;
         bool m_bSysLogFileScanned;
 
+    public:
+        /* For standalone oops processor */
         void SaveOopsToDebugDump();
         int ScanDmesg();
-        int ScanSysLogFile(const char *filename, int issyslog);
-    public:
+        int ScanSysLogFile(const char *filename);
+
+        /* Plugin intarface */
         CKerneloopsScanner() :
             m_sSysLogFile("/var/log/messages"),
             m_bSysLogFileScanned(false)
