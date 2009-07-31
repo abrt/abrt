@@ -13,9 +13,8 @@ class CKerneloopsScanner : public CAction
         bool m_bSysLogFileScanned;
 
         void SaveOopsToDebugDump();
-        void ScanDmesg();
-        void ScanSysLogFile(const char *filename, int issyslog);
-        void WriteSysLog(int m_nCount);
+        int ScanDmesg();
+        int ScanSysLogFile(const char *filename, int issyslog);
     public:
         CKerneloopsScanner() :
             m_sSysLogFile("/var/log/messages"),

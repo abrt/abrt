@@ -1,3 +1,5 @@
+#include "abrtlib.h"
+
 #include "KerneloopsScanner.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
@@ -5,34 +7,35 @@
 #include "PluginSettings.h"
 
 #include <assert.h>
-#include <stdlib.h>
-#include <string.h>
+//#include <stdlib.h>
+//#include <string.h>
 #include <syslog.h>
-#include <sys/stat.h>
+//#include <sys/stat.h>
 #include <asm/unistd.h>
 
 
 #define MIN(A,B) ((A) < (B) ? (A) : (B))
 #define FILENAME_KERNELOOPS  "kerneloops"
 
-void CKerneloopsScanner::WriteSysLog(int m_nCount)
-{
-    if (m_nCount > 0) {
-        openlog("abrt", 0, LOG_KERN);
-        syslog(LOG_WARNING, "Kerneloops: Reported %i kernel oopses to Abrt", m_nCount);
-        closelog();
-    }
-}
-
 void CKerneloopsScanner::Run(const std::string& pActionDir,
                              const std::string& pArgs)
 {
-    ScanDmesg();
+    int cnt_FoundOopses;
+
     if (!m_bSysLogFileScanned)
     {
-        ScanSysLogFile(m_sSysLogFile.c_str(), 1);
+        cnt_FoundOopses = ScanSysLogFile(m_sSysLogFile.c_str(), 1);
+        if (cnt_FoundOopses > 0) {
+            SaveOopsToDebugDump();
+            openlog("abrt", 0, LOG_KERN);
+            syslog(LOG_WARNING, "Kerneloops: Reported %u kernel oopses to Abrt", cnt_FoundOopses);
+            closelog();
+        }
         m_bSysLogFileScanned = true;
     }
+    cnt_FoundOopses = ScanDmesg();
+    if (cnt_FoundOopses > 0)
+        SaveOopsToDebugDump();
 }
 
 void CKerneloopsScanner::SaveOopsToDebugDump()
@@ -44,16 +47,12 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
     std::list<COops> m_pOopsList;
 
     time_t t = time(NULL);
-    if (((time_t) -1) == t)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerKerneloops::Report(): cannot get local time.");
-    }
 
     m_pOopsList = m_pSysLog.GetOopsList();
     m_pSysLog.ClearOopsList();
     while (!m_pOopsList.empty())
     {
-        snprintf(m_sPath, sizeof(m_sPath), "%s/kerneloops-%d-%d", DEBUG_DUMPS_DIR, t, m_pOopsList.size());
+        snprintf(m_sPath, sizeof(m_sPath), "%s/kerneloops-%ld-%ld", DEBUG_DUMPS_DIR, (long)t, (long)m_pOopsList.size());
 
         COops m_pOops;
         m_pOops = m_pOopsList.back();
@@ -77,40 +76,38 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 }
 
 
-void CKerneloopsScanner::ScanDmesg()
+int CKerneloopsScanner::ScanDmesg()
 {
     comm_layer_inner_debug("Scanning dmesg...");
 
-    int m_nFoundOopses;
+    int cnt_FoundOopses;
     char *buffer;
 
-    buffer = (char*)calloc(getpagesize()+1, 1);
+    buffer = (char*)xzalloc(getpagesize()+1);
 
     syscall(__NR_syslog, 3, buffer, getpagesize());
-    m_nFoundOopses = m_pSysLog.ExtractOops(buffer, strlen(buffer), 0);
+    cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, strlen(buffer), 0);
     free(buffer);
 
-    if (m_nFoundOopses > 0)
-        SaveOopsToDebugDump();
+    return cnt_FoundOopses;
 }
 
-void CKerneloopsScanner::ScanSysLogFile(const char *filename, int issyslog)
+int CKerneloopsScanner::ScanSysLogFile(const char *filename, int issyslog)
 {
     comm_layer_inner_debug("Scanning syslog...");
 
     char *buffer;
     struct stat statb;
-    FILE *file;
-    int ret;
-    int m_nFoundOopses;
-    size_t buflen, nread;
+    int fd;
+    int cnt_FoundOopses;
+    ssize_t sz;
 
-    memset(&statb, 0, sizeof(statb));
-
-    ret = stat(filename, &statb);
-
-    if (statb.st_size < 1 || ret != 0)
-        return;
+    fd = open(filename, O_RDONLY);
+    if (fd < 0)
+        return 0;
+    statb.st_size = 0; /* paranoia */
+    if (fstat(fd, &statb) != 0 || statb.st_size < 1)
+        return 0;
 
     /*
      * in theory there's a race here, since someone could spew
@@ -123,27 +120,21 @@ void CKerneloopsScanner::ScanSysLogFile(const char *filename, int issyslog)
      * than enough; it's not worth looping through more log
      * if the log is larger than that.
      */
-    buflen = MIN(statb.st_size+1024, 32*1024*1024);
-    buffer = (char*)calloc(buflen, 1);
-    assert(buffer != NULL);
-
-    file = fopen(filename, "rm");
-    if (!file) {
-        free(buffer);
-        return;
+    sz = statb.st_size + 1024;
+    if (statb.st_size > (32*1024*1024 - 1024)) {
+        xlseek(fd, -(32*1024*1024 - 1024), SEEK_END);
+        sz = 32*1024*1024;
     }
-    fseek(file, -buflen, SEEK_END);
-    nread = fread(buffer, 1, buflen, file);
-    fclose(file);
+    buffer = (char*)xzalloc(sz);
+    sz = full_read(fd, buffer, sz);
+    close(fd);
 
-    if (nread > 0)
-        m_nFoundOopses = m_pSysLog.ExtractOops(buffer, nread, issyslog);
+    cnt_FoundOopses = 0;
+    if (sz > 0)
+        cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, sz, issyslog);
     free(buffer);
 
-    if (m_nFoundOopses > 0) {
-        SaveOopsToDebugDump();
-        WriteSysLog(m_nFoundOopses);
-    }
+    return cnt_FoundOopses;
 }
 
 void CKerneloopsScanner::LoadSettings(const std::string& pPath)
@@ -151,7 +142,7 @@ void CKerneloopsScanner::LoadSettings(const std::string& pPath)
     map_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("SysLogFile")!= settings.end())
+    if (settings.find("SysLogFile") != settings.end())
     {
         m_sSysLogFile = settings["SysLogFile"];
     }

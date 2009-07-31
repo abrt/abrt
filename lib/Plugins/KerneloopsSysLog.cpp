@@ -77,8 +77,8 @@ void CSysLog::QueueOops(char *data, char *version)
 	if (m_nFoundOopses > MAX_OOPS)
 		return;
 
-	m_NewOops.m_sData = xstrdup(data);
-	m_NewOops.m_sVersion = xstrdup(version);
+	m_NewOops.m_sData = data;
+	m_NewOops.m_sVersion = version;
 
 	m_OopsQueue.push_back(m_NewOops);
 	m_nFoundOopses++;
@@ -357,10 +357,10 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 
 				len = 2;
 				for (q = oopsstart; q <= oopsend; q++)
-					len += strlen(lines_info[q].ptr)+1;
+					len += strlen(lines_info[q].ptr) + 1;
 
-				oops = (char*)calloc(len, 1);
-				version = (char*)calloc(len, 1);
+				oops = (char*)xzalloc(len);
+				version = (char*)xzalloc(len);
 
 				is_version = 0;
 				for (q = oopsstart; q <= oopsend; q++) {
