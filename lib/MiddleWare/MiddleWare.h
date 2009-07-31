@@ -198,6 +198,26 @@ class CMiddleWare
          */
         void UnRegisterPlugin(const std::string& pName);
         /**
+         * A method, which sets up a plugin.
+         * @param pName A plugin name.
+         * @param pSettings A plugin's settings.
+         */
+        void SetPluginSettings(const std::string& pName,
+                               const map_plugin_settings_t& pSettings);
+        /**
+         * A method, which returns plugin's settings.
+         * @param pName A plugin name.
+         * @return Plugin's settings
+         */
+        map_plugin_settings_t GetPluginSettings(const std::string& pName);
+        /**
+         * A method, which gets all plugins info (event those plugins which are
+         * disabled). It can be send via DBus to GUI and displayed to an user.
+         * Then a user can fill all needed informations like URLs etc.
+         * @return A vector of maps <key, vaule>
+         */
+        vector_map_string_string_t GetPluginsInfo();
+        /**
          * A method, which takes care of getting all additional data needed
          * for computing UUIDs and creating a report for particular analyzer
          * plugin. This report could be send somewhere afterwards. If a creation
@@ -287,13 +307,6 @@ class CMiddleWare
          * @return A vector of pairs  (local UUID, UID).
          */
         vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
-        /**
-         * A method, which gets all plugins info (event those plugins which are
-         * disabled). It can be send via DBus to GUI and displayed to an user.
-         * Then a user can fill all needed informations like URLs etc.
-         * @return A vector of maps <key, vaule>
-         */
-        vector_map_string_string_t GetPluginsInfo();
         /**
          * A method, which set a GPG finger print check.
          * @param pCheck Is it enabled?

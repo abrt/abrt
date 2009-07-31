@@ -4,7 +4,6 @@
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
-#include "PluginSettings.h"
 
 #include <assert.h>
 //#include <stdlib.h>
@@ -143,13 +142,27 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 
 void CKerneloopsScanner::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
+    map_plugin_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("SysLogFile") != settings.end())
+    SetSettings(settings);
+}
+
+void CKerneloopsScanner::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("SysLogFile") != pSettings.end())
     {
-        m_sSysLogFile = settings["SysLogFile"];
+        m_sSysLogFile = pSettings.find("SysLogFile")->second;
     }
+}
+
+map_plugin_settings_t CKerneloopsScanner::GetSettings()
+{
+    map_plugin_settings_t ret;
+
+    ret["SysLogFile"] = m_sSysLogFile;
+
+    return ret;
 }
 
 PLUGIN_INFO(ACTION,

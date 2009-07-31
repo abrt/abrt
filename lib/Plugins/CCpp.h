@@ -33,6 +33,7 @@ class CAnalyzerCCpp : public CAnalyzer
         bool m_bMemoryMap;
         pid_t m_Pid;
         std::string m_sOldCorePattern;
+        std::string m_sDebugInfo;
         void InstallDebugInfos(const std::string& pPackage);
         void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace);
         void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace);
@@ -48,6 +49,8 @@ class CAnalyzerCCpp : public CAnalyzer
         virtual void Init();
         virtual void DeInit();
         virtual void LoadSettings(const std::string& pPath);
+        virtual void SetSettings(const map_plugin_settings_t& pSettings);
+        virtual map_plugin_settings_t GetSettings();
 };
 
 #endif /* CCPP */

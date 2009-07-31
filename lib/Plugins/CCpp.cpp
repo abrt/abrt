@@ -23,10 +23,10 @@
 #include "CCpp.h"
 #include "ABRTException.h"
 #include "DebugDump.h"
-#include "PluginSettings.h"
 #include "CommLayerInner.h"
 #include <fstream>
 #include <sstream>
+#include <set>
 //#include <ctype.h>
 //#include <unistd.h>
 //#include <sys/types.h>
@@ -573,13 +573,32 @@ void CAnalyzerCCpp::DeInit()
 
 void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
+    map_plugin_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("MemoryMap") != settings.end())
+    SetSettings(settings);
+}
+
+void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("MemoryMap") != pSettings.end())
     {
-        m_bMemoryMap = settings["MemoryMap"] == "yes";
+        m_bMemoryMap = pSettings.find("MemoryMap")->second == "yes";
     }
+    if (pSettings.find("DebugInfo") != pSettings.end())
+    {
+        m_sDebugInfo = pSettings.find("DebugInfo")->second;
+    }
+}
+
+map_plugin_settings_t CAnalyzerCCpp::GetSettings()
+{
+    map_plugin_settings_t ret;
+
+    ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
+    ret["DebugInfo"] = m_sDebugInfo;
+
+    return ret;
 }
 
 PLUGIN_INFO(ANALYZER,

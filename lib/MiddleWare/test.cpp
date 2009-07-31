@@ -57,6 +57,9 @@ int main(int argc, char** argv)
         int ii;
         for ( ii = 0; ii < loaded_plugins.size(); ii++)
         {
+            std::cout << "-------------------------------------------" << std::endl;
+            map_plugin_settings_t settings;
+            std::cout << "Enabled: " << loaded_plugins[ii]["Enabled"] << std::endl;
             std::cout << "Type: " << loaded_plugins[ii]["Type"] << std::endl;
             std::cout << "Name: " << loaded_plugins[ii]["Name"] << std::endl;
             std::cout << "Version: " << loaded_plugins[ii]["Version"] << std::endl;
@@ -64,6 +67,17 @@ int main(int argc, char** argv)
             std::cout << "Email: " << loaded_plugins[ii]["Email"] << std::endl;
             std::cout << "WWW: " << loaded_plugins[ii]["WWW"] << std::endl;
             std::cout << "GTKBuilder: " << loaded_plugins[ii]["GTKBuilder"] << std::endl;
+            if (loaded_plugins[ii]["Enabled"] == "yes")
+            {
+                std::cout << std::endl << "Settings: " << std::endl;
+                settings = middleWare.GetPluginSettings(loaded_plugins[ii]["Name"]);
+                map_plugin_settings_t::iterator it;
+                for (it = settings.begin(); it != settings.end(); it++)
+                {
+                    std::cout << "\t" << it->first << ": " << it->second << std::endl;
+                }
+            }
+            std::cout << "-------------------------------------------" << std::endl;
         }
         /* Try to save it into DB */
         map_crash_info_t crashInfo;

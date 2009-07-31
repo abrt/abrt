@@ -24,7 +24,6 @@
 #include <sstream>
 #include "DebugDump.h"
 #include "ABRTException.h"
-#include "PluginSettings.h"
 #include "CommLayerInner.h"
 
 #define MAILX_COMMAND "/bin/mailx"
@@ -140,29 +139,47 @@ void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& p
 
 void CMailx::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
+    map_plugin_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("Subject")!= settings.end())
+    SetSettings(settings);
+}
+
+void CMailx::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("Subject") != pSettings.end())
     {
-        m_sSubject = settings["Subject"];
+        m_sSubject = pSettings.find("Subject")->second;
     }
-    if (settings.find("EmailFrom")!= settings.end())
+    if (pSettings.find("EmailFrom") != pSettings.end())
     {
-        m_sEmailFrom = settings["EmailFrom"];
+        m_sEmailFrom = pSettings.find("EmailFrom")->second;
     }
-    if (settings.find("EmailTo")!= settings.end())
+    if (pSettings.find("EmailTo") != pSettings.end())
     {
-        m_sEmailTo = settings["EmailTo"];
+        m_sEmailTo = pSettings.find("EmailTo")->second;
     }
-    if (settings.find("Parameters")!= settings.end())
+    if (pSettings.find("Parameters") != pSettings.end())
     {
-        m_sParameters = settings["Parameters"];
+        m_sParameters = pSettings.find("Parameters")->second;
     }
-    if (settings.find("SendBinaryData")!= settings.end())
+    if (pSettings.find("SendBinaryData") != pSettings.end())
     {
-        m_bSendBinaryData = settings["SendBinaryData"] == "yes";
+        m_bSendBinaryData = pSettings.find("SendBinaryData")->second == "yes";
     }
+}
+
+map_plugin_settings_t CMailx::GetSettings()
+{
+    map_plugin_settings_t ret;
+
+    ret["Subject"] = m_sSubject;
+    ret["EmailFrom"] = m_sEmailFrom;
+    ret["EmailTo"] = m_sEmailTo;
+    ret["Parameters"] = m_sParameters;
+    ret["SendBinaryData"] = m_bSendBinaryData ? "yes" : "no";
+
+    return ret;
 }
 
 PLUGIN_INFO(REPORTER,

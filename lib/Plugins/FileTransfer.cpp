@@ -32,7 +32,6 @@
 
 #include "DebugDump.h"
 #include "ABRTException.h"
-#include "PluginSettings.h"
 #include "CommLayerInner.h"
 
 
@@ -225,37 +224,57 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
 
 void CFileTransfer::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
+    map_plugin_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("URL")!= settings.end())
+    SetSettings(settings);
+}
+
+void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("URL") != pSettings.end())
     {
-        m_sURL = settings["URL"];
+        m_sURL = pSettings.find("URL")->second;
     }
     else
     {
         comm_layer_inner_warning("FileTransfer: URL not specified");
     }
 
-    if (settings.find("RetryCount")!= settings.end())
+    if (pSettings.find("RetryCount") != pSettings.end())
     {
-        m_nRetryCount = atoi(settings["RetryCount"].c_str());
+        m_nRetryCount = atoi(pSettings.find("RetryCount")->second.c_str());
     }
 
-    if (settings.find("RetryDelay")!= settings.end())
+    if (pSettings.find("RetryDelay") != pSettings.end())
     {
-        m_nRetryDelay = atoi(settings["RetryDelay"].c_str());
+        m_nRetryDelay = atoi(pSettings.find("RetryDelay")->second.c_str());
     }
 
-    if (settings.find("ArchiveType")!= settings.end())
+    if (pSettings.find("ArchiveType") != pSettings.end())
     {
         /* currently supporting .tar.gz, .tar.bz2 and .zip */
-        m_sArchiveType = settings["ArchiveType"];
+        m_sArchiveType =pSettings.find("ArchiveType")->second;
         if(m_sArchiveType[0] != '.')
         {
             m_sArchiveType =  "." + m_sArchiveType;
         }
     }
+}
+
+map_plugin_settings_t CFileTransfer::GetSettings()
+{
+    map_plugin_settings_t ret;
+    std::stringstream ss;
+    ret["URL"] = m_sURL;
+    ss << m_nRetryCount;
+    ret["RetryCount"] = ss.str();
+    ss.str("");
+    ss << m_nRetryDelay;
+    ret["RetryDelay"] = ss.str();
+    ret["ArchiveType"] = m_sArchiveType;
+
+    return ret;
 }
 
 PLUGIN_INFO(ACTION,

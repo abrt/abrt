@@ -108,6 +108,16 @@ void CMiddleWare::UnRegisterPlugin(const std::string& pName)
     m_pPluginManager->UnRegisterPlugin(pName);
 }
 
+void CMiddleWare::SetPluginSettings(const std::string& pName,
+                                    const map_plugin_settings_t& pSettings)
+{
+    m_pPluginManager->SetPluginSettings(pName, pSettings);
+}
+
+map_plugin_settings_t CMiddleWare::GetPluginSettings(const std::string& pName)
+{
+    return m_pPluginManager->GetPluginSettings(pName);
+}
 
 std::string CMiddleWare::GetLocalUUID(const std::string& pAnalyzer,
                                       const std::string& pDebugDumpDir)

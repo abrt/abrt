@@ -21,7 +21,6 @@
 
 #include "Logger.h"
 #include <fstream>
-#include "PluginSettings.h"
 #include <sstream>
 #include "DebugDump.h"
 #include "CommLayerInner.h"
@@ -33,17 +32,32 @@ CLogger::CLogger() :
 
 void CLogger::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
+    map_plugin_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("LogPath")!= settings.end())
+    SetSettings(settings);
+}
+
+void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("LogPath") != pSettings.end())
     {
-        m_sLogPath = settings["LogPath"];
+        m_sLogPath = pSettings.find("LogPath")->second;
     }
-    if (settings.find("AppendLogs")!= settings.end())
+    if (pSettings.find("AppendLogs") != pSettings.end())
     {
-        m_bAppendLogs = settings["AppendLogs"] == "yes";
+        m_bAppendLogs = pSettings.find("AppendLogs")->second == "yes";
     }
+}
+
+map_plugin_settings_t CLogger::GetSettings()
+{
+    map_plugin_settings_t ret;
+
+    ret["LogPath"] = m_sLogPath;
+    ret["AppendLogs"] = m_bAppendLogs ? "yes" : "no";
+
+    return ret;
 }
 
 void CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)

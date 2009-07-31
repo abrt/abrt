@@ -24,7 +24,6 @@
 #include "SQLite3.h"
 #include <string>
 #include <iostream>
-#include "PluginSettings.h"
 #include "ABRTException.h"
 
 #define ABRT_TABLE "abrt"
@@ -270,13 +269,27 @@ const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::
 
 void CSQLite3::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
+    map_plugin_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("DBPath")!= settings.end())
+    SetSettings(settings);
+}
+
+void CSQLite3::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("DBPath") != pSettings.end())
     {
-        m_sDBPath = settings["DBPath"];
+        m_sDBPath = pSettings.find("DBPath")->second;
     }
+}
+
+map_plugin_settings_t CSQLite3::GetSettings()
+{
+    map_plugin_settings_t ret;
+
+    ret["DBPath"] = m_sDBPath;
+
+    return ret;
 }
 
 PLUGIN_INFO(DATABASE,

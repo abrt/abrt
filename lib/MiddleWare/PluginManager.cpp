@@ -240,6 +240,8 @@ vector_map_string_string_t CPluginManager::GetPluginsInfo()
     {
         map_string_string_t plugin_info;
 
+        plugin_info["Enabled"] = (m_mapPlugins.find(it_abrt_plugin->second->GetName()) != m_mapPlugins.end()) ?
+                                 "yes" : "no";
         plugin_info["Type"] = plugin_type_str_t[it_abrt_plugin->second->GetType()];
         plugin_info["Name"] = it_abrt_plugin->second->GetName();
         plugin_info["Version"] = it_abrt_plugin->second->GetVersion();
@@ -253,3 +255,27 @@ vector_map_string_string_t CPluginManager::GetPluginsInfo()
     return ret;
 }
 
+void CPluginManager::SetPluginSettings(const std::string& pName,
+                                       const map_plugin_settings_t& pSettings)
+{
+    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    {
+        if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+        {
+            m_mapPlugins[pName]->SetSettings(pSettings);
+        }
+    }
+}
+
+map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName)
+{
+    map_plugin_settings_t ret;
+    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    {
+        if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+        {
+            ret = m_mapPlugins[pName]->GetSettings();
+        }
+    }
+    return ret;
+}

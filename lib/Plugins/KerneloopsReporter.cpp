@@ -26,7 +26,6 @@
 #include "abrtlib.h"
 
 #include "KerneloopsReporter.h"
-#include "PluginSettings.h"
 #include "CommLayerInner.h"
 
 //#include <stdlib.h>
@@ -110,13 +109,27 @@ void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const s
 
 void CKerneloopsReporter::LoadSettings(const std::string& pPath)
 {
-	map_settings_t settings;
+	map_plugin_settings_t settings;
 	plugin_load_settings(pPath, settings);
 
-	if (settings.find("SubmitURL") != settings.end())
-	{
-		m_sSubmitURL = settings["SubmitURL"];
-	}
+    SetSettings(settings);
+}
+
+void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("SubmitURL") != pSettings.end())
+    {
+        m_sSubmitURL = pSettings.find("SubmitURL")->second;
+    }
+}
+
+map_plugin_settings_t CKerneloopsReporter::GetSettings()
+{
+    map_plugin_settings_t ret;
+
+    ret["SubmitURL"] = m_sSubmitURL;
+
+    return ret;
 }
 
 PLUGIN_INFO(REPORTER,

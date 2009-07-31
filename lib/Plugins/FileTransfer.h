@@ -51,6 +51,8 @@ class CFileTransfer : public CAction
         virtual ~CFileTransfer() {}
 
         virtual void LoadSettings(const std::string& pPath);
+        virtual void SetSettings(const map_plugin_settings_t& pSettings);
+        virtual map_plugin_settings_t GetSettings();
         virtual void Run(const std::string& pActiveDir,
                          const std::string& pArgs);
 };

@@ -138,6 +138,19 @@ class CPluginManager
          * @return A vector of maps <key, vaule>
          */
         vector_map_string_string_t GetPluginsInfo();
+        /**
+         * A method, which sets up a plugin.
+         * @param pName A plugin name.
+         * @param pSettings A plugin's settings.
+         */
+        void SetPluginSettings(const std::string& pName,
+                               const map_plugin_settings_t& pSettings);
+        /**
+         * A method, which returns plugin's settings.
+         * @param pName A plugin name.
+         * @return Plugin's settings
+         */
+        map_plugin_settings_t GetPluginSettings(const std::string& pName);
 };
 
 #endif /*PLUGINMANAGER_H_*/

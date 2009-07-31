@@ -25,15 +25,20 @@
 
 #include <string>
 #include <map>
+#include <fstream>
 
-#define PLUGINS_MAGIC_NUMBER 3
+
+#define PLUGINS_MAGIC_NUMBER 4
 
 #define PLUGINS_CONF_EXTENSION "conf"
 #define PLUGINS_LIB_EXTENSION "so"
 #define PLUGINS_LIB_PREFIX "lib"
 
+typedef std::map<std::string, std::string> map_plugin_settings_t;
+
 /**
- * An abstract class. The class defines a common plugin interface.
+ * An abstract class. The class defines a common plugin interface. If a plugin
+ * has some settings, then a *Settings(*) method has to be written.
  */
 class CPlugin
 {
@@ -51,10 +56,20 @@ class CPlugin
          */
         virtual void DeInit() {}
         /**
-         * A method, which loads a plugin settings. It is not mandatory method.
+         * A method, which loads a plugin settings from a file. It is not mandatory method.
          * @param pPath A path to plugin configuration file.
          */
         virtual void LoadSettings(const std::string& pPath) {}
+        /**
+         * A method, which takes a settings and apply them. It is not a mandatory method.
+         * @param pSettings Plugin's settings
+         */
+        virtual void SetSettings(const map_plugin_settings_t& pSettings) {}
+        /**
+         * A method, which return current settings. It is not mandatory method.
+         * @return Plugin's settings
+         */
+        virtual map_plugin_settings_t GetSettings() {return map_plugin_settings_t();}
 };
 
 /**
@@ -100,5 +115,65 @@ typedef struct SPluginInfo
         gtk_builder,\
         PLUGINS_MAGIC_NUMBER,\
     };
+
+inline void plugin_load_settings(const std::string& path, map_plugin_settings_t& settings)
+{
+    std::ifstream fIn;
+    fIn.open(path.c_str());
+    if (fIn.is_open())
+    {
+        std::string line;
+        while (!fIn.eof())
+        {
+            getline(fIn, line);
+
+            int ii;
+            bool is_value = false;
+            bool valid = false;
+            bool in_quote = false;
+            std::string key = "";
+            std::string value = "";
+            for (ii = 0; ii < line.length(); ii++)
+            {
+                if (line[ii] == '\"')
+                {
+                    in_quote = in_quote == true ? false : true;
+                }
+                if (isspace(line[ii]) && !in_quote)
+                {
+                    continue;
+                }
+                if (line[ii] == '#' && !in_quote)
+                {
+                    break;
+                }
+                else if (line[ii] == '=' && !in_quote)
+                {
+                    is_value = true;
+                }
+                else if (line[ii] == '=' && is_value && !in_quote)
+                {
+                    key = "";
+                    value = "";
+                    break;
+                }
+                else if (!is_value)
+                {
+                    key += line[ii];
+                }
+                else
+                {
+                    valid = true;
+                    value += line[ii];
+                }
+            }
+            if (valid && !in_quote)
+            {
+                settings[key] = value;
+            }
+        }
+        fIn.close();
+    }
+}
 
 #endif /* PLUGIN_H_ */

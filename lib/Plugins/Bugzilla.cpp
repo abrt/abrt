@@ -1,7 +1,6 @@
 #include "Bugzilla.h"
 #include <xmlrpc-c/base.hpp>
 #include "CrashTypes.h"
-#include "PluginSettings.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
@@ -18,10 +17,9 @@ CReporterBugzilla::CReporterBugzilla() :
 
 CReporterBugzilla::~CReporterBugzilla()
 {}
-#include <iostream>
+
 void CReporterBugzilla::NewXMLRPCClient()
 {
-    std::cout << "m_bNoSSLVerify: " << m_bNoSSLVerify << std::endl;
     m_pXmlrpcTransport = new xmlrpc_c::clientXmlTransport_curl(
                              xmlrpc_c::clientXmlTransport_curl::constrOpt()
                                  .no_ssl_verifyhost(m_bNoSSLVerify)
@@ -117,6 +115,8 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
     std::vector<xmlrpc_c::value> bugs = xmlrpc_c::value_array(ret["bugs"]).vectorValueValue();
     if (bugs.size() > 0)
     {
+        comm_layer_inner_debug("Bug is already reported.");
+        comm_layer_inner_status("Bug is already reported.");
         return true;
     }
     return false;
@@ -322,25 +322,42 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
 
 void CReporterBugzilla::LoadSettings(const std::string& pPath)
 {
-    map_settings_t settings;
+    map_plugin_settings_t settings;
     plugin_load_settings(pPath, settings);
 
-    if (settings.find("BugzillaURL")!= settings.end())
+    SetSettings(settings);
+}
+
+void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    if (pSettings.find("BugzillaURL") != pSettings.end())
     {
-        m_sBugzillaURL = settings["BugzillaURL"];
+        m_sBugzillaURL = pSettings.find("BugzillaURL")->second;
     }
-    if (settings.find("Login")!= settings.end())
+    if (pSettings.find("Login") != pSettings.end())
     {
-        m_sLogin = settings["Login"];
+        m_sLogin = pSettings.find("Login")->second;
     }
-    if (settings.find("Password")!= settings.end())
+    if (pSettings.find("Password") != pSettings.end())
     {
-        m_sPassword = settings["Password"];
+        m_sPassword = pSettings.find("Password")->second;
     }
-    if (settings.find("NoSSLVerify")!= settings.end())
+    if (pSettings.find("NoSSLVerify") != pSettings.end())
     {
-        m_bNoSSLVerify = settings["NoSSLVerify"] == "yes";
+        m_bNoSSLVerify = pSettings.find("NoSSLVerify")->second == "yes";
     }
+}
+
+map_plugin_settings_t CReporterBugzilla::GetSettings()
+{
+    map_plugin_settings_t ret;
+
+    ret["BugzillaURL"] = m_sBugzillaURL;
+    ret["Login"] = m_sLogin;
+    ret["Password"] = m_sPassword;
+    ret["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
+
+    return ret;
 }
 
 PLUGIN_INFO(REPORTER,
