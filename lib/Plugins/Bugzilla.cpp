@@ -9,16 +9,45 @@
 #include <string.h>
 
 CReporterBugzilla::CReporterBugzilla() :
-    m_sBugzillaURL("https://bugzilla.redhat.com/xmlrpc.cgi")
-{
-    m_pXmlrpcTransport = new xmlrpc_c::clientXmlTransport_curl();
-    m_pXmlrpcClient = new xmlrpc_c::client_xml(m_pXmlrpcTransport);
-}
+    m_sBugzillaURL("https://bugzilla.redhat.com/xmlrpc.cgi"),
+    m_bNoSSLVerify(false),
+    m_pXmlrpcTransport(NULL),
+    m_pXmlrpcClient(NULL),
+    m_pCarriageParm(NULL)
+{}
 
 CReporterBugzilla::~CReporterBugzilla()
+{}
+#include <iostream>
+void CReporterBugzilla::NewXMLRPCClient()
 {
-    delete m_pXmlrpcTransport;
-    delete m_pXmlrpcClient;
+    std::cout << "m_bNoSSLVerify: " << m_bNoSSLVerify << std::endl;
+    m_pXmlrpcTransport = new xmlrpc_c::clientXmlTransport_curl(
+                             xmlrpc_c::clientXmlTransport_curl::constrOpt()
+                                 .no_ssl_verifyhost(m_bNoSSLVerify)
+                                 .no_ssl_verifypeer(m_bNoSSLVerify)
+                             );
+    m_pXmlrpcClient = new xmlrpc_c::client_xml(m_pXmlrpcTransport);
+    m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaURL);
+}
+
+void CReporterBugzilla::DeleteXMLRPCClient()
+{
+    if (m_pCarriageParm != NULL)
+    {
+        delete m_pCarriageParm;
+        m_pCarriageParm = NULL;
+    }
+    if (m_pXmlrpcClient != NULL)
+    {
+        delete m_pXmlrpcClient;
+        m_pXmlrpcClient = NULL;
+    }
+    if (m_pXmlrpcTransport != NULL)
+    {
+        delete m_pXmlrpcTransport;
+        m_pXmlrpcTransport = NULL;
+    }
 }
 
 PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
@@ -166,7 +195,7 @@ void CReporterBugzilla::GetProductAndVersion(const std::string& pRelease,
     }
 }
 
-void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
+std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
 {
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t bugParams;
@@ -177,9 +206,9 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     std::string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];;
     std::string product;
     std::string version;
+    std::stringstream bugId;
     CreateNewBugDescription(pCrashReport, description);
     GetProductAndVersion(release, product, version);
-
 
     bugParams["product"] = xmlrpc_c::value_string(product);
     bugParams["component"] =  xmlrpc_c::value_string(component);
@@ -196,16 +225,15 @@ void CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     {
         rpc->call(m_pXmlrpcClient, m_pCarriageParm);
         ret =  xmlrpc_c::value_struct(rpc->getResult());
-        std::stringstream ss;
-        ss << xmlrpc_c::value_int(ret["id"]);
-        comm_layer_inner_debug("New bug id: " + ss.str());
-        AddAttachments(ss.str(), pCrashReport);
+        bugId << xmlrpc_c::value_int(ret["id"]);
+        comm_layer_inner_debug("New bug id: " + bugId.str());
+        comm_layer_inner_status("New bug id: " + bugId.str());
     }
     catch (std::exception& e)
     {
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::NewBug(): ") + e.what());
     }
-
+    return bugId.str();
 }
 
 void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
@@ -238,6 +266,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
                     attchmentInBase64Printable +=  m_sAttchmentInBase64[ii];
                 }
             }
+
             paramList.add(xmlrpc_c::value_string(pBugId));
             attachmentParams["description"] = xmlrpc_c::value_string("File: " + it->first);
             attachmentParams["filename"] = xmlrpc_c::value_string(it->first);
@@ -266,8 +295,10 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
+    std::string bugId;
     comm_layer_inner_status("Logging into bugzilla...");
-    m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaURL);
+
+    NewXMLRPCClient();
     try
     {
         Login();
@@ -275,17 +306,18 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
         if (!CheckUUIDInBugzilla(component, uuid))
         {
             comm_layer_inner_status("Creating new bug...");
-            NewBug(pCrashReport);
+            bugId = NewBug(pCrashReport);
+            AddAttachments(bugId, pCrashReport);
         }
         comm_layer_inner_status("Logging out...");
         Logout();
     }
     catch (CABRTException& e)
     {
-        delete m_pCarriageParm;
+        DeleteXMLRPCClient();
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
     }
-    delete m_pCarriageParm;
+    DeleteXMLRPCClient();
 }
 
 void CReporterBugzilla::LoadSettings(const std::string& pPath)
@@ -304,5 +336,9 @@ void CReporterBugzilla::LoadSettings(const std::string& pPath)
     if (settings.find("Password")!= settings.end())
     {
         m_sPassword = settings["Password"];
+    }
+    if (settings.find("NoSSLVerify")!= settings.end())
+    {
+        m_bNoSSLVerify = settings["NoSSLVerify"] == "yes";
     }
 }

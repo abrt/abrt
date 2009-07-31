@@ -12,11 +12,13 @@ class CReporterBugzilla : public CReporter
     private:
         typedef std::map<std::string, xmlrpc_c::value> map_xmlrpc_params_t;
 
+        void NewXMLRPCClient();
+        void DeleteXMLRPCClient();
         static PRInt32 Base64Encode_cb(void *arg, const char *obuf, PRInt32 size);
         void Login();
         void Logout();
         bool CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID);
-        void NewBug(const map_crash_report_t& pCrashReport);
+        std::string NewBug(const map_crash_report_t& pCrashReport);
         void AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport);
         void CreateNewBugDescription(const map_crash_report_t& pCrashReport,
                                      std::string& pDescription);
@@ -31,6 +33,7 @@ class CReporterBugzilla : public CReporter
         std::string m_sLogin;
         std::string m_sPassword;
         std::string m_sAttchmentInBase64;
+        bool m_bNoSSLVerify;
 
     public:
         CReporterBugzilla();
@@ -43,7 +46,7 @@ class CReporterBugzilla : public CReporter
 PLUGIN_INFO(REPORTER,
             CReporterBugzilla,
             "Bugzilla",
-            "0.0.1",
+            "0.0.2",
             "Check if a bug isn't already reported in a bugzilla "
             "and if not, report it.",
             "zprikryl@redhat.com",
