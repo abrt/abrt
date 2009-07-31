@@ -62,7 +62,7 @@ PLUGIN_INFO(ACTION,
             "0.0.6",
             "Sends a report via FTP or SCTP",
             "dnovotny@redhat.com",
-            "https://fedorahosted.org/crash-catcher/wiki",
+            "https://fedorahosted.org/abrt/wiki",
             "");
 
 
