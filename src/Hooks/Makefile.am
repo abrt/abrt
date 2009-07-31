@@ -1,9 +1,24 @@
 libexec_PROGRAMS = hookCCpp
+bin_PROGRAMS = dumpoops
 
 # CCpp
 hookCCpp_SOURCES = CCpp.cpp
 hookCCpp_LDADD = ../../lib/Utils/libABRTUtils.la
-hookCCpp_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../../lib/Utils \
+hookCCpp_CPPFLAGS = -I$(srcdir)/../../inc \
+                    -I$(srcdir)/../../lib/Utils \
+                    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+                    -DVAR_RUN=\"$(VAR_RUN)\"
+
+# dumpoops
+dumpoops_SOURCES = dumpoops.cpp
+dumpoops_LDADD = ../../lib/Utils/libABRTUtils.la \
+                ../../lib/MiddleWare/libABRTMiddleWare.la \
+                ../../lib/Plugins/libKerneloopsScanner.la \
+                ../../lib/CommLayer/libABRTCommLayer.la
+dumpoops_CPPFLAGS = -I$(srcdir)/../../inc \
+                    -I$(srcdir)/../../lib/Utils \
+                    -I$(srcdir)/../../lib/Plugins \
+                    -I$(srcdir)/../../lib/MiddleWare \
                     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
                     -DVAR_RUN=\"$(VAR_RUN)\"
 
