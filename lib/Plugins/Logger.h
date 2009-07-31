@@ -39,14 +39,4 @@ class CLogger : public CReporter
         virtual void Report(const map_crash_report_t& pCrashReport, const std::string& pArgs);
 };
 
-
-PLUGIN_INFO(REPORTER,
-            CLogger,
-            "Logger",
-            "0.0.1",
-            "Write a report to a specific file",
-            "zprikryl@redhat.com",
-            "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/Logger.GTKBuilder");
-
 #endif /* LOGGER_H_ */

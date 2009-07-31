@@ -38,13 +38,4 @@ class CActionSOSreport : public CAction
                          const std::string& pArgs);
 };
 
-PLUGIN_INFO(ACTION,
-            CActionSOSreport ,
-            "SOSreport",
-            "0.0.2",
-            "Run sosreport, save the output in the crash dump",
-            "gavin@redhat.com",
-            "https://fedorahosted.org/abrt/wiki",
-            "");
-
 #endif

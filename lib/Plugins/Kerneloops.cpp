@@ -61,3 +61,12 @@ std::string CAnalyzerKerneloops::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
 	return GetLocalUUID(pDebugDumpDir);
 }
+
+PLUGIN_INFO(ANALYZER,
+            CAnalyzerKerneloops,
+            "Kerneloops",
+            "0.0.2",
+            "Abrt's Kerneloops plugin.",
+            "anton@redhat.com",
+            "https://people.redhat.com/aarapov",
+            "");

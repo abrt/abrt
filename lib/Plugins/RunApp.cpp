@@ -86,5 +86,14 @@ void CActionRunApp::Run(const std::string& pActionDir,
         dd.SaveText(args[FILENAME], output);
         dd.Close();
     }
-
 }
+
+PLUGIN_INFO(ACTION,
+            CActionRunApp,
+            "RunApp",
+            "0.0.1",
+            "Simple action plugin which runs a command "
+            "and it can save command's output",
+            "zprikryl@redhat.com",
+            "https://fedorahosted.org/abrt/wiki",
+            "");

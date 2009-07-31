@@ -581,3 +581,12 @@ void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
         m_bMemoryMap = settings["MemoryMap"] == "yes";
     }
 }
+
+PLUGIN_INFO(ANALYZER,
+            CAnalyzerCCpp,
+            "CCpp",
+            "0.0.1",
+            "Simple C/C++ analyzer plugin.",
+            "zprikryl@redhat.com",
+            "https://fedorahosted.org/abrt/wiki",
+            "");

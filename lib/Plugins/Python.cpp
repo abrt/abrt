@@ -48,3 +48,12 @@ void CAnalyzerPython::DeInit()
 		fOutPySiteCustomize.close();
 	}
 }
+
+PLUGIN_INFO(ANALYZER,
+            CAnalyzerPython,
+            "Python",
+            "0.0.1",
+            "Simple Python analyzer plugin.",
+            "zprikryl@redhat.com, jmoskovc@redhat.com",
+            "https://fedorahosted.org/abrt/wiki",
+            "");

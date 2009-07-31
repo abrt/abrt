@@ -342,3 +342,13 @@ void CReporterBugzilla::LoadSettings(const std::string& pPath)
         m_bNoSSLVerify = settings["NoSSLVerify"] == "yes";
     }
 }
+
+PLUGIN_INFO(REPORTER,
+            CReporterBugzilla,
+            "Bugzilla",
+            "0.0.2",
+            "Check if a bug isn't already reported in a bugzilla "
+            "and if not, report it.",
+            "zprikryl@redhat.com",
+            "https://fedorahosted.org/abrt/wiki",
+            PLUGINS_LIB_DIR"/Bugzilla.GTKBuilder");

@@ -60,15 +60,12 @@ class CPlugin
 /**
  * An emun of plugin types.
  */
-typedef enum { ANALYZER,    /**< An analyzer plugin*/
-               ACTION,      /**< An action plugin*/
-               REPORTER,    /**< A reporter plugin*/
-               DATABASE     /**< A database plugin*/
-             } plugin_type_t;
-/**
- * Text reprezentation of plugin types.
- */
-const char* const plugin_type_str_t[] = {"Analyzer", "Action", "Reporter", "Database"};
+typedef enum {
+    ANALYZER,    /**< An analyzer plugin*/
+    ACTION,      /**< An action plugin*/
+    REPORTER,    /**< A reporter plugin*/
+    DATABASE     /**< A database plugin*/
+} plugin_type_t;
 
 /**
  * A struct contains all needed data about particular plugin.

@@ -241,7 +241,7 @@ void CFileTransfer::LoadSettings(const std::string& pPath)
     {
         m_nRetryCount = atoi(settings["RetryCount"].c_str());
     }
-    
+
     if (settings.find("RetryDelay")!= settings.end())
     {
         m_nRetryDelay = atoi(settings["RetryDelay"].c_str());
@@ -256,5 +256,13 @@ void CFileTransfer::LoadSettings(const std::string& pPath)
             m_sArchiveType =  "." + m_sArchiveType;
         }
     }
-
 }
+
+PLUGIN_INFO(ACTION,
+            CFileTransfer,
+            "FileTransfer",
+            "0.0.6",
+            "Sends a report via FTP or SCTP",
+            "dnovotny@redhat.com",
+            "https://fedorahosted.org/abrt/wiki",
+            "");

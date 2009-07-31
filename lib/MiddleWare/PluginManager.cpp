@@ -27,6 +27,12 @@
 #include <stdio.h>
 #include <sys/types.h>
 
+/**
+ * Text reprezentation of plugin types.
+ */
+static const char* const plugin_type_str_t[] = { "Analyzer", "Action", "Reporter", "Database" };
+
+
 CPluginManager::CPluginManager(const std::string& pPlugisConfDir,
 							   const std::string& pPlugisLibDir) :
     m_sPlugisConfDir(pPlugisConfDir),

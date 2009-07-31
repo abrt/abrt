@@ -12,9 +12,9 @@ The subclasses are:
 
 Each of them requires you to override a different set of methods.
 
-The pDebugDumpDir parameter is very common: it specifies the directory 
+The pDebugDumpDir parameter is very common: it specifies the directory
 that is created to gather information of this specific crash.
-The files that were created when the application crashed (such as core dumps) 
+The files that were created when the application crashed (such as core dumps)
 are all stored here. In addition, the plugins can write
 their output files there, if any.
 
@@ -27,8 +27,8 @@ performed when a crash is encountered.
 you have to override one method:
 
 virtual void Run(const std::string& pActiveDir,
-                 const std::string& pArgs) = 0; 
--This method runs the specified action.		 
+                 const std::string& pArgs) = 0;
+-This method runs the specified action.
  The first argument is a directory name. It can be either the current debug
  dump dir or a directory that contains all debug dumps.
  The second argument is a string with arguments specified for the action.
@@ -36,8 +36,8 @@ virtual void Run(const std::string& pActiveDir,
 Analyzer Plugin
 ---------------
 This plugin has to compute the UUID of the crash. Crashes differ, depending on
-where they occur, for example crashes in the kernel differ from crashes in 
-userspace binaries, which differ from crashes in python scripts. Therefore, 
+where they occur, for example crashes in the kernel differ from crashes in
+userspace binaries, which differ from crashes in python scripts. Therefore,
 you need a plugin for each type of application that you want "abrt" to handle.
 
 you have to override these methods:
@@ -77,8 +77,8 @@ virtual void Report(const crash_report_t& pCrashReport,
 Database Plugin
 ---------------
 You use this plugin to store the metadata about the crash. The metadata
-has to be in a database, to distinguish whether the current crash is or 
-is not the same as some crash before. The database can be local, or in 
+has to be in a database, to distinguish whether the current crash is or
+is not the same as some crash before. The database can be local, or in
 some centralized location on the network.
 
 you have to override these methods:
@@ -90,7 +90,7 @@ virtual void Insert(const std::string& pUUID,
                     const std::string& pUID,
                     const std::string& pDebugDumpPath,
                     const std::string& pTime) = 0;
-- insert an entry into the database: you use both UID (user ID) and UUID 
+- insert an entry into the database: you use both UID (user ID) and UUID
   (ID of the crash)
 
 virtual void Delete(const std::string& pUUID, const std::string& pUID) = 0;
@@ -111,13 +111,13 @@ virtual const database_row_t GetUUIDData(const std::string& pUUID, const
 
 The macro PLUGIN_INFO
 ---------------------
-Use the macro PLUGIN_INFO in the header file of your plugin so that your 
-subclass will be properly registered  and treated as a plugin.
-This sets up all the lower-level and administrative details to fit your 
+Use the macro PLUGIN_INFO in the *.cpp file of your plugin so that your
+subclass will be properly registered and treated as a plugin.
+This sets up all the lower-level and administrative details to fit your
 class into the plugin infrastructure. The syntax is:
 
 PLUGIN_INFO(type, plugin_class, name, version, description, email, www)
-- "type" is one of ANALYZER, ACTION, REPORTER, or DATABASE 
+- "type" is one of ANALYZER, ACTION, REPORTER, or DATABASE
 - "plugin_class" is the identifier of the class
 - "name" is a string with the name of the plugin
 - "version" is a string with the version of the plugin

@@ -29,13 +29,4 @@ class CKerneloopsScanner : public CAction
         virtual void LoadSettings(const std::string& pPath);
 };
 
-PLUGIN_INFO(ACTION,
-            CKerneloopsScanner,
-            "KerneloopsScanner",
-            "0.0.1",
-            "Save new Kerneloops crashes into debug dump dir",
-            "anton@redhat.com",
-            "http://people.redhat.com/aarapov",
-            "");
-
 #endif /* KERNELOOPSSCANNER_H_ */

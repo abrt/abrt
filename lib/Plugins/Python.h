@@ -17,15 +17,4 @@ class CAnalyzerPython : public CAnalyzer
         virtual std::string CreateHash(const std::string& pInput);
 };
 
-
-PLUGIN_INFO(ANALYZER,
-            CAnalyzerPython,
-            "Python",
-            "0.0.1",
-            "Simple Python analyzer plugin.",
-            "zprikryl@redhat.com, jmoskovc@redhat.com",
-            "https://fedorahosted.org/abrt/wiki",
-            "");
-
-
 #endif /* PYTHON_H_ */

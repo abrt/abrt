@@ -47,14 +47,4 @@ class CMailx : public CReporter
         virtual void Report(const map_crash_report_t& pCrashReport, const std::string& pArgs);
 };
 
-
-PLUGIN_INFO(REPORTER,
-            CMailx,
-            "Mailx",
-            "0.0.2",
-            "Sends an email with a report via mailx command",
-            "zprikryl@redhat.com",
-            "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/Mailx.GTKBuilder");
-
 #endif /* MAILX_H_ */

@@ -278,3 +278,12 @@ void CSQLite3::LoadSettings(const std::string& pPath)
         m_sDBPath = settings["DBPath"];
     }
 }
+
+PLUGIN_INFO(DATABASE,
+            CSQLite3,
+            "SQLite3",
+            "0.0.1",
+            "SQLite3 database plugin.",
+            "zprikryl@redhat.com,jmoskovc@redhat.com",
+            "https://fedorahosted.org/abrt/wiki",
+            "");

@@ -118,3 +118,12 @@ void CKerneloopsReporter::LoadSettings(const std::string& pPath)
 		m_sSubmitURL = settings["SubmitURL"];
 	}
 }
+
+PLUGIN_INFO(REPORTER,
+            CKerneloopsReporter,
+            "KerneloopsReporter",
+            "0.0.1",
+            "Sends the Kerneloops crash information to Kerneloopsoops.org",
+            "anton@redhat.com",
+            "http://people.redhat.com/aarapov",
+            PLUGINS_LIB_DIR"/KerneloopsReporter.GTKBuilder");

@@ -151,3 +151,12 @@ void CKerneloopsScanner::LoadSettings(const std::string& pPath)
         m_sSysLogFile = settings["SysLogFile"];
     }
 }
+
+PLUGIN_INFO(ACTION,
+            CKerneloopsScanner,
+            "KerneloopsScanner",
+            "0.0.1",
+            "Save new Kerneloops crashes into debug dump dir",
+            "anton@redhat.com",
+            "http://people.redhat.com/aarapov",
+            "");
