@@ -46,7 +46,7 @@ void verror_msg(const char *s, va_list p, const char* strerr)
 	if (prefix_len) {
 		memmove(msg + prefix_len, msg, used);
 		used += prefix_len;
-		strcpy(msg, msg_prefix);
+		memcpy(msg, msg_prefix, prefix_len);
 	}
 	if (strerr) {
 		if (s[0]) { /* not perror_nomsg? */
