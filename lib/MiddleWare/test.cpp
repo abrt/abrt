@@ -40,6 +40,7 @@ int main(int argc, char** argv)
     {
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
                                PLUGINS_LIB_DIR);
+        vector_map_string_string_t loaded_plugins;
         middleWare.RegisterPlugin("CCpp");
         middleWare.RegisterPlugin("Mailx");
         middleWare.RegisterPlugin("Logger");
@@ -51,7 +52,19 @@ int main(int argc, char** argv)
         middleWare.AddAnalyzerActionOrReporter("CCpp", "Mailx", "");
         middleWare.AddAnalyzerActionOrReporter("CCpp", "RunApp", "date");
 
-        std::cout << "Mailx GTKBuilder path: " << middleWare.GetPluginInfo("Mailx")["GTKBuilder"];
+        loaded_plugins = middleWare.GetPluginsInfo();
+        std::cout << "Loaded plugins" << std::endl;
+        int ii;
+        for ( ii = 0; ii < loaded_plugins.size(); ii++)
+        {
+            std::cout << "Type: " << loaded_plugins[ii]["Type"] << std::endl;
+            std::cout << "Name: " << loaded_plugins[ii]["Name"] << std::endl;
+            std::cout << "Version: " << loaded_plugins[ii]["Version"] << std::endl;
+            std::cout << "Description: " << loaded_plugins[ii]["Description"] << std::endl;
+            std::cout << "Email: " << loaded_plugins[ii]["Email"] << std::endl;
+            std::cout << "WWW: " << loaded_plugins[ii]["WWW"] << std::endl;
+            std::cout << "GTKBuilder: " << loaded_plugins[ii]["GTKBuilder"] << std::endl;
+        }
         /* Try to save it into DB */
         map_crash_info_t crashInfo;
         if (middleWare.SaveDebugDump(argv[1], crashInfo))

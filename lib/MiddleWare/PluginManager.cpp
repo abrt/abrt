@@ -226,18 +226,23 @@ plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
     return m_mapABRTPlugins[pName]->GetType();
 }
 
-map_string_string_t CPluginManager::GetPluginInfo(const std::string& pName)
+vector_map_string_string_t CPluginManager::GetPluginsInfo()
 {
-    map_string_string_t ret;
-    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    vector_map_string_string_t ret;
+    map_abrt_plugins_t::iterator it_abrt_plugin;
+    for (it_abrt_plugin = m_mapABRTPlugins.begin(); it_abrt_plugin != m_mapABRTPlugins.end(); it_abrt_plugin++)
     {
-        ret["Type"] = plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()];
-        ret["Name"] = m_mapABRTPlugins[pName]->GetName();
-        ret["Version"] = m_mapABRTPlugins[pName]->GetVersion();
-        ret["Description"] = m_mapABRTPlugins[pName]->GetDescription();
-        ret["Email"] = m_mapABRTPlugins[pName]->GetEmail();
-        ret["WWW"] = m_mapABRTPlugins[pName]->GetWWW();
-        ret["GTKBuilder"] = m_mapABRTPlugins[pName]->GetGTKBuilder();
+        map_string_string_t plugin_info;
+
+        plugin_info["Type"] = plugin_type_str_t[it_abrt_plugin->second->GetType()];
+        plugin_info["Name"] = it_abrt_plugin->second->GetName();
+        plugin_info["Version"] = it_abrt_plugin->second->GetVersion();
+        plugin_info["Description"] = it_abrt_plugin->second->GetDescription();
+        plugin_info["Email"] = it_abrt_plugin->second->GetEmail();
+        plugin_info["WWW"] = it_abrt_plugin->second->GetWWW();
+        plugin_info["GTKBuilder"] = it_abrt_plugin->second->GetGTKBuilder();
+        ret.push_back(plugin_info);
+
     }
     return ret;
 }

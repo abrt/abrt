@@ -132,12 +132,12 @@ class CPluginManager
 		 */
 		plugin_type_t GetPluginType(const std::string& pName);
         /**
-         * A method, which gets all needed plugin info. It can be send via DBus
-         * to GUI and displayed to an user.
-         * @param pName A Name of plugin.
-         * @return A map <key, vaule>
+         * A method, which gets all plugins info (event those plugins which are
+         * disabled). It can be send via DBus to GUI and displayed to an user.
+         * Then a user can fill all needed informations like URLs etc.
+         * @return A vector of maps <key, vaule>
          */
-        map_string_string_t GetPluginInfo(const std::string& pName);
+        vector_map_string_string_t GetPluginsInfo();
 };
 
 #endif /*PLUGINMANAGER_H_*/
