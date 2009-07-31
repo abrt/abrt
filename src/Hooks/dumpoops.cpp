@@ -29,7 +29,8 @@ int main(int argc, char **argv)
         log("usage: %s FILE", argv[0]);
         return 1;
     }
-    msg_prefix = xasprintf("%s: ", argv[0]);
+    char *slash = strrchr(argv[0], '/');
+    msg_prefix = xasprintf("%s: ", slash ? slash+1 : argv[0]);
 
     CKerneloopsScanner scanner;
     int cnt = scanner.ScanSysLogFile(argv[1]);
