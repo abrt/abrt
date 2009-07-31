@@ -98,15 +98,18 @@ const std::list<COops>& CSysLog::GetOopsList()
  * This function splits the dmesg buffer data into lines
  * (null terminated).
  */
-int CSysLog::FillLinePointers(char *buffer, size_t buflen, int remove_syslog)
+int CSysLog::FillLinePointers(char *buffer, size_t buflen /*, int remove_syslog*/)
 {
 	char *c, *linepointer, linelevel;
+	enum { maybe, no, yes } syslog_format = maybe;
 	linecount = 0;
+
 	if (!buflen)
 		return 0;
 	buffer[buflen - 1] = '\n';  /* the buffer usually ends with \n, but let's make sure */
 	c = buffer;
 	while (c < buffer + buflen) {
+		char v;
 		int len = 0;
 		char *c9;
 
@@ -115,7 +118,19 @@ int CSysLog::FillLinePointers(char *buffer, size_t buflen, int remove_syslog)
 		len = c9 - c;
 
 		/* in /var/log/messages, we need to strip the first part off, upto the 3rd ':' */
-		if (remove_syslog) {
+		if (syslog_format == yes
+		 || (syslog_format == maybe
+		     && len > sizeof("Jul  4 11:11:41")
+		     && c[3] == ' ' && c[6] == ' ' && c[9] == ':' && c[12] == ':'
+		     && (v = (c[5] | c[7]|c[8] | c[10]|c[11] | c[13]|c[14])) <= '9'
+		     && v >= '0'
+		     && (v = (c[5] & c[7]&c[8] & c[10]&c[11] & c[13]&c[14])) <= '9'
+		     && v >= '0'
+		    )
+		) {
+			/* It's syslog file, not a bare dmesg */
+			syslog_format = yes;
+
 			char *c2;
 			int i;
 
@@ -136,6 +151,8 @@ int CSysLog::FillLinePointers(char *buffer, size_t buflen, int remove_syslog)
 			}
 			c++;
 			len--;
+		} else if (len) {
+			syslog_format = no;
 		}
 
 		linepointer = c;
@@ -197,7 +214,7 @@ int CSysLog::ExtractVersion(char *linepointer, char *version)
 
 		start = strstr(linepointer, "2.6.");
 		if (start) {
-			end = index(start, 0x20);
+			end = strchrnul(start, ' ');
 			strncpy(version, start, end-start);
 			ret = 1;
 		}
@@ -212,7 +229,7 @@ int CSysLog::ExtractVersion(char *linepointer, char *version)
 /*
  * extract_oops tries to find oops signatures in a log
  */
-int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
+int CSysLog::ExtractOops(char *buffer, size_t buflen /*, int remove_syslog*/)
 {
 	int i;
 	char prevlevel = 0;
@@ -224,7 +241,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 	lines_info = NULL;
 	lines_info_alloc = 0;
 
-	if (FillLinePointers(buffer, buflen, remove_syslog) < 0);
+	if (FillLinePointers(buffer, buflen /*, remove_syslog*/) < 0)
 		goto fail;
 
 	oopsend = linecount;
@@ -407,10 +424,10 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen, int remove_syslog)
 		while (oopsend > 0 && lines_info[oopsend].ptr == NULL)
 			oopsend--;
 		for (q = oopsstart; q <= oopsend; q++)
-			len += strlen(lines_info[q].ptr)+1;
+			len += strlen(lines_info[q].ptr) + 1;
 
-		oops = (char*)calloc(len, 1);
-		version = (char*)calloc(len, 1);
+		oops = (char*)xzalloc(len);
+		version = (char*)xzalloc(len);
 
 		is_version = 0;
 		for (q = oopsstart; q <= oopsend; q++) {

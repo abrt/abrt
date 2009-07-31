@@ -42,7 +42,7 @@ class CSysLog
 	private:
 		void QueueOops(char *data, char *version);
 		int ExtractVersion(char *linepointer, char *version);
-		int FillLinePointers(char *buffer, size_t buflen, int remove_syslog);
+		int FillLinePointers(char *buffer, size_t buflen /*, int remove_syslog*/);
 		std::list<COops> m_OopsQueue;
 		int m_nFoundOopses;
 
@@ -50,7 +50,7 @@ class CSysLog
 		CSysLog();
 		const std::list<COops>& GetOopsList();
 		void ClearOopsList();
-		int ExtractOops(char *buffer, size_t buflen, int remove_syslog);
+		int ExtractOops(char *buffer, size_t buflen /*, int remove_syslog*/);
 };
 
 #endif
