@@ -14,7 +14,6 @@
 #include <asm/unistd.h>
 
 
-#define MIN(A,B) ((A) < (B) ? (A) : (B))
 #define FILENAME_KERNELOOPS  "kerneloops"
 
 void CKerneloopsScanner::Run(const std::string& pActionDir,
@@ -42,39 +41,37 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 {
     comm_layer_inner_status("Creating kernel oops crash reports...");
 
-    CDebugDump m_pDebugDump;
-    char m_sPath[PATH_MAX];
-    std::list<COops> m_pOopsList;
+    CDebugDump debugDump;
+    char path[PATH_MAX];
+    std::list<COops> oopsList;
 
     time_t t = time(NULL);
 
-    m_pOopsList = m_pSysLog.GetOopsList();
+    oopsList = m_pSysLog.GetOopsList();
     m_pSysLog.ClearOopsList();
-    while (!m_pOopsList.empty())
+    while (!oopsList.empty())
     {
-        snprintf(m_sPath, sizeof(m_sPath), "%s/kerneloops-%ld-%ld", DEBUG_DUMPS_DIR, (long)t, (long)m_pOopsList.size());
+        snprintf(path, sizeof(path), "%s/kerneloops-%lu-%lu", DEBUG_DUMPS_DIR, (long)t, (long)oopsList.size());
 
-        COops m_pOops;
-        m_pOops = m_pOopsList.back();
+        COops oops = oopsList.back();
 
         try
         {
-            m_pDebugDump.Create(m_sPath, "0");
-            m_pDebugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
-            m_pDebugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
-            m_pDebugDump.SaveText(FILENAME_KERNEL, m_pOops.m_sVersion);
-            m_pDebugDump.SaveText(FILENAME_PACKAGE, "not_applicable");
-            m_pDebugDump.SaveText(FILENAME_KERNELOOPS, m_pOops.m_sData);
-            m_pDebugDump.Close();
+            debugDump.Create(path, "0");
+            debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
+            debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
+            debugDump.SaveText(FILENAME_KERNEL, oops.m_sVersion);
+            debugDump.SaveText(FILENAME_PACKAGE, "not_applicable");
+            debugDump.SaveText(FILENAME_KERNELOOPS, oops.m_sData);
+            debugDump.Close();
         }
         catch (CABRTException& e)
         {
-            throw CABRTException(EXCEP_PLUGIN, "CAnalyzerKerneloops::Report(): " + e.what());
+            throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": " + e.what());
         }
-        m_pOopsList.pop_back();
+        oopsList.pop_back();
     }
 }
-
 
 int CKerneloopsScanner::ScanDmesg()
 {
