@@ -257,6 +257,7 @@ fi
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsScanner.conf
+%{_bindir}/dumpoops
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
