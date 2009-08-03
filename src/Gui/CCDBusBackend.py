@@ -20,7 +20,6 @@ class DBusManager(gobject.GObject):
     # and later with policyKit
     bus = None
     uniq_name = None
-    pending_jobs = []
     def __init__(self):
         session = None
         # binds the dbus to glib mainloop
@@ -128,7 +127,7 @@ class DBusManager(gobject.GObject):
         if not self.bus:
             self.bus = dbus.SystemBus()
             self.bus.add_signal_receiver(self.owner_changed_cb,"NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
-        #self.uniq_name = bus.get_unique_name()
+        self.uniq_name = self.bus.get_unique_name()
         if not self.bus:
             raise Exception("Can't connect to dbus")
         if self.bus.name_has_owner(CC_NAME):
@@ -153,17 +152,16 @@ class DBusManager(gobject.GObject):
             raise Exception("Please check if abrt daemon is running.")
 
     def addJob(self, job_id):
-        self.pending_jobs.append(job_id)
+        pass
+        #self.pending_jobs.append(job_id)
         
-    def jobdone_cb(self, job_id):
-        #if self.uniq_name == client_id:
-        try:
-            self.pending_jobs.index(job_id)
-        except:
-            return
-        dump = self.cc.GetJobResult(job_id)
-        if dump:
-            self.emit("analyze-complete", dump)
+    def jobdone_cb(self, dest, job_id):
+        if self.uniq_name == dest:
+            dump = self.cc.GetJobResult(job_id)
+            if dump:
+                self.emit("analyze-complete", dump)
+            else:
+                raise Exception("Daemon did't return valid report info")
         
     def getReport(self, UUID):
         try:

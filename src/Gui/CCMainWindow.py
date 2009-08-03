@@ -145,7 +145,7 @@ class MainWindow():
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
         except Exception, e:
-            gui_error_message("Error while loading the dumplist, please check if abrt daemon is running\n %s" % e.message)
+            gui_error_message("Error while loading the dumplist, please check if abrt daemon is running\n %s" % e)
         for entry in dumplist:
             try:
                 icon = get_icon_for_package(self.theme, entry.getPackageName())

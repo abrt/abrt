@@ -112,13 +112,30 @@ public:
 class CDBusClient_proxy
  : public DBus::InterfaceProxy
 {
+private:
+    bool m_bJobDone;
+    uint64_t m_iPendingJobID;
+    GMainLoop *gloop;
+    std::string m_sConnName;
 public:
 
+    
     CDBusClient_proxy()
     : DBus::InterfaceProxy(CC_DBUS_IFACE)
     {
+        connect_signal(CDBusClient_proxy, Crash, _Crash_stub);
+        connect_signal(CDBusClient_proxy, JobDone, _JobDone_stub);
+        m_sConnName = "";
+    }
+    
+    CDBusClient_proxy(::DBus::Connection &pConnection)
+    : DBus::InterfaceProxy(CC_DBUS_IFACE)
+    {
+        gloop = g_main_loop_new(NULL, false);
         //# define connect_signal(interface, signal, callback)
         connect_signal(CDBusClient_proxy, Crash, _Crash_stub);
+        connect_signal(CDBusClient_proxy, JobDone, _JobDone_stub);
+        m_sConnName = pConnection.unique_name();
     }
 
 public:
@@ -168,6 +185,7 @@ public:
     
     map_crash_report_t CreateReport(const std::string& pUUID)
     {
+        m_bJobDone = false;
         DBus::CallMessage call;
         
         DBus::MessageIter wi = call.writer();
@@ -176,10 +194,10 @@ public:
         call.member("CreateReport");
         DBus::Message ret = invoke_method(call);
         DBus::MessageIter ri = ret.reader();
-
-        map_crash_report_t argout;
-        ri >> argout;
-        return argout;
+        ri >> m_iPendingJobID;
+        //FIXME: what if the report is created before we start the loop? (we miss the signal and get stuck in the loop)
+        g_main_loop_run(gloop);
+        return GetJobResult(m_iPendingJobID);
     };
     
     void Report(map_crash_report_t pReport)
@@ -194,12 +212,27 @@ public:
         DBus::MessageIter ri = ret.reader();
     }
     
+    map_crash_report_t GetJobResult(uint64_t pJobID)
+    {
+        DBus::CallMessage call;
+        
+        DBus::MessageIter wi = call.writer();
+
+        wi << pJobID;
+        call.member("GetJobResult");
+        DBus::Message ret = invoke_method(call);
+        DBus::MessageIter ri = ret.reader();
+        map_crash_report_t argout;
+        ri >> argout;
+        return argout;
+    }
+    
 public:
 
     /* signal handlers for this interface
      */
-     virtual void Crash(std::string& value) = 0;
-
+    virtual void Crash(std::string& value){}
+    
 private:
 
     /* unmarshalers (to unpack the DBus message before calling the actual signal handler)
@@ -210,5 +243,17 @@ private:
 
         std::string value; ri >> value;
         Crash(value);
+    }
+    
+    void _JobDone_stub(const ::DBus::SignalMessage &sig)
+    {
+        DBus::MessageIter ri = sig.reader();
+        std::string dest;
+        ri >> dest;
+        if(m_sConnName == dest)
+        {
+            ri >> m_iPendingJobID;
+            g_main_loop_quit(gloop);
+        }
     }
 };

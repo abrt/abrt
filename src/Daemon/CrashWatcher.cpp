@@ -169,9 +169,9 @@ void *CCrashWatcher::create_report(void *arg){
         }
         /* only one thread can write */
         pthread_mutex_lock(&(thread_data->daemon->m_pJobsMutex));
-        thread_data->daemon->pending_jobs[thread_data->thread_id] = crashReport;
+        thread_data->daemon->pending_jobs[std::string(thread_data->UID)][thread_data->thread_id] = crashReport;
         pthread_mutex_unlock(&(thread_data->daemon->m_pJobsMutex));
-        thread_data->daemon->m_pCommLayer->JobDone(thread_data->thread_id);
+        thread_data->daemon->m_pCommLayer->JobDone(thread_data->dest, thread_data->thread_id);
     }
     catch (CABRTException& e)
     {
@@ -180,6 +180,7 @@ void *CCrashWatcher::create_report(void *arg){
             /* free strduped strings */
             free(thread_data->UUID);
             free(thread_data->UID);
+            free(thread_data->dest);
             free(thread_data);
             throw e;
         }
@@ -188,6 +189,7 @@ void *CCrashWatcher::create_report(void *arg){
     /* free strduped strings */
     free(thread_data->UUID);
     free(thread_data->UID);
+    free(thread_data->dest);
     free(thread_data);
 }
 
@@ -375,22 +377,22 @@ void CCrashWatcher::SetUpCron()
     }
 }
 
-void CCrashWatcher::Status(const std::string& pMessage)
+void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest)
 {
     std::cout << "Update: " + pMessage << std::endl;
     //FIXME: send updates only to job owner
-    if (m_pCommLayer != NULL)
-        m_pCommLayer->Update("0",pMessage);
+    if(m_pCommLayer != NULL)
+       m_pCommLayer->Update(pDest,pMessage);
 }
 
-void CCrashWatcher::Warning(const std::string& pMessage)
+void CCrashWatcher::Warning(const std::string& pMessage, const std::string& pDest)
 {
     std::cerr << "Warning: " + pMessage << std::endl;
-    if (m_pCommLayer != NULL)
-        m_pCommLayer->Warning("0",pMessage);
+    if(m_pCommLayer != NULL)
+       m_pCommLayer->Warning(pDest,pMessage);
 }
 
-void CCrashWatcher::Debug(const std::string& pMessage)
+void CCrashWatcher::Debug(const std::string& pMessage, const std::string& pDest)
 {
     //some logic to add logging levels?
     std::cout << "Debug: " + pMessage << std::endl;
@@ -771,17 +773,26 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     return retval;
 }
 
-uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID)
+uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
-    thread_data->UUID = xstrdup(pUUID.c_str());
-    thread_data->UID = xstrdup(pUID.c_str());
-    thread_data->daemon = this;
-    if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
+    if (thread_data != NULL)
     {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
+        thread_data->UUID = xstrdup(pUUID.c_str());
+        thread_data->UID = xstrdup(pUID.c_str());
+        thread_data->dest = xstrdup(pSender.c_str());
+        thread_data->daemon = this;
+        if(pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
+        {
+            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
+        }
     }
-    return (uint64_t) thread_data->thread_id;
+    else
+    {
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot allocate memory!");
+    }
+    //FIXME: we don't use this value anymore, so fix the API
+    return 0;
 }
 
 bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
@@ -840,7 +851,11 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     return true;
 }
 
-map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::string& pDBusSender)
+map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::string& pSender)
 {
-    return pending_jobs[pJobID];
+    /* FIXME: once we return the result, we should remove it from map to free memory
+       - use some TTL to clean the memory even if client won't get it
+       - if we don't find it in the cache we should try to ask MW to get it again??
+    */
+    return pending_jobs[pSender][pJobID];
 }

@@ -118,10 +118,11 @@ public:
     }
     
     
-    void JobDone(uint64_t job_id)
+    void JobDone(const std::string &pDest, uint64_t job_id)
     {
         ::DBus::SignalMessage sig("JobDone");
         ::DBus::MessageIter wi = sig.writer();
+        wi << pDest;
         wi << job_id;
         emit_signal(sig);
     }

@@ -1,6 +1,7 @@
 #include "CommLayerClientDBus.h"
 CCommLayerClientDBus::CCommLayerClientDBus(DBus::Connection &connection, const char *path, const char *name)
-: DBus::ObjectProxy(connection, path, name)
+: CDBusClient_proxy(connection),
+  DBus::ObjectProxy(connection, path, name)
 {
 }
 CCommLayerClientDBus::~CCommLayerClientDBus()

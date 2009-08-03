@@ -69,8 +69,8 @@ class CApplet
                             gpointer       user_data);
     private:
     /* dbus stuff */
-            void Crash(std::string &value);
-    private:
+        void Crash(std::string &value);
+
     /* the real signal handler called to handle the signal */
     void (*m_pCrashHandler)(const char *progname);
 };

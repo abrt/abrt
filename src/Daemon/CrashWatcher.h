@@ -74,10 +74,18 @@ class CCrashWatcher
            pthread_t  thread_id;
            char* UUID;
            char* UID;
+           char *dest;
            CCrashWatcher *daemon;
         } thread_data_t;
         
-        std::map <int, map_crash_report_t> pending_jobs;
+        /**
+         * Map to cache the results from CreateReport_t
+         * <UID, <UUID, result>>
+         */
+         std::map <const std::string, std::map <int, map_crash_report_t > > pending_jobs;
+        /**
+        * mutex to protect pending_jobs from being accesed by multiple threads at the same time
+        */
         pthread_mutex_t m_pJobsMutex;
 
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
@@ -120,15 +128,15 @@ class CCrashWatcher
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
         /*FIXME: fix CLI and remove this stub*/
         virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID){map_crash_report_t retval; return retval;};
-        uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID);
+        uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
         virtual bool Report(map_crash_report_t pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
-        virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender);
+        virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
 
         /* Observer methods */
-        void Status(const std::string& pMessage);
-        void Debug(const std::string& pMessage);
-        void Warning(const std::string& pMessage);
+        void Status(const std::string& pMessage,const std::string& pDest="0");
+        void Debug(const std::string& pMessage, const std::string& pDest="0");
+        void Warning(const std::string& pMessage, const std::string& pDest="0");
 };
 
 #endif /*CRASHWATCHER_H_*/
