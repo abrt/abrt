@@ -46,7 +46,7 @@ class CSettings
         const set_strings_t& GetBlackList();
         const set_strings_t& GetEnabledPlugins();
         const set_strings_t& GetOpenGPGPublicKeys();
-        const bool& GetOpenGPGCheck();
+        bool GetOpenGPGCheck();
         const map_analyzer_actions_and_reporters_t& GetAnalyzerActionsAndReporters();
         const unsigned int& GetMaxCrashReportsSize();
         const vector_pair_strings_t& GetActionsAndReporters();

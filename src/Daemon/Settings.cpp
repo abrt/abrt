@@ -286,7 +286,7 @@ const CSettings::set_strings_t& CSettings::GetOpenGPGPublicKeys()
     return m_setOpenGPGPublicKeys;
 }
 
-const bool& CSettings::GetOpenGPGCheck()
+bool CSettings::GetOpenGPGCheck()
 {
     return m_bOpenGPGCheck;
 }

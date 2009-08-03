@@ -581,7 +581,7 @@ vector_map_string_string_t CMiddleWare::GetPluginsInfo()
     return m_pPluginManager->GetPluginsInfo();
 }
 
-void CMiddleWare::SetOpenGPGCheck(const bool& pCheck)
+void CMiddleWare::SetOpenGPGCheck(bool pCheck)
 {
     m_bOpenGPGCheck = pCheck;
 }

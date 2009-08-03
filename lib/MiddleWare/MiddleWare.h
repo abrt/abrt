@@ -311,7 +311,7 @@ class CMiddleWare
          * A method, which set a GPG finger print check.
          * @param pCheck Is it enabled?
          */
-        void SetOpenGPGCheck(const bool& pCheck);
+        void SetOpenGPGCheck(bool pCheck);
         /**
          * A method, which sets a name of database.
          * @param pDatabase A database name.
