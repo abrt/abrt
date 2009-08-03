@@ -684,6 +684,7 @@ static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpoin
 {
     SignalSource *ssrc = (SignalSource*) source;
     ssrc->watcher->StopRun();
+    return 1;
 }
 
 /* daemon loop with glib */

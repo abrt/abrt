@@ -1,22 +1,22 @@
-/* 
-    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com) 
-    Copyright (C) 2009  RedHat inc. 
- 
-    This program is free software; you can redistribute it and/or modify 
-    it under the terms of the GNU General Public License as published by 
-    the Free Software Foundation; either version 2 of the License, or 
-    (at your option) any later version. 
- 
-    This program is distributed in the hope that it will be useful, 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-    GNU General Public License for more details. 
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+/*
+    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com)
+    Copyright (C) 2009  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
-    
+
 #ifndef CC_APPLET_H_
 #define CC_APPLET_H_
 
@@ -25,10 +25,6 @@
 #include <string>
 #include <DBusClientProxy.h>
 #include<libnotify/notify.h>
-
-#ifndef BIN_DIR
-    #define BIN_DIR "/usr/bin"
-#endif
 
 class CApplet
 : public CDBusClient_proxy,
@@ -41,7 +37,7 @@ class CApplet
         std::map<int, std::string > m_mapEvents;
         DaemonWatcher *m_pDaemonWatcher;
         bool m_bDaemonRunning;
-	public:
+    public:
         CApplet(DBus::Connection &connection, const char *path, const char *name);
         ~CApplet();
         void ShowIcon();
@@ -59,7 +55,7 @@ class CApplet
         int RemoveEvent(int pUUID);
         void ConnectCrashHandler(void (*pCrashHandler)(const char *progname));
         static void DaemonStateChange_cb(bool running, void* data);
-        
+
     protected:
         //@@TODO applet menus
         static void OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data);
@@ -68,11 +64,11 @@ class CApplet
                             guint          activate_time,
                             gpointer       user_data);
     private:
-    /* dbus stuff */
+        /* dbus stuff */
         void Crash(std::string &value);
 
-    /* the real signal handler called to handle the signal */
-    void (*m_pCrashHandler)(const char *progname);
+        /* the real signal handler called to handle the signal */
+        void (*m_pCrashHandler)(const char *progname);
 };
 
 #endif /*CC_APPLET_H_*/

@@ -1,22 +1,23 @@
-/* 
-    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com) 
-    Copyright (C) 2009  RedHat inc. 
- 
-    This program is free software; you can redistribute it and/or modify 
-    it under the terms of the GNU General Public License as published by 
-    the Free Software Foundation; either version 2 of the License, or 
-    (at your option) any later version. 
- 
-    This program is distributed in the hope that it will be useful, 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-    GNU General Public License for more details. 
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+/*
+    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com)
+    Copyright (C) 2009  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#include "abrtlib.h"
 #include "CCApplet.h"
 #include <iostream>
 #include <cstdarg>
@@ -30,20 +31,19 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
 : DBus::ObjectProxy(connection, path, name)
 {
     m_pDaemonWatcher = new DaemonWatcher(connection, DBUS_SERVICE_PATH, DBUS_SERVICE_NAME);
-    m_pDaemonWatcher->ConnectStateChangeHandler(DaemonStateChange_cb,this);
-    m_pStatusIcon =  gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
+    m_pDaemonWatcher->ConnectStateChangeHandler(DaemonStateChange_cb, this);
+    m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
     m_bDaemonRunning = true;
-    char notify_title[5] = "ABRT";
-    notify_init(notify_title);
-    m_pNotification =  notify_notification_new_with_status_icon("Warning!",NULL, NULL,m_pStatusIcon);
-    notify_notification_set_urgency(m_pNotification,NOTIFY_URGENCY_CRITICAL);
+    notify_init("ABRT");
+    m_pNotification = notify_notification_new_with_status_icon("Warning!", NULL, NULL, m_pStatusIcon);
+    notify_notification_set_urgency(m_pNotification, NOTIFY_URGENCY_CRITICAL);
     notify_notification_set_timeout(m_pNotification, 5000);
-    gtk_status_icon_set_visible(m_pStatusIcon,FALSE);
+    gtk_status_icon_set_visible(m_pStatusIcon, FALSE);
     // LMB click
     //TODO add some actions!
-    g_signal_connect(G_OBJECT(m_pStatusIcon),"activate",GTK_SIGNAL_FUNC(CApplet::OnAppletActivate_CB), this);
-    g_signal_connect(G_OBJECT(m_pStatusIcon),"popup_menu",GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
-    SetIconTooltip("Pending events: %i",m_mapEvents.size());
+    g_signal_connect(G_OBJECT(m_pStatusIcon), "activate", GTK_SIGNAL_FUNC(CApplet::OnAppletActivate_CB), this);
+    g_signal_connect(G_OBJECT(m_pStatusIcon), "popup_menu", GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
+    SetIconTooltip("Pending events: %i", m_mapEvents.size());
 }
 
 CApplet::~CApplet()
@@ -111,18 +111,23 @@ void CApplet::SetIconTooltip(const char *format, ...)
         gtk_status_icon_set_tooltip_text(m_pStatusIcon,"Error while setting the tooltip!");
     }
     delete[] buf;
-    
 }
 
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
 {
     CApplet *applet = (CApplet *)user_data;
-    FILE *gui = NULL;
-    //FIXME - use fork+exec and absolute paths? or dbus?
-    if(applet->m_bDaemonRunning)
+    if (applet->m_bDaemonRunning)
     {
-        gui = popen((std::string(BIN_DIR) + "/abrt-gui").c_str(),"r");
-        gtk_status_icon_set_visible(applet->m_pStatusIcon,false);
+        pid_t pid = vfork();
+        if (pid < 0)
+            std::cerr << "vfork failed\n";
+        if (pid == 0)
+        { /* child */
+            execlp("abrt-gui", "abrt-gui", (char*) NULL);
+            std::cerr << "can't exec abrt-gui\n";
+            exit(1);
+        }
+        gtk_status_icon_set_visible(applet->m_pStatusIcon, false);
     }
 }
 
@@ -165,7 +170,7 @@ void CApplet::Disable(const char *reason)
 
 void CApplet::Enable(const char *reason)
 {
-    /* restore the original icon*/
+    /* restore the original icon */
     m_bDaemonRunning = true;
     SetIconTooltip(reason);
     gtk_status_icon_set_from_stock(m_pStatusIcon,GTK_STOCK_DIALOG_WARNING);
@@ -175,7 +180,7 @@ void CApplet::Enable(const char *reason)
 int CApplet::AddEvent(int pUUID, const std::string& pProgname)
 {
     m_mapEvents[pUUID] = "pProgname";
-    SetIconTooltip("Pending events: %i",m_mapEvents.size());
+    SetIconTooltip("Pending events: %i", m_mapEvents.size());
     return 0;
 }
 

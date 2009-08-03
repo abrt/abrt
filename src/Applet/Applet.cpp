@@ -16,7 +16,7 @@
     with this program; if not, write to the Free Software Foundation, Inc., 
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
     */
-    
+
 #include "CCApplet.h"
 #include <iostream>
 #include <dbus/dbus-shared.h>
@@ -42,6 +42,9 @@ int main(int argc, char **argv)
     gdk_threads_init();
     gdk_threads_enter();
     gtk_init(&argc,&argv);
+    /* prevent zombies when we spawn abrt-gui */
+    signal(SIGCHLD, SIG_IGN);
+
     /* move to the DBusClient::connect */
     DBus::Glib::BusDispatcher dispatcher;
     /* this should bind the dispatcher with mainloop */
@@ -60,7 +63,7 @@ int main(int argc, char **argv)
         //applet is not running, so claim the name on the session bus
         session.request_name("com.redhat.abrt.applet");
     }
-    
+
     DBus::Connection conn = DBus::Connection::SystemBus();
     applet = new CApplet(conn, CC_DBUS_PATH, CC_DBUS_NAME);
     applet->ConnectCrashHandler(crash_notify_cb);
@@ -69,6 +72,7 @@ int main(int argc, char **argv)
         std::cout << "Daemon is not running" << std::endl;
         applet->Disable("Daemon is not running");
     }
+
     gtk_main();
     gdk_threads_leave();
     delete applet;
