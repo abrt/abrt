@@ -48,21 +48,13 @@
 #define FILENAME_BACKTRACE      "backtrace"
 #define FILENAME_MEMORYMAP      "memorymap"
 
+static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::string& pOutput);
+
 CAnalyzerCCpp::CAnalyzerCCpp() :
-        m_bMemoryMap(false),
-        m_Pid(0)
+    m_bMemoryMap(false)
 {}
 
-CAnalyzerCCpp::~CAnalyzerCCpp()
-{
-    if (m_Pid)
-    {
-        kill(m_Pid, SIGTERM);
-        wait(NULL);
-    }
-}
-
-std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
+static std::string CreateHash(const std::string& pInput)
 {
     std::string ret = "";
     HASHContext* hc;
@@ -94,7 +86,7 @@ std::string CAnalyzerCCpp::CreateHash(const std::string& pInput)
     return hash_str;
 }
 
-void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
+static void InstallDebugInfos(const std::string& pPackage)
 {
     comm_layer_inner_status("Searching for debug-info packages...");
 
@@ -108,7 +100,6 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     pipe(pipeout);
 
     child = fork();
-    m_Pid = child;
     if (child < 0)
     {
         close(pipein[0]); close(pipeout[0]);
@@ -180,7 +171,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
             close(pipeout[0]);
             kill(child, SIGTERM);
             wait(NULL);
-            throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
+            throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot install debuginfos for " + pPackage);
         }
         if (strstr(buff, "Total download size") != NULL)
         {
@@ -191,7 +182,7 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
                 close(pipeout[0]);
                 kill(child, SIGTERM);
                 wait(NULL);
-                throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos(): cannot install debuginfos for " + pPackage);
+                throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot install debuginfos for " + pPackage);
             }
             comm_layer_inner_status("Downloading and installing debug-info packages...");
         }
@@ -200,10 +191,9 @@ void CAnalyzerCCpp::InstallDebugInfos(const std::string& pPackage)
     close(pipeout[0]);
 
     wait(NULL);
-    m_Pid = 0;
 }
 
-void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
+static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
     comm_layer_inner_status("Getting backtrace...");
 
@@ -235,7 +225,7 @@ void CAnalyzerCCpp::GetBacktrace(const std::string& pDebugDumpDir, std::string& 
     ExecVP(command, args, atoi(UID.c_str()), pBacktrace);
 }
 
-void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
+static void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
 {
     int ii = 0;
     std::string line;
@@ -331,7 +321,7 @@ void CAnalyzerCCpp::GetIndependentBacktrace(const std::string& pBacktrace, std::
     }
 }
 
-void CAnalyzerCCpp::GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
+static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
 {
     int ii = 0;
     while (ii < pBuildIdPC.length())
@@ -361,7 +351,7 @@ void CAnalyzerCCpp::GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::
     }
 }
 
-void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::string& pOutput)
+static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
     char buff[1024];
@@ -372,17 +362,16 @@ void CAnalyzerCCpp::ExecVP(const char* pCommand, char* const pArgs[], uid_t uid,
     struct passwd* pw = getpwuid(uid);
     if (!pw)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): cannot get GID for UID.");
+        throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot get GID for UID.");
     }
 
     pipe(pipeout);  /* error check? */
     child = fork();
-    m_Pid = child;
     if (child == -1)
     {
         close(pipeout[0]);
         close(pipeout[1]);
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::ExecVP(): fork failed.");
+        throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": fork failed.");
     }
     if (child == 0)
     {
@@ -451,7 +440,8 @@ I think the below code has absolutely the same effect:
 
     close(pipeout[0]);
     wait(NULL); /* why? */
-    m_Pid = 0;
+
+    return 0;
 }
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
@@ -477,6 +467,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
     GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
     return CreateHash(package + executable + independentBuildIdPC);
 }
+
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
     comm_layer_inner_status("Getting global universal unique identification...");
