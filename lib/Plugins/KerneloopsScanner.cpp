@@ -173,3 +173,18 @@ PLUGIN_INFO(ACTION,
             "anton@redhat.com",
             "http://people.redhat.com/aarapov",
             "");
+
+/* for dumpoops tool */
+extern "C" {
+
+int scan_syslog_file(CKerneloopsScanner *This, const char *filename)
+{
+    return This->ScanSysLogFile(filename);
+}
+
+void save_oops_to_debug_dump(CKerneloopsScanner *This)
+{
+    This->SaveOopsToDebugDump();
+}
+
+}
