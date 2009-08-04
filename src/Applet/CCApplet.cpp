@@ -35,7 +35,7 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
     m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
     m_bDaemonRunning = true;
     notify_init("ABRT");
-    m_pNotification = notify_notification_new_with_status_icon("Warning!", NULL, NULL, m_pStatusIcon);
+    m_pNotification = notify_notification_new_with_status_icon("Warning", NULL, NULL, m_pStatusIcon);
     notify_notification_set_urgency(m_pNotification, NOTIFY_URGENCY_CRITICAL);
     notify_notification_set_timeout(m_pNotification, 5000);
     gtk_status_icon_set_visible(m_pStatusIcon, FALSE);
@@ -50,10 +50,11 @@ CApplet::~CApplet()
 {
     delete m_pDaemonWatcher;
 }
+
 /* dbus related */
 void CApplet::Crash(std::string &value)
 {
-    if(m_pCrashHandler)
+    if (m_pCrashHandler)
     {
         m_pCrashHandler(value.c_str());
     }
@@ -67,13 +68,13 @@ void CApplet::Crash(std::string &value)
 void CApplet::DaemonStateChange_cb(bool running, void* data)
 {
     CApplet *applet = (CApplet *)data;
-    if(!running)
+    if (!running)
     {
-        applet->Disable("ABRT service is not running!");
+        applet->Disable("ABRT service is not running");
     }
     else
     {
-        applet->Enable("ABRT service has been started!");
+        applet->Enable("ABRT service has been started");
     }
 }
 
@@ -81,36 +82,27 @@ void CApplet::ConnectCrashHandler(void (*pCrashHandler)(const char *progname))
 {
     m_pCrashHandler = pCrashHandler;
 }
-/* --- */
+
 void CApplet::SetIconTooltip(const char *format, ...)
 {
     va_list args;
-    // change to smth sane like MAX_TOOLTIP length or rewrite this whole sh*t
     int n;
-    size_t size = 30;
-    char *buf = new char[size];
-    va_start (args, format);
-    while((n = vsnprintf (buf, size, format, args)) > (int)size)
+    char *buf;
+
+    va_start(args, format);
+    buf = NULL;
+    n = vasprintf(&buf, format, args);
+    va_end(args);
+    if (n >= 0 && buf)
     {
-        va_end (args);
-        // string was larger than our buffer
-        // alloc larger buffer
-        size = n+1;
-        delete[] buf;
-        buf = new char[size];
-        va_start (args, format);
-    }
-    va_end (args);
-    if (n != -1)
-    {
-        notify_notification_update(m_pNotification, "Warning!",buf, NULL);
-        gtk_status_icon_set_tooltip_text(m_pStatusIcon,buf);
+        notify_notification_update(m_pNotification, "Warning", buf, NULL);
+        gtk_status_icon_set_tooltip_text(m_pStatusIcon, buf);
+        free(buf);
     }
     else
     {
-        gtk_status_icon_set_tooltip_text(m_pStatusIcon,"Error while setting the tooltip!");
+        gtk_status_icon_set_tooltip_text(m_pStatusIcon, "Out of memory");
     }
-    delete[] buf;
 }
 
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
@@ -124,6 +116,10 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
         if (pid == 0)
         { /* child */
             signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
+            /* execlp searches PATH. We do not need to supply the path this way,
+             * and user has a freedom to install abrt-gui whereever he pleases.
+             * He just needs to set up PATH accordingly.
+             */
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
             std::cerr << "can't exec abrt-gui\n";
             exit(1);
@@ -142,14 +138,15 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
 
 void CApplet::ShowIcon()
 {
-    gtk_status_icon_set_visible(m_pStatusIcon,true);
-    notify_notification_show(m_pNotification,NULL);
+    gtk_status_icon_set_visible(m_pStatusIcon, true);
+    notify_notification_show(m_pNotification, NULL);
 }
 
 void CApplet::HideIcon()
 {
-    gtk_status_icon_set_visible(m_pStatusIcon,false);
+    gtk_status_icon_set_visible(m_pStatusIcon, false);
 }
+
 void CApplet::Disable(const char *reason)
 {
     /*
@@ -159,7 +156,8 @@ void CApplet::Disable(const char *reason)
     GdkPixbuf *gray_scaled;
     GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), GTK_STOCK_DIALOG_WARNING, 24, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
     gray_scaled = gdk_pixbuf_copy(pixbuf);
-    if(pixbuf){
+    if (pixbuf)
+    {
         gdk_pixbuf_saturate_and_pixelate(pixbuf, gray_scaled, 0.0, NULL);
         gtk_status_icon_set_from_pixbuf(m_pStatusIcon, gray_scaled);
     }
@@ -174,7 +172,7 @@ void CApplet::Enable(const char *reason)
     /* restore the original icon */
     m_bDaemonRunning = true;
     SetIconTooltip(reason);
-    gtk_status_icon_set_from_stock(m_pStatusIcon,GTK_STOCK_DIALOG_WARNING);
+    gtk_status_icon_set_from_stock(m_pStatusIcon, GTK_STOCK_DIALOG_WARNING);
     ShowIcon();
 }
 
@@ -192,5 +190,5 @@ int CApplet::RemoveEvent(int pUUID)
 }
 void CApplet::BlinkIcon(bool pBlink)
 {
-    gtk_status_icon_set_blinking(m_pStatusIcon,pBlink);
+    gtk_status_icon_set_blinking(m_pStatusIcon, pBlink);
 }
