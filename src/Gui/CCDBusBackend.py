@@ -161,7 +161,7 @@ class DBusManager(gobject.GObject):
             if dump:
                 self.emit("analyze-complete", dump)
             else:
-                raise Exception("Daemon did't return valid report info")
+                self.emit("error","Daemon did't return valid report info\nDebuginfo is missing?")
         
     def getReport(self, UUID):
         try:
