@@ -129,7 +129,7 @@ class MainWindow():
             self.pBarWindow.hide()
         except Exception, e:
             pass
-        gui_error_message("Unable to get report!\n%s" % message)
+        gui_error_message("Unable to get report!\n%s" % message,parent_dialog=self.window)
     
     def update_cb(self, daemon, message):
         self.wTree.get_widget("lStatus").set_text(message)
@@ -255,6 +255,7 @@ class MainWindow():
             self.pBarWindow.hide()
             gui_error_message("Error getting the report: %s" % e)
         return
+    
     def sw_delete_event_cb(self, widget, event, data=None):
         if self.timer:
             gobject.source_remove(self.timer)
