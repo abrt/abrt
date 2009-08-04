@@ -18,18 +18,12 @@
     */
 #include "abrtlib.h"
 #include "CrashWatcher.h"
-//#include <unistd.h>
 #include <iostream>
 #include <climits>
 #include <cstdlib>
-//#include <sys/types.h>
-//#include <pwd.h>
-//#include <sys/stat.h>
-//#include <fcntl.h>
 #include <cstring>
 #include <csignal>
 #include <sstream>
-//#include <dirent.h>
 #include <cstring>
 #include "ABRTException.h"
 
@@ -46,6 +40,16 @@ to_string( T x )
     return o.str();
 }
 */
+
+/* Is it "." or ".."? */
+static bool dot_or_dotdot(const char *filename)
+{
+    if (filename[0] != '.') return false;
+    if (filename[1] == '\0') return true;
+    if (filename[1] != '.') return false;
+    if (filename[2] == '\0') return true;
+    return false;
+}
 
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon)
 {
@@ -408,12 +412,13 @@ double CCrashWatcher::GetDirSize(const std::string &pPath)
     dp = opendir(pPath.c_str());
     if (dp != NULL)
     {
-        while ((ep = readdir(dp)))
+        while ((ep = readdir(dp)) != NULL)
         {
-            if (strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0)
+            if (dot_or_dotdot(ep->d_name))
+                continue;
+            dname = pPath + "/" + ep->d_name;
+            if (lstat(dname.c_str(), &stats) == 0)
             {
-                dname = pPath + "/" + ep->d_name;
-                lstat(dname.c_str(), &stats);
                 if (S_ISDIR(stats.st_mode))
                 {
                     size += GetDirSize(dname);
@@ -515,16 +520,17 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
     DIR *dp;
     std::vector<std::string> dirs;
     std::string dname;
-    // get potencial unsaved debugdumps
+    // get potential unsaved debugdumps
     dp = opendir(pPath.c_str());
     if (dp != NULL)
     {
         while ((ep = readdir(dp)))
         {
-            if(strcmp(ep->d_name, ".") != 0 && strcmp(ep->d_name, "..") != 0)
+            if (dot_or_dotdot(ep->d_name))
+                continue;
+            dname = pPath + "/" + ep->d_name;
+            if (lstat(dname.c_str(), &stats) == 0)
             {
-                dname = pPath + "/" + ep->d_name;
-                lstat(dname.c_str(), &stats);
                 if (S_ISDIR(stats.st_mode))
                 {
                     dirs.push_back(dname);
