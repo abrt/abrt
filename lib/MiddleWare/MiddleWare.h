@@ -178,11 +178,11 @@ class CMiddleWare
     public:
         /**
          * A constructor.
-         * @param pPlugisConfDir A plugins configuration directory.
-         * @param pPlugisLibDir A plugins library directory.
+         * @param pPluginsConfDir A plugins configuration directory.
+         * @param pPluginsLibDir A plugins library directory.
          */
-        CMiddleWare(const std::string& pPlugisConfDir,
-                    const std::string& pPlugisLibDir);
+        CMiddleWare(const std::string& pPluginsConfDir,
+                    const std::string& pPluginsLibDir);
         /**
          * A destructor.
          */

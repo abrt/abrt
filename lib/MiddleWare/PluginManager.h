@@ -55,20 +55,20 @@ class CPluginManager
 		/**
 		 * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
 		 */
-		std::string m_sPlugisConfDir;
+		std::string m_sPluginsConfDir;
 		/**
 		 * Plugins library directory (e.g. /usr/lib/abrt/plugins, ...).
 		 */
-		std::string m_sPlugisLibDir;
+		std::string m_sPluginsLibDir;
 
 	public:
 	    /**
 	     * A constructor.
-	     * @param pPlugisConfDir A plugins configuration directory.
-	     * @param pPlugisLibDir A plugins library directory.
+	     * @param pPluginsConfDir A plugins configuration directory.
+	     * @param pPluginsLibDir A plugins library directory.
 	     */
-		CPluginManager(const std::string& pPlugisConfDir,
-					   const std::string& pPlugisLibDir);
+		CPluginManager(const std::string& pPluginsConfDir,
+					   const std::string& pPluginsLibDir);
 		/**
 		 * A destructor.
 		 */

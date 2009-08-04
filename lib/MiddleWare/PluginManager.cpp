@@ -33,10 +33,12 @@
 static const char* const plugin_type_str_t[] = { "Analyzer", "Action", "Reporter", "Database" };
 
 
-CPluginManager::CPluginManager(const std::string& pPlugisConfDir,
-							   const std::string& pPlugisLibDir) :
-    m_sPlugisConfDir(pPlugisConfDir),
-    m_sPlugisLibDir(pPlugisLibDir)
+CPluginManager::CPluginManager(
+        const std::string& pPluginsConfDir,
+        const std::string& pPluginsLibDir)
+:
+    m_sPluginsConfDir(pPluginsConfDir),
+    m_sPluginsLibDir(pPluginsLibDir)
 {}
 
 CPluginManager::~CPluginManager()
@@ -44,7 +46,7 @@ CPluginManager::~CPluginManager()
 
 void CPluginManager::LoadPlugins()
 {
-    DIR *dir = opendir(m_sPlugisLibDir.c_str());
+    DIR *dir = opendir(m_sPluginsLibDir.c_str());
     struct dirent *dent = NULL;
     if (dir != NULL)
     {
@@ -83,7 +85,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
         CABRTPlugin* abrtPlugin = NULL;
         try
         {
-            std::string libPath = m_sPlugisLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
+            std::string libPath = m_sPluginsLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
             abrtPlugin = new CABRTPlugin(libPath);
             if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
                 (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
@@ -123,7 +125,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
     {
         if (m_mapPlugins.find(pName) == m_mapPlugins.end())
         {
-            std::string path = m_sPlugisConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
+            std::string path = m_sPluginsConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
             CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
             try
             {

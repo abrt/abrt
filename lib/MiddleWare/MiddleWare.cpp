@@ -24,13 +24,13 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-CMiddleWare::CMiddleWare(const std::string& pPlugisConfDir,
-                         const std::string& pPlugisLibDir) :
+CMiddleWare::CMiddleWare(const std::string& pPluginsConfDir,
+                         const std::string& pPluginsLibDir) :
     m_pPluginManager(NULL),
     m_bOpenGPGCheck(true),
-    m_sPluginsConfDir(pPlugisConfDir)
+    m_sPluginsConfDir(pPluginsConfDir)
 {
-    m_pPluginManager = new CPluginManager(pPlugisConfDir, pPlugisLibDir);
+    m_pPluginManager = new CPluginManager(pPluginsConfDir, pPluginsLibDir);
     m_pPluginManager->LoadPlugins();
 }
 
