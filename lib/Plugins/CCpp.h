@@ -35,7 +35,6 @@ class CAnalyzerCCpp : public CAnalyzer
         std::string m_sDebugInfo;
     public:
         CAnalyzerCCpp();
-        /*virtual ~CAnalyzerCCpp();*/
         virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
         virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
         virtual void CreateReport(const std::string& pDebugDumpDir);

@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     errno = 0;
     handle = dlopen(PLUGINS_LIB_DIR"/libKerneloopsScanner.so", RTLD_NOW);
     if (!handle)
-	perror_msg_and_die("can't load %s", PLUGINS_LIB_DIR"/libKerneloopsScanner.so");
+        perror_msg_and_die("can't load %s", PLUGINS_LIB_DIR"/libKerneloopsScanner.so");
 #define LOADSYM(fp, name) \
 do { \
     fp = (typeof(fp)) (dlsym(handle, name)); \
@@ -64,8 +64,8 @@ do { \
 
     if (cnt > 0)
     {
-	log("dumping oopses");
-	save_oops_to_debug_dump(scanner);
+        log("dumping oopses");
+        save_oops_to_debug_dump(scanner);
     }
 
     /*dlclose(handle); - why bother? */

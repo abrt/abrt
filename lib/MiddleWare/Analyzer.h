@@ -32,10 +32,6 @@ class CAnalyzer : public CPlugin
 {
     public:
         /**
-         * A destructor.
-         */
-        virtual ~CAnalyzer() {}
-        /**
          * A method, which gets a local UUID of particular crash. The local
          * UUID is usualy computed from data which are stored in debugdump dir.
          * @param pDebugDumpPath A debugdump dir containing all necessary data.

@@ -33,7 +33,6 @@ class CActionRunApp : public CAction
         void ParseArgs(const std::string& psArgs, vector_args_t& pArgs);
 
     public:
-        virtual ~CActionRunApp() {}
         virtual void Run(const std::string& pActionDir,
                          const std::string& pArgs);
 };

@@ -43,7 +43,6 @@ class CSQLite3 : public CDatabase
 
     public:
         CSQLite3();
-        virtual ~CSQLite3() {}
 
         virtual void Connect();
         virtual void DisConnect();

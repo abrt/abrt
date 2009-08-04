@@ -33,7 +33,6 @@ class CActionSOSreport : public CAction
         std::string ParseFilename(const std::string& pOutput);
 
     public:
-        virtual ~CActionSOSreport() {}
         virtual void Run(const std::string& pActionDir,
                          const std::string& pArgs);
 };

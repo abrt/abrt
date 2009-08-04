@@ -23,7 +23,6 @@ class CKerneloopsScanner : public CAction
             m_sSysLogFile("/var/log/messages"),
             m_bSysLogFileScanned(false)
         {}
-        virtual ~CKerneloopsScanner() {}
         virtual void Run(const std::string& pActionDir,
                          const std::string& pArgs);
         virtual void LoadSettings(const std::string& pPath);

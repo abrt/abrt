@@ -39,7 +39,6 @@ class CKerneloopsReporter : public CReporter
 
 	public:
 		CKerneloopsReporter();
-		virtual ~CKerneloopsReporter() {}
 
 		virtual void LoadSettings(const std::string& pPath);
         virtual void SetSettings(const map_plugin_settings_t& pSettings);

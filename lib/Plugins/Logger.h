@@ -33,7 +33,6 @@ class CLogger : public CReporter
         bool m_bAppendLogs;
     public:
         CLogger();
-        virtual ~CLogger() {}
 
         virtual void LoadSettings(const std::string& pPath);
         virtual void SetSettings(const map_plugin_settings_t& pSettings);

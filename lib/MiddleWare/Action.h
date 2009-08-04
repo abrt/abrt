@@ -32,10 +32,6 @@ class CAction : public CPlugin
 {
     public:
         /**
-         * A destructor.
-         */
-        virtual ~CAction() {}
-        /**
          * A Method which performs particular action. As the first parameter it
          * takes an action directory. It could be either a directory of actual
          * crash or it could be a directory contains all crashes. It depends on

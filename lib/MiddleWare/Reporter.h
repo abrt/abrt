@@ -33,10 +33,6 @@ class CReporter : public CPlugin
 {
     public:
         /**
-         * A destructor.
-         */
-        virtual ~CReporter() {}
-        /**
          * A method, which reports a crash report to particular receiver.
          * The plugin can takes arguments, but the plugin  has to parse them
          * by itself.

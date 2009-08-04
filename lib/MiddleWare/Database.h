@@ -67,10 +67,6 @@ class CDatabase : public CPlugin
 {
     public:
         /**
-         * A destructor.
-         */
-        virtual ~CDatabase() {}
-        /**
          * A method, which connects to a database.
          */
         virtual void Connect() = 0;
