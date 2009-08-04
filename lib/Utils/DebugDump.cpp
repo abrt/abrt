@@ -40,6 +40,7 @@
 #include <stdlib.h>
 
 #include "CommLayerInner.h"
+// BUG? in C/C++, compiler may assume that function address is never NULL
 #pragma weak comm_layer_inner_debug
 #define comm_layer_inner_debug(msg) ({\
     if (comm_layer_inner_debug)\
@@ -64,7 +65,6 @@ void CDebugDump::Open(const std::string& pDir)
         throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
-    std::string lockPath = m_sDebugDumpDir + "/.lock";
     if (!ExistFileDir(m_sDebugDumpDir))
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" does not exist.");
@@ -100,7 +100,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
     {
         if (errno != EEXIST)
         {
-    	    throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot create lock file");
+            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot create lock file");
         }
         fd = open(pLockFile.c_str(), O_RDONLY);
         if (fd == -1)
@@ -111,7 +111,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         int r = read(fd, pid, sizeof(pid) - 1);
         if (r == -1)
         {
-    	    close(fd);
+            close(fd);
             throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get a pid");
         }
         pid[r] = '\0';
@@ -242,7 +242,7 @@ void CDebugDump::DeleteFileDir(const std::string& pDir)
                 }
                 if (remove(fullPath.c_str()) == -1)
                 {
-    		    closedir(dir);
+                    closedir(dir);
                     throw CABRTException(EXCEP_DD_DELETE, "CDebugDump::DeleteFileDir(): Cannot remove file: " + fullPath);
                 }
             }
@@ -331,10 +331,6 @@ void CDebugDump::SaveTime()
 {
     std::stringstream ss;
     time_t t = time(NULL);
-    if (((time_t) -1) == t) /* isn't it a bit TOO paranoid? :) */
-    {
-        throw CABRTException(EXCEP_ERROR, "CDebugDump::SaveTime(): Cannot get local time.");
-    }
     ss << t;
     SaveText(FILENAME_TIME, ss.str());
 }
@@ -494,10 +490,18 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
     }
     while ((dent = readdir(m_pGetNextFileDir)) != NULL)
     {
-        if (dent->d_type == DT_REG)
-        {
+        struct stat statbuf;
+        std::string fullname = m_sDebugDumpDir + "/" + dent->d_name;
+
+        /* some filesystems do not report the type! they report DT_UNKNOWN */
+        if (dent->d_type == DT_REG
+         || (dent->d_type == DT_UNKNOWN
+            && lstat(fullname.c_str(), &statbuf) == 0
+            && S_ISREG(statbuf.st_mode)
+            )
+        ) {
             pFileName = dent->d_name;
-            if (IsTextFile(m_sDebugDumpDir + "/" + pFileName))
+            if (IsTextFile(fullname))
             {
                 LoadText(pFileName, pContent);
                 pIsTextFile = true;
