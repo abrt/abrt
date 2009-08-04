@@ -1,1 +1,1 @@
-EXTRA_DIST = ABRTException.h CrashTypes.h CrashTypesSocket.h
+EXTRA_DIST = ABRTException.h CrashTypes.h CrashTypesSocket.h abrtlib.h

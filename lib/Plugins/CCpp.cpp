@@ -171,7 +171,7 @@ static void InstallDebugInfos(const std::string& pPackage)
             close(pipeout[0]);
             kill(child, SIGTERM);
             wait(NULL);
-            throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot install debuginfos for " + pPackage);
+            throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
         }
         if (strstr(buff, "Total download size") != NULL)
         {
@@ -182,7 +182,7 @@ static void InstallDebugInfos(const std::string& pPackage)
                 close(pipeout[0]);
                 kill(child, SIGTERM);
                 wait(NULL);
-                throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot install debuginfos for " + pPackage);
+                throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
             }
             comm_layer_inner_status("Downloading and installing debug-info packages...");
         }
@@ -362,7 +362,7 @@ static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::s
     struct passwd* pw = getpwuid(uid);
     if (!pw)
     {
-        throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot get GID for UID.");
+        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
     }
 
     pipe(pipeout);  /* error check? */
@@ -371,7 +371,7 @@ static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::s
     {
         close(pipeout[0]);
         close(pipeout[1]);
-        throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": fork failed.");
+        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": fork failed.");
     }
     if (child == 0)
     {
