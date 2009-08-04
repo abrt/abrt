@@ -266,6 +266,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsReporter.conf
 %{_libdir}/%{name}/libKerneloopsReporter.so*
+%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
 %{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
 
 %files plugin-sqlite3
@@ -278,12 +279,14 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_libdir}/%{name}/libLogger.so*
+%{_libdir}/%{name}/Logger.GTKBuilder
 %{_mandir}/man7/%{name}-Logger.7.gz
 
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_libdir}/%{name}/libMailx.so*
+%{_libdir}/%{name}/Mailx.GTKBuilder
 %{_mandir}/man7/%{name}-Mailx.7.gz
 
 %files plugin-runapp
@@ -299,6 +302,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_libdir}/%{name}/libBugzilla.so*
+%{_libdir}/%{name}/Bugzilla.GTKBuilder
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
 
 %files plugin-filetransfer
