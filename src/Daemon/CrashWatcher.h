@@ -104,7 +104,6 @@ class CCrashWatcher
         /* finds dumps created when daemon wasn't running */
         // FIXME: how to catch abrt itself without this?
         void FindNewDumps(const std::string& pPath);
-        double GetDirSize(const std::string &pPath);
 
         int m_nFd;
         GIOChannel* m_pGio;

@@ -20,7 +20,7 @@ to_string( T x )
 }
 
 
-class CCommLayerServer{
+class CCommLayerServer {
     protected:
         /* FIXME more observers? */
         //std::vector<Observer *obs>;

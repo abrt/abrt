@@ -50,6 +50,21 @@
 
 #define PID_STR_MAX 16
 
+/* Is it "." or ".."? */
+/* abrtlib candidate */
+static bool dot_or_dotdot(const char *filename)
+{
+    if (filename[0] != '.') return false;
+    if (filename[1] == '\0') return true;
+    if (filename[1] != '.') return false;
+    if (filename[2] == '\0') return true;
+    return false;
+}
+
+static std::string RemoveBackSlashes(const std::string& pDir);
+static bool ExistFileDir(const std::string& pPath);
+static void LoadTextFile(const std::string& pPath, std::string& pData);
+
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
     m_bOpened(false),
@@ -80,7 +95,7 @@ bool CDebugDump::Exist(const std::string& pPath)
 }
 
 
-bool CDebugDump::ExistFileDir(const std::string& pPath)
+static bool ExistFileDir(const std::string& pPath)
 {
     struct stat buf;
     if (stat(pPath.c_str(), &buf) == 0)
@@ -220,49 +235,42 @@ void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
     SaveTime();
 }
 
-void CDebugDump::DeleteFileDir(const std::string& pDir)
+static void DeleteFileDir(const std::string& pDir)
 {
-    if (!ExistFileDir(pDir))
-    {
-        return;
-    }
     DIR *dir = opendir(pDir.c_str());
-    std::string fullPath;
-    if (dir != NULL)
+    if (!dir)
+	return;
+
+    struct dirent *dent;
+    while ((dent = readdir(dir)) != NULL)
     {
-        struct dirent *dent;
-        while ((dent = readdir(dir)) != NULL)
+        if (dot_or_dotdot(dent->d_name))
+            continue;
+        std::string fullPath = pDir + "/" + dent->d_name;
+        if (unlink(fullPath.c_str()) == -1)
         {
-            if (std::string(dent->d_name) != "." && std::string(dent->d_name) != "..")
+            if (errno != EISDIR)
             {
-                fullPath = pDir + "/" + dent->d_name;
-                if (dent->d_type == DT_DIR)
-                {
-                    DeleteFileDir(fullPath);
-                }
-                if (remove(fullPath.c_str()) == -1)
-                {
-                    closedir(dir);
-                    throw CABRTException(EXCEP_DD_DELETE, "CDebugDump::DeleteFileDir(): Cannot remove file: " + fullPath);
-                }
+                closedir(dir);
+                throw CABRTException(EXCEP_DD_DELETE, std::string(__func__) + ": Cannot remove file: " + fullPath);
             }
+            DeleteFileDir(fullPath);
         }
-        closedir(dir);
-        if (remove(pDir.c_str()) == -1)
-        {
-            throw CABRTException(EXCEP_DD_DELETE, "CDebugDump::DeleteFileDir(): Cannot remove dir: " + fullPath);
-        }
+    }
+    closedir(dir);
+    if (remove(pDir.c_str()) == -1)
+    {
+        throw CABRTException(EXCEP_DD_DELETE, std::string(__func__) + ": Cannot remove dir: " + pDir);
     }
 }
 
-bool CDebugDump::IsTextFile(const std::string& pName)
+static bool IsTextFile(const std::string& pName)
 {
-    bool isText = false;
     magic_t m = magic_open(MAGIC_MIME_TYPE);
 
     if (m == NULL)
     {
-        throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot open magic cookie: ") + magic_error(m));
+        throw CABRTException(EXCEP_ERROR, std::string(__func__) + "Cannot open magic cookie: " + magic_error(m));
     }
 
     int r = magic_load(m, NULL);
@@ -270,26 +278,25 @@ bool CDebugDump::IsTextFile(const std::string& pName)
     if (r == -1)
     {
         magic_close(m);
-        throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot load magic db: ") + magic_error(m));
+        throw CABRTException(EXCEP_ERROR, std::string(__func__) + "Cannot load magic db: " + magic_error(m));
     }
 
     char* ch = (char *) magic_file(m, pName.c_str());
 
     if (ch == NULL)
     {
-        throw CABRTException(EXCEP_ERROR, std::string("CDebugDump::IsTextFile(): Cannot determine file type: ") + magic_error(m));
+        magic_close(m);
+        throw CABRTException(EXCEP_ERROR, std::string(__func__) + "Cannot determine file type: " + magic_error(m));
     }
 
-    if (!strncmp(ch, "text", 4))
-    {
-        isText = true;
-    }
+    bool isText = (strncmp(ch, "text", 4) == 0);
+
     magic_close(m);
 
     return isText;
 }
 
-std::string CDebugDump::RemoveBackSlashes(const std::string& pDir)
+static std::string RemoveBackSlashes(const std::string& pDir)
 {
     std::string ret = pDir;
     while (ret[ret.length() - 1] == '/')
@@ -335,7 +342,7 @@ void CDebugDump::SaveTime()
     SaveText(FILENAME_TIME, ss.str());
 }
 
-void CDebugDump::LoadTextFile(const std::string& pPath, std::string& pData)
+static void LoadTextFile(const std::string& pPath, std::string& pData)
 {
     std::ifstream fIn;
     pData = "";
@@ -359,11 +366,11 @@ void CDebugDump::LoadTextFile(const std::string& pPath, std::string& pData)
     }
     else
     {
-        throw CABRTException(EXCEP_DD_LOAD, "CDebugDump: LoadTextFile(): Cannot open file " + pPath);
+        throw CABRTException(EXCEP_DD_LOAD, std::string(__func__) + ": Cannot open file " + pPath);
     }
 }
 
-void CDebugDump::LoadBinaryFile(const std::string& pPath, char** pData, unsigned int* pSize)
+static void LoadBinaryFile(const std::string& pPath, char** pData, unsigned int* pSize)
 {
     std::ifstream fIn;
     fIn.open(pPath.c_str(), std::ios::binary | std::ios::ate);
@@ -381,12 +388,11 @@ void CDebugDump::LoadBinaryFile(const std::string& pPath, char** pData, unsigned
     }
     else
     {
-        throw CABRTException(EXCEP_DD_LOAD, "CDebugDump: LoadBinaryFile(): Cannot open file " + pPath);
+        throw CABRTException(EXCEP_DD_LOAD, std::string(__func__) + ": Cannot open file " + pPath);
     }
 }
 
-
-void CDebugDump::SaveTextFile(const std::string& pPath, const std::string& pData)
+static void SaveTextFile(const std::string& pPath, const std::string& pData)
 {
     std::ofstream fOut;
     fOut.open(pPath.c_str());
@@ -395,17 +401,17 @@ void CDebugDump::SaveTextFile(const std::string& pPath, const std::string& pData
         fOut << pData;
         if (!fOut.good())
         {
-            throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveTextFile(): Cannot save file " + pPath);
+            throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot save file " + pPath);
         }
         fOut.close();
     }
     else
     {
-        throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveTextFile(): Cannot open file " + pPath);
+        throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot open file " + pPath);
     }
 }
 
-void CDebugDump::SaveBinaryFile(const std::string& pPath, const char* pData, const unsigned pSize)
+static void SaveBinaryFile(const std::string& pPath, const char* pData, const unsigned pSize)
 {
     std::ofstream fOut;
     fOut.open(pPath.c_str(), std::ios::binary);
@@ -414,13 +420,13 @@ void CDebugDump::SaveBinaryFile(const std::string& pPath, const char* pData, con
         fOut.write(pData, pSize);
         if (!fOut.good())
         {
-            throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveBinaryFile(): Cannot save file " + pPath);
+            throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot save file " + pPath);
         }
         fOut.close();
     }
     else
     {
-        throw CABRTException(EXCEP_DD_SAVE, "CDebugDump: SaveBinaryFile(): Cannot open file " + pPath);
+        throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot open file " + pPath);
     }
 }
 

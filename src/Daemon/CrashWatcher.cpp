@@ -42,6 +42,7 @@ to_string( T x )
 */
 
 /* Is it "." or ".."? */
+/* abrtlib candidate */
 static bool dot_or_dotdot(const char *filename)
 {
     if (filename[0] != '.') return false;
@@ -50,6 +51,8 @@ static bool dot_or_dotdot(const char *filename)
     if (filename[2] == '\0') return true;
     return false;
 }
+
+static double GetDirSize(const std::string &pPath);
 
 gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon)
 {
@@ -81,7 +84,8 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         /* we want to ignore the lock files */
         if (event->mask & IN_ISDIR)
         {
-            if (cc->GetDirSize(DEBUG_DUMPS_DIR)/(1024*1024.0) < cc->m_pSettings->GetMaxCrashReportsSize()){
+            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < cc->m_pSettings->GetMaxCrashReportsSize())
+            {
                 //std::string sName = name;
                 map_crash_info_t crashinfo;
                 try
@@ -402,13 +406,13 @@ void CCrashWatcher::Debug(const std::string& pMessage, const std::string& pDest)
     std::cout << "Debug: " + pMessage << std::endl;
 }
 
-double CCrashWatcher::GetDirSize(const std::string &pPath)
+static double GetDirSize(const std::string &pPath)
 {
     double size = 0;
     struct dirent *ep;
     struct stat stats;
     DIR *dp;
-    std::string dname;
+
     dp = opendir(pPath.c_str());
     if (dp != NULL)
     {
@@ -416,7 +420,7 @@ double CCrashWatcher::GetDirSize(const std::string &pPath)
         {
             if (dot_or_dotdot(ep->d_name))
                 continue;
-            dname = pPath + "/" + ep->d_name;
+            std::string dname = pPath + "/" + ep->d_name;
             if (lstat(dname.c_str(), &stats) == 0)
             {
                 if (S_ISDIR(stats.st_mode))
@@ -429,11 +433,11 @@ double CCrashWatcher::GetDirSize(const std::string &pPath)
                 }
             }
         }
-        (void) closedir(dp);
+        closedir(dp);
     }
     else
     {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::GetDirSize(): Init Failed");
+        throw CABRTException(EXCEP_FATAL, std::string(__func__) + ": Init Failed");
     }
     return size;
 }

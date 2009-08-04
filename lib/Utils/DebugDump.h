@@ -50,24 +50,11 @@ class CDebugDump
         void SaveKernelArchitectureRelease();
         void SaveTime();
 
-        void LoadTextFile(const std::string& pName, std::string& pData);
-        void LoadBinaryFile(const std::string& pName, char** pData, unsigned int* pSize);
-
-        void SaveTextFile(const std::string& pName, const std::string& pData);
-        void SaveBinaryFile(const std::string& pName, const char* pData, const unsigned int pSize);
-        bool ExistFileDir(const std::string& pPath);
-
         void Lock();
         bool GetAndSetLock(const std::string& pLockFile, const std::string& pPID);
         void UnLock();
 
-        void DeleteFileDir(const std::string& pDir);
-
-        bool IsTextFile(const std::string& pName);
-
-        std::string RemoveBackSlashes(const std::string& pDir);
     public:
-
         CDebugDump();
         void Open(const std::string& pDir);
         void Create(const std::string& pDir, const std::string& pUID);
