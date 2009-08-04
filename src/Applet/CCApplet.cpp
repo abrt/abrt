@@ -123,6 +123,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
             std::cerr << "vfork failed\n";
         if (pid == 0)
         { /* child */
+            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
             std::cerr << "can't exec abrt-gui\n";
             exit(1);
