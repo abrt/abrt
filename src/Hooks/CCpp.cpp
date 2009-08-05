@@ -175,7 +175,7 @@ int main(int argc, char** argv)
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
 
         CDebugDump dd;
-        dd.Create(path, ssprintf("%u", (int)uid));
+        dd.Create(path, uid);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_CMDLINE, cmdline);

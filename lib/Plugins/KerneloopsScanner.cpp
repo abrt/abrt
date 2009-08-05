@@ -62,7 +62,7 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 
         try
         {
-            debugDump.Create(path, "0");
+            debugDump.Create(path, 0);
             debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
             debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
             debugDump.SaveText(FILENAME_KERNEL, oops.m_sVersion);

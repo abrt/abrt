@@ -183,7 +183,7 @@ void CDebugDump::UnLock()
     }
 }
 
-void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
+void CDebugDump::Create(const std::string& pDir, uid_t uid)
 {
     if (m_bOpened)
     {
@@ -211,7 +211,6 @@ void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot change permissions, dir: " + pDir);
     }
-    uid_t uid = atoi(pUID.c_str());
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
     if (chown(m_sDebugDumpDir.c_str(), uid, gid) == -1)
@@ -221,7 +220,7 @@ void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
         perror_msg("can't change '%s' ownership to %u:%u", m_sDebugDumpDir.c_str(), (int)uid, (int)gid);
     }
 
-    SaveText(FILENAME_UID, pUID);
+    SaveText(FILENAME_UID, ssprintf("%u", (int)uid));
     SaveKernelArchitectureRelease();
     SaveTime();
 }
