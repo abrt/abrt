@@ -31,12 +31,12 @@
 
 #define VAR_RUN_PID_FILE         VAR_RUN"/abrt.pid"
 
-static char* get_executable(const char* pid)
+static char* get_executable(pid_t pid)
 {
     char buf[PATH_MAX + 1];
     int len;
 
-    snprintf(buf, sizeof(buf), "/proc/%s/exe", pid);
+    snprintf(buf, sizeof(buf), "/proc/%u/exe", (int)pid);
     len = readlink(buf, buf, sizeof(buf)-1);
     if (len >= 0)
     {
@@ -49,31 +49,38 @@ static char* get_executable(const char* pid)
 // taken from kernel
 #define COMMAND_LINE_SIZE 2048
 
-static char* get_cmdline(const char* pid)
+static char* get_cmdline(pid_t pid)
 {
     char path[PATH_MAX];
     char cmdline[COMMAND_LINE_SIZE];
-    snprintf(path, sizeof(path), "/proc/%s/cmdline", pid);
-    FILE* fp = fopen(path, "r");
-    int ch;
-    int ii = 0;
-    if (fp)
+    snprintf(path, sizeof(path), "/proc/%u/cmdline", (int)pid);
+    int dst = 0;
+
+    int fd = open(path, O_RDONLY);
+    if (fd >= 0)
     {
-        while ((ch = fgetc(fp)) != EOF && ii < COMMAND_LINE_SIZE-1)
+        int len = read(fd, cmdline, sizeof(cmdline) - 1);
+        if (len >= 0)
         {
-            if (ch == 0)
+            int src = 0;
+            while (src < len)
             {
-                cmdline[ii] = ' ';
+                char ch = cmdline[src++];
+                if (ch == '\0')
+                {
+                    cmdline[dst++] = ' ';
+                }
+                /* TODO: maybe just ch >= ' '? */
+                else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
+                {
+                    cmdline[dst++] = ch;
+                }
             }
-            else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
-            {
-                cmdline[ii] = ch;
-            }
-            ii++;
         }
-        fclose(fp);
+        close(fd);
     }
-    cmdline[ii] = '\0';
+    cmdline[dst] = '\0';
+
     return xstrdup(cmdline);
 }
 
@@ -118,20 +125,27 @@ int main(int argc, char** argv)
     logmode = LOGMODE_SYSLOG;
 
     const char* dddir = argv[1];
-    const char* pid = argv[2];
-    const char* signal = argv[3];
-    const char* uid = argv[4];
+    pid_t pid = atoi(argv[2]);
+    const char* signal_str = argv[3];
+    int signal = atoi(argv[3]);
+    uid_t uid = atoi(argv[4]);
 
-    if (strcmp(signal, "3") != 0 &&     // SIGQUIT
-        strcmp(signal, "4") != 0 &&     // SIGILL
-        strcmp(signal, "6") != 0 &&     // SIGABRT
-        strcmp(signal, "8") != 0 &&     // SIGFPE
-        strcmp(signal, "11") != 0)      // SIGSEGV
-    {
+    if (signal != SIGQUIT
+     && signal != SIGILL
+     && signal != SIGABRT
+     && signal != SIGFPE
+     && signal != SIGSEGV
+    ) {
+        /* not an error, exit silently */
         return 0;
+    }
+    if (pid <= 0 || uid < 0)
+    {
+        error_msg_and_die("pid '%s' or uid '%s' are bogus", argv[2], argv[4]);
     }
     if (!daemon_is_ok())
     {
+        /* not an error, exit with exitcode 0 */
         log("abrt daemon is not running. If it crashed, "
             "/proc/sys/kernel/core_pattern contains a stale value, "
             "consider resetting it to 'core'"
@@ -141,30 +155,35 @@ int main(int argc, char** argv)
 
     try
     {
-        int fd;
-        CDebugDump dd;
-        char path[PATH_MAX];
         char* executable;
         char* cmdline;
-
         executable = get_executable(pid);
         cmdline = get_cmdline(pid);
         if (executable == NULL || cmdline == NULL)
         {
+            error_msg_and_die("can not get proc info for pid %u", (int)pid);
+        }
+        if (strstr(executable, "/abrt"))
+        {
             /* free(executable); - why bother? */
             /* free(cmdline); */
-            error_msg_and_die("can not get proc info for pid %s", pid);
+            error_msg_and_die("pid %u is '%s', not dumping it to avoid abrt recursion",
+                            (int)pid, executable);
         }
 
-        snprintf(path, sizeof(path), "%s/ccpp-%ld-%s", dddir, (long)time(NULL), pid);
-        dd.Create(path, uid);
+        char path[PATH_MAX];
+        snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
+
+        CDebugDump dd;
+        dd.Create(path, ssprintf("%u", (int)uid));
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
-        dd.SaveText(FILENAME_REASON, std::string("Process was terminated by signal ") + signal);
+        dd.SaveText(FILENAME_REASON, std::string("Process was terminated by signal ") + signal_str);
 
         snprintf(path + strlen(path), sizeof(path), "/%s", FILENAME_COREDUMP);
 
+        int fd;
         fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
         if (fd < 0)
         {
@@ -185,7 +204,7 @@ int main(int argc, char** argv)
         /* free(executable); */
         /* free(cmdline); */
         dd.Close();
-        log("saved core dump of pid %s to %s", pid, path);
+        log("saved core dump of pid %u to %s", (int)pid, path);
     }
     catch (CABRTException& e)
     {

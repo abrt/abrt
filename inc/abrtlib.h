@@ -36,6 +36,8 @@
 #endif
 #include <pwd.h>
 #include <grp.h>
+/* C++ bits */
+#include <string>
 
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
@@ -103,6 +105,7 @@ void xstat(const char *name, struct stat *stat_buf);
 
 void xmove_fd(int from, int to);
 char* xasprintf(const char *format, ...);
+std::string ssprintf(const char *format, ...);
 
 /* copyfd_XX print read/write errors and return -1 if they occur */
 off_t copyfd_eof(int src_fd, int dst_fd);
