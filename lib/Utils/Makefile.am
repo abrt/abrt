@@ -1,6 +1,7 @@
 lib_LTLIBRARIES = libABRTUtils.la
 libABRTUtils_la_SOURCES = \
 	DebugDump.cpp DebugDump.h \
+	CrashTypesSocket.cpp \
 	xfuncs.cpp \
 	read_write.cpp \
 	logging.cpp
