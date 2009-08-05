@@ -165,7 +165,7 @@ int main(int argc, char** argv)
 
         snprintf(path + strlen(path), sizeof(path), "/%s", FILENAME_COREDUMP);
 
-        fd = open(path, O_WRONLY | O_CREAT | O_TRUNC);
+        fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
         if (fd < 0)
         {
             dd.Delete();
