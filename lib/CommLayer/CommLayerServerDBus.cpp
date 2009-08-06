@@ -22,7 +22,11 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     }
     catch(DBus::Error err)
     {
-        throw CABRTException(EXCEP_FATAL, "CCommLayerServerDBus::CCommLayerServerDBus(): Error while requesting dbus name - have you reloaded the dbus settings?");
+        throw CABRTException(EXCEP_FATAL, std::string(__func__) + 
+                             "\nPlease check if:\n"
+                             + " * abrt is being run with root permissions\n"
+                             + " * you have reloaded the dbus\n"+
+                             + "Original exception was:\n " + err.what());
     }
 
 }
@@ -102,4 +106,12 @@ void CCommLayerServerDBus::Update(const std::string& pDest, const std::string& p
 void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t pJobID)
 {
     CDBusServer_adaptor::JobDone(pDest, pJobID);
+}
+
+vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
+{
+    //FIXME: simplify?
+    vector_map_string_string_t plugins_info;
+    plugins_info = m_pObserver->GetPluginsInfo();
+    return plugins_info;
 }

@@ -1,7 +1,8 @@
 #ifndef OBSERVER_H_
 #define OBSERVER_H_
 
-#include "CrashTypes.h"
+//FIXME: move all common types to AbrtTypes.h ??
+#include "DBusCommon.h"
 #include <string>
 #include <stdint.h>
 
@@ -19,6 +20,7 @@ class CObserver {
         virtual bool Report(map_crash_report_t pReport, const std::string &pSender) = 0;
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender) = 0;
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string &pSender) = 0;
+        virtual vector_map_string_string_t GetPluginsInfo() = 0;
 };
 
 #endif /* OBSERVER_H_ */

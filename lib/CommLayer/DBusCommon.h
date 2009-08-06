@@ -22,3 +22,5 @@
 #define CC_DBUS_IFACE "com.redhat.abrt"
 
 #include "CrashTypes.h"
+typedef std::map<std::string, std::string> map_string_string_t;
+typedef std::vector<map_string_string_t> vector_map_string_string_t;

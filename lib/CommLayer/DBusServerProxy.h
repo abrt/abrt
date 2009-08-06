@@ -48,6 +48,7 @@ public:
      virtual bool Report(map_crash_report_t pReport, const std::string &pDBusSender) = 0;
      virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
      virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
+     virtual vector_map_string_string_t GetPluginsInfo() = 0;
 
 public:
     /* signal emitters for this interface
@@ -69,6 +70,7 @@ private:
     DBus::Message _Report_stub(const DBus::CallMessage &call);
     DBus::Message _DeleteDebugDump_stub(const DBus::CallMessage &call);
     DBus::Message _GetJobResult_stub(const DBus::CallMessage &call);
+    DBus::Message _GetPluginsInfo_stub(const DBus::CallMessage &call);
 };
 
 #endif

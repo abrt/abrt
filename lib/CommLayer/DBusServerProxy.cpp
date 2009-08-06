@@ -30,6 +30,7 @@ CDBusServer_adaptor::CDBusServer_adaptor()
     register_method(CDBusServer_adaptor, Report, _Report_stub);
     register_method(CDBusServer_adaptor, DeleteDebugDump, _DeleteDebugDump_stub);
     register_method(CDBusServer_adaptor, GetJobResult, _GetJobResult_stub);
+    register_method(CDBusServer_adaptor, GetPluginsInfo, _GetPluginsInfo_stub);
 }
 /* reveal Interface introspection when we stabilize the API */
 /*
@@ -191,5 +192,15 @@ DBus::Message CDBusServer_adaptor::_GetJobResult_stub(const DBus::CallMessage &c
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
     wi << report;
+    return reply;
+}
+
+DBus::Message CDBusServer_adaptor::_GetPluginsInfo_stub(const DBus::CallMessage &call)
+{
+    vector_map_string_string_t plugins_info;
+    plugins_info = GetPluginsInfo();
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << plugins_info;
     return reply;
 }
