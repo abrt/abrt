@@ -1,6 +1,7 @@
 sbin_PROGRAMS = abrt
 
 abrt_SOURCES = \
+    PluginManager.cpp PluginManager.h \
     MiddleWare.cpp MiddleWare.h \
     CrashWatcher.cpp CrashWatcher.h \
     Daemon.cpp \
