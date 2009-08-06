@@ -1,8 +1,6 @@
 lib_LTLIBRARIES = libABRTMiddleWare.la
 
 libABRTMiddleWare_la_SOURCES = \
-    ABRTPlugin.cpp ABRTPlugin.h \
-    DynamicLibrary.cpp DynamicLibrary.h \
     RPM.cpp RPM.h \
     Plugin.h MiddleWareTypes.h Action.h Database.h \
     Reporter.h Analyzer.h
