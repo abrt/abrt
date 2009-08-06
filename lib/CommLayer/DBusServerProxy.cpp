@@ -18,11 +18,6 @@
     */
 
 #include "DBusServerProxy.h"
-//#include <dbus-c++/dbus.h>
-//#include <dbus-c++/glib-integration.h>
-//#include "DBusCommon.h"
-//#include <map>
-//#include <iostream>
 #include <stdlib.h>
 
 /* public: */

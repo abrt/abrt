@@ -5,11 +5,11 @@ libABRTCommLayer_la_SOURCES = \
     CommLayerServerSocket.h CommLayerServerSocket.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     DBusServerProxy.h DBusServerProxy.cpp \
-    Observer.h \
-    DBusCommon.h \
+    DBusClientProxy.h DBusClientProxy.cpp \
     CommLayerInner.h CommLayerInner.cpp \
-    DBusClientProxy.h \
-    CommLayerClientDBus.h CommLayerClientDBus.cpp
+    CommLayerClientDBus.h CommLayerClientDBus.cpp \
+    Observer.h \
+    DBusCommon.h
 libABRTCommLayer_la_LIBADD = \
     ../../lib/MiddleWare/libABRTMiddleWare.la \
     $(DL_LIBS) $(DBUSCPP_LIBS)
