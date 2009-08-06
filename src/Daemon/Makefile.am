@@ -1,6 +1,8 @@
 sbin_PROGRAMS = abrt
 
 abrt_SOURCES = \
+    DynamicLibrary.cpp DynamicLibrary.h \
+    ABRTPlugin.cpp ABRTPlugin.h \
     PluginManager.cpp PluginManager.h \
     MiddleWare.cpp MiddleWare.h \
     CrashWatcher.cpp CrashWatcher.h \
