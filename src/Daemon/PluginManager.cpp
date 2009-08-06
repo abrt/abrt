@@ -181,7 +181,7 @@ CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAnalyzer():"
                                             "Plugin: '"+pName+"' is not analyzer plugin.");
     }
-    return dynamic_cast<CAnalyzer*>(m_mapPlugins[pName]);
+    return (CAnalyzer*)(m_mapPlugins[pName]);
 }
 
 CReporter* CPluginManager::GetReporter(const std::string& pName)
@@ -196,7 +196,7 @@ CReporter* CPluginManager::GetReporter(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetReporter():"
                                             "Plugin: '"+pName+"' is not reporter plugin.");
     }
-    return dynamic_cast<CReporter*>(m_mapPlugins[pName]);
+    return (CReporter*)(m_mapPlugins[pName]);
 }
 
 CAction* CPluginManager::GetAction(const std::string& pName)
@@ -211,7 +211,7 @@ CAction* CPluginManager::GetAction(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAction():"
                                             "Plugin: '"+pName+"' is not action plugin.");
     }
-    return dynamic_cast<CAction*>(m_mapPlugins[pName]);
+    return (CAction*)(m_mapPlugins[pName]);
 }
 
 CDatabase* CPluginManager::GetDatabase(const std::string& pName)
@@ -226,7 +226,7 @@ CDatabase* CPluginManager::GetDatabase(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetDatabase():"
                                             "Plugin: '"+pName+"' is not database plugin.");
     }
-    return dynamic_cast<CDatabase*>(m_mapPlugins[pName]);
+    return (CDatabase*)(m_mapPlugins[pName]);
 }
 
 plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
