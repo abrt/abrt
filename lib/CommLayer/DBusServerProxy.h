@@ -36,6 +36,7 @@ public:
         register_method(CDBusServer_adaptor, Report, _Report_stub);
         register_method(CDBusServer_adaptor, DeleteDebugDump, _DeleteDebugDump_stub);
         register_method(CDBusServer_adaptor, GetJobResult, _GetJobResult_stub);
+        register_method(CDBusServer_adaptor, GetPluginsInfo, _GetPluginsInfo_stub);
     }
 /* reveal Interface introspection when we stabilize the API */
 /*
@@ -95,7 +96,7 @@ public:
      virtual bool Report(map_crash_report_t pReport, const std::string &pDBusSender) = 0;
      virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
      virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
-     
+     virtual vector_map_string_string_t GetPluginsInfo() = 0;
 
 public:
     /* signal emitters for this interface
@@ -214,6 +215,16 @@ private:
         DBus::ReturnMessage reply(call);
         DBus::MessageIter wi = reply.writer();
         wi << report;
+        return reply;
+    }
+    
+    DBus::Message _GetPluginsInfo_stub(const DBus::CallMessage &call)
+    {
+        vector_map_string_string_t plugins_info;
+        plugins_info = GetPluginsInfo();
+        DBus::ReturnMessage reply(call);
+        DBus::MessageIter wi = reply.writer();
+        wi << plugins_info;
         return reply;
     }
 };

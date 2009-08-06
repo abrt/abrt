@@ -870,3 +870,19 @@ map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::strin
     */
     return pending_jobs[pSender][pJobID];
 }
+
+vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
+{
+    try
+    {
+        return m_pMW->GetPluginsInfo();
+    }
+    catch(CABRTException &e)
+    {
+        if (e.type() == EXCEP_FATAL)
+        {
+            throw e;
+        }
+        Warning(e.what());
+    }
+}
