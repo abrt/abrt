@@ -248,7 +248,7 @@ def handleMyException((etype, value, tb)):
 
     # add coredump saving
     write_dump(os.getpid(), tb_uuid, text)
-    sys.exit(__EXITCODE)
+    return sys.__excepthook__(etype, value, tb)
 
 def installExceptionHandler(debug = 1):
     """
