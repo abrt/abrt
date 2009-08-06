@@ -136,7 +136,7 @@ int main(int argc, char** argv)
         dispatcher.attach(NULL);
         DBus::default_dispatcher = &dispatcher;
         DBus::Connection conn = DBus::Connection::SystemBus();
-        CCommLayerClientDBus ABRTDaemon(conn, CC_DBUS_PATH, CC_DBUS_NAME); 
+        CCommLayerClientDBus ABRTDaemon(conn, CC_DBUS_PATH, CC_DBUS_NAME);
         if(!conn.has_name(CC_DBUS_NAME)){
             std::cout << "Daemon is not running!" << std::endl;
             return -1;

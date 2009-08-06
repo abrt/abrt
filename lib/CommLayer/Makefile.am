@@ -5,7 +5,7 @@ libABRTCommLayer_la_SOURCES = CommLayerServer.h CommLayerServer.cpp \
                            DBusServerProxy.h Observer.h DBusCommon.h \
                            CommLayerInner.h CommLayerInner.cpp \
                            DBusClientProxy.h CommLayerClientDBus.h CommLayerClientDBus.cpp
-                           
+
 libABRTCommLayer_la_LIBADD = ../../lib/MiddleWare/libABRTMiddleWare.la $(DL_LIBS) $(DBUSCPP_LIBS)
 libABRTCommLayer_la_LDFLAGS = -version-info 0:1:0
 libABRTCommLayer_la_CPPFLAGS = -Wall -Werror -I$(srcdir)/../../lib/MiddleWare\

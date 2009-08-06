@@ -32,7 +32,7 @@ virtual void Run(const std::string& pActiveDir,
  The first argument is a directory name. It can be either the current debug
  dump dir or a directory that contains all debug dumps.
  The second argument is a string with arguments specified for the action.
- 
+
 Analyzer Plugin
 ---------------
 This plugin has to compute the UUID of the crash. Crashes differ, depending on
@@ -106,7 +106,7 @@ virtual const vector_database_rows_t GetUIDData(const std::string& pUID) = 0;
 
 virtual const database_row_t GetUUIDData(const std::string& pUUID, const
  std::string& pUID) = 0;
-- get a database row for the specified user ID and UUID 
+- get a database row for the specified user ID and UUID
 
 
 The macro PLUGIN_INFO

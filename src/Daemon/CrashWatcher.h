@@ -69,7 +69,7 @@ class CCrashWatcher
            {}
 
         } cron_callback_data_t;
-        
+
         typedef struct SThreadData{
            pthread_t  thread_id;
            char* UUID;
@@ -77,7 +77,7 @@ class CCrashWatcher
            char *dest;
            CCrashWatcher *daemon;
         } thread_data_t;
-        
+
         /**
          * Map to cache the results from CreateReport_t
          * <UID, <UUID, result>>

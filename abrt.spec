@@ -24,8 +24,8 @@ BuildRequires: python-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 %description
-%{name} is a tool to help users to detect defects in applications and 
-to create a bug report with all informations needed by maintainer to fix it. 
+%{name} is a tool to help users to detect defects in applications and
+to create a bug report with all informations needed by maintainer to fix it.
 It uses plugin system to extend its functionality.
 
 %package libs
@@ -59,7 +59,7 @@ Requires: gdb
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
-This package contains hook for C/C++ crashed programs and %{name}'s C/C++ 
+This package contains hook for C/C++ crashed programs and %{name}'s C/C++
 analyzer plugin.
 
 %package addon-kerneloops
@@ -89,7 +89,7 @@ Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description plugin-sqlite3
-This package contains SQLite3 database plugin. It is used for storing the data 
+This package contains SQLite3 database plugin. It is used for storing the data
 required for creating a bug report.
 
 %package plugin-logger
@@ -108,7 +108,7 @@ Requires: mailx
 
 %description plugin-mailx
 The simple reporter plugin, which sends a report via mailx to a specified
-email. 
+email.
 
 %package plugin-runapp
 Summary: %{name}'s runapp plugin

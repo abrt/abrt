@@ -1,22 +1,22 @@
-/* 
-    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com) 
-    Copyright (C) 2009  RedHat inc. 
- 
-    This program is free software; you can redistribute it and/or modify 
-    it under the terms of the GNU General Public License as published by 
-    the Free Software Foundation; either version 2 of the License, or 
-    (at your option) any later version. 
- 
-    This program is distributed in the hope that it will be useful, 
-    but WITHOUT ANY WARRANTY; without even the implied warranty of 
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
-    GNU General Public License for more details. 
- 
-    You should have received a copy of the GNU General Public License along 
-    with this program; if not, write to the Free Software Foundation, Inc., 
-    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA. 
+/*
+    Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com)
+    Copyright (C) 2009  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
-    
+
 #include <dbus-c++/dbus.h>
 #include <dbus-c++/glib-integration.h>
 #include "DBusCommon.h"
@@ -62,7 +62,8 @@ private:
         ri >> name;
         ri >> old_owner;
         ri >> new_owner;
-        if(name.compare("com.redhat.abrt") == 0){ 
+        if(name.compare("com.redhat.abrt") == 0)
+	{
             if(new_owner.length() > 0)
             {
                 if(m_pStateChangeHandler)
@@ -107,7 +108,7 @@ public:
         std::cout << "~DaemonWatcher" << std::endl;
     }
 };
-        
+
 
 class CDBusClient_proxy
  : public DBus::InterfaceProxy
@@ -119,7 +120,7 @@ private:
     std::string m_sConnName;
 public:
 
-    
+
     CDBusClient_proxy()
     : DBus::InterfaceProxy(CC_DBUS_IFACE)
     {
@@ -127,7 +128,7 @@ public:
         connect_signal(CDBusClient_proxy, JobDone, _JobDone_stub);
         m_sConnName = "";
     }
-    
+
     CDBusClient_proxy(::DBus::Connection &pConnection)
     : DBus::InterfaceProxy(CC_DBUS_IFACE)
     {
@@ -144,8 +145,8 @@ public:
      * this functions will invoke the corresponding methods on the remote objects
      */
      /*
-     
-     < 
+
+     <
       <m_sUUID;m_sUID;m_sCount;m_sExecutable;m_sPackage>
       <m_sUUID;m_sUID;m_sCount;m_sExecutable;m_sPackage>
       <m_sUUID;m_sUID;m_sCount;m_sExecutable;m_sPackage>
@@ -155,7 +156,6 @@ public:
     vector_crash_infos_t GetCrashInfos()
     {
         DBus::CallMessage call;
-        
         DBus::MessageIter wi = call.writer();
 
         call.member("GetCrashInfos");
@@ -166,11 +166,11 @@ public:
         ri >> argout;
         return argout;
     }
-    
+
     bool DeleteDebugDump(const std::string& pUUID)
     {
         DBus::CallMessage call;
-        
+
         DBus::MessageIter wi = call.writer();
 
         wi << pUUID;
@@ -182,12 +182,12 @@ public:
         ri >> argout;
         return argout;
     }
-    
+
     map_crash_report_t CreateReport(const std::string& pUUID)
     {
         m_bJobDone = false;
         DBus::CallMessage call;
-        
+
         DBus::MessageIter wi = call.writer();
 
         wi << pUUID;
@@ -199,11 +199,11 @@ public:
         g_main_loop_run(gloop);
         return GetJobResult(m_iPendingJobID);
     };
-    
+
     void Report(map_crash_report_t pReport)
     {
         DBus::CallMessage call;
-        
+
         DBus::MessageIter wi = call.writer();
 
         wi << pReport;
@@ -211,11 +211,11 @@ public:
         DBus::Message ret = invoke_method(call);
         DBus::MessageIter ri = ret.reader();
     }
-    
+
     map_crash_report_t GetJobResult(uint64_t pJobID)
     {
         DBus::CallMessage call;
-        
+
         DBus::MessageIter wi = call.writer();
 
         wi << pJobID;
@@ -226,13 +226,13 @@ public:
         ri >> argout;
         return argout;
     }
-    
+
 public:
 
     /* signal handlers for this interface
      */
     virtual void Crash(std::string& value){}
-    
+
 private:
 
     /* unmarshalers (to unpack the DBus message before calling the actual signal handler)
@@ -244,7 +244,7 @@ private:
         std::string value; ri >> value;
         Crash(value);
     }
-    
+
     void _JobDone_stub(const ::DBus::SignalMessage &sig)
     {
         DBus::MessageIter ri = sig.reader();

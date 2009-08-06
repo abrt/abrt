@@ -5,11 +5,11 @@ abrt.conf \- configuration file for abrt
 .P
 .I abrt
 is a daemon that watches for application crashes. When a crash occurs,
-it collects the crash data and takes action according to 
+it collects the crash data and takes action according to
 its configuration. This manual page describes \fIabrt\fP's configuration
 file.
 .P
-The configuration file consists of sections, each section contains 
+The configuration file consists of sections, each section contains
 several items in the format "Option = Value". A description of each
 section follows:
 .SS [Common]
@@ -21,7 +21,7 @@ will report crashes only in GPG signed packages. When set to "no",
 it will report crashes also in unsigned packages.
 .TP
 .B OpenGPGPublicKeys =  \fIfilename\fP , \fIfilename\fP ...
-These are the trusted GPG keys with which packages have to be 
+These are the trusted GPG keys with which packages have to be
 signed for
 .I abrt
 to report them if "EnableOpenGPG = yes".
@@ -35,7 +35,7 @@ will ignore packages in this list and will not handle their crashes.
 will only load plugins in this list.
 .TP
 .B Database = \fIdatabasePlugin\fP
-This specifies which database plugin 
+This specifies which database plugin
 .I abrt
 uses to store metadata about the crash.
 .TP

@@ -95,7 +95,7 @@ public:
      virtual bool Report(map_crash_report_t pReport, const std::string &pDBusSender) = 0;
      virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
      virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
-     
+
 
 public:
     /* signal emitters for this interface
@@ -116,8 +116,7 @@ public:
         wi << arg1;
         emit_signal(sig);
     }
-    
-    
+
     void JobDone(const std::string &pDest, uint64_t job_id)
     {
         ::DBus::SignalMessage sig("JobDone");
@@ -134,7 +133,7 @@ public:
         wi << arg1;
         emit_signal(sig);
     }
-    
+
     void Update(const std::string pDest, const std::string& pMessage)
     {
         ::DBus::SignalMessage sig("Update");
@@ -143,7 +142,7 @@ public:
         wi << pMessage;
         emit_signal(sig);
     }
-    
+
     void Warning(const std::string& arg1)
     {
         ::DBus::SignalMessage sig("Warning");
@@ -204,7 +203,7 @@ private:
         wi << argout1;
         return reply;
     }
-    
+
     DBus::Message _GetJobResult_stub(const DBus::CallMessage &call)
     {
         DBus::MessageIter ri = call.reader();
