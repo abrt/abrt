@@ -56,25 +56,34 @@ int main(int argc, char** argv)
                 daemonize = 0;
             }
         }
-        if(daemonize)
+        if (daemonize)
         {
             /* Open stdin to /dev/null. We do it before forking
              * in order to emit useful exitcode to the parent
-	     * if open fails */
+             * if open fails */
             close(STDIN_FILENO);
             if (open("/dev/null", O_RDWR))
             {
                 throw CABRTException(EXCEP_FATAL, "Can't open /dev/null");
             }
-    	    /* forking to background */
+            /* forking to background */
             pid_t pid = fork();
             if (pid < 0)
             {
                 throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): Fork error");
             }
-            /* parent exits */
-            if (pid > 0) _exit(0);
-            /* child (daemon) continues */
+            if (pid > 0)
+            {
+                /* Parent */
+                /* Wait for child to notify us via SIGTERM that it feels ok */
+                int i = 20; /* 2 sec */
+                while (sig_caught == 0 && --i)
+                {
+                        usleep(100 * 1000);
+                }
+                _exit(sig_caught != SIGTERM); /* TERM:ok (0), anything else: bad (1) */
+            }
+            /* Child (daemon) continues */
             pid_t sid = setsid();
             if(sid == -1)
             {
@@ -88,6 +97,11 @@ int main(int argc, char** argv)
             dup(0);
         }
         g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
+        if (daemonize)
+        {
+            /* Let parent know we initialized ok */
+            kill(getppid(), SIGTERM);
+        }
         g_pCrashWatcher->Run();
     }
     catch(CABRTException& e)
