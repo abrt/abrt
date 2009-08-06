@@ -187,7 +187,7 @@ int main(int argc, char** argv)
         /* We need coredumps to be readable by all, because
          * process producing backtraces is run under the same UID
          * as the crashed process.
-	 * Thus 644, not 600 */
+         * Thus 644, not 600 */
         fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd < 0)
         {
