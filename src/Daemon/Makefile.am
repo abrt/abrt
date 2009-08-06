@@ -1,4 +1,5 @@
 sbin_PROGRAMS = abrt
+
 abrt_SOURCES = \
     CrashWatcher.cpp CrashWatcher.h \
     Daemon.cpp \
