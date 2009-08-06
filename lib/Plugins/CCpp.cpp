@@ -527,19 +527,20 @@ void CAnalyzerCCpp::Init()
     }
     if (m_sOldCorePattern[0] == '|')
     {
-	if (m_sOldCorePattern == CORE_PATTERN)
-	{
-	    log("warning: %s already contains %s, "
-		"did abrt daemon crash recently?",
-		CORE_PATTERN_IFACE, CORE_PATTERN);
-	    /* There is no point in "restoring" CORE_PATTERN_IFACE
-	     * to CORE_PATTERN on exit. Will restore to a default value:
-	     */
-	    m_sOldCorePattern = "core";
-	}
-	log("warning: %s was already set to run a crash analyser (%s), "
-	    "abrt may interfere with it",
-	    CORE_PATTERN_IFACE, CORE_PATTERN);
+        if (m_sOldCorePattern == CORE_PATTERN)
+        {
+            log("warning: %s already contains %s, "
+                "did abrt daemon crash recently?",
+                CORE_PATTERN_IFACE, CORE_PATTERN);
+            /* There is no point in "restoring" CORE_PATTERN_IFACE
+             * to CORE_PATTERN on exit. Will restore to a default value:
+             */
+            m_sOldCorePattern = "core";
+        } else {
+            log("warning: %s was already set to run a crash analyser (%s), "
+                "abrt may interfere with it",
+                CORE_PATTERN_IFACE, CORE_PATTERN);
+        }
     }
 
     std::ofstream fOutCorePattern;
