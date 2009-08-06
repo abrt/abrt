@@ -184,7 +184,11 @@ int main(int argc, char** argv)
         snprintf(path + strlen(path), sizeof(path), "/%s", FILENAME_COREDUMP);
 
         int fd;
-        fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+        /* We need coredumps to be readable by all, because
+         * process producing backtraces is run under the same UID
+         * as the crashed process.
+	 * Thus 644, not 600 */
+        fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd < 0)
         {
             dd.Delete();
