@@ -12,7 +12,7 @@ if test -z "$PYTHON"; then
     echo "*** Essential program python not found" 1>&2
     exit 1
 fi
-    
+
 PKG_CHECK_MODULES([SQLITE3], [sqlite3])
 PKG_CHECK_MODULES([GTK], [gtk+-2.0])
 PKG_CHECK_MODULES([GLIB], [glib-2.0])
@@ -37,22 +37,22 @@ PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 
 DEBUG_DUMPS_DIR='${localstatedir}/cache/${PACKAGE_NAME}'
-AC_ARG_WITH(debugdumpsdir, 
+AC_ARG_WITH(debugdumpsdir,
             [AS_HELP_STRING([--with-debugdumpdir=DIR],
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
 
 AC_ARG_ENABLE(socket,
-              [AC_HELP_STRING([--enable-socket], 
+              [AC_HELP_STRING([--enable-socket],
                              [Enable socket communication. Disable DBus communication])],
               [ENABLE_SOCKET_OR_DBUS='-DENABLE_SOCKET=1'])
 
 AC_ARG_ENABLE(dbus,
-              [AC_HELP_STRING([--enable-dbus], 
+              [AC_HELP_STRING([--enable-dbus],
                              [Enable DBus communication. Disable socket communication @<:@default@:>@])],
               [ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'])
-                
-AC_SUBST(ENABLE_SOCKET_OR_DBUS)  
+
+AC_SUBST(ENABLE_SOCKET_OR_DBUS)
 AC_SUBST(CONF_DIR)
 AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)

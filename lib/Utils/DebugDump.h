@@ -57,7 +57,7 @@ class CDebugDump
     public:
         CDebugDump();
         void Open(const std::string& pDir);
-        void Create(const std::string& pDir, const std::string& pUID);
+        void Create(const std::string& pDir, uid_t pUID);
         void Delete();
         void Close();
 

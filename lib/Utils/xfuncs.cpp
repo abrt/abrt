@@ -158,6 +158,35 @@ char* xasprintf(const char *format, ...)
 	return string_ptr;
 }
 
+std::string ssprintf(const char *format, ...)
+{
+	va_list p;
+	int r;
+	char *string_ptr;
+
+#if 1
+	// GNU extension
+	va_start(p, format);
+	r = vasprintf(&string_ptr, format, p);
+	va_end(p);
+#else
+	// Bloat for systems that haven't got the GNU extension.
+	va_start(p, format);
+	r = vsnprintf(NULL, 0, format, p);
+	va_end(p);
+	string_ptr = xmalloc(r+1);
+	va_start(p, format);
+	r = vsnprintf(string_ptr, r+1, format, p);
+	va_end(p);
+#endif
+
+	if (r < 0)
+		error_msg_and_die(msg_memory_exhausted);
+	std::string res = string_ptr;
+	free(string_ptr);
+	return res;
+}
+
 void xsetenv(const char *key, const char *value)
 {
 	if (setenv(key, value, 1))
@@ -170,7 +199,6 @@ int xsocket(int domain, int type, int protocol)
 	int r = socket(domain, type, protocol);
 
 	if (r < 0) {
-		/* Hijack vaguely related config option */
 		const char *s = "INET";
 		if (domain == AF_PACKET) s = "PACKET";
 		if (domain == AF_NETLINK) s = "NETLINK";

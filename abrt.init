@@ -25,7 +25,7 @@ RETVAL=0
 check() {
 	# Check that we're a privileged user
 	[ `id -u` = 0 ] || exit 4
-	
+
 	# Check if abrt is executable
 	test -x /usr/sbin/abrt || exit 5
 }
@@ -33,14 +33,14 @@ check() {
 start() {
 
 	check
-	
+
 	# Check if it is already running
 	if [ ! -f /var/lock/subsys/abrt ]; then
-		echo -n $"Starting abrt daemon: "	
-	    daemon /usr/sbin/abrt
-	    RETVAL=$?
-	    [ $RETVAL -eq 0 ] && touch /var/lock/subsys/abrt
-	    echo
+		echo -n $"Starting abrt daemon: "
+		daemon /usr/sbin/abrt
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/abrt
+		echo
 	fi
 	return $RETVAL
 }
@@ -48,24 +48,24 @@ start() {
 stop() {
 
 	check
-	
+
 	echo -n $"Stopping abrt daemon: "
 	killproc /usr/sbin/abrt
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/abrt
 	echo
-    return $RETVAL
+	return $RETVAL
 }
 
 
 restart() {
 	stop
 	start
-}	
+}
 
 reload() {
 	restart
-}	
+}
 
 case "$1" in
 start)

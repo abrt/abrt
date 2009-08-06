@@ -19,25 +19,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#include "abrtlib.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <cerrno>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <dirent.h>
 #include <sys/utsname.h>
-#include <limits.h>
-#include <fcntl.h>
-#include <ctype.h>
-#include <time.h>
-#include <unistd.h>
 #include <magic.h>
-#include <string.h>
-#include <pwd.h>
-#include <stdlib.h>
 
 #include "CommLayerInner.h"
 // BUG? in C/C++, compiler may assume that function address is never NULL
@@ -193,7 +183,7 @@ void CDebugDump::UnLock()
     }
 }
 
-void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
+void CDebugDump::Create(const std::string& pDir, uid_t uid)
 {
     if (m_bOpened)
     {
@@ -221,16 +211,16 @@ void CDebugDump::Create(const std::string& pDir, const std::string& pUID)
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot change permissions, dir: " + pDir);
     }
-    uid_t uid = atoi(pUID.c_str());
     struct passwd* pw = getpwuid(uid);
-    if (chown(m_sDebugDumpDir.c_str(), uid, pw ? pw->pw_gid : uid) == -1)
+    gid_t gid = pw ? pw->pw_gid : uid;
+    if (chown(m_sDebugDumpDir.c_str(), uid, gid) == -1)
     {
-        UnLock();
-        m_bOpened = false;
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot change ownership, dir: " + pDir);
+        /* if /var/cache/abrt is writable by all, _aborting_ here is not useful */
+        /* let's just warn */
+        perror_msg("can't change '%s' ownership to %u:%u", m_sDebugDumpDir.c_str(), (int)uid, (int)gid);
     }
 
-    SaveText(FILENAME_UID, pUID);
+    SaveText(FILENAME_UID, ssprintf("%u", (int)uid));
     SaveKernelArchitectureRelease();
     SaveTime();
 }
@@ -239,7 +229,7 @@ static void DeleteFileDir(const std::string& pDir)
 {
     DIR *dir = opendir(pDir.c_str());
     if (!dir)
-	return;
+        return;
 
     struct dirent *dent;
     while ((dent = readdir(dir)) != NULL)

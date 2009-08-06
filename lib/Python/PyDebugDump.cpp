@@ -73,7 +73,7 @@ static PyMethodDef ABRTUtils_functions[] = {
 static int
 _wrap_PyCDebugDump__tp_init(PyCDebugDump *self, PyObject *args, PyObject *kwargs)
 {
-    const char *keywords[] = {NULL};
+    static const char *const keywords[] = {NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "", (char **) keywords)) {
         return -1;
@@ -100,10 +100,10 @@ _wrap_PyCDebugDump_Create(PyCDebugDump *self, PyObject *args, PyObject *kwargs)
 {
     PyObject *py_retval;
     char *pFilename2;
-    char *pUID2;
-    const char *keywords[] = {"pFilename", "pUID", NULL};
+    int pUID2;
+    static const char *const keywords[] = {"pFilename", "pUID", NULL};
 
-    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "ss", (char **) keywords, &pFilename2, &pUID2)) {
+    if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "si", (char **) keywords, &pFilename2, &pUID2)) {
         return NULL;
     }
     self->obj->Create(pFilename2, pUID2);
@@ -119,7 +119,7 @@ _wrap_PyCDebugDump_SaveText(PyCDebugDump *self, PyObject *args, PyObject *kwargs
     PyObject *py_retval;
     char *pName2;
     char *pData2;
-    const char *keywords[] = {"pName", "pData", NULL};
+    static const char *const keywords[] = {"pName", "pData", NULL};
 
     if (!PyArg_ParseTupleAndKeywords(args, kwargs, (char *) "ss", (char **) keywords, &pName2, &pData2)) {
         return NULL;

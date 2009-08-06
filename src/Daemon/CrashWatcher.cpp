@@ -516,6 +516,7 @@ CCrashWatcher::~CCrashWatcher()
     /* delete lock file */
     unlink(VAR_RUN_LOCK_FILE);
 }
+
 void CCrashWatcher::FindNewDumps(const std::string& pPath)
 {
     Debug("Scanning for unsaved entries...");

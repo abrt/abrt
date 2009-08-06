@@ -28,9 +28,14 @@
 #include <sys/types.h>
 
 /**
- * Text reprezentation of plugin types.
+ * Text representation of plugin types.
  */
-static const char* const plugin_type_str_t[] = { "Analyzer", "Action", "Reporter", "Database" };
+static const char* const plugin_type_str_t[] = {
+    "Analyzer",
+    "Action",
+    "Reporter",
+    "Database"
+};
 
 
 CPluginManager::CPluginManager(
@@ -52,10 +57,11 @@ void CPluginManager::LoadPlugins()
     {
         while ((dent = readdir(dir)) != NULL)
         {
+            // FIXME: need to handle DT_UNKNOWN too
             if (dent->d_type == DT_REG)
             {
                 std::string name = dent->d_name;
-                std::string extension = name.substr(name.length()-sizeof(PLUGINS_LIB_EXTENSION)+1);
+                std::string extension = name.substr(name.length() - sizeof(PLUGINS_LIB_EXTENSION) + 1);
                 if (extension == PLUGINS_LIB_EXTENSION)
                 {
                     name.erase(0, sizeof(PLUGINS_LIB_PREFIX) - 1);
@@ -71,11 +77,11 @@ void CPluginManager::LoadPlugins()
 void CPluginManager::UnLoadPlugins()
 {
     map_abrt_plugins_t::iterator it_p;
-      while ((it_p = m_mapABRTPlugins.begin()) != m_mapABRTPlugins.end())
-      {
-          std::string pluginName = it_p->first;
-          UnLoadPlugin(pluginName);
-      }
+    while ((it_p = m_mapABRTPlugins.begin()) != m_mapABRTPlugins.end())
+    {
+        std::string pluginName = it_p->first;
+        UnLoadPlugin(pluginName);
+    }
 }
 
 void CPluginManager::LoadPlugin(const std::string& pName)
@@ -117,7 +123,6 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
         comm_layer_inner_debug("Plugin " + pName + " sucessfully unloaded.");
     }
 }
-
 
 void CPluginManager::RegisterPlugin(const std::string& pName)
 {
@@ -176,7 +181,7 @@ CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAnalyzer():"
                                             "Plugin: '"+pName+"' is not analyzer plugin.");
     }
-    return dynamic_cast<CAnalyzer*>(m_mapPlugins[pName]);
+    return (CAnalyzer*)(m_mapPlugins[pName]);
 }
 
 CReporter* CPluginManager::GetReporter(const std::string& pName)
@@ -191,7 +196,7 @@ CReporter* CPluginManager::GetReporter(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetReporter():"
                                             "Plugin: '"+pName+"' is not reporter plugin.");
     }
-    return dynamic_cast<CReporter*>(m_mapPlugins[pName]);
+    return (CReporter*)(m_mapPlugins[pName]);
 }
 
 CAction* CPluginManager::GetAction(const std::string& pName)
@@ -206,7 +211,7 @@ CAction* CPluginManager::GetAction(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAction():"
                                             "Plugin: '"+pName+"' is not action plugin.");
     }
-    return dynamic_cast<CAction*>(m_mapPlugins[pName]);
+    return (CAction*)(m_mapPlugins[pName]);
 }
 
 CDatabase* CPluginManager::GetDatabase(const std::string& pName)
@@ -221,7 +226,7 @@ CDatabase* CPluginManager::GetDatabase(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetDatabase():"
                                             "Plugin: '"+pName+"' is not database plugin.");
     }
-    return dynamic_cast<CDatabase*>(m_mapPlugins[pName]);
+    return (CDatabase*)(m_mapPlugins[pName]);
 }
 
 plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
@@ -252,7 +257,6 @@ vector_map_string_string_t CPluginManager::GetPluginsInfo()
         plugin_info["WWW"] = it_abrt_plugin->second->GetWWW();
         plugin_info["GTKBuilder"] = it_abrt_plugin->second->GetGTKBuilder();
         ret.push_back(plugin_info);
-
     }
     return ret;
 }

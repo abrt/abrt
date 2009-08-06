@@ -5,18 +5,18 @@ FileTransfer plugin for abrt(8)
 .P
 .I abrt
 is a daemon that watches for application crashes. When a crash occurs,
-it collects the crash data and takes action according to 
-its configuration. This manual page describes the \fIFileTransfer\fP plugin 
+it collects the crash data and takes action according to
+its configuration. This manual page describes the \fIFileTransfer\fP plugin
 for \fIabrt\fP.
 .P
 This plugin is used to transfer the crash report to another
 machine using a file transfer protocol. The protocols supported
-are FTP, FTPS, HTTP, HTTPS, SCP, SFTP, and TFTP. 
+are FTP, FTPS, HTTP, HTTPS, SCP, SFTP, and TFTP.
 .SH INVOCATION
 .P
 The plugin is invoked in the \fIabrt.conf\fP file, usually in the
 \fIActionsAndReporters\fP option and/or the \fI[cron]\fP section.
-There are two modes of invocation: 
+There are two modes of invocation:
 .P
 * If you use the parameter
 \fI"store"\fP, the plugin stores a record of the occurrence of
@@ -27,12 +27,12 @@ plugin will iterate through the internal list and will send
 every recorded crash to the server specified in the \fIFileTransfer.conf\fP
 configuration file. After that, the internal list is cleared.
 .P
-On a production machine, you probably do not want the daemon to send crash 
+On a production machine, you probably do not want the daemon to send crash
 data at times that the machine is busy working. This second mode allows you
-to send crash reports at a quieter time (at night, perhaps) that you 
+to send crash reports at a quieter time (at night, perhaps) that you
 schedule in the \fI[cron]\fP section of \fIabrt.conf\fP.
 .SH CONFIGURATION
-The \fIFileTransfer.conf\fP configuration file contains 
+The \fIFileTransfer.conf\fP configuration file contains
 several entries in the format "Option = Value". The options are:
 .SS URL
 The URL of the server, where the crash should
@@ -41,7 +41,7 @@ the user name and the password, for example:
 .br
 URL = ftp://user:passwd@server.com/path
 .SS ArchiveType
-The type of the archive in which to pack the crash data. 
+The type of the archive in which to pack the crash data.
 Currently, \fI.tar.gz\fP, \fI.tar.bz2\fP and \fI.zip\fP are supported.
 The plugin currently relies on external file archiving
 commandline utilities, which will create the archive.

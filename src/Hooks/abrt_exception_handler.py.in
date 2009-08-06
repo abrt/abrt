@@ -200,7 +200,7 @@ def handleMyException((etype, value, tb)):
     progname - the name of the application
     version  - the version of the application
     """
-    
+
     # restore original exception handler
     sys.excepthook = sys.__excepthook__  # pylint: disable-msg=E1101
 

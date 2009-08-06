@@ -40,61 +40,61 @@
  */
 class CPluginManager
 {
-	private:
-		typedef std::map<std::string, CABRTPlugin*> map_abrt_plugins_t;
-		typedef std::map<std::string, CPlugin*> map_plugins_t;
+    private:
+        typedef std::map<std::string, CABRTPlugin*> map_abrt_plugins_t;
+        typedef std::map<std::string, CPlugin*> map_plugins_t;
 
-		/**
-		 * Loaded plugins. A key is a plugin name.
-		 */
-		map_abrt_plugins_t m_mapABRTPlugins;
-		/**
-		 * Registered plugins. A key is a plugin name.
-		 */
-		map_plugins_t m_mapPlugins;
-		/**
-		 * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
-		 */
-		std::string m_sPluginsConfDir;
-		/**
-		 * Plugins library directory (e.g. /usr/lib/abrt/plugins, ...).
-		 */
-		std::string m_sPluginsLibDir;
+        /**
+         * Loaded plugins. A key is a plugin name.
+         */
+        map_abrt_plugins_t m_mapABRTPlugins;
+        /**
+         * Registered plugins. A key is a plugin name.
+         */
+        map_plugins_t m_mapPlugins;
+        /**
+         * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
+         */
+        std::string m_sPluginsConfDir;
+        /**
+         * Plugins library directory (e.g. /usr/lib/abrt/plugins, ...).
+         */
+        std::string m_sPluginsLibDir;
 
-	public:
-	    /**
-	     * A constructor.
-	     * @param pPluginsConfDir A plugins configuration directory.
-	     * @param pPluginsLibDir A plugins library directory.
-	     */
-		CPluginManager(const std::string& pPluginsConfDir,
-					   const std::string& pPluginsLibDir);
-		/**
-		 * A destructor.
-		 */
-		~CPluginManager();
-		/**
-		 * A method, which loads all plugins in plugins library direcotry.
-		 */
-		void LoadPlugins();
-		/**
-		 * A method, which unregister and unload all loaded plugins.
-		 */
-		void UnLoadPlugins();
-		/**
-		 * A method, which loads particular plugin.
-		 * @param pName A plugin name.
-		 */
-		void LoadPlugin(const std::string& pName);
-		/**
-		 * A method, which unloads particular plugin.
-		 * @param pName A plugin name.
-		 */
-		void UnLoadPlugin(const std::string& pName);
-		/**
-		 * A method, which registers particular plugin.
-		 * @param pName A plugin name.
-		 */
+    public:
+        /**
+         * A constructor.
+         * @param pPluginsConfDir A plugins configuration directory.
+         * @param pPluginsLibDir A plugins library directory.
+         */
+        CPluginManager(const std::string& pPluginsConfDir,
+                                           const std::string& pPluginsLibDir);
+        /**
+         * A destructor.
+         */
+        ~CPluginManager();
+        /**
+         * A method, which loads all plugins in plugins library direcotry.
+         */
+        void LoadPlugins();
+        /**
+         * A method, which unregister and unload all loaded plugins.
+         */
+        void UnLoadPlugins();
+        /**
+         * A method, which loads particular plugin.
+         * @param pName A plugin name.
+         */
+        void LoadPlugin(const std::string& pName);
+        /**
+         * A method, which unloads particular plugin.
+         * @param pName A plugin name.
+         */
+        void UnLoadPlugin(const std::string& pName);
+        /**
+         * A method, which registers particular plugin.
+         * @param pName A plugin name.
+         */
         void RegisterPlugin(const std::string& pName);
         /**
          * A method, which unregister particular plugin.
@@ -106,31 +106,31 @@ class CPluginManager
          * @param pName A plugin name.
          * @return An analyzer plugin.
          */
-		CAnalyzer* GetAnalyzer(const std::string& pName);
+        CAnalyzer* GetAnalyzer(const std::string& pName);
         /**
          * A method, which returns instance of particular reporter plugin.
          * @param pName A plugin name.
          * @return A reporter plugin.
          */
-		CReporter* GetReporter(const std::string& pName);
+        CReporter* GetReporter(const std::string& pName);
         /**
          * A method, which returns instance of particular action plugin.
          * @param pName A plugin name.
          * @return An action plugin.
          */
-		CAction* GetAction(const std::string& pName);
+        CAction* GetAction(const std::string& pName);
         /**
          * A method, which returns instance of particular database plugin.
          * @param pName A plugin name.
          * @return A database plugin.
          */
-		CDatabase* GetDatabase(const std::string& pName);
-		/**
-		 * A method, which returns type of particular plugin.
-		 * @param pName A plugin name.
-		 * @return A plugin type.
-		 */
-		plugin_type_t GetPluginType(const std::string& pName);
+        CDatabase* GetDatabase(const std::string& pName);
+        /**
+         * A method, which returns type of particular plugin.
+         * @param pName A plugin name.
+         * @return A plugin type.
+         */
+        plugin_type_t GetPluginType(const std::string& pName);
         /**
          * A method, which gets all plugins info (event those plugins which are
          * disabled). It can be send via DBus to GUI and displayed to an user.

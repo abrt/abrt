@@ -1,9 +1,11 @@
 lib_LTLIBRARIES = libABRTUtils.la
 libABRTUtils_la_SOURCES = \
 	DebugDump.cpp DebugDump.h \
+	CrashTypesSocket.cpp \
 	xfuncs.cpp \
 	read_write.cpp \
-	logging.cpp
+	logging.cpp \
+	copyfd.cpp
 
 libABRTUtils_la_LDFLAGS = -version-info 0:1:0
 libABRTUtils_la_LIBADD = -lmagic
