@@ -27,8 +27,8 @@ CABRTPlugin::CABRTPlugin(const std::string& pLibPath) :
     m_pFnPluginNew(NULL)
 {
     m_pDynamicLibrary = new CDynamicLibrary(pLibPath);
-    m_pPluginInfo = reinterpret_cast<p_plugin_info_t>(m_pDynamicLibrary->FindSymbol("plugin_info"));
-    m_pFnPluginNew = reinterpret_cast<p_fn_plugin_new_t>(m_pDynamicLibrary->FindSymbol("plugin_new"));
+    m_pPluginInfo = reinterpret_cast<typeof(m_pPluginInfo)>(m_pDynamicLibrary->FindSymbol("plugin_info"));
+    m_pFnPluginNew = reinterpret_cast<typeof(m_pFnPluginNew)>(m_pDynamicLibrary->FindSymbol("plugin_new"));
 }
 
 CABRTPlugin::~CABRTPlugin()
@@ -37,50 +37,4 @@ CABRTPlugin::~CABRTPlugin()
     {
         delete m_pDynamicLibrary;
     }
-}
-
-const std::string& CABRTPlugin::GetVersion()
-{
-    return m_pPluginInfo->m_sVersion;
-}
-
-const int CABRTPlugin::GetMagicNumber()
-{
-    return m_pPluginInfo->m_nMagicNumber;
-}
-
-const std::string& CABRTPlugin::GetName()
-{
-    return m_pPluginInfo->m_sName;
-}
-
-const std::string& CABRTPlugin::GetDescription()
-{
-    return m_pPluginInfo->m_sDescription;
-}
-
-const std::string& CABRTPlugin::GetEmail()
-{
-    return m_pPluginInfo->m_sEmail;
-}
-
-const std::string& CABRTPlugin::GetWWW()
-{
-    return m_pPluginInfo->m_sWWW;
-}
-
-const std::string& CABRTPlugin::GetGTKBuilder()
-{
-    return m_pPluginInfo->m_sGTKBuilder;
-}
-
-
-const plugin_type_t CABRTPlugin::GetType()
-{
-    return m_pPluginInfo->m_Type;
-}
-
-CPlugin* CABRTPlugin::PluginNew()
-{
-    return m_pFnPluginNew();
 }

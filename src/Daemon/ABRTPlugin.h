@@ -33,10 +33,6 @@
 class CABRTPlugin
 {
     private:
-
-        typedef const plugin_info_t* p_plugin_info_t;
-        typedef CPlugin* (*p_fn_plugin_new_t)();
-
         /**
          * A class containing library which contains plugin functionality.
          * @see DynamicLibrary.h
@@ -45,11 +41,11 @@ class CABRTPlugin
         /**
          * A pointer to struc containing information about plugin.
          */
-        p_plugin_info_t m_pPluginInfo;
+        const plugin_info_t* m_pPluginInfo;
         /**
          * A pointer to function, which creates new instances of plugin.
          */
-        p_fn_plugin_new_t m_pFnPluginNew;
+        CPlugin* (*m_pFnPluginNew)();
 
     public:
         /**
@@ -66,42 +62,42 @@ class CABRTPlugin
          * It is used for getting loaded plugin's version.
          * @return plugin version
          */
-        const std::string& GetVersion();
+        const char* GetVersion();
         /**
          * It is used for getting loaded plugin's magic number.
          * @return magic number
          */
-        const int GetMagicNumber();
+        int GetMagicNumber();
         /**
          * It is used for getting loaded plugin's name.
          * @return magic number
          */
-        const std::string& GetName();
+        const char* GetName();
         /**
          * It is used for getting loaded plugin's description.
          * @return magic number
          */
-        const std::string& GetDescription();
+        const char* GetDescription();
         /**
          * It is used for getting an author email of loaded plugin.
          * @return description
          */
-        const std::string& GetEmail();
+        const char* GetEmail();
         /**
          * It is used for getting a home page of loaded plugin.
          * @return home page
          */
-        const std::string& GetWWW();
+        const char* GetWWW();
         /**
          * It is used for getting a path to gui description.
          * @return home page
          */
-        const std::string& GetGTKBuilder();
+        const char* GetGTKBuilder();
         /**
          * It is used for getting loaded plugin's type.
          * @return type
          */
-        const plugin_type_t GetType();
+        plugin_type_t GetType();
         /**
          * It is used fot getting of a new instance of loaded plugin
          * @return pointer to new allocated instance of plugin. A caller
@@ -109,5 +105,59 @@ class CABRTPlugin
          */
         CPlugin* PluginNew();
 };
+
+inline
+const char* CABRTPlugin::GetVersion()
+{
+    return m_pPluginInfo->m_sVersion;
+}
+
+inline
+int CABRTPlugin::GetMagicNumber()
+{
+    return m_pPluginInfo->m_nMagicNumber;
+}
+
+inline
+const char* CABRTPlugin::GetName()
+{
+    return m_pPluginInfo->m_sName;
+}
+
+inline
+const char* CABRTPlugin::GetDescription()
+{
+    return m_pPluginInfo->m_sDescription;
+}
+
+inline
+const char* CABRTPlugin::GetEmail()
+{
+    return m_pPluginInfo->m_sEmail;
+}
+
+inline
+const char* CABRTPlugin::GetWWW()
+{
+    return m_pPluginInfo->m_sWWW;
+}
+
+inline
+const char* CABRTPlugin::GetGTKBuilder()
+{
+    return m_pPluginInfo->m_sGTKBuilder;
+}
+
+inline
+plugin_type_t CABRTPlugin::GetType()
+{
+    return m_pPluginInfo->m_Type;
+}
+
+inline
+CPlugin* CABRTPlugin::PluginNew()
+{
+    return m_pFnPluginNew();
+}
 
 #endif /*ABRTPLUGIN_H_*/

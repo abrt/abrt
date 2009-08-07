@@ -86,12 +86,12 @@ typedef enum {
 typedef struct SPluginInfo
 {
     const plugin_type_t m_Type;         /**< Plugin type.*/
-    const std::string m_sName;          /**< Plugin name.*/
-    const std::string m_sVersion;       /**< Plugin version.*/
-    const std::string m_sDescription;   /**< Plugin description.*/
-    const std::string m_sEmail;         /**< Plugin author's email.*/
-    const std::string m_sWWW;           /**< Plugin's home page.*/
-    const std::string m_sGTKBuilder;    /**< Plugin's gui description.*/
+    const char *const m_sName;          /**< Plugin name.*/
+    const char *const m_sVersion;       /**< Plugin version.*/
+    const char *const m_sDescription;   /**< Plugin description.*/
+    const char *const m_sEmail;         /**< Plugin author's email.*/
+    const char *const m_sWWW;           /**< Plugin's home page.*/
+    const char *const m_sGTKBuilder;    /**< Plugin's gui description.*/
     const int m_nMagicNumber;           /**< Plugin magical number.*/
 } plugin_info_t;
 
