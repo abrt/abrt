@@ -6,10 +6,7 @@
 #include "CommLayerInner.h"
 
 #include <assert.h>
-//#include <stdlib.h>
-//#include <string.h>
 #include <syslog.h>
-//#include <sys/stat.h>
 #include <asm/unistd.h>
 
 

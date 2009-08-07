@@ -23,13 +23,10 @@
  *      Anton Arapov <anton@redhat.com>
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
-#include "abrtlib.h"
 
+#include "abrtlib.h"
 #include "KerneloopsReporter.h"
 #include "CommLayerInner.h"
-
-//#include <stdlib.h>
-//#include <string.h>
 #include <curl/curl.h>
 
 #define FILENAME_KERNELOOPS "kerneloops"

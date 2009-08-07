@@ -2,8 +2,9 @@ lib_LTLIBRARIES = libABRTMiddleWare.la
 
 libABRTMiddleWare_la_SOURCES = \
     RPM.cpp RPM.h \
-    Plugin.h MiddleWareTypes.h Action.h Database.h \
-    Reporter.h Analyzer.h
+    Plugin.cpp Plugin.h \
+    MiddleWareTypes.h \
+    Action.h Database.h Reporter.h Analyzer.h
 libABRTMiddleWare_la_LIBADD = \
     $(DL_LIBS) \
     ../Utils/libABRTUtils.la \

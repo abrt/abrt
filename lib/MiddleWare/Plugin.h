@@ -25,8 +25,6 @@
 
 #include <string>
 #include <map>
-#include <fstream>
-
 
 #define PLUGINS_MAGIC_NUMBER 4
 
@@ -46,34 +44,34 @@ class CPlugin
         /**
          * A destructor.
          */
-        virtual ~CPlugin() {}
+        virtual ~CPlugin();
         /**
          * A method, which initializes a plugin. It is not mandatory method.
          */
-        virtual void Init() {}
+        virtual void Init();
         /**
          * A method, which deinitializes a plugin. It is not mandatory method.
          */
-        virtual void DeInit() {}
+        virtual void DeInit();
         /**
          * A method, which loads a plugin settings from a file. It is not mandatory method.
          * @param pPath A path to plugin configuration file.
          */
-        virtual void LoadSettings(const std::string& pPath) {}
+        virtual void LoadSettings(const std::string& pPath);
         /**
          * A method, which takes a settings and apply them. It is not a mandatory method.
          * @param pSettings Plugin's settings
          */
-        virtual void SetSettings(const map_plugin_settings_t& pSettings) {}
+        virtual void SetSettings(const map_plugin_settings_t& pSettings);
         /**
          * A method, which return current settings. It is not mandatory method.
          * @return Plugin's settings
          */
-        virtual map_plugin_settings_t GetSettings() {return map_plugin_settings_t();}
+        virtual map_plugin_settings_t GetSettings();
 };
 
 /**
- * An emun of plugin types.
+ * An enum of plugin types.
  */
 typedef enum {
     ANALYZER,    /**< An analyzer plugin*/
@@ -97,14 +95,12 @@ typedef struct SPluginInfo
     const int m_nMagicNumber;           /**< Plugin magical number.*/
 } plugin_info_t;
 
-#define PLUGIN_IFACE extern "C"
-
 #define PLUGIN_INFO(type, plugin_class, name, version, description, email, www, gtk_builder)\
-    PLUGIN_IFACE CPlugin* plugin_new()\
+    extern "C" CPlugin* plugin_new()\
     {\
         return new plugin_class();\
     }\
-    PLUGIN_IFACE const plugin_info_t plugin_info =\
+    extern "C" const plugin_info_t plugin_info =\
     {\
         type,\
         name,\
@@ -116,64 +112,6 @@ typedef struct SPluginInfo
         PLUGINS_MAGIC_NUMBER,\
     };
 
-inline void plugin_load_settings(const std::string& path, map_plugin_settings_t& settings)
-{
-    std::ifstream fIn;
-    fIn.open(path.c_str());
-    if (fIn.is_open())
-    {
-        std::string line;
-        while (!fIn.eof())
-        {
-            getline(fIn, line);
-
-            int ii;
-            bool is_value = false;
-            bool valid = false;
-            bool in_quote = false;
-            std::string key = "";
-            std::string value = "";
-            for (ii = 0; ii < line.length(); ii++)
-            {
-                if (line[ii] == '\"')
-                {
-                    in_quote = in_quote == true ? false : true;
-                }
-                if (isspace(line[ii]) && !in_quote)
-                {
-                    continue;
-                }
-                if (line[ii] == '#' && !in_quote)
-                {
-                    break;
-                }
-                else if (line[ii] == '=' && !in_quote)
-                {
-                    is_value = true;
-                }
-                else if (line[ii] == '=' && is_value && !in_quote)
-                {
-                    key = "";
-                    value = "";
-                    break;
-                }
-                else if (!is_value)
-                {
-                    key += line[ii];
-                }
-                else
-                {
-                    valid = true;
-                    value += line[ii];
-                }
-            }
-            if (valid && !in_quote)
-            {
-                settings[key] = value;
-            }
-        }
-        fIn.close();
-    }
-}
+void plugin_load_settings(const std::string& path, map_plugin_settings_t& settings);
 
 #endif /* PLUGIN_H_ */

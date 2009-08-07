@@ -18,8 +18,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
-#include "abrtlib.h"
 
+#include "abrtlib.h"
 #include "CCpp.h"
 #include "ABRTException.h"
 #include "DebugDump.h"
@@ -27,16 +27,7 @@
 #include <fstream>
 #include <sstream>
 #include <set>
-//#include <ctype.h>
-//#include <unistd.h>
-//#include <sys/types.h>
-//#include <sys/wait.h>
-//#include <fcntl.h>
-//#include <stdlib.h>
-//#include <string.h>
 #include <iomanip>
-//#include <grp.h>
-//#include <pwd.h>
 
 #include <nss.h>
 #include <sechash.h>

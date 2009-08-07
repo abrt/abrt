@@ -23,12 +23,11 @@
  *      Anton Arapov <anton@redhat.com>
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
+
 #include "abrtlib.h"
 #include "KerneloopsSysLog.h"
 
 #include <list>
-//#include <stdlib.h>
-//#include <string.h>
 #include <assert.h>
 
 /*

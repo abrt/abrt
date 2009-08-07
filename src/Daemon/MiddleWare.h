@@ -37,7 +37,7 @@ class CMiddleWare
 {
     public:
         /**
-         * An emun contains all return codes.
+         * An enum contains all return codes.
          */
         typedef enum {
             MW_ERROR,            /**< Common error.*/
