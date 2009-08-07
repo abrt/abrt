@@ -42,6 +42,7 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
 	CDebugDump m_pDebugDump;
 	m_pDebugDump.Open(pDebugDumpDir);
 	m_pDebugDump.LoadText(FILENAME_KERNELOOPS, m_sOops);
+	m_pDebugDump.Close();
 
 	/* An algorithm proposed by Donald E. Knuth in The Art Of Computer
 	 * Programming Volume 3, under the topic of sorting and search
