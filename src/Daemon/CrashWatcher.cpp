@@ -450,8 +450,7 @@ CCrashWatcher::CCrashWatcher(const std::string& pPath)
     // TODO: initialize object according parameters -w -d
     // status has to be always created.
     m_pCommLayer = NULL;
-    m_pCommLayerInner = new CCommLayerInner(this, true, true);
-    comm_layer_inner_init(m_pCommLayerInner);
+    comm_layer_inner_init(this);
 
     m_pSettings = new CSettings();
     m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
@@ -506,7 +505,6 @@ CCrashWatcher::~CCrashWatcher()
     delete m_pCommLayer;
     delete m_pMW;
     delete m_pSettings;
-    delete m_pCommLayerInner;
     if (pthread_mutex_destroy(&m_pJobsMutex) != 0)
     {
         throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't destroy mutex!");

@@ -111,7 +111,6 @@ class CCrashWatcher
         std::string m_sTarget;
         CMiddleWare *m_pMW;
         CCommLayerServer *m_pCommLayer;
-        CCommLayerInner *m_pCommLayerInner;
         /*FIXME not needed */
         //DBus::Connection *m_pConn;
         CSettings *m_pSettings;

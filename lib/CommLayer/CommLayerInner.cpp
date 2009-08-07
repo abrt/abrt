@@ -1,44 +1,35 @@
 #include "CommLayerInner.h"
 
-CCommLayerInner* g_pCommLayerInner = NULL;
+static CObserver *g_pObs = NULL;
 
 
-void comm_layer_inner_init(CCommLayerInner *pCommLayerInner)
+void comm_layer_inner_init(CObserver *pObs)
 {
-    if (!g_pCommLayerInner)
+    if (!g_pObs)
     {
-        g_pCommLayerInner = pCommLayerInner;
+        g_pObs = pObs;
     }
 }
 
 void comm_layer_inner_debug(const std::string& pMessage)
 {
-    if (g_pCommLayerInner)
+    if (g_pObs)
     {
-        if (g_pCommLayerInner->GetDebugCommLayer())
-        {
-            g_pCommLayerInner->GetDebugCommLayer()->Message(pMessage);
-        }
+        g_pObs->Debug(pMessage);
     }
 }
 void comm_layer_inner_warning(const std::string& pMessage)
 {
-    if (g_pCommLayerInner)
+    if (g_pObs)
     {
-        if (g_pCommLayerInner->GetWarningCommLayer())
-        {
-            g_pCommLayerInner->GetWarningCommLayer()->Message(pMessage);
-        }
+        g_pObs->Warning(pMessage);
     }
 }
 
 void comm_layer_inner_status(const std::string& pMessage)
 {
-    if (g_pCommLayerInner)
+    if (g_pObs)
     {
-        if (g_pCommLayerInner->GetStatusCommLayer())
-        {
-            g_pCommLayerInner->GetStatusCommLayer()->Message(pMessage);
-        }
+        g_pObs->Status(pMessage);
     }
 }
