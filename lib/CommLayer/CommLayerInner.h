@@ -74,7 +74,7 @@ class CCommLayerInner
             {
                 return m_pStatusCommLayer;
             }
-        CCommLayerInner(CObserver *pObs, const bool& pDebug, const bool pWarning)
+        CCommLayerInner(CObserver *pObs, bool pDebug, bool pWarning)
             {
                 m_pDebugCommLayer = NULL;
                 m_pWarningCommLayer = NULL;

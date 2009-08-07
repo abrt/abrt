@@ -66,23 +66,23 @@ class CCrashWatcher
                 m_sPluginName(pPluginName),
                 m_sPluginArgs(pPluginArgs),
                 m_nTimeout(pTimeout)
-           {}
+            {}
 
         } cron_callback_data_t;
 
-        typedef struct SThreadData{
-           pthread_t  thread_id;
-           char* UUID;
-           char* UID;
-           char *dest;
-           CCrashWatcher *daemon;
+        typedef struct SThreadData {
+            pthread_t  thread_id;
+            char* UUID;
+            char* UID;
+            char *dest;
+            CCrashWatcher *daemon;
         } thread_data_t;
 
         /**
          * Map to cache the results from CreateReport_t
          * <UID, <UUID, result>>
          */
-         std::map <const std::string, std::map <int, map_crash_report_t > > pending_jobs;
+        std::map <const std::string, std::map <int, map_crash_report_t > > pending_jobs;
         /**
         * mutex to protect pending_jobs from being accesed by multiple threads at the same time
         */
@@ -115,7 +115,7 @@ class CCrashWatcher
         /*FIXME not needed */
         //DBus::Connection *m_pConn;
         CSettings *m_pSettings;
-        public:
+    public:
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
         CCrashWatcher(const std::string& pPath);
         virtual ~CCrashWatcher();
