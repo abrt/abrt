@@ -81,7 +81,7 @@ int main(int argc, char** argv)
                 {
                         usleep(100 * 1000);
                 }
-                _exit(sig_caught != SIGTERM); /* TERM:ok (0), anything else: bad (1) */
+                _exit(sig_caught != SIGTERM); /* TERM:ok(0), else:bad(1) */
             }
             /* Child (daemon) continues */
             pid_t sid = setsid();
@@ -104,11 +104,11 @@ int main(int argc, char** argv)
         }
         g_pCrashWatcher->Run();
     }
-    catch(CABRTException& e)
+    catch (CABRTException& e)
     {
         std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
-    catch(std::exception& e)
+    catch (std::exception& e)
     {
         std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }

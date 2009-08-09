@@ -259,7 +259,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
                                     it->second[CD_CONTENT].length());
             NSSBase64Encoder_Destroy(base64, PR_FALSE);
             std::string attchmentInBase64Printable = "";
-            for(unsigned int ii = 0; ii < m_sAttchmentInBase64.length(); ii++)
+            for (unsigned int ii = 0; ii < m_sAttchmentInBase64.length(); ii++)
             {
                 if (isprint(m_sAttchmentInBase64[ii]))
                 {

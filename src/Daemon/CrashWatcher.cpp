@@ -149,7 +149,8 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
     return TRUE;
 }
 
-void *CCrashWatcher::create_report(void *arg){
+void *CCrashWatcher::create_report(void *arg)
+{
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
     thread_data->daemon->Debug("Creating report...");
@@ -792,7 +793,7 @@ uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::strin
         thread_data->UID = xstrdup(pUID.c_str());
         thread_data->dest = xstrdup(pSender.c_str());
         thread_data->daemon = this;
-        if(pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
+        if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
         {
             throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
         }
@@ -876,7 +877,7 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
     {
         return m_pMW->GetPluginsInfo();
     }
-    catch(CABRTException &e)
+    catch (CABRTException &e)
     {
         if (e.type() == EXCEP_FATAL)
         {

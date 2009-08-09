@@ -44,9 +44,9 @@ class CFileTransfer : public CAction
 
     public:
         CFileTransfer() :
+            m_sArchiveType(".tar.gz"),
             m_nRetryCount(3),
-            m_nRetryDelay(20),
-            m_sArchiveType(".tar.gz")
+            m_nRetryDelay(20)
         {}
 
         virtual void LoadSettings(const std::string& pPath);

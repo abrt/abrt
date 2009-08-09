@@ -42,13 +42,13 @@ public:
     /* methods exported by this interface,
      * you will have to implement them in your ObjectAdaptor
      */
-     virtual vector_crash_infos_t GetCrashInfos(const std::string &pDBusSender) = 0;
-     virtual map_crash_report_t CreateReport(const std::string &pUUID, const std::string &pDBusSender) = 0;
-     virtual uint64_t CreateReport_t(const std::string &pUUID, const std::string &pDBusSender) = 0;
-     virtual bool Report(map_crash_report_t pReport, const std::string &pDBusSender) = 0;
-     virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
-     virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
-     virtual vector_map_string_string_t GetPluginsInfo() = 0;
+    virtual vector_crash_infos_t GetCrashInfos(const std::string &pDBusSender) = 0;
+    virtual map_crash_report_t CreateReport(const std::string &pUUID, const std::string &pDBusSender) = 0;
+    virtual uint64_t CreateReport_t(const std::string &pUUID, const std::string &pDBusSender) = 0;
+    virtual bool Report(map_crash_report_t pReport, const std::string &pDBusSender) = 0;
+    virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
+    virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
+    virtual vector_map_string_string_t GetPluginsInfo() = 0;
 
 public:
     /* signal emitters for this interface
