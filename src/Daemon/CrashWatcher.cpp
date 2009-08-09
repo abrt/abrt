@@ -200,6 +200,9 @@ void *CCrashWatcher::create_report(void *arg)
     free(thread_data->UID);
     free(thread_data->dest);
     free(thread_data);
+
+    /* Bogus value. pthreads require us to return void* */
+    return NULL;
 }
 
 gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
@@ -885,4 +888,7 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
         }
         Warning(e.what());
     }
+    // TODO: is it right? I added it just to disable a warning...
+    // but maybe returning empty map is wrong here?
+    return vector_map_string_string_t();
 }

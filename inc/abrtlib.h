@@ -94,6 +94,7 @@ extern void xwrite(int fd, const void *buf, size_t count);
 extern void xwrite_str(int fd, const char *str);
 
 void xpipe(int filedes[2]);
+void xdup(int from);
 void xdup2(int from, int to);
 off_t xlseek(int fd, off_t offset, int whence);
 void xsetenv(const char *key, const char *value);

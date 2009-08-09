@@ -84,11 +84,10 @@ static void InstallDebugInfos(const std::string& pPackage)
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
     char buff[1024];
     int pipein[2], pipeout[2];
-    struct timeval delay;
     pid_t child;
 
-    pipe(pipein); /* error check? */
-    pipe(pipeout);
+    xpipe(pipein);
+    xpipe(pipeout);
 
     child = fork();
     if (child < 0)
@@ -128,6 +127,7 @@ static void InstallDebugInfos(const std::string& pPackage)
 /* Was before read, does not seem to be needed
         fd_set rsfd;
         FD_ZERO(&rsfd);
+        struct timeval delay;
 
         FD_SET(pipeout[0], &rsfd);
 
@@ -221,7 +221,6 @@ static void GetIndependentBacktrace(const std::string& pBacktrace, std::string& 
     int ii = 0;
     std::string line;
     std::string header;
-    int jj = 0;
     bool in_bracket = false;
     bool in_quote = false;
     bool in_header = false;
@@ -346,9 +345,7 @@ static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::s
 {
     int pipeout[2];
     char buff[1024];
-    struct timeval delay;
     pid_t child;
-    gid_t GID[1];
 
     struct passwd* pw = getpwuid(uid);
     if (!pw)
@@ -356,7 +353,7 @@ static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::s
         throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
     }
 
-    pipe(pipeout);  /* error check? */
+    xpipe(pipeout);
     child = fork();
     if (child == -1)
     {
@@ -399,6 +396,7 @@ static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::s
         fd_set rsfd;
         FD_ZERO(&rsfd);
         FD_SET(pipeout[0], &rsfd);
+        struct timeval delay;
 
         delay.tv_sec = 1;
         delay.tv_usec = 0;

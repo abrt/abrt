@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#include "abrtlib.h"
 #include "CrashWatcher.h"
 #include "ABRTException.h"
 #include <iostream>
@@ -93,8 +94,8 @@ int main(int argc, char** argv)
              * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
             close(STDOUT_FILENO);
             close(STDERR_FILENO);
-            dup(0);
-            dup(0);
+            xdup(0);
+            xdup(0);
         }
         g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
         if (daemonize)

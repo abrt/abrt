@@ -8,11 +8,11 @@
 #include <string.h>
 
 CReporterBugzilla::CReporterBugzilla() :
-    m_sBugzillaURL("https://bugzilla.redhat.com/xmlrpc.cgi"),
-    m_bNoSSLVerify(false),
     m_pXmlrpcTransport(NULL),
     m_pXmlrpcClient(NULL),
-    m_pCarriageParm(NULL)
+    m_pCarriageParm(NULL),
+    m_sBugzillaURL("https://bugzilla.redhat.com/xmlrpc.cgi"),
+    m_bNoSSLVerify(false)
 {}
 
 CReporterBugzilla::~CReporterBugzilla()
@@ -242,7 +242,6 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
     map_xmlrpc_params_t attachmentParams;
     std::vector<xmlrpc_c::value> ret;
     NSSBase64Encoder* base64;
-    std::string::size_type pos;
 
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)

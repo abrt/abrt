@@ -88,6 +88,12 @@ void xpipe(int filedes[2])
 		perror_msg_and_die("can't create pipe");
 }
 
+void xdup(int from)
+{
+	if (dup(from) < 0)
+		perror_msg_and_die("can't duplicate file descriptor");
+}
+
 void xdup2(int from, int to)
 {
 	if (dup2(from, to) != to)
