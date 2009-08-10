@@ -115,3 +115,8 @@ vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
     plugins_info = m_pObserver->GetPluginsInfo();
     return plugins_info;
 }
+
+map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string& pName)
+{
+    return m_pObserver->GetPluginSettings(pName);
+}

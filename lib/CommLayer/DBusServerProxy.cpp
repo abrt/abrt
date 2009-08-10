@@ -31,6 +31,7 @@ CDBusServer_adaptor::CDBusServer_adaptor()
     register_method(CDBusServer_adaptor, DeleteDebugDump, _DeleteDebugDump_stub);
     register_method(CDBusServer_adaptor, GetJobResult, _GetJobResult_stub);
     register_method(CDBusServer_adaptor, GetPluginsInfo, _GetPluginsInfo_stub);
+    register_method(CDBusServer_adaptor, GetPluginSettings, _GetPluginSettings_stub);
 }
 /* reveal Interface introspection when we stabilize the API */
 /*
@@ -202,5 +203,18 @@ DBus::Message CDBusServer_adaptor::_GetPluginsInfo_stub(const DBus::CallMessage 
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
     wi << plugins_info;
+    return reply;
+}
+
+DBus::Message CDBusServer_adaptor::_GetPluginSettings_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    std::string PluginName;
+    ri >> PluginName;
+    map_plugin_settings_t plugin_settings;
+    plugin_settings = GetPluginSettings(PluginName);
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << plugin_settings;
     return reply;
 }

@@ -892,3 +892,19 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
     // but maybe returning empty map is wrong here?
     return vector_map_string_string_t();
 }
+
+map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName)
+{
+    try
+    {
+        return m_pMW->GetPluginSettings(pName);
+    }
+    catch(CABRTException &e)
+    {
+        if (e.type() == EXCEP_FATAL)
+        {
+            throw e;
+        }
+        Warning(e.what());
+    }
+}

@@ -26,6 +26,7 @@ class CObserver {
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender) = 0;
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string &pSender) = 0;
         virtual vector_map_string_string_t GetPluginsInfo() = 0;
+        virtual map_plugin_settings_t GetPluginSettings(const std::string& pName) = 0;
 };
 
 #endif /* OBSERVER_H_ */
