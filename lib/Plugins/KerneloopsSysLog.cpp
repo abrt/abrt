@@ -97,7 +97,7 @@ const std::list<COops>& CSysLog::GetOopsList()
  * This function splits the dmesg buffer data into lines
  * (null terminated).
  */
-int CSysLog::FillLinePointers(char *buffer, size_t buflen /*, int remove_syslog*/)
+int CSysLog::FillLinePointers(char *buffer, size_t buflen)
 {
 	char *c, *linepointer, linelevel;
 	enum { maybe, no, yes } syslog_format = maybe;
@@ -228,7 +228,7 @@ int CSysLog::ExtractVersion(char *linepointer, char *version)
 /*
  * extract_oops tries to find oops signatures in a log
  */
-int CSysLog::ExtractOops(char *buffer, size_t buflen /*, int remove_syslog*/)
+int CSysLog::ExtractOops(char *buffer, size_t buflen)
 {
 	int i;
 	char prevlevel = 0;
@@ -240,7 +240,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen /*, int remove_syslog*/)
 	lines_info = NULL;
 	lines_info_alloc = 0;
 
-	if (FillLinePointers(buffer, buflen /*, remove_syslog*/) < 0)
+	if (FillLinePointers(buffer, buflen) < 0)
 		goto fail;
 
 	oopsend = linecount;

@@ -92,7 +92,7 @@ int CKerneloopsScanner::ScanDmesg()
 	buffer = (char*)xzalloc(pagesz + 1);
 
 	syscall(__NR_syslog, 3, buffer, pagesz);
-	cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, strlen(buffer) /*, 0*/);
+	cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, strlen(buffer));
 	free(buffer);
 
 	return cnt_FoundOopses;
@@ -137,7 +137,7 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 
 	cnt_FoundOopses = 0;
 	if (sz > 0)
-		cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, sz /*, 1*/);
+		cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, sz);
 	free(buffer);
 
 	return cnt_FoundOopses;
