@@ -32,7 +32,6 @@
 #define FILENAME_KERNELOOPS "kerneloops"
 
 /* helpers */
-
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 {
 	size *= nmemb;
@@ -89,7 +88,6 @@ static int http_post_to_kerneloops_site(const char *url, const char *oopsdata)
 
 
 /* class CKerneloopsReporter */
-
 CKerneloopsReporter::CKerneloopsReporter() :
 	m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
 {}
@@ -120,24 +118,24 @@ void CKerneloopsReporter::LoadSettings(const std::string& pPath)
 	map_plugin_settings_t settings;
 	plugin_load_settings(pPath, settings);
 
-    SetSettings(settings);
+	SetSettings(settings);
 }
 
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("SubmitURL") != pSettings.end())
-    {
-        m_sSubmitURL = pSettings.find("SubmitURL")->second;
-    }
+	if (pSettings.find("SubmitURL") != pSettings.end())
+	{
+		m_sSubmitURL = pSettings.find("SubmitURL")->second;
+	}
 }
 
 map_plugin_settings_t CKerneloopsReporter::GetSettings()
 {
-    map_plugin_settings_t ret;
+	map_plugin_settings_t ret;
 
-    ret["SubmitURL"] = m_sSubmitURL;
+	ret["SubmitURL"] = m_sSubmitURL;
 
-    return ret;
+	return ret;
 }
 
 PLUGIN_INFO(REPORTER,
