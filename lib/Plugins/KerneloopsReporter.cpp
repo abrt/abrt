@@ -96,13 +96,23 @@ CKerneloopsReporter::CKerneloopsReporter() :
 
 void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
+	int ret = -1;
+	map_crash_report_t::const_iterator it;
+
 	comm_layer_inner_status("Creating and submitting a report...");
 
-	/* TODO: react on errorcode (!0 -> error) */
-	http_post_to_kerneloops_site(
-		m_sSubmitURL.c_str(),
-		pCrashReport.find(FILENAME_KERNELOOPS)->second[CD_CONTENT].c_str()
-	);
+	it = pCrashReport.begin();
+	it = pCrashReport.find(FILENAME_KERNELOOPS);
+	if (it != pCrashReport.end()) {
+		ret = http_post_to_kerneloops_site(
+			m_sSubmitURL.c_str(),
+			it->second[CD_CONTENT].c_str()
+		);
+	}
+
+	if (ret)
+		/* FIXME: be more informative */
+		comm_layer_inner_status("Report has not been sent...");
 }
 
 void CKerneloopsReporter::LoadSettings(const std::string& pPath)
