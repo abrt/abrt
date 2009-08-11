@@ -17,6 +17,8 @@ class CReporterBugzilla : public CReporter
         static PRInt32 Base64Encode_cb(void *arg, const char *obuf, PRInt32 size);
         void Login();
         void Logout();
+        void AddPlusOneComment(const std::string& pBugId);
+        void AddPlusOneCC(const std::string& pBugId);
         bool CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID);
         std::string NewBug(const map_crash_report_t& pCrashReport);
         void AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport);
@@ -38,7 +40,6 @@ class CReporterBugzilla : public CReporter
     public:
         CReporterBugzilla();
         virtual ~CReporterBugzilla();
-        virtual void LoadSettings(const std::string& pPath);
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
         virtual void Report(const map_crash_report_t& pCrashReport,

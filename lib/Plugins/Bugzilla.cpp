@@ -94,6 +94,55 @@ void CReporterBugzilla::Logout()
     }
 }
 
+void CReporterBugzilla::AddPlusOneComment(const std::string& pBugId)
+{
+    xmlrpc_c::paramList paramList;
+    map_xmlrpc_params_t addCommentParams;
+    map_xmlrpc_params_t ret;
+
+    addCommentParams["id"] = xmlrpc_c::value_int(atoi(pBugId.c_str()));
+    addCommentParams["comment"] = xmlrpc_c::value_string("+1");
+
+    paramList.add(xmlrpc_c::value_struct(addCommentParams));
+    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.add_comment", paramList));
+    try
+    {
+        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
+    }
+    catch (std::exception& e)
+    {
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::AddPlusOneComment(): ") + e.what());
+    }
+    ret = xmlrpc_c::value_struct(rpc->getResult());
+}
+
+void CReporterBugzilla::AddPlusOneCC(const std::string& pBugId)
+{
+    xmlrpc_c::paramList paramList;
+    map_xmlrpc_params_t addCCParams;
+    map_xmlrpc_params_t ret;
+    map_xmlrpc_params_t updates;
+
+    std::vector<xmlrpc_c::value> CCList;
+    CCList.push_back(xmlrpc_c::value_string(m_sLogin));
+    updates["add_cc"] = xmlrpc_c::value_array(CCList);
+
+    addCCParams["ids"] = xmlrpc_c::value_int(atoi(pBugId.c_str()));
+    addCCParams["updates"] = xmlrpc_c::value_struct(updates);
+
+    paramList.add(xmlrpc_c::value_struct(addCCParams));
+    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.update", paramList));
+    try
+    {
+        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
+    }
+    catch (std::exception& e)
+    {
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::AddPlusOneComment(): ") + e.what());
+    }
+    ret = xmlrpc_c::value_struct(rpc->getResult());
+}
+
 bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID)
 {
     xmlrpc_c::paramList paramList;
@@ -115,8 +164,17 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
     std::vector<xmlrpc_c::value> bugs = xmlrpc_c::value_array(ret["bugs"]).vectorValueValue();
     if (bugs.size() > 0)
     {
-        comm_layer_inner_debug("Bug is already reported.");
-        comm_layer_inner_status("Bug is already reported.");
+        map_xmlrpc_params_t bug;
+        std::stringstream ss;
+
+        bug = xmlrpc_c::value_struct(bugs[0]);
+        ss << xmlrpc_c::value_int(bug["bug_id"]);
+
+        comm_layer_inner_debug("Bug is already reported: " + ss.str());
+        comm_layer_inner_status("Bug is already reported: " + ss.str());
+
+        AddPlusOneComment(ss.str());
+        AddPlusOneCC(ss.str());
         return true;
     }
     return false;
@@ -317,14 +375,6 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
     }
     DeleteXMLRPCClient();
-}
-
-void CReporterBugzilla::LoadSettings(const std::string& pPath)
-{
-    map_plugin_settings_t settings;
-    plugin_load_settings(pPath, settings);
-
-    SetSettings(settings);
 }
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
