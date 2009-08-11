@@ -212,9 +212,10 @@ DBus::Message CDBusServer_adaptor::_GetPluginSettings_stub(const DBus::CallMessa
 {
     DBus::MessageIter ri = call.reader();
     std::string PluginName;
+    std::string uid;
     ri >> PluginName;
     map_plugin_settings_t plugin_settings;
-    plugin_settings = GetPluginSettings(PluginName);
+    plugin_settings = GetPluginSettings(PluginName, call.sender());
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
     wi << plugin_settings;

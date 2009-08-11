@@ -22,7 +22,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     }
     catch(DBus::Error err)
     {
-        throw CABRTException(EXCEP_FATAL, std::string(__func__) + 
+        throw CABRTException(EXCEP_FATAL, std::string(__func__) +
                              "\nPlease check if:\n"
                              + " * abrt is being run with root permissions\n"
                              + " * you have reloaded the dbus\n"+
@@ -116,9 +116,10 @@ vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
     return plugins_info;
 }
 
-map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string& pName)
+map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string& pName, const std::string& pSender)
 {
-    return m_pObserver->GetPluginSettings(pName);
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
+    return m_pObserver->GetPluginSettings(pName, to_string(unix_uid));
 }
 
 
