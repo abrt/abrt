@@ -112,9 +112,9 @@ def write_dump(pid, tb_uuid, tb):
     dd = ABRTUtils.CDebugDump()
     try:
         #os.mkdir(dir_name)
-        dd.Create(dir_name, str(os.getuid()))
+        dd.Create(dir_name, os.getuid())
     except Exception, e:
-        syslog.syslog("abrt: Cannot create dir %s" % dir_name)
+        syslog.syslog("abrt: Cannot create dir %s %s" % (dir_name, e))
         return
     # save executable
     fexecutable = open("%s/executable" % dir_name, "w")
