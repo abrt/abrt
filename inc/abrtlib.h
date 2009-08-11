@@ -113,4 +113,6 @@ off_t copyfd_eof(int src_fd, int dst_fd);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
 
+std::string get_home_dir(int uid);
+
 #endif
