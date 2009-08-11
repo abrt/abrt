@@ -130,8 +130,11 @@ class CCrashWatcher
         virtual bool Report(map_crash_report_t pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
+        /* plugins related */
         virtual vector_map_string_string_t GetPluginsInfo();
         virtual map_plugin_settings_t GetPluginSettings(const std::string& pName);
+        void RegisterPlugin(const std::string& pName);
+        void UnRegisterPlugin(const std::string& pName);
 
         /* Observer methods */
         void Status(const std::string& pMessage,const std::string& pDest="0");

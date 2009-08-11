@@ -51,6 +51,8 @@ public:
      virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
      virtual vector_map_string_string_t GetPluginsInfo() = 0;
      virtual map_plugin_settings_t GetPluginSettings(const std::string& pName) = 0;
+     virtual void RegisterPlugin(const std::string& pName) = 0;
+     virtual void UnRegisterPlugin(const std::string& pName) = 0;
 
 public:
     /* signal emitters for this interface
@@ -74,6 +76,8 @@ private:
     DBus::Message _GetJobResult_stub(const DBus::CallMessage &call);
     DBus::Message _GetPluginsInfo_stub(const DBus::CallMessage &call);
     DBus::Message _GetPluginSettings_stub(const DBus::CallMessage &call);
+    DBus::Message _RegisterPlugin_stub(const DBus::CallMessage &call);
+    DBus::Message _UnRegisterPlugin_stub(const DBus::CallMessage &call);
 };
 
 #endif

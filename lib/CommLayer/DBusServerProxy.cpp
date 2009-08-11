@@ -32,6 +32,8 @@ CDBusServer_adaptor::CDBusServer_adaptor()
     register_method(CDBusServer_adaptor, GetJobResult, _GetJobResult_stub);
     register_method(CDBusServer_adaptor, GetPluginsInfo, _GetPluginsInfo_stub);
     register_method(CDBusServer_adaptor, GetPluginSettings, _GetPluginSettings_stub);
+    register_method(CDBusServer_adaptor, RegisterPlugin, _RegisterPlugin_stub);
+    register_method(CDBusServer_adaptor, UnRegisterPlugin, _UnRegisterPlugin_stub);
 }
 /* reveal Interface introspection when we stabilize the API */
 /*
@@ -216,5 +218,27 @@ DBus::Message CDBusServer_adaptor::_GetPluginSettings_stub(const DBus::CallMessa
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
     wi << plugin_settings;
+    return reply;
+}
+
+DBus::Message CDBusServer_adaptor::_RegisterPlugin_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    std::string PluginName;
+    ri >> PluginName;
+    RegisterPlugin(PluginName);
+    DBus::ReturnMessage reply(call);
+    //DBus::MessageIter wi = reply.writer();
+    //wi << plugin_settings;
+    return reply;
+}
+
+DBus::Message CDBusServer_adaptor::_UnRegisterPlugin_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    std::string PluginName;
+    ri >> PluginName;
+    UnRegisterPlugin(PluginName);
+    DBus::ReturnMessage reply(call);
     return reply;
 }

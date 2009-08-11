@@ -120,3 +120,15 @@ map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string&
 {
     return m_pObserver->GetPluginSettings(pName);
 }
+
+
+void CCommLayerServerDBus::RegisterPlugin(const std::string& pName)
+{
+    return m_pObserver->RegisterPlugin(pName);
+}
+
+void CCommLayerServerDBus::UnRegisterPlugin(const std::string& pName)
+{
+    return m_pObserver->UnRegisterPlugin(pName);
+}
+

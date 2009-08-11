@@ -908,3 +908,35 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName)
         Warning(e.what());
     }
 }
+
+void CCrashWatcher::RegisterPlugin(const std::string& pName)
+{
+    try
+    {
+        m_pMW->RegisterPlugin(pName);
+    }
+    catch(CABRTException &e)
+    {
+        if (e.type() == EXCEP_FATAL)
+        {
+            throw e;
+        }
+        Warning(e.what());
+    }
+}
+
+void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
+{
+    try
+    {
+        m_pMW->UnRegisterPlugin(pName);
+    }
+    catch(CABRTException &e)
+    {
+        if (e.type() == EXCEP_FATAL)
+        {
+            throw e;
+        }
+        Warning(e.what());
+    }
+}
