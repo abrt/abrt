@@ -132,7 +132,7 @@ class CCrashWatcher
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
         /* plugins related */
         virtual vector_map_string_string_t GetPluginsInfo();
-        virtual map_plugin_settings_t GetPluginSettings(const std::string& pName);
+        virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID);
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 

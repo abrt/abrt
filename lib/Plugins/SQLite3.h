@@ -57,7 +57,6 @@ class CSQLite3 : public CDatabase
         virtual const vector_database_rows_t GetUIDData(const std::string& pUID);
         virtual const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
 
-        virtual void LoadSettings(const std::string& pPath);
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
 };

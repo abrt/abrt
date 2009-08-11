@@ -139,18 +139,40 @@ class CPluginManager
          */
         vector_map_string_string_t GetPluginsInfo();
         /**
-         * A method, which sets up a plugin.
+         * A method, which sets up a plugin. The settings are also saved in home
+         * directory of an user.
          * @param pName A plugin name.
+         * @param pUID An uid of user.
          * @param pSettings A plugin's settings.
          */
         void SetPluginSettings(const std::string& pName,
+                               const std::string& pUID,
                                const map_plugin_settings_t& pSettings);
         /**
-         * A method, which returns plugin's settings.
+         * A method, which returns plugin's settings according to user.
          * @param pName A plugin name.
-         * @return Plugin's settings
+         * @param pUID An uid of user.
+         * @return Plugin's settings accorting to user.
          */
-        map_plugin_settings_t GetPluginSettings(const std::string& pName);
+        map_plugin_settings_t GetPluginSettings(const std::string& pName,
+                                                const std::string& pUID);
+        /**
+         * A function. It loads settings and store it in second parameter. On success it
+         * returns true, otherwise returns false.
+         * @param path A path of config file.
+         * @param settings A readed plugin's settings.
+         * @return if it success it returns true, otherwise it returns false.
+         */
+        bool LoadPluginSettings(const std::string& pPath,
+                                map_plugin_settings_t& pSettings);
+        /**
+         * A function. It saves settings. On success it returns true, otherwise returns false.
+         * @param path A path of config file.
+         * @param settings Plugin's settings.
+         * @return if it success it returns true, otherwise it returns false.
+         */
+        bool SavePluginSettings(const std::string& pPath,
+                                const map_plugin_settings_t& pSettings);
 };
 
 #endif /*PLUGINMANAGER_H_*/

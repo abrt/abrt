@@ -26,6 +26,9 @@
 #include <dirent.h>
 #include <stdio.h>
 #include <sys/types.h>
+#include <stdlib.h>
+#include "abrtlib.h"
+#include <fstream>
 
 /**
  * Text representation of plugin types.
@@ -130,18 +133,20 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
     {
         if (m_mapPlugins.find(pName) == m_mapPlugins.end())
         {
-            std::string path = m_sPluginsConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
             CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
+            map_plugin_settings_t pluginSettings;
+
+            LoadPluginSettings(m_sPluginsConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION, pluginSettings);
             try
             {
                 plugin->Init();
-                plugin->LoadSettings(path);
+                plugin->SetSettings(pluginSettings);
             }
-            catch (std::string sError)
+            catch (CABRTException& e)
             {
                 comm_layer_inner_warning("Can not initialize plugin " + pName + "("
                                         + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
-                                        + ")");
+                                        + "): " + e.what());
                 UnLoadPlugin(pName);
                 return;
             }
@@ -262,6 +267,7 @@ vector_map_string_string_t CPluginManager::GetPluginsInfo()
 }
 
 void CPluginManager::SetPluginSettings(const std::string& pName,
+                                       const std::string& pUID,
                                        const map_plugin_settings_t& pSettings)
 {
     if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
@@ -269,19 +275,123 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
         if (m_mapPlugins.find(pName) != m_mapPlugins.end())
         {
             m_mapPlugins[pName]->SetSettings(pSettings);
+
+            if (m_mapABRTPlugins[pName]->GetType() == REPORTER)
+            {
+                std::string home = get_home_dir(atoi(pUID.c_str()));
+                if (home != "")
+                {
+                    SavePluginSettings(home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION, pSettings);
+                }
+            }
         }
     }
 }
 
-map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName)
+map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName,
+                                                        const std::string& pUID)
 {
     map_plugin_settings_t ret;
     if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
     {
         if (m_mapPlugins.find(pName) != m_mapPlugins.end())
         {
-            ret = m_mapPlugins[pName]->GetSettings();
+            if (m_mapABRTPlugins[pName]->GetType() == REPORTER)
+            {
+                std::string home = get_home_dir(atoi(pUID.c_str()));
+                if (home != "")
+                {
+                    comm_layer_inner_debug("home: " + home);
+                    if (LoadPluginSettings(home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION, ret))
+                    {
+                        comm_layer_inner_debug("success");
+                        return ret;
+                    }
+                }
+            }
+            return m_mapPlugins[pName]->GetSettings();
         }
     }
     return ret;
+}
+
+bool CPluginManager::LoadPluginSettings(const std::string& pPath, map_plugin_settings_t& pSettings)
+{
+    std::ifstream fIn;
+    fIn.open(pPath.c_str());
+    if (fIn.is_open())
+    {
+        std::string line;
+        while (!fIn.eof())
+        {
+            getline(fIn, line);
+
+            int ii;
+            bool is_value = false;
+            bool valid = false;
+            bool in_quote = false;
+            std::string key = "";
+            std::string value = "";
+            for (ii = 0; ii < line.length(); ii++)
+            {
+                if (line[ii] == '\"')
+                {
+                    in_quote = in_quote == true ? false : true;
+                }
+                if (isspace(line[ii]) && !in_quote)
+                {
+                    continue;
+                }
+                if (line[ii] == '#' && !in_quote)
+                {
+                    break;
+                }
+                else if (line[ii] == '=' && !in_quote)
+                {
+                    is_value = true;
+                }
+                else if (line[ii] == '=' && is_value && !in_quote)
+                {
+                    key = "";
+                    value = "";
+                    break;
+                }
+                else if (!is_value)
+                {
+                    key += line[ii];
+                }
+                else
+                {
+                    valid = true;
+                    value += line[ii];
+                }
+            }
+            if (valid && !in_quote)
+            {
+                pSettings[key] = value;
+            }
+        }
+        fIn.close();
+        return true;
+    }
+    return false;
+
+}
+
+bool CPluginManager::SavePluginSettings(const std::string& pPath, const map_plugin_settings_t& pSettings)
+{
+    std::ofstream fOut;
+    fOut.open(pPath.c_str());
+    if (fOut.is_open())
+    {
+        fOut << "Settings were written by abrt." << std::endl;
+        map_plugin_settings_t::const_iterator it;
+        for (it = pSettings.begin(); it != pSettings.end(); it++)
+        {
+            fOut << it->first << " = " << it->second << std::endl;
+        }
+        fOut.close();
+        return true;
+    }
+    return false;
 }

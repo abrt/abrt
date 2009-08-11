@@ -552,14 +552,6 @@ void CAnalyzerCCpp::DeInit()
     }
 }
 
-void CAnalyzerCCpp::LoadSettings(const std::string& pPath)
-{
-    map_plugin_settings_t settings;
-    plugin_load_settings(pPath, settings);
-
-    SetSettings(settings);
-}
-
 void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 {
     if (pSettings.find("MemoryMap") != pSettings.end())

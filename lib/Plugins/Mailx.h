@@ -42,7 +42,6 @@ class CMailx : public CReporter
     public:
         CMailx();
 
-        virtual void LoadSettings(const std::string& pPath);
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
         virtual void Report(const map_crash_report_t& pCrashReport,

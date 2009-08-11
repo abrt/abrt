@@ -222,14 +222,6 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
     }
 }
 
-void CFileTransfer::LoadSettings(const std::string& pPath)
-{
-    map_plugin_settings_t settings;
-    plugin_load_settings(pPath, settings);
-
-    SetSettings(settings);
-}
-
 void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
 {
     if (pSettings.find("URL") != pSettings.end())

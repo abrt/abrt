@@ -26,7 +26,7 @@
 #include <string>
 #include <map>
 
-#define PLUGINS_MAGIC_NUMBER 4
+#define PLUGINS_MAGIC_NUMBER 5
 
 #define PLUGINS_CONF_EXTENSION "conf"
 #define PLUGINS_LIB_EXTENSION "so"
@@ -53,11 +53,6 @@ class CPlugin
          * A method, which deinitializes a plugin. It is not mandatory method.
          */
         virtual void DeInit();
-        /**
-         * A method, which loads a plugin settings from a file. It is not mandatory method.
-         * @param pPath A path to plugin configuration file.
-         */
-        virtual void LoadSettings(const std::string& pPath);
         /**
          * A method, which takes a settings and apply them. It is not a mandatory method.
          * @param pSettings Plugin's settings
@@ -111,7 +106,5 @@ typedef struct SPluginInfo
         gtk_builder,\
         PLUGINS_MAGIC_NUMBER,\
     };
-
-void plugin_load_settings(const std::string& path, map_plugin_settings_t& settings);
 
 #endif /* PLUGIN_H_ */

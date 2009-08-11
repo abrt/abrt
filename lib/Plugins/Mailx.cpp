@@ -137,14 +137,6 @@ void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& p
     }
 }
 
-void CMailx::LoadSettings(const std::string& pPath)
-{
-    map_plugin_settings_t settings;
-    plugin_load_settings(pPath, settings);
-
-    SetSettings(settings);
-}
-
 void CMailx::SetSettings(const map_plugin_settings_t& pSettings)
 {
     if (pSettings.find("Subject") != pSettings.end())

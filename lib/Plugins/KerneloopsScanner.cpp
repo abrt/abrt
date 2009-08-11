@@ -169,14 +169,6 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 	return cnt_FoundOopses;
 }
 
-void CKerneloopsScanner::LoadSettings(const std::string& pPath)
-{
-	map_plugin_settings_t settings;
-	plugin_load_settings(pPath, settings);
-
-	SetSettings(settings);
-}
-
 void CKerneloopsScanner::SetSettings(const map_plugin_settings_t& pSettings)
 {
 	if (pSettings.find("SysLogFile") != pSettings.end())

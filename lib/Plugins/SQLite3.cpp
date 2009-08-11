@@ -267,14 +267,6 @@ const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::
     return table[0];
 }
 
-void CSQLite3::LoadSettings(const std::string& pPath)
-{
-    map_plugin_settings_t settings;
-    plugin_load_settings(pPath, settings);
-
-    SetSettings(settings);
-}
-
 void CSQLite3::SetSettings(const map_plugin_settings_t& pSettings)
 {
     if (pSettings.find("DBPath") != pSettings.end())

@@ -49,7 +49,6 @@ class CFileTransfer : public CAction
             m_nRetryDelay(20)
         {}
 
-        virtual void LoadSettings(const std::string& pPath);
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
         virtual void Run(const std::string& pActiveDir,

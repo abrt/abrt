@@ -40,7 +40,6 @@ class CAnalyzerCCpp : public CAnalyzer
         virtual void CreateReport(const std::string& pDebugDumpDir);
         virtual void Init();
         virtual void DeInit();
-        virtual void LoadSettings(const std::string& pPath);
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
 };

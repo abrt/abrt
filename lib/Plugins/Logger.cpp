@@ -30,14 +30,6 @@ CLogger::CLogger() :
     m_bAppendLogs(true)
 {}
 
-void CLogger::LoadSettings(const std::string& pPath)
-{
-    map_plugin_settings_t settings;
-    plugin_load_settings(pPath, settings);
-
-    SetSettings(settings);
-}
-
 void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
 {
     if (pSettings.find("LogPath") != pSettings.end())

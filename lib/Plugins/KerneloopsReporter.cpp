@@ -113,14 +113,6 @@ void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const s
 		comm_layer_inner_status("Report has not been sent...");
 }
 
-void CKerneloopsReporter::LoadSettings(const std::string& pPath)
-{
-	map_plugin_settings_t settings;
-	plugin_load_settings(pPath, settings);
-
-	SetSettings(settings);
-}
-
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)
 {
 	if (pSettings.find("SubmitURL") != pSettings.end())

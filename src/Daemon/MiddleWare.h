@@ -199,23 +199,28 @@ class CMiddleWare
          */
         void UnRegisterPlugin(const std::string& pName);
         /**
-         * A method, which sets up a plugin.
+         * A method, which sets up a plugin. The settings are also saved in home
+         * directory of an user.
          * @param pName A plugin name.
+         * @param pUID An uid of user.
          * @param pSettings A plugin's settings.
          */
         void SetPluginSettings(const std::string& pName,
+                               const std::string& pUID,
                                const map_plugin_settings_t& pSettings);
         /**
-         * A method, which returns plugin's settings.
+         * A method, which returns plugin's settings according to user.
          * @param pName A plugin name.
-         * @return Plugin's settings
+         * @param pUID An uid of user.
+         * @return Plugin's settings accorting to user.
          */
-        map_plugin_settings_t GetPluginSettings(const std::string& pName);
+        map_plugin_settings_t GetPluginSettings(const std::string& pName,
+                                                const std::string& pUID);
         /**
          * A method, which gets all plugins info (event those plugins which are
          * disabled). It can be send via DBus to GUI and displayed to an user.
          * Then a user can fill all needed informations like URLs etc.
-         * @return A vector of maps <key, vaule>
+         * @return A vector of maps <key, vaule>.
          */
         vector_map_string_string_t GetPluginsInfo();
         /**
@@ -247,19 +252,16 @@ class CMiddleWare
          */
         void RunActionsAndReporters(const std::string& pDebugDumpDir);
         /**
-         * A method, which reports a crash report to particular receiver.
-         * @param pCrashReport A crash report.
-         */
-        void Report(const map_crash_report_t& pCrashReport);
-        /**
          * A method, which reports a crash report to particular receiver. It
-         * takes a path where settings of reporter are stored (e.g. $HOME/.abrt,
+         * takes an user uid, tries to find user config file and load it. If it
+         * fails, then default config is used. If pUID is emply string, default
+         * config is used.
          * ...).
          * @param pCrashReport A crash report.
-         * @param pSettingsPath A path to setting files.
+         * @param pUID An user uid
          */
         void Report(const map_crash_report_t& pCrashReport,
-                    const std::string& pSettingsPath);
+                    const std::string& pUID);
         /**
          * A method, which deletes particular debugdump directory.
          * @param pDebugDumpDir A debugdump directory.

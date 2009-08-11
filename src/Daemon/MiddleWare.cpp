@@ -110,14 +110,16 @@ void CMiddleWare::UnRegisterPlugin(const std::string& pName)
 }
 
 void CMiddleWare::SetPluginSettings(const std::string& pName,
+                                    const std::string& pUID,
                                     const map_plugin_settings_t& pSettings)
 {
-    m_pPluginManager->SetPluginSettings(pName, pSettings);
+    m_pPluginManager->SetPluginSettings(pName, pUID, pSettings);
 }
 
-map_plugin_settings_t CMiddleWare::GetPluginSettings(const std::string& pName)
+map_plugin_settings_t CMiddleWare::GetPluginSettings(const std::string& pName,
+                                                     const std::string& pUID)
 {
-    return m_pPluginManager->GetPluginSettings(pName);
+    return m_pPluginManager->GetPluginSettings(pName, pUID);
 }
 
 std::string CMiddleWare::GetLocalUUID(const std::string& pAnalyzer,
@@ -245,13 +247,8 @@ void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
     }
 }
 
-void CMiddleWare::Report(const map_crash_report_t& pCrashReport)
-{
-    Report(pCrashReport, m_sPluginsConfDir);
-}
-
 void CMiddleWare::Report(const map_crash_report_t& pCrashReport,
-                         const std::string& pPluginsConfDir)
+                         const std::string& pUID)
 {
     if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
@@ -275,16 +272,29 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport,
                 if (m_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
                 {
                     CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+                    std::string home = "";
+                    map_plugin_settings_t oldSettings;
+                    map_plugin_settings_t newSettings;
 
-                    if (pPluginsConfDir == m_sPluginsConfDir)
+                    if (pUID != "")
                     {
-                        reporter->Report(pCrashReport, (*it_r).second);
+                        home = get_home_dir(atoi(pUID.c_str()));
+                        if (home != "")
+                        {
+                            oldSettings = reporter->GetSettings();
+
+                            if (m_pPluginManager->LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
+                            {
+                                reporter->SetSettings(newSettings);
+                            }
+                        }
                     }
-                    else
+
+                    reporter->Report(pCrashReport, (*it_r).second);
+
+                    if (home != "")
                     {
-                        reporter->LoadSettings(pPluginsConfDir + "/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION);
-                        reporter->Report(pCrashReport, (*it_r).second);
-                        reporter->LoadSettings(m_sPluginsConfDir + "/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION);
+                        reporter->SetSettings(oldSettings);
                     }
                 }
             }

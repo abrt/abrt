@@ -820,16 +820,7 @@ bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
     //}
     try
     {
-        struct passwd* pw = getpwuid(atoi(pUID.c_str()));
-        std::string home = pw ? pw->pw_dir : "";
-        if (home != "")
-        {
-            m_pMW->Report(pReport, home + "/.abrt/");
-        }
-        else
-        {
-            m_pMW->Report(pReport);
-        }
+        m_pMW->Report(pReport, pUID);
     }
     catch (CABRTException& e)
     {
@@ -893,11 +884,11 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
     return vector_map_string_string_t();
 }
 
-map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName)
+map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName, const std::string& pUID)
 {
     try
     {
-        return m_pMW->GetPluginSettings(pName);
+        return m_pMW->GetPluginSettings(pName, pUID);
     }
     catch(CABRTException &e)
     {
