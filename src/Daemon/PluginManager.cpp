@@ -301,10 +301,8 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName
                 std::string home = get_home_dir(atoi(pUID.c_str()));
                 if (home != "")
                 {
-                    comm_layer_inner_debug("home: " + home);
                     if (LoadPluginSettings(home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION, ret))
                     {
-                        comm_layer_inner_debug("success");
                         return ret;
                     }
                 }
