@@ -35,28 +35,20 @@ class DBusManager(gobject.GObject):
         try:
             session = dbus.SessionBus()
         except Exception, e:
-            print e
-        
-        try:
-            app_proxy = session.get_object(APP_NAME,APP_PATH)
-            app_iface = dbus.Interface(app_proxy, dbus_interface=APP_IFACE)
-            # app is running, so make it show it self
-            app_iface.show()
-            raise ABRTExceptions.IsRunning()
-        except DBusException, e:
-            # cannot create proxy or call the method => gui is not running
+            # probably run after "$ su" 
             pass
         
-        """    
-        try:
-            session = dbus.SessionBus()
-        except:
-            # FIXME: root doesn't have SessionBus
-            pass
         if session:
-            if session.request_name(APP_NAME, dbus.bus.NAME_FLAG_DO_NOT_QUEUE) != dbus.bus.REQUEST_NAME_REPLY_PRIMARY_OWNER:
-                raise Exception("Name %s is taken,\nanother instance is already running." % APP_NAME)
-        """
+            try:
+                app_proxy = session.get_object(APP_NAME,APP_PATH)
+                app_iface = dbus.Interface(app_proxy, dbus_interface=APP_IFACE)
+                # app is running, so make it show it self
+                app_iface.show()
+                raise ABRTExceptions.IsRunning()
+            except DBusException, e:
+                # cannot create proxy or call the method => gui is not running
+                pass
+        
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
         gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
@@ -189,3 +181,16 @@ class DBusManager(gobject.GObject):
                 row_dict[column] = row[column]
             rows.append(row_dict);
         return rows
+        
+    def getPluginsInfo(self):
+        return self.cc.GetPluginsInfo()
+        
+    def getPluginSettings(self, plugin_name):
+        return self.cc.GetPluginSettings(plugin_name)
+        
+    def registerPlugin(self, plugin_name):
+        return self.cc.RegisterPlugin(plugin_name)
+    
+    def unRegisterPlugin(self, plugin_name):
+        return self.cc.UnRegisterPlugin(plugin_name)
+    

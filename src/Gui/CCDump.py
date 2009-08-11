@@ -6,7 +6,7 @@ EDITABLE = 1
 CONTENT = 2
 
 class Dump():
-    """Class for mapping the debug dump to pyhon object"""
+    """Class for mapping the debug dump to python object"""
     def __init__(self):
         self.UUID = None
         self.UID = None

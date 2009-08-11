@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="2.14"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkDialog" id="dialog1">
+  <object class="GtkDialog" id="PluginDialog">
     <property name="border_width">5</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
@@ -19,10 +19,6 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Kerneloops Reporter plugin configuration</property>
-                <attributes>
-                  <attribute name="weight">bold</attribute>
-                  <attribute name="scale">1.300000</attribute>
-                </attributes>
               </object>
               <packing>
                 <property name="position">0</property>

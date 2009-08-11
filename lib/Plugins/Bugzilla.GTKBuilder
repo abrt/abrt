@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.16"/>
+  <requires lib="gtk+" version="2.14"/>
   <!-- interface-naming-policy project-wide -->
-  <object class="GtkDialog" id="dialog1">
+  <object class="GtkDialog" id="PluginDialog">
     <property name="border_width">5</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
-      <object class="GtkVBox" id="dialog-vbox1">
+      <object class="GtkVBox" id="dialog-vbox">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
         <property name="spacing">2</property>
@@ -19,10 +19,6 @@
               <object class="GtkLabel" id="label1">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Bugzilla plugin configuration</property>
-                <attributes>
-                  <attribute name="weight">bold</attribute>
-                  <attribute name="scale">1.300000</attribute>
-                </attributes>
               </object>
               <packing>
                 <property name="position">0</property>
@@ -60,7 +56,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="conf_Bugzilla URL">
+                  <object class="GtkEntry" id="conf_BugzillaURL">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">&#x25CF;</property>
@@ -124,7 +120,7 @@
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="button1">
+              <object class="GtkButton" id="bApply">
                 <property name="label" translatable="yes">gtk-apply</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -161,8 +157,9 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="-10">button1</action-widget>
+      <action-widget response="-10">bApply</action-widget>
       <action-widget response="-6">button2</action-widget>
     </action-widgets>
   </object>
+  <object class="GtkAction" id="action1"/>
 </interface>
