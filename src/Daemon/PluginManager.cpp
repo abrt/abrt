@@ -382,7 +382,7 @@ bool CPluginManager::SavePluginSettings(const std::string& pPath, const map_plug
     fOut.open(pPath.c_str());
     if (fOut.is_open())
     {
-        fOut << "Settings were written by abrt." << std::endl;
+        fOut << "# Settings were written by abrt." << std::endl;
         map_plugin_settings_t::const_iterator it;
         for (it = pSettings.begin(); it != pSettings.end(); it++)
         {
