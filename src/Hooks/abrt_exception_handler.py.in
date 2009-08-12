@@ -205,7 +205,7 @@ def handleMyException((etype, value, tb)):
     sys.excepthook = sys.__excepthook__  # pylint: disable-msg=E1101
 
     import os.path
-    import md5
+    from hashlib import md5
     import traceback
 
     syslog.syslog("abrt: Pyhook: Detected unhandled exception in %s " % sys.argv[0])
@@ -222,7 +222,7 @@ def handleMyException((etype, value, tb)):
         ll[0] = os.path.basename(tblast[0])
         tblast = ll
 
-    m = md5.new()
+    m = md5()
     ntext = ""
     for t in tblast:
         ntext += str(t) + ":"
@@ -241,8 +241,8 @@ def handleMyException((etype, value, tb)):
     frame = trace.tb_frame
     text += ("\nLocal variables in innermost frame:\n")
     try:
-        for (key, value) in frame.f_locals.items():
-            text += "%s: %s\n" % (key, value)
+        for (key, val) in frame.f_locals.items():
+            text += "%s: %s\n" % (key, val)
     except:
         pass
 
