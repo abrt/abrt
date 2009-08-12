@@ -182,13 +182,24 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
 
 void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
-    pDescription = "\nabrt detected crash.\n"
-                   "\n\nHow to reproduce\n"
-                   "-----\n" +
-                   pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT] +
-                   "\n\nCommnet\n"
-                   "-----\n" +
-                   pCrashReport.find(CD_COMMENT)->second[CD_CONTENT] +
+    std::string howToReproduce;
+    std::string comment;
+
+    if (pCrashReport.find(CD_REPRODUCE) != pCrashReport.end())
+    {
+        howToReproduce = "\n\nHow to reproduce\n"
+                         "-----\n" +
+                         pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT];
+    }
+    if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
+    {
+       comment = "\n\nCommnet\n"
+                 "-----\n" + 
+                 pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
+    }
+    pDescription = "\nabrt detected crash.\n" +
+                   howToReproduce +
+                   comment +
                    "\n\nAdditional information\n"
                    "======\n";
 
