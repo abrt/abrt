@@ -108,6 +108,10 @@ class SettingsDialog:
         response = ui.run()
         if response == gtk.RESPONSE_APPLY:
             ui.dehydrate()
+            if pluginfo.Settings:
+                self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)
+            for key, val in pluginfo.Settings.iteritems():
+                print "%s:%s" % (key, val)
         elif response == gtk.RESPONSE_CANCEL:
             pass
         else:

@@ -48,7 +48,19 @@ class PluginSettingsUI(gtk.Dialog):
             
     def dehydrate(self):
         #print "dehydrating %s" % self.pluginfo.getName()
-        pass
+        if self.Settings:
+            for key in self.Settings.keys():
+                #print "%s:%s" % (key,value)
+                widget = self.plugin_gui.get_object("conf_%s" % key)
+                if type(widget) == gtk.Entry:
+                    self.Settings[key] = widget.get_text()
+                elif type(widget) == gtk.CheckButton:
+                    if widget.get_active():
+                        self.Settings[key] = "yes"
+                    else:
+                        self.Settings[key] = "no"
+                elif type(widget) == gtk.ComboBox:
+                    print "combo box is not implemented"
     
     def destroy(self):
         self.dialog.destroy()

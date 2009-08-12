@@ -193,4 +193,7 @@ class DBusManager(gobject.GObject):
     
     def unRegisterPlugin(self, plugin_name):
         return self.cc.UnRegisterPlugin(plugin_name)
+        
+    def setPluginSettings(self, plugin_name, plugin_settings):
+        return self.cc.SetPluginSettings(plugin_name, plugin_settings)
     
