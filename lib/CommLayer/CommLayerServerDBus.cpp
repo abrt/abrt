@@ -133,3 +133,9 @@ void CCommLayerServerDBus::UnRegisterPlugin(const std::string& pName)
     return m_pObserver->UnRegisterPlugin(pName);
 }
 
+void CCommLayerServerDBus::SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings)
+{
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
+    return m_pObserver->SetPluginSettings(pName, to_string(unix_uid), pSettings);
+}
+

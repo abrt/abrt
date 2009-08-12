@@ -28,6 +28,7 @@ class CCommLayerServerDBus
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
         virtual vector_map_string_string_t GetPluginsInfo();
         virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pSender);
+        void SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings);
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 

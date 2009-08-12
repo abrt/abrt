@@ -931,3 +931,19 @@ void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
         Warning(e.what());
     }
 }
+
+void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings)
+{
+    try
+    {
+        m_pMW->SetPluginSettings(pName, pUID, pSettings);
+    }
+    catch(CABRTException &e)
+    {
+        if (e.type() == EXCEP_FATAL)
+        {
+            throw e;
+        }
+        Warning(e.what());
+    }
+}

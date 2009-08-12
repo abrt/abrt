@@ -27,6 +27,7 @@ class CObserver {
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string &pSender) = 0;
         virtual vector_map_string_string_t GetPluginsInfo() = 0;
         virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID) = 0;
+        virtual void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings) = 0;
         virtual void RegisterPlugin(const std::string& pName) = 0;
         virtual void UnRegisterPlugin(const std::string& pName) = 0;
 };

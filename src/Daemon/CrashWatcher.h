@@ -133,6 +133,7 @@ class CCrashWatcher
         /* plugins related */
         virtual vector_map_string_string_t GetPluginsInfo();
         virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID);
+        void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings);
         void RegisterPlugin(const std::string& pName);
         void UnRegisterPlugin(const std::string& pName);
 
