@@ -51,7 +51,14 @@ void CReporterBugzilla::DeleteXMLRPCClient()
 PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
 {
     CReporterBugzilla* bz = static_cast<CReporterBugzilla*>(arg);
-    bz->m_sAttchmentInBase64 += obuf;
+    int ii;
+    for (ii = 0; ii < size; ii++)
+    {
+        if (isprint(obuf[ii]))
+        {
+            bz->m_sAttchmentInBase64 += obuf[ii];
+        }
+    }
     return 1;
 }
 
@@ -194,7 +201,7 @@ void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrash
     if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
     {
        comment = "\n\nCommnet\n"
-                 "-----\n" + 
+                 "-----\n" +
                  pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
     }
     pDescription = "\nabrt detected crash.\n" +
@@ -322,24 +329,17 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
             {
                 throw CABRTException(EXCEP_PLUGIN, "CReporterBugzilla::AddAttachemnt(): cannot initialize base64.");
             }
+
             NSSBase64Encoder_Update(base64,
                                     reinterpret_cast<const unsigned char*>(it->second[CD_CONTENT].c_str()),
                                     it->second[CD_CONTENT].length());
             NSSBase64Encoder_Destroy(base64, PR_FALSE);
-            std::string attchmentInBase64Printable = "";
-            for (unsigned int ii = 0; ii < m_sAttchmentInBase64.length(); ii++)
-            {
-                if (isprint(m_sAttchmentInBase64[ii]))
-                {
-                    attchmentInBase64Printable +=  m_sAttchmentInBase64[ii];
-                }
-            }
 
             paramList.add(xmlrpc_c::value_string(pBugId));
             attachmentParams["description"] = xmlrpc_c::value_string("File: " + it->first);
             attachmentParams["filename"] = xmlrpc_c::value_string(it->first);
             attachmentParams["contenttype"] = xmlrpc_c::value_string("text/plain");
-            attachmentParams["data"] = xmlrpc_c::value_string(attchmentInBase64Printable);
+            attachmentParams["data"] = xmlrpc_c::value_string(m_sAttchmentInBase64);
             paramList.add(xmlrpc_c::value_struct(attachmentParams));
             xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("bugzilla.addAttachment", paramList));
             try
