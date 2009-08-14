@@ -141,6 +141,7 @@ static void InstallDebugInfos(const std::string& pPackage)
 */
         buff[r] = '\0';
         comm_layer_inner_debug(buff);
+        comm_layer_inner_status(buff);
         if (strstr(buff, packageName.c_str()) != NULL &&
             strstr(buff, "already installed and latest version") != NULL)
         {
