@@ -44,8 +44,8 @@ class CMailx : public CReporter
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
-        virtual void Report(const map_crash_report_t& pCrashReport,
-                            const std::string& pArgs);
+        virtual std::string Report(const map_crash_report_t& pCrashReport,
+                                   const std::string& pArgs);
 };
 
 #endif /* MAILX_H_ */

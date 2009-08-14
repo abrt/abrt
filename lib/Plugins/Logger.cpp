@@ -24,6 +24,7 @@
 #include <sstream>
 #include "DebugDump.h"
 #include "CommLayerInner.h"
+#include "ABRTException.h"
 
 CLogger::CLogger() :
     m_sLogPath("/var/log/abrt-logger"),
@@ -52,7 +53,7 @@ map_plugin_settings_t CLogger::GetSettings()
     return ret;
 }
 
-void CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
     comm_layer_inner_status("Creating a report...");
 
@@ -130,6 +131,11 @@ void CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& 
         fOut << std::endl;
         fOut.close();
     }
+    else
+    {
+        throw CABRTException(EXCEP_PLUGIN, "CLogger::Report(): Cannot open file: " + m_sLogPath);
+    }
+    return "Report was stored into: " + m_sLogPath;
 }
 
 PLUGIN_INFO(REPORTER,

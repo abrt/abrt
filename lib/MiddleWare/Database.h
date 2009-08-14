@@ -40,6 +40,7 @@
 #define DATABASE_COLUMN_DEBUG_DUMP_PATH "DebugDumpPath"
 #define DATABASE_COLUMN_COUNT           "Count"
 #define DATABASE_COLUMN_REPORTED        "Reported"
+#define DATABASE_COLUMN_MESSAGE         "Message"
 #define DATABASE_COLUMN_TIME            "Time"
 
 /**
@@ -52,6 +53,7 @@ typedef struct SDatabaseRow
     std::string m_sDebugDumpDir; /**< A debugdump directory of a crash.*/
     std::string m_sCount; /**< Crash rate.*/
     std::string m_sReported; /**< Is a row reported?*/
+    std::string m_sMessage; /**< if a row is reported, then there can be store message abotu that*/
     std::string m_sTime; /**< Time of last occurred crash with same local UUID*/
 } database_row_t;
 
@@ -96,9 +98,12 @@ class CDatabase : public CPlugin
          * A method, which sets that particular row was reported.
          * @param pUUID A local UUID of a crash.
          * @param pUID An UID of an user.
+         * @param pMessga A text explanation of reported problem (where
+         * it is stored etc...
          */
         virtual void SetReported(const std::string& pUUID,
-                                 const std::string& pUID) = 0;
+                                 const std::string& pUID,
+                                 const std::string& pMessage) = 0;
         /**
          * A method, which gets all rows which belongs to particular user.
          * If the user is root, then all rows are returned. If there are no

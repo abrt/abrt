@@ -26,7 +26,7 @@
 #include <string>
 #include <map>
 
-#define PLUGINS_MAGIC_NUMBER 5
+#define PLUGINS_MAGIC_NUMBER 6
 
 #define PLUGINS_CONF_EXTENSION "conf"
 #define PLUGINS_LIB_EXTENSION "so"

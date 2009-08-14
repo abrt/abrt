@@ -820,7 +820,7 @@ bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
     //}
     try
     {
-        m_pMW->Report(pReport, pUID);
+        CMiddleWare::report_status_t rs = m_pMW->Report(pReport, pUID);
     }
     catch (CABRTException& e)
     {

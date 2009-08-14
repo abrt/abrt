@@ -53,7 +53,7 @@ class CSQLite3 : public CDatabase
                             const std::string& pTime);
 
         virtual void Delete(const std::string& pUUID, const std::string& pUID);
-        virtual void SetReported(const std::string& pUUID, const std::string& pUID);
+        virtual void SetReported(const std::string& pUUID, const std::string& pUID, const std::string& pMessage);
         virtual const vector_database_rows_t GetUIDData(const std::string& pUID);
         virtual const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
 

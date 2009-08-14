@@ -19,7 +19,7 @@ class CReporterBugzilla : public CReporter
         void Logout();
         void AddPlusOneComment(const std::string& pBugId);
         void AddPlusOneCC(const std::string& pBugId);
-        bool CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID);
+        std::string CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID);
         std::string NewBug(const map_crash_report_t& pCrashReport);
         void AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport);
         void CreateNewBugDescription(const map_crash_report_t& pCrashReport,
@@ -42,8 +42,8 @@ class CReporterBugzilla : public CReporter
         virtual ~CReporterBugzilla();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
-        virtual void Report(const map_crash_report_t& pCrashReport,
-                            const std::string& pArgs);
+        virtual std::string Report(const map_crash_report_t& pCrashReport,
+                                   const std::string& pArgs);
 };
 
 #endif /* BUGZILLA_H_ */

@@ -87,7 +87,9 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
                         break;
                     case 4: row.m_sReported = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 5: row.m_sTime = table[jj +(ncol*ii) + ncol];
+                    case 5: row.m_sMessage = table[jj +(ncol*ii) + ncol];
+                        break;
+                    case 6: row.m_sTime = table[jj +(ncol*ii) + ncol];
                         break;
                     default:
                         break;
@@ -155,6 +157,7 @@ void CSQLite3::CreateTable()
          DATABASE_COLUMN_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
          DATABASE_COLUMN_COUNT" INT NOT NULL DEFAULT 1,"
          DATABASE_COLUMN_REPORTED" INT NOT NULL DEFAULT 0,"
+         DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
          DATABASE_COLUMN_TIME" VARCHAR NOT NULL DEFAULT 0,"
          "PRIMARY KEY ("DATABASE_COLUMN_UUID","DATABASE_COLUMN_UID"));");
 }
@@ -211,7 +214,7 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
     }
 }
 
-void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID)
+void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID, const std::string& pMessage)
 {
     if (Exist(pUUID, pUID))
     {
@@ -219,6 +222,11 @@ void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID)
                  "SET "DATABASE_COLUMN_REPORTED" = 1 "
                  "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
                  "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
+            Exec("UPDATE "ABRT_TABLE" "
+                 "SET "DATABASE_COLUMN_MESSAGE" = '" + pMessage + "' "
+                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
+
     }
     else
     {

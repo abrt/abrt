@@ -31,6 +31,7 @@
 #define CD_DESCRIPTION  "Description"
 #define CD_TIME         "Time"
 #define CD_REPORTED     "Reported"
+#define CD_MESSAGE      "Message"
 #define CD_COMMENT      "Comment"
 #define CD_REPRODUCE    "How to reproduce"
 #define CD_MWANALYZER   "_MWAnalyzer"

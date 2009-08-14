@@ -61,7 +61,7 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText)
 }
 
 
-void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
     comm_layer_inner_status("Creating a report...");
 
@@ -135,6 +135,7 @@ void CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& p
     {
         SendEmail(m_sSubject, emailBody.str());
     }
+    return "Email was send to :" + m_sEmailTo;
 }
 
 void CMailx::SetSettings(const map_plugin_settings_t& pSettings)

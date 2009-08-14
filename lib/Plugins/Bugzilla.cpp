@@ -150,7 +150,7 @@ void CReporterBugzilla::AddPlusOneCC(const std::string& pBugId)
     ret = xmlrpc_c::value_struct(rpc->getResult());
 }
 
-bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID)
+std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID)
 {
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t searchParams;
@@ -182,9 +182,9 @@ bool CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const
 
         AddPlusOneComment(ss.str());
         AddPlusOneCC(ss.str());
-        return true;
+        return ss.str();
     }
-    return false;
+    return "";
 }
 
 void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrashReport, std::string& pDescription)
@@ -358,7 +358,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
     }
 }
 
-void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
@@ -371,7 +371,7 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
     {
         Login();
         comm_layer_inner_status("Checking for duplicates...");
-        if (!CheckUUIDInBugzilla(component, uuid))
+        if ((bugId = CheckUUIDInBugzilla(component, uuid)) == "")
         {
             comm_layer_inner_status("Creating new bug...");
             bugId = NewBug(pCrashReport);
@@ -386,6 +386,7 @@ void CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
     }
     DeleteXMLRPCClient();
+    return "See bug in bugzilla: " + m_sBugzillaURL + ", bug id:" + bugId;
 }
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)

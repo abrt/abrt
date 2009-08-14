@@ -247,9 +247,11 @@ void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
     }
 }
 
-void CMiddleWare::Report(const map_crash_report_t& pCrashReport,
-                         const std::string& pUID)
+CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCrashReport,
+                                    const std::string& pUID)
 {
+    report_status_t ret;
+    std::string message;
     if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUUID) == pCrashReport.end())
@@ -269,6 +271,8 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport,
         {
             try
             {
+                std::string res;
+
                 if (m_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
                 {
                     CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
@@ -290,26 +294,34 @@ void CMiddleWare::Report(const map_crash_report_t& pCrashReport,
                         }
                     }
 
-                    reporter->Report(pCrashReport, (*it_r).second);
+                    res = reporter->Report(pCrashReport, (*it_r).second);
 
                     if (home != "")
                     {
                         reporter->SetSettings(oldSettings);
                     }
                 }
+                ret[(*it_r).first].push_back("1");
+                ret[(*it_r).first].push_back(res);
+                message += res + "\n";
             }
             catch (CABRTException& e)
             {
+                ret[(*it_r).first].push_back("0");
+                ret[(*it_r).first].push_back(e.what());
                 comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
                 comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
             }
+
         }
     }
 
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     database->Connect();
-    database->SetReported(UUID, UID);
+    database->SetReported(UUID, UID, message);
     database->DisConnect();
+
+    return ret;
 }
 
 void CMiddleWare::DeleteDebugDumpDir(const std::string& pDebugDumpDir)
@@ -564,6 +576,7 @@ CMiddleWare::mw_result_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     add_crash_data_to_crash_info(pCrashInfo, CD_COUNT, row.m_sCount);
     add_crash_data_to_crash_info(pCrashInfo, CD_TIME, row.m_sTime);
     add_crash_data_to_crash_info(pCrashInfo, CD_REPORTED, row.m_sReported);
+    add_crash_data_to_crash_info(pCrashInfo, CD_MESSAGE, row.m_sMessage);
     add_crash_data_to_crash_info(pCrashInfo, CD_MWDDD, row.m_sDebugDumpDir);
 
     return MW_OK;

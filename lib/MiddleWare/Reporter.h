@@ -38,9 +38,10 @@ class CReporter : public CPlugin
          * by itself.
          * @param pCrashReport A crash report.
          * @param pArgs Plugin's arguments.
+         * @retun A message which can be displayed after a report is created.
          */
-        virtual void Report(const map_crash_report_t& pCrashReport,
-                            const std::string& pArgs) = 0;
+        virtual std::string Report(const map_crash_report_t& pCrashReport,
+                                   const std::string& pArgs) = 0;
 };
 
 #endif /* REPORTER_H_ */

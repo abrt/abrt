@@ -28,6 +28,7 @@
 #include "KerneloopsReporter.h"
 #include "CommLayerInner.h"
 #include <curl/curl.h>
+#include "ABRTException.h"
 
 #define FILENAME_KERNELOOPS "kerneloops"
 
@@ -92,7 +93,7 @@ CKerneloopsReporter::CKerneloopsReporter() :
 	m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
 {}
 
-void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
 	int ret = -1;
 	map_crash_report_t::const_iterator it;
@@ -109,8 +110,11 @@ void CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const s
 	}
 
 	if (ret)
+	{
 		/* FIXME: be more informative */
-		comm_layer_inner_status("Report has not been sent...");
+	    throw CABRTException(EXCEP_PLUGIN, std::string("CKerneloopsReporter::Report(): Report has not been sent..."));
+	}
+	return "Kernel oops report was uploaded to :" + m_sSubmitURL;
 }
 
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)

@@ -54,6 +54,12 @@ class CMiddleWare
                                       when trying open file in debug dump directory..*/
         } mw_result_t;
 
+        typedef std::map<std::string, vector_strings_t> report_status_t;
+        typedef enum {
+            RS_CODE,
+            RS_MESSAGE
+        } report_status_items_t;
+
     private:
         typedef set_strings_t set_blacklist_t;
         typedef set_strings_t set_enabled_plugins_t;
@@ -259,9 +265,10 @@ class CMiddleWare
          * ...).
          * @param pCrashReport A crash report.
          * @param pUID An user uid
+         * @return A report status, which reporters ends sucessfuly with messages.
          */
-        void Report(const map_crash_report_t& pCrashReport,
-                    const std::string& pUID);
+        report_status_t Report(const map_crash_report_t& pCrashReport,
+                               const std::string& pUID);
         /**
          * A method, which deletes particular debugdump directory.
          * @param pDebugDumpDir A debugdump directory.
