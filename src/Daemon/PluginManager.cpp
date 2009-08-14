@@ -281,7 +281,15 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                 std::string home = get_home_dir(atoi(pUID.c_str()));
                 if (home != "")
                 {
-                    SavePluginSettings(home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION, pSettings);
+                    std::string confPath = home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION;
+                    SavePluginSettings(confPath, pSettings);
+                    uid_t uid = atoi(pUID.c_str());
+                    struct passwd* pw = getpwuid(uid);
+                    gid_t gid = pw ? pw->pw_gid : uid;
+                    if (chown(confPath.c_str(), uid, gid) == -1)
+                    {
+                        perror_msg("can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+                    }
                 }
             }
         }
