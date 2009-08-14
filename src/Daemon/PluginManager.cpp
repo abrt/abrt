@@ -333,18 +333,17 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName
     {
         if (m_mapPlugins.find(pName) != m_mapPlugins.end())
         {
+            ret = m_mapPlugins[pName]->GetSettings();
+
             if (m_mapABRTPlugins[pName]->GetType() == REPORTER)
             {
                 std::string home = get_home_dir(atoi(pUID.c_str()));
                 if (home != "")
                 {
-                    if (LoadPluginSettings(home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION, ret))
-                    {
-                        return ret;
-                    }
+                    LoadPluginSettings(home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION, ret);
                 }
             }
-            return m_mapPlugins[pName]->GetSettings();
+            return ret;
         }
     }
     return ret;
