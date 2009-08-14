@@ -281,14 +281,43 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                 std::string home = get_home_dir(atoi(pUID.c_str()));
                 if (home != "")
                 {
-                    std::string confPath = home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION;
-                    SavePluginSettings(confPath, pSettings);
+                    std::string confDir = home + "/.abrt";
+                    std::string confPath = confDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
                     uid_t uid = atoi(pUID.c_str());
                     struct passwd* pw = getpwuid(uid);
                     gid_t gid = pw ? pw->pw_gid : uid;
+
+                    struct stat buf;
+                    if (stat(confDir.c_str(), &buf) != 0)
+                    {
+                        if (mkdir(confDir.c_str(), 0700) == -1)
+                        {
+                            perror_msg("can't create dir '%s'", confDir.c_str());
+                            return;
+                        }
+                        if (chmod(confDir.c_str(), 0700) == -1)
+                        {
+                            perror_msg("can't change mod of dir '%s'", confDir.c_str());
+                            return;
+                        }
+                        if (chown(confDir.c_str(), uid, gid) == -1)
+                        {
+                            perror_msg("can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+                            return;
+                        }
+
+                    }
+                    else if (!S_ISDIR(buf.st_mode))
+                    {
+                        perror_msg("'%s' is not a directory", confDir.c_str());
+                        return;
+                    }
+
+                    SavePluginSettings(confPath, pSettings);
                     if (chown(confPath.c_str(), uid, gid) == -1)
                     {
                         perror_msg("can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+                        return;
                     }
                 }
             }
