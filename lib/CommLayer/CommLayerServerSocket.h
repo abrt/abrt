@@ -1,4 +1,5 @@
 #include "CommLayerServer.h"
+#include "DBusCommon.h"
 #include <glib.h>
 
 #define SOCKET_FILE VAR_RUN"/abrt.socket"
@@ -27,7 +28,7 @@ class CCommLayerServerSocket : public CCommLayerServer
 
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pSender);
         virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pSender);
-        virtual bool Report(map_crash_report_t pReport, const std::string& pSender);
+        virtual report_status_t Report(map_crash_report_t pReport, const std::string& pSender);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
 
         virtual void Crash(const std::string& arg1);

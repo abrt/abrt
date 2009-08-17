@@ -17,7 +17,8 @@ class DumpList(list):
                 for row in rows:
                     entry = Dump()
                     for column in row:
-                        #print "DumpList adding %s:%s" % (column,row[column])
+                        #if column == "Reported":
+                        #    print "DumpList adding %s:%s" % (column,row[column])
                         entry.__dict__[column] = row[column]
                     self.append(entry)
                     self.ddict[entry.getUUID()] = entry

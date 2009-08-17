@@ -219,10 +219,11 @@ map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID
     return crashReport;
 }
 
-bool CCommLayerServerSocket::Report(map_crash_report_t pReport, const std::string& pSender)
+report_status_t CCommLayerServerSocket::Report(map_crash_report_t pReport, const std::string& pSender)
 {
-    m_pObserver->Report(pReport, pSender);
-    return true;
+    report_status_t rs;
+    rs = m_pObserver->Report(pReport, pSender);
+    return rs;
 }
 
 bool CCommLayerServerSocket::DeleteDebugDump(const std::string& pUUID, const std::string& pSender)

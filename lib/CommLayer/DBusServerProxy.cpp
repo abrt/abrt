@@ -168,7 +168,7 @@ DBus::Message CDBusServer_adaptor::_Report_stub(const DBus::CallMessage &call)
     DBus::MessageIter ri = call.reader();
 
     map_crash_report_t argin1; ri >> argin1;
-    bool argout1 = Report(argin1, call.sender());
+    report_status_t argout1 = Report(argin1, call.sender());
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
     wi << argout1;

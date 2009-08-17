@@ -61,11 +61,12 @@ uint64_t CCommLayerServerDBus::CreateReport_t(const std::string &pUUID,const std
     return job_id;
 }
 
-bool CCommLayerServerDBus::Report(map_crash_report_t pReport,const std::string &pSender)
+report_status_t CCommLayerServerDBus::Report(map_crash_report_t pReport,const std::string &pSender)
 {
+    report_status_t rs;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    m_pObserver->Report(pReport, to_string(unix_uid));
-    return true;
+    rs = m_pObserver->Report(pReport, to_string(unix_uid));
+    return rs;
 }
 
 bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::string& pSender)
@@ -106,6 +107,11 @@ void CCommLayerServerDBus::Update(const std::string& pDest, const std::string& p
 void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t pJobID)
 {
     CDBusServer_adaptor::JobDone(pDest, pJobID);
+}
+
+void CCommLayerServerDBus::Warning(const std::string& pDest, const std::string& pMessage)
+{
+    CDBusServer_adaptor::Warning(pMessage);
 }
 
 vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()

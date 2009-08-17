@@ -809,7 +809,7 @@ uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::strin
     return 0;
 }
 
-bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
+CMiddleWare::report_status_t CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
 {
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];
@@ -818,9 +818,10 @@ bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
     //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
     //     std::cerr << it->second << std::endl;
     //}
+    CMiddleWare::report_status_t rs;
     try
     {
-        CMiddleWare::report_status_t rs = m_pMW->Report(pReport, pUID);
+        rs = m_pMW->Report(pReport, pUID);
     }
     catch (CABRTException& e)
     {
@@ -830,9 +831,9 @@ bool CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
         }
         Warning(e.what());
         Status(e.what());
-        return false;
+        return rs;
     }
-    return true;
+    return rs;
 }
 
 bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string& pUID)

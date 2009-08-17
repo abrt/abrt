@@ -29,14 +29,14 @@ class SettingsDialog:
         self.pluginlist.set_model(self.modelfilter)
         # ===============================================
         columns = [None]*1
-        columns[0] = gtk.TreeViewColumn('Plugins')
+        columns[0] = gtk.TreeViewColumn('Name')
         
         # create list
         for column in columns:
             n = self.pluginlist.append_column(column)
             column.cell = gtk.CellRendererText()
             column.pack_start(column.cell, False)
-            column.set_attributes(column.cell, text=(n-1))
+            column.set_attributes(column.cell, markup=(n-1))
             column.set_resizable(True)
             
         # toggle
@@ -79,7 +79,7 @@ class SettingsDialog:
             print e
             #gui_error_message("Error while loading plugins info, please check if abrt daemon is running\n %s" % e)
         for entry in pluginlist:
-                n = self.pluginsListStore.append(["%s\n%s" % (entry.getName(), entry.Description), entry.Enabled == "yes", entry])
+                n = self.pluginsListStore.append(["<b>%s</b>\n%s" % (entry.getName(), entry.Description), entry.Enabled == "yes", entry])
 
     def dehydrate(self):
         # we have nothing to save, plugin's does the work
@@ -109,9 +109,12 @@ class SettingsDialog:
         if response == gtk.RESPONSE_APPLY:
             ui.dehydrate()
             if pluginfo.Settings:
-                self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)
-            for key, val in pluginfo.Settings.iteritems():
-                print "%s:%s" % (key, val)
+                try:
+                    self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)
+                except Exception, e:
+                    gui_error_message("Can't save plugin settings:\n %s", e)
+            #for key, val in pluginfo.Settings.iteritems():
+            #    print "%s:%s" % (key, val)
         elif response == gtk.RESPONSE_CANCEL:
             pass
         else:
@@ -124,7 +127,7 @@ class SettingsDialog:
     def on_tvDumps_cursor_changed(self, treeview):
         pluginsListStore, path = treeview.get_selection().get_selected_rows()
         if not path:
-            self.builder.get_object("lDescription").set_label("ARGH...")
+            self.builder.get_object("lDescription").set_label("No description")
             return
         # this should work until we keep the row object in the last position
         pluginfo = pluginsListStore.get_value(pluginsListStore.get_iter(path[0]), pluginsListStore.get_n_columns()-1)

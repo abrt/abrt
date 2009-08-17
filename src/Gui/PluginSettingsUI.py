@@ -50,6 +50,7 @@ class PluginSettingsUI(gtk.Dialog):
         #print "dehydrating %s" % self.pluginfo.getName()
         if self.Settings:
             for key in self.Settings.keys():
+                #print key
                 #print "%s:%s" % (key,value)
                 widget = self.plugin_gui.get_object("conf_%s" % key)
                 if type(widget) == gtk.Entry:

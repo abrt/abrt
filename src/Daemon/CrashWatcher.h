@@ -127,7 +127,7 @@ class CCrashWatcher
         /*FIXME: fix CLI and remove this stub*/
         virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID){map_crash_report_t retval; return retval;};
         uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
-        virtual bool Report(map_crash_report_t pReport, const std::string &pUID);
+        virtual CMiddleWare::report_status_t Report(map_crash_report_t pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
         /* plugins related */

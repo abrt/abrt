@@ -15,6 +15,7 @@ class Dump():
         self.Package = None
         self.Time = None
         self.Description = None
+        self.Reported = None
     
     def getUUID(self):
         return self.UUID[CONTENT]
@@ -30,6 +31,9 @@ class Dump():
         
     def getPackage(self):
         return self.Package[CONTENT]
+    
+    def isReported(self):
+        return self.Reported[CONTENT] == "1"
     
     def getTime(self,format):
         #print format

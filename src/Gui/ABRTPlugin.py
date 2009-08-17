@@ -14,7 +14,8 @@ Description
 
 class PluginSettings(dict):
     def __init__(self):
-        print "Init plugin settings"
+        #print "Init plugin settings"
+        pass
 
     def __init__(self, settings_dict):
         for key in settings_dict.keys():
