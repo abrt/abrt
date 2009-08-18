@@ -64,6 +64,8 @@ class MainWindow():
 
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
+        #rows of items with:
+        #icon, package_name, application, date, crash_rate, user (only if root), is_reported, ?object?
         if os.getuid() == 0:
             # root
             self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str,bool, object)
@@ -177,7 +179,7 @@ class MainWindow():
                 icon = None
             if os.getuid() == 0:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), pwd.getpwuid(int(entry.getUID()))[0], entry])
+                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), pwd.getpwuid(int(entry.getUID()))[0], entry.isReported(), entry])
             else:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                                 entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry.isReported(), entry])
