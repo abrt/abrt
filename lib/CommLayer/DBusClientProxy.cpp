@@ -33,7 +33,7 @@ DaemonWatcher_proxy::DaemonWatcher_proxy()
 {
     m_pStateChangeHandler_cb_data = NULL;
     m_pStateChangeHandler = NULL;
-    connect_signal(DaemonWatcher_proxy, NameOwnerChanged , _DaemonStateChanged);
+    connect_signal(DaemonWatcher_proxy, NameOwnerChanged, _DaemonStateChanged);
 }
 
 void DaemonWatcher_proxy::ConnectStateChangeHandler(void (*pStateChangeHandler)(bool running, void* data), void *cb_data)

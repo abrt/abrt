@@ -28,16 +28,16 @@ class DBusManager(gobject.GObject):
             def __init__(self, dbusmanager):
                 self.dbusmanager = dbusmanager
                 dbus.service.Object.__init__(self, dbus.SessionBus(), APP_PATH)
-    
+
             @dbus.service.method(dbus_interface=APP_IFACE)
             def show(self):
                 self.dbusmanager.emit("show")
         try:
             session = dbus.SessionBus()
         except Exception, e:
-            # probably run after "$ su" 
+            # probably run after "$ su"
             pass
-        
+
         if session:
             try:
                 app_proxy = session.get_object(APP_NAME,APP_PATH)
@@ -48,23 +48,23 @@ class DBusManager(gobject.GObject):
             except DBusException, e:
                 # cannot create proxy or call the method => gui is not running
                 pass
-        
+
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
-        gobject.signal_new ("crash", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
+        gobject.signal_new ("crash", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
         # signal emited when new analyze is complete
-        gobject.signal_new ("analyze-complete", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new ("analyze-complete", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited when smth fails
-        gobject.signal_new ("error", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
-        gobject.signal_new ("warning", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new ("error", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new ("warning", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited to update gui with current status
-        gobject.signal_new ("update", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new ("update", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited to show gui if user try to run it again
-        gobject.signal_new ("show", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
+        gobject.signal_new ("show", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
         # signal emited to show gui if user try to run it again
-        gobject.signal_new ("daemon-state-changed", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
-        gobject.signal_new ("report-done", self ,gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
-        
+        gobject.signal_new ("daemon-state-changed", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new ("report-done", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+
         # export the app dbus interface
         if session:
             session.request_name(APP_NAME)
@@ -75,21 +75,21 @@ class DBusManager(gobject.GObject):
     # disconnect callback
     def disconnected(*args):
         print "disconnect"
-    
+
     def error_handler_cb(self,arg):
         self.emit("error",arg)
-        
+
     def warning_handler_cb(self,arg):
         self.emit("warning",arg)
-    
+
     def error_handler(self,arg):
         # used to silently ingore dbus timeouts
         pass
-    
+
     def dummy(*args):
         # dummy function for async method call to workaround the timeout
         pass
-    
+
     def crash_cb(self,*args):
         #FIXME "got another crash, gui should reload!"
         #for arg in args:
@@ -97,17 +97,17 @@ class DBusManager(gobject.GObject):
         #emit a signal
         #print "crash"
         self.emit("crash")
-    
+
     def update_cb(self, dest, message):
         # FIXME: use dest instead of 0 once we implement it in daemon
         #if self.uniq_name == dest:
         self.emit("update", message)
-        
+
     def warning_cb(self, message, dest=None):
         # FIXME: use dest instead of 0 once we implement it in daemon
         #if self.uniq_name == dest:
         self.emit("warning", message)
-        
+
     def analyze_complete_cb(self,dump):
         #for arg in args:
         #    print "Analyze complete for: %s" % arg
@@ -115,7 +115,7 @@ class DBusManager(gobject.GObject):
         # FIXME - rewrite with CCReport class
     #    self.emit("analyze-complete", dump)
         pass
-    
+
     def owner_changed_cb(self,name, old_owner, new_owner):
         if(name == CC_NAME and new_owner):
             self.proxy = self.connect_to_daemon()
@@ -123,8 +123,8 @@ class DBusManager(gobject.GObject):
         if(name == CC_NAME and not(new_owner)):
             self.proxy = None
             self.emit("daemon-state-changed", "down")
-            
-    
+
+
     def connect_to_daemon(self):
         if not self.bus:
             self.bus = dbus.SystemBus()
@@ -136,7 +136,7 @@ class DBusManager(gobject.GObject):
             self.proxy = self.bus.get_object(CC_IFACE, CC_PATH)
         else:
             raise Exception("Please check if abrt daemon is running.")
-            
+
         if self.proxy:
             self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
             #intr = dbus.Interface(proxy, dbus_interface='org.freedesktop.DBus.Introspectable')
@@ -158,7 +158,7 @@ class DBusManager(gobject.GObject):
     def addJob(self, job_id):
         pass
         #self.pending_jobs.append(job_id)
-        
+
     def jobdone_cb(self, dest, job_id):
         if self.uniq_name == dest:
             dump = self.cc.GetJobResult(job_id)
@@ -166,10 +166,10 @@ class DBusManager(gobject.GObject):
                 self.emit("analyze-complete", dump)
             else:
                 self.emit("error","Daemon did't return valid report info\nDebuginfo is missing?")
-                
+
     def report_done(self, result):
         self.emit("report-done", result)
-        
+
     def getReport(self, UUID):
         try:
             # let's try it async
@@ -178,14 +178,14 @@ class DBusManager(gobject.GObject):
             self.addJob(self.cc.CreateReport(UUID, timeout=60))
         except dbus.exceptions.DBusException, e:
             raise Exception(e)
-    
+
     def Report(self,report):
         # map < Plguin_name vec <status, message> >
         self.cc.Report(report, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
-    
+
     def DeleteDebugDump(self,UUID):
         return self.cc.DeleteDebugDump(UUID)
-    
+
     def getDumps(self):
         row_dict = None
         rows = []
@@ -196,22 +196,22 @@ class DBusManager(gobject.GObject):
                 row_dict[column] = row[column]
             rows.append(row_dict);
         return rows
-        
+
     def getPluginsInfo(self):
         return self.cc.GetPluginsInfo()
-        
+
     def getPluginSettings(self, plugin_name):
         settings = self.cc.GetPluginSettings(plugin_name)
         #for i in settings.keys():
         #    print i
         return settings
-        
+
     def registerPlugin(self, plugin_name):
         return self.cc.RegisterPlugin(plugin_name)
-    
+
     def unRegisterPlugin(self, plugin_name):
         return self.cc.UnRegisterPlugin(plugin_name)
-        
+
     def setPluginSettings(self, plugin_name, plugin_settings):
         return self.cc.SetPluginSettings(plugin_name, plugin_settings)
-    
+

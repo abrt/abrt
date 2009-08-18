@@ -21,7 +21,7 @@ try:
 except Exception, ex:
     rpm = None
 
-#installExceptionHandler("abrt-gui", "0.0.6")
+#installExceptionHandler("abrt-gui", "0.0.7")
 
 class MainWindow():
     ccdaemon = None
@@ -40,7 +40,7 @@ class MainWindow():
         #Set the Glade file
         self.gladefile = "%s%sccgui.glade" % (sys.path[0],"/")
         self.wTree = gtk.glade.XML(self.gladefile)
-        
+
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window2")
         self.window.set_default_size(700, 480)
@@ -48,20 +48,20 @@ class MainWindow():
             self.window.connect("delete_event", self.delete_event_cb)
             self.window.connect("destroy", self.destroy)
             self.window.connect("focus-in-event", self.focus_in_cb)
-        
+
         self.statusWindow = self.wTree.get_widget("pBarWindow")
         if self.statusWindow:
             self.statusWindow.connect("delete_event", self.sw_delete_event_cb)
-        
+
         self.appBar = self.wTree.get_widget("appBar")
         # pregress bar window to show while bt is being extracted
         self.pBarWindow = self.wTree.get_widget("pBarWindow")
         self.pBarWindow.set_transient_for(self.window)
         self.pBar = self.wTree.get_widget("pBar")
-        
-        # set colours for descritpion heading
+
+        # set colours for description heading
         self.wTree.get_widget("evDescription").modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
-        
+
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
         if os.getuid() == 0:
@@ -76,7 +76,7 @@ class MainWindow():
         # add pixbuff separatelly
         icon_column = gtk.TreeViewColumn('Icon')
         icon_column.cell = gtk.CellRendererPixbuf()
-        icon_column.cell.set_property('cell-background' , "#C9C9C9")
+        icon_column.cell.set_property('cell-background', "#C9C9C9")
         n = self.dlist.append_column(icon_column)
         icon_column.pack_start(icon_column.cell, False)
         icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=5)
@@ -96,7 +96,7 @@ class MainWindow():
             column.pack_start(column.cell, False)
             #column.set_attributes(column.cell, )
             # FIXME: use some relative indexing
-            column.cell.set_property('cell-background' , "#C9C9C9")
+            column.cell.set_property('cell-background', "#C9C9C9")
             column.set_attributes(column.cell, text=(n-1), cell_background_set=5)
             column.set_resizable(True)
         #connect signals
@@ -115,7 +115,7 @@ class MainWindow():
         self.ccdaemon.connect("show", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         self.ccdaemon.connect("report-done", self.on_report_done_cb)
-        
+
         # load data
         #self.load()
     def on_daemon_state_changed_cb(self, widget, state):
@@ -124,17 +124,17 @@ class MainWindow():
             self.window.set_sensitive(True)
         elif state == "down":
             self.window.set_sensitive(False)
-    
+
     def on_miAbout_clicked(self, widget):
         dialog = self.wTree.get_widget("about")
         result = dialog.run()
         dialog.hide()
-    
+
     def on_miPreferences_clicked(self, widget):
         dialog = SettingsDialog(self.window,self.ccdaemon)
         dialog.hydrate()
         dialog.show()
-    
+
     def warning_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
         try:
@@ -144,7 +144,7 @@ class MainWindow():
         except Exception, e:
             pass
         gui_error_message("%s" % message,parent_dialog=self.window)
-    
+
     def error_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
         try:
@@ -153,16 +153,16 @@ class MainWindow():
         except Exception, e:
             pass
         gui_error_message("Unable to get report!\n%s" % message,parent_dialog=self.window)
-    
+
     def update_cb(self, daemon, message):
         message = message.replace('\n',' ')
         self.wTree.get_widget("lStatus").set_text(message)
-        
+
     # call to update the progressbar
     def progress_update_cb(self, *args):
         self.pBar.pulse()
         return True
-    
+
     def hydrate(self):
         n = None
         self.dumpsListStore.clear()
@@ -176,15 +176,15 @@ class MainWindow():
             except:
                 icon = None
             if os.getuid() == 0:
-                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), 
+                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                                 entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), pwd.getpwuid(int(entry.getUID()))[0], entry])
             else:
-                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(), 
+                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                                 entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry.isReported(), entry])
         # activate the last row if any..
         if n:
             self.dlist.set_cursor(self.dumpsListStore.get_path(n))
-            
+
     def filter_dumps(self, model, miter, data):
         # for later..
         return True
@@ -203,7 +203,7 @@ class MainWindow():
         #move this to Dump class
         lPackage = self.wTree.get_widget("lPackage")
         self.wTree.get_widget("lDescription").set_label(dump.getDescription())
-        
+
     def on_bDelete_clicked(self, button, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
@@ -218,10 +218,10 @@ class MainWindow():
                 print "Couldn't delete"
         except Exception, e:
             print e
-    
+
     def destroy(self, widget, data=None):
         gtk.main_quit()
-    
+
     def on_data_changed_cb(self, *args):
         # FIXME mark the new entry somehow....
         # remember the selected row
@@ -230,7 +230,7 @@ class MainWindow():
         if not path:
             return
         self.dlist.set_cursor(path[0])
-    
+
     def on_report_done_cb(self, daemon, result):
         try:
             gobject.source_remove(self.timer)
@@ -242,10 +242,10 @@ class MainWindow():
         message = ""
         for plugin, res in result.iteritems():
             message += "<b>%s</b>: %s\n" % (plugin, result[plugin][1])
-            
+
         gui_info_dialog("<b>Report done!</b>\n%s" % message, self.window)
         self.hydrate()
-    
+
     def on_analyze_complete_cb(self, daemon, report, pBarWindow):
         try:
             gobject.source_remove(self.timer)
@@ -277,7 +277,7 @@ class MainWindow():
         #else:
         #    pass
         #print "got another crash, refresh gui?"
-    
+
     def on_bReport_clicked(self, button):
         # FIXME don't duplicate the code, move to function
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
@@ -287,7 +287,7 @@ class MainWindow():
         #self.pBar.show()
         self.pBarWindow.show_all()
         self.timer = gobject.timeout_add (100,self.progress_update_cb)
-        
+
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         # show the report window with selected dump
         try:
@@ -300,25 +300,25 @@ class MainWindow():
             self.pBarWindow.hide()
             gui_error_message("Error getting the report: %s" % e)
         return
-    
+
     def sw_delete_event_cb(self, widget, event, data=None):
         if self.timer:
             gobject.source_remove(self.timer)
         widget.hide()
         return True
-    
+
     def delete_event_cb(self, widget, event, data=None):
         gtk.main_quit()
-    
+
     def focus_in_cb(self, widget, event, data=None):
         self.window.set_urgency_hint(False)
-    
+
     def on_bQuit_clicked(self, widget):
         gtk.main_quit()
-            
+
     def show(self):
         self.window.show()
-        
+
     def show_cb(self, daemon):
         if self.window:
             if self.window.is_active():

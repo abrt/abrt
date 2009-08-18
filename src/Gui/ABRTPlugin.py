@@ -23,8 +23,8 @@ class PluginSettings(dict):
 
 """Class to represent common plugin info"""
 class PluginInfo():
-    keys = ["WWW", "Name", "Enabled", 
-            "GTKBuilder", "Version", 
+    keys = ["WWW", "Name", "Enabled",
+            "GTKBuilder", "Version",
             "Type", "Email", "Description"]
 
     def __init__(self):
@@ -38,16 +38,16 @@ class PluginInfo():
         self.Email = None
         self.Description = None
         self.Settings = None
-        
+
     def getName(self):
         return self.Name
-    
+
     def getDescription(self):
         return self.Description
-        
+
     def getGUI(self):
         return self.GTKBuilder
-    
+
     def __str__(self):
         return self.Name
-        
+

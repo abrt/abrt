@@ -22,7 +22,7 @@ if conf.has_key("enabled"):
     if conf["enabled"] == "yes":
         try:
             from abrt_exception_handler import *
-            
+
             installExceptionHandler(debug = 1)
         except Exception, e:
             # FIXME don't print anything, write it to some log file

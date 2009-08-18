@@ -8,7 +8,7 @@ class PluginSettingsUI(gtk.Dialog):
         self.Settings = pluginfo.Settings
         self.pluginfo = pluginfo
         self.plugin_gui = None
-        
+
         if pluginfo.getGUI():
             self.plugin_gui = gtk.Builder()
             self.plugin_gui.add_from_file(pluginfo.getGUI())
@@ -21,7 +21,7 @@ class PluginSettingsUI(gtk.Dialog):
             no_ui_label = gtk.Label("No UI for plugin %s" % pluginfo)
             self.add(no_ui_label)
             no_ui_label.show()
-        
+
     def hydrate(self):
         if self.plugin_gui:
             if self.pluginfo.Enabled == "yes":
@@ -42,10 +42,10 @@ class PluginSettingsUI(gtk.Dialog):
             else:
                 #print "Plugin %s is disabled." % self.plugin_name
                 pass
-            
+
         else:
             print "Nothing to hydrate!"
-            
+
     def dehydrate(self):
         #print "dehydrating %s" % self.pluginfo.getName()
         if self.Settings:
@@ -62,9 +62,9 @@ class PluginSettingsUI(gtk.Dialog):
                         self.Settings[key] = "no"
                 elif type(widget) == gtk.ComboBox:
                     print "combo box is not implemented"
-    
+
     def destroy(self):
         self.dialog.destroy()
-    
+
     def run(self):
         return self.dialog.run()

@@ -30,7 +30,7 @@ class SettingsDialog:
         # ===============================================
         columns = [None]*1
         columns[0] = gtk.TreeViewColumn('Name')
-        
+
         # create list
         for column in columns:
             n = self.pluginlist.append_column(column)
@@ -38,7 +38,7 @@ class SettingsDialog:
             column.pack_start(column.cell, False)
             column.set_attributes(column.cell, markup=(n-1))
             column.set_resizable(True)
-            
+
         # toggle
         toggle_renderer = gtk.CellRendererToggle()
         toggle_renderer.set_property('activatable', True)
@@ -46,7 +46,7 @@ class SettingsDialog:
         column = gtk.TreeViewColumn('Enabled', toggle_renderer)
         column.add_attribute( toggle_renderer, "active", 1)
         self.pluginlist.insert_column(column, 0)
-            
+
         #connect signals
         self.pluginlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
         self.builder.get_object("bConfigurePlugin").connect("clicked", self.on_bConfigurePlugin_clicked, self.pluginlist)
@@ -66,7 +66,7 @@ class SettingsDialog:
             # FIXME: create class plugin and move this into method Plugin.Enable()
             plugin.Enabled = "yes"
             plugin.Settings = PluginSettings(self.ccdaemon.getPluginSettings(plugin.getName()))
-        model[path][1] = not model[path][1]    
+        model[path][1] = not model[path][1]
 
     def filter_plugins(self, model, miter, data):
         return True
@@ -120,7 +120,7 @@ class SettingsDialog:
         else:
             print "unknown response from settings dialog"
         ui.destroy()
-    
+
     def on_bClose_clicked(self, button):
         self.window.destroy()
 

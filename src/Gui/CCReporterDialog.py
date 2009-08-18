@@ -23,19 +23,19 @@ class ReporterDialog():
         self.report = report
         #Set the Glade file
         # FIXME add to path
-        self.gladefile = "%s%sreport.glade" % (sys.path[0],"/")  
-        self.wTree = gtk.glade.XML(self.gladefile) 
+        self.gladefile = "%s%sreport.glade" % (sys.path[0],"/")
+        self.wTree = gtk.glade.XML(self.gladefile)
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("reporter_dialog")
         self.window.set_default_size(640, 480)
-        
+
         # comment textview
         self.tvComment = self.wTree.get_widget("tvComment")
         self.tvComment.connect("focus-in-event", self.on_comment_focus_cb)
         self.comment_changed = False
-        
+
         self.tvReport = self.wTree.get_widget("tvReport")
-        
+
         self.reportListStore = gtk.ListStore(str, str, bool, bool, bool)
         # set filter
         #self.modelfilter = self.reportListStore.filter_new()
@@ -44,12 +44,12 @@ class ReporterDialog():
         renderer = gtk.CellRendererText()
         column = gtk.TreeViewColumn('Item', renderer, text=0)
         self.tvReport.append_column(column)
-        
+
         renderer = CellRenderers.MultilineCellRenderer()
         renderer.props.editable = True
         renderer.props.wrap_mode = pango.WRAP_WORD
         renderer.props.wrap_width = 800
-        
+
         #renderer.props.wrap_mode = pango.WRAP_WORD
         #renderer.props.wrap_width = 600
         column = gtk.TreeViewColumn('Value', renderer, text=1, editable=2)
@@ -66,35 +66,35 @@ class ReporterDialog():
         # connect the signals
         self.wTree.get_widget("bApply").connect("clicked", self.on_apply_clicked, self.tvReport)
         #self.wTree.get_widget("bCancel").connect("clicked", self.on_cancel_clicked, self.tvReport)
-        
+
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
-        
+
         self.hydrate()
-        
+
     def on_send_toggled(self, cell, path, model):
         model[path][3] = not model[path][3]
-        
+
     def on_comment_focus_cb(self, widget, event):
         if not self.comment_changed:
             widget.set_buffer(gtk.TextBuffer())
             self.comment_changed = True
-    
+
     def on_window_resize(self, treeview, allocation):
         # multine support
         pass
         #print allocation
-        
+
     def column_edited(self, cell, path, new_text, model):
         # 1 means the second cell
         model[path][1] = new_text
         return
-        
+
     def on_apply_clicked(self, button, treeview):
         self.dehydrate()
-        
+
     def on_cancel_clicked(self, button, treeview):
         pass
-    
+
     def hydrate(self):
         for item in self.report:
             if item == "Comment":
@@ -106,8 +106,8 @@ class ReporterDialog():
                 # item name 0| value 1| editable? 2| toggled? 3| visible?(attachment)4
                 if self.report[item][EDITABLE] == 'y':
                     self.editable.append(item)
-                self.row_dict[item] = self.reportListStore.append([item, self.report[item][CONTENT], 
-                                                                    item in self.editable, False, 
+                self.row_dict[item] = self.reportListStore.append([item, self.report[item][CONTENT],
+                                                                    item in self.editable, False,
                                                                     self.report[item][TYPE] in ['a','b']])
 
     def dehydrate(self):
@@ -134,4 +134,4 @@ class ReporterDialog():
             self.report = None
         self.window.destroy()
         return self.report
-            
+

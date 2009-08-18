@@ -16,25 +16,25 @@ class Dump():
         self.Time = None
         self.Description = None
         self.Reported = None
-    
+
     def getUUID(self):
         return self.UUID[CONTENT]
-    
+
     def getUID(self):
         return self.UID[CONTENT]
-        
+
     def getCount(self):
         return self.Count[CONTENT]
-    
+
     def getExecutable(self):
         return self.Executable[CONTENT]
-        
+
     def getPackage(self):
         return self.Package[CONTENT]
-    
+
     def isReported(self):
         return self.Reported[CONTENT] == "1"
-    
+
     def getTime(self,format):
         #print format
         if format:
@@ -43,9 +43,9 @@ class Dump():
             except Exception, e:
                 print e
         return int(self.Time[CONTENT])
-        
+
     def getPackageName(self):
         return self.Package[CONTENT][:self.Package[CONTENT].find("-")]
-        
+
     def getDescription(self):
         return self.Description[CONTENT]

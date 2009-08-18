@@ -7,7 +7,7 @@ class DumpList(list):
     def __init__(self,dbus_manager=None):
         self.dm = dbus_manager
         self.ddict = {}
-    
+
     def load(self):
         if self.dm:
             #print "loading DumpList"
@@ -27,7 +27,7 @@ class DumpList(list):
                 return
         else:
             print "db == None!"
-                
+
 
 __PFList = None
 __PFList_dbmanager = None

@@ -108,7 +108,7 @@ def write_dump(pid, tb_uuid, tb):
     import time
     ttime = int(time.time())
     # localstatedir
-    dir_name = "@DEBUG_DUMP_DIR@/pyhook-%s-%s" % (ttime , pid)
+    dir_name = "@DEBUG_DUMP_DIR@/pyhook-%s-%s" % (ttime, pid)
     dd = ABRTUtils.CDebugDump()
     try:
         #os.mkdir(dir_name)

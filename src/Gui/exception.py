@@ -156,10 +156,10 @@ def __exception_window(title, text, component_name):
     info.set_line_wrap(True)
     hbox.pack_start (scw, True)
     # pylint: disable-msg=E1101
-    win.vbox.pack_start (info, False) 
-    win.vbox.pack_start (hbox, True)  
-    win.vbox.set_border_width(12)     
-    win.vbox.set_spacing(12)          
+    win.vbox.pack_start (info, False)
+    win.vbox.pack_start (hbox, True)
+    win.vbox.set_border_width(12)
+    win.vbox.set_spacing(12)
     win.set_size_request (500, 300)
     win.set_position (gtk.WIN_POS_CENTER)
     #contents = win.get_children()[0]
@@ -231,7 +231,7 @@ def exitcode(num):
 #
 # handleMyException function
 #
-def handleMyException((etype, value, tb), progname, version, 
+def handleMyException((etype, value, tb), progname, version,
                       gui = 1, debug = 1):
     """
     The exception handling function.
@@ -309,7 +309,7 @@ def handleMyException((etype, value, tb), progname, version,
 
     while 1:
         rc = __exception_window (_("%(progname)s - Exception Occurred") \
-                                    % {'progname' : progname}, 
+                                    % {'progname' : progname},
                                 text, progname)
         print text
 
@@ -340,7 +340,7 @@ def handleMyException((etype, value, tb), progname, version,
                     out.close()
 
                 except IOError:
-                    _generic_error_dialog(progname, 
+                    _generic_error_dialog(progname,
                                            _("Failed to write to file %s.") \
                                                % (tfile), None)
                 else:
@@ -365,7 +365,7 @@ def installExceptionHandler(progname, version, gui = 1, debug = 1):
     debug    - show the full traceback (with "Save to file" in GUI)
     """
     sys.excepthook = lambda etype, value, tb: \
-        handleMyException((etype, value, tb), 
+        handleMyException((etype, value, tb),
                           progname, version, gui, debug)
 
 if __name__ == '__main__':

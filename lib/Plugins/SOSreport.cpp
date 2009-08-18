@@ -116,7 +116,7 @@ void CActionSOSreport::Run(const std::string& pActionDir,
 }
 
 PLUGIN_INFO(ACTION,
-            CActionSOSreport ,
+            CActionSOSreport,
             "SOSreport",
             "0.0.2",
             "Run sosreport, save the output in the crash dump",

@@ -334,7 +334,7 @@ void CCrashWatcher::SetUpCron()
 
                 cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(this, (*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
-                                           timeout ,
+                                           timeout,
                                            cron_activation_periodic_cb,
                                            static_cast<gpointer>(cronPeriodicCallbackData),
                                            cron_delete_callback_data_cb);

@@ -7,7 +7,7 @@ class PluginInfoList(list):
     def __init__(self,dbus_manager=None):
         self.dm = dbus_manager
         self.ddict = {}
-    
+
     def load(self):
         if self.dm:
             #print "loading PluginList"
@@ -33,7 +33,7 @@ class PluginInfoList(list):
                 return
         else:
             print "db == None!"
-                
+
 
 __PFList = None
 __PFList_dbmanager = None

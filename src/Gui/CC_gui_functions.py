@@ -52,7 +52,7 @@ def gui_error_message ( message, parent_dialog=None,
     ret = dialog.run ()
     dialog.destroy()
     return ret
-    
+
 def gui_question_dialog ( message, parent_dialog=None,
                       message_type=gtk.MESSAGE_QUESTION,
                       widget=None, page=0, broken_widget=None ):
@@ -71,7 +71,7 @@ def gui_question_dialog ( message, parent_dialog=None,
     ret = dialog.run ()
     dialog.destroy()
     return ret
-    
+
 def get_icon_for_package(theme,package):
     #print package
     try:

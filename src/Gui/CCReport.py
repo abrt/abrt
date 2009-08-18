@@ -20,12 +20,12 @@ class Report():
 
     def getUUID(self):
         return self.UUID
-    
+
     def getArchitecture(self):
         return self.Architecture
-    
+
     def getExecutable(self):
         return self.Executable
-        
+
     def getPackage(self):
         return self.Package
