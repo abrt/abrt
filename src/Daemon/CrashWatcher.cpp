@@ -325,7 +325,7 @@ void CCrashWatcher::SetUpCron()
 
             sS = it_c->first;
             nS = atoi(sS.c_str());
-            nS = nS < 0 ? 0 : nS;
+            nS = nS <= 0 ? 1 : nS;
             timeout = nS;
         }
 
