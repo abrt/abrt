@@ -31,7 +31,6 @@
 CMailx::CMailx() :
     m_sEmailFrom("user@localhost"),
     m_sEmailTo("root@localhost"),
-    m_sParameters(""),
     m_sAttachments(""),
     m_sSubject("[abrt] full crash report"),
     m_bSendBinaryData(false)
@@ -44,7 +43,6 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText)
 
     FILE* command;
     std::string mailx_command = MAILX_COMMAND + m_sAttachments +
-                                " " + m_sParameters +
                                 " -s " + pSubject +
                                 " -r " + m_sEmailFrom + " " + m_sEmailTo;
 
@@ -152,10 +150,6 @@ void CMailx::SetSettings(const map_plugin_settings_t& pSettings)
     {
         m_sEmailTo = pSettings.find("EmailTo")->second;
     }
-    if (pSettings.find("Parameters") != pSettings.end())
-    {
-        m_sParameters = pSettings.find("Parameters")->second;
-    }
     if (pSettings.find("SendBinaryData") != pSettings.end())
     {
         m_bSendBinaryData = pSettings.find("SendBinaryData")->second == "yes";
@@ -169,7 +163,6 @@ map_plugin_settings_t CMailx::GetSettings()
     ret["Subject"] = m_sSubject;
     ret["EmailFrom"] = m_sEmailFrom;
     ret["EmailTo"] = m_sEmailTo;
-    ret["Parameters"] = m_sParameters;
     ret["SendBinaryData"] = m_bSendBinaryData ? "yes" : "no";
 
     return ret;
