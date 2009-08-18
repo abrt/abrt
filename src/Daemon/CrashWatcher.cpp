@@ -95,7 +95,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                     switch (res)
                     {
                         case CMiddleWare::MW_OK:
-                            cc->Warning("New crash, saving...");
+                            cc->Debug("New crash, saving...");
                             cc->m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
                             cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
@@ -103,7 +103,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                         case CMiddleWare::MW_REPORTED:
                         case CMiddleWare::MW_OCCURED:
                             /* send message to dbus */
-                            cc->Warning("Already saved crash, deleting...");
+                            cc->Debug("Already saved crash, deleting...");
                             cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
@@ -164,6 +164,9 @@ void *CCrashWatcher::create_report(void *arg)
                 break;
             case CMiddleWare::MW_IN_DB_ERROR:
                 thread_data->daemon->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
+                break;
+            case CMiddleWare::MW_PLUGIN_ERROR:
+                thread_data->daemon->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."));
                 break;
             case CMiddleWare::MW_CORRUPTED:
             case CMiddleWare::MW_FILE_ERROR:

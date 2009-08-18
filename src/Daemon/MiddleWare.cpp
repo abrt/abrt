@@ -194,6 +194,10 @@ CMiddleWare::mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID
         {
             return MW_FILE_ERROR;
         }
+        else if (e.type() == EXCEP_PLUGIN)
+        {
+            return MW_PLUGIN_ERROR;
+        }
         return MW_CORRUPTED;
     }
 

@@ -50,6 +50,7 @@ class CMiddleWare
             MW_OCCURED,          /**< Crash occurred in the past, but it is not reported yet.*/
             MW_IN_DB,            /**< Debugdump directory is already saved in a database.*/
             MW_IN_DB_ERROR,      /**< Error while working with a database.*/
+            MW_PLUGIN_ERROR,     /**< plugin wasn't found or error within plugin*/
             MW_FILE_ERROR        /**< Error when trying open debugdump directory or
                                       when trying open file in debug dump directory..*/
         } mw_result_t;
