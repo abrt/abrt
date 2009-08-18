@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.7
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -330,6 +330,14 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+
+* Tue Aug 18 2009  Denys Vlasenko <dvlasenk@redhat.com> 0.0.7-2
+- removed dangerous parameter option
+- minimum plugin activation period is 1 second
+- in case of plugin error, don't delete debug dumps
+- abrt-gui: fix crash when run by root
+- simplify parsing of debuginfo-install output
+
 * Tue Aug 18 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.7-1
 - new version
 - added status window to show user some info after reporting a bug
