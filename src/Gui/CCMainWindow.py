@@ -21,7 +21,7 @@ try:
 except Exception, ex:
     rpm = None
 
-#installExceptionHandler("abrt-gui", "0.0.4")
+#installExceptionHandler("abrt-gui", "0.0.6")
 
 class MainWindow():
     ccdaemon = None
