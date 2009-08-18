@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.6
+Version: 0.0.7
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -330,6 +330,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Tue Aug 18 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.7-1
+- new version
+- added status window to show user some info after reporting a bug
+
 * Mon Aug 17 2009  Denys Vlasenko <dvlasenk@redhat.com> 0.0.6-1
 - new version
 - many fixes
