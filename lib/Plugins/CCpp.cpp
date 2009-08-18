@@ -98,62 +98,52 @@ static void InstallDebugInfos(const std::string& pPackage)
     }
     if (child == 0)
     {
-        if (pipein[0] != STDIN_FILENO)
-        {
-            dup2(pipein[0], STDIN_FILENO);
-            close(pipein[0]);
-        }
-        if (pipeout[1] != STDOUT_FILENO)
-        {
-            dup2(pipeout[1], STDOUT_FILENO);
-            close(pipeout[1]);
-        }
+        close(pipein[1]);
+        close(pipeout[0]);
+        xmove_fd(pipein[0], STDIN_FILENO);
+        xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Not a good idea, we won't see any error messages */
         /*close(STDERR_FILENO);*/
 
         setsid();
-        execlp("debuginfo-install", "debuginfo-install", pPackage.c_str(), NULL);
+        execlp("debuginfo-install", "debuginfo-install", "-y", "--", pPackage.c_str(), NULL);
         exit(0);
     }
 
     close(pipein[0]);
     close(pipeout[1]);
 
+    /* Should not be needed (we use -y option), but just in case: */
+    safe_write(pipein[1], "y\n", sizeof("y\n")-1);
+
+    comm_layer_inner_status("Downloading and installing debug-info packages...");
     bool already_installed = false;
 
     int r;
-    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+    while ((r = safe_read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
     {
-/* Was before read, does not seem to be needed
-        fd_set rsfd;
-        FD_ZERO(&rsfd);
-        struct timeval delay;
-
-        FD_SET(pipeout[0], &rsfd);
-
-        delay.tv_sec = 1;
-        delay.tv_usec = 0;
-
-        if (select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) <= 0)
-            continue;
-        if (!FD_ISSET(pipeout[0], &rsfd))
-            continue;
-*/
         buff[r] = '\0';
         comm_layer_inner_debug(buff);
         comm_layer_inner_status(buff);
-        if (strstr(buff, packageName.c_str()) != NULL &&
-            strstr(buff, "already installed and latest version") != NULL)
-        {
-            char* ii = strstr(buff, packageName.c_str());
-            char* jj = strstr(ii, "\n");
-            char* kk = strstr(ii, "already installed and latest version");
 
-            if (jj > kk)
+        if (!already_installed)
+        {
+            /* "Package foo-debuginfo-1.2-5.ARCH already installed and latest version" */
+            char* pn = strstr(buff, packageName.c_str());
+            if (pn)
             {
-                already_installed = true;
+                char* already_str = strstr(pn, "already installed and latest version");
+                if (already_str)
+                {
+                    char* jj = strchr(pn, '\n');
+                    if (jj && jj > already_str)
+                    {
+                        already_installed = true;
+                    }
+                }
             }
         }
+
         if (already_installed == false &&
             (strstr(buff, "No debuginfo packages available to install") != NULL ||
              strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
@@ -165,23 +155,10 @@ static void InstallDebugInfos(const std::string& pPackage)
             wait(NULL);
             throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
         }
-        if (strstr(buff, "Total download size") != NULL)
-        {
-            int r = write(pipein[1], "y\n", sizeof("y\n")-1);
-            if (r != sizeof("y\n")-1)
-            {
-                close(pipein[1]);
-                close(pipeout[0]);
-                kill(child, SIGTERM);
-                wait(NULL);
-                throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
-            }
-            comm_layer_inner_status("Downloading and installing debug-info packages...");
-        }
     }
+
     close(pipein[1]);
     close(pipeout[0]);
-
     wait(NULL);
 }
 
