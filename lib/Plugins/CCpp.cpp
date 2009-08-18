@@ -115,18 +115,32 @@ static void InstallDebugInfos(const std::string& pPackage)
 
     /* Should not be needed (we use -y option), but just in case: */
     safe_write(pipein[1], "y\n", sizeof("y\n")-1);
+    close(pipein[1]);
 
     comm_layer_inner_status("Downloading and installing debug-info packages...");
-    bool already_installed = false;
 
-    int r;
-    while ((r = safe_read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+    FILE *pipeout_fp = fdopen(pipeout[0], "r");
+    if (pipeout_fp == NULL) /* never happens */
     {
-        buff[r] = '\0';
+        close(pipeout[0]);
+        wait(NULL);
+        return;
+    }
+
+/* glx-utils, for example, do not have glx-utils-debuginfo package.
+ * Disabled code was causing failures in backtrace decoding.
+ * This does not seem to be useful.
+ */
+#ifdef COMPLAIN_IF_NO_DEBUGINFO
+    bool already_installed = false;
+#endif
+    while (fgets(buff, sizeof(buff), pipeout_fp))
+    {
         comm_layer_inner_debug(buff);
         comm_layer_inner_status(buff);
 
-        if (!already_installed)
+#ifdef COMPLAIN_IF_NO_DEBUGINFO
+        if (already_installed == false)
         {
             /* "Package foo-debuginfo-1.2-5.ARCH already installed and latest version" */
             char* pn = strstr(buff, packageName.c_str());
@@ -135,11 +149,7 @@ static void InstallDebugInfos(const std::string& pPackage)
                 char* already_str = strstr(pn, "already installed and latest version");
                 if (already_str)
                 {
-                    char* jj = strchr(pn, '\n');
-                    if (jj && jj > already_str)
-                    {
-                        already_installed = true;
-                    }
+                    already_installed = true;
                 }
             }
         }
@@ -149,16 +159,15 @@ static void InstallDebugInfos(const std::string& pPackage)
              strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
              strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL))
         {
-            close(pipein[1]);
-            close(pipeout[0]);
+            fclose(pipeout_fp);
             kill(child, SIGTERM);
             wait(NULL);
             throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
         }
+#endif
     }
 
-    close(pipein[1]);
-    close(pipeout[0]);
+    fclose(pipeout_fp);
     wait(NULL);
 }
 
