@@ -22,6 +22,7 @@ BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
+Requires: %{name}-libs = %{version}-%{release}
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -48,6 +49,9 @@ Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: dbus-python, pygtk2, pygtk2-libglade
+Provides: abrt-applet = %{version}-%{release}
+Obsoletes: abrt-applet < 0.0.5
+Conflicts: abrt-applet < 0.0.5
 
 %description gui
 GTK+ wizard for convenient bug reporting.
