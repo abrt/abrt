@@ -136,6 +136,10 @@ static void InstallDebugInfos(const std::string& pPackage)
 #endif
     while (fgets(buff, sizeof(buff), pipeout_fp))
     {
+        int last = strlen(buff) - 1;
+        if (last >= 0 && buff[last] == '\n')
+            buff[last] = '\0';
+
         comm_layer_inner_debug(buff);
         comm_layer_inner_status(buff);
 
