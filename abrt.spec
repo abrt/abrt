@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.7
+Version: 0.0.7.1
 Release: 2%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -330,6 +330,8 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed Aug 19 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.7.1-1
+- fixes to bugzilla plugin and gui to make the report message more user-friendly
 
 * Tue Aug 18 2009  Denys Vlasenko <dvlasenk@redhat.com> 0.0.7-2
 - removed dangerous parameter option

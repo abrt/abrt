@@ -1,4 +1,4 @@
-AC_INIT([abrt], [0.0.7], [jmoskovc@redhat.com, zprikryl@redhat.com])
+AC_INIT([abrt], [0.0.7.1], [jmoskovc@redhat.com, zprikryl@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
