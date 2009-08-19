@@ -243,7 +243,13 @@ class MainWindow():
         MESSAGE = 1
         message = ""
         for plugin, res in result.iteritems():
-            message += "<b>%s</b>: %s\n" % (plugin, result[plugin][1])
+            if "http" in result[plugin][1]:
+                if gtk.gtk_version[1] >= 17:
+                    message += "<b>%s</b>: <a href=\"%s\">%s</a>\n" % (plugin, result[plugin][1], result[plugin][1])
+                else:
+                    message += "<b>%s</b>: <span foreground='blue' underline='low'>%s</span>\n" % (plugin, result[plugin][1])
+            else:
+                message += "<b>%s</b>: %s\n" % (plugin, result[plugin][1])
 
         gui_info_dialog("<b>Report done!</b>\n%s" % message, self.window)
         self.hydrate()
