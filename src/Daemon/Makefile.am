@@ -7,7 +7,6 @@ abrt_SOURCES = \
     MiddleWare.cpp MiddleWare.h \
     CrashWatcher.cpp CrashWatcher.h \
     Daemon.cpp \
-    DBusCommon.h \
     Settings.h Settings.cpp
 abrt_CPPFLAGS = \
     -I$(srcdir)/../../inc \
