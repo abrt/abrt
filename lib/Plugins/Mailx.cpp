@@ -105,8 +105,6 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::st
         }
     }
 
-
-
     emailBody << "Duplicity check" << std::endl;
     emailBody << "=====" << std::endl << std::endl;
     emailBody << UUIDFile.str() << std::endl;
@@ -133,7 +131,7 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::st
     {
         SendEmail(m_sSubject, emailBody.str());
     }
-    return "Email was send to :" + m_sEmailTo;
+    return "Email was sent to: " + m_sEmailTo;
 }
 
 void CMailx::SetSettings(const map_plugin_settings_t& pSettings)
