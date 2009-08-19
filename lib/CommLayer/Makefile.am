@@ -1,9 +1,6 @@
 lib_LTLIBRARIES = libABRTCommLayer.la
 
 libABRTCommLayer_la_SOURCES = \
-    CommLayerServer.h CommLayerServer.cpp \
-    CommLayerServerSocket.h CommLayerServerSocket.cpp \
-    CommLayerServerDBus.h CommLayerServerDBus.cpp \
     DBusServerProxy.h DBusServerProxy.cpp \
     DBusClientProxy.h DBusClientProxy.cpp \
     CommLayerInner.h CommLayerInner.cpp \

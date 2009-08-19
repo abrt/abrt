@@ -6,6 +6,9 @@ abrt_SOURCES = \
     PluginManager.cpp PluginManager.h \
     MiddleWare.cpp MiddleWare.h \
     CrashWatcher.cpp CrashWatcher.h \
+    CommLayerServer.h CommLayerServer.cpp \
+    CommLayerServerSocket.h CommLayerServerSocket.cpp \
+    CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Daemon.cpp \
     Settings.h Settings.cpp
 abrt_CPPFLAGS = \
