@@ -119,7 +119,29 @@ std::string CRPM::GetDescription(const std::string& pPackage)
     rpmtsFree(ts);
     return pDescription;
 }
+std::string CRPM::GetComponent(const std::string& pFileName)
+{
+    std::string ret = "";
+    rpmts ts = rpmtsCreate();
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName.c_str(), 0);
+    Header header;
+    if ((header = rpmdbNextIterator(iter)) != NULL)
+    {
+        rpmtd td = rpmtdNew();
+        headerGet(header,RPMTAG_SOURCERPM, td, HEADERGET_DEFAULT);
+        const char * srpm = rpmtdGetString(td);
+        if (srpm != NULL)
+        {
+            std::string srcrpm(srpm);
+            ret = srcrpm.erase(srcrpm.rfind('-',srcrpm.rfind('-')-1));
+        }
+        rpmtdFree(td);
+    }
 
+    rpmdbFreeIterator(iter);
+    rpmtsFree(ts);
+    return ret;
+}
 std::string CRPM::GetPackage(const std::string& pFileName)
 {
     std::string ret = "";
@@ -140,4 +162,3 @@ std::string CRPM::GetPackage(const std::string& pFileName)
     rpmtsFree(ts);
     return ret;
 }
-

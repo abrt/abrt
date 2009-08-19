@@ -87,6 +87,14 @@ class CRPM
          * @return A package name.
          */
         std::string GetPackage(const std::string& pFileName);
+        /**
+         * A method to find a main package for given file. This package contains particular
+         * file. If the file doesn't belong to any package, empty string is
+         * returned.
+         * @param pFileName A file name.
+         * @return A package name.
+         */
+        std::string GetComponent(const std::string& pFileName);
 };
 
 #endif /* RPMINFO_H_ */
