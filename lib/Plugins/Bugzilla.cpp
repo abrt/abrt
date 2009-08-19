@@ -11,7 +11,8 @@ CReporterBugzilla::CReporterBugzilla() :
     m_pXmlrpcTransport(NULL),
     m_pXmlrpcClient(NULL),
     m_pCarriageParm(NULL),
-    m_sBugzillaURL("https://bugzilla.redhat.com/xmlrpc.cgi"),
+    m_sBugzillaURL("https://bugzilla.redhat.com"),
+    m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX)),
     m_bNoSSLVerify(false)
 {}
 
@@ -26,7 +27,7 @@ void CReporterBugzilla::NewXMLRPCClient()
                                  .no_ssl_verifypeer(m_bNoSSLVerify)
                              );
     m_pXmlrpcClient = new xmlrpc_c::client_xml(m_pXmlrpcTransport);
-    m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaURL);
+    m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaXMLRPC);
 }
 
 void CReporterBugzilla::DeleteXMLRPCClient()
@@ -386,7 +387,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
     }
     DeleteXMLRPCClient();
-    return "See bug in bugzilla: " + m_sBugzillaURL + ", bug id:" + bugId;
+    return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
 }
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
@@ -394,6 +395,18 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     if (pSettings.find("BugzillaURL") != pSettings.end())
     {
         m_sBugzillaURL = pSettings.find("BugzillaURL")->second;
+        //remove the /xmlrpc.cgi part from old settings
+        //FIXME: can be removed after users are informed about new config format
+        std::string::size_type pos = m_sBugzillaURL.find("/xmlrpc.cgi");
+        if(pos != std::string::npos){
+            m_sBugzillaURL.erase(pos);
+        }
+        //remove the trailing '/'
+        if(*(--m_sBugzillaURL.end()) == '/')
+        {
+            m_sBugzillaURL.erase(--m_sBugzillaURL.end());
+        }
+        m_sBugzillaXMLRPC = m_sBugzillaURL + std::string(XML_RPC_SUFFIX);
     }
     if (pSettings.find("Login") != pSettings.end())
     {

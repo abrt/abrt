@@ -7,6 +7,8 @@
 
 #include <nssb64.h>
 
+#define XML_RPC_SUFFIX "/xmlrpc.cgi"
+
 class CReporterBugzilla : public CReporter
 {
     private:
@@ -32,6 +34,7 @@ class CReporterBugzilla : public CReporter
         xmlrpc_c::client_xml* m_pXmlrpcClient;
         xmlrpc_c::carriageParm_curl0 *m_pCarriageParm;
         std::string m_sBugzillaURL;
+        std::string m_sBugzillaXMLRPC;
         std::string m_sLogin;
         std::string m_sPassword;
         std::string m_sAttchmentInBase64;
