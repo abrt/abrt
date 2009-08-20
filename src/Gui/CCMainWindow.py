@@ -111,7 +111,7 @@ class MainWindow():
         # connect handlers for daemon signals
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
-        self.ccdaemon.connect("error", self.error_cb)
+        self.ccdaemon.connect("abrt-error", self.error_cb)
         #self.ccdaemon.connect("warning", self.warning_cb)
         self.ccdaemon.connect("update", self.update_cb)
         self.ccdaemon.connect("show", self.show_cb)
@@ -239,19 +239,7 @@ class MainWindow():
         except:
             pass
         self.pBarWindow.hide()
-        STATUS = 0
-        MESSAGE = 1
-        message = ""
-        for plugin, res in result.iteritems():
-            if "http" in result[plugin][1]:
-                if gtk.gtk_version[1] >= 17:
-                    message += "<b>%s</b>: <a href=\"%s\">%s</a>\n" % (plugin, result[plugin][1], result[plugin][1])
-                else:
-                    message += "<b>%s</b>: <span foreground='blue' underline='low'>%s</span>\n" % (plugin, result[plugin][1])
-            else:
-                message += "<b>%s</b>: %s\n" % (plugin, result[plugin][1])
-
-        gui_info_dialog("<b>Report done!</b>\n%s" % message, self.window)
+        gui_report_dialog(result, self.window)
         self.hydrate()
 
     def on_analyze_complete_cb(self, daemon, report, pBarWindow):

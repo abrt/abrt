@@ -55,7 +55,7 @@ class DBusManager(gobject.GObject):
         # signal emited when new analyze is complete
         gobject.signal_new ("analyze-complete", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited when smth fails
-        gobject.signal_new ("error", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new ("abrt-error", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         gobject.signal_new ("warning", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited to update gui with current status
         gobject.signal_new ("update", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
@@ -77,7 +77,7 @@ class DBusManager(gobject.GObject):
         print "disconnect"
 
     def error_handler_cb(self,arg):
-        self.emit("error",arg)
+        self.emit("abrt-error",arg)
 
     def warning_handler_cb(self,arg):
         self.emit("warning",arg)
