@@ -19,7 +19,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+
 #include "Mailx.h"
+#include "abrtlib.h"
 #include <stdio.h>
 #include <sstream>
 #include "DebugDump.h"
@@ -31,31 +33,93 @@
 CMailx::CMailx() :
     m_sEmailFrom("user@localhost"),
     m_sEmailTo("root@localhost"),
-    m_sAttachments(""),
     m_sSubject("[abrt] full crash report"),
-    m_bSendBinaryData(false)
+    m_bSendBinaryData(false),
+    m_nArgs(0),
+    m_pArgs(NULL)
 {}
 
+void CMailx::FreeMailxArgs()
+{
+    int ii;
+    for (ii = 0; ii < m_nArgs; ii++)
+    {
+        free(m_pArgs[ii]);
+    }
+    free((void*) m_pArgs);
+    m_pArgs = NULL;
+}
 
-void CMailx::SendEmail(const std::string& pSubject, const std::string& pText)
+void CMailx::AddMailxArg(const std::string& pArg)
+{
+    m_pArgs = (char**) realloc((void*)m_pArgs, (++m_nArgs) * (sizeof(char*)));
+    if (pArg == "")
+    {
+        m_pArgs[m_nArgs - 1] = NULL;
+    }
+    else
+    {
+        m_pArgs[m_nArgs - 1] = strdup(pArg.c_str());
+    }
+}
+
+
+void CMailx::ExecMailx(uid_t uid, const std::string& pText)
+{
+    int pipein[2];
+    char buff[1024];
+    pid_t child;
+
+    struct passwd* pw = getpwuid(uid);
+    if (!pw)
+    {
+        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
+    }
+
+    xpipe(pipein);
+    child = fork();
+    if (child == -1)
+    {
+        close(pipein[0]);
+        close(pipein[1]);
+        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": fork failed.");
+    }
+    if (child == 0)
+    {
+
+        close(pipein[1]);
+        xmove_fd(pipein[0], STDIN_FILENO);
+
+        setgroups(1, &pw->pw_gid);
+        setregid(pw->pw_gid, pw->pw_gid);
+        setreuid(uid, uid);
+        setsid();
+
+        execvp(MAILX_COMMAND, m_pArgs);
+        exit(0);
+    }
+
+    close(pipein[0]);
+    safe_write(pipein[1], pText.c_str(), pText.length());
+    close(pipein[1]);
+
+    wait(NULL); /* why? */
+}
+
+
+void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, const std::string& pUID)
 {
     comm_layer_inner_status("Sending an email...");
 
-    FILE* command;
-    std::string mailx_command = MAILX_COMMAND + m_sAttachments +
-                                " -s " + pSubject +
-                                " -r " + m_sEmailFrom + " " + m_sEmailTo;
+    AddMailxArg("-s");
+    AddMailxArg(pSubject);
+    AddMailxArg("-r");
+    AddMailxArg(m_sEmailFrom);
+    AddMailxArg(m_sEmailTo);
+    AddMailxArg("");
 
-    command = popen(mailx_command.c_str(), "w");
-    if (!command)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CMailx::SendEmail(): Can not execute mailx.");
-    }
-    if (fputs(pText.c_str(), command) == -1)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CMailx::SendEmail(): Can not send data.");
-    }
-    pclose(command);
+    ExecMailx(atoi(pUID.c_str()), pText);
+
 }
 
 
@@ -65,6 +129,8 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::st
 
     std::stringstream emailBody;
     std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
+
+    AddMailxArg(MAILX_COMMAND);
 
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
@@ -102,9 +168,20 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::st
         if (it->second[CD_TYPE] == CD_BIN)
         {
             binaryFiles << " -a " << it->second[CD_CONTENT];
+            if (m_bSendBinaryData)
+            {
+                AddMailxArg("-a");
+                AddMailxArg(it->second[CD_CONTENT]);
+            }
         }
     }
-
+    {
+    map_crash_report_t::const_iterator it;
+    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    {
+        comm_layer_inner_status(it->first);
+    }
+    }
     emailBody << "Duplicity check" << std::endl;
     emailBody << "=====" << std::endl << std::endl;
     emailBody << UUIDFile.str() << std::endl;
@@ -116,21 +193,21 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::st
     emailBody << additionalFiles.str() << std::endl;
     emailBody << "Other information" << std::endl;
     emailBody << "=====" << std::endl << std::endl;
-    emailBody << bigTextFiles << std::endl;
+    emailBody << bigTextFiles.str() << std::endl;
 
-    if (m_bSendBinaryData)
-    {
-        m_sAttachments += binaryFiles.str();
-    }
+
 
     if (pArgs != "")
     {
-        SendEmail(pArgs, emailBody.str());
+        SendEmail(pArgs, emailBody.str(), pCrashReport.find(CD_MWUID)->second[CD_CONTENT]);
     }
     else
     {
-        SendEmail(m_sSubject, emailBody.str());
+        SendEmail(m_sSubject, emailBody.str(), pCrashReport.find(CD_MWUID)->second[CD_CONTENT]);
     }
+
+    FreeMailxArgs();
+
     return "Email was sent to: " + m_sEmailTo;
 }
 

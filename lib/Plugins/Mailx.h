@@ -32,11 +32,16 @@ class CMailx : public CReporter
     private:
         std::string m_sEmailFrom;
         std::string m_sEmailTo;
-        std::string m_sAttachments;
         std::string m_sSubject;
         bool m_bSendBinaryData;
 
-        void SendEmail(const std::string& pSubject, const std::string& pText);
+        int m_nArgs;
+        char** m_pArgs;
+
+        void FreeMailxArgs();
+        void AddMailxArg(const std::string& pArg);
+        void ExecMailx(uid_t uid, const std::string& pText);
+        void SendEmail(const std::string& pSubject, const std::string& pText, const std::string& pUID);
 
     public:
         CMailx();
