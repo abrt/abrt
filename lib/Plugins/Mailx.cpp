@@ -175,13 +175,7 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::st
             }
         }
     }
-    {
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
-    {
-        comm_layer_inner_status(it->first);
-    }
-    }
+
     emailBody << "Duplicity check" << std::endl;
     emailBody << "=====" << std::endl << std::endl;
     emailBody << UUIDFile.str() << std::endl;
@@ -194,8 +188,6 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::st
     emailBody << "Other information" << std::endl;
     emailBody << "=====" << std::endl << std::endl;
     emailBody << bigTextFiles.str() << std::endl;
-
-
 
     if (pArgs != "")
     {
