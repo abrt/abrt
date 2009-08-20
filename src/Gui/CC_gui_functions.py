@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import gtk
 import subprocess
+import sys
 # url markup is supported from gtk 2.18 so we need to use libsexy
 if gtk.gtk_version[1] <= 17:
     from sexy import UrlLabel as Label
@@ -24,7 +25,8 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
                       message_type=gtk.MESSAGE_INFO,
                       widget=None, page=0, broken_widget=None ):
     builder = gtk.Builder()
-    builder.add_from_file("dialogs.GtkBuilder")
+    builderfile = "%s%sdialogs.GtkBuilder" % (sys.path[0],"/")
+    builder.add_from_file(builderfile)
     dialog = builder.get_object("ReportDialog")
     
     

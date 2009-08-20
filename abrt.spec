@@ -3,8 +3,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.7.1
-Release: 1%{?dist}
+Version: 0.0.7.2
+Release: 3%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -330,6 +330,10 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Thu Aug 20 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.7.2-1
+- new version
+- fixed some bugs found during test day
+
 * Wed Aug 19 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.7.1-1
 - fixes to bugzilla plugin and gui to make the report message more user-friendly
 
