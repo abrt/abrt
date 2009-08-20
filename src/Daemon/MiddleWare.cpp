@@ -415,10 +415,14 @@ CMiddleWare::mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const st
         }
         if (m_bOpenGPGCheck)
         {
-            if (!m_RPM.CheckFingerprint(packageName) ||
-                !m_RPM.CheckHash(packageName, pExecutable))
+            if (!m_RPM.CheckFingerprint(packageName))
             {
-                comm_layer_inner_debug("Can not find package");
+                comm_layer_inner_debug("package isn't signed with proper key");
+                return MW_GPG_ERROR;
+            }
+            if (!m_RPM.CheckHash(packageName, pExecutable))
+            {
+                comm_layer_inner_debug("executable has bad hash");
                 return MW_GPG_ERROR;
             }
         }

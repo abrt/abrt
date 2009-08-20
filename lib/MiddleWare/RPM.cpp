@@ -40,21 +40,37 @@ bool CRPM::CheckFingerprint(const std::string& pPackage)
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.c_str(), 0);
     Header header;
+
     if ((header = rpmdbNextIterator(iter)) != NULL)
     {
-        if (headerIsEntry(header, RPMTAG_SIGGPG))
+        rpmTag rpmTags[] = { RPMTAG_DSAHEADER, RPMTAG_RSAHEADER, RPMTAG_SHA1HEADER };
+        int ii;
+        for (ii = 0; ii < 3; ii++)
         {
-            char* headerFingerprint;
-            rpmtd td = rpmtdNew();
-            headerGet(header, RPMTAG_SIGGPG, td, HEADERGET_DEFAULT);
-            headerFingerprint = pgpHexStr((const uint8_t*)td->data + 9, sizeof(pgpKeyID_t));
-            rpmtdFree(td);
-            if (headerFingerprint != NULL)
+            if (headerIsEntry(header, rpmTags[ii]))
             {
-                if (m_setFingerprints.find(headerFingerprint) != m_setFingerprints.end())
+                rpmtd td = rpmtdNew();
+                headerGet(header, rpmTags[ii] , td, HEADERGET_DEFAULT);
+                char* pgpsig = rpmtdFormat(td, RPMTD_FORMAT_PGPSIG , NULL);
+                if (pgpsig)
                 {
-                    free(headerFingerprint);
-                    ret = true;
+                    std::string PGPSignatureText = pgpsig;
+                    free(pgpsig);
+
+                    if (PGPSignatureText.find(" Key ID ") != std::string::npos)
+                    {
+                        std::string headerFingerprint = PGPSignatureText.substr(PGPSignatureText.find(" Key ID ") + sizeof (" Key ID ") - 1);
+
+                        rpmtdFree(td);
+                        if (headerFingerprint != "")
+                        {
+                            if (m_setFingerprints.find(headerFingerprint) != m_setFingerprints.end())
+                            {
+                                ret = true;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
         }
