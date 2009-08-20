@@ -407,7 +407,7 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
         //remove the trailing '/'
         while (m_sBugzillaURL[m_sBugzillaURL.length() - 1] == '/')
         {
-            m_sBugzillaURL.erase(m_sBugzillaURL.length() - 2);
+            m_sBugzillaURL.erase(m_sBugzillaURL.length() - 1);
         }
         /*
         if(*(--m_sBugzillaURL.end()) == '/')
