@@ -35,13 +35,14 @@ class CSettings
 
         void ParseCommon();
         void ParseAnalyzerActionsAndReporters();
-    void ParseCron();
+        void ParseCron();
 
         set_strings_t ParseList(const std::string& pList);
         vector_pair_strings_t ParseListWithArgs(const std::string& pList);
         set_strings_t ParseKey(const std::string& pKey);
 
     public:
+        CSettings();
         void LoadSettings(const std::string& pPath);
         const set_strings_t& GetBlackList();
         const set_strings_t& GetEnabledPlugins();

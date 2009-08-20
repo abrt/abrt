@@ -6,7 +6,11 @@
 #define SECTION_ANALYZER_ACTIONS_AND_REPORTERS   "AnalyzerActionsAndReporters"
 #define SECTION_CRON        "Cron"
 
-#include <iostream>
+CSettings::CSettings() :
+    m_bOpenGPGCheck(false),
+    m_nMaxCrashReportsSize(1000)
+{}
+
 void CSettings::LoadSettings(const std::string& pPath)
 {
     std::ifstream fIn;
