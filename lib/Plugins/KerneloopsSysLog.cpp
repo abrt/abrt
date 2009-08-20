@@ -181,7 +181,7 @@ int CSysLog::FillLinePointers(char *buffer, size_t buflen)
 		*c9 = '\0'; /* turn the \n into a string termination */
 
 		/* if we see our own marker, we know we submitted everything upto here already */
-		if (memmem(linepointer, len, "Abrt", 4)) {
+		if (len >= 4 && memmem(linepointer, len, "Abrt", 4)) {
 			linecount = 0;
 			lines_info[0].ptr = NULL;
 		}
