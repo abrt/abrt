@@ -7,7 +7,7 @@ PYTHON_FILES = CCDBusBackend.py  CCDumpList.py  CCDump.py  CC_gui_functions.py \
                CCMainWindow.py exception.py CellRenderers.py ABRTExceptions.py \
                SettingsDialog.py ABRTPlugin.py PluginList.py PluginSettingsUI.py
 
-GLADE_FILES = ccgui.glade report.glade settings.GtkBuilder
+GLADE_FILES = ccgui.glade report.glade settings.GtkBuilder dialogs.GtkBuilder
 
 EXTRA_DIST = $(PYTHON_FILES) $(GLADE_FILES) abrt-gui abrt.desktop
 
