@@ -31,6 +31,7 @@
 #define FILENAME_TIME               "time"
 #define FILENAME_UID                "uid"
 #define FILENAME_PACKAGE            "package"
+#define FILENAME_COMPONENT          "component"
 #define FILENAME_DESCRIPTION        "description"
 #define FILENAME_ANALYZER           "analyzer"
 #define FILENAME_RELEASE            "release"

@@ -7,8 +7,6 @@
 
 #include <nssb64.h>
 
-#define XML_RPC_SUFFIX "/xmlrpc.cgi"
-
 class CReporterBugzilla : public CReporter
 {
     private:

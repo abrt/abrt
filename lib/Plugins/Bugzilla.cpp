@@ -7,6 +7,8 @@
 #include <sstream>
 #include <string.h>
 
+#define XML_RPC_SUFFIX "/xmlrpc.cgi"
+
 CReporterBugzilla::CReporterBugzilla() :
     m_pXmlrpcTransport(NULL),
     m_pXmlrpcClient(NULL),
@@ -278,7 +280,7 @@ std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     map_xmlrpc_params_t bugParams;
     map_xmlrpc_params_t ret;
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-    std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
+    std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string description;
     std::string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];;
     std::string product;
@@ -291,7 +293,7 @@ std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
     bugParams["component"] =  xmlrpc_c::value_string(component);
     bugParams["version"] =  xmlrpc_c::value_string(version);
     //bugParams["op_sys"] =  xmlrpc_c::value_string("Linux");
-    bugParams["summary"] = xmlrpc_c::value_string("[abrt] crash detected in " + component);
+    bugParams["summary"] = xmlrpc_c::value_string("[abrt] crash detected in " + package);
     bugParams["description"] = xmlrpc_c::value_string(description);
     bugParams["status_whiteboard"] = xmlrpc_c::value_string("abrt_hash:" + pCrashReport.find(CD_UUID)->second[CD_CONTENT]);
     bugParams["platform"] = xmlrpc_c::value_string(pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT]);
@@ -362,7 +364,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
 std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-    std::string component = package.substr(0, package.rfind("-", package.rfind("-")-1));
+    std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
     std::string bugId;
     comm_layer_inner_status("Logging into bugzilla...");
@@ -397,15 +399,22 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
         m_sBugzillaURL = pSettings.find("BugzillaURL")->second;
         //remove the /xmlrpc.cgi part from old settings
         //FIXME: can be removed after users are informed about new config format
-        std::string::size_type pos = m_sBugzillaURL.find("/xmlrpc.cgi");
-        if(pos != std::string::npos){
+        std::string::size_type pos = m_sBugzillaURL.find(XML_RPC_SUFFIX);
+        if(pos != std::string::npos)
+        {
             m_sBugzillaURL.erase(pos);
         }
         //remove the trailing '/'
+        while (m_sBugzillaURL[m_sBugzillaURL.length() - 1] == '/')
+        {
+            m_sBugzillaURL.erase(m_sBugzillaURL.length() - 2);
+        }
+        /*
         if(*(--m_sBugzillaURL.end()) == '/')
         {
             m_sBugzillaURL.erase(--m_sBugzillaURL.end());
         }
+        */
         m_sBugzillaXMLRPC = m_sBugzillaURL + std::string(XML_RPC_SUFFIX);
     }
     if (pSettings.find("Login") != pSettings.end())
@@ -437,7 +446,7 @@ map_plugin_settings_t CReporterBugzilla::GetSettings()
 PLUGIN_INFO(REPORTER,
             CReporterBugzilla,
             "Bugzilla",
-            "0.0.2",
+            "0.0.3",
             "Check if a bug isn't already reported in a bugzilla "
             "and if not, report it.",
             "zprikryl@redhat.com",

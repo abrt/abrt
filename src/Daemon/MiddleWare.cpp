@@ -52,6 +52,7 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
     if (!dd.Exist(FILENAME_ARCHITECTURE) ||
         !dd.Exist(FILENAME_KERNEL) ||
         !dd.Exist(FILENAME_PACKAGE) ||
+        !dd.Exist(FILENAME_COMPONENT) ||
         !dd.Exist(FILENAME_RELEASE) ||
         !dd.Exist(FILENAME_EXECUTABLE))
     {
@@ -75,6 +76,7 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
             if (fileName == FILENAME_ARCHITECTURE ||
                 fileName == FILENAME_KERNEL ||
                 fileName == FILENAME_PACKAGE ||
+                fileName == FILENAME_COMPONENT ||
                 fileName == FILENAME_RELEASE ||
                 fileName == FILENAME_EXECUTABLE)
             {
@@ -262,61 +264,74 @@ CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCras
     {
         throw CABRTException(EXCEP_ERROR, "CMiddleWare::Report(): System data are missing in crash report.");
     }
+
     std::string analyzer = pCrashReport.find(CD_MWANALYZER)->second[CD_CONTENT];
     std::string UID = pCrashReport.find(CD_MWUID)->second[CD_CONTENT];
     std::string UUID = pCrashReport.find(CD_MWUUID)->second[CD_CONTENT];
 
-    if (m_mapAnalyzerActionsAndReporters.find(analyzer) != m_mapAnalyzerActionsAndReporters.end())
+
+    // ii = 0 -> analyzer is without package name (default)
+    // ii = 1 -> analyzer is with package name (CCpp:xrog-x11-app) (additional reporters to package)
+    int ii;
+    for (ii = 0; ii < 2; ii++)
     {
-        vector_actions_and_reporters_t::iterator it_r;
-        for (it_r = m_mapAnalyzerActionsAndReporters[analyzer].begin();
-             it_r != m_mapAnalyzerActionsAndReporters[analyzer].end();
-             it_r++)
+        if (ii == 1)
         {
-            try
+            std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+            std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1 ));
+            analyzer += ":" + packageName;
+        }
+
+        if (m_mapAnalyzerActionsAndReporters.find(analyzer) != m_mapAnalyzerActionsAndReporters.end())
+        {
+            vector_actions_and_reporters_t::iterator it_r;
+            for (it_r = m_mapAnalyzerActionsAndReporters[analyzer].begin();
+                 it_r != m_mapAnalyzerActionsAndReporters[analyzer].end();
+                 it_r++)
             {
-                std::string res;
-
-                if (m_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
+                try
                 {
-                    CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
-                    std::string home = "";
-                    map_plugin_settings_t oldSettings;
-                    map_plugin_settings_t newSettings;
-
-                    if (pUID != "")
+                    std::string res;
+                    if (m_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
                     {
-                        home = get_home_dir(atoi(pUID.c_str()));
-                        if (home != "")
-                        {
-                            oldSettings = reporter->GetSettings();
+                        CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+                        std::string home = "";
+                        map_plugin_settings_t oldSettings;
+                        map_plugin_settings_t newSettings;
 
-                            if (m_pPluginManager->LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
+                        if (pUID != "")
+                        {
+                            home = get_home_dir(atoi(pUID.c_str()));
+                            if (home != "")
                             {
-                                reporter->SetSettings(newSettings);
+                                oldSettings = reporter->GetSettings();
+
+                                if (m_pPluginManager->LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
+                                {
+                                    reporter->SetSettings(newSettings);
+                                }
                             }
                         }
-                    }
 
-                    res = reporter->Report(pCrashReport, (*it_r).second);
+                        res = reporter->Report(pCrashReport, (*it_r).second);
 
-                    if (home != "")
-                    {
-                        reporter->SetSettings(oldSettings);
+                        if (home != "")
+                        {
+                            reporter->SetSettings(oldSettings);
+                        }
                     }
+                    ret[(*it_r).first].push_back("1");
+                    ret[(*it_r).first].push_back(res);
+                    message += res + "\n";
                 }
-                ret[(*it_r).first].push_back("1");
-                ret[(*it_r).first].push_back(res);
-                message += res + "\n";
+                catch (CABRTException& e)
+                {
+                    ret[(*it_r).first].push_back("0");
+                    ret[(*it_r).first].push_back(e.what());
+                    comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
+                    comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
+                }
             }
-            catch (CABRTException& e)
-            {
-                ret[(*it_r).first].push_back("0");
-                ret[(*it_r).first].push_back(e.what());
-                comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
-                comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
-            }
-
         }
     }
 
@@ -410,6 +425,7 @@ CMiddleWare::mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const st
     }
 
     std::string description = m_RPM.GetDescription(packageName);
+    std::string component = m_RPM.GetComponent(pExecutable);
 
     CDebugDump dd;
     try
@@ -417,6 +433,7 @@ CMiddleWare::mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const st
         dd.Open(pDebugDumpDir);
         dd.SaveText(FILENAME_PACKAGE, package);
         dd.SaveText(FILENAME_DESCRIPTION, description);
+        dd.SaveText(FILENAME_COMPONENT, component);
         dd.Close();
     }
     catch (CABRTException& e)
