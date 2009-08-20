@@ -33,11 +33,8 @@ static void handle_fatal_signal(int signal)
     sig_caught = signal;
 }
 
-CCrashWatcher *g_pCrashWatcher = NULL;
-
 void print_help()
 {
-
 }
 
 int main(int argc, char** argv)
@@ -97,13 +94,14 @@ int main(int argc, char** argv)
             xdup(0);
             xdup(0);
         }
-        g_pCrashWatcher = new CCrashWatcher(DEBUG_DUMPS_DIR);
+
+        CCrashWatcher watcher(DEBUG_DUMPS_DIR);
         if (daemonize)
         {
             /* Let parent know we initialized ok */
             kill(getppid(), SIGTERM);
         }
-        g_pCrashWatcher->Run();
+        watcher.Run();
     }
     catch (CABRTException& e)
     {
@@ -113,8 +111,6 @@ int main(int argc, char** argv)
     {
         std::cerr << "Cannot create daemon: " << e.what() << std::endl;
     }
-
-    delete g_pCrashWatcher;
 
     /* Take care to emit correct exit status */
     if (sig_caught) {
