@@ -35,7 +35,7 @@ void CSettings::LoadSettings(const std::string& pPath)
                 {
                     continue;
                 }
-                else if (line[ii] == '#' && !is_quote)
+                else if (line[ii] == '#' && !is_quote && key == "")
                 {
                     break;
                 }

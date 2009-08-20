@@ -376,21 +376,16 @@ bool CPluginManager::LoadPluginSettings(const std::string& pPath, map_plugin_set
                 {
                     continue;
                 }
-                if (line[ii] == '#' && !in_quote)
+                if (line[ii] == '#' && !in_quote && key == "")
                 {
                     break;
                 }
-                else if (line[ii] == '=' && !in_quote)
+                if (line[ii] == '=' && !in_quote)
                 {
                     is_value = true;
+                    continue;
                 }
-                else if (line[ii] == '=' && is_value && !in_quote)
-                {
-                    key = "";
-                    value = "";
-                    break;
-                }
-                else if (!is_value)
+                if (!is_value)
                 {
                     key += line[ii];
                 }
