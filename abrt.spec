@@ -48,7 +48,7 @@ Development libraries and headers for %{name}.
 Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: dbus-python, pygtk2, pygtk2-libglade
+Requires: dbus-python, pygtk2, pygtk2-libglade,gnome-python2-gnomevfs
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
