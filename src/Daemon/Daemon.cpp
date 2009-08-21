@@ -48,28 +48,6 @@
 #define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
 #define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
 
-static uint8_t sig_caught; /* = 0 */
-
-static int m_nFd;
-static GIOChannel* m_pGio;
-static GMainLoop *m_pMainloop;
-static std::string m_sTarget;
-static CMiddleWare *m_pMW;
-static CCommLayerServer *m_pCommLayer;
-/*FIXME not needed */
-//static DBus::Connection *m_pConn;
-static CSettings *m_pSettings;
-/**
- * Map to cache the results from CreateReport_t
- * <UID, <UUID, result>>
- */
-static std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
-/**
-* mutex to protect m_pending_jobs from being accesed by multiple threads at the same time
-*/
-static pthread_mutex_t m_pJobsMutex;
-
-
 /* CCrashWatcher interface */
 
 namespace { /* make it all static */
@@ -81,33 +59,6 @@ class CCrashWatcher
 :  public CObserver
 {
     private:
-        //FIXME: add some struct to be able to join all threads!
-        typedef struct SCronCallbackData
-        {
-            CCrashWatcher* m_pCrashWatcher;
-            std::string m_sPluginName;
-            std::string m_sPluginArgs;
-            unsigned int m_nTimeout;
-
-            SCronCallbackData(CCrashWatcher* pCrashWatcher,
-                              const std::string& pPluginName,
-                              const std::string& pPluginArgs,
-                              const unsigned int& pTimeout) :
-                m_pCrashWatcher(pCrashWatcher),
-                m_sPluginName(pPluginName),
-                m_sPluginArgs(pPluginArgs),
-                m_nTimeout(pTimeout)
-            {}
-        } cron_callback_data_t;
-
-        typedef struct SThreadData {
-            pthread_t  thread_id;
-            char* UUID;
-            char* UID;
-            char *dest;
-            CCrashWatcher *daemon;
-        } thread_data_t;
-
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
         static void *create_report(void *arg);
         static gboolean cron_activation_periodic_cb(gpointer data);
@@ -130,11 +81,18 @@ class CCrashWatcher
         CCrashWatcher(const std::string& pPath);
         virtual ~CCrashWatcher();
 
-    /* methods exported on dbus */
     public:
+        /* Observer methods */
+        virtual void Status(const std::string& pMessage,const std::string& pDest="0");
+        virtual void Debug(const std::string& pMessage, const std::string& pDest="0");
+        virtual void Warning(const std::string& pMessage, const std::string& pDest="0");
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
         /*FIXME: fix CLI and remove this stub*/
-        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID){map_crash_report_t retval; return retval;};
+        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID)
+        {
+            map_crash_report_t retval;
+            return retval;
+        }
         uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
         virtual CMiddleWare::report_status_t Report(map_crash_report_t pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
@@ -142,22 +100,61 @@ class CCrashWatcher
         /* plugins related */
         virtual vector_map_string_string_t GetPluginsInfo();
         virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID);
-        void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings);
-        void RegisterPlugin(const std::string& pName);
-        void UnRegisterPlugin(const std::string& pName);
-
-        /* Observer methods */
-        void Status(const std::string& pMessage,const std::string& pDest="0");
-        void Debug(const std::string& pMessage, const std::string& pDest="0");
-        void Warning(const std::string& pMessage, const std::string& pDest="0");
+        virtual void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings);
+        virtual void RegisterPlugin(const std::string& pName);
+        virtual void UnRegisterPlugin(const std::string& pName);
 };
 
-} /* unnamed namespace */
+static uint8_t sig_caught; /* = 0 */
+
+static int m_nFd;
+static GIOChannel* m_pGio;
+static GMainLoop *m_pMainloop;
+static std::string m_sTarget;
+static CMiddleWare *m_pMW;
+static CCommLayerServer *m_pCommLayer;
+/*FIXME not needed */
+//static DBus::Connection *m_pConn;
+static CSettings *m_pSettings;
+/**
+ * Map to cache the results from CreateReport_t
+ * <UID, <UUID, result>>
+ */
+static std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
+/**
+* mutex to protect m_pending_jobs from being accesed by multiple threads at the same time
+*/
+static pthread_mutex_t m_pJobsMutex;
+
+//FIXME: add some struct to be able to join all threads!
+typedef struct SCronCallbackData
+{
+    CCrashWatcher* m_pCrashWatcher;
+    std::string m_sPluginName;
+    std::string m_sPluginArgs;
+    unsigned int m_nTimeout;
+
+    SCronCallbackData(CCrashWatcher* pCrashWatcher,
+                      const std::string& pPluginName,
+                      const std::string& pPluginArgs,
+                      const unsigned int& pTimeout) :
+        m_pCrashWatcher(pCrashWatcher),
+        m_sPluginName(pPluginName),
+        m_sPluginArgs(pPluginArgs),
+        m_nTimeout(pTimeout)
+    {}
+} cron_callback_data_t;
+
+typedef struct SThreadData {
+    pthread_t thread_id;
+    char* UUID;
+    char* UID;
+    char *dest;
+    CCrashWatcher *daemon;
+} thread_data_t;
 
 
 /* CCrashWatcher implementation */
-
-namespace { /* make it all static */
 
 /* Is it "." or ".."? */
 /* abrtlib candidate */
@@ -1080,11 +1077,6 @@ int main(int argc, char** argv)
         watcher.Debug("Running...");
         watcher.Lock();
         watcher.CreatePidFile();
-        if (daemonize)
-        {
-            /* Let parent know we initialized ok */
-            kill(getppid(), SIGTERM);
-        }
 
         g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, &watcher);
         GSourceFuncs waitsignal_funcs;
@@ -1092,11 +1084,17 @@ int main(int argc, char** argv)
         waitsignal_funcs.prepare  = waitsignal_prepare;
         waitsignal_funcs.check    = waitsignal_check;
         waitsignal_funcs.dispatch = waitsignal_dispatch;
-        //waitsignal_funcs.finalize = NULL; - already done
+        /*waitsignal_funcs.finalize = NULL; - already done */
         GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
         g_source_attach(waitsignal_src, g_main_context_default());
 
-        //enter the event loop
+        /* Let parent know we initialized ok */
+        if (daemonize)
+        {
+            kill(getppid(), SIGTERM);
+        }
+
+        /* Enter the event loop */
         g_main_run(m_pMainloop);
     }
     catch (CABRTException& e)
