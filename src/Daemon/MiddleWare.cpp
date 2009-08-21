@@ -257,6 +257,7 @@ CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCras
                                     const std::string& pUID)
 {
     report_status_t ret;
+    std::string ret_key;
     std::string message;
     if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
@@ -268,7 +269,8 @@ CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCras
     std::string analyzer = pCrashReport.find(CD_MWANALYZER)->second[CD_CONTENT];
     std::string UID = pCrashReport.find(CD_MWUID)->second[CD_CONTENT];
     std::string UUID = pCrashReport.find(CD_MWUUID)->second[CD_CONTENT];
-
+    std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+    std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1 ));
 
     // ii = 0 -> analyzer is without package name (default)
     // ii = 1 -> analyzer is with package name (CCpp:xrog-x11-app) (additional reporters to package)
@@ -277,8 +279,6 @@ CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCras
     {
         if (ii == 1)
         {
-            std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-            std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1 ));
             analyzer += ":" + packageName;
         }
 
@@ -292,6 +292,12 @@ CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCras
                 try
                 {
                     std::string res;
+
+                    ret_key = (*it_r).first;
+                    if (ii == 1)
+                    {
+                        ret_key += " (" + packageName + ")";
+                    }
                     if (m_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
                     {
                         CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
@@ -320,14 +326,14 @@ CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCras
                             reporter->SetSettings(oldSettings);
                         }
                     }
-                    ret[(*it_r).first].push_back("1");
-                    ret[(*it_r).first].push_back(res);
+                    ret[ret_key].push_back("1");
+                    ret[ret_key].push_back(res);
                     message += res + "\n";
                 }
                 catch (CABRTException& e)
                 {
-                    ret[(*it_r).first].push_back("0");
-                    ret[(*it_r).first].push_back(e.what());
+                    ret[ret_key].push_back("0");
+                    ret[ret_key].push_back(e.what());
                     comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
                     comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
                 }
