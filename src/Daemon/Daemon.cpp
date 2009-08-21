@@ -115,7 +115,6 @@ class CCrashWatcher
         static gboolean cron_activation_reshedule_cb(gpointer data);
         static void cron_delete_callback_data_cb(gpointer data);
 
-        void StartWatch();
     public:
         void CreatePidFile();
         void Lock();
@@ -130,7 +129,6 @@ class CCrashWatcher
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
         CCrashWatcher(const std::string& pPath);
         virtual ~CCrashWatcher();
-        void StopRun();
 
     /* methods exported on dbus */
     public:
@@ -752,82 +750,6 @@ void CCrashWatcher::Lock()
     //write(lfp,str,strlen(str)); /* record pid to lockfile */
 }
 
-void CCrashWatcher::StartWatch()
-{
-    char *buff = new char[INOTIFY_BUFF_SIZE];
-    int len = 0;
-    int i = 0;
-    char action[FILENAME_MAX];
-    struct inotify_event *pevent;
-    //run forever
-    while (1)
-    {
-        i = 0;
-        len = read(m_nFd,buff,INOTIFY_BUFF_SIZE);
-        while (i < len)
-        {
-            pevent = (struct inotify_event *)&buff[i];
-            if (pevent->len)
-            {
-                strcpy(action, pevent->name);
-            }
-            else
-            {
-                strcpy(action, m_sTarget.c_str());
-            }
-
-            i += sizeof(struct inotify_event) + pevent->len;
-            Debug(std::string("Created file: ") + action);
-        }
-    }
-    delete[] buff;
-}
-
-//prepare()
-//If the source can determine that it is ready here (without waiting
-//for the results of the poll() call) it should return TRUE. It can also
-//return a timeout_ value which should be the maximum timeout (in milliseconds)
-//which should be passed to the poll() call.
-//check()
-//Called after all the file descriptors are polled. The source should
-//return TRUE if it is ready to be dispatched.
-//dispatch()
-//Called to dispatch the event source, after it has returned TRUE
-//in either its prepare or its check function. The dispatch function
-//is passed in a callback function and data. The callback function
-//may be NULL if the source was never connected to a callback using
-//g_source_set_callback(). The dispatch function should
-//call the callback function with user_data and whatever additional
-//parameters are needed for this type of event source.
-typedef struct SignalSource
-{
-    GSource src;
-    CCrashWatcher* watcher;
-} SignalSource;
-static gboolean waitsignal_prepare(GSource *source, gint *timeout_)
-{
-    /* We depend on the fact that in Unix, poll() is interrupted
-     * by caught signals (returns EINTR). Thus we do not need to set
-     * a small timeout here: infinite timeout (-1) works too */
-    *timeout_ = -1;
-    return sig_caught != 0;
-}
-static gboolean waitsignal_check(GSource *source)
-{
-    return sig_caught != 0;
-}
-static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
-{
-    SignalSource *ssrc = (SignalSource*) source;
-    ssrc->watcher->StopRun();
-    return 1;
-}
-
-void CCrashWatcher::StopRun()
-{
-    g_main_quit(m_pMainloop);
-}
-
 vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 {
     vector_crash_infos_t retval;
@@ -1050,13 +972,50 @@ void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::strin
 
 /* Daemon's main() */
 
+void print_help()
+{
+}
+
 static void handle_fatal_signal(int signal)
 {
     sig_caught = signal;
 }
 
-void print_help()
+/* One of our event sources is sig_caught when it becomes != 0.
+ * glib machinery we need to hook it up to the main loop:
+ * prepare():
+ * If the source can determine that it is ready here (without waiting
+ * for the results of the poll() call) it should return TRUE. It can also
+ * return a timeout_ value which should be the maximum timeout (in milliseconds)
+ * which should be passed to the poll() call.
+ * check():
+ * Called after all the file descriptors are polled. The source should
+ * return TRUE if it is ready to be dispatched.
+ * dispatch():
+ * Called to dispatch the event source, after it has returned TRUE
+ * in either its prepare or its check function. The dispatch function
+ * is passed in a callback function and data. The callback function
+ * may be NULL if the source was never connected to a callback using
+ * g_source_set_callback(). The dispatch function should
+ * call the callback function with user_data and whatever additional
+ * parameters are needed for this type of event source.
+ */
+static gboolean waitsignal_prepare(GSource *source, gint *timeout_)
 {
+    /* We depend on the fact that in Unix, poll() is interrupted
+     * by caught signals (in returns EINTR). Thus we do not need to set
+     * a small timeout here: infinite timeout (-1) works too */
+    *timeout_ = -1;
+    return sig_caught != 0;
+}
+static gboolean waitsignal_check(GSource *source)
+{
+    return sig_caught != 0;
+}
+static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
+{
+    g_main_quit(m_pMainloop);
+    return 1;
 }
 
 int main(int argc, char** argv)
@@ -1134,9 +1093,8 @@ int main(int argc, char** argv)
         waitsignal_funcs.check    = waitsignal_check;
         waitsignal_funcs.dispatch = waitsignal_dispatch;
         //waitsignal_funcs.finalize = NULL; - already done
-        SignalSource *waitsignal_src = (SignalSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
-        waitsignal_src->watcher = &watcher;
-        g_source_attach(&waitsignal_src->src, g_main_context_default());
+        GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
+        g_source_attach(waitsignal_src, g_main_context_default());
 
         //enter the event loop
         g_main_run(m_pMainloop);
