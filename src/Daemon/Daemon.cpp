@@ -112,30 +112,27 @@ static std::map<const std::string, std::map <int, map_crash_report_t > > m_pendi
 static pthread_mutex_t m_pJobsMutex;
 
 //FIXME: add some struct to be able to join all threads!
-typedef struct SCronCallbackData
+typedef struct cron_callback_data_t
 {
-    CCrashWatcher* m_pCrashWatcher;
     std::string m_sPluginName;
     std::string m_sPluginArgs;
     unsigned int m_nTimeout;
 
-    SCronCallbackData(CCrashWatcher* pCrashWatcher,
+    cron_callback_data_t(
                       const std::string& pPluginName,
                       const std::string& pPluginArgs,
                       const unsigned int& pTimeout) :
-        m_pCrashWatcher(pCrashWatcher),
         m_sPluginName(pPluginName),
         m_sPluginArgs(pPluginArgs),
         m_nTimeout(pTimeout)
     {}
 } cron_callback_data_t;
 
-typedef struct SThreadData {
+typedef struct thread_data_t {
     pthread_t thread_id;
     char* UUID;
     char* UID;
     char *dest;
-    CCrashWatcher *daemon;
 } thread_data_t;
 
 static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
@@ -175,10 +172,9 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
     gsize len;
     gsize i = 0;
     err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
-    CCrashWatcher *cc = (CCrashWatcher*)daemon;
     if (err != G_IO_ERROR_NONE)
     {
-        cc->Warning("Error reading inotify fd.");
+        g_cw->Warning("Error reading inotify fd.");
         delete[] buf;
         return FALSE;
     }
@@ -193,7 +189,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
             name = &buf[i] + sizeof (struct inotify_event);
         i += sizeof (struct inotify_event) + event->len;
 
-        cc->Debug(std::string("Created file: ") + name);
+        g_cw->Debug(std::string("Created file: ") + name);
 
         /* we want to ignore the lock files */
         if (event->mask & IN_ISDIR)
@@ -209,7 +205,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                     switch (res)
                     {
                         case CMiddleWare::MW_OK:
-                            cc->Debug("New crash, saving...");
+                            g_cw->Debug("New crash, saving...");
                             m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
                             m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
@@ -217,7 +213,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                         case CMiddleWare::MW_REPORTED:
                         case CMiddleWare::MW_OCCURED:
                             /* send message to dbus */
-                            cc->Debug("Already saved crash, deleting...");
+                            g_cw->Debug("Already saved crash, deleting...");
                             m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
@@ -228,14 +224,14 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                         case CMiddleWare::MW_IN_DB:
                         case CMiddleWare::MW_FILE_ERROR:
                         default:
-                            cc->Warning("Corrupted or bad crash, deleting...");
+                            g_cw->Warning("Corrupted or bad crash, deleting...");
                             m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                     }
                 }
                 catch (CABRTException& e)
                 {
-                    cc->Warning(e.what());
+                    g_cw->Warning(e.what());
                     if (e.type() == EXCEP_FATAL)
                     {
                         delete[] buf;
@@ -250,13 +246,13 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
             }
             else
             {
-                cc->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
+                g_cw->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
                 m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             }
         }
         else
         {
-            cc->Debug("Some file created, ignoring...");
+            g_cw->Debug("Some file created, ignoring...");
         }
     }
     delete[] buf;
@@ -267,7 +263,7 @@ static void *create_report(void *arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
-    thread_data->daemon->Debug("Creating report...");
+    g_cw->Debug("Creating report...");
     try
     {
         CMiddleWare::mw_result_t res;
@@ -277,17 +273,17 @@ static void *create_report(void *arg)
             case CMiddleWare::MW_OK:
                 break;
             case CMiddleWare::MW_IN_DB_ERROR:
-                thread_data->daemon->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
+                g_cw->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
                 break;
             case CMiddleWare::MW_PLUGIN_ERROR:
-                thread_data->daemon->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."));
+                g_cw->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."));
                 break;
             case CMiddleWare::MW_CORRUPTED:
             case CMiddleWare::MW_FILE_ERROR:
             default:
                 {
                     std::string debugDumpDir;
-                    thread_data->daemon->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
+                    g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
                     debugDumpDir = m_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
                     m_pMW->DeleteDebugDumpDir(debugDumpDir);
                 }
@@ -310,7 +306,7 @@ static void *create_report(void *arg)
             free(thread_data);
             throw e;
         }
-        thread_data->daemon->Warning(e.what());
+        g_cw->Warning(e.what());
     }
     /* free strduped strings */
     free(thread_data->UUID);
@@ -325,7 +321,7 @@ static void *create_report(void *arg)
 static gboolean cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
-    cronPeriodicCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
+    g_cw->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
     m_pMW->RunAction(m_sTarget,
                                                                 cronPeriodicCallbackData->m_sPluginName,
                                                                 cronPeriodicCallbackData->m_sPluginArgs);
@@ -334,7 +330,7 @@ static gboolean cron_activation_periodic_cb(gpointer data)
 static gboolean cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
-    cronOneCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
+    g_cw->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
     m_pMW->RunAction(m_sTarget,
                                                            cronOneCallbackData->m_sPluginName,
                                                            cronOneCallbackData->m_sPluginArgs);
@@ -343,9 +339,8 @@ static gboolean cron_activation_one_cb(gpointer data)
 static gboolean cron_activation_reshedule_cb(gpointer data)
 {
     cron_callback_data_t* cronResheduleCallbackData = static_cast<cron_callback_data_t*>(data);
-    cronResheduleCallbackData->m_pCrashWatcher->Debug("Rescheduling plugin: " + cronResheduleCallbackData->m_sPluginName);
-    cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(cronResheduleCallbackData->m_pCrashWatcher,
-                                                                              cronResheduleCallbackData->m_sPluginName,
+    g_cw->Debug("Rescheduling plugin: " + cronResheduleCallbackData->m_sPluginName);
+    cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(cronResheduleCallbackData->m_sPluginName,
                                                                               cronResheduleCallbackData->m_sPluginArgs,
                                                                               cronResheduleCallbackData->m_nTimeout);
     g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
@@ -449,7 +444,7 @@ static void SetUpCron()
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
 
-                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(g_cw, (*it_ar).first, (*it_ar).second, timeout);
+                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_periodic_cb,
@@ -482,13 +477,13 @@ static void SetUpCron()
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
 
-                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t(g_cw, (*it_ar).first, (*it_ar).second, timeout);
+                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_one_cb,
                                            static_cast<gpointer>(cronOneCallbackData),
                                            cron_delete_callback_data_cb);
-                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t(g_cw, (*it_ar).first, (*it_ar).second, 24 * 60 * 60);
+                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, 24 * 60 * 60);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_reshedule_cb,
@@ -804,7 +799,6 @@ uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::strin
         thread_data->UUID = xstrdup(pUUID.c_str());
         thread_data->UID = xstrdup(pUID.c_str());
         thread_data->dest = xstrdup(pSender.c_str());
-        thread_data->daemon = this;
         if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
         {
             throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
@@ -1040,7 +1034,7 @@ int main(int argc, char** argv)
             pid_t pid = fork();
             if (pid < 0)
             {
-                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): Fork error");
+                throw CABRTException(EXCEP_FATAL, "fork error");
             }
             if (pid > 0)
             {
