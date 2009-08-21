@@ -8,7 +8,7 @@ DBus::Connection *CCommLayerServerDBus::init_dbus(CCommLayerServerDBus *self)
     server->m_pDispatcher = new DBus::Glib::BusDispatcher();
     server->m_pDispatcher->attach(NULL);
     DBus::default_dispatcher = self->m_pDispatcher;
-	server->m_pConn = new DBus::Connection(DBus::Connection::SystemBus());
+    server->m_pConn = new DBus::Connection(DBus::Connection::SystemBus());
     return server->m_pConn;
 }
 
@@ -20,7 +20,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     {
         m_pConn->request_name(CC_DBUS_NAME);
     }
-    catch(DBus::Error err)
+    catch (DBus::Error err)
     {
         throw CABRTException(EXCEP_FATAL, std::string(__func__) +
                              "\nPlease check if:\n"
@@ -28,7 +28,6 @@ CCommLayerServerDBus::CCommLayerServerDBus()
                              + " * you have reloaded the dbus\n"+
                              + "Original exception was:\n " + err.what());
     }
-
 }
 
 CCommLayerServerDBus::~CCommLayerServerDBus()
@@ -41,7 +40,7 @@ vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSen
     vector_crash_infos_t crashInfos;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     crashInfos = m_pObserver->GetCrashInfos(to_string(unix_uid));
-	return crashInfos;
+    return crashInfos;
 }
 //FIXME: fix CLI and remove this
 /*
@@ -127,7 +126,6 @@ map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string&
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     return m_pObserver->GetPluginSettings(pName, to_string(unix_uid));
 }
-
 
 void CCommLayerServerDBus::RegisterPlugin(const std::string& pName)
 {

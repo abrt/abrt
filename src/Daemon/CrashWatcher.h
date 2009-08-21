@@ -22,17 +22,11 @@
 
 #include <string>
 #include <sys/inotify.h>
-#include <sys/inotify.h>
 #include <glib.h>
 #include <pthread.h>
-//#include "DBusManager.h"
-//#include "DBusServerProxy.h"
 #include "MiddleWare.h"
 #include "Settings.h"
 
-//FIXME remove when it gets to autoconf
-//#include "CommLayerServerDBus.h"
-//#include "CommLayerServerSocket.h"
 #ifdef ENABLE_DBUS
     #include "CommLayerServerDBus.h"
 #elif ENABLE_SOCKET
@@ -53,7 +47,6 @@ class CCrashWatcher
 //  public DBus::ObjectAdaptor,
 :  public CObserver
 {
-
     public:
         CCrashWatcher();
         virtual ~CCrashWatcher();
@@ -86,16 +79,16 @@ class CCrashWatcher
 /* used only for ->Debug(), ->Warning() etc calls */
 extern CCrashWatcher *g_cw;
 /* conduit for these messages */
-extern CCommLayerServer *m_pCommLayer;
+extern CCommLayerServer *g_pCommLayer;
 
-extern CMiddleWare *m_pMW;
+extern CMiddleWare *g_pMW;
 
 /*
  * Map to cache the results from CreateReport_t
  * <UID, <UUID, result>>
  */
-extern std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
-/* mutex to protect m_pending_jobs */
-extern pthread_mutex_t m_pJobsMutex;
+extern std::map<const std::string, std::map<int, map_crash_report_t> > g_pending_jobs;
+/* mutex to protect g_pending_jobs */
+extern pthread_mutex_t g_pJobsMutex;
 
 #endif /*CRASHWATCHER_H_*/

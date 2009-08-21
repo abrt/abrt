@@ -26,15 +26,15 @@ void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest
 {
     std::cout << "Update: " + pMessage << std::endl;
     //FIXME: send updates only to job owner
-    if(m_pCommLayer != NULL)
-       m_pCommLayer->Update(pDest,pMessage);
+    if(g_pCommLayer != NULL)
+       g_pCommLayer->Update(pDest,pMessage);
 }
 
 void CCrashWatcher::Warning(const std::string& pMessage, const std::string& pDest)
 {
     std::cerr << "Warning: " + pMessage << std::endl;
-    if(m_pCommLayer != NULL)
-       m_pCommLayer->Warning(pDest,pMessage);
+    if(g_pCommLayer != NULL)
+       g_pCommLayer->Warning(pDest,pMessage);
 }
 
 void CCrashWatcher::Debug(const std::string& pMessage, const std::string& pDest)
@@ -59,7 +59,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     try
     {
         vector_pair_string_string_t UUIDsUIDs;
-        UUIDsUIDs = m_pMW->GetUUIDsOfCrash(pUID);
+        UUIDsUIDs = g_pMW->GetUUIDsOfCrash(pUID);
 
         unsigned int ii;
         for (ii = 0; ii < UUIDsUIDs.size(); ii++)
@@ -67,7 +67,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
             CMiddleWare::mw_result_t res;
             map_crash_info_t info;
 
-            res = m_pMW->GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
+            res = g_pMW->GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
             switch (res)
             {
                 case CMiddleWare::MW_OK:
@@ -76,15 +76,15 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
                 case CMiddleWare::MW_ERROR:
                     Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    m_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                    g_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                     break;
                 case CMiddleWare::MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
                         Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
                         Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        debugDumpDir = m_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
-                        m_pMW->DeleteDebugDumpDir(debugDumpDir);
+                        debugDumpDir = g_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                        g_pMW->DeleteDebugDumpDir(debugDumpDir);
                     }
                     break;
                 default:
@@ -102,7 +102,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
         Status(e.what());
     }
 
-    //retval = m_pMW->GetCrashInfos(pUID);
+    //retval = g_pMW->GetCrashInfos(pUID);
     //Notify("Sent crash info");
     return retval;
 }
@@ -121,7 +121,7 @@ static void *create_report(void *arg)
     try
     {
         CMiddleWare::mw_result_t res;
-        res = m_pMW->CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
+        res = g_pMW->CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
         switch (res)
         {
             case CMiddleWare::MW_OK:
@@ -138,16 +138,16 @@ static void *create_report(void *arg)
                 {
                     std::string debugDumpDir;
                     g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
-                    debugDumpDir = m_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
-                    m_pMW->DeleteDebugDumpDir(debugDumpDir);
+                    debugDumpDir = g_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
+                    g_pMW->DeleteDebugDumpDir(debugDumpDir);
                 }
                 break;
         }
         /* only one thread can write */
-        pthread_mutex_lock(&m_pJobsMutex);
-        m_pending_jobs[std::string(thread_data->UID)][thread_data->thread_id] = crashReport;
-        pthread_mutex_unlock(&m_pJobsMutex);
-        m_pCommLayer->JobDone(thread_data->dest, thread_data->thread_id);
+        pthread_mutex_lock(&g_pJobsMutex);
+        g_pending_jobs[std::string(thread_data->UID)][thread_data->thread_id] = crashReport;
+        pthread_mutex_unlock(&g_pJobsMutex);
+        g_pCommLayer->JobDone(thread_data->dest, thread_data->thread_id);
     }
     catch (CABRTException& e)
     {
@@ -204,7 +204,7 @@ CMiddleWare::report_status_t CCrashWatcher::Report(map_crash_report_t pReport, c
     CMiddleWare::report_status_t rs;
     try
     {
-        rs = m_pMW->Report(pReport, pUID);
+        rs = g_pMW->Report(pReport, pUID);
     }
     catch (CABRTException& e)
     {
@@ -224,8 +224,8 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     try
     {
         std::string debugDumpDir;
-        debugDumpDir = m_pMW->DeleteCrashInfo(pUUID,pUID);
-        m_pMW->DeleteDebugDumpDir(debugDumpDir);
+        debugDumpDir = g_pMW->DeleteCrashInfo(pUUID,pUID);
+        g_pMW->DeleteDebugDumpDir(debugDumpDir);
     }
     catch (CABRTException& e)
     {
@@ -246,14 +246,14 @@ map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::strin
        - use some TTL to clean the memory even if client won't get it
        - if we don't find it in the cache we should try to ask MW to get it again??
     */
-    return m_pending_jobs[pSender][pJobID];
+    return g_pending_jobs[pSender][pJobID];
 }
 
 vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
 {
     try
     {
-        return m_pMW->GetPluginsInfo();
+        return g_pMW->GetPluginsInfo();
     }
     catch (CABRTException &e)
     {
@@ -272,7 +272,7 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName,
 {
     try
     {
-        return m_pMW->GetPluginSettings(pName, pUID);
+        return g_pMW->GetPluginSettings(pName, pUID);
     }
     catch(CABRTException &e)
     {
@@ -284,14 +284,14 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName,
     }
     // TODO: is it right? I added it just to disable a warning...
     // but maybe returning empty map is wrong here?
-    return vector_map_string_string_t();
+    return map_plugin_settings_t();
 }
 
 void CCrashWatcher::RegisterPlugin(const std::string& pName)
 {
     try
     {
-        m_pMW->RegisterPlugin(pName);
+        g_pMW->RegisterPlugin(pName);
     }
     catch(CABRTException &e)
     {
@@ -307,7 +307,7 @@ void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
 {
     try
     {
-        m_pMW->UnRegisterPlugin(pName);
+        g_pMW->UnRegisterPlugin(pName);
     }
     catch(CABRTException &e)
     {
@@ -323,7 +323,7 @@ void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::strin
 {
     try
     {
-        m_pMW->SetPluginSettings(pName, pUID, pSettings);
+        g_pMW->SetPluginSettings(pName, pUID, pSettings);
     }
     catch(CABRTException &e)
     {

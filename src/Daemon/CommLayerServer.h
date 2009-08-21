@@ -22,12 +22,8 @@ to_string( T x )
 
 class CCommLayerServer {
     protected:
-        /* FIXME more observers? */
-        //std::vector<Observer *obs>;
         CObserver *m_pObserver;
     public:
-        //CMiddleWare *m_pMW;
-        //CCommLayerServer(CMiddleWare *pMW);
         CCommLayerServer();
         virtual ~CCommLayerServer();
         /* observer */

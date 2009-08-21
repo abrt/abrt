@@ -48,21 +48,21 @@ typedef struct cron_callback_data_t
 
 
 static uint8_t sig_caught; /* = 0 */
-static int m_nFd;
-static GIOChannel* m_pGio;
-static GMainLoop* m_pMainloop;
-static CSettings* m_pSettings;
+static int g_nFd;
+static GIOChannel* g_pGio;
+static GMainLoop* g_pMainloop;
+static CSettings* g_pSettings;
 
 CCrashWatcher *g_cw;
-CCommLayerServer *m_pCommLayer;
-CMiddleWare *m_pMW;
+CCommLayerServer *g_pCommLayer;
+CMiddleWare *g_pMW;
 /*
  * Map to cache the results from CreateReport_t
  * <UID, <UUID, result>>
  */
-std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
-/* mutex to protect m_pending_jobs */
-pthread_mutex_t m_pJobsMutex;
+std::map<const std::string, std::map <int, map_crash_report_t > > g_pending_jobs;
+/* mutex to protect g_pending_jobs */
+pthread_mutex_t g_pJobsMutex;
 
 
 /* Is it "." or ".."? */
@@ -122,7 +122,7 @@ static gboolean cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
     g_cw->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
-    m_pMW->RunAction(DEBUG_DUMPS_DIR,
+    g_pMW->RunAction(DEBUG_DUMPS_DIR,
                                                                 cronPeriodicCallbackData->m_sPluginName,
                                                                 cronPeriodicCallbackData->m_sPluginArgs);
     return TRUE;
@@ -131,7 +131,7 @@ static gboolean cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
     g_cw->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
-    m_pMW->RunAction(DEBUG_DUMPS_DIR,
+    g_pMW->RunAction(DEBUG_DUMPS_DIR,
                                                            cronOneCallbackData->m_sPluginName,
                                                            cronOneCallbackData->m_sPluginArgs);
     return FALSE;
@@ -153,48 +153,48 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
 
 static void SetUpMW()
 {
-    m_pMW->SetOpenGPGCheck(m_pSettings->GetOpenGPGCheck());
-    m_pMW->SetDatabase(m_pSettings->GetDatabase());
-    CSettings::set_strings_t openGPGPublicKeys = m_pSettings->GetOpenGPGPublicKeys();
+    g_pMW->SetOpenGPGCheck(g_pSettings->GetOpenGPGCheck());
+    g_pMW->SetDatabase(g_pSettings->GetDatabase());
+    CSettings::set_strings_t openGPGPublicKeys = g_pSettings->GetOpenGPGPublicKeys();
     CSettings::set_strings_t::iterator it_k;
     for (it_k = openGPGPublicKeys.begin(); it_k != openGPGPublicKeys.end(); it_k++)
     {
-        m_pMW->AddOpenGPGPublicKey(*it_k);
+        g_pMW->AddOpenGPGPublicKey(*it_k);
     }
-    CSettings::set_strings_t blackList = m_pSettings->GetBlackList();
+    CSettings::set_strings_t blackList = g_pSettings->GetBlackList();
     CSettings::set_strings_t::iterator it_b;
     for (it_b = blackList.begin(); it_b != blackList.end(); it_b++)
     {
-        m_pMW->AddBlackListedPackage(*it_b);
+        g_pMW->AddBlackListedPackage(*it_b);
     }
-    CSettings::set_strings_t enabledPlugins = m_pSettings->GetEnabledPlugins();
+    CSettings::set_strings_t enabledPlugins = g_pSettings->GetEnabledPlugins();
     CSettings::set_strings_t::iterator it_p;
     for (it_p = enabledPlugins.begin(); it_p != enabledPlugins.end(); it_p++)
     {
-        m_pMW->RegisterPlugin(*it_p);
+        g_pMW->RegisterPlugin(*it_p);
     }
-    CSettings::vector_pair_strings_t actionsAndReporters = m_pSettings->GetActionsAndReporters();
+    CSettings::vector_pair_strings_t actionsAndReporters = g_pSettings->GetActionsAndReporters();
     CSettings::vector_pair_strings_t::iterator it_ar;
     for (it_ar = actionsAndReporters.begin(); it_ar != actionsAndReporters.end(); it_ar++)
     {
-        m_pMW->AddActionOrReporter((*it_ar).first, (*it_ar).second);
+        g_pMW->AddActionOrReporter((*it_ar).first, (*it_ar).second);
     }
 
-    CSettings::map_analyzer_actions_and_reporters_t analyzerActionsAndReporters = m_pSettings->GetAnalyzerActionsAndReporters();
+    CSettings::map_analyzer_actions_and_reporters_t analyzerActionsAndReporters = g_pSettings->GetAnalyzerActionsAndReporters();
     CSettings::map_analyzer_actions_and_reporters_t::iterator it_aar;
     for (it_aar = analyzerActionsAndReporters.begin(); it_aar != analyzerActionsAndReporters.end(); it_aar++)
     {
         CSettings::vector_pair_strings_t::iterator it_ar;
         for (it_ar = it_aar->second.begin(); it_ar != it_aar->second.end(); it_ar++)
         {
-            m_pMW->AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
+            g_pMW->AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
         }
     }
 }
 
 static void SetUpCron()
 {
-    CSettings::map_cron_t cron = m_pSettings->GetCron();
+    CSettings::map_cron_t cron = g_pSettings->GetCron();
     CSettings::map_cron_t::iterator it_c;
     for (it_c = cron.begin(); it_c != cron.end(); it_c++)
     {
@@ -322,12 +322,12 @@ static void FindNewDumps(const std::string& pPath)
         try
         {
             CMiddleWare::mw_result_t res;
-            res = m_pMW->SaveDebugDump(*itt, crashinfo);
+            res = g_pMW->SaveDebugDump(*itt, crashinfo);
             switch (res)
             {
                 case CMiddleWare::MW_OK:
                     g_cw->Debug("Saving into database (" + *itt + ").");
-                    m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                    g_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                     break;
                 case CMiddleWare::MW_IN_DB:
                     g_cw->Debug("Already saved in database (" + *itt + ").");
@@ -341,7 +341,7 @@ static void FindNewDumps(const std::string& pPath)
                 case CMiddleWare::MW_FILE_ERROR:
                 default:
                     g_cw->Warning("Corrupted, bad or already saved crash, deleting.");
-                    m_pMW->DeleteDebugDumpDir(*itt);
+                    g_pMW->DeleteDebugDumpDir(*itt);
                     break;
             }
         }
@@ -433,7 +433,7 @@ static gboolean waitsignal_check(GSource *source)
 }
 static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
 {
-    g_main_quit(m_pMainloop);
+    g_main_quit(g_pMainloop);
     return 1;
 }
 
@@ -467,28 +467,28 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
         /* we want to ignore the lock files */
         if (event->mask & IN_ISDIR)
         {
-            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < m_pSettings->GetMaxCrashReportsSize())
+            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < g_pSettings->GetMaxCrashReportsSize())
             {
                 //std::string sName = name;
                 map_crash_info_t crashinfo;
                 try
                 {
                     CMiddleWare::mw_result_t res;
-                    res = m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+                    res = g_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
                     switch (res)
                     {
                         case CMiddleWare::MW_OK:
                             g_cw->Debug("New crash, saving...");
-                            m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                            g_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
-                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             break;
                         case CMiddleWare::MW_REPORTED:
                         case CMiddleWare::MW_OCCURED:
                             /* send message to dbus */
                             g_cw->Debug("Already saved crash, deleting...");
-                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
-                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                         case CMiddleWare::MW_BLACKLISTED:
                         case CMiddleWare::MW_CORRUPTED:
@@ -498,7 +498,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                         case CMiddleWare::MW_FILE_ERROR:
                         default:
                             g_cw->Warning("Corrupted or bad crash, deleting...");
-                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                     }
                 }
@@ -520,7 +520,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
             else
             {
                 g_cw->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
-                m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             }
         }
         else
@@ -582,36 +582,36 @@ int main(int argc, char** argv)
     /* Initialization */
     try
     {
-        pthread_mutex_init(&m_pJobsMutex, NULL); /* never fails */
+        pthread_mutex_init(&g_pJobsMutex, NULL); /* never fails */
         /* DBus init - we want it early so that errors are reported */
         comm_layer_inner_init(&watcher);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         errno = 0;
-        m_nFd = inotify_init();
-        if (m_nFd == -1)
+        g_nFd = inotify_init();
+        if (g_nFd == -1)
             perror_msg_and_die("inotify_init failed");
-        if (inotify_add_watch(m_nFd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
+        if (inotify_add_watch(g_nFd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
         /* (comment here) */
-        m_pSettings = new CSettings();
-        m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
+        g_pSettings = new CSettings();
+        g_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
         /* (comment here) */
-        m_pMainloop = g_main_loop_new(NULL, FALSE);
+        g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* (comment here) */
-        m_pMW = new CMiddleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
+        g_pMW = new CMiddleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
         SetUpMW();
         SetUpCron();
         FindNewDumps(DEBUG_DUMPS_DIR);
         /* (comment here) */
 #ifdef ENABLE_DBUS
-        m_pCommLayer = new CCommLayerServerDBus();
+        g_pCommLayer = new CCommLayerServerDBus();
 #elif ENABLE_SOCKET
-        m_pCommLayer = new CCommLayerServerSocket();
+        g_pCommLayer = new CCommLayerServerSocket();
 #endif
-        m_pCommLayer->Attach(&watcher);
+        g_pCommLayer->Attach(&watcher);
         /* (comment here) */
-        m_pGio = g_io_channel_unix_new(m_nFd);
-        g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, NULL);
+        g_pGio = g_io_channel_unix_new(g_nFd);
+        g_io_add_watch(g_pGio, G_IO_IN, handle_event_cb, NULL);
         /* Add an event source which waits for INT/TERM signal */
         GSourceFuncs waitsignal_funcs;
         memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
@@ -630,13 +630,13 @@ int main(int argc, char** argv)
         /* Initialization error. Clean up, in reverse order */
         unlink(VAR_RUN_PIDFILE);
         unlink(VAR_RUN_LOCK_FILE);
-        g_io_channel_unref(m_pGio);
-        delete m_pCommLayer;
+        g_io_channel_unref(g_pGio);
+        delete g_pCommLayer;
         /* This restores /proc/sys/kernel/core_pattern, among other things: */
-        delete m_pMW;
-        g_main_loop_unref(m_pMainloop);
-        delete m_pSettings;
-        if (pthread_mutex_destroy(&m_pJobsMutex) != 0)
+        delete g_pMW;
+        g_main_loop_unref(g_pMainloop);
+        delete g_pSettings;
+        if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
         {
             error_msg("threading error: job mutex locked");
         }
@@ -654,7 +654,7 @@ int main(int argc, char** argv)
     try
     {
 	watcher.Debug("Running...");
-	g_main_run(m_pMainloop);
+	g_main_run(g_pMainloop);
     }
     catch (CABRTException& e)
     {
@@ -668,12 +668,12 @@ int main(int argc, char** argv)
     /* Error or INT/TERM. Clean up, in reverse order */
     unlink(VAR_RUN_PIDFILE);
     unlink(VAR_RUN_LOCK_FILE);
-    g_io_channel_unref(m_pGio);
-    delete m_pCommLayer;
+    g_io_channel_unref(g_pGio);
+    delete g_pCommLayer;
     /* This restores /proc/sys/kernel/core_pattern, among other things: */
-    delete m_pMW;
-    g_main_loop_unref(m_pMainloop);
-    delete m_pSettings;
+    delete g_pMW;
+    g_main_loop_unref(g_pMainloop);
+    delete g_pSettings;
 
     /* Exiting */
     if (sig_caught)
