@@ -108,9 +108,11 @@ class CCrashWatcher
         static void cron_delete_callback_data_cb(gpointer data);
 
         void StartWatch();
+    public:
         void GStartWatch();
         void CreatePidFile();
         void Lock();
+    private:
         void SetUpMW();
         void SetUpCron();
         /* finds dumps created when daemon wasn't running */
@@ -130,7 +132,6 @@ class CCrashWatcher
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
         CCrashWatcher(const std::string& pPath);
         virtual ~CCrashWatcher();
-        void Run();
         void StopRun();
 
     /* methods exported on dbus */
@@ -843,14 +844,6 @@ void CCrashWatcher::GStartWatch()
     g_main_run(m_pMainloop);
 }
 
-void CCrashWatcher::Run()
-{
-    Debug("Running...");
-    Lock();
-    CreatePidFile();
-    GStartWatch();
-}
-
 void CCrashWatcher::StopRun()
 {
     g_main_quit(m_pMainloop);
@@ -1146,12 +1139,15 @@ int main(int argc, char** argv)
         }
 
         CCrashWatcher watcher(DEBUG_DUMPS_DIR);
+        watcher.Debug("Running...");
+        watcher.Lock();
+        watcher.CreatePidFile();
         if (daemonize)
         {
             /* Let parent know we initialized ok */
             kill(getppid(), SIGTERM);
         }
-        watcher.Run();
+        watcher.GStartWatch();
     }
     catch (CABRTException& e)
     {
