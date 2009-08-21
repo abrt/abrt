@@ -48,6 +48,7 @@ void CMailx::FreeMailxArgs()
     }
     free((void*) m_pArgs);
     m_pArgs = NULL;
+    m_nArgs = 0;
 }
 
 void CMailx::AddMailxArg(const std::string& pArg)
