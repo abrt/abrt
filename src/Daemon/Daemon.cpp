@@ -24,92 +24,10 @@
 
 #include "ABRTException.h"
 #include <iostream>
-//#include <sstream>
 #include <string>
 
-//#include "DBusManager.h"
-//#include "DBusServerProxy.h"
-#include "MiddleWare.h"
-#include "Settings.h"
+#include "CrashWatcher.h"
 
-//FIXME remove when it gets to autoconf
-//#include "CommLayerServerDBus.h"
-//#include "CommLayerServerSocket.h"
-#ifdef ENABLE_DBUS
-    #include "CommLayerServerDBus.h"
-#elif ENABLE_SOCKET
-    #include "CommLayerServerSocket.h"
-#endif
-#include "CommLayerInner.h"
-
-// 1024 simultaneous actions
-#define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event)+FILENAME_MAX)*1024)
-
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
-#define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
-
-/* CCrashWatcher interface */
-
-namespace { /* make it all static */
-
-class CCrashWatcher
-//: public CDBusServer_adaptor,
-//  public DBus::IntrospectableAdaptor,
-//  public DBus::ObjectAdaptor,
-:  public CObserver
-{
-
-    public:
-        //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
-        CCrashWatcher(const std::string& pPath);
-        virtual ~CCrashWatcher();
-
-    public:
-        /* Observer methods */
-        virtual void Status(const std::string& pMessage,const std::string& pDest="0");
-        virtual void Debug(const std::string& pMessage, const std::string& pDest="0");
-        virtual void Warning(const std::string& pMessage, const std::string& pDest="0");
-        virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
-        /*FIXME: fix CLI and remove this stub*/
-        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID)
-        {
-            map_crash_report_t retval;
-            return retval;
-        }
-        uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
-        virtual CMiddleWare::report_status_t Report(map_crash_report_t pReport, const std::string &pUID);
-        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
-        virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
-        /* plugins related */
-        virtual vector_map_string_string_t GetPluginsInfo();
-        virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID);
-        virtual void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings);
-        virtual void RegisterPlugin(const std::string& pName);
-        virtual void UnRegisterPlugin(const std::string& pName);
-};
-
-static uint8_t sig_caught; /* = 0 */
-
-static CCrashWatcher *g_cw;
-
-static int m_nFd;
-static GIOChannel* m_pGio;
-static GMainLoop *m_pMainloop;
-static std::string m_sTarget;
-static CMiddleWare *m_pMW;
-static CCommLayerServer *m_pCommLayer;
-/*FIXME not needed */
-//static DBus::Connection *m_pConn;
-static CSettings *m_pSettings;
-/**
- * Map to cache the results from CreateReport_t
- * <UID, <UUID, result>>
- */
-static std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
-/**
-* mutex to protect m_pending_jobs from being accesed by multiple threads at the same time
-*/
-static pthread_mutex_t m_pJobsMutex;
 
 //FIXME: add some struct to be able to join all threads!
 typedef struct cron_callback_data_t
@@ -128,29 +46,29 @@ typedef struct cron_callback_data_t
     {}
 } cron_callback_data_t;
 
-typedef struct thread_data_t {
-    pthread_t thread_id;
-    char* UUID;
-    char* UID;
-    char *dest;
-} thread_data_t;
 
-static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
-static void *create_report(void *arg);
-static gboolean cron_activation_periodic_cb(gpointer data);
-static gboolean cron_activation_one_cb(gpointer data);
-static gboolean cron_activation_reshedule_cb(gpointer data);
-static void cron_delete_callback_data_cb(gpointer data);
-static void CreatePidFile();
-static void Lock();
-static void SetUpMW();
-static void SetUpCron();
-/* finds dumps created when daemon wasn't running */
-// FIXME: how to catch abrt itself without this?
-static void FindNewDumps(const std::string& pPath);
+static uint8_t sig_caught; /* = 0 */
 
+CCrashWatcher *g_cw;
+int m_nFd;
+GIOChannel* m_pGio;
+GMainLoop *m_pMainloop;
+std::string m_sTarget;
+CMiddleWare *m_pMW;
+CCommLayerServer *m_pCommLayer;
+/*FIXME not needed */
+//DBus::Connection *m_pConn;
+CSettings *m_pSettings;
+/**
+ * Map to cache the results from CreateReport_t
+ * <UID, <UUID, result>>
+ */
+std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
+/**
+* mutex to protect m_pending_jobs from being accesed by multiple threads at the same time
+*/
+pthread_mutex_t m_pJobsMutex;
 
-/* CCrashWatcher implementation */
 
 /* Is it "." or ".."? */
 /* abrtlib candidate */
@@ -163,159 +81,46 @@ static bool dot_or_dotdot(const char *filename)
     return false;
 }
 
-static double GetDirSize(const std::string &pPath);
-
-static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon)
+static double GetDirSize(const std::string &pPath)
 {
-    GIOError err;
-    char *buf = new char[INOTIFY_BUFF_SIZE];
-    gsize len;
-    gsize i = 0;
-    err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
-    if (err != G_IO_ERROR_NONE)
+    double size = 0;
+    struct dirent *ep;
+    struct stat stats;
+    DIR *dp;
+
+    dp = opendir(pPath.c_str());
+    if (dp != NULL)
     {
-        g_cw->Warning("Error reading inotify fd.");
-        delete[] buf;
-        return FALSE;
-    }
-    /* reconstruct each event and send message to the dbus */
-    while (i < len)
-    {
-        const char *name = NULL;
-        struct inotify_event *event;
-
-        event = (struct inotify_event *) &buf[i];
-        if (event->len)
-            name = &buf[i] + sizeof (struct inotify_event);
-        i += sizeof (struct inotify_event) + event->len;
-
-        g_cw->Debug(std::string("Created file: ") + name);
-
-        /* we want to ignore the lock files */
-        if (event->mask & IN_ISDIR)
+        while ((ep = readdir(dp)) != NULL)
         {
-            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < m_pSettings->GetMaxCrashReportsSize())
+            if (dot_or_dotdot(ep->d_name))
+                continue;
+            std::string dname = pPath + "/" + ep->d_name;
+            if (lstat(dname.c_str(), &stats) == 0)
             {
-                //std::string sName = name;
-                map_crash_info_t crashinfo;
-                try
+                if (S_ISDIR(stats.st_mode))
                 {
-                    CMiddleWare::mw_result_t res;
-                    res = m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
-                    switch (res)
-                    {
-                        case CMiddleWare::MW_OK:
-                            g_cw->Debug("New crash, saving...");
-                            m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
-                            /* send message to dbus */
-                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
-                            break;
-                        case CMiddleWare::MW_REPORTED:
-                        case CMiddleWare::MW_OCCURED:
-                            /* send message to dbus */
-                            g_cw->Debug("Already saved crash, deleting...");
-                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
-                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
-                            break;
-                        case CMiddleWare::MW_BLACKLISTED:
-                        case CMiddleWare::MW_CORRUPTED:
-                        case CMiddleWare::MW_PACKAGE_ERROR:
-                        case CMiddleWare::MW_GPG_ERROR:
-                        case CMiddleWare::MW_IN_DB:
-                        case CMiddleWare::MW_FILE_ERROR:
-                        default:
-                            g_cw->Warning("Corrupted or bad crash, deleting...");
-                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
-                            break;
-                    }
+                    size += GetDirSize(dname);
                 }
-                catch (CABRTException& e)
+                else if (S_ISREG(stats.st_mode))
                 {
-                    g_cw->Warning(e.what());
-                    if (e.type() == EXCEP_FATAL)
-                    {
-                        delete[] buf;
-                        return -1;
-                    }
-                }
-                catch (...)
-                {
-                    delete[] buf;
-                    throw;
+                    size += stats.st_size;
                 }
             }
-            else
-            {
-                g_cw->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
-                m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
-            }
         }
-        else
-        {
-            g_cw->Debug("Some file created, ignoring...");
-        }
+        closedir(dp);
     }
-    delete[] buf;
-    return TRUE;
+    else
+    {
+        throw CABRTException(EXCEP_FATAL, std::string(__func__) + ": Init Failed");
+    }
+    return size;
 }
 
-static void *create_report(void *arg)
+static void cron_delete_callback_data_cb(gpointer data)
 {
-    thread_data_t *thread_data = (thread_data_t *) arg;
-    map_crash_info_t crashReport;
-    g_cw->Debug("Creating report...");
-    try
-    {
-        CMiddleWare::mw_result_t res;
-        res = m_pMW->CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
-        switch (res)
-        {
-            case CMiddleWare::MW_OK:
-                break;
-            case CMiddleWare::MW_IN_DB_ERROR:
-                g_cw->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
-                break;
-            case CMiddleWare::MW_PLUGIN_ERROR:
-                g_cw->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."));
-                break;
-            case CMiddleWare::MW_CORRUPTED:
-            case CMiddleWare::MW_FILE_ERROR:
-            default:
-                {
-                    std::string debugDumpDir;
-                    g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
-                    debugDumpDir = m_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
-                    m_pMW->DeleteDebugDumpDir(debugDumpDir);
-                }
-                break;
-        }
-        /* only one thread can write */
-        pthread_mutex_lock(&m_pJobsMutex);
-        m_pending_jobs[std::string(thread_data->UID)][thread_data->thread_id] = crashReport;
-        pthread_mutex_unlock(&m_pJobsMutex);
-        m_pCommLayer->JobDone(thread_data->dest, thread_data->thread_id);
-    }
-    catch (CABRTException& e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            /* free strduped strings */
-            free(thread_data->UUID);
-            free(thread_data->UID);
-            free(thread_data->dest);
-            free(thread_data);
-            throw e;
-        }
-        g_cw->Warning(e.what());
-    }
-    /* free strduped strings */
-    free(thread_data->UUID);
-    free(thread_data->UID);
-    free(thread_data->dest);
-    free(thread_data);
-
-    /* Bogus value. pthreads require us to return void* */
-    return NULL;
+    cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
+    delete cronDeleteCallbackData;
 }
 
 static gboolean cron_activation_periodic_cb(gpointer data)
@@ -348,18 +153,10 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
                                cron_activation_periodic_cb,
                                static_cast<gpointer>(cronPeriodicCallbackData),
                                cron_delete_callback_data_cb);
-
-
     return FALSE;
 }
 
-static void cron_delete_callback_data_cb(gpointer data)
-{
-    cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
-    delete cronDeleteCallbackData;
-}
-
-static void SetUpMW()
+/*static*/ void SetUpMW()
 {
     m_pMW->SetOpenGPGCheck(m_pSettings->GetOpenGPGCheck());
     m_pMW->SetDatabase(m_pSettings->GetDatabase());
@@ -400,7 +197,7 @@ static void SetUpMW()
     }
 }
 
-static void SetUpCron()
+/*static*/ void SetUpCron()
 {
     CSettings::map_cron_t cron = m_pSettings->GetCron();
     CSettings::map_cron_t::iterator it_c;
@@ -443,7 +240,6 @@ static void SetUpCron()
             CSettings::vector_pair_strings_t::iterator it_ar;
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
-
                 cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
@@ -494,139 +290,7 @@ static void SetUpCron()
     }
 }
 
-void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest)
-{
-    std::cout << "Update: " + pMessage << std::endl;
-    //FIXME: send updates only to job owner
-    if(m_pCommLayer != NULL)
-       m_pCommLayer->Update(pDest,pMessage);
-}
-
-void CCrashWatcher::Warning(const std::string& pMessage, const std::string& pDest)
-{
-    std::cerr << "Warning: " + pMessage << std::endl;
-    if(m_pCommLayer != NULL)
-       m_pCommLayer->Warning(pDest,pMessage);
-}
-
-void CCrashWatcher::Debug(const std::string& pMessage, const std::string& pDest)
-{
-    //some logic to add logging levels?
-    std::cout << "Debug: " + pMessage << std::endl;
-}
-
-static double GetDirSize(const std::string &pPath)
-{
-    double size = 0;
-    struct dirent *ep;
-    struct stat stats;
-    DIR *dp;
-
-    dp = opendir(pPath.c_str());
-    if (dp != NULL)
-    {
-        while ((ep = readdir(dp)) != NULL)
-        {
-            if (dot_or_dotdot(ep->d_name))
-                continue;
-            std::string dname = pPath + "/" + ep->d_name;
-            if (lstat(dname.c_str(), &stats) == 0)
-            {
-                if (S_ISDIR(stats.st_mode))
-                {
-                    size += GetDirSize(dname);
-                }
-                else if (S_ISREG(stats.st_mode))
-                {
-                    size += stats.st_size;
-                }
-            }
-        }
-        closedir(dp);
-    }
-    else
-    {
-        throw CABRTException(EXCEP_FATAL, std::string(__func__) + ": Init Failed");
-    }
-    return size;
-}
-
-CCrashWatcher::CCrashWatcher(const std::string& pPath)
-{
-    g_cw = this;
-
-    int watch = 0;
-    m_sTarget = pPath;
-
-    // TODO: initialize object according parameters -w -d
-    // status has to be always created.
-    m_pCommLayer = NULL;
-    comm_layer_inner_init(this);
-
-    m_pSettings = new CSettings();
-    m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
-
-    m_pMainloop = g_main_loop_new(NULL,FALSE);
-    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
-    if (pthread_mutex_init(&m_pJobsMutex, NULL) != 0)
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't init mutex!");
-    }
-    try
-    {
-        SetUpMW();
-        SetUpCron();
-        FindNewDumps(pPath);
-#ifdef ENABLE_DBUS
-        m_pCommLayer = new CCommLayerServerDBus();
-#elif ENABLE_SOCKET
-        m_pCommLayer = new CCommLayerServerSocket();
-#endif
-//      m_pCommLayer = new CCommLayerServerDBus();
-//      m_pCommLayer = new CCommLayerServerSocket();
-        m_pCommLayer->Attach(this);
-
-        if ((m_nFd = inotify_init()) == -1)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
-        }
-        if ((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
-        }
-        m_pGio = g_io_channel_unix_new(m_nFd);
-    }
-    catch (...)
-    {
-        /* This restores /proc/sys/kernel/core_pattern, among other things */
-        delete m_pMW;
-        //too? delete m_pCommLayer;
-        throw;
-    }
-}
-
-CCrashWatcher::~CCrashWatcher()
-{
-    //delete dispatcher, connection, etc..
-    //m_pConn->disconnect();
-
-    g_io_channel_unref(m_pGio);
-    g_main_loop_unref(m_pMainloop);
-
-    delete m_pCommLayer;
-    delete m_pMW;
-    delete m_pSettings;
-    if (pthread_mutex_destroy(&m_pJobsMutex) != 0)
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't destroy mutex!");
-    }
-    /* delete pid file */
-    unlink(VAR_RUN_PIDFILE);
-    /* delete lock file */
-    unlink(VAR_RUN_LOCK_FILE);
-}
-
-static void FindNewDumps(const std::string& pPath)
+/*static*/ void FindNewDumps(const std::string& pPath)
 {
     g_cw->Debug("Scanning for unsaved entries...");
     struct dirent *ep;
@@ -736,231 +400,6 @@ static void Lock()
     //write(lfp,str,strlen(str)); /* record pid to lockfile */
 }
 
-vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
-{
-    vector_crash_infos_t retval;
-    Debug("Getting crash infos...");
-    try
-    {
-        vector_pair_string_string_t UUIDsUIDs;
-        UUIDsUIDs = m_pMW->GetUUIDsOfCrash(pUID);
-
-        unsigned int ii;
-        for (ii = 0; ii < UUIDsUIDs.size(); ii++)
-        {
-            CMiddleWare::mw_result_t res;
-            map_crash_info_t info;
-
-            res = m_pMW->GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
-            switch (res)
-            {
-                case CMiddleWare::MW_OK:
-                    retval.push_back(info);
-                    break;
-                case CMiddleWare::MW_ERROR:
-                    Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    m_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
-                    break;
-                case CMiddleWare::MW_FILE_ERROR:
-                    {
-                        std::string debugDumpDir;
-                        Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        debugDumpDir = m_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
-                        m_pMW->DeleteDebugDumpDir(debugDumpDir);
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-    catch (CABRTException& e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-        Status(e.what());
-    }
-
-    //retval = m_pMW->GetCrashInfos(pUID);
-    //Notify("Sent crash info");
-    return retval;
-}
-
-uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender)
-{
-    thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
-    if (thread_data != NULL)
-    {
-        thread_data->UUID = xstrdup(pUUID.c_str());
-        thread_data->UID = xstrdup(pUID.c_str());
-        thread_data->dest = xstrdup(pSender.c_str());
-        if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
-        }
-    }
-    else
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot allocate memory!");
-    }
-    //FIXME: we don't use this value anymore, so fix the API
-    return 0;
-}
-
-CMiddleWare::report_status_t CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
-{
-    //#define FIELD(X) crashReport.m_s##X = pReport[#X];
-    //crashReport.m_sUUID = pReport["UUID"];
-    //ALL_CRASH_REPORT_FIELDS;
-    //#undef FIELD
-    //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
-    //     std::cerr << it->second << std::endl;
-    //}
-    CMiddleWare::report_status_t rs;
-    try
-    {
-        rs = m_pMW->Report(pReport, pUID);
-    }
-    catch (CABRTException& e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-        Status(e.what());
-        return rs;
-    }
-    return rs;
-}
-
-bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
-{
-    try
-    {
-        std::string debugDumpDir;
-        debugDumpDir = m_pMW->DeleteCrashInfo(pUUID,pUID);
-        m_pMW->DeleteDebugDumpDir(debugDumpDir);
-    }
-    catch (CABRTException& e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-        Status(e.what());
-        return false;
-    }
-    return true;
-}
-
-map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::string& pSender)
-{
-    /* FIXME: once we return the result, we should remove it from map to free memory
-       - use some TTL to clean the memory even if client won't get it
-       - if we don't find it in the cache we should try to ask MW to get it again??
-    */
-    return m_pending_jobs[pSender][pJobID];
-}
-
-vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
-{
-    try
-    {
-        return m_pMW->GetPluginsInfo();
-    }
-    catch (CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-    }
-    // TODO: is it right? I added it just to disable a warning...
-    // but maybe returning empty map is wrong here?
-    return vector_map_string_string_t();
-}
-
-map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName, const std::string& pUID)
-{
-    try
-    {
-        return m_pMW->GetPluginSettings(pName, pUID);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-    }
-}
-
-void CCrashWatcher::RegisterPlugin(const std::string& pName)
-{
-    try
-    {
-        m_pMW->RegisterPlugin(pName);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-    }
-}
-
-void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
-{
-    try
-    {
-        m_pMW->UnRegisterPlugin(pName);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-    }
-}
-
-void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings)
-{
-    try
-    {
-        m_pMW->SetPluginSettings(pName, pUID, pSettings);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        Warning(e.what());
-    }
-}
-
-} /* unnamed namespace */
-
-
-/* Daemon's main() */
-
-void print_help()
-{
-}
-
 static void handle_fatal_signal(int signal)
 {
     sig_caught = signal;
@@ -1002,6 +441,102 @@ static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpoin
     g_main_quit(m_pMainloop);
     return 1;
 }
+
+/* Inotify handler */
+static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
+{
+    GIOError err;
+    char *buf = new char[INOTIFY_BUFF_SIZE];
+    gsize len;
+    gsize i = 0;
+    err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
+    if (err != G_IO_ERROR_NONE)
+    {
+        g_cw->Warning("Error reading inotify fd.");
+        delete[] buf;
+        return FALSE;
+    }
+    /* reconstruct each event and send message to the dbus */
+    while (i < len)
+    {
+        const char *name = NULL;
+        struct inotify_event *event;
+
+        event = (struct inotify_event *) &buf[i];
+        if (event->len)
+            name = &buf[i] + sizeof (struct inotify_event);
+        i += sizeof (struct inotify_event) + event->len;
+
+        g_cw->Debug(std::string("Created file: ") + name);
+
+        /* we want to ignore the lock files */
+        if (event->mask & IN_ISDIR)
+        {
+            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < m_pSettings->GetMaxCrashReportsSize())
+            {
+                //std::string sName = name;
+                map_crash_info_t crashinfo;
+                try
+                {
+                    CMiddleWare::mw_result_t res;
+                    res = m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+                    switch (res)
+                    {
+                        case CMiddleWare::MW_OK:
+                            g_cw->Debug("New crash, saving...");
+                            m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                            /* send message to dbus */
+                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            break;
+                        case CMiddleWare::MW_REPORTED:
+                        case CMiddleWare::MW_OCCURED:
+                            /* send message to dbus */
+                            g_cw->Debug("Already saved crash, deleting...");
+                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            break;
+                        case CMiddleWare::MW_BLACKLISTED:
+                        case CMiddleWare::MW_CORRUPTED:
+                        case CMiddleWare::MW_PACKAGE_ERROR:
+                        case CMiddleWare::MW_GPG_ERROR:
+                        case CMiddleWare::MW_IN_DB:
+                        case CMiddleWare::MW_FILE_ERROR:
+                        default:
+                            g_cw->Warning("Corrupted or bad crash, deleting...");
+                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            break;
+                    }
+                }
+                catch (CABRTException& e)
+                {
+                    g_cw->Warning(e.what());
+                    if (e.type() == EXCEP_FATAL)
+                    {
+                        delete[] buf;
+                        return -1;
+                    }
+                }
+                catch (...)
+                {
+                    delete[] buf;
+                    throw;
+                }
+            }
+            else
+            {
+                g_cw->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
+                m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+            }
+        }
+        else
+        {
+            g_cw->Debug("Some file created, ignoring...");
+        }
+    }
+    delete[] buf;
+    return TRUE;
+}
+
 
 int main(int argc, char** argv)
 {
@@ -1066,7 +601,7 @@ int main(int argc, char** argv)
         Lock();
         CreatePidFile();
 
-        g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, &watcher);
+        g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, NULL);
         GSourceFuncs waitsignal_funcs;
         memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
         waitsignal_funcs.prepare  = waitsignal_prepare;

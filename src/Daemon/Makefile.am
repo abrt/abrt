@@ -6,6 +6,7 @@ abrt_SOURCES = \
     ABRTPlugin.cpp ABRTPlugin.h \
     PluginManager.cpp PluginManager.h \
     MiddleWare.cpp MiddleWare.h \
+    CrashWatcher.cpp CrashWatcher.h \
     CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerSocket.h CommLayerServerSocket.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
