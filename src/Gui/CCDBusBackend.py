@@ -165,7 +165,7 @@ class DBusManager(gobject.GObject):
             if dump:
                 self.emit("analyze-complete", dump)
             else:
-                self.emit("error","Daemon did't return valid report info\nDebuginfo is missing?")
+                self.emit("abrt-error","Daemon did't return valid report info\nDebuginfo is missing?")
 
     def report_done(self, result):
         self.emit("report-done", result)

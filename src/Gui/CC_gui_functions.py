@@ -3,10 +3,14 @@ import gtk
 import subprocess
 import sys
 # url markup is supported from gtk 2.18 so we need to use libsexy
-if gtk.gtk_version[1] <= 17:
+if gtk.gtk_version[1] < 17:
+    print "using sexy"
     from sexy import UrlLabel as Label
+    on_url_clicked_signal = "url-activated"
 else:
+    print "using gtk"
     from gtk import Label
+    on_url_clicked_signal = "activate-link"
 try:
     # we don't want to add dependency to rpm, but if we have it, we can use it
     import rpm
@@ -38,7 +42,8 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
     status_vbox = gtk.VBox()
     for plugin, res in report_status_dict.iteritems():
         status_hbox = gtk.HBox()
-        plugin_label = Label("<b>%s</b>: " % plugin)
+        plugin_label = Label()
+        plugin_label.set_markup("<b>%s</b>: " % plugin)
         plugin_label.set_justify(gtk.JUSTIFY_RIGHT)
         status_label = Label()
         status_label.set_selectable(True)
@@ -49,13 +54,9 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
             status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][1])
         elif report_status_dict[plugin][0] == '1':
             if "http" in report_status_dict[plugin][1] or report_status_dict[plugin][1][0] == '/':
-                #message += "<b>%s</b>: <a href=\"%s\">%s</a>\n" % (plugin, report_status_dict[plugin][1], report_status_dict[plugin][1])
                 status_label.set_markup("<a href=\"%s\">%s</a>" % (report_status_dict[plugin][1], report_status_dict[plugin][1]))
-                status_label.connect("url-activated", on_url_clicked)
-                #else:
-                    #message += "<b>%s</b>: <span foreground='blue' underline='low'>%s</span>\n" % (plugin, report_status_dict[plugin][1])
+                status_label.connect(on_url_clicked_signal, on_url_clicked)
             else:
-                #message += "<b>%s</b>: %s\n" % (plugin, report_status_dict[plugin][1])
                 status_label.set_text("%s" % report_status_dict[plugin][1])
         status_vbox.pack_start(status_hbox, expand=False)
     main_hbox.pack_start(status_vbox)
