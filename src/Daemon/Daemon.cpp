@@ -58,23 +58,6 @@ class CCrashWatcher
 //  public DBus::ObjectAdaptor,
 :  public CObserver
 {
-    private:
-        static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
-        static void *create_report(void *arg);
-        static gboolean cron_activation_periodic_cb(gpointer data);
-        static gboolean cron_activation_one_cb(gpointer data);
-        static gboolean cron_activation_reshedule_cb(gpointer data);
-        static void cron_delete_callback_data_cb(gpointer data);
-
-    public:
-        void CreatePidFile();
-        void Lock();
-    private:
-        void SetUpMW();
-        void SetUpCron();
-        /* finds dumps created when daemon wasn't running */
-        // FIXME: how to catch abrt itself without this?
-        void FindNewDumps(const std::string& pPath);
 
     public:
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
@@ -106,6 +89,8 @@ class CCrashWatcher
 };
 
 static uint8_t sig_caught; /* = 0 */
+
+static CCrashWatcher *g_cw;
 
 static int m_nFd;
 static GIOChannel* m_pGio;
@@ -152,6 +137,20 @@ typedef struct SThreadData {
     char *dest;
     CCrashWatcher *daemon;
 } thread_data_t;
+
+static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
+static void *create_report(void *arg);
+static gboolean cron_activation_periodic_cb(gpointer data);
+static gboolean cron_activation_one_cb(gpointer data);
+static gboolean cron_activation_reshedule_cb(gpointer data);
+static void cron_delete_callback_data_cb(gpointer data);
+static void CreatePidFile();
+static void Lock();
+static void SetUpMW();
+static void SetUpCron();
+/* finds dumps created when daemon wasn't running */
+// FIXME: how to catch abrt itself without this?
+static void FindNewDumps(const std::string& pPath);
 
 
 /* CCrashWatcher implementation */
@@ -264,7 +263,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
     return TRUE;
 }
 
-void *CCrashWatcher::create_report(void *arg)
+static void *create_report(void *arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
@@ -323,7 +322,7 @@ void *CCrashWatcher::create_report(void *arg)
     return NULL;
 }
 
-gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
+static gboolean cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
     cronPeriodicCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
@@ -332,7 +331,7 @@ gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
                                                                 cronPeriodicCallbackData->m_sPluginArgs);
     return TRUE;
 }
-gboolean CCrashWatcher::cron_activation_one_cb(gpointer data)
+static gboolean cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
     cronOneCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
@@ -341,7 +340,7 @@ gboolean CCrashWatcher::cron_activation_one_cb(gpointer data)
                                                            cronOneCallbackData->m_sPluginArgs);
     return FALSE;
 }
-gboolean CCrashWatcher::cron_activation_reshedule_cb(gpointer data)
+static gboolean cron_activation_reshedule_cb(gpointer data)
 {
     cron_callback_data_t* cronResheduleCallbackData = static_cast<cron_callback_data_t*>(data);
     cronResheduleCallbackData->m_pCrashWatcher->Debug("Rescheduling plugin: " + cronResheduleCallbackData->m_sPluginName);
@@ -359,13 +358,13 @@ gboolean CCrashWatcher::cron_activation_reshedule_cb(gpointer data)
     return FALSE;
 }
 
-void CCrashWatcher::cron_delete_callback_data_cb(gpointer data)
+static void cron_delete_callback_data_cb(gpointer data)
 {
     cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
     delete cronDeleteCallbackData;
 }
 
-void CCrashWatcher::SetUpMW()
+static void SetUpMW()
 {
     m_pMW->SetOpenGPGCheck(m_pSettings->GetOpenGPGCheck());
     m_pMW->SetDatabase(m_pSettings->GetDatabase());
@@ -406,7 +405,7 @@ void CCrashWatcher::SetUpMW()
     }
 }
 
-void CCrashWatcher::SetUpCron()
+static void SetUpCron()
 {
     CSettings::map_cron_t cron = m_pSettings->GetCron();
     CSettings::map_cron_t::iterator it_c;
@@ -450,7 +449,7 @@ void CCrashWatcher::SetUpCron()
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
 
-                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(this, (*it_ar).first, (*it_ar).second, timeout);
+                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(g_cw, (*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_periodic_cb,
@@ -461,22 +460,15 @@ void CCrashWatcher::SetUpCron()
         else
         {
             time_t actTime = time(NULL);
-            if (actTime == ((time_t)-1))
-            {
-                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::SetUpCron(): Cannot get time.");
-            }
             struct tm locTime;
-            if (localtime_r(&actTime, &locTime) == NULL)
-            {
-                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::SetUpCron(): Cannot get local time.");
-            }
+            localtime_r(&actTime, &locTime);
             locTime.tm_hour = nH;
             locTime.tm_min = nM;
             locTime.tm_sec = 0;
             time_t nextTime = mktime(&locTime);
             if (nextTime == ((time_t)-1))
             {
-                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::SetUpCron(): Cannot set up time.");
+                throw CABRTException(EXCEP_FATAL, "SetUpCron(): Cannot set up time");
             }
             if (actTime > nextTime)
             {
@@ -490,13 +482,13 @@ void CCrashWatcher::SetUpCron()
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
 
-                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t(this, (*it_ar).first, (*it_ar).second, timeout);
+                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t(g_cw, (*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_one_cb,
                                            static_cast<gpointer>(cronOneCallbackData),
                                            cron_delete_callback_data_cb);
-                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t(this, (*it_ar).first, (*it_ar).second, 24 * 60 * 60);
+                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t(g_cw, (*it_ar).first, (*it_ar).second, 24 * 60 * 60);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_reshedule_cb,
@@ -566,6 +558,8 @@ static double GetDirSize(const std::string &pPath)
 
 CCrashWatcher::CCrashWatcher(const std::string& pPath)
 {
+    g_cw = this;
+
     int watch = 0;
     m_sTarget = pPath;
 
@@ -637,9 +631,9 @@ CCrashWatcher::~CCrashWatcher()
     unlink(VAR_RUN_LOCK_FILE);
 }
 
-void CCrashWatcher::FindNewDumps(const std::string& pPath)
+static void FindNewDumps(const std::string& pPath)
 {
-    Debug("Scanning for unsaved entries...");
+    g_cw->Debug("Scanning for unsaved entries...");
     struct dirent *ep;
     struct stat stats;
     DIR *dp;
@@ -666,7 +660,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
     }
     else
     {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::FindNewDumps(): Couldn't open the directory:" + pPath);
+        throw CABRTException(EXCEP_FATAL, "FindNewDumps(): Couldn't open the directory:" + pPath);
     }
 
     for (std::vector<std::string>::iterator itt = dirs.begin(); itt != dirs.end(); ++itt){
@@ -678,11 +672,11 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
             switch (res)
             {
                 case CMiddleWare::MW_OK:
-                    Debug("Saving into database (" + *itt + ").");
+                    g_cw->Debug("Saving into database (" + *itt + ").");
                     m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                     break;
                 case CMiddleWare::MW_IN_DB:
-                    Debug("Already saved in database (" + *itt + ").");
+                    g_cw->Debug("Already saved in database (" + *itt + ").");
                     break;
                 case CMiddleWare::MW_REPORTED:
                 case CMiddleWare::MW_OCCURED:
@@ -692,7 +686,7 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
                 case CMiddleWare::MW_GPG_ERROR:
                 case CMiddleWare::MW_FILE_ERROR:
                 default:
-                    Warning("Corrupted, bad or already saved crash, deleting.");
+                    g_cw->Warning("Corrupted, bad or already saved crash, deleting.");
                     m_pMW->DeleteDebugDumpDir(*itt);
                     break;
             }
@@ -703,12 +697,12 @@ void CCrashWatcher::FindNewDumps(const std::string& pPath)
             {
                 throw e;
             }
-            Warning(e.what());
+            g_cw->Warning(e.what());
         }
     }
 }
 
-void CCrashWatcher::CreatePidFile()
+static void CreatePidFile()
 {
     int fd;
 
@@ -728,19 +722,19 @@ void CCrashWatcher::CreatePidFile()
     }
 
     /* something went wrong */
-    throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreatePidFile(): can not open pid file");
+    throw CABRTException(EXCEP_FATAL, "can not open pid file");
 }
 
-void CCrashWatcher::Lock()
+static void Lock()
 {
     int lfp = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT, 0640);
     if (lfp < 0)
     {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): can not open lock file");
+        throw CABRTException(EXCEP_FATAL, "can not open lock file");
     }
     if (lockf(lfp, F_TLOCK, 0) < 0)
     {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Lock(): cannot create lock on lockfile");
+        throw CABRTException(EXCEP_FATAL, "cannot create lock on lockfile");
     }
     /* only first instance continues */
     //sprintf(str,"%d\n",getpid());
@@ -1075,8 +1069,8 @@ int main(int argc, char** argv)
 
         CCrashWatcher watcher(DEBUG_DUMPS_DIR);
         watcher.Debug("Running...");
-        watcher.Lock();
-        watcher.CreatePidFile();
+        Lock();
+        CreatePidFile();
 
         g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, &watcher);
         GSourceFuncs waitsignal_funcs;
