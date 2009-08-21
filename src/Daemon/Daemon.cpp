@@ -48,25 +48,20 @@ typedef struct cron_callback_data_t
 
 
 static uint8_t sig_caught; /* = 0 */
+static int m_nFd;
+static GIOChannel* m_pGio;
+static GMainLoop* m_pMainloop;
+static CSettings* m_pSettings;
 
 CCrashWatcher *g_cw;
-int m_nFd;
-GIOChannel* m_pGio;
-GMainLoop *m_pMainloop;
-std::string m_sTarget;
-CMiddleWare *m_pMW;
 CCommLayerServer *m_pCommLayer;
-/*FIXME not needed */
-//DBus::Connection *m_pConn;
-CSettings *m_pSettings;
-/**
+CMiddleWare *m_pMW;
+/*
  * Map to cache the results from CreateReport_t
  * <UID, <UUID, result>>
  */
 std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
-/**
-* mutex to protect m_pending_jobs from being accesed by multiple threads at the same time
-*/
+/* mutex to protect m_pending_jobs */
 pthread_mutex_t m_pJobsMutex;
 
 
@@ -127,7 +122,7 @@ static gboolean cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
     g_cw->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
-    m_pMW->RunAction(m_sTarget,
+    m_pMW->RunAction(DEBUG_DUMPS_DIR,
                                                                 cronPeriodicCallbackData->m_sPluginName,
                                                                 cronPeriodicCallbackData->m_sPluginArgs);
     return TRUE;
@@ -136,7 +131,7 @@ static gboolean cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
     g_cw->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
-    m_pMW->RunAction(m_sTarget,
+    m_pMW->RunAction(DEBUG_DUMPS_DIR,
                                                            cronOneCallbackData->m_sPluginName,
                                                            cronOneCallbackData->m_sPluginArgs);
     return FALSE;
@@ -156,7 +151,7 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
     return FALSE;
 }
 
-/*static*/ void SetUpMW()
+static void SetUpMW()
 {
     m_pMW->SetOpenGPGCheck(m_pSettings->GetOpenGPGCheck());
     m_pMW->SetDatabase(m_pSettings->GetDatabase());
@@ -197,7 +192,7 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
     }
 }
 
-/*static*/ void SetUpCron()
+static void SetUpCron()
 {
     CSettings::map_cron_t cron = m_pSettings->GetCron();
     CSettings::map_cron_t::iterator it_c;
@@ -290,7 +285,7 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
     }
 }
 
-/*static*/ void FindNewDumps(const std::string& pPath)
+static void FindNewDumps(const std::string& pPath)
 {
     g_cw->Debug("Scanning for unsaved entries...");
     struct dirent *ep;
@@ -540,68 +535,84 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
 
 int main(int argc, char** argv)
 {
-    int daemonize = 1;
+    int daemonize = 0;
 
-    /* signal handlers */
     signal(SIGTERM, handle_fatal_signal);
     signal(SIGINT, handle_fatal_signal);
 
+    /* Daemonize unless -d */
+    if (!argv[1] || strcmp(argv[1], "-d") != 0)
+    {
+        daemonize = 1;
+
+        /* Open stdin to /dev/null. We do it before forking
+         * in order to emit useful exitcode to the parent
+         * if open fails */
+        close(STDIN_FILENO);
+        xopen("/dev/null", O_RDWR);
+        /* forking to background */
+        pid_t pid = fork();
+        if (pid < 0)
+        {
+            perror_msg_and_die("can't fork");
+        }
+        if (pid > 0)
+        {
+            /* Parent */
+            /* Wait for child to notify us via SIGTERM that it feels ok */
+            int i = 20; /* 2 sec */
+            while (sig_caught == 0 && --i)
+            {
+                    usleep(100 * 1000);
+            }
+            _exit(sig_caught != SIGTERM); /* TERM:ok(0), else:bad(1) */
+        }
+        /* Child (daemon) continues */
+        setsid(); /* never fails */
+        /* We must not leave fds 0,1,2 closed.
+         * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+        xdup(0);
+        xdup(0);
+    }
+
+    CCrashWatcher watcher;
+
+    /* Initialization */
     try
     {
-        if (argv[1])
-        {
-            if (strcmp(argv[1], "-d") == 0)
-            {
-                daemonize = 0;
-            }
-        }
-        if (daemonize)
-        {
-            /* Open stdin to /dev/null. We do it before forking
-             * in order to emit useful exitcode to the parent
-             * if open fails */
-            close(STDIN_FILENO);
-            if (open("/dev/null", O_RDWR))
-            {
-                throw CABRTException(EXCEP_FATAL, "Can't open /dev/null");
-            }
-            /* forking to background */
-            pid_t pid = fork();
-            if (pid < 0)
-            {
-                throw CABRTException(EXCEP_FATAL, "fork error");
-            }
-            if (pid > 0)
-            {
-                /* Parent */
-                /* Wait for child to notify us via SIGTERM that it feels ok */
-                int i = 20; /* 2 sec */
-                while (sig_caught == 0 && --i)
-                {
-                        usleep(100 * 1000);
-                }
-                _exit(sig_caught != SIGTERM); /* TERM:ok(0), else:bad(1) */
-            }
-            /* Child (daemon) continues */
-            pid_t sid = setsid();
-            if(sid == -1)
-            {
-                throw CABRTException(EXCEP_FATAL, "CCrashWatcher::Daemonize(): setsid failed");
-            }
-            /* We must not leave fds 0,1,2 closed.
-             * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
-            close(STDOUT_FILENO);
-            close(STDERR_FILENO);
-            xdup(0);
-            xdup(0);
-        }
-
-        CCrashWatcher watcher(DEBUG_DUMPS_DIR);
-        watcher.Debug("Running...");
-        Lock();
-        CreatePidFile();
-
+        pthread_mutex_init(&m_pJobsMutex, NULL); /* never fails */
+        /* DBus init - we want it early so that errors are reported */
+        comm_layer_inner_init(&watcher);
+        /* Watching DEBUG_DUMPS_DIR for new files... */
+        errno = 0;
+        m_nFd = inotify_init();
+        if (m_nFd == -1)
+            perror_msg_and_die("inotify_init failed");
+        if (inotify_add_watch(m_nFd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
+            perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+        /* (comment here) */
+        m_pSettings = new CSettings();
+        m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
+        /* (comment here) */
+        m_pMainloop = g_main_loop_new(NULL, FALSE);
+        /* (comment here) */
+        m_pMW = new CMiddleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
+        SetUpMW();
+        SetUpCron();
+        FindNewDumps(DEBUG_DUMPS_DIR);
+        /* (comment here) */
+#ifdef ENABLE_DBUS
+        m_pCommLayer = new CCommLayerServerDBus();
+#elif ENABLE_SOCKET
+        m_pCommLayer = new CCommLayerServerSocket();
+#endif
+        m_pCommLayer->Attach(&watcher);
+        /* (comment here) */
+        m_pGio = g_io_channel_unix_new(m_nFd);
         g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, NULL);
+        /* Add an event source which waits for INT/TERM signal */
         GSourceFuncs waitsignal_funcs;
         memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
         waitsignal_funcs.prepare  = waitsignal_prepare;
@@ -610,30 +621,65 @@ int main(int argc, char** argv)
         /*waitsignal_funcs.finalize = NULL; - already done */
         GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
         g_source_attach(waitsignal_src, g_main_context_default());
-
-        /* Let parent know we initialized ok */
-        if (daemonize)
+        /* Mark the territory */
+        Lock();
+        CreatePidFile();
+    }
+    catch (...)
+    {
+        /* Initialization error. Clean up, in reverse order */
+        unlink(VAR_RUN_PIDFILE);
+        unlink(VAR_RUN_LOCK_FILE);
+        g_io_channel_unref(m_pGio);
+        delete m_pCommLayer;
+        /* This restores /proc/sys/kernel/core_pattern, among other things: */
+        delete m_pMW;
+        g_main_loop_unref(m_pMainloop);
+        delete m_pSettings;
+        if (pthread_mutex_destroy(&m_pJobsMutex) != 0)
         {
-            kill(getppid(), SIGTERM);
+            error_msg("threading error: job mutex locked");
         }
+        /* Inform parent that initialization failed */
+        if (daemonize)
+    	    kill(getppid(), SIGINT);
+        error_msg_and_die("error while initializing daemon, exiting");
+    }
 
-        /* Enter the event loop */
-        g_main_run(m_pMainloop);
+    /* Inform parent that we initialized ok */
+    if (daemonize)
+        kill(getppid(), SIGTERM);
+
+    /* Enter the event loop */
+    try
+    {
+	watcher.Debug("Running...");
+	g_main_run(m_pMainloop);
     }
     catch (CABRTException& e)
     {
-        std::cerr << "Cannot create daemon: " << e.what() << std::endl;
+        error_msg("error: %s", e.what().c_str());
     }
     catch (std::exception& e)
     {
-        std::cerr << "Cannot create daemon: " << e.what() << std::endl;
+        error_msg("error: %s", e.what());
     }
 
-    /* Take care to emit correct exit status */
-    if (sig_caught) {
+    /* Error or INT/TERM. Clean up, in reverse order */
+    unlink(VAR_RUN_PIDFILE);
+    unlink(VAR_RUN_LOCK_FILE);
+    g_io_channel_unref(m_pGio);
+    delete m_pCommLayer;
+    /* This restores /proc/sys/kernel/core_pattern, among other things: */
+    delete m_pMW;
+    g_main_loop_unref(m_pMainloop);
+    delete m_pSettings;
+
+    /* Exiting */
+    if (sig_caught)
+    {
         signal(sig_caught, SIG_DFL);
         raise(sig_caught);
     }
-    /* I think we never end up here */
-    return 0;
+    return 1;
 }

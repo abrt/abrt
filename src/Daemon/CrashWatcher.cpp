@@ -43,79 +43,13 @@ void CCrashWatcher::Debug(const std::string& pMessage, const std::string& pDest)
     std::cout << "Debug: " + pMessage << std::endl;
 }
 
-CCrashWatcher::CCrashWatcher(const std::string& pPath)
+CCrashWatcher::CCrashWatcher()
 {
     g_cw = this;
-
-    int watch = 0;
-    m_sTarget = pPath;
-
-    // TODO: initialize object according parameters -w -d
-    // status has to be always created.
-    m_pCommLayer = NULL;
-    comm_layer_inner_init(this);
-
-    m_pSettings = new CSettings();
-    m_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
-
-    m_pMainloop = g_main_loop_new(NULL,FALSE);
-    m_pMW = new CMiddleWare(PLUGINS_CONF_DIR,PLUGINS_LIB_DIR);
-    if (pthread_mutex_init(&m_pJobsMutex, NULL) != 0)
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't init mutex!");
-    }
-    try
-    {
-        SetUpMW();
-        SetUpCron();
-        FindNewDumps(pPath);
-#ifdef ENABLE_DBUS
-        m_pCommLayer = new CCommLayerServerDBus();
-#elif ENABLE_SOCKET
-        m_pCommLayer = new CCommLayerServerSocket();
-#endif
-//      m_pCommLayer = new CCommLayerServerDBus();
-//      m_pCommLayer = new CCommLayerServerSocket();
-        m_pCommLayer->Attach(this);
-
-        if ((m_nFd = inotify_init()) == -1)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Init Failed");
-        }
-        if ((watch = inotify_add_watch(m_nFd, pPath.c_str(), IN_CREATE)) == -1)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Add watch failed:" + pPath);
-        }
-        m_pGio = g_io_channel_unix_new(m_nFd);
-    }
-    catch (...)
-    {
-        /* This restores /proc/sys/kernel/core_pattern, among other things */
-        delete m_pMW;
-        //too? delete m_pCommLayer;
-        throw;
-    }
 }
 
 CCrashWatcher::~CCrashWatcher()
 {
-    //delete dispatcher, connection, etc..
-    //m_pConn->disconnect();
-
-    g_io_channel_unref(m_pGio);
-    g_main_loop_unref(m_pMainloop);
-
-    delete m_pCommLayer;
-    delete m_pMW;
-    delete m_pSettings;
-    if (pthread_mutex_destroy(&m_pJobsMutex) != 0)
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CCrashWatcher(): Can't destroy mutex!");
-    }
-    /* delete pid file */
-    unlink(VAR_RUN_PIDFILE);
-    /* delete lock file */
-    unlink(VAR_RUN_LOCK_FILE);
 }
 
 vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
@@ -348,6 +282,9 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName,
         }
         Warning(e.what());
     }
+    // TODO: is it right? I added it just to disable a warning...
+    // but maybe returning empty map is wrong here?
+    return vector_map_string_string_t();
 }
 
 void CCrashWatcher::RegisterPlugin(const std::string& pName)

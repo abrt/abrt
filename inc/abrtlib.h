@@ -108,6 +108,9 @@ void xmove_fd(int from, int to);
 char* xasprintf(const char *format, ...);
 std::string ssprintf(const char *format, ...);
 
+int xopen(const char *pathname, int flags);
+int xopen3(const char *pathname, int flags, int mode);
+
 /* copyfd_XX print read/write errors and return -1 if they occur */
 off_t copyfd_eof(int src_fd, int dst_fd);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size);

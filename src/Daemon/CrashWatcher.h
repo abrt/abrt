@@ -55,8 +55,7 @@ class CCrashWatcher
 {
 
     public:
-        //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
-        CCrashWatcher(const std::string& pPath);
+        CCrashWatcher();
         virtual ~CCrashWatcher();
 
     public:
@@ -84,37 +83,19 @@ class CCrashWatcher
 };
 
 
+/* used only for ->Debug(), ->Warning() etc calls */
 extern CCrashWatcher *g_cw;
-extern int m_nFd;
-extern GIOChannel* m_pGio;
-extern GMainLoop *m_pMainloop;
-extern std::string m_sTarget;
-extern CMiddleWare *m_pMW;
+/* conduit for these messages */
 extern CCommLayerServer *m_pCommLayer;
-extern CSettings *m_pSettings;
-/**
+
+extern CMiddleWare *m_pMW;
+
+/*
  * Map to cache the results from CreateReport_t
  * <UID, <UUID, result>>
  */
 extern std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
-/**
-* mutex to protect m_pending_jobs from being accesed by multiple threads at the same time
-*/
+/* mutex to protect m_pending_jobs */
 extern pthread_mutex_t m_pJobsMutex;
-
-
-//extern gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
-//extern void *create_report(void *arg);
-//extern gboolean cron_activation_periodic_cb(gpointer data);
-//extern gboolean cron_activation_one_cb(gpointer data);
-//extern gboolean cron_activation_reshedule_cb(gpointer data);
-//extern void cron_delete_callback_data_cb(gpointer data);
-//extern void CreatePidFile();
-//extern void Lock();
-extern void SetUpMW();
-extern void SetUpCron();
-/* finds dumps created when daemon wasn't running */
-// FIXME: how to catch abrt itself without this?
-extern void FindNewDumps(const std::string& pPath);
 
 #endif /*CRASHWATCHER_H_*/

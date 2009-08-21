@@ -252,3 +252,41 @@ std::string get_home_dir(int uid)
     struct passwd* pw = getpwuid(uid);
     return pw ? pw->pw_dir : "";
 }
+
+// Die if we can't open a file and return a fd
+int xopen3(const char *pathname, int flags, int mode)
+{
+	int ret;
+
+	ret = open(pathname, flags, mode);
+	if (ret < 0) {
+		perror_msg_and_die("can't open '%s'", pathname);
+	}
+	return ret;
+}
+
+// Die if we can't open an existing file and return a fd
+int xopen(const char *pathname, int flags)
+{
+	return xopen3(pathname, flags, 0666);
+}
+
+#if 0 //UNUSED
+// Warn if we can't open a file and return a fd.
+int open3_or_warn(const char *pathname, int flags, int mode)
+{
+	int ret;
+
+	ret = open(pathname, flags, mode);
+	if (ret < 0) {
+		perror_msg("can't open '%s'", pathname);
+	}
+	return ret;
+}
+
+// Warn if we can't open a file and return a fd.
+int open_or_warn(const char *pathname, int flags)
+{
+	return open3_or_warn(pathname, flags, 0666);
+}
+#endif
