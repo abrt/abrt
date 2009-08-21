@@ -50,6 +50,25 @@
 
 static uint8_t sig_caught; /* = 0 */
 
+static int m_nFd;
+static GIOChannel* m_pGio;
+static GMainLoop *m_pMainloop;
+static std::string m_sTarget;
+static CMiddleWare *m_pMW;
+static CCommLayerServer *m_pCommLayer;
+/*FIXME not needed */
+//static DBus::Connection *m_pConn;
+static CSettings *m_pSettings;
+/**
+ * Map to cache the results from CreateReport_t
+ * <UID, <UUID, result>>
+ */
+static std::map<const std::string, std::map <int, map_crash_report_t > > m_pending_jobs;
+/**
+* mutex to protect m_pending_jobs from being accesed by multiple threads at the same time
+*/
+static pthread_mutex_t m_pJobsMutex;
+
 
 /* CCrashWatcher interface */
 
@@ -79,7 +98,6 @@ class CCrashWatcher
                 m_sPluginArgs(pPluginArgs),
                 m_nTimeout(pTimeout)
             {}
-
         } cron_callback_data_t;
 
         typedef struct SThreadData {
@@ -90,16 +108,6 @@ class CCrashWatcher
             CCrashWatcher *daemon;
         } thread_data_t;
 
-        /**
-         * Map to cache the results from CreateReport_t
-         * <UID, <UUID, result>>
-         */
-        std::map <const std::string, std::map <int, map_crash_report_t > > pending_jobs;
-        /**
-        * mutex to protect pending_jobs from being accesed by multiple threads at the same time
-        */
-        pthread_mutex_t m_pJobsMutex;
-
         static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer data);
         static void *create_report(void *arg);
         static gboolean cron_activation_periodic_cb(gpointer data);
@@ -109,7 +117,6 @@ class CCrashWatcher
 
         void StartWatch();
     public:
-        void GStartWatch();
         void CreatePidFile();
         void Lock();
     private:
@@ -119,15 +126,6 @@ class CCrashWatcher
         // FIXME: how to catch abrt itself without this?
         void FindNewDumps(const std::string& pPath);
 
-        int m_nFd;
-        GIOChannel* m_pGio;
-        GMainLoop *m_pMainloop;
-        std::string m_sTarget;
-        CMiddleWare *m_pMW;
-        CCommLayerServer *m_pCommLayer;
-        /*FIXME not needed */
-        //DBus::Connection *m_pConn;
-        CSettings *m_pSettings;
     public:
         //CCrashWatcher(const std::string& pPath,DBus::Connection &connection);
         CCrashWatcher(const std::string& pPath);
@@ -176,7 +174,7 @@ static bool dot_or_dotdot(const char *filename)
 
 static double GetDirSize(const std::string &pPath);
 
-gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon)
+static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer daemon)
 {
     GIOError err;
     char *buf = new char[INOTIFY_BUFF_SIZE];
@@ -206,28 +204,28 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
         /* we want to ignore the lock files */
         if (event->mask & IN_ISDIR)
         {
-            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < cc->m_pSettings->GetMaxCrashReportsSize())
+            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < m_pSettings->GetMaxCrashReportsSize())
             {
                 //std::string sName = name;
                 map_crash_info_t crashinfo;
                 try
                 {
                     CMiddleWare::mw_result_t res;
-                    res = cc->m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+                    res = m_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
                     switch (res)
                     {
                         case CMiddleWare::MW_OK:
                             cc->Debug("New crash, saving...");
-                            cc->m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                            m_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
-                            cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             break;
                         case CMiddleWare::MW_REPORTED:
                         case CMiddleWare::MW_OCCURED:
                             /* send message to dbus */
                             cc->Debug("Already saved crash, deleting...");
-                            cc->m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
-                            cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            m_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                         case CMiddleWare::MW_BLACKLISTED:
                         case CMiddleWare::MW_CORRUPTED:
@@ -237,7 +235,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
                         case CMiddleWare::MW_FILE_ERROR:
                         default:
                             cc->Warning("Corrupted or bad crash, deleting...");
-                            cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                     }
                 }
@@ -259,7 +257,7 @@ gboolean CCrashWatcher::handle_event_cb(GIOChannel *gio, GIOCondition condition,
             else
             {
                 cc->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
-                cc->m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                m_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             }
         }
         else
@@ -279,7 +277,7 @@ void *CCrashWatcher::create_report(void *arg)
     try
     {
         CMiddleWare::mw_result_t res;
-        res = thread_data->daemon->m_pMW->CreateCrashReport(thread_data->UUID,thread_data->UID,crashReport);
+        res = m_pMW->CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
         switch (res)
         {
             case CMiddleWare::MW_OK:
@@ -296,16 +294,16 @@ void *CCrashWatcher::create_report(void *arg)
                 {
                     std::string debugDumpDir;
                     thread_data->daemon->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
-                    debugDumpDir = thread_data->daemon->m_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
-                    thread_data->daemon->m_pMW->DeleteDebugDumpDir(debugDumpDir);
+                    debugDumpDir = m_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
+                    m_pMW->DeleteDebugDumpDir(debugDumpDir);
                 }
                 break;
         }
         /* only one thread can write */
-        pthread_mutex_lock(&(thread_data->daemon->m_pJobsMutex));
-        thread_data->daemon->pending_jobs[std::string(thread_data->UID)][thread_data->thread_id] = crashReport;
-        pthread_mutex_unlock(&(thread_data->daemon->m_pJobsMutex));
-        thread_data->daemon->m_pCommLayer->JobDone(thread_data->dest, thread_data->thread_id);
+        pthread_mutex_lock(&m_pJobsMutex);
+        m_pending_jobs[std::string(thread_data->UID)][thread_data->thread_id] = crashReport;
+        pthread_mutex_unlock(&m_pJobsMutex);
+        m_pCommLayer->JobDone(thread_data->dest, thread_data->thread_id);
     }
     catch (CABRTException& e)
     {
@@ -334,7 +332,7 @@ gboolean CCrashWatcher::cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
     cronPeriodicCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
-    cronPeriodicCallbackData->m_pCrashWatcher->m_pMW->RunAction(cronPeriodicCallbackData->m_pCrashWatcher->m_sTarget,
+    m_pMW->RunAction(m_sTarget,
                                                                 cronPeriodicCallbackData->m_sPluginName,
                                                                 cronPeriodicCallbackData->m_sPluginArgs);
     return TRUE;
@@ -343,7 +341,7 @@ gboolean CCrashWatcher::cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
     cronOneCallbackData->m_pCrashWatcher->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
-    cronOneCallbackData->m_pCrashWatcher->m_pMW->RunAction(cronOneCallbackData->m_pCrashWatcher->m_sTarget,
+    m_pMW->RunAction(m_sTarget,
                                                            cronOneCallbackData->m_sPluginName,
                                                            cronOneCallbackData->m_sPluginArgs);
     return FALSE;
@@ -825,25 +823,6 @@ static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpoin
     return 1;
 }
 
-/* daemon loop with glib */
-void CCrashWatcher::GStartWatch()
-{
-    g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, this);
-
-    GSourceFuncs waitsignal_funcs;
-    memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
-    waitsignal_funcs.prepare  = waitsignal_prepare;
-    waitsignal_funcs.check    = waitsignal_check;
-    waitsignal_funcs.dispatch = waitsignal_dispatch;
-    //waitsignal_funcs.finalize = NULL; - already done
-    SignalSource *waitsignal_src = (SignalSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
-    waitsignal_src->watcher = this;
-    g_source_attach(&waitsignal_src->src, g_main_context_default());
-
-    //enter the event loop
-    g_main_run(m_pMainloop);
-}
-
 void CCrashWatcher::StopRun()
 {
     g_main_quit(m_pMainloop);
@@ -980,7 +959,7 @@ map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::strin
        - use some TTL to clean the memory even if client won't get it
        - if we don't find it in the cache we should try to ask MW to get it again??
     */
-    return pending_jobs[pSender][pJobID];
+    return m_pending_jobs[pSender][pJobID];
 }
 
 vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
@@ -1147,7 +1126,20 @@ int main(int argc, char** argv)
             /* Let parent know we initialized ok */
             kill(getppid(), SIGTERM);
         }
-        watcher.GStartWatch();
+
+        g_io_add_watch(m_pGio, G_IO_IN, handle_event_cb, &watcher);
+        GSourceFuncs waitsignal_funcs;
+        memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
+        waitsignal_funcs.prepare  = waitsignal_prepare;
+        waitsignal_funcs.check    = waitsignal_check;
+        waitsignal_funcs.dispatch = waitsignal_dispatch;
+        //waitsignal_funcs.finalize = NULL; - already done
+        SignalSource *waitsignal_src = (SignalSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
+        waitsignal_src->watcher = &watcher;
+        g_source_attach(&waitsignal_src->src, g_main_context_default());
+
+        //enter the event loop
+        g_main_run(m_pMainloop);
     }
     catch (CABRTException& e)
     {
