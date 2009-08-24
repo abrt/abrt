@@ -2,7 +2,6 @@ sbin_PROGRAMS = abrt
 
 abrt_SOURCES = \
     DBusServerProxy.h DBusServerProxy.cpp \
-    DynamicLibrary.cpp DynamicLibrary.h \
     ABRTPlugin.cpp ABRTPlugin.h \
     PluginManager.cpp PluginManager.h \
     MiddleWare.cpp MiddleWare.h \

@@ -24,7 +24,6 @@
 #define ABRTPLUGIN_H_
 
 #include <string>
-#include "DynamicLibrary.h"
 #include "Plugin.h"
 
 /**
@@ -34,10 +33,9 @@ class CABRTPlugin
 {
     private:
         /**
-         * A class containing library which contains plugin functionality.
-         * @see DynamicLibrary.h
+         * dlopen'ed library
          */
-        CDynamicLibrary* m_pDynamicLibrary;
+        void* m_pHandle;
         /**
          * A pointer to struc containing information about plugin.
          */
@@ -53,7 +51,7 @@ class CABRTPlugin
          * The constructor loads a plugin
          * @param pLibPath a path to a plugin
          */
-        CABRTPlugin(const std::string& pLibPath);
+        CABRTPlugin(const char* pLibPath);
         /**
          * A destructor.
          */

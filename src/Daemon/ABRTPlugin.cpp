@@ -19,22 +19,28 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#include "abrtlib.h"
 #include "ABRTPlugin.h"
+#include <dlfcn.h>
 
-CABRTPlugin::CABRTPlugin(const std::string& pLibPath) :
-    m_pDynamicLibrary(NULL),
-    m_pPluginInfo(NULL),
-    m_pFnPluginNew(NULL)
+CABRTPlugin::CABRTPlugin(const char* pLibPath)
 {
-    m_pDynamicLibrary = new CDynamicLibrary(pLibPath);
-    m_pPluginInfo = reinterpret_cast<typeof(m_pPluginInfo)>(m_pDynamicLibrary->FindSymbol("plugin_info"));
-    m_pFnPluginNew = reinterpret_cast<typeof(m_pFnPluginNew)>(m_pDynamicLibrary->FindSymbol("plugin_new"));
+    /* All errors are fatal */
+    m_pHandle = dlopen(pLibPath, RTLD_NOW);
+    if (!m_pHandle)
+        error_msg_and_die("can't load '%s'", pLibPath);
+
+#define LOADSYM(fp, handle, name) do { \
+    fp = (typeof(fp)) (dlsym(handle, name)); \
+    if (!fp) \
+        error_msg_and_die("'%s' has no %s entry", pLibPath, name); \
+} while (0)
+
+    LOADSYM(m_pPluginInfo, m_pHandle, "plugin_info");
+    LOADSYM(m_pFnPluginNew, m_pHandle, "plugin_new");
 }
 
 CABRTPlugin::~CABRTPlugin()
 {
-    if (m_pDynamicLibrary != NULL)
-    {
-        delete m_pDynamicLibrary;
-    }
+    dlclose(m_pHandle);
 }

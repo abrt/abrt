@@ -95,7 +95,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
         try
         {
             std::string libPath = m_sPluginsLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
-            abrtPlugin = new CABRTPlugin(libPath);
+            abrtPlugin = new CABRTPlugin(libPath.c_str());
             if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
                 (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
             {
