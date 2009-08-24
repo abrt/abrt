@@ -42,7 +42,7 @@ class MainWindow():
         self.wTree = gtk.glade.XML(self.gladefile)
 
         #Get the Main Window, and connect the "destroy" event
-        self.window = self.wTree.get_widget("main_window2")
+        self.window = self.wTree.get_widget("main_window3")
         self.window.set_default_size(700, 480)
         if (self.window):
             self.window.connect("delete_event", self.delete_event_cb)
@@ -203,6 +203,16 @@ class MainWindow():
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         #move this to Dump class
+        if dump.isReported():
+            report_label = "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+            for message in dump.getMessage().split('\n'):
+                if message:
+                    if "http" in message or "file:///" in message:
+                        message = "<a href=\"%s\">%s</a>" % (message, message)
+                    report_label += "%s\n" % message
+            self.wTree.get_widget("lReported").set_markup(report_label)
+        else:
+            self.wTree.get_widget("lReported").set_markup("<b>Not reported!</b>")
         lPackage = self.wTree.get_widget("lPackage")
         self.wTree.get_widget("lDescription").set_label(dump.getDescription())
 
