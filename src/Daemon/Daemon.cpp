@@ -168,7 +168,7 @@ static void SetUpMW()
     CSettings::set_strings_t::iterator it_p;
     for (it_p = enabledPlugins.begin(); it_p != enabledPlugins.end(); it_p++)
     {
-        ::RegisterPlugin(*it_p);
+        g_pPluginManager->RegisterPlugin(*it_p);
     }
     CSettings::vector_pair_strings_t actionsAndReporters = g_pSettings->GetActionsAndReporters();
     CSettings::vector_pair_strings_t::iterator it_ar;

@@ -253,7 +253,7 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
 {
     try
     {
-        return ::GetPluginsInfo();
+        return g_pPluginManager->GetPluginsInfo();
     }
     catch (CABRTException &e)
     {
@@ -272,7 +272,7 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName,
 {
     try
     {
-        return ::GetPluginSettings(pName, pUID);
+        return g_pPluginManager->GetPluginSettings(pName, pUID);
     }
     catch(CABRTException &e)
     {
@@ -291,7 +291,7 @@ void CCrashWatcher::RegisterPlugin(const std::string& pName)
 {
     try
     {
-        ::RegisterPlugin(pName);
+        g_pPluginManager->RegisterPlugin(pName);
     }
     catch(CABRTException &e)
     {
@@ -307,7 +307,7 @@ void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
 {
     try
     {
-        ::UnRegisterPlugin(pName);
+        g_pPluginManager->UnRegisterPlugin(pName);
     }
     catch(CABRTException &e)
     {
@@ -323,7 +323,7 @@ void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::strin
 {
     try
     {
-        ::SetPluginSettings(pName, pUID, pSettings);
+        g_pPluginManager->SetPluginSettings(pName, pUID, pSettings);
     }
     catch(CABRTException &e)
     {

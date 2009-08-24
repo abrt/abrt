@@ -31,7 +31,9 @@
  * with plugins, it calls the plugin manager.
  * @see PluginManager.h
  */
-static CPluginManager* m_pPluginManager;
+CPluginManager* g_pPluginManager;
+
+
 /**
  * An instance of CRPM used for package checking.
  * @see RPM.h
@@ -57,10 +59,6 @@ static map_analyzer_actions_and_reporters_t m_mapAnalyzerActionsAndReporters;
  */
 static vector_pair_string_string_t m_vectorActionsAndReporters;
 /**
- * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
- */
-static std::string m_sPluginsConfDir;
-/**
  * Check GPG finger print?
  */
 static bool m_bOpenGPGCheck;
@@ -72,16 +70,15 @@ static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& 
 void CMiddleWare(const std::string& pPluginsConfDir,
                          const std::string& pPluginsLibDir)
 {
-    m_sPluginsConfDir = pPluginsConfDir;
     m_bOpenGPGCheck = true;
-    m_pPluginManager = new CPluginManager(pPluginsConfDir, pPluginsLibDir);
-    m_pPluginManager->LoadPlugins();
+    g_pPluginManager = new CPluginManager(pPluginsConfDir, pPluginsLibDir);
+    g_pPluginManager->LoadPlugins();
 }
 
 void CMiddleWare_deinit()
 {
-    m_pPluginManager->UnLoadPlugins();
-    delete m_pPluginManager;
+    g_pPluginManager->UnLoadPlugins();
+    delete g_pPluginManager;
 }
 
 /**
@@ -150,29 +147,6 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
     dd.Close();
 }
 
-void RegisterPlugin(const std::string& pName)
-{
-    m_pPluginManager->RegisterPlugin(pName);
-}
-
-void UnRegisterPlugin(const std::string& pName)
-{
-    m_pPluginManager->UnRegisterPlugin(pName);
-}
-
-void SetPluginSettings(const std::string& pName,
-                                    const std::string& pUID,
-                                    const map_plugin_settings_t& pSettings)
-{
-    m_pPluginManager->SetPluginSettings(pName, pUID, pSettings);
-}
-
-map_plugin_settings_t GetPluginSettings(const std::string& pName,
-                                                     const std::string& pUID)
-{
-    return m_pPluginManager->GetPluginSettings(pName, pUID);
-}
-
 /**
  * Get a local UUID from particular analyzer plugin.
  * @param pAnalyzer A name of an analyzer plugin.
@@ -182,7 +156,7 @@ map_plugin_settings_t GetPluginSettings(const std::string& pName,
 static std::string GetLocalUUID(const std::string& pAnalyzer,
                                       const std::string& pDebugDumpDir)
 {
-    CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->GetLocalUUID(pDebugDumpDir);
 }
 
@@ -195,7 +169,7 @@ static std::string GetLocalUUID(const std::string& pAnalyzer,
 static std::string GetGlobalUUID(const std::string& pAnalyzer,
                                        const std::string& pDebugDumpDir)
 {
-    CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->GetGlobalUUID(pDebugDumpDir);
 }
 
@@ -209,7 +183,7 @@ static std::string GetGlobalUUID(const std::string& pAnalyzer,
 static void CreateReport(const std::string& pAnalyzer,
                                const std::string& pDebugDumpDir)
 {
-    CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
     analyzer->CreateReport(pDebugDumpDir);
 }
 
@@ -217,7 +191,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
                                                         const std::string& pUID,
                                                         map_crash_report_t& pCrashReport)
 {
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
     database->Connect();
     row = database->GetUUIDData(pUUID, pUID);
@@ -280,7 +254,7 @@ void RunAction(const std::string& pActionDir,
 {
     try
     {
-        CAction* action = m_pPluginManager->GetAction(pPluginName);
+        CAction* action = g_pPluginManager->GetAction(pPluginName);
 
         action->Run(pActionDir, pPluginArgs);
     }
@@ -299,17 +273,17 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir)
     {
         try
         {
-            if (m_pPluginManager->GetPluginType((*it_ar).first) == REPORTER)
+            if (g_pPluginManager->GetPluginType((*it_ar).first) == REPORTER)
             {
-                CReporter* reporter = m_pPluginManager->GetReporter((*it_ar).first);
+                CReporter* reporter = g_pPluginManager->GetReporter((*it_ar).first);
 
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
                 reporter->Report(crashReport, (*it_ar).second);
             }
-            else if (m_pPluginManager->GetPluginType((*it_ar).first) == ACTION)
+            else if (g_pPluginManager->GetPluginType((*it_ar).first) == ACTION)
             {
-                CAction* action = m_pPluginManager->GetAction((*it_ar).first);
+                CAction* action = g_pPluginManager->GetAction((*it_ar).first);
                 action->Run(pDebugDumpDir, (*it_ar).second);
             }
         }
@@ -366,9 +340,9 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                     {
                         ret_key += " (" + packageName + ")";
                     }
-                    if (m_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
+                    if (g_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
                     {
-                        CReporter* reporter = m_pPluginManager->GetReporter((*it_r).first);
+                        CReporter* reporter = g_pPluginManager->GetReporter((*it_r).first);
                         std::string home = "";
                         map_plugin_settings_t oldSettings;
                         map_plugin_settings_t newSettings;
@@ -380,7 +354,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                             {
                                 oldSettings = reporter->GetSettings();
 
-                                if (m_pPluginManager->LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
+                                if (g_pPluginManager->LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
                                 {
                                     reporter->SetSettings(newSettings);
                                 }
@@ -409,7 +383,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
         }
     }
 
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
     database->Connect();
     database->SetReported(UUID, UID, message);
     database->DisConnect();
@@ -429,7 +403,7 @@ std::string DeleteCrashInfo(const std::string& pUUID,
                                          const std::string& pUID)
 {
     database_row_t row;
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
     database->Connect();
     row = database->GetUUIDData(pUUID, pUID);
     database->Delete(pUUID, pUID);
@@ -449,7 +423,7 @@ std::string DeleteCrashInfo(const std::string& pUUID,
 static bool IsDebugDumpSaved(const std::string& pUID,
                                    const std::string& pDebugDumpDir)
 {
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
     vector_database_rows_t rows;
     database->Connect();
     rows = database->GetUIDData(pUID);
@@ -559,9 +533,9 @@ static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& 
         {
             try
             {
-                if (m_pPluginManager->GetPluginType((*it_a).first) == ACTION)
+                if (g_pPluginManager->GetPluginType((*it_a).first) == ACTION)
                 {
-                    CAction* action = m_pPluginManager->GetAction((*it_a).first);
+                    CAction* action = g_pPluginManager->GetAction((*it_a).first);
 
                     action->Run(pDebugDumpDir, (*it_a).second);
                 }
@@ -593,7 +567,7 @@ static mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
                                                               map_crash_info_t& pCrashInfo)
 {
     mw_result_t res;
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
     database->Connect();
     database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
@@ -669,7 +643,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
                                                    map_crash_info_t& pCrashInfo)
 {
     pCrashInfo.clear();
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
     database_row_t row;
     database->Connect();
     row = database->GetUUIDData(pUUID, pUID);
@@ -714,7 +688,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
 
 vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
 {
-    CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
     vector_database_rows_t rows;
     database->Connect();
     rows = database->GetUIDData(pUID);
@@ -728,11 +702,6 @@ vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
     }
 
     return UUIDsUIDs;
-}
-
-vector_map_string_string_t GetPluginsInfo()
-{
-    return m_pPluginManager->GetPluginsInfo();
 }
 
 void SetOpenGPGCheck(bool pCheck)

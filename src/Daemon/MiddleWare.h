@@ -56,44 +56,13 @@ typedef enum {
 typedef std::map<std::string, vector_strings_t> report_status_t;
 typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
 
+
+extern CPluginManager* g_pPluginManager;
+
+
 void CMiddleWare(const std::string& pPluginsConfDir,
             const std::string& pPluginsLibDir);
 void CMiddleWare_deinit();
-/**
- * Register particular plugin.
- * @param pName A plugin name.
- */
-void RegisterPlugin(const std::string& pName);
-/**
- * A method, which unregister particular plugin.
- * @param pName A plugin name.
- */
-void UnRegisterPlugin(const std::string& pName);
-/**
- * A method, which sets up a plugin. The settings are also saved in home
- * directory of an user.
- * @param pName A plugin name.
- * @param pUID An uid of user.
- * @param pSettings A plugin's settings.
- */
-void SetPluginSettings(const std::string& pName,
-                       const std::string& pUID,
-                       const map_plugin_settings_t& pSettings);
-/**
- * A method, which returns plugin's settings according to user.
- * @param pName A plugin name.
- * @param pUID An uid of user.
- * @return Plugin's settings accorting to user.
- */
-map_plugin_settings_t GetPluginSettings(const std::string& pName,
-                                        const std::string& pUID);
-/**
- * A method, which gets all plugins info (event those plugins which are
- * disabled). It can be send via DBus to GUI and displayed to an user.
- * Then a user can fill all needed informations like URLs etc.
- * @return A vector of maps <key, vaule>.
- */
-vector_map_string_string_t GetPluginsInfo();
 /**
  * A method, which takes care of getting all additional data needed
  * for computing UUIDs and creating a report for particular analyzer
