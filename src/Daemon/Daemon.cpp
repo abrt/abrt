@@ -581,7 +581,7 @@ int main(int argc, char** argv)
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
         /* (comment here) */
-        LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
+        LoadSettings(CONF_DIR"/abrt.conf");
         /* (comment here) */
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* (comment here) */
