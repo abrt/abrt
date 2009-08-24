@@ -203,11 +203,11 @@ void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrash
     }
     if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
     {
-       comment = "\n\nCommnet\n"
+       comment = "\n\nComment\n"
                  "-----\n" +
                  pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
     }
-    pDescription = "\nabrt detected crash.\n" +
+    pDescription = "\nabrt detected a crash.\n" +
                    howToReproduce +
                    comment +
                    "\n\nAdditional information\n"
