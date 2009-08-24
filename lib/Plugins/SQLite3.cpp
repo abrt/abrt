@@ -25,14 +25,51 @@
 #include <string>
 #include <iostream>
 #include "ABRTException.h"
+#include <stdlib.h>
 
-#define ABRT_TABLE "abrt"
+
+#define ABRT_TABLE_VERSION      2
+#define ABRT_TABLE_VERSION_STR "2"
+#define ABRT_TABLE "abrt_v"ABRT_TABLE_VERSION_STR
 #define SQLITE3_MASTER_TABLE "sqlite_master"
+
+
+static const char* upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
+    // v0 -> *
+    {
+        // v0 -> v0
+        ";",
+        // v0 -> v1
+        "ALTER TABLE abrt ADD "DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '';",
+        // v0 -> v2
+        "ALTER TABLE abrt RENAME TO abrt_v2;"
+        "ALTER TABLE abrt_v2 ADD "DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '';",
+
+    },
+    //v1 -> *
+    {
+        // v1 -> v0
+        // TODO: does it make sense to support downgrade?
+        ";",
+        // v1 -> v1
+        ";",
+        // v1 -> v2
+        "ALTER TABLE abrt RENAME TO abrt_v2;",
+    },
+};
+
 
 CSQLite3::CSQLite3() :
     m_sDBPath(LOCALSTATEDIR "/cache/abrt/abrt-db"),
     m_pDB(NULL)
 {}
+
+
+void CSQLite3::UpdateABRTTable(const int pOldVersion)
+{
+    Exec(upate_sql_commands[pOldVersion][ABRT_TABLE_VERSION]);
+}
+
 
 bool CSQLite3::Exist(const std::string& pUUID, const std::string& pUID)
 {
@@ -87,9 +124,9 @@ void CSQLite3::GetTable(const std::string& pCommand, vector_database_rows_t& pTa
                         break;
                     case 4: row.m_sReported = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 5: row.m_sMessage = table[jj +(ncol*ii) + ncol];
+                    case 5: row.m_sTime = table[jj +(ncol*ii) + ncol];
                         break;
-                    case 6: row.m_sTime = table[jj +(ncol*ii) + ncol];
+                    case 6: row.m_sMessage = table[jj +(ncol*ii) + ncol];
                         break;
                     default:
                         break;
@@ -140,6 +177,52 @@ void CSQLite3::CreateDB()
     }
 }
 
+
+bool CSQLite3::CheckTable()
+{
+    std::string command = "SELECT NAME, SQL FROM "SQLITE3_MASTER_TABLE" "
+                          "WHERE TYPE='table';";
+    char **table;
+    int ncol, nrow;
+    char *err;
+    int ret = sqlite3_get_table(m_pDB, command.c_str(), &table, &nrow, &ncol, &err);
+    if (ret != SQLITE_OK)
+    {
+            throw CABRTException(EXCEP_PLUGIN, "SQLite3::GetTable(): Error on: " + command + " " + err);
+    }
+    if (!nrow || !nrow)
+    {
+        return false;
+    }
+
+    std::string tableName = table[0 + ncol];
+    std::string::size_type pos = tableName.find("_");
+    if (pos != std::string::npos)
+    {
+        std::string tableVersion = tableName.substr(pos + 2);
+        if (atoi(tableVersion.c_str()) < ABRT_TABLE_VERSION)
+        {
+            UpdateABRTTable(atoi(tableVersion.c_str()));
+        }
+        return true;
+    }
+    // TODO: after some time could be removed
+    else
+    {
+        // hack for version 0 and 1
+        std::string sql = table[1 + ncol];
+        if (sql.find(DATABASE_COLUMN_MESSAGE) != std::string::npos)
+        {
+            UpdateABRTTable(1);
+            return true;
+        }
+        UpdateABRTTable(0);
+        return true;
+    }
+
+    return true;
+}
+/*
 bool CSQLite3::CheckTable()
 {
     vector_database_rows_t table;
@@ -148,7 +231,7 @@ bool CSQLite3::CheckTable()
 
     return table.size() == 1;
 }
-
+*/
 void CSQLite3::CreateTable()
 {
     Exec("CREATE TABLE "ABRT_TABLE" ("
@@ -157,8 +240,8 @@ void CSQLite3::CreateTable()
          DATABASE_COLUMN_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
          DATABASE_COLUMN_COUNT" INT NOT NULL DEFAULT 1,"
          DATABASE_COLUMN_REPORTED" INT NOT NULL DEFAULT 0,"
-         DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
          DATABASE_COLUMN_TIME" VARCHAR NOT NULL DEFAULT 0,"
+         DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
          "PRIMARY KEY ("DATABASE_COLUMN_UUID","DATABASE_COLUMN_UID"));");
 }
 
@@ -295,7 +378,7 @@ map_plugin_settings_t CSQLite3::GetSettings()
 PLUGIN_INFO(DATABASE,
             CSQLite3,
             "SQLite3",
-            "0.0.1",
+            "0.0.2",
             "SQLite3 database plugin.",
             "zprikryl@redhat.com,jmoskovc@redhat.com",
             "https://fedorahosted.org/abrt/wiki",

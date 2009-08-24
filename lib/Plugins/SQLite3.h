@@ -35,6 +35,7 @@ class CSQLite3 : public CDatabase
 
         bool OpenDB();
         bool CheckTable();
+        void UpdateABRTTable(const int pOldVersion);
         void CreateDB();
         void CreateTable();
         void Exec(const std::string& pCommand);
