@@ -4,11 +4,9 @@ import subprocess
 import sys
 # url markup is supported from gtk 2.18 so we need to use libsexy
 if gtk.gtk_version[1] < 17:
-    print "using sexy"
     from sexy import UrlLabel as Label
     on_url_clicked_signal = "url-activated"
 else:
-    print "using gtk"
     from gtk import Label
     on_url_clicked_signal = "activate-link"
 try:

@@ -320,6 +320,7 @@ class MainWindow():
             if self.window.is_active():
                 return
             self.window.set_urgency_hint(True)
+            self.window.present()
 
 if __name__ == "__main__":
     cc = MainWindow()
