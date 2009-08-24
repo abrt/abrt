@@ -522,7 +522,6 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
 
 int main(int argc, char** argv)
 {
-    GIOChannel* pGio;
     int daemonize = 0;
 
     signal(SIGTERM, handle_fatal_signal);
@@ -565,6 +564,7 @@ int main(int argc, char** argv)
         xdup(0);
     }
 
+    GIOChannel* pGio = NULL;
     CCrashWatcher watcher;
 
     /* Initialization */
@@ -592,6 +592,7 @@ int main(int argc, char** argv)
         FindNewDumps(DEBUG_DUMPS_DIR);
         /* (comment here) */
 #ifdef ENABLE_DBUS
+        attach_dbus_dispatcher_to_glib_main_context();
         g_pCommLayer = new CCommLayerServerDBus();
 #elif ENABLE_SOCKET
         g_pCommLayer = new CCommLayerServerSocket();
@@ -616,9 +617,11 @@ int main(int argc, char** argv)
     catch (...)
     {
         /* Initialization error. Clean up, in reverse order */
+        error_msg("error while initializing daemon");
         unlink(VAR_RUN_PIDFILE);
         unlink(VAR_RUN_LOCK_FILE);
-        g_io_channel_unref(pGio);
+        if (pGio)
+            g_io_channel_unref(pGio);
         delete g_pCommLayer;
         /* This restores /proc/sys/kernel/core_pattern, among other things: */
         g_pPluginManager->UnLoadPlugins();
@@ -631,8 +634,8 @@ int main(int argc, char** argv)
         }
         /* Inform parent that initialization failed */
         if (daemonize)
-    	    kill(getppid(), SIGINT);
-        error_msg_and_die("error while initializing daemon, exiting");
+            kill(getppid(), SIGINT);
+        error_msg_and_die("exiting");
     }
 
     /* Inform parent that we initialized ok */
