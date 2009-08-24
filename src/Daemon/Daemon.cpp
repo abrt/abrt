@@ -53,7 +53,6 @@ static CSettings* g_pSettings;
 
 CCrashWatcher *g_cw;
 CCommLayerServer *g_pCommLayer;
-CMiddleWare *g_pMW;
 /*
  * Map to cache the results from CreateReport_t
  * <UID, <UUID, result>>
@@ -120,7 +119,7 @@ static gboolean cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
     g_cw->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
-    g_pMW->RunAction(DEBUG_DUMPS_DIR,
+    ::RunAction(DEBUG_DUMPS_DIR,
                                                                 cronPeriodicCallbackData->m_sPluginName,
                                                                 cronPeriodicCallbackData->m_sPluginArgs);
     return TRUE;
@@ -129,7 +128,7 @@ static gboolean cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
     g_cw->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
-    g_pMW->RunAction(DEBUG_DUMPS_DIR,
+    ::RunAction(DEBUG_DUMPS_DIR,
                                                            cronOneCallbackData->m_sPluginName,
                                                            cronOneCallbackData->m_sPluginArgs);
     return FALSE;
@@ -151,31 +150,31 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
 
 static void SetUpMW()
 {
-    g_pMW->SetOpenGPGCheck(g_pSettings->GetOpenGPGCheck());
-    g_pMW->SetDatabase(g_pSettings->GetDatabase());
+    ::SetOpenGPGCheck(g_pSettings->GetOpenGPGCheck());
+    ::SetDatabase(g_pSettings->GetDatabase());
     CSettings::set_strings_t openGPGPublicKeys = g_pSettings->GetOpenGPGPublicKeys();
     CSettings::set_strings_t::iterator it_k;
     for (it_k = openGPGPublicKeys.begin(); it_k != openGPGPublicKeys.end(); it_k++)
     {
-        g_pMW->AddOpenGPGPublicKey(*it_k);
+        ::AddOpenGPGPublicKey(*it_k);
     }
     CSettings::set_strings_t blackList = g_pSettings->GetBlackList();
     CSettings::set_strings_t::iterator it_b;
     for (it_b = blackList.begin(); it_b != blackList.end(); it_b++)
     {
-        g_pMW->AddBlackListedPackage(*it_b);
+        ::AddBlackListedPackage(*it_b);
     }
     CSettings::set_strings_t enabledPlugins = g_pSettings->GetEnabledPlugins();
     CSettings::set_strings_t::iterator it_p;
     for (it_p = enabledPlugins.begin(); it_p != enabledPlugins.end(); it_p++)
     {
-        g_pMW->RegisterPlugin(*it_p);
+        ::RegisterPlugin(*it_p);
     }
     CSettings::vector_pair_strings_t actionsAndReporters = g_pSettings->GetActionsAndReporters();
     CSettings::vector_pair_strings_t::iterator it_ar;
     for (it_ar = actionsAndReporters.begin(); it_ar != actionsAndReporters.end(); it_ar++)
     {
-        g_pMW->AddActionOrReporter((*it_ar).first, (*it_ar).second);
+        ::AddActionOrReporter((*it_ar).first, (*it_ar).second);
     }
 
     CSettings::map_analyzer_actions_and_reporters_t analyzerActionsAndReporters = g_pSettings->GetAnalyzerActionsAndReporters();
@@ -185,7 +184,7 @@ static void SetUpMW()
         CSettings::vector_pair_strings_t::iterator it_ar;
         for (it_ar = it_aar->second.begin(); it_ar != it_aar->second.end(); it_ar++)
         {
-            g_pMW->AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
+            ::AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
         }
     }
 }
@@ -320,12 +319,12 @@ static void FindNewDumps(const std::string& pPath)
         try
         {
             mw_result_t res;
-            res = g_pMW->SaveDebugDump(*itt, crashinfo);
+            res = ::SaveDebugDump(*itt, crashinfo);
             switch (res)
             {
                 case MW_OK:
                     g_cw->Debug("Saving into database (" + *itt + ").");
-                    g_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                    ::RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                     break;
                 case MW_IN_DB:
                     g_cw->Debug("Already saved in database (" + *itt + ").");
@@ -339,7 +338,7 @@ static void FindNewDumps(const std::string& pPath)
                 case MW_FILE_ERROR:
                 default:
                     g_cw->Warning("Corrupted, bad or already saved crash, deleting.");
-                    g_pMW->DeleteDebugDumpDir(*itt);
+                    ::DeleteDebugDumpDir(*itt);
                     break;
             }
         }
@@ -472,12 +471,12 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                 try
                 {
                     mw_result_t res;
-                    res = g_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+                    res = ::SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
                     switch (res)
                     {
                         case MW_OK:
                             g_cw->Debug("New crash, saving...");
-                            g_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                            ::RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             break;
@@ -486,7 +485,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                             /* send message to dbus */
                             g_cw->Debug("Already saved crash, deleting...");
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
-                            g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            ::DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                         case MW_BLACKLISTED:
                         case MW_CORRUPTED:
@@ -496,7 +495,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                         case MW_FILE_ERROR:
                         default:
                             g_cw->Warning("Corrupted or bad crash, deleting...");
-                            g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                            ::DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                     }
                 }
@@ -518,7 +517,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
             else
             {
                 g_cw->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
-                g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                ::DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             }
         }
         else
@@ -597,7 +596,7 @@ int main(int argc, char** argv)
         /* (comment here) */
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* (comment here) */
-        g_pMW = new CMiddleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
+        CMiddleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
         SetUpMW();
         SetUpCron();
         FindNewDumps(DEBUG_DUMPS_DIR);
@@ -632,7 +631,7 @@ int main(int argc, char** argv)
         g_io_channel_unref(pGio);
         delete g_pCommLayer;
         /* This restores /proc/sys/kernel/core_pattern, among other things: */
-        delete g_pMW;
+        CMiddleWare_deinit();
         g_main_loop_unref(g_pMainloop);
         delete g_pSettings;
         if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
@@ -670,7 +669,7 @@ int main(int argc, char** argv)
     g_io_channel_unref(pGio);
     delete g_pCommLayer;
     /* This restores /proc/sys/kernel/core_pattern, among other things: */
-    delete g_pMW;
+    CMiddleWare_deinit();
     g_main_loop_unref(g_pMainloop);
     delete g_pSettings;
 

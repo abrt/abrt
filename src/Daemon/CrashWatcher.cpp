@@ -59,7 +59,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     try
     {
         vector_pair_string_string_t UUIDsUIDs;
-        UUIDsUIDs = g_pMW->GetUUIDsOfCrash(pUID);
+        UUIDsUIDs = ::GetUUIDsOfCrash(pUID);
 
         unsigned int ii;
         for (ii = 0; ii < UUIDsUIDs.size(); ii++)
@@ -67,7 +67,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
             mw_result_t res;
             map_crash_info_t info;
 
-            res = g_pMW->GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
+            res = GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
             switch (res)
             {
                 case MW_OK:
@@ -76,15 +76,15 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
                 case MW_ERROR:
                     Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    g_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                    ::DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                     break;
                 case MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
                         Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
                         Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        debugDumpDir = g_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
-                        g_pMW->DeleteDebugDumpDir(debugDumpDir);
+                        debugDumpDir = ::DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                        ::DeleteDebugDumpDir(debugDumpDir);
                     }
                     break;
                 default:
@@ -102,7 +102,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
         Status(e.what());
     }
 
-    //retval = g_pMW->GetCrashInfos(pUID);
+    //retval = ::GetCrashInfos(pUID);
     //Notify("Sent crash info");
     return retval;
 }
@@ -121,7 +121,7 @@ static void *create_report(void *arg)
     try
     {
         mw_result_t res;
-        res = g_pMW->CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
+        res = ::CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
         switch (res)
         {
             case MW_OK:
@@ -138,8 +138,8 @@ static void *create_report(void *arg)
                 {
                     std::string debugDumpDir;
                     g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
-                    debugDumpDir = g_pMW->DeleteCrashInfo(thread_data->UUID, thread_data->UID);
-                    g_pMW->DeleteDebugDumpDir(debugDumpDir);
+                    debugDumpDir = ::DeleteCrashInfo(thread_data->UUID, thread_data->UID);
+                    ::DeleteDebugDumpDir(debugDumpDir);
                 }
                 break;
         }
@@ -204,7 +204,7 @@ report_status_t CCrashWatcher::Report(map_crash_report_t pReport, const std::str
     report_status_t rs;
     try
     {
-        rs = g_pMW->Report(pReport, pUID);
+        rs = ::Report(pReport, pUID);
     }
     catch (CABRTException& e)
     {
@@ -224,8 +224,8 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     try
     {
         std::string debugDumpDir;
-        debugDumpDir = g_pMW->DeleteCrashInfo(pUUID,pUID);
-        g_pMW->DeleteDebugDumpDir(debugDumpDir);
+        debugDumpDir = ::DeleteCrashInfo(pUUID,pUID);
+        ::DeleteDebugDumpDir(debugDumpDir);
     }
     catch (CABRTException& e)
     {
@@ -253,7 +253,7 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
 {
     try
     {
-        return g_pMW->GetPluginsInfo();
+        return ::GetPluginsInfo();
     }
     catch (CABRTException &e)
     {
@@ -272,7 +272,7 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName,
 {
     try
     {
-        return g_pMW->GetPluginSettings(pName, pUID);
+        return ::GetPluginSettings(pName, pUID);
     }
     catch(CABRTException &e)
     {
@@ -291,7 +291,7 @@ void CCrashWatcher::RegisterPlugin(const std::string& pName)
 {
     try
     {
-        g_pMW->RegisterPlugin(pName);
+        ::RegisterPlugin(pName);
     }
     catch(CABRTException &e)
     {
@@ -307,7 +307,7 @@ void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
 {
     try
     {
-        g_pMW->UnRegisterPlugin(pName);
+        ::UnRegisterPlugin(pName);
     }
     catch(CABRTException &e)
     {
@@ -323,7 +323,7 @@ void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::strin
 {
     try
     {
-        g_pMW->SetPluginSettings(pName, pUID, pSettings);
+        ::SetPluginSettings(pName, pUID, pSettings);
     }
     catch(CABRTException &e)
     {

@@ -56,262 +56,169 @@ typedef enum {
 typedef std::map<std::string, vector_strings_t> report_status_t;
 typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
 
+void CMiddleWare(const std::string& pPluginsConfDir,
+            const std::string& pPluginsLibDir);
+void CMiddleWare_deinit();
 /**
- * A very important class :-). It manages part of user demands like creating
- * reports, or reporting stuff somewhere etc.
+ * Register particular plugin.
+ * @param pName A plugin name.
  */
-class CMiddleWare
-{
-    private:
-        /**
-         * A method, which gets a local UUID from particular analyzer plugin.
-         * @param pAnalyzer A name of an analyzer plugin.
-         * @param pDebugDumpDir A debugdump dir containing all necessary data.
-         * @return A local UUID.
-         */
-        std::string GetLocalUUID(const std::string& pAnalyzer,
-                                 const std::string& pDebugDumpDir);
-        /**
-         * A method, which gets a global UUID from particular analyzer plugin.
-         * @param pAnalyzer A name of an analyzer plugin.
-         * @param pDebugDumpDir A debugdump dir containing all necessary data.
-         * @return A global UUID.
-         */
-        std::string GetGlobalUUID(const std::string& pAnalyzer,
-                                  const std::string& pDebugDumpDir);
-        /**
-         * A method, which takes care of getting all additional data needed
-         * for computing UUIDs and creating a report for particular analyzer
-         * plugin. This report could be send somewhere afterwards.
-         * @param pAnalyzer A name of an analyzer plugin.
-         * @param pDebugDumpPath A debugdump dir containing all necessary data.
-         */
-        void CreateReport(const std::string& pAnalyzer,
-                          const std::string& pDebugDumpDir);
-        /**
-         * A method, which executes all action plugins, which are associated to
-         * particular analyzer plugin.
-         * @param pAnalyzer A name of an analyzer plugin.
-         * @param pDebugDumpPath A debugdump dir containing all necessary data.
-         */
-        void RunAnalyzerActions(const std::string& pAnalyzer,
-                                const std::string& pDebugDumpDir);
-        /**
-         * A method, which transforms a debugdump direcortry to inner crash
-         * report form. This form is used for later reporting.
-         * @param pDebugDumpDir A debugdump dir containing all necessary data.
-         * @param pCrashReport A created crash report.
-         */
-        void DebugDumpToCrashReport(const std::string& pDebugDumpDir,
-                                    map_crash_report_t& pCrashReport);
-        /**
-         * A method, which checks is particular debugdump directory is saved
-         * in database. This check is done together with an UID of an user.
-         * @param pUID an UID of an user.
-         * @param pDebugDumpDir A debugdump dir containing all necessary data.
-         * @return It returns true if debugdump dir is already saved, otherwise
-         * it returns false.
-         */
-        bool IsDebugDumpSaved(const std::string& pUID,
-                              const std::string& pDebugDumpDir);
-        /**
-         * A method, which gets a package name from executable name and saves
-         * package description to particular debugdump directory of a crash.
-         * @param pExecutable A name of crashed application.
-         * @param pDebugDumpDir A debugdump dir containing all necessary data.
-         * @return It return results of operation. See mw_result_t.
-         */
-        mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable,
-                                                      const std::string& pDebugDumpDir);
-        /**
-         * A method, which save a debugdump into database. If a saving is
-         * successful, then a crash info is filled. Otherwise the crash info is
-         * not changed.
-         * @param pUUID A local UUID of a crash.
-         * @param pUID An UID of an user.
-         * @param pTime Time when a crash occurs.
-         * @param pDebugDumpPath A debugdump path.
-         * @param pCrashInfo A filled crash info.
-         * @return It return results of operation. See mw_result_t.
-         */
-        mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
-                                            const std::string& pUID,
-                                            const std::string& pTime,
-                                            const std::string& pDebugDumpDir,
-                                            map_crash_info_t& pCrashInfo);
-
-    public:
-        /**
-         * A constructor.
-         * @param pPluginsConfDir A plugins configuration directory.
-         * @param pPluginsLibDir A plugins library directory.
-         */
-        CMiddleWare(const std::string& pPluginsConfDir,
-                    const std::string& pPluginsLibDir);
-        /**
-         * A destructor.
-         */
-        ~CMiddleWare();
-        /**
-         * A method, which registers particular plugin.
-         * @param pName A plugin name.
-         */
-        void RegisterPlugin(const std::string& pName);
-        /**
-         * A method, which unregister particular plugin.
-         * @param pName A plugin name.
-         */
-        void UnRegisterPlugin(const std::string& pName);
-        /**
-         * A method, which sets up a plugin. The settings are also saved in home
-         * directory of an user.
-         * @param pName A plugin name.
-         * @param pUID An uid of user.
-         * @param pSettings A plugin's settings.
-         */
-        void SetPluginSettings(const std::string& pName,
-                               const std::string& pUID,
-                               const map_plugin_settings_t& pSettings);
-        /**
-         * A method, which returns plugin's settings according to user.
-         * @param pName A plugin name.
-         * @param pUID An uid of user.
-         * @return Plugin's settings accorting to user.
-         */
-        map_plugin_settings_t GetPluginSettings(const std::string& pName,
-                                                const std::string& pUID);
-        /**
-         * A method, which gets all plugins info (event those plugins which are
-         * disabled). It can be send via DBus to GUI and displayed to an user.
-         * Then a user can fill all needed informations like URLs etc.
-         * @return A vector of maps <key, vaule>.
-         */
-        vector_map_string_string_t GetPluginsInfo();
-        /**
-         * A method, which takes care of getting all additional data needed
-         * for computing UUIDs and creating a report for particular analyzer
-         * plugin. This report could be send somewhere afterwards. If a creation
-         * is successful, then  a crash report is filled.
-         * @param pAnalyzer A name of an analyzer plugin.
-         * @param pDebugDumpPath A debugdump dir containing all necessary data.
-         * @param pCrashReport A filled crash report.
-         * @return It return results of operation. See mw_result_t.
-         */
-        mw_result_t CreateCrashReport(const std::string& pUUID,
-                                      const std::string& pUID,
-                                      map_crash_report_t& pCrashReport);
-        /**
-         * A method, which activate particular action plugin.
-         * @param pActionDir A directory, which is passed as working to a action plugin.
-         * @param pPluginName An action plugin name.
-         * @param pPluginArgs Action plugin's arguments.
-         */
-        void RunAction(const std::string& pActionDir,
-                       const std::string& pPluginName,
-                       const std::string& pPluginArgs);
-        /**
-         * A method, which activate all action and reporter plugins when any
-         * crash occurs.
-         * @param pDebugDumpDir A debugdump dir containing all necessary data.
-         */
-        void RunActionsAndReporters(const std::string& pDebugDumpDir);
-        /**
-         * A method, which reports a crash report to particular receiver. It
-         * takes an user uid, tries to find user config file and load it. If it
-         * fails, then default config is used. If pUID is emply string, default
-         * config is used.
-         * ...).
-         * @param pCrashReport A crash report.
-         * @param pUID An user uid
-         * @return A report status, which reporters ends sucessfuly with messages.
-         */
-        report_status_t Report(const map_crash_report_t& pCrashReport,
-                               const std::string& pUID);
-        /**
-         * A method, which deletes particular debugdump directory.
-         * @param pDebugDumpDir A debugdump directory.
-         */
-        void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
-        /**
-         * A method, which delete a row from database. If a deleting is
-         * successfull, it returns a debugdump directort, which is not
-         * deleted. Otherwise, it returns empty string.
-         * @param pUUID A local UUID of a crash.
-         * @param pUID An UID of an user.
-         * @return A debugdump directory.
-         */
-        std::string DeleteCrashInfo(const std::string& pUUID,
-                                    const std::string& pUID);
-        /**
-         * A method, whis saves debugdump into database.
-         * @param pDebugDumpDir A debugdump directory.
-         * @return It return results of operation. See mw_result_t.
-         */
-        mw_result_t SaveDebugDump(const std::string& pDebugDumpDir);
-        /**
-         * A method, whis saves debugdump into database. If saving is sucessful
-         * it fills crash info.
-         * @param pDebugDumpDir A debugdump directory.
-         * @param pCrashInfo A crash info.
-         * @return It return results of operation. See mw_result_t.
-         */
-        mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
-                                  map_crash_info_t& pCrashInfo);
-        /**
-         * A method, which gets one crash info. If a getting is successful,
-         * then a crash info is filled.
-         * @param pUUID A local UUID of a crash.
-         * @param pUID An UID of an user.
-         * @param pCrashInfo A crash info.
-         * @return It return results of operation. See mw_result_t.
-         */
-        mw_result_t GetCrashInfo(const std::string& pUUID,
-                                 const std::string& pUID,
-                                 map_crash_info_t& pCrashInfo);
-        /**
-         * A method, which gets all local UUIDs and UIDs of crashes. These crashes
-         * occurred when a particular user was logged in.
-         * @param pUID an UID of an user.
-         * @return A vector of pairs  (local UUID, UID).
-         */
-        vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
-        /**
-         * A method, which set a GPG finger print check.
-         * @param pCheck Is it enabled?
-         */
-        void SetOpenGPGCheck(bool pCheck);
-        /**
-         * A method, which sets a name of database.
-         * @param pDatabase A database name.
-         */
-        void SetDatabase(const std::string& pDatabase);
-        /**
-         * A method, which adds one path to a GPG public key into MW's set.
-         * @param pKey A path to a GPG public key.
-         */
-        void AddOpenGPGPublicKey(const std::string& pKey);
-        /**
-         * A method, which adds one blacklisted package.
-         */
-        void AddBlackListedPackage(const std::string& pPackage);
-        /**
-         * A method, which adds one association among alanyzer plugin and its
-         * action and reporter plugins.
-         * @param pAnalyzer A name of an analyzer plugin.
-         * @param pActionOrReporter A name of an action or reporter plugin.
-         * @param pArgs An arguments for action or reporter plugin.
-         */
-        void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
-                                         const std::string& pActionOrReporter,
-                                         const std::string& pArgs);
-        /**
-         * A method, which adds action and reporter plugins, which are activated
-         * when any crash occurs.
-         * @param pActionOrReporter A name of an action or reporter plugin.
-         * @param pArgs An arguments for action or reporter plugin.
-         */
-        void AddActionOrReporter(const std::string& pActionOrReporter,
+void RegisterPlugin(const std::string& pName);
+/**
+ * A method, which unregister particular plugin.
+ * @param pName A plugin name.
+ */
+void UnRegisterPlugin(const std::string& pName);
+/**
+ * A method, which sets up a plugin. The settings are also saved in home
+ * directory of an user.
+ * @param pName A plugin name.
+ * @param pUID An uid of user.
+ * @param pSettings A plugin's settings.
+ */
+void SetPluginSettings(const std::string& pName,
+                       const std::string& pUID,
+                       const map_plugin_settings_t& pSettings);
+/**
+ * A method, which returns plugin's settings according to user.
+ * @param pName A plugin name.
+ * @param pUID An uid of user.
+ * @return Plugin's settings accorting to user.
+ */
+map_plugin_settings_t GetPluginSettings(const std::string& pName,
+                                        const std::string& pUID);
+/**
+ * A method, which gets all plugins info (event those plugins which are
+ * disabled). It can be send via DBus to GUI and displayed to an user.
+ * Then a user can fill all needed informations like URLs etc.
+ * @return A vector of maps <key, vaule>.
+ */
+vector_map_string_string_t GetPluginsInfo();
+/**
+ * A method, which takes care of getting all additional data needed
+ * for computing UUIDs and creating a report for particular analyzer
+ * plugin. This report could be send somewhere afterwards. If a creation
+ * is successful, then  a crash report is filled.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pDebugDumpPath A debugdump dir containing all necessary data.
+ * @param pCrashReport A filled crash report.
+ * @return It return results of operation. See mw_result_t.
+ */
+mw_result_t CreateCrashReport(const std::string& pUUID,
+                              const std::string& pUID,
+                              map_crash_report_t& pCrashReport);
+/**
+ * A method, which activate particular action plugin.
+ * @param pActionDir A directory, which is passed as working to a action plugin.
+ * @param pPluginName An action plugin name.
+ * @param pPluginArgs Action plugin's arguments.
+ */
+void RunAction(const std::string& pActionDir,
+               const std::string& pPluginName,
+               const std::string& pPluginArgs);
+/**
+ * A method, which activate all action and reporter plugins when any
+ * crash occurs.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ */
+void RunActionsAndReporters(const std::string& pDebugDumpDir);
+/**
+ * A method, which reports a crash report to particular receiver. It
+ * takes an user uid, tries to find user config file and load it. If it
+ * fails, then default config is used. If pUID is emply string, default
+ * config is used.
+ * ...).
+ * @param pCrashReport A crash report.
+ * @param pUID An user uid
+ * @return A report status, which reporters ends sucessfuly with messages.
+ */
+report_status_t Report(const map_crash_report_t& pCrashReport,
+                       const std::string& pUID);
+/**
+ * A method, which deletes particular debugdump directory.
+ * @param pDebugDumpDir A debugdump directory.
+ */
+void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
+/**
+ * A method, which delete a row from database. If a deleting is
+ * successfull, it returns a debugdump directort, which is not
+ * deleted. Otherwise, it returns empty string.
+ * @param pUUID A local UUID of a crash.
+ * @param pUID An UID of an user.
+ * @return A debugdump directory.
+ */
+std::string DeleteCrashInfo(const std::string& pUUID,
+                            const std::string& pUID);
+/**
+ * A method, whis saves debugdump into database.
+ * @param pDebugDumpDir A debugdump directory.
+ * @return It return results of operation. See mw_result_t.
+ */
+mw_result_t SaveDebugDump(const std::string& pDebugDumpDir);
+/**
+ * A method, whis saves debugdump into database. If saving is sucessful
+ * it fills crash info.
+ * @param pDebugDumpDir A debugdump directory.
+ * @param pCrashInfo A crash info.
+ * @return It return results of operation. See mw_result_t.
+ */
+mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
+                          map_crash_info_t& pCrashInfo);
+/**
+ * Get one crash info. If getting is successful,
+ * then crash info is filled.
+ * @param pUUID A local UUID of a crash.
+ * @param pUID An UID of an user.
+ * @param pCrashInfo A crash info.
+ * @return It return results of operation. See mw_result_t.
+ */
+mw_result_t GetCrashInfo(const std::string& pUUID,
+                         const std::string& pUID,
+                         map_crash_info_t& pCrashInfo);
+/**
+ * Gets all local UUIDs and UIDs of crashes. These crashes
+ * occurred when a particular user was logged in.
+ * @param pUID an UID of an user.
+ * @return A vector of pairs  (local UUID, UID).
+ */
+vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
+/**
+ * Sets a GPG finger print check.
+ * @param pCheck Is it enabled?
+ */
+void SetOpenGPGCheck(bool pCheck);
+/**
+ * Sets a name of database.
+ * @param pDatabase A database name.
+ */
+void SetDatabase(const std::string& pDatabase);
+/**
+ * Adds one path to a GPG public key into MW's set.
+ * @param pKey A path to a GPG public key.
+ */
+void AddOpenGPGPublicKey(const std::string& pKey);
+/**
+ * Adds one blacklisted package.
+ */
+void AddBlackListedPackage(const std::string& pPackage);
+/**
+ * Adds one association among alanyzer plugin and its
+ * action and reporter plugins.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pActionOrReporter A name of an action or reporter plugin.
+ * @param pArgs An arguments for action or reporter plugin.
+ */
+void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
+                                 const std::string& pActionOrReporter,
                                  const std::string& pArgs);
-};
+/**
+ * Add action and reporter plugins, which are activated
+ * when any crash occurs.
+ * @param pActionOrReporter A name of an action or reporter plugin.
+ * @param pArgs An arguments for action or reporter plugin.
+ */
+void AddActionOrReporter(const std::string& pActionOrReporter,
+                         const std::string& pArgs);
+
 
 #endif /*MIDDLEWARE_H_*/

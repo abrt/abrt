@@ -66,7 +66,10 @@ static std::string m_sPluginsConfDir;
 static bool m_bOpenGPGCheck;
 
 
-CMiddleWare::CMiddleWare(const std::string& pPluginsConfDir,
+static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
+
+
+void CMiddleWare(const std::string& pPluginsConfDir,
                          const std::string& pPluginsLibDir)
 {
     m_sPluginsConfDir = pPluginsConfDir;
@@ -75,13 +78,19 @@ CMiddleWare::CMiddleWare(const std::string& pPluginsConfDir,
     m_pPluginManager->LoadPlugins();
 }
 
-CMiddleWare::~CMiddleWare()
+void CMiddleWare_deinit()
 {
     m_pPluginManager->UnLoadPlugins();
     delete m_pPluginManager;
 }
 
-void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_report_t& pCrashReport)
+/**
+ * A method, which transforms a debugdump direcortry to inner crash
+ * report form. This form is used for later reporting.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @param pCrashReport A created crash report.
+ */
+static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_report_t& pCrashReport)
 {
     std::string fileName;
     std::string content;
@@ -97,7 +106,7 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
         !dd.Exist(FILENAME_EXECUTABLE))
     {
         dd.Close();
-        throw CABRTException(EXCEP_ERROR, "CMiddleWare::DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
+        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
     }
     pCrashReport.clear();
     dd.InitGetNextFile();
@@ -141,51 +150,70 @@ void CMiddleWare::DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_c
     dd.Close();
 }
 
-void CMiddleWare::RegisterPlugin(const std::string& pName)
+void RegisterPlugin(const std::string& pName)
 {
     m_pPluginManager->RegisterPlugin(pName);
 }
 
-void CMiddleWare::UnRegisterPlugin(const std::string& pName)
+void UnRegisterPlugin(const std::string& pName)
 {
     m_pPluginManager->UnRegisterPlugin(pName);
 }
 
-void CMiddleWare::SetPluginSettings(const std::string& pName,
+void SetPluginSettings(const std::string& pName,
                                     const std::string& pUID,
                                     const map_plugin_settings_t& pSettings)
 {
     m_pPluginManager->SetPluginSettings(pName, pUID, pSettings);
 }
 
-map_plugin_settings_t CMiddleWare::GetPluginSettings(const std::string& pName,
+map_plugin_settings_t GetPluginSettings(const std::string& pName,
                                                      const std::string& pUID)
 {
     return m_pPluginManager->GetPluginSettings(pName, pUID);
 }
 
-std::string CMiddleWare::GetLocalUUID(const std::string& pAnalyzer,
+/**
+ * Get a local UUID from particular analyzer plugin.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @return A local UUID.
+ */
+static std::string GetLocalUUID(const std::string& pAnalyzer,
                                       const std::string& pDebugDumpDir)
 {
     CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->GetLocalUUID(pDebugDumpDir);
 }
 
-std::string CMiddleWare::GetGlobalUUID(const std::string& pAnalyzer,
+/**
+ * Get a global UUID from particular analyzer plugin.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @return A global UUID.
+ */
+static std::string GetGlobalUUID(const std::string& pAnalyzer,
                                        const std::string& pDebugDumpDir)
 {
     CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->GetGlobalUUID(pDebugDumpDir);
 }
 
-void CMiddleWare::CreateReport(const std::string& pAnalyzer,
+/**
+ * Take care of getting all additional data needed
+ * for computing UUIDs and creating a report for particular analyzer
+ * plugin. This report could be send somewhere afterwards.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pDebugDumpPath A debugdump dir containing all necessary data.
+ */
+static void CreateReport(const std::string& pAnalyzer,
                                const std::string& pDebugDumpDir)
 {
     CAnalyzer* analyzer = m_pPluginManager->GetAnalyzer(pAnalyzer);
     analyzer->CreateReport(pDebugDumpDir);
 }
 
-mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID,
+mw_result_t CreateCrashReport(const std::string& pUUID,
                                                         const std::string& pUID,
                                                         map_crash_report_t& pCrashReport)
 {
@@ -198,7 +226,7 @@ mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID,
 
     if (pUUID == "" || row.m_sUUID != pUUID)
     {
-        comm_layer_inner_warning("CMiddleWare::CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
+        comm_layer_inner_warning("CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
         return MW_IN_DB_ERROR;
     }
 
@@ -227,7 +255,7 @@ mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("CMiddleWare::CreateCrashReport(): " + e.what());
+        comm_layer_inner_warning("CreateCrashReport(): " + e.what());
         if (e.type() == EXCEP_DD_OPEN)
         {
             return MW_ERROR;
@@ -246,7 +274,7 @@ mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID,
     return MW_OK;
 }
 
-void CMiddleWare::RunAction(const std::string& pActionDir,
+void RunAction(const std::string& pActionDir,
                             const std::string& pPluginName,
                             const std::string& pPluginArgs)
 {
@@ -258,13 +286,13 @@ void CMiddleWare::RunAction(const std::string& pActionDir,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("CMiddleWare::RunAction(): " + e.what());
+        comm_layer_inner_warning("RunAction(): " + e.what());
         comm_layer_inner_status("Execution of '"+pPluginName+"' was not successful: " + e.what());
     }
 
 }
 
-void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
+void RunActionsAndReporters(const std::string& pDebugDumpDir)
 {
     vector_pair_string_string_t::iterator it_ar;
     for (it_ar = m_vectorActionsAndReporters.begin(); it_ar != m_vectorActionsAndReporters.end(); it_ar++)
@@ -287,13 +315,13 @@ void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
         }
         catch (CABRTException& e)
         {
-            comm_layer_inner_warning("CMiddleWare::RunActionsAndReporters(): " + e.what());
+            comm_layer_inner_warning("RunActionsAndReporters(): " + e.what());
             comm_layer_inner_status("Activation of plugin '"+(*it_ar).first+"' was not successful: " + e.what());
         }
     }
 }
 
-report_status_t CMiddleWare::Report(const map_crash_report_t& pCrashReport,
+report_status_t Report(const map_crash_report_t& pCrashReport,
                                     const std::string& pUID)
 {
     report_status_t ret;
@@ -303,7 +331,7 @@ report_status_t CMiddleWare::Report(const map_crash_report_t& pCrashReport,
         pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUUID) == pCrashReport.end())
     {
-        throw CABRTException(EXCEP_ERROR, "CMiddleWare::Report(): System data are missing in crash report.");
+        throw CABRTException(EXCEP_ERROR, "Report(): System data are missing in crash report.");
     }
 
     std::string analyzer = pCrashReport.find(CD_MWANALYZER)->second[CD_CONTENT];
@@ -374,7 +402,7 @@ report_status_t CMiddleWare::Report(const map_crash_report_t& pCrashReport,
                 {
                     ret[ret_key].push_back("0");
                     ret[ret_key].push_back(e.what());
-                    comm_layer_inner_warning("CMiddleWare::Report(): " + e.what());
+                    comm_layer_inner_warning("Report(): " + e.what());
                     comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
                 }
             }
@@ -389,7 +417,7 @@ report_status_t CMiddleWare::Report(const map_crash_report_t& pCrashReport,
     return ret;
 }
 
-void CMiddleWare::DeleteDebugDumpDir(const std::string& pDebugDumpDir)
+void DeleteDebugDumpDir(const std::string& pDebugDumpDir)
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
@@ -397,7 +425,7 @@ void CMiddleWare::DeleteDebugDumpDir(const std::string& pDebugDumpDir)
     dd.Close();
 }
 
-std::string CMiddleWare::DeleteCrashInfo(const std::string& pUUID,
+std::string DeleteCrashInfo(const std::string& pUUID,
                                          const std::string& pUID)
 {
     database_row_t row;
@@ -410,8 +438,15 @@ std::string CMiddleWare::DeleteCrashInfo(const std::string& pUUID,
     return row.m_sDebugDumpDir;
 }
 
-
-bool CMiddleWare::IsDebugDumpSaved(const std::string& pUID,
+/**
+ * Check whether particular debugdump directory is saved
+ * in database. This check is done together with an UID of an user.
+ * @param pUID an UID of an user.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @return It returns true if debugdump dir is already saved, otherwise
+ * it returns false.
+ */
+static bool IsDebugDumpSaved(const std::string& pUID,
                                    const std::string& pDebugDumpDir)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
@@ -434,7 +469,14 @@ bool CMiddleWare::IsDebugDumpSaved(const std::string& pUID,
     return found;
 }
 
-mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutable,
+/**
+ * Get a package name from executable name and save
+ * package description to particular debugdump directory of a crash.
+ * @param pExecutable A name of crashed application.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @return It return results of operation. See mw_result_t.
+ */
+static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable,
                                                                         const std::string& pDebugDumpDir)
 {
     std::string package;
@@ -488,7 +530,7 @@ mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pE
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("CMiddleWare::SavePackageDescriptionToDebugDump(): " + e.what());
+        comm_layer_inner_warning("SavePackageDescriptionToDebugDump(): " + e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             dd.Close();
@@ -500,7 +542,13 @@ mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pE
     return MW_OK;
 }
 
-void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
+/**
+ * Execute all action plugins, which are associated to
+ * particular analyzer plugin.
+ * @param pAnalyzer A name of an analyzer plugin.
+ * @param pDebugDumpPath A debugdump dir containing all necessary data.
+ */
+static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
 {
     if (m_mapAnalyzerActionsAndReporters.find(pAnalyzer) != m_mapAnalyzerActionsAndReporters.end())
     {
@@ -520,14 +568,25 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
             }
             catch (CABRTException& e)
             {
-                comm_layer_inner_warning("CMiddleWare::RunAnalyzerActions(): " + e.what());
+                comm_layer_inner_warning("RunAnalyzerActions(): " + e.what());
                 comm_layer_inner_status("Action performed by '"+(*it_a).first+"' was not successful: " + e.what());
             }
         }
     }
 }
 
-mw_result_t CMiddleWare::SaveDebugDumpToDatabase(const std::string& pUUID,
+/**
+ * Save a debugdump into database. If saving is
+ * successful, then crash info is filled. Otherwise the crash info is
+ * not changed.
+ * @param pUUID A local UUID of a crash.
+ * @param pUID An UID of an user.
+ * @param pTime Time when a crash occurs.
+ * @param pDebugDumpPath A debugdump path.
+ * @param pCrashInfo A filled crash info.
+ * @return It return results of operation. See mw_result_t.
+ */
+static mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
                                                               const std::string& pUID,
                                                               const std::string& pTime,
                                                               const std::string& pDebugDumpDir,
@@ -554,13 +613,13 @@ mw_result_t CMiddleWare::SaveDebugDumpToDatabase(const std::string& pUUID,
     return res;
 }
 
-mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir)
+mw_result_t SaveDebugDump(const std::string& pDebugDumpDir)
 {
     map_crash_info_t info;
     return SaveDebugDump(pDebugDumpDir, info);
 }
 
-mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir,
+mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
                                                     map_crash_info_t& pCrashInfo)
 {
     std::string lUUID;
@@ -582,7 +641,7 @@ mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("CMiddleWare::SaveDebugDump(): " + e.what());
+        comm_layer_inner_warning("SaveDebugDump(): " + e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             dd.Close();
@@ -605,7 +664,7 @@ mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir,
     return SaveDebugDumpToDatabase(lUUID, UID, time, pDebugDumpDir, pCrashInfo);
 }
 
-mw_result_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
+mw_result_t GetCrashInfo(const std::string& pUUID,
                                                    const std::string& pUID,
                                                    map_crash_info_t& pCrashInfo)
 {
@@ -631,7 +690,7 @@ mw_result_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("CMiddleWare::GetCrashInfo(): " + e.what());
+        comm_layer_inner_warning("GetCrashInfo(): " + e.what());
         if (e.type() == EXCEP_DD_LOAD)
         {
             dd.Close();
@@ -653,7 +712,7 @@ mw_result_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
     return MW_OK;
 }
 
-vector_pair_string_string_t CMiddleWare::GetUUIDsOfCrash(const std::string& pUID)
+vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
 {
     CDatabase* database = m_pPluginManager->GetDatabase(m_sDatabase);
     vector_database_rows_t rows;
@@ -671,39 +730,39 @@ vector_pair_string_string_t CMiddleWare::GetUUIDsOfCrash(const std::string& pUID
     return UUIDsUIDs;
 }
 
-vector_map_string_string_t CMiddleWare::GetPluginsInfo()
+vector_map_string_string_t GetPluginsInfo()
 {
     return m_pPluginManager->GetPluginsInfo();
 }
 
-void CMiddleWare::SetOpenGPGCheck(bool pCheck)
+void SetOpenGPGCheck(bool pCheck)
 {
     m_bOpenGPGCheck = pCheck;
 }
 
-void CMiddleWare::SetDatabase(const std::string& pDatabase)
+void SetDatabase(const std::string& pDatabase)
 {
     m_sDatabase = pDatabase;
 }
 
-void CMiddleWare::AddOpenGPGPublicKey(const std::string& pKey)
+void AddOpenGPGPublicKey(const std::string& pKey)
 {
     m_RPM.LoadOpenGPGPublicKey(pKey);
 }
 
-void CMiddleWare::AddBlackListedPackage(const std::string& pPackage)
+void AddBlackListedPackage(const std::string& pPackage)
 {
     m_setBlackList.insert(pPackage);
 }
 
-void CMiddleWare::AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
+void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
                                               const std::string& pAnalyzerOrReporter,
                                               const std::string& pArgs)
 {
     m_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(pAnalyzerOrReporter, pArgs));
 }
 
-void CMiddleWare::AddActionOrReporter(const std::string& pActionOrReporter,
+void AddActionOrReporter(const std::string& pActionOrReporter,
                                       const std::string& pArgs)
 {
     m_vectorActionsAndReporters.push_back(make_pair(pActionOrReporter, pArgs));

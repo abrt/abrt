@@ -81,8 +81,6 @@ extern CCrashWatcher *g_cw;
 /* conduit for these messages */
 extern CCommLayerServer *g_pCommLayer;
 
-extern CMiddleWare *g_pMW;
-
 /*
  * Map to cache the results from CreateReport_t
  * <UID, <UUID, result>>
