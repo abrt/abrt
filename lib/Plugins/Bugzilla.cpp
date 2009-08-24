@@ -104,6 +104,40 @@ void CReporterBugzilla::Logout()
     }
 }
 
+bool CReporterBugzilla::CheckCCAndReporter(const std::string& pBugId)
+{
+    xmlrpc_c::paramList paramList;
+    map_xmlrpc_params_t ret;
+
+    paramList.add(xmlrpc_c::value_string(pBugId));
+    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("bugzilla.getBug", paramList));
+    try
+    {
+        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
+        ret = xmlrpc_c::value_struct(rpc->getResult());
+    }
+    catch (std::exception& e)
+    {
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::CheckCCAndReporter(): ") + e.what());
+    }
+    std::string reporter = xmlrpc_c::value_string(ret["reporter"]);
+    if (reporter == m_sLogin)
+    {
+        return true;
+    }
+    std::vector<xmlrpc_c::value> ccs = xmlrpc_c::value_array(ret["cc"]).vectorValueValue();
+    int ii;
+    for (ii = 0; ii < ccs.size(); ii++)
+    {
+        std::string cc =  xmlrpc_c::value_string(ccs[ii]);
+        if (cc == m_sLogin)
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 void CReporterBugzilla::AddPlusOneComment(const std::string& pBugId)
 {
     xmlrpc_c::paramList paramList;
@@ -183,8 +217,11 @@ std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent
         comm_layer_inner_debug("Bug is already reported: " + ss.str());
         comm_layer_inner_status("Bug is already reported: " + ss.str());
 
-        AddPlusOneComment(ss.str());
-        AddPlusOneCC(ss.str());
+        if (!CheckCCAndReporter(ss.str()))
+        {
+            AddPlusOneComment(ss.str());
+            AddPlusOneCC(ss.str());
+        }
         return ss.str();
     }
     return "";

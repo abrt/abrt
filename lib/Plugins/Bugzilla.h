@@ -17,6 +17,7 @@ class CReporterBugzilla : public CReporter
         static PRInt32 Base64Encode_cb(void *arg, const char *obuf, PRInt32 size);
         void Login();
         void Logout();
+        bool CheckCCAndReporter(const std::string& pBugId);
         void AddPlusOneComment(const std::string& pBugId);
         void AddPlusOneCC(const std::string& pBugId);
         std::string CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID);
