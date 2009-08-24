@@ -226,7 +226,7 @@ void CMiddleWare::RunAction(const std::string& pActionDir,
 
 void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
 {
-    vector_actions_and_reporters_t::iterator it_ar;
+    vector_pair_string_string_t::iterator it_ar;
     for (it_ar = m_vectorActionsAndReporters.begin(); it_ar != m_vectorActionsAndReporters.end(); it_ar++)
     {
         try
@@ -284,7 +284,7 @@ CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCras
 
         if (m_mapAnalyzerActionsAndReporters.find(analyzer) != m_mapAnalyzerActionsAndReporters.end())
         {
-            vector_actions_and_reporters_t::iterator it_r;
+            vector_pair_string_string_t::iterator it_r;
             for (it_r = m_mapAnalyzerActionsAndReporters[analyzer].begin();
                  it_r != m_mapAnalyzerActionsAndReporters[analyzer].end();
                  it_r++)
@@ -464,7 +464,7 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
 {
     if (m_mapAnalyzerActionsAndReporters.find(pAnalyzer) != m_mapAnalyzerActionsAndReporters.end())
     {
-        vector_actions_and_reporters_t::iterator it_a;
+        vector_pair_string_string_t::iterator it_a;
         for (it_a = m_mapAnalyzerActionsAndReporters[pAnalyzer].begin();
              it_a != m_mapAnalyzerActionsAndReporters[pAnalyzer].end();
              it_a++)

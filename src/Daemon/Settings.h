@@ -13,7 +13,6 @@ class CSettings
         typedef std::set<std::string> set_strings_t;
         typedef std::pair<std::string, std::string> pair_string_string_t;
         typedef std::vector<pair_string_string_t> vector_pair_strings_t;
-        typedef vector_pair_strings_t vector_actions_and_reporters_t;
         typedef std::map<std::string, vector_pair_strings_t> map_analyzer_actions_and_reporters_t;
         typedef std::map<std::string, vector_pair_strings_t> map_cron_t;
 
@@ -26,7 +25,7 @@ class CSettings
         set_strings_t m_setBlackList;
         set_strings_t m_setEnabledPlugins;
         std::string m_sDatabase;
-        vector_actions_and_reporters_t m_vectorActionsAndReporters;
+        vector_pair_string_string_t m_vectorActionsAndReporters;
         map_cron_t m_mapCron;
 
         bool m_bOpenGPGCheck;

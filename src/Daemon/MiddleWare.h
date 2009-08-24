@@ -62,11 +62,7 @@ class CMiddleWare
         } report_status_items_t;
 
     private:
-        typedef set_strings_t set_blacklist_t;
-        typedef set_strings_t set_enabled_plugins_t;
-        typedef std::vector<pair_string_string_t> vector_pairt_strings_t;
-        typedef vector_pairt_strings_t vector_actions_and_reporters_t;
-        typedef std::map<std::string, vector_actions_and_reporters_t> map_analyzer_actions_and_reporters_t;
+        typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
 
         /**
          * An instance of CPluginManager. When MiddleWare wants to do something
@@ -82,7 +78,7 @@ class CMiddleWare
         /**
          * A set of blacklisted packages.
          */
-        set_blacklist_t m_setBlackList;
+        set_strings_t m_setBlackList;
         /**
          * A name of database plugin, which is used for metadata.
          */
@@ -97,7 +93,7 @@ class CMiddleWare
          * A vector of one or more action or reporter plugins. These are
          * activated when any crash occurs.
          */
-        vector_actions_and_reporters_t m_vectorActionsAndReporters;
+        vector_pair_string_string_t m_vectorActionsAndReporters;
         /**
          * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
          */

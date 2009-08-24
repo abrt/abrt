@@ -48,8 +48,6 @@ typedef struct cron_callback_data_t
 
 
 static uint8_t sig_caught; /* = 0 */
-static int g_nFd;
-static GIOChannel* g_pGio;
 static GMainLoop* g_pMainloop;
 static CSettings* g_pSettings;
 
@@ -535,6 +533,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
 
 int main(int argc, char** argv)
 {
+    GIOChannel* pGio;
     int daemonize = 0;
 
     signal(SIGTERM, handle_fatal_signal);
@@ -587,10 +586,10 @@ int main(int argc, char** argv)
         comm_layer_inner_init(&watcher);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         errno = 0;
-        g_nFd = inotify_init();
-        if (g_nFd == -1)
+        int inotify_fd = inotify_init();
+        if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
-        if (inotify_add_watch(g_nFd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
+        if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
         /* (comment here) */
         g_pSettings = new CSettings();
@@ -610,8 +609,8 @@ int main(int argc, char** argv)
 #endif
         g_pCommLayer->Attach(&watcher);
         /* (comment here) */
-        g_pGio = g_io_channel_unix_new(g_nFd);
-        g_io_add_watch(g_pGio, G_IO_IN, handle_event_cb, NULL);
+        pGio = g_io_channel_unix_new(inotify_fd);
+        g_io_add_watch(pGio, G_IO_IN, handle_event_cb, NULL);
         /* Add an event source which waits for INT/TERM signal */
         GSourceFuncs waitsignal_funcs;
         memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
@@ -630,7 +629,7 @@ int main(int argc, char** argv)
         /* Initialization error. Clean up, in reverse order */
         unlink(VAR_RUN_PIDFILE);
         unlink(VAR_RUN_LOCK_FILE);
-        g_io_channel_unref(g_pGio);
+        g_io_channel_unref(pGio);
         delete g_pCommLayer;
         /* This restores /proc/sys/kernel/core_pattern, among other things: */
         delete g_pMW;
@@ -668,7 +667,7 @@ int main(int argc, char** argv)
     /* Error or INT/TERM. Clean up, in reverse order */
     unlink(VAR_RUN_PIDFILE);
     unlink(VAR_RUN_LOCK_FILE);
-    g_io_channel_unref(g_pGio);
+    g_io_channel_unref(pGio);
     delete g_pCommLayer;
     /* This restores /proc/sys/kernel/core_pattern, among other things: */
     delete g_pMW;
