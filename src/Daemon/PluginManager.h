@@ -52,14 +52,6 @@ class CPluginManager
          * Registered plugins. A key is a plugin name.
          */
         map_plugins_t m_mapPlugins;
-        /**
-         * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
-         */
-        std::string m_sPluginsConfDir;
-        /**
-         * Plugins library directory (e.g. /usr/lib/abrt/plugins, ...).
-         */
-        std::string m_sPluginsLibDir;
 
     public:
         /**
@@ -67,8 +59,7 @@ class CPluginManager
          * @param pPluginsConfDir A plugins configuration directory.
          * @param pPluginsLibDir A plugins library directory.
          */
-        CPluginManager(const std::string& pPluginsConfDir,
-                                           const std::string& pPluginsLibDir);
+        CPluginManager();
         /**
          * A destructor.
          */

@@ -41,12 +41,7 @@ static const char* const plugin_type_str_t[] = {
 };
 
 
-CPluginManager::CPluginManager(
-        const std::string& pPluginsConfDir,
-        const std::string& pPluginsLibDir)
-:
-    m_sPluginsConfDir(pPluginsConfDir),
-    m_sPluginsLibDir(pPluginsLibDir)
+CPluginManager::CPluginManager()
 {}
 
 CPluginManager::~CPluginManager()
@@ -54,10 +49,10 @@ CPluginManager::~CPluginManager()
 
 void CPluginManager::LoadPlugins()
 {
-    DIR *dir = opendir(m_sPluginsLibDir.c_str());
-    struct dirent *dent = NULL;
+    DIR *dir = opendir(PLUGINS_LIB_DIR);
     if (dir != NULL)
     {
+        struct dirent *dent;
         while ((dent = readdir(dir)) != NULL)
         {
             // FIXME: need to handle DT_UNKNOWN too
@@ -94,7 +89,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
         CABRTPlugin* abrtPlugin = NULL;
         try
         {
-            std::string libPath = m_sPluginsLibDir + "/" + PLUGINS_LIB_PREFIX + pName + "." + PLUGINS_LIB_EXTENSION;
+            std::string libPath = PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX + pName + "."PLUGINS_LIB_EXTENSION;
             abrtPlugin = new CABRTPlugin(libPath.c_str());
             if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
                 (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
@@ -136,7 +131,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
             map_plugin_settings_t pluginSettings;
 
-            LoadPluginSettings(m_sPluginsConfDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION, pluginSettings);
+            LoadPluginSettings(PLUGINS_CONF_DIR"/" + pName + "."PLUGINS_CONF_EXTENSION, pluginSettings);
             try
             {
                 plugin->Init();

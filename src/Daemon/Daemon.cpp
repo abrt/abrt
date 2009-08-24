@@ -596,7 +596,7 @@ int main(int argc, char** argv)
         /* (comment here) */
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* (comment here) */
-        g_pPluginManager = new CPluginManager(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
+        g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
         SetUpMW();
         SetUpCron();
