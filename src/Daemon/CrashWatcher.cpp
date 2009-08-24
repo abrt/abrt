@@ -26,15 +26,15 @@ void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest
 {
     std::cout << "Update: " + pMessage << std::endl;
     //FIXME: send updates only to job owner
-    if(g_pCommLayer != NULL)
-       g_pCommLayer->Update(pDest,pMessage);
+    if (g_pCommLayer != NULL)
+        g_pCommLayer->Update(pDest, pMessage);
 }
 
 void CCrashWatcher::Warning(const std::string& pMessage, const std::string& pDest)
 {
     std::cerr << "Warning: " + pMessage << std::endl;
-    if(g_pCommLayer != NULL)
-       g_pCommLayer->Warning(pDest,pMessage);
+    if (g_pCommLayer != NULL)
+        g_pCommLayer->Warning(pDest, pMessage);
 }
 
 void CCrashWatcher::Debug(const std::string& pMessage, const std::string& pDest)
@@ -59,7 +59,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
     try
     {
         vector_pair_string_string_t UUIDsUIDs;
-        UUIDsUIDs = ::GetUUIDsOfCrash(pUID);
+        UUIDsUIDs = GetUUIDsOfCrash(pUID);
 
         unsigned int ii;
         for (ii = 0; ii < UUIDsUIDs.size(); ii++)
@@ -76,15 +76,15 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
                 case MW_ERROR:
                     Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    ::DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                    DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                     break;
                 case MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
                         Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
                         Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        debugDumpDir = ::DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
-                        ::DeleteDebugDumpDir(debugDumpDir);
+                        debugDumpDir = DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                        DeleteDebugDumpDir(debugDumpDir);
                     }
                     break;
                 default:
@@ -102,7 +102,7 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
         Status(e.what());
     }
 
-    //retval = ::GetCrashInfos(pUID);
+    //retval = GetCrashInfos(pUID);
     //Notify("Sent crash info");
     return retval;
 }
@@ -121,7 +121,7 @@ static void *create_report(void *arg)
     try
     {
         mw_result_t res;
-        res = ::CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
+        res = CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
         switch (res)
         {
             case MW_OK:
@@ -138,8 +138,8 @@ static void *create_report(void *arg)
                 {
                     std::string debugDumpDir;
                     g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
-                    debugDumpDir = ::DeleteCrashInfo(thread_data->UUID, thread_data->UID);
-                    ::DeleteDebugDumpDir(debugDumpDir);
+                    debugDumpDir = DeleteCrashInfo(thread_data->UUID, thread_data->UID);
+                    DeleteDebugDumpDir(debugDumpDir);
                 }
                 break;
         }
@@ -224,8 +224,8 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     try
     {
         std::string debugDumpDir;
-        debugDumpDir = ::DeleteCrashInfo(pUUID,pUID);
-        ::DeleteDebugDumpDir(debugDumpDir);
+        debugDumpDir = DeleteCrashInfo(pUUID, pUID);
+        DeleteDebugDumpDir(debugDumpDir);
     }
     catch (CABRTException& e)
     {

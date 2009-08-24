@@ -147,23 +147,15 @@ class CPluginManager
          */
         map_plugin_settings_t GetPluginSettings(const std::string& pName,
                                                 const std::string& pUID);
-        /**
-         * A function. It loads settings and store it in second parameter. On success it
-         * returns true, otherwise returns false.
-         * @param path A path of config file.
-         * @param settings A readed plugin's settings.
-         * @return if it success it returns true, otherwise it returns false.
-         */
-        bool LoadPluginSettings(const std::string& pPath,
-                                map_plugin_settings_t& pSettings);
-        /**
-         * A function. It saves settings. On success it returns true, otherwise returns false.
-         * @param path A path of config file.
-         * @param settings Plugin's settings.
-         * @return if it success it returns true, otherwise it returns false.
-         */
-        bool SavePluginSettings(const std::string& pPath,
-                                const map_plugin_settings_t& pSettings);
 };
 
+/**
+ * A function. It loads settings and store it in second parameter. On success it
+ * returns true, otherwise returns false.
+ * @param path A path of config file.
+ * @param settings A readed plugin's settings.
+ * @return if it success it returns true, otherwise it returns false.
+ */
+bool LoadPluginSettings(const std::string& pPath,
+                        map_plugin_settings_t& pSettings);
 #endif /*PLUGINMANAGER_H_*/

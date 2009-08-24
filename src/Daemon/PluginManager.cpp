@@ -33,12 +33,94 @@
 /**
  * Text representation of plugin types.
  */
-static const char* const plugin_type_str_t[] = {
+static const char* const plugin_type_str[] = {
     "Analyzer",
     "Action",
     "Reporter",
     "Database"
 };
+
+
+bool LoadPluginSettings(const std::string& pPath, map_plugin_settings_t& pSettings)
+{
+    std::ifstream fIn;
+    fIn.open(pPath.c_str());
+    if (fIn.is_open())
+    {
+        std::string line;
+        while (!fIn.eof())
+        {
+            getline(fIn, line);
+
+            int ii;
+            bool is_value = false;
+            bool valid = false;
+            bool in_quote = false;
+            std::string key = "";
+            std::string value = "";
+            for (ii = 0; ii < line.length(); ii++)
+            {
+                if (line[ii] == '\"')
+                {
+                    in_quote = in_quote == true ? false : true;
+                }
+                if (isspace(line[ii]) && !in_quote)
+                {
+                    continue;
+                }
+                if (line[ii] == '#' && !in_quote && key == "")
+                {
+                    break;
+                }
+                if (line[ii] == '=' && !in_quote)
+                {
+                    is_value = true;
+                    continue;
+                }
+                if (!is_value)
+                {
+                    key += line[ii];
+                }
+                else
+                {
+                    valid = true;
+                    value += line[ii];
+                }
+            }
+            if (valid && !in_quote)
+            {
+                pSettings[key] = value;
+            }
+        }
+        fIn.close();
+        return true;
+    }
+    return false;
+}
+
+/**
+ * A function. It saves settings. On success it returns true, otherwise returns false.
+ * @param path A path of config file.
+ * @param settings Plugin's settings.
+ * @return if it success it returns true, otherwise it returns false.
+ */
+static bool SavePluginSettings(const std::string& pPath, const map_plugin_settings_t& pSettings)
+{
+    std::ofstream fOut;
+    fOut.open(pPath.c_str());
+    if (fOut.is_open())
+    {
+        fOut << "# Settings were written by abrt." << std::endl;
+        map_plugin_settings_t::const_iterator it;
+        for (it = pSettings.begin(); it != pSettings.end(); it++)
+        {
+            fOut << it->first << " = " << it->second << std::endl;
+        }
+        fOut.close();
+        return true;
+    }
+    return false;
+}
 
 
 CPluginManager::CPluginManager()
@@ -140,14 +222,14 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             catch (CABRTException& e)
             {
                 comm_layer_inner_warning("Can not initialize plugin " + pName + "("
-                                        + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
+                                        + std::string(plugin_type_str[m_mapABRTPlugins[pName]->GetType()])
                                         + "): " + e.what());
                 UnLoadPlugin(pName);
                 return;
             }
             m_mapPlugins[pName] = plugin;
             comm_layer_inner_debug("Registered plugin " + pName + "("
-                                  + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
+                                  + std::string(plugin_type_str[m_mapABRTPlugins[pName]->GetType()])
                                   + ")");
         }
     }
@@ -163,7 +245,7 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
             delete m_mapPlugins[pName];
             m_mapPlugins.erase(pName);
             comm_layer_inner_debug("UnRegistred plugin " + pName + "("
-                                  + std::string(plugin_type_str_t[m_mapABRTPlugins[pName]->GetType()])
+                                  + std::string(plugin_type_str[m_mapABRTPlugins[pName]->GetType()])
                                   + ")");
         }
     }
@@ -249,7 +331,7 @@ vector_map_string_string_t CPluginManager::GetPluginsInfo()
 
         plugin_info["Enabled"] = (m_mapPlugins.find(it_abrt_plugin->second->GetName()) != m_mapPlugins.end()) ?
                                  "yes" : "no";
-        plugin_info["Type"] = plugin_type_str_t[it_abrt_plugin->second->GetType()];
+        plugin_info["Type"] = plugin_type_str[it_abrt_plugin->second->GetType()];
         plugin_info["Name"] = it_abrt_plugin->second->GetName();
         plugin_info["Version"] = it_abrt_plugin->second->GetVersion();
         plugin_info["Description"] = it_abrt_plugin->second->GetDescription();
@@ -277,7 +359,7 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                 if (home != "")
                 {
                     std::string confDir = home + "/.abrt";
-                    std::string confPath = confDir + "/" + pName + "." + PLUGINS_CONF_EXTENSION;
+                    std::string confPath = confDir + "/" + pName + "."PLUGINS_CONF_EXTENSION;
                     uid_t uid = atoi(pUID.c_str());
                     struct passwd* pw = getpwuid(uid);
                     gid_t gid = pw ? pw->pw_gid : uid;
@@ -335,87 +417,11 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName
                 std::string home = get_home_dir(atoi(pUID.c_str()));
                 if (home != "")
                 {
-                    LoadPluginSettings(home + "/.abrt/" + pName + "." + PLUGINS_CONF_EXTENSION, ret);
+                    LoadPluginSettings(home + "/.abrt/" + pName + "."PLUGINS_CONF_EXTENSION, ret);
                 }
             }
             return ret;
         }
     }
     return ret;
-}
-
-bool CPluginManager::LoadPluginSettings(const std::string& pPath, map_plugin_settings_t& pSettings)
-{
-    std::ifstream fIn;
-    fIn.open(pPath.c_str());
-    if (fIn.is_open())
-    {
-        std::string line;
-        while (!fIn.eof())
-        {
-            getline(fIn, line);
-
-            int ii;
-            bool is_value = false;
-            bool valid = false;
-            bool in_quote = false;
-            std::string key = "";
-            std::string value = "";
-            for (ii = 0; ii < line.length(); ii++)
-            {
-                if (line[ii] == '\"')
-                {
-                    in_quote = in_quote == true ? false : true;
-                }
-                if (isspace(line[ii]) && !in_quote)
-                {
-                    continue;
-                }
-                if (line[ii] == '#' && !in_quote && key == "")
-                {
-                    break;
-                }
-                if (line[ii] == '=' && !in_quote)
-                {
-                    is_value = true;
-                    continue;
-                }
-                if (!is_value)
-                {
-                    key += line[ii];
-                }
-                else
-                {
-                    valid = true;
-                    value += line[ii];
-                }
-            }
-            if (valid && !in_quote)
-            {
-                pSettings[key] = value;
-            }
-        }
-        fIn.close();
-        return true;
-    }
-    return false;
-
-}
-
-bool CPluginManager::SavePluginSettings(const std::string& pPath, const map_plugin_settings_t& pSettings)
-{
-    std::ofstream fOut;
-    fOut.open(pPath.c_str());
-    if (fOut.is_open())
-    {
-        fOut << "# Settings were written by abrt." << std::endl;
-        map_plugin_settings_t::const_iterator it;
-        for (it = pSettings.begin(); it != pSettings.end(); it++)
-        {
-            fOut << it->first << " = " << it->second << std::endl;
-        }
-        fOut.close();
-        return true;
-    }
-    return false;
 }

@@ -340,7 +340,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                             {
                                 oldSettings = reporter->GetSettings();
 
-                                if (g_pPluginManager->LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
+                                if (LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
                                 {
                                     reporter->SetSettings(newSettings);
                                 }
