@@ -135,7 +135,7 @@ std::string CLogger::Report(const map_crash_report_t& pCrashReport, const std::s
     {
         throw CABRTException(EXCEP_PLUGIN, "CLogger::Report(): Cannot open file: " + m_sLogPath);
     }
-    return "Report was stored into: " + m_sLogPath;
+    return "file://" + m_sLogPath;
 }
 
 PLUGIN_INFO(REPORTER,
