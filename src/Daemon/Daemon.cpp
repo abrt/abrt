@@ -596,7 +596,8 @@ int main(int argc, char** argv)
         /* (comment here) */
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* (comment here) */
-        CMiddleWare(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
+        g_pPluginManager = new CPluginManager(PLUGINS_CONF_DIR, PLUGINS_LIB_DIR);
+        g_pPluginManager->LoadPlugins();
         SetUpMW();
         SetUpCron();
         FindNewDumps(DEBUG_DUMPS_DIR);
@@ -631,7 +632,9 @@ int main(int argc, char** argv)
         g_io_channel_unref(pGio);
         delete g_pCommLayer;
         /* This restores /proc/sys/kernel/core_pattern, among other things: */
-        CMiddleWare_deinit();
+        g_pPluginManager->UnLoadPlugins();
+        delete g_pPluginManager;
+
         g_main_loop_unref(g_pMainloop);
         delete g_pSettings;
         if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
@@ -669,7 +672,9 @@ int main(int argc, char** argv)
     g_io_channel_unref(pGio);
     delete g_pCommLayer;
     /* This restores /proc/sys/kernel/core_pattern, among other things: */
-    CMiddleWare_deinit();
+    g_pPluginManager->UnLoadPlugins();
+    delete g_pPluginManager;
+
     g_main_loop_unref(g_pMainloop);
     delete g_pSettings;
 

@@ -60,11 +60,8 @@ typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_
 extern CPluginManager* g_pPluginManager;
 
 
-void CMiddleWare(const std::string& pPluginsConfDir,
-            const std::string& pPluginsLibDir);
-void CMiddleWare_deinit();
 /**
- * A method, which takes care of getting all additional data needed
+ * Takes care of getting all additional data needed
  * for computing UUIDs and creating a report for particular analyzer
  * plugin. This report could be send somewhere afterwards. If a creation
  * is successful, then  a crash report is filled.
@@ -77,7 +74,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
                               const std::string& pUID,
                               map_crash_report_t& pCrashReport);
 /**
- * A method, which activate particular action plugin.
+ * Activates particular action plugin.
  * @param pActionDir A directory, which is passed as working to a action plugin.
  * @param pPluginName An action plugin name.
  * @param pPluginArgs Action plugin's arguments.
@@ -86,13 +83,13 @@ void RunAction(const std::string& pActionDir,
                const std::string& pPluginName,
                const std::string& pPluginArgs);
 /**
- * A method, which activate all action and reporter plugins when any
+ * Activates all action and reporter plugins when any
  * crash occurs.
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  */
 void RunActionsAndReporters(const std::string& pDebugDumpDir);
 /**
- * A method, which reports a crash report to particular receiver. It
+ * Reports a crash report to particular receiver. It
  * takes an user uid, tries to find user config file and load it. If it
  * fails, then default config is used. If pUID is emply string, default
  * config is used.
@@ -104,12 +101,12 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir);
 report_status_t Report(const map_crash_report_t& pCrashReport,
                        const std::string& pUID);
 /**
- * A method, which deletes particular debugdump directory.
+ * Deletes particular debugdump directory.
  * @param pDebugDumpDir A debugdump directory.
  */
 void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
 /**
- * A method, which delete a row from database. If a deleting is
+ * Deletes a row from database. If a deleting is
  * successfull, it returns a debugdump directort, which is not
  * deleted. Otherwise, it returns empty string.
  * @param pUUID A local UUID of a crash.
@@ -119,13 +116,13 @@ void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
 std::string DeleteCrashInfo(const std::string& pUUID,
                             const std::string& pUID);
 /**
- * A method, whis saves debugdump into database.
+ * Saves debugdump into database.
  * @param pDebugDumpDir A debugdump directory.
  * @return It return results of operation. See mw_result_t.
  */
 mw_result_t SaveDebugDump(const std::string& pDebugDumpDir);
 /**
- * A method, whis saves debugdump into database. If saving is sucessful
+ * Saves debugdump into database. If saving is sucessful
  * it fills crash info.
  * @param pDebugDumpDir A debugdump directory.
  * @param pCrashInfo A crash info.

@@ -61,28 +61,14 @@ static vector_pair_string_string_t m_vectorActionsAndReporters;
 /**
  * Check GPG finger print?
  */
-static bool m_bOpenGPGCheck;
+static bool m_bOpenGPGCheck = true;
 
 
 static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
 
 
-void CMiddleWare(const std::string& pPluginsConfDir,
-                         const std::string& pPluginsLibDir)
-{
-    m_bOpenGPGCheck = true;
-    g_pPluginManager = new CPluginManager(pPluginsConfDir, pPluginsLibDir);
-    g_pPluginManager->LoadPlugins();
-}
-
-void CMiddleWare_deinit()
-{
-    g_pPluginManager->UnLoadPlugins();
-    delete g_pPluginManager;
-}
-
 /**
- * A method, which transforms a debugdump direcortry to inner crash
+ * Transforms a debugdump direcortry to inner crash
  * report form. This form is used for later reporting.
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @param pCrashReport A created crash report.
