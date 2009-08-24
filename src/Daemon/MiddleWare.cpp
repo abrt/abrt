@@ -20,10 +20,11 @@
     */
 
 #include "abrtlib.h"
-#include "MiddleWare.h"
+#include "Settings.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
+#include "MiddleWare.h"
 
 
 /**
@@ -38,15 +39,11 @@ CPluginManager* g_pPluginManager;
  * An instance of CRPM used for package checking.
  * @see RPM.h
  */
-static CRPM m_RPM;
+static CRPM s_RPM;
 /**
  * A set of blacklisted packages.
  */
 static set_strings_t s_setBlackList;
-/**
- * A name of database plugin, which is used for metadata.
- */
-static std::string m_sDatabase;
 /**
  * A map, which associates particular analyzer to one or more
  * action or reporter plugins. These are activated when a crash, which
@@ -58,10 +55,6 @@ static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
  * activated when any crash occurs.
  */
 static vector_pair_string_string_t s_vectorActionsAndReporters;
-/**
- * Check GPG finger print?
- */
-static bool s_bOpenGPGCheck = true;
 
 
 static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
@@ -177,7 +170,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
                                                         const std::string& pUID,
                                                         map_crash_report_t& pCrashReport)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database_row_t row;
     database->Connect();
     row = database->GetUUIDData(pUUID, pUID);
@@ -369,7 +362,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
         }
     }
 
-    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
     database->SetReported(UUID, UID, message);
     database->DisConnect();
@@ -389,7 +382,7 @@ std::string DeleteCrashInfo(const std::string& pUUID,
                                          const std::string& pUID)
 {
     database_row_t row;
-    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
     row = database->GetUUIDData(pUUID, pUID);
     database->Delete(pUUID, pUID);
@@ -409,7 +402,7 @@ std::string DeleteCrashInfo(const std::string& pUUID,
 static bool IsDebugDumpSaved(const std::string& pUID,
                                    const std::string& pDebugDumpDir)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     vector_database_rows_t rows;
     database->Connect();
     rows = database->GetUIDData(pUID);
@@ -448,7 +441,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
     }
     else
     {
-        package = m_RPM.GetPackage(pExecutable);
+        package = s_RPM.GetPackage(pExecutable);
         packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
         if (packageName == "" ||
             (s_setBlackList.find(packageName) != s_setBlackList.end()))
@@ -461,14 +454,14 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
             comm_layer_inner_debug("Blacklisted package");
             return MW_BLACKLISTED;
         }
-        if (s_bOpenGPGCheck)
+        if (g_settings_bOpenGPGCheck)
         {
-            if (!m_RPM.CheckFingerprint(packageName))
+            if (!s_RPM.CheckFingerprint(packageName))
             {
                 comm_layer_inner_debug("package isn't signed with proper key");
                 return MW_GPG_ERROR;
             }
-            if (!m_RPM.CheckHash(packageName, pExecutable))
+            if (!s_RPM.CheckHash(packageName, pExecutable))
             {
                 comm_layer_inner_debug("executable has bad hash");
                 return MW_GPG_ERROR;
@@ -476,8 +469,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
         }
     }
 
-    std::string description = m_RPM.GetDescription(packageName);
-    std::string component = m_RPM.GetComponent(pExecutable);
+    std::string description = s_RPM.GetDescription(packageName);
+    std::string component = s_RPM.GetComponent(pExecutable);
 
     CDebugDump dd;
     try
@@ -553,7 +546,7 @@ static mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
                                                               map_crash_info_t& pCrashInfo)
 {
     mw_result_t res;
-    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database_row_t row;
     database->Connect();
     database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
@@ -629,7 +622,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
                                                    map_crash_info_t& pCrashInfo)
 {
     pCrashInfo.clear();
-    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database_row_t row;
     database->Connect();
     row = database->GetUUIDData(pUUID, pUID);
@@ -674,7 +667,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
 
 vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(m_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     vector_database_rows_t rows;
     database->Connect();
     rows = database->GetUIDData(pUID);
@@ -690,19 +683,9 @@ vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
     return UUIDsUIDs;
 }
 
-void SetOpenGPGCheck(bool pCheck)
-{
-    s_bOpenGPGCheck = pCheck;
-}
-
-void SetDatabase(const std::string& pDatabase)
-{
-    m_sDatabase = pDatabase;
-}
-
 void AddOpenGPGPublicKey(const std::string& pKey)
 {
-    m_RPM.LoadOpenGPGPublicKey(pKey);
+    s_RPM.LoadOpenGPGPublicKey(pKey);
 }
 
 void AddBlackListedPackage(const std::string& pPackage)

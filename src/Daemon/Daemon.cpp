@@ -149,9 +149,6 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
 
 static void SetUpMW()
 {
-    SetOpenGPGCheck(g_settings_bOpenGPGCheck);
-    SetDatabase(g_settings_sDatabase);
-
     set_strings_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {

@@ -149,16 +149,6 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
  */
 vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
 /**
- * Sets a GPG finger print check.
- * @param pCheck Is it enabled?
- */
-void SetOpenGPGCheck(bool pCheck);
-/**
- * Sets a name of database.
- * @param pDatabase A database name.
- */
-void SetDatabase(const std::string& pDatabase);
-/**
  * Adds one path to a GPG public key into MW's set.
  * @param pKey A path to a GPG public key.
  */
