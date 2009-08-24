@@ -4,12 +4,11 @@
 
 DBus::Connection *CCommLayerServerDBus::init_dbus(CCommLayerServerDBus *self)
 {
-    CCommLayerServerDBus *server = (CCommLayerServerDBus*) self;
-    server->m_pDispatcher = new DBus::Glib::BusDispatcher();
-    server->m_pDispatcher->attach(NULL);
+    self->m_pDispatcher = new DBus::Glib::BusDispatcher();
+    self->m_pDispatcher->attach(NULL);
     DBus::default_dispatcher = self->m_pDispatcher;
-    server->m_pConn = new DBus::Connection(DBus::Connection::SystemBus());
-    return server->m_pConn;
+    self->m_pConn = new DBus::Connection(DBus::Connection::SystemBus());
+    return self->m_pConn;
 }
 
 CCommLayerServerDBus::CCommLayerServerDBus()

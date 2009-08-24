@@ -9,13 +9,14 @@
 
 set_strings_t g_settings_setOpenGPGPublicKeys;
 set_strings_t g_settings_mapSettingsBlackList;
-vector_pair_string_string_t g_settings_vectorActionsAndReporters;
 set_strings_t g_settings_setEnabledPlugins;
+unsigned int  g_settings_nMaxCrashReportsSize = 1000;
+bool          g_settings_bOpenGPGCheck = false;
+std::string   g_settings_sDatabase;
+map_cron_t    g_settings_mapCron;
+vector_pair_string_string_t g_settings_vectorActionsAndReporters;
 map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
-unsigned int g_settings_nMaxCrashReportsSize = 1000;
-bool g_settings_bOpenGPGCheck = false;
-std::string g_settings_sDatabase;
-map_cron_t g_settings_mapCron;
+
 
 static map_settings_t s_mapSettingsCommon;
 static map_settings_t s_mapSettingsAnalyzerActionsAndReporters;
@@ -128,8 +129,8 @@ static void ParseCommon()
 
 static void ParseCron()
 {
-    map_settings_t::iterator it;
-    for (it = s_mapSettingsCron.begin(); it != s_mapSettingsCron.end(); it++)
+    map_settings_t::iterator it = s_mapSettingsCron.begin();
+    for (; it != s_mapSettingsCron.end(); it++)
     {
         vector_pair_strings_t actionsAndReporters = ParseListWithArgs(it->second);
         g_settings_mapCron[it->first] = actionsAndReporters;
@@ -180,23 +181,23 @@ static set_strings_t ParseKey(const std::string& Key)
 
 static void ParseAnalyzerActionsAndReporters()
 {
-    map_settings_t::iterator it;
-    for (it = s_mapSettingsAnalyzerActionsAndReporters.begin(); it != s_mapSettingsAnalyzerActionsAndReporters.end(); it++)
+    map_settings_t::iterator it = s_mapSettingsAnalyzerActionsAndReporters.begin();
+    for (; it != s_mapSettingsAnalyzerActionsAndReporters.end(); it++)
     {
         set_strings_t keys = ParseKey(it->first);
         vector_pair_strings_t actionsAndReporters = ParseListWithArgs(it->second);
-        set_strings_t::iterator it_keys;
-        for (it_keys = keys.begin(); it_keys != keys.end(); it_keys++)
+        set_strings_t::iterator it_keys = keys.begin();
+        for (; it_keys != keys.end(); it_keys++)
         {
             g_settings_mapAnalyzerActionsAndReporters[*it_keys] = actionsAndReporters;
         }
     }
 }
 
-void LoadSettings(const std::string& pPath)
+void LoadSettings(const char* pPath)
 {
     std::ifstream fIn;
-    fIn.open(pPath.c_str());
+    fIn.open(pPath);
     if (fIn.is_open())
     {
         std::string line;
