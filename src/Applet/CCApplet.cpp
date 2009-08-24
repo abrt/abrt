@@ -26,6 +26,30 @@
 
 static const char *DBUS_SERVICE_NAME = "org.freedesktop.DBus";
 static const char *DBUS_SERVICE_PATH = "/org/freedesktop/DBus";
+const gchar *CApplet::menu_xml = 
+        "<?xml version=\"1.0\"?>\
+        <interface>\
+          <requires lib=\"gtk+\" version=\"2.16\"/>\
+          <!-- interface-naming-policy project-wide -->\
+          <object class=\"GtkMenu\" id=\"popup_menu\">\
+            <property name=\"visible\">True</property>\
+            <child>\
+              <object class=\"GtkMenuItem\" id=\"miHide\">\
+                <property name=\"visible\">True</property>\
+                <property name=\"label\" translatable=\"yes\">Hide</property>\
+              </object>\
+            </child>\
+            <child>\
+              <object class=\"GtkImageMenuItem\" id=\"miQuit\">\
+                <property name=\"label\">gtk-quit</property>\
+                <property name=\"visible\">True</property>\
+                <property name=\"use_underline\">True</property>\
+                <property name=\"use_stock\">True</property>\
+                <property name=\"always_show_image\">True</property>\
+              </object>\
+            </child>\
+          </object>\
+        </interface>";
 
 CApplet::CApplet(DBus::Connection &connection, const char *path, const char *name)
 : DBus::ObjectProxy(connection, path, name)
@@ -39,11 +63,29 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
     notify_notification_set_urgency(m_pNotification, NOTIFY_URGENCY_CRITICAL);
     notify_notification_set_timeout(m_pNotification, 5000);
     gtk_status_icon_set_visible(m_pStatusIcon, FALSE);
-    // LMB click
-    //TODO add some actions!
     g_signal_connect(G_OBJECT(m_pStatusIcon), "activate", GTK_SIGNAL_FUNC(CApplet::OnAppletActivate_CB), this);
     g_signal_connect(G_OBJECT(m_pStatusIcon), "popup_menu", GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
     SetIconTooltip("Pending events: %i", m_mapEvents.size());
+    m_pBuilder = gtk_builder_new();
+    if(gtk_builder_add_from_string(m_pBuilder, menu_xml, strlen(menu_xml), NULL))
+    {
+        m_pMenu = gtk_builder_get_object(m_pBuilder, "popup_menu");
+        //gtk_menu_attach_to_widget(GTK_MENU(m_pMenu), GTK_WIDGET(m_pStatusIcon), NULL);
+        m_pmiHide = gtk_builder_get_object(m_pBuilder, "miHide");
+        if(m_pmiHide != NULL)
+        {
+            g_signal_connect(m_pmiHide,"activate", G_CALLBACK(CApplet::onHide_cb), this);
+        }
+        m_pmiQuit = gtk_builder_get_object(m_pBuilder, "miQuit");
+        if(m_pmiQuit != NULL)
+        {
+            g_signal_connect(m_pmiQuit,"activate",G_CALLBACK(gtk_main_quit),NULL);
+        }
+    }
+    else
+    {
+        fprintf(stderr,"Can't create menu from the description, popup won't be available!\n");
+    }
 }
 
 CApplet::~CApplet()
@@ -133,7 +175,10 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          activate_time,
                             gpointer       user_data)
 {
-    gtk_status_icon_set_visible(((CApplet *)user_data)->m_pStatusIcon, false);
+    if(((CApplet *)user_data)->m_pMenu != NULL)
+    {
+        gtk_menu_popup(GTK_MENU(((CApplet *)user_data)->m_pMenu),NULL,NULL,gtk_status_icon_position_menu,status_icon,button,activate_time);
+    }
 }
 
 void CApplet::ShowIcon()
@@ -141,7 +186,10 @@ void CApplet::ShowIcon()
     gtk_status_icon_set_visible(m_pStatusIcon, true);
     notify_notification_show(m_pNotification, NULL);
 }
-
+void CApplet::onHide_cb(GtkMenuItem *menuitem, gpointer applet)
+{
+    ((CApplet*)applet)->HideIcon();
+}
 void CApplet::HideIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon, false);

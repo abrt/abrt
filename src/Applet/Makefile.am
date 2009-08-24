@@ -18,7 +18,7 @@ abrt_applet_LDADD = \
     -lglib-2.0 -lgthread-2.0 \
     $(DBUSCPP_LIBS) $(LIBNOTIFY_LIBS)
 
-EXTRA_DIST = abrt-applet.desktop
+EXTRA_DIST = abrt-applet.desktop popup.GtkBuilder
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = abrt-applet.desktop

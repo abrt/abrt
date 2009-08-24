@@ -32,7 +32,14 @@ class CApplet
   public DBus::ObjectProxy
 {
     private:
+        static const gchar *menu_xml;
+
         GtkStatusIcon* m_pStatusIcon;
+        GObject *m_pMenu;
+        GtkBuilder *m_pBuilder;
+        GObject *m_pmiHide;
+        GObject *m_pmiQuit;
+
         NotifyNotification *m_pNotification;
         std::map<int, std::string > m_mapEvents;
         DaemonWatcher *m_pDaemonWatcher;
@@ -63,6 +70,7 @@ class CApplet
                             guint          button,
                             guint          activate_time,
                             gpointer       user_data);
+        static void onHide_cb(GtkMenuItem *menuitem, gpointer applet);
     private:
         /* dbus stuff */
         void Crash(std::string &value);
