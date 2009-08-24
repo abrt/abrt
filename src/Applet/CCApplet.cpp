@@ -158,10 +158,9 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
         if (pid == 0)
         { /* child */
             signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-            /* execlp searches PATH. We do not need to supply the path this way,
-             * and user has a freedom to install abrt-gui whereever he pleases.
-             * He just needs to set up PATH accordingly.
-             */
+            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
+            /* Did not find abrt-gui in installation directory. Oh well */
+            /* Trying to find it in PATH */
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
             std::cerr << "can't exec abrt-gui\n";
             exit(1);
