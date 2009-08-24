@@ -152,36 +152,36 @@ static void SetUpMW()
 {
     ::SetOpenGPGCheck(g_pSettings->GetOpenGPGCheck());
     ::SetDatabase(g_pSettings->GetDatabase());
-    CSettings::set_strings_t openGPGPublicKeys = g_pSettings->GetOpenGPGPublicKeys();
-    CSettings::set_strings_t::iterator it_k;
+    set_strings_t openGPGPublicKeys = g_pSettings->GetOpenGPGPublicKeys();
+    set_strings_t::iterator it_k;
     for (it_k = openGPGPublicKeys.begin(); it_k != openGPGPublicKeys.end(); it_k++)
     {
         ::AddOpenGPGPublicKey(*it_k);
     }
-    CSettings::set_strings_t blackList = g_pSettings->GetBlackList();
-    CSettings::set_strings_t::iterator it_b;
+    set_strings_t blackList = g_pSettings->GetBlackList();
+    set_strings_t::iterator it_b;
     for (it_b = blackList.begin(); it_b != blackList.end(); it_b++)
     {
         ::AddBlackListedPackage(*it_b);
     }
-    CSettings::set_strings_t enabledPlugins = g_pSettings->GetEnabledPlugins();
-    CSettings::set_strings_t::iterator it_p;
+    set_strings_t enabledPlugins = g_pSettings->GetEnabledPlugins();
+    set_strings_t::iterator it_p;
     for (it_p = enabledPlugins.begin(); it_p != enabledPlugins.end(); it_p++)
     {
         g_pPluginManager->RegisterPlugin(*it_p);
     }
-    CSettings::vector_pair_strings_t actionsAndReporters = g_pSettings->GetActionsAndReporters();
-    CSettings::vector_pair_strings_t::iterator it_ar;
+    vector_pair_strings_t actionsAndReporters = g_pSettings->GetActionsAndReporters();
+    vector_pair_strings_t::iterator it_ar;
     for (it_ar = actionsAndReporters.begin(); it_ar != actionsAndReporters.end(); it_ar++)
     {
         ::AddActionOrReporter((*it_ar).first, (*it_ar).second);
     }
 
-    CSettings::map_analyzer_actions_and_reporters_t analyzerActionsAndReporters = g_pSettings->GetAnalyzerActionsAndReporters();
-    CSettings::map_analyzer_actions_and_reporters_t::iterator it_aar;
+    map_analyzer_actions_and_reporters_t analyzerActionsAndReporters = g_pSettings->GetAnalyzerActionsAndReporters();
+    map_analyzer_actions_and_reporters_t::iterator it_aar;
     for (it_aar = analyzerActionsAndReporters.begin(); it_aar != analyzerActionsAndReporters.end(); it_aar++)
     {
-        CSettings::vector_pair_strings_t::iterator it_ar;
+        vector_pair_strings_t::iterator it_ar;
         for (it_ar = it_aar->second.begin(); it_ar != it_aar->second.end(); it_ar++)
         {
             ::AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
@@ -191,8 +191,8 @@ static void SetUpMW()
 
 static void SetUpCron()
 {
-    CSettings::map_cron_t cron = g_pSettings->GetCron();
-    CSettings::map_cron_t::iterator it_c;
+    map_cron_t cron = g_pSettings->GetCron();
+    map_cron_t::iterator it_c;
     for (it_c = cron.begin(); it_c != cron.end(); it_c++)
     {
         std::string::size_type pos = it_c->first.find(":");
@@ -229,7 +229,7 @@ static void SetUpCron()
 
         if (nS != -1)
         {
-            CSettings::vector_pair_strings_t::iterator it_ar;
+            vector_pair_strings_t::iterator it_ar;
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
                 cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
@@ -261,7 +261,7 @@ static void SetUpCron()
             {
                 timeout = nextTime - actTime;
             }
-            CSettings::vector_pair_strings_t::iterator it_ar;
+            vector_pair_strings_t::iterator it_ar;
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
 

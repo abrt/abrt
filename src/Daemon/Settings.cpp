@@ -160,7 +160,7 @@ void CSettings::ParseCron()
     }
 }
 
-CSettings::vector_pair_strings_t CSettings::ParseListWithArgs(const std::string& pValue)
+vector_pair_strings_t CSettings::ParseListWithArgs(const std::string& pValue)
 {
     vector_pair_strings_t pluginsWithArgs;
     unsigned int ii;
@@ -208,7 +208,7 @@ CSettings::vector_pair_strings_t CSettings::ParseListWithArgs(const std::string&
     return pluginsWithArgs;
 }
 
-CSettings::set_strings_t CSettings::ParseKey(const std::string& Key)
+set_strings_t CSettings::ParseKey(const std::string& Key)
 {
    unsigned int ii;
    std::string item  = "";
@@ -250,7 +250,7 @@ CSettings::set_strings_t CSettings::ParseKey(const std::string& Key)
     return set;
 }
 
-CSettings::set_strings_t CSettings::ParseList(const std::string& pList)
+set_strings_t CSettings::ParseList(const std::string& pList)
 {
    unsigned int ii;
    std::string item  = "";
@@ -275,17 +275,17 @@ CSettings::set_strings_t CSettings::ParseList(const std::string& pList)
 }
 
 
-const CSettings::set_strings_t& CSettings::GetBlackList()
+const set_strings_t& CSettings::GetBlackList()
 {
     return m_setBlackList;
 }
 
-const CSettings::set_strings_t& CSettings::GetEnabledPlugins()
+const set_strings_t& CSettings::GetEnabledPlugins()
 {
     return m_setEnabledPlugins;
 }
 
-const CSettings::set_strings_t& CSettings::GetOpenGPGPublicKeys()
+const set_strings_t& CSettings::GetOpenGPGPublicKeys()
 {
     return m_setOpenGPGPublicKeys;
 }
@@ -295,7 +295,7 @@ bool CSettings::GetOpenGPGCheck()
     return m_bOpenGPGCheck;
 }
 
-const CSettings::map_analyzer_actions_and_reporters_t& CSettings::GetAnalyzerActionsAndReporters()
+const map_analyzer_actions_and_reporters_t& CSettings::GetAnalyzerActionsAndReporters()
 {
     return m_mapAnalyzerActionsAndReporters;
 }
@@ -305,7 +305,7 @@ const unsigned int& CSettings::GetMaxCrashReportsSize()
     return m_nMaxCrashReportsSize;
 }
 
-const CSettings::vector_pair_strings_t& CSettings::GetActionsAndReporters()
+const vector_pair_strings_t& CSettings::GetActionsAndReporters()
 {
     return m_vectorActionsAndReporters;
 }
@@ -315,7 +315,7 @@ const std::string& CSettings::GetDatabase()
     return m_sDatabase;
 }
 
-const CSettings::map_cron_t& CSettings::GetCron()
+const map_cron_t& CSettings::GetCron()
 {
     return m_mapCron;
 }

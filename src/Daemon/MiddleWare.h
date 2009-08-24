@@ -122,7 +122,7 @@ std::string DeleteCrashInfo(const std::string& pUUID,
  */
 mw_result_t SaveDebugDump(const std::string& pDebugDumpDir);
 /**
- * Saves debugdump into database. If saving is sucessful
+ * Saves debugdump into database. If saving is successful,
  * it fills crash info.
  * @param pDebugDumpDir A debugdump directory.
  * @param pCrashInfo A crash info.

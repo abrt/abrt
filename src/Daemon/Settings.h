@@ -8,16 +8,15 @@
 
 #include "MiddleWareTypes.h"
 
+typedef std::map<std::string, std::string> map_settings_t;
+typedef std::set<std::string> set_strings_t;
+typedef std::pair<std::string, std::string> pair_string_string_t;
+typedef std::vector<pair_string_string_t> vector_pair_strings_t;
+typedef std::map<std::string, vector_pair_strings_t> map_analyzer_actions_and_reporters_t;
+typedef std::map<std::string, vector_pair_strings_t> map_cron_t;
+
 class CSettings
 {
-    public:
-        typedef std::map<std::string, std::string> map_settings_t;
-        typedef std::set<std::string> set_strings_t;
-        typedef std::pair<std::string, std::string> pair_string_string_t;
-        typedef std::vector<pair_string_string_t> vector_pair_strings_t;
-        typedef std::map<std::string, vector_pair_strings_t> map_analyzer_actions_and_reporters_t;
-        typedef std::map<std::string, vector_pair_strings_t> map_cron_t;
-
     private:
         map_settings_t m_mapSettingsCommon;
         map_settings_t m_mapSettingsAnalyzerActionsAndReporters;
