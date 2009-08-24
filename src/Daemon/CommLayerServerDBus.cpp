@@ -1,12 +1,18 @@
+#include "abrtlib.h"
 #include "CommLayerServerDBus.h"
 #include <iostream>
 #include "ABRTException.h"
 
+void attach_dbus_dispatcher_to_glib_main_context()
+{
+    DBus::Glib::BusDispatcher* dispatcher;
+    dispatcher = new DBus::Glib::BusDispatcher();
+    dispatcher->attach(NULL);
+    DBus::default_dispatcher = dispatcher;
+}
+
 DBus::Connection *CCommLayerServerDBus::init_dbus(CCommLayerServerDBus *self)
 {
-    self->m_pDispatcher = new DBus::Glib::BusDispatcher();
-    self->m_pDispatcher->attach(NULL);
-    DBus::default_dispatcher = self->m_pDispatcher;
     self->m_pConn = new DBus::Connection(DBus::Connection::SystemBus());
     return self->m_pConn;
 }
@@ -31,7 +37,6 @@ CCommLayerServerDBus::CCommLayerServerDBus()
 
 CCommLayerServerDBus::~CCommLayerServerDBus()
 {
-    delete m_pDispatcher;
 }
 
 vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSender)

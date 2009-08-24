@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <glade-interface>
-  <!-- interface-requires gtk+ 2.16 -->
+  <!-- interface-requires gtk+ 2.14 -->
   <!-- interface-naming-policy toplevel-contextual -->
   <widget class="GtkWindow" id="main_window2">
     <property name="title" translatable="yes">Automatic Bug Reporting Tool</property>
@@ -287,6 +287,216 @@ Zdenek Prikryl &lt;zprikryl@redhat.com&gt;</property>
             <property name="expand">False</property>
             <property name="pack_type">end</property>
             <property name="position">0</property>
+          </packing>
+        </child>
+      </widget>
+    </child>
+  </widget>
+  <widget class="GtkWindow" id="main_window3">
+    <property name="title" translatable="yes">Automatic Bug Reporting Tool</property>
+    <property name="window_position">center</property>
+    <child>
+      <widget class="GtkVBox" id="vbox4">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <widget class="GtkMenuBar" id="menubar2">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkMenuItem" id="menuitem5">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_File</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu4">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="miQuit">
+                        <property name="label">gtk-quit</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="edit">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Edit</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu1">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="miPreferences">
+                        <property name="label">gtk-preferences</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+            <child>
+              <widget class="GtkMenuItem" id="menuitem8">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">_Help</property>
+                <property name="use_underline">True</property>
+                <child>
+                  <widget class="GtkMenu" id="menu6">
+                    <property name="visible">True</property>
+                    <child>
+                      <widget class="GtkImageMenuItem" id="miAbout">
+                        <property name="label">gtk-about</property>
+                        <property name="visible">True</property>
+                        <property name="use_underline">True</property>
+                        <property name="use_stock">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkToolbar" id="toolbar1">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkToolButton" id="bDelete">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="label" translatable="yes">Delete</property>
+                <property name="stock_id">gtk-delete</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="bReport">
+                <property name="visible">True</property>
+                <property name="sensitive">False</property>
+                <property name="label" translatable="yes">Report</property>
+                <property name="stock_id">gtk-save</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkSeparatorToolItem" id="toolbutton1">
+                <property name="visible">True</property>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkScrolledWindow" id="swDumps">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="hscrollbar_policy">automatic</property>
+            <property name="vscrollbar_policy">automatic</property>
+            <child>
+              <widget class="GtkTreeView" id="tvDumps">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkEventBox" id="evDescription">
+            <property name="visible">True</property>
+            <child>
+              <widget class="GtkLabel" id="Description">
+                <property name="visible">True</property>
+                <property name="xalign">0.05000000074505806</property>
+                <property name="label" translatable="yes">&lt;span color="white"&gt;Description&lt;/span&gt;</property>
+                <property name="use_markup">True</property>
+              </widget>
+            </child>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkVBox" id="vbox2">
+            <property name="visible">True</property>
+            <property name="orientation">vertical</property>
+            <child>
+              <widget class="GtkScrolledWindow" id="scrolledwindow1">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="hscrollbar_policy">automatic</property>
+                <property name="vscrollbar_policy">automatic</property>
+                <child>
+                  <widget class="GtkViewport" id="viewport1">
+                    <property name="visible">True</property>
+                    <property name="resize_mode">queue</property>
+                    <child>
+                      <widget class="GtkLabel" id="lDescription">
+                        <property name="visible">True</property>
+                        <property name="xalign">0.10000000149011612</property>
+                        <property name="yalign">0.20000000298023224</property>
+                        <property name="selectable">True</property>
+                      </widget>
+                    </child>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkLabel" id="lReported">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">&lt;b&gt;Not reported!&lt;/b&gt;</property>
+                <property name="use_markup">True</property>
+                <property name="justify">fill</property>
+              </widget>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </widget>
+          <packing>
+            <property name="position">4</property>
+          </packing>
+        </child>
+        <child>
+          <widget class="GtkStatusbar" id="statusbar1">
+            <property name="visible">True</property>
+            <property name="spacing">2</property>
+          </widget>
+          <packing>
+            <property name="expand">False</property>
+            <property name="position">5</property>
           </packing>
         </child>
       </widget>

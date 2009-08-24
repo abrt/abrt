@@ -2,7 +2,8 @@
 import gtk
 import subprocess
 import sys
-# url markup is supported from gtk 2.18 so we need to use libsexy
+# url markup is supported from gtk 2.17 so we need to use libsexy
+# FIXME: make a new branch for rawhide with gtk 2.17 and remove this
 if gtk.gtk_version[1] < 17:
     from sexy import UrlLabel as Label
     on_url_clicked_signal = "url-activated"
@@ -51,9 +52,11 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         if report_status_dict[plugin][0] == '0':
             status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][1])
         elif report_status_dict[plugin][0] == '1':
-            if "http" in report_status_dict[plugin][1] or report_status_dict[plugin][1][0] == '/':
+            if "http" in report_status_dict[plugin][1] or "file://" in report_status_dict[plugin][1]:
                 status_label.set_markup("<a href=\"%s\">%s</a>" % (report_status_dict[plugin][1], report_status_dict[plugin][1]))
-                status_label.connect(on_url_clicked_signal, on_url_clicked)
+                # FIXME: make a new branch for rawhide with gtk 2.17 and remove this
+                if gtk.gtk_version[1] < 17:
+                    status_label.connect(on_url_clicked_signal, on_url_clicked)
             else:
                 status_label.set_text("%s" % report_status_dict[plugin][1])
         status_vbox.pack_start(status_hbox, expand=False)

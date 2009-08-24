@@ -13,7 +13,6 @@ class CCommLayerServerDBus
 {
     private:
         DBus::Connection *m_pConn;
-        DBus::Glib::BusDispatcher *m_pDispatcher;
         static DBus::Connection *init_dbus(CCommLayerServerDBus *self);
     public:
         CCommLayerServerDBus();
@@ -44,3 +43,8 @@ class CCommLayerServerDBus
         virtual void Warning(const std::string& pDest, const std::string& pMessage);
 };
 
+/*
+ * This must be done before instances of CCommLayerServerDBus are created
+ * (otherwise "new DBus::Connection(DBus::Connection::SystemBus())" fails)
+ */
+void attach_dbus_dispatcher_to_glib_main_context();
