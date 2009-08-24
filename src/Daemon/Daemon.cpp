@@ -49,7 +49,6 @@ typedef struct cron_callback_data_t
 
 static uint8_t sig_caught; /* = 0 */
 static GMainLoop* g_pMainloop;
-static CSettings* g_pSettings;
 
 CCrashWatcher *g_cw;
 CCommLayerServer *g_pCommLayer;
@@ -150,39 +149,34 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
 
 static void SetUpMW()
 {
-    SetOpenGPGCheck(g_pSettings->GetOpenGPGCheck());
-    SetDatabase(g_pSettings->GetDatabase());
-    set_strings_t openGPGPublicKeys = g_pSettings->GetOpenGPGPublicKeys();
-    set_strings_t::iterator it_k;
-    for (it_k = openGPGPublicKeys.begin(); it_k != openGPGPublicKeys.end(); it_k++)
+    SetOpenGPGCheck(g_settings_bOpenGPGCheck);
+    SetDatabase(g_settings_sDatabase);
+
+    set_strings_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
+    for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {
         AddOpenGPGPublicKey(*it_k);
     }
-    set_strings_t blackList = g_pSettings->GetBlackList();
-    set_strings_t::iterator it_b;
-    for (it_b = blackList.begin(); it_b != blackList.end(); it_b++)
+    set_strings_t::iterator it_b = g_settings_mapSettingsBlackList.begin();
+    for (; it_b != g_settings_mapSettingsBlackList.end(); it_b++)
     {
         AddBlackListedPackage(*it_b);
     }
-    set_strings_t enabledPlugins = g_pSettings->GetEnabledPlugins();
-    set_strings_t::iterator it_p;
-    for (it_p = enabledPlugins.begin(); it_p != enabledPlugins.end(); it_p++)
+    set_strings_t::iterator it_p = g_settings_setEnabledPlugins.begin();
+    for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
     {
         g_pPluginManager->RegisterPlugin(*it_p);
     }
-    vector_pair_strings_t actionsAndReporters = g_pSettings->GetActionsAndReporters();
-    vector_pair_strings_t::iterator it_ar;
-    for (it_ar = actionsAndReporters.begin(); it_ar != actionsAndReporters.end(); it_ar++)
+    vector_pair_strings_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
+    for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
     {
         AddActionOrReporter((*it_ar).first, (*it_ar).second);
     }
-
-    map_analyzer_actions_and_reporters_t analyzerActionsAndReporters = g_pSettings->GetAnalyzerActionsAndReporters();
-    map_analyzer_actions_and_reporters_t::iterator it_aar;
-    for (it_aar = analyzerActionsAndReporters.begin(); it_aar != analyzerActionsAndReporters.end(); it_aar++)
+    map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
+    for (; it_aar != g_settings_mapAnalyzerActionsAndReporters.end(); it_aar++)
     {
-        vector_pair_strings_t::iterator it_ar;
-        for (it_ar = it_aar->second.begin(); it_ar != it_aar->second.end(); it_ar++)
+        vector_pair_strings_t::iterator it_ar = it_aar->second.begin();
+        for (; it_ar != it_aar->second.end(); it_ar++)
         {
             AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
         }
@@ -191,9 +185,8 @@ static void SetUpMW()
 
 static void SetUpCron()
 {
-    map_cron_t cron = g_pSettings->GetCron();
-    map_cron_t::iterator it_c;
-    for (it_c = cron.begin(); it_c != cron.end(); it_c++)
+    map_cron_t::iterator it_c = g_settings_mapCron.begin();
+    for (; it_c != g_settings_mapCron.end(); it_c++)
     {
         std::string::size_type pos = it_c->first.find(":");
         int timeout = 0;
@@ -464,7 +457,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
         /* we want to ignore the lock files */
         if (event->mask & IN_ISDIR)
         {
-            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < g_pSettings->GetMaxCrashReportsSize())
+            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < g_settings_nMaxCrashReportsSize)
             {
                 //std::string sName = name;
                 map_crash_info_t crashinfo;
@@ -591,8 +584,7 @@ int main(int argc, char** argv)
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
         /* (comment here) */
-        g_pSettings = new CSettings();
-        g_pSettings->LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
+        LoadSettings(std::string(CONF_DIR) + "/abrt.conf");
         /* (comment here) */
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* (comment here) */
@@ -636,7 +628,6 @@ int main(int argc, char** argv)
         delete g_pPluginManager;
 
         g_main_loop_unref(g_pMainloop);
-        delete g_pSettings;
         if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
         {
             error_msg("threading error: job mutex locked");
@@ -676,7 +667,6 @@ int main(int argc, char** argv)
     delete g_pPluginManager;
 
     g_main_loop_unref(g_pMainloop);
-    delete g_pSettings;
 
     /* Exiting */
     if (sig_caught)

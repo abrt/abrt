@@ -42,7 +42,7 @@ static CRPM m_RPM;
 /**
  * A set of blacklisted packages.
  */
-static set_strings_t m_setBlackList;
+static set_strings_t s_setBlackList;
 /**
  * A name of database plugin, which is used for metadata.
  */
@@ -52,16 +52,16 @@ static std::string m_sDatabase;
  * action or reporter plugins. These are activated when a crash, which
  * is maintained by particular analyzer, occurs.
  */
-static map_analyzer_actions_and_reporters_t m_mapAnalyzerActionsAndReporters;
+static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
 /**
  * A vector of one or more action or reporter plugins. These are
  * activated when any crash occurs.
  */
-static vector_pair_string_string_t m_vectorActionsAndReporters;
+static vector_pair_string_string_t s_vectorActionsAndReporters;
 /**
  * Check GPG finger print?
  */
-static bool m_bOpenGPGCheck = true;
+static bool s_bOpenGPGCheck = true;
 
 
 static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
@@ -255,7 +255,7 @@ void RunAction(const std::string& pActionDir,
 void RunActionsAndReporters(const std::string& pDebugDumpDir)
 {
     vector_pair_string_string_t::iterator it_ar;
-    for (it_ar = m_vectorActionsAndReporters.begin(); it_ar != m_vectorActionsAndReporters.end(); it_ar++)
+    for (it_ar = s_vectorActionsAndReporters.begin(); it_ar != s_vectorActionsAndReporters.end(); it_ar++)
     {
         try
         {
@@ -310,11 +310,11 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
             analyzer += ":" + packageName;
         }
 
-        if (m_mapAnalyzerActionsAndReporters.find(analyzer) != m_mapAnalyzerActionsAndReporters.end())
+        if (s_mapAnalyzerActionsAndReporters.find(analyzer) != s_mapAnalyzerActionsAndReporters.end())
         {
             vector_pair_string_string_t::iterator it_r;
-            for (it_r = m_mapAnalyzerActionsAndReporters[analyzer].begin();
-                 it_r != m_mapAnalyzerActionsAndReporters[analyzer].end();
+            for (it_r = s_mapAnalyzerActionsAndReporters[analyzer].begin();
+                 it_r != s_mapAnalyzerActionsAndReporters[analyzer].end();
                  it_r++)
             {
                 try
@@ -451,7 +451,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
         package = m_RPM.GetPackage(pExecutable);
         packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
         if (packageName == "" ||
-            (m_setBlackList.find(packageName) != m_setBlackList.end()))
+            (s_setBlackList.find(packageName) != s_setBlackList.end()))
         {
             if (packageName == "")
             {
@@ -461,7 +461,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
             comm_layer_inner_debug("Blacklisted package");
             return MW_BLACKLISTED;
         }
-        if (m_bOpenGPGCheck)
+        if (s_bOpenGPGCheck)
         {
             if (!m_RPM.CheckFingerprint(packageName))
             {
@@ -510,11 +510,11 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
  */
 static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
 {
-    if (m_mapAnalyzerActionsAndReporters.find(pAnalyzer) != m_mapAnalyzerActionsAndReporters.end())
+    if (s_mapAnalyzerActionsAndReporters.find(pAnalyzer) != s_mapAnalyzerActionsAndReporters.end())
     {
         vector_pair_string_string_t::iterator it_a;
-        for (it_a = m_mapAnalyzerActionsAndReporters[pAnalyzer].begin();
-             it_a != m_mapAnalyzerActionsAndReporters[pAnalyzer].end();
+        for (it_a = s_mapAnalyzerActionsAndReporters[pAnalyzer].begin();
+             it_a != s_mapAnalyzerActionsAndReporters[pAnalyzer].end();
              it_a++)
         {
             try
@@ -692,7 +692,7 @@ vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
 
 void SetOpenGPGCheck(bool pCheck)
 {
-    m_bOpenGPGCheck = pCheck;
+    s_bOpenGPGCheck = pCheck;
 }
 
 void SetDatabase(const std::string& pDatabase)
@@ -707,18 +707,18 @@ void AddOpenGPGPublicKey(const std::string& pKey)
 
 void AddBlackListedPackage(const std::string& pPackage)
 {
-    m_setBlackList.insert(pPackage);
+    s_setBlackList.insert(pPackage);
 }
 
 void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
                                               const std::string& pAnalyzerOrReporter,
                                               const std::string& pArgs)
 {
-    m_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(pAnalyzerOrReporter, pArgs));
+    s_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(pAnalyzerOrReporter, pArgs));
 }
 
 void AddActionOrReporter(const std::string& pActionOrReporter,
                                       const std::string& pArgs)
 {
-    m_vectorActionsAndReporters.push_back(make_pair(pActionOrReporter, pArgs));
+    s_vectorActionsAndReporters.push_back(make_pair(pActionOrReporter, pArgs));
 }
