@@ -30,78 +30,39 @@
 #include "RPM.h"
 
 /**
+ * An enum contains all return codes.
+ */
+typedef enum {
+    MW_ERROR,            /**< Common error.*/
+    MW_OK,               /**< No error.*/
+    MW_BLACKLISTED,      /**< Package is blacklisted.*/
+    MW_CORRUPTED,        /**< Debugdump directory is corrupted.*/
+    MW_PACKAGE_ERROR,    /**< Cannot determine package name.*/
+    MW_GPG_ERROR,        /**< Package is not signed properly.*/
+    MW_REPORTED,         /**< Crash is already reported.*/
+    MW_OCCURED,          /**< Crash occurred in the past, but it is not reported yet.*/
+    MW_IN_DB,            /**< Debugdump directory is already saved in a database.*/
+    MW_IN_DB_ERROR,      /**< Error while working with a database.*/
+    MW_PLUGIN_ERROR,     /**< plugin wasn't found or error within plugin*/
+    MW_FILE_ERROR        /**< Error when trying open debugdump directory or
+                              when trying open file in debug dump directory..*/
+} mw_result_t;
+
+typedef enum {
+    RS_CODE,
+    RS_MESSAGE
+} report_status_items_t;
+
+typedef std::map<std::string, vector_strings_t> report_status_t;
+typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
+
+/**
  * A very important class :-). It manages part of user demands like creating
  * reports, or reporting stuff somewhere etc.
  */
 class CMiddleWare
 {
-    public:
-        /**
-         * An enum contains all return codes.
-         */
-        typedef enum {
-            MW_ERROR,            /**< Common error.*/
-            MW_OK,               /**< No error.*/
-            MW_BLACKLISTED,      /**< Package is blacklisted.*/
-            MW_CORRUPTED,        /**< Debugdump directory is corrupted.*/
-            MW_PACKAGE_ERROR,    /**< Cannot determine package name.*/
-            MW_GPG_ERROR,        /**< Package is not signed properly.*/
-            MW_REPORTED,         /**< Crash is already reported.*/
-            MW_OCCURED,          /**< Crash occurred in the past, but it is not reported yet.*/
-            MW_IN_DB,            /**< Debugdump directory is already saved in a database.*/
-            MW_IN_DB_ERROR,      /**< Error while working with a database.*/
-            MW_PLUGIN_ERROR,     /**< plugin wasn't found or error within plugin*/
-            MW_FILE_ERROR        /**< Error when trying open debugdump directory or
-                                      when trying open file in debug dump directory..*/
-        } mw_result_t;
-
-        typedef std::map<std::string, vector_strings_t> report_status_t;
-        typedef enum {
-            RS_CODE,
-            RS_MESSAGE
-        } report_status_items_t;
-
     private:
-        typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
-
-        /**
-         * An instance of CPluginManager. When MiddleWare wants to do something
-         * with plugins, it calls the plugin manager.
-         * @see PluginManager.h
-         */
-        CPluginManager* m_pPluginManager;
-        /**
-         * An instance of CRPM used for package checking.
-         * @see RPM.h
-         */
-        CRPM m_RPM;
-        /**
-         * A set of blacklisted packages.
-         */
-        set_strings_t m_setBlackList;
-        /**
-         * A name of database plugin, which is used for metadata.
-         */
-        std::string m_sDatabase;
-        /**
-         * A map, which associates particular analyzer to one or more
-         * action or reporter plugins. These are activated when a crash, which
-         * is maintained by particular analyzer, occurs.
-         */
-        map_analyzer_actions_and_reporters_t m_mapAnalyzerActionsAndReporters;
-        /**
-         * A vector of one or more action or reporter plugins. These are
-         * activated when any crash occurs.
-         */
-        vector_pair_string_string_t m_vectorActionsAndReporters;
-        /**
-         * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
-         */
-        std::string m_sPluginsConfDir;
-        /**
-         * Check GPG finger print?
-         */
-        bool m_bOpenGPGCheck;
         /**
          * A method, which gets a local UUID from particular analyzer plugin.
          * @param pAnalyzer A name of an analyzer plugin.

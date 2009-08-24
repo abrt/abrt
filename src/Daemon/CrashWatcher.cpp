@@ -64,21 +64,21 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
         unsigned int ii;
         for (ii = 0; ii < UUIDsUIDs.size(); ii++)
         {
-            CMiddleWare::mw_result_t res;
+            mw_result_t res;
             map_crash_info_t info;
 
             res = g_pMW->GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
             switch (res)
             {
-                case CMiddleWare::MW_OK:
+                case MW_OK:
                     retval.push_back(info);
                     break;
-                case CMiddleWare::MW_ERROR:
+                case MW_ERROR:
                     Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     g_pMW->DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                     break;
-                case CMiddleWare::MW_FILE_ERROR:
+                case MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
                         Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
@@ -120,20 +120,20 @@ static void *create_report(void *arg)
     g_cw->Debug("Creating report...");
     try
     {
-        CMiddleWare::mw_result_t res;
+        mw_result_t res;
         res = g_pMW->CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
         switch (res)
         {
-            case CMiddleWare::MW_OK:
+            case MW_OK:
                 break;
-            case CMiddleWare::MW_IN_DB_ERROR:
+            case MW_IN_DB_ERROR:
                 g_cw->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
                 break;
-            case CMiddleWare::MW_PLUGIN_ERROR:
+            case MW_PLUGIN_ERROR:
                 g_cw->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."));
                 break;
-            case CMiddleWare::MW_CORRUPTED:
-            case CMiddleWare::MW_FILE_ERROR:
+            case MW_CORRUPTED:
+            case MW_FILE_ERROR:
             default:
                 {
                     std::string debugDumpDir;
@@ -192,7 +192,7 @@ uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::strin
     return 0;
 }
 
-CMiddleWare::report_status_t CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
+report_status_t CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
 {
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];
@@ -201,7 +201,7 @@ CMiddleWare::report_status_t CCrashWatcher::Report(map_crash_report_t pReport, c
     //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
     //     std::cerr << it->second << std::endl;
     //}
-    CMiddleWare::report_status_t rs;
+    report_status_t rs;
     try
     {
         rs = g_pMW->Report(pReport, pUID);

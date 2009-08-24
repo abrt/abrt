@@ -6,6 +6,8 @@
 #include <set>
 #include <vector>
 
+#include "MiddleWareTypes.h"
+
 class CSettings
 {
     public:

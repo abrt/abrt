@@ -319,24 +319,24 @@ static void FindNewDumps(const std::string& pPath)
         map_crash_info_t crashinfo;
         try
         {
-            CMiddleWare::mw_result_t res;
+            mw_result_t res;
             res = g_pMW->SaveDebugDump(*itt, crashinfo);
             switch (res)
             {
-                case CMiddleWare::MW_OK:
+                case MW_OK:
                     g_cw->Debug("Saving into database (" + *itt + ").");
                     g_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                     break;
-                case CMiddleWare::MW_IN_DB:
+                case MW_IN_DB:
                     g_cw->Debug("Already saved in database (" + *itt + ").");
                     break;
-                case CMiddleWare::MW_REPORTED:
-                case CMiddleWare::MW_OCCURED:
-                case CMiddleWare::MW_BLACKLISTED:
-                case CMiddleWare::MW_CORRUPTED:
-                case CMiddleWare::MW_PACKAGE_ERROR:
-                case CMiddleWare::MW_GPG_ERROR:
-                case CMiddleWare::MW_FILE_ERROR:
+                case MW_REPORTED:
+                case MW_OCCURED:
+                case MW_BLACKLISTED:
+                case MW_CORRUPTED:
+                case MW_PACKAGE_ERROR:
+                case MW_GPG_ERROR:
+                case MW_FILE_ERROR:
                 default:
                     g_cw->Warning("Corrupted, bad or already saved crash, deleting.");
                     g_pMW->DeleteDebugDumpDir(*itt);
@@ -471,29 +471,29 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                 map_crash_info_t crashinfo;
                 try
                 {
-                    CMiddleWare::mw_result_t res;
+                    mw_result_t res;
                     res = g_pMW->SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
                     switch (res)
                     {
-                        case CMiddleWare::MW_OK:
+                        case MW_OK:
                             g_cw->Debug("New crash, saving...");
                             g_pMW->RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             break;
-                        case CMiddleWare::MW_REPORTED:
-                        case CMiddleWare::MW_OCCURED:
+                        case MW_REPORTED:
+                        case MW_OCCURED:
                             /* send message to dbus */
                             g_cw->Debug("Already saved crash, deleting...");
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
-                        case CMiddleWare::MW_BLACKLISTED:
-                        case CMiddleWare::MW_CORRUPTED:
-                        case CMiddleWare::MW_PACKAGE_ERROR:
-                        case CMiddleWare::MW_GPG_ERROR:
-                        case CMiddleWare::MW_IN_DB:
-                        case CMiddleWare::MW_FILE_ERROR:
+                        case MW_BLACKLISTED:
+                        case MW_CORRUPTED:
+                        case MW_PACKAGE_ERROR:
+                        case MW_GPG_ERROR:
+                        case MW_IN_DB:
+                        case MW_FILE_ERROR:
                         default:
                             g_cw->Warning("Corrupted or bad crash, deleting...");
                             g_pMW->DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);

@@ -25,12 +25,52 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
+
+/**
+ * An instance of CPluginManager. When MiddleWare wants to do something
+ * with plugins, it calls the plugin manager.
+ * @see PluginManager.h
+ */
+static CPluginManager* m_pPluginManager;
+/**
+ * An instance of CRPM used for package checking.
+ * @see RPM.h
+ */
+static CRPM m_RPM;
+/**
+ * A set of blacklisted packages.
+ */
+static set_strings_t m_setBlackList;
+/**
+ * A name of database plugin, which is used for metadata.
+ */
+static std::string m_sDatabase;
+/**
+ * A map, which associates particular analyzer to one or more
+ * action or reporter plugins. These are activated when a crash, which
+ * is maintained by particular analyzer, occurs.
+ */
+static map_analyzer_actions_and_reporters_t m_mapAnalyzerActionsAndReporters;
+/**
+ * A vector of one or more action or reporter plugins. These are
+ * activated when any crash occurs.
+ */
+static vector_pair_string_string_t m_vectorActionsAndReporters;
+/**
+ * Plugins configuration directory (e.g. /etc/abrt/plugins, ...).
+ */
+static std::string m_sPluginsConfDir;
+/**
+ * Check GPG finger print?
+ */
+static bool m_bOpenGPGCheck;
+
+
 CMiddleWare::CMiddleWare(const std::string& pPluginsConfDir,
-                         const std::string& pPluginsLibDir) :
-    m_pPluginManager(NULL),
-    m_sPluginsConfDir(pPluginsConfDir),
-    m_bOpenGPGCheck(true)
+                         const std::string& pPluginsLibDir)
 {
+    m_sPluginsConfDir = pPluginsConfDir;
+    m_bOpenGPGCheck = true;
     m_pPluginManager = new CPluginManager(pPluginsConfDir, pPluginsLibDir);
     m_pPluginManager->LoadPlugins();
 }
@@ -145,7 +185,7 @@ void CMiddleWare::CreateReport(const std::string& pAnalyzer,
     analyzer->CreateReport(pDebugDumpDir);
 }
 
-CMiddleWare::mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID,
+mw_result_t CMiddleWare::CreateCrashReport(const std::string& pUUID,
                                                         const std::string& pUID,
                                                         map_crash_report_t& pCrashReport)
 {
@@ -253,7 +293,7 @@ void CMiddleWare::RunActionsAndReporters(const std::string& pDebugDumpDir)
     }
 }
 
-CMiddleWare::report_status_t CMiddleWare::Report(const map_crash_report_t& pCrashReport,
+report_status_t CMiddleWare::Report(const map_crash_report_t& pCrashReport,
                                     const std::string& pUID)
 {
     report_status_t ret;
@@ -394,7 +434,7 @@ bool CMiddleWare::IsDebugDumpSaved(const std::string& pUID,
     return found;
 }
 
-CMiddleWare::mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutable,
+mw_result_t CMiddleWare::SavePackageDescriptionToDebugDump(const std::string& pExecutable,
                                                                         const std::string& pDebugDumpDir)
 {
     std::string package;
@@ -487,7 +527,7 @@ void CMiddleWare::RunAnalyzerActions(const std::string& pAnalyzer, const std::st
     }
 }
 
-CMiddleWare::mw_result_t CMiddleWare::SaveDebugDumpToDatabase(const std::string& pUUID,
+mw_result_t CMiddleWare::SaveDebugDumpToDatabase(const std::string& pUUID,
                                                               const std::string& pUID,
                                                               const std::string& pTime,
                                                               const std::string& pDebugDumpDir,
@@ -514,13 +554,13 @@ CMiddleWare::mw_result_t CMiddleWare::SaveDebugDumpToDatabase(const std::string&
     return res;
 }
 
-CMiddleWare::mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir)
+mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir)
 {
     map_crash_info_t info;
     return SaveDebugDump(pDebugDumpDir, info);
 }
 
-CMiddleWare::mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir,
+mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDumpDir,
                                                     map_crash_info_t& pCrashInfo)
 {
     std::string lUUID;
@@ -565,7 +605,7 @@ CMiddleWare::mw_result_t CMiddleWare::SaveDebugDump(const std::string& pDebugDum
     return SaveDebugDumpToDatabase(lUUID, UID, time, pDebugDumpDir, pCrashInfo);
 }
 
-CMiddleWare::mw_result_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
+mw_result_t CMiddleWare::GetCrashInfo(const std::string& pUUID,
                                                    const std::string& pUID,
                                                    map_crash_info_t& pCrashInfo)
 {
