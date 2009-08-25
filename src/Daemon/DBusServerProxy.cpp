@@ -92,7 +92,7 @@ void CDBusServer_adaptor::Crash(const std::string& arg1)
 }
 
 /* Notify the clients that creating a report has finished */
-void CDBusServer_adaptor::AnalyzeComplete(map_crash_report_t arg1)
+void CDBusServer_adaptor::AnalyzeComplete(const map_crash_report_t& arg1)
 {
     ::DBus::SignalMessage sig("AnalyzeComplete");
     ::DBus::MessageIter wi = sig.writer();
@@ -153,7 +153,8 @@ DBus::Message CDBusServer_adaptor::_CreateReport_stub(const DBus::CallMessage &c
 {
     DBus::MessageIter ri = call.reader();
 
-    std::string argin1; ri >> argin1;
+    std::string argin1;
+    ri >> argin1;
     uint64_t argout1 = CreateReport_t(argin1, call.sender());
     if(sizeof (uint64_t) != 8) abort ();
     //map_crash_report_t argout1 = CreateReport(argin1,call.sender());
@@ -167,7 +168,8 @@ DBus::Message CDBusServer_adaptor::_Report_stub(const DBus::CallMessage &call)
 {
     DBus::MessageIter ri = call.reader();
 
-    map_crash_report_t argin1; ri >> argin1;
+    map_crash_report_t argin1;
+    ri >> argin1;
     report_status_t argout1 = Report(argin1, call.sender());
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
@@ -179,7 +181,8 @@ DBus::Message CDBusServer_adaptor::_DeleteDebugDump_stub(const DBus::CallMessage
 {
     DBus::MessageIter ri = call.reader();
 
-    std::string argin1; ri >> argin1;
+    std::string argin1;
+    ri >> argin1;
     bool argout1 = DeleteDebugDump(argin1, call.sender());
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();

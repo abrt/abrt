@@ -90,7 +90,7 @@ public:
     vector_crash_infos_t GetCrashInfos();
     bool DeleteDebugDump(const std::string& pUUID);
     map_crash_report_t CreateReport(const std::string& pUUID);
-    void Report(map_crash_report_t pReport);
+    void Report(const map_crash_report_t& pReport);
     map_crash_report_t GetJobResult(uint64_t pJobID);
 
 public:

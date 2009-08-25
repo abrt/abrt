@@ -43,10 +43,10 @@ public:
      * you will have to implement them in your ObjectAdaptor
      */
 
-    virtual vector_crash_infos_t GetCrashInfos(const std::string &pDBusSender) = 0;
-    virtual map_crash_report_t CreateReport(const std::string &pUUID, const std::string &pDBusSender) = 0;
-    virtual uint64_t CreateReport_t(const std::string &pUUID, const std::string &pDBusSender) = 0;
-    virtual report_status_t Report(map_crash_report_t pReport, const std::string &pDBusSender) = 0;
+    virtual vector_crash_infos_t GetCrashInfos(const std::string& pDBusSender) = 0;
+    virtual map_crash_report_t CreateReport(const std::string& pUUID, const std::string& pDBusSender) = 0;
+    virtual uint64_t CreateReport_t(const std::string& pUUID, const std::string& pDBusSender) = 0;
+    virtual report_status_t Report(const map_crash_report_t& pReport, const std::string& pDBusSender) = 0;
     virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
     virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
     virtual vector_map_string_string_t GetPluginsInfo() = 0;
@@ -61,8 +61,8 @@ public:
     /* Notify the clients (UI) about a new crash */
     void Crash(const std::string& arg1);
     /* Notify the clients that creating a report has finished */
-    void AnalyzeComplete(map_crash_report_t arg1);
-    void JobDone(const std::string &pDest, uint64_t job_id);
+    void AnalyzeComplete(const map_crash_report_t& arg1);
+    void JobDone(const std::string& pDest, uint64_t job_id);
     void Error(const std::string& arg1);
     void Update(const std::string pDest, const std::string& pMessage);
     void Warning(const std::string& arg1);

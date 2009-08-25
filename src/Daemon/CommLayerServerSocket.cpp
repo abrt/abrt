@@ -219,7 +219,7 @@ map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID
     return crashReport;
 }
 
-report_status_t CCommLayerServerSocket::Report(map_crash_report_t pReport, const std::string& pSender)
+report_status_t CCommLayerServerSocket::Report(const map_crash_report_t& pReport, const std::string& pSender)
 {
     report_status_t rs;
     rs = m_pObserver->Report(pReport, pSender);
@@ -237,7 +237,7 @@ void CCommLayerServerSocket::Crash(const std::string& arg1)
     //Send("(CRASH)New Crash Detected: " + arg1);
 }
 
-void CCommLayerServerSocket::AnalyzeComplete(map_crash_report_t arg1)
+void CCommLayerServerSocket::AnalyzeComplete(const map_crash_report_t& arg1)
 {
     //Send("(ANALYZE_COMPLETE)Analyze Complete.");
 }

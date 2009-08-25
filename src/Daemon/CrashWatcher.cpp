@@ -192,7 +192,7 @@ uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::strin
     return 0;
 }
 
-report_status_t CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
+report_status_t CCrashWatcher::Report(const map_crash_report_t& pReport, const std::string& pUID)
 {
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];

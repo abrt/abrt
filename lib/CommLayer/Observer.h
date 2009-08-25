@@ -22,7 +22,7 @@ class CObserver {
             std::cout << "DEFAULT OBSERVER";
             return 0;
         }
-        virtual report_status_t Report(map_crash_report_t pReport, const std::string &pSender) = 0;
+        virtual report_status_t Report(const map_crash_report_t& pReport, const std::string &pSender) = 0;
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender) = 0;
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string &pSender) = 0;
         virtual vector_map_string_string_t GetPluginsInfo() = 0;

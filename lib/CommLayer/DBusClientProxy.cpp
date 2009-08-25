@@ -180,7 +180,7 @@ map_crash_report_t CDBusClient_proxy::CreateReport(const std::string& pUUID)
     return GetJobResult(m_iPendingJobID);
 };
 
-void CDBusClient_proxy::Report(map_crash_report_t pReport)
+void CDBusClient_proxy::Report(const map_crash_report_t& pReport)
 {
     DBus::CallMessage call;
 

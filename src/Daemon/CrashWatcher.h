@@ -64,7 +64,7 @@ class CCrashWatcher
             return retval;
         }
         uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
-        virtual report_status_t Report(map_crash_report_t pReport, const std::string &pUID);
+        virtual report_status_t Report(const map_crash_report_t& pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
         /* plugins related */

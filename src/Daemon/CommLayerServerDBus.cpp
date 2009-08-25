@@ -64,7 +64,7 @@ uint64_t CCommLayerServerDBus::CreateReport_t(const std::string &pUUID,const std
     return job_id;
 }
 
-report_status_t CCommLayerServerDBus::Report(map_crash_report_t pReport,const std::string &pSender)
+report_status_t CCommLayerServerDBus::Report(const map_crash_report_t& pReport, const std::string &pSender)
 {
     report_status_t rs;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
@@ -92,7 +92,7 @@ void CCommLayerServerDBus::Crash(const std::string& arg)
     CDBusServer_adaptor::Crash(arg);
 }
 
-void CCommLayerServerDBus::AnalyzeComplete(map_crash_report_t arg1)
+void CCommLayerServerDBus::AnalyzeComplete(const map_crash_report_t& arg1)
 {
     CDBusServer_adaptor::AnalyzeComplete(arg1);
 }

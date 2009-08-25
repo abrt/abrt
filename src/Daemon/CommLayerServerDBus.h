@@ -26,7 +26,7 @@ class CCommLayerServerDBus
             return retval;
         }
         virtual uint64_t CreateReport_t(const std::string& pUUID, const std::string& pSender);
-        virtual report_status_t Report(map_crash_report_t pReport,const std::string& pSender);
+        virtual report_status_t Report(const map_crash_report_t& pReport, const std::string& pSender);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
         virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
         virtual vector_map_string_string_t GetPluginsInfo();
@@ -36,7 +36,7 @@ class CCommLayerServerDBus
         void UnRegisterPlugin(const std::string& pName);
 
         virtual void Crash(const std::string& arg1);
-        virtual void AnalyzeComplete(map_crash_report_t arg1);
+        virtual void AnalyzeComplete(const map_crash_report_t& arg1);
         virtual void Error(const std::string& arg1);
         virtual void Update(const std::string& pDest, const std::string& pMessage);
         virtual void JobDone(const std::string& pDest, uint64_t pJobID);
