@@ -38,6 +38,8 @@
 #include <grp.h>
 /* C++ bits */
 #include <string>
+#include <sstream>
+#include <iostream>
 
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
@@ -106,7 +108,6 @@ void xstat(const char *name, struct stat *stat_buf);
 
 void xmove_fd(int from, int to);
 char* xasprintf(const char *format, ...);
-std::string ssprintf(const char *format, ...);
 
 int xopen(const char *pathname, int flags);
 int xopen3(const char *pathname, int flags, int mode);
@@ -116,6 +117,18 @@ off_t copyfd_eof(int src_fd, int dst_fd);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
 
+/* C++ style stuff */
+
+std::string ssprintf(const char *format, ...);
 std::string get_home_dir(int uid);
+
+template <class T>
+std::string
+to_string( T x )
+{
+    std::ostringstream o;
+    o << x;
+    return o.str();
+}
 
 #endif
