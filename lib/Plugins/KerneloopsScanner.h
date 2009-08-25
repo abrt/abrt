@@ -36,7 +36,6 @@ class CKerneloopsScanner : public CAction
 	private:
 		std::string m_sSysLogFile;
 		CSysLog m_pSysLog;
-		bool m_bSysLogFileScanned;
 
 	public:
 		/* For standalone oops processor */
@@ -45,10 +44,7 @@ class CKerneloopsScanner : public CAction
 		int ScanSysLogFile(const char *filename);
 
 		/* Plugin interface */
-		CKerneloopsScanner() :
-			m_sSysLogFile("/var/log/messages"),
-			m_bSysLogFileScanned(false)
-		{}
+		CKerneloopsScanner();
 		virtual void Run(const std::string& pActionDir,
 				 const std::string& pArgs);
 		virtual void SetSettings(const map_plugin_settings_t& pSettings);
