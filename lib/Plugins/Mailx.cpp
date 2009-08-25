@@ -64,11 +64,9 @@ void CMailx::AddMailxArg(const std::string& pArg)
     }
 }
 
-
 void CMailx::ExecMailx(uid_t uid, const std::string& pText)
 {
     int pipein[2];
-    char buff[1024];
     pid_t child;
 
     struct passwd* pw = getpwuid(uid);
@@ -107,7 +105,6 @@ void CMailx::ExecMailx(uid_t uid, const std::string& pText)
     wait(NULL); /* why? */
 }
 
-
 void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, const std::string& pUID)
 {
     comm_layer_inner_status("Sending an email...");
@@ -120,9 +117,7 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, co
     AddMailxArg("");
 
     ExecMailx(atoi(pUID.c_str()), pText);
-
 }
-
 
 std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
