@@ -38,39 +38,42 @@
 
 #define FILENAME_KERNELOOPS  "kerneloops"
 
+// TODO: https://fedorahosted.org/abrt/ticket/78
+
+CKerneloopsScanner::CKerneloopsScanner()
+{
+	int cnt_FoundOopses;
+	m_sSysLogFile = "/var/log/messages";
+
+	/* Scan dmesg, on first call only */
+	cnt_FoundOopses = ScanDmesg();
+	if (cnt_FoundOopses > 0)
+		SaveOopsToDebugDump();
+}
+
 void CKerneloopsScanner::Run(const std::string& pActionDir,
 			     const std::string& pArgs)
 {
 	int cnt_FoundOopses;
 
-	/* Scan syslog file, on first call only */
-	if (!m_bSysLogFileScanned)
-	{
-		cnt_FoundOopses = ScanSysLogFile(m_sSysLogFile.c_str());
-		if (cnt_FoundOopses > 0) {
-			SaveOopsToDebugDump();
-			/*
-			 * This marker in syslog file prevents us from
-			 * re-parsing old oopses (any oops before it is
-			 * ignored by ScanSysLogFile()). The only problem
-			 * is that we can't be sure here that m_sSysLogFile
-			 * is the file where syslog(xxx) stuff ends up.
-			 */
-			openlog("abrt", 0, LOG_KERN);
-			syslog(
-				LOG_WARNING,
-				"Kerneloops: Reported %u kernel oopses to Abrt",
-				cnt_FoundOopses
-			);
-			closelog();
-		}
-		m_bSysLogFileScanned = true;
-	}
-
-	/* Scan kernel's log buffer */
-	cnt_FoundOopses = ScanDmesg();
-	if (cnt_FoundOopses > 0)
+	cnt_FoundOopses = ScanSysLogFile(m_sSysLogFile.c_str());
+	if (cnt_FoundOopses > 0) {
 		SaveOopsToDebugDump();
+		/*
+		 * This marker in syslog file prevents us from
+		 * re-parsing old oopses (any oops before it is
+		 * ignored by ScanSysLogFile()). The only problem
+		 * is that we can't be sure here that m_sSysLogFile
+		 * is the file where syslog(xxx) stuff ends up.
+		 */
+		openlog("abrt", 0, LOG_KERN);
+		syslog(
+			LOG_WARNING,
+			"Kerneloops: Reported %u kernel oopses to Abrt",
+			cnt_FoundOopses
+		);
+		closelog();
+	}
 }
 
 void CKerneloopsScanner::SaveOopsToDebugDump()
