@@ -286,3 +286,107 @@ void LoadSettings(const char* pPath)
     ParseCron();
 }
 
+static void SaveSetString(const std::string& pKey, const set_strings_t& pSet, std::ofstream& pFOut, bool pNewLine = true)
+{
+    set_strings_t::const_iterator it_set;
+    if (pKey != "")
+    {
+        pFOut << pKey << " = ";
+    }
+    int ii = 0;
+    for (it_set = pSet.begin(); it_set != pSet.end(); it_set++)
+    {
+        pFOut << (*it_set);
+        ii++;
+        if (ii < pSet.size())
+        {
+            pFOut << ",";
+        }
+    }
+    if (pNewLine)
+    {
+        pFOut << std::endl;
+    }
+}
+
+static void SaveVectorPairStrings(const std::string& pKey, const vector_pair_string_string_t& pVector, std::ofstream& pFOut, bool pNewLine = true)
+{
+    int ii;
+    if (pKey != "")
+    {
+        pFOut << pKey << " = ";
+    }
+    for (ii = 0; ii < pVector.size(); ii++)
+    {
+        pFOut << pVector[ii].first;
+        if (pVector[ii].second != "")
+        {
+            pFOut << "(" << pVector[ii].second << ")";
+        }
+        if ((ii + 1) < pVector.size())
+        {
+            pFOut << ",";
+        }
+    }
+    if (pNewLine)
+    {
+        pFOut << std::endl;
+    }
+}
+
+static void SaveMapVectorPairStrings(const map_vector_pair_strings_t& pMap, std::ofstream& pFOut, bool pNewLine = true)
+{
+    map_vector_pair_strings_t::const_iterator it;
+    for (it = pMap.begin(); it != pMap.end(); it++)
+    {
+        pFOut << it->first << " = ";
+        SaveVectorPairStrings("", it->second, pFOut, false);
+        pFOut << std::endl;
+    }
+    if (pNewLine)
+    {
+        pFOut << std::endl;
+    }
+
+}
+
+static void SaveSection(const std::string& pSection, std::ofstream& pFOut)
+{
+    pFOut << std::endl << "[" << pSection << "]" << std::endl << std::endl;
+}
+
+static void SaveBool(const std::string& pKey, const bool pBool, std::ofstream& pFOut, bool pNewLine = true)
+{
+    if (pKey != "")
+    {
+        pFOut << pKey << " = ";
+    }
+    pFOut << (pBool ? "yes" : "no");
+    if (pNewLine)
+    {
+        pFOut << std::endl;
+    }
+}
+
+void SaveSettings(const char* pPath)
+{
+    std::ofstream fOut;
+    fOut.open(pPath);
+
+    if (fOut.is_open())
+    {
+        SaveSection(SECTION_COMMON, fOut);
+        SaveBool("OpenGPGCheck", g_settings_bOpenGPGCheck, fOut);
+        SaveSetString("OpenGPGPublicKeys", g_settings_setOpenGPGPublicKeys, fOut);
+        SaveSetString("BlackList", g_settings_mapSettingsBlackList, fOut);
+        SaveSetString("EnabledPlugins", g_settings_setEnabledPlugins, fOut);
+        fOut << "Database = " << g_settings_sDatabase << std::endl;
+        fOut << "MaxCrashReportsSize = " << g_settings_nMaxCrashReportsSize << std::endl;
+        SaveVectorPairStrings("ActionsAndReporters", g_settings_vectorActionsAndReporters, fOut);
+        SaveSection(SECTION_ANALYZER_ACTIONS_AND_REPORTERS, fOut);
+        SaveMapVectorPairStrings(g_settings_mapAnalyzerActionsAndReporters, fOut);
+        SaveSection(SECTION_CRON, fOut);
+        SaveMapVectorPairStrings(g_settings_mapCron, fOut);
+        fOut.close();
+    }
+}
