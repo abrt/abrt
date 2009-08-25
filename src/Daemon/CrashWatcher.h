@@ -42,9 +42,6 @@
 
 
 class CCrashWatcher
-//: public CDBusServer_adaptor,
-//  public DBus::IntrospectableAdaptor,
-//  public DBus::ObjectAdaptor,
 :  public CObserver
 {
     public:
@@ -57,12 +54,6 @@ class CCrashWatcher
         virtual void Debug(const std::string& pMessage, const std::string& pDest="0");
         virtual void Warning(const std::string& pMessage, const std::string& pDest="0");
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
-        /*FIXME: fix CLI and remove this stub*/
-        virtual map_crash_report_t CreateReport(const std::string &pUUID,const std::string &pUID)
-        {
-            map_crash_report_t retval;
-            return retval;
-        }
         uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
         virtual report_status_t Report(const map_crash_report_t& pReport, const std::string &pUID);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);

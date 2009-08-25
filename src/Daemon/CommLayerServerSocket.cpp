@@ -148,10 +148,11 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     }
     else if (!strncmp(pMessage.c_str(), MESSAGE_CREATE_REPORT, sizeof(MESSAGE_CREATE_REPORT) - 1))
     {
-        std::string UUID = pMessage.substr(sizeof(MESSAGE_CREATE_REPORT) - 1);
-        map_crash_report_t crashReport = CreateReport(UUID, UID);
-        std::string message = MESSAGE_CREATE_REPORT + crash_report_to_string(crashReport);
-        Send(message, pSource);
+//        std::string UUID = pMessage.substr(sizeof(MESSAGE_CREATE_REPORT) - 1);
+//        map_crash_report_t crashReport = CreateReport(UUID, UID);
+//use CreateReport_t instead of CreateReport?
+//        std::string message = MESSAGE_CREATE_REPORT + crash_report_to_string(crashReport);
+//        Send(message, pSource);
     }
     else if (!strncmp(pMessage.c_str(), MESSAGE_DELETE_DEBUG_DUMP, sizeof(MESSAGE_DELETE_DEBUG_DUMP) - 1))
     {
@@ -212,12 +213,13 @@ vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pS
     return crashInfos;
 }
 
-map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID,const std::string &pSender)
-{
-    map_crash_report_t crashReport;
-    crashReport = m_pObserver->CreateReport(pUUID, pSender);
-    return crashReport;
-}
+//reimplement as CreateReport_t(...)?
+//map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID,const std::string &pSender)
+//{
+//    map_crash_report_t crashReport;
+//    crashReport = m_pObserver->CreateReport(pUUID, pSender);
+//    return crashReport;
+//}
 
 report_status_t CCommLayerServerSocket::Report(const map_crash_report_t& pReport, const std::string& pSender)
 {

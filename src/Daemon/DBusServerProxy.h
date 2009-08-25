@@ -23,63 +23,68 @@
 #include <dbus-c++/glib-integration.h>
 #include "DBusCommon.h"
 
+/*
+ * This class server two roles:
+ *
+ * - when a DBus call arrives (detected in glib main loop),
+ *   a corresponding unmarshaler is called. It unpacks DBus::CallMessage
+ *   and calls virtual interface method function. Derived classes are expected
+ *   to override interface methods so that they perform desired functions.
+ *
+ * - it can be used to emit DBus messages (signals) simply by calling
+ *   appropriate (non-virtual) member, which packs arguments into
+ *   a DBus message and sends it.
+ */
 class CDBusServer_adaptor
 : public DBus::InterfaceAdaptor
 {
-public:
-    CDBusServer_adaptor();
-/* reveal Interface introspection when we stabilize the API */
-/*
-    DBus::IntrospectedInterface *const introspect() const;
-*/
+    public:
+        CDBusServer_adaptor();
+    /* reveal Interface introspection when we stabilize the API */
+    /*
+        DBus::IntrospectedInterface *const introspect() const;
+    */
 
-public:
-    /* properties exposed by this interface, use
-     * property() and property(value) to get and set a particular property
-     */
+    public:
+        /* properties exposed by this interface, use
+         * property() and property(value) to get and set a particular property
+         */
 
-public:
-    /* methods exported by this interface,
-     * you will have to implement them in your ObjectAdaptor
-     */
+    private:
+        /* Unmarshalers (unpack the message and call the interface method) */
+        DBus::Message _GetCrashInfos_stub(const DBus::CallMessage &call);
+        DBus::Message _CreateReport_stub(const DBus::CallMessage &call);
+        DBus::Message _Report_stub(const DBus::CallMessage &call);
+        DBus::Message _DeleteDebugDump_stub(const DBus::CallMessage &call);
+        DBus::Message _GetJobResult_stub(const DBus::CallMessage &call);
+        DBus::Message _GetPluginsInfo_stub(const DBus::CallMessage &call);
+        DBus::Message _GetPluginSettings_stub(const DBus::CallMessage &call);
+        DBus::Message _RegisterPlugin_stub(const DBus::CallMessage &call);
+        DBus::Message _UnRegisterPlugin_stub(const DBus::CallMessage &call);
+        DBus::Message _SetPluginSettings_stub(const DBus::CallMessage &call);
+    public:
+        /* Interface methods */
+        virtual vector_crash_infos_t GetCrashInfos(const std::string& pDBusSender) = 0;
+        virtual uint64_t CreateReport_t(const std::string& pUUID, const std::string& pDBusSender) = 0;
+        virtual report_status_t Report(const map_crash_report_t& pReport, const std::string& pDBusSender) = 0;
+        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
+        virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
+        virtual vector_map_string_string_t GetPluginsInfo() = 0;
+        virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pDBusSender) = 0;
+        virtual void SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings) = 0;
+        virtual void RegisterPlugin(const std::string& pName) = 0;
+        virtual void UnRegisterPlugin(const std::string& pName) = 0;
 
-    virtual vector_crash_infos_t GetCrashInfos(const std::string& pDBusSender) = 0;
-    virtual map_crash_report_t CreateReport(const std::string& pUUID, const std::string& pDBusSender) = 0;
-    virtual uint64_t CreateReport_t(const std::string& pUUID, const std::string& pDBusSender) = 0;
-    virtual report_status_t Report(const map_crash_report_t& pReport, const std::string& pDBusSender) = 0;
-    virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pDBusSender) = 0;
-    virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pDBusSender) = 0;
-    virtual vector_map_string_string_t GetPluginsInfo() = 0;
-    virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pDBusSender) = 0;
-    virtual void SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings) = 0;
-    virtual void RegisterPlugin(const std::string& pName) = 0;
-    virtual void UnRegisterPlugin(const std::string& pName) = 0;
-
-public:
-    /* signal emitters for this interface
-     */
-    /* Notify the clients (UI) about a new crash */
-    void Crash(const std::string& arg1);
-    /* Notify the clients that creating a report has finished */
-    void AnalyzeComplete(const map_crash_report_t& arg1);
-    void JobDone(const std::string& pDest, uint64_t job_id);
-    void Error(const std::string& arg1);
-    void Update(const std::string pDest, const std::string& pMessage);
-    void Warning(const std::string& arg1);
-
-private:
-    /* unmarshalers (to unpack the DBus message before calling the actual interface method)
-     */
-    DBus::Message _GetCrashInfos_stub(const DBus::CallMessage &call);
-    DBus::Message _CreateReport_stub(const DBus::CallMessage &call);
-    DBus::Message _Report_stub(const DBus::CallMessage &call);
-    DBus::Message _DeleteDebugDump_stub(const DBus::CallMessage &call);
-    DBus::Message _GetJobResult_stub(const DBus::CallMessage &call);
-    DBus::Message _GetPluginsInfo_stub(const DBus::CallMessage &call);
-    DBus::Message _GetPluginSettings_stub(const DBus::CallMessage &call);
-    DBus::Message _RegisterPlugin_stub(const DBus::CallMessage &call);
-    DBus::Message _UnRegisterPlugin_stub(const DBus::CallMessage &call);
-    DBus::Message _SetPluginSettings_stub(const DBus::CallMessage &call);
+    public:
+        /* Signal emitters for this interface */
+        /* Notify the clients (UI) about a new crash */
+        void Crash(const std::string& arg1);
+        /* Notify the clients that creating a report has finished */
+        void AnalyzeComplete(const map_crash_report_t& arg1);
+        void JobDone(const std::string& pDest, uint64_t job_id);
+        void Error(const std::string& arg1);
+        void Update(const std::string pDest, const std::string& pMessage);
+        void Warning(const std::string& arg1);
 };
 
 #endif

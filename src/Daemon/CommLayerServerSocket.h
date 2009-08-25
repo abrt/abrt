@@ -27,7 +27,6 @@ class CCommLayerServerSocket : public CCommLayerServer
         virtual ~CCommLayerServerSocket();
 
         virtual vector_crash_infos_t GetCrashInfos(const std::string& pSender);
-        virtual map_crash_report_t CreateReport(const std::string& pUUID, const std::string& pSender);
         virtual report_status_t Report(const map_crash_report_t& pReport, const std::string& pSender);
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
 

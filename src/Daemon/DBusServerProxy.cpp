@@ -156,7 +156,7 @@ DBus::Message CDBusServer_adaptor::_CreateReport_stub(const DBus::CallMessage &c
     std::string argin1;
     ri >> argin1;
     uint64_t argout1 = CreateReport_t(argin1, call.sender());
-    if(sizeof (uint64_t) != 8) abort ();
+    if (sizeof (uint64_t) != 8) abort ();
     //map_crash_report_t argout1 = CreateReport(argin1,call.sender());
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();

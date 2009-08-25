@@ -18,8 +18,8 @@ DBus::Connection *CCommLayerServerDBus::init_dbus(CCommLayerServerDBus *self)
 }
 
 CCommLayerServerDBus::CCommLayerServerDBus()
-: CCommLayerServer(),
-  DBus::ObjectAdaptor(*init_dbus(this), CC_DBUS_PATH)
+:
+    DBus::ObjectAdaptor(*init_dbus(this), CC_DBUS_PATH)
 {
     try
     {
@@ -38,6 +38,11 @@ CCommLayerServerDBus::CCommLayerServerDBus()
 CCommLayerServerDBus::~CCommLayerServerDBus()
 {
 }
+
+
+/*
+ * DBus call handlers
+ */
 
 vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSender)
 {
@@ -87,6 +92,41 @@ map_crash_report_t CCommLayerServerDBus::GetJobResult(uint64_t pJobID, const std
     return crashReport;
 }
 
+vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
+{
+    //FIXME: simplify?
+    vector_map_string_string_t plugins_info;
+    plugins_info = m_pObserver->GetPluginsInfo();
+    return plugins_info;
+}
+
+map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string& pName, const std::string& pSender)
+{
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
+    return m_pObserver->GetPluginSettings(pName, to_string(unix_uid));
+}
+
+void CCommLayerServerDBus::SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings)
+{
+    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
+    return m_pObserver->SetPluginSettings(pName, to_string(unix_uid), pSettings);
+}
+
+void CCommLayerServerDBus::RegisterPlugin(const std::string& pName)
+{
+    return m_pObserver->RegisterPlugin(pName);
+}
+
+void CCommLayerServerDBus::UnRegisterPlugin(const std::string& pName)
+{
+    return m_pObserver->UnRegisterPlugin(pName);
+}
+
+
+/*
+ * DBus signal emitters
+ */
+
 void CCommLayerServerDBus::Crash(const std::string& arg)
 {
     CDBusServer_adaptor::Crash(arg);
@@ -115,35 +155,5 @@ void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t pJobID)
 void CCommLayerServerDBus::Warning(const std::string& pDest, const std::string& pMessage)
 {
     CDBusServer_adaptor::Warning(pMessage);
-}
-
-vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
-{
-    //FIXME: simplify?
-    vector_map_string_string_t plugins_info;
-    plugins_info = m_pObserver->GetPluginsInfo();
-    return plugins_info;
-}
-
-map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string& pName, const std::string& pSender)
-{
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    return m_pObserver->GetPluginSettings(pName, to_string(unix_uid));
-}
-
-void CCommLayerServerDBus::RegisterPlugin(const std::string& pName)
-{
-    return m_pObserver->RegisterPlugin(pName);
-}
-
-void CCommLayerServerDBus::UnRegisterPlugin(const std::string& pName)
-{
-    return m_pObserver->UnRegisterPlugin(pName);
-}
-
-void CCommLayerServerDBus::SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings)
-{
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    return m_pObserver->SetPluginSettings(pName, to_string(unix_uid), pSettings);
 }
 
