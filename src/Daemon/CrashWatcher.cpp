@@ -24,7 +24,7 @@
 
 void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest)
 {
-    std::cout << "Update: " + pMessage << std::endl;
+    log("Update: %s", pMessage.c_str());
     //FIXME: send updates only to job owner
     if (g_pCommLayer != NULL)
         g_pCommLayer->Update(pDest, pMessage);
@@ -32,15 +32,14 @@ void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest
 
 void CCrashWatcher::Warning(const std::string& pMessage)
 {
-    std::cerr << "Warning: " + pMessage << std::endl;
+    log("Warning: %s", pMessage.c_str());
     if (g_pCommLayer != NULL)
         g_pCommLayer->Warning(pMessage);
 }
 
 void CCrashWatcher::Debug(const std::string& pMessage)
 {
-    //some logic to add logging levels?
-    std::cout << "Debug: " + pMessage << std::endl;
+    log("Debug: %s", pMessage.c_str());
 }
 
 CCrashWatcher::CCrashWatcher()
@@ -55,7 +54,7 @@ CCrashWatcher::~CCrashWatcher()
 vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
 {
     vector_crash_infos_t retval;
-    Debug("Getting crash infos...");
+    log("Getting crash infos...");
     try
     {
         vector_pair_string_string_t UUIDsUIDs;
@@ -117,7 +116,7 @@ static void *create_report(void *arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
-    g_cw->Debug("Creating report...");
+    log("Creating report...");
     try
     {
         mw_result_t res;

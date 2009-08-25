@@ -19,17 +19,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "FileTransfer.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <unistd.h>
 #include <iostream>
 #include <sstream>
 #include <fstream>
 #include <curl/curl.h>
 
+#include "abrtlib.h"
+#include "FileTransfer.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
@@ -141,7 +137,7 @@ void CFileTransfer::CreateArchive(const std::string& pArchiveName,
         throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::CreateArchive(): unknown/unsupported archive type "+m_sArchiveType);
     }
 
-    comm_layer_inner_debug(cmdline);
+    log("Executing '%s'", cmdline.c_str());
     result = system(cmdline.c_str());
 
     if( result != 0 )

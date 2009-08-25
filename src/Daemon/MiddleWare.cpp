@@ -305,10 +305,8 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 
         if (s_mapAnalyzerActionsAndReporters.find(analyzer) != s_mapAnalyzerActionsAndReporters.end())
         {
-            vector_pair_string_string_t::iterator it_r;
-            for (it_r = s_mapAnalyzerActionsAndReporters[analyzer].begin();
-                 it_r != s_mapAnalyzerActionsAndReporters[analyzer].end();
-                 it_r++)
+            vector_pair_string_string_t::iterator it_r = s_mapAnalyzerActionsAndReporters[analyzer].begin();
+            for (; it_r != s_mapAnalyzerActionsAndReporters[analyzer].end(); it_r++)
             {
                 try
                 {
@@ -333,7 +331,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                             {
                                 oldSettings = reporter->GetSettings();
 
-                                if (LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "." + PLUGINS_CONF_EXTENSION, newSettings))
+                                if (LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "."PLUGINS_CONF_EXTENSION, newSettings))
                                 {
                                     reporter->SetSettings(newSettings);
                                 }
@@ -448,22 +446,22 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
         {
             if (packageName == "")
             {
-                comm_layer_inner_debug("Executable doesn't belong to any package");
+                error_msg("Executable doesn't belong to any package");
                 return MW_PACKAGE_ERROR;
             }
-            comm_layer_inner_debug("Blacklisted package");
+            log("Blacklisted package");
             return MW_BLACKLISTED;
         }
         if (g_settings_bOpenGPGCheck)
         {
             if (!s_RPM.CheckFingerprint(packageName))
             {
-                comm_layer_inner_debug("package isn't signed with proper key");
+                error_msg("package isn't signed with proper key");
                 return MW_GPG_ERROR;
             }
             if (!s_RPM.CheckHash(packageName, pExecutable))
             {
-                comm_layer_inner_debug("executable has bad hash");
+                error_msg("executable has bad hash");
                 return MW_GPG_ERROR;
             }
         }
@@ -555,12 +553,12 @@ static mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
     res = GetCrashInfo(pUUID, pUID, pCrashInfo);
     if (row.m_sReported == "1")
     {
-        comm_layer_inner_debug("Crash is already reported");
+        log("Crash is already reported");
         return MW_REPORTED;
     }
     if (row.m_sCount != "1")
     {
-        comm_layer_inner_debug("Crash is in database already");
+        log("Crash is in database already");
         return MW_OCCURED;
     }
     return res;

@@ -117,7 +117,7 @@ static void cron_delete_callback_data_cb(gpointer data)
 static gboolean cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
-    g_cw->Debug("Activating plugin: " + cronPeriodicCallbackData->m_sPluginName);
+    log("Activating plugin: %s", cronPeriodicCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
             cronPeriodicCallbackData->m_sPluginName,
             cronPeriodicCallbackData->m_sPluginArgs);
@@ -126,7 +126,7 @@ static gboolean cron_activation_periodic_cb(gpointer data)
 static gboolean cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
-    g_cw->Debug("Activating plugin: " + cronOneCallbackData->m_sPluginName);
+    log("Activating plugin: %s", cronOneCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
             cronOneCallbackData->m_sPluginName,
             cronOneCallbackData->m_sPluginArgs);
@@ -135,7 +135,7 @@ static gboolean cron_activation_one_cb(gpointer data)
 static gboolean cron_activation_reshedule_cb(gpointer data)
 {
     cron_callback_data_t* cronResheduleCallbackData = static_cast<cron_callback_data_t*>(data);
-    g_cw->Debug("Rescheduling plugin: " + cronResheduleCallbackData->m_sPluginName);
+    log("Rescheduling plugin: %s", cronResheduleCallbackData->m_sPluginName.c_str());
     cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(cronResheduleCallbackData->m_sPluginName,
                                                                               cronResheduleCallbackData->m_sPluginArgs,
                                                                               cronResheduleCallbackData->m_nTimeout);
@@ -274,7 +274,7 @@ static void SetUpCron()
 
 static void FindNewDumps(const std::string& pPath)
 {
-    g_cw->Debug("Scanning for unsaved entries...");
+    log("Scanning for unsaved entries...");
     struct dirent *ep;
     struct stat stats;
     DIR *dp;
@@ -313,11 +313,11 @@ static void FindNewDumps(const std::string& pPath)
             switch (res)
             {
                 case MW_OK:
-                    g_cw->Debug("Saving into database (" + *itt + ").");
+                    log("Saving into database (%s)", itt->c_str());
                     RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                     break;
                 case MW_IN_DB:
-                    g_cw->Debug("Already saved in database (" + *itt + ").");
+                    log("Already saved in database (%s)", itt->c_str());
                     break;
                 case MW_REPORTED:
                 case MW_OCCURED:
@@ -449,7 +449,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
             name = &buf[i] + sizeof (struct inotify_event);
         i += sizeof (struct inotify_event) + event->len;
 
-        g_cw->Debug(std::string("Created file: ") + name);
+        log("Created file: %s", name);
 
         /* we want to ignore the lock files */
         if (event->mask & IN_ISDIR)
@@ -465,7 +465,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                     switch (res)
                     {
                         case MW_OK:
-                            g_cw->Debug("New crash, saving...");
+                            log("New crash, saving...");
                             RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
@@ -473,7 +473,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                         case MW_REPORTED:
                         case MW_OCCURED:
                             /* send message to dbus */
-                            g_cw->Debug("Already saved crash, deleting...");
+                            log("Already saved crash, deleting...");
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
                             DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
@@ -506,13 +506,13 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
             }
             else
             {
-                g_cw->Debug(std::string("DebugDumps size has exceeded the limit, deleting the last dump: ") + name);
+                log("DebugDumps size has exceeded the limit, deleting the last dump: %s", name);
                 DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             }
         }
         else
         {
-            g_cw->Debug("Some file created, ignoring...");
+            log("Some file created, ignoring...");
         }
     }
     delete[] buf;
@@ -562,6 +562,7 @@ int main(int argc, char** argv)
         close(STDERR_FILENO);
         xdup(0);
         xdup(0);
+        logmode = LOGMODE_SYSLOG;
     }
 
     GIOChannel* pGio = NULL;
@@ -645,7 +646,7 @@ int main(int argc, char** argv)
     /* Enter the event loop */
     try
     {
-	watcher.Debug("Running...");
+	log("Running...");
 	g_main_run(g_pMainloop);
     }
     catch (CABRTException& e)

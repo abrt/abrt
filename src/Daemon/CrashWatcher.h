@@ -67,7 +67,7 @@ class CCrashWatcher
 };
 
 
-/* used only for ->Debug(), ->Warning() etc calls */
+/* used only for ->Warning() calls */
 extern CCrashWatcher *g_cw;
 /* conduit for these messages */
 extern CCommLayerServer *g_pCommLayer;

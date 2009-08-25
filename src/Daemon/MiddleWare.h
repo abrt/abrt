@@ -96,7 +96,7 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir);
  * ...).
  * @param pCrashReport A crash report.
  * @param pUID An user uid
- * @return A report status, which reporters ends sucessfuly with messages.
+ * @return A report status, which reporters ends successfuly with messages.
  */
 report_status_t Report(const map_crash_report_t& pCrashReport,
                        const std::string& pUID);

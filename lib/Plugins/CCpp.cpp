@@ -140,7 +140,7 @@ static void InstallDebugInfos(const std::string& pPackage)
         if (last >= 0 && buff[last] == '\n')
             buff[last] = '\0';
 
-        comm_layer_inner_debug(buff);
+        log(buff);
         comm_layer_inner_status(buff);
 
 #ifdef COMPLAIN_IF_NO_DEBUGINFO

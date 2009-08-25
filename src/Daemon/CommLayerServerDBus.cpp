@@ -1,7 +1,7 @@
-#include "abrtlib.h"
-#include "CommLayerServerDBus.h"
 #include <iostream>
+#include "abrtlib.h"
 #include "ABRTException.h"
+#include "CommLayerServerDBus.h"
 
 void attach_dbus_dispatcher_to_glib_main_context()
 {

@@ -24,16 +24,14 @@
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
+#include <assert.h>
+#include <syslog.h>
+#include <asm/unistd.h> /* __NR_syslog */
 #include "abrtlib.h"
-
-#include "KerneloopsScanner.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
-
-#include <assert.h>
-#include <syslog.h>
-#include <asm/unistd.h>
+#include "KerneloopsScanner.h"
 
 
 #define FILENAME_KERNELOOPS  "kerneloops"
@@ -112,7 +110,7 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 
 int CKerneloopsScanner::ScanDmesg()
 {
-	comm_layer_inner_debug("Scanning dmesg...");
+	log("Scanning dmesg...");
 
 	int cnt_FoundOopses;
 	char *buffer;
@@ -129,7 +127,7 @@ int CKerneloopsScanner::ScanDmesg()
 
 int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 {
-	comm_layer_inner_debug("Scanning syslog...");
+	log("Scanning syslog...");
 
 	char *buffer;
 	struct stat statb;

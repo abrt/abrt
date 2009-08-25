@@ -1,11 +1,12 @@
-#include "Bugzilla.h"
+
 #include <xmlrpc-c/base.hpp>
+#include <sstream>
+#include "abrtlib.h"
+#include "Bugzilla.h"
 #include "CrashTypes.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
-#include <sstream>
-#include <string.h>
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
@@ -65,7 +66,6 @@ PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 
     return 1;
 }
 
-
 void CReporterBugzilla::Login()
 {
     xmlrpc_c::paramList paramList;
@@ -81,7 +81,7 @@ void CReporterBugzilla::Login()
         ret =  xmlrpc_c::value_struct(rpc->getResult());
         std::stringstream ss;
         ss << xmlrpc_c::value_int(ret["id"]);
-        comm_layer_inner_debug("Login id: " + ss.str());
+        log("Login id: %s", ss.str().c_str());
     }
     catch (std::exception& e)
     {
@@ -214,7 +214,7 @@ std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent
         bug = xmlrpc_c::value_struct(bugs[0]);
         ss << xmlrpc_c::value_int(bug["bug_id"]);
 
-        comm_layer_inner_debug("Bug is already reported: " + ss.str());
+        log("Bug is already reported: %s", ss.str().c_str());
         comm_layer_inner_status("Bug is already reported: " + ss.str());
 
         if (!CheckCCAndReporter(ss.str()))
@@ -342,7 +342,7 @@ std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
         rpc->call(m_pXmlrpcClient, m_pCarriageParm);
         ret =  xmlrpc_c::value_struct(rpc->getResult());
         bugId << xmlrpc_c::value_int(ret["id"]);
-        comm_layer_inner_debug("New bug id: " + bugId.str());
+        log("New bug id: %s", bugId.str().c_str());
         comm_layer_inner_status("New bug id: " + bugId.str());
     }
     catch (std::exception& e)
@@ -388,7 +388,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
                 ret = xmlrpc_c::value_array(rpc->getResult()).vectorValueValue();
                 std::stringstream ss;
                 ss << xmlrpc_c::value_int(ret[0]);
-                comm_layer_inner_debug("New attachment id: " + ss.str());
+                log("New attachment id: %s", ss.str().c_str());
             }
             catch (std::exception& e)
             {

@@ -19,16 +19,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#include <fstream>
 #include <iostream>
-#include "PluginManager.h"
+#include "abrtlib.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
-#include <dirent.h>
-#include <stdio.h>
-#include <sys/types.h>
-#include <stdlib.h>
-#include "abrtlib.h"
-#include <fstream>
+#include "PluginManager.h"
 
 /**
  * Text representation of plugin types.
@@ -178,7 +174,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
             {
                 throw CABRTException(EXCEP_PLUGIN, "CPluginManager::LoadPlugin(): non-compatible plugin");
             }
-            comm_layer_inner_debug("Plugin " + pName + " (" + abrtPlugin->GetVersion() + ") succesfully loaded.");
+            log("Plugin %s (%s) succesfully loaded", pName.c_str(), abrtPlugin->GetVersion());
             m_mapABRTPlugins[pName] = abrtPlugin;
         }
         catch (CABRTException& e)
@@ -200,7 +196,7 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
         UnRegisterPlugin(pName);
         delete m_mapABRTPlugins[pName];
         m_mapABRTPlugins.erase(pName);
-        comm_layer_inner_debug("Plugin " + pName + " sucessfully unloaded.");
+        log("Plugin %s successfully unloaded", pName.c_str());
     }
 }
 
@@ -228,9 +224,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
                 return;
             }
             m_mapPlugins[pName] = plugin;
-            comm_layer_inner_debug("Registered plugin " + pName + "("
-                                  + std::string(plugin_type_str[m_mapABRTPlugins[pName]->GetType()])
-                                  + ")");
+            log("Registered plugin %s(%s)", pName.c_str(), plugin_type_str[m_mapABRTPlugins[pName]->GetType()]);
         }
     }
 }
@@ -244,9 +238,7 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
             m_mapPlugins[pName]->DeInit();
             delete m_mapPlugins[pName];
             m_mapPlugins.erase(pName);
-            comm_layer_inner_debug("UnRegistred plugin " + pName + "("
-                                  + std::string(plugin_type_str[m_mapABRTPlugins[pName]->GetType()])
-                                  + ")");
+            log("UnRegistered plugin %s(%s)", pName.c_str(), plugin_type_str[m_mapABRTPlugins[pName]->GetType()]);
         }
     }
 }

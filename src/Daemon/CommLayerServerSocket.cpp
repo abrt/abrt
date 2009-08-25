@@ -1,15 +1,12 @@
-#include "CommLayerServerSocket.h"
-#include "CommLayerInner.h"
-#include "ABRTException.h"
-#include "CrashTypesSocket.h"
-#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/un.h>
 #include <iostream>
 #include <sstream>
-#include <sys/stat.h>
-#include <unistd.h>
-#include <fcntl.h>
+#include "abrtlib.h"
+#include "CommLayerInner.h"
+#include "ABRTException.h"
+#include "CrashTypesSocket.h"
+#include "CommLayerServerSocket.h"
 
 void CCommLayerServerSocket::Send(const std::string& pData, GIOChannel *pDestination)
 {
@@ -66,7 +63,7 @@ gboolean CCommLayerServerSocket::client_socket_cb(GIOChannel *source, GIOConditi
         condition & G_IO_ERR ||
         condition & G_IO_NVAL)
     {
-        comm_layer_inner_debug("Socket client disconnected.");
+        log("Socket client disconnected");
         g_io_channel_unref(serverSocket->m_mapClientChannels[g_io_channel_unix_get_fd(source)]);
         serverSocket->m_mapClientChannels.erase(g_io_channel_unix_get_fd(source));
         return FALSE;
@@ -116,7 +113,7 @@ gboolean CCommLayerServerSocket::server_socket_cb(GIOChannel *source, GIOConditi
         comm_layer_inner_warning("Server can not accept client.");
         return TRUE;
     }
-    comm_layer_inner_debug("New socket client connected.");
+    log("New socket client connected");
     GIOChannel* gSocket = g_io_channel_unix_new(socket);
     if (!g_io_add_watch(gSocket,
                         static_cast<GIOCondition>(G_IO_IN |G_IO_PRI| G_IO_ERR | G_IO_HUP | G_IO_NVAL),
