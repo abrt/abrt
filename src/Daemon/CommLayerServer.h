@@ -9,17 +9,6 @@
 #include "Observer.h"
 #include "CrashTypes.h"
 
-/* just a helper function */
-template< class T >
-std::string
-to_string( T x )
-{
-    std::ostringstream o;
-    o << x;
-    return o.str();
-}
-
-
 class CCommLayerServer {
     protected:
         CObserver *m_pObserver;
