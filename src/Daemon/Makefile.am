@@ -3,6 +3,7 @@ sbin_PROGRAMS = abrt
 abrt_SOURCES = \
     ABRTPlugin.cpp ABRTPlugin.h \
     PluginManager.cpp PluginManager.h \
+    RPM.cpp RPM.h \
     MiddleWare.cpp MiddleWare.h \
     CrashWatcher.cpp CrashWatcher.h \
     CommLayerServer.h CommLayerServer.cpp \
