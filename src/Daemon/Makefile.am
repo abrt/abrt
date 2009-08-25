@@ -1,7 +1,6 @@
 sbin_PROGRAMS = abrt
 
 abrt_SOURCES = \
-    DBusServerProxy.h DBusServerProxy.cpp \
     ABRTPlugin.cpp ABRTPlugin.h \
     PluginManager.cpp PluginManager.h \
     MiddleWare.cpp MiddleWare.h \

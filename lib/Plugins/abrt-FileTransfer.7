@@ -22,6 +22,11 @@ There are two modes of invocation:
 \fI"store"\fP, the plugin stores a record of the occurrence of
 the crash in its internal list.
 .P
+* If you use the parameter
+\fI"one"\fP, the plugin will transfer this specific crash,
+on which it was invoked, without storing it in the internal
+list.
+.P
 * If you use some other parameter, or no parameter at all, the
 plugin will iterate through the internal list and will send
 every recorded crash to the server specified in the \fIFileTransfer.conf\fP

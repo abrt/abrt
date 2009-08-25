@@ -18,8 +18,9 @@ DBus::Connection *CCommLayerServerDBus::init_dbus(CCommLayerServerDBus *self)
 }
 
 CCommLayerServerDBus::CCommLayerServerDBus()
-: CCommLayerServer(),
-  DBus::ObjectAdaptor(*init_dbus(this), CC_DBUS_PATH)
+:
+    DBus::InterfaceAdaptor(CC_DBUS_IFACE),
+    DBus::ObjectAdaptor(*init_dbus(this), CC_DBUS_PATH)
 {
     try
     {
@@ -33,12 +34,39 @@ CCommLayerServerDBus::CCommLayerServerDBus()
                              + " * you have reloaded the dbus\n"+
                              + "Original exception was:\n " + err.what());
     }
+    register_method(CCommLayerServerDBus, GetCrashInfos, _GetCrashInfos_stub);
+    register_method(CCommLayerServerDBus, CreateReport, _CreateReport_stub);
+    register_method(CCommLayerServerDBus, Report, _Report_stub);
+    register_method(CCommLayerServerDBus, DeleteDebugDump, _DeleteDebugDump_stub);
+    register_method(CCommLayerServerDBus, GetJobResult, _GetJobResult_stub);
+    register_method(CCommLayerServerDBus, GetPluginsInfo, _GetPluginsInfo_stub);
+    register_method(CCommLayerServerDBus, GetPluginSettings, _GetPluginSettings_stub);
+    register_method(CCommLayerServerDBus, SetPluginSettings, _SetPluginSettings_stub);
+    register_method(CCommLayerServerDBus, RegisterPlugin, _RegisterPlugin_stub);
+    register_method(CCommLayerServerDBus, UnRegisterPlugin, _UnRegisterPlugin_stub);
 }
 
 CCommLayerServerDBus::~CCommLayerServerDBus()
 {
 }
 
+
+/*
+ * DBus call handlers
+ */
+
+/* unmarshaler (non-virtual private function) */
+DBus::Message CCommLayerServerDBus::_GetCrashInfos_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    //FIXME: @@@REMOVE!!
+    vector_crash_infos_t argout1 = GetCrashInfos(call.sender());
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << argout1;
+    return reply;
+}
+/* handler (public function) */
 vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSender)
 {
     vector_crash_infos_t crashInfos;
@@ -46,16 +74,21 @@ vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSen
     crashInfos = m_pObserver->GetCrashInfos(to_string(unix_uid));
     return crashInfos;
 }
-//FIXME: fix CLI and remove this
-/*
-map_crash_report_t CCommLayerServerDBus::CreateReport(const std::string &pUUID,const std::string &pSender)
+
+DBus::Message CCommLayerServerDBus::_CreateReport_stub(const DBus::CallMessage &call)
 {
-    unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    map_crash_report_t crashReport;
-    crashReport = m_pObserver->CreateReport(pUUID, to_string(unix_uid));
-    return crashReport;
+    DBus::MessageIter ri = call.reader();
+
+    std::string argin1;
+    ri >> argin1;
+    uint64_t argout1 = CreateReport_t(argin1, call.sender());
+    if (sizeof (uint64_t) != 8) abort ();
+    //map_crash_report_t argout1 = CreateReport(argin1,call.sender());
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << argout1;
+    return reply;
 }
-*/
 uint64_t CCommLayerServerDBus::CreateReport_t(const std::string &pUUID,const std::string &pSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
@@ -64,7 +97,19 @@ uint64_t CCommLayerServerDBus::CreateReport_t(const std::string &pUUID,const std
     return job_id;
 }
 
-report_status_t CCommLayerServerDBus::Report(map_crash_report_t pReport,const std::string &pSender)
+DBus::Message CCommLayerServerDBus::_Report_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+
+    map_crash_report_t argin1;
+    ri >> argin1;
+    report_status_t argout1 = Report(argin1, call.sender());
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << argout1;
+    return reply;
+}
+report_status_t CCommLayerServerDBus::Report(const map_crash_report_t& pReport, const std::string &pSender)
 {
     report_status_t rs;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
@@ -72,6 +117,18 @@ report_status_t CCommLayerServerDBus::Report(map_crash_report_t pReport,const st
     return rs;
 }
 
+DBus::Message CCommLayerServerDBus::_DeleteDebugDump_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+
+    std::string argin1;
+    ri >> argin1;
+    bool argout1 = DeleteDebugDump(argin1, call.sender());
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << argout1;
+    return reply;
+}
 bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::string& pSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
@@ -79,6 +136,17 @@ bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::
     return true;
 }
 
+DBus::Message CCommLayerServerDBus::_GetJobResult_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    uint64_t job_id;
+    ri >> job_id;
+    map_crash_report_t report = GetJobResult(job_id, call.sender());
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << report;
+    return reply;
+}
 map_crash_report_t CCommLayerServerDBus::GetJobResult(uint64_t pJobID, const std::string& pSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
@@ -87,36 +155,15 @@ map_crash_report_t CCommLayerServerDBus::GetJobResult(uint64_t pJobID, const std
     return crashReport;
 }
 
-void CCommLayerServerDBus::Crash(const std::string& arg)
+DBus::Message CCommLayerServerDBus::_GetPluginsInfo_stub(const DBus::CallMessage &call)
 {
-    CDBusServer_adaptor::Crash(arg);
+    vector_map_string_string_t plugins_info;
+    plugins_info = GetPluginsInfo();
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << plugins_info;
+    return reply;
 }
-
-void CCommLayerServerDBus::AnalyzeComplete(map_crash_report_t arg1)
-{
-    CDBusServer_adaptor::AnalyzeComplete(arg1);
-}
-
-void CCommLayerServerDBus::Error(const std::string& arg1)
-{
-    CDBusServer_adaptor::Error(arg1);
-}
-
-void CCommLayerServerDBus::Update(const std::string& pDest, const std::string& pMessage)
-{
-    CDBusServer_adaptor::Update(pDest, pMessage);
-}
-
-void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t pJobID)
-{
-    CDBusServer_adaptor::JobDone(pDest, pJobID);
-}
-
-void CCommLayerServerDBus::Warning(const std::string& pDest, const std::string& pMessage)
-{
-    CDBusServer_adaptor::Warning(pMessage);
-}
-
 vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
 {
     //FIXME: simplify?
@@ -125,25 +172,125 @@ vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
     return plugins_info;
 }
 
+DBus::Message CCommLayerServerDBus::_GetPluginSettings_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    std::string PluginName;
+    std::string uid;
+    ri >> PluginName;
+    map_plugin_settings_t plugin_settings;
+    plugin_settings = GetPluginSettings(PluginName, call.sender());
+    DBus::ReturnMessage reply(call);
+    DBus::MessageIter wi = reply.writer();
+    wi << plugin_settings;
+    return reply;
+}
 map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string& pName, const std::string& pSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     return m_pObserver->GetPluginSettings(pName, to_string(unix_uid));
 }
 
-void CCommLayerServerDBus::RegisterPlugin(const std::string& pName)
+DBus::Message CCommLayerServerDBus::_SetPluginSettings_stub(const DBus::CallMessage &call)
 {
-    return m_pObserver->RegisterPlugin(pName);
+    DBus::MessageIter ri = call.reader();
+    std::string PluginName;
+    map_plugin_settings_t plugin_settings;
+    ri >> PluginName;
+    ri >> plugin_settings;
+    SetPluginSettings(PluginName, call.sender(), plugin_settings);
+    DBus::ReturnMessage reply(call);
+    return reply;
 }
-
-void CCommLayerServerDBus::UnRegisterPlugin(const std::string& pName)
-{
-    return m_pObserver->UnRegisterPlugin(pName);
-}
-
 void CCommLayerServerDBus::SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     return m_pObserver->SetPluginSettings(pName, to_string(unix_uid), pSettings);
 }
 
+DBus::Message CCommLayerServerDBus::_RegisterPlugin_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    std::string PluginName;
+    ri >> PluginName;
+    RegisterPlugin(PluginName);
+    DBus::ReturnMessage reply(call);
+    //DBus::MessageIter wi = reply.writer();
+    //wi << plugin_settings;
+    return reply;
+}
+void CCommLayerServerDBus::RegisterPlugin(const std::string& pName)
+{
+    return m_pObserver->RegisterPlugin(pName);
+}
+
+DBus::Message CCommLayerServerDBus::_UnRegisterPlugin_stub(const DBus::CallMessage &call)
+{
+    DBus::MessageIter ri = call.reader();
+    std::string PluginName;
+    ri >> PluginName;
+    UnRegisterPlugin(PluginName);
+    DBus::ReturnMessage reply(call);
+    return reply;
+}
+void CCommLayerServerDBus::UnRegisterPlugin(const std::string& pName)
+{
+    return m_pObserver->UnRegisterPlugin(pName);
+}
+
+
+/*
+ * DBus signal emitters
+ */
+
+/* Notify the clients (UI) about a new crash */
+void CCommLayerServerDBus::Crash(const std::string& arg1)
+{
+    ::DBus::SignalMessage sig("Crash");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << arg1;
+    emit_signal(sig);
+}
+
+/* Notify the clients that creating a report has finished */
+void CCommLayerServerDBus::AnalyzeComplete(const map_crash_report_t& arg1)
+{
+    ::DBus::SignalMessage sig("AnalyzeComplete");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << arg1;
+    emit_signal(sig);
+}
+
+void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t job_id)
+{
+    ::DBus::SignalMessage sig("JobDone");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << pDest;
+    wi << job_id;
+    emit_signal(sig);
+}
+
+void CCommLayerServerDBus::Error(const std::string& arg1)
+{
+    ::DBus::SignalMessage sig("Error");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << arg1;
+    emit_signal(sig);
+}
+
+void CCommLayerServerDBus::Update(const std::string& pDest, const std::string& pMessage)
+{
+    ::DBus::SignalMessage sig("Update");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << pDest;
+    wi << pMessage;
+    emit_signal(sig);
+}
+
+void CCommLayerServerDBus::Warning(const std::string& arg1)
+{
+    ::DBus::SignalMessage sig("Warning");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << arg1;
+    emit_signal(sig);
+}

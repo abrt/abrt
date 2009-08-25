@@ -30,14 +30,14 @@ void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest
         g_pCommLayer->Update(pDest, pMessage);
 }
 
-void CCrashWatcher::Warning(const std::string& pMessage, const std::string& pDest)
+void CCrashWatcher::Warning(const std::string& pMessage)
 {
     std::cerr << "Warning: " + pMessage << std::endl;
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Warning(pDest, pMessage);
+        g_pCommLayer->Warning(pMessage);
 }
 
-void CCrashWatcher::Debug(const std::string& pMessage, const std::string& pDest)
+void CCrashWatcher::Debug(const std::string& pMessage)
 {
     //some logic to add logging levels?
     std::cout << "Debug: " + pMessage << std::endl;
@@ -192,7 +192,7 @@ uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::strin
     return 0;
 }
 
-report_status_t CCrashWatcher::Report(map_crash_report_t pReport, const std::string& pUID)
+report_status_t CCrashWatcher::Report(const map_crash_report_t& pReport, const std::string& pUID)
 {
     //#define FIELD(X) crashReport.m_s##X = pReport[#X];
     //crashReport.m_sUUID = pReport["UUID"];

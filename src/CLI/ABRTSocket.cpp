@@ -117,7 +117,7 @@ map_crash_report_t CABRTSocket::CreateReport(const std::string &pUUID)
     return string_to_crash_report(message);
 }
 
-void CABRTSocket::Report(map_crash_report_t pReport)
+void CABRTSocket::Report(const map_crash_report_t& pReport)
 {
     std::string message = MESSAGE_REPORT + crash_report_to_string(pReport);
     Send(message);
