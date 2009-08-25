@@ -30,7 +30,7 @@
 /**
  * Table
  * =====
- * UUID | UID| DebugDumpPath | Count | Reported
+ * UUID | UID| DebugDumpPath | Count | Reported | Time | Message
  *
  * primary key (UUID, UID)
  */
@@ -40,8 +40,8 @@
 #define DATABASE_COLUMN_DEBUG_DUMP_PATH "DebugDumpPath"
 #define DATABASE_COLUMN_COUNT           "Count"
 #define DATABASE_COLUMN_REPORTED        "Reported"
-#define DATABASE_COLUMN_MESSAGE         "Message"
 #define DATABASE_COLUMN_TIME            "Time"
+#define DATABASE_COLUMN_MESSAGE         "Message"
 
 /**
  * A struct contains one database row.

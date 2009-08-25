@@ -33,7 +33,8 @@
 #define ABRT_TABLE "abrt_v"ABRT_TABLE_VERSION_STR
 #define SQLITE3_MASTER_TABLE "sqlite_master"
 
-
+// afret a while, we can drom a support for update, so a table can stay in
+// normal limits
 static const char* upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
     // v0 -> *
     {
@@ -42,8 +43,10 @@ static const char* upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
         // v0 -> v1
         "ALTER TABLE abrt ADD "DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '';",
         // v0 -> v2
+        "BEGIN TRANSACTION;"
         "ALTER TABLE abrt RENAME TO abrt_v2;"
-        "ALTER TABLE abrt_v2 ADD "DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '';",
+        "ALTER TABLE abrt_v2 ADD "DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '';"
+        "COMMIT;",
 
     },
     //v1 -> *
@@ -54,7 +57,27 @@ static const char* upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
         // v1 -> v1
         ";",
         // v1 -> v2
-        "ALTER TABLE abrt RENAME TO abrt_v2;",
+        "BEGIN TRANSACTION;"
+        "CREATE TABLE abrt_v2 ("
+                 DATABASE_COLUMN_UUID" VARCHAR NOT NULL,"
+                 DATABASE_COLUMN_UID" VARCHAR NOT NULL,"
+                 DATABASE_COLUMN_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
+                 DATABASE_COLUMN_COUNT" INT NOT NULL DEFAULT 1,"
+                 DATABASE_COLUMN_REPORTED" INT NOT NULL DEFAULT 0,"
+                 DATABASE_COLUMN_TIME" VARCHAR NOT NULL DEFAULT 0,"
+                 DATABASE_COLUMN_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
+                 "PRIMARY KEY ("DATABASE_COLUMN_UUID","DATABASE_COLUMN_UID"));"
+        "INSERT INTO abrt_v2 "
+            "SELECT "DATABASE_COLUMN_UUID","
+                     DATABASE_COLUMN_UID","
+                     DATABASE_COLUMN_DEBUG_DUMP_PATH","
+                     DATABASE_COLUMN_COUNT","
+                     DATABASE_COLUMN_REPORTED","
+                     DATABASE_COLUMN_TIME","
+                     DATABASE_COLUMN_MESSAGE
+            " FROM abrt;"
+        "DROP TABLE abrt;"
+        "COMMIT;",
     },
 };
 
@@ -206,7 +229,8 @@ bool CSQLite3::CheckTable()
         }
         return true;
     }
-    // TODO: after some time could be removed
+    // TODO: after some time could be removed, and if a table is that old,
+    // then simoply drop it and create new one
     else
     {
         // hack for version 0 and 1
