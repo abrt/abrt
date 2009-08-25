@@ -50,9 +50,9 @@ class CCrashWatcher
 
     public:
         /* Observer methods */
-        virtual void Status(const std::string& pMessage,const std::string& pDest="0");
-        virtual void Debug(const std::string& pMessage, const std::string& pDest="0");
-        virtual void Warning(const std::string& pMessage, const std::string& pDest="0");
+        virtual void Status(const std::string& pMessage, const std::string& pDest="0");
+        virtual void Debug(const std::string& pMessage);
+        virtual void Warning(const std::string& pMessage);
         virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
         uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
         virtual report_status_t Report(const map_crash_report_t& pReport, const std::string &pUID);

@@ -30,7 +30,7 @@ class CCommLayerServer {
         virtual void AnalyzeComplete(const map_crash_report_t& arg1) {}
         virtual void Error(const std::string& arg1) {}
         virtual void Update(const std::string& pDest, const std::string& pMessage) {};
-        virtual void Warning(const std::string& pDest, const std::string& pMessage) {};
+        virtual void Warning(const std::string& pMessage) {};
         virtual void JobDone(const std::string &pDest, uint64_t pJobID) {};
 };
 
