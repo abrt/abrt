@@ -172,6 +172,8 @@ std::string CFileTransfer::DirBase(const std::string& pStr)
 void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
 {
     fstream dirlist;
+    std::string dirname, archivename;
+    char hostname[HBLEN];
 
     comm_layer_inner_status("File Transfer: Creating a report...");
 
@@ -181,12 +183,26 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
         dirlist.open(FILETRANSFER_DIRLIST, fstream::out | fstream::app );
         dirlist << pActiveDir << endl;
         dirlist.close();
+    } else if(pArgs == "one")
+    {
+        /* just send one archive */
+	gethostname(hostname,HBLEN);
+        archivename = std::string(hostname) + "-"
+                      + DirBase(pActiveDir) + m_sArchiveType;
+        try
+        {
+            CreateArchive(archivename,pActiveDir);
+            SendFile(m_sURL, archivename);
+        }
+        catch (CABRTException& e)
+        {
+            comm_layer_inner_warning("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
+            comm_layer_inner_status("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
+        }
+	unlink(archivename.c_str());
     }
     else
     {
-        std::string dirname, archivename;
-
-        char hostname[HBLEN];
 
         gethostname(hostname,HBLEN);
 
