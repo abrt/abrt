@@ -467,13 +467,13 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                             log("New crash, saving...");
                             RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                             /* send message to dbus */
-                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
                             break;
                         case MW_REPORTED:
                         case MW_OCCURED:
                             /* send message to dbus */
                             log("Already saved crash, deleting...");
-                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT]);
+                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
                             DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                         case MW_BLACKLISTED:

@@ -73,7 +73,7 @@ class CApplet
         static void onHide_cb(GtkMenuItem *menuitem, gpointer applet);
     private:
         /* dbus stuff */
-        void Crash(std::string &value);
+        void Crash(const std::string& progname, const std::string& uid);
 
         /* the real signal handler called to handle the signal */
         void (*m_pCrashHandler)(const char *progname);

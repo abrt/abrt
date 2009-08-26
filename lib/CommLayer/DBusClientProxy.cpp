@@ -209,7 +209,7 @@ map_crash_report_t CDBusClient_proxy::GetJobResult(uint64_t pJobID)
 
 /* signal handlers for this interface
  */
-void CDBusClient_proxy::Crash(std::string& value)
+void CDBusClient_proxy::Crash(const std::string& progname, const std::string& uid)
 {
 }
 
@@ -221,8 +221,9 @@ void CDBusClient_proxy::_Crash_stub(const ::DBus::SignalMessage &sig)
 {
     DBus::MessageIter ri = sig.reader();
 
-    std::string value; ri >> value;
-    Crash(value);
+    std::string progname; ri >> progname;
+    std::string uid; ri >> uid;
+    Crash(progname, uid);
 }
 
 void CDBusClient_proxy::_JobDone_stub(const ::DBus::SignalMessage &sig)

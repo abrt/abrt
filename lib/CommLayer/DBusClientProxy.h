@@ -96,7 +96,7 @@ public:
 public:
     /* signal handlers for this interface
      */
-    virtual void Crash(std::string& value);
+    virtual void Crash(const std::string& progname, const std::string& uid);
 
 private:
     /* unmarshalers (to unpack the DBus message before calling the actual signal handler)

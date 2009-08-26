@@ -203,11 +203,12 @@ DBus::Message CCommLayerServerDBus::_UnRegisterPlugin_stub(const DBus::CallMessa
  */
 
 /* Notify the clients (UI) about a new crash */
-void CCommLayerServerDBus::Crash(const std::string& arg1)
+void CCommLayerServerDBus::Crash(const std::string& progname, const std::string& uid)
 {
     ::DBus::SignalMessage sig("Crash");
     ::DBus::MessageIter wi = sig.writer();
-    wi << arg1;
+    wi << progname;
+    wi << uid;
     emit_signal(sig);
 }
 

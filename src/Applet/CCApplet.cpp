@@ -94,11 +94,16 @@ CApplet::~CApplet()
 }
 
 /* dbus related */
-void CApplet::Crash(std::string &value)
+void CApplet::Crash(const std::string& progname, const std::string& uid  )
 {
     if (m_pCrashHandler)
     {
-        m_pCrashHandler(value.c_str());
+        std::istringstream input_string(uid);
+        uid_t num;
+        input_string >> num;
+
+        if( (num == getuid()) )
+            m_pCrashHandler(progname.c_str());
     }
     else
     {
