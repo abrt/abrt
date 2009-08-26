@@ -21,7 +21,6 @@ class CCommLayerServerDBus
 
         /* DBus call handlers */
     private:
-        /* unmarshalers */
         DBus::Message _GetCrashInfos_stub(const DBus::CallMessage &call);
         DBus::Message _CreateReport_stub(const DBus::CallMessage &call);
         DBus::Message _Report_stub(const DBus::CallMessage &call);
@@ -32,18 +31,6 @@ class CCommLayerServerDBus
         DBus::Message _SetPluginSettings_stub(const DBus::CallMessage &call);
         DBus::Message _RegisterPlugin_stub(const DBus::CallMessage &call);
         DBus::Message _UnRegisterPlugin_stub(const DBus::CallMessage &call);
-    public:
-        /* handlers */
-        virtual vector_crash_infos_t GetCrashInfos(const std::string& pSender);
-        virtual uint64_t CreateReport_t(const std::string& pUUID, const std::string& pSender);
-        virtual report_status_t Report(const map_crash_report_t& pReport, const std::string& pSender);
-        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
-        virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
-        virtual vector_map_string_string_t GetPluginsInfo();
-        virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pSender);
-        virtual void SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings);
-        virtual void RegisterPlugin(const std::string& pName);
-        virtual void UnRegisterPlugin(const std::string& pName);
 
         /* DBus signal senders */
     public:

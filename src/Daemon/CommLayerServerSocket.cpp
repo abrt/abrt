@@ -207,7 +207,7 @@ CCommLayerServerSocket::~CCommLayerServerSocket()
 vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pSender)
 {
     vector_crash_infos_t crashInfos;
-    crashInfos = m_pCrashWatcher->GetCrashInfos(pSender);
+    crashInfos = ::GetCrashInfos(pSender);
     return crashInfos;
 }
 
@@ -215,20 +215,20 @@ vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pS
 //map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID,const std::string &pSender)
 //{
 //    map_crash_report_t crashReport;
-//    crashReport = m_pCrashWatcher->CreateReport(pUUID, pSender);
+//    crashReport = ::CreateReport(pUUID, pSender);
 //    return crashReport;
 //}
 
 report_status_t CCommLayerServerSocket::Report(const map_crash_report_t& pReport, const std::string& pSender)
 {
     report_status_t rs;
-    rs = m_pCrashWatcher->Report(pReport, pSender);
+    rs = ::Report(pReport, pSender);
     return rs;
 }
 
 bool CCommLayerServerSocket::DeleteDebugDump(const std::string& pUUID, const std::string& pSender)
 {
-    m_pCrashWatcher->DeleteDebugDump(pUUID, pSender);
+    ::DeleteDebugDump(pUUID, pSender);
     return true;
 }
 

@@ -597,7 +597,6 @@ int main(int argc, char** argv)
 #elif ENABLE_SOCKET
         g_pCommLayer = new CCommLayerServerSocket();
 #endif
-        g_pCommLayer->Attach(&watcher);
         /* (comment here) */
         pGio = g_io_channel_unix_new(inotify_fd);
         g_io_add_watch(pGio, G_IO_IN, handle_event_cb, NULL);

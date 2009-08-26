@@ -53,7 +53,7 @@ CCrashWatcher::~CCrashWatcher()
 {
 }
 
-vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
+vector_crash_infos_t GetCrashInfos(const std::string &pUID)
 {
     vector_crash_infos_t retval;
     log("Getting crash infos...");
@@ -172,7 +172,7 @@ static void *create_report(void *arg)
     /* Bogus value. pthreads require us to return void* */
     return NULL;
 }
-uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender)
+uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
     thread_data->UUID = xstrdup(pUUID.c_str());
@@ -190,34 +190,7 @@ uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::strin
     return 0;
 }
 
-report_status_t CCrashWatcher::Report(const map_crash_report_t& pReport, const std::string& pUID)
-{
-    //#define FIELD(X) crashReport.m_s##X = pReport[#X];
-    //crashReport.m_sUUID = pReport["UUID"];
-    //ALL_CRASH_REPORT_FIELDS;
-    //#undef FIELD
-    //for (dbus_map_report_info_t::iterator it = pReport.begin(); it!=pReport.end(); ++it) {
-    //     std::cerr << it->second << std::endl;
-    //}
-    report_status_t rs;
-    try
-    {
-        rs = ::Report(pReport, pUID);
-    }
-    catch (CABRTException& e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        g_cw->Warning(e.what());
-        g_cw->Status(e.what());
-        return rs;
-    }
-    return rs;
-}
-
-bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
+bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
 {
     try
     {
@@ -238,7 +211,7 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
     return true;
 }
 
-map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::string& pSender)
+map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender)
 {
     /* FIXME: once we return the result, we should remove it from map to free memory
        - use some TTL to clean the memory even if client won't get it
@@ -247,7 +220,7 @@ map_crash_report_t CCrashWatcher::GetJobResult(uint64_t pJobID, const std::strin
     return g_pending_jobs[pSender][pJobID];
 }
 
-vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
+vector_map_string_string_t GetPluginsInfo()
 {
     try
     {
@@ -266,7 +239,7 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
     return vector_map_string_string_t();
 }
 
-map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName, const std::string& pUID)
+map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID)
 {
     try
     {
@@ -285,7 +258,7 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName,
     return map_plugin_settings_t();
 }
 
-void CCrashWatcher::RegisterPlugin(const std::string& pName)
+void RegisterPlugin(const std::string& pName)
 {
     try
     {
@@ -301,7 +274,7 @@ void CCrashWatcher::RegisterPlugin(const std::string& pName)
     }
 }
 
-void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
+void UnRegisterPlugin(const std::string& pName)
 {
     try
     {
@@ -317,7 +290,7 @@ void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
     }
 }
 
-void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings)
+void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings)
 {
     try
     {

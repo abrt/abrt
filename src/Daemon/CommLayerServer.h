@@ -1,31 +1,16 @@
 #ifndef COMMLAYERSERVER_H_
 #define COMMLAYERSERVER_H_
 
-#include <vector>
-#include <map>
 #include <string>
-#include <sstream>
-#include <iostream>
-#include "Observer.h"
+#include "abrtlib.h"
 #include "CrashTypes.h"
 
 class CCrashWatcher;
 
 class CCommLayerServer {
-    protected:
-        CCrashWatcher *m_pCrashWatcher;
     public:
         CCommLayerServer();
         virtual ~CCommLayerServer();
-
-        /* observer */
-        void Attach(CCrashWatcher *pCW);
-        void Detach(CCrashWatcher *pCW);
-        void Notify(const std::string& pMessage);
-
-        virtual vector_crash_infos_t GetCrashInfos(const std::string& pSender) = 0;
-        virtual report_status_t Report(const map_crash_report_t& pReport, const std::string& pSender) = 0;
-        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender) = 0;
 
         /* just stubs to be called when not implemented in specific comm layer */
         virtual void Crash(const std::string& arg1) {}
