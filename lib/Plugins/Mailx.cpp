@@ -107,7 +107,7 @@ void CMailx::ExecMailx(uid_t uid, const std::string& pText)
 
 void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, const std::string& pUID)
 {
-    comm_layer_inner_status("Sending an email...");
+    update_client("Sending an email...");
 
     AddMailxArg("-s");
     AddMailxArg(pSubject);
@@ -121,7 +121,7 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, co
 
 std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
-    comm_layer_inner_status("Creating a report...");
+    update_client("Creating a report...");
 
     std::stringstream emailBody;
     std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;

@@ -180,8 +180,8 @@ void CPluginManager::LoadPlugin(const std::string& pName)
         catch (CABRTException& e)
         {
             delete abrtPlugin;
-            comm_layer_inner_warning("CPluginManager::LoadPlugin(): " + e.what());
-            comm_layer_inner_warning("Failed to load plugin " + pName);
+            warn_client("CPluginManager::LoadPlugin(): " + e.what());
+            warn_client("Failed to load plugin " + pName);
         }
     }
 }
@@ -214,7 +214,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             }
             catch (CABRTException& e)
             {
-                comm_layer_inner_warning("Can not initialize plugin " + pName + "("
+                warn_client("Can not initialize plugin " + pName + "("
                                         + std::string(plugin_type_str[m_mapABRTPlugins[pName]->GetType()])
                                         + "): " + e.what());
                 UnLoadPlugin(pName);

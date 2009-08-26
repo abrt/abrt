@@ -118,6 +118,20 @@ static void *create_report(void *arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
+
+    /* Ugly hack.
+     * We use DBus signals to talk to clients.
+     * If the report thread emits a signal with embedded job id before
+     * main thread returns this job id as a CreateReport() DBus call's
+     * return value, the client will not be able to understand
+     * that this signal is for its job.
+     * By no means this is the right solution. The right one would be
+     * to ensure that CreateReport() DBus call returns _before_
+     * we continue here. This will need substantial surgery
+     * on our DBus machinery. TODO.
+     */
+    usleep(10*1000);
+
     log("Creating report...");
     try
     {
@@ -172,22 +186,25 @@ static void *create_report(void *arg)
     /* Bogus value. pthreads require us to return void* */
     return NULL;
 }
-uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender)
+uint64_t CreateReport_t(const std::string& pUUID, const std::string& pUID, const std::string& pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
     thread_data->UUID = xstrdup(pUUID.c_str());
     thread_data->UID = xstrdup(pUID.c_str());
     thread_data->dest = xstrdup(pSender.c_str());
-    if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
+    if (pthread_create(&thread_data->thread_id, NULL, create_report, (void *)thread_data) != 0)
     {
         free(thread_data->UUID);
         free(thread_data->UID);
         free(thread_data->dest);
         free(thread_data);
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
+        /* The only reason this may happen is system-wide resource starvation,
+         * or ulimit is exceeded (someoune floods us with CreateReport() Dbus calls?)
+         */
+        error_msg("cannot create thread");
+        return 0;
     }
-    //FIXME: we don't use this value anymore, so fix the API
-    return 0;
+    return uint64_t(thread_data->thread_id);
 }
 
 bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)

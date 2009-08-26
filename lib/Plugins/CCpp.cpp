@@ -79,7 +79,7 @@ static std::string CreateHash(const std::string& pInput)
 
 static void InstallDebugInfos(const std::string& pPackage)
 {
-    comm_layer_inner_status("Searching for debug-info packages...");
+    update_client("Searching for debug-info packages...");
 
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
     char buff[1024];
@@ -117,7 +117,7 @@ static void InstallDebugInfos(const std::string& pPackage)
     safe_write(pipein[1], "y\n", sizeof("y\n")-1);
     close(pipein[1]);
 
-    comm_layer_inner_status("Downloading and installing debug-info packages...");
+    update_client("Downloading and installing debug-info packages...");
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */
@@ -141,7 +141,7 @@ static void InstallDebugInfos(const std::string& pPackage)
             buff[last] = '\0';
 
         log(buff);
-        comm_layer_inner_status(buff);
+        update_client(buff);
 
 #ifdef COMPLAIN_IF_NO_DEBUGINFO
         if (already_installed == false)
@@ -177,7 +177,7 @@ static void InstallDebugInfos(const std::string& pPackage)
 
 static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
-    comm_layer_inner_status("Getting backtrace...");
+    update_client("Getting backtrace...");
 
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
@@ -426,7 +426,8 @@ I think the below code has absolutely the same effect:
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-    comm_layer_inner_status("Getting local universal unique identification...");
+///
+    update_client("Getting local universal unique identification...");
 
     CDebugDump dd;
     std::string UID;
@@ -450,7 +451,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-    comm_layer_inner_status("Getting global universal unique identification...");
+    update_client("Getting global universal unique identification...");
 
     std::string backtrace;
     std::string executable;
@@ -468,7 +469,7 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
-    comm_layer_inner_status("Starting report creation...");
+    update_client("Starting report creation...");
 
     std::string package;
     std::string backtrace;

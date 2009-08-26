@@ -28,7 +28,7 @@ void CCommLayerServerSocket::Send(const std::string& pData, GIOChannel *pDestina
         ret = g_io_channel_write_chars(pDestination, message + offset, strlen(message + offset), &len, &err);
         if (ret == G_IO_STATUS_ERROR)
         {
-            comm_layer_inner_warning("Error during sending data.");
+            warn_client("Error during sending data.");
         }
     }
 
@@ -76,7 +76,7 @@ gboolean CCommLayerServerSocket::client_socket_cb(GIOChannel *source, GIOConditi
         ret = g_io_channel_read_chars(source, buff, 1, &len, &err);
         if (ret == G_IO_STATUS_ERROR)
         {
-            comm_layer_inner_warning(std::string("Error while reading data from client socket: ") + err->message);
+            warn_client(std::string("Error while reading data from client socket: ") + err->message);
             return FALSE;
         }
         message += buff[0];
@@ -105,13 +105,13 @@ gboolean CCommLayerServerSocket::server_socket_cb(GIOChannel *source, GIOConditi
         condition & G_IO_ERR ||
         condition & G_IO_NVAL)
     {
-        comm_layer_inner_warning("Server socket error.");
+        warn_client("Server socket error.");
         return FALSE;
     }
 
     if ((socket = accept(serverSocket->m_nSocket,  (struct sockaddr *)&remote, &len)) == -1)
     {
-        comm_layer_inner_warning("Server can not accept client.");
+        warn_client("Server can not accept client.");
         return TRUE;
     }
     log("New socket client connected");
@@ -121,7 +121,7 @@ gboolean CCommLayerServerSocket::server_socket_cb(GIOChannel *source, GIOConditi
                         static_cast<GIOFunc>(client_socket_cb),
                         data))
     {
-        comm_layer_inner_warning("Can not init g_io_channel.");
+        warn_client("Can not init g_io_channel.");
         return TRUE;
     }
     serverSocket->m_mapClientChannels[socket] = gSocket;
@@ -159,7 +159,7 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     }
     else
     {
-        comm_layer_inner_warning("Received unknown message type.");
+        warn_client("Received unknown message type.");
     }
 }
 

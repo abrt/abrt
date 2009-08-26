@@ -76,7 +76,7 @@ void CKerneloopsScanner::Run(const std::string& pActionDir,
 
 void CKerneloopsScanner::SaveOopsToDebugDump()
 {
-	comm_layer_inner_status("Creating kernel oops crash reports...");
+	update_client("Creating kernel oops crash reports...");
 
 	time_t t = time(NULL);
 	CDebugDump debugDump;

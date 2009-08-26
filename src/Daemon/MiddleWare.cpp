@@ -180,7 +180,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
 
     if (pUUID == "" || row.m_sUUID != pUUID)
     {
-        comm_layer_inner_warning("CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
+        warn_client("CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
         return MW_IN_DB_ERROR;
     }
 
@@ -209,7 +209,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("CreateCrashReport(): " + e.what());
+        warn_client("CreateCrashReport(): " + e.what());
         if (e.type() == EXCEP_DD_OPEN)
         {
             return MW_ERROR;
@@ -240,8 +240,8 @@ void RunAction(const std::string& pActionDir,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("RunAction(): " + e.what());
-        comm_layer_inner_status("Execution of '"+pPluginName+"' was not successful: " + e.what());
+        warn_client("RunAction(): " + e.what());
+        update_client("Execution of '"+pPluginName+"' was not successful: " + e.what());
     }
 
 }
@@ -269,8 +269,8 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir)
         }
         catch (CABRTException& e)
         {
-            comm_layer_inner_warning("RunActionsAndReporters(): " + e.what());
-            comm_layer_inner_status("Activation of plugin '"+(*it_ar).first+"' was not successful: " + e.what());
+            warn_client("RunActionsAndReporters(): " + e.what());
+            update_client("Activation of plugin '"+(*it_ar).first+"' was not successful: " + e.what());
         }
     }
 }
@@ -354,8 +354,8 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                 {
                     ret[ret_key].push_back("0");
                     ret[ret_key].push_back(e.what());
-                    comm_layer_inner_warning("Report(): " + e.what());
-                    comm_layer_inner_status("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
+                    warn_client("Report(): " + e.what());
+                    update_client("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
                 }
             }
         }
@@ -482,7 +482,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("SavePackageDescriptionToDebugDump(): " + e.what());
+        warn_client("SavePackageDescriptionToDebugDump(): " + e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             dd.Close();
@@ -520,8 +520,8 @@ static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& 
             }
             catch (CABRTException& e)
             {
-                comm_layer_inner_warning("RunAnalyzerActions(): " + e.what());
-                comm_layer_inner_status("Action performed by '"+(*it_a).first+"' was not successful: " + e.what());
+                warn_client("RunAnalyzerActions(): " + e.what());
+                update_client("Action performed by '"+(*it_a).first+"' was not successful: " + e.what());
             }
         }
     }
@@ -593,7 +593,7 @@ mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("SaveDebugDump(): " + e.what());
+        warn_client("SaveDebugDump(): " + e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             dd.Close();
@@ -642,7 +642,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
     }
     catch (CABRTException& e)
     {
-        comm_layer_inner_warning("GetCrashInfo(): " + e.what());
+        warn_client("GetCrashInfo(): " + e.what());
         if (e.type() == EXCEP_DD_LOAD)
         {
             dd.Close();

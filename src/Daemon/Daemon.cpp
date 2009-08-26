@@ -274,36 +274,34 @@ static void SetUpCron()
 static void FindNewDumps(const std::string& pPath)
 {
     log("Scanning for unsaved entries...");
-    struct dirent *ep;
     struct stat stats;
     DIR *dp;
     std::vector<std::string> dirs;
     std::string dname;
     // get potential unsaved debugdumps
     dp = opendir(pPath.c_str());
-    if (dp != NULL)
-    {
-        while ((ep = readdir(dp)))
-        {
-            if (dot_or_dotdot(ep->d_name))
-                continue;
-            dname = pPath + "/" + ep->d_name;
-            if (lstat(dname.c_str(), &stats) == 0)
-            {
-                if (S_ISDIR(stats.st_mode))
-                {
-                    dirs.push_back(dname);
-                }
-            }
-        }
-        (void) closedir(dp);
-    }
-    else
+    if (dp == NULL)
     {
         throw CABRTException(EXCEP_FATAL, "FindNewDumps(): Couldn't open the directory:" + pPath);
     }
+    struct dirent *ep;
+    while ((ep = readdir(dp)))
+    {
+        if (dot_or_dotdot(ep->d_name))
+            continue;
+        dname = pPath + "/" + ep->d_name;
+        if (lstat(dname.c_str(), &stats) == 0)
+        {
+            if (S_ISDIR(stats.st_mode))
+            {
+                dirs.push_back(dname);
+            }
+        }
+    }
+    closedir(dp);
 
-    for (std::vector<std::string>::iterator itt = dirs.begin(); itt != dirs.end(); ++itt){
+    for (std::vector<std::string>::iterator itt = dirs.begin(); itt != dirs.end(); ++itt)
+    {
         map_crash_info_t crashinfo;
         try
         {
@@ -572,7 +570,7 @@ int main(int argc, char** argv)
     {
         pthread_mutex_init(&g_pJobsMutex, NULL); /* never fails */
         /* DBus init - we want it early so that errors are reported */
-        comm_layer_inner_init(&watcher);
+        init_daemon_logging(&watcher);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         errno = 0;
         int inotify_fd = inotify_init();

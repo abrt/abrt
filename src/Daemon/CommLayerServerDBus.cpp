@@ -75,9 +75,9 @@ DBus::Message CCommLayerServerDBus::_CreateReport_stub(const DBus::CallMessage &
     std::string argin1;
     ri >> argin1;
 
-    unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
-    uint64_t argout1 = CreateReport_t(argin1, to_string(unix_uid), call.sender());
-    //map_crash_report_t argout1 = CreateReport(argin1,call.sender());
+    const char* sender = call.sender();
+    unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    uint64_t argout1 = CreateReport_t(argin1, to_string(unix_uid), sender);
 
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();

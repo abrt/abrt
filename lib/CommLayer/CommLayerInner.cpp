@@ -1,28 +1,52 @@
+#include <pthread.h> /* pthread_self() */
+#include "abrtlib.h"
 #include "CommLayerInner.h"
 
-static CObserver *g_pObs = NULL;
+static CObserver *s_pObs;
+static pthread_t s_main_id;
 
-
-void comm_layer_inner_init(CObserver *pObs)
+void init_daemon_logging(CObserver *pObs)
 {
-    if (!g_pObs)
+    s_pObs = pObs;
+    s_main_id = pthread_self();
+}
+
+void warn_client(const std::string& pMessage)
+{
+    if (!s_pObs)
+        return;
+    pthread_t self = pthread_self();
+    if (self != s_main_id)
     {
-        g_pObs = pObs;
+        std::string s = ssprintf("%%%llx: %s", (unsigned long long)self, pMessage.c_str());
+        s_pObs->Warning(s);
+//log("w: '%s'", s.c_str());
+    }
+    else
+    {
+        s_pObs->Warning(pMessage);
+// debug: this should not happen - if it is, we are trying to log to a client
+// but we have no job id!
+log("W: '%s'", pMessage.c_str());
     }
 }
 
-void comm_layer_inner_warning(const std::string& pMessage)
+void update_client(const std::string& pMessage)
 {
-    if (g_pObs)
+    if (!s_pObs)
+        return;
+    pthread_t self = pthread_self();
+    if (self != s_main_id)
     {
-        g_pObs->Warning(pMessage);
+        std::string s = ssprintf("%%%llx: %s", (unsigned long long)self, pMessage.c_str());
+        s_pObs->Status(s);
+//log("u: '%s'", s.c_str());
     }
-}
-
-void comm_layer_inner_status(const std::string& pMessage)
-{
-    if (g_pObs)
+    else
     {
-        g_pObs->Status(pMessage);
+        s_pObs->Status(pMessage);
+// debug: this should not happen - if it is, we are trying to log to a client
+// but we have no job id!
+log("U: '%s'", pMessage.c_str());
     }
 }

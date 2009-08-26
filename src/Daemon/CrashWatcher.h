@@ -56,7 +56,7 @@ class CCrashWatcher
 };
 
 vector_crash_infos_t GetCrashInfos(const std::string &pUID);
-uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
+uint64_t CreateReport_t(const std::string& pUUID, const std::string& pUID, const std::string& pSender);
 bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
 map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
 

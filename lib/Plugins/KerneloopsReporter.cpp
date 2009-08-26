@@ -98,7 +98,7 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, 
 	int ret = -1;
 	map_crash_report_t::const_iterator it;
 
-	comm_layer_inner_status("Creating and submitting a report...");
+	update_client("Creating and submitting a report...");
 
 	it = pCrashReport.begin();
 	it = pCrashReport.find(FILENAME_KERNELOOPS);
