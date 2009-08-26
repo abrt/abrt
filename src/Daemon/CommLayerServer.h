@@ -5,8 +5,6 @@
 #include "abrtlib.h"
 #include "CrashTypes.h"
 
-class CCrashWatcher;
-
 class CCommLayerServer {
     public:
         CCommLayerServer();

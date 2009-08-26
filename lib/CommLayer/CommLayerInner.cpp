@@ -11,13 +11,6 @@ void comm_layer_inner_init(CObserver *pObs)
     }
 }
 
-void comm_layer_inner_debug(const std::string& pMessage)
-{
-    if (g_pObs)
-    {
-        g_pObs->Debug(pMessage);
-    }
-}
 void comm_layer_inner_warning(const std::string& pMessage)
 {
     if (g_pObs)

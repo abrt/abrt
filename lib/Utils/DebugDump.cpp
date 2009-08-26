@@ -19,26 +19,16 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "abrtlib.h"
-#include "DebugDump.h"
-#include "ABRTException.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <cerrno>
 #include <sys/utsname.h>
 #include <magic.h>
-
+#include "abrtlib.h"
+#include "DebugDump.h"
+#include "ABRTException.h"
 #include "CommLayerInner.h"
-// BUG? in C/C++, compiler may assume that function address is never NULL
-#pragma weak comm_layer_inner_debug
-#define comm_layer_inner_debug(msg) ({\
-    if (comm_layer_inner_debug)\
-    {\
-        comm_layer_inner_debug(msg);\
-    }})
-
-#define PID_STR_MAX 16
 
 /* Is it "." or ".."? */
 /* abrtlib candidate */
@@ -112,7 +102,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         {
             throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock status");
         }
-        char pid[PID_STR_MAX + 1];
+        char pid[sizeof(pid_t)*3 + 4];
         int r = read(fd, pid, sizeof(pid) - 1);
         if (r == -1)
         {
@@ -124,7 +114,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         {
             close(fd);
             m_bUnlock = false;
-            comm_layer_inner_debug("Lock file '"+pLockFile+"' is locked by same process");
+            log("Lock file '%s' is locked by same process", pLockFile.c_str());
             return true;
         }
         if (lockf(fd, F_TEST, 0) == 0)
@@ -134,7 +124,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
             Delete();
             throw CABRTException(EXCEP_ERROR, "CDebugDump::GetAndSetLock(): dead lock found");
         }
-        comm_layer_inner_debug("Lock file '"+pLockFile+"' is locked by another process");
+        log("Lock file '%s' is locked by another process", pLockFile.c_str());
         close(fd);
         return false;
     }
@@ -154,7 +144,7 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
     m_nFD = fd;
     m_bUnlock = true;
 
-    comm_layer_inner_debug("Locking '"+pLockFile+"'...");
+    log("Locking '%s'...", pLockFile.c_str());
 
     return true;
 }
@@ -176,7 +166,7 @@ void CDebugDump::UnLock()
     std::string lockFile = m_sDebugDumpDir + ".lock";
     if (m_bUnlock)
     {
-        comm_layer_inner_debug("UnLocking '"+lockFile+"'...");
+        log("UnLocking '%s'...", lockFile.c_str());
         close(m_nFD);
         m_nFD = -1;
         remove(lockFile.c_str());

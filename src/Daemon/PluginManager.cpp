@@ -179,10 +179,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
         }
         catch (CABRTException& e)
         {
-            if (abrtPlugin != NULL)
-            {
-                delete abrtPlugin;
-            }
+            delete abrtPlugin;
             comm_layer_inner_warning("CPluginManager::LoadPlugin(): " + e.what());
             comm_layer_inner_warning("Failed to load plugin " + pName);
         }

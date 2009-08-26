@@ -72,7 +72,13 @@ extern void simple_perror_msg_and_die(const char *s) NORETURN;
 extern void perror_nomsg_and_die(void) NORETURN;
 extern void perror_nomsg(void);
 extern void verror_msg(const char *s, va_list p, const char *strerr);
-/* This is a macro since it collides with log() from math.h */
+/* error_msg() and log() do the same thing:
+ * they log a message on stderr, syslog, etc.
+ * They are only semantically different: error_msg() implies that
+ * the logged event is a warning/error, while log() does not.
+ * Another reason is that log() is such a short and nice name. :)
+ * It's a macro, not function, since it collides with log() from math.h
+ */
 #undef log
 #define log(...) error_msg(__VA_ARGS__)
 
