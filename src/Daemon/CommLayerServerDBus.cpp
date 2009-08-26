@@ -166,10 +166,7 @@ DBus::Message CCommLayerServerDBus::_GetPluginsInfo_stub(const DBus::CallMessage
 }
 vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
 {
-    //FIXME: simplify?
-    vector_map_string_string_t plugins_info;
-    plugins_info = m_pObserver->GetPluginsInfo();
-    return plugins_info;
+    return m_pObserver->GetPluginsInfo();
 }
 
 DBus::Message CCommLayerServerDBus::_GetPluginSettings_stub(const DBus::CallMessage &call)

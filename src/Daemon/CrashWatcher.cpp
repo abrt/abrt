@@ -175,19 +175,16 @@ static void *create_report(void *arg)
 uint64_t CCrashWatcher::CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
-    if (thread_data != NULL)
+    thread_data->UUID = xstrdup(pUUID.c_str());
+    thread_data->UID = xstrdup(pUID.c_str());
+    thread_data->dest = xstrdup(pSender.c_str());
+    if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
     {
-        thread_data->UUID = xstrdup(pUUID.c_str());
-        thread_data->UID = xstrdup(pUID.c_str());
-        thread_data->dest = xstrdup(pSender.c_str());
-        if (pthread_create(&(thread_data->thread_id), NULL, create_report, (void *)thread_data) != 0)
-        {
-            throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
-        }
-    }
-    else
-    {
-        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot allocate memory!");
+        free(thread_data->UUID);
+        free(thread_data->UID);
+        free(thread_data->dest);
+        free(thread_data);
+        throw CABRTException(EXCEP_FATAL, "CCrashWatcher::CreateReport_t(): Cannot create thread!");
     }
     //FIXME: we don't use this value anymore, so fix the API
     return 0;

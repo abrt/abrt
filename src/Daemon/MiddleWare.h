@@ -20,7 +20,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-
 #ifndef MIDDLEWARE_H_
 #define MIDDLEWARE_H_
 
@@ -55,9 +54,6 @@ typedef enum {
 
 typedef std::map<std::string, vector_strings_t> report_status_t;
 typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
-
-
-extern CPluginManager* g_pPluginManager;
 
 
 /**
@@ -148,15 +144,6 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
  * @return A vector of pairs  (local UUID, UID).
  */
 vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
-/**
- * Adds one path to a GPG public key into MW's set.
- * @param pKey A path to a GPG public key.
- */
-void AddOpenGPGPublicKey(const std::string& pKey);
-/**
- * Adds one blacklisted package.
- */
-void AddBlackListedPackage(const std::string& pPackage);
 /**
  * Adds one association among alanyzer plugin and its
  * action and reporter plugins.

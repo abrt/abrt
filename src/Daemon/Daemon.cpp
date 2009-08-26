@@ -151,12 +151,12 @@ static void SetUpMW()
     set_strings_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {
-        AddOpenGPGPublicKey(*it_k);
+        g_RPM.LoadOpenGPGPublicKey(*it_k);
     }
     set_strings_t::iterator it_b = g_settings_mapSettingsBlackList.begin();
     for (; it_b != g_settings_mapSettingsBlackList.end(); it_b++)
     {
-        AddBlackListedPackage(*it_b);
+        g_setBlackList.insert(*it_b);
     }
     set_strings_t::iterator it_p = g_settings_setEnabledPlugins.begin();
     for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)

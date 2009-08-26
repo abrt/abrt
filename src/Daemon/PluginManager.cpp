@@ -316,8 +316,8 @@ plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
 vector_map_string_string_t CPluginManager::GetPluginsInfo()
 {
     vector_map_string_string_t ret;
-    map_abrt_plugins_t::iterator it_abrt_plugin;
-    for (it_abrt_plugin = m_mapABRTPlugins.begin(); it_abrt_plugin != m_mapABRTPlugins.end(); it_abrt_plugin++)
+    map_abrt_plugins_t::iterator it_abrt_plugin = m_mapABRTPlugins.begin();
+    for (; it_abrt_plugin != m_mapABRTPlugins.end(); it_abrt_plugin++)
     {
         map_string_string_t plugin_info;
 

@@ -682,16 +682,6 @@ vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
     return UUIDsUIDs;
 }
 
-void AddOpenGPGPublicKey(const std::string& pKey)
-{
-    g_RPM.LoadOpenGPGPublicKey(pKey);
-}
-
-void AddBlackListedPackage(const std::string& pPackage)
-{
-    g_setBlackList.insert(pPackage);
-}
-
 void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
                                               const std::string& pAnalyzerOrReporter,
                                               const std::string& pArgs)
