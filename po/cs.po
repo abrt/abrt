@@ -1,70 +1,65 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the ABRT package.
-# FIRST AUTHOR <jmoskovc@redhat.com>, 2009.
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-25 16:19+0200\n"
-"PO-Revision-Date: 2009-08-25 16:26+ZONE\n"
-"Last-Translator: Jiri Moskovcak <jmoskovc@redhat.com>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Project-Id-Version: ABRT 0.7.1.1\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2009-08-26 10:19+0200\n"
+"PO-Revision-Date: 2009-08-25 22:04+ZONE\n"
+"Last-Translator: JIRI MOSKOVCAK <jmoskovc@redhat.com>\n"
+"Language-Team: CZECH <ll@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ccgui.glade:6 ccgui.glade:296
-msgid "Automatic Bug Reporting Tool"
+#: src/Gui/ABRTExceptions.py:4
+msgid "Another client is already running, trying to wake it."
 msgstr ""
 
-#: ccgui.glade:17 ccgui.glade:308
-msgid "_File"
-msgstr "_Soubor"
-
-#: ccgui.glade:37 ccgui.glade:328
-msgid "_Edit"
+#: src/Gui/ABRTExceptions.py:10
+msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 
-#: ccgui.glade:57 ccgui.glade:348
-msgid "_Help"
-msgstr "_Nápověda"
+#: src/Gui/CCDBusBackend.py:135
+msgid "Can't connect to dbus"
+msgstr ""
 
-#: ccgui.glade:87 ccgui.glade:378
-msgid "Delete"
-msgstr "Smazat"
+#: src/Gui/CCDBusBackend.py:139 src/Gui/CCDBusBackend.py:157
+msgid "Please check if abrt daemon is running."
+msgstr ""
+"Nepodařilo se připojit k démonovi, zkontrolujte prosím, zda služba abrt běží."
 
-#: ccgui.glade:99 ccgui.glade:390
-msgid "Report"
-msgstr "Reportovat"
+#: src/Gui/CCDBusBackend.py:169
+msgid ""
+"Daemon did't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
 
-#: ccgui.glade:146 ccgui.glade:437
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: ccgui.glade:196
+#: src/Gui/ccgui.glade:6
 msgid "Please wait.."
-msgstr "Čekejte prosím..."
+msgstr "Prosím čekejte.."
 
-#: ccgui.glade:206
+#: src/Gui/ccgui.glade:16
 msgid "Working..."
-msgstr "Pracuji..."
+msgstr "Pracuji.."
 
-#: ccgui.glade:239
+#: src/Gui/ccgui.glade:49
 msgid " "
 msgstr ""
 
-#: ccgui.glade:258
+#: src/Gui/ccgui.glade:68
 msgid "About ABRT"
-msgstr "O ABRTu"
+msgstr "O aplikaci ABRT"
 
-#: ccgui.glade:264
+#: src/Gui/ccgui.glade:74
 msgid "(C) 2009 Red Hat, Inc."
 msgstr ""
 
-#: ccgui.glade:265
+#: src/Gui/ccgui.glade:75
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -80,6 +75,158 @@ msgid ""
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
-#: ccgui.glade:479
+#: src/Gui/ccgui.glade:106
+msgid "Automatic Bug Reporting Tool"
+msgstr ""
+
+#: src/Gui/ccgui.glade:118
+msgid "_File"
+msgstr "_Soubor"
+
+#: src/Gui/ccgui.glade:138
+msgid "_Edit"
+msgstr "_Upravit"
+
+#: src/Gui/ccgui.glade:158
+msgid "_Help"
+msgstr "_Pomoc"
+
+#: src/Gui/ccgui.glade:188
+msgid "Delete"
+msgstr "Smazat"
+
+#: src/Gui/ccgui.glade:200 src/Gui/report.glade:7 src/Gui/report.glade:24
+msgid "Report"
+msgstr "Reportovat"
+
+#: src/Gui/ccgui.glade:247
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">Popis balíčku</span>"
+
+#: src/Gui/ccgui.glade:289 src/Gui/CCMainWindow.py:214
 msgid "<b>Not reported!</b>"
-msgstr "<b>Nereportováno!</b>"
+msgstr "<b>Nereportováno</b>"
+
+#: src/Gui/CCMainWindow.py:86
+msgid "Package"
+msgstr "Balíček"
+
+#: src/Gui/CCMainWindow.py:87
+msgid "Application"
+msgstr "Aplikace"
+
+#: src/Gui/CCMainWindow.py:88
+msgid "Date"
+msgstr "Datum"
+
+#: src/Gui/CCMainWindow.py:89
+msgid "Crash Rate"
+msgstr "Počet incidentů"
+
+#: src/Gui/CCMainWindow.py:91
+msgid "User"
+msgstr "Uživatel"
+
+#: src/Gui/CCMainWindow.py:156
+#, python-format
+msgid ""
+"Unable to get report!\n"
+"%s"
+msgstr ""
+"Nepodařilo se ziskat report\n"
+"%s"
+
+#: src/Gui/CCMainWindow.py:173
+#, python-format
+msgid ""
+"Error while loading the dumplist, please check if abrt daemon is running\n"
+" %s"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:206
+msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+msgstr "<b>Tento pád již byl reportován, záznam můžete nalézt na:</b>\n"
+
+#: src/Gui/CCMainWindow.py:266
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:278
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Vytváření reportu se nezdařilo\n"
+"%s"
+
+#: src/Gui/CCMainWindow.py:306
+#, python-format
+msgid "Error getting the report: %s"
+msgstr ""
+
+#: src/Gui/CCReporterDialog.py:103
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Zde stručně popište, jak došlo k pádu..."
+
+#: src/Gui/PluginSettingsUI.py:17
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr "Widget PluginDialog nenalezen!"
+
+#: src/Gui/PluginSettingsUI.py:21
+#, python-format
+msgid "No UI for plugin %s"
+msgstr ""
+
+#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
+msgid "combo box is not implemented"
+msgstr ""
+
+#: src/Gui/PluginSettingsUI.py:47
+msgid "Nothing to hydrate!"
+msgstr ""
+
+#: src/Gui/report.glade:64
+msgid "Comment"
+msgstr "Komentář"
+
+#: src/Gui/report.glade:103
+msgid "gtk-cancel"
+msgstr ""
+
+#: src/Gui/report.glade:118
+msgid "Send"
+msgstr "Poslat"
+
+#: src/Gui/SettingsDialog.py:22
+msgid "Can't load gui description for SettingsDialog!"
+msgstr ""
+
+#: src/Gui/SettingsDialog.py:33
+msgid "Name"
+msgstr "Jméno"
+
+#: src/Gui/SettingsDialog.py:47
+msgid "Enabled"
+msgstr "Aktivní"
+
+#: src/Gui/SettingsDialog.py:106
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/Gui/SettingsDialog.py:116
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+
+#: src/Gui/SettingsDialog.py:122
+msgid "unknown response from settings dialog"
+msgstr ""

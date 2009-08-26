@@ -4,6 +4,7 @@ from PluginList import getPluginInfoList, PluginInfoList
 from CC_gui_functions import *
 from PluginSettingsUI import PluginSettingsUI
 from ABRTPlugin import PluginSettings
+from abrt_utils import _
 
 class SettingsDialog:
     def __init__(self, parent, daemon):
@@ -18,7 +19,7 @@ class SettingsDialog:
             print e
         self.window = self.builder.get_object("wSettings")
         if not self.window:
-            raise Exception("Can't load gui description for SettingsDialog!")
+            raise Exception(_("Can't load gui description for SettingsDialog!"))
         #self.window.set_parent(parent)
 
         self.pluginlist = self.builder.get_object("tvSettings")
@@ -29,7 +30,7 @@ class SettingsDialog:
         self.pluginlist.set_model(self.modelfilter)
         # ===============================================
         columns = [None]*1
-        columns[0] = gtk.TreeViewColumn('Name')
+        columns[0] = gtk.TreeViewColumn(_("Name"))
 
         # create list
         for column in columns:
@@ -43,7 +44,7 @@ class SettingsDialog:
         toggle_renderer = gtk.CellRendererToggle()
         toggle_renderer.set_property('activatable', True)
         toggle_renderer.connect( 'toggled', self.on_enabled_toggled, self.pluginsListStore )
-        column = gtk.TreeViewColumn('Enabled', toggle_renderer)
+        column = gtk.TreeViewColumn(_('Enabled'), toggle_renderer)
         column.add_attribute( toggle_renderer, "active", 1)
         self.pluginlist.insert_column(column, 0)
 
@@ -102,7 +103,7 @@ class SettingsDialog:
         try:
             ui = PluginSettingsUI(pluginfo)
         except Exception, e:
-            gui_error_message("Error while opening plugin settings UI: \n\n%s" % e)
+            gui_error_message(_("Error while opening plugin settings UI: \n\n%s" % e))
             return
         ui.hydrate()
         response = ui.run()
@@ -112,13 +113,13 @@ class SettingsDialog:
                 try:
                     self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)
                 except Exception, e:
-                    gui_error_message("Can't save plugin settings:\n %s", e)
+                    gui_error_message(_("Can't save plugin settings:\n %s", e))
             #for key, val in pluginfo.Settings.iteritems():
             #    print "%s:%s" % (key, val)
         elif response == gtk.RESPONSE_CANCEL:
             pass
         else:
-            print "unknown response from settings dialog"
+            print _("unknown response from settings dialog")
         ui.destroy()
 
     def on_bClose_clicked(self, button):

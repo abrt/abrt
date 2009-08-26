@@ -1,5 +1,5 @@
 import gtk
-
+from abrt_utils import _
 class PluginSettingsUI(gtk.Dialog):
     def __init__(self, pluginfo):
         #print "Init PluginSettingsUI"
@@ -14,11 +14,11 @@ class PluginSettingsUI(gtk.Dialog):
             self.plugin_gui.add_from_file(pluginfo.getGUI())
             self.dialog = self.plugin_gui.get_object("PluginDialog")
             if not self.dialog:
-                raise Exception("Can't find PluginDialog widget in UI description!")
+                raise Exception(_("Can't find PluginDialog widget in UI description!"))
             self.dialog.set_title("%s" % pluginfo.getName())
         else:
             # we shouldn't get here, but just to be safe
-            no_ui_label = gtk.Label("No UI for plugin %s" % pluginfo)
+            no_ui_label = gtk.Label(_("No UI for plugin %s" % pluginfo))
             self.add(no_ui_label)
             no_ui_label.show()
 
@@ -35,7 +35,7 @@ class PluginSettingsUI(gtk.Dialog):
                         elif type(widget) == gtk.CheckButton:
                             widget.set_active(value == "yes")
                         elif type(widget) == gtk.ComboBox:
-                            print "combo box is not implemented"
+                            print _("combo box is not implemented")
                 else:
                     #print "Plugin %s has no configuration." % self.plugin_name
                     pass
@@ -44,7 +44,7 @@ class PluginSettingsUI(gtk.Dialog):
                 pass
 
         else:
-            print "Nothing to hydrate!"
+            print _("Nothing to hydrate!")
 
     def dehydrate(self):
         #print "dehydrating %s" % self.pluginfo.getName()
@@ -61,7 +61,7 @@ class PluginSettingsUI(gtk.Dialog):
                     else:
                         self.Settings[key] = "no"
                 elif type(widget) == gtk.ComboBox:
-                    print "combo box is not implemented"
+                    print _("combo box is not implemented")
 
     def destroy(self):
         self.dialog.destroy()

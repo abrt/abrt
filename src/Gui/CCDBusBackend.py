@@ -6,6 +6,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 import gtk
 from dbus.exceptions import *
 import ABRTExceptions
+from abrt_utils import _
 
 CC_NAME = 'com.redhat.abrt'
 CC_IFACE = 'com.redhat.abrt'
@@ -131,11 +132,11 @@ class DBusManager(gobject.GObject):
             self.bus.add_signal_receiver(self.owner_changed_cb,"NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
         self.uniq_name = self.bus.get_unique_name()
         if not self.bus:
-            raise Exception("Can't connect to dbus")
+            raise Exception(_("Can't connect to dbus"))
         if self.bus.name_has_owner(CC_NAME):
             self.proxy = self.bus.get_object(CC_IFACE, CC_PATH)
         else:
-            raise Exception("Please check if abrt daemon is running.")
+            raise Exception(_("Please check if abrt daemon is running."))
 
         if self.proxy:
             self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
@@ -153,7 +154,7 @@ class DBusManager(gobject.GObject):
             # watch for job-done signals
             self.acconnection = self.proxy.connect_to_signal("JobDone",self.jobdone_cb,dbus_interface=CC_IFACE)
         else:
-            raise Exception("Please check if abrt daemon is running.")
+            raise Exception(_("Please check if abrt daemon is running."))
 
     def addJob(self, job_id):
         pass
@@ -165,7 +166,7 @@ class DBusManager(gobject.GObject):
             if dump:
                 self.emit("analyze-complete", dump)
             else:
-                self.emit("abrt-error","Daemon did't return valid report info\nDebuginfo is missing?")
+                self.emit("abrt-error",_("Daemon did't return valid report info\nDebuginfo is missing?"))
 
     def report_done(self, result):
         self.emit("report-done", result)
@@ -182,7 +183,7 @@ class DBusManager(gobject.GObject):
     def Report(self,report):
         # map < Plguin_name vec <status, message> >
         self.cc.Report(report, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
-
+        
     def DeleteDebugDump(self,UUID):
         return self.cc.DeleteDebugDump(UUID)
 

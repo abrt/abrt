@@ -21,6 +21,7 @@ BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRequires: python-devel
+BuildRequires: gettext
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 
@@ -190,6 +191,7 @@ make %{?_smp_mflags}
 %install
 rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
+%find_lang %{name}
 
 #rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
 #rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
@@ -223,7 +225,7 @@ fi
 
 %postun libs -p /sbin/ldconfig
 
-%files
+%files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
 %{_sbindir}/%{name}

@@ -9,6 +9,7 @@ from CC_gui_functions import *
 from CCReport import Report
 import CellRenderers
 #from CCDumpList import getDumpList, DumpList
+from abrt_utils import _
 
 # FIXME - create method or smth that returns type|editable|content
 TYPE = 0
@@ -99,7 +100,7 @@ class ReporterDialog():
         for item in self.report:
             if item == "Comment":
                 buff = gtk.TextBuffer()
-                buff.set_text("Brief description how to reproduce this or what you did...")
+                buff.set_text(_("Brief description how to reproduce this or what you did..."))
                 self.tvComment.set_buffer(buff)
                 continue
             if self.report[item][TYPE] != 's':

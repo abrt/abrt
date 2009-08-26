@@ -4,8 +4,10 @@ AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
-
 AC_PROG_CXX
+
+AM_GNU_GETTEXT([external])
+AM_GNU_GETTEXT_VERSION([0.17])
 
 AM_PATH_PYTHON
 if test -z "$PYTHON"; then
@@ -77,6 +79,7 @@ AC_CONFIG_FILES([
 	src/Gui/Makefile
 	src/CLI/Makefile
 	inc/Makefile
+	po/Makefile.in
 ])
 
 AC_OUTPUT

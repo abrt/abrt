@@ -13,30 +13,14 @@ from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
 from SettingsDialog import SettingsDialog
 from CCReport import Report
-from exception import installExceptionHandler, handleMyException
 import ABRTExceptions
+from abrt_utils import _
 
 try:
     import rpm
 except Exception, ex:
     rpm = None
 
-
-PROGNAME = "abrt"
-import locale
-try:
-    locale.setlocale (locale.LC_ALL, "")
-except locale.Error, e:
-    import os
-    os.environ['LC_ALL'] = 'C'
-    locale.setlocale (locale.LC_ALL, "")
-import gettext
-gettext.bind_textdomain_codeset(PROGNAME,locale.nl_langinfo(locale.CODESET))
-gettext.bindtextdomain(PROGNAME, '/usr/share/locale')
-gettext.textdomain(PROGNAME)
-_ = lambda x: gettext.lgettext(x)
-
-#installExceptionHandler("abrt-gui", "0.0.7")
 
 class MainWindow():
     ccdaemon = None
@@ -99,12 +83,12 @@ class MainWindow():
         icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=5)
         # ===============================================
         columns = [None]*4
-        columns[0] = gtk.TreeViewColumn('Package')
-        columns[1] = gtk.TreeViewColumn('Application')
-        columns[2] = gtk.TreeViewColumn('Date')
-        columns[3] = gtk.TreeViewColumn('Crash Rate')
+        columns[0] = gtk.TreeViewColumn(_("Package"))
+        columns[1] = gtk.TreeViewColumn(_("Application"))
+        columns[2] = gtk.TreeViewColumn(_("Date"))
+        columns[3] = gtk.TreeViewColumn(_("Crash Rate"))
         if os.getuid() == 0:
-            column = gtk.TreeViewColumn('User')
+            column = gtk.TreeViewColumn(_("User"))
             columns.append(column)
         # create list
         for column in columns:
@@ -169,7 +153,7 @@ class MainWindow():
             self.pBarWindow.hide()
         except Exception, e:
             pass
-        gui_error_message("Unable to get report!\n%s" % message,parent_dialog=self.window)
+        gui_error_message(_("Unable to get report!\n%s" % message),parent_dialog=self.window)
 
     def update_cb(self, daemon, message):
         message = message.replace('\n',' ')
@@ -186,7 +170,7 @@ class MainWindow():
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
         except Exception, e:
-            gui_error_message("Error while loading the dumplist, please check if abrt daemon is running\n %s" % e)
+            gui_error_message(_("Error while loading the dumplist, please check if abrt daemon is running\n %s" % e))
         for entry in dumplist:
             try:
                 icon = get_icon_for_package(self.theme, entry.getPackageName())
@@ -219,7 +203,7 @@ class MainWindow():
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         #move this to Dump class
         if dump.isReported():
-            report_label = "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+            report_label = _("<b>This crash has been reported, you can find the report(s) at:</b>\n")
             for message in dump.getMessage().split('\n'):
                 if message:
                     if "http" in message or "file:///" in message:
@@ -227,7 +211,7 @@ class MainWindow():
                     report_label += "%s\n" % message
             self.wTree.get_widget("lReported").set_markup(report_label)
         else:
-            self.wTree.get_widget("lReported").set_markup("<b>Not reported!</b>")
+            self.wTree.get_widget("lReported").set_markup(_("<b>Not reported!</b>"))
         lPackage = self.wTree.get_widget("lPackage")
         self.wTree.get_widget("lDescription").set_label(dump.getDescription())
 
@@ -279,7 +263,7 @@ class MainWindow():
 #        except Exception, e:
 #            print e
         if not report:
-            gui_error_message("Unable to get report!\nDebuginfo is missing?")
+            gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
             return
         report_dialog = ReporterDialog(report)
         result = report_dialog.run()
@@ -291,7 +275,7 @@ class MainWindow():
                 self.ccdaemon.Report(result)
                 #self.hydrate()
             except Exception, e:
-                gui_error_message("Reporting failed!\n%s" % e)
+                gui_error_message(_("Reporting failed!\n%s" % e))
         #ret = gui_question_dialog("GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID),self.window)
         #if ret == gtk.RESPONSE_YES:
         #    self.hydrate()
@@ -319,7 +303,7 @@ class MainWindow():
             if self.timer:
                 gobject.source_remove(self.timer)
             self.pBarWindow.hide()
-            gui_error_message("Error getting the report: %s" % e)
+            gui_error_message(_("Error getting the report: %s" % e))
         return
 
     def sw_delete_event_cb(self, widget, event, data=None):
