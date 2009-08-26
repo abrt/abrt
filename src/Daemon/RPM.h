@@ -1,5 +1,5 @@
 /*
-    RPMInfo.h - header file for rpm database
+    RPM.h - header file for rpm database
               - it implements query for local rpm database
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
@@ -20,8 +20,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#ifndef RPMINFO_H_
-#define RPMINFO_H_
+#ifndef RPM_H_
+#define RPM_H_
 
 #include "MiddleWareTypes.h"
 
@@ -36,9 +36,6 @@
 class CRPM
 {
     private:
-
-        typedef set_strings_t set_fingerprints_t;
-
         /**
          * A context for librpm library.
          */
@@ -46,7 +43,7 @@ class CRPM
         /**
          * A set, which contains finger prints.
          */
-        set_fingerprints_t m_setFingerprints;
+        set_strings_t m_setFingerprints;
 
     public:
         /**
@@ -67,34 +64,35 @@ class CRPM
          * @param pPackage A package name.
          */
         bool CheckFingerprint(const std::string& pPackage);
-        /**
-         * A method, which checks if an application is modified by thir party.
-         * @param pPackage A package name. The package contains the application.
-         * @param pPath A path to the application.
-         */
-        bool CheckHash(const std::string& pPackage, const std::string& pPath);
-        /**
-         * A method, which gets a package description.
-         * @param pPackage A package name.
-         * @return A package description.
-         */
-        std::string GetDescription(const std::string& pPackage);
-        /**
-         * A method, which gets a package name. This package contains particular
-         * file. If the file doesn't belong to any package, empty string is
-         * returned.
-         * @param pFileName A file name.
-         * @return A package name.
-         */
-        std::string GetPackage(const std::string& pFileName);
-        /**
-         * A method to find a main package for given file. This package contains particular
-         * file. If the file doesn't belong to any package, empty string is
-         * returned.
-         * @param pFileName A file name.
-         * @return A package name.
-         */
-        std::string GetComponent(const std::string& pFileName);
 };
 
-#endif /* RPMINFO_H_ */
+/**
+ * Checks if an application is modified by third party.
+ * @param pPackage A package name. The package contains the application.
+ * @param pPath A path to the application.
+ */
+bool CheckHash(const std::string& pPackage, const std::string& pPath);
+/**
+ * Gets a package description.
+ * @param pPackage A package name.
+ * @return A package description.
+ */
+std::string GetDescription(const std::string& pPackage);
+/**
+ * Gets a package name. This package contains particular
+ * file. If the file doesn't belong to any package, empty string is
+ * returned.
+ * @param pFileName A file name.
+ * @return A package name.
+ */
+std::string GetPackage(const std::string& pFileName);
+/**
+ * Finds a main package for given file. This package contains particular
+ * file. If the file doesn't belong to any package, empty string is
+ * returned.
+ * @param pFileName A file name.
+ * @return A package name.
+ */
+std::string GetComponent(const std::string& pFileName);
+
+#endif

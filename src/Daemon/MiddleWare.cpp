@@ -439,7 +439,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
     }
     else
     {
-        package = s_RPM.GetPackage(pExecutable);
+        package = GetPackage(pExecutable);
         packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
         if (packageName == "" ||
             (s_setBlackList.find(packageName) != s_setBlackList.end()))
@@ -459,7 +459,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
                 error_msg("package isn't signed with proper key");
                 return MW_GPG_ERROR;
             }
-            if (!s_RPM.CheckHash(packageName, pExecutable))
+            if (!CheckHash(packageName, pExecutable))
             {
                 error_msg("executable has bad hash");
                 return MW_GPG_ERROR;
@@ -467,8 +467,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
         }
     }
 
-    std::string description = s_RPM.GetDescription(packageName);
-    std::string component = s_RPM.GetComponent(pExecutable);
+    std::string description = GetDescription(packageName);
+    std::string component = GetComponent(pExecutable);
 
     CDebugDump dd;
     try
