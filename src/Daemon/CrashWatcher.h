@@ -53,17 +53,29 @@ class CCrashWatcher
         virtual void Status(const std::string& pMessage, const std::string& pDest="0");
         virtual void Debug(const std::string& pMessage);
         virtual void Warning(const std::string& pMessage);
-        virtual vector_crash_infos_t GetCrashInfos(const std::string &pUID);
+
+        /* New methods */
+static
+        vector_crash_infos_t GetCrashInfos(const std::string &pUID);
+static
         uint64_t CreateReport_t(const std::string &pUUID,const std::string &pUID, const std::string &pSender);
-        virtual report_status_t Report(const map_crash_report_t& pReport, const std::string &pUID);
-        virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
-        virtual map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
+static
+        report_status_t Report(const map_crash_report_t& pReport, const std::string &pUID);
+static
+        bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
+static
+        map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
         /* plugins related */
-        virtual vector_map_string_string_t GetPluginsInfo();
-        virtual map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID);
-        virtual void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings);
-        virtual void RegisterPlugin(const std::string& pName);
-        virtual void UnRegisterPlugin(const std::string& pName);
+static
+        vector_map_string_string_t GetPluginsInfo();
+static
+        map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID);
+static
+        void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings);
+static
+        void RegisterPlugin(const std::string& pName);
+static
+        void UnRegisterPlugin(const std::string& pName);
 };
 
 #endif /*CRASHWATCHER_H_*/

@@ -6,6 +6,7 @@
 #include "CommLayerInner.h"
 #include "ABRTException.h"
 #include "CrashTypesSocket.h"
+#include "CrashWatcher.h"
 #include "CommLayerServerSocket.h"
 
 void CCommLayerServerSocket::Send(const std::string& pData, GIOChannel *pDestination)
@@ -206,7 +207,7 @@ CCommLayerServerSocket::~CCommLayerServerSocket()
 vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pSender)
 {
     vector_crash_infos_t crashInfos;
-    crashInfos = m_pObserver->GetCrashInfos(pSender);
+    crashInfos = m_pCrashWatcher->GetCrashInfos(pSender);
     return crashInfos;
 }
 
@@ -214,20 +215,20 @@ vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pS
 //map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID,const std::string &pSender)
 //{
 //    map_crash_report_t crashReport;
-//    crashReport = m_pObserver->CreateReport(pUUID, pSender);
+//    crashReport = m_pCrashWatcher->CreateReport(pUUID, pSender);
 //    return crashReport;
 //}
 
 report_status_t CCommLayerServerSocket::Report(const map_crash_report_t& pReport, const std::string& pSender)
 {
     report_status_t rs;
-    rs = m_pObserver->Report(pReport, pSender);
+    rs = m_pCrashWatcher->Report(pReport, pSender);
     return rs;
 }
 
 bool CCommLayerServerSocket::DeleteDebugDump(const std::string& pUUID, const std::string& pSender)
 {
-    m_pObserver->DeleteDebugDump(pUUID, pSender);
+    m_pCrashWatcher->DeleteDebugDump(pUUID, pSender);
     return true;
 }
 

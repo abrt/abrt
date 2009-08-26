@@ -1,5 +1,5 @@
 #include "CommLayerServer.h"
-#include <iostream>
+#include "CrashWatcher.h"
 
 CCommLayerServer::CCommLayerServer()
 {
@@ -9,16 +9,16 @@ CCommLayerServer::~CCommLayerServer()
 {
 }
 
-void CCommLayerServer::Attach(CObserver *pObs)
+void CCommLayerServer::Attach(CCrashWatcher *pCW)
 {
-    m_pObserver = pObs;
+    m_pCrashWatcher = pCW;
 }
-void CCommLayerServer::Detach(CObserver *pObs)
+void CCommLayerServer::Detach(CCrashWatcher *pCW)
 {
-    m_pObserver = NULL;
+    m_pCrashWatcher = NULL;
 }
 void CCommLayerServer::Notify(const std::string& pMessage)
 {
-    if(m_pObserver)
-        m_pObserver->Status(pMessage);
+    if (m_pCrashWatcher)
+        m_pCrashWatcher->Status(pMessage);
 }

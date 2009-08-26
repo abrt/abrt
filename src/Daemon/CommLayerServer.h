@@ -9,16 +9,18 @@
 #include "Observer.h"
 #include "CrashTypes.h"
 
+class CCrashWatcher;
+
 class CCommLayerServer {
     protected:
-        CObserver *m_pObserver;
+        CCrashWatcher *m_pCrashWatcher;
     public:
         CCommLayerServer();
         virtual ~CCommLayerServer();
 
         /* observer */
-        void Attach(CObserver *pObs);
-        void Detach(CObserver *pObs);
+        void Attach(CCrashWatcher *pCW);
+        void Detach(CCrashWatcher *pCW);
         void Notify(const std::string& pMessage);
 
         virtual vector_crash_infos_t GetCrashInfos(const std::string& pSender) = 0;

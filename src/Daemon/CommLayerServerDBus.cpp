@@ -1,6 +1,7 @@
 #include <iostream>
 #include "abrtlib.h"
 #include "ABRTException.h"
+#include "CrashWatcher.h"
 #include "CommLayerServerDBus.h"
 
 void attach_dbus_dispatcher_to_glib_main_context()
@@ -71,7 +72,7 @@ vector_crash_infos_t CCommLayerServerDBus::GetCrashInfos(const std::string &pSen
 {
     vector_crash_infos_t crashInfos;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    crashInfos = m_pObserver->GetCrashInfos(to_string(unix_uid));
+    crashInfos = m_pCrashWatcher->GetCrashInfos(to_string(unix_uid));
     return crashInfos;
 }
 
@@ -93,7 +94,7 @@ uint64_t CCommLayerServerDBus::CreateReport_t(const std::string &pUUID,const std
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     map_crash_report_t crashReport;
-    uint64_t job_id = m_pObserver->CreateReport_t(pUUID, to_string(unix_uid), pSender);
+    uint64_t job_id = m_pCrashWatcher->CreateReport_t(pUUID, to_string(unix_uid), pSender);
     return job_id;
 }
 
@@ -113,7 +114,7 @@ report_status_t CCommLayerServerDBus::Report(const map_crash_report_t& pReport, 
 {
     report_status_t rs;
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    rs = m_pObserver->Report(pReport, to_string(unix_uid));
+    rs = m_pCrashWatcher->Report(pReport, to_string(unix_uid));
     return rs;
 }
 
@@ -132,7 +133,7 @@ DBus::Message CCommLayerServerDBus::_DeleteDebugDump_stub(const DBus::CallMessag
 bool CCommLayerServerDBus::DeleteDebugDump(const std::string& pUUID, const std::string& pSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    m_pObserver->DeleteDebugDump(pUUID,to_string(unix_uid));
+    m_pCrashWatcher->DeleteDebugDump(pUUID,to_string(unix_uid));
     return true;
 }
 
@@ -151,7 +152,7 @@ map_crash_report_t CCommLayerServerDBus::GetJobResult(uint64_t pJobID, const std
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
     map_crash_report_t crashReport;
-    crashReport = m_pObserver->GetJobResult(pJobID,to_string(unix_uid));
+    crashReport = m_pCrashWatcher->GetJobResult(pJobID,to_string(unix_uid));
     return crashReport;
 }
 
@@ -166,7 +167,7 @@ DBus::Message CCommLayerServerDBus::_GetPluginsInfo_stub(const DBus::CallMessage
 }
 vector_map_string_string_t CCommLayerServerDBus::GetPluginsInfo()
 {
-    return m_pObserver->GetPluginsInfo();
+    return m_pCrashWatcher->GetPluginsInfo();
 }
 
 DBus::Message CCommLayerServerDBus::_GetPluginSettings_stub(const DBus::CallMessage &call)
@@ -185,7 +186,7 @@ DBus::Message CCommLayerServerDBus::_GetPluginSettings_stub(const DBus::CallMess
 map_plugin_settings_t CCommLayerServerDBus::GetPluginSettings(const std::string& pName, const std::string& pSender)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    return m_pObserver->GetPluginSettings(pName, to_string(unix_uid));
+    return m_pCrashWatcher->GetPluginSettings(pName, to_string(unix_uid));
 }
 
 DBus::Message CCommLayerServerDBus::_SetPluginSettings_stub(const DBus::CallMessage &call)
@@ -202,7 +203,7 @@ DBus::Message CCommLayerServerDBus::_SetPluginSettings_stub(const DBus::CallMess
 void CCommLayerServerDBus::SetPluginSettings(const std::string& pName, const std::string& pSender, const map_plugin_settings_t& pSettings)
 {
     unsigned long unix_uid = m_pConn->sender_unix_uid(pSender.c_str());
-    return m_pObserver->SetPluginSettings(pName, to_string(unix_uid), pSettings);
+    return m_pCrashWatcher->SetPluginSettings(pName, to_string(unix_uid), pSettings);
 }
 
 DBus::Message CCommLayerServerDBus::_RegisterPlugin_stub(const DBus::CallMessage &call)
@@ -218,7 +219,7 @@ DBus::Message CCommLayerServerDBus::_RegisterPlugin_stub(const DBus::CallMessage
 }
 void CCommLayerServerDBus::RegisterPlugin(const std::string& pName)
 {
-    return m_pObserver->RegisterPlugin(pName);
+    return m_pCrashWatcher->RegisterPlugin(pName);
 }
 
 DBus::Message CCommLayerServerDBus::_UnRegisterPlugin_stub(const DBus::CallMessage &call)
@@ -232,7 +233,7 @@ DBus::Message CCommLayerServerDBus::_UnRegisterPlugin_stub(const DBus::CallMessa
 }
 void CCommLayerServerDBus::UnRegisterPlugin(const std::string& pName)
 {
-    return m_pObserver->UnRegisterPlugin(pName);
+    return m_pCrashWatcher->UnRegisterPlugin(pName);
 }
 
 

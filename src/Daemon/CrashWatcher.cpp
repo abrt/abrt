@@ -75,15 +75,15 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
                     retval.push_back(info);
                     break;
                 case MW_ERROR:
-                    Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
+                    g_cw->Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
+                    g_cw->Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                     break;
                 case MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
-                        Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
+                        g_cw->Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
+                        g_cw->Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
                         debugDumpDir = DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                         DeleteDebugDumpDir(debugDumpDir);
                     }
@@ -99,8 +99,8 @@ vector_crash_infos_t CCrashWatcher::GetCrashInfos(const std::string &pUID)
         {
             throw e;
         }
-        Warning(e.what());
-        Status(e.what());
+        g_cw->Warning(e.what());
+        g_cw->Status(e.what());
     }
 
     //retval = GetCrashInfos(pUID);
@@ -210,8 +210,8 @@ report_status_t CCrashWatcher::Report(const map_crash_report_t& pReport, const s
         {
             throw e;
         }
-        Warning(e.what());
-        Status(e.what());
+        g_cw->Warning(e.what());
+        g_cw->Status(e.what());
         return rs;
     }
     return rs;
@@ -231,8 +231,8 @@ bool CCrashWatcher::DeleteDebugDump(const std::string& pUUID, const std::string&
         {
             throw e;
         }
-        Warning(e.what());
-        Status(e.what());
+        g_cw->Warning(e.what());
+        g_cw->Status(e.what());
         return false;
     }
     return true;
@@ -259,7 +259,7 @@ vector_map_string_string_t CCrashWatcher::GetPluginsInfo()
         {
             throw e;
         }
-        Warning(e.what());
+        g_cw->Warning(e.what());
     }
     // TODO: is it right? I added it just to disable a warning...
     // but maybe returning empty map is wrong here?
@@ -278,7 +278,7 @@ map_plugin_settings_t CCrashWatcher::GetPluginSettings(const std::string& pName,
         {
             throw e;
         }
-        Warning(e.what());
+        g_cw->Warning(e.what());
     }
     // TODO: is it right? I added it just to disable a warning...
     // but maybe returning empty map is wrong here?
@@ -297,7 +297,7 @@ void CCrashWatcher::RegisterPlugin(const std::string& pName)
         {
             throw e;
         }
-        Warning(e.what());
+        g_cw->Warning(e.what());
     }
 }
 
@@ -313,7 +313,7 @@ void CCrashWatcher::UnRegisterPlugin(const std::string& pName)
         {
             throw e;
         }
-        Warning(e.what());
+        g_cw->Warning(e.what());
     }
 }
 
@@ -329,6 +329,6 @@ void CCrashWatcher::SetPluginSettings(const std::string& pName, const std::strin
         {
             throw e;
         }
-        Warning(e.what());
+        g_cw->Warning(e.what());
     }
 }
