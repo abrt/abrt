@@ -66,18 +66,4 @@ class CCrashWatcher
         virtual void UnRegisterPlugin(const std::string& pName);
 };
 
-
-/* used only for ->Warning() calls */
-extern CCrashWatcher *g_cw;
-/* conduit for these messages */
-extern CCommLayerServer *g_pCommLayer;
-
-/*
- * Map to cache the results from CreateReport_t
- * <UID, <UUID, result>>
- */
-extern std::map<const std::string, std::map<int, map_crash_report_t> > g_pending_jobs;
-/* mutex to protect g_pending_jobs */
-extern pthread_mutex_t g_pJobsMutex;
-
 #endif /*CRASHWATCHER_H_*/

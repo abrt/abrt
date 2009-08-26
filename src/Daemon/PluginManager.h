@@ -150,7 +150,7 @@ class CPluginManager
 };
 
 /**
- * A function. It loads settings and store it in second parameter. On success it
+ * Loads settings and stores it in second parameter. On success it
  * returns true, otherwise returns false.
  * @param path A path of config file.
  * @param settings A readed plugin's settings.

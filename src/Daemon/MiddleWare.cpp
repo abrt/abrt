@@ -20,6 +20,7 @@
     */
 
 #include "abrtlib.h"
+#include "Daemon.h"
 #include "Settings.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
@@ -33,17 +34,17 @@
  * @see PluginManager.h
  */
 CPluginManager* g_pPluginManager;
-
-
 /**
  * An instance of CRPM used for package checking.
  * @see RPM.h
  */
-static CRPM s_RPM;
+CRPM g_RPM;
 /**
  * A set of blacklisted packages.
  */
-static set_strings_t s_setBlackList;
+set_strings_t g_setBlackList;
+
+
 /**
  * A map, which associates particular analyzer to one or more
  * action or reporter plugins. These are activated when a crash, which
@@ -442,7 +443,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
         package = GetPackage(pExecutable);
         packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
         if (packageName == "" ||
-            (s_setBlackList.find(packageName) != s_setBlackList.end()))
+            (g_setBlackList.find(packageName) != g_setBlackList.end()))
         {
             if (packageName == "")
             {
@@ -454,7 +455,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
         }
         if (g_settings_bOpenGPGCheck)
         {
-            if (!s_RPM.CheckFingerprint(packageName))
+            if (!g_RPM.CheckFingerprint(packageName))
             {
                 error_msg("package isn't signed with proper key");
                 return MW_GPG_ERROR;
@@ -683,12 +684,12 @@ vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
 
 void AddOpenGPGPublicKey(const std::string& pKey)
 {
-    s_RPM.LoadOpenGPGPublicKey(pKey);
+    g_RPM.LoadOpenGPGPublicKey(pKey);
 }
 
 void AddBlackListedPackage(const std::string& pPackage)
 {
-    s_setBlackList.insert(pPackage);
+    g_setBlackList.insert(pPackage);
 }
 
 void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,

@@ -17,16 +17,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "abrtlib.h"
 #include <sys/inotify.h>
 #include <glib.h>
 #include <pthread.h>
-
-#include "ABRTException.h"
 #include <iostream>
 #include <string>
-
+#include "abrtlib.h"
+#include "ABRTException.h"
 #include "CrashWatcher.h"
+#include "Daemon.h"
 
 
 //FIXME: add some struct to be able to join all threads!

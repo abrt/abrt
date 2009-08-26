@@ -9,7 +9,7 @@ abrt_SOURCES = \
     CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerSocket.h CommLayerServerSocket.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
-    Daemon.cpp \
+    Daemon.cpp Daemon.h \
     Settings.h Settings.cpp
 abrt_CPPFLAGS = \
     -I$(srcdir)/../../inc \
