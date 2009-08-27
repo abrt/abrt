@@ -17,12 +17,13 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#ifndef DBUSCOMMON_H_
+#define DBUSCOMMON_H_
+
+#include "CrashTypes.h"
+
 #define CC_DBUS_NAME "com.redhat.abrt"
 #define CC_DBUS_PATH "/com/redhat/abrt"
 #define CC_DBUS_IFACE "com.redhat.abrt"
 
-#include "CrashTypes.h"
-typedef std::map<std::string, std::string> map_string_string_t;
-typedef std::vector<map_string_string_t> vector_map_string_string_t;
-typedef std::map<std::string, std::string> map_plugin_settings_t;
-typedef std::map<std::string, vector_strings_t> report_status_t;
+#endif

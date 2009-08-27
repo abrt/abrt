@@ -23,10 +23,8 @@
 #ifndef MIDDLEWARE_H_
 #define MIDDLEWARE_H_
 
+#include "abrt_types.h"
 #include "PluginManager.h"
-#include "CrashTypes.h"
-#include "MiddleWareTypes.h"
-#include "RPM.h"
 
 /**
  * An enum contains all return codes.
@@ -51,9 +49,6 @@ typedef enum {
     RS_CODE,
     RS_MESSAGE
 } report_status_items_t;
-
-typedef std::map<std::string, vector_strings_t> report_status_t;
-typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
 
 
 /**

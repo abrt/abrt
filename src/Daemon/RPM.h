@@ -23,11 +23,10 @@
 #ifndef RPM_H_
 #define RPM_H_
 
-#include "MiddleWareTypes.h"
-
 #include <rpm/rpmcli.h>
 #include <rpm/rpmts.h>
 #include <rpm/rpmdb.h>
+#include "abrt_types.h"
 
 /**
  * A class. It is used for additional checks of package, which contains

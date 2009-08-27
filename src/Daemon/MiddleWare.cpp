@@ -22,6 +22,7 @@
 #include "abrtlib.h"
 #include "Daemon.h"
 #include "Settings.h"
+#include "RPM.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
@@ -50,6 +51,7 @@ set_strings_t g_setBlackList;
  * action or reporter plugins. These are activated when a crash, which
  * is maintained by particular analyzer, occurs.
  */
+typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
 static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
 /**
  * A vector of one or more action or reporter plugins. These are
@@ -248,8 +250,8 @@ void RunAction(const std::string& pActionDir,
 
 void RunActionsAndReporters(const std::string& pDebugDumpDir)
 {
-    vector_pair_string_string_t::iterator it_ar;
-    for (it_ar = s_vectorActionsAndReporters.begin(); it_ar != s_vectorActionsAndReporters.end(); it_ar++)
+    vector_pair_string_string_t::iterator it_ar = s_vectorActionsAndReporters.begin();
+    for (; it_ar != s_vectorActionsAndReporters.end(); it_ar++)
     {
         try
         {
@@ -402,9 +404,8 @@ static bool IsDebugDumpSaved(const std::string& pUID,
                                    const std::string& pDebugDumpDir)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    vector_database_rows_t rows;
     database->Connect();
-    rows = database->GetUIDData(pUID);
+    vector_database_rows_t rows = database->GetUIDData(pUID);
     database->DisConnect();
 
     int ii;
@@ -504,10 +505,8 @@ static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& 
 {
     if (s_mapAnalyzerActionsAndReporters.find(pAnalyzer) != s_mapAnalyzerActionsAndReporters.end())
     {
-        vector_pair_string_string_t::iterator it_a;
-        for (it_a = s_mapAnalyzerActionsAndReporters[pAnalyzer].begin();
-             it_a != s_mapAnalyzerActionsAndReporters[pAnalyzer].end();
-             it_a++)
+        vector_pair_string_string_t::iterator it_a = s_mapAnalyzerActionsAndReporters[pAnalyzer].begin();
+        for (; it_a != s_mapAnalyzerActionsAndReporters[pAnalyzer].end(); it_a++)
         {
             try
             {

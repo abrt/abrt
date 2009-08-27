@@ -24,6 +24,7 @@
 #include <string>
 #include "abrtlib.h"
 #include "ABRTException.h"
+#include "RPM.h"
 #include "CrashWatcher.h"
 #include "Daemon.h"
 
@@ -156,7 +157,7 @@ static void SetUpMW()
     {
         g_pPluginManager->RegisterPlugin(*it_p);
     }
-    vector_pair_strings_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
+    vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
     {
         AddActionOrReporter((*it_ar).first, (*it_ar).second);
@@ -164,7 +165,7 @@ static void SetUpMW()
     map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
     for (; it_aar != g_settings_mapAnalyzerActionsAndReporters.end(); it_aar++)
     {
-        vector_pair_strings_t::iterator it_ar = it_aar->second.begin();
+        vector_pair_string_string_t::iterator it_ar = it_aar->second.begin();
         for (; it_ar != it_aar->second.end(); it_ar++)
         {
             AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
@@ -211,8 +212,8 @@ static int SetUpCron()
 
         if (nS != -1)
         {
-            vector_pair_strings_t::iterator it_ar;
-            for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
+            vector_pair_string_string_t::iterator it_ar = it_c->second.begin();
+            for (; it_ar != it_c->second.end(); it_ar++)
             {
                 cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
@@ -245,8 +246,8 @@ static int SetUpCron()
             {
                 timeout = nextTime - actTime;
             }
-            vector_pair_strings_t::iterator it_ar;
-            for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
+            vector_pair_string_string_t::iterator it_ar = it_c->second.begin();
+            for (; it_ar != it_c->second.end(); it_ar++)
             {
                 cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,

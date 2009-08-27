@@ -18,6 +18,7 @@ vector_pair_string_string_t g_settings_vectorActionsAndReporters;
 map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
 
 
+typedef std::map<std::string, std::string> map_settings_t;
 static map_settings_t s_mapSettingsCommon;
 static map_settings_t s_mapSettingsAnalyzerActionsAndReporters;
 static map_settings_t s_mapSettingsCron;
@@ -47,9 +48,9 @@ static set_strings_t ParseList(const std::string& pList)
    return set;
 }
 
-static vector_pair_strings_t ParseListWithArgs(const std::string& pValue)
+static vector_pair_string_string_t ParseListWithArgs(const std::string& pValue)
 {
-    vector_pair_strings_t pluginsWithArgs;
+    vector_pair_string_string_t pluginsWithArgs;
     unsigned int ii;
     std::string item = "";
     std::string action = "";
@@ -132,7 +133,7 @@ static void ParseCron()
     map_settings_t::iterator it = s_mapSettingsCron.begin();
     for (; it != s_mapSettingsCron.end(); it++)
     {
-        vector_pair_strings_t actionsAndReporters = ParseListWithArgs(it->second);
+        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second);
         g_settings_mapCron[it->first] = actionsAndReporters;
     }
 }
@@ -185,7 +186,7 @@ static void ParseAnalyzerActionsAndReporters()
     for (; it != s_mapSettingsAnalyzerActionsAndReporters.end(); it++)
     {
         set_strings_t keys = ParseKey(it->first);
-        vector_pair_strings_t actionsAndReporters = ParseListWithArgs(it->second);
+        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second);
         set_strings_t::iterator it_keys = keys.begin();
         for (; it_keys != keys.end(); it_keys++)
         {
@@ -288,13 +289,13 @@ void LoadSettings(const char* pPath)
 
 static void SaveSetString(const std::string& pKey, const set_strings_t& pSet, std::ofstream& pFOut, bool pNewLine = true)
 {
-    set_strings_t::const_iterator it_set;
     if (pKey != "")
     {
         pFOut << pKey << " = ";
     }
     int ii = 0;
-    for (it_set = pSet.begin(); it_set != pSet.end(); it_set++)
+    set_strings_t::const_iterator it_set = pSet.begin();
+    for (; it_set != pSet.end(); it_set++)
     {
         pFOut << (*it_set);
         ii++;
@@ -334,10 +335,10 @@ static void SaveVectorPairStrings(const std::string& pKey, const vector_pair_str
     }
 }
 
-static void SaveMapVectorPairStrings(const map_vector_pair_strings_t& pMap, std::ofstream& pFOut, bool pNewLine = true)
+static void SaveMapVectorPairStrings(const map_vector_pair_string_string_t& pMap, std::ofstream& pFOut, bool pNewLine = true)
 {
-    map_vector_pair_strings_t::const_iterator it;
-    for (it = pMap.begin(); it != pMap.end(); it++)
+    map_vector_pair_string_string_t::const_iterator it = pMap.begin();
+    for (; it != pMap.end(); it++)
     {
         pFOut << it->first << " = ";
         SaveVectorPairStrings("", it->second, pFOut, false);

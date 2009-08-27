@@ -17,38 +17,26 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#ifndef DAEMON_H_
-#define DAEMON_H_
+#ifndef ABRT_TYPES_H_
+#define ABRT_TYPES_H_
 
-#include <pthread.h>
-#include "abrt_types.h"
-#include "CrashTypes.h"
+#include <map>
+#include <set>
+#include <vector>
+#include <string>
 
-class CCrashWatcher;
-class CCommLayerServer;
-class CPluginManager;
-class CRPM;
+typedef std::vector<std::string> vector_strings_t;
+typedef std::set<std::string> set_strings_t;
+typedef std::pair<std::string, std::string> pair_string_string_t;
+typedef std::map<std::string, std::string> map_string_string_t;
 
-/* Used for sending dbus signals */
-extern CCommLayerServer *g_pCommLayer;
+typedef std::vector<pair_string_string_t> vector_pair_string_string_t;
+typedef std::vector<map_string_string_t> vector_map_string_string_t;
+typedef std::map<std::string, vector_pair_string_string_t> map_vector_pair_string_string_t;
 
-/* Collection of loaded plugins */
-extern CPluginManager* g_pPluginManager;
-
-/**
- * An instance of CRPM used for package checking.
- * @see RPM.h
- */
-
-extern CRPM g_RPM;
-/**
- * A set of blacklisted packages.
- */
-extern set_strings_t g_setBlackList;
-
-/* Map <UID, <UUID, result>> to cache the results from CreateReport_t() */
-extern std::map<const std::string, std::map<int, map_crash_report_t> > g_pending_jobs;
-/* Mutex to protect g_pending_jobs */
-extern pthread_mutex_t g_pJobsMutex;
+/* Report() method return type */
+typedef std::map<std::string, vector_strings_t> report_status_t;
+/* Holds result of .conf file parsing */
+typedef std::map<std::string, std::string> map_plugin_settings_t;
 
 #endif

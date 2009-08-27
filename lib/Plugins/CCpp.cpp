@@ -426,7 +426,6 @@ I think the below code has absolutely the same effect:
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-///
     update_client("Getting local universal unique identification...");
 
     CDebugDump dd;

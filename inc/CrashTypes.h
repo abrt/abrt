@@ -1,9 +1,7 @@
 #ifndef CRASHTYPES_H_
 #define CRASHTYPES_H_
 
-#include <string>
-#include <map>
-#include <vector>
+#include "abrt_types.h"
 
 // SYS - system value, should not be displayed
 // BIN - binary value, should be displayed as a path to binary file
@@ -39,8 +37,7 @@
 #define CD_MWUUID       "_MWUUID"
 #define CD_MWDDD        "_MWDDD"
 
-// now, size of a vecor is always 3 -> <type, editable, content>
-typedef std::vector<std::string> vector_strings_t;
+// currently, vector always has exactly 3 elements -> <type, editable, content>
 // <key, data>
 typedef std::map<std::string, vector_strings_t> map_crash_data_t;
 

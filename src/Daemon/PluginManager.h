@@ -23,15 +23,13 @@
 #ifndef PLUGINMANAGER_H_
 #define PLUGINMANAGER_H_
 
-#include <map>
-#include <string>
+#include "abrt_types.h"
 #include "ABRTPlugin.h"
 #include "Plugin.h"
 #include "Analyzer.h"
 #include "Reporter.h"
 #include "Database.h"
 #include "Action.h"
-#include "MiddleWareTypes.h"
 
 /**
  * A class. It takes care of loading, registering and manipulating with

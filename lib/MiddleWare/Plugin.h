@@ -23,16 +23,13 @@
 #ifndef PLUGIN_H_
 #define PLUGIN_H_
 
-#include <string>
-#include <map>
+#include "abrt_types.h"
 
 #define PLUGINS_MAGIC_NUMBER 6
 
 #define PLUGINS_CONF_EXTENSION "conf"
 #define PLUGINS_LIB_EXTENSION "so"
 #define PLUGINS_LIB_PREFIX "lib"
-
-typedef std::map<std::string, std::string> map_plugin_settings_t;
 
 /**
  * An abstract class. The class defines a common plugin interface. If a plugin
