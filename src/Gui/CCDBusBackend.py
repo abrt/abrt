@@ -22,6 +22,7 @@ class DBusManager(gobject.GObject):
     bus = None
     uniq_name = None
     def __init__(self):
+        self.pending_jobs = []
         session = None
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
@@ -99,15 +100,17 @@ class DBusManager(gobject.GObject):
         #print "crash"
         self.emit("crash")
 
-    def update_cb(self, dest, message):
+    def update_cb(self, message, job_id=0):
         # FIXME: use dest instead of 0 once we implement it in daemon
         #if self.uniq_name == dest:
-        self.emit("update", message)
+        if job_id == 0 or job_id in self.pending_jobs:
+            self.emit("update", message)
 
-    def warning_cb(self, message, dest=None):
+    def warning_cb(self, message, job_id=0):
         # FIXME: use dest instead of 0 once we implement it in daemon
         #if self.uniq_name == dest:
-        self.emit("warning", message)
+        if job_id == 0 or job_id in self.pending_jobs:
+            self.emit("warning", message)
 
     def analyze_complete_cb(self,dump):
         #for arg in args:
@@ -157,8 +160,7 @@ class DBusManager(gobject.GObject):
             raise Exception(_("Please check if abrt daemon is running."))
 
     def addJob(self, job_id):
-        pass
-        #self.pending_jobs.append(job_id)
+        self.pending_jobs.append(job_id)
 
     def jobdone_cb(self, dest, job_id):
         if self.uniq_name == dest:
@@ -183,7 +185,7 @@ class DBusManager(gobject.GObject):
     def Report(self,report):
         # map < Plguin_name vec <status, message> >
         self.cc.Report(report, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
-        
+
     def DeleteDebugDump(self,UUID):
         return self.cc.DeleteDebugDump(UUID)
 

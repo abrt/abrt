@@ -24,19 +24,19 @@
 #include "ABRTException.h"
 #include "CrashWatcher.h"
 
-void CCrashWatcher::Status(const std::string& pMessage, const std::string& pDest)
+void CCrashWatcher::Status(const std::string& pMessage, uint64_t pJobID)
 {
     log("Update: %s", pMessage.c_str());
     //FIXME: send updates only to job owner
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Update(pDest, pMessage);
+        g_pCommLayer->Update(pMessage, pJobID);
 }
 
-void CCrashWatcher::Warning(const std::string& pMessage)
+void CCrashWatcher::Warning(const std::string& pMessage, uint64_t pJobID)
 {
     log("Warning: %s", pMessage.c_str());
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Warning(pMessage);
+        g_pCommLayer->Warning(pMessage, pJobID);
 }
 
 void CCrashWatcher::Debug(const std::string& pMessage)
@@ -142,17 +142,17 @@ static void *create_report(void *arg)
             case MW_OK:
                 break;
             case MW_IN_DB_ERROR:
-                g_cw->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.");
+                g_cw->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.",(uint64_t)thread_data->thread_id);
                 break;
             case MW_PLUGIN_ERROR:
-                g_cw->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."));
+                g_cw->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."),(uint64_t)thread_data->thread_id);
                 break;
             case MW_CORRUPTED:
             case MW_FILE_ERROR:
             default:
                 {
                     std::string debugDumpDir;
-                    g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.");
+                    g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.",(uint64_t)thread_data->thread_id);
                     debugDumpDir = DeleteCrashInfo(thread_data->UUID, thread_data->UID);
                     DeleteDebugDumpDir(debugDumpDir);
                 }
@@ -175,7 +175,7 @@ static void *create_report(void *arg)
             free(thread_data);
             throw e;
         }
-        g_cw->Warning(e.what());
+        g_cw->Warning(e.what(),(uint64_t)thread_data->thread_id);
     }
     /* free strduped strings */
     free(thread_data->UUID);

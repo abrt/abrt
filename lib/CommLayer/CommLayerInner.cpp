@@ -18,8 +18,7 @@ void warn_client(const std::string& pMessage)
     pthread_t self = pthread_self();
     if (self != s_main_id)
     {
-        std::string s = ssprintf("%%%llx: %s", (unsigned long long)self, pMessage.c_str());
-        s_pObs->Warning(s);
+        s_pObs->Warning(pMessage,(uint64_t)self);
 //log("w: '%s'", s.c_str());
     }
     else
@@ -38,8 +37,7 @@ void update_client(const std::string& pMessage)
     pthread_t self = pthread_self();
     if (self != s_main_id)
     {
-        std::string s = ssprintf("%%%llx: %s", (unsigned long long)self, pMessage.c_str());
-        s_pObs->Status(s);
+        s_pObs->Status(pMessage, (uint64_t)self);
 //log("u: '%s'", s.c_str());
     }
     else

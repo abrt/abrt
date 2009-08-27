@@ -238,12 +238,12 @@ void CCommLayerServerDBus::Error(const std::string& arg1)
     emit_signal(sig);
 }
 
-void CCommLayerServerDBus::Update(const std::string& pDest, const std::string& pMessage)
+void CCommLayerServerDBus::Update(const std::string& pMessage, uint64_t pJobID)
 {
     ::DBus::SignalMessage sig("Update");
     ::DBus::MessageIter wi = sig.writer();
-    wi << pDest;
     wi << pMessage;
+    wi << pJobID;
     emit_signal(sig);
 }
 
@@ -252,5 +252,14 @@ void CCommLayerServerDBus::Warning(const std::string& arg1)
     ::DBus::SignalMessage sig("Warning");
     ::DBus::MessageIter wi = sig.writer();
     wi << arg1;
+    emit_signal(sig);
+}
+
+void CCommLayerServerDBus::Warning(const std::string& pMessage, uint64_t pJobID)
+{
+    ::DBus::SignalMessage sig("Warning");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << pMessage;
+    wi << pJobID;
     emit_signal(sig);
 }
