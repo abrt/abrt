@@ -60,7 +60,7 @@ class DBusManager(gobject.GObject):
         gobject.signal_new ("abrt-error", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         gobject.signal_new ("warning", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
         # signal emited to update gui with current status
-        gobject.signal_new ("update", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new ("update", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,gobject.TYPE_PYOBJECT))
         # signal emited to show gui if user try to run it again
         gobject.signal_new ("show", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
         # signal emited to show gui if user try to run it again
@@ -101,12 +101,14 @@ class DBusManager(gobject.GObject):
         self.emit("crash")
 
     def update_cb(self, message, job_id=0):
+        print "Update >>%s<< for job: %s" % (message, job_id)
         # FIXME: use dest instead of 0 once we implement it in daemon
         #if self.uniq_name == dest:
         if job_id == 0 or job_id in self.pending_jobs:
-            self.emit("update", message)
+            self.emit("update", message, job_id)
 
     def warning_cb(self, message, job_id=0):
+        print "Warning >>%s<< for job: %s" % (message, job_id)
         # FIXME: use dest instead of 0 once we implement it in daemon
         #if self.uniq_name == dest:
         if job_id == 0 or job_id in self.pending_jobs:
@@ -156,14 +158,22 @@ class DBusManager(gobject.GObject):
             self.acconnection = self.proxy.connect_to_signal("Warning",self.warning_cb,dbus_interface=CC_IFACE)
             # watch for job-done signals
             self.acconnection = self.proxy.connect_to_signal("JobDone",self.jobdone_cb,dbus_interface=CC_IFACE)
+            self.acconnection = self.proxy.connect_to_signal("JobStarted",self.jobstarted_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception(_("Please check if abrt daemon is running."))
 
     def addJob(self, job_id):
         self.pending_jobs.append(job_id)
 
+    def jobstarted_cb(self, dest, job_id):
+        # the job belongs to this client
+        if self.uniq_name == dest:
+            print "Started our job: %s" % job_id
+            self.addJob(job_id)
+
     def jobdone_cb(self, dest, job_id):
         if self.uniq_name == dest:
+            print "Our job: %s is done." % job_id
             dump = self.cc.GetJobResult(job_id)
             if dump:
                 self.emit("analyze-complete", dump)
@@ -178,7 +188,8 @@ class DBusManager(gobject.GObject):
             # let's try it async
             # even if it's async it timeouts, so let's try to set the timeout to 60sec
             #self.cc.CreateReport(UUID, reply_handler=self.addJob, error_handler=self.error_handler, timeout=60)
-            self.addJob(self.cc.CreateReport(UUID, timeout=60))
+            # we don't need the return value, as the job_id is sent via JobStarted signal
+            self.cc.CreateReport(UUID, timeout=60)
         except dbus.exceptions.DBusException, e:
             raise Exception(e)
 

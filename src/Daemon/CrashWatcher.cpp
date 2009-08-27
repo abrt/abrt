@@ -119,18 +119,7 @@ static void *create_report(void *arg)
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
 
-    /* Ugly hack.
-     * We use DBus signals to talk to clients.
-     * If the report thread emits a signal with embedded job id before
-     * main thread returns this job id as a CreateReport() DBus call's
-     * return value, the client will not be able to understand
-     * that this signal is for its job.
-     * By no means this is the right solution. The right one would be
-     * to ensure that CreateReport() DBus call returns _before_
-     * we continue here. This will need substantial surgery
-     * on our DBus machinery. TODO.
-     */
-    usleep(10*1000);
+    g_pCommLayer->JobStarted(thread_data->dest, thread_data->thread_id);
 
     log("Creating report...");
     try

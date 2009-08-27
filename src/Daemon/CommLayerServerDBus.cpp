@@ -230,6 +230,15 @@ void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t job_id)
     emit_signal(sig);
 }
 
+void CCommLayerServerDBus::JobStarted(const std::string &pDest, uint64_t job_id)
+{
+    ::DBus::SignalMessage sig("JobStarted");
+    ::DBus::MessageIter wi = sig.writer();
+    wi << pDest;
+    wi << job_id;
+    emit_signal(sig);
+}
+
 void CCommLayerServerDBus::Error(const std::string& arg1)
 {
     ::DBus::SignalMessage sig("Error");

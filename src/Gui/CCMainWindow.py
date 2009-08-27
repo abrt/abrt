@@ -155,7 +155,7 @@ class MainWindow():
             pass
         gui_error_message(_("Unable to get report!\n%s" % message),parent_dialog=self.window)
 
-    def update_cb(self, daemon, message):
+    def update_cb(self, daemon, message, job_id):
         message = message.replace('\n',' ')
         self.wTree.get_widget("lStatus").set_text(message)
 
