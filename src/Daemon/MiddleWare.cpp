@@ -281,7 +281,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                                     const std::string& pUID)
 {
     report_status_t ret;
-    std::string ret_key;
+    std::string key;
     std::string message;
     if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
         pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
@@ -296,69 +296,60 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1 ));
 
-    // ii = 0 -> analyzer is without package name (default)
-    // ii = 1 -> analyzer is with package name (CCpp:xrog-x11-app) (additional reporters to package)
-    int ii;
-    for (ii = 0; ii < 2; ii++)
+    // analyzer with package name (CCpp:xrog-x11-app) has higher priority
+    key = analyzer + ":" + packageName;
+    if (s_mapAnalyzerActionsAndReporters.find(key) == s_mapAnalyzerActionsAndReporters.end())
     {
-        if (ii == 1)
+        // if there is no such settings, then try default analyzer
+        key = analyzer;
+    }
+    if (s_mapAnalyzerActionsAndReporters.find(key) != s_mapAnalyzerActionsAndReporters.end())
+    {
+        vector_pair_string_string_t::iterator it_r = s_mapAnalyzerActionsAndReporters[key].begin();
+        for (; it_r != s_mapAnalyzerActionsAndReporters[key].end(); it_r++)
         {
-            analyzer += ":" + packageName;
-        }
-
-        if (s_mapAnalyzerActionsAndReporters.find(analyzer) != s_mapAnalyzerActionsAndReporters.end())
-        {
-            vector_pair_string_string_t::iterator it_r = s_mapAnalyzerActionsAndReporters[analyzer].begin();
-            for (; it_r != s_mapAnalyzerActionsAndReporters[analyzer].end(); it_r++)
+            try
             {
-                try
+                std::string res;
+
+                if (g_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
                 {
-                    std::string res;
+                    CReporter* reporter = g_pPluginManager->GetReporter((*it_r).first);
+                    std::string home = "";
+                    map_plugin_settings_t oldSettings;
+                    map_plugin_settings_t newSettings;
 
-                    ret_key = (*it_r).first;
-                    if (ii == 1)
+                    if (pUID != "")
                     {
-                        ret_key += " (" + packageName + ")";
-                    }
-                    if (g_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
-                    {
-                        CReporter* reporter = g_pPluginManager->GetReporter((*it_r).first);
-                        std::string home = "";
-                        map_plugin_settings_t oldSettings;
-                        map_plugin_settings_t newSettings;
-
-                        if (pUID != "")
-                        {
-                            home = get_home_dir(atoi(pUID.c_str()));
-                            if (home != "")
-                            {
-                                oldSettings = reporter->GetSettings();
-
-                                if (LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "."PLUGINS_CONF_EXTENSION, newSettings))
-                                {
-                                    reporter->SetSettings(newSettings);
-                                }
-                            }
-                        }
-
-                        res = reporter->Report(pCrashReport, (*it_r).second);
-
+                        home = get_home_dir(atoi(pUID.c_str()));
                         if (home != "")
                         {
-                            reporter->SetSettings(oldSettings);
+                            oldSettings = reporter->GetSettings();
+
+                            if (LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "."PLUGINS_CONF_EXTENSION, newSettings))
+                            {
+                                reporter->SetSettings(newSettings);
+                            }
                         }
                     }
-                    ret[ret_key].push_back("1");
-                    ret[ret_key].push_back(res);
-                    message += res + "\n";
+
+                    res = reporter->Report(pCrashReport, (*it_r).second);
+
+                    if (home != "")
+                    {
+                        reporter->SetSettings(oldSettings);
+                    }
                 }
-                catch (CABRTException& e)
-                {
-                    ret[ret_key].push_back("0");
-                    ret[ret_key].push_back(e.what());
-                    warn_client("Report(): " + e.what());
-                    update_client("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
-                }
+                ret[(*it_r).first].push_back("1");
+                ret[(*it_r).first].push_back(res);
+                message += res + "\n";
+            }
+            catch (CABRTException& e)
+            {
+                ret[(*it_r).first].push_back("0");
+                ret[(*it_r).first].push_back(e.what());
+                warn_client("Report(): " + e.what());
+                update_client("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
             }
         }
     }
