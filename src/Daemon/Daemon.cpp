@@ -49,7 +49,6 @@ typedef struct cron_callback_data_t
 static uint8_t sig_caught; /* = 0 */
 static GMainLoop* g_pMainloop;
 
-CCrashWatcher *g_cw;
 CCommLayerServer *g_pCommLayer;
 /*
  * Map to cache the results from CreateReport_t
@@ -324,7 +323,7 @@ static void FindNewDumps(const std::string& pPath)
                 case MW_GPG_ERROR:
                 case MW_FILE_ERROR:
                 default:
-                    g_cw->Warning("Corrupted, bad or already saved crash, deleting.");
+                    warn_client("Corrupted, bad or already saved crash, deleting.");
                     DeleteDebugDumpDir(*itt);
                     break;
             }
@@ -335,7 +334,7 @@ static void FindNewDumps(const std::string& pPath)
             {
                 throw e;
             }
-            g_cw->Warning(e.what());
+            warn_client(e.what());
         }
     }
 }
@@ -431,7 +430,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
     err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
     if (err != G_IO_ERROR_NONE)
     {
-        g_cw->Warning("Error reading inotify fd.");
+        warn_client("Error reading inotify fd.");
         delete[] buf;
         return FALSE;
     }
@@ -469,8 +468,8 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                             break;
                         case MW_REPORTED:
                         case MW_OCCURED:
-                            /* send message to dbus */
                             log("Already saved crash, deleting...");
+                            /* Send dbus signal */
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
                             DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
@@ -481,14 +480,14 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                         case MW_IN_DB:
                         case MW_FILE_ERROR:
                         default:
-                            g_cw->Warning("Corrupted or bad crash, deleting...");
+                            warn_client("Corrupted or bad crash, deleting...");
                             DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                             break;
                     }
                 }
                 catch (CABRTException& e)
                 {
-                    g_cw->Warning(e.what());
+                    warn_client(e.what());
                     if (e.type() == EXCEP_FATAL)
                     {
                         delete[] buf;

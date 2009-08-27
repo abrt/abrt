@@ -29,22 +29,22 @@ class CCommLayerServer;
 class CPluginManager;
 class CRPM;
 
-/* Used only for ->Warning() calls */
-extern CCrashWatcher *g_cw;
-/* Conduit for these messages */
+/* Used for sending dbus signals */
 extern CCommLayerServer *g_pCommLayer;
+
 /* Collection of loaded plugins */
 extern CPluginManager* g_pPluginManager;
+
 /**
  * An instance of CRPM used for package checking.
  * @see RPM.h
  */
+
 extern CRPM g_RPM;
 /**
  * A set of blacklisted packages.
  */
 extern set_strings_t g_setBlackList;
-
 
 /* Map <UID, <UUID, result>> to cache the results from CreateReport_t() */
 extern std::map<const std::string, std::map<int, map_crash_report_t> > g_pending_jobs;

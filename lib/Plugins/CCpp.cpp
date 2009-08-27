@@ -140,8 +140,8 @@ static void InstallDebugInfos(const std::string& pPackage)
         if (last >= 0 && buff[last] == '\n')
             buff[last] = '\0';
 
-        log(buff);
-        update_client(buff);
+        /* log(buff); - update_client logs it too */
+        update_client(buff); /* maybe only if buff != ""? */
 
 #ifdef COMPLAIN_IF_NO_DEBUGINFO
         if (already_installed == false)

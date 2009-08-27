@@ -46,7 +46,6 @@ void CCrashWatcher::Debug(const std::string& pMessage)
 
 CCrashWatcher::CCrashWatcher()
 {
-    g_cw = this;
 }
 
 CCrashWatcher::~CCrashWatcher()
@@ -75,15 +74,15 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
                     retval.push_back(info);
                     break;
                 case MW_ERROR:
-                    g_cw->Warning("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    g_cw->Status("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
+                    warn_client("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
+                    update_client("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                     break;
                 case MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
-                        g_cw->Warning("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        g_cw->Status("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
+                        warn_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
+                        update_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
                         debugDumpDir = DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                         DeleteDebugDumpDir(debugDumpDir);
                     }
@@ -99,8 +98,8 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
         {
             throw e;
         }
-        g_cw->Warning(e.what());
-        g_cw->Status(e.what());
+        warn_client(e.what());
+        update_client(e.what());
     }
 
     //retval = GetCrashInfos(pUID);
@@ -131,17 +130,17 @@ static void *create_report(void *arg)
             case MW_OK:
                 break;
             case MW_IN_DB_ERROR:
-                g_cw->Warning(std::string("Did not find crash with UUID ")+thread_data->UUID+ " in database.",(uint64_t)thread_data->thread_id);
+                warn_client(std::string("Did not find crash with UUID ") + thread_data->UUID + " in database");
                 break;
             case MW_PLUGIN_ERROR:
-                g_cw->Warning(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)."),(uint64_t)thread_data->thread_id);
+                warn_client(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)"));
                 break;
             case MW_CORRUPTED:
             case MW_FILE_ERROR:
             default:
                 {
                     std::string debugDumpDir;
-                    g_cw->Warning(std::string("Corrupted crash with UUID ")+thread_data->UUID+", deleting.",(uint64_t)thread_data->thread_id);
+                    warn_client(std::string("Corrupted crash with UUID ") + thread_data->UUID + ", deleting");
                     debugDumpDir = DeleteCrashInfo(thread_data->UUID, thread_data->UID);
                     DeleteDebugDumpDir(debugDumpDir);
                 }
@@ -164,7 +163,7 @@ static void *create_report(void *arg)
             free(thread_data);
             throw e;
         }
-        g_cw->Warning(e.what(),(uint64_t)thread_data->thread_id);
+        warn_client(e.what());
     }
     /* free strduped strings */
     free(thread_data->UUID);
@@ -210,8 +209,8 @@ bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
         {
             throw e;
         }
-        g_cw->Warning(e.what());
-        g_cw->Status(e.what());
+        warn_client(e.what());
+        update_client(e.what());
         return false;
     }
     return true;
@@ -238,7 +237,7 @@ vector_map_string_string_t GetPluginsInfo()
         {
             throw e;
         }
-        g_cw->Warning(e.what());
+        warn_client(e.what());
     }
     // TODO: is it right? I added it just to disable a warning...
     // but maybe returning empty map is wrong here?
@@ -257,7 +256,7 @@ map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::str
         {
             throw e;
         }
-        g_cw->Warning(e.what());
+        warn_client(e.what());
     }
     // TODO: is it right? I added it just to disable a warning...
     // but maybe returning empty map is wrong here?
@@ -276,7 +275,7 @@ void RegisterPlugin(const std::string& pName)
         {
             throw e;
         }
-        g_cw->Warning(e.what());
+        warn_client(e.what());
     }
 }
 
@@ -292,7 +291,7 @@ void UnRegisterPlugin(const std::string& pName)
         {
             throw e;
         }
-        g_cw->Warning(e.what());
+        warn_client(e.what());
     }
 }
 
@@ -308,6 +307,6 @@ void SetPluginSettings(const std::string& pName, const std::string& pUID, const 
         {
             throw e;
         }
-        g_cw->Warning(e.what());
+        warn_client(e.what());
     }
 }
