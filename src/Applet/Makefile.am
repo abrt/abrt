@@ -20,5 +20,7 @@ abrt_applet_LDADD = \
 
 EXTRA_DIST = abrt-applet.desktop popup.GtkBuilder
 
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = abrt-applet.desktop

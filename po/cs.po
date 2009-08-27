@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT 0.7.1.1\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-08-26 10:19+0200\n"
+"POT-Creation-Date: 2009-08-27 14:29+0200\n"
 "PO-Revision-Date: 2009-08-25 22:04+ZONE\n"
 "Last-Translator: JIRI MOSKOVCAK <jmoskovc@redhat.com>\n"
 "Language-Team: CZECH <ll@li.org>\n"
@@ -24,16 +24,16 @@ msgstr ""
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 
-#: src/Gui/CCDBusBackend.py:135
+#: src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
 msgstr ""
 
-#: src/Gui/CCDBusBackend.py:139 src/Gui/CCDBusBackend.py:157
+#: src/Gui/CCDBusBackend.py:144 src/Gui/CCDBusBackend.py:163
 msgid "Please check if abrt daemon is running."
 msgstr ""
 "Nepodařilo se připojit k démonovi, zkontrolujte prosím, zda služba abrt běží."
 
-#: src/Gui/CCDBusBackend.py:169
+#: src/Gui/CCDBusBackend.py:181
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -229,4 +229,49 @@ msgstr ""
 
 #: src/Gui/SettingsDialog.py:122
 msgid "unknown response from settings dialog"
+msgstr ""
+
+#: src/Applet/Applet.cpp:49
+#, c-format
+msgid "A crash in package %s has been detected!"
+msgstr "Zjištěn pád v balíčku %s"
+
+#: src/Applet/Applet.cpp:80
+msgid "Applet is already running."
+msgstr "Applet už běží."
+
+#: src/Applet/Applet.cpp:94 src/Applet/Applet.cpp:95
+msgid "Daemon is not running."
+msgstr "Služba není spuštěná."
+
+#: src/Applet/CCApplet.cpp:90 src/Applet/CCApplet.cpp:256
+#, c-format
+msgid "Pending events: %i"
+msgstr ""
+
+#: src/Applet/CCApplet.cpp:109
+#, c-format
+msgid "Can't create menu from the description, popup won't be available!\n"
+msgstr ""
+
+#: src/Applet/CCApplet.cpp:132
+msgid ""
+"This is default handler, you should register your own with "
+"ConnectCrashHandler"
+msgstr ""
+
+#: src/Applet/CCApplet.cpp:142
+msgid "ABRT service is not running"
+msgstr "ěščřěščřěščř"
+
+#: src/Applet/CCApplet.cpp:146
+msgid "ABRT service has been started"
+msgstr "ěščřěščřěščř"
+
+#: src/Applet/CCApplet.cpp:167
+msgid "Warning"
+msgstr ""
+
+#: src/Applet/CCApplet.cpp:173
+msgid "Out of memory"
 msgstr ""

@@ -24,6 +24,21 @@
 #include <sstream>
 #include <cstdio>
 
+
+
+#if HAVE_CONFIG_H
+    #include <config.h>
+#endif
+
+#if ENABLE_NLS
+    #include <libintl.h>
+    #define _(S) gettext(S)
+#else
+    #define _(S) (S)
+#endif
+
+
+
 static const char *DBUS_SERVICE_NAME = "org.freedesktop.DBus";
 static const char *DBUS_SERVICE_PATH = "/org/freedesktop/DBus";
 const gchar *CApplet::menu_xml = 
@@ -54,6 +69,13 @@ const gchar *CApplet::menu_xml =
 CApplet::CApplet(DBus::Connection &connection, const char *path, const char *name)
 : DBus::ObjectProxy(connection, path, name)
 {
+    setlocale(LC_ALL,"");
+
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     m_pDaemonWatcher = new DaemonWatcher(connection, DBUS_SERVICE_PATH, DBUS_SERVICE_NAME);
     m_pDaemonWatcher->ConnectStateChangeHandler(DaemonStateChange_cb, this);
     m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
@@ -65,7 +87,7 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
     gtk_status_icon_set_visible(m_pStatusIcon, FALSE);
     g_signal_connect(G_OBJECT(m_pStatusIcon), "activate", GTK_SIGNAL_FUNC(CApplet::OnAppletActivate_CB), this);
     g_signal_connect(G_OBJECT(m_pStatusIcon), "popup_menu", GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
-    SetIconTooltip("Pending events: %i", m_mapEvents.size());
+    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
     m_pBuilder = gtk_builder_new();
     if(gtk_builder_add_from_string(m_pBuilder, menu_xml, strlen(menu_xml), NULL))
     {
@@ -84,7 +106,7 @@ CApplet::CApplet(DBus::Connection &connection, const char *path, const char *nam
     }
     else
     {
-        fprintf(stderr,"Can't create menu from the description, popup won't be available!\n");
+        fprintf(stderr,_("Can't create menu from the description, popup won't be available!\n"));
     }
 }
 
@@ -107,7 +129,7 @@ void CApplet::Crash(const std::string& progname, const std::string& uid  )
     }
     else
     {
-        std::cout << "This is default handler, you should register your own with ConnectCrashHandler" << std::endl;
+        std::cout << _("This is default handler, you should register your own with ConnectCrashHandler") << std::endl;
         std::cout.flush();
     }
 }
@@ -117,11 +139,11 @@ void CApplet::DaemonStateChange_cb(bool running, void* data)
     CApplet *applet = (CApplet *)data;
     if (!running)
     {
-        applet->Disable("ABRT service is not running");
+        applet->Disable(_("ABRT service is not running"));
     }
     else
     {
-        applet->Enable("ABRT service has been started");
+        applet->Enable(_("ABRT service has been started"));
     }
 }
 
@@ -142,13 +164,13 @@ void CApplet::SetIconTooltip(const char *format, ...)
     va_end(args);
     if (n >= 0 && buf)
     {
-        notify_notification_update(m_pNotification, "Warning", buf, NULL);
+        notify_notification_update(m_pNotification, _("Warning"), buf, NULL);
         gtk_status_icon_set_tooltip_text(m_pStatusIcon, buf);
         free(buf);
     }
     else
     {
-        gtk_status_icon_set_tooltip_text(m_pStatusIcon, "Out of memory");
+        gtk_status_icon_set_tooltip_text(m_pStatusIcon, _("Out of memory"));
     }
 }
 
@@ -231,7 +253,7 @@ void CApplet::Enable(const char *reason)
 int CApplet::AddEvent(int pUUID, const std::string& pProgname)
 {
     m_mapEvents[pUUID] = "pProgname";
-    SetIconTooltip("Pending events: %i", m_mapEvents.size());
+    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
     return 0;
 }
 

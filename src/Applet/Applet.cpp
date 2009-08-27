@@ -21,6 +21,21 @@
 #include <iostream>
 #include <dbus/dbus-shared.h>
 
+#if HAVE_CONFIG_H
+    #include <config.h>
+#endif
+
+#if HAVE_LOCALE_H
+    #include <locale.h>
+#endif
+
+#if ENABLE_NLS
+    #include <libintl.h>
+    #define _(S) gettext(S)
+#else
+    #define _(S) (S)
+#endif
+
 //@@global applet object
 CApplet *applet;
 
@@ -31,12 +46,19 @@ crash_notify_cb(const char* progname)
     std::cerr << "Application " << progname << " has crashed!" << std::endl;
 #endif
     //applet->AddEvent(uid, std::string(progname));
-    applet->SetIconTooltip("A crash in package %s has been detected!", progname);
+    applet->SetIconTooltip(_("A crash in package %s has been detected!"), progname);
     applet->ShowIcon();
 }
 
 int main(int argc, char **argv)
 {
+    setlocale(LC_ALL,"");
+
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
+
     /* need to be thread safe */
     g_thread_init(NULL);
     gdk_threads_init();
@@ -55,7 +77,7 @@ int main(int argc, char **argv)
     if(session.has_name("com.redhat.abrt.applet"))
     {
         //applet is already running
-        std::cerr << "Applet is already running." << std::endl;
+        std::cerr << _("Applet is already running.") << std::endl;
         return -1;
     }
     else
@@ -69,8 +91,8 @@ int main(int argc, char **argv)
     applet->ConnectCrashHandler(crash_notify_cb);
     if(!conn.has_name(CC_DBUS_NAME))
     {
-        std::cout << "Daemon is not running" << std::endl;
-        applet->Disable("Daemon is not running");
+        std::cout << _("Daemon is not running.") << std::endl;
+        applet->Disable(_("Daemon is not running."));
     }
 
     gtk_main();
