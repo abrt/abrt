@@ -333,7 +333,6 @@ void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID, co
                  "SET "DATABASE_COLUMN_MESSAGE" = '" + pMessage + "' "
                  "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
                  "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
-
     }
     else
     {

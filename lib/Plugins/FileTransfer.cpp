@@ -106,8 +106,7 @@ void CFileTransfer::SendFile(const std::string& pURL,
         fclose(f);
     }
     /*retry the upload if not succesful, wait a bit before next try*/
-    while( result!=0 && count-- != 0 && (sleep(m_nRetryDelay),1) );
-
+    while (result != 0 && --count >= 0 && (sleep(m_nRetryDelay), 1));
 }
 
 void CFileTransfer::CreateArchive(const std::string& pArchiveName,

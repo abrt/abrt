@@ -60,11 +60,4 @@ uint64_t CreateReport_t(const std::string& pUUID, const std::string& pUID, const
 bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
 map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender);
 
-/* plugins related */
-vector_map_string_string_t GetPluginsInfo();
-map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID);
-void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings);
-void RegisterPlugin(const std::string& pName);
-void UnRegisterPlugin(const std::string& pName);
-
 #endif /*CRASHWATCHER_H_*/

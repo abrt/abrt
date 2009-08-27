@@ -72,37 +72,31 @@ static bool dot_or_dotdot(const char *filename)
 
 static double GetDirSize(const std::string &pPath)
 {
-    double size = 0;
+    DIR *dp = opendir(pPath.c_str());
+    if (dp == NULL)
+        return 0;
+
     struct dirent *ep;
     struct stat stats;
-    DIR *dp;
-
-    dp = opendir(pPath.c_str());
-    if (dp != NULL)
+    double size = 0;
+    while ((ep = readdir(dp)) != NULL)
     {
-        while ((ep = readdir(dp)) != NULL)
+        if (dot_or_dotdot(ep->d_name))
+            continue;
+        std::string dname = pPath + "/" + ep->d_name;
+        if (lstat(dname.c_str(), &stats) == 0)
         {
-            if (dot_or_dotdot(ep->d_name))
-                continue;
-            std::string dname = pPath + "/" + ep->d_name;
-            if (lstat(dname.c_str(), &stats) == 0)
+            if (S_ISDIR(stats.st_mode))
             {
-                if (S_ISDIR(stats.st_mode))
-                {
-                    size += GetDirSize(dname);
-                }
-                else if (S_ISREG(stats.st_mode))
-                {
-                    size += stats.st_size;
-                }
+                size += GetDirSize(dname);
+            }
+            else if (S_ISREG(stats.st_mode))
+            {
+                size += stats.st_size;
             }
         }
-        closedir(dp);
     }
-    else
-    {
-        throw CABRTException(EXCEP_FATAL, std::string(__func__) + ": Init Failed");
-    }
+    closedir(dp);
     return size;
 }
 
@@ -178,7 +172,7 @@ static void SetUpMW()
     }
 }
 
-static void SetUpCron()
+static int SetUpCron()
 {
     map_cron_t::iterator it_c = g_settings_mapCron.begin();
     for (; it_c != g_settings_mapCron.end(); it_c++)
@@ -239,7 +233,9 @@ static void SetUpCron()
             time_t nextTime = mktime(&locTime);
             if (nextTime == ((time_t)-1))
             {
-                throw CABRTException(EXCEP_FATAL, "SetUpCron(): Cannot set up time");
+                /* paranoia */
+                perror_msg("can't set up cron time");
+                return -1;
             }
             if (actTime > nextTime)
             {
@@ -252,7 +248,6 @@ static void SetUpCron()
             vector_pair_strings_t::iterator it_ar;
             for (it_ar = it_c->second.begin(); it_ar != it_c->second.end(); it_ar++)
             {
-
                 cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
@@ -268,27 +263,28 @@ static void SetUpCron()
             }
         }
     }
+    return 0;
 }
 
-static void FindNewDumps(const std::string& pPath)
+static int FindNewDumps(const std::string& pPath)
 {
     log("Scanning for unsaved entries...");
     struct stat stats;
     DIR *dp;
     std::vector<std::string> dirs;
-    std::string dname;
     // get potential unsaved debugdumps
     dp = opendir(pPath.c_str());
     if (dp == NULL)
     {
-        throw CABRTException(EXCEP_FATAL, "FindNewDumps(): Couldn't open the directory:" + pPath);
+        perror_msg("can't open directory '%s'", pPath.c_str());
+        return -1;
     }
     struct dirent *ep;
     while ((ep = readdir(dp)))
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
-        dname = pPath + "/" + ep->d_name;
+        std::string dname = pPath + "/" + ep->d_name;
         if (lstat(dname.c_str(), &stats) == 0)
         {
             if (S_ISDIR(stats.st_mode))
@@ -337,9 +333,10 @@ static void FindNewDumps(const std::string& pPath)
             warn_client(e.what());
         }
     }
+    return 0;
 }
 
-static void CreatePidFile()
+static int CreatePidFile()
 {
     int fd;
 
@@ -355,27 +352,29 @@ static void CreatePidFile()
         int len = sprintf(buf, "%u\n", (unsigned)getpid());
         write(fd, buf, len);
         close(fd);
-        return;
+        return 0;
     }
 
     /* something went wrong */
-    throw CABRTException(EXCEP_FATAL, "can not open pid file");
+    perror_msg("can't open '%s'", VAR_RUN_PIDFILE);
+    return -1;
 }
 
-static void Lock()
+static int Lock()
 {
-    int lfp = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT, 0640);
-    if (lfp < 0)
+    int lfd = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT, 0640);
+    if (lfd < 0)
     {
-        throw CABRTException(EXCEP_FATAL, "can not open lock file");
+        perror_msg("can't open '%s'", VAR_RUN_LOCK_FILE);
+        return -1;
     }
-    if (lockf(lfp, F_TLOCK, 0) < 0)
+    if (lockf(lfd, F_TLOCK, 0) < 0)
     {
-        throw CABRTException(EXCEP_FATAL, "cannot create lock on lockfile");
+        perror_msg("can't lock file '%s'", VAR_RUN_LOCK_FILE);
+        return -1;
     }
-    /* only first instance continues */
-    //sprintf(str,"%d\n",getpid());
-    //write(lfp,str,strlen(str)); /* record pid to lockfile */
+    return 0;
+    /* we leak opened lfd intentionally */
 }
 
 static void handle_fatal_signal(int signal)
@@ -427,10 +426,11 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
     char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
     gsize i = 0;
+    errno = 0;
     err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
     if (err != G_IO_ERROR_NONE)
     {
-        warn_client("Error reading inotify fd.");
+        perror_msg("Error reading inotify fd");
         delete[] buf;
         return FALSE;
     }
@@ -585,8 +585,10 @@ int main(int argc, char** argv)
         g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
         SetUpMW();
-        SetUpCron();
-        FindNewDumps(DEBUG_DUMPS_DIR);
+        if (SetUpCron() != 0)
+            throw 1;
+        if (FindNewDumps(DEBUG_DUMPS_DIR) != 0)
+            throw 1;
         /* (comment here) */
 #ifdef ENABLE_DBUS
         attach_dbus_dispatcher_to_glib_main_context();
@@ -594,6 +596,8 @@ int main(int argc, char** argv)
 #elif ENABLE_SOCKET
         g_pCommLayer = new CCommLayerServerSocket();
 #endif
+        if (g_pCommLayer->m_init_error)
+            throw 1;
         /* (comment here) */
         pGio = g_io_channel_unix_new(inotify_fd);
         g_io_add_watch(pGio, G_IO_IN, handle_event_cb, NULL);
@@ -607,8 +611,8 @@ int main(int argc, char** argv)
         GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
         g_source_attach(waitsignal_src, g_main_context_default());
         /* Mark the territory */
-        Lock();
-        CreatePidFile();
+        if (Lock() != 0 || CreatePidFile() != 0)
+            throw 1;
     }
     catch (...)
     {

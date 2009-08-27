@@ -170,21 +170,29 @@ CCommLayerServerSocket::CCommLayerServerSocket()
     struct sockaddr_un local;
 
     unlink(SOCKET_FILE);
-    if ((m_nSocket = socket(AF_UNIX, SOCK_STREAM, 0)) == -1)
+    m_nSocket = socket(AF_UNIX, SOCK_STREAM, 0);
+    if (m_nSocket == -1)
     {
-        throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not create socket.");
+        m_init_error = 1;
+        perror_msg("CCommLayerServerSocket: can't create AF_UNIX socket");
+        return;
     }
     fcntl(m_nSocket, F_SETFD, FD_CLOEXEC);
+
+    memset(&local, 0, sizeof(local));
     local.sun_family = AF_UNIX;
     strcpy(local.sun_path, SOCKET_FILE);
-    len = strlen(local.sun_path) + sizeof(local.sun_family);
-    if (bind(m_nSocket, (struct sockaddr *)&local, len) == -1)
+    if (bind(m_nSocket, (struct sockaddr *)&local, sizeof(local)) == -1)
     {
-        throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not bind to the socket.");
+        m_init_error = 1;
+        perror_msg("CCommLayerServerSocket: can't bind AF_UNIX socket to '%s'", SOCKET_FILE);
+        return;
     }
     if (listen(m_nSocket, 5) == -1)
     {
-        throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not listen on the socket.");
+        m_init_error = 1;
+        perror_msg("CCommLayerServerSocket: can't listen on AF_UNIX socket");
+        return;
     }
     chmod(SOCKET_FILE, SOCKET_PERMISSION);
 
@@ -194,7 +202,9 @@ CCommLayerServerSocket::CCommLayerServerSocket()
                         static_cast<GIOFunc>(server_socket_cb),
                         this))
     {
-        throw CABRTException(EXCEP_FATAL, "CCommLayerServerSocket::CCommLayerServerSocket(): Can not init g_io_channel.");
+        m_init_error = 1;
+        perror_msg("CCommLayerServerSocket: can't hook AF_UNIX socket to glb main loop");
+        return;
     }
 }
 

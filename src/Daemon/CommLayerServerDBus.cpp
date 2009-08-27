@@ -2,6 +2,7 @@
 #include "abrtlib.h"
 #include "ABRTException.h"
 #include "CrashWatcher.h"
+#include "Daemon.h"
 #include "CommLayerServerDBus.h"
 
 void attach_dbus_dispatcher_to_glib_main_context()
@@ -29,11 +30,9 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     }
     catch (DBus::Error err)
     {
-        throw CABRTException(EXCEP_FATAL, std::string(__func__) +
-                             "\nPlease check if:\n"
-                             + " * abrt is being run with root permissions\n"
-                             + " * you have reloaded the dbus\n"+
-                             + "Original exception was:\n " + err.what());
+        error_msg("error requesting DBus name %s, possible reasons: abrt run by non-root; dbus config is incorrect", CC_DBUS_NAME);
+        m_init_error = 1;
+        return;
     }
     register_method(CCommLayerServerDBus, GetCrashInfos, _GetCrashInfos_stub);
     register_method(CCommLayerServerDBus, CreateReport, _CreateReport_stub);
@@ -132,7 +131,7 @@ DBus::Message CCommLayerServerDBus::_GetJobResult_stub(const DBus::CallMessage &
 
 DBus::Message CCommLayerServerDBus::_GetPluginsInfo_stub(const DBus::CallMessage &call)
 {
-    vector_map_string_string_t plugins_info = GetPluginsInfo();
+    vector_map_string_string_t plugins_info = g_pPluginManager->GetPluginsInfo();
 
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
@@ -148,7 +147,7 @@ DBus::Message CCommLayerServerDBus::_GetPluginSettings_stub(const DBus::CallMess
     ri >> PluginName;
 
     unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
-    map_plugin_settings_t plugin_settings = GetPluginSettings(PluginName, to_string(unix_uid));
+    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid));
 
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();
@@ -165,7 +164,7 @@ DBus::Message CCommLayerServerDBus::_SetPluginSettings_stub(const DBus::CallMess
     ri >> plugin_settings;
 
     unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
-    SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
+    g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
 
     DBus::ReturnMessage reply(call);
     return reply;
@@ -177,7 +176,7 @@ DBus::Message CCommLayerServerDBus::_RegisterPlugin_stub(const DBus::CallMessage
     std::string PluginName;
     ri >> PluginName;
 
-    RegisterPlugin(PluginName);
+    g_pPluginManager->RegisterPlugin(PluginName);
 
     DBus::ReturnMessage reply(call);
     //DBus::MessageIter wi = reply.writer();
@@ -191,7 +190,7 @@ DBus::Message CCommLayerServerDBus::_UnRegisterPlugin_stub(const DBus::CallMessa
     std::string PluginName;
     ri >> PluginName;
 
-    UnRegisterPlugin(PluginName);
+    g_pPluginManager->UnRegisterPlugin(PluginName);
 
     DBus::ReturnMessage reply(call);
     return reply;

@@ -81,8 +81,8 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
                 case MW_FILE_ERROR:
                     {
                         std::string debugDumpDir;
-                        warn_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
-                        update_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting ");
+                        warn_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting");
+                        update_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting");
                         debugDumpDir = DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
                         DeleteDebugDumpDir(debugDumpDir);
                     }
@@ -187,7 +187,7 @@ uint64_t CreateReport_t(const std::string& pUUID, const std::string& pUID, const
         free(thread_data->dest);
         free(thread_data);
         /* The only reason this may happen is system-wide resource starvation,
-         * or ulimit is exceeded (someoune floods us with CreateReport() Dbus calls?)
+         * or ulimit is exceeded (someoune floods us with CreateReport() dbus calls?)
          */
         error_msg("cannot create thread");
         return 0;
@@ -223,90 +223,4 @@ map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender)
        - if we don't find it in the cache we should try to ask MW to get it again??
     */
     return g_pending_jobs[pSender][pJobID];
-}
-
-vector_map_string_string_t GetPluginsInfo()
-{
-    try
-    {
-        return g_pPluginManager->GetPluginsInfo();
-    }
-    catch (CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        warn_client(e.what());
-    }
-    // TODO: is it right? I added it just to disable a warning...
-    // but maybe returning empty map is wrong here?
-    return vector_map_string_string_t();
-}
-
-map_plugin_settings_t GetPluginSettings(const std::string& pName, const std::string& pUID)
-{
-    try
-    {
-        return g_pPluginManager->GetPluginSettings(pName, pUID);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        warn_client(e.what());
-    }
-    // TODO: is it right? I added it just to disable a warning...
-    // but maybe returning empty map is wrong here?
-    return map_plugin_settings_t();
-}
-
-void RegisterPlugin(const std::string& pName)
-{
-    try
-    {
-        g_pPluginManager->RegisterPlugin(pName);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        warn_client(e.what());
-    }
-}
-
-void UnRegisterPlugin(const std::string& pName)
-{
-    try
-    {
-        g_pPluginManager->UnRegisterPlugin(pName);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        warn_client(e.what());
-    }
-}
-
-void SetPluginSettings(const std::string& pName, const std::string& pUID, const map_plugin_settings_t& pSettings)
-{
-    try
-    {
-        g_pPluginManager->SetPluginSettings(pName, pUID, pSettings);
-    }
-    catch(CABRTException &e)
-    {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
-        warn_client(e.what());
-    }
 }

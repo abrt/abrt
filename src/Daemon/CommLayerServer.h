@@ -7,6 +7,8 @@
 
 class CCommLayerServer {
     public:
+        int m_init_error;
+
         CCommLayerServer();
         virtual ~CCommLayerServer();
 
