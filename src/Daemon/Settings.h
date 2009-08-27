@@ -5,9 +5,12 @@
 
 typedef map_vector_pair_string_string_t map_analyzer_actions_and_reporters_t;
 typedef map_vector_pair_string_string_t map_cron_t;
+typedef std::map<std::string, std::map<std::string, std::string> > map_abrt_settings_t;
 
 void LoadSettings(const char* pPath);
 void SaveSettings(const char* pPath);
+void SetSettings(const map_abrt_settings_t& pSettings);
+map_abrt_settings_t GetSettings();
 
 extern set_strings_t g_settings_setOpenGPGPublicKeys;
 extern set_strings_t g_settings_mapSettingsBlackList;

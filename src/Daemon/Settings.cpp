@@ -23,7 +23,6 @@ static map_settings_t s_mapSettingsCommon;
 static map_settings_t s_mapSettingsAnalyzerActionsAndReporters;
 static map_settings_t s_mapSettingsCron;
 
-
 static set_strings_t ParseList(const std::string& pList)
 {
    unsigned int ii;
@@ -391,3 +390,34 @@ void SaveSettings(const char* pPath)
         fOut.close();
     }
 }
+
+void SetSettings(const map_abrt_settings_t& pSettings)
+{
+    if (pSettings.find(SECTION_COMMON) != pSettings.end())
+    {
+        s_mapSettingsCommon = pSettings.find(SECTION_COMMON)->second;
+        ParseCommon();
+    }
+    if (pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS) != pSettings.end())
+    {
+        s_mapSettingsAnalyzerActionsAndReporters = pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS)->second;
+        ParseAnalyzerActionsAndReporters();
+    }
+    if (pSettings.find(SECTION_CRON) != pSettings.end())
+    {
+        s_mapSettingsCron = pSettings.find(SECTION_CRON)->second;
+        ParseCron();
+    }
+}
+
+map_abrt_settings_t GetSettings()
+{
+    map_abrt_settings_t ABRTSettings;
+
+    ABRTSettings[SECTION_COMMON] = s_mapSettingsCommon;
+    ABRTSettings[SECTION_ANALYZER_ACTIONS_AND_REPORTERS] = s_mapSettingsAnalyzerActionsAndReporters;
+    ABRTSettings[SECTION_CRON] = s_mapSettingsCron;
+
+    return ABRTSettings;
+}
+
