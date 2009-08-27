@@ -69,13 +69,6 @@ const gchar *CApplet::menu_xml =
 CApplet::CApplet(DBus::Connection &connection, const char *path, const char *name)
 : DBus::ObjectProxy(connection, path, name)
 {
-    setlocale(LC_ALL,"");
-
-#if ENABLE_NLS
-    bindtextdomain(PACKAGE, LOCALEDIR);
-    textdomain(PACKAGE);
-#endif
-
     m_pDaemonWatcher = new DaemonWatcher(connection, DBUS_SERVICE_PATH, DBUS_SERVICE_NAME);
     m_pDaemonWatcher->ConnectStateChangeHandler(DaemonStateChange_cb, this);
     m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
