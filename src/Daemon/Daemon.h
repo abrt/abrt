@@ -29,6 +29,9 @@ class CCommLayerServer;
 class CPluginManager;
 class CRPM;
 
+/* Verbosity level */
+extern int g_verbose;
+
 /* Used for sending dbus signals */
 extern CCommLayerServer *g_pCommLayer;
 
@@ -39,8 +42,8 @@ extern CPluginManager* g_pPluginManager;
  * An instance of CRPM used for package checking.
  * @see RPM.h
  */
-
 extern CRPM g_RPM;
+
 /**
  * A set of blacklisted packages.
  */

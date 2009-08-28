@@ -17,6 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#include <syslog.h>
 #include <sys/inotify.h>
 #include <glib.h>
 #include <pthread.h>
@@ -47,9 +48,10 @@ typedef struct cron_callback_data_t
 } cron_callback_data_t;
 
 
-static uint8_t sig_caught; /* = 0 */
+static uint8_t s_sig_caught;
 static GMainLoop* g_pMainloop;
 
+int g_verbose;
 CCommLayerServer *g_pCommLayer;
 /*
  * Map to cache the results from CreateReport_t
@@ -380,10 +382,10 @@ static int Lock()
 
 static void handle_fatal_signal(int signal)
 {
-    sig_caught = signal;
+    s_sig_caught = signal;
 }
 
-/* One of our event sources is sig_caught when it becomes != 0.
+/* One of our event sources is s_sig_caught when it becomes != 0.
  * glib machinery we need to hook it up to the main loop:
  * prepare():
  * If the source can determine that it is ready here (without waiting
@@ -408,11 +410,11 @@ static gboolean waitsignal_prepare(GSource *source, gint *timeout_)
      * by caught signals (in returns EINTR). Thus we do not need to set
      * a small timeout here: infinite timeout (-1) works too */
     *timeout_ = -1;
-    return sig_caught != 0;
+    return s_sig_caught != 0;
 }
 static gboolean waitsignal_check(GSource *source)
 {
-    return sig_caught != 0;
+    return s_sig_caught != 0;
 }
 static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
 {
@@ -448,7 +450,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
 
         log("Created file: %s", name);
 
-        /* we want to ignore the lock files */
+        /* we ignore the lock files */
         if (event->mask & IN_ISDIR)
         {
             if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < g_settings_nMaxCrashReportsSize)
@@ -464,7 +466,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                         case MW_OK:
                             log("New crash, saving...");
                             RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
-                            /* send message to dbus */
+                            /* Send dbus signal */
                             g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
                             break;
                         case MW_REPORTED:
@@ -519,16 +521,35 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
 
 int main(int argc, char** argv)
 {
-    int daemonize = 0;
+    bool daemonize = true;
+    int opt;
+
+    while ((opt = getopt(argc, argv, "dv")) != -1)
+    {
+        switch (opt)
+        {
+        case 'd':
+            daemonize = false;
+            break;
+        case 'v':
+            g_verbose++;
+            break;
+        default:
+            error_msg_and_die(
+                "Usage: abrt [-dv]\n"
+        	"\nOptions:"
+                "\n\t-d\tDo not daemonize"
+                "\n\t-v\tVerbose"
+            );
+        }
+    }
 
     signal(SIGTERM, handle_fatal_signal);
     signal(SIGINT, handle_fatal_signal);
 
     /* Daemonize unless -d */
-    if (!argv[1] || strcmp(argv[1], "-d") != 0)
+    if (daemonize)
     {
-        daemonize = 1;
-
         /* Open stdin to /dev/null. We do it before forking
          * in order to emit useful exitcode to the parent
          * if open fails */
@@ -545,11 +566,11 @@ int main(int argc, char** argv)
             /* Parent */
             /* Wait for child to notify us via SIGTERM that it feels ok */
             int i = 20; /* 2 sec */
-            while (sig_caught == 0 && --i)
+            while (s_sig_caught == 0 && --i)
             {
                     usleep(100 * 1000);
             }
-            _exit(sig_caught != SIGTERM); /* TERM:ok(0), else:bad(1) */
+            _exit(s_sig_caught != SIGTERM); /* TERM:ok(0), else:bad(1) */
         }
         /* Child (daemon) continues */
         setsid(); /* never fails */
@@ -559,11 +580,15 @@ int main(int argc, char** argv)
         close(STDERR_FILENO);
         xdup(0);
         xdup(0);
+
+        openlog("abrt daemon", 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
     }
 
     GIOChannel* pGio = NULL;
     CCrashWatcher watcher;
+    bool lockfile_created = false;
+    bool pidfile_created = false;
 
     /* Initialization */
     try
@@ -612,31 +637,21 @@ int main(int argc, char** argv)
         GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
         g_source_attach(waitsignal_src, g_main_context_default());
         /* Mark the territory */
-        if (Lock() != 0 || CreatePidFile() != 0)
+        if (Lock() != 0)
             throw 1;
+        lockfile_created = true;
+        if (CreatePidFile() != 0)
+            throw 1;
+        pidfile_created = true;
     }
     catch (...)
     {
-        /* Initialization error. Clean up, in reverse order */
+        /* Initialization error */
         error_msg("error while initializing daemon");
-        unlink(VAR_RUN_PIDFILE);
-        unlink(VAR_RUN_LOCK_FILE);
-        if (pGio)
-            g_io_channel_unref(pGio);
-        delete g_pCommLayer;
-        /* This restores /proc/sys/kernel/core_pattern, among other things: */
-        g_pPluginManager->UnLoadPlugins();
-        delete g_pPluginManager;
-
-        g_main_loop_unref(g_pMainloop);
-        if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
-        {
-            error_msg("threading error: job mutex locked");
-        }
         /* Inform parent that initialization failed */
         if (daemonize)
             kill(getppid(), SIGINT);
-        error_msg_and_die("exiting");
+        goto cleanup;
     }
 
     /* Inform parent that we initialized ok */
@@ -646,8 +661,8 @@ int main(int argc, char** argv)
     /* Enter the event loop */
     try
     {
-	log("Running...");
-	g_main_run(g_pMainloop);
+        log("Running...");
+        g_main_run(g_pMainloop);
     }
     catch (CABRTException& e)
     {
@@ -658,22 +673,34 @@ int main(int argc, char** argv)
         error_msg("error: %s", e.what());
     }
 
-    /* Error or INT/TERM. Clean up, in reverse order */
-    unlink(VAR_RUN_PIDFILE);
-    unlink(VAR_RUN_LOCK_FILE);
-    g_io_channel_unref(pGio);
+ cleanup:
+    /* Error or INT/TERM. Clean up, in reverse order.
+     * Take care to not undo things we did not do.
+     */
+    if (pidfile_created)
+        unlink(VAR_RUN_PIDFILE);
+    if (lockfile_created)
+        unlink(VAR_RUN_LOCK_FILE);
+    if (pGio)
+        g_io_channel_unref(pGio);
     delete g_pCommLayer;
-    /* This restores /proc/sys/kernel/core_pattern, among other things: */
-    g_pPluginManager->UnLoadPlugins();
-    delete g_pPluginManager;
-
-    g_main_loop_unref(g_pMainloop);
+    if (g_pPluginManager)
+    {
+        /* This restores /proc/sys/kernel/core_pattern, among other things: */
+        g_pPluginManager->UnLoadPlugins();
+        delete g_pPluginManager;
+    }
+    if (g_pMainloop)
+        g_main_loop_unref(g_pMainloop);
+    if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
+        error_msg("threading error: job mutex locked");
 
     /* Exiting */
-    if (sig_caught)
+    if (s_sig_caught)
     {
-        signal(sig_caught, SIG_DFL);
-        raise(sig_caught);
+        error_msg_and_die("got signal %d, exiting", s_sig_caught);
+        signal(s_sig_caught, SIG_DFL);
+        raise(s_sig_caught);
     }
-    return 1;
+    error_msg_and_die("exiting");
 }
