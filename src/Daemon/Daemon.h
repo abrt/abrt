@@ -31,6 +31,9 @@ class CRPM;
 
 /* Verbosity level */
 extern int g_verbose;
+#define VERB1 if (g_verbose >= 1)
+#define VERB2 if (g_verbose >= 2)
+#define VERB3 if (g_verbose >= 3)
 
 /* Used for sending dbus signals */
 extern CCommLayerServer *g_pCommLayer;

@@ -5,6 +5,7 @@
 #include "Daemon.h"
 #include "CommLayerServerDBus.h"
 
+
 void attach_dbus_dispatcher_to_glib_main_context()
 {
     DBus::Glib::BusDispatcher* dispatcher;
@@ -59,7 +60,9 @@ DBus::Message CCommLayerServerDBus::_GetCrashInfos_stub(const DBus::CallMessage 
 {
     DBus::MessageIter ri = call.reader();
 
-    unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
+    const char* sender = call.sender();
+    unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    VERB1 log("got %s() call from %s, uid %lu", "GetCrashInfos", sender, unix_uid);
     vector_crash_infos_t argout1 = GetCrashInfos(to_string(unix_uid));
 
     DBus::ReturnMessage reply(call);
@@ -76,6 +79,7 @@ DBus::Message CCommLayerServerDBus::_CreateReport_stub(const DBus::CallMessage &
 
     const char* sender = call.sender();
     unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    VERB1 log("got %s('%s') call from %s, uid %lu", "CreateReport", argin1.c_str(), sender, unix_uid);
     uint64_t argout1 = CreateReport_t(argin1, to_string(unix_uid), sender);
 
     DBus::ReturnMessage reply(call);
@@ -90,7 +94,9 @@ DBus::Message CCommLayerServerDBus::_Report_stub(const DBus::CallMessage &call)
     map_crash_report_t argin1;
     ri >> argin1;
 
-    unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
+    const char* sender = call.sender();
+    unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    VERB1 log("got %s(...) call from %s, uid %lu", "Report", sender, unix_uid);
     report_status_t argout1 = Report(argin1, to_string(unix_uid));
 
     DBus::ReturnMessage reply(call);
@@ -105,7 +111,9 @@ DBus::Message CCommLayerServerDBus::_DeleteDebugDump_stub(const DBus::CallMessag
     std::string argin1;
     ri >> argin1;
 
-    unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
+    const char* sender = call.sender();
+    unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    VERB1 log("got %s('%s') call from %s, uid %lu", "DeleteDebugDump", argin1.c_str(), sender, unix_uid);
     bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid));
 
     DBus::ReturnMessage reply(call);
@@ -120,7 +128,9 @@ DBus::Message CCommLayerServerDBus::_GetJobResult_stub(const DBus::CallMessage &
     uint64_t job_id;
     ri >> job_id;
 
-    unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
+    const char* sender = call.sender();
+    unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    VERB1 log("got %s(%llx) call from %s, uid %lu", "GetJobResult", (long long)job_id, sender, unix_uid);
     map_crash_report_t report = GetJobResult(job_id, to_string(unix_uid));
 
     DBus::ReturnMessage reply(call);
@@ -143,10 +153,11 @@ DBus::Message CCommLayerServerDBus::_GetPluginSettings_stub(const DBus::CallMess
 {
     DBus::MessageIter ri = call.reader();
     std::string PluginName;
-    std::string uid;
     ri >> PluginName;
 
-    unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
+    const char* sender = call.sender();
+    unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    VERB1 log("got %s('%s') call from %s, uid %lu", "GetPluginSettings", PluginName.c_str(), sender, unix_uid);
     map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid));
 
     DBus::ReturnMessage reply(call);
@@ -163,7 +174,9 @@ DBus::Message CCommLayerServerDBus::_SetPluginSettings_stub(const DBus::CallMess
     ri >> PluginName;
     ri >> plugin_settings;
 
-    unsigned long unix_uid = m_pConn->sender_unix_uid(call.sender());
+    const char* sender = call.sender();
+    unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
+    VERB1 log("got %s('%s',...) call from %s, uid %lu", "SetPluginSettings", PluginName.c_str(), sender, unix_uid);
     g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
 
     DBus::ReturnMessage reply(call);

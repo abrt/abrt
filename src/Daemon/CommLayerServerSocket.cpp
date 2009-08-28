@@ -166,7 +166,6 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
 CCommLayerServerSocket::CCommLayerServerSocket()
 : CCommLayerServer()
 {
-    int len;
     struct sockaddr_un local;
 
     unlink(SOCKET_FILE);

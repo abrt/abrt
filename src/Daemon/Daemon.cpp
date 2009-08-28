@@ -451,75 +451,73 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
 
         event = (struct inotify_event *) &buf[i];
         if (event->len)
-            name = &buf[i] + sizeof (struct inotify_event);
-        i += sizeof (struct inotify_event) + event->len;
+            name = &buf[i] + sizeof (*event);
+        i += sizeof (*event) + event->len;
 
-        log("Created file: %s", name);
-
-        /* we ignore the lock files */
-        if (event->mask & IN_ISDIR)
+        /* ignore lock files and such */
+        if (!(event->mask & IN_ISDIR))
         {
-            if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) < g_settings_nMaxCrashReportsSize)
+            VERB3 log("File '%s' creation detected, ignoring", name);
+            continue;
+        }
+
+        log("Directory '%s' creation detected", name);
+        if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) >= g_settings_nMaxCrashReportsSize)
+        {
+//TODO: delete oldest or biggest dir
+            log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, name);
+            DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+            continue;
+        }
+
+        map_crash_info_t crashinfo;
+        try
+        {
+            mw_result_t res;
+            res = SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+            switch (res)
             {
-                //std::string sName = name;
-                map_crash_info_t crashinfo;
-                try
-                {
-                    mw_result_t res;
-                    res = SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
-                    switch (res)
-                    {
-                        case MW_OK:
-                            log("New crash, saving...");
-                            RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
-                            /* Send dbus signal */
-                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                            break;
-                        case MW_REPORTED:
-                        case MW_OCCURED:
-                            log("Already saved crash, deleting...");
-                            /* Send dbus signal */
-                            g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                            DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
-                            break;
-                        case MW_BLACKLISTED:
-                        case MW_CORRUPTED:
-                        case MW_PACKAGE_ERROR:
-                        case MW_GPG_ERROR:
-                        case MW_IN_DB:
-                        case MW_FILE_ERROR:
-                        default:
-                            warn_client("Corrupted or bad crash, deleting...");
-                            DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
-                            break;
-                    }
-                }
-                catch (CABRTException& e)
-                {
-                    warn_client(e.what());
-                    if (e.type() == EXCEP_FATAL)
-                    {
-                        delete[] buf;
-                        return -1;
-                    }
-                }
-                catch (...)
-                {
-                    delete[] buf;
-                    throw;
-                }
-            }
-            else
-            {
-                log("DebugDumps size has exceeded the limit, deleting the last dump: %s", name);
-                DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                case MW_OK:
+                    log("New crash, saving...");
+                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                    /* Send dbus signal */
+                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
+                    break;
+                case MW_REPORTED:
+                case MW_OCCURED:
+                    log("Already saved crash, deleting...");
+                    /* Send dbus signal */
+                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
+                    DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                    break;
+                case MW_BLACKLISTED:
+                case MW_CORRUPTED:
+                case MW_PACKAGE_ERROR:
+                case MW_GPG_ERROR:
+                case MW_IN_DB:
+                case MW_FILE_ERROR:
+                default:
+                    warn_client("Corrupted or bad crash, deleting...");
+                    DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                    break;
             }
         }
-        else
+        catch (CABRTException& e)
         {
-            log("Some file created, ignoring...");
+            warn_client(e.what());
+            if (e.type() == EXCEP_FATAL)
+            {
+                delete[] buf;
+                return -1;
+            }
         }
-    }
+        catch (...)
+        {
+            delete[] buf;
+            throw;
+        }
+    } /* while */
+
     delete[] buf;
     return TRUE;
 }
