@@ -34,12 +34,6 @@
 #endif
 #include "CommLayerInner.h"
 
-// 1024 simultaneous actions
-#define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event)+FILENAME_MAX)*1024)
-
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
-#define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
-
 
 class CCrashWatcher
 :  public CObserver
@@ -51,7 +45,6 @@ class CCrashWatcher
     public:
         /* Observer methods */
         virtual void Status(const std::string& pMessage, uint64_t pJobID=0);
-        virtual void Debug(const std::string& pMessage);
         virtual void Warning(const std::string& pMessage, uint64_t pJobID=0);
 };
 

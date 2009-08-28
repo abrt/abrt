@@ -30,6 +30,10 @@
 #include "Daemon.h"
 
 
+#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
+#define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
+
+
 //FIXME: add some struct to be able to join all threads!
 typedef struct cron_callback_data_t
 {
@@ -423,6 +427,8 @@ static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpoin
 }
 
 /* Inotify handler */
+/* 1024 simultaneous actions */
+#define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event)+FILENAME_MAX)*1024)
 static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
     GIOError err;

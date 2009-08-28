@@ -39,11 +39,6 @@ void CCrashWatcher::Warning(const std::string& pMessage, uint64_t pJobID)
         g_pCommLayer->Warning(pMessage, pJobID);
 }
 
-void CCrashWatcher::Debug(const std::string& pMessage)
-{
-    log("Debug: %s", pMessage.c_str());
-}
-
 CCrashWatcher::CCrashWatcher()
 {
 }
