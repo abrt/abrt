@@ -1,0 +1,305 @@
+# Finnish translation of abrt.
+# Copyright (C) 2009 abrt's COPYRIGHT HOLDER
+# This file is distributed under the same license as the abrt package.
+# Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: abrt\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2009-08-29 20:05+0000\n"
+"PO-Revision-Date: 2009-08-30 00:34+0300\n"
+"Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
+"Language-Team: Finnish <laatu@lokalisointi.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: ../src/Gui/ABRTExceptions.py:4
+msgid "Another client is already running, trying to wake it."
+msgstr "Toinen asiakasohjelma on jo käynnissä, yritetään herättää sitä."
+
+#: ../src/Gui/ABRTExceptions.py:10
+msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr ""
+"Saatiin odottamatonta dataa taustaprosessilta (onko tietokanta päivitetty?)"
+
+#: ../src/Gui/CCDBusBackend.py:140
+msgid "Can't connect to dbus"
+msgstr "DBusiin ei saada yhteyttä"
+
+#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:163
+msgid "Please check if abrt daemon is running."
+msgstr "Tarkista onko abrt-taustaprosessi käynnissä."
+
+#: ../src/Gui/CCDBusBackend.py:181
+msgid ""
+"Daemon did't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
+"Taustaprosessi ei palauttanut kelvollista raporttitietoa\n"
+"Puuttuuko debuginfo?"
+
+#: ../src/Gui/ccgui.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:214
+msgid "<b>Not reported!</b>"
+msgstr "<b>Ei raportoitu!</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">Kuvaus</span>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "About ABRT"
+msgstr "Tietoja ABRT:stä"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Automatic Bug Reporting Tool"
+msgstr "Automaattinen ohjelmavikojen raportointiohjelma"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Delete"
+msgstr "Poista"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "Please wait.."
+msgstr "Odota hetki..."
+
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:2
+msgid "Report"
+msgstr "Raportti"
+
+#: ../src/Gui/ccgui.glade.h:10
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Tämä on vapaa ohjelma: tätä ohjelmaa saa levittää edelleen ja muuttaa Free "
+"Software Foundationin julkaiseman GNU General Public Licensen (GPL-lisenssi) "
+"version 2 tai (valinnan mukaan) myöhemmän version ehtojen mukaisesti.\n"
+"\n"
+"Tätä ohjelmaa levitetään siinä toivossa, että se olisi hyödyllinen mutta "
+"ilman mitään takuuta; edes hiljaista takuuta kaupallisesti hyväksyttävästä "
+"laadusta tai soveltuvuudesta tiettyyn tarkoitukseen. Katso GPL- lisenssistä "
+"lisää yksityiskohtia.\n"
+"\n"
+"Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä. Jos näin ei ole, "
+"katso <http://www.gnu.org/licenses/>."
+
+#: ../src/Gui/ccgui.glade.h:15
+msgid "Working..."
+msgstr "Työskentelee..."
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "_Edit"
+msgstr "_Muokkaa"
+
+#: ../src/Gui/ccgui.glade.h:17
+msgid "_File"
+msgstr "_Tiedosto"
+
+#: ../src/Gui/ccgui.glade.h:18
+msgid "_Help"
+msgstr "_Ohje"
+
+#: ../src/Gui/CCMainWindow.py:86
+msgid "Package"
+msgstr "Paketti"
+
+#: ../src/Gui/CCMainWindow.py:87
+msgid "Application"
+msgstr "Ohjelma"
+
+#: ../src/Gui/CCMainWindow.py:88
+msgid "Date"
+msgstr "Päiväys"
+
+#: ../src/Gui/CCMainWindow.py:89
+msgid "Crash Rate"
+msgstr "Kaatumisaste"
+
+#: ../src/Gui/CCMainWindow.py:91
+msgid "User"
+msgstr "Käyttäjä"
+
+#: ../src/Gui/CCMainWindow.py:156
+#, python-format
+msgid ""
+"Unable to get report!\n"
+"%s"
+msgstr ""
+"Raporttia ei saatu!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:173
+#, python-format
+msgid ""
+"Error while loading the dumplist, please check if abrt daemon is running\n"
+" %s"
+msgstr ""
+"Vedosluetteloa ladattaessa tapahtui virhe, tarkista onko abrt-taustaprosessi "
+"käynnissä\n"
+" %s"
+
+#: ../src/Gui/CCMainWindow.py:206
+msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+msgstr "<b>Tämä kaatuminen on raportoitu, raportit on nähtävillä osoitteessa:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:266
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"Raporttia ei saatu!\n"
+"Puuttuuko debuginfo?"
+
+#: ../src/Gui/CCMainWindow.py:278
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Raportin tekeminen epäonnistui!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:306
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "Raportin noutaminen epäonnistui: %s"
+
+#: ../src/Gui/CCReporterDialog.py:103
+msgid "Brief description how to reproduce this or what you did..."
+msgstr ""
+"Lyhyt kuvaus siitä, miten tämän pystyy toistamaan tai mitä olit tekemässä..."
+
+#: ../src/Gui/PluginSettingsUI.py:17
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr "PluginDialog-elementtiä ei löydy käyttöliittymäkuvauksesta!"
+
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:21
+#, python-format
+msgid "No UI for plugin %s"
+msgstr "Liitännäisellä %s ei ole käyttöliittymää"
+
+#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+msgid "combo box is not implemented"
+msgstr "alasvetovalikkoa ei ole toteutettu"
+
+#: ../src/Gui/PluginSettingsUI.py:47
+msgid "Nothing to hydrate!"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:1
+msgid "Comment"
+msgstr "Kommentti"
+
+#: ../src/Gui/report.glade.h:3
+msgid "Send"
+msgstr "Lähetä"
+
+#: ../src/Gui/report.glade.h:4
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/Gui/SettingsDialog.py:22
+msgid "Can't load gui description for SettingsDialog!"
+msgstr "Ei voida ladata SettingsDialogin käyttöliittymäkuvausta!"
+
+#: ../src/Gui/SettingsDialog.py:33
+msgid "Name"
+msgstr "Nimi"
+
+#: ../src/Gui/SettingsDialog.py:47
+msgid "Enabled"
+msgstr "Käytössä"
+
+#: ../src/Gui/SettingsDialog.py:106
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"Virhe avattaessa liitännäisen asetuskäyttöliittymää:\n"
+"\n"
+"%s"
+
+#: ../src/Gui/SettingsDialog.py:116
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"Liitännäisen asetuksia ei voida tallentaa:\n"
+" %s"
+
+#: ../src/Gui/SettingsDialog.py:122
+msgid "unknown response from settings dialog"
+msgstr "asetusikkuna antoi tuntemattoman vastauksen"
+
+#. applet->AddEvent(uid, std::string(progname));
+#: ../src/Applet/Applet.cpp:49
+#, c-format
+msgid "A crash in package %s has been detected!"
+msgstr "Paketissa %s on huomattu kaatuminen!"
+
+#. applet is already running
+#: ../src/Applet/Applet.cpp:80
+msgid "Applet is already running."
+msgstr "Sovelma on jo käynnissä."
+
+#: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
+msgid "Daemon is not running."
+msgstr "Taustaprosessi ei ole käynnissä."
+
+#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
+#, c-format
+msgid "Pending events: %i"
+msgstr "Tapahtumia jonossa: %i"
+
+#: ../src/Applet/CCApplet.cpp:102
+#, c-format
+msgid "Can't create menu from the description, popup won't be available!\n"
+msgstr "Kuvauksesta ei voi luoda valikkoa, ponnahdusvalikko ei ole käytettävissä!\n"
+
+#: ../src/Applet/CCApplet.cpp:125
+msgid ""
+"This is default handler, you should register your own with "
+"ConnectCrashHandler"
+msgstr ""
+"Tämä on oletuskäsittelijä, sinun pitäisi rekisteröidä omasi "
+"ConnectCrashHandlerin avulla"
+
+#: ../src/Applet/CCApplet.cpp:135
+msgid "ABRT service is not running"
+msgstr "ABRT-palvelu ei ole käytössä"
+
+#: ../src/Applet/CCApplet.cpp:139
+msgid "ABRT service has been started"
+msgstr "ABRT-palvelu on käynnistetty"
+
+#: ../src/Applet/CCApplet.cpp:160
+msgid "Warning"
+msgstr "Varoitus"
+
+#: ../src/Applet/CCApplet.cpp:166
+msgid "Out of memory"
+msgstr "Muisti loppui"
