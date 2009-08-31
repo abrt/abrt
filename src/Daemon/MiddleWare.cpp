@@ -277,17 +277,51 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir)
     }
 }
 
+
+static bool CheckReport(const map_crash_report_t& pCrashReport)
+{
+    map_crash_report_t::const_iterator it_analyzer = pCrashReport.find(CD_MWANALYZER);
+    map_crash_report_t::const_iterator it_mwuid = pCrashReport.find(CD_MWUID);
+    map_crash_report_t::const_iterator it_mwuuid = pCrashReport.find(CD_MWUUID);
+
+    map_crash_report_t::const_iterator it_package = pCrashReport.find(FILENAME_PACKAGE);
+    map_crash_report_t::const_iterator it_architecture = pCrashReport.find(FILENAME_ARCHITECTURE);
+    map_crash_report_t::const_iterator it_kernel = pCrashReport.find(FILENAME_KERNEL);
+    map_crash_report_t::const_iterator it_component = pCrashReport.find(FILENAME_COMPONENT);
+    map_crash_report_t::const_iterator it_release = pCrashReport.find(FILENAME_RELEASE);
+    map_crash_report_t::const_iterator it_executable = pCrashReport.find(FILENAME_EXECUTABLE);
+
+    if (it_analyzer == pCrashReport.end() || it_mwuid == pCrashReport.end() ||
+        it_mwuuid == pCrashReport.end() || it_package == pCrashReport.end() ||
+        it_architecture == pCrashReport.end() || it_kernel == pCrashReport.end() ||
+        it_component == pCrashReport.end() || it_release == pCrashReport.end() ||
+        it_executable == pCrashReport.end())
+    {
+        return false;
+    }
+
+    if (it_analyzer->second[CD_CONTENT] == "" || it_mwuid->second[CD_CONTENT] == "" ||
+        it_mwuuid->second[CD_CONTENT] == "" || it_package->second[CD_CONTENT] == "" ||
+        it_architecture->second[CD_CONTENT] == "" || it_kernel->second[CD_CONTENT] == "" ||
+        it_component->second[CD_CONTENT] == "" || it_release->second[CD_CONTENT] == "" ||
+        it_executable->second[CD_CONTENT] == "")
+    {
+        return false;
+    }
+
+    return true;
+}
+
 report_status_t Report(const map_crash_report_t& pCrashReport,
                                     const std::string& pUID)
 {
     report_status_t ret;
     std::string key;
     std::string message;
-    if (pCrashReport.find(CD_MWANALYZER) == pCrashReport.end() ||
-        pCrashReport.find(CD_MWUID) == pCrashReport.end() ||
-        pCrashReport.find(CD_MWUUID) == pCrashReport.end())
+
+    if (!CheckReport)
     {
-        throw CABRTException(EXCEP_ERROR, "Report(): System data are missing in crash report.");
+        throw CABRTException(EXCEP_ERROR, "Report(): Some of mandatory report data are missing.");
     }
 
     std::string analyzer = pCrashReport.find(CD_MWANALYZER)->second[CD_CONTENT];
