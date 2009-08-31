@@ -3,8 +3,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.7.2
-Release: 3%{?dist}
+Version: 0.0.8
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -22,6 +22,7 @@ BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
+BuildRequires: nss-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 
@@ -334,6 +335,46 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed Aug 26 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.8-1
+- new version
+- resolved: Bug 518420 -  ordinary user's abrt-applet shows up for root owned crashes (npajkovs)
+- GUI: added support for gettext (+part of czech translation) (jmoskovc)
+- added support for saving settings (zprikryl)
+- fixed conf: comment in the middle of the line isn't supported anymore (zprikryl)
+- BZ#518413 PATCH ... furious kerneloops reporting (aarapov)
+- GUI: added first part of support for gettext (jmoskovc)
+- add new parameter to FileTransfer plugin (dnovotny)
+- added support for updating abrt's table (zprikryl)
+- added check for cc-list and reporter. +1 is created iff reporter is somebody else and current user isn't in cc list. (zprikryl)
+- GUI: few improvements, to be more userfriendly (jmoskovc)
+- LOGGER: return valid uri of the log file on succes (jmoskovc)
+- GUI: bring the GUI up to front instead of just blinking in taskbar (trac#60, rhbz#512390) (jmoskovc)
+- Try to execute $bindir/abrt-gui, then fall back to $PATH search. Closes bug 65 (vda.linux)
+- APPLET: added popup menu (trac#37, rhbz#518386) (jmoskovc)
+- Improved report results (zprikryl)
+- Fixed sigsegv (#rhbz 518609) (zprikryl)
+- GUI: removed dependency on libsexy if gtk2 >= 2.17 (jmoskovc)
+- fixed signature check (zprikryl)
+- KerneloopsSysLog: check line length to be >= 4 before looking for "Abrt" (vda.linux)
+- Comment cannot start in the middle of the line. Comment has to start by Char # (first char in the line) (zprikryl)
+- command mailx isn't run under root anymore. (zprikryl)
+- GUI: added horizontal scrolling to report window (jmoskovc)
+- GUI: added clickable link to "after report" status window (jmoskovc)
+- added default values for abrt daemon (zprikryl)
+- Plugins/CCpp: remove trailing \n from debuginfo-install's output (vda.linux)
+- explain EnableGPGCheck option better (vda.linux)
+- mailx: correct English (vda.linux)
+- Bugzilla.conf: correct English (vda.linux)
+- GUI: nicer after report message (jmoskovc)
+- BZ plugin: removed /xmlrpc.cgi from config, made the report message more user friendly (jmoskovc)
+- CCpp plugin: do not abort if debuginfos aren't found (vda.linux)
+- abrt.spec: bump version to 0.0.7-2 (vda.linux)
+- mailx removed dangerous parameter option (zprikryl)
+- minimum timeout is 1 second (zprikryl)
+- in case of plugin error, don't delete debug dumps (zprikryl)
+- abrt-gui: fix crash when run by root (vda.linux)
+- and lot more in git log ...
+
 * Thu Aug 20 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.7.2-1
 - new version
 - fixed some bugs found during test day
