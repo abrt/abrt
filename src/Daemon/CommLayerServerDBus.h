@@ -40,7 +40,7 @@ class CCommLayerServerDBus
         virtual void Update(const std::string& pMessage, uint64_t pJobID);
         //the job id should be enough in jobdone
         virtual void JobDone(const std::string& pDest, uint64_t pJobID);
-        virtual void JobStarted(const std::string& pDest, uint64_t pJobID);
+        virtual void JobStarted(const std::string &pDest, uint64_t pJobID);
         virtual void Warning(const std::string& pMessage);
         virtual void Warning(const std::string& pMessage, uint64_t pJobID);
 };

@@ -102,6 +102,7 @@ class MainWindow():
             column.set_resizable(True)
         #connect signals
         self.dlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
+        self.dlist.connect("row-activated", self.on_dumpRowActivated)
         self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked, self.dlist)
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
@@ -284,8 +285,12 @@ class MainWindow():
         #print "got another crash, refresh gui?"
 
     def on_bReport_clicked(self, button):
-        # FIXME don't duplicate the code, move to function
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        self.on_dumpRowActivated(self.dlist, None, path, None)
+
+    def on_dumpRowActivated(self, treeview, iter, path, user_data=None):
+        # FIXME don't duplicate the code, move to function
+        dumpsListStore, path = treeview.get_selection().get_selected_rows()
         if not path:
             return
         self.update_pBar = False

@@ -33,4 +33,5 @@ class CCommLayerServerSocket : public CCommLayerServer
         virtual void Crash(const std::string& arg1);
         virtual void AnalyzeComplete(const map_crash_report_t& arg1);
         virtual void Error(const std::string& arg1);
+        virtual void JobStarted(const std::string &pDest, uint64_t pJobID) {};
 };
