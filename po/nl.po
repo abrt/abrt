@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2009-08-31 08:38+0000\n"
-"PO-Revision-Date: 2009-08-31 14:07+0200\n"
+"PO-Revision-Date: 2009-08-31 15:03+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,61 +19,64 @@ msgstr ""
 
 #: ../src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
-msgstr ""
+msgstr "Andere client draait al, probeer het te wekken."
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
+"Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
 
 #: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
-msgstr ""
+msgstr "Kan niet verbinden met dbus"
 
 #: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:163
 msgid "Please check if abrt daemon is running."
-msgstr ""
+msgstr "Controleer a.u.b. of de abrt daemon draait."
 
 #: ../src/Gui/CCDBusBackend.py:181
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
+"Daemon gaf geen geldige rapport info terug\n"
+"Mist debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/Gui/ccgui.glade.h:2
 msgid "(C) 2009 Red Hat, Inc."
-msgstr ""
+msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:214
 msgid "<b>Not reported!</b>"
-msgstr ""
+msgstr "<b>Niet gerapporteerd!</b>"
 
 #: ../src/Gui/ccgui.glade.h:4
 msgid "<span color=\"white\">Description</span>"
-msgstr ""
+msgstr "<span color=\"white\">Beschrijving</span>"
 
 #: ../src/Gui/ccgui.glade.h:5
 msgid "About ABRT"
-msgstr ""
+msgstr "Over ABRT"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Automatic Bug Reporting Tool"
-msgstr ""
+msgstr "Automatisch bug rapporteer gereedschap"
 
 #: ../src/Gui/ccgui.glade.h:7
 msgid "Delete"
-msgstr ""
+msgstr "Verwijderen"
 
 #: ../src/Gui/ccgui.glade.h:8
 msgid "Please wait.."
-msgstr ""
+msgstr "Wacht a.u.b..."
 
 #: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:2
 msgid "Report"
-msgstr ""
+msgstr "Rapport"
 
 #: ../src/Gui/ccgui.glade.h:10
 msgid ""
@@ -90,38 +93,50 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Dit programma is vrije software; je kunt het heruitgeven en/of veranderen "
+"volgens de regels van de GNU General Public License zoals gepubliceerd door "
+"de Free Software Foundation; volgens of versie 2 van de licentie, of (zoals "
+"je wilt) elke latere versie.\n"
+"\n"
+"Dit programma wordt uitgegeven in de hoop dat het nuttig zal zijn, maar "
+"ZONDER ENIGE GARANTIE; zonder zelfs de impliciete garantie van "
+"VERKOOPBAARHEID of GESCHIKT VOOR EEN BEPAALD DOEL. Zie de GNU General Public "
+"License voor meer details.\n"
+"\n"
+"Je moet een kopie van de GNU General Public License tezamen met dit "
+"programma ontvangen hebben.  Zo niet, zie <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:15
 msgid "Working..."
-msgstr ""
+msgstr "Ben bezig..."
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "_Edit"
-msgstr ""
+msgstr "Be_werken"
 
 #: ../src/Gui/ccgui.glade.h:17
 msgid "_File"
-msgstr ""
+msgstr "_Bestand"
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "_Help"
-msgstr ""
+msgstr "_Hulp"
 
 #: ../src/Gui/CCMainWindow.py:86
 msgid "Package"
-msgstr ""
+msgstr "Pakket"
 
 #: ../src/Gui/CCMainWindow.py:87
 msgid "Application"
-msgstr ""
+msgstr "Toepassing"
 
 #: ../src/Gui/CCMainWindow.py:88
 msgid "Date"
-msgstr ""
+msgstr "Datum"
 
 #: ../src/Gui/CCMainWindow.py:89
 msgid "Crash Rate"
-msgstr ""
+msgstr "Crash rate"
 
 #: ../src/Gui/CCMainWindow.py:91
 msgid "User"
@@ -133,6 +148,8 @@ msgid ""
 "Unable to get report!\n"
 "%s"
 msgstr ""
+"Kan rapport niet krijgen!\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:173
 #, python-format
@@ -140,16 +157,21 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
+"Fout tijdens het laden van de dumplijst, controleer a.u.b of abrt daemon "
+"draait\n"
+" %s"
 
 #: ../src/Gui/CCMainWindow.py:206
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr ""
+msgstr "<b>Deze crash is gerapporteerd, je kunt het rapport vinden op:</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:266
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
+"Kan geen rapport krijgen!\n"
+"Mist debuginfo?"
 
 #: ../src/Gui/CCMainWindow.py:278
 #, python-format
@@ -157,57 +179,59 @@ msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
+"Rapporteren mislukte!\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:306
 #, python-format
 msgid "Error getting the report: %s"
-msgstr ""
+msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
 #: ../src/Gui/CCReporterDialog.py:103
 msgid "Brief description how to reproduce this or what you did..."
-msgstr ""
+msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr ""
+msgstr "Kan geen PluginDialog widget in UI beschrijving vinden!"
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
-msgstr ""
+msgstr "Gee UI voor plugin %s"
 
 #: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr ""
+msgstr "combo box is niet geimplementeertd"
 
 #: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
-msgstr ""
+msgstr "Kan het niet hard maken!"
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
-msgstr ""
+msgstr "Commentaar"
 
 #: ../src/Gui/report.glade.h:3
 msgid "Send"
-msgstr ""
+msgstr "Verzenden"
 
 #: ../src/Gui/report.glade.h:4
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: ../src/Gui/SettingsDialog.py:22
 msgid "Can't load gui description for SettingsDialog!"
-msgstr ""
+msgstr "Kan gui beschrijving voor SettingsDialog niet laden!"
 
 #: ../src/Gui/SettingsDialog.py:33
 msgid "Name"
-msgstr ""
+msgstr "Naam"
 
 #: ../src/Gui/SettingsDialog.py:47
 msgid "Enabled"
-msgstr ""
+msgstr "Aangezet"
 
 #: ../src/Gui/SettingsDialog.py:106
 #, python-format
@@ -216,6 +240,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"Fout tijdens het openen van plugin instellingen UI: \n"
+"\n"
+"%s"
 
 #: ../src/Gui/SettingsDialog.py:116
 #, python-format
@@ -223,54 +250,59 @@ msgid ""
 "Can't save plugin settings:\n"
 " %s"
 msgstr ""
+"Kan plugin instellingen niet opslaan:\n"
+" %s"
 
 #: ../src/Gui/SettingsDialog.py:122
 msgid "unknown response from settings dialog"
-msgstr ""
+msgstr "onbekende reactie van de instellingen dialoog"
 
 #. applet->AddEvent(uid, std::string(progname));
 #: ../src/Applet/Applet.cpp:49
 #, c-format
 msgid "A crash in package %s has been detected!"
-msgstr ""
+msgstr "Een crash in pakket %s is ontdekt!"
 
 #. applet is already running
 #: ../src/Applet/Applet.cpp:80
 msgid "Applet is already running."
-msgstr ""
+msgstr "Applet draait al."
 
 #: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
 msgid "Daemon is not running."
-msgstr ""
+msgstr "Daemon draait niet."
 
 #: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
 #, c-format
 msgid "Pending events: %i"
-msgstr ""
+msgstr "Gebeurtenissen in behandeling: %i"
 
 #: ../src/Applet/CCApplet.cpp:102
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr ""
+"Kan geen menu maken van de beschrijving, pop-up zal niet beschikbaar zijn!\n"
 
 #: ../src/Applet/CCApplet.cpp:125
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
 msgstr ""
+"Dit is de standaard afhandeling, je moet je eigen registreren bij "
+"ConnectCrashHandler"
 
 #: ../src/Applet/CCApplet.cpp:135
 msgid "ABRT service is not running"
-msgstr ""
+msgstr "ABRT service draait niet"
 
 #: ../src/Applet/CCApplet.cpp:139
 msgid "ABRT service has been started"
-msgstr ""
+msgstr "ABRT service is gestart"
 
 #: ../src/Applet/CCApplet.cpp:160
 msgid "Warning"
-msgstr ""
+msgstr "Waarschuwing"
 
 #: ../src/Applet/CCApplet.cpp:166
 msgid "Out of memory"
-msgstr ""
+msgstr "Geen geheugen beschikbaar"
