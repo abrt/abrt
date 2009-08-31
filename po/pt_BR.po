@@ -1,0 +1,296 @@
+# Brazilian Portuguese translation of ABRT.
+# This file is distributed under the same license as the ABRT package.
+#
+# Igor Pires Soares <igor@projetofedora.org>, 2009.
+#
+
+msgid ""
+msgstr ""
+"Project-Id-Version: ABRT\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2009-08-31 08:38+0000\n"
+"PO-Revision-Date: 2009-08-31 11:44-0300\n"
+"Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
+"Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Poedit-Language: Portuguese\n"
+"X-Poedit-Country: BRAZIL\n"
+
+#: ../src/Gui/ABRTExceptions.py:4
+msgid "Another client is already running, trying to wake it."
+msgstr "Outro cliente já está em execução, tentando acordá-lo."
+
+#: ../src/Gui/ABRTExceptions.py:10
+msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr "Dados inesperados obtidos do daemon (o banco de dados está devidamente atualizado?)."
+
+#: ../src/Gui/CCDBusBackend.py:140
+msgid "Can't connect to dbus"
+msgstr "Não foi possível conectar ao dbus"
+
+#: ../src/Gui/CCDBusBackend.py:144
+#: ../src/Gui/CCDBusBackend.py:163
+msgid "Please check if abrt daemon is running."
+msgstr "Por favor, verifique se o daemon do abrt está em execução."
+
+#: ../src/Gui/CCDBusBackend.py:181
+msgid ""
+"Daemon did't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
+"O daemon não retornou informações válidas no relatório\n"
+"O debuginfo está faltando?"
+
+#: ../src/Gui/ccgui.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/CCMainWindow.py:214
+msgid "<b>Not reported!</b>"
+msgstr "<b>Não relatado!</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">Descrição</span>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "About ABRT"
+msgstr "Sobre o ABRT"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Automatic Bug Reporting Tool"
+msgstr "Ferramenta para o relato automático de erros"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Delete"
+msgstr "Excluir"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "Please wait.."
+msgstr "Por favor aguarde..."
+
+#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/report.glade.h:2
+msgid "Report"
+msgstr "Relatar"
+
+#: ../src/Gui/ccgui.glade.h:10
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Este programa é um software livre; você pode redistribuí-lo e/ou modificá-lo sob os termos da Licença Pública Geral GNU (GNU GPL) como publicada pela Free Software Foundation; tanto a versão 2 da Licença ou (a sua escolha) qualquer versão posterior.\n"
+"\n"
+"Este programa é distribuído na esperança de que será útil, mas SEM NENHUMA GARANTIA; até mesmo sem a garantia implícita de COMERCIALIZAÇÃO ou ADEQUAÇÃO A UM PROPÓSITO EM PARTICULAR. Veja a Licença Pública Geral GNU (GNU GPL) para mais detalhes.\n"
+"\n"
+"Você deve ter recebido uma cópia da GNU General Public License (GPL) junto com este programa. Se não, acesse <http://www.gnu.org/licenses/>."
+
+#: ../src/Gui/ccgui.glade.h:15
+msgid "Working..."
+msgstr "Processando..."
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "_Edit"
+msgstr "_Editar"
+
+#: ../src/Gui/ccgui.glade.h:17
+msgid "_File"
+msgstr "_Arquivo"
+
+#: ../src/Gui/ccgui.glade.h:18
+msgid "_Help"
+msgstr "Aj_uda"
+
+#: ../src/Gui/CCMainWindow.py:86
+msgid "Package"
+msgstr "Pacote"
+
+#: ../src/Gui/CCMainWindow.py:87
+msgid "Application"
+msgstr "Aplicativo"
+
+#: ../src/Gui/CCMainWindow.py:88
+msgid "Date"
+msgstr "Data"
+
+#: ../src/Gui/CCMainWindow.py:89
+msgid "Crash Rate"
+msgstr "Taxa de travamento"
+
+#: ../src/Gui/CCMainWindow.py:91
+msgid "User"
+msgstr "Usuário"
+
+#: ../src/Gui/CCMainWindow.py:156
+#, python-format
+msgid ""
+"Unable to get report!\n"
+"%s"
+msgstr ""
+"Não foi possível obter o relatório!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:173
+#, python-format
+msgid ""
+"Error while loading the dumplist, please check if abrt daemon is running\n"
+" %s"
+msgstr ""
+"Erro ao carregar a lista de despejo, por favor, verifique se o daemon do abrt está em execução\n"
+" %s"
+
+#: ../src/Gui/CCMainWindow.py:206
+msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+msgstr "<b>Este travamento foi relatado, você pode localizar o(s) relatório(s) em:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:266
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"Não foi possível obter o relatório!\n"
+"O debuginfo está faltando?"
+
+#: ../src/Gui/CCMainWindow.py:278
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Falha no relato!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:306
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "Erro ao obter o relatório: %s"
+
+#: ../src/Gui/CCReporterDialog.py:103
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
+
+#: ../src/Gui/PluginSettingsUI.py:17
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr "Não foi possível localizar o widget PluginDialog na descrição da interface de usuário!"
+
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:21
+#, python-format
+msgid "No UI for plugin %s"
+msgstr "Nenhuma interface de usuário para o plugin %s"
+
+#: ../src/Gui/PluginSettingsUI.py:38
+#: ../src/Gui/PluginSettingsUI.py:64
+msgid "combo box is not implemented"
+msgstr "caixa de combinação não implementada"
+
+#: ../src/Gui/PluginSettingsUI.py:47
+msgid "Nothing to hydrate!"
+msgstr "Nada a ser hidratado!"
+
+#: ../src/Gui/report.glade.h:1
+msgid "Comment"
+msgstr "Comentário"
+
+#: ../src/Gui/report.glade.h:3
+msgid "Send"
+msgstr "Enviar"
+
+#: ../src/Gui/report.glade.h:4
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/Gui/SettingsDialog.py:22
+msgid "Can't load gui description for SettingsDialog!"
+msgstr "Não foi possível carregar a descrição da interface gráfica de usuário para o SettingsDialog!"
+
+#: ../src/Gui/SettingsDialog.py:33
+msgid "Name"
+msgstr "Nome"
+
+#: ../src/Gui/SettingsDialog.py:47
+msgid "Enabled"
+msgstr "Habilitado"
+
+#: ../src/Gui/SettingsDialog.py:106
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"Erro ao abrir a interface de usuário das configurações do plugin: \n"
+"\n"
+"%s"
+
+#: ../src/Gui/SettingsDialog.py:116
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"Não foi possível salvar as configurações do plugin:\n"
+" %s"
+
+#: ../src/Gui/SettingsDialog.py:122
+msgid "unknown response from settings dialog"
+msgstr "resposta desconhecida do diálogo de configurações"
+
+#. applet->AddEvent(uid, std::string(progname));
+#: ../src/Applet/Applet.cpp:49
+#, c-format
+msgid "A crash in package %s has been detected!"
+msgstr "Um travamento no pacote %s foi detectado!"
+
+#. applet is already running
+#: ../src/Applet/Applet.cpp:80
+msgid "Applet is already running."
+msgstr "O miniaplicativo já está em execução."
+
+#: ../src/Applet/Applet.cpp:94
+#: ../src/Applet/Applet.cpp:95
+msgid "Daemon is not running."
+msgstr "O daemon não está em execução."
+
+#: ../src/Applet/CCApplet.cpp:83
+#: ../src/Applet/CCApplet.cpp:249
+#, c-format
+msgid "Pending events: %i"
+msgstr "Eventos pendentes: %i"
+
+#: ../src/Applet/CCApplet.cpp:102
+#, c-format
+msgid "Can't create menu from the description, popup won't be available!\n"
+msgstr "Não foi possível criar um menu a partir da descrição, a janela instantânea não estará disponível!\n"
+
+#: ../src/Applet/CCApplet.cpp:125
+msgid "This is default handler, you should register your own with ConnectCrashHandler"
+msgstr "Este é o manipulador padrão, você deve registrar o seu próprio com o ConnectCrashHandler"
+
+#: ../src/Applet/CCApplet.cpp:135
+msgid "ABRT service is not running"
+msgstr "O serviço do ABRT não está em execução"
+
+#: ../src/Applet/CCApplet.cpp:139
+msgid "ABRT service has been started"
+msgstr "O serviço ABRT foi iniciado"
+
+#: ../src/Applet/CCApplet.cpp:160
+msgid "Warning"
+msgstr "Aviso"
+
+#: ../src/Applet/CCApplet.cpp:166
+msgid "Out of memory"
+msgstr "Memória insuficiente"
+
