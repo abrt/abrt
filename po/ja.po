@@ -1,78 +1,80 @@
-# SOME DESCRIPTIVE TITLE.
+# translation of ja.po to Japanese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
+# Kiyoto Hashida <khashida@redhat.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-08-29 10:50+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"POT-Creation-Date: 2009-08-31 02:47+0000\n"
+"PO-Revision-Date: 2009-08-31 16:35+0900\n"
+"Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
+"Language-Team: Japanese <jp@li.org>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
-msgstr ""
+msgstr "別のクライアントが稼働していますので、それを呼び出しています。"
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
+msgstr "デーモンから予想外のデータを受け取りました（データベースは正常に更新されていますか？）。"
 
 #: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
-msgstr ""
+msgstr "dbus に接続できません。"
 
 #: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:163
 msgid "Please check if abrt daemon is running."
-msgstr ""
+msgstr "abrt デーモンが稼働しているかどうかチェックして下さい。"
 
 #: ../src/Gui/CCDBusBackend.py:181
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
+"デーモンは有効な報告内容を返しませんでした。\n"
+"Debuginfo が無いですか？"
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid " "
-msgstr ""
+msgstr " "
 
 #: ../src/Gui/ccgui.glade.h:2
 msgid "(C) 2009 Red Hat, Inc."
-msgstr ""
+msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:214
 msgid "<b>Not reported!</b>"
-msgstr ""
+msgstr "<b>報告がありません!</b>"
 
 #: ../src/Gui/ccgui.glade.h:4
 msgid "<span color=\"white\">Description</span>"
-msgstr ""
+msgstr "<span color=\"white\">説明</span>"
 
 #: ../src/Gui/ccgui.glade.h:5
 msgid "About ABRT"
-msgstr ""
+msgstr "ABRT について"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Automatic Bug Reporting Tool"
-msgstr ""
+msgstr "自動バグ報告ツール（ABRT）"
 
 #: ../src/Gui/ccgui.glade.h:7
 msgid "Delete"
-msgstr ""
+msgstr "削除"
 
 #: ../src/Gui/ccgui.glade.h:8
 msgid "Please wait.."
-msgstr ""
+msgstr "お待ち下さい..."
 
 #: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:2
 msgid "Report"
-msgstr ""
+msgstr "報告"
 
 #: ../src/Gui/ccgui.glade.h:10
 msgid ""
@@ -89,42 +91,52 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"このプログラムはフリーソフトウェアです。これは、Free Software Foundation のライセンス "
+"バージョン２、又は最新版（選択可能）で公開されている GNU General Public License の "
+"規定に準じて、再配布したり修正をしたりすることができます。\n"
+"\n"
+"このプログラムは有用なものとしての期待をもって配布されています。しかし保証はありません。 "
+"そして市場性に関する保証、あるいは特定の目的への適正に関する保証の示唆もありません。 "
+"詳細については GNU General Public License  をご覧下さい。\n"
+"\n"
+"このプログラムと一緒に GNU General Public License のコピーを受理されているはずです。 "
+"受理されていない場合は、<http://www.gnu.org/licenses/> をご覧下さい。"
 
 #: ../src/Gui/ccgui.glade.h:15
 msgid "Working..."
-msgstr ""
+msgstr "作業中..."
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "_Edit"
-msgstr ""
+msgstr "編集（_E）"
 
 #: ../src/Gui/ccgui.glade.h:17
 msgid "_File"
-msgstr ""
+msgstr "ファイル（_F）"
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "_Help"
-msgstr ""
+msgstr "ヘルプ（_H）"
 
 #: ../src/Gui/CCMainWindow.py:86
 msgid "Package"
-msgstr ""
+msgstr "パッケージ"
 
 #: ../src/Gui/CCMainWindow.py:87
 msgid "Application"
-msgstr ""
+msgstr "アプリケーション"
 
 #: ../src/Gui/CCMainWindow.py:88
 msgid "Date"
-msgstr ""
+msgstr "期日"
 
 #: ../src/Gui/CCMainWindow.py:89
 msgid "Crash Rate"
-msgstr ""
+msgstr "クラッシュレート"
 
 #: ../src/Gui/CCMainWindow.py:91
 msgid "User"
-msgstr ""
+msgstr "ユーザー"
 
 #: ../src/Gui/CCMainWindow.py:156
 #, python-format
@@ -132,6 +144,8 @@ msgid ""
 "Unable to get report!\n"
 "%s"
 msgstr ""
+"報告を取得できません\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:173
 #, python-format
@@ -139,16 +153,20 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
+"dumplist のロード中にエラーが発生。abrt デーモンが稼働しているかチェックして下さいn"
+" %s"
 
 #: ../src/Gui/CCMainWindow.py:206
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr ""
+msgstr "<b>このクラッシュは報告済みです。報告は以下で見ることができます:</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:266
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
+"報告を取得できません\n"
+"Debuginfo が無いですか ?"
 
 #: ../src/Gui/CCMainWindow.py:278
 #, python-format
@@ -156,57 +174,59 @@ msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
+"報告が失敗しました!\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:306
 #, python-format
 msgid "Error getting the report: %s"
-msgstr ""
+msgstr "報告の取得中にエラーです: %s"
 
 #: ../src/Gui/CCReporterDialog.py:103
 msgid "Brief description how to reproduce this or what you did..."
-msgstr ""
+msgstr "この問題の再現手順、または実行したことの簡単な説明..."
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr ""
+msgstr "UI 説明の中で PluginDialog ウィジェットを見つけることが出来ません!"
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
-msgstr ""
+msgstr "plugin の UI がありません %s"
 
 #: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr ""
+msgstr "combo box が実装されていません"
 
 #: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
-msgstr ""
+msgstr "水和するものは有りません!"
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
-msgstr ""
+msgstr "コメント"
 
 #: ../src/Gui/report.glade.h:3
 msgid "Send"
-msgstr ""
+msgstr "送信"
 
 #: ../src/Gui/report.glade.h:4
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: ../src/Gui/SettingsDialog.py:22
 msgid "Can't load gui description for SettingsDialog!"
-msgstr ""
+msgstr "SettingsDialog の gui 説明をロードできません!"
 
 #: ../src/Gui/SettingsDialog.py:33
 msgid "Name"
-msgstr ""
+msgstr "名前"
 
 #: ../src/Gui/SettingsDialog.py:47
 msgid "Enabled"
-msgstr ""
+msgstr "有効です"
 
 #: ../src/Gui/SettingsDialog.py:106
 #, python-format
@@ -215,6 +235,9 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
+"plugin セッティング UI を開く時にエラー: \n"
+"\n"
+"%s"
 
 #: ../src/Gui/SettingsDialog.py:116
 #, python-format
@@ -222,54 +245,59 @@ msgid ""
 "Can't save plugin settings:\n"
 " %s"
 msgstr ""
+"plugin セッティングを保存できません:\n"
+" %s"
 
 #: ../src/Gui/SettingsDialog.py:122
 msgid "unknown response from settings dialog"
-msgstr ""
+msgstr "セッティングダイアログから不明な反応です"
 
 #. applet->AddEvent(uid, std::string(progname));
 #: ../src/Applet/Applet.cpp:49
 #, c-format
 msgid "A crash in package %s has been detected!"
-msgstr ""
+msgstr "パッケージ %s のクラッシュが検出されました !"
 
 #. applet is already running
 #: ../src/Applet/Applet.cpp:80
 msgid "Applet is already running."
-msgstr ""
+msgstr "アプレットは既に稼働しています。"
 
 #: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
 msgid "Daemon is not running."
-msgstr ""
+msgstr "デーモンは稼働していません。"
 
 #: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
 #, c-format
 msgid "Pending events: %i"
-msgstr ""
+msgstr "保留中のイベント: %i"
 
 #: ../src/Applet/CCApplet.cpp:102
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr ""
+msgstr "説明からメニューを作成できません。ポップアップは利用できないでしょう !\n"
 
 #: ../src/Applet/CCApplet.cpp:125
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
 msgstr ""
+"これはデフォルトのハンドラです。自分自身のハンドラは ConnectCrashHandler に "
+"登録する必要があります"
 
 #: ../src/Applet/CCApplet.cpp:135
 msgid "ABRT service is not running"
-msgstr ""
+msgstr "ABRT サービスは稼働していません。"
 
 #: ../src/Applet/CCApplet.cpp:139
 msgid "ABRT service has been started"
-msgstr ""
+msgstr "ABRT サービスは開始しています"
 
 #: ../src/Applet/CCApplet.cpp:160
 msgid "Warning"
-msgstr ""
+msgstr "警告"
 
 #: ../src/Applet/CCApplet.cpp:166
 msgid "Out of memory"
-msgstr ""
+msgstr "メモリー超過"
+
