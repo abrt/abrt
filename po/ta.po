@@ -1,14 +1,14 @@
-# translation of abrt.master.abrt.po to Tamil
+# translation of abrt.master.ta.po to Tamil
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # I. Felix <ifelix@redhat.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.abrt\n"
+"Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-08-31 08:38+0000\n"
-"PO-Revision-Date: 2009-08-31 22:34+0530\n"
+"POT-Creation-Date: 2009-09-01 19:44+0000\n"
+"PO-Revision-Date: 2009-09-02 02:50+0530\n"
 "Last-Translator: I. Felix <ifelix@redhat.com>\n"
 "Language-Team: Tamil <fedora-trans-ta@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
+"\n"
 "\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
@@ -25,6 +26,22 @@ msgstr "வேறு கிளையன் ஏற்கனவே இயங்க
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "டீமானுக்கு எதிர்பாராத தரவு பெறப்பட்டது (தரவுத்தளம் சரியாக மேம்படுத்தப்பட்டதா?)."
+
+#: ../src/Gui/ABRTPlugin.py:26
+msgid "Analyzer plugins"
+msgstr "ஆய்வி கூடுதல் இணைப்புகள்"
+
+#: ../src/Gui/ABRTPlugin.py:27
+msgid "Action plugins"
+msgstr "செயல் கூடுதல் இணைப்புகள்"
+
+#: ../src/Gui/ABRTPlugin.py:28
+msgid "Reporter plugins"
+msgstr "ரிப்போர்டர் கூடுதல் இணைப்புகள்"
+
+#: ../src/Gui/ABRTPlugin.py:29
+msgid "Database plugins"
+msgstr "தரவுத்தள கூடுதல் இணைப்புகள்"
 
 #: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
@@ -50,7 +67,7 @@ msgstr " "
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:214
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:215
 msgid "<b>Not reported!</b>"
 msgstr "<b>அறிக்கையிடப்படவில்லை!</b>"
 
@@ -142,16 +159,16 @@ msgstr "சேதம் விகிதம்"
 msgid "User"
 msgstr "பயனர்"
 
-#: ../src/Gui/CCMainWindow.py:156
+#: ../src/Gui/CCMainWindow.py:157
 #, python-format
 msgid ""
-"Unable to get report!\n"
+"Unable to finish current task!\n"
 "%s"
 msgstr ""
-"அறிக்கையை பெற முடியவில்லை!\n"
+"நடப்பு பணியை முடிக்க முடியவில்லை!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -160,11 +177,11 @@ msgstr ""
 "இந்த dumplistஐ ஏற்றும் போது பிழை, abrt டீமான் இயங்குகிறதா என பார்க்கவும்\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:206
+#: ../src/Gui/CCMainWindow.py:207
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>இந்த சேதம் அறிக்கையிடப்பட்டுள்ளது, நீங்கள் அறிக்கை(களை) இதில் தேடலாம்:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:266
+#: ../src/Gui/CCMainWindow.py:267
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -172,7 +189,7 @@ msgstr ""
 "அறிக்கையை பெற முடியவில்லை!\n"
 "Debuginfo விடுபட்டுள்ளதா?"
 
-#: ../src/Gui/CCMainWindow.py:278
+#: ../src/Gui/CCMainWindow.py:279
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -181,12 +198,23 @@ msgstr ""
 "அறிக்கையிடுதல் தோல்வியுற்றது!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:306
+#: ../src/Gui/CCMainWindow.py:311
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "அறிக்கையை பெறும் போது பிழை: %s"
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:98
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data that might contain some sensitive "
+"informations!\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+"<b>எச்சரிக்கை</b>, நீங்கள் அனுப்ப இருக்கும் தரவு சில அறிவார்ந்த தகவல்ளை கொண்டிருக்கும்"
+"!\n"
+"நீங்கள் <b>%s</b>ஐ அனுப்ப வேண்டும்?\n"
+
+#: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "இதனை மீண்டும் உருவாக்குவதற்கான சுருக்க விளக்கம் அல்லது நீங்கள் என்ன செய்தீர்கள்..."
 
@@ -224,15 +252,19 @@ msgstr "gtk-cancel"
 msgid "Can't load gui description for SettingsDialog!"
 msgstr "gui விளக்கத்தை SettingsDialogக்கு ஏற்ற முடியவில்லை!"
 
-#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:34
 msgid "Name"
 msgstr "பெயர்"
 
-#: ../src/Gui/SettingsDialog.py:47
+#: ../src/Gui/SettingsDialog.py:52
 msgid "Enabled"
 msgstr "செயல்படுத்தப்பட்டது"
 
-#: ../src/Gui/SettingsDialog.py:106
+#: ../src/Gui/SettingsDialog.py:117
+msgid "Can't get plugin description"
+msgstr "கூடுதல் இணைப்பு விளக்கத்தை பெற முடியவில்லை"
+
+#: ../src/Gui/SettingsDialog.py:125
 #, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
@@ -243,7 +275,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/Gui/SettingsDialog.py:116
+#: ../src/Gui/SettingsDialog.py:135
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -252,7 +284,7 @@ msgstr ""
 "கூடுதல் இணைப்பு அமைவுகளை சேமிக்க முடியவில்லை:\n"
 " %s"
 
-#: ../src/Gui/SettingsDialog.py:122
+#: ../src/Gui/SettingsDialog.py:141
 msgid "unknown response from settings dialog"
 msgstr "அமைவுகள் உரையாடலிலிருந்து தெரியாத பதில்"
 
@@ -268,8 +300,9 @@ msgid "Applet is already running."
 msgstr "ஆப்லெட் ஏற்கனவே இயங்குகிறது."
 
 #: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
-msgid "Daemon is not running."
-msgstr "டீமான் இயங்கவில்லை."
+#: ../src/Applet/CCApplet.cpp:135
+msgid "ABRT service is not running"
+msgstr "ABRT சேவை இயங்கவில்லை"
 
 #: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
 #, c-format
@@ -285,11 +318,9 @@ msgstr "விளக்கத்திலிருதநு மெனுவை �
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
-msgstr "இது முன்னிருப்பு கையாளி, உங்களுக்கு உள்ளதை ConnectCrashHandlerஉடன் பதிவு செய்ய வேண்டும்"
-
-#: ../src/Applet/CCApplet.cpp:135
-msgid "ABRT service is not running"
-msgstr "ABRT சேவை இயங்கவில்லை"
+msgstr ""
+"இது முன்னிருப்பு கையாளி, உங்களுக்கு உள்ளதை ConnectCrashHandlerஉடன் பதிவு செய்ய "
+"வேண்டும்"
 
 #: ../src/Applet/CCApplet.cpp:139
 msgid "ABRT service has been started"
