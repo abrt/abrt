@@ -140,6 +140,7 @@ def gui_question_dialog ( message, parent_dialog=None,
                                message_type, gtk.BUTTONS_YES_NO,
                                message )
 
+    dialog.set_markup(message)
     if parent_dialog:
         dialog.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
         dialog.set_transient_for(parent_dialog)

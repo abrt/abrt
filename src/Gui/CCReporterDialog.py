@@ -91,6 +91,14 @@ class ReporterDialog():
         return
 
     def on_apply_clicked(self, button, treeview):
+        attributes = ["item", "content", "editable", "send", "attachment"]
+        for row in self.reportListStore:
+            rowe = dict(zip(attributes, row))
+            if (rowe["attachment"] or (rowe["editable"] and rowe["attachment"])) and rowe["send"]:
+                result = gui_question_dialog(_("<b>WARNING</b>, you're about to send data that might contain some sensitive informations!\n"
+                                        "Do you really want to send <b>%s</b>?\n" % rowe["item"]), self.window)
+                if result == gtk.RESPONSE_NO:
+                    row[attributes.index("send")] = False
         self.dehydrate()
 
     def on_cancel_clicked(self, button, treeview):
@@ -108,7 +116,7 @@ class ReporterDialog():
                 if self.report[item][EDITABLE] == 'y':
                     self.editable.append(item)
                 self.row_dict[item] = self.reportListStore.append([item, self.report[item][CONTENT],
-                                                                    item in self.editable, False,
+                                                                    item in self.editable, True,
                                                                     self.report[item][TYPE] in ['a','b']])
 
     def dehydrate(self):
