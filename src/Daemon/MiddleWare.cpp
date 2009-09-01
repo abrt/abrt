@@ -319,7 +319,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     std::string key;
     std::string message;
 
-    if (!CheckReport)
+    if (!CheckReport(pCrashReport))
     {
         throw CABRTException(EXCEP_ERROR, "Report(): Some of mandatory report data are missing.");
     }
