@@ -621,7 +621,6 @@ int main(int argc, char** argv)
             throw 1;
         /* (comment here) */
 #ifdef ENABLE_DBUS
-        attach_dbus_dispatcher_to_glib_main_context();
         g_pCommLayer = new CCommLayerServerDBus();
 #elif ENABLE_SOCKET
         g_pCommLayer = new CCommLayerServerSocket();

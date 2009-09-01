@@ -23,4 +23,4 @@ class CCommLayerServer {
         virtual void Warning(const std::string& pMessage, uint64_t pJobID) {};
 };
 
-#endif //COMMLAYERSERVER_H_
+#endif
