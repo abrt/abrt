@@ -91,7 +91,7 @@ static void store_vector(DBusMessageIter* iter, const std::vector<E>& val)
     typename std::vector<E>::const_iterator vit = val.begin();
     for (; vit != val.end(); ++vit)
     {
-	store_val(&sub_iter, *vit);
+        store_val(&sub_iter, *vit);
     }
 
     if (!dbus_message_iter_close_container(iter, &sub_iter))
@@ -119,7 +119,7 @@ static void store_map(DBusMessageIter* iter, const std::map<K,V>& val)
         if (!dbus_message_iter_open_container(&sub_iter, DBUS_TYPE_DICT_ENTRY, NULL, &sub_sub_iter))
             die_out_of_memory();
         store_val(&sub_sub_iter, mit->first);
-	store_val(&sub_sub_iter, mit->second);
+        store_val(&sub_sub_iter, mit->second);
         if (!dbus_message_iter_close_container(&sub_iter, &sub_sub_iter))
             die_out_of_memory();
     }
@@ -277,7 +277,7 @@ static bool load_map(DBusMessageIter* iter, std::map<K,V>& val)
         val[key] = value;
 //cnt++;
 
-	next_exists = dbus_message_iter_next(&sub_iter);
+        next_exists = dbus_message_iter_next(&sub_iter);
     } while (next_exists);
 //log("%s: %d elems", __func__, cnt);
 
@@ -671,9 +671,9 @@ static void toggled_watch(DBusWatch *watch, void* data)
             int dbus_flags = dbus_watch_get_flags(watch);
             int glib_flags = 0;
             if (dbus_flags & DBUS_WATCH_READABLE)
-        	glib_flags |= G_IO_IN;
+                glib_flags |= G_IO_IN;
             if (dbus_flags & DBUS_WATCH_WRITABLE)
-        	glib_flags |= G_IO_OUT;
+                glib_flags |= G_IO_OUT;
             VERB3 log(" adding watch to glib main loop. dbus_flags:%x glib_flags:%x", dbus_flags, glib_flags);
             app_info->event_source_id = g_io_add_watch(app_info->channel, GIOCondition(glib_flags), handle_dbus, watch);
         }
