@@ -154,7 +154,7 @@ class MainWindow():
             self.pBarWindow.hide()
         except Exception, e:
             pass
-        gui_error_message(_("Unable to get report!\n%s" % message),parent_dialog=self.window)
+        gui_error_message(_("Unable to finish current task!\n%s" % message),parent_dialog=self.window)
 
     def update_cb(self, daemon, message, job_id):
         message = message.replace('\n',' ')

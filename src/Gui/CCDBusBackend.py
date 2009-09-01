@@ -78,8 +78,8 @@ class DBusManager(gobject.GObject):
     def disconnected(*args):
         print "disconnect"
 
-    def error_handler_cb(self,arg):
-        self.emit("abrt-error",arg)
+    def error_handler_cb(self,error):
+        self.emit("abrt-error",error)
 
     def warning_handler_cb(self,arg):
         self.emit("warning",arg)
