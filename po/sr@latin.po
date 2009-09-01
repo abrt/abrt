@@ -1,0 +1,310 @@
+# Serbian(Latin) translations for abrt
+# Copyright (C) 2009 Red Hat, Inc.
+# This file is distributed under the same license as the abrt package.
+# Miloš Komarčević <kmilos@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: abrt\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2009-09-01 14:43+0000\n"
+"PO-Revision-Date: 2009-09-01 20:41+0100\n"
+"Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
+"Language-Team: Serbian (sr) <fedora-trans-sr@redhat.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+#: ../src/Gui/ABRTExceptions.py:4
+msgid "Another client is already running, trying to wake it."
+msgstr "Drugi klijent se već izvršava, pokušavam da ga probudim."
+
+#: ../src/Gui/ABRTExceptions.py:10
+msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr ""
+"Primljeni su neočekivano podaci od demona (da li je baza podataka propisno "
+"ažurirana?)."
+
+#: ../src/Gui/ABRTPlugin.py:26
+msgid "Analyzer plugins"
+msgstr ""
+
+#: ../src/Gui/ABRTPlugin.py:27
+msgid "Action plugins"
+msgstr ""
+
+#: ../src/Gui/ABRTPlugin.py:28
+msgid "Reporter plugins"
+msgstr ""
+
+#: ../src/Gui/ABRTPlugin.py:29
+msgid "Database plugins"
+msgstr ""
+
+#: ../src/Gui/CCDBusBackend.py:140
+msgid "Can't connect to dbus"
+msgstr "Ne mogu da se povežem sa dbus magistralom"
+
+#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:163
+msgid "Please check if abrt daemon is running."
+msgstr "Proverite da li se abrt demon izvršava."
+
+#: ../src/Gui/CCDBusBackend.py:181
+msgid ""
+"Daemon did't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
+"Demon nije vratio ispravne podatke izveštaja.\n"
+"Nedostaje debuginfo?"
+
+#: ../src/Gui/ccgui.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "Autorska prava 2009 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:215
+msgid "<b>Not reported!</b>"
+msgstr "<b>Nije prijavljeno!</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">Opis</span>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "About ABRT"
+msgstr "O ABRT-u"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Automatic Bug Reporting Tool"
+msgstr "Alatka za samostalnu prijavu grešaka"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Delete"
+msgstr "Obriši"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "Please wait.."
+msgstr "Sačekajte..."
+
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:2
+msgid "Report"
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:10
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:15
+msgid "Working..."
+msgstr "Radim..."
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "_Edit"
+msgstr "_Uredi"
+
+#: ../src/Gui/ccgui.glade.h:17
+msgid "_File"
+msgstr "_Datoteka"
+
+#: ../src/Gui/ccgui.glade.h:18
+msgid "_Help"
+msgstr "_Pomoć"
+
+#: ../src/Gui/CCMainWindow.py:86
+msgid "Package"
+msgstr "Paket"
+
+#: ../src/Gui/CCMainWindow.py:87
+msgid "Application"
+msgstr "Program"
+
+#: ../src/Gui/CCMainWindow.py:88
+msgid "Date"
+msgstr "Datum"
+
+#: ../src/Gui/CCMainWindow.py:89
+msgid "Crash Rate"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:91
+msgid "User"
+msgstr "Korisnik"
+
+#: ../src/Gui/CCMainWindow.py:157
+#, python-format
+msgid ""
+"Unable to finish current task!\n"
+"%s"
+msgstr ""
+"Ne mogu da završim tekući zadatak!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:174
+#, python-format
+msgid ""
+"Error while loading the dumplist, please check if abrt daemon is running\n"
+" %s"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:207
+msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:267
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:279
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:311
+#, python-format
+msgid "Error getting the report: %s"
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:98
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data that might contain some sensitive "
+"informations!\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:111
+msgid "Brief description how to reproduce this or what you did..."
+msgstr ""
+
+#: ../src/Gui/PluginSettingsUI.py:17
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr ""
+
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:21
+#, python-format
+msgid "No UI for plugin %s"
+msgstr ""
+
+#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+msgid "combo box is not implemented"
+msgstr ""
+
+#: ../src/Gui/PluginSettingsUI.py:47
+msgid "Nothing to hydrate!"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:1
+msgid "Comment"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:3
+msgid "Send"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:4
+msgid "gtk-cancel"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:22
+msgid "Can't load gui description for SettingsDialog!"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:34
+msgid "Name"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:52
+msgid "Enabled"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:117
+msgid "Can't get plugin description"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:125
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:135
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:141
+msgid "unknown response from settings dialog"
+msgstr ""
+
+#. applet->AddEvent(uid, std::string(progname));
+#: ../src/Applet/Applet.cpp:49
+#, c-format
+msgid "A crash in package %s has been detected!"
+msgstr ""
+
+#. applet is already running
+#: ../src/Applet/Applet.cpp:80
+msgid "Applet is already running."
+msgstr ""
+
+#: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
+msgid "Daemon is not running."
+msgstr ""
+
+#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
+#, c-format
+msgid "Pending events: %i"
+msgstr ""
+
+#: ../src/Applet/CCApplet.cpp:102
+#, c-format
+msgid "Can't create menu from the description, popup won't be available!\n"
+msgstr ""
+
+#: ../src/Applet/CCApplet.cpp:125
+msgid ""
+"This is default handler, you should register your own with "
+"ConnectCrashHandler"
+msgstr ""
+
+#: ../src/Applet/CCApplet.cpp:135
+msgid "ABRT service is not running"
+msgstr "ABRT servis se ne izvršava"
+
+#: ../src/Applet/CCApplet.cpp:139
+msgid "ABRT service has been started"
+msgstr "ABRT servis je pokrenut"
+
+#: ../src/Applet/CCApplet.cpp:160
+msgid "Warning"
+msgstr "Upozorenje"
+
+#: ../src/Applet/CCApplet.cpp:166
+msgid "Out of memory"
+msgstr "Nestalo je memorije"
