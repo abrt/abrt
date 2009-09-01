@@ -3,13 +3,12 @@
 #
 # Igor Pires Soares <igor@projetofedora.org>, 2009.
 #
-
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-08-31 08:38+0000\n"
-"PO-Revision-Date: 2009-08-31 11:44-0300\n"
+"POT-Creation-Date: 2009-09-01 14:43+0000\n"
+"PO-Revision-Date: 2009-09-01 14:49-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -26,6 +25,22 @@ msgstr "Outro cliente já está em execução, tentando acordá-lo."
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Dados inesperados obtidos do daemon (o banco de dados está devidamente atualizado?)."
+
+#: ../src/Gui/ABRTPlugin.py:26
+msgid "Analyzer plugins"
+msgstr "Plugins de análise"
+
+#: ../src/Gui/ABRTPlugin.py:27
+msgid "Action plugins"
+msgstr "Plugins de ação"
+
+#: ../src/Gui/ABRTPlugin.py:28
+msgid "Reporter plugins"
+msgstr "Plugins de relato"
+
+#: ../src/Gui/ABRTPlugin.py:29
+msgid "Database plugins"
+msgstr "Plugins de banco de dados"
 
 #: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
@@ -53,7 +68,7 @@ msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:214
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não relatado!</b>"
 
@@ -132,16 +147,16 @@ msgstr "Taxa de travamento"
 msgid "User"
 msgstr "Usuário"
 
-#: ../src/Gui/CCMainWindow.py:156
+#: ../src/Gui/CCMainWindow.py:157
 #, python-format
 msgid ""
-"Unable to get report!\n"
+"Unable to finish current task!\n"
 "%s"
 msgstr ""
-"Não foi possível obter o relatório!\n"
+"Não foi possível finalizar a tarefa atual!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -150,11 +165,11 @@ msgstr ""
 "Erro ao carregar a lista de despejo, por favor, verifique se o daemon do abrt está em execução\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:206
+#: ../src/Gui/CCMainWindow.py:207
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Este travamento foi relatado, você pode localizar o(s) relatório(s) em:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:266
+#: ../src/Gui/CCMainWindow.py:267
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -162,7 +177,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "O debuginfo está faltando?"
 
-#: ../src/Gui/CCMainWindow.py:278
+#: ../src/Gui/CCMainWindow.py:279
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -171,12 +186,21 @@ msgstr ""
 "Falha no relato!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:306
+#: ../src/Gui/CCMainWindow.py:311
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:98
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data that might contain some sensitive informations!\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+"<b>AVISO</b>, você está prestes a enviar dados que podem conter informações delicadas!\n"
+"Você realmente deseja enviar o <b>%s</b>?\n"
+
+#: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
 
@@ -215,15 +239,19 @@ msgstr "gtk-cancel"
 msgid "Can't load gui description for SettingsDialog!"
 msgstr "Não foi possível carregar a descrição da interface gráfica de usuário para o SettingsDialog!"
 
-#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:34
 msgid "Name"
 msgstr "Nome"
 
-#: ../src/Gui/SettingsDialog.py:47
+#: ../src/Gui/SettingsDialog.py:52
 msgid "Enabled"
 msgstr "Habilitado"
 
-#: ../src/Gui/SettingsDialog.py:106
+#: ../src/Gui/SettingsDialog.py:117
+msgid "Can't get plugin description"
+msgstr "Não foi possível obter a descrição do plugin"
+
+#: ../src/Gui/SettingsDialog.py:125
 #, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
@@ -234,7 +262,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/Gui/SettingsDialog.py:116
+#: ../src/Gui/SettingsDialog.py:135
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -243,7 +271,7 @@ msgstr ""
 "Não foi possível salvar as configurações do plugin:\n"
 " %s"
 
-#: ../src/Gui/SettingsDialog.py:122
+#: ../src/Gui/SettingsDialog.py:141
 msgid "unknown response from settings dialog"
 msgstr "resposta desconhecida do diálogo de configurações"
 
