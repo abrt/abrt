@@ -2,6 +2,11 @@ AC_INIT([abrt], [0.0.8], [jmoskovc@redhat.com, zprikryl@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
+AC_ARG_ENABLE(debug,
+              [AC_HELP_STRING([--enable-debug],
+                             [Enable debug information])],
+              [CXXFLAGS="$CXXFLAGS -DDEBUG -ggdb -g"])
+
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CXX
