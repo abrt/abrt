@@ -97,7 +97,17 @@ DBus::Message CCommLayerServerDBus::_Report_stub(const DBus::CallMessage &call)
     const char* sender = call.sender();
     unsigned long unix_uid = m_pConn->sender_unix_uid(sender);
     VERB1 log("got %s(...) call from %s, uid %lu", "Report", sender, unix_uid);
-    report_status_t argout1 = Report(argin1, to_string(unix_uid));
+    report_status_t argout1;
+    try
+    {
+        argout1 = Report(argin1, to_string(unix_uid));
+    }
+    catch(CABRTException &e)
+    {
+        DBus::ErrorMessage reply(call, DBUS_ERROR_FAILED, e.what().c_str());
+        return reply;
+    }
+    
 
     DBus::ReturnMessage reply(call);
     DBus::MessageIter wi = reply.writer();

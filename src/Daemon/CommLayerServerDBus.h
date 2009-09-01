@@ -2,6 +2,7 @@
 #define COMMLAYERSERVERDBUS_H_
 
 #include <dbus-c++/dbus.h>
+#include <dbus/dbus.h>
 #include <dbus-c++/glib-integration.h>
 #include "CommLayerServer.h"
 
