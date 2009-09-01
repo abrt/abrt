@@ -10,7 +10,7 @@ Type
 Email
 Description
 """
-
+from abrt_utils import _
 
 class PluginSettings(dict):
     def __init__(self):
@@ -23,6 +23,10 @@ class PluginSettings(dict):
 
 """Class to represent common plugin info"""
 class PluginInfo():
+    types = {"Analyzer":_("Analyzer plugins"), 
+             "Action":_("Action plugins"),
+             "Reporter":_("Reporter plugins"),
+             "Database":_("Database plugins")}
     keys = ["WWW", "Name", "Enabled",
             "GTKBuilder", "Version",
             "Type", "Email", "Description"]
@@ -44,6 +48,9 @@ class PluginInfo():
 
     def getDescription(self):
         return self.Description
+        
+    def getType(self):
+        return self.Type
 
     def getGUI(self):
         return self.GTKBuilder
