@@ -63,23 +63,29 @@ static void store_string(DBusMessageIter* iter, const char* val)
 
 /* Templates for vector and map */
 template <typename T> struct type {};
-//template <> struct type<bool>           { static std::string sig() { return "b"; } };
-template <> struct type<int32_t>        { static std::string sig() { return "i"; } };
-template <> struct type<uint32_t>       { static std::string sig() { return "u"; } };
-template <> struct type<int64_t>        { static std::string sig() { return "x"; } };
-template <> struct type<uint64_t>       { static std::string sig() { return "t"; } };
-template <> struct type<std::string>    { static std::string sig() { return "s"; } };
+//template <> struct type<bool>        { static const char* csig() { return "b"; } };
+template <> struct type<int32_t>     { static const char* csig() { return "i"; } static std::string sig(); };
+template <> struct type<uint32_t>    { static const char* csig() { return "u"; } static std::string sig(); };
+template <> struct type<int64_t>     { static const char* csig() { return "x"; } static std::string sig(); };
+template <> struct type<uint64_t>    { static const char* csig() { return "t"; } static std::string sig(); };
+template <> struct type<std::string> { static const char* csig() { return "s"; } static std::string sig(); };
+#define SIG(T) (type<T>::csig() ? type<T>::csig() : type<T>::sig().c_str())
 template <typename E>
-struct type< std::vector<E> > { static std::string sig() { return "a" + type<E>::sig(); } };
+struct type< std::vector<E> > {
+    static const char* csig() { return NULL; }
+    static std::string sig() { return ssprintf("a%s", SIG(E)); }
+};
 template <typename K, typename V>
-struct type< std::map<K,V> >  { static std::string sig() { return "a{" + type<K>::sig() + type<V>::sig() + "}"; } };
+struct type< std::map<K,V> > {
+    static const char* csig() { return NULL; }
+    static std::string sig() { return ssprintf("a{%s%s}", SIG(K), SIG(V)); }
+};
 
 template<typename E>
 static void store_vector(DBusMessageIter* iter, const std::vector<E>& val)
 {
     DBusMessageIter sub_iter;
-    const std::string sig = type<E>::sig();
-    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, sig.c_str(), &sub_iter))
+    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, SIG(E), &sub_iter))
         die_out_of_memory();
 
     typename std::vector<E>::const_iterator vit = val.begin();
@@ -102,8 +108,9 @@ template<typename K, typename V>
 static void store_map(DBusMessageIter* iter, const std::map<K,V>& val)
 {
     DBusMessageIter sub_iter;
-    const std::string sig = "{" + type<K>::sig() + type<V>::sig() + "}";
-    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, sig.c_str(), &sub_iter))
+    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY,
+                ssprintf("{%s%s}", SIG(K), SIG(V)).c_str(),
+                &sub_iter))
         die_out_of_memory();
 
     typename std::map<K,V>::const_iterator mit = val.begin();
