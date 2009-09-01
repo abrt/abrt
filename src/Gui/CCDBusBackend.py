@@ -139,7 +139,7 @@ class DBusManager(gobject.GObject):
         if not self.bus:
             raise Exception(_("Can't connect to dbus"))
         if self.bus.name_has_owner(CC_NAME):
-            self.proxy = self.bus.get_object(CC_IFACE, CC_PATH)
+            self.proxy = self.bus.get_object(CC_IFACE, CC_PATH,introspect=False)
         else:
             raise Exception(_("Please check if abrt daemon is running."))
 
