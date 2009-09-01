@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-08-31 08:38+0000\n"
-"PO-Revision-Date: 2009-08-31 15:03+0200\n"
+"POT-Creation-Date: 2009-09-01 14:43+0000\n"
+"PO-Revision-Date: 2009-09-01 17:43+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -25,6 +25,22 @@ msgstr "Andere client draait al, probeer het te wekken."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
+
+#: ../src/Gui/ABRTPlugin.py:26
+msgid "Analyzer plugins"
+msgstr "Analyse plugins"
+
+#: ../src/Gui/ABRTPlugin.py:27
+msgid "Action plugins"
+msgstr "Actie plugins"
+
+#: ../src/Gui/ABRTPlugin.py:28
+msgid "Reporter plugins"
+msgstr "Rapporteer plugins"
+
+#: ../src/Gui/ABRTPlugin.py:29
+msgid "Database plugins"
+msgstr "Databse plugins"
 
 #: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
@@ -50,7 +66,7 @@ msgstr " "
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:214
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:215
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
@@ -142,16 +158,16 @@ msgstr "Crash rate"
 msgid "User"
 msgstr "Gebruiker"
 
-#: ../src/Gui/CCMainWindow.py:156
+#: ../src/Gui/CCMainWindow.py:157
 #, python-format
 msgid ""
-"Unable to get report!\n"
+"Unable to finish current task!\n"
 "%s"
 msgstr ""
-"Kan rapport niet krijgen!\n"
+"Kan huidige taak niet afmaken!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -161,11 +177,11 @@ msgstr ""
 "draait\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:206
+#: ../src/Gui/CCMainWindow.py:207
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Deze crash is gerapporteerd, je kunt het rapport vinden op:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:266
+#: ../src/Gui/CCMainWindow.py:267
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -173,7 +189,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:278
+#: ../src/Gui/CCMainWindow.py:279
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -182,12 +198,23 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:306
+#: ../src/Gui/CCMainWindow.py:311
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:98
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data that might contain some sensitive "
+"informations!\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+"<b>WAARSCHUWING</b>, je staat op het punt om data te versturen die gevoelige "
+"informatie kan bevatten!\n"
+"Wil je <b>%s</b> echt versturen?\n"
+
+#: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
@@ -225,15 +252,19 @@ msgstr "gtk-cancel"
 msgid "Can't load gui description for SettingsDialog!"
 msgstr "Kan gui beschrijving voor SettingsDialog niet laden!"
 
-#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:34
 msgid "Name"
 msgstr "Naam"
 
-#: ../src/Gui/SettingsDialog.py:47
+#: ../src/Gui/SettingsDialog.py:52
 msgid "Enabled"
 msgstr "Aangezet"
 
-#: ../src/Gui/SettingsDialog.py:106
+#: ../src/Gui/SettingsDialog.py:117
+msgid "Can't get plugin description"
+msgstr "Kan plugin beschrijving niet krijgen."
+
+#: ../src/Gui/SettingsDialog.py:125
 #, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
@@ -244,7 +275,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/Gui/SettingsDialog.py:116
+#: ../src/Gui/SettingsDialog.py:135
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -253,7 +284,7 @@ msgstr ""
 "Kan plugin instellingen niet opslaan:\n"
 " %s"
 
-#: ../src/Gui/SettingsDialog.py:122
+#: ../src/Gui/SettingsDialog.py:141
 msgid "unknown response from settings dialog"
 msgstr "onbekende reactie van de instellingen dialoog"
 
