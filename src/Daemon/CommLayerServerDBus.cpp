@@ -7,12 +7,6 @@
 #include "CommLayerServerDBus.h"
 
 
-static void die_out_of_memory()
-{
-    error_msg_and_die("Out of memory, exiting");
-}
-
-
 static DBusConnection* s_pConn;
 
 

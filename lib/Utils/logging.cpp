@@ -117,3 +117,8 @@ void simple_perror_msg(const char *s)
 {
 	perror_msg("%s", s);
 }
+
+void die_out_of_memory(void)
+{
+    error_msg_and_die("Out of memory, exiting");
+}

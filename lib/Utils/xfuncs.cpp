@@ -5,22 +5,12 @@
  */
 #include "abrtlib.h"
 
-static const char msg_memory_exhausted[] = "memory exhausted";
-
-void* malloc_or_warn(size_t size)
-{
-	void *ptr = malloc(size);
-	if (ptr == NULL && size != 0)
-		error_msg(msg_memory_exhausted);
-	return ptr;
-}
-
 // Die if we can't allocate size bytes of memory.
 void* xmalloc(size_t size)
 {
 	void *ptr = malloc(size);
 	if (ptr == NULL && size != 0)
-		error_msg_and_die(msg_memory_exhausted);
+		die_out_of_memory();
 	return ptr;
 }
 
@@ -31,7 +21,7 @@ void* xrealloc(void *ptr, size_t size)
 {
 	ptr = realloc(ptr, size);
 	if (ptr == NULL && size != 0)
-		error_msg_and_die(msg_memory_exhausted);
+		die_out_of_memory();
 	return ptr;
 }
 
@@ -54,7 +44,7 @@ char* xstrdup(const char *s)
 	t = strdup(s);
 
 	if (t == NULL)
-		error_msg_and_die(msg_memory_exhausted);
+		die_out_of_memory();
 
 	return t;
 }
@@ -160,7 +150,7 @@ char* xasprintf(const char *format, ...)
 #endif
 
 	if (r < 0)
-		error_msg_and_die(msg_memory_exhausted);
+		die_out_of_memory();
 	return string_ptr;
 }
 
@@ -187,7 +177,7 @@ std::string ssprintf(const char *format, ...)
 #endif
 
 	if (r < 0)
-		error_msg_and_die(msg_memory_exhausted);
+		die_out_of_memory();
 	std::string res = string_ptr;
 	free(string_ptr);
 	return res;
@@ -196,7 +186,7 @@ std::string ssprintf(const char *format, ...)
 void xsetenv(const char *key, const char *value)
 {
 	if (setenv(key, value, 1))
-		error_msg_and_die(msg_memory_exhausted);
+		die_out_of_memory();
 }
 
 // Die with an error message if we can't open a new socket.

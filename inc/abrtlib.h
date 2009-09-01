@@ -63,6 +63,7 @@ extern const char *msg_eol;
 extern int logmode;
 extern int xfunc_error_retval;
 extern void xfunc_die(void) NORETURN;
+extern void die_out_of_memory(void) NORETURN;
 extern void error_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 extern void error_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
 extern void perror_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
@@ -82,7 +83,6 @@ extern void verror_msg(const char *s, va_list p, const char *strerr);
 #undef log
 #define log(...) error_msg(__VA_ARGS__)
 
-void* malloc_or_warn(size_t size);
 void* xmalloc(size_t size);
 void* xrealloc(void *ptr, size_t size);
 void* xzalloc(size_t size);
