@@ -91,8 +91,8 @@ int main(int argc, char **argv)
     applet->ConnectCrashHandler(crash_notify_cb);
     if(!conn.has_name(CC_DBUS_NAME))
     {
-        std::cout << _("Daemon is not running.") << std::endl;
-        applet->Disable(_("Daemon is not running."));
+        std::cout << _("ABRT service is not running") << std::endl;
+        applet->Disable(_("ABRT service is not running"));
     }
 
     gtk_main();
