@@ -87,7 +87,7 @@ std::string CActionSOSreport::ParseFilename(const std::string& pOutput)
 void CActionSOSreport::Run(const std::string& pActionDir,
                            const std::string& pArgs)
 {
-    update_client("Executing SOSreportAction plugin...");
+    update_client(_("Executing SOSreportAction plugin..."));
 
     const char command[] = "sosreport --batch --no-progressbar -k rpm.rpmva=off 2>&1";
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-01 01:11+0000\n"
+"POT-Creation-Date: 2009-09-02 11:35+0200\n"
 "PO-Revision-Date: 2009-09-01 10:15+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
@@ -16,25 +16,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../src/Gui/ABRTExceptions.py:4
+#: src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
 msgstr "別のクライアントが稼働していますので、それを呼び出しています。"
 
-#: ../src/Gui/ABRTExceptions.py:10
+#: src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "デーモンから予想外のデータを受け取りました（データベースは正常に更新されてい"
 "ますか？）。"
 
-#: ../src/Gui/CCDBusBackend.py:140
+#: src/Gui/ABRTPlugin.py:26
+msgid "Analyzer plugins"
+msgstr ""
+
+#: src/Gui/ABRTPlugin.py:27
+msgid "Action plugins"
+msgstr ""
+
+#: src/Gui/ABRTPlugin.py:28
+msgid "Reporter plugins"
+msgstr ""
+
+#: src/Gui/ABRTPlugin.py:29
+msgid "Database plugins"
+msgstr ""
+
+#: src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
 msgstr "dbus に接続できません。"
 
-#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:163
+#: src/Gui/CCDBusBackend.py:144 src/Gui/CCDBusBackend.py:163
 msgid "Please check if abrt daemon is running."
 msgstr "abrt デーモンが稼働しているかどうかチェックして下さい。"
 
-#: ../src/Gui/CCDBusBackend.py:181
+#: src/Gui/CCDBusBackend.py:181
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -42,43 +58,27 @@ msgstr ""
 "デーモンは有効な報告内容を返しませんでした。\n"
 "Debuginfo が無いですか？"
 
-#: ../src/Gui/ccgui.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/ccgui.glade.h:2
-msgid "(C) 2009 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
-
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:215
-msgid "<b>Not reported!</b>"
-msgstr "<b>報告がありません!</b>"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">説明</span>"
-
-#: ../src/Gui/ccgui.glade.h:5
-msgid "About ABRT"
-msgstr "ABRT について"
-
-#: ../src/Gui/ccgui.glade.h:6
-msgid "Automatic Bug Reporting Tool"
-msgstr "自動バグ報告ツール（ABRT）"
-
-#: ../src/Gui/ccgui.glade.h:7
-msgid "Delete"
-msgstr "削除"
-
-#: ../src/Gui/ccgui.glade.h:8
+#: src/Gui/ccgui.glade:6
 msgid "Please wait.."
 msgstr "お待ち下さい..."
 
-#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:2
-msgid "Report"
-msgstr "報告"
+#: src/Gui/ccgui.glade:16
+msgid "Working..."
+msgstr "作業中..."
 
-#: ../src/Gui/ccgui.glade.h:10
+#: src/Gui/ccgui.glade:49
+msgid " "
+msgstr " "
+
+#: src/Gui/ccgui.glade:68
+msgid "About ABRT"
+msgstr "ABRT について"
+
+#: src/Gui/ccgui.glade:74
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
+
+#: src/Gui/ccgui.glade:75
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -106,52 +106,68 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:15
-msgid "Working..."
-msgstr "作業中..."
+#: src/Gui/ccgui.glade:106
+msgid "Automatic Bug Reporting Tool"
+msgstr "自動バグ報告ツール（ABRT）"
 
-#: ../src/Gui/ccgui.glade.h:16
-msgid "_Edit"
-msgstr "編集（_E）"
-
-#: ../src/Gui/ccgui.glade.h:17
+#: src/Gui/ccgui.glade:118
 msgid "_File"
 msgstr "ファイル（_F）"
 
-#: ../src/Gui/ccgui.glade.h:18
+#: src/Gui/ccgui.glade:138
+msgid "_Edit"
+msgstr "編集（_E）"
+
+#: src/Gui/ccgui.glade:158
 msgid "_Help"
 msgstr "ヘルプ（_H）"
 
-#: ../src/Gui/CCMainWindow.py:86
+#: src/Gui/ccgui.glade:188
+msgid "Delete"
+msgstr "削除"
+
+#: src/Gui/ccgui.glade:200 src/Gui/report.glade:7 src/Gui/report.glade:24
+msgid "Report"
+msgstr "報告"
+
+#: src/Gui/ccgui.glade:247
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">説明</span>"
+
+#: src/Gui/ccgui.glade:289 src/Gui/CCMainWindow.py:215
+msgid "<b>Not reported!</b>"
+msgstr "<b>報告がありません!</b>"
+
+#: src/Gui/CCMainWindow.py:86
 msgid "Package"
 msgstr "パッケージ"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: src/Gui/CCMainWindow.py:87
 msgid "Application"
 msgstr "アプリケーション"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: src/Gui/CCMainWindow.py:88
 msgid "Date"
 msgstr "期日"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: src/Gui/CCMainWindow.py:89
 msgid "Crash Rate"
 msgstr "クラッシュレート"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: src/Gui/CCMainWindow.py:91
 msgid "User"
 msgstr "ユーザー"
 
-#: ../src/Gui/CCMainWindow.py:157
-#, python-format
+#: src/Gui/CCMainWindow.py:157
+#, fuzzy, python-format
 msgid ""
-"Unable to get report!\n"
+"Unable to finish current task!\n"
 "%s"
 msgstr ""
 "報告を取得できません\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:174
+#: src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -160,11 +176,11 @@ msgstr ""
 "dumplist のロード中にエラーが発生。abrt デーモンが稼働しているかチェックして"
 "下さいn %s"
 
-#: ../src/Gui/CCMainWindow.py:207
+#: src/Gui/CCMainWindow.py:207
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>このクラッシュは報告済みです。報告は以下で見ることができます:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:267
+#: src/Gui/CCMainWindow.py:267
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -172,7 +188,7 @@ msgstr ""
 "報告を取得できません\n"
 "Debuginfo が無いですか ?"
 
-#: ../src/Gui/CCMainWindow.py:279
+#: src/Gui/CCMainWindow.py:279
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -181,58 +197,72 @@ msgstr ""
 "報告が失敗しました!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:311
+#: src/Gui/CCMainWindow.py:311
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "報告の取得中にエラーです: %s"
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: src/Gui/CCReporterDialog.py:98
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data that might contain some sensitive "
+"informations!\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+
+#: src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "この問題の再現手順、または実行したことの簡単な説明..."
 
-#: ../src/Gui/PluginSettingsUI.py:17
+#: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "UI 説明の中で PluginDialog ウィジェットを見つけることが出来ません!"
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:21
+#: src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "plugin の UI がありません %s"
 
-#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
 msgstr "combo box が実装されていません"
 
-#: ../src/Gui/PluginSettingsUI.py:47
+#: src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
 msgstr "水和するものは有りません!"
 
-#: ../src/Gui/report.glade.h:1
+#: src/Gui/report.glade:64
 msgid "Comment"
 msgstr "コメント"
 
-#: ../src/Gui/report.glade.h:3
-msgid "Send"
-msgstr "送信"
-
-#: ../src/Gui/report.glade.h:4
+#: src/Gui/report.glade:103
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:22
+#: src/Gui/report.glade:118
+msgid "Send"
+msgstr "送信"
+
+#: src/Gui/SettingsDialog.py:22
 msgid "Can't load gui description for SettingsDialog!"
 msgstr "SettingsDialog の gui 説明をロードできません!"
 
-#: ../src/Gui/SettingsDialog.py:33
+#: src/Gui/SettingsDialog.py:34
 msgid "Name"
 msgstr "名前"
 
-#: ../src/Gui/SettingsDialog.py:47
+#: src/Gui/SettingsDialog.py:52
 msgid "Enabled"
 msgstr "有効です"
 
-#: ../src/Gui/SettingsDialog.py:106
+#: src/Gui/SettingsDialog.py:117
+#, fuzzy
+msgid "Can't get plugin description"
+msgstr ""
+"plugin セッティングを保存できません:\n"
+" %s"
+
+#: src/Gui/SettingsDialog.py:125
 #, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
@@ -243,7 +273,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/Gui/SettingsDialog.py:116
+#: src/Gui/SettingsDialog.py:135
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -252,36 +282,36 @@ msgstr ""
 "plugin セッティングを保存できません:\n"
 " %s"
 
-#: ../src/Gui/SettingsDialog.py:122
+#: src/Gui/SettingsDialog.py:141
 msgid "unknown response from settings dialog"
 msgstr "セッティングダイアログから不明な反応です"
 
-#. applet->AddEvent(uid, std::string(progname));
-#: ../src/Applet/Applet.cpp:49
+#: src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
 msgstr "パッケージ %s のクラッシュが検出されました !"
 
-#. applet is already running
-#: ../src/Applet/Applet.cpp:80
+#: src/Applet/Applet.cpp:82
 msgid "Applet is already running."
 msgstr "アプレットは既に稼働しています。"
 
-#: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
-msgid "Daemon is not running."
-msgstr "デーモンは稼働していません。"
+#: src/Applet/Applet.cpp:96 src/Applet/Applet.cpp:97
+#: src/Applet/CCApplet.cpp:135
+msgid "ABRT service is not running"
+msgstr "ABRT サービスは稼働していません。"
 
-#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
+#: src/Applet/CCApplet.cpp:83 src/Applet/CCApplet.cpp:262
 #, c-format
 msgid "Pending events: %i"
 msgstr "保留中のイベント: %i"
 
-#: ../src/Applet/CCApplet.cpp:102
+#: src/Applet/CCApplet.cpp:102
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "説明からメニューを作成できません。ポップアップは利用できないでしょう !\n"
+msgstr ""
+"説明からメニューを作成できません。ポップアップは利用できないでしょう !\n"
 
-#: ../src/Applet/CCApplet.cpp:125
+#: src/Applet/CCApplet.cpp:125
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
@@ -289,19 +319,119 @@ msgstr ""
 "これはデフォルトのハンドラです。自分自身のハンドラは ConnectCrashHandler に "
 "登録する必要があります"
 
-#: ../src/Applet/CCApplet.cpp:135
-msgid "ABRT service is not running"
-msgstr "ABRT サービスは稼働していません。"
-
-#: ../src/Applet/CCApplet.cpp:139
+#: src/Applet/CCApplet.cpp:139
 msgid "ABRT service has been started"
 msgstr "ABRT サービスは開始しています"
 
-#: ../src/Applet/CCApplet.cpp:160
-msgid "Warning"
-msgstr "警告"
-
-#: ../src/Applet/CCApplet.cpp:166
+#: src/Applet/CCApplet.cpp:165
 msgid "Out of memory"
 msgstr "メモリー超過"
 
+#: src/Applet/CCApplet.cpp:180
+msgid "Warning"
+msgstr "警告"
+
+#: lib/Plugins/Bugzilla.cpp:218
+msgid "Bug is already reported: "
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:278
+#, c-format
+msgid "Binary file %s will not be reported."
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:348
+msgid "New bug id: "
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:409
+msgid "Logging into bugzilla..."
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:415
+msgid "Checking for duplicates..."
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:418
+msgid "Creating new bug..."
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:422
+msgid "Logging out..."
+msgstr ""
+
+#: lib/Plugins/Kerneloops.cpp:38
+msgid "Getting local/global universal unique identification..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:82
+msgid "Searching for debug-info packages..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:120
+msgid "Downloading and installing debug-info packages..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:180
+msgid "Getting backtrace..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:429
+msgid "Getting local universal unique identification..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:453
+msgid "Getting global universal unique identification..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:471
+msgid "Starting report creation..."
+msgstr ""
+
+#: lib/Plugins/KerneloopsReporter.cpp:101
+msgid "Creating and submitting a report..."
+msgstr ""
+
+#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr ""
+
+#: lib/Plugins/RunApp.cpp:62
+msgid "Executing RunApp plugin..."
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:52 lib/Plugins/FileTransfer.cpp:247
+msgid "FileTransfer: URL not specified"
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:69
+#, c-format
+msgid "Sending archive %s via %s"
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:121
+msgid "Creating an archive..."
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:176
+msgid "File Transfer: Creating a report..."
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:197 lib/Plugins/FileTransfer.cpp:226
+msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+msgstr ""
+
+#: lib/Plugins/KerneloopsScanner.cpp:79
+msgid "Creating kernel oops crash reports..."
+msgstr ""
+
+#: lib/Plugins/Mailx.cpp:110
+msgid "Sending an email..."
+msgstr ""
+
+#: lib/Plugins/SOSreport.cpp:90
+msgid "Executing SOSreportAction plugin..."
+msgstr ""
+
+#~ msgid "Daemon is not running."
+#~ msgstr "デーモンは稼働していません。"

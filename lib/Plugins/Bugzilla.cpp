@@ -215,7 +215,7 @@ std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent
         ss << xmlrpc_c::value_int(bug["bug_id"]);
 
         log("Bug is already reported: %s", ss.str().c_str());
-        update_client("Bug is already reported: " + ss.str());
+        update_client(_("Bug is already reported: ") + ss.str());
 
         if (!CheckCCAndReporter(ss.str()))
         {
@@ -274,8 +274,10 @@ void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrash
         }
         else if (it->second[CD_TYPE] == CD_BIN)
         {
-            warn_client("Binary file "+it->first+" will not be reported.");
-            update_client("Binary file "+it->first+" will not be reported.");
+            char buffer[1024];
+            snprintf(buffer, 1024, _("Binary file %s will not be reported."), it->first.c_str());
+            warn_client(std::string(buffer));
+            //update_client(_("Binary file ")+it->first+_(" will not be reported."));
         }
     }
 }
@@ -343,7 +345,7 @@ std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
         ret =  xmlrpc_c::value_struct(rpc->getResult());
         bugId << xmlrpc_c::value_int(ret["id"]);
         log("New bug id: %s", bugId.str().c_str());
-        update_client("New bug id: " + bugId.str());
+        update_client(_("New bug id: ") + bugId.str());
     }
     catch (std::exception& e)
     {
@@ -404,20 +406,20 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
     std::string bugId;
-    update_client("Logging into bugzilla...");
+    update_client(_("Logging into bugzilla..."));
 
     NewXMLRPCClient();
     try
     {
         Login();
-        update_client("Checking for duplicates...");
+        update_client(_("Checking for duplicates..."));
         if ((bugId = CheckUUIDInBugzilla(component, uuid)) == "")
         {
-            update_client("Creating new bug...");
+            update_client(_("Creating new bug..."));
             bugId = NewBug(pCrashReport);
             AddAttachments(bugId, pCrashReport);
         }
-        update_client("Logging out...");
+        update_client(_("Logging out..."));
         Logout();
     }
     catch (CABRTException& e)

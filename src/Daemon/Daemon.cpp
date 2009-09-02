@@ -34,6 +34,22 @@
 #define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
 
 
+#if HAVE_CONFIG_H
+    #include <config.h>
+#endif
+
+#if HAVE_LOCALE_H
+    #include <locale.h>
+#endif
+
+#if ENABLE_NLS
+    #include <libintl.h>
+    #define _(S) gettext(S)
+#else
+    #define _(S) (S)
+#endif
+
+
 //FIXME: add some struct to be able to join all threads!
 typedef struct cron_callback_data_t
 {
@@ -527,6 +543,13 @@ int main(int argc, char** argv)
 {
     bool daemonize = true;
     int opt;
+
+    setlocale(LC_ALL,"");
+
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
 
     while ((opt = getopt(argc, argv, "dv")) != -1)
     {

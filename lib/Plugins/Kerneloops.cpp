@@ -35,7 +35,7 @@
 
 std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-	update_client("Getting local/global universal unique identification...");
+	update_client(_("Getting local/global universal unique identification..."));
 
 	std::string m_sOops;
 	std::stringstream m_sHash;

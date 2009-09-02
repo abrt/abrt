@@ -55,7 +55,7 @@ map_plugin_settings_t CLogger::GetSettings()
 
 std::string CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
 {
-    update_client("Creating a report...");
+    update_client(_("Creating a report..."));
 
     std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
     std::ofstream fOut;
