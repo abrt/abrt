@@ -52,6 +52,7 @@ class CApplet
         //void DisableIcon();
         void BlinkIcon(bool pBlink);
         void SetIconTooltip(const char *format, ...);
+        void CrashNotify(const char *format, ...);
         void Disable(const char *reason);
         void Enable(const char *reason);
         // create some event storage, to let user choose

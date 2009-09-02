@@ -42,11 +42,13 @@ CApplet *applet;
 static void
 crash_notify_cb(const char* progname)
 {
+    const char *message = _("A crash in package %s has been detected!");
 #ifdef DEBUG
     std::cerr << "Application " << progname << " has crashed!" << std::endl;
 #endif
     //applet->AddEvent(uid, std::string(progname));
-    applet->SetIconTooltip(_("A crash in package %s has been detected!"), progname);
+    applet->SetIconTooltip(message, progname);
+    applet->CrashNotify(message, progname);
     applet->ShowIcon();
 }
 

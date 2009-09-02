@@ -157,7 +157,6 @@ void CApplet::SetIconTooltip(const char *format, ...)
     va_end(args);
     if (n >= 0 && buf)
     {
-        notify_notification_update(m_pNotification, _("Warning"), buf, NULL);
         gtk_status_icon_set_tooltip_text(m_pStatusIcon, buf);
         free(buf);
     }
@@ -165,6 +164,21 @@ void CApplet::SetIconTooltip(const char *format, ...)
     {
         gtk_status_icon_set_tooltip_text(m_pStatusIcon, _("Out of memory"));
     }
+}
+
+void CApplet::CrashNotify(const char *format, ...)
+{
+    va_list args;
+    char *buf;
+    int n;
+
+    va_start(args, format);
+    buf = NULL;
+    n = vasprintf(&buf, format, args);
+    va_end(args);
+
+    notify_notification_update(m_pNotification, _("Warning"), buf, NULL); 
+    notify_notification_show(m_pNotification, NULL);
 }
 
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
@@ -203,7 +217,6 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
 void CApplet::ShowIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon, true);
-    notify_notification_show(m_pNotification, NULL);
 }
 void CApplet::onHide_cb(GtkMenuItem *menuitem, gpointer applet)
 {
