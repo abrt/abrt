@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-01 14:43+0000\n"
-"PO-Revision-Date: 2009-09-01 14:49-0300\n"
+"POT-Creation-Date: 2009-09-02 12:35+0000\n"
+"PO-Revision-Date: 2009-09-02 11:47-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -275,24 +275,24 @@ msgstr ""
 msgid "unknown response from settings dialog"
 msgstr "resposta desconhecida do diálogo de configurações"
 
-#. applet->AddEvent(uid, std::string(progname));
-#: ../src/Applet/Applet.cpp:49
+#: ../src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
 msgstr "Um travamento no pacote %s foi detectado!"
 
 #. applet is already running
-#: ../src/Applet/Applet.cpp:80
+#: ../src/Applet/Applet.cpp:82
 msgid "Applet is already running."
 msgstr "O miniaplicativo já está em execução."
 
-#: ../src/Applet/Applet.cpp:94
-#: ../src/Applet/Applet.cpp:95
-msgid "Daemon is not running."
-msgstr "O daemon não está em execução."
+#: ../src/Applet/Applet.cpp:96
+#: ../src/Applet/Applet.cpp:97
+#: ../src/Applet/CCApplet.cpp:135
+msgid "ABRT service is not running"
+msgstr "O serviço do ABRT não está em execução"
 
 #: ../src/Applet/CCApplet.cpp:83
-#: ../src/Applet/CCApplet.cpp:249
+#: ../src/Applet/CCApplet.cpp:262
 #, c-format
 msgid "Pending events: %i"
 msgstr "Eventos pendentes: %i"
@@ -306,19 +306,123 @@ msgstr "Não foi possível criar um menu a partir da descrição, a janela insta
 msgid "This is default handler, you should register your own with ConnectCrashHandler"
 msgstr "Este é o manipulador padrão, você deve registrar o seu próprio com o ConnectCrashHandler"
 
-#: ../src/Applet/CCApplet.cpp:135
-msgid "ABRT service is not running"
-msgstr "O serviço do ABRT não está em execução"
-
 #: ../src/Applet/CCApplet.cpp:139
 msgid "ABRT service has been started"
 msgstr "O serviço ABRT foi iniciado"
 
-#: ../src/Applet/CCApplet.cpp:160
+#: ../src/Applet/CCApplet.cpp:165
+msgid "Out of memory"
+msgstr "Memória insuficiente"
+
+#: ../src/Applet/CCApplet.cpp:180
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Applet/CCApplet.cpp:166
-msgid "Out of memory"
-msgstr "Memória insuficiente"
+#: ../lib/Plugins/Bugzilla.cpp:218
+msgid "Bug is already reported: "
+msgstr "O erro já foi relatado: "
+
+#: ../lib/Plugins/Bugzilla.cpp:278
+#, c-format
+msgid "Binary file %s will not be reported."
+msgstr "O arquivo binário %s não será relatado."
+
+#: ../lib/Plugins/Bugzilla.cpp:348
+msgid "New bug id: "
+msgstr "Novo id do erro: "
+
+#: ../lib/Plugins/Bugzilla.cpp:409
+msgid "Logging into bugzilla..."
+msgstr "Autenticando no bugzilla..."
+
+#: ../lib/Plugins/Bugzilla.cpp:415
+msgid "Checking for duplicates..."
+msgstr "Verificando duplicatas..."
+
+#: ../lib/Plugins/Bugzilla.cpp:418
+msgid "Creating new bug..."
+msgstr "Criando novo erro..."
+
+#: ../lib/Plugins/Bugzilla.cpp:422
+msgid "Logging out..."
+msgstr "Encerrando sessão..."
+
+#: ../lib/Plugins/Kerneloops.cpp:38
+msgid "Getting local/global universal unique identification..."
+msgstr "Obtendo identificação universal local/global única..."
+
+#: ../lib/Plugins/CCpp.cpp:82
+msgid "Searching for debug-info packages..."
+msgstr "Pesquisando por pacotes debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:120
+msgid "Downloading and installing debug-info packages..."
+msgstr "Baixando e instalando pacotes debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:180
+msgid "Getting backtrace..."
+msgstr "Obtendo backtrace..."
+
+#: ../lib/Plugins/CCpp.cpp:429
+msgid "Getting local universal unique identification..."
+msgstr "Obtendo identificação universal local única..."
+
+#: ../lib/Plugins/CCpp.cpp:453
+msgid "Getting global universal unique identification..."
+msgstr "Obtendo identificação universal global única..."
+
+#: ../lib/Plugins/CCpp.cpp:471
+msgid "Starting report creation..."
+msgstr "Iniciando a criação do relatório..."
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:101
+msgid "Creating and submitting a report..."
+msgstr "Criando e enviando um relatório..."
+
+#: ../lib/Plugins/Logger.cpp:58
+#: ../lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr "Criando um relatório..."
+
+#: ../lib/Plugins/RunApp.cpp:62
+msgid "Executing RunApp plugin..."
+msgstr "Executando o plugin RunApp..."
+
+#: ../lib/Plugins/FileTransfer.cpp:52
+#: ../lib/Plugins/FileTransfer.cpp:247
+msgid "FileTransfer: URL not specified"
+msgstr "FileTransfer: URL não especificada"
+
+#: ../lib/Plugins/FileTransfer.cpp:69
+#, c-format
+msgid "Sending archive %s via %s"
+msgstr "Enviando o pacote %s via %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:121
+msgid "Creating an archive..."
+msgstr "Criando um pacote..."
+
+#: ../lib/Plugins/FileTransfer.cpp:176
+msgid "File Transfer: Creating a report..."
+msgstr "File Transfer: Criando um relatório..."
+
+#: ../lib/Plugins/FileTransfer.cpp:197
+#: ../lib/Plugins/FileTransfer.cpp:226
+msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+msgstr "CFileTransfer::Run(): Não foi possível criar e enviar o pacote: "
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
+msgid "Creating kernel oops crash reports..."
+msgstr "Criando relatórios de oops do kernel no travamento..."
+
+#: ../lib/Plugins/Mailx.cpp:110
+msgid "Sending an email..."
+msgstr "Enviando email..."
+
+#: ../lib/Plugins/SOSreport.cpp:90
+msgid "Executing SOSreportAction plugin..."
+msgstr "Executando o plugin SOSreportAction..."
+
+#~ msgid "Daemon is not running."
+#~ msgstr "O daemon não está em execução."
 
