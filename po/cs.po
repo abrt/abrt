@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT 0.7.1.1\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-08-31 12:36+0200\n"
+"POT-Creation-Date: 2009-09-02 11:35+0200\n"
 "PO-Revision-Date: 2009-08-25 22:04+ZONE\n"
 "Last-Translator: JIRI MOSKOVCAK <jmoskovc@redhat.com>\n"
 "Language-Team: CZECH <ll@li.org>\n"
@@ -22,6 +22,22 @@ msgstr ""
 
 #: src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr ""
+
+#: src/Gui/ABRTPlugin.py:26
+msgid "Analyzer plugins"
+msgstr ""
+
+#: src/Gui/ABRTPlugin.py:27
+msgid "Action plugins"
+msgstr ""
+
+#: src/Gui/ABRTPlugin.py:28
+msgid "Reporter plugins"
+msgstr ""
+
+#: src/Gui/ABRTPlugin.py:29
+msgid "Database plugins"
 msgstr ""
 
 #: src/Gui/CCDBusBackend.py:140
@@ -103,7 +119,7 @@ msgstr "Reportovat"
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">Popis balíčku</span>"
 
-#: src/Gui/ccgui.glade:289 src/Gui/CCMainWindow.py:214
+#: src/Gui/ccgui.glade:289 src/Gui/CCMainWindow.py:215
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nereportováno</b>"
 
@@ -127,33 +143,33 @@ msgstr "Počet incidentů"
 msgid "User"
 msgstr "Uživatel"
 
-#: src/Gui/CCMainWindow.py:156
-#, python-format
+#: src/Gui/CCMainWindow.py:157
+#, fuzzy, python-format
 msgid ""
-"Unable to get report!\n"
+"Unable to finish current task!\n"
 "%s"
 msgstr ""
 "Nepodařilo se ziskat report\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:173
+#: src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:206
+#: src/Gui/CCMainWindow.py:207
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Tento pád již byl reportován, záznam můžete nalézt na:</b>\n"
 
-#: src/Gui/CCMainWindow.py:266
+#: src/Gui/CCMainWindow.py:267
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:278
+#: src/Gui/CCMainWindow.py:279
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -162,12 +178,20 @@ msgstr ""
 "Vytváření reportu se nezdařilo\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:306
+#: src/Gui/CCMainWindow.py:311
 #, python-format
 msgid "Error getting the report: %s"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:103
+#: src/Gui/CCReporterDialog.py:98
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data that might contain some sensitive "
+"informations!\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+
+#: src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Zde stručně popište, jak došlo k pádu..."
 
@@ -204,15 +228,20 @@ msgstr "Poslat"
 msgid "Can't load gui description for SettingsDialog!"
 msgstr ""
 
-#: src/Gui/SettingsDialog.py:33
+#: src/Gui/SettingsDialog.py:34
 msgid "Name"
 msgstr "Jméno"
 
-#: src/Gui/SettingsDialog.py:47
+#: src/Gui/SettingsDialog.py:52
 msgid "Enabled"
 msgstr "Aktivní"
 
-#: src/Gui/SettingsDialog.py:106
+#: src/Gui/SettingsDialog.py:117
+#, fuzzy
+msgid "Can't get plugin description"
+msgstr "Widget PluginDialog nenalezen!"
+
+#: src/Gui/SettingsDialog.py:125
 #, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
@@ -220,31 +249,32 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/Gui/SettingsDialog.py:116
+#: src/Gui/SettingsDialog.py:135
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
 msgstr ""
 
-#: src/Gui/SettingsDialog.py:122
+#: src/Gui/SettingsDialog.py:141
 msgid "unknown response from settings dialog"
 msgstr ""
 
-#: src/Applet/Applet.cpp:49
+#: src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
 msgstr "Zjištěn pád v balíčku %s"
 
-#: src/Applet/Applet.cpp:80
+#: src/Applet/Applet.cpp:82
 msgid "Applet is already running."
 msgstr "Applet už běží."
 
-#: src/Applet/Applet.cpp:94 src/Applet/Applet.cpp:95
-msgid "Daemon is not running."
-msgstr "Služba není spuštěná."
+#: src/Applet/Applet.cpp:96 src/Applet/Applet.cpp:97
+#: src/Applet/CCApplet.cpp:135
+msgid "ABRT service is not running"
+msgstr "ABRT služba nebězí"
 
-#: src/Applet/CCApplet.cpp:83 src/Applet/CCApplet.cpp:249
+#: src/Applet/CCApplet.cpp:83 src/Applet/CCApplet.cpp:262
 #, c-format
 msgid "Pending events: %i"
 msgstr ""
@@ -260,18 +290,119 @@ msgid ""
 "ConnectCrashHandler"
 msgstr ""
 
-#: src/Applet/CCApplet.cpp:135
-msgid "ABRT service is not running"
-msgstr "ABRT služba nebězí"
-
 #: src/Applet/CCApplet.cpp:139
 msgid "ABRT service has been started"
 msgstr "ABRT služba byla spuštěna"
 
-#: src/Applet/CCApplet.cpp:160
+#: src/Applet/CCApplet.cpp:165
+msgid "Out of memory"
+msgstr "Nedostatek paměti"
+
+#: src/Applet/CCApplet.cpp:180
 msgid "Warning"
 msgstr "Upozornění"
 
-#: src/Applet/CCApplet.cpp:166
-msgid "Out of memory"
-msgstr "Nedostatek paměti"
+#: lib/Plugins/Bugzilla.cpp:218
+msgid "Bug is already reported: "
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:278
+#, c-format
+msgid "Binary file %s will not be reported."
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:348
+msgid "New bug id: "
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:409
+msgid "Logging into bugzilla..."
+msgstr "Přihlašuji se do bugzilly..."
+
+#: lib/Plugins/Bugzilla.cpp:415
+msgid "Checking for duplicates..."
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:418
+msgid "Creating new bug..."
+msgstr ""
+
+#: lib/Plugins/Bugzilla.cpp:422
+msgid "Logging out..."
+msgstr ""
+
+#: lib/Plugins/Kerneloops.cpp:38
+msgid "Getting local/global universal unique identification..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:82
+msgid "Searching for debug-info packages..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:120
+msgid "Downloading and installing debug-info packages..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:180
+msgid "Getting backtrace..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:429
+msgid "Getting local universal unique identification..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:453
+msgid "Getting global universal unique identification..."
+msgstr ""
+
+#: lib/Plugins/CCpp.cpp:471
+msgid "Starting report creation..."
+msgstr ""
+
+#: lib/Plugins/KerneloopsReporter.cpp:101
+msgid "Creating and submitting a report..."
+msgstr ""
+
+#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr ""
+
+#: lib/Plugins/RunApp.cpp:62
+msgid "Executing RunApp plugin..."
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:52 lib/Plugins/FileTransfer.cpp:247
+msgid "FileTransfer: URL not specified"
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:69
+#, c-format
+msgid "Sending archive %s via %s"
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:121
+msgid "Creating an archive..."
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:176
+msgid "File Transfer: Creating a report..."
+msgstr ""
+
+#: lib/Plugins/FileTransfer.cpp:197 lib/Plugins/FileTransfer.cpp:226
+msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+msgstr ""
+
+#: lib/Plugins/KerneloopsScanner.cpp:79
+msgid "Creating kernel oops crash reports..."
+msgstr ""
+
+#: lib/Plugins/Mailx.cpp:110
+msgid "Sending an email..."
+msgstr ""
+
+#: lib/Plugins/SOSreport.cpp:90
+msgid "Executing SOSreportAction plugin..."
+msgstr ""
+
+#~ msgid "Daemon is not running."
+#~ msgstr "Služba není spuštěná."

@@ -59,7 +59,7 @@ void CActionRunApp::ParseArgs(const std::string& psArgs, vector_args_t& pArgs)
 void CActionRunApp::Run(const std::string& pActionDir,
                         const std::string& pArgs)
 {
-    update_client("Executing RunApp plugin...");
+    update_client(_("Executing RunApp plugin..."));
 
     char line[1024];
     std::string output = "";

@@ -49,7 +49,8 @@ void CFileTransfer::SendFile(const std::string& pURL,
 
     if (pURL == "")
     {
-        warn_client("FileTransfer: URL not specified");
+        warn_client(_("FileTransfer: URL not specified"));
+
         return;
     }
     protocol = "";
@@ -64,7 +65,9 @@ void CFileTransfer::SendFile(const std::string& pURL,
         }
     }
 
-    update_client("Sending archive " + pFilename + " via " + protocol);
+    char buffer[1024];
+    snprintf(buffer, 1024, _("Sending archive %s via %s"), pFilename.c_str(), protocol.c_str());
+    update_client(std::string(buffer));
 
     if( pURL[len-1] == '/' )
     {
@@ -115,7 +118,7 @@ void CFileTransfer::CreateArchive(const std::string& pArchiveName,
     std::string cmdline;
     int result;
 
-    update_client("Creating an archive...");
+    update_client(_("Creating an archive..."));
 
     /*TODO: consider library for archive creation, if there is any*/
 
@@ -170,7 +173,7 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
     std::string dirname, archivename;
     char hostname[HBLEN];
 
-    update_client("File Transfer: Creating a report...");
+    update_client(_("File Transfer: Creating a report..."));
 
     if (pArgs == "store")
     {
@@ -191,8 +194,8 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
         }
         catch (CABRTException& e)
         {
-            warn_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
-            update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
+            warn_client(_("CFileTransfer::Run(): Cannot create and send an archive: ") + e.what());
+            //update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
         }
 	unlink(archivename.c_str());
     }
@@ -220,8 +223,8 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
             }
             catch (CABRTException& e)
             {
-                warn_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
-                update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
+                warn_client(_("CFileTransfer::Run(): Cannot create and send an archive: ") + e.what());
+//                update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
             }
             unlink(archivename.c_str());
         }
@@ -241,7 +244,7 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
     }
     else
     {
-        warn_client("FileTransfer: URL not specified");
+        warn_client(_("FileTransfer: URL not specified"));
     }
 
     if (pSettings.find("RetryCount") != pSettings.end())

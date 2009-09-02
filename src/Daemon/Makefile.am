@@ -40,5 +40,7 @@ dist_daemonconf_DATA = abrt.conf
 man_MANS = abrt.8 abrt.conf.5
 EXTRA_DIST = $(man_MANS)
 
+DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
+
 install-data-local:
 	$(mkdir_p) '$(DESTDIR)/$(VAR_RUN)'

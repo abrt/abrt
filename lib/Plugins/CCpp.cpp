@@ -79,7 +79,7 @@ static std::string CreateHash(const std::string& pInput)
 
 static void InstallDebugInfos(const std::string& pPackage)
 {
-    update_client("Searching for debug-info packages...");
+    update_client(_("Searching for debug-info packages..."));
 
     std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
     char buff[1024];
@@ -117,7 +117,7 @@ static void InstallDebugInfos(const std::string& pPackage)
     safe_write(pipein[1], "y\n", sizeof("y\n")-1);
     close(pipein[1]);
 
-    update_client("Downloading and installing debug-info packages...");
+    update_client(_("Downloading and installing debug-info packages..."));
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */
@@ -177,7 +177,7 @@ static void InstallDebugInfos(const std::string& pPackage)
 
 static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
-    update_client("Getting backtrace...");
+    update_client(_("Getting backtrace..."));
 
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
@@ -426,7 +426,7 @@ I think the below code has absolutely the same effect:
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-    update_client("Getting local universal unique identification...");
+    update_client(_("Getting local universal unique identification..."));
 
     CDebugDump dd;
     std::string UID;
@@ -450,7 +450,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-    update_client("Getting global universal unique identification...");
+    update_client(_("Getting global universal unique identification..."));
 
     std::string backtrace;
     std::string executable;
@@ -468,7 +468,7 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
-    update_client("Starting report creation...");
+    update_client(_("Starting report creation..."));
 
     std::string package;
     std::string backtrace;

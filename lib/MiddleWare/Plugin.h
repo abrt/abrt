@@ -31,6 +31,17 @@
 #define PLUGINS_LIB_EXTENSION "so"
 #define PLUGINS_LIB_PREFIX "lib"
 
+#if HAVE_CONFIG_H
+    #include <config.h>
+#endif
+
+#if ENABLE_NLS
+    #include <libintl.h>
+    #define _(S) gettext(S)
+#else
+    #define _(S) (S)
+#endif
+
 /**
  * An abstract class. The class defines a common plugin interface. If a plugin
  * has some settings, then a *Settings(*) method has to be written.
