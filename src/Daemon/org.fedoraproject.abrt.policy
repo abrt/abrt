@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE policyconfig PUBLIC
+ "-//freedesktop//DTD PolicyKit Policy Configuration 1.0//EN"
+ "http://www.freedesktop.org/standards/PolicyKit/1.0/policyconfig.dtd">
+
+<!--
+PolicyKit policy definitions for ABRT
+
+Copyright (c) 2009 Daniel Novotny <dnovotny@redhat.com>
+Copyright (c) 2009 Red Hat inc.
+
+-->
+
+<policyconfig>
+
+  <action id="org.fedoraproject.abrt.save-settings">
+    <description>Save settings</description>
+    <message>Saving global settings requires authentication</message>
+    <defaults>
+      <allow_any>auth_admin</allow_any>
+    </defaults>
+  </action>
+
+</policyconfig>
