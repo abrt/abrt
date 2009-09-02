@@ -225,10 +225,10 @@ static bool load_vector(DBusMessageIter* iter, std::vector<E>& val)
     DBusMessageIter sub_iter;
     dbus_message_iter_recurse(iter, &sub_iter);
 
-    type = dbus_message_iter_get_arg_type(&sub_iter);
-    /* here "type" is the element's type */
     bool next_exists;
 //int cnt = 0;
+    //type = dbus_message_iter_get_arg_type(&sub_iter);
+    /* here "type" is the element's type, and it will be checked by load_val */
     // if (type != DBUS_TYPE_INVALID) - not needed?
     do {
         E elem;
@@ -342,7 +342,7 @@ void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t job_id)
     const char* c_dest = pDest.c_str();
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &c_dest,
-            DBUS_TYPE_INT64, &job_id,
+            DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
 }
@@ -353,7 +353,7 @@ void CCommLayerServerDBus::JobStarted(const std::string &pDest, uint64_t job_id)
     const char* c_dest = pDest.c_str();
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &c_dest,
-            DBUS_TYPE_INT64, &job_id,
+            DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
 }
@@ -374,7 +374,7 @@ void CCommLayerServerDBus::Update(const std::string& pMessage, uint64_t job_id)
     const char* c_message = pMessage.c_str();
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &c_message,
-            DBUS_TYPE_INT64, &job_id,
+            DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
 }
@@ -395,7 +395,7 @@ void CCommLayerServerDBus::Warning(const std::string& pMessage, uint64_t job_id)
     const char* c_message = pMessage.c_str();
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &c_message,
-            DBUS_TYPE_INT64, &job_id,
+            DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
 }
@@ -518,8 +518,7 @@ static void handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
 
 static void handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
 {
-//?! load_val definitely sees DBUS_TYPE_INT64, not UINT! ('x', not 't')
-    /*u*/ int64_t job_id;
+    uint64_t job_id;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
         error_msg_and_die("dbus call error: no parameters");
