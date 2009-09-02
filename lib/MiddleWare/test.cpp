@@ -40,7 +40,7 @@ int main(int argc, char** argv)
     {
         CMiddleWare middleWare(PLUGINS_CONF_DIR,
                                PLUGINS_LIB_DIR);
-        vector_map_string_string_t loaded_plugins;
+        vector_map_string_t loaded_plugins;
         middleWare.RegisterPlugin("CCpp");
         middleWare.RegisterPlugin("Mailx");
         middleWare.RegisterPlugin("Logger");

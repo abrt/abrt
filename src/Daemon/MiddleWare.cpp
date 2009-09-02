@@ -332,23 +332,26 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 
     // analyzer with package name (CCpp:xrog-x11-app) has higher priority
     key = analyzer + ":" + packageName;
-    if (s_mapAnalyzerActionsAndReporters.find(key) == s_mapAnalyzerActionsAndReporters.end())
+    map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
+    if (keyPtr == s_mapAnalyzerActionsAndReporters.end())
     {
         // if there is no such settings, then try default analyzer
-        key = analyzer;
+        keyPtr = s_mapAnalyzerActionsAndReporters.find(analyzer);
     }
-    if (s_mapAnalyzerActionsAndReporters.find(key) != s_mapAnalyzerActionsAndReporters.end())
+
+    if (keyPtr != s_mapAnalyzerActionsAndReporters.end())
     {
-        vector_pair_string_string_t::iterator it_r = s_mapAnalyzerActionsAndReporters[key].begin();
-        for (; it_r != s_mapAnalyzerActionsAndReporters[key].end(); it_r++)
+        vector_pair_string_string_t::iterator it_r = keyPtr->second.begin();
+        for (; it_r != keyPtr->second.end(); it_r++)
         {
+            std::string pluginName = it_r->first;
             try
             {
                 std::string res;
 
-                if (g_pPluginManager->GetPluginType((*it_r).first) == REPORTER)
+                if (g_pPluginManager->GetPluginType(pluginName) == REPORTER)
                 {
-                    CReporter* reporter = g_pPluginManager->GetReporter((*it_r).first);
+                    CReporter* reporter = g_pPluginManager->GetReporter(pluginName);
                     std::string home = "";
                     map_plugin_settings_t oldSettings;
                     map_plugin_settings_t newSettings;
@@ -360,30 +363,30 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                         {
                             oldSettings = reporter->GetSettings();
 
-                            if (LoadPluginSettings(home + "/.abrt/" + (*it_r).first + "."PLUGINS_CONF_EXTENSION, newSettings))
+                            if (LoadPluginSettings(home + "/.abrt/" + pluginName + "."PLUGINS_CONF_EXTENSION, newSettings))
                             {
                                 reporter->SetSettings(newSettings);
                             }
                         }
                     }
 
-                    res = reporter->Report(pCrashReport, (*it_r).second);
+                    res = reporter->Report(pCrashReport, it_r->second);
 
                     if (home != "")
                     {
                         reporter->SetSettings(oldSettings);
                     }
                 }
-                ret[(*it_r).first].push_back("1");
-                ret[(*it_r).first].push_back(res);
+                ret[pluginName].push_back("1");
+                ret[pluginName].push_back(res);
                 message += res + "\n";
             }
             catch (CABRTException& e)
             {
-                ret[(*it_r).first].push_back("0");
-                ret[(*it_r).first].push_back(e.what());
+                ret[pluginName].push_back("0");
+                ret[pluginName].push_back(e.what());
                 warn_client("Report(): " + e.what());
-                update_client("Reporting via '"+(*it_r).first+"' was not successful: " + e.what());
+                update_client("Reporting via '" + pluginName + "' was not successful: " + e.what());
             }
         }
     }
@@ -528,24 +531,25 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
  */
 static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
 {
-    if (s_mapAnalyzerActionsAndReporters.find(pAnalyzer) != s_mapAnalyzerActionsAndReporters.end())
+    map_analyzer_actions_and_reporters_t::iterator analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
+    if (analyzer != s_mapAnalyzerActionsAndReporters.end())
     {
-        vector_pair_string_string_t::iterator it_a = s_mapAnalyzerActionsAndReporters[pAnalyzer].begin();
-        for (; it_a != s_mapAnalyzerActionsAndReporters[pAnalyzer].end(); it_a++)
+        vector_pair_string_string_t::iterator it_a = analyzer->second.begin();
+        for (; it_a != analyzer->second.end(); it_a++)
         {
+            std::string pluginName = it_a->first;
             try
             {
-                if (g_pPluginManager->GetPluginType((*it_a).first) == ACTION)
+                if (g_pPluginManager->GetPluginType(pluginName) == ACTION)
                 {
-                    CAction* action = g_pPluginManager->GetAction((*it_a).first);
-
-                    action->Run(pDebugDumpDir, (*it_a).second);
+                    CAction* action = g_pPluginManager->GetAction(pluginName);
+                    action->Run(pDebugDumpDir, it_a->second);
                 }
             }
             catch (CABRTException& e)
             {
                 warn_client("RunAnalyzerActions(): " + e.what());
-                update_client("Action performed by '"+(*it_a).first+"' was not successful: " + e.what());
+                update_client("Action performed by '" + pluginName + "' was not successful: " + e.what());
             }
         }
     }

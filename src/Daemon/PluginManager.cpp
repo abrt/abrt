@@ -310,13 +310,13 @@ plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
     return m_mapABRTPlugins[pName]->GetType();
 }
 
-vector_map_string_string_t CPluginManager::GetPluginsInfo()
+vector_map_string_t CPluginManager::GetPluginsInfo()
 {
-    vector_map_string_string_t ret;
+    vector_map_string_t ret;
     map_abrt_plugins_t::iterator it_abrt_plugin = m_mapABRTPlugins.begin();
     for (; it_abrt_plugin != m_mapABRTPlugins.end(); it_abrt_plugin++)
     {
-        map_string_string_t plugin_info;
+        map_string_t plugin_info;
 
         plugin_info["Enabled"] = (m_mapPlugins.find(it_abrt_plugin->second->GetName()) != m_mapPlugins.end()) ?
                                  "yes" : "no";

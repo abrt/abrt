@@ -57,9 +57,10 @@ bool CRPM::CheckFingerprint(const std::string& pPackage)
                     std::string PGPSignatureText = pgpsig;
                     free(pgpsig);
 
-                    if (PGPSignatureText.find(" Key ID ") != std::string::npos)
+                    size_t Key_ID_pos = PGPSignatureText.find(" Key ID ");
+                    if (Key_ID_pos != std::string::npos)
                     {
-                        std::string headerFingerprint = PGPSignatureText.substr(PGPSignatureText.find(" Key ID ") + sizeof (" Key ID ") - 1);
+                        std::string headerFingerprint = PGPSignatureText.substr(Key_ID_pos + sizeof (" Key ID ") - 1);
 
                         rpmtdFree(td);
                         if (headerFingerprint != "")

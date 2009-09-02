@@ -97,33 +97,41 @@ static vector_pair_string_string_t ParseListWithArgs(const std::string& pValue)
 
 static void ParseCommon()
 {
-    if (s_mapSettingsCommon.find("OpenGPGCheck") != s_mapSettingsCommon.end())
+    map_settings_t::const_iterator it = s_mapSettingsCommon.find("OpenGPGCheck");
+    map_settings_t::const_iterator end = s_mapSettingsCommon.end();
+    if (it != end)
     {
-        g_settings_bOpenGPGCheck = s_mapSettingsCommon["OpenGPGCheck"] == "yes";
+        g_settings_bOpenGPGCheck = it->second == "yes";
     }
-    if (s_mapSettingsCommon.find("OpenGPGPublicKeys") != s_mapSettingsCommon.end())
+    it = s_mapSettingsCommon.find("OpenGPGPublicKeys");
+    if (it != end)
     {
-        g_settings_setOpenGPGPublicKeys = ParseList(s_mapSettingsCommon["OpenGPGPublicKeys"]);
+        g_settings_setOpenGPGPublicKeys = ParseList(it->second);
     }
-    if (s_mapSettingsCommon.find("BlackList") != s_mapSettingsCommon.end())
+    it = s_mapSettingsCommon.find("BlackList");
+    if (it != end)
     {
-        g_settings_mapSettingsBlackList = ParseList(s_mapSettingsCommon["BlackList"]);
+        g_settings_mapSettingsBlackList = ParseList(it->second);
     }
-    if (s_mapSettingsCommon.find("Database") != s_mapSettingsCommon.end())
+    it = s_mapSettingsCommon.find("Database");
+    if (it != end)
     {
-        g_settings_sDatabase = s_mapSettingsCommon["Database"];
+        g_settings_sDatabase = it->second;
     }
-    if (s_mapSettingsCommon.find("EnabledPlugins") != s_mapSettingsCommon.end())
+    it = s_mapSettingsCommon.find("EnabledPlugins");
+    if (it != end)
     {
-        g_settings_setEnabledPlugins = ParseList(s_mapSettingsCommon["EnabledPlugins"]);
+        g_settings_setEnabledPlugins = ParseList(it->second);
     }
-    if (s_mapSettingsCommon.find("MaxCrashReportsSize") != s_mapSettingsCommon.end())
+    it = s_mapSettingsCommon.find("MaxCrashReportsSize");
+    if (it != end)
     {
-        g_settings_nMaxCrashReportsSize = atoi(s_mapSettingsCommon["MaxCrashReportsSize"].c_str());
+        g_settings_nMaxCrashReportsSize = atoi(it->second.c_str());
     }
-    if (s_mapSettingsCommon.find("ActionsAndReporters") != s_mapSettingsCommon.end())
+    it = s_mapSettingsCommon.find("ActionsAndReporters");
+    if (it != end)
     {
-        g_settings_vectorActionsAndReporters = ParseListWithArgs(s_mapSettingsCommon["ActionsAndReporters"]);
+        g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second);
     }
 }
 
@@ -393,19 +401,22 @@ void SaveSettings(const char* pPath)
 
 void SetSettings(const map_abrt_settings_t& pSettings)
 {
-    if (pSettings.find(SECTION_COMMON) != pSettings.end())
+    map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
+    if (it != pSettings.end())
     {
-        s_mapSettingsCommon = pSettings.find(SECTION_COMMON)->second;
+        s_mapSettingsCommon = it->second;
         ParseCommon();
     }
-    if (pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS) != pSettings.end())
+    it = pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS);
+    if (it != pSettings.end())
     {
-        s_mapSettingsAnalyzerActionsAndReporters = pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS)->second;
+        s_mapSettingsAnalyzerActionsAndReporters = it->second;
         ParseAnalyzerActionsAndReporters();
     }
-    if (pSettings.find(SECTION_CRON) != pSettings.end())
+    it = pSettings.find(SECTION_CRON);
+    if (it != pSettings.end())
     {
-        s_mapSettingsCron = pSettings.find(SECTION_CRON)->second;
+        s_mapSettingsCron = it->second;
         ParseCron();
     }
 }

@@ -538,7 +538,7 @@ static void handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
 
 static void handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 {
-    vector_map_string_string_t plugins_info = g_pPluginManager->GetPluginsInfo();
+    vector_map_string_t plugins_info = g_pPluginManager->GetPluginsInfo();
 
     DBusMessageIter iter;
     dbus_message_iter_init_append(reply, &iter);

@@ -126,7 +126,7 @@ class CPluginManager
          * Then a user can fill all needed informations like URLs etc.
          * @return A vector of maps <key, vaule>
          */
-        vector_map_string_string_t GetPluginsInfo();
+        vector_map_string_t GetPluginsInfo();
         /**
          * A method, which sets up a plugin. The settings are also saved in home
          * directory of an user.
