@@ -95,7 +95,7 @@ class ReporterDialog():
         for row in self.reportListStore:
             rowe = dict(zip(attributes, row))
             if (rowe["attachment"] or (rowe["editable"] and rowe["attachment"])) and rowe["send"]:
-                result = gui_question_dialog(_("<b>WARNING</b>, you're about to send data that might contain some sensitive informations!\n"
+                result = gui_question_dialog(_("<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
                                         "Do you really want to send <b>%s</b>?\n" % rowe["item"]), self.window)
                 if result == gtk.RESPONSE_NO:
                     row[attributes.index("send")] = False

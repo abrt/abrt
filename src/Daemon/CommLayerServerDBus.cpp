@@ -139,30 +139,35 @@ static inline void store_val(DBusMessageIter* iter, const std::map<K,V>& val)  {
  * Helpers for parsing DBus messages
  */
 
+enum {
+    ERROR = -1,
+    LAST_FIELD = 0,
+    MORE_FIELDS = 1,
+};
 /* Checks type, loads data, advances to the next arg.
  * Returns TRUE if next arg exists.
  */
-//static bool load_bool(DBusMessageIter* iter, bool& val);
-static bool load_int32(DBusMessageIter* iter, int32_t &val);
-static bool load_uint32(DBusMessageIter* iter, uint32_t &val);
-static bool load_int64(DBusMessageIter* iter, int64_t &val);
-static bool load_uint64(DBusMessageIter* iter, uint64_t &val);
-static bool load_charp(DBusMessageIter* iter, const char*& val);
-//static inline bool load_val(DBusMessageIter* iter, bool &val)        { return load_bool(iter, val); }
-static inline bool load_val(DBusMessageIter* iter, int32_t &val)     { return load_int32(iter, val); }
-static inline bool load_val(DBusMessageIter* iter, uint32_t &val)    { return load_uint32(iter, val); }
-static inline bool load_val(DBusMessageIter* iter, int64_t &val)     { return load_int64(iter, val); }
-static inline bool load_val(DBusMessageIter* iter, uint64_t &val)    { return load_uint64(iter, val); }
-static inline bool load_val(DBusMessageIter* iter, const char*& val) { return load_charp(iter, val); }
-static inline bool load_val(DBusMessageIter* iter, std::string& val)
+//static int load_bool(DBusMessageIter* iter, bool& val);
+static int load_int32(DBusMessageIter* iter, int32_t &val);
+static int load_uint32(DBusMessageIter* iter, uint32_t &val);
+static int load_int64(DBusMessageIter* iter, int64_t &val);
+static int load_uint64(DBusMessageIter* iter, uint64_t &val);
+static int load_charp(DBusMessageIter* iter, const char*& val);
+//static inline int load_val(DBusMessageIter* iter, bool &val)        { return load_bool(iter, val); }
+static inline int load_val(DBusMessageIter* iter, int32_t &val)     { return load_int32(iter, val); }
+static inline int load_val(DBusMessageIter* iter, uint32_t &val)    { return load_uint32(iter, val); }
+static inline int load_val(DBusMessageIter* iter, int64_t &val)     { return load_int64(iter, val); }
+static inline int load_val(DBusMessageIter* iter, uint64_t &val)    { return load_uint64(iter, val); }
+static inline int load_val(DBusMessageIter* iter, const char*& val) { return load_charp(iter, val); }
+static inline int load_val(DBusMessageIter* iter, std::string& val)
 {
     const char* str;
-    bool r = load_charp(iter, str);
+    int r = load_charp(iter, str);
     val = str;
     return r;
 }
 
-//static bool load_bool(DBusMessageIter* iter, bool& val)
+//static int load_bool(DBusMessageIter* iter, bool& val)
 //{
 //    int type = dbus_message_iter_get_arg_type(iter);
 //    if (type != DBUS_TYPE_BOOLEAN)
@@ -172,43 +177,58 @@ static inline bool load_val(DBusMessageIter* iter, std::string& val)
 //    val = db;
 //    return dbus_message_iter_next(iter);
 //}
-static bool load_int32(DBusMessageIter* iter, int32_t& val)
+static int load_int32(DBusMessageIter* iter, int32_t& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_INT32)
-        error_msg_and_die("%s expected in dbus message, but not found ('%c')", "int32", type);
+    {
+        error_msg("%s expected in dbus message, but not found ('%c')", "int32", type);
+        return -1;
+    }
     dbus_message_iter_get_basic(iter, &val);
     return dbus_message_iter_next(iter);
 }
-static bool load_uint32(DBusMessageIter* iter, uint32_t& val)
+static int load_uint32(DBusMessageIter* iter, uint32_t& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_UINT32)
-        error_msg_and_die("%s expected in dbus message, but not found ('%c')", "uint32", type);
+    {
+        error_msg("%s expected in dbus message, but not found ('%c')", "uint32", type);
+        return -1;
+    }
     dbus_message_iter_get_basic(iter, &val);
     return dbus_message_iter_next(iter);
 }
-static bool load_int64(DBusMessageIter* iter, int64_t& val)
+static int load_int64(DBusMessageIter* iter, int64_t& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_INT64)
-        error_msg_and_die("%s expected in dbus message, but not found ('%c')", "int64", type);
+    {
+        error_msg("%s expected in dbus message, but not found ('%c')", "int64", type);
+        return -1;
+    }
     dbus_message_iter_get_basic(iter, &val);
     return dbus_message_iter_next(iter);
 }
-static bool load_uint64(DBusMessageIter* iter, uint64_t& val)
+static int load_uint64(DBusMessageIter* iter, uint64_t& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_UINT64)
-        error_msg_and_die("%s expected in dbus message, but not found ('%c')", "uint64", type);
+    {
+        error_msg("%s expected in dbus message, but not found ('%c')", "uint64", type);
+        return -1;
+    }
     dbus_message_iter_get_basic(iter, &val);
     return dbus_message_iter_next(iter);
 }
-static bool load_charp(DBusMessageIter* iter, const char*& val)
+static int load_charp(DBusMessageIter* iter, const char*& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_STRING)
-        error_msg_and_die("%s expected in dbus message, but not found ('%c')", "string", type);
+    {
+        error_msg("%s expected in dbus message, but not found ('%c')", "string", type);
+        return -1;
+    }
     dbus_message_iter_get_basic(iter, &val);
 //log("load_charp:'%s'", val);
     return dbus_message_iter_next(iter);
@@ -216,16 +236,19 @@ static bool load_charp(DBusMessageIter* iter, const char*& val)
 
 /* Templates for vector and map */
 template<typename E>
-static bool load_vector(DBusMessageIter* iter, std::vector<E>& val)
+static int load_vector(DBusMessageIter* iter, std::vector<E>& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_ARRAY)
-        error_msg_and_die("array expected in dbus message, but not found ('%c')", type);
+    {
+        error_msg("array expected in dbus message, but not found ('%c')", type);
+        return -1;
+    }
 
     DBusMessageIter sub_iter;
     dbus_message_iter_recurse(iter, &sub_iter);
 
-    bool next_exists;
+    int r;
 //int cnt = 0;
     //type = dbus_message_iter_get_arg_type(&sub_iter);
     /* here "type" is the element's type, and it will be checked by load_val */
@@ -233,51 +256,67 @@ static bool load_vector(DBusMessageIter* iter, std::vector<E>& val)
     do {
         E elem;
 //cnt++;
-        next_exists = load_val(&sub_iter, elem);
+        r = load_val(&sub_iter, elem);
+        if (r < 0)
+            return r;
         val.push_back(elem);
-    } while (next_exists);
+    } while (r == MORE_FIELDS);
 //log("%s: %d elems", __func__, cnt);
 
     return dbus_message_iter_next(iter);
 }
 /*
 template<>
-static bool load_vector(DBusMessageIter* iter, std::vector<uint8_t>& val)
+static int load_vector(DBusMessageIter* iter, std::vector<uint8_t>& val)
 {
     if we use such vector, MUST add specialized code here (see in dbus-c++ source)
 }
 */
 template<typename K, typename V>
-static bool load_map(DBusMessageIter* iter, std::map<K,V>& val)
+static int load_map(DBusMessageIter* iter, std::map<K,V>& val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_ARRAY)
-        error_msg_and_die("map expected in dbus message, but not found ('%c')", type);
+    {
+        error_msg("array expected in dbus message, but not found ('%c')", type);
+        return -1;
+    }
 
     DBusMessageIter sub_iter;
     dbus_message_iter_recurse(iter, &sub_iter);
 
     bool next_exists;
+    int r;
 //int cnt = 0;
     do {
         type = dbus_message_iter_get_arg_type(&sub_iter);
         if (type != DBUS_TYPE_DICT_ENTRY)
-            error_msg_and_die("sub_iter type is not DBUS_TYPE_DICT_ENTRY (%c)!", type);
+        {
+            error_msg("sub_iter type is not DBUS_TYPE_DICT_ENTRY (%c)!", type);
+            return -1;
+        }
 
         DBusMessageIter sub_sub_iter;
         dbus_message_iter_recurse(&sub_iter, &sub_sub_iter);
 
         K key;
-        next_exists = load_val(&sub_sub_iter, key);
-        if (!next_exists)
-            error_msg_and_die("malformed map element in dbus message");
+        r = load_val(&sub_sub_iter, key);
+        if (r != MORE_FIELDS)
+        {
+            if (r == LAST_FIELD)
+                error_msg("malformed map element in dbus message");
+            return -1;
+        }
         V value;
-        next_exists = load_val(&sub_sub_iter, value);
-        if (next_exists)
-            error_msg_and_die("malformed map element in dbus message");
+        r = load_val(&sub_sub_iter, value);
+        if (r != LAST_FIELD)
+        {
+            if (r == MORE_FIELDS)
+                error_msg("malformed map element in dbus message");
+            return -1;
+        }
         val[key] = value;
 //cnt++;
-
         next_exists = dbus_message_iter_next(&sub_iter);
     } while (next_exists);
 //log("%s: %d elems", __func__, cnt);
@@ -286,9 +325,9 @@ static bool load_map(DBusMessageIter* iter, std::map<K,V>& val)
 }
 
 template<typename E>
-static inline bool load_val(DBusMessageIter* iter, std::vector<E>& val) { return load_vector(iter, val); }
+static inline int load_val(DBusMessageIter* iter, std::vector<E>& val) { return load_vector(iter, val); }
 template<typename K, typename V>
-static inline bool load_val(DBusMessageIter* iter, std::map<K,V>& val)  { return load_map(iter, val); }
+static inline int load_val(DBusMessageIter* iter, std::map<K,V>& val)  { return load_map(iter, val); }
 
 
 /*
@@ -412,25 +451,15 @@ static long get_remote_uid(DBusMessage* call)
     const char* sender = dbus_message_get_sender(call);
     long uid = dbus_bus_get_unix_user(s_pConn, sender, &err);
     if (dbus_error_is_set(&err))
-        return -1;
+    {
+        dbus_error_free(&err);
+        error_msg("can't determine remore uid, assuming 0");
+        return 0;
+    }
     return uid;
 }
-//static const char* get_string_param(DBusMessage* call)
-//{
-//    const char* str = NULL;
-//    DBusError err;
-//    dbus_error_init(&err);
-//    if (!dbus_message_get_args(call,
-//            &err,
-//            DBUS_TYPE_STRING, &str
-//            )
-//    ) {
-//        error_msg_and_die("dbus call parameter mismatch");
-//    }
-//    return str;
-//}
 
-static void handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
+static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 {
     long unix_uid = get_remote_uid(call);
     VERB1 log("got %s() call from uid %ld", "GetCrashInfos", unix_uid);
@@ -441,36 +470,55 @@ static void handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
     store_val(&iter, argout1);
 
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_CreateReport(DBusMessage* call, DBusMessage* reply)
+static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 {
-    const char* argin1;//DOESNT WORK!?? = get_string_param(call);
+    const char* argin1;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    load_val(&in_iter, argin1);
-
-    if (argin1) // superfluous now
     {
-        long unix_uid = get_remote_uid(call);
-        VERB1 log("got %s('%s') call from uid %ld", "CreateReport", argin1, unix_uid);
+        error_msg("dbus call %s: no parameters", "CreateReport");
+        return -1;
+    }
+    int r = load_val(&in_iter, argin1);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "CreateReport");
+        return -1;
+    }
+
+    long unix_uid = get_remote_uid(call);
+    VERB1 log("got %s('%s') call from uid %ld", "CreateReport", argin1, unix_uid);
 //FIXME: duplicate dbus_message_get_sender in get_remote_uid
-        uint64_t argout1 = CreateReport_t(argin1, to_string(unix_uid), dbus_message_get_sender(call));
-        dbus_message_append_args(reply,
+    uint64_t argout1 = CreateReport_t(argin1, to_string(unix_uid), dbus_message_get_sender(call));
+
+    dbus_message_append_args(reply,
                 DBUS_TYPE_UINT64, &argout1,
                 DBUS_TYPE_INVALID);
-    }
+
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_Report(DBusMessage* call, DBusMessage* reply)
+static int handle_Report(DBusMessage* call, DBusMessage* reply)
 {
     map_crash_report_t argin1;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    load_val(&in_iter, argin1);
+    {
+        error_msg("dbus call %s: no parameters", "Report");
+        return -1;
+    }
+    int r = load_val(&in_iter, argin1);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "Report");
+        return -1;
+    }
 
     long unix_uid = get_remote_uid(call);
     VERB1 log("got %s(...) call from uid %ld", "Report", unix_uid);
@@ -479,14 +527,14 @@ static void handle_Report(DBusMessage* call, DBusMessage* reply)
     {
         argout1 = Report(argin1, to_string(unix_uid));
     }
-    catch(CABRTException &e)
+    catch (CABRTException &e)
     {
         dbus_message_unref(reply);
         reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, e.what().c_str());
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
-        return;
+        return 0;
     }
 
     DBusMessageIter out_iter;
@@ -494,35 +542,54 @@ static void handle_Report(DBusMessage* call, DBusMessage* reply)
     store_val(&out_iter, argout1);
 
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
+static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
 {
-    const char* argin1; // = get_string_param(call);
+    const char* argin1;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    load_val(&in_iter, argin1);
-
-    if (argin1) // superfluous now
     {
-        long unix_uid = get_remote_uid(call);
-        VERB1 log("got %s('%s') call from uid %ld", "DeleteDebugDump", argin1, unix_uid);
-        bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid));
-        dbus_message_append_args(reply,
+        error_msg("dbus call %s: no parameters", "DeleteDebugDump");
+        return -1;
+    }
+    int r = load_val(&in_iter, argin1);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "DeleteDebugDump");
+        return -1;
+    }
+
+    long unix_uid = get_remote_uid(call);
+    VERB1 log("got %s('%s') call from uid %ld", "DeleteDebugDump", argin1, unix_uid);
+    bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid));
+
+    dbus_message_append_args(reply,
                 DBUS_TYPE_BOOLEAN, &argout1,
                 DBUS_TYPE_INVALID);
-    }
+
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
+static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
 {
     uint64_t job_id;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    load_val(&in_iter, job_id);
+    {
+        error_msg("dbus call %s: no parameters", "GetJobResult");
+        return -1;
+    }
+    int r = load_val(&in_iter, job_id);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "GetJobResult");
+        return -1;
+    }
 
     long unix_uid = get_remote_uid(call);
     VERB1 log("got %s(%llx) call from uid %ld", "GetJobResult", (long long)job_id, unix_uid);
@@ -533,9 +600,10 @@ static void handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
     store_val(&out_iter, report);
 
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
+static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 {
     vector_map_string_t plugins_info = g_pPluginManager->GetPluginsInfo();
 
@@ -544,75 +612,114 @@ static void handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
     store_val(&iter, plugins_info);
 
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
+static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 {
     const char* PluginName; // = get_string_param(call);
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    load_val(&in_iter, PluginName);
-
-    if (PluginName) // superfluous now
     {
-        long unix_uid = get_remote_uid(call);
-        VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-        map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid));
-
-        DBusMessageIter iter;
-        dbus_message_iter_init_append(reply, &iter);
-        store_val(&iter, plugin_settings);
+        error_msg("dbus call %s: no parameters", "GetPluginSettings");
+        return -1;
     }
+    int r = load_val(&in_iter, PluginName);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "GetPluginSettings");
+        return -1;
+    }
+
+    long unix_uid = get_remote_uid(call);
+    VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
+    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid));
+
+    DBusMessageIter iter;
+    dbus_message_iter_init_append(reply, &iter);
+    store_val(&iter, plugin_settings);
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
+static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
 {
-    std::string PluginName;
-    map_plugin_settings_t plugin_settings;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    bool next_exists = load_val(&in_iter, PluginName);
-    if (!next_exists)
-        error_msg_and_die("dbus call format error");
-    load_val(&in_iter, plugin_settings);
+    {
+        error_msg("dbus call %s: no parameters", "SetPluginSettings");
+        return -1;
+    }
+    std::string PluginName;
+    int r = load_val(&in_iter, PluginName);
+    if (r != MORE_FIELDS)
+    {
+        if (r == LAST_FIELD)
+            error_msg("dbus call %s: too few parameters", "SetPluginSettings");
+        return -1;
+    }
+    map_plugin_settings_t plugin_settings;
+    r = load_val(&in_iter, plugin_settings);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "SetPluginSettings");
+        return -1;
+    }
 
     long unix_uid = get_remote_uid(call);
     VERB1 log("got %s('%s',...) call from uid %ld", "SetPluginSettings", PluginName.c_str(), unix_uid);
     g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
+
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
+static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
 {
-    const char* PluginName; // = get_string_param(call);
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    load_val(&in_iter, PluginName);
-
-    if (PluginName) // superfluous now
     {
-        g_pPluginManager->RegisterPlugin(PluginName);
+        error_msg("dbus call %s: no parameters", "RegisterPlugin");
+        return -1;
     }
+    const char* PluginName;
+    int r = load_val(&in_iter, PluginName);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "RegisterPlugin");
+        return -1;
+    }
+
+    g_pPluginManager->RegisterPlugin(PluginName);
+
     send_flush_and_unref(reply);
+    return 0;
 }
 
-static void handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
+static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
 {
-    const char* PluginName; // = get_string_param(call);
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
-        error_msg_and_die("dbus call error: no parameters");
-    load_val(&in_iter, PluginName);
-
-    if (PluginName) // superfluous now
     {
-        g_pPluginManager->UnRegisterPlugin(PluginName);
+        error_msg("dbus call %s: no parameters", "UnRegisterPlugin");
+        return -1;
     }
+    const char* PluginName;
+    int r = load_val(&in_iter, PluginName);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "UnRegisterPlugin");
+        return -1;
+    }
+
+    g_pPluginManager->UnRegisterPlugin(PluginName);
+
     send_flush_and_unref(reply);
+    return 0;
 }
 
 
