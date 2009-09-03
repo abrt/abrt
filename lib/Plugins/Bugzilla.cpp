@@ -408,9 +408,25 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
     std::string bugId;
 
+
+    NewXMLRPCClient();
+    update_client(_("Checking for duplicates..."));
+    try
+    {
+        if ((bugId = CheckUUIDInBugzilla(component, uuid)) != "")
+        {
+            DeleteXMLRPCClient();
+            return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
+        }
+    }
+    catch (CABRTException& e)
+    {
+        DeleteXMLRPCClient();
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+    }
+
     m_bLoggedIn = false;
     update_client(_("Logging into bugzilla..."));
-    NewXMLRPCClient();
     try
     {
         Login();
@@ -418,33 +434,17 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     }
     catch (CABRTException& e)
     {
-        update_client(_("Logging failed, trying to find a bug..."));
-        try
-        {
-            if ((bugId = CheckUUIDInBugzilla(component, uuid)) != "")
-            {
-                DeleteXMLRPCClient();
-                return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
-            }
-        }
-        catch (CABRTException& e)
-        {
-            DeleteXMLRPCClient();
-            throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
-        }
         DeleteXMLRPCClient();
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+        return "";
     }
 
+
+    update_client(_("Creating new bug..."));
     try
     {
-        update_client(_("Checking for duplicates..."));
-        if ((bugId = CheckUUIDInBugzilla(component, uuid)) == "")
-        {
-            update_client(_("Creating new bug..."));
-            bugId = NewBug(pCrashReport);
-            AddAttachments(bugId, pCrashReport);
-        }
+        bugId = NewBug(pCrashReport);
+        AddAttachments(bugId, pCrashReport);
         update_client(_("Logging out..."));
         Logout();
     }
@@ -453,8 +453,11 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
         DeleteXMLRPCClient();
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
     }
+
+
     DeleteXMLRPCClient();
     return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
+
 }
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
