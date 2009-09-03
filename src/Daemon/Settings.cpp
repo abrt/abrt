@@ -55,26 +55,26 @@ map_cron_t    g_settings_mapCron;
 
 static set_strings_t ParseList(const std::string& pList)
 {
-   unsigned int ii;
-   std::string item  = "";
-   set_strings_t set;
-   for(ii = 0; ii < pList.size(); ii++)
-   {
-       if (pList[ii] == ',')
-       {
-           set.insert(item);
-           item = "";
-       }
-       else
-       {
-          item += pList[ii];
-       }
-   }
-   if (item != "")
-   {
-       set.insert(item);
-   }
-   return set;
+    unsigned int ii;
+    std::string item  = "";
+    set_strings_t set;
+    for (ii = 0; ii < pList.size(); ii++)
+    {
+        if (pList[ii] == ',')
+        {
+            set.insert(item);
+            item = "";
+        }
+        else
+        {
+            item += pList[ii];
+        }
+    }
+    if (item != "")
+    {
+        set.insert(item);
+    }
+    return set;
 }
 
 static vector_pair_string_string_t ParseListWithArgs(const std::string& pValue)
@@ -177,31 +177,31 @@ static void ParseCron()
 
 static set_strings_t ParseKey(const std::string& Key)
 {
-   unsigned int ii;
-   std::string item  = "";
-   std::string key = "";
-   set_strings_t set;
-   bool is_quote = false;
-   for(ii = 0; ii < Key.size(); ii++)
-   {
-       if (Key[ii] == '\"')
-       {
-          is_quote = is_quote == true ? false : true;
-       }
-       else if (Key[ii] == ':' && !is_quote)
-       {
-           key = item;
-           item = "";
-       }
-       else if ((Key[ii] == ',') && !is_quote)
-       {
-           set.insert(key + ":" + item);
-           item = "";
-       }
-       else
-       {
-           item += Key[ii];
-       }
+    unsigned int ii;
+    std::string item  = "";
+    std::string key = "";
+    set_strings_t set;
+    bool is_quote = false;
+    for (ii = 0; ii < Key.size(); ii++)
+    {
+        if (Key[ii] == '\"')
+        {
+            is_quote = is_quote == true ? false : true;
+        }
+        else if (Key[ii] == ':' && !is_quote)
+        {
+            key = item;
+            item = "";
+        }
+        else if ((Key[ii] == ',') && !is_quote)
+        {
+            set.insert(key + ":" + item);
+            item = "";
+        }
+        else
+        {
+            item += Key[ii];
+        }
     }
     if (item != "" && !is_quote)
     {
@@ -413,12 +413,14 @@ void SaveSettings()
         SaveMapVectorPairStrings(g_settings_mapAnalyzerActionsAndReporters, fOut);
         SaveSectionHeader(SECTION_CRON, fOut);
         SaveMapVectorPairStrings(g_settings_mapCron, fOut);
-        if (fclose(fOut) || rename(CONF_DIR"/abrt.conf.NEW", CONF_DIR"/abrt.conf"))
+        if (fclose(fOut) == 0 && rename(CONF_DIR"/abrt.conf.NEW", CONF_DIR"/abrt.conf") == 0)
         {
-            perror_msg("Error saving '%s'", CONF_DIR"/abrt.conf");
-            unlink(CONF_DIR"/abrt.conf.NEW");
+            return; /* success */
         }
     }
+    perror_msg("Error saving '%s'", CONF_DIR"/abrt.conf");
+    if (fOut)
+        unlink(CONF_DIR"/abrt.conf.NEW");
 }
 
 /* dbus call to change some .conf file data */
