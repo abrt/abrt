@@ -16,7 +16,8 @@ CReporterBugzilla::CReporterBugzilla() :
     m_pCarriageParm(NULL),
     m_sBugzillaURL("https://bugzilla.redhat.com"),
     m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX)),
-    m_bNoSSLVerify(false)
+    m_bNoSSLVerify(false),
+    m_bLoggedIn(false)
 {}
 
 CReporterBugzilla::~CReporterBugzilla()
@@ -217,7 +218,7 @@ std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent
         log("Bug is already reported: %s", ss.str().c_str());
         update_client(_("Bug is already reported: ") + ss.str());
 
-        if (!CheckCCAndReporter(ss.str()))
+        if (!CheckCCAndReporter(ss.str()) && m_bLoggedIn)
         {
             AddPlusOneComment(ss.str());
             AddPlusOneCC(ss.str());
@@ -406,12 +407,37 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
     std::string bugId;
-    update_client(_("Logging into bugzilla..."));
 
+    m_bLoggedIn = false;
+    update_client(_("Logging into bugzilla..."));
     NewXMLRPCClient();
     try
     {
         Login();
+        m_bLoggedIn = true;
+    }
+    catch (CABRTException& e)
+    {
+        update_client(_("Logging failed, trying to find a bug..."));
+        try
+        {
+            if ((bugId = CheckUUIDInBugzilla(component, uuid)) != "")
+            {
+                DeleteXMLRPCClient();
+                return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
+            }
+        }
+        catch (CABRTException& e)
+        {
+            DeleteXMLRPCClient();
+            throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+        }
+        DeleteXMLRPCClient();
+        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+    }
+
+    try
+    {
         update_client(_("Checking for duplicates..."));
         if ((bugId = CheckUUIDInBugzilla(component, uuid)) == "")
         {
