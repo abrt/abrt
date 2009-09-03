@@ -3,6 +3,7 @@
 #include "abrtlib.h"
 #include "ABRTException.h"
 #include "CrashWatcher.h"
+#include "Settings.h"
 #include "Daemon.h"
 #include "CommLayerServerDBus.h"
 
@@ -617,7 +618,7 @@ static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 
 static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 {
-    const char* PluginName; // = get_string_param(call);
+    const char* PluginName;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
     {
@@ -717,6 +718,40 @@ static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
     }
 
     g_pPluginManager->UnRegisterPlugin(PluginName);
+
+    send_flush_and_unref(reply);
+    return 0;
+}
+
+static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
+{
+    map_abrt_settings_t result = GetSettings();
+
+    DBusMessageIter iter;
+    dbus_message_iter_init_append(reply, &iter);
+    store_val(&iter, result);
+    send_flush_and_unref(reply);
+    return 0;
+}
+
+static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
+{
+    DBusMessageIter in_iter;
+    if (!dbus_message_iter_init(call, &in_iter))
+    {
+        error_msg("dbus call %s: no parameters", "SetSettings");
+        return -1;
+    }
+    map_abrt_settings_t param1;
+    int r = load_val(&in_iter, param1);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "SetSettings");
+        return -1;
+    }
+
+    SetSettings(param1);
 
     send_flush_and_unref(reply);
     return 0;
@@ -849,28 +884,31 @@ static DBusHandlerResult message_received(DBusConnection *conn, DBusMessage *msg
     log("%s(method:'%s')", __func__, member);
 
     DBusMessage* reply = dbus_message_new_method_return(msg);
+    int r = -1;
     if (strcmp(member, "GetCrashInfos") == 0)
-        handle_GetCrashInfos(msg, reply);
+        r = handle_GetCrashInfos(msg, reply);
     else if (strcmp(member, "CreateReport") == 0)
-        handle_CreateReport(msg, reply);
+        r = handle_CreateReport(msg, reply);
     else if (strcmp(member, "Report") == 0)
-        handle_Report(msg, reply);
+        r = handle_Report(msg, reply);
     else if (strcmp(member, "DeleteDebugDump") == 0)
-        handle_DeleteDebugDump(msg, reply);
+        r = handle_DeleteDebugDump(msg, reply);
     else if (strcmp(member, "GetJobResult") == 0)
-        handle_GetJobResult(msg, reply);
+        r = handle_GetJobResult(msg, reply);
     else if (strcmp(member, "GetPluginsInfo") == 0)
-        handle_GetPluginsInfo(msg, reply);
+        r = handle_GetPluginsInfo(msg, reply);
     else if (strcmp(member, "GetPluginSettings") == 0)
-        handle_GetPluginSettings(msg, reply);
+        r = handle_GetPluginSettings(msg, reply);
     else if (strcmp(member, "SetPluginSettings") == 0)
-        handle_SetPluginSettings(msg, reply);
+        r = handle_SetPluginSettings(msg, reply);
     else if (strcmp(member, "RegisterPlugin") == 0)
-        handle_RegisterPlugin(msg, reply);
+        r = handle_RegisterPlugin(msg, reply);
     else if (strcmp(member, "UnRegisterPlugin") == 0)
-        handle_UnRegisterPlugin(msg, reply);
-    else
-    {
+        r = handle_UnRegisterPlugin(msg, reply);
+    else if (strcmp(member, "GetSettings") == 0)
+        r = handle_GetSettings(msg, reply);
+    else if (strcmp(member, "SetSettings") == 0)
+        r = handle_SetSettings(msg, reply);
 // NB: C++ binding also handles "Introspect" method, which returns a string.
 // It was sending "dummy" introspection answer whick looks like this:
 // "<!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\"\n"
@@ -879,6 +917,8 @@ static DBusHandlerResult message_received(DBusConnection *conn, DBusMessage *msg
 // "</node>\n"
 // Apart from a warning from abrt-gui, just sending error back works as well.
 // NB2: we may want to handle "Disconnected" here too.
+    if (r < 0) /* error */
+    {
         dbus_message_unref(reply);
         if (dbus_message_get_type(msg) == DBUS_MESSAGE_TYPE_METHOD_CALL)
         {
