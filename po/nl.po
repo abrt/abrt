@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-03 08:33+0000\n"
-"PO-Revision-Date: 2009-09-03 13:22+0200\n"
+"POT-Creation-Date: 2009-09-03 14:38+0000\n"
+"PO-Revision-Date: 2009-09-03 20:55+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -206,12 +206,12 @@ msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data that might contain some sensitive "
-"informations!\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive "
+"information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
 "<b>WAARSCHUWING</b>, je staat op het punt om data te versturen die gevoelige "
-"informatie kan bevatten!\n"
+"informatie kan bevatten\n"
 "Wil je <b>%s</b> echt versturen?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
@@ -347,19 +347,15 @@ msgstr "Binair bestand %s wordt niet gerapporteerd."
 msgid "New bug id: "
 msgstr "Nieuwe bug id: "
 
-#: ../lib/Plugins/Bugzilla.cpp:412
-msgid "Logging into bugzilla..."
-msgstr "Inloggen bij bugzilla..."
-
-#: ../lib/Plugins/Bugzilla.cpp:421
-msgid "Logging failed, trying to find a bug..."
-msgstr "Inloggen mislukte, probeer het probleem te vinden..."
-
-#: ../lib/Plugins/Bugzilla.cpp:441
+#: ../lib/Plugins/Bugzilla.cpp:413
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:444
+#: ../lib/Plugins/Bugzilla.cpp:429
+msgid "Logging into bugzilla..."
+msgstr "Inloggen bij bugzilla..."
+
+#: ../lib/Plugins/Bugzilla.cpp:443
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
@@ -439,6 +435,9 @@ msgstr "Versturen van email..."
 #: ../lib/Plugins/SOSreport.cpp:90
 msgid "Executing SOSreportAction plugin..."
 msgstr "Uitvoeren van SOSreportAction plugin..."
+
+#~ msgid "Logging failed, trying to find a bug..."
+#~ msgstr "Inloggen mislukte, probeer het probleem te vinden..."
 
 #~ msgid "Daemon is not running."
 #~ msgstr "Daemon draait niet."
