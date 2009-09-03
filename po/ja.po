@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-02 08:35+0000\n"
-"PO-Revision-Date: 2009-09-03 09:17+0900\n"
+"POT-Creation-Date: 2009-09-03 00:21+0000\n"
+"PO-Revision-Date: 2009-09-03 09:54+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -72,7 +72,7 @@ msgstr "<b>報告がありません!</b>"
 
 #: ../src/Gui/ccgui.glade.h:4
 msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">説明</span>"
+msgstr "<span color=\"white\">記述</span>"
 
 #: ../src/Gui/ccgui.glade.h:5
 msgid "About ABRT"
@@ -286,23 +286,22 @@ msgstr ""
 msgid "unknown response from settings dialog"
 msgstr "セッティングダイアログから不明な反応です"
 
-#. applet->AddEvent(uid, std::string(progname));
-#: ../src/Applet/Applet.cpp:49
+#: ../src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
 msgstr "パッケージ %s のクラッシュが検出されました !"
 
 #. applet is already running
-#: ../src/Applet/Applet.cpp:80
+#: ../src/Applet/Applet.cpp:82
 msgid "Applet is already running."
 msgstr "アプレットは既に稼働しています。"
 
-#: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
+#: ../src/Applet/Applet.cpp:96 ../src/Applet/Applet.cpp:97
 #: ../src/Applet/CCApplet.cpp:135
 msgid "ABRT service is not running"
 msgstr "ABRT サービスは稼働していません。"
 
-#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
+#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:262
 #, c-format
 msgid "Pending events: %i"
 msgstr "保留中のイベント: %i"
@@ -324,11 +323,113 @@ msgstr ""
 msgid "ABRT service has been started"
 msgstr "ABRT サービスは開始しています"
 
-#: ../src/Applet/CCApplet.cpp:160
+#: ../src/Applet/CCApplet.cpp:165
+msgid "Out of memory"
+msgstr "メモリー超過"
+
+#: ../src/Applet/CCApplet.cpp:180
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/Applet/CCApplet.cpp:166
-msgid "Out of memory"
-msgstr "メモリー超過"
+#: ../lib/Plugins/Bugzilla.cpp:218
+msgid "Bug is already reported: "
+msgstr "バグは既に報告済みです:"
+
+#: ../lib/Plugins/Bugzilla.cpp:278
+#, c-format
+msgid "Binary file %s will not be reported."
+msgstr "バイナリファイル %s は報告されません。"
+
+#: ../lib/Plugins/Bugzilla.cpp:348
+msgid "New bug id: "
+msgstr "新しいバグ id:"
+
+#: ../lib/Plugins/Bugzilla.cpp:409
+msgid "Logging into bugzilla..."
+msgstr "bugzilla にログインしています..."
+
+#: ../lib/Plugins/Bugzilla.cpp:415
+msgid "Checking for duplicates..."
+msgstr "重複をチェックしています..."
+
+#: ../lib/Plugins/Bugzilla.cpp:418
+msgid "Creating new bug..."
+msgstr "新しいバグを作成中..."
+
+#: ../lib/Plugins/Bugzilla.cpp:422
+msgid "Logging out..."
+msgstr "ログアウトしています..."
+
+#: ../lib/Plugins/Kerneloops.cpp:38
+msgid "Getting local/global universal unique identification..."
+msgstr "ローカル/グローバルの普遍的で独特の識別を取得中..."
+
+#: ../lib/Plugins/CCpp.cpp:82
+msgid "Searching for debug-info packages..."
+msgstr "debug-info パッケージを探しています..."
+
+#: ../lib/Plugins/CCpp.cpp:120
+msgid "Downloading and installing debug-info packages..."
+msgstr "debug-info パッケージをダウンロードしてインストール中..."
+
+#: ../lib/Plugins/CCpp.cpp:180
+msgid "Getting backtrace..."
+msgstr "バックトレース取得中..."
+
+#: ../lib/Plugins/CCpp.cpp:429
+msgid "Getting local universal unique identification..."
+msgstr "ローカルで普遍的な独特の識別を取得しています..."
+
+#: ../lib/Plugins/CCpp.cpp:453
+msgid "Getting global universal unique identification..."
+msgstr "グローバルで普遍的な独特の識別を取得しています..."
+
+#: ../lib/Plugins/CCpp.cpp:471
+msgid "Starting report creation..."
+msgstr "報告作成を開始しています..."
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:101
+msgid "Creating and submitting a report..."
+msgstr "報告の作成と提出をしています..."
+
+#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr "報告を作成しています..."
+
+#: ../lib/Plugins/RunApp.cpp:62
+msgid "Executing RunApp plugin..."
+msgstr "RunApp plugin を実行中..."
+
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/FileTransfer.cpp:247
+msgid "FileTransfer: URL not specified"
+msgstr "ファイル転送: URL が示されていません"
+
+#: ../lib/Plugins/FileTransfer.cpp:69
+#, c-format
+msgid "Sending archive %s via %s"
+msgstr "アーカイブ %s を %s 経由で送信中"
+
+#: ../lib/Plugins/FileTransfer.cpp:121
+msgid "Creating an archive..."
+msgstr "アーカイブを作成中..."
+
+#: ../lib/Plugins/FileTransfer.cpp:176
+msgid "File Transfer: Creating a report..."
+msgstr "ファイル転送: 報告を作成中..."
+
+#: ../lib/Plugins/FileTransfer.cpp:197 ../lib/Plugins/FileTransfer.cpp:226
+msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+msgstr "CFileTransfer::Run(): アーカイブを作成して送信できません:"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
+msgid "Creating kernel oops crash reports..."
+msgstr "カーネル oops クラッシュ報告を作成中..."
+
+#: ../lib/Plugins/Mailx.cpp:110
+msgid "Sending an email..."
+msgstr "電子メールを送信中..."
+
+#: ../lib/Plugins/SOSreport.cpp:90
+msgid "Executing SOSreportAction plugin..."
+msgstr "SOSreportAction plugin を実行中..."
 
