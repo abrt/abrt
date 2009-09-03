@@ -38,6 +38,7 @@ class CReporterBugzilla : public CReporter
         std::string m_sPassword;
         std::string m_sAttchmentInBase64;
         bool m_bNoSSLVerify;
+        bool m_bLoggedIn;
 
     public:
         CReporterBugzilla();

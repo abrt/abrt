@@ -1,57 +1,61 @@
-# Fernando Gonzalez <f.gonz.blanco@gmail.com>, 2009.
+# German translation of abrt.
+# Copyright (C) 2009 Red Hat Inc.
+# This file is distributed under the same license as the abrt package.
+#
+# Fabian Affolter <fab@fedoraproject.org>, 2009.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2009-09-03 11:47+0000\n"
-"PO-Revision-Date: 2009-09-03 09:33-0300\n"
-"Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
-"Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
+"PO-Revision-Date: 2009-09-03 15:43+0100\n"
+"Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
+"Language-Team: Gemran <fedora-trans-de@redhat.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Spanish\n"
+"X-Poedit-Language: German\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
-msgstr "Otro cliente ya está siendo ejecutado, intentando levantarlo."
+msgstr ""
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Se obtienen datos inesperados desde el demonio (¿está la Base de Datos correctamente actualizada?)"
+msgstr ""
 
 #: ../src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
-msgstr "Complementos analizadores"
+msgstr "Analyse-Plugin"
 
 #: ../src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
-msgstr "Complementos de acción"
+msgstr "Aktion-Plugin"
 
 #: ../src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
-msgstr "Complementos de informes"
+msgstr "Bericht-Plugin"
 
 #: ../src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
-msgstr "Complementos de Bases de Datos"
+msgstr "Datenbank-Plugin"
 
 #: ../src/Gui/CCDBusBackend.py:140
+#, fuzzy
 msgid "Can't connect to dbus"
-msgstr "No se puede conectar con DBus"
+msgstr "Kann nicht in den gepackten Datenstrom schreiben: %s"
 
 #: ../src/Gui/CCDBusBackend.py:144
 #: ../src/Gui/CCDBusBackend.py:163
 msgid "Please check if abrt daemon is running."
-msgstr "Por favor compruebe si el demonio ABRT está corriendo."
+msgstr ""
 
 #: ../src/Gui/CCDBusBackend.py:181
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
-"El demonio no devuelve un informe válido\n"
-"¿Falta la información de la depuración?"
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid " "
@@ -63,33 +67,34 @@ msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3
 #: ../src/Gui/CCMainWindow.py:215
+#, fuzzy
 msgid "<b>Not reported!</b>"
-msgstr "<b>¡No informado!</b>"
+msgstr "Nicht gebridged"
 
 #: ../src/Gui/ccgui.glade.h:4
 msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">Descripción</span>"
+msgstr "<span color=\"white\">Beschreibung</span>"
 
 #: ../src/Gui/ccgui.glade.h:5
 msgid "About ABRT"
-msgstr "Acerca de ABRT"
+msgstr "Über ABRT"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Automatic Bug Reporting Tool"
-msgstr "Acerca de la Herramienta de Informe de Errores Automática"
+msgstr "Automatic Bug Reporting Tool"
 
 #: ../src/Gui/ccgui.glade.h:7
 msgid "Delete"
-msgstr "Eliminar"
+msgstr "Löschen"
 
 #: ../src/Gui/ccgui.glade.h:8
 msgid "Please wait.."
-msgstr "Por favor aguarde..."
+msgstr "Bitte warten ..."
 
 #: ../src/Gui/ccgui.glade.h:9
 #: ../src/Gui/report.glade.h:2
 msgid "Report"
-msgstr "Informe"
+msgstr "Bericht"
 
 #: ../src/Gui/ccgui.glade.h:10
 msgid ""
@@ -99,48 +104,42 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de Bibliotecas de GNU, como fueron publicadas por la Fundación de Software Libre; ya sea la versión 2 o (a su elección) alguna posterior.\n"
-"\n"
-"\n"
-"Este programa se distribuye con la esperanza de que será útil, pero SIN NUNGUNA GARANTÍA; sin siquiera la garantía implícita de MERCANTIBILIDAD o AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de Bibliotecas de GNU para más detalles.\n"
-"\n"
-"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas de GNU junto con este programa; sino, see <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:15
 msgid "Working..."
-msgstr "Trabajando..."
+msgstr "Verarbeiten ..."
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "_Edit"
-msgstr "_Editar"
+msgstr "_Bearbeiten"
 
 #: ../src/Gui/ccgui.glade.h:17
 msgid "_File"
-msgstr "_Archivo"
+msgstr "_Datei"
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "_Help"
-msgstr "Ay_uda"
+msgstr "_Hilfe"
 
 #: ../src/Gui/CCMainWindow.py:86
 msgid "Package"
-msgstr "Paquete"
+msgstr "Paket"
 
 #: ../src/Gui/CCMainWindow.py:87
 msgid "Application"
-msgstr "Aplicación"
+msgstr "Anwendung"
 
 #: ../src/Gui/CCMainWindow.py:88
 msgid "Date"
-msgstr "Fecha"
+msgstr "Datum"
 
 #: ../src/Gui/CCMainWindow.py:89
 msgid "Crash Rate"
-msgstr "Tasa de caídas"
+msgstr ""
 
 #: ../src/Gui/CCMainWindow.py:91
 msgid "User"
-msgstr "Usuario"
+msgstr "Benutzer"
 
 #: ../src/Gui/CCMainWindow.py:157
 #, python-format
@@ -148,8 +147,6 @@ msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
-"¡No se pudo finalizar la tarea actual!\n"
-"%s"
 
 #: ../src/Gui/CCMainWindow.py:174
 #, python-format
@@ -157,34 +154,28 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"Error intentando cargar la lista  de volcado, por favor compruebe si el demonio abrt está siendo ejecutado\n"
-"%s"
 
 #: ../src/Gui/CCMainWindow.py:207
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b> Esta caída ha sido reportada, usted puede encontrar el informe en:</b>\n"
+msgstr ""
 
 #: ../src/Gui/CCMainWindow.py:267
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"Incapaz de conseguir el informe!\n"
-"¿Falta la información de la depuración?"
 
 #: ../src/Gui/CCMainWindow.py:279
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Reporting failed!\n"
 "%s"
-msgstr ""
-"¡El informe falló!\n"
-"%s"
+msgstr "Fehlgeschlagener Befehl: %s"
 
 #: ../src/Gui/CCMainWindow.py:311
-#, python-format
+#, fuzzy, python-format
 msgid "Error getting the report: %s"
-msgstr "Error al obtener el informe: %s"
+msgstr "Vorschau des Fehlerberichts:"
 
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
@@ -192,39 +183,38 @@ msgid ""
 "<b>WARNING</b>, you're about to send data that might contain some sensitive informations!\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>WARNING</b>, ¡está por enviar datos que pueden contener información sensible!\n"
-"¿Realmente quiere enviar <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
+msgstr ""
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "No se encuentra el widget de PluginDialog en la descripción del interfaz del usuario"
+msgstr ""
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
-#, python-format
+#, fuzzy, python-format
 msgid "No UI for plugin %s"
-msgstr "No hay interfase del usuario para el complemento %s"
+msgstr "Dieses Bild-Format wird nicht unterstützt"
 
 #: ../src/Gui/PluginSettingsUI.py:38
 #: ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr "el combo box no está implementado"
+msgstr ""
 
 #: ../src/Gui/PluginSettingsUI.py:47
+#, fuzzy
 msgid "Nothing to hydrate!"
-msgstr "¡Nada para hidratar!"
+msgstr "Pfad zur DB:"
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
-msgstr "Comentario"
+msgstr "Kommentar"
 
 #: ../src/Gui/report.glade.h:3
 msgid "Send"
-msgstr "Enviar"
+msgstr "Senden"
 
 #: ../src/Gui/report.glade.h:4
 msgid "gtk-cancel"
@@ -232,19 +222,20 @@ msgstr "gtk-cancel"
 
 #: ../src/Gui/SettingsDialog.py:22
 msgid "Can't load gui description for SettingsDialog!"
-msgstr "No se puede cargar interfaz gráfico de usuario para SettingsDialog!"
+msgstr ""
 
 #: ../src/Gui/SettingsDialog.py:34
 msgid "Name"
-msgstr "Nombre"
+msgstr "Name"
 
 #: ../src/Gui/SettingsDialog.py:52
 msgid "Enabled"
-msgstr "Habilitado"
+msgstr "Aktiviert"
 
 #: ../src/Gui/SettingsDialog.py:117
+#, fuzzy
 msgid "Can't get plugin description"
-msgstr "No se pudo obtener la descripción del complemento"
+msgstr "Kann keine Information über den Registrierungs-Schlüssel '%s' finden"
 
 #: ../src/Gui/SettingsDialog.py:125
 #, python-format
@@ -253,175 +244,176 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Error intentando abrir las preferencias del complemento de interfaz de usuario:\n"
-"\n"
-"%s"
 
 #: ../src/Gui/SettingsDialog.py:135
-#, python-format
+#, fuzzy, python-format
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
-msgstr ""
-"No se pueden salvar las preferencias del complemento:\n"
-"%s"
+msgstr "Kann Logtexte nicht in Datei sichern."
 
 #: ../src/Gui/SettingsDialog.py:141
 msgid "unknown response from settings dialog"
-msgstr "Respuesta desconocida del diálogo de preferencias"
+msgstr ""
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
-msgstr "Ha sido detectado una caída en el paquete %s"
+msgstr ""
 
 #. applet is already running
 #: ../src/Applet/Applet.cpp:82
+#, fuzzy
 msgid "Applet is already running."
-msgstr "El applet ya se está ejecutándo."
+msgstr "Fehler beim Wiederherstellen der Domain '%s'. Läuft die Domain bereits?"
 
 #: ../src/Applet/Applet.cpp:96
 #: ../src/Applet/Applet.cpp:97
 #: ../src/Applet/CCApplet.cpp:135
 msgid "ABRT service is not running"
-msgstr "El servicio ABRT no se está ejecutando"
+msgstr ""
 
 #: ../src/Applet/CCApplet.cpp:83
 #: ../src/Applet/CCApplet.cpp:262
 #, c-format
 msgid "Pending events: %i"
-msgstr "Eventos pendientes: %i"
+msgstr ""
 
 #: ../src/Applet/CCApplet.cpp:102
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "No se puede crear un menú desde la descripción, la ventana popup no está disponible!\n"
+msgstr ""
 
 #: ../src/Applet/CCApplet.cpp:125
 msgid "This is default handler, you should register your own with ConnectCrashHandler"
-msgstr "Este es el controlador por defecto, usted puede registrarse con ConnectCrashHandler"
+msgstr ""
 
 #: ../src/Applet/CCApplet.cpp:139
+#, fuzzy
 msgid "ABRT service has been started"
-msgstr "El servicio ABRT ha sido ejecutado"
+msgstr " - Wurde der Xen-Dienst gestartet?\n"
 
 #: ../src/Applet/CCApplet.cpp:165
 msgid "Out of memory"
-msgstr "Sin memoria"
+msgstr "Nicht genug Speicher"
 
 #: ../src/Applet/CCApplet.cpp:180
 msgid "Warning"
-msgstr "Aviso"
+msgstr "Warnung"
 
 #: ../lib/Plugins/Bugzilla.cpp:219
+#, fuzzy
 msgid "Bug is already reported: "
-msgstr "El error ya ha sido informado:"
+msgstr "Fehler beim Wiederherstellen der Domain '%s'. Läuft die Domain bereits?"
 
 #: ../lib/Plugins/Bugzilla.cpp:279
 #, c-format
 msgid "Binary file %s will not be reported."
-msgstr "El archivo binario %s no será informado."
+msgstr ""
 
 #: ../lib/Plugins/Bugzilla.cpp:349
 msgid "New bug id: "
-msgstr "Nuevo id del error:"
+msgstr "Neue Fehler-ID:"
 
 #: ../lib/Plugins/Bugzilla.cpp:412
+#, fuzzy
 msgid "Logging into bugzilla..."
-msgstr "Ingresando a bugzilla..."
+msgstr "Erzeuge ein Bugzilla-Konto"
 
 #: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Logging failed, trying to find a bug..."
-msgstr "El ingreso falló, intentando encontrar un error..."
+msgstr ""
 
 #: ../lib/Plugins/Bugzilla.cpp:441
+#, fuzzy
 msgid "Checking for duplicates..."
-msgstr "Chequeando si hay duplicados..."
+msgstr "Suche nach Benutzer"
 
 #: ../lib/Plugins/Bugzilla.cpp:444
+#, fuzzy
 msgid "Creating new bug..."
-msgstr "Creando un nuevo informe..."
+msgstr "Allgemeine Fehlerbeseitigung"
 
 #: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Logging out..."
-msgstr "Saliendo..."
+msgstr "Abmelden ..."
 
 #: ../lib/Plugins/Kerneloops.cpp:38
 msgid "Getting local/global universal unique identification..."
-msgstr "Obteniendo la identificación única universal local/global..."
+msgstr ""
 
 #: ../lib/Plugins/CCpp.cpp:82
 msgid "Searching for debug-info packages..."
-msgstr "Buscando paquetes de información del depurador..."
+msgstr ""
 
 #: ../lib/Plugins/CCpp.cpp:120
 msgid "Downloading and installing debug-info packages..."
-msgstr "Descargando e instalando paquetes de información del depurador..."
+msgstr ""
 
 #: ../lib/Plugins/CCpp.cpp:180
 msgid "Getting backtrace..."
-msgstr "Obteniendo el backtrace..."
+msgstr ""
 
 #: ../lib/Plugins/CCpp.cpp:429
 msgid "Getting local universal unique identification..."
-msgstr "Obteniendo la identificación única universal local..."
+msgstr ""
 
 #: ../lib/Plugins/CCpp.cpp:453
 msgid "Getting global universal unique identification..."
-msgstr "Obteniendo la identificación única universal global..."
+msgstr ""
 
 #: ../lib/Plugins/CCpp.cpp:471
+#, fuzzy
 msgid "Starting report creation..."
-msgstr "Iniciando la creación del informe..."
+msgstr "Konnte keine Pipe anlegen"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
-msgstr "Creando y enviando un informe..."
+msgstr ""
 
 #: ../lib/Plugins/Logger.cpp:58
 #: ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
-msgstr "Creando un informe..."
+msgstr "Einen Bericht erzeugen ..."
 
 #: ../lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
-msgstr "Ejecutando complemento RunApp..."
+msgstr ""
 
 #: ../lib/Plugins/FileTransfer.cpp:52
 #: ../lib/Plugins/FileTransfer.cpp:247
+#, fuzzy
 msgid "FileTransfer: URL not specified"
-msgstr "FileTransfer: URL no especificado"
+msgstr "Der benötigte Parameter '%s' wurde nicht angegeben."
 
 #: ../lib/Plugins/FileTransfer.cpp:69
-#, c-format
+#, fuzzy, c-format
 msgid "Sending archive %s via %s"
-msgstr "Enviando archivo %s vía %s"
+msgstr "Archiv enthält keine #SYSTEM datei"
 
 #: ../lib/Plugins/FileTransfer.cpp:121
 msgid "Creating an archive..."
-msgstr "Creando un archivo..."
+msgstr "Ein Archiv erzeugen ..."
 
 #: ../lib/Plugins/FileTransfer.cpp:176
+#, fuzzy
 msgid "File Transfer: Creating a report..."
-msgstr "Transferencia de archivo: Creando un informe..."
+msgstr "Konnte Fehlerberichtsdatei \"%s\" nicht entfernen."
 
 #: ../lib/Plugins/FileTransfer.cpp:197
 #: ../lib/Plugins/FileTransfer.cpp:226
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): no se puede crear y enviar un archivo: "
+msgstr ""
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
-msgstr "Creando un informe de cuelgue de kernel oops..."
+msgstr ""
 
 #: ../lib/Plugins/Mailx.cpp:110
 msgid "Sending an email..."
-msgstr "Enviando un correo..."
+msgstr "Eine E-Mail senden ..."
 
 #: ../lib/Plugins/SOSreport.cpp:90
 msgid "Executing SOSreportAction plugin..."
-msgstr "Ejecutando complemento SOSreportAction..."
-
-#~ msgid "Daemon is not running."
-#~ msgstr "El demonio no se está ejecutando."
+msgstr ""
 
