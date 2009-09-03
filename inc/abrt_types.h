@@ -36,7 +36,7 @@ typedef std::map<std::string, vector_pair_string_string_t> map_vector_pair_strin
 
 /* Report() method return type */
 typedef std::map<std::string, vector_strings_t> report_status_t;
-/* Holds result of .conf file parsing */
-typedef std::map<std::string, std::string> map_plugin_settings_t;
+/* Holds result of .conf file section parsing: map["name"] = "value" */
+typedef map_string_t map_plugin_settings_t;
 
 #endif

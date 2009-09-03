@@ -1,6 +1,7 @@
 #include "Settings.h"
+#include "abrtlib.h"
+#include "abrt_types.h"
 #include <fstream>
-#include <stdlib.h>
 
 #define SECTION_COMMON      "Common"
 #define SECTION_ANALYZER_ACTIONS_AND_REPORTERS   "AnalyzerActionsAndReporters"
@@ -17,15 +18,14 @@
 /* Static data */
 /* Filled by LoadSettings() */
 
-typedef std::map<std::string, std::string> map_settings_t;
-/* "name = value" strings from [ Common ] section.
+/* map["name"] = "value" strings from [ Common ] section.
  * If the same name found on more than one line,
- * the values are appended, separated by comma: "name = value1,value2" */
-static map_settings_t s_mapSettingsCommon;
+ * the values are appended, separated by comma: map["name"] = "value1,value2" */
+static map_string_t s_mapSectionCommon;
 /* ... from [ AnalyzerActionsAndReporters ] */
-static map_settings_t s_mapSettingsAnalyzerActionsAndReporters;
+static map_string_t s_mapSectionAnalyzerActionsAndReporters;
 /* ... from [ Cron ] */
-static map_settings_t s_mapSettingsCron;
+static map_string_t s_mapSectionCron;
 
 /* Public data */
 /* Written out exactly in this order by SaveSettings() */
@@ -127,38 +127,38 @@ static vector_pair_string_string_t ParseListWithArgs(const std::string& pValue)
 
 static void ParseCommon()
 {
-    map_settings_t::const_iterator it = s_mapSettingsCommon.find("OpenGPGCheck");
-    map_settings_t::const_iterator end = s_mapSettingsCommon.end();
+    map_string_t::const_iterator it = s_mapSectionCommon.find("OpenGPGCheck");
+    map_string_t::const_iterator end = s_mapSectionCommon.end();
     if (it != end)
     {
         g_settings_bOpenGPGCheck = it->second == "yes";
     }
-    it = s_mapSettingsCommon.find("OpenGPGPublicKeys");
+    it = s_mapSectionCommon.find("OpenGPGPublicKeys");
     if (it != end)
     {
         g_settings_setOpenGPGPublicKeys = ParseList(it->second);
     }
-    it = s_mapSettingsCommon.find("BlackList");
+    it = s_mapSectionCommon.find("BlackList");
     if (it != end)
     {
         g_settings_mapBlackList = ParseList(it->second);
     }
-    it = s_mapSettingsCommon.find("Database");
+    it = s_mapSectionCommon.find("Database");
     if (it != end)
     {
         g_settings_sDatabase = it->second;
     }
-    it = s_mapSettingsCommon.find("EnabledPlugins");
+    it = s_mapSectionCommon.find("EnabledPlugins");
     if (it != end)
     {
         g_settings_setEnabledPlugins = ParseList(it->second);
     }
-    it = s_mapSettingsCommon.find("MaxCrashReportsSize");
+    it = s_mapSectionCommon.find("MaxCrashReportsSize");
     if (it != end)
     {
         g_settings_nMaxCrashReportsSize = atoi(it->second.c_str());
     }
-    it = s_mapSettingsCommon.find("ActionsAndReporters");
+    it = s_mapSectionCommon.find("ActionsAndReporters");
     if (it != end)
     {
         g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second);
@@ -167,8 +167,8 @@ static void ParseCommon()
 
 static void ParseCron()
 {
-    map_settings_t::iterator it = s_mapSettingsCron.begin();
-    for (; it != s_mapSettingsCron.end(); it++)
+    map_string_t::iterator it = s_mapSectionCron.begin();
+    for (; it != s_mapSectionCron.end(); it++)
     {
         vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second);
         g_settings_mapCron[it->first] = actionsAndReporters;
@@ -219,8 +219,8 @@ static set_strings_t ParseKey(const std::string& Key)
 
 static void ParseAnalyzerActionsAndReporters()
 {
-    map_settings_t::iterator it = s_mapSettingsAnalyzerActionsAndReporters.begin();
-    for (; it != s_mapSettingsAnalyzerActionsAndReporters.end(); it++)
+    map_string_t::iterator it = s_mapSectionAnalyzerActionsAndReporters.begin();
+    for (; it != s_mapSectionAnalyzerActionsAndReporters.end(); it++)
     {
         set_strings_t keys = ParseKey(it->first);
         vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second);
@@ -294,27 +294,27 @@ void LoadSettings()
             {
                 if (section == SECTION_COMMON)
                 {
-                    if (s_mapSettingsCommon[key] != "")
+                    if (s_mapSectionCommon[key] != "")
                     {
-                        s_mapSettingsCommon[key] += ",";
+                        s_mapSectionCommon[key] += ",";
                     }
-                    s_mapSettingsCommon[key] += value;
+                    s_mapSectionCommon[key] += value;
                 }
                 else if (section == SECTION_ANALYZER_ACTIONS_AND_REPORTERS)
                 {
-                    if (s_mapSettingsAnalyzerActionsAndReporters[key] != "")
+                    if (s_mapSectionAnalyzerActionsAndReporters[key] != "")
                     {
-                        s_mapSettingsAnalyzerActionsAndReporters[key] += ",";
+                        s_mapSectionAnalyzerActionsAndReporters[key] += ",";
                     }
-                    s_mapSettingsAnalyzerActionsAndReporters[key] += value;
+                    s_mapSectionAnalyzerActionsAndReporters[key] += value;
                 }
                 else if (section == SECTION_CRON)
                 {
-                    if (s_mapSettingsCron[key] != "")
+                    if (s_mapSectionCron[key] != "")
                     {
-                        s_mapSettingsCron[key] += ",";
+                        s_mapSectionCron[key] += ",";
                     }
-                    s_mapSettingsCron[key] += value;
+                    s_mapSectionCron[key] += value;
                 }
             }
         }
@@ -330,9 +330,9 @@ map_abrt_settings_t GetSettings()
 {
     map_abrt_settings_t ABRTSettings;
 
-    ABRTSettings[SECTION_COMMON] = s_mapSettingsCommon;
-    ABRTSettings[SECTION_ANALYZER_ACTIONS_AND_REPORTERS] = s_mapSettingsAnalyzerActionsAndReporters;
-    ABRTSettings[SECTION_CRON] = s_mapSettingsCron;
+    ABRTSettings[SECTION_COMMON] = s_mapSectionCommon;
+    ABRTSettings[SECTION_ANALYZER_ACTIONS_AND_REPORTERS] = s_mapSectionAnalyzerActionsAndReporters;
+    ABRTSettings[SECTION_CRON] = s_mapSectionCron;
 
     return ABRTSettings;
 }
@@ -342,94 +342,82 @@ map_abrt_settings_t GetSettings()
  * Saving
  */
 
-static void SaveSetString(const std::string& pKey, const set_strings_t& pSet, std::ofstream& pFOut)
+static void SaveSetString(const char* pKey, const set_strings_t& pSet, FILE* pFOut)
 {
-    if (pKey != "")
-    {
-        pFOut << pKey << " = ";
-    }
-    int ii = 0;
+    fprintf(pFOut, "%s =", pKey);
+
+    const char* fmt = " %s";
     set_strings_t::const_iterator it_set = pSet.begin();
     for (; it_set != pSet.end(); it_set++)
     {
-        pFOut << (*it_set);
-        ii++;
-        if (ii < pSet.size())
-        {
-            pFOut << ",";
-        }
+        fprintf(pFOut, fmt, it_set->c_str());
+        fmt = ",%s";
     }
-    pFOut << std::endl;
+    fputc('\n', pFOut);
 }
 
-static void SaveVectorPairStrings(const std::string& pKey, const vector_pair_string_string_t& pVector, std::ofstream& pFOut)
+static void SaveVectorPairStrings(const char* pKey, const vector_pair_string_string_t& pVector, FILE* pFOut)
 {
+    fprintf(pFOut, "%s =", pKey);
+
+    const char* fmt = " %s";
     int ii;
-    if (pKey != "")
-    {
-        pFOut << pKey << " = ";
-    }
     for (ii = 0; ii < pVector.size(); ii++)
     {
-        pFOut << pVector[ii].first;
+        fprintf(pFOut, fmt, pVector[ii].first.c_str());
         if (pVector[ii].second != "")
         {
-            pFOut << "(" << pVector[ii].second << ")";
+            fprintf(pFOut, "(%s)", pVector[ii].second.c_str());
         }
-        if ((ii + 1) < pVector.size())
-        {
-            pFOut << ",";
-        }
+        fmt = ",%s";
     }
-    pFOut << std::endl;
+    fputc('\n', pFOut);
 }
 
-static void SaveMapVectorPairStrings(const map_vector_pair_string_string_t& pMap, std::ofstream& pFOut)
+static void SaveMapVectorPairStrings(const map_vector_pair_string_string_t& pMap, FILE* pFOut)
 {
     map_vector_pair_string_string_t::const_iterator it = pMap.begin();
     for (; it != pMap.end(); it++)
     {
-        pFOut << it->first << " = ";
-        SaveVectorPairStrings("", it->second, pFOut);
+        SaveVectorPairStrings(it->first.c_str(), it->second, pFOut);
     }
-    pFOut << std::endl;
+    fputc('\n', pFOut);
 }
 
-static void SaveSectionHeader(const std::string& pSection, std::ofstream& pFOut)
+static void SaveSectionHeader(const char* pSection, FILE* pFOut)
 {
-    pFOut << std::endl << "[" << pSection << "]" << std::endl << std::endl;
+    fprintf(pFOut, "\n[%s]\n\n", pSection);
 }
 
-static void SaveBool(const std::string& pKey, const bool pBool, std::ofstream& pFOut)
+static void SaveBool(const char* pKey, bool pBool, FILE* pFOut)
 {
-    if (pKey != "")
-    {
-        pFOut << pKey << " = ";
-    }
-    pFOut << (pBool ? "yes" : "no") << std::endl;
+    fprintf(pFOut, "%s = %s\n", pKey, (pBool ? "yes" : "no"));
 }
 
 /* Rewrite .conf file */
 void SaveSettings()
 {
-    std::ofstream fOut;
-    fOut.open(CONF_DIR"/abrt.conf");
+    FILE* fOut = fopen(CONF_DIR"/abrt.conf.NEW", "w");
 
-    if (fOut.is_open())
+    if (fOut)
     {
         SaveSectionHeader(SECTION_COMMON, fOut);
         SaveBool("OpenGPGCheck", g_settings_bOpenGPGCheck, fOut);
         SaveSetString("OpenGPGPublicKeys", g_settings_setOpenGPGPublicKeys, fOut);
         SaveSetString("BlackList", g_settings_mapBlackList, fOut);
         SaveSetString("EnabledPlugins", g_settings_setEnabledPlugins, fOut);
-        fOut << "Database = " << g_settings_sDatabase << std::endl;
-        fOut << "MaxCrashReportsSize = " << g_settings_nMaxCrashReportsSize << std::endl;
+        fprintf(fOut, "Database = %s\n", g_settings_sDatabase.c_str());
+        fprintf(fOut, "MaxCrashReportsSize = %u\n", g_settings_nMaxCrashReportsSize);
         SaveVectorPairStrings("ActionsAndReporters", g_settings_vectorActionsAndReporters, fOut);
         SaveSectionHeader(SECTION_ANALYZER_ACTIONS_AND_REPORTERS, fOut);
         SaveMapVectorPairStrings(g_settings_mapAnalyzerActionsAndReporters, fOut);
         SaveSectionHeader(SECTION_CRON, fOut);
         SaveMapVectorPairStrings(g_settings_mapCron, fOut);
-        fOut.close();
+        if (fclose(fOut) || rename(CONF_DIR"/abrt.conf.NEW", CONF_DIR"/abrt.conf"))
+        {
+            perror_msg("Error saving '%s'", CONF_DIR"/abrt.conf");
+            unlink(CONF_DIR"/abrt.conf.NEW");
+        }
     }
 }
 
@@ -438,23 +426,24 @@ void SetSettings(const map_abrt_settings_t& pSettings)
 {
     bool dirty = false;
     map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
-    if (it != pSettings.end())
+    map_abrt_settings_t::const_iterator end = pSettings.end();
+    if (it != end)
     {
-        s_mapSettingsCommon = it->second;
+        s_mapSectionCommon = it->second;
         ParseCommon();
         dirty = true;
     }
     it = pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS);
-    if (it != pSettings.end())
+    if (it != end)
     {
-        s_mapSettingsAnalyzerActionsAndReporters = it->second;
+        s_mapSectionAnalyzerActionsAndReporters = it->second;
         ParseAnalyzerActionsAndReporters();
         dirty = true;
     }
     it = pSettings.find(SECTION_CRON);
-    if (it != pSettings.end())
+    if (it != end)
     {
-        s_mapSettingsCron = it->second;
+        s_mapSectionCron = it->second;
         ParseCron();
         dirty = true;
     }
