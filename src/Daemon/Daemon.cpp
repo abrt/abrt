@@ -169,8 +169,8 @@ static void SetUpMW()
     {
         g_RPM.LoadOpenGPGPublicKey(*it_k);
     }
-    set_strings_t::iterator it_b = g_settings_mapSettingsBlackList.begin();
-    for (; it_b != g_settings_mapSettingsBlackList.end(); it_b++)
+    set_strings_t::iterator it_b = g_settings_mapBlackList.begin();
+    for (; it_b != g_settings_mapBlackList.end(); it_b++)
     {
         g_setBlackList.insert(*it_b);
     }
@@ -631,7 +631,7 @@ int main(int argc, char** argv)
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
         /* (comment here) */
-        LoadSettings(CONF_DIR"/abrt.conf");
+        LoadSettings();
         /* (comment here) */
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* (comment here) */

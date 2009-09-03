@@ -6,22 +6,52 @@
 #define SECTION_ANALYZER_ACTIONS_AND_REPORTERS   "AnalyzerActionsAndReporters"
 #define SECTION_CRON        "Cron"
 
+/* Conf file has this format:
+ * [ section_name1 ]
+ * name1 = value1
+ * name2 = value2
+ * [ section_name2 ]
+ * name = value
+ */
 
-set_strings_t g_settings_setOpenGPGPublicKeys;
-set_strings_t g_settings_mapSettingsBlackList;
-set_strings_t g_settings_setEnabledPlugins;
-unsigned int  g_settings_nMaxCrashReportsSize = 1000;
-bool          g_settings_bOpenGPGCheck = false;
-std::string   g_settings_sDatabase;
-map_cron_t    g_settings_mapCron;
-vector_pair_string_string_t g_settings_vectorActionsAndReporters;
-map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
-
+/* Static data */
+/* Filled by LoadSettings() */
 
 typedef std::map<std::string, std::string> map_settings_t;
+/* "name = value" strings from [ Common ] section.
+ * If the same name found on more than one line,
+ * the values are appended, separated by comma: "name = value1,value2" */
 static map_settings_t s_mapSettingsCommon;
+/* ... from [ AnalyzerActionsAndReporters ] */
 static map_settings_t s_mapSettingsAnalyzerActionsAndReporters;
+/* ... from [ Cron ] */
 static map_settings_t s_mapSettingsCron;
+
+/* Public data */
+/* Written out exactly in this order by SaveSettings() */
+
+/* [ Common ] */
+/* one line: "OpenGPGCheck = value" */
+bool          g_settings_bOpenGPGCheck = false;
+/* one line: "OpenGPGPublicKeys = value1,value2" */
+set_strings_t g_settings_setOpenGPGPublicKeys;
+set_strings_t g_settings_mapBlackList;
+set_strings_t g_settings_setEnabledPlugins;
+std::string   g_settings_sDatabase;
+unsigned int  g_settings_nMaxCrashReportsSize = 1000;
+/* one line: "ActionsAndReporters = aa_first,bb_first(bb_second),cc_first" */
+vector_pair_string_string_t g_settings_vectorActionsAndReporters;
+/* [ AnalyzerActionsAndReporters ] */
+/* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
+map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
+/* [ Cron ] */
+/* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
+map_cron_t    g_settings_mapCron;
+
+
+/*
+ * Loading
+ */
 
 static set_strings_t ParseList(const std::string& pList)
 {
@@ -111,7 +141,7 @@ static void ParseCommon()
     it = s_mapSettingsCommon.find("BlackList");
     if (it != end)
     {
-        g_settings_mapSettingsBlackList = ParseList(it->second);
+        g_settings_mapBlackList = ParseList(it->second);
     }
     it = s_mapSettingsCommon.find("Database");
     if (it != end)
@@ -202,10 +232,11 @@ static void ParseAnalyzerActionsAndReporters()
     }
 }
 
-void LoadSettings(const char* pPath)
+/* abrt daemon loads .conf file */
+void LoadSettings()
 {
     std::ifstream fIn;
-    fIn.open(pPath);
+    fIn.open(CONF_DIR"/abrt.conf");
     if (fIn.is_open())
     {
         std::string line;
@@ -294,7 +325,24 @@ void LoadSettings(const char* pPath)
     ParseCron();
 }
 
-static void SaveSetString(const std::string& pKey, const set_strings_t& pSet, std::ofstream& pFOut, bool pNewLine = true)
+/* dbus call to retrieve .conf file data from daemon */
+map_abrt_settings_t GetSettings()
+{
+    map_abrt_settings_t ABRTSettings;
+
+    ABRTSettings[SECTION_COMMON] = s_mapSettingsCommon;
+    ABRTSettings[SECTION_ANALYZER_ACTIONS_AND_REPORTERS] = s_mapSettingsAnalyzerActionsAndReporters;
+    ABRTSettings[SECTION_CRON] = s_mapSettingsCron;
+
+    return ABRTSettings;
+}
+
+
+/*
+ * Saving
+ */
+
+static void SaveSetString(const std::string& pKey, const set_strings_t& pSet, std::ofstream& pFOut)
 {
     if (pKey != "")
     {
@@ -311,13 +359,10 @@ static void SaveSetString(const std::string& pKey, const set_strings_t& pSet, st
             pFOut << ",";
         }
     }
-    if (pNewLine)
-    {
-        pFOut << std::endl;
-    }
+    pFOut << std::endl;
 }
 
-static void SaveVectorPairStrings(const std::string& pKey, const vector_pair_string_string_t& pVector, std::ofstream& pFOut, bool pNewLine = true)
+static void SaveVectorPairStrings(const std::string& pKey, const vector_pair_string_string_t& pVector, std::ofstream& pFOut)
 {
     int ii;
     if (pKey != "")
@@ -336,99 +381,85 @@ static void SaveVectorPairStrings(const std::string& pKey, const vector_pair_str
             pFOut << ",";
         }
     }
-    if (pNewLine)
-    {
-        pFOut << std::endl;
-    }
+    pFOut << std::endl;
 }
 
-static void SaveMapVectorPairStrings(const map_vector_pair_string_string_t& pMap, std::ofstream& pFOut, bool pNewLine = true)
+static void SaveMapVectorPairStrings(const map_vector_pair_string_string_t& pMap, std::ofstream& pFOut)
 {
     map_vector_pair_string_string_t::const_iterator it = pMap.begin();
     for (; it != pMap.end(); it++)
     {
         pFOut << it->first << " = ";
-        SaveVectorPairStrings("", it->second, pFOut, false);
-        pFOut << std::endl;
+        SaveVectorPairStrings("", it->second, pFOut);
     }
-    if (pNewLine)
-    {
-        pFOut << std::endl;
-    }
-
+    pFOut << std::endl;
 }
 
-static void SaveSection(const std::string& pSection, std::ofstream& pFOut)
+static void SaveSectionHeader(const std::string& pSection, std::ofstream& pFOut)
 {
     pFOut << std::endl << "[" << pSection << "]" << std::endl << std::endl;
 }
 
-static void SaveBool(const std::string& pKey, const bool pBool, std::ofstream& pFOut, bool pNewLine = true)
+static void SaveBool(const std::string& pKey, const bool pBool, std::ofstream& pFOut)
 {
     if (pKey != "")
     {
         pFOut << pKey << " = ";
     }
-    pFOut << (pBool ? "yes" : "no");
-    if (pNewLine)
-    {
-        pFOut << std::endl;
-    }
+    pFOut << (pBool ? "yes" : "no") << std::endl;
 }
 
-void SaveSettings(const char* pPath)
+/* Rewrite .conf file */
+void SaveSettings()
 {
     std::ofstream fOut;
-    fOut.open(pPath);
+    fOut.open(CONF_DIR"/abrt.conf");
 
     if (fOut.is_open())
     {
-        SaveSection(SECTION_COMMON, fOut);
+        SaveSectionHeader(SECTION_COMMON, fOut);
         SaveBool("OpenGPGCheck", g_settings_bOpenGPGCheck, fOut);
         SaveSetString("OpenGPGPublicKeys", g_settings_setOpenGPGPublicKeys, fOut);
-        SaveSetString("BlackList", g_settings_mapSettingsBlackList, fOut);
+        SaveSetString("BlackList", g_settings_mapBlackList, fOut);
         SaveSetString("EnabledPlugins", g_settings_setEnabledPlugins, fOut);
         fOut << "Database = " << g_settings_sDatabase << std::endl;
         fOut << "MaxCrashReportsSize = " << g_settings_nMaxCrashReportsSize << std::endl;
         SaveVectorPairStrings("ActionsAndReporters", g_settings_vectorActionsAndReporters, fOut);
-        SaveSection(SECTION_ANALYZER_ACTIONS_AND_REPORTERS, fOut);
+        SaveSectionHeader(SECTION_ANALYZER_ACTIONS_AND_REPORTERS, fOut);
         SaveMapVectorPairStrings(g_settings_mapAnalyzerActionsAndReporters, fOut);
-        SaveSection(SECTION_CRON, fOut);
+        SaveSectionHeader(SECTION_CRON, fOut);
         SaveMapVectorPairStrings(g_settings_mapCron, fOut);
         fOut.close();
     }
 }
 
+/* dbus call to change some .conf file data */
 void SetSettings(const map_abrt_settings_t& pSettings)
 {
+    bool dirty = false;
     map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
     if (it != pSettings.end())
     {
         s_mapSettingsCommon = it->second;
         ParseCommon();
+        dirty = true;
     }
     it = pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS);
     if (it != pSettings.end())
     {
         s_mapSettingsAnalyzerActionsAndReporters = it->second;
         ParseAnalyzerActionsAndReporters();
+        dirty = true;
     }
     it = pSettings.find(SECTION_CRON);
     if (it != pSettings.end())
     {
         s_mapSettingsCron = it->second;
         ParseCron();
+        dirty = true;
+    }
+    if (dirty)
+    {
+        SaveSettings();
     }
 }
-
-map_abrt_settings_t GetSettings()
-{
-    map_abrt_settings_t ABRTSettings;
-
-    ABRTSettings[SECTION_COMMON] = s_mapSettingsCommon;
-    ABRTSettings[SECTION_ANALYZER_ACTIONS_AND_REPORTERS] = s_mapSettingsAnalyzerActionsAndReporters;
-    ABRTSettings[SECTION_CRON] = s_mapSettingsCron;
-
-    return ABRTSettings;
-}
-
