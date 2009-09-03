@@ -3,7 +3,7 @@
 #
 # chkconfig: 35 82 16
 # description: Daemon to detect crashing apps
-# processname: abrt
+# processname: abrtd
 ### BEGIN INIT INFO
 # Provides: abrt
 # Required-Start: $syslog $local_fs
@@ -28,7 +28,7 @@ check() {
 	[ `id -u` = 0 ] || exit 4
 
 	# Check if abrt is executable
-	test -x /usr/sbin/abrt || exit 5
+	test -x /usr/sbin/abrtd || exit 5
 }
 
 start() {
@@ -38,7 +38,7 @@ start() {
 	# Check if it is already running
 	if [ ! -f /var/lock/subsys/abrt ]; then
 		echo -n $"Starting abrt daemon: "
-		daemon /usr/sbin/abrt
+		daemon /usr/sbin/abrtd
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/abrt
 		echo
@@ -51,7 +51,7 @@ stop() {
 	check
 
 	echo -n $"Stopping abrt daemon: "
-	killproc /usr/sbin/abrt
+	killproc /usr/sbin/abrtd
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/abrt
 	echo
