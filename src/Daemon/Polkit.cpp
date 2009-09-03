@@ -24,7 +24,7 @@
 
 #include "Polkit.h"
 
-PolkitResult polkit_check_authorization(char *action_id)
+PolkitResult polkit_check_authorization(char* dbus_name,char *action_id)
 {
     PolkitAuthority *authority;
     PolkitSubject *subject;
@@ -33,7 +33,7 @@ PolkitResult polkit_check_authorization(char *action_id)
     
     g_type_init();
     authority = polkit_authority_get();
-    subject = polkit_system_bus_name_new( NULL /*TODO get bus name*/  );
+    subject = polkit_system_bus_name_new( dbus_name );
 
     result = polkit_authority_check_authorization_sync(authority,
                 subject, 
