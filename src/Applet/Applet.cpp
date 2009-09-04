@@ -48,8 +48,8 @@ crash_notify_cb(const char* progname)
 #endif
     //applet->AddEvent(uid, std::string(progname));
     applet->SetIconTooltip(message, progname);
-    applet->CrashNotify(message, progname);
     applet->ShowIcon();
+    applet->CrashNotify(message, progname);
 }
 
 int main(int argc, char **argv)
@@ -89,7 +89,7 @@ int main(int argc, char **argv)
     }
 
     DBus::Connection conn = DBus::Connection::SystemBus();
-    applet = new CApplet(conn, CC_DBUS_PATH, CC_DBUS_NAME);
+    applet = new CApplet(conn, session, CC_DBUS_PATH, CC_DBUS_NAME);
     applet->ConnectCrashHandler(crash_notify_cb);
     if(!conn.has_name(CC_DBUS_NAME))
     {

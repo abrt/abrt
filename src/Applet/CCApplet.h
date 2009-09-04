@@ -39,13 +39,16 @@ class CApplet
         GtkBuilder *m_pBuilder;
         GObject *m_pmiHide;
         GObject *m_pmiQuit;
+        GObject *m_pmiAbout;
+        GObject *m_pAboutDialog;
 
         NotifyNotification *m_pNotification;
         std::map<int, std::string > m_mapEvents;
         DaemonWatcher *m_pDaemonWatcher;
         bool m_bDaemonRunning;
+        DBus::Connection *m_pSessionDBus;
     public:
-        CApplet(DBus::Connection &connection, const char *path, const char *name);
+        CApplet(DBus::Connection &system, DBus::Connection &session, const char *path, const char *name);
         ~CApplet();
         void ShowIcon();
         void HideIcon();
@@ -72,6 +75,7 @@ class CApplet
                             guint          activate_time,
                             gpointer       user_data);
         static void onHide_cb(GtkMenuItem *menuitem, gpointer applet);
+        static void onAbout_cb(GtkMenuItem *menuitem, gpointer applet);
     private:
         /* dbus stuff */
         void Crash(const std::string& progname, const std::string& uid);
