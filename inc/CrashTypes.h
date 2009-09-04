@@ -39,11 +39,11 @@
 
 // currently, vector always has exactly 3 elements -> <type, editable, content>
 // <key, data>
-typedef std::map<std::string, vector_strings_t> map_crash_data_t;
+typedef map_vector_string_t map_crash_data_t;
 
 typedef map_crash_data_t map_crash_info_t;
-typedef std::vector<map_crash_info_t> vector_crash_infos_t;
 typedef map_crash_data_t map_crash_report_t;
+typedef std::vector<map_crash_info_t> vector_crash_infos_t;
 
 inline void add_crash_data_to_crash_info(map_crash_info_t& pCrashInfo,
                                          const std::string& pItem,

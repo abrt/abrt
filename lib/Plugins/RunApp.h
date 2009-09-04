@@ -29,8 +29,7 @@
 class CActionRunApp : public CAction
 {
     private:
-        typedef std::vector<std::string> vector_args_t;
-        void ParseArgs(const std::string& psArgs, vector_args_t& pArgs);
+        void ParseArgs(const std::string& psArgs, vector_string_t& pArgs);
 
     public:
         virtual void Run(const std::string& pActionDir,

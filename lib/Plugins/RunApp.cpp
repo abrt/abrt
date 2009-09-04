@@ -29,7 +29,7 @@
 #define COMMAND     0
 #define FILENAME    1
 
-void CActionRunApp::ParseArgs(const std::string& psArgs, vector_args_t& pArgs)
+void CActionRunApp::ParseArgs(const std::string& psArgs, vector_string_t& pArgs)
 {
     unsigned int ii;
     bool is_quote = false;
@@ -64,7 +64,7 @@ void CActionRunApp::Run(const std::string& pActionDir,
     char line[1024];
     std::string output = "";
 
-    vector_args_t args;
+    vector_string_t args;
 
     ParseArgs(pArgs, args);
 

@@ -50,7 +50,7 @@ extern CRPM g_RPM;
 /**
  * A set of blacklisted packages.
  */
-extern set_strings_t g_setBlackList;
+extern set_string_t g_setBlackList;
 
 /* Map <UID, <UUID, result>> to cache the results from CreateReport_t() */
 extern std::map<const std::string, std::map<int, map_crash_report_t> > g_pending_jobs;

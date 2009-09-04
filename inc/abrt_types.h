@@ -25,17 +25,19 @@
 #include <vector>
 #include <string>
 
-typedef std::vector<std::string> vector_strings_t;
-typedef std::set<std::string> set_strings_t;
+typedef std::vector<std::string> vector_string_t;
+typedef std::set<std::string> set_string_t;
 typedef std::pair<std::string, std::string> pair_string_string_t;
 typedef std::map<std::string, std::string> map_string_t;
 
 typedef std::vector<pair_string_string_t> vector_pair_string_string_t;
 typedef std::vector<map_string_t> vector_map_string_t;
+typedef std::map<std::string, map_string_t> map_map_string_t;
+typedef std::map<std::string, vector_string_t> map_vector_string_t;
 typedef std::map<std::string, vector_pair_string_string_t> map_vector_pair_string_string_t;
 
 /* Report() method return type */
-typedef std::map<std::string, vector_strings_t> report_status_t;
+typedef map_vector_string_t report_status_t;
 /* Holds result of .conf file section parsing: map["name"] = "value" */
 typedef map_string_t map_plugin_settings_t;
 

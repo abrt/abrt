@@ -43,7 +43,7 @@ class CApplet
         GObject *m_pAboutDialog;
 
         NotifyNotification *m_pNotification;
-        std::map<int, std::string > m_mapEvents;
+        std::map<int, std::string> m_mapEvents;
         DaemonWatcher *m_pDaemonWatcher;
         bool m_bDaemonRunning;
         DBus::Connection *m_pSessionDBus;

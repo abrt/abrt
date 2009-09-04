@@ -23,26 +23,24 @@
 #include <pthread.h>
 #include <iostream>
 #include <string>
-#include "abrtlib.h"
-#include "ABRTException.h"
-#include "RPM.h"
-#include "CrashWatcher.h"
-#include "Daemon.h"
-
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
-
 #if HAVE_LOCALE_H
     #include <locale.h>
 #endif
-
 #if ENABLE_NLS
     #include <libintl.h>
     #define _(S) gettext(S)
 #else
     #define _(S) (S)
 #endif
+#include "abrtlib.h"
+#include "ABRTException.h"
+#include "RPM.h"
+#include "CrashWatcher.h"
+#include "Daemon.h"
+
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
@@ -51,17 +49,18 @@
  * - signal: we got SIGTERM or SIGINT
  *
  * DBus methods we have:
- * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_strings_t)
+ * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
  *      of crashes for given uid
- *      v[N]["???"][N] = "???"
- * - CreateReport(str): starts creating a report for given /var/cache/abrt/STR.
+ *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
+ * - CreateReport(DIR): starts creating a report for given /var/cache/abrt/DIR.
  *      Returns job id (uint64)
- * - Report(map_crash_report_t (map_vector_strings_t)): ???
- *      Returns report_status_t (map_vector_strings_t)
+ * - Report(map_crash_report_t (map_vector_string_t)):
+ *      "Please report this crash": calls Report() of all registered reporter plugins
+ *      Returns report_status_t (map_vector_string_t) - the status of each call
  * - DeleteDebugDump(DIR): delete /var/cache/abrt/DIR. Returns bool
- * - GetJobResult(job_id): returns map_crash_report_t (map_vector_strings_t)
+ * - GetJobResult(job_id): returns map_crash_report_t (map_vector_string_t)
  * - GetPluginsInfo(): returns vector_map_string_t
- * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_map_string_t)
+ * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
  * - RegisterPlugin(PluginName): returns void
  * - UnRegisterPlugin(PluginName): returns void
@@ -191,19 +190,19 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
 
 static void SetUpMW()
 {
-    set_strings_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
+    set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {
         log("Loading GPG key '%s'", it_k->c_str());
         g_RPM.LoadOpenGPGPublicKey(it_k->c_str());
     }
-    set_strings_t::iterator it_b = g_settings_mapBlackList.begin();
+    set_string_t::iterator it_b = g_settings_mapBlackList.begin();
     for (; it_b != g_settings_mapBlackList.end(); it_b++)
     {
         g_setBlackList.insert(*it_b);
     }
     log("Registering plugins");
-    set_strings_t::iterator it_p = g_settings_setEnabledPlugins.begin();
+    set_string_t::iterator it_p = g_settings_setEnabledPlugins.begin();
     for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
     {
         g_pPluginManager->RegisterPlugin(*it_p);
@@ -328,7 +327,7 @@ static void FindNewDumps(const char* pPath)
     log("Scanning for unsaved entries");
     struct stat stats;
     DIR *dp;
-    std::vector<std::string> dirs;
+    vector_string_t dirs;
     // get potential unsaved debugdumps
     dp = opendir(pPath);
     if (dp == NULL)
@@ -352,7 +351,7 @@ static void FindNewDumps(const char* pPath)
     }
     closedir(dp);
 
-    std::vector<std::string>::iterator itt = dirs.begin();
+    vector_string_t::iterator itt = dirs.begin();
     for (; itt != dirs.end(); ++itt)
     {
         map_crash_info_t crashinfo;

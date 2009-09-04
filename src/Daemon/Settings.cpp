@@ -34,9 +34,9 @@ static map_string_t s_mapSectionCron;
 /* one line: "OpenGPGCheck = value" */
 bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
-set_strings_t g_settings_setOpenGPGPublicKeys;
-set_strings_t g_settings_mapBlackList;
-set_strings_t g_settings_setEnabledPlugins;
+set_string_t  g_settings_setOpenGPGPublicKeys;
+set_string_t  g_settings_mapBlackList;
+set_string_t  g_settings_setEnabledPlugins;
 std::string   g_settings_sDatabase;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 /* one line: "ActionsAndReporters = aa_first,bb_first(bb_second),cc_first" */
@@ -53,11 +53,11 @@ map_cron_t    g_settings_mapCron;
  * Loading
  */
 
-static set_strings_t ParseList(const std::string& pList)
+static set_string_t ParseList(const std::string& pList)
 {
     unsigned int ii;
     std::string item  = "";
-    set_strings_t set;
+    set_string_t set;
     for (ii = 0; ii < pList.size(); ii++)
     {
         if (pList[ii] == ',')
@@ -175,12 +175,12 @@ static void ParseCron()
     }
 }
 
-static set_strings_t ParseKey(const std::string& Key)
+static set_string_t ParseKey(const std::string& Key)
 {
     unsigned int ii;
     std::string item  = "";
     std::string key = "";
-    set_strings_t set;
+    set_string_t set;
     bool is_quote = false;
     for (ii = 0; ii < Key.size(); ii++)
     {
@@ -222,9 +222,9 @@ static void ParseAnalyzerActionsAndReporters()
     map_string_t::iterator it = s_mapSectionAnalyzerActionsAndReporters.begin();
     for (; it != s_mapSectionAnalyzerActionsAndReporters.end(); it++)
     {
-        set_strings_t keys = ParseKey(it->first);
+        set_string_t keys = ParseKey(it->first);
         vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second);
-        set_strings_t::iterator it_keys = keys.begin();
+        set_string_t::iterator it_keys = keys.begin();
         for (; it_keys != keys.end(); it_keys++)
         {
             g_settings_mapAnalyzerActionsAndReporters[*it_keys] = actionsAndReporters;
@@ -342,12 +342,12 @@ map_abrt_settings_t GetSettings()
  * Saving
  */
 
-static void SaveSetString(const char* pKey, const set_strings_t& pSet, FILE* pFOut)
+static void SaveSetString(const char* pKey, const set_string_t& pSet, FILE* pFOut)
 {
     fprintf(pFOut, "%s =", pKey);
 
     const char* fmt = " %s";
-    set_strings_t::const_iterator it_set = pSet.begin();
+    set_string_t::const_iterator it_set = pSet.begin();
     for (; it_set != pSet.end(); it_set++)
     {
         fprintf(pFOut, fmt, it_set->c_str());

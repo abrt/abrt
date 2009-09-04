@@ -42,7 +42,7 @@ class CRPM
         /**
          * A set, which contains finger prints.
          */
-        set_strings_t m_setFingerprints;
+        set_string_t m_setFingerprints;
 
     public:
         /**

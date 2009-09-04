@@ -43,7 +43,7 @@ CRPM g_RPM;
 /**
  * A set of blacklisted packages.
  */
-set_strings_t g_setBlackList;
+set_string_t g_setBlackList;
 
 
 /**
