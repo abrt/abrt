@@ -595,9 +595,17 @@ int main(int argc, char** argv)
             int i = 20; /* 2 sec */
             while (s_sig_caught == 0 && --i)
             {
-                    usleep(100 * 1000);
+                usleep(100 * 1000);
             }
-            _exit(s_sig_caught != SIGTERM); /* TERM:ok(0), else:bad(1) */
+            if (s_sig_caught == SIGTERM)
+            {
+                exit(0);
+            }
+            if (s_sig_caught)
+            {
+                error_msg_and_die("Failed to start: got sig %d", s_sig_caught);
+            }
+            error_msg_and_die("Failed to start: timeout waiting for child");
         }
         /* Child (daemon) continues */
         setsid(); /* never fails */
