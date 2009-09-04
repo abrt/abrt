@@ -6,10 +6,10 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT 0.7.1.1\n"
+"Project-Id-Version: ABRT 0.0.8.5\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-02 11:35+0200\n"
-"PO-Revision-Date: 2009-08-25 22:04+ZONE\n"
+"POT-Creation-Date: 2009-09-04 14:08+0200\n"
+"PO-Revision-Date: 2009-09-04 23:41+0100\n"
 "Last-Translator: JIRI MOSKOVCAK <jmoskovc@redhat.com>\n"
 "Language-Team: CZECH <ll@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -30,26 +30,25 @@ msgstr ""
 
 #: src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
-msgstr ""
+msgstr "Akční pluginy"
 
 #: src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
-msgstr ""
+msgstr "Reportovací pluginy"
 
 #: src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
-msgstr ""
+msgstr "Databázové pluginy"
 
 #: src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
-msgstr ""
+msgstr "Nelze se připojit k dbusu"
 
 #: src/Gui/CCDBusBackend.py:144 src/Gui/CCDBusBackend.py:163
 msgid "Please check if abrt daemon is running."
-msgstr ""
-"Nepodařilo se připojit k démonovi, zkontrolujte prosím, zda služba abrt běží."
+msgstr "Nepodařilo se připojit k démonovi, zkontrolujte prosím, zda služba abrt běží."
 
-#: src/Gui/CCDBusBackend.py:181
+#: src/Gui/CCDBusBackend.py:182
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -168,6 +167,9 @@ msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
+"Nepodařilo se získat report"
+"Pravděpodobně chybí debuginfo."
+
 
 #: src/Gui/CCMainWindow.py:279
 #, python-format
@@ -186,10 +188,12 @@ msgstr ""
 #: src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data that might contain some sensitive "
-"informations!\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive "
+"information.\n"
 "Do you really want to send <b>%s</b>?\n"
-msgstr ""
+msgstr "<b><VAROVÁNÍ</b>, snažíte se odeslat data, která mohou obsahovat citlivé "
+"informace.\n"
+"Jste si opravdu jistí, že chcete odeslat <b>%s</b>?\n"
 
 #: src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
@@ -202,15 +206,15 @@ msgstr "Widget PluginDialog nenalezen!"
 #: src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
-msgstr ""
+msgstr "Plugin %s nemá žádné UI"
 
 #: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr ""
+msgstr "combo box není implementován"
 
 #: src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
-msgstr ""
+msgstr "Žádná data k zobrazení!"
 
 #: src/Gui/report.glade:64
 msgid "Comment"
@@ -226,7 +230,7 @@ msgstr "Poslat"
 
 #: src/Gui/SettingsDialog.py:22
 msgid "Can't load gui description for SettingsDialog!"
-msgstr ""
+msgstr "Nelze načíst popis uživatelského rozhraní pro SettingsDialog!"
 
 #: src/Gui/SettingsDialog.py:34
 msgid "Name"
@@ -254,11 +258,11 @@ msgstr ""
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
-msgstr ""
+msgstr "Nepadařilo se uložit nastavení pro %s\n"
 
 #: src/Gui/SettingsDialog.py:141
 msgid "unknown response from settings dialog"
-msgstr ""
+msgstr "settings dialog vrátil neočekávanou odpověď"
 
 #: src/Applet/Applet.cpp:45
 #, c-format
@@ -270,66 +274,66 @@ msgid "Applet is already running."
 msgstr "Applet už běží."
 
 #: src/Applet/Applet.cpp:96 src/Applet/Applet.cpp:97
-#: src/Applet/CCApplet.cpp:135
+#: src/Applet/CCApplet.cpp:201
 msgid "ABRT service is not running"
 msgstr "ABRT služba nebězí"
 
-#: src/Applet/CCApplet.cpp:83 src/Applet/CCApplet.cpp:262
+#: src/Applet/CCApplet.cpp:135 src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr ""
 
-#: src/Applet/CCApplet.cpp:102
+#: src/Applet/CCApplet.cpp:161
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr ""
 
-#: src/Applet/CCApplet.cpp:125
+#: src/Applet/CCApplet.cpp:190
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
 msgstr ""
 
-#: src/Applet/CCApplet.cpp:139
+#: src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
 msgstr "ABRT služba byla spuštěna"
 
-#: src/Applet/CCApplet.cpp:165
+#: src/Applet/CCApplet.cpp:231
 msgid "Out of memory"
 msgstr "Nedostatek paměti"
 
-#: src/Applet/CCApplet.cpp:180
+#: src/Applet/CCApplet.cpp:247
 msgid "Warning"
 msgstr "Upozornění"
 
-#: lib/Plugins/Bugzilla.cpp:218
+#: lib/Plugins/Bugzilla.cpp:219
 msgid "Bug is already reported: "
-msgstr ""
+msgstr "Tato chyba je již reportována."
 
-#: lib/Plugins/Bugzilla.cpp:278
+#: lib/Plugins/Bugzilla.cpp:279
 #, c-format
 msgid "Binary file %s will not be reported."
-msgstr ""
+msgstr "Binární soubor %s nebude odeslán!"
 
-#: lib/Plugins/Bugzilla.cpp:348
+#: lib/Plugins/Bugzilla.cpp:349
 msgid "New bug id: "
-msgstr ""
+msgstr "Číslo chyby: "
 
-#: lib/Plugins/Bugzilla.cpp:409
+#: lib/Plugins/Bugzilla.cpp:413
+msgid "Checking for duplicates..."
+msgstr "Hledám duplikáty..."
+
+#: lib/Plugins/Bugzilla.cpp:429
 msgid "Logging into bugzilla..."
 msgstr "Přihlašuji se do bugzilly..."
 
-#: lib/Plugins/Bugzilla.cpp:415
-msgid "Checking for duplicates..."
-msgstr ""
-
-#: lib/Plugins/Bugzilla.cpp:418
+#: lib/Plugins/Bugzilla.cpp:443
 msgid "Creating new bug..."
-msgstr ""
+msgstr "Vytvářím nový záznam..."
 
-#: lib/Plugins/Bugzilla.cpp:422
+#: lib/Plugins/Bugzilla.cpp:448
 msgid "Logging out..."
-msgstr ""
+msgstr "Odhlašování.."
 
 #: lib/Plugins/Kerneloops.cpp:38
 msgid "Getting local/global universal unique identification..."
@@ -337,27 +341,27 @@ msgstr ""
 
 #: lib/Plugins/CCpp.cpp:82
 msgid "Searching for debug-info packages..."
-msgstr ""
+msgstr "Vyhledávám debug-info balíčky..."
 
 #: lib/Plugins/CCpp.cpp:120
 msgid "Downloading and installing debug-info packages..."
-msgstr ""
+msgstr "Instaluji debug-info balíčky..."
 
 #: lib/Plugins/CCpp.cpp:180
 msgid "Getting backtrace..."
-msgstr ""
+msgstr "Získávám backtrace..."
 
 #: lib/Plugins/CCpp.cpp:429
 msgid "Getting local universal unique identification..."
-msgstr ""
+msgstr "Vytvářím lokální identifikátor.."
 
 #: lib/Plugins/CCpp.cpp:453
 msgid "Getting global universal unique identification..."
-msgstr ""
+msgstr "Vytvářím globální identifikátor..."
 
 #: lib/Plugins/CCpp.cpp:471
 msgid "Starting report creation..."
-msgstr ""
+msgstr "Zahajuji vytváření reportu..."
 
 #: lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
@@ -365,32 +369,32 @@ msgstr ""
 
 #: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
-msgstr ""
+msgstr "Vytvářím report..."
 
 #: lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
-msgstr ""
+msgstr "Spouśtím RunApp plugin..."
 
 #: lib/Plugins/FileTransfer.cpp:52 lib/Plugins/FileTransfer.cpp:247
 msgid "FileTransfer: URL not specified"
-msgstr ""
+msgstr "FileTransfer: není zadáno žádné URL"
 
 #: lib/Plugins/FileTransfer.cpp:69
 #, c-format
 msgid "Sending archive %s via %s"
-msgstr ""
+msgstr "Odesílám %s přes %s"
 
 #: lib/Plugins/FileTransfer.cpp:121
 msgid "Creating an archive..."
-msgstr ""
+msgstr "Vytvářím archiv..."
 
 #: lib/Plugins/FileTransfer.cpp:176
 msgid "File Transfer: Creating a report..."
-msgstr ""
+msgstr "Přenos Souborů: Vytvářím report..."
 
 #: lib/Plugins/FileTransfer.cpp:197 lib/Plugins/FileTransfer.cpp:226
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr ""
+msgstr "Odesílání archivu selhalo: "
 
 #: lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
@@ -398,11 +402,15 @@ msgstr ""
 
 #: lib/Plugins/Mailx.cpp:110
 msgid "Sending an email..."
-msgstr ""
+msgstr "Odesílám email"
 
 #: lib/Plugins/SOSreport.cpp:90
 msgid "Executing SOSreportAction plugin..."
 msgstr ""
+
+#, fuzzy
+#~ msgid "Logging failed, trying to find a bug..."
+#~ msgstr "Přihlašuji se do bugzilly..."
 
 #~ msgid "Daemon is not running."
 #~ msgstr "Služba není spuštěná."
