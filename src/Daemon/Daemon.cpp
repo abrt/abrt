@@ -323,25 +323,25 @@ static int SetUpCron()
     return 0;
 }
 
-static int FindNewDumps(const std::string& pPath)
+static void FindNewDumps(const char* pPath)
 {
     log("Scanning for unsaved entries");
     struct stat stats;
     DIR *dp;
     std::vector<std::string> dirs;
     // get potential unsaved debugdumps
-    dp = opendir(pPath.c_str());
+    dp = opendir(pPath);
     if (dp == NULL)
     {
-        perror_msg("Can't open directory '%s'", pPath.c_str());
-        return -1;
+        perror_msg("Can't open directory '%s'", pPath);
+        return;
     }
     struct dirent *ep;
     while ((ep = readdir(dp)))
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
-        std::string dname = pPath + "/" + ep->d_name;
+        std::string dname = ssprintf("%s/%s", pPath, ep->d_name);
         if (lstat(dname.c_str(), &stats) == 0)
         {
             if (S_ISDIR(stats.st_mode))
@@ -352,7 +352,8 @@ static int FindNewDumps(const std::string& pPath)
     }
     closedir(dp);
 
-    for (std::vector<std::string>::iterator itt = dirs.begin(); itt != dirs.end(); ++itt)
+    std::vector<std::string>::iterator itt = dirs.begin();
+    for (; itt != dirs.end(); ++itt)
     {
         map_crash_info_t crashinfo;
         try
@@ -390,7 +391,6 @@ static int FindNewDumps(const std::string& pPath)
             log("%s", e.what().c_str());
         }
     }
-    return 0;
 }
 
 static int CreatePidFile()
@@ -577,6 +577,7 @@ int main(int argc, char** argv)
 {
     bool daemonize = true;
     int opt;
+    int parent_pid = getpid();
 
     setlocale(LC_ALL,"");
 
@@ -611,11 +612,6 @@ int main(int argc, char** argv)
     /* Daemonize unless -d */
     if (daemonize)
     {
-        /* Open stdin to /dev/null. We do it before forking
-         * in order to emit useful exitcode to the parent
-         * if open fails */
-        close(STDIN_FILENO);
-        xopen("/dev/null", O_RDWR);
         /* forking to background */
         pid_t pid = fork();
         if (pid < 0)
@@ -659,6 +655,9 @@ int main(int argc, char** argv)
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         log("Initializing inotify");
+//FIXME: is this the right mode? do we need to chown/chmod it, just to be sure?
+        if (mkdir(DEBUG_DUMPS_DIR, 0777 | S_ISVTX) != 0 && errno != EEXIST)
+            perror_msg_and_die("Can't create '%s'", DEBUG_DUMPS_DIR);
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
@@ -672,8 +671,6 @@ int main(int argc, char** argv)
         g_pPluginManager->LoadPlugins();
         SetUpMW(); /* logging is inside */
         if (SetUpCron() != 0)
-            throw 1;
-        if (FindNewDumps(DEBUG_DUMPS_DIR) != 0)
             throw 1;
 #ifdef ENABLE_DBUS
         log("Initializing dbus");
@@ -712,15 +709,19 @@ int main(int argc, char** argv)
         error_msg("Error while initializing daemon");
         /* Inform parent that initialization failed */
         if (daemonize)
-            kill(getppid(), SIGINT);
+            kill(parent_pid, SIGINT);
         goto cleanup;
     }
 
     /* Inform parent that we initialized ok */
     if (daemonize)
     {
-        kill(getppid(), SIGTERM);
+        log("Signalling parent");
+        kill(parent_pid, SIGTERM);
 
+        /* Open stdin to /dev/null */
+        close(STDIN_FILENO);
+        xopen("/dev/null", O_RDWR);
         /* We must not leave fds 0,1,2 closed.
          * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
         close(STDOUT_FILENO);
@@ -734,6 +735,8 @@ int main(int argc, char** argv)
     /* Enter the event loop */
     try
     {
+        /* This may take a while, therefore we don't do it in init section */
+        FindNewDumps(DEBUG_DUMPS_DIR);
         log("Running...");
         g_main_run(g_pMainloop);
     }
