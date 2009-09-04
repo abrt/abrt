@@ -134,8 +134,8 @@ CApplet::CApplet(DBus::Connection &system, DBus::Connection &session, const char
     g_signal_connect(G_OBJECT(m_pStatusIcon), "popup_menu", GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
     SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
     m_pBuilder = gtk_builder_new();
-    //if(gtk_builder_add_from_string(m_pBuilder, menu_xml, strlen(menu_xml), NULL))
-    if(gtk_builder_add_from_file(m_pBuilder, "popup.GtkBuilder", NULL))
+    if(gtk_builder_add_from_string(m_pBuilder, menu_xml, strlen(menu_xml), NULL))
+    //if(gtk_builder_add_from_file(m_pBuilder, "popup.GtkBuilder", NULL))
     {
         m_pMenu = gtk_builder_get_object(m_pBuilder, "popup_menu");
         //gtk_menu_attach_to_widget(GTK_MENU(m_pMenu), GTK_WIDGET(m_pStatusIcon), NULL);
