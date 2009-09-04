@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-03 00:21+0000\n"
-"PO-Revision-Date: 2009-09-04 13:09+1000\n"
+"POT-Creation-Date: 2009-09-04 04:40+0000\n"
+"PO-Revision-Date: 2009-09-04 15:22+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,9 @@ msgstr "다른 클라이언트가 이미 실행되고 있으므로 이를 호출
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "데몬에서 예기치 못한 데이터를 수신했습니다 (데이터베이스가 올바르게 업데이트되었습니까?).  "
+msgstr ""
+"데몬에서 예기치 못한 데이터를 수신했습니다 (데이터베이스가 올바르게 업데이트"
+"되었습니까?).  "
 
 #: ../src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
@@ -109,11 +111,16 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"이 프로그램은 자유 소프트웨어로서 Free Software Foundation이 발행하는 라이센스 버전 2 또는 그 이상 버전의 GNU General Public License 조건 하에서 수정하거나 재배포하실 수 있습니다.\n"
+"이 프로그램은 자유 소프트웨어로서 Free Software Foundation이 발행하는 라이센"
+"스 버전 2 또는 그 이상 버전의 GNU General Public License 조건 하에서 수정하거"
+"나 재배포하실 수 있습니다.\n"
 "\n"
-"이 프로그램은 어떠한 보증 없이, 또는 특정 목적에 대한 상품성 또는 적합성의 묵시적 보증 없이 유용하게 사용될 것을 희망하며 배포합니다.  보다 자세한 내용은 GNU General Public License를 참조하십시오.\n"
+"이 프로그램은 어떠한 보증 없이, 또는 특정 목적에 대한 상품성 또는 적합성의 묵"
+"시적 보증 없이 유용하게 사용될 것을 희망하며 배포합니다.  보다 자세한 내용은 "
+"GNU General Public License를 참조하십시오.\n"
 "\n"
-"이 프로그램과 함께 GNU General Public License 복사본을 받으시게 됩니다.  받지 못하셨을 경우, <http://www.gnu.org/licenses/>에서 살펴보십시오.     "
+"이 프로그램과 함께 GNU General Public License 복사본을 받으시게 됩니다.  받"
+"지 못하셨을 경우, <http://www.gnu.org/licenses/>에서 살펴보십시오.     "
 
 #: ../src/Gui/ccgui.glade.h:15
 msgid "Working..."
@@ -166,12 +173,15 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"dumplist를 불러오는 도중 오류 발생, abrt 데몬이 실행되고 있는지 확인하십시오\n"
+"dumplist를 불러오는 도중 오류 발생, abrt 데몬이 실행되고 있는지 확인하십시"
+"오\n"
 " %s "
 
 #: ../src/Gui/CCMainWindow.py:207
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>이러한 크래시는 보고되었습니다, 다음 페이지에서 이를 확인하실 수 있습니다:</b>\n"
+msgstr ""
+"<b>이러한 크래시는 보고되었습니다, 다음 페이지에서 이를 확인하실 수 있습니다:"
+"</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:267
 msgid ""
@@ -198,8 +208,8 @@ msgstr "보고서를 가져오는 도중 오류 발생: %s"
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data that might contain some sensitive "
-"informations!\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive "
+"information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
 "<b>경고</b>, 기밀 정보가 들어있는 데이터를 보내려고 합니다!\n"
@@ -308,7 +318,9 @@ msgstr "설명에서 메뉴를 만들 수 없습니다. 팝업을 사용할 수 
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
-msgstr "이는 기본값 처리기입니다. 자신의 처리기를 ConnectCrashHandler를 사용하여 등록해야 합니다  "
+msgstr ""
+"이는 기본값 처리기입니다. 자신의 처리기를 ConnectCrashHandler를 사용하여 등록"
+"해야 합니다  "
 
 #: ../src/Applet/CCApplet.cpp:139
 msgid "ABRT service has been started"
@@ -322,32 +334,32 @@ msgstr "메모리 부족 "
 msgid "Warning"
 msgstr "경고  "
 
-#: ../lib/Plugins/Bugzilla.cpp:218
+#: ../lib/Plugins/Bugzilla.cpp:219
 msgid "Bug is already reported: "
 msgstr "이미 버그를 보고하였습니다:  "
 
-#: ../lib/Plugins/Bugzilla.cpp:278
+#: ../lib/Plugins/Bugzilla.cpp:279
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "%s 바이너리 파일은 보고되지 않습니다.  "
 
-#: ../lib/Plugins/Bugzilla.cpp:348
+#: ../lib/Plugins/Bugzilla.cpp:349
 msgid "New bug id: "
 msgstr "새 버그 id:   "
 
-#: ../lib/Plugins/Bugzilla.cpp:409
-msgid "Logging into bugzilla..."
-msgstr "bugzilla에 로그인 중...       "
-
-#: ../lib/Plugins/Bugzilla.cpp:415
+#: ../lib/Plugins/Bugzilla.cpp:413
 msgid "Checking for duplicates..."
 msgstr "중복성 확인 중...      "
 
-#: ../lib/Plugins/Bugzilla.cpp:418
+#: ../lib/Plugins/Bugzilla.cpp:429
+msgid "Logging into bugzilla..."
+msgstr "bugzilla에 로그인 중...       "
+
+#: ../lib/Plugins/Bugzilla.cpp:443
 msgid "Creating new bug..."
 msgstr "새 버그 생성 중...   "
 
-#: ../lib/Plugins/Bugzilla.cpp:422
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Logging out..."
 msgstr "로그아웃 중...   "
 
