@@ -57,7 +57,7 @@ class CRPM
          * A method, which loads one GPG public key.
          * @param pFileName A path to the public key.
          */
-        void LoadOpenGPGPublicKey(const std::string& pFileName);
+        void LoadOpenGPGPublicKey(const char* pFileName);
         /**
          * A method, which checks if package's finger print is valid.
          * @param pPackage A package name.

@@ -1,9 +1,10 @@
+#include "abrtlib.h"
 #include "RPM.h"
 #include "CommLayerInner.h"
 
 CRPM::CRPM()
 {
-    char *argv[] = {(char*)""};
+    char *argv[] = { (char*)"" };
     m_poptContext = rpmcliInit(0, argv, NULL);
 }
 
@@ -12,15 +13,15 @@ CRPM::~CRPM()
     rpmcliFini(m_poptContext);
 }
 
-void CRPM::LoadOpenGPGPublicKey(const std::string& pFileName)
+void CRPM::LoadOpenGPGPublicKey(const char* pFileName)
 {
     uint8_t* pkt = NULL;
     size_t pklen;
     pgpKeyID_t keyID;
-    if (pgpReadPkts(pFileName.c_str(), &pkt, &pklen) != PGPARMOR_PUBKEY)
+    if (pgpReadPkts(pFileName, &pkt, &pklen) != PGPARMOR_PUBKEY)
     {
         free(pkt);
-        warn_client("CRPM::LoadOpenGPGPublicKey(): Can not load public key " + pFileName);
+        error_msg("Can't load public GPG key %s", pFileName);
         return;
     }
     if (pgpPubkeyFingerprint(pkt, pklen, keyID) == 0)

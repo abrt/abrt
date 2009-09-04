@@ -29,11 +29,6 @@
 #include "CrashWatcher.h"
 #include "Daemon.h"
 
-
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
-#define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
-
-
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
@@ -48,6 +43,38 @@
 #else
     #define _(S) (S)
 #endif
+
+/* Daemon initializes, then sits in glib main loop, waiting for events.
+ * Events can be:
+ * - inotify: something new appeared under /var/cache/abrt
+ * - DBus: dbus message arrived
+ * - signal: we got SIGTERM or SIGINT
+ *
+ * DBus methods we have:
+ * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_strings_t)
+ *      of crashes for given uid
+ *      v[N]["???"][N] = "???"
+ * - CreateReport(str): starts creating a report for given /var/cache/abrt/STR.
+ *      Returns job id (uint64)
+ * - Report(map_crash_report_t (map_vector_strings_t)): ???
+ *      Returns report_status_t (map_vector_strings_t)
+ * - DeleteDebugDump(DIR): delete /var/cache/abrt/DIR. Returns bool
+ * - GetJobResult(job_id): returns map_crash_report_t (map_vector_strings_t)
+ * - GetPluginsInfo(): returns vector_map_string_t
+ * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_map_string_t)
+ * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
+ * - RegisterPlugin(PluginName): returns void
+ * - UnRegisterPlugin(PluginName): returns void
+ * - GetSettings(): returns map_abrt_settings_t (map_map_string_t)
+ * - SetSettings(map_abrt_settings_t): returns void
+ *
+ * DBus signals we emit:
+ * - ...
+ */
+
+
+#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
+#define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
 
 
 //FIXME: add some struct to be able to join all threads!
@@ -167,30 +194,34 @@ static void SetUpMW()
     set_strings_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {
-        g_RPM.LoadOpenGPGPublicKey(*it_k);
+        log("Loading GPG key '%s'", it_k->c_str());
+        g_RPM.LoadOpenGPGPublicKey(it_k->c_str());
     }
     set_strings_t::iterator it_b = g_settings_mapBlackList.begin();
     for (; it_b != g_settings_mapBlackList.end(); it_b++)
     {
         g_setBlackList.insert(*it_b);
     }
+    log("Registering plugins");
     set_strings_t::iterator it_p = g_settings_setEnabledPlugins.begin();
     for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
     {
         g_pPluginManager->RegisterPlugin(*it_p);
     }
+    log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
     {
-        AddActionOrReporter((*it_ar).first, (*it_ar).second);
+        AddActionOrReporter(it_ar->first, it_ar->second);
     }
+    log("Adding analyzers, actions or reporters");
     map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
     for (; it_aar != g_settings_mapAnalyzerActionsAndReporters.end(); it_aar++)
     {
         vector_pair_string_string_t::iterator it_ar = it_aar->second.begin();
         for (; it_ar != it_aar->second.end(); it_ar++)
         {
-            AddAnalyzerActionOrReporter(it_aar->first, (*it_ar).first, (*it_ar).second);
+            AddAnalyzerActionOrReporter(it_aar->first, it_ar->first, it_ar->second);
         }
     }
 }
@@ -237,7 +268,8 @@ static int SetUpCron()
             vector_pair_string_string_t::iterator it_ar = it_c->second.begin();
             for (; it_ar != it_c->second.end(); it_ar++)
             {
-                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
+                cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(it_ar->first, it_ar->second, timeout);
+                log("Adding timeout 1");
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_periodic_cb,
@@ -257,7 +289,7 @@ static int SetUpCron()
             if (nextTime == ((time_t)-1))
             {
                 /* paranoia */
-                perror_msg("can't set up cron time");
+                perror_msg("Can't set up cron time");
                 return -1;
             }
             if (actTime > nextTime)
@@ -272,12 +304,14 @@ static int SetUpCron()
             for (; it_ar != it_c->second.end(); it_ar++)
             {
                 cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
+                log("Adding timeout 2");
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_one_cb,
                                            static_cast<gpointer>(cronOneCallbackData),
                                            cron_delete_callback_data_cb);
                 cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, 24 * 60 * 60);
+                log("Adding timeout 3");
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_reshedule_cb,
@@ -291,7 +325,7 @@ static int SetUpCron()
 
 static int FindNewDumps(const std::string& pPath)
 {
-    log("Scanning for unsaved entries...");
+    log("Scanning for unsaved entries");
     struct stat stats;
     DIR *dp;
     std::vector<std::string> dirs;
@@ -299,7 +333,7 @@ static int FindNewDumps(const std::string& pPath)
     dp = opendir(pPath.c_str());
     if (dp == NULL)
     {
-        perror_msg("can't open directory '%s'", pPath.c_str());
+        perror_msg("Can't open directory '%s'", pPath.c_str());
         return -1;
     }
     struct dirent *ep;
@@ -342,7 +376,7 @@ static int FindNewDumps(const std::string& pPath)
                 case MW_GPG_ERROR:
                 case MW_FILE_ERROR:
                 default:
-                    warn_client("Corrupted, bad or already saved crash, deleting.");
+                    log("Corrupted, bad or already saved crash, deleting");
                     DeleteDebugDumpDir(*itt);
                     break;
             }
@@ -353,7 +387,7 @@ static int FindNewDumps(const std::string& pPath)
             {
                 throw e;
             }
-            warn_client(e.what());
+            log("%s", e.what().c_str());
         }
     }
     return 0;
@@ -379,7 +413,7 @@ static int CreatePidFile()
     }
 
     /* something went wrong */
-    perror_msg("can't open '%s'", VAR_RUN_PIDFILE);
+    perror_msg("Can't open '%s'", VAR_RUN_PIDFILE);
     return -1;
 }
 
@@ -388,12 +422,12 @@ static int Lock()
     int lfd = open(VAR_RUN_LOCK_FILE, O_RDWR|O_CREAT, 0640);
     if (lfd < 0)
     {
-        perror_msg("can't open '%s'", VAR_RUN_LOCK_FILE);
+        perror_msg("Can't open '%s'", VAR_RUN_LOCK_FILE);
         return -1;
     }
     if (lockf(lfd, F_TLOCK, 0) < 0)
     {
-        perror_msg("can't lock file '%s'", VAR_RUN_LOCK_FILE);
+        perror_msg("Can't lock file '%s'", VAR_RUN_LOCK_FILE);
         return -1;
     }
     return 0;
@@ -586,7 +620,7 @@ int main(int argc, char** argv)
         pid_t pid = fork();
         if (pid < 0)
         {
-            perror_msg_and_die("can't fork");
+            perror_msg_and_die("Can't fork");
         }
         if (pid > 0)
         {
@@ -609,15 +643,6 @@ int main(int argc, char** argv)
         }
         /* Child (daemon) continues */
         setsid(); /* never fails */
-        /* We must not leave fds 0,1,2 closed.
-         * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
-        close(STDOUT_FILENO);
-        close(STDERR_FILENO);
-        xdup(0);
-        xdup(0);
-
-        openlog("abrt daemon", 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
     }
 
     GIOChannel* pGio = NULL;
@@ -629,39 +654,40 @@ int main(int argc, char** argv)
     try
     {
         pthread_mutex_init(&g_pJobsMutex, NULL); /* never fails */
-        /* DBus init - we want it early so that errors are reported */
         init_daemon_logging(&watcher);
+        log("Creating glib main loop");
+        g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
+        log("Initializing inotify");
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
-        /* (comment here) */
+        log("Loading settings");
         LoadSettings();
-        /* (comment here) */
-        g_pMainloop = g_main_loop_new(NULL, FALSE);
-        /* (comment here) */
+        log("Loading plugins");
         g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
-        SetUpMW();
+        SetUpMW(); /* logging is inside */
         if (SetUpCron() != 0)
             throw 1;
         if (FindNewDumps(DEBUG_DUMPS_DIR) != 0)
             throw 1;
-        /* (comment here) */
 #ifdef ENABLE_DBUS
+        log("Initializing dbus");
         g_pCommLayer = new CCommLayerServerDBus();
 #elif ENABLE_SOCKET
         g_pCommLayer = new CCommLayerServerSocket();
 #endif
         if (g_pCommLayer->m_init_error)
             throw 1;
-        /* (comment here) */
+        log("Adding inotify watch to glib main loop");
         pGio = g_io_channel_unix_new(inotify_fd);
         g_io_add_watch(pGio, G_IO_IN, handle_event_cb, NULL);
         /* Add an event source which waits for INT/TERM signal */
+        log("Adding signal watch to glib main loop");
         GSourceFuncs waitsignal_funcs;
         memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
         waitsignal_funcs.prepare  = waitsignal_prepare;
@@ -671,9 +697,11 @@ int main(int argc, char** argv)
         GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
         g_source_attach(waitsignal_src, g_main_context_default());
         /* Mark the territory */
+        log("Creating lock file");
         if (Lock() != 0)
             throw 1;
         lockfile_created = true;
+        log("Creating pid file");
         if (CreatePidFile() != 0)
             throw 1;
         pidfile_created = true;
@@ -681,7 +709,7 @@ int main(int argc, char** argv)
     catch (...)
     {
         /* Initialization error */
-        error_msg("error while initializing daemon");
+        error_msg("Error while initializing daemon");
         /* Inform parent that initialization failed */
         if (daemonize)
             kill(getppid(), SIGINT);
@@ -690,7 +718,18 @@ int main(int argc, char** argv)
 
     /* Inform parent that we initialized ok */
     if (daemonize)
+    {
         kill(getppid(), SIGTERM);
+
+        /* We must not leave fds 0,1,2 closed.
+         * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
+        close(STDOUT_FILENO);
+        close(STDERR_FILENO);
+        xdup(0);
+        xdup(0);
+        openlog("abrtd", 0, LOG_DAEMON);
+        logmode = LOGMODE_SYSLOG;
+    }
 
     /* Enter the event loop */
     try
@@ -700,11 +739,11 @@ int main(int argc, char** argv)
     }
     catch (CABRTException& e)
     {
-        error_msg("error: %s", e.what().c_str());
+        error_msg("Error: %s", e.what().c_str());
     }
     catch (std::exception& e)
     {
-        error_msg("error: %s", e.what());
+        error_msg("Error: %s", e.what());
     }
 
  cleanup:
@@ -727,14 +766,14 @@ int main(int argc, char** argv)
     if (g_pMainloop)
         g_main_loop_unref(g_pMainloop);
     if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
-        error_msg("threading error: job mutex locked");
+        error_msg("Threading error: job mutex locked");
 
     /* Exiting */
     if (s_sig_caught)
     {
-        error_msg_and_die("got signal %d, exiting", s_sig_caught);
+        error_msg_and_die("Got signal %d, exiting", s_sig_caught);
         signal(s_sig_caught, SIG_DFL);
         raise(s_sig_caught);
     }
-    error_msg_and_die("exiting");
+    error_msg_and_die("Exiting");
 }
