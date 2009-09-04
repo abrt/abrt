@@ -3,8 +3,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.8
-Release: 2%{?dist}
+Version: 0.0.8.5
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -337,6 +337,18 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Fri Sep  4 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.8.5-1
+- new version
+- APPLET: added about dialog, removed popup, if icon is not visible, fixed (trac#43) (jmoskovc@redhat.com)
+- renamed abrt to abrtd, few minor spec file fixes (jmoskovc@redhat.com)
+- Made abrt service start by deafult (jmoskovc@redhat.com)
+- add gettext support for all plugins (npajkovs@redhat.com)
+- APPLET: removed the warning bubble about not running abrt service (walters)
+- APPLET: changed tooltip rhbz#520293 (jmoskovc@redhat.com)
+- CommLayerServerDBus: rewrote to use dbus, not dbus-c++ (vda.linux@googlemail.com)
+- fixed timeout on boot causing [ FAILED ] message (vda.linux@googlemail.com)
+- and many other fixes
+
 * Wed Sep 02 2009  Colin Walters <watlers@verbum.org> 0.0.8-2
 - Change Conflicts: kerneloops to be an Obsoletes so we do the right thing
   on upgrades.  Also add an Obsoletes: bug-buddy.

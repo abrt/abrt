@@ -1,4 +1,4 @@
-AC_INIT([abrt], [0.0.8], [jmoskovc@redhat.com, zprikryl@redhat.com])
+AC_INIT([abrt], [0.0.8.5], [jmoskovc@redhat.com, zprikryl@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -31,6 +31,7 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC_CPP], [xmlrpc++])
 PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [xmlrpc_client++])
+PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [python])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
