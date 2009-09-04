@@ -158,7 +158,7 @@ static void cron_delete_callback_data_cb(gpointer data)
 static gboolean cron_activation_periodic_cb(gpointer data)
 {
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
-    log("Activating plugin: %s", cronPeriodicCallbackData->m_sPluginName.c_str());
+    VERB1 log("Activating plugin: %s", cronPeriodicCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
             cronPeriodicCallbackData->m_sPluginName,
             cronPeriodicCallbackData->m_sPluginArgs);
@@ -167,7 +167,7 @@ static gboolean cron_activation_periodic_cb(gpointer data)
 static gboolean cron_activation_one_cb(gpointer data)
 {
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
-    log("Activating plugin: %s", cronOneCallbackData->m_sPluginName.c_str());
+    VERB1 log("Activating plugin: %s", cronOneCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
             cronOneCallbackData->m_sPluginName,
             cronOneCallbackData->m_sPluginArgs);
@@ -176,7 +176,7 @@ static gboolean cron_activation_one_cb(gpointer data)
 static gboolean cron_activation_reshedule_cb(gpointer data)
 {
     cron_callback_data_t* cronResheduleCallbackData = static_cast<cron_callback_data_t*>(data);
-    log("Rescheduling plugin: %s", cronResheduleCallbackData->m_sPluginName.c_str());
+    VERB1 log("Rescheduling plugin: %s", cronResheduleCallbackData->m_sPluginName.c_str());
     cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(cronResheduleCallbackData->m_sPluginName,
                                                                               cronResheduleCallbackData->m_sPluginArgs,
                                                                               cronResheduleCallbackData->m_nTimeout);
@@ -193,7 +193,7 @@ static void SetUpMW()
     set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {
-        log("Loading GPG key '%s'", it_k->c_str());
+        VERB1 log("Loading GPG key '%s'", it_k->c_str());
         g_RPM.LoadOpenGPGPublicKey(it_k->c_str());
     }
     set_string_t::iterator it_b = g_settings_mapBlackList.begin();
@@ -201,19 +201,19 @@ static void SetUpMW()
     {
         g_setBlackList.insert(*it_b);
     }
-    log("Registering plugins");
+    VERB1 log("Registering plugins");
     set_string_t::iterator it_p = g_settings_setEnabledPlugins.begin();
     for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
     {
         g_pPluginManager->RegisterPlugin(*it_p);
     }
-    log("Adding actions or reporters");
+    VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
     {
         AddActionOrReporter(it_ar->first, it_ar->second);
     }
-    log("Adding analyzers, actions or reporters");
+    VERB1 log("Adding analyzers, actions or reporters");
     map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
     for (; it_aar != g_settings_mapAnalyzerActionsAndReporters.end(); it_aar++)
     {
@@ -268,7 +268,6 @@ static int SetUpCron()
             for (; it_ar != it_c->second.end(); it_ar++)
             {
                 cron_callback_data_t* cronPeriodicCallbackData = new cron_callback_data_t(it_ar->first, it_ar->second, timeout);
-                log("Adding timeout 1");
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_periodic_cb,
@@ -303,14 +302,12 @@ static int SetUpCron()
             for (; it_ar != it_c->second.end(); it_ar++)
             {
                 cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
-                log("Adding timeout 2");
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_one_cb,
                                            static_cast<gpointer>(cronOneCallbackData),
                                            cron_delete_callback_data_cb);
                 cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, 24 * 60 * 60);
-                log("Adding timeout 3");
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_reshedule_cb,
@@ -324,7 +321,7 @@ static int SetUpCron()
 
 static void FindNewDumps(const char* pPath)
 {
-    log("Scanning for unsaved entries");
+    VERB1 log("Scanning for unsaved entries");
     struct stat stats;
     DIR *dp;
     vector_string_t dirs;
@@ -362,11 +359,11 @@ static void FindNewDumps(const char* pPath)
             switch (res)
             {
                 case MW_OK:
-                    log("Saving into database (%s)", itt->c_str());
+                    VERB1 log("Saving into database (%s)", itt->c_str());
                     RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                     break;
                 case MW_IN_DB:
-                    log("Already saved in database (%s)", itt->c_str());
+                    VERB1 log("Already saved in database (%s)", itt->c_str());
                     break;
                 case MW_REPORTED:
                 case MW_OCCURED:
@@ -376,7 +373,9 @@ static void FindNewDumps(const char* pPath)
                 case MW_GPG_ERROR:
                 case MW_FILE_ERROR:
                 default:
-                    log("Corrupted, bad or already saved crash, deleting");
+//Perhaps corrupted & bad needs to be logged unconditionally,
+//already saved one - only on VERB1
+                    VERB1 log("Corrupted, bad or already saved crash, deleting");
                     DeleteDebugDumpDir(*itt);
                     break;
             }
@@ -387,7 +386,7 @@ static void FindNewDumps(const char* pPath)
             {
                 throw e;
             }
-            log("%s", e.what().c_str());
+            error_msg("%s", e.what().c_str());
         }
     }
 }
@@ -546,7 +545,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                 case MW_IN_DB:
                 case MW_FILE_ERROR:
                 default:
-                    warn_client("Corrupted or bad crash, deleting...");
+                    log("Corrupted or bad crash, deleting...");
                     DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                     break;
             }
@@ -571,6 +570,20 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
     return TRUE;
 }
 
+static void start_syslog_logging()
+{
+    /* Open stdin to /dev/null */
+    close(STDIN_FILENO);
+    xopen("/dev/null", O_RDWR);
+    /* We must not leave fds 0,1,2 closed.
+     * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
+    close(STDOUT_FILENO);
+    close(STDERR_FILENO);
+    xdup(0);
+    xdup(0);
+    openlog("abrtd", 0, LOG_DAEMON);
+    logmode = LOGMODE_SYSLOG;
+}
 
 int main(int argc, char** argv)
 {
@@ -605,6 +618,7 @@ int main(int argc, char** argv)
         }
     }
 
+    msg_prefix = "abrtd: "; /* for log(), error_msg() and such */
     signal(SIGTERM, handle_fatal_signal);
     signal(SIGINT, handle_fatal_signal);
 
@@ -638,22 +652,24 @@ int main(int argc, char** argv)
         }
         /* Child (daemon) continues */
         setsid(); /* never fails */
+        if (g_verbose == 0)
+            start_syslog_logging();
     }
 
     GIOChannel* pGio = NULL;
-    CCrashWatcher watcher;
     bool lockfile_created = false;
     bool pidfile_created = false;
+    CCrashWatcher watcher;
 
     /* Initialization */
     try
     {
         pthread_mutex_init(&g_pJobsMutex, NULL); /* never fails */
         init_daemon_logging(&watcher);
-        log("Creating glib main loop");
+        VERB1 log("Creating glib main loop");
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
-        log("Initializing inotify");
+        VERB1 log("Initializing inotify");
 //FIXME: is this the right mode? do we need to chown/chmod it, just to be sure?
         if (mkdir(DEBUG_DUMPS_DIR, 0777 | S_ISVTX) != 0 && errno != EEXIST)
             perror_msg_and_die("Can't create '%s'", DEBUG_DUMPS_DIR);
@@ -663,27 +679,27 @@ int main(int argc, char** argv)
             perror_msg_and_die("inotify_init failed");
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
-        log("Loading settings");
+        VERB1 log("Loading settings");
         LoadSettings();
-        log("Loading plugins");
+        VERB1 log("Loading plugins");
         g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
         SetUpMW(); /* logging is inside */
         if (SetUpCron() != 0)
             throw 1;
 #ifdef ENABLE_DBUS
-        log("Initializing dbus");
+        VERB1 log("Initializing dbus");
         g_pCommLayer = new CCommLayerServerDBus();
 #elif ENABLE_SOCKET
         g_pCommLayer = new CCommLayerServerSocket();
 #endif
         if (g_pCommLayer->m_init_error)
             throw 1;
-        log("Adding inotify watch to glib main loop");
+        VERB1 log("Adding inotify watch to glib main loop");
         pGio = g_io_channel_unix_new(inotify_fd);
         g_io_add_watch(pGio, G_IO_IN, handle_event_cb, NULL);
         /* Add an event source which waits for INT/TERM signal */
-        log("Adding signal watch to glib main loop");
+        VERB1 log("Adding signal watch to glib main loop");
         GSourceFuncs waitsignal_funcs;
         memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
         waitsignal_funcs.prepare  = waitsignal_prepare;
@@ -693,11 +709,11 @@ int main(int argc, char** argv)
         GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
         g_source_attach(waitsignal_src, g_main_context_default());
         /* Mark the territory */
-        log("Creating lock file");
+        VERB1 log("Creating lock file");
         if (Lock() != 0)
             throw 1;
         lockfile_created = true;
-        log("Creating pid file");
+        VERB1 log("Creating pid file");
         if (CreatePidFile() != 0)
             throw 1;
         pidfile_created = true;
@@ -715,20 +731,10 @@ int main(int argc, char** argv)
     /* Inform parent that we initialized ok */
     if (daemonize)
     {
-        log("Signalling parent");
+        VERB1 log("Signalling parent");
         kill(parent_pid, SIGTERM);
-
-        /* Open stdin to /dev/null */
-        close(STDIN_FILENO);
-        xopen("/dev/null", O_RDWR);
-        /* We must not leave fds 0,1,2 closed.
-         * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
-        close(STDOUT_FILENO);
-        close(STDERR_FILENO);
-        xdup(0);
-        xdup(0);
-        openlog("abrtd", 0, LOG_DAEMON);
-        logmode = LOGMODE_SYSLOG;
+        if (logmode != LOGMODE_SYSLOG)
+            start_syslog_logging();
     }
 
     /* Enter the event loop */
