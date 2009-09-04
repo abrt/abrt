@@ -6,7 +6,7 @@ msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2009-09-03 14:38+0000\n"
-"PO-Revision-Date: 2009-09-03 21:05+0200\n"
+"PO-Revision-Date: 2009-09-04 02:33+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <pl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -202,6 +202,11 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Błąd podczas uzyskiwania raportu: %s"
 
+# Poufne chyba lepiej oddaje znaczenie "sensitive".
+#
+# Co konkretnie znaczy "prywatne informacje"? Dane osobowe? Tu nie chodzi o dane osobowe.
+#
+# Crash report może zawierać wersje oprogramowania, rodzaj systemu operacyjnego, informacje o urządzeniach, otwartych plikach itp, co może być ważne np. z punktu widzenia bezpieczeństwa. Więc raczej dane "poufne", niż "prywatne".
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
@@ -210,14 +215,14 @@ msgid ""
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
 "<b>OSTRZEŻENIE:</b> za chwilę zostaną wysłane dane, które mogą zawierać "
-"prywatne informacje.\n"
+"poufne informacje.\n"
 "Na pewno chcesz wysłać <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
-"Krótki opis, jak powtórzyć tę awarię lub co robił użytkownik (w języku "
-"angielskim)..."
+"Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
+"języku angielskim)..."
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
@@ -227,13 +232,22 @@ msgstr "Nie można znaleźć widgetu PluginDialog w opisie UI!"
 #: ../src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
-msgstr "Brak UI dla wtyczki %s"
+msgstr "Brak interfejsu użytkownika dla wtyczki %s"
 
 #: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr "Widget \"combo box\" nie jest zaimplementowany"
+msgstr "pole kombinowane nie jest zaimplementowane"
 
+# Na pewno to tak się nazywa?
+# http://hydrate.sourceforge.net/
+#
+# Jeśli tłumaczenie jest dosłowne, to może lepiej "nawodnienia". Nawilżyć to "moisten", "dampen".
+#
+# Może chodzi o "zasilenie" np. bazy danych? Ja bym spytał autora, co miał na myśli,póki jest jeszce czas. Hydration w odniesieniu do danych to przeniesienie z XML do bazy danych, obiektu albo na odwrót.
+#
+# Naturalnie, mogę się mylić i taki termin w informatyce może istnieć...
 #: ../src/Gui/PluginSettingsUI.py:47
+#, fuzzy
 msgid "Nothing to hydrate!"
 msgstr "Nie ma niczego do nawilżenia!"
 
@@ -313,7 +327,7 @@ msgstr "Oczekujące zdarzenia: %i"
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr ""
-"Nie można utworzyć manu z opisu, okno wyskakujące nie będzie dostępne!\n"
+"Nie można utworzyć menu z opisu, okno wyskakujące nie będzie dostępne!\n"
 
 #: ../src/Applet/CCApplet.cpp:125
 msgid ""
@@ -356,9 +370,13 @@ msgstr "Sprawdzanie duplikatów..."
 msgid "Logging into bugzilla..."
 msgstr "Logowanie do Bugzilli..."
 
+# Po angielsku wiadomo, o co chodzi, ale: "Tworzenie nowego błędu", po polsku - nie wiadomo.
+#
+# Ew. "Tworzenie nowego wpisu w bazie błędów".
 #: ../lib/Plugins/Bugzilla.cpp:443
+#, fuzzy
 msgid "Creating new bug..."
-msgstr "Tworzenie nowego błędu..."
+msgstr "Dodawanie nowego błędu do bazy..."
 
 #: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Logging out..."
@@ -377,9 +395,13 @@ msgstr "Wyszukiwanie pakietów debuginfo..."
 msgid "Downloading and installing debug-info packages..."
 msgstr "Pobieranie i instalowanie pakietów debuginfo..."
 
+# Backtrace to nie wyjątek(exception).
+#
+# Myślę, że jeśli nie znajdziemy lepszego terminu, to lepiej zostawić backtrace.
 #: ../lib/Plugins/CCpp.cpp:180
+#, fuzzy
 msgid "Getting backtrace..."
-msgstr "Uzyskiwanie wyjątku..."
+msgstr "Uzyskiwanie backtrace'u..."
 
 #: ../lib/Plugins/CCpp.cpp:429
 msgid "Getting local universal unique identification..."
@@ -405,9 +427,13 @@ msgstr "Tworzenie raportu..."
 msgid "Executing RunApp plugin..."
 msgstr "Wykonywanie wtyczki RunApp..."
 
+# Skoro nie podano adresu URL, to przesyłanie plików sie jeszcze nie rozpoczęło. Dlatego myślę, że pisanie "Przesyłanie pliku" może być w tym wypadku lekko mylące. (Btw. File Transfer może oznaczać przesyłanie zarówno jednego, jak i wielu plików).
+#
+# Poza tym, FileTransfer to nazwa wtyczki, a nie czynności. Chyba lepiej tego nie zmieniać, albo zamienic na "Wtyczka przesyłania plików", tak jak na początku.
 #: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/FileTransfer.cpp:247
+#, fuzzy
 msgid "FileTransfer: URL not specified"
-msgstr "Przesyłanie pliku: nie podano adresu URL"
+msgstr "FileTransfer: nie podano adresu URL"
 
 #: ../lib/Plugins/FileTransfer.cpp:69
 #, c-format
@@ -418,9 +444,13 @@ msgstr "Wysyłanie archiwum %s przez %s"
 msgid "Creating an archive..."
 msgstr "Tworzenie archiwum..."
 
+# Skoro nie podano adresu URL, to przesyłanie plików sie jeszcze nie rozpoczęło. Dlatego myślę, że pisanie "Przesyłanie pliku" może być w tym wypadku lekko mylące. (Btw. File Transfer może oznaczać przesyłanie zarówno jednego, jak i wielu plików).
+#
+# Poza tym, FileTransfer to nazwa wtyczki, a nie czynności. Chyba lepiej tego nie zmieniać, albo zamienic na "Wtyczka przesyłania plików", tak jak na początku.
 #: ../lib/Plugins/FileTransfer.cpp:176
+#, fuzzy
 msgid "File Transfer: Creating a report..."
-msgstr "Przesyłanie pliku: tworzenie raportu..."
+msgstr "FileTransfer: tworzenie raportu..."
 
 #: ../lib/Plugins/FileTransfer.cpp:197 ../lib/Plugins/FileTransfer.cpp:226
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
