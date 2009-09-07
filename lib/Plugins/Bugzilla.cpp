@@ -78,6 +78,11 @@ void CReporterBugzilla::Login()
     xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("User.login", paramList));
     try
     {
+        if( (m_sLogin == "") && (m_sPassword=="") )
+        {
+            log("Empty login and password");
+            throw std::string(_("Empty login and password. Please check Bugzilla.conf"));
+        }
         rpc->call(m_pXmlrpcClient, m_pCarriageParm);
         ret =  xmlrpc_c::value_struct(rpc->getResult());
         std::stringstream ss;
@@ -87,6 +92,10 @@ void CReporterBugzilla::Login()
     catch (std::exception& e)
     {
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Login(): ") + e.what());
+    }
+    catch (std::string& s)
+    {
+        throw CABRTException(EXCEP_PLUGIN, s);
     }
 }
 
@@ -218,11 +227,6 @@ std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent
         log("Bug is already reported: %s", ss.str().c_str());
         update_client(_("Bug is already reported: ") + ss.str());
 
-        if (!CheckCCAndReporter(ss.str()) && m_bLoggedIn)
-        {
-            AddPlusOneComment(ss.str());
-            AddPlusOneCC(ss.str());
-        }
         return ss.str();
     }
     return "";
@@ -410,25 +414,26 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
 
 
     NewXMLRPCClient();
-    update_client(_("Checking for duplicates..."));
+
+    m_bLoggedIn = false;
     try
     {
-        if ((bugId = CheckUUIDInBugzilla(component, uuid)) != "")
-        {
+        update_client(_("Checking for duplicates..."));
+        bugId = CheckUUIDInBugzilla(component, uuid);
+        if ( bugId != "" ) {
+            update_client(_("Logging into bugzilla..."));
+            Login();
+            m_bLoggedIn = true;
+            update_client(_("Check CC and add coment +1..."));
+            if (!CheckCCAndReporter(bugId) && m_bLoggedIn)
+            {
+                AddPlusOneComment(bugId);
+                AddPlusOneCC(bugId);
+            }
             DeleteXMLRPCClient();
             return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
         }
-    }
-    catch (CABRTException& e)
-    {
-        DeleteXMLRPCClient();
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
-    }
-
-    m_bLoggedIn = false;
-    update_client(_("Logging into bugzilla..."));
-    try
-    {
+        update_client(_("Logging into bugzilla..."));
         Login();
         m_bLoggedIn = true;
     }
