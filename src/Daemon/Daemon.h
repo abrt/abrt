@@ -31,9 +31,13 @@ class CRPM;
 
 /* Verbosity level */
 extern int g_verbose;
+/* VERB1 log("what you sometimes want to see, even on a production box") */
 #define VERB1 if (g_verbose >= 1)
+/* VERB2 log("debug message, not going into insanely small details") */
 #define VERB2 if (g_verbose >= 2)
+/* VERB3 log("lots and lots of details") */
 #define VERB3 if (g_verbose >= 3)
+/* there is no level > 3 */
 
 /* Used for sending dbus signals */
 extern CCommLayerServer *g_pCommLayer;
