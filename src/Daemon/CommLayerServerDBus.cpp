@@ -363,6 +363,7 @@ void CCommLayerServerDBus::Crash(const std::string& progname, const std::string&
             DBUS_TYPE_STRING, &c_progname,
             DBUS_TYPE_STRING, &c_uid,
             DBUS_TYPE_INVALID);
+    VERB2 log("Sending signal Crash('%s','%s')", c_progname, c_uid);
     send_flush_and_unref(msg);
 }
 
@@ -373,28 +374,35 @@ void CCommLayerServerDBus::AnalyzeComplete(const map_crash_report_t& arg1)
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(msg, &out_iter);
     store_val(&out_iter, arg1);
+    VERB2 log("Sending signal AnalyzeComplete([%d elements])", (int)arg1.size());
     send_flush_and_unref(msg);
 }
 
 void CCommLayerServerDBus::JobDone(const char* pDest, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("JobDone");
-    /* TODO: if (!dbus_message_set_destination(msg, pDest) die_out_of_memory(); */
+    /* send unicast dbus signal */
+    if (!dbus_message_set_destination(msg, pDest))
+        die_out_of_memory();
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &pDest, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
+    VERB2 log("Sending signal JobDone('%s',%llx)", pDest, (unsigned long long)job_id);
     send_flush_and_unref(msg);
 }
 
 void CCommLayerServerDBus::JobStarted(const char* pDest, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("JobStarted");
-    /* TODO: if (!dbus_message_set_destination(msg, pDest) die_out_of_memory(); */
+    /* send unicast dbus signal */
+    if (!dbus_message_set_destination(msg, pDest))
+        die_out_of_memory();
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &pDest, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
+    VERB2 log("Sending signal JobStarted('%s',%llx)", pDest, (unsigned long long)job_id);
     send_flush_and_unref(msg);
 }
 
@@ -419,6 +427,7 @@ void CCommLayerServerDBus::Update(const std::string& pMessage, uint64_t job_id)
     send_flush_and_unref(msg);
 }
 
+/* TODO: one Warning()? */
 void CCommLayerServerDBus::Warning(const std::string& pMessage)
 {
     DBusMessage* msg = new_signal_msg("Warning");

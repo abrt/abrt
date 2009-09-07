@@ -173,33 +173,42 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
                                                         const std::string& pUID,
                                                         map_crash_report_t& pCrashReport)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database_row_t row;
-    database->Connect();
-    row = database->GetUUIDData(pUUID, pUID);
-    database->DisConnect();
-    CDebugDump dd;
+    VERB2 log("CreateCrashReport('%s','%',result)", pUUID.c_str(), pUID.c_str());
 
+    database_row_t row;
+    if (pUUID != "")
+    {
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+        database->Connect();
+        row = database->GetUUIDData(pUUID, pUID);
+        database->DisConnect();
+    }
     if (pUUID == "" || row.m_sUUID != pUUID)
     {
         warn_client("CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
         return MW_IN_DB_ERROR;
     }
 
+    CDebugDump dd;
     try
     {
         std::string analyzer;
         std::string gUUID;
 
+        VERB3 log(" LoadText(FILENAME_ANALYZER,'%s')", row.m_sDebugDumpDir.c_str());
         dd.Open(row.m_sDebugDumpDir);
         dd.LoadText(FILENAME_ANALYZER, analyzer);
         dd.Close();
 
+        VERB3 log(" CreateReport('%s')", analyzer.c_str());
         CreateReport(analyzer, row.m_sDebugDumpDir);
 
         gUUID = GetGlobalUUID(analyzer, row.m_sDebugDumpDir);
+        VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());
 
+        VERB3 log(" RunAnalyzerActions");
         RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
+        VERB3 log(" DebugDumpToCrashReport");
         DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
 
         add_crash_data_to_crash_report(pCrashReport, CD_UUID, CD_TXT, CD_ISNOTEDITABLE, gUUID);
@@ -245,7 +254,6 @@ void RunAction(const std::string& pActionDir,
         warn_client("RunAction(): " + e.what());
         update_client("Execution of '"+pPluginName+"' was not successful: " + e.what());
     }
-
 }
 
 void RunActionsAndReporters(const std::string& pDebugDumpDir)

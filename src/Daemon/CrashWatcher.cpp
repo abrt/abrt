@@ -142,6 +142,7 @@ static void *create_report(void *arg)
         pthread_mutex_lock(&g_pJobsMutex);
         g_pending_jobs[std::string(thread_data->UID)][uint64_t(thread_data->thread_id)] = crashReport;
         pthread_mutex_unlock(&g_pJobsMutex);
+
         g_pCommLayer->JobDone(thread_data->dest, uint64_t(thread_data->thread_id));
     }
     catch (CABRTException& e)
@@ -179,7 +180,7 @@ uint64_t CreateReport_t(const char* pUUID, const char* pUID, const char* pSender
         free(thread_data->dest);
         free(thread_data);
         /* The only reason this may happen is system-wide resource starvation,
-         * or ulimit is exceeded (someoune floods us with CreateReport() dbus calls?)
+         * or ulimit is exceeded (someone floods us with CreateReport() dbus calls?)
          */
         error_msg("cannot create thread");
         return 0;
