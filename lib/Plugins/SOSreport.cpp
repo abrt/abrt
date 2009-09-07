@@ -31,7 +31,6 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-
 void CActionSOSreport::CopyFile(const std::string& pSourceName, const std::string& pDestName)
 {
     std::ifstream source(pSourceName.c_str(), std::fstream::binary);
@@ -84,14 +83,61 @@ std::string CActionSOSreport::ParseFilename(const std::string& pOutput)
     return pOutput.substr(filename_start,(filename_end-filename_start)+1);
 }
 
+void CActionSOSreport::ParseArgs(const std::string& psArgs, vector_args_t& pArgs)
+{
+    unsigned int ii;
+    bool is_quote = false;
+    std::string item = "";
+    for (ii = 0; ii < psArgs.length(); ii++)
+    {
+        if (psArgs[ii] == '\"')
+        {
+            is_quote = is_quote == true ? false : true;
+        }
+        else if (psArgs[ii] == ',' && !is_quote)
+        {
+            pArgs.push_back(item);
+            item = "";
+        }
+        else
+        {
+            item += psArgs[ii];
+        }
+    }
+    if (item != "")
+    {
+        pArgs.push_back(item);
+    }
+}
+
 void CActionSOSreport::Run(const std::string& pActionDir,
                            const std::string& pArgs)
 {
-    update_client(_("Executing SOSreportAction plugin..."));
+    update_client(_("Executing SOSreport plugin..."));
 
-    const char command[] = "sosreport --batch --no-progressbar -k rpm.rpmva=off 2>&1";
+    const char command_default[] = "sosreport --batch --no-progressbar --only=anaconda --only=bootloader"
+                                            " --only=devicemapper --only=filesys --only=hardware --only=kernel"
+                                            " --only=libraries --only=memory --only=networking --only=nfsserver"
+                                            " --only=pam --only=process --only=rpm -k rpm.rpmva=off --only=ssh"
+                                            " --only=startup --only=yum 2>&1";
+    const char command_prefix[] = "sosreport --batch --no-progressbar";
+    std::string command;
 
-    FILE *fp = popen(command, "r");
+    vector_args_t args;
+    ParseArgs(pArgs, args);
+
+    if (args.size() == 0 || args[0] == "")
+    {
+        command = std::string(command_default);
+    }
+    else
+    {
+        command = std::string(command_prefix) + ' ' + args[0] + " 2>&1";
+    }
+
+    update_client(_("running sosreport: ") + command);
+    FILE *fp = popen(command.c_str(), "r");
+
     if (fp == NULL)
     {
         throw CABRTException(EXCEP_PLUGIN, std::string("CActionSOSreport::Run(): cannot execute ") + command);
@@ -100,17 +146,21 @@ void CActionSOSreport::Run(const std::string& pActionDir,
     std::ostringstream output_stream;
     __gnu_cxx::stdio_filebuf<char> command_output_buffer(fp, std::ios_base::in);
 
-    output_stream << std::string(command) << std::endl;
+    output_stream << command << std::endl;
     output_stream << &command_output_buffer;
 
     pclose(fp);
+    update_client(_("done running sosreport"));
 
     std::string output = output_stream.str();
+
     std::string sosreport_filename = ParseFilename(output);
     std::string sosreport_dd_filename = pActionDir + "/sosreport.tar.bz2";
 
     CDebugDump dd;
     dd.Open(pActionDir);
+    //Not usefull
+    //dd.SaveText("sosreportoutput", output);
     CopyFile(sosreport_filename,sosreport_dd_filename);
     dd.Close();
 }
