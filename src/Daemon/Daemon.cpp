@@ -37,7 +37,6 @@
 #endif
 #include "abrtlib.h"
 #include "ABRTException.h"
-#include "RPM.h"
 #include "CrashWatcher.h"
 #include "Daemon.h"
 
@@ -193,8 +192,7 @@ static void SetUpMW()
     set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {
-        VERB1 log("Loading GPG key '%s'", it_k->c_str());
-        g_RPM.LoadOpenGPGPublicKey(it_k->c_str());
+        LoadOpenGPGPublicKey(it_k->c_str());
     }
     set_string_t::iterator it_b = g_settings_mapBlackList.begin();
     for (; it_b != g_settings_mapBlackList.end(); it_b++)

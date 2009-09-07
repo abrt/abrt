@@ -188,22 +188,24 @@ void CPluginManager::LoadPlugin(const std::string& pName)
 
 void CPluginManager::UnLoadPlugin(const std::string& pName)
 {
-    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
+    if (abrt_plugin != m_mapABRTPlugins.end())
     {
         UnRegisterPlugin(pName);
-        delete m_mapABRTPlugins[pName];
-        m_mapABRTPlugins.erase(pName);
+        delete abrt_plugin->second;
+        m_mapABRTPlugins.erase(abrt_plugin);
         log("Plugin %s successfully unloaded", pName.c_str());
     }
 }
 
 void CPluginManager::RegisterPlugin(const std::string& pName)
 {
-    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
+    if (abrt_plugin != m_mapABRTPlugins.end())
     {
         if (m_mapPlugins.find(pName) == m_mapPlugins.end())
         {
-            CPlugin* plugin = m_mapABRTPlugins[pName]->PluginNew();
+            CPlugin* plugin = abrt_plugin->second->PluginNew();
             map_plugin_settings_t pluginSettings;
 
             LoadPluginSettings(PLUGINS_CONF_DIR"/" + pName + "."PLUGINS_CONF_EXTENSION, pluginSettings);
@@ -215,34 +217,37 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             catch (CABRTException& e)
             {
                 warn_client("Can not initialize plugin " + pName + "("
-                                        + std::string(plugin_type_str[m_mapABRTPlugins[pName]->GetType()])
+                                        + std::string(plugin_type_str[abrt_plugin->second->GetType()])
                                         + "): " + e.what());
                 UnLoadPlugin(pName);
                 return;
             }
             m_mapPlugins[pName] = plugin;
-            log("Registered plugin %s(%s)", pName.c_str(), plugin_type_str[m_mapABRTPlugins[pName]->GetType()]);
+            log("Registered plugin %s(%s)", pName.c_str(), plugin_type_str[abrt_plugin->second->GetType()]);
         }
     }
 }
 
 void CPluginManager::UnRegisterPlugin(const std::string& pName)
 {
-    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
+    if (abrt_plugin != m_mapABRTPlugins.end())
     {
-        if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+        map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+        if (plugin != m_mapPlugins.end())
         {
-            m_mapPlugins[pName]->DeInit();
-            delete m_mapPlugins[pName];
-            m_mapPlugins.erase(pName);
-            log("UnRegistered plugin %s(%s)", pName.c_str(), plugin_type_str[m_mapABRTPlugins[pName]->GetType()]);
+            plugin->second->DeInit();
+            delete plugin->second;
+            m_mapPlugins.erase(plugin);
+            log("UnRegistered plugin %s(%s)", pName.c_str(), plugin_type_str[abrt_plugin->second->GetType()]);
         }
     }
 }
 
 CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
 {
-    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+    if (plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAnalyzer():"
                                             "Analyzer plugin: '"+pName+"' is not registered.");
@@ -252,12 +257,13 @@ CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAnalyzer():"
                                             "Plugin: '"+pName+"' is not analyzer plugin.");
     }
-    return (CAnalyzer*)(m_mapPlugins[pName]);
+    return (CAnalyzer*)(plugin->second);
 }
 
 CReporter* CPluginManager::GetReporter(const std::string& pName)
 {
-    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+    if (plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetReporter():"
                                            "Reporter plugin: '"+pName+"' is not registered.");
@@ -267,12 +273,13 @@ CReporter* CPluginManager::GetReporter(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetReporter():"
                                             "Plugin: '"+pName+"' is not reporter plugin.");
     }
-    return (CReporter*)(m_mapPlugins[pName]);
+    return (CReporter*)(plugin->second);
 }
 
 CAction* CPluginManager::GetAction(const std::string& pName)
 {
-    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+    if (plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAction():"
                                            "Action plugin: '"+pName+"' is not registered.");
@@ -282,12 +289,13 @@ CAction* CPluginManager::GetAction(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetAction():"
                                             "Plugin: '"+pName+"' is not action plugin.");
     }
-    return (CAction*)(m_mapPlugins[pName]);
+    return (CAction*)(plugin->second);
 }
 
 CDatabase* CPluginManager::GetDatabase(const std::string& pName)
 {
-    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+    if (plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetDatabase():"
                                            "Database plugin: '"+pName+"' is not registered.");
@@ -297,12 +305,13 @@ CDatabase* CPluginManager::GetDatabase(const std::string& pName)
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetDatabase():"
                                             "Plugin: '"+pName+"' is not database plugin.");
     }
-    return (CDatabase*)(m_mapPlugins[pName]);
+    return (CDatabase*)(plugin->second);
 }
 
 plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
 {
-    if (m_mapPlugins.find(pName) == m_mapPlugins.end())
+    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+    if (plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "CPluginManager::GetPluginType():"
                                            "Plugin: '"+pName+"' is not registered.");
@@ -336,13 +345,15 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                                        const std::string& pUID,
                                        const map_plugin_settings_t& pSettings)
 {
-    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
+    if (abrt_plugin != m_mapABRTPlugins.end())
     {
-        if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+        map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+        if (plugin != m_mapPlugins.end())
         {
-            m_mapPlugins[pName]->SetSettings(pSettings);
+            plugin->second->SetSettings(pSettings);
 
-            if (m_mapABRTPlugins[pName]->GetType() == REPORTER)
+            if (abrt_plugin->second->GetType() == REPORTER)
             {
                 std::string home = get_home_dir(atoi(pUID.c_str()));
                 if (home != "")
@@ -395,13 +406,15 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName
                                                         const std::string& pUID)
 {
     map_plugin_settings_t ret;
-    if (m_mapABRTPlugins.find(pName) != m_mapABRTPlugins.end())
+    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
+    if (abrt_plugin != m_mapABRTPlugins.end())
     {
-        if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+        map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+        if (plugin != m_mapPlugins.end())
         {
-            ret = m_mapPlugins[pName]->GetSettings();
+            ret = plugin->second->GetSettings();
 
-            if (m_mapABRTPlugins[pName]->GetType() == REPORTER)
+            if (abrt_plugin->second->GetType() == REPORTER)
             {
                 std::string home = get_home_dir(atoi(pUID.c_str()));
                 if (home != "")

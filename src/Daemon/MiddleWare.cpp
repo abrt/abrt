@@ -36,14 +36,14 @@
  */
 CPluginManager* g_pPluginManager;
 /**
- * An instance of CRPM used for package checking.
- * @see RPM.h
- */
-CRPM g_RPM;
-/**
  * A set of blacklisted packages.
  */
 set_string_t g_setBlackList;
+/**
+ * An instance of CRPM used for package checking.
+ * @see RPM.h
+ */
+static CRPM s_RPM;
 
 
 /**
@@ -450,6 +450,12 @@ static bool IsDebugDumpSaved(const std::string& pUID,
     return found;
 }
 
+void LoadOpenGPGPublicKey(const char* key)
+{
+    VERB1 log("Loading GPG key '%s'", key);
+    s_RPM.LoadOpenGPGPublicKey(key);
+}
+
 /**
  * Get a package name from executable name and save
  * package description to particular debugdump directory of a crash.
@@ -484,7 +490,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
         }
         if (g_settings_bOpenGPGCheck)
         {
-            if (!g_RPM.CheckFingerprint(packageName))
+            if (!s_RPM.CheckFingerprint(packageName))
             {
                 error_msg("package isn't signed with proper key");
                 return MW_GPG_ERROR;
