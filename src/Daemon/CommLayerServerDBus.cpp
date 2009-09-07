@@ -367,17 +367,6 @@ void CCommLayerServerDBus::Crash(const std::string& progname, const std::string&
     send_flush_and_unref(msg);
 }
 
-/* Notify the clients that creating a report has finished */
-void CCommLayerServerDBus::AnalyzeComplete(const map_crash_report_t& arg1)
-{
-    DBusMessage* msg = new_signal_msg("AnalyzeComplete");
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(msg, &out_iter);
-    store_val(&out_iter, arg1);
-    VERB2 log("Sending signal AnalyzeComplete([%d elements])", (int)arg1.size());
-    send_flush_and_unref(msg);
-}
-
 void CCommLayerServerDBus::JobDone(const char* pDest, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("JobDone");

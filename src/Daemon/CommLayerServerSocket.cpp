@@ -246,11 +246,6 @@ void CCommLayerServerSocket::Crash(const std::string& arg1)
     //Send("(CRASH)New Crash Detected: " + arg1);
 }
 
-void CCommLayerServerSocket::AnalyzeComplete(const map_crash_report_t& arg1)
-{
-    //Send("(ANALYZE_COMPLETE)Analyze Complete.");
-}
-
 void CCommLayerServerSocket::Error(const std::string& arg1)
 {
     //Send("(ERROR)Error: " + arg1);
