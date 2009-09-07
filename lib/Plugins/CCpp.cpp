@@ -42,7 +42,7 @@
 static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::string& pOutput);
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
-    m_bMemoryMap(false)
+    m_bMemoryMap(false), m_bInstallDebuginfo(true)
 {}
 
 static std::string CreateHash(const std::string& pInput)
@@ -483,7 +483,16 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     dd.LoadText(FILENAME_PACKAGE, package);
     dd.Close();
 
-    InstallDebugInfos(package);
+    map_plugin_settings_t settings = GetSettings();
+    if( settings["InstallDebuginfo"] == "yes" )
+    {
+        InstallDebugInfos(package);
+    }
+    else {
+        char buffer[1024];
+        snprintf(buffer,1024, _("Skip debuginfo installation for package %s"), package.c_str());
+        warn_client(std::string(buffer));
+    }
 
     GetBacktrace(pDebugDumpDir, backtrace);
 
@@ -553,6 +562,10 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     {
         m_sDebugInfo = pSettings.find("DebugInfo")->second;
     }
+    if (pSettings.find("InstallDebuginfo") != pSettings.end())
+    {
+        m_bInstallDebuginfo = pSettings.find("InstallDebuginfo")->second == "yes";
+    }
 }
 
 map_plugin_settings_t CAnalyzerCCpp::GetSettings()
@@ -561,6 +574,7 @@ map_plugin_settings_t CAnalyzerCCpp::GetSettings()
 
     ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
     ret["DebugInfo"] = m_sDebugInfo;
+    ret["InstallDebuginfo"] = m_bInstallDebuginfo ? "yes" : "no";
 
     return ret;
 }
