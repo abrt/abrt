@@ -51,13 +51,13 @@
  * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - CreateReport(DIR): starts creating a report for given /var/cache/abrt/DIR.
+ * - CreateReport(UUID): starts creating a report for /var/cache/abrt/DIR with this UUID
  *      Returns job id (uint64)
+ * - GetJobResult(job_id): returns map_crash_report_t (map_vector_string_t)
  * - Report(map_crash_report_t (map_vector_string_t)):
  *      "Please report this crash": calls Report() of all registered reporter plugins
  *      Returns report_status_t (map_vector_string_t) - the status of each call
- * - DeleteDebugDump(DIR): delete /var/cache/abrt/DIR. Returns bool
- * - GetJobResult(job_id): returns map_crash_report_t (map_vector_string_t)
+ * - DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool
  * - GetPluginsInfo(): returns vector_map_string_t
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
@@ -97,12 +97,12 @@ static uint8_t s_sig_caught;
 static GMainLoop* g_pMainloop;
 
 int g_verbose;
-CCommLayerServer *g_pCommLayer;
+CCommLayerServer* g_pCommLayer;
 /*
  * Map to cache the results from CreateReport_t
- * <UID, <UUID, result>>
+ * <UID, <job_id, result>>
  */
-std::map<const std::string, std::map <int, map_crash_report_t > > g_pending_jobs;
+std::map<const std::string, std::map<uint64_t, map_crash_report_t> > g_pending_jobs;
 /* mutex to protect g_pending_jobs */
 pthread_mutex_t g_pJobsMutex;
 
