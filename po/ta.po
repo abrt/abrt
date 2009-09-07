@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-01 19:44+0000\n"
-"PO-Revision-Date: 2009-09-02 02:50+0530\n"
+"POT-Creation-Date: 2009-09-07 02:50+0000\n"
+"PO-Revision-Date: 2009-09-07 12:14+0530\n"
 "Last-Translator: I. Felix <ifelix@redhat.com>\n"
 "Language-Team: Tamil <fedora-trans-ta@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
+"\n"
 "\n"
 "\n"
 
@@ -206,12 +207,12 @@ msgstr "அறிக்கையை பெறும் போது பிழை
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data that might contain some sensitive "
-"informations!\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive "
+"information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>எச்சரிக்கை</b>, நீங்கள் அனுப்ப இருக்கும் தரவு சில அறிவார்ந்த தகவல்ளை கொண்டிருக்கும்"
-"!\n"
+"<b>எச்சரிக்கை</b>, நீங்கள் அனுப்ப இருக்கும் தரவு சில உணர்வார்ந்த தகவல்களை "
+"கொண்டிருக்கும்.\n"
 "நீங்கள் <b>%s</b>ஐ அனுப்ப வேண்டும்?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
@@ -288,33 +289,32 @@ msgstr ""
 msgid "unknown response from settings dialog"
 msgstr "அமைவுகள் உரையாடலிலிருந்து தெரியாத பதில்"
 
-#. applet->AddEvent(uid, std::string(progname));
-#: ../src/Applet/Applet.cpp:49
+#: ../src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
 msgstr "தொகுப்பு %s இல் ஒரு சேதம் கண்டறியப்பட்டது!"
 
 #. applet is already running
-#: ../src/Applet/Applet.cpp:80
+#: ../src/Applet/Applet.cpp:82
 msgid "Applet is already running."
 msgstr "ஆப்லெட் ஏற்கனவே இயங்குகிறது."
 
-#: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
-#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/Applet.cpp:96 ../src/Applet/Applet.cpp:97
+#: ../src/Applet/CCApplet.cpp:201
 msgid "ABRT service is not running"
 msgstr "ABRT சேவை இயங்கவில்லை"
 
-#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
+#: ../src/Applet/CCApplet.cpp:135 ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr "விடுபட்ட நிகழ்வுகள்: %i"
 
-#: ../src/Applet/CCApplet.cpp:102
+#: ../src/Applet/CCApplet.cpp:161
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr "விளக்கத்திலிருதநு மெனுவை உருவாக்க முடியவில்லை, பாப்அப் இல்லை!\n"
 
-#: ../src/Applet/CCApplet.cpp:125
+#: ../src/Applet/CCApplet.cpp:190
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
@@ -322,15 +322,117 @@ msgstr ""
 "இது முன்னிருப்பு கையாளி, உங்களுக்கு உள்ளதை ConnectCrashHandlerஉடன் பதிவு செய்ய "
 "வேண்டும்"
 
-#: ../src/Applet/CCApplet.cpp:139
+#: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
 msgstr "ABRT சேவை துவக்கப்பட்டது"
 
-#: ../src/Applet/CCApplet.cpp:160
+#: ../src/Applet/CCApplet.cpp:231
+msgid "Out of memory"
+msgstr "நினைவகம் போதவில்லை"
+
+#: ../src/Applet/CCApplet.cpp:247
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
-#: ../src/Applet/CCApplet.cpp:166
-msgid "Out of memory"
-msgstr "நினைவகம் போதவில்லை"
+#: ../lib/Plugins/Bugzilla.cpp:219
+msgid "Bug is already reported: "
+msgstr "பிழை ஏற்கனவே அறிக்கையிடப்பட்டது:"
+
+#: ../lib/Plugins/Bugzilla.cpp:279
+#, c-format
+msgid "Binary file %s will not be reported."
+msgstr "பைனரி கோப்பு %s அறிக்கையிடப்படாது."
+
+#: ../lib/Plugins/Bugzilla.cpp:349
+msgid "New bug id: "
+msgstr "புதிய பிழை குறியீடு: "
+
+#: ../lib/Plugins/Bugzilla.cpp:413
+msgid "Checking for duplicates..."
+msgstr "போலிகளுக்கு சரிபார்க்கிறது..."
+
+#: ../lib/Plugins/Bugzilla.cpp:429
+msgid "Logging into bugzilla..."
+msgstr "bugzillaவில் உள்நுழைகிறது..."
+
+#: ../lib/Plugins/Bugzilla.cpp:443
+msgid "Creating new bug..."
+msgstr "புதிய பிழையை உருவாக்குகிறது..."
+
+#: ../lib/Plugins/Bugzilla.cpp:448
+msgid "Logging out..."
+msgstr "வெளியேறுகிறது..."
+
+#: ../lib/Plugins/Kerneloops.cpp:38
+msgid "Getting local/global universal unique identification..."
+msgstr "உள்ளமை/முழுமையான உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
+
+#: ../lib/Plugins/CCpp.cpp:82
+msgid "Searching for debug-info packages..."
+msgstr "debug-info தொகுப்புகளுக்கு தேடுகிறது..."
+
+#: ../lib/Plugins/CCpp.cpp:120
+msgid "Downloading and installing debug-info packages..."
+msgstr "debug-info தொகுப்புகளை பதிவிறக்கி நிறுவுகிறது..."
+
+#: ../lib/Plugins/CCpp.cpp:180
+msgid "Getting backtrace..."
+msgstr "backtraceஐ பெறுகிறது..."
+
+#: ../lib/Plugins/CCpp.cpp:429
+msgid "Getting local universal unique identification..."
+msgstr "உள்ளமை உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
+
+#: ../lib/Plugins/CCpp.cpp:453
+msgid "Getting global universal unique identification..."
+msgstr "முழுமையான உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
+
+#: ../lib/Plugins/CCpp.cpp:471
+msgid "Starting report creation..."
+msgstr "அறிக்கை உருவாக்கத்தை துவக்குகிறது..."
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:101
+msgid "Creating and submitting a report..."
+msgstr "ஒரு அறிக்கையை உருவாக்கி சமர்ப்பிக்கிறது..."
+
+#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr "ஒரு அறிக்கையை உருவாக்குகிறது..."
+
+#: ../lib/Plugins/RunApp.cpp:62
+msgid "Executing RunApp plugin..."
+msgstr "RunApp கூடுதல் இணைப்பை இயக்குகிறது..."
+
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/FileTransfer.cpp:247
+msgid "FileTransfer: URL not specified"
+msgstr "கோப்பு இடமாற்றம்: URL குறிப்பிடப்படவில்லை"
+
+#: ../lib/Plugins/FileTransfer.cpp:69
+#, c-format
+msgid "Sending archive %s via %s"
+msgstr "காப்பு %sஐ %sவழியாக அனுப்புகிறது"
+
+#: ../lib/Plugins/FileTransfer.cpp:121
+msgid "Creating an archive..."
+msgstr "ஒரு காப்பினை உருவாக்குகிறது..."
+
+#: ../lib/Plugins/FileTransfer.cpp:176
+msgid "File Transfer: Creating a report..."
+msgstr "கோப்பு இடமாற்றம்: ஒரு அறிக்கை உருவாக்குகிறது..."
+
+#: ../lib/Plugins/FileTransfer.cpp:197 ../lib/Plugins/FileTransfer.cpp:226
+msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+msgstr "CFileTransfer::Run(): ஒரு காப்பினை உருவாக்க மற்றும் அனுப்ப முடியவில்லை: "
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
+msgid "Creating kernel oops crash reports..."
+msgstr "கர்னல் oops க்ரஷ்களை அறிக்கைகளை உருவாக்குகிறது..."
+
+#: ../lib/Plugins/Mailx.cpp:110
+msgid "Sending an email..."
+msgstr "ஒரு மின்னஞ்சல் அனுப்புகிறது..."
+
+#: ../lib/Plugins/SOSreport.cpp:90
+msgid "Executing SOSreportAction plugin..."
+msgstr "SOSreportAction கூடுதல் இணைப்பை இயக்குகிறது..."
 
