@@ -116,6 +116,11 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID)
 {
     map_crash_info_t crashReport;
 
+    /* FIXME: starting from here, any shared data must be protected with a mutex.
+     * For example, CreateCrashReport does:
+     * g_pPluginManager->GetDatabase(g_settings_sDatabase);
+     * which is unsafe wrt concurrent updates to g_pPluginManager state.
+     */
     mw_result_t res = CreateCrashReport(pUUID, pUID, crashReport);
     switch (res)
     {
@@ -152,7 +157,7 @@ static void* create_report(void* arg)
 
     try
     {
-	/* "GetJobResult" is a bit of a misnomer */
+        /* "GetJobResult" is a bit of a misnomer */
         log("Creating report...");
         map_crash_info_t crashReport = GetJobResult(thread_data->UUID, thread_data->UID);
         g_pCommLayer->JobDone(thread_data->dest, thread_data->UUID);
@@ -213,8 +218,7 @@ bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
 {
     try
     {
-        std::string debugDumpDir;
-        debugDumpDir = DeleteCrashInfo(pUUID, pUID);
+        std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
         DeleteDebugDumpDir(debugDumpDir);
     }
     catch (CABRTException& e)

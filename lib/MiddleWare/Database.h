@@ -111,7 +111,7 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A vector of matched rows.
          */
-        virtual const vector_database_rows_t GetUIDData(const std::string& pUID) = 0;
+        virtual vector_database_rows_t GetUIDData(const std::string& pUID) = 0;
         /**
          * A method, which returns one row accordind to UUID of a crash and
          * UID of an user. If there are no row, empty row is returned.
@@ -119,7 +119,7 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A matched row.
          */
-        virtual const database_row_t GetUUIDData(const std::string& pUUID,
+        virtual database_row_t GetUUIDData(const std::string& pUUID,
                                                  const std::string& pUID) = 0;
 };
 
