@@ -455,7 +455,7 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
     if (dbus_error_is_set(&err))
     {
         dbus_error_free(&err);
-        error_msg("can't determine remore uid, assuming 0");
+        error_msg("Can't determine remote uid, assuming 0");
         return 0;
     }
     return uid;
