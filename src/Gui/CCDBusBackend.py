@@ -149,6 +149,7 @@ class DBusManager(gobject.GObject):
             # new crash notify
             self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
             # BT extracting complete
+#TODO: remove, abrtd does not emit AnalyzeComplete
             self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
             # Catch Errors
             self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
@@ -173,7 +174,7 @@ class DBusManager(gobject.GObject):
 
     def jobdone_cb(self, dest, uuid):
         if self.uniq_name == dest:
-            print "Our job: %s is done." % uuid
+            print "Our job for UUID %s is done." % uuid
             dump = self.cc.GetJobResult(uuid)
             if dump:
                 self.emit("analyze-complete", dump)

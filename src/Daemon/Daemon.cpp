@@ -53,7 +53,7 @@
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
  * - CreateReport(UUID): starts creating a report for /var/cache/abrt/DIR with this UUID
  *      Returns job id (uint64)
- * - GetJobResult(job_id): returns map_crash_report_t (map_vector_string_t)
+ * - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
  * - Report(map_crash_report_t (map_vector_string_t)):
  *      "Please report this crash": calls Report() of all registered reporter plugins
  *      Returns report_status_t (map_vector_string_t) - the status of each call
@@ -98,12 +98,7 @@ static GMainLoop* g_pMainloop;
 
 int g_verbose;
 CCommLayerServer* g_pCommLayer;
-/*
- * Map to cache the results from CreateReport_t
- * <UID, <job_id, result>>
- */
-std::map<const std::string, std::map<uint64_t, map_crash_report_t> > g_pending_jobs;
-/* mutex to protect g_pending_jobs */
+
 pthread_mutex_t g_pJobsMutex;
 
 

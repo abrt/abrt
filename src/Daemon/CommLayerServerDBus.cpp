@@ -367,7 +367,22 @@ void CCommLayerServerDBus::Crash(const std::string& progname, const std::string&
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::JobDone(const char* pDest, uint64_t job_id)
+void CCommLayerServerDBus::JobStarted(const char* pDest)
+{
+    DBusMessage* msg = new_signal_msg("JobStarted");
+    /* send unicast dbus signal */
+    if (!dbus_message_set_destination(msg, pDest))
+        die_out_of_memory();
+    uint64_t nJobID = uint64_t(pthread_self());
+    dbus_message_append_args(msg,
+            DBUS_TYPE_STRING, &pDest, /* TODO: redundant parameter, remove from API */
+            DBUS_TYPE_UINT64, &nJobID, /* TODO: redundant parameter, remove from API */
+            DBUS_TYPE_INVALID);
+    VERB2 log("Sending signal JobStarted('%s',%llx)", pDest, (unsigned long long)nJobID);
+    send_flush_and_unref(msg);
+}
+
+void CCommLayerServerDBus::JobDone(const char* pDest, const char* pUUID)
 {
     DBusMessage* msg = new_signal_msg("JobDone");
     /* send unicast dbus signal */
@@ -375,23 +390,9 @@ void CCommLayerServerDBus::JobDone(const char* pDest, uint64_t job_id)
         die_out_of_memory();
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &pDest, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_UINT64, &job_id,
+            DBUS_TYPE_STRING, &pUUID, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal JobDone('%s',%llx)", pDest, (unsigned long long)job_id);
-    send_flush_and_unref(msg);
-}
-
-void CCommLayerServerDBus::JobStarted(const char* pDest, uint64_t job_id)
-{
-    DBusMessage* msg = new_signal_msg("JobStarted");
-    /* send unicast dbus signal */
-    if (!dbus_message_set_destination(msg, pDest))
-        die_out_of_memory();
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &pDest, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_UINT64, &job_id,
-            DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal JobStarted('%s',%llx)", pDest, (unsigned long long)job_id);
+    VERB2 log("Sending signal JobDone('%s','%s')", pDest, pUUID);
     send_flush_and_unref(msg);
 }
 
@@ -493,12 +494,42 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 
     const char* sender;
     long unix_uid = get_remote_uid(call, &sender);
-    VERB1 log("got %s('%s') call from uid %ld", "CreateReport", pUUID, unix_uid);
-    uint64_t argout1 = CreateReport_t(pUUID, to_string(unix_uid).c_str(), sender);
+    VERB1 log("got %s('%s') call from sender '%s' uid %ld", "CreateReport", pUUID, sender, unix_uid);
+    if (CreateReportThread(pUUID, to_string(unix_uid).c_str(), sender) != 0)
+        return -1; /* can't create thread (err msg is already logged) */
 
     dbus_message_append_args(reply,
-                DBUS_TYPE_UINT64, &argout1,
+                DBUS_TYPE_STRING, &pUUID, /* redundant, eliminate from API */
                 DBUS_TYPE_INVALID);
+
+    send_flush_and_unref(reply);
+    return 0;
+}
+
+static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
+{
+    const char* pUUID;
+    DBusMessageIter in_iter;
+    if (!dbus_message_iter_init(call, &in_iter))
+    {
+        error_msg("dbus call %s: no parameters", "GetJobResult");
+        return -1;
+    }
+    int r = load_val(&in_iter, pUUID);
+    if (r != LAST_FIELD)
+    {
+        if (r == MORE_FIELDS)
+            error_msg("dbus call %s: extra parameters", "GetJobResult");
+        return -1;
+    }
+
+    long unix_uid = get_remote_uid(call);
+    VERB1 log("got %s('%s') call from uid %ld", "GetJobResult", pUUID, unix_uid);
+    map_crash_report_t report = GetJobResult(pUUID, to_string(unix_uid).c_str());
+
+    DBusMessageIter out_iter;
+    dbus_message_iter_init_append(reply, &out_iter);
+    store_val(&out_iter, report);
 
     send_flush_and_unref(reply);
     return 0;
@@ -570,35 +601,6 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     dbus_message_append_args(reply,
                 DBUS_TYPE_BOOLEAN, &argout1,
                 DBUS_TYPE_INVALID);
-
-    send_flush_and_unref(reply);
-    return 0;
-}
-
-static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
-{
-    uint64_t job_id;
-    DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "GetJobResult");
-        return -1;
-    }
-    int r = load_val(&in_iter, job_id);
-    if (r != LAST_FIELD)
-    {
-        if (r == MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "GetJobResult");
-        return -1;
-    }
-
-    long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s(%llx) call from uid %ld", "GetJobResult", (long long)job_id, unix_uid);
-    map_crash_report_t report = GetJobResult(job_id, to_string(unix_uid));
-
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, report);
 
     send_flush_and_unref(reply);
     return 0;

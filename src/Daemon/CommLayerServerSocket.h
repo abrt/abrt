@@ -31,6 +31,7 @@ class CCommLayerServerSocket : public CCommLayerServer
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
 
         virtual void Crash(const std::string& arg1);
+        virtual void JobStarted(const char* pDest) {};
+
         virtual void Error(const std::string& arg1);
-        virtual void JobStarted(const char* pDest, uint64_t pJobID) {};
 };

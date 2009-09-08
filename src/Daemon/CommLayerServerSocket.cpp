@@ -148,7 +148,7 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     {
 //        std::string UUID = pMessage.substr(sizeof(MESSAGE_CREATE_REPORT) - 1);
 //        map_crash_report_t crashReport = CreateReport(UUID, UID);
-//use CreateReport_t instead of CreateReport?
+//use CreateReportThread instead of CreateReport?
 //        std::string message = MESSAGE_CREATE_REPORT + crash_report_to_string(crashReport);
 //        Send(message, pSource);
     }
@@ -220,7 +220,7 @@ vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pS
     return crashInfos;
 }
 
-//reimplement as CreateReport_t(...)?
+//reimplement as CreateReportThread(...)?
 //map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID,const std::string &pSender)
 //{
 //    map_crash_report_t crashReport;
