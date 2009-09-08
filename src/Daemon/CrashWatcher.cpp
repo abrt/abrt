@@ -168,7 +168,7 @@ static void* create_report(void* arg)
     {
         if (e.type() == EXCEP_FATAL)
         {
-	    set_client_name(NULL);
+            set_client_name(NULL);
             /* free strduped strings */
             free(thread_data->UUID);
             free(thread_data->UID);
