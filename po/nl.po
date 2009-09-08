@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-03 14:38+0000\n"
-"PO-Revision-Date: 2009-09-03 20:55+0200\n"
+"POT-Creation-Date: 2009-09-07 14:45+0000\n"
+"PO-Revision-Date: 2009-09-07 18:00+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -299,22 +299,22 @@ msgid "Applet is already running."
 msgstr "Applet draait al."
 
 #: ../src/Applet/Applet.cpp:96 ../src/Applet/Applet.cpp:97
-#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/CCApplet.cpp:201
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
-#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:262
+#: ../src/Applet/CCApplet.cpp:135 ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr "Gebeurtenissen in behandeling: %i"
 
-#: ../src/Applet/CCApplet.cpp:102
+#: ../src/Applet/CCApplet.cpp:161
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr ""
 "Kan geen menu maken van de beschrijving, pop-up zal niet beschikbaar zijn!\n"
 
-#: ../src/Applet/CCApplet.cpp:125
+#: ../src/Applet/CCApplet.cpp:190
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
@@ -322,44 +322,52 @@ msgstr ""
 "Dit is de standaard afhandeling, je moet je eigen registreren bij "
 "ConnectCrashHandler"
 
-#: ../src/Applet/CCApplet.cpp:139
+#: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
 msgstr "ABRT service is gestart"
 
-#: ../src/Applet/CCApplet.cpp:165
+#: ../src/Applet/CCApplet.cpp:231
 msgid "Out of memory"
 msgstr "Geen geheugen beschikbaar"
 
-#: ../src/Applet/CCApplet.cpp:180
+#: ../src/Applet/CCApplet.cpp:247
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../lib/Plugins/Bugzilla.cpp:219
+#: ../lib/Plugins/Bugzilla.cpp:84
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:228
 msgid "Bug is already reported: "
 msgstr "Bug is al aangemeld: "
 
-#: ../lib/Plugins/Bugzilla.cpp:279
+#: ../lib/Plugins/Bugzilla.cpp:283
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "Binair bestand %s wordt niet gerapporteerd."
 
-#: ../lib/Plugins/Bugzilla.cpp:349
+#: ../lib/Plugins/Bugzilla.cpp:353
 msgid "New bug id: "
 msgstr "Nieuwe bug id: "
 
-#: ../lib/Plugins/Bugzilla.cpp:413
+#: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:429
+#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:443
+#: ../lib/Plugins/Bugzilla.cpp:427
+msgid "Check CC and add coment +1..."
+msgstr "Controleer CC en voeg commentaar toe +1..."
+
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
@@ -390,6 +398,11 @@ msgstr "Verkrijgen van golbale universele unieke identificatie..."
 #: ../lib/Plugins/CCpp.cpp:471
 msgid "Starting report creation..."
 msgstr "Beginnen met rapport aanmaken..."
+
+#: ../lib/Plugins/CCpp.cpp:493
+#, c-format
+msgid "Skip debuginfo installation for package %s"
+msgstr "Sla debuginfo installatie over voor pakket %s"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."

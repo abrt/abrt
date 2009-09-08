@@ -347,7 +347,7 @@ static DBusMessage* new_signal_msg(const char* member)
 static void send_flush_and_unref(DBusMessage* msg)
 {
     if (!dbus_connection_send(s_pConn, msg, NULL /* &serial */))
-        error_msg_and_die("Error sending DBus signal");
+        error_msg_and_die("Error sending DBus message");
     dbus_connection_flush(s_pConn);
     VERB3 log("DBus message sent");
     dbus_message_unref(msg);
@@ -363,38 +363,35 @@ void CCommLayerServerDBus::Crash(const std::string& progname, const std::string&
             DBUS_TYPE_STRING, &c_progname,
             DBUS_TYPE_STRING, &c_uid,
             DBUS_TYPE_INVALID);
+    VERB2 log("Sending signal Crash('%s','%s')", c_progname, c_uid);
     send_flush_and_unref(msg);
 }
 
-/* Notify the clients that creating a report has finished */
-void CCommLayerServerDBus::AnalyzeComplete(const map_crash_report_t& arg1)
-{
-    DBusMessage* msg = new_signal_msg("AnalyzeComplete");
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(msg, &out_iter);
-    store_val(&out_iter, arg1);
-    send_flush_and_unref(msg);
-}
-
-void CCommLayerServerDBus::JobDone(const std::string &pDest, uint64_t job_id)
+void CCommLayerServerDBus::JobDone(const char* pDest, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("JobDone");
-    const char* c_dest = pDest.c_str();
+    /* send unicast dbus signal */
+    if (!dbus_message_set_destination(msg, pDest))
+        die_out_of_memory();
     dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &c_dest,
+            DBUS_TYPE_STRING, &pDest, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
+    VERB2 log("Sending signal JobDone('%s',%llx)", pDest, (unsigned long long)job_id);
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::JobStarted(const std::string &pDest, uint64_t job_id)
+void CCommLayerServerDBus::JobStarted(const char* pDest, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("JobStarted");
-    const char* c_dest = pDest.c_str();
+    /* send unicast dbus signal */
+    if (!dbus_message_set_destination(msg, pDest))
+        die_out_of_memory();
     dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &c_dest,
+            DBUS_TYPE_STRING, &pDest, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_UINT64, &job_id,
             DBUS_TYPE_INVALID);
+    VERB2 log("Sending signal JobStarted('%s',%llx)", pDest, (unsigned long long)job_id);
     send_flush_and_unref(msg);
 }
 
@@ -419,6 +416,7 @@ void CCommLayerServerDBus::Update(const std::string& pMessage, uint64_t job_id)
     send_flush_and_unref(msg);
 }
 
+/* TODO: one Warning()? */
 void CCommLayerServerDBus::Warning(const std::string& pMessage)
 {
     DBusMessage* msg = new_signal_msg("Warning");
@@ -445,11 +443,13 @@ void CCommLayerServerDBus::Warning(const std::string& pMessage, uint64_t job_id)
  * DBus call handlers
  */
 
-static long get_remote_uid(DBusMessage* call)
+static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
 {
     DBusError err;
     dbus_error_init(&err);
     const char* sender = dbus_message_get_sender(call);
+    if (ppSender)
+        *ppSender = sender;
     long uid = dbus_bus_get_unix_user(s_pConn, sender, &err);
     if (dbus_error_is_set(&err))
     {
@@ -476,14 +476,14 @@ static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 
 static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 {
-    const char* argin1;
+    const char* pUUID;
     DBusMessageIter in_iter;
     if (!dbus_message_iter_init(call, &in_iter))
     {
         error_msg("dbus call %s: no parameters", "CreateReport");
         return -1;
     }
-    int r = load_val(&in_iter, argin1);
+    int r = load_val(&in_iter, pUUID);
     if (r != LAST_FIELD)
     {
         if (r == MORE_FIELDS)
@@ -491,10 +491,10 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s('%s') call from uid %ld", "CreateReport", argin1, unix_uid);
-//FIXME: duplicate dbus_message_get_sender in get_remote_uid
-    uint64_t argout1 = CreateReport_t(argin1, to_string(unix_uid), dbus_message_get_sender(call));
+    const char* sender;
+    long unix_uid = get_remote_uid(call, &sender);
+    VERB1 log("got %s('%s') call from uid %ld", "CreateReport", pUUID, unix_uid);
+    uint64_t argout1 = CreateReport_t(pUUID, to_string(unix_uid).c_str(), sender);
 
     dbus_message_append_args(reply,
                 DBUS_TYPE_UINT64, &argout1,

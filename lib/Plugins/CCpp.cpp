@@ -428,22 +428,24 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
     update_client(_("Getting local universal unique identification..."));
 
-    CDebugDump dd;
     std::string UID;
     std::string executable;
     std::string package;
     std::string buildIdPC;
     std::string independentBuildIdPC;
-    std::string core = "--core="+ pDebugDumpDir + "/" +FILENAME_COREDUMP;
+    std::string core = "--core=" + pDebugDumpDir + "/"FILENAME_COREDUMP;
     char* command = (char*)"eu-unstrip";
     char* args[4] = { (char*)"eu-unstrip", NULL, (char*)"-n", NULL };
     args[1] = (char*)core.c_str();
+
+    CDebugDump dd;
     dd.Open(pDebugDumpDir);
     dd.LoadText(FILENAME_UID, UID);
     dd.LoadText(FILENAME_EXECUTABLE, executable);
     dd.LoadText(FILENAME_PACKAGE, package);
     ExecVP(command, args, atoi(UID.c_str()), buildIdPC);
     dd.Close();
+
     GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
     return CreateHash(package + executable + independentBuildIdPC);
 }
@@ -484,14 +486,13 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     dd.Close();
 
     map_plugin_settings_t settings = GetSettings();
-    if( settings["InstallDebuginfo"] == "yes" )
+    if (settings["InstallDebuginfo"] == "yes")
     {
         InstallDebugInfos(package);
     }
-    else {
-        char buffer[1024];
-        snprintf(buffer,1024, _("Skip debuginfo installation for package %s"), package.c_str());
-        warn_client(std::string(buffer));
+    else
+    {
+        warn_client(ssprintf(_("Skip debuginfo installation for package %s"), package.c_str()));
     }
 
     GetBacktrace(pDebugDumpDir, backtrace);
@@ -554,17 +555,21 @@ void CAnalyzerCCpp::DeInit()
 
 void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("MemoryMap") != pSettings.end())
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it = pSettings.find("MemoryMap");
+    if (it != end)
     {
-        m_bMemoryMap = pSettings.find("MemoryMap")->second == "yes";
+        m_bMemoryMap = it->second == "yes";
     }
-    if (pSettings.find("DebugInfo") != pSettings.end())
+    it = pSettings.find("DebugInfo");
+    if (it != end)
     {
-        m_sDebugInfo = pSettings.find("DebugInfo")->second;
+        m_sDebugInfo = it->second;
     }
-    if (pSettings.find("InstallDebuginfo") != pSettings.end())
+    it = pSettings.find("InstallDebuginfo");
+    if (it != end)
     {
-        m_bInstallDebuginfo = pSettings.find("InstallDebuginfo")->second == "yes";
+        m_bInstallDebuginfo = it->second == "yes";
     }
 }
 

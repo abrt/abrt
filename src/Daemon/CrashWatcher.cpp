@@ -106,14 +106,14 @@ typedef struct thread_data_t {
     pthread_t thread_id;
     char* UUID;
     char* UID;
-    char *dest;
+    char* dest;
 } thread_data_t;
 static void *create_report(void *arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
     map_crash_info_t crashReport;
 
-    g_pCommLayer->JobStarted(thread_data->dest, thread_data->thread_id);
+    g_pCommLayer->JobStarted(thread_data->dest, uint64_t(thread_data->thread_id));
 
     log("Creating report...");
     try
@@ -133,19 +133,17 @@ static void *create_report(void *arg)
             case MW_CORRUPTED:
             case MW_FILE_ERROR:
             default:
-                {
-                    std::string debugDumpDir;
-                    warn_client(std::string("Corrupted crash with UUID ") + thread_data->UUID + ", deleting");
-                    debugDumpDir = DeleteCrashInfo(thread_data->UUID, thread_data->UID);
-                    DeleteDebugDumpDir(debugDumpDir);
-                }
+                warn_client(std::string("Corrupted crash with UUID ") + thread_data->UUID + ", deleting");
+                std::string debugDumpDir = DeleteCrashInfo(thread_data->UUID, thread_data->UID);
+                DeleteDebugDumpDir(debugDumpDir);
                 break;
         }
         /* only one thread can write */
         pthread_mutex_lock(&g_pJobsMutex);
-        g_pending_jobs[std::string(thread_data->UID)][thread_data->thread_id] = crashReport;
+        g_pending_jobs[std::string(thread_data->UID)][uint64_t(thread_data->thread_id)] = crashReport;
         pthread_mutex_unlock(&g_pJobsMutex);
-        g_pCommLayer->JobDone(thread_data->dest, thread_data->thread_id);
+
+        g_pCommLayer->JobDone(thread_data->dest, uint64_t(thread_data->thread_id));
     }
     catch (CABRTException& e)
     {
@@ -169,12 +167,12 @@ static void *create_report(void *arg)
     /* Bogus value. pthreads require us to return void* */
     return NULL;
 }
-uint64_t CreateReport_t(const std::string& pUUID, const std::string& pUID, const std::string& pSender)
+uint64_t CreateReport_t(const char* pUUID, const char* pUID, const char* pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
-    thread_data->UUID = xstrdup(pUUID.c_str());
-    thread_data->UID = xstrdup(pUID.c_str());
-    thread_data->dest = xstrdup(pSender.c_str());
+    thread_data->UUID = xstrdup(pUUID);
+    thread_data->UID = xstrdup(pUID);
+    thread_data->dest = xstrdup(pSender);
     if (pthread_create(&thread_data->thread_id, NULL, create_report, (void *)thread_data) != 0)
     {
         free(thread_data->UUID);
@@ -182,7 +180,7 @@ uint64_t CreateReport_t(const std::string& pUUID, const std::string& pUID, const
         free(thread_data->dest);
         free(thread_data);
         /* The only reason this may happen is system-wide resource starvation,
-         * or ulimit is exceeded (someoune floods us with CreateReport() dbus calls?)
+         * or ulimit is exceeded (someone floods us with CreateReport() dbus calls?)
          */
         error_msg("cannot create thread");
         return 0;
