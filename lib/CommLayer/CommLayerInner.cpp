@@ -1,50 +1,63 @@
-#include <pthread.h> /* pthread_self() */
+#include <pthread.h>
+#include <map>
 #include "abrtlib.h"
 #include "CommLayerInner.h"
 
 static CObserver *s_pObs;
-static pthread_t s_main_id;
+
+typedef std::map<uint64_t, std::string> map_uint_str_t;
+static map_uint_str_t s_mapClientID;
+static pthread_mutex_t s_map_mutex;
+static bool s_map_mutex_inited;
 
 void init_daemon_logging(CObserver *pObs)
 {
     s_pObs = pObs;
-    s_main_id = pthread_self();
+    if (!s_map_mutex_inited)
+    {
+        pthread_mutex_init(&s_map_mutex, NULL);
+        s_map_mutex_inited = true;
+    }
+}
+
+void set_client_name(const char* name)
+{
+    uint64_t key = uint64_t(pthread_self());
+
+    pthread_mutex_lock(&s_map_mutex);
+    if (!name)
+        s_mapClientID.erase(key);
+    else
+        s_mapClientID[key] = name;
+    pthread_mutex_unlock(&s_map_mutex);
 }
 
 void warn_client(const std::string& pMessage)
 {
     if (!s_pObs)
         return;
-    pthread_t self = pthread_self();
-    if (self != s_main_id)
-    {
-        s_pObs->Warning(pMessage,(uint64_t)self);
-//log("w: '%s'", s.c_str());
-    }
-    else
-    {
-        s_pObs->Warning(pMessage);
-// debug: this should not happen - if it is, we are trying to log to a client
-// but we have no job id!
-log("W: '%s'", pMessage.c_str());
-    }
+
+    uint64_t key = uint64_t(pthread_self());
+
+    pthread_mutex_lock(&s_map_mutex);
+    map_uint_str_t::const_iterator ki = s_mapClientID.find(key);
+    const char* peer = (ki != s_mapClientID.end() ? ki->second.c_str() : NULL);
+    pthread_mutex_unlock(&s_map_mutex);
+
+    s_pObs->Warning(pMessage, peer, key);
 }
 
 void update_client(const std::string& pMessage)
 {
     if (!s_pObs)
         return;
-    pthread_t self = pthread_self();
-    if (self != s_main_id)
-    {
-        s_pObs->Status(pMessage, (uint64_t)self);
-//log("u: '%s'", s.c_str());
-    }
-    else
-    {
-        s_pObs->Status(pMessage);
-// debug: this should not happen - if it is, we are trying to log to a client
-// but we have no job id!
-log("U: '%s'", pMessage.c_str());
-    }
+
+    uint64_t key = uint64_t(pthread_self());
+
+    pthread_mutex_lock(&s_map_mutex);
+    map_uint_str_t::const_iterator ki = s_mapClientID.find(key);
+    const char* peer = (ki != s_mapClientID.end() ? ki->second.c_str() : NULL);
+    pthread_mutex_unlock(&s_map_mutex);
+
+    s_pObs->Status(pMessage, peer, key);
 }

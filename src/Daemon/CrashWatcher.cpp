@@ -24,19 +24,18 @@
 #include "ABRTException.h"
 #include "CrashWatcher.h"
 
-void CCrashWatcher::Status(const std::string& pMessage, uint64_t pJobID)
+void CCrashWatcher::Status(const std::string& pMessage, const char* peer, uint64_t pJobID)
 {
-    log("Update: %s", pMessage.c_str());
-    //FIXME: send updates only to job owner
+    VERB1 log("Update('%s'): %s", peer, pMessage.c_str());
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Update(pMessage, pJobID);
+        g_pCommLayer->Update(pMessage, peer, pJobID);
 }
 
-void CCrashWatcher::Warning(const std::string& pMessage, uint64_t pJobID)
+void CCrashWatcher::Warning(const std::string& pMessage, const char* peer, uint64_t pJobID)
 {
-    log("Warning: %s", pMessage.c_str());
+    VERB1 log("Warning('%s'): %s", peer, pMessage.c_str());
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Warning(pMessage, pJobID);
+        g_pCommLayer->Warning(pMessage, peer, pJobID);
 }
 
 CCrashWatcher::CCrashWatcher()
@@ -147,38 +146,44 @@ typedef struct thread_data_t {
     pthread_t thread_id;
     char* UUID;
     char* UID;
-    char* dest;
+    char* peer;
 } thread_data_t;
 static void* create_report(void* arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
 
-    g_pCommLayer->JobStarted(thread_data->dest);
+    g_pCommLayer->JobStarted(thread_data->peer);
+
+    /* Client name is per-thread, need to set it */
+    set_client_name(thread_data->peer);
 
     try
     {
         /* "GetJobResult" is a bit of a misnomer */
         log("Creating report...");
         map_crash_info_t crashReport = GetJobResult(thread_data->UUID, thread_data->UID);
-        g_pCommLayer->JobDone(thread_data->dest, thread_data->UUID);
+        g_pCommLayer->JobDone(thread_data->peer, thread_data->UUID);
     }
     catch (CABRTException& e)
     {
         if (e.type() == EXCEP_FATAL)
         {
+	    set_client_name(NULL);
             /* free strduped strings */
             free(thread_data->UUID);
             free(thread_data->UID);
-            free(thread_data->dest);
+            free(thread_data->peer);
             free(thread_data);
             throw e;
         }
         warn_client(e.what());
     }
+    set_client_name(NULL);
+
     /* free strduped strings */
     free(thread_data->UUID);
     free(thread_data->UID);
-    free(thread_data->dest);
+    free(thread_data->peer);
     free(thread_data);
 
     /* Bogus value. pthreads require us to return void* */
@@ -189,7 +194,7 @@ int CreateReportThread(const char* pUUID, const char* pUID, const char* pSender)
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
     thread_data->UUID = xstrdup(pUUID);
     thread_data->UID = xstrdup(pUID);
-    thread_data->dest = xstrdup(pSender);
+    thread_data->peer = xstrdup(pSender);
 //TODO: do we need this?
 //pthread_attr_t attr;
 //pthread_attr_init(&attr);
@@ -199,7 +204,7 @@ int CreateReportThread(const char* pUUID, const char* pUID, const char* pSender)
     {
         free(thread_data->UUID);
         free(thread_data->UID);
-        free(thread_data->dest);
+        free(thread_data->peer);
         free(thread_data);
         /* The only reason this may happen is system-wide resource starvation,
          * or ulimit is exceeded (someone floods us with CreateReport() dbus calls?)

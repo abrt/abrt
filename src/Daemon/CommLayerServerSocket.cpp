@@ -246,7 +246,7 @@ void CCommLayerServerSocket::Crash(const std::string& arg1)
     //Send("(CRASH)New Crash Detected: " + arg1);
 }
 
-void CCommLayerServerSocket::Error(const std::string& arg1)
+void CCommLayerServerSocket::Error(const std::string& arg1, const char* peer)
 {
     //Send("(ERROR)Error: " + arg1);
 }

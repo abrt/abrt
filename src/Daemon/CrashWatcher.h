@@ -44,8 +44,8 @@ class CCrashWatcher
 
     public:
         /* Observer methods */
-        virtual void Status(const std::string& pMessage, uint64_t pJobID=0);
-        virtual void Warning(const std::string& pMessage, uint64_t pJobID=0);
+        virtual void Status(const std::string& pMessage, const char* peer, uint64_t pJobID);
+        virtual void Warning(const std::string& pMessage, const char* peer, uint64_t pJobID);
 };
 
 vector_crash_infos_t GetCrashInfos(const std::string &pUID);

@@ -17,10 +17,9 @@ class CCommLayerServer {
         virtual void JobDone(const char* pDest, const char* pUUID) = 0;
         virtual void JobStarted(const char* pDest) {};
 
-        virtual void Error(const std::string& arg1) {}
-        virtual void Update(const std::string& pMessage, uint64_t pJobID) {};
-        virtual void Warning(const std::string& pMessage) {};
-        virtual void Warning(const std::string& pMessage, uint64_t pJobID) {};
+        virtual void Error(const std::string& pMessage, const char* peer) {}
+        virtual void Update(const std::string& pMessage, const char* peer, uint64_t pJobID) {};
+        virtual void Warning(const std::string& pMessage, const char* peer, uint64_t pJobID) {};
 };
 
 #endif
