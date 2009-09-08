@@ -393,16 +393,6 @@ void CCommLayerServerDBus::JobDone(const char* peer, const char* pUUID)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Error(const std::string& pMessage, const char* peer)
-{
-    DBusMessage* msg = new_signal_msg("Error", peer);
-    const char* c_message = pMessage.c_str();
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &c_message,
-            DBUS_TYPE_INVALID);
-    send_flush_and_unref(msg);
-}
-
 void CCommLayerServerDBus::Update(const std::string& pMessage, const char* peer, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("Update", peer);
