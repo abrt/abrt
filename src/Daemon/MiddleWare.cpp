@@ -173,7 +173,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
                                                         const std::string& pUID,
                                                         map_crash_report_t& pCrashReport)
 {
-    VERB2 log("CreateCrashReport('%s','%',result)", pUUID.c_str(), pUID.c_str());
+    VERB2 log("CreateCrashReport('%s','%s',result)", pUUID.c_str(), pUID.c_str());
 
     database_row_t row;
     if (pUUID != "")
