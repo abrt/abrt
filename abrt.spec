@@ -145,6 +145,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
+%package plugin-ticketuploader
+Summary: %{name}'s ticketuploader plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-ticketuploader
+Plugin to report bugs into anonymous FTP site associated with ticketing system.
+
 %package plugin-filetransfer
 Summary: %{name}'s File Transfer plugin
 Group: System Environment/Libraries
@@ -315,6 +323,13 @@ fi
 %{_libdir}/%{name}/libBugzilla.so*
 %{_libdir}/%{name}/Bugzilla.GTKBuilder
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
+
+%files plugin-ticketuploader
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/TicketUploader.conf
+%{_libdir}/%{name}/libTicketUploader.so*
+%{_libdir}/%{name}/TicketUploader.GTKBuilder
+%{_mandir}/man7/%{name}-TicketUploader.7.gz
 
 %files plugin-filetransfer
 %defattr(-,root,root,-)
