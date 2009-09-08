@@ -24,7 +24,7 @@
 
 #include "Polkit.h"
 
-PolkitResult polkit_check_authorization(char* dbus_name,char *action_id)
+PolkitResult polkit_check_authorization(const char* dbus_name,const char *action_id)
 {
     PolkitAuthority *authority;
     PolkitSubject *subject;

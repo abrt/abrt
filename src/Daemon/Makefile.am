@@ -13,7 +13,8 @@ abrtd_SOURCES = \
     CommLayerServerSocket.h CommLayerServerSocket.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Daemon.cpp Daemon.h \
-    Settings.h Settings.cpp
+    Settings.h Settings.cpp \
+    Polkit.h Polkit.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/MiddleWare \
@@ -25,11 +26,11 @@ abrtd_CPPFLAGS = \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) $(DBUS_CFLAGS) \
-    $(ENABLE_SOCKET_OR_DBUS)
+    $(ENABLE_SOCKET_OR_DBUS) $(POLKIT_CFLAGS)
 abrtd_LDADD = \
     ../../lib/MiddleWare/libABRTMiddleWare.la \
     ../../lib/CommLayer/libABRTCommLayer.la \
-    $(DL_LIBS) $(DBUS_LIBS) $(RPM_LIBS)
+    $(DL_LIBS) $(DBUS_LIBS) $(RPM_LIBS) $(POLKIT_LIBS)
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf

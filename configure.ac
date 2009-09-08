@@ -32,6 +32,7 @@ PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC_CPP], [xmlrpc++])
 PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [xmlrpc_client++])
 PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [python])
+PKG_CHECK_MODULES([POLKIT],[polkit-gobject-1])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
