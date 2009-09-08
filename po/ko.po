@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-04 04:40+0000\n"
-"PO-Revision-Date: 2009-09-04 15:22+1000\n"
+"POT-Creation-Date: 2009-09-07 19:47+0000\n"
+"PO-Revision-Date: 2009-09-08 11:20+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -300,21 +300,21 @@ msgid "Applet is already running."
 msgstr "애플릿이 이미 실행되고 있습니다.  "
 
 #: ../src/Applet/Applet.cpp:96 ../src/Applet/Applet.cpp:97
-#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/CCApplet.cpp:201
 msgid "ABRT service is not running"
 msgstr "ABRT 서비스가 실행되고 있지 않습니다  "
 
-#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:262
+#: ../src/Applet/CCApplet.cpp:135 ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr "보류 중인 이벤트: %i "
 
-#: ../src/Applet/CCApplet.cpp:102
+#: ../src/Applet/CCApplet.cpp:161
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr "설명에서 메뉴를 만들 수 없습니다. 팝업을 사용할 수 없습니다!\n"
 
-#: ../src/Applet/CCApplet.cpp:125
+#: ../src/Applet/CCApplet.cpp:190
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
@@ -322,44 +322,52 @@ msgstr ""
 "이는 기본값 처리기입니다. 자신의 처리기를 ConnectCrashHandler를 사용하여 등록"
 "해야 합니다  "
 
-#: ../src/Applet/CCApplet.cpp:139
+#: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
 msgstr "ABRT 서비스가 시작되었습니다  "
 
-#: ../src/Applet/CCApplet.cpp:165
+#: ../src/Applet/CCApplet.cpp:231
 msgid "Out of memory"
 msgstr "메모리 부족 "
 
-#: ../src/Applet/CCApplet.cpp:180
+#: ../src/Applet/CCApplet.cpp:247
 msgid "Warning"
 msgstr "경고  "
 
-#: ../lib/Plugins/Bugzilla.cpp:219
+#: ../lib/Plugins/Bugzilla.cpp:84
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "로그인 및 암호가 없습니다. Bugzilla.conf를 확인해 주십시오  "
+
+#: ../lib/Plugins/Bugzilla.cpp:228
 msgid "Bug is already reported: "
 msgstr "이미 버그를 보고하였습니다:  "
 
-#: ../lib/Plugins/Bugzilla.cpp:279
+#: ../lib/Plugins/Bugzilla.cpp:283
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "%s 바이너리 파일은 보고되지 않습니다.  "
 
-#: ../lib/Plugins/Bugzilla.cpp:349
+#: ../lib/Plugins/Bugzilla.cpp:353
 msgid "New bug id: "
 msgstr "새 버그 id:   "
 
-#: ../lib/Plugins/Bugzilla.cpp:413
+#: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr "중복성 확인 중...      "
 
-#: ../lib/Plugins/Bugzilla.cpp:429
+#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "bugzilla에 로그인 중...       "
 
-#: ../lib/Plugins/Bugzilla.cpp:443
+#: ../lib/Plugins/Bugzilla.cpp:427
+msgid "Check CC and add coment +1..."
+msgstr "CC 확인 후 코멘트에 +1 추가...  "
+
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr "새 버그 생성 중...   "
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr "로그아웃 중...   "
 
@@ -383,13 +391,18 @@ msgstr "역추적 검색 중...        "
 msgid "Getting local universal unique identification..."
 msgstr "로컬 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:453
+#: ../lib/Plugins/CCpp.cpp:455
 msgid "Getting global universal unique identification..."
 msgstr "글로벌 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:471
+#: ../lib/Plugins/CCpp.cpp:473
 msgid "Starting report creation..."
 msgstr "보고서 작성 시작 중...  "
+
+#: ../lib/Plugins/CCpp.cpp:495
+#, c-format
+msgid "Skip debuginfo installation for package %s"
+msgstr "%s 패키지에 대한 디버그 정보 설치 생략  "
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
