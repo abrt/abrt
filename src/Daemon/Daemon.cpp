@@ -75,12 +75,12 @@
  *      Sent as unicast to the client which did CreateReport.
  * - JobDone(client_dbus_ID,UUID) - see CreateReport above.
  *      Sent as unicast to the client which did CreateReport.
- * - Error(msg)
- * - Warning(msg[,job_id])
+ * - Warning(msg,job_id)
  * - Update(msg,job_id)
+ *      Both are sent as unicast to last client set by set_client_name(name).
+ *      If set_client_name(NULL) was done, they are not sent.
  *
  * TODO:
- * - Error/Warning/Update dbus signals must be unicast too
  * - API does not really need JobStarted dbus signal at all, and JobDone signal
  *   does not need to pass any parameters - out clients never sent multiple
  *   CreateReport's.

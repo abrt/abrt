@@ -34,6 +34,6 @@ POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE*/
 PolkitChallenge = 0x03 
 } PolkitResult;
                                     
-PolkitResult polkit_check_authorization(char * dbus_name,char *action_id);
+PolkitResult polkit_check_authorization(const char * dbus_name,const char *action_id);
 
 #endif
