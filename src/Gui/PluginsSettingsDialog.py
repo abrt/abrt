@@ -6,7 +6,7 @@ from PluginSettingsUI import PluginSettingsUI
 from ABRTPlugin import PluginSettings, PluginInfo
 from abrt_utils import _
 
-class SettingsDialog:
+class PluginsSettingsDialog:
     def __init__(self, parent, daemon):
         #print "Settings dialog init"
         self.ccdaemon = daemon
@@ -17,7 +17,7 @@ class SettingsDialog:
             self.builder.add_from_file(builderfile)
         except Exception, e:
             print e
-        self.window = self.builder.get_object("wSettings")
+        self.window = self.builder.get_object("wPluginsSettings")
         if not self.window:
             raise Exception(_("Can't load gui description for SettingsDialog!"))
         #self.window.set_parent(parent)

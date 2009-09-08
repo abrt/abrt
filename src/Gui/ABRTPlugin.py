@@ -57,4 +57,7 @@ class PluginInfo():
 
     def __str__(self):
         return self.Name
+        
+    def __getitem__(self, item):
+        return self.__dict__[item]
 

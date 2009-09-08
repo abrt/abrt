@@ -33,6 +33,14 @@ class PluginInfoList(list):
                 return
         else:
             print "db == None!"
+            
+    
+    def getEnabledPlugins(self):
+        return [x for x in self if x["Enabled"] == 'yes']
+        
+    def getActionPlugins(self):
+        return [x for x in self if x["Enabled"] == 'yes' and x["Type"] == 'Action']
+
 
 
 __PFList = None

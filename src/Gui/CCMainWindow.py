@@ -11,6 +11,7 @@ import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
+from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
 from CCReport import Report
 import ABRTExceptions
@@ -108,6 +109,7 @@ class MainWindow():
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
         self.wTree.get_widget("miAbout").connect("activate", self.on_miAbout_clicked)
         self.wTree.get_widget("miPreferences").connect("activate", self.on_miPreferences_clicked)
+        self.wTree.get_widget("miSettings").connect("activate", self.on_miSettings_clicked)
         # connect handlers for daemon signals
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
@@ -133,9 +135,15 @@ class MainWindow():
         dialog.hide()
 
     def on_miPreferences_clicked(self, widget):
-        dialog = SettingsDialog(self.window,self.ccdaemon)
+        dialog = PluginsSettingsDialog(self.window,self.ccdaemon)
         dialog.hydrate()
         dialog.show()
+        
+    def on_miSettings_clicked(self, widget):
+        dialog = SettingsDialog(self.window, self.ccdaemon)
+        dialog.hydrate()
+        dialog.show()
+        self.ccdaemon.getSettings()
 
     def warning_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
