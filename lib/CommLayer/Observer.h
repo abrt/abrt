@@ -9,8 +9,8 @@
 class CObserver {
     public:
         virtual ~CObserver() {}
-        virtual void Status(const std::string& pMessage, uint64_t pDest=0) = 0;
-        virtual void Warning(const std::string& pMessage, uint64_t pDest=0) = 0;
+        virtual void Status(const std::string& pMessage, const char* peer, uint64_t pDest) = 0;
+        virtual void Warning(const std::string& pMessage, const char* peer, uint64_t pDest) = 0;
 };
 
 #endif

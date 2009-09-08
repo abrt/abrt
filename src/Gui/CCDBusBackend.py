@@ -149,6 +149,7 @@ class DBusManager(gobject.GObject):
             # new crash notify
             self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
             # BT extracting complete
+#TODO: remove, abrtd does not emit AnalyzeComplete
             self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
             # Catch Errors
             self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
@@ -171,10 +172,10 @@ class DBusManager(gobject.GObject):
             print "Started our job: %s" % job_id
             self.addJob(job_id)
 
-    def jobdone_cb(self, dest, job_id):
+    def jobdone_cb(self, dest, uuid):
         if self.uniq_name == dest:
-            print "Our job: %s is done." % job_id
-            dump = self.cc.GetJobResult(job_id)
+            print "Our job for UUID %s is done." % uuid
+            dump = self.cc.GetJobResult(uuid)
             if dump:
                 self.emit("analyze-complete", dump)
             else:
@@ -219,7 +220,7 @@ class DBusManager(gobject.GObject):
         #for i in settings.keys():
         #    print i
         return settings
-
+    
     def registerPlugin(self, plugin_name):
         return self.cc.RegisterPlugin(plugin_name)
 
@@ -229,3 +230,8 @@ class DBusManager(gobject.GObject):
     def setPluginSettings(self, plugin_name, plugin_settings):
         return self.cc.SetPluginSettings(plugin_name, plugin_settings)
 
+    def getSettings(self):
+        return self.cc.GetSettings()
+        
+    def setSettings(self, settings):
+        return self.cc.SetSettings(settings)

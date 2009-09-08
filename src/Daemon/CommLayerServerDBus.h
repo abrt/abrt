@@ -12,14 +12,12 @@ class CCommLayerServerDBus
 
         /* DBus signal senders */
         virtual void Crash(const std::string& progname, const std::string& uid);
-        virtual void AnalyzeComplete(const map_crash_report_t& arg1);
-        virtual void Error(const std::string& arg1);
-        virtual void Update(const std::string& pMessage, uint64_t pJobID);
-        //the job id should be enough in jobdone
-        virtual void JobDone(const char* pDest, uint64_t pJobID);
-        virtual void JobStarted(const char* pDest, uint64_t pJobID);
-        virtual void Warning(const std::string& pMessage);
-        virtual void Warning(const std::string& pMessage, uint64_t pJobID);
+        virtual void JobStarted(const char* pDest);
+        virtual void JobDone(const char* pDest, const char* pUUID);
+
+        virtual void Error(const std::string& pMessage, const char* peer);
+        virtual void Update(const std::string& pMessage, const char* peer, uint64_t pJobID);
+        virtual void Warning(const std::string& pMessage, const char* peer, uint64_t pJobID);
 };
 
 #endif

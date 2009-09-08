@@ -1,16 +1,18 @@
+# translation of ru.po to Russian
 # translation of ru.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Yulia Poyarkova <yulia.poyarkova@redhat.com>, 2009.
+# Yulia Poyarkova <yulia.poyarkova@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-01 19:44+0000\n"
-"PO-Revision-Date: 2009-09-03 10:55+1000\n"
-"Last-Translator: Yulia Poyarkova <yulia.poyarkova@redhat.com>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2009-09-07 19:47+0000\n"
+"PO-Revision-Date: 2009-09-08 17:25+1000\n"
+"Last-Translator: Yulia Poyarkova <yulia.poyarkova@gmail.com>\n"
+"Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -22,7 +24,9 @@ msgstr "Выполняется другой клиент. Будет выпол�
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Получены непредвиденные данные от демона. Проверьте, обновлена ли база данных."
+msgstr ""
+"Получены непредвиденные данные от демона. Проверьте, обновлена ли база "
+"данных."
 
 #: ../src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
@@ -109,14 +113,14 @@ msgid ""
 msgstr ""
 "Эта программа — свободное программное обеспечение; её можно распространять "
 "или изменять в соответствии с условиями лицензии GNU General Public License, "
-"опубликованной Фондом свободного программного обеспечения, версии 2 "
-"или (по вашему выбору) любой более поздней версии.\n"
+"опубликованной Фондом свободного программного обеспечения, версии 2 или (по "
+"вашему выбору) любой более поздней версии.\n"
 "\n"
 "Эта программа распространяется в надежде, что она может быть полезной, но "
-"БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВЫРАЖЕННЫХ ЯВНО ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ "
-"(НО НЕ ОГРАНИЧИВАЯСЬ) ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И "
-"ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Для получения дополнительных сведений "
-"обратитесь к лицензии GNU General Public License.\n"
+"БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВЫРАЖЕННЫХ ЯВНО ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ (НО НЕ "
+"ОГРАНИЧИВАЯСЬ) ПОДРАЗУМЕВАЕМЫЕ ГАРАНТИИ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ "
+"ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Для получения дополнительных сведений обратитесь к "
+"лицензии GNU General Public License.\n"
 "\n"
 "Копия лиценции GNU предоставляется вместе с этой программой. \n"
 "Её также можно найти на сайте <http://www.gnu.org/licenses/>."
@@ -204,11 +208,12 @@ msgstr "Ошибка при получении отчёта: %s"
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data that might contain some sensitive "
-"informations!\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive "
+"information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>ПРЕДУПРЕЖДЕНИЕ:</b> Вы собираетесь отправить данные, которые могут содержать конфиденциальную информацию.\n"
+"<b>ПРЕДУПРЕЖДЕНИЕ:</b> Вы собираетесь отправить данные, которые могут "
+"содержать конфиденциальную информацию.\n"
 "Вы действительно хотите отправить <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
@@ -231,7 +236,7 @@ msgstr "поле ввода недоступно"
 
 #: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
-msgstr "Невозможно применить hydrate!"
+msgstr "Нет данных для отображения!"
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
@@ -247,7 +252,7 @@ msgstr "gtk-cancel"
 
 #: ../src/Gui/SettingsDialog.py:22
 msgid "Can't load gui description for SettingsDialog!"
-msgstr "Не удалось загрузить описание gui для SettingsDialog"
+msgstr "Не удалось загрузить описание GUI для SettingsDialog"
 
 #: ../src/Gui/SettingsDialog.py:34
 msgid "Name"
@@ -285,47 +290,165 @@ msgstr ""
 msgid "unknown response from settings dialog"
 msgstr "неизвестный ответ диалога настроек"
 
-#. applet->AddEvent(uid, std::string(progname));
-#: ../src/Applet/Applet.cpp:49
+#: ../src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
-msgstr "Обнаружен сбой пакета %s!"
+msgstr "Сбой в пакете %s!"
 
 #. applet is already running
-#: ../src/Applet/Applet.cpp:80
+#: ../src/Applet/Applet.cpp:82
 msgid "Applet is already running."
 msgstr "Апплет уже выполняется."
 
-#: ../src/Applet/Applet.cpp:94 ../src/Applet/Applet.cpp:95
-#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/Applet.cpp:96 ../src/Applet/Applet.cpp:97
+#: ../src/Applet/CCApplet.cpp:201
 msgid "ABRT service is not running"
 msgstr "Служба ABRT не работает"
 
-#: ../src/Applet/CCApplet.cpp:83 ../src/Applet/CCApplet.cpp:249
+#: ../src/Applet/CCApplet.cpp:135 ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr "Ожидающие события: %i"
 
-#: ../src/Applet/CCApplet.cpp:102
+#: ../src/Applet/CCApplet.cpp:161
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "Не удалось создать меню на основе описания. Всплывающее окно будет недоступно!\n"
+msgstr ""
+"Не удалось создать меню на основе описания. Всплывающее окно будет "
+"недоступно!\n"
 
-#: ../src/Applet/CCApplet.cpp:125
+#: ../src/Applet/CCApplet.cpp:190
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
-msgstr "Это стандартный обработчик. Зарегистировать собственный обработчик можно с помощью ConnectCrashHandler"
+msgstr ""
+"Это стандартный обработчик. Зарегистрировать собственный обработчик можно с "
+"помощью ConnectCrashHandler"
 
-#: ../src/Applet/CCApplet.cpp:139
+#: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
 msgstr "Служба ABRT запущена"
 
-#: ../src/Applet/CCApplet.cpp:160
+#: ../src/Applet/CCApplet.cpp:231
+msgid "Out of memory"
+msgstr "Недостаточно памяти"
+
+#: ../src/Applet/CCApplet.cpp:247
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: ../src/Applet/CCApplet.cpp:166
-msgid "Out of memory"
-msgstr "Не хватает памяти"
+#: ../lib/Plugins/Bugzilla.cpp:84
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Пустое имя входа и пароль. Проверьте Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:228
+msgid "Bug is already reported: "
+msgstr "Запрос уже создан:"
+
+#: ../lib/Plugins/Bugzilla.cpp:283
+#, c-format
+msgid "Binary file %s will not be reported."
+msgstr "Запрос не будет создаваться для бинарного файла %s:"
+
+#: ../lib/Plugins/Bugzilla.cpp:353
+msgid "New bug id: "
+msgstr "Идентификатор запроса:"
+
+#: ../lib/Plugins/Bugzilla.cpp:421
+msgid "Checking for duplicates..."
+msgstr "Проверяется наличие дубликатов..."
+
+#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+msgid "Logging into bugzilla..."
+msgstr "Выполняется вход в Bugzilla..."
+
+#: ../lib/Plugins/Bugzilla.cpp:427
+msgid "Check CC and add coment +1..."
+msgstr "Проверьте список CC и добавьте комментарий..."
+
+#: ../lib/Plugins/Bugzilla.cpp:448
+msgid "Creating new bug..."
+msgstr "Создаётся новый запрос..."
+
+#: ../lib/Plugins/Bugzilla.cpp:453
+msgid "Logging out..."
+msgstr "Выполняется выход..."
+
+#: ../lib/Plugins/Kerneloops.cpp:38
+msgid "Getting local/global universal unique identification..."
+msgstr "Получение уникальных данных идентификации (локальной/глобальной)..."
+
+#: ../lib/Plugins/CCpp.cpp:82
+msgid "Searching for debug-info packages..."
+msgstr "Выполняется поиск пакетов debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:120
+msgid "Downloading and installing debug-info packages..."
+msgstr "Загружаются и устанавливаются пакеты debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:180
+msgid "Getting backtrace..."
+msgstr "Получение трассировки..."
+
+#: ../lib/Plugins/CCpp.cpp:429
+msgid "Getting local universal unique identification..."
+msgstr "Получение локальных данных идентификации..."
+
+#: ../lib/Plugins/CCpp.cpp:455
+msgid "Getting global universal unique identification..."
+msgstr "Получение глобальных данных идентификации..."
+
+#: ../lib/Plugins/CCpp.cpp:473
+msgid "Starting report creation..."
+msgstr "Начинается создание отчёта..."
+
+#: ../lib/Plugins/CCpp.cpp:495
+#, c-format
+msgid "Skip debuginfo installation for package %s"
+msgstr "Пропустить установку debuginfo для пакета %s"
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:101
+msgid "Creating and submitting a report..."
+msgstr "Создание и отправка отчёта..."
+
+#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr "Создаётся отчёт..."
+
+#: ../lib/Plugins/RunApp.cpp:62
+msgid "Executing RunApp plugin..."
+msgstr "Выполняется модуль RunApp..."
+
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/FileTransfer.cpp:247
+msgid "FileTransfer: URL not specified"
+msgstr "FileTransfer: Не указан URL"
+
+#: ../lib/Plugins/FileTransfer.cpp:69
+#, c-format
+msgid "Sending archive %s via %s"
+msgstr "Архив %s отправляется через %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:121
+msgid "Creating an archive..."
+msgstr "Создаётся архив..."
+
+#: ../lib/Plugins/FileTransfer.cpp:176
+msgid "File Transfer: Creating a report..."
+msgstr "File Transfer: Создаётся отчёт..."
+
+#: ../lib/Plugins/FileTransfer.cpp:197 ../lib/Plugins/FileTransfer.cpp:226
+msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+msgstr "CFileTransfer::Run(): Не удалось создать и отправить архив: "
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
+msgid "Creating kernel oops crash reports..."
+msgstr "Создаются отчёты о сбоях ядра..."
+
+#: ../lib/Plugins/Mailx.cpp:110
+msgid "Sending an email..."
+msgstr "Отправляется почтовое сообщение..."
+
+#: ../lib/Plugins/SOSreport.cpp:90
+msgid "Executing SOSreportAction plugin..."
+msgstr "Запускается модуль SOSreportAction..."
 

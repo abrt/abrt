@@ -31,7 +31,7 @@ class CCommLayerServerSocket : public CCommLayerServer
         virtual bool DeleteDebugDump(const std::string& pUUID, const std::string& pSender);
 
         virtual void Crash(const std::string& arg1);
-        virtual void AnalyzeComplete(const map_crash_report_t& arg1);
-        virtual void Error(const std::string& arg1);
-        virtual void JobStarted(const char* pDest, uint64_t pJobID) {};
+        virtual void JobStarted(const char* pDest) {};
+
+        virtual void Error(const std::string& arg1, const char* peer);
 };

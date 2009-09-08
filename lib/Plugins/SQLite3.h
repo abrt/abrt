@@ -1,6 +1,5 @@
 /*
-    DebugDump.h - header file for the library caring of writing new reports
-                  to the specific directory
+    SQLite3.h
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -55,8 +54,8 @@ class CSQLite3 : public CDatabase
 
         virtual void Delete(const std::string& pUUID, const std::string& pUID);
         virtual void SetReported(const std::string& pUUID, const std::string& pUID, const std::string& pMessage);
-        virtual const vector_database_rows_t GetUIDData(const std::string& pUID);
-        virtual const database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
+        virtual vector_database_rows_t GetUIDData(const std::string& pUID);
+        virtual database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();

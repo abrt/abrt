@@ -1,6 +1,5 @@
 /*
-    DebugDump.h - header file for the library caring of writing new reports
-                  to the specific directory
+    SQLite3.cpp
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -33,7 +32,7 @@
 #define ABRT_TABLE "abrt_v"ABRT_TABLE_VERSION_STR
 #define SQLITE3_MASTER_TABLE "sqlite_master"
 
-// afret a while, we can drom a support for update, so a table can stay in
+// after a while, we can drop support for update, so a table can stay in
 // normal limits
 static const char* upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
     // v0 -> *
@@ -100,9 +99,9 @@ bool CSQLite3::Exist(const std::string& pUUID, const std::string& pUID)
     GetTable("SELECT "DATABASE_COLUMN_REPORTED" FROM "ABRT_TABLE" WHERE "
              DATABASE_COLUMN_UUID" = '"+pUUID+"' AND "
              DATABASE_COLUMN_UID" = '"+pUID+"';", table);
-    if(table.empty())
+    if (table.empty())
     {
-            return false;
+        return false;
     }
     return true;
 }
@@ -113,7 +112,7 @@ void CSQLite3::Exec(const std::string& pCommand)
     int ret = sqlite3_exec(m_pDB, pCommand.c_str(), 0, 0, &err);
     if (ret != SQLITE_OK)
     {
-            throw CABRTException(EXCEP_PLUGIN, "SQLite3::Exec(): Error on: " + pCommand + " " + err);
+        throw CABRTException(EXCEP_PLUGIN, "SQLite3::Exec(): Error on: " + pCommand + " " + err);
     }
 }
 
@@ -211,7 +210,7 @@ bool CSQLite3::CheckTable()
     int ret = sqlite3_get_table(m_pDB, command.c_str(), &table, &nrow, &ncol, &err);
     if (ret != SQLITE_OK)
     {
-            throw CABRTException(EXCEP_PLUGIN, "SQLite3::GetTable(): Error on: " + command + " " + err);
+        throw CABRTException(EXCEP_PLUGIN, "SQLite3::GetTable(): Error on: " + command + " " + err);
     }
     if (!nrow || !nrow)
     {
@@ -281,24 +280,24 @@ void CSQLite3::Insert(const std::string& pUUID,
 {
     if (!Exist(pUUID, pUID))
     {
-            Exec("INSERT INTO "ABRT_TABLE"("
-                 DATABASE_COLUMN_UUID","
-                 DATABASE_COLUMN_UID","
-                 DATABASE_COLUMN_DEBUG_DUMP_PATH","
-                 DATABASE_COLUMN_TIME")"
-                   " VALUES ('"+pUUID+"',"
-                             "'"+pUID+"',"
-                             "'"+pDebugDumpPath+"',"
-                             "'"+pTime+"'"
-                           ");");
+        Exec("INSERT INTO "ABRT_TABLE"("
+             DATABASE_COLUMN_UUID","
+             DATABASE_COLUMN_UID","
+             DATABASE_COLUMN_DEBUG_DUMP_PATH","
+             DATABASE_COLUMN_TIME")"
+               " VALUES ('"+pUUID+"',"
+                         "'"+pUID+"',"
+                         "'"+pDebugDumpPath+"',"
+                         "'"+pTime+"'"
+                       ");");
     }
     else
     {
-            Exec("UPDATE "ABRT_TABLE" "
-                 "SET "DATABASE_COLUMN_COUNT" = "DATABASE_COLUMN_COUNT" + 1, "
-                       DATABASE_COLUMN_TIME" = '"+pTime+"' "
-                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
-                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
+        Exec("UPDATE "ABRT_TABLE" "
+             "SET "DATABASE_COLUMN_COUNT" = "DATABASE_COLUMN_COUNT" + 1, "
+                   DATABASE_COLUMN_TIME" = '"+pTime+"' "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+             "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
 }
 
@@ -306,14 +305,14 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
 {
     if (pUID == "0")
     {
-           Exec("DELETE FROM "ABRT_TABLE" "
-                "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+        Exec("DELETE FROM "ABRT_TABLE" "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
     }
     else if (Exist(pUUID, pUID))
     {
-            Exec("DELETE FROM "ABRT_TABLE" "
-                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
-                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
+        Exec("DELETE FROM "ABRT_TABLE" "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+             "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
     else
     {
@@ -325,14 +324,14 @@ void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID, co
 {
     if (Exist(pUUID, pUID))
     {
-            Exec("UPDATE "ABRT_TABLE" "
-                 "SET "DATABASE_COLUMN_REPORTED" = 1 "
-                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
-                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
-            Exec("UPDATE "ABRT_TABLE" "
-                 "SET "DATABASE_COLUMN_MESSAGE" = '" + pMessage + "' "
-                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
-                 "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
+        Exec("UPDATE "ABRT_TABLE" "
+             "SET "DATABASE_COLUMN_REPORTED" = 1 "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+             "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
+        Exec("UPDATE "ABRT_TABLE" "
+             "SET "DATABASE_COLUMN_MESSAGE" = '" + pMessage + "' "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
+             "AND "DATABASE_COLUMN_UID" = '"+pUID+"';");
     }
     else
     {
@@ -340,7 +339,7 @@ void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID, co
     }
 }
 
-const vector_database_rows_t CSQLite3::GetUIDData(const std::string& pUID)
+vector_database_rows_t CSQLite3::GetUIDData(const std::string& pUID)
 {
     vector_database_rows_t table;
     if (pUID == "0")
@@ -356,7 +355,7 @@ const vector_database_rows_t CSQLite3::GetUIDData(const std::string& pUID)
     return table;
 }
 
-const database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::string& pUID)
+database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::string& pUID)
 {
     vector_database_rows_t table;
 

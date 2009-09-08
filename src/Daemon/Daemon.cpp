@@ -51,9 +51,12 @@
  * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - CreateReport(UUID): starts creating a report for /var/cache/abrt/DIR with this UUID
- *      Returns job id (uint64)
- * - GetJobResult(job_id): returns map_crash_report_t (map_vector_string_t)
+ * - CreateReport(UUID): starts creating a report for /var/cache/abrt/DIR with this UUID.
+ *      Returns job id (uint64).
+ *      Emits JobStarted(client_dbus_ID,job_id) dbus signal.
+ *      After it returns, when report creation thread has finished,
+ *      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
+ * - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
  * - Report(map_crash_report_t (map_vector_string_t)):
  *      "Please report this crash": calls Report() of all registered reporter plugins
  *      Returns report_status_t (map_vector_string_t) - the status of each call
@@ -67,7 +70,20 @@
  * - SetSettings(map_abrt_settings_t): returns void
  *
  * DBus signals we emit:
- * - ...
+ * - Crash(progname,uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
+ * - JobStarted(client_dbus_ID,job_id) - see CreateReport above.
+ *      Sent as unicast to the client which did CreateReport.
+ * - JobDone(client_dbus_ID,UUID) - see CreateReport above.
+ *      Sent as unicast to the client which did CreateReport.
+ * - Error(msg)
+ * - Warning(msg[,job_id])
+ * - Update(msg,job_id)
+ *
+ * TODO:
+ * - Error/Warning/Update dbus signals must be unicast too
+ * - API does not really need JobStarted dbus signal at all, and JobDone signal
+ *   does not need to pass any parameters - out clients never sent multiple
+ *   CreateReport's.
  */
 
 
@@ -98,12 +114,7 @@ static GMainLoop* g_pMainloop;
 
 int g_verbose;
 CCommLayerServer* g_pCommLayer;
-/*
- * Map to cache the results from CreateReport_t
- * <UID, <job_id, result>>
- */
-std::map<const std::string, std::map<uint64_t, map_crash_report_t> > g_pending_jobs;
-/* mutex to protect g_pending_jobs */
+
 pthread_mutex_t g_pJobsMutex;
 
 
@@ -503,7 +514,8 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
         /* ignore lock files and such */
         if (!(event->mask & IN_ISDIR))
         {
-            VERB3 log("File '%s' creation detected, ignoring", name);
+            // Happens all the time during normal run
+            //VERB3 log("File '%s' creation detected, ignoring", name);
             continue;
         }
 

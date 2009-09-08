@@ -49,9 +49,6 @@ extern CPluginManager* g_pPluginManager;
  */
 extern set_string_t g_setBlackList;
 
-/* Map <UID, <job_id, result>> to cache the results from CreateReport_t() */
-extern std::map<const std::string, std::map<uint64_t, map_crash_report_t> > g_pending_jobs;
-/* Mutex to protect g_pending_jobs */
 extern pthread_mutex_t g_pJobsMutex;
 
 #endif

@@ -24,19 +24,18 @@
 #include "ABRTException.h"
 #include "CrashWatcher.h"
 
-void CCrashWatcher::Status(const std::string& pMessage, uint64_t pJobID)
+void CCrashWatcher::Status(const std::string& pMessage, const char* peer, uint64_t pJobID)
 {
-    log("Update: %s", pMessage.c_str());
-    //FIXME: send updates only to job owner
+    VERB1 log("Update('%s'): %s", peer, pMessage.c_str());
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Update(pMessage, pJobID);
+        g_pCommLayer->Update(pMessage, peer, pJobID);
 }
 
-void CCrashWatcher::Warning(const std::string& pMessage, uint64_t pJobID)
+void CCrashWatcher::Warning(const std::string& pMessage, const char* peer, uint64_t pJobID)
 {
-    log("Warning: %s", pMessage.c_str());
+    VERB1 log("Warning('%s'): %s", peer, pMessage.c_str());
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Warning(pMessage, pJobID);
+        g_pCommLayer->Warning(pMessage, peer, pJobID);
 }
 
 CCrashWatcher::CCrashWatcher()
@@ -102,97 +101,129 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
     return retval;
 }
 
+/*
+ * "GetJobResult" is a bit of a misnomer.
+ * It actually _creates_ a_ report_ and returns the result.
+ * It is called in two cases:
+ * (1) by CreateReport dbus call -> CreateReportThread(), in the thread
+ * (2) by GetJobResult dbus call
+ * In the second case, it finishes quickly, because previous
+ * CreateReport dbus call already did all the processing, and we just retrieve
+ * the result from dump directory, which is fast.
+ */
+map_crash_report_t GetJobResult(const char* pUUID, const char* pUID)
+{
+    map_crash_info_t crashReport;
+
+    /* FIXME: starting from here, any shared data must be protected with a mutex.
+     * For example, CreateCrashReport does:
+     * g_pPluginManager->GetDatabase(g_settings_sDatabase);
+     * which is unsafe wrt concurrent updates to g_pPluginManager state.
+     */
+    mw_result_t res = CreateCrashReport(pUUID, pUID, crashReport);
+    switch (res)
+    {
+        case MW_OK:
+            break;
+        case MW_IN_DB_ERROR:
+            warn_client(std::string("Did not find crash with UUID ") + pUUID + " in database");
+            break;
+        case MW_PLUGIN_ERROR:
+            warn_client("Particular analyzer plugin isn't loaded or there is an error within plugin(s)");
+            break;
+        case MW_CORRUPTED:
+        case MW_FILE_ERROR:
+        default:
+            warn_client(std::string("Corrupted crash with UUID ") + pUUID + ", deleting");
+            std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
+            DeleteDebugDumpDir(debugDumpDir);
+            break;
+    }
+    return crashReport;
+}
+
 typedef struct thread_data_t {
     pthread_t thread_id;
     char* UUID;
     char* UID;
-    char* dest;
+    char* peer;
 } thread_data_t;
-static void *create_report(void *arg)
+static void* create_report(void* arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
-    map_crash_info_t crashReport;
 
-    g_pCommLayer->JobStarted(thread_data->dest, uint64_t(thread_data->thread_id));
+    g_pCommLayer->JobStarted(thread_data->peer);
 
-    log("Creating report...");
+    /* Client name is per-thread, need to set it */
+    set_client_name(thread_data->peer);
+
     try
     {
-        mw_result_t res;
-        res = CreateCrashReport(thread_data->UUID, thread_data->UID, crashReport);
-        switch (res)
-        {
-            case MW_OK:
-                break;
-            case MW_IN_DB_ERROR:
-                warn_client(std::string("Did not find crash with UUID ") + thread_data->UUID + " in database");
-                break;
-            case MW_PLUGIN_ERROR:
-                warn_client(std::string("Particular analyzer plugin isn't loaded or there is an error within plugin(s)"));
-                break;
-            case MW_CORRUPTED:
-            case MW_FILE_ERROR:
-            default:
-                warn_client(std::string("Corrupted crash with UUID ") + thread_data->UUID + ", deleting");
-                std::string debugDumpDir = DeleteCrashInfo(thread_data->UUID, thread_data->UID);
-                DeleteDebugDumpDir(debugDumpDir);
-                break;
-        }
-        /* only one thread can write */
-        pthread_mutex_lock(&g_pJobsMutex);
-        g_pending_jobs[std::string(thread_data->UID)][uint64_t(thread_data->thread_id)] = crashReport;
-        pthread_mutex_unlock(&g_pJobsMutex);
-        g_pCommLayer->JobDone(thread_data->dest, uint64_t(thread_data->thread_id));
+        /* "GetJobResult" is a bit of a misnomer */
+        log("Creating report...");
+        map_crash_info_t crashReport = GetJobResult(thread_data->UUID, thread_data->UID);
+        g_pCommLayer->JobDone(thread_data->peer, thread_data->UUID);
     }
     catch (CABRTException& e)
     {
         if (e.type() == EXCEP_FATAL)
         {
+	    set_client_name(NULL);
             /* free strduped strings */
             free(thread_data->UUID);
             free(thread_data->UID);
-            free(thread_data->dest);
+            free(thread_data->peer);
             free(thread_data);
             throw e;
         }
         warn_client(e.what());
     }
+    set_client_name(NULL);
+
     /* free strduped strings */
     free(thread_data->UUID);
     free(thread_data->UID);
-    free(thread_data->dest);
+    free(thread_data->peer);
     free(thread_data);
 
     /* Bogus value. pthreads require us to return void* */
     return NULL;
 }
-uint64_t CreateReport_t(const char* pUUID, const char* pUID, const char* pSender)
+int CreateReportThread(const char* pUUID, const char* pUID, const char* pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
     thread_data->UUID = xstrdup(pUUID);
     thread_data->UID = xstrdup(pUID);
-    thread_data->dest = xstrdup(pSender);
-    if (pthread_create(&thread_data->thread_id, NULL, create_report, (void *)thread_data) != 0)
+    thread_data->peer = xstrdup(pSender);
+//TODO: do we need this?
+//pthread_attr_t attr;
+//pthread_attr_init(&attr);
+//pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    int r = pthread_create(&thread_data->thread_id, NULL, create_report, thread_data);
+    if (r != 0)
     {
         free(thread_data->UUID);
         free(thread_data->UID);
-        free(thread_data->dest);
+        free(thread_data->peer);
         free(thread_data);
         /* The only reason this may happen is system-wide resource starvation,
-         * or ulimit is exceeded (someoune floods us with CreateReport() dbus calls?)
+         * or ulimit is exceeded (someone floods us with CreateReport() dbus calls?)
          */
-        error_msg("cannot create thread");
-        return 0;
+        error_msg("Can't create thread");
     }
-    return uint64_t(thread_data->thread_id);
+    else
+    {
+        VERB3 log("Thread %llx created", (unsigned long long)thread_data->thread_id);
+    }
+//pthread_attr_destroy(&attr);
+    return r;
 }
 
 bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
 {
     try
     {
-        std::string debugDumpDir;
-        debugDumpDir = DeleteCrashInfo(pUUID, pUID);
+        std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
         DeleteDebugDumpDir(debugDumpDir);
     }
     catch (CABRTException& e)
@@ -206,13 +237,4 @@ bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
         return false;
     }
     return true;
-}
-
-map_crash_report_t GetJobResult(uint64_t pJobID, const std::string& pSender)
-{
-    /* FIXME: once we return the result, we should remove it from map to free memory
-       - use some TTL to clean the memory even if client won't get it
-       - if we don't find it in the cache we should try to ask MW to get it again??
-    */
-    return g_pending_jobs[pSender][pJobID];
 }

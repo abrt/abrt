@@ -5,6 +5,10 @@
 
 void init_daemon_logging(CObserver *pObs);
 
+/*
+ * Set client's name (dbus ID). NULL unsets it.
+ */
+void set_client_name(const char* name);
 /* Ask a client to warn the user about a non-fatal, but unexpected condition.
  * In GUI, it will usually be presented as a popup message.
  */

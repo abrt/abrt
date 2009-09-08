@@ -1,3 +1,4 @@
+# translation of abrt.master.ml.po to
 # translation of abrt.master.abrt.ml.po to
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
@@ -5,10 +6,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.abrt.ml\n"
+"Project-Id-Version: abrt.master.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-07 08:38+0000\n"
-"PO-Revision-Date: 2009-09-07 17:15+0530\n"
+"POT-Creation-Date: 2009-09-07 19:47+0000\n"
+"PO-Revision-Date: 2009-09-08 08:13+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -205,8 +206,7 @@ msgid ""
 "information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>മുന്നറിയിപ്പു്</b>, പ്രധാന വിവരങ്ങളടങ്ങുന്ന ഡേറ്റാ നിങ്ങള്‍ അയയ്ക്കുവാന്‍ "
-"തുടങ്ങുന്നു.\n"
+"<b>മുന്നറിയിപ്പു്</b>, പ്രധാന വിവരങ്ങളടങ്ങുന്ന ഡേറ്റാ നിങ്ങള്‍ അയയ്ക്കുവാന്‍ തുടങ്ങുന്നു.\n"
 "നിങ്ങള്‍ക്ക് <b>%s</b> അയയ്ക്കണമോ?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
@@ -313,8 +313,8 @@ msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
 msgstr ""
-"ഇതു് സ്വതവേയുള്ള ഹാന്‍ഡിലറാണു്. ConnectCrashHandler-ല്‍ "
-"നിങ്ങളുടെ സ്വന്തം ഹാന്‍ഡിലര്‍ രജിസ്ടര്‍ ചെയ്യണം"
+"ഇതു് സ്വതവേയുള്ള ഹാന്‍ഡിലറാണു്. ConnectCrashHandler-ല്‍ നിങ്ങളുടെ സ്വന്തം ഹാന്‍ഡിലര്‍ രജിസ്ടര്‍ "
+"ചെയ്യണം"
 
 #: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
@@ -328,32 +328,40 @@ msgstr "മെമ്മറി ലഭ്യമല്ല"
 msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
-#: ../lib/Plugins/Bugzilla.cpp:219
+#: ../lib/Plugins/Bugzilla.cpp:84
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "ലോഗിനും അടയാളവാക്കും ശൂന്യം. ദയവായി Bugzilla.conf പരിശോധിക്കുക"
+
+#: ../lib/Plugins/Bugzilla.cpp:228
 msgid "Bug is already reported: "
 msgstr "ബഗ് രേഖപ്പെടുത്തിയിരിക്കുന്നു: "
 
-#: ../lib/Plugins/Bugzilla.cpp:279
+#: ../lib/Plugins/Bugzilla.cpp:283
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "ബൈനറി ഫയല്‍ %s റിപോര്‍ട്ട് ചെയ്യുന്നതല്ല."
 
-#: ../lib/Plugins/Bugzilla.cpp:349
+#: ../lib/Plugins/Bugzilla.cpp:353
 msgid "New bug id: "
 msgstr "പുതിയ ബഗ് id: "
 
-#: ../lib/Plugins/Bugzilla.cpp:413
+#: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr "ഒരേപോലുള്ളവയ്ക്കായി തെരയുന്നു..."
 
-#: ../lib/Plugins/Bugzilla.cpp:429
+#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "ബഗ്സിലയിലേക്ക് പ്രവേശിക്കുന്നു..."
 
-#: ../lib/Plugins/Bugzilla.cpp:443
+#: ../lib/Plugins/Bugzilla.cpp:427
+msgid "Check CC and add coment +1..."
+msgstr "CC പരിശോധിച്ചു് coment +1 ചേര്‍ക്കുക..."
+
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr "പുതിയ ബഗ് ഉണ്ടാക്കുന്നു..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr "ലോഗൌട്ട് ചെയ്യുന്നു..."
 
@@ -377,13 +385,18 @@ msgstr "ബാക്ക്ട്രെയിസ് ലഭിക്കുന്�
 msgid "Getting local universal unique identification..."
 msgstr "ലോക്കല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
 
-#: ../lib/Plugins/CCpp.cpp:453
+#: ../lib/Plugins/CCpp.cpp:455
 msgid "Getting global universal unique identification..."
 msgstr "ഗ്ലോബല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
 
-#: ../lib/Plugins/CCpp.cpp:471
+#: ../lib/Plugins/CCpp.cpp:473
 msgid "Starting report creation..."
 msgstr "റിപോര്‍ട്ട് ഉണ്ടാക്കുവാന്‍ തുടങ്ങുന്നു..."
+
+#: ../lib/Plugins/CCpp.cpp:495
+#, c-format
+msgid "Skip debuginfo installation for package %s"
+msgstr "%s പാക്കേജിനുള്ള debuginfo ഇന്‍സ്റ്റലേഷന്‍ ഉപേക്ഷിക്കുക"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
