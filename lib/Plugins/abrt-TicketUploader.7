@@ -1,0 +1,55 @@
+.TH abrt "7" "9 July 2009" ""
+.SH NAME
+TicketUploader plugin for abrt(8)
+.SH DESCRIPTION
+.P
+.I abrt
+is a daemon which watches for application crashes. When a crash occurs,
+it collects the crash data and performs some actions according to 
+the configuration. This manual page describes the \fITicketUploader\fP plugin 
+for \fIabrt\fP.
+.P
+This plugin will send a report to an anonymous FTP site.  It's intended
+for use in cases where a ticketing system is associated with the FTP site,
+but the ticketing system has no way to automatically create new tickets,
+or add to existing tickets.  Customer Name is put in config file.
+Ticket name (or number) is also put in config file.  If no ticket
+name is configured, assume ticketing system should create a new ticket.
+This information is added to the report, the report is copied into a 
+compressed, optionally encrypted, tarball.  Then the tarball is FTP'd 
+to the upload site.  Then a status string is displayed to the user 
+showing the name of the file on the FTP site, it's MD5SUM, and 
+it's encryption key.  This information can be pasted into a ticket 
+in the ticketing system.
+.SH INVOCATION
+The plugin is invoked in the \fIabrt.conf\fP configuration file. 
+No parameters are necessary.
+.SH CONFIGURATION
+The \fITicketUploader.conf\fP configuration file contains
+entries in a format "Option = Value". The options are:
+.SS Customer
+This is the customer's name or other customer identifier.
+.SS Ticket
+This is the ticket name or number.
+.SS Encrypt
+"yes" for encrypt upload, anything else for not.
+.SS Upload
+"yes" for for upload to FTP site, anything else for copy to local /tmp.
+.SS URL
+URL of upload site (ie. ftp://support.com/upload).
+.SH EXAMPLES
+.P
+This is a snippet from the \fIabrt.conf\fP configuration file.
+Log all the C/C++ application crashes:
+.P
+[AnalyzerActionsAndReporters]
+.br
+CCpp = RHUpload
+.SH "SEE ALSO"
+.IR abrt (8),
+.IR abrt.conf (5),
+.IR abrt-plugins (7)
+.SH AUTHOR
+Plugin and man page by Gavin Romig-Koch <gavin@redhat.com>.
+
+
