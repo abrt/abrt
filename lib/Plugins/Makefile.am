@@ -87,7 +87,8 @@ libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) $(NSS
 # TicketUploader
 libTicketUploader_la_SOURCES = TicketUploader.h TicketUploader.cpp
 libTicketUploader_la_LDFLAGS = -avoid-version
-libTicketUploader_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libTicketUploader_la_LIBADD = $(CURL_LIBS)
+libTicketUploader_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # Python
 libPython_la_SOURCES = Python.h Python.cpp

@@ -31,7 +31,6 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC_CPP], [xmlrpc++])
 PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [xmlrpc_client++])
-PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [python])
 PKG_CHECK_MODULES([POLKIT],[polkit-gobject-1])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
@@ -39,6 +38,7 @@ AC_CHECK_HEADER([sys/inotify.h], [],
 
 AC_CHECK_HEADER([magic.h], [],
    [AC_MSG_ERROR([magic.h is needed to build abrt])])
+   
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'
