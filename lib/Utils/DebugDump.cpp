@@ -410,7 +410,7 @@ static void SaveBinaryFile(const std::string& pPath, const char* pData, const un
     }
 }
 
-void CDebugDump::LoadText(const std::string& pName, std::string& pData)
+void CDebugDump::LoadText(const char* pName, std::string& pData)
 {
     if (!m_bOpened)
     {
@@ -419,7 +419,7 @@ void CDebugDump::LoadText(const std::string& pName, std::string& pData)
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
     LoadTextFile(fullPath, pData);
 }
-void CDebugDump::LoadBinary(const std::string& pName, char** pData, unsigned int* pSize)
+void CDebugDump::LoadBinary(const char* pName, char** pData, unsigned int* pSize)
 {
     if (!m_bOpened)
     {
@@ -429,7 +429,7 @@ void CDebugDump::LoadBinary(const std::string& pName, char** pData, unsigned int
     LoadBinaryFile(fullPath, pData, pSize);
 }
 
-void CDebugDump::SaveText(const std::string& pName, const std::string& pData)
+void CDebugDump::SaveText(const char* pName, const std::string& pData)
 {
     if (!m_bOpened)
     {
@@ -438,7 +438,7 @@ void CDebugDump::SaveText(const std::string& pName, const std::string& pData)
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
     SaveTextFile(fullPath, pData);
 }
-void CDebugDump::SaveBinary(const std::string& pName, const char* pData, const unsigned int pSize)
+void CDebugDump::SaveBinary(const char* pName, const char* pData, const unsigned int pSize)
 {
     if (!m_bOpened)
     {
@@ -489,7 +489,7 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
             pFileName = dent->d_name;
             if (IsTextFile(fullname))
             {
-                LoadText(pFileName, pContent);
+                LoadText(dent->d_name, pContent);
                 pIsTextFile = true;
             }
             else
