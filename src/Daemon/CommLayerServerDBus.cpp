@@ -729,7 +729,8 @@ static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    SetSettings(param1);
+    const char * sender = dbus_message_get_sender(call);
+    SetSettings(param1, sender);
 
     send_flush_and_unref(reply);
     return 0;

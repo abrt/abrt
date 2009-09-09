@@ -19,7 +19,7 @@ extern map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndRepo
 
 void LoadSettings();
 void SaveSettings();
-void SetSettings(const map_abrt_settings_t& pSettings);
+void SetSettings(const map_abrt_settings_t& pSettings, const char * dbus_sender);
 map_abrt_settings_t GetSettings();
 
 #endif

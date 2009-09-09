@@ -1,6 +1,7 @@
 #include "Settings.h"
 #include "abrtlib.h"
 #include "abrt_types.h"
+#include "Polkit.h"
 #include <fstream>
 
 #define SECTION_COMMON      "Common"
@@ -424,9 +425,22 @@ void SaveSettings()
 }
 
 /* dbus call to change some .conf file data */
-void SetSettings(const map_abrt_settings_t& pSettings)
+void SetSettings(const map_abrt_settings_t& pSettings, const char * dbus_sender)
 {
     bool dirty = false;
+    int polkit_result;
+
+    if(( polkit_result = polkit_check_authorization(dbus_sender,
+                       "org.fedoraproject.abrt.save-settings")) != PolkitYes)
+    {
+        log("user %s not authorized, returned %d", dbus_sender,
+             polkit_result );
+        return;
+    } else
+    {
+       log("user %s succesfully authorized", dbus_sender);
+    }
+    
     map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
     map_abrt_settings_t::const_iterator end = pSettings.end();
     if (it != end)
