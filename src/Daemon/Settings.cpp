@@ -425,22 +425,20 @@ void SaveSettings()
 }
 
 /* dbus call to change some .conf file data */
-void SetSettings(const map_abrt_settings_t& pSettings, const char * dbus_sender)
+void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
 {
     bool dirty = false;
     int polkit_result;
 
-    if(( polkit_result = polkit_check_authorization(dbus_sender,
-                       "org.fedoraproject.abrt.save-settings")) != PolkitYes)
+    polkit_result = polkit_check_authorization(dbus_sender,
+                       "org.fedoraproject.abrt.save-settings");
+    if (polkit_result != PolkitYes)
     {
-        log("user %s not authorized, returned %d", dbus_sender,
-             polkit_result );
+        log("user %s not authorized, returned %d", dbus_sender, polkit_result);
         return;
-    } else
-    {
-       log("user %s succesfully authorized", dbus_sender);
     }
-    
+    log("user %s succesfully authorized", dbus_sender);
+
     map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
     map_abrt_settings_t::const_iterator end = pSettings.end();
     if (it != end)

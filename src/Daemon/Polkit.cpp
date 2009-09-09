@@ -1,4 +1,4 @@
-/* 
+/*
     Polkit.cpp - PolicyKit integration for ABRT
  
     Copyright (C) 2009  Daniel Novotny (dnovotny@redhat.com) 
@@ -24,39 +24,41 @@
 
 #include "Polkit.h"
 
-PolkitResult polkit_check_authorization(const char* dbus_name,const char *action_id)
+PolkitResult polkit_check_authorization(const char *dbus_name, const char *action_id)
 {
     PolkitAuthority *authority;
     PolkitSubject *subject;
     PolkitAuthorizationResult *result;
     GError *error = NULL;
-    
+
     g_type_init();
     authority = polkit_authority_get();
-    subject = polkit_system_bus_name_new( dbus_name );
+    subject = polkit_system_bus_name_new(dbus_name);
 
     result = polkit_authority_check_authorization_sync(authority,
-                subject, 
-                action_id, 
+                subject,
+                action_id,
                 NULL,
                 POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
                 NULL,
                 &error);
-		
-    if (error) {
-        g_error_free (error);
+
+    if (error)
+    {
+        g_error_free(error);
         return PolkitUnknown;
     }
-                                                                                                    
+
     if (result)
+    {
 	if (polkit_authorization_result_get_is_challenge(result))
+            /* Can't happen (happens only with
+             * POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE flag) */
 	    return PolkitChallenge;
-	else
-    	    if (polkit_authorization_result_get_is_authorized(result)) 
-		return PolkitYes;
-	    else 
-		return PolkitNo;
-		
+    	if (polkit_authorization_result_get_is_authorized(result))
+	    return PolkitYes;
+	return PolkitNo;
+    }
+
     return PolkitUnknown;
 }
-

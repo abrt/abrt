@@ -22,18 +22,18 @@
 #ifndef ABRT_POLKIT_H
 #define ABRT_POLKIT_H
 
-typedef enum { 
+typedef enum {
 /* Authorization status is unknown */
-PolkitUnknown = 0x0, 
-/* Subject is authorized for the action */
-PolkitYes = 0x01, 
-/* Subject is not authorized for the action */
-PolkitNo = 0x02, 
-/* Challenge is needed for this action, only when flag is 
-POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE*/
-PolkitChallenge = 0x03 
+    PolkitUnknown = 0x0,
+    /* Subject is authorized for the action */
+    PolkitYes = 0x01,
+    /* Subject is not authorized for the action */
+    PolkitNo = 0x02,
+    /* Challenge is needed for this action, only when flag is
+     * POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE */
+    PolkitChallenge = 0x03
 } PolkitResult;
-                                    
-PolkitResult polkit_check_authorization(const char * dbus_name,const char *action_id);
+
+PolkitResult polkit_check_authorization(const char *dbus_name, const char *action_id);
 
 #endif
