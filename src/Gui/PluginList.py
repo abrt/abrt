@@ -40,6 +40,12 @@ class PluginInfoList(list):
         
     def getActionPlugins(self):
         return [x for x in self if x["Enabled"] == 'yes' and x["Type"] == 'Action']
+        
+    def getDatabasePlugins(self):
+        return [x for x in self if x["Enabled"] == 'yes' and x["Type"] == 'Database']
+        
+    def getAnalyzerPlugins(self):
+        return [x for x in self if x["Enabled"] == 'yes' and x["Type"] == 'Analyzer']
 
 
 

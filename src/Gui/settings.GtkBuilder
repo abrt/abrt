@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <interface>
-  <requires lib="gtk+" version="2.14"/>
+  <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="wPluginsSettings">
     <property name="title" translatable="yes">Settings</property>
@@ -67,7 +67,8 @@
                     <child>
                       <object class="GtkLabel" id="label4">
                         <property name="visible">True</property>
-                        <property name="xalign">0.05000000074505806</property>
+                        <property name="xalign">2.2351741291171123e-10</property>
+                        <property name="xpad">5</property>
                         <property name="label" translatable="yes">Web Site:</property>
                       </object>
                       <packing>
@@ -78,7 +79,8 @@
                     <child>
                       <object class="GtkLabel" id="label2">
                         <property name="visible">True</property>
-                        <property name="xalign">0.05000000074505806</property>
+                        <property name="xalign">2.2351741291171123e-10</property>
+                        <property name="xpad">5</property>
                         <property name="label" translatable="yes">Author:</property>
                       </object>
                       <packing>
@@ -90,7 +92,8 @@
                     <child>
                       <object class="GtkLabel" id="label3">
                         <property name="visible">True</property>
-                        <property name="xalign">0.05000000074505806</property>
+                        <property name="xalign">0</property>
+                        <property name="xpad">5</property>
                         <property name="label" translatable="yes">Version:</property>
                       </object>
                       <packing>
@@ -100,7 +103,7 @@
                     <child>
                       <object class="GtkLabel" id="lPluginVersion">
                         <property name="visible">True</property>
-                        <property name="xalign">0.05000000074505806</property>
+                        <property name="xalign">2.2351741291171123e-10</property>
                         <property name="label" translatable="yes">Nothing selected</property>
                       </object>
                       <packing>
@@ -113,7 +116,7 @@
                     <child>
                       <object class="GtkLabel" id="lPluginAuthor">
                         <property name="visible">True</property>
-                        <property name="xalign">0.05000000074505806</property>
+                        <property name="xalign">2.2351741291171123e-10</property>
                         <property name="label" translatable="yes">Nothing selected</property>
                       </object>
                       <packing>
@@ -126,7 +129,7 @@
                     <child>
                       <object class="GtkLabel" id="lPluginWebSite">
                         <property name="visible">True</property>
-                        <property name="xalign">0.05000000074505806</property>
+                        <property name="xalign">0</property>
                         <property name="label" translatable="yes">Nothing selected</property>
                       </object>
                       <packing>
@@ -228,36 +231,174 @@
             <property name="visible">True</property>
             <property name="can_focus">True</property>
             <child>
-              <object class="GtkTable" id="stable1">
+              <object class="GtkTable" id="common_table">
                 <property name="visible">True</property>
-                <property name="n_rows">3</property>
-                <property name="n_columns">3</property>
+                <property name="n_rows">5</property>
+                <property name="n_columns">2</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkCheckButton" id="cbOpenGPGCheck">
+                    <property name="label" translatable="yes">Check package GPG signature</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">False</property>
+                    <property name="draw_indicator">True</property>
+                  </object>
+                  <packing>
+                    <property name="right_attach">2</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkLabel" id="lDatabasePlugin">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">5</property>
+                    <property name="label" translatable="yes">Database backend: </property>
+                  </object>
+                  <packing>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkComboBox" id="cbDatabase">
+                    <property name="visible">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkLabel" id="lBlacklist">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">5</property>
+                    <property name="label" translatable="yes">Blacklisted packages: </property>
+                  </object>
+                  <packing>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkLabel" id="lMaxCrashReportsSize">
+                    <property name="visible">True</property>
+                    <property name="xalign">2.2351741291171123e-10</property>
+                    <property name="xpad">5</property>
+                    <property name="label" translatable="yes">Max coredump storage size(MB):</property>
+                  </object>
+                  <packing>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkLabel" id="lOpenGPGPublicKeys">
+                    <property name="visible">True</property>
+                    <property name="xalign">0</property>
+                    <property name="xpad">5</property>
+                    <property name="label" translatable="yes">GPG keys: </property>
+                  </object>
+                  <packing>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkSpinButton" id="sbMaxCrashReportsSize">
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="adjustment">adjMaxRepSize</property>
+                    <property name="numeric">True</property>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">3</property>
+                    <property name="bottom_attach">4</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkHBox" id="blhbox">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkEntry" id="eBlacklist">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="bEditBlackList">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="tooltip_text" translatable="yes">Edit blacklisted packages</property>
+                        <property name="image">imEdit</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkHBox" id="gpghbox">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkEntry" id="eOpenGPGPublicKeys">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="editable">False</property>
+                        <property name="invisible_char">&#x25CF;</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="bOpenGPGPublicKeys">
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="image">imEdit1</property>
+                      </object>
+                      <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="left_attach">1</property>
+                    <property name="right_attach">2</property>
+                    <property name="top_attach">4</property>
+                    <property name="bottom_attach">5</property>
+                    <property name="y_options">GTK_FILL</property>
+                  </packing>
                 </child>
               </object>
             </child>
@@ -285,11 +426,49 @@
                         <property name="visible">True</property>
                         <property name="resize_mode">queue</property>
                         <child>
-                          <object class="GtkVBox" id="vbCronJobs">
+                          <object class="GtkVBox" id="cjvbox1">
                             <property name="visible">True</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <placeholder/>
+                              <object class="GtkHBox" id="cjhbox1">
+                                <property name="visible">True</property>
+                                <child>
+                                  <object class="GtkLabel" id="lPlugin">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Plugin&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">0</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkLabel" id="lTime">
+                                    <property name="visible">True</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Time (or period)&lt;/b&gt;</property>
+                                    <property name="use_markup">True</property>
+                                  </object>
+                                  <packing>
+                                    <property name="position">1</property>
+                                  </packing>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="expand">False</property>
+                                <property name="position">0</property>
+                              </packing>
+                            </child>
+                            <child>
+                              <object class="GtkVBox" id="vbCronJobs">
+                                <property name="visible">True</property>
+                                <property name="orientation">vertical</property>
+                                <child>
+                                  <placeholder/>
+                                </child>
+                              </object>
+                              <packing>
+                                <property name="position">1</property>
+                              </packing>
                             </child>
                           </object>
                         </child>
@@ -360,36 +539,103 @@
               </packing>
             </child>
             <child>
-              <object class="GtkTable" id="stable3">
+              <object class="GtkVBox" id="actions_vbox">
                 <property name="visible">True</property>
-                <property name="n_rows">3</property>
-                <property name="n_columns">3</property>
+                <property name="orientation">vertical</property>
                 <child>
-                  <placeholder/>
+                  <object class="GtkHBox" id="ahbox1">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkLabel" id="lReporter">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Analyzer plugin&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkLabel" id="lAssociatedActions">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">&lt;b&gt;Associated action&lt;/b&gt;</property>
+                        <property name="use_markup">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="action_lbl_align">
+                        <property name="visible">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">0</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
+                  <object class="GtkVBox" id="vbActions">
+                    <property name="visible">True</property>
+                    <property name="orientation">vertical</property>
+                    <child>
+                      <placeholder/>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
                 </child>
                 <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
-                </child>
-                <child>
-                  <placeholder/>
+                  <object class="GtkHBox" id="actions_button_hbox">
+                    <property name="visible">True</property>
+                    <child>
+                      <object class="GtkAlignment" id="act_align1">
+                        <property name="visible">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">0</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="act_align2">
+                        <property name="visible">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">1</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkButton" id="bAddAction">
+                        <property name="label" translatable="yes">gtk-add</property>
+                        <property name="visible">True</property>
+                        <property name="can_focus">True</property>
+                        <property name="receives_default">True</property>
+                        <property name="use_stock">True</property>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                  </object>
+                  <packing>
+                    <property name="expand">False</property>
+                    <property name="position">2</property>
+                  </packing>
                 </child>
               </object>
               <packing>
@@ -466,6 +712,99 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAdjustment" id="adjMaxRepSize">
+    <property name="upper">1000000</property>
+    <property name="step_increment">1</property>
+  </object>
+  <object class="GtkImage" id="imEdit">
+    <property name="visible">True</property>
+    <property name="stock">gtk-edit</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkImage" id="imEdit1">
+    <property name="visible">True</property>
+    <property name="stock">gtk-edit</property>
+    <property name="icon-size">1</property>
+  </object>
+  <object class="GtkWindow" id="wGPGKeys">
+    <property name="title" translatable="yes">GPG Keys</property>
+    <property name="modal">True</property>
+    <property name="default_width">400</property>
+    <property name="default_height">250</property>
+    <child>
+      <object class="GtkVBox" id="gpgkeys_vbox">
+        <property name="visible">True</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkTreeView" id="tvGPGKeys">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+          </object>
+          <packing>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkHBox" id="gpg_buttons_hbox">
+            <property name="visible">True</property>
+            <property name="homogeneous">True</property>
+            <child>
+              <object class="GtkButton" id="bAddGPGKey">
+                <property name="label" translatable="yes">gtk-add</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="bRemoveGPGKey">
+                <property name="label" translatable="yes">gtk-remove</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="bSaveGPGKeys">
+                <property name="label" translatable="yes">gtk-ok</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="bCancelGPGKeys">
+                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="position">3</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
             <property name="position">1</property>
           </packing>
         </child>

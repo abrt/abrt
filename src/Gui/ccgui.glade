@@ -141,18 +141,17 @@ Zdenek Prikryl &lt;zprikryl@redhat.com&gt;</property>
                   <widget class="GtkMenu" id="menu1">
                     <property name="visible">True</property>
                     <child>
+                      <widget class="GtkMenuItem" id="miPlugins">
+                        <property name="visible">True</property>
+                        <property name="label" translatable="yes">Plugins</property>
+                      </widget>
+                    </child>
+                    <child>
                       <widget class="GtkImageMenuItem" id="miPreferences">
                         <property name="label">gtk-preferences</property>
                         <property name="visible">True</property>
                         <property name="use_underline">True</property>
                         <property name="use_stock">True</property>
-                      </widget>
-                    </child>
-                    <child>
-                      <widget class="GtkMenuItem" id="miSettings">
-                        <property name="visible">True</property>
-                        <property name="label" translatable="yes">Global settings</property>
-                        <property name="use_underline">True</property>
                       </widget>
                     </child>
                   </widget>

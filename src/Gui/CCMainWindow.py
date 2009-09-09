@@ -108,8 +108,8 @@ class MainWindow():
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
         self.wTree.get_widget("miAbout").connect("activate", self.on_miAbout_clicked)
-        self.wTree.get_widget("miPreferences").connect("activate", self.on_miPreferences_clicked)
-        self.wTree.get_widget("miSettings").connect("activate", self.on_miSettings_clicked)
+        self.wTree.get_widget("miPlugins").connect("activate", self.on_miPreferences_clicked)
+        self.wTree.get_widget("miPreferences").connect("activate", self.on_miSettings_clicked)
         # connect handlers for daemon signals
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
