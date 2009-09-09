@@ -28,7 +28,7 @@ CABRTPlugin::CABRTPlugin(const char* pLibPath)
     /* All errors are fatal */
     m_pHandle = dlopen(pLibPath, RTLD_NOW);
     if (!m_pHandle)
-        error_msg_and_die("can't load '%s'", pLibPath);
+        error_msg_and_die("can't load '%s': %s", pLibPath, dlerror());
 
 #define LOADSYM(fp, handle, name) do { \
     fp = (typeof(fp)) (dlsym(handle, name)); \
