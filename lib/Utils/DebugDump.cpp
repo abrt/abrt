@@ -41,6 +41,15 @@ static bool dot_or_dotdot(const char *filename)
     return false;
 }
 
+static bool isdigit_str(const char *str)
+{
+    while (*str)
+    {
+        if (*str < '0' || *str > '9') return false;
+        str++;
+    }
+}
+
 static std::string RemoveBackSlashes(const std::string& pDir);
 static bool ExistFileDir(const char* pPath);
 static void LoadTextFile(const std::string& pPath, std::string& pData);
@@ -94,51 +103,52 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
     while ((fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640)) < 0)
     {
         if (errno != EEXIST)
-        {
-            throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't create lock file");
-        }
+            perror_msg_and_die("Can't create lock file '%s'", pLockFile);
         fd = open(pLockFile, O_RDONLY);
-        if (fd == -1)
+        if (fd < 0)
         {
-            throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't get lock status");
+            if (errno == ENOENT)
+                continue; /* someone else deleted the file */
+            perror_msg_and_die("Can't open lock file '%s'", pLockFile);
         }
-        char pid[sizeof(pid_t)*3 + 4];
-        int r = read(fd, pid, sizeof(pid) - 1);
-        if (r == -1)
+        char pid_buf[sizeof(pid_t)*3 + 4];
+        int r = read(fd, pid_buf, sizeof(pid_buf) - 1);
+        if (r < 0)
+            perror_msg_and_die("Can't read lock file '%s'", pLockFile);
+        close(fd);
+        if (r == 0)
         {
-            close(fd);
-            throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't get a pid");
+            /* Other process did not write out PID yet.
+             * We HOPE it did not crash... */
+            continue;
         }
-        pid[r] = '\0';
-        if (strcmp(pid, pPID) == 0)
+        pid_buf[r] = '\0';
+        if (strcmp(pid_buf, pPID) == 0)
         {
-            close(fd);
-            log("Lock file '%s' is locked by same process", pLockFile);
+            log("Lock file '%s' is already locked by us", pLockFile);
             return -1;
         }
-        if (lockf(fd, F_TEST, 0) != 0)
+        if (isdigit_str(pid_buf))
         {
-            log("Lock file '%s' is locked by another process", pLockFile);
-            close(fd);
-            return -1;
+            if (access(ssprintf("/proc/%s", pid_buf).c_str(), F_OK) == 0)
+            {
+                log("Lock file '%s' is locked by process %s", pLockFile, pid_buf);
+                return -1;
+            }
+            log("Lock file '%s' was locked by process %s, but it crashed?", pLockFile, pid_buf);
         }
-        log("Lock file '%s' was locked by another process, but it crashed?", pLockFile);
-        xunlink(pLockFile);
+        /* The file may be deleted by now by other process. Ignore errors */
+        unlink(pLockFile);
     }
 
     int len = strlen(pPID);
     if (write(fd, pPID, len) != len)
     {
-        close(fd);
-        remove(pLockFile);
-        throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't write a pid");
+        unlink(pLockFile);
+        /* close(fd); - not needed, exiting does it too */
+        perror_msg_and_die("Can't write lock file '%s'", pLockFile);
     }
-    if (lockf(fd, F_LOCK, 0) != 0)
-    {
-        close(fd);
-        remove(pLockFile);
-        throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't get lock file");
-    }
+
     log("Locked '%s'", pLockFile);
     return fd;
 }
