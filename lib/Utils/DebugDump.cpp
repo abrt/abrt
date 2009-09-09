@@ -42,7 +42,7 @@ static bool dot_or_dotdot(const char *filename)
 }
 
 static std::string RemoveBackSlashes(const std::string& pDir);
-static bool ExistFileDir(const std::string& pPath);
+static bool ExistFileDir(const char* pPath);
 static void LoadTextFile(const std::string& pPath, std::string& pData);
 
 CDebugDump::CDebugDump() :
@@ -60,7 +60,7 @@ void CDebugDump::Open(const std::string& pDir)
         throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
-    if (!ExistFileDir(m_sDebugDumpDir))
+    if (!ExistFileDir(m_sDebugDumpDir.c_str()))
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" does not exist.");
     }
@@ -71,14 +71,14 @@ void CDebugDump::Open(const std::string& pDir)
 bool CDebugDump::Exist(const char* pPath)
 {
     std::string fullPath = m_sDebugDumpDir + "/" + pPath;
-    return ExistFileDir(fullPath);
+    return ExistFileDir(fullPath.c_str());
 }
 
 
-static bool ExistFileDir(const std::string& pPath)
+static bool ExistFileDir(const char* pPath)
 {
     struct stat buf;
-    if (stat(pPath.c_str(), &buf) == 0)
+    if (stat(pPath, &buf) == 0)
     {
         if (S_ISDIR(buf.st_mode) || S_ISREG(buf.st_mode))
         {
@@ -88,16 +88,16 @@ static bool ExistFileDir(const std::string& pPath)
     return false;
 }
 
-bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& pPID)
+bool CDebugDump::GetAndSetLock(const char* pLockFile, const std::string& pPID)
 {
-    int fd = open(pLockFile.c_str(), O_WRONLY | O_CREAT | O_EXCL, 0640);
+    int fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640);
     if (fd == -1)
     {
         if (errno != EEXIST)
         {
             throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot create lock file");
         }
-        fd = open(pLockFile.c_str(), O_RDONLY);
+        fd = open(pLockFile, O_RDONLY);
         if (fd == -1)
         {
             throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock status");
@@ -114,17 +114,17 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
         {
             close(fd);
             m_bUnlock = false;
-            log("Lock file '%s' is locked by same process", pLockFile.c_str());
+            log("Lock file '%s' is locked by same process", pLockFile);
             return true;
         }
         if (lockf(fd, F_TEST, 0) == 0)
         {
             close(fd);
-            remove(pLockFile.c_str());
+            remove(pLockFile);
             Delete();
             throw CABRTException(EXCEP_ERROR, "CDebugDump::GetAndSetLock(): dead lock found");
         }
-        log("Lock file '%s' is locked by another process", pLockFile.c_str());
+        log("Lock file '%s' is locked by another process", pLockFile);
         close(fd);
         return false;
     }
@@ -132,19 +132,19 @@ bool CDebugDump::GetAndSetLock(const std::string& pLockFile, const std::string& 
     if (write(fd, pPID.c_str(), pPID.length()) != pPID.length())
     {
         close(fd);
-        remove(pLockFile.c_str());
+        remove(pLockFile);
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot write a pid");
     }
     if (lockf(fd, F_LOCK, 0) == -1)
     {
         close(fd);
-        remove(pLockFile.c_str());
+        remove(pLockFile);
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock file");
     }
     m_nFD = fd;
     m_bUnlock = true;
 
-    log("Locking '%s'...", pLockFile.c_str());
+    log("Locking '%s'...", pLockFile);
 
     return true;
 }
@@ -155,7 +155,7 @@ void CDebugDump::Lock()
     pid_t nPID = getpid();
     std::stringstream ss;
     ss << nPID;
-    while (!GetAndSetLock(lockFile, ss.str()))
+    while (!GetAndSetLock(lockFile.c_str(), ss.str()))
     {
         usleep(500000);
     }
@@ -181,7 +181,7 @@ void CDebugDump::Create(const std::string& pDir, uid_t uid)
     }
 
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
-    if (ExistFileDir(m_sDebugDumpDir))
+    if (ExistFileDir(m_sDebugDumpDir.c_str()))
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" already exists.");
     }
@@ -288,7 +288,7 @@ static std::string RemoveBackSlashes(const std::string& pDir)
 
 void CDebugDump::Delete()
 {
-    if (!ExistFileDir(m_sDebugDumpDir))
+    if (!ExistFileDir(m_sDebugDumpDir.c_str()))
     {
         return;
     }
@@ -457,7 +457,6 @@ void CDebugDump::InitGetNextFile()
     if (m_pGetNextFileDir != NULL)
     {
         closedir(m_pGetNextFileDir);
-        m_pGetNextFileDir= NULL;
     }
     m_pGetNextFileDir = opendir(m_sDebugDumpDir.c_str());
     if (m_pGetNextFileDir == NULL)
@@ -468,12 +467,12 @@ void CDebugDump::InitGetNextFile()
 
 bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile)
 {
-    struct dirent *dent;
-
     if (m_pGetNextFileDir == NULL)
     {
         return false;
     }
+
+    struct dirent *dent;
     while ((dent = readdir(m_pGetNextFileDir)) != NULL)
     {
         struct stat statbuf;
@@ -500,6 +499,8 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
             return true;
         }
     }
+    closedir(m_pGetNextFileDir);
+    m_pGetNextFileDir = NULL;
     return false;
 }
 

@@ -52,13 +52,13 @@ class CDebugDump
         void SaveTime();
 
         void Lock();
-        bool GetAndSetLock(const std::string& pLockFile, const std::string& pPID);
+        bool GetAndSetLock(const char* pLockFile, const std::string& pPID);
         void UnLock();
 
     public:
         CDebugDump();
         void Open(const std::string& pDir);
-        void Create(const std::string& pDir, uid_t pUID);
+        void Create(const std::string& pDir, uid_t nUID);
         void Delete();
         void Close();
 
