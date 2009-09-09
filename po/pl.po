@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-08 19:01+0000\n"
-"PO-Revision-Date: 2009-09-08 21:03+0200\n"
+"POT-Creation-Date: 2009-09-09 15:44+0000\n"
+"PO-Revision-Date: 2009-09-09 18:05+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <fedora-trans-pl@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -85,12 +85,12 @@ msgid "Delete"
 msgstr "Usuń"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "Ustawienia systemowe"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "Proszę czekać..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "Wtyczki"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -255,9 +255,21 @@ msgstr "Wyślij"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "Wybierz wtyczkę"
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>Wybierz wtyczkę</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>Wybierz zaplecze bazy danych</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "Usuń te zadanie"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "Usuń tę czynność"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
