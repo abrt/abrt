@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-07 19:47+0000\n"
-"PO-Revision-Date: 2009-09-08 11:20+1000\n"
+"POT-Creation-Date: 2009-09-08 19:49+0000\n"
+"PO-Revision-Date: 2009-09-09 10:38+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -48,11 +48,11 @@ msgstr "Database 플러그인 "
 msgid "Can't connect to dbus"
 msgstr "dbus에 연결할 수 없음 "
 
-#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:163
+#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
 msgid "Please check if abrt daemon is running."
 msgstr "abrt 데몬이 실행되고 있는지 확인하십시오.  "
 
-#: ../src/Gui/CCDBusBackend.py:181
+#: ../src/Gui/CCDBusBackend.py:182
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -68,7 +68,7 @@ msgstr " "
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:215
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:223
 msgid "<b>Not reported!</b>"
 msgstr "<b>보고되지 않았습니다!</b>  "
 
@@ -89,14 +89,18 @@ msgid "Delete"
 msgstr "삭제 "
 
 #: ../src/Gui/ccgui.glade.h:8
+msgid "Global settings"
+msgstr "글로벌 설정  "
+
+#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "잠시만 기다려 주십시오..  "
 
-#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:2
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
 msgstr "보고  "
 
-#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/ccgui.glade.h:11
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -122,43 +126,43 @@ msgstr ""
 "이 프로그램과 함께 GNU General Public License 복사본을 받으시게 됩니다.  받"
 "지 못하셨을 경우, <http://www.gnu.org/licenses/>에서 살펴보십시오.     "
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "Working..."
 msgstr "작업 중...       "
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Edit"
 msgstr "편집(_E)  "
 
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:18
 msgid "_File"
 msgstr "파일(_F)  "
 
-#: ../src/Gui/ccgui.glade.h:18
+#: ../src/Gui/ccgui.glade.h:19
 msgid "_Help"
 msgstr "도움말(_H)  "
 
-#: ../src/Gui/CCMainWindow.py:86
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Package"
 msgstr "패키지  "
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:88
 msgid "Application"
 msgstr "응용 프로그램  "
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Date"
 msgstr "날짜  "
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:90
 msgid "Crash Rate"
 msgstr "크래시 비율  "
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:92
 msgid "User"
 msgstr "사용자  "
 
-#: ../src/Gui/CCMainWindow.py:157
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -167,7 +171,7 @@ msgstr ""
 "현재 작업을 완료할 수 없습니다!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:174
+#: ../src/Gui/CCMainWindow.py:182
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -177,13 +181,13 @@ msgstr ""
 "오\n"
 " %s "
 
-#: ../src/Gui/CCMainWindow.py:207
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr ""
 "<b>이러한 크래시는 보고되었습니다, 다음 페이지에서 이를 확인하실 수 있습니다:"
 "</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:267
+#: ../src/Gui/CCMainWindow.py:275
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -191,7 +195,7 @@ msgstr ""
 "보고서를 가져올 수 없습니다!\n"
 "디버그 정보가 없습니까?        "
 
-#: ../src/Gui/CCMainWindow.py:279
+#: ../src/Gui/CCMainWindow.py:287
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -200,7 +204,7 @@ msgstr ""
 "보고 실패했습니다!\n"
 "%s "
 
-#: ../src/Gui/CCMainWindow.py:311
+#: ../src/Gui/CCMainWindow.py:319
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "보고서를 가져오는 도중 오류 발생: %s"
@@ -249,45 +253,9 @@ msgstr "전송 "
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:22
-msgid "Can't load gui description for SettingsDialog!"
-msgstr "SettingsDialog의 gui 설명을 불러올 수 없습니다!  "
-
-#: ../src/Gui/SettingsDialog.py:34
-msgid "Name"
-msgstr "이름       "
-
-#: ../src/Gui/SettingsDialog.py:52
-msgid "Enabled"
-msgstr "활성화  "
-
-#: ../src/Gui/SettingsDialog.py:117
-msgid "Can't get plugin description"
-msgstr "플러그인 설명을 가져올 수 없습니다  "
-
-#: ../src/Gui/SettingsDialog.py:125
-#, python-format
-msgid ""
-"Error while opening plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-"플러그인 설정 UI를 열 때 오류 발생: \n"
-"\n"
-"%s "
-
-#: ../src/Gui/SettingsDialog.py:135
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-"플러그인 설정을 저장할 수 없음:\n"
-" %s "
-
-#: ../src/Gui/SettingsDialog.py:141
-msgid "unknown response from settings dialog"
-msgstr "설정 다이얼로그에서의 알 수 없는 응답  "
+#: ../src/Gui/SettingsDialog.py:44
+msgid "Select a plugin"
+msgstr "플러그인 선택  "
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -445,7 +413,15 @@ msgstr "커널 oops 크래시 보고서 작성 중...   "
 msgid "Sending an email..."
 msgstr "이메일 전송 중...   "
 
-#: ../lib/Plugins/SOSreport.cpp:90
-msgid "Executing SOSreportAction plugin..."
-msgstr "SOSreportAction 플러그인 실행 중...   "
+#: ../lib/Plugins/SOSreport.cpp:116
+msgid "Executing SOSreport plugin..."
+msgstr "SOSreport 플러그인 실행 중...     "
+
+#: ../lib/Plugins/SOSreport.cpp:138
+msgid "running sosreport: "
+msgstr "sosreport 실행 중:  "
+
+#: ../lib/Plugins/SOSreport.cpp:153
+msgid "done running sosreport"
+msgstr "sosreport 실행 완료  "
 
