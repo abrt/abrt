@@ -280,3 +280,9 @@ int open_or_warn(const char *pathname, int flags)
 	return open3_or_warn(pathname, flags, 0666);
 }
 #endif
+
+void xunlink(const char *pathname)
+{
+	if (unlink(pathname))
+		perror_msg_and_die("can't remove file '%s'", pathname);
+}

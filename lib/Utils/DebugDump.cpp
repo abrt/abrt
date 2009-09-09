@@ -48,9 +48,8 @@ static void LoadTextFile(const std::string& pPath, std::string& pData);
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
     m_bOpened(false),
-    m_bUnlock(true),
     m_pGetNextFileDir(NULL),
-    m_nFD(-1)
+    m_nLockfileFD(-1)
 {}
 
 void CDebugDump::Open(const std::string& pDir)
@@ -88,74 +87,72 @@ static bool ExistFileDir(const char* pPath)
     return false;
 }
 
-bool CDebugDump::GetAndSetLock(const char* pLockFile, const std::string& pPID)
+static int GetAndSetLock(const char* pLockFile, const char* pPID)
 {
-    int fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640);
-    if (fd == -1)
+    bool need2lock = true;
+    int fd;
+
+    while ((fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640)) < 0)
     {
         if (errno != EEXIST)
         {
-            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot create lock file");
+            throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't create lock file");
         }
         fd = open(pLockFile, O_RDONLY);
         if (fd == -1)
         {
-            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock status");
+            throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't get lock status");
         }
         char pid[sizeof(pid_t)*3 + 4];
         int r = read(fd, pid, sizeof(pid) - 1);
         if (r == -1)
         {
             close(fd);
-            throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get a pid");
+            throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't get a pid");
         }
         pid[r] = '\0';
-        if (pid == pPID)
+        if (strcmp(pid, pPID) == 0)
         {
             close(fd);
-            m_bUnlock = false;
             log("Lock file '%s' is locked by same process", pLockFile);
-            return true;
+            return -1;
         }
-        if (lockf(fd, F_TEST, 0) == 0)
+        if (lockf(fd, F_TEST, 0) != 0)
         {
+            log("Lock file '%s' is locked by another process", pLockFile);
             close(fd);
-            remove(pLockFile);
-            Delete();
-            throw CABRTException(EXCEP_ERROR, "CDebugDump::GetAndSetLock(): dead lock found");
+            return -1;
         }
-        log("Lock file '%s' is locked by another process", pLockFile);
-        close(fd);
-        return false;
+        log("Lock file '%s' was locked by another process, but it crashed?", pLockFile);
+        xunlink(pLockFile);
     }
 
-    if (write(fd, pPID.c_str(), pPID.length()) != pPID.length())
+    int len = strlen(pPID);
+    if (write(fd, pPID, len) != len)
     {
         close(fd);
         remove(pLockFile);
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot write a pid");
+        throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't write a pid");
     }
-    if (lockf(fd, F_LOCK, 0) == -1)
+    if (need2lock && lockf(fd, F_LOCK, 0) != 0)
     {
         close(fd);
         remove(pLockFile);
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::GetAndSetLock(): cannot get lock file");
+        throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't get lock file");
     }
-    m_nFD = fd;
-    m_bUnlock = true;
-
-    log("Locking '%s'...", pLockFile);
-
-    return true;
+    log("Locked '%s'", pLockFile);
+    return fd;
 }
 
 void CDebugDump::Lock()
 {
+    if (m_nLockfileFD >= 0)
+        error_msg_and_die("Locking bug on '%s'", m_sDebugDumpDir.c_str());
+
     std::string lockFile = m_sDebugDumpDir + ".lock";
-    pid_t nPID = getpid();
-    std::stringstream ss;
-    ss << nPID;
-    while (!GetAndSetLock(lockFile.c_str(), ss.str()))
+    char pid_buf[sizeof(int)*3 + 2];
+    sprintf(pid_buf, "%u", (unsigned)getpid());
+    while ((m_nLockfileFD = GetAndSetLock(lockFile.c_str(), pid_buf)) < 0)
     {
         usleep(500000);
     }
@@ -163,13 +160,13 @@ void CDebugDump::Lock()
 
 void CDebugDump::UnLock()
 {
-    std::string lockFile = m_sDebugDumpDir + ".lock";
-    if (m_bUnlock)
+    if (m_nLockfileFD >= 0)
     {
-        log("UnLocking '%s'...", lockFile.c_str());
-        close(m_nFD);
-        m_nFD = -1;
-        remove(lockFile.c_str());
+        std::string lockFile = m_sDebugDumpDir + ".lock";
+        log("UnLocking '%s'", lockFile.c_str());
+        close(m_nLockfileFD);
+        m_nLockfileFD = -1;
+        xunlink(lockFile.c_str());
     }
 }
 

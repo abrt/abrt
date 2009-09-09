@@ -44,15 +44,13 @@ class CDebugDump
     private:
         std::string m_sDebugDumpDir;
         bool m_bOpened;
-        bool m_bUnlock;
         DIR* m_pGetNextFileDir;
-        int m_nFD;
+        int m_nLockfileFD;
 
         void SaveKernelArchitectureRelease();
         void SaveTime();
 
         void Lock();
-        bool GetAndSetLock(const char* pLockFile, const std::string& pPID);
         void UnLock();
 
     public:

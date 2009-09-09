@@ -117,6 +117,7 @@ char* xasprintf(const char *format, ...);
 
 int xopen(const char *pathname, int flags);
 int xopen3(const char *pathname, int flags, int mode);
+void xunlink(const char *pathname);
 
 /* copyfd_XX print read/write errors and return -1 if they occur */
 off_t copyfd_eof(int src_fd, int dst_fd);
