@@ -24,6 +24,7 @@
 #include "abrtlib.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
+#include "Polkit.h"
 #include "PluginManager.h"
 
 /**
@@ -228,6 +229,20 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
     }
 }
 
+void CPluginManager::RegisterPluginDBUS(const std::string& pName,
+                     const char * pDBUSSender)
+{
+    int polkit_result = polkit_check_authorization(pDBUSSender,
+                           "org.fedoraproject.abrt.register-plugin");
+    if (polkit_result == PolkitYes)
+    {
+        RegisterPlugin(pName);
+    } else
+    {
+        log("user %s not authorized, returned %d", pDBUSSender, polkit_result);
+    }
+}
+
 void CPluginManager::UnRegisterPlugin(const std::string& pName)
 {
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
@@ -243,6 +258,21 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
         }
     }
 }
+
+void CPluginManager::UnRegisterPluginDBUS(const std::string& pName,
+                     const char * pDBUSSender)
+{
+    int polkit_result = polkit_check_authorization(pDBUSSender,
+                           "org.fedoraproject.abrt.unregister-plugin");
+    if (polkit_result == PolkitYes)
+    {
+        UnRegisterPlugin(pName);
+    } else
+    {
+        log("user %s not authorized, returned %d", pDBUSSender, polkit_result);
+    }
+}
+
 
 CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
 {
