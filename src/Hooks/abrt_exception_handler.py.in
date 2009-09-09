@@ -203,6 +203,9 @@ def handleMyException((etype, value, tb)):
 
     # restore original exception handler
     sys.excepthook = sys.__excepthook__  # pylint: disable-msg=E1101
+    # ignore uncaught ctrl-c
+    if etype == KeyboardInterrupt:
+        return sys.__excepthook__(etype, value, tb)
 
     import os.path
     from hashlib import md5
