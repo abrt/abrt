@@ -83,7 +83,7 @@ void CActionRunApp::Run(const std::string& pActionDir,
     {
         CDebugDump dd;
         dd.Open(pActionDir);
-        dd.SaveText(args[FILENAME], output);
+        dd.SaveText(args[FILENAME].c_str(), output);
         dd.Close();
     }
 }

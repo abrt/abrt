@@ -672,7 +672,8 @@ static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    g_pPluginManager->RegisterPlugin(PluginName);
+    const char * sender = dbus_message_get_sender(call);
+    g_pPluginManager->RegisterPluginDBUS(PluginName, sender);
 
     send_flush_and_unref(reply);
     return 0;
@@ -695,7 +696,8 @@ static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    g_pPluginManager->UnRegisterPlugin(PluginName);
+    const char * sender = dbus_message_get_sender(call);
+    g_pPluginManager->UnRegisterPluginDBUS(PluginName, sender);
 
     send_flush_and_unref(reply);
     return 0;

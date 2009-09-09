@@ -64,11 +64,11 @@ class CDebugDump
 
         bool Exist(const char* pFileName);
 
-        void LoadText(const std::string& pName, std::string& pData);
-        void LoadBinary(const std::string& pName, char** pData, unsigned int* pSize);
+        void LoadText(const char* pName, std::string& pData);
+        void LoadBinary(const char* pName, char** pData, unsigned int* pSize);
 
-        void SaveText(const std::string& pName, const std::string& pData);
-        void SaveBinary(const std::string& pName, const char* pData, const unsigned int pSize);
+        void SaveText(const char* pName, const std::string& pData);
+        void SaveBinary(const char* pName, const char* pData, const unsigned int pSize);
 
         void InitGetNextFile();
         bool GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile);

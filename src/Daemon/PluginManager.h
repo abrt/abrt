@@ -91,6 +91,22 @@ class CPluginManager
          */
         void UnRegisterPlugin(const std::string& pName);
         /**
+         * A method, which registers particular plugin,
+         * called via DBUS
+         * @param pName A plugin name.
+         * @param pDBUSSender DBUS user identification
+         */
+        void RegisterPluginDBUS(const std::string& pName,
+             const char * pDBUSSender);
+        /**
+         * A method, which unregister particular plugin,
+         * called via DBUS
+         * @param pName A plugin name.
+         * @param pDBUSSender DBUS user identification
+         */
+        void UnRegisterPluginDBUS(const std::string& pName,
+             const char * pDBUSSender);
+        /**
          * A method, which returns instance of particular analyzer plugin.
          * @param pName A plugin name.
          * @return An analyzer plugin.
