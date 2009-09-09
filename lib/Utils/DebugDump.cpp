@@ -89,7 +89,6 @@ static bool ExistFileDir(const char* pPath)
 
 static int GetAndSetLock(const char* pLockFile, const char* pPID)
 {
-    bool need2lock = true;
     int fd;
 
     while ((fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640)) < 0)
@@ -134,7 +133,7 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
         remove(pLockFile);
         throw CABRTException(EXCEP_DD_OPEN, "GetAndSetLock: can't write a pid");
     }
-    if (need2lock && lockf(fd, F_LOCK, 0) != 0)
+    if (lockf(fd, F_LOCK, 0) != 0)
     {
         close(fd);
         remove(pLockFile);
