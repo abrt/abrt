@@ -1,0 +1,414 @@
+# translation of abrt.master.po to Korean
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Eunju Kim <eukim@redhat.com>, 2009.
+msgid ""
+msgstr ""
+"Project-Id-Version: abrt.master\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2009-09-09 02:44+0000\n"
+"PO-Revision-Date: 2009-09-09 17:56+0800\n"
+"Last-Translator: Tom K. C. Chiu <tomchiukc@gmail.com>\n"
+"Language-Team: Chinese <zh@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: ../src/Gui/ABRTExceptions.py:4
+msgid "Another client is already running, trying to wake it."
+msgstr "另一用戶端已在運行中，嘗試喚醒中。"
+
+#: ../src/Gui/ABRTExceptions.py:10
+msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr "從Daemon得到非預期的資料（數據庫有否正確更新？）"
+
+#: ../src/Gui/ABRTPlugin.py:26
+msgid "Analyzer plugins"
+msgstr "Analyzer 插件  "
+
+#: ../src/Gui/ABRTPlugin.py:27
+msgid "Action plugins"
+msgstr "Action 插件  "
+
+#: ../src/Gui/ABRTPlugin.py:28
+msgid "Reporter plugins"
+msgstr "Reporter 插件  "
+
+#: ../src/Gui/ABRTPlugin.py:29
+msgid "Database plugins"
+msgstr "Database 插件 "
+
+#: ../src/Gui/CCDBusBackend.py:140
+msgid "Can't connect to dbus"
+msgstr "未能連結到dbus"
+
+#: ../src/Gui/CCDBusBackend.py:144
+#: ../src/Gui/CCDBusBackend.py:164
+msgid "Please check if abrt daemon is running."
+msgstr "請檢查abrt daemon是否運行中。"
+
+#: ../src/Gui/CCDBusBackend.py:182
+msgid ""
+"Daemon did't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
+"Daemon沒有傳回有效的報告內容。\n"
+"除錯內容是否缺失？"
+
+#: ../src/Gui/ccgui.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/CCMainWindow.py:223
+msgid "<b>Not reported!</b>"
+msgstr "<b>沒有報告!</b>  "
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">說明</span>  "
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "About ABRT"
+msgstr "有關 ABRT  "
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Automatic Bug Reporting Tool"
+msgstr "自動錯誤回報工具 (ABRT) "
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Delete"
+msgstr "刪除 "
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "Global settings"
+msgstr "全域設定"
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Please wait.."
+msgstr "請稍候……"
+
+#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/report.glade.h:2
+msgid "Report"
+msgstr "報告  "
+
+#: ../src/Gui/ccgui.glade.h:11
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"本程式是自由軟體；你可以根據Free Software Foundation出版的GNU General Public License第二版或更新的版本所列舉的條款而對本軟體再發布或修改。\n"
+"\n"
+"本程式的發布，是基於它會對其他人有用，但不包含任何保證。 어떠한 보증 없이, 또는 특정 목적에 대한 상품성 또는 적합성의 묵시적 보증 없이 유용하게 사용될 것을 희망하며 배포합니다.  보다 자세한 내용은 GNU General Public License를 참조하십시오.\n"
+"\n"
+"이 프로그램과 함께 GNU General Public License 복사본을 받으시게 됩니다.  받지 못하셨을 경우, <http://www.gnu.org/licenses/>에서 살펴보십시오.     "
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "Working..."
+msgstr "工作中...       "
+
+#: ../src/Gui/ccgui.glade.h:17
+msgid "_Edit"
+msgstr "編輯(_E)  "
+
+#: ../src/Gui/ccgui.glade.h:18
+msgid "_File"
+msgstr "檔案(_F)  "
+
+#: ../src/Gui/ccgui.glade.h:19
+msgid "_Help"
+msgstr "求助(_H)  "
+
+#: ../src/Gui/CCMainWindow.py:87
+msgid "Package"
+msgstr "軟件包  "
+
+#: ../src/Gui/CCMainWindow.py:88
+msgid "Application"
+msgstr "應用程式  "
+
+#: ../src/Gui/CCMainWindow.py:89
+msgid "Date"
+msgstr "日期  "
+
+#: ../src/Gui/CCMainWindow.py:90
+msgid "Crash Rate"
+msgstr "當機比率"
+
+#: ../src/Gui/CCMainWindow.py:92
+msgid "User"
+msgstr "用戶 "
+
+#: ../src/Gui/CCMainWindow.py:165
+#, python-format
+msgid ""
+"Unable to finish current task!\n"
+"%s"
+msgstr ""
+"無法完結現有程序！\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:182
+#, python-format
+msgid ""
+"Error while loading the dumplist, please check if abrt daemon is running\n"
+" %s"
+msgstr ""
+"dumplist를 불러오는 도중 오류 발생, abrt 데몬이 실행되고 있는지 확인하십시오\n"
+" %s "
+
+#: ../src/Gui/CCMainWindow.py:215
+msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+msgstr "<b>이러한 크래시는 보고되었습니다, 다음 페이지에서 이를 확인하실 수 있습니다:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:275
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"보고서를 가져올 수 없습니다!\n"
+"디버그 정보가 없습니까?        "
+
+#: ../src/Gui/CCMainWindow.py:287
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"보고 실패했습니다!\n"
+"%s "
+
+#: ../src/Gui/CCMainWindow.py:319
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "보고서를 가져오는 도중 오류 발생: %s"
+
+#: ../src/Gui/CCReporterDialog.py:98
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+"<b>경고</b>, 기밀 정보가 들어있는 데이터를 보내려고 합니다!\n"
+"정말로 <b>%s</b>을(를) 보내시겠습니까?\n"
+
+#: ../src/Gui/CCReporterDialog.py:111
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "이를 재현하는 방법 또는 실행에 관한 간단한 설명...  "
+
+#: ../src/Gui/PluginSettingsUI.py:17
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr "UI 설명에서 PluginDialog 위젯을 찾을 수 없습니다!  "
+
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:21
+#, python-format
+msgid "No UI for plugin %s"
+msgstr "插件 %s에 대한 UI가 없습니다  "
+
+#: ../src/Gui/PluginSettingsUI.py:38
+#: ../src/Gui/PluginSettingsUI.py:64
+msgid "combo box is not implemented"
+msgstr "combo box가 구현되지 않았습니다  "
+
+#: ../src/Gui/PluginSettingsUI.py:47
+msgid "Nothing to hydrate!"
+msgstr "hydrate할 것이 없습니다!  "
+
+#: ../src/Gui/report.glade.h:1
+msgid "Comment"
+msgstr "주석  "
+
+#: ../src/Gui/report.glade.h:3
+msgid "Send"
+msgstr "전송 "
+
+#: ../src/Gui/report.glade.h:4
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/Gui/SettingsDialog.py:44
+msgid "Select a plugin"
+msgstr "插件 선택  "
+
+#: ../src/Applet/Applet.cpp:45
+#, c-format
+msgid "A crash in package %s has been detected!"
+msgstr "%s 패키지에 있는 크래시가 감지되었습니다!  "
+
+#. applet is already running
+#: ../src/Applet/Applet.cpp:82
+msgid "Applet is already running."
+msgstr "애플릿이 이미 실행되고 있습니다.  "
+
+#: ../src/Applet/Applet.cpp:96
+#: ../src/Applet/Applet.cpp:97
+#: ../src/Applet/CCApplet.cpp:201
+msgid "ABRT service is not running"
+msgstr "ABRT 서비스가 실행되고 있지 않습니다  "
+
+#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/CCApplet.cpp:343
+#, c-format
+msgid "Pending events: %i"
+msgstr "보류 중인 이벤트: %i "
+
+#: ../src/Applet/CCApplet.cpp:161
+#, c-format
+msgid "Can't create menu from the description, popup won't be available!\n"
+msgstr "설명에서 메뉴를 만들 수 없습니다. 팝업을 사용할 수 없습니다!\n"
+
+#: ../src/Applet/CCApplet.cpp:190
+msgid "This is default handler, you should register your own with ConnectCrashHandler"
+msgstr "이는 기본값 처리기입니다. 자신의 처리기를 ConnectCrashHandler를 사용하여 등록해야 합니다  "
+
+#: ../src/Applet/CCApplet.cpp:205
+msgid "ABRT service has been started"
+msgstr "ABRT 서비스가 시작되었습니다  "
+
+#: ../src/Applet/CCApplet.cpp:231
+msgid "Out of memory"
+msgstr "메모리 부족 "
+
+#: ../src/Applet/CCApplet.cpp:247
+msgid "Warning"
+msgstr "경고  "
+
+#: ../lib/Plugins/Bugzilla.cpp:84
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "로그인 및 암호가 없습니다. Bugzilla.conf를 확인해 주십시오  "
+
+#: ../lib/Plugins/Bugzilla.cpp:228
+msgid "Bug is already reported: "
+msgstr "이미 버그를 보고하였습니다:  "
+
+#: ../lib/Plugins/Bugzilla.cpp:283
+#, c-format
+msgid "Binary file %s will not be reported."
+msgstr "%s 바이너리 파일은 보고되지 않습니다.  "
+
+#: ../lib/Plugins/Bugzilla.cpp:353
+msgid "New bug id: "
+msgstr "새 버그 id:   "
+
+#: ../lib/Plugins/Bugzilla.cpp:421
+msgid "Checking for duplicates..."
+msgstr "중복성 확인 중...      "
+
+#: ../lib/Plugins/Bugzilla.cpp:424
+#: ../lib/Plugins/Bugzilla.cpp:436
+msgid "Logging into bugzilla..."
+msgstr "bugzilla에 로그인 중...       "
+
+#: ../lib/Plugins/Bugzilla.cpp:427
+msgid "Check CC and add coment +1..."
+msgstr "CC 확인 후 코멘트에 +1 추가...  "
+
+#: ../lib/Plugins/Bugzilla.cpp:448
+msgid "Creating new bug..."
+msgstr "새 버그 생성 중...   "
+
+#: ../lib/Plugins/Bugzilla.cpp:453
+msgid "Logging out..."
+msgstr "로그아웃 중...   "
+
+#: ../lib/Plugins/Kerneloops.cpp:38
+msgid "Getting local/global universal unique identification..."
+msgstr "로컬/글로벌 UUID를 가져오는 중...   "
+
+#: ../lib/Plugins/CCpp.cpp:82
+msgid "Searching for debug-info packages..."
+msgstr "debug-info 패키지 검색 중...   "
+
+#: ../lib/Plugins/CCpp.cpp:120
+msgid "Downloading and installing debug-info packages..."
+msgstr "debug-info 패키지 다운로드 및 설치 중...    "
+
+#: ../lib/Plugins/CCpp.cpp:180
+msgid "Getting backtrace..."
+msgstr "역추적 검색 중...        "
+
+#: ../lib/Plugins/CCpp.cpp:429
+msgid "Getting local universal unique identification..."
+msgstr "로컬 UUID를 가져오는 중...   "
+
+#: ../lib/Plugins/CCpp.cpp:455
+msgid "Getting global universal unique identification..."
+msgstr "글로벌 UUID를 가져오는 중...   "
+
+#: ../lib/Plugins/CCpp.cpp:473
+msgid "Starting report creation..."
+msgstr "보고서 작성 시작 중...  "
+
+#: ../lib/Plugins/CCpp.cpp:495
+#, c-format
+msgid "Skip debuginfo installation for package %s"
+msgstr "%s 패키지에 대한 디버그 정보 설치 생략  "
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:101
+msgid "Creating and submitting a report..."
+msgstr "보고서 작성 및 제출 중...   "
+
+#: ../lib/Plugins/Logger.cpp:58
+#: ../lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr "보고서 작성 중...   "
+
+#: ../lib/Plugins/RunApp.cpp:62
+msgid "Executing RunApp plugin..."
+msgstr "RunApp 插件 실행 중...   "
+
+#: ../lib/Plugins/FileTransfer.cpp:52
+#: ../lib/Plugins/FileTransfer.cpp:247
+msgid "FileTransfer: URL not specified"
+msgstr "파일 전송: URL이 지정되지 않음  "
+
+#: ../lib/Plugins/FileTransfer.cpp:69
+#, c-format
+msgid "Sending archive %s via %s"
+msgstr "%s를 통해 %s 아카이브 전송 중   "
+
+#: ../lib/Plugins/FileTransfer.cpp:121
+msgid "Creating an archive..."
+msgstr "아카이브 생성 중...   "
+
+#: ../lib/Plugins/FileTransfer.cpp:176
+msgid "File Transfer: Creating a report..."
+msgstr "파일 전송: 보고서 작성 중...   "
+
+#: ../lib/Plugins/FileTransfer.cpp:197
+#: ../lib/Plugins/FileTransfer.cpp:226
+msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+msgstr "CFileTransfer::Run(): 아카이브를 작성하여 보낼 수 없습니다:   "
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
+msgid "Creating kernel oops crash reports..."
+msgstr "커널 oops 크래시 보고서 작성 중...   "
+
+#: ../lib/Plugins/Mailx.cpp:110
+msgid "Sending an email..."
+msgstr "이메일 전송 중...   "
+
+#: ../lib/Plugins/SOSreport.cpp:116
+msgid "Executing SOSreport plugin..."
+msgstr "SOSreport 插件 실행 중...     "
+
+#: ../lib/Plugins/SOSreport.cpp:138
+msgid "running sosreport: "
+msgstr "sosreport 실행 중:  "
+
+#: ../lib/Plugins/SOSreport.cpp:153
+msgid "done running sosreport"
+msgstr "sosreport 실행 완료  "
+
