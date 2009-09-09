@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 02:44+0000\n"
-"PO-Revision-Date: 2009-09-09 11:53+0530\n"
+"POT-Creation-Date: 2009-09-09 15:44+0000\n"
+"PO-Revision-Date: 2009-09-09 21:55+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -86,12 +86,12 @@ msgid "Delete"
 msgstr "വെട്ടി നീക്കുക"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "ഗ്ലോബല്‍ സജ്ജമീകരണങ്ങള്‍"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "ദയവായി കാത്തിരിക്കുക..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "പ്ലഗിനുകള്‍"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -247,9 +247,21 @@ msgstr "അയയ്ക്കുക"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "ഒരു പ്ലഗിന്‍ തെരഞ്ഞെടുക്കുക"
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>പ്ലഗിന്‍ തെരഞ്ഞെടുക്കുക</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>ഡേറ്റാബെയിസ് ബാക്കെന്‍ഡ് തെരഞ്ഞെടുക്കുക</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "ഈ ജോലി നീക്കം ചെയ്യുക"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "ഈ പ്രവര്‍ത്തി നീക്കം ചെയ്യുക"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
