@@ -595,6 +595,25 @@ static void start_syslog_logging()
     logmode = LOGMODE_SYSLOG;
 }
 
+static void sanitize_dump_dir_rights()
+{
+    struct stat sb;
+
+    if (mkdir(DEBUG_DUMPS_DIR, 0755) != 0 && errno != EEXIST)
+        perror_msg_and_die("Can't create '%s'", DEBUG_DUMPS_DIR);
+    if (stat(DEBUG_DUMPS_DIR, &sb) != 0 || !S_ISDIR(sb.st_mode))
+        error_msg_and_die("'%s' is not a directory", DEBUG_DUMPS_DIR);
+
+    if (sb.st_uid != 0 || sb.st_gid != 0 || chown(DEBUG_DUMPS_DIR, 0, 0) != 0)
+        perror_msg_and_die("Can't set owner 0:0 on '%s'", DEBUG_DUMPS_DIR);
+    /* We can't allow anyone to create dumps: otherwise users can flood
+     * us with thousands of bogus or malicious dumps */
+    /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
+    /* 00777 bits are usual "rwx" access rights */
+    if ((sb.st_mode & 07777) != 0755 && chmod(DEBUG_DUMPS_DIR, 0755) != 0)
+        perror_msg_and_die("Can't set mode rwxr-xr-x on '%s'", DEBUG_DUMPS_DIR);
+}
+
 int main(int argc, char** argv)
 {
     bool daemonize = true;
@@ -680,9 +699,7 @@ int main(int argc, char** argv)
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         VERB1 log("Initializing inotify");
-//FIXME: is this the right mode? do we need to chown/chmod it, just to be sure?
-        if (mkdir(DEBUG_DUMPS_DIR, 0777 | S_ISVTX) != 0 && errno != EEXIST)
-            perror_msg_and_die("Can't create '%s'", DEBUG_DUMPS_DIR);
+        sanitize_dump_dir_rights();
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
