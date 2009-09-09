@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 08:37+0000\n"
-"PO-Revision-Date: 2009-09-09 10:51+0200\n"
+"POT-Creation-Date: 2009-09-09 15:44+0000\n"
+"PO-Revision-Date: 2009-09-09 18:23+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -87,12 +87,12 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "Globale instellingen"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "Wacht a.u.b..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "Plugins"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -252,9 +252,21 @@ msgstr "Verzenden"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "Selecteer een plugin"
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>Selecteer een plugin</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>Selecteer database back-end</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "Verwijder deze taak"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "Verwijder deze actie"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -424,6 +436,9 @@ msgstr "sosreport draaien: "
 #: ../lib/Plugins/SOSreport.cpp:153
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
+
+#~ msgid "Global settings"
+#~ msgstr "Globale instellingen"
 
 #~ msgid "Can't load gui description for SettingsDialog!"
 #~ msgstr "Kan gui beschrijving voor SettingsDialog niet laden!"
