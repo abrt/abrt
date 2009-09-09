@@ -68,7 +68,7 @@ void CDebugDump::Open(const std::string& pDir)
     m_bOpened = true;
 }
 
-bool CDebugDump::Exist(const std::string& pPath)
+bool CDebugDump::Exist(const char* pPath)
 {
     std::string fullPath = m_sDebugDumpDir + "/" + pPath;
     return ExistFileDir(fullPath);
