@@ -24,6 +24,7 @@ BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: nss-devel
+BuildRequires: polkit-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 
@@ -250,6 +251,7 @@ fi
 %{_mandir}/man8/%{name}.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
 %{_mandir}/man7/%{name}-plugins.7.gz
+%{_datadir}/polkit-1/actions/org.fedoraproject.abrt.policy
 
 %files libs
 %defattr(-,root,root,-)

@@ -38,6 +38,9 @@ dist_dbusabrtconf_DATA = dbus-abrt.conf
 daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = abrt.conf
 
+polkitconfdir = /usr/share/polkit-1/actions
+dist_polkitconf_DATA = org.fedoraproject.abrt.policy
+
 man_MANS = abrt.8 abrt.conf.5
 EXTRA_DIST = $(man_MANS)
 
