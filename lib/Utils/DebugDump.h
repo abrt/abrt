@@ -62,7 +62,7 @@ class CDebugDump
         void Delete();
         void Close();
 
-        bool Exist(const std::string& pFileName);
+        bool Exist(const char* pFileName);
 
         void LoadText(const std::string& pName, std::string& pData);
         void LoadBinary(const std::string& pName, char** pData, unsigned int* pSize);
