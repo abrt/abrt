@@ -9,21 +9,20 @@
 
 std::string CAnalyzerPython::CreateHash(const std::string& pDebugDumpDir)
 {
-    std::string uuid;
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    dd.LoadText("uuid", uuid);
-    dd.Close();
-    return uuid;
+	std::string uuid;
+	CDebugDump dd;
+	dd.Open(pDebugDumpDir);
+	dd.LoadText("uuid", uuid);
+	return uuid;
 }
 
 std::string CAnalyzerPython::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-    return CreateHash(pDebugDumpDir);
+	return CreateHash(pDebugDumpDir);
 }
 std::string CAnalyzerPython::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-    return GetLocalUUID(pDebugDumpDir);
+	return GetLocalUUID(pDebugDumpDir);
 }
 
 void CAnalyzerPython::Init()
@@ -39,8 +38,8 @@ void CAnalyzerPython::Init()
 
 void CAnalyzerPython::DeInit()
 {
-    // TODO: remove copied abrt exception handler
-    std::ofstream fOutPySiteCustomize;
+	// TODO: remove copied abrt exception handler
+	std::ofstream fOutPySiteCustomize;
 	fOutPySiteCustomize.open(PYHOOK_CONFIG);
 	if (fOutPySiteCustomize.is_open())
 	{

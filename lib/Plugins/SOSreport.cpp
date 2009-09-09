@@ -159,10 +159,9 @@ void CActionSOSreport::Run(const std::string& pActionDir,
 
     CDebugDump dd;
     dd.Open(pActionDir);
-    //Not usefull
+    //Not useful
     //dd.SaveText("sosreportoutput", output);
     CopyFile(sosreport_filename,sosreport_dd_filename);
-    dd.Close();
 }
 
 PLUGIN_INFO(ACTION,

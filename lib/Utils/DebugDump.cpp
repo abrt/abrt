@@ -48,6 +48,7 @@ static bool isdigit_str(const char *str)
         if (*str < '0' || *str > '9') return false;
         str++;
     }
+    return true;
 }
 
 static std::string RemoveBackSlashes(const std::string& pDir);
@@ -105,6 +106,7 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
         if (errno != EEXIST)
             perror_msg_and_die("Can't create lock file '%s'", pLockFile);
         fd = open(pLockFile, O_RDONLY);
+log("opened O_RDONLY: '%s'", pLockFile);
         if (fd < 0)
         {
             if (errno == ENOENT)
@@ -123,6 +125,7 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
             continue;
         }
         pid_buf[r] = '\0';
+log("read: '%s'", pid_buf);
         if (strcmp(pid_buf, pPID) == 0)
         {
             log("Lock file '%s' is already locked by us", pLockFile);
@@ -140,6 +143,7 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
         /* The file may be deleted by now by other process. Ignore errors */
         unlink(pLockFile);
     }
+log("created O_EXCL: '%s'", pLockFile);
 
     int len = strlen(pPID);
     if (write(fd, pPID, len) != len)
@@ -304,6 +308,11 @@ void CDebugDump::Delete()
 void CDebugDump::Close()
 {
     UnLock();
+    if (m_pGetNextFileDir != NULL)
+    {
+        closedir(m_pGetNextFileDir);
+        m_pGetNextFileDir = NULL;
+    }
     m_bOpened = false;
 }
 

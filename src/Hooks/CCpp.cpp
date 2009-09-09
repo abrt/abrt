@@ -207,7 +207,6 @@ int main(int argc, char** argv)
         /* close(fd); - why bother? */
         /* free(executable); */
         /* free(cmdline); */
-        dd.Close();
         log("saved core dump of pid %u to %s", (int)pid, path);
     }
     catch (CABRTException& e)

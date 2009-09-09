@@ -79,7 +79,6 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 	update_client(_("Creating kernel oops crash reports..."));
 
 	time_t t = time(NULL);
-	CDebugDump debugDump;
 	std::list<COops> oopsList = m_pSysLog.GetOopsList();
 	m_pSysLog.ClearOopsList();
 
@@ -92,13 +91,13 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 
 		try
 		{
+			CDebugDump debugDump;
 			debugDump.Create(path, 0);
 			debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
 			debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
 			debugDump.SaveText(FILENAME_KERNEL, oops.m_sVersion);
 			debugDump.SaveText(FILENAME_PACKAGE, "not_applicable");
 			debugDump.SaveText(FILENAME_KERNELOOPS, oops.m_sData);
-			debugDump.Close();
 		}
 		catch (CABRTException& e)
 		{

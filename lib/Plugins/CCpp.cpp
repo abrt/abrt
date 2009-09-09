@@ -190,7 +190,6 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_UID, UID);
-        dd.Close();
         fTmp << "file " << executable << std::endl;
         fTmp << "core " << pDebugDumpDir << "/" << FILENAME_COREDUMP << std::endl;
         fTmp << "thread apply all backtrace full" << std::endl;
@@ -479,7 +478,6 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     dd.Open(pDebugDumpDir);
     if (dd.Exist(FILENAME_BACKTRACE))
     {
-        dd.Close();
         return;
     }
     dd.LoadText(FILENAME_PACKAGE, package);
@@ -503,7 +501,6 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
-    dd.Close();
 }
 
 void CAnalyzerCCpp::Init()

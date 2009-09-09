@@ -84,7 +84,6 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
         !dd.Exist(FILENAME_RELEASE) ||
         !dd.Exist(FILENAME_EXECUTABLE))
     {
-        dd.Close();
         throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
     }
     pCrashReport.clear();
@@ -126,7 +125,6 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
             }
         }
     }
-    dd.Close();
 }
 
 /**
@@ -189,9 +187,9 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
         return MW_IN_DB_ERROR;
     }
 
-    CDebugDump dd;
     try
     {
+        CDebugDump dd;
         std::string analyzer;
         std::string gUUID;
 
@@ -412,7 +410,6 @@ void DeleteDebugDumpDir(const std::string& pDebugDumpDir)
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
     dd.Delete();
-    dd.Close();
 }
 
 std::string DeleteCrashInfo(const std::string& pUUID,
@@ -514,21 +511,19 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
     std::string description = GetDescription(packageName);
     std::string component = GetComponent(pExecutable);
 
-    CDebugDump dd;
     try
     {
+        CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.SaveText(FILENAME_PACKAGE, package);
         dd.SaveText(FILENAME_DESCRIPTION, description);
         dd.SaveText(FILENAME_COMPONENT, component);
-        dd.Close();
     }
     catch (CABRTException& e)
     {
         warn_client("SavePackageDescriptionToDebugDump(): " + e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
-            dd.Close();
             return MW_FILE_ERROR;
         }
         return MW_ERROR;
@@ -621,24 +616,22 @@ mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
     std::string time;
     std::string analyzer;
     std::string executable;
-    CDebugDump dd;
     mw_result_t res;
 
     try
     {
+        CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_TIME, time);
         dd.LoadText(FILENAME_UID, UID);
         dd.LoadText(FILENAME_ANALYZER, analyzer);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.Close();
     }
     catch (CABRTException& e)
     {
         warn_client("SaveDebugDump(): " + e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
-            dd.Close();
             return MW_FILE_ERROR;
         }
         return MW_ERROR;
@@ -648,7 +641,8 @@ mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
     {
         return MW_IN_DB;
     }
-    if ((res = SavePackageDescriptionToDebugDump(executable, pDebugDumpDir)) != MW_OK)
+    res = SavePackageDescriptionToDebugDump(executable, pDebugDumpDir);
+    if (res != MW_OK)
     {
         return res;
     }
@@ -669,25 +663,23 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
     row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
 
-    CDebugDump dd;
     std::string package;
     std::string executable;
     std::string description;
 
     try
     {
+        CDebugDump dd;
         dd.Open(row.m_sDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
         dd.LoadText(FILENAME_DESCRIPTION, description);
-        dd.Close();
     }
     catch (CABRTException& e)
     {
         warn_client("GetCrashInfo(): " + e.what());
         if (e.type() == EXCEP_DD_LOAD)
         {
-            dd.Close();
             return MW_FILE_ERROR;
         }
         return MW_ERROR;
