@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 10:05+0000\n"
-"PO-Revision-Date: 2009-09-09 10:58-0300\n"
+"POT-Creation-Date: 2009-09-10 18:54+0000\n"
+"PO-Revision-Date: 2009-09-10 17:13-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -89,12 +89,12 @@ msgid "Delete"
 msgstr "Excluir"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "Configurações globais"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "Por favor aguarde..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "Plugins"
 
 #: ../src/Gui/ccgui.glade.h:10
 #: ../src/Gui/report.glade.h:2
@@ -239,9 +239,22 @@ msgstr "Enviar"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "Selecione um plugin"
+#: ../src/Gui/SettingsDialog.py:35
+#: ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>Selecionar plugin</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>Selecione o backend de banco de dados</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "Remover este trabalho"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "Remover esta ação"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -340,19 +353,19 @@ msgstr "Baixando e instalando pacotes debug-info..."
 msgid "Getting backtrace..."
 msgstr "Obtendo backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "Obtendo identificação universal local única..."
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "Obtendo identificação universal global única..."
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
 msgstr "Iniciando a criação do relatório..."
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "Pular instalação do debuginfo para o pacote %s"
@@ -413,6 +426,8 @@ msgstr "executando o sosreport: "
 msgid "done running sosreport"
 msgstr "Execução do sosreport realizada"
 
+#~ msgid "Global settings"
+#~ msgstr "Configurações globais"
 #~ msgid "Can't load gui description for SettingsDialog!"
 #~ msgstr ""
 #~ "Não foi possível carregar a descrição da interface gráfica de usuário "
