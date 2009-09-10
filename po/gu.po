@@ -1,14 +1,14 @@
-# translation of ABRT.po to Gujarati
+# translation of ABRT1.po to Gujarati
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Sweta Kothari <swkothar@redhat.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: ABRT\n"
+"Project-Id-Version: ABRT1\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 02:44+0000\n"
-"PO-Revision-Date: 2009-09-09 11:19+0530\n"
+"POT-Creation-Date: 2009-09-10 04:40+0000\n"
+"PO-Revision-Date: 2009-09-10 11:01+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -86,12 +86,12 @@ msgid "Delete"
 msgstr "કાઢી નાંખો"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "વૈશ્ર્વિક સુયોજનો"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "મહેરબાની કરીને થોભો.."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "પ્લગઇનો"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -176,7 +176,8 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"જ્યારે ડમ્પયાદીને લાવી રહ્યા હોય ત્યારે ભૂલ, મહેરબાની કરીને ચકાસો જો abrt ડિમન ચાલી રહ્યુ છે\n"
+"જ્યારે ડમ્પયાદીને લાવી રહ્યા હોય ત્યારે ભૂલ, મહેરબાની કરીને ચકાસો જો abrt ડિમન ચાલી "
+"રહ્યુ છે\n"
 " %s"
 
 #: ../src/Gui/CCMainWindow.py:215
@@ -249,9 +250,22 @@ msgstr "મોકલો"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#, fuzzy
+msgid "<b>Select plugin</b>"
 msgstr "પ્લગઇનને પસંદ કરો"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>ડેટાબેઝ બેકએન્ડ ને પસંદ કરો</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "આ જોબને દૂર કરો"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "આ ક્રિયાને દૂર કરો"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -349,19 +363,19 @@ msgstr "ડિબગ-જાણકારી પેકેજોને સ્થા
 msgid "Getting backtrace..."
 msgstr "બેકટ્રેસને મેળવી રહ્યા છે..."
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "સ્થાનિક વિશ્ર્વવ્યાપક અનન્ય ઓળખાણ ને મેળવી રહ્યા છે..."
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "વૈશ્ર્વિક વિશ્ર્વવ્યાપક અનન્ય ઓળખાણને મેળવી રહ્યા છે..."
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
 msgstr "અહેવાલ બનાવવાનું શરૂ કરી રહ્યા છે..."
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "પેકેજ %s માટે ડિબગ જાણકારી સ્થાપન ને છોડો"
