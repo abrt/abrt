@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 02:44+0000\n"
-"PO-Revision-Date: 2009-09-09 11:43+0530\n"
+"POT-Creation-Date: 2009-09-10 08:38+0000\n"
+"PO-Revision-Date: 2009-09-10 16:57+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
 "MIME-Version: 1.0\n"
@@ -86,12 +86,12 @@ msgid "Delete"
 msgstr "মুছে ফেলুন"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "গ্লোবাল বৈশিষ্ট্য"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "অনুগ্রহ করে অপেক্ষা করুন..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "প্লাগ-ইন"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -249,9 +249,21 @@ msgstr "প্রেরণ করুন"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "একটি প্লাগ-ইন নির্বাচন করুন"
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>প্লাগ-ইন নির্বাচন করুন</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>ডাটাবেস ব্যাক-এন্ড নির্বাচন করুন</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "এই কাজটি সরিয়ে ফেলুন"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "এই কর্মটি সরিয়ে ফেলুন"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -349,19 +361,19 @@ msgstr "debug-info প্যাকেজ ডাউনলোড ও ইনস্�
 msgid "Getting backtrace..."
 msgstr "ব্যাক-ট্রেস প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "স্থানীয় ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "গ্লোবাল ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
 msgstr "রিপোর্ট নির্মাণ আরম্ভ করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "%s প্যাকেজের জন্য debuginfo উপেক্ষা করা হবে"
