@@ -1,14 +1,14 @@
-# translation of abrt.master.abrt.po to Hindi
+# translation of abrt.master.po to Hindi
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Rajesh Ranjan <rajesh672@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.abrt\n"
+"Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 02:44+0000\n"
-"PO-Revision-Date: 2009-09-09 14:37+0530\n"
+"POT-Creation-Date: 2009-09-10 08:38+0000\n"
+"PO-Revision-Date: 2009-09-10 15:52+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
 "Language-Team: Hindi <hindi.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
@@ -87,12 +88,12 @@ msgid "Delete"
 msgstr "मिटाएँ"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "वैश्विक सेटिंग"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "कृपया इंतजार करें..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "प्लगिन"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -250,9 +251,21 @@ msgstr "भेजें"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "प्लगिन चुनें"
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>प्लगिन चुनें</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>डेटाबेस बैकेंड चुनें</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "इस कार्य को हटाएँ"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "इस क्रिया को हटाएँ"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -283,9 +296,7 @@ msgstr "विवरण से मेन्यू नहीं बना सक�
 msgid ""
 "This is default handler, you should register your own with "
 "ConnectCrashHandler"
-msgstr ""
-"यह तयशुदा नियंत्रक है, आपको स्वयं से पंजीकृत करना चाहिए"
-"ConnectCrashHandler के साथ"
+msgstr "यह तयशुदा नियंत्रक है, आपको स्वयं से पंजीकृत करना चाहिएConnectCrashHandler के साथ"
 
 #: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
@@ -352,19 +363,19 @@ msgstr "डिबग सूचना संकुल डाउनलोड औ�
 msgid "Getting backtrace..."
 msgstr "बैकट्रैस पा रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "स्थानीय सार्वभौमिक अद्वितीय पहचान पा रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "वैश्विक सार्वभौमिक अद्वितीय पहचान पा रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
 msgstr "रिपोर्ट निर्माण आरंभ कर रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "%s संकुल के लिए डिबगइंफो संस्थापन छोड़ें"
