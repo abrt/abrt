@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-08 19:49+0000\n"
-"PO-Revision-Date: 2009-09-08 23:11+0200\n"
-"Last-Translator: Fernando Gonzalez <fgonz@fedoraproject.org>\n"
+"POT-Creation-Date: 2009-09-10 08:38+0000\n"
+"PO-Revision-Date: 2009-09-10 11:26-0300\n"
+"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
 "Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,9 +22,7 @@ msgstr "Otro cliente ya está siendo ejecutado, intentando levantarlo."
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
-"Se obtienen datos inesperados desde el demonio (¿está la Base de Datos "
-"correctamente actualizada?)"
+msgstr "Se obtienen datos inesperados desde el demonio (¿está la Base de Datos correctamente actualizada?)"
 
 #: ../src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
@@ -46,7 +44,8 @@ msgstr "Complementos de Bases de Datos"
 msgid "Can't connect to dbus"
 msgstr "No se puede conectar con DBus"
 
-#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
+#: ../src/Gui/CCDBusBackend.py:144
+#: ../src/Gui/CCDBusBackend.py:164
 msgid "Please check if abrt daemon is running."
 msgstr "Por favor compruebe si el demonio ABRT está corriendo."
 
@@ -66,7 +65,8 @@ msgstr " "
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/CCMainWindow.py:223
 msgid "<b>Not reported!</b>"
 msgstr "<b>¡No informado!</b>"
 
@@ -87,45 +87,32 @@ msgid "Delete"
 msgstr "Eliminar"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "Preferencias globales"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "Por favor aguarde..."
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "Complementos"
+
+#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/report.glade.h:2
 msgid "Report"
 msgstr "Informe"
 
 #: ../src/Gui/ccgui.glade.h:11
 msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo "
-"los términos de la Licencia Pública General de Bibliotecas de GNU, como "
-"fueron publicadas por la Fundación de Software Libre; ya sea la versión 2 o "
-"(a su elección) alguna posterior.\n"
+"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de Bibliotecas de GNU, como fueron publicadas por la Fundación de Software Libre; ya sea la versión 2 o (a su elección) alguna posterior.\n"
 "\n"
 "\n"
-"Este programa se distribuye con la esperanza de que será útil, pero SIN "
-"NINGUNA GARANTÍA; sin siquiera la garantía implícita de MERCANTIBILIDAD o "
-"AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de "
-"Bibliotecas de GNU para más detalles.\n"
+"Este programa se distribuye con la esperanza de que será útil, pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita de MERCANTIBILIDAD o AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de Bibliotecas de GNU para más detalles.\n"
 "\n"
-"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas "
-"de GNU junto con este programa; sino, see <http://www.gnu.org/licenses/>."
+"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas de GNU junto con este programa; sino, see <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "Working..."
@@ -178,14 +165,12 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"Error intentando cargar la lista  de volcado, por favor compruebe si el "
-"demonio abrt está siendo ejecutado\n"
+"Error intentando cargar la lista  de volcado, por favor compruebe si el demonio abrt está siendo ejecutado\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr ""
-"<b> Esta caída ha sido reportada, usted puede encontrar el informe en:</b>\n"
+msgstr "<b> Esta caída ha sido reportada, usted puede encontrar el informe en:</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:275
 msgid ""
@@ -212,12 +197,10 @@ msgstr "Error al obtener el informe: %s"
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>ADVERTENCIA</b>, ¡está por enviar datos que pueden contener información "
-"sensible!\n"
+"<b>ADVERTENCIA</b>, ¡está por enviar datos que pueden contener información sensible!\n"
 "¿Realmente quiere enviar <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
@@ -226,9 +209,7 @@ msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr ""
-"No se encuentra el control visual de PluginDialog en la descripción de la "
-"interfaz del usuario."
+msgstr "No se encuentra el control visual de PluginDialog en la descripción de la interfaz del usuario."
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
@@ -236,7 +217,8 @@ msgstr ""
 msgid "No UI for plugin %s"
 msgstr "No hay interfase del usuario para el complemento %s"
 
-#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:38
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
 msgstr "el combo box no está implementado"
 
@@ -256,9 +238,22 @@ msgstr "Enviar"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "Elija un complemento"
+#: ../src/Gui/SettingsDialog.py:35
+#: ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>Seleccione un complemento</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>Seleccione la base de datos de fondo</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "Eliminar este trabajo"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "Eliminar esta acción"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -270,12 +265,14 @@ msgstr "Ha sido detectado una caída en el paquete %s"
 msgid "Applet is already running."
 msgstr "La aplicación ya se está ejecutando."
 
-#: ../src/Applet/Applet.cpp:96 ../src/Applet/Applet.cpp:97
+#: ../src/Applet/Applet.cpp:96
+#: ../src/Applet/Applet.cpp:97
 #: ../src/Applet/CCApplet.cpp:201
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
-#: ../src/Applet/CCApplet.cpp:135 ../src/Applet/CCApplet.cpp:343
+#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr "Eventos pendientes: %i"
@@ -283,17 +280,11 @@ msgstr "Eventos pendientes: %i"
 #: ../src/Applet/CCApplet.cpp:161
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr ""
-"No se puede crear un menú desde la descripción, la ventana emergente no está "
-"disponible!\n"
+msgstr "No se puede crear un menú desde la descripción, la ventana emergente no está disponible!\n"
 
 #: ../src/Applet/CCApplet.cpp:190
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectCrashHandler"
-msgstr ""
-"Este es el controlador por defecto, usted puede registrarse con "
-"ConnectCrashHandler"
+msgid "This is default handler, you should register your own with ConnectCrashHandler"
+msgstr "Este es el controlador por defecto, usted puede registrarse con ConnectCrashHandler"
 
 #: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
@@ -309,8 +300,7 @@ msgstr "Aviso"
 
 #: ../lib/Plugins/Bugzilla.cpp:84
 msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr ""
-"Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
+msgstr "Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:228
 msgid "Bug is already reported: "
@@ -329,7 +319,8 @@ msgstr "Nuevo id del error:"
 msgid "Checking for duplicates..."
 msgstr "Chequeando si hay duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:424
+#: ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "Ingresando a bugzilla..."
 
@@ -361,19 +352,19 @@ msgstr "Descargando e instalando paquetes de información del depurador..."
 msgid "Getting backtrace..."
 msgstr "Obteniendo el backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "Obteniendo la identificación única universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
 msgstr "Iniciando la creación del informe..."
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "Omita la información de debuginfo para el paquete %s"
@@ -382,7 +373,8 @@ msgstr "Omita la información de debuginfo para el paquete %s"
 msgid "Creating and submitting a report..."
 msgstr "Creando y enviando un informe..."
 
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:58
+#: ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "Creando un informe..."
 
@@ -390,7 +382,8 @@ msgstr "Creando un informe..."
 msgid "Executing RunApp plugin..."
 msgstr "Ejecutando complemento RunApp..."
 
-#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/FileTransfer.cpp:247
+#: ../lib/Plugins/FileTransfer.cpp:52
+#: ../lib/Plugins/FileTransfer.cpp:247
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL no especificada"
 
@@ -407,7 +400,8 @@ msgstr "Creando un archivo..."
 msgid "File Transfer: Creating a report..."
 msgstr "Transferencia de archivo: Creando un informe..."
 
-#: ../lib/Plugins/FileTransfer.cpp:197 ../lib/Plugins/FileTransfer.cpp:226
+#: ../lib/Plugins/FileTransfer.cpp:197
+#: ../lib/Plugins/FileTransfer.cpp:226
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): no se puede crear y enviar un archivo: "
 
@@ -431,18 +425,16 @@ msgstr "lanzando.sosreport"
 msgid "done running sosreport"
 msgstr "Sosreport.corriendo"
 
+#~ msgid "Global settings"
+#~ msgstr "Preferencias globales"
 #~ msgid "Can't load gui description for SettingsDialog!"
 #~ msgstr "No se puede cargar interfaz gráfico de usuario para SettingsDialog!"
-
 #~ msgid "Name"
 #~ msgstr "Nombre"
-
 #~ msgid "Enabled"
 #~ msgstr "Habilitado"
-
 #~ msgid "Can't get plugin description"
 #~ msgstr "No se pudo obtener la descripción del complemento"
-
 #~ msgid ""
 #~ "Error while opening plugin settings UI: \n"
 #~ "\n"
@@ -452,13 +444,12 @@ msgstr "Sosreport.corriendo"
 #~ "usuario:\n"
 #~ "\n"
 #~ "%s"
-
 #~ msgid ""
 #~ "Can't save plugin settings:\n"
 #~ " %s"
 #~ msgstr ""
 #~ "No se pueden salvar las preferencias del complemento:\n"
 #~ "%s"
-
 #~ msgid "unknown response from settings dialog"
 #~ msgstr "Respuesta desconocida del diálogo de preferencias"
+
