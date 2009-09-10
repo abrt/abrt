@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-08 19:49+0000\n"
-"PO-Revision-Date: 2009-09-09 10:38+1000\n"
+"POT-Creation-Date: 2009-09-09 22:04+0000\n"
+"PO-Revision-Date: 2009-09-10 10:48+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -89,12 +89,12 @@ msgid "Delete"
 msgstr "삭제 "
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "글로벌 설정  "
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "잠시만 기다려 주십시오..  "
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "플러그인  "
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -253,9 +253,21 @@ msgstr "전송 "
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "플러그인 선택  "
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>플러그인 선택</b>  "
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>데이터베이스 백엔드 선택</b>  "
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "작업 삭제  "
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "작업 실행 삭제   "
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -355,19 +367,19 @@ msgstr "debug-info 패키지 다운로드 및 설치 중...    "
 msgid "Getting backtrace..."
 msgstr "역추적 검색 중...        "
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "로컬 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "글로벌 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
 msgstr "보고서 작성 시작 중...  "
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "%s 패키지에 대한 디버그 정보 설치 생략  "
