@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 02:44+0000\n"
-"PO-Revision-Date: 2009-09-09 18:25+0800\n"
+"POT-Creation-Date: 2009-09-10 18:54+0000\n"
+"PO-Revision-Date: 2009-09-11 03:10+0800\n"
 "Last-Translator: Tom K. C. Chiu <tomchiukc@gmail.com>\n"
 "Language-Team: Chinese <zh@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -88,12 +88,12 @@ msgid "Delete"
 msgstr "刪除 "
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "全域設定"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "請稍候……"
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "插件"
 
 #: ../src/Gui/ccgui.glade.h:10
 #: ../src/Gui/report.glade.h:2
@@ -186,13 +186,13 @@ msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
-"보고 실패했습니다!\n"
+"報告失敗！\n"
 "%s "
 
 #: ../src/Gui/CCMainWindow.py:319
 #, python-format
 msgid "Error getting the report: %s"
-msgstr "보고서를 가져오는 도중 오류 발생: %s"
+msgstr "取得報告時出錯：%s"
 
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
@@ -200,8 +200,8 @@ msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>경고</b>, 기밀 정보가 들어있는 데이터를 보내려고 합니다!\n"
-"정말로 <b>%s</b>을(를) 보내시겠습니까?\n"
+"<b>警告</b>，將要傳送的資料可能含有機密情報。\n"
+"你確定要傳送<b>%s</b>嗎？\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
@@ -209,18 +209,18 @@ msgstr "이를 재현하는 방법 또는 실행에 관한 간단한 설명...  
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "UI 설명에서 PluginDialog 위젯을 찾을 수 없습니다!  "
+msgstr "找不到 PluginDialog 的用戶介面說明！"
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
-msgstr "插件 %s에 대한 UI가 없습니다  "
+msgstr "插件 %s 並未有用戶介面"
 
 #: ../src/Gui/PluginSettingsUI.py:38
 #: ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr "combo box가 구현되지 않았습니다  "
+msgstr "combo box還未被建構"
 
 #: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
@@ -238,19 +238,33 @@ msgstr "發送"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
+#: ../src/Gui/SettingsDialog.py:35
+#: ../src/Gui/SettingsDialog.py:52
+#, fuzzy
+msgid "<b>Select plugin</b>"
 msgstr "選擇插件"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>選擇數據庫的後台</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "移除這項工作"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "移除這個動作"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
-msgstr "%s 패키지에 있는 크래시가 감지되었습니다!  "
+msgstr "發現了 %s 軟件包的錯誤紀錄！"
 
 #. applet is already running
 #: ../src/Applet/Applet.cpp:82
 msgid "Applet is already running."
-msgstr "애플릿이 이미 실행되고 있습니다.  "
+msgstr "小桯式已在運行中。"
 
 #: ../src/Applet/Applet.cpp:96
 #: ../src/Applet/Applet.cpp:97
@@ -313,7 +327,7 @@ msgstr "往bugzilla登錄中……"
 
 #: ../lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
-msgstr "CC 확인 후 코멘트에 +1 추가...  "
+msgstr "確認 CC 後註釋 +1 增加...  "
 
 #: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
@@ -339,40 +353,40 @@ msgstr "debug-info 패키지 다운로드 및 설치 중...    "
 msgid "Getting backtrace..."
 msgstr "역추적 검색 중...        "
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "로컬 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "글로벌 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
-msgstr "보고서 작성 시작 중...  "
+msgstr "報告書生成啟動……"
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "%s 패키지에 대한 디버그 정보 설치 생략  "
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
-msgstr "보고서 작성 및 제출 중...   "
+msgstr "報告書生成及傳送中……"
 
 #: ../lib/Plugins/Logger.cpp:58
 #: ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
-msgstr "보고서 작성 중...   "
+msgstr "報告書生成中……"
 
 #: ../lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
-msgstr "RunApp 插件 실행 중...   "
+msgstr "RunApp 插件執行中……"
 
 #: ../lib/Plugins/FileTransfer.cpp:52
 #: ../lib/Plugins/FileTransfer.cpp:247
 msgid "FileTransfer: URL not specified"
-msgstr "파일 전송: URL이 지정되지 않음  "
+msgstr "檔案傳送： URL未指定"
 
 #: ../lib/Plugins/FileTransfer.cpp:69
 #, c-format
@@ -385,7 +399,7 @@ msgstr "아카이브 생성 중...   "
 
 #: ../lib/Plugins/FileTransfer.cpp:176
 msgid "File Transfer: Creating a report..."
-msgstr "파일 전송: 보고서 작성 중...   "
+msgstr "檔案傳送：報告書生成中……"
 
 #: ../lib/Plugins/FileTransfer.cpp:197
 #: ../lib/Plugins/FileTransfer.cpp:226
@@ -398,17 +412,20 @@ msgstr "커널 oops 크래시 보고서 작성 중...   "
 
 #: ../lib/Plugins/Mailx.cpp:110
 msgid "Sending an email..."
-msgstr "이메일 전송 중...   "
+msgstr "電郵傳送中……"
 
 #: ../lib/Plugins/SOSreport.cpp:116
 msgid "Executing SOSreport plugin..."
-msgstr "SOSreport 插件 실행 중...     "
+msgstr "SOSreport 插件執行中……"
 
 #: ../lib/Plugins/SOSreport.cpp:138
 msgid "running sosreport: "
-msgstr "sosreport 실행 중:  "
+msgstr "sosreport 執行中……"
 
 #: ../lib/Plugins/SOSreport.cpp:153
 msgid "done running sosreport"
-msgstr "sosreport 실행 완료  "
+msgstr "sosreport 執行完結"
+
+#~ msgid "Global settings"
+#~ msgstr "全域設定"
 
