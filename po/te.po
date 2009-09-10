@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 02:44+0000\n"
-"PO-Revision-Date: 2009-09-09 11:51+0530\n"
+"POT-Creation-Date: 2009-09-10 08:38+0000\n"
+"PO-Revision-Date: 2009-09-10 17:47+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
@@ -87,12 +88,12 @@ msgid "Delete"
 msgstr "తొలగించు"
 
 #: ../src/Gui/ccgui.glade.h:8
-msgid "Global settings"
-msgstr "గ్లోబల్ అమరికలు"
-
-#: ../src/Gui/ccgui.glade.h:9
 msgid "Please wait.."
 msgstr "దయచేసి వేచివుండు..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "ప్లగిన్లు"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
@@ -248,9 +249,21 @@ msgstr "పంపుము"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:44
-msgid "Select a plugin"
-msgstr "ఒక ప్లగిన్ యెంపికచేయుము"
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+msgid "<b>Select plugin</b>"
+msgstr "<b>ప్లగిన్ యెంచుకొనుము</b>"
+
+#: ../src/Gui/SettingsDialog.py:38
+msgid "<b>Select database backend</b>"
+msgstr "<b>డాటాబేస్ బ్యాకెండ్ యెంపికచేయుము</b>"
+
+#: ../src/Gui/SettingsDialog.py:170
+msgid "Remove this job"
+msgstr "ఈ జాబ్‌ను తీసివేయుము"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "ఈ చర్యను తీసివేయుము"
 
 #: ../src/Applet/Applet.cpp:45
 #, c-format
@@ -348,19 +361,19 @@ msgstr "డీబగ్-సమాచార ప్యాకేజీలను డ
 msgid "Getting backtrace..."
 msgstr "బాక్‌ట్రేస్ పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:429
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
 msgstr "లోకల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:455
+#: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
 msgstr "గ్లోబల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:473
+#: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
 msgstr "నివేదిక సృష్టీకరణను ప్రారంభించుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:495
+#: ../lib/Plugins/CCpp.cpp:493
 #, c-format
 msgid "Skip debuginfo installation for package %s"
 msgstr "ప్యాకేజీ %s కొరకు డీబగ్‌సమాచార సంస్థాపనను వదిలివేయుము"
