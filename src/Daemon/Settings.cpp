@@ -431,7 +431,7 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
     int polkit_result;
 
     polkit_result = polkit_check_authorization(dbus_sender,
-                       "org.fedoraproject.abrt.save-settings");
+                       "org.fedoraproject.abrt.change-daemon-settings");
     if (polkit_result != PolkitYes)
     {
         log("user %s not authorized, returned %d", dbus_sender, polkit_result);

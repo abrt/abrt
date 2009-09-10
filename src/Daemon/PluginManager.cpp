@@ -233,7 +233,7 @@ void CPluginManager::RegisterPluginDBUS(const std::string& pName,
                      const char * pDBUSSender)
 {
     int polkit_result = polkit_check_authorization(pDBUSSender,
-                           "org.fedoraproject.abrt.register-plugin");
+                           "org.fedoraproject.abrt.change-daemon-settings");
     if (polkit_result == PolkitYes)
     {
         RegisterPlugin(pName);
@@ -263,7 +263,7 @@ void CPluginManager::UnRegisterPluginDBUS(const std::string& pName,
                      const char * pDBUSSender)
 {
     int polkit_result = polkit_check_authorization(pDBUSSender,
-                           "org.fedoraproject.abrt.unregister-plugin");
+                           "org.fedoraproject.abrt.change-daemon-settings");
     if (polkit_result == PolkitYes)
     {
         UnRegisterPlugin(pName);
