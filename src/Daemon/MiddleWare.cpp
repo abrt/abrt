@@ -353,14 +353,13 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
             std::string pluginName = it_r->first;
             try
             {
-                std::string res;
-
                 if (g_pPluginManager->GetPluginType(pluginName) == REPORTER)
                 {
                     CReporter* reporter = g_pPluginManager->GetReporter(pluginName);
                     std::string home = "";
                     map_plugin_settings_t oldSettings;
                     map_plugin_settings_t newSettings;
+                    std::string res;
 
                     if (pUID != "")
                     {
@@ -382,10 +381,11 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                     {
                         reporter->SetSettings(oldSettings);
                     }
+
+                    ret[pluginName].push_back("1");
+                    ret[pluginName].push_back(res);
+                    message += res + "\n";
                 }
-                ret[pluginName].push_back("1");
-                ret[pluginName].push_back(res);
-                message += res + "\n";
             }
             catch (CABRTException& e)
             {
