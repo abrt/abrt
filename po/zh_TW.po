@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-10 18:54+0000\n"
-"PO-Revision-Date: 2009-09-11 03:20+0800\n"
+"POT-Creation-Date: 2009-09-11 04:39+0000\n"
+"PO-Revision-Date: 2009-09-11 13:25+0800\n"
 "Last-Translator: Tom K. C. Chiu <tomchiukc@gmail.com>\n"
 "Language-Team: Chinese <zh@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -165,20 +165,20 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"dumplist를 불러오는 도중 오류 발생, abrt 데몬이 실행되고 있는지 확인하십시오\n"
+"dumplist載入時發生錯誤，請檢查 abrt daemon是否運行中\n"
 " %s "
 
 #: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>이러한 크래시는 보고되었습니다, 다음 페이지에서 이를 확인하실 수 있습니다:</b>\n"
+msgstr "<b>這個錯誤已經報告，你可以在這個地點找到這個報告：</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:275
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"보고서를 가져올 수 없습니다!\n"
-"디버그 정보가 없습니까?        "
+"未能取得報告書！\n"
+"會是因為除錯資料的缺失嗎？"
 
 #: ../src/Gui/CCMainWindow.py:287
 #, python-format
@@ -205,7 +205,7 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "이를 재현하는 방법 또는 실행에 관한 간단한 설명...  "
+msgstr "簡述如何可以再次讓這問題出現，或描述你做過甚麼……"
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
@@ -280,15 +280,15 @@ msgstr "有待執行的事件: %i "
 #: ../src/Applet/CCApplet.cpp:161
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "설명에서 메뉴를 만들 수 없습니다. 팝업을 사용할 수 없습니다!\n"
+msgstr "不能從說明建立選單，彈出視窗將不能使用！\n"
 
 #: ../src/Applet/CCApplet.cpp:190
 msgid "This is default handler, you should register your own with ConnectCrashHandler"
-msgstr "이는 기본값 처리기입니다. 자신의 처리기를 ConnectCrashHandler를 사용하여 등록해야 합니다  "
+msgstr "這是預設的處理器，你應該透過 ConnectCrashHandler來註冊你自己的處理器"
 
 #: ../src/Applet/CCApplet.cpp:205
 msgid "ABRT service has been started"
-msgstr "ABRT 서비스가 시작되었습니다  "
+msgstr "ABRT 服務已經啟動了"
 
 #: ../src/Applet/CCApplet.cpp:231
 msgid "Out of memory"
@@ -304,12 +304,12 @@ msgstr "沒有設定登錄及密碼。請檢查Bugzilla.conf檔案"
 
 #: ../lib/Plugins/Bugzilla.cpp:228
 msgid "Bug is already reported: "
-msgstr "이미 버그를 보고하였습니다:  "
+msgstr "錯誤已報告了："
 
 #: ../lib/Plugins/Bugzilla.cpp:283
 #, c-format
 msgid "Binary file %s will not be reported."
-msgstr "%s 바이너리 파일은 보고되지 않습니다.  "
+msgstr "%s 是二進位檔案，將不會隨報告提交。"
 
 #: ../lib/Plugins/Bugzilla.cpp:353
 msgid "New bug id: "
@@ -338,7 +338,7 @@ msgstr "正在登出……"
 
 #: ../lib/Plugins/Kerneloops.cpp:38
 msgid "Getting local/global universal unique identification..."
-msgstr "로컬/글로벌 UUID를 가져오는 중...   "
+msgstr "正在取得局域/全域的UUID……"
 
 #: ../lib/Plugins/CCpp.cpp:82
 msgid "Searching for debug-info packages..."
@@ -350,15 +350,15 @@ msgstr "debug-info 軟件包下載及安裝中……"
 
 #: ../lib/Plugins/CCpp.cpp:180
 msgid "Getting backtrace..."
-msgstr "역추적 검색 중...        "
+msgstr "正在取得逆向追蹤資料……"
 
 #: ../lib/Plugins/CCpp.cpp:428
 msgid "Getting local universal unique identification..."
-msgstr "로컬 UUID를 가져오는 중...   "
+msgstr "正在取得局域的UUID……"
 
 #: ../lib/Plugins/CCpp.cpp:454
 msgid "Getting global universal unique identification..."
-msgstr "글로벌 UUID를 가져오는 중...   "
+msgstr "正在取得全域的UUID……"
 
 #: ../lib/Plugins/CCpp.cpp:472
 msgid "Starting report creation..."
@@ -390,11 +390,11 @@ msgstr "檔案傳送： URL未指定"
 #: ../lib/Plugins/FileTransfer.cpp:69
 #, c-format
 msgid "Sending archive %s via %s"
-msgstr "%s를 통해 %s 아카이브 전송 중   "
+msgstr "傳送壓縮檔 %s，透過 %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:121
 msgid "Creating an archive..."
-msgstr "아카이브 생성 중...   "
+msgstr "正在建立壓縮檔……"
 
 #: ../lib/Plugins/FileTransfer.cpp:176
 msgid "File Transfer: Creating a report..."
@@ -403,7 +403,7 @@ msgstr "檔案傳送：報告書生成中……"
 #: ../lib/Plugins/FileTransfer.cpp:197
 #: ../lib/Plugins/FileTransfer.cpp:226
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): 아카이브를 작성하여 보낼 수 없습니다:   "
+msgstr "CFileTransfer::Run(): 不能建立及傳送壓縮檔："
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
