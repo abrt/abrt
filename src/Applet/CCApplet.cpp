@@ -42,7 +42,7 @@
 
 static const char *DBUS_SERVICE_NAME = "org.freedesktop.DBus";
 static const char *DBUS_SERVICE_PATH = "/org/freedesktop/DBus";
-const gchar *CApplet::menu_xml = 
+const gchar *CApplet::menu_xml =
         "<?xml version=\"1.0\"?>\
 <interface>\
   <requires lib=\"gtk+\" version=\"2.16\"/>\
@@ -135,18 +135,18 @@ CApplet::CApplet(DBus::Connection &system, DBus::Connection &session, const char
     g_signal_connect(G_OBJECT(m_pStatusIcon), "popup_menu", GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
     SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
     m_pBuilder = gtk_builder_new();
-    if(gtk_builder_add_from_string(m_pBuilder, menu_xml, strlen(menu_xml), NULL))
-    //if(gtk_builder_add_from_file(m_pBuilder, "popup.GtkBuilder", NULL))
+    if (gtk_builder_add_from_string(m_pBuilder, menu_xml, strlen(menu_xml), NULL))
+    //if (gtk_builder_add_from_file(m_pBuilder, "popup.GtkBuilder", NULL))
     {
         m_pMenu = gtk_builder_get_object(m_pBuilder, "popup_menu");
         //gtk_menu_attach_to_widget(GTK_MENU(m_pMenu), GTK_WIDGET(m_pStatusIcon), NULL);
         m_pmiHide = gtk_builder_get_object(m_pBuilder, "miHide");
-        if(m_pmiHide != NULL)
+        if (m_pmiHide != NULL)
         {
             g_signal_connect(m_pmiHide,"activate", G_CALLBACK(CApplet::onHide_cb), this);
         }
         m_pmiQuit = gtk_builder_get_object(m_pBuilder, "miQuit");
-        if(m_pmiQuit != NULL)
+        if (m_pmiQuit != NULL)
         {
             g_signal_connect(m_pmiQuit,"activate",G_CALLBACK(gtk_main_quit),NULL);
         }
@@ -155,7 +155,6 @@ CApplet::CApplet(DBus::Connection &system, DBus::Connection &session, const char
         {
             g_signal_connect(m_pmiAbout,"activate",G_CALLBACK(CApplet::onAbout_cb),m_pAboutDialog);
         }
-        
     }
     else
     {
@@ -171,7 +170,7 @@ CApplet::~CApplet()
 /* dbus related */
 void CApplet::Crash(const std::string& progname, const std::string& uid  )
 {
-    if(m_pSessionDBus->has_name("com.redhat.abrt.gui"))
+    if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
     {
         return;
     }
@@ -182,8 +181,8 @@ void CApplet::Crash(const std::string& progname, const std::string& uid  )
             std::istringstream input_string(uid);
             uid_t num;
             input_string >> num;
-    
-            if( (num == getuid()) )
+
+            if (num == getuid())
                 m_pCrashHandler(progname.c_str());
         }
         else
@@ -246,9 +245,9 @@ void CApplet::CrashNotify(const char *format, ...)
     va_end(args);
 
     notify_notification_update(m_pNotification, _("Warning"), buf, NULL);
-    if(gtk_status_icon_is_embedded (m_pStatusIcon))
+    if (gtk_status_icon_is_embedded (m_pStatusIcon))
         notify_notification_show(m_pNotification, &err);
-    if(err != NULL)
+    if (err != NULL)
         g_print(err->message);
 }
 
@@ -279,7 +278,7 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          activate_time,
                             gpointer       user_data)
 {
-    if(((CApplet *)user_data)->m_pMenu != NULL)
+    if (((CApplet *)user_data)->m_pMenu != NULL)
     {
         gtk_menu_popup(GTK_MENU(((CApplet *)user_data)->m_pMenu),NULL,NULL,gtk_status_icon_position_menu,status_icon,button,activate_time);
     }
@@ -299,7 +298,7 @@ void CApplet::onHide_cb(GtkMenuItem *menuitem, gpointer applet)
 
 void CApplet::onAbout_cb(GtkMenuItem *menuitem, gpointer dialog)
 {
-    if(dialog)
+    if (dialog)
         gtk_dialog_run(GTK_DIALOG(dialog));
     gtk_widget_hide(GTK_WIDGET(dialog));
 }

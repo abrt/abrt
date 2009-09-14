@@ -99,7 +99,7 @@ std::string crash_infos_to_string(const vector_crash_infos_t& pCrashInfos)
     return sCI.str();
 }
 
-int get_number_from_string(const std::string& pMessage, int& len)
+static int get_number_from_string(const std::string& pMessage, int& len)
 {
     std::string sNumber = "";
 

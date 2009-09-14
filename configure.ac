@@ -38,7 +38,7 @@ AC_CHECK_HEADER([sys/inotify.h], [],
 
 AC_CHECK_HEADER([magic.h], [],
    [AC_MSG_ERROR([magic.h is needed to build abrt])])
-   
+
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'

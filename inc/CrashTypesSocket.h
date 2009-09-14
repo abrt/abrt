@@ -77,8 +77,6 @@ inline std::string crash_report_to_string(const map_crash_report_t& pCrashReport
     return crash_data_to_string(pCrashReport);
 }
 
-int get_number_from_string(const std::string& pMessage, int& len);
-
 vector_crash_infos_t string_to_crash_infos(const std::string& pMessage);
 map_crash_data_t string_to_crash_data(const std::string& pMessage, int& len);
 inline map_crash_report_t string_to_crash_report(const std::string& pMessage)
