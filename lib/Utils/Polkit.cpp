@@ -21,6 +21,8 @@
 
 #include <polkit/polkit.h>
 #include <glib-object.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #include "Polkit.h"
 
@@ -62,3 +64,4 @@ PolkitResult polkit_check_authorization(const char *dbus_name, const char *actio
 
     return PolkitUnknown;
 }
+

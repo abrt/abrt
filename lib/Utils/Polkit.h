@@ -35,5 +35,6 @@ typedef enum {
 } PolkitResult;
 
 PolkitResult polkit_check_authorization(const char *dbus_name, const char *action_id);
+PolkitResult polkit_check_authorization(unsigned int UID, const char *action_id);
 
 #endif
