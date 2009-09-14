@@ -3,7 +3,6 @@ lib_LTLIBRARIES = libABRTCommLayer.la
 libABRTCommLayer_la_SOURCES = \
     DBusClientProxy.h DBusClientProxy.cpp \
     CommLayerInner.h CommLayerInner.cpp \
-    CommLayerClientDBus.h CommLayerClientDBus.cpp \
     Observer.h \
     DBusCommon.h
 libABRTCommLayer_la_LIBADD = \

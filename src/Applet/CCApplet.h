@@ -24,7 +24,7 @@
 #include <map>
 #include <string>
 #include <DBusClientProxy.h>
-#include<libnotify/notify.h>
+#include <libnotify/notify.h>
 
 class CApplet
 : public CDBusClient_proxy,
