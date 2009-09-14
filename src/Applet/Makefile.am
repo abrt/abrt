@@ -1,6 +1,8 @@
 bin_PROGRAMS = abrt-applet
 
-abrt_applet_SOURCES = Applet.cpp CCApplet.cpp CCApplet.h
+abrt_applet_SOURCES = \
+    Applet.cpp \
+    CCApplet.h CCApplet.cpp
 abrt_applet_CPPFLAGS = \
     -Wall -Werror \
     -I../Daemon/ \
