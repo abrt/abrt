@@ -699,7 +699,11 @@ int main(int argc, char** argv)
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         VERB1 log("Initializing inotify");
-        sanitize_dump_dir_rights();
+        /*FIXME: python hook runs with ordinary user privileges, 
+        so it fails if everyone doesn't have write acces
+        to DEBUG_DUMPS_DIR
+        */
+        //sanitize_dump_dir_rights();
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
