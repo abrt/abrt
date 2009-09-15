@@ -35,11 +35,11 @@ void CRPM::LoadOpenGPGPublicKey(const char* pFileName)
     free(pkt);
 }
 
-bool CRPM::CheckFingerprint(const std::string& pPackage)
+bool CRPM::CheckFingerprint(const char* pPackage)
 {
     bool ret = false;
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.c_str(), 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage, 0);
     Header header = rpmdbNextIterator(iter);
 
     if (header != NULL)
@@ -82,11 +82,11 @@ bool CRPM::CheckFingerprint(const std::string& pPackage)
     return ret;
 }
 
-bool CheckHash(const std::string& pPackage, const std::string& pPath)
+bool CheckHash(const char* pPackage, const char* pPath)
 {
     bool ret = false;
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.c_str(), 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage, 0);
     Header header = rpmdbNextIterator(iter);
     if (header != NULL)
     {
@@ -95,16 +95,16 @@ bool CheckHash(const std::string& pPackage, const std::string& pPath)
         std::string headerHash;
         char computedHash[1024] = "";
 
-        while(rpmfiNext(fi) != -1)
+        while (rpmfiNext(fi) != -1)
         {
-            if (pPath == rpmfiFN(fi))
+            if (strcmp(pPath, rpmfiFN(fi)) == 0)
             {
                 headerHash = rpmfiFDigestHex(fi, &hashAlgo);
             }
         }
         rpmfiFree(fi);
 
-        rpmDoDigest(hashAlgo, pPath.c_str(), 1, (unsigned char*) computedHash, NULL);
+        rpmDoDigest(hashAlgo, pPath, 1, (unsigned char*) computedHash, NULL);
 
         if (headerHash != "" && headerHash == computedHash)
         {
@@ -116,11 +116,11 @@ bool CheckHash(const std::string& pPackage, const std::string& pPath)
     return ret;
 }
 
-std::string GetDescription(const std::string& pPackage)
+std::string GetDescription(const char* pPackage)
 {
     std::string pDescription = "";
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage.c_str(), 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage, 0);
     Header header = rpmdbNextIterator(iter);
     if (header != NULL)
     {
@@ -137,11 +137,11 @@ std::string GetDescription(const std::string& pPackage)
     return pDescription;
 }
 
-std::string GetComponent(const std::string& pFileName)
+std::string GetComponent(const char* pFileName)
 {
     std::string ret = "";
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName.c_str(), 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName, 0);
     Header header = rpmdbNextIterator(iter);
     if (header != NULL)
     {
@@ -161,11 +161,11 @@ std::string GetComponent(const std::string& pFileName)
     return ret;
 }
 
-std::string GetPackage(const std::string& pFileName)
+std::string GetPackage(const char* pFileName)
 {
     std::string ret = "";
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName.c_str(), 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName, 0);
     Header header = rpmdbNextIterator(iter);
     if (header != NULL)
     {

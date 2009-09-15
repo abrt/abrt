@@ -62,7 +62,7 @@ class CRPM
          * A method, which checks if package's finger print is valid.
          * @param pPackage A package name.
          */
-        bool CheckFingerprint(const std::string& pPackage);
+        bool CheckFingerprint(const char* pPackage);
 };
 
 /**
@@ -70,13 +70,13 @@ class CRPM
  * @param pPackage A package name. The package contains the application.
  * @param pPath A path to the application.
  */
-bool CheckHash(const std::string& pPackage, const std::string& pPath);
+bool CheckHash(const char* pPackage, const char* pPath);
 /**
  * Gets a package description.
  * @param pPackage A package name.
  * @return A package description.
  */
-std::string GetDescription(const std::string& pPackage);
+std::string GetDescription(const char* pPackage);
 /**
  * Gets a package name. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
@@ -84,7 +84,7 @@ std::string GetDescription(const std::string& pPackage);
  * @param pFileName A file name.
  * @return A package name.
  */
-std::string GetPackage(const std::string& pFileName);
+std::string GetPackage(const char* pFileName);
 /**
  * Finds a main package for given file. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
@@ -92,6 +92,6 @@ std::string GetPackage(const std::string& pFileName);
  * @param pFileName A file name.
  * @return A package name.
  */
-std::string GetComponent(const std::string& pFileName);
+std::string GetComponent(const char* pFileName);
 
 #endif
