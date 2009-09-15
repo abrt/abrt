@@ -39,11 +39,20 @@
 #define FILENAME_BACKTRACE      "backtrace"
 #define FILENAME_MEMORYMAP      "memorymap"
 
-static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::string& pOutput);
-
 CAnalyzerCCpp::CAnalyzerCCpp() :
     m_bMemoryMap(false), m_bInstallDebuginfo(true)
 {}
+
+static bool is_hexstr(const char* str)
+{
+    while (*str)
+    {
+        if (!isxdigit(*str))
+            return false;
+        str++;
+    }
+    return true;
+}
 
 static std::string CreateHash(const std::string& pInput)
 {
@@ -55,7 +64,7 @@ static std::string CreateHash(const std::string& pInput)
     hc = HASH_Create(HASH_AlgSHA1);
     if (!hc)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::CreateHash(): cannot initialize hash.");
+        error_msg_and_die("HASH_Create(HASH_AlgSHA1) failed"); /* paranoia */
     }
     HASH_Begin(hc);
     HASH_Update(hc, reinterpret_cast<const unsigned char*>(pInput.c_str()), pInput.length());
@@ -77,102 +86,58 @@ static std::string CreateHash(const std::string& pInput)
     return hash_str;
 }
 
-static void InstallDebugInfos(const std::string& pPackage)
+static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
 {
-    update_client(_("Searching for debug-info packages..."));
-
-    std::string packageName = pPackage.substr(0, pPackage.rfind("-", pPackage.rfind("-")-1));
+    int pipeout[2];
     char buff[1024];
-    int pipein[2], pipeout[2];
     pid_t child;
 
-    xpipe(pipein);
-    xpipe(pipeout);
-
-    child = fork();
-    if (child < 0)
+    struct passwd* pw = getpwuid(uid);
+    if (!pw)
     {
-        close(pipein[0]); close(pipeout[0]);
-        close(pipein[1]); close(pipeout[1]);
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::InstallDebugInfos():  fork failed.");
+        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
+    }
+
+    xpipe(pipeout);
+    child = fork();
+    if (child == -1)
+    {
+        perror_msg_and_die("fork");
     }
     if (child == 0)
     {
-        close(pipein[1]);
-        close(pipeout[0]);
-        xmove_fd(pipein[0], STDIN_FILENO);
+        close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
+        /* Make sure stdin is safely open to nothing */
+        close(STDIN_FILENO);
+        if (open("/dev/null", O_RDONLY))
+                if (open("/", O_RDONLY))
+                        abort(); /* never happens */
         /* Not a good idea, we won't see any error messages */
-        /*close(STDERR_FILENO);*/
+        /* close(STDERR_FILENO); */
 
+        setgroups(1, &pw->pw_gid);
+        setregid(pw->pw_gid, pw->pw_gid);
+        setreuid(uid, uid);
         setsid();
-        execlp("debuginfo-install", "debuginfo-install", "-y", "--", pPackage.c_str(), NULL);
+
+        execvp(pArgs[0], pArgs);
         exit(0);
     }
 
-    close(pipein[0]);
-    close(pipeout[1]);
+    close(pipeout[1]); /* write side of the pipe */
 
-    /* Should not be needed (we use -y option), but just in case: */
-    safe_write(pipein[1], "y\n", sizeof("y\n")-1);
-    close(pipein[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
-
-    FILE *pipeout_fp = fdopen(pipeout[0], "r");
-    if (pipeout_fp == NULL) /* never happens */
+    int r;
+    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
     {
-        close(pipeout[0]);
-        wait(NULL);
-        return;
+        buff[r] = '\0';
+        pOutput += buff;
     }
 
-/* glx-utils, for example, do not have glx-utils-debuginfo package.
- * Disabled code was causing failures in backtrace decoding.
- * This does not seem to be useful.
- */
-#ifdef COMPLAIN_IF_NO_DEBUGINFO
-    bool already_installed = false;
-#endif
-    while (fgets(buff, sizeof(buff), pipeout_fp))
-    {
-        int last = strlen(buff) - 1;
-        if (last >= 0 && buff[last] == '\n')
-            buff[last] = '\0';
+    close(pipeout[0]);
+    wait(NULL); /* prevent having zombie child process */
 
-        /* log(buff); - update_client logs it too */
-        update_client(buff); /* maybe only if buff != ""? */
-
-#ifdef COMPLAIN_IF_NO_DEBUGINFO
-        if (already_installed == false)
-        {
-            /* "Package foo-debuginfo-1.2-5.ARCH already installed and latest version" */
-            char* pn = strstr(buff, packageName.c_str());
-            if (pn)
-            {
-                char* already_str = strstr(pn, "already installed and latest version");
-                if (already_str)
-                {
-                    already_installed = true;
-                }
-            }
-        }
-
-        if (already_installed == false &&
-            (strstr(buff, "No debuginfo packages available to install") != NULL ||
-             strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
-             strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL))
-        {
-            fclose(pipeout_fp);
-            kill(child, SIGTERM);
-            wait(NULL);
-            throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
-        }
-#endif
-    }
-
-    fclose(pipeout_fp);
-    wait(NULL);
+    return 0;
 }
 
 static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
@@ -190,20 +155,22 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_UID, UID);
-        fTmp << "file " << executable << std::endl;
-        fTmp << "core " << pDebugDumpDir << "/" << FILENAME_COREDUMP << std::endl;
-        fTmp << "thread apply all backtrace full" << std::endl;
-        fTmp << "q" << std::endl;
+        fTmp << "file " << executable << '\n';
+        fTmp << "core " << pDebugDumpDir << "/"FILENAME_COREDUMP"\n";
+        fTmp << "thread apply all backtrace full\nq\n";
         fTmp.close();
     }
     else
     {
         throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile);
     }
-    char* command = (char*)"gdb";
-    char* args[5] = { (char*)"gdb", (char*)"-batch", (char*)"-x", NULL, NULL };
-    args[3] = (char*) tmpFile.c_str();
-    ExecVP(command, args, atoi(UID.c_str()), pBacktrace);
+    char* args[5];
+    args[0] = (char*)"gdb";
+    args[1] = (char*)"-batch";
+    args[2] = (char*)"-x";
+    args[3] = (char*)tmpFile.c_str();
+    args[4] = NULL;
+    ExecVP(args, atoi(UID.c_str()), pBacktrace);
 }
 
 static void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
@@ -331,138 +298,216 @@ static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& 
     }
 }
 
-static pid_t ExecVP(const char* pCommand, char* const pArgs[], uid_t uid, std::string& pOutput)
+static std::string run_unstrip_n(const std::string& pDebugDumpDir)
 {
-    int pipeout[2];
-    char buff[1024];
-    pid_t child;
-
-    struct passwd* pw = getpwuid(uid);
-    if (!pw)
+    std::string UID;
     {
-        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
+        CDebugDump dd;
+        dd.Open(pDebugDumpDir);
+        dd.LoadText(FILENAME_UID, UID);
     }
 
-    xpipe(pipeout);
-    child = fork();
-    if (child == -1)
+    std::string core = "--core=" + pDebugDumpDir + "/"FILENAME_COREDUMP;
+    char* args[4];
+    args[0] = (char*)"eu-unstrip";
+    args[1] = (char*)core.c_str();
+    args[2] = (char*)"-n";
+    args[3] = NULL;
+    std::string output;
+    ExecVP(args, atoi(UID.c_str()), output);
+    return output;
+}
+
+static void InstallDebugInfos(const std::string& pDebugDumpDir)
+{
+    log("Getting module names, file names, build IDs from core file");
+    std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
+
+    log("Builting list of missing debuginfos");
+    // lines look like this:
+    // 0x400000+0x209000 ab3c8286aac6c043fd1bb1cc2a0b88ec29517d3e@0x40024c /bin/sleep /usr/lib/debug/bin/sleep.debug [exe]
+    // 0x7fff313ff000+0x1000 389c7475e3d5401c55953a425a2042ef62c4c7df@0x7fff313ff2f8 . - linux-vdso.so.1
+    vector_string_t missing;
+    char *dup = xstrdup(unstrip_list.c_str());
+    char *p = dup;
+    char c;
+    do {
+        char* end = strchrnul(p, '\n');
+        c = *end;
+        *end = '\0';
+        char* word2 = strchr(p, ' ');
+        if (!word2)
+            continue;
+        word2++;
+        char* endsp = strchr(word2, ' ');
+        if (!endsp)
+            continue;
+        /* This filters out linux-vdso.so, among others */
+        if (endsp[1] != '/')
+            continue;
+        *endsp = '\0';
+        char* at = strchrnul(word2, '@');
+        *at = '\0';
+
+        bool file_exists = 1;
+        if (word2[0] && word2[1] && is_hexstr(word2))
+        {
+            struct stat sb;
+            char *fn = xasprintf("/usr/lib/debug/.build-id/%.2s/%s", word2, word2 + 2);
+            /* Not lstat: this is a symlink and we want link's TARGET to exist */
+            file_exists = stat(fn, &sb) == 0 && S_ISREG(sb.st_mode);
+            free(fn);
+        }
+        log("build_id:%s exists:%d", word2, (int)file_exists);
+        if (!file_exists)
+            missing.push_back(word2);
+
+        p = end + 1;
+    } while (c);
+    free(dup);
+
+    if (missing.size() == 0)
     {
-        close(pipeout[0]);
-        close(pipeout[1]);
-        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": fork failed.");
+        log("All debuginfos are present, not installing debuginfo packages");
+        return;
+    }
+    //missing vector is unused for now, but TODO: use it to install only needed debuginfos
+
+    std::string package;
+    {
+        CDebugDump dd;
+        dd.Open(pDebugDumpDir);
+        dd.LoadText(FILENAME_PACKAGE, package);
+    }
+
+    update_client(_("Searching for debug-info packages..."));
+
+    int pipein[2], pipeout[2];
+    xpipe(pipein);
+    xpipe(pipeout);
+
+    pid_t child = fork();
+    if (child < 0)
+    {
+        /*close(pipein[0]); close(pipeout[0]); - why bother */
+        /*close(pipein[1]); close(pipeout[1]); */
+        perror_msg_and_die("fork");
     }
     if (child == 0)
     {
-        close(pipeout[0]); /* read side of the pipe */
-        if (pipeout[1] != STDOUT_FILENO)
-        {
-            dup2(pipeout[1], STDOUT_FILENO);
-            close(pipeout[1]);
-        }
-        /* Make sure stdin is safely open to nothing */
-        close(STDIN_FILENO);
-        if (open("/dev/null", O_RDONLY))
-                if (open("/", O_RDONLY))
-                        abort(); /* never happens */
+        close(pipein[1]);
+        close(pipeout[0]);
+        xmove_fd(pipein[0], STDIN_FILENO);
+        xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Not a good idea, we won't see any error messages */
-        /* close(STDERR_FILENO); */
+        /*close(STDERR_FILENO);*/
 
-        setgroups(1, &pw->pw_gid);
-        setregid(pw->pw_gid, pw->pw_gid);
-        setreuid(uid, uid);
         setsid();
-
-        execvp(pCommand, pArgs);
+        execlp("debuginfo-install", "debuginfo-install", "-y", "--", package.c_str(), NULL);
         exit(0);
     }
 
-    close(pipeout[1]); /* write side of the pipe */
+    close(pipein[0]);
+    close(pipeout[1]);
 
-/*
-    bool quit = false;
+    /* Should not be needed (we use -y option), but just in case: */
+    safe_write(pipein[1], "y\n", sizeof("y\n")-1);
+    close(pipein[1]);
 
-    while (!quit)
+    update_client(_("Downloading and installing debug-info packages..."));
+
+    FILE *pipeout_fp = fdopen(pipeout[0], "r");
+    if (pipeout_fp == NULL) /* never happens */
     {
-        fd_set rsfd;
-        FD_ZERO(&rsfd);
-        FD_SET(pipeout[0], &rsfd);
-        struct timeval delay;
+        close(pipeout[0]);
+        wait(NULL);
+        return;
+    }
 
-        delay.tv_sec = 1;
-        delay.tv_usec = 0;
+/* glx-utils, for example, do not have glx-utils-debuginfo package.
+ * Disabled code was causing failures in backtrace decoding.
+ * This does not seem to be useful.
+ */
+#ifdef COMPLAIN_IF_NO_DEBUGINFO
+    bool already_installed = false;
+#endif
+    char buff[1024];
+    std::string packageName = package.substr(0, package.rfind("-", package.rfind("-")-1));
+    while (fgets(buff, sizeof(buff), pipeout_fp))
+    {
+        int last = strlen(buff) - 1;
+        if (last >= 0 && buff[last] == '\n')
+            buff[last] = '\0';
 
-        if (select(FD_SETSIZE, &rsfd, NULL, NULL, &delay) > 0)
+        /* log(buff); - update_client logs it too */
+        update_client(buff); /* maybe only if buff != ""? */
+
+#ifdef COMPLAIN_IF_NO_DEBUGINFO
+        if (already_installed == false)
         {
-            if (FD_ISSET(pipeout[0], &rsfd))
+            /* "Package foo-debuginfo-1.2-5.ARCH already installed and latest version" */
+            char* pn = strstr(buff, packageName.c_str());
+            if (pn)
             {
-                int r = read(pipeout[0], buff, sizeof(buff) - 1);
-                if (r <= 0)
+                char* already_str = strstr(pn, "already installed and latest version");
+                if (already_str)
                 {
-                    quit = true;
-                }
-                else
-                {
-                    buff[r] = '\0';
-                    pOutput += buff;
+                    already_installed = true;
                 }
             }
         }
-    }
-I think the below code has absolutely the same effect:
-*/
-    int r;
-    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
-    {
-        buff[r] = '\0';
-        pOutput += buff;
+
+        if (already_installed == false &&
+            (strstr(buff, "No debuginfo packages available to install") != NULL ||
+             strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
+             strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL))
+        {
+            fclose(pipeout_fp);
+            kill(child, SIGTERM);
+            wait(NULL);
+            throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
+        }
+#endif
     }
 
-    close(pipeout[0]);
-    wait(NULL); /* why? */
-
-    return 0;
+    fclose(pipeout_fp);
+    wait(NULL);
 }
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-    update_client(_("Getting local universal unique identification..."));
+    log(_("Getting local universal unique identification..."));
 
-    std::string UID;
     std::string executable;
     std::string package;
-    std::string buildIdPC;
+    {
+        CDebugDump dd;
+        dd.Open(pDebugDumpDir);
+        dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.LoadText(FILENAME_PACKAGE, package);
+    }
+
+    std::string buildIdPC = run_unstrip_n(pDebugDumpDir);
     std::string independentBuildIdPC;
-    std::string core = "--core=" + pDebugDumpDir + "/"FILENAME_COREDUMP;
-    char* command = (char*)"eu-unstrip";
-    char* args[4] = { (char*)"eu-unstrip", NULL, (char*)"-n", NULL };
-    args[1] = (char*)core.c_str();
-
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    dd.LoadText(FILENAME_UID, UID);
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
-    dd.LoadText(FILENAME_PACKAGE, package);
-    ExecVP(command, args, atoi(UID.c_str()), buildIdPC);
-    dd.Close();
-
     GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
     return CreateHash(package + executable + independentBuildIdPC);
 }
 
 std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 {
-    update_client(_("Getting global universal unique identification..."));
+    log(_("Getting global universal unique identification..."));
 
     std::string backtrace;
     std::string executable;
     std::string package;
     std::string independentBacktrace;
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    dd.LoadText(FILENAME_BACKTRACE, backtrace);
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
-    dd.LoadText(FILENAME_PACKAGE, package);
-    dd.Close();
+    {
+        CDebugDump dd;
+        dd.Open(pDebugDumpDir);
+        dd.LoadText(FILENAME_BACKTRACE, backtrace);
+        dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.LoadText(FILENAME_PACKAGE, package);
+    }
     GetIndependentBacktrace(backtrace, independentBacktrace);
     return CreateHash(package + executable + independentBacktrace);
 }
@@ -471,28 +516,26 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
     update_client(_("Starting report creation..."));
 
-    std::string package;
-    std::string backtrace;
     CDebugDump dd;
-
     dd.Open(pDebugDumpDir);
-    if (dd.Exist(FILENAME_BACKTRACE))
+    bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
+    dd.Close(); /* do not keep dir locked longer than needed */
+    if (bt_exists)
     {
-        return;
+        return; /* already done */
     }
-    dd.LoadText(FILENAME_PACKAGE, package);
-    dd.Close();
 
     map_plugin_settings_t settings = GetSettings();
     if (settings["InstallDebuginfo"] == "yes")
     {
-        InstallDebugInfos(package);
+        InstallDebugInfos(pDebugDumpDir);
     }
     else
     {
-        warn_client(ssprintf(_("Skip debuginfo installation for package %s"), package.c_str()));
+        warn_client(_("Skipping debuginfo installation"));
     }
 
+    std::string backtrace;
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
