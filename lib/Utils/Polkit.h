@@ -22,6 +22,9 @@
 #ifndef ABRT_POLKIT_H
 #define ABRT_POLKIT_H
 
+#include <sys/types.h>
+#include <unistd.h>
+
 typedef enum {
 /* Authorization status is unknown */
     PolkitUnknown = 0x0,
@@ -35,6 +38,6 @@ typedef enum {
 } PolkitResult;
 
 PolkitResult polkit_check_authorization(const char *dbus_name, const char *action_id);
-PolkitResult polkit_check_authorization(unsigned int UID, const char *action_id);
+PolkitResult polkit_check_authorization(pid_t pid, const char *action_id);
 
 #endif

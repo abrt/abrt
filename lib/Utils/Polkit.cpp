@@ -65,3 +65,41 @@ PolkitResult polkit_check_authorization(const char *dbus_name, const char *actio
     return PolkitUnknown;
 }
 
+PolkitResult polkit_check_authorization(pid_t pid, const char *action_id)
+{
+    PolkitAuthority *authority;
+    PolkitSubject *subject;
+    PolkitAuthorizationResult *result;
+    GError *error = NULL;
+
+    g_type_init();
+    authority = polkit_authority_get();
+    subject = polkit_unix_process_new(pid);
+
+    result = polkit_authority_check_authorization_sync(authority,
+                subject,
+                action_id,
+                NULL,
+                POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
+                NULL,
+                &error);
+
+    if (error)
+    {
+        g_error_free(error);
+        return PolkitUnknown;
+    }
+
+    if (result)
+    {
+	if (polkit_authorization_result_get_is_challenge(result))
+            /* Can't happen (happens only with
+             * POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE flag) */
+	    return PolkitChallenge;
+    	if (polkit_authorization_result_get_is_authorized(result))
+	    return PolkitYes;
+	return PolkitNo;
+    }
+
+    return PolkitUnknown;
+}
