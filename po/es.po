@@ -6,9 +6,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-10 08:38+0000\n"
-"PO-Revision-Date: 2009-09-10 11:26-0300\n"
-"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
+"POT-Creation-Date: 2009-09-15 16:14+0000\n"
+"PO-Revision-Date: 2009-09-15 15:02-0300\n"
+"Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
 "Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -271,7 +271,7 @@ msgstr "La aplicación ya se está ejecutando."
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
-#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/CCApplet.cpp:136
 #: ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
@@ -340,34 +340,33 @@ msgstr "Saliendo..."
 msgid "Getting local/global universal unique identification..."
 msgstr "Obteniendo la identificación única universal local/global..."
 
-#: ../lib/Plugins/CCpp.cpp:82
-msgid "Searching for debug-info packages..."
-msgstr "Buscando paquetes de información del depurador..."
-
-#: ../lib/Plugins/CCpp.cpp:120
-msgid "Downloading and installing debug-info packages..."
-msgstr "Descargando e instalando paquetes de información del depurador..."
-
-#: ../lib/Plugins/CCpp.cpp:180
+#: ../lib/Plugins/CCpp.cpp:145
 msgid "Getting backtrace..."
 msgstr "Obteniendo el backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:428
+#: ../lib/Plugins/CCpp.cpp:383
+msgid "Searching for debug-info packages..."
+msgstr "Buscando paquetes de información del depurador..."
+
+#: ../lib/Plugins/CCpp.cpp:417
+msgid "Downloading and installing debug-info packages..."
+msgstr "Descargando e instalando paquetes de información del depurador..."
+
+#: ../lib/Plugins/CCpp.cpp:479
 msgid "Getting local universal unique identification..."
 msgstr "Obteniendo la identificación única universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:454
+#: ../lib/Plugins/CCpp.cpp:498
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:472
+#: ../lib/Plugins/CCpp.cpp:517
 msgid "Starting report creation..."
 msgstr "Iniciando la creación del informe..."
 
-#: ../lib/Plugins/CCpp.cpp:493
-#, c-format
-msgid "Skip debuginfo installation for package %s"
-msgstr "Omita la información de debuginfo para el paquete %s"
+#: ../lib/Plugins/CCpp.cpp:535
+msgid "Skipping debuginfo installation"
+msgstr "Omita la instalación de la información de depuración"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
