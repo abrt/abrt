@@ -353,7 +353,7 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
         if (word2[0] && word2[1] && is_hexstr(word2))
         {
             struct stat sb;
-            char *fn = xasprintf("/usr/lib/debug/.build-id/%.2s/%s", word2, word2 + 2);
+            char *fn = xasprintf("/usr/lib/debug/.build-id/%.2s/%s.debug", word2, word2 + 2);
             /* Not lstat: this is a symlink and we want link's TARGET to exist */
             file_exists = stat(fn, &sb) == 0 && S_ISREG(sb.st_mode);
             free(fn);
