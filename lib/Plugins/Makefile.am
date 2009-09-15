@@ -1,4 +1,4 @@
-AM_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -I$(srcdir)/../CommLayer
+AM_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 pluginslibdir=$(PLUGINS_LIB_DIR)
 pluginslib_LTLIBRARIES = libCCpp.la \
                          libMailx.la \
@@ -36,39 +36,39 @@ install-data-hook:
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h
 libCCpp_la_LDFLAGS = -avoid-version
 libCCpp_la_LIBADD = $(NSS_LIBS)
-libCCpp_la_CPPFLAGS =  -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(NSS_CFLAGS)
+libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(NSS_CFLAGS)
 
 # Kerneloops
 libKerneloops_la_SOURCES = Kerneloops.cpp Kerneloops.h
 libKerneloops_la_LDFLAGS = -avoid-version
-libKerneloops_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
+libKerneloops_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 
 # KerneloopsReporter
 libKerneloopsReporter_la_SOURCES = KerneloopsReporter.cpp KerneloopsReporter.h
 libKerneloopsReporter_la_LDFLAGS = -avoid-version
 libKerneloopsReporter_la_LIBADD = $(CURL_LIBS)
-libKerneloopsReporter_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libKerneloopsReporter_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # KerneloopsScanner
 libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h
 libKerneloopsScanner_la_LDFLAGS = -avoid-version
-libKerneloopsScanner_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"
+libKerneloopsScanner_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"
 
 # Mailx
 libMailx_la_SOURCES = Mailx.cpp Mailx.h
 libMailx_la_LDFLAGS = -avoid-version
-libMailx_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -I$(srcdir)/../CommLayer -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libMailx_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # SQLite3
 libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
 libSQLite3_la_LDFLAGS = -avoid-version
 libSQLite3_la_LIBADD = $(SQLITE3_LIBS)
-libSQLite3_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"'
+libSQLite3_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"'
 
 # Logger
 libLogger_la_SOURCES = Logger.cpp Logger.h
 libLogger_la_LDFLAGS = -avoid-version
-libLogger_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -I$(srcdir)/../CommLayer -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libLogger_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # RunApp
 libRunApp_la_SOURCES = RunApp.h RunApp.cpp
@@ -82,22 +82,22 @@ libSOSreport_la_LDFLAGS = -avoid-version
 libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
 libBugzilla_la_LIBADD = $(XMLRPC_CPP_LIBS) $(XMLRPC_CLIENT_CPP_LIBS) $(NSS_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
-libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) $(NSS_CFLAGS) -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) $(NSS_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # TicketUploader
 libTicketUploader_la_SOURCES = TicketUploader.h TicketUploader.cpp
 libTicketUploader_la_LDFLAGS = -avoid-version
 libTicketUploader_la_LIBADD = $(CURL_LIBS)
-libTicketUploader_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libTicketUploader_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # Python
 libPython_la_SOURCES = Python.h Python.cpp
 #libPython_la_LIBADD = $(NSS_LIBS)
 libPython_la_LDFLAGS = -avoid-version
-libPython_la_CPPFLAGS = $(NSS_CFLAGS) -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils
+libPython_la_CPPFLAGS = $(NSS_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 
 # FileTrasfer
 libFileTransfer_la_SOURCES = FileTransfer.cpp FileTransfer.h
 libFileTransfer_la_LDFLAGS = -avoid-version
 libFileTransfer_la_LIBADD = $(CURL_LIBS)
-libFileTransfer_la_CPPFLAGS = -I$(srcdir)/../CommLayer -I$(srcdir)/../../inc -I$(srcdir)/../MiddleWare -I$(srcdir)/../Utils $(CURL_CFLAGS) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"
+libFileTransfer_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"

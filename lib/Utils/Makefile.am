@@ -1,17 +1,40 @@
 lib_LTLIBRARIES = libABRTUtils.la
-libABRTUtils_la_SOURCES = \
-	DebugDump.cpp DebugDump.h \
-	CrashTypesSocket.cpp \
-	xfuncs.cpp \
-	read_write.cpp \
-	logging.cpp \
-	copyfd.cpp \
-	Polkit.cpp \
-	Polkit.h
 
-libABRTUtils_la_LDFLAGS = -version-info 0:1:0
-libABRTUtils_la_LIBADD = -lmagic $(POLKIT_LIBS)
-libABRTUtils_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../../lib/CommLayer $(POLKIT_CFLAGS)
+libABRTUtils_la_SOURCES = \
+    xfuncs.cpp \
+    read_write.cpp \
+    logging.cpp \
+    copyfd.cpp \
+    CrashTypesSocket.cpp \
+    DebugDump.h DebugDump.cpp \
+    DBusClientProxy.h DBusClientProxy.cpp \
+    CommLayerInner.h CommLayerInner.cpp \
+    Plugin.h Plugin.cpp \
+    Polkit.h Polkit.cpp \
+    Action.h Database.h Reporter.h Analyzer.h \
+    Observer.h \
+    DBusCommon.h
+libABRTUtils_la_LDFLAGS = \
+    -version-info 0:1:0 \
+    $(DL_LIBS) \
+    $(RPM_LIBS) \
+    $(DBUSCPP_LIBS)
+libABRTUtils_la_LIBADD = \
+    -lmagic \
+    $(POLKIT_LIBS)
+libABRTUtils_la_CPPFLAGS = \
+    -Wall -Werror \
+    -I$(srcdir)/../../inc \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    $(RPM_CFLAGS) \
+    $(GLIB_CFLAGS) \
+    $(DBUSCPP_CFLAGS) \
+    $(POLKIT_CFLAGS) \
+    -D_GNU_SOURCE
 
 install-data-local:
 	$(mkdir_p) '$(DESTDIR)/$(DEBUG_DUMPS_DIR)'

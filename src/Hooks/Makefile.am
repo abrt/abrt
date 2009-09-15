@@ -10,19 +10,19 @@ hookCCpp_CPPFLAGS = -I$(srcdir)/../../inc \
                     -DVAR_RUN=\"$(VAR_RUN)\"
 
 # dumpoops
-dumpoops_SOURCES = dumpoops.cpp
-dumpoops_LDADD = ../../lib/Utils/libABRTUtils.la \
-                ../../lib/MiddleWare/libABRTMiddleWare.la \
-                ../../lib/CommLayer/libABRTCommLayer.la
-dumpoops_CPPFLAGS = -I$(srcdir)/../../inc \
-                    -I$(srcdir)/../../lib/Utils \
-                    -I$(srcdir)/../../lib/Plugins \
-                    -I$(srcdir)/../../lib/MiddleWare \
-                    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-                    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-                    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-                    -DCONF_DIR=\"$(CONF_DIR)\" \
-                    -DVAR_RUN=\"$(VAR_RUN)\"
+dumpoops_SOURCES = \
+    dumpoops.cpp
+dumpoops_LDADD = \
+    ../../lib/Utils/libABRTUtils.la
+dumpoops_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/Utils \
+    -I$(srcdir)/../../lib/Plugins \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\"
 
 python_PYTHON = sitecustomize.py abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in

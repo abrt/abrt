@@ -76,8 +76,6 @@ AC_CONFIG_FILES([
 	Makefile
 	lib/Makefile
 	lib/Utils/Makefile
-	lib/MiddleWare/Makefile
-	lib/CommLayer/Makefile
 	lib/Plugins/Makefile
 	lib/Python/Makefile
 	src/Makefile

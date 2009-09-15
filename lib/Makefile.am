@@ -1,1 +1,1 @@
-SUBDIRS = Utils MiddleWare Plugins CommLayer Python
+SUBDIRS = Utils Plugins Python

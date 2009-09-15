@@ -1,7 +1,7 @@
 sbin_PROGRAMS = abrtd
 
 # FIXME: we still link against dbus-c++ (not just dbus)
-# because lib/CommLayer links it in
+# because lib/Utils links it in
 
 abrtd_SOURCES = \
     ABRTPlugin.cpp ABRTPlugin.h \
@@ -16,8 +16,6 @@ abrtd_SOURCES = \
     Settings.h Settings.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/MiddleWare \
-    -I$(srcdir)/../../lib/CommLayer \
     -I$(srcdir)/../../lib/Utils \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
@@ -27,8 +25,7 @@ abrtd_CPPFLAGS = \
     $(GLIB_CFLAGS) $(DBUS_CFLAGS) \
     $(ENABLE_SOCKET_OR_DBUS)
 abrtd_LDADD = \
-    ../../lib/MiddleWare/libABRTMiddleWare.la \
-    ../../lib/CommLayer/libABRTCommLayer.la \
+    ../../lib/Utils/libABRTUtils.la \
     $(DL_LIBS) $(DBUS_LIBS) $(RPM_LIBS)
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
