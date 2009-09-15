@@ -61,6 +61,7 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
     }
 
     return PolkitUnknown;
+}
 
 PolkitResult polkit_check_authorization(const char *dbus_name, const char *action_id)
 {
