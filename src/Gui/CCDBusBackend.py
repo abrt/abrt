@@ -234,4 +234,7 @@ class DBusManager(gobject.GObject):
         return self.cc.GetSettings()
         
     def setSettings(self, settings):
-        return self.cc.SetSettings(settings)
+        # FIXME: STUB!!!!
+        print "setSettings stub"
+        retval = self.cc.SetSettings(self.cc.GetSettings())
+        print ">>>", retval
