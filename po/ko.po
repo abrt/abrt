@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 22:04+0000\n"
-"PO-Revision-Date: 2009-09-10 10:48+1000\n"
+"POT-Creation-Date: 2009-09-15 23:26+0000\n"
+"PO-Revision-Date: 2009-09-16 11:09+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -284,7 +284,7 @@ msgstr "애플릿이 이미 실행되고 있습니다.  "
 msgid "ABRT service is not running"
 msgstr "ABRT 서비스가 실행되고 있지 않습니다  "
 
-#: ../src/Applet/CCApplet.cpp:135 ../src/Applet/CCApplet.cpp:343
+#: ../src/Applet/CCApplet.cpp:136 ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr "보류 중인 이벤트: %i "
@@ -355,34 +355,33 @@ msgstr "로그아웃 중...   "
 msgid "Getting local/global universal unique identification..."
 msgstr "로컬/글로벌 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:82
-msgid "Searching for debug-info packages..."
-msgstr "debug-info 패키지 검색 중...   "
-
-#: ../lib/Plugins/CCpp.cpp:120
-msgid "Downloading and installing debug-info packages..."
-msgstr "debug-info 패키지 다운로드 및 설치 중...    "
-
-#: ../lib/Plugins/CCpp.cpp:180
+#: ../lib/Plugins/CCpp.cpp:145
 msgid "Getting backtrace..."
 msgstr "역추적 검색 중...        "
 
-#: ../lib/Plugins/CCpp.cpp:428
+#: ../lib/Plugins/CCpp.cpp:383
+msgid "Searching for debug-info packages..."
+msgstr "debug-info 패키지 검색 중...   "
+
+#: ../lib/Plugins/CCpp.cpp:417
+msgid "Downloading and installing debug-info packages..."
+msgstr "debug-info 패키지 다운로드 및 설치 중...    "
+
+#: ../lib/Plugins/CCpp.cpp:479
 msgid "Getting local universal unique identification..."
 msgstr "로컬 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:454
+#: ../lib/Plugins/CCpp.cpp:498
 msgid "Getting global universal unique identification..."
 msgstr "글로벌 UUID를 가져오는 중...   "
 
-#: ../lib/Plugins/CCpp.cpp:472
+#: ../lib/Plugins/CCpp.cpp:517
 msgid "Starting report creation..."
 msgstr "보고서 작성 시작 중...  "
 
-#: ../lib/Plugins/CCpp.cpp:493
-#, c-format
-msgid "Skip debuginfo installation for package %s"
-msgstr "%s 패키지에 대한 디버그 정보 설치 생략  "
+#: ../lib/Plugins/CCpp.cpp:535
+msgid "Skipping debuginfo installation"
+msgstr "디버그 정보 설치 생략  "
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
