@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-10 18:54+0000\n"
-"PO-Revision-Date: 2009-09-10 17:13-0300\n"
+"POT-Creation-Date: 2009-09-16 07:12+0000\n"
+"PO-Revision-Date: 2009-09-16 11:04-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -272,7 +272,7 @@ msgstr "O miniaplicativo já está em execução."
 msgid "ABRT service is not running"
 msgstr "O serviço do ABRT não está em execução"
 
-#: ../src/Applet/CCApplet.cpp:135
+#: ../src/Applet/CCApplet.cpp:136
 #: ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
@@ -341,34 +341,33 @@ msgstr "Encerrando sessão..."
 msgid "Getting local/global universal unique identification..."
 msgstr "Obtendo identificação universal local/global única..."
 
-#: ../lib/Plugins/CCpp.cpp:82
-msgid "Searching for debug-info packages..."
-msgstr "Pesquisando por pacotes debug-info..."
-
-#: ../lib/Plugins/CCpp.cpp:120
-msgid "Downloading and installing debug-info packages..."
-msgstr "Baixando e instalando pacotes debug-info..."
-
-#: ../lib/Plugins/CCpp.cpp:180
+#: ../lib/Plugins/CCpp.cpp:145
 msgid "Getting backtrace..."
 msgstr "Obtendo backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:428
+#: ../lib/Plugins/CCpp.cpp:383
+msgid "Searching for debug-info packages..."
+msgstr "Pesquisando por pacotes debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:417
+msgid "Downloading and installing debug-info packages..."
+msgstr "Baixando e instalando pacotes debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:479
 msgid "Getting local universal unique identification..."
 msgstr "Obtendo identificação universal local única..."
 
-#: ../lib/Plugins/CCpp.cpp:454
+#: ../lib/Plugins/CCpp.cpp:498
 msgid "Getting global universal unique identification..."
 msgstr "Obtendo identificação universal global única..."
 
-#: ../lib/Plugins/CCpp.cpp:472
+#: ../lib/Plugins/CCpp.cpp:517
 msgid "Starting report creation..."
 msgstr "Iniciando a criação do relatório..."
 
-#: ../lib/Plugins/CCpp.cpp:493
-#, c-format
-msgid "Skip debuginfo installation for package %s"
-msgstr "Pular instalação do debuginfo para o pacote %s"
+#: ../lib/Plugins/CCpp.cpp:535
+msgid "Skipping debuginfo installation"
+msgstr "Pulando instalação do debuginfo"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
