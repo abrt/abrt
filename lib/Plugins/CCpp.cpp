@@ -580,7 +580,6 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
         warn_client(_("Skipping debuginfo installation"));
     }
 
-    std::string backtrace;
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
