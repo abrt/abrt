@@ -32,7 +32,6 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
     PolkitAuthorizationResult *result;
     GError *error = NULL;
 
-    g_type_init();
     authority = polkit_authority_get();
 
     result = polkit_authority_check_authorization_sync(authority,
@@ -65,12 +64,14 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
 
 PolkitResult polkit_check_authorization(const char *dbus_name, const char *action_id)
 {
+    g_type_init();
     PolkitSubject *subject = polkit_system_bus_name_new(dbus_name);
     return do_check(subject, action_id);
 }
 
 PolkitResult polkit_check_authorization(pid_t pid, const char *action_id)
 {
+    g_type_init();
     PolkitSubject *subject = polkit_unix_process_new(pid);
     return do_check(subject, action_id);
 }
