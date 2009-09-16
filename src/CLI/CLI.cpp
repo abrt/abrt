@@ -1,95 +1,31 @@
+#include <iostream>
+#include <getopt.h>
 #include "ABRTException.h"
 #include "ABRTSocket.h"
-#include "ABRTException.h"
-#include <iostream>
-#include <CommLayerClientDBus.h>
-#include <string.h>
+#include "abrtlib.h"
+#include "abrt_dbus.h"
+#include "DBusCommon.h"
 
-#define SOCKET_FILE VAR_RUN"/abrt.socket"
-
-typedef enum {HELP,
-              GET_LIST,
-              GET_LIST_FULL,
-              REPORT,
-              REPORT_ALWAYS,
-              DELETE} param_mode_t;
-
-typedef struct param_s
+enum
 {
-    param_mode_t m_Mode;
-    char* m_sUUID;
-} param_t;
+    HELP,
+    GET_LIST,
+    GET_LIST_FULL,
+    REPORT,
+    REPORT_ALWAYS,
+    DELETE
+};
 
-void print_usage(char* pProgramName)
-{
-    std::cout << pProgramName << " [OPTION]" << std::endl << std::endl;
-    std::cout << "[OPTION]" << std::endl;
-    std::cout << "\t--help                   - prints this text" << std::endl;
-    std::cout << "\t--get-list               - prints list of crashes which are not reported" << std::endl;
-    std::cout << "\t--get-list-full          - prints list of all crashes" << std::endl;
-    std::cout << "\t--report <uuid>          - create and send a report" << std::endl;
-    std::cout << "\t--report-always <uuid>   - create and send a report without asking" << std::endl;
-    std::cout << "\t--delete <uuid>          - delete crash" << std::endl;
-}
+static DBusConnection* s_dbus_conn;
 
-void parse_args(int argc, char** argv, param_t& param)
-{
-    if (argc == 2)
-    {
-        if (!strcmp(argv[1], "--help") || !strcmp(argv[1], "--version"))
-        {
-            param.m_Mode = HELP;
-        }
-        else if (!strcmp(argv[1], "--get-list"))
-        {
-            param.m_Mode = GET_LIST;
-        }
-        else if (!strcmp(argv[1], "--get-list-full"))
-        {
-            param.m_Mode = GET_LIST_FULL;
-        }
-        else
-        {
-            param.m_Mode = HELP;
-        }
-    }
-    else if (argc == 3)
-    {
-        if (!strcmp(argv[1], "--report"))
-        {
-            param.m_Mode = REPORT;
-            param.m_sUUID = argv[2];
-        }
-        else if (!strcmp(argv[1], "--report-always"))
-        {
-            param.m_Mode = REPORT_ALWAYS;
-            param.m_sUUID = argv[2];
-        }
-        else if (!strcmp(argv[1], "--delete"))
-        {
-            param.m_Mode = DELETE;
-            param.m_sUUID = argv[2];
-        }
-        else
-        {
-            param.m_Mode = HELP;
-        }
-    }
-    else
-    {
-        param.m_Mode = HELP;
-    }
-}
-
-void print_crash_infos(const vector_crash_infos_t& pCrashInfos,
-                       const param_mode_t& pMode)
+static void print_crash_infos(const vector_crash_infos_t& pCrashInfos, int pMode)
 {
     unsigned int ii;
     for (ii = 0; ii < pCrashInfos.size(); ii++)
     {
         if (pCrashInfos[ii].find(CD_REPORTED)->second[CD_CONTENT] != "1" || pMode == GET_LIST_FULL)
         {
-            std::cout << ii << ". " << std::endl;
+            std::cout << ii << ".\n";
             std::cout << "\tUID       : " << pCrashInfos[ii].find(CD_UID)->second[CD_CONTENT] << std::endl;
             std::cout << "\tUUID      : " << pCrashInfos[ii].find(CD_UUID)->second[CD_CONTENT] << std::endl;
             std::cout << "\tPackage   : " << pCrashInfos[ii].find(CD_PACKAGE)->second[CD_CONTENT] << std::endl;
@@ -100,10 +36,10 @@ void print_crash_infos(const vector_crash_infos_t& pCrashInfos,
     }
 }
 
-void print_crash_report(const map_crash_report_t& pCrashReport)
+static void print_crash_report(const map_crash_report_t& pCrashReport)
 {
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    map_crash_report_t::const_iterator it = pCrashReport.begin();
+    for (; it != pCrashReport.end(); it++)
     {
         if (it->second[CD_TYPE] != CD_SYS)
         {
@@ -114,77 +50,221 @@ void print_crash_report(const map_crash_report_t& pCrashReport)
     }
 }
 
+/*
+ * DBus member calls
+ */
+
+/* helpers */
+static DBusMessage* new_call_msg(const char* method)
+{
+    DBusMessage* msg = dbus_message_new_method_call(CC_DBUS_NAME, CC_DBUS_PATH, CC_DBUS_IFACE, method);
+    if (!msg)
+        die_out_of_memory();
+    return msg;
+}
+static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
+{
+    DBusError err;
+    dbus_error_init(&err);
+    DBusMessage *reply = dbus_connection_send_with_reply_and_block(s_dbus_conn, msg, /*timeout*/ -1, &err);
+    if (reply == NULL)
+    {
+//analyse error
+        error_msg_and_die("Error sending DBus message");
+    }
+    dbus_message_unref(msg);
+    return reply;
+}
+
+static vector_crash_infos_t call_GetCrashInfos()
+{
+    DBusMessage* msg = new_call_msg("GetCrashInfos");
+
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+
+    vector_crash_infos_t argout;
+    DBusMessageIter in_iter;
+    if (!dbus_message_iter_init(reply, &in_iter)) /* no values */
+        error_msg_and_die("dbus call %s: return type mismatch", "GetCrashInfos");
+    int r = load_val(&in_iter, argout);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", "GetCrashInfos");
+    dbus_message_unref(reply);
+    return argout;
+}
+
+static map_crash_report_t call_CreateReport(const char* uuid)
+{
+    DBusMessage* msg = new_call_msg("GetJobResult");
+    dbus_message_append_args(msg,
+            DBUS_TYPE_STRING, &uuid,
+            DBUS_TYPE_INVALID);
+
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+
+    map_crash_report_t argout;
+    DBusMessageIter in_iter;
+    if (!dbus_message_iter_init(reply, &in_iter)) /* no values */
+        error_msg_and_die("dbus call %s: return type mismatch", "GetJobResult");
+    int r = load_val(&in_iter, argout);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", "GetJobResult");
+    dbus_message_unref(reply);
+    return argout;
+}
+
+static void call_Report(const map_crash_report_t& report)
+{
+    DBusMessage* msg = new_call_msg("Report");
+    DBusMessageIter out_iter;
+    dbus_message_iter_init_append(msg, &out_iter);
+    store_val(&out_iter, report);
+
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+    //it returns a single value of report_status_t type,
+    //but we don't use it (yet?)
+
+    dbus_message_unref(reply);
+    return;
+}
+
+static void call_DeleteDebugDump(const char* uuid)
+{
+    DBusMessage* msg = new_call_msg("DeleteDebugDump");
+    dbus_message_append_args(msg,
+            DBUS_TYPE_STRING, &uuid,
+            DBUS_TYPE_INVALID);
+
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+    //it returns a single boolean value,
+    //but we don't use it (yet?)
+
+    dbus_message_unref(reply);
+    return;
+}
+
+static void handle_dbus_err(bool error_flag, DBusError *err)
+{
+    if (dbus_error_is_set(err))
+    {
+        error_msg("dbus error: %s", err->message);
+        /* dbus_error_free(&err); */
+        error_flag = true;
+    }
+    if (!error_flag)
+        return;
+    error_msg_and_die(
+            "error requesting DBus name %s, possible reasons: "
+            "abrt run by non-root; dbus config is incorrect",
+            CC_DBUS_NAME);
+}
+
+static const struct option longopts[] =
+{
+    /* name, has_arg, flag, val */
+    { "help"         , no_argument      , NULL, HELP          },
+    { "version"      , no_argument      , NULL, HELP          },
+    { "get-list"     , no_argument      , NULL, GET_LIST      },
+    { "get-list-full", no_argument      , NULL, GET_LIST_FULL },
+    { "report"       , required_argument, NULL, REPORT        },
+    { "report-always", required_argument, NULL, REPORT_ALWAYS },
+    { "delete"       , required_argument, NULL, DELETE        },
+};
+
 int main(int argc, char** argv)
 {
-    vector_crash_infos_t ci;
-    map_crash_report_t cr;
-    param_t param;
-    std::string answer = "n";
+    char* uuid = NULL;
+    int op = -1;
 
-    parse_args(argc, argv, param);
-
-    if (param.m_Mode == HELP)
+    while (1)
     {
-        print_usage(argv[0]);
-        return 1;
-    }
-    try
-    {
-#ifdef ENABLE_DBUS
-        DBus::Glib::BusDispatcher dispatcher;
-        /* this should bind the dispatcher with mainloop */
-        dispatcher.attach(NULL);
-        DBus::default_dispatcher = &dispatcher;
-        DBus::Connection conn = DBus::Connection::SystemBus();
-        CCommLayerClientDBus ABRTDaemon(conn, CC_DBUS_PATH, CC_DBUS_NAME);
-        if(!conn.has_name(CC_DBUS_NAME)){
-            std::cout << "Daemon is not running!" << std::endl;
-            return -1;
-        }
-#elif ENABLE_SOCKET
-        CABRTSocket ABRTDaemon;
-        ABRTDaemon.Connect(SOCKET_FILE);
-#endif
-        switch (param.m_Mode)
+        int option_index;
+        int c = getopt_long_only(argc, argv, "", longopts, &option_index);
+        switch (c)
         {
-            case GET_LIST:
-                ci = ABRTDaemon.GetCrashInfos();
-                print_crash_infos(ci, GET_LIST);
-                break;
-            case GET_LIST_FULL:
-                ci = ABRTDaemon.GetCrashInfos();
-                print_crash_infos(ci, GET_LIST_FULL);
-                break;
             case REPORT:
-                cr = ABRTDaemon.CreateReport(param.m_sUUID);
-                print_crash_report(cr);
-                std::cout << std::endl << "Do you want to send the report? [y/n]: ";
-                std::flush(std::cout);
-                std::cin >> answer;
-                if (answer == "Y" || answer == "y")
-                {
-                    ABRTDaemon.Report(cr);
-                }
-                break;
             case REPORT_ALWAYS:
-                cr = ABRTDaemon.CreateReport(param.m_sUUID);
-                ABRTDaemon.Report(cr);
-                break;
             case DELETE:
-                ABRTDaemon.DeleteDebugDump(param.m_sUUID);
-                break;
+                uuid = optarg;
+                /* fall through */
+            case GET_LIST:
+            case GET_LIST_FULL:
+                if (op == -1)
+                    break;
+                /* fall through */
+            case -1: /* end of options */
+                if (op != -1)
+                    break;
+                error_msg("You must specify exactly one operation.");
+                /* fall through */
             default:
-                print_usage(argv[0]);
-                break;
+            case HELP:
+                char* progname = strrchr(argv[0], '/');
+                if (progname)
+                    progname++;
+                else
+                    progname = argv[0];
+                /* note: message has embedded tabs */
+                std::cout << "Usage: " << progname << " [OPTION]\n\n"
+                        "	--get-list		print list of crashes which are not reported\n"
+                        "	--get-list-full		print list of all crashes\n"
+                        "	--report UUID		create and send a report\n"
+                        "	--report-always UUID	create and send a report without asking\n"
+                        "	--delete UUID		delete crash\n";
+                return 1;
         }
+        if (c == -1)
+            break;
+        op = c;
+    }
+
+#ifdef ENABLE_DBUS
+    DBusError err;
+    dbus_error_init(&err);
+    s_dbus_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
+    handle_dbus_err(s_dbus_conn == NULL, &err);
+#elif ENABLE_SOCKET
+    CABRTSocket ABRTDaemon;
+    ABRTDaemon.Connect(VAR_RUN"/abrt.socket");
+#endif
+    switch (op)
+    {
+        case GET_LIST:
+        case GET_LIST_FULL:
+        {
+            vector_crash_infos_t ci = call_GetCrashInfos();
+            print_crash_infos(ci, op);
+            break;
+        }
+        case REPORT:
+        {
+            map_crash_report_t cr = call_CreateReport(uuid);
+            print_crash_report(cr);
+            std::cout << "\nDo you want to send the report? [y/n]: ";
+            std::flush(std::cout);
+            std::string answer = "n";
+            std::cin >> answer;
+            if (answer == "Y" || answer == "y")
+            {
+                call_Report(cr);
+            }
+            break;
+        }
+        case REPORT_ALWAYS:
+        {
+            map_crash_report_t cr = call_CreateReport(uuid);
+            call_Report(cr);
+            break;
+        }
+        case DELETE:
+        {
+            call_DeleteDebugDump(uuid);
+            break;
+        }
+    }
 #if ENABLE_SOCKET
-        ABRTDaemon.DisConnect();
+    ABRTDaemon.DisConnect();
 #endif
 
-    }
-    catch (CABRTException& e)
-    {
-        std::cout << e.what() << std::endl;
-    }
     return 0;
 }

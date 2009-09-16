@@ -9,6 +9,7 @@ libABRTUtils_la_SOURCES = \
     DebugDump.h DebugDump.cpp \
     DBusClientProxy.h DBusClientProxy.cpp \
     CommLayerInner.h CommLayerInner.cpp \
+    abrt_dbus.h abrt_dbus.cpp \
     Plugin.h Plugin.cpp \
     Polkit.h Polkit.cpp \
     Action.h Database.h Reporter.h Analyzer.h \

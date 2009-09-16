@@ -6,8 +6,7 @@ bin_PROGRAMS = abrt-cli
 
 abrt_cli_SOURCES = \
     CLI.cpp \
-    ABRTSocket.h ABRTSocket.cpp \
-    CommLayerClientDBus.h CommLayerClientDBus.cpp
+    ABRTSocket.h ABRTSocket.cpp
 abrt_cli_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \

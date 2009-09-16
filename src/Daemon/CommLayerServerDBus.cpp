@@ -1,335 +1,12 @@
-#include <iostream>
+//#include <iostream>
 #include <dbus/dbus.h>
 #include "abrtlib.h"
+#include "abrt_dbus.h"
 #include "ABRTException.h"
 #include "CrashWatcher.h"
 #include "Settings.h"
 #include "Daemon.h"
 #include "CommLayerServerDBus.h"
-
-
-static DBusConnection* s_pConn;
-
-
-/*
- * Helpers for building DBus messages
- */
-
-//static void store_bool(DBusMessageIter* iter, bool val);
-static void store_int32(DBusMessageIter* iter, int32_t val);
-static void store_uint32(DBusMessageIter* iter, uint32_t val);
-static void store_int64(DBusMessageIter* iter, int64_t val);
-static void store_uint64(DBusMessageIter* iter, uint64_t val);
-static void store_string(DBusMessageIter* iter, const char* val);
-
-//static inline void store_val(DBusMessageIter* iter, bool val)               { store_bool(iter, val); }
-static inline void store_val(DBusMessageIter* iter, int32_t val)            { store_int32(iter, val); }
-static inline void store_val(DBusMessageIter* iter, uint32_t val)           { store_uint32(iter, val); }
-static inline void store_val(DBusMessageIter* iter, int64_t val)            { store_int64(iter, val); }
-static inline void store_val(DBusMessageIter* iter, uint64_t val)           { store_uint64(iter, val); }
-static inline void store_val(DBusMessageIter* iter, const char* val)        { store_string(iter, val); }
-static inline void store_val(DBusMessageIter* iter, const std::string& val) { store_string(iter, val.c_str()); }
-
-//static void store_bool(DBusMessageIter* iter, bool val)
-//{
-//    dbus_bool_t db = val;
-//    if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_BOOLEAN, &db))
-//        die_out_of_memory();
-//}
-static void store_int32(DBusMessageIter* iter, int32_t val)
-{
-    if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_INT32, &val))
-        die_out_of_memory();
-}
-static void store_uint32(DBusMessageIter* iter, uint32_t val)
-{
-    if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_UINT32, &val))
-        die_out_of_memory();
-}
-static void store_int64(DBusMessageIter* iter, int64_t val)
-{
-    if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_INT64, &val))
-        die_out_of_memory();
-}
-static void store_uint64(DBusMessageIter* iter, uint64_t val)
-{
-    if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_UINT64, &val))
-        die_out_of_memory();
-}
-static void store_string(DBusMessageIter* iter, const char* val)
-{
-    if (!dbus_message_iter_append_basic(iter, DBUS_TYPE_STRING, &val))
-        die_out_of_memory();
-}
-
-/* Templates for vector and map */
-template <typename T> struct type {};
-//template <> struct type<bool>        { static const char* csig() { return "b"; } };
-template <> struct type<int32_t>     { static const char* csig() { return "i"; } static std::string sig(); };
-template <> struct type<uint32_t>    { static const char* csig() { return "u"; } static std::string sig(); };
-template <> struct type<int64_t>     { static const char* csig() { return "x"; } static std::string sig(); };
-template <> struct type<uint64_t>    { static const char* csig() { return "t"; } static std::string sig(); };
-template <> struct type<std::string> { static const char* csig() { return "s"; } static std::string sig(); };
-#define SIG(T) (type<T>::csig() ? type<T>::csig() : type<T>::sig().c_str())
-template <typename E>
-struct type< std::vector<E> > {
-    static const char* csig() { return NULL; }
-    static std::string sig() { return ssprintf("a%s", SIG(E)); }
-};
-template <typename K, typename V>
-struct type< std::map<K,V> > {
-    static const char* csig() { return NULL; }
-    static std::string sig() { return ssprintf("a{%s%s}", SIG(K), SIG(V)); }
-};
-
-template<typename E>
-static void store_vector(DBusMessageIter* iter, const std::vector<E>& val)
-{
-    DBusMessageIter sub_iter;
-    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY, SIG(E), &sub_iter))
-        die_out_of_memory();
-
-    typename std::vector<E>::const_iterator vit = val.begin();
-    for (; vit != val.end(); ++vit)
-    {
-        store_val(&sub_iter, *vit);
-    }
-
-    if (!dbus_message_iter_close_container(iter, &sub_iter))
-        die_out_of_memory();
-}
-/*
-template<>
-static void store_vector(DBus::MessageIter &iter, const std::vector<uint8_t>& val)
-{
-    if we use such vector, MUST add specialized code here (see in dbus-c++ source)
-}
-*/
-template<typename K, typename V>
-static void store_map(DBusMessageIter* iter, const std::map<K,V>& val)
-{
-    DBusMessageIter sub_iter;
-    if (!dbus_message_iter_open_container(iter, DBUS_TYPE_ARRAY,
-                ssprintf("{%s%s}", SIG(K), SIG(V)).c_str(),
-                &sub_iter))
-        die_out_of_memory();
-
-    typename std::map<K,V>::const_iterator mit = val.begin();
-    for (; mit != val.end(); ++mit)
-    {
-        DBusMessageIter sub_sub_iter;
-        if (!dbus_message_iter_open_container(&sub_iter, DBUS_TYPE_DICT_ENTRY, NULL, &sub_sub_iter))
-            die_out_of_memory();
-        store_val(&sub_sub_iter, mit->first);
-        store_val(&sub_sub_iter, mit->second);
-        if (!dbus_message_iter_close_container(&sub_iter, &sub_sub_iter))
-            die_out_of_memory();
-    }
-
-    if (!dbus_message_iter_close_container(iter, &sub_iter))
-        die_out_of_memory();
-}
-
-template<typename E>
-static inline void store_val(DBusMessageIter* iter, const std::vector<E>& val) { store_vector(iter, val); }
-template<typename K, typename V>
-static inline void store_val(DBusMessageIter* iter, const std::map<K,V>& val)  { store_map(iter, val); }
-
-
-/*
- * Helpers for parsing DBus messages
- */
-
-enum {
-    ERROR = -1,
-    LAST_FIELD = 0,
-    MORE_FIELDS = 1,
-};
-/* Checks type, loads data, advances to the next arg.
- * Returns TRUE if next arg exists.
- */
-//static int load_bool(DBusMessageIter* iter, bool& val);
-static int load_int32(DBusMessageIter* iter, int32_t &val);
-static int load_uint32(DBusMessageIter* iter, uint32_t &val);
-static int load_int64(DBusMessageIter* iter, int64_t &val);
-static int load_uint64(DBusMessageIter* iter, uint64_t &val);
-static int load_charp(DBusMessageIter* iter, const char*& val);
-//static inline int load_val(DBusMessageIter* iter, bool &val)        { return load_bool(iter, val); }
-static inline int load_val(DBusMessageIter* iter, int32_t &val)     { return load_int32(iter, val); }
-static inline int load_val(DBusMessageIter* iter, uint32_t &val)    { return load_uint32(iter, val); }
-static inline int load_val(DBusMessageIter* iter, int64_t &val)     { return load_int64(iter, val); }
-static inline int load_val(DBusMessageIter* iter, uint64_t &val)    { return load_uint64(iter, val); }
-static inline int load_val(DBusMessageIter* iter, const char*& val) { return load_charp(iter, val); }
-static inline int load_val(DBusMessageIter* iter, std::string& val)
-{
-    const char* str;
-    int r = load_charp(iter, str);
-    val = str;
-    return r;
-}
-
-//static int load_bool(DBusMessageIter* iter, bool& val)
-//{
-//    int type = dbus_message_iter_get_arg_type(iter);
-//    if (type != DBUS_TYPE_BOOLEAN)
-//        error_msg_and_die("%s expected in dbus message, but not found ('%c')", "bool", type);
-//    dbus_bool_t db;
-//    dbus_message_iter_get_basic(iter, &db);
-//    val = db;
-//    return dbus_message_iter_next(iter);
-//}
-static int load_int32(DBusMessageIter* iter, int32_t& val)
-{
-    int type = dbus_message_iter_get_arg_type(iter);
-    if (type != DBUS_TYPE_INT32)
-    {
-        error_msg("%s expected in dbus message, but not found ('%c')", "int32", type);
-        return -1;
-    }
-    dbus_message_iter_get_basic(iter, &val);
-    return dbus_message_iter_next(iter);
-}
-static int load_uint32(DBusMessageIter* iter, uint32_t& val)
-{
-    int type = dbus_message_iter_get_arg_type(iter);
-    if (type != DBUS_TYPE_UINT32)
-    {
-        error_msg("%s expected in dbus message, but not found ('%c')", "uint32", type);
-        return -1;
-    }
-    dbus_message_iter_get_basic(iter, &val);
-    return dbus_message_iter_next(iter);
-}
-static int load_int64(DBusMessageIter* iter, int64_t& val)
-{
-    int type = dbus_message_iter_get_arg_type(iter);
-    if (type != DBUS_TYPE_INT64)
-    {
-        error_msg("%s expected in dbus message, but not found ('%c')", "int64", type);
-        return -1;
-    }
-    dbus_message_iter_get_basic(iter, &val);
-    return dbus_message_iter_next(iter);
-}
-static int load_uint64(DBusMessageIter* iter, uint64_t& val)
-{
-    int type = dbus_message_iter_get_arg_type(iter);
-    if (type != DBUS_TYPE_UINT64)
-    {
-        error_msg("%s expected in dbus message, but not found ('%c')", "uint64", type);
-        return -1;
-    }
-    dbus_message_iter_get_basic(iter, &val);
-    return dbus_message_iter_next(iter);
-}
-static int load_charp(DBusMessageIter* iter, const char*& val)
-{
-    int type = dbus_message_iter_get_arg_type(iter);
-    if (type != DBUS_TYPE_STRING)
-    {
-        error_msg("%s expected in dbus message, but not found ('%c')", "string", type);
-        return -1;
-    }
-    dbus_message_iter_get_basic(iter, &val);
-//log("load_charp:'%s'", val);
-    return dbus_message_iter_next(iter);
-}
-
-/* Templates for vector and map */
-template<typename E>
-static int load_vector(DBusMessageIter* iter, std::vector<E>& val)
-{
-    int type = dbus_message_iter_get_arg_type(iter);
-    if (type != DBUS_TYPE_ARRAY)
-    {
-        error_msg("array expected in dbus message, but not found ('%c')", type);
-        return -1;
-    }
-
-    DBusMessageIter sub_iter;
-    dbus_message_iter_recurse(iter, &sub_iter);
-
-    int r;
-//int cnt = 0;
-    //type = dbus_message_iter_get_arg_type(&sub_iter);
-    /* here "type" is the element's type, and it will be checked by load_val */
-    // if (type != DBUS_TYPE_INVALID) - not needed?
-    do {
-        E elem;
-//cnt++;
-        r = load_val(&sub_iter, elem);
-        if (r < 0)
-            return r;
-        val.push_back(elem);
-    } while (r == MORE_FIELDS);
-//log("%s: %d elems", __func__, cnt);
-
-    return dbus_message_iter_next(iter);
-}
-/*
-template<>
-static int load_vector(DBusMessageIter* iter, std::vector<uint8_t>& val)
-{
-    if we use such vector, MUST add specialized code here (see in dbus-c++ source)
-}
-*/
-template<typename K, typename V>
-static int load_map(DBusMessageIter* iter, std::map<K,V>& val)
-{
-    int type = dbus_message_iter_get_arg_type(iter);
-    if (type != DBUS_TYPE_ARRAY)
-    {
-        error_msg("array expected in dbus message, but not found ('%c')", type);
-        return -1;
-    }
-
-    DBusMessageIter sub_iter;
-    dbus_message_iter_recurse(iter, &sub_iter);
-
-    bool next_exists;
-    int r;
-//int cnt = 0;
-    do {
-        type = dbus_message_iter_get_arg_type(&sub_iter);
-        if (type != DBUS_TYPE_DICT_ENTRY)
-        {
-            error_msg("sub_iter type is not DBUS_TYPE_DICT_ENTRY (%c)!", type);
-            return -1;
-        }
-
-        DBusMessageIter sub_sub_iter;
-        dbus_message_iter_recurse(&sub_iter, &sub_sub_iter);
-
-        K key;
-        r = load_val(&sub_sub_iter, key);
-        if (r != MORE_FIELDS)
-        {
-            if (r == LAST_FIELD)
-                error_msg("malformed map element in dbus message");
-            return -1;
-        }
-        V value;
-        r = load_val(&sub_sub_iter, value);
-        if (r != LAST_FIELD)
-        {
-            if (r == MORE_FIELDS)
-                error_msg("malformed map element in dbus message");
-            return -1;
-        }
-        val[key] = value;
-//cnt++;
-        next_exists = dbus_message_iter_next(&sub_iter);
-    } while (next_exists);
-//log("%s: %d elems", __func__, cnt);
-
-    return dbus_message_iter_next(iter);
-}
-
-template<typename E>
-static inline int load_val(DBusMessageIter* iter, std::vector<E>& val) { return load_vector(iter, val); }
-template<typename K, typename V>
-static inline int load_val(DBusMessageIter* iter, std::map<K,V>& val)  { return load_map(iter, val); }
-
 
 /*
  * DBus signal emitters
@@ -349,9 +26,9 @@ static DBusMessage* new_signal_msg(const char* member, const char* peer = NULL)
 }
 static void send_flush_and_unref(DBusMessage* msg)
 {
-    if (!dbus_connection_send(s_pConn, msg, NULL /* &serial */))
+    if (!dbus_connection_send(g_dbus_conn, msg, NULL /* &serial */))
         error_msg_and_die("Error sending DBus message");
-    dbus_connection_flush(s_pConn);
+    dbus_connection_flush(g_dbus_conn);
     VERB3 log("DBus message sent");
     dbus_message_unref(msg);
 }
@@ -427,7 +104,7 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
     const char* sender = dbus_message_get_sender(call);
     if (ppSender)
         *ppSender = sender;
-    long uid = dbus_bus_get_unix_user(s_pConn, sender, &err);
+    long uid = dbus_bus_get_unix_user(g_dbus_conn, sender, &err);
     if (dbus_error_is_set(&err))
     {
         dbus_error_free(&err);
@@ -461,9 +138,9 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
     int r = load_val(&in_iter, pUUID);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "CreateReport");
         return -1;
     }
@@ -492,9 +169,9 @@ static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
     int r = load_val(&in_iter, pUUID);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "GetJobResult");
         return -1;
     }
@@ -521,9 +198,9 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
     int r = load_val(&in_iter, argin1);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "Report");
         return -1;
     }
@@ -563,9 +240,9 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
     int r = load_val(&in_iter, argin1);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "DeleteDebugDump");
         return -1;
     }
@@ -604,9 +281,9 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
     int r = load_val(&in_iter, PluginName);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "GetPluginSettings");
         return -1;
     }
@@ -632,17 +309,17 @@ static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
     }
     std::string PluginName;
     int r = load_val(&in_iter, PluginName);
-    if (r != MORE_FIELDS)
+    if (r != ABRT_DBUS_MORE_FIELDS)
     {
-        if (r == LAST_FIELD)
+        if (r == ABRT_DBUS_LAST_FIELD)
             error_msg("dbus call %s: too few parameters", "SetPluginSettings");
         return -1;
     }
     map_plugin_settings_t plugin_settings;
     r = load_val(&in_iter, plugin_settings);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "SetPluginSettings");
         return -1;
     }
@@ -665,9 +342,9 @@ static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
     }
     const char* PluginName;
     int r = load_val(&in_iter, PluginName);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "RegisterPlugin");
         return -1;
     }
@@ -689,9 +366,9 @@ static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
     }
     const char* PluginName;
     int r = load_val(&in_iter, PluginName);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "UnRegisterPlugin");
         return -1;
     }
@@ -724,9 +401,9 @@ static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
     }
     map_abrt_settings_t param1;
     int r = load_val(&in_iter, param1);
-    if (r != LAST_FIELD)
+    if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == MORE_FIELDS)
+        if (r == ABRT_DBUS_MORE_FIELDS)
             error_msg("dbus call %s: extra parameters", "SetSettings");
         return -1;
     }
@@ -770,7 +447,7 @@ static gboolean handle_dbus(GIOChannel *gio, GIOCondition condition, gpointer da
      */
     dbus_watch_handle(watch, dbus_flags);
 
-    while (dbus_connection_dispatch(s_pConn) == DBUS_DISPATCH_DATA_REMAINS)
+    while (dbus_connection_dispatch(g_dbus_conn) == DBUS_DISPATCH_DATA_REMAINS)
         VERB3 log("%s: more data to process, looping", __func__);
     return TRUE; /* "glib, do not remove this even source!" */
 }
@@ -967,7 +644,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
 
     dbus_error_init(&err);
     VERB3 log("dbus_bus_get");
-    s_pConn = conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
+    g_dbus_conn = conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
     handle_dbus_err(conn == NULL, &err);
 
 //do we need this? why?
@@ -1016,5 +693,5 @@ CCommLayerServerDBus::CCommLayerServerDBus()
 
 CCommLayerServerDBus::~CCommLayerServerDBus()
 {
-// do we need to do something here?
+// do we need to do anything here?
 }
