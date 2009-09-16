@@ -526,7 +526,7 @@ static bool DebuginfoCheckPolkit(int uid)
          //child
         setuid(uid);
         result = polkit_check_authorization(getpid(),
-                 "org.fedoraproject.abrt.change-daemon-settings");
+                 "org.fedoraproject.abrt.install-debuginfos");
         if (result == PolkitYes)
         {
             exit(0); //authentication OK
