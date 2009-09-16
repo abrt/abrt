@@ -24,6 +24,8 @@
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "CommLayerInner.h"
+#include "Polkit.h"
+#include <sys/wait.h>
 #include <fstream>
 #include <sstream>
 #include <set>
@@ -467,12 +469,46 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
     return CreateHash(package + executable + independentBacktrace);
 }
 
+static bool DebuginfoCheckPolkit(int uid)
+{
+    PolkitResult result;
+    int child_pid;
+
+    child_pid = fork();
+
+    if (child_pid == 0)
+    {
+         //child
+        setuid(uid);
+        result = polkit_check_authorization(getpid(),
+                 "org.fedoraproject.abrt.change-daemon-settings");
+        if (result == PolkitYes)
+        {
+            exit(0); //authentication OK
+        }
+        exit(1);
+    } else
+    {
+        //parent
+        int status;
+
+        waitpid(child_pid, &status, 0);
+        if (WEXITSTATUS(status) == 0)
+        {
+            return true; //authentication OK
+        }
+        return false;
+    }
+
+}
+
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
     update_client(_("Starting report creation..."));
 
     std::string package;
     std::string backtrace;
+    std::string UID;
     CDebugDump dd;
 
     dd.Open(pDebugDumpDir);
@@ -481,10 +517,12 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
         return;
     }
     dd.LoadText(FILENAME_PACKAGE, package);
+    dd.LoadText(FILENAME_UID, UID);
     dd.Close();
 
     map_plugin_settings_t settings = GetSettings();
-    if (settings["InstallDebuginfo"] == "yes")
+    if (settings["InstallDebuginfo"] == "yes" &&
+        DebuginfoCheckPolkit(atoi(UID.c_str())) )
     {
         InstallDebugInfos(package);
     }
