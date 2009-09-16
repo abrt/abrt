@@ -551,12 +551,10 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 {
     update_client(_("Starting report creation..."));
 
-<<<<<<< HEAD
     std::string package;
     std::string backtrace;
     std::string UID;
-=======
->>>>>>> 5349d07f9cae8a2b9686916c1e5bd01a0fe14a29
+
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
     bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
@@ -565,12 +563,11 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     {
         return; /* already done */
     }
-<<<<<<< HEAD
+
     dd.LoadText(FILENAME_PACKAGE, package);
     dd.LoadText(FILENAME_UID, UID);
     dd.Close();
-=======
->>>>>>> 5349d07f9cae8a2b9686916c1e5bd01a0fe14a29
+
 
     map_plugin_settings_t settings = GetSettings();
     if (settings["InstallDebuginfo"] == "yes" &&

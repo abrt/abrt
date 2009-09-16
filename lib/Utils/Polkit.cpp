@@ -27,7 +27,6 @@
 #include "Polkit.h"
 #include "abrtlib.h"
 
-<<<<<<< HEAD
 /*number of seconds: timeout for the authorization*/
 #define POLKIT_TIMEOUT 20
 
@@ -38,8 +37,7 @@ static gboolean do_cancel(GCancellable* cancellable)
     return FALSE;
 }
 
-=======
->>>>>>> 5349d07f9cae8a2b9686916c1e5bd01a0fe14a29
+
 static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
 {
     PolkitAuthority *authority;
@@ -48,14 +46,13 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
     GCancellable * cancellable;
 
     authority = polkit_authority_get();
-<<<<<<< HEAD
+
     cancellable = g_cancellable_new();
     
     g_timeout_add (POLKIT_TIMEOUT * 1000,
                    (GSourceFunc) do_cancel,
                    cancellable);
-=======
->>>>>>> 5349d07f9cae8a2b9686916c1e5bd01a0fe14a29
+
 
     result = polkit_authority_check_authorization_sync(authority,
                 subject,
