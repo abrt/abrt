@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-09 22:04+0000\n"
-"PO-Revision-Date: 2009-09-10 10:51+1000\n"
+"POT-Creation-Date: 2009-09-15 23:26+0000\n"
+"PO-Revision-Date: 2009-09-16 12:49+1000\n"
 "Last-Translator: Yulia Poyarkova <yulia.poyarkova@redhat.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -125,7 +125,7 @@ msgstr ""
 "ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Для получения дополнительных сведений обратитесь к "
 "лицензии GNU General Public License.\n"
 "\n"
-"Копия лиценции GNU предоставляется вместе с этой программой. \n"
+"Копия лицензии GNU предоставляется вместе с этой программой. \n"
 "Её также можно найти на сайте <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:16
@@ -284,7 +284,7 @@ msgstr "Апплет уже выполняется."
 msgid "ABRT service is not running"
 msgstr "Служба ABRT не работает"
 
-#: ../src/Applet/CCApplet.cpp:135 ../src/Applet/CCApplet.cpp:343
+#: ../src/Applet/CCApplet.cpp:136 ../src/Applet/CCApplet.cpp:343
 #, c-format
 msgid "Pending events: %i"
 msgstr "Ожидающие события: %i"
@@ -357,34 +357,33 @@ msgstr "Выполняется выход..."
 msgid "Getting local/global universal unique identification..."
 msgstr "Получение уникальных данных идентификации (локальной/глобальной)..."
 
-#: ../lib/Plugins/CCpp.cpp:82
-msgid "Searching for debug-info packages..."
-msgstr "Выполняется поиск пакетов debug-info..."
-
-#: ../lib/Plugins/CCpp.cpp:120
-msgid "Downloading and installing debug-info packages..."
-msgstr "Загружаются и устанавливаются пакеты debug-info..."
-
-#: ../lib/Plugins/CCpp.cpp:180
+#: ../lib/Plugins/CCpp.cpp:145
 msgid "Getting backtrace..."
 msgstr "Получение трассировки..."
 
-#: ../lib/Plugins/CCpp.cpp:428
+#: ../lib/Plugins/CCpp.cpp:383
+msgid "Searching for debug-info packages..."
+msgstr "Выполняется поиск пакетов debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:417
+msgid "Downloading and installing debug-info packages..."
+msgstr "Загружаются и устанавливаются пакеты debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:479
 msgid "Getting local universal unique identification..."
 msgstr "Получение локальных данных идентификации..."
 
-#: ../lib/Plugins/CCpp.cpp:454
+#: ../lib/Plugins/CCpp.cpp:498
 msgid "Getting global universal unique identification..."
 msgstr "Получение глобальных данных идентификации..."
 
-#: ../lib/Plugins/CCpp.cpp:472
+#: ../lib/Plugins/CCpp.cpp:517
 msgid "Starting report creation..."
 msgstr "Начинается создание отчёта..."
 
-#: ../lib/Plugins/CCpp.cpp:493
-#, c-format
-msgid "Skip debuginfo installation for package %s"
-msgstr "Пропустить установку debuginfo для пакета %s"
+#: ../lib/Plugins/CCpp.cpp:535
+msgid "Skipping debuginfo installation"
+msgstr "Пропускается установка debuginfo"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
