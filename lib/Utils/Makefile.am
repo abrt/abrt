@@ -7,7 +7,6 @@ libABRTUtils_la_SOURCES = \
     copyfd.cpp \
     CrashTypesSocket.cpp \
     DebugDump.h DebugDump.cpp \
-    DBusClientProxy.h DBusClientProxy.cpp \
     CommLayerInner.h CommLayerInner.cpp \
     abrt_dbus.h abrt_dbus.cpp \
     Plugin.h Plugin.cpp \
@@ -15,14 +14,6 @@ libABRTUtils_la_SOURCES = \
     Action.h Database.h Reporter.h Analyzer.h \
     Observer.h \
     DBusCommon.h
-libABRTUtils_la_LDFLAGS = \
-    -version-info 0:1:0 \
-    $(DL_LIBS) \
-    $(RPM_LIBS) \
-    $(DBUSCPP_LIBS)
-libABRTUtils_la_LIBADD = \
-    -lmagic \
-    $(POLKIT_LIBS)
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \
@@ -31,11 +22,17 @@ libABRTUtils_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(RPM_CFLAGS) \
     $(GLIB_CFLAGS) \
-    $(DBUSCPP_CFLAGS) \
+    $(DBUS_CFLAGS) \
     $(POLKIT_CFLAGS) \
     -D_GNU_SOURCE
+libABRTUtils_la_LDFLAGS = \
+    -version-info 0:1:0 \
+    $(DL_LIBS) \
+    $(DBUS_LIBS)
+libABRTUtils_la_LIBADD = \
+    -lmagic \
+    $(POLKIT_LIBS)
 
 install-data-local:
 	$(mkdir_p) '$(DESTDIR)/$(DEBUG_DUMPS_DIR)'

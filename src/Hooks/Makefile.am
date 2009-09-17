@@ -2,18 +2,20 @@ libexec_PROGRAMS = hookCCpp
 bin_PROGRAMS = dumpoops
 
 # CCpp
-hookCCpp_SOURCES = CCpp.cpp
-hookCCpp_LDADD = ../../lib/Utils/libABRTUtils.la
-hookCCpp_CPPFLAGS = -I$(srcdir)/../../inc \
-                    -I$(srcdir)/../../lib/Utils \
-                    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-                    -DVAR_RUN=\"$(VAR_RUN)\"
+hookCCpp_SOURCES = \
+    CCpp.cpp
+hookCCpp_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/Utils \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -D_GNU_SOURCE
+hookCCpp_LDADD = \
+    ../../lib/Utils/libABRTUtils.la
 
 # dumpoops
 dumpoops_SOURCES = \
     dumpoops.cpp
-dumpoops_LDADD = \
-    ../../lib/Utils/libABRTUtils.la
 dumpoops_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
@@ -22,7 +24,10 @@ dumpoops_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\"
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -D_GNU_SOURCE
+dumpoops_LDADD = \
+    ../../lib/Utils/libABRTUtils.la
 
 python_PYTHON = sitecustomize.py abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in

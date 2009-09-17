@@ -1,32 +1,34 @@
 sbin_PROGRAMS = abrtd
 
-# FIXME: we still link against dbus-c++ (not just dbus)
-# because lib/Utils links it in
-
 abrtd_SOURCES = \
-    ABRTPlugin.cpp ABRTPlugin.h \
-    PluginManager.cpp PluginManager.h \
-    RPM.cpp RPM.h \
-    MiddleWare.cpp MiddleWare.h \
-    CrashWatcher.cpp CrashWatcher.h \
+    ABRTPlugin.h ABRTPlugin.cpp \
+    PluginManager.h PluginManager.cpp \
+    RPM.h RPM.cpp \
+    MiddleWare.h MiddleWare.cpp \
+    CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerSocket.h CommLayerServerSocket.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
-    Daemon.cpp Daemon.h \
+    Daemon.h Daemon.cpp \
     Settings.h Settings.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(GLIB_CFLAGS) $(DBUS_CFLAGS) \
-    $(ENABLE_SOCKET_OR_DBUS)
+    $(GLIB_CFLAGS) \
+    $(DBUS_CFLAGS) \
+    $(ENABLE_SOCKET_OR_DBUS) \
+    -D_GNU_SOURCE
 abrtd_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
-    $(DL_LIBS) $(DBUS_LIBS) $(RPM_LIBS)
+    $(DL_LIBS) \
+    $(DBUS_LIBS) \
+    $(RPM_LIBS)
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf
