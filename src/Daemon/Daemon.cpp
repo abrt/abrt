@@ -112,7 +112,6 @@ typedef struct cron_callback_data_t
 static uint8_t s_sig_caught;
 static GMainLoop* g_pMainloop;
 
-int g_verbose;
 CCommLayerServer* g_pCommLayer;
 
 pthread_mutex_t g_pJobsMutex;

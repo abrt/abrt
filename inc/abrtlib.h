@@ -83,6 +83,17 @@ extern void verror_msg(const char *s, va_list p, const char *strerr);
 #undef log
 #define log(...) error_msg(__VA_ARGS__)
 
+/* Verbosity level */
+extern int g_verbose;
+/* VERB1 log("what you sometimes want to see, even on a production box") */
+#define VERB1 if (g_verbose >= 1)
+/* VERB2 log("debug message, not going into insanely small details") */
+#define VERB2 if (g_verbose >= 2)
+/* VERB3 log("lots and lots of details") */
+#define VERB3 if (g_verbose >= 3)
+/* there is no level > 3 */
+
+
 void* xmalloc(size_t size);
 void* xrealloc(void *ptr, size_t size);
 void* xzalloc(size_t size);

@@ -6,6 +6,16 @@
 extern DBusConnection* g_dbus_conn;
 
 /*
+ * Glib integration machinery
+ */
+void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
+    const char* object_path_to_register = NULL, /* NULL if you are just a client */
+    /* makes sense only if you use object_path_to_register: */
+    DBusHandlerResult (*message_received_func)(DBusConnection *conn, DBusMessage *msg, void* data) = NULL
+);
+
+
+/*
  * Helpers for building DBus messages
  */
 
