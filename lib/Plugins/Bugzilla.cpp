@@ -371,6 +371,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
     {
         if (it->second[CD_TYPE] == CD_ATT)
         {
+            m_sAttchmentInBase64 = "";
             base64 = NSSBase64Encoder_Create(Base64Encode_cb, this);
             if (!base64)
             {
