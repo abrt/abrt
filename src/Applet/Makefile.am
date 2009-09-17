@@ -2,25 +2,34 @@ bin_PROGRAMS = abrt-applet
 
 abrt_applet_SOURCES = \
     Applet.cpp \
-    CCApplet.h CCApplet.cpp
+    CCApplet.h CCApplet.cpp \
+    DBusClientProxy.h DBusClientProxy.cpp
 abrt_applet_CPPFLAGS = \
     -Wall -Werror \
-    -I../Daemon/ \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
     -I/usr/include/glib-2.0 \
     -I/usr/lib/glib-2.0/include \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DBIN_DIR=\"$(bindir)\" \
-    $(DBUS_GLIB_CFLAGS) \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GTK_CFLAGS) \
     $(DBUSCPP_CFLAGS) \
-    $(LIBNOTIFY_CFLAGS)
+    -D_GNU_SOURCE
+#    $(LIBNOTIFY_CFLAGS)
+#    $(DBUS_CFLAGS)
+#    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
-    -lglib-2.0 -lgthread-2.0 \
-    $(DL_LIBS) $(GTK_LIBS) \
-    $(DBUSCPP_LIBS) $(LIBNOTIFY_LIBS)
+    -lglib-2.0 \
+    -lgthread-2.0 \
+    $(DL_LIBS) \
+    $(GTK_LIBS) \
+    $(DBUSCPP_LIBS) \
+    $(LIBNOTIFY_LIBS)
 
 EXTRA_DIST = abrt-applet.desktop popup.GtkBuilder
 
