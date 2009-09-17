@@ -81,7 +81,7 @@ class MainWindow():
         icon_column.cell.set_property('cell-background', "#C9C9C9")
         n = self.dlist.append_column(icon_column)
         icon_column.pack_start(icon_column.cell, False)
-        icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=5)
+        icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=5+(os.getuid() == 0))
         # ===============================================
         columns = [None]*4
         columns[0] = gtk.TreeViewColumn(_("Package"))
@@ -99,17 +99,20 @@ class MainWindow():
             #column.set_attributes(column.cell, )
             # FIXME: use some relative indexing
             column.cell.set_property('cell-background', "#C9C9C9")
-            column.set_attributes(column.cell, text=(n-1), cell_background_set=5)
+            column.set_attributes(column.cell, text=(n-1), cell_background_set=5+(os.getuid() == 0))
             column.set_resizable(True)
         #connect signals
         self.dlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
         self.dlist.connect("row-activated", self.on_dumpRowActivated)
+        self.dlist.connect("button-press-event", self.on_popupActivate)
         self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked, self.dlist)
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
         self.wTree.get_widget("miAbout").connect("activate", self.on_miAbout_clicked)
         self.wTree.get_widget("miPlugins").connect("activate", self.on_miPreferences_clicked)
         self.wTree.get_widget("miPreferences").connect("activate", self.on_miSettings_clicked)
+        self.wTree.get_widget("miReport").connect("activate", self.on_bReport_clicked)
+        self.wTree.get_widget("miDelete").connect("activate", self.on_bDelete_clicked, self.dlist)
         # connect handlers for daemon signals
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
@@ -128,6 +131,12 @@ class MainWindow():
             self.window.set_sensitive(True)
         elif state == "down":
             self.window.set_sensitive(False)
+            
+    def on_popupActivate(self, widget, event):
+        menu = self.wTree.get_widget("popup_menu")
+        # 3 == right mouse button
+        if event.button == 3:
+            menu.popup(None, None, None, event.button, event.time)
 
     def on_miAbout_clicked(self, widget):
         dialog = self.wTree.get_widget("about")
@@ -186,8 +195,12 @@ class MainWindow():
             except:
                 icon = None
             if os.getuid() == 0:
+                try:
+                    user = pwd.getpwuid(int(entry.getUID()))[0]
+                except Exception, e:
+                    user = _("Can't get username for uid %s" % entry.getUID())
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), pwd.getpwuid(int(entry.getUID()))[0], entry.isReported(), entry])
+                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), user, entry.isReported(), entry])
             else:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                                 entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry.isReported(), entry])
