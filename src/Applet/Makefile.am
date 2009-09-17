@@ -23,13 +23,13 @@ abrt_applet_CPPFLAGS = \
 #    $(DBUS_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
-    ../../lib/Utils/libABRTUtils.la \
     -lglib-2.0 \
     -lgthread-2.0 \
-    $(DL_LIBS) \
-    $(GTK_LIBS) \
     $(DBUSCPP_LIBS) \
     $(LIBNOTIFY_LIBS)
+#    ../../lib/Utils/libABRTUtils.la
+#    $(DL_LIBS)
+#    $(GTK_LIBS)
 
 EXTRA_DIST = abrt-applet.desktop popup.GtkBuilder
 

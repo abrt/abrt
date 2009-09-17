@@ -8,6 +8,8 @@
 
 int xfunc_error_retval = EXIT_FAILURE;
 
+int g_verbose;
+
 void xfunc_die(void)
 {
 	exit(xfunc_error_retval);
