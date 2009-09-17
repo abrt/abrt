@@ -24,6 +24,7 @@ BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: nss-devel
 BuildRequires: polkit-devel
+BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 

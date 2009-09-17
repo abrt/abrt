@@ -19,9 +19,20 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#define _GNU_SOURCE
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include<stdio.h>
+#include<string.h>
+#include<dirent.h>
+#include<sys/types.h>
+#include<sys/stat.h>
+#include<fcntl.h>
+#include<zip.h>
+#include<libtar.h>
+#include<bzlib.h>
+#include<zlib.h>
 #include <curl/curl.h>
 #include "abrtlib.h"
 #include "FileTransfer.h"
@@ -33,8 +44,6 @@
 using namespace std;
 #define HBLEN 255
 #define FILETRANSFER_DIRLIST DEBUG_DUMPS_DIR "/FileTransferDirlist.txt"
-
-/* FILETRANSFER_DIRLIST */
 
 void CFileTransfer::SendFile(const std::string& pURL,
                              const std::string& pFilename)
@@ -111,39 +120,139 @@ void CFileTransfer::SendFile(const std::string& pURL,
     while (result != 0 && --count >= 0 && (sleep(m_nRetryDelay), 1));
 }
 
+/*
+walks through the directory and applies a function with one
+parameter "something" to each filename,
+now used in create_zip, but can be useful for some future
+archivers as well
+*/
+static void traverse_directory(const char * directory, void * something, 
+                               void (*func)(void *,const char *) )
+{
+    DIR * dp;
+    struct dirent * dirp;
+    char complete_name[BUFSIZ];
+    char * end;
+
+    dp = opendir(directory);
+    while(dirp = readdir(dp))
+        if(dirp->d_type == DT_REG)
+        {
+            complete_name[0] = '\0';
+            end = stpcpy(complete_name, directory);
+            if( end[-1] != '/' )
+            {
+                end = stpcpy(end, "/");
+            }
+            end = stpcpy(end, dirp->d_name);
+
+            func(something, complete_name);
+        }
+    closedir(dp);
+}
+
+static void add_to_zip(void * z, const char * filename)
+{
+    struct zip_source *s;
+
+    s = zip_source_file( (struct zip *)z, filename, 0, 0);
+    zip_add( (struct zip *)z, filename, s);
+}
+
+
+static void create_zip(const char * archive_name, const char * directory)
+{
+    struct zip * z;
+
+    z = zip_open(archive_name, ZIP_CREATE, NULL);
+    traverse_directory(directory, z, add_to_zip);
+    zip_close(z);
+}
+
+static void create_tar(const char * archive_name, const char * directory)
+{
+    TAR *tar; 
+
+    tar_open(&tar, (char *)archive_name, NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU);
+    tar_append_tree(tar, (char *)directory, ".");
+    close(tar_fd(tar));
+}
+
+static void create_targz(const char * archive_name, const char * directory)
+{
+    char name_wo_gz[BUFSIZ];
+    char buf[BUFSIZ];
+    FILE * f;
+    ssize_t bytesRead;
+    gzFile gz;
+
+    strcpy(name_wo_gz, archive_name);
+    strrchr(name_wo_gz,'.')[0] = '\0';
+    create_tar(name_wo_gz, directory);
+
+    f = fopen(name_wo_gz, "r");
+    gz = gzopen(archive_name, "w");
+
+    while( (bytesRead = fread(buf, 1, BUFSIZ, f)) > 0 )
+    {
+        gzwrite(gz, buf, bytesRead);
+    }
+    gzclose(gz);
+    fclose(f);
+    remove(name_wo_gz);
+}
+
+static void create_tarbz2(const char * archive_name, const char * directory)
+{
+    char name_wo_bz2[BUFSIZ];
+    char buf[BUFSIZ];
+    FILE * f;
+    ssize_t bytesRead;
+    int tarFD;
+    int bzError;
+    BZFILE * bz;
+#define BLOCK_MULTIPLIER 7
+
+    strcpy(name_wo_bz2, archive_name);
+    strrchr(name_wo_bz2,'.')[0] = '\0';
+    create_tar(name_wo_bz2, directory);
+
+    tarFD = open(name_wo_bz2, O_RDONLY);
+    f = fopen(archive_name, "w");
+    bz = BZ2_bzWriteOpen(&bzError, f, BLOCK_MULTIPLIER, 0, 0);
+
+    while ( (bytesRead = read(tarFD,buf,BUFSIZ)) > 0)
+    {
+        BZ2_bzWrite(&bzError, bz, buf, bytesRead);
+    }
+    BZ2_bzWriteClose(&bzError, bz, 0, NULL, NULL);
+
+    close(tarFD);
+    remove(name_wo_bz2);
+}
+
 void CFileTransfer::CreateArchive(const std::string& pArchiveName,
                                   const std::string& pDir)
 {
-    std::string cmdline;
-    int result;
-
-    update_client(_("Creating an archive..."));
-
-    /*TODO: consider library for archive creation, if there is any*/
-
-    if(m_sArchiveType == ".tar.gz")
+    if(m_sArchiveType == ".tar")
     {
-       cmdline = "tar czf " + pArchiveName + " " + pDir;
+        create_tar(pArchiveName.c_str(), pDir.c_str());
+    }
+    else if(m_sArchiveType == ".tar.gz")
+    {
+        create_targz(pArchiveName.c_str(), pDir.c_str());
     }
     else if(m_sArchiveType == ".tar.bz2")
     {
-       cmdline = "tar cjf " + pArchiveName + " " + pDir;
+        create_tarbz2(pArchiveName.c_str(), pDir.c_str());
     }
     else if(m_sArchiveType == ".zip")
     {
-       cmdline = "zip " + pArchiveName + " " + pDir + "/*";
+        create_zip(pArchiveName.c_str(), pDir.c_str());
     }
     else
     {
         throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::CreateArchive(): unknown/unsupported archive type "+m_sArchiveType);
-    }
-
-    log("Executing '%s'", cmdline.c_str());
-    result = system(cmdline.c_str());
-
-    if( result != 0 )
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::CreateArchive(): Error while executing the archiver command.");
     }
 }
 
@@ -183,7 +292,7 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
     } else if(pArgs == "one")
     {
         /* just send one archive */
-	gethostname(hostname,HBLEN);
+        gethostname(hostname,HBLEN);
         archivename = std::string(hostname) + "-"
                       + DirBase(pActiveDir) + m_sArchiveType;
         try
@@ -196,7 +305,7 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
             warn_client(_("CFileTransfer::Run(): Cannot create and send an archive: ") + e.what());
             //update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
         }
-	unlink(archivename.c_str());
+        unlink(archivename.c_str());
     }
     else
     {
@@ -258,7 +367,7 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
 
     if (pSettings.find("ArchiveType") != pSettings.end())
     {
-        /* currently supporting .tar.gz, .tar.bz2 and .zip */
+        /* currently supporting .tar, .tar.gz, .tar.bz2 and .zip */
         m_sArchiveType =pSettings.find("ArchiveType")->second;
         if(m_sArchiveType[0] != '.')
         {
