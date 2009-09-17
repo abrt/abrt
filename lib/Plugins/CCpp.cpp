@@ -558,9 +558,10 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
     bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
-    dd.Close(); /* do not keep dir locked longer than needed */
+
     if (bt_exists)
     {
+        dd.Close(); /* do not keep dir locked longer than needed */
         return; /* already done */
     }
 
