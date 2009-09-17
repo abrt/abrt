@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-16 18:09+0000\n"
-"PO-Revision-Date: 2009-09-17 15:47+0100\n"
+"POT-Creation-Date: 2009-09-17 19:01+0000\n"
+"PO-Revision-Date: 2009-09-17 23:54+0100\n"
 "Last-Translator: Zoltan Hoppar <hopparz@gmail.com>\n"
 "Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -65,7 +65,7 @@ msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nincs bejelentve!</b>"
 
@@ -149,7 +149,7 @@ msgstr "Ütközés foka"
 msgid "User"
 msgstr "Felhasználó"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -158,7 +158,7 @@ msgstr ""
 "Jelenlegi feladat befejezése nem lehetséges!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:182
+#: ../src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -167,11 +167,16 @@ msgstr ""
 "A kapott adatok betöltése közben hiba lépett fel, kérem ellenőrizze, hogy az ABRT szolgáltatás működik!\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:215
+#: ../src/Gui/CCMainWindow.py:201
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr "Felhasználónév elérhetetlen a %s uid-hez"
+
+#: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Ez a hiba már be volt korábban jelentve, megtalálhatja a jelentés(eke)t itt:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:275
+#: ../src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -179,7 +184,7 @@ msgstr ""
 "Jelentés összeállítása nem lehetséges!\n"
 "Debuginfo hiányzik?"
 
-#: ../src/Gui/CCMainWindow.py:287
+#: ../src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -188,7 +193,7 @@ msgstr ""
 "Bejelentés nem sikerült!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:319
+#: ../src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Jelentés összeállítása nem sikerült: %s"
@@ -260,18 +265,18 @@ msgid "A crash in package %s has been detected!"
 msgstr "Ütközés a %s csomagban érzékelve!"
 
 #. applet is already running
-#: ../src/Applet/Applet.cpp:82
+#: ../src/Applet/Applet.cpp:89
 msgid "Applet is already running."
 msgstr "Applet már fut."
 
-#: ../src/Applet/Applet.cpp:96
-#: ../src/Applet/Applet.cpp:97
-#: ../src/Applet/CCApplet.cpp:201
+#: ../src/Applet/Applet.cpp:104
+#: ../src/Applet/Applet.cpp:105
+#: ../src/Applet/CCApplet.cpp:221
 msgid "ABRT service is not running"
 msgstr "ABRT szolgáltatás nem fut"
 
 #: ../src/Applet/CCApplet.cpp:136
-#: ../src/Applet/CCApplet.cpp:343
+#: ../src/Applet/CCApplet.cpp:368
 #, c-format
 msgid "Pending events: %i"
 msgstr "Események függőben: %i"
@@ -285,17 +290,25 @@ msgstr "A leírásból nem sikerült menüt készíteni, így előugó ablak nem
 msgid "This is default handler, you should register your own with ConnectCrashHandler"
 msgstr "Ez az alapértelmezett kezelő, beregisztrálhatja a saját regiszterét a ConnectCrashHandler-el"
 
-#: ../src/Applet/CCApplet.cpp:205
+#: ../src/Applet/CCApplet.cpp:210
+msgid "This is default handler, you should register your own with ConnectQuotaExceedHandler"
+msgstr "Ez az alapértelmezett kezelő, beregisztrálhatja a saját kezelőjét a ConnectCrashHandler-el"
+
+#: ../src/Applet/CCApplet.cpp:225
 msgid "ABRT service has been started"
 msgstr "ABRT szolgáltatás elindult"
 
-#: ../src/Applet/CCApplet.cpp:231
+#: ../src/Applet/CCApplet.cpp:256
 msgid "Out of memory"
 msgstr "Memóra elfogyott"
 
-#: ../src/Applet/CCApplet.cpp:247
+#: ../src/Applet/CCApplet.cpp:272
 msgid "Warning"
 msgstr "Figyelmeztetés"
+
+#: ../src/Daemon/Daemon.cpp:526
+msgid "Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."
+msgstr "Kvóta elérve. Kérem ellenőrizze a MaxCrashReportsSize értékeket az abrt.conf-ban"
 
 #: ../lib/Plugins/Bugzilla.cpp:84
 msgid "Empty login and password. Please check Bugzilla.conf"
@@ -314,24 +327,24 @@ msgstr "A %s bináris fájl nem kerül a jelentésbe."
 msgid "New bug id: "
 msgstr "Új hiba azonosító:"
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:422
 msgid "Checking for duplicates..."
 msgstr "Duplikátok ellenőrzése..."
 
-#: ../lib/Plugins/Bugzilla.cpp:424
-#: ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:425
+#: ../lib/Plugins/Bugzilla.cpp:437
 msgid "Logging into bugzilla..."
 msgstr "Bejelentkezés a bugzillába..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
+#: ../lib/Plugins/Bugzilla.cpp:428
 msgid "Check CC and add coment +1..."
 msgstr "Ellenőrizze a CC-t és adjon egy megjegyzést hozzá..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:449
 msgid "Creating new bug..."
 msgstr "Új hiba készítése..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:454
 msgid "Logging out..."
 msgstr "Kijelentkezés..."
 
@@ -363,7 +376,7 @@ msgstr "Globális univerzális egyedi azonosító beszerzése..."
 msgid "Starting report creation..."
 msgstr "Jelentés felépítésének indítása..."
 
-#: ../lib/Plugins/CCpp.cpp:580
+#: ../lib/Plugins/CCpp.cpp:581
 msgid "Skipping debuginfo installation"
 msgstr "Debuginfo telepítésének kihagyása"
 
