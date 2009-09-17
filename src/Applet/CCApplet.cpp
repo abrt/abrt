@@ -193,6 +193,26 @@ void CApplet::Crash(const std::string& progname, const std::string& uid  )
     }
 }
 
+void CApplet::QuotaExceed(const char* str)
+{
+    if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
+    {
+        return;
+    }
+    else
+    {
+        if(m_pQuotaExceedHandler)
+        {
+            m_pQuotaExceedHandler(str);
+        }
+        else
+        {
+            std::cout << _("This is default handler, you should register your own with ConnectQuotaExceedHandler") << std::endl;
+            std::cout.flush();
+        }
+    }
+}
+
 void CApplet::DaemonStateChange_cb(bool running, void* data)
 {
     CApplet *applet = (CApplet *)data;
@@ -209,6 +229,11 @@ void CApplet::DaemonStateChange_cb(bool running, void* data)
 void CApplet::ConnectCrashHandler(void (*pCrashHandler)(const char *progname))
 {
     m_pCrashHandler = pCrashHandler;
+}
+
+void CApplet::ConnectQuotaExceedHandler(void (*pQuotaExceedHandler)(const char *progname))
+{
+    m_pQuotaExceedHandler = pQuotaExceedHandler;
 }
 
 void CApplet::SetIconTooltip(const char *format, ...)

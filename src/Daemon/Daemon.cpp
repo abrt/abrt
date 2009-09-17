@@ -524,6 +524,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
         {
 //TODO: delete oldest or biggest dir
             log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, name);
+            g_pCommLayer->QuotaExceed(_("Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."));
             DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
             continue;
         }

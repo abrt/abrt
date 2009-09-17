@@ -14,6 +14,7 @@ class CCommLayerServerDBus
         virtual void Crash(const std::string& progname, const std::string& uid);
         virtual void JobStarted(const char* pDest);
         virtual void JobDone(const char* pDest, const char* pUUID);
+        virtual void QuotaExceed(const char* str);
 
         virtual void Update(const std::string& pMessage, const char* peer, uint64_t pJobID);
         virtual void Warning(const std::string& pMessage, const char* peer, uint64_t pJobID);

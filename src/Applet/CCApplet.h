@@ -65,6 +65,7 @@ class CApplet
         int AddEvent(int pUUID, const std::string& pProgname);
         int RemoveEvent(int pUUID);
         void ConnectCrashHandler(void (*pCrashHandler)(const char *progname));
+        void ConnectQuotaExceedHandler(void (*pQuotaExeedHandler)(const char *str));
         static void DaemonStateChange_cb(bool running, void* data);
 
     protected:
@@ -79,9 +80,11 @@ class CApplet
     private:
         /* dbus stuff */
         void Crash(const std::string& progname, const std::string& uid);
+        void QuotaExceed(const char* str);
 
         /* the real signal handler called to handle the signal */
         void (*m_pCrashHandler)(const char *progname);
+        void (*m_pQuotaExceedHandler)(const char *str);
 };
 
 #endif /*CC_APPLET_H_*/

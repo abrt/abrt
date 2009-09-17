@@ -97,12 +97,13 @@ public:
     /* signal handlers for this interface
      */
     virtual void Crash(const std::string& progname, const std::string& uid);
-
+    virtual void QuotaExceed(const char* str);
 private:
     /* unmarshalers (to unpack the DBus message before calling the actual signal handler)
      */
     void _Crash_stub(const ::DBus::SignalMessage &sig);
     void _JobDone_stub(const ::DBus::SignalMessage &sig);
+    void _QuotaExceed_stub(const ::DBus::SignalMessage &sig);
 };
 
 #endif

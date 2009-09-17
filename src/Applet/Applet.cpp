@@ -52,6 +52,13 @@ crash_notify_cb(const char* progname)
     applet->CrashNotify(message, progname);
 }
 
+static void
+quota_exceed_cb(const char* str)
+{
+    applet->ShowIcon();
+    applet->CrashNotify("%s", str);
+}
+
 int main(int argc, char **argv)
 {
     setlocale(LC_ALL,"");
@@ -91,6 +98,7 @@ int main(int argc, char **argv)
     DBus::Connection conn = DBus::Connection::SystemBus();
     applet = new CApplet(conn, session, CC_DBUS_PATH, CC_DBUS_NAME);
     applet->ConnectCrashHandler(crash_notify_cb);
+    applet->ConnectQuotaExceedHandler(quota_exceed_cb);
     if(!conn.has_name(CC_DBUS_NAME))
     {
         std::cout << _("ABRT service is not running") << std::endl;

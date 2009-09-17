@@ -108,6 +108,7 @@ CDBusClient_proxy::CDBusClient_proxy()
 {
     connect_signal(CDBusClient_proxy, Crash, _Crash_stub);
     connect_signal(CDBusClient_proxy, JobDone, _JobDone_stub);
+    connect_signal(CDBusClient_proxy, QuotaExceed, _QuotaExceed_stub);
     m_sConnName = "";
 }
 
@@ -118,6 +119,7 @@ CDBusClient_proxy::CDBusClient_proxy(::DBus::Connection &pConnection)
     //# define connect_signal(interface, signal, callback)
     connect_signal(CDBusClient_proxy, Crash, _Crash_stub);
     connect_signal(CDBusClient_proxy, JobDone, _JobDone_stub);
+    connect_signal(CDBusClient_proxy, QuotaExceed, _QuotaExceed_stub);
     m_sConnName = pConnection.unique_name();
 }
 
@@ -213,6 +215,9 @@ void CDBusClient_proxy::Crash(const std::string& progname, const std::string& ui
 {
 }
 
+void CDBusClient_proxy::QuotaExceed(const char* str)
+{
+}
 /* private: */
 
 /* unmarshalers (to unpack the DBus message before calling the actual signal handler)
@@ -236,4 +241,12 @@ void CDBusClient_proxy::_JobDone_stub(const ::DBus::SignalMessage &sig)
         ri >> m_iPendingJobID;
         g_main_loop_quit(gloop);
     }
+}
+
+void CDBusClient_proxy::_QuotaExceed_stub(const ::DBus::SignalMessage &sig)
+{
+    DBus::MessageIter ri = sig.reader();
+    std::string str;
+    ri >> str;
+    QuotaExceed(str.c_str());
 }

@@ -47,6 +47,16 @@ void CCommLayerServerDBus::Crash(const std::string& progname, const std::string&
     send_flush_and_unref(msg);
 }
 
+void CCommLayerServerDBus::QuotaExceed(const char* str)
+{
+    DBusMessage* msg = new_signal_msg("QuotaExceed");
+    dbus_message_append_args(msg,
+            DBUS_TYPE_STRING, &str,
+            DBUS_TYPE_INVALID);
+    VERB2 log("Quota exceeded");
+    send_flush_and_unref(msg);
+}
+
 void CCommLayerServerDBus::JobStarted(const char* peer)
 {
     DBusMessage* msg = new_signal_msg("JobStarted", peer);
