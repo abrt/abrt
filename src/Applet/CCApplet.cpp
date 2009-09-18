@@ -17,10 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include <iostream>
-#include <cstdarg>
-#include <sstream>
-#include <cstdio>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
@@ -199,7 +195,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
     {
         pid_t pid = vfork();
         if (pid < 0)
-            std::cerr << "vfork failed\n";
+            perror_msg("vfork");
         if (pid == 0)
         { /* child */
             signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
@@ -207,8 +203,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
             /* Did not find abrt-gui in installation directory. Oh well */
             /* Trying to find it in PATH */
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            std::cerr << "can't exec abrt-gui\n";
-            exit(1);
+            perror_msg_and_die("Can't exec abrt-gui");
         }
         gtk_status_icon_set_visible(applet->m_pStatusIcon, false);
     }
@@ -264,7 +259,7 @@ void CApplet::Disable(const char *reason)
         gtk_status_icon_set_from_pixbuf(m_pStatusIcon, gray_scaled);
     }
     else
-        std::cerr << "Cannot load icon!" << std::endl;
+        error_msg("Can't load icon");
     SetIconTooltip(reason);
     ShowIcon();
 }

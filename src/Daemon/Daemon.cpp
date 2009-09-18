@@ -21,7 +21,6 @@
 #include <sys/inotify.h>
 #include <glib.h>
 #include <pthread.h>
-#include <iostream>
 #include <string>
 #if HAVE_CONFIG_H
     #include <config.h>

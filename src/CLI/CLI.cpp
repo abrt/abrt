@@ -1,4 +1,3 @@
-#include <iostream>
 #include <getopt.h>
 #include "ABRTException.h"
 #include "ABRTSocket.h"
@@ -18,20 +17,29 @@ enum
 
 static DBusConnection* s_dbus_conn;
 
-static void print_crash_infos(const vector_crash_infos_t& pCrashInfos, int pMode)
+static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
 {
     unsigned int ii;
     for (ii = 0; ii < pCrashInfos.size(); ii++)
     {
-        if (pCrashInfos[ii].find(CD_REPORTED)->second[CD_CONTENT] != "1" || pMode == GET_LIST_FULL)
+        map_crash_info_t& info = pCrashInfos[ii];
+        if (pMode == GET_LIST_FULL || info.find(CD_REPORTED)->second[CD_CONTENT] != "1")
         {
-            std::cout << ii << ".\n";
-            std::cout << "\tUID       : " << pCrashInfos[ii].find(CD_UID)->second[CD_CONTENT] << std::endl;
-            std::cout << "\tUUID      : " << pCrashInfos[ii].find(CD_UUID)->second[CD_CONTENT] << std::endl;
-            std::cout << "\tPackage   : " << pCrashInfos[ii].find(CD_PACKAGE)->second[CD_CONTENT] << std::endl;
-            std::cout << "\tExecutable: " << pCrashInfos[ii].find(CD_EXECUTABLE)->second[CD_CONTENT] << std::endl;
-            std::cout << "\tCrash time: " << pCrashInfos[ii].find(CD_TIME)->second[CD_CONTENT] << std::endl;
-            std::cout << "\tCrash Rate: " << pCrashInfos[ii].find(CD_COUNT)->second[CD_CONTENT] << std::endl;
+            printf("%u.\n"
+                    "\tUID       : %s\n"
+                    "\tUUID      : %s\n"
+                    "\tPackage   : %s\n"
+                    "\tExecutable: %s\n"
+                    "\tCrash time: %s\n"
+                    "\tCrash Rate: %s\n",
+                    ii,
+                    info[CD_UID][CD_CONTENT].c_str(),
+                    info[CD_UUID][CD_CONTENT].c_str(),
+                    info[CD_PACKAGE][CD_CONTENT].c_str(),
+                    info[CD_EXECUTABLE][CD_CONTENT].c_str(),
+                    info[CD_TIME][CD_CONTENT].c_str(),
+                    info[CD_COUNT][CD_CONTENT].c_str()
+            );
         }
     }
 }
@@ -43,9 +51,9 @@ static void print_crash_report(const map_crash_report_t& pCrashReport)
     {
         if (it->second[CD_TYPE] != CD_SYS)
         {
-            std::cout << std::endl << it->first << std::endl;
-            std::cout << "-----" << std::endl;
-            std::cout << it->second[CD_CONTENT] << std::endl;
+            printf("\n%s\n"
+                    "-----\n"
+                    "%s\n", it->first.c_str(), it->second[CD_CONTENT].c_str());
         }
     }
 }
@@ -205,12 +213,13 @@ int main(int argc, char** argv)
                 else
                     progname = argv[0];
                 /* note: message has embedded tabs */
-                std::cout << "Usage: " << progname << " [OPTION]\n\n"
+                printf("Usage: %s [OPTION]\n\n"
                         "	--get-list		print list of crashes which are not reported\n"
                         "	--get-list-full		print list of all crashes\n"
                         "	--report UUID		create and send a report\n"
                         "	--report-always UUID	create and send a report without asking\n"
-                        "	--delete UUID		delete crash\n";
+                        "	--delete UUID		delete crash\n",
+                        progname);
                 return 1;
         }
         if (c == -1)
@@ -240,11 +249,11 @@ int main(int argc, char** argv)
         {
             map_crash_report_t cr = call_CreateReport(uuid);
             print_crash_report(cr);
-            std::cout << "\nDo you want to send the report? [y/n]: ";
-            std::flush(std::cout);
-            std::string answer = "n";
-            std::cin >> answer;
-            if (answer == "Y" || answer == "y")
+            printf("\nDo you want to send the report? [y/n]: ");
+            fflush(NULL);
+            char answer[16] = "n";
+            fgets(answer, sizeof(answer), stdin);
+            if (answer[0] == 'Y' || answer[0] == 'y')
             {
                 call_Report(cr);
             }
