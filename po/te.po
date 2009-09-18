@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-17 12:05+0200\n"
+"POT-Creation-Date: 2009-09-18 13:02+0200\n"
 "PO-Revision-Date: 2009-09-10 17:47+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
@@ -130,8 +130,8 @@ msgstr "సహాయము (_H)"
 msgid "Delete"
 msgstr "తొలగించు"
 
-#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/report.glade:7
-#: src/Gui/report.glade:24
+#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
+#: src/Gui/report.glade:7 src/Gui/report.glade:24
 msgid "Report"
 msgstr "నివేదించు"
 
@@ -139,7 +139,7 @@ msgstr "నివేదించు"
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">వివరణ</span>"
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:223
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
 msgstr "<b>నివేదించబడలేదు!</b>"
 
@@ -163,7 +163,7 @@ msgstr "క్రాష్ రేటు"
 msgid "User"
 msgstr "వినియోగదారి"
 
-#: src/Gui/CCMainWindow.py:165
+#: src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -172,7 +172,7 @@ msgstr ""
 "ప్రస్తుత కర్తవ్యమును పూర్తిచేయలేక పోయింది!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:182
+#: src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -181,11 +181,16 @@ msgstr ""
 "డంపుజాబితాను లోడుచేయుటలో దోషము, దయచేసి abrt డెమోన్ నడుస్తున్నదో లేదో పరిశీలించండి\n"
 " %s"
 
-#: src/Gui/CCMainWindow.py:215
+#: src/Gui/CCMainWindow.py:201
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>ఈ క్రాష్ నివేదించబడింది, మీరు నివేదికలను దీనివద్ద కనుగొనవచ్చును:</b>\n"
 
-#: src/Gui/CCMainWindow.py:275
+#: src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -193,7 +198,7 @@ msgstr ""
 "నివేదికను పొందలేక పోయింది!\n"
 "డీబగ్‌సమాచారము తప్పిపోయిందా?"
 
-#: src/Gui/CCMainWindow.py:287
+#: src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -202,7 +207,7 @@ msgstr ""
 "నివేదించుట విఫలమైంది!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:319
+#: src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "నివేదికను పొందుటలో దోషము: %s"
@@ -315,9 +320,10 @@ msgstr "మెమొరీ దాటినది"
 msgid "Warning"
 msgstr "హెచ్చరిక"
 
-#: src/Daemon/Daemon.cpp:527
+#: src/Daemon/Daemon.cpp:526
 msgid ""
-"Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
 msgstr ""
 
 #: lib/Plugins/Bugzilla.cpp:84

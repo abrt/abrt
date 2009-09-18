@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT 0.0.8.5\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-17 12:05+0200\n"
+"POT-Creation-Date: 2009-09-18 13:02+0200\n"
 "PO-Revision-Date: 2009-09-04 23:41+0100\n"
 "Last-Translator: JIRI MOSKOVCAK <jmoskovc@redhat.com>\n"
 "Language-Team: CZECH <ll@li.org>\n"
@@ -114,8 +114,8 @@ msgstr "_Pomoc"
 msgid "Delete"
 msgstr "Smazat"
 
-#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/report.glade:7
-#: src/Gui/report.glade:24
+#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
+#: src/Gui/report.glade:7 src/Gui/report.glade:24
 msgid "Report"
 msgstr "Reportovat"
 
@@ -123,7 +123,7 @@ msgstr "Reportovat"
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">Popis balíčku</span>"
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:223
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nereportováno</b>"
 
@@ -147,7 +147,7 @@ msgstr "Počet incidentů"
 msgid "User"
 msgstr "Uživatel"
 
-#: src/Gui/CCMainWindow.py:165
+#: src/Gui/CCMainWindow.py:174
 #, fuzzy, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -156,24 +156,29 @@ msgstr ""
 "Nepodařilo se ziskat report\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:182
+#: src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:215
+#: src/Gui/CCMainWindow.py:201
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Tento pád již byl reportován, záznam můžete nalézt na:</b>\n"
 
-#: src/Gui/CCMainWindow.py:275
+#: src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr "Nepodařilo se získat reportPravděpodobně chybí debuginfo."
 
-#: src/Gui/CCMainWindow.py:287
+#: src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -182,7 +187,7 @@ msgstr ""
 "Vytváření reportu se nezdařilo\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:319
+#: src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr ""
@@ -295,10 +300,13 @@ msgstr "Nedostatek paměti"
 msgid "Warning"
 msgstr "Upozornění"
 
-#: src/Daemon/Daemon.cpp:527
+#: src/Daemon/Daemon.cpp:526
 msgid ""
-"Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."
-msgstr "Kvóta přetekla. Prosím zkontrolujte si hodnotu MaxCrashRepostsSize v abrt.conf."
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
+msgstr ""
+"Velikost zprávy překročena. Prosím zkontrolujte si systémovou hodnotu "
+"MaxCrashRepostsSize v abrt.conf."
 
 #: lib/Plugins/Bugzilla.cpp:84
 msgid "Empty login and password. Please check Bugzilla.conf"

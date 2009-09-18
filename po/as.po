@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-17 12:05+0200\n"
+"POT-Creation-Date: 2009-09-18 13:02+0200\n"
 "PO-Revision-Date: 2009-09-10 09:36+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@fedoraproject.org>\n"
 "Language-Team: Assamese <kde-i18n-doc@lists.kde.org>\n"
@@ -122,8 +122,8 @@ msgstr "সহায় (_H)"
 msgid "Delete"
 msgstr "আঁতৰাওক"
 
-#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/report.glade:7
-#: src/Gui/report.glade:24
+#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
+#: src/Gui/report.glade:7 src/Gui/report.glade:24
 msgid "Report"
 msgstr "ৰিপোৰ্ট"
 
@@ -131,7 +131,7 @@ msgstr "ৰিপোৰ্ট"
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">বিৱৰণ</span>"
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:223
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
 msgstr "<b>ৰিপোৰ্ট কৰা নহয়!</b>"
 
@@ -155,7 +155,7 @@ msgstr "বিপৰ্যয়ৰ হাৰ"
 msgid "User"
 msgstr "ব্যৱহাৰকৰ্তা"
 
-#: src/Gui/CCMainWindow.py:165
+#: src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -164,7 +164,7 @@ msgstr ""
 "বৰ্তমান কাম সমাপ্ত কৰিবলৈ ব্যৰ্থ!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:182
+#: src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -173,12 +173,17 @@ msgstr ""
 "dumplist লোড কৰিবলৈ সমস্যা । অনুগ্ৰহ কৰি পৰীক্ষা কৰক abrt ডেমন চলিছে নে নাই\n"
 "  %s"
 
-#: src/Gui/CCMainWindow.py:215
+#: src/Gui/CCMainWindow.py:201
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr ""
 "<b>বিপৰ্যয়ৰ তথ্য প্ৰতিবেদন কৰা হৈছে । ৰিপোৰ্ট(সমূহ) নিম্নলিখিত অৱস্থান উপস্থিত  আছে:</b>\n"
 
-#: src/Gui/CCMainWindow.py:275
+#: src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -186,7 +191,7 @@ msgstr ""
 "ৰিপোৰ্ট প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ!\n"
 "Debuginfo চাবি অনুপস্থিত?"
 
-#: src/Gui/CCMainWindow.py:287
+#: src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -195,7 +200,7 @@ msgstr ""
 "ৰিপোৰ্ট কৰিবলৈ ব্যৰ্থ!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:319
+#: src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "ৰিপোৰ্ট প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ: %s"
@@ -310,9 +315,10 @@ msgstr "স্মৃতিশক্তি অৱশিষ্ট নাই"
 msgid "Warning"
 msgstr "সতৰ্কবাণী"
 
-#: src/Daemon/Daemon.cpp:527
+#: src/Daemon/Daemon.cpp:526
 msgid ""
-"Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
 msgstr ""
 
 #: lib/Plugins/Bugzilla.cpp:84

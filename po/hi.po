@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-17 12:05+0200\n"
+"POT-Creation-Date: 2009-09-18 13:02+0200\n"
 "PO-Revision-Date: 2009-09-10 15:52+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
 "Language-Team: Hindi <hindi.sf.net>\n"
@@ -132,8 +132,8 @@ msgstr "मदद (_H)"
 msgid "Delete"
 msgstr "मिटाएँ"
 
-#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/report.glade:7
-#: src/Gui/report.glade:24
+#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
+#: src/Gui/report.glade:7 src/Gui/report.glade:24
 msgid "Report"
 msgstr "रिपोर्ट"
 
@@ -141,7 +141,7 @@ msgstr "रिपोर्ट"
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">विवरण</span>"
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:223
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
 msgstr "<b>रिपोर्ट नहीं किया हुआ!</b>"
 
@@ -165,7 +165,7 @@ msgstr "क्रेश दर"
 msgid "User"
 msgstr "उपयोक्ता"
 
-#: src/Gui/CCMainWindow.py:165
+#: src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -174,7 +174,7 @@ msgstr ""
 "मौजूदा कार्य समाप्त करने में असमर्थ!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:182
+#: src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -183,11 +183,16 @@ msgstr ""
 "डंपलिस्ट लोड करने के दौरान त्रुटि, कृपया जाँचें यदि abrt डेमॉन कार्यशील है\n"
 " %s"
 
-#: src/Gui/CCMainWindow.py:215
+#: src/Gui/CCMainWindow.py:201
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>यह क्रैश रिपोर्ट किया गया है, आप रिपोर्ट को यहाँ पा सकते हैं:</b>\n"
 
-#: src/Gui/CCMainWindow.py:275
+#: src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -195,7 +200,7 @@ msgstr ""
 "रिपोर्ट पाने में असमर्थ!\n"
 "डिबगइंफो अनुपस्थित है?"
 
-#: src/Gui/CCMainWindow.py:287
+#: src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -204,7 +209,7 @@ msgstr ""
 "रिपोर्टिंग विफल!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:319
+#: src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "रिपोर्ट पाने में त्रुटि: %s"
@@ -319,9 +324,10 @@ msgstr "मेमोरी कम पड़ गई"
 msgid "Warning"
 msgstr "चेतावनी"
 
-#: src/Daemon/Daemon.cpp:527
+#: src/Daemon/Daemon.cpp:526
 msgid ""
-"Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
 msgstr ""
 
 #: lib/Plugins/Bugzilla.cpp:84

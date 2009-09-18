@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-17 12:05+0200\n"
+"POT-Creation-Date: 2009-09-18 13:02+0200\n"
 "PO-Revision-Date: 2009-09-16 11:09+1000\n"
 "Last-Translator: Eunju Kim <eukim@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -130,8 +130,8 @@ msgstr "도움말(_H)  "
 msgid "Delete"
 msgstr "삭제 "
 
-#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/report.glade:7
-#: src/Gui/report.glade:24
+#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
+#: src/Gui/report.glade:7 src/Gui/report.glade:24
 msgid "Report"
 msgstr "보고  "
 
@@ -139,7 +139,7 @@ msgstr "보고  "
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">설명</span>  "
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:223
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
 msgstr "<b>보고되지 않았습니다!</b>  "
 
@@ -163,7 +163,7 @@ msgstr "크래시 비율  "
 msgid "User"
 msgstr "사용자  "
 
-#: src/Gui/CCMainWindow.py:165
+#: src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -172,7 +172,7 @@ msgstr ""
 "현재 작업을 완료할 수 없습니다!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:182
+#: src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -182,13 +182,18 @@ msgstr ""
 "오\n"
 " %s "
 
-#: src/Gui/CCMainWindow.py:215
+#: src/Gui/CCMainWindow.py:201
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr ""
 "<b>이러한 크래시는 보고되었습니다, 다음 페이지에서 이를 확인하실 수 있습니다:"
 "</b>\n"
 
-#: src/Gui/CCMainWindow.py:275
+#: src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -196,7 +201,7 @@ msgstr ""
 "보고서를 가져올 수 없습니다!\n"
 "디버그 정보가 없습니까?        "
 
-#: src/Gui/CCMainWindow.py:287
+#: src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -205,7 +210,7 @@ msgstr ""
 "보고 실패했습니다!\n"
 "%s "
 
-#: src/Gui/CCMainWindow.py:319
+#: src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "보고서를 가져오는 도중 오류 발생: %s"
@@ -322,9 +327,10 @@ msgstr "메모리 부족 "
 msgid "Warning"
 msgstr "경고  "
 
-#: src/Daemon/Daemon.cpp:527
+#: src/Daemon/Daemon.cpp:526
 msgid ""
-"Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
 msgstr ""
 
 #: lib/Plugins/Bugzilla.cpp:84

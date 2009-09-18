@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-17 12:05+0200\n"
+"POT-Creation-Date: 2009-09-18 13:02+0200\n"
 "PO-Revision-Date: 2009-09-09 21:55+0530\n"
 "Last-Translator: ANI PETER <apeter@redhat.com>\n"
 "Language-Team: Swathantra Malayalam Computing|സ്വതന്ത്ര മലയാളം കമ്പ്യൂട്ടിങ് <smc-"
@@ -128,8 +128,8 @@ msgstr "_സഹായം"
 msgid "Delete"
 msgstr "വെട്ടി നീക്കുക"
 
-#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/report.glade:7
-#: src/Gui/report.glade:24
+#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
+#: src/Gui/report.glade:7 src/Gui/report.glade:24
 msgid "Report"
 msgstr "റിപോര്‍ട്ട്"
 
@@ -137,7 +137,7 @@ msgstr "റിപോര്‍ട്ട്"
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">വിവരണം</span>"
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:223
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
 msgstr "<b>രേഖപ്പെടുത്തിയിട്ടില്ല!</b>"
 
@@ -161,7 +161,7 @@ msgstr "ക്രാഷ് റേറ്റ്"
 msgid "User"
 msgstr "ഉപയോക്താവു്"
 
-#: src/Gui/CCMainWindow.py:165
+#: src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -170,7 +170,7 @@ msgstr ""
 "നിലവിലുള്ള ജോലി പൂര്‍ത്തിയാക്കുവാന്‍ സാധിച്ചില്ല!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:182
+#: src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -179,11 +179,16 @@ msgstr ""
 "dumplist ലഭ്യമാക്കുമ്പോള്‍ പിശക്, ദയവായി abrt ഡെമണ്‍ പ്രവര്‍ത്തിക്കുന്നുണ്ടോ എന്നു് പരിശോധിക്കുക.\n"
 " %s"
 
-#: src/Gui/CCMainWindow.py:215
+#: src/Gui/CCMainWindow.py:201
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>ഈ തകരാറു് രേഖപ്പെടുത്തിയിട്ടുണ്ടു്. ഈ റിപോര്‍ട്ട് ഇവിടെ ലഭ്യമാണു്:</b>\n"
 
-#: src/Gui/CCMainWindow.py:275
+#: src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -191,7 +196,7 @@ msgstr ""
 "റിപോര്‍ട്ട് ലഭിക്കുവാന്‍ സാധിച്ചില്ല!\n"
 "Debuginfo ലഭ്യമല്ലേ?"
 
-#: src/Gui/CCMainWindow.py:287
+#: src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -200,7 +205,7 @@ msgstr ""
 "റിപോര്‍ട്ട് പരാജയപ്പെട്ടു!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:319
+#: src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
@@ -317,9 +322,10 @@ msgstr "മെമ്മറി ലഭ്യമല്ല"
 msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
-#: src/Daemon/Daemon.cpp:527
+#: src/Daemon/Daemon.cpp:526
 msgid ""
-"Quota exceeded. Please check your MaxCrashReportsSize value in abrt.conf."
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
 msgstr ""
 
 #: lib/Plugins/Bugzilla.cpp:84
