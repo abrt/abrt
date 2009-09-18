@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 13:02+0200\n"
+"POT-Creation-Date: 2009-09-18 13:40+0200\n"
 "PO-Revision-Date: 2009-09-18 14:09+0530\n"
 "Last-Translator: Jaswinder Singh <jsingh@redhat.com>\n"
 "Language-Team: Punjabi <Punjabi-users@lists.sourceforge.net>\n"
@@ -24,19 +24,19 @@ msgstr "ਹੋਰ ਕਲਾਂਈਟ ਪਹਿਲਾਂ ਹੀ ਚੱਲ ਰਿ�
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "ਡੈਮਨ ਤੋਂ ਅਚਾਨਕ ਡਾਟਾ ਮਿਲਿਆ ਹੈ (ਕੀ ਡਾਟਾਬੇਸ ਠੀਕ ਤਰਾਂ ਅੱਪਡੇਟ ਹੋਇਆ ਹੈ?)।"
 
-#: src/Gui/ABRTPlugin.py:26
+#: src/Gui/ABRTPlugin.py:34
 msgid "Analyzer plugins"
 msgstr "ਜਾਂਚਕਾਰ ਪਲੱਗਇਨ"
 
-#: src/Gui/ABRTPlugin.py:27
+#: src/Gui/ABRTPlugin.py:35
 msgid "Action plugins"
 msgstr "ਕਾਰਵਾਈ ਪਲੱਗਇਨ"
 
-#: src/Gui/ABRTPlugin.py:28
+#: src/Gui/ABRTPlugin.py:36
 msgid "Reporter plugins"
 msgstr "ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ"
 
-#: src/Gui/ABRTPlugin.py:29
+#: src/Gui/ABRTPlugin.py:37
 msgid "Database plugins"
 msgstr "ਡਾਟਾਬੇਸ ਪਲੱਗਇਨ"
 
@@ -48,7 +48,7 @@ msgstr "dbus ਨਾਲ ਜੁੜ ਨਹੀਂ ਸਕਿਆ"
 msgid "Please check if abrt daemon is running."
 msgstr "ਕਿਰਪਾ ਕਰਕੇ ਜਾਂਚ ਕਰੋ ਕੀ abrt ਡੈਮਨ ਚੱਲ ਰਿਹਾ ਹੈ।"
 
-#: src/Gui/CCDBusBackend.py:182
+#: src/Gui/CCDBusBackend.py:183
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -139,6 +139,10 @@ msgstr "<span color=\"white\">ਵਰਣਨ</span>"
 msgid "<b>Not reported!</b>"
 msgstr "<b>ਰਿਪੋਰਟ ਨਹੀਂ ਕੀਤਾ!</b>"
 
+#: src/Gui/CCMainWindow.py:79
+msgid "Icon"
+msgstr ""
+
 #: src/Gui/CCMainWindow.py:87
 msgid "Package"
 msgstr "ਪੈਕੇਜ"
@@ -208,7 +212,26 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
 
-#: src/Gui/CCReporterDialog.py:98
+#: src/Gui/CCReporterDialog.py:114
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/Gui/CCReporterDialog.py:124
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+
+#: src/Gui/CCReporterDialog.py:130
+msgid "unknown response from settings dialog"
+msgstr ""
+
+#: src/Gui/CCReporterDialog.py:141
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -218,24 +241,34 @@ msgstr ""
 "<b>ਚੇਤਾਵਨੀ</b>, ਤੁਸੀਂ ਡਾਟਾ ਭੇਜ ਰਹੇ ਹੋ ਜਿਸ ਵਿੱਚ ਜਰੂਰੀ ਜਾਣਕਾਰੀ ਹੋ ਸਕਦੀ ਹੈ।\n"
 "ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਭੇਜਣਾ ਚਾਹੁੰਦੇ ਹੋ <b>%s</b>?\n"
 
-#: src/Gui/CCReporterDialog.py:111
+#: src/Gui/CCReporterDialog.py:155
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "ਇਸ ਨੂੰ ਪੈਦਾ ਕਰਨ ਬਾਰੇ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਜਾਂ ਤੁਸੀਂ ਕੀ ਕੀਤਾ ਹੈ..."
+
+#: src/Gui/dialogs.glade:7
+#, fuzzy
+msgid "Report done"
+msgstr "ਰਿਪੋਰਟ"
+
+#: src/Gui/dialogs.glade:47 src/Gui/settings.glade:695
+#: src/Gui/settings.glade:783
+msgid "gtk-ok"
+msgstr ""
 
 #: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "UI ਵੇਰਵੇ ਵਿੱਚ ਪਲੱਗਇਨਡਾਇਲਾਗ ਵਿਡਗਿਟ ਲੱਭ ਨਹੀਂ ਸਕਿਆ!"
 
-#: src/Gui/PluginSettingsUI.py:21
+#: src/Gui/PluginSettingsUI.py:23
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "ਪਲੱਗਇਨ %s ਲਈ ਕੋਈ UI ਨਹੀਂ ਹੈ"
 
-#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
+#: src/Gui/PluginSettingsUI.py:40 src/Gui/PluginSettingsUI.py:66
 msgid "combo box is not implemented"
 msgstr "ਕੰਬੋ ਬਾਕਸ ਲਾਗੂ ਨਹੀਂ ਕੀਤਾ ਹੈ"
 
-#: src/Gui/PluginSettingsUI.py:47
+#: src/Gui/PluginSettingsUI.py:49
 msgid "Nothing to hydrate!"
 msgstr "ਹਾਈਡਰੇਟ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ!"
 
@@ -243,7 +276,8 @@ msgstr "ਹਾਈਡਰੇਟ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ!"
 msgid "Comment"
 msgstr "ਟਿੱਪਣੀ"
 
-#: src/Gui/report.glade:103
+#: src/Gui/report.glade:103 src/Gui/settings.glade:682
+#: src/Gui/settings.glade:795
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
@@ -267,6 +301,116 @@ msgstr "ਇਹ ਜੌਬ ਹਟਾਓ"
 msgid "Remove this action"
 msgstr "ਇਹ ਕਾਰਵਾਈ ਹਟਾਓ"
 
+#: src/Gui/settings.glade:6
+msgid "Settings"
+msgstr ""
+
+#: src/Gui/settings.glade:46 src/Gui/settings.glade:55
+#: src/Gui/settings.glade:107 src/Gui/settings.glade:120
+#: src/Gui/settings.glade:133
+msgid "Nothing selected"
+msgstr ""
+
+#: src/Gui/settings.glade:72
+msgid "Web Site:"
+msgstr ""
+
+#: src/Gui/settings.glade:84
+msgid "Author:"
+msgstr ""
+
+#: src/Gui/settings.glade:97
+msgid "Version:"
+msgstr ""
+
+#: src/Gui/settings.glade:152
+#, fuzzy
+msgid "Plugin Details"
+msgstr "ਪਲੱਗਇਨ"
+
+#: src/Gui/settings.glade:179
+#, fuzzy
+msgid "C_onfigure plugin"
+msgstr "ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ"
+
+#: src/Gui/settings.glade:191
+#, fuzzy
+msgid "gtk-close"
+msgstr "gtk-cancel"
+
+#: src/Gui/settings.glade:221
+msgid "Global Settings"
+msgstr ""
+
+#: src/Gui/settings.glade:240
+msgid "Check package GPG signature"
+msgstr ""
+
+#: src/Gui/settings.glade:256
+#, fuzzy
+msgid "Database backend: "
+msgstr "<b>ਡਾਟਾਬੇਸ ਬੈਕਐਂਡ ਚੁਣੋ</b>"
+
+#: src/Gui/settings.glade:281
+msgid "Blacklisted packages: "
+msgstr ""
+
+#: src/Gui/settings.glade:294
+msgid "Max coredump storage size(MB):"
+msgstr ""
+
+#: src/Gui/settings.glade:307
+msgid "GPG keys: "
+msgstr ""
+
+#: src/Gui/settings.glade:349
+msgid "Edit blacklisted packages"
+msgstr ""
+
+#: src/Gui/settings.glade:408
+#, fuzzy
+msgid "Common"
+msgstr "ਟਿੱਪਣੀ"
+
+#: src/Gui/settings.glade:438
+#, fuzzy
+msgid "<b>Plugin</b>"
+msgstr "<b>ਪਲੱਗਇਨ ਚੁਣੋ</b>"
+
+#: src/Gui/settings.glade:448
+msgid "<b>Time (or period)</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:510 src/Gui/settings.glade:624
+#: src/Gui/settings.glade:759
+msgid "gtk-add"
+msgstr ""
+
+#: src/Gui/settings.glade:534
+msgid "Cron"
+msgstr ""
+
+#: src/Gui/settings.glade:551
+#, fuzzy
+msgid "<b>Analyzer plugin</b>"
+msgstr "ਜਾਂਚਕਾਰ ਪਲੱਗਇਨ"
+
+#: src/Gui/settings.glade:561
+msgid "<b>Associated action</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:648
+msgid "Analyzers, Actions, Reporters"
+msgstr ""
+
+#: src/Gui/settings.glade:736
+msgid "GPG Keys"
+msgstr ""
+
+#: src/Gui/settings.glade:771
+msgid "gtk-remove"
+msgstr ""
+
 #: src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
@@ -281,7 +425,7 @@ msgstr "ਐਪਲਿਟ ਪਹਿਲਾਂ ਹੀ ਚੱਲ ਰਿਹਾ ਹੈ�
 msgid "ABRT service is not running"
 msgstr "ABRT ਸਰਵਿਸ ਨਹੀਨ ਚੱਲ ਰਹੀ ਹੈ"
 
-#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:368
+#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:366
 #, c-format
 msgid "Pending events: %i"
 msgstr "ਅਧੂਰੀਆਂ ਕਾਰਵਾਈਆਂ: %i"

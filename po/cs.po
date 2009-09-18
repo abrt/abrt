@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT 0.0.8.5\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 13:02+0200\n"
+"POT-Creation-Date: 2009-09-18 13:40+0200\n"
 "PO-Revision-Date: 2009-09-04 23:41+0100\n"
 "Last-Translator: JIRI MOSKOVCAK <jmoskovc@redhat.com>\n"
 "Language-Team: CZECH <ll@li.org>\n"
@@ -23,19 +23,19 @@ msgstr ""
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 
-#: src/Gui/ABRTPlugin.py:26
+#: src/Gui/ABRTPlugin.py:34
 msgid "Analyzer plugins"
 msgstr ""
 
-#: src/Gui/ABRTPlugin.py:27
+#: src/Gui/ABRTPlugin.py:35
 msgid "Action plugins"
 msgstr "Akční pluginy"
 
-#: src/Gui/ABRTPlugin.py:28
+#: src/Gui/ABRTPlugin.py:36
 msgid "Reporter plugins"
 msgstr "Reportovací pluginy"
 
-#: src/Gui/ABRTPlugin.py:29
+#: src/Gui/ABRTPlugin.py:37
 msgid "Database plugins"
 msgstr "Databázové pluginy"
 
@@ -48,7 +48,7 @@ msgid "Please check if abrt daemon is running."
 msgstr ""
 "Nepodařilo se připojit k démonovi, zkontrolujte prosím, zda služba abrt běží."
 
-#: src/Gui/CCDBusBackend.py:182
+#: src/Gui/CCDBusBackend.py:183
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -127,6 +127,10 @@ msgstr "<span color=\"white\">Popis balíčku</span>"
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nereportováno</b>"
 
+#: src/Gui/CCMainWindow.py:79
+msgid "Icon"
+msgstr ""
+
 #: src/Gui/CCMainWindow.py:87
 msgid "Package"
 msgstr "Balíček"
@@ -192,7 +196,28 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:98
+#: src/Gui/CCReporterDialog.py:114
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+
+#: src/Gui/CCReporterDialog.py:124
+#, fuzzy, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"Nepadařilo se uložit nastavení pro:\n"
+" %s"
+
+#: src/Gui/CCReporterDialog.py:130
+msgid "unknown response from settings dialog"
+msgstr "settings dialog vrátil neočekávanou odpověď"
+
+#: src/Gui/CCReporterDialog.py:141
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -203,24 +228,34 @@ msgstr ""
 "informace.\n"
 "Jste si opravdu jistí, že chcete odeslat <b>%s</b>?\n"
 
-#: src/Gui/CCReporterDialog.py:111
+#: src/Gui/CCReporterDialog.py:155
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Zde stručně popište, jak došlo k pádu..."
+
+#: src/Gui/dialogs.glade:7
+#, fuzzy
+msgid "Report done"
+msgstr "Reportovat"
+
+#: src/Gui/dialogs.glade:47 src/Gui/settings.glade:695
+#: src/Gui/settings.glade:783
+msgid "gtk-ok"
+msgstr ""
 
 #: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Widget PluginDialog nenalezen!"
 
-#: src/Gui/PluginSettingsUI.py:21
+#: src/Gui/PluginSettingsUI.py:23
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "Plugin %s nemá žádné UI"
 
-#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
+#: src/Gui/PluginSettingsUI.py:40 src/Gui/PluginSettingsUI.py:66
 msgid "combo box is not implemented"
 msgstr "combo box není implementován"
 
-#: src/Gui/PluginSettingsUI.py:47
+#: src/Gui/PluginSettingsUI.py:49
 msgid "Nothing to hydrate!"
 msgstr "Žádná data k zobrazení!"
 
@@ -228,7 +263,8 @@ msgstr "Žádná data k zobrazení!"
 msgid "Comment"
 msgstr "Komentář"
 
-#: src/Gui/report.glade:103
+#: src/Gui/report.glade:103 src/Gui/settings.glade:682
+#: src/Gui/settings.glade:795
 msgid "gtk-cancel"
 msgstr ""
 
@@ -252,6 +288,111 @@ msgstr ""
 msgid "Remove this action"
 msgstr ""
 
+#: src/Gui/settings.glade:6
+msgid "Settings"
+msgstr ""
+
+#: src/Gui/settings.glade:46 src/Gui/settings.glade:55
+#: src/Gui/settings.glade:107 src/Gui/settings.glade:120
+#: src/Gui/settings.glade:133
+msgid "Nothing selected"
+msgstr ""
+
+#: src/Gui/settings.glade:72
+msgid "Web Site:"
+msgstr ""
+
+#: src/Gui/settings.glade:84
+msgid "Author:"
+msgstr ""
+
+#: src/Gui/settings.glade:97
+msgid "Version:"
+msgstr ""
+
+#: src/Gui/settings.glade:152
+msgid "Plugin Details"
+msgstr ""
+
+#: src/Gui/settings.glade:179
+#, fuzzy
+msgid "C_onfigure plugin"
+msgstr "Reportovací pluginy"
+
+#: src/Gui/settings.glade:191
+msgid "gtk-close"
+msgstr ""
+
+#: src/Gui/settings.glade:221
+msgid "Global Settings"
+msgstr ""
+
+#: src/Gui/settings.glade:240
+msgid "Check package GPG signature"
+msgstr ""
+
+#: src/Gui/settings.glade:256
+msgid "Database backend: "
+msgstr ""
+
+#: src/Gui/settings.glade:281
+msgid "Blacklisted packages: "
+msgstr ""
+
+#: src/Gui/settings.glade:294
+msgid "Max coredump storage size(MB):"
+msgstr ""
+
+#: src/Gui/settings.glade:307
+msgid "GPG keys: "
+msgstr ""
+
+#: src/Gui/settings.glade:349
+msgid "Edit blacklisted packages"
+msgstr ""
+
+#: src/Gui/settings.glade:408
+#, fuzzy
+msgid "Common"
+msgstr "Komentář"
+
+#: src/Gui/settings.glade:438
+msgid "<b>Plugin</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:448
+msgid "<b>Time (or period)</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:510 src/Gui/settings.glade:624
+#: src/Gui/settings.glade:759
+msgid "gtk-add"
+msgstr ""
+
+#: src/Gui/settings.glade:534
+msgid "Cron"
+msgstr ""
+
+#: src/Gui/settings.glade:551
+msgid "<b>Analyzer plugin</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:561
+msgid "<b>Associated action</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:648
+msgid "Analyzers, Actions, Reporters"
+msgstr ""
+
+#: src/Gui/settings.glade:736
+msgid "GPG Keys"
+msgstr ""
+
+#: src/Gui/settings.glade:771
+msgid "gtk-remove"
+msgstr ""
+
 #: src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
@@ -266,7 +407,7 @@ msgstr "Applet už běží."
 msgid "ABRT service is not running"
 msgstr "ABRT služba nebězí"
 
-#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:368
+#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:366
 #, c-format
 msgid "Pending events: %i"
 msgstr ""
@@ -443,17 +584,6 @@ msgstr ""
 #, fuzzy
 #~ msgid "Can't get plugin description"
 #~ msgstr "Widget PluginDialog nenalezen!"
-
-#, fuzzy
-#~ msgid ""
-#~ "Can't save plugin settings:\n"
-#~ " %s"
-#~ msgstr ""
-#~ "Nepadařilo se uložit nastavení pro:\n"
-#~ " %s"
-
-#~ msgid "unknown response from settings dialog"
-#~ msgstr "settings dialog vrátil neočekávanou odpověď"
 
 #, fuzzy
 #~ msgid "Logging failed, trying to find a bug..."

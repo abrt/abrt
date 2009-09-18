@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 13:02+0200\n"
+"POT-Creation-Date: 2009-09-18 13:40+0200\n"
 "PO-Revision-Date: 2009-09-16 11:04-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
@@ -28,19 +28,19 @@ msgstr ""
 "Dados inesperados obtidos do daemon (o banco de dados está devidamente "
 "atualizado?)."
 
-#: src/Gui/ABRTPlugin.py:26
+#: src/Gui/ABRTPlugin.py:34
 msgid "Analyzer plugins"
 msgstr "Plugins de análise"
 
-#: src/Gui/ABRTPlugin.py:27
+#: src/Gui/ABRTPlugin.py:35
 msgid "Action plugins"
 msgstr "Plugins de ação"
 
-#: src/Gui/ABRTPlugin.py:28
+#: src/Gui/ABRTPlugin.py:36
 msgid "Reporter plugins"
 msgstr "Plugins de relato"
 
-#: src/Gui/ABRTPlugin.py:29
+#: src/Gui/ABRTPlugin.py:37
 msgid "Database plugins"
 msgstr "Plugins de banco de dados"
 
@@ -52,7 +52,7 @@ msgstr "Não foi possível conectar ao dbus"
 msgid "Please check if abrt daemon is running."
 msgstr "Por favor, verifique se o daemon do abrt está em execução."
 
-#: src/Gui/CCDBusBackend.py:182
+#: src/Gui/CCDBusBackend.py:183
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -145,6 +145,10 @@ msgstr "<span color=\"white\">Descrição</span>"
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não relatado!</b>"
 
+#: src/Gui/CCMainWindow.py:79
+msgid "Icon"
+msgstr ""
+
 #: src/Gui/CCMainWindow.py:87
 msgid "Package"
 msgstr "Pacote"
@@ -217,7 +221,31 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
 
-#: src/Gui/CCReporterDialog.py:98
+#: src/Gui/CCReporterDialog.py:114
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"Erro ao abrir a interface de usuário das configurações do plugin: \n"
+"\n"
+"%s"
+
+#: src/Gui/CCReporterDialog.py:124
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"Não foi possível salvar as configurações do plugin:\n"
+" %s"
+
+#: src/Gui/CCReporterDialog.py:130
+msgid "unknown response from settings dialog"
+msgstr "resposta desconhecida do diálogo de configurações"
+
+#: src/Gui/CCReporterDialog.py:141
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -228,9 +256,19 @@ msgstr ""
 "delicadas.\n"
 "Você realmente deseja enviar o <b>%s</b>?\n"
 
-#: src/Gui/CCReporterDialog.py:111
+#: src/Gui/CCReporterDialog.py:155
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
+
+#: src/Gui/dialogs.glade:7
+#, fuzzy
+msgid "Report done"
+msgstr "Relatar"
+
+#: src/Gui/dialogs.glade:47 src/Gui/settings.glade:695
+#: src/Gui/settings.glade:783
+msgid "gtk-ok"
+msgstr ""
 
 #: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
@@ -238,16 +276,16 @@ msgstr ""
 "Não foi possível localizar o widget PluginDialog na descrição da interface "
 "de usuário!"
 
-#: src/Gui/PluginSettingsUI.py:21
+#: src/Gui/PluginSettingsUI.py:23
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "Nenhuma interface de usuário para o plugin %s"
 
-#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
+#: src/Gui/PluginSettingsUI.py:40 src/Gui/PluginSettingsUI.py:66
 msgid "combo box is not implemented"
 msgstr "caixa de combinação não implementada"
 
-#: src/Gui/PluginSettingsUI.py:47
+#: src/Gui/PluginSettingsUI.py:49
 msgid "Nothing to hydrate!"
 msgstr "Nada a ser hidratado!"
 
@@ -255,7 +293,8 @@ msgstr "Nada a ser hidratado!"
 msgid "Comment"
 msgstr "Comentário"
 
-#: src/Gui/report.glade:103
+#: src/Gui/report.glade:103 src/Gui/settings.glade:682
+#: src/Gui/settings.glade:795
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
@@ -279,6 +318,118 @@ msgstr "Remover este trabalho"
 msgid "Remove this action"
 msgstr "Remover esta ação"
 
+#: src/Gui/settings.glade:6
+#, fuzzy
+msgid "Settings"
+msgstr "Configurações globais"
+
+#: src/Gui/settings.glade:46 src/Gui/settings.glade:55
+#: src/Gui/settings.glade:107 src/Gui/settings.glade:120
+#: src/Gui/settings.glade:133
+msgid "Nothing selected"
+msgstr ""
+
+#: src/Gui/settings.glade:72
+msgid "Web Site:"
+msgstr ""
+
+#: src/Gui/settings.glade:84
+msgid "Author:"
+msgstr ""
+
+#: src/Gui/settings.glade:97
+msgid "Version:"
+msgstr ""
+
+#: src/Gui/settings.glade:152
+#, fuzzy
+msgid "Plugin Details"
+msgstr "Plugins"
+
+#: src/Gui/settings.glade:179
+#, fuzzy
+msgid "C_onfigure plugin"
+msgstr "Plugins de relato"
+
+#: src/Gui/settings.glade:191
+#, fuzzy
+msgid "gtk-close"
+msgstr "gtk-cancel"
+
+#: src/Gui/settings.glade:221
+#, fuzzy
+msgid "Global Settings"
+msgstr "Configurações globais"
+
+#: src/Gui/settings.glade:240
+msgid "Check package GPG signature"
+msgstr ""
+
+#: src/Gui/settings.glade:256
+#, fuzzy
+msgid "Database backend: "
+msgstr "<b>Selecione o backend de banco de dados</b>"
+
+#: src/Gui/settings.glade:281
+msgid "Blacklisted packages: "
+msgstr ""
+
+#: src/Gui/settings.glade:294
+msgid "Max coredump storage size(MB):"
+msgstr ""
+
+#: src/Gui/settings.glade:307
+msgid "GPG keys: "
+msgstr ""
+
+#: src/Gui/settings.glade:349
+msgid "Edit blacklisted packages"
+msgstr ""
+
+#: src/Gui/settings.glade:408
+#, fuzzy
+msgid "Common"
+msgstr "Comentário"
+
+#: src/Gui/settings.glade:438
+#, fuzzy
+msgid "<b>Plugin</b>"
+msgstr "<b>Selecionar plugin</b>"
+
+#: src/Gui/settings.glade:448
+msgid "<b>Time (or period)</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:510 src/Gui/settings.glade:624
+#: src/Gui/settings.glade:759
+msgid "gtk-add"
+msgstr ""
+
+#: src/Gui/settings.glade:534
+msgid "Cron"
+msgstr ""
+
+#: src/Gui/settings.glade:551
+#, fuzzy
+msgid "<b>Analyzer plugin</b>"
+msgstr "Plugins de análise"
+
+#: src/Gui/settings.glade:561
+msgid "<b>Associated action</b>"
+msgstr ""
+
+#: src/Gui/settings.glade:648
+msgid "Analyzers, Actions, Reporters"
+msgstr ""
+
+#: src/Gui/settings.glade:736
+msgid "GPG Keys"
+msgstr ""
+
+#: src/Gui/settings.glade:771
+msgid "gtk-remove"
+msgstr ""
+
 #: src/Applet/Applet.cpp:45
 #, c-format
 msgid "A crash in package %s has been detected!"
@@ -293,7 +444,7 @@ msgstr "O miniaplicativo já está em execução."
 msgid "ABRT service is not running"
 msgstr "O serviço do ABRT não está em execução"
 
-#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:368
+#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:366
 #, c-format
 msgid "Pending events: %i"
 msgstr "Eventos pendentes: %i"
@@ -462,9 +613,6 @@ msgstr "executando o sosreport: "
 msgid "done running sosreport"
 msgstr "Execução do sosreport realizada"
 
-#~ msgid "Global settings"
-#~ msgstr "Configurações globais"
-
 #~ msgid "Can't load gui description for SettingsDialog!"
 #~ msgstr ""
 #~ "Não foi possível carregar a descrição da interface gráfica de usuário "
@@ -478,25 +626,6 @@ msgstr "Execução do sosreport realizada"
 
 #~ msgid "Can't get plugin description"
 #~ msgstr "Não foi possível obter a descrição do plugin"
-
-#~ msgid ""
-#~ "Error while opening plugin settings UI: \n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Erro ao abrir a interface de usuário das configurações do plugin: \n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid ""
-#~ "Can't save plugin settings:\n"
-#~ " %s"
-#~ msgstr ""
-#~ "Não foi possível salvar as configurações do plugin:\n"
-#~ " %s"
-
-#~ msgid "unknown response from settings dialog"
-#~ msgstr "resposta desconhecida do diálogo de configurações"
 
 #~ msgid "Daemon is not running."
 #~ msgstr "O daemon não está em execução."

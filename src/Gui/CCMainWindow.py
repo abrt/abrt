@@ -76,7 +76,7 @@ class MainWindow():
         self.modelfilter.set_visible_func(self.filter_dumps, None)
         self.dlist.set_model(self.modelfilter)
         # add pixbuff separatelly
-        icon_column = gtk.TreeViewColumn('Icon')
+        icon_column = gtk.TreeViewColumn(_("Icon"))
         icon_column.cell = gtk.CellRendererPixbuf()
         icon_column.cell.set_property('cell-background', "#C9C9C9")
         n = self.dlist.append_column(icon_column)

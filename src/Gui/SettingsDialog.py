@@ -20,7 +20,7 @@ settings_dict = { "Common":
 
 class SettingsDialog:
     def __init__(self, parent, daemon):
-        builderfile = "%s%ssettings.GtkBuilder" % (sys.path[0],"/")
+        builderfile = "%s%ssettings.glade" % (sys.path[0],"/")
         self.ccdaemon = daemon
         self.builder = gtk.Builder()
         self.builder.add_from_file(builderfile)

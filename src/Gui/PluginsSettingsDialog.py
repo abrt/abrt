@@ -11,7 +11,7 @@ class PluginsSettingsDialog:
         #print "Settings dialog init"
         self.ccdaemon = daemon
         self.builder = gtk.Builder()
-        builderfile = "%s%ssettings.GtkBuilder" % (sys.path[0],"/")
+        builderfile = "%s%ssettings.glade" % (sys.path[0],"/")
         #print builderfile
         try:
             self.builder.add_from_file(builderfile)

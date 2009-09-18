@@ -28,7 +28,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
                       message_type=gtk.MESSAGE_INFO,
                       widget=None, page=0, broken_widget=None ):
     builder = gtk.Builder()
-    builderfile = "%s%sdialogs.GtkBuilder" % (sys.path[0],"/")
+    builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
     dialog = builder.get_object("ReportDialog")
     
