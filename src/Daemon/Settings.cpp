@@ -1,8 +1,8 @@
+#include <fstream>
 #include "Settings.h"
 #include "abrtlib.h"
 #include "abrt_types.h"
 #include "Polkit.h"
-#include <fstream>
 
 #define SECTION_COMMON      "Common"
 #define SECTION_ANALYZER_ACTIONS_AND_REPORTERS   "AnalyzerActionsAndReporters"

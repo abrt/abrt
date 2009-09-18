@@ -18,15 +18,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "SOSreport.h"
-
 #include <stdio.h>
 #include <string.h>
 #include <ext/stdio_filebuf.h>
-
 #include <fstream>
 #include <sstream>
-
+#include "SOSreport.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"

@@ -22,7 +22,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <cerrno>
 #include <sys/utsname.h>
 #include <magic.h>
 #include "abrtlib.h"

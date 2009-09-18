@@ -24,38 +24,38 @@
  *      Arjan van de Ven <arjan@linux.intel.com>
  */
 
+#include "abrtlib.h"
 #include "Kerneloops.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-#include <sstream>
-
 #define FILENAME_KERNELOOPS  "kerneloops"
 
 std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
 {
-	update_client(_("Getting local/global universal unique identification..."));
+	log(_("Getting local universal unique identification"));
 
-	std::string m_sOops;
-	std::stringstream m_sHash;
-	CDebugDump m_pDebugDump;
-	m_pDebugDump.Open(pDebugDumpDir);
-	m_pDebugDump.LoadText(FILENAME_KERNELOOPS, m_sOops);
-	m_pDebugDump.Close();
+	std::string oops;
+	{
+		CDebugDump dd;
+		dd.Open(pDebugDumpDir);
+		dd.LoadText(FILENAME_KERNELOOPS, oops);
+	}
 
 	/* An algorithm proposed by Donald E. Knuth in The Art Of Computer
 	 * Programming Volume 3, under the topic of sorting and search
 	 * chapter 6.4.
 	 */
-	unsigned int m_nHash = static_cast<unsigned int>(m_sOops.length());
-	for(std::size_t i = 0; i < m_sOops.length(); i++)
+	unsigned len = oops.length();
+	unsigned hash = len;
+	for (unsigned i = 0; i < len; i++)
 	{
-		m_nHash = ((m_nHash << 5) ^ (m_nHash >> 27)) ^ m_sOops[i];
+		hash = ((hash << 5) ^ (hash >> 27)) ^ oops[i];
 	}
-	m_sHash << (m_nHash & 0x7FFFFFFF);
+	hash &= 0x7FFFFFFF;
 
-	return m_sHash.str();
+	return to_string(hash);
 }
 
 std::string CAnalyzerKerneloops::GetGlobalUUID(const std::string& pDebugDumpDir)

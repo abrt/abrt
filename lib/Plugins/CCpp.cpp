@@ -19,20 +19,19 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
+#include <sys/wait.h>
+#include <fstream>
+#include <sstream>
+#include <set>
+#include <iomanip>
+#include <nss.h>
+#include <sechash.h>
 #include "abrtlib.h"
 #include "CCpp.h"
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "CommLayerInner.h"
 #include "Polkit.h"
-#include <sys/wait.h>
-#include <fstream>
-#include <sstream>
-#include <set>
-#include <iomanip>
-
-#include <nss.h>
-#include <sechash.h>
 
 #define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
