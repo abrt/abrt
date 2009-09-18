@@ -264,6 +264,10 @@ void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
         const char* object_path,
         DBusHandlerResult (*message_received_func)(DBusConnection *conn, DBusMessage *msg, void* data)
 ) {
+    if (g_dbus_conn)
+        error_msg_and_die("Internal bug: can't connect to more than one dbus");
+    g_dbus_conn = conn;
+
 //do we need this? why?
 //log("dbus_connection_set_dispatch_status_function");
 //    dbus_connection_set_dispatch_status_function(conn,

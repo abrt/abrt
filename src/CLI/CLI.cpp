@@ -69,7 +69,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
     DBusMessage *reply = dbus_connection_send_with_reply_and_block(s_dbus_conn, msg, /*timeout*/ -1, &err);
     if (reply == NULL)
     {
-//analyse error
+//TODO: analyse err
         error_msg_and_die("Error sending DBus message");
     }
     dbus_message_unref(msg);

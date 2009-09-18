@@ -17,95 +17,256 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "CCApplet.h"
 #include <iostream>
 #include <dbus/dbus-shared.h>
-
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-lowlevel.h>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
-
 #if HAVE_LOCALE_H
     #include <locale.h>
 #endif
-
 #if ENABLE_NLS
     #include <libintl.h>
     #define _(S) gettext(S)
 #else
     #define _(S) (S)
 #endif
+#include "abrtlib.h"
+#include "abrt_dbus.h"
+#include "DBusCommon.h"
+#include "CCApplet.h"
 
-//@@global applet object
-CApplet *applet;
 
-static void
-crash_notify_cb(const char* progname)
+static CApplet* applet;
+
+
+static void Crash(DBusMessage* signal)
 {
-    const char *message = _("A crash in package %s has been detected!");
-#ifdef DEBUG
-    std::cerr << "Application " << progname << " has crashed!" << std::endl;
-#endif
-    //applet->AddEvent(uid, std::string(progname));
+    int r;
+    DBusMessageIter in_iter;
+    if (!dbus_message_iter_init(signal, &in_iter))
+    {
+        /* signal has no parameters */
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+    const char* progname;
+    r = load_val(&in_iter, progname);
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+    const char* uid_str;
+    r = load_val(&in_iter, uid_str);
+    if (r != ABRT_DBUS_LAST_FIELD)
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+
+    //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
+    //    return;
+    uid_t uid_num = atoi(uid_str);
+
+    if (uid_num != getuid())
+        return;
+
+    const char* message = _("A crash in package %s has been detected");
+    //applet->AddEvent(uid, progname);
     applet->SetIconTooltip(message, progname);
     applet->ShowIcon();
     applet->CrashNotify(message, progname);
 }
 
-static void
-quota_exceed_cb(const char* str)
+static void QuotaExceed(DBusMessage* signal)
 {
+    int r;
+    DBusMessageIter in_iter;
+    if (!dbus_message_iter_init(signal, &in_iter))
+    {
+        /* signal has no parameters */
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+    const char* str;
+    r = load_val(&in_iter, str);
+    if (r != ABRT_DBUS_LAST_FIELD)
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+
+    //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
+    //    return;
     applet->ShowIcon();
     applet->CrashNotify("%s", str);
 }
 
-int main(int argc, char **argv)
+static void NameOwnerChanged(DBusMessage* signal)
 {
-    setlocale(LC_ALL,"");
+    int r;
+    DBusMessageIter in_iter;
+    if (!dbus_message_iter_init(signal, &in_iter))
+    {
+        /* signal has no parameters */
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+    const char* name;
+    r = load_val(&in_iter, name);
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
 
+    /* We are only interested in (dis)appearances of our daemon */
+    if (strcmp(name, "com.redhat.abrt") != 0)
+        return;
+
+    const char* old_owner;
+    r = load_val(&in_iter, old_owner);
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+    const char* new_owner;
+    r = load_val(&in_iter, new_owner);
+    if (r != ABRT_DBUS_LAST_FIELD)
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+
+    if (new_owner[0])
+        applet->Enable(_("ABRT service has been started"));
+    else
+        applet->Disable(_("ABRT service is not running"));
+}
+
+static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
+{
+    const char* member = dbus_message_get_member(msg);
+    log("%s(member:'%s')", __func__, member);
+
+    int type = dbus_message_get_type(msg);
+    if (type != DBUS_MESSAGE_TYPE_SIGNAL)
+    {
+        log("The message is not a signal. ignoring");
+        return DBUS_HANDLER_RESULT_HANDLED;
+    }
+
+    if (strcmp(member, "NameOwnerChanged") == 0)
+        NameOwnerChanged(msg);
+    else if (strcmp(member, "Crash") == 0)
+        Crash(msg);
+    else if (strcmp(member, "QuotaExceed") == 0)
+        QuotaExceed(msg);
+
+    return DBUS_HANDLER_RESULT_HANDLED;
+}
+
+//TODO: move to abrt_dbus.cpp
+static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
+{
+    if (dbus_error_is_set(err))
+    {
+        error_msg("dbus error: %s", err->message);
+        /*dbus_error_free(&err); - why bother, we will exit in a microsecond */
+        error_flag = true;
+    }
+    if (!error_flag)
+        return;
+    error_msg_and_die("%s", msg);
+}
+
+int main(int argc, char** argv)
+{
+    /* I18n */
+    setlocale(LC_ALL, "");
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
 #endif
 
-    /* need to be thread safe */
+    /* Need to be thread safe */
     g_thread_init(NULL);
     gdk_threads_init();
     gdk_threads_enter();
-    gtk_init(&argc,&argv);
-    /* prevent zombies when we spawn abrt-gui */
+
+    /* Parse options */
+    int opt;
+    while ((opt = getopt(argc, argv, "dv")) != -1)
+    {
+        switch (opt)
+        {
+        case 'v':
+            g_verbose++;
+            break;
+        default:
+            error_msg_and_die(
+                "Usage: abrt-applet [-v]\n"
+        	"\nOptions:"
+                "\n\t-v\tVerbose"
+            );
+        }
+    }
+    gtk_init(&argc, &argv);
+
+    /* Prevent zombies when we spawn abrt-gui */
     signal(SIGCHLD, SIG_IGN);
 
-    /* move to the DBusClient::connect */
-    DBus::Glib::BusDispatcher dispatcher;
-    /* this should bind the dispatcher with mainloop */
-    dispatcher.attach(NULL);
-    DBus::default_dispatcher = &dispatcher;
-    DBus::Connection session = DBus::Connection::SessionBus();
-    //FIXME: possible race, but the dbus-c++ API won't let us check return value of request_name :(
-    if(session.has_name("com.redhat.abrt.applet"))
+    /* Initialize our (dbus_abrt) machinery: hook _system_ dbus to glib main loop.
+     * (session bus is left to be handled by libnotify, see below) */
+    DBusError err;
+    dbus_error_init(&err);
+    DBusConnection* system_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
+    die_if_dbus_error(system_conn == NULL, &err, "Can't connect to system dbus");
+    attach_dbus_conn_to_glib_main_loop(system_conn);
+    if (!dbus_connection_add_filter(system_conn, handle_message, NULL, NULL))
+        error_msg_and_die("Can't add dbus filter");
+    /* which messages do we want to be fed to handle_message()? */
+    //signal sender=org.freedesktop.DBus -> path=/org/freedesktop/DBus; interface=org.freedesktop.DBus; member=NameOwnerChanged
+    //   string "com.redhat.abrt"
+    //   string ""
+    //   string ":1.70"
+    dbus_bus_add_match(system_conn, "type='signal',member='NameOwnerChanged'", &err);
+    die_if_dbus_error(false, &err, "Can't add dbus match");
+    //signal sender=:1.73 -> path=/com/redhat/abrt; interface=com.redhat.abrt; member=Crash
+    //   string "coreutils-7.2-3.fc11"
+    //   string "0"
+    dbus_bus_add_match(system_conn, "type='signal',path='/com/redhat/abrt'", &err);
+    die_if_dbus_error(false, &err, "Can't add dbus match");
+
+    /* Initialize GUI stuff.
+     * Note: inside CApplet ctor, libnotify hooks session dbus
+     * to glib main loop */
+    applet = new CApplet;
+    /* dbus_abrt cannot handle more than one bus, and we don't really need to.
+     * The only thing we want to do is to announce ourself on session dbus */
+    DBusConnection* session_conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
+    die_if_dbus_error(session_conn == NULL, &err, "Can't connect to session dbus");
+    int r = dbus_bus_request_name(session_conn,
+        "com.redhat.abrt.applet",
+        /* flags */ DBUS_NAME_FLAG_DO_NOT_QUEUE, &err);
+    die_if_dbus_error(r != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, &err,
+        "Problem connecting to dbus, or applet is already running");
+
+    /* Show disabled icon if daemon is not running */
+    if (!dbus_bus_name_has_owner(system_conn, CC_DBUS_NAME, &err))
     {
-        //applet is already running
-        std::cerr << _("Applet is already running.") << std::endl;
-        return -1;
-    }
-    else
-    {
-        //applet is not running, so claim the name on the session bus
-        session.request_name("com.redhat.abrt.applet");
+        const char* msg = _("ABRT service is not running");
+        puts(msg);
+        applet->Disable(msg);
     }
 
-    DBus::Connection conn = DBus::Connection::SystemBus();
-    applet = new CApplet(conn, session, CC_DBUS_PATH, CC_DBUS_NAME);
-    applet->ConnectCrashHandler(crash_notify_cb);
-    applet->ConnectQuotaExceedHandler(quota_exceed_cb);
-    if(!conn.has_name(CC_DBUS_NAME))
-    {
-        std::cout << _("ABRT service is not running") << std::endl;
-        applet->Disable(_("ABRT service is not running"));
-    }
-
+    /* Enter main loop */
     gtk_main();
+
     gdk_threads_leave();
     delete applet;
     return 0;

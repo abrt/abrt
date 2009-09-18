@@ -430,7 +430,7 @@ static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
  */
 
 /* Callback: "a message is received to a registered object path" */
-static DBusHandlerResult message_received(DBusConnection *conn, DBusMessage *msg, void* data)
+static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg, void* data)
 {
     const char* member = dbus_message_get_member(msg);
     log("%s(method:'%s')", __func__, member);
@@ -499,7 +499,7 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
     if (!error_flag)
         return;
     error_msg_and_die(
-            "error requesting DBus name %s, possible reasons: "
+            "Error requesting DBus name %s, possible reasons: "
             "abrt run by non-root; dbus config is incorrect",
             CC_DBUS_NAME);
 }
@@ -511,13 +511,14 @@ CCommLayerServerDBus::CCommLayerServerDBus()
 
     dbus_error_init(&err);
     VERB3 log("dbus_bus_get");
-    g_dbus_conn = conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
+    conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
     handle_dbus_err(conn == NULL, &err);
 
     attach_dbus_conn_to_glib_main_loop(conn, "/com/redhat/abrt", message_received);
 
     VERB3 log("dbus_bus_request_name");
     int rc = dbus_bus_request_name(conn, CC_DBUS_NAME, DBUS_NAME_FLAG_REPLACE_EXISTING, &err);
+//maybe check that r == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER instead?
     handle_dbus_err(rc < 0, &err);
     VERB3 log("dbus init done");
 }

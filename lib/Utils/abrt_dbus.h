@@ -8,8 +8,43 @@ extern DBusConnection* g_dbus_conn;
 /*
  * Glib integration machinery
  */
+
+/* Hook up to DBus and to glib main loop.
+ * Usage cases:
+ *
+ * - server:
+ *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
+ *  attach_dbus_conn_to_glib_main_loop(conn, "/some/path", handler_of_calls_to_some_path);
+ *  rc = dbus_bus_request_name(conn, "server.name", DBUS_NAME_FLAG_REPLACE_EXISTING, &err);
+ *
+ * - client which does not receive signals (only makes calls and emits signals):
+ *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
+ *  // needed only if you need to use async dbus calls (not shown below):
+ *  attach_dbus_conn_to_glib_main_loop(conn);
+ *  // syncronous method call:
+ *  msg = dbus_message_new_method_call("some.serv", "/path/on/serv", "optional.iface.on.serv", "method_name");
+ *  reply = dbus_connection_send_with_reply_and_block(conn, msg, timeout, &err);
+ *  // emitting signal:
+ *  msg = dbus_message_new_signal("/path/sig/emitted/from", "iface.sig.emitted.from", "sig_name");
+ *  // (note: "iface.sig.emitted.from" is not optional for signals!)
+ *  dbus_message_set_destination(msg, "peer"); // optional
+ *  dbus_connection_send(conn, msg, &serial); // &serial can be NULL
+ *
+ * - client which receives and processes signals:
+ *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
+ *  attach_dbus_conn_to_glib_main_loop(conn);
+ *  dbus_connection_add_filter(conn, handle_message, NULL, NULL)
+ *  dbus_bus_add_match(system_conn, "type='signal',...", &err);
+ *  // signal is a dbus message which looks like this:
+ *  // sender=XXX dest=YYY(or null) path=/path/sig/emitted/from interface=iface.sig.emitted.from member=sig_name
+ *  // and handler_for_signals(conn,msg,opaque) will be called by glib
+ *  // main loop to process received signals (and other messages
+ *  // if you ask for them in dbus_bus_add_match[es], but this
+ *  // would turn you into a server if you handle them too) ;]
+ */
 void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
-    const char* object_path_to_register = NULL, /* NULL if you are just a client */
+    /* NULL if you are just a client */
+    const char* object_path_to_register = NULL,
     /* makes sense only if you use object_path_to_register: */
     DBusHandlerResult (*message_received_func)(DBusConnection *conn, DBusMessage *msg, void* data) = NULL
 );
