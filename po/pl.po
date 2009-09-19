@@ -2,14 +2,13 @@
 # Piotr Drąg <piotrdrag@gmail.com>, 2009.
 # Tomasz Chrzczonowicz <chrzczonowicz@gmail.com>, 2009.
 #
-# Tomasz Chrzczonowicz <chrzczonowicz@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2009-09-19 02:37+0000\n"
-"PO-Revision-Date: 2009-09-19 11:54+0200\n"
-"Last-Translator: Tomasz Chrzczonowicz <chrzczonowicz@gmail.com>\n"
+"PO-Revision-Date: 2009-09-19 13:20+0200\n"
+"Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <fedora-trans-pl@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,7 +46,7 @@ msgstr "Nie można połączyć się z D-Bus"
 
 #: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
 msgid "Please check if abrt daemon is running."
-msgstr "Sprawdź, czy demon abrt jest uruchomiony."
+msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony."
 
 #: ../src/Gui/CCDBusBackend.py:182
 msgid ""
@@ -174,7 +173,7 @@ msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
-"Nie można ukończyć bieżącego zadania!\n"
+"Nie można ukończyć bieżącego zadania.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:191
@@ -183,14 +182,14 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"Błąd podczas wczytywania listy zrzutów. Sprawdź, czy demon abrt jest "
-"uruchomiony\n"
+"Błąd podczas wczytywania listy zrzutów. Proszę sprawdzić, czy demon abrt "
+"jest uruchomiony\n"
 " %s"
 
 #: ../src/Gui/CCMainWindow.py:201
 #, python-format
 msgid "Can't get username for uid %s"
-msgstr "Nie można uzyskać nazwy użytkownika o uid %s"
+msgstr "Nie można uzyskać nazwy użytkownika dla UID %s"
 
 #: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
@@ -201,7 +200,7 @@ msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"Nie można uzyskać raportu!\n"
+"Nie można uzyskać raportu.\n"
 "Brak pakietów debuginfo?"
 
 #: ../src/Gui/CCMainWindow.py:300
@@ -210,7 +209,7 @@ msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
-"Zgłoszenie nie powiodło się!\n"
+"Zgłoszenie nie powiodło się.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:332
@@ -227,7 +226,7 @@ msgid ""
 msgstr ""
 "<b>OSTRZEŻENIE:</b> za chwilę zostaną wysłane dane, które mogą zawierać "
 "poufne informacje.\n"
-"Na pewno chcesz wysłać <b>%s</b>?\n"
+"Na pewno wysłać <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
@@ -246,7 +245,7 @@ msgstr "gtk-ok"
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr ""
-"Nie można znaleźć widgetu PluginDialog w opisie interfejsu użytkownika!"
+"Nie można znaleźć widgetu PluginDialog w opisie interfejsu użytkownika."
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
@@ -260,7 +259,7 @@ msgstr "pole kombinowane nie jest zaimplementowane"
 
 #: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
-msgstr "Brak danych do wyświetlenia!"
+msgstr "Brak danych do wyświetlenia."
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
@@ -276,11 +275,11 @@ msgstr "gtk-cancel"
 
 #: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
 msgid "<b>Select plugin</b>"
-msgstr "<b>Wybierz wtyczkę</b>"
+msgstr "<b>Wybór wtyczki</b>"
 
 #: ../src/Gui/SettingsDialog.py:38
 msgid "<b>Select database backend</b>"
-msgstr "<b>Wybierz zaplecze bazy danych</b>"
+msgstr "<b>Wybór zaplecza bazy danych</b>"
 
 #: ../src/Gui/SettingsDialog.py:170
 msgid "Remove this job"
@@ -292,10 +291,9 @@ msgstr "Usuń tę czynność"
 
 #: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr "Wtyczka analizy"
+msgstr "<b>Wtyczka analizy</b>"
 
 #: ../src/Gui/settings.glade.h:2
-#, fuzzy
 msgid "<b>Associated action</b>"
 msgstr "<b>Powiązane działanie</b>"
 
@@ -303,39 +301,33 @@ msgstr "<b>Powiązane działanie</b>"
 msgid "<b>Plugin</b>"
 msgstr "<b>Wtyczka</b>"
 
-# Nie jestem pewien
 #: ../src/Gui/settings.glade.h:4
-#, fuzzy
 msgid "<b>Time (or period)</b>"
-msgstr "<b>Godzina (lub okres czasu)</b>"
+msgstr "<b>Czas (lub okres czasu)</b>"
 
 #: ../src/Gui/settings.glade.h:5
 msgid "Analyzers, Actions, Reporters"
-msgstr ""
+msgstr "Analizy, działania, zgłaszający"
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Author:"
 msgstr "Autor:"
 
 #: ../src/Gui/settings.glade.h:7
-#, fuzzy
 msgid "Blacklisted packages: "
-msgstr "Czarna lista pakietów:"
+msgstr "Czarna lista pakietów: "
 
 #: ../src/Gui/settings.glade.h:8
 msgid "C_onfigure plugin"
-msgstr "_Konfiguruj wtyczkę"
+msgstr "Sk_onfiguruj wtyczkę"
 
-# To może być opcja do odchaczania albo tytuł okna, wtedy 
 #: ../src/Gui/settings.glade.h:9
-#, fuzzy
 msgid "Check package GPG signature"
-msgstr "Sprawdź podpis GPG pakietu"
+msgstr "Sprawdzanie podpisu GPG pakietu"
 
 #: ../src/Gui/settings.glade.h:10
-#, fuzzy
 msgid "Common"
-msgstr "Komentarz"
+msgstr "Wspólne"
 
 #: ../src/Gui/settings.glade.h:11
 msgid "Cron"
@@ -343,11 +335,11 @@ msgstr "Cron"
 
 #: ../src/Gui/settings.glade.h:12
 msgid "Database backend: "
-msgstr "Zaplecze bazy danych:"
+msgstr "Zaplecze bazy danych: "
 
 #: ../src/Gui/settings.glade.h:13
 msgid "Edit blacklisted packages"
-msgstr "Edytuj czarną listę pakietów"
+msgstr "Modyfikacja czarnej listy pakietów"
 
 #: ../src/Gui/settings.glade.h:14
 msgid "GPG Keys"
@@ -355,21 +347,19 @@ msgstr "Klucze GPG"
 
 #: ../src/Gui/settings.glade.h:15
 msgid "GPG keys: "
-msgstr "klucze GPG:"
+msgstr "klucze GPG: "
 
 #: ../src/Gui/settings.glade.h:16
 msgid "Global Settings"
 msgstr "Ustawienia globalne"
 
-# Na pojedynczy, czy wszystkie?
 #: ../src/Gui/settings.glade.h:17
-#, fuzzy
 msgid "Max coredump storage size(MB):"
-msgstr "Limit miejsca na zrzuty pamięci (MB):"
+msgstr "Ograniczenie miejsca na zrzuty pamięci (MB):"
 
 #: ../src/Gui/settings.glade.h:18
 msgid "Nothing selected"
-msgstr "Nic nie zaznaczono"
+msgstr "Nic nie wybrano"
 
 #: ../src/Gui/settings.glade.h:19
 msgid "Plugin Details"
@@ -385,7 +375,7 @@ msgstr "Wersja:"
 
 #: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
-msgstr "Strona internetowa:"
+msgstr "Strona WWW:"
 
 #: ../src/Gui/settings.glade.h:23
 msgid "gtk-add"
@@ -421,7 +411,7 @@ msgstr "Oczekujące zdarzenia: %i"
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr ""
-"Nie można utworzyć menu z opisu, okno wyskakujące nie będzie dostępne!\n"
+"Nie można utworzyć menu z opisu, okno wyskakujące nie będzie dostępne.\n"
 
 #: ../src/Applet/CCApplet.cpp:184
 msgid "Warning"
@@ -432,14 +422,13 @@ msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
-"Wielkość raportu przekroczyła dozwolony limit. Proszę sprawdzić wartość "
-"zmiennej MaxCrashReportsSize w abrt.conf"
+"Wielkość raportu przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
+"wartość zmiennej MaxCrashReportsSize w pliku abrt.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Pola login i hasło są puste. Sprawdź plik Bugzilla.conf"
+msgstr "Pola login i hasło są puste. Proszę sprawdzić plik Bugzilla.conf"
 
-# "Błąd został już zgłoszony" może również oznaczać "Komputer zgłosił już błąd". Lepiej unikać dwuznaczności.
 #: ../lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
 msgstr "Błąd został już wcześniej zgłoszony: "
@@ -463,7 +452,7 @@ msgstr "Logowanie do Bugzilli..."
 
 #: ../lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
-msgstr "Powiadamiaj mnie o zmianach i wstaw komentarz \"+1\"..."
+msgstr "Powiadamianie o zmianach i wstawienie komentarza \"+1\"..."
 
 #: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
@@ -474,9 +463,8 @@ msgid "Logging out..."
 msgstr "Wylogowywanie..."
 
 #: ../lib/Plugins/Kerneloops.cpp:37
-#, fuzzy
 msgid "Getting local universal unique identification"
-msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora..."
+msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora"
 
 #: ../lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
@@ -558,28 +546,3 @@ msgstr "wykonywanie sosreport: "
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "zakończono wykonywanie sosreport"
-
-#~ msgid "Applet is already running."
-#~ msgstr "Aplet jest już uruchomiony."
-
-#~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectCrashHandler"
-#~ msgstr ""
-#~ "To jest domyślny program do obsługi awarii, powinieneś zarejestrować "
-#~ "własny za pomocą ConnectCrashHandler"
-
-#~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectQuotaExceedHandler"
-#~ msgstr ""
-#~ "To jest domyślny program do obsługi przekroczonych limitów, powinieneś "
-#~ "zarejestrować własny za pomocą ConnectQuotaExceedHandler"
-
-#~ msgid "Out of memory"
-#~ msgstr "Brak pamięci"
-
-#~ msgid "Getting local/global universal unique identification..."
-#~ msgstr ""
-#~ "Uzyskiwanie lokalnego/globalnego uniwersalnego, unikalnego "
-#~ "identyfikatora..."
