@@ -336,6 +336,24 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1 ));
 
+    // Save comments and how to reproduciton
+    map_crash_report_t::const_iterator it_comment = pCrashReport.find(CD_COMMENT);
+    map_crash_report_t::const_iterator it_reproduce = pCrashReport.find(CD_REPRODUCE);
+    std::cout << "save reproduce " << std::endl << it_reproduce->second[CD_CONTENT] << std::endl;
+    std::string pDumpDir = getDebugDumpDir(UUID,UID);
+    CDebugDump dd;
+        dd.Open(pDumpDir);
+        if ( it_comment != pCrashReport.end() )
+        {
+            std::cout << "save comment " << std::endl << it_comment->second[CD_CONTENT] << std::endl;
+            dd.SaveText(FILENAME_COMMENTS, it_comment->second[CD_CONTENT]);
+        }
+        if ( it_reproduce != pCrashReport.end() )
+        {
+            std::cout << "save reproduce " << std::endl << it_reproduce->second[CD_CONTENT] << std::endl;
+            dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT]);
+        }
+        dd.Close();
     // analyzer with package name (CCpp:xrog-x11-app) has higher priority
     key = analyzer + ":" + packageName;
     map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
@@ -600,6 +618,17 @@ static mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
         return MW_OCCURED;
     }
     return res;
+}
+
+std::string getDebugDumpDir( const std::string& pUUID,
+                             const std::string& pUID)
+{
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    database_row_t row;
+    database->Connect();
+    row = database->GetUUIDData(pUUID, pUID);
+    database->DisConnect();
+    return row.m_sDebugDumpDir;
 }
 
 mw_result_t SaveDebugDump(const std::string& pDebugDumpDir)

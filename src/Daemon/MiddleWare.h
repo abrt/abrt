@@ -94,6 +94,15 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir);
 report_status_t Report(const map_crash_report_t& pCrashReport,
                        const std::string& pUID);
 /**
+ * Get debugdump direcotory. If debugdump is not found
+ * in database it will return empty string.
+ * @param pUUID A local UUID of a crash.
+ * @param pUID An UID of an user.
+ * @return A debugdump directory.
+ */
+std::string getDebugDumpDir( const std::string& pUUID,
+                             const std::string& pUID);
+/**
  * Deletes particular debugdump directory.
  * @param pDebugDumpDir A debugdump directory.
  */
