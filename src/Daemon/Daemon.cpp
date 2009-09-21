@@ -127,7 +127,7 @@ static bool dot_or_dotdot(const char *filename)
     return false;
 }
 
-static double GetDirSize(const std::string &pPath)
+static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL, const char *excluded = NULL)
 {
     DIR *dp = opendir(pPath.c_str());
     if (dp == NULL)
@@ -136,21 +136,38 @@ static double GetDirSize(const std::string &pPath)
     struct dirent *ep;
     struct stat stats;
     double size = 0;
+    double maxsz = 0;
     while ((ep = readdir(dp)) != NULL)
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
         std::string dname = pPath + "/" + ep->d_name;
-        if (lstat(dname.c_str(), &stats) == 0)
+        if (lstat(dname.c_str(), &stats) != 0)
+            continue;
+        if (S_ISDIR(stats.st_mode))
         {
-            if (S_ISDIR(stats.st_mode))
+            double sz = GetDirSize(dname);
+            size += sz;
+
+            if (worst_dir && strcmp(excluded, ep->d_name) != 0)
             {
-                size += GetDirSize(dname);
+                /* Calculate "weighted" size and age
+                /* w = sz_kbytes * age_mins */
+                sz /= 1024;
+                long age = (time(NULL) - stats.st_mtime) / 60;
+                if (age > 0)
+                    sz *= age;
+
+                if (sz > maxsz)
+                {
+                    maxsz = sz;
+                    *worst_dir = ep->d_name;
+                }
             }
-            else if (S_ISREG(stats.st_mode))
-            {
-                size += stats.st_size;
-            }
+        }
+        else if (S_ISREG(stats.st_mode))
+        {
+            size += stats.st_size;
         }
     }
     closedir(dp);
@@ -482,10 +499,10 @@ static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpoin
 }
 
 /* Inotify handler */
-/* 1024 simultaneous actions */
-#define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event)+FILENAME_MAX)*1024)
 static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
+    /* 128 simultaneous actions */
+#define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event) + FILENAME_MAX)*128)
     GIOError err;
     char *buf = new char[INOTIFY_BUFF_SIZE];
     gsize len;
@@ -513,18 +530,21 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
         if (!(event->mask & IN_ISDIR))
         {
             // Happens all the time during normal run
-            //VERB3 log("File '%s' creation detected, ignoring", name);
+            //VERB3 log("File '%s' creation detectenamed, ignoring", name);
             continue;
         }
 
         log("Directory '%s' creation detected", name);
-        if (GetDirSize(DEBUG_DUMPS_DIR) / (1024*1024) >= g_settings_nMaxCrashReportsSize)
-        {
-//TODO: delete oldest or biggest dir
-            log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, name);
+
+        std::string worst_dir;
+        while (g_settings_nMaxCrashReportsSize > 0
+         && GetDirSize(DEBUG_DUMPS_DIR, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
+         && worst_dir != ""
+        ) {
+            log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir.c_str());
             g_pCommLayer->QuotaExceed(_("Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
-            DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
-            continue;
+            DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + worst_dir);
+            worst_dir = "";
         }
 
         map_crash_info_t crashinfo;
