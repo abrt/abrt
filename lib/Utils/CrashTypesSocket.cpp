@@ -21,7 +21,6 @@
 
 #include "abrtlib.h"
 #include "CrashTypesSocket.h"
-#include <sstream>
 
 /**
  * A request GET_CRASH_INFOS has the following form:

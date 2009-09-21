@@ -103,17 +103,16 @@ bool LoadPluginSettings(const std::string& pPath, map_plugin_settings_t& pSettin
  */
 static bool SavePluginSettings(const std::string& pPath, const map_plugin_settings_t& pSettings)
 {
-    std::ofstream fOut;
-    fOut.open(pPath.c_str());
-    if (fOut.is_open())
+    FILE* fOut = fopen(pPath.c_str(), "w");
+    if (fOut)
     {
-        fOut << "# Settings were written by abrt." << std::endl;
-        map_plugin_settings_t::const_iterator it;
-        for (it = pSettings.begin(); it != pSettings.end(); it++)
+        fprintf(fOut, "# Settings were written by abrt\n");
+        map_plugin_settings_t::const_iterator it = pSettings.begin();
+        for (; it != pSettings.end(); it++)
         {
-            fOut << it->first << " = " << it->second << std::endl;
+            fprintf(fOut, "%s = %s\n", it->first.c_str(), it->second.c_str());
         }
-        fOut.close();
+        fclose(fOut);
         return true;
     }
     return false;

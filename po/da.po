@@ -1,67 +1,59 @@
-# translation of ja.po to Japanese
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# Danish translation of abrt
+# Copyright (C) 2009 abrt
+# This file is distributed under the same license as the abrt package.
+# Kris Thomsen <lakristho@gmail.com>, 2009.
 #
-# Kiyoto Hashida <khashida@redhat.com>, 2009.
-# Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: ja\n"
+"Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 21:59+0000\n"
-"PO-Revision-Date: 2009-09-19 09:20+0900\n"
-"Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
-"Language-Team: Japanese <jp@li.org>\n"
+"POT-Creation-Date: 2009-09-21 08:47+0000\n"
+"PO-Revision-Date: 2009-09-21 11:31+0200\n"
+"Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
+"Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n\n"
-"\n"
-"\n"
-"\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
-msgstr "別のクライアントが稼働していますので、それを呼び出しています。"
+msgstr "En anden klient kører allerede, prøver at vække den."
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
-"デーモンから予想外のデータを受け取りました（データベースは正常に更新されてい"
-"ますか？）。"
+msgstr "Modtog uventede data fra dæmon (er databasen opdateret rigtigt?)."
 
 #: ../src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
-msgstr "アナライザー plugin"
+msgstr "Analyseringsudvidelsesmoduler"
 
 #: ../src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
-msgstr "アクション plugin"
+msgstr "Handlingsudvidelsesmoduler"
 
 #: ../src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
-msgstr "レポーター plugin"
+msgstr "Rapporteringsudvidelsesmoduler"
 
 #: ../src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
-msgstr "データベース plugin"
+msgstr "Databaseudvidelsesmoduler"
 
 #: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
-msgstr "dbus に接続できません。"
+msgstr "Kan ikke forbinde til dbus"
 
 #: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
 msgid "Please check if abrt daemon is running."
-msgstr "abrt デーモンが稼働しているかどうかチェックして下さい。"
+msgstr "Kontrollér om abrt-dæmonen kører."
 
 #: ../src/Gui/CCDBusBackend.py:182
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
-"デーモンは有効な報告内容を返しませんでした。\n"
-"Debuginfo が無いですか？"
+"Dæmonen returnerede ikke gyldig rapportinformation\n"
+"Mangler fejlsøgningsinformation?"
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid " "
@@ -73,35 +65,35 @@ msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
-msgstr "<b>報告がありません!</b>"
+msgstr "<b>Ikke rapporteret!</b>"
 
 #: ../src/Gui/ccgui.glade.h:4
 msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">記述</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
 
 #: ../src/Gui/ccgui.glade.h:5
 msgid "About ABRT"
-msgstr "ABRT について"
+msgstr "Om ABRT"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Automatic Bug Reporting Tool"
-msgstr "自動バグ報告ツール（ABRT）"
+msgstr "Automatisk værktøj til fejlrapportering"
 
 #: ../src/Gui/ccgui.glade.h:7
 msgid "Delete"
-msgstr "削除"
+msgstr "Slet"
 
 #: ../src/Gui/ccgui.glade.h:8
 msgid "Please wait.."
-msgstr "お待ち下さい..."
+msgstr "Vent venligst.."
 
 #: ../src/Gui/ccgui.glade.h:9
 msgid "Plugins"
-msgstr "プラグイン"
+msgstr "Udvidelsesmoduler"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
-msgstr "報告"
+msgstr "Rapportér"
 
 #: ../src/Gui/ccgui.glade.h:11
 msgid ""
@@ -118,59 +110,59 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"Dette program er fri software. Du kan redistribuere og/eller modificere det "
+"under de betingelserne som er angivet i GNU General Public License, som er "
+"udgivet af Free Software Foundation. Enten version 2 af licensen eller "
+"(efter eget valg) enhver senere version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"Dette program distribueres i håb om at det vil vise sig nyttigt, men UDEN "
+"NOGEN FORM FOR GARANTI, uden selv de underforståede garantier omkring "
+"SALGBARHED eller EGNETHED TIL ET BESTEMT FORMÅL. Yderligere detaljer kan "
+"læses i GNU General Public License.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"Du bør have modtaget en kopi af GNU General Public License sammen med dette "
+"program. Hvis ikke, se <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "Working..."
-msgstr "作業中..."
+msgstr "Arbejder..."
 
 #: ../src/Gui/ccgui.glade.h:17
 msgid "_Edit"
-msgstr "編集（_E）"
+msgstr "_Redigér"
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "_File"
-msgstr "ファイル（_F）"
+msgstr "_Fil"
 
 #: ../src/Gui/ccgui.glade.h:19
 msgid "_Help"
-msgstr "ヘルプ（_H）"
+msgstr "_Hjælp"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:79
 msgid "Icon"
-msgstr "アイコン"
+msgstr "Ikon"
 
 #: ../src/Gui/CCMainWindow.py:87
 msgid "Package"
-msgstr "パッケージ"
+msgstr "Pakke"
 
 #: ../src/Gui/CCMainWindow.py:88
 msgid "Application"
-msgstr "アプリケーション"
+msgstr "Program"
 
 #: ../src/Gui/CCMainWindow.py:89
 msgid "Date"
-msgstr "期日"
+msgstr "Dato"
 
 #: ../src/Gui/CCMainWindow.py:90
 msgid "Crash Rate"
-msgstr "クラッシュレート"
+msgstr "Nedbrudsrate"
 
 #: ../src/Gui/CCMainWindow.py:92
 msgid "User"
-msgstr "ユーザー"
+msgstr "Bruger"
 
 #: ../src/Gui/CCMainWindow.py:174
 #, python-format
@@ -178,7 +170,7 @@ msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
-"現在のタスクを終了できません! \n"
+"Kunne ikke afslutte nuværende handling!\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:191
@@ -187,25 +179,27 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"dumplist のロード中にエラーが発生。abrt デーモンが稼働しているかチェックして"
-"下さいn %s"
+"Fejl opstod under indlæsning af dumplisten, kontrollér om abrt-dæmonen "
+"kører\n"
+" %s"
 
 #: ../src/Gui/CCMainWindow.py:201
 #, python-format
 msgid "Can't get username for uid %s"
-msgstr "uid %s 用のユーザー名を取得できません"
+msgstr "Kan ikke hente brugernavn for uid %s"
 
 #: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>このクラッシュは報告済みです。報告は以下で見ることができます:</b>\n"
+msgstr ""
+"<b>Dette nedbrud er blevet rapporteret, du kan finde rapporten på: </b>\n"
 
 #: ../src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"報告を取得できません\n"
-"Debuginfo が無いですか ?"
+"Kunne ikke hente rapport!\n"
+"Mangler fejlsøgningsinformation?"
 
 #: ../src/Gui/CCMainWindow.py:300
 #, python-format
@@ -213,13 +207,13 @@ msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
-"報告が失敗しました!\n"
+"Rapportering fejlede!\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
-msgstr "報告の取得中にエラーです: %s"
+msgstr "Fejl under hentning af rapporten: %s"
 
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
@@ -228,16 +222,18 @@ msgid ""
 "information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>警告</b>、機密情報を含む可能性のあるデータを送信 しようとしています。\n"
-"本当に<b>%s</b>を送信したいですか ?\n"
+"<b>ADVARSEL</b>, du er i gang med at sende data som kan indeholde følsom "
+"information!\n"
+"Vil du virkelig sende <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "この問題の再現手順、または実行したことの簡単な説明..."
+msgstr ""
+"Kort beskrivelse om hvordan fejlen kan gentages eller hvad du gjorde..."
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
-msgstr "報告完了"
+msgstr "Rapportering færdiggjort"
 
 #: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
 msgid "gtk-ok"
@@ -245,29 +241,29 @@ msgstr "gtk-ok"
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "UI 説明の中で PluginDialog ウィジェットを見つけることが出来ません!"
+msgstr "Kan ikke finde PluginDialog-widget i UI-beskrivelse!"
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
-msgstr "plugin の UI がありません %s"
+msgstr "Ingen UI for udvidelsesmodul %s"
 
 #: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr "combo box が実装されていません"
+msgstr "comboboks er ikke implementeret"
 
 #: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
-msgstr "表示するデータはありません!"
+msgstr "Intet at hydrere!"
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
-msgstr "コメント"
+msgstr "Kommentér"
 
 #: ../src/Gui/report.glade.h:3
 msgid "Send"
-msgstr "送信"
+msgstr "Send"
 
 #: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
 msgid "gtk-cancel"
@@ -275,59 +271,59 @@ msgstr "gtk-cancel"
 
 #: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
 msgid "<b>Select plugin</b>"
-msgstr "<b>plugin を選択</b>"
+msgstr "<b>Vælg udvidelsesmodul</b>"
 
 #: ../src/Gui/SettingsDialog.py:38
 msgid "<b>Select database backend</b>"
-msgstr "<b>データベースバックエンドを選択</b>"
+msgstr "<b>Vælg databasebackend</b>"
 
 #: ../src/Gui/SettingsDialog.py:170
 msgid "Remove this job"
-msgstr "このジョブを取り除く"
+msgstr "Fjern dette job"
 
 #: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
-msgstr "このアクションを取り除く"
+msgstr "Fjern denne handling"
 
 #: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr "<b>アナライザー plugin</b>"
+msgstr "<b>Analyseringsudvidelsesmodul</b>"
 
 #: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
-msgstr "<b>関連したアクション</b>"
+msgstr "<b>Tilknyttet handling</b>"
 
 #: ../src/Gui/settings.glade.h:3
 msgid "<b>Plugin</b>"
-msgstr "<b>Plugin</b>"
+msgstr "<b>Udvidelsesmodul</b>"
 
 #: ../src/Gui/settings.glade.h:4
 msgid "<b>Time (or period)</b>"
-msgstr "<b>時間 (又は、期間)</b>"
+msgstr "<b>Tid (eller periode)</b>"
 
 #: ../src/Gui/settings.glade.h:5
 msgid "Analyzers, Actions, Reporters"
-msgstr "アナライザ、アクション、レポーター"
+msgstr "Analyser, handlinger og rapporter"
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Author:"
-msgstr "著者:"
+msgstr "Forfatter:"
 
 #: ../src/Gui/settings.glade.h:7
 msgid "Blacklisted packages: "
-msgstr "ブラックリスト内のパッケージ:"
+msgstr "Sortlistede pakker: "
 
 #: ../src/Gui/settings.glade.h:8
 msgid "C_onfigure plugin"
-msgstr "plugin を設定（_C）"
+msgstr "K_onfigurér udvidelsesmodul"
 
 #: ../src/Gui/settings.glade.h:9
 msgid "Check package GPG signature"
-msgstr "パッケージの GPG 署名をチェック"
+msgstr "Kontrollér GPG-signatur for pakke"
 
 #: ../src/Gui/settings.glade.h:10
 msgid "Common"
-msgstr "共通"
+msgstr "Almindelig"
 
 #: ../src/Gui/settings.glade.h:11
 msgid "Cron"
@@ -335,47 +331,47 @@ msgstr "Cron"
 
 #: ../src/Gui/settings.glade.h:12
 msgid "Database backend: "
-msgstr "データベースバックエンド:"
+msgstr "Databasebackend: "
 
 #: ../src/Gui/settings.glade.h:13
 msgid "Edit blacklisted packages"
-msgstr "ブラックリスト内のパッケージを編集"
+msgstr "Redigér sortlistede pakker"
 
 #: ../src/Gui/settings.glade.h:14
 msgid "GPG Keys"
-msgstr "GPG キー"
+msgstr "GPG-nøgler"
 
 #: ../src/Gui/settings.glade.h:15
 msgid "GPG keys: "
-msgstr "GPG キー: "
+msgstr "GPG-nøgler: "
 
 #: ../src/Gui/settings.glade.h:16
 msgid "Global Settings"
-msgstr "グローバル設定"
+msgstr "Globale indstillinger"
 
 #: ../src/Gui/settings.glade.h:17
 msgid "Max coredump storage size(MB):"
-msgstr "コアダンプ格納の最大サイズ (MB):"
+msgstr "Maks. kernedump-opbevaringsstørrelse (MB):"
 
 #: ../src/Gui/settings.glade.h:18
 msgid "Nothing selected"
-msgstr "選択されていません"
+msgstr "Intet valgt"
 
 #: ../src/Gui/settings.glade.h:19
 msgid "Plugin Details"
-msgstr "Plugin の詳細"
+msgstr "Detaljer om udvidelsesmodul"
 
 #: ../src/Gui/settings.glade.h:20
 msgid "Settings"
-msgstr "設定"
+msgstr "Indstillinger"
 
 #: ../src/Gui/settings.glade.h:21
 msgid "Version:"
-msgstr "バージョン:"
+msgstr "Version:"
 
 #: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
-msgstr "ウェブサイト:"
+msgstr "Websted:"
 
 #: ../src/Gui/settings.glade.h:23
 msgid "gtk-add"
@@ -392,157 +388,202 @@ msgstr "gtk-remove"
 #: ../src/Applet/Applet.cpp:76
 #, c-format
 msgid "A crash in package %s has been detected"
-msgstr "パッケージ %s のクラッシュが検出されました"
+msgstr "Der blev fundet et nedbrud i pakke %s"
 
 #: ../src/Applet/Applet.cpp:145
 msgid "ABRT service has been started"
-msgstr "ABRT サービスは開始しています"
+msgstr "ABRT-tjenesten er blevet startet"
 
 #: ../src/Applet/Applet.cpp:147 ../src/Applet/Applet.cpp:261
 msgid "ABRT service is not running"
-msgstr "ABRT サービスは稼働していません。"
+msgstr "ABRT-service kører ikke"
 
 #: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
 #, c-format
 msgid "Pending events: %i"
-msgstr "保留中のイベント: %i"
+msgstr "Ventende handlinger: %i"
 
 #: ../src/Applet/CCApplet.cpp:145
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "説明からメニューを作成できません。ポップアップは利用できないでしょう !\n"
+msgstr ""
+"Kan ikke oprette menu ud fra beskrivelsen, pop op vil ikke være "
+"tilgængelig!\n"
 
 #: ../src/Applet/CCApplet.cpp:184
 msgid "Warning"
-msgstr "警告"
+msgstr "Advarsel"
 
 #: ../src/Daemon/Daemon.cpp:525
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
-"報告のサイズが割り当て超過です。abrt.conf の中で MaxCrashReportsSize の値を "
-"チェックして下さい。"
+"Rapportstørrelse overskred den tilladte størrelse. Kontrollér systemets MaxCrashReportsSize-værdien "
+"i abrt.conf."
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "ログインとパスワードが空です。Bugzilla.conf を確認して下さい"
+msgstr "Tom logind og adgangskode. Kontrollér Bugzilla.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
-msgstr "バグは既に報告済みです:"
+msgstr "Fejl er allerede rapporteret: "
 
 #: ../lib/Plugins/Bugzilla.cpp:282
 #, c-format
 msgid "Binary file %s will not be reported."
-msgstr "バイナリファイル %s は報告されません。"
+msgstr "Binærfil %s vil ikke blive rapporteret."
 
 #: ../lib/Plugins/Bugzilla.cpp:352
 msgid "New bug id: "
-msgstr "新しいバグ id:"
+msgstr "Ny bug-id: "
 
 #: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
-msgstr "重複をチェックしています..."
+msgstr "Kontrollerer for dubletter..."
 
 #: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
-msgstr "bugzilla にログインしています..."
+msgstr "Logger ind på bugzilla..."
 
 #: ../lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
-msgstr "CC を確認して、コメント +1 を追加します..."
+msgstr "Kontrollér CC og tilføj kommentar +1..."
 
 #: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
-msgstr "新しいバグを作成中..."
+msgstr "Opretter ny fejl..."
 
 #: ../lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
-msgstr "ログアウトしています..."
+msgstr "Logger ud..."
 
 #: ../lib/Plugins/Kerneloops.cpp:37
 msgid "Getting local universal unique identification"
-msgstr "ローカルで普遍的な独特の識別を取得しています"
+msgstr "Henter lokal, universal, unik identifikation"
 
 #: ../lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
-msgstr "バックトレース取得中..."
+msgstr "Henter backtrace..."
 
 #: ../lib/Plugins/CCpp.cpp:384
 msgid "Searching for debug-info packages..."
-msgstr "debug-info パッケージを探しています..."
+msgstr "Søger efter pakker med fejlsøgningsinformation..."
 
 #: ../lib/Plugins/CCpp.cpp:418
 msgid "Downloading and installing debug-info packages..."
-msgstr "debug-info パッケージをダウンロードしてインストール中..."
+msgstr "Henter og installerer pakker med fejlsøgningsinformation..."
 
 #: ../lib/Plugins/CCpp.cpp:480
 msgid "Getting local universal unique identification..."
-msgstr "ローカルで普遍的な独特の識別を取得しています..."
+msgstr "Henter lokal, universal, unik identifikation..."
 
 #: ../lib/Plugins/CCpp.cpp:499
 msgid "Getting global universal unique identification..."
-msgstr "グローバルで普遍的な独特の識別を取得しています..."
+msgstr "Henter global, universal, unik identifikation..."
 
 #: ../lib/Plugins/CCpp.cpp:551
 msgid "Starting report creation..."
-msgstr "報告作成を開始しています..."
+msgstr "Starter rapportoprettelse..."
 
 #: ../lib/Plugins/CCpp.cpp:580
 msgid "Skipping debuginfo installation"
-msgstr "debuginfo のインストールをスキップします"
+msgstr "Springer over fejlsøgningsinfo-installation"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
-msgstr "報告の作成と提出をしています..."
+msgstr "Opretter og indsender en rapport..."
 
 #: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
-msgstr "報告を作成しています..."
+msgstr "Opretter en rapport..."
 
 #: ../lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
-msgstr "RunApp plugin を実行中..."
+msgstr "Udfører RunApp-udvidelsesmodul..."
 
 #: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
 msgid "FileTransfer: URL not specified"
-msgstr "ファイル転送: URL が示されていません"
+msgstr "Filoverførsel: URL ikke angivet"
 
 #: ../lib/Plugins/FileTransfer.cpp:68
 #, c-format
 msgid "Sending archive %s via %s"
-msgstr "アーカイブ %s を %s 経由で送信中"
+msgstr "Sender arkiv %s via %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:120
 msgid "Creating an archive..."
-msgstr "アーカイブを作成中..."
+msgstr "Opretter et arkiv..."
 
 #: ../lib/Plugins/FileTransfer.cpp:175
 msgid "File Transfer: Creating a report..."
-msgstr "ファイル転送: 報告を作成中..."
+msgstr "Filoverførsel: Opretter en rapport..."
 
 #: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): アーカイブを作成して送信できません:"
+msgstr "CFileTransfer::Run(): Kan ikke oprette og sende et arkiv: "
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
-msgstr "カーネル oops クラッシュ報告を作成中..."
+msgstr "Opretter rapporter om kerne-oops-nedbrud..."
 
 #: ../lib/Plugins/Mailx.cpp:109
 msgid "Sending an email..."
-msgstr "電子メールを送信中..."
+msgstr "Sender en e-post..."
 
 #: ../lib/Plugins/SOSreport.cpp:113
 msgid "Executing SOSreport plugin..."
-msgstr "SOSreport plugin の実行中..."
+msgstr "Udfører SOSreport-udvidelsesmodul..."
 
 #: ../lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
-msgstr "sosreport を実行しています:"
+msgstr "kører sosreport: "
 
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
-msgstr "sosreport の実行完了"
+msgstr "færdig med at køre sosreport"
 
+#~ msgid "Can't load gui description for SettingsDialog!"
+#~ msgstr "Kan ikke indlæse gui-beskrivelse for SettingsDialog!"
+
+#~ msgid "Name"
+#~ msgstr "Navn"
+
+#~ msgid "Enabled"
+#~ msgstr "Aktiveret"
+
+#~ msgid "Can't get plugin description"
+#~ msgstr "Kan ikke hente beskrivelse af udvidelsesmodul"
+
+#~ msgid ""
+#~ "Error while opening plugin settings UI: \n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Fejl under åbning af indstillingsbrugerfladen for udvidelser: \n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Can't save plugin settings:\n"
+#~ " %s"
+#~ msgstr ""
+#~ "Kan ikke gemme indstillinger for udvidelsesmoduler:\n"
+#~ " %s"
+
+#~ msgid "unknown response from settings dialog"
+#~ msgstr "ukendt svar fra indstillingsdialog"
+
+#~ msgid "Applet is already running."
+#~ msgstr "Applet kører allerede."
+
+#~ msgid ""
+#~ "This is default handler, you should register your own with "
+#~ "ConnectCrashHandler"
+#~ msgstr ""
+#~ "Dette er standardhåndteringen, du burde registrere din egen med "
+#~ "ConnectCrashHandler"
+
+#~ msgid "Out of memory"
+#~ msgstr "Løbet tør for hukommelse"

@@ -11,7 +11,6 @@ URL: https://fedorahosted.org/abrt/
 Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
 Source1: abrt.init
 BuildRequires: dbus-devel
-BuildRequires: dbus-c++-devel
 BuildRequires: gtk2-devel
 BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6

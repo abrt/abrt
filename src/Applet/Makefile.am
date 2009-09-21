@@ -2,8 +2,7 @@ bin_PROGRAMS = abrt-applet
 
 abrt_applet_SOURCES = \
     Applet.cpp \
-    CCApplet.h CCApplet.cpp \
-    DBusClientProxy.h DBusClientProxy.cpp
+    CCApplet.h CCApplet.cpp
 abrt_applet_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \
@@ -17,15 +16,15 @@ abrt_applet_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GTK_CFLAGS) \
-    $(DBUSCPP_CFLAGS) \
+    $(DBUS_CFLAGS) \
     -D_GNU_SOURCE
 #    $(LIBNOTIFY_CFLAGS)
-#    $(DBUS_CFLAGS)
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
+    ../../lib/Utils/libABRTUtils.la \
     -lglib-2.0 \
     -lgthread-2.0 \
-    $(DBUSCPP_LIBS) \
+    $(DBUS_LIBS) \
     $(LIBNOTIFY_LIBS)
 #    ../../lib/Utils/libABRTUtils.la
 #    $(DL_LIBS)

@@ -23,7 +23,6 @@
 #include <sstream>
 #include <fstream>
 #include <curl/curl.h>
-
 #include "abrtlib.h"
 #include "FileTransfer.h"
 #include "DebugDump.h"

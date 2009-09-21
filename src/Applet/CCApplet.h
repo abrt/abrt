@@ -23,13 +23,9 @@
 #include <gtk/gtk.h>
 #include <map>
 #include <string>
-#include <DBusClientProxy.h>
 #include <libnotify/notify.h>
 
 class CApplet
-: public CDBusClient_proxy,
-  public DBus::IntrospectableProxy,
-  public DBus::ObjectProxy
 {
     private:
         static const gchar *menu_xml;
@@ -44,11 +40,10 @@ class CApplet
 
         NotifyNotification *m_pNotification;
         std::map<int, std::string> m_mapEvents;
-        DaemonWatcher *m_pDaemonWatcher;
         bool m_bDaemonRunning;
-        DBus::Connection *m_pSessionDBus;
+
     public:
-        CApplet(DBus::Connection &system, DBus::Connection &session, const char *path, const char *name);
+        CApplet();
         ~CApplet();
         void ShowIcon();
         void HideIcon();
@@ -64,9 +59,6 @@ class CApplet
         // map::
         int AddEvent(int pUUID, const std::string& pProgname);
         int RemoveEvent(int pUUID);
-        void ConnectCrashHandler(void (*pCrashHandler)(const char *progname));
-        void ConnectQuotaExceedHandler(void (*pQuotaExeedHandler)(const char *str));
-        static void DaemonStateChange_cb(bool running, void* data);
 
     protected:
         //@@TODO applet menus
@@ -77,14 +69,6 @@ class CApplet
                             gpointer       user_data);
         static void onHide_cb(GtkMenuItem *menuitem, gpointer applet);
         static void onAbout_cb(GtkMenuItem *menuitem, gpointer applet);
-    private:
-        /* dbus stuff */
-        void Crash(const std::string& progname, const std::string& uid);
-        void QuotaExceed(const char* str);
-
-        /* the real signal handler called to handle the signal */
-        void (*m_pCrashHandler)(const char *progname);
-        void (*m_pQuotaExceedHandler)(const char *str);
 };
 
-#endif /*CC_APPLET_H_*/
+#endif

@@ -1,67 +1,61 @@
-# translation of ja.po to Japanese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
+# This file is distributed under the same license as the abrt package.
 #
-# Kiyoto Hashida <khashida@redhat.com>, 2009.
-# Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
+# Ondrej Šulek <feonsu@gmail.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: ja\n"
+"Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 21:59+0000\n"
-"PO-Revision-Date: 2009-09-19 09:20+0900\n"
-"Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
-"Language-Team: Japanese <jp@li.org>\n"
+"POT-Creation-Date: 2009-09-20 11:04+0000\n"
+"PO-Revision-Date: 2009-09-20 19:01+0200\n"
+"Last-Translator: Ondrej Šulek <feonsu@gmail.com>\n"
+"Language-Team: Slovak <fedora-trans-sk@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n\n"
-"\n"
-"\n"
-"\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
-msgstr "別のクライアントが稼働していますので、それを呼び出しています。"
+msgstr "Iný klient už beží, snažím sa ho prebudiť."
 
 #: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
-"デーモンから予想外のデータを受け取りました（データベースは正常に更新されてい"
-"ますか？）。"
+"Boli získané neočakávané dáta od démona (je správne aktualizovaná databáza?)."
 
 #: ../src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
-msgstr "アナライザー plugin"
+msgstr "Analyzačné moduly"
 
 #: ../src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
-msgstr "アクション plugin"
+msgstr "Akčné moduly"
 
 #: ../src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
-msgstr "レポーター plugin"
+msgstr "Reportovacie moduly"
 
 #: ../src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
-msgstr "データベース plugin"
+msgstr "Databázové moduly"
 
 #: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
-msgstr "dbus に接続できません。"
+msgstr "Nedá sa pripojiť k dbus"
 
 #: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
 msgid "Please check if abrt daemon is running."
-msgstr "abrt デーモンが稼働しているかどうかチェックして下さい。"
+msgstr "Prosím skontrolujte, či démon abrt beží."
 
 #: ../src/Gui/CCDBusBackend.py:182
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
-"デーモンは有効な報告内容を返しませんでした。\n"
-"Debuginfo が無いですか？"
+"Démon vrátil neplatné informácie o správe\n"
+"Chýba debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid " "
@@ -73,35 +67,35 @@ msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
-msgstr "<b>報告がありません!</b>"
+msgstr "<b>Nenahlásené!</b>"
 
 #: ../src/Gui/ccgui.glade.h:4
 msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">記述</span>"
+msgstr "<span color=\"white\">Popis</span>"
 
 #: ../src/Gui/ccgui.glade.h:5
 msgid "About ABRT"
-msgstr "ABRT について"
+msgstr "O programe ABRT"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Automatic Bug Reporting Tool"
-msgstr "自動バグ報告ツール（ABRT）"
+msgstr "Nástroj na automatické hlásenie chýb"
 
 #: ../src/Gui/ccgui.glade.h:7
 msgid "Delete"
-msgstr "削除"
+msgstr "Odstrániť"
 
 #: ../src/Gui/ccgui.glade.h:8
 msgid "Please wait.."
-msgstr "お待ち下さい..."
+msgstr "Prosím čakajte..."
 
 #: ../src/Gui/ccgui.glade.h:9
 msgid "Plugins"
-msgstr "プラグイン"
+msgstr "Moduly"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
 msgid "Report"
-msgstr "報告"
+msgstr "Správa"
 
 #: ../src/Gui/ccgui.glade.h:11
 msgid ""
@@ -118,59 +112,58 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"Toto je slobodný software; môžete ho šíriť a/alebo upravovať podľa "
+"ustanovení GNU General Public License vydaných Free Software Foundation; buď "
+"verzia 2 tejto licencie alebo (podľa vášho uváženia) ktorákoľvek neskoršia "
+"verzia.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"Tento program je šírený v nádeji, že bude užitočný, avšak BEZ AKEJKOĽVEK "
+"ZÁRUKY; neposkytujú sa ani odvodené záruky PREDAJNOSTI alebo VHODNOSTI PRE "
+"URČITÝ ÚČEL. Ďalšie podrobnosti môžete nájsť v GNU General Public License.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"Kópiu GNU General Public License by ste mali obdržať spolu s týmto "
+"programom. Ak sa tak nestalo navštívte <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "Working..."
-msgstr "作業中..."
+msgstr "Pracujem..."
 
 #: ../src/Gui/ccgui.glade.h:17
 msgid "_Edit"
-msgstr "編集（_E）"
+msgstr "_Upraviť"
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "_File"
-msgstr "ファイル（_F）"
+msgstr "_Súbor"
 
 #: ../src/Gui/ccgui.glade.h:19
 msgid "_Help"
-msgstr "ヘルプ（_H）"
+msgstr "_Pomocník"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:79
 msgid "Icon"
-msgstr "アイコン"
+msgstr "Ikona"
 
 #: ../src/Gui/CCMainWindow.py:87
 msgid "Package"
-msgstr "パッケージ"
+msgstr "Balíček"
 
 #: ../src/Gui/CCMainWindow.py:88
 msgid "Application"
-msgstr "アプリケーション"
+msgstr "Aplikácia"
 
 #: ../src/Gui/CCMainWindow.py:89
 msgid "Date"
-msgstr "期日"
+msgstr "Dátum"
 
 #: ../src/Gui/CCMainWindow.py:90
 msgid "Crash Rate"
-msgstr "クラッシュレート"
+msgstr "Počet pádov"
 
 #: ../src/Gui/CCMainWindow.py:92
 msgid "User"
-msgstr "ユーザー"
+msgstr "Používateľ"
 
 #: ../src/Gui/CCMainWindow.py:174
 #, python-format
@@ -178,7 +171,7 @@ msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
-"現在のタスクを終了できません! \n"
+"Nepodarilo sa dokončiť aktuálnu úlohu!\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:191
@@ -187,25 +180,25 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"dumplist のロード中にエラーが発生。abrt デーモンが稼働しているかチェックして"
-"下さいn %s"
+"Chyba pri načítavaní dumplistu, prosím skontrolujte, či démon abrt beží\n"
+" %s"
 
 #: ../src/Gui/CCMainWindow.py:201
 #, python-format
 msgid "Can't get username for uid %s"
-msgstr "uid %s 用のユーザー名を取得できません"
+msgstr "Nie je možné získať používateľské meno z uid %s"
 
 #: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>このクラッシュは報告済みです。報告は以下で見ることができます:</b>\n"
+msgstr "<b>Tento pád bol už nahlásený, správy môžete nájsť na:</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"報告を取得できません\n"
-"Debuginfo が無いですか ?"
+"Nepodarilo sa získať správu!\n"
+"Chýba debuginfo?"
 
 #: ../src/Gui/CCMainWindow.py:300
 #, python-format
@@ -213,13 +206,13 @@ msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
-"報告が失敗しました!\n"
+"Nahlásenie zlyhalo!\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
-msgstr "報告の取得中にエラーです: %s"
+msgstr "Chyba pri získavaní správy: %s"
 
 #: ../src/Gui/CCReporterDialog.py:98
 #, python-format
@@ -228,16 +221,19 @@ msgid ""
 "information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>警告</b>、機密情報を含む可能性のあるデータを送信 しようとしています。\n"
-"本当に<b>%s</b>を送信したいですか ?\n"
+"<b>VAROVANIE</b>, snažíte sa odoslať dáta, ktoré môžu obsahovať citlivé "
+"informácie.\n"
+"Naozaj ich chcete odoslať <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "この問題の再現手順、または実行したことの簡単な説明..."
+msgstr ""
+"Stručne opíšte, ako zopakovať túto chybu alebo čo ste urobili (v "
+"angličtine)..."
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
-msgstr "報告完了"
+msgstr "Nahlásenie hotové"
 
 #: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
 msgid "gtk-ok"
@@ -245,29 +241,29 @@ msgstr "gtk-ok"
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "UI 説明の中で PluginDialog ウィジェットを見つけることが出来ません!"
+msgstr "Prvok PluginDialog nie je možné nájsť v popise UI!"
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
-msgstr "plugin の UI がありません %s"
+msgstr "Modul %s nemá žiadne UI"
 
 #: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
-msgstr "combo box が実装されていません"
+msgstr "combo box nie je implementovaný"
 
 #: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
-msgstr "表示するデータはありません!"
+msgstr "Žiadne dáta na zobrazenie!"
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
-msgstr "コメント"
+msgstr "Komentár"
 
 #: ../src/Gui/report.glade.h:3
 msgid "Send"
-msgstr "送信"
+msgstr "Odoslať"
 
 #: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
 msgid "gtk-cancel"
@@ -275,59 +271,59 @@ msgstr "gtk-cancel"
 
 #: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
 msgid "<b>Select plugin</b>"
-msgstr "<b>plugin を選択</b>"
+msgstr "<b>Výber modulu</b>"
 
 #: ../src/Gui/SettingsDialog.py:38
 msgid "<b>Select database backend</b>"
-msgstr "<b>データベースバックエンドを選択</b>"
+msgstr "<b>Výber databázového backendu</b>"
 
 #: ../src/Gui/SettingsDialog.py:170
 msgid "Remove this job"
-msgstr "このジョブを取り除く"
+msgstr "Odstrániť túto úlohu"
 
 #: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
-msgstr "このアクションを取り除く"
+msgstr "Odstrániť túto akciu"
 
 #: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr "<b>アナライザー plugin</b>"
+msgstr "<b>Analyzačné moduly</b>"
 
 #: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
-msgstr "<b>関連したアクション</b>"
+msgstr "<b>Priradená akcia</b>"
 
 #: ../src/Gui/settings.glade.h:3
 msgid "<b>Plugin</b>"
-msgstr "<b>Plugin</b>"
+msgstr "<b>Modul</b>"
 
 #: ../src/Gui/settings.glade.h:4
 msgid "<b>Time (or period)</b>"
-msgstr "<b>時間 (又は、期間)</b>"
+msgstr "<b>Čas (alebo doba)</b>"
 
 #: ../src/Gui/settings.glade.h:5
 msgid "Analyzers, Actions, Reporters"
-msgstr "アナライザ、アクション、レポーター"
+msgstr "Analyzátory, akcie, reportéri"
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Author:"
-msgstr "著者:"
+msgstr "Autor:"
 
 #: ../src/Gui/settings.glade.h:7
 msgid "Blacklisted packages: "
-msgstr "ブラックリスト内のパッケージ:"
+msgstr "Balíčky na čiernej listine: "
 
 #: ../src/Gui/settings.glade.h:8
 msgid "C_onfigure plugin"
-msgstr "plugin を設定（_C）"
+msgstr "_Nastaviť modul"
 
 #: ../src/Gui/settings.glade.h:9
 msgid "Check package GPG signature"
-msgstr "パッケージの GPG 署名をチェック"
+msgstr "Skontrolovať GPG podpis balíčka"
 
 #: ../src/Gui/settings.glade.h:10
 msgid "Common"
-msgstr "共通"
+msgstr "Všeobecné"
 
 #: ../src/Gui/settings.glade.h:11
 msgid "Cron"
@@ -335,47 +331,47 @@ msgstr "Cron"
 
 #: ../src/Gui/settings.glade.h:12
 msgid "Database backend: "
-msgstr "データベースバックエンド:"
+msgstr "Databázový backend:"
 
 #: ../src/Gui/settings.glade.h:13
 msgid "Edit blacklisted packages"
-msgstr "ブラックリスト内のパッケージを編集"
+msgstr "Upraviť balíčky na čiernej listine"
 
 #: ../src/Gui/settings.glade.h:14
 msgid "GPG Keys"
-msgstr "GPG キー"
+msgstr "GPG kľúče"
 
 #: ../src/Gui/settings.glade.h:15
 msgid "GPG keys: "
-msgstr "GPG キー: "
+msgstr "GPG kľúče: "
 
 #: ../src/Gui/settings.glade.h:16
 msgid "Global Settings"
-msgstr "グローバル設定"
+msgstr "Globálne nastavenia"
 
 #: ../src/Gui/settings.glade.h:17
 msgid "Max coredump storage size(MB):"
-msgstr "コアダンプ格納の最大サイズ (MB):"
+msgstr "Maximálna veľkosť coredump (MB):"
 
 #: ../src/Gui/settings.glade.h:18
 msgid "Nothing selected"
-msgstr "選択されていません"
+msgstr "Nič nevybrané"
 
 #: ../src/Gui/settings.glade.h:19
 msgid "Plugin Details"
-msgstr "Plugin の詳細"
+msgstr "Podrobnosti o module"
 
 #: ../src/Gui/settings.glade.h:20
 msgid "Settings"
-msgstr "設定"
+msgstr "Nastavenie"
 
 #: ../src/Gui/settings.glade.h:21
 msgid "Version:"
-msgstr "バージョン:"
+msgstr "Verzia:"
 
 #: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
-msgstr "ウェブサイト:"
+msgstr "Web stránka:"
 
 #: ../src/Gui/settings.glade.h:23
 msgid "gtk-add"
@@ -389,160 +385,208 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:76
-#, c-format
+#: ../src/Applet/Applet.cpp:76, c-format
 msgid "A crash in package %s has been detected"
-msgstr "パッケージ %s のクラッシュが検出されました"
+msgstr "Bol zistený pád v balíčku %s"
 
 #: ../src/Applet/Applet.cpp:145
 msgid "ABRT service has been started"
-msgstr "ABRT サービスは開始しています"
+msgstr "Služba ABRT bola spustená"
 
 #: ../src/Applet/Applet.cpp:147 ../src/Applet/Applet.cpp:261
 msgid "ABRT service is not running"
-msgstr "ABRT サービスは稼働していません。"
+msgstr "Služba ABRT nebeží"
 
 #: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
 #, c-format
 msgid "Pending events: %i"
-msgstr "保留中のイベント: %i"
+msgstr "Čakajúce udalosti: %i"
 
 #: ../src/Applet/CCApplet.cpp:145
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "説明からメニューを作成できません。ポップアップは利用できないでしょう !\n"
+msgstr ""
+"Nie je možné vytvoriť menu z popisu, vyskakovacie okno nebude k dispozícii!\n"
 
 #: ../src/Applet/CCApplet.cpp:184
 msgid "Warning"
-msgstr "警告"
+msgstr "Upozornenie"
 
 #: ../src/Daemon/Daemon.cpp:525
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
-"報告のサイズが割り当て超過です。abrt.conf の中で MaxCrashReportsSize の値を "
-"チェックして下さい。"
+"Veľkosť správy prekročila kvótu. Prosím skontrolujte systémovú hodnotu "
+"MaxCrashReportsSize v abrt.conf."
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "ログインとパスワードが空です。Bugzilla.conf を確認して下さい"
+msgstr "Login a heslo sú prázdne. Prosím skontrolujte Bugzilla.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
-msgstr "バグは既に報告済みです:"
+msgstr "Táto chyba je už nahlásená: "
 
 #: ../lib/Plugins/Bugzilla.cpp:282
 #, c-format
 msgid "Binary file %s will not be reported."
-msgstr "バイナリファイル %s は報告されません。"
+msgstr "Binárny súbor %s nebude nahlásený."
 
 #: ../lib/Plugins/Bugzilla.cpp:352
 msgid "New bug id: "
-msgstr "新しいバグ id:"
+msgstr "ID novej chyby: "
 
 #: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
-msgstr "重複をチェックしています..."
+msgstr "Kontrolovanie duplikátov..."
 
 #: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
-msgstr "bugzilla にログインしています..."
+msgstr "Prihlasovanie do bugzilly..."
 
 #: ../lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
-msgstr "CC を確認して、コメント +1 を追加します..."
+msgstr "Skontrolujte zoznam CC a pridajte komentár +1..."
 
 #: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
-msgstr "新しいバグを作成中..."
+msgstr "Vytváranie novej správy o chybe..."
 
 #: ../lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
-msgstr "ログアウトしています..."
+msgstr "Odhlasovanie..."
 
 #: ../lib/Plugins/Kerneloops.cpp:37
 msgid "Getting local universal unique identification"
-msgstr "ローカルで普遍的な独特の識別を取得しています"
+msgstr "Získavanie lokálneho univerzálneho unikátneho identifikátora"
 
 #: ../lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
-msgstr "バックトレース取得中..."
+msgstr "Získavanie backtrace..."
 
 #: ../lib/Plugins/CCpp.cpp:384
 msgid "Searching for debug-info packages..."
-msgstr "debug-info パッケージを探しています..."
+msgstr "Hľadanie debug-info balíčkov..."
 
 #: ../lib/Plugins/CCpp.cpp:418
 msgid "Downloading and installing debug-info packages..."
-msgstr "debug-info パッケージをダウンロードしてインストール中..."
+msgstr "Sťahovanie a inštalovanie debug-info balíčkov..."
 
 #: ../lib/Plugins/CCpp.cpp:480
 msgid "Getting local universal unique identification..."
-msgstr "ローカルで普遍的な独特の識別を取得しています..."
+msgstr "Získavanie lokálneho univerzálneho unikátneho identifikátora..."
 
 #: ../lib/Plugins/CCpp.cpp:499
 msgid "Getting global universal unique identification..."
-msgstr "グローバルで普遍的な独特の識別を取得しています..."
+msgstr "Získavanie globálneho univerzálneho unikátneho identifikátora..."
 
 #: ../lib/Plugins/CCpp.cpp:551
 msgid "Starting report creation..."
-msgstr "報告作成を開始しています..."
+msgstr "Spúšťa sa vytváranie správy..."
 
 #: ../lib/Plugins/CCpp.cpp:580
 msgid "Skipping debuginfo installation"
-msgstr "debuginfo のインストールをスキップします"
+msgstr "Preskakovanie inštalačného debuginfo"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
-msgstr "報告の作成と提出をしています..."
+msgstr "Vytváranie a odosielanie správy..."
 
 #: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
-msgstr "報告を作成しています..."
+msgstr "Vytváranie správy..."
 
 #: ../lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
-msgstr "RunApp plugin を実行中..."
+msgstr "Spúšťanie modulu RunApp..."
 
 #: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
 msgid "FileTransfer: URL not specified"
-msgstr "ファイル転送: URL が示されていません"
+msgstr "Prenos súborov: nie je zadané URL"
 
 #: ../lib/Plugins/FileTransfer.cpp:68
 #, c-format
 msgid "Sending archive %s via %s"
-msgstr "アーカイブ %s を %s 経由で送信中"
+msgstr "Odosielanie archívu %s cez %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:120
 msgid "Creating an archive..."
-msgstr "アーカイブを作成中..."
+msgstr "Vytváranie archívu..."
 
 #: ../lib/Plugins/FileTransfer.cpp:175
 msgid "File Transfer: Creating a report..."
-msgstr "ファイル転送: 報告を作成中..."
+msgstr "Prenos súborov: Vytváranie správy..."
 
 #: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): アーカイブを作成して送信できません:"
+msgstr "CFileTransfer::Run(): Nie je možné vytvoriť a odoslať archív: "
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
-msgstr "カーネル oops クラッシュ報告を作成中..."
+msgstr "Vytváranie správy o páde kernel oops..."
 
 #: ../lib/Plugins/Mailx.cpp:109
 msgid "Sending an email..."
-msgstr "電子メールを送信中..."
+msgstr "Odosielanie e-mailu..."
 
 #: ../lib/Plugins/SOSreport.cpp:113
 msgid "Executing SOSreport plugin..."
-msgstr "SOSreport plugin の実行中..."
+msgstr "Spúšťanie modulu SOSreport..."
 
 #: ../lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
-msgstr "sosreport を実行しています:"
+msgstr "spúšťanie sosreport: "
 
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
-msgstr "sosreport の実行完了"
+msgstr "spúšťanie sosreport hotové"
 
+#~ msgid "Can't load gui description for SettingsDialog!"
+#~ msgstr ""
+#~ "Nie je možné načítať popis užívateľského rozhrania pre SettingsDialog!"
+
+#~ msgid "Name"
+#~ msgstr "Názov"
+
+#~ msgid "Enabled"
+#~ msgstr "Povolené"
+
+#~ msgid "Can't get plugin description"
+#~ msgstr "Nie je možné získať popis modulu"
+
+#~ msgid ""
+#~ "Error while opening plugin settings UI: \n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Chyba počas otvárania nastavení modulu: \n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid ""
+#~ "Can't save plugin settings:\n"
+#~ " %s"
+#~ msgstr ""
+#~ "Nie je možné uložiť nastavenie modulu:\n"
+#~ " %s"
+
+#~ msgid "unknown response from settings dialog"
+#~ msgstr "neznáma odozva od dialógu nastavenia"
+
+#~ msgid "Applet is already running."
+#~ msgstr "Applet už beží."
+
+#~ msgid ""
+#~ "This is default handler, you should register your own with "
+#~ "ConnectCrashHandler"
+#~ msgstr ""
+#~ "Toto je predvolený obslužný program, mali by ste si zaregistrovať váš "
+#~ "vlastný pomocou ConnectCrashHandler"
+
+#~ msgid "Out of memory"
+#~ msgstr "Nedostatok pamäte"
+
+#~ msgid "Getting local/global universal unique identification..."
+#~ msgstr ""
+#~ "Získavanie lokálneho/globálneho univerzálneho unikátneho identifikátora..."

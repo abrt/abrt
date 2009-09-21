@@ -22,7 +22,6 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
-#include <cerrno>
 #include <sys/utsname.h>
 #include <magic.h>
 #include "abrtlib.h"
@@ -106,7 +105,6 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
         if (errno != EEXIST)
             perror_msg_and_die("Can't create lock file '%s'", pLockFile);
         fd = open(pLockFile, O_RDONLY);
-log("opened O_RDONLY: '%s'", pLockFile);
         if (fd < 0)
         {
             if (errno == ENOENT)
@@ -125,7 +123,6 @@ log("opened O_RDONLY: '%s'", pLockFile);
             continue;
         }
         pid_buf[r] = '\0';
-log("read: '%s'", pid_buf);
         if (strcmp(pid_buf, pPID) == 0)
         {
             log("Lock file '%s' is already locked by us", pLockFile);
@@ -143,7 +140,6 @@ log("read: '%s'", pid_buf);
         /* The file may be deleted by now by other process. Ignore errors */
         unlink(pLockFile);
     }
-log("created O_EXCL: '%s'", pLockFile);
 
     int len = strlen(pPID);
     if (write(fd, pPID, len) != len)
@@ -331,10 +327,8 @@ void CDebugDump::SaveKernelArchitectureRelease()
 
 void CDebugDump::SaveTime()
 {
-    std::stringstream ss;
     time_t t = time(NULL);
-    ss << t;
-    SaveText(FILENAME_TIME, ss.str());
+    SaveText(FILENAME_TIME, to_string(t));
 }
 
 static void LoadTextFile(const std::string& pPath, std::string& pData)

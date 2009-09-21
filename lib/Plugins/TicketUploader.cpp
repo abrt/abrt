@@ -490,5 +490,3 @@ PLUGIN_INFO(REPORTER,
             "gavin@redhat.com",
             "https://fedorahosted.org/abtr/wiki",
             PLUGINS_LIB_DIR"/TicketUploader.GTKBuilder");
-
-

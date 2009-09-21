@@ -20,11 +20,10 @@
     */
 
 #include <sqlite3.h>
-#include "SQLite3.h"
 #include <string>
-#include <iostream>
-#include "ABRTException.h"
 #include <stdlib.h>
+#include "SQLite3.h"
+#include "ABRTException.h"
 
 
 #define ABRT_TABLE_VERSION      2

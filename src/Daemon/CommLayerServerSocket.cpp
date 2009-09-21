@@ -1,7 +1,5 @@
 #include <sys/socket.h>
 #include <sys/un.h>
-#include <iostream>
-#include <sstream>
 #include "abrtlib.h"
 #include "CommLayerInner.h"
 #include "ABRTException.h"
@@ -44,9 +42,7 @@ std::string CCommLayerServerSocket::GetSenderUID(int pSenderSocket)
     {
         throw CABRTException(EXCEP_ERROR, "CCommLayerServerSocket::GetSenderUID(): Error can get sender uid.");
     }
-    std::stringstream ss;
-    ss << creds.uid;
-    return ss.str();
+    return to_string(creds.uid);
 }
 
 gboolean CCommLayerServerSocket::client_socket_cb(GIOChannel *source, GIOCondition condition, gpointer data)

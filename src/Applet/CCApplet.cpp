@@ -17,31 +17,19 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "abrtlib.h"
-#include "CCApplet.h"
-#include <iostream>
-#include <cstdarg>
-#include <sstream>
-#include <cstdio>
-#include <unistd.h>
-
-
-
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
-
 #if ENABLE_NLS
     #include <libintl.h>
     #define _(S) gettext(S)
 #else
     #define _(S) (S)
 #endif
+#include "abrtlib.h"
+#include "CCApplet.h"
 
 
-
-static const char *DBUS_SERVICE_NAME = "org.freedesktop.DBus";
-static const char *DBUS_SERVICE_PATH = "/org/freedesktop/DBus";
 const gchar *CApplet::menu_xml =
         "<?xml version=\"1.0\"?>\
 <interface>\
@@ -118,12 +106,8 @@ You should have received a copy of the GNU General Public License along with thi
   </object>\
 </interface>";
 
-CApplet::CApplet(DBus::Connection &system, DBus::Connection &session, const char *path, const char *name)
-: DBus::ObjectProxy(system, path, name)
+CApplet::CApplet()
 {
-    m_pSessionDBus = &session;
-    m_pDaemonWatcher = new DaemonWatcher(system, DBUS_SERVICE_PATH, DBUS_SERVICE_NAME);
-    m_pDaemonWatcher->ConnectStateChangeHandler(DaemonStateChange_cb, this);
     m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
     m_bDaemonRunning = true;
     notify_init("ABRT");
@@ -153,87 +137,17 @@ CApplet::CApplet(DBus::Connection &system, DBus::Connection &session, const char
         m_pAboutDialog = gtk_builder_get_object(m_pBuilder, "aboutdialog");
         m_pmiAbout = gtk_builder_get_object(m_pBuilder, "miAbout");
         {
-            g_signal_connect(m_pmiAbout,"activate",G_CALLBACK(CApplet::onAbout_cb),m_pAboutDialog);
+            g_signal_connect(m_pmiAbout, "activate", G_CALLBACK(CApplet::onAbout_cb),m_pAboutDialog);
         }
     }
     else
     {
-        fprintf(stderr,_("Can't create menu from the description, popup won't be available!\n"));
+        fprintf(stderr, _("Can't create menu from the description, popup won't be available!\n"));
     }
 }
 
 CApplet::~CApplet()
 {
-    delete m_pDaemonWatcher;
-}
-
-/* dbus related */
-void CApplet::Crash(const std::string& progname, const std::string& uid  )
-{
-    if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
-    {
-        return;
-    }
-    else
-    {
-        if (m_pCrashHandler)
-        {
-            std::istringstream input_string(uid);
-            uid_t num;
-            input_string >> num;
-
-            if (num == getuid())
-                m_pCrashHandler(progname.c_str());
-        }
-        else
-        {
-            std::cout << _("This is default handler, you should register your own with ConnectCrashHandler") << std::endl;
-            std::cout.flush();
-        }
-    }
-}
-
-void CApplet::QuotaExceed(const char* str)
-{
-    if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
-    {
-        return;
-    }
-    else
-    {
-        if(m_pQuotaExceedHandler)
-        {
-            m_pQuotaExceedHandler(str);
-        }
-        else
-        {
-            std::cout << _("This is default handler, you should register your own with ConnectQuotaExceedHandler") << std::endl;
-            std::cout.flush();
-        }
-    }
-}
-
-void CApplet::DaemonStateChange_cb(bool running, void* data)
-{
-    CApplet *applet = (CApplet *)data;
-    if (!running)
-    {
-        applet->Disable(_("ABRT service is not running"));
-    }
-    else
-    {
-        applet->Enable(_("ABRT service has been started"));
-    }
-}
-
-void CApplet::ConnectCrashHandler(void (*pCrashHandler)(const char *progname))
-{
-    m_pCrashHandler = pCrashHandler;
-}
-
-void CApplet::ConnectQuotaExceedHandler(void (*pQuotaExceedHandler)(const char *progname))
-{
-    m_pQuotaExceedHandler = pQuotaExceedHandler;
 }
 
 void CApplet::SetIconTooltip(const char *format, ...)
@@ -251,10 +165,8 @@ void CApplet::SetIconTooltip(const char *format, ...)
         gtk_status_icon_set_tooltip_text(m_pStatusIcon, buf);
         free(buf);
     }
-    else
-    {
-        gtk_status_icon_set_tooltip_text(m_pStatusIcon, _("Out of memory"));
-    }
+    /* else: out of memory. Let's not do anything,
+     * or else it may only get worse */
 }
 
 void CApplet::CrashNotify(const char *format, ...)
@@ -270,7 +182,7 @@ void CApplet::CrashNotify(const char *format, ...)
     va_end(args);
 
     notify_notification_update(m_pNotification, _("Warning"), buf, NULL);
-    if (gtk_status_icon_is_embedded (m_pStatusIcon))
+    if (gtk_status_icon_is_embedded(m_pStatusIcon))
         notify_notification_show(m_pNotification, &err);
     if (err != NULL)
         g_print(err->message);
@@ -283,7 +195,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
     {
         pid_t pid = vfork();
         if (pid < 0)
-            std::cerr << "vfork failed\n";
+            perror_msg("vfork");
         if (pid == 0)
         { /* child */
             signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
@@ -291,8 +203,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
             /* Did not find abrt-gui in installation directory. Oh well */
             /* Trying to find it in PATH */
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            std::cerr << "can't exec abrt-gui\n";
-            exit(1);
+            perror_msg_and_die("Can't exec abrt-gui");
         }
         gtk_status_icon_set_visible(applet->m_pStatusIcon, false);
     }
@@ -313,7 +224,7 @@ void CApplet::ShowIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon, true);
     //Active wait for icon to be REALLY visible in status area
-    //while(!gtk_status_icon_is_embedded (m_pStatusIcon));
+    //while(!gtk_status_icon_is_embedded(m_pStatusIcon)) continue;
 }
 
 void CApplet::onHide_cb(GtkMenuItem *menuitem, gpointer applet)
@@ -348,7 +259,7 @@ void CApplet::Disable(const char *reason)
         gtk_status_icon_set_from_pixbuf(m_pStatusIcon, gray_scaled);
     }
     else
-        std::cerr << "Cannot load icon!" << std::endl;
+        error_msg("Can't load icon");
     SetIconTooltip(reason);
     ShowIcon();
 }

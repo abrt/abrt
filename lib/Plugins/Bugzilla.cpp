@@ -1,6 +1,5 @@
 
 #include <xmlrpc-c/base.hpp>
-#include <sstream>
 #include "abrtlib.h"
 #include "Bugzilla.h"
 #include "CrashTypes.h"

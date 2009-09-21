@@ -2,7 +2,6 @@
 #define OBSERVER_H_
 
 #include <string>
-#include <iostream>
 #include <stdint.h>
 #include "DBusCommon.h"
 

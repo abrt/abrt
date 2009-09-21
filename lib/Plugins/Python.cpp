@@ -1,7 +1,6 @@
+#include <fstream>
 #include "Python.h"
 #include "DebugDump.h"
-
-#include <fstream>
 #include "ABRTException.h"
 
 #define FILENAME_BACKTRACE      "backtrace"
