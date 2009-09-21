@@ -109,7 +109,7 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 
 int CKerneloopsScanner::ScanDmesg()
 {
-	log("Scanning dmesg...");
+	VERB1 log("Scanning dmesg...");
 
 	int cnt_FoundOopses;
 	char *buffer;
@@ -126,7 +126,7 @@ int CKerneloopsScanner::ScanDmesg()
 
 int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 {
-	log("Scanning syslog...");
+	VERB1 log("Scanning syslog...");
 
 	char *buffer;
 	struct stat statb;

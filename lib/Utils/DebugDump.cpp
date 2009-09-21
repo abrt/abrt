@@ -149,7 +149,7 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
         perror_msg_and_die("Can't write lock file '%s'", pLockFile);
     }
 
-    log("Locked '%s'", pLockFile);
+    VERB1 log("Locked '%s'", pLockFile);
     return fd;
 }
 
@@ -172,10 +172,10 @@ void CDebugDump::UnLock()
     if (m_nLockfileFD >= 0)
     {
         std::string lockFile = m_sDebugDumpDir + ".lock";
-        log("UnLocking '%s'", lockFile.c_str());
         close(m_nLockfileFD);
         m_nLockfileFD = -1;
         xunlink(lockFile.c_str());
+        VERB1 log("UnLocked '%s'", lockFile.c_str());
     }
 }
 

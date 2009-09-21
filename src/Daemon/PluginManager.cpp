@@ -216,9 +216,11 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             }
             catch (CABRTException& e)
             {
-                warn_client("Can not initialize plugin " + pName + "("
-                                        + std::string(plugin_type_str[abrt_plugin->second->GetType()])
-                                        + "): " + e.what());
+                log("Can't initialize plugin %s(%s): %s",
+                        pName.c_str(),
+                        plugin_type_str[abrt_plugin->second->GetType()],
+                        e.what().c_str()
+                );
                 UnLoadPlugin(pName);
                 return;
             }
@@ -238,7 +240,7 @@ void CPluginManager::RegisterPluginDBUS(const std::string& pName,
         RegisterPlugin(pName);
     } else
     {
-        log("user %s not authorized, returned %d", pDBUSSender, polkit_result);
+        log("User %s not authorized, returned %d", pDBUSSender, polkit_result);
     }
 }
 
@@ -398,17 +400,17 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                     {
                         if (mkdir(confDir.c_str(), 0700) == -1)
                         {
-                            perror_msg("can't create dir '%s'", confDir.c_str());
+                            perror_msg("Can't create dir '%s'", confDir.c_str());
                             return;
                         }
                         if (chmod(confDir.c_str(), 0700) == -1)
                         {
-                            perror_msg("can't change mod of dir '%s'", confDir.c_str());
+                            perror_msg("Can't change mod of dir '%s'", confDir.c_str());
                             return;
                         }
                         if (chown(confDir.c_str(), uid, gid) == -1)
                         {
-                            perror_msg("can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+                            perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
                             return;
                         }
 
@@ -422,7 +424,7 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                     SavePluginSettings(confPath, pSettings);
                     if (chown(confPath.c_str(), uid, gid) == -1)
                     {
-                        perror_msg("can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+                        perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
                         return;
                     }
                 }
