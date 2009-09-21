@@ -8,49 +8,48 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 13:40+0200\n"
-"PO-Revision-Date: 2009-09-09 21:55+0530\n"
-"Last-Translator: ANI PETER <apeter@redhat.com>\n"
-"Language-Team: Swathantra Malayalam Computing|സ്വതന്ത്ര മലയാളം കമ്പ്യൂട്ടിങ് <smc-"
-"discuss@googlegroups.com>\n"
+"POT-Creation-Date: 2009-09-21 08:47+0000\n"
+"PO-Revision-Date: 2009-09-21 19:29+0530\n"
+"Last-Translator: \n"
+"Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/Gui/ABRTExceptions.py:4
+#: ../src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
 msgstr "മറ്റൊരു ക്ലൈന്റ് പ്രവര്‍ത്തിക്കുന്നു, ലഭ്യമാക്കുവാന്‍ ശ്രമിക്കുന്നു."
 
-#: src/Gui/ABRTExceptions.py:10
+#: ../src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "ഡെമണില്‍ നിന്നും അപ്രതീക്ഷിതമായ ഡേറ്റാ ലഭിച്ചു (ഈ ഡേറ്റാബെയിസ് ശരിയായി പുതുക്കിയോ?)."
 
-#: src/Gui/ABRTPlugin.py:34
+#: ../src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
 msgstr "അനലൈസര്‍ പ്ലഗിനുകള്‍"
 
-#: src/Gui/ABRTPlugin.py:35
+#: ../src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
 msgstr "ആക്ഷന്‍ പ്ലഗിനുകള്‍"
 
-#: src/Gui/ABRTPlugin.py:36
+#: ../src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
 msgstr "റിപോര്‍ട്ടര്‍ പ്ലഗിനുകള്‍"
 
-#: src/Gui/ABRTPlugin.py:37
+#: ../src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
 msgstr "ഡേറ്റാബെയിസ് പ്ലഗിനുകള്‍"
 
-#: src/Gui/CCDBusBackend.py:140
+#: ../src/Gui/CCDBusBackend.py:140
 msgid "Can't connect to dbus"
 msgstr "dbus-ലേക്ക് കണക്ട് ചെയ്യുവാന്‍ സാധ്യമല്ല"
 
-#: src/Gui/CCDBusBackend.py:144 src/Gui/CCDBusBackend.py:164
+#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
 msgid "Please check if abrt daemon is running."
 msgstr "abrt ഡെമണ്‍ പ്രവര്‍ത്തിക്കുന്നുണ്ടോ എന്നു് പരിശോധിക്കുക."
 
-#: src/Gui/CCDBusBackend.py:183
+#: ../src/Gui/CCDBusBackend.py:182
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -58,27 +57,47 @@ msgstr ""
 "ശരിയായ റിപോര്‍ട്ട് വിവരം ഡെമണ്‍ ലഭ്യമാക്കിയില്ല\n"
 "Debuginfo ലഭ്യമല്ലേ?"
 
-#: src/Gui/ccgui.glade:6
-msgid "Please wait.."
-msgstr "ദയവായി കാത്തിരിക്കുക..."
-
-#: src/Gui/ccgui.glade:16
-msgid "Working..."
-msgstr "പ്രവര്‍ത്തിക്കുന്നു..."
-
-#: src/Gui/ccgui.glade:49
+#: ../src/Gui/ccgui.glade.h:1
 msgid " "
 msgstr " "
 
-#: src/Gui/ccgui.glade:68
-msgid "About ABRT"
-msgstr "ABRT സംബന്ധിച്ചു്"
-
-#: src/Gui/ccgui.glade:74
+#: ../src/Gui/ccgui.glade.h:2
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: src/Gui/ccgui.glade:75
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:236
+msgid "<b>Not reported!</b>"
+msgstr "<b>രേഖപ്പെടുത്തിയിട്ടില്ല!</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">വിവരണം</span>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "About ABRT"
+msgstr "ABRT സംബന്ധിച്ചു്"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Automatic Bug Reporting Tool"
+msgstr "ഓട്ടോമാറ്റിക് ബഗ് രേഖപ്പെടുത്തല്‍ പ്രയോഗം"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Delete"
+msgstr "വെട്ടി നീക്കുക"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "Please wait.."
+msgstr "ദയവായി കാത്തിരിക്കുക..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "പ്ലഗിനുകള്‍"
+
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
+msgid "Report"
+msgstr "റിപോര്‍ട്ട്"
+
+#: ../src/Gui/ccgui.glade.h:11
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -104,68 +123,48 @@ msgstr ""
 "ഈ പ്രോഗ്രാമിനൊപ്പം നിങ്ങള്‍ക്കു് ഗ്നു ജനറല്‍ പബ്ളിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പും ലഭിച്ചിരിക്കണം, "
 "ഇല്ലായെങ്കില്‍,  <http://www.gnu.org/licenses/> കാണുക."
 
-#: src/Gui/ccgui.glade:106
-msgid "Automatic Bug Reporting Tool"
-msgstr "ഓട്ടോമാറ്റിക് ബഗ് രേഖപ്പെടുത്തല്‍ പ്രയോഗം"
+#: ../src/Gui/ccgui.glade.h:16
+msgid "Working..."
+msgstr "പ്രവര്‍ത്തിക്കുന്നു..."
 
-#: src/Gui/ccgui.glade:118
-msgid "_File"
-msgstr "_ഫയല്‍"
-
-#: src/Gui/ccgui.glade:138
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Edit"
 msgstr "_ചിട്ടപ്പെടുത്തുക"
 
-#: src/Gui/ccgui.glade:146
-msgid "Plugins"
-msgstr "പ്ലഗിനുകള്‍"
+#: ../src/Gui/ccgui.glade.h:18
+msgid "_File"
+msgstr "_ഫയല്‍"
 
-#: src/Gui/ccgui.glade:164
+#: ../src/Gui/ccgui.glade.h:19
 msgid "_Help"
 msgstr "_സഹായം"
 
-#: src/Gui/ccgui.glade:194 src/Gui/ccgui.glade:195
-msgid "Delete"
-msgstr "വെട്ടി നീക്കുക"
-
-#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
-#: src/Gui/report.glade:7 src/Gui/report.glade:24
-msgid "Report"
-msgstr "റിപോര്‍ട്ട്"
-
-#: src/Gui/ccgui.glade:255
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">വിവരണം</span>"
-
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
-msgid "<b>Not reported!</b>"
-msgstr "<b>രേഖപ്പെടുത്തിയിട്ടില്ല!</b>"
-
-#: src/Gui/CCMainWindow.py:79
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Icon"
-msgstr ""
+msgstr "ചിഹ്നം"
 
-#: src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Package"
 msgstr "പാക്കേജ്"
 
-#: src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:88
 msgid "Application"
 msgstr "പ്രയോഗം"
 
-#: src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Date"
 msgstr "തീയതി"
 
-#: src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:90
 msgid "Crash Rate"
 msgstr "ക്രാഷ് റേറ്റ്"
 
-#: src/Gui/CCMainWindow.py:92
+#: ../src/Gui/CCMainWindow.py:92
 msgid "User"
 msgstr "ഉപയോക്താവു്"
 
-#: src/Gui/CCMainWindow.py:174
+#: ../src/Gui/CCMainWindow.py:174
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -174,7 +173,7 @@ msgstr ""
 "നിലവിലുള്ള ജോലി പൂര്‍ത്തിയാക്കുവാന്‍ സാധിച്ചില്ല!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:191
+#: ../src/Gui/CCMainWindow.py:191
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -183,16 +182,16 @@ msgstr ""
 "dumplist ലഭ്യമാക്കുമ്പോള്‍ പിശക്, ദയവായി abrt ഡെമണ്‍ പ്രവര്‍ത്തിക്കുന്നുണ്ടോ എന്നു് പരിശോധിക്കുക.\n"
 " %s"
 
-#: src/Gui/CCMainWindow.py:201
+#: ../src/Gui/CCMainWindow.py:201
 #, python-format
 msgid "Can't get username for uid %s"
-msgstr ""
+msgstr "uid %s-നുള്ള ഉപയോക്തൃനാമം ലഭ്യമാക്കുവാന്‍ സാധ്യമല്ല"
 
-#: src/Gui/CCMainWindow.py:228
+#: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>ഈ തകരാറു് രേഖപ്പെടുത്തിയിട്ടുണ്ടു്. ഈ റിപോര്‍ട്ട് ഇവിടെ ലഭ്യമാണു്:</b>\n"
 
-#: src/Gui/CCMainWindow.py:288
+#: ../src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -200,7 +199,7 @@ msgstr ""
 "റിപോര്‍ട്ട് ലഭിക്കുവാന്‍ സാധിച്ചില്ല!\n"
 "Debuginfo ലഭ്യമല്ലേ?"
 
-#: src/Gui/CCMainWindow.py:300
+#: ../src/Gui/CCMainWindow.py:300
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -209,31 +208,12 @@ msgstr ""
 "റിപോര്‍ട്ട് പരാജയപ്പെട്ടു!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:332
+#: ../src/Gui/CCMainWindow.py:332
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
 
-#: src/Gui/CCReporterDialog.py:114
-#, python-format
-msgid ""
-"Error while opening plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:124
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:130
-msgid "unknown response from settings dialog"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:141
+#: ../src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -243,354 +223,318 @@ msgstr ""
 "<b>മുന്നറിയിപ്പു്</b>, പ്രധാന വിവരങ്ങളടങ്ങുന്ന ഡേറ്റാ നിങ്ങള്‍ അയയ്ക്കുവാന്‍ തുടങ്ങുന്നു.\n"
 "നിങ്ങള്‍ക്ക് <b>%s</b> അയയ്ക്കണമോ?\n"
 
-#: src/Gui/CCReporterDialog.py:155
+#: ../src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "ഇതെങ്ങനെ ഉണ്ടായി എന്നു് വിവരിക്കുന്നു..."
 
-#: src/Gui/dialogs.glade:7
-#, fuzzy
+#: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
-msgstr "റിപോര്‍ട്ട്"
+msgstr "റിപോര്‍ട്ട് പൂര്‍ത്തിയായി"
 
-#: src/Gui/dialogs.glade:47 src/Gui/settings.glade:695
-#: src/Gui/settings.glade:783
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
-#: src/Gui/PluginSettingsUI.py:17
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "UI വിവരണത്തില്‍ PluginDialog വിഡ്ജറ്റ് ലഭ്യമല്ല!"
 
-#: src/Gui/PluginSettingsUI.py:23
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "%s-നു് UI പ്ലഗിന്‍ ലഭ്യമല്ല"
 
-#: src/Gui/PluginSettingsUI.py:40 src/Gui/PluginSettingsUI.py:66
+#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
 msgstr "കോംബോ ബോക്സ് ലഭ്യമാക്കിയിട്ടില്ല"
 
-#: src/Gui/PluginSettingsUI.py:49
+#: ../src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
 msgstr "ഹൈഡ്രേറ്റ് ചെയ്യുവാനൊന്നുമില്ല!"
 
-#: src/Gui/report.glade:64
+#: ../src/Gui/report.glade.h:1
 msgid "Comment"
 msgstr "അഭിപ്രായം"
 
-#: src/Gui/report.glade:103 src/Gui/settings.glade:682
-#: src/Gui/settings.glade:795
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: src/Gui/report.glade:118
+#: ../src/Gui/report.glade.h:3
 msgid "Send"
 msgstr "അയയ്ക്കുക"
 
-#: src/Gui/SettingsDialog.py:35 src/Gui/SettingsDialog.py:52
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
 msgid "<b>Select plugin</b>"
 msgstr "<b>പ്ലഗിന്‍ തെരഞ്ഞെടുക്കുക</b>"
 
-#: src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:38
 msgid "<b>Select database backend</b>"
 msgstr "<b>ഡേറ്റാബെയിസ് ബാക്കെന്‍ഡ് തെരഞ്ഞെടുക്കുക</b>"
 
-#: src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:170
 msgid "Remove this job"
 msgstr "ഈ ജോലി നീക്കം ചെയ്യുക"
 
-#: src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "ഈ പ്രവര്‍ത്തി നീക്കം ചെയ്യുക"
 
-#: src/Gui/settings.glade:6
-msgid "Settings"
-msgstr ""
-
-#: src/Gui/settings.glade:46 src/Gui/settings.glade:55
-#: src/Gui/settings.glade:107 src/Gui/settings.glade:120
-#: src/Gui/settings.glade:133
-msgid "Nothing selected"
-msgstr ""
-
-#: src/Gui/settings.glade:72
-msgid "Web Site:"
-msgstr ""
-
-#: src/Gui/settings.glade:84
-msgid "Author:"
-msgstr ""
-
-#: src/Gui/settings.glade:97
-msgid "Version:"
-msgstr ""
-
-#: src/Gui/settings.glade:152
-#, fuzzy
-msgid "Plugin Details"
-msgstr "പ്ലഗിനുകള്‍"
-
-#: src/Gui/settings.glade:179
-#, fuzzy
-msgid "C_onfigure plugin"
-msgstr "റിപോര്‍ട്ടര്‍ പ്ലഗിനുകള്‍"
-
-#: src/Gui/settings.glade:191
-#, fuzzy
-msgid "gtk-close"
-msgstr "gtk-cancel"
-
-#: src/Gui/settings.glade:221
-msgid "Global Settings"
-msgstr ""
-
-#: src/Gui/settings.glade:240
-msgid "Check package GPG signature"
-msgstr ""
-
-#: src/Gui/settings.glade:256
-#, fuzzy
-msgid "Database backend: "
-msgstr "<b>ഡേറ്റാബെയിസ് ബാക്കെന്‍ഡ് തെരഞ്ഞെടുക്കുക</b>"
-
-#: src/Gui/settings.glade:281
-msgid "Blacklisted packages: "
-msgstr ""
-
-#: src/Gui/settings.glade:294
-msgid "Max coredump storage size(MB):"
-msgstr ""
-
-#: src/Gui/settings.glade:307
-msgid "GPG keys: "
-msgstr ""
-
-#: src/Gui/settings.glade:349
-msgid "Edit blacklisted packages"
-msgstr ""
-
-#: src/Gui/settings.glade:408
-#, fuzzy
-msgid "Common"
-msgstr "അഭിപ്രായം"
-
-#: src/Gui/settings.glade:438
-#, fuzzy
-msgid "<b>Plugin</b>"
-msgstr "<b>പ്ലഗിന്‍ തെരഞ്ഞെടുക്കുക</b>"
-
-#: src/Gui/settings.glade:448
-msgid "<b>Time (or period)</b>"
-msgstr ""
-
-#: src/Gui/settings.glade:510 src/Gui/settings.glade:624
-#: src/Gui/settings.glade:759
-msgid "gtk-add"
-msgstr ""
-
-#: src/Gui/settings.glade:534
-msgid "Cron"
-msgstr ""
-
-#: src/Gui/settings.glade:551
-#, fuzzy
+#: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr "അനലൈസര്‍ പ്ലഗിനുകള്‍"
+msgstr "<b>അനലൈസര്‍ പ്ലഗിനുകള്‍</b>"
 
-#: src/Gui/settings.glade:561
+#: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
-msgstr ""
+msgstr "<b>അനുബന്ധിച്ചുള്ള പ്രവര്‍ത്തി</b>"
 
-#: src/Gui/settings.glade:648
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin</b>"
+msgstr "<b>പ്ലഗിന്‍</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Time (or period)</b>"
+msgstr "<b>സമയം (അല്ലെങ്കില്‍ കാലാവധി)</b>"
+
+#: ../src/Gui/settings.glade.h:5
 msgid "Analyzers, Actions, Reporters"
-msgstr ""
+msgstr "അനലൈസറുകള്‍, പ്രവര്‍ത്തികള്‍, റിപ്പോര്‍ട്ടറുകള്‍"
 
-#: src/Gui/settings.glade:736
+#: ../src/Gui/settings.glade.h:6
+msgid "Author:"
+msgstr "രചയിതാവു്:"
+
+#: ../src/Gui/settings.glade.h:7
+msgid "Blacklisted packages: "
+msgstr "ബാക്ക്ലിസ്റ്റഡ് പാക്കേജുകള്‍: "
+
+#: ../src/Gui/settings.glade.h:8
+msgid "C_onfigure plugin"
+msgstr "പ്ലഗിന്‍ ക്ര_മീകരിക്കുക"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "Check package GPG signature"
+msgstr "പാക്കേജ് GPG ഒപ്പ് പരിശോധിക്കുക"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Common"
+msgstr "സാധാരണ"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Cron"
+msgstr "ക്രോണ്‍"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Database backend: "
+msgstr "ഡേറ്റാബെയിസ് ബാക്കെന്‍ഡ്:"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Edit blacklisted packages"
+msgstr "ബാക്ക്ലിസ്റ്റഡ് പാക്കേജുകള്‍ ചിട്ടപ്പെടുത്തുക"
+
+#: ../src/Gui/settings.glade.h:14
 msgid "GPG Keys"
-msgstr ""
+msgstr "GPG കീകള്‍"
 
-#: src/Gui/settings.glade:771
+#: ../src/Gui/settings.glade.h:15
+msgid "GPG keys: "
+msgstr "GPG കീകള്‍: "
+
+#: ../src/Gui/settings.glade.h:16
+msgid "Global Settings"
+msgstr "ഗ്ലോബല്‍ സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "ഏറ്റവും കൂടിയ കോര്‍ഡംപ് സ്റ്റോറേജ് വ്യാപ്തി(MB):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Nothing selected"
+msgstr "ഒന്നും തെരഞ്ഞെടുത്തിട്ടില്ല"
+
+#: ../src/Gui/settings.glade.h:19
+msgid "Plugin Details"
+msgstr "പ്ലഗിന്‍ വിശദാംശങ്ങള്‍"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Settings"
+msgstr "സജ്ജീകരണങ്ങള്‍"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "ലക്കം: "
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "വെബ് സൈറ്റ്:"
+
+#: ../src/Gui/settings.glade.h:23
+msgid "gtk-add"
+msgstr "gtk-add"
+
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-close"
+msgstr "gtk-close"
+
+#: ../src/Gui/settings.glade.h:27
 msgid "gtk-remove"
-msgstr ""
+msgstr "gtk-remove"
 
-#: src/Applet/Applet.cpp:45
+#: ../src/Applet/Applet.cpp:76
 #, c-format
-msgid "A crash in package %s has been detected!"
-msgstr "%s പാക്കേജില്‍ തകരാറുണ്ടു്!"
+msgid "A crash in package %s has been detected"
+msgstr "പാക്കേജ് %s-ല്‍ ഒരു തകരാറുണ്ടു്"
 
-#: src/Applet/Applet.cpp:89
-msgid "Applet is already running."
-msgstr "അപ്ലെറ്റ് പ്രവര്‍ത്തനത്തിലുണ്ടു്."
+#: ../src/Applet/Applet.cpp:145
+msgid "ABRT service has been started"
+msgstr "ABRT സര്‍വീസ് ആരംഭിച്ചിരിക്കുന്നു"
 
-#: src/Applet/Applet.cpp:104 src/Applet/Applet.cpp:105
-#: src/Applet/CCApplet.cpp:221
+#: ../src/Applet/Applet.cpp:147 ../src/Applet/Applet.cpp:261
 msgid "ABRT service is not running"
 msgstr "ABRT സര്‍വീസ് പ്രവര്‍ത്തിക്കുന്നില്ല"
 
-#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:366
+#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
 #, c-format
 msgid "Pending events: %i"
 msgstr "ബാക്കിയുള്ള ഇവന്റുകള്‍: %i"
 
-#: src/Applet/CCApplet.cpp:161
+#: ../src/Applet/CCApplet.cpp:145
 #, c-format
 msgid "Can't create menu from the description, popup won't be available!\n"
 msgstr "വിശദീകരണത്തില്‍ നിന്നും മെനു ഉണ്ടാക്കുവാന്‍ സാധ്യമല്ല, പോപ്പപ്പ് ലഭ്യമല്ല!\n"
 
-#: src/Applet/CCApplet.cpp:190
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectCrashHandler"
-msgstr ""
-"ഇതു് സ്വതവേയുള്ള ഹാന്‍ഡിലറാണു്. ConnectCrashHandler-ല്‍ നിങ്ങളുടെ സ്വന്തം ഹാന്‍ഡിലര്‍ രജിസ്ടര്‍ "
-"ചെയ്യണം"
-
-#: src/Applet/CCApplet.cpp:210
-#, fuzzy
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectQuotaExceedHandler"
-msgstr ""
-"ഇതു് സ്വതവേയുള്ള ഹാന്‍ഡിലറാണു്. ConnectCrashHandler-ല്‍ നിങ്ങളുടെ സ്വന്തം ഹാന്‍ഡിലര്‍ രജിസ്ടര്‍ "
-"ചെയ്യണം"
-
-#: src/Applet/CCApplet.cpp:225
-msgid "ABRT service has been started"
-msgstr "ABRT സര്‍വീസ് ആരംഭിച്ചിരിക്കുന്നു"
-
-#: src/Applet/CCApplet.cpp:256
-msgid "Out of memory"
-msgstr "മെമ്മറി ലഭ്യമല്ല"
-
-#: src/Applet/CCApplet.cpp:272
+#: ../src/Applet/CCApplet.cpp:184
 msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
-#: src/Daemon/Daemon.cpp:526
+#: ../src/Daemon/Daemon.cpp:525
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
+"വ്യാപ്തി കോട്ടയേക്കാള്‍ കൂടിയതായി രേഖപ്പെടുത്തുക. ദയവായി abrt.conf-ലുള്ള സിസ്റ്റത്തിന്റെ "
+"MaxCrashReportsSize മൂല്ല്യം പരിശോധിക്കുക."
 
-#: lib/Plugins/Bugzilla.cpp:84
+#: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "ലോഗിനും അടയാളവാക്കും ശൂന്യം. ദയവായി Bugzilla.conf പരിശോധിക്കുക"
 
-#: lib/Plugins/Bugzilla.cpp:228
+#: ../lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
 msgstr "ബഗ് രേഖപ്പെടുത്തിയിരിക്കുന്നു: "
 
-#: lib/Plugins/Bugzilla.cpp:283
+#: ../lib/Plugins/Bugzilla.cpp:282
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "ബൈനറി ഫയല്‍ %s റിപോര്‍ട്ട് ചെയ്യുന്നതല്ല."
 
-#: lib/Plugins/Bugzilla.cpp:353
+#: ../lib/Plugins/Bugzilla.cpp:352
 msgid "New bug id: "
 msgstr "പുതിയ ബഗ് id: "
 
-#: lib/Plugins/Bugzilla.cpp:422
+#: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr "ഒരേപോലുള്ളവയ്ക്കായി തെരയുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:425 lib/Plugins/Bugzilla.cpp:437
+#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "ബഗ്സിലയിലേക്ക് പ്രവേശിക്കുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:428
+#: ../lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
 msgstr "CC പരിശോധിച്ചു് coment +1 ചേര്‍ക്കുക..."
 
-#: lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr "പുതിയ ബഗ് ഉണ്ടാക്കുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:454
+#: ../lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr "ലോഗൌട്ട് ചെയ്യുന്നു..."
 
-#: lib/Plugins/Kerneloops.cpp:38
-msgid "Getting local/global universal unique identification..."
-msgstr "ലോക്കല്‍/ഗ്ലോബല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
+#: ../lib/Plugins/Kerneloops.cpp:37
+msgid "Getting local universal unique identification"
+msgstr "ലോക്കല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു"
 
-#: lib/Plugins/CCpp.cpp:147
+#: ../lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
 msgstr "ബാക്ക്ട്രെയിസ് ലഭിക്കുന്നു..."
 
-#: lib/Plugins/CCpp.cpp:385
+#: ../lib/Plugins/CCpp.cpp:384
 msgid "Searching for debug-info packages..."
 msgstr "debug-info പാക്കേജുകള്‍ക്കായി തെരയുന്നു..."
 
-#: lib/Plugins/CCpp.cpp:419
+#: ../lib/Plugins/CCpp.cpp:418
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info പാക്കേജുകള്‍ ഡൌണ്‍ലോട് ചെയ്തു് ഇന്‍സ്റ്റോള്‍ ചെയ്യുന്നു..."
 
-#: lib/Plugins/CCpp.cpp:481
+#: ../lib/Plugins/CCpp.cpp:480
 msgid "Getting local universal unique identification..."
 msgstr "ലോക്കല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
 
-#: lib/Plugins/CCpp.cpp:500
+#: ../lib/Plugins/CCpp.cpp:499
 msgid "Getting global universal unique identification..."
 msgstr "ഗ്ലോബല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
 
-#: lib/Plugins/CCpp.cpp:552
+#: ../lib/Plugins/CCpp.cpp:551
 msgid "Starting report creation..."
 msgstr "റിപോര്‍ട്ട് ഉണ്ടാക്കുവാന്‍ തുടങ്ങുന്നു..."
 
-#: lib/Plugins/CCpp.cpp:581
-#, fuzzy
+#: ../lib/Plugins/CCpp.cpp:580
 msgid "Skipping debuginfo installation"
-msgstr "%s പാക്കേജിനുള്ള debuginfo ഇന്‍സ്റ്റലേഷന്‍ ഉപേക്ഷിക്കുക"
+msgstr "debuginfo ഇന്‍സ്റ്റലേഷന്‍ ഉപേക്ഷിക്കുന്നു"
 
-#: lib/Plugins/KerneloopsReporter.cpp:101
+#: ../lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
 msgstr "ഒരു റിപോര്‍ട്ട് ഉണ്ടാക്കി സമര്‍പ്പിക്കുന്നു..."
 
-#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
 msgstr "ഒരു റിപോര്‍ട്ട് ഉണ്ടാക്കുന്നു..."
 
-#: lib/Plugins/RunApp.cpp:62
+#: ../lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
 msgstr "RunApp പ്ലഗിന്‍ പ്രവര്‍ത്തിപ്പിക്കുന്നു..."
 
-#: lib/Plugins/FileTransfer.cpp:52 lib/Plugins/FileTransfer.cpp:247
+#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
 msgid "FileTransfer: URL not specified"
 msgstr "ഫയല്‍ നീക്കം ചെയ്യല്‍: URL നല്‍കിയിട്ടില്ല"
 
-#: lib/Plugins/FileTransfer.cpp:69
+#: ../lib/Plugins/FileTransfer.cpp:68
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "ആര്‍ക്കൈവ് %s, %s വഴി അയയ്ക്കുന്നു"
 
-#: lib/Plugins/FileTransfer.cpp:121
+#: ../lib/Plugins/FileTransfer.cpp:120
 msgid "Creating an archive..."
 msgstr "ഒരു ആര്‍ക്കൈവ് ഉണ്ടാക്കുന്നു..."
 
-#: lib/Plugins/FileTransfer.cpp:176
+#: ../lib/Plugins/FileTransfer.cpp:175
 msgid "File Transfer: Creating a report..."
 msgstr "ഫയല്‍ നീക്കം ചെയ്യല്‍: റിപോര്‍ട്ട് ഉണ്ടാക്കുന്നു..."
 
-#: lib/Plugins/FileTransfer.cpp:197 lib/Plugins/FileTransfer.cpp:226
+#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): ഒരു ആര്‍ക്കൈവ് ഉണ്ടാക്കി അയയ്ക്കുവാന്‍ സാധ്യമല്ല: "
 
-#: lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "കേര്‍ണല്‍ oops ക്രാഷ് റിപോര്‍ട്ടുകള്‍ ഉണ്ടാക്കുന്നു..."
 
-#: lib/Plugins/Mailx.cpp:110
+#: ../lib/Plugins/Mailx.cpp:109
 msgid "Sending an email..."
 msgstr "ഒരു ഈമെയില്‍ അയയ്ക്കുന്നു..."
 
-#: lib/Plugins/SOSreport.cpp:116
+#: ../lib/Plugins/SOSreport.cpp:113
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport പ്ലഗിന്‍ പ്രവര്‍ത്തിപ്പിക്കുന്നു..."
 
-#: lib/Plugins/SOSreport.cpp:138
+#: ../lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
 msgstr "sosreport പ്രവര്‍ത്തിപ്പിക്കുന്നു: "
 
-#: lib/Plugins/SOSreport.cpp:153
+#: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "sosreport പ്രവര്‍ത്തനം പൂര്‍ത്തിയായി"
+
