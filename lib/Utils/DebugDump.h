@@ -37,7 +37,7 @@
 #define FILENAME_RELEASE            "release"
 #define FILENAME_EXECUTABLE         "executable"
 #define FILENAME_REASON             "reason"
-#define FILENAME_COMMENTS           "comment"
+#define FILENAME_COMMENT            "comment"
 #define FILENAME_REPRODUCE          "reproduce"
 
 class CDebugDump

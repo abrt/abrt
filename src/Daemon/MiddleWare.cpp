@@ -112,7 +112,9 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
             else if (fileName != FILENAME_UID &&
                      fileName != FILENAME_ANALYZER &&
                      fileName != FILENAME_TIME &&
-                     fileName != FILENAME_DESCRIPTION )
+                     fileName != FILENAME_DESCRIPTION &&
+                     fileName != FILENAME_REPRODUCE &&
+                     fileName != FILENAME_COMMENT)
             {
                 if (content.length() < CD_ATT_SIZE)
                 {
@@ -192,10 +194,20 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
         CDebugDump dd;
         std::string analyzer;
         std::string gUUID;
+        std::string comment;
+        std::string reproduce = "1.\n2.\n3.\n";
 
         VERB3 log(" LoadText(FILENAME_ANALYZER,'%s')", row.m_sDebugDumpDir.c_str());
         dd.Open(row.m_sDebugDumpDir);
         dd.LoadText(FILENAME_ANALYZER, analyzer);
+        if (dd.Exist(FILENAME_COMMENT))
+        {
+            dd.LoadText(FILENAME_COMMENT, comment);
+        }
+        if (dd.Exist(FILENAME_REPRODUCE))
+        {
+            dd.LoadText(FILENAME_REPRODUCE, reproduce);
+        }
         dd.Close();
 
         VERB3 log(" CreateReport('%s')", analyzer.c_str());
@@ -213,8 +225,8 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
         add_crash_data_to_crash_report(pCrashReport, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
         add_crash_data_to_crash_report(pCrashReport, CD_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
         add_crash_data_to_crash_report(pCrashReport, CD_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
-        add_crash_data_to_crash_report(pCrashReport, CD_COMMENT, CD_TXT, CD_ISEDITABLE, "");
-        add_crash_data_to_crash_report(pCrashReport, CD_REPRODUCE, CD_TXT, CD_ISEDITABLE, "1.\n2.\n3.\n");
+        add_crash_data_to_crash_report(pCrashReport, CD_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
+        add_crash_data_to_crash_report(pCrashReport, CD_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
     }
     catch (CABRTException& e)
     {
@@ -324,6 +336,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     report_status_t ret;
     std::string key;
     std::string message;
+    CDebugDump dd;
 
     if (!CheckReport(pCrashReport))
     {
@@ -339,21 +352,18 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     // Save comments and how to reproduciton
     map_crash_report_t::const_iterator it_comment = pCrashReport.find(CD_COMMENT);
     map_crash_report_t::const_iterator it_reproduce = pCrashReport.find(CD_REPRODUCE);
-    std::cout << "save reproduce " << std::endl << it_reproduce->second[CD_CONTENT] << std::endl;
     std::string pDumpDir = getDebugDumpDir(UUID,UID);
-    CDebugDump dd;
-        dd.Open(pDumpDir);
-        if ( it_comment != pCrashReport.end() )
-        {
-            std::cout << "save comment " << std::endl << it_comment->second[CD_CONTENT] << std::endl;
-            dd.SaveText(FILENAME_COMMENTS, it_comment->second[CD_CONTENT]);
-        }
-        if ( it_reproduce != pCrashReport.end() )
-        {
-            std::cout << "save reproduce " << std::endl << it_reproduce->second[CD_CONTENT] << std::endl;
-            dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT]);
-        }
-        dd.Close();
+
+    dd.Open(pDumpDir);
+    if ( it_comment != pCrashReport.end() )
+    {
+        dd.SaveText(FILENAME_COMMENT, it_comment->second[CD_CONTENT]);
+    }
+    if ( it_reproduce != pCrashReport.end() )
+    {
+        dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT]);
+    }
+    dd.Close();
     // analyzer with package name (CCpp:xrog-x11-app) has higher priority
     key = analyzer + ":" + packageName;
     map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
