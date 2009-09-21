@@ -108,7 +108,16 @@ class ReporterDialog():
         for item in self.report:
             if item == "Comment":
                 buff = gtk.TextBuffer()
-                buff.set_text(_("Brief description how to reproduce this or what you did..."))
+                comment = _("Brief description how to reproduce this or what you did...")
+                try:
+                    if self.report[item][CONTENT]:
+                        comment = self.report[item][CONTENT]
+                        self.comment_changed = True
+                except Exception, e:
+                    pass
+                
+                buff.set_text(comment)
+                
                 self.tvComment.set_buffer(buff)
                 continue
             if self.report[item][TYPE] != 's':

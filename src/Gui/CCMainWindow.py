@@ -322,7 +322,7 @@ class MainWindow():
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         # show the report window with selected dump
         try:
-            report = self.ccdaemon.getReport(dump.getUUID())
+            self.ccdaemon.getReport(dump.getUUID())
         except Exception, e:
             # FIXME #3	dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
