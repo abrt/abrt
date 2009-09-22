@@ -25,7 +25,6 @@ class SettingsDialog:
         self.builder = gtk.Builder()
         self.builder.add_from_file(builderfile)
         self.window = self.builder.get_object("wGlobalSettings")
-        print "GSD init"
         self.builder.get_object("bSaveSettings").connect("clicked", self.on_ok_clicked)
         self.builder.get_object("bCancelSettings").connect("clicked", self.on_cancel_clicked)
         self.builder.get_object("bAddCronJob").connect("clicked", self.on_bAddCronJob_clicked)
@@ -73,10 +72,6 @@ class SettingsDialog:
         except Exception, e:
             # FIXME: this should be error gui message!
             print e
-        for i in self.settings:
-            print "XXX", i
-            for key,val in self.settings[i].iteritems():
-                print "\t", key, val
         try:
             self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
         except Exception, e:
@@ -196,7 +191,7 @@ class SettingsDialog:
         print "edit action"
         
     def add_AnalyzerAction(self, action=None):
-        print "add_AnalyzerAction"
+        #print "add_AnalyzerAction"
         hbox = gtk.HBox()
         action_list = gtk.Entry()
         edit_actions = gtk.Button()
@@ -234,16 +229,12 @@ class SettingsDialog:
         
     def on_bAddAction_clicked(self, button):
         self.add_AnalyzerAction()
-        print "on_bAddActions_clicked"
         
     def on_cancel_clicked(self,button):
-        print "hide"
         self.window.hide()
         
     def dehydrate(self):
         self.ccdaemon.setSettings(self.settings)
-        print "dehydrate"
         
     def show(self):
-        print "show"
         self.window.show()

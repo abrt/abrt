@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.8.5
+Version: 0.0.9
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -353,6 +353,29 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Tue Sep 22 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.9-1
+- new version
+- comments and how to reproduce are stored now (npajkovs@redhat.com)
+- reduce verbosity a bit (vda.linux@googlemail.com)
+- GUI: fixed word wrap in Comment field rhbz#524349 (jmoskovc@redhat.com)
+- remove last vestives of dbus-c++ from build system (vda.linux@googlemail.com)
+- GUI: added popup menu, fixed behaviour when run with root privs (jmoskovc@redhat.com)
+- add dbus signalization when quota exceeded (npajkovs@redhat.com)
+- Added cleaning of attachment variable, so there should not be mixed attachmetn anymore. (zprikryl@redhat.com)
+- fixed closing of debug dump in case of existing backtrace (zprikryl@redhat.com)
+- remove C++ dbus glue in src/CLI; fix a bug in --report (vda.linux@googlemail.com)
+- new polkit action for installing debuginfo, default "yes" (danny@rawhide.localdomain)
+- Polkit moved to Utils (can be used both in daemon and plugins) (danny@rawhide.localdomain)
+- oops... remove stray trailing '\' (vda.linux@googlemail.com)
+- GUI: added missing tooltips (jmoskovc@redhat.com)
+- PYHOOK: ignore KeyboardInterrupt exception (jmoskovc@redhat.com)
+- added ticket uploader plugin (gavin@redhat.com) (zprikryl@redhat.com)
+- GUI: added UI for global settings (just preview, not usable!) (jmoskovc@redhat.com)
+- Add checker if bugzilla login and password are filled in. (npajkovs@redhat.com)
+- Add new config option InstallDebuginfo into CCpp.conf (npajkovs@redhat.com)
+- translation updates
+- many other fixes
+
 * Fri Sep  4 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.8.5-1
 - new version
 - APPLET: added about dialog, removed popup, if icon is not visible, fixed (trac#43) (jmoskovc@redhat.com)
