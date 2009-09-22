@@ -28,8 +28,6 @@
 class CApplet
 {
     private:
-        static const gchar *menu_xml;
-
         GtkStatusIcon* m_pStatusIcon;
         GObject *m_pMenu;
         GtkBuilder *m_pBuilder;
@@ -39,16 +37,16 @@ class CApplet
         GObject *m_pAboutDialog;
 
         NotifyNotification *m_pNotification;
-        std::map<int, std::string> m_mapEvents;
+//        std::map<int, std::string> m_mapEvents;
         bool m_bDaemonRunning;
 
     public:
         CApplet();
         ~CApplet();
         void ShowIcon();
-        void HideIcon();
+//        void HideIcon();
         //void DisableIcon();
-        void BlinkIcon(bool pBlink);
+//        void BlinkIcon(bool pBlink);
         void SetIconTooltip(const char *format, ...);
         void CrashNotify(const char *format, ...);
         void Disable(const char *reason);
@@ -57,8 +55,8 @@ class CApplet
         // or ask the daemon every time?
         // maybe just events which occured during current session
         // map::
-        int AddEvent(int pUUID, const std::string& pProgname);
-        int RemoveEvent(int pUUID);
+//        int AddEvent(int pUUID, const std::string& pProgname);
+//        int RemoveEvent(int pUUID);
 
     protected:
         //@@TODO applet menus

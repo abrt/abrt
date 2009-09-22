@@ -30,7 +30,7 @@
 #include "CCApplet.h"
 
 
-const gchar *CApplet::menu_xml =
+static const gchar menu_xml[] =
         "<?xml version=\"1.0\"?>\
 <interface>\
   <requires lib=\"gtk+\" version=\"2.16\"/>\
@@ -110,39 +110,44 @@ CApplet::CApplet()
 {
     m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
     m_bDaemonRunning = true;
+
     notify_init("ABRT");
     m_pNotification = notify_notification_new_with_status_icon("Warning", NULL, NULL, m_pStatusIcon);
     notify_notification_set_urgency(m_pNotification, NOTIFY_URGENCY_CRITICAL);
     notify_notification_set_timeout(m_pNotification, 5000);
+
     gtk_status_icon_set_visible(m_pStatusIcon, FALSE);
+
     g_signal_connect(G_OBJECT(m_pStatusIcon), "activate", GTK_SIGNAL_FUNC(CApplet::OnAppletActivate_CB), this);
     g_signal_connect(G_OBJECT(m_pStatusIcon), "popup_menu", GTK_SIGNAL_FUNC(CApplet::OnMenuPopup_cb), this);
-    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
+
+//    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
+
     m_pBuilder = gtk_builder_new();
-    if (gtk_builder_add_from_string(m_pBuilder, menu_xml, strlen(menu_xml), NULL))
-    //if (gtk_builder_add_from_file(m_pBuilder, "popup.GtkBuilder", NULL))
+    if (!gtk_builder_add_from_string(m_pBuilder, menu_xml, sizeof(menu_xml)-1, NULL))
+    //if (!gtk_builder_add_from_file(m_pBuilder, "popup.GtkBuilder", NULL))
     {
-        m_pMenu = gtk_builder_get_object(m_pBuilder, "popup_menu");
-        //gtk_menu_attach_to_widget(GTK_MENU(m_pMenu), GTK_WIDGET(m_pStatusIcon), NULL);
-        m_pmiHide = gtk_builder_get_object(m_pBuilder, "miHide");
-        if (m_pmiHide != NULL)
-        {
-            g_signal_connect(m_pmiHide,"activate", G_CALLBACK(CApplet::onHide_cb), this);
-        }
-        m_pmiQuit = gtk_builder_get_object(m_pBuilder, "miQuit");
-        if (m_pmiQuit != NULL)
-        {
-            g_signal_connect(m_pmiQuit,"activate",G_CALLBACK(gtk_main_quit),NULL);
-        }
-        m_pAboutDialog = gtk_builder_get_object(m_pBuilder, "aboutdialog");
-        m_pmiAbout = gtk_builder_get_object(m_pBuilder, "miAbout");
-        {
-            g_signal_connect(m_pmiAbout, "activate", G_CALLBACK(CApplet::onAbout_cb),m_pAboutDialog);
-        }
+        error_msg("Can't create menu from the description, popup won't be available");
+        return;
     }
-    else
+
+    m_pMenu = gtk_builder_get_object(m_pBuilder, "popup_menu");
+    //gtk_menu_attach_to_widget(GTK_MENU(m_pMenu), GTK_WIDGET(m_pStatusIcon), NULL);
+    m_pmiHide = gtk_builder_get_object(m_pBuilder, "miHide");
+    if (m_pmiHide != NULL)
     {
-        fprintf(stderr, _("Can't create menu from the description, popup won't be available!\n"));
+        g_signal_connect(m_pmiHide, "activate", G_CALLBACK(CApplet::onHide_cb), this);
+    }
+    m_pmiQuit = gtk_builder_get_object(m_pBuilder, "miQuit");
+    if (m_pmiQuit != NULL)
+    {
+        g_signal_connect(m_pmiQuit, "activate", G_CALLBACK(gtk_main_quit), NULL);
+    }
+    m_pAboutDialog = gtk_builder_get_object(m_pBuilder, "aboutdialog");
+    m_pmiAbout = gtk_builder_get_object(m_pBuilder, "miAbout");
+    if (m_pmiAbout != NULL)
+    {
+        g_signal_connect(m_pmiAbout, "activate", G_CALLBACK(CApplet::onAbout_cb), m_pAboutDialog);
     }
 }
 
@@ -160,13 +165,9 @@ void CApplet::SetIconTooltip(const char *format, ...)
     buf = NULL;
     n = vasprintf(&buf, format, args);
     va_end(args);
-    if (n >= 0 && buf)
-    {
-        gtk_status_icon_set_tooltip_text(m_pStatusIcon, buf);
-        free(buf);
-    }
-    /* else: out of memory. Let's not do anything,
-     * or else it may only get worse */
+
+    gtk_status_icon_set_tooltip_text(m_pStatusIcon, (n >= 0 && buf) ? buf : "");
+    free(buf);
 }
 
 void CApplet::CrashNotify(const char *format, ...)
@@ -188,7 +189,7 @@ void CApplet::CrashNotify(const char *format, ...)
         g_print(err->message);
 }
 
-void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data)
+void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data)
 {
     CApplet *applet = (CApplet *)user_data;
     if (applet->m_bDaemonRunning)
@@ -216,7 +217,10 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
 {
     if (((CApplet *)user_data)->m_pMenu != NULL)
     {
-        gtk_menu_popup(GTK_MENU(((CApplet *)user_data)->m_pMenu),NULL,NULL,gtk_status_icon_position_menu,status_icon,button,activate_time);
+        gtk_menu_popup(GTK_MENU(((CApplet *)user_data)->m_pMenu),
+                NULL, NULL,
+                gtk_status_icon_position_menu,
+                status_icon, button, activate_time);
     }
 }
 
@@ -229,7 +233,7 @@ void CApplet::ShowIcon()
 
 void CApplet::onHide_cb(GtkMenuItem *menuitem, gpointer applet)
 {
-    ((CApplet*)applet)->HideIcon();
+    gtk_status_icon_set_visible(((CApplet*)applet)->m_pStatusIcon, false);
 }
 
 void CApplet::onAbout_cb(GtkMenuItem *menuitem, gpointer dialog)
@@ -239,10 +243,10 @@ void CApplet::onAbout_cb(GtkMenuItem *menuitem, gpointer dialog)
     gtk_widget_hide(GTK_WIDGET(dialog));
 }
 
-void CApplet::HideIcon()
-{
-    gtk_status_icon_set_visible(m_pStatusIcon, false);
-}
+//void CApplet::HideIcon()
+//{
+//    gtk_status_icon_set_visible(m_pStatusIcon, false);
+//}
 
 void CApplet::Disable(const char *reason)
 {
@@ -251,12 +255,14 @@ void CApplet::Disable(const char *reason)
     */
     m_bDaemonRunning = false;
     GdkPixbuf *gray_scaled;
-    GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(), GTK_STOCK_DIALOG_WARNING, 24, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
-    gray_scaled = gdk_pixbuf_copy(pixbuf);
+    GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
+                GTK_STOCK_DIALOG_WARNING, 24, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
     if (pixbuf)
     {
+        gray_scaled = gdk_pixbuf_copy(pixbuf);
         gdk_pixbuf_saturate_and_pixelate(pixbuf, gray_scaled, 0.0, NULL);
         gtk_status_icon_set_from_pixbuf(m_pStatusIcon, gray_scaled);
+//do we need to free pixbufs nere?
     }
     else
         error_msg("Can't load icon");
@@ -273,19 +279,19 @@ void CApplet::Enable(const char *reason)
     ShowIcon();
 }
 
-int CApplet::AddEvent(int pUUID, const std::string& pProgname)
-{
-    m_mapEvents[pUUID] = "pProgname";
-    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
-    return 0;
-}
-
-int CApplet::RemoveEvent(int pUUID)
-{
-     m_mapEvents.erase(pUUID);
-     return 0;
-}
-void CApplet::BlinkIcon(bool pBlink)
-{
-    gtk_status_icon_set_blinking(m_pStatusIcon, pBlink);
-}
+//int CApplet::AddEvent(int pUUID, const std::string& pProgname)
+//{
+//    m_mapEvents[pUUID] = "pProgname";
+//    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
+//    return 0;
+//}
+//
+//int CApplet::RemoveEvent(int pUUID)
+//{
+//     m_mapEvents.erase(pUUID);
+//     return 0;
+//}
+//void CApplet::BlinkIcon(bool pBlink)
+//{
+//    gtk_status_icon_set_blinking(m_pStatusIcon, pBlink);
+//}
