@@ -530,7 +530,7 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
         if (!(event->mask & IN_ISDIR))
         {
             // Happens all the time during normal run
-            //VERB3 log("File '%s' creation detectenamed, ignoring", name);
+            //VERB3 log("File '%s' creation detected, ignoring", name);
             continue;
         }
 
