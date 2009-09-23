@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-21 02:54+0000\n"
-"PO-Revision-Date: 2009-09-21 16:25+0530\n"
+"POT-Creation-Date: 2009-09-23 04:48+0000\n"
+"PO-Revision-Date: 2009-09-23 12:04+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -239,7 +239,7 @@ msgstr ""
 msgid "Report done"
 msgstr "ವರದಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -269,23 +269,23 @@ msgstr "ಅಭಿಪ್ರಾಯ"
 msgid "Send"
 msgstr "ಕಳುಹಿಸು"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಆರಿಸಿ</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್ ಅನ್ನು ಆರಿಸಿ</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "ಈ ಕಾರ್ಯವನ್ನು ತೆಗೆದು ಹಾಕಿ"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "ಈ ಕ್ರಿಯೆಯನ್ನು ತೆಗೆದು ಹಾಕಿ"
 
@@ -370,22 +370,26 @@ msgid "Settings"
 msgstr "ಸಿದ್ಧತೆಗಳು"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "ಈ ಕ್ರಿಯೆಯನ್ನು ಇನ್ನೂ ಸಹ ಅನ್ವಯಿಸಲಾಗಿಲ್ಲ!"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "ಆವೃತ್ತಿ:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "ಜಾಲತಾಣ:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
@@ -402,25 +406,17 @@ msgstr "ABRT ಸೇವೆಯನ್ನು ಆರಂಭಿಸಲಾಗಿದೆ"
 msgid "ABRT service is not running"
 msgstr "ABRT ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲ"
 
-#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
-#, c-format
-msgid "Pending events: %i"
-msgstr "ಬಾಕಿ ಇರುವ ಘಟನೆಗಳು: %i"
-
-#: ../src/Applet/CCApplet.cpp:145
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "ವಿವರಣೆಯಿಂದ ಮೆನುವನ್ನು ರಚಿಸಲಾಗಲಿಲ್ಲ, ಪುಟಿಕೆಯು ಲಭ್ಯವಿರುವುದಿಲ್ಲ!\n"
-
-#: ../src/Applet/CCApplet.cpp:184
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "ಎಚ್ಚರಿಕೆ"
 
-#: ../src/Daemon/Daemon.cpp:525
+#: ../src/Daemon/Daemon.cpp:545
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
-msgstr "ವರದಿಯ ಗಾತ್ರವು ಕೋಟವನ್ನು ಮೀರಿದೆ. abrt.conf ನಲ್ಲಿ ವ್ಯವಸ್ಥೆಯ MaxCrashReportsSize ಅನ್ನು ಪರಿಶೀಲಿಸಿ."
+msgstr ""
+"ವರದಿಯ ಗಾತ್ರವು ಕೋಟವನ್ನು ಮೀರಿದೆ. abrt.conf ನಲ್ಲಿ ವ್ಯವಸ್ಥೆಯ MaxCrashReportsSize ಅನ್ನು "
+"ಪರಿಶೀಲಿಸಿ."
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
@@ -503,24 +499,20 @@ msgstr "ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್�
 msgid "Executing RunApp plugin..."
 msgstr "RunApp ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಕಾರ್ಯಗತಗೊಳಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "ಕಡತ ವರ್ಗಾವಣೆ: URL ಅನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/FileTransfer.cpp:68
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "ಆರ್ಕೈವ್ %s ಅನ್ನು %s ಮೂಲಕ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/FileTransfer.cpp:120
-msgid "Creating an archive..."
-msgstr "ಒಂದು ಆರ್ಕೈವ್ ಅನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
-
-#: ../lib/Plugins/FileTransfer.cpp:175
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "ಕಡತ ವರ್ಗಾವಣೆ: ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): ಒಂದು ಆರ್ಕೈವ್ ಅನ್ನು ರಚಿಸಲು ಹಾಗು ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: "
 
