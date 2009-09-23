@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.9
-Release: 1%{?dist}
+Release: 2%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -59,6 +59,7 @@ Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
 Obsoletes: bug-buddy
+Provides: bug-buddy
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -354,6 +355,9 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed Sep 23 2009  jiri Moskovcak <jmoskovc@redhat.com> 0.0.9-2
+- added bug-buddy to provides rhbz#524934
+
 * Tue Sep 22 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.9-1
 - new version
 - comments and how to reproduce are stored now (npajkovs@redhat.com)
