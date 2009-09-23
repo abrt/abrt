@@ -138,7 +138,7 @@ PLUGIN_INFO(REPORTER,
             CKerneloopsReporter,
             "KerneloopsReporter",
             "0.0.1",
-            "Sends the Kerneloops crash information to Kerneloopsoops.org",
+            "Sends the Kerneloops crash information to Kerneloops.org",
             "anton@redhat.com",
             "http://people.redhat.com/aarapov",
             PLUGINS_LIB_DIR"/KerneloopsReporter.GTKBuilder");
