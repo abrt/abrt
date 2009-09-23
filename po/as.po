@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-22 04:44+0000\n"
-"PO-Revision-Date: 2009-09-22 14:42+0530\n"
+"POT-Creation-Date: 2009-09-23 04:48+0000\n"
+"PO-Revision-Date: 2009-09-23 13:55+0530\n"
 "Last-Translator: \n"
 "Language-Team: Assamese <>\n"
 "MIME-Version: 1.0\n"
@@ -190,7 +190,8 @@ msgstr "%s ৰ কাৰণে uid পোৱা ন'গ'ল"
 
 #: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>বিপৰ্যয়ৰ তথ্য প্ৰতিবেদন কৰা হৈছে । ৰিপোৰ্ট(সমূহ) নিম্নলিখিত অৱস্থান উপস্থিত  আছে:</b>\n"
+msgstr ""
+"<b>বিপৰ্যয়ৰ তথ্য প্ৰতিবেদন কৰা হৈছে । ৰিপোৰ্ট(সমূহ) নিম্নলিখিত অৱস্থান উপস্থিত  আছে:</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:288
 msgid ""
@@ -232,7 +233,7 @@ msgstr "এইটো পুনঃ সঞ্চালনৰ সংক্ষিপ
 msgid "Report done"
 msgstr "ৰিপোৰ্ট বনোৱা হ'ল"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -262,23 +263,23 @@ msgstr "বক্তব্য"
 msgid "Send"
 msgstr "প্ৰেৰণ কৰক"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>প্লাগ-ইন বাচক</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>তথ্যভঁৰালৰ বেক-এন্ড নিৰ্ব্বাচন কৰক</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "এই কাম আঁতৰাওক"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "এই কাৰ্য্য আঁতৰাওক"
 
@@ -363,22 +364,26 @@ msgid "Settings"
 msgstr "পছন্দ"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "এই কাৰ্য্যক্ষমতা এতিয়াও বাস্তবায়িত নহয়!"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "সংস্কৰণ:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "ৱেব ছাইট:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
@@ -395,17 +400,7 @@ msgstr "ABRT সেৱ আৰম্ভ কৰা হৈছে"
 msgid "ABRT service is not running"
 msgstr "ABRT সেৱা বৰ্তমানে নাই চলা"
 
-#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
-#, c-format
-msgid "Pending events: %i"
-msgstr "অপেক্ষাৰত কাম: %i"
-
-#: ../src/Applet/CCApplet.cpp:145
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "বিৱৰণৰ তথ্য প্ৰয়োগ কৰি তালিকা সৃষ্টি কৰিবলৈ ব্যৰ্থ, পপ-আপ উপলব্ধ ন'হ'ব!\n"
-
-#: ../src/Applet/CCApplet.cpp:184
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "সতৰ্কবাণী"
 
@@ -413,7 +408,9 @@ msgstr "সতৰ্কবাণী"
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
-msgstr "ক'টাতকৈ আকাৰ অধিক হোৱা প্ৰতিবেদন কৰক । অনুগ্ৰহ কৰি abrt.conf ত প্ৰণালীৰ MaxCrashReportsSize ৰ মান চাওক ।"
+msgstr ""
+"ক'টাতকৈ আকাৰ অধিক হোৱা প্ৰতিবেদন কৰক । অনুগ্ৰহ কৰি abrt.conf ত প্ৰণালীৰ "
+"MaxCrashReportsSize ৰ মান চাওক ।"
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
@@ -496,24 +493,20 @@ msgstr "ৰিপোৰ্ট নিৰ্মাণ কৰক..."
 msgid "Executing RunApp plugin..."
 msgstr "RunApp প্লাগ-ইন সঞ্চালনা..."
 
-#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL উল্লিখিত নহয়"
 
-#: ../lib/Plugins/FileTransfer.cpp:68
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "%s আৰ্কাইভ %s ৰ মাধ্যমে প্ৰেৰিত হৈছে"
 
-#: ../lib/Plugins/FileTransfer.cpp:120
-msgid "Creating an archive..."
-msgstr "এটা আৰ্কাইভ নিৰ্মাণ কৰক..."
-
-#: ../lib/Plugins/FileTransfer.cpp:175
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "নথিপত্ৰ পৰিবহণ: ৰিপোৰ্ট নিৰ্মাণ কৰক..."
 
-#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): আৰ্কাইভ নিৰ্মাণ কৰি প্ৰেৰণ কৰিবলৈ ব্যৰ্থ: "
 
@@ -536,6 +529,15 @@ msgstr "sosreport সঞ্চালিত হৈছে: "
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "sosreport সঞ্চালনা সমাপ্ত"
+
+#~ msgid "Pending events: %i"
+#~ msgstr "অপেক্ষাৰত কাম: %i"
+
+#~ msgid "Can't create menu from the description, popup won't be available!\n"
+#~ msgstr "বিৱৰণৰ তথ্য প্ৰয়োগ কৰি তালিকা সৃষ্টি কৰিবলৈ ব্যৰ্থ, পপ-আপ উপলব্ধ ন'হ'ব!\n"
+
+#~ msgid "Creating an archive..."
+#~ msgstr "এটা আৰ্কাইভ নিৰ্মাণ কৰক..."
 
 #~ msgid "Applet is already running."
 #~ msgstr "এপ্লেট বৰ্তমানে চলিছে ।"
