@@ -1,4 +1,4 @@
-# translation of abrt.master.zh_TW(2).po to Traditional Chinese
+# translation of abrt.master.po to Traditional Chinese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
@@ -6,10 +6,10 @@
 # Terry Chuang <tchuang@redhat.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.zh_TW(2)\n"
+"Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-21 19:54+0000\n"
-"PO-Revision-Date: 2009-09-22 16:17+1000\n"
+"POT-Creation-Date: 2009-09-22 19:32+0000\n"
+"PO-Revision-Date: 2009-09-23 10:51+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
 "Language-Team: Traditional Chinese <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -113,11 +113,15 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"本程式為自由軟體；您可依據自由軟體基金會所發表的 GNU 通用公共許可證就本程式再為發佈與／或修改；無論您依據的是本授權的第二版或（您自行選擇的）任一日後發行之版本。\n"
+"本程式為自由軟體；您可依據自由軟體基金會所發表的 GNU 通用公共許可證就本程式再"
+"為發佈與／或修改；無論您依據的是本授權的第二版或（您自行選擇的）任一日後發行"
+"之版本。\n"
 "\n"
-"本程式是基於使用目的而加以發佈，然而不負任何擔保責任；亦無對適售性或特定目的適用性所為的默示性擔保。詳情請參照 GNU 通用公共許可證。\n"
+"本程式是基於使用目的而加以發佈，然而不負任何擔保責任；亦無對適售性或特定目的"
+"適用性所為的默示性擔保。詳情請參照 GNU 通用公共許可證。\n"
 "\n"
-"您應該已收到了附隨於本程式的 GNU 通用公共授權的副本。若沒有收到的話，請至 <http://www.gnu.org/licenses/>。"
+"您應該已收到了附隨於本程式的 GNU 通用公共授權的副本。若沒有收到的話，請至 "
+"<http://www.gnu.org/licenses/>。"
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "Working..."
@@ -227,7 +231,7 @@ msgstr "簡述如何可再次讓這項問題出現，或描述您做過甚麼…
 msgid "Report done"
 msgstr "回報完成"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -257,23 +261,23 @@ msgstr "註釋"
 msgid "Send"
 msgstr "發送"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>選擇插件</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>選擇資料庫後端</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "移除這項工作"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "移除這項動作"
 
@@ -358,22 +362,26 @@ msgid "Settings"
 msgstr "設定"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "此功能還未實做！"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "版本："
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "網站："
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
@@ -390,17 +398,7 @@ msgstr "ABRT 服務已經啟動了"
 msgid "ABRT service is not running"
 msgstr "ABRT 服務沒有在運作"
 
-#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
-#, c-format
-msgid "Pending events: %i"
-msgstr "等待進行的事件: %i"
-
-#: ../src/Applet/CCApplet.cpp:145
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "無法由描述來建立選單，彈出視窗將無法使用！\n"
-
-#: ../src/Applet/CCApplet.cpp:184
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "警告"
 
@@ -491,24 +489,20 @@ msgstr "報告書生成中……"
 msgid "Executing RunApp plugin..."
 msgstr "正在執行 RunApp  插件中…"
 
-#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "檔案傳輸：未指定 URL"
 
-#: ../lib/Plugins/FileTransfer.cpp:68
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "正在透過 %s 來傳送壓縮檔 %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:120
-msgid "Creating an archive..."
-msgstr "正在建立壓縮檔…"
-
-#: ../lib/Plugins/FileTransfer.cpp:175
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "檔案傳輸：建立報告中…"
 
-#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run()：無法建立和傳送壓縮檔："
 

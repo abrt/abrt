@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-21 08:47+0000\n"
-"PO-Revision-Date: 2009-09-21 15:54+0530\n"
+"POT-Creation-Date: 2009-09-23 04:48+0000\n"
+"PO-Revision-Date: 2009-09-23 13:49+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
 "Language-Team: Hindi <hindi.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -236,7 +237,7 @@ msgstr "संक्षिप्त विवरण कि कैसे इस�
 msgid "Report done"
 msgstr "रिपोर्ट संपन्न"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -266,23 +267,23 @@ msgstr "टिप्पणी"
 msgid "Send"
 msgstr "भेजें"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>प्लगिन चुनें</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>डेटाबेस बैकेंड चुनें</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "इस कार्य को हटाएँ"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "इस क्रिया को हटाएँ"
 
@@ -367,22 +368,26 @@ msgid "Settings"
 msgstr "सेटिंग"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "प्रकार्य अभी तक लागू नहीं है!"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "संस्करण:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "वेब साइट:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
@@ -399,27 +404,17 @@ msgstr "ABRT सेवा शुरू की गई है"
 msgid "ABRT service is not running"
 msgstr "ABRT सेवा नहीं चल रहा है"
 
-#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
-#, c-format
-msgid "Pending events: %i"
-msgstr "स्थगित घटना: %i"
-
-#: ../src/Applet/CCApplet.cpp:145
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "विवरण से मेन्यू नहीं बना सकता है, पॉपअप उपलब्ध नहीं होगा!\n"
-
-#: ../src/Applet/CCApplet.cpp:184
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "चेतावनी"
 
-#: ../src/Daemon/Daemon.cpp:525
+#: ../src/Daemon/Daemon.cpp:545
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
-"कोटा से बढ़ा हुआ आकार रिपोर्ट करें. कृपया सिस्टम के MaxCrashReportsSize "
-"मान को abrt.conf में जाँचें."
+"कोटा से बढ़ा हुआ आकार रिपोर्ट करें. कृपया सिस्टम के MaxCrashReportsSize मान को abrt."
+"conf में जाँचें."
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
@@ -502,24 +497,20 @@ msgstr "कोई रिपोर्ट बना रहा है..."
 msgid "Executing RunApp plugin..."
 msgstr "RunApp प्लगिन चला रहा है..."
 
-#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL निर्दिष्ट नहीं"
 
-#: ../lib/Plugins/FileTransfer.cpp:68
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "अभिलेख %s को %s के द्वारा भेज रहा है"
 
-#: ../lib/Plugins/FileTransfer.cpp:120
-msgid "Creating an archive..."
-msgstr "एक अभिलेख बना रहा है..."
-
-#: ../lib/Plugins/FileTransfer.cpp:175
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "फ़ाइल हस्तांतरण: कोई रिपोर्ट बना रहा है..."
 
-#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): एक अभिलेख नहीं बना सकता है और भेज सकता है: "
 

@@ -1,22 +1,22 @@
+# translation of ABRT.po to
 # Italian translation of ABRT.
 # Copyright (C) 2009 Red Hat, Inc.
 # This file is distributed under the same license as the ABRT package.
 # Pierro Silvio <perplesso82@gmail.com>, 2009.
 # Guido Grazioli <guido.grazioli@gmail.com>, 2009.
-# , fuzzy
-# 
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 11:59+0000\n"
-"PO-Revision-Date: 2009-09-20 13:59+0200\n"
-"Last-Translator: Pierro Silvio <perplesso82@gmail.com>\n"
-"Language-Team: Italian\n"
+"POT-Creation-Date: 2009-09-22 19:32+0000\n"
+"PO-Revision-Date: 2009-09-23 10:07+1000\n"
+"Last-Translator: \n"
+"Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
 
 #: ../src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
@@ -182,7 +182,8 @@ msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
-"Errore durante il caricamento della dumplist, controllare se il demone abrt è in esecuzione\n"
+"Errore durante il caricamento della dumplist, controllare se il demone abrt "
+"è in esecuzione\n"
 " %s"
 
 #: ../src/Gui/CCMainWindow.py:201
@@ -223,7 +224,8 @@ msgid ""
 "information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>ATTENZIONE</b>, si stanno per inviare dati che potrebbero contenere informazioni sensibili.\n"
+"<b>ATTENZIONE</b>, si stanno per inviare dati che potrebbero contenere "
+"informazioni sensibili.\n"
 "Si desidera comunque trasmettere <b>%s</b>?\n"
 
 #: ../src/Gui/CCReporterDialog.py:111
@@ -234,7 +236,7 @@ msgstr "Breve descrizione di come riprodurre ciò oppure cosa si stava facendo..
 msgid "Report done"
 msgstr "Report fatto"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -264,23 +266,23 @@ msgstr "Commento"
 msgid "Send"
 msgstr "Invia"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancella"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>Selezionare plugin</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>Selezionare backend di database</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "Rimuovi questo compito"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "Rimuovi questa azione"
 
@@ -365,149 +367,120 @@ msgid "Settings"
 msgstr "Impostazioni"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "Questa funzione non è ancora implementata!"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "Versione:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "Sito web:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-aggiungi"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-chiudi"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-rimuovi"
 
-#: ../src/Applet/Applet.cpp:45
+#: ../src/Applet/Applet.cpp:76
 #, c-format
-msgid "A crash in package %s has been detected!"
-msgstr "È stato rilevato un crash nel pacchetto %s !"
+msgid "A crash in package %s has been detected"
+msgstr "È stato rilevato un crash nel pacchetto %s"
 
-#. applet is already running
-#: ../src/Applet/Applet.cpp:89
-msgid "Applet is already running."
-msgstr "L'applet è già in esecuzione."
-
-#: ../src/Applet/Applet.cpp:104 ../src/Applet/Applet.cpp:105
-#: ../src/Applet/CCApplet.cpp:221
-msgid "ABRT service is not running"
-msgstr "Il servizio ABRT non è in esecuzione"
-
-#: ../src/Applet/CCApplet.cpp:136 ../src/Applet/CCApplet.cpp:368
-#, c-format
-msgid "Pending events: %i"
-msgstr "Eventi in sospeso: %i"
-
-#: ../src/Applet/CCApplet.cpp:161
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "Impossibile creare il menu dalla descrizione, il popup non sarà disponibile!\n"
-
-#: ../src/Applet/CCApplet.cpp:190
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectCrashHandler"
-msgstr ""
-"Questa è la gestione predefinita, bisogna registrare da se con ConnectCrashHandler"
-
-#: ../src/Applet/CCApplet.cpp:210
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectQuotaExceedHandler"
-msgstr ""
-"Questa è la gestione predefinita, bisogna registrare da se con ConnectQuotaExceedHandler"
-
-#: ../src/Applet/CCApplet.cpp:225
+#: ../src/Applet/Applet.cpp:145
 msgid "ABRT service has been started"
 msgstr "Il servizio ABRT è stato avviato"
 
-#: ../src/Applet/CCApplet.cpp:256
-msgid "Out of memory"
-msgstr "Memoria esaurita"
+#: ../src/Applet/Applet.cpp:147 ../src/Applet/Applet.cpp:261
+msgid "ABRT service is not running"
+msgstr "Il servizio ABRT non è in esecuzione"
 
-#: ../src/Applet/CCApplet.cpp:272
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "Attenzione"
 
-#: ../src/Daemon/Daemon.cpp:526
+#: ../src/Daemon/Daemon.cpp:545
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
-"La dimensione del report ha superato la quota. Controllare il valore MaxCrashReportSize in abrt.conf."
+"La dimensione del report ha superato la quota. Controllare il valore "
+"MaxCrashReportSize in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:84
+#: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Login e password vuoti. Controllare Bugzilla.conf prego."
 
-#: ../lib/Plugins/Bugzilla.cpp:228
+#: ../lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
 msgstr "Il bug è già riportato: "
 
-#: ../lib/Plugins/Bugzilla.cpp:283
+#: ../lib/Plugins/Bugzilla.cpp:282
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "Il file binario %s non verrà riportato."
 
-#: ../lib/Plugins/Bugzilla.cpp:353
+#: ../lib/Plugins/Bugzilla.cpp:352
 msgid "New bug id: "
 msgstr "Nuovo id bug: "
 
-#: ../lib/Plugins/Bugzilla.cpp:422
+#: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr "Controllo di duplicati..."
 
-#: ../lib/Plugins/Bugzilla.cpp:425 ../lib/Plugins/Bugzilla.cpp:437
+#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "Accesso in bugzilla in corso..."
 
-#: ../lib/Plugins/Bugzilla.cpp:428
+#: ../lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
 msgstr "Controllo CC e aggiunta commento +1..."
 
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr "Creazione nuovo bug..."
 
-#: ../lib/Plugins/Bugzilla.cpp:454
+#: ../lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr "Log out..."
 
-#: ../lib/Plugins/Kerneloops.cpp:38
-msgid "Getting local/global universal unique identification..."
-msgstr "Ottengo identificazione unica universale locale/globale..."
+#: ../lib/Plugins/Kerneloops.cpp:37
+msgid "Getting local universal unique identification"
+msgstr "Acquisizione identificazione unica universale locale..."
 
-#: ../lib/Plugins/CCpp.cpp:147
+#: ../lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
 msgstr "Ottengo backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:385
+#: ../lib/Plugins/CCpp.cpp:384
 msgid "Searching for debug-info packages..."
 msgstr "Ricerca dei pacchetti debug-info in corso..."
 
-#: ../lib/Plugins/CCpp.cpp:419
+#: ../lib/Plugins/CCpp.cpp:418
 msgid "Downloading and installing debug-info packages..."
 msgstr "Download e installazione pacchetti debug-info in corso..."
 
-#: ../lib/Plugins/CCpp.cpp:481
+#: ../lib/Plugins/CCpp.cpp:480
 msgid "Getting local universal unique identification..."
 msgstr "Ottenendo identificazione unica universale locale..."
 
-#: ../lib/Plugins/CCpp.cpp:500
+#: ../lib/Plugins/CCpp.cpp:499
 msgid "Getting global universal unique identification..."
 msgstr "Ottenendo identificazione unica universale globale..."
 
-#: ../lib/Plugins/CCpp.cpp:552
+#: ../lib/Plugins/CCpp.cpp:551
 msgid "Starting report creation..."
 msgstr "Avvio di creazione report in corso..."
 
-#: ../lib/Plugins/CCpp.cpp:581
+#: ../lib/Plugins/CCpp.cpp:580
 msgid "Skipping debuginfo installation"
 msgstr "Salto dell'installazione debuginfo"
 
@@ -515,7 +488,7 @@ msgstr "Salto dell'installazione debuginfo"
 msgid "Creating and submitting a report..."
 msgstr "Creazione e sottomissione di un report in corso..."
 
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
 msgstr "Creazione del report in corso..."
 
@@ -523,24 +496,20 @@ msgstr "Creazione del report in corso..."
 msgid "Executing RunApp plugin..."
 msgstr "Esecuzione del plugin RunApp..."
 
-#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/FileTransfer.cpp:247
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL non specificato"
 
-#: ../lib/Plugins/FileTransfer.cpp:69
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "Invio archivio %s tramite %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:121
-msgid "Creating an archive..."
-msgstr "Creazione di un archivio in corso..."
-
-#: ../lib/Plugins/FileTransfer.cpp:176
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "File Transfer: Creazione di un report in corso..."
 
-#: ../lib/Plugins/FileTransfer.cpp:197 ../lib/Plugins/FileTransfer.cpp:226
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): Impossibile creare e inviare un archivio: "
 
@@ -548,19 +517,19 @@ msgstr "CFileTransfer::Run(): Impossibile creare e inviare un archivio: "
 msgid "Creating kernel oops crash reports..."
 msgstr "Creazione di kernel oops crash report..."
 
-#: ../lib/Plugins/Mailx.cpp:110
+#: ../lib/Plugins/Mailx.cpp:109
 msgid "Sending an email..."
 msgstr "Invio della mail in corso..."
 
-#: ../lib/Plugins/SOSreport.cpp:116
+#: ../lib/Plugins/SOSreport.cpp:113
 msgid "Executing SOSreport plugin..."
 msgstr "Esecuzione del plugin SOSreport..."
 
-#: ../lib/Plugins/SOSreport.cpp:138
+#: ../lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
 msgstr "esecuzione di sosreport: "
 
-#: ../lib/Plugins/SOSreport.cpp:153
+#: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "esecuzione di sosreport eseguita"
 
