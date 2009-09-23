@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-20 14:52+0000\n"
-"PO-Revision-Date: 2009-09-20 21:44+0300\n"
+"POT-Creation-Date: 2009-09-23 08:51+0000\n"
+"PO-Revision-Date: 2009-09-23 17:36+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
 "MIME-Version: 1.0\n"
@@ -190,7 +190,8 @@ msgstr "Käyttäjänumeron %s käyttäjänimeä ei saatu selville"
 
 #: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>Tämä kaatuminen on raportoitu, raportit on nähtävillä osoitteessa:</b>\n"
+msgstr ""
+"<b>Tämä kaatuminen on raportoitu, raportit on nähtävillä osoitteessa:</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:288
 msgid ""
@@ -234,7 +235,7 @@ msgstr ""
 msgid "Report done"
 msgstr "Raportti on valmis"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -264,23 +265,23 @@ msgstr "Kommentti"
 msgid "Send"
 msgstr "Lähetä"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>Valitse liitännäinen</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>Valitse tietokannan taustajärjestelmä</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "Poista tämä työ"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "Poista tämä toiminto"
 
@@ -365,22 +366,26 @@ msgid "Settings"
 msgstr "Asetukset"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "Tätä toimintoa ei ole vielä toteutettu!"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "Versio:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "Verkkosivu:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
@@ -397,21 +402,11 @@ msgstr "ABRT-palvelu on käynnistetty"
 msgid "ABRT service is not running"
 msgstr "ABRT-palvelu ei ole käytössä"
 
-#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
-#, c-format
-msgid "Pending events: %i"
-msgstr "Tapahtumia jonossa: %i"
-
-#: ../src/Applet/CCApplet.cpp:145
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "Kuvauksesta ei voi luoda valikkoa, ponnahdusvalikko ei ole käytettävissä!\n"
-
-#: ../src/Applet/CCApplet.cpp:184
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "Varoitus"
 
-#: ../src/Daemon/Daemon.cpp:525
+#: ../src/Daemon/Daemon.cpp:545
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -500,24 +495,20 @@ msgstr "Luodaan ilmoitus..."
 msgid "Executing RunApp plugin..."
 msgstr "Suoritetaan RunApp-liitännäinen..."
 
-#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL:ää ei ole määritelty"
 
-#: ../lib/Plugins/FileTransfer.cpp:68
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "Lähetetään arkisto %s protokollan %s avulla"
 
-#: ../lib/Plugins/FileTransfer.cpp:120
-msgid "Creating an archive..."
-msgstr "Luodaan arkisto..."
-
-#: ../lib/Plugins/FileTransfer.cpp:175
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
 
-#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): Ei voitu luoda ja lähettää arkistoa:"
 
@@ -540,6 +531,17 @@ msgstr "suoritetaan sosreport:"
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "sosreportin suoritus valmistui"
+
+#~ msgid "Pending events: %i"
+#~ msgstr "Tapahtumia jonossa: %i"
+
+#~ msgid "Can't create menu from the description, popup won't be available!\n"
+#~ msgstr ""
+#~ "Kuvauksesta ei voi luoda valikkoa, ponnahdusvalikko ei ole "
+#~ "käytettävissä!\n"
+
+#~ msgid "Creating an archive..."
+#~ msgstr "Luodaan arkisto..."
 
 #~ msgid ""
 #~ "Error while opening plugin settings UI: \n"
