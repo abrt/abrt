@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-22 04:44+0000\n"
-"PO-Revision-Date: 2009-09-22 12:31+0530\n"
+"POT-Creation-Date: 2009-09-23 14:58+0000\n"
+"PO-Revision-Date: 2009-09-23 22:37+0530\n"
 "Last-Translator: I. Felix <ifelix@redhat.com>\n"
 "Language-Team: Tamil <fedora-trans-ta@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -239,7 +240,7 @@ msgstr "இதனை மீண்டும் உருவாக்குவத�
 msgid "Report done"
 msgstr "அறிக்கை முடிந்தது"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -269,23 +270,23 @@ msgstr "குறிப்பு"
 msgid "Send"
 msgstr "அனுப்பு"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>கூடுதல் இணைப்பை தேர்ந்தெடு</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>தரவுத்தள பின்தளத்தை தேர்ந்தெடு</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "இந்த பணியை நீக்கு"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "இந்த செயலை நீக்கு"
 
@@ -370,22 +371,26 @@ msgid "Settings"
 msgstr "அமைவுகள்"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "இந்த செயல்பாடு இதுவரை செயல்படுத்தப்படவில்லை!"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "பதிப்பு:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "இணைய தளம்:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
@@ -402,17 +407,7 @@ msgstr "ABRT சேவை துவக்கப்பட்டது"
 msgid "ABRT service is not running"
 msgstr "ABRT சேவை இயங்கவில்லை"
 
-#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
-#, c-format
-msgid "Pending events: %i"
-msgstr "விடுபட்ட நிகழ்வுகள்: %i"
-
-#: ../src/Applet/CCApplet.cpp:145
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "விளக்கத்திலிருதநு மெனுவை உருவாக்க முடியவில்லை, பாப்அப் இல்லை!\n"
-
-#: ../src/Applet/CCApplet.cpp:184
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
@@ -420,7 +415,9 @@ msgstr "எச்சரிக்கை"
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
-msgstr "அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை abrt.conf.இல் சரிபார்க்கவும்."
+msgstr ""
+"அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை abrt.conf.இல் "
+"சரிபார்க்கவும்."
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
@@ -503,24 +500,20 @@ msgstr "ஒரு அறிக்கையை உருவாக்குகி�
 msgid "Executing RunApp plugin..."
 msgstr "RunApp கூடுதல் இணைப்பை இயக்குகிறது..."
 
-#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "கோப்பு இடமாற்றம்: URL குறிப்பிடப்படவில்லை"
 
-#: ../lib/Plugins/FileTransfer.cpp:68
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "காப்பு %sஐ %sவழியாக அனுப்புகிறது"
 
-#: ../lib/Plugins/FileTransfer.cpp:120
-msgid "Creating an archive..."
-msgstr "ஒரு காப்பினை உருவாக்குகிறது..."
-
-#: ../lib/Plugins/FileTransfer.cpp:175
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "கோப்பு இடமாற்றம்: ஒரு அறிக்கை உருவாக்குகிறது..."
 
-#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): ஒரு காப்பினை உருவாக்க மற்றும் அனுப்ப முடியவில்லை: "
 
