@@ -1,0 +1,115 @@
+	Design goals
+
+We want to catch kernel oopses, binary program crashes (coredumps)
+and interpreted languages crashes (Python exceptions, maybe more
+in the future).
+
+We want to support the following use cases:
+
+* Home/office user with minimal administration
+
+In this scenario, user expects that abrt will work "out of the box"
+with minimal configuration. It will be sufficient if crashes
+just show a GUI notification, and user can invoke a GUI tool
+to process the crash and report it to bugzilla etc.
+
+The configuration (like bugzilla address, username, passowrd)
+needs to be done via GUI dialogs from the same GUI tool.
+
+* Standalone server
+
+The server is installed by an admin. It may lack GUI.
+Admin is willing to do somewhat more complex configuration.
+Crashes should be recorded, and either processed at once
+or reported to the admin by email etc. Admin may log in
+and manually request crash(es) to be processed and reported,
+using GUI or CLI tools.
+
+* Mission critical servers, server farms etc.
+
+Admins are expected to be competent and willing to set up complex
+configurations. They might want to avoid any complex crash processing
+on the servers - for example, it does not make much sense and/or
+can be considered insecure to download debuginfo packages
+to such servers. Admins may want to send "raw" crash dumps
+to a dedicated server(s) for processing (backtrace, etc).
+
+
+	Design
+
+Abrt design should be flexible enough to accomodate all
+of the above usage scenarios.
+
+The description below is not what abrt does now.
+It is (currently incomplete) design notes on how we want
+it to achieve design goals.
+
+Since currently we do not know how to dump oops on demand,
+we can only poll for it. There is a small daemon which polls
+kernel message buffer and dumps oopses when it sees them.
+The dump is written into /var/cache/abrt/DIR.
+After this, daemon spawns "abrt-process -d /var/cache/abrt/DIR"
+which processes it according to configuration in /etc/abrt/*.conf.
+
+In order to catch binary crashes, we install a handler for it
+in /proc/sys/kernel/core_pattern (by setting it to
+"|/usr/libexec/hookCCpp /var/cache/abrt %p %s %u").
+When process dumps core, the dump is written into /var/cache/abrt/DIR.
+After this, hookCCpp spawns "abrt-process -d /var/cache/abrt/DIR"
+and terminates.
+
+When python program crashes, it invokes internel python subroutine
+which dumps crash info into ~/abrt/cache/DIR.
+[this is a tentative plan, currently we dump in /var/cache/abrt/DIR]
+After this, it spawns "abrt-process -d ~/abrt/cache/DIR"
+and terminates.
+
+[Problem: dumping to /var/cache/abrt/DIR needs world-writable
+/var/cache/abrt and allows user to go way over his
+disk quota. Dumping to ~/abrt/cache/DIR makes it difficult
+to present a list of all crashes which happened on the machine -
+for example, root-owned processes cannot even access user data
+in ~user/* if /home is on NFS4...
+]
+
+When user (admin) wants to see the list of dumped crashes and
+process them, he runs abrt-gui or abrt-cli. These programs
+perform a dbus call to "com.redhat.abrt" on a system dbus.
+If there is no program with this name on it, dbus autostart
+will invoke "abrt-process", which registers "com.redhat.abrt"
+and processes the call(s).
+
+abrt-process will terminate after a timeout (a few minutes)
+if no new dbus calls are arriving to it.
+
+The key dbus calls served by abrt-process are:
+
+- GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
+     of crashes for given uid
+     v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
+[see above the problem with producing this list]
+- CreateReport(UUID): starts creating a report for /var/cache/abrt/DIR with this UUID.
+     Returns job id (uint64).
+     After it returns, when report creation thread has finished,
+     JobDone(client_dbus_ID,UUID) dbus signal is emitted.
+- GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
+- Report(map_crash_report_t (map_vector_string_t)):
+     "Please report this crash": calls Report() of all registered reporter plugins
+     Returns report_status_t (map_vector_string_t) - the status of each call
+- DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool
+
+
+	Development plan
+
+Since current code does not match the palnned design, we need to gradually
+change the code to "morph" it into the desired shape. Planned steps:
+
+* Make abrt-gui "dbus-startable", so that abrt-gui can be started
+  even if abrtd does not run at the moment.
+* Add -t TIMEOUT_SEC option to abrtd.
+* ???
+* ???
+* ???
+* ???
+* ???
+* Take over the world

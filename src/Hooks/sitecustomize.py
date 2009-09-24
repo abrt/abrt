@@ -1,3 +1,8 @@
+# This special script is placed in
+# /usr/local/lib/pythonNNN/site-packages/sitecustomize.py
+# and python interpreter runs it automatically everytime
+# some python script is executed
+
 config = None
 conf = {}
 try:
