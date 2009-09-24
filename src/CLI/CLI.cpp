@@ -92,8 +92,7 @@ static vector_crash_infos_t call_GetCrashInfos()
 
     vector_crash_infos_t argout;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(reply, &in_iter)) /* no values */
-        error_msg_and_die("dbus call %s: return type mismatch", "GetCrashInfos");
+    dbus_message_iter_init(reply, &in_iter);
     int r = load_val(&in_iter, argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
         error_msg_and_die("dbus call %s: return type mismatch", "GetCrashInfos");
@@ -103,6 +102,8 @@ static vector_crash_infos_t call_GetCrashInfos()
 
 static map_crash_report_t call_CreateReport(const char* uuid)
 {
+    /* Yes, call name is not "CreateReport" but "GetJobResult".
+     * We need to clean up the names one day. */
     DBusMessage* msg = new_call_msg("GetJobResult");
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &uuid,
@@ -112,8 +113,7 @@ static map_crash_report_t call_CreateReport(const char* uuid)
 
     map_crash_report_t argout;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(reply, &in_iter)) /* no values */
-        error_msg_and_die("dbus call %s: return type mismatch", "GetJobResult");
+    dbus_message_iter_init(reply, &in_iter);
     int r = load_val(&in_iter, argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
         error_msg_and_die("dbus call %s: return type mismatch", "GetJobResult");

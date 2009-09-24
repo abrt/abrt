@@ -52,7 +52,7 @@ void CCommLayerServerDBus::QuotaExceed(const char* str)
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &str,
             DBUS_TYPE_INVALID);
-    VERB2 log("Quota exceeded");
+    VERB2 log("Sending signal QuotaExceed('%s')", str);
     send_flush_and_unref(msg);
 }
 
@@ -126,7 +126,6 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
 static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 {
     long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s() call from uid %ld", "GetCrashInfos", unix_uid);
     vector_crash_infos_t argout1 = GetCrashInfos(to_string(unix_uid));
 
     DBusMessageIter iter;
@@ -139,24 +138,19 @@ static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 
 static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 {
-    const char* pUUID;
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "CreateReport");
-        return -1;
-    }
-    int r = load_val(&in_iter, pUUID);
+    dbus_message_iter_init(call, &in_iter);
+    const char* pUUID;
+    r = load_val(&in_iter, pUUID);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "CreateReport");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
     const char* sender;
     long unix_uid = get_remote_uid(call, &sender);
-    VERB1 log("got %s('%s') call from sender '%s' uid %ld", "CreateReport", pUUID, sender, unix_uid);
     if (CreateReportThread(pUUID, to_string(unix_uid).c_str(), sender) != 0)
         return -1; /* can't create thread (err msg is already logged) */
 
@@ -170,23 +164,18 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 
 static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
 {
-    const char* pUUID;
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "GetJobResult");
-        return -1;
-    }
-    int r = load_val(&in_iter, pUUID);
+    dbus_message_iter_init(call, &in_iter);
+    const char* pUUID;
+    r = load_val(&in_iter, pUUID);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "GetJobResult");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
     long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s('%s') call from uid %ld", "GetJobResult", pUUID, unix_uid);
     map_crash_report_t report = GetJobResult(pUUID, to_string(unix_uid).c_str());
 
     DBusMessageIter out_iter;
@@ -199,23 +188,30 @@ static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
 
 static int handle_Report(DBusMessage* call, DBusMessage* reply)
 {
-    map_crash_report_t argin1;
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
+    dbus_message_iter_init(call, &in_iter);
+    map_crash_report_t argin1;
+    r = load_val(&in_iter, argin1);
+    if (r == ABRT_DBUS_ERROR)
     {
-        error_msg("dbus call %s: no parameters", "Report");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
-    int r = load_val(&in_iter, argin1);
-    if (r != ABRT_DBUS_LAST_FIELD)
+    /* Second parameter is optional */
+    map_map_string_t user_conf_data;
+    if (r == ABRT_DBUS_MORE_FIELDS)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "Report");
-        return -1;
+        r = load_val(&in_iter, user_conf_data);
+        if (r != ABRT_DBUS_LAST_FIELD)
+        {
+            error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
+            return -1;
+        }
     }
 
+//so far, user_conf_data is unused
     long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s(...) call from uid %ld", "Report", unix_uid);
     report_status_t argout1;
     try
     {
@@ -241,23 +237,18 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
 
 static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
 {
-    const char* argin1;
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "DeleteDebugDump");
-        return -1;
-    }
-    int r = load_val(&in_iter, argin1);
+    dbus_message_iter_init(call, &in_iter);
+    const char* argin1;
+    r = load_val(&in_iter, argin1);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "DeleteDebugDump");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
     long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s('%s') call from uid %ld", "DeleteDebugDump", argin1, unix_uid);
     bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid));
 
     dbus_message_append_args(reply,
@@ -282,18 +273,14 @@ static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 
 static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 {
-    const char* PluginName;
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "GetPluginSettings");
-        return -1;
-    }
-    int r = load_val(&in_iter, PluginName);
+    dbus_message_iter_init(call, &in_iter);
+    const char* PluginName;
+    r = load_val(&in_iter, PluginName);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "GetPluginSettings");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
@@ -310,26 +297,21 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
 static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
 {
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "SetPluginSettings");
-        return -1;
-    }
+    dbus_message_iter_init(call, &in_iter);
     std::string PluginName;
-    int r = load_val(&in_iter, PluginName);
+    r = load_val(&in_iter, PluginName);
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
-        if (r == ABRT_DBUS_LAST_FIELD)
-            error_msg("dbus call %s: too few parameters", "SetPluginSettings");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
     map_plugin_settings_t plugin_settings;
     r = load_val(&in_iter, plugin_settings);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "SetPluginSettings");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
@@ -343,18 +325,14 @@ static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
 static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
 {
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "RegisterPlugin");
-        return -1;
-    }
+    dbus_message_iter_init(call, &in_iter);
     const char* PluginName;
-    int r = load_val(&in_iter, PluginName);
+    r = load_val(&in_iter, PluginName);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "RegisterPlugin");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
@@ -367,18 +345,14 @@ static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
 
 static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
 {
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "UnRegisterPlugin");
-        return -1;
-    }
+    dbus_message_iter_init(call, &in_iter);
     const char* PluginName;
-    int r = load_val(&in_iter, PluginName);
+    r = load_val(&in_iter, PluginName);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "UnRegisterPlugin");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
@@ -402,18 +376,14 @@ static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
 
 static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
 {
+    int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(call, &in_iter))
-    {
-        error_msg("dbus call %s: no parameters", "SetSettings");
-        return -1;
-    }
+    dbus_message_iter_init(call, &in_iter);
     map_abrt_settings_t param1;
-    int r = load_val(&in_iter, param1);
+    r = load_val(&in_iter, param1);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
-        if (r == ABRT_DBUS_MORE_FIELDS)
-            error_msg("dbus call %s: extra parameters", "SetSettings");
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
 
@@ -433,7 +403,7 @@ static int handle_SetSettings(DBusMessage* call, DBusMessage* reply)
 static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg, void* data)
 {
     const char* member = dbus_message_get_member(msg);
-    log("%s(method:'%s')", __func__, member);
+    VERB1 log("%s(method:'%s')", __func__, member);
 
     set_client_name(dbus_message_get_sender(msg));
 
@@ -471,11 +441,14 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
 // "</node>\n"
 // Apart from a warning from abrt-gui, just sending error back works as well.
 // NB2: we may want to handle "Disconnected" here too.
-    if (r < 0) /* error */
+
+    if (r < 0)
     {
+        /* handle_XXX experienced an error (and did not send any reply) */
         dbus_message_unref(reply);
         if (dbus_message_get_type(msg) == DBUS_MESSAGE_TYPE_METHOD_CALL)
         {
+            /* Create and send error reply */
             reply = dbus_message_new_error(msg, DBUS_ERROR_FAILED, "not supported");
             if (!reply)
                 die_out_of_memory();

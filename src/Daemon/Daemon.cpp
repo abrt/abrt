@@ -56,9 +56,10 @@
  *      After it returns, when report creation thread has finished,
  *      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
  * - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
- * - Report(map_crash_report_t (map_vector_string_t)):
- *      "Please report this crash": calls Report() of all registered reporter plugins
- *      Returns report_status_t (map_vector_string_t) - the status of each call
+ * - Report(map_crash_report_t (map_vector_string_t[, map_map_string_t])):
+ *      "Please report this crash": calls Report() of all registered reporter plugins.
+ *      Returns report_status_t (map_vector_string_t) - the status of each call.
+ *      2nd parameter is the contents of user's abrt.conf.
  * - DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool
  * - GetPluginsInfo(): returns vector_map_string_t
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)

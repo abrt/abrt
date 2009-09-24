@@ -45,12 +45,7 @@ static void Crash(DBusMessage* signal)
 {
     int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(signal, &in_iter))
-    {
-        /* signal has no parameters */
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
+    dbus_message_iter_init(signal, &in_iter);
     const char* progname;
     r = load_val(&in_iter, progname);
     if (r != ABRT_DBUS_MORE_FIELDS)
@@ -84,12 +79,7 @@ static void QuotaExceed(DBusMessage* signal)
 {
     int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(signal, &in_iter))
-    {
-        /* signal has no parameters */
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
+    dbus_message_iter_init(signal, &in_iter);
     const char* str;
     r = load_val(&in_iter, str);
     if (r != ABRT_DBUS_LAST_FIELD)
@@ -108,12 +98,7 @@ static void NameOwnerChanged(DBusMessage* signal)
 {
     int r;
     DBusMessageIter in_iter;
-    if (!dbus_message_iter_init(signal, &in_iter))
-    {
-        /* signal has no parameters */
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
-    }
+    dbus_message_iter_init(signal, &in_iter);
     const char* name;
     r = load_val(&in_iter, name);
     if (r != ABRT_DBUS_MORE_FIELDS)
