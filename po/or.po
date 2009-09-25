@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.or\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-21 08:47+0000\n"
-"PO-Revision-Date: 2009-09-24 14:27+0530\n"
+"POT-Creation-Date: 2009-09-25 08:50+0000\n"
+"PO-Revision-Date: 2009-09-25 17:46+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -240,7 +241,7 @@ msgstr "ଏହାକୁ କିପରି ପୁନଃପ୍ରାପ୍ତି କ
 msgid "Report done"
 msgstr "ବିବରଣୀ ସମାପ୍ତ ହୋଇଛି"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:26
+#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
@@ -270,23 +271,23 @@ msgstr "ଟିପ୍ପଣୀ"
 msgid "Send"
 msgstr "ପଠାନ୍ତୁ"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:24
+#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:35 ../src/Gui/SettingsDialog.py:52
+#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>ପ୍ଲଗଇନ ବାଛନ୍ତୁ</b>"
 
-#: ../src/Gui/SettingsDialog.py:38
+#: ../src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>ତଥ୍ୟାଧାର ପୃଷ୍ଠଭୂମି ବାଛନ୍ତୁ</b>"
 
-#: ../src/Gui/SettingsDialog.py:170
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "ଏହି କାର୍ଯ୍ୟକୁ କାଢ଼ନ୍ତୁ"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "ଏହି କାର୍ଯ୍ୟକୁ କାଢ଼ୁଅଛି"
 
@@ -371,59 +372,53 @@ msgid "Settings"
 msgstr "ସଂରଚନାଗୁଡ଼ିକ"
 
 #: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "ଏହି କାର୍ଯ୍ୟଟି ଏପର୍ଯ୍ୟନ୍ତ କାର୍ଯ୍ୟକାରୀ ହୋଇନାହିଁ!"
+
+#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "ସଂସ୍କରଣ:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
 msgstr "ୱେବ ସାଇଟ:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:27
+#: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:76
+#: ../src/Applet/Applet.cpp:71
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "ପ୍ୟାକେଜ %s ରେ ଗୋଟିଏ ବିନାଶ ଚିହ୍ନାପଡ଼ିଛି"
 
-#: ../src/Applet/Applet.cpp:145
+#: ../src/Applet/Applet.cpp:130
 msgid "ABRT service has been started"
 msgstr "ABRT ସର୍ଭିସ ଆରମ୍ଭ ହୋଇସାରିଛି"
 
-#: ../src/Applet/Applet.cpp:147 ../src/Applet/Applet.cpp:261
+#: ../src/Applet/Applet.cpp:132 ../src/Applet/Applet.cpp:246
 msgid "ABRT service is not running"
 msgstr "ABRT ସର୍ଭିସଟି ଚାଲୁନାହିଁ"
 
-#: ../src/Applet/CCApplet.cpp:120 ../src/Applet/CCApplet.cpp:279
-#, c-format
-msgid "Pending events: %i"
-msgstr "ବକୟା ଘଟଣାଗୁଡ଼ିକ: %i"
-
-#: ../src/Applet/CCApplet.cpp:145
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "ବର୍ଣ୍ଣନାରୁ ତାଲିକା ନିର୍ମାଣ କରିପାରିବେ ନାହିଁ, ପପଅପ ଉପଲବ୍ଧ ହୋଇପାରିବ ନାହିଁ!\n"
-
-#: ../src/Applet/CCApplet.cpp:184
+#: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "ଚେତାବନୀ"
 
-#: ../src/Daemon/Daemon.cpp:525
+#: ../src/Daemon/Daemon.cpp:546
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
-"ବିବରଣୀ ଆକାର ସଂରକ୍ଷଣକୁ ଅତିକ୍ରମ କରିଛି। ଦୟାକରି ତନ୍ତ୍ରର MaxCrashReportsSize "
-"ମୂଲ୍ୟକୁ abrt.conf ରେ ଯାଞ୍ଚ କରନ୍ତୁ।"
+"ବିବରଣୀ ଆକାର ସଂରକ୍ଷଣକୁ ଅତିକ୍ରମ କରିଛି। ଦୟାକରି ତନ୍ତ୍ରର MaxCrashReportsSize ମୂଲ୍ୟକୁ abrt.conf "
+"ରେ ଯାଞ୍ଚ କରନ୍ତୁ।"
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
@@ -506,24 +501,20 @@ msgstr "ବିବରଣୀ ନିର୍ମାଣ କରୁଅଛି..."
 msgid "Executing RunApp plugin..."
 msgstr "RunApp ପ୍ଲଗଇନକୁ ନିଷ୍ପାଦନ କରୁଅଛି..."
 
-#: ../lib/Plugins/FileTransfer.cpp:51 ../lib/Plugins/FileTransfer.cpp:246
+#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋଇନାହିଁ"
 
-#: ../lib/Plugins/FileTransfer.cpp:68
+#: ../lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "ଅଭିଲେଖ %s କୁ %s ମାଧ୍ଯମରେ ପଠାଉଛି"
 
-#: ../lib/Plugins/FileTransfer.cpp:120
-msgid "Creating an archive..."
-msgstr "ଗୋଟିଏ ଅଭିଲେଖ ନିର୍ମାଣ କରୁଅଛି..."
-
-#: ../lib/Plugins/FileTransfer.cpp:175
+#: ../lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "ଫାଇଲ ପରିବହନ: ଗୋଟିଏ ବିବରଣୀ ନିର୍ମାଣ କରୁଅଛି..."
 
-#: ../lib/Plugins/FileTransfer.cpp:196 ../lib/Plugins/FileTransfer.cpp:225
+#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): ଗୋଟିଏ ଅଭିଲେଖ ନିର୍ମାଣ କରି ପାରିବେ ନାହିଁ କିମ୍ବା ପଠାଇପାରିବେ ନାହିଁ: "
 
