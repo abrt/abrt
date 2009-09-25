@@ -7,6 +7,9 @@
 #include "Daemon.h"
 #include "CommLayerServerDBus.h"
 
+
+#define LIMIT_MESSAGE 1
+
 /*
  * DBus signal emitters
  */
@@ -192,12 +195,41 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     DBusMessageIter in_iter;
     dbus_message_iter_init(call, &in_iter);
     map_crash_report_t argin1;
+    const char* comment;
+    const char* reproduce;
+
     r = load_val(&in_iter, argin1);
     if (r == ABRT_DBUS_ERROR)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
+
+    map_crash_report_t::const_iterator it_comment = argin1.find(CD_COMMENT);
+    map_crash_report_t::const_iterator it_reproduce = argin1.find(CD_REPRODUCE);
+    comment = (it_comment != argin1.end()) ? it_comment->second[CD_CONTENT].c_str() : "";
+    reproduce = (it_reproduce != argin1.end()) ? it_reproduce->second[CD_CONTENT].c_str() : "";
+
+    if( strlen(comment) > LIMIT_MESSAGE )
+    {
+        dbus_message_unref(reply);
+        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED,"Comment message is too long" );
+        if (!reply)
+            die_out_of_memory();
+        send_flush_and_unref(reply);
+        return 0;
+    }
+
+    if( strlen(reproduce) > LIMIT_MESSAGE )
+    {
+        dbus_message_unref(reply);
+        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED,"How to reproduce message is too long" );
+        if (!reply)
+            die_out_of_memory();
+        send_flush_and_unref(reply);
+        return 0;
+    }
+
     /* Second parameter is optional */
     map_map_string_t user_conf_data;
     if (r == ABRT_DBUS_MORE_FIELDS)
