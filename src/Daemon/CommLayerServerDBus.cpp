@@ -7,8 +7,18 @@
 #include "Daemon.h"
 #include "CommLayerServerDBus.h"
 
+// 16kB message limit
+#define LIMIT_MESSAGE 16384
 
-#define LIMIT_MESSAGE 1
+#if HAVE_CONFIG_H
+    #include <config.h>
+#endif
+#if ENABLE_NLS
+    #include <libintl.h>
+    #define _(S) gettext(S)
+#else
+    #define _(S) (S)
+#endif
 
 /*
  * DBus signal emitters
@@ -210,20 +220,20 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     comment = (it_comment != argin1.end()) ? it_comment->second[CD_CONTENT].c_str() : "";
     reproduce = (it_reproduce != argin1.end()) ? it_reproduce->second[CD_CONTENT].c_str() : "";
 
-    if( strlen(comment) > LIMIT_MESSAGE )
+    if (strlen(comment) > LIMIT_MESSAGE)
     {
         dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED,"Comment message is too long" );
+        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, _("Comment message is too long"));
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
         return 0;
     }
 
-    if( strlen(reproduce) > LIMIT_MESSAGE )
+    if (strlen(reproduce) > LIMIT_MESSAGE)
     {
         dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED,"How to reproduce message is too long" );
+        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, _("How to reproduce message is too long"));
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
@@ -240,6 +250,28 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
             error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
             return -1;
         }
+    }
+
+
+    if (!user_conf_data.empty())
+    {
+#if DEBUG
+        map_map_string_t::const_iterator it_user_conf_data;
+        for (it_user_conf_data = user_conf_data.begin(); it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
+        {
+            map_string_t::const_iterator it_plugin_config;
+            map_string_t plugin_config = it_user_conf_data->second;
+            std::cout << "plugin name: " << it_user_conf_data->first;
+            for    (it_plugin_config = it_user_conf_data->second.begin();
+                    it_plugin_config != it_user_conf_data->second.end();
+                    it_plugin_config++)
+            {
+                std::cout << " key: " << it_plugin_config->first << " value: " << it_plugin_config->second << std::endl;
+            }
+        }
+#endif
+        const char * sender = dbus_message_get_sender(call);
+        SetSettings(user_conf_data, sender);
     }
 
 //so far, user_conf_data is unused

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 13:40+0200\n"
+"POT-Creation-Date: 2009-09-29 14:46+0200\n"
 "PO-Revision-Date: 2009-09-01 20:41+0100\n"
 "Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
 "Language-Team: Serbian (sr) <fedora-trans-sr@redhat.com>\n"
@@ -27,31 +27,31 @@ msgstr ""
 "Primljeni su neočekivano podaci od demona (da li je baza podataka propisno "
 "ažurirana?)."
 
-#: src/Gui/ABRTPlugin.py:34
+#: src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
 msgstr ""
 
-#: src/Gui/ABRTPlugin.py:35
+#: src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
 msgstr ""
 
-#: src/Gui/ABRTPlugin.py:36
+#: src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
 msgstr ""
 
-#: src/Gui/ABRTPlugin.py:37
+#: src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
 msgstr ""
 
-#: src/Gui/CCDBusBackend.py:140
+#: src/Gui/CCDBusBackend.py:143
 msgid "Can't connect to dbus"
 msgstr "Ne mogu da se povežem sa dbus magistralom"
 
-#: src/Gui/CCDBusBackend.py:144 src/Gui/CCDBusBackend.py:164
+#: src/Gui/CCDBusBackend.py:169
 msgid "Please check if abrt daemon is running."
 msgstr "Proverite da li se abrt demon izvršava."
 
-#: src/Gui/CCDBusBackend.py:183
+#: src/Gui/CCDBusBackend.py:187
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -128,35 +128,35 @@ msgstr ""
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">Opis</span>"
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:239
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nije prijavljeno!</b>"
 
-#: src/Gui/CCMainWindow.py:79
+#: src/Gui/CCMainWindow.py:80
 msgid "Icon"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:87
+#: src/Gui/CCMainWindow.py:88
 msgid "Package"
 msgstr "Paket"
 
-#: src/Gui/CCMainWindow.py:88
+#: src/Gui/CCMainWindow.py:89
 msgid "Application"
 msgstr "Program"
 
-#: src/Gui/CCMainWindow.py:89
+#: src/Gui/CCMainWindow.py:90
 msgid "Date"
 msgstr "Datum"
 
-#: src/Gui/CCMainWindow.py:90
+#: src/Gui/CCMainWindow.py:91
 msgid "Crash Rate"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:92
+#: src/Gui/CCMainWindow.py:93
 msgid "User"
 msgstr "Korisnik"
 
-#: src/Gui/CCMainWindow.py:174
+#: src/Gui/CCMainWindow.py:177
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -165,60 +165,41 @@ msgstr ""
 "Ne mogu da završim tekući zadatak!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:191
+#: src/Gui/CCMainWindow.py:194
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
 " %s"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:201
+#: src/Gui/CCMainWindow.py:204
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:228
+#: src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:288
+#: src/Gui/CCMainWindow.py:291
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:300
+#: src/Gui/CCMainWindow.py:306
 #, python-format
 msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:332
+#: src/Gui/CCMainWindow.py:338
 #, python-format
 msgid "Error getting the report: %s"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:114
-#, python-format
-msgid ""
-"Error while opening plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:124
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:130
-msgid "unknown response from settings dialog"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:141
+#: src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -226,7 +207,7 @@ msgid ""
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:155
+#: src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 
@@ -235,7 +216,7 @@ msgid "Report done"
 msgstr ""
 
 #: src/Gui/dialogs.glade:47 src/Gui/settings.glade:695
-#: src/Gui/settings.glade:783
+#: src/Gui/settings.glade:785
 msgid "gtk-ok"
 msgstr ""
 
@@ -243,16 +224,16 @@ msgstr ""
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr ""
 
-#: src/Gui/PluginSettingsUI.py:23
+#: src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
 msgstr ""
 
-#: src/Gui/PluginSettingsUI.py:40 src/Gui/PluginSettingsUI.py:66
+#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
 msgstr ""
 
-#: src/Gui/PluginSettingsUI.py:49
+#: src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
 msgstr ""
 
@@ -260,28 +241,28 @@ msgstr ""
 msgid "Comment"
 msgstr ""
 
-#: src/Gui/report.glade:103 src/Gui/settings.glade:682
-#: src/Gui/settings.glade:795
+#: src/Gui/report.glade:104 src/Gui/settings.glade:682
+#: src/Gui/settings.glade:797
 msgid "gtk-cancel"
 msgstr ""
 
-#: src/Gui/report.glade:118
+#: src/Gui/report.glade:119
 msgid "Send"
 msgstr ""
 
-#: src/Gui/SettingsDialog.py:35 src/Gui/SettingsDialog.py:52
+#: src/Gui/SettingsDialog.py:34 src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr ""
 
-#: src/Gui/SettingsDialog.py:38
+#: src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr ""
 
-#: src/Gui/SettingsDialog.py:170
+#: src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr ""
 
-#: src/Gui/SettingsDialog.py:213
+#: src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr ""
 
@@ -360,7 +341,7 @@ msgid "<b>Time (or period)</b>"
 msgstr ""
 
 #: src/Gui/settings.glade:510 src/Gui/settings.glade:624
-#: src/Gui/settings.glade:759
+#: src/Gui/settings.glade:761
 msgid "gtk-add"
 msgstr ""
 
@@ -380,134 +361,107 @@ msgstr ""
 msgid "Analyzers, Actions, Reporters"
 msgstr ""
 
-#: src/Gui/settings.glade:736
+#: src/Gui/settings.glade:700
+msgid "This function is not implemented yet!"
+msgstr ""
+
+#: src/Gui/settings.glade:738
 msgid "GPG Keys"
 msgstr ""
 
-#: src/Gui/settings.glade:771
+#: src/Gui/settings.glade:773
 msgid "gtk-remove"
 msgstr ""
 
-#: src/Applet/Applet.cpp:45
+#: src/Applet/Applet.cpp:71
 #, c-format
-msgid "A crash in package %s has been detected!"
+msgid "A crash in package %s has been detected"
 msgstr ""
 
-#: src/Applet/Applet.cpp:89
-msgid "Applet is already running."
-msgstr ""
-
-#: src/Applet/Applet.cpp:104 src/Applet/Applet.cpp:105
-#: src/Applet/CCApplet.cpp:221
-msgid "ABRT service is not running"
-msgstr "ABRT servis se ne izvršava"
-
-#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:366
-#, c-format
-msgid "Pending events: %i"
-msgstr ""
-
-#: src/Applet/CCApplet.cpp:161
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr ""
-
-#: src/Applet/CCApplet.cpp:190
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectCrashHandler"
-msgstr ""
-
-#: src/Applet/CCApplet.cpp:210
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectQuotaExceedHandler"
-msgstr ""
-
-#: src/Applet/CCApplet.cpp:225
+#: src/Applet/Applet.cpp:130
 msgid "ABRT service has been started"
 msgstr "ABRT servis je pokrenut"
 
-#: src/Applet/CCApplet.cpp:256
-msgid "Out of memory"
-msgstr "Nestalo je memorije"
+#: src/Applet/Applet.cpp:132 src/Applet/Applet.cpp:246
+msgid "ABRT service is not running"
+msgstr "ABRT servis se ne izvršava"
 
-#: src/Applet/CCApplet.cpp:272
+#: src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "Upozorenje"
 
-#: src/Daemon/Daemon.cpp:526
+#: src/Daemon/Daemon.cpp:546
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:84
+#: lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:228
+#: lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:283
+#: lib/Plugins/Bugzilla.cpp:282
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:353
+#: lib/Plugins/Bugzilla.cpp:352
 msgid "New bug id: "
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:422
+#: lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:425 lib/Plugins/Bugzilla.cpp:437
+#: lib/Plugins/Bugzilla.cpp:424 lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:428
+#: lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:449
+#: lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:454
+#: lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr ""
 
-#: lib/Plugins/Kerneloops.cpp:38
-msgid "Getting local/global universal unique identification..."
+#: lib/Plugins/Kerneloops.cpp:37
+msgid "Getting local universal unique identification"
 msgstr ""
 
-#: lib/Plugins/CCpp.cpp:147
+#: lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
 msgstr ""
 
-#: lib/Plugins/CCpp.cpp:385
+#: lib/Plugins/CCpp.cpp:410
 msgid "Searching for debug-info packages..."
 msgstr ""
 
-#: lib/Plugins/CCpp.cpp:419
+#: lib/Plugins/CCpp.cpp:444
 msgid "Downloading and installing debug-info packages..."
 msgstr ""
 
-#: lib/Plugins/CCpp.cpp:481
+#: lib/Plugins/CCpp.cpp:506
 msgid "Getting local universal unique identification..."
 msgstr ""
 
-#: lib/Plugins/CCpp.cpp:500
+#: lib/Plugins/CCpp.cpp:525
 msgid "Getting global universal unique identification..."
 msgstr ""
 
-#: lib/Plugins/CCpp.cpp:552
+#: lib/Plugins/CCpp.cpp:576
 msgid "Starting report creation..."
 msgstr ""
 
-#: lib/Plugins/CCpp.cpp:581
+#: lib/Plugins/CCpp.cpp:605
 msgid "Skipping debuginfo installation"
 msgstr ""
 
@@ -515,7 +469,7 @@ msgstr ""
 msgid "Creating and submitting a report..."
 msgstr ""
 
-#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:124
+#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
 msgstr ""
 
@@ -523,24 +477,20 @@ msgstr ""
 msgid "Executing RunApp plugin..."
 msgstr ""
 
-#: lib/Plugins/FileTransfer.cpp:52 lib/Plugins/FileTransfer.cpp:247
+#: lib/Plugins/FileTransfer.cpp:60 lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr ""
 
-#: lib/Plugins/FileTransfer.cpp:69
+#: lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr ""
 
-#: lib/Plugins/FileTransfer.cpp:121
-msgid "Creating an archive..."
-msgstr ""
-
-#: lib/Plugins/FileTransfer.cpp:176
+#: lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr ""
 
-#: lib/Plugins/FileTransfer.cpp:197 lib/Plugins/FileTransfer.cpp:226
+#: lib/Plugins/FileTransfer.cpp:305 lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr ""
 
@@ -548,18 +498,21 @@ msgstr ""
 msgid "Creating kernel oops crash reports..."
 msgstr ""
 
-#: lib/Plugins/Mailx.cpp:110
+#: lib/Plugins/Mailx.cpp:109
 msgid "Sending an email..."
 msgstr ""
 
-#: lib/Plugins/SOSreport.cpp:116
+#: lib/Plugins/SOSreport.cpp:113
 msgid "Executing SOSreport plugin..."
 msgstr ""
 
-#: lib/Plugins/SOSreport.cpp:138
+#: lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
 msgstr ""
 
-#: lib/Plugins/SOSreport.cpp:153
+#: lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr ""
+
+#~ msgid "Out of memory"
+#~ msgstr "Nestalo je memorije"

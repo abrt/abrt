@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-22 19:32+0000\n"
+"POT-Creation-Date: 2009-09-29 14:46+0200\n"
 "PO-Revision-Date: 2009-09-23 12:49+1000\n"
 "Last-Translator: Yulia Poyarkova <yulia.poyarkova@redhat.com>\n"
 "Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
@@ -18,41 +18,41 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../src/Gui/ABRTExceptions.py:4
+#: src/Gui/ABRTExceptions.py:4
 msgid "Another client is already running, trying to wake it."
 msgstr "Выполняется другой клиент. Будет выполнена попытка его активировать."
 
-#: ../src/Gui/ABRTExceptions.py:10
+#: src/Gui/ABRTExceptions.py:10
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "Получены непредвиденные данные от демона. Проверьте, обновлена ли база "
 "данных."
 
-#: ../src/Gui/ABRTPlugin.py:26
+#: src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
 msgstr "Модули анализа"
 
-#: ../src/Gui/ABRTPlugin.py:27
+#: src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
 msgstr "Модули действий"
 
-#: ../src/Gui/ABRTPlugin.py:28
+#: src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
 msgstr "Модули отчётности"
 
-#: ../src/Gui/ABRTPlugin.py:29
+#: src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
 msgstr "Модули базы данных"
 
-#: ../src/Gui/CCDBusBackend.py:140
+#: src/Gui/CCDBusBackend.py:143
 msgid "Can't connect to dbus"
 msgstr "Не удалось подключиться к dbus"
 
-#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
+#: src/Gui/CCDBusBackend.py:169
 msgid "Please check if abrt daemon is running."
 msgstr "Проверьте, выполняется ли демон abrt."
 
-#: ../src/Gui/CCDBusBackend.py:182
+#: src/Gui/CCDBusBackend.py:187
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -60,47 +60,27 @@ msgstr ""
 "Демон не вернул ожидаемую информацию об отчёте.\n"
 "Отсутствует debuginfo?"
 
-#: ../src/Gui/ccgui.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/ccgui.glade.h:2
-msgid "(C) 2009 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
-
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:236
-msgid "<b>Not reported!</b>"
-msgstr "<b>Не сообщено!</b>"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">Описание</span>"
-
-#: ../src/Gui/ccgui.glade.h:5
-msgid "About ABRT"
-msgstr "Об ABRT"
-
-#: ../src/Gui/ccgui.glade.h:6
-msgid "Automatic Bug Reporting Tool"
-msgstr "Утилита автоматической регистрации ошибок (ABRT)"
-
-#: ../src/Gui/ccgui.glade.h:7
-msgid "Delete"
-msgstr "Удалить"
-
-#: ../src/Gui/ccgui.glade.h:8
+#: src/Gui/ccgui.glade:6
 msgid "Please wait.."
 msgstr "Пожалуйста, подождите..."
 
-#: ../src/Gui/ccgui.glade.h:9
-msgid "Plugins"
-msgstr "Модули"
+#: src/Gui/ccgui.glade:16
+msgid "Working..."
+msgstr "Выполняется..."
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
-msgid "Report"
-msgstr "Сообщить"
+#: src/Gui/ccgui.glade:49
+msgid " "
+msgstr " "
 
-#: ../src/Gui/ccgui.glade.h:11
+#: src/Gui/ccgui.glade:68
+msgid "About ABRT"
+msgstr "Об ABRT"
+
+#: src/Gui/ccgui.glade:74
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
+
+#: src/Gui/ccgui.glade:75
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -129,48 +109,68 @@ msgstr ""
 "Копия лицензии GNU предоставляется вместе с этой программой. \n"
 "Её также можно найти на сайте <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:16
-msgid "Working..."
-msgstr "Выполняется..."
+#: src/Gui/ccgui.glade:106
+msgid "Automatic Bug Reporting Tool"
+msgstr "Утилита автоматической регистрации ошибок (ABRT)"
 
-#: ../src/Gui/ccgui.glade.h:17
-msgid "_Edit"
-msgstr "_Правка"
-
-#: ../src/Gui/ccgui.glade.h:18
+#: src/Gui/ccgui.glade:118
 msgid "_File"
 msgstr "_Файл"
 
-#: ../src/Gui/ccgui.glade.h:19
+#: src/Gui/ccgui.glade:138
+msgid "_Edit"
+msgstr "_Правка"
+
+#: src/Gui/ccgui.glade:146
+msgid "Plugins"
+msgstr "Модули"
+
+#: src/Gui/ccgui.glade:164
 msgid "_Help"
 msgstr "_Справка"
 
-#. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:79
+#: src/Gui/ccgui.glade:194 src/Gui/ccgui.glade:195
+msgid "Delete"
+msgstr "Удалить"
+
+#: src/Gui/ccgui.glade:207 src/Gui/ccgui.glade:208 src/Gui/ccgui.glade:335
+#: src/Gui/report.glade:7 src/Gui/report.glade:24
+msgid "Report"
+msgstr "Сообщить"
+
+#: src/Gui/ccgui.glade:255
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">Описание</span>"
+
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:239
+msgid "<b>Not reported!</b>"
+msgstr "<b>Не сообщено!</b>"
+
+#: src/Gui/CCMainWindow.py:80
 msgid "Icon"
 msgstr "Значок"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: src/Gui/CCMainWindow.py:88
 msgid "Package"
 msgstr "Пакет"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: src/Gui/CCMainWindow.py:89
 msgid "Application"
 msgstr "Приложение"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: src/Gui/CCMainWindow.py:90
 msgid "Date"
 msgstr "Дата"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: src/Gui/CCMainWindow.py:91
 msgid "Crash Rate"
 msgstr "Частота сбоев"
 
-#: ../src/Gui/CCMainWindow.py:92
+#: src/Gui/CCMainWindow.py:93
 msgid "User"
 msgstr "Пользователь"
 
-#: ../src/Gui/CCMainWindow.py:174
+#: src/Gui/CCMainWindow.py:177
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -179,7 +179,7 @@ msgstr ""
 "Не удалось завершить текущую задачу.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:191
+#: src/Gui/CCMainWindow.py:194
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -188,16 +188,16 @@ msgstr ""
 "Ошибка при загрузке dumplist. Убедитесь, что демон abrt выполняется\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:201
+#: src/Gui/CCMainWindow.py:204
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr "Не удалось получить имя пользователя для UID %s"
 
-#: ../src/Gui/CCMainWindow.py:228
+#: src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Создан отчёт для этого сбоя. Просмотреть его можно здесь:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:288
+#: src/Gui/CCMainWindow.py:291
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -205,7 +205,7 @@ msgstr ""
 "Не удалось получить отчёт!\n"
 "Отсутствует debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:300
+#: src/Gui/CCMainWindow.py:306
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -214,12 +214,12 @@ msgstr ""
 "Не удалось отправить отчёт!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:332
+#: src/Gui/CCMainWindow.py:338
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Ошибка при получении отчёта: %s"
 
-#: ../src/Gui/CCReporterDialog.py:98
+#: src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -230,186 +230,190 @@ msgstr ""
 "содержать конфиденциальную информацию.\n"
 "Вы действительно хотите отправить <b>%s</b>?\n"
 
-#: ../src/Gui/CCReporterDialog.py:111
+#: src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Кратко опишите действия, которые привели к ошибке..."
 
-#: ../src/Gui/dialogs.glade.h:1
+#: src/Gui/dialogs.glade:7
 msgid "Report done"
 msgstr "Отчёт отправлен"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
+#: src/Gui/dialogs.glade:47 src/Gui/settings.glade:695
+#: src/Gui/settings.glade:785
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
-#: ../src/Gui/PluginSettingsUI.py:17
+#: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Не найден виджет PluginDialog в описании UI!"
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:21
+#: src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "Нет UI для модуля %s"
 
-#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
 msgstr "поле ввода недоступно"
 
-#: ../src/Gui/PluginSettingsUI.py:47
+#: src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
 msgstr "Нет данных для отображения!"
 
-#: ../src/Gui/report.glade.h:1
+#: src/Gui/report.glade:64
 msgid "Comment"
 msgstr "Комментарий"
 
-#: ../src/Gui/report.glade.h:3
-msgid "Send"
-msgstr "Отправить"
-
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
+#: src/Gui/report.glade:104 src/Gui/settings.glade:682
+#: src/Gui/settings.glade:797
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
+#: src/Gui/report.glade:119
+msgid "Send"
+msgstr "Отправить"
+
+#: src/Gui/SettingsDialog.py:34 src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>Выбрать модуль</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>Выбрать базу данных</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "Удалить это задание"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "Удалить это действие"
 
-#: ../src/Gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Модуль анализа</b>"
-
-#: ../src/Gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>Связанное действие</b>"
-
-#: ../src/Gui/settings.glade.h:3
-msgid "<b>Plugin</b>"
-msgstr "<b>Доп. модуль</b>"
-
-#: ../src/Gui/settings.glade.h:4
-msgid "<b>Time (or period)</b>"
-msgstr "<b>Время (период времени)</b>"
-
-#: ../src/Gui/settings.glade.h:5
-msgid "Analyzers, Actions, Reporters"
-msgstr "Анализаторы, действия, создатели отчётов"
-
-#: ../src/Gui/settings.glade.h:6
-msgid "Author:"
-msgstr "Автор:"
-
-#: ../src/Gui/settings.glade.h:7
-msgid "Blacklisted packages: "
-msgstr "Чёрный список пакетов:"
-
-#: ../src/Gui/settings.glade.h:8
-msgid "C_onfigure plugin"
-msgstr "_Настроить модуль"
-
-#: ../src/Gui/settings.glade.h:9
-msgid "Check package GPG signature"
-msgstr "Проверить GPG-подпись пакета"
-
-#: ../src/Gui/settings.glade.h:10
-msgid "Common"
-msgstr "Общие"
-
-#: ../src/Gui/settings.glade.h:11
-msgid "Cron"
-msgstr "Cron"
-
-#: ../src/Gui/settings.glade.h:12
-msgid "Database backend: "
-msgstr "База данных:"
-
-#: ../src/Gui/settings.glade.h:13
-msgid "Edit blacklisted packages"
-msgstr "Изменить чёрный список пакетов"
-
-#: ../src/Gui/settings.glade.h:14
-msgid "GPG Keys"
-msgstr "Ключи GPG"
-
-#: ../src/Gui/settings.glade.h:15
-msgid "GPG keys: "
-msgstr "Ключи GPG:"
-
-#: ../src/Gui/settings.glade.h:16
-msgid "Global Settings"
-msgstr "Общие настройки"
-
-#: ../src/Gui/settings.glade.h:17
-msgid "Max coredump storage size(MB):"
-msgstr "Макс. размер coredump (Мбайт):"
-
-#: ../src/Gui/settings.glade.h:18
-msgid "Nothing selected"
-msgstr "Ничего не выбрано"
-
-#: ../src/Gui/settings.glade.h:19
-msgid "Plugin Details"
-msgstr "Свойства модуля"
-
-#: ../src/Gui/settings.glade.h:20
+#: src/Gui/settings.glade:6
 msgid "Settings"
 msgstr "Настройки"
 
-#: ../src/Gui/settings.glade.h:21
-msgid "This function is not implemented yet!"
-msgstr "Эта возможность ещё не добавлена!"
+#: src/Gui/settings.glade:46 src/Gui/settings.glade:55
+#: src/Gui/settings.glade:107 src/Gui/settings.glade:120
+#: src/Gui/settings.glade:133
+msgid "Nothing selected"
+msgstr "Ничего не выбрано"
 
-#: ../src/Gui/settings.glade.h:22
-msgid "Version:"
-msgstr "Версия:"
-
-#: ../src/Gui/settings.glade.h:23
+#: src/Gui/settings.glade:72
 msgid "Web Site:"
 msgstr "Веб-сайт:"
 
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-add"
-msgstr "gtk-add"
+#: src/Gui/settings.glade:84
+msgid "Author:"
+msgstr "Автор:"
 
-#: ../src/Gui/settings.glade.h:26
+#: src/Gui/settings.glade:97
+msgid "Version:"
+msgstr "Версия:"
+
+#: src/Gui/settings.glade:152
+msgid "Plugin Details"
+msgstr "Свойства модуля"
+
+#: src/Gui/settings.glade:179
+msgid "C_onfigure plugin"
+msgstr "_Настроить модуль"
+
+#: src/Gui/settings.glade:191
 msgid "gtk-close"
 msgstr "gtk-close"
 
-#: ../src/Gui/settings.glade.h:28
+#: src/Gui/settings.glade:221
+msgid "Global Settings"
+msgstr "Общие настройки"
+
+#: src/Gui/settings.glade:240
+msgid "Check package GPG signature"
+msgstr "Проверить GPG-подпись пакета"
+
+#: src/Gui/settings.glade:256
+msgid "Database backend: "
+msgstr "База данных:"
+
+#: src/Gui/settings.glade:281
+msgid "Blacklisted packages: "
+msgstr "Чёрный список пакетов:"
+
+#: src/Gui/settings.glade:294
+msgid "Max coredump storage size(MB):"
+msgstr "Макс. размер coredump (Мбайт):"
+
+#: src/Gui/settings.glade:307
+msgid "GPG keys: "
+msgstr "Ключи GPG:"
+
+#: src/Gui/settings.glade:349
+msgid "Edit blacklisted packages"
+msgstr "Изменить чёрный список пакетов"
+
+#: src/Gui/settings.glade:408
+msgid "Common"
+msgstr "Общие"
+
+#: src/Gui/settings.glade:438
+msgid "<b>Plugin</b>"
+msgstr "<b>Доп. модуль</b>"
+
+#: src/Gui/settings.glade:448
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Время (период времени)</b>"
+
+#: src/Gui/settings.glade:510 src/Gui/settings.glade:624
+#: src/Gui/settings.glade:761
+msgid "gtk-add"
+msgstr "gtk-add"
+
+#: src/Gui/settings.glade:534
+msgid "Cron"
+msgstr "Cron"
+
+#: src/Gui/settings.glade:551
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>Модуль анализа</b>"
+
+#: src/Gui/settings.glade:561
+msgid "<b>Associated action</b>"
+msgstr "<b>Связанное действие</b>"
+
+#: src/Gui/settings.glade:648
+msgid "Analyzers, Actions, Reporters"
+msgstr "Анализаторы, действия, создатели отчётов"
+
+#: src/Gui/settings.glade:700
+msgid "This function is not implemented yet!"
+msgstr "Эта возможность ещё не добавлена!"
+
+#: src/Gui/settings.glade:738
+msgid "GPG Keys"
+msgstr "Ключи GPG"
+
+#: src/Gui/settings.glade:773
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:76
+#: src/Applet/Applet.cpp:71
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Сбой в пакете %s"
 
-#: ../src/Applet/Applet.cpp:145
+#: src/Applet/Applet.cpp:130
 msgid "ABRT service has been started"
 msgstr "Служба ABRT запущена"
 
-#: ../src/Applet/Applet.cpp:147 ../src/Applet/Applet.cpp:261
+#: src/Applet/Applet.cpp:132 src/Applet/Applet.cpp:246
 msgid "ABRT service is not running"
 msgstr "Служба ABRT не работает"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "Предупреждение"
 
-#: ../src/Daemon/Daemon.cpp:545
+#: src/Daemon/Daemon.cpp:546
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -417,121 +421,120 @@ msgstr ""
 "Размер отчёта превысил допустимый. Проверьте значение MaxCrashReportsSize в "
 "файле abrt.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:83
+#: lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Пустое имя входа и пароль. Проверьте Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:227
+#: lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
 msgstr "Запрос уже создан:"
 
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: lib/Plugins/Bugzilla.cpp:282
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "Запрос не будет создаваться для бинарного файла %s:"
 
-#: ../lib/Plugins/Bugzilla.cpp:352
+#: lib/Plugins/Bugzilla.cpp:352
 msgid "New bug id: "
 msgstr "Идентификатор запроса:"
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr "Проверяется наличие дубликатов..."
 
-#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+#: lib/Plugins/Bugzilla.cpp:424 lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "Выполняется вход в Bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
+#: lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
 msgstr "Проверьте список CC и добавьте комментарий..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr "Создаётся новый запрос..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr "Выполняется выход..."
 
-#: ../lib/Plugins/Kerneloops.cpp:37
+#: lib/Plugins/Kerneloops.cpp:37
 msgid "Getting local universal unique identification"
 msgstr "Получение локальных идентификационных данных"
 
-#: ../lib/Plugins/CCpp.cpp:146
+#: lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
 msgstr "Получение трассировки..."
 
-#: ../lib/Plugins/CCpp.cpp:384
+#: lib/Plugins/CCpp.cpp:410
 msgid "Searching for debug-info packages..."
 msgstr "Выполняется поиск пакетов debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:418
+#: lib/Plugins/CCpp.cpp:444
 msgid "Downloading and installing debug-info packages..."
 msgstr "Загружаются и устанавливаются пакеты debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:480
+#: lib/Plugins/CCpp.cpp:506
 msgid "Getting local universal unique identification..."
 msgstr "Получение локальных данных идентификации..."
 
-#: ../lib/Plugins/CCpp.cpp:499
+#: lib/Plugins/CCpp.cpp:525
 msgid "Getting global universal unique identification..."
 msgstr "Получение глобальных данных идентификации..."
 
-#: ../lib/Plugins/CCpp.cpp:551
+#: lib/Plugins/CCpp.cpp:576
 msgid "Starting report creation..."
 msgstr "Начинается создание отчёта..."
 
-#: ../lib/Plugins/CCpp.cpp:580
+#: lib/Plugins/CCpp.cpp:605
 msgid "Skipping debuginfo installation"
 msgstr "Пропускается установка debuginfo"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
+#: lib/Plugins/KerneloopsReporter.cpp:101
 msgid "Creating and submitting a report..."
 msgstr "Создание и отправка отчёта..."
 
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
+#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
 msgstr "Создаётся отчёт..."
 
-#: ../lib/Plugins/RunApp.cpp:62
+#: lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
 msgstr "Выполняется модуль RunApp..."
 
-#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
+#: lib/Plugins/FileTransfer.cpp:60 lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: Не указан URL"
 
-#: ../lib/Plugins/FileTransfer.cpp:77
+#: lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "Архив %s отправляется через %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:284
+#: lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "File Transfer: Создаётся отчёт..."
 
-#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
+#: lib/Plugins/FileTransfer.cpp:305 lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): Не удалось создать и отправить архив: "
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "Создаются отчёты о сбоях ядра..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: lib/Plugins/Mailx.cpp:109
 msgid "Sending an email..."
 msgstr "Отправляется почтовое сообщение..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
+#: lib/Plugins/SOSreport.cpp:113
 msgid "Executing SOSreport plugin..."
 msgstr "Запускается модуль SOSreport..."
 
-#: ../lib/Plugins/SOSreport.cpp:135
+#: lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
 msgstr "выполняется sosreport: "
 
-#: ../lib/Plugins/SOSreport.cpp:150
+#: lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "sosreport завершён"
-

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-18 13:40+0200\n"
+"POT-Creation-Date: 2009-09-29 14:46+0200\n"
 "PO-Revision-Date: 2009-09-10 16:57+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
@@ -26,31 +26,31 @@ msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "ডেমন থেকে অপ্রত্যাশিত তথ্য পাওয়া গিয়েছে (ডাটাবেস কি সঠিকভাবে আপডেট করা হয়েছে?)।"
 
-#: src/Gui/ABRTPlugin.py:34
+#: src/Gui/ABRTPlugin.py:26
 msgid "Analyzer plugins"
 msgstr "বিশ্লেষণের প্লাগ-ইন"
 
-#: src/Gui/ABRTPlugin.py:35
+#: src/Gui/ABRTPlugin.py:27
 msgid "Action plugins"
 msgstr "কাজের প্লাগ-ইন"
 
-#: src/Gui/ABRTPlugin.py:36
+#: src/Gui/ABRTPlugin.py:28
 msgid "Reporter plugins"
 msgstr "রিপোর্টার প্লাগ-ইন"
 
-#: src/Gui/ABRTPlugin.py:37
+#: src/Gui/ABRTPlugin.py:29
 msgid "Database plugins"
 msgstr "ডাটাবেস প্লাগ-ইন"
 
-#: src/Gui/CCDBusBackend.py:140
+#: src/Gui/CCDBusBackend.py:143
 msgid "Can't connect to dbus"
 msgstr "dbus-র সাথে সংযোগ স্থাপন করতে ব্যর্থ"
 
-#: src/Gui/CCDBusBackend.py:144 src/Gui/CCDBusBackend.py:164
+#: src/Gui/CCDBusBackend.py:169
 msgid "Please check if abrt daemon is running."
 msgstr "abrt ডেমন চলছে কি না তা অনুগ্রহ করে পরীক্ষা করুন।"
 
-#: src/Gui/CCDBusBackend.py:183
+#: src/Gui/CCDBusBackend.py:187
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -137,35 +137,35 @@ msgstr "রিপোর্ট"
 msgid "<span color=\"white\">Description</span>"
 msgstr "<span color=\"white\">বিবরণ</span>"
 
-#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:236
+#: src/Gui/ccgui.glade:297 src/Gui/CCMainWindow.py:239
 msgid "<b>Not reported!</b>"
 msgstr "<b>রিপোর্ট করা হয়নি!</b>"
 
-#: src/Gui/CCMainWindow.py:79
+#: src/Gui/CCMainWindow.py:80
 msgid "Icon"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:87
+#: src/Gui/CCMainWindow.py:88
 msgid "Package"
 msgstr "প্যাকেজ"
 
-#: src/Gui/CCMainWindow.py:88
+#: src/Gui/CCMainWindow.py:89
 msgid "Application"
 msgstr "অ্যাপ্লিকেশন"
 
-#: src/Gui/CCMainWindow.py:89
+#: src/Gui/CCMainWindow.py:90
 msgid "Date"
 msgstr "তারিখ"
 
-#: src/Gui/CCMainWindow.py:90
+#: src/Gui/CCMainWindow.py:91
 msgid "Crash Rate"
 msgstr "বিপর্যয়ের হার"
 
-#: src/Gui/CCMainWindow.py:92
+#: src/Gui/CCMainWindow.py:93
 msgid "User"
 msgstr "ব্যবহারকারী"
 
-#: src/Gui/CCMainWindow.py:174
+#: src/Gui/CCMainWindow.py:177
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -174,7 +174,7 @@ msgstr ""
 "বর্তমান কর্ম সমাপ্ত করতে ব্যর্থ!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:191
+#: src/Gui/CCMainWindow.py:194
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -183,18 +183,18 @@ msgstr ""
 "dumplist লোড করতে সমস্যা। অনুগ্রহ করে পরীক্ষঅ করুন abrt ডেমন চলছে কি না\n"
 " %s"
 
-#: src/Gui/CCMainWindow.py:201
+#: src/Gui/CCMainWindow.py:204
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr ""
 
-#: src/Gui/CCMainWindow.py:228
+#: src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr ""
 "<b>বিপর্যয়ের তথ্য দায়ের করা হয়েছে। রিপোর্ট(গুলি) নিম্নলিখিত অবস্থান উপস্থিত রয়েছে:</"
 "b>\n"
 
-#: src/Gui/CCMainWindow.py:288
+#: src/Gui/CCMainWindow.py:291
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -202,7 +202,7 @@ msgstr ""
 "রিপোর্ট প্রাপ্ত করতে ব্যর্থ!\n"
 "Debuginfo কি অনুপস্থিত?"
 
-#: src/Gui/CCMainWindow.py:300
+#: src/Gui/CCMainWindow.py:306
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -211,31 +211,12 @@ msgstr ""
 "রিপোর্ট করতে ব্যর্থ!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:332
+#: src/Gui/CCMainWindow.py:338
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "রিপোর্ট প্রাপ্ত করতে ব্যর্থ: %s"
 
-#: src/Gui/CCReporterDialog.py:114
-#, python-format
-msgid ""
-"Error while opening plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:124
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:130
-msgid "unknown response from settings dialog"
-msgstr ""
-
-#: src/Gui/CCReporterDialog.py:141
+#: src/Gui/CCReporterDialog.py:98
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -245,7 +226,7 @@ msgstr ""
 "<b>সতর্কবার্তা</b>, সংবেদনশীল তথ্য বিশিষ্ট কিছু তথ্য প্রেরণের প্রচেষ্টা করা হচ্ছে।\n"
 "আপনি কি নিশ্চিতরূপে <b>%s</b> পাঠাতে ইচ্ছুক?\n"
 
-#: src/Gui/CCReporterDialog.py:155
+#: src/Gui/CCReporterDialog.py:111
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "এটি পুনরায় সঞ্চালনের সংক্ষিপ্ত বিবরণ অথবা আপনার সঞ্চালিত কর্মের তথ্য..."
 
@@ -255,7 +236,7 @@ msgid "Report done"
 msgstr "রিপোর্ট"
 
 #: src/Gui/dialogs.glade:47 src/Gui/settings.glade:695
-#: src/Gui/settings.glade:783
+#: src/Gui/settings.glade:785
 msgid "gtk-ok"
 msgstr ""
 
@@ -263,16 +244,16 @@ msgstr ""
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "ইউজার ইন্টারফেসের বিবরণের মধ্যে PluginDialog উইজেট পাওয়া যায়নি!"
 
-#: src/Gui/PluginSettingsUI.py:23
+#: src/Gui/PluginSettingsUI.py:21
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "%s প্লাগ-ইনের কোনো UI উপস্থিত নেই"
 
-#: src/Gui/PluginSettingsUI.py:40 src/Gui/PluginSettingsUI.py:66
+#: src/Gui/PluginSettingsUI.py:38 src/Gui/PluginSettingsUI.py:64
 msgid "combo box is not implemented"
 msgstr "কম্বো-বক্স বাস্তবায়িত হয়নি"
 
-#: src/Gui/PluginSettingsUI.py:49
+#: src/Gui/PluginSettingsUI.py:47
 msgid "Nothing to hydrate!"
 msgstr "প্রদর্শনযোগ্য কোনো বস্তু উপস্থিত নেই!"
 
@@ -280,28 +261,28 @@ msgstr "প্রদর্শনযোগ্য কোনো বস্তু উ
 msgid "Comment"
 msgstr "বিবৃতি"
 
-#: src/Gui/report.glade:103 src/Gui/settings.glade:682
-#: src/Gui/settings.glade:795
+#: src/Gui/report.glade:104 src/Gui/settings.glade:682
+#: src/Gui/settings.glade:797
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: src/Gui/report.glade:118
+#: src/Gui/report.glade:119
 msgid "Send"
 msgstr "প্রেরণ করুন"
 
-#: src/Gui/SettingsDialog.py:35 src/Gui/SettingsDialog.py:52
+#: src/Gui/SettingsDialog.py:34 src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>প্লাগ-ইন নির্বাচন করুন</b>"
 
-#: src/Gui/SettingsDialog.py:38
+#: src/Gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>ডাটাবেস ব্যাক-এন্ড নির্বাচন করুন</b>"
 
-#: src/Gui/SettingsDialog.py:170
+#: src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "এই কাজটি সরিয়ে ফেলুন"
 
-#: src/Gui/SettingsDialog.py:213
+#: src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "এই কর্মটি সরিয়ে ফেলুন"
 
@@ -386,7 +367,7 @@ msgid "<b>Time (or period)</b>"
 msgstr ""
 
 #: src/Gui/settings.glade:510 src/Gui/settings.glade:624
-#: src/Gui/settings.glade:759
+#: src/Gui/settings.glade:761
 msgid "gtk-add"
 msgstr ""
 
@@ -407,137 +388,109 @@ msgstr ""
 msgid "Analyzers, Actions, Reporters"
 msgstr ""
 
-#: src/Gui/settings.glade:736
+#: src/Gui/settings.glade:700
+#, fuzzy
+msgid "This function is not implemented yet!"
+msgstr "কম্বো-বক্স বাস্তবায়িত হয়নি"
+
+#: src/Gui/settings.glade:738
 msgid "GPG Keys"
 msgstr ""
 
-#: src/Gui/settings.glade:771
+#: src/Gui/settings.glade:773
 msgid "gtk-remove"
 msgstr ""
 
-#: src/Applet/Applet.cpp:45
-#, c-format
-msgid "A crash in package %s has been detected!"
+#: src/Applet/Applet.cpp:71
+#, fuzzy, c-format
+msgid "A crash in package %s has been detected"
 msgstr "%s প্যাকেজের মধ্যে একটি বিপর্যয় সনাক্ত করা হয়েছে!"
 
-#: src/Applet/Applet.cpp:89
-msgid "Applet is already running."
-msgstr "অ্যাপ্লেট বর্তমানে চলছে।"
-
-#: src/Applet/Applet.cpp:104 src/Applet/Applet.cpp:105
-#: src/Applet/CCApplet.cpp:221
-msgid "ABRT service is not running"
-msgstr "ABRT পরিসেবা বর্তমানে চলছে না"
-
-#: src/Applet/CCApplet.cpp:136 src/Applet/CCApplet.cpp:366
-#, c-format
-msgid "Pending events: %i"
-msgstr "অপেক্ষারত কর্ম: %i"
-
-#: src/Applet/CCApplet.cpp:161
-#, c-format
-msgid "Can't create menu from the description, popup won't be available!\n"
-msgstr "বিবরণের তথ্য প্রয়োগ করে মেনু তৈরি করতে ব্যর্থ, পপ-আপ উপলব্ধ হবে না!\n"
-
-#: src/Applet/CCApplet.cpp:190
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectCrashHandler"
-msgstr ""
-"এটি ডিফল্ট হ্যান্ডলার, ConnectCrashHandler সহযোগে নিজস্ব হ্যান্ডলার নিবন্ধন করুন"
-
-#: src/Applet/CCApplet.cpp:210
-#, fuzzy
-msgid ""
-"This is default handler, you should register your own with "
-"ConnectQuotaExceedHandler"
-msgstr ""
-"এটি ডিফল্ট হ্যান্ডলার, ConnectCrashHandler সহযোগে নিজস্ব হ্যান্ডলার নিবন্ধন করুন"
-
-#: src/Applet/CCApplet.cpp:225
+#: src/Applet/Applet.cpp:130
 msgid "ABRT service has been started"
 msgstr "ABRT পরিসেবা আরম্ভ করা হয়েছে"
 
-#: src/Applet/CCApplet.cpp:256
-msgid "Out of memory"
-msgstr "মেমরি অবশিষ্ট নেই"
+#: src/Applet/Applet.cpp:132 src/Applet/Applet.cpp:246
+msgid "ABRT service is not running"
+msgstr "ABRT পরিসেবা বর্তমানে চলছে না"
 
-#: src/Applet/CCApplet.cpp:272
+#: src/Applet/CCApplet.cpp:185
 msgid "Warning"
 msgstr "সতর্কবার্তা"
 
-#: src/Daemon/Daemon.cpp:526
+#: src/Daemon/Daemon.cpp:546
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:84
+#: lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "লগ-ইন ও পাসওয়ার্ড লেখা হয়নি। অনুগ্রহ করে Bugzilla.conf পরীক্ষা করুন"
 
-#: lib/Plugins/Bugzilla.cpp:228
+#: lib/Plugins/Bugzilla.cpp:227
 msgid "Bug is already reported: "
 msgstr "বাগ পূর্বেই দায়ের করা হয়েছে: "
 
-#: lib/Plugins/Bugzilla.cpp:283
+#: lib/Plugins/Bugzilla.cpp:282
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "%s বাইনারি ফাইলের রিপোর্ট দায়ের করা হবে না।"
 
-#: lib/Plugins/Bugzilla.cpp:353
+#: lib/Plugins/Bugzilla.cpp:352
 msgid "New bug id: "
 msgstr "নতুন বাগ id: "
 
-#: lib/Plugins/Bugzilla.cpp:422
+#: lib/Plugins/Bugzilla.cpp:421
 msgid "Checking for duplicates..."
 msgstr "প্রতিলিপি পরীক্ষা করা হচ্ছে..."
 
-#: lib/Plugins/Bugzilla.cpp:425 lib/Plugins/Bugzilla.cpp:437
+#: lib/Plugins/Bugzilla.cpp:424 lib/Plugins/Bugzilla.cpp:436
 msgid "Logging into bugzilla..."
 msgstr "bugzilla-তে লগ-ইন করা হচ্ছে..."
 
-#: lib/Plugins/Bugzilla.cpp:428
+#: lib/Plugins/Bugzilla.cpp:427
 msgid "Check CC and add coment +1..."
 msgstr "প্রতিলিপি প্রাপ্ত পরীক্ষা করুন ও মন্তব্য রূপে +1 যোগ করুন ..."
 
-#: lib/Plugins/Bugzilla.cpp:449
+#: lib/Plugins/Bugzilla.cpp:448
 msgid "Creating new bug..."
 msgstr "নতুন বাগ তৈরি করা হচ্ছে..."
 
-#: lib/Plugins/Bugzilla.cpp:454
+#: lib/Plugins/Bugzilla.cpp:453
 msgid "Logging out..."
 msgstr "লগ-আউট করা হচ্ছে..."
 
-#: lib/Plugins/Kerneloops.cpp:38
-msgid "Getting local/global universal unique identification..."
-msgstr "স্থানীয়/গ্লোবাল ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
+#: lib/Plugins/Kerneloops.cpp:37
+#, fuzzy
+msgid "Getting local universal unique identification"
+msgstr "স্থানীয় ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: lib/Plugins/CCpp.cpp:147
+#: lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
 msgstr "ব্যাক-ট্রেস প্রাপ্ত করা হচ্ছে..."
 
-#: lib/Plugins/CCpp.cpp:385
+#: lib/Plugins/CCpp.cpp:410
 msgid "Searching for debug-info packages..."
 msgstr "debug-info প্যাকেজ অনুসন্ধান করা হচ্ছে..."
 
-#: lib/Plugins/CCpp.cpp:419
+#: lib/Plugins/CCpp.cpp:444
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info প্যাকেজ ডাউনলোড ও ইনস্টল করা হচ্ছে..."
 
-#: lib/Plugins/CCpp.cpp:481
+#: lib/Plugins/CCpp.cpp:506
 msgid "Getting local universal unique identification..."
 msgstr "স্থানীয় ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: lib/Plugins/CCpp.cpp:500
+#: lib/Plugins/CCpp.cpp:525
 msgid "Getting global universal unique identification..."
 msgstr "গ্লোবাল ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: lib/Plugins/CCpp.cpp:552
+#: lib/Plugins/CCpp.cpp:576
 msgid "Starting report creation..."
 msgstr "রিপোর্ট নির্মাণ আরম্ভ করা হচ্ছে..."
 
-#: lib/Plugins/CCpp.cpp:581
+#: lib/Plugins/CCpp.cpp:605
 #, fuzzy
 msgid "Skipping debuginfo installation"
 msgstr "%s প্যাকেজের জন্য debuginfo উপেক্ষা করা হবে"
@@ -546,7 +499,7 @@ msgstr "%s প্যাকেজের জন্য debuginfo উপেক্ষ
 msgid "Creating and submitting a report..."
 msgstr "রিপোর্ট নির্মাণ করে দায়ের করুন..."
 
-#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:124
+#: lib/Plugins/Logger.cpp:58 lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
 msgstr "রিপোর্ট নির্মাণ করুন..."
 
@@ -554,24 +507,20 @@ msgstr "রিপোর্ট নির্মাণ করুন..."
 msgid "Executing RunApp plugin..."
 msgstr "RunApp প্লাগ-ইন সঞ্চালনা..."
 
-#: lib/Plugins/FileTransfer.cpp:52 lib/Plugins/FileTransfer.cpp:247
+#: lib/Plugins/FileTransfer.cpp:60 lib/Plugins/FileTransfer.cpp:355
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL উল্লিখিত হয়নি"
 
-#: lib/Plugins/FileTransfer.cpp:69
+#: lib/Plugins/FileTransfer.cpp:77
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "%s আর্কাইভটি %s-র মাধ্যমে প্রেরিত হচ্ছে"
 
-#: lib/Plugins/FileTransfer.cpp:121
-msgid "Creating an archive..."
-msgstr "একটি আর্কাইভ নির্মাণ করুন..."
-
-#: lib/Plugins/FileTransfer.cpp:176
+#: lib/Plugins/FileTransfer.cpp:284
 msgid "File Transfer: Creating a report..."
 msgstr "ফাইল পরিবহণ: রিপোর্ট নির্মাণ করুন..."
 
-#: lib/Plugins/FileTransfer.cpp:197 lib/Plugins/FileTransfer.cpp:226
+#: lib/Plugins/FileTransfer.cpp:305 lib/Plugins/FileTransfer.cpp:334
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): আর্কাইভ নির্মাণ করে প্রেরণ করতে ব্যর্থ: "
 
@@ -579,18 +528,49 @@ msgstr "CFileTransfer::Run(): আর্কাইভ নির্মাণ কর
 msgid "Creating kernel oops crash reports..."
 msgstr "kernel oops বিপর্যয়ের রিপোর্ট নির্মাণ করা হচ্ছে..."
 
-#: lib/Plugins/Mailx.cpp:110
+#: lib/Plugins/Mailx.cpp:109
 msgid "Sending an email..."
 msgstr "ই-মেইল পাঠানো হচ্ছে..."
 
-#: lib/Plugins/SOSreport.cpp:116
+#: lib/Plugins/SOSreport.cpp:113
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport প্লাগ-ইন সঞ্চালনা করা হচ্ছে..."
 
-#: lib/Plugins/SOSreport.cpp:138
+#: lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
 msgstr "sosreport সঞ্চালিত হচ্ছে: "
 
-#: lib/Plugins/SOSreport.cpp:153
+#: lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "sosreport সঞ্চালনা সমাপ্ত"
+
+#~ msgid "Applet is already running."
+#~ msgstr "অ্যাপ্লেট বর্তমানে চলছে।"
+
+#~ msgid "Pending events: %i"
+#~ msgstr "অপেক্ষারত কর্ম: %i"
+
+#~ msgid "Can't create menu from the description, popup won't be available!\n"
+#~ msgstr "বিবরণের তথ্য প্রয়োগ করে মেনু তৈরি করতে ব্যর্থ, পপ-আপ উপলব্ধ হবে না!\n"
+
+#~ msgid ""
+#~ "This is default handler, you should register your own with "
+#~ "ConnectCrashHandler"
+#~ msgstr ""
+#~ "এটি ডিফল্ট হ্যান্ডলার, ConnectCrashHandler সহযোগে নিজস্ব হ্যান্ডলার নিবন্ধন করুন"
+
+#, fuzzy
+#~ msgid ""
+#~ "This is default handler, you should register your own with "
+#~ "ConnectQuotaExceedHandler"
+#~ msgstr ""
+#~ "এটি ডিফল্ট হ্যান্ডলার, ConnectCrashHandler সহযোগে নিজস্ব হ্যান্ডলার নিবন্ধন করুন"
+
+#~ msgid "Out of memory"
+#~ msgstr "মেমরি অবশিষ্ট নেই"
+
+#~ msgid "Getting local/global universal unique identification..."
+#~ msgstr "স্থানীয়/গ্লোবাল ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
+
+#~ msgid "Creating an archive..."
+#~ msgstr "একটি আর্কাইভ নির্মাণ করুন..."
