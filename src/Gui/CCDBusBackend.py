@@ -122,12 +122,15 @@ class DBusManager(gobject.GObject):
     #    self.emit("analyze-complete", dump)
         pass
 
+# Seems to be not needed at all. Not only that, it is actively harmful
+# when abrtd is autostarted by dbus-daemon: connect_to_daemon() would install
+# duplicate signal handlers!
     def owner_changed_cb(self,name, old_owner, new_owner):
         if(name == CC_NAME and new_owner):
-            self.proxy = self.connect_to_daemon()
+            #self.proxy = self.connect_to_daemon()
             self.emit("daemon-state-changed", "up")
         if(name == CC_NAME and not(new_owner)):
-            self.proxy = None
+            #self.proxy = None
             self.emit("daemon-state-changed", "down")
 
 
@@ -138,10 +141,12 @@ class DBusManager(gobject.GObject):
         self.uniq_name = self.bus.get_unique_name()
         if not self.bus:
             raise Exception(_("Can't connect to dbus"))
-        if self.bus.name_has_owner(CC_NAME):
-            self.proxy = self.bus.get_object(CC_IFACE, CC_PATH,introspect=False)
-        else:
-            raise Exception(_("Please check if abrt daemon is running."))
+        self.proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
+        # Can't do this: abrtd may be autostarted by dbus-daemon
+        #if self.bus.name_has_owner(CC_NAME):
+        #    self.proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
+        #else:
+        #    raise Exception(_("Please check if abrt daemon is running."))
 
         if self.proxy:
             self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)

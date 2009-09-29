@@ -647,12 +647,15 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
-    while ((opt = getopt(argc, argv, "dv")) != -1)
+    while ((opt = getopt(argc, argv, "dsv")) != -1)
     {
         switch (opt)
         {
         case 'd':
             daemonize = false;
+            break;
+        case 's':
+            start_syslog_logging();
             break;
         case 'v':
             g_verbose++;
@@ -662,6 +665,7 @@ int main(int argc, char** argv)
                 "Usage: abrt [-dv]\n"
         	"\nOptions:"
                 "\n\t-d\tDo not daemonize"
+                "\n\t-s\tLog to syslog even with -d"
                 "\n\t-v\tVerbose"
             );
         }
@@ -701,7 +705,7 @@ int main(int argc, char** argv)
         }
         /* Child (daemon) continues */
         setsid(); /* never fails */
-        if (g_verbose == 0)
+        if (g_verbose == 0 && logmode != LOGMODE_SYSLOG)
             start_syslog_logging();
     }
 

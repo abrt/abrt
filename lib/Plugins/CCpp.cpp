@@ -174,10 +174,8 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
 }
 
-static void GetIndependentBacktrace(const std::string& pBacktrace, std::string& pIndependentBacktrace)
+static std::string GetIndependentBacktrace(const std::string& pBacktrace)
 {
-    int ii = 0;
-    std::string line;
     std::string header;
     bool in_bracket = false;
     bool in_quote = false;
@@ -188,10 +186,35 @@ static void GetIndependentBacktrace(const std::string& pBacktrace, std::string& 
     bool has_bracket = false;
     std::set<std::string> set_headers;
 
-    while (ii < pBacktrace.length())
+    /* Backtrace example:
+    #0  0x00007f047e21af70 in __nanosleep_nocancel () from /lib64/libc-2.10.1.so
+
+    Thread 1 (Thread 30750):
+    #0  0x00007f047e21af70 in __nanosleep_nocancel () from /lib64/libc-2.10.1.so
+    No symbol table info available.
+    #1  0x00000000004037bb in rpl_nanosleep (requested_delay=0x7fff8999e400, 
+        remaining_delay=0x0) at nanosleep.c:69
+            r = -516
+            delay = {tv_sec = 1260, tv_nsec = 0}
+            t0 = {tv_sec = 12407, tv_nsec = 291505364}
+    #2  0x000000000040322b in xnanosleep (seconds=<value optimized out>)
+        at xnanosleep.c:112
+            overflow = false
+            ts_sleep = {tv_sec = 1260, tv_nsec = 0}
+            __PRETTY_FUNCTION__ = "xnanosleep"
+    #3  0x0000000000401779 in main (argc=2, argv=0x7fff8999e598) at sleep.c:147
+            i = 2
+            seconds = 1260
+            ok = true
+    */
+    const char *bk = pBacktrace.c_str();
+    while (*bk)
     {
-        if (pBacktrace[ii] == '#' && !in_quote)
-        {
+        if (bk[0] == '#'
+         && bk[1] >= '0' && bk[1] <= '4'
+         && bk[2] == ' ' /* take only #0...#4 (5 last stack frames) */
+         && !in_quote
+        ) {
             if (in_header && !has_filename)
             {
                 header = "";
@@ -200,32 +223,32 @@ static void GetIndependentBacktrace(const std::string& pBacktrace, std::string& 
         }
         if (in_header)
         {
-            if (isdigit(pBacktrace[ii]) && !in_quote && !has_at)
+            if (isdigit(*bk) && !in_quote && !has_at)
             {
                 in_digit = true;
             }
-            else if (pBacktrace[ii] == '\\' && pBacktrace[ii + 1] == '\"')
+            else if (bk[0] == '\\' && bk[1] == '\"')
             {
-                ii++;
+                bk++;
             }
-            else if (pBacktrace[ii] == '\"')
+            else if (*bk == '\"')
             {
                 in_quote = in_quote == true ? false : true;
             }
-            else if (pBacktrace[ii] == '(' && !in_quote)
+            else if (*bk == '(' && !in_quote)
             {
                 in_bracket = true;
                 in_digit = false;
                 header += '(';
             }
-            else if (pBacktrace[ii] == ')' && !in_quote)
+            else if (*bk == ')' && !in_quote)
             {
                 in_bracket = false;
                 has_bracket = true;
                 in_digit = false;
                 header += ')';
             }
-            else if (pBacktrace[ii] == '\n' && has_filename)
+            else if (*bk == '\n' && has_filename)
             {
                 set_headers.insert(header);
                 in_bracket = false;
@@ -237,36 +260,39 @@ static void GetIndependentBacktrace(const std::string& pBacktrace, std::string& 
                 has_bracket = false;
                 header = "";
             }
-            else if (pBacktrace[ii] == ',' && !in_quote)
+            else if (*bk == ',' && !in_quote)
             {
                 in_digit = false;
             }
-            else if (isspace(pBacktrace[ii]) && !in_quote)
+            else if (isspace(*bk) && !in_quote)
             {
                 in_digit = false;
             }
-            else if (pBacktrace[ii] == 'a' && pBacktrace[ii + 1] == 't' && has_bracket && !in_quote)
+            else if (bk[0] == 'a' && bk[1] == 't' && has_bracket && !in_quote)
             {
                 has_at = true;
                 header += 'a';
             }
-            else if (pBacktrace[ii] == ':' && has_at && isdigit(pBacktrace[ii + 1]) && !in_quote)
+            else if (bk[0] == ':' && has_at && isdigit(bk[1]) && !in_quote)
             {
                 has_filename = true;
             }
             else if (in_header && !in_digit && !in_quote && !in_bracket)
             {
-                header += pBacktrace[ii];
+                header += *bk;
             }
         }
-        ii++;
+        bk++;
     }
-    pIndependentBacktrace = "";
-    std::set<std::string>::iterator it;
-    for (it = set_headers.begin(); it != set_headers.end(); it++)
+
+    std::string pIndependentBacktrace;
+    std::set<std::string>::iterator it = set_headers.begin();
+    for (; it != set_headers.end(); it++)
     {
         pIndependentBacktrace += *it;
     }
+    VERB3 log("IndependentBacktrace:'%s'", pIndependentBacktrace.c_str());
+    return pIndependentBacktrace;
 }
 
 static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
@@ -274,7 +300,7 @@ static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& 
     int ii = 0;
     while (ii < pBuildIdPC.length())
     {
-        std::string line = "";
+        std::string line;
         int jj = 0;
 
         while (pBuildIdPC[ii] != '\n' && ii < pBuildIdPC.length())
@@ -501,7 +527,6 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
     std::string backtrace;
     std::string executable;
     std::string package;
-    std::string independentBacktrace;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -509,7 +534,7 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
     }
-    GetIndependentBacktrace(backtrace, independentBacktrace);
+    std::string independentBacktrace = GetIndependentBacktrace(backtrace);
     return CreateHash(package + executable + independentBacktrace);
 }
 
@@ -522,7 +547,7 @@ static bool DebuginfoCheckPolkit(int uid)
 
     if (child_pid == 0)
     {
-         //child
+        //child
         setuid(uid);
         result = polkit_check_authorization(getpid(),
                  "org.fedoraproject.abrt.install-debuginfos");
