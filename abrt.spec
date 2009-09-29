@@ -253,6 +253,7 @@ fi
 %{_mandir}/man5/%{name}.conf.5.gz
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/polkit-1/actions/org.fedoraproject.abrt.policy
+%{_datadir}/dbus-1/system-services/com.redhat.abrt.service
 
 %files libs
 %defattr(-,root,root,-)
