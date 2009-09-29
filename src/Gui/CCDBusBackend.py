@@ -75,7 +75,7 @@ class DBusManager(gobject.GObject):
         self.connect_to_daemon()
 
     # disconnect callback
-    def disconnected(*args):
+    def disconnected(self, *args):
         print "disconnect"
 
     def error_handler_cb(self,error):
@@ -88,7 +88,7 @@ class DBusManager(gobject.GObject):
         # used to silently ingore dbus timeouts
         pass
 
-    def dummy(*args):
+    def dummy(self, *args):
         # dummy function for async method call to workaround the timeout
         pass
 
@@ -194,9 +194,9 @@ class DBusManager(gobject.GObject):
         except dbus.exceptions.DBusException, e:
             raise Exception(e)
 
-    def Report(self,report):
+    def Report(self, report, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
-        self.cc.Report(report, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+        self.cc.Report(report,reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
 
     def DeleteDebugDump(self,UUID):
         return self.cc.DeleteDebugDump(UUID)

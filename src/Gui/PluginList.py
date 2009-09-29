@@ -46,6 +46,9 @@ class PluginInfoList(list):
         
     def getAnalyzerPlugins(self):
         return [x for x in self if x["Enabled"] == 'yes' and x["Type"] == 'Analyzer']
+        
+    def getReporterPlugins(self):
+        return [x for x in self if x["Enabled"] == 'yes' and x["Type"] == 'Reporter']
 
 
 

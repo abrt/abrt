@@ -14,6 +14,7 @@ from CCReporterDialog import ReporterDialog
 from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
 from CCReport import Report
+from PluginList import getPluginInfoList
 import ABRTExceptions
 from abrt_utils import _
 
@@ -122,9 +123,11 @@ class MainWindow():
         self.ccdaemon.connect("show", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         self.ccdaemon.connect("report-done", self.on_report_done_cb)
-
+        
         # load data
         #self.load()
+        self.pluginlist = getPluginInfoList(self.ccdaemon)
+        
     def on_daemon_state_changed_cb(self, widget, state):
         if state == "up":
             self.hydrate()
@@ -294,7 +297,10 @@ class MainWindow():
                 self.update_pBar = False
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add (100,self.progress_update_cb)
-                self.ccdaemon.Report(result)
+                reporters_settings = {}
+                for plugin in self.pluginlist.getReporterPlugins():
+                    reporters_settings[str(plugin)] = plugin.Settings
+                self.ccdaemon.Report(result, reporters_settings)
                 #self.hydrate()
             except Exception, e:
                 gui_error_message(_("Reporting failed!\n%s" % e))
