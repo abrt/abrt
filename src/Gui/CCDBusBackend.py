@@ -72,6 +72,16 @@ class DBusManager(gobject.GObject):
             iface = DBusInterface(self)
 
         self.connect_to_daemon()
+        self.bus.add_signal_receiver(self.owner_changed_cb, "NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
+        # new crash notification
+        self.bus.add_signal_receiver(self.crash_cb, "Crash", dbus_interface=CC_IFACE)
+        # watch for updates
+        self.bus.add_signal_receiver(self.update_cb, "Update", dbus_interface=CC_IFACE)
+        # watch for warnings
+        self.bus.add_signal_receiver(self.warning_cb, "Warning", dbus_interface=CC_IFACE)
+        # watch for job-done signals
+        self.bus.add_signal_receiver(self.jobdone_cb, "JobDone", dbus_interface=CC_IFACE)
+        self.bus.add_signal_receiver(self.jobstarted_cb, "JobStarted", dbus_interface=CC_IFACE)
 
     # disconnect callback
     def disconnected(self, *args):
@@ -111,14 +121,6 @@ class DBusManager(gobject.GObject):
         if job_id == 0 or job_id in self.pending_jobs:
             self.emit("warning", message)
 
-    def analyze_complete_cb(self,dump):
-        #for arg in args:
-        #    print "Analyze complete for: %s" % arg
-        # emit signal to let clients know that analyze has been completed
-        # FIXME - rewrite with CCReport class
-    #    self.emit("analyze-complete", dump)
-        pass
-
 # Seems to be not needed at all. Not only that, it is actively harmful
 # when abrtd is autostarted by dbus-daemon: connect_to_daemon() would install
 # duplicate signal handlers!
@@ -134,33 +136,16 @@ class DBusManager(gobject.GObject):
     def connect_to_daemon(self):
         if not self.bus:
             self.bus = dbus.SystemBus()
-            self.bus.add_signal_receiver(self.owner_changed_cb,"NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
         if not self.bus:
             raise Exception(_("Can't connect to dbus"))
-        self.proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
         # Can't do this: abrtd may be autostarted by dbus-daemon
         #if self.bus.name_has_owner(CC_NAME):
         #    self.proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
         #else:
         #    raise Exception(_("Please check if abrt daemon is running."))
-
+        self.proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
         if self.proxy:
             self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
-            #intr = dbus.Interface(proxy, dbus_interface='org.freedesktop.DBus.Introspectable')
-            # new crash notify
-            self.proxy.connect_to_signal("Crash",self.crash_cb,dbus_interface=CC_IFACE)
-            # BT extracting complete
-#TODO: remove, abrtd does not emit AnalyzeComplete
-            self.acconnection = self.proxy.connect_to_signal("AnalyzeComplete",self.analyze_complete_cb,dbus_interface=CC_IFACE)
-            # Catch Errors
-            self.acconnection = self.proxy.connect_to_signal("Error",self.error_handler_cb,dbus_interface=CC_IFACE)
-            # watch for updates
-            self.acconnection = self.proxy.connect_to_signal("Update",self.update_cb,dbus_interface=CC_IFACE)
-            # watch for warnings
-            self.acconnection = self.proxy.connect_to_signal("Warning",self.warning_cb,dbus_interface=CC_IFACE)
-            # watch for job-done signals
-            self.acconnection = self.proxy.connect_to_signal("JobDone",self.jobdone_cb,dbus_interface=CC_IFACE)
-            self.acconnection = self.proxy.connect_to_signal("JobStarted",self.jobstarted_cb,dbus_interface=CC_IFACE)
         else:
             raise Exception(_("Please check if abrt daemon is running."))
 
