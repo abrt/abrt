@@ -35,7 +35,7 @@ class Dump():
 
     def isReported(self):
         return self.Reported[CONTENT] == "1"
-        
+
     def getMessage(self):
         if not self.Message:
             return []

@@ -123,18 +123,18 @@ class MainWindow():
         self.ccdaemon.connect("show", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         self.ccdaemon.connect("report-done", self.on_report_done_cb)
-        
+
         # load data
         #self.load()
         self.pluginlist = getPluginInfoList(self.ccdaemon)
-        
+
     def on_daemon_state_changed_cb(self, widget, state):
         if state == "up":
             self.hydrate()
             self.window.set_sensitive(True)
         elif state == "down":
             self.window.set_sensitive(False)
-            
+
     def on_popupActivate(self, widget, event):
         menu = self.wTree.get_widget("popup_menu")
         # 3 == right mouse button
@@ -150,7 +150,7 @@ class MainWindow():
         dialog = PluginsSettingsDialog(self.window,self.ccdaemon)
         dialog.hydrate()
         dialog.show()
-        
+
     def on_miSettings_clicked(self, widget):
         dialog = SettingsDialog(self.window, self.ccdaemon)
         dialog.hydrate()
@@ -165,7 +165,7 @@ class MainWindow():
             pass
         except Exception, e:
             pass
-        gui_error_message("%s" % message,parent_dialog=self.window)
+        gui_error_message("%s" % message, parent_dialog=self.window)
 
     def error_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
@@ -174,7 +174,7 @@ class MainWindow():
             self.pBarWindow.hide()
         except Exception, e:
             pass
-        gui_error_message(_("Unable to finish current task!\n%s" % message),parent_dialog=self.window)
+        gui_error_message(_("Unable to finish current task!\n%s" % message), parent_dialog=self.window)
 
     def update_cb(self, daemon, message, job_id):
         message = message.replace('\n',' ')
@@ -296,7 +296,7 @@ class MainWindow():
             try:
                 self.update_pBar = False
                 self.pBarWindow.show_all()
-                self.timer = gobject.timeout_add (100,self.progress_update_cb)
+                self.timer = gobject.timeout_add(100, self.progress_update_cb)
                 reporters_settings = {}
                 for plugin in self.pluginlist.getReporterPlugins():
                     reporters_settings[str(plugin)] = plugin.Settings

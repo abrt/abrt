@@ -93,9 +93,9 @@ The key dbus calls served by abrt-process are:
      After it returns, when report creation thread has finished,
      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
 [Problem: how to do privilegged plugin specific actions?]
-    Solution: if plugin needs an access to some root only accessible dir then 
+    Solution: if plugin needs an access to some root only accessible dir then
     abrt should be run by root anyway
-    - debuginfo gets installed using pkg-debug-install, which cares about 
+    - debuginfo gets installed using pkg-debug-install, which cares about
     privileges itself, so no problem here
 - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
 - Report(map_crash_report_t (map_vector_string_t)):

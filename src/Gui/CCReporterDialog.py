@@ -115,9 +115,9 @@ class ReporterDialog():
                         self.comment_changed = True
                 except Exception, e:
                     pass
-                
+
                 buff.set_text(comment)
-                
+
                 self.tvComment.set_buffer(buff)
                 continue
             if self.report[item][TYPE] != 's':

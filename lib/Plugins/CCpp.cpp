@@ -192,7 +192,7 @@ static std::string GetIndependentBacktrace(const std::string& pBacktrace)
     Thread 1 (Thread 30750):
     #0  0x00007f047e21af70 in __nanosleep_nocancel () from /lib64/libc-2.10.1.so
     No symbol table info available.
-    #1  0x00000000004037bb in rpl_nanosleep (requested_delay=0x7fff8999e400, 
+    #1  0x00000000004037bb in rpl_nanosleep (requested_delay=0x7fff8999e400,
         remaining_delay=0x0) at nanosleep.c:69
             r = -516
             delay = {tv_sec = 1260, tv_nsec = 0}

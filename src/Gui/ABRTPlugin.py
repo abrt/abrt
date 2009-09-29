@@ -23,7 +23,7 @@ class PluginSettings(dict):
 
 """Class to represent common plugin info"""
 class PluginInfo():
-    types = {"Analyzer":_("Analyzer plugins"), 
+    types = {"Analyzer":_("Analyzer plugins"),
              "Action":_("Action plugins"),
              "Reporter":_("Reporter plugins"),
              "Database":_("Database plugins")}
@@ -48,7 +48,7 @@ class PluginInfo():
 
     def getDescription(self):
         return self.Description
-        
+
     def getType(self):
         return self.Type
 
@@ -57,7 +57,7 @@ class PluginInfo():
 
     def __str__(self):
         return self.Name
-        
+
     def __getitem__(self, item):
         return self.__dict__[item]
 

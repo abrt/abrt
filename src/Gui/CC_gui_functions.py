@@ -31,10 +31,9 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
     builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
     dialog = builder.get_object("ReportDialog")
-    
-    
+
     main_hbox = builder.get_object("main_hbox")
-    
+
     STATUS = 0
     MESSAGE = 1
     message = ""
@@ -200,7 +199,7 @@ def get_icon_for_package(theme,package):
             return gtk.gdk.pixbuf_new_from_file_at_size(icon_filename,22,22)
         else:
             return None
-            
+
 if __name__ == "__main__":
     window = gtk.Window()
     gui_report_dialog("<b>Bugzilla</b>: <span foreground='red'>CReporterBugzilla::Report(): CReporterBugzilla::Login(): RPC response indicates failure.  The username or password you entered is not valid.</span>\n<b>Logger</b>: Report was stored into: /var/log/abrt-logger", window)
