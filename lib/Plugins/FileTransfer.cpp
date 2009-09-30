@@ -135,6 +135,10 @@ static void traverse_directory(const char * directory, void * something,
     char * end;
 
     dp = opendir(directory);
+    if (dp == NULL)
+    {
+        return;
+    }
     while ((dirp = readdir(dp)) != NULL)
     {
         if (is_regular_file(dirp, directory))
@@ -166,6 +170,10 @@ static void create_zip(const char * archive_name, const char * directory)
     struct zip * z;
 
     z = zip_open(archive_name, ZIP_CREATE, NULL);
+    if (z == NULL)
+    {
+        return;
+    }
     traverse_directory(directory, z, add_to_zip);
     zip_close(z);
 }
@@ -176,24 +184,32 @@ static void create_tar(const char * archive_name, const char * directory)
 
     tar_open(&tar, (char *)archive_name, NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU);
     tar_append_tree(tar, (char *)directory, ".");
-//why not tar_close(tar)??
-    close(tar_fd(tar));
+    tar_close(tar);
 }
 
 static void create_targz(const char * archive_name, const char * directory)
 {
-    char name_wo_gz[BUFSIZ];
+    char * name_without_gz;
     char buf[BUFSIZ];
     FILE * f;
     ssize_t bytesRead;
     gzFile gz;
 
-    strcpy(name_wo_gz, archive_name);
-    strrchr(name_wo_gz,'.')[0] = '\0';
-    create_tar(name_wo_gz, directory);
+    name_without_gz = strdup(archive_name);
+    strrchr(name_without_gz,'.')[0] = '\0';
+    create_tar(name_without_gz, directory);
 
-    f = fopen(name_wo_gz, "r");
+    f = fopen(name_without_gz, "r");
+    if (f == NULL)
+    {
+        return;
+    }
     gz = gzopen(archive_name, "w");
+    if (gz == NULL)
+    {
+        fclose(f);
+        return;
+    }
 
     while ((bytesRead = fread(buf, 1, BUFSIZ, f)) > 0)
     {
@@ -201,12 +217,13 @@ static void create_targz(const char * archive_name, const char * directory)
     }
     gzclose(gz);
     fclose(f);
-    remove(name_wo_gz);
+    remove(name_without_gz);
+    free(name_without_gz);
 }
 
 static void create_tarbz2(const char * archive_name, const char * directory)
 {
-    char name_wo_bz2[BUFSIZ];
+    char * name_without_bz2;
     char buf[BUFSIZ];
     FILE * f;
     ssize_t bytesRead;
@@ -215,13 +232,28 @@ static void create_tarbz2(const char * archive_name, const char * directory)
     BZFILE * bz;
 #define BLOCK_MULTIPLIER 7
 
-    strcpy(name_wo_bz2, archive_name);
-    strrchr(name_wo_bz2,'.')[0] = '\0';
-    create_tar(name_wo_bz2, directory);
+    name_without_bz2 = strdup(archive_name);
+    strrchr(name_without_bz2,'.')[0] = '\0';
+    create_tar(name_without_bz2, directory);
 
-    tarFD = open(name_wo_bz2, O_RDONLY);
+    tarFD = open(name_without_bz2, O_RDONLY);
+    if (tarFD == -1)
+    {
+        return;
+    }
     f = fopen(archive_name, "w");
+    if (f == NULL)
+    {
+        close(tarFD);
+        return;
+    }
     bz = BZ2_bzWriteOpen(&bzError, f, BLOCK_MULTIPLIER, 0, 0);
+    if (bz == NULL)
+    {
+        close(tarFD);
+        fclose(f);
+        return;
+    }
 
     while ((bytesRead = read(tarFD,buf,BUFSIZ)) > 0)
     {
@@ -230,7 +262,9 @@ static void create_tarbz2(const char * archive_name, const char * directory)
     BZ2_bzWriteClose(&bzError, bz, 0, NULL, NULL);
 
     close(tarFD);
-    remove(name_wo_bz2);
+    fclose(f);
+    remove(name_without_bz2);
+    free(name_without_bz2);
 }
 
 void CFileTransfer::CreateArchive(const std::string& pArchiveName,
