@@ -430,8 +430,10 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
         /*close(STDERR_FILENO);*/
 
         setsid();
+        execlp("pk-debuginfo-install", "pk-debuginfo-install", "-y", "--", package.c_str(), NULL);
+        /* fall back */
         execlp("debuginfo-install", "debuginfo-install", "-y", "--", package.c_str(), NULL);
-        exit(0);
+        exit(1);
     }
 
     close(pipein[0]);
