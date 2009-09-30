@@ -130,10 +130,11 @@ class MainWindow():
 
     def on_daemon_state_changed_cb(self, widget, state):
         if state == "up":
-            self.hydrate()
-            self.window.set_sensitive(True)
-        elif state == "down":
-            self.window.set_sensitive(False)
+            self.hydrate() # refresh crash list
+            #self.window.set_sensitive(True)
+        # abrtd might just die on timeout, it's not fatal
+        #elif state == "down":
+        #    self.window.set_sensitive(False)
 
     def on_popupActivate(self, widget, event):
         menu = self.wTree.get_widget("popup_menu")

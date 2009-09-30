@@ -125,12 +125,17 @@ class DBusManager(gobject.GObject):
 # when abrtd is autostarted by dbus-daemon: connect_to_daemon() would install
 # duplicate signal handlers!
     def owner_changed_cb(self,name, old_owner, new_owner):
-        if(name == CC_NAME and new_owner):
-            #self.proxy = self.connect_to_daemon()
-            self.emit("daemon-state-changed", "up")
-        if(name == CC_NAME and not(new_owner)):
-            #self.proxy = None
-            self.emit("daemon-state-changed", "down")
+        if name == CC_NAME:
+            # No need to connect at once, we can do it when we need it
+            # (and this "connect on demand" mode of operation is needed
+            # anyway if abrtd is autostarted by dbus: before we call it,
+            # there is no abrtd to connect to!)
+            if new_owner:
+                #self.proxy = self.connect_to_daemon()
+                self.emit("daemon-state-changed", "up")
+            else:
+                #self.proxy = None
+                self.emit("daemon-state-changed", "down")
 
 
     def connect_to_daemon(self):
@@ -176,7 +181,11 @@ class DBusManager(gobject.GObject):
             # we don't need the return value, as the job_id is sent via JobStarted signal
             self.cc.CreateReport(UUID, timeout=60)
         except dbus.exceptions.DBusException, e:
-            raise Exception(e)
+            # One case when it fails is if abrtd exited and needs to be
+            # autostarted by dbus again. (This is a first stab
+            # at making it work in this case, I want to find a better way)
+            self.connect_to_daemon()
+            self.cc.CreateReport(UUID, timeout=60)
 
     def Report(self, report, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
