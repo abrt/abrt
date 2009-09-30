@@ -21,7 +21,6 @@ class DBusManager(gobject.GObject):
     # and later with policyKit
     bus = None
     def __init__(self):
-        self.pending_jobs = []
         session = None
         # binds the dbus to glib mainloop
         DBusGMainLoop(set_as_default=True)
@@ -81,7 +80,6 @@ class DBusManager(gobject.GObject):
         self.bus.add_signal_receiver(self.warning_cb, "Warning", dbus_interface=CC_IFACE)
         # watch for job-done signals
         self.bus.add_signal_receiver(self.jobdone_cb, "JobDone", dbus_interface=CC_IFACE)
-        self.bus.add_signal_receiver(self.jobstarted_cb, "JobStarted", dbus_interface=CC_IFACE)
 
     # disconnect callback
     def disconnected(self, *args):
@@ -111,15 +109,11 @@ class DBusManager(gobject.GObject):
 
     def update_cb(self, message, job_id=0):
         print "Update >>%s<< for job: %s" % (message, job_id)
-        # FIXME: use dest instead of 0 once we implement it in daemon
-        if job_id == 0 or job_id in self.pending_jobs:
-            self.emit("update", message, job_id)
+        self.emit("update", message, job_id)
 
     def warning_cb(self, message, job_id=0):
         print "Warning >>%s<< for job: %s" % (message, job_id)
-        # FIXME: use dest instead of 0 once we implement it in daemon
-        if job_id == 0 or job_id in self.pending_jobs:
-            self.emit("warning", message)
+        self.emit("warning", message)
 
 # Seems to be not needed at all. Not only that, it is actively harmful
 # when abrtd is autostarted by dbus-daemon: connect_to_daemon() would install
@@ -137,7 +131,6 @@ class DBusManager(gobject.GObject):
                 #self.proxy = None
                 self.emit("daemon-state-changed", "down")
 
-
     def connect_to_daemon(self):
         if not self.bus:
             self.bus = dbus.SystemBus()
@@ -154,15 +147,9 @@ class DBusManager(gobject.GObject):
         else:
             raise Exception(_("Please check if abrt daemon is running."))
 
-    def addJob(self, job_id):
-        self.pending_jobs.append(job_id)
-
-    def jobstarted_cb(self, dest, job_id):
-        # the job belongs to this client
-        print "Started our job: %s" % job_id
-        self.addJob(job_id)
-
     def jobdone_cb(self, dest, uuid):
+        # TODO: check that it is indeed OUR job:
+        # remember uuid in getReport and compare here
         print "Our job for UUID %s is done." % uuid
         dump = self.cc.GetJobResult(uuid)
         if dump:
