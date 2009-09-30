@@ -133,8 +133,7 @@ void CPluginManager::LoadPlugins()
         struct dirent *dent;
         while ((dent = readdir(dir)) != NULL)
         {
-            // FIXME: need to handle DT_UNKNOWN too
-            if (dent->d_type == DT_REG)
+            if (is_regular_file(dent, PLUGINS_LIB_DIR))
             {
                 std::string name = dent->d_name;
                 std::string extension = name.substr(name.length() - sizeof(PLUGINS_LIB_EXTENSION) + 1);

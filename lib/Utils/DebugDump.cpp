@@ -484,16 +484,10 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
     struct dirent *dent;
     while ((dent = readdir(m_pGetNextFileDir)) != NULL)
     {
-        struct stat statbuf;
-        std::string fullname = m_sDebugDumpDir + "/" + dent->d_name;
+        if (is_regular_file(dent, m_sDebugDumpDir.c_str()))
+        {
+            std::string fullname = m_sDebugDumpDir + "/" + dent->d_name;
 
-        /* some filesystems do not report the type! they report DT_UNKNOWN */
-        if (dent->d_type == DT_REG
-         || (dent->d_type == DT_UNKNOWN
-            && lstat(fullname.c_str(), &statbuf) == 0
-            && S_ISREG(statbuf.st_mode)
-            )
-        ) {
             pFileName = dent->d_name;
             if (IsTextFile(fullname))
             {

@@ -137,13 +137,12 @@ static void traverse_directory(const char * directory, void * something,
     dp = opendir(directory);
     while ((dirp = readdir(dp)) != NULL)
     {
-        if (dirp->d_type == DT_REG)
+        if (is_regular_file(dirp, directory))
         {
-            complete_name[0] = '\0';
             end = stpcpy(complete_name, directory);
             if (end[-1] != '/')
             {
-                end = stpcpy(end, "/");
+                *end++ = '/';
             }
             end = stpcpy(end, dirp->d_name);
 
@@ -292,7 +291,8 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
         dirlist.open(FILETRANSFER_DIRLIST, fstream::out | fstream::app );
         dirlist << pActiveDir << endl;
         dirlist.close();
-    } else if(pArgs == "one")
+    }
+    else if (pArgs == "one")
     {
         /* just send one archive */
         gethostname(hostname,HBLEN);
@@ -312,7 +312,6 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
     }
     else
     {
-
         gethostname(hostname,HBLEN);
 
         dirlist.open(FILETRANSFER_DIRLIST, fstream::in);

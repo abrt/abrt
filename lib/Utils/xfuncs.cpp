@@ -286,3 +286,22 @@ void xunlink(const char *pathname)
 	if (unlink(pathname))
 		perror_msg_and_die("can't remove file '%s'", pathname);
 }
+
+/* Just testing dent->d_type == DT_REG is wrong: some filesystems
+ * do not report the type, they report DT_UNKNOWN for every dirent
+ * (and this is not a bug in filesystem, this is allowed by standards).
+ */
+int is_regular_file(struct dirent *dent, const char *dirname)
+{
+	if (dent->d_type == DT_REG)
+		return 1;
+	if (dent->d_type != DT_UNKNOWN)
+		return 0;
+
+	char *fullname = xasprintf("%s/%s", dirname, dent->d_name);
+	struct stat statbuf;
+	int r = lstat(fullname, &statbuf);
+	free(fullname);
+
+        return r == 0 && S_ISREG(statbuf.st_mode);
+}

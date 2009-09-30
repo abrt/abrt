@@ -122,6 +122,13 @@ void xbind(int sockfd, struct sockaddr *my_addr, socklen_t addrlen);
 void xlisten(int s, int backlog);
 ssize_t xsendto(int s, const void *buf, size_t len, const struct sockaddr *to, socklen_t tolen);
 void xstat(const char *name, struct stat *stat_buf);
+/* Just testing dent->d_type == DT_REG is wrong: some filesystems
+ * do not report the type, they report DT_UNKNOWN for every dirent
+ * (and this is not a bug in filesystem, this is allowed by standards).
+ * This function handles this case. Note: it returns 0 on symlinks
+ * even if they point to regular files.
+ */
+int is_regular_file(struct dirent *dent, const char *dirname);
 
 void xmove_fd(int from, int to);
 char* xasprintf(const char *format, ...);
