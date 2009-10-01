@@ -195,19 +195,21 @@ static void create_targz(const char * archive_name, const char * directory)
     ssize_t bytesRead;
     gzFile gz;
 
-    name_without_gz = strdup(archive_name);
+    name_without_gz = xstrdup(archive_name);
     strrchr(name_without_gz,'.')[0] = '\0';
     create_tar(name_without_gz, directory);
 
     f = fopen(name_without_gz, "r");
     if (f == NULL)
     {
+        free(name_without_gz);
         return;
     }
     gz = gzopen(archive_name, "w");
     if (gz == NULL)
     {
         fclose(f);
+	free(name_without_gz);
         return;
     }
 
@@ -232,19 +234,21 @@ static void create_tarbz2(const char * archive_name, const char * directory)
     BZFILE * bz;
 #define BLOCK_MULTIPLIER 7
 
-    name_without_bz2 = strdup(archive_name);
+    name_without_bz2 = xstrdup(archive_name);
     strrchr(name_without_bz2,'.')[0] = '\0';
     create_tar(name_without_bz2, directory);
 
     tarFD = open(name_without_bz2, O_RDONLY);
     if (tarFD == -1)
     {
+        free(name_without_bz2);
         return;
     }
     f = fopen(archive_name, "w");
     if (f == NULL)
     {
         close(tarFD);
+        free(name_without_bz2);
         return;
     }
     bz = BZ2_bzWriteOpen(&bzError, f, BLOCK_MULTIPLIER, 0, 0);
@@ -252,6 +256,7 @@ static void create_tarbz2(const char * archive_name, const char * directory)
     {
         close(tarFD);
         fclose(f);
+        free(name_without_bz2);
         return;
     }
 
