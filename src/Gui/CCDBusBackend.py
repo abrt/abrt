@@ -51,19 +51,19 @@ class DBusManager(gobject.GObject):
 
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
-        gobject.signal_new("crash", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
+        gobject.signal_new("crash", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
         # signal emited when new analyze is complete
-        gobject.signal_new("analyze-complete", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new("analyze-complete", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         # signal emited when smth fails
-        gobject.signal_new("abrt-error", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
-        gobject.signal_new("warning", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new("abrt-error", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
+        gobject.signal_new("warning", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         # signal emited to update gui with current status
-        gobject.signal_new("update", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,gobject.TYPE_PYOBJECT))
+        gobject.signal_new("update", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         # signal emited to show gui if user try to run it again
-        gobject.signal_new("show", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,())
+        gobject.signal_new("show", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
         # signal emited to show gui if user try to run it again
-        gobject.signal_new("daemon-state-changed", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
-        gobject.signal_new("report-done", self, gobject.SIGNAL_RUN_FIRST,gobject.TYPE_NONE,(gobject.TYPE_PYOBJECT,))
+        gobject.signal_new("daemon-state-changed", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
+        gobject.signal_new("report-done", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
 
         # export the app dbus interface
         if session:
