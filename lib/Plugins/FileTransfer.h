@@ -40,15 +40,9 @@ class CFileTransfer : public CAction
 
         void SendFile(const std::string& pURL,
                       const std::string& pFilename);
-        std::string DirBase(const std::string &pStr);
 
     public:
-        CFileTransfer() :
-            m_sArchiveType(".tar.gz"),
-            m_nRetryCount(3),
-            m_nRetryDelay(20)
-        {}
-
+        CFileTransfer();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
         virtual void Run(const std::string& pActiveDir,
