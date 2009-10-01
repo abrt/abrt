@@ -108,11 +108,11 @@ class DBusManager(gobject.GObject):
         self.emit("crash")
 
     def update_cb(self, message, job_id=0):
-        print "Update >>%s<< for job: %s" % (message, job_id)
-        self.emit("update", message, job_id)
+        print "Update >>%s<<" % message
+        self.emit("update", message)
 
     def warning_cb(self, message, job_id=0):
-        print "Warning >>%s<< for job: %s" % (message, job_id)
+        print "Warning >>%s<<" % message
         self.emit("warning", message)
 
 # Seems to be not needed at all. Not only that, it is actively harmful

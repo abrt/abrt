@@ -177,7 +177,7 @@ class MainWindow():
             pass
         gui_error_message(_("Unable to finish current task!\n%s" % message), parent_dialog=self.window)
 
-    def update_cb(self, daemon, message, job_id):
+    def update_cb(self, daemon, message):
         message = message.replace('\n',' ')
         self.wTree.get_widget("lStatus").set_text(message)
 
