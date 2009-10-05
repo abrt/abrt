@@ -27,11 +27,13 @@ def on_url_clicked(label, url):
 def gui_report_dialog ( report_status_dict, parent_dialog,
                       message_type=gtk.MESSAGE_INFO,
                       widget=None, page=0, broken_widget=None ):
+    MAX_WIDTH = 50
     builder = gtk.Builder()
     builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
     dialog = builder.get_object("ReportDialog")
-
+    dialog.set_default_size(200, 50)
+    dialog.set_resizable(False)
     main_hbox = builder.get_object("main_hbox")
 
     STATUS = 0
@@ -44,6 +46,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         plugin_label.set_markup("<b>%s</b>: " % plugin)
         plugin_label.set_justify(gtk.JUSTIFY_RIGHT)
         status_label = Label()
+        status_label.set_max_width_chars(MAX_WIDTH)
         status_label.set_selectable(True)
         status_hbox.pack_start(plugin_label, expand=False)
         status_hbox.pack_start(status_label, expand=False)
@@ -58,6 +61,8 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
                     status_label.connect(on_url_clicked_signal, on_url_clicked)
             else:
                 status_label.set_text("%s" % report_status_dict[plugin][1])
+        if len(report_status_dict[plugin][1]) > MAX_WIDTH:
+            status_label.set_tooltip_text(report_status_dict[plugin][1])
         status_vbox.pack_start(status_hbox, expand=False)
     main_hbox.pack_start(status_vbox)
 

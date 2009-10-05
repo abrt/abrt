@@ -75,8 +75,8 @@ class SettingsDialog:
         try:
             self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
         except Exception, e:
-            print e
-
+            print "SettingsDialog: ", e
+        
         ## hydrate cron jobs:
         for key,val in self.settings["Cron"].iteritems():
             # actionas are separated by ','

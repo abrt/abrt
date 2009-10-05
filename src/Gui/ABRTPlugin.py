@@ -11,18 +11,34 @@ Email
 Description
 """
 from abrt_utils import _
+from ConfBackend import ConfBackendGnomeKeyring
 
 class PluginSettings(dict):
     def __init__(self):
+        dict.__init__(self)
         #print "Init plugin settings"
-        pass
 
     def __init__(self, settings_dict):
+        dict.__init__(self)
         for key in settings_dict.keys():
             self[key] = settings_dict[key]
-
-"""Class to represent common plugin info"""
+            
+    def check(self):
+        if "Password" in self.keys():
+            # password is missing
+            if not self["Password"]:
+                return False
+        # settings are OK
+        return True
+    
+    def load(self, name):
+        print "load:", name
+    
+    def save(self, name):
+        print "save: ", name
+        
 class PluginInfo():
+    """Class to represent common plugin info"""
     types = {"Analyzer":_("Analyzer plugins"),
              "Action":_("Action plugins"),
              "Reporter":_("Reporter plugins"),
@@ -41,7 +57,7 @@ class PluginInfo():
         self.Type = None
         self.Email = None
         self.Description = None
-        self.Settings = None
+        self.Settings = PluginSettings({})
 
     def getName(self):
         return self.Name
@@ -60,4 +76,12 @@ class PluginInfo():
 
     def __getitem__(self, item):
         return self.__dict__[item]
-
+    
+    def load_settings(self):
+        if self.Name:
+            self.Settings.load(self.Name)
+        else:
+            print "plugin name is not set, can't load it's settings"
+    
+    def save_settings(self):
+        self.Settings.save(self.Name)
