@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from datetime import datetime
 
 class Report():
     """Class for mapping the report to pyhon object"""

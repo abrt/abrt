@@ -6,7 +6,6 @@ from abrt_utils import _
 try:
     import gnomekeyring as gkey
 except ImportError, e:
-    print e
     gkey = None
 
 class ConfBackend(object):
@@ -30,13 +29,11 @@ class ConfBackendGnomeKeyring(ConfBackend):
             raise ConfBackendInitError(_("Can't connect do Gnome Keyring daemon"))
 
     def save(self, name, settings):
-        print settings
         settings_tmp = settings.copy()
         settings_tmp["AbrtPluginInfo"] = name
         password = ""
 
         if "Password" in settings_tmp:
-            print "saving password"
             password = settings_tmp["Password"]
             del settings_tmp["Password"]
         gkey.item_create_sync(self.default_key_ring,
@@ -51,9 +48,10 @@ class ConfBackendGnomeKeyring(ConfBackend):
         try:
             item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, {"AbrtPluginInfo":str(name)})
         except gkey.NoMatchError, ex:
-            print "kekeke"
+            # nothing found
+            pass
+
         if item_list:
-            print ">>> neco"
             retval = item_list[0].attributes.copy()
             retval["Password"] = item_list[0].secret
             return retval

@@ -28,7 +28,6 @@ class PluginSettings(dict):
         return True
 
     def load(self, name, default_settings):
-        print "load:", name
         # load settings from daemon
         for key in default_settings.keys():
             self[str(key)] = str(default_settings[key])
@@ -37,10 +36,8 @@ class PluginSettings(dict):
         # overwrite defaluts with user setting
         for key in settings.keys():
             self[str(key)] = str(settings[key])
-            print str(key), str(settings[key])
 
     def save(self, name):
-        print "save: ", name
         self.conf.save(name, self)
 
 class PluginInfo():
@@ -85,7 +82,6 @@ class PluginInfo():
 
     def load_settings(self, default_settings):
         if self.Name:
-            print self.Name
             self.Settings.load(self.Name, default_settings)
         else:
             print _("Plugin name is not set, can't load it's settings")
