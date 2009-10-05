@@ -420,12 +420,18 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                         return;
                     }
 
+                    /** we don't want to save it from daemon if it's running under root
+                    but wi might get back to this once we make the daemon to not run
+                    with root privileges
+                    */
+                    /*
                     SavePluginSettings(confPath, pSettings);
                     if (chown(confPath.c_str(), uid, gid) == -1)
                     {
                         perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
                         return;
                     }
+                    */
                 }
             }
         }
@@ -443,7 +449,11 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName
         if (plugin != m_mapPlugins.end())
         {
             ret = plugin->second->GetSettings();
-
+            /** we don't want to load it from daemon if it's running under root
+                but wi might get back to this once we make the daemon to not run
+                with root privileges
+            */
+              /*
             if (abrt_plugin->second->GetType() == REPORTER)
             {
                 std::string home = get_home_dir(atoi(pUID.c_str()));
@@ -452,6 +462,7 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName
                     LoadPluginSettings(home + "/.abrt/" + pName + "."PLUGINS_CONF_EXTENSION, ret);
                 }
             }
+            */
             return ret;
         }
     }

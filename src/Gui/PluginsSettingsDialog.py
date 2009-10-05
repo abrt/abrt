@@ -130,9 +130,10 @@ class PluginsSettingsDialog:
                 ui.dehydrate()
                 if pluginfo.Settings:
                     try:
+                        pluginfo.save_settings()
                         self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)
                     except Exception, e:
-                        gui_error_message(_("Can't save plugin settings:\n %s", e))
+                        gui_error_message(_("Can't save plugin settings:\n %s" % e))
                 #for key, val in pluginfo.Settings.iteritems():
                 #    print "%s:%s" % (key, val)
             elif response == gtk.RESPONSE_CANCEL:

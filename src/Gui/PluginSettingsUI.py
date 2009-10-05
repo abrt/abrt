@@ -1,7 +1,8 @@
 import gtk
 from abrt_utils import _
+
 class PluginSettingsUI(gtk.Dialog):
-    def __init__(self, pluginfo):
+    def __init__(self, pluginfo, parent=None):
         #print "Init PluginSettingsUI"
         gtk.Dialog.__init__(self)
         self.plugin_name = pluginfo.Name
@@ -16,6 +17,8 @@ class PluginSettingsUI(gtk.Dialog):
             if not self.dialog:
                 raise Exception(_("Can't find PluginDialog widget in UI description!"))
             self.dialog.set_title("%s" % pluginfo.getName())
+            if parent:
+                self.dialog.set_transient_for(parent)
         else:
             # we shouldn't get here, but just to be safe
             no_ui_label = gtk.Label(_("No UI for plugin %s" % pluginfo))
@@ -27,7 +30,7 @@ class PluginSettingsUI(gtk.Dialog):
             if self.pluginfo.Enabled == "yes":
                 if self.Settings:
                     #print "Hydrating %s" % self.plugin_name
-                    for key,value in self.Settings.iteritems():
+                    for key, value in self.Settings.iteritems():
                         #print "%s:%s" % (key,value)
                         widget = self.plugin_gui.get_object("conf_%s" % key)
                         if type(widget) == gtk.Entry:
