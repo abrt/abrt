@@ -76,7 +76,7 @@ class SettingsDialog:
             self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
         except Exception, e:
             print "SettingsDialog: ", e
-        
+
         ## hydrate cron jobs:
         for key,val in self.settings["Cron"].iteritems():
             # actionas are separated by ','
@@ -91,6 +91,9 @@ class SettingsDialog:
                     self.settings["Cron"][key].remove(plugin.getName())
         # hydrate common
         common = self.settings["Common"]
+        # ensure that all expected keys exist:
+        if not common.has_key("OpenGPGCheck"):
+            common["OpenGPGCheck"] = "no" # check unsigned pkgs too
         ## gpgcheck
         self.builder.get_object("cbOpenGPGCheck").set_active(common["OpenGPGCheck"] == 'yes')
         ## database
