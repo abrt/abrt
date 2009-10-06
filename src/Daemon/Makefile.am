@@ -42,7 +42,7 @@ dist_polkitconf_DATA = org.fedoraproject.abrt.policy
 comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 
-man_MANS = abrt.8 abrt.conf.5
+man_MANS = abrtd.8 abrt.conf.5
 EXTRA_DIST = $(man_MANS)
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
