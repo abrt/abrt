@@ -145,6 +145,7 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
 {
     update_client(_("Getting backtrace..."));
 
+// TODO: use -ex CMD1 -ex CMD2 ... instead of temp file?
     std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
     std::ofstream fTmp;
     std::string UID;
@@ -156,8 +157,12 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_UID, UID);
-        fTmp << "file " << executable << '\n';
-        fTmp << "core " << pDebugDumpDir << "/"FILENAME_COREDUMP"\n";
+        /* Unfortunately, this doesn't work if the executable
+         * was deleted (as often happens during updates):
+         * with "file" directive, gdb will use specified file
+         * even if it is completely unrelated to the coredump */
+        /* fTmp << "file " << executable << '\n'; */
+        fTmp << "core-file " << pDebugDumpDir << "/"FILENAME_COREDUMP"\n";
         fTmp << "thread apply all backtrace full\nq\n";
         fTmp.close();
     }
@@ -211,8 +216,8 @@ static std::string GetIndependentBacktrace(const std::string& pBacktrace)
     while (*bk)
     {
         if (bk[0] == '#'
-         && bk[1] >= '0' && bk[1] <= '4'
-         && bk[2] == ' ' /* take only #0...#4 (5 last stack frames) */
+         && bk[1] >= '0' && bk[1] <= '7'
+         && bk[2] == ' ' /* take only #0...#7 (8 last stack frames) */
          && !in_quote
         ) {
             if (in_header && !has_filename)
