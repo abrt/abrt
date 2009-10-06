@@ -92,7 +92,7 @@ class SettingsDialog:
         # hydrate common
         common = self.settings["Common"]
         # ensure that all expected keys exist:
-        if not common.has_key("OpenGPGCheck"):
+        if "OpenGPGCheck" not in common:
             common["OpenGPGCheck"] = "no" # check unsigned pkgs too
         ## gpgcheck
         self.builder.get_object("cbOpenGPGCheck").set_active(common["OpenGPGCheck"] == 'yes')
@@ -115,7 +115,7 @@ class SettingsDialog:
         AnalyzerActionsAndReporters = self.settings["AnalyzerActionsAndReporters"]
         for analplugin in self.pluginlist.getAnalyzerPlugins():
             it = self.analyzerPluginsListStore.append([analplugin.getName(), analplugin])
-            if AnalyzerActionsAndReporters.has_key(analplugin.getName()):
+            if analplugin.getName() in AnalyzerActionsAndReporters:
                 action = (AnalyzerActionsAndReporters[analplugin.getName()], it)
                 self.add_AnalyzerAction(action)
 
