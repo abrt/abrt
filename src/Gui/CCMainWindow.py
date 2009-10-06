@@ -126,7 +126,7 @@ class MainWindow():
 
         # load data
         #self.load()
-        self.pluginlist = getPluginInfoList(self.ccdaemon)
+        self.pluginlist = None
 
     def on_daemon_state_changed_cb(self, widget, state):
         if state == "up":
@@ -299,6 +299,7 @@ class MainWindow():
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
                 reporters_settings = {}
+                self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
                 for plugin in self.pluginlist.getReporterPlugins():
                     reporters_settings[str(plugin)] = plugin.Settings
                 self.ccdaemon.Report(result, reporters_settings)

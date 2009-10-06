@@ -35,7 +35,10 @@ class PluginSettings(dict):
         settings = self.conf.load(name)
         # overwrite defaluts with user setting
         for key in settings.keys():
-            self[str(key)] = str(settings[key])
+            # only rewrite keys needed by the plugin
+            # e.g we don't want a pass field for logger
+            if key in default_settings.keys():
+                self[str(key)] = str(settings[key])
 
     def save(self, name):
         self.conf.save(name, self)
