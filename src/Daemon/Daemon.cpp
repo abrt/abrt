@@ -662,7 +662,7 @@ int main(int argc, char** argv)
             break;
         default:
             error_msg_and_die(
-                "Usage: abrt [-dv]\n"
+                "Usage: abrtd [-dv]\n"
         	"\nOptions:"
                 "\n\t-d\tDo not daemonize"
                 "\n\t-s\tLog to syslog even with -d"
