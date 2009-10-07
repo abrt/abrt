@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-06 14:25+0000\n"
-"PO-Revision-Date: 2009-10-06 16:30+0200\n"
+"POT-Creation-Date: 2009-10-07 20:33+0000\n"
+"PO-Revision-Date: 2009-10-07 22:36+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <fedora-trans-pl@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -44,15 +44,15 @@ msgstr "Wtyczki baz danych"
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "Nie ustawiono nazwy wtyczki, nie można wczytać jej ustawień"
 
-#: ../src/Gui/CCDBusBackend.py:138
-msgid "Can't connect to dbus"
-msgstr "Nie można połączyć się z D-Bus"
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "Nie można połączyć się z systemową magistralą D-Bus"
 
-#: ../src/Gui/CCDBusBackend.py:148
-msgid "Please check if abrt daemon is running."
-msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony."
+#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+msgid "Please check if abrt daemon is running"
+msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony"
 
-#: ../src/Gui/CCDBusBackend.py:158
+#: ../src/Gui/CCDBusBackend.py:155
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -467,27 +467,27 @@ msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora"
 msgid "Getting backtrace..."
 msgstr "Uzyskiwanie wyjątku..."
 
-#: ../lib/Plugins/CCpp.cpp:410
+#: ../lib/Plugins/CCpp.cpp:415
 msgid "Searching for debug-info packages..."
 msgstr "Wyszukiwanie pakietów debuginfo..."
 
-#: ../lib/Plugins/CCpp.cpp:446
+#: ../lib/Plugins/CCpp.cpp:451
 msgid "Downloading and installing debug-info packages..."
 msgstr "Pobieranie i instalowanie pakietów debuginfo..."
 
-#: ../lib/Plugins/CCpp.cpp:508
+#: ../lib/Plugins/CCpp.cpp:513
 msgid "Getting local universal unique identification..."
 msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora..."
 
-#: ../lib/Plugins/CCpp.cpp:527
+#: ../lib/Plugins/CCpp.cpp:532
 msgid "Getting global universal unique identification..."
 msgstr "Uzyskiwanie globalnego uniwersalnego, unikalnego identyfikatora..."
 
-#: ../lib/Plugins/CCpp.cpp:578
+#: ../lib/Plugins/CCpp.cpp:583
 msgid "Starting report creation..."
 msgstr "Uruchamianie tworzenia raportu..."
 
-#: ../lib/Plugins/CCpp.cpp:607
+#: ../lib/Plugins/CCpp.cpp:612
 msgid "Skipping debuginfo installation"
 msgstr "Pomijanie instalacji pakietu debuginfo"
 
@@ -539,4 +539,3 @@ msgstr "wykonywanie sosreport: "
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "zakończono wykonywanie sosreport"
-
