@@ -176,7 +176,7 @@ class DBusManager(gobject.GObject):
 
     def Report(self, report, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
-        self.cc.Report(report,reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+        self.cc.Report(report, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
 
     def DeleteDebugDump(self,UUID):
         return self.cc.DeleteDebugDump(UUID)

@@ -11,26 +11,19 @@ class PluginInfoList(list):
     def load(self):
         if self.dm:
             #print "loading PluginList"
-            try:
-                rows = self.dm.getPluginsInfo()
-                #print rows
-                for row in rows:
-                    entry = PluginInfo()
-                    for column in row:
-                        #print "PluginInfoList adding %s:%s" % (column,row[column])
-                        entry.__dict__[column] = row[column]
-                    if entry.Enabled == "yes":
-                        #print ">>%s<<" % entry
-                        entry.Settings = PluginSettings(self.dm.getPluginSettings(str(entry)))
-                        #for i in entry.Settings.keys():
-                        #    print "%s: %s" % (i, entry.Settings[i])
-                    #else:
-                    #    print "%s is disabled" % entry
-                    self.append(entry)
-                    self.ddict[entry.getName()] = entry
-            except Exception, e:
-                print e
-                return
+            rows = self.dm.getPluginsInfo()
+            #print rows
+            for row in rows:
+                entry = PluginInfo()
+                for column in row:
+                    #print "PluginInfoList adding %s:%s" % (column,row[column])
+                    entry.__dict__[column] = row[column]
+                if entry.Enabled == "yes":
+                    #entry.Settings = PluginSettings(self.dm.getPluginSettings(str(entry)))
+                    default_settings = self.dm.getPluginSettings(str(entry))
+                    entry.load_settings(default_settings)
+                self.append(entry)
+                self.ddict[entry.getName()] = entry
         else:
             print "db == None!"
 

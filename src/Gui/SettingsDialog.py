@@ -76,7 +76,7 @@ class SettingsDialog:
             self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
         except Exception, e:
             print "SettingsDialog: ", e
-        
+
         ## hydrate cron jobs:
         for key,val in self.settings["Cron"].iteritems():
             # actionas are separated by ','
@@ -91,6 +91,9 @@ class SettingsDialog:
                     self.settings["Cron"][key].remove(plugin.getName())
         # hydrate common
         common = self.settings["Common"]
+        # ensure that all expected keys exist:
+        if "OpenGPGCheck" not in common:
+            common["OpenGPGCheck"] = "no" # check unsigned pkgs too
         ## gpgcheck
         self.builder.get_object("cbOpenGPGCheck").set_active(common["OpenGPGCheck"] == 'yes')
         ## database
@@ -112,7 +115,7 @@ class SettingsDialog:
         AnalyzerActionsAndReporters = self.settings["AnalyzerActionsAndReporters"]
         for analplugin in self.pluginlist.getAnalyzerPlugins():
             it = self.analyzerPluginsListStore.append([analplugin.getName(), analplugin])
-            if AnalyzerActionsAndReporters.has_key(analplugin.getName()):
+            if analplugin.getName() in AnalyzerActionsAndReporters:
                 action = (AnalyzerActionsAndReporters[analplugin.getName()], it)
                 self.add_AnalyzerAction(action)
 

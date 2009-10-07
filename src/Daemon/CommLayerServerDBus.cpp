@@ -253,14 +253,19 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     }
 
 
+    const char * sender = dbus_message_get_sender(call);
     if (!user_conf_data.empty())
     {
-#if DEBUG
+        std::string PluginName;
+        map_plugin_settings_t plugin_settings;
         map_map_string_t::const_iterator it_user_conf_data;
         for (it_user_conf_data = user_conf_data.begin(); it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
         {
             map_string_t::const_iterator it_plugin_config;
             map_string_t plugin_config = it_user_conf_data->second;
+            PluginName = it_user_conf_data->first;
+            plugin_settings = it_user_conf_data->second;
+#if DEBUG
             std::cout << "plugin name: " << it_user_conf_data->first;
             for    (it_plugin_config = it_user_conf_data->second.begin();
                     it_plugin_config != it_user_conf_data->second.end();
@@ -268,10 +273,9 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
             {
                 std::cout << " key: " << it_plugin_config->first << " value: " << it_plugin_config->second << std::endl;
             }
-        }
 #endif
-        const char * sender = dbus_message_get_sender(call);
-        SetSettings(user_conf_data, sender);
+            g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
+        }
     }
 
 //so far, user_conf_data is unused

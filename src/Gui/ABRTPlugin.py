@@ -16,27 +16,33 @@ from ConfBackend import ConfBackendGnomeKeyring
 class PluginSettings(dict):
     def __init__(self):
         dict.__init__(self)
-        #print "Init plugin settings"
+        self.conf = ConfBackendGnomeKeyring()
 
-    def __init__(self, settings_dict):
-        dict.__init__(self)
-        for key in settings_dict.keys():
-            self[key] = settings_dict[key]
-            
     def check(self):
-        if "Password" in self.keys():
-            # password is missing
-            if not self["Password"]:
-                return False
+        for key in ["Password", "Login"]:
+            if key in self.keys():
+                # some of the required keys is missing
+                if not self[key]:
+                    return False
         # settings are OK
         return True
-    
-    def load(self, name):
-        print "load:", name
-    
+
+    def load(self, name, default_settings):
+        # load settings from daemon
+        for key in default_settings.keys():
+            self[str(key)] = str(default_settings[key])
+
+        settings = self.conf.load(name)
+        # overwrite defaluts with user setting
+        for key in settings.keys():
+            # only rewrite keys needed by the plugin
+            # e.g we don't want a pass field for logger
+            if key in default_settings.keys():
+                self[str(key)] = str(settings[key])
+
     def save(self, name):
-        print "save: ", name
-        
+        self.conf.save(name, self)
+
 class PluginInfo():
     """Class to represent common plugin info"""
     types = {"Analyzer":_("Analyzer plugins"),
@@ -57,7 +63,7 @@ class PluginInfo():
         self.Type = None
         self.Email = None
         self.Description = None
-        self.Settings = PluginSettings({})
+        self.Settings = PluginSettings()
 
     def getName(self):
         return self.Name
@@ -76,12 +82,12 @@ class PluginInfo():
 
     def __getitem__(self, item):
         return self.__dict__[item]
-    
-    def load_settings(self):
+
+    def load_settings(self, default_settings):
         if self.Name:
-            self.Settings.load(self.Name)
+            self.Settings.load(self.Name, default_settings)
         else:
-            print "plugin name is not set, can't load it's settings"
-    
+            print _("Plugin name is not set, can't load it's settings")
+
     def save_settings(self):
-        self.Settings.save(self.Name)
+        self.Settings.save(str(self.Name))

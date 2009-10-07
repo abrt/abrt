@@ -249,7 +249,7 @@ fi
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_libdir}/%{name}
-%{_mandir}/man8/%{name}.8.gz
+%{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
 %{_mandir}/man5/pyhook.conf.5.gz
 %{_mandir}/man7/%{name}-plugins.7.gz
