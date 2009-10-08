@@ -29,11 +29,12 @@ class MultilineCellRenderer(gtk.CellRendererText):
     def __init__(self):
         gtk.CellRendererText.__init__(self)
         self._in_editor_menu = False
+        self.old_text = ""
 
-    def _on_editor_focus_out_event(self, editor, *args):
+    def _on_editor_focus_out_event(self, editor, event):
         if self._in_editor_menu: return
         editor.remove_widget()
-        self.emit("editing-canceled")
+        self.emit("edited", editor.get_data("path"), editor.get_text())
 
     def _on_editor_key_press_event(self, editor, event):
         if event.state & (gtk.gdk.SHIFT_MASK | gtk.gdk.CONTROL_MASK): return
@@ -41,6 +42,7 @@ class MultilineCellRenderer(gtk.CellRendererText):
             editor.remove_widget()
             self.emit("edited", editor.get_data("path"), editor.get_text())
         elif event.keyval == gtk.keysyms.Escape:
+            editor.set_text(self.old_text)
             editor.remove_widget()
             self.emit("editing-canceled")
 
@@ -53,6 +55,7 @@ class MultilineCellRenderer(gtk.CellRendererText):
     def do_start_editing(self, event, widget, path, bg_area, cell_area, flags):
         editor = CellTextView()
         editor.modify_font(self.props.font_desc)
+        self.old_text = self.props.text
         editor.set_text(self.props.text)
         editor.set_size_request(cell_area.width, cell_area.height)
         editor.set_border_width(min(self.props.xpad, self.props.ypad))
