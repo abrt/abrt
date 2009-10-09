@@ -1,5 +1,5 @@
 
-#include <xmlrpc-c/base.hpp>
+//#include <xmlrpc-c/base.hpp>
 #include "abrtlib.h"
 #include "Bugzilla.h"
 #include "CrashTypes.h"
@@ -7,12 +7,75 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
+
+#ifdef HAVE_CONFIG_H
+    #include <config.h>
+#endif
+
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
+#define C_I 1
+
+static xmlrpc_env env;
+static xmlrpc_client* client = NULL;
+static struct xmlrpc_clientparms clientParms;
+static struct xmlrpc_curl_xportparms curlParms;
+static xmlrpc_server_info* server_info = NULL;
+
+
+static void throw_if_fault_occurred(xmlrpc_env* const env);
+
+static void new_xmlrpc_client(const char* url, bool no_ssl_verify);
+static void destroy_xmlrpc_client();
+
+
+
+
+static void throw_if_fault_occurred(xmlrpc_env* const env)
+{
+    if (env->fault_occurred)
+    {
+        char buffer[2048];
+        snprintf(buffer, 2047, "XML-RPC Fault: %s(%d)\n", env->fault_string, env->fault_code);
+        throw CABRTException(EXCEP_PLUGIN, std::string(buffer));
+    }
+}
+
+static void new_xmlrpc_client(const char* url, bool no_ssl_verify)
+{
+    xmlrpc_env_init(&env);
+    xmlrpc_client_setup_global_const(&env);
+
+    curlParms.network_interface = NULL;
+    curlParms.no_ssl_verifypeer = no_ssl_verify;
+    curlParms.no_ssl_verifyhost = no_ssl_verify;
+#ifdef VERSION
+    curlParms.user_agent        = PACKAGE_NAME"/"VERSION;
+#else
+    curlParms.user_agent        = "abrt";
+#endif
+
+    clientParms.transport          = "curl";
+    clientParms.transportparmsP    = &curlParms;
+    clientParms.transportparm_size = XMLRPC_CXPSIZE(user_agent);
+
+    xmlrpc_client_create(&env, XMLRPC_CLIENT_NO_FLAGS, PACKAGE_NAME, VERSION, &clientParms, XMLRPC_CPSIZE(transportparm_size),
+                         &client);
+    throw_if_fault_occurred(&env);
+
+    server_info = xmlrpc_server_info_new(&env, url);
+    throw_if_fault_occurred(&env);
+}
+
+static void destroy_xmlrpc_client()
+{
+    xmlrpc_server_info_free(server_info);
+    xmlrpc_env_clean(&env);
+    xmlrpc_client_destroy(client);
+    xmlrpc_client_teardown_global_const();
+}
+
 CReporterBugzilla::CReporterBugzilla() :
-    m_pXmlrpcTransport(NULL),
-    m_pXmlrpcClient(NULL),
-    m_pCarriageParm(NULL),
     m_sBugzillaURL("https://bugzilla.redhat.com"),
     m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX)),
     m_bNoSSLVerify(false),
@@ -24,6 +87,7 @@ CReporterBugzilla::~CReporterBugzilla()
 
 void CReporterBugzilla::NewXMLRPCClient()
 {
+/*
     m_pXmlrpcTransport = new xmlrpc_c::clientXmlTransport_curl(
                              xmlrpc_c::clientXmlTransport_curl::constrOpt()
                                  .no_ssl_verifyhost(m_bNoSSLVerify)
@@ -31,10 +95,13 @@ void CReporterBugzilla::NewXMLRPCClient()
                              );
     m_pXmlrpcClient = new xmlrpc_c::client_xml(m_pXmlrpcTransport);
     m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaXMLRPC);
+*/
 }
 
 void CReporterBugzilla::DeleteXMLRPCClient()
 {
+
+/*
     if (m_pCarriageParm != NULL)
     {
         delete m_pCarriageParm;
@@ -50,6 +117,7 @@ void CReporterBugzilla::DeleteXMLRPCClient()
         delete m_pXmlrpcTransport;
         m_pXmlrpcTransport = NULL;
     }
+*/
 }
 
 PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
@@ -66,8 +134,20 @@ PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 
     return 1;
 }
 
-void CReporterBugzilla::Login()
+void CReporterBugzilla::Login(const char* login, const char* passwd)
 {
+    new_xmlrpc_client(m_sBugzillaXMLRPC.c_str(), m_bNoSSLVerify);
+    xmlrpc_value* result;
+
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
+    throw_if_fault_occurred(&env);
+
+    xmlrpc_client_call2(&env, client, server_info, "User.login", param, &result);
+    throw_if_fault_occurred(&env);
+
+    destroy_xmlrpc_client();
+
+    /*
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t loginParams;
     map_xmlrpc_params_t ret;
@@ -96,10 +176,12 @@ void CReporterBugzilla::Login()
     {
         throw CABRTException(EXCEP_PLUGIN, s);
     }
+    */
 }
 
 void CReporterBugzilla::Logout()
 {
+    /*
     xmlrpc_c::paramList paramList;
     paramList.add(xmlrpc_c::value_string(""));
     xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("User.logout", paramList));
@@ -111,10 +193,12 @@ void CReporterBugzilla::Logout()
     {
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Logout(): ") + e.what());
     }
+    */
 }
 
 bool CReporterBugzilla::CheckCCAndReporter(const std::string& pBugId)
 {
+    /*
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t ret;
 
@@ -145,10 +229,12 @@ bool CReporterBugzilla::CheckCCAndReporter(const std::string& pBugId)
         }
     }
     return false;
+    */
 }
 
 void CReporterBugzilla::AddPlusOneCC(const std::string& pBugId)
 {
+    /*
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t addCCParams;
     map_xmlrpc_params_t ret;
@@ -172,45 +258,70 @@ void CReporterBugzilla::AddPlusOneCC(const std::string& pBugId)
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::AddPlusOneComment(): ") + e.what());
     }
     ret = xmlrpc_c::value_struct(rpc->getResult());
+    */
 }
 
 std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID)
 {
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t searchParams;
-    map_xmlrpc_params_t ret;
-    std::string quicksearch = "ALL component:\""+ pComponent +"\" statuswhiteboard:\""+ pUUID + "\"";
-    searchParams["quicksearch"] = xmlrpc_c::value_string(quicksearch.c_str());
-    paramList.add(xmlrpc_c::value_struct(searchParams));
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.search", paramList));
-    try
-    {
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::CheckUUIDInBugzilla(): ") + e.what());
-    }
-    ret = xmlrpc_c::value_struct(rpc->getResult());
-    std::vector<xmlrpc_c::value> bugs = xmlrpc_c::value_array(ret["bugs"]).vectorValueValue();
-    if (bugs.size() > 0)
-    {
-        map_xmlrpc_params_t bug;
-        std::stringstream ss;
 
-        bug = xmlrpc_c::value_struct(bugs[0]);
-        ss << xmlrpc_c::value_int(bug["bug_id"]);
+    xmlrpc_value* result = NULL;
+    xmlrpc_value* bugs_member = NULL;
+    xmlrpc_int bug_id;
 
-        log("Bug is already reported: %s", ss.str().c_str());
-        update_client(_("Bug is already reported: ") + ss.str());
+    char component[1024];
+    snprintf(component, 1023, "ALL component:\"%s\" statuswhiteboard:\"%s\"", pComponent.c_str(), pUUID.c_str());
 
-        return ss.str();
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", component);
+    throw_if_fault_occurred(&env);
+
+    xmlrpc_client_call2(&env, client, server_info, "Bug.search", param, &result);
+    throw_if_fault_occurred(&env);
+
+    xmlrpc_struct_find_value(&env, result, "bugs", &bugs_member);
+    throw_if_fault_occurred(&env);
+
+    if (bugs_member)
+    {
+        uint32_t array_size = xmlrpc_array_size(&env, bugs_member);
+        throw_if_fault_occurred(&env);
+
+        xmlrpc_value* item = NULL;
+        xmlrpc_array_read_item(&env, bugs_member, 0, &item); // Correct
+        throw_if_fault_occurred(&env);
+
+        xmlrpc_value* bug = NULL;
+        xmlrpc_struct_find_value(&env, item,"bug_id", &bug);
+        throw_if_fault_occurred(&env);
+        if (bug)
+        {
+            xmlrpc_read_int(&env, bug, &bug_id);
+            log("Bug is already reported: %i", bug_id);
+            update_client(_("Bug is already reported: ") + to_string(bug_id));
+
+            xmlrpc_DECREF(param);
+            xmlrpc_DECREF(bugs_member);
+            xmlrpc_DECREF(result);
+            return to_string(bug_id);
+        }
+        else
+        {
+            std::cout <<  "There is no member named 'bug_id'" << std::endl;
+        }
+
     }
+    else
+    {
+        std::cout <<  "There is no member named 'bugs'" << std::endl;
+    }
+    xmlrpc_DECREF(param);
+    xmlrpc_DECREF(bugs_member);
+    xmlrpc_DECREF(result);
     return "";
 }
 
 void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
+    /*
     std::string howToReproduce;
     std::string comment;
 
@@ -262,12 +373,14 @@ void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrash
             //update_client(_("Binary file ")+it->first+_(" will not be reported."));
         }
     }
+    */
 }
 
 void CReporterBugzilla::GetProductAndVersion(const std::string& pRelease,
                                              std::string& pProduct,
                                              std::string& pVersion)
 {
+    /*
     if (pRelease.find("Rawhide") != std::string::npos)
     {
         pProduct = "Fedora";
@@ -293,10 +406,12 @@ void CReporterBugzilla::GetProductAndVersion(const std::string& pRelease,
         }
         pos++;
     }
+    */
 }
 
 std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
 {
+    /*
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t bugParams;
     map_xmlrpc_params_t ret;
@@ -334,10 +449,12 @@ std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::NewBug(): ") + e.what());
     }
     return bugId.str();
+    */
 }
 
 void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
 {
+    /*
     xmlrpc_c::paramList paramList;
     map_xmlrpc_params_t attachmentParams;
     std::vector<xmlrpc_c::value> ret;
@@ -381,6 +498,7 @@ void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_cras
             }
         }
     }
+    */
 }
 
 std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
@@ -391,17 +509,21 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     std::string bugId;
 
 
-    NewXMLRPCClient();
 
     m_bLoggedIn = false;
     try
     {
+        new_xmlrpc_client(m_sBugzillaXMLRPC.c_str(), m_bNoSSLVerify);
+    //    NewXMLRPCClient();
         update_client(_("Checking for duplicates..."));
         bugId = CheckUUIDInBugzilla(component, uuid);
+
         if ( bugId != "" ) {
             update_client(_("Logging into bugzilla..."));
-            Login();
+            Login(m_sLogin.c_str(), m_sPassword.c_str());
             m_bLoggedIn = true;
+        }
+/*
             update_client(_("Checking CC..."));
             if (!CheckCCAndReporter(bugId) && m_bLoggedIn)
             {
@@ -413,15 +535,16 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
         update_client(_("Logging into bugzilla..."));
         Login();
         m_bLoggedIn = true;
+*/
     }
     catch (CABRTException& e)
     {
-        DeleteXMLRPCClient();
+        destroy_xmlrpc_client();
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
         return "";
     }
 
-
+/*
     update_client(_("Creating new bug..."));
     try
     {
@@ -435,9 +558,9 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
         DeleteXMLRPCClient();
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
     }
-
-
-    DeleteXMLRPCClient();
+*/
+    destroy_xmlrpc_client();
+//    DeleteXMLRPCClient();
     return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
 
 }

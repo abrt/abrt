@@ -3,19 +3,28 @@
 
 #include "Plugin.h"
 #include "Reporter.h"
-#include <xmlrpc-c/client.hpp>
+//#include <xmlrpc-c/client.hpp>
 
 #include <nssb64.h>
+
+#include <xmlrpc-c/base.h>
+#include <xmlrpc-c/client.h>
 
 class CReporterBugzilla : public CReporter
 {
     private:
-        typedef std::map<std::string, xmlrpc_c::value> map_xmlrpc_params_t;
+    // C implementation
+
+        bool m_bNoSSLVerify;
+
+    // C++ implementation
+
+       // typedef std::map<std::string, xmlrpc_c::value> map_xmlrpc_params_t;
 
         void NewXMLRPCClient();
         void DeleteXMLRPCClient();
         static PRInt32 Base64Encode_cb(void *arg, const char *obuf, PRInt32 size);
-        void Login();
+        void Login(const char* login, const char* passwd);
         void Logout();
         bool CheckCCAndReporter(const std::string& pBugId);
         void AddPlusOneCC(const std::string& pBugId);
@@ -28,15 +37,14 @@ class CReporterBugzilla : public CReporter
                                   std::string& pProduct,
                                   std::string& pVersion);
 
-        xmlrpc_c::clientXmlTransport_curl* m_pXmlrpcTransport;
-        xmlrpc_c::client_xml* m_pXmlrpcClient;
-        xmlrpc_c::carriageParm_curl0 *m_pCarriageParm;
+      //  xmlrpc_c::clientXmlTransport_curl* m_pXmlrpcTransport;
+      //  xmlrpc_c::client_xml* m_pXmlrpcClient;
+      //  xmlrpc_c::carriageParm_curl0 *m_pCarriageParm;
         std::string m_sBugzillaURL;
         std::string m_sBugzillaXMLRPC;
         std::string m_sLogin;
         std::string m_sPassword;
         std::string m_sAttchmentInBase64;
-        bool m_bNoSSLVerify;
         bool m_bLoggedIn;
 
     public:
