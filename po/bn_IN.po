@@ -1,14 +1,14 @@
-# translation of abrt.master.bn_IN.po to Bengali INDIA
+# translation of abrt.master.po to Bengali INDIA
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Runa Bhattacharjee <runab@redhat.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.bn_IN\n"
+"Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-06 04:15+0000\n"
-"PO-Revision-Date: 2009-10-06 14:43+0530\n"
+"POT-Creation-Date: 2009-10-09 09:55+0000\n"
+"PO-Revision-Date: 2009-10-09 17:58+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
 "MIME-Version: 1.0\n"
@@ -25,35 +25,35 @@ msgstr "একটি ভিন্ন ক্লায়েন্ট বর্তম
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "ডেমন থেকে অপ্রত্যাশিত তথ্য পাওয়া গিয়েছে (ডাটাবেস কি সঠিকভাবে আপডেট করা হয়েছে?)।"
 
-#: ../src/Gui/ABRTPlugin.py:45
+#: ../src/Gui/ABRTPlugin.py:48
 msgid "Analyzer plugins"
 msgstr "বিশ্লেষণের প্লাগ-ইন"
 
-#: ../src/Gui/ABRTPlugin.py:46
+#: ../src/Gui/ABRTPlugin.py:49
 msgid "Action plugins"
 msgstr "কাজের প্লাগ-ইন"
 
-#: ../src/Gui/ABRTPlugin.py:47
+#: ../src/Gui/ABRTPlugin.py:50
 msgid "Reporter plugins"
 msgstr "রিপোর্টার প্লাগ-ইন"
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:51
 msgid "Database plugins"
 msgstr "ডাটাবেস প্লাগ-ইন"
 
-#: ../src/Gui/ABRTPlugin.py:87
+#: ../src/Gui/ABRTPlugin.py:90
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "প্লাগ-ইনের নাম নির্ধারণ করা হয়নি, এটির বৈশিষ্ট্য লোড করা সম্ভব নয়"
 
-#: ../src/Gui/CCDBusBackend.py:138
-msgid "Can't connect to dbus"
-msgstr "dbus-র সাথে সংযোগ স্থাপন করতে ব্যর্থ"
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "সিস্টেম dbus-র সাথে সংযোগ স্থাপন করতে ব্যর্থ"
 
-#: ../src/Gui/CCDBusBackend.py:148
-msgid "Please check if abrt daemon is running."
-msgstr "abrt ডেমন চলছে কি না তা অনুগ্রহ করে পরীক্ষা করুন।"
+#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+msgid "Please check if abrt daemon is running"
+msgstr "abrt ডেমন চলছে কি না তা অনুগ্রহ করে পরীক্ষা করুন"
 
-#: ../src/Gui/CCDBusBackend.py:158
+#: ../src/Gui/CCDBusBackend.py:155
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -205,7 +205,7 @@ msgstr ""
 "রিপোর্ট প্রাপ্ত করতে ব্যর্থ!\n"
 "Debuginfo কি অনুপস্থিত?"
 
-#: ../src/Gui/CCMainWindow.py:307
+#: ../src/Gui/CCMainWindow.py:308
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -214,7 +214,7 @@ msgstr ""
 "রিপোর্ট করতে ব্যর্থ!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:339
+#: ../src/Gui/CCMainWindow.py:340
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "রিপোর্ট প্রাপ্ত করতে ব্যর্থ: %s"
@@ -251,11 +251,11 @@ msgstr "ইউজার ইন্টারফেসের বিবরণের 
 msgid "No UI for plugin %s"
 msgstr "%s প্লাগ-ইনের কোনো UI উপস্থিত নেই"
 
-#: ../src/Gui/PluginSettingsUI.py:41 ../src/Gui/PluginSettingsUI.py:67
+#: ../src/Gui/PluginSettingsUI.py:55 ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "কম্বো-বক্স বাস্তবায়িত হয়নি"
 
-#: ../src/Gui/PluginSettingsUI.py:50
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
 msgstr "প্রদর্শনযোগ্য কোনো বস্তু উপস্থিত নেই!"
 
@@ -279,11 +279,11 @@ msgstr "<b>প্লাগ-ইন নির্বাচন করুন</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>ডাটাবেস ব্যাক-এন্ড নির্বাচন করুন</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:168
 msgid "Remove this job"
 msgstr "এই কাজটি সরিয়ে ফেলুন"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:211
 msgid "Remove this action"
 msgstr "এই কর্মটি সরিয়ে ফেলুন"
 
@@ -412,42 +412,44 @@ msgstr "সতর্কবার্তা"
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
-msgstr "রিপোর্টের মাপ অনুমোদিত মাপের থেকে বড়। অনুগ্রহ করে abrt.conf ফাইলের মধ্যে MaxCrashReportsSize-র মাপ যাচাই করুন।"
+msgstr ""
+"রিপোর্টের মাপ অনুমোদিত মাপের থেকে বড়। অনুগ্রহ করে abrt.conf ফাইলের মধ্যে "
+"MaxCrashReportsSize-র মাপ যাচাই করুন।"
 
 #: ../lib/Plugins/Bugzilla.cpp:83
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "লগ-ইন ও পাসওয়ার্ড লেখা হয়নি। অনুগ্রহ করে Bugzilla.conf পরীক্ষা করুন"
 
-#: ../lib/Plugins/Bugzilla.cpp:227
+#: ../lib/Plugins/Bugzilla.cpp:205
 msgid "Bug is already reported: "
 msgstr "বাগ পূর্বেই দায়ের করা হয়েছে: "
 
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: ../lib/Plugins/Bugzilla.cpp:260
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "%s বাইনারি ফাইলের রিপোর্ট দায়ের করা হবে না।"
 
-#: ../lib/Plugins/Bugzilla.cpp:352
+#: ../lib/Plugins/Bugzilla.cpp:330
 msgid "New bug id: "
 msgstr "নতুন বাগ id: "
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:399
 msgid "Checking for duplicates..."
 msgstr "প্রতিলিপি পরীক্ষা করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:402 ../lib/Plugins/Bugzilla.cpp:413
 msgid "Logging into bugzilla..."
 msgstr "bugzilla-তে লগ-ইন করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
-msgid "Check CC and add coment +1..."
-msgstr "প্রতিলিপি প্রাপ্ত পরীক্ষা করুন ও মন্তব্য রূপে +1 যোগ করুন ..."
+#: ../lib/Plugins/Bugzilla.cpp:405
+msgid "Checking CC..."
+msgstr "প্রতিলিপি পরীক্ষা করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:425
 msgid "Creating new bug..."
 msgstr "নতুন বাগ তৈরি করা হচ্ছে..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:430
 msgid "Logging out..."
 msgstr "লগ-আউট করা হচ্ছে..."
 
@@ -459,27 +461,27 @@ msgstr "স্থানীয় ইউনিভার্সেল ইউনিক 
 msgid "Getting backtrace..."
 msgstr "ব্যাক-ট্রেস প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:410
+#: ../lib/Plugins/CCpp.cpp:415
 msgid "Searching for debug-info packages..."
 msgstr "debug-info প্যাকেজ অনুসন্ধান করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:446
+#: ../lib/Plugins/CCpp.cpp:451
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info প্যাকেজ ডাউনলোড ও ইনস্টল করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:508
+#: ../lib/Plugins/CCpp.cpp:513
 msgid "Getting local universal unique identification..."
 msgstr "স্থানীয় ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:527
+#: ../lib/Plugins/CCpp.cpp:532
 msgid "Getting global universal unique identification..."
 msgstr "গ্লোবাল ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:578
+#: ../lib/Plugins/CCpp.cpp:583
 msgid "Starting report creation..."
 msgstr "রিপোর্ট নির্মাণ আরম্ভ করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:607
+#: ../lib/Plugins/CCpp.cpp:612
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo ইনস্টলেশন উপেক্ষা করা হবে"
 
