@@ -50,7 +50,7 @@ class CAnalyzer : public CPlugin
          * somewhere afterwards.
          * @param pDebugDumpPath A debugdump dir containing all necessary data.
          */
-        virtual void CreateReport(const std::string& pDebugDumpPath) = 0;
+        virtual void CreateReport(const std::string& pDebugDumpPath, int force) = 0;
 };
 
 #endif /*ANALYZER_H_*/

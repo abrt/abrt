@@ -49,8 +49,8 @@ class CCrashWatcher
 };
 
 vector_crash_infos_t GetCrashInfos(const std::string &pUID);
-int CreateReportThread(const char* pUUID, const char* pUID, const char* pSender);
-map_crash_report_t GetJobResult(const char* pUUID, const char* pUID);
+int CreateReportThread(const char* pUUID, const char* pUID, int force, const char* pSender);
+map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force);
 bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
 
 #endif /*CRASHWATCHER_H_*/

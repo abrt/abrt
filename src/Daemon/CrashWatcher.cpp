@@ -109,7 +109,7 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
  * CreateReport dbus call already did all the processing, and we just retrieve
  * the result from dump directory, which is fast.
  */
-map_crash_report_t GetJobResult(const char* pUUID, const char* pUID)
+map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
 {
     map_crash_info_t crashReport;
 
@@ -118,7 +118,7 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID)
      * g_pPluginManager->GetDatabase(g_settings_sDatabase);
      * which is unsafe wrt concurrent updates to g_pPluginManager state.
      */
-    mw_result_t res = CreateCrashReport(pUUID, pUID, crashReport);
+    mw_result_t res = CreateCrashReport(pUUID, pUID, force, crashReport);
     switch (res)
     {
         case MW_OK:
@@ -144,6 +144,7 @@ typedef struct thread_data_t {
     pthread_t thread_id;
     char* UUID;
     char* UID;
+    int force;
     char* peer;
 } thread_data_t;
 static void* create_report(void* arg)
@@ -159,7 +160,7 @@ static void* create_report(void* arg)
     {
         /* "GetJobResult" is a bit of a misnomer */
         log("Creating report...");
-        map_crash_info_t crashReport = GetJobResult(thread_data->UUID, thread_data->UID);
+        map_crash_info_t crashReport = GetJobResult(thread_data->UUID, thread_data->UID, thread_data->force);
         g_pCommLayer->JobDone(thread_data->peer, thread_data->UUID);
     }
     catch (CABRTException& e)
@@ -187,11 +188,12 @@ static void* create_report(void* arg)
     /* Bogus value. pthreads require us to return void* */
     return NULL;
 }
-int CreateReportThread(const char* pUUID, const char* pUID, const char* pSender)
+int CreateReportThread(const char* pUUID, const char* pUID, int force, const char* pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
     thread_data->UUID = xstrdup(pUUID);
     thread_data->UID = xstrdup(pUID);
+    thread_data->force = force;
     thread_data->peer = xstrdup(pSender);
 //TODO: do we need this?
 //pthread_attr_t attr;

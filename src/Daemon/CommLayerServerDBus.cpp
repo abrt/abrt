@@ -156,6 +156,13 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
     dbus_message_iter_init(call, &in_iter);
     const char* pUUID;
     r = load_val(&in_iter, pUUID);
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
+        return -1;
+    }
+    int32_t force;
+    r = load_val(&in_iter, force);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
@@ -164,7 +171,7 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 
     const char* sender;
     long unix_uid = get_remote_uid(call, &sender);
-    if (CreateReportThread(pUUID, to_string(unix_uid).c_str(), sender) != 0)
+    if (CreateReportThread(pUUID, to_string(unix_uid).c_str(), force, sender) != 0)
         return -1; /* can't create thread (err msg is already logged) */
 
     dbus_message_append_args(reply,
@@ -189,7 +196,7 @@ static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    map_crash_report_t report = GetJobResult(pUUID, to_string(unix_uid).c_str());
+    map_crash_report_t report = GetJobResult(pUUID, to_string(unix_uid).c_str(), /*force:*/ 0);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);

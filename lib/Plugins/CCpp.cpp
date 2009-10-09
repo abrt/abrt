@@ -578,7 +578,7 @@ static bool DebuginfoCheckPolkit(int uid)
 
 }
 
-void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
+void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
 {
     update_client(_("Starting report creation..."));
 
@@ -588,18 +588,19 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
 
-    if (bt_exists)
+    if (!force)
     {
-        dd.Close(); /* do not keep dir locked longer than needed */
-        return; /* already done */
+        bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
+        if (bt_exists)
+        {
+            return; /* backtrace already exists */
+        }
     }
 
     dd.LoadText(FILENAME_PACKAGE, package);
     dd.LoadText(FILENAME_UID, UID);
-    dd.Close();
-
+    dd.Close(); /* do not keep dir locked longer than needed */
 
     map_plugin_settings_t settings = GetSettings();
     if (settings["InstallDebuginfo"] == "yes" &&
@@ -609,7 +610,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     }
     else
     {
-        warn_client(_("Skipping debuginfo installation"));
+        VERB1 log(_("Skipping debuginfo installation"));
     }
 
     GetBacktrace(pDebugDumpDir, backtrace);

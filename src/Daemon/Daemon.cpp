@@ -50,7 +50,7 @@
  * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - CreateReport(UUID): starts creating a report for /var/cache/abrt/DIR with this UUID.
+ * - CreateReport(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
  *      Returns job id (uint64).
  *      Emits JobStarted(client_dbus_ID,job_id) dbus signal.
  *      After it returns, when report creation thread has finished,
@@ -82,7 +82,7 @@
  *
  * TODO:
  * - API does not really need JobStarted dbus signal at all, and JobDone signal
- *   does not need to pass any parameters - out clients never sent multiple
+ *   does not need to pass any parameters - out clients never send multiple
  *   CreateReport's.
  */
 
@@ -153,7 +153,7 @@ static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL
             if (worst_dir && strcmp(excluded, ep->d_name) != 0)
             {
                 /* Calculate "weighted" size and age
-                /* w = sz_kbytes * age_mins */
+                 * w = sz_kbytes * age_mins */
                 sz /= 1024;
                 long age = (time(NULL) - stats.st_mtime) / 60;
                 if (age > 0)
