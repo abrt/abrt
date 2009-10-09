@@ -107,6 +107,11 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     }
     if (child == 0)
     {
+        VERB1 log("Executing: %s %s %s %s", pArgs[0]
+                ,pArgs[1] ? pArgs[1] : ""
+                ,pArgs[1] && pArgs[2] ? pArgs[2] : ""
+                ,pArgs[1] && pArgs[2] && pArgs[3] ? pArgs[3] : ""
+        );
         close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
@@ -123,7 +128,9 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
         setsid();
 
         execvp(pArgs[0], pArgs);
-        exit(0);
+        /* VERB1 since sometimes we expect errors here */
+        VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
+        exit(1);
     }
 
     close(pipeout[1]); /* write side of the pipe */
@@ -438,8 +445,34 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
         /*close(STDERR_FILENO);*/
 
         setsid();
+/* Honestly, I do not know what is worse, pk-debuginfo-install or debuginfo-install:
+
+# pk-debuginfo-install -y -- coreutils-7.2-4.fc11
+1. Getting sources list...OK. Found 16 enabled and 23 disabled sources.
+2. Finding debugging sources...OK. Found 0 disabled debuginfo repos.
+3. Enabling debugging sources...OK. Enabled 0 debugging sources.
+4. Finding debugging packages...Failed to find the package : more than one package found for 
+Failed to find the package : more than one package found for 
+FAILED. Found no packages to install.
+5. Disabling sources previously enabled...OK. Disabled 0 debugging sources.
+
+:( FAIL!
+
+# debuginfo-install -y -- coreutils-7.2-4.fc11
+Loaded plugins: refresh-packagekit
+Another application is holding the yum lock, cannot continue
+
+:( FAIL!
+
+# debuginfo-install -y -- coreutils-7.2-4.fc11
+(second time in a row - it worked)
+
+*/
+        /* log() goes to stderr/syslog, it's ok to use it here */
+        VERB1 log("Executing: %s %s %s %s", "pk-debuginfo-install", "-y", "--", package.c_str());
         execlp("pk-debuginfo-install", "pk-debuginfo-install", "-y", "--", package.c_str(), NULL);
         /* fall back */
+        VERB1 log("Executing: %s %s %s %s", "debuginfo-install", "-y", "--", package.c_str());
         execlp("debuginfo-install", "debuginfo-install", "-y", "--", package.c_str(), NULL);
         exit(1);
     }
