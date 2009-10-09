@@ -151,8 +151,6 @@ static void* create_report(void* arg)
 {
     thread_data_t *thread_data = (thread_data_t *) arg;
 
-    g_pCommLayer->JobStarted(thread_data->peer);
-
     /* Client name is per-thread, need to set it */
     set_client_name(thread_data->peer);
 

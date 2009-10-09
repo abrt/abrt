@@ -69,18 +69,6 @@ void CCommLayerServerDBus::QuotaExceed(const char* str)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::JobStarted(const char* peer)
-{
-    DBusMessage* msg = new_signal_msg("JobStarted", peer);
-    uint64_t nJobID = uint64_t(pthread_self());
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &peer, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_UINT64, &nJobID, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal JobStarted('%s',%llx)", peer, (unsigned long long)nJobID);
-    send_flush_and_unref(msg);
-}
-
 void CCommLayerServerDBus::JobDone(const char* peer, const char* pUUID)
 {
     DBusMessage* msg = new_signal_msg("JobDone", peer);

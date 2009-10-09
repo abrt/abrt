@@ -12,7 +12,6 @@ class CCommLayerServerDBus
 
         /* DBus signal senders */
         virtual void Crash(const std::string& progname, const std::string& uid);
-        virtual void JobStarted(const char* pDest);
         virtual void JobDone(const char* pDest, const char* pUUID);
         virtual void QuotaExceed(const char* str);
 

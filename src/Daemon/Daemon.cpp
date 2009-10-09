@@ -52,8 +52,7 @@
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
  * - CreateReport(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
  *      Returns job id (uint64).
- *      Emits JobStarted(client_dbus_ID,job_id) dbus signal.
- *      After it returns, when report creation thread has finished,
+ *      After thread returns, when report creation thread has finished,
  *      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
  * - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
  * - Report(map_crash_report_t (map_vector_string_t[, map_map_string_t])):
@@ -71,8 +70,6 @@
  *
  * DBus signals we emit:
  * - Crash(progname,uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
- * - JobStarted(client_dbus_ID,job_id) - see CreateReport above.
- *      Sent as unicast to the client which did CreateReport.
  * - JobDone(client_dbus_ID,UUID) - see CreateReport above.
  *      Sent as unicast to the client which did CreateReport.
  * - Warning(msg,job_id)
@@ -81,9 +78,8 @@
  *      If set_client_name(NULL) was done, they are not sent.
  *
  * TODO:
- * - API does not really need JobStarted dbus signal at all, and JobDone signal
- *   does not need to pass any parameters - out clients never send multiple
- *   CreateReport's.
+ * - JobDone signal does not need to pass any parameters
+ *   - our clients never send multiple CreateReport's.
  */
 
 
