@@ -197,7 +197,7 @@ static void create_tar(const char * archive_name, const char * directory)
     {
         return;
     }
-    tar_append_tree(tar, (char *)directory, ".");
+    tar_append_tree(tar, (char *)directory, (char*)".");
     tar_close(tar);
 }
 

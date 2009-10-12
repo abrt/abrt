@@ -10,7 +10,7 @@ class CAnalyzerPython : public CAnalyzer
     public:
         virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
         virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-        virtual void CreateReport(const std::string& pDebugDumpDir) {}
+        virtual void CreateReport(const std::string& pDebugDumpDir, int force) {}
         virtual void Init();
         virtual void DeInit();
         virtual std::string CreateHash(const std::string& pInput);

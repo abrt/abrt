@@ -69,18 +69,6 @@ void CCommLayerServerDBus::QuotaExceed(const char* str)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::JobStarted(const char* peer)
-{
-    DBusMessage* msg = new_signal_msg("JobStarted", peer);
-    uint64_t nJobID = uint64_t(pthread_self());
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &peer, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_UINT64, &nJobID, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal JobStarted('%s',%llx)", peer, (unsigned long long)nJobID);
-    send_flush_and_unref(msg);
-}
-
 void CCommLayerServerDBus::JobDone(const char* peer, const char* pUUID)
 {
     DBusMessage* msg = new_signal_msg("JobDone", peer);
@@ -156,6 +144,13 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
     dbus_message_iter_init(call, &in_iter);
     const char* pUUID;
     r = load_val(&in_iter, pUUID);
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
+        return -1;
+    }
+    int32_t force;
+    r = load_val(&in_iter, force);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
@@ -164,7 +159,7 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 
     const char* sender;
     long unix_uid = get_remote_uid(call, &sender);
-    if (CreateReportThread(pUUID, to_string(unix_uid).c_str(), sender) != 0)
+    if (CreateReportThread(pUUID, to_string(unix_uid).c_str(), force, sender) != 0)
         return -1; /* can't create thread (err msg is already logged) */
 
     dbus_message_append_args(reply,
@@ -189,7 +184,7 @@ static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    map_crash_report_t report = GetJobResult(pUUID, to_string(unix_uid).c_str());
+    map_crash_report_t report = GetJobResult(pUUID, to_string(unix_uid).c_str(), /*force:*/ 0);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);

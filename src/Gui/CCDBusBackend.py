@@ -61,7 +61,6 @@ class DBusManager(gobject.GObject):
         gobject.signal_new("update", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         # signal emited to show gui if user try to run it again
         gobject.signal_new("show", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
-        # signal emited to show gui if user try to run it again
         gobject.signal_new("daemon-state-changed", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         gobject.signal_new("report-done", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
 
@@ -70,7 +69,9 @@ class DBusManager(gobject.GObject):
             session.request_name(APP_NAME)
             iface = DBusInterface(self)
 
-        self.connect_to_daemon()
+        self.bus = dbus.SystemBus()
+        if not self.bus:
+            raise Exception(_("Can't connect to system dbus"))
         self.bus.add_signal_receiver(self.owner_changed_cb, "NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
         # new crash notification
         self.bus.add_signal_receiver(self.crash_cb, "Crash", dbus_interface=CC_IFACE)
@@ -81,9 +82,30 @@ class DBusManager(gobject.GObject):
         # watch for job-done signals
         self.bus.add_signal_receiver(self.jobdone_cb, "JobDone", dbus_interface=CC_IFACE)
 
-    # disconnect callback
-    def disconnected(self, *args):
-        print "disconnect"
+    # We use this function instead of caching and reusing of
+    # dbus.Interface(proxy, dbus_interface=CC_IFACE) because we want
+    # to restart abrtd in this scenario:
+    # (1) abrt-gui was run
+    # (2) user generated the report, then left for coffee break
+    # (3) abrtd exited on inactivity timeout
+    # (4) user returned and wants to submit the report
+    # for (4) to restart abrtd, we must recreate proxy and daemon
+    def daemon(self):
+        if not self.bus:
+            self.bus = dbus.SystemBus()
+        if not self.bus:
+            raise Exception(_("Can't connect to system dbus"))
+        proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
+        if not proxy:
+            raise Exception(_("Please check if abrt daemon is running"))
+        daemon = dbus.Interface(proxy, dbus_interface=CC_IFACE)
+        if not daemon:
+            raise Exception(_("Please check if abrt daemon is running"))
+        return daemon
+
+#    # disconnect callback
+#    def disconnected(self, *args):
+#        print "disconnect"
 
     def error_handler_cb(self,error):
         self.emit("abrt-error",error)
@@ -115,43 +137,18 @@ class DBusManager(gobject.GObject):
         print "Warning >>%s<<" % message
         self.emit("warning", message)
 
-# Seems to be not needed at all. Not only that, it is actively harmful
-# when abrtd is autostarted by dbus-daemon: connect_to_daemon() would install
-# duplicate signal handlers!
     def owner_changed_cb(self,name, old_owner, new_owner):
         if name == CC_NAME:
-            # No need to connect at once, we can do it when we need it
-            # (and this "connect on demand" mode of operation is needed
-            # anyway if abrtd is autostarted by dbus: before we call it,
-            # there is no abrtd to connect to!)
             if new_owner:
-                #self.proxy = self.connect_to_daemon()
                 self.emit("daemon-state-changed", "up")
             else:
-                #self.proxy = None
                 self.emit("daemon-state-changed", "down")
-
-    def connect_to_daemon(self):
-        if not self.bus:
-            self.bus = dbus.SystemBus()
-        if not self.bus:
-            raise Exception(_("Can't connect to dbus"))
-        # Can't do this: abrtd may be autostarted by dbus-daemon
-        #if self.bus.name_has_owner(CC_NAME):
-        #    self.proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
-        #else:
-        #    raise Exception(_("Please check if abrt daemon is running."))
-        self.proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
-        if self.proxy:
-            self.cc = dbus.Interface(self.proxy, dbus_interface=CC_IFACE)
-        else:
-            raise Exception(_("Please check if abrt daemon is running."))
 
     def jobdone_cb(self, dest, uuid):
         # TODO: check that it is indeed OUR job:
         # remember uuid in getReport and compare here
         print "Our job for UUID %s is done." % uuid
-        dump = self.cc.GetJobResult(uuid)
+        dump = self.daemon().GetJobResult(uuid)
         if dump:
             self.emit("analyze-complete", dump)
         else:
@@ -161,31 +158,21 @@ class DBusManager(gobject.GObject):
         self.emit("report-done", result)
 
     def getReport(self, UUID):
-        try:
-            # let's try it async
-            # even if it's async it timeouts, so let's try to set the timeout to 60sec
-            #self.cc.CreateReport(UUID, reply_handler=self.addJob, error_handler=self.error_handler, timeout=60)
-            # we don't need the return value, as the job_id is sent via JobStarted signal
-            self.cc.CreateReport(UUID, timeout=60)
-        except dbus.exceptions.DBusException, e:
-            # One case when it fails is if abrtd exited and needs to be
-            # autostarted by dbus again. (This is a first stab
-            # at making it work in this case, I want to find a better way)
-            self.connect_to_daemon()
-            self.cc.CreateReport(UUID, timeout=60)
+        # 2nd param is "force recreating of backtrace etc"
+        self.daemon().CreateReport(UUID, 0, timeout=60)
 
     def Report(self, report, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
-        self.cc.Report(report, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+        self.daemon().Report(report, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
 
     def DeleteDebugDump(self,UUID):
-        return self.cc.DeleteDebugDump(UUID)
+        return self.daemon().DeleteDebugDump(UUID)
 
     def getDumps(self):
         row_dict = None
         rows = []
         # FIXME check the arguments
-        for row in self.cc.GetCrashInfos():
+        for row in self.daemon().GetCrashInfos():
             row_dict = {}
             for column in row:
                 row_dict[column] = row[column]
@@ -193,28 +180,28 @@ class DBusManager(gobject.GObject):
         return rows
 
     def getPluginsInfo(self):
-        return self.cc.GetPluginsInfo()
+        return self.daemon().GetPluginsInfo()
 
     def getPluginSettings(self, plugin_name):
-        settings = self.cc.GetPluginSettings(plugin_name)
+        settings = self.daemon().GetPluginSettings(plugin_name)
         #for i in settings.keys():
         #    print i
         return settings
 
     def registerPlugin(self, plugin_name):
-        return self.cc.RegisterPlugin(plugin_name)
+        return self.daemon().RegisterPlugin(plugin_name)
 
     def unRegisterPlugin(self, plugin_name):
-        return self.cc.UnRegisterPlugin(plugin_name)
+        return self.daemon().UnRegisterPlugin(plugin_name)
 
     def setPluginSettings(self, plugin_name, plugin_settings):
-        return self.cc.SetPluginSettings(plugin_name, plugin_settings)
+        return self.daemon().SetPluginSettings(plugin_name, plugin_settings)
 
     def getSettings(self):
-        return self.cc.GetSettings()
+        return self.daemon().GetSettings()
 
     def setSettings(self, settings):
         # FIXME: STUB!!!!
         print "setSettings stub"
-        retval = self.cc.SetSettings(self.cc.GetSettings())
+        retval = self.daemon().SetSettings(self.daemon().GetSettings())
         print ">>>", retval

@@ -6,52 +6,56 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-01 22:53+0000\n"
-"PO-Revision-Date: 2009-10-02 13:53+0800\n"
+"POT-Creation-Date: 2009-10-08 04:40+0000\n"
+"PO-Revision-Date: 2009-10-08 15:08+0800\n"
 "Last-Translator: cyrushmh <cyrushmh@vip.qq.com;cyrusyzgtt@gmail.com>\n"
-"Language-Team: cvsl10n\n"
-"Language: zh_CN\n"
+"Language-Team: cvsl10n <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: Virtaal 0.4.0\n"
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-Country: CHINA\n"
 
-#: ../src/Gui/ABRTExceptions.py:5
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "另一用户机已在运行中，尝试唤醒中。"
 
-#: ../src/Gui/ABRTExceptions.py:11
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "从Daemon得到非预期的数据（数据库有否正确更新？）"
 
-#: ../src/Gui/ABRTPlugin.py:26
+#: ../src/Gui/ABRTPlugin.py:48
 msgid "Analyzer plugins"
 msgstr "Analyzer 插件  "
 
-#: ../src/Gui/ABRTPlugin.py:27
+#: ../src/Gui/ABRTPlugin.py:49
 msgid "Action plugins"
 msgstr "Action 插件  "
 
-#: ../src/Gui/ABRTPlugin.py:28
+#: ../src/Gui/ABRTPlugin.py:50
 msgid "Reporter plugins"
 msgstr "Reporter 插件  "
 
-#: ../src/Gui/ABRTPlugin.py:29
+#: ../src/Gui/ABRTPlugin.py:51
 msgid "Database plugins"
 msgstr "Database 插件 "
 
-#: ../src/Gui/CCDBusBackend.py:138
-msgid "Can't connect to dbus"
-msgstr "未能连结到dbus"
+#: ../src/Gui/ABRTPlugin.py:90
+msgid "Plugin name is not set, can't load it's settings"
+msgstr "插件名未设定，无法装载其设置。"
 
-#: ../src/Gui/CCDBusBackend.py:148
-msgid "Please check if abrt daemon is running."
-msgstr "请检查abrt daemon是否运行中。"
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "未能连结到系统dbus"
 
-#: ../src/Gui/CCDBusBackend.py:158
+#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+msgid "Please check if abrt daemon is running"
+msgstr "请检查abrt daemon是否运行中"
+
+#: ../src/Gui/CCDBusBackend.py:155
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -200,7 +204,7 @@ msgstr ""
 "未能取得报告书！\n"
 "会是因为调试数据的缺失吗？"
 
-#: ../src/Gui/CCMainWindow.py:307
+#: ../src/Gui/CCMainWindow.py:308
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -209,7 +213,7 @@ msgstr ""
 "报告失败！\n"
 "%s "
 
-#: ../src/Gui/CCMainWindow.py:339
+#: ../src/Gui/CCMainWindow.py:340
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "取得报告时出错：%s"
@@ -236,21 +240,21 @@ msgstr "报告完成"
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
-#: ../src/Gui/PluginSettingsUI.py:17
+#: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "找不到 PluginDialog 的用户界面说明！"
 
 #. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:21
+#: ../src/Gui/PluginSettingsUI.py:24
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "插件 %s 并未有用户界面"
 
-#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:41 ../src/Gui/PluginSettingsUI.py:67
 msgid "combo box is not implemented"
 msgstr "combo box还未被建构"
 
-#: ../src/Gui/PluginSettingsUI.py:47
+#: ../src/Gui/PluginSettingsUI.py:50
 msgid "Nothing to hydrate!"
 msgstr "没有需要hydrate的东西！"
 
@@ -274,11 +278,11 @@ msgstr "<b>选择插件</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>选择数据库的后台</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:168
 msgid "Remove this job"
 msgstr "删除这项工作"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:211
 msgid "Remove this action"
 msgstr "删除这个动作"
 
@@ -291,9 +295,8 @@ msgid "<b>Associated action</b>"
 msgstr "<b>关联的动作</b>"
 
 #: ../src/Gui/settings.glade.h:3
-#, fuzzy
 msgid "<b>Plugin</b>"
-msgstr "<b>选择插件</b>"
+msgstr "<b>插件</b>"
 
 #: ../src/Gui/settings.glade.h:4
 msgid "<b>Time (or period)</b>"
@@ -312,27 +315,24 @@ msgid "Blacklisted packages: "
 msgstr "黑名单中的软件包："
 
 #: ../src/Gui/settings.glade.h:8
-#, fuzzy
 msgid "C_onfigure plugin"
-msgstr "设置Reporter插件 (_O)"
+msgstr "设置插件(_O)"
 
 #: ../src/Gui/settings.glade.h:9
 msgid "Check package GPG signature"
 msgstr "检查软件包的 GPG 签章"
 
 #: ../src/Gui/settings.glade.h:10
-#, fuzzy
 msgid "Common"
-msgstr "一般  "
+msgstr "一般"
 
 #: ../src/Gui/settings.glade.h:11
 msgid "Cron"
 msgstr "克隆"
 
 #: ../src/Gui/settings.glade.h:12
-#, fuzzy
 msgid "Database backend: "
-msgstr "<b>选择数据库的后台</b>"
+msgstr "数据库的后台："
 
 #: ../src/Gui/settings.glade.h:13
 msgid "Edit blacklisted packages"
@@ -347,7 +347,6 @@ msgid "GPG keys: "
 msgstr "GPG 金钥："
 
 #: ../src/Gui/settings.glade.h:16
-#, fuzzy
 msgid "Global Settings"
 msgstr "全局设置"
 
@@ -364,14 +363,12 @@ msgid "Plugin Details"
 msgstr "插件详情"
 
 #: ../src/Gui/settings.glade.h:20
-#, fuzzy
 msgid "Settings"
-msgstr "全局设置"
+msgstr "设置"
 
 #: ../src/Gui/settings.glade.h:21
-#, fuzzy
 msgid "This function is not implemented yet!"
-msgstr "combo box还未被建构"
+msgstr "函数还未被实现！"
 
 #: ../src/Gui/settings.glade.h:22
 msgid "Version:"
@@ -386,7 +383,6 @@ msgid "gtk-add"
 msgstr "gtk-add"
 
 #: ../src/Gui/settings.glade.h:26
-#, fuzzy
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -395,9 +391,9 @@ msgid "gtk-remove"
 msgstr "gtk-remove"
 
 #: ../src/Applet/Applet.cpp:71
-#, fuzzy, c-format
+#, c-format
 msgid "A crash in package %s has been detected"
-msgstr "发现了 %s 软件包的错误纪录！"
+msgstr "发现了%s软件包的错误记录！"
 
 #: ../src/Applet/Applet.cpp:130
 msgid "ABRT service has been started"
@@ -455,36 +451,34 @@ msgid "Logging out..."
 msgstr "正在登出……"
 
 #: ../lib/Plugins/Kerneloops.cpp:37
-#, fuzzy
 msgid "Getting local universal unique identification"
-msgstr "正在取得局域的UUID……"
+msgstr "正在取得局域的UUID"
 
 #: ../lib/Plugins/CCpp.cpp:146
 msgid "Getting backtrace..."
 msgstr "正在取得逆向跟踪数据……"
 
-#: ../lib/Plugins/CCpp.cpp:410
+#: ../lib/Plugins/CCpp.cpp:415
 msgid "Searching for debug-info packages..."
 msgstr "debug-info 软件包寻找中……"
 
-#: ../lib/Plugins/CCpp.cpp:446
+#: ../lib/Plugins/CCpp.cpp:451
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info 软件包下载及安装中……"
 
-#: ../lib/Plugins/CCpp.cpp:508
+#: ../lib/Plugins/CCpp.cpp:513
 msgid "Getting local universal unique identification..."
 msgstr "正在取得局域的UUID……"
 
-#: ../lib/Plugins/CCpp.cpp:527
+#: ../lib/Plugins/CCpp.cpp:532
 msgid "Getting global universal unique identification..."
 msgstr "正在取得全局的UUID……"
 
-#: ../lib/Plugins/CCpp.cpp:578
+#: ../lib/Plugins/CCpp.cpp:583
 msgid "Starting report creation..."
 msgstr "报告书生成引导……"
 
-#: ../lib/Plugins/CCpp.cpp:607
-#, fuzzy
+#: ../lib/Plugins/CCpp.cpp:612
 msgid "Skipping debuginfo installation"
 msgstr "省略 %s 软件包的调试数据安装"
 
@@ -498,7 +492,7 @@ msgstr "报告书生成中……"
 
 #: ../lib/Plugins/RunApp.cpp:62
 msgid "Executing RunApp plugin..."
-msgstr "RunApp 插件执行中……"
+msgstr "RunApp 插件执行中..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:409
 msgid "FileTransfer: URL not specified"

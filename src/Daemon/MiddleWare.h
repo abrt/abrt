@@ -65,6 +65,7 @@ void LoadOpenGPGPublicKey(const char* key);
  */
 mw_result_t CreateCrashReport(const std::string& pUUID,
                               const std::string& pUID,
+                              int force,
                               map_crash_report_t& pCrashReport);
 /**
  * Activates particular action plugin.

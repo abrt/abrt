@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-05 21:13+0000\n"
+"POT-Creation-Date: 2009-10-08 21:21+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Rui Gouveia <rui.gouveia@globaltek.pt>\n"
 "Language-Team: PT <fedora-trans-pt@redhat.com>\n"
@@ -20,35 +20,37 @@ msgstr "Outro cliente já está em execução. A tentar despertá-lo."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Obteve-se dados inesperados do serviço (a base de dados está actualizada?)"
 
-#: ../src/Gui/ABRTPlugin.py:45
+#: ../src/Gui/ABRTPlugin.py:48
 msgid "Analyzer plugins"
 msgstr "Plugins de análise"
 
-#: ../src/Gui/ABRTPlugin.py:46
+#: ../src/Gui/ABRTPlugin.py:49
 msgid "Action plugins"
 msgstr "Plugins de acções"
 
-#: ../src/Gui/ABRTPlugin.py:47
+#: ../src/Gui/ABRTPlugin.py:50
 msgid "Reporter plugins"
 msgstr "Plugins de relatórios"
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:51
 msgid "Database plugins"
 msgstr "Plugins de bases de dados"
 
-#: ../src/Gui/ABRTPlugin.py:87
+#: ../src/Gui/ABRTPlugin.py:90
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "Nome do plugin não está definido, incapaz de carregar configurações"
 
-#: ../src/Gui/CCDBusBackend.py:138
-msgid "Can't connect to dbus"
-msgstr "Incapaz de ligar ao dbus"
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "Incapaz de ligar ao sistema dbus"
 
-#: ../src/Gui/CCDBusBackend.py:148
-msgid "Please check if abrt daemon is running."
-msgstr "Por favor verifique se o serviço abrt está a correr."
+#: ../src/Gui/CCDBusBackend.py:100
+#: ../src/Gui/CCDBusBackend.py:103
+msgid "Please check if abrt daemon is running"
+msgstr "Por favor verifique se o serviço abrt está a correr"
 
-#: ../src/Gui/CCDBusBackend.py:158
+#: ../src/Gui/CCDBusBackend.py:155
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -188,7 +190,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "Debuginfo está em falta?"
 
-#: ../src/Gui/CCMainWindow.py:307
+#: ../src/Gui/CCMainWindow.py:308
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -197,7 +199,7 @@ msgstr ""
 "Relatório falhou!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:339
+#: ../src/Gui/CCMainWindow.py:340
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
@@ -234,12 +236,12 @@ msgstr "Não foi possível encontrar na descrição do UI o objecto PluginDialog
 msgid "No UI for plugin %s"
 msgstr "Não existe interface de utilizador para o plugin %s"
 
-#: ../src/Gui/PluginSettingsUI.py:41
-#: ../src/Gui/PluginSettingsUI.py:67
+#: ../src/Gui/PluginSettingsUI.py:55
+#: ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "caixa de combinação não está implementada"
 
-#: ../src/Gui/PluginSettingsUI.py:50
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
 msgstr "Nada para fazer!"
 
@@ -265,11 +267,11 @@ msgstr "<b>Seleccione plugin</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>Seleccione base de dados</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:168
 msgid "Remove this job"
 msgstr "Remover esta tarefa"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:211
 msgid "Remove this action"
 msgstr "Remover esta acção"
 
@@ -403,37 +405,37 @@ msgstr "O relatório excedeu a cota. Por favor, verifique o valor MaxCrashReport
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Nome de utilizador e senha vazios. Por favor, verifique Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:227
+#: ../lib/Plugins/Bugzilla.cpp:205
 msgid "Bug is already reported: "
 msgstr "Erro já foi reportado: "
 
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: ../lib/Plugins/Bugzilla.cpp:260
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "Ficheiro binário %s não será reportado."
 
-#: ../lib/Plugins/Bugzilla.cpp:352
+#: ../lib/Plugins/Bugzilla.cpp:330
 msgid "New bug id: "
 msgstr "Criar novo ID de erro: "
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:399
 msgid "Checking for duplicates..."
 msgstr "A procurar por duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:424
-#: ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:402
+#: ../lib/Plugins/Bugzilla.cpp:413
 msgid "Logging into bugzilla..."
 msgstr "A iniciar sessão no bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
-msgid "Check CC and add coment +1..."
-msgstr "Verifique o campo CC e adicione o comentário +1..."
+#: ../lib/Plugins/Bugzilla.cpp:405
+msgid "Checking CC..."
+msgstr "A verificar CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:425
 msgid "Creating new bug..."
 msgstr "A criar novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:430
 msgid "Logging out..."
 msgstr "A Terminar Sessão..."
 
@@ -445,27 +447,27 @@ msgstr "A obter identificador único universal local"
 msgid "Getting backtrace..."
 msgstr "A obter dados do processo..."
 
-#: ../lib/Plugins/CCpp.cpp:410
+#: ../lib/Plugins/CCpp.cpp:415
 msgid "Searching for debug-info packages..."
 msgstr "A pesquisar por pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:446
+#: ../lib/Plugins/CCpp.cpp:451
 msgid "Downloading and installing debug-info packages..."
 msgstr "A transferir e instalar pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:508
+#: ../lib/Plugins/CCpp.cpp:513
 msgid "Getting local universal unique identification..."
 msgstr "A obter identificador único universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:527
+#: ../lib/Plugins/CCpp.cpp:532
 msgid "Getting global universal unique identification..."
 msgstr "A obter identificador único universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:578
+#: ../lib/Plugins/CCpp.cpp:583
 msgid "Starting report creation..."
 msgstr "A iniciar a criação do relatório..."
 
-#: ../lib/Plugins/CCpp.cpp:607
+#: ../lib/Plugins/CCpp.cpp:612
 msgid "Skipping debuginfo installation"
 msgstr "A passar à frente a instalação do debuginfo"
 
@@ -521,6 +523,8 @@ msgstr "A executar sosreport: "
 msgid "done running sosreport"
 msgstr "execução do sosreport terminou"
 
+#~ msgid "Check CC and add coment +1..."
+#~ msgstr "Verifique o campo CC e adicione o comentário +1..."
 #~ msgid "Pending events: %i"
 #~ msgstr "Eventos pendentes: %i"
 #~ msgid "Can't create menu from the description, popup won't be available!\n"

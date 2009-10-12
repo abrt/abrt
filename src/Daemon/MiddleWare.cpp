@@ -163,15 +163,17 @@ static std::string GetGlobalUUID(const std::string& pAnalyzer,
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
  */
 static void CreateReport(const std::string& pAnalyzer,
-                               const std::string& pDebugDumpDir)
+                const std::string& pDebugDumpDir,
+                int force)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
-    analyzer->CreateReport(pDebugDumpDir);
+    analyzer->CreateReport(pDebugDumpDir, force);
 }
 
 mw_result_t CreateCrashReport(const std::string& pUUID,
-                                                        const std::string& pUID,
-                                                        map_crash_report_t& pCrashReport)
+                const std::string& pUID,
+                int force,
+                map_crash_report_t& pCrashReport)
 {
     VERB2 log("CreateCrashReport('%s','%s',result)", pUUID.c_str(), pUID.c_str());
 
@@ -185,7 +187,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
     }
     if (pUUID == "" || row.m_sUUID != pUUID)
     {
-        warn_client("CreateCrashReport(): UUID '"+pUUID+"' is not in database.");
+        warn_client("CreateCrashReport(): UUID '"+pUUID+"' is not in database");
         return MW_IN_DB_ERROR;
     }
 
@@ -211,7 +213,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
         dd.Close();
 
         VERB3 log(" CreateReport('%s')", analyzer.c_str());
-        CreateReport(analyzer, row.m_sDebugDumpDir);
+        CreateReport(analyzer, row.m_sDebugDumpDir, force);
 
         gUUID = GetGlobalUUID(analyzer, row.m_sDebugDumpDir);
         VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());

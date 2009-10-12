@@ -107,6 +107,11 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     }
     if (child == 0)
     {
+        VERB1 log("Executing: %s %s %s %s", pArgs[0]
+                ,pArgs[1] ? pArgs[1] : ""
+                ,pArgs[1] && pArgs[2] ? pArgs[2] : ""
+                ,pArgs[1] && pArgs[2] && pArgs[3] ? pArgs[3] : ""
+        );
         close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
@@ -123,7 +128,9 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
         setsid();
 
         execvp(pArgs[0], pArgs);
-        exit(0);
+        /* VERB1 since sometimes we expect errors here */
+        VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
+        exit(1);
     }
 
     close(pipeout[1]); /* write side of the pipe */
@@ -357,6 +364,7 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
 
     log("Builting list of missing debuginfos");
     // lines look like this:
+    // 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
     // 0x400000+0x209000 ab3c8286aac6c043fd1bb1cc2a0b88ec29517d3e@0x40024c /bin/sleep /usr/lib/debug/bin/sleep.debug [exe]
     // 0x7fff313ff000+0x1000 389c7475e3d5401c55953a425a2042ef62c4c7df@0x7fff313ff2f8 . - linux-vdso.so.1
     vector_string_t missing;
@@ -374,8 +382,10 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
         char* endsp = strchr(word2, ' ');
         if (!endsp)
             continue;
+        /* endsp points to 2nd space in the line now*/
+
         /* This filters out linux-vdso.so, among others */
-        if (endsp[1] != '/')
+        if (strstr(endsp, "[exe]") == NULL && endsp[1] != '/')
             continue;
         *endsp = '\0';
         char* at = strchrnul(word2, '@');
@@ -435,8 +445,34 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
         /*close(STDERR_FILENO);*/
 
         setsid();
+/* Honestly, I do not know what is worse, pk-debuginfo-install or debuginfo-install:
+
+# pk-debuginfo-install -y -- coreutils-7.2-4.fc11
+1. Getting sources list...OK. Found 16 enabled and 23 disabled sources.
+2. Finding debugging sources...OK. Found 0 disabled debuginfo repos.
+3. Enabling debugging sources...OK. Enabled 0 debugging sources.
+4. Finding debugging packages...Failed to find the package : more than one package found for 
+Failed to find the package : more than one package found for 
+FAILED. Found no packages to install.
+5. Disabling sources previously enabled...OK. Disabled 0 debugging sources.
+
+:( FAIL!
+
+# debuginfo-install -y -- coreutils-7.2-4.fc11
+Loaded plugins: refresh-packagekit
+Another application is holding the yum lock, cannot continue
+
+:( FAIL!
+
+# debuginfo-install -y -- coreutils-7.2-4.fc11
+(second time in a row - it worked)
+
+*/
+        /* log() goes to stderr/syslog, it's ok to use it here */
+        VERB1 log("Executing: %s %s %s %s", "pk-debuginfo-install", "-y", "--", package.c_str());
         execlp("pk-debuginfo-install", "pk-debuginfo-install", "-y", "--", package.c_str(), NULL);
         /* fall back */
+        VERB1 log("Executing: %s %s %s %s", "debuginfo-install", "-y", "--", package.c_str());
         execlp("debuginfo-install", "debuginfo-install", "-y", "--", package.c_str(), NULL);
         exit(1);
     }
@@ -578,7 +614,7 @@ static bool DebuginfoCheckPolkit(int uid)
 
 }
 
-void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
+void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
 {
     update_client(_("Starting report creation..."));
 
@@ -588,18 +624,19 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
 
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
 
-    if (bt_exists)
+    if (!force)
     {
-        dd.Close(); /* do not keep dir locked longer than needed */
-        return; /* already done */
+        bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
+        if (bt_exists)
+        {
+            return; /* backtrace already exists */
+        }
     }
 
     dd.LoadText(FILENAME_PACKAGE, package);
     dd.LoadText(FILENAME_UID, UID);
-    dd.Close();
-
+    dd.Close(); /* do not keep dir locked longer than needed */
 
     map_plugin_settings_t settings = GetSettings();
     if (settings["InstallDebuginfo"] == "yes" &&
@@ -609,7 +646,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir)
     }
     else
     {
-        warn_client(_("Skipping debuginfo installation"));
+        VERB1 log(_("Skipping debuginfo installation"));
     }
 
     GetBacktrace(pDebugDumpDir, backtrace);

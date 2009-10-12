@@ -25,6 +25,13 @@ class PluginSettingsUI(gtk.Dialog):
             self.add(no_ui_label)
             no_ui_label.show()
 
+        #connect show_pass buttons if present
+
+
+    def on_show_pass_toggled(self, button, entry=None):
+        if entry:
+            entry.set_visibility(button.get_active())
+
     def hydrate(self):
         if self.plugin_gui:
             if self.pluginfo.Enabled == "yes":
@@ -35,6 +42,13 @@ class PluginSettingsUI(gtk.Dialog):
                         widget = self.plugin_gui.get_object("conf_%s" % key)
                         if type(widget) == gtk.Entry:
                             widget.set_text(value)
+                            if widget.get_visibility() == False:
+                                # if we find toggle button called the same name as entry and entry has
+                                # visibility set to False, connect set_visible to it
+                                # coz I guess it's toggle for revealing the password
+                                button = self.plugin_gui.get_object("cb_%s" % key)
+                                if type(button) == gtk.CheckButton:
+                                    button.connect("toggled", self.on_show_pass_toggled, widget)
                         elif type(widget) == gtk.CheckButton:
                             widget.set_active(value == "yes")
                         elif type(widget) == gtk.ComboBox:

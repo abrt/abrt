@@ -33,6 +33,17 @@ class ConfBackendGnomeKeyring(ConfBackend):
         settings_tmp["AbrtPluginInfo"] = name
         password = ""
 
+        item_list = []
+        try:
+            item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, {"AbrtPluginInfo":str(name)})
+        except gkey.NoMatchError, ex:
+            # nothing found
+            pass
+
+        # delete all items containg "AbrtPluginInfo":<plugin_name>, so we always have only 1 item per plugin
+        for item in item_list:
+            gkey.item_delete_sync(self.default_key_ring, item.item_id)
+
         if "Password" in settings_tmp:
             password = settings_tmp["Password"]
             del settings_tmp["Password"]
@@ -42,6 +53,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
                                     settings_tmp,
                                     password,
                                     True)
+
 
     def load(self, name):
         item_list = None

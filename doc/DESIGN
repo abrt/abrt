@@ -92,10 +92,10 @@ The key dbus calls served by abrt-process are:
      Returns job id (uint64).
      After it returns, when report creation thread has finished,
      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
-[Problem: how to do privilegged plugin specific actions?]
+  [Problem: how to do privilegged plugin specific actions?]
     Solution: if plugin needs an access to some root only accessible dir then
     abrt should be run by root anyway
-    - debuginfo gets installed using pkg-debug-install, which cares about
+    - debuginfo gets installed using pk-debuginfo-install, which cares about
     privileges itself, so no problem here
 - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
 - Report(map_crash_report_t (map_vector_string_t)):
@@ -106,10 +106,11 @@ The key dbus calls served by abrt-process are:
 
 	Development plan
 
-Since current code does not match the palnned design, we need to gradually
+Since current code does not match the planned design, we need to gradually
 change the code to "morph" it into the desired shape. Planned steps:
 
-* make kerneloops plugin into separate daemon (convert it to a hook and get rid of "cron plugins" which are wrong idea since the begining)
+* make kerneloops plugin into separate daemon (convert it to a hook
+  and get rid of "cron plugins" which are wrong idea since the begining)
 * Make abrtd dbus startable
 * Make abrt-gui start abrtd on demand, so that abrt-gui can be started
   even if abrtd does not run at the moment.

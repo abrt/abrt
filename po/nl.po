@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-06 04:15+0000\n"
-"PO-Revision-Date: 2009-10-06 09:29+0200\n"
+"POT-Creation-Date: 2009-10-08 17:38+0000\n"
+"PO-Revision-Date: 2009-10-08 21:12+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,35 +26,35 @@ msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
 
-#: ../src/Gui/ABRTPlugin.py:45
+#: ../src/Gui/ABRTPlugin.py:48
 msgid "Analyzer plugins"
 msgstr "Analyse plugins"
 
-#: ../src/Gui/ABRTPlugin.py:46
+#: ../src/Gui/ABRTPlugin.py:49
 msgid "Action plugins"
 msgstr "Actie plugins"
 
-#: ../src/Gui/ABRTPlugin.py:47
+#: ../src/Gui/ABRTPlugin.py:50
 msgid "Reporter plugins"
 msgstr "Rapporteer plugins"
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:51
 msgid "Database plugins"
 msgstr "Databse plugins"
 
-#: ../src/Gui/ABRTPlugin.py:87
+#: ../src/Gui/ABRTPlugin.py:90
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "Plugin naam is niet opgegeven, kan zijn instellingen niet laden"
 
-#: ../src/Gui/CCDBusBackend.py:138
-msgid "Can't connect to dbus"
-msgstr "Kan niet verbinden met dbus"
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "Kan niet verbinden met systeem dbus"
 
-#: ../src/Gui/CCDBusBackend.py:148
-msgid "Please check if abrt daemon is running."
-msgstr "Controleer a.u.b. of de abrt daemon draait."
+#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+msgid "Please check if abrt daemon is running"
+msgstr "Controleer a.u.b. of de abrt daemon draait"
 
-#: ../src/Gui/CCDBusBackend.py:158
+#: ../src/Gui/CCDBusBackend.py:155
 msgid ""
 "Daemon did't return valid report info\n"
 "Debuginfo is missing?"
@@ -207,7 +207,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:307
+#: ../src/Gui/CCMainWindow.py:308
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -216,7 +216,7 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:339
+#: ../src/Gui/CCMainWindow.py:340
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -254,11 +254,11 @@ msgstr "Kan geen PluginDialog widget in UI beschrijving vinden!"
 msgid "No UI for plugin %s"
 msgstr "Geen UI voor plugin %s"
 
-#: ../src/Gui/PluginSettingsUI.py:41 ../src/Gui/PluginSettingsUI.py:67
+#: ../src/Gui/PluginSettingsUI.py:55 ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "combo box is niet geïmplementeertd"
 
-#: ../src/Gui/PluginSettingsUI.py:50
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
 msgstr "Kan het niet hard maken!"
 
@@ -282,11 +282,11 @@ msgstr "<b>Selecteer een plugin</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>Selecteer database back-end</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:168
 msgid "Remove this job"
 msgstr "Verwijder deze taak"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:211
 msgid "Remove this action"
 msgstr "Verwijder deze actie"
 
@@ -423,36 +423,36 @@ msgstr ""
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:227
+#: ../lib/Plugins/Bugzilla.cpp:205
 msgid "Bug is already reported: "
 msgstr "Bug is al aangemeld: "
 
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: ../lib/Plugins/Bugzilla.cpp:260
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "Binair bestand %s wordt niet gerapporteerd."
 
-#: ../lib/Plugins/Bugzilla.cpp:352
+#: ../lib/Plugins/Bugzilla.cpp:330
 msgid "New bug id: "
 msgstr "Nieuwe bug id: "
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:399
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:402 ../lib/Plugins/Bugzilla.cpp:413
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
-msgid "Check CC and add coment +1..."
-msgstr "Controleer CC en voeg commentaar toe +1..."
+#: ../lib/Plugins/Bugzilla.cpp:405
+msgid "Checking CC..."
+msgstr "Controleren van CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:425
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:430
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
@@ -464,27 +464,27 @@ msgstr "Verkrijgen van locale universele unieke identificatie"
 msgid "Getting backtrace..."
 msgstr "Backtrace ophalen..."
 
-#: ../lib/Plugins/CCpp.cpp:410
+#: ../lib/Plugins/CCpp.cpp:415
 msgid "Searching for debug-info packages..."
 msgstr "Zoeken naar debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:446
+#: ../lib/Plugins/CCpp.cpp:451
 msgid "Downloading and installing debug-info packages..."
 msgstr "Downloaden en installeren van debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:508
+#: ../lib/Plugins/CCpp.cpp:513
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:527
+#: ../lib/Plugins/CCpp.cpp:532
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:578
+#: ../lib/Plugins/CCpp.cpp:583
 msgid "Starting report creation..."
 msgstr "Beginnen met rapport aanmaken..."
 
-#: ../lib/Plugins/CCpp.cpp:607
+#: ../lib/Plugins/CCpp.cpp:612
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 
@@ -536,6 +536,9 @@ msgstr "sosreport draaien: "
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
+
+#~ msgid "Check CC and add coment +1..."
+#~ msgstr "Controleer CC en voeg commentaar toe +1..."
 
 #~ msgid "Creating an archive..."
 #~ msgstr "Aanmaken van een archief..."

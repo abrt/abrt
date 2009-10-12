@@ -147,28 +147,6 @@ bool CReporterBugzilla::CheckCCAndReporter(const std::string& pBugId)
     return false;
 }
 
-void CReporterBugzilla::AddPlusOneComment(const std::string& pBugId)
-{
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t addCommentParams;
-    map_xmlrpc_params_t ret;
-
-    addCommentParams["id"] = xmlrpc_c::value_int(atoi(pBugId.c_str()));
-    addCommentParams["comment"] = xmlrpc_c::value_string("+1");
-
-    paramList.add(xmlrpc_c::value_struct(addCommentParams));
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.add_comment", paramList));
-    try
-    {
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::AddPlusOneComment(): ") + e.what());
-    }
-    ret = xmlrpc_c::value_struct(rpc->getResult());
-}
-
 void CReporterBugzilla::AddPlusOneCC(const std::string& pBugId)
 {
     xmlrpc_c::paramList paramList;
@@ -424,10 +402,9 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
             update_client(_("Logging into bugzilla..."));
             Login();
             m_bLoggedIn = true;
-            update_client(_("Check CC and add coment +1..."));
+            update_client(_("Checking CC..."));
             if (!CheckCCAndReporter(bugId) && m_bLoggedIn)
             {
-                AddPlusOneComment(bugId);
                 AddPlusOneCC(bugId);
             }
             DeleteXMLRPCClient();

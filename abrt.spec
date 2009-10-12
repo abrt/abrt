@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.9
-Release: 2%{?dist}
+Release: 3%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -52,7 +52,8 @@ Development libraries and headers for %{name}.
 Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: dbus-python, pygtk2, pygtk2-libglade,gnome-python2-gnomevfs
+Requires: dbus-python, pygtk2, pygtk2-libglade,
+Requires: gnome-python2-gnomevfs, gnome-python2-gnomekeyring
 # only if gtk2 version < 2.17
 #Requires: python-sexy
 Provides: abrt-applet = %{version}-%{release}
