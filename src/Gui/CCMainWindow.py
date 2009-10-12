@@ -204,10 +204,10 @@ class MainWindow():
                 except Exception, e:
                     user = _("Can't get username for uid %s" % entry.getUID())
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), user, entry.isReported(), entry])
+                                                entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry])
             else:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                                entry.getTime("%Y.%m.%d %H:%M:%S"), entry.getCount(), entry.isReported(), entry])
+                                                entry.getTime("%c"), entry.getCount(), entry.isReported(), entry])
         # activate the last row if any..
         if n:
             self.dlist.set_cursor(self.dumpsListStore.get_path(n))
