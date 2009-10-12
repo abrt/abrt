@@ -1,18 +1,40 @@
+/*
+    Copyright (C) 2009  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 #include <getopt.h>
 #include "ABRTException.h"
 #include "ABRTSocket.h"
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "DBusCommon.h"
+#if HAVE_CONFIG_H
+    #include <config.h>
+#endif
 
+/* Program options */
 enum
 {
-    HELP,
-    GET_LIST,
-    GET_LIST_FULL,
-    REPORT,
-    REPORT_ALWAYS,
-    DELETE
+    OPT_VERSION,
+    OPT_HELP,
+    OPT_GET_LIST,
+    OPT_GET_LIST_FULL,
+    OPT_REPORT,
+    OPT_REPORT_ALWAYS,
+    OPT_DELETE
 };
 
 static DBusConnection* s_dbus_conn;
@@ -23,7 +45,7 @@ static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
     for (ii = 0; ii < pCrashInfos.size(); ii++)
     {
         map_crash_info_t& info = pCrashInfos[ii];
-        if (pMode == GET_LIST_FULL || info.find(CD_REPORTED)->second[CD_CONTENT] != "1")
+        if (pMode == OPT_GET_LIST_FULL || info.find(CD_REPORTED)->second[CD_CONTENT] != "1")
         {
             printf("%u.\n"
                     "\tUID       : %s\n"
@@ -170,57 +192,75 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
 static const struct option longopts[] =
 {
     /* name, has_arg, flag, val */
-    { "help"         , no_argument      , NULL, HELP          },
-    { "version"      , no_argument      , NULL, HELP          },
-    { "get-list"     , no_argument      , NULL, GET_LIST      },
-    { "get-list-full", no_argument      , NULL, GET_LIST_FULL },
-    { "report"       , required_argument, NULL, REPORT        },
-    { "report-always", required_argument, NULL, REPORT_ALWAYS },
-    { "delete"       , required_argument, NULL, DELETE        },
+    { "help"         , no_argument      , NULL, OPT_HELP          },
+    { "version"      , no_argument      , NULL, OPT_VERSION       },
+    { "get-list"     , no_argument      , NULL, OPT_GET_LIST      },
+    { "get-list-full", no_argument      , NULL, OPT_GET_LIST_FULL },
+    { "report"       , required_argument, NULL, OPT_REPORT        },
+    { "report-always", required_argument, NULL, OPT_REPORT_ALWAYS },
+    { "delete"       , required_argument, NULL, OPT_DELETE        },
+    { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
 };
+
+/* Gets program name from command line argument. */
+static char *progname(char *argv0)
+{
+    char* name = strrchr(argv0, '/');
+    if (name)
+        return ++name;
+    else
+        return argv0;
+}
 
 int main(int argc, char** argv)
 {
     char* uuid = NULL;
     int op = -1;
+    char *name;
 
     while (1)
     {
         int option_index;
-        int c = getopt_long_only(argc, argv, "", longopts, &option_index);
+        int c = getopt_long_only(argc, argv, "?V", longopts, &option_index);
         switch (c)
         {
-            case REPORT:
-            case REPORT_ALWAYS:
-            case DELETE:
+            case OPT_REPORT:
+            case OPT_REPORT_ALWAYS:
+            case OPT_DELETE:
                 uuid = optarg;
                 /* fall through */
-            case GET_LIST:
-            case GET_LIST_FULL:
+            case OPT_GET_LIST:
+            case OPT_GET_LIST_FULL:
                 if (op == -1)
                     break;
-                /* fall through */
-            case -1: /* end of options */
-                if (op != -1)
-                    break;
-                error_msg("You must specify exactly one operation.");
+		error_msg("You must specify exactly one operation.");
+                return 1;
+	    case -1: /* end of options */
+	        if (op != -1) /* if some operation was specified... */
+		    break;
                 /* fall through */
             default:
-            case HELP:
-                char* progname = strrchr(argv[0], '/');
-                if (progname)
-                    progname++;
-                else
-                    progname = argv[0];
+  	    case '?':
+            case OPT_HELP:
+	        name = progname(argv[0]);
+  	        printf("%s " VERSION "\n\n", name);
                 /* note: message has embedded tabs */
                 printf("Usage: %s [OPTION]\n\n"
-                        "	--get-list		print list of crashes which are not reported\n"
+		        "Startup:\n"
+		        "	-V, --version		display the version of %s and exit\n"
+		        "	-?, --help		print this help\n\n"
+		        "Actions:\n"
+                        "	--get-list		print list of crashes which are not reported yet\n"
                         "	--get-list-full		print list of all crashes\n"
                         "	--report UUID		create and send a report\n"
                         "	--report-always UUID	create and send a report without asking\n"
-                        "	--delete UUID		delete crash\n",
-                        progname);
+                        "	--delete UUID		remove crash\n",
+		       name, name);
                 return 1;
+            case 'V':
+	    case OPT_VERSION:
+  	        printf("%s " VERSION "\n", progname(argv[0]));
+		return 0;
         }
         if (c == -1)
             break;
@@ -238,14 +278,14 @@ int main(int argc, char** argv)
 #endif
     switch (op)
     {
-        case GET_LIST:
-        case GET_LIST_FULL:
+        case OPT_GET_LIST:
+        case OPT_GET_LIST_FULL:
         {
             vector_crash_infos_t ci = call_GetCrashInfos();
             print_crash_infos(ci, op);
             break;
         }
-        case REPORT:
+        case OPT_REPORT:
         {
             map_crash_report_t cr = call_CreateReport(uuid);
             print_crash_report(cr);
@@ -259,13 +299,13 @@ int main(int argc, char** argv)
             }
             break;
         }
-        case REPORT_ALWAYS:
+        case OPT_REPORT_ALWAYS:
         {
             map_crash_report_t cr = call_CreateReport(uuid);
             call_Report(cr);
             break;
         }
-        case DELETE:
+        case OPT_DELETE:
         {
             call_DeleteDebugDump(uuid);
             break;
