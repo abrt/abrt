@@ -80,9 +80,8 @@ class ReporterDialog():
         # thu button has been pressed (probably)
         if response_id == gtk.RESPONSE_APPLY:
             if not self.check_settings(daemon):
-                print "smth is wrong"
                 dialog.stop_emission("response")
-                self.wTree.get_widget("bApply").stop_emission("clicked")
+                self.wTree.get_widget("bSend").stop_emission("clicked")
 
     def on_send_toggled(self, cell, path, model):
         model[path][3] = not model[path][3]
@@ -151,10 +150,10 @@ class ReporterDialog():
             response = dialog.run()
             dialog.destroy()
             if response == gtk.RESPONSE_NO:
-                print "user cancelled reporting"
+                # user cancelled reporting
                 return False
             if response == gtk.RESPONSE_YES:
-                print "user wants to proceed with report"
+                # "user wants to proceed with report"
                 return True
         return True
 
