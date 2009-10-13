@@ -3,6 +3,7 @@ bin_PROGRAMS = abrt-cli
 abrt_cli_SOURCES = \
     CLI.cpp \
     ABRTSocket.h ABRTSocket.cpp
+
 abrt_cli_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
@@ -11,5 +12,10 @@ abrt_cli_CPPFLAGS = \
     $(DBUS_CFLAGS) \
     -D_GNU_SOURCE
 #    $(GTK_CFLAGS)
+
 abrt_cli_LDADD = \
     ../../lib/Utils/libABRTUtils.la
+
+man_MANS = abrt-cli.1
+EXTRA_DIST = $(man_MANS)
+
