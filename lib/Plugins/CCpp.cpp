@@ -156,6 +156,90 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     return 0;
 }
 
+enum LineRating 
+{
+        /* RATING           --          EXAMPLE */
+    MissingEverything = 0, // #0 0x0000dead in ?? ()
+    MissingFunction = 1, // #0 0x0000dead in ?? () from /usr/lib/libfoobar.so.4
+    MissingLibrary = 2, // #0 0x0000dead in foobar()
+    MissingSourceFile = 3, // #0 0x0000dead in FooBar::FooBar () from /usr/lib/libfoobar.so.4
+    Good = 4, // #0 0x0000dead in FooBar::crash (this=0x0) at /home/user/foobar.cpp:204
+    InvalidRating = -1 // (dummy invalid value)
+};
+
+static const LineRating BestRating = Good;
+
+LineRating rate_line(std::string line)
+{
+    bool function = false;
+    bool library = false;
+    bool source_file = false;
+
+#define FOUND(x) (line.find(x) != std::string::npos)
+    if (FOUND(" in ") && !FOUND(" in ??"))
+        function = true;
+
+    if (FOUND(" from "))
+        library = true;
+
+    if(FOUND(" at "))
+        source_file = true;
+#undef FOUND
+
+    /* see the "enum LineRating" comments for possible combinations */
+    if (function && source_file)
+        return Good;
+    if (function && library)
+        return MissingSourceFile;
+    if (function)
+        return MissingLibrary;
+    if (library)
+        return MissingFunction;
+
+    return MissingEverything;
+}
+
+/* returns number of "stars" to show*/
+int rate_backtrace(std::string backtrace)
+{
+    backtrace="#"+backtrace; /*line termination condition*/
+    int l = backtrace.length();
+    int i;
+    std::string s = "";
+    int multiplier = 0;
+    int rating = 0;
+    int best_possible_rating = 0;
+
+    /*we get the lines from the end, b/c of the rating multiplier
+      which gives weight to the first lines*/
+    for (i=l-1; i>=0; i--) 
+    {
+        if (backtrace[i] == '#') /*this divides frames from each other*/
+        {
+            multiplier++;	    
+            rating += rate_line(s) * multiplier;
+            best_possible_rating += BestRating * multiplier;
+    
+            s = ""; /*starting new line*/
+        } else
+        {
+            s=backtrace[i]+s; 
+        }
+    }
+
+    /*returning number of "stars" to show*/
+    if (rating >= best_possible_rating*0.8)
+        return 4;
+    if (rating >= best_possible_rating*0.6)
+        return 3;
+    if (rating >= best_possible_rating*0.4)
+        return 2;
+    if (rating >= best_possible_rating*0.2)
+        return 1;
+
+    return 0;
+}
+
 static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
