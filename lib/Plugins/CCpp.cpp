@@ -152,38 +152,38 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
 {
     update_client(_("Getting backtrace..."));
 
-// TODO: use -ex CMD1 -ex CMD2 ... instead of temp file?
-    std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
-    std::ofstream fTmp;
     std::string UID;
-    fTmp.open(tmpFile.c_str());
-    if (fTmp.is_open())
+    std::string executable;
     {
-        std::string executable;
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_UID, UID);
-        /* Unfortunately, this doesn't work if the executable
-         * was deleted (as often happens during updates):
-         * with "file" directive, gdb will use specified file
-         * even if it is completely unrelated to the coredump */
-        /* fTmp << "file " << executable << '\n'; */
-        fTmp << "core-file " << pDebugDumpDir << "/"FILENAME_COREDUMP"\n";
-        fTmp << "thread apply all backtrace full\nq\n";
-        fTmp.close();
     }
-    else
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile);
-    }
-    char* args[5];
+
+    char* args[7];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
-    args[2] = (char*)"-x";
-    args[3] = (char*)tmpFile.c_str();
-    args[4] = NULL;
+    // when/if we'll add support for networked debuginfos
+    // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
+    //args[] = xasprintf("-ex 'set debug-file-directory %s'", dir);
+    /*
+     * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
+     * was deleted (as often happens during system updates):
+     * gdb uses specified BINARY_FILE
+     * even if it is completely unrelated to the coredump
+     * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
+     */
+    args[2] = xasprintf("-ex 'file %s'", executable.c_str());
+    args[3] = xasprintf("-ex 'core-file %s/"FILENAME_COREDUMP"'", pDebugDumpDir.c_str());
+    args[4] = (char*)"ex 'thread apply all backtrace full'";
+    args[5] = (char*)tmpFile.c_str();
+    args[6] = NULL;
+
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
+
+    free(args[2]);
+    free(args[3]);
 }
 
 static std::string GetIndependentBacktrace(const std::string& pBacktrace)
@@ -346,14 +346,17 @@ static std::string run_unstrip_n(const std::string& pDebugDumpDir)
         dd.LoadText(FILENAME_UID, UID);
     }
 
-    std::string core = "--core=" + pDebugDumpDir + "/"FILENAME_COREDUMP;
     char* args[4];
     args[0] = (char*)"eu-unstrip";
-    args[1] = (char*)core.c_str();
+    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
     args[2] = (char*)"-n";
     args[3] = NULL;
+
     std::string output;
     ExecVP(args, atoi(UID.c_str()), output);
+
+    free(args[1]);
+
     return output;
 }
 
