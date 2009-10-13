@@ -161,12 +161,13 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
         dd.LoadText(FILENAME_UID, UID);
     }
 
-    char* args[7];
+    char* args[9];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
     // when/if we'll add support for networked debuginfos
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
-    //args[] = xasprintf("-ex 'set debug-file-directory %s'", dir);
+    //args[] = (char*)"-ex";
+    //args[] = xasprintf("set debug-file-directory %s", dir);
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -174,16 +175,18 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
      * even if it is completely unrelated to the coredump
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
      */
-    args[2] = xasprintf("-ex 'file %s'", executable.c_str());
-    args[3] = xasprintf("-ex 'core-file %s/"FILENAME_COREDUMP"'", pDebugDumpDir.c_str());
-    args[4] = (char*)"ex 'thread apply all backtrace full'";
-    args[5] = (char*)tmpFile.c_str();
-    args[6] = NULL;
+    args[2] = (char*)"-ex";
+    args[3] = xasprintf("file %s", executable.c_str());
+    args[4] = (char*)"-ex";
+    args[5] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[6] = (char*)"-ex";
+    args[7] = (char*)"thread apply all backtrace full";
+    args[8] = NULL;
 
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
 
-    free(args[2]);
     free(args[3]);
+    free(args[5]);
 }
 
 static std::string GetIndependentBacktrace(const std::string& pBacktrace)
