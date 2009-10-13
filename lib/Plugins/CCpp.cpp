@@ -202,7 +202,6 @@ LineRating rate_line(std::string line)
 /* returns number of "stars" to show*/
 int rate_backtrace(std::string backtrace)
 {
-    backtrace="#"+backtrace; /*line termination condition*/
     int l = backtrace.length();
     int i;
     std::string s = "";
