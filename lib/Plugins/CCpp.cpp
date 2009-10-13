@@ -227,6 +227,8 @@ int rate_backtrace(const std::string & backtrace)
     }
 
     /*returning number of "stars" to show*/
+    if (rating==0)
+        return 0;
     if (rating >= best_possible_rating*0.8)
         return 4;
     if (rating >= best_possible_rating*0.6)
@@ -837,6 +839,8 @@ log("BACKTRACE:'%s'", (build_ids + backtrace).c_str());
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
+    std::string rating = ssprintf("%d\n", rate_backtrace(backtrace));
+    dd.SaveText(FILENAME_RATING, rating);
 }
 
 void CAnalyzerCCpp::Init()

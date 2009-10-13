@@ -39,6 +39,7 @@
 #define FILENAME_REASON             "reason"
 #define FILENAME_COMMENT            "comment"
 #define FILENAME_REPRODUCE          "reproduce"
+#define FILENAME_RATING             "rating"
 
 class CDebugDump
 {
