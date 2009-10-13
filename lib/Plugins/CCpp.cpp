@@ -360,7 +360,7 @@ static std::string run_unstrip_n(const std::string& pDebugDumpDir)
     return output;
 }
 
-static void InstallDebugInfos(const std::string& pDebugDumpDir)
+static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");
     std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
@@ -402,6 +402,9 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
             /* Not lstat: this is a symlink and we want link's TARGET to exist */
             file_exists = stat(fn, &sb) == 0 && S_ISREG(sb.st_mode);
             free(fn);
+            build_ids += "build-id ";
+            build_ids += word2;
+            build_ids += file_exists ? " (debuginfo present)\n" : " (debuginfo absent)\n";
         }
         log("build_id:%s exists:%d", word2, (int)file_exists);
         if (!file_exists)
@@ -454,8 +457,8 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
 1. Getting sources list...OK. Found 16 enabled and 23 disabled sources.
 2. Finding debugging sources...OK. Found 0 disabled debuginfo repos.
 3. Enabling debugging sources...OK. Enabled 0 debugging sources.
-4. Finding debugging packages...Failed to find the package : more than one package found for 
-Failed to find the package : more than one package found for 
+4. Finding debugging packages...Failed to find the package : more than one package found for
+Failed to find the package : more than one package found for
 FAILED. Found no packages to install.
 5. Disabling sources previously enabled...OK. Disabled 0 debugging sources.
 
@@ -641,11 +644,12 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     dd.LoadText(FILENAME_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
+    std::string build_ids;
     map_plugin_settings_t settings = GetSettings();
     if (settings["InstallDebuginfo"] == "yes" &&
         DebuginfoCheckPolkit(atoi(UID.c_str())) )
     {
-        InstallDebugInfos(pDebugDumpDir);
+        InstallDebugInfos(pDebugDumpDir, build_ids);
     }
     else
     {
@@ -655,7 +659,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
-    dd.SaveText(FILENAME_BACKTRACE, backtrace);
+    dd.SaveText(FILENAME_BACKTRACE, build_ids + backtrace);
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
