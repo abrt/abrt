@@ -169,7 +169,7 @@ enum LineRating
 
 static const LineRating BestRating = Good;
 
-LineRating rate_line(std::string line)
+LineRating rate_line(const std::string & line)
 {
     bool function = false;
     bool library = false;
@@ -200,7 +200,7 @@ LineRating rate_line(std::string line)
 }
 
 /* returns number of "stars" to show*/
-int rate_backtrace(std::string backtrace)
+int rate_backtrace(const std::string & backtrace)
 {
     int l = backtrace.length();
     int i;
