@@ -291,9 +291,11 @@ class MainWindow():
         if not report:
             gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
             return
-        report_dialog = ReporterDialog(report)
-        result = report_dialog.run()
-        if result:
+        report_dialog = ReporterDialog(report, self.ccdaemon)
+        # (response, report)
+        response, result = report_dialog.run()
+
+        if response == gtk.RESPONSE_APPLY:
             try:
                 self.update_pBar = False
                 self.pBarWindow.show_all()
@@ -306,12 +308,26 @@ class MainWindow():
                 #self.hydrate()
             except Exception, e:
                 gui_error_message(_("Reporting failed!\n%s" % e))
-        #ret = gui_question_dialog("GUI: Analyze for package %s crash with UUID %s is complete" % (entry.Package, UUID),self.window)
-        #if ret == gtk.RESPONSE_YES:
-        #    self.hydrate()
-        #else:
-        #    pass
-        #print "got another crash, refresh gui?"
+        # -50 == REFRESH
+        elif response == -50:
+            self.refresh_report(report)
+
+    def refresh_report(self, report):
+        self.update_pBar = False
+        self.pBarWindow.show_all()
+        self.timer = gobject.timeout_add (100,self.progress_update_cb)
+
+        # show the report window with selected report
+        try:
+            self.ccdaemon.getReport(report["_MWUUID"][2], force=1)
+        except Exception, e:
+            # FIXME #3	dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
+            # do this async and wait for yum to end with debuginfoinstal
+            if self.timer:
+                gobject.source_remove(self.timer)
+            self.pBarWindow.hide()
+            gui_error_message(_("Error getting the report: %s" % e))
+        return
 
     def on_bReport_clicked(self, button):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()

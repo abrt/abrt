@@ -157,9 +157,9 @@ class DBusManager(gobject.GObject):
     def report_done(self, result):
         self.emit("report-done", result)
 
-    def getReport(self, UUID):
+    def getReport(self, UUID, force=0):
         # 2nd param is "force recreating of backtrace etc"
-        self.daemon().CreateReport(UUID, 0, timeout=60)
+        self.daemon().CreateReport(UUID, force, timeout=60)
 
     def Report(self, report, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
