@@ -87,6 +87,18 @@ static std::string CreateHash(const std::string& pInput)
     return hash_str;
 }
 
+static std::string concat_str_vector(char **strings)
+{
+    std::string result;
+    while (*strings)
+    {
+        result += *strings++;
+        if (*strings)
+            result += ' ';
+    }
+    return result;
+}
+
 static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
@@ -107,11 +119,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     }
     if (child == 0)
     {
-        VERB1 log("Executing: %s %s %s %s", pArgs[0]
-                ,pArgs[1] ? pArgs[1] : ""
-                ,pArgs[1] && pArgs[2] ? pArgs[2] : ""
-                ,pArgs[1] && pArgs[2] && pArgs[3] ? pArgs[3] : ""
-        );
+        VERB1 log("Executing: %s", concat_str_vector(pArgs).c_str());
         close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
