@@ -600,35 +600,29 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 static bool DebuginfoCheckPolkit(int uid)
 {
-    PolkitResult result;
-    int child_pid;
-
-    child_pid = fork();
-
+    int child_pid = fork();
+    if (child_pid < 0)
+    {
+        perror_msg_and_die("fork");
+    }
     if (child_pid == 0)
     {
         //child
-        setuid(uid);
-        result = polkit_check_authorization(getpid(),
+        if (setuid(uid))
+            exit(1); //paranoia
+        PolkitResult result = polkit_check_authorization(getpid(),
                  "org.fedoraproject.abrt.install-debuginfos");
-        if (result == PolkitYes)
-        {
-            exit(0); //authentication OK
-        }
-        exit(1);
-    } else
-    {
-        //parent
-        int status;
-
-        waitpid(child_pid, &status, 0);
-        if (WEXITSTATUS(status) == 0)
-        {
-            return true; //authentication OK
-        }
-        return false;
+        exit(result != PolkitYes); //exit 1 (failure) if not allowed
     }
 
+    //parent
+    int status;
+    if (waitpid(child_pid, &status, 0) > 0 && WEXITSTATUS(status) == 0)
+    {
+        return true; //authorization OK
+    }
+    log("UID %d is not authorized to install debuginfos", uid);
+    return false;
 }
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
