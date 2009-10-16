@@ -243,6 +243,7 @@ fi
 %defattr(-,root,root,-)
 %doc README COPYING
 %{_sbindir}/%{name}d
+%{_bindir}/%{name}-debuginfo-install
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d

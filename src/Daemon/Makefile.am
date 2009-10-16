@@ -1,3 +1,5 @@
+bin_SCRIPTS = abrt-debuginfo-install
+
 sbin_PROGRAMS = abrtd
 
 abrtd_SOURCES = \
@@ -43,7 +45,8 @@ comredhatabrtservicedir = ${datadir}/dbus-1/system-services
 dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 
 man_MANS = abrtd.8 abrt.conf.5
-EXTRA_DIST = $(man_MANS)
+
+EXTRA_DIST = $(man_MANS) abrt-debuginfo-install
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
