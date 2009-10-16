@@ -376,9 +376,10 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
     log("Getting module names, file names, build IDs from core file");
     std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
 
-    log("Builting list of missing debuginfos");
+    log("Building list of missing debuginfos");
     // lines look like this:
     // 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
+    //  or
     // 0x400000+0x209000 ab3c8286aac6c043fd1bb1cc2a0b88ec29517d3e@0x40024c /bin/sleep /usr/lib/debug/bin/sleep.debug [exe]
     // 0x7fff313ff000+0x1000 389c7475e3d5401c55953a425a2042ef62c4c7df@0x7fff313ff2f8 . - linux-vdso.so.1
     vector_string_t missing;
@@ -390,6 +391,7 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         c = *end;
         *end = '\0';
         char* word2 = strchr(p, ' ');
+        p = end + 1;
         if (!word2)
             continue;
         word2++;
@@ -420,8 +422,6 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         log("build_id:%s exists:%d", word2, (int)file_exists);
         if (!file_exists)
             missing.push_back(word2);
-
-        p = end + 1;
     } while (c);
     free(dup);
 
