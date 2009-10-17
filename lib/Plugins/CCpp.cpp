@@ -152,38 +152,41 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
 {
     update_client(_("Getting backtrace..."));
 
-// TODO: use -ex CMD1 -ex CMD2 ... instead of temp file?
-    std::string tmpFile = "/tmp/" + pDebugDumpDir.substr(pDebugDumpDir.rfind("/"));
-    std::ofstream fTmp;
     std::string UID;
-    fTmp.open(tmpFile.c_str());
-    if (fTmp.is_open())
+    std::string executable;
     {
-        std::string executable;
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_UID, UID);
-        /* Unfortunately, this doesn't work if the executable
-         * was deleted (as often happens during updates):
-         * with "file" directive, gdb will use specified file
-         * even if it is completely unrelated to the coredump */
-        /* fTmp << "file " << executable << '\n'; */
-        fTmp << "core-file " << pDebugDumpDir << "/"FILENAME_COREDUMP"\n";
-        fTmp << "thread apply all backtrace full\nq\n";
-        fTmp.close();
     }
-    else
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CAnalyzerCCpp::GetBacktrace(): cannot create gdb script " + tmpFile);
-    }
-    char* args[5];
+
+    char* args[9];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
-    args[2] = (char*)"-x";
-    args[3] = (char*)tmpFile.c_str();
-    args[4] = NULL;
+    // when/if we'll add support for networked debuginfos
+    // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
+    //args[] = (char*)"-ex";
+    //args[] = xasprintf("set debug-file-directory %s", dir);
+    /*
+     * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
+     * was deleted (as often happens during system updates):
+     * gdb uses specified BINARY_FILE
+     * even if it is completely unrelated to the coredump
+     * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
+     */
+    args[2] = (char*)"-ex";
+    args[3] = xasprintf("file %s", executable.c_str());
+    args[4] = (char*)"-ex";
+    args[5] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[6] = (char*)"-ex";
+    args[7] = (char*)"thread apply all backtrace full";
+    args[8] = NULL;
+
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
+
+    free(args[3]);
+    free(args[5]);
 }
 
 static std::string GetIndependentBacktrace(const std::string& pBacktrace)
@@ -346,18 +349,21 @@ static std::string run_unstrip_n(const std::string& pDebugDumpDir)
         dd.LoadText(FILENAME_UID, UID);
     }
 
-    std::string core = "--core=" + pDebugDumpDir + "/"FILENAME_COREDUMP;
     char* args[4];
     args[0] = (char*)"eu-unstrip";
-    args[1] = (char*)core.c_str();
+    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
     args[2] = (char*)"-n";
     args[3] = NULL;
+
     std::string output;
     ExecVP(args, atoi(UID.c_str()), output);
+
+    free(args[1]);
+
     return output;
 }
 
-static void InstallDebugInfos(const std::string& pDebugDumpDir)
+static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");
     std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
@@ -399,6 +405,9 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
             /* Not lstat: this is a symlink and we want link's TARGET to exist */
             file_exists = stat(fn, &sb) == 0 && S_ISREG(sb.st_mode);
             free(fn);
+            build_ids += "build-id ";
+            build_ids += word2;
+            build_ids += file_exists ? " (debuginfo present)\n" : " (debuginfo absent)\n";
         }
         log("build_id:%s exists:%d", word2, (int)file_exists);
         if (!file_exists)
@@ -451,8 +460,8 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir)
 1. Getting sources list...OK. Found 16 enabled and 23 disabled sources.
 2. Finding debugging sources...OK. Found 0 disabled debuginfo repos.
 3. Enabling debugging sources...OK. Enabled 0 debugging sources.
-4. Finding debugging packages...Failed to find the package : more than one package found for 
-Failed to find the package : more than one package found for 
+4. Finding debugging packages...Failed to find the package : more than one package found for
+Failed to find the package : more than one package found for
 FAILED. Found no packages to install.
 5. Disabling sources previously enabled...OK. Disabled 0 debugging sources.
 
@@ -638,11 +647,12 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     dd.LoadText(FILENAME_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
+    std::string build_ids;
     map_plugin_settings_t settings = GetSettings();
     if (settings["InstallDebuginfo"] == "yes" &&
         DebuginfoCheckPolkit(atoi(UID.c_str())) )
     {
-        InstallDebugInfos(pDebugDumpDir);
+        InstallDebugInfos(pDebugDumpDir, build_ids);
     }
     else
     {
@@ -652,7 +662,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
-    dd.SaveText(FILENAME_BACKTRACE, backtrace);
+    dd.SaveText(FILENAME_BACKTRACE, build_ids + backtrace);
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");

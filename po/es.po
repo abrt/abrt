@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-08 09:51+0000\n"
-"PO-Revision-Date: 2009-10-08 10:11-0300\n"
-"Last-Translator: Héctor Daniel Cabrera <h.daniel.cabrera@gmail.com>\n"
+"POT-Creation-Date: 2009-10-09 16:26+0000\n"
+"PO-Revision-Date: 2009-10-09 17:30-0300\n"
+"Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
 "Language-Team: Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -242,12 +242,12 @@ msgstr "No se encuentra el control visual de PluginDialog en la descripción de 
 msgid "No UI for plugin %s"
 msgstr "No hay interfase del usuario para el complemento %s"
 
-#: ../src/Gui/PluginSettingsUI.py:41
-#: ../src/Gui/PluginSettingsUI.py:67
+#: ../src/Gui/PluginSettingsUI.py:55
+#: ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "el combo box no está implementado"
 
-#: ../src/Gui/PluginSettingsUI.py:50
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
 msgstr "¡Nada para hidratar!"
 
@@ -403,7 +403,7 @@ msgstr "El servicio ABRT no se está ejecutando"
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:546
+#: ../src/Daemon/Daemon.cpp:542
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "El tamaño del informe excede la cuota. Por favor, verifique el valor de MaxCrashReportsSize del sistema en abrt.conf."
 
@@ -411,37 +411,37 @@ msgstr "El tamaño del informe excede la cuota. Por favor, verifique el valor de
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:227
+#: ../lib/Plugins/Bugzilla.cpp:205
 msgid "Bug is already reported: "
 msgstr "El error ya ha sido informado:"
 
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: ../lib/Plugins/Bugzilla.cpp:260
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "El archivo binario %s no será informado."
 
-#: ../lib/Plugins/Bugzilla.cpp:352
+#: ../lib/Plugins/Bugzilla.cpp:330
 msgid "New bug id: "
 msgstr "Nuevo id del error:"
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:399
 msgid "Checking for duplicates..."
 msgstr "Chequeando si hay duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:424
-#: ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:402
+#: ../lib/Plugins/Bugzilla.cpp:413
 msgid "Logging into bugzilla..."
 msgstr "Ingresando a bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
-msgid "Check CC and add coment +1..."
-msgstr "Compruebe CC y añada un comentario +1"
+#: ../lib/Plugins/Bugzilla.cpp:405
+msgid "Checking CC..."
+msgstr "Chequeando CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:425
 msgid "Creating new bug..."
 msgstr "Creando un nuevo informe..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:430
 msgid "Logging out..."
 msgstr "Saliendo..."
 
@@ -449,31 +449,31 @@ msgstr "Saliendo..."
 msgid "Getting local universal unique identification"
 msgstr "Obteniendo la identificación única universal local"
 
-#: ../lib/Plugins/CCpp.cpp:146
+#: ../lib/Plugins/CCpp.cpp:153
 msgid "Getting backtrace..."
 msgstr "Obteniendo el backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:415
+#: ../lib/Plugins/CCpp.cpp:425
 msgid "Searching for debug-info packages..."
 msgstr "Buscando paquetes de información del depurador..."
 
-#: ../lib/Plugins/CCpp.cpp:451
+#: ../lib/Plugins/CCpp.cpp:487
 msgid "Downloading and installing debug-info packages..."
 msgstr "Descargando e instalando paquetes de información del depurador..."
 
-#: ../lib/Plugins/CCpp.cpp:513
+#: ../lib/Plugins/CCpp.cpp:549
 msgid "Getting local universal unique identification..."
 msgstr "Obteniendo la identificación única universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:532
+#: ../lib/Plugins/CCpp.cpp:568
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:583
+#: ../lib/Plugins/CCpp.cpp:619
 msgid "Starting report creation..."
 msgstr "Iniciando la creación del informe..."
 
-#: ../lib/Plugins/CCpp.cpp:612
+#: ../lib/Plugins/CCpp.cpp:649
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
@@ -529,6 +529,8 @@ msgstr "lanzando.sosreport"
 msgid "done running sosreport"
 msgstr "Sosreport.corriendo"
 
+#~ msgid "Check CC and add coment +1..."
+#~ msgstr "Compruebe CC y añada un comentario +1"
 #~ msgid "Pending events: %i"
 #~ msgstr "Eventos pendientes: %i"
 #~ msgid "Can't create menu from the description, popup won't be available!\n"

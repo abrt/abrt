@@ -1,0 +1,36 @@
+.TH abrt\-cli "1" "12 Oct 2009" ""
+.SH NAME
+abrt\-cli \- a command line interface to abrt
+.SH SYNOPSIS
+.B abrt\-cli 
+[option]
+.SH DESCRIPTION
+.I abrt\-cli
+is a command line tool that manages application crashes catched by
+.I abrtd 
+daemon. It enables access to crash data, and allows to report
+crashes depending on active abrt plugins.
+.SH OPTIONS
+.B Basic startup options
+.IP "\-V, \-\-version"
+Displays version of abrt\-cli.
+.IP "\-?, \-\-help"
+Print a help message describing all of abrt-cli’s command-line options.
+
+.PP
+.B Crash action options
+.IP "\-\-get\-list"
+Prints list of crashes which are not reported yet.
+.IP "\-\-get-list-full"
+Prints list of all crashes.
+.IP "\-\-report \fIUUID\fR"
+Creates and sends a report.
+.IP "\-\-report-always \fIUUID\fR"
+Creates and sends a report without asking.
+.IP "\-\-delete \fIUUID\fR"
+Removes crash.
+.SH "SEE ALSO"
+.IR abrtd (8),
+.IR abrt.conf (5),
+.IR abrt-plugins (7)
+

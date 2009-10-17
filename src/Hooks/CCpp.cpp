@@ -181,7 +181,8 @@ int main(int argc, char** argv)
         dd.SaveText(FILENAME_CMDLINE, cmdline);
         dd.SaveText(FILENAME_REASON, std::string("Process was terminated by signal ") + signal_str);
 
-        snprintf(path + strlen(path), sizeof(path), "/%s", FILENAME_COREDUMP);
+        int len = strlen(path);
+        snprintf(path + len, sizeof(path) - len, "/"FILENAME_COREDUMP);
 
         int fd;
         /* We need coredumps to be readable by all, because
