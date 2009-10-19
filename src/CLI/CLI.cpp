@@ -24,6 +24,15 @@
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
+#if HAVE_LOCALE_H
+    #include <locale.h>
+#endif
+#if ENABLE_NLS
+    #include <libintl.h>
+    #define _(S) gettext(S)
+#else
+    #define _(S) (S)
+#endif
 
 /* Program options */
 enum
@@ -47,23 +56,52 @@ static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
         map_crash_info_t& info = pCrashInfos[ii];
         if (pMode == OPT_GET_LIST_FULL || info.find(CD_REPORTED)->second[CD_CONTENT] != "1")
         {
-            printf("%u.\n"
-                    "\tUID       : %s\n"
-                    "\tUUID      : %s\n"
-                    "\tPackage   : %s\n"
-                    "\tExecutable: %s\n"
-                    "\tCrash time: %s\n"
-                    "\tCrash Rate: %s\n",
-                    ii,
-                    info[CD_UID][CD_CONTENT].c_str(),
-                    info[CD_UUID][CD_CONTENT].c_str(),
-                    info[CD_PACKAGE][CD_CONTENT].c_str(),
-                    info[CD_EXECUTABLE][CD_CONTENT].c_str(),
-                    info[CD_TIME][CD_CONTENT].c_str(),
-                    info[CD_COUNT][CD_CONTENT].c_str()
-            );
+	  const char *timestr = info[CD_TIME][CD_CONTENT].c_str();
+	  long time = strtol(timestr, 0, 10);
+	  if (time == 0)
+	    error_msg_and_die("Error while converting time string.");
+
+	  char timeloc[256];
+	  int success = strftime(timeloc, 128, "%c", localtime(&time));
+	  if (!success)
+	    error_msg_and_die("Error while converting time to string.");
+	  
+	  printf(_("%u.\n"
+		   "\tUID        : %s\n"
+		   "\tUUID       : %s\n"
+		   "\tPackage    : %s\n"
+		   "\tExecutable : %s\n"
+		   "\tCrash Time : %s\n"
+		   "\tCrash Count: %s\n"),
+		 ii,
+		 info[CD_UID][CD_CONTENT].c_str(),
+		 info[CD_UUID][CD_CONTENT].c_str(),
+		 info[CD_PACKAGE][CD_CONTENT].c_str(),
+		 info[CD_EXECUTABLE][CD_CONTENT].c_str(),
+		 timeloc,
+		 info[CD_COUNT][CD_CONTENT].c_str()
+	    );
         }
     }
+}
+
+/* Saves the crash report to a file. 
+ * Fp must be opened before write_crash_report is called.
+ * Returned Value:
+ *  If the report is successfully stored to the file, a zero value is returned.
+ *  On failure, nonzero value is returned.
+ */
+static int write_crash_report(const map_crash_report_t& report, FILE *fp)
+{
+  for (map_crash_report_t::const_iterator it = report.begin(); it != report.end(); it++)
+  {
+    if (it->second[CD_TYPE] == CD_SYS)
+      continue;
+
+    fprintf(fp, "\n%s\n-----\n%s\n", it->first.c_str(), it->second[CD_CONTENT].c_str());
+  }
+
+  return 0;
 }
 
 static void print_crash_report(const map_crash_report_t& pCrashReport)
@@ -92,6 +130,7 @@ static DBusMessage* new_call_msg(const char* method)
         die_out_of_memory();
     return msg;
 }
+
 static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
 {
     DBusError err;
@@ -99,7 +138,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
     DBusMessage *reply = dbus_connection_send_with_reply_and_block(s_dbus_conn, msg, /*timeout*/ -1, &err);
     if (reply == NULL)
     {
-//TODO: analyse err
+        //TODO: analyse err
         error_msg_and_die("Error sending DBus message");
     }
     dbus_message_unref(msg);
@@ -109,7 +148,6 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
 static vector_crash_infos_t call_GetCrashInfos()
 {
     DBusMessage* msg = new_call_msg("GetCrashInfos");
-
     DBusMessage *reply = send_get_reply_and_unref(msg);
 
     vector_crash_infos_t argout;
@@ -189,6 +227,76 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
             CC_DBUS_NAME);
 }
 
+int launch_editor(const char *path, const char *report, char **output)
+{
+  const char *editor, *terminal;
+  
+  editor = getenv("VISUAL");
+  if (!editor)
+    editor = getenv("EDITOR");
+  
+  terminal = getenv("TERM");
+  if (!editor && (!terminal || !strcmp(terminal, "dumb")))
+  {
+    error_msg(_("Terminal is dumb but no VISUAL nor EDITOR defined."));
+    return 1;
+  }
+  
+  if (!editor)
+    editor = "vi";
+
+  return 0;
+}
+
+/* Reports the crash with corresponding uuid over DBus. */
+int report(const char *uuid, bool always)
+{
+  map_crash_report_t cr = call_CreateReport(uuid);
+
+  if (always)
+  {
+    call_Report(cr);
+    return 0;
+  }
+
+  print_crash_report(cr);
+
+  /* Open a temporary file and write the crash report to it. */
+  char filename[] = "/tmp/abrt-report.XXXXXX";
+  int fd = mkstemp(filename);
+  if (fd == -1)
+  {
+    error_msg("could not generate temporary file name");
+    return 1;
+  }
+
+  FILE *fp = fdopen(fd, "w");
+  if (!fp)
+  {
+    error_msg("could not open '%s' to save the crash report", filename);
+    return 1;
+  }
+
+  write_crash_report(cr, fp);
+
+  if (fclose(fp))
+  {
+    error_msg("could not close '%s'", filename);
+    return 2;
+  }
+
+  printf(_("\nDo you want to send the report? [y/n]: "));
+  fflush(NULL);
+  char answer[16] = "n";
+  fgets(answer, sizeof(answer), stdin);
+  if (answer[0] == 'Y' || answer[0] == 'y')
+  {
+    call_Report(cr);
+  }
+
+  return 0;
+}
+
 static const struct option longopts[] =
 {
     /* name, has_arg, flag, val */
@@ -202,7 +310,7 @@ static const struct option longopts[] =
     { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
 };
 
-/* Gets program name from command line argument. */
+/* Gets the program name from the first command line argument. */
 static char *progname(char *argv0)
 {
     char* name = strrchr(argv0, '/');
@@ -212,11 +320,37 @@ static char *progname(char *argv0)
         return argv0;
 }
 
+/* Prints abrt-cli version and some help text. */
+static void usage(char *argv0)
+{
+  char *name = progname(argv0);
+  printf("%s " VERSION "\n\n", name);
+
+  /* Message has embedded tabs. */
+  printf(_("Usage: %s [OPTION]\n\n"
+	 "Startup:\n"
+	 "	-V, --version		display the version of %s and exit\n"
+	 "	-?, --help		print this help\n\n"
+	 "Actions:\n"
+	 "	--get-list		print list of crashes which are not reported yet\n"
+	 "	--get-list-full		print list of all crashes\n"
+	 "	--report UUID		create and send a report\n"
+	 "	--report-always UUID	create and send a report without asking\n"
+	   "	--delete UUID		remove crash\n"),
+	 name, name);
+}
+
 int main(int argc, char** argv)
 {
     char* uuid = NULL;
     int op = -1;
     char *name;
+
+    setlocale(LC_ALL,"");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
 
     while (1)
     {
@@ -233,7 +367,7 @@ int main(int argc, char** argv)
             case OPT_GET_LIST_FULL:
                 if (op == -1)
                     break;
-		error_msg("You must specify exactly one operation.");
+		error_msg(_("You must specify exactly one operation."));
                 return 1;
 	    case -1: /* end of options */
 	        if (op != -1) /* if some operation was specified... */
@@ -242,25 +376,12 @@ int main(int argc, char** argv)
             default:
   	    case '?':
             case OPT_HELP:
-	        name = progname(argv[0]);
-  	        printf("%s " VERSION "\n\n", name);
-                /* note: message has embedded tabs */
-                printf("Usage: %s [OPTION]\n\n"
-		        "Startup:\n"
-		        "	-V, --version		display the version of %s and exit\n"
-		        "	-?, --help		print this help\n\n"
-		        "Actions:\n"
-                        "	--get-list		print list of crashes which are not reported yet\n"
-                        "	--get-list-full		print list of all crashes\n"
-                        "	--report UUID		create and send a report\n"
-                        "	--report-always UUID	create and send a report without asking\n"
-                        "	--delete UUID		remove crash\n",
-		       name, name);
-                return 1;
+	      usage(argv[0]);
+	      return 1;
             case 'V':
 	    case OPT_VERSION:
-  	        printf("%s " VERSION "\n", progname(argv[0]));
-		return 0;
+	      printf("%s " VERSION "\n", progname(argv[0]));
+	      return 0;
         }
         if (c == -1)
             break;
@@ -276,6 +397,7 @@ int main(int argc, char** argv)
     CABRTSocket ABRTDaemon;
     ABRTDaemon.Connect(VAR_RUN"/abrt.socket");
 #endif
+
     switch (op)
     {
         case OPT_GET_LIST:
@@ -286,33 +408,20 @@ int main(int argc, char** argv)
             break;
         }
         case OPT_REPORT:
-        {
-            map_crash_report_t cr = call_CreateReport(uuid);
-            print_crash_report(cr);
-            printf("\nDo you want to send the report? [y/n]: ");
-            fflush(NULL);
-            char answer[16] = "n";
-            fgets(answer, sizeof(answer), stdin);
-            if (answer[0] == 'Y' || answer[0] == 'y')
-            {
-                call_Report(cr);
-            }
-            break;
-        }
+	  report(uuid, false);
+	  break;
         case OPT_REPORT_ALWAYS:
-        {
-            map_crash_report_t cr = call_CreateReport(uuid);
-            call_Report(cr);
-            break;
-        }
+	  report(uuid, true);
+	  break;
         case OPT_DELETE:
         {
             call_DeleteDebugDump(uuid);
             break;
         }
     }
+
 #if ENABLE_SOCKET
-    ABRTDaemon.DisConnect();
+    ABRTDaemon.Disconnect();
 #endif
 
     return 0;

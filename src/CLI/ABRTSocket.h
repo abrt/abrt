@@ -18,7 +18,7 @@ class CABRTSocket
         ~CABRTSocket();
 
         void Connect(const std::string& pPath);
-        void DisConnect();
+        void Disconnect();
 
         vector_crash_infos_t GetCrashInfos();
         map_crash_report_t CreateReport(const std::string& pUUID);
