@@ -1,0 +1,175 @@
+#!/bin/sh
+
+core=$1
+tempdir=$2
+cachedir=$3
+debug=false
+
+count_words() {
+    echo $#
+}
+
+exec 2>&1
+
+# Output goes to GUI as debigunfo install log.
+# "MISSING:xxxx" messages result in xxxx being prepended to backtrace
+
+# Exitcodes:
+# 0 - all debuginfos are installed
+# 1 - not all debuginfos are installed
+# 2+ - serious problem
+
+test -f "$core" || exit 2
+# cachedir is optional
+test x"$cachedir" = x"" || test -d "$cachedir" || exit 2
+# tempdir must not exist
+test -e "$tempdir" && exit 2
+
+mkdir "$tempdir" || exit 2
+cd "$tempdir" || exit 2
+$debug && echo "Installing rpms to $tempdir"
+
+# eu-unstrip output example:
+# 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
+#   or
+# 0x400000+0x20d000 233aa1a57e9ffda65f53efdaf5e5058657a39993@0x40024c /usr/libexec/im-settings-daemon /usr/lib/debug/usr/libexec/im-settings-daemon.debug [exe]
+# 0x7fff5cdff000+0x1000 0d3eb4326fd7489fcf9b598269f1edc420e2c560@0x7fff5cdff2f8 . - linux-vdso.so.1
+# 0x3d15600000+0x208000 20196628d1bc062279622615cc9955554e5bb227@0x3d156001a0 /usr/lib64/libnotify.so.1.1.3 /usr/lib/debug/usr/lib64/libnotify.so.1.1.3.debug libnotify.so.1
+# 0x7fd8ae931000+0x62d000 dd49f44f958b5a11a1635523b2f09cb2e45c1734@0x7fd8ae9311a0 /usr/lib64/libgtk-x11-2.0.so.0.1600.6 /usr/lib/debug/usr/lib64/libgtk-x11-2.0.so.0.1600.6.debug
+echo "Getting list of build IDs"
+eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>&1`
+err=$?
+printf "%s\nexitcode:%s\n" "$eu_unstrip_OUT" $err >eu_unstrip.OUT
+test $err = 0 || exit 2
+
+# Get space-separated list of all build-ids
+# There can be duplicates (observed in real world)
+build_ids=`printf "%s\n" "$eu_unstrip_OUT" \
+| while read junk1 build_id binary_file di_file lib_name junk2; do
+    build_id=${build_id%%@*}
+
+    # This filters out linux-vdso.so, among others
+    test x"$lib_name" != x"[exe]" && test x"${binary_file:0:1}" != x"/" && continue
+    # Sanitize build_id: must be longer than 2 chars
+    test ${#build_id} -le 2 && continue
+    # Sanitize build_id: must have only hex digits
+    test x"${build_id//[0-9a-f]/}" != x"" && continue
+
+    echo "$build_id"
+done | sort | uniq | xargs`
+$debug && echo "build_ids:$build_ids"
+
+# Which debuginfo files are missing?
+missing_debuginfo_files=`for build_id in $build_ids; do
+    build_id1=${build_id:0:2}
+    build_id2=${build_id:2}
+
+    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+    if test x"$cachedir" != x"" && test x"$cachedir" != x"/" ; then
+	test -f "$cachedir/$file" && continue
+	if test -f "/$file"; then
+	    mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
+	    # Note: this does not preserve symlinks. This is intentional
+	    $debug && echo Copying "$file" to "$cachedir/$file" >&2
+	    cp "$file" "$cachedir/$file"
+	    continue
+	fi
+    fi
+    test -f "/$file" && continue
+    echo -n "/$file "
+done`
+$debug && echo "missing_debuginfo_files:$missing_debuginfo_files"
+
+test x"$missing_debuginfo_files" = x"" && exit 0
+
+# We'll run something like:
+#   yum --enablerepo='*debuginfo*' --quiet provides \
+#   /usr/lib/debug/.build-id/bb/11528d59940983f495e9cb099cafb0cb206051.debug \
+#   /usr/lib/debug/.build-id/c5/b84c0ad3676509dc30bfa7d42191574dac5b06.debug ...
+echo "Determining list of packages for `count_words $missing_debuginfo_files` missing debuginfos"
+yum_provides_OUT=`yum --enablerepo='*debuginfo*' --quiet provides $missing_debuginfo_files 2>&1`
+err=$?
+printf "%s\nexitcode:%s\n" "$yum_provides_OUT" $err >yum_provides.OUT
+test $err = 0 || exit 2
+
+# The output is pretty machine-unfriendly:
+#   glibc-debuginfo-2.10.90-24.x86_64 : Debug information for package glibc
+#   Repo        : rawhide-debuginfo
+#   Matched from:
+#   Filename    : /usr/lib/debug/.build-id/5b/c784c8d63f87dbdeb747a773940956a18ecd2f.debug
+#
+#   1:dbus-debuginfo-1.2.12-2.fc11.x86_64 : Debug information for package dbus
+#   Repo        : updates-debuginfo
+#   Matched from:
+#   Filename    : /usr/lib/debug/.build-id/bc/da7d09eb6c9ee380dae0ed3d591d4311decc31.debug
+# Need to massage it a lot.
+# There can be duplicates (one package may provide many debuginfos).
+packages=`printf "%s\n" "$yum_provides_OUT" \
+| grep -- -debuginfo- \
+| sed 's/^[0-9]*://' \
+| sed -e 's/ .*//' -e 's/:.*//' \
+| sort | uniq | xargs`
+$debug && echo "packages:$packages"
+
+# yum may return "" here if it found no packages (say, if coredump is from a new,
+# unreleased package fresh from koji).
+test x"$packages" = x"" && exit 1
+
+# Redirecting, since progress bar stuff only messes up our output
+echo "Downloading `count_words $packages` packages"
+yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
+err=$?
+echo "exitcode:$err" >>yumdownloader.OUT
+test $err = 0 || exit 2
+
+for f in *.rpm; do
+    # Happens if no .rpm's were downloaded (yumdownloader problem)
+    # In this case, $f is the literal "*.rpm" string
+    test -f "$f" || exit 2
+    echo "Unpacking: $f"
+    echo "Processing: $f" >>unpack.OUT
+    rpm2cpio <"$f" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
+done
+
+# Which debuginfo files are still missing, including those we just unpacked?
+missing_build_ids=`for build_id in $build_ids; do
+    build_id1=${build_id:0:2}
+    build_id2=${build_id:2}
+
+    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+
+    test -f "/$file" && continue
+    test x"$cachedir" != x"" \
+    && test x"$cachedir" != x"/" \
+    && test -f "$cachedir/$file" && continue
+
+    if test -f "$file"; then
+	# file is one of those we just installed.
+	# Cache it if cachedir is specified.
+	if test x"$cachedir" != x"" && test -d "$cachedir"; then
+	    mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
+	    # Note: this does not preserve symlinks. This is intentional
+	    $debug && echo Copying "$file" to "$cachedir/$file" >&2
+	    cp --remove-destination "$file" "$cachedir/$file"
+	fi
+	continue
+    fi
+    echo -n "$build_id "
+done`
+$debug && echo "missing_build_ids:$missing_build_ids"
+
+# If cachedir is specified, tempdir is just a staging area. Delete it
+if test x"$cachedir" != x""; then
+    $debug && echo "Removing $tempdir"
+    rm -rf "$tempdir"
+fi
+
+test x"$missing_build_ids" = x"" && exit 0
+
+for missing in $missing_build_ids; do
+    echo "MISSING:$missing"
+done
+
+echo "`count_words $missing_build_ids` debuginfos can't be found"
+
+exit 1
