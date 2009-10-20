@@ -23,8 +23,6 @@
 
 extern DBusConnection* s_dbus_conn;
 
-extern DBusMessage* new_call_msg(const char* method);
-extern DBusMessage* send_get_reply_and_unref(DBusMessage* msg);
 extern vector_crash_infos_t call_GetCrashInfos();
 extern map_crash_report_t call_CreateReport(const char* uuid);
 extern void call_Report(const map_crash_report_t& report);

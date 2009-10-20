@@ -25,7 +25,7 @@ DBusConnection* s_dbus_conn;
  */
 
 /* helpers */
-DBusMessage* new_call_msg(const char* method)
+static DBusMessage* new_call_msg(const char* method)
 {
     DBusMessage* msg = dbus_message_new_method_call(CC_DBUS_NAME, CC_DBUS_PATH, CC_DBUS_IFACE, method);
     if (!msg)
@@ -33,7 +33,7 @@ DBusMessage* new_call_msg(const char* method)
     return msg;
 }
 
-DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
+static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
 {
     DBusError err;
     dbus_error_init(&err);
