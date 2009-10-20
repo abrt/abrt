@@ -335,7 +335,8 @@ int report(const char *uuid, bool always)
   read_crash_report(cr, text);
   free(text);
 
-  /*int result = */unlink(filename);
+  if (unlink(filename) != 0)
+    error_msg("could not unlink %s: %s", filename, strerror(errno));
 
   printf(_("\nThe report has been updated.\nDo you want to send the report? [y/N]: "));
   fflush(NULL);
