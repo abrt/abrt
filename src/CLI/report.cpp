@@ -33,6 +33,33 @@
 #define FIELD_SEP "%----"
 
 /* 
+ * Trims whitespace characters both from left and right side of a string. 
+ * Modifies the string in-place. Returns the trimmed string.
+ */
+char *trim(char *str)
+{
+  if (!str)
+    return NULL;
+  
+  // Remove leading spaces.
+  char *ibuf;
+  for (ibuf = str; *ibuf && isspace(*ibuf); ++ibuf)
+    ;
+  if (str != ibuf)
+    memmove(str, ibuf, ibuf - str);
+
+  // Remove trailing spaces.
+  int i = strlen(str);
+  while (--i >= 0)
+  {
+    if (!isspace(str[i]))
+      break;
+  }
+  str[++i] = NULL;
+  return str;
+}
+
+/* 
  * Escapes the field content string to avoid confusion with file comments. 
  * Returned field must be free()d by caller. 
  */
@@ -188,15 +215,19 @@ static int write_crash_report(const map_crash_report_t &report, FILE *fp)
 /* 
  * Updates appropriate field in the report from the text. The text can
  * contain multiple fields. 
+ * Returns:
+ *  0 if no change to the field was detected.
+ *  1 if the field was changed.
+ *  Changes to read-only fields are ignored.
  */
-static void read_crash_report_field(const char *text, map_crash_report_t &report, 
-				    const char *field)
+static int read_crash_report_field(const char *text, map_crash_report_t &report, 
+				   const char *field)
 {
   char separator[strlen("\n" FIELD_SEP) + strlen(field) + 2]; // 2 = '\n\0'
   sprintf(separator, "\n%s%s\n", FIELD_SEP, field);
   const char *textfield = strstr(text, separator);
   if (!textfield)
-    return;
+    return 0;
 
   textfield += strlen(separator);
   int length = 0;
@@ -210,40 +241,63 @@ static void read_crash_report_field(const char *text, map_crash_report_t &report
   if (it == report.end())
   {
     error_msg("Field %s not found.\n", field);
-    return;
+    return 0;
   }
 
   if (it->second[CD_TYPE] == CD_SYS)
   {
     error_msg("Cannot update field %s because it is a system value.\n", field);
-    return; 
+    return 0; 
   }
 
-  if (it->second[CD_EDITABLE] == CD_ISEDITABLE)
-    it->second[CD_CONTENT].assign(textfield, length);
+  // Do not change noneditable fields.
+  if (it->second[CD_EDITABLE] != CD_ISEDITABLE)
+    return 0;
+
+  // Compare the old field contents with the new field contents.
+  char newvalue[length + 1];
+  strncpy(newvalue, textfield, length);
+  newvalue[length] = '\0';
+  trim(newvalue);
+
+  char oldvalue[it->second[CD_CONTENT].length() + 1];
+  strcpy(oldvalue, it->second[CD_CONTENT].c_str());
+  trim(oldvalue);
+
+  // Return if no change in the contents detected.
+  int cmp = strcmp(newvalue, oldvalue);
+  if (!cmp)
+    return 0;
+
+  it->second[CD_CONTENT].assign(newvalue);
+  return 1;
 }
 
 /* 
  * Updates the crash report 'report' from the text. The text must not contain 
  * any comments. 
+ * Returns:
+ *  0 if no field was changed.
+ *  1 if any field was changed. 
+ *  Changes to read-only fields are ignored.
  */
 static int read_crash_report(map_crash_report_t &report, const char *text)
 {
-  read_crash_report_field(text, report, "Comment");
-  read_crash_report_field(text, report, "How to reproduce");
-  read_crash_report_field(text, report, "backtrace");
-  read_crash_report_field(text, report, "UUID");
-  read_crash_report_field(text, report, "architecture");
-  read_crash_report_field(text, report, "cmdline");
-  read_crash_report_field(text, report, "component");
-  read_crash_report_field(text, report, "coredump");
-  read_crash_report_field(text, report, "executable");
-  read_crash_report_field(text, report, "kernel");
-  read_crash_report_field(text, report, "package");
-  read_crash_report_field(text, report, "reason");
-  read_crash_report_field(text, report, "release");
-
-  return 0;
+  int result = 0;
+  result |= read_crash_report_field(text, report, "Comment");
+  result |= read_crash_report_field(text, report, "How to reproduce");
+  result |= read_crash_report_field(text, report, "backtrace");
+  result |= read_crash_report_field(text, report, "UUID");
+  result |= read_crash_report_field(text, report, "architecture");
+  result |= read_crash_report_field(text, report, "cmdline");
+  result |= read_crash_report_field(text, report, "component");
+  result |= read_crash_report_field(text, report, "coredump");
+  result |= read_crash_report_field(text, report, "executable");
+  result |= read_crash_report_field(text, report, "kernel");
+  result |= read_crash_report_field(text, report, "package");
+  result |= read_crash_report_field(text, report, "reason");
+  result |= read_crash_report_field(text, report, "release");
+  return result;
 }
 
 /* Runs external editor. */
@@ -337,14 +391,20 @@ int report(const char *uuid, bool always)
   fclose(fp);
 
   remove_comments_and_unescape(text);
-  read_crash_report(cr, text); // Updates the crash report from the file text.
+  // Updates the crash report from the file text.
+  int report_changed = read_crash_report(cr, text); 
+  if (report_changed)
+    puts(_("\nThe report has been updated."));
+  else
+    puts(_("\nNo changes were detected in the report."));
+
   free(text);
 
   if (unlink(filename) != 0) // Delete the tempfile.
     error_msg("could not unlink %s: %s", filename, strerror(errno));
 
   // Report only if the user is sure.
-  printf(_("\nThe report has been updated.\nDo you want to send the report? [y/N]: "));
+  printf(_("Do you want to send the report? [y/N]: "));
   fflush(NULL);
   char answer[16] = "n";
   fgets(answer, sizeof(answer), stdin);
