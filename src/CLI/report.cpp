@@ -409,7 +409,13 @@ int report(const char *uuid, bool always)
   char answer[16] = "n";
   fgets(answer, sizeof(answer), stdin);
   if (answer[0] == 'Y' || answer[0] == 'y')
+  {
+    puts(_("Reporting..."));
     call_Report(cr);
+    puts(_("Crash report was successfully sent."));
+  }
+  else
+    puts(_("Crash report was not sent."));
 
   return 0;
 }
