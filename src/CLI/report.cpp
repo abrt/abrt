@@ -29,10 +29,13 @@
 #define _(S) (S)
 #endif
 
+/* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
 
-/* Escapes the field content string to avoid confusion with file comments. 
-   Returned field must be free()d by caller. */
+/* 
+ * Escapes the field content string to avoid confusion with file comments. 
+ * Returned field must be free()d by caller. 
+ */
 static char *escape(const char *str)
 {
   // Determine the size of resultant string.
@@ -82,8 +85,10 @@ static char *escape(const char *str)
   return result;
 }
 
-/* Removes all comment lines, and unescapes the string previously escaped 
-   by escape(). Works in-place. */
+/*
+ * Removes all comment lines, and unescapes the string previously escaped 
+ * by escape(). Works in-place. 
+ */
 static char *remove_comments_and_unescape(char *str)
 {
   char *src = str, *dest = str;
@@ -138,17 +143,19 @@ static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
   
   fprintf(fp, "%s%s\n", FIELD_SEP, it->first.c_str());
 
-  bool readonly = (it->second[CD_EDITABLE] != CD_ISEDITABLE);
-  fprintf(fp, readonly ? _("# %s (read only)\n") : "# %s\n", description);
+  fprintf(fp, "%s\n", description);
+  if (it->second[CD_EDITABLE] != CD_ISEDITABLE)
+    fprintf(fp, _("# This field is read only.\n"));
 
   char *escaped_content = escape(it->second[CD_CONTENT].c_str());
   fprintf(fp, "%s\n", escaped_content);
   free(escaped_content);
 }
 
-/* Saves the crash report to a file. 
- * Fp must be opened before write_crash_report is called.
- * Returned Value:
+/* 
+ * Saves the crash report to a file. 
+ * Parameter 'fp' must be opened before write_crash_report is called.
+ * Returned value:
  *  If the report is successfully stored to the file, a zero value is returned.
  *  On failure, nonzero value is returned.
  */
@@ -158,22 +165,22 @@ static int write_crash_report(const map_crash_report_t &report, FILE *fp)
 	  "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
 
   write_crash_report_field(fp, report, "Comment", 
-			     _("Describe the circumstances of this crash below."));
+			   _("# Describe the circumstances of this crash below."));
   write_crash_report_field(fp, report, "How to reproduce",
-			     _("How to reproduce the crash?"));
+			   _("# How to reproduce the crash?"));
   write_crash_report_field(fp, report, "backtrace",
-			     _("Backtrace. Check that it does not contain any sensitive data such as passwords."));
-  write_crash_report_field(fp, report, "UUID", "UUID");
-  write_crash_report_field(fp, report, "architecture", "Architecture");
-  write_crash_report_field(fp, report, "cmdline", "Command line");
-  write_crash_report_field(fp, report, "component", "Component");
-  write_crash_report_field(fp, report, "coredump", "Core dump");
-  write_crash_report_field(fp, report, "executable", "Executable");
-  write_crash_report_field(fp, report, "kernel", "Kernel");
-  write_crash_report_field(fp, report, "package", "Package");
-  write_crash_report_field(fp, report, "reason", "Reason");
-  write_crash_report_field(fp, report, "release", "Release");
-   
+			   _("# Stack trace: a list of active stack frames at the time the crash occurred\n# Check that it does not contain any sensitive data such as passwords."));
+  write_crash_report_field(fp, report, "UUID", _("# UUID"));
+  write_crash_report_field(fp, report, "architecture", _("# Architecture"));
+  write_crash_report_field(fp, report, "cmdline", _("# Command line"));
+  write_crash_report_field(fp, report, "component", _("# Component"));
+  write_crash_report_field(fp, report, "coredump", _("# Core dump"));
+  write_crash_report_field(fp, report, "executable", _("# Executable"));
+  write_crash_report_field(fp, report, "kernel", _("# Kernel version"));
+  write_crash_report_field(fp, report, "package", _("# Package"));
+  write_crash_report_field(fp, report, "reason", _("# Reason of crash"));
+  write_crash_report_field(fp, report, "release", _("# Release string of the operating system"));
+  
   return 0;
 }
 
@@ -313,7 +320,6 @@ int report(const char *uuid, bool always)
 
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
-  printf("%d", size);
   fseek(fp, 0, SEEK_SET);
 
   char *text = (char*)malloc(size + 1);
@@ -331,14 +337,12 @@ int report(const char *uuid, bool always)
 
   /*int result = */unlink(filename);
 
-  printf(_("\nReport has been updated.\nDo you want to send the report? [y/n]: "));
+  printf(_("\nThe report has been updated.\nDo you want to send the report? [y/N]: "));
   fflush(NULL);
   char answer[16] = "n";
   fgets(answer, sizeof(answer), stdin);
   if (answer[0] == 'Y' || answer[0] == 'y')
-  {
     call_Report(cr);
-  }
 
   return 0;
 }
