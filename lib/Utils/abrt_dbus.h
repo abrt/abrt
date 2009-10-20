@@ -1,3 +1,6 @@
+#ifndef ABRT_UTIL_DBUS_H
+#define ABRT_UTIL_DBUS_H
+
 #include <dbus/dbus.h>
 #include <map>
 #include <vector>
@@ -269,3 +272,5 @@ template<typename E>
 static inline int load_val(DBusMessageIter* iter, std::vector<E>& val) { return load_vector(iter, val); }
 template<typename K, typename V>
 static inline int load_val(DBusMessageIter* iter, std::map<K,V>& val)  { return load_map(iter, val); }
+
+#endif
