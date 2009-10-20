@@ -2,7 +2,14 @@ bin_PROGRAMS = abrt-cli
 
 abrt_cli_SOURCES = \
     CLI.cpp \
-    ABRTSocket.h ABRTSocket.cpp
+    ABRTSocket.h \
+    ABRTSocket.cpp \
+    run-command.h \
+    run-command.cpp \
+    report.h \
+    report.cpp \
+    dbus.h \
+    dbus.cpp
 
 abrt_cli_CPPFLAGS = \
     -I$(srcdir)/../../inc \
