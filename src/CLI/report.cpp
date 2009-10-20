@@ -122,7 +122,8 @@ static char *remove_comments_and_unescape(char *str)
   *dest = '\0';
 }
 
-/* Writes a field of crash report to a file.
+/* 
+ * Writes a field of crash report to a file.
  * Field must be writable.
  */
 static void write_crash_report_field(FILE *fp, const map_crash_report_t &report, 
@@ -277,10 +278,12 @@ int launch_editor(const char *path)
 /* Reports the crash with corresponding uuid over DBus. */
 int report(const char *uuid, bool always)
 {
+  // Ask for an initial report.
   map_crash_report_t cr = call_CreateReport(uuid);
 
   if (always)
   {
+    // Send the report immediately.
     call_Report(cr);
     return 0;
   }
@@ -308,9 +311,11 @@ int report(const char *uuid, bool always)
     error_msg("could not close '%s'", filename);
     return 2;
   }
-
+  
+  // Start a text editor on the temporary file.
   launch_editor(filename);
 
+  // Read the file back and update the report from the file.
   fp = fopen(filename, "r");
   if (!fp)
   {
@@ -332,12 +337,13 @@ int report(const char *uuid, bool always)
   fclose(fp);
 
   remove_comments_and_unescape(text);
-  read_crash_report(cr, text);
+  read_crash_report(cr, text); // Updates the crash report from the file text.
   free(text);
 
-  if (unlink(filename) != 0)
+  if (unlink(filename) != 0) // Delete the tempfile.
     error_msg("could not unlink %s: %s", filename, strerror(errno));
 
+  // Report only if the user is sure.
   printf(_("\nThe report has been updated.\nDo you want to send the report? [y/N]: "));
   fflush(NULL);
   char answer[16] = "n";
