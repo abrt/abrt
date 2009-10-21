@@ -499,7 +499,7 @@ void LoadOpenGPGPublicKey(const char* key)
  * @return It return results of operation. See mw_result_t.
  */
 static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable,
-                                                                        const std::string& pDebugDumpDir)
+						     const std::string& pDebugDumpDir)
 {
     std::string package;
     std::string packageName;

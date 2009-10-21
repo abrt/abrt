@@ -354,6 +354,8 @@ fi
 %files cli
 %defattr(-,root,root,-)
 %{_bindir}/abrt-cli
+%{_mandir}/man1/abrt-cli.1.gz
+%{_sysconfdir}/bash_completion.d/abrt-cli.bash
 
 %files desktop
 %defattr(-,root,root,-)
