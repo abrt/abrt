@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/sh
 export PYTHONPATH=/usr/share/abrt
 export XLOGNAME=$LOGNAME
 exec /usr/bin/python /usr/share/abrt/CCMainWindow.py "$@"

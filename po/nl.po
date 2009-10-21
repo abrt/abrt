@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-08 17:38+0000\n"
-"PO-Revision-Date: 2009-10-08 21:12+0200\n"
+"POT-Creation-Date: 2009-10-16 16:11+0000\n"
+"PO-Revision-Date: 2009-10-16 21:12+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <nl@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -207,7 +207,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:308
+#: ../src/Gui/CCMainWindow.py:310
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -216,12 +216,16 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:340
+#: ../src/Gui/CCMainWindow.py:329 ../src/Gui/CCMainWindow.py:356
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:98
+#: ../src/Gui/CCReporterDialog.py:167
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
+
+#: ../src/Gui/CCReporterDialog.py:211
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -231,10 +235,6 @@ msgstr ""
 "<b>WAARSCHUWING</b>, je staat op het punt om data te versturen die gevoelige "
 "informatie kan bevatten\n"
 "Wil je <b>%s</b> echt versturen?\n"
-
-#: ../src/Gui/CCReporterDialog.py:111
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
@@ -273,6 +273,10 @@ msgstr "Verzenden"
 #: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
+
+#: ../src/Gui/report.glade.h:5
+msgid "gtk-refresh"
+msgstr "gtk-refresh"
 
 #: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
@@ -411,7 +415,7 @@ msgstr "ABRT service draait niet"
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/Daemon/Daemon.cpp:546
+#: ../src/Daemon/Daemon.cpp:542
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -460,31 +464,31 @@ msgstr "Uitloggen..."
 msgid "Getting local universal unique identification"
 msgstr "Verkrijgen van locale universele unieke identificatie"
 
-#: ../lib/Plugins/CCpp.cpp:146
+#: ../lib/Plugins/CCpp.cpp:161
 msgid "Getting backtrace..."
 msgstr "Backtrace ophalen..."
 
-#: ../lib/Plugins/CCpp.cpp:415
+#: ../lib/Plugins/CCpp.cpp:442
 msgid "Searching for debug-info packages..."
 msgstr "Zoeken naar debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:451
+#: ../lib/Plugins/CCpp.cpp:504
 msgid "Downloading and installing debug-info packages..."
 msgstr "Downloaden en installeren van debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:513
+#: ../lib/Plugins/CCpp.cpp:566
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:532
+#: ../lib/Plugins/CCpp.cpp:585
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:583
+#: ../lib/Plugins/CCpp.cpp:630
 msgid "Starting report creation..."
 msgstr "Beginnen met rapport aanmaken..."
 
-#: ../lib/Plugins/CCpp.cpp:612
+#: ../lib/Plugins/CCpp.cpp:661
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 

@@ -21,8 +21,19 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "DBusCommon.h"
+#include "report.h"
+#include "dbus.h"
 #if HAVE_CONFIG_H
-    #include <config.h>
+#include <config.h>
+#endif
+#if HAVE_LOCALE_H
+#include <locale.h>
+#endif
+#if ENABLE_NLS
+#include <libintl.h>
+#define _(S) gettext(S)
+#else
+#define _(S) (S)
 #endif
 
 /* Program options */
@@ -37,8 +48,6 @@ enum
     OPT_DELETE
 };
 
-static DBusConnection* s_dbus_conn;
-
 static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
 {
     unsigned int ii;
@@ -47,146 +56,33 @@ static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
         map_crash_info_t& info = pCrashInfos[ii];
         if (pMode == OPT_GET_LIST_FULL || info.find(CD_REPORTED)->second[CD_CONTENT] != "1")
         {
-            printf("%u.\n"
-                    "\tUID       : %s\n"
-                    "\tUUID      : %s\n"
-                    "\tPackage   : %s\n"
-                    "\tExecutable: %s\n"
-                    "\tCrash time: %s\n"
-                    "\tCrash Rate: %s\n",
-                    ii,
-                    info[CD_UID][CD_CONTENT].c_str(),
-                    info[CD_UUID][CD_CONTENT].c_str(),
-                    info[CD_PACKAGE][CD_CONTENT].c_str(),
-                    info[CD_EXECUTABLE][CD_CONTENT].c_str(),
-                    info[CD_TIME][CD_CONTENT].c_str(),
-                    info[CD_COUNT][CD_CONTENT].c_str()
-            );
+	  const char *timestr = info[CD_TIME][CD_CONTENT].c_str();
+	  long time = strtol(timestr, 0, 10);
+	  if (time == 0)
+	    error_msg_and_die("Error while converting time string.");
+
+	  char timeloc[256];
+	  int success = strftime(timeloc, 128, "%c", localtime(&time));
+	  if (!success)
+	    error_msg_and_die("Error while converting time to string.");
+
+	  printf(_("%u.\n"
+		   "\tUID        : %s\n"
+		   "\tUUID       : %s\n"
+		   "\tPackage    : %s\n"
+		   "\tExecutable : %s\n"
+		   "\tCrash Time : %s\n"
+		   "\tCrash Count: %s\n"),
+		 ii,
+		 info[CD_UID][CD_CONTENT].c_str(),
+		 info[CD_UUID][CD_CONTENT].c_str(),
+		 info[CD_PACKAGE][CD_CONTENT].c_str(),
+		 info[CD_EXECUTABLE][CD_CONTENT].c_str(),
+		 timeloc,
+		 info[CD_COUNT][CD_CONTENT].c_str()
+	    );
         }
     }
-}
-
-static void print_crash_report(const map_crash_report_t& pCrashReport)
-{
-    map_crash_report_t::const_iterator it = pCrashReport.begin();
-    for (; it != pCrashReport.end(); it++)
-    {
-        if (it->second[CD_TYPE] != CD_SYS)
-        {
-            printf("\n%s\n"
-                    "-----\n"
-                    "%s\n", it->first.c_str(), it->second[CD_CONTENT].c_str());
-        }
-    }
-}
-
-/*
- * DBus member calls
- */
-
-/* helpers */
-static DBusMessage* new_call_msg(const char* method)
-{
-    DBusMessage* msg = dbus_message_new_method_call(CC_DBUS_NAME, CC_DBUS_PATH, CC_DBUS_IFACE, method);
-    if (!msg)
-        die_out_of_memory();
-    return msg;
-}
-static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
-{
-    DBusError err;
-    dbus_error_init(&err);
-    DBusMessage *reply = dbus_connection_send_with_reply_and_block(s_dbus_conn, msg, /*timeout*/ -1, &err);
-    if (reply == NULL)
-    {
-//TODO: analyse err
-        error_msg_and_die("Error sending DBus message");
-    }
-    dbus_message_unref(msg);
-    return reply;
-}
-
-static vector_crash_infos_t call_GetCrashInfos()
-{
-    DBusMessage* msg = new_call_msg("GetCrashInfos");
-
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    vector_crash_infos_t argout;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-    int r = load_val(&in_iter, argout);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", "GetCrashInfos");
-    dbus_message_unref(reply);
-    return argout;
-}
-
-static map_crash_report_t call_CreateReport(const char* uuid)
-{
-    /* Yes, call name is not "CreateReport" but "GetJobResult".
-     * We need to clean up the names one day. */
-    DBusMessage* msg = new_call_msg("GetJobResult");
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &uuid,
-            DBUS_TYPE_INVALID);
-
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-
-    map_crash_report_t argout;
-    DBusMessageIter in_iter;
-    dbus_message_iter_init(reply, &in_iter);
-    int r = load_val(&in_iter, argout);
-    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", "GetJobResult");
-    dbus_message_unref(reply);
-    return argout;
-}
-
-static void call_Report(const map_crash_report_t& report)
-{
-    DBusMessage* msg = new_call_msg("Report");
-    DBusMessageIter out_iter;
-    dbus_message_iter_init_append(msg, &out_iter);
-    store_val(&out_iter, report);
-
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-    //it returns a single value of report_status_t type,
-    //but we don't use it (yet?)
-
-    dbus_message_unref(reply);
-    return;
-}
-
-static void call_DeleteDebugDump(const char* uuid)
-{
-    DBusMessage* msg = new_call_msg("DeleteDebugDump");
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &uuid,
-            DBUS_TYPE_INVALID);
-
-    DBusMessage *reply = send_get_reply_and_unref(msg);
-    //it returns a single boolean value,
-    //but we don't use it (yet?)
-
-    dbus_message_unref(reply);
-    return;
-}
-
-static void handle_dbus_err(bool error_flag, DBusError *err)
-{
-    if (dbus_error_is_set(err))
-    {
-        error_msg("dbus error: %s", err->message);
-        /* dbus_error_free(&err); */
-        error_flag = true;
-    }
-    if (!error_flag)
-        return;
-    error_msg_and_die(
-            "error requesting DBus name %s, possible reasons: "
-            "abrt run by non-root; dbus config is incorrect",
-            CC_DBUS_NAME);
 }
 
 static const struct option longopts[] =
@@ -202,7 +98,7 @@ static const struct option longopts[] =
     { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
 };
 
-/* Gets program name from command line argument. */
+/* Gets the program name from the first command line argument. */
 static char *progname(char *argv0)
 {
     char* name = strrchr(argv0, '/');
@@ -212,11 +108,36 @@ static char *progname(char *argv0)
         return argv0;
 }
 
+/* Prints abrt-cli version and some help text. */
+static void usage(char *argv0)
+{
+  char *name = progname(argv0);
+  printf("%s " VERSION "\n\n", name);
+
+  /* Message has embedded tabs. */
+  printf(_("Usage: %s [OPTION]\n\n"
+	 "Startup:\n"
+	 "	-V, --version		display the version of %s and exit\n"
+	 "	-?, --help		print this help\n\n"
+	 "Actions:\n"
+	 "	--get-list		print list of crashes which are not reported yet\n"
+	 "	--get-list-full		print list of all crashes\n"
+	 "	--report UUID		create and send a report\n"
+	 "	--report-always UUID	create and send a report without asking\n"
+	   "	--delete UUID		remove crash\n"),
+	 name, name);
+}
+
 int main(int argc, char** argv)
 {
     char* uuid = NULL;
     int op = -1;
-    char *name;
+
+    setlocale(LC_ALL,"");
+#if ENABLE_NLS
+    bindtextdomain(PACKAGE, LOCALEDIR);
+    textdomain(PACKAGE);
+#endif
 
     while (1)
     {
@@ -233,7 +154,7 @@ int main(int argc, char** argv)
             case OPT_GET_LIST_FULL:
                 if (op == -1)
                     break;
-		error_msg("You must specify exactly one operation.");
+		error_msg(_("You must specify exactly one operation."));
                 return 1;
 	    case -1: /* end of options */
 	        if (op != -1) /* if some operation was specified... */
@@ -242,25 +163,12 @@ int main(int argc, char** argv)
             default:
   	    case '?':
             case OPT_HELP:
-	        name = progname(argv[0]);
-  	        printf("%s " VERSION "\n\n", name);
-                /* note: message has embedded tabs */
-                printf("Usage: %s [OPTION]\n\n"
-		        "Startup:\n"
-		        "	-V, --version		display the version of %s and exit\n"
-		        "	-?, --help		print this help\n\n"
-		        "Actions:\n"
-                        "	--get-list		print list of crashes which are not reported yet\n"
-                        "	--get-list-full		print list of all crashes\n"
-                        "	--report UUID		create and send a report\n"
-                        "	--report-always UUID	create and send a report without asking\n"
-                        "	--delete UUID		remove crash\n",
-		       name, name);
-                return 1;
+	      usage(argv[0]);
+	      return 1;
             case 'V':
 	    case OPT_VERSION:
-  	        printf("%s " VERSION "\n", progname(argv[0]));
-		return 0;
+	      printf("%s " VERSION "\n", progname(argv[0]));
+	      return 0;
         }
         if (c == -1)
             break;
@@ -276,6 +184,7 @@ int main(int argc, char** argv)
     CABRTSocket ABRTDaemon;
     ABRTDaemon.Connect(VAR_RUN"/abrt.socket");
 #endif
+
     switch (op)
     {
         case OPT_GET_LIST:
@@ -286,33 +195,20 @@ int main(int argc, char** argv)
             break;
         }
         case OPT_REPORT:
-        {
-            map_crash_report_t cr = call_CreateReport(uuid);
-            print_crash_report(cr);
-            printf("\nDo you want to send the report? [y/n]: ");
-            fflush(NULL);
-            char answer[16] = "n";
-            fgets(answer, sizeof(answer), stdin);
-            if (answer[0] == 'Y' || answer[0] == 'y')
-            {
-                call_Report(cr);
-            }
-            break;
-        }
+	  report(uuid, false);
+	  break;
         case OPT_REPORT_ALWAYS:
-        {
-            map_crash_report_t cr = call_CreateReport(uuid);
-            call_Report(cr);
-            break;
-        }
+	  report(uuid, true);
+	  break;
         case OPT_DELETE:
         {
             call_DeleteDebugDump(uuid);
             break;
         }
     }
+
 #if ENABLE_SOCKET
-    ABRTDaemon.DisConnect();
+    ABRTDaemon.Disconnect();
 #endif
 
     return 0;

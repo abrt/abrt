@@ -87,6 +87,18 @@ static std::string CreateHash(const std::string& pInput)
     return hash_str;
 }
 
+static std::string concat_str_vector(char **strings)
+{
+    std::string result;
+    while (*strings)
+    {
+        result += *strings++;
+        if (*strings)
+            result += ' ';
+    }
+    return result;
+}
+
 static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
@@ -107,11 +119,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     }
     if (child == 0)
     {
-        VERB1 log("Executing: %s %s %s %s", pArgs[0]
-                ,pArgs[1] ? pArgs[1] : ""
-                ,pArgs[1] && pArgs[2] ? pArgs[2] : ""
-                ,pArgs[1] && pArgs[2] && pArgs[3] ? pArgs[3] : ""
-        );
+        VERB1 log("Executing: %s", concat_str_vector(pArgs).c_str());
         close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
@@ -161,13 +169,18 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
         dd.LoadText(FILENAME_UID, UID);
     }
 
+    // Workaround for
+    // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
+    unsetenv("TERM");
+    putenv((char*)"TERM=dumb");
+
     char* args[9];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
-    // when/if we'll add support for networked debuginfos
+    // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
-    //args[] = (char*)"-ex";
-    //args[] = xasprintf("set debug-file-directory %s", dir);
+    //args[2] = (char*)"-ex";
+    //args[3] = "set debug-file-directory /usr/lib/debug/.build-id:/var/cache/abrt-di/usr/lib/debug/.build-id";
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -552,6 +565,85 @@ Another application is holding the yum lock, cannot continue
     fclose(pipeout_fp);
     wait(NULL);
 }
+#if 0
+/* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668 */
+static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
+{
+    update_client(_("Searching for debug-info packages..."));
+
+    int pipein[2], pipeout[2]; //TODO: get rid of pipein. Can we use ExecVP?
+    xpipe(pipein);
+    xpipe(pipeout);
+
+    pid_t child = fork();
+    if (child < 0)
+    {
+        /*close(pipein[0]); close(pipeout[0]); - why bother */
+        /*close(pipein[1]); close(pipeout[1]); */
+        perror_msg_and_die("fork");
+    }
+    if (child == 0)
+    {
+        close(pipein[1]);
+        close(pipeout[0]);
+        xmove_fd(pipein[0], STDIN_FILENO);
+        xmove_fd(pipeout[1], STDOUT_FILENO);
+        /* Not a good idea, we won't see any error messages */
+        /*close(STDERR_FILENO);*/
+
+        setsid();
+
+        char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+        char *tempdir = xasprintf("/tmp/abrt-%u-%lu", (int)getpid(), (long)time(NULL));
+        /* log() goes to stderr/syslog, it's ok to use it here */
+        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, "/var/cache/abrt-di");
+        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, "/var/cache/abrt-di", NULL);
+        exit(1);
+    }
+
+    close(pipein[0]);
+    close(pipeout[1]);
+
+    update_client(_("Downloading and installing debug-info packages..."));
+
+    FILE *pipeout_fp = fdopen(pipeout[0], "r");
+    if (pipeout_fp == NULL) /* never happens */
+    {
+        close(pipeout[0]);
+        wait(NULL);
+        return;
+    }
+
+    char buff[1024];
+    while (fgets(buff, sizeof(buff), pipeout_fp))
+    {
+        int last = strlen(buff) - 1;
+        if (last >= 0 && buff[last] == '\n')
+            buff[last] = '\0';
+
+        if (strncmp(buff, "MISSING:", 8) == 0)
+        {
+            build_ids += "Debuginfo absent: ";
+            build_ids += buff + 8;
+            build_ids += "\n";
+        }
+
+        const char *p = buff;
+        while (*p == ' ' || *p == '\t')
+        {
+            p++;
+        }
+        if (*p)
+        {
+            /* log(buff); - update_client logs it too */
+            update_client(buff);
+        }
+    }
+
+    fclose(pipeout_fp);
+    wait(NULL);
+}
+#endif
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
@@ -592,35 +684,29 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
 
 static bool DebuginfoCheckPolkit(int uid)
 {
-    PolkitResult result;
-    int child_pid;
-
-    child_pid = fork();
-
+    int child_pid = fork();
+    if (child_pid < 0)
+    {
+        perror_msg_and_die("fork");
+    }
     if (child_pid == 0)
     {
         //child
-        setuid(uid);
-        result = polkit_check_authorization(getpid(),
+        if (setuid(uid))
+            exit(1); //paranoia
+        PolkitResult result = polkit_check_authorization(getpid(),
                  "org.fedoraproject.abrt.install-debuginfos");
-        if (result == PolkitYes)
-        {
-            exit(0); //authentication OK
-        }
-        exit(1);
-    } else
-    {
-        //parent
-        int status;
-
-        waitpid(child_pid, &status, 0);
-        if (WEXITSTATUS(status) == 0)
-        {
-            return true; //authentication OK
-        }
-        return false;
+        exit(result != PolkitYes); //exit 1 (failure) if not allowed
     }
 
+    //parent
+    int status;
+    if (waitpid(child_pid, &status, 0) > 0 && WEXITSTATUS(status) == 0)
+    {
+        return true; //authorization OK
+    }
+    log("UID %d is not authorized to install debuginfos", uid);
+    return false;
 }
 
 void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
@@ -663,6 +749,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
 
     dd.Open(pDebugDumpDir);
     dd.SaveText(FILENAME_BACKTRACE, build_ids + backtrace);
+log("BACKTRACE:'%s'", (build_ids + backtrace).c_str());
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");

@@ -8,13 +8,12 @@
 #include <sys/un.h>
 #include <string.h>
 
-CABRTSocket::CABRTSocket() :
-    m_nSocket(-1)
+CABRTSocket::CABRTSocket() : m_nSocket(-1)
 {}
 
 CABRTSocket::~CABRTSocket()
 {
-    DisConnect();
+    Disconnect();
 }
 
 void CABRTSocket::Send(const std::string& pMessage)
@@ -91,12 +90,10 @@ void CABRTSocket::Connect(const std::string& pPath)
     }
 }
 
-void CABRTSocket::DisConnect()
+void CABRTSocket::Disconnect()
 {
     if (m_nSocket != -1)
-    {
         close(m_nSocket);
-    }
 }
 
 vector_crash_infos_t CABRTSocket::GetCrashInfos()
