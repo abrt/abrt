@@ -169,6 +169,11 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
         dd.LoadText(FILENAME_UID, UID);
     }
 
+    // Workaround for
+    // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
+    unsetenv("TERM");
+    putenv((char*)"TERM=dumb");
+
     char* args[9];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
