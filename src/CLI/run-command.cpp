@@ -23,7 +23,7 @@
   http://git.kernel.org/?p=git/git.git;a=blob;f=run-command.c;hb=HEAD
 */
 
-struct child_process 
+struct child_process
 {
   const char **argv;
   pid_t pid;
@@ -51,28 +51,28 @@ static int finish_command(struct child_process *cmd)
   int status, code = -1;
   while ((waiting = waitpid(cmd->pid, &status, 0)) < 0 && errno == EINTR)
     ;       /* nothing */
-  
-  if (waiting < 0) 
+
+  if (waiting < 0)
     error_msg_and_die("waitpid for %s failed: %s", cmd->argv[0], strerror(errno));
-  else if (waiting != cmd->pid) 
+  else if (waiting != cmd->pid)
     error_msg_and_die("waitpid is confused (%s)", cmd->argv[0]);
-  else if (WIFSIGNALED(status)) 
+  else if (WIFSIGNALED(status))
   {
     code = WTERMSIG(status);
     error_msg("%s died of signal %d", cmd->argv[0], code);
-  } 
-  else if (WIFEXITED(status)) 
+  }
+  else if (WIFEXITED(status))
   {
     code = WEXITSTATUS(status);
-    if (code == 127) 
+    if (code == 127)
     {
       code = -1;
       error_msg_and_die("cannot run %s: %s", cmd->argv[0], strerror(ENOENT));
     }
-  } 
-  else 
+  }
+  else
     error_msg_and_die("waitpid is confused (%s)", cmd->argv[0]);
-  
+
   return code;
 }
 
