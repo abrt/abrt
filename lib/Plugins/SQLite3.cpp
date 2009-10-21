@@ -321,7 +321,16 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
 
 void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID, const std::string& pMessage)
 {
-    if (Exist(pUUID, pUID))
+    if(pUID == "0")
+    {
+        Exec("UPDATE "ABRT_TABLE" "
+             "SET "DATABASE_COLUMN_REPORTED" = 1 "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+        Exec("UPDATE "ABRT_TABLE" "
+             "SET "DATABASE_COLUMN_MESSAGE" = '" + pMessage + "' "
+             "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"';");
+    }
+    else if (Exist(pUUID, pUID))
     {
         Exec("UPDATE "ABRT_TABLE" "
              "SET "DATABASE_COLUMN_REPORTED" = 1 "
