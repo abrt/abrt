@@ -154,9 +154,12 @@ class MainWindow():
 
     def on_miSettings_clicked(self, widget):
         dialog = SettingsDialog(self.window, self.ccdaemon)
-        dialog.hydrate()
+        try:
+            dialog.hydrate()
+        except Exception, e:
+            gui_error_message(_("Can't show the settings dialog\n%s" % e))
+            return
         dialog.show()
-        self.ccdaemon.getSettings()
 
     def warning_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
