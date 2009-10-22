@@ -27,6 +27,6 @@ man_MANS = abrt-cli.1
 EXTRA_DIST = $(man_MANS)
 
 completiondir = $(sysconfdir)/bash_completion.d
-completion_DATA = abrt-cli.bash
+dist_completion_DATA = abrt-cli.bash
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
