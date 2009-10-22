@@ -45,9 +45,9 @@ def exception_function():
 import sys
 import os
 import syslog
+import subprocess
 # abrt lib for saving debugdumps
 import ABRTUtils
-
 
 __DUMPHASH = {}
 # FIXME: do length limits on obj dumps.
@@ -105,45 +105,20 @@ def __dump_class(instance, fd, level=0):
             fd.write("%s%s: %s\n" % (pad, key, value))
 
 def write_dump(pid, tb_uuid, tb):
-    import time
-    ttime = int(time.time())
-    # localstatedir
-    dir_name = "@DEBUG_DUMP_DIR@/pyhook-%s-%s" % (ttime, pid)
-    dd = ABRTUtils.CDebugDump()
-    try:
-        #os.mkdir(dir_name)
-        dd.Create(dir_name, os.getuid())
-    except Exception, e:
-        syslog.syslog("abrt: Cannot create dir %s %s" % (dir_name, e))
-        return
-    # save executable
-    fexecutable = open("%s/executable" % dir_name, "w")
+    executable = "Exception raised from python shell"
     if sys.argv[0]:
-        fexecutable.write(os.path.abspath(sys.argv[0]))
-    else:
-        fexecutable.write("Exception raised from python shell")
-    fexecutable.close()
-    # save coredump
-    coredump = open("%s/backtrace" % dir_name, "w")
-    coredump.write(tb)
-    coredump.close()
-    # save uuid
-    uuid = open("%s/uuid" % dir_name, "w")
-    uuid.write(tb_uuid)
-    uuid.close()
-    # save cmdline
-    cmdline = open("%s/cmdline" % dir_name, "w")
-    cmdline.write(open("/proc/%s/cmdline" % pid).read().replace('\x00',' '))
-    cmdline.close()
-    # save uid
-    uid = open("%s/uid" % dir_name, "w")
-    uid.write(open("/proc/%s/loginuid" % pid).readlines()[0])
-    uid.close()
-    # save analyzer
-    analyzer = open("%s/analyzer" % dir_name, "w")
-    analyzer.write("Python")
-    analyzer.close()
-    dd.Close()
+        executable = os.path.abspath(sys.argv[0])
+    
+    command = ["abrt-pyhook-helper"]
+    command.append("--pid=%s" % pid)
+    command.append("--executable=%s" % executable)
+    command.append("--uuid=%s" % tb_uuid)
+    command.append("--cmdline=%s" % open("/proc/%s/cmdline" % pid).read().replace('\x00',' '))
+    command.append("--loginuid=%s" % open("/proc/%s/loginuid" % pid).readlines()[0])
+
+    helper = subprocess.Popen(command, stdin=subprocess.PIPE)
+    helper.communicate(tb)
+    helper.wait()
 
 def __dump_exception(out, text, tracebk):
     'write a traceback to "out"'

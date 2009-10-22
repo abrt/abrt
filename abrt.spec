@@ -346,6 +346,7 @@ fi
 
 %files addon-python
 %defattr(-,root,root,-)
+%{_bindir}/%{name}-pyhook-helper
 %config(noreplace) %{_sysconfdir}/%{name}/pyhook.conf
 %{python_sitearch}/ABRTUtils.so
 %{_libdir}/%{name}/libPython.so*
