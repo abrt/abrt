@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-09 16:26+0000\n"
-"PO-Revision-Date: 2009-10-09 17:30-0300\n"
+"POT-Creation-Date: 2009-10-22 09:44+0000\n"
+"PO-Revision-Date: 2009-10-22 09:16-0300\n"
 "Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
 "Language-Team: Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -196,7 +196,7 @@ msgstr ""
 "Incapaz de conseguir el informe!\n"
 "¿Falta la información de la depuración?"
 
-#: ../src/Gui/CCMainWindow.py:308
+#: ../src/Gui/CCMainWindow.py:310
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -205,12 +205,17 @@ msgstr ""
 "¡El informe falló!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:340
+#: ../src/Gui/CCMainWindow.py:329
+#: ../src/Gui/CCMainWindow.py:356
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
 
-#: ../src/Gui/CCReporterDialog.py:98
+#: ../src/Gui/CCReporterDialog.py:167
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
+
+#: ../src/Gui/CCReporterDialog.py:211
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -218,10 +223,6 @@ msgid ""
 msgstr ""
 "<b>ADVERTENCIA</b>, ¡está por enviar datos que pueden contener información sensible!\n"
 "¿Realmente quiere enviar <b>%s</b>?\n"
-
-#: ../src/Gui/CCReporterDialog.py:111
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
@@ -263,6 +264,10 @@ msgstr "Enviar"
 #: ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
+
+#: ../src/Gui/report.glade.h:5
+msgid "gtk-refresh"
+msgstr "gtk-refresh"
 
 #: ../src/Gui/SettingsDialog.py:34
 #: ../src/Gui/SettingsDialog.py:51
@@ -449,31 +454,33 @@ msgstr "Saliendo..."
 msgid "Getting local universal unique identification"
 msgstr "Obteniendo la identificación única universal local"
 
-#: ../lib/Plugins/CCpp.cpp:153
+#: ../lib/Plugins/CCpp.cpp:161
 msgid "Getting backtrace..."
 msgstr "Obteniendo el backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:425
+#: ../lib/Plugins/CCpp.cpp:447
+#: ../lib/Plugins/CCpp.cpp:572
 msgid "Searching for debug-info packages..."
 msgstr "Buscando paquetes de información del depurador..."
 
-#: ../lib/Plugins/CCpp.cpp:487
+#: ../lib/Plugins/CCpp.cpp:509
+#: ../lib/Plugins/CCpp.cpp:607
 msgid "Downloading and installing debug-info packages..."
 msgstr "Descargando e instalando paquetes de información del depurador..."
 
-#: ../lib/Plugins/CCpp.cpp:549
+#: ../lib/Plugins/CCpp.cpp:650
 msgid "Getting local universal unique identification..."
 msgstr "Obteniendo la identificación única universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:568
+#: ../lib/Plugins/CCpp.cpp:669
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:619
+#: ../lib/Plugins/CCpp.cpp:714
 msgid "Starting report creation..."
 msgstr "Iniciando la creación del informe..."
 
-#: ../lib/Plugins/CCpp.cpp:649
+#: ../lib/Plugins/CCpp.cpp:745
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
