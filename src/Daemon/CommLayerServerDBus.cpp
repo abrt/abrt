@@ -215,20 +215,19 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     comment = (it_comment != argin1.end()) ? it_comment->second[CD_CONTENT].c_str() : "";
     reproduce = (it_reproduce != argin1.end()) ? it_reproduce->second[CD_CONTENT].c_str() : "";
 
+    const char* errmsg = NULL;
     if (strlen(comment) > LIMIT_MESSAGE)
     {
-        dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, _("Comment message is too long"));
-        if (!reply)
-            die_out_of_memory();
-        send_flush_and_unref(reply);
-        return 0;
+        errmsg = _("Comment is too long");
     }
-
-    if (strlen(reproduce) > LIMIT_MESSAGE)
+    else if (strlen(reproduce) > LIMIT_MESSAGE)
+    {
+        errmsg = _("'How to reproduce' is too long");
+    }
+    if (errmsg)
     {
         dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, _("How to reproduce message is too long"));
+        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, errmsg);
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
@@ -247,21 +246,19 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         }
     }
 
-
     const char * sender = dbus_message_get_sender(call);
     if (!user_conf_data.empty())
     {
         std::string PluginName;
         map_plugin_settings_t plugin_settings;
-        map_map_string_t::const_iterator it_user_conf_data;
-        for (it_user_conf_data = user_conf_data.begin(); it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
+        map_map_string_t::const_iterator it_user_conf_data = user_conf_data.begin();
+        for (; it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
         {
-            map_string_t::const_iterator it_plugin_config;
-            map_string_t plugin_config = it_user_conf_data->second;
             PluginName = it_user_conf_data->first;
             plugin_settings = it_user_conf_data->second;
 #if DEBUG
             std::cout << "plugin name: " << it_user_conf_data->first;
+            map_string_t::const_iterator it_plugin_config;
             for    (it_plugin_config = it_user_conf_data->second.begin();
                     it_plugin_config != it_user_conf_data->second.end();
                     it_plugin_config++)

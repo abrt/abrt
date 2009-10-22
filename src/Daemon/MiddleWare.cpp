@@ -311,11 +311,12 @@ static bool CheckReport(const map_crash_report_t& pCrashReport)
     map_crash_report_t::const_iterator it_release = pCrashReport.find(FILENAME_RELEASE);
     map_crash_report_t::const_iterator it_executable = pCrashReport.find(FILENAME_EXECUTABLE);
 
-    if (it_analyzer == pCrashReport.end() || it_mwuid == pCrashReport.end() ||
-        it_mwuuid == pCrashReport.end() || it_package == pCrashReport.end() ||
-        it_architecture == pCrashReport.end() || it_kernel == pCrashReport.end() ||
-        it_component == pCrashReport.end() || it_release == pCrashReport.end() ||
-        it_executable == pCrashReport.end())
+    map_crash_report_t::const_iterator end = pCrashReport.end();
+    if (it_analyzer == end || it_mwuid == end ||
+        it_mwuuid == end || it_package == end ||
+        it_architecture == end || it_kernel == end ||
+        it_component == end || it_release == end ||
+        it_executable == end)
     {
         return false;
     }
