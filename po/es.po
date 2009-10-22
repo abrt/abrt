@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-22 09:44+0000\n"
-"PO-Revision-Date: 2009-10-22 09:16-0300\n"
+"POT-Creation-Date: 2009-10-22 16:18+0000\n"
+"PO-Revision-Date: 2009-10-22 13:24-0300\n"
 "Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
 "Language-Team: Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -25,23 +25,23 @@ msgstr "Otro cliente ya está siendo ejecutado, intentando despertarlo."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Se obtienen datos inesperados desde el demonio (¿está la Base de Datos correctamente actualizada?)"
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
 msgstr "Complementos analizadores"
 
-#: ../src/Gui/ABRTPlugin.py:49
+#: ../src/Gui/ABRTPlugin.py:56
 msgid "Action plugins"
 msgstr "Complementos de acción"
 
-#: ../src/Gui/ABRTPlugin.py:50
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Reporter plugins"
 msgstr "Complementos de informes"
 
-#: ../src/Gui/ABRTPlugin.py:51
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Database plugins"
 msgstr "Complementos de Bases de Datos"
 
-#: ../src/Gui/ABRTPlugin.py:90
+#: ../src/Gui/ABRTPlugin.py:97
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "No se puso el nombre del complemento, no se puede cargar su configuración"
 
@@ -72,7 +72,7 @@ msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:240
+#: ../src/Gui/CCMainWindow.py:244
 msgid "<b>Not reported!</b>"
 msgstr "<b>¡No informado!</b>"
 
@@ -161,7 +161,16 @@ msgstr "Tasa de caídas"
 msgid "User"
 msgstr "Usuario"
 
-#: ../src/Gui/CCMainWindow.py:178
+#: ../src/Gui/CCMainWindow.py:160
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"No se puede mostrar el diálogo de configuración\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:181
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -170,7 +179,7 @@ msgstr ""
 "¡No se pudo finalizar la tarea actual!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:195
+#: ../src/Gui/CCMainWindow.py:198
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -179,16 +188,16 @@ msgstr ""
 "Error intentando cargar la lista  de volcado, por favor compruebe si el demonio abrt está siendo ejecutado\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:205
+#: ../src/Gui/CCMainWindow.py:208
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr "No se pudo obtener nombre de usuario para el uid %s"
 
-#: ../src/Gui/CCMainWindow.py:232
+#: ../src/Gui/CCMainWindow.py:236
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b> Esta caída ha sido reportada, usted puede encontrar el informe en:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:292
+#: ../src/Gui/CCMainWindow.py:296
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -196,7 +205,7 @@ msgstr ""
 "Incapaz de conseguir el informe!\n"
 "¿Falta la información de la depuración?"
 
-#: ../src/Gui/CCMainWindow.py:310
+#: ../src/Gui/CCMainWindow.py:314
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -205,8 +214,8 @@ msgstr ""
 "¡El informe falló!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:329
-#: ../src/Gui/CCMainWindow.py:356
+#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:360
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
@@ -269,20 +278,20 @@ msgstr "gtk-cancel"
 msgid "gtk-refresh"
 msgstr "gtk-refresh"
 
-#: ../src/Gui/SettingsDialog.py:34
-#: ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Seleccione un complemento</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Seleccione la base de datos de fondo</b>"
 
-#: ../src/Gui/SettingsDialog.py:168
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "Eliminar este trabajo"
 
-#: ../src/Gui/SettingsDialog.py:211
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "Eliminar esta acción"
 
@@ -454,33 +463,33 @@ msgstr "Saliendo..."
 msgid "Getting local universal unique identification"
 msgstr "Obteniendo la identificación única universal local"
 
-#: ../lib/Plugins/CCpp.cpp:161
+#: ../lib/Plugins/CCpp.cpp:246
 msgid "Getting backtrace..."
 msgstr "Obteniendo el backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:447
-#: ../lib/Plugins/CCpp.cpp:572
+#: ../lib/Plugins/CCpp.cpp:532
+#: ../lib/Plugins/CCpp.cpp:657
 msgid "Searching for debug-info packages..."
 msgstr "Buscando paquetes de información del depurador..."
 
-#: ../lib/Plugins/CCpp.cpp:509
-#: ../lib/Plugins/CCpp.cpp:607
+#: ../lib/Plugins/CCpp.cpp:594
+#: ../lib/Plugins/CCpp.cpp:692
 msgid "Downloading and installing debug-info packages..."
 msgstr "Descargando e instalando paquetes de información del depurador..."
 
-#: ../lib/Plugins/CCpp.cpp:650
+#: ../lib/Plugins/CCpp.cpp:735
 msgid "Getting local universal unique identification..."
 msgstr "Obteniendo la identificación única universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:669
+#: ../lib/Plugins/CCpp.cpp:754
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:714
+#: ../lib/Plugins/CCpp.cpp:799
 msgid "Starting report creation..."
 msgstr "Iniciando la creación del informe..."
 
-#: ../lib/Plugins/CCpp.cpp:745
+#: ../lib/Plugins/CCpp.cpp:830
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
@@ -554,12 +563,6 @@ msgstr "Sosreport.corriendo"
 #~ "Error intentando abrir las preferencias del complemento de interfaz de "
 #~ "usuario:\n"
 #~ "\n"
-#~ "%s"
-#~ msgid ""
-#~ "Can't save plugin settings:\n"
-#~ " %s"
-#~ msgstr ""
-#~ "No se pueden salvar las preferencias del complemento:\n"
 #~ "%s"
 #~ msgid "unknown response from settings dialog"
 #~ msgstr "Respuesta desconocida del diálogo de preferencias"
