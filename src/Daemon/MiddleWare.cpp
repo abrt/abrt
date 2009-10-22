@@ -311,11 +311,12 @@ static bool CheckReport(const map_crash_report_t& pCrashReport)
     map_crash_report_t::const_iterator it_release = pCrashReport.find(FILENAME_RELEASE);
     map_crash_report_t::const_iterator it_executable = pCrashReport.find(FILENAME_EXECUTABLE);
 
-    if (it_analyzer == pCrashReport.end() || it_mwuid == pCrashReport.end() ||
-        it_mwuuid == pCrashReport.end() || it_package == pCrashReport.end() ||
-        it_architecture == pCrashReport.end() || it_kernel == pCrashReport.end() ||
-        it_component == pCrashReport.end() || it_release == pCrashReport.end() ||
-        it_executable == pCrashReport.end())
+    map_crash_report_t::const_iterator end = pCrashReport.end();
+    if (it_analyzer == end || it_mwuid == end ||
+        it_mwuuid == end || it_package == end ||
+        it_architecture == end || it_kernel == end ||
+        it_component == end || it_release == end ||
+        it_executable == end)
     {
         return false;
     }
@@ -336,9 +337,6 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                                     const std::string& pUID)
 {
     report_status_t ret;
-    std::string key;
-    std::string message;
-    CDebugDump dd;
 
     if (!CheckReport(pCrashReport))
     {
@@ -349,25 +347,28 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     std::string UID = pCrashReport.find(CD_MWUID)->second[CD_CONTENT];
     std::string UUID = pCrashReport.find(CD_MWUUID)->second[CD_CONTENT];
     std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-    std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1 ));
+    std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
 
     // Save comments and how to reproduciton
     map_crash_report_t::const_iterator it_comment = pCrashReport.find(CD_COMMENT);
     map_crash_report_t::const_iterator it_reproduce = pCrashReport.find(CD_REPRODUCE);
     std::string pDumpDir = getDebugDumpDir(UUID,UID);
 
-    dd.Open(pDumpDir);
-    if ( it_comment != pCrashReport.end() )
     {
-        dd.SaveText(FILENAME_COMMENT, it_comment->second[CD_CONTENT]);
+        CDebugDump dd;
+        dd.Open(pDumpDir);
+        if (it_comment != pCrashReport.end())
+        {
+            dd.SaveText(FILENAME_COMMENT, it_comment->second[CD_CONTENT]);
+        }
+        if (it_reproduce != pCrashReport.end())
+        {
+            dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT]);
+        }
     }
-    if ( it_reproduce != pCrashReport.end() )
-    {
-        dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT]);
-    }
-    dd.Close();
+
     // analyzer with package name (CCpp:xrog-x11-app) has higher priority
-    key = analyzer + ":" + packageName;
+    std::string key = analyzer + ":" + packageName;
     map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
     if (keyPtr == s_mapAnalyzerActionsAndReporters.end())
     {
@@ -375,6 +376,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
         keyPtr = s_mapAnalyzerActionsAndReporters.find(analyzer);
     }
 
+    std::string message;
     if (keyPtr != s_mapAnalyzerActionsAndReporters.end())
     {
         vector_pair_string_string_t::iterator it_r = keyPtr->second.begin();
@@ -386,10 +388,10 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                 if (g_pPluginManager->GetPluginType(pluginName) == REPORTER)
                 {
                     CReporter* reporter = g_pPluginManager->GetReporter(pluginName);
+#if 0 /* Using ~user/.abrt/ is bad wrt security */
                     std::string home = "";
                     map_plugin_settings_t oldSettings;
                     map_plugin_settings_t newSettings;
-                    std::string res;
 
                     if (pUID != "")
                     {
@@ -404,14 +406,15 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                             }
                         }
                     }
+#endif
+                    std::string res = reporter->Report(pCrashReport, it_r->second);
 
-                    res = reporter->Report(pCrashReport, it_r->second);
-
+#if 0 /* Using ~user/.abrt/ is bad wrt security */
                     if (home != "")
                     {
                         reporter->SetSettings(oldSettings);
                     }
-
+#endif
                     ret[pluginName].push_back("1");
                     ret[pluginName].push_back(res);
                     message += res + "\n";

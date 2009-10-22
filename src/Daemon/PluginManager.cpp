@@ -376,66 +376,73 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
                                        const map_plugin_settings_t& pSettings)
 {
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
-    if (abrt_plugin != m_mapABRTPlugins.end())
+    if (abrt_plugin == m_mapABRTPlugins.end())
     {
-        map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-        if (plugin != m_mapPlugins.end())
+        return;
+    }
+    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
+    if (plugin == m_mapPlugins.end())
+    {
+        return;
+    }
+    plugin->second->SetSettings(pSettings);
+
+#if 0 /* Writing to ~user/.abrt/ is bad wrt security */
+    if (abrt_plugin->second->GetType() != REPORTER)
+    {
+        return;
+    }
+
+    std::string home = get_home_dir(atoi(pUID.c_str()));
+    if (home == "")
+    {
+        return;
+    }
+
+    std::string confDir = home + "/.abrt";
+    std::string confPath = confDir + "/" + pName + "."PLUGINS_CONF_EXTENSION;
+    uid_t uid = atoi(pUID.c_str());
+    struct passwd* pw = getpwuid(uid);
+    gid_t gid = pw ? pw->pw_gid : uid;
+
+    struct stat buf;
+    if (stat(confDir.c_str(), &buf) != 0)
+    {
+        if (mkdir(confDir.c_str(), 0700) == -1)
         {
-            plugin->second->SetSettings(pSettings);
-
-            if (abrt_plugin->second->GetType() == REPORTER)
-            {
-                std::string home = get_home_dir(atoi(pUID.c_str()));
-                if (home != "")
-                {
-                    std::string confDir = home + "/.abrt";
-                    std::string confPath = confDir + "/" + pName + "."PLUGINS_CONF_EXTENSION;
-                    uid_t uid = atoi(pUID.c_str());
-                    struct passwd* pw = getpwuid(uid);
-                    gid_t gid = pw ? pw->pw_gid : uid;
-
-                    struct stat buf;
-                    if (stat(confDir.c_str(), &buf) != 0)
-                    {
-                        if (mkdir(confDir.c_str(), 0700) == -1)
-                        {
-                            perror_msg("Can't create dir '%s'", confDir.c_str());
-                            return;
-                        }
-                        if (chmod(confDir.c_str(), 0700) == -1)
-                        {
-                            perror_msg("Can't change mod of dir '%s'", confDir.c_str());
-                            return;
-                        }
-                        if (chown(confDir.c_str(), uid, gid) == -1)
-                        {
-                            perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
-                            return;
-                        }
-
-                    }
-                    else if (!S_ISDIR(buf.st_mode))
-                    {
-                        perror_msg("'%s' is not a directory", confDir.c_str());
-                        return;
-                    }
-
-                    /** we don't want to save it from daemon if it's running under root
-                    but wi might get back to this once we make the daemon to not run
-                    with root privileges
-                    */
-                    /*
-                    SavePluginSettings(confPath, pSettings);
-                    if (chown(confPath.c_str(), uid, gid) == -1)
-                    {
-                        perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
-                        return;
-                    }
-                    */
-                }
-            }
+            perror_msg("Can't create dir '%s'", confDir.c_str());
+            return;
+        }
+        if (chmod(confDir.c_str(), 0700) == -1)
+        {
+            perror_msg("Can't change mod of dir '%s'", confDir.c_str());
+            return;
+        }
+        if (chown(confDir.c_str(), uid, gid) == -1)
+        {
+            perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+            return;
         }
     }
+    else if (!S_ISDIR(buf.st_mode))
+    {
+        perror_msg("'%s' is not a directory", confDir.c_str());
+        return;
+    }
+
+    /** we don't want to save it from daemon if it's running under root
+    but wi might get back to this once we make the daemon to not run
+    with root privileges
+    */
+    /*
+    SavePluginSettings(confPath, pSettings);
+    if (chown(confPath.c_str(), uid, gid) == -1)
+    {
+        perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+        return;
+    }
+    */
+#endif
 }
 
 map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName,

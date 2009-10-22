@@ -65,7 +65,7 @@ static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
 	  int success = strftime(timeloc, 128, "%c", localtime(&time));
 	  if (!success)
 	    error_msg_and_die("Error while converting time to string.");
-	  
+
 	  printf(_("%u.\n"
 		   "\tUID        : %s\n"
 		   "\tUUID       : %s\n"
@@ -132,7 +132,6 @@ int main(int argc, char** argv)
 {
     char* uuid = NULL;
     int op = -1;
-    char *name;
 
     setlocale(LC_ALL,"");
 #if ENABLE_NLS

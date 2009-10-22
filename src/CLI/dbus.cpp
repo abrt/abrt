@@ -38,7 +38,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
     DBusError err;
     dbus_error_init(&err);
     DBusMessage *reply;
-    reply = dbus_connection_send_with_reply_and_block(s_dbus_conn, 
+    reply = dbus_connection_send_with_reply_and_block(s_dbus_conn,
 						      msg, /*timeout*/ -1, &err);
     if (reply == NULL)
     {

@@ -33,15 +33,15 @@
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
 
-/* 
- * Trims whitespace characters both from left and right side of a string. 
+/*
+ * Trims whitespace characters both from left and right side of a string.
  * Modifies the string in-place. Returns the trimmed string.
  */
 char *trim(char *str)
 {
   if (!str)
     return NULL;
-  
+
   // Remove leading spaces.
   char *ibuf;
   for (ibuf = str; *ibuf && isspace(*ibuf); ++ibuf)
@@ -60,9 +60,9 @@ char *trim(char *str)
   return str;
 }
 
-/* 
- * Escapes the field content string to avoid confusion with file comments. 
- * Returned field must be free()d by caller. 
+/*
+ * Escapes the field content string to avoid confusion with file comments.
+ * Returned field must be free()d by caller.
  */
 static char *escape(const char *str)
 {
@@ -87,12 +87,12 @@ static char *escape(const char *str)
     ++ptr;
   }
 
-  // Copy the input string to the resultant string, and escape all 
+  // Copy the input string to the resultant string, and escape all
   // occurences of \# and #.
   char *result = (char*)malloc(strlen(str) + 1 + count);
   if (!result)
     error_msg_and_die("Memory error while escaping a field.");
-  
+
   const char *src = str;
   char *dest = result;
   newline = true;
@@ -109,15 +109,15 @@ static char *escape(const char *str)
     newline = (*src == '\n');
     *dest++ = *src++;
   }
-  *dest = '\0';  
+  *dest = '\0';
   return result;
 }
 
 /*
- * Removes all comment lines, and unescapes the string previously escaped 
- * by escape(). Works in-place. 
+ * Removes all comment lines, and unescapes the string previously escaped
+ * by escape(). Works in-place.
  */
-static char *remove_comments_and_unescape(char *str)
+static void remove_comments_and_unescape(char *str)
 {
   char *src = str, *dest = str;
   bool newline = true;
@@ -125,7 +125,7 @@ static char *remove_comments_and_unescape(char *str)
   {
     if (newline)
     {
-      if (*src == '#') 
+      if (*src == '#')
       { // Skip the comment line!
 	while (*src && *src != '\n')
 	  ++src;
@@ -136,25 +136,25 @@ static char *remove_comments_and_unescape(char *str)
 	++src;
 	continue;
       }
-      else if (*src == '\\' && 
-	       (*(src + 1) == '#' || 
+      else if (*src == '\\' &&
+	       (*(src + 1) == '#' ||
 		(*(src + 1) == '\\' && *(src + 2) == '#')))
       {
 	++src; // Unescape escaped char.
       }
     }
-    
+
     newline = (*src == '\n');
     *dest++ = *src++;
   }
   *dest = '\0';
 }
 
-/* 
+/*
  * Writes a field of crash report to a file.
  * Field must be writable.
  */
-static void write_crash_report_field(FILE *fp, const map_crash_report_t &report, 
+static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
 				     const char *field, const char *description)
 {
   const map_crash_report_t::const_iterator it = report.find(field);
@@ -168,9 +168,9 @@ static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
   if (it->second[CD_TYPE] == CD_SYS)
   {
     error_msg("Cannot write field %s because it is a system value\n", field);
-    return; 
+    return;
   }
-  
+
   fprintf(fp, "%s%s\n", FIELD_SEP, it->first.c_str());
 
   fprintf(fp, "%s\n", description);
@@ -182,8 +182,8 @@ static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
   free(escaped_content);
 }
 
-/* 
- * Saves the crash report to a file. 
+/*
+ * Saves the crash report to a file.
  * Parameter 'fp' must be opened before write_crash_report is called.
  * Returned value:
  *  If the report is successfully stored to the file, a zero value is returned.
@@ -194,7 +194,7 @@ static int write_crash_report(const map_crash_report_t &report, FILE *fp)
   fprintf(fp, "# Please check this report. Lines starting with '#' will be ignored.\n"
 	  "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
 
-  write_crash_report_field(fp, report, CD_COMMENT, 
+  write_crash_report_field(fp, report, CD_COMMENT,
 			   _("# Describe the circumstances of this crash below."));
   write_crash_report_field(fp, report, CD_REPRODUCE,
 			   _("# How to reproduce the crash?"));
@@ -210,19 +210,19 @@ static int write_crash_report(const map_crash_report_t &report, FILE *fp)
   write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
   write_crash_report_field(fp, report, FILENAME_REASON, _("# Reason of crash"));
   write_crash_report_field(fp, report, FILENAME_RELEASE, _("# Release string of the operating system"));
-  
+
   return 0;
 }
 
-/* 
+/*
  * Updates appropriate field in the report from the text. The text can
- * contain multiple fields. 
+ * contain multiple fields.
  * Returns:
  *  0 if no change to the field was detected.
  *  1 if the field was changed.
  *  Changes to read-only fields are ignored.
  */
-static int read_crash_report_field(const char *text, map_crash_report_t &report, 
+static int read_crash_report_field(const char *text, map_crash_report_t &report,
 				   const char *field)
 {
   char separator[strlen("\n" FIELD_SEP) + strlen(field) + 2]; // 2 = '\n\0'
@@ -236,9 +236,9 @@ static int read_crash_report_field(const char *text, map_crash_report_t &report,
   const char *end = strstr(textfield, "\n" FIELD_SEP);
   if (!end)
     length = strlen(textfield);
-  else 
+  else
     length = end - textfield;
-  
+
   const map_crash_report_t::iterator it = report.find(field);
   if (it == report.end())
   {
@@ -249,7 +249,7 @@ static int read_crash_report_field(const char *text, map_crash_report_t &report,
   if (it->second[CD_TYPE] == CD_SYS)
   {
     error_msg("Cannot update field %s because it is a system value.\n", field);
-    return 0; 
+    return 0;
   }
 
   // Do not change noneditable fields.
@@ -275,12 +275,12 @@ static int read_crash_report_field(const char *text, map_crash_report_t &report,
   return 1;
 }
 
-/* 
- * Updates the crash report 'report' from the text. The text must not contain 
- * any comments. 
+/*
+ * Updates the crash report 'report' from the text. The text must not contain
+ * any comments.
  * Returns:
  *  0 if no field was changed.
- *  1 if any field was changed. 
+ *  1 if any field was changed.
  *  Changes to read-only fields are ignored.
  */
 static int read_crash_report(map_crash_report_t &report, const char *text)
@@ -306,20 +306,20 @@ static int read_crash_report(map_crash_report_t &report, const char *text)
 int launch_editor(const char *path)
 {
   const char *editor, *terminal;
-  
+
   editor = getenv("ABRT_EDITOR");
   if (!editor)
     editor = getenv("VISUAL");
   if (!editor)
     editor = getenv("EDITOR");
-  
+
   terminal = getenv("TERM");
   if (!editor && (!terminal || !strcmp(terminal, "dumb")))
   {
     error_msg(_("Terminal is dumb but no VISUAL nor EDITOR defined."));
     return 1;
   }
-  
+
   if (!editor)
     editor = "vi";
 
@@ -367,7 +367,7 @@ int report(const char *uuid, bool always)
     error_msg("could not close '%s'", filename);
     return 2;
   }
-  
+
   // Start a text editor on the temporary file.
   launch_editor(filename);
 
@@ -394,7 +394,7 @@ int report(const char *uuid, bool always)
 
   remove_comments_and_unescape(text);
   // Updates the crash report from the file text.
-  int report_changed = read_crash_report(cr, text); 
+  int report_changed = read_crash_report(cr, text);
   if (report_changed)
     puts(_("\nThe report has been updated."));
   else

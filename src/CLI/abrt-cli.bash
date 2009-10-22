@@ -1,7 +1,7 @@
 # bash-completion add-on for abrt-cli(1)
 # http://bash-completion.alioth.debian.org/
 
-_abrt_cli() 
+_abrt_cli()
 {
     local cur prev opts
     COMPREPLY=()
