@@ -14,11 +14,3 @@ class WrongData(Exception):
 
     def __str__(self):
         return self.what
-
-class ConfBackendInitError(Exception):
-    def __init__(self, msg):
-        Exception.__init__(self)
-        self.what = msg
-
-    def __str__(self):
-        return self.what
