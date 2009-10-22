@@ -210,7 +210,8 @@ class MainWindow():
                                                 entry.getTime("%c"), entry.getCount(), entry.isReported(), entry])
         # activate the last row if any..
         if n:
-            self.dlist.set_cursor(self.dumpsListStore.get_path(n))
+            # we can use (0,) as path for the first row, but what if API changes?
+            self.dlist.set_cursor(self.dumpsListStore.get_path(self.dumpsListStore.get_iter_first()))
 
     def filter_dumps(self, model, miter, data):
         # for later..
