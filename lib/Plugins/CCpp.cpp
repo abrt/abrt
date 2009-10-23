@@ -265,7 +265,7 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     //args[2] = (char*)"-ex";
-    //args[3] = "set debug-file-directory /usr/lib/debug/.build-id:/var/cache/abrt-di/usr/lib/debug/.build-id";
+    //args[3] = "set debug-file-directory /usr/lib/debug:/var/cache/abrt-di/usr/lib/debug";
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -656,23 +656,22 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
 {
     update_client(_("Searching for debug-info packages..."));
 
-    int pipein[2], pipeout[2]; //TODO: get rid of pipein. Can we use ExecVP?
-    xpipe(pipein);
+    int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
 
     pid_t child = fork();
     if (child < 0)
     {
-        /*close(pipein[0]); close(pipeout[0]); - why bother */
-        /*close(pipein[1]); close(pipeout[1]); */
+        /*close(pipeout[0]); - why bother */
+        /*close(pipeout[1]); */
         perror_msg_and_die("fork");
     }
     if (child == 0)
     {
-        close(pipein[1]);
         close(pipeout[0]);
-        xmove_fd(pipein[0], STDIN_FILENO);
         xmove_fd(pipeout[1], STDOUT_FILENO);
+        close(STDIN_FILENO);
+        xopen("/dev/null", O_RDONLY);
         /* Not a good idea, we won't see any error messages */
         /*close(STDERR_FILENO);*/
 
@@ -686,7 +685,6 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         exit(1);
     }
 
-    close(pipein[0]);
     close(pipeout[1]);
 
     update_client(_("Downloading and installing debug-info packages..."));
