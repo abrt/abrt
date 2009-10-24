@@ -7,9 +7,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-22 16:18+0000\n"
-"PO-Revision-Date: 2009-10-22 13:24-0300\n"
-"Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
+"POT-Creation-Date: 2009-10-24 00:40+0000\n"
+"PO-Revision-Date: 2009-10-24 00:15-0300\n"
+"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
 "Language-Team: Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -136,10 +136,12 @@ msgstr "_Archivo"
 msgid "_Help"
 msgstr "Ay_uda"
 
+# Revisar si hay que traducir.
+# Ver como referencia los botones gtk que no habia que traducirlos
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:80
 msgid "Icon"
-msgstr "icono"
+msgstr "Icono"
 
 #: ../src/Gui/CCMainWindow.py:88
 msgid "Package"
@@ -237,6 +239,7 @@ msgstr ""
 msgid "Report done"
 msgstr "Informe hecho"
 
+# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/dialogs.glade.h:2
 #: ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
@@ -269,11 +272,13 @@ msgstr "Comentario"
 msgid "Send"
 msgstr "Enviar"
 
+# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/report.glade.h:4
 #: ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
+# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/report.glade.h:5
 msgid "gtk-refresh"
 msgstr "gtk-refresh"
@@ -325,7 +330,7 @@ msgstr "Paquetes en la Blacklist"
 
 #: ../src/Gui/settings.glade.h:8
 msgid "C_onfigure plugin"
-msgstr "C_onfigure Complemento"
+msgstr "C_onfigurar Complemento"
 
 #: ../src/Gui/settings.glade.h:9
 msgid "Check package GPG signature"
@@ -353,7 +358,7 @@ msgstr "LLaves GPG"
 
 #: ../src/Gui/settings.glade.h:15
 msgid "GPG keys: "
-msgstr "LLaves GPG"
+msgstr "LLaves GPG:"
 
 #: ../src/Gui/settings.glade.h:16
 msgid "Global Settings"
@@ -387,17 +392,20 @@ msgstr "Version:"
 msgid "Web Site:"
 msgstr "Página Web:"
 
+# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
 msgstr "gtk-add"
 
+# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
-msgstr "gtk-cerrado"
+msgstr "gtk-close"
 
+# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
-msgstr "gtk-borra"
+msgstr "gtk-remove"
 
 #: ../src/Applet/Applet.cpp:71
 #, c-format
@@ -473,23 +481,23 @@ msgid "Searching for debug-info packages..."
 msgstr "Buscando paquetes de información del depurador..."
 
 #: ../lib/Plugins/CCpp.cpp:594
-#: ../lib/Plugins/CCpp.cpp:692
+#: ../lib/Plugins/CCpp.cpp:690
 msgid "Downloading and installing debug-info packages..."
 msgstr "Descargando e instalando paquetes de información del depurador..."
 
-#: ../lib/Plugins/CCpp.cpp:735
+#: ../lib/Plugins/CCpp.cpp:733
 msgid "Getting local universal unique identification..."
 msgstr "Obteniendo la identificación única universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:754
+#: ../lib/Plugins/CCpp.cpp:752
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:799
+#: ../lib/Plugins/CCpp.cpp:797
 msgid "Starting report creation..."
 msgstr "Iniciando la creación del informe..."
 
-#: ../lib/Plugins/CCpp.cpp:830
+#: ../lib/Plugins/CCpp.cpp:828
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
@@ -509,7 +517,7 @@ msgstr "Ejecutando complemento RunApp..."
 #: ../lib/Plugins/FileTransfer.cpp:63
 #: ../lib/Plugins/FileTransfer.cpp:409
 msgid "FileTransfer: URL not specified"
-msgstr "FileTransfer: URL no especificada"
+msgstr "Transferencia de archivo: URL no especificada"
 
 #: ../lib/Plugins/FileTransfer.cpp:81
 #, c-format
@@ -539,11 +547,11 @@ msgstr "Ejecutando complemento SOSreport..."
 
 #: ../lib/Plugins/SOSreport.cpp:135
 msgid "running sosreport: "
-msgstr "lanzando.sosreport"
+msgstr "lanzando sosreport:"
 
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
-msgstr "Sosreport.corriendo"
+msgstr "Sosreport corriendo"
 
 #~ msgid "Check CC and add coment +1..."
 #~ msgstr "Compruebe CC y añada un comentario +1"
