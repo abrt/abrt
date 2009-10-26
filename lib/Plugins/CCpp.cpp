@@ -156,6 +156,91 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     return 0;
 }
 
+enum LineRating 
+{
+        /* RATING           --          EXAMPLE */
+    MissingEverything = 0, // #0 0x0000dead in ?? ()
+    MissingFunction = 1, // #0 0x0000dead in ?? () from /usr/lib/libfoobar.so.4
+    MissingLibrary = 2, // #0 0x0000dead in foobar()
+    MissingSourceFile = 3, // #0 0x0000dead in FooBar::FooBar () from /usr/lib/libfoobar.so.4
+    Good = 4, // #0 0x0000dead in FooBar::crash (this=0x0) at /home/user/foobar.cpp:204
+    InvalidRating = -1 // (dummy invalid value)
+};
+
+static const LineRating BestRating = Good;
+
+LineRating rate_line(const std::string & line)
+{
+    bool function = false;
+    bool library = false;
+    bool source_file = false;
+
+#define FOUND(x) (line.find(x) != std::string::npos)
+    if (FOUND(" in ") && !FOUND(" in ??"))
+        function = true;
+
+    if (FOUND(" from "))
+        library = true;
+
+    if(FOUND(" at "))
+        source_file = true;
+#undef FOUND
+
+    /* see the "enum LineRating" comments for possible combinations */
+    if (function && source_file)
+        return Good;
+    if (function && library)
+        return MissingSourceFile;
+    if (function)
+        return MissingLibrary;
+    if (library)
+        return MissingFunction;
+
+    return MissingEverything;
+}
+
+/* returns number of "stars" to show*/
+int rate_backtrace(const std::string & backtrace)
+{
+    int l = backtrace.length();
+    int i;
+    std::string s = "";
+    int multiplier = 0;
+    int rating = 0;
+    int best_possible_rating = 0;
+
+    /*we get the lines from the end, b/c of the rating multiplier
+      which gives weight to the first lines*/
+    for (i=l-1; i>=0; i--) 
+    {
+        if (backtrace[i] == '#') /*this divides frames from each other*/
+        {
+            multiplier++;	    
+            rating += rate_line(s) * multiplier;
+            best_possible_rating += BestRating * multiplier;
+    
+            s = ""; /*starting new line*/
+        } else
+        {
+            s=backtrace[i]+s; 
+        }
+    }
+
+    /*returning number of "stars" to show*/
+    if (rating==0)
+        return 0;
+    if (rating >= best_possible_rating*0.8)
+        return 4;
+    if (rating >= best_possible_rating*0.6)
+        return 3;
+    if (rating >= best_possible_rating*0.4)
+        return 2;
+    if (rating >= best_possible_rating*0.2)
+        return 1;
+
+    return 0;
+}
+
 static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
@@ -180,7 +265,7 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     //args[2] = (char*)"-ex";
-    //args[3] = "set debug-file-directory /usr/lib/debug/.build-id:/var/cache/abrt-di/usr/lib/debug/.build-id";
+    //args[3] = "set debug-file-directory /usr/lib/debug:/var/cache/abrt-di/usr/lib/debug";
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -571,23 +656,22 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
 {
     update_client(_("Searching for debug-info packages..."));
 
-    int pipein[2], pipeout[2]; //TODO: get rid of pipein. Can we use ExecVP?
-    xpipe(pipein);
+    int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
 
     pid_t child = fork();
     if (child < 0)
     {
-        /*close(pipein[0]); close(pipeout[0]); - why bother */
-        /*close(pipein[1]); close(pipeout[1]); */
+        /*close(pipeout[0]); - why bother */
+        /*close(pipeout[1]); */
         perror_msg_and_die("fork");
     }
     if (child == 0)
     {
-        close(pipein[1]);
         close(pipeout[0]);
-        xmove_fd(pipein[0], STDIN_FILENO);
         xmove_fd(pipeout[1], STDOUT_FILENO);
+        close(STDIN_FILENO);
+        xopen("/dev/null", O_RDONLY);
         /* Not a good idea, we won't see any error messages */
         /*close(STDERR_FILENO);*/
 
@@ -601,7 +685,6 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         exit(1);
     }
 
-    close(pipein[0]);
     close(pipeout[1]);
 
     update_client(_("Downloading and installing debug-info packages..."));
@@ -749,11 +832,12 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
 
     dd.Open(pDebugDumpDir);
     dd.SaveText(FILENAME_BACKTRACE, build_ids + backtrace);
-log("BACKTRACE:'%s'", (build_ids + backtrace).c_str());
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
+    std::string rating = ssprintf("%d\n", rate_backtrace(backtrace));
+    dd.SaveText(FILENAME_RATING, rating);
 }
 
 void CAnalyzerCCpp::Init()

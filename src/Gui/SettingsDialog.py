@@ -1,9 +1,8 @@
 import sys
 import gtk
-from PluginList import getPluginInfoList, PluginInfoList
+from PluginList import getPluginInfoList
 from CC_gui_functions import *
 #from PluginSettingsUI import PluginSettingsUI
-from ABRTPlugin import PluginSettings, PluginInfo
 from abrt_utils import _
 
 
@@ -75,11 +74,11 @@ class SettingsDialog:
         try:
             self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
         except Exception, e:
-            print "SettingsDialog: ", e
+            raise Exception("Comunication with daemon has failed, have you restarted the daemon after update?")
 
         ## hydrate cron jobs:
         for key,val in self.settings["Cron"].iteritems():
-            # actionas are separated by ','
+            # actions are separated by ','
             actions = val.split(',')
             self.settings["Cron"][key] = actions
         for plugin in self.pluginlist.getActionPlugins():
@@ -120,11 +119,9 @@ class SettingsDialog:
                 self.add_AnalyzerAction(action)
 
     def on_bCancelGPGKeys_clicked(self, button):
-        print "cancel"
         self.wGPGKeys.hide()
 
     def on_bSaveGPGKeys_clicked(self, button):
-        print "save"
         self.wGPGKeys.hide()
 
     def on_bAddGPGKey_clicked(self, button):
@@ -232,9 +229,6 @@ class SettingsDialog:
 
     def on_bAddAction_clicked(self, button):
         self.add_AnalyzerAction()
-
-    def on_cancel_clicked(self,button):
-        self.window.hide()
 
     def dehydrate(self):
         self.ccdaemon.setSettings(self.settings)

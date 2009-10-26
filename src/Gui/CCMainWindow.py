@@ -154,9 +154,12 @@ class MainWindow():
 
     def on_miSettings_clicked(self, widget):
         dialog = SettingsDialog(self.window, self.ccdaemon)
-        dialog.hydrate()
+        try:
+            dialog.hydrate()
+        except Exception, e:
+            gui_error_message(_("Can't show the settings dialog\n%s" % e))
+            return
         dialog.show()
-        self.ccdaemon.getSettings()
 
     def warning_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
@@ -210,7 +213,8 @@ class MainWindow():
                                                 entry.getTime("%c"), entry.getCount(), entry.isReported(), entry])
         # activate the last row if any..
         if n:
-            self.dlist.set_cursor(self.dumpsListStore.get_path(n))
+            # we can use (0,) as path for the first row, but what if API changes?
+            self.dlist.set_cursor(self.dumpsListStore.get_path(self.dumpsListStore.get_iter_first()))
 
     def filter_dumps(self, model, miter, data):
         # for later..

@@ -1,5 +1,5 @@
 libexec_PROGRAMS = hookCCpp
-bin_PROGRAMS = dumpoops
+bin_PROGRAMS = dumpoops abrt-pyhook-helper
 
 # CCpp
 hookCCpp_SOURCES = \
@@ -29,6 +29,18 @@ dumpoops_CPPFLAGS = \
 dumpoops_LDADD = \
     ../../lib/Utils/libABRTUtils.la
 
+# abrt-pyhook-helper
+abrt_pyhook_helper_SOURCES = \
+    abrt-pyhook-helper.cpp
+abrt_pyhook_helper_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/Utils \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -D_GNU_SOURCE
+abrt_pyhook_helper_LDADD = \
+    ../../lib/Utils/libABRTUtils.la
+
 man_MANS = pyhook.conf.5
 
 python_PYTHON = sitecustomize.py abrt_exception_handler.py
@@ -45,3 +57,7 @@ abrt_exception_handler.py:
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
 	sed s,@DEBUG_DUMP_DIR@,$(DEBUG_DUMPS_DIR),g abrt_exception_handler.py.in  > abrt_exception_handler.py
+
+install-data-hook:
+	chmod u+s,g+s $(DESTDIR)$(bindir)/abrt-pyhook-helper
+

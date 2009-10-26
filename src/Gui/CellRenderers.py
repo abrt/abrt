@@ -38,10 +38,7 @@ class MultilineCellRenderer(gtk.CellRendererText):
 
     def _on_editor_key_press_event(self, editor, event):
         if event.state & (gtk.gdk.SHIFT_MASK | gtk.gdk.CONTROL_MASK): return
-        if event.keyval in (gtk.keysyms.Return, gtk.keysyms.KP_Enter):
-            editor.remove_widget()
-            self.emit("edited", editor.get_data("path"), editor.get_text())
-        elif event.keyval == gtk.keysyms.Escape:
+        if event.keyval == gtk.keysyms.Escape:
             editor.set_text(self.old_text)
             editor.remove_widget()
             self.emit("editing-canceled")
