@@ -41,17 +41,13 @@ static void get_product_and_version(const std::string& pRelease,
                                           std::string& pVersion);
 
 
-#define throw_if_fault_occurred(env)                                                        \
-do                                                                                          \
-{                                                                                           \
-    xmlrpc_env* e = (env);                                                                  \
-    if (e->fault_occurred)                                                                  \
-    {                                                                                       \
-        char buffer[2048];                                                                  \
-        snprintf(buffer, 2047, "XML-RPC Fault: %s(%d)", e->fault_string, e->fault_code);    \
-        throw CABRTException(EXCEP_PLUGIN, std::string(buffer));                            \
-    }                                                                                       \
-}while(0)
+static void throw_if_fault_occurred(xmlrpc_env* e)
+{
+    if (e->fault_occurred)
+    {
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("XML-RPC Fault: %s(%d)", e->fault_string, e->fault_code));;
+    }
+}
 
 static void new_xmlrpc_client(const char* url, bool no_ssl_verify)
 {
@@ -88,10 +84,10 @@ static void destroy_xmlrpc_client()
 }
 
 CReporterBugzilla::CReporterBugzilla() :
-    m_sBugzillaURL("https://bugzilla.redhat.com"),
-    m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX)),
     m_bNoSSLVerify(false),
-    m_bLoggedIn(false)
+    m_bLoggedIn(false),
+    m_sBugzillaURL("https://bugzilla.redhat.com"),
+    m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX))
 {}
 
 CReporterBugzilla::~CReporterBugzilla()
