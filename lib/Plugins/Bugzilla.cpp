@@ -1,3 +1,6 @@
+#include <nssb64.h>
+#include <xmlrpc-c/base.h>
+#include <xmlrpc-c/client.h>
 
 #include "abrtlib.h"
 #include "Bugzilla.h"
@@ -45,7 +48,9 @@ static void throw_if_fault_occurred(xmlrpc_env* e)
 {
     if (e->fault_occurred)
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("XML-RPC Fault: %s(%d)", e->fault_string, e->fault_code));;
+        std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", e->fault_string, e->fault_code);
+        error_msg("%s", errmsg.c_str()); // show error in daemon log
+        throw CABRTException(EXCEP_PLUGIN, errmsg);
     }
 }
 
@@ -85,27 +90,22 @@ static void destroy_xmlrpc_client()
 
 CReporterBugzilla::CReporterBugzilla() :
     m_bNoSSLVerify(false),
-    m_bLoggedIn(false),
     m_sBugzillaURL("https://bugzilla.redhat.com"),
-    m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX))
+    m_sBugzillaXMLRPC("https://bugzilla.redhat.com"XML_RPC_SUFFIX)
 {}
 
 CReporterBugzilla::~CReporterBugzilla()
 {}
 
-#if 1
-PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
-#else
-static PRint32 base64_encode_cb(void *arg, const char* obuff, PRInt32 size)
-#endif
+static PRInt32 base64_encode_cb(void *arg, const char* obuf, PRInt32 size)
 {
-    CReporterBugzilla* bz = static_cast<CReporterBugzilla*>(arg);
+    std::string& attachment_b64 = *static_cast<std::string*>(arg);
     int ii;
     for (ii = 0; ii < size; ii++)
     {
         if (isprint(obuf[ii]))
         {
-            bz->m_sAttchmentInBase64 += obuf[ii];
+            attachment_b64 += obuf[ii];
         }
     }
     return 1;
@@ -285,8 +285,8 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
                    "\n\nAdditional information\n"
                    "======\n";
 
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    map_crash_report_t::const_iterator it = pCrashReport.begin();
+    for (; it != pCrashReport.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {
@@ -400,37 +400,33 @@ static uint32_t new_bug(const map_crash_report_t& pCrashReport)
     return bug_id;
 }
 
-void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
+static void add_attachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
 {
-    xmlrpc_value* param = NULL;
     xmlrpc_value* result = NULL;
-    NSSBase64Encoder* base64 = NULL;
 
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    map_crash_report_t::const_iterator it = pCrashReport.begin();
+    for (; it != pCrashReport.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_ATT)
         {
-            m_sAttchmentInBase64 = "";
-            base64 = NSSBase64Encoder_Create(Base64Encode_cb, this);
+            std::string attachment_b64;
+            NSSBase64Encoder* base64 = NSSBase64Encoder_Create(&base64_encode_cb, &attachment_b64);
             if (!base64)
             {
-                throw CABRTException(EXCEP_PLUGIN, "CReporterBugzilla::AddAttachemnt(): cannot initialize base64.");
+                error_msg_and_die("cannot initialize base64"); // never happens
             }
-
             NSSBase64Encoder_Update(base64,
                                     reinterpret_cast<const unsigned char*>(it->second[CD_CONTENT].c_str()),
                                     it->second[CD_CONTENT].length());
             NSSBase64Encoder_Destroy(base64, PR_FALSE);
 
-
             std::string description = "File: " + it->first;
-            param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
+            xmlrpc_value* param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
                                               pBugId.c_str(),
                                               "description", description.c_str(),
                                               "filename", it->first.c_str(),
                                               "contenttype", "text/plain",
-                                              "data", m_sAttchmentInBase64.c_str()
+                                              "data", attachment_b64.c_str()
                                       );
             throw_if_fault_occurred(&env);
 
@@ -474,7 +470,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
 
         update_client(_("Creating new bug..."));
         bug_id = new_bug(pCrashReport);
-        AddAttachments(to_string(bug_id), pCrashReport);
+        add_attachments(to_string(bug_id), pCrashReport);
 
         update_client(_("Logging out..."));
         logout();
@@ -519,7 +515,7 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
             m_sBugzillaURL.erase(--m_sBugzillaURL.end());
         }
         */
-        m_sBugzillaXMLRPC = m_sBugzillaURL + std::string(XML_RPC_SUFFIX);
+        m_sBugzillaXMLRPC = m_sBugzillaURL + XML_RPC_SUFFIX;
     }
     if (pSettings.find("Login") != pSettings.end())
     {
