@@ -25,6 +25,7 @@
 #include <sys/time.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <arpa/inet.h> /* sockaddr_in, sockaddr_in6 etc */
 #include <termios.h>
 #include <time.h>
 #include <unistd.h>
@@ -100,6 +101,9 @@ void* xzalloc(size_t size);
 char* xstrdup(const char *s);
 char* xstrndup(const char *s, int n);
 
+char* skip_whitespace(const char *s);
+char* skip_non_whitespace(const char *s);
+
 extern ssize_t safe_read(int fd, void *buf, size_t count);
 // NB: will return short read on error, not -1,
 // if some data was read before error occurred
@@ -131,6 +135,9 @@ void xstat(const char *name, struct stat *stat_buf);
 int is_regular_file(struct dirent *dent, const char *dirname);
 
 void xmove_fd(int from, int to);
+int ndelay_on(int fd);
+int ndelay_off(int fd);
+int close_on_exec_on(int fd);
 char* xasprintf(const char *format, ...);
 
 int xopen(const char *pathname, int flags);
@@ -141,6 +148,50 @@ void xunlink(const char *pathname);
 off_t copyfd_eof(int src_fd, int dst_fd);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+
+unsigned long long monotonic_ns(void);
+unsigned long long monotonic_us(void);
+unsigned monotonic_sec(void);
+
+/* networking helpers */
+typedef struct len_and_sockaddr {
+	socklen_t len;
+	union {
+		struct sockaddr sa;
+		struct sockaddr_in sin;
+		struct sockaddr_in6 sin6;
+	} u;
+} len_and_sockaddr;
+enum {
+	LSA_LEN_SIZE = offsetof(len_and_sockaddr, u),
+	LSA_SIZEOF_SA = sizeof(struct sockaddr) > sizeof(struct sockaddr_in6) ?
+			sizeof(struct sockaddr) : sizeof(struct sockaddr_in6),
+};
+void setsockopt_reuseaddr(int fd);
+int setsockopt_broadcast(int fd);
+int setsockopt_bindtodevice(int fd, const char *iface);
+len_and_sockaddr* get_sock_lsa(int fd);
+void xconnect(int s, const struct sockaddr *s_addr, socklen_t addrlen);
+unsigned lookup_port(const char *port, const char *protocol, unsigned default_port);
+int get_nport(const struct sockaddr *sa);
+void set_nport(len_and_sockaddr *lsa, unsigned port);
+len_and_sockaddr* host_and_af2sockaddr(const char *host, int port, sa_family_t af);
+len_and_sockaddr* xhost_and_af2sockaddr(const char *host, int port, sa_family_t af);
+len_and_sockaddr* host2sockaddr(const char *host, int port);
+len_and_sockaddr* xhost2sockaddr(const char *host, int port);
+len_and_sockaddr* xdotted2sockaddr(const char *host, int port);
+int xsocket_type(len_and_sockaddr **lsap, int family, int sock_type);
+int xsocket_stream(len_and_sockaddr **lsap);
+int create_and_bind_stream_or_die(const char *bindaddr, int port);
+int create_and_bind_dgram_or_die(const char *bindaddr, int port);
+int create_and_connect_stream_or_die(const char *peer, int port);
+int xconnect_stream(const len_and_sockaddr *lsa);
+char* xmalloc_sockaddr2host(const struct sockaddr *sa);
+char* xmalloc_sockaddr2host_noport(const struct sockaddr *sa);
+char* xmalloc_sockaddr2hostonly_noport(const struct sockaddr *sa);
+char* xmalloc_sockaddr2dotted(const struct sockaddr *sa);
+char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
+
 
 /* C++ style stuff */
 
