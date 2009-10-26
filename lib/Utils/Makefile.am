@@ -1,7 +1,10 @@
 lib_LTLIBRARIES = libABRTUtils.la
 
 libABRTUtils_la_SOURCES = \
+    time.cpp \
     xfuncs.cpp \
+    xconnect.cpp \
+    skip_whitespace.cpp \
     read_write.cpp \
     logging.cpp \
     copyfd.cpp \
