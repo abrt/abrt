@@ -10,19 +10,22 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libRunApp.la \
                          libSOSreport.la \
                          libBugzilla.la \
+                         libCatcut.la \
                          libTicketUploader.la \
                          libPython.la \
                          libFileTransfer.la
 
 dist_pluginslib_DATA = KerneloopsReporter.GTKBuilder Logger.GTKBuilder Mailx.GTKBuilder Bugzilla.GTKBuilder TicketUploader.GTKBuilder
+# + Catcut.GTKBuilder?
 
 pluginsconfdir=$(PLUGINS_CONF_DIR)
-dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf TicketUploader.conf FileTransfer.conf
+dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf Catcut.conf TicketUploader.conf FileTransfer.conf
 
 
 man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7\
            abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7\
            abrt-SQLite3.7  abrt-RunApp.7 abrt-TicketUploader.7
+# + abrt-Catcut.7
 
 EXTRA_DIST = $(man_MANS)
 
@@ -83,6 +86,12 @@ libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
 libBugzilla_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
 libBugzilla_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+
+# Catcut
+libCatcut_la_SOURCES = Catcut.h Catcut.cpp
+libCatcut_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
+libCatcut_la_LDFLAGS = -avoid-version
+libCatcut_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # TicketUploader
 libTicketUploader_la_SOURCES = TicketUploader.h TicketUploader.cpp
