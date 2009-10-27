@@ -193,6 +193,10 @@ char* xmalloc_sockaddr2dotted(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 
 
+/* Returns malloc'ed block */
+char *encode_base64(const void *src, int length);
+
+
 /* C++ style stuff */
 
 std::string ssprintf(const char *format, ...);

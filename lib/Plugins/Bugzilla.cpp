@@ -1,4 +1,3 @@
-#include <nssb64.h>
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 
@@ -96,21 +95,6 @@ CReporterBugzilla::CReporterBugzilla() :
 
 CReporterBugzilla::~CReporterBugzilla()
 {}
-
-static PRInt32 base64_encode_cb(void *arg, const char* obuf, PRInt32 size)
-{
-    std::string& attachment_b64 = *static_cast<std::string*>(arg);
-    int ii;
-    for (ii = 0; ii < size; ii++)
-    {
-        if (isprint(obuf[ii]))
-        {
-            attachment_b64 += obuf[ii];
-        }
-    }
-    return 1;
-}
-
 
 static void login(const char* login, const char* passwd)
 {
@@ -409,25 +393,17 @@ static void add_attachments(const std::string& pBugId, const map_crash_report_t&
     {
         if (it->second[CD_TYPE] == CD_ATT)
         {
-            std::string attachment_b64;
-            NSSBase64Encoder* base64 = NSSBase64Encoder_Create(&base64_encode_cb, &attachment_b64);
-            if (!base64)
-            {
-                error_msg_and_die("cannot initialize base64"); // never happens
-            }
-            NSSBase64Encoder_Update(base64,
-                                    reinterpret_cast<const unsigned char*>(it->second[CD_CONTENT].c_str()),
-                                    it->second[CD_CONTENT].length());
-            NSSBase64Encoder_Destroy(base64, PR_FALSE);
-
             std::string description = "File: " + it->first;
+            const std::string& to_encode = it->second[CD_CONTENT];
+            char *encoded64 = encode_base64(to_encode.c_str(), to_encode.length());
             xmlrpc_value* param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
                                               pBugId.c_str(),
                                               "description", description.c_str(),
                                               "filename", it->first.c_str(),
                                               "contenttype", "text/plain",
-                                              "data", attachment_b64.c_str()
+                                              "data", encoded64
                                       );
+            free(encoded64);
             throw_if_fault_occurred(&env);
 
             xmlrpc_client_call2(&env, client, server_info, "bugzilla.addAttachment", param, &result);
