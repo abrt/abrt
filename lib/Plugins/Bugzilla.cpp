@@ -259,7 +259,7 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
     }
     if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
     {
-       comment = "\n\nComment\n"
+        comment = "\n\nComment\n"
                  "-----\n" +
                  pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
     }
@@ -333,28 +333,23 @@ static void get_product_and_version(const std::string& pRelease,
 
 static uint32_t new_bug(const map_crash_report_t& pCrashReport)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* id = NULL;
-
-    xmlrpc_int bug_id = -1;
-
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];
     std::string arch = pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
 
-    std::string description;
-    std::string product;
-    std::string version;
     std::string summary = "[abrt] crash detected in " + package;
     std::string status_whiteboard = "abrt_hash:" + uuid;
 
+    std::string description;
     create_new_bug_description(pCrashReport, description);
+
+    std::string product;
+    std::string version;
     get_product_and_version(release, product, version);
 
-    param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                                         "product", product.c_str(),
                                         "component", component.c_str(),
                                         "version", version.c_str(),
@@ -365,12 +360,15 @@ static uint32_t new_bug(const map_crash_report_t& pCrashReport)
                               );
     throw_if_fault_occurred(&env);
 
+    xmlrpc_value* result;
     xmlrpc_client_call2(&env, client, server_info, "Bug.create", param, &result);
     throw_if_fault_occurred(&env);
 
+    xmlrpc_value* id;
     xmlrpc_struct_find_value(&env, result, "id", &id);
     throw_if_fault_occurred(&env);
 
+    xmlrpc_int bug_id = -1;
     if (id)
     {
         xmlrpc_read_int(&env, id, &bug_id);
