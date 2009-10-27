@@ -30,11 +30,11 @@ static void get_product_and_version(const string& pRelease,
                                           string& pVersion);
 
 
-static void throw_if_fault_occurred(xmlrpc_env* e)
+static void throw_if_xml_fault_occurred()
 {
-    if (e->fault_occurred)
+    if (env.fault_occurred)
     {
-        string errmsg = ssprintf("XML-RPC Fault: %s(%d)", e->fault_string, e->fault_code);
+        string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
         error_msg("%s", errmsg.c_str()); // show error in daemon log
         throw CABRTException(EXCEP_PLUGIN, errmsg);
     }
@@ -60,10 +60,10 @@ static void new_xmlrpc_client(const char* url, bool no_ssl_verify)
 
     xmlrpc_client_create(&env, XMLRPC_CLIENT_NO_FLAGS, PACKAGE_NAME, VERSION, &clientParms, XMLRPC_CPSIZE(transportparm_size),
                          &client);
-    throw_if_fault_occurred(&env);
+    throw_if_xml_fault_occurred();
 
     server_info = xmlrpc_server_info_new(&env, url);
-    throw_if_fault_occurred(&env);
+    throw_if_xml_fault_occurred();
 }
 
 static void destroy_xmlrpc_client()
@@ -77,37 +77,37 @@ static void destroy_xmlrpc_client()
 static string login(const char* login, const char* passwd)
 {
     xmlrpc_value* param = xmlrpc_build_value(&env, "(ss)", login, passwd);
-    throw_if_fault_occurred(&env);
+    throw_if_xml_fault_occurred();
 
-    xmlrpc_value* result = NULL; /* paranoia */
+    xmlrpc_value* result;
     xmlrpc_client_call2(&env, client, server_info, "Catcut.auth", param, &result);
-    throw_if_fault_occurred(&env);
+    throw_if_xml_fault_occurred();
     xmlrpc_DECREF(param);
 
-    const char *cookie = NULL;
-    xmlrpc_value *cookie_xml = NULL;
+    xmlrpc_value *cookie_xml;
+    const char *cookie;
+    string cookie_str;
     xmlrpc_struct_find_value(&env, result, "cookie", &cookie_xml);
-    throw_if_fault_occurred(&env);
-    if (cookie_xml)
-    {
-        xmlrpc_read_string(&env, cookie_xml, &cookie);
-        throw_if_fault_occurred(&env);
-        xmlrpc_DECREF(cookie_xml);
-    }
+    throw_if_xml_fault_occurred();
+    xmlrpc_read_string(&env, cookie_xml, &cookie);
+    throw_if_xml_fault_occurred();
+    cookie_str = cookie;
+    xmlrpc_DECREF(cookie_xml);
 
     xmlrpc_DECREF(result);
-    return cookie ? cookie : "";
+
+    return cookie_str;
 }
 
 // catcut does not have it (yet?)
 //static void logout()
 //{
 //    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", "");
-//    throw_if_fault_occurred(&env);
+//    throw_if_xml_fault_occurred();
 //
 //    xmlrpc_value* result = NULL; /* paranoia */
 //    xmlrpc_client_call2(&env, client, server_info, "User.logout", param, &result);
-//    throw_if_fault_occurred(&env);
+//    throw_if_xml_fault_occurred();
 //}
 
 static void create_new_bug_description(const map_crash_report_t& pCrashReport, string& pDescription)
@@ -223,28 +223,28 @@ static string new_bug(const char *auth_cookie, const map_crash_report_t& pCrashR
                 "status_whiteboard", status_whiteboard.c_str(),
                 "platform", arch.c_str()
                 );
-    throw_if_fault_occurred(&env);
+    throw_if_xml_fault_occurred();
 
-    xmlrpc_value *result = NULL;
+    xmlrpc_value *result;
     xmlrpc_client_call2(&env, client, server_info, "Catcut.createTicket", param, &result);
-    throw_if_fault_occurred(&env);
+    throw_if_xml_fault_occurred();
     xmlrpc_DECREF(param);
 
-    const char *bug_id = NULL;
-    xmlrpc_value *bug_id_xml = NULL;
+    xmlrpc_value *bug_id_xml;
+    const char *bug_id;
+    string bug_id_str;
     xmlrpc_struct_find_value(&env, result, "ticket", &bug_id_xml);
-    throw_if_fault_occurred(&env);
-    if (bug_id_xml)
-    {
-        xmlrpc_read_string(&env, bug_id_xml, &bug_id);
-        throw_if_fault_occurred(&env);
-        xmlrpc_DECREF(bug_id_xml);
-        log("New bug id: %s", bug_id);
-        update_client(_("New bug id: ") + string(bug_id));
-    }
+    throw_if_xml_fault_occurred();
+    xmlrpc_read_string(&env, bug_id_xml, &bug_id);
+    throw_if_xml_fault_occurred();
+    bug_id_str = bug_id;
+    log("New bug id: %s", bug_id);
+    update_client(_("New bug id: ") + bug_id_str);
+    xmlrpc_DECREF(bug_id_xml);
 
     xmlrpc_DECREF(result);
-    return bug_id;
+
+    return bug_id_str;
 }
 
 //static
@@ -268,7 +268,7 @@ static string new_bug(const char *auth_cookie, const map_crash_report_t& pCrashR
 //                                              "data", encoded64
 //                                      );
 //            free(encoded64);
-//            throw_if_fault_occurred(&env);
+//            throw_if_xml_fault_occurred();
 //
 //// catcut has this API:
 //// struct response requestUpload(string cookie, string ticket, string filename, string description)
@@ -281,7 +281,7 @@ static string new_bug(const char *auth_cookie, const map_crash_report_t& pCrashR
 ////be combined with the base URL of the XML-RPC server using the usual
 ////rules for relative URL's (RFC 3986).
 //            xmlrpc_client_call2(&env, client, server_info, "catcut.addAttachment", param, &result);
-//            throw_if_fault_occurred(&env);
+//            throw_if_xml_fault_occurred();
 //        }
 //    }
 //}
