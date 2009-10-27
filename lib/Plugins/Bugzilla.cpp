@@ -293,9 +293,8 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
         }
         else if (it->second[CD_TYPE] == CD_BIN)
         {
-            char buffer[1024];
-            snprintf(buffer, 1024, _("Binary file %s will not be reported."), it->first.c_str());
-            warn_client(std::string(buffer));
+            std::string msg = ssprintf(_("Binary file %s will not be reported."), it->first.c_str());
+            warn_client(msg);
             //update_client(_("Binary file ")+it->first+_(" will not be reported."));
         }
     }
