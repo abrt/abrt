@@ -455,7 +455,6 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     {
         destroy_xmlrpc_client();
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
-        return "";
     }
     destroy_xmlrpc_client();
 
