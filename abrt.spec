@@ -148,6 +148,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
+%package plugin-catcut
+Summary: %{name}'s catcut plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-catcut
+Plugin to report bugs into the catcut.
+
 %package plugin-ticketuploader
 Summary: %{name}'s ticketuploader plugin
 Group: System Environment/Libraries
@@ -330,6 +338,13 @@ fi
 %{_libdir}/%{name}/libBugzilla.so*
 %{_libdir}/%{name}/Bugzilla.GTKBuilder
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
+
+%files plugin-catcut
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Catcut.conf
+%{_libdir}/%{name}/libCatcut.so*
+#%{_libdir}/%{name}/Catcut.GTKBuilder
+#%{_mandir}/man7/%{name}-Catcut.7.gz
 
 %files plugin-ticketuploader
 %defattr(-,root,root,-)

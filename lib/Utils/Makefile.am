@@ -1,10 +1,13 @@
 lib_LTLIBRARIES = libABRTUtils.la
 
+# Not used just yet:
+# time.cpp
+# xconnect.cpp
+# skip_whitespace.cpp
+
 libABRTUtils_la_SOURCES = \
-    time.cpp \
     xfuncs.cpp \
-    xconnect.cpp \
-    skip_whitespace.cpp \
+    encbase64.cpp \
     read_write.cpp \
     logging.cpp \
     copyfd.cpp \

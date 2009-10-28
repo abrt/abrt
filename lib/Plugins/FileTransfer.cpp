@@ -77,9 +77,8 @@ void CFileTransfer::SendFile(const std::string& pURL,
         }
     }
 
-    char buffer[1024];
-    snprintf(buffer, 1024, _("Sending archive %s via %s"), pFilename.c_str(), protocol.c_str());
-    update_client(buffer);
+    std::string msg = ssprintf(_("Sending archive %s via %s"), pFilename.c_str(), protocol.c_str());
+    update_client(msg.c_str());
 
     std::string wholeURL;
     if (pURL[len-1] == '/')

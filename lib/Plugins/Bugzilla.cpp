@@ -1,3 +1,5 @@
+#include <xmlrpc-c/base.h>
+#include <xmlrpc-c/client.h>
 
 #include "abrtlib.h"
 #include "Bugzilla.h"
@@ -45,7 +47,9 @@ static void throw_if_fault_occurred(xmlrpc_env* e)
 {
     if (e->fault_occurred)
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("XML-RPC Fault: %s(%d)", e->fault_string, e->fault_code));;
+        std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", e->fault_string, e->fault_code);
+        error_msg("%s", errmsg.c_str()); // show error in daemon log
+        throw CABRTException(EXCEP_PLUGIN, errmsg);
     }
 }
 
@@ -85,32 +89,12 @@ static void destroy_xmlrpc_client()
 
 CReporterBugzilla::CReporterBugzilla() :
     m_bNoSSLVerify(false),
-    m_bLoggedIn(false),
     m_sBugzillaURL("https://bugzilla.redhat.com"),
-    m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX))
+    m_sBugzillaXMLRPC("https://bugzilla.redhat.com"XML_RPC_SUFFIX)
 {}
 
 CReporterBugzilla::~CReporterBugzilla()
 {}
-
-#if 1
-PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
-#else
-static PRint32 base64_encode_cb(void *arg, const char* obuff, PRInt32 size)
-#endif
-{
-    CReporterBugzilla* bz = static_cast<CReporterBugzilla*>(arg);
-    int ii;
-    for (ii = 0; ii < size; ii++)
-    {
-        if (isprint(obuf[ii]))
-        {
-            bz->m_sAttchmentInBase64 += obuf[ii];
-        }
-    }
-    return 1;
-}
-
 
 static void login(const char* login, const char* passwd)
 {
@@ -275,7 +259,7 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
     }
     if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
     {
-       comment = "\n\nComment\n"
+        comment = "\n\nComment\n"
                  "-----\n" +
                  pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
     }
@@ -285,8 +269,8 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
                    "\n\nAdditional information\n"
                    "======\n";
 
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    map_crash_report_t::const_iterator it = pCrashReport.begin();
+    for (; it != pCrashReport.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {
@@ -309,9 +293,8 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
         }
         else if (it->second[CD_TYPE] == CD_BIN)
         {
-            char buffer[1024];
-            snprintf(buffer, 1024, _("Binary file %s will not be reported."), it->first.c_str());
-            warn_client(std::string(buffer));
+            std::string msg = ssprintf(_("Binary file %s will not be reported."), it->first.c_str());
+            warn_client(msg);
             //update_client(_("Binary file ")+it->first+_(" will not be reported."));
         }
     }
@@ -350,28 +333,23 @@ static void get_product_and_version(const std::string& pRelease,
 
 static uint32_t new_bug(const map_crash_report_t& pCrashReport)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* id = NULL;
-
-    xmlrpc_int bug_id = -1;
-
     std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];
     std::string arch = pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
 
-    std::string description;
-    std::string product;
-    std::string version;
     std::string summary = "[abrt] crash detected in " + package;
     std::string status_whiteboard = "abrt_hash:" + uuid;
 
+    std::string description;
     create_new_bug_description(pCrashReport, description);
+
+    std::string product;
+    std::string version;
     get_product_and_version(release, product, version);
 
-    param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                                         "product", product.c_str(),
                                         "component", component.c_str(),
                                         "version", version.c_str(),
@@ -382,12 +360,15 @@ static uint32_t new_bug(const map_crash_report_t& pCrashReport)
                               );
     throw_if_fault_occurred(&env);
 
+    xmlrpc_value* result;
     xmlrpc_client_call2(&env, client, server_info, "Bug.create", param, &result);
     throw_if_fault_occurred(&env);
 
+    xmlrpc_value* id;
     xmlrpc_struct_find_value(&env, result, "id", &id);
     throw_if_fault_occurred(&env);
 
+    xmlrpc_int bug_id = -1;
     if (id)
     {
         xmlrpc_read_int(&env, id, &bug_id);
@@ -400,38 +381,26 @@ static uint32_t new_bug(const map_crash_report_t& pCrashReport)
     return bug_id;
 }
 
-void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
+static void add_attachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
 {
-    xmlrpc_value* param = NULL;
     xmlrpc_value* result = NULL;
-    NSSBase64Encoder* base64 = NULL;
 
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    map_crash_report_t::const_iterator it = pCrashReport.begin();
+    for (; it != pCrashReport.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_ATT)
         {
-            m_sAttchmentInBase64 = "";
-            base64 = NSSBase64Encoder_Create(Base64Encode_cb, this);
-            if (!base64)
-            {
-                throw CABRTException(EXCEP_PLUGIN, "CReporterBugzilla::AddAttachemnt(): cannot initialize base64.");
-            }
-
-            NSSBase64Encoder_Update(base64,
-                                    reinterpret_cast<const unsigned char*>(it->second[CD_CONTENT].c_str()),
-                                    it->second[CD_CONTENT].length());
-            NSSBase64Encoder_Destroy(base64, PR_FALSE);
-
-
             std::string description = "File: " + it->first;
-            param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
+            const std::string& to_encode = it->second[CD_CONTENT];
+            char *encoded64 = encode_base64(to_encode.c_str(), to_encode.length());
+            xmlrpc_value* param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
                                               pBugId.c_str(),
                                               "description", description.c_str(),
                                               "filename", it->first.c_str(),
                                               "contenttype", "text/plain",
-                                              "data", m_sAttchmentInBase64.c_str()
+                                              "data", encoded64
                                       );
+            free(encoded64);
             throw_if_fault_occurred(&env);
 
             xmlrpc_client_call2(&env, client, server_info, "bugzilla.addAttachment", param, &result);
@@ -474,7 +443,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
 
         update_client(_("Creating new bug..."));
         bug_id = new_bug(pCrashReport);
-        AddAttachments(to_string(bug_id), pCrashReport);
+        add_attachments(to_string(bug_id), pCrashReport);
 
         update_client(_("Logging out..."));
         logout();
@@ -484,7 +453,6 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     {
         destroy_xmlrpc_client();
         throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
-        return "";
     }
     destroy_xmlrpc_client();
 
@@ -519,7 +487,7 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
             m_sBugzillaURL.erase(--m_sBugzillaURL.end());
         }
         */
-        m_sBugzillaXMLRPC = m_sBugzillaURL + std::string(XML_RPC_SUFFIX);
+        m_sBugzillaXMLRPC = m_sBugzillaURL + XML_RPC_SUFFIX;
     }
     if (pSettings.find("Login") != pSettings.end())
     {
