@@ -83,12 +83,10 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 	m_pSysLog.ClearOopsList();
 
 	while (!oopsList.empty()) {
-		char path[PATH_MAX];
-		snprintf(path, sizeof(path), "%s/kerneloops-%lu-%lu",
-			DEBUG_DUMPS_DIR, (long)t, (long)oopsList.size());
-
+		char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu") + 2 * sizeof(long)*3];
+		sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu",
+				(long)t, (long)oopsList.size());
 		COops oops = oopsList.back();
-
 		try
 		{
 			CDebugDump debugDump;
@@ -171,9 +169,10 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 
 void CKerneloopsScanner::SetSettings(const map_plugin_settings_t& pSettings)
 {
-	if (pSettings.find("SysLogFile") != pSettings.end())
+	map_plugin_settings_t::const_iterator it = pSettings.find("SysLogFile");
+	if (it != pSettings.end())
 	{
-		m_sSysLogFile = pSettings.find("SysLogFile")->second;
+		m_sSysLogFile = it->second;
 	}
 }
 

@@ -41,8 +41,6 @@ class CSysLog
 {
 	private:
 		void QueueOops(char *data, char *version);
-		int ExtractVersion(char *linepointer, char *version);
-		int FillLinePointers(char *buffer, size_t buflen);
 		std::list<COops> m_OopsQueue;
 		int m_nFoundOopses;
 

@@ -38,7 +38,7 @@ class CKerneloopsScanner : public CAction
 		CSysLog m_pSysLog;
 
 	public:
-		/* For standalone oops processor */
+		/* For "dumpoops" tool */
 		void SaveOopsToDebugDump();
 		int ScanDmesg();
 		int ScanSysLogFile(const char *filename);
