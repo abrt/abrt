@@ -27,28 +27,8 @@
 #ifndef __INCLUDE_GUARD_KERNELOOPSSYSLOG_H_
 #define __INCLUDE_GUARD_KERNELOOPSSYSLOG_H_
 
-#include <string>
-#include <list>
+#include "abrt_types.h"
 
-class COops
-{
-	public:
-		std::string m_sData;
-		std::string m_sVersion;
-};
-
-class CSysLog
-{
-	private:
-		void QueueOops(char *data, char *version);
-		std::list<COops> m_OopsQueue;
-		int m_nFoundOopses;
-
-	public:
-		CSysLog();
-		const std::list<COops>& GetOopsList();
-		void ClearOopsList();
-		int ExtractOops(char *buffer, size_t buflen);
-};
+int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen);
 
 #endif

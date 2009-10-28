@@ -78,24 +78,29 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 {
 	update_client(_("Creating kernel oops crash reports..."));
 
+	int countdown = 16; /* do not report hundreds of oopses */
 	time_t t = time(NULL);
-	std::list<COops> oopsList = m_pSysLog.GetOopsList();
-	m_pSysLog.ClearOopsList();
+	vector_string_t oopsList = m_pOopsList;
+	m_pOopsList.clear();
 
-	while (!oopsList.empty()) {
+	while (!oopsList.empty() && --countdown != 0) {
 		char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu") + 2 * sizeof(long)*3];
 		sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu",
 				(long)t, (long)oopsList.size());
-		COops oops = oopsList.back();
+
+		std::string oops = oopsList.back();
+		const char *first_line = oops.c_str();
+		char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
+              	*second_line++ = '\0';
 		try
 		{
 			CDebugDump debugDump;
 			debugDump.Create(path, 0);
 			debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
 			debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
-			debugDump.SaveText(FILENAME_KERNEL, oops.m_sVersion);
+			debugDump.SaveText(FILENAME_KERNEL, first_line);
 			debugDump.SaveText(FILENAME_PACKAGE, "not_applicable");
-			debugDump.SaveText(FILENAME_KERNELOOPS, oops.m_sData);
+			debugDump.SaveText(FILENAME_KERNELOOPS, second_line);
 		}
 		catch (CABRTException& e)
 		{
@@ -116,7 +121,8 @@ int CKerneloopsScanner::ScanDmesg()
 	buffer = (char*)xzalloc(pagesz + 1);
 
 	syscall(__NR_syslog, 3, buffer, pagesz);
-	cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, strlen(buffer));
+	m_pOopsList.clear();
+	cnt_FoundOopses = extract_oopses(m_pOopsList, buffer, strlen(buffer));
 	free(buffer);
 
 	return cnt_FoundOopses;
@@ -160,8 +166,10 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 	close(fd);
 
 	cnt_FoundOopses = 0;
-	if (sz > 0)
-		cnt_FoundOopses = m_pSysLog.ExtractOops(buffer, sz);
+	if (sz > 0) {
+		m_pOopsList.clear();
+		cnt_FoundOopses = extract_oopses(m_pOopsList, buffer, sz);
+	}
 	free(buffer);
 
 	return cnt_FoundOopses;

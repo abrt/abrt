@@ -29,10 +29,7 @@
 
 #include "Plugin.h"
 #include "Analyzer.h"
-
 #include <string>
-
-#include "KerneloopsSysLog.h"
 
 class CAnalyzerKerneloops : public CAnalyzer
 {

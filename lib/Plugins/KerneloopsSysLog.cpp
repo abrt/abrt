@@ -26,44 +26,12 @@
 
 #include "abrtlib.h"
 #include "KerneloopsSysLog.h"
-
-#include <list>
 #include <assert.h>
 
-/*
- * This limits the number of oopses we'll submit per session;
- * it's important that this is bounded to avoid feedback loops
- * for the scenario where submitting an oopses causes a warning/oops
- */
-#define MAX_OOPS 16
-
-CSysLog::CSysLog() :
-	m_nFoundOopses(0)
-{}
-
-void CSysLog::QueueOops(char *data, char *version)
+static void queue_oops(vector_string_t &vec, const char *data, const char *version)
 {
-	if (m_nFoundOopses > MAX_OOPS)
-		return;
-
-	COops m_NewOops;
-	m_NewOops.m_sData = data;
-	m_NewOops.m_sVersion = version;
-
-	m_OopsQueue.push_back(m_NewOops);
-	m_nFoundOopses++;
+        vec.push_back(ssprintf("%s\n%s", version, data));
 }
-
-void CSysLog::ClearOopsList()
-{
-	m_OopsQueue.clear();
-}
-
-const std::list<COops>& CSysLog::GetOopsList()
-{
-	return m_OopsQueue;
-}
-
 
 /*
  * extract_version tries to find the kernel version in given data
@@ -104,7 +72,7 @@ struct line_info {
 	char level;
 };
 #define REALLOC_CHUNK 1000
-int CSysLog::ExtractOops(char *buffer, size_t buflen)
+int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 {
 	char *c;
 	enum { maybe, no, yes } syslog_format = maybe;
@@ -216,10 +184,9 @@ next_line:
 	int i;
 	char prevlevel = 0;
 	int oopsstart = -1;
-	int oopsend;
+	int oopsend = linecount;
 	int inbacktrace = 0;
 	int oopsesfound = 0;
-	oopsend = linecount;
 
 	i = 0;
 	while (i < linecount) {
@@ -370,7 +337,7 @@ next_line:
 				}
 				/* too short oopses are invalid */
 				if (strlen(oops) > 100) {
-					QueueOops(oops, version);
+					queue_oops(oopses, oops, version);
 					oopsesfound++;
 				}
 				oopsstart = -1;
@@ -420,7 +387,7 @@ next_line:
 		}
 		/* too short oopses are invalid */
 		if (strlen(oops) > 100) {
-			QueueOops(oops, version);
+			queue_oops(oopses, oops, version);
 			oopsesfound++;
 		}
 		oopsstart = -1;

@@ -35,7 +35,7 @@ class CKerneloopsScanner : public CAction
 {
 	private:
 		std::string m_sSysLogFile;
-		CSysLog m_pSysLog;
+		vector_string_t m_pOopsList;
 
 	public:
 		/* For "dumpoops" tool */
