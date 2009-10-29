@@ -295,7 +295,7 @@ class MainWindow():
         if not report:
             gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
             return
-        report_dialog = ReporterDialog(report, self.ccdaemon)
+        report_dialog = ReporterDialog(report, self.ccdaemon, parent=self.window)
         # (response, report)
         response, result = report_dialog.run()
 

@@ -23,7 +23,7 @@ REFRESH = -50
 
 class ReporterDialog():
     """Reporter window"""
-    def __init__(self, report, daemon):
+    def __init__(self, report, daemon, parent=None):
         self.editable = []
         self.row_dict = {}
         self.report = report
@@ -35,6 +35,9 @@ class ReporterDialog():
         self.window = self.wTree.get_widget("reporter_dialog")
         self.window.set_default_size(640, 480)
         self.window.connect("response", self.on_response, daemon)
+        if parent:
+            self.window.set_transient_for(parent)
+            self.window.set_modal(True)
 
         # comment textview
         self.tvComment = self.wTree.get_widget("tvComment")
@@ -147,6 +150,7 @@ class ReporterDialog():
                 vbWrongSettings.pack_start(hbox)
             vbWrongSettings.show_all()
             dialog.set_transient_for(self.window)
+            dialog.set_modal(True)
             response = dialog.run()
             dialog.destroy()
             if response == gtk.RESPONSE_NO:
