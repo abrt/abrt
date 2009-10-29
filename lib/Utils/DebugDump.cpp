@@ -42,11 +42,11 @@ static bool dot_or_dotdot(const char *filename)
 
 static bool isdigit_str(const char *str)
 {
-    while (*str)
+    do
     {
         if (*str < '0' || *str > '9') return false;
         str++;
-    }
+    } while (*str);
     return true;
 }
 
@@ -56,9 +56,9 @@ static void LoadTextFile(const std::string& pPath, std::string& pData);
 
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
-    m_bOpened(false),
     m_pGetNextFileDir(NULL),
-    m_nLockfileFD(-1)
+    m_bOpened(false),
+    m_bLocked(false)
 {}
 
 void CDebugDump::Open(const std::string& pDir)
@@ -96,10 +96,49 @@ static bool ExistFileDir(const char* pPath)
     return false;
 }
 
-static int GetAndSetLock(const char* pLockFile, const char* pPID)
+static bool GetAndSetLock(const char* pLockFile, const char* pPID)
 {
-    int fd;
+    while (symlink(pPID, pLockFile) != 0)
+    {
+        if (errno != EEXIST)
+            perror_msg_and_die("Can't create lock file '%s'", pLockFile);
 
+        char pid_buf[sizeof(pid_t)*3 + 4];
+        ssize_t r = readlink(pLockFile, pid_buf, sizeof(pid_buf) - 1);
+        if (r < 0)
+            perror_msg_and_die("Can't read lock file '%s'", pLockFile);
+        pid_buf[r] = '\0';
+
+        if (strcmp(pid_buf, pPID) == 0)
+        {
+            log("Lock file '%s' is already locked by us", pLockFile);
+            return false;
+        }
+        if (isdigit_str(pid_buf))
+        {
+            if (access(ssprintf("/proc/%s", pid_buf).c_str(), F_OK) == 0)
+            {
+                log("Lock file '%s' is locked by process %s", pLockFile, pid_buf);
+                return false;
+            }
+            log("Lock file '%s' was locked by process %s, but it crashed?", pLockFile, pid_buf);
+        }
+        /* The file may be deleted by now by other process. Ignore ENOENT */
+        if (unlink(pLockFile) != 0 && errno != ENOENT)
+        {
+            perror_msg_and_die("Can't remove stale lock file '%s'", pLockFile);
+        }
+    }
+
+    VERB1 log("Locked '%s'", pLockFile);
+    return true;
+
+#if 0
+/* Old code was using ordinary files instead of symlinks,
+ * but it had a race window between open and write, during which file was
+ * empty. It was seen to happen in practice.
+ */
+    int fd;
     while ((fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640)) < 0)
     {
         if (errno != EEXIST)
@@ -148,20 +187,22 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
         /* close(fd); - not needed, exiting does it too */
         perror_msg_and_die("Can't write lock file '%s'", pLockFile);
     }
+    close(fd);
 
     VERB1 log("Locked '%s'", pLockFile);
-    return fd;
+    return true;
+#endif
 }
 
 void CDebugDump::Lock()
 {
-    if (m_nLockfileFD >= 0)
+    if (m_bLocked)
         error_msg_and_die("Locking bug on '%s'", m_sDebugDumpDir.c_str());
 
     std::string lockFile = m_sDebugDumpDir + ".lock";
     char pid_buf[sizeof(int)*3 + 2];
     sprintf(pid_buf, "%u", (unsigned)getpid());
-    while ((m_nLockfileFD = GetAndSetLock(lockFile.c_str(), pid_buf)) < 0)
+    while ((m_bLocked = GetAndSetLock(lockFile.c_str(), pid_buf)) != true)
     {
         usleep(500000);
     }
@@ -169,11 +210,10 @@ void CDebugDump::Lock()
 
 void CDebugDump::UnLock()
 {
-    if (m_nLockfileFD >= 0)
+    if (m_bLocked)
     {
+        m_bLocked = false;
         std::string lockFile = m_sDebugDumpDir + ".lock";
-        close(m_nLockfileFD);
-        m_nLockfileFD = -1;
         xunlink(lockFile.c_str());
         VERB1 log("UnLocked '%s'", lockFile.c_str());
     }

@@ -45,9 +45,9 @@ class CDebugDump
 {
     private:
         std::string m_sDebugDumpDir;
-        bool m_bOpened;
         DIR* m_pGetNextFileDir;
-        int m_nLockfileFD;
+        bool m_bOpened;
+        bool m_bLocked;
 
         void SaveKernelArchitectureRelease();
         void SaveTime();
