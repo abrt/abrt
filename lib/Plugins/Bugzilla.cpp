@@ -106,6 +106,9 @@ static void login(const char* login, const char* passwd)
 
     xmlrpc_client_call2(&env, client, server_info, "User.login", param, &result);
     throw_if_fault_occurred(&env);
+
+    xmlrpc_DECREF(result);
+    xmlrpc_DECREF(param);
 }
 
 static void logout()
@@ -118,6 +121,9 @@ static void logout()
 
     xmlrpc_client_call2(&env, client, server_info, "User.logout", param, &result);
     throw_if_fault_occurred(&env);
+
+    xmlrpc_DECREF(result);
+    xmlrpc_DECREF(param);
 }
 
 static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
@@ -146,6 +152,10 @@ static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
 
         if (strcmp(reporter, login) == 0 )
         {
+            xmlrpc_DECREF(param);
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(reporter_member);
+            free((void*)reporter);
             return true;
         }
     }
@@ -169,12 +179,20 @@ static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
 
             if (strcmp(cc, login) == 0)
             {
+                xmlrpc_DECREF(param);
+                xmlrpc_DECREF(result);
+                xmlrpc_DECREF(reporter_member);
+                xmlrpc_DECREF(cc_member);
+                xmlrpc_DECREF(item);
+                free((void*)cc);
                 return true;
             }
         }
     }
-
+    xmlrpc_DECREF(cc_member);
+    xmlrpc_DECREF(param);
     xmlrpc_DECREF(result);
+    xmlrpc_DECREF(reporter_member);
     return false;
 }
 
@@ -190,6 +208,7 @@ static void add_plus_one_cc(const uint32_t bug_id, const char* login)
     throw_if_fault_occurred(&env);
 
     xmlrpc_DECREF(result);
+    xmlrpc_DECREF(param);
 }
 
 static int32_t check_uuid_in_bugzilla(const char* component, const char* UUID)
@@ -237,12 +256,14 @@ static int32_t check_uuid_in_bugzilla(const char* component, const char* UUID)
             xmlrpc_DECREF(bug);
             xmlrpc_DECREF(item);
             xmlrpc_DECREF(bugs_member);
+            xmlrpc_DECREF(param);
             return bug_id;
         }
     }
 
     xmlrpc_DECREF(result);
     xmlrpc_DECREF(bugs_member);
+    xmlrpc_DECREF(param);
     return -1;
 }
 
@@ -378,6 +399,8 @@ static uint32_t new_bug(const map_crash_report_t& pCrashReport)
     }
 
     xmlrpc_DECREF(result);
+    xmlrpc_DECREF(param);
+    xmlrpc_DECREF(id);
     return bug_id;
 }
 
@@ -405,6 +428,8 @@ static void add_attachments(const std::string& pBugId, const map_crash_report_t&
 
             xmlrpc_client_call2(&env, client, server_info, "bugzilla.addAttachment", param, &result);
             throw_if_fault_occurred(&env);
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(param);
         }
     }
 }

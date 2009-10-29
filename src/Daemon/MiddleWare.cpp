@@ -710,6 +710,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
     std::string package;
     std::string executable;
     std::string description;
+    std::string analyzer;
 
     try
     {
@@ -718,6 +719,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
         dd.LoadText(FILENAME_DESCRIPTION, description);
+        dd.LoadText(FILENAME_ANALYZER, analyzer);
     }
     catch (CABRTException& e)
     {
@@ -738,6 +740,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
     add_crash_data_to_crash_info(pCrashInfo, CD_REPORTED, row.m_sReported);
     add_crash_data_to_crash_info(pCrashInfo, CD_MESSAGE, row.m_sMessage);
     add_crash_data_to_crash_info(pCrashInfo, CD_MWDDD, row.m_sDebugDumpDir);
+    add_crash_data_to_crash_info(pCrashInfo, CD_MWANALYZER, analyzer);
 
     return MW_OK;
 }

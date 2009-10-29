@@ -34,6 +34,7 @@
 #include "KerneloopsSysLog.h"
 #include "KerneloopsScanner.h"
 
+#include <limits.h>
 
 #define FILENAME_KERNELOOPS  "kerneloops"
 
@@ -96,7 +97,7 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 		try
 		{
 			CDebugDump debugDump;
-			debugDump.Create(path, 0);
+			debugDump.Create(path, UINT_MAX);
 			debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
 			debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
 			debugDump.SaveText(FILENAME_KERNEL, first_line);

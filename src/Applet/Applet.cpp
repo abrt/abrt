@@ -20,6 +20,7 @@
 #include <dbus/dbus-shared.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
+#include <limits.h>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
@@ -63,9 +64,13 @@ static void Crash(DBusMessage* signal)
 
     //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
     //    return;
-    uid_t uid_num = atoi(uid_str);
+//    uid_t uid_num = atol(uid_str);
 
-    if (uid_num != getuid())
+    char* endptr;
+    uid_t uid_num = (uid_t)strtoul(uid_str,&endptr, 10);
+
+    printf("%u:%s\n", uid_num, uid_str);
+    if ((uid_num != getuid()) && (uid_num != UINT_MAX))
         return;
 
     const char* message = _("A crash in package %s has been detected");

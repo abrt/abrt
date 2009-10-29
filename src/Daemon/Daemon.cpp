@@ -22,6 +22,7 @@
 #include <glib.h>
 #include <pthread.h>
 #include <string>
+#include <limits.h>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
@@ -555,14 +556,34 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                     log("New crash, saving...");
                     RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
                     /* Send dbus signal */
-                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
+                    if(crashinfo[CD_MWANALYZER][CD_CONTENT] == "Kerneloops")
+                    {
+                        // When Kerneloops comes it will be sent uid with -1
+                        // Applet will detected and show normal user
+                        std::cout << "New: package|kerneloops" << crashinfo[CD_PACKAGE][CD_CONTENT] << std::endl;
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string(UINT_MAX));
+                    }
+                    else
+                    {
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
+                    }
                     break;
                 case MW_REPORTED:
                 case MW_OCCURED:
                     log("Already saved crash, deleting...");
                     /* Send dbus signal */
-                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                    DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                    if(crashinfo[CD_MWANALYZER][CD_CONTENT] == "Kerneloops")
+                    {
+                        // When Kerneloops comes it will be sent uid with -1
+                        // Applet will detected and show normal user
+                        std::cout << "New: package|kerneloops" << crashinfo[CD_PACKAGE][CD_CONTENT] << std::endl;
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string(UINT_MAX));
+                    }
+                    else
+                    {
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
+                    }
+                    //DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                     break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
