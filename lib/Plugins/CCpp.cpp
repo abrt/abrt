@@ -830,6 +830,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     }
     std::string rating = ssprintf("%d\n", rate_backtrace(backtrace));
     dd.SaveText(FILENAME_RATING, rating);
+    dd.Close();
 }
 
 void CAnalyzerCCpp::Init()
