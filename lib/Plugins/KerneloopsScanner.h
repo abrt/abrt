@@ -27,7 +27,7 @@
 #ifndef KERNELOOPSSCANNER_H_
 #define KERNELOOPSSCANNER_H_
 
-#include "KerneloopsSysLog.h"
+#include "abrt_types.h"
 #include "Plugin.h"
 #include "Action.h"
 
@@ -35,15 +35,19 @@ class CKerneloopsScanner : public CAction
 {
 	private:
 		std::string m_sSysLogFile;
+
+		/* For "dumpoops" tool */
+	public:
 		vector_string_t m_pOopsList;
 
-	public:
 		/* For "dumpoops" tool */
+	public:
 		void SaveOopsToDebugDump();
 		int ScanDmesg();
 		int ScanSysLogFile(const char *filename);
 
 		/* Plugin interface */
+	public:
 		CKerneloopsScanner();
 		virtual void Run(const std::string& pActionDir,
 				 const std::string& pArgs);
@@ -51,4 +55,4 @@ class CKerneloopsScanner : public CAction
 		virtual map_plugin_settings_t GetSettings();
 };
 
-#endif /* KERNELOOPSSCANNER_H_ */
+#endif

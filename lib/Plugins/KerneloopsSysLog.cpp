@@ -200,36 +200,36 @@ next_line:
 			/* find start-of-oops markers */
 			if (strstr(c, "general protection fault:"))
 				oopsstart = i;
-			if (strstr(c, "BUG:"))
+			else if (strstr(c, "BUG:"))
 				oopsstart = i;
-			if (strstr(c, "kernel BUG at"))
+			else if (strstr(c, "kernel BUG at"))
 				oopsstart = i;
-			if (strstr(c, "do_IRQ: stack overflow:"))
+			else if (strstr(c, "do_IRQ: stack overflow:"))
 				oopsstart = i;
-			if (strstr(c, "RTNL: assertion failed"))
+			else if (strstr(c, "RTNL: assertion failed"))
 				oopsstart = i;
-			if (strstr(c, "Eeek! page_mapcount(page) went negative!"))
+			else if (strstr(c, "Eeek! page_mapcount(page) went negative!"))
 				oopsstart = i;
-			if (strstr(c, "near stack overflow (cur:"))
+			else if (strstr(c, "near stack overflow (cur:"))
 				oopsstart = i;
-			if (strstr(c, "double fault:"))
+			else if (strstr(c, "double fault:"))
 				oopsstart = i;
-			if (strstr(c, "Badness at"))
+			else if (strstr(c, "Badness at"))
 				oopsstart = i;
-			if (strstr(c, "NETDEV WATCHDOG"))
+			else if (strstr(c, "NETDEV WATCHDOG"))
 				oopsstart = i;
-			if (strstr(c, "WARNING:") &&
-			    !strstr(c, "appears to be on the same physical disk"))
+			else if (strstr(c, "WARNING:") &&
+				!strstr(c, "appears to be on the same physical disk"))
 				oopsstart = i;
-			if (strstr(c, "Unable to handle kernel"))
+			else if (strstr(c, "Unable to handle kernel"))
 				oopsstart = i;
-			if (strstr(c, "sysctl table check failed"))
+			else if (strstr(c, "sysctl table check failed"))
 				oopsstart = i;
-			if (strstr(c, "------------[ cut here ]------------"))
+			else if (strstr(c, "------------[ cut here ]------------"))
 				oopsstart = i;
-			if (strstr(c, "list_del corruption."))
+			else if (strstr(c, "list_del corruption."))
 				oopsstart = i;
-			if (strstr(c, "list_add corruption."))
+			else if (strstr(c, "list_add corruption."))
 				oopsstart = i;
 			if (strstr(c, "Oops:") && i >= 3)
 				oopsstart = i-3;
@@ -332,8 +332,10 @@ next_line:
 				for (q = oopsstart; q <= oopsend; q++) {
 					if (!is_version)
 						is_version = extract_version(lines_info[q].ptr, version);
-					strcat(oops, lines_info[q].ptr);
-					strcat(oops, "\n");
+					if (lines_info[q].ptr[0]) {
+						strcat(oops, lines_info[q].ptr);
+						strcat(oops, "\n");
+					}
 				}
 				/* too short oopses are invalid */
 				if (strlen(oops) > 100) {

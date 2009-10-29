@@ -31,6 +31,7 @@
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
+#include "KerneloopsSysLog.h"
 #include "KerneloopsScanner.h"
 
 
@@ -202,7 +203,7 @@ PLUGIN_INFO(ACTION,
             "http://people.redhat.com/aarapov",
             "");
 
-/* for dumpoops tool */
+/* For "dumpoops" tool */
 extern "C" {
 
 int scan_syslog_file(CKerneloopsScanner *This, const char *filename)

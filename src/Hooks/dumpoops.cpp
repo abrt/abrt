@@ -25,6 +25,7 @@
  */
 
 #include "abrtlib.h"
+#include "abrt_types.h"
 #include "KerneloopsScanner.h"
 #include <dlfcn.h>
 
@@ -38,13 +39,36 @@ do { \
 
 int main(int argc, char **argv)
 {
-	if (!argv[1])
-	{
-		log("usage: %s FILE", argv[0]);
-		return 1;
+	char *program_name = strrchr(argv[0], '/');
+	program_name = program_name ? program_name + 1 : argv[0];
+
+	/* Parse options */
+	bool opt_d = 0, opt_s = 0;
+	int opt;
+	while ((opt = getopt(argc, argv, "ds")) != -1) {
+		switch (opt) {
+		case 'd':
+			opt_d = 1;
+			break;
+		case 's':
+			opt_s = 1;
+			break;
+		default:
+ usage:
+			error_msg_and_die(
+				"Usage: %s [-ds] FILE\n\n"
+				"Options:\n"
+				"\t-d\tCreate ABRT dump for every oops found\n"
+				"\t-s\tPrint found oopses on standard output\n"
+				, program_name
+			);
+		}
 	}
-	char *slash = strrchr(argv[0], '/');
-	msg_prefix = xasprintf("%s: ", slash ? slash+1 : argv[0]);
+	argv += optind;
+	if (!argv[0])
+		goto usage;
+
+	msg_prefix = xasprintf("%s: ", program_name);
 
 	/* Load KerneloopsScanner plugin */
 //	const plugin_info_t *plugin_info;
@@ -67,13 +91,21 @@ int main(int argc, char **argv)
 //	scanner->LoadSettings(path);
 
 	/* Use it: parse and dump the oops */
-	int cnt = scan_syslog_file(scanner, argv[1]);
+	int cnt = scan_syslog_file(scanner, argv[0]);
 	log("found oopses: %d", cnt);
 
-	if (cnt > 0)
-	{
-		log("dumping oopses");
-		save_oops_to_debug_dump(scanner);
+	if (cnt > 0) {
+		if (opt_s) {
+			int i = 0;
+			while (i < scanner->m_pOopsList.size()) {
+				printf("\nVersion: %s", scanner->m_pOopsList[i].c_str());
+				i++;
+			}
+		}
+		if (opt_d) {
+			log("dumping oopses");
+			save_oops_to_debug_dump(scanner);
+		}
 	}
 
 	/*dlclose(handle); - why bother? */
