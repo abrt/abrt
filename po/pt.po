@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-08 21:21+0000\n"
+"POT-Creation-Date: 2009-10-28 21:05+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Rui Gouveia <rui.gouveia@globaltek.pt>\n"
 "Language-Team: PT <fedora-trans-pt@redhat.com>\n"
@@ -20,23 +20,23 @@ msgstr "Outro cliente já está em execução. A tentar despertá-lo."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Obteve-se dados inesperados do serviço (a base de dados está actualizada?)"
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
 msgstr "Plugins de análise"
 
-#: ../src/Gui/ABRTPlugin.py:49
+#: ../src/Gui/ABRTPlugin.py:56
 msgid "Action plugins"
 msgstr "Plugins de acções"
 
-#: ../src/Gui/ABRTPlugin.py:50
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Reporter plugins"
 msgstr "Plugins de relatórios"
 
-#: ../src/Gui/ABRTPlugin.py:51
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Database plugins"
 msgstr "Plugins de bases de dados"
 
-#: ../src/Gui/ABRTPlugin.py:90
+#: ../src/Gui/ABRTPlugin.py:97
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "Nome do plugin não está definido, incapaz de carregar configurações"
 
@@ -67,7 +67,7 @@ msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:240
+#: ../src/Gui/CCMainWindow.py:244
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não reportado!</b>"
 
@@ -155,7 +155,16 @@ msgstr "Taxa de Crash"
 msgid "User"
 msgstr "Utilizador"
 
-#: ../src/Gui/CCMainWindow.py:178
+#: ../src/Gui/CCMainWindow.py:160
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"Impossível mostrar a janela de definições\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:181
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -164,7 +173,7 @@ msgstr ""
 "Impossível terminar a tarefa actual!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:195
+#: ../src/Gui/CCMainWindow.py:198
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -173,16 +182,16 @@ msgstr ""
 "Erro ao carregar a lista de dump, por favor, verifique se o serviço abrt está a correr\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:205
+#: ../src/Gui/CCMainWindow.py:208
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr "Incapaz de obter o nome de utilizador para o uid %s"
 
-#: ../src/Gui/CCMainWindow.py:232
+#: ../src/Gui/CCMainWindow.py:236
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Este crash foi reportado. Pode encontrar o(s) relatório(s) em:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:292
+#: ../src/Gui/CCMainWindow.py:296
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -190,7 +199,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "Debuginfo está em falta?"
 
-#: ../src/Gui/CCMainWindow.py:308
+#: ../src/Gui/CCMainWindow.py:314
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -199,12 +208,17 @@ msgstr ""
 "Relatório falhou!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:340
+#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:360
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
 
-#: ../src/Gui/CCReporterDialog.py:98
+#: ../src/Gui/CCReporterDialog.py:167
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Breve descrição de como reproduzir isto ou o que fez..."
+
+#: ../src/Gui/CCReporterDialog.py:211
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -212,10 +226,6 @@ msgid ""
 msgstr ""
 "<b>AVISO</b>, você está prestes a enviar dados que podem conter informação sensível.\n"
 "Deseja mesmo enviar <b>%s</b>?\n"
-
-#: ../src/Gui/CCReporterDialog.py:111
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "Breve descrição de como reproduzir isto ou o que fez..."
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
@@ -258,20 +268,24 @@ msgstr "Enviar"
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/SettingsDialog.py:34
-#: ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/report.glade.h:5
+msgid "gtk-refresh"
+msgstr "gtk-refresh"
+
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Seleccione plugin</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Seleccione base de dados</b>"
 
-#: ../src/Gui/SettingsDialog.py:168
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "Remover esta tarefa"
 
-#: ../src/Gui/SettingsDialog.py:211
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "Remover esta acção"
 
@@ -397,45 +411,44 @@ msgstr "O serviço ABRT não está a correr"
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:546
+#: ../src/Daemon/Daemon.cpp:542
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "O relatório excedeu a cota. Por favor, verifique o valor MaxCrashReportsSize em abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:83
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Nome de utilizador e senha vazios. Por favor, verifique Bugzilla.conf"
-
-#: ../lib/Plugins/Bugzilla.cpp:205
+#: ../lib/Plugins/Bugzilla.cpp:234
 msgid "Bug is already reported: "
 msgstr "Erro já foi reportado: "
 
-#: ../lib/Plugins/Bugzilla.cpp:260
+#: ../lib/Plugins/Bugzilla.cpp:296
 #, c-format
 msgid "Binary file %s will not be reported."
 msgstr "Ficheiro binário %s não será reportado."
 
-#: ../lib/Plugins/Bugzilla.cpp:330
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "New bug id: "
 msgstr "Criar novo ID de erro: "
 
-#: ../lib/Plugins/Bugzilla.cpp:399
+#: ../lib/Plugins/Bugzilla.cpp:422
 msgid "Checking for duplicates..."
 msgstr "A procurar por duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:402
-#: ../lib/Plugins/Bugzilla.cpp:413
+#: ../lib/Plugins/Bugzilla.cpp:425
 msgid "Logging into bugzilla..."
 msgstr "A iniciar sessão no bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:405
+#: ../lib/Plugins/Bugzilla.cpp:429
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Nome de utilizador e senha vazios. Por favor, verifique Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:435
 msgid "Checking CC..."
 msgstr "A verificar CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:425
+#: ../lib/Plugins/Bugzilla.cpp:444
 msgid "Creating new bug..."
 msgstr "A criar novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:430
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Logging out..."
 msgstr "A Terminar Sessão..."
 
@@ -443,31 +456,33 @@ msgstr "A Terminar Sessão..."
 msgid "Getting local universal unique identification"
 msgstr "A obter identificador único universal local"
 
-#: ../lib/Plugins/CCpp.cpp:146
+#: ../lib/Plugins/CCpp.cpp:246
 msgid "Getting backtrace..."
 msgstr "A obter dados do processo..."
 
-#: ../lib/Plugins/CCpp.cpp:415
+#: ../lib/Plugins/CCpp.cpp:532
+#: ../lib/Plugins/CCpp.cpp:657
 msgid "Searching for debug-info packages..."
 msgstr "A pesquisar por pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:451
+#: ../lib/Plugins/CCpp.cpp:594
+#: ../lib/Plugins/CCpp.cpp:690
 msgid "Downloading and installing debug-info packages..."
 msgstr "A transferir e instalar pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:513
+#: ../lib/Plugins/CCpp.cpp:733
 msgid "Getting local universal unique identification..."
 msgstr "A obter identificador único universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:532
+#: ../lib/Plugins/CCpp.cpp:752
 msgid "Getting global universal unique identification..."
 msgstr "A obter identificador único universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:583
+#: ../lib/Plugins/CCpp.cpp:797
 msgid "Starting report creation..."
 msgstr "A iniciar a criação do relatório..."
 
-#: ../lib/Plugins/CCpp.cpp:612
+#: ../lib/Plugins/CCpp.cpp:828
 msgid "Skipping debuginfo installation"
 msgstr "A passar à frente a instalação do debuginfo"
 
@@ -485,21 +500,21 @@ msgid "Executing RunApp plugin..."
 msgstr "A executar plugin RunApp..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:409
+#: ../lib/Plugins/FileTransfer.cpp:408
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL não especificado"
 
-#: ../lib/Plugins/FileTransfer.cpp:81
+#: ../lib/Plugins/FileTransfer.cpp:80
 #, c-format
 msgid "Sending archive %s via %s"
 msgstr "A enviar arquivo %s via %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:336
+#: ../lib/Plugins/FileTransfer.cpp:335
 msgid "File Transfer: Creating a report..."
 msgstr "Transferência de Ficheiro: A criar relatório..."
 
-#: ../lib/Plugins/FileTransfer.cpp:358
-#: ../lib/Plugins/FileTransfer.cpp:386
+#: ../lib/Plugins/FileTransfer.cpp:357
+#: ../lib/Plugins/FileTransfer.cpp:385
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): Não foi possível criar e enviar um arquivo: "
 
