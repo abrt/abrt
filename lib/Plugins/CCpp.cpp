@@ -156,34 +156,23 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     return 0;
 }
 
-enum LineRating 
+enum LineRating
 {
-        /* RATING           --          EXAMPLE */
+    // RATING              EXAMPLE
     MissingEverything = 0, // #0 0x0000dead in ?? ()
-    MissingFunction = 1, // #0 0x0000dead in ?? () from /usr/lib/libfoobar.so.4
-    MissingLibrary = 2, // #0 0x0000dead in foobar()
+    MissingFunction   = 1, // #0 0x0000dead in ?? () from /usr/lib/libfoobar.so.4
+    MissingLibrary    = 2, // #0 0x0000dead in foobar()
     MissingSourceFile = 3, // #0 0x0000dead in FooBar::FooBar () from /usr/lib/libfoobar.so.4
-    Good = 4, // #0 0x0000dead in FooBar::crash (this=0x0) at /home/user/foobar.cpp:204
-    InvalidRating = -1 // (dummy invalid value)
+    Good              = 4, // #0 0x0000dead in FooBar::crash (this=0x0) at /home/user/foobar.cpp:204
+    BestRating = Good,
 };
 
-static const LineRating BestRating = Good;
-
-LineRating rate_line(const std::string & line)
+static LineRating rate_line(const std::string & line)
 {
-    bool function = false;
-    bool library = false;
-    bool source_file = false;
-
 #define FOUND(x) (line.find(x) != std::string::npos)
-    if (FOUND(" in ") && !FOUND(" in ??"))
-        function = true;
-
-    if (FOUND(" from "))
-        library = true;
-
-    if(FOUND(" at "))
-        source_file = true;
+    bool function = FOUND(" in ") && !FOUND(" in ??");
+    bool library = FOUND(" from ");
+    bool source_file = FOUND(" at ");
 #undef FOUND
 
     /* see the "enum LineRating" comments for possible combinations */
@@ -199,43 +188,43 @@ LineRating rate_line(const std::string & line)
     return MissingEverything;
 }
 
-/* returns number of "stars" to show*/
+/* returns number of "stars" to show */
 int rate_backtrace(const std::string & backtrace)
 {
     int l = backtrace.length();
     int i;
-    std::string s = "";
+    std::string s;
     int multiplier = 0;
     int rating = 0;
     int best_possible_rating = 0;
 
-    /*we get the lines from the end, b/c of the rating multiplier
-      which gives weight to the first lines*/
-    for (i=l-1; i>=0; i--) 
+    /* We look at the frames in reversed order, since
+     * - rate_line() looks at the first line of the frame
+     * - we increase weight (multiplier) for every frame,
+     *   so that topmost frames end up most important.
+     */
+    for (i = l-1; i >= 0; i--)
     {
-        if (backtrace[i] == '#') /*this divides frames from each other*/
+        if (backtrace[i] == '#') /* this separates frames from each other */
         {
-            multiplier++;	    
+            multiplier++;
             rating += rate_line(s) * multiplier;
             best_possible_rating += BestRating * multiplier;
-    
-            s = ""; /*starting new line*/
+            s = ""; /* starting new line */
         } else
         {
-            s=backtrace[i]+s; 
+            s = backtrace[i] + s;
         }
     }
 
-    /*returning number of "stars" to show*/
-    if (rating==0)
-        return 0;
-    if (rating >= best_possible_rating*0.8)
+    /* returning number of "stars" to show */
+    if (rating*10 >= best_possible_rating*8) /* >= 0.8 */
         return 4;
-    if (rating >= best_possible_rating*0.6)
+    if (rating*10 >= best_possible_rating*6)
         return 3;
-    if (rating >= best_possible_rating*0.4)
+    if (rating*10 >= best_possible_rating*4)
         return 2;
-    if (rating >= best_possible_rating*0.2)
+    if (rating*10 >= best_possible_rating*2)
         return 1;
 
     return 0;
@@ -259,13 +248,13 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     unsetenv("TERM");
     putenv((char*)"TERM=dumb");
 
-    char* args[9];
+    char* args[11];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
     // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
-    //args[2] = (char*)"-ex";
-    //args[3] = "set debug-file-directory /usr/lib/debug:/var/cache/abrt-di/usr/lib/debug";
+    args[2] = (char*)"-ex";
+    args[3] = "set debug-file-directory /usr/lib/debug:" LOCALSTATEDIR"/cache/abrt-di/usr/lib/debug";
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -273,18 +262,18 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
      * even if it is completely unrelated to the coredump
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
      */
-    args[2] = (char*)"-ex";
-    args[3] = xasprintf("file %s", executable.c_str());
     args[4] = (char*)"-ex";
-    args[5] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[5] = xasprintf("file %s", executable.c_str());
     args[6] = (char*)"-ex";
-    args[7] = (char*)"thread apply all backtrace full";
-    args[8] = NULL;
+    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[8] = (char*)"-ex";
+    args[9] = (char*)"thread apply all backtrace full";
+    args[10] = NULL;
 
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
 
-    free(args[3]);
     free(args[5]);
+    free(args[7]);
 }
 
 static std::string GetIndependentBacktrace(const std::string& pBacktrace)
@@ -461,6 +450,8 @@ static std::string run_unstrip_n(const std::string& pDebugDumpDir)
     return output;
 }
 
+#if 0
+/* older code */
 static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");
@@ -650,8 +641,10 @@ Another application is holding the yum lock, cannot continue
     fclose(pipeout_fp);
     wait(NULL);
 }
-#if 0
-/* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668 */
+#endif
+/* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
+ * It is slated to be in F12/RHEL6.
+ */
 static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
 {
     update_client(_("Searching for debug-info packages..."));
@@ -680,8 +673,8 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
         char *tempdir = xasprintf("/tmp/abrt-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
-        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, "/var/cache/abrt-di");
-        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, "/var/cache/abrt-di", NULL);
+        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, LOCALSTATEDIR"/cache/abrt-di");
+        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, LOCALSTATEDIR"/cache/abrt-di", NULL);
         exit(1);
     }
 
@@ -726,7 +719,6 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
     fclose(pipeout_fp);
     wait(NULL);
 }
-#endif
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
