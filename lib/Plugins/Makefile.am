@@ -15,8 +15,9 @@ pluginslib_LTLIBRARIES = libCCpp.la \
                          libPython.la \
                          libFileTransfer.la
 
-dist_pluginslib_DATA = KerneloopsReporter.GTKBuilder Logger.GTKBuilder Mailx.GTKBuilder Bugzilla.GTKBuilder TicketUploader.GTKBuilder
-# + Catcut.GTKBuilder?
+dist_pluginslib_DATA = KerneloopsReporter.GTKBuilder Logger.GTKBuilder\
+                       Mailx.GTKBuilder Bugzilla.GTKBuilder\
+                       TicketUploader.GTKBuilder Catcut.GTKBuilder
 
 pluginsconfdir=$(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf Catcut.conf TicketUploader.conf FileTransfer.conf
