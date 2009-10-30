@@ -194,7 +194,7 @@ the sockets.
 Summary: Virtual package to install all necessary packages for usage from desktop environment
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla
+Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
 Requires: %{name}-gui
 # removed until it's usable the same way as the original kerneloops rhbz#528395
 #Requires: %{name}-addon-kerneloops
@@ -345,7 +345,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Catcut.conf
 %{_libdir}/%{name}/libCatcut.so*
-#%{_libdir}/%{name}/Catcut.GTKBuilder
+%{_libdir}/%{name}/Catcut.GTKBuilder
 #%{_mandir}/man7/%{name}-Catcut.7.gz
 
 %files plugin-ticketuploader
