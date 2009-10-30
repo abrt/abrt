@@ -632,23 +632,28 @@ static void start_syslog_logging()
     logmode = LOGMODE_SYSLOG;
 }
 
-static void sanitize_dump_dir_rights()
+static void ensure_root_writable_dir(const char *dir)
 {
     struct stat sb;
 
-    if (mkdir(DEBUG_DUMPS_DIR, 0755) != 0 && errno != EEXIST)
-        perror_msg_and_die("Can't create '%s'", DEBUG_DUMPS_DIR);
-    if (stat(DEBUG_DUMPS_DIR, &sb) != 0 || !S_ISDIR(sb.st_mode))
-        error_msg_and_die("'%s' is not a directory", DEBUG_DUMPS_DIR);
-
-    if (sb.st_uid != 0 || sb.st_gid != 0 || chown(DEBUG_DUMPS_DIR, 0, 0) != 0)
-        perror_msg_and_die("Can't set owner 0:0 on '%s'", DEBUG_DUMPS_DIR);
+    if (mkdir(dir, 0755) != 0 && errno != EEXIST)
+        perror_msg_and_die("Can't create '%s'", dir);
+    if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
+        error_msg_and_die("'%s' is not a directory", dir);
+    if (sb.st_uid != 0 || sb.st_gid != 0 || chown(dir, 0, 0) != 0)
+        perror_msg_and_die("Can't set owner 0:0 on '%s'", dir);
     /* We can't allow anyone to create dumps: otherwise users can flood
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
-    /* 00777 bits are usual "rwx" access rights */
-    if ((sb.st_mode & 07777) != 0755 && chmod(DEBUG_DUMPS_DIR, 0755) != 0)
-        perror_msg_and_die("Can't set mode rwxr-xr-x on '%s'", DEBUG_DUMPS_DIR);
+    /* 00777 bits are usual "rwxrwxrwx" access rights */
+    if ((sb.st_mode & 07777) != 0755 && chmod(dir, 0755) != 0)
+        perror_msg_and_die("Can't set mode rwxr-xr-x on '%s'", dir);
+}
+
+static void sanitize_dump_dir_rights()
+{
+    ensure_root_writable_dir(DEBUG_DUMPS_DIR);
+    ensure_root_writable_dir(DEBUG_DUMPS_DIR"-di"); /* debuginfo cache */
 }
 
 int main(int argc, char** argv)
@@ -740,11 +745,12 @@ int main(int argc, char** argv)
         g_pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         VERB1 log("Initializing inotify");
-        /*FIXME: python hook runs with ordinary user privileges,
-        so it fails if everyone doesn't have write acces
-        to DEBUG_DUMPS_DIR
-        */
-        //sanitize_dump_dir_rights();
+// Enabled again since we have new abrt-pyhook-helper, remove comment when verified to work
+        /* FIXME: python hook runs with ordinary user privileges,
+         * so it fails if everyone doesn't have write acces
+         * to DEBUG_DUMPS_DIR
+         */
+        sanitize_dump_dir_rights();
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
