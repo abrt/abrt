@@ -267,56 +267,8 @@ static int32_t check_uuid_in_bugzilla(const char* component, const char* UUID)
 
 static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
-    std::string howToReproduce;
-    std::string comment;
-
-    if (pCrashReport.find(CD_REPRODUCE) != pCrashReport.end())
-    {
-        howToReproduce = "\n\nHow to reproduce\n"
-                         "-----\n" +
-                         pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT];
-    }
-    if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
-    {
-        comment = "\n\nComment\n"
-                 "-----\n" +
-                 pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
-    }
-    pDescription = "\nabrt detected a crash.\n" +
-                   howToReproduce +
-                   comment +
-                   "\n\nAdditional information\n"
-                   "======\n";
-
-    map_crash_report_t::const_iterator it = pCrashReport.begin();
-    for (; it != pCrashReport.end(); it++)
-    {
-        if (it->second[CD_TYPE] == CD_TXT)
-        {
-            if (it->first !=  CD_UUID &&
-                it->first !=  FILENAME_ARCHITECTURE &&
-                it->first !=  FILENAME_RELEASE &&
-                it->first !=  CD_REPRODUCE &&
-                it->first !=  CD_COMMENT)
-            {
-                pDescription += "\n" + it->first + "\n";
-                pDescription += "-----\n";
-                pDescription += it->second[CD_CONTENT] + "\n\n";
-            }
-        }
-        else if (it->second[CD_TYPE] == CD_ATT)
-        {
-            pDescription += "\n\nAttached files\n"
-                            "----\n";
-            pDescription += it->first + "\n";
-        }
-        else if (it->second[CD_TYPE] == CD_BIN)
-        {
-            std::string msg = ssprintf(_("Binary file %s will not be reported."), it->first.c_str());
-            warn_client(msg);
-            //update_client(_("Binary file ")+it->first+_(" will not be reported."));
-        }
-    }
+    pDescription = "abrt detected a crash.\n\n";
+    pDescription += make_description_bz(pCrashReport);
 }
 
 static void get_product_and_version(const std::string& pRelease,
