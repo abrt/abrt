@@ -116,5 +116,6 @@ typedef struct SPluginInfo
 
 /* helper finctions */
 std::string make_description_bz(const map_crash_report_t& pCrashReport);
+std::string make_description_logger(const map_crash_report_t& pCrashReport);
 
 #endif

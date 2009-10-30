@@ -85,3 +85,68 @@ string make_description_bz(const map_crash_report_t& pCrashReport)
 
     return description;
 }
+
+string make_description_logger(const map_crash_report_t& pCrashReport)
+{
+//    string description;
+    stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
+
+    map_crash_report_t::const_iterator it = pCrashReport.begin();
+    for (; it != pCrashReport.end(); it++)
+    {
+        if (it->second[CD_TYPE] == CD_TXT)
+        {
+            if (it->first != CD_UUID
+             && it->first != FILENAME_ARCHITECTURE
+             && it->first != FILENAME_KERNEL
+             && it->first != FILENAME_PACKAGE
+            ) {
+                additionalFiles << it->first << std::endl;
+                additionalFiles << "-----" << std::endl;
+                additionalFiles << it->second[CD_CONTENT] << std::endl << std::endl;
+            }
+            else if (it->first == CD_UUID)
+            {
+                UUIDFile << it->first << std::endl;
+                UUIDFile << "-----" << std::endl;
+                UUIDFile << it->second[CD_CONTENT] << std::endl << std::endl;
+            }
+            else
+            {
+                commonFiles << it->first << std::endl;
+                commonFiles << "-----" << std::endl;
+                commonFiles << it->second[CD_CONTENT] << std::endl << std::endl;
+            }
+        }
+        if (it->second[CD_TYPE] == CD_ATT)
+        {
+            bigTextFiles << it->first << std::endl;
+            bigTextFiles << "-----" << std::endl;
+            bigTextFiles << it->second[CD_CONTENT] << std::endl << std::endl;
+        }
+        if (it->second[CD_TYPE] == CD_BIN)
+        {
+            binaryFiles << it->first << std::endl;
+            binaryFiles << "-----" << std::endl;
+            binaryFiles << it->second[CD_CONTENT] << std::endl << std::endl;
+        }
+    }
+
+    string description = "Duplicity check\n======\n\n";
+    description += UUIDFile.str();
+    description += '\n';
+    description += "Common information\n======\n\n";
+    description += commonFiles.str();
+    description += '\n';
+    description += "Additional information\n======\n\n";
+    description += additionalFiles.str();
+    description += '\n';
+    description += "Big Text Files\n======\n\n";
+    description += bigTextFiles.str();
+    description += '\n';
+    description += "Binary files\n======\n";
+    description += binaryFiles.str();
+    description += "\n\n";
+
+    return description;
+}
