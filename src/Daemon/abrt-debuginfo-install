@@ -13,9 +13,10 @@
 # If CACHEDIR is specified, debuginfos should be installed there.
 # If not, debuginfos should be installed into TEMPDIR.
 #
-# Currently, we are called with CACHEDIR set to "/", but in the future
-# it may be omitted or set to something else. script must be ready
-# for those cases too.
+# Currently, we are called with CACHEDIR set to "/var/cache/abrt-di",
+# but in the future it may be omitted or set to something else.
+# Script must be ready for those cases too. Consider, for example,
+# corner cases of "" and "/".
 #
 # Output goes to GUI as debuginfo install log. The script should be careful
 # to give useful, but not overly cluttered info to stdout.
