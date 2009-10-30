@@ -640,7 +640,7 @@ static void ensure_root_writable_dir(const char *dir)
         perror_msg_and_die("Can't create '%s'", dir);
     if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
         error_msg_and_die("'%s' is not a directory", dir);
-    if (sb.st_uid != 0 || sb.st_gid != 0 || chown(dir, 0, 0) != 0)
+    if ((sb.st_uid != 0 || sb.st_gid != 0) && chown(dir, 0, 0) != 0)
         perror_msg_and_die("Can't set owner 0:0 on '%s'", dir);
     /* We can't allow anyone to create dumps: otherwise users can flood
      * us with thousands of bogus or malicious dumps */
