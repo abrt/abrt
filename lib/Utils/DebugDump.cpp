@@ -23,7 +23,7 @@
 #include <iostream>
 #include <sstream>
 #include <sys/utsname.h>
-#include <magic.h>
+//#include <magic.h>
 #include "abrtlib.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
@@ -290,8 +290,10 @@ static void DeleteFileDir(const std::string& pDir)
     }
 }
 
-static bool IsTextFile(const std::string& pName)
+static bool IsTextFile(const char *name)
 {
+/* This idiotic library thinks that file containing just "0" is not text (!!)
+
     magic_t m = magic_open(MAGIC_MIME_TYPE);
 
     if (m == NULL)
@@ -320,6 +322,24 @@ static bool IsTextFile(const std::string& pName)
     magic_close(m);
 
     return isText;
+ */
+    int fd = open(name, O_RDONLY);
+    if (fd < 0)
+        return false;
+
+    unsigned char buf[4*1024];
+    int r = full_read(fd, buf, sizeof(buf));
+    close(fd);
+
+    while (--r >= 0)
+    {
+        if (buf[r] >= 0x7f)
+            return false;
+        /* Among control chars, only '\t','\n' etc are allowed */
+        if (buf[r] < ' ' && !isspace(buf[r]))
+            return false;
+    }
+    return true;
 }
 
 static std::string RemoveBackSlashes(const std::string& pDir)
@@ -532,7 +552,7 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
             std::string fullname = m_sDebugDumpDir + "/" + dent->d_name;
 
             pFileName = dent->d_name;
-            if (IsTextFile(fullname))
+            if (IsTextFile(fullname.c_str()))
             {
                 LoadText(dent->d_name, pContent);
                 pIsTextFile = true;

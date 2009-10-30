@@ -84,12 +84,14 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
         !dd.Exist(FILENAME_RELEASE) ||
         !dd.Exist(FILENAME_EXECUTABLE))
     {
-        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s)'re missing.");
+        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s)'re missing");
     }
+
     pCrashReport.clear();
     dd.InitGetNextFile();
     while (dd.GetNextFile(fileName, content, isTextFile))
     {
+VERB3 log(" file:'%s' text:%d", fileName.c_str(), isTextFile);
         if (!isTextFile)
         {
             add_crash_data_to_crash_report(pCrashReport,

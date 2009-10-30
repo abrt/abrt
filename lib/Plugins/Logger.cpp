@@ -58,6 +58,7 @@ std::string CLogger::Report(const map_crash_report_t& pCrashReport, const std::s
     update_client(_("Creating a report..."));
 
     std::string description = make_description_logger(pCrashReport);
+    description += "\n\n\n";
 
     FILE *fOut;
     if (m_bAppendLogs)

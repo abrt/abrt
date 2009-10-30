@@ -37,7 +37,6 @@ libABRTUtils_la_LDFLAGS = \
     $(DL_LIBS) \
     $(DBUS_LIBS)
 libABRTUtils_la_LIBADD = \
-    -lmagic \
     $(POLKIT_LIBS)
 
 install-data-local:
