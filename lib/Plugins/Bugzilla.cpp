@@ -436,7 +436,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
         bug_id = check_uuid_in_bugzilla(component.c_str(), uuid.c_str());
 
         update_client(_("Logging into bugzilla..."));
-        if ((m_sLogin == "") && (m_sPassword==""))
+        if ((m_sLogin == "") && (m_sPassword == ""))
         {
             VERB3 log("Empty login and password");
             throw CABRTException(EXCEP_PLUGIN, std::string(_("Empty login and password. Please check Bugzilla.conf")));
@@ -479,13 +479,24 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("BugzillaURL") != pSettings.end())
+//BUG! This gets called when user's keyring contains login data,
+//then it takes precedence over /etc/abrt/plugins/Bugzilla.conf.
+//I got a case when keyring had a STALE password, and there was no way
+//for me to know that it is being used. Moreover, when I discovered it
+//(by hacking abrt source!), I don't know how to purge it from the keyring.
+//At the very least, log("SOMETHING") here.
+
+    map_plugin_settings_t::const_iterator it;
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+
+    it = pSettings.find("BugzillaURL");
+    if (it != end)
     {
-        m_sBugzillaURL = pSettings.find("BugzillaURL")->second;
+        m_sBugzillaURL = it->second;
         //remove the /xmlrpc.cgi part from old settings
         //FIXME: can be removed after users are informed about new config format
         std::string::size_type pos = m_sBugzillaURL.find(XML_RPC_SUFFIX);
-        if(pos != std::string::npos)
+        if (pos != std::string::npos)
         {
             m_sBugzillaURL.erase(pos);
         }
@@ -502,17 +513,20 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
         */
         m_sBugzillaXMLRPC = m_sBugzillaURL + XML_RPC_SUFFIX;
     }
-    if (pSettings.find("Login") != pSettings.end())
+    it = pSettings.find("Login");
+    if (it != end)
     {
-        m_sLogin = pSettings.find("Login")->second;
+        m_sLogin = it->second;
     }
-    if (pSettings.find("Password") != pSettings.end())
+    it = pSettings.find("Password");
+    if (it != end)
     {
-        m_sPassword = pSettings.find("Password")->second;
+        m_sPassword = it->second;
     }
-    if (pSettings.find("NoSSLVerify") != pSettings.end())
+    it = pSettings.find("NoSSLVerify");
+    if (it != end)
     {
-        m_bNoSSLVerify = pSettings.find("NoSSLVerify")->second == "yes";
+        m_bNoSSLVerify = (it->second == "yes");
     }
 }
 
