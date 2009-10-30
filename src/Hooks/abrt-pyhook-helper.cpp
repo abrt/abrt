@@ -92,6 +92,33 @@ int main(int argc, char** argv)
   struct arguments arguments;
   argp_parse (&argp, argc, argv, 0, 0, &arguments);
 
+  // Read the backtrace from stdin.
+  int c;
+  int capacity = 1024;
+  char *bt = (char*)malloc(capacity);
+  if (!bt)
+  {
+    printf("Error while allocating memory for backtrace.\n");
+    return 1;
+  }
+  char *btptr = bt;
+  while ((c = getchar()) != EOF)
+  {
+    *btptr++ = (char)c;    
+    if (btptr - bt >= capacity - 1)
+    {
+      capacity *= 2;
+      bt = (char*)realloc(bt, capacity);
+      if (!bt)
+      {
+	printf("Error while allocating memory for backtrace.\n");
+	return 1;
+      }
+    }
+  }
+  *btptr = '\0';
+
+  // Create directory with the debug dump.
   char path[PATH_MAX];
   snprintf(path, sizeof(path), "%s/pyhook-%ld-%s", DEBUG_DUMPS_DIR, 
 	   (long)time(NULL), arguments.pid);
@@ -107,29 +134,6 @@ int main(int argc, char** argv)
     dd.SaveText("uuid", arguments.uuid);
   if (arguments.loginuid)
     dd.SaveText("uid", arguments.loginuid);
-
-  // Read the backtrace from stdin.
-  int c;
-  int capacity = 1024;
-  char *bt = (char*)malloc(capacity);
-  char *btptr = bt;
-  while ((c = getchar()) != EOF)
-  {
-    if (c >= 0 && c <= 255)
-      *btptr++ = (char)c;    
-    if (btptr - bt >= capacity - 1)
-    {
-      capacity *= 2;
-      bt = (char*)realloc(bt, capacity);
-      if (!bt)
-      {
-	printf("Error while allocating memory for backtrace.");
-	return 1;
-      }
-    }
-  }
-  *btptr = '\0';
-
   dd.SaveText("backtrace", bt);
   free(bt);
   dd.Close();
