@@ -47,6 +47,8 @@ static void throw_if_xml_fault_occurred()
     if (env.fault_occurred)
     {
         std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
+        xmlrpc_env_clean(&env);
+        xmlrpc_env_init(&env);
         error_msg("%s", errmsg.c_str()); // show error in daemon log
         throw CABRTException(EXCEP_PLUGIN, errmsg);
     }
@@ -102,10 +104,18 @@ static void login(const char* login, const char* passwd)
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "User.login", param, &result);
-    throw_if_xml_fault_occurred();
-
-    xmlrpc_DECREF(result);
     xmlrpc_DECREF(param);
+    if (result)
+        xmlrpc_DECREF(result);
+
+    if (env.fault_occurred)
+    {
+        std::string errmsg = ssprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
+        xmlrpc_env_clean(&env);
+        xmlrpc_env_init(&env);
+        error_msg("%s", errmsg.c_str()); // show error in daemon log
+        throw CABRTException(EXCEP_PLUGIN, errmsg);
+    }
 }
 
 static void logout()
@@ -115,10 +125,10 @@ static void logout()
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "User.logout", param, &result);
-    throw_if_xml_fault_occurred();
-
-    xmlrpc_DECREF(result);
     xmlrpc_DECREF(param);
+    if (result)
+        xmlrpc_DECREF(result);
+    throw_if_xml_fault_occurred();
 }
 
 static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
@@ -465,7 +475,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     catch (CABRTException& e)
     {
         destroy_xmlrpc_client();
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+        throw CABRTException(EXCEP_PLUGIN, e.what());
     }
     destroy_xmlrpc_client();
 
