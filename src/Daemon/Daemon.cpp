@@ -654,6 +654,7 @@ static void sanitize_dump_dir_rights()
 {
     ensure_root_writable_dir(DEBUG_DUMPS_DIR);
     ensure_root_writable_dir(DEBUG_DUMPS_DIR"-di"); /* debuginfo cache */
+    ensure_root_writable_dir(VAR_RUN"/abrt"); /* temp dir */
 }
 
 int main(int argc, char** argv)

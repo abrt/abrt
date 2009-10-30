@@ -71,7 +71,7 @@ test x"$cachedir" = x"" || test -d "$cachedir" || exit 2
 # tempdir must not exist
 test -e "$tempdir" && exit 2
 
-mkdir "$tempdir" || exit 2
+mkdir -- "$tempdir" || exit 2
 cd "$tempdir" || exit 2
 $debug && echo "Installing rpms to $tempdir"
 
