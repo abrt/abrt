@@ -98,20 +98,26 @@ int main(int argc, char** argv)
   char *bt = (char*)malloc(capacity);
   if (!bt)
   {
-    printf("Error while allocating memory for backtrace.\n");
+    fprintf(stderr, "Error while allocating memory for backtrace.\n");
     return 1;
   }
   char *btptr = bt;
   while ((c = getchar()) != EOF)
   {
-    *btptr++ = (char)c;    
+    *btptr++ = (char)c;
     if (btptr - bt >= capacity - 1)
     {
       capacity *= 2;
+      if (capacity > 1048576) // > 1 MB
+      {
+	fprintf(stderr, "Backtrace size limit exceeded. Trimming to 1 MB.\n");
+	break;
+      }
+	
       bt = (char*)realloc(bt, capacity);
       if (!bt)
       {
-	printf("Error while allocating memory for backtrace.\n");
+	fprintf(stderr, "Error while allocating memory for backtrace.\n");
 	return 1;
       }
     }
