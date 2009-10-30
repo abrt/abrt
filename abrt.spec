@@ -224,6 +224,8 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
 mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
+mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}-di
+mkdir -p $RPM_BUILD_ROOT/var/run/%{name}
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
@@ -258,6 +260,8 @@ fi
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
 %dir /var/cache/%{name}
+%dir /var/cache/%{name}-di
+%dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_libdir}/%{name}

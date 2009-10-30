@@ -24,23 +24,22 @@
 #define PLUGIN_H_
 
 #include "abrt_types.h"
-
-#define PLUGINS_MAGIC_NUMBER 6
-
-#define PLUGINS_CONF_EXTENSION "conf"
-#define PLUGINS_LIB_EXTENSION "so"
-#define PLUGINS_LIB_PREFIX "lib"
-
+#include "CrashTypes.h"
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
-
 #if ENABLE_NLS
     #include <libintl.h>
     #define _(S) gettext(S)
 #else
     #define _(S) (S)
 #endif
+
+#define PLUGINS_MAGIC_NUMBER 6
+
+#define PLUGINS_CONF_EXTENSION "conf"
+#define PLUGINS_LIB_EXTENSION "so"
+#define PLUGINS_LIB_PREFIX "lib"
 
 /**
  * An abstract class. The class defines a common plugin interface. If a plugin
@@ -115,4 +114,8 @@ typedef struct SPluginInfo
         PLUGINS_MAGIC_NUMBER,\
     };
 
-#endif /* PLUGIN_H_ */
+/* helper finctions */
+std::string make_description_bz(const map_crash_report_t& pCrashReport);
+std::string make_description_logger(const map_crash_report_t& pCrashReport);
+
+#endif

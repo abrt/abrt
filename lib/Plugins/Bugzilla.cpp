@@ -40,11 +40,15 @@ static void get_product_and_version(const std::string& pRelease,
                                           std::string& pVersion);
 
 
+// FIXME: we still leak memmory if this function detects a fault:
+// many instances when we leave non-freed or non-xmlrpc_DECREF'ed data behind.
 static void throw_if_xml_fault_occurred()
 {
     if (env.fault_occurred)
     {
         std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
+        xmlrpc_env_clean(&env);
+        xmlrpc_env_init(&env);
         error_msg("%s", errmsg.c_str()); // show error in daemon log
         throw CABRTException(EXCEP_PLUGIN, errmsg);
     }
@@ -95,49 +99,49 @@ CReporterBugzilla::~CReporterBugzilla()
 
 static void login(const char* login, const char* passwd)
 {
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
+    throw_if_xml_fault_occurred();
+
     xmlrpc_value* result = NULL;
-    xmlrpc_value* param = NULL;
-
-    param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
-    throw_if_xml_fault_occurred();
-
     xmlrpc_client_call2(&env, client, server_info, "User.login", param, &result);
-    throw_if_xml_fault_occurred();
-
-    xmlrpc_DECREF(result);
     xmlrpc_DECREF(param);
+    if (result)
+        xmlrpc_DECREF(result);
+
+    if (env.fault_occurred)
+    {
+        std::string errmsg = ssprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
+        xmlrpc_env_clean(&env);
+        xmlrpc_env_init(&env);
+        error_msg("%s", errmsg.c_str()); // show error in daemon log
+        throw CABRTException(EXCEP_PLUGIN, errmsg);
+    }
 }
 
 static void logout()
 {
+    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", "");
+    throw_if_xml_fault_occurred();
+
     xmlrpc_value* result = NULL;
-    xmlrpc_value* param = NULL;
-
-    param = xmlrpc_build_value(&env, "(s)", "");
-    throw_if_xml_fault_occurred();
-
     xmlrpc_client_call2(&env, client, server_info, "User.logout", param, &result);
-    throw_if_xml_fault_occurred();
-
-    xmlrpc_DECREF(result);
     xmlrpc_DECREF(param);
+    if (result)
+        xmlrpc_DECREF(result);
+    throw_if_xml_fault_occurred();
 }
 
 static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* reporter_member = NULL;
-    xmlrpc_value* cc_member = NULL;
-
-    const char* bug = to_string(bug_id).c_str();
-
-    param = xmlrpc_build_value(&env, "(s)", bug);
+    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", to_string(bug_id).c_str());
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "bugzilla.getBug", param, &result);
     throw_if_xml_fault_occurred();
+    xmlrpc_DECREF(param);
 
+    xmlrpc_value* reporter_member = NULL;
     xmlrpc_struct_find_value(&env, result, "reporter", &reporter_member);
     throw_if_xml_fault_occurred();
 
@@ -147,26 +151,27 @@ static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
         xmlrpc_read_string(&env, reporter_member, &reporter);
         throw_if_xml_fault_occurred();
 
-        if (strcmp(reporter, login) == 0 )
+        bool eq = (strcmp(reporter, login) == 0);
+        free((void*)reporter);
+        xmlrpc_DECREF(reporter_member);
+        if (eq)
         {
-            xmlrpc_DECREF(param);
             xmlrpc_DECREF(result);
-            xmlrpc_DECREF(reporter_member);
-            free((void*)reporter);
             return true;
         }
     }
 
+    xmlrpc_value* cc_member = NULL;
     xmlrpc_struct_find_value(&env, result, "cc", &cc_member);
     throw_if_xml_fault_occurred();
 
     if (cc_member)
     {
-        xmlrpc_value* item = NULL;
         uint32_t array_size = xmlrpc_array_size(&env, cc_member);
 
         for (uint32_t i = 0; i < array_size; i++)
         {
+            xmlrpc_value* item = NULL;
             xmlrpc_array_read_item(&env, cc_member, i, &item); // Correct
             throw_if_xml_fault_occurred();
 
@@ -174,33 +179,29 @@ static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
             xmlrpc_read_string(&env, item, &cc);
             throw_if_xml_fault_occurred();
 
-            if (strcmp(cc, login) == 0)
+            bool eq = (strcmp(cc, login) == 0);
+            free((void*)cc);
+            xmlrpc_DECREF(item);
+            if (eq)
             {
-                xmlrpc_DECREF(param);
-                xmlrpc_DECREF(result);
-                xmlrpc_DECREF(reporter_member);
                 xmlrpc_DECREF(cc_member);
-                xmlrpc_DECREF(item);
-                free((void*)cc);
+                xmlrpc_DECREF(result);
                 return true;
             }
         }
+        xmlrpc_DECREF(cc_member);
     }
-    xmlrpc_DECREF(cc_member);
-    xmlrpc_DECREF(param);
+
     xmlrpc_DECREF(result);
-    xmlrpc_DECREF(reporter_member);
     return false;
 }
 
 static void add_plus_one_cc(const uint32_t bug_id, const char* login)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-
-    param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "Bug.update", param, &result);
     throw_if_xml_fault_occurred();
 
@@ -210,21 +211,17 @@ static void add_plus_one_cc(const uint32_t bug_id, const char* login)
 
 static int32_t check_uuid_in_bugzilla(const char* component, const char* UUID)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* bugs_member = NULL;
+    std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
 
-    xmlrpc_int bug_id;
-
-    char query[1024];
-    snprintf(query, 1023, "ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
-
-    param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query);
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query.c_str());
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "Bug.search", param, &result);
     throw_if_xml_fault_occurred();
+    xmlrpc_DECREF(param);
 
+    xmlrpc_value* bugs_member = NULL;
     xmlrpc_struct_find_value(&env, result, "bugs", &bugs_member);
     throw_if_xml_fault_occurred();
 
@@ -233,89 +230,45 @@ static int32_t check_uuid_in_bugzilla(const char* component, const char* UUID)
         // when array size is equal 0 that means no bug reported
         uint32_t array_size = xmlrpc_array_size(&env, bugs_member);
         throw_if_xml_fault_occurred();
-        if( array_size == 0 )
+        if (array_size == 0)
+        {
+            xmlrpc_DECREF(bugs_member);
+            xmlrpc_DECREF(result);
             return -1;
+        }
 
         xmlrpc_value* item = NULL;
         xmlrpc_array_read_item(&env, bugs_member, 0, &item); // Correct
         throw_if_xml_fault_occurred();
-
         xmlrpc_value* bug = NULL;
-        xmlrpc_struct_find_value(&env, item,"bug_id", &bug);
+        xmlrpc_struct_find_value(&env, item, "bug_id", &bug);
         throw_if_xml_fault_occurred();
+
         if (bug)
         {
+            xmlrpc_int bug_id;
             xmlrpc_read_int(&env, bug, &bug_id);
-            log("Bug is already reported: %i", bug_id);
+            log("Bug is already reported: %i", (int)bug_id);
             update_client(_("Bug is already reported: ") + to_string(bug_id));
 
-            xmlrpc_DECREF(result);
             xmlrpc_DECREF(bug);
             xmlrpc_DECREF(item);
             xmlrpc_DECREF(bugs_member);
-            xmlrpc_DECREF(param);
+            xmlrpc_DECREF(result);
             return bug_id;
         }
+        xmlrpc_DECREF(item);
+        xmlrpc_DECREF(bugs_member);
     }
 
     xmlrpc_DECREF(result);
-    xmlrpc_DECREF(bugs_member);
-    xmlrpc_DECREF(param);
     return -1;
 }
 
 static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
-    std::string howToReproduce;
-    std::string comment;
-
-    if (pCrashReport.find(CD_REPRODUCE) != pCrashReport.end())
-    {
-        howToReproduce = "\n\nHow to reproduce\n"
-                         "-----\n" +
-                         pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT];
-    }
-    if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
-    {
-        comment = "\n\nComment\n"
-                 "-----\n" +
-                 pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
-    }
-    pDescription = "\nabrt detected a crash.\n" +
-                   howToReproduce +
-                   comment +
-                   "\n\nAdditional information\n"
-                   "======\n";
-
-    map_crash_report_t::const_iterator it = pCrashReport.begin();
-    for (; it != pCrashReport.end(); it++)
-    {
-        if (it->second[CD_TYPE] == CD_TXT)
-        {
-            if (it->first !=  CD_UUID &&
-                it->first !=  FILENAME_ARCHITECTURE &&
-                it->first !=  FILENAME_RELEASE &&
-                it->first !=  CD_REPRODUCE &&
-                it->first !=  CD_COMMENT)
-            {
-                pDescription += "\n" + it->first + "\n";
-                pDescription += "-----\n";
-                pDescription += it->second[CD_CONTENT] + "\n\n";
-            }
-        }
-        else if (it->second[CD_TYPE] == CD_ATT)
-        {
-            pDescription += "\n\nAttached files\n"
-                            "----\n";
-            pDescription += it->first + "\n";
-        }
-        else if (it->second[CD_TYPE] == CD_BIN)
-        {
-            std::string msg = ssprintf(_("Binary file %s will not be reported."), it->first.c_str());
-            warn_client(msg);
-            //update_client(_("Binary file ")+it->first+_(" will not be reported."));
-        }
-    }
+    pDescription = "abrt detected a crash.\n\n";
+    pDescription += make_description_bz(pCrashReport);
 }
 
 static void get_product_and_version(const std::string& pRelease,
@@ -445,7 +398,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
         bug_id = check_uuid_in_bugzilla(component.c_str(), uuid.c_str());
 
         update_client(_("Logging into bugzilla..."));
-        if ((m_sLogin == "") && (m_sPassword==""))
+        if ((m_sLogin == "") && (m_sPassword == ""))
         {
             VERB3 log("Empty login and password");
             throw CABRTException(EXCEP_PLUGIN, std::string(_("Empty login and password. Please check Bugzilla.conf")));
@@ -474,7 +427,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
     catch (CABRTException& e)
     {
         destroy_xmlrpc_client();
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+        throw CABRTException(EXCEP_PLUGIN, e.what());
     }
     destroy_xmlrpc_client();
 
@@ -488,13 +441,24 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("BugzillaURL") != pSettings.end())
+//BUG! This gets called when user's keyring contains login data,
+//then it takes precedence over /etc/abrt/plugins/Bugzilla.conf.
+//I got a case when keyring had a STALE password, and there was no way
+//for me to know that it is being used. Moreover, when I discovered it
+//(by hacking abrt source!), I don't know how to purge it from the keyring.
+//At the very least, log("SOMETHING") here.
+
+    map_plugin_settings_t::const_iterator it;
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+
+    it = pSettings.find("BugzillaURL");
+    if (it != end)
     {
-        m_sBugzillaURL = pSettings.find("BugzillaURL")->second;
+        m_sBugzillaURL = it->second;
         //remove the /xmlrpc.cgi part from old settings
         //FIXME: can be removed after users are informed about new config format
         std::string::size_type pos = m_sBugzillaURL.find(XML_RPC_SUFFIX);
-        if(pos != std::string::npos)
+        if (pos != std::string::npos)
         {
             m_sBugzillaURL.erase(pos);
         }
@@ -511,17 +475,20 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
         */
         m_sBugzillaXMLRPC = m_sBugzillaURL + XML_RPC_SUFFIX;
     }
-    if (pSettings.find("Login") != pSettings.end())
+    it = pSettings.find("Login");
+    if (it != end)
     {
-        m_sLogin = pSettings.find("Login")->second;
+        m_sLogin = it->second;
     }
-    if (pSettings.find("Password") != pSettings.end())
+    it = pSettings.find("Password");
+    if (it != end)
     {
-        m_sPassword = pSettings.find("Password")->second;
+        m_sPassword = it->second;
     }
-    if (pSettings.find("NoSSLVerify") != pSettings.end())
+    it = pSettings.find("NoSSLVerify");
+    if (it != end)
     {
-        m_bNoSSLVerify = pSettings.find("NoSSLVerify")->second == "yes";
+        m_bNoSSLVerify = (it->second == "yes");
     }
 }
 

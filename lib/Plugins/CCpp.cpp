@@ -671,7 +671,8 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         setsid();
 
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
-        char *tempdir = xasprintf("/tmp/abrt-%u-%lu", (int)getpid(), (long)time(NULL));
+        /* SELinux guys are not happy with /tmp, using /var/run/abrt */
+        char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
         VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, LOCALSTATEDIR"/cache/abrt-di");
         execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, LOCALSTATEDIR"/cache/abrt-di", NULL);
