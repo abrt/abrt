@@ -40,6 +40,8 @@ static void get_product_and_version(const std::string& pRelease,
                                           std::string& pVersion);
 
 
+// FIXME: we still leak memmory if this function detects a fault:
+// many instances when we leave non-freed or non-xmlrpc_DECREF'ed data behind.
 static void throw_if_xml_fault_occurred()
 {
     if (env.fault_occurred)
@@ -95,12 +97,10 @@ CReporterBugzilla::~CReporterBugzilla()
 
 static void login(const char* login, const char* passwd)
 {
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* param = NULL;
-
-    param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "User.login", param, &result);
     throw_if_xml_fault_occurred();
 
@@ -110,12 +110,10 @@ static void login(const char* login, const char* passwd)
 
 static void logout()
 {
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* param = NULL;
-
-    param = xmlrpc_build_value(&env, "(s)", "");
+    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", "");
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "User.logout", param, &result);
     throw_if_xml_fault_occurred();
 
@@ -125,19 +123,15 @@ static void logout()
 
 static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* reporter_member = NULL;
-    xmlrpc_value* cc_member = NULL;
-
-    const char* bug = to_string(bug_id).c_str();
-
-    param = xmlrpc_build_value(&env, "(s)", bug);
+    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", to_string(bug_id).c_str());
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "bugzilla.getBug", param, &result);
     throw_if_xml_fault_occurred();
+    xmlrpc_DECREF(param);
 
+    xmlrpc_value* reporter_member = NULL;
     xmlrpc_struct_find_value(&env, result, "reporter", &reporter_member);
     throw_if_xml_fault_occurred();
 
@@ -147,26 +141,27 @@ static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
         xmlrpc_read_string(&env, reporter_member, &reporter);
         throw_if_xml_fault_occurred();
 
-        if (strcmp(reporter, login) == 0 )
+        bool eq = (strcmp(reporter, login) == 0);
+        free((void*)reporter);
+        xmlrpc_DECREF(reporter_member);
+        if (eq)
         {
-            xmlrpc_DECREF(param);
             xmlrpc_DECREF(result);
-            xmlrpc_DECREF(reporter_member);
-            free((void*)reporter);
             return true;
         }
     }
 
+    xmlrpc_value* cc_member = NULL;
     xmlrpc_struct_find_value(&env, result, "cc", &cc_member);
     throw_if_xml_fault_occurred();
 
     if (cc_member)
     {
-        xmlrpc_value* item = NULL;
         uint32_t array_size = xmlrpc_array_size(&env, cc_member);
 
         for (uint32_t i = 0; i < array_size; i++)
         {
+            xmlrpc_value* item = NULL;
             xmlrpc_array_read_item(&env, cc_member, i, &item); // Correct
             throw_if_xml_fault_occurred();
 
@@ -174,33 +169,29 @@ static bool check_cc_and_reporter(const uint32_t bug_id, const char* login)
             xmlrpc_read_string(&env, item, &cc);
             throw_if_xml_fault_occurred();
 
-            if (strcmp(cc, login) == 0)
+            bool eq = (strcmp(cc, login) == 0);
+            free((void*)cc);
+            xmlrpc_DECREF(item);
+            if (eq)
             {
-                xmlrpc_DECREF(param);
-                xmlrpc_DECREF(result);
-                xmlrpc_DECREF(reporter_member);
                 xmlrpc_DECREF(cc_member);
-                xmlrpc_DECREF(item);
-                free((void*)cc);
+                xmlrpc_DECREF(result);
                 return true;
             }
         }
+        xmlrpc_DECREF(cc_member);
     }
-    xmlrpc_DECREF(cc_member);
-    xmlrpc_DECREF(param);
+
     xmlrpc_DECREF(result);
-    xmlrpc_DECREF(reporter_member);
     return false;
 }
 
 static void add_plus_one_cc(const uint32_t bug_id, const char* login)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-
-    param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "Bug.update", param, &result);
     throw_if_xml_fault_occurred();
 
@@ -210,21 +201,17 @@ static void add_plus_one_cc(const uint32_t bug_id, const char* login)
 
 static int32_t check_uuid_in_bugzilla(const char* component, const char* UUID)
 {
-    xmlrpc_value* param = NULL;
-    xmlrpc_value* result = NULL;
-    xmlrpc_value* bugs_member = NULL;
+    std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
 
-    xmlrpc_int bug_id;
-
-    char query[1024];
-    snprintf(query, 1023, "ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
-
-    param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query);
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query.c_str());
     throw_if_xml_fault_occurred();
 
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, client, server_info, "Bug.search", param, &result);
     throw_if_xml_fault_occurred();
+    xmlrpc_DECREF(param);
 
+    xmlrpc_value* bugs_member = NULL;
     xmlrpc_struct_find_value(&env, result, "bugs", &bugs_member);
     throw_if_xml_fault_occurred();
 
@@ -233,34 +220,38 @@ static int32_t check_uuid_in_bugzilla(const char* component, const char* UUID)
         // when array size is equal 0 that means no bug reported
         uint32_t array_size = xmlrpc_array_size(&env, bugs_member);
         throw_if_xml_fault_occurred();
-        if( array_size == 0 )
+        if (array_size == 0)
+        {
+            xmlrpc_DECREF(bugs_member);
+            xmlrpc_DECREF(result);
             return -1;
+        }
 
         xmlrpc_value* item = NULL;
         xmlrpc_array_read_item(&env, bugs_member, 0, &item); // Correct
         throw_if_xml_fault_occurred();
-
         xmlrpc_value* bug = NULL;
-        xmlrpc_struct_find_value(&env, item,"bug_id", &bug);
+        xmlrpc_struct_find_value(&env, item, "bug_id", &bug);
         throw_if_xml_fault_occurred();
+
         if (bug)
         {
+            xmlrpc_int bug_id;
             xmlrpc_read_int(&env, bug, &bug_id);
-            log("Bug is already reported: %i", bug_id);
+            log("Bug is already reported: %i", (int)bug_id);
             update_client(_("Bug is already reported: ") + to_string(bug_id));
 
-            xmlrpc_DECREF(result);
             xmlrpc_DECREF(bug);
             xmlrpc_DECREF(item);
             xmlrpc_DECREF(bugs_member);
-            xmlrpc_DECREF(param);
+            xmlrpc_DECREF(result);
             return bug_id;
         }
+        xmlrpc_DECREF(item);
+        xmlrpc_DECREF(bugs_member);
     }
 
     xmlrpc_DECREF(result);
-    xmlrpc_DECREF(bugs_member);
-    xmlrpc_DECREF(param);
     return -1;
 }
 

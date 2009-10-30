@@ -92,6 +92,9 @@ static string login(const char* login, const char* passwd)
     xmlrpc_read_string(&env, cookie_xml, &cookie);
     throw_if_xml_fault_occurred();
     cookie_str = cookie;
+    /* xmlrpc_read_string returns *malloc'ed ptr*.
+     * doc is not very clear on it, but I looked in xmlrpc sources. */
+    free((void*)cookie);
     xmlrpc_DECREF(cookie_xml);
 
     xmlrpc_DECREF(result);
@@ -240,6 +243,7 @@ static string new_bug(const char *auth_cookie, const map_crash_report_t& pCrashR
     bug_id_str = bug_id;
     log("New bug id: %s", bug_id);
     update_client(_("New bug id: ") + bug_id_str);
+    free((void*)bug_id);
     xmlrpc_DECREF(bug_id_xml);
 
     xmlrpc_DECREF(result);
