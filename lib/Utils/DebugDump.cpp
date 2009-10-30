@@ -362,6 +362,9 @@ void CDebugDump::SaveKernelArchitectureRelease()
     }
     std::string release;
     LoadTextFile("/etc/redhat-release", release);
+    const char *release_ptr = release.c_str();
+    unsigned len_1st_str = strchrnul(release_ptr, '\n') - release_ptr;
+    release.erase(len_1st_str); /* usually simply removes trailing '\n' */
     SaveText(FILENAME_RELEASE, release);
 }
 

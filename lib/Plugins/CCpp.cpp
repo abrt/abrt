@@ -828,7 +828,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
-    std::string rating = ssprintf("%d\n", rate_backtrace(backtrace));
+    std::string rating = ssprintf("%d", rate_backtrace(backtrace));
     dd.SaveText(FILENAME_RATING, rating);
     dd.Close();
 }
