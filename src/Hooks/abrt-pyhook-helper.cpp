@@ -18,7 +18,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <argp.h>
+
+#include <getopt.h>
 /* We can easily get rid of abrtlib (libABRTUtils.so) usage in this file,
  * but DebugDump will pull it in anyway */
 #include "abrtlib.h"
@@ -27,74 +28,63 @@
 # include <config.h>
 #endif
 
-const char *argp_program_version = "abrt-pyhook-helper " VERSION;
-const char *argp_program_bug_address = "<crash-catcher@lists.fedorahosted.org>";
-
-static char doc[] = "abrt-pyhook-helper -- stores crash data to abrt shared directory";
-
-static struct argp_option options[] = {
-  {"pid"       , 'p', "PID"     , 0, "PID of process that caused the crash" },
-  {"executable", 'e', "PATH"    , 0, "absolute path to the program that crashed" },
-  {"uuid"      , 'u', "UUID"    , 0, "hash generated from the backtrace"},
-  {"cmdline"   , 'c', "TEXT"    , 0, "command line of the crashed program"},
-  {"loginuid"  , 'l', "UID"     , 0, "login UID"},
-  { 0 }
-};
-
-struct arguments
-{
-  char *pid;
-  char *executable;
-  char *uuid;
-  char *cmdline;
-  char *loginuid;
-};
-
-static error_t
-parse_opt(int key, char *arg, struct argp_state *state)
-{
-  /* Get the input argument from argp_parse, which we
-     know is a pointer to our arguments structure. */
-  struct arguments *arguments = (struct arguments*)state->input;
-
-  switch (key)
-  {
-  case 'p': arguments->pid = arg; break;
-  case 'e': arguments->executable = arg; break;
-  case 'u': arguments->uuid = arg; break;
-  case 'c': arguments->cmdline = arg; break;
-  case 'l': arguments->loginuid = arg; break;
-
-  case ARGP_KEY_ARG:
-    argp_usage(state);
-    exit(1);
-    break;
-
-  case ARGP_KEY_END:
-    if (!arguments->pid)
-    {
-      argp_usage(state);
-      exit(1);
-    }
-    break;
-
-  default:
-    return ARGP_ERR_UNKNOWN;
-  }
-  return 0;
-}
-
-/* Our argp parser. */
-static struct argp argp = { options, parse_opt, 0, doc };
-
 #define MAX_BT_SIZE (1024*1024)
+
+static char *pid;
+static char *executable;
+static char *uuid;
+static char *cmdline;
+static char *loginuid;
 
 int main(int argc, char** argv)
 {
-  struct arguments arguments;
-  argp_parse (&argp, argc, argv, 0, 0, &arguments);
+  // Parse options
+  static const struct option longopts[] = {
+    // name       , has_arg          , flag, val
+    { "pid"       , required_argument, NULL, 'p' },
+    { "executable", required_argument, NULL, 'e' },
+    { "uuid"      , required_argument, NULL, 'u' },
+    { "cmdline"   , required_argument, NULL, 'c' },
+    { "loginuid"  , required_argument, NULL, 'l' },
+  };
+  int opt;
+  while ((opt = getopt_long(argc, argv, "p:e:u:c:l:", longopts, NULL)) != -1)
+  {
+    switch (opt)
+    {
+    case 'p':
+      pid = optarg;
+      break;
+    case 'e':
+      executable = optarg;
+      break;
+    case 'u':
+      uuid = optarg;
+      break;
+    case 'c':
+      cmdline = optarg;
+      break;
+    case 'l':
+      loginuid = optarg;
+      break;
+    default:
+ usage:
+      error_msg_and_die(
+                "Usage: abrt-pyhook-helper [OPTIONS] <BACKTRACE\n"
+                "\nOptions:\n"
+                "	-p,--pid PID		PID of process that caused the crash\n"
+                "	-p,--executable	PATH	absolute path to the program that crashed\n"
+                "	-u,--uuid UUID		hash generated from the backtrace\n"
+                "	-c,--cmdline TEXT	command line of the crashed program\n"
+                "	-l,--loginuid UID	login UID\n"
+      );
+    }
+  }
+  if (!pid)
+    goto usage;
+// is it really ok if other params aren't specified? abrtd might get confused...
 
-  // Read the backtrace from stdin.
+  // Read the backtrace from stdin
   char *bt = (char*)xmalloc(MAX_BT_SIZE);
   ssize_t len = full_read(STDIN_FILENO, bt, MAX_BT_SIZE-1);
   if (len < 0)
@@ -107,22 +97,22 @@ int main(int argc, char** argv)
     error_msg("Backtrace size limit exceeded, trimming to 1 MB");
   }
 
-  // Create directory with the debug dump.
+  // Create directory with the debug dump
   char path[PATH_MAX];
   snprintf(path, sizeof(path), DEBUG_DUMPS_DIR"/pyhook-%ld-%s",
-	   (long)time(NULL), arguments.pid);
+	   (long)time(NULL), pid);
 
   CDebugDump dd;
   dd.Create(path, geteuid());
   dd.SaveText(FILENAME_ANALYZER, "Python");
-  if (arguments.executable)
-    dd.SaveText(FILENAME_EXECUTABLE, arguments.executable);
-  if (arguments.cmdline)
-    dd.SaveText("cmdline", arguments.cmdline);
-  if (arguments.uuid)
-    dd.SaveText("uuid", arguments.uuid);
-  if (arguments.loginuid)
-    dd.SaveText("uid", arguments.loginuid);
+  if (executable)
+    dd.SaveText(FILENAME_EXECUTABLE, executable);
+  if (cmdline)
+    dd.SaveText("cmdline", cmdline);
+  if (uuid)
+    dd.SaveText("uuid", uuid);
+  if (loginuid)
+    dd.SaveText("uid", loginuid);
   dd.SaveText("backtrace", bt);
   free(bt);
   dd.Close();
