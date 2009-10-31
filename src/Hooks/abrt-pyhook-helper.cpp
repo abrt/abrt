@@ -19,12 +19,12 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <argp.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
+/* We can easily get rid of abrtlib (libABRTUtils.so) usage in this file,
+ * but DebugDump will pull it in anyway */
+#include "abrtlib.h"
 #include "DebugDump.h"
 #if HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif
 
 const char *argp_program_version = "abrt-pyhook-helper " VERSION;
@@ -51,7 +51,7 @@ struct arguments
 };
 
 static error_t
-parse_opt (int key, char *arg, struct argp_state *state)
+parse_opt(int key, char *arg, struct argp_state *state)
 {
   /* Get the input argument from argp_parse, which we
      know is a pointer to our arguments structure. */
@@ -87,46 +87,29 @@ parse_opt (int key, char *arg, struct argp_state *state)
 /* Our argp parser. */
 static struct argp argp = { options, parse_opt, 0, doc };
 
+#define MAX_BT_SIZE (1024*1024)
+
 int main(int argc, char** argv)
 {
   struct arguments arguments;
   argp_parse (&argp, argc, argv, 0, 0, &arguments);
 
   // Read the backtrace from stdin.
-  int c;
-  int capacity = 1024;
-  char *bt = (char*)malloc(capacity);
-  if (!bt)
+  char *bt = (char*)xmalloc(MAX_BT_SIZE);
+  ssize_t len = full_read(STDIN_FILENO, bt, MAX_BT_SIZE-1);
+  if (len < 0)
   {
-    fprintf(stderr, "Error while allocating memory for backtrace.\n");
-    return 1;
+    perror_msg_and_die("Read error");
   }
-  char *btptr = bt;
-  while ((c = getchar()) != EOF)
+  bt[len] = '\0';
+  if (len == MAX_BT_SIZE-1)
   {
-    *btptr++ = (char)c;
-    if (btptr - bt >= capacity - 1)
-    {
-      capacity *= 2;
-      if (capacity > 1048576) // > 1 MB
-      {
-	fprintf(stderr, "Backtrace size limit exceeded. Trimming to 1 MB.\n");
-	break;
-      }
-
-      bt = (char*)realloc(bt, capacity);
-      if (!bt)
-      {
-	fprintf(stderr, "Error while allocating memory for backtrace.\n");
-	return 1;
-      }
-    }
+    error_msg("Backtrace size limit exceeded, trimming to 1 MB");
   }
-  *btptr = '\0';
 
   // Create directory with the debug dump.
   char path[PATH_MAX];
-  snprintf(path, sizeof(path), "%s/pyhook-%ld-%s", DEBUG_DUMPS_DIR,
+  snprintf(path, sizeof(path), DEBUG_DUMPS_DIR"/pyhook-%ld-%s",
 	   (long)time(NULL), arguments.pid);
 
   CDebugDump dd;
