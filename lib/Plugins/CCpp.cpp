@@ -44,17 +44,6 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
     m_bMemoryMap(false), m_bInstallDebuginfo(true)
 {}
 
-static bool is_hexstr(const char* str)
-{
-    while (*str)
-    {
-        if (!isxdigit(*str))
-            return false;
-        str++;
-    }
-    return true;
-}
-
 static std::string CreateHash(const std::string& pInput)
 {
     std::string ret = "";
@@ -452,6 +441,16 @@ static std::string run_unstrip_n(const std::string& pDebugDumpDir)
 
 #if 0
 /* older code */
+static bool is_hexstr(const char* str)
+{
+    while (*str)
+    {
+        if (!isxdigit(*str))
+            return false;
+        str++;
+    }
+    return true;
+}
 static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");

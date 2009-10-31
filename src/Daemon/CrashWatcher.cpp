@@ -163,18 +163,9 @@ static void* create_report(void* arg)
     }
     catch (CABRTException& e)
     {
-        if (e.type() == EXCEP_FATAL)
-        {
-            set_client_name(NULL);
-            /* free strduped strings */
-            free(thread_data->UUID);
-            free(thread_data->UID);
-            free(thread_data->peer);
-            free(thread_data);
-            throw e;
-        }
         warn_client(e.what());
     }
+    catch (...) {}
     set_client_name(NULL);
 
     /* free strduped strings */
@@ -193,10 +184,12 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
     thread_data->UID = xstrdup(pUID);
     thread_data->force = force;
     thread_data->peer = xstrdup(pSender);
+
 //TODO: do we need this?
 //pthread_attr_t attr;
 //pthread_attr_init(&attr);
 //pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+
     int r = pthread_create(&thread_data->thread_id, NULL, create_report, thread_data);
     if (r != 0)
     {
@@ -208,11 +201,9 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
          * or ulimit is exceeded (someone floods us with CreateReport() dbus calls?)
          */
         error_msg("Can't create thread");
+        return r;
     }
-    else
-    {
-        VERB3 log("Thread %llx created", (unsigned long long)thread_data->thread_id);
-    }
+    VERB3 log("Thread %llx created", (unsigned long long)thread_data->thread_id);
 //pthread_attr_destroy(&attr);
     return r;
 }

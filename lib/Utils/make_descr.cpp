@@ -98,6 +98,9 @@ string make_description_logger(const map_crash_report_t& pCrashReport)
          || type == CD_ATT
          || type == CD_BIN
         ) {
+            if (content == "1.\n2.\n3.\n")
+                continue; /* user did not change default "How to reproduce" */
+
             bool was_multiline = 0;
             string tmp;
             add_content(was_multiline, tmp, filename.c_str(), content.c_str());
@@ -115,7 +118,7 @@ string make_description_logger(const map_crash_report_t& pCrashReport)
         }
     }
 
-    if (long_description.size() != 0)
+    if (description.size() != 0 && long_description.size() != 0)
     {
         description += '\n';
         description += long_description;
