@@ -46,6 +46,7 @@ int main(int argc, char** argv)
     { "uuid"      , required_argument, NULL, 'u' },
     { "cmdline"   , required_argument, NULL, 'c' },
     { "loginuid"  , required_argument, NULL, 'l' },
+    { 0 },
   };
   int opt;
   while ((opt = getopt_long(argc, argv, "p:e:u:c:l:", longopts, NULL)) != -1)
