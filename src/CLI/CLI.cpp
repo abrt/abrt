@@ -24,16 +24,16 @@
 #include "report.h"
 #include "dbus.h"
 #if HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif
 #if HAVE_LOCALE_H
-#include <locale.h>
+# include <locale.h>
 #endif
 #if ENABLE_NLS
-#include <libintl.h>
-#define _(S) gettext(S)
+# include <libintl.h>
+# define _(S) gettext(S)
 #else
-#define _(S) (S)
+# define _(S) (S)
 #endif
 
 /* Program options */
@@ -56,31 +56,31 @@ static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
         map_crash_info_t& info = pCrashInfos[ii];
         if (pMode == OPT_GET_LIST_FULL || info.find(CD_REPORTED)->second[CD_CONTENT] != "1")
         {
-	  const char *timestr = info[CD_TIME][CD_CONTENT].c_str();
-	  long time = strtol(timestr, 0, 10);
-	  if (time == 0)
-	    error_msg_and_die("Error while converting time string.");
+            const char *timestr = info[CD_TIME][CD_CONTENT].c_str();
+            long time = strtol(timestr, NULL, 10);
+            if (time == 0)
+                error_msg_and_die("Error while converting time string.");
 
-	  char timeloc[256];
-	  int success = strftime(timeloc, 128, "%c", localtime(&time));
-	  if (!success)
-	    error_msg_and_die("Error while converting time to string.");
+            char timeloc[256];
+            int success = strftime(timeloc, 128, "%c", localtime(&time));
+            if (!success)
+                error_msg_and_die("Error while converting time to string.");
 
-	  printf(_("%u.\n"
-		   "\tUID        : %s\n"
-		   "\tUUID       : %s\n"
-		   "\tPackage    : %s\n"
-		   "\tExecutable : %s\n"
-		   "\tCrash Time : %s\n"
-		   "\tCrash Count: %s\n"),
-		 ii,
-		 info[CD_UID][CD_CONTENT].c_str(),
-		 info[CD_UUID][CD_CONTENT].c_str(),
-		 info[CD_PACKAGE][CD_CONTENT].c_str(),
-		 info[CD_EXECUTABLE][CD_CONTENT].c_str(),
-		 timeloc,
-		 info[CD_COUNT][CD_CONTENT].c_str()
-	    );
+            printf(_("%u.\n"
+                   "\tUID        : %s\n"
+                   "\tUUID       : %s\n"
+                   "\tPackage    : %s\n"
+                   "\tExecutable : %s\n"
+                   "\tCrash Time : %s\n"
+                   "\tCrash Count: %s\n"),
+                 ii,
+                 info[CD_UID][CD_CONTENT].c_str(),
+                 info[CD_UUID][CD_CONTENT].c_str(),
+                 info[CD_PACKAGE][CD_CONTENT].c_str(),
+                 info[CD_EXECUTABLE][CD_CONTENT].c_str(),
+                 timeloc,
+                 info[CD_COUNT][CD_CONTENT].c_str()
+            );
         }
     }
 }
@@ -111,21 +111,21 @@ static char *progname(char *argv0)
 /* Prints abrt-cli version and some help text. */
 static void usage(char *argv0)
 {
-  char *name = progname(argv0);
-  printf("%s " VERSION "\n\n", name);
+    char *name = progname(argv0);
+    printf("%s " VERSION "\n\n", name);
 
-  /* Message has embedded tabs. */
-  printf(_("Usage: %s [OPTION]\n\n"
-	 "Startup:\n"
-	 "	-V, --version		display the version of %s and exit\n"
-	 "	-?, --help		print this help\n\n"
-	 "Actions:\n"
-	 "	--get-list		print list of crashes which are not reported yet\n"
-	 "	--get-list-full		print list of all crashes\n"
-	 "	--report UUID		create and send a report\n"
-	 "	--report-always UUID	create and send a report without asking\n"
-	   "	--delete UUID		remove crash\n"),
-	 name, name);
+    /* Message has embedded tabs. */
+    printf(_("Usage: %s [OPTION]\n\n"
+        "Startup:\n"
+        "	-V, --version		display the version of %s and exit\n"
+        "	-?, --help		print this help\n\n"
+        "Actions:\n"
+        "	--get-list		print list of crashes which are not reported yet\n"
+        "	--get-list-full		print list of all crashes\n"
+        "	--report UUID		create and send a report\n"
+        "	--report-always UUID	create and send a report without asking\n"
+        "	--delete UUID		remove crash\n"),
+        name, name);
 }
 
 int main(int argc, char** argv)
@@ -154,21 +154,21 @@ int main(int argc, char** argv)
             case OPT_GET_LIST_FULL:
                 if (op == -1)
                     break;
-		error_msg(_("You must specify exactly one operation."));
+                error_msg(_("You must specify exactly one operation."));
                 return 1;
-	    case -1: /* end of options */
-	        if (op != -1) /* if some operation was specified... */
-		    break;
+            case -1: /* end of options */
+                if (op != -1) /* if some operation was specified... */
+                    break;
                 /* fall through */
             default:
-  	    case '?':
+            case '?':
             case OPT_HELP:
-	      usage(argv[0]);
-	      return 1;
+                usage(argv[0]);
+                return 1;
             case 'V':
-	    case OPT_VERSION:
-	      printf("%s " VERSION "\n", progname(argv[0]));
-	      return 0;
+            case OPT_VERSION:
+                printf("%s " VERSION "\n", progname(argv[0]));
+                return 0;
         }
         if (c == -1)
             break;
@@ -195,11 +195,11 @@ int main(int argc, char** argv)
             break;
         }
         case OPT_REPORT:
-	  report(uuid, false);
-	  break;
+            report(uuid, false);
+            break;
         case OPT_REPORT_ALWAYS:
-	  report(uuid, true);
-	  break;
+            report(uuid, true);
+            break;
         case OPT_DELETE:
         {
             call_DeleteDebugDump(uuid);

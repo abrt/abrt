@@ -21,13 +21,13 @@
 #include "abrtlib.h"
 #include "DebugDump.h" // FILENAME_* defines
 #if HAVE_CONFIG_H
-#include <config.h>
+# include <config.h>
 #endif
 #if ENABLE_NLS
-#include <libintl.h>
-#define _(S) gettext(S)
+# include <libintl.h>
+# define _(S) gettext(S)
 #else
-#define _(S) (S)
+# define _(S) (S)
 #endif
 
 /* Field separator for the crash report file that is edited by user. */
@@ -45,7 +45,7 @@ char *trim(char *str)
   // Remove leading spaces.
   char *ibuf;
   for (ibuf = str; *ibuf && isspace(*ibuf); ++ibuf)
-    ;
+    continue;
   if (str != ibuf)
     memmove(str, ibuf, ibuf - str);
 
@@ -79,7 +79,7 @@ static char *escape(const char *str)
     {
       if (*ptr == '#')
 	++count;
-      if (*ptr == '\\' && *(ptr + 1) == '#')
+      if (*ptr == '\\' && ptr[1] == '#')
 	++count;
     }
 
@@ -89,9 +89,7 @@ static char *escape(const char *str)
 
   // Copy the input string to the resultant string, and escape all
   // occurences of \# and #.
-  char *result = (char*)malloc(strlen(str) + 1 + count);
-  if (!result)
-    error_msg_and_die("Memory error while escaping a field.");
+  char *result = (char*)xmalloc(strlen(str) + 1 + count);
 
   const char *src = str;
   char *dest = result;
@@ -136,10 +134,9 @@ static void remove_comments_and_unescape(char *str)
 	++src;
 	continue;
       }
-      else if (*src == '\\' &&
-	       (*(src + 1) == '#' ||
-		(*(src + 1) == '\\' && *(src + 2) == '#')))
-      {
+      if (*src == '\\'
+       && (src[1] == '#' || (src[1] == '\\' && src[2] == '#'))
+      ) {
 	++src; // Unescape escaped char.
       }
     }
@@ -189,7 +186,7 @@ static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
  *  If the report is successfully stored to the file, a zero value is returned.
  *  On failure, nonzero value is returned.
  */
-static int write_crash_report(const map_crash_report_t &report, FILE *fp)
+static void write_crash_report(const map_crash_report_t &report, FILE *fp)
 {
   fprintf(fp, "# Please check this report. Lines starting with '#' will be ignored.\n"
 	  "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
@@ -210,8 +207,6 @@ static int write_crash_report(const map_crash_report_t &report, FILE *fp)
   write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
   write_crash_report_field(fp, report, FILENAME_REASON, _("# Reason of crash"));
   write_crash_report_field(fp, report, FILENAME_RELEASE, _("# Release string of the operating system"));
-
-  return 0;
 }
 
 /*
@@ -303,7 +298,7 @@ static int read_crash_report(map_crash_report_t &report, const char *text)
 }
 
 /* Runs external editor. */
-int launch_editor(const char *path)
+static int launch_editor(const char *path)
 {
   const char *editor, *terminal;
 
@@ -323,9 +318,10 @@ int launch_editor(const char *path)
   if (!editor)
     editor = "vi";
 
-  const char *args[6];
-  args[0] = editor;
-  args[1] = path;
+  char *args[3];
+  args[0] = (char*)editor;
+  args[1] = (char*)path;
+  args[2] = NULL;
   run_command(args);
 
   return 0;
@@ -349,14 +345,14 @@ int report(const char *uuid, bool always)
   int fd = mkstemp(filename);
   if (fd == -1)
   {
-    error_msg("could not generate temporary file name");
+    error_msg("can't generate temporary file name");
     return 1;
   }
 
   FILE *fp = fdopen(fd, "w");
   if (!fp)
   {
-    error_msg("could not open '%s' to save the crash report", filename);
+    error_msg("can't open '%s' to save the crash report", filename);
     return 1;
   }
 
@@ -364,7 +360,7 @@ int report(const char *uuid, bool always)
 
   if (fclose(fp))
   {
-    error_msg("could not close '%s'", filename);
+    error_msg("can't close '%s'", filename);
     return 2;
   }
 
@@ -375,7 +371,7 @@ int report(const char *uuid, bool always)
   fp = fopen(filename, "r");
   if (!fp)
   {
-    error_msg("could not open '%s' to read the crash report", filename);
+    error_msg("can't open '%s' to read the crash report", filename);
     return 1;
   }
 
@@ -383,10 +379,10 @@ int report(const char *uuid, bool always)
   long size = ftell(fp);
   fseek(fp, 0, SEEK_SET);
 
-  char *text = (char*)malloc(size + 1);
+  char *text = (char*)xmalloc(size + 1);
   if (fread(text, 1, size, fp) != size)
   {
-    error_msg("could not read '%s'", filename);
+    error_msg("can't read '%s'", filename);
     return 1;
   }
   text[size] = '\0';
@@ -403,7 +399,7 @@ int report(const char *uuid, bool always)
   free(text);
 
   if (unlink(filename) != 0) // Delete the tempfile.
-    error_msg("could not unlink %s: %s", filename, strerror(errno));
+    perror_msg("can't unlink %s", filename);
 
   // Report only if the user is sure.
   printf(_("Do you want to send the report? [y/N]: "));

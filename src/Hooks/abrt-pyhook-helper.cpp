@@ -1,5 +1,5 @@
 /*
-    python-hook-writer.cpp - writes data to the /var/cache/abrt directory 
+    python-hook-writer.cpp - writes data to the /var/cache/abrt directory
     with SUID bit
 
     Copyright (C) 2009  RedHat inc.
@@ -26,7 +26,7 @@
 #if HAVE_CONFIG_H
 #include <config.h>
 #endif
- 
+
 const char *argp_program_version = "abrt-pyhook-helper " VERSION;
 const char *argp_program_bug_address = "<crash-catcher@lists.fedorahosted.org>";
 
@@ -56,7 +56,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
   /* Get the input argument from argp_parse, which we
      know is a pointer to our arguments structure. */
   struct arguments *arguments = (struct arguments*)state->input;
-     
+
   switch (key)
   {
   case 'p': arguments->pid = arg; break;
@@ -77,7 +77,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
       exit(1);
     }
     break;
-    
+
   default:
     return ARGP_ERR_UNKNOWN;
   }
@@ -113,7 +113,7 @@ int main(int argc, char** argv)
 	fprintf(stderr, "Backtrace size limit exceeded. Trimming to 1 MB.\n");
 	break;
       }
-	
+
       bt = (char*)realloc(bt, capacity);
       if (!bt)
       {
@@ -126,7 +126,7 @@ int main(int argc, char** argv)
 
   // Create directory with the debug dump.
   char path[PATH_MAX];
-  snprintf(path, sizeof(path), "%s/pyhook-%ld-%s", DEBUG_DUMPS_DIR, 
+  snprintf(path, sizeof(path), "%s/pyhook-%ld-%s", DEBUG_DUMPS_DIR,
 	   (long)time(NULL), arguments.pid);
 
   CDebugDump dd;

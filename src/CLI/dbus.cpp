@@ -37,71 +37,70 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
 {
     dbus_uint32_t serial;
     if (TRUE != dbus_connection_send(s_dbus_conn, msg, &serial))
-      error_msg_and_die("Error sending DBus message");
+        error_msg_and_die("Error sending DBus message");
     dbus_message_unref(msg);
-    
+
     while (true)
     {
-      DBusMessage *received = dbus_connection_pop_message(s_dbus_conn);
-      if (!received)
-      {
-	if (FALSE == dbus_connection_read_write(s_dbus_conn, -1))
-	  error_msg_and_die("Connection to ABRT daemon closed.");
+        DBusMessage *received = dbus_connection_pop_message(s_dbus_conn);
+        if (!received)
+        {
+            if (FALSE == dbus_connection_read_write(s_dbus_conn, -1))
+                error_msg_and_die("DBus connection closed");
+            continue;
+        }
 
-	continue;
-      }
+        /* Debugging */
+        /*
+        const char *sender = dbus_message_get_sender(received);
+        if (sender)
+            printf("sender: %s\n", sender);
+        const char *path = dbus_message_get_path(received);
+        if (path)
+            printf("path: %s\n", path);
+        const char *member = dbus_message_get_member(received);
+        if (member)
+            printf("member: %s\n", member);
+        const char *interface = dbus_message_get_interface(received);
+        if (interface)
+            printf("interface: %s\n", interface);
+        const char *destination = dbus_message_get_destination(received);
+        if (destination)
+            printf("destination: %s\n", destination);
+        */
 
-      /* Debugging*/
-      /*
-      const char *sender = dbus_message_get_sender(received);
-      if (sender)
-	printf("sender: %s\n", sender);
-      const char *path = dbus_message_get_path(received);
-      if (path)
-	printf("path: %s\n", path);
-      const char *member = dbus_message_get_member(received);
-      if (member)
-        printf("member: %s\n", member);
-      const char *interface = dbus_message_get_interface(received);
-      if (interface)
-        printf("interface: %s\n", interface);
-      const char *destination = dbus_message_get_destination(received);
-      if (destination)
-        printf("destination: %s\n", destination);
-      */
+        DBusError err;
+        dbus_error_init(&err);
 
-      DBusError err;
-      dbus_error_init(&err);
-      
-      if (dbus_message_is_signal(received, CC_DBUS_IFACE, "Update"))
-      {
-	const char *update_msg;
-	if (!dbus_message_get_args(received, &err, 
-				   DBUS_TYPE_STRING, &update_msg, 
-				   DBUS_TYPE_INVALID))
-	{
-	  error_msg_and_die("dbus Update message: arguments mismatch");
-	}
-	printf(">> %s\n", update_msg);
-      }
-      else if (dbus_message_is_signal(received, CC_DBUS_IFACE, "Warning"))
-      {
-	const char *warning_msg;
-	if (!dbus_message_get_args(received, &err, 
-				   DBUS_TYPE_STRING, &warning_msg, 
-				   DBUS_TYPE_INVALID))
-	{
-	  error_msg_and_die("dbus Update message: arguments mismatch");
-	}
-	printf(">! %s\n", warning_msg);
-      }
-      else if (dbus_message_get_type(received) == DBUS_MESSAGE_TYPE_METHOD_RETURN &&
-	       dbus_message_get_reply_serial(received) == serial)
-      {
-	return received;
-      }
-    
-      dbus_message_unref(received);
+        if (dbus_message_is_signal(received, CC_DBUS_IFACE, "Update"))
+        {
+            const char *update_msg;
+            if (!dbus_message_get_args(received, &err,
+                                   DBUS_TYPE_STRING, &update_msg,
+                                   DBUS_TYPE_INVALID))
+            {
+                error_msg_and_die("dbus Update message: arguments mismatch");
+            }
+            printf(">> %s\n", update_msg);
+        }
+        else if (dbus_message_is_signal(received, CC_DBUS_IFACE, "Warning"))
+        {
+            const char *warning_msg;
+            if (!dbus_message_get_args(received, &err,
+                                   DBUS_TYPE_STRING, &warning_msg,
+                                   DBUS_TYPE_INVALID))
+            {
+                error_msg_and_die("dbus Update message: arguments mismatch");
+            }
+            printf(">! %s\n", warning_msg);
+        }
+        else if (dbus_message_get_type(received) == DBUS_MESSAGE_TYPE_METHOD_RETURN &&
+                 dbus_message_get_reply_serial(received) == serial)
+        {
+            return received;
+        }
+
+        dbus_message_unref(received);
     }
 }
 
