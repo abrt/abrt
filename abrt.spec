@@ -68,7 +68,7 @@ GTK+ wizard for convenient bug reporting.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
-Requires: gdb
+Requires: gdb >= 7.0-3
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
