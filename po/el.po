@@ -4,17 +4,16 @@
 #
 # Pierros Papadeas <ppapadeas@gmail.com>, 2009.
 #
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-30 10:16+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"POT-Creation-Date: 2009-11-01 21:05+0000\n"
+"PO-Revision-Date: 2009-11-02 00:13+0200\n"
+"Last-Translator: Nikos Charonitakis <nikosx@gmail.com>\n"
 "Language-Team: Greek Fedora team <fedora-trans-el@redhat.com>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
@@ -45,11 +44,13 @@ msgstr ""
 msgid "Plugin name is not set, can't load it's settings"
 msgstr ""
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr ""
 
-#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+#: ../src/Gui/CCDBusBackend.py:100
+#: ../src/Gui/CCDBusBackend.py:103
 msgid "Please check if abrt daemon is running"
 msgstr ""
 
@@ -67,7 +68,8 @@ msgstr ""
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:244
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/CCMainWindow.py:244
 msgid "<b>Not reported!</b>"
 msgstr ""
 
@@ -89,30 +91,24 @@ msgstr ""
 
 #: ../src/Gui/ccgui.glade.h:8
 msgid "Please wait.."
-msgstr ""
+msgstr "Παρακαλώ περιμένετε..."
 
 #: ../src/Gui/ccgui.glade.h:9
 msgid "Plugins"
 msgstr ""
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
+#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/report.glade.h:2
 msgid "Report"
 msgstr ""
 
 #: ../src/Gui/ccgui.glade.h:11
 msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
 #: ../src/Gui/ccgui.glade.h:16
@@ -121,32 +117,32 @@ msgstr ""
 
 #: ../src/Gui/ccgui.glade.h:17
 msgid "_Edit"
-msgstr ""
+msgstr "_Επεξεργασία"
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "_File"
-msgstr ""
+msgstr "_Αρχείο"
 
 #: ../src/Gui/ccgui.glade.h:19
 msgid "_Help"
-msgstr ""
+msgstr "_Βοήθεια"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:80
 msgid "Icon"
-msgstr ""
+msgstr "Εικονίδιο"
 
 #: ../src/Gui/CCMainWindow.py:88
 msgid "Package"
-msgstr ""
+msgstr "Πακέτο"
 
 #: ../src/Gui/CCMainWindow.py:89
 msgid "Application"
-msgstr ""
+msgstr "Εφαρμογή"
 
 #: ../src/Gui/CCMainWindow.py:90
 msgid "Date"
-msgstr ""
+msgstr "Ημερομηνία"
 
 #: ../src/Gui/CCMainWindow.py:91
 msgid "Crash Rate"
@@ -154,7 +150,7 @@ msgstr ""
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
-msgstr ""
+msgstr "Χρήστης"
 
 #: ../src/Gui/CCMainWindow.py:160
 #, python-format
@@ -199,7 +195,8 @@ msgid ""
 "%s"
 msgstr ""
 
-#: ../src/Gui/CCMainWindow.py:333 ../src/Gui/CCMainWindow.py:360
+#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:360
 #, python-format
 msgid "Error getting the report: %s"
 msgstr ""
@@ -211,8 +208,7 @@ msgstr ""
 #: ../src/Gui/CCReporterDialog.py:215
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
 
@@ -220,9 +216,10 @@ msgstr ""
 msgid "Report done"
 msgstr ""
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
+#: ../src/Gui/dialogs.glade.h:2
+#: ../src/Gui/settings.glade.h:27
 msgid "gtk-ok"
-msgstr ""
+msgstr "gtk-ok"
 
 #: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
@@ -234,7 +231,8 @@ msgstr ""
 msgid "No UI for plugin %s"
 msgstr ""
 
-#: ../src/Gui/PluginSettingsUI.py:55 ../src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:55
+#: ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr ""
 
@@ -244,21 +242,23 @@ msgstr ""
 
 #: ../src/Gui/report.glade.h:1
 msgid "Comment"
-msgstr ""
+msgstr "Σχόλιο:"
 
 #: ../src/Gui/report.glade.h:3
 msgid "Send"
-msgstr ""
+msgstr "Αποστολή"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
+#: ../src/Gui/report.glade.h:4
+#: ../src/Gui/settings.glade.h:25
 msgid "gtk-cancel"
-msgstr ""
+msgstr "gtk-cancel"
 
 #: ../src/Gui/report.glade.h:5
 msgid "gtk-refresh"
-msgstr ""
+msgstr "gtk-refresh"
 
-#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr ""
 
@@ -296,7 +296,7 @@ msgstr ""
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Author:"
-msgstr ""
+msgstr "Συγγραφέας:"
 
 #: ../src/Gui/settings.glade.h:7
 msgid "Blacklisted packages: "
@@ -316,7 +316,7 @@ msgstr ""
 
 #: ../src/Gui/settings.glade.h:11
 msgid "Cron"
-msgstr ""
+msgstr "Cron"
 
 #: ../src/Gui/settings.glade.h:12
 msgid "Database backend: "
@@ -352,7 +352,7 @@ msgstr ""
 
 #: ../src/Gui/settings.glade.h:20
 msgid "Settings"
-msgstr ""
+msgstr "Ρυθμίσεις"
 
 #: ../src/Gui/settings.glade.h:21
 msgid "This function is not implemented yet!"
@@ -360,23 +360,23 @@ msgstr ""
 
 #: ../src/Gui/settings.glade.h:22
 msgid "Version:"
-msgstr ""
+msgstr "Έκδοση:"
 
 #: ../src/Gui/settings.glade.h:23
 msgid "Web Site:"
-msgstr ""
+msgstr "Ιστότοπος:"
 
 #: ../src/Gui/settings.glade.h:24
 msgid "gtk-add"
-msgstr ""
+msgstr "gtk-add"
 
 #: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
-msgstr ""
+msgstr "gtk-close"
 
 #: ../src/Gui/settings.glade.h:28
 msgid "gtk-remove"
-msgstr ""
+msgstr "gtk-remove"
 
 #: ../src/Applet/Applet.cpp:76
 #, c-format
@@ -387,54 +387,48 @@ msgstr ""
 msgid "ABRT service has been started"
 msgstr ""
 
-#: ../src/Applet/Applet.cpp:137 ../src/Applet/Applet.cpp:251
+#: ../src/Applet/Applet.cpp:137
+#: ../src/Applet/Applet.cpp:251
 msgid "ABRT service is not running"
 msgstr ""
 
 #: ../src/Applet/CCApplet.cpp:185
 msgid "Warning"
+msgstr "Προειδοποίηση"
+
+#: ../src/Daemon/Daemon.cpp:521
+msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr ""
 
-#: ../src/Daemon/Daemon.cpp:543
-msgid ""
-"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
-"value in abrt.conf."
-msgstr ""
-
-#: ../lib/Plugins/Bugzilla.cpp:253
+#: ../lib/Plugins/Bugzilla.cpp:252
 msgid "Bug is already reported: "
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:317
-#, c-format
-msgid "Binary file %s will not be reported."
-msgstr ""
-
-#: ../lib/Plugins/Bugzilla.cpp:398
+#: ../lib/Plugins/Bugzilla.cpp:348
 msgid "New bug id: "
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:447
+#: ../lib/Plugins/Bugzilla.cpp:397
 msgid "Checking for duplicates..."
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:450
+#: ../lib/Plugins/Bugzilla.cpp:400
 msgid "Logging into bugzilla..."
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:454
+#: ../lib/Plugins/Bugzilla.cpp:404
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:460
+#: ../lib/Plugins/Bugzilla.cpp:410
 msgid "Checking CC..."
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:419
 msgid "Creating new bug..."
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:473
+#: ../lib/Plugins/Bugzilla.cpp:423
 msgid "Logging out..."
 msgstr ""
 
@@ -442,15 +436,17 @@ msgstr ""
 msgid "Getting local universal unique identification"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:235
+#: ../lib/Plugins/CCpp.cpp:224
 msgid "Getting backtrace..."
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:523 ../lib/Plugins/CCpp.cpp:650
+#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:649
 msgid "Searching for debug-info packages..."
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:585 ../lib/Plugins/CCpp.cpp:683
+#: ../lib/Plugins/CCpp.cpp:584
+#: ../lib/Plugins/CCpp.cpp:683
 msgid "Downloading and installing debug-info packages..."
 msgstr ""
 
@@ -474,7 +470,8 @@ msgstr ""
 msgid "Creating and submitting a report..."
 msgstr ""
 
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
+#: ../lib/Plugins/Logger.cpp:58
+#: ../lib/Plugins/Mailx.cpp:123
 msgid "Creating a report..."
 msgstr ""
 
@@ -482,7 +479,8 @@ msgstr ""
 msgid "Executing RunApp plugin..."
 msgstr ""
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:408
+#: ../lib/Plugins/FileTransfer.cpp:63
+#: ../lib/Plugins/FileTransfer.cpp:408
 msgid "FileTransfer: URL not specified"
 msgstr ""
 
@@ -495,7 +493,8 @@ msgstr ""
 msgid "File Transfer: Creating a report..."
 msgstr ""
 
-#: ../lib/Plugins/FileTransfer.cpp:357 ../lib/Plugins/FileTransfer.cpp:385
+#: ../lib/Plugins/FileTransfer.cpp:357
+#: ../lib/Plugins/FileTransfer.cpp:385
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr ""
 
@@ -518,3 +517,4 @@ msgstr ""
 #: ../lib/Plugins/SOSreport.cpp:150
 msgid "done running sosreport"
 msgstr ""
+
