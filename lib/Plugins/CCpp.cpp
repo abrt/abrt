@@ -41,7 +41,9 @@
 #define FILENAME_MEMORYMAP      "memorymap"
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
-    m_bMemoryMap(false), m_bInstallDebuginfo(true)
+    m_bMemoryMap(false),
+    m_bInstallDebuginfo(true),
+    m_nDebugInfoCacheMB(4000)
 {}
 
 static std::string CreateHash(const std::string& pInput)
@@ -243,7 +245,7 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
-    args[3] = "set debug-file-directory /usr/lib/debug:" LOCALSTATEDIR"/cache/abrt-di/usr/lib/debug";
+    args[3] = (char*)"set debug-file-directory /usr/lib/debug:" LOCALSTATEDIR"/cache/abrt-di/usr/lib/debug";
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -720,6 +722,11 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
     wait(NULL);
 }
 
+static void trim_debuginfo_cache(unsigned max_mb)
+{
+    // TODO
+}
+
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
 {
     log(_("Getting local universal unique identification..."));
@@ -809,10 +816,9 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     dd.Close(); /* do not keep dir locked longer than needed */
 
     std::string build_ids;
-    map_plugin_settings_t settings = GetSettings();
-    if (settings["InstallDebuginfo"] == "yes" &&
-        DebuginfoCheckPolkit(atoi(UID.c_str())) )
-    {
+    if (m_bInstallDebuginfo && DebuginfoCheckPolkit(atoi(UID.c_str()))) {
+	if (m_nDebugInfoCacheMB > 0)
+            trim_debuginfo_cache(m_nDebugInfoCacheMB);
         InstallDebugInfos(pDebugDumpDir, build_ids);
     }
     else
@@ -883,7 +889,8 @@ void CAnalyzerCCpp::DeInit()
 void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 {
     map_plugin_settings_t::const_iterator end = pSettings.end();
-    map_plugin_settings_t::const_iterator it = pSettings.find("MemoryMap");
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("MemoryMap");
     if (it != end)
     {
         m_bMemoryMap = it->second == "yes";
@@ -892,6 +899,11 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     if (it != end)
     {
         m_sDebugInfo = it->second;
+    }
+    it = pSettings.find("DebugInfoCacheMB");
+    if (it != end)
+    {
+        m_nDebugInfoCacheMB = atoi(it->second.c_str());
     }
     it = pSettings.find("InstallDebuginfo");
     if (it != end)
@@ -906,6 +918,7 @@ map_plugin_settings_t CAnalyzerCCpp::GetSettings()
 
     ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
     ret["DebugInfo"] = m_sDebugInfo;
+    ret["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
     ret["InstallDebuginfo"] = m_bInstallDebuginfo ? "yes" : "no";
 
     return ret;

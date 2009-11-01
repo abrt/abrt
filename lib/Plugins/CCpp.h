@@ -32,6 +32,7 @@ class CAnalyzerCCpp : public CAnalyzer
     private:
         bool m_bMemoryMap;
         bool m_bInstallDebuginfo;
+        unsigned m_nDebugInfoCacheMB;
         std::string m_sOldCorePattern;
         std::string m_sDebugInfo;
     public:
