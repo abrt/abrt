@@ -93,7 +93,9 @@ CKerneloopsReporter::CKerneloopsReporter() :
 	m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
 {}
 
-std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
+                                        const map_plugin_settings_t& pSettings,
+                                        const std::string& pArgs)
 {
 	int ret = -1;
 	map_crash_report_t::const_iterator it;

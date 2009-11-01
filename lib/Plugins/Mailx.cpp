@@ -118,7 +118,8 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, co
     ExecMailx(atoi(pUID.c_str()), pText);
 }
 
-std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CMailx::Report(const map_crash_report_t& pCrashReport, 
+                           const map_plugin_settings_t& pSettings, const std::string& pArgs)
 {
     update_client(_("Creating a report..."));
 

@@ -138,7 +138,9 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     {
         std::string message = pMessage.substr(sizeof(MESSAGE_REPORT) - 1);
         map_crash_report_t report = string_to_crash_report(message);
-        Report(report, UID);
+        map_plugin_settings_t plugin_settings;
+        //FIXME: another hack to make this compile
+//        Report(report, plugin_settings, UID);
     }
     else if (!strncmp(pMessage.c_str(), MESSAGE_CREATE_REPORT, sizeof(MESSAGE_CREATE_REPORT) - 1))
     {
@@ -227,7 +229,12 @@ vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pS
 report_status_t CCommLayerServerSocket::Report(const map_crash_report_t& pReport, const std::string& pSender)
 {
     report_status_t rs;
-    rs = ::Report(pReport, pSender);
+    //FIXME: a hack to make this compile, but we don't use sockets anyway
+    /* we could probably remove the sockets and rely only on dbus,
+       as it will become mandatory even on servers, but this needs some investigation
+       and more opinions
+   */
+    //rs = ::Report(pReport, pSettings, pSender);
     return rs;
 }
 

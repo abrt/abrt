@@ -39,6 +39,68 @@ static void get_product_and_version(const std::string& pRelease,
                                           std::string& pProduct,
                                           std::string& pVersion);
 
+map_plugin_settings_t CReporterBugzilla::parse_settings(const map_plugin_settings_t& pSettings)
+{
+    map_plugin_settings_t plugin_settings;
+    map_plugin_settings_t::const_iterator it;
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    
+    std::string BugzillaURL;
+    std::string BugzillaXMLRPC;
+    
+    it = pSettings.find("BugzillaURL");
+    if (it != end)
+    {
+        BugzillaURL = it->second;
+        //remove the /xmlrpc.cgi part from old settings
+        //FIXME: can be removed after users are informed about new config format
+        std::string::size_type pos = BugzillaURL.find(XML_RPC_SUFFIX);
+        if (pos != std::string::npos)
+        {
+            BugzillaURL.erase(pos);
+        }
+        //remove the trailing '/'
+        while (BugzillaURL[BugzillaURL.length() - 1] == '/')
+        {
+            BugzillaURL.erase(BugzillaURL.length() - 1);
+        }
+        plugin_settings["BugzillaXMLRPC"] = BugzillaURL + XML_RPC_SUFFIX;
+        plugin_settings["BugzillaURL"] = BugzillaURL;
+    }
+    it = pSettings.find("Login");
+    if (it != end)
+    {
+        plugin_settings["Login"] = it->second;
+    }
+    else
+    {
+        /* if any of the option is not set we use the defaults for everything */
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    it = pSettings.find("Password");
+    if (it != end)
+    {
+        plugin_settings["Password"] = it->second;
+    }
+    else
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    it = pSettings.find("NoSSLVerify");
+    if (it != end)
+    {
+        plugin_settings["NoSSLVerify"] = (it->second == "yes");
+    }
+    else
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    VERB1 log("User settings ok, using it instead of defaults");
+    return plugin_settings;
+}
 
 // FIXME: we still leak memmory if this function detects a fault:
 // many instances when we leave non-freed or non-xmlrpc_DECREF'ed data behind.
@@ -384,36 +446,61 @@ static void add_attachments(const std::string& pBugId, const map_crash_report_t&
     }
 }
 
-std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, 
+                                      const map_plugin_settings_t& pSettings, 
+                                      const std::string& pArgs)
 {
     int32_t bug_id = -1;
-
+    std::string Login;
+    std::string Password;
+    std::string BugzillaXMLRPC;
+    std::string BugzillaURL;
+    bool NoSSLVerify;
+    map_plugin_settings_t settings = parse_settings(pSettings);
+    /* if parse_settings fails it returns an empty map so we need to use defaults*/
+    if(!settings.empty())
+    {
+        Login = settings["Login"];
+        Password = settings["Password"];
+        BugzillaXMLRPC = settings["BugzillaXMLRPC"];
+        BugzillaURL = settings["BugzillaURL"];
+        NoSSLVerify = settings["NoSSLVerify"] == "yes";
+    }
+    else
+    {
+        Login = m_sLogin;
+        Password = m_sPassword;
+        BugzillaXMLRPC = m_sBugzillaXMLRPC;
+        BugzillaURL = m_sBugzillaURL;
+        NoSSLVerify = m_bNoSSLVerify;
+    }
+    
     std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
     try
     {
-        new_xmlrpc_client(m_sBugzillaXMLRPC.c_str(), m_bNoSSLVerify);
+        new_xmlrpc_client(BugzillaXMLRPC.c_str(), NoSSLVerify);
 
         update_client(_("Checking for duplicates..."));
         bug_id = check_uuid_in_bugzilla(component.c_str(), uuid.c_str());
 
         update_client(_("Logging into bugzilla..."));
-        if ((m_sLogin == "") && (m_sPassword == ""))
+        if ((Login == "") && (Password == ""))
         {
             VERB3 log("Empty login and password");
             throw CABRTException(EXCEP_PLUGIN, std::string(_("Empty login and password. Please check Bugzilla.conf")));
         }
-        login(m_sLogin.c_str(), m_sPassword.c_str());
+        login(Login.c_str(), Password.c_str());
 
         if (bug_id > 0)
         {
             update_client(_("Checking CC..."));
-            if (!check_cc_and_reporter(bug_id, m_sLogin.c_str()))
+            if (!check_cc_and_reporter(bug_id, Login.c_str()))
             {
-                add_plus_one_cc(bug_id, m_sLogin.c_str());
+                add_plus_one_cc(bug_id, Login.c_str());
             }
             destroy_xmlrpc_client();
-            return m_sBugzillaURL + "/show_bug.cgi?id="+to_string(bug_id);
+            return BugzillaURL + "/show_bug.cgi?id="+to_string(bug_id);
         }
 
         update_client(_("Creating new bug..."));
@@ -433,10 +520,10 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, co
 
     if (bug_id > 0)
     {
-        return m_sBugzillaURL + "/show_bug.cgi?id="+to_string(bug_id);
+        return BugzillaURL + "/show_bug.cgi?id="+to_string(bug_id);
     }
 
-    return m_sBugzillaURL + "/show_bug.cgi?id=";
+    return BugzillaURL + "/show_bug.cgi?id=";
 }
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)

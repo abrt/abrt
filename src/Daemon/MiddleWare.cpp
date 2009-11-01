@@ -273,6 +273,7 @@ void RunAction(const std::string& pActionDir,
 void RunActionsAndReporters(const std::string& pDebugDumpDir)
 {
     vector_pair_string_string_t::iterator it_ar = s_vectorActionsAndReporters.begin();
+    map_plugin_settings_t plugin_settings;
     for (; it_ar != s_vectorActionsAndReporters.end(); it_ar++)
     {
         try
@@ -283,7 +284,7 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir)
 
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
-                reporter->Report(crashReport, (*it_ar).second);
+                reporter->Report(crashReport, plugin_settings, (*it_ar).second);
             }
             else if (g_pPluginManager->GetPluginType((*it_ar).first) == ACTION)
             {
@@ -336,7 +337,8 @@ static bool CheckReport(const map_crash_report_t& pCrashReport)
 }
 
 report_status_t Report(const map_crash_report_t& pCrashReport,
-                                    const std::string& pUID)
+                       map_map_string_t& pSettings,
+                       const std::string& pUID)
 {
     report_status_t ret;
 
@@ -409,7 +411,8 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                         }
                     }
 #endif
-                    std::string res = reporter->Report(pCrashReport, it_r->second);
+                    map_plugin_settings_t plugin_settings = pSettings[pluginName];
+                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second);
 
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
                     if (home != "")

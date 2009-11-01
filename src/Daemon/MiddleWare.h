@@ -93,6 +93,7 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir);
  * @return A report status, which reporters ends successfuly with messages.
  */
 report_status_t Report(const map_crash_report_t& pCrashReport,
+                       map_map_string_t& pSettings,
                        const std::string& pUID);
 /**
  * Get debugdump direcotory. If debugdump is not found

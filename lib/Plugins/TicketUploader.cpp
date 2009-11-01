@@ -218,7 +218,8 @@ void CTicketUploader::SendFile(const std::string& pURL,
 }
 
 
-string CTicketUploader::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
+                               const map_plugin_settings_t& pSettings, const std::string& pArgs)
 {
     string ret;
     update_client(_("Creating an TicketUploader report..."));

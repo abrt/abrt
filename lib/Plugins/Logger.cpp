@@ -53,7 +53,8 @@ map_plugin_settings_t CLogger::GetSettings()
     return ret;
 }
 
-std::string CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CLogger::Report(const map_crash_report_t& pCrashReport,
+                            const map_plugin_settings_t& pSettings, const std::string& pArgs)
 {
     update_client(_("Creating a report..."));
 

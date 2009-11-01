@@ -250,12 +250,10 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     if (!user_conf_data.empty())
     {
         std::string PluginName;
-        map_plugin_settings_t plugin_settings;
         map_map_string_t::const_iterator it_user_conf_data = user_conf_data.begin();
         for (; it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
         {
             PluginName = it_user_conf_data->first;
-            plugin_settings = it_user_conf_data->second;
 #if DEBUG
             std::cout << "plugin name: " << it_user_conf_data->first;
             map_string_t::const_iterator it_plugin_config;
@@ -266,16 +264,16 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
                 std::cout << " key: " << it_plugin_config->first << " value: " << it_plugin_config->second << std::endl;
             }
 #endif
-            g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
+            // this would overwrite the default settings
+            //g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
         }
     }
 
-//so far, user_conf_data is unused
     long unix_uid = get_remote_uid(call);
     report_status_t argout1;
     try
     {
-        argout1 = Report(argin1, to_string(unix_uid));
+        argout1 = Report(argin1, user_conf_data, to_string(unix_uid));
     }
     catch (CABRTException &e)
     {
@@ -377,7 +375,12 @@ static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
     long unix_uid = get_remote_uid(call);
     VERB1 log("got %s('%s',...) call from uid %ld", "SetPluginSettings", PluginName.c_str(), unix_uid);
-    g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
+    /* Disabled, as we don't use it, we use only temporary user settings while reporting
+       this method should be used to change the default setting and thus should
+       be protected by polkit
+   */
+   //FIXME: protect with polkit
+//    g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
 
     send_flush_and_unref(reply);
     return 0;
