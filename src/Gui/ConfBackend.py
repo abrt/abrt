@@ -33,7 +33,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
     def __init__(self):
         ConfBackend.__init__(self)
         if not gkey.is_available():
-            raise ConfBackendInitError(_("Can't connect do Gnome Keyring daemon"))
+            raise ConfBackendInitError(_("Can't connect to Gnome Keyring daemon"))
         try:
             self.default_key_ring = gkey.get_default_keyring_sync()
         except:
