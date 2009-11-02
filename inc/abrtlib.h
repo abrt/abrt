@@ -193,14 +193,19 @@ char* xmalloc_sockaddr2dotted(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 
 
+/* Random utility functions */
+
 /* Returns malloc'ed block */
 char *encode_base64(const void *src, int length);
+bool dot_or_dotdot(const char *filename);
+char *last_char_is(const char *s, int c);
 
 
 /* C++ style stuff */
 
 std::string ssprintf(const char *format, ...);
 std::string get_home_dir(int uid);
+std::string concat_path_file(const char *path, const char *filename);
 
 template <class T>
 std::string

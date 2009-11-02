@@ -73,7 +73,7 @@ std::string CLogger::Report(const map_crash_report_t& pCrashReport,
 
     if (fOut)
     {
-	fputs(description.c_str(), fOut);
+        fputs(description.c_str(), fOut);
         fclose(fOut);
         return "file://" + m_sLogPath;
     }

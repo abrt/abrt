@@ -114,17 +114,6 @@ static bool s_exiting;
 CCommLayerServer* g_pCommLayer;
 
 
-/* Is it "." or ".."? */
-/* abrtlib candidate */
-static bool dot_or_dotdot(const char *filename)
-{
-    if (filename[0] != '.') return false;
-    if (filename[1] == '\0') return true;
-    if (filename[1] != '.') return false;
-    if (filename[2] == '\0') return true;
-    return false;
-}
-
 static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL, const char *excluded = NULL)
 {
     DIR *dp = opendir(pPath.c_str());
@@ -621,7 +610,7 @@ static void run_main_loop(GMainLoop* loop)
 
         if (s_timeout)
             alarm(s_timeout);
-	g_poll(fds, nfds, timeout);
+        g_poll(fds, nfds, timeout);
         if (s_timeout)
             alarm(0);
 
@@ -709,7 +698,7 @@ int main(int argc, char** argv)
         default:
             error_msg_and_die(
                 "Usage: abrtd [-dv]\n"
-        	"\nOptions:"
+                "\nOptions:"
                 "\n\t-d\tDo not daemonize"
                 "\n\t-s\tLog to syslog even with -d"
                 "\n\t-t SEC\tExit after SEC seconds of inactivity"

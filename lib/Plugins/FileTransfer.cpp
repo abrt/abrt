@@ -222,7 +222,7 @@ static void create_targz(const char * archive_name, const char * directory)
     if (gz == NULL)
     {
         fclose(f);
-	free(name_without_gz);
+        free(name_without_gz);
         return;
     }
 

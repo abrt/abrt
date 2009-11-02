@@ -33,16 +33,18 @@
 #include "CommLayerInner.h"
 #include "Polkit.h"
 
-#define CORE_PATTERN_IFACE "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
+#define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
+#define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
 
 #define FILENAME_COREDUMP       "coredump"
 #define FILENAME_BACKTRACE      "backtrace"
 #define FILENAME_MEMORYMAP      "memorymap"
 
+#define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
+
 CAnalyzerCCpp::CAnalyzerCCpp() :
     m_bMemoryMap(false),
-    m_bInstallDebuginfo(true),
+    m_bInstallDebugInfo(true),
     m_nDebugInfoCacheMB(4000)
 {}
 
@@ -245,7 +247,7 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
-    args[3] = (char*)"set debug-file-directory /usr/lib/debug:" LOCALSTATEDIR"/cache/abrt-di/usr/lib/debug";
+    args[3] = (char*)"set debug-file-directory /usr/lib/debug:" DEBUGINFO_CACHE_DIR"/usr/lib/debug";
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -675,8 +677,8 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
-        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, LOCALSTATEDIR"/cache/abrt-di");
-        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, LOCALSTATEDIR"/cache/abrt-di", NULL);
+        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR);
+        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR, NULL);
         exit(1);
     }
 
@@ -722,9 +724,67 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
     wait(NULL);
 }
 
+static double get_dir_size(const char *dirname, std::string *worst_file, double *maxsz)
+{
+    DIR *dp = opendir(dirname);
+    if (dp == NULL)
+        return 0;
+
+    struct dirent *ep;
+    struct stat stats;
+    double size = 0;
+    while ((ep = readdir(dp)) != NULL)
+    {
+        if (dot_or_dotdot(ep->d_name))
+            continue;
+        std::string dname = concat_path_file(dirname, ep->d_name);
+        if (lstat(dname.c_str(), &stats) != 0)
+            continue;
+        if (S_ISDIR(stats.st_mode))
+        {
+            double sz = get_dir_size(dname.c_str(), worst_file, maxsz);
+            size += sz;
+        }
+        else if (S_ISREG(stats.st_mode))
+        {
+            double sz = stats.st_size;
+            size += sz;
+
+            if (worst_file)
+            {
+                /* Calculate "weighted" size and age
+                 * w = sz_kbytes * age_mins */
+                sz /= 1024;
+                long age = (time(NULL) - stats.st_mtime) / 60;
+                if (age > 0)
+                    sz *= age;
+
+                if (sz > *maxsz)
+                {
+                    *maxsz = sz;
+                    *worst_file = dname;
+                }
+            }
+        }
+    }
+    closedir(dp);
+    return size;
+}
+
 static void trim_debuginfo_cache(unsigned max_mb)
 {
-    // TODO
+    while (1)
+    {
+        std::string worst_file;
+        double maxsz = 0;
+        double cache_sz = get_dir_size(DEBUGINFO_CACHE_DIR, &worst_file, &maxsz);
+        if (cache_sz / (1024 * 1024) < max_mb)
+            break;
+        VERB1 log("%s is %.0f bytes (over %u MB), deleting '%s'",
+                DEBUGINFO_CACHE_DIR, cache_sz, max_mb, worst_file.c_str());
+        if (unlink(worst_file.c_str()) != 0)
+            perror_msg("Can't unlink '%s'");
+    }
 }
 
 std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
@@ -816,7 +876,7 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     dd.Close(); /* do not keep dir locked longer than needed */
 
     std::string build_ids;
-    if (m_bInstallDebuginfo && DebuginfoCheckPolkit(atoi(UID.c_str()))) {
+    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str()))) {
 	if (m_nDebugInfoCacheMB > 0)
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
         InstallDebugInfos(pDebugDumpDir, build_ids);
@@ -905,10 +965,12 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     {
         m_nDebugInfoCacheMB = atoi(it->second.c_str());
     }
-    it = pSettings.find("InstallDebuginfo");
+    it = pSettings.find("InstallDebugInfo");
+    if (it == end) //compat, remove after 0.0.11
+        it = pSettings.find("InstallDebuginfo");
     if (it != end)
     {
-        m_bInstallDebuginfo = it->second == "yes";
+        m_bInstallDebugInfo = it->second == "yes";
     }
 }
 
@@ -919,7 +981,7 @@ map_plugin_settings_t CAnalyzerCCpp::GetSettings()
     ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
     ret["DebugInfo"] = m_sDebugInfo;
     ret["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
-    ret["InstallDebuginfo"] = m_bInstallDebuginfo ? "yes" : "no";
+    ret["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
 
     return ret;
 }

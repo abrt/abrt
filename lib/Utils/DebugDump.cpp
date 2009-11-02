@@ -29,17 +29,6 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-/* Is it "." or ".."? */
-/* abrtlib candidate */
-static bool dot_or_dotdot(const char *filename)
-{
-    if (filename[0] != '.') return false;
-    if (filename[1] == '\0') return true;
-    if (filename[1] != '.') return false;
-    if (filename[2] == '\0') return true;
-    return false;
-}
-
 static bool isdigit_str(const char *str)
 {
     do

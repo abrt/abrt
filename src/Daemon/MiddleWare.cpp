@@ -91,7 +91,7 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
     dd.InitGetNextFile();
     while (dd.GetNextFile(fileName, content, isTextFile))
     {
-VERB3 log(" file:'%s' text:%d", fileName.c_str(), isTextFile);
+        //VERB3 log(" file:'%s' text:%d", fileName.c_str(), isTextFile);
         if (!isTextFile)
         {
             add_crash_data_to_crash_report(pCrashReport,
@@ -507,7 +507,7 @@ void LoadOpenGPGPublicKey(const char* key)
  * @return It return results of operation. See mw_result_t.
  */
 static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable,
-						     const std::string& pDebugDumpDir)
+                                                     const std::string& pDebugDumpDir)
 {
     std::string package;
     std::string packageName;
