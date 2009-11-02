@@ -27,7 +27,7 @@ DBusConnection* s_dbus_conn;
 /* helpers */
 static DBusMessage* new_call_msg(const char* method)
 {
-    DBusMessage* msg = dbus_message_new_method_call(CC_DBUS_NAME, CC_DBUS_PATH, CC_DBUS_IFACE, method);
+    DBusMessage* msg = dbus_message_new_method_call(ABRTD_DBUS_NAME, ABRTD_DBUS_PATH, ABRTD_DBUS_IFACE, method);
     if (!msg)
         die_out_of_memory();
     return msg;
@@ -72,7 +72,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
         DBusError err;
         dbus_error_init(&err);
 
-        if (dbus_message_is_signal(received, CC_DBUS_IFACE, "Update"))
+        if (dbus_message_is_signal(received, ABRTD_DBUS_IFACE, "Update"))
         {
             const char *update_msg;
             if (!dbus_message_get_args(received, &err,
@@ -83,7 +83,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
             }
             printf(">> %s\n", update_msg);
         }
-        else if (dbus_message_is_signal(received, CC_DBUS_IFACE, "Warning"))
+        else if (dbus_message_is_signal(received, ABRTD_DBUS_IFACE, "Warning"))
         {
             const char *warning_msg;
             if (!dbus_message_get_args(received, &err,
@@ -181,5 +181,5 @@ void handle_dbus_err(bool error_flag, DBusError *err)
     error_msg_and_die(
             "error requesting DBus name %s, possible reasons: "
             "abrt run by non-root; dbus config is incorrect",
-            CC_DBUS_NAME);
+            ABRTD_DBUS_NAME);
 }

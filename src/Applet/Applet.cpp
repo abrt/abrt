@@ -246,7 +246,7 @@ int main(int argc, char** argv)
         "Problem connecting to dbus, or applet is already running");
 
     /* Show disabled icon if daemon is not running */
-    if (!dbus_bus_name_has_owner(system_conn, CC_DBUS_NAME, &err))
+    if (!dbus_bus_name_has_owner(system_conn, ABRTD_DBUS_NAME, &err))
     {
         const char* msg = _("ABRT service is not running");
         puts(msg);
