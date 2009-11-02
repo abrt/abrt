@@ -192,12 +192,26 @@ if test x"$packages" = x""; then
     exit 1
 fi
 
-# Redirecting, since progress bar stuff only messes up our output
-echo "Downloading `count_words $packages` packages"
-yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
-err=$?
-echo "exitcode:$err" >>yumdownloader.OUT
-test $err = 0 || exit 2
+num_packages=`count_words $packages`
+echo "Downloading $num_packages packages"
+## Download with one command (too silent):
+## Redirecting, since progress bar stuff only messes up our output
+##yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
+##err=$?
+##echo "exitcode:$err" >>yumdownloader.OUT
+##test $err = 0 || exit 2
+>yumdownloader.OUT
+i=1
+for pkg in $packages; do
+    echo "Download $i/$num_packages: $pkg"
+    echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
+    yumdownloader --enablerepo='*debuginfo*' --quiet $pkg >>yumdownloader.OUT 2>&1
+    err=$?
+    echo "exitcode:$err" >>yumdownloader.OUT
+    echo >>yumdownloader.OUT
+    test $err = 0 || { echo "Download of $pkg failed!"; sleep 1; }
+    : $((i++))
+done
 
 for f in *.rpm; do
     # Happens if no .rpm's were downloaded (yumdownloader problem)
