@@ -3,8 +3,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.10
-Release: 12%{?dist}
+Version: 0.0.11
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -393,6 +393,29 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Mon Nov  2 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.11-1
+- abrt-debuginfo-install: download packages one-by-one - better logging (vda.linux@googlemail.com)
+- do not report empty fields (vda.linux@googlemail.com)
+- Added abrt.png, fixed rhbz#531181 (jmoskovc@redhat.com)
+- added option DebugInfoCacheMB to limit size of unpacked debuginfos (vda.linux@googlemail.com)
+- fixed the problem with overwriting the default plugin settings (jmoskovc@redhat.com)
+- disabled kerneloops in config file (jmoskovc@redhat.com)
+- added dependency to gdb >= 7.0 (jmoskovc@redhat.com)
+- better format of report text (vda.linux@googlemail.com)
+- Python backtrace size limited to 1 MB (kklic@redhat.com)
+- lib/Plugins/Bugzilla: better message at login failure (vda.linux@googlemail.com)
+- build fixes, added plugin-logger to abrt-desktop (jmoskovc@redhat.com)
+- blacklisted nspluginwrapper, because it causes too many useless reports (jmoskovc@redhat.com)
+- GUI: Wrong settings window is not shown behind the reporter dialog rhbz#531119 (jmoskovc@redhat.com)
+- Normal user can see kerneloops and report it Bugzilla memory leaks fix (npajkovs@redhat.com)
+- dumpoops: add -s option to dump results to stdout (vda.linux@googlemail.com)
+- removed kerneloops from abrt-desktop rhbz#528395 (jmoskovc@redhat.com)
+- GUI: fixed exception when enabling plugin rhbz#530495 (jmoskovc@redhat.com)
+- Improved abrt-cli (kklic@redhat.com)
+- Added backtrace rating to CCpp analyzer (dnovotny@redhat.com)
+- GUI improvements (jmoskovc@redhat.com)
+- Added abrt-pyhook-helper (kklic@redhat.com)
+
 * Thu Oct 15 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.10-1
 - new version
 - added more logging (vda.linux@googlemail.com)
