@@ -106,8 +106,9 @@ typedef struct cron_callback_data_t
 } cron_callback_data_t;
 
 
-static uint8_t s_sig_caught;
+static uint8_t s_sig_caught; /* must be one byte */
 static int s_signal_pipe[2];
+static int s_signal_pipe_write = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
@@ -443,10 +444,12 @@ static int Lock()
     /* we leak opened lfd intentionally */
 }
 
-static void handle_fatal_signal(int signal)
+static void handle_fatal_signal(int signo)
 {
-    s_sig_caught = signal;
-    write(s_signal_pipe[1], &s_sig_caught, 1);
+    s_sig_caught = signo;
+    VERB3 log("Got signal %d", signo);
+    if (s_signal_pipe_write >= 0)
+        write(s_signal_pipe_write, &s_sig_caught, 1);
 }
 
 /* Signal pipe handler */
@@ -458,6 +461,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
     if (len == 1)
     {
         /* we did receive a signal */
+        VERB3 log("Got signal %d through signal pipe", signo);
         s_exiting = 1;
         return TRUE;
     }
@@ -827,6 +831,9 @@ int main(int argc, char** argv)
         if (logmode != LOGMODE_SYSLOG)
             start_syslog_logging();
     }
+
+    /* Only now we want signal pipe to work */
+    s_signal_pipe_write = s_signal_pipe[1];
 
     /* Enter the event loop */
     try

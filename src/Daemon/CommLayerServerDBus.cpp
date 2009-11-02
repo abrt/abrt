@@ -28,7 +28,7 @@
 static DBusMessage* new_signal_msg(const char* member, const char* peer = NULL)
 {
     /* path, interface, member name */
-    DBusMessage* msg = dbus_message_new_signal(CC_DBUS_PATH, CC_DBUS_IFACE, member);
+    DBusMessage* msg = dbus_message_new_signal(ABRTD_DBUS_PATH, ABRTD_DBUS_IFACE, member);
     if (!msg)
         die_out_of_memory();
     /* Send unicast dbus signal if peer is known */
@@ -537,7 +537,7 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
     error_msg_and_die(
             "Error requesting DBus name %s, possible reasons: "
             "abrt run by non-root; dbus config is incorrect",
-            CC_DBUS_NAME);
+            ABRTD_DBUS_NAME);
 }
 
 CCommLayerServerDBus::CCommLayerServerDBus()
@@ -553,7 +553,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     attach_dbus_conn_to_glib_main_loop(conn, "/com/redhat/abrt", message_received);
 
     VERB3 log("dbus_bus_request_name");
-    int rc = dbus_bus_request_name(conn, CC_DBUS_NAME, DBUS_NAME_FLAG_REPLACE_EXISTING, &err);
+    int rc = dbus_bus_request_name(conn, ABRTD_DBUS_NAME, DBUS_NAME_FLAG_REPLACE_EXISTING, &err);
 //maybe check that r == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER instead?
     handle_dbus_err(rc < 0, &err);
     VERB3 log("dbus init done");

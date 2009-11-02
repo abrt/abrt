@@ -1,7 +1,7 @@
 [D-BUS Service]
 Name=com.redhat.abrt
-# We use small timeout of 33 seconds in order to make
-# "abrtd exited while clients existed but were idle" situations
-# to be triggered more often and thus better tested
-Exec=/usr/sbin/abrtd -ds -t33
+# For testing, you may add -t33 to use small timeout of 33 seconds.
+# This will make "abrtd exited while clients existed but were idle"
+# situations easy to trigger
+Exec=/usr/sbin/abrtd -ds
 User=root

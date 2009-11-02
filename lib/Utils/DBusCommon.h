@@ -22,8 +22,8 @@
 
 #include "CrashTypes.h"
 
-#define CC_DBUS_NAME "com.redhat.abrt"
-#define CC_DBUS_PATH "/com/redhat/abrt"
-#define CC_DBUS_IFACE "com.redhat.abrt"
+#define ABRTD_DBUS_NAME "com.redhat.abrt"
+#define ABRTD_DBUS_PATH "/com/redhat/abrt"
+#define ABRTD_DBUS_IFACE "com.redhat.abrt"
 
 #endif
