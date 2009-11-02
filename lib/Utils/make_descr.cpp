@@ -16,6 +16,11 @@ static void add_content(bool &was_multiline, string& description, const char *he
 
     if (strchr(content, '\n') == NULL)
     {
+        if (skip_whitespace(content)[0] == '\0')
+        {
+            /* empty, dont report at all */
+            return;
+        }
         /* one string value, like OS release */
         description += header;
         description += ": ";
