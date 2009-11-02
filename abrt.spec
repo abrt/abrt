@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.10
-Release: 6%{?dist}
+Release: 12%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -69,6 +69,8 @@ GTK+ wizard for convenient bug reporting.
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
 Requires: gdb >= 7.0-3
+Requires: elfutils
+Requires: yum-utils
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
@@ -229,7 +231,9 @@ mkdir -p $RPM_BUILD_ROOT/var/run/%{name}
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-        src/Gui/%{name}.desktop
+        --vendor fedora \
+        --delete-original \
+        ${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}.desktop
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
@@ -249,12 +253,12 @@ if [ "$1" -eq "0" ] ; then
   /sbin/chkconfig --del %{name}d
 fi
 
-%postun 
-libs -p /sbin/ldconfig
-if [ "$1" -eq "1" ]; then
+%postun libs -p /sbin/ldconfig
+
+%posttrans
+if [ "$1" -eq "0" ]; then
     service %{name}d condrestart >/dev/null 2>&1 || :
 fi
-
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -289,7 +293,7 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-gui
 %{_datadir}/%{name}
-%{_datadir}/applications/%{name}.desktop
+%{_datadir}/applications/fedora-%{name}.desktop
 %{_datadir}/pixmaps/abrt.png
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
