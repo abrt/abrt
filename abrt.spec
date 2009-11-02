@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 0.0.10
-Release: 1%{?dist}
+Release: 6%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -249,7 +249,12 @@ if [ "$1" -eq "0" ] ; then
   /sbin/chkconfig --del %{name}d
 fi
 
-%postun libs -p /sbin/ldconfig
+%postun 
+libs -p /sbin/ldconfig
+if [ "$1" -eq "1" ]; then
+    service %{name}d condrestart >/dev/null 2>&1 || :
+fi
+
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
@@ -285,6 +290,7 @@ fi
 %{_bindir}/%{name}-gui
 %{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/pixmaps/abrt.png
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 
