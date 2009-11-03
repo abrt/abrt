@@ -198,8 +198,7 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
 Requires: %{name}-gui
-# removed until it's usable the same way as the original kerneloops rhbz#528395
-#Requires: %{name}-addon-kerneloops
+Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
 
 %description desktop
