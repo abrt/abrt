@@ -208,7 +208,7 @@ void CDebugDump::UnLock()
     }
 }
 
-void CDebugDump::Create(const std::string& pDir, uint64_t uid)
+void CDebugDump::Create(const std::string& pDir, int64_t uid)
 {
     if (m_bOpened)
     {
