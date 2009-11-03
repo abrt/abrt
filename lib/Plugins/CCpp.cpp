@@ -783,7 +783,7 @@ static void trim_debuginfo_cache(unsigned max_mb)
         VERB1 log("%s is %.0f bytes (over %u MB), deleting '%s'",
                 DEBUGINFO_CACHE_DIR, cache_sz, max_mb, worst_file.c_str());
         if (unlink(worst_file.c_str()) != 0)
-            perror_msg("Can't unlink '%s'");
+            perror_msg("Can't unlink '%s'", worst_file.c_str());
     }
 }
 
