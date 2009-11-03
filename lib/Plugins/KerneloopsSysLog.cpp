@@ -399,7 +399,6 @@ next_line:
 		free(version);
 	}
 
-fail:
 	free(lines_info);
 	return oopsesfound;
 }

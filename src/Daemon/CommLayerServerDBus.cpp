@@ -246,7 +246,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         }
     }
 
-    const char * sender = dbus_message_get_sender(call);
+    //const char * sender = dbus_message_get_sender(call);
     if (!user_conf_data.empty())
     {
         std::string PluginName;
