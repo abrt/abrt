@@ -315,6 +315,11 @@ static bool CheckReport(const map_crash_report_t& pCrashReport)
     map_crash_report_t::const_iterator it_executable = pCrashReport.find(FILENAME_EXECUTABLE);
 
     map_crash_report_t::const_iterator end = pCrashReport.end();
+    
+    // FIXME: bypass the test if it's kerneloops
+    if(it_package->second[CD_CONTENT] == "kernel")
+        return true;
+    
     if (it_analyzer == end || it_mwuid == end ||
         it_mwuuid == end || it_package == end ||
         it_architecture == end || it_kernel == end ||
