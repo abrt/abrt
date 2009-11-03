@@ -236,7 +236,7 @@ class MainWindow():
             report_label = _("<b>This crash has been reported, you can find the report(s) at:</b>\n")
             for message in dump.getMessage().split('\n'):
                 if message:
-                    if "http" in message or "file:///" in message:
+                    if "http" in message[0:5] or "file:///"[0:8] in message:
                         message = "<a href=\"%s\">%s</a>" % (message, message)
                     report_label += "%s\n" % message
             self.wTree.get_widget("lReported").set_markup(report_label)

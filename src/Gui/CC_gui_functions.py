@@ -54,7 +54,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         if report_status_dict[plugin][0] == '0':
             status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][1])
         elif report_status_dict[plugin][0] == '1':
-            if "http" in report_status_dict[plugin][1][0:4] or "file://" in report_status_dict[plugin][1][0:4]:
+            if "http" in report_status_dict[plugin][1][0:4] or "file://" in report_status_dict[plugin][1][0:7]:
                 status_label.set_markup("<a href=\"%s\">%s</a>" % (report_status_dict[plugin][1], report_status_dict[plugin][1]))
                 # FIXME: make a new branch for rawhide with gtk 2.17 and remove this
                 if gtk.gtk_version[1] < 17:
