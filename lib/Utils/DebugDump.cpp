@@ -208,7 +208,7 @@ void CDebugDump::UnLock()
     }
 }
 
-void CDebugDump::Create(const std::string& pDir, uid_t uid)
+void CDebugDump::Create(const std::string& pDir, uint64_t uid)
 {
     if (m_bOpened)
     {
@@ -245,7 +245,7 @@ void CDebugDump::Create(const std::string& pDir, uid_t uid)
         perror_msg("can't change '%s' ownership to %u:%u", m_sDebugDumpDir.c_str(), (int)uid, (int)gid);
     }
 
-    SaveText(FILENAME_UID, ssprintf("%u", (int)uid));
+    SaveText(FILENAME_UID, ssprintf("%li", uid));
     SaveKernelArchitectureRelease();
     SaveTime();
 }

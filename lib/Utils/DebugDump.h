@@ -25,6 +25,7 @@
 
 #include <string>
 #include <dirent.h>
+#include <stdint.h>
 
 #define FILENAME_ARCHITECTURE       "architecture"
 #define FILENAME_KERNEL             "kernel"
@@ -60,7 +61,7 @@ class CDebugDump
         ~CDebugDump() { Close(); }
 
         void Open(const std::string& pDir);
-        void Create(const std::string& pDir, uid_t nUID);
+        void Create(const std::string& pDir, uint64_t uid);
         void Delete();
         void Close();
 

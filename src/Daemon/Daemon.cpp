@@ -531,8 +531,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     {
                         // When Kerneloops comes it will be sent uid with -1
                         // Applet will detected and show normal user
-                        std::cout << "New: package|kerneloops" << crashinfo[CD_PACKAGE][CD_CONTENT] << std::endl;
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string(UINT_MAX));
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string("-1"));
                     }
                     else
                     {
@@ -547,8 +546,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     {
                         // When Kerneloops comes it will be sent uid with -1
                         // Applet will detected and show normal user
-                        std::cout << "New: package|kerneloops" << crashinfo[CD_PACKAGE][CD_CONTENT] << std::endl;
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string(UINT_MAX));
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string("-1"));
                     }
                     else
                     {

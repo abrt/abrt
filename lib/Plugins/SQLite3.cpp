@@ -99,7 +99,7 @@ bool CSQLite3::Exist(const std::string& pUUID, const std::string& pUID)
     GetTable("SELECT "DATABASE_COLUMN_REPORTED" FROM "ABRT_TABLE" WHERE "
              DATABASE_COLUMN_UUID" = '"+pUUID+"' "
              "AND ("DATABASE_COLUMN_UID" = '"+pUID+"' "
-             "OR "DATABASE_COLUMN_UID" = '"+to_string(UINT_MAX)+"');"
+             "OR "DATABASE_COLUMN_UID" = '-1');"
              , table);
     if (table.empty())
     {
@@ -315,7 +315,7 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
         Exec("DELETE FROM "ABRT_TABLE" "
              "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
              "AND "DATABASE_COLUMN_UID" = '"+pUID+"' "
-             "OR "DATABASE_COLUMN_UID" = '"+to_string(UINT_MAX)+"';");
+             "OR "DATABASE_COLUMN_UID" = '-1';");
     }
     else
     {
@@ -340,12 +340,12 @@ void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID, co
              "SET "DATABASE_COLUMN_REPORTED" = 1 "
              "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
              "AND ("DATABASE_COLUMN_UID" = '"+pUID+"' "
-             "OR "DATABASE_COLUMN_UID" = '"+to_string(UINT_MAX)+"');");
+             "OR "DATABASE_COLUMN_UID" = '-1');");
         Exec("UPDATE "ABRT_TABLE" "
              "SET "DATABASE_COLUMN_MESSAGE" = '" + pMessage + "' "
              "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
              "AND ("DATABASE_COLUMN_UID" = '"+pUID+"' "
-             "OR "DATABASE_COLUMN_UID" = '"+to_string(UINT_MAX)+"');");
+             "OR "DATABASE_COLUMN_UID" = '-1');");
     }
     else
     {
@@ -364,7 +364,7 @@ vector_database_rows_t CSQLite3::GetUIDData(const std::string& pUID)
     {
         GetTable("SELECT * FROM "ABRT_TABLE
                  " WHERE "DATABASE_COLUMN_UID" = '"+pUID+"' "
-                 "OR "DATABASE_COLUMN_UID" = '"+to_string(UINT_MAX)+"';",
+                 "OR "DATABASE_COLUMN_UID" = '-1';",
                  table);
     }
     return table;
@@ -385,7 +385,7 @@ database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::string
         GetTable("SELECT * FROM "ABRT_TABLE" "
                 "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
                 "AND ("DATABASE_COLUMN_UID" = '"+pUID+"' "
-                "OR "DATABASE_COLUMN_UID" = '"+to_string(UINT_MAX)+"');",
+                "OR "DATABASE_COLUMN_UID" = '-1');",
                 table);
     }
 

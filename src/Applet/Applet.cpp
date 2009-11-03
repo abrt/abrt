@@ -67,12 +67,12 @@ static void Crash(DBusMessage* signal)
 //    uid_t uid_num = atol(uid_str);
 
     char* endptr;
-    uid_t uid_num = (uid_t)strtoul(uid_str,&endptr, 10);
+    int64_t uid_num = strtoll(uid_str,&endptr, 10);
 
-    printf("%u:%s\n", uid_num, uid_str);
-    if ((uid_num != getuid()) && (uid_num != UINT_MAX))
+    if ((uid_num != getuid()) && (uid_num != -1))
+    {
         return;
-
+    }
     const char* message = _("A crash in package %s has been detected");
     //applet->AddEvent(uid, progname);
     applet->SetIconTooltip(message, progname);
