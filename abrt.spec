@@ -393,6 +393,7 @@ fi
 
 %changelog
 * Mon Nov  2 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.11-1
+- re-enabled kerneloops
 - abrt-debuginfo-install: download packages one-by-one - better logging (vda.linux@googlemail.com)
 - do not report empty fields (vda.linux@googlemail.com)
 - Added abrt.png, fixed rhbz#531181 (jmoskovc@redhat.com)
