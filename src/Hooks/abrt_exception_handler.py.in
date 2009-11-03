@@ -181,51 +181,54 @@ def handleMyException((etype, value, tb)):
     # ignore uncaught ctrl-c
     if etype == KeyboardInterrupt:
         return sys.__excepthook__(etype, value, tb)
-
-    import os.path
-    from hashlib import md5
-    import traceback
-
-    syslog.syslog("abrt: Pyhook: Detected unhandled exception in %s " % sys.argv[0])
-    elist = traceback.format_exception (etype, value, tb)
-    tblast = traceback.extract_tb(tb, limit=None)
-    if len(tblast):
-        tblast = tblast[len(tblast)-1]
-    extxt = traceback.format_exception_only(etype, value)
-    text = ""
-    text = text + "Summary: TB"
-    if tblast and len(tblast) > 3:
-        ll = []
-        ll.extend(tblast[:3])
-        ll[0] = os.path.basename(tblast[0])
-        tblast = ll
-
-    m = md5()
-    ntext = ""
-    for t in tblast:
-        ntext += str(t) + ":"
-        m.update(str(t))
-
-    tb_uuid = str(m.hexdigest())[:8]
-    text += tb_uuid + " " + ntext
-
-    text += extxt[0]
-    text += "\n"
-    text += "".join(elist)
-
-    trace = tb
-    while trace.tb_next:
-        trace = trace.tb_next
-    frame = trace.tb_frame
-    text += ("\nLocal variables in innermost frame:\n")
+    
     try:
-        for (key, val) in frame.f_locals.items():
-            text += "%s: %s\n" % (key, val)
-    except:
+        import os.path
+        from hashlib import md5
+        import traceback
+    
+        syslog.syslog("abrt: Pyhook: Detected unhandled exception in %s " % sys.argv[0])
+        elist = traceback.format_exception (etype, value, tb)
+        tblast = traceback.extract_tb(tb, limit=None)
+        if len(tblast):
+            tblast = tblast[len(tblast)-1]
+        extxt = traceback.format_exception_only(etype, value)
+        text = ""
+        text = text + "Summary: TB"
+        if tblast and len(tblast) > 3:
+            ll = []
+            ll.extend(tblast[:3])
+            ll[0] = os.path.basename(tblast[0])
+            tblast = ll
+    
+        m = md5()
+        ntext = ""
+        for t in tblast:
+            ntext += str(t) + ":"
+            m.update(str(t))
+    
+        tb_uuid = str(m.hexdigest())[:8]
+        text += tb_uuid + " " + ntext
+    
+        text += extxt[0]
+        text += "\n"
+        text += "".join(elist)
+    
+        trace = tb
+        while trace.tb_next:
+            trace = trace.tb_next
+        frame = trace.tb_frame
+        text += ("\nLocal variables in innermost frame:\n")
+        try:
+            for (key, val) in frame.f_locals.items():
+                text += "%s: %s\n" % (key, val)
+        except:
+            pass
+    
+        # add coredump saving
+        write_dump(os.getpid(), tb_uuid, text)
+    except: #silently ignore any error in this hook, to not interfere with the python scripts
         pass
-
-    # add coredump saving
-    write_dump(os.getpid(), tb_uuid, text)
     return sys.__excepthook__(etype, value, tb)
 
 def installExceptionHandler(debug = 1):
