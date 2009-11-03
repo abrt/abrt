@@ -211,7 +211,7 @@ class MainWindow():
             else:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                                 entry.getTime("%c"), entry.getCount(), entry.isReported(), entry])
-        # activate the last row if any..
+        # activate the first row if any..
         if n:
             # we can use (0,) as path for the first row, but what if API changes?
             self.dlist.set_cursor(self.dumpsListStore.get_path(self.dumpsListStore.get_iter_first()))
