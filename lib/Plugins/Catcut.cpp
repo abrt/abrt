@@ -43,7 +43,10 @@ static void throw_if_xml_fault_occurred()
 static void new_xmlrpc_client(const char* url, bool no_ssl_verify)
 {
     xmlrpc_env_init(&env);
-    xmlrpc_client_setup_global_const(&env);
+
+    /* This should be done at program startup, once.
+     * We do it in abrtd's main */
+    /* xmlrpc_client_setup_global_const(&env); */
 
     curlParms.network_interface = NULL;
     curlParms.no_ssl_verifypeer = no_ssl_verify;
@@ -71,7 +74,6 @@ static void destroy_xmlrpc_client()
     xmlrpc_server_info_free(server_info);
     xmlrpc_env_clean(&env);
     xmlrpc_client_destroy(client);
-    xmlrpc_client_teardown_global_const();
 }
 
 static string login(const char* login, const char* passwd)

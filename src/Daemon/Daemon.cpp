@@ -18,11 +18,13 @@
     */
 
 #include <syslog.h>
-#include <sys/inotify.h>
-#include <glib.h>
 #include <pthread.h>
 #include <string>
 #include <limits.h>
+#include <sys/inotify.h>
+#include <xmlrpc-c/base.h>
+#include <xmlrpc-c/client.h>
+#include <glib.h>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
@@ -762,6 +764,13 @@ int main(int argc, char** argv)
     try
     {
         init_daemon_logging(&watcher);
+
+        VERB1 log("Initializing XML-RPC library");
+        xmlrpc_env env;
+        xmlrpc_env_init(&env);
+        xmlrpc_client_setup_global_const(&env);
+        if (env.fault_occurred)
+            error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
