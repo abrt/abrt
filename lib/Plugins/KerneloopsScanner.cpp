@@ -97,7 +97,8 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 		try
 		{
 			CDebugDump debugDump;
-			debugDump.Create(path, UINT_MAX);
+			// UID of kerneloops is -1
+			debugDump.Create(path, -1);
 			debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
 			debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
 			debugDump.SaveText(FILENAME_KERNEL, first_line);
