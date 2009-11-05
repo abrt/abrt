@@ -18,41 +18,45 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include <stdio.h>
-#include <string.h>
 #include <ext/stdio_filebuf.h>
 #include <fstream>
 #include <sstream>
+#include "abrtlib.h"
+#include "abrt_types.h"
+#include "ABRTException.h"
 #include "SOSreport.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-void CActionSOSreport::CopyFile(const std::string& pSourceName, const std::string& pDestName)
+/* abrtlib candidate */
+static void CopyFile(const char *pSourceName, const char *pDestName)
 {
-    std::ifstream source(pSourceName.c_str(), std::fstream::binary);
-
-    if (!source)
+    int src = open(pSourceName, O_RDONLY);
+    if (src < 0)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CActionSOSreport::CopyFile(): could not open input sosreport filename:" + pSourceName);
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open input sosreport file '%s'", pSourceName));
     }
-    std::ofstream dest(pDestName.c_str(),std::fstream::trunc|std::fstream::binary);
-    if (!dest)
+    int dst = open(pDestName, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    if (dst < 0)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CActionSOSreport::CopyFile(): could not open output sosreport filename:" + pDestName);
+        close(src);
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open output sosreport file '%s'", pDestName));
     }
-    dest << source.rdbuf();
+    copyfd_eof(src, dst);
+    close(src);
+    close(dst);
 }
 
-void CActionSOSreport::ErrorCheck(const index_type pI)
+static void ErrorCheck(int pos)
 {
-    if (pI == std::string::npos)
+    if (pos < 0)
     {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CActionSOSreport::ErrorCheck(): could not find filename in sosreport output"));
+        throw CABRTException(EXCEP_PLUGIN, "Can't find filename in sosreport output");
     }
 }
 
-std::string CActionSOSreport::ParseFilename(const std::string& pOutput)
+static std::string ParseFilename(const std::string& pOutput)
 {
     /*
     the sosreport's filename is embedded in sosreport's output.
@@ -63,45 +67,48 @@ std::string CActionSOSreport::ParseFilename(const std::string& pOutput)
     static const char sosreport_filename_marker[] =
           "Your sosreport has been generated and saved in:";
 
-    index_type p = pOutput.find(sosreport_filename_marker);
+    int p = pOutput.find(sosreport_filename_marker);
     ErrorCheck(p);
 
-    p += strlen(sosreport_filename_marker);
+    p += sizeof(sosreport_filename_marker)-1;
 
-    index_type filename_start = pOutput.find_first_not_of(" \n\t", p);
+    int filename_start = pOutput.find_first_not_of(" \n\t", p);
     ErrorCheck(p);
 
-    index_type line_end = pOutput.find_first_of('\n',filename_start);
+    int line_end = pOutput.find_first_of('\n',filename_start);
     ErrorCheck(p);
 
-    index_type filename_end = pOutput.find_last_not_of(" \n\t",line_end);
+    int filename_end = pOutput.find_last_not_of(" \n\t",line_end);
     ErrorCheck(p);
 
-    return pOutput.substr(filename_start,(filename_end-filename_start)+1);
+    return pOutput.substr(filename_start, filename_end - filename_start + 1);
 }
 
-void CActionSOSreport::ParseArgs(const std::string& psArgs, vector_args_t& pArgs)
+/* TODO: do not duplicate: RunApp.cpp has same function too */
+static void ParseArgs(const char *psArgs, vector_string_t& pArgs)
 {
-    unsigned int ii;
+    unsigned ii;
     bool is_quote = false;
-    std::string item = "";
-    for (ii = 0; ii < psArgs.length(); ii++)
+    std::string item;
+
+    for (ii = 0; psArgs[ii]; ii++)
     {
-        if (psArgs[ii] == '\"')
+        if (psArgs[ii] == '"')
         {
-            is_quote = is_quote == true ? false : true;
+            is_quote = !is_quote;
         }
         else if (psArgs[ii] == ',' && !is_quote)
         {
             pArgs.push_back(item);
-            item = "";
+            item.clear();
         }
         else
         {
             item += psArgs[ii];
         }
     }
-    if (item != "")
+
+    if (item.size() != 0)
     {
         pArgs.push_back(item);
     }
@@ -112,16 +119,16 @@ void CActionSOSreport::Run(const std::string& pActionDir,
 {
     update_client(_("Executing SOSreport plugin..."));
 
-    const char command_default[] = "sosreport --batch --no-progressbar --only=anaconda --only=bootloader"
+    static const char command_default[] = "sosreport --batch --no-progressbar --only=anaconda --only=bootloader"
                                             " --only=devicemapper --only=filesys --only=hardware --only=kernel"
                                             " --only=libraries --only=memory --only=networking --only=nfsserver"
                                             " --only=pam --only=process --only=rpm -k rpm.rpmva=off --only=ssh"
                                             " --only=startup --only=yum 2>&1";
-    const char command_prefix[] = "sosreport --batch --no-progressbar";
+    static const char command_prefix[] = "sosreport --batch --no-progressbar";
     std::string command;
 
-    vector_args_t args;
-    ParseArgs(pArgs, args);
+    vector_string_t args;
+    ParseArgs(pArgs.c_str(), args);
 
     if (args.size() == 0 || args[0] == "")
     {
@@ -158,7 +165,7 @@ void CActionSOSreport::Run(const std::string& pActionDir,
     dd.Open(pActionDir);
     //Not useful
     //dd.SaveText("sosreportoutput", output);
-    CopyFile(sosreport_filename,sosreport_dd_filename);
+    CopyFile(sosreport_filename.c_str(), sosreport_dd_filename.c_str());
 }
 
 PLUGIN_INFO(ACTION,
