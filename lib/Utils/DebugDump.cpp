@@ -39,7 +39,14 @@ static bool isdigit_str(const char *str)
     return true;
 }
 
-static std::string RemoveBackSlashes(const std::string& pDir);
+static std::string RemoveBackSlashes(const char *pDir)
+{
+    unsigned len = strlen(pDir);
+    while (len != 0 && pDir[len-1] == '/')
+        len--;
+    return std::string(pDir, len);
+}
+
 static bool ExistFileDir(const char* pPath);
 static void LoadTextFile(const std::string& pPath, std::string& pData);
 
@@ -56,10 +63,10 @@ void CDebugDump::Open(const std::string& pDir)
     {
         throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
-    m_sDebugDumpDir = RemoveBackSlashes(pDir);
+    m_sDebugDumpDir = RemoveBackSlashes(pDir.c_str());
     if (!ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" does not exist.");
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): " + m_sDebugDumpDir + " does not exist.");
     }
     Lock();
     m_bOpened = true;
@@ -215,7 +222,7 @@ void CDebugDump::Create(const std::string& pDir, int64_t uid)
         throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
     }
 
-    m_sDebugDumpDir = RemoveBackSlashes(pDir);
+    m_sDebugDumpDir = RemoveBackSlashes(pDir.c_str());
     if (ExistFileDir(m_sDebugDumpDir.c_str()))
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" already exists.");
@@ -329,16 +336,6 @@ static bool IsTextFile(const char *name)
             return false;
     }
     return true;
-}
-
-static std::string RemoveBackSlashes(const std::string& pDir)
-{
-    std::string ret = pDir;
-    while (ret[ret.length() - 1] == '/')
-    {
-        ret = ret.substr(0, ret.length() - 2);
-    }
-    return ret;
 }
 
 void CDebugDump::Delete()

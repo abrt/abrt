@@ -6,7 +6,7 @@
 #define FILENAME_BACKTRACE      "backtrace"
 #define PYHOOK_CONFIG          "/etc/abrt/pyhook.conf"
 
-std::string CAnalyzerPython::CreateHash(const std::string& pDebugDumpDir)
+static std::string CreateHash(const std::string& pDebugDumpDir)
 {
 	std::string uuid;
 	CDebugDump dd;
