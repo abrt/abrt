@@ -1,30 +1,42 @@
 AM_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 pluginslibdir=$(PLUGINS_LIB_DIR)
-pluginslib_LTLIBRARIES = libCCpp.la \
-                         libMailx.la \
-                         libSQLite3.la \
-                         libLogger.la \
-                         libKerneloopsScanner.la\
-                         libKerneloopsReporter.la\
-                         libKerneloops.la \
-                         libRunApp.la \
-                         libSOSreport.la \
-                         libBugzilla.la \
-                         libCatcut.la \
-                         libTicketUploader.la \
-                         libPython.la \
-                         libFileTransfer.la
+pluginslib_LTLIBRARIES = \
+    libCCpp.la \
+    libMailx.la \
+    libSQLite3.la \
+    libLogger.la \
+    libKerneloopsScanner.la\
+    libKerneloopsReporter.la\
+    libKerneloops.la \
+    libRunApp.la \
+    libSOSreport.la \
+    libBugzilla.la \
+    libCatcut.la \
+    libTicketUploader.la \
+    libPython.la \
+    libFileTransfer.la
 
-dist_pluginslib_DATA = KerneloopsReporter.GTKBuilder Logger.GTKBuilder\
-                       Mailx.GTKBuilder Bugzilla.GTKBuilder\
-                       TicketUploader.GTKBuilder Catcut.GTKBuilder
+dist_pluginslib_DATA = \
+    KerneloopsReporter.GTKBuilder Logger.GTKBuilder \
+    Mailx.GTKBuilder Bugzilla.GTKBuilder \
+    TicketUploader.GTKBuilder Catcut.GTKBuilder
 
-pluginsconfdir=$(PLUGINS_CONF_DIR)
-dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf Catcut.conf TicketUploader.conf FileTransfer.conf
+pluginsconfdir = $(PLUGINS_CONF_DIR)
+dist_pluginsconf_DATA = \
+    CCpp.conf \
+    Mailx.conf \
+    SQLite3.conf \
+    Logger.conf \
+    Kerneloops.conf \
+    KerneloopsScanner.conf \
+    KerneloopsReporter.conf \
+    Bugzilla.conf \
+    Catcut.conf \
+    TicketUploader.conf \
+    FileTransfer.conf
 
-
-man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7\
-           abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7\
+man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7 \
+           abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7 \
            abrt-SQLite3.7  abrt-RunApp.7 abrt-TicketUploader.7
 # + abrt-Catcut.7
 

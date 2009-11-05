@@ -34,7 +34,7 @@
 class CKerneloopsScanner : public CAction
 {
 	private:
-		std::string m_sSysLogFile;
+		map_plugin_settings_t m_pSettings;
 
 		/* For "dumpoops" tool */
 	public:

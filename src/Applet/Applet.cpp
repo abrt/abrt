@@ -49,13 +49,12 @@ static void Crash(DBusMessage* signal)
     dbus_message_iter_init(signal, &in_iter);
     const char* progname;
     r = load_val(&in_iter, progname);
-    if (r != ABRT_DBUS_MORE_FIELDS)
+    /* Optional 2nd param: uid */
+    const char* uid_str = NULL;
+    if (r == ABRT_DBUS_MORE_FIELDS)
     {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
+        r = load_val(&in_iter, uid_str);
     }
-    const char* uid_str;
-    r = load_val(&in_iter, uid_str);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
@@ -66,13 +65,17 @@ static void Crash(DBusMessage* signal)
     //    return;
 //    uid_t uid_num = atol(uid_str);
 
-    char* endptr;
-    int64_t uid_num = strtoll(uid_str,&endptr, 10);
-
-    if ((uid_num != getuid()) && (uid_num != -1))
+    if (uid_str != NULL)
     {
-        return;
+        char *end;
+        errno = 0;
+        unsigned long uid_num = strtoul(uid_str, &end, 10);
+        if (errno || *end != '\0' || uid_num != getuid())
+        {
+            return;
+        }
     }
+
     const char* message = _("A crash in package %s has been detected");
     //applet->AddEvent(uid, progname);
     applet->SetIconTooltip(message, progname);

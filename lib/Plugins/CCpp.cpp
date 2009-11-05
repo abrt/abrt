@@ -948,6 +948,8 @@ void CAnalyzerCCpp::DeInit()
 
 void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    m_pSettings = pSettings;
+
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
     it = pSettings.find("MemoryMap");
@@ -976,7 +978,7 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 
 map_plugin_settings_t CAnalyzerCCpp::GetSettings()
 {
-    map_plugin_settings_t ret;
+    map_plugin_settings_t ret = m_pSettings;
 
     ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
     ret["DebugInfo"] = m_sDebugInfo;

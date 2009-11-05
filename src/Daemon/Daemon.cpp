@@ -165,6 +165,18 @@ static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL
     return size;
 }
 
+static bool analyzer_has_InformAllUsers(const char *analyzer_name)
+{
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
+    if (!analyzer)
+        return false;
+    map_plugin_settings_t settings = analyzer->GetSettings();
+    map_plugin_settings_t::const_iterator it = settings.find("InformAllUsers");
+    if (it == settings.end())
+        return false;
+    return string_to_bool(it->second.c_str());
+}
+
 static void cron_delete_callback_data_cb(gpointer data)
 {
     cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
@@ -369,8 +381,7 @@ static void FindNewDumps(const char* pPath)
         map_crash_info_t crashinfo;
         try
         {
-            mw_result_t res;
-            res = SaveDebugDump(*itt, crashinfo);
+            mw_result_t res = SaveDebugDump(*itt, crashinfo);
             switch (res)
             {
                 case MW_OK:
@@ -522,38 +533,23 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         map_crash_info_t crashinfo;
         try
         {
-            mw_result_t res;
-            res = SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+            mw_result_t res = SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
             switch (res)
             {
                 case MW_OK:
-                    log("New crash, saving...");
+                    log("New crash, saving");
                     RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
-                    /* Send dbus signal */
-                    if(crashinfo[CD_MWANALYZER][CD_CONTENT] == "Kerneloops")
-                    {
-                        // When Kerneloops comes it will be sent uid with -1
-                        // Applet will detected and show normal user
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string("-1"));
-                    }
-                    else
-                    {
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                    }
-                    break;
+                    /* Fall through to "send dbus signal" */
                 case MW_REPORTED:
                 case MW_OCCURED:
-                    log("Already saved crash, deleting...");
+                    if (res != MW_OK)
+                        log("Already saved crash, just sending dbus signal");
                     /* Send dbus signal */
-                    if(crashinfo[CD_MWANALYZER][CD_CONTENT] == "Kerneloops")
                     {
-                        // When Kerneloops comes it will be sent uid with -1
-                        // Applet will detected and show normal user
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string("-1"));
-                    }
-                    else
-                    {
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
+                        const char *uid_str = analyzer_has_InformAllUsers(crashinfo[CD_MWANALYZER][CD_CONTENT].c_str())
+                            ? NULL
+                            : crashinfo[CD_UID][CD_CONTENT].c_str();
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
                     }
                     //DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                     break;
@@ -564,7 +560,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 case MW_IN_DB:
                 case MW_FILE_ERROR:
                 default:
-                    log("Corrupted or bad crash, deleting...");
+                    log("Corrupted or bad crash, deleting");
                     DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                     break;
             }

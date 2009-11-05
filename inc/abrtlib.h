@@ -199,6 +199,7 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 char *encode_base64(const void *src, int length);
 bool dot_or_dotdot(const char *filename);
 char *last_char_is(const char *s, int c);
+bool string_to_bool(const char *s);
 
 
 /* C++ style stuff */

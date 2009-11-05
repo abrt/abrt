@@ -46,16 +46,24 @@ static void send_flush_and_unref(DBusMessage* msg)
 }
 
 /* Notify the clients (UI) about a new crash */
-void CCommLayerServerDBus::Crash(const std::string& progname, const std::string& uid)
+void CCommLayerServerDBus::Crash(const char *progname, const char *uid_str)
 {
     DBusMessage* msg = new_signal_msg("Crash");
-    const char* c_progname = progname.c_str();
-    const char* c_uid = uid.c_str();
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &c_progname,
-            DBUS_TYPE_STRING, &c_uid,
-            DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal Crash('%s','%s')", c_progname, c_uid);
+    if (uid_str)
+    {
+        dbus_message_append_args(msg,
+                DBUS_TYPE_STRING, &progname,
+                DBUS_TYPE_STRING, &uid_str,
+                DBUS_TYPE_INVALID);
+        VERB2 log("Sending signal Crash('%s','%s')", progname, uid_str);
+    }
+    else
+    {
+        dbus_message_append_args(msg,
+                DBUS_TYPE_STRING, &progname,
+                DBUS_TYPE_INVALID);
+        VERB2 log("Sending signal Crash('%s')", progname);
+    }
     send_flush_and_unref(msg);
 }
 
