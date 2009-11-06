@@ -316,19 +316,19 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
     }
     msgbuf << _("END: ") << endl;
 
-    error_msg("%s", msgbuf.str());
+    error_msg("%s", msgbuf.str().c_str());
 
     string ret;
     if (do_upload)
     {
         string xx = _("report sent to ") + upload_url + '/' + outfile_basename;
-        update_client("%s", xx);
+        update_client("%s", xx.c_str());
         ret = xx;
     }
     else
     {
         string xx = _("report copied to /tmp/") + outfile_basename;
-        update_client("%s", xx);
+        update_client("%s", xx.c_str());
         ret = xx;
     }
 
