@@ -42,8 +42,8 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-
 using namespace std;
+
 #define HBLEN 255
 #define FILETRANSFER_DIRLIST DEBUG_DUMPS_DIR "/FileTransferDirlist.txt"
 
@@ -64,10 +64,10 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         return;
     }
 
-    std::string msg = ssprintf(_("Sending archive %s to %s"), pFilename, pURL);
+    string msg = ssprintf(_("Sending archive %s to %s"), pFilename, pURL);
     update_client(msg.c_str());
 
-    std::string wholeURL = concat_path_file(pURL, pFilename);
+    string wholeURL = concat_path_file(pURL, pFilename);
 
     int result;
     int count = m_nRetryCount;
@@ -289,43 +289,44 @@ void CFileTransfer::CreateArchive(const char *pArchiveName, const char *pDir)
     }
 }
 
-/*returns the last component of the directory path*/
-static std::string DirBase(const std::string& pStr)
+/* Returns the last component of the directory path.
+ * Careful to not return "" on "/path/path2/", but "path2".
+ */
+static string DirBase(const char *pStr)
 {
-    int i = pStr.length() - 1;
-    if (i > 0 && pStr[i] == '/')
+    int end = strlen(pStr);
+    if (end > 1 && pStr[end-1] == '/')
     {
-        i--;
+        end--;
     }
-    std::string result;
-    for (; i >= 0 && pStr[i] != '/'; i--)
+    int beg = end;
+    while (beg > 0 && pStr[beg-1] != '/')
     {
-        result = pStr[i] + result;
+        beg--;
     }
-    return result;
+    return string(pStr + beg, end - beg);
 }
 
 void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
 {
-    fstream dirlist;
-    std::string dirname, archivename;
-    char hostname[HBLEN];
-
     update_client(_("File Transfer: Creating a report..."));
 
+    char hostname[HBLEN];
+    gethostname(hostname, HBLEN-1);
+    hostname[HBLEN-1] = '\0';
+
+    fstream dirlist;
     if (strcmp(pArgs, "store") == 0)
     {
         /* store pActiveDir for later sending */
-        dirlist.open(FILETRANSFER_DIRLIST, fstream::out | fstream::app );
+        dirlist.open(FILETRANSFER_DIRLIST, fstream::out | fstream::app);
         dirlist << pActionDir << endl;
         dirlist.close();
     }
     else if (strcmp(pArgs, "one") == 0)
     {
         /* just send one archive */
-        gethostname(hostname, HBLEN);
-        archivename = std::string(hostname) + "-"
-                      + DirBase(pActionDir) + m_sArchiveType;
+        string archivename = ssprintf("%s-%s%s", hostname, DirBase(pActionDir).c_str(), m_sArchiveType.c_str());
         try
         {
             CreateArchive(archivename.c_str(), pActionDir);
@@ -340,8 +341,6 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
     }
     else
     {
-        gethostname(hostname, HBLEN);
-
         dirlist.open(FILETRANSFER_DIRLIST, fstream::in);
         if (dirlist.fail())
         {
@@ -350,10 +349,10 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
             return;
         }
 
+        string dirname;
         while (getline(dirlist, dirname), dirlist.good())
         {
-            archivename = std::string(hostname) + "-"
-                         + DirBase(dirname) + m_sArchiveType;
+            string archivename = ssprintf("%s-%s%s", hostname, DirBase(dirname.c_str()).c_str(), m_sArchiveType.c_str());
             try
             {
                 CreateArchive(archivename.c_str(), dirname.c_str());
@@ -406,7 +405,7 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
         m_sArchiveType = it->second;
         if (m_sArchiveType[0] != '.')
         {
-            m_sArchiveType =  "." + m_sArchiveType;
+            m_sArchiveType = "." + m_sArchiveType;
         }
     }
 }
@@ -414,13 +413,10 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
 map_plugin_settings_t CFileTransfer::GetSettings()
 {
     map_plugin_settings_t ret;
-    std::stringstream ss;
+
     ret["URL"] = m_sURL;
-    ss << m_nRetryCount;
-    ret["RetryCount"] = ss.str();
-    ss.str("");
-    ss << m_nRetryDelay;
-    ret["RetryDelay"] = ss.str();
+    ret["RetryCount"] = to_string(m_nRetryCount);
+    ret["RetryDelay"] = to_string(m_nRetryDelay);
     ret["ArchiveType"] = m_sArchiveType;
 
     return ret;
