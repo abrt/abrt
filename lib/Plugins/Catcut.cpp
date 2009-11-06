@@ -162,9 +162,7 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
         }
         else if (it->second[CD_TYPE] == CD_BIN)
         {
-            string msg = ssprintf(_("Binary file %s will not be reported."), it->first.c_str());
-            warn_client(msg);
-            //update_client(_("Binary file ")+it->first+_(" will not be reported."));
+            error_msg(_("Binary file %s will not be reported"), it->first.c_str());
         }
     }
 }
@@ -244,7 +242,7 @@ static string new_bug(const char *auth_cookie, const map_crash_report_t& pCrashR
     throw_if_xml_fault_occurred();
     bug_id_str = bug_id;
     log("New bug id: %s", bug_id);
-    update_client(_("New bug id: ") + bug_id_str);
+    update_client(_("New bug id: %s"), bug_id);
     free((void*)bug_id);
     xmlrpc_DECREF(bug_id_xml);
 

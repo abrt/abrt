@@ -610,8 +610,8 @@ Another application is holding the yum lock, cannot continue
         if (last >= 0 && buff[last] == '\n')
             buff[last] = '\0';
 
-        /* log(buff); - update_client logs it too */
-        update_client(buff); /* maybe only if buff != ""? */
+        log("%s", buff);
+        update_client("%s", buff); /* maybe only if buff != ""? */
 
 #ifdef COMPLAIN_IF_NO_DEBUGINFO
         if (already_installed == false)
@@ -715,8 +715,8 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
         }
         if (*p)
         {
-            /* log(buff); - update_client logs it too */
-            update_client(buff);
+            log("%s", buff);
+            update_client("%s", buff);
         }
     }
 

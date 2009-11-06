@@ -58,31 +58,29 @@ enum {
 	LOGMODE_STDIO = (1 << 0),
 	LOGMODE_SYSLOG = (1 << 1),
 	LOGMODE_BOTH = LOGMODE_SYSLOG + LOGMODE_STDIO,
+	LOGMODE_CUSTOM = (1 << 2),
 };
+extern void (*g_custom_logger)(const char*);
 extern const char *msg_prefix;
 extern const char *msg_eol;
 extern int logmode;
 extern int xfunc_error_retval;
-extern void xfunc_die(void) NORETURN;
-extern void die_out_of_memory(void) NORETURN;
-extern void error_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
-extern void error_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
-extern void perror_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
-extern void simple_perror_msg(const char *s);
-extern void perror_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
-extern void simple_perror_msg_and_die(const char *s) NORETURN;
-extern void perror_nomsg_and_die(void) NORETURN;
-extern void perror_nomsg(void);
-extern void verror_msg(const char *s, va_list p, const char *strerr);
-/* error_msg() and log() do the same thing:
- * they log a message on stderr, syslog, etc.
- * They are only semantically different: error_msg() implies that
- * the logged event is a warning/error, while log() does not.
- * Another reason is that log() is such a short and nice name. :)
- * It's a macro, not function, since it collides with log() from math.h
- */
+void xfunc_die(void) NORETURN;
+void log_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
+/* It's a macro, not function, since it collides with log() from math.h */
 #undef log
-#define log(...) error_msg(__VA_ARGS__)
+#define log(...) log_msg(__VA_ARGS__)
+/* error_msg family will use g_custom_logger. log_msg does not. */
+void error_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
+void error_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
+void perror_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
+void simple_perror_msg(const char *s);
+void perror_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
+void simple_perror_msg_and_die(const char *s) NORETURN;
+void perror_nomsg_and_die(void) NORETURN;
+void perror_nomsg(void);
+void verror_msg(const char *s, va_list p, const char *strerr);
+void die_out_of_memory(void) NORETURN;
 
 /* Verbosity level */
 extern int g_verbose;

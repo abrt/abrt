@@ -60,12 +60,11 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
     int len = strlen(pURL);
     if (len == 0)
     {
-        warn_client(_("FileTransfer: URL not specified"));
+        error_msg(_("FileTransfer: URL not specified"));
         return;
     }
 
-    string msg = ssprintf(_("Sending archive %s to %s"), pFilename, pURL);
-    update_client(msg.c_str());
+    update_client(_("Sending archive %s to %s"), pFilename, pURL);
 
     string wholeURL = concat_path_file(pURL, pFilename);
 
@@ -332,8 +331,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
         }
         catch (CABRTException& e)
         {
-            warn_client(ssprintf(_("Can't create and send an archive: %s"), e.what()));
-            //update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
+            error_msg(_("Can't create and send an archive: %s"), e.what());
         }
         unlink(archivename.c_str());
     }
@@ -358,8 +356,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
             }
             catch (CABRTException& e)
             {
-                warn_client(ssprintf(_("Can't create and send an archive: "), e.what()));
-//                update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
+                error_msg(_("Can't create and send an archive %s"), e.what());
             }
             unlink(archivename.c_str());
         }
@@ -381,7 +378,7 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
     }
     else
     {
-        warn_client(_("FileTransfer: URL not specified"));
+        error_msg(_("FileTransfer: URL not specified"));
     }
 
     it = pSettings.find("RetryCount");

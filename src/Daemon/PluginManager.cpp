@@ -179,7 +179,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
         catch (CABRTException& e)
         {
             delete abrtPlugin;
-            warn_client(ssprintf("Failed to load plugin %s: %s", pName.c_str(), e.what()));
+            error_msg("Failed to load plugin %s: %s", pName.c_str(), e.what());
         }
     }
 }

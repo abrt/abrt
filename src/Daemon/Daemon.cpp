@@ -572,7 +572,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         }
         catch (CABRTException& e)
         {
-            warn_client(e.what());
+            error_msg(e.what());
             if (e.type() == EXCEP_FATAL)
             {
                 free(buf);
