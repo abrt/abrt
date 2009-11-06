@@ -29,25 +29,6 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-/* abrtlib candidate */
-static void CopyFile(const char *pSourceName, const char *pDestName)
-{
-    int src = open(pSourceName, O_RDONLY);
-    if (src < 0)
-    {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open input sosreport file '%s'", pSourceName));
-    }
-    int dst = open(pDestName, O_WRONLY | O_TRUNC | O_CREAT, 0666);
-    if (dst < 0)
-    {
-        close(src);
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open output sosreport file '%s'", pDestName));
-    }
-    copyfd_eof(src, dst);
-    close(src);
-    close(dst);
-}
-
 static void ErrorCheck(int pos)
 {
     if (pos < 0)
@@ -78,7 +59,7 @@ static std::string ParseFilename(const std::string& pOutput)
     int line_end = pOutput.find_first_of('\n',filename_start);
     ErrorCheck(p);
 
-    int filename_end = pOutput.find_last_not_of(" \n\t",line_end);
+    int filename_end = pOutput.find_last_not_of(" \n\t", line_end);
     ErrorCheck(p);
 
     return pOutput.substr(filename_start, filename_end - filename_start + 1);
@@ -164,7 +145,15 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
     dd.Open(pActionDir);
     //Not useful
     //dd.SaveText("sosreportoutput", output);
-    CopyFile(sosreport_filename.c_str(), sosreport_dd_filename.c_str());
+    if (copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str()) < 0)
+    {
+        throw CABRTException(EXCEP_PLUGIN,
+                ssprintf("Can't copy '%s' to '%s'",
+                        sosreport_filename.c_str(),
+                        sosreport_dd_filename.c_str()
+                )
+        );
+    }
 }
 
 PLUGIN_INFO(ACTION,

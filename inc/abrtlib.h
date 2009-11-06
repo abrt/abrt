@@ -148,6 +148,8 @@ void xunlink(const char *pathname);
 off_t copyfd_eof(int src_fd, int dst_fd);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+off_t copy_file(const char *src_name, const char *dst_name);
+
 
 unsigned long long monotonic_ns(void);
 unsigned long long monotonic_us(void);

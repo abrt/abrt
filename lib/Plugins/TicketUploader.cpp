@@ -17,26 +17,20 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
-
+#include <string>
+#include <fstream>
+#include <sstream>
+#include <curl/curl.h>
+#include "abrtlib.h"
 #include "TicketUploader.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-#include <stdlib.h>
-#include <sys/stat.h>
-
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <ext/stdio_filebuf.h>
-#include <curl/curl.h>
+using namespace std;
 
 
 CTicketUploader::CTicketUploader() :
-    m_sCustomer(""),
-    m_sTicket(""),
-    m_sURL(""),
     m_bEncrypt(false),
     m_bUpload(false),
     m_nRetryCount(3),
@@ -47,148 +41,93 @@ CTicketUploader::~CTicketUploader()
 {}
 
 
-
-void CTicketUploader::Error(string func, string msg)
+static void Error(const char *msg)
 {
     update_client(msg);
-    throw CABRTException(EXCEP_PLUGIN, func + msg);
+    throw CABRTException(EXCEP_PLUGIN, msg);
 }
 
-void CTicketUploader::CopyFile(const std::string& pSourceName, const std::string& pDestName)
+static void RunCommand(const char *cmd)
 {
-    std::ifstream source(pSourceName.c_str(), std::fstream::binary);
-
-    if (!source)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CActionSOSreport::CopyFile(): could not open input sosreport filename:" + pSourceName);
-    }
-    std::ofstream dest(pDestName.c_str(),std::fstream::trunc|std::fstream::binary);
-    if (!dest)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "CActionSOSreport::CopyFile(): could not open output sosreport filename:" + pDestName);
-    }
-    dest << source.rdbuf();
-}
-
-void CTicketUploader::RunCommand(string cmd)
-{
-    int retcode = system(cmd.c_str());
-    if (retcode == -1)
-    {
-        Error("TicketUploader::RunCommand:", "error: could not start subshell: " + cmd);
-    }
+    int retcode = system(cmd);
     if (retcode)
     {
-        std::ostringstream msg;
-        msg << "error: subshell failed (rc=" << retcode << "):" << cmd;
-        Error("TicketUploader::RunCommand:", msg.str());
+        Error(ssprintf("'%s' exited with %d", cmd, retcode).c_str());
     }
 }
 
-string CTicketUploader::ReadCommand(string cmd)
+static string ReadCommand(const char *cmd)
 {
-    FILE* fp = popen(cmd.c_str(),"r");
+    FILE* fp = popen(cmd, "r");
     if (!fp)
     {
-        Error("TicketUploader::ReadCommand:", "error: could not start subshell: " + cmd);
+        Error(ssprintf("error running '%s'", cmd).c_str());
     }
 
-    __gnu_cxx::stdio_filebuf<char> command_output_buffer(fp, std::ios_base::in);
-    std::ostringstream output_stream;
-    output_stream << &command_output_buffer;
-
-    int retcode = pclose(fp);
-    if (retcode)
+    string result;
+    char buff[1024];
+    while (fgets(buff, sizeof(buff), fp) != NULL)
     {
-        std::ostringstream msg;
-        msg << "error: subshell failed (rc=" << retcode << "):" << cmd;
-        Error("TicketUploader::ReadCommand:", msg.str());
-    }
-
-    return output_stream.str();
-}
-
-void CTicketUploader::WriteCommand(string cmd,string input)
-{
-    FILE* fp = popen(cmd.c_str(),"w");
-    if (!fp)
-    {
-        Error("TicketUploader::WriteCommand:", "error: could not start subshell: " + cmd);
-    }
-
-    size_t input_length = input.length();
-    size_t check = fwrite(input.c_str(),1,input_length,fp);
-    if (input_length != check)
-    {
-        Error("TicketUploader::WriteCommand:", "error: could not send input to subshell: " + cmd);
+        result += buff;
     }
 
     int retcode = pclose(fp);
     if (retcode)
     {
-        std::ostringstream msg;
-        msg << "error: subshell failed (rc=" << retcode << "):" << cmd;
-        Error("TicketUploader::ReadCommand:", msg.str());
+        Error(ssprintf("'%s' exited with %d", cmd, retcode).c_str());
     }
 
+    return result;
 }
 
-void CTicketUploader::SendFile(const std::string& pURL,
-                               const std::string& pFilename)
+static void WriteCommand(const char *cmd, const char *input)
 {
-    FILE * f;
-    struct stat buf;
-    CURL * curl;
-    std::string wholeURL, protocol;
-    int result, i, count = m_nRetryCount;
-    int len = pURL.length();
-    std::string file;
+    FILE* fp = popen(cmd, "w");
+    if (!fp)
+    {
+        Error(ssprintf("error running '%s'", cmd).c_str());
+    }
 
-    if (pURL == "")
+    /* Hoping it's not too big to get us forever blocked... */
+    fputs(input, fp);
+
+    int retcode = pclose(fp);
+    if (retcode)
+    {
+        Error(ssprintf("'%s' exited with %d", cmd, retcode).c_str());
+    }
+}
+
+void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
+{
+    if (pURL[0] == '\0')
     {
         warn_client(_("FileTransfer: URL not specified"));
         return;
     }
-    protocol = "";
-    i = 0;
-    while(pURL[i] != ':')
-    {
-        protocol += pURL[i];
-        i++;
-        if(i == len)
-        {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): malformed URL, does not contain protocol");
-        }
-    }
 
-    file = pFilename.substr(pFilename.rfind("/") + 1, pFilename.length());
+    update_client(ssprintf(_("Sending archive %s to %s"), pFilename, pURL));
 
-    if( pURL[len-1] == '/' )
-    {
-        wholeURL = pURL + file;
-    }
-    else
-    {
-        wholeURL = pURL + "/" + file;
-    }
-
-    update_client(_("Sending archive ") + pFilename + _(" via ") + protocol + _(" to ") + pURL);
-
+    const char *base = (strrchr(pFilename, '/') ? : pFilename-1) + 1;
+    string wholeURL = concat_path_file(pURL, base);
+    int count = m_nRetryCount;
+    int result;
     do
     {
-        f = fopen(pFilename.c_str(),"r");
-        if(!f)
+        FILE* f = fopen(pFilename, "r");
+        if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): cannot open archive file "+pFilename);
+            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open archive file '%s'", pFilename));
         }
-        if (stat(pFilename.c_str(), &buf) == -1)
+        struct stat buf;
+        if (fstat(fileno(f), &buf) == -1)
         {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): cannot stat archive file "+pFilename);
+            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't stat archive file '%s'", pFilename));
         }
-        curl = curl_easy_init();
-        if(!curl)
+        CURL* curl = curl_easy_init();
+        if (!curl)
         {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): Curl library error.");
+            throw CABRTException(EXCEP_PLUGIN, "Curl library init error");
         }
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
@@ -196,48 +135,38 @@ void CTicketUploader::SendFile(const std::string& pURL,
         curl_easy_setopt(curl, CURLOPT_URL, wholeURL.c_str());
         /*file handle: passed to the default callback, it will fread() it*/
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
-        /*get file size*/
         curl_easy_setopt(curl, CURLOPT_INFILESIZE, buf.st_size);
-        /*everything is done here; result 0 means success*/
+        /* everything is done here; result 0 means success */
         result = curl_easy_perform(curl);
-        /*goodbye*/
+        /* goodbye */
         curl_easy_cleanup(curl);
         fclose(f);
         if (result != 0)
         {
-            update_client(_("Sending failed, try it again: ") + std::string(curl_easy_strerror((CURLcode)result)));
+            update_client(ssprintf(_("Sending failed, trying again. %s"), curl_easy_strerror((CURLcode)result)));
         }
     }
     /*retry the upload if not succesful, wait a bit before next try*/
-    while( result!=0 && --count != 0 && (sleep(m_nRetryDelay),1) );
+    while (result != 0 && --count != 0 && (sleep(m_nRetryDelay), 1));
 
     if (count <= 0 && result != 0)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): Curl can not send a ticket.");
+        throw CABRTException(EXCEP_PLUGIN, "Curl can not send a ticket");
     }
 }
 
 
 string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
-                               const map_plugin_settings_t& pSettings, const std::string& pArgs)
+                               const map_plugin_settings_t& pSettings, const string& pArgs)
 {
-    string ret;
     update_client(_("Creating an TicketUploader report..."));
 
-
-
     // Get ticket name, customer name, and do_encrypt from config settings
-    string ticket_name;
-    string customer_name;
-    string upload_url;
-    bool do_encrypt = false;
-    bool do_upload = false;
-
-    customer_name = m_sCustomer;
-    ticket_name = m_sTicket;
-    upload_url = m_sURL;
-    do_encrypt = m_bEncrypt;
-    do_upload = m_bUpload;
+    string customer_name = m_sCustomer;
+    string ticket_name = m_sTicket;
+    string upload_url = m_sURL;
+    bool do_encrypt = m_bEncrypt;
+    bool do_upload = m_bUpload;
 
     bool have_ticket_name = false;
     if (ticket_name == "")
@@ -249,168 +178,148 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
         have_ticket_name = true;
     }
 
-
-
     // Format the time to add to the file name
     const int timebufmax = 256;
     char timebuf[timebufmax];
     time_t curtime = time(NULL);
-    if (!strftime(timebuf,timebufmax,"-%G%m%d%k%M%S",gmtime(&curtime)))
+    if (!strftime(timebuf, timebufmax, "-%G%m%d%k%M%S", gmtime(&curtime)))
     {
-        Error("TicketUploader::Report:","could not format time");
+        Error("Can't format time");
     }
-
-
 
     // Create a tmp work directory, and within that the directory
     //   that will be the root of the tarball
     string file_name = ticket_name + timebuf;
 
-    char TEMPLATE[] = "/tmp/rhuploadXXXXXX";
-    string tmpdir_name = mkdtemp(TEMPLATE);
-    string tmptar_name = tmpdir_name + '/' + file_name;
+    char tmpdir_name[] = "/tmp/rhuploadXXXXXX";
+    if (mkdtemp(tmpdir_name) == NULL)
+    {
+        Error("Can't mkdir a temporary directory in /tmp");
+    }
+    string tmptar_name = concat_path_file(tmpdir_name, file_name.c_str());
 
     if (mkdir(tmptar_name.c_str(),S_IRWXU))
     {
-        Error("TicketUploader::Report:","error: could not mkdir: " + tmptar_name);
+        Error(ssprintf("Can't mkdir '%s'", tmptar_name.c_str()).c_str());
     }
-
-
 
     // Copy each entry into the tarball root,
     //   files are simply copied, strings are written to a file
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
-        if (it->second[CD_TYPE] == CD_TXT)
-        {
-            string ofile_name = tmptar_name + '/' + it->first;
-            std::ofstream ofile(ofile_name.c_str(),std::fstream::trunc|std::fstream::binary);
+        if (it->second[CD_TYPE] == CD_TXT
+         || it->second[CD_TYPE] == CD_ATT
+        ) {
+            string ofile_name = concat_path_file(tmptar_name.c_str(), it->first.c_str());
+            ofstream ofile(ofile_name.c_str(), fstream::trunc|fstream::binary);
             if (!ofile)
             {
-                Error("TicketUploader::Report:","error: could not open: " + ofile_name);
+                Error(ssprintf("Can't open '%s'", ofile_name.c_str()).c_str());
             }
-            ofile << it->second[CD_CONTENT] << std::endl;
+            ofile << it->second[CD_CONTENT] << endl;
             ofile.close();
         }
-        if (it->second[CD_TYPE] == CD_ATT)
+        else if (it->second[CD_TYPE] == CD_BIN)
         {
-            string ofile_name = tmptar_name + '/' + it->first;
-            std::ofstream ofile(ofile_name.c_str(),std::fstream::trunc|std::fstream::binary);
-            if (!ofile)
+            string ofile_name = concat_path_file(tmptar_name.c_str(), it->first.c_str());
+            if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str()) < 0)
             {
-                Error("TicketUploader::Report:","error: could not open: " + ofile_name);
+                throw CABRTException(EXCEP_PLUGIN,
+                        ssprintf("Can't copy '%s' to '%s'",
+                                it->second[CD_CONTENT].c_str(),
+                                ofile_name.c_str()
+                        )
+                );
             }
-            ofile << it->second[CD_CONTENT] << std::endl;
-            ofile.close();
-         }
-        if (it->second[CD_TYPE] == CD_BIN)
-        {
-            string ofile_name = tmptar_name + '/' + it->first;
-            CopyFile(it->second[CD_CONTENT],ofile_name);
         }
     }
-
-
 
     // add ticket_name and customer name to tarball
     if (have_ticket_name)
     {
         string ofile_name = tmptar_name + "/TICKET";
-        std::ofstream ofile(ofile_name.c_str(),std::fstream::trunc|std::fstream::binary);
+        ofstream ofile(ofile_name.c_str(), fstream::trunc|fstream::binary);
         if (!ofile)
         {
-            Error("TicketUploader::Report:","error: could not open: " + ofile_name);
+            Error(ssprintf("Can't open '%s'", ofile_name.c_str()).c_str());
         }
-        ofile << ticket_name << std::endl;
+        ofile << ticket_name << endl;
         ofile.close();
     }
     if (customer_name != "")
     {
         string ofile_name = tmptar_name + "/CUSTOMER";
-        std::ofstream ofile(ofile_name.c_str(),std::fstream::trunc|std::fstream::binary);
+        ofstream ofile(ofile_name.c_str(), fstream::trunc|fstream::binary);
         if (!ofile)
         {
-            Error("TicketUploader::Report:","error: could not open: " + ofile_name);
+            Error(ssprintf("Can't open '%s'", ofile_name.c_str()).c_str());
         }
-        ofile << customer_name << std::endl;
+        ofile << customer_name << endl;
         ofile.close();
     }
 
-
-
     // Create the compressed tarball
     string outfile_basename = file_name + ".tar.gz";
-    string outfile_name = tmpdir_name + '/' + outfile_basename;
-    string cmd = string("tar -C ") + tmpdir_name +
-      " --create --gzip --file=" + outfile_name + ' ' + file_name;
-    RunCommand(cmd);
-
-
-
+    string outfile_name = concat_path_file(tmpdir_name, outfile_basename.c_str());
+    string cmd = ssprintf("tar -C %s --create --gzip --file=%s %s", tmpdir_name, outfile_name.c_str(), file_name.c_str());
+    RunCommand(cmd.c_str());
 
     // encrypt if requested
     string key;
     if (do_encrypt)
     {
-        cmd = string("openssl rand -base64 48");
-        key = ReadCommand(cmd);
+        key = ReadCommand("openssl rand -base64 48");
 
         string infile_name = outfile_name;
         outfile_basename += ".aes";
         outfile_name += ".aes";
 
-        cmd = string("openssl aes-128-cbc -in ") + infile_name +
-          " -out " + outfile_name + " -pass stdin";
-        WriteCommand(cmd,key);
+        cmd = ssprintf("openssl aes-128-cbc -in %s -out %s -pass stdin", infile_name.c_str(), outfile_name.c_str());
+        WriteCommand(cmd.c_str(), key.c_str());
     }
 
-
-
     // generate md5sum
-    cmd = string("cd ") + tmpdir_name + string("; md5sum ") + outfile_basename;
-    string md5sum = ReadCommand(cmd);
-
-
+    cmd = ssprintf("cd %s; md5sum %s", tmpdir_name, outfile_basename.c_str());
+    string md5sum = ReadCommand(cmd.c_str());
 
     // upload or cp to /tmp
     if (do_upload)
     {
         // FIXME: SendFile isn't working sometime (scp)
-        SendFile(upload_url,outfile_name);
+        SendFile(upload_url.c_str(), outfile_name.c_str());
     }
     else
     {
-        cmd = string("cp ") + outfile_name + " /tmp/";
-        RunCommand(cmd);
+        cmd = ssprintf("cp %s /tmp/", outfile_name.c_str());
+        RunCommand(cmd.c_str());
     }
 
-
-
     // generate a reciept telling md5sum and encryption key
-    std::ostringstream msgbuf;
+    ostringstream msgbuf;
     if (have_ticket_name)
-        msgbuf << _("Please copy this into ticket: ") << ticket_name << std::endl;
+        msgbuf << _("Please copy this into ticket: ") << ticket_name << endl;
     else
-        msgbuf << _("Please send this to your technical support: ") << std::endl;
+        msgbuf << _("Please send this to your technical support: ") << endl;
     if (do_upload)
-        msgbuf << _("RHUPLOAD: This report was sent to ") + upload_url << std::endl;
+        msgbuf << _("RHUPLOAD: This report was sent to ") + upload_url << endl;
     else
-        msgbuf << _("RHUPLOAD: This report was copied into /tmp/: ") << std::endl;
+        msgbuf << _("RHUPLOAD: This report was copied into /tmp/: ") << endl;
     if (have_ticket_name)
-        msgbuf << _("TICKET: ") << ticket_name << std::endl;
-    msgbuf << _("FILE: ") << outfile_basename << std::endl;
-    msgbuf << _("MD5SUM: ") << std::endl;
+        msgbuf << _("TICKET: ") << ticket_name << endl;
+    msgbuf << _("FILE: ") << outfile_basename << endl;
+    msgbuf << _("MD5SUM: ") << endl;
     msgbuf << md5sum;
     if (do_encrypt)
     {
-        msgbuf << _("KEY: aes-128-cbc") << std::endl;
+        msgbuf << _("KEY: aes-128-cbc") << endl;
         msgbuf << key;
     }
-    msgbuf << _("END: ") << std::endl;
+    msgbuf << _("END: ") << endl;
 
     warn_client(msgbuf.str());
 
+    string ret;
     if (do_upload)
     {
         string xx = _("report sent to ") + upload_url + '/' + outfile_basename;
@@ -425,41 +334,51 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
     }
 
     // delete the temporary directory
-    cmd = string("rm -rf ") + tmpdir_name;
-    RunCommand(cmd);
+    cmd = ssprintf("rm -rf %s", tmpdir_name);
+    RunCommand(cmd.c_str());
 
     return ret;
 }
 
 void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("Customer") != pSettings.end())
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+
+    it = pSettings.find("Customer");
+    if (it != end)
     {
-        m_sCustomer = pSettings.find("Customer")->second;
+        m_sCustomer = it->second;
     }
-    if (pSettings.find("Ticket") != pSettings.end())
+    it = pSettings.find("Ticket");
+    if (it != end)
     {
-        m_sTicket = pSettings.find("Ticket")->second;
+        m_sTicket = it->second;
     }
-    if (pSettings.find("URL") != pSettings.end())
+    it = pSettings.find("URL");
+    if (it != end)
     {
-        m_sURL = pSettings.find("URL")->second;
+        m_sURL = it->second;
     }
-    if (pSettings.find("Encrypt") != pSettings.end())
+    it = pSettings.find("Encrypt");
+    if (it != end)
     {
-        m_bEncrypt = pSettings.find("Encrypt")->second == "yes";
+        m_bEncrypt = it->second == "yes";
     }
-    if (pSettings.find("Upload") != pSettings.end())
+    it = pSettings.find("Upload");
+    if (it != end)
     {
-        m_bUpload = pSettings.find("Upload")->second == "yes";
+        m_bUpload = it->second == "yes";
     }
-    if (pSettings.find("RetryCount") != pSettings.end())
+    it = pSettings.find("RetryCount");
+    if (it != end)
     {
-        m_nRetryCount = atoi(pSettings.find("RetryCount")->second.c_str());
+        m_nRetryCount = atoi(it->second.c_str());
     }
-    if (pSettings.find("RetryDelay") != pSettings.end())
+    it = pSettings.find("RetryDelay");
+    if (it != end)
     {
-        m_nRetryDelay = atoi(pSettings.find("RetryDelay")->second.c_str());
+        m_nRetryDelay = atoi(it->second.c_str());
     }
 }
 
@@ -473,12 +392,8 @@ map_plugin_settings_t CTicketUploader::GetSettings()
     ret["Encrypt"] = m_bEncrypt ? "yes" : "no";
     ret["Upload"] = m_bEncrypt ? "yes" : "no";
 
-    std::stringstream ss;
-    ss << m_nRetryCount;
-    ret["RetryCount"] = ss.str();
-    ss.str("");
-    ss << m_nRetryDelay;
-    ret["RetryDelay"] = ss.str();
+    ret["RetryCount"] = to_string(m_nRetryCount);
+    ret["RetryDelay"] = to_string(m_nRetryDelay);
 
     return ret;
 }

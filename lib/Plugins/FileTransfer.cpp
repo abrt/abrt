@@ -96,13 +96,11 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
         /* specify target */
         curl_easy_setopt(curl, CURLOPT_URL, wholeURL.c_str());
-        /*file handle: passed to the default callback, it will fread() it*/
+        /* FILE handle: passed to the default callback, it will fread() it */
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
-        /*get file size*/
         curl_easy_setopt(curl, CURLOPT_INFILESIZE, buf.st_size);
-        /*everything is done here; result 0 means success*/
+        /* everything is done here; result 0 means success */
         result = curl_easy_perform(curl);
-        /*goodbye*/
         curl_easy_cleanup(curl);
         fclose(f);
     }

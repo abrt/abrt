@@ -95,7 +95,6 @@ static std::string concat_str_vector(char **strings)
 static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
-    char buff[1024];
     pid_t child;
 
     struct passwd* pw = getpwuid(uid);
@@ -137,6 +136,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     close(pipeout[1]); /* write side of the pipe */
 
     int r;
+    char buff[1024];
     while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
     {
         buff[r] = '\0';
