@@ -76,6 +76,8 @@ class ReporterDialog():
         # connect the signals
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
         self.wTree.get_widget("bSend").connect("clicked", self.on_send_clicked)
+        # start whit the warning hidden, so it's not visible when there is no rating
+        self.wTree.get_widget("ebErrors").hide()
         self.hydrate()
 
     # this callback is called when user press Cancel or Report button in Report dialog
@@ -180,6 +182,36 @@ class ReporterDialog():
 
                 self.tvComment.set_buffer(buff)
                 continue
+            # if an backtrace has rating use it
+            if item == "rating":
+                try:
+                    package = self.report["package"][CONTENT]
+                # if we don't have package for some reason
+                except:
+                    package = None
+                ebErrors = self.wTree.get_widget("ebErrors")
+                lErrors = self.wTree.get_widget("lErrors")
+                bSend = self.wTree.get_widget("bSend")
+                # not usable report
+                if int(self.report[item][CONTENT]) < 3:
+                    ebErrors.show()
+                    ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
+                    if package:
+                        lErrors.set_markup(
+                            "<span color=\"white\">%s</span>" % _("Reporting disabled because the backtrace is unusable!\nPlease try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
+                    else:
+                        lErrors.set_markup("<span color=\"white\">%s</span>" % _("The bactrace is unusable, you can't report this!"))
+                    bSend.set_sensitive(False)
+                # probably usable 3
+                elif int(self.report[item][CONTENT]) < 4:
+                    ebErrors.show()
+                    ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("yellow"))
+                    lErrors.set_markup("<span color=\"black\">%s</span>" % _("The bactrace is incomplete, please make sure you provide good steps to reproduce."))
+                    bSend.set_sensitive(True)
+                else:
+                    ebErrors.hide()
+                    bSend.set_sensitive(True)
+                
             if self.report[item][TYPE] != 's':
                 # item name 0| value 1| editable? 2| toggled? 3| visible?(attachment)4
                 if self.report[item][EDITABLE] == 'y':
