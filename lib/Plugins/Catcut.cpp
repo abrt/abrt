@@ -348,16 +348,14 @@ void CReporterCatcut::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CReporterCatcut::GetSettings()
+const map_plugin_settings_t& CReporterCatcut::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["CatcutURL"] = m_sCatcutURL;
+    m_pSettings["Login"] = m_sLogin;
+    m_pSettings["Password"] = m_sPassword;
+    m_pSettings["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
 
-    ret["CatcutURL"] = m_sCatcutURL;
-    ret["Login"] = m_sLogin;
-    ret["Password"] = m_sPassword;
-    ret["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,

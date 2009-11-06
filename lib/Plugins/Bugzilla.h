@@ -8,20 +8,19 @@ class CReporterBugzilla : public CReporter
 {
     private:
         bool m_bNoSSLVerify;
-
         std::string m_sBugzillaURL;
         std::string m_sBugzillaXMLRPC;
         std::string m_sLogin;
         std::string m_sPassword;
         std::string m_sAttchmentInBase64;
-        
+
         map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettings);
 
     public:
         CReporterBugzilla();
         virtual ~CReporterBugzilla();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-        virtual map_plugin_settings_t GetSettings();
+        virtual const map_plugin_settings_t& GetSettings();
         virtual std::string Report(const map_crash_report_t& pCrashReport,
                                    const map_plugin_settings_t& pSettings,
                                    const std::string& pArgs);

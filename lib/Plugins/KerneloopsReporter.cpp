@@ -124,13 +124,11 @@ void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)
 	}
 }
 
-map_plugin_settings_t CKerneloopsReporter::GetSettings()
+const map_plugin_settings_t& CKerneloopsReporter::GetSettings()
 {
-	map_plugin_settings_t ret;
+	m_pSettings["SubmitURL"] = m_sSubmitURL;
 
-	ret["SubmitURL"] = m_sSubmitURL;
-
-	return ret;
+	return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,

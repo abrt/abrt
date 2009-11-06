@@ -35,7 +35,6 @@ class CAnalyzerCCpp : public CAnalyzer
         unsigned m_nDebugInfoCacheMB;
         std::string m_sOldCorePattern;
         std::string m_sDebugInfo;
-        map_plugin_settings_t m_pSettings;
 
     public:
         CAnalyzerCCpp();
@@ -45,7 +44,7 @@ class CAnalyzerCCpp : public CAnalyzer
         virtual void Init();
         virtual void DeInit();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-        virtual map_plugin_settings_t GetSettings();
+        virtual const map_plugin_settings_t& GetSettings();
 };
 
 #endif /* CCPP */

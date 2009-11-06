@@ -618,16 +618,14 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CReporterBugzilla::GetSettings()
+const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["BugzillaURL"] = m_sBugzillaURL;
+    m_pSettings["Login"] = m_sLogin;
+    m_pSettings["Password"] = m_sPassword;
+    m_pSettings["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
 
-    ret["BugzillaURL"] = m_sBugzillaURL;
-    ret["Login"] = m_sLogin;
-    ret["Password"] = m_sPassword;
-    ret["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,

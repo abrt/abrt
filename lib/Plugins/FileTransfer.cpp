@@ -405,16 +405,14 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CFileTransfer::GetSettings()
+const map_plugin_settings_t& CFileTransfer::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["URL"] = m_sURL;
+    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
+    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
+    m_pSettings["ArchiveType"] = m_sArchiveType;
 
-    ret["URL"] = m_sURL;
-    ret["RetryCount"] = to_string(m_nRetryCount);
-    ret["RetryDelay"] = to_string(m_nRetryDelay);
-    ret["ArchiveType"] = m_sArchiveType;
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(ACTION,

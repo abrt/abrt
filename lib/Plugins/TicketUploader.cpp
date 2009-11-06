@@ -381,20 +381,17 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CTicketUploader::GetSettings()
+const map_plugin_settings_t& CTicketUploader::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["Customer"] = m_sCustomer;
+    m_pSettings["Ticket"] = m_sTicket;
+    m_pSettings["URL"] = m_sURL;
+    m_pSettings["Encrypt"] = m_bEncrypt ? "yes" : "no";
+    m_pSettings["Upload"] = m_bEncrypt ? "yes" : "no";
+    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
+    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
 
-    ret["Customer"] = m_sCustomer;
-    ret["Ticket"] = m_sTicket;
-    ret["URL"] = m_sURL;
-    ret["Encrypt"] = m_bEncrypt ? "yes" : "no";
-    ret["Upload"] = m_bEncrypt ? "yes" : "no";
-
-    ret["RetryCount"] = to_string(m_nRetryCount);
-    ret["RetryDelay"] = to_string(m_nRetryDelay);
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,

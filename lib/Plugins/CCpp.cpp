@@ -975,16 +975,14 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CAnalyzerCCpp::GetSettings()
+const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
 {
-    map_plugin_settings_t ret = m_pSettings;
+    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
+    m_pSettings["DebugInfo"] = m_sDebugInfo;
+    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
+    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
 
-    ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
-    ret["DebugInfo"] = m_sDebugInfo;
-    ret["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
-    ret["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(ANALYZER,
