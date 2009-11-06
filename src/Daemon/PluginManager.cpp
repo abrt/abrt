@@ -179,8 +179,7 @@ void CPluginManager::LoadPlugin(const std::string& pName)
         catch (CABRTException& e)
         {
             delete abrtPlugin;
-            warn_client("CPluginManager::LoadPlugin(): " + e.what());
-            warn_client("Failed to load plugin " + pName);
+            warn_client(ssprintf("Failed to load plugin %s: %s", pName.c_str(), e.what()));
         }
     }
 }
@@ -218,7 +217,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
                 log("Can't initialize plugin %s(%s): %s",
                         pName.c_str(),
                         plugin_type_str[abrt_plugin->second->GetType()],
-                        e.what().c_str()
+                        e.what()
                 );
                 UnLoadPlugin(pName);
                 return;

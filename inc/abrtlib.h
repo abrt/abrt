@@ -212,7 +212,7 @@ std::string concat_path_file(const char *path, const char *filename);
 
 template <class T>
 std::string
-to_string( T x )
+to_string(T x)
 {
     std::ostringstream o;
     o << x;

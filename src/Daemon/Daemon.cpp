@@ -415,7 +415,7 @@ static void FindNewDumps(const char* pPath)
             {
                 throw e;
             }
-            error_msg("%s", e.what().c_str());
+            error_msg("%s", e.what());
         }
     }
 }
@@ -883,7 +883,7 @@ int main(int argc, char** argv)
     }
     catch (CABRTException& e)
     {
-        error_msg("Error: %s", e.what().c_str());
+        error_msg("Error: %s", e.what());
     }
     catch (std::exception& e)
     {

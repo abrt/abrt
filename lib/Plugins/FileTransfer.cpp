@@ -332,7 +332,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
         }
         catch (CABRTException& e)
         {
-            warn_client(_("CFileTransfer::Run(): Cannot create and send an archive: ") + e.what());
+            warn_client(ssprintf(_("Can't create and send an archive: %s"), e.what()));
             //update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
         }
         unlink(archivename.c_str());
@@ -358,7 +358,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
             }
             catch (CABRTException& e)
             {
-                warn_client(_("CFileTransfer::Run(): Cannot create and send an archive: ") + e.what());
+                warn_client(ssprintf(_("Can't create and send an archive: "), e.what()));
 //                update_client("CFileTransfer::Run(): Cannot create and send an archive: " + e.what());
             }
             unlink(archivename.c_str());

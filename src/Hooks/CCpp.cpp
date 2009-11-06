@@ -221,7 +221,7 @@ int main(int argc, char** argv)
     }
     catch (CABRTException& e)
     {
-        error_msg_and_die("%s", e.what().c_str());
+        error_msg_and_die("%s", e.what());
     }
     catch (std::exception& e)
     {
