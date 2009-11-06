@@ -2,6 +2,7 @@ bin_SCRIPTS = abrt-debuginfo-install
 
 sbin_PROGRAMS = abrtd
 
+# disabled: CommLayerServerSocket.h CommLayerServerSocket.cpp
 abrtd_SOURCES = \
     ABRTPlugin.h ABRTPlugin.cpp \
     PluginManager.h PluginManager.cpp \
@@ -9,7 +10,6 @@ abrtd_SOURCES = \
     MiddleWare.h MiddleWare.cpp \
     CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \
-    CommLayerServerSocket.h CommLayerServerSocket.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Daemon.h Daemon.cpp \
     Settings.h Settings.cpp

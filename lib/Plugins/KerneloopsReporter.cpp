@@ -98,12 +98,10 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
                                         const std::string& pArgs)
 {
 	int ret = -1;
-	map_crash_report_t::const_iterator it;
 
 	update_client(_("Creating and submitting a report..."));
 
-	it = pCrashReport.begin();
-	it = pCrashReport.find(FILENAME_KERNELOOPS);
+	map_crash_report_t::const_iterator it = pCrashReport.find(FILENAME_KERNELOOPS);
 	if (it != pCrashReport.end()) {
 		ret = http_post_to_kerneloops_site(
 			m_sSubmitURL.c_str(),
@@ -111,19 +109,18 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
 		);
 	}
 
-	if (ret)
-	{
+	if (ret) {
 		/* FIXME: be more informative */
-	    throw CABRTException(EXCEP_PLUGIN, std::string("CKerneloopsReporter::Report(): Report has not been sent..."));
+		throw CABRTException(EXCEP_PLUGIN, std::string("CKerneloopsReporter::Report(): Report has not been sent..."));
 	}
 	return "Kernel oops report was uploaded to: " + m_sSubmitURL;
 }
 
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)
 {
-	if (pSettings.find("SubmitURL") != pSettings.end())
-	{
-		m_sSubmitURL = pSettings.find("SubmitURL")->second;
+	map_plugin_settings_t::const_iterator it = pSettings.find("SubmitURL");
+	if (it != pSettings.end()) {
+		m_sSubmitURL = it->second;
 	}
 }
 

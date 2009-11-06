@@ -34,7 +34,7 @@
 class CKerneloopsScanner : public CAction
 {
 	private:
-		std::string m_sSysLogFile;
+		map_plugin_settings_t m_pSettings;
 
 		/* For "dumpoops" tool */
 	public:
@@ -49,8 +49,7 @@ class CKerneloopsScanner : public CAction
 		/* Plugin interface */
 	public:
 		CKerneloopsScanner();
-		virtual void Run(const std::string& pActionDir,
-				 const std::string& pArgs);
+		virtual void Run(const char *pActionDir, const char *pArgs);
 		virtual void SetSettings(const map_plugin_settings_t& pSettings);
 		virtual map_plugin_settings_t GetSettings();
 };

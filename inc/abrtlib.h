@@ -148,6 +148,8 @@ void xunlink(const char *pathname);
 off_t copyfd_eof(int src_fd, int dst_fd);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+off_t copy_file(const char *src_name, const char *dst_name);
+
 
 unsigned long long monotonic_ns(void);
 unsigned long long monotonic_us(void);
@@ -199,6 +201,7 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 char *encode_base64(const void *src, int length);
 bool dot_or_dotdot(const char *filename);
 char *last_char_is(const char *s, int c);
+bool string_to_bool(const char *s);
 
 
 /* C++ style stuff */

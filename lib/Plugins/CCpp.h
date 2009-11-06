@@ -35,11 +35,13 @@ class CAnalyzerCCpp : public CAnalyzer
         unsigned m_nDebugInfoCacheMB;
         std::string m_sOldCorePattern;
         std::string m_sDebugInfo;
+        map_plugin_settings_t m_pSettings;
+
     public:
         CAnalyzerCCpp();
-        virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
-        virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-        virtual void CreateReport(const std::string& pDebugDumpDir, int force);
+        virtual std::string GetLocalUUID(const char *pDebugDumpDir);
+        virtual std::string GetGlobalUUID(const char *pDebugDumpDir);
+        virtual void CreateReport(const char *pDebugDumpDir, int force);
         virtual void Init();
         virtual void DeInit();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);

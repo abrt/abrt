@@ -32,7 +32,7 @@
 
 #define FILENAME_KERNELOOPS  "kerneloops"
 
-std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
 {
 	log(_("Getting local universal unique identification"));
 
@@ -58,9 +58,19 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const std::string& pDebugDumpDir)
 	return to_string(hash);
 }
 
-std::string CAnalyzerKerneloops::GetGlobalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerKerneloops::GetGlobalUUID(const char *pDebugDumpDir)
 {
 	return GetLocalUUID(pDebugDumpDir);
+}
+
+void CAnalyzerKerneloops::SetSettings(const map_plugin_settings_t& pSettings)
+{
+	m_pSettings = pSettings;
+}
+
+map_plugin_settings_t CAnalyzerKerneloops::GetSettings()
+{
+	return m_pSettings;
 }
 
 PLUGIN_INFO(ANALYZER,

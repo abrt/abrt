@@ -6,7 +6,7 @@
 #define FILENAME_BACKTRACE      "backtrace"
 #define PYHOOK_CONFIG          "/etc/abrt/pyhook.conf"
 
-std::string CAnalyzerPython::CreateHash(const std::string& pDebugDumpDir)
+static std::string CreateHash(const char *pDebugDumpDir)
 {
 	std::string uuid;
 	CDebugDump dd;
@@ -15,11 +15,11 @@ std::string CAnalyzerPython::CreateHash(const std::string& pDebugDumpDir)
 	return uuid;
 }
 
-std::string CAnalyzerPython::GetLocalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 {
 	return CreateHash(pDebugDumpDir);
 }
-std::string CAnalyzerPython::GetGlobalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerPython::GetGlobalUUID(const char *pDebugDumpDir)
 {
 	return GetLocalUUID(pDebugDumpDir);
 }

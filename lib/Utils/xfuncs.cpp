@@ -355,3 +355,16 @@ std::string concat_path_file(const char *path, const char *filename)
 	lc = last_char_is(path, '/');
 	return ssprintf("%s%s%s", path, (lc==NULL ? "/" : ""), filename);
 }
+
+bool string_to_bool(const char *s)
+{
+	if (s[0] == '1' && s[1] == '\0')
+		return true;
+	if (strcasecmp(s, "on") == 0)
+		return true;
+	if (strcasecmp(s, "yes") == 0)
+		return true;
+	if (strcasecmp(s, "true") == 0)
+		return true;
+	return false;
+}

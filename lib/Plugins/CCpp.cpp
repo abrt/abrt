@@ -95,7 +95,6 @@ static std::string concat_str_vector(char **strings)
 static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
-    char buff[1024];
     pid_t child;
 
     struct passwd* pw = getpwuid(uid);
@@ -137,6 +136,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     close(pipeout[1]); /* write side of the pipe */
 
     int r;
+    char buff[1024];
     while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
     {
         buff[r] = '\0';
@@ -223,7 +223,7 @@ int rate_backtrace(const std::string & backtrace)
     return 0;
 }
 
-static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
+static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
 
@@ -258,7 +258,7 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     args[4] = (char*)"-ex";
     args[5] = xasprintf("file %s", executable.c_str());
     args[6] = (char*)"-ex";
-    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
     args[8] = (char*)"-ex";
     args[9] = (char*)"thread apply all backtrace full";
     args[10] = NULL;
@@ -420,7 +420,7 @@ static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& 
     }
 }
 
-static std::string run_unstrip_n(const std::string& pDebugDumpDir)
+static std::string run_unstrip_n(const char *pDebugDumpDir)
 {
     std::string UID;
     {
@@ -431,7 +431,7 @@ static std::string run_unstrip_n(const std::string& pDebugDumpDir)
 
     char* args[4];
     args[0] = (char*)"eu-unstrip";
-    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, pDebugDumpDir);
     args[2] = (char*)"-n";
     args[3] = NULL;
 
@@ -455,7 +455,7 @@ static bool is_hexstr(const char* str)
     }
     return true;
 }
-static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");
     std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
@@ -648,7 +648,7 @@ Another application is holding the yum lock, cannot continue
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
  */
-static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
     update_client(_("Searching for debug-info packages..."));
 
@@ -673,7 +673,7 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
 
         setsid();
 
-        char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+        char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
@@ -787,7 +787,7 @@ static void trim_debuginfo_cache(unsigned max_mb)
     }
 }
 
-std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting local universal unique identification..."));
 
@@ -806,7 +806,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
     return CreateHash(package + executable + independentBuildIdPC);
 }
 
-std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
@@ -851,7 +851,7 @@ static bool DebuginfoCheckPolkit(int uid)
     return false;
 }
 
-void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
+void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
     update_client(_("Starting report creation..."));
 
@@ -889,13 +889,12 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
-    dd.SaveText(FILENAME_BACKTRACE, build_ids + backtrace);
+    dd.SaveText(FILENAME_BACKTRACE, (build_ids + backtrace).c_str());
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
-    std::string rating = ssprintf("%d", rate_backtrace(backtrace));
-    dd.SaveText(FILENAME_RATING, rating);
+    dd.SaveText(FILENAME_RATING, to_string(rate_backtrace(backtrace)).c_str());
     dd.Close();
 }
 
@@ -948,6 +947,8 @@ void CAnalyzerCCpp::DeInit()
 
 void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    m_pSettings = pSettings;
+
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
     it = pSettings.find("MemoryMap");
@@ -976,7 +977,7 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 
 map_plugin_settings_t CAnalyzerCCpp::GetSettings()
 {
-    map_plugin_settings_t ret;
+    map_plugin_settings_t ret = m_pSettings;
 
     ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
     ret["DebugInfo"] = m_sDebugInfo;
