@@ -45,7 +45,7 @@ void warn_client(const std::string& pMessage)
     pthread_mutex_unlock(&s_map_mutex);
 
     if (peer)
-        s_pObs->Warning(pMessage, peer, key);
+        s_pObs->Warning(pMessage.c_str(), peer, key);
     else /* Bug: someone tries to warn_client() without set_client_name()!? */
         log("Hmm, stray %s: '%s'", __func__, pMessage.c_str());
 }
@@ -63,7 +63,7 @@ void update_client(const std::string& pMessage)
     pthread_mutex_unlock(&s_map_mutex);
 
     if (peer)
-        s_pObs->Status(pMessage, peer, key);
+        s_pObs->Status(pMessage.c_str(), peer, key);
     else
         log("Hmm, stray %s: '%s'", __func__, pMessage.c_str());
 }

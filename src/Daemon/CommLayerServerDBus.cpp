@@ -135,7 +135,7 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
 static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 {
     long unix_uid = get_remote_uid(call);
-    vector_crash_infos_t argout1 = GetCrashInfos(to_string(unix_uid));
+    vector_crash_infos_t argout1 = GetCrashInfos(to_string(unix_uid).c_str());
 
     DBusMessageIter iter;
     dbus_message_iter_init_append(reply, &iter);
@@ -281,7 +281,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     report_status_t argout1;
     try
     {
-        argout1 = Report(argin1, user_conf_data, to_string(unix_uid));
+        argout1 = Report(argin1, user_conf_data, to_string(unix_uid).c_str());
     }
     catch (CABRTException &e)
     {
@@ -315,7 +315,7 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid));
+    bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid).c_str());
 
     dbus_message_append_args(reply,
                 DBUS_TYPE_BOOLEAN, &argout1,

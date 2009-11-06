@@ -22,16 +22,16 @@
 #include "ABRTException.h"
 #include "CrashWatcher.h"
 
-void CCrashWatcher::Status(const std::string& pMessage, const char* peer, uint64_t pJobID)
+void CCrashWatcher::Status(const char *pMessage, const char* peer, uint64_t pJobID)
 {
-    VERB1 log("Update('%s'): %s", peer, pMessage.c_str());
+    VERB1 log("Update('%s'): %s", peer, pMessage);
     if (g_pCommLayer != NULL)
         g_pCommLayer->Update(pMessage, peer, pJobID);
 }
 
-void CCrashWatcher::Warning(const std::string& pMessage, const char* peer, uint64_t pJobID)
+void CCrashWatcher::Warning(const char *pMessage, const char* peer, uint64_t pJobID)
 {
-    VERB1 log("Warning('%s'): %s", peer, pMessage.c_str());
+    VERB1 log("Warning('%s'): %s", peer, pMessage);
     if (g_pCommLayer != NULL)
         g_pCommLayer->Warning(pMessage, peer, pJobID);
 }
@@ -44,7 +44,7 @@ CCrashWatcher::~CCrashWatcher()
 {
 }
 
-vector_crash_infos_t GetCrashInfos(const std::string &pUID)
+vector_crash_infos_t GetCrashInfos(const char *pUID)
 {
     vector_crash_infos_t retval;
     log("Getting crash infos...");
@@ -59,7 +59,7 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
             mw_result_t res;
             map_crash_info_t info;
 
-            res = GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
+            res = GetCrashInfo(UUIDsUIDs[ii].first.c_str(), UUIDsUIDs[ii].second.c_str(), info);
             switch (res)
             {
                 case MW_OK:
@@ -68,15 +68,14 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
                 case MW_ERROR:
                     warn_client("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
                     update_client("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                    DeleteCrashInfo(UUIDsUIDs[ii].first.c_str(), UUIDsUIDs[ii].second.c_str());
                     break;
                 case MW_FILE_ERROR:
                     {
-                        std::string debugDumpDir;
                         warn_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting");
                         update_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting");
-                        debugDumpDir = DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
-                        DeleteDebugDumpDir(debugDumpDir);
+                        std::string debugDumpDir = DeleteCrashInfo(UUIDsUIDs[ii].first.c_str(), UUIDsUIDs[ii].second.c_str());
+                        DeleteDebugDumpDir(debugDumpDir.c_str());
                     }
                     break;
                 default:
@@ -134,7 +133,7 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
         default:
             warn_client(std::string("Corrupted crash with UUID ") + pUUID + ", deleting");
             std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-            DeleteDebugDumpDir(debugDumpDir);
+            DeleteDebugDumpDir(debugDumpDir.c_str());
             break;
     }
     return crashReport;
@@ -208,12 +207,12 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
     return r;
 }
 
-bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
+bool DeleteDebugDump(const char *pUUID, const char *pUID)
 {
     try
     {
         std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-        DeleteDebugDumpDir(debugDumpDir);
+        DeleteDebugDumpDir(debugDumpDir.c_str());
     }
     catch (CABRTException& e)
     {

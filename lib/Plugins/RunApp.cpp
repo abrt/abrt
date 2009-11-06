@@ -59,15 +59,14 @@ static void ParseArgs(const char *psArgs, vector_string_t& pArgs)
     }
 }
 
-void CActionRunApp::Run(const std::string& pActionDir,
-                        const std::string& pArgs)
+void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
 {
     update_client(_("Executing RunApp plugin..."));
 
     std::string output;
     vector_string_t args;
 
-    ParseArgs(pArgs.c_str(), args);
+    ParseArgs(pArgs, args);
 
     FILE *fp = popen(args[COMMAND].c_str(), "r");
     if (fp == NULL)
@@ -85,7 +84,7 @@ void CActionRunApp::Run(const std::string& pActionDir,
     {
         CDebugDump dd;
         dd.Open(pActionDir);
-        dd.SaveText(args[FILENAME].c_str(), output);
+        dd.SaveText(args[FILENAME].c_str(), output.c_str());
     }
 }
 

@@ -35,18 +35,14 @@ class CFileTransfer : public CAction
         int m_nRetryCount;
         int m_nRetryDelay;
 
-        void CreateArchive(const std::string& pArchiveName,
-                           const std::string& pDir);
-
-        void SendFile(const std::string& pURL,
-                      const std::string& pFilename);
+        void CreateArchive(const char *pArchiveName, const char *pDir);
+        void SendFile(const char *pURL, const char *pFilename);
 
     public:
         CFileTransfer();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
         virtual map_plugin_settings_t GetSettings();
-        virtual void Run(const std::string& pActiveDir,
-                         const std::string& pArgs);
+        virtual void Run(const char *pActionDir, const char *pArgs);
 };
 
 #endif /* FILETRANSFER_H_ */

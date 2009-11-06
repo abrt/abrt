@@ -55,62 +55,42 @@ CFileTransfer::CFileTransfer()
 {
 }
 
-void CFileTransfer::SendFile(const std::string& pURL,
-                             const std::string& pFilename)
+void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
 {
-    if (pURL == "")
+    int len = strlen(pURL);
+    if (len == 0)
     {
         warn_client(_("FileTransfer: URL not specified"));
         return;
     }
 
-    int len = pURL.length();
-    int i = 0;
-    std::string protocol;
-    while (pURL[i] != ':')
-    {
-        protocol += pURL[i];
-        i++;
-        if (i == len)
-        {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): malformed URL, does not contain protocol");
-        }
-    }
-
-    std::string msg = ssprintf(_("Sending archive %s via %s"), pFilename.c_str(), protocol.c_str());
+    std::string msg = ssprintf(_("Sending archive %s to %s"), pFilename, pURL);
     update_client(msg.c_str());
 
-    std::string wholeURL;
-    if (pURL[len-1] == '/')
-    {
-        wholeURL = pURL + pFilename;
-    }
-    else
-    {
-        wholeURL = pURL + "/" + pFilename;
-    }
+    std::string wholeURL = concat_path_file(pURL, pFilename);
 
     int result;
     int count = m_nRetryCount;
     do
     {
-        FILE * f;
+        FILE *f;
         struct stat buf;
-        CURL * curl;
+        CURL *curl;
 
-        f = fopen(pFilename.c_str(), "r");
+        f = fopen(pFilename, "r");
         if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): cannot open archive file "+pFilename);
+            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open archive file '%s'", pFilename));
         }
         if (fstat(fileno(f), &buf) == -1)
         {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): cannot stat archive file "+pFilename);
+            fclose(f);
+            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't stat archive file '%s'", pFilename));
         }
         curl = curl_easy_init();
         if (!curl)
         {
-            throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::SendFile(): Curl library error.");
+            throw CABRTException(EXCEP_PLUGIN, "Curl library init error");
         }
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
@@ -285,28 +265,27 @@ static void create_tarbz2(const char * archive_name, const char * directory)
     free(name_without_bz2);
 }
 
-void CFileTransfer::CreateArchive(const std::string& pArchiveName,
-                                  const std::string& pDir)
+void CFileTransfer::CreateArchive(const char *pArchiveName, const char *pDir)
 {
     if (m_sArchiveType == ".tar")
     {
-        create_tar(pArchiveName.c_str(), pDir.c_str());
+        create_tar(pArchiveName, pDir);
     }
     else if (m_sArchiveType == ".tar.gz")
     {
-        create_targz(pArchiveName.c_str(), pDir.c_str());
+        create_targz(pArchiveName, pDir);
     }
     else if (m_sArchiveType == ".tar.bz2")
     {
-        create_tarbz2(pArchiveName.c_str(), pDir.c_str());
+        create_tarbz2(pArchiveName, pDir);
     }
     else if (m_sArchiveType == ".zip")
     {
-        create_zip(pArchiveName.c_str(), pDir.c_str());
+        create_zip(pArchiveName, pDir);
     }
     else
     {
-        throw CABRTException(EXCEP_PLUGIN, "CFileTransfer::CreateArchive(): unknown/unsupported archive type "+m_sArchiveType);
+        throw CABRTException(EXCEP_PLUGIN, "Unknown/unsupported archive type " + m_sArchiveType);
     }
 }
 
@@ -326,7 +305,7 @@ static std::string DirBase(const std::string& pStr)
     return result;
 }
 
-void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
+void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
 {
     fstream dirlist;
     std::string dirname, archivename;
@@ -334,23 +313,23 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
 
     update_client(_("File Transfer: Creating a report..."));
 
-    if (pArgs == "store")
+    if (strcmp(pArgs, "store") == 0)
     {
         /* store pActiveDir for later sending */
         dirlist.open(FILETRANSFER_DIRLIST, fstream::out | fstream::app );
-        dirlist << pActiveDir << endl;
+        dirlist << pActionDir << endl;
         dirlist.close();
     }
-    else if (pArgs == "one")
+    else if (strcmp(pArgs, "one") == 0)
     {
         /* just send one archive */
         gethostname(hostname, HBLEN);
         archivename = std::string(hostname) + "-"
-                      + DirBase(pActiveDir) + m_sArchiveType;
+                      + DirBase(pActionDir) + m_sArchiveType;
         try
         {
-            CreateArchive(archivename, pActiveDir);
-            SendFile(m_sURL, archivename);
+            CreateArchive(archivename.c_str(), pActionDir);
+            SendFile(m_sURL.c_str(), archivename.c_str());
         }
         catch (CABRTException& e)
         {
@@ -377,8 +356,8 @@ void CFileTransfer::Run(const std::string& pActiveDir, const std::string& pArgs)
                          + DirBase(dirname) + m_sArchiveType;
             try
             {
-                CreateArchive(archivename, dirname);
-                SendFile(m_sURL, archivename);
+                CreateArchive(archivename.c_str(), dirname.c_str());
+                SendFile(m_sURL.c_str(), archivename.c_str());
             }
             catch (CABRTException& e)
             {

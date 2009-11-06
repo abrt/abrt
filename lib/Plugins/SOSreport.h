@@ -26,8 +26,7 @@
 class CActionSOSreport : public CAction
 {
     public:
-        virtual void Run(const std::string& pActionDir,
-                         const std::string& pArgs);
+        virtual void Run(const char *pActionDir, const char *pArgs);
 };
 
 #endif

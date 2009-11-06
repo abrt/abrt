@@ -114,8 +114,7 @@ static void ParseArgs(const char *psArgs, vector_string_t& pArgs)
     }
 }
 
-void CActionSOSreport::Run(const std::string& pActionDir,
-                           const std::string& pArgs)
+void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
 {
     update_client(_("Executing SOSreport plugin..."));
 
@@ -128,25 +127,25 @@ void CActionSOSreport::Run(const std::string& pActionDir,
     std::string command;
 
     vector_string_t args;
-    ParseArgs(pArgs.c_str(), args);
+    ParseArgs(pArgs, args);
 
     if (args.size() == 0 || args[0] == "")
     {
-        command = std::string(command_default);
+        command = command_default;
     }
     else
     {
-        command = std::string(command_prefix) + ' ' + args[0] + " 2>&1";
+        command = ssprintf("%s %s 2>&1", command_prefix, args[0].c_str());
     }
 
     update_client(_("running sosreport: ") + command);
     FILE *fp = popen(command.c_str(), "r");
-
     if (fp == NULL)
     {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CActionSOSreport::Run(): cannot execute ") + command);
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't execute '%s'", command.c_str()));
     }
 
+//vda TODO: fix this mess
     std::ostringstream output_stream;
     __gnu_cxx::stdio_filebuf<char> command_output_buffer(fp, std::ios_base::in);
 
@@ -159,7 +158,7 @@ void CActionSOSreport::Run(const std::string& pActionDir,
     std::string output = output_stream.str();
 
     std::string sosreport_filename = ParseFilename(output);
-    std::string sosreport_dd_filename = pActionDir + "/sosreport.tar.bz2";
+    std::string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar.bz2");
 
     CDebugDump dd;
     dd.Open(pActionDir);

@@ -49,8 +49,7 @@ class CKerneloopsScanner : public CAction
 		/* Plugin interface */
 	public:
 		CKerneloopsScanner();
-		virtual void Run(const std::string& pActionDir,
-				 const std::string& pArgs);
+		virtual void Run(const char *pActionDir, const char *pArgs);
 		virtual void SetSettings(const map_plugin_settings_t& pSettings);
 		virtual map_plugin_settings_t GetSettings();
 };
