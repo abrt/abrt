@@ -88,7 +88,7 @@ class MainWindow():
         columns[0] = gtk.TreeViewColumn(_("Package"))
         columns[1] = gtk.TreeViewColumn(_("Application"))
         columns[2] = gtk.TreeViewColumn(_("Date"))
-        columns[3] = gtk.TreeViewColumn(_("Crash Rate"))
+        columns[3] = gtk.TreeViewColumn(_("Crash count"))
         if os.getuid() == 0:
             column = gtk.TreeViewColumn(_("User"))
             columns.append(column)
