@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-03 09:13+0000\n"
-"PO-Revision-Date: 2009-11-03 18:09+0200\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2009-11-08 04:03+0000\n"
+"PO-Revision-Date: 2009-11-08 11:25+0200\n"
+"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
 "Language-Team: Greek Fedora team <fedora-trans-el@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -64,6 +64,7 @@ msgstr ""
 "Μήπως λείπει το Debuginfo;"
 
 #: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
@@ -101,7 +102,7 @@ msgid "Plugins"
 msgstr "Πρόσθετες λειτουργίες"
 
 #: ../src/Gui/ccgui.glade.h:10
-#: ../src/Gui/report.glade.h:2
+#: ../src/Gui/report.glade.h:3
 msgid "Report"
 msgstr "Αναφορά"
 
@@ -219,11 +220,30 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Σφάλμα λήψης της αναφοράς: %s"
 
-#: ../src/Gui/CCReporterDialog.py:171
+#: ../src/Gui/CCReporterDialog.py:173
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Μια σύντομη περιγραφή για το πως θα αναπαραχθεί το σφάλμα ή τι κάνατε όταν συνέβηκε..."
 
-#: ../src/Gui/CCReporterDialog.py:215
+#: ../src/Gui/CCReporterDialog.py:201
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable!\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Η αναφορά σφάλματος έχει απενεργοποιηθεί επειδή το bactrace δεν μπορεί χρησιμοποιηθεί!\n"
+"Παρακαλώ προσπαθήστε να επανεγκαταστήσετε το debuginfo με τη χρήση της εντολής <span color=\"blue\"> debuginfo-install %s </span>\n"
+"και μετά πατήστε το κουμπί Ανανέωση για την επαναδημιουργία του backtrace."
+
+#: ../src/Gui/CCReporterDialog.py:203
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "Το bactrace δεν μπορεί χρησιμοποιηθεί, δεν μπορείτε να το στείλετε!"
+
+#: ../src/Gui/CCReporterDialog.py:209
+msgid "The bactrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "Το bactrace είναι ημιτελές, βεβαιωθείτε ότι αναφέρετε τα βήματα για την αναπαραγωγή του."
+
+#: ../src/Gui/CCReporterDialog.py:247
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -260,22 +280,13 @@ msgstr "το πεδίο συνδυασμού combo δεν έχει εφαρμο�
 msgid "Nothing to hydrate!"
 msgstr "Δεν υπάρχουν δεδομένα για εμφάνιση!"
 
-#: ../src/Gui/report.glade.h:1
+#: ../src/Gui/report.glade.h:2
 msgid "Comment"
 msgstr "Σχόλιο:"
 
-#: ../src/Gui/report.glade.h:3
+#: ../src/Gui/report.glade.h:4
 msgid "Send"
 msgstr "Αποστολή"
-
-#: ../src/Gui/report.glade.h:4
-#: ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../src/Gui/report.glade.h:5
-msgid "gtk-refresh"
-msgstr "gtk-refresh"
 
 #: ../src/Gui/SettingsDialog.py:33
 #: ../src/Gui/SettingsDialog.py:50
@@ -390,6 +401,10 @@ msgstr "Ιστοσελίδα:"
 msgid "gtk-add"
 msgstr "gtk-add"
 
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
 #: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -398,17 +413,17 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:76
+#: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Εντοπίστηκε μια κατάρρευση στην εφαρμογή %s"
 
-#: ../src/Applet/Applet.cpp:135
+#: ../src/Applet/Applet.cpp:138
 msgid "ABRT service has been started"
 msgstr "Η υπηρεσία ABRT έχει ξεκινήσει"
 
-#: ../src/Applet/Applet.cpp:137
-#: ../src/Applet/Applet.cpp:251
+#: ../src/Applet/Applet.cpp:140
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "Η υπηρεσία ABRT δεν εκτελείται"
 
@@ -416,39 +431,41 @@ msgstr "Η υπηρεσία ABRT δεν εκτελείται"
 msgid "Warning"
 msgstr "Προειδοποίηση"
 
-#: ../src/Daemon/Daemon.cpp:514
+#: ../src/Daemon/Daemon.cpp:531
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "Το μέγεθος της αναφοράς έχει υπερβεί το όριο, Παρακαλώ ελέγξτε την τιμή του  MaxCrashReportsSize στο abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:314
-msgid "Bug is already reported: "
-msgstr "Το σφάλμα έχει ήδη αναφερθεί:"
+#: ../lib/Plugins/Bugzilla.cpp:316
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Το σφάλμα έχει ήδη αναφερθεί %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:410
-msgid "New bug id: "
-msgstr "Νέο id σφάλματος;"
+#: ../lib/Plugins/Bugzilla.cpp:378
+#, c-format
+msgid "New bug id: %i"
+msgstr "Νέο id σφάλματος;%i"
 
-#: ../lib/Plugins/Bugzilla.cpp:484
+#: ../lib/Plugins/Bugzilla.cpp:471
 msgid "Checking for duplicates..."
 msgstr "Έλεγχος για ίδια σφάλματα"
 
-#: ../lib/Plugins/Bugzilla.cpp:487
+#: ../lib/Plugins/Bugzilla.cpp:474
 msgid "Logging into bugzilla..."
 msgstr "Σύνδεση στον bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:491
+#: ../lib/Plugins/Bugzilla.cpp:478
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Κενό όνομα χρήστη και κωδικός. Παρακαλώ ελέγξτε το  Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:497
+#: ../lib/Plugins/Bugzilla.cpp:484
 msgid "Checking CC..."
 msgstr "Έλεγχος CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:506
+#: ../lib/Plugins/Bugzilla.cpp:493
 msgid "Creating new bug..."
 msgstr "Δημιουργία νέας αναφοράς σφάλματος..."
 
-#: ../lib/Plugins/Bugzilla.cpp:510
+#: ../lib/Plugins/Bugzilla.cpp:497
 msgid "Logging out..."
 msgstr "Αποσύνδεση..."
 
@@ -486,39 +503,44 @@ msgstr "Εκκίνηση δημιουργίας αναφοράς..."
 msgid "Skipping debuginfo installation"
 msgstr "Παράκαμψη εγκατάστασης debuginfo "
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:103
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
 msgid "Creating and submitting a report..."
 msgstr "Δημιουργία και υποβολή αναφοράς..."
 
-#: ../lib/Plugins/Logger.cpp:59
+#: ../lib/Plugins/Logger.cpp:57
 #: ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "Δημιουργία αναφοράς..."
 
-#: ../lib/Plugins/RunApp.cpp:62
+#: ../lib/Plugins/RunApp.cpp:64
 msgid "Executing RunApp plugin..."
 msgstr "Εκτέλεση πρόσθετης λειτουργίας RunApp..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:408
+#: ../lib/Plugins/FileTransfer.cpp:381
 msgid "FileTransfer: URL not specified"
 msgstr "Μεταφορά αρχείου: Δεν έχει καθοριστεί URL"
 
-#: ../lib/Plugins/FileTransfer.cpp:80
+#: ../lib/Plugins/FileTransfer.cpp:67
 #, c-format
-msgid "Sending archive %s via %s"
-msgstr "Αποστολή αρχείου %s μέσω %s"
+msgid "Sending archive %s to %s"
+msgstr "Αποστολή αρχείου %s στο %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:335
+#: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
 msgstr "Μεταφορά αρχείου: Δημιουργία αναφοράς..."
 
-#: ../lib/Plugins/FileTransfer.cpp:357
-#: ../lib/Plugins/FileTransfer.cpp:385
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): Αδυναμία δημιουργίας και αποστολής αρχείου: "
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Αδυναμία δημιουργίας και αποστολής αρχείου: %s "
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:81
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Αδυναμία δημιουργίας και αποστολής αρχείου: %s"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
 msgstr "Δημιουργία αναφορών κατάρρευσης kernel oops..."
 
@@ -526,15 +548,19 @@ msgstr "Δημιουργία αναφορών κατάρρευσης kernel oops
 msgid "Sending an email..."
 msgstr "Αποστολή ενός email..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
+#: ../lib/Plugins/SOSreport.cpp:100
 msgid "Executing SOSreport plugin..."
 msgstr "Εκτέλεση  πρόσθετης λειτουργίας SOSreport..."
 
-#: ../lib/Plugins/SOSreport.cpp:135
-msgid "running sosreport: "
-msgstr "εκτέλεση sosreport: "
+#: ../lib/Plugins/SOSreport.cpp:122
+#, c-format
+msgid "running sosreport: %s"
+msgstr "εκτέλεση sosreport: %s "
 
-#: ../lib/Plugins/SOSreport.cpp:150
+#: ../lib/Plugins/SOSreport.cpp:137
 msgid "done running sosreport"
 msgstr "ολοκληρώθηκε η εκτέλεση του sosreport"
+
+#~ msgid "gtk-refresh"
+#~ msgstr "gtk-refresh"
 
