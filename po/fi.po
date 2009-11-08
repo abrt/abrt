@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-06 15:36+0000\n"
-"PO-Revision-Date: 2009-11-06 22:50+0200\n"
+"POT-Creation-Date: 2009-11-08 20:52+0000\n"
+"PO-Revision-Date: 2009-11-08 23:07+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
 "MIME-Version: 1.0\n"
@@ -455,12 +455,14 @@ msgstr ""
 "MaxCrashReportsSize-arvo abrt.conf-tiedostossa."
 
 #: ../lib/Plugins/Bugzilla.cpp:316
-msgid "Bug is already reported: "
-msgstr "Ohjelmavirheestä on jo tehty ilmoitus:"
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:378
-msgid "New bug id: "
-msgstr "Uuden ohjelmavirheilmoituksen tunnus:"
+#, c-format
+msgid "New bug id: %i"
+msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:471
 msgid "Checking for duplicates..."
@@ -522,7 +524,7 @@ msgstr "Ohitetaan debuginfon asennus"
 msgid "Creating and submitting a report..."
 msgstr "Luodaan ja lähetetään ilmoitus..."
 
-#: ../lib/Plugins/Logger.cpp:59 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:57 ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "Luodaan ilmoitus..."
 
@@ -530,7 +532,7 @@ msgstr "Luodaan ilmoitus..."
 msgid "Executing RunApp plugin..."
 msgstr "Suoritetaan RunApp-liitännäinen..."
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:381
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL:ää ei ole määritelty"
 
@@ -539,13 +541,19 @@ msgstr "FileTransfer: URL:ää ei ole määritelty"
 msgid "Sending archive %s to %s"
 msgstr "Lähetetään arkisto %s osoitteeseen %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:310
+#: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
 msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
 
-#: ../lib/Plugins/FileTransfer.cpp:335 ../lib/Plugins/FileTransfer.cpp:361
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): Ei voitu luoda ja lähettää arkistoa:"
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Ei voitu luoda ja lähettää arkistoa %s"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
@@ -560,8 +568,9 @@ msgid "Executing SOSreport plugin..."
 msgstr "Suoritetaan SOSreport-liitännäinen..."
 
 #: ../lib/Plugins/SOSreport.cpp:122
-msgid "running sosreport: "
-msgstr "suoritetaan sosreport:"
+#, c-format
+msgid "running sosreport: %s"
+msgstr "suoritetaan sosreport: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:137
 msgid "done running sosreport"
