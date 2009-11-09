@@ -664,13 +664,6 @@ std::string getDebugDumpDir(const char *pUUID,
     return row.m_sDebugDumpDir;
 }
 
-// Ok to remove?
-//mw_result_t SaveDebugDump(const char *pDebugDumpDir)
-//{
-//    map_crash_info_t info;
-//    return SaveDebugDump(pDebugDumpDir, info);
-//}
-
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                                                     map_crash_info_t& pCrashInfo)
 {

@@ -120,14 +120,6 @@ void DeleteDebugDumpDir(const char *pDebugDumpDir);
 std::string DeleteCrashInfo(const char *pUUID,
                             const char *pUID);
 /**
- * Saves debugdump into database.
- * @param pDebugDumpDir A debugdump directory.
- * @return It return results of operation. See mw_result_t.
- */
-// Ok to remove?
-//mw_result_t SaveDebugDump(const char *pDebugDumpDir);
-
-/**
  * Saves debugdump into database. If saving is successful,
  * it fills crash info.
  * @param pDebugDumpDir A debugdump directory.
