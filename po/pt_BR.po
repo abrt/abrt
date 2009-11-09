@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-06 15:36+0000\n"
-"PO-Revision-Date: 2009-11-06 17:43-0300\n"
+"POT-Creation-Date: 2009-11-09 09:30+0000\n"
+"PO-Revision-Date: 2009-11-09 11:04-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -436,12 +436,14 @@ msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize
 msgstr "O tamanho do relatório excedeu a cota. Por favor, verifique o valor MaxCrashReportsSize do sistema no abrt.conf."
 
 #: ../lib/Plugins/Bugzilla.cpp:316
-msgid "Bug is already reported: "
-msgstr "O erro já foi relatado: "
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "O erro já foi relatado: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:378
-msgid "New bug id: "
-msgstr "Novo id do erro: "
+#, c-format
+msgid "New bug id: %i"
+msgstr "Novo id do erro: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:471
 msgid "Checking for duplicates..."
@@ -505,7 +507,7 @@ msgstr "Pulando instalação do debuginfo"
 msgid "Creating and submitting a report..."
 msgstr "Criando e enviando um relatório..."
 
-#: ../lib/Plugins/Logger.cpp:59
+#: ../lib/Plugins/Logger.cpp:57
 #: ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "Criando um relatório..."
@@ -515,7 +517,7 @@ msgid "Executing RunApp plugin..."
 msgstr "Executando o plugin RunApp..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:381
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL não especificada"
 
@@ -524,14 +526,19 @@ msgstr "FileTransfer: URL não especificada"
 msgid "Sending archive %s to %s"
 msgstr "Enviando o pacote %s para %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:310
+#: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
 msgstr "File Transfer: Criando um relatório..."
 
-#: ../lib/Plugins/FileTransfer.cpp:335
-#: ../lib/Plugins/FileTransfer.cpp:361
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): Não foi possível criar e enviar o pacote: "
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Não foi possível criar e enviar o pacote: %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Não foi possível criar e enviar o pacote %s"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
@@ -546,8 +553,9 @@ msgid "Executing SOSreport plugin..."
 msgstr "Executando o plugin SOSreport..."
 
 #: ../lib/Plugins/SOSreport.cpp:122
-msgid "running sosreport: "
-msgstr "executando o sosreport: "
+#, c-format
+msgid "running sosreport: %s"
+msgstr "executando o sosreport: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:137
 msgid "done running sosreport"
