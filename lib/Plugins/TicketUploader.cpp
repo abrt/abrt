@@ -43,7 +43,7 @@ CTicketUploader::~CTicketUploader()
 
 static void Error(const char *msg)
 {
-    update_client(msg);
+    update_client("%s", msg);
     throw CABRTException(EXCEP_PLUGIN, msg);
 }
 
@@ -102,11 +102,11 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
 {
     if (pURL[0] == '\0')
     {
-        warn_client(_("FileTransfer: URL not specified"));
+        error_msg(_("FileTransfer: URL not specified"));
         return;
     }
 
-    update_client(ssprintf(_("Sending archive %s to %s"), pFilename, pURL));
+    update_client(_("Sending archive %s to %s"), pFilename, pURL);
 
     const char *base = (strrchr(pFilename, '/') ? : pFilename-1) + 1;
     string wholeURL = concat_path_file(pURL, base);
@@ -133,7 +133,6 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
         /* specify target */
         curl_easy_setopt(curl, CURLOPT_URL, wholeURL.c_str());
-        /*file handle: passed to the default callback, it will fread() it*/
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
         curl_easy_setopt(curl, CURLOPT_INFILESIZE, buf.st_size);
         /* everything is done here; result 0 means success */
@@ -143,7 +142,7 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
         fclose(f);
         if (result != 0)
         {
-            update_client(ssprintf(_("Sending failed, trying again. %s"), curl_easy_strerror((CURLcode)result)));
+            update_client(_("Sending failed, trying again. %s"), curl_easy_strerror((CURLcode)result));
         }
     }
     /*retry the upload if not succesful, wait a bit before next try*/
@@ -317,19 +316,19 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
     }
     msgbuf << _("END: ") << endl;
 
-    warn_client(msgbuf.str());
+    error_msg("%s", msgbuf.str().c_str());
 
     string ret;
     if (do_upload)
     {
         string xx = _("report sent to ") + upload_url + '/' + outfile_basename;
-        update_client(xx);
+        update_client("%s", xx.c_str());
         ret = xx;
     }
     else
     {
         string xx = _("report copied to /tmp/") + outfile_basename;
-        update_client(xx);
+        update_client("%s", xx.c_str());
         ret = xx;
     }
 
@@ -382,20 +381,17 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CTicketUploader::GetSettings()
+const map_plugin_settings_t& CTicketUploader::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["Customer"] = m_sCustomer;
+    m_pSettings["Ticket"] = m_sTicket;
+    m_pSettings["URL"] = m_sURL;
+    m_pSettings["Encrypt"] = m_bEncrypt ? "yes" : "no";
+    m_pSettings["Upload"] = m_bEncrypt ? "yes" : "no";
+    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
+    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
 
-    ret["Customer"] = m_sCustomer;
-    ret["Ticket"] = m_sTicket;
-    ret["URL"] = m_sURL;
-    ret["Encrypt"] = m_bEncrypt ? "yes" : "no";
-    ret["Upload"] = m_bEncrypt ? "yes" : "no";
-
-    ret["RetryCount"] = to_string(m_nRetryCount);
-    ret["RetryDelay"] = to_string(m_nRetryDelay);
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,

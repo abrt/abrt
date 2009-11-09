@@ -191,7 +191,7 @@ mw_result_t CreateCrashReport(const char *pUUID,
     }
     if (pUUID[0] == '\0' || row.m_sUUID != pUUID)
     {
-        warn_client(ssprintf("CreateCrashReport(): UUID '%s' is not in database", pUUID));
+        error_msg("UUID '%s' is not in database", pUUID);
         return MW_IN_DB_ERROR;
     }
 
@@ -236,7 +236,7 @@ mw_result_t CreateCrashReport(const char *pUUID,
     }
     catch (CABRTException& e)
     {
-        warn_client("CreateCrashReport(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_OPEN)
         {
             return MW_ERROR;
@@ -266,8 +266,7 @@ void RunAction(const char *pActionDir,
     }
     catch (CABRTException& e)
     {
-        warn_client(ssprintf("RunAction(): %s", e.what().c_str()));
-        update_client(ssprintf("Execution of '%s' was not successful: %s", pPluginName, e.what().c_str()));
+        error_msg("Execution of '%s' was not successful: %s", pPluginName, e.what());
     }
 }
 
@@ -295,8 +294,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
         }
         catch (CABRTException& e)
         {
-            warn_client("RunActionsAndReporters(): " + e.what());
-            update_client("Activation of plugin '" + it_ar->first + "' was not successful: " + e.what());
+            error_msg("Activation of plugin '%s' was not successful: %s", it_ar->first.c_str(), e.what());
         }
     }
 }
@@ -435,8 +433,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
             {
                 ret[pluginName].push_back("0");
                 ret[pluginName].push_back(e.what());
-                warn_client("Report(): " + e.what());
-                update_client("Reporting via '" + pluginName + "' was not successful: " + e.what());
+                update_client("Reporting via  %s' was not successful: %s", pluginName.c_str(), e.what());
             }
         }
     }
@@ -565,7 +562,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
     }
     catch (CABRTException& e)
     {
-        warn_client("SavePackageDescriptionToDebugDump(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             return MW_FILE_ERROR;
@@ -601,8 +598,7 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
             }
             catch (CABRTException& e)
             {
-                warn_client("RunAnalyzerActions(): " + e.what());
-                update_client("Action performed by '" + pluginName + "' was not successful: " + e.what());
+                update_client("Action performed by '%s' was not successful: %s", pluginName.c_str(), e.what());
             }
         }
     }
@@ -684,7 +680,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     }
     catch (CABRTException& e)
     {
-        warn_client("SaveDebugDump(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             return MW_FILE_ERROR;
@@ -708,8 +704,8 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
 }
 
 mw_result_t GetCrashInfo(const char *pUUID,
-                                                   const char *pUID,
-                                                   map_crash_info_t& pCrashInfo)
+                const char *pUID,
+                map_crash_info_t& pCrashInfo)
 {
     pCrashInfo.clear();
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
@@ -734,7 +730,7 @@ mw_result_t GetCrashInfo(const char *pUUID,
     }
     catch (CABRTException& e)
     {
-        warn_client("GetCrashInfo(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_LOAD)
         {
             return MW_FILE_ERROR;

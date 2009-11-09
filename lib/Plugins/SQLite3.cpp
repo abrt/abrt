@@ -404,13 +404,11 @@ void CSQLite3::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CSQLite3::GetSettings()
+const map_plugin_settings_t& CSQLite3::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["DBPath"] = m_sDBPath;
 
-    ret["DBPath"] = m_sDBPath;
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(DATABASE,

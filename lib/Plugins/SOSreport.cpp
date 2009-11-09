@@ -119,7 +119,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
         command = ssprintf("%s %s 2>&1", command_prefix, args[0].c_str());
     }
 
-    update_client(_("running sosreport: ") + command);
+    update_client(_("running sosreport: %s"), command.c_str());
     FILE *fp = popen(command.c_str(), "r");
     if (fp == NULL)
     {

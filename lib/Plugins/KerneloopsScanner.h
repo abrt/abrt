@@ -33,9 +33,6 @@
 
 class CKerneloopsScanner : public CAction
 {
-	private:
-		map_plugin_settings_t m_pSettings;
-
 		/* For "dumpoops" tool */
 	public:
 		vector_string_t m_pOopsList;
@@ -50,8 +47,6 @@ class CKerneloopsScanner : public CAction
 	public:
 		CKerneloopsScanner();
 		virtual void Run(const char *pActionDir, const char *pArgs);
-		virtual void SetSettings(const map_plugin_settings_t& pSettings);
-		virtual map_plugin_settings_t GetSettings();
 };
 
 #endif

@@ -313,7 +313,7 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
             xmlrpc_int bug_id;
             xmlrpc_read_int(&env, bug, &bug_id);
             log("Bug is already reported: %i", (int)bug_id);
-            update_client(_("Bug is already reported: ") + to_string(bug_id));
+            update_client(_("Bug is already reported: %i"), (int)bug_id);
 
             xmlrpc_DECREF(bug);
             xmlrpc_DECREF(item);
@@ -375,7 +375,7 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
         xmlrpc_read_int(&env, id, &bug_id);
         throw_if_xml_fault_occurred(&env);
         log("New bug id: %i", bug_id);
-        update_client(_("New bug id: ") + to_string(bug_id));
+        update_client(_("New bug id: %i"), bug_id);
     }
 
     xmlrpc_DECREF(result);
@@ -618,16 +618,14 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CReporterBugzilla::GetSettings()
+const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["BugzillaURL"] = m_sBugzillaURL;
+    m_pSettings["Login"] = m_sLogin;
+    m_pSettings["Password"] = m_sPassword;
+    m_pSettings["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
 
-    ret["BugzillaURL"] = m_sBugzillaURL;
-    ret["Login"] = m_sLogin;
-    ret["Password"] = m_sPassword;
-    ret["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,

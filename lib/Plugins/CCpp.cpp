@@ -610,8 +610,8 @@ Another application is holding the yum lock, cannot continue
         if (last >= 0 && buff[last] == '\n')
             buff[last] = '\0';
 
-        /* log(buff); - update_client logs it too */
-        update_client(buff); /* maybe only if buff != ""? */
+        log("%s", buff);
+        update_client("%s", buff); /* maybe only if buff != ""? */
 
 #ifdef COMPLAIN_IF_NO_DEBUGINFO
         if (already_installed == false)
@@ -715,8 +715,8 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
         }
         if (*p)
         {
-            /* log(buff); - update_client logs it too */
-            update_client(buff);
+            log("%s", buff);
+            update_client("%s", buff);
         }
     }
 
@@ -975,16 +975,14 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CAnalyzerCCpp::GetSettings()
+const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
 {
-    map_plugin_settings_t ret = m_pSettings;
+    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
+    m_pSettings["DebugInfo"] = m_sDebugInfo;
+    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
+    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
 
-    ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
-    ret["DebugInfo"] = m_sDebugInfo;
-    ret["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
-    ret["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(ANALYZER,

@@ -286,7 +286,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     catch (CABRTException &e)
     {
         dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, e.what().c_str());
+        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, e.what());
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);

@@ -26,7 +26,7 @@ void CCommLayerServerSocket::Send(const std::string& pData, GIOChannel *pDestina
         ret = g_io_channel_write_chars(pDestination, message + offset, strlen(message + offset), &len, &err);
         if (ret == G_IO_STATUS_ERROR)
         {
-            warn_client("Error during sending data.");
+            error_msg("Error during sending data");
         }
     }
 
@@ -72,7 +72,7 @@ gboolean CCommLayerServerSocket::client_socket_cb(GIOChannel *source, GIOConditi
         ret = g_io_channel_read_chars(source, buff, 1, &len, &err);
         if (ret == G_IO_STATUS_ERROR)
         {
-            warn_client(std::string("Error while reading data from client socket: ") + err->message);
+            error_msg("Error while reading data from client socket: %s", err->message);
             return FALSE;
         }
         message += buff[0];
@@ -101,13 +101,13 @@ gboolean CCommLayerServerSocket::server_socket_cb(GIOChannel *source, GIOConditi
         condition & G_IO_ERR ||
         condition & G_IO_NVAL)
     {
-        warn_client("Server socket error.");
+        error_msg("Server socket error");
         return FALSE;
     }
 
     if ((socket = accept(serverSocket->m_nSocket,  (struct sockaddr *)&remote, &len)) == -1)
     {
-        warn_client("Server can not accept client.");
+        error_msg("Server can not accept client");
         return TRUE;
     }
     log("New socket client connected");
@@ -117,7 +117,7 @@ gboolean CCommLayerServerSocket::server_socket_cb(GIOChannel *source, GIOConditi
                         static_cast<GIOFunc>(client_socket_cb),
                         data))
     {
-        warn_client("Can not init g_io_channel.");
+        error_msg("Can not init g_io_channel");
         return TRUE;
     }
     serverSocket->m_mapClientChannels[socket] = gSocket;
@@ -157,7 +157,7 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     }
     else
     {
-        warn_client("Received unknown message type.");
+        error_msg("Received unknown message type");
     }
 }
 

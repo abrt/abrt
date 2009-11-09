@@ -19,9 +19,18 @@
 
 #include "Plugin.h"
 
+CPlugin::CPlugin() {}
+
 /* class CPlugin's virtuals */
 CPlugin::~CPlugin() {}
 void CPlugin::Init() {}
 void CPlugin::DeInit() {}
-void CPlugin::SetSettings(const map_plugin_settings_t& pSettings) {}
-map_plugin_settings_t CPlugin::GetSettings() {return map_plugin_settings_t();}
+void CPlugin::SetSettings(const map_plugin_settings_t& pSettings)
+{
+    m_pSettings = pSettings;
+}
+
+const map_plugin_settings_t& CPlugin::GetSettings()
+{
+    return m_pSettings;
+}

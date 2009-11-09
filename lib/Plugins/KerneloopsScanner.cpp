@@ -180,16 +180,6 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 	return cnt_FoundOopses;
 }
 
-void CKerneloopsScanner::SetSettings(const map_plugin_settings_t& pSettings)
-{
-	m_pSettings = pSettings;
-}
-
-map_plugin_settings_t CKerneloopsScanner::GetSettings()
-{
-	return m_pSettings;
-}
-
 PLUGIN_INFO(ACTION,
             CKerneloopsScanner,
             "KerneloopsScanner",

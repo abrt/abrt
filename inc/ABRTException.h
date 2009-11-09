@@ -3,33 +3,40 @@
 
 #include <string>
 
-typedef enum {EXCEP_UNKNOW,
-              EXCEP_DD_OPEN,
-              EXCEP_DD_LOAD,
-              EXCEP_DD_SAVE,
-              EXCEP_DD_DELETE,
-              EXCEP_DL,
-              EXCEP_PLUGIN,
-              EXCEP_ERROR,
-              EXCEP_FATAL} abrt_exception_t;
+typedef enum {
+    EXCEP_UNKNOW,
+    EXCEP_DD_OPEN,
+    EXCEP_DD_LOAD,
+    EXCEP_DD_SAVE,
+    EXCEP_DD_DELETE,
+    EXCEP_DL,
+    EXCEP_PLUGIN,
+    EXCEP_ERROR,
+    EXCEP_FATAL,
+} abrt_exception_t;
 
-class CABRTException : public std::exception
+/* std::exception is a class with virtual members.
+ * deriving from it makes our ctor/dtor much more heavy,
+ * and those are inlined in every throw and catch site!
+ */
+class CABRTException /*: public std::exception*/
 {
     private:
         std::string m_sWhat;
         abrt_exception_t m_Type;
+
     public:
-        virtual ~CABRTException() throw() {}
-        CABRTException(const abrt_exception_t& pType, const char* pWhat) :
+        /* virtual ~CABRTException() throw() {} */
+        CABRTException(abrt_exception_t pType, const char* pWhat) :
             m_sWhat(pWhat),
             m_Type(pType)
         {}
-        CABRTException(const abrt_exception_t& pType, const std::string& pWhat) :
+        CABRTException(abrt_exception_t pType, const std::string& pWhat) :
             m_sWhat(pWhat),
             m_Type(pType)
         {}
         abrt_exception_t type() { return m_Type; }
-        std::string what() { return m_sWhat; }
+        const char* what() const { return m_sWhat.c_str(); }
 };
 
-#endif /* ABRTEXCEPTION_H_ */
+#endif
