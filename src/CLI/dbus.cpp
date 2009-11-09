@@ -113,6 +113,21 @@ void call_DeleteDebugDump(const char* uuid)
     dbus_message_unref(reply);
 }
 
+vector_map_string_t call_GetPluginsInfo()
+{
+  DBusMessage *msg = new_call_msg("GetPluginsInfo");
+  DBusMessage *reply = send_get_reply_and_unref(msg);
+
+  vector_map_string_t argout;
+  DBusMessageIter in_iter;
+  dbus_message_iter_init(reply, &in_iter);
+  int r = load_val(&in_iter, argout);
+  if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+    error_msg_and_die("dbus call GetPluginsInfo: return type mismatch");
+  dbus_message_unref(reply);
+  return argout;
+}
+
 void handle_dbus_err(bool error_flag, DBusError *err)
 {
     if (dbus_error_is_set(err))
