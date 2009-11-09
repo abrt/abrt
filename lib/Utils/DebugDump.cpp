@@ -258,9 +258,9 @@ void CDebugDump::Create(const char *pDir, int64_t uid)
     SaveText(FILENAME_TIME, to_string(t).c_str());
 }
 
-static void DeleteFileDir(const std::string& pDir)
+static void DeleteFileDir(const char *pDir)
 {
-    DIR *dir = opendir(pDir.c_str());
+    DIR *dir = opendir(pDir);
     if (!dir)
         return;
 
@@ -269,21 +269,21 @@ static void DeleteFileDir(const std::string& pDir)
     {
         if (dot_or_dotdot(dent->d_name))
             continue;
-        std::string fullPath = pDir + "/" + dent->d_name;
+        std::string fullPath = concat_path_file(pDir, dent->d_name);
         if (unlink(fullPath.c_str()) == -1)
         {
             if (errno != EISDIR)
             {
                 closedir(dir);
-                throw CABRTException(EXCEP_DD_DELETE, "Can't remove file: " + fullPath);
+                throw CABRTException(EXCEP_DD_DELETE, ssprintf("Can't remove dir %s", fullPath.c_str()));
             }
-            DeleteFileDir(fullPath);
+            DeleteFileDir(fullPath.c_str());
         }
     }
     closedir(dir);
-    if (remove(pDir.c_str()) == -1)
+    if (remove(pDir) == -1)
     {
-        throw CABRTException(EXCEP_DD_DELETE, "Can't remove dir: " + pDir);
+        throw CABRTException(EXCEP_DD_DELETE, ssprintf("Can't remove dir %s", pDir));
     }
 }
 
@@ -345,7 +345,7 @@ void CDebugDump::Delete()
     {
         return;
     }
-    DeleteFileDir(m_sDebugDumpDir);
+    DeleteFileDir(m_sDebugDumpDir.c_str());
 }
 
 void CDebugDump::Close()
