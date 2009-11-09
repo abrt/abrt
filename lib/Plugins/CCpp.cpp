@@ -210,7 +210,11 @@ int rate_backtrace(const std::string & backtrace)
         }
     }
 
-    /* returning number of "stars" to show */
+    /* Bogus "backtrace" with zero frames? */
+    if (best_possible_rating == 0)
+        return 0;
+
+    /* Returning number of "stars" to show */
     if (rating*10 >= best_possible_rating*8) /* >= 0.8 */
         return 4;
     if (rating*10 >= best_possible_rating*6)
