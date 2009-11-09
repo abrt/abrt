@@ -127,6 +127,18 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
         setreuid(uid, uid);
         setsid();
 
+        /* Nuke everything which may make setlocale() switch to non-POSIX locale:
+         * we need to avoid having gdb output in some obscure language.
+         */
+        unsetenv("LANG");
+        unsetenv("LC_ALL");
+        unsetenv("LC_COLLATE");
+        unsetenv("LC_CTYPE");
+        unsetenv("LC_MESSAGES");
+        unsetenv("LC_MONETARY");
+        unsetenv("LC_NUMERIC");
+        unsetenv("LC_TIME");
+
         execvp(pArgs[0], pArgs);
         /* VERB1 since sometimes we expect errors here */
         VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
