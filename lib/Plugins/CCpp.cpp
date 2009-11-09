@@ -160,17 +160,25 @@ enum LineRating
     BestRating = Good,
 };
 
-static LineRating rate_line(const std::string & line)
+static LineRating rate_line(const char *line)
 {
-#define FOUND(x) (line.find(x) != std::string::npos)
-    bool function = FOUND(" in ") && !FOUND(" in ??");
-    bool library = FOUND(" from ");
-    bool source_file = FOUND(" at ");
-#undef FOUND
-
+#define FOUND(x) (strstr(line, x) != NULL)
     /* see the "enum LineRating" comments for possible combinations */
-    if (function && source_file)
-        return Good;
+    const char *function = strstr(line, " in ");
+    if (function)
+    {
+        if (function[4] == '?') /* " in ??" does not count */
+        {
+            function = NULL;
+        }
+        else
+        {
+            bool source_file = FOUND(" at ");
+            if (source_file)
+                return Good;
+        }
+    }
+    bool library = FOUND(" from ");
     if (function && library)
         return MissingSourceFile;
     if (function)
@@ -179,34 +187,37 @@ static LineRating rate_line(const std::string & line)
         return MissingFunction;
 
     return MissingEverything;
+#undef FOUND
 }
 
 /* returns number of "stars" to show */
-int rate_backtrace(const std::string & backtrace)
+static int rate_backtrace(const char *backtrace)
 {
-    int l = backtrace.length();
-    int i;
-    std::string s;
+    int i, len;
     int multiplier = 0;
     int rating = 0;
     int best_possible_rating = 0;
 
-    /* We look at the frames in reversed order, since
-     * - rate_line() looks at the first line of the frame
+    /* We look at the frames in reversed order, since:
+     * - rate_line() checks starting from the first line of the frame
+     * (note: it may need to look at more than one line!)
      * - we increase weight (multiplier) for every frame,
-     *   so that topmost frames end up most important.
+     *   so that topmost frames end up most important
      */
-    for (i = l-1; i >= 0; i--)
+    len = 0;
+    for (i = strlen(backtrace) - 1; i >= 0; i--)
     {
         if (backtrace[i] == '#') /* this separates frames from each other */
         {
+            std::string s(backtrace + 1, len);
             multiplier++;
-            rating += rate_line(s) * multiplier;
+            rating += rate_line(s.c_str()) * multiplier;
             best_possible_rating += BestRating * multiplier;
-            s = ""; /* starting new line */
-        } else
+            len = 0; /* starting new line */
+        }
+        else
         {
-            s = backtrace[i] + s;
+            len++;
         }
     }
 
@@ -898,7 +909,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
-    dd.SaveText(FILENAME_RATING, to_string(rate_backtrace(backtrace)).c_str());
+    dd.SaveText(FILENAME_RATING, to_string(rate_backtrace(backtrace.c_str())).c_str());
     dd.Close();
 }
 
