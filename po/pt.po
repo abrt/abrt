@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-28 21:05+0000\n"
+"POT-Creation-Date: 2009-11-08 20:52+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Rui Gouveia <rui.gouveia@globaltek.pt>\n"
 "Language-Team: PT <fedora-trans-pt@redhat.com>\n"
@@ -59,6 +59,7 @@ msgstr ""
 "Debuginfo está em falta?"
 
 #: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
@@ -96,7 +97,7 @@ msgid "Plugins"
 msgstr "Plugins"
 
 #: ../src/Gui/ccgui.glade.h:10
-#: ../src/Gui/report.glade.h:2
+#: ../src/Gui/report.glade.h:3
 msgid "Report"
 msgstr "Relatório"
 
@@ -214,11 +215,30 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
 
-#: ../src/Gui/CCReporterDialog.py:167
+#: ../src/Gui/CCReporterDialog.py:173
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descrição de como reproduzir isto ou o que fez..."
 
-#: ../src/Gui/CCReporterDialog.py:211
+#: ../src/Gui/CCReporterDialog.py:201
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable!\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Relatórios desactivados porque a traçagem não é usável!\n"
+"Por favor, tente instalar o debuginfo manualmente utilizando o comando:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"depois utilize o botão Recarregar para gerar uma nova traçagem."
+
+#: ../src/Gui/CCReporterDialog.py:203
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "A traçagem não é usável. Você não pode reportar isto!"
+
+#: ../src/Gui/CCReporterDialog.py:209
+msgid "The bactrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "A traçagem está incompleta. Por favor, garanta que fornece passos adequados para reproduzir."
+
+#: ../src/Gui/CCReporterDialog.py:247
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -255,22 +275,13 @@ msgstr "caixa de combinação não está implementada"
 msgid "Nothing to hydrate!"
 msgstr "Nada para fazer!"
 
-#: ../src/Gui/report.glade.h:1
+#: ../src/Gui/report.glade.h:2
 msgid "Comment"
 msgstr "Comentário"
 
-#: ../src/Gui/report.glade.h:3
+#: ../src/Gui/report.glade.h:4
 msgid "Send"
 msgstr "Enviar"
-
-#: ../src/Gui/report.glade.h:4
-#: ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../src/Gui/report.glade.h:5
-msgid "gtk-refresh"
-msgstr "gtk-refresh"
 
 #: ../src/Gui/SettingsDialog.py:33
 #: ../src/Gui/SettingsDialog.py:50
@@ -386,6 +397,10 @@ msgid "gtk-add"
 msgstr "gtk-add"
 
 #: ../src/Gui/settings.glade.h:26
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
 
@@ -393,17 +408,17 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:71
+#: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Foi detectado um crash no pacote %s"
 
-#: ../src/Applet/Applet.cpp:130
+#: ../src/Applet/Applet.cpp:138
 msgid "ABRT service has been started"
 msgstr "O serviço ABRT foi iniciado"
 
-#: ../src/Applet/Applet.cpp:132
-#: ../src/Applet/Applet.cpp:246
+#: ../src/Applet/Applet.cpp:140
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "O serviço ABRT não está a correr"
 
@@ -411,44 +426,41 @@ msgstr "O serviço ABRT não está a correr"
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:542
+#: ../src/Daemon/Daemon.cpp:531
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "O relatório excedeu a cota. Por favor, verifique o valor MaxCrashReportsSize em abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:234
-msgid "Bug is already reported: "
-msgstr "Erro já foi reportado: "
-
-#: ../lib/Plugins/Bugzilla.cpp:296
+#: ../lib/Plugins/Bugzilla.cpp:316
 #, c-format
-msgid "Binary file %s will not be reported."
-msgstr "Ficheiro binário %s não será reportado."
+msgid "Bug is already reported: %i"
+msgstr "Erro já foi reportado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:377
-msgid "New bug id: "
-msgstr "Criar novo ID de erro: "
+#: ../lib/Plugins/Bugzilla.cpp:378
+#, c-format
+msgid "New bug id: %i"
+msgstr "Novo ID de erro: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:422
+#: ../lib/Plugins/Bugzilla.cpp:471
 msgid "Checking for duplicates..."
 msgstr "A procurar por duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:425
+#: ../lib/Plugins/Bugzilla.cpp:474
 msgid "Logging into bugzilla..."
 msgstr "A iniciar sessão no bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:429
+#: ../lib/Plugins/Bugzilla.cpp:478
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Nome de utilizador e senha vazios. Por favor, verifique Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:435
+#: ../lib/Plugins/Bugzilla.cpp:484
 msgid "Checking CC..."
 msgstr "A verificar CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:444
+#: ../lib/Plugins/Bugzilla.cpp:493
 msgid "Creating new bug..."
 msgstr "A criar novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:497
 msgid "Logging out..."
 msgstr "A Terminar Sessão..."
 
@@ -456,69 +468,74 @@ msgstr "A Terminar Sessão..."
 msgid "Getting local universal unique identification"
 msgstr "A obter identificador único universal local"
 
-#: ../lib/Plugins/CCpp.cpp:246
+#: ../lib/Plugins/CCpp.cpp:228
 msgid "Getting backtrace..."
 msgstr "A obter dados do processo..."
 
-#: ../lib/Plugins/CCpp.cpp:532
-#: ../lib/Plugins/CCpp.cpp:657
+#: ../lib/Plugins/CCpp.cpp:526
+#: ../lib/Plugins/CCpp.cpp:653
 msgid "Searching for debug-info packages..."
 msgstr "A pesquisar por pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:594
-#: ../lib/Plugins/CCpp.cpp:690
+#: ../lib/Plugins/CCpp.cpp:588
+#: ../lib/Plugins/CCpp.cpp:687
 msgid "Downloading and installing debug-info packages..."
 msgstr "A transferir e instalar pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:733
+#: ../lib/Plugins/CCpp.cpp:792
 msgid "Getting local universal unique identification..."
 msgstr "A obter identificador único universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:752
+#: ../lib/Plugins/CCpp.cpp:811
 msgid "Getting global universal unique identification..."
 msgstr "A obter identificador único universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:797
+#: ../lib/Plugins/CCpp.cpp:856
 msgid "Starting report creation..."
 msgstr "A iniciar a criação do relatório..."
 
-#: ../lib/Plugins/CCpp.cpp:828
+#: ../lib/Plugins/CCpp.cpp:886
 msgid "Skipping debuginfo installation"
 msgstr "A passar à frente a instalação do debuginfo"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
 msgid "Creating and submitting a report..."
 msgstr "A criar e enviar relatório..."
 
-#: ../lib/Plugins/Logger.cpp:58
-#: ../lib/Plugins/Mailx.cpp:123
+#: ../lib/Plugins/Logger.cpp:57
+#: ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "A criar relatório..."
 
-#: ../lib/Plugins/RunApp.cpp:62
+#: ../lib/Plugins/RunApp.cpp:64
 msgid "Executing RunApp plugin..."
 msgstr "A executar plugin RunApp..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:408
+#: ../lib/Plugins/FileTransfer.cpp:381
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL não especificado"
 
-#: ../lib/Plugins/FileTransfer.cpp:80
+#: ../lib/Plugins/FileTransfer.cpp:67
 #, c-format
-msgid "Sending archive %s via %s"
-msgstr "A enviar arquivo %s via %s"
+msgid "Sending archive %s to %s"
+msgstr "A enviar arquivo %s para %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:335
+#: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
 msgstr "Transferência de Ficheiro: A criar relatório..."
 
-#: ../lib/Plugins/FileTransfer.cpp:357
-#: ../lib/Plugins/FileTransfer.cpp:385
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): Não foi possível criar e enviar um arquivo: "
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Não foi possível criar e enviar um arquivo: %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Não foi possível criar e enviar um arquivo %s"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
 msgstr "A criar relatório oops de crash do kernel..."
 
@@ -526,18 +543,23 @@ msgstr "A criar relatório oops de crash do kernel..."
 msgid "Sending an email..."
 msgstr "A enviar E-mail..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
+#: ../lib/Plugins/SOSreport.cpp:100
 msgid "Executing SOSreport plugin..."
 msgstr "A executar plugin do SOSreport..."
 
-#: ../lib/Plugins/SOSreport.cpp:135
-msgid "running sosreport: "
-msgstr "A executar sosreport: "
+#: ../lib/Plugins/SOSreport.cpp:122
+#, c-format
+msgid "running sosreport: %s"
+msgstr "A executar sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:150
+#: ../lib/Plugins/SOSreport.cpp:137
 msgid "done running sosreport"
 msgstr "execução do sosreport terminou"
 
+#~ msgid "gtk-refresh"
+#~ msgstr "gtk-refresh"
+#~ msgid "Binary file %s will not be reported."
+#~ msgstr "Ficheiro binário %s não será reportado."
 #~ msgid "Check CC and add coment +1..."
 #~ msgstr "Verifique o campo CC e adicione o comentário +1..."
 #~ msgid "Pending events: %i"
