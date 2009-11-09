@@ -209,7 +209,7 @@ static int rate_backtrace(const char *backtrace)
     {
         if (backtrace[i] == '#') /* this separates frames from each other */
         {
-            std::string s(backtrace + 1, len);
+            std::string s(backtrace + i + 1, len);
             multiplier++;
             rating += rate_line(s.c_str()) * multiplier;
             best_possible_rating += BestRating * multiplier;
