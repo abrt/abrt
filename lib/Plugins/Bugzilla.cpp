@@ -1,272 +1,21 @@
-
-#include <xmlrpc-c/base.hpp>
+#include <xmlrpc-c/base.h>
+#include <xmlrpc-c/client.h>
 #include "abrtlib.h"
 #include "Bugzilla.h"
 #include "CrashTypes.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
+#ifdef HAVE_CONFIG_H
+    #include <config.h>
+#endif
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
-CReporterBugzilla::CReporterBugzilla() :
-    m_pXmlrpcTransport(NULL),
-    m_pXmlrpcClient(NULL),
-    m_pCarriageParm(NULL),
-    m_sBugzillaURL("https://bugzilla.redhat.com"),
-    m_sBugzillaXMLRPC("https://bugzilla.redhat.com" + std::string(XML_RPC_SUFFIX)),
-    m_bNoSSLVerify(false),
-    m_bLoggedIn(false)
-{}
 
-CReporterBugzilla::~CReporterBugzilla()
-{}
-
-void CReporterBugzilla::NewXMLRPCClient()
-{
-    m_pXmlrpcTransport = new xmlrpc_c::clientXmlTransport_curl(
-                             xmlrpc_c::clientXmlTransport_curl::constrOpt()
-                                 .no_ssl_verifyhost(m_bNoSSLVerify)
-                                 .no_ssl_verifypeer(m_bNoSSLVerify)
-                             );
-    m_pXmlrpcClient = new xmlrpc_c::client_xml(m_pXmlrpcTransport);
-    m_pCarriageParm = new xmlrpc_c::carriageParm_curl0(m_sBugzillaXMLRPC);
-}
-
-void CReporterBugzilla::DeleteXMLRPCClient()
-{
-    if (m_pCarriageParm != NULL)
-    {
-        delete m_pCarriageParm;
-        m_pCarriageParm = NULL;
-    }
-    if (m_pXmlrpcClient != NULL)
-    {
-        delete m_pXmlrpcClient;
-        m_pXmlrpcClient = NULL;
-    }
-    if (m_pXmlrpcTransport != NULL)
-    {
-        delete m_pXmlrpcTransport;
-        m_pXmlrpcTransport = NULL;
-    }
-}
-
-PRInt32 CReporterBugzilla::Base64Encode_cb(void *arg, const char *obuf, PRInt32 size)
-{
-    CReporterBugzilla* bz = static_cast<CReporterBugzilla*>(arg);
-    int ii;
-    for (ii = 0; ii < size; ii++)
-    {
-        if (isprint(obuf[ii]))
-        {
-            bz->m_sAttchmentInBase64 += obuf[ii];
-        }
-    }
-    return 1;
-}
-
-void CReporterBugzilla::Login()
-{
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t loginParams;
-    map_xmlrpc_params_t ret;
-    loginParams["login"] = xmlrpc_c::value_string(m_sLogin);
-    loginParams["password"] = xmlrpc_c::value_string(m_sPassword);
-    paramList.add(xmlrpc_c::value_struct(loginParams));
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("User.login", paramList));
-    try
-    {
-        if( (m_sLogin == "") && (m_sPassword=="") )
-        {
-            log("Empty login and password");
-            throw std::string(_("Empty login and password. Please check Bugzilla.conf"));
-        }
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-        ret =  xmlrpc_c::value_struct(rpc->getResult());
-        std::stringstream ss;
-        ss << xmlrpc_c::value_int(ret["id"]);
-        log("Login id: %s", ss.str().c_str());
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Login(): ") + e.what());
-    }
-    catch (std::string& s)
-    {
-        throw CABRTException(EXCEP_PLUGIN, s);
-    }
-}
-
-void CReporterBugzilla::Logout()
-{
-    xmlrpc_c::paramList paramList;
-    paramList.add(xmlrpc_c::value_string(""));
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("User.logout", paramList));
-    try
-    {
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Logout(): ") + e.what());
-    }
-}
-
-bool CReporterBugzilla::CheckCCAndReporter(const std::string& pBugId)
-{
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t ret;
-
-    paramList.add(xmlrpc_c::value_string(pBugId));
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("bugzilla.getBug", paramList));
-    try
-    {
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-        ret = xmlrpc_c::value_struct(rpc->getResult());
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::CheckCCAndReporter(): ") + e.what());
-    }
-    std::string reporter = xmlrpc_c::value_string(ret["reporter"]);
-    if (reporter == m_sLogin)
-    {
-        return true;
-    }
-    std::vector<xmlrpc_c::value> ccs = xmlrpc_c::value_array(ret["cc"]).vectorValueValue();
-    int ii;
-    for (ii = 0; ii < ccs.size(); ii++)
-    {
-        std::string cc =  xmlrpc_c::value_string(ccs[ii]);
-        if (cc == m_sLogin)
-        {
-            return true;
-        }
-    }
-    return false;
-}
-
-void CReporterBugzilla::AddPlusOneCC(const std::string& pBugId)
-{
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t addCCParams;
-    map_xmlrpc_params_t ret;
-    map_xmlrpc_params_t updates;
-
-    std::vector<xmlrpc_c::value> CCList;
-    CCList.push_back(xmlrpc_c::value_string(m_sLogin));
-    updates["add_cc"] = xmlrpc_c::value_array(CCList);
-
-    addCCParams["ids"] = xmlrpc_c::value_int(atoi(pBugId.c_str()));
-    addCCParams["updates"] = xmlrpc_c::value_struct(updates);
-
-    paramList.add(xmlrpc_c::value_struct(addCCParams));
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.update", paramList));
-    try
-    {
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::AddPlusOneComment(): ") + e.what());
-    }
-    ret = xmlrpc_c::value_struct(rpc->getResult());
-}
-
-std::string CReporterBugzilla::CheckUUIDInBugzilla(const std::string& pComponent, const std::string& pUUID)
-{
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t searchParams;
-    map_xmlrpc_params_t ret;
-    std::string quicksearch = "ALL component:\""+ pComponent +"\" statuswhiteboard:\""+ pUUID + "\"";
-    searchParams["quicksearch"] = xmlrpc_c::value_string(quicksearch.c_str());
-    paramList.add(xmlrpc_c::value_struct(searchParams));
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.search", paramList));
-    try
-    {
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::CheckUUIDInBugzilla(): ") + e.what());
-    }
-    ret = xmlrpc_c::value_struct(rpc->getResult());
-    std::vector<xmlrpc_c::value> bugs = xmlrpc_c::value_array(ret["bugs"]).vectorValueValue();
-    if (bugs.size() > 0)
-    {
-        map_xmlrpc_params_t bug;
-        std::stringstream ss;
-
-        bug = xmlrpc_c::value_struct(bugs[0]);
-        ss << xmlrpc_c::value_int(bug["bug_id"]);
-
-        log("Bug is already reported: %s", ss.str().c_str());
-        update_client(_("Bug is already reported: ") + ss.str());
-
-        return ss.str();
-    }
-    return "";
-}
-
-void CReporterBugzilla::CreateNewBugDescription(const map_crash_report_t& pCrashReport, std::string& pDescription)
-{
-    std::string howToReproduce;
-    std::string comment;
-
-    if (pCrashReport.find(CD_REPRODUCE) != pCrashReport.end())
-    {
-        howToReproduce = "\n\nHow to reproduce\n"
-                         "-----\n" +
-                         pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT];
-    }
-    if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
-    {
-       comment = "\n\nComment\n"
-                 "-----\n" +
-                 pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
-    }
-    pDescription = "\nabrt detected a crash.\n" +
-                   howToReproduce +
-                   comment +
-                   "\n\nAdditional information\n"
-                   "======\n";
-
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
-    {
-        if (it->second[CD_TYPE] == CD_TXT)
-        {
-            if (it->first !=  CD_UUID &&
-                it->first !=  FILENAME_ARCHITECTURE &&
-                it->first !=  FILENAME_RELEASE &&
-                it->first !=  CD_REPRODUCE &&
-                it->first !=  CD_COMMENT)
-            {
-                pDescription += "\n" + it->first + "\n";
-                pDescription += "-----\n";
-                pDescription += it->second[CD_CONTENT] + "\n\n";
-            }
-        }
-        else if (it->second[CD_TYPE] == CD_ATT)
-        {
-            pDescription += "\n\nAttached files\n"
-                            "----\n";
-            pDescription += it->first + "\n";
-        }
-        else if (it->second[CD_TYPE] == CD_BIN)
-        {
-            char buffer[1024];
-            snprintf(buffer, 1024, _("Binary file %s will not be reported."), it->first.c_str());
-            warn_client(std::string(buffer));
-            //update_client(_("Binary file ")+it->first+_(" will not be reported."));
-        }
-    }
-}
-
-void CReporterBugzilla::GetProductAndVersion(const std::string& pRelease,
-                                             std::string& pProduct,
-                                             std::string& pVersion)
+static void get_product_and_version(const std::string& pRelease,
+                                          std::string& pProduct,
+                                          std::string& pVersion)
 {
     if (pRelease.find("Rawhide") != std::string::npos)
     {
@@ -295,162 +44,547 @@ void CReporterBugzilla::GetProductAndVersion(const std::string& pRelease,
     }
 }
 
-std::string CReporterBugzilla::NewBug(const map_crash_report_t& pCrashReport)
+static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t bugParams;
-    map_xmlrpc_params_t ret;
-    std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-    std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
-    std::string description;
-    std::string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];;
-    std::string product;
-    std::string version;
-    std::stringstream bugId;
-    CreateNewBugDescription(pCrashReport, description);
-    GetProductAndVersion(release, product, version);
-
-    bugParams["product"] = xmlrpc_c::value_string(product);
-    bugParams["component"] =  xmlrpc_c::value_string(component);
-    bugParams["version"] =  xmlrpc_c::value_string(version);
-    //bugParams["op_sys"] =  xmlrpc_c::value_string("Linux");
-    bugParams["summary"] = xmlrpc_c::value_string("[abrt] crash detected in " + package);
-    bugParams["description"] = xmlrpc_c::value_string(description);
-    bugParams["status_whiteboard"] = xmlrpc_c::value_string("abrt_hash:" + pCrashReport.find(CD_UUID)->second[CD_CONTENT]);
-    bugParams["platform"] = xmlrpc_c::value_string(pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT]);
-    paramList.add(xmlrpc_c::value_struct(bugParams));
-
-    xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("Bug.create", paramList));
-    try
-    {
-        rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-        ret =  xmlrpc_c::value_struct(rpc->getResult());
-        bugId << xmlrpc_c::value_int(ret["id"]);
-        log("New bug id: %s", bugId.str().c_str());
-        update_client(_("New bug id: ") + bugId.str());
-    }
-    catch (std::exception& e)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::NewBug(): ") + e.what());
-    }
-    return bugId.str();
+    pDescription = "abrt detected a crash.\n\n";
+    pDescription += make_description_bz(pCrashReport);
 }
 
-void CReporterBugzilla::AddAttachments(const std::string& pBugId, const map_crash_report_t& pCrashReport)
+// FIXME: we still leak memory if this function detects a fault:
+// many instances when we leave non-freed or non-xmlrpc_DECREF'ed data behind.
+static void throw_if_xml_fault_occurred(xmlrpc_env *env)
 {
-    xmlrpc_c::paramList paramList;
-    map_xmlrpc_params_t attachmentParams;
-    std::vector<xmlrpc_c::value> ret;
-    NSSBase64Encoder* base64;
+    if (env->fault_occurred)
+    {
+        std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env->fault_string, env->fault_code);
+        xmlrpc_env_clean(env); // this is needed ONLY if fault_occurred
+        xmlrpc_env_init(env); // just in case user catches ex and _continues_ to use env
+        error_msg("%s", errmsg.c_str()); // show error in daemon log
+        throw CABRTException(EXCEP_PLUGIN, errmsg);
+    }
+}
 
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+
+/*
+ * Static namespace for xmlrpc stuff.
+ * Used mainly to ensure we always destroy xmlrpc client and server_info.
+ */
+
+namespace {
+
+struct ctx {
+	xmlrpc_client* client;
+	xmlrpc_server_info* server_info;
+
+        ctx(const char* url, bool no_ssl_verify) { new_xmlrpc_client(url, no_ssl_verify); }
+	~ctx() { destroy_xmlrpc_client(); }
+
+	void new_xmlrpc_client(const char* url, bool no_ssl_verify);
+	void destroy_xmlrpc_client();
+
+	void login(const char* login, const char* passwd);
+	void logout();
+	int32_t check_uuid_in_bugzilla(const char* component, const char* UUID);
+	bool check_cc_and_reporter(uint32_t bug_id, const char* login);
+	void add_plus_one_cc(uint32_t bug_id, const char* login);
+	uint32_t new_bug(const map_crash_report_t& pCrashReport);
+	void add_attachments(const char* bug_id_str, const map_crash_report_t& pCrashReport);
+};
+
+void ctx::new_xmlrpc_client(const char* url, bool no_ssl_verify)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    /* This should be done at program startup, once.
+     * We do it in abrtd's main */
+    /* xmlrpc_client_setup_global_const(&env); */
+
+    struct xmlrpc_curl_xportparms curlParms;
+    memset(&curlParms, 0, sizeof(curlParms));
+    /* curlParms.network_interface = NULL; - done by memset */
+    curlParms.no_ssl_verifypeer = no_ssl_verify;
+    curlParms.no_ssl_verifyhost = no_ssl_verify;
+#ifdef VERSION
+    curlParms.user_agent        = PACKAGE_NAME"/"VERSION;
+#else
+    curlParms.user_agent        = "abrt";
+#endif
+
+    struct xmlrpc_clientparms clientParms;
+    memset(&clientParms, 0, sizeof(clientParms));
+    clientParms.transport          = "curl";
+    clientParms.transportparmsP    = &curlParms;
+    clientParms.transportparm_size = XMLRPC_CXPSIZE(user_agent);
+
+    client = NULL;
+    xmlrpc_client_create(&env, XMLRPC_CLIENT_NO_FLAGS,
+                        PACKAGE_NAME, VERSION,
+                        &clientParms, XMLRPC_CPSIZE(transportparm_size),
+                        &client);
+    throw_if_xml_fault_occurred(&env);
+
+    server_info = xmlrpc_server_info_new(&env, url);
+    if (env.fault_occurred)
+    {
+        xmlrpc_client_destroy(client);
+        client = NULL;
+    }
+    throw_if_xml_fault_occurred(&env);
+}
+
+void ctx::destroy_xmlrpc_client()
+{
+    if (server_info)
+    {
+        xmlrpc_server_info_free(server_info);
+        server_info = NULL;
+    }
+    if (client)
+    {
+        xmlrpc_client_destroy(client);
+        client = NULL;
+    }
+}
+
+void ctx::login(const char* login, const char* passwd)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(&env, client, server_info, "User.login", param, &result);
+    xmlrpc_DECREF(param);
+    if (result)
+        xmlrpc_DECREF(result);
+
+    if (env.fault_occurred)
+    {
+        std::string errmsg = ssprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
+        xmlrpc_env_clean(&env);
+        error_msg("%s", errmsg.c_str()); // show error in daemon log
+        throw CABRTException(EXCEP_PLUGIN, errmsg);
+    }
+}
+
+void ctx::logout()
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", "");
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(&env, client, server_info, "User.logout", param, &result);
+    xmlrpc_DECREF(param);
+    if (result)
+        xmlrpc_DECREF(result);
+    throw_if_xml_fault_occurred(&env);
+}
+
+bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", to_string(bug_id).c_str());
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(&env, client, server_info, "bugzilla.getBug", param, &result);
+    throw_if_xml_fault_occurred(&env);
+    xmlrpc_DECREF(param);
+
+    xmlrpc_value* reporter_member = NULL;
+    xmlrpc_struct_find_value(&env, result, "reporter", &reporter_member);
+    throw_if_xml_fault_occurred(&env);
+
+    if (reporter_member)
+    {
+        const char* reporter = NULL;
+        xmlrpc_read_string(&env, reporter_member, &reporter);
+        throw_if_xml_fault_occurred(&env);
+
+        bool eq = (strcmp(reporter, login) == 0);
+        free((void*)reporter);
+        xmlrpc_DECREF(reporter_member);
+        if (eq)
+        {
+            xmlrpc_DECREF(result);
+            return true;
+        }
+    }
+
+    xmlrpc_value* cc_member = NULL;
+    xmlrpc_struct_find_value(&env, result, "cc", &cc_member);
+    throw_if_xml_fault_occurred(&env);
+
+    if (cc_member)
+    {
+        uint32_t array_size = xmlrpc_array_size(&env, cc_member);
+
+        for (uint32_t i = 0; i < array_size; i++)
+        {
+            xmlrpc_value* item = NULL;
+            xmlrpc_array_read_item(&env, cc_member, i, &item); // Correct
+            throw_if_xml_fault_occurred(&env);
+
+            const char* cc = NULL;
+            xmlrpc_read_string(&env, item, &cc);
+            throw_if_xml_fault_occurred(&env);
+
+            bool eq = (strcmp(cc, login) == 0);
+            free((void*)cc);
+            xmlrpc_DECREF(item);
+            if (eq)
+            {
+                xmlrpc_DECREF(cc_member);
+                xmlrpc_DECREF(result);
+                return true;
+            }
+        }
+        xmlrpc_DECREF(cc_member);
+    }
+
+    xmlrpc_DECREF(result);
+    return false;
+}
+
+void ctx::add_plus_one_cc(uint32_t bug_id, const char* login)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(&env, client, server_info, "Bug.update", param, &result);
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_DECREF(result);
+    xmlrpc_DECREF(param);
+}
+
+int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
+
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query.c_str());
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(&env, client, server_info, "Bug.search", param, &result);
+    throw_if_xml_fault_occurred(&env);
+    xmlrpc_DECREF(param);
+
+    xmlrpc_value* bugs_member = NULL;
+    xmlrpc_struct_find_value(&env, result, "bugs", &bugs_member);
+    throw_if_xml_fault_occurred(&env);
+
+    if (bugs_member)
+    {
+        // when array size is equal 0 that means no bug reported
+        uint32_t array_size = xmlrpc_array_size(&env, bugs_member);
+        throw_if_xml_fault_occurred(&env);
+        if (array_size == 0)
+        {
+            xmlrpc_DECREF(bugs_member);
+            xmlrpc_DECREF(result);
+            return -1;
+        }
+
+        xmlrpc_value* item = NULL;
+        xmlrpc_array_read_item(&env, bugs_member, 0, &item); // Correct
+        throw_if_xml_fault_occurred(&env);
+        xmlrpc_value* bug = NULL;
+        xmlrpc_struct_find_value(&env, item, "bug_id", &bug);
+        throw_if_xml_fault_occurred(&env);
+
+        if (bug)
+        {
+            xmlrpc_int bug_id;
+            xmlrpc_read_int(&env, bug, &bug_id);
+            log("Bug is already reported: %i", (int)bug_id);
+            update_client(_("Bug is already reported: %i"), (int)bug_id);
+
+            xmlrpc_DECREF(bug);
+            xmlrpc_DECREF(item);
+            xmlrpc_DECREF(bugs_member);
+            xmlrpc_DECREF(result);
+            return bug_id;
+        }
+        xmlrpc_DECREF(item);
+        xmlrpc_DECREF(bugs_member);
+    }
+
+    xmlrpc_DECREF(result);
+    return -1;
+}
+
+uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+    std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
+    std::string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];
+    std::string arch = pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
+    std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
+
+    std::string summary = "[abrt] crash detected in " + package;
+    std::string status_whiteboard = "abrt_hash:" + uuid;
+
+    std::string description;
+    create_new_bug_description(pCrashReport, description);
+
+    std::string product;
+    std::string version;
+    get_product_and_version(release, product, version);
+
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+                                        "product", product.c_str(),
+                                        "component", component.c_str(),
+                                        "version", version.c_str(),
+                                        "summary", summary.c_str(),
+                                        "description", description.c_str(),
+                                        "status_whiteboard", status_whiteboard.c_str(),
+                                        "platform", arch.c_str()
+                              );
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_value* result;
+    xmlrpc_client_call2(&env, client, server_info, "Bug.create", param, &result);
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_value* id;
+    xmlrpc_struct_find_value(&env, result, "id", &id);
+    throw_if_xml_fault_occurred(&env);
+
+    xmlrpc_int bug_id = -1;
+    if (id)
+    {
+        xmlrpc_read_int(&env, id, &bug_id);
+        throw_if_xml_fault_occurred(&env);
+        log("New bug id: %i", bug_id);
+        update_client(_("New bug id: %i"), bug_id);
+    }
+
+    xmlrpc_DECREF(result);
+    xmlrpc_DECREF(param);
+    xmlrpc_DECREF(id);
+    return bug_id;
+}
+
+void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCrashReport)
+{
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    xmlrpc_value* result = NULL;
+
+    map_crash_report_t::const_iterator it = pCrashReport.begin();
+    for (; it != pCrashReport.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_ATT)
         {
-            m_sAttchmentInBase64 = "";
-            base64 = NSSBase64Encoder_Create(Base64Encode_cb, this);
-            if (!base64)
-            {
-                throw CABRTException(EXCEP_PLUGIN, "CReporterBugzilla::AddAttachemnt(): cannot initialize base64.");
-            }
+            std::string description = "File: " + it->first;
+            const std::string& to_encode = it->second[CD_CONTENT];
+            char *encoded64 = encode_base64(to_encode.c_str(), to_encode.length());
+            xmlrpc_value* param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
+                                              bug_id_str,
+                                              "description", description.c_str(),
+                                              "filename", it->first.c_str(),
+                                              "contenttype", "text/plain",
+                                              "data", encoded64
+                                      );
+            free(encoded64);
+            throw_if_xml_fault_occurred(&env);
 
-            NSSBase64Encoder_Update(base64,
-                                    reinterpret_cast<const unsigned char*>(it->second[CD_CONTENT].c_str()),
-                                    it->second[CD_CONTENT].length());
-            NSSBase64Encoder_Destroy(base64, PR_FALSE);
-
-            paramList.add(xmlrpc_c::value_string(pBugId));
-            attachmentParams["description"] = xmlrpc_c::value_string("File: " + it->first);
-            attachmentParams["filename"] = xmlrpc_c::value_string(it->first);
-            attachmentParams["contenttype"] = xmlrpc_c::value_string("text/plain");
-            attachmentParams["data"] = xmlrpc_c::value_string(m_sAttchmentInBase64);
-            paramList.add(xmlrpc_c::value_struct(attachmentParams));
-            xmlrpc_c::rpcPtr rpc(new  xmlrpc_c::rpc("bugzilla.addAttachment", paramList));
-            try
-            {
-                rpc->call(m_pXmlrpcClient, m_pCarriageParm);
-                ret = xmlrpc_c::value_array(rpc->getResult()).vectorValueValue();
-                std::stringstream ss;
-                ss << xmlrpc_c::value_int(ret[0]);
-                log("New attachment id: %s", ss.str().c_str());
-            }
-            catch (std::exception& e)
-            {
-                throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::AddAttachemnt(): ") + e.what());
-            }
+            xmlrpc_client_call2(&env, client, server_info, "bugzilla.addAttachment", param, &result);
+            throw_if_xml_fault_occurred(&env);
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(param);
         }
     }
 }
 
-std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+} /* namespace */
+
+
+/*
+ * CReporterBugzilla
+ */
+
+CReporterBugzilla::CReporterBugzilla() :
+    m_bNoSSLVerify(false),
+    m_sBugzillaURL("https://bugzilla.redhat.com"),
+    m_sBugzillaXMLRPC("https://bugzilla.redhat.com"XML_RPC_SUFFIX)
+{}
+
+CReporterBugzilla::~CReporterBugzilla()
+{}
+
+std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
+                                      const map_plugin_settings_t& pSettings,
+                                      const std::string& pArgs)
 {
-    std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+    int32_t bug_id = -1;
+    std::string Login;
+    std::string Password;
+    std::string BugzillaXMLRPC;
+    std::string BugzillaURL;
+    bool NoSSLVerify;
+    map_plugin_settings_t settings = parse_settings(pSettings);
+    /* if parse_settings fails it returns an empty map so we need to use defaults*/
+    if(!settings.empty())
+    {
+        Login = settings["Login"];
+        Password = settings["Password"];
+        BugzillaXMLRPC = settings["BugzillaXMLRPC"];
+        BugzillaURL = settings["BugzillaURL"];
+        NoSSLVerify = settings["NoSSLVerify"] == "yes";
+    }
+    else
+    {
+        Login = m_sLogin;
+        Password = m_sPassword;
+        BugzillaXMLRPC = m_sBugzillaXMLRPC;
+        BugzillaURL = m_sBugzillaURL;
+        NoSSLVerify = m_bNoSSLVerify;
+    }
+
     std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
-    std::string bugId;
-
-
-    NewXMLRPCClient();
-
-    m_bLoggedIn = false;
     try
     {
+        ctx bz_server(BugzillaXMLRPC.c_str(), NoSSLVerify);
+
         update_client(_("Checking for duplicates..."));
-        bugId = CheckUUIDInBugzilla(component, uuid);
-        if ( bugId != "" ) {
-            update_client(_("Logging into bugzilla..."));
-            Login();
-            m_bLoggedIn = true;
-            update_client(_("Checking CC..."));
-            if (!CheckCCAndReporter(bugId) && m_bLoggedIn)
-            {
-                AddPlusOneCC(bugId);
-            }
-            DeleteXMLRPCClient();
-            return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
-        }
+        bug_id = bz_server.check_uuid_in_bugzilla(component.c_str(), uuid.c_str());
+
         update_client(_("Logging into bugzilla..."));
-        Login();
-        m_bLoggedIn = true;
-    }
-    catch (CABRTException& e)
-    {
-        DeleteXMLRPCClient();
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
-        return "";
-    }
+        if ((Login == "") && (Password == ""))
+        {
+            VERB3 log("Empty login and password");
+            throw CABRTException(EXCEP_PLUGIN, std::string(_("Empty login and password. Please check Bugzilla.conf")));
+        }
+        bz_server.login(Login.c_str(), Password.c_str());
 
+        if (bug_id > 0)
+        {
+            update_client(_("Checking CC..."));
+            if (!bz_server.check_cc_and_reporter(bug_id, Login.c_str()))
+            {
+                bz_server.add_plus_one_cc(bug_id, Login.c_str());
+            }
+            bz_server.logout();
+            return BugzillaURL + "/show_bug.cgi?id=" + to_string(bug_id);
+        }
 
-    update_client(_("Creating new bug..."));
-    try
-    {
-        bugId = NewBug(pCrashReport);
-        AddAttachments(bugId, pCrashReport);
+        update_client(_("Creating new bug..."));
+        bug_id = bz_server.new_bug(pCrashReport);
+        bz_server.add_attachments(to_string(bug_id).c_str(), pCrashReport);
+
         update_client(_("Logging out..."));
-        Logout();
+        bz_server.logout();
     }
     catch (CABRTException& e)
     {
-        DeleteXMLRPCClient();
-        throw CABRTException(EXCEP_PLUGIN, std::string("CReporterBugzilla::Report(): ") + e.what());
+        throw CABRTException(EXCEP_PLUGIN, e.what());
     }
 
+    if (bug_id > 0)
+    {
+        return BugzillaURL + "/show_bug.cgi?id=" + to_string(bug_id);
+    }
 
-    DeleteXMLRPCClient();
-    return m_sBugzillaURL + "/show_bug.cgi?id=" + bugId;
+    return BugzillaURL + "/show_bug.cgi?id=";
+}
 
+map_plugin_settings_t CReporterBugzilla::parse_settings(const map_plugin_settings_t& pSettings)
+{
+    map_plugin_settings_t plugin_settings;
+    map_plugin_settings_t::const_iterator it;
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+
+    it = pSettings.find("BugzillaURL");
+    if (it != end)
+    {
+        std::string BugzillaURL = it->second;
+        //remove the /xmlrpc.cgi part from old settings
+        //FIXME: can be removed after users are informed about new config format
+        std::string::size_type pos = BugzillaURL.find(XML_RPC_SUFFIX);
+        if (pos != std::string::npos)
+        {
+            BugzillaURL.erase(pos);
+        }
+        //remove the trailing '/'
+        while (BugzillaURL[BugzillaURL.length() - 1] == '/')
+        {
+            BugzillaURL.erase(BugzillaURL.length() - 1);
+        }
+        plugin_settings["BugzillaXMLRPC"] = BugzillaURL + XML_RPC_SUFFIX;
+        plugin_settings["BugzillaURL"] = BugzillaURL;
+    }
+
+    it = pSettings.find("Login");
+    if (it == end)
+    {
+        /* if any of the option is not set we use the defaults for everything */
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["Login"] = it->second;
+
+    it = pSettings.find("Password");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["Password"] = it->second;
+
+    it = pSettings.find("NoSSLVerify");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["NoSSLVerify"] = it->second;
+
+    VERB1 log("User settings ok, using them instead of defaults");
+    return plugin_settings;
 }
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("BugzillaURL") != pSettings.end())
+//BUG! This gets called when user's keyring contains login data,
+//then it takes precedence over /etc/abrt/plugins/Bugzilla.conf.
+//I got a case when keyring had a STALE password, and there was no way
+//for me to know that it is being used. Moreover, when I discovered it
+//(by hacking abrt source!), I don't know how to purge it from the keyring.
+//At the very least, log("SOMETHING") here.
+
+    map_plugin_settings_t::const_iterator it;
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+
+    it = pSettings.find("BugzillaURL");
+    if (it != end)
     {
-        m_sBugzillaURL = pSettings.find("BugzillaURL")->second;
+        m_sBugzillaURL = it->second;
         //remove the /xmlrpc.cgi part from old settings
         //FIXME: can be removed after users are informed about new config format
         std::string::size_type pos = m_sBugzillaURL.find(XML_RPC_SUFFIX);
-        if(pos != std::string::npos)
+        if (pos != std::string::npos)
         {
             m_sBugzillaURL.erase(pos);
         }
@@ -465,40 +599,41 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
             m_sBugzillaURL.erase(--m_sBugzillaURL.end());
         }
         */
-        m_sBugzillaXMLRPC = m_sBugzillaURL + std::string(XML_RPC_SUFFIX);
+        m_sBugzillaXMLRPC = m_sBugzillaURL + XML_RPC_SUFFIX;
     }
-    if (pSettings.find("Login") != pSettings.end())
+    it = pSettings.find("Login");
+    if (it != end)
     {
-        m_sLogin = pSettings.find("Login")->second;
+        m_sLogin = it->second;
     }
-    if (pSettings.find("Password") != pSettings.end())
+    it = pSettings.find("Password");
+    if (it != end)
     {
-        m_sPassword = pSettings.find("Password")->second;
+        m_sPassword = it->second;
     }
-    if (pSettings.find("NoSSLVerify") != pSettings.end())
+    it = pSettings.find("NoSSLVerify");
+    if (it != end)
     {
-        m_bNoSSLVerify = pSettings.find("NoSSLVerify")->second == "yes";
+        m_bNoSSLVerify = (it->second == "yes");
     }
 }
 
-map_plugin_settings_t CReporterBugzilla::GetSettings()
+const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["BugzillaURL"] = m_sBugzillaURL;
+    m_pSettings["Login"] = m_sLogin;
+    m_pSettings["Password"] = m_sPassword;
+    m_pSettings["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
 
-    ret["BugzillaURL"] = m_sBugzillaURL;
-    ret["Login"] = m_sLogin;
-    ret["Password"] = m_sPassword;
-    ret["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,
             CReporterBugzilla,
             "Bugzilla",
-            "0.0.3",
+            "0.0.4",
             "Check if a bug isn't already reported in a bugzilla "
             "and if not, report it.",
-            "zprikryl@redhat.com",
+            "npajkovs@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/Bugzilla.GTKBuilder");

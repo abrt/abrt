@@ -11,12 +11,17 @@ Email
 Description
 """
 from abrt_utils import _
-from ConfBackend import ConfBackendGnomeKeyring
+from ConfBackend import ConfBackendGnomeKeyring, ConfBackendInitError
 
 class PluginSettings(dict):
     def __init__(self):
         dict.__init__(self)
-        self.conf = ConfBackendGnomeKeyring()
+        self.conf = None
+        try:
+            self.conf = ConfBackendGnomeKeyring()
+        except ConfBackendInitError, e:
+            print e
+            pass
 
     def check(self):
         for key in ["Password", "Login"]:
@@ -32,16 +37,18 @@ class PluginSettings(dict):
         for key in default_settings.keys():
             self[str(key)] = str(default_settings[key])
 
-        settings = self.conf.load(name)
-        # overwrite defaluts with user setting
-        for key in settings.keys():
-            # only rewrite keys needed by the plugin
-            # e.g we don't want a pass field for logger
-            if key in default_settings.keys():
-                self[str(key)] = str(settings[key])
+        if self.conf:
+            settings = self.conf.load(name)
+            # overwrite defaluts with user setting
+            for key in settings.keys():
+                # only rewrite keys needed by the plugin
+                # e.g we don't want a pass field for logger
+                if key in default_settings.keys():
+                    self[str(key)] = str(settings[key])
 
     def save(self, name):
-        self.conf.save(name, self)
+        if self.conf:
+            self.conf.save(name, self)
 
 class PluginInfo():
     """Class to represent common plugin info"""

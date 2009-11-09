@@ -39,6 +39,4 @@ extern CPluginManager* g_pPluginManager;
  */
 extern set_string_t g_setBlackList;
 
-extern pthread_mutex_t g_pJobsMutex;
-
 #endif

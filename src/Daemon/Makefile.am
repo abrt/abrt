@@ -2,6 +2,7 @@ bin_SCRIPTS = abrt-debuginfo-install
 
 sbin_PROGRAMS = abrtd
 
+# disabled: CommLayerServerSocket.h CommLayerServerSocket.cpp
 abrtd_SOURCES = \
     ABRTPlugin.h ABRTPlugin.cpp \
     PluginManager.h PluginManager.cpp \
@@ -9,7 +10,6 @@ abrtd_SOURCES = \
     MiddleWare.h MiddleWare.cpp \
     CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \
-    CommLayerServerSocket.h CommLayerServerSocket.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Daemon.h Daemon.cpp \
     Settings.h Settings.cpp
@@ -24,13 +24,15 @@ abrtd_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
+    $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(ENABLE_SOCKET_OR_DBUS) \
     -D_GNU_SOURCE
 abrtd_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
-    $(RPM_LIBS)
+    $(RPM_LIBS) \
+    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf

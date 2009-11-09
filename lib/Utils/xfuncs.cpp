@@ -5,6 +5,22 @@
  */
 #include "abrtlib.h"
 
+/* Turn on nonblocking I/O on a fd */
+int ndelay_on(int fd)
+{
+	return fcntl(fd, F_SETFL, fcntl(fd,F_GETFL) | O_NONBLOCK);
+}
+
+int ndelay_off(int fd)
+{
+	return fcntl(fd, F_SETFL, fcntl(fd,F_GETFL) & ~O_NONBLOCK);
+}
+
+int close_on_exec_on(int fd)
+{
+	return fcntl(fd, F_SETFD, FD_CLOEXEC);
+}
+
 // Die if we can't allocate size bytes of memory.
 void* xmalloc(size_t size)
 {
@@ -304,4 +320,51 @@ int is_regular_file(struct dirent *dent, const char *dirname)
 	free(fullname);
 
         return r == 0 && S_ISREG(statbuf.st_mode);
+}
+
+/* Is it "." or ".."? */
+/* abrtlib candidate */
+bool dot_or_dotdot(const char *filename)
+{
+    if (filename[0] != '.') return false;
+    if (filename[1] == '\0') return true;
+    if (filename[1] != '.') return false;
+    if (filename[2] == '\0') return true;
+    return false;
+}
+
+/* Find out if the last character of a string matches the one given.
+ * Don't underrun the buffer if the string length is 0.
+ */
+char *last_char_is(const char *s, int c)
+{
+	if (s && *s) {
+		s += strlen(s) - 1;
+		if ((unsigned char)*s == c)
+			return (char*)s;
+	}
+	return NULL;
+}
+
+std::string concat_path_file(const char *path, const char *filename)
+{
+	char *lc;
+
+	while (*filename == '/')
+		filename++;
+	lc = last_char_is(path, '/');
+	return ssprintf("%s%s%s", path, (lc==NULL ? "/" : ""), filename);
+}
+
+bool string_to_bool(const char *s)
+{
+	if (s[0] == '1' && s[1] == '\0')
+		return true;
+	if (strcasecmp(s, "on") == 0)
+		return true;
+	if (strcasecmp(s, "yes") == 0)
+		return true;
+	if (strcasecmp(s, "true") == 0)
+		return true;
+	return false;
 }

@@ -118,7 +118,8 @@ void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, co
     ExecMailx(atoi(pUID.c_str()), pText);
 }
 
-std::string CMailx::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CMailx::Report(const map_crash_report_t& pCrashReport, 
+                           const map_plugin_settings_t& pSettings, const std::string& pArgs)
 {
     update_client(_("Creating a report..."));
 
@@ -218,16 +219,14 @@ void CMailx::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CMailx::GetSettings()
+const map_plugin_settings_t& CMailx::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["Subject"] = m_sSubject;
+    m_pSettings["EmailFrom"] = m_sEmailFrom;
+    m_pSettings["EmailTo"] = m_sEmailTo;
+    m_pSettings["SendBinaryData"] = m_bSendBinaryData ? "yes" : "no";
 
-    ret["Subject"] = m_sSubject;
-    ret["EmailFrom"] = m_sEmailFrom;
-    ret["EmailTo"] = m_sEmailTo;
-    ret["SendBinaryData"] = m_bSendBinaryData ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
 PLUGIN_INFO(REPORTER,

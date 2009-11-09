@@ -26,91 +26,70 @@
 
 #include "abrtlib.h"
 #include "KerneloopsSysLog.h"
-
-#include <list>
 #include <assert.h>
 
-/*
- * This limits the number of oopses we'll submit per session;
- * it's important that this is bounded to avoid feedback loops
- * for the scenario where submitting an oopses causes a warning/oops
- */
-#define MAX_OOPS 16
+static void queue_oops(vector_string_t &vec, const char *data, const char *version)
+{
+        vec.push_back(ssprintf("%s\n%s", version, data));
+}
 
+/*
+ * extract_version tries to find the kernel version in given data
+ */
+static int extract_version(const char *linepointer, char *version)
+{
+	int ret;
+
+	ret = 0;
+	if ((strstr(linepointer, "Pid") != NULL)
+	 || (strstr(linepointer, "comm") != NULL)
+	 || (strstr(linepointer, "CPU") != NULL)
+	 || (strstr(linepointer, "REGS") != NULL)
+	 || (strstr(linepointer, "EFLAGS") != NULL)
+	) {
+		char* start;
+		char* end;
+
+		start = strstr((char*)linepointer, "2.6.");
+		if (start) {
+			end = strchrnul(start, ' ');
+			strncpy(version, start, end-start);
+			ret = 1;
+		}
+	}
+
+	if (!ret)
+		strncpy(version, "undefined", 9);
+
+	return ret;
+}
+
+/*
+ * extract_oops tries to find oops signatures in a log
+ */
 struct line_info {
 	char *ptr;
 	char level;
 };
-
-static struct line_info *lines_info;
-static int lines_info_alloc;
-static int linecount;
-
 #define REALLOC_CHUNK 1000
-
-static int set_line_info(int index, char *linepointer, char linelevel)
+int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 {
-	if (index >= lines_info_alloc) {
-		struct line_info *new_info;
-		new_info = (line_info*)realloc(lines_info,
-				(lines_info_alloc + REALLOC_CHUNK) * sizeof(struct line_info));
-		if (!new_info)
-			return -1;
-		lines_info_alloc += REALLOC_CHUNK;
-		lines_info = new_info;
-	}
-
-	lines_info[index].ptr = linepointer;
-	lines_info[index].level = linelevel;
-	return 0;
-}
-
-CSysLog::CSysLog() :
-	m_nFoundOopses(0)
-{}
-
-void CSysLog::QueueOops(char *data, char *version)
-{
-	COops m_NewOops;
-
-	if (m_nFoundOopses > MAX_OOPS)
-		return;
-
-	m_NewOops.m_sData = data;
-	m_NewOops.m_sVersion = version;
-
-	m_OopsQueue.push_back(m_NewOops);
-	m_nFoundOopses++;
-}
-
-void CSysLog::ClearOopsList()
-{
-	m_OopsQueue.clear();
-}
-
-const std::list<COops>& CSysLog::GetOopsList()
-{
-	return m_OopsQueue;
-}
-
-/*
- * This function splits the dmesg buffer data into lines
- * (null terminated).
- */
-int CSysLog::FillLinePointers(char *buffer, size_t buflen)
-{
-	char *c, *linepointer, linelevel;
+	char *c;
 	enum { maybe, no, yes } syslog_format = maybe;
-	linecount = 0;
+	int linecount = 0;
+	int lines_info_alloc = 0;
+	struct line_info *lines_info = NULL;
 
-	if (!buflen)
-		return 0;
-	buffer[buflen - 1] = '\n';  /* the buffer usually ends with \n, but let's make sure */
+	/* Split buffer into lines */
+
+	if (buflen != 0)
+		buffer[buflen - 1] = '\n';  /* the buffer usually ends with \n, but let's make sure */
 	c = buffer;
 	while (c < buffer + buflen) {
-		char v;
+		char v, linelevel;
 		int len = 0;
 		char *c9;
+		char *linepointer;
 
 		c9 = (char*)memchr(c, '\n', buffer + buflen - c); /* a \n will always be found */
 		assert(c9);
@@ -183,67 +162,31 @@ int CSysLog::FillLinePointers(char *buffer, size_t buflen)
 		/* if we see our own marker, we know we submitted everything upto here already */
 		if (len >= 4 && memmem(linepointer, len, "Abrt", 4)) {
 			linecount = 0;
-			lines_info[0].ptr = NULL;
+			lines_info_alloc = 0;
+			free(lines_info);
+			lines_info = NULL;
 		}
-		if (set_line_info(linecount, linepointer, linelevel) < 0)
-			return -1;
+
+		if (linecount >= lines_info_alloc) {
+			lines_info_alloc += REALLOC_CHUNK;
+			lines_info = (line_info*)xrealloc(lines_info,
+					lines_info_alloc * sizeof(struct line_info));
+		}
+		lines_info[linecount].ptr = linepointer;
+		lines_info[linecount].level = linelevel;
 		linecount++;
 next_line:
 		c = c9 + 1;
 	}
-	return 0;
-}
 
-/*
- * extract_version tries to find the kernel version in given data
- */
-int CSysLog::ExtractVersion(char *linepointer, char *version)
-{
-	int ret;
+	/* Analyze lines */
 
-	ret = 0;
-	if ((strstr(linepointer, "Pid") != NULL) ||
-		(strstr(linepointer, "comm") != NULL) ||
-		(strstr(linepointer, "CPU") != NULL) ||
-		(strstr(linepointer, "REGS") != NULL) ||
-		(strstr(linepointer, "EFLAGS") != NULL))
-	{
-		char* start;
-		char* end;
-
-		start = strstr(linepointer, "2.6.");
-		if (start) {
-			end = strchrnul(start, ' ');
-			strncpy(version, start, end-start);
-			ret = 1;
-		}
-	}
-
-	if (!ret)
-		strncpy(version, "undefined", 9);
-
-	return ret;
-}
-
-/*
- * extract_oops tries to find oops signatures in a log
- */
-int CSysLog::ExtractOops(char *buffer, size_t buflen)
-{
 	int i;
 	char prevlevel = 0;
 	int oopsstart = -1;
-	int oopsend;
+	int oopsend = linecount;
 	int inbacktrace = 0;
 	int oopsesfound = 0;
-
-	lines_info = NULL;
-	lines_info_alloc = 0;
-
-	if (FillLinePointers(buffer, buflen) < 0)
-		goto fail;
-
-	oopsend = linecount;
 
 	i = 0;
 	while (i < linecount) {
@@ -257,36 +200,36 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen)
 			/* find start-of-oops markers */
 			if (strstr(c, "general protection fault:"))
 				oopsstart = i;
-			if (strstr(c, "BUG:"))
+			else if (strstr(c, "BUG:"))
 				oopsstart = i;
-			if (strstr(c, "kernel BUG at"))
+			else if (strstr(c, "kernel BUG at"))
 				oopsstart = i;
-			if (strstr(c, "do_IRQ: stack overflow:"))
+			else if (strstr(c, "do_IRQ: stack overflow:"))
 				oopsstart = i;
-			if (strstr(c, "RTNL: assertion failed"))
+			else if (strstr(c, "RTNL: assertion failed"))
 				oopsstart = i;
-			if (strstr(c, "Eeek! page_mapcount(page) went negative!"))
+			else if (strstr(c, "Eeek! page_mapcount(page) went negative!"))
 				oopsstart = i;
-			if (strstr(c, "near stack overflow (cur:"))
+			else if (strstr(c, "near stack overflow (cur:"))
 				oopsstart = i;
-			if (strstr(c, "double fault:"))
+			else if (strstr(c, "double fault:"))
 				oopsstart = i;
-			if (strstr(c, "Badness at"))
+			else if (strstr(c, "Badness at"))
 				oopsstart = i;
-			if (strstr(c, "NETDEV WATCHDOG"))
+			else if (strstr(c, "NETDEV WATCHDOG"))
 				oopsstart = i;
-			if (strstr(c, "WARNING:") &&
-			    !strstr(c, "appears to be on the same physical disk"))
+			else if (strstr(c, "WARNING:") &&
+				!strstr(c, "appears to be on the same physical disk"))
 				oopsstart = i;
-			if (strstr(c, "Unable to handle kernel"))
+			else if (strstr(c, "Unable to handle kernel"))
 				oopsstart = i;
-			if (strstr(c, "sysctl table check failed"))
+			else if (strstr(c, "sysctl table check failed"))
 				oopsstart = i;
-			if (strstr(c, "------------[ cut here ]------------"))
+			else if (strstr(c, "------------[ cut here ]------------"))
 				oopsstart = i;
-			if (strstr(c, "list_del corruption."))
+			else if (strstr(c, "list_del corruption."))
 				oopsstart = i;
-			if (strstr(c, "list_add corruption."))
+			else if (strstr(c, "list_add corruption."))
 				oopsstart = i;
 			if (strstr(c, "Oops:") && i >= 3)
 				oopsstart = i-3;
@@ -323,26 +266,33 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen)
 			c1 = strstr(lines_info[i].ptr, ">]");
 			c2 = strstr(lines_info[i].ptr, "+0x");
 			c3 = strstr(lines_info[i].ptr, "/0x");
-			if (lines_info[i].ptr[0] == ' ' && lines_info[i].ptr[1] == '[' && lines_info[i].ptr[2] == '<' && c1 && c2 && c3)
+			if (lines_info[i].ptr[0] == ' '
+			 && lines_info[i].ptr[1] == '['
+			 && lines_info[i].ptr[2] == '<'
+			 && c1 && c2 && c3
+			) {
 				inbacktrace = 1;
-		} else
+			}
+		}
 
 		/* try to see if we're at the end of an oops */
-		if (oopsstart >= 0 && inbacktrace > 0) {
+		else if (oopsstart >= 0 && inbacktrace > 0) {
 			char c2, c3;
 			c2 = lines_info[i].ptr[0];
 			c3 = lines_info[i].ptr[1];
 
 			/* line needs to start with " [" or have "] ["*/
-			if ((c2 != ' ' || c3 != '[') &&
-				strstr(lines_info[i].ptr, "] [") == NULL &&
-				strstr(lines_info[i].ptr, "--- Exception") == NULL &&
-				strstr(lines_info[i].ptr, "    LR =") == NULL &&
-				strstr(lines_info[i].ptr, "<#DF>") == NULL &&
-				strstr(lines_info[i].ptr, "<IRQ>") == NULL &&
-				strstr(lines_info[i].ptr, "<EOI>") == NULL &&
-				strstr(lines_info[i].ptr, "<<EOE>>") == NULL)
+			if ((c2 != ' ' || c3 != '[')
+			 && strstr(lines_info[i].ptr, "] [") == NULL
+			 && strstr(lines_info[i].ptr, "--- Exception") == NULL
+			 && strstr(lines_info[i].ptr, "    LR =") == NULL
+			 && strstr(lines_info[i].ptr, "<#DF>") == NULL
+			 && strstr(lines_info[i].ptr, "<IRQ>") == NULL
+			 && strstr(lines_info[i].ptr, "<EOI>") == NULL
+			 && strstr(lines_info[i].ptr, "<<EOE>>") == NULL
+			) {
 				oopsend = i-1;
+			}
 
 			/* oops lines are always more than 8 long */
 			if (strlen(lines_info[i].ptr) < 8)
@@ -381,13 +331,15 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen)
 				is_version = 0;
 				for (q = oopsstart; q <= oopsend; q++) {
 					if (!is_version)
-						is_version = ExtractVersion(lines_info[q].ptr, version);
-					strcat(oops, lines_info[q].ptr);
-					strcat(oops, "\n");
+						is_version = extract_version(lines_info[q].ptr, version);
+					if (lines_info[q].ptr[0]) {
+						strcat(oops, lines_info[q].ptr);
+						strcat(oops, "\n");
+					}
 				}
 				/* too short oopses are invalid */
 				if (strlen(oops) > 100) {
-					QueueOops(oops, version);
+					queue_oops(oopses, oops, version);
 					oopsesfound++;
 				}
 				oopsstart = -1;
@@ -431,13 +383,13 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen)
 		is_version = 0;
 		for (q = oopsstart; q <= oopsend; q++) {
 			if (!is_version)
-				is_version = ExtractVersion(lines_info[q].ptr, version);
+				is_version = extract_version(lines_info[q].ptr, version);
 			strcat(oops, lines_info[q].ptr);
 			strcat(oops, "\n");
 		}
 		/* too short oopses are invalid */
 		if (strlen(oops) > 100) {
-			QueueOops(oops, version);
+			queue_oops(oopses, oops, version);
 			oopsesfound++;
 		}
 		oopsstart = -1;
@@ -446,8 +398,7 @@ int CSysLog::ExtractOops(char *buffer, size_t buflen)
 		free(oops);
 		free(version);
 	}
-fail:
+
 	free(lines_info);
-	lines_info = NULL;
 	return oopsesfound;
 }

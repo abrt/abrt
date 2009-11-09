@@ -1,0 +1,27 @@
+#!/bin/sh
+
+test -f abrt.spec || exit 1
+ABRTVER=`grep ^Version: abrt.spec | head -n1 | sed 's/.* //'`
+
+if ! test -f configure; then
+        echo "Autogenerating configure"
+        ./autogen.sh || { rm -f configure; exit 1; }
+fi
+
+
+T=/tmp/$$_$RANDOM
+test -d "$T" && exit 1
+
+rm -rf BUILDROOT "abrt-$ABRTVER" "abrt-$ABRTVER".tar "abrt-$ABRTVER".tar.gz \
+    abrt*.rpm \
+    2>/dev/null
+
+mkdir -p "$T"/"abrt-$ABRTVER" || exit
+cp -a * "$T"/"abrt-$ABRTVER" || exit
+(cd "$T" && tar -c "abrt-$ABRTVER") >"abrt-$ABRTVER".tar || exit
+rm -rf "$T" || exit
+
+gzip "abrt-$ABRTVER".tar || exit
+
+
+./dbg_rpmbuildlocal -bb abrt.spec 2>&1 | tee -a "$0.log"

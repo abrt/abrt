@@ -23,45 +23,41 @@
 #include <iostream>
 #include <sstream>
 #include <sys/utsname.h>
-#include <magic.h>
+//#include <magic.h>
 #include "abrtlib.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-/* Is it "." or ".."? */
-/* abrtlib candidate */
-static bool dot_or_dotdot(const char *filename)
-{
-    if (filename[0] != '.') return false;
-    if (filename[1] == '\0') return true;
-    if (filename[1] != '.') return false;
-    if (filename[2] == '\0') return true;
-    return false;
-}
-
 static bool isdigit_str(const char *str)
 {
-    while (*str)
+    do
     {
         if (*str < '0' || *str > '9') return false;
         str++;
-    }
+    } while (*str);
     return true;
 }
 
-static std::string RemoveBackSlashes(const std::string& pDir);
+static std::string RemoveBackSlashes(const char *pDir)
+{
+    unsigned len = strlen(pDir);
+    while (len != 0 && pDir[len-1] == '/')
+        len--;
+    return std::string(pDir, len);
+}
+
 static bool ExistFileDir(const char* pPath);
-static void LoadTextFile(const std::string& pPath, std::string& pData);
+static void LoadTextFile(const char *pPath, std::string& pData);
 
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
-    m_bOpened(false),
     m_pGetNextFileDir(NULL),
-    m_nLockfileFD(-1)
+    m_bOpened(false),
+    m_bLocked(false)
 {}
 
-void CDebugDump::Open(const std::string& pDir)
+void CDebugDump::Open(const char *pDir)
 {
     if (m_bOpened)
     {
@@ -70,7 +66,7 @@ void CDebugDump::Open(const std::string& pDir)
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
     if (!ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" does not exist.");
+        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): " + m_sDebugDumpDir + " does not exist.");
     }
     Lock();
     m_bOpened = true;
@@ -96,10 +92,49 @@ static bool ExistFileDir(const char* pPath)
     return false;
 }
 
-static int GetAndSetLock(const char* pLockFile, const char* pPID)
+static bool GetAndSetLock(const char* pLockFile, const char* pPID)
 {
-    int fd;
+    while (symlink(pPID, pLockFile) != 0)
+    {
+        if (errno != EEXIST)
+            perror_msg_and_die("Can't create lock file '%s'", pLockFile);
 
+        char pid_buf[sizeof(pid_t)*3 + 4];
+        ssize_t r = readlink(pLockFile, pid_buf, sizeof(pid_buf) - 1);
+        if (r < 0)
+            perror_msg_and_die("Can't read lock file '%s'", pLockFile);
+        pid_buf[r] = '\0';
+
+        if (strcmp(pid_buf, pPID) == 0)
+        {
+            log("Lock file '%s' is already locked by us", pLockFile);
+            return false;
+        }
+        if (isdigit_str(pid_buf))
+        {
+            if (access(ssprintf("/proc/%s", pid_buf).c_str(), F_OK) == 0)
+            {
+                log("Lock file '%s' is locked by process %s", pLockFile, pid_buf);
+                return false;
+            }
+            log("Lock file '%s' was locked by process %s, but it crashed?", pLockFile, pid_buf);
+        }
+        /* The file may be deleted by now by other process. Ignore ENOENT */
+        if (unlink(pLockFile) != 0 && errno != ENOENT)
+        {
+            perror_msg_and_die("Can't remove stale lock file '%s'", pLockFile);
+        }
+    }
+
+    VERB1 log("Locked '%s'", pLockFile);
+    return true;
+
+#if 0
+/* Old code was using ordinary files instead of symlinks,
+ * but it had a race window between open and write, during which file was
+ * empty. It was seen to happen in practice.
+ */
+    int fd;
     while ((fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640)) < 0)
     {
         if (errno != EEXIST)
@@ -148,20 +183,22 @@ static int GetAndSetLock(const char* pLockFile, const char* pPID)
         /* close(fd); - not needed, exiting does it too */
         perror_msg_and_die("Can't write lock file '%s'", pLockFile);
     }
+    close(fd);
 
     VERB1 log("Locked '%s'", pLockFile);
-    return fd;
+    return true;
+#endif
 }
 
 void CDebugDump::Lock()
 {
-    if (m_nLockfileFD >= 0)
+    if (m_bLocked)
         error_msg_and_die("Locking bug on '%s'", m_sDebugDumpDir.c_str());
 
     std::string lockFile = m_sDebugDumpDir + ".lock";
     char pid_buf[sizeof(int)*3 + 2];
     sprintf(pid_buf, "%u", (unsigned)getpid());
-    while ((m_nLockfileFD = GetAndSetLock(lockFile.c_str(), pid_buf)) < 0)
+    while ((m_bLocked = GetAndSetLock(lockFile.c_str(), pid_buf)) != true)
     {
         usleep(500000);
     }
@@ -169,27 +206,26 @@ void CDebugDump::Lock()
 
 void CDebugDump::UnLock()
 {
-    if (m_nLockfileFD >= 0)
+    if (m_bLocked)
     {
+        m_bLocked = false;
         std::string lockFile = m_sDebugDumpDir + ".lock";
-        close(m_nLockfileFD);
-        m_nLockfileFD = -1;
         xunlink(lockFile.c_str());
         VERB1 log("UnLocked '%s'", lockFile.c_str());
     }
 }
 
-void CDebugDump::Create(const std::string& pDir, uid_t uid)
+void CDebugDump::Create(const char *pDir, int64_t uid)
 {
     if (m_bOpened)
     {
-        throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
+        throw CABRTException(EXCEP_ERROR, "DebugDump is already opened");
     }
 
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
     if (ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): "+m_sDebugDumpDir+" already exists.");
+        throw CABRTException(EXCEP_DD_OPEN, ssprintf("'%s' already exists", m_sDebugDumpDir.c_str()));
     }
 
     Lock();
@@ -199,13 +235,13 @@ void CDebugDump::Create(const std::string& pDir, uid_t uid)
     {
         UnLock();
         m_bOpened = false;
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot create dir: " + pDir);
+        throw CABRTException(EXCEP_DD_OPEN, ssprintf("Can't create dir '%s'", pDir));
     }
     if (chmod(m_sDebugDumpDir.c_str(), 0700) == -1)
     {
         UnLock();
         m_bOpened = false;
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::Create(): Cannot change permissions, dir: " + pDir);
+        throw CABRTException(EXCEP_DD_OPEN, ssprintf("Can't change mode of '%s'", pDir));
     }
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
@@ -216,14 +252,15 @@ void CDebugDump::Create(const std::string& pDir, uid_t uid)
         perror_msg("can't change '%s' ownership to %u:%u", m_sDebugDumpDir.c_str(), (int)uid, (int)gid);
     }
 
-    SaveText(FILENAME_UID, ssprintf("%u", (int)uid));
+    SaveText(FILENAME_UID, to_string(uid).c_str());
     SaveKernelArchitectureRelease();
-    SaveTime();
+    time_t t = time(NULL);
+    SaveText(FILENAME_TIME, to_string(t).c_str());
 }
 
-static void DeleteFileDir(const std::string& pDir)
+static void DeleteFileDir(const char *pDir)
 {
-    DIR *dir = opendir(pDir.c_str());
+    DIR *dir = opendir(pDir);
     if (!dir)
         return;
 
@@ -232,26 +269,28 @@ static void DeleteFileDir(const std::string& pDir)
     {
         if (dot_or_dotdot(dent->d_name))
             continue;
-        std::string fullPath = pDir + "/" + dent->d_name;
+        std::string fullPath = concat_path_file(pDir, dent->d_name);
         if (unlink(fullPath.c_str()) == -1)
         {
             if (errno != EISDIR)
             {
                 closedir(dir);
-                throw CABRTException(EXCEP_DD_DELETE, std::string(__func__) + ": Cannot remove file: " + fullPath);
+                throw CABRTException(EXCEP_DD_DELETE, ssprintf("Can't remove dir %s", fullPath.c_str()));
             }
-            DeleteFileDir(fullPath);
+            DeleteFileDir(fullPath.c_str());
         }
     }
     closedir(dir);
-    if (remove(pDir.c_str()) == -1)
+    if (remove(pDir) == -1)
     {
-        throw CABRTException(EXCEP_DD_DELETE, std::string(__func__) + ": Cannot remove dir: " + pDir);
+        throw CABRTException(EXCEP_DD_DELETE, ssprintf("Can't remove dir %s", pDir));
     }
 }
 
-static bool IsTextFile(const std::string& pName)
+static bool IsTextFile(const char *name)
 {
+/* This idiotic library thinks that file containing just "0" is not text (!!)
+
     magic_t m = magic_open(MAGIC_MIME_TYPE);
 
     if (m == NULL)
@@ -280,16 +319,24 @@ static bool IsTextFile(const std::string& pName)
     magic_close(m);
 
     return isText;
-}
+ */
+    int fd = open(name, O_RDONLY);
+    if (fd < 0)
+        return false;
 
-static std::string RemoveBackSlashes(const std::string& pDir)
-{
-    std::string ret = pDir;
-    while (ret[ret.length() - 1] == '/')
+    unsigned char buf[4*1024];
+    int r = full_read(fd, buf, sizeof(buf));
+    close(fd);
+
+    while (--r >= 0)
     {
-        ret = ret.substr(0, ret.length() - 2);
+        if (buf[r] >= 0x7f)
+            return false;
+        /* Among control chars, only '\t','\n' etc are allowed */
+        if (buf[r] < ' ' && !isspace(buf[r]))
+            return false;
     }
-    return ret;
+    return true;
 }
 
 void CDebugDump::Delete()
@@ -298,7 +345,7 @@ void CDebugDump::Delete()
     {
         return;
     }
-    DeleteFileDir(m_sDebugDumpDir);
+    DeleteFileDir(m_sDebugDumpDir.c_str());
 }
 
 void CDebugDump::Close()
@@ -322,100 +369,47 @@ void CDebugDump::SaveKernelArchitectureRelease()
     }
     std::string release;
     LoadTextFile("/etc/redhat-release", release);
-    SaveText(FILENAME_RELEASE, release);
+    const char *release_ptr = release.c_str();
+    unsigned len_1st_str = strchrnul(release_ptr, '\n') - release_ptr;
+    release.erase(len_1st_str); /* usually simply removes trailing '\n' */
+    SaveText(FILENAME_RELEASE, release.c_str());
 }
 
-void CDebugDump::SaveTime()
+static void LoadTextFile(const char *pPath, std::string& pData)
 {
-    time_t t = time(NULL);
-    SaveText(FILENAME_TIME, to_string(t));
-}
-
-static void LoadTextFile(const std::string& pPath, std::string& pData)
-{
-    std::ifstream fIn;
+    FILE *fp = fopen(pPath, "r");
+    if (!fp)
+    {
+        throw CABRTException(EXCEP_DD_LOAD, ssprintf("Can't open file '%s'", pPath));
+    }
     pData = "";
-    fIn.open(pPath.c_str());
-    if (fIn.is_open())
+    int ch;
+    while ((ch = fgetc(fp)) != EOF)
     {
-        // TODO: rewrite this
-        int ch;
-        while ((ch = fIn.get())!= EOF)
+        if (ch == '\0')
         {
-            if (ch == 0)
-            {
-                pData += " ";
-            }
-            else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
-            {
-                pData += ch;
-            }
+            pData += ' ';
         }
-        fIn.close();
+        else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
+        {
+            pData += ch;
+        }
     }
-    else
-    {
-        throw CABRTException(EXCEP_DD_LOAD, std::string(__func__) + ": Cannot open file " + pPath);
-    }
+    fclose(fp);
 }
 
-static void LoadBinaryFile(const std::string& pPath, char** pData, unsigned int* pSize)
+static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize)
 {
-    std::ifstream fIn;
-    fIn.open(pPath.c_str(), std::ios::binary | std::ios::ate);
-    unsigned int size;
-    if (fIn.is_open())
+    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    if (fd < 0)
     {
-        size = fIn.tellg();
-        char *data = new char [size];
-        fIn.read(data, size);
-
-        *pData = data;
-        *pSize = size;
-
-        fIn.close();
+        throw CABRTException(EXCEP_DD_SAVE, ssprintf("Can't open file '%s'", pPath));
     }
-    else
+    unsigned r = full_write(fd, pData, pSize);
+    close(fd);
+    if (r != pSize)
     {
-        throw CABRTException(EXCEP_DD_LOAD, std::string(__func__) + ": Cannot open file " + pPath);
-    }
-}
-
-static void SaveTextFile(const std::string& pPath, const std::string& pData)
-{
-    std::ofstream fOut;
-    fOut.open(pPath.c_str());
-    if (fOut.is_open())
-    {
-        fOut << pData;
-        if (!fOut.good())
-        {
-            throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot save file " + pPath);
-        }
-        fOut.close();
-    }
-    else
-    {
-        throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot open file " + pPath);
-    }
-}
-
-static void SaveBinaryFile(const std::string& pPath, const char* pData, const unsigned pSize)
-{
-    std::ofstream fOut;
-    fOut.open(pPath.c_str(), std::ios::binary);
-    if (fOut.is_open())
-    {
-        fOut.write(pData, pSize);
-        if (!fOut.good())
-        {
-            throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot save file " + pPath);
-        }
-        fOut.close();
-    }
-    else
-    {
-        throw CABRTException(EXCEP_DD_SAVE, std::string(__func__) + ": Cannot open file " + pPath);
+        throw CABRTException(EXCEP_DD_SAVE, ssprintf("Can't save file '%s'", pPath));
     }
 }
 
@@ -425,36 +419,27 @@ void CDebugDump::LoadText(const char* pName, std::string& pData)
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::LoadText(): DebugDump is not opened.");
     }
-    std::string fullPath = m_sDebugDumpDir + "/" + pName;
-    LoadTextFile(fullPath, pData);
-}
-void CDebugDump::LoadBinary(const char* pName, char** pData, unsigned int* pSize)
-{
-    if (!m_bOpened)
-    {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::LoadBinary(): DebugDump is not opened.");
-    }
-    std::string fullPath = m_sDebugDumpDir + "/" + pName;
-    LoadBinaryFile(fullPath, pData, pSize);
+    std::string fullPath = m_sDebugDumpDir + '/' + pName;
+    LoadTextFile(fullPath.c_str(), pData);
 }
 
-void CDebugDump::SaveText(const char* pName, const std::string& pData)
+void CDebugDump::SaveText(const char* pName, const char* pData)
 {
     if (!m_bOpened)
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::SaveText(): DebugDump is not opened.");
     }
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
-    SaveTextFile(fullPath, pData);
+    SaveBinaryFile(fullPath.c_str(), pData, strlen(pData));
 }
-void CDebugDump::SaveBinary(const char* pName, const char* pData, const unsigned int pSize)
+void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize)
 {
     if (!m_bOpened)
     {
         throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::SaveBinary(): DebugDump is not opened.");
     }
     std::string fullPath = m_sDebugDumpDir + "/" + pName;
-    SaveBinaryFile(fullPath, pData, pSize);
+    SaveBinaryFile(fullPath.c_str(), pData, pSize);
 }
 
 void CDebugDump::InitGetNextFile()
@@ -486,17 +471,17 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
     {
         if (is_regular_file(dent, m_sDebugDumpDir.c_str()))
         {
-            std::string fullname = m_sDebugDumpDir + "/" + dent->d_name;
+            std::string fullname = m_sDebugDumpDir + '/' + dent->d_name;
 
             pFileName = dent->d_name;
-            if (IsTextFile(fullname))
+            if (IsTextFile(fullname.c_str()))
             {
                 LoadText(dent->d_name, pContent);
                 pIsTextFile = true;
             }
             else
             {
-                pContent = "";
+                pContent.clear();
                 pIsTextFile = false;
             }
             return true;
@@ -506,4 +491,3 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
     m_pGetNextFileDir = NULL;
     return false;
 }
-

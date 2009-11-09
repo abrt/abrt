@@ -1,15 +1,21 @@
 lib_LTLIBRARIES = libABRTUtils.la
 
+# Not used just yet:
+# time.cpp
+# xconnect.cpp
+
 libABRTUtils_la_SOURCES = \
     xfuncs.cpp \
+    encbase64.cpp \
     read_write.cpp \
     logging.cpp \
     copyfd.cpp \
+    skip_whitespace.cpp \
     CrashTypesSocket.cpp \
     DebugDump.h DebugDump.cpp \
     CommLayerInner.h CommLayerInner.cpp \
     abrt_dbus.h abrt_dbus.cpp \
-    Plugin.h Plugin.cpp \
+    Plugin.h Plugin.cpp make_descr.cpp \
     Polkit.h Polkit.cpp \
     Action.h Database.h Reporter.h Analyzer.h \
     Observer.h \
@@ -31,7 +37,6 @@ libABRTUtils_la_LDFLAGS = \
     $(DL_LIBS) \
     $(DBUS_LIBS)
 libABRTUtils_la_LIBADD = \
-    -lmagic \
     $(POLKIT_LIBS)
 
 install-data-local:

@@ -154,9 +154,12 @@ class MainWindow():
 
     def on_miSettings_clicked(self, widget):
         dialog = SettingsDialog(self.window, self.ccdaemon)
-        dialog.hydrate()
+        try:
+            dialog.hydrate()
+        except Exception, e:
+            gui_error_message(_("Can't show the settings dialog\n%s" % e))
+            return
         dialog.show()
-        self.ccdaemon.getSettings()
 
     def warning_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
@@ -208,9 +211,10 @@ class MainWindow():
             else:
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                                 entry.getTime("%c"), entry.getCount(), entry.isReported(), entry])
-        # activate the last row if any..
+        # activate the first row if any..
         if n:
-            self.dlist.set_cursor(self.dumpsListStore.get_path(n))
+            # we can use (0,) as path for the first row, but what if API changes?
+            self.dlist.set_cursor(self.dumpsListStore.get_path(self.dumpsListStore.get_iter_first()))
 
     def filter_dumps(self, model, miter, data):
         # for later..
@@ -232,7 +236,7 @@ class MainWindow():
             report_label = _("<b>This crash has been reported, you can find the report(s) at:</b>\n")
             for message in dump.getMessage().split('\n'):
                 if message:
-                    if "http" in message or "file:///" in message:
+                    if "http" in message[0:5] or "file:///"[0:8] in message:
                         message = "<a href=\"%s\">%s</a>" % (message, message)
                     report_label += "%s\n" % message
             self.wTree.get_widget("lReported").set_markup(report_label)
@@ -291,7 +295,7 @@ class MainWindow():
         if not report:
             gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
             return
-        report_dialog = ReporterDialog(report, self.ccdaemon)
+        report_dialog = ReporterDialog(report, self.ccdaemon, parent=self.window)
         # (response, report)
         response, result = report_dialog.run()
 

@@ -63,8 +63,8 @@ void LoadOpenGPGPublicKey(const char* key);
  * @param pCrashReport A filled crash report.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t CreateCrashReport(const std::string& pUUID,
-                              const std::string& pUID,
+mw_result_t CreateCrashReport(const char *pUUID,
+                              const char *pUID,
                               int force,
                               map_crash_report_t& pCrashReport);
 /**
@@ -73,15 +73,15 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
  * @param pPluginName An action plugin name.
  * @param pPluginArgs Action plugin's arguments.
  */
-void RunAction(const std::string& pActionDir,
-               const std::string& pPluginName,
-               const std::string& pPluginArgs);
+void RunAction(const char *pActionDir,
+               const char *pPluginName,
+               const char *pPluginArgs);
 /**
  * Activates all action and reporter plugins when any
  * crash occurs.
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  */
-void RunActionsAndReporters(const std::string& pDebugDumpDir);
+void RunActionsAndReporters(const char *pDebugDumpDir);
 /**
  * Reports a crash report to particular receiver. It
  * takes an user uid, tries to find user config file and load it. If it
@@ -93,7 +93,8 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir);
  * @return A report status, which reporters ends successfuly with messages.
  */
 report_status_t Report(const map_crash_report_t& pCrashReport,
-                       const std::string& pUID);
+                       map_map_string_t& pSettings,
+                       const char *pUID);
 /**
  * Get debugdump direcotory. If debugdump is not found
  * in database it will return empty string.
@@ -101,13 +102,13 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
  * @param pUID An UID of an user.
  * @return A debugdump directory.
  */
-std::string getDebugDumpDir( const std::string& pUUID,
-                             const std::string& pUID);
+std::string getDebugDumpDir( const char *pUUID,
+                             const char *pUID);
 /**
  * Deletes particular debugdump directory.
  * @param pDebugDumpDir A debugdump directory.
  */
-void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
+void DeleteDebugDumpDir(const char *pDebugDumpDir);
 /**
  * Deletes a row from database. If a deleting is
  * successfull, it returns a debugdump directort, which is not
@@ -116,14 +117,14 @@ void DeleteDebugDumpDir(const std::string& pDebugDumpDir);
  * @param pUID An UID of an user.
  * @return A debugdump directory.
  */
-std::string DeleteCrashInfo(const std::string& pUUID,
-                            const std::string& pUID);
+std::string DeleteCrashInfo(const char *pUUID,
+                            const char *pUID);
 /**
  * Saves debugdump into database.
  * @param pDebugDumpDir A debugdump directory.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t SaveDebugDump(const std::string& pDebugDumpDir);
+mw_result_t SaveDebugDump(const char *pDebugDumpDir);
 /**
  * Saves debugdump into database. If saving is successful,
  * it fills crash info.
@@ -131,7 +132,7 @@ mw_result_t SaveDebugDump(const std::string& pDebugDumpDir);
  * @param pCrashInfo A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
+mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                           map_crash_info_t& pCrashInfo);
 /**
  * Get one crash info. If getting is successful,
@@ -141,8 +142,8 @@ mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
  * @param pCrashInfo A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t GetCrashInfo(const std::string& pUUID,
-                         const std::string& pUID,
+mw_result_t GetCrashInfo(const char *pUUID,
+                         const char *pUID,
                          map_crash_info_t& pCrashInfo);
 /**
  * Gets all local UUIDs and UIDs of crashes. These crashes
@@ -150,7 +151,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
  * @param pUID an UID of an user.
  * @return A vector of pairs  (local UUID, UID).
  */
-vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
+vector_pair_string_string_t GetUUIDsOfCrash(const char *pUID);
 /**
  * Adds one association among alanyzer plugin and its
  * action and reporter plugins.
@@ -158,17 +159,17 @@ vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID);
  * @param pActionOrReporter A name of an action or reporter plugin.
  * @param pArgs An arguments for action or reporter plugin.
  */
-void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
-                                 const std::string& pActionOrReporter,
-                                 const std::string& pArgs);
+void AddAnalyzerActionOrReporter(const char *pAnalyzer,
+                                 const char *pActionOrReporter,
+                                 const char *pArgs);
 /**
  * Add action and reporter plugins, which are activated
  * when any crash occurs.
  * @param pActionOrReporter A name of an action or reporter plugin.
  * @param pArgs An arguments for action or reporter plugin.
  */
-void AddActionOrReporter(const std::string& pActionOrReporter,
-                         const std::string& pArgs);
+void AddActionOrReporter(const char *pActionOrReporter,
+                         const char *pArgs);
 
 
 #endif /*MIDDLEWARE_H_*/

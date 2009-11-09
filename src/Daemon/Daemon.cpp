@@ -18,10 +18,14 @@
     */
 
 #include <syslog.h>
-#include <sys/inotify.h>
-#include <glib.h>
 #include <pthread.h>
+#include <resolv.h> /* res_init */
 #include <string>
+#include <limits.h>
+#include <sys/inotify.h>
+#include <xmlrpc-c/base.h>
+#include <xmlrpc-c/client.h>
+#include <glib.h>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
@@ -105,24 +109,14 @@ typedef struct cron_callback_data_t
 } cron_callback_data_t;
 
 
-static uint8_t s_sig_caught;
-static GMainLoop* g_pMainloop;
+static uint8_t s_sig_caught; /* must be one byte */
+static int s_signal_pipe[2];
+static int s_signal_pipe_write = -1;
+static unsigned s_timeout;
+static bool s_exiting;
 
 CCommLayerServer* g_pCommLayer;
 
-pthread_mutex_t g_pJobsMutex;
-
-
-/* Is it "." or ".."? */
-/* abrtlib candidate */
-static bool dot_or_dotdot(const char *filename)
-{
-    if (filename[0] != '.') return false;
-    if (filename[1] == '\0') return true;
-    if (filename[1] != '.') return false;
-    if (filename[2] == '\0') return true;
-    return false;
-}
 
 static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL, const char *excluded = NULL)
 {
@@ -171,6 +165,18 @@ static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL
     return size;
 }
 
+static bool analyzer_has_InformAllUsers(const char *analyzer_name)
+{
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
+    if (!analyzer)
+        return false;
+    map_plugin_settings_t settings = analyzer->GetSettings();
+    map_plugin_settings_t::const_iterator it = settings.find("InformAllUsers");
+    if (it == settings.end())
+        return false;
+    return string_to_bool(it->second.c_str());
+}
+
 static void cron_delete_callback_data_cb(gpointer data)
 {
     cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
@@ -182,8 +188,9 @@ static gboolean cron_activation_periodic_cb(gpointer data)
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
     VERB1 log("Activating plugin: %s", cronPeriodicCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
-            cronPeriodicCallbackData->m_sPluginName,
-            cronPeriodicCallbackData->m_sPluginArgs);
+            cronPeriodicCallbackData->m_sPluginName.c_str(),
+            cronPeriodicCallbackData->m_sPluginArgs.c_str()
+    );
     return TRUE;
 }
 static gboolean cron_activation_one_cb(gpointer data)
@@ -191,8 +198,9 @@ static gboolean cron_activation_one_cb(gpointer data)
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
     VERB1 log("Activating plugin: %s", cronOneCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
-            cronOneCallbackData->m_sPluginName,
-            cronOneCallbackData->m_sPluginArgs);
+            cronOneCallbackData->m_sPluginName.c_str(),
+            cronOneCallbackData->m_sPluginArgs.c_str()
+    );
     return FALSE;
 }
 static gboolean cron_activation_reshedule_cb(gpointer data)
@@ -206,7 +214,8 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
                                cronPeriodicCallbackData->m_nTimeout,
                                cron_activation_periodic_cb,
                                static_cast<gpointer>(cronPeriodicCallbackData),
-                               cron_delete_callback_data_cb);
+                               cron_delete_callback_data_cb
+    );
     return FALSE;
 }
 
@@ -232,7 +241,7 @@ static void SetUpMW()
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
     {
-        AddActionOrReporter(it_ar->first, it_ar->second);
+        AddActionOrReporter(it_ar->first.c_str(), it_ar->second.c_str());
     }
     VERB1 log("Adding analyzers, actions or reporters");
     map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
@@ -241,7 +250,7 @@ static void SetUpMW()
         vector_pair_string_string_t::iterator it_ar = it_aar->second.begin();
         for (; it_ar != it_aar->second.end(); it_ar++)
         {
-            AddAnalyzerActionOrReporter(it_aar->first, it_ar->first, it_ar->second);
+            AddAnalyzerActionOrReporter(it_aar->first.c_str(), it_ar->first.c_str(), it_ar->second.c_str());
         }
     }
 }
@@ -322,13 +331,13 @@ static int SetUpCron()
             vector_pair_string_string_t::iterator it_ar = it_c->second.begin();
             for (; it_ar != it_c->second.end(); it_ar++)
             {
-                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, timeout);
+                cron_callback_data_t* cronOneCallbackData = new cron_callback_data_t(it_ar->first, it_ar->second, timeout);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_one_cb,
                                            static_cast<gpointer>(cronOneCallbackData),
                                            cron_delete_callback_data_cb);
-                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t((*it_ar).first, (*it_ar).second, 24 * 60 * 60);
+                cron_callback_data_t* cronResheduleCallbackData = new cron_callback_data_t(it_ar->first, it_ar->second, 24 * 60 * 60);
                 g_timeout_add_seconds_full(G_PRIORITY_DEFAULT,
                                            timeout,
                                            cron_activation_reshedule_cb,
@@ -375,13 +384,12 @@ static void FindNewDumps(const char* pPath)
         map_crash_info_t crashinfo;
         try
         {
-            mw_result_t res;
-            res = SaveDebugDump(*itt, crashinfo);
+            mw_result_t res = SaveDebugDump(itt->c_str(), crashinfo);
             switch (res)
             {
                 case MW_OK:
                     VERB1 log("Saving into database (%s)", itt->c_str());
-                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
                     break;
                 case MW_IN_DB:
                     VERB1 log("Already saved in database (%s)", itt->c_str());
@@ -397,7 +405,7 @@ static void FindNewDumps(const char* pPath)
 //Perhaps corrupted & bad needs to be logged unconditionally,
 //already saved one - only on VERB1
                     VERB1 log("Corrupted, bad or already saved crash, deleting");
-                    DeleteDebugDumpDir(*itt);
+                    DeleteDebugDumpDir(itt->c_str());
                     break;
             }
         }
@@ -407,7 +415,7 @@ static void FindNewDumps(const char* pPath)
             {
                 throw e;
             }
-            error_msg("%s", e.what().c_str());
+            error_msg("%s", e.what());
         }
     }
 }
@@ -453,63 +461,44 @@ static int Lock()
     /* we leak opened lfd intentionally */
 }
 
-static void handle_fatal_signal(int signal)
+static void handle_fatal_signal(int signo)
 {
-    s_sig_caught = signal;
+    s_sig_caught = signo;
+    VERB3 log("Got signal %d", signo);
+    if (s_signal_pipe_write >= 0)
+        write(s_signal_pipe_write, &s_sig_caught, 1);
 }
 
-/* One of our event sources is s_sig_caught when it becomes != 0.
- * glib machinery we need to hook it up to the main loop:
- * prepare():
- * If the source can determine that it is ready here (without waiting
- * for the results of the poll() call) it should return TRUE. It can also
- * return a timeout_ value which should be the maximum timeout (in milliseconds)
- * which should be passed to the poll() call.
- * check():
- * Called after all the file descriptors are polled. The source should
- * return TRUE if it is ready to be dispatched.
- * dispatch():
- * Called to dispatch the event source, after it has returned TRUE
- * in either its prepare or its check function. The dispatch function
- * is passed in a callback function and data. The callback function
- * may be NULL if the source was never connected to a callback using
- * g_source_set_callback(). The dispatch function should
- * call the callback function with user_data and whatever additional
- * parameters are needed for this type of event source.
- */
-static gboolean waitsignal_prepare(GSource *source, gint *timeout_)
+/* Signal pipe handler */
+static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
-    /* We depend on the fact that in Unix, poll() is interrupted
-     * by caught signals (in returns EINTR). Thus we do not need to set
-     * a small timeout here: infinite timeout (-1) works too */
-    *timeout_ = -1;
-    return s_sig_caught != 0;
-}
-static gboolean waitsignal_check(GSource *source)
-{
-    return s_sig_caught != 0;
-}
-static gboolean waitsignal_dispatch(GSource *source, GSourceFunc callback, gpointer user_data)
-{
-    g_main_quit(g_pMainloop);
-    return 1;
+    char signo;
+    gsize len = 0;
+    g_io_channel_read(gio, &signo, 1, &len);
+    if (len == 1)
+    {
+        /* we did receive a signal */
+        VERB3 log("Got signal %d through signal pipe", signo);
+        s_exiting = 1;
+        return TRUE;
+    }
+    return FALSE;
 }
 
 /* Inotify handler */
-static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
+static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
     /* 128 simultaneous actions */
 #define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event) + FILENAME_MAX)*128)
-    GIOError err;
-    char *buf = new char[INOTIFY_BUFF_SIZE];
+    char *buf = (char*)xmalloc(INOTIFY_BUFF_SIZE);
     gsize len;
     gsize i = 0;
     errno = 0;
-    err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
+    GIOError err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
     if (err != G_IO_ERROR_NONE)
     {
         perror_msg("Error reading inotify fd");
-        delete[] buf;
+        free(buf);
         return FALSE;
     }
     /* reconstruct each event and send message to the dbus */
@@ -540,29 +529,34 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
         ) {
             log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir.c_str());
             g_pCommLayer->QuotaExceed(_("Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
-            DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + worst_dir);
+            DeleteDebugDumpDir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
             worst_dir = "";
         }
 
         map_crash_info_t crashinfo;
         try
         {
-            mw_result_t res;
-            res = SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+            std::string fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
+
+            mw_result_t res = SaveDebugDump(fullname.c_str(), crashinfo);
             switch (res)
             {
                 case MW_OK:
-                    log("New crash, saving...");
-                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
-                    /* Send dbus signal */
-                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                    break;
+                    log("New crash, saving");
+                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
+                    /* Fall through to "send dbus signal" */
                 case MW_REPORTED:
                 case MW_OCCURED:
-                    log("Already saved crash, deleting...");
+                    if (res != MW_OK)
+                        log("Already saved crash, just sending dbus signal");
                     /* Send dbus signal */
-                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                    DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                    {
+                        const char *uid_str = analyzer_has_InformAllUsers(crashinfo[CD_MWANALYZER][CD_CONTENT].c_str())
+                            ? NULL
+                            : crashinfo[CD_UID][CD_CONTENT].c_str();
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
+                    }
+                    //DeleteDebugDumpDir(fullname.c_str());
                     break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
@@ -571,29 +565,94 @@ static gboolean handle_event_cb(GIOChannel *gio, GIOCondition condition, gpointe
                 case MW_IN_DB:
                 case MW_FILE_ERROR:
                 default:
-                    log("Corrupted or bad crash, deleting...");
-                    DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                    log("Corrupted or bad crash, deleting");
+                    DeleteDebugDumpDir(fullname.c_str());
                     break;
             }
         }
         catch (CABRTException& e)
         {
-            warn_client(e.what());
+            error_msg(e.what());
             if (e.type() == EXCEP_FATAL)
             {
-                delete[] buf;
+                free(buf);
                 return -1;
             }
         }
         catch (...)
         {
-            delete[] buf;
+            free(buf);
             throw;
         }
     } /* while */
 
-    delete[] buf;
+    free(buf);
     return TRUE;
+}
+
+/* Run main loop with idle timeout.
+ * Basically, almost like glib's g_main_run(loop)
+ */
+static void run_main_loop(GMainLoop* loop)
+{
+    GMainContext *context = g_main_loop_get_context(loop);
+    time_t old_time = 0;
+    time_t dns_conf_hash = 0;
+
+    while (!s_exiting)
+    {
+        /* we have just a handful of sources, 32 should be ample */
+        const unsigned NUM_POLLFDS = 32;
+        GPollFD fds[NUM_POLLFDS];
+        gboolean some_ready;
+        gint max_priority;
+        gint timeout;
+
+        some_ready = g_main_context_prepare(context, &max_priority);
+        if (some_ready)
+            g_main_context_dispatch(context);
+
+        gint nfds = g_main_context_query(context, max_priority, &timeout, fds, NUM_POLLFDS);
+        if (nfds > NUM_POLLFDS)
+            error_msg_and_die("Internal error");
+
+        if (s_timeout)
+            alarm(s_timeout);
+        g_poll(fds, nfds, timeout);
+        if (s_timeout)
+            alarm(0);
+
+        /* res_init() makes glibc reread /etc/resolv.conf.
+         * I'd think libc should be clever enough to do it itself
+         * at every name resolution attempt, but no...
+         * We need to guess ourself whether we want to do it.
+         */
+        time_t now = time(NULL) >> 2;
+        if (old_time != now) /* check once in 4 seconds */
+        {
+            old_time = now;
+
+            time_t hash = 0;
+            struct stat sb;
+            if (stat("/etc/resolv.conf", &sb) == 0)
+                hash = sb.st_mtime;
+            if (stat("/etc/host.conf", &sb) == 0)
+                hash += sb.st_mtime;
+            if (stat("/etc/hosts", &sb) == 0)
+                hash += sb.st_mtime;
+            if (stat("/etc/nsswitch.conf", &sb) == 0)
+                hash += sb.st_mtime;
+            if (dns_conf_hash != hash)
+            {
+                dns_conf_hash = hash;
+                res_init();
+            }
+        }
+
+        some_ready = g_main_context_check(context, max_priority, fds, nfds);
+        if (some_ready)
+            g_main_context_dispatch(context);
+    }
 }
 
 static void start_syslog_logging()
@@ -611,23 +670,29 @@ static void start_syslog_logging()
     logmode = LOGMODE_SYSLOG;
 }
 
-static void sanitize_dump_dir_rights()
+static void ensure_root_writable_dir(const char *dir)
 {
     struct stat sb;
 
-    if (mkdir(DEBUG_DUMPS_DIR, 0755) != 0 && errno != EEXIST)
-        perror_msg_and_die("Can't create '%s'", DEBUG_DUMPS_DIR);
-    if (stat(DEBUG_DUMPS_DIR, &sb) != 0 || !S_ISDIR(sb.st_mode))
-        error_msg_and_die("'%s' is not a directory", DEBUG_DUMPS_DIR);
-
-    if (sb.st_uid != 0 || sb.st_gid != 0 || chown(DEBUG_DUMPS_DIR, 0, 0) != 0)
-        perror_msg_and_die("Can't set owner 0:0 on '%s'", DEBUG_DUMPS_DIR);
+    if (mkdir(dir, 0755) != 0 && errno != EEXIST)
+        perror_msg_and_die("Can't create '%s'", dir);
+    if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
+        error_msg_and_die("'%s' is not a directory", dir);
+    if ((sb.st_uid != 0 || sb.st_gid != 0) && chown(dir, 0, 0) != 0)
+        perror_msg_and_die("Can't set owner 0:0 on '%s'", dir);
     /* We can't allow anyone to create dumps: otherwise users can flood
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
-    /* 00777 bits are usual "rwx" access rights */
-    if ((sb.st_mode & 07777) != 0755 && chmod(DEBUG_DUMPS_DIR, 0755) != 0)
-        perror_msg_and_die("Can't set mode rwxr-xr-x on '%s'", DEBUG_DUMPS_DIR);
+    /* 00777 bits are usual "rwxrwxrwx" access rights */
+    if ((sb.st_mode & 07777) != 0755 && chmod(dir, 0755) != 0)
+        perror_msg_and_die("Can't set mode rwxr-xr-x on '%s'", dir);
+}
+
+static void sanitize_dump_dir_rights()
+{
+    ensure_root_writable_dir(DEBUG_DUMPS_DIR);
+    ensure_root_writable_dir(DEBUG_DUMPS_DIR"-di"); /* debuginfo cache */
+    ensure_root_writable_dir(VAR_RUN"/abrt"); /* temp dir */
 }
 
 int main(int argc, char** argv)
@@ -643,8 +708,10 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
-    while ((opt = getopt(argc, argv, "dsv")) != -1)
+    while ((opt = getopt(argc, argv, "dsvt:")) != -1)
     {
+        unsigned long ul;
+
         switch (opt)
         {
         case 'd':
@@ -656,20 +723,32 @@ int main(int argc, char** argv)
         case 'v':
             g_verbose++;
             break;
+        case 't':
+            char *end;
+            errno = 0;
+            s_timeout = ul = strtoul(optarg, &end, 0);
+            if (errno == 0 && *end == '\0' && ul <= INT_MAX)
+                break;
+            /* fall through to error */
         default:
             error_msg_and_die(
                 "Usage: abrtd [-dv]\n"
-        	"\nOptions:"
+                "\nOptions:"
                 "\n\t-d\tDo not daemonize"
                 "\n\t-s\tLog to syslog even with -d"
+                "\n\t-t SEC\tExit after SEC seconds of inactivity"
                 "\n\t-v\tVerbose"
             );
         }
     }
 
     msg_prefix = "abrtd: "; /* for log(), error_msg() and such */
+
+    xpipe(s_signal_pipe);
     signal(SIGTERM, handle_fatal_signal);
-    signal(SIGINT, handle_fatal_signal);
+    signal(SIGINT,  handle_fatal_signal);
+    if (s_timeout)
+        signal(SIGALRM, handle_fatal_signal);
 
     /* Daemonize unless -d */
     if (daemonize)
@@ -705,7 +784,9 @@ int main(int argc, char** argv)
             start_syslog_logging();
     }
 
-    GIOChannel* pGio = NULL;
+    GMainLoop* pMainloop = NULL;
+    GIOChannel* pGiochannel_inotify = NULL;
+    GIOChannel* pGiochannel_signal = NULL;
     bool lockfile_created = false;
     bool pidfile_created = false;
     CCrashWatcher watcher;
@@ -713,17 +794,24 @@ int main(int argc, char** argv)
     /* Initialization */
     try
     {
-        pthread_mutex_init(&g_pJobsMutex, NULL); /* never fails */
         init_daemon_logging(&watcher);
+
+        VERB1 log("Initializing XML-RPC library");
+        xmlrpc_env env;
+        xmlrpc_env_init(&env);
+        xmlrpc_client_setup_global_const(&env);
+        if (env.fault_occurred)
+            error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
         VERB1 log("Creating glib main loop");
-        g_pMainloop = g_main_loop_new(NULL, FALSE);
+        pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         VERB1 log("Initializing inotify");
-        /*FIXME: python hook runs with ordinary user privileges,
-        so it fails if everyone doesn't have write acces
-        to DEBUG_DUMPS_DIR
-        */
-        //sanitize_dump_dir_rights();
+// Enabled again since we have new abrt-pyhook-helper, remove comment when verified to work
+        /* FIXME: python hook runs with ordinary user privileges,
+         * so it fails if everyone doesn't have write acces
+         * to DEBUG_DUMPS_DIR
+         */
+        sanitize_dump_dir_rights();
         errno = 0;
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
@@ -738,7 +826,7 @@ int main(int argc, char** argv)
         SetUpMW(); /* logging is inside */
         if (SetUpCron() != 0)
             throw 1;
-#ifdef ENABLE_DBUS
+#if 1 //def ENABLE_DBUS
         VERB1 log("Initializing dbus");
         g_pCommLayer = new CCommLayerServerDBus();
 #elif ENABLE_SOCKET
@@ -747,18 +835,12 @@ int main(int argc, char** argv)
         if (g_pCommLayer->m_init_error)
             throw 1;
         VERB1 log("Adding inotify watch to glib main loop");
-        pGio = g_io_channel_unix_new(inotify_fd);
-        g_io_add_watch(pGio, G_IO_IN, handle_event_cb, NULL);
+        pGiochannel_inotify = g_io_channel_unix_new(inotify_fd);
+        g_io_add_watch(pGiochannel_inotify, G_IO_IN, handle_inotify_cb, NULL);
         /* Add an event source which waits for INT/TERM signal */
-        VERB1 log("Adding signal watch to glib main loop");
-        GSourceFuncs waitsignal_funcs;
-        memset(&waitsignal_funcs, 0, sizeof(waitsignal_funcs));
-        waitsignal_funcs.prepare  = waitsignal_prepare;
-        waitsignal_funcs.check    = waitsignal_check;
-        waitsignal_funcs.dispatch = waitsignal_dispatch;
-        /*waitsignal_funcs.finalize = NULL; - already done */
-        GSource *waitsignal_src = (GSource*) g_source_new(&waitsignal_funcs, sizeof(*waitsignal_src));
-        g_source_attach(waitsignal_src, g_main_context_default());
+        VERB1 log("Adding signal pipe watch to glib main loop");
+        pGiochannel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
+        g_io_add_watch(pGiochannel_signal, G_IO_IN, handle_signal_cb, NULL);
         /* Mark the territory */
         VERB1 log("Creating lock file");
         if (Lock() != 0)
@@ -788,17 +870,20 @@ int main(int argc, char** argv)
             start_syslog_logging();
     }
 
+    /* Only now we want signal pipe to work */
+    s_signal_pipe_write = s_signal_pipe[1];
+
     /* Enter the event loop */
     try
     {
         /* This may take a while, therefore we don't do it in init section */
         FindNewDumps(DEBUG_DUMPS_DIR);
         log("Running...");
-        g_main_run(g_pMainloop);
+        run_main_loop(pMainloop);
     }
     catch (CABRTException& e)
     {
-        error_msg("Error: %s", e.what().c_str());
+        error_msg("Error: %s", e.what());
     }
     catch (std::exception& e)
     {
@@ -813,8 +898,12 @@ int main(int argc, char** argv)
         unlink(VAR_RUN_PIDFILE);
     if (lockfile_created)
         unlink(VAR_RUN_LOCK_FILE);
-    if (pGio)
-        g_io_channel_unref(pGio);
+
+    if (pGiochannel_signal)
+        g_io_channel_unref(pGiochannel_signal);
+    if (pGiochannel_inotify)
+        g_io_channel_unref(pGiochannel_inotify);
+
     delete g_pCommLayer;
     if (g_pPluginManager)
     {
@@ -822,13 +911,11 @@ int main(int argc, char** argv)
         g_pPluginManager->UnLoadPlugins();
         delete g_pPluginManager;
     }
-    if (g_pMainloop)
-        g_main_loop_unref(g_pMainloop);
-    if (pthread_mutex_destroy(&g_pJobsMutex) != 0)
-        error_msg("Threading error: job mutex locked");
+    if (pMainloop)
+        g_main_loop_unref(pMainloop);
 
     /* Exiting */
-    if (s_sig_caught)
+    if (s_sig_caught && s_sig_caught != SIGALRM)
     {
         error_msg_and_die("Got signal %d, exiting", s_sig_caught);
         signal(s_sig_caught, SIG_DFL);

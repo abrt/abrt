@@ -1,4 +1,3 @@
-from ABRTExceptions import ConfBackendInitError
 from abrt_utils import _
 
 #FIXME: add some backend factory
@@ -7,6 +6,15 @@ try:
     import gnomekeyring as gkey
 except ImportError, e:
     gkey = None
+
+# Exceptions
+class ConfBackendInitError(Exception):
+    def __init__(self, msg):
+        Exception.__init__(self)
+        self.what = msg
+
+    def __str__(self):
+        return self.what
 
 class ConfBackend(object):
     def __init__(self):
@@ -24,9 +32,14 @@ class ConfBackend(object):
 class ConfBackendGnomeKeyring(ConfBackend):
     def __init__(self):
         ConfBackend.__init__(self)
-        self.default_key_ring = gkey.get_default_keyring_sync()
         if not gkey.is_available():
-            raise ConfBackendInitError(_("Can't connect do Gnome Keyring daemon"))
+            raise ConfBackendInitError(_("Can't connect to Gnome Keyring daemon"))
+        try:
+            self.default_key_ring = gkey.get_default_keyring_sync()
+        except:
+            # could happen if keyring daemon is running, but we run gui under
+            # user who is not owner is the running session - using su
+            raise ConfBackendInitError(_("Can't get default keyring"))
 
     def save(self, name, settings):
         settings_tmp = settings.copy()
@@ -36,7 +49,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
         item_list = []
         try:
             item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, {"AbrtPluginInfo":str(name)})
-        except gkey.NoMatchError, ex:
+        except gkey.NoMatchError:
             # nothing found
             pass
 
@@ -59,7 +72,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
         item_list = None
         try:
             item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, {"AbrtPluginInfo":str(name)})
-        except gkey.NoMatchError, ex:
+        except gkey.NoMatchError:
             # nothing found
             pass
 

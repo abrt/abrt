@@ -29,41 +29,41 @@
 #define COMMAND     0
 #define FILENAME    1
 
-void CActionRunApp::ParseArgs(const std::string& psArgs, vector_string_t& pArgs)
+/* TODO: do not duplicate: SOSreport.cpp has same function too */
+static void ParseArgs(const char *psArgs, vector_string_t& pArgs)
 {
-    unsigned int ii;
+    unsigned ii;
     bool is_quote = false;
-    std::string item = "";
-    for (ii = 0; ii < psArgs.length(); ii++)
+    std::string item;
+
+    for (ii = 0; psArgs[ii]; ii++)
     {
-        if (psArgs[ii] == '\"')
+        if (psArgs[ii] == '"')
         {
-            is_quote = is_quote == true ? false : true;
+            is_quote = !is_quote;
         }
         else if (psArgs[ii] == ',' && !is_quote)
         {
             pArgs.push_back(item);
-            item = "";
+            item.clear();
         }
         else
         {
             item += psArgs[ii];
         }
     }
-    if (item != "")
+
+    if (item.size() != 0)
     {
         pArgs.push_back(item);
     }
 }
 
-void CActionRunApp::Run(const std::string& pActionDir,
-                        const std::string& pArgs)
+void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
 {
     update_client(_("Executing RunApp plugin..."));
 
-    char line[1024];
-    std::string output = "";
-
+    std::string output;
     vector_string_t args;
 
     ParseArgs(pArgs, args);
@@ -71,8 +71,9 @@ void CActionRunApp::Run(const std::string& pActionDir,
     FILE *fp = popen(args[COMMAND].c_str(), "r");
     if (fp == NULL)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CActionRunApp::Run(): cannot execute " + args[COMMAND]);
+        throw CABRTException(EXCEP_PLUGIN, "Can't execute " + args[COMMAND]);
     }
+    char line[1024];
     while (fgets(line, 1024, fp) != NULL)
     {
         output += line;
@@ -83,7 +84,7 @@ void CActionRunApp::Run(const std::string& pActionDir,
     {
         CDebugDump dd;
         dd.Open(pActionDir);
-        dd.SaveText(args[FILENAME].c_str(), output);
+        dd.SaveText(args[FILENAME].c_str(), output.c_str());
     }
 }
 

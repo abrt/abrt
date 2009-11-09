@@ -1,4 +1,4 @@
-AC_INIT([abrt], [0.0.10], [jmoskovc@redhat.com])
+AC_INIT([abrt], [0.0.11], [jmoskovc@redhat.com])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -28,8 +28,8 @@ PKG_CHECK_MODULES([RPM], [rpm])
 PKG_CHECK_MODULES([CURL], [libcurl])
 PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 PKG_CHECK_MODULES([NSS], [nss])
-PKG_CHECK_MODULES([XMLRPC_CPP], [xmlrpc++])
-PKG_CHECK_MODULES([XMLRPC_CLIENT_CPP], [xmlrpc_client++])
+PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
+PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
 PKG_CHECK_MODULES([POLKIT],[polkit-gobject-1])
 PKG_CHECK_MODULES([ZIP],[libzip])
 
@@ -38,10 +38,6 @@ AC_CHECK_HEADER([libtar.h], [],
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])
-
-AC_CHECK_HEADER([magic.h], [],
-   [AC_MSG_ERROR([magic.h is needed to build abrt])])
-
 
 CONF_DIR='${sysconfdir}/${PACKAGE_NAME}'
 VAR_RUN='${localstatedir}/run'

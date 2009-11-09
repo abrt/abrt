@@ -28,7 +28,7 @@
 static DBusMessage* new_signal_msg(const char* member, const char* peer = NULL)
 {
     /* path, interface, member name */
-    DBusMessage* msg = dbus_message_new_signal(CC_DBUS_PATH, CC_DBUS_IFACE, member);
+    DBusMessage* msg = dbus_message_new_signal(ABRTD_DBUS_PATH, ABRTD_DBUS_IFACE, member);
     if (!msg)
         die_out_of_memory();
     /* Send unicast dbus signal if peer is known */
@@ -46,16 +46,24 @@ static void send_flush_and_unref(DBusMessage* msg)
 }
 
 /* Notify the clients (UI) about a new crash */
-void CCommLayerServerDBus::Crash(const std::string& progname, const std::string& uid)
+void CCommLayerServerDBus::Crash(const char *progname, const char *uid_str)
 {
     DBusMessage* msg = new_signal_msg("Crash");
-    const char* c_progname = progname.c_str();
-    const char* c_uid = uid.c_str();
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &c_progname,
-            DBUS_TYPE_STRING, &c_uid,
-            DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal Crash('%s','%s')", c_progname, c_uid);
+    if (uid_str)
+    {
+        dbus_message_append_args(msg,
+                DBUS_TYPE_STRING, &progname,
+                DBUS_TYPE_STRING, &uid_str,
+                DBUS_TYPE_INVALID);
+        VERB2 log("Sending signal Crash('%s','%s')", progname, uid_str);
+    }
+    else
+    {
+        dbus_message_append_args(msg,
+                DBUS_TYPE_STRING, &progname,
+                DBUS_TYPE_INVALID);
+        VERB2 log("Sending signal Crash('%s')", progname);
+    }
     send_flush_and_unref(msg);
 }
 
@@ -127,7 +135,7 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
 static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 {
     long unix_uid = get_remote_uid(call);
-    vector_crash_infos_t argout1 = GetCrashInfos(to_string(unix_uid));
+    vector_crash_infos_t argout1 = GetCrashInfos(to_string(unix_uid).c_str());
 
     DBusMessageIter iter;
     dbus_message_iter_init_append(reply, &iter);
@@ -246,16 +254,14 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         }
     }
 
-    const char * sender = dbus_message_get_sender(call);
+    //const char * sender = dbus_message_get_sender(call);
     if (!user_conf_data.empty())
     {
         std::string PluginName;
-        map_plugin_settings_t plugin_settings;
         map_map_string_t::const_iterator it_user_conf_data = user_conf_data.begin();
         for (; it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
         {
             PluginName = it_user_conf_data->first;
-            plugin_settings = it_user_conf_data->second;
 #if DEBUG
             std::cout << "plugin name: " << it_user_conf_data->first;
             map_string_t::const_iterator it_plugin_config;
@@ -266,21 +272,21 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
                 std::cout << " key: " << it_plugin_config->first << " value: " << it_plugin_config->second << std::endl;
             }
 #endif
-            g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
+            // this would overwrite the default settings
+            //g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
         }
     }
 
-//so far, user_conf_data is unused
     long unix_uid = get_remote_uid(call);
     report_status_t argout1;
     try
     {
-        argout1 = Report(argin1, to_string(unix_uid));
+        argout1 = Report(argin1, user_conf_data, to_string(unix_uid).c_str());
     }
     catch (CABRTException &e)
     {
         dbus_message_unref(reply);
-        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, e.what().c_str());
+        reply = dbus_message_new_error(call, DBUS_ERROR_FAILED, e.what());
         if (!reply)
             die_out_of_memory();
         send_flush_and_unref(reply);
@@ -309,7 +315,7 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid));
+    bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid).c_str());
 
     dbus_message_append_args(reply,
                 DBUS_TYPE_BOOLEAN, &argout1,
@@ -377,7 +383,12 @@ static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
     long unix_uid = get_remote_uid(call);
     VERB1 log("got %s('%s',...) call from uid %ld", "SetPluginSettings", PluginName.c_str(), unix_uid);
-    g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
+    /* Disabled, as we don't use it, we use only temporary user settings while reporting
+       this method should be used to change the default setting and thus should
+       be protected by polkit
+   */
+   //FIXME: protect with polkit
+//    g_pPluginManager->SetPluginSettings(PluginName, to_string(unix_uid), plugin_settings);
 
     send_flush_and_unref(reply);
     return 0;
@@ -534,7 +545,7 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
     error_msg_and_die(
             "Error requesting DBus name %s, possible reasons: "
             "abrt run by non-root; dbus config is incorrect",
-            CC_DBUS_NAME);
+            ABRTD_DBUS_NAME);
 }
 
 CCommLayerServerDBus::CCommLayerServerDBus()
@@ -550,7 +561,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     attach_dbus_conn_to_glib_main_loop(conn, "/com/redhat/abrt", message_received);
 
     VERB3 log("dbus_bus_request_name");
-    int rc = dbus_bus_request_name(conn, CC_DBUS_NAME, DBUS_NAME_FLAG_REPLACE_EXISTING, &err);
+    int rc = dbus_bus_request_name(conn, ABRTD_DBUS_NAME, DBUS_NAME_FLAG_REPLACE_EXISTING, &err);
 //maybe check that r == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER instead?
     handle_dbus_err(rc < 0, &err);
     VERB3 log("dbus init done");

@@ -29,45 +29,28 @@
 #include "Reporter.h"
 #include "CrashTypes.h"
 
-typedef std::string string;
-
 class CTicketUploader : public CReporter
 {
     private:
-    string m_sCustomer;
-    string m_sTicket;
-    string m_sURL;
-    bool   m_bEncrypt;
-    bool   m_bUpload;
+        std::string m_sCustomer;
+        std::string m_sTicket;
+        std::string m_sURL;
+        bool m_bEncrypt;
+        bool m_bUpload;
+        int m_nRetryCount;
+        int m_nRetryDelay;
 
-    int m_nRetryCount;
-    int m_nRetryDelay;
-
-    void Error(string func, string msg);
-    void CopyFile(const std::string& pSourceName, const std::string& pDestName);
-    // Wrappers around popen/system
-    // the wrapper in each case handles errors,
-    // and converts from string->char*
-    // RunCommand - a wrapper around system(cmd)
-    void   RunCommand(string cmd);
-    // ReadCommand - a wrapper around popen(cmd,"r")
-    string ReadCommand(string cmd);
-    // WriteCommand  - a wrapper around popen(cmd,"w")
-    void   WriteCommand(string cmd, string input );
-
-    void SendFile(const std::string& pURL,
-                  const std::string& pFilename);
+        void SendFile(const char *pURL, const char *pFilename);
 
     public:
         CTicketUploader();
         virtual ~CTicketUploader();
-        virtual map_plugin_settings_t GetSettings();
+        virtual const map_plugin_settings_t& GetSettings();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 
-        virtual string Report(const map_crash_report_t& pCrashReport,
+        virtual std::string Report(const map_crash_report_t& pCrashReport,
+                              const map_plugin_settings_t& pSettings,
                               const std::string& pArgs);
-
-
 };
 
-#endif /* TICKETUPLOADER_H_ */
+#endif

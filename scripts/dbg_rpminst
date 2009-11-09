@@ -1,0 +1,23 @@
+#!/bin/sh
+
+while rpm -qa | grep abrt >/dev/null; do
+    rpm -qa | grep abrt | while read package; do
+	echo "$package: rpm -e `basename "$package" .rpm`"
+        rpm -e "`basename "$package" .rpm`"
+    done
+done
+
+while true; do
+    r=0
+    for package in *.rpm; do
+        test -f "$package" || continue
+	# Is it installed?
+        rpm -q "`basename "$package" .rpm`" >/dev/null && continue
+	# Try to install, record failure
+	echo "$package: rpm -i `basename "$package" .rpm`"
+	rpm -i "$package" || r=1
+    done
+    test $r = 0 && break
+done
+
+killall -HUP dbus-daemon

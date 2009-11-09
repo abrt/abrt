@@ -25,6 +25,7 @@
 
 #include <string>
 #include <dirent.h>
+#include <stdint.h>
 
 #define FILENAME_ARCHITECTURE       "architecture"
 #define FILENAME_KERNEL             "kernel"
@@ -39,17 +40,17 @@
 #define FILENAME_REASON             "reason"
 #define FILENAME_COMMENT            "comment"
 #define FILENAME_REPRODUCE          "reproduce"
+#define FILENAME_RATING             "rating"
 
 class CDebugDump
 {
     private:
         std::string m_sDebugDumpDir;
-        bool m_bOpened;
         DIR* m_pGetNextFileDir;
-        int m_nLockfileFD;
+        bool m_bOpened;
+        bool m_bLocked;
 
         void SaveKernelArchitectureRelease();
-        void SaveTime();
 
         void Lock();
         void UnLock();
@@ -58,18 +59,17 @@ class CDebugDump
         CDebugDump();
         ~CDebugDump() { Close(); }
 
-        void Open(const std::string& pDir);
-        void Create(const std::string& pDir, uid_t nUID);
+        void Open(const char *pDir);
+        void Create(const char *pDir, int64_t uid);
         void Delete();
         void Close();
 
         bool Exist(const char* pFileName);
 
         void LoadText(const char* pName, std::string& pData);
-        void LoadBinary(const char* pName, char** pData, unsigned int* pSize);
 
-        void SaveText(const char* pName, const std::string& pData);
-        void SaveBinary(const char* pName, const char* pData, const unsigned int pSize);
+        void SaveText(const char* pName, const char *pData);
+        void SaveBinary(const char* pName, const char* pData, unsigned pSize);
 
         void InitGetNextFile();
         bool GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile);

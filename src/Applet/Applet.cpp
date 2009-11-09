@@ -20,6 +20,7 @@
 #include <dbus/dbus-shared.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
+#include <limits.h>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
@@ -48,13 +49,12 @@ static void Crash(DBusMessage* signal)
     dbus_message_iter_init(signal, &in_iter);
     const char* progname;
     r = load_val(&in_iter, progname);
-    if (r != ABRT_DBUS_MORE_FIELDS)
+    /* Optional 2nd param: uid */
+    const char* uid_str = NULL;
+    if (r == ABRT_DBUS_MORE_FIELDS)
     {
-        error_msg("dbus signal %s: parameter type mismatch", __func__);
-        return;
+        r = load_val(&in_iter, uid_str);
     }
-    const char* uid_str;
-    r = load_val(&in_iter, uid_str);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
@@ -63,10 +63,18 @@ static void Crash(DBusMessage* signal)
 
     //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
     //    return;
-    uid_t uid_num = atoi(uid_str);
+//    uid_t uid_num = atol(uid_str);
 
-    if (uid_num != getuid())
-        return;
+    if (uid_str != NULL)
+    {
+        char *end;
+        errno = 0;
+        unsigned long uid_num = strtoul(uid_str, &end, 10);
+        if (errno || *end != '\0' || uid_num != getuid())
+        {
+            return;
+        }
+    }
 
     const char* message = _("A crash in package %s has been detected");
     //applet->AddEvent(uid, progname);
@@ -241,7 +249,7 @@ int main(int argc, char** argv)
         "Problem connecting to dbus, or applet is already running");
 
     /* Show disabled icon if daemon is not running */
-    if (!dbus_bus_name_has_owner(system_conn, CC_DBUS_NAME, &err))
+    if (!dbus_bus_name_has_owner(system_conn, ABRTD_DBUS_NAME, &err))
     {
         const char* msg = _("ABRT service is not running");
         puts(msg);

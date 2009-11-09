@@ -79,7 +79,9 @@ class PluginsSettingsDialog:
                 self.ccdaemon.registerPlugin(plugin.getName())
                 # FIXME: create class plugin and move this into method Plugin.Enable()
                 plugin.Enabled = "yes"
-                plugin.Settings = PluginSettings(self.ccdaemon.getPluginSettings(plugin.getName()))
+                default_settings = self.ccdaemon.getPluginSettings(plugin.getName())
+                plugin.Settings = PluginSettings()
+                plugin.Settings.load(plugin.getName(), default_settings)
             model[path][1] = not model[path][1]
 
     def filter_plugins(self, model, miter, data):

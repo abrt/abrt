@@ -1,28 +1,44 @@
 AM_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 pluginslibdir=$(PLUGINS_LIB_DIR)
-pluginslib_LTLIBRARIES = libCCpp.la \
-                         libMailx.la \
-                         libSQLite3.la \
-                         libLogger.la \
-                         libKerneloopsScanner.la\
-                         libKerneloopsReporter.la\
-                         libKerneloops.la \
-                         libRunApp.la \
-                         libSOSreport.la \
-                         libBugzilla.la \
-                         libTicketUploader.la \
-                         libPython.la \
-                         libFileTransfer.la
+pluginslib_LTLIBRARIES = \
+    libCCpp.la \
+    libMailx.la \
+    libSQLite3.la \
+    libLogger.la \
+    libKerneloopsScanner.la\
+    libKerneloopsReporter.la\
+    libKerneloops.la \
+    libRunApp.la \
+    libSOSreport.la \
+    libBugzilla.la \
+    libCatcut.la \
+    libTicketUploader.la \
+    libPython.la \
+    libFileTransfer.la
 
-dist_pluginslib_DATA = KerneloopsReporter.GTKBuilder Logger.GTKBuilder Mailx.GTKBuilder Bugzilla.GTKBuilder TicketUploader.GTKBuilder
+dist_pluginslib_DATA = \
+    KerneloopsReporter.GTKBuilder Logger.GTKBuilder \
+    Mailx.GTKBuilder Bugzilla.GTKBuilder \
+    TicketUploader.GTKBuilder Catcut.GTKBuilder
 
-pluginsconfdir=$(PLUGINS_CONF_DIR)
-dist_pluginsconf_DATA = CCpp.conf Mailx.conf SQLite3.conf Logger.conf KerneloopsScanner.conf KerneloopsReporter.conf Bugzilla.conf TicketUploader.conf FileTransfer.conf
+pluginsconfdir = $(PLUGINS_CONF_DIR)
+dist_pluginsconf_DATA = \
+    CCpp.conf \
+    Mailx.conf \
+    SQLite3.conf \
+    Logger.conf \
+    Kerneloops.conf \
+    KerneloopsScanner.conf \
+    KerneloopsReporter.conf \
+    Bugzilla.conf \
+    Catcut.conf \
+    TicketUploader.conf \
+    FileTransfer.conf
 
-
-man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7\
-           abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7\
+man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7 \
+           abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7 \
            abrt-SQLite3.7  abrt-RunApp.7 abrt-TicketUploader.7
+# + abrt-Catcut.7
 
 EXTRA_DIST = $(man_MANS)
 
@@ -36,7 +52,11 @@ install-data-hook:
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h
 libCCpp_la_LDFLAGS = -avoid-version
 libCCpp_la_LIBADD = $(NSS_LIBS)
-libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(NSS_CFLAGS)
+libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
+    -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    $(NSS_CFLAGS)
 
 # Kerneloops
 libKerneloops_la_SOURCES = Kerneloops.cpp Kerneloops.h
@@ -57,7 +77,7 @@ libKerneloopsScanner_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -D
 # Mailx
 libMailx_la_SOURCES = Mailx.cpp Mailx.h
 libMailx_la_LDFLAGS = -avoid-version
-libMailx_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libMailx_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" -DLOCALSTATEDIR='"$(localstatedir)"'
 
 # SQLite3
 libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
@@ -80,9 +100,15 @@ libSOSreport_la_LDFLAGS = -avoid-version
 
 # Bugzilla
 libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
-libBugzilla_la_LIBADD = $(XMLRPC_CPP_LIBS) $(XMLRPC_CLIENT_CPP_LIBS) $(NSS_LIBS)
+libBugzilla_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
-libBugzilla_la_CPPFLAGS = $(XMLRPC_CPP_CFLAGS) $(XMLRPC_CLIENT_CPP_CFLAGS) $(NSS_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libBugzilla_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+
+# Catcut
+libCatcut_la_SOURCES = Catcut.h Catcut.cpp
+libCatcut_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
+libCatcut_la_LDFLAGS = -avoid-version
+libCatcut_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # TicketUploader
 libTicketUploader_la_SOURCES = TicketUploader.h TicketUploader.cpp

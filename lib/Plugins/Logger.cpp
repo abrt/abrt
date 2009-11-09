@@ -43,99 +43,40 @@ void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-map_plugin_settings_t CLogger::GetSettings()
+const map_plugin_settings_t& CLogger::GetSettings()
 {
-    map_plugin_settings_t ret;
+    m_pSettings["LogPath"] = m_sLogPath;
+    m_pSettings["AppendLogs"] = m_bAppendLogs ? "yes" : "no";
 
-    ret["LogPath"] = m_sLogPath;
-    ret["AppendLogs"] = m_bAppendLogs ? "yes" : "no";
-
-    return ret;
+    return m_pSettings;
 }
 
-std::string CLogger::Report(const map_crash_report_t& pCrashReport, const std::string& pArgs)
+std::string CLogger::Report(const map_crash_report_t& pCrashReport,
+                            const map_plugin_settings_t& pSettings, const std::string& pArgs)
 {
     update_client(_("Creating a report..."));
 
-    std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
-    std::ofstream fOut;
+    std::string description = make_description_logger(pCrashReport);
+    description += "\n\n\n";
 
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
-    {
-        if (it->second[CD_TYPE] == CD_TXT)
-        {
-            if (it->first !=  CD_UUID &&
-                it->first !=  FILENAME_ARCHITECTURE &&
-                it->first !=  FILENAME_KERNEL &&
-                it->first !=  FILENAME_PACKAGE)
-            {
-                additionalFiles << it->first << std::endl;
-                additionalFiles << "-----" << std::endl;
-                additionalFiles << it->second[CD_CONTENT] << std::endl << std::endl;
-            }
-            else if (it->first == CD_UUID)
-            {
-                UUIDFile << it->first << std::endl;
-                UUIDFile << "-----" << std::endl;
-                UUIDFile << it->second[CD_CONTENT] << std::endl << std::endl;
-            }
-            else
-            {
-                commonFiles << it->first << std::endl;
-                commonFiles << "-----" << std::endl;
-                commonFiles << it->second[CD_CONTENT] << std::endl << std::endl;
-            }
-        }
-        if (it->second[CD_TYPE] == CD_ATT)
-        {
-            bigTextFiles << it->first << std::endl;
-            bigTextFiles << "-----" << std::endl;
-            bigTextFiles << it->second[CD_CONTENT] << std::endl << std::endl;
-        }
-        if (it->second[CD_TYPE] == CD_BIN)
-        {
-            binaryFiles << it->first << std::endl;
-            binaryFiles << "-----" << std::endl;
-            binaryFiles << it->second[CD_CONTENT] << std::endl << std::endl;
-        }
-    }
-
-
+    FILE *fOut;
     if (m_bAppendLogs)
     {
-        fOut.open(m_sLogPath.c_str(), std::ios::app);
+        fOut = fopen(m_sLogPath.c_str(), "a");
     }
     else
     {
-        fOut.open(m_sLogPath.c_str());
+        fOut = fopen(m_sLogPath.c_str(), "w");
     }
-    if (fOut.is_open())
-    {
 
-        fOut << "Duplicity check" << std::endl;
-        fOut << "======" << std::endl << std::endl;
-        fOut << UUIDFile.str() << std::endl;
-        fOut << "Common information" << std::endl;
-        fOut << "======" << std::endl << std::endl;
-        fOut << commonFiles.str() << std::endl;
-        fOut << "Additional information" << std::endl;
-        fOut << "======" << std::endl << std::endl;
-        fOut << additionalFiles.str() << std::endl;
-        fOut << "Big Text Files" << std::endl;
-        fOut << "======" << std::endl;
-        fOut << bigTextFiles.str() << std::endl;
-        fOut << "Binary files" << std::endl;
-        fOut << "======" << std::endl;
-        fOut << binaryFiles.str() << std::endl;
-        fOut << std::endl;
-        fOut.close();
-    }
-    else
+    if (fOut)
     {
-        throw CABRTException(EXCEP_PLUGIN, "CLogger::Report(): Cannot open file: " + m_sLogPath);
+        fputs(description.c_str(), fOut);
+        fclose(fOut);
+        return "file://" + m_sLogPath;
     }
-    return "file://" + m_sLogPath;
+
+    throw CABRTException(EXCEP_PLUGIN, "CLogger::Report(): Cannot open file: " + m_sLogPath);
 }
 
 PLUGIN_INFO(REPORTER,

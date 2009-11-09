@@ -18,6 +18,6 @@
 #ifndef ABRT_CLI_RUN_COMMAND_H
 #define ABRT_CLI_RUN_COMMAND_H
 
-int run_command(const char **argv);
+int run_command(char **argv);
 
 #endif

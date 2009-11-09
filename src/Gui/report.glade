@@ -5,7 +5,6 @@
   <widget class="GtkDialog" id="reporter_dialog">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Report</property>
-    <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
@@ -14,10 +13,12 @@
     <child internal-child="vbox">
       <widget class="GtkVBox" id="dialog-vbox4">
         <property name="visible">True</property>
+        <property name="orientation">vertical</property>
         <property name="spacing">2</property>
         <child>
           <widget class="GtkVBox" id="vbox5">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkLabel" id="label10">
                 <property name="visible">True</property>
@@ -45,14 +46,35 @@
                 <property name="position">1</property>
               </packing>
             </child>
+            <child>
+              <widget class="GtkEventBox" id="ebErrors">
+                <property name="visible">True</property>
+                <child>
+                  <widget class="GtkLabel" id="lErrors">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes"> </property>
+                    <property name="use_markup">True</property>
+                  </widget>
+                </child>
+              </widget>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
           </widget>
           <packing>
             <property name="position">0</property>
           </packing>
         </child>
         <child>
+          <placeholder/>
+        </child>
+        <child>
           <widget class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
+            <property name="orientation">vertical</property>
             <child>
               <widget class="GtkEventBox" id="eventbox1">
                 <property name="visible">True</property>
@@ -92,7 +114,7 @@
           </widget>
           <packing>
             <property name="expand">False</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child internal-child="action_area">
@@ -101,7 +123,7 @@
             <property name="layout_style">end</property>
             <child>
               <widget class="GtkButton" id="bCancel">
-                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="label">gtk-cancel</property>
                 <property name="response_id">-6</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -109,12 +131,14 @@
                 <property name="use_stock">True</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">0</property>
               </packing>
             </child>
             <child>
               <widget class="GtkButton" id="bRefresh">
-                <property name="label" translatable="yes">gtk-refresh</property>
+                <property name="label">gtk-refresh</property>
                 <property name="response_id">-50</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
@@ -122,6 +146,8 @@
                 <property name="use_stock">True</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">1</property>
               </packing>
             </child>
@@ -134,6 +160,8 @@
                 <property name="receives_default">True</property>
               </widget>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">2</property>
               </packing>
             </child>

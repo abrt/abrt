@@ -44,13 +44,13 @@ class CCrashWatcher
 
     public:
         /* Observer methods */
-        virtual void Status(const std::string& pMessage, const char* peer, uint64_t pJobID);
-        virtual void Warning(const std::string& pMessage, const char* peer, uint64_t pJobID);
+        virtual void Status(const char *pMessage, const char* peer, uint64_t pJobID);
+        virtual void Warning(const char *pMessage, const char* peer, uint64_t pJobID);
 };
 
-vector_crash_infos_t GetCrashInfos(const std::string &pUID);
+vector_crash_infos_t GetCrashInfos(const char *pUID);
 int CreateReportThread(const char* pUUID, const char* pUID, int force, const char* pSender);
 map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force);
-bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID);
+bool DeleteDebugDump(const char *pUUID, const char *pUID);
 
 #endif /*CRASHWATCHER_H_*/

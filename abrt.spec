@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.10
+Version: 0.0.11
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -68,7 +68,9 @@ GTK+ wizard for convenient bug reporting.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
-Requires: gdb
+Requires: gdb >= 7.0-3
+Requires: elfutils
+Requires: yum-utils
 Requires: %{name} = %{version}-%{release}
 
 %description addon-ccpp
@@ -148,6 +150,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
+%package plugin-catcut
+Summary: %{name}'s catcut plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-catcut
+Plugin to report bugs into the catcut.
+
 %package plugin-ticketuploader
 Summary: %{name}'s ticketuploader plugin
 Group: System Environment/Libraries
@@ -186,8 +196,9 @@ the sockets.
 Summary: Virtual package to install all necessary packages for usage from desktop environment
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla
-Requires: %{name}-gui, %{name}-addon-kerneloops
+Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
+Requires: %{name}-gui
+Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
 
 %description desktop
@@ -214,10 +225,14 @@ find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
 mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
+mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}-di
+mkdir -p $RPM_BUILD_ROOT/var/run/%{name}
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
-        src/Gui/%{name}.desktop
+        --vendor fedora \
+        --delete-original \
+        ${RPM_BUILD_ROOT}%{_datadir}/applications/%{name}.desktop
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
@@ -239,6 +254,11 @@ fi
 
 %postun libs -p /sbin/ldconfig
 
+%posttrans
+if [ "$1" -eq "0" ]; then
+    service %{name}d condrestart >/dev/null 2>&1 || :
+fi
+
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
@@ -248,6 +268,8 @@ fi
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
 %dir /var/cache/%{name}
+%dir /var/cache/%{name}-di
+%dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_libdir}/%{name}
@@ -270,7 +292,8 @@ fi
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-gui
 %{_datadir}/%{name}
-%{_datadir}/applications/%{name}.desktop
+%{_datadir}/applications/fedora-%{name}.desktop
+%{_datadir}/pixmaps/abrt.png
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 
@@ -282,6 +305,7 @@ fi
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsScanner.conf
 %{_bindir}/dumpoops
 %{_libdir}/%{name}/libKerneloops.so*
@@ -331,6 +355,13 @@ fi
 %{_libdir}/%{name}/Bugzilla.GTKBuilder
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
 
+%files plugin-catcut
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Catcut.conf
+%{_libdir}/%{name}/libCatcut.so*
+%{_libdir}/%{name}/Catcut.GTKBuilder
+#%{_mandir}/man7/%{name}-Catcut.7.gz
+
 %files plugin-ticketuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/TicketUploader.conf
@@ -362,6 +393,30 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Mon Nov  2 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.11-1
+- re-enabled kerneloops
+- abrt-debuginfo-install: download packages one-by-one - better logging (vda.linux@googlemail.com)
+- do not report empty fields (vda.linux@googlemail.com)
+- Added abrt.png, fixed rhbz#531181 (jmoskovc@redhat.com)
+- added option DebugInfoCacheMB to limit size of unpacked debuginfos (vda.linux@googlemail.com)
+- fixed the problem with overwriting the default plugin settings (jmoskovc@redhat.com)
+- disabled kerneloops in config file (jmoskovc@redhat.com)
+- added dependency to gdb >= 7.0 (jmoskovc@redhat.com)
+- better format of report text (vda.linux@googlemail.com)
+- Python backtrace size limited to 1 MB (kklic@redhat.com)
+- lib/Plugins/Bugzilla: better message at login failure (vda.linux@googlemail.com)
+- build fixes, added plugin-logger to abrt-desktop (jmoskovc@redhat.com)
+- blacklisted nspluginwrapper, because it causes too many useless reports (jmoskovc@redhat.com)
+- GUI: Wrong settings window is not shown behind the reporter dialog rhbz#531119 (jmoskovc@redhat.com)
+- Normal user can see kerneloops and report it Bugzilla memory leaks fix (npajkovs@redhat.com)
+- dumpoops: add -s option to dump results to stdout (vda.linux@googlemail.com)
+- removed kerneloops from abrt-desktop rhbz#528395 (jmoskovc@redhat.com)
+- GUI: fixed exception when enabling plugin rhbz#530495 (jmoskovc@redhat.com)
+- Improved abrt-cli (kklic@redhat.com)
+- Added backtrace rating to CCpp analyzer (dnovotny@redhat.com)
+- GUI improvements (jmoskovc@redhat.com)
+- Added abrt-pyhook-helper (kklic@redhat.com)
+
 * Thu Oct 15 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.10-1
 - new version
 - added more logging (vda.linux@googlemail.com)

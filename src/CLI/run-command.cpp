@@ -23,65 +23,51 @@
   http://git.kernel.org/?p=git/git.git;a=blob;f=run-command.c;hb=HEAD
 */
 
-struct child_process
+static pid_t start_command(char **argv)
 {
-  const char **argv;
-  pid_t pid;
-};
-
-static int start_command(struct child_process *cmd)
-{
-  cmd->pid = fork();
-  if (cmd->pid == 0)
+  pid_t pid = vfork();
+  if (pid < 0)
+  {
+    perror_msg_and_die("Can't fork");
+  }
+  if (pid == 0)
   { // new process
-    execvp(cmd->argv[0], (char *const*)cmd->argv);
+    execvp(argv[0], argv);
     exit(127);
   }
-  if (cmd->pid < 0)
-  {
-    error_msg_and_die("Unable to fork for %s: %s", cmd->argv[0], strerror(errno));
-    return -1;
-  }
-  return 0;
+  return pid;
 }
 
-static int finish_command(struct child_process *cmd)
+static int finish_command(pid_t pid, char **argv)
 {
   pid_t waiting;
-  int status, code = -1;
-  while ((waiting = waitpid(cmd->pid, &status, 0)) < 0 && errno == EINTR)
-    ;       /* nothing */
-
+  int status;
+  while ((waiting = waitpid(pid, &status, 0)) < 0 && errno == EINTR)
+    continue;
   if (waiting < 0)
-    error_msg_and_die("waitpid for %s failed: %s", cmd->argv[0], strerror(errno));
-  else if (waiting != cmd->pid)
-    error_msg_and_die("waitpid is confused (%s)", cmd->argv[0]);
-  else if (WIFSIGNALED(status))
+    perror_msg_and_die("waitpid");
+
+  int code = -1;
+  if (WIFSIGNALED(status))
   {
     code = WTERMSIG(status);
-    error_msg("%s died of signal %d", cmd->argv[0], code);
+    error_msg("'%s' killed by signal %d", argv[0], code);
+    code += 128; /* shells use this convention for deaths by signal */
   }
-  else if (WIFEXITED(status))
+  else /* if (WIFEXITED(status)) */
   {
     code = WEXITSTATUS(status);
     if (code == 127)
     {
-      code = -1;
-      error_msg_and_die("cannot run %s: %s", cmd->argv[0], strerror(ENOENT));
+      error_msg_and_die("Can't run '%s'", argv[0]);
     }
   }
-  else
-    error_msg_and_die("waitpid is confused (%s)", cmd->argv[0]);
 
   return code;
 }
 
-int run_command(const char **argv)
+int run_command(char **argv)
 {
-  struct child_process cmd;
-  cmd.argv = argv;
-  int code = start_command(&cmd);
-  if (code)
-    return code;
-  return finish_command(&cmd);
+  pid_t pid = start_command(argv);
+  return finish_command(pid, argv);
 }

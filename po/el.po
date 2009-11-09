@@ -1,0 +1,566 @@
+# Translation of abrt.master in Greek by Fedora Greek team
+# Copyright (C) 2009 authors below.
+# This file is distributed under the same license as the Abrt package.
+#
+# Pierros Papadeas <ppapadeas@gmail.com>, 2009.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: abrt.master\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2009-11-08 04:03+0000\n"
+"PO-Revision-Date: 2009-11-08 11:25+0200\n"
+"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
+"Language-Team: Greek Fedora team <fedora-trans-el@redhat.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Greek\n"
+
+#: ../src/Gui/ABRTExceptions.py:6
+msgid "Another client is already running, trying to wake it."
+msgstr "Εκτελείται μια άλλη διεργασία, γίνεται προσπάθεια αφύπνισης της."
+
+#: ../src/Gui/ABRTExceptions.py:13
+msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr "Έγινε λήψη απρόσμενων δεδομένων από την υπηρεσία (είναι η βάση δεδομένων σωστά ενημερωμένη;)"
+
+#: ../src/Gui/ABRTPlugin.py:55
+msgid "Analyzer plugins"
+msgstr "Πρόσθετες λειτουργίες αναλυτή"
+
+#: ../src/Gui/ABRTPlugin.py:56
+msgid "Action plugins"
+msgstr "Πρόσθετες λειτουργίες ενέργειας"
+
+#: ../src/Gui/ABRTPlugin.py:57
+msgid "Reporter plugins"
+msgstr "Πρόσθετες λειτουργίες αναφοράς"
+
+#: ../src/Gui/ABRTPlugin.py:58
+msgid "Database plugins"
+msgstr "Πρόσθετες λειτουργίες βάσης δεδομένων"
+
+#: ../src/Gui/ABRTPlugin.py:97
+msgid "Plugin name is not set, can't load it's settings"
+msgstr "Το όνομα πρόσθετης λειτουργίας δεν έχει οριστεί, αδυναμία φόρτωσης των ρυθμίσεων της"
+
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "Αδυναμία σύνδεσης με το dbus συστήματος"
+
+#: ../src/Gui/CCDBusBackend.py:100
+#: ../src/Gui/CCDBusBackend.py:103
+msgid "Please check if abrt daemon is running"
+msgstr "Παρακαλώ ελέγξτε αν εκτελείται η υπηρεσία abrt"
+
+#: ../src/Gui/CCDBusBackend.py:155
+msgid ""
+"Daemon did't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
+"Η υπηρεσία δεν επέστρεψε έγκυρες πληροφορίες αναφοράς\n"
+"Μήπως λείπει το Debuginfo;"
+
+#: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/CCMainWindow.py:244
+msgid "<b>Not reported!</b>"
+msgstr "<b>Δεν έγινε αναφορά!</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">Περιγραφή</span>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "About ABRT"
+msgstr "Περί ABRT"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Automatic Bug Reporting Tool"
+msgstr "Εργαλείο αυτόματης αναφοράς σφαλμάτων"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Delete"
+msgstr "Διαγραφή"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "Please wait.."
+msgstr "Παρακαλώ περιμένετε..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "Πρόσθετες λειτουργίες"
+
+#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/report.glade.h:3
+msgid "Report"
+msgstr "Αναφορά"
+
+#: ../src/Gui/ccgui.glade.h:11
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Αυτό το πρόγραμμα είναι ελεύθερο λογισμικό· επιτρέπεται η αναδιανομή ή/και η τροποποίησή του υπό τους όρους της Γενικής Άδειας Δημόσιας Χρήσης GNU (GPL), όπως αυτή έχει δημοσιευτεί από το Ίδρυμα Ελεύθερου Λογισμικού (FSF) — είτε  της έκδοσης 2 της Άδειας, είτε (κατ' επιλογήν σας) οποιασδήποτε μεταγενέστερης έκδοσης.\n"
+"\n"
+"Το πρόγραμμα διανέμεται με την ελπίδα ότι θα αποδειχθεί χρήσιμο, παρόλα αυτά ΧΩΡΙΣ ΚΑΜΙΑ ΕΓΓΥΗΣΗ — χωρίς ούτε και την σιωπηρή εγγύηση ΕΜΠΟΡΕΥΣΙΜΟΤΗΤΑΣ ή ΚΑΤΑΛΛΗΛΟΤΗΤΑΣ ΓΙΑ ΕΙΔΙΚΟ ΣΚΟΠΟ. Για περισσότερες λεπτομέρειες ανατρέξτε στη Γενική Άδεια Δημόσιας Χρήσης GNU (GPL).\n"
+"\n"
+" Θα πρέπει να έχετε λάβει αντίγραφο της Γενικής Άδειας Δημόσιας Χρήσης GNU  (GPL) μαζί με το πρόγραμμα. Αν όχι, γράψτε στο Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA"
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "Working..."
+msgstr "Σε λειτουργία..."
+
+#: ../src/Gui/ccgui.glade.h:17
+msgid "_Edit"
+msgstr "_Επεξεργασία"
+
+#: ../src/Gui/ccgui.glade.h:18
+msgid "_File"
+msgstr "_Αρχείο"
+
+#: ../src/Gui/ccgui.glade.h:19
+msgid "_Help"
+msgstr "_Βοήθεια"
+
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:80
+msgid "Icon"
+msgstr "Εικονίδιο"
+
+#: ../src/Gui/CCMainWindow.py:88
+msgid "Package"
+msgstr "Πακέτο"
+
+#: ../src/Gui/CCMainWindow.py:89
+msgid "Application"
+msgstr "Εφαρμογή"
+
+#: ../src/Gui/CCMainWindow.py:90
+msgid "Date"
+msgstr "Ημερομηνία"
+
+#: ../src/Gui/CCMainWindow.py:91
+msgid "Crash Rate"
+msgstr "Συχνότητα καταρρεύσεων"
+
+#: ../src/Gui/CCMainWindow.py:93
+msgid "User"
+msgstr "Χρήστης"
+
+#: ../src/Gui/CCMainWindow.py:160
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"Αδυναμία προβολής του διαλόγου ρυθμίσεων\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:181
+#, python-format
+msgid ""
+"Unable to finish current task!\n"
+"%s"
+msgstr ""
+"Αδυναμία ολοκλήρωσης της τρέχουσας εργασίας!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:198
+#, python-format
+msgid ""
+"Error while loading the dumplist, please check if abrt daemon is running\n"
+" %s"
+msgstr ""
+"Σφάλμα κατά τη φόρτωση της dumplist, παρακαλώ ελέγξτε αν εκτελείται ο abrt daemon\n"
+" %s"
+
+#: ../src/Gui/CCMainWindow.py:208
+#, python-format
+msgid "Can't get username for uid %s"
+msgstr "Αδυναμία λήψης ονόματος χρήστη για uid %s"
+
+#: ../src/Gui/CCMainWindow.py:236
+msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+msgstr "<b>Αυτή η κατάρρευση έχει αναφερθεί, μπορείτε να βρείτε τις αναφορές στο:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:296
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"Αδυναμία λήψης αναφοράς!\n"
+"Μήπως λείπει το Debuginfo;"
+
+#: ../src/Gui/CCMainWindow.py:314
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Η αναφορά απέτυχε!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:360
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "Σφάλμα λήψης της αναφοράς: %s"
+
+#: ../src/Gui/CCReporterDialog.py:173
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Μια σύντομη περιγραφή για το πως θα αναπαραχθεί το σφάλμα ή τι κάνατε όταν συνέβηκε..."
+
+#: ../src/Gui/CCReporterDialog.py:201
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable!\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Η αναφορά σφάλματος έχει απενεργοποιηθεί επειδή το bactrace δεν μπορεί χρησιμοποιηθεί!\n"
+"Παρακαλώ προσπαθήστε να επανεγκαταστήσετε το debuginfo με τη χρήση της εντολής <span color=\"blue\"> debuginfo-install %s </span>\n"
+"και μετά πατήστε το κουμπί Ανανέωση για την επαναδημιουργία του backtrace."
+
+#: ../src/Gui/CCReporterDialog.py:203
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "Το bactrace δεν μπορεί χρησιμοποιηθεί, δεν μπορείτε να το στείλετε!"
+
+#: ../src/Gui/CCReporterDialog.py:209
+msgid "The bactrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "Το bactrace είναι ημιτελές, βεβαιωθείτε ότι αναφέρετε τα βήματα για την αναπαραγωγή του."
+
+#: ../src/Gui/CCReporterDialog.py:247
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+"<b>ΠΡΟΕΙΔΟΠΟΙΗΣΗ</b>, πρόκειται να αποστείλετε δεδομένα που πιθανώς να περιέχουν ευαίσθητες πληροφορίες.\n"
+"Είστε σίγουροι ότι θέλετε να στείλετε το <b>%s</b>?\n"
+
+#: ../src/Gui/dialogs.glade.h:1
+msgid "Report done"
+msgstr "Η αναφορά ολοκληρώθηκε"
+
+#: ../src/Gui/dialogs.glade.h:2
+#: ../src/Gui/settings.glade.h:27
+msgid "gtk-ok"
+msgstr "gtk-ok"
+
+#: ../src/Gui/PluginSettingsUI.py:18
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr "Αδυναμία εύρεσης γραφικού συστατικού PluginDialog στην περιγραφή UI!"
+
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid "No UI for plugin %s"
+msgstr "Δεν υπάρχει UI για την πρόσθετη λειτουργία %s"
+
+#: ../src/Gui/PluginSettingsUI.py:55
+#: ../src/Gui/PluginSettingsUI.py:81
+msgid "combo box is not implemented"
+msgstr "το πεδίο συνδυασμού combo δεν έχει εφαρμοστεί"
+
+#: ../src/Gui/PluginSettingsUI.py:64
+msgid "Nothing to hydrate!"
+msgstr "Δεν υπάρχουν δεδομένα για εμφάνιση!"
+
+#: ../src/Gui/report.glade.h:2
+msgid "Comment"
+msgstr "Σχόλιο:"
+
+#: ../src/Gui/report.glade.h:4
+msgid "Send"
+msgstr "Αποστολή"
+
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
+msgid "<b>Select plugin</b>"
+msgstr "<b>Επιλογή πρόσθετης λειτουργίας</b>"
+
+#: ../src/Gui/SettingsDialog.py:36
+msgid "<b>Select database backend</b>"
+msgstr "<b>Επιλογή backend βάσης δεδομένων</b>"
+
+#: ../src/Gui/SettingsDialog.py:165
+msgid "Remove this job"
+msgstr "Απομάκρυνση αυτής της εργασίας"
+
+#: ../src/Gui/SettingsDialog.py:208
+msgid "Remove this action"
+msgstr "Απομάκρυνση αυτής της ενέργειας"
+
+#: ../src/Gui/settings.glade.h:1
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>Πρόσθετη λειτουργία αναλυτή</b>"
+
+#: ../src/Gui/settings.glade.h:2
+msgid "<b>Associated action</b>"
+msgstr "<b>Συσχετιζόμενη ενέργεια</b>"
+
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin</b>"
+msgstr "<b>Πρόσθετη λειτουργία</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Χρόνος (ή περίοδος)</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "Analyzers, Actions, Reporters"
+msgstr "Αναλυτές, Ενέργειες, Αναφορές"
+
+#: ../src/Gui/settings.glade.h:6
+msgid "Author:"
+msgstr "Συγγραφέας:"
+
+#: ../src/Gui/settings.glade.h:7
+msgid "Blacklisted packages: "
+msgstr "Πακέτα σε μαύρη λίστα: "
+
+#: ../src/Gui/settings.glade.h:8
+msgid "C_onfigure plugin"
+msgstr "Ρύ_θμιση πρόσθετης λειτουργίας"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "Check package GPG signature"
+msgstr "έλεγχος υπογραφής GPG πακέτου"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Common"
+msgstr "Κοινά"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Database backend: "
+msgstr "Backend βάσης δεδομένων"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Edit blacklisted packages"
+msgstr "Επεξεργασία πακέτων της μαύρης λίστας"
+
+#: ../src/Gui/settings.glade.h:14
+msgid "GPG Keys"
+msgstr "Κλειδιά GPG"
+
+#: ../src/Gui/settings.glade.h:15
+msgid "GPG keys: "
+msgstr "Κλειδιά GPG:"
+
+#: ../src/Gui/settings.glade.h:16
+msgid "Global Settings"
+msgstr "Καθολικές ρυθμίσεις"
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "Μέγιστο μέγεθος αποθηκευτικού χώρου coredump (MB):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Nothing selected"
+msgstr "Καμία επιλογή"
+
+#: ../src/Gui/settings.glade.h:19
+msgid "Plugin Details"
+msgstr "Λεπτομέρειες πρόσθετης λειτουργίας"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Settings"
+msgstr "Ρυθμίσεις"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "Αυτή η λειτουργία δεν έχει ακόμα εφαρμοστεί!"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Version:"
+msgstr "Έκδοση:"
+
+#: ../src/Gui/settings.glade.h:23
+msgid "Web Site:"
+msgstr "Ιστοσελίδα:"
+
+#: ../src/Gui/settings.glade.h:24
+msgid "gtk-add"
+msgstr "gtk-add"
+
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
+#: ../src/Gui/settings.glade.h:26
+msgid "gtk-close"
+msgstr "gtk-close"
+
+#: ../src/Gui/settings.glade.h:28
+msgid "gtk-remove"
+msgstr "gtk-remove"
+
+#: ../src/Applet/Applet.cpp:79
+#, c-format
+msgid "A crash in package %s has been detected"
+msgstr "Εντοπίστηκε μια κατάρρευση στην εφαρμογή %s"
+
+#: ../src/Applet/Applet.cpp:138
+msgid "ABRT service has been started"
+msgstr "Η υπηρεσία ABRT έχει ξεκινήσει"
+
+#: ../src/Applet/Applet.cpp:140
+#: ../src/Applet/Applet.cpp:254
+msgid "ABRT service is not running"
+msgstr "Η υπηρεσία ABRT δεν εκτελείται"
+
+#: ../src/Applet/CCApplet.cpp:185
+msgid "Warning"
+msgstr "Προειδοποίηση"
+
+#: ../src/Daemon/Daemon.cpp:531
+msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
+msgstr "Το μέγεθος της αναφοράς έχει υπερβεί το όριο, Παρακαλώ ελέγξτε την τιμή του  MaxCrashReportsSize στο abrt.conf."
+
+#: ../lib/Plugins/Bugzilla.cpp:316
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Το σφάλμα έχει ήδη αναφερθεί %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:378
+#, c-format
+msgid "New bug id: %i"
+msgstr "Νέο id σφάλματος;%i"
+
+#: ../lib/Plugins/Bugzilla.cpp:471
+msgid "Checking for duplicates..."
+msgstr "Έλεγχος για ίδια σφάλματα"
+
+#: ../lib/Plugins/Bugzilla.cpp:474
+msgid "Logging into bugzilla..."
+msgstr "Σύνδεση στον bugzilla..."
+
+#: ../lib/Plugins/Bugzilla.cpp:478
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Κενό όνομα χρήστη και κωδικός. Παρακαλώ ελέγξτε το  Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:484
+msgid "Checking CC..."
+msgstr "Έλεγχος CC..."
+
+#: ../lib/Plugins/Bugzilla.cpp:493
+msgid "Creating new bug..."
+msgstr "Δημιουργία νέας αναφοράς σφάλματος..."
+
+#: ../lib/Plugins/Bugzilla.cpp:497
+msgid "Logging out..."
+msgstr "Αποσύνδεση..."
+
+#: ../lib/Plugins/Kerneloops.cpp:37
+msgid "Getting local universal unique identification"
+msgstr "Λήψη τοπικού μοναδικού αναγνωριστικού"
+
+#: ../lib/Plugins/CCpp.cpp:228
+msgid "Getting backtrace..."
+msgstr "Λήψη backtrace..."
+
+#: ../lib/Plugins/CCpp.cpp:526
+#: ../lib/Plugins/CCpp.cpp:653
+msgid "Searching for debug-info packages..."
+msgstr "Αναζήτηση για πακέτα debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:588
+#: ../lib/Plugins/CCpp.cpp:687
+msgid "Downloading and installing debug-info packages..."
+msgstr "Λήψη και εγκατάσταση πακέτων debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:792
+msgid "Getting local universal unique identification..."
+msgstr "Λήψη τοπικού μοναδικού αναγνωριστικού..."
+
+#: ../lib/Plugins/CCpp.cpp:811
+msgid "Getting global universal unique identification..."
+msgstr "Λήψη καθολικού μοναδικού αναγνωριστικού..."
+
+#: ../lib/Plugins/CCpp.cpp:856
+msgid "Starting report creation..."
+msgstr "Εκκίνηση δημιουργίας αναφοράς..."
+
+#: ../lib/Plugins/CCpp.cpp:886
+msgid "Skipping debuginfo installation"
+msgstr "Παράκαμψη εγκατάστασης debuginfo "
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
+msgid "Creating and submitting a report..."
+msgstr "Δημιουργία και υποβολή αναφοράς..."
+
+#: ../lib/Plugins/Logger.cpp:57
+#: ../lib/Plugins/Mailx.cpp:124
+msgid "Creating a report..."
+msgstr "Δημιουργία αναφοράς..."
+
+#: ../lib/Plugins/RunApp.cpp:64
+msgid "Executing RunApp plugin..."
+msgstr "Εκτέλεση πρόσθετης λειτουργίας RunApp..."
+
+#: ../lib/Plugins/FileTransfer.cpp:63
+#: ../lib/Plugins/FileTransfer.cpp:381
+msgid "FileTransfer: URL not specified"
+msgstr "Μεταφορά αρχείου: Δεν έχει καθοριστεί URL"
+
+#: ../lib/Plugins/FileTransfer.cpp:67
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "Αποστολή αρχείου %s στο %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:309
+msgid "File Transfer: Creating a report..."
+msgstr "Μεταφορά αρχείου: Δημιουργία αναφοράς..."
+
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Αδυναμία δημιουργίας και αποστολής αρχείου: %s "
+
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Αδυναμία δημιουργίας και αποστολής αρχείου: %s"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
+msgid "Creating kernel oops crash reports..."
+msgstr "Δημιουργία αναφορών κατάρρευσης kernel oops..."
+
+#: ../lib/Plugins/Mailx.cpp:109
+msgid "Sending an email..."
+msgstr "Αποστολή ενός email..."
+
+#: ../lib/Plugins/SOSreport.cpp:100
+msgid "Executing SOSreport plugin..."
+msgstr "Εκτέλεση  πρόσθετης λειτουργίας SOSreport..."
+
+#: ../lib/Plugins/SOSreport.cpp:122
+#, c-format
+msgid "running sosreport: %s"
+msgstr "εκτέλεση sosreport: %s "
+
+#: ../lib/Plugins/SOSreport.cpp:137
+msgid "done running sosreport"
+msgstr "ολοκληρώθηκε η εκτέλεση του sosreport"
+
+#~ msgid "gtk-refresh"
+#~ msgstr "gtk-refresh"
+

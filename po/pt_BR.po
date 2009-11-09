@@ -1,14 +1,13 @@
 # Brazilian Portuguese translation of ABRT.
 # This file is distributed under the same license as the ABRT package.
-#
 # Igor Pires Soares <igor@projetofedora.org>, 2009.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-17 16:06+0000\n"
-"PO-Revision-Date: 2009-10-17 15:59-0300\n"
+"POT-Creation-Date: 2009-11-06 15:36+0000\n"
+"PO-Revision-Date: 2009-11-06 17:43-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -26,23 +25,23 @@ msgstr "Outro cliente já está em execução, tentando acordá-lo."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Dados inesperados obtidos do daemon (o banco de dados está devidamente atualizado?)."
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
 msgstr "Plugins de análise"
 
-#: ../src/Gui/ABRTPlugin.py:49
+#: ../src/Gui/ABRTPlugin.py:56
 msgid "Action plugins"
 msgstr "Plugins de ação"
 
-#: ../src/Gui/ABRTPlugin.py:50
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Reporter plugins"
 msgstr "Plugins de relato"
 
-#: ../src/Gui/ABRTPlugin.py:51
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Database plugins"
 msgstr "Plugins de banco de dados"
 
-#: ../src/Gui/ABRTPlugin.py:90
+#: ../src/Gui/ABRTPlugin.py:97
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "O nome do plugin não está definido, não é possível carregar as configurações dele"
 
@@ -65,6 +64,7 @@ msgstr ""
 "O debuginfo está faltando?"
 
 #: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
@@ -73,7 +73,7 @@ msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:240
+#: ../src/Gui/CCMainWindow.py:244
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não relatado!</b>"
 
@@ -102,7 +102,7 @@ msgid "Plugins"
 msgstr "Plugins"
 
 #: ../src/Gui/ccgui.glade.h:10
-#: ../src/Gui/report.glade.h:2
+#: ../src/Gui/report.glade.h:3
 msgid "Report"
 msgstr "Relatar"
 
@@ -161,7 +161,16 @@ msgstr "Taxa de travamento"
 msgid "User"
 msgstr "Usuário"
 
-#: ../src/Gui/CCMainWindow.py:178
+#: ../src/Gui/CCMainWindow.py:160
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"Não foi possível mostrar o diálogo de configurações\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:181
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -170,7 +179,7 @@ msgstr ""
 "Não foi possível finalizar a tarefa atual!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:195
+#: ../src/Gui/CCMainWindow.py:198
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -179,16 +188,16 @@ msgstr ""
 "Erro ao carregar a lista de despejo, por favor, verifique se o daemon do abrt está em execução\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:205
+#: ../src/Gui/CCMainWindow.py:208
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr "Não foi possível obter o nome de usuário para o uid %s"
 
-#: ../src/Gui/CCMainWindow.py:232
+#: ../src/Gui/CCMainWindow.py:236
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>Este travamento foi relatado, você pode localizar o(s) relatório(s) em:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:292
+#: ../src/Gui/CCMainWindow.py:296
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -196,7 +205,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "O debuginfo está faltando?"
 
-#: ../src/Gui/CCMainWindow.py:310
+#: ../src/Gui/CCMainWindow.py:314
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -205,17 +214,36 @@ msgstr ""
 "Falha no relato!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:329
-#: ../src/Gui/CCMainWindow.py:356
+#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:360
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
 
-#: ../src/Gui/CCReporterDialog.py:167
+#: ../src/Gui/CCReporterDialog.py:173
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
 
-#: ../src/Gui/CCReporterDialog.py:211
+#: ../src/Gui/CCReporterDialog.py:201
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable!\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Relato desabilitado porque o backtrace é inutilizável!\n"
+"Por favor, tente instalar o debuginfo manualmente usando o comando:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"e depois use o botão Atualizar para regerar o backtrace."
+
+#: ../src/Gui/CCReporterDialog.py:203
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "O backtrace é inutilizável, você não pode reportá-lo!"
+
+#: ../src/Gui/CCReporterDialog.py:209
+msgid "The bactrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "O backtrace está incompleto. Por favor, certifique-se de fornecer bons passos para a reprodução."
+
+#: ../src/Gui/CCReporterDialog.py:247
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -252,37 +280,28 @@ msgstr "caixa de combinação não implementada"
 msgid "Nothing to hydrate!"
 msgstr "Nada a ser hidratado!"
 
-#: ../src/Gui/report.glade.h:1
+#: ../src/Gui/report.glade.h:2
 msgid "Comment"
 msgstr "Comentário"
 
-#: ../src/Gui/report.glade.h:3
+#: ../src/Gui/report.glade.h:4
 msgid "Send"
 msgstr "Enviar"
 
-#: ../src/Gui/report.glade.h:4
-#: ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../src/Gui/report.glade.h:5
-msgid "gtk-refresh"
-msgstr "gtk-refresh"
-
-#: ../src/Gui/SettingsDialog.py:34
-#: ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Selecionar plugin</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Selecione o backend de banco de dados</b>"
 
-#: ../src/Gui/SettingsDialog.py:168
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "Remover este trabalho"
 
-#: ../src/Gui/SettingsDialog.py:211
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "Remover esta ação"
 
@@ -382,6 +401,10 @@ msgstr "Web site:"
 msgid "gtk-add"
 msgstr "gtk-add"
 
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
 #: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -390,17 +413,17 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:71
+#: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Um travamento no pacote %s foi detectado"
 
-#: ../src/Applet/Applet.cpp:130
+#: ../src/Applet/Applet.cpp:138
 msgid "ABRT service has been started"
 msgstr "O serviço ABRT foi iniciado"
 
-#: ../src/Applet/Applet.cpp:132
-#: ../src/Applet/Applet.cpp:246
+#: ../src/Applet/Applet.cpp:140
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "O serviço do ABRT não está em execução"
 
@@ -408,45 +431,39 @@ msgstr "O serviço do ABRT não está em execução"
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:542
+#: ../src/Daemon/Daemon.cpp:531
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "O tamanho do relatório excedeu a cota. Por favor, verifique o valor MaxCrashReportsSize do sistema no abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:83
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Nome de usuário e senha vazios. Por favor, verifique o Bugzilla.conf"
-
-#: ../lib/Plugins/Bugzilla.cpp:205
+#: ../lib/Plugins/Bugzilla.cpp:316
 msgid "Bug is already reported: "
 msgstr "O erro já foi relatado: "
 
-#: ../lib/Plugins/Bugzilla.cpp:260
-#, c-format
-msgid "Binary file %s will not be reported."
-msgstr "O arquivo binário %s não será relatado."
-
-#: ../lib/Plugins/Bugzilla.cpp:330
+#: ../lib/Plugins/Bugzilla.cpp:378
 msgid "New bug id: "
 msgstr "Novo id do erro: "
 
-#: ../lib/Plugins/Bugzilla.cpp:399
+#: ../lib/Plugins/Bugzilla.cpp:471
 msgid "Checking for duplicates..."
 msgstr "Verificando duplicatas..."
 
-#: ../lib/Plugins/Bugzilla.cpp:402
-#: ../lib/Plugins/Bugzilla.cpp:413
+#: ../lib/Plugins/Bugzilla.cpp:474
 msgid "Logging into bugzilla..."
 msgstr "Autenticando no bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:405
+#: ../lib/Plugins/Bugzilla.cpp:478
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Nome de usuário e senha vazios. Por favor, verifique o Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:484
 msgid "Checking CC..."
 msgstr "Verificando CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:425
+#: ../lib/Plugins/Bugzilla.cpp:493
 msgid "Creating new bug..."
 msgstr "Criando novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:430
+#: ../lib/Plugins/Bugzilla.cpp:497
 msgid "Logging out..."
 msgstr "Encerrando sessão..."
 
@@ -454,67 +471,69 @@ msgstr "Encerrando sessão..."
 msgid "Getting local universal unique identification"
 msgstr "Obtendo identificação universal local única"
 
-#: ../lib/Plugins/CCpp.cpp:161
+#: ../lib/Plugins/CCpp.cpp:228
 msgid "Getting backtrace..."
 msgstr "Obtendo backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:442
+#: ../lib/Plugins/CCpp.cpp:526
+#: ../lib/Plugins/CCpp.cpp:653
 msgid "Searching for debug-info packages..."
 msgstr "Pesquisando por pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:504
+#: ../lib/Plugins/CCpp.cpp:588
+#: ../lib/Plugins/CCpp.cpp:687
 msgid "Downloading and installing debug-info packages..."
 msgstr "Baixando e instalando pacotes debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:566
+#: ../lib/Plugins/CCpp.cpp:792
 msgid "Getting local universal unique identification..."
 msgstr "Obtendo identificação universal local única..."
 
-#: ../lib/Plugins/CCpp.cpp:585
+#: ../lib/Plugins/CCpp.cpp:811
 msgid "Getting global universal unique identification..."
 msgstr "Obtendo identificação universal global única..."
 
-#: ../lib/Plugins/CCpp.cpp:630
+#: ../lib/Plugins/CCpp.cpp:856
 msgid "Starting report creation..."
 msgstr "Iniciando a criação do relatório..."
 
-#: ../lib/Plugins/CCpp.cpp:661
+#: ../lib/Plugins/CCpp.cpp:886
 msgid "Skipping debuginfo installation"
 msgstr "Pulando instalação do debuginfo"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
 msgid "Creating and submitting a report..."
 msgstr "Criando e enviando um relatório..."
 
-#: ../lib/Plugins/Logger.cpp:58
-#: ../lib/Plugins/Mailx.cpp:123
+#: ../lib/Plugins/Logger.cpp:59
+#: ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "Criando um relatório..."
 
-#: ../lib/Plugins/RunApp.cpp:62
+#: ../lib/Plugins/RunApp.cpp:64
 msgid "Executing RunApp plugin..."
 msgstr "Executando o plugin RunApp..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:409
+#: ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL não especificada"
 
-#: ../lib/Plugins/FileTransfer.cpp:81
+#: ../lib/Plugins/FileTransfer.cpp:67
 #, c-format
-msgid "Sending archive %s via %s"
-msgstr "Enviando o pacote %s via %s"
+msgid "Sending archive %s to %s"
+msgstr "Enviando o pacote %s para %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:336
+#: ../lib/Plugins/FileTransfer.cpp:310
 msgid "File Transfer: Creating a report..."
 msgstr "File Transfer: Criando um relatório..."
 
-#: ../lib/Plugins/FileTransfer.cpp:358
-#: ../lib/Plugins/FileTransfer.cpp:386
+#: ../lib/Plugins/FileTransfer.cpp:335
+#: ../lib/Plugins/FileTransfer.cpp:361
 msgid "CFileTransfer::Run(): Cannot create and send an archive: "
 msgstr "CFileTransfer::Run(): Não foi possível criar e enviar o pacote: "
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
 msgstr "Criando relatórios de oops do kernel no travamento..."
 
@@ -522,18 +541,22 @@ msgstr "Criando relatórios de oops do kernel no travamento..."
 msgid "Sending an email..."
 msgstr "Enviando email..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
+#: ../lib/Plugins/SOSreport.cpp:100
 msgid "Executing SOSreport plugin..."
 msgstr "Executando o plugin SOSreport..."
 
-#: ../lib/Plugins/SOSreport.cpp:135
+#: ../lib/Plugins/SOSreport.cpp:122
 msgid "running sosreport: "
 msgstr "executando o sosreport: "
 
-#: ../lib/Plugins/SOSreport.cpp:150
+#: ../lib/Plugins/SOSreport.cpp:137
 msgid "done running sosreport"
 msgstr "Execução do sosreport realizada"
 
+#~ msgid "gtk-refresh"
+#~ msgstr "gtk-refresh"
+#~ msgid "Binary file %s will not be reported."
+#~ msgstr "O arquivo binário %s não será relatado."
 #~ msgid "Check CC and add coment +1..."
 #~ msgstr "Verifique o CC e adicione o comentário +1..."
 #~ msgid "Pending events: %i"
@@ -554,12 +577,6 @@ msgstr "Execução do sosreport realizada"
 #~ "Erro ao abrir a interface de usuário das configurações do plugin: \n"
 #~ "\n"
 #~ "%s"
-#~ msgid ""
-#~ "Can't save plugin settings:\n"
-#~ " %s"
-#~ msgstr ""
-#~ "Não foi possível salvar as configurações do plugin:\n"
-#~ " %s"
 #~ msgid "unknown response from settings dialog"
 #~ msgstr "resposta desconhecida do diálogo de configurações"
 #~ msgid "Applet is already running."

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-15 09:50+0000\n"
-"PO-Revision-Date: 2009-10-16 22:53+0200\n"
+"POT-Creation-Date: 2009-10-26 00:22+0000\n"
+"PO-Revision-Date: 2009-10-26 02:42+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -23,25 +23,27 @@ msgstr "En anden klient kører allerede, prøver at vække den."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Modtog uventede data fra dæmon (er databasen opdateret rigtigt?)."
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
 msgstr "Analyseringsudvidelsesmoduler"
 
-#: ../src/Gui/ABRTPlugin.py:49
+#: ../src/Gui/ABRTPlugin.py:56
 msgid "Action plugins"
 msgstr "Handlingsudvidelsesmoduler"
 
-#: ../src/Gui/ABRTPlugin.py:50
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Reporter plugins"
 msgstr "Rapporteringsudvidelsesmoduler"
 
-#: ../src/Gui/ABRTPlugin.py:51
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Database plugins"
 msgstr "Databaseudvidelsesmoduler"
 
-#: ../src/Gui/ABRTPlugin.py:90
+#: ../src/Gui/ABRTPlugin.py:97
 msgid "Plugin name is not set, can't load it's settings"
-msgstr "Navn for udvidelsesmodul er ikke indstillet, kan ikke indlæse dets indstillinger"
+msgstr ""
+"Navn for udvidelsesmodul er ikke indstillet, kan ikke indlæse dets "
+"indstillinger"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
@@ -67,7 +69,7 @@ msgstr " "
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:240
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:244
 msgid "<b>Not reported!</b>"
 msgstr "<b>Ikke rapporteret!</b>"
 
@@ -168,7 +170,16 @@ msgstr "Nedbrudsrate"
 msgid "User"
 msgstr "Bruger"
 
-#: ../src/Gui/CCMainWindow.py:178
+#: ../src/Gui/CCMainWindow.py:160
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"Kan ikke vise indstillingsdialogen\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:181
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -177,7 +188,7 @@ msgstr ""
 "Kunne ikke afslutte nuværende handling!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:195
+#: ../src/Gui/CCMainWindow.py:198
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -187,17 +198,17 @@ msgstr ""
 "kører\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:205
+#: ../src/Gui/CCMainWindow.py:208
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr "Kan ikke hente brugernavn for uid %s"
 
-#: ../src/Gui/CCMainWindow.py:232
+#: ../src/Gui/CCMainWindow.py:236
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr ""
 "<b>Dette nedbrud er blevet rapporteret, du kan finde rapporten på: </b>\n"
 
-#: ../src/Gui/CCMainWindow.py:292
+#: ../src/Gui/CCMainWindow.py:296
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -205,7 +216,7 @@ msgstr ""
 "Kunne ikke hente rapport!\n"
 "Mangler fejlsøgningsinformation?"
 
-#: ../src/Gui/CCMainWindow.py:310
+#: ../src/Gui/CCMainWindow.py:314
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -214,7 +225,7 @@ msgstr ""
 "Rapportering fejlede!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:329 ../src/Gui/CCMainWindow.py:356
+#: ../src/Gui/CCMainWindow.py:333 ../src/Gui/CCMainWindow.py:360
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fejl under hentning af rapporten: %s"
@@ -277,19 +288,19 @@ msgstr "gtk-cancel"
 msgid "gtk-refresh"
 msgstr "gtk-refresh"
 
-#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Vælg udvidelsesmodul</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Vælg databasebackend</b>"
 
-#: ../src/Gui/SettingsDialog.py:168
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "Fjern dette job"
 
-#: ../src/Gui/SettingsDialog.py:211
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "Fjern denne handling"
 
@@ -463,31 +474,31 @@ msgstr "Logger ud..."
 msgid "Getting local universal unique identification"
 msgstr "Henter lokal, universal, unik identifikation"
 
-#: ../lib/Plugins/CCpp.cpp:153
+#: ../lib/Plugins/CCpp.cpp:246
 msgid "Getting backtrace..."
 msgstr "Henter backtrace..."
 
-#: ../lib/Plugins/CCpp.cpp:434
+#: ../lib/Plugins/CCpp.cpp:532 ../lib/Plugins/CCpp.cpp:657
 msgid "Searching for debug-info packages..."
 msgstr "Søger efter pakker med fejlsøgningsinformation..."
 
-#: ../lib/Plugins/CCpp.cpp:496
+#: ../lib/Plugins/CCpp.cpp:594 ../lib/Plugins/CCpp.cpp:690
 msgid "Downloading and installing debug-info packages..."
 msgstr "Henter og installerer pakker med fejlsøgningsinformation..."
 
-#: ../lib/Plugins/CCpp.cpp:558
+#: ../lib/Plugins/CCpp.cpp:733
 msgid "Getting local universal unique identification..."
 msgstr "Henter lokal, universal, unik identifikation..."
 
-#: ../lib/Plugins/CCpp.cpp:577
+#: ../lib/Plugins/CCpp.cpp:752
 msgid "Getting global universal unique identification..."
 msgstr "Henter global, universal, unik identifikation..."
 
-#: ../lib/Plugins/CCpp.cpp:628
+#: ../lib/Plugins/CCpp.cpp:797
 msgid "Starting report creation..."
 msgstr "Starter rapportoprettelse..."
 
-#: ../lib/Plugins/CCpp.cpp:659
+#: ../lib/Plugins/CCpp.cpp:828
 msgid "Skipping debuginfo installation"
 msgstr "Springer over fejlsøgningsinfo-installation"
 
@@ -574,13 +585,6 @@ msgstr "færdig med at køre sosreport"
 #~ "Fejl under åbning af indstillingsbrugerfladen for udvidelser: \n"
 #~ "\n"
 #~ "%s"
-
-#~ msgid ""
-#~ "Can't save plugin settings:\n"
-#~ " %s"
-#~ msgstr ""
-#~ "Kan ikke gemme indstillinger for udvidelsesmoduler:\n"
-#~ " %s"
 
 #~ msgid "unknown response from settings dialog"
 #~ msgstr "ukendt svar fra indstillingsdialog"

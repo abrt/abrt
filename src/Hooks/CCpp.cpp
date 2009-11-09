@@ -54,32 +54,41 @@ static char* get_cmdline(pid_t pid)
     char path[PATH_MAX];
     char cmdline[COMMAND_LINE_SIZE];
     snprintf(path, sizeof(path), "/proc/%u/cmdline", (int)pid);
-    int dst = 0;
+    int idx = 0;
 
     int fd = open(path, O_RDONLY);
     if (fd >= 0)
     {
         int len = read(fd, cmdline, sizeof(cmdline) - 1);
-        if (len >= 0)
+        close(fd);
+
+        if (len > 0)
         {
-            int src = 0;
-            while (src < len)
+            /* In Linux, there is always one trailing NUL byte,
+	     * prevent it from being replaced by space below.
+             */
+            if (cmdline[len - 1] == '\0')
+                len--;
+
+            while (idx < len)
             {
-                char ch = cmdline[src++];
+                unsigned char ch = cmdline[idx];
                 if (ch == '\0')
                 {
-                    cmdline[dst++] = ' ';
+                    cmdline[idx++] = ' ';
                 }
-                /* TODO: maybe just ch >= ' '? */
-                else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
+                else if (ch >= ' ' && ch <= 0x7e)
                 {
-                    cmdline[dst++] = ch;
+                    cmdline[idx++] = ch;
+                }
+                else
+                {
+                    cmdline[idx++] = '?';
                 }
             }
         }
-        close(fd);
     }
-    cmdline[dst] = '\0';
+    cmdline[idx] = '\0';
 
     return xstrdup(cmdline);
 }
@@ -179,7 +188,7 @@ int main(int argc, char** argv)
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
-        dd.SaveText(FILENAME_REASON, std::string("Process was terminated by signal ") + signal_str);
+        dd.SaveText(FILENAME_REASON, ssprintf("Process was terminated by signal %s", signal_str).c_str());
 
         int len = strlen(path);
         snprintf(path + len, sizeof(path) - len, "/"FILENAME_COREDUMP);
@@ -212,7 +221,7 @@ int main(int argc, char** argv)
     }
     catch (CABRTException& e)
     {
-        error_msg_and_die("%s", e.what().c_str());
+        error_msg_and_die("%s", e.what());
     }
     catch (std::exception& e)
     {

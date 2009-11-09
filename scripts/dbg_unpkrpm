@@ -1,0 +1,8 @@
+#!/bin/sh
+
+rm -rf UNPACKED
+mkdir -p UNPACKED
+
+for rpm in *.rpm; do
+    rpm2cpio "$rpm" | ( cd UNPACKED && cpio -i --make-directories)
+done

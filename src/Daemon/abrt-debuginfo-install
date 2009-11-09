@@ -13,9 +13,10 @@
 # If CACHEDIR is specified, debuginfos should be installed there.
 # If not, debuginfos should be installed into TEMPDIR.
 #
-# Currently, we are called with CACHEDIR set to "/", but in the future
-# it may be omitted or set to something else. script must be ready
-# for those cases too.
+# Currently, we are called with CACHEDIR set to "/var/cache/abrt-di",
+# but in the future it may be omitted or set to something else.
+# Script must be ready for those cases too. Consider, for example,
+# corner cases of "" and "/".
 #
 # Output goes to GUI as debuginfo install log. The script should be careful
 # to give useful, but not overly cluttered info to stdout.
@@ -62,10 +63,6 @@ tempdir=$2
 cachedir=$3
 debug=false
 
-count_words() {
-    echo $#
-}
-
 exec 2>&1
 
 test -f "$core" || exit 2
@@ -74,9 +71,40 @@ test x"$cachedir" = x"" || test -d "$cachedir" || exit 2
 # tempdir must not exist
 test -e "$tempdir" && exit 2
 
-mkdir "$tempdir" || exit 2
+mkdir -- "$tempdir" || exit 2
 cd "$tempdir" || exit 2
 $debug && echo "Installing rpms to $tempdir"
+
+
+count_words() {
+    echo $#
+}
+
+cleanup_and_report_missing() {
+# Which debuginfo files are still missing, including those we just unpacked?
+    missing_build_ids=`for build_id in $build_ids; do
+	build_id1=${build_id:0:2}
+	build_id2=${build_id:2}
+	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+	test -f "/$file" && continue
+	test -f "$cachedir/$file" && continue
+	echo -n "$build_id "
+    done`
+    $debug && echo "missing_build_ids:$missing_build_ids"
+
+    # If cachedir is specified, tempdir is just a staging area. Delete it
+    if test x"$cachedir" != x""; then
+        $debug && echo "Removing $tempdir"
+        rm -rf "$tempdir"
+    fi
+
+    for missing in $missing_build_ids; do
+        echo "MISSING:$missing"
+    done
+
+    test x"$missing_build_ids" != x"" && echo "`count_words $missing_build_ids` debuginfos can't be found"
+}
+
 
 # eu-unstrip output example:
 # 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
@@ -86,7 +114,9 @@ $debug && echo "Installing rpms to $tempdir"
 # 0x3d15600000+0x208000 20196628d1bc062279622615cc9955554e5bb227@0x3d156001a0 /usr/lib64/libnotify.so.1.1.3 /usr/lib/debug/usr/lib64/libnotify.so.1.1.3.debug libnotify.so.1
 # 0x7fd8ae931000+0x62d000 dd49f44f958b5a11a1635523b2f09cb2e45c1734@0x7fd8ae9311a0 /usr/lib64/libgtk-x11-2.0.so.0.1600.6 /usr/lib/debug/usr/lib64/libgtk-x11-2.0.so.0.1600.6.debug
 echo "Getting list of build IDs"
-eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>&1`
+# Observed errors:
+# eu-unstrip: /var/cache/abrt/ccpp-1256301004-2754/coredump: Callback returned failure
+eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
 err=$?
 printf "%s\nexitcode:%s\n" "$eu_unstrip_OUT" $err >eu_unstrip.OUT
 test $err = 0 || exit 2
@@ -112,24 +142,19 @@ $debug && echo "build_ids:$build_ids"
 missing_debuginfo_files=`for build_id in $build_ids; do
     build_id1=${build_id:0:2}
     build_id2=${build_id:2}
-
     file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
     if test x"$cachedir" != x"" && test x"$cachedir" != x"/" ; then
 	test -f "$cachedir/$file" && continue
-	if test -f "/$file"; then
-	    mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
-	    # Note: this does not preserve symlinks. This is intentional
-	    $debug && echo Copying "$file" to "$cachedir/$file" >&2
-	    cp "$file" "$cachedir/$file"
-	    continue
-	fi
     fi
     test -f "/$file" && continue
     echo -n "/$file "
 done`
 $debug && echo "missing_debuginfo_files:$missing_debuginfo_files"
 
-test x"$missing_debuginfo_files" = x"" && exit 0
+if test x"$missing_debuginfo_files" = x""; then
+    cleanup_and_report_missing
+    exit 0
+fi
 
 # We'll run something like:
 #   yum --enablerepo='*debuginfo*' --quiet provides \
@@ -162,14 +187,31 @@ $debug && echo "packages:$packages"
 
 # yum may return "" here if it found no packages (say, if coredump is from a new,
 # unreleased package fresh from koji).
-test x"$packages" = x"" && exit 1
+if test x"$packages" = x""; then
+    cleanup_and_report_missing
+    exit 1
+fi
 
-# Redirecting, since progress bar stuff only messes up our output
-echo "Downloading `count_words $packages` packages"
-yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
-err=$?
-echo "exitcode:$err" >>yumdownloader.OUT
-test $err = 0 || exit 2
+num_packages=`count_words $packages`
+echo "Downloading $num_packages packages"
+## Download with one command (too silent):
+## Redirecting, since progress bar stuff only messes up our output
+##yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
+##err=$?
+##echo "exitcode:$err" >>yumdownloader.OUT
+##test $err = 0 || exit 2
+>yumdownloader.OUT
+i=1
+for pkg in $packages; do
+    echo "Download $i/$num_packages: $pkg"
+    echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
+    yumdownloader --enablerepo='*debuginfo*' --quiet $pkg >>yumdownloader.OUT 2>&1
+    err=$?
+    echo "exitcode:$err" >>yumdownloader.OUT
+    echo >>yumdownloader.OUT
+    test $err = 0 || { echo "Download of $pkg failed!"; sleep 1; }
+    : $((i++))
+done
 
 for f in *.rpm; do
     # Happens if no .rpm's were downloaded (yumdownloader problem)
@@ -180,45 +222,31 @@ for f in *.rpm; do
     rpm2cpio <"$f" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
 done
 
-# Which debuginfo files are still missing, including those we just unpacked?
-missing_build_ids=`for build_id in $build_ids; do
-    build_id1=${build_id:0:2}
-    build_id2=${build_id:2}
+# Copy debuginfo files to cachedir
+if test x"$cachedir" != x"" && test -d "$cachedir"; then
+    for build_id in $build_ids; do
+	build_id1=${build_id:0:2}
+	build_id2=${build_id:2}
 
-    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
 
-    test -f "/$file" && continue
-    test x"$cachedir" != x"" \
-    && test x"$cachedir" != x"/" \
-    && test -f "$cachedir/$file" && continue
+	test -f "/$file" && continue
+	test x"$cachedir" != x"/" && test -f "$cachedir/$file" && continue
 
-    if test -f "$file"; then
-	# file is one of those we just installed.
-	# Cache it if cachedir is specified.
-	if test x"$cachedir" != x"" && test -d "$cachedir"; then
+	if test -f "$file"; then
+	    # file is one of those we just installed.
+	    # Cache it if cachedir is specified.
 	    mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
 	    # Note: this does not preserve symlinks. This is intentional
-	    $debug && echo Copying "$file" to "$cachedir/$file" >&2
+	    $debug && echo Copying2 "$file" to "$cachedir/$file" >&2
 	    cp --remove-destination "$file" "$cachedir/$file"
+	    continue
 	fi
-	continue
-    fi
-    echo -n "$build_id "
-done`
+    done
+fi
 $debug && echo "missing_build_ids:$missing_build_ids"
 
-# If cachedir is specified, tempdir is just a staging area. Delete it
-if test x"$cachedir" != x""; then
-    $debug && echo "Removing $tempdir"
-    rm -rf "$tempdir"
-fi
+cleanup_and_report_missing
 
-test x"$missing_build_ids" = x"" && exit 0
-
-for missing in $missing_build_ids; do
-    echo "MISSING:$missing"
-done
-
-echo "`count_words $missing_build_ids` debuginfos can't be found"
-
-exit 1
+test x"$missing_build_ids" != x"" && exit 1
+exit 0

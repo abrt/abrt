@@ -22,7 +22,6 @@
 #ifndef ACTION_H_
 #define ACTION_H_
 
-#include <string>
 #include "Plugin.h"
 
 /**
@@ -40,8 +39,7 @@ class CAction : public CPlugin
          * @param pActionDir An actual directory.
          * @param pArgs Plugin's arguments.
          */
-        virtual void Run(const std::string& pActionDir,
-                         const std::string& pArgs) = 0;
+        virtual void Run(const char *pActionDir, const char *pArgs) = 0;
 };
 
-#endif /*ACTION_H_*/
+#endif
