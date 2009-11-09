@@ -1,5 +1,5 @@
 /*
-    python-hook-writer.cpp - writes data to the /var/cache/abrt directory 
+    abrt-pyhook-helper.cpp - writes data to the /var/cache/abrt directory 
     with SUID bit
 
     Copyright (C) 2009  RedHat inc.
