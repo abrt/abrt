@@ -216,7 +216,7 @@ class ReporterDialog():
                     ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
                     if package:
                         lErrors.set_markup(
-                            "<span color=\"white\">%s</span>" % _("Reporting disabled because the backtrace is unusable!\nPlease try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
+                            "<span color=\"white\">%s</span>" % _("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                     else:
                         lErrors.set_markup("<span color=\"white\">%s</span>" % _("The bactrace is unusable, you can't report this!"))
                     bSend.set_sensitive(False)
