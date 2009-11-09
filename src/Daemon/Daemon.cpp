@@ -165,18 +165,6 @@ static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL
     return size;
 }
 
-static bool analyzer_has_InformAllUsers(const char *analyzer_name)
-{
-    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
-    if (!analyzer)
-        return false;
-    map_plugin_settings_t settings = analyzer->GetSettings();
-    map_plugin_settings_t::const_iterator it = settings.find("InformAllUsers");
-    if (it == settings.end())
-        return false;
-    return string_to_bool(it->second.c_str());
-}
-
 static void cron_delete_callback_data_cb(gpointer data)
 {
     cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
@@ -556,7 +544,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                             : crashinfo[CD_UID][CD_CONTENT].c_str();
                         g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
                     }
-                    //DeleteDebugDumpDir(fullname.c_str());
                     break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:

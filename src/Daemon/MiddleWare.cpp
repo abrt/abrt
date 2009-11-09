@@ -456,10 +456,9 @@ void DeleteDebugDumpDir(const char *pDebugDumpDir)
 std::string DeleteCrashInfo(const char *pUUID,
                                          const char *pUID)
 {
-    database_row_t row;
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->Delete(pUUID, pUID);
     database->DisConnect();
 
@@ -573,6 +572,21 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
     return MW_OK;
 }
 
+bool analyzer_has_InformAllUsers(const char *analyzer_name)
+{
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
+    if (!analyzer)
+    {
+        VERB1 log("Strange, asked for analyzer %s but it doesn't exist?", analyzer_name);
+        return false;
+    }
+    map_plugin_settings_t settings = analyzer->GetSettings();
+    map_plugin_settings_t::const_iterator it = settings.find("InformAllUsers");
+    if (it == settings.end())
+        return false;
+    return string_to_bool(it->second.c_str());
+}
+
 /**
  * Execute all action plugins, which are associated to
  * particular analyzer plugin.
@@ -621,14 +635,12 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
                                                               const char *pDebugDumpDir,
                                                               map_crash_info_t& pCrashInfo)
 {
-    mw_result_t res;
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database_row_t row;
     database->Connect();
     database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
-    res = GetCrashInfo(pUUID, pUID, pCrashInfo);
+    mw_result_t res = GetCrashInfo(pUUID, pUID, pCrashInfo);
     if (row.m_sReported == "1")
     {
         log("Crash is already reported");
@@ -646,29 +658,26 @@ std::string getDebugDumpDir(const char *pUUID,
                              const char *pUID)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database_row_t row;
     database->Connect();
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
     return row.m_sDebugDumpDir;
 }
 
-mw_result_t SaveDebugDump(const char *pDebugDumpDir)
-{
-    map_crash_info_t info;
-    return SaveDebugDump(pDebugDumpDir, info);
-}
+// Ok to remove?
+//mw_result_t SaveDebugDump(const char *pDebugDumpDir)
+//{
+//    map_crash_info_t info;
+//    return SaveDebugDump(pDebugDumpDir, info);
+//}
 
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                                                     map_crash_info_t& pCrashInfo)
 {
-    std::string lUUID;
     std::string UID;
     std::string time;
     std::string analyzer;
     std::string executable;
-    mw_result_t res;
-
     try
     {
         CDebugDump dd;
@@ -692,15 +701,17 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     {
         return MW_IN_DB;
     }
-    res = SavePackageDescriptionToDebugDump(executable.c_str(), pDebugDumpDir);
+    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), pDebugDumpDir);
     if (res != MW_OK)
     {
         return res;
     }
 
-    lUUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
-
-    return SaveDebugDumpToDatabase(lUUID.c_str(), UID.c_str(), time.c_str(), pDebugDumpDir, pCrashInfo);
+    std::string lUUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
+    const char *uid_str = analyzer_has_InformAllUsers(analyzer.c_str())
+        ? "-1"
+        : UID.c_str();
+    return SaveDebugDumpToDatabase(lUUID.c_str(), uid_str, time.c_str(), pDebugDumpDir, pCrashInfo);
 }
 
 mw_result_t GetCrashInfo(const char *pUUID,
@@ -709,16 +720,14 @@ mw_result_t GetCrashInfo(const char *pUUID,
 {
     pCrashInfo.clear();
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database_row_t row;
     database->Connect();
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
 
     std::string package;
     std::string executable;
     std::string description;
     std::string analyzer;
-
     try
     {
         CDebugDump dd;
@@ -737,6 +746,7 @@ mw_result_t GetCrashInfo(const char *pUUID,
         }
         return MW_ERROR;
     }
+
     add_crash_data_to_crash_info(pCrashInfo, CD_EXECUTABLE, executable);
     add_crash_data_to_crash_info(pCrashInfo, CD_PACKAGE, package);
     add_crash_data_to_crash_info(pCrashInfo, CD_DESCRIPTION, description);
