@@ -164,18 +164,14 @@ static LineRating rate_line(const char *line)
 {
 #define FOUND(x) (strstr(line, x) != NULL)
     /* see the "enum LineRating" comments for possible combinations */
+    if (FOUND(" at "))
+        return Good;
     const char *function = strstr(line, " in ");
     if (function)
     {
         if (function[4] == '?') /* " in ??" does not count */
         {
             function = NULL;
-        }
-        else
-        {
-            bool source_file = FOUND(" at ");
-            if (source_file)
-                return Good;
         }
     }
     bool library = FOUND(" from ");
@@ -193,7 +189,7 @@ static LineRating rate_line(const char *line)
 /* returns number of "stars" to show */
 static int rate_backtrace(const char *backtrace)
 {
-    int i, len;
+    int i, j, len;
     int multiplier = 0;
     int rating = 0;
     int best_possible_rating = 0;
@@ -210,6 +206,9 @@ static int rate_backtrace(const char *backtrace)
         if (backtrace[i] == '#') /* this separates frames from each other */
         {
             std::string s(backtrace + i + 1, len);
+            for (j=0; j<len; j++) /* replace tabs with spaces */
+                if (s[j] == '\t')
+                    s[j] = ' ';
             multiplier++;
             rating += rate_line(s.c_str()) * multiplier;
             best_possible_rating += BestRating * multiplier;
