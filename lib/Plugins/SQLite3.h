@@ -58,7 +58,8 @@ class CSQLite3 : public CDatabase
         virtual database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-        virtual const map_plugin_settings_t& GetSettings();
+//ok to delete?
+//        virtual const map_plugin_settings_t& GetSettings();
 };
 
 #endif /* SQLITE3_H_ */

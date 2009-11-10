@@ -8,42 +8,11 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+# include <config.h>
 #endif
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
-
-static void get_product_and_version(const std::string& pRelease,
-                                          std::string& pProduct,
-                                          std::string& pVersion)
-{
-    if (pRelease.find("Rawhide") != std::string::npos)
-    {
-        pProduct = "Fedora";
-        pVersion = "rawhide";
-        return;
-    }
-    if (pRelease.find("Fedora") != std::string::npos)
-    {
-        pProduct = "Fedora";
-    }
-    else if (pRelease.find("Red Hat Enterprise Linux") != std::string::npos)
-    {
-        pProduct = "Red Hat Enterprise Linux ";
-    }
-    std::string::size_type pos = pRelease.find("release");
-    pos = pRelease.find(" ", pos) + 1;
-    while (pRelease[pos] != ' ')
-    {
-        pVersion += pRelease[pos];
-        if (pProduct == "Red Hat Enterprise Linux ")
-        {
-            pProduct += pRelease[pos];
-        }
-        pos++;
-    }
-}
 
 static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
@@ -272,7 +241,7 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
 
     std::string product;
     std::string version;
-    get_product_and_version(release, product, version);
+    parse_release(release.c_str(), product, version);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                                         "product", product.c_str(),
@@ -368,14 +337,14 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
     std::string BugzillaURL;
     bool NoSSLVerify;
     map_plugin_settings_t settings = parse_settings(pSettings);
-    /* if parse_settings fails it returns an empty map so we need to use defaults*/
-    if(!settings.empty())
+    /* if parse_settings fails it returns an empty map so we need to use defaults */
+    if (!settings.empty())
     {
         Login = settings["Login"];
         Password = settings["Password"];
         BugzillaXMLRPC = settings["BugzillaXMLRPC"];
         BugzillaURL = settings["BugzillaURL"];
-        NoSSLVerify = settings["NoSSLVerify"] == "yes";
+        NoSSLVerify = string_to_bool(settings["NoSSLVerify"].c_str());
     }
     else
     {
@@ -437,9 +406,9 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
 map_plugin_settings_t CReporterBugzilla::parse_settings(const map_plugin_settings_t& pSettings)
 {
     map_plugin_settings_t plugin_settings;
-    map_plugin_settings_t::const_iterator it;
-    map_plugin_settings_t::const_iterator end = pSettings.end();
 
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
     it = pSettings.find("BugzillaURL");
     if (it != end)
     {
@@ -491,6 +460,8 @@ map_plugin_settings_t CReporterBugzilla::parse_settings(const map_plugin_setting
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    m_pSettings = pSettings;
+
 //BUG! This gets called when user's keyring contains login data,
 //then it takes precedence over /etc/abrt/plugins/Bugzilla.conf.
 //I got a case when keyring had a STALE password, and there was no way
@@ -498,9 +469,8 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 //(by hacking abrt source!), I don't know how to purge it from the keyring.
 //At the very least, log("SOMETHING") here.
 
-    map_plugin_settings_t::const_iterator it;
     map_plugin_settings_t::const_iterator end = pSettings.end();
-
+    map_plugin_settings_t::const_iterator it;
     it = pSettings.find("BugzillaURL");
     if (it != end)
     {
@@ -538,10 +508,11 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("NoSSLVerify");
     if (it != end)
     {
-        m_bNoSSLVerify = (it->second == "yes");
+        m_bNoSSLVerify = string_to_bool(it->second.c_str());
     }
 }
 
+/* Should not be deleted (why?) */
 const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
     m_pSettings["BugzillaURL"] = m_sBugzillaURL;

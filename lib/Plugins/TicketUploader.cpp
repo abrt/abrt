@@ -341,9 +341,10 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
 
 void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    m_pSettings = pSettings;
+
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
-
     it = pSettings.find("Customer");
     if (it != end)
     {
@@ -362,12 +363,12 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("Encrypt");
     if (it != end)
     {
-        m_bEncrypt = it->second == "yes";
+        m_bEncrypt = string_to_bool(it->second.c_str());
     }
     it = pSettings.find("Upload");
     if (it != end)
     {
-        m_bUpload = it->second == "yes";
+        m_bUpload = string_to_bool(it->second.c_str());
     }
     it = pSettings.find("RetryCount");
     if (it != end)
@@ -381,18 +382,19 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-const map_plugin_settings_t& CTicketUploader::GetSettings()
-{
-    m_pSettings["Customer"] = m_sCustomer;
-    m_pSettings["Ticket"] = m_sTicket;
-    m_pSettings["URL"] = m_sURL;
-    m_pSettings["Encrypt"] = m_bEncrypt ? "yes" : "no";
-    m_pSettings["Upload"] = m_bEncrypt ? "yes" : "no";
-    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
-    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
-
-    return m_pSettings;
-}
+//ok to delete?
+//const map_plugin_settings_t& CTicketUploader::GetSettings()
+//{
+//    m_pSettings["Customer"] = m_sCustomer;
+//    m_pSettings["Ticket"] = m_sTicket;
+//    m_pSettings["URL"] = m_sURL;
+//    m_pSettings["Encrypt"] = m_bEncrypt ? "yes" : "no";
+//    m_pSettings["Upload"] = m_bEncrypt ? "yes" : "no";
+//    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
+//    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(REPORTER,
             CTicketUploader,

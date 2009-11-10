@@ -118,18 +118,23 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
 
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)
 {
-	map_plugin_settings_t::const_iterator it = pSettings.find("SubmitURL");
-	if (it != pSettings.end()) {
+	m_pSettings = pSettings;
+
+	map_plugin_settings_t::const_iterator end = pSettings.end();
+	map_plugin_settings_t::const_iterator it;
+	it = pSettings.find("SubmitURL");
+	if (it != end) {
 		m_sSubmitURL = it->second;
 	}
 }
 
-const map_plugin_settings_t& CKerneloopsReporter::GetSettings()
-{
-	m_pSettings["SubmitURL"] = m_sSubmitURL;
-
-	return m_pSettings;
-}
+//ok to delete?
+//const map_plugin_settings_t& CKerneloopsReporter::GetSettings()
+//{
+//	m_pSettings["SubmitURL"] = m_sSubmitURL;
+//
+//	return m_pSettings;
+//}
 
 PLUGIN_INFO(REPORTER,
             CKerneloopsReporter,

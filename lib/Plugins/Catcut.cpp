@@ -68,41 +68,6 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
     }
 }
 
-static void
-get_product_and_version(const char *pRelease,
-                string& pProduct,
-                string& pVersion)
-{
-    if (strstr(pRelease, "Rawhide"))
-    {
-        pProduct = "Fedora";
-        pVersion = "rawhide";
-        return;
-    }
-    if (strstr(pRelease, "Fedora"))
-    {
-        pProduct = "Fedora";
-    }
-    else if (strstr(pRelease, "Red Hat Enterprise Linux"))
-    {
-        pProduct = "Red Hat Enterprise Linux ";
-    }
-
-    const char *release = strstr(pRelease, "release");
-    const char *space = release ? strchr(release, ' ') : NULL;
-
-    if (space++) while (*space != '\0' && *space != ' ')
-    {
-        /* Eat string like "5.2" */
-        pVersion += *space;
-        if (pProduct == "Red Hat Enterprise Linux ")
-        {
-            pProduct += *space;
-        }
-        space++;
-    }
-}
-
 static int
 put_stream(const char *pURL, FILE* f, size_t content_length)
 {
@@ -364,7 +329,7 @@ ctx::new_bug(const char *auth_cookie, const map_crash_report_t& pCrashReport)
 
     string product;
     string version;
-    get_product_and_version(release.c_str(), product, version);
+    parse_release(release.c_str(), product, version);
 
     xmlrpc_value *param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                 auth_cookie,
@@ -570,9 +535,8 @@ void CReporterCatcut::SetSettings(const map_plugin_settings_t& pSettings)
 {
     m_pSettings = pSettings;
 
-    map_plugin_settings_t::const_iterator it;
     map_plugin_settings_t::const_iterator end = pSettings.end();
-
+    map_plugin_settings_t::const_iterator it;
     it = pSettings.find("CatcutURL");
     if (it != end)
     {
@@ -591,7 +555,7 @@ void CReporterCatcut::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("NoSSLVerify");
     if (it != end)
     {
-        m_bNoSSLVerify = it->second == "yes";
+        m_bNoSSLVerify = string_to_bool(it->second.c_str());
     }
     it = pSettings.find("RetryCount");
     if (it != end)

@@ -45,7 +45,8 @@ class CTicketUploader : public CReporter
     public:
         CTicketUploader();
         virtual ~CTicketUploader();
-        virtual const map_plugin_settings_t& GetSettings();
+//ok to delete?
+//        virtual const map_plugin_settings_t& GetSettings();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 
         virtual std::string Report(const map_crash_report_t& pCrashReport,

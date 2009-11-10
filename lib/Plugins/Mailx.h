@@ -47,7 +47,8 @@ class CMailx : public CReporter
         CMailx();
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-        virtual const map_plugin_settings_t& GetSettings();
+//ok to delete?
+//        virtual const map_plugin_settings_t& GetSettings();
         virtual std::string Report(const map_crash_report_t& pCrashReport,
                                    const map_plugin_settings_t& pSettings,
                                    const std::string& pArgs);

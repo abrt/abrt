@@ -11,6 +11,7 @@ libABRTUtils_la_SOURCES = \
     logging.cpp \
     copyfd.cpp \
     skip_whitespace.cpp \
+    parse_release.cpp \
     CrashTypesSocket.cpp \
     DebugDump.h DebugDump.cpp \
     CommLayerInner.h CommLayerInner.cpp \

@@ -376,23 +376,24 @@ static void FindNewDumps(const char* pPath)
             switch (res)
             {
                 case MW_OK:
-                    VERB1 log("Saving into database (%s)", itt->c_str());
+                    VERB1 log("Saving %s into database", itt->c_str());
                     RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
                     break;
                 case MW_IN_DB:
-                    VERB1 log("Already saved in database (%s)", itt->c_str());
+                    VERB1 log("%s is already saved in database", itt->c_str());
                     break;
                 case MW_REPORTED:
                 case MW_OCCURED:
+                    VERB1 log("Already saved crash %s, deleting", itt->c_str());
+                    DeleteDebugDumpDir(itt->c_str());
+                    break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
                 case MW_PACKAGE_ERROR:
                 case MW_GPG_ERROR:
                 case MW_FILE_ERROR:
                 default:
-//Perhaps corrupted & bad needs to be logged unconditionally,
-//already saved one - only on VERB1
-                    VERB1 log("Corrupted, bad or already saved crash, deleting");
+                    log("Corrupted or bad crash %s (res:%d), deleting", itt->c_str(), (int)res);
                     DeleteDebugDumpDir(itt->c_str());
                     break;
             }

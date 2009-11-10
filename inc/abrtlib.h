@@ -217,4 +217,6 @@ to_string(T x)
     return o.str();
 }
 
+void parse_release(const char *pRelease, std::string& pProduct, std::string& pVersion);
+
 #endif

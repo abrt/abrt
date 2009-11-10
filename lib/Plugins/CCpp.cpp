@@ -980,7 +980,7 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("MemoryMap");
     if (it != end)
     {
-        m_bMemoryMap = it->second == "yes";
+        m_bMemoryMap = string_to_bool(it->second.c_str());
     }
     it = pSettings.find("DebugInfo");
     if (it != end)
@@ -997,19 +997,20 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
         it = pSettings.find("InstallDebuginfo");
     if (it != end)
     {
-        m_bInstallDebugInfo = it->second == "yes";
+        m_bInstallDebugInfo = string_to_bool(it->second.c_str());
     }
 }
 
-const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
-{
-    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
-    m_pSettings["DebugInfo"] = m_sDebugInfo;
-    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
-    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
-
-    return m_pSettings;
-}
+//ok to delete?
+//const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
+//{
+//    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
+//    m_pSettings["DebugInfo"] = m_sDebugInfo;
+//    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
+//    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(ANALYZER,
             CAnalyzerCCpp,
