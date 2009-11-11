@@ -1,0 +1,272 @@
+%{ /* -*- mode: yacc -*-
+/*
+    Copyright (C) 2009  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include "backtrace.h"
+#include "strbuf.h"
+
+struct backtrace *g_backtrace;
+
+#define YYDEBUG 1
+#define YYMAXDEPTH 10000000
+void yyerror(char const *s)
+{
+  fprintf (stderr, "\nParser error: %s\n", s);
+}
+
+%}
+     
+/* This defines the type of yylval */
+%union {
+  struct backtrace *backtrace;
+  struct thread *thread;
+  struct frame *frame;
+  char *str;
+  int num;
+  char c;
+
+  struct strbuf *strbuf;
+}
+
+/* Bison declarations.  */
+%type <backtrace> backtrace ignoredpart_backtrace
+%type <thread> threads thread
+%type <frame> frames frame
+%type <strbuf> identifier hexadecimal_digit_sequence hexadecimal_number file_name function_call function_name digit_sequence
+%type <c> nondigit digit hexadecimal_digit file_name_char '(' ')' '+' '-' '/' '.' 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' '_' '0' '1' '2' '3' '4' '5' '6' '7' '8' '9' '\'' '`' ',' '#' '@' '<' '>' '=' ':' '"' ';' ' ' '\n' '\t' '\\' '!' '*' '%' '|' '^' '&' '$'
+
+%start backtrace
+%glr-parser
+%error-verbose
+
+%% /* The grammar follows.  */
+
+backtrace : /* empty */  { $$ = g_backtrace = backtrace_new(); }
+          | ignoredpart_backtrace wsa { $$ = g_backtrace = $1; }
+;
+
+/**/
+ignoredpart_backtrace : threads { $$ = backtrace_new(); $$->threads = $1; }
+                      | anychar ignoredpart_backtrace { $$ = $2; }
+;
+
+anychar   : ws | digit | nondigit | '(' | ')' | '+' | '-' | '#' | '=' | ':' | ';'
+          | '/' | '.' | '[' | ']' | '?' | '\'' | '`' | ',' | '<' | '>' | '"'
+;
+
+threads   : thread             { $$ = $1; }
+          | threads wsa thread { $$ = thread_add_sibling($1, $3); }
+;
+
+thread    : keyword_thread wss digit_sequence wsa '(' keyword_thread wss digit_sequence wsa ')' ':' wsa frames { $$ = thread_new(); $$->frames = $13; }
+;
+
+frames    : frame            { $$ = $1; }
+          | frames wsa frame { $$ = frame_add_sibling($1, $3); }
+;
+
+frame     : frame_head wss function_call wsa keyword_at wss file_location wss variables %dprec 2 { $$ = frame_new(); }
+	  | frame_head wss frame_address_in_function wss keyword_at wss file_location wss variables %dprec 3 { $$ = frame_new(); }
+	  | frame_head wss frame_address_in_function wss keyword_from wss file_location wss variables %dprec 3 { $$ = frame_new(); }
+          | frame_head wss frame_address_in_function wss variables %dprec 1 { $$ = frame_new(); }
+          | frame_head wss keyword_sighandler wss variables { $$ = frame_new(); }
+;
+
+
+frame_head : '#' digit_sequence
+;
+
+frame_address_in_function : hexadecimal_number wss keyword_in wss function_call
+;
+
+file_location : file_name ':' digit_sequence
+              | file_name
+;
+
+variables : variables_char
+          | variables variables_char
+          | variables variables_wss variables_char
+          | variables '\n' variables_char_no_framestart
+          | variables variables_wss '\n' variables_wss variables_char_no_framestart
+          | variables variables_wss '\n' variables_char_no_framestart
+          | variables '\n' variables_wss variables_char_no_framestart
+;
+
+variables_ws : '\t' | ' '
+;
+
+variables_wss : variables_ws
+              | variables_wss variables_ws
+;
+
+ /* We hope variables in frame never contain # character. */
+variables_char : '#' | variables_char_no_framestart
+;
+
+variables_char_no_framestart : digit | nondigit | '(' | ')' | '+' | '-' | '<' 
+                             | '>' | '"' | '/' | '.' | '[' | ']' | '?' | '\'' 
+                             | '`' | ',' | '=' | '{' | '}' | '^' | '&' | '$'
+                             | ':' | ';' | '\\' | '!' | '@' | '*' | '%' | '|'
+
+function_call : function_name wsa function_args
+;
+
+function_name : identifier
+              | '?' '?' { $$ = strbuf_new(); strbuf_append_str($$, "??"); }
+;
+
+function_args : '(' wsa ')'
+              | '(' wsa function_args_sequence wsa ')'
+;
+
+function_args_sequence : function_args_char
+                       | function_args_sequence wsa function_args_char
+;
+
+function_args_char : digit | nondigit | '{' | '}' | '<' | '>' 
+                   | '=' | '-' | '+' | '@' | ',' | '.'
+;
+
+file_name : file_name_char { $$ = strbuf_new(); strbuf_append_char($$, $1); }
+          | file_name file_name_char { $$ = strbuf_append_char($1, $2); }
+;
+
+file_name_char : digit | nondigit | '-' | '+' | '/' | '.'
+;
+
+ /* Mangled function name.  */
+identifier : nondigit  { $$ = strbuf_new(); strbuf_append_char($$, $1); }
+           | identifier nondigit { $$ = strbuf_append_char($1, $2); }
+           | identifier digit { $$ = strbuf_append_char($1, $2); }
+           | identifier '@' { $$ = strbuf_append_char($1, $2); }
+           | identifier '.' { $$ = strbuf_append_char($1, $2); }
+           | identifier ':' { $$ = strbuf_append_char($1, $2); }
+;
+
+digit_sequence : digit { $$ = strbuf_new(); strbuf_append_char($$, $1); }
+               | digit_sequence digit { $$ = strbuf_append_char($1, $2); }
+;
+
+hexadecimal_number : '0' 'x' hexadecimal_digit_sequence { $$ = strbuf_new(); strbuf_append_str($$, "0x"); strbuf_append_str($$, $3->buf); }
+                   | '0' 'X' hexadecimal_digit_sequence { $$ = strbuf_new(); strbuf_append_str($$, "0X"); strbuf_append_str($$, $3->buf); }
+;
+
+hexadecimal_digit_sequence : hexadecimal_digit { $$ = strbuf_new(); strbuf_append_char($$, $1); }
+                           | hexadecimal_digit_sequence hexadecimal_digit { $$ = strbuf_append_char($1, $2); }
+;
+
+hexadecimal_digit : digit
+                  | 'a' | 'b' | 'c' | 'd' | 'e' | 'f'
+                  | 'A' | 'B' | 'C' | 'D' | 'E' | 'F'
+;
+
+digit : '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9'
+;
+
+nondigit : 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k'
+         | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w'
+         | 'x' | 'y' | 'z' 
+         | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G' | 'H' | 'I' | 'J' | 'K'
+         | 'L' | 'M' | 'N' | 'O' | 'P' | 'Q' | 'R' | 'S' | 'T' | 'U' | 'V' | 'W'
+         | 'X' | 'Y' | 'Z'
+         | '_'
+;
+
+ /* whitespace */
+ws : '\t' | ' ' | '\n' | '\r'
+;
+
+ /* whitespace sequence */
+wss : ws
+    | wss ws
+;
+ 
+/* whitespace sequence allowed */
+wsa : 
+    | wss
+;
+
+keyword_in : 'i' 'n'
+;
+
+keyword_at : 'a' 't'
+;
+
+keyword_from : 'f' 'r' 'o' 'm'
+;
+
+keyword_thread: 'T' 'h' 'r' 'e' 'a' 'd'
+;
+
+keyword_sighandler: '<' 's' 'i' 'g' 'n' 'a' 'l' ' ' 'h' 'a' 'n' 'd' 'l' 'e' 'r' ' ' 'c' 'a' 'l' 'l' 'e' 'd' '>'
+;
+
+%%
+
+static bool scanner_echo = false;
+static FILE *yyin;
+
+int yylex()
+{
+  int c = fgetc(yyin);
+  if (c == EOF)
+    return 0;
+
+  /* Debug output. */
+  if (scanner_echo)
+    putchar(c);
+
+  /* Return a single char. */
+  return c;
+}
+
+/* This is the function that is actually called from outside. 
+ * @returns
+ *   Backtrace structure. Caller is responsible for calling
+ *   backtrace_free() on this.
+ */
+struct backtrace *do_parse(FILE *input, bool debug_parser, bool debug_scanner)
+{
+  /* Prepare for running parser. */
+  g_backtrace = 0;
+  yyin = input;
+#if YYDEBUG == 1
+  if (debug_parser)
+    yydebug = 1;
+#endif
+  scanner_echo = debug_scanner;
+
+  /* Parse. */
+  int failure = yyparse();
+  
+  /* Separate debugging output. */
+  if (scanner_echo)
+    putchar('\n'); 
+
+  if (failure)
+  {
+    if (g_backtrace)
+      backtrace_free(g_backtrace);
+    puts("Error while parsing backtrace.");
+    exit(6);
+  }
+
+  return g_backtrace;
+}

@@ -1,0 +1,60 @@
+#!/usr/bin/python
+# -*- mode:python -*-
+
+from bugzilla import RHBugzilla
+from optparse import OptionParser
+import sys
+import os.path
+
+parser = OptionParser(version="%prog 1.0")
+parser.add_option("-u", "--user", dest="user",
+                  help="Bugzilla user name (REQUIRED)", metavar="USERNAME")
+parser.add_option("-p", "--password", dest="password",
+                  help="Bugzilla password (REQUIRED)", metavar="PASSWORD")
+parser.add_option("-b", "--bugzilla", dest="bugzilla",
+                  help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
+parser.add_option("-f", "--fields",
+                  action="store_true", dest="fields", default=False,
+                  help="Print possible bug fields and exit.")
+
+(options, args) = parser.parse_args()
+
+if not options.user or len(options.user) == 0:
+  parser.error("User name is required.\nTry {0} --help".format(sys.argv[0]))
+
+if not options.password or len(options.password) == 0:
+  parser.error("Password is required.\nTry {0} --help".format(sys.argv[0]))
+
+if not options.bugzilla or len(options.bugzilla) == 0:
+  options.bugzilla = "https://bugzilla.redhat.com/xmlrpc.cgi"
+
+bz = RHBugzilla()
+bz.connect(options.bugzilla)
+bz.login(options.user, options.password)
+
+if options.fields:
+  print bz.bugfields
+  exit(0)
+
+buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboard':'abrt_hash'})
+
+print "{0} bugs found.".format(len(buginfos))
+
+for buginfo in buginfos:
+  # Skip bugs with already downloaded backtraces.
+  filename = "{0}.bt".format(buginfo.bug_id)
+  if os.path.isfile(filename):
+    print "Skipping {0} (already exists).".format(filename)
+    continue
+
+  # Get backtrace from bug and store it as a file.
+  bug = bz.getbug(buginfo.bug_id)
+  for attachment in bug.attachments:
+    if attachment['filename'] == 'backtrace':
+      data = bz.openattachment(attachment['id'])
+      f = open(filename, 'w')
+      f.write(data.read())
+      f.close()
+      print "Attachment {0} downloaded.".format(filename)
+
+bz.logout()
