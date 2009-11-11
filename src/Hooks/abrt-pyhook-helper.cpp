@@ -20,6 +20,7 @@
 */
 
 #include <getopt.h>
+#include <unistd.h>
 /* We can easily get rid of abrtlib (libABRTUtils.so) usage in this file,
  * but DebugDump will pull it in anyway */
 #include "abrtlib.h"
@@ -34,7 +35,6 @@ static char *pid;
 static char *executable;
 static char *uuid;
 static char *cmdline;
-static char *loginuid;
 
 int main(int argc, char** argv)
 {
@@ -45,7 +45,6 @@ int main(int argc, char** argv)
     { "executable", required_argument, NULL, 'e' },
     { "uuid"      , required_argument, NULL, 'u' },
     { "cmdline"   , required_argument, NULL, 'c' },
-    { "loginuid"  , required_argument, NULL, 'l' },
     { 0 },
   };
   int opt;
@@ -65,9 +64,6 @@ int main(int argc, char** argv)
     case 'c':
       cmdline = optarg;
       break;
-    case 'l':
-      loginuid = optarg;
-      break;
     default:
  usage:
       error_msg_and_die(
@@ -77,7 +73,6 @@ int main(int argc, char** argv)
                 "	-p,--executable	PATH	absolute path to the program that crashed\n"
                 "	-u,--uuid UUID		hash generated from the backtrace\n"
                 "	-c,--cmdline TEXT	command line of the crashed program\n"
-                "	-l,--loginuid UID	login UID\n"
       );
     }
   }
@@ -112,8 +107,11 @@ int main(int argc, char** argv)
     dd.SaveText("cmdline", cmdline);
   if (uuid)
     dd.SaveText("uuid", uuid);
-  if (loginuid)
-    dd.SaveText("uid", loginuid);
+
+  char uid[16];
+  snprintf(uid, 16, "%d", (int)getuid());
+  dd.SaveText("uid", uid);
+
   dd.SaveText("backtrace", bt);
   free(bt);
   dd.Close();
