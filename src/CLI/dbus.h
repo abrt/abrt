@@ -32,8 +32,9 @@ extern void call_DeleteDebugDump(const char* uuid);
  */
 extern vector_map_string_t call_GetPluginsInfo();
 
-/* Gets default plugin settings.
- * Parameter name corresponds to name obtained from  call_GetPluginsInfo.
+/** Gets default plugin settings.
+ * @param name
+ *    Corresponds to name obtained from  call_GetPluginsInfo.
  */
 extern map_plugin_settings_t call_GetPluginSettings(const char *name);
 
