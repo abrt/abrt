@@ -117,13 +117,13 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 			/* Skip over timestamp */
 			c += 16;
 
-			/* skip non-kernel lines */
+			/* Skip non-kernel lines */
 			char *kernel_str = strstr(c, "kernel: ");
 			if (kernel_str == NULL) {
 				/* if we see our own marker:
 				 * "hostname abrt: Kerneloops: Reported 1 kernel oopses to Abrt"
 				 * we know we submitted everything upto here already */
-				if (strstr(c, "abrt:") && strstr(linepointer, "Abrt")) {
+				if (strstr(c, "abrt:") && strstr(c, "Abrt")) {
 					linecount = 0;
 					lines_info_alloc = 0;
 					free(lines_info);
