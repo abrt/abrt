@@ -325,7 +325,7 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
 
 void CSQLite3::SetReported(const std::string& pUUID, const std::string& pUID, const std::string& pMessage)
 {
-    if(pUID == "0")
+    if (pUID == "0")
     {
         Exec("UPDATE "ABRT_TABLE" "
              "SET "DATABASE_COLUMN_REPORTED" = 1 "
@@ -398,20 +398,24 @@ database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::string
 
 void CSQLite3::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("DBPath") != pSettings.end())
+    m_pSettings = pSettings;
+
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("DBPath");
+    if (it != end)
     {
-        m_sDBPath = pSettings.find("DBPath")->second;
+        m_sDBPath = it->second;
     }
 }
 
-map_plugin_settings_t CSQLite3::GetSettings()
-{
-    map_plugin_settings_t ret;
-
-    ret["DBPath"] = m_sDBPath;
-
-    return ret;
-}
+//ok to delete?
+//const map_plugin_settings_t& CSQLite3::GetSettings()
+//{
+//    m_pSettings["DBPath"] = m_sDBPath;
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(DATABASE,
             CSQLite3,

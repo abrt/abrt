@@ -11,13 +11,14 @@ class CReporterCatcut : public CReporter
 	std::string m_sLogin;
 	std::string m_sPassword;
 	bool m_bNoSSLVerify;
+	int m_nRetryCount;
+	int m_nRetryDelay;
 
     public:
         CReporterCatcut();
         virtual ~CReporterCatcut();
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-        virtual map_plugin_settings_t GetSettings();
 
         virtual std::string Report(const map_crash_report_t& pCrashReport,
                                    const map_plugin_settings_t& pSettings,

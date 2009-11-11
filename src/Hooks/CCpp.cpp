@@ -188,7 +188,7 @@ int main(int argc, char** argv)
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
-        dd.SaveText(FILENAME_REASON, std::string("Process was terminated by signal ") + signal_str);
+        dd.SaveText(FILENAME_REASON, ssprintf("Process was terminated by signal %s", signal_str).c_str());
 
         int len = strlen(path);
         snprintf(path + len, sizeof(path) - len, "/"FILENAME_COREDUMP);
@@ -221,7 +221,7 @@ int main(int argc, char** argv)
     }
     catch (CABRTException& e)
     {
-        error_msg_and_die("%s", e.what().c_str());
+        error_msg_and_die("%s", e.what());
     }
     catch (std::exception& e)
     {

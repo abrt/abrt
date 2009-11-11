@@ -11,10 +11,12 @@ libABRTUtils_la_SOURCES = \
     logging.cpp \
     copyfd.cpp \
     skip_whitespace.cpp \
+    parse_release.cpp \
     CrashTypesSocket.cpp \
     DebugDump.h DebugDump.cpp \
     CommLayerInner.h CommLayerInner.cpp \
     abrt_dbus.h abrt_dbus.cpp \
+    abrt_xmlrpc.h abrt_xmlrpc.cpp \
     Plugin.h Plugin.cpp make_descr.cpp \
     Polkit.h Polkit.cpp \
     Action.h Database.h Reporter.h Analyzer.h \
@@ -30,6 +32,7 @@ libABRTUtils_la_CPPFLAGS = \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
+    $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(POLKIT_CFLAGS) \
     -D_GNU_SOURCE
 libABRTUtils_la_LDFLAGS = \
@@ -37,7 +40,9 @@ libABRTUtils_la_LDFLAGS = \
     $(DL_LIBS) \
     $(DBUS_LIBS)
 libABRTUtils_la_LIBADD = \
+    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     $(POLKIT_LIBS)
+
 
 install-data-local:
 	$(mkdir_p) '$(DESTDIR)/$(DEBUG_DUMPS_DIR)'

@@ -22,24 +22,11 @@
 #define SOSREPORT_H_
 
 #include "Action.h"
-#include <string>
-#include <vector>
 
 class CActionSOSreport : public CAction
 {
-    private:
-        typedef std::string::size_type index_type;
-
-        void CopyFile(const std::string& pSourceName, const std::string& pDestName);
-        void ErrorCheck(const index_type pI);
-        std::string ParseFilename(const std::string& pOutput);
-
-        typedef std::vector<std::string> vector_args_t;
-        void ParseArgs(const std::string& psArgs, vector_args_t& pArgs);
-
     public:
-        virtual void Run(const std::string& pActionDir,
-                         const std::string& pArgs);
+        virtual void Run(const char *pActionDir, const char *pArgs);
 };
 
 #endif

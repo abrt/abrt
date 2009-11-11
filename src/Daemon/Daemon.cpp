@@ -19,6 +19,7 @@
 
 #include <syslog.h>
 #include <pthread.h>
+#include <resolv.h> /* res_init */
 #include <string>
 #include <limits.h>
 #include <sys/inotify.h>
@@ -175,8 +176,9 @@ static gboolean cron_activation_periodic_cb(gpointer data)
     cron_callback_data_t* cronPeriodicCallbackData = static_cast<cron_callback_data_t*>(data);
     VERB1 log("Activating plugin: %s", cronPeriodicCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
-            cronPeriodicCallbackData->m_sPluginName,
-            cronPeriodicCallbackData->m_sPluginArgs);
+            cronPeriodicCallbackData->m_sPluginName.c_str(),
+            cronPeriodicCallbackData->m_sPluginArgs.c_str()
+    );
     return TRUE;
 }
 static gboolean cron_activation_one_cb(gpointer data)
@@ -184,8 +186,9 @@ static gboolean cron_activation_one_cb(gpointer data)
     cron_callback_data_t* cronOneCallbackData = static_cast<cron_callback_data_t*>(data);
     VERB1 log("Activating plugin: %s", cronOneCallbackData->m_sPluginName.c_str());
     RunAction(DEBUG_DUMPS_DIR,
-            cronOneCallbackData->m_sPluginName,
-            cronOneCallbackData->m_sPluginArgs);
+            cronOneCallbackData->m_sPluginName.c_str(),
+            cronOneCallbackData->m_sPluginArgs.c_str()
+    );
     return FALSE;
 }
 static gboolean cron_activation_reshedule_cb(gpointer data)
@@ -199,7 +202,8 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
                                cronPeriodicCallbackData->m_nTimeout,
                                cron_activation_periodic_cb,
                                static_cast<gpointer>(cronPeriodicCallbackData),
-                               cron_delete_callback_data_cb);
+                               cron_delete_callback_data_cb
+    );
     return FALSE;
 }
 
@@ -225,7 +229,7 @@ static void SetUpMW()
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
     {
-        AddActionOrReporter(it_ar->first, it_ar->second);
+        AddActionOrReporter(it_ar->first.c_str(), it_ar->second.c_str());
     }
     VERB1 log("Adding analyzers, actions or reporters");
     map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
@@ -234,7 +238,7 @@ static void SetUpMW()
         vector_pair_string_string_t::iterator it_ar = it_aar->second.begin();
         for (; it_ar != it_aar->second.end(); it_ar++)
         {
-            AddAnalyzerActionOrReporter(it_aar->first, it_ar->first, it_ar->second);
+            AddAnalyzerActionOrReporter(it_aar->first.c_str(), it_ar->first.c_str(), it_ar->second.c_str());
         }
     }
 }
@@ -368,29 +372,29 @@ static void FindNewDumps(const char* pPath)
         map_crash_info_t crashinfo;
         try
         {
-            mw_result_t res;
-            res = SaveDebugDump(*itt, crashinfo);
+            mw_result_t res = SaveDebugDump(itt->c_str(), crashinfo);
             switch (res)
             {
                 case MW_OK:
-                    VERB1 log("Saving into database (%s)", itt->c_str());
-                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
+                    VERB1 log("Saving %s into database", itt->c_str());
+                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
                     break;
                 case MW_IN_DB:
-                    VERB1 log("Already saved in database (%s)", itt->c_str());
+                    VERB1 log("%s is already saved in database", itt->c_str());
                     break;
                 case MW_REPORTED:
                 case MW_OCCURED:
+                    VERB1 log("Already saved crash %s, deleting", itt->c_str());
+                    DeleteDebugDumpDir(itt->c_str());
+                    break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
                 case MW_PACKAGE_ERROR:
                 case MW_GPG_ERROR:
                 case MW_FILE_ERROR:
                 default:
-//Perhaps corrupted & bad needs to be logged unconditionally,
-//already saved one - only on VERB1
-                    VERB1 log("Corrupted, bad or already saved crash, deleting");
-                    DeleteDebugDumpDir(*itt);
+                    log("Corrupted or bad crash %s (res:%d), deleting", itt->c_str(), (int)res);
+                    DeleteDebugDumpDir(itt->c_str());
                     break;
             }
         }
@@ -400,7 +404,7 @@ static void FindNewDumps(const char* pPath)
             {
                 throw e;
             }
-            error_msg("%s", e.what().c_str());
+            error_msg("%s", e.what());
         }
     }
 }
@@ -514,47 +518,33 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         ) {
             log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir.c_str());
             g_pCommLayer->QuotaExceed(_("Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
-            DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + worst_dir);
+            DeleteDebugDumpDir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
             worst_dir = "";
         }
 
         map_crash_info_t crashinfo;
         try
         {
-            mw_result_t res;
-            res = SaveDebugDump(std::string(DEBUG_DUMPS_DIR) + "/" + name, crashinfo);
+            std::string fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
+
+            mw_result_t res = SaveDebugDump(fullname.c_str(), crashinfo);
             switch (res)
             {
                 case MW_OK:
-                    log("New crash, saving...");
-                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT]);
-                    /* Send dbus signal */
-                    if(crashinfo[CD_MWANALYZER][CD_CONTENT] == "Kerneloops")
-                    {
-                        // When Kerneloops comes it will be sent uid with -1
-                        // Applet will detected and show normal user
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string("-1"));
-                    }
-                    else
-                    {
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                    }
-                    break;
+                    log("New crash, saving");
+                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
+                    /* Fall through to "send dbus signal" */
                 case MW_REPORTED:
                 case MW_OCCURED:
-                    log("Already saved crash, deleting...");
+                    if (res != MW_OK)
+                        log("Already saved crash, just sending dbus signal");
                     /* Send dbus signal */
-                    if(crashinfo[CD_MWANALYZER][CD_CONTENT] == "Kerneloops")
                     {
-                        // When Kerneloops comes it will be sent uid with -1
-                        // Applet will detected and show normal user
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], to_string("-1"));
+                        const char *uid_str = analyzer_has_InformAllUsers(crashinfo[CD_MWANALYZER][CD_CONTENT].c_str())
+                            ? NULL
+                            : crashinfo[CD_UID][CD_CONTENT].c_str();
+                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
                     }
-                    else
-                    {
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT], crashinfo[CD_UID][CD_CONTENT]);
-                    }
-                    //DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
                     break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
@@ -563,14 +553,14 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 case MW_IN_DB:
                 case MW_FILE_ERROR:
                 default:
-                    log("Corrupted or bad crash, deleting...");
-                    DeleteDebugDumpDir(std::string(DEBUG_DUMPS_DIR) + "/" + name);
+                    log("Corrupted or bad crash, deleting");
+                    DeleteDebugDumpDir(fullname.c_str());
                     break;
             }
         }
         catch (CABRTException& e)
         {
-            warn_client(e.what());
+            error_msg(e.what());
             if (e.type() == EXCEP_FATAL)
             {
                 free(buf);
@@ -594,6 +584,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 static void run_main_loop(GMainLoop* loop)
 {
     GMainContext *context = g_main_loop_get_context(loop);
+    time_t old_time = 0;
+    time_t dns_conf_hash = 0;
 
     while (!s_exiting)
     {
@@ -617,6 +609,33 @@ static void run_main_loop(GMainLoop* loop)
         g_poll(fds, nfds, timeout);
         if (s_timeout)
             alarm(0);
+
+        /* res_init() makes glibc reread /etc/resolv.conf.
+         * I'd think libc should be clever enough to do it itself
+         * at every name resolution attempt, but no...
+         * We need to guess ourself whether we want to do it.
+         */
+        time_t now = time(NULL) >> 2;
+        if (old_time != now) /* check once in 4 seconds */
+        {
+            old_time = now;
+
+            time_t hash = 0;
+            struct stat sb;
+            if (stat("/etc/resolv.conf", &sb) == 0)
+                hash = sb.st_mtime;
+            if (stat("/etc/host.conf", &sb) == 0)
+                hash += sb.st_mtime;
+            if (stat("/etc/hosts", &sb) == 0)
+                hash += sb.st_mtime;
+            if (stat("/etc/nsswitch.conf", &sb) == 0)
+                hash += sb.st_mtime;
+            if (dns_conf_hash != hash)
+            {
+                dns_conf_hash = hash;
+                res_init();
+            }
+        }
 
         some_ready = g_main_context_check(context, max_priority, fds, nfds);
         if (some_ready)
@@ -795,7 +814,7 @@ int main(int argc, char** argv)
         SetUpMW(); /* logging is inside */
         if (SetUpCron() != 0)
             throw 1;
-#ifdef ENABLE_DBUS
+#if 1 //def ENABLE_DBUS
         VERB1 log("Initializing dbus");
         g_pCommLayer = new CCommLayerServerDBus();
 #elif ENABLE_SOCKET
@@ -852,7 +871,7 @@ int main(int argc, char** argv)
     }
     catch (CABRTException& e)
     {
-        error_msg("Error: %s", e.what().c_str());
+        error_msg("Error: %s", e.what());
     }
     catch (std::exception& e)
     {

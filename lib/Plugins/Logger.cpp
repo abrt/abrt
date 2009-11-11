@@ -19,9 +19,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include "Logger.h"
 #include <fstream>
 #include <sstream>
+#include "abrtlib.h"
+#include "Logger.h"
 #include "DebugDump.h"
 #include "CommLayerInner.h"
 #include "ABRTException.h"
@@ -33,25 +34,30 @@ CLogger::CLogger() :
 
 void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("LogPath") != pSettings.end())
+    m_pSettings = pSettings;
+
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("LogPath");
+    if (it != end)
     {
-        m_sLogPath = pSettings.find("LogPath")->second;
+        m_sLogPath = it->second;
     }
-    if (pSettings.find("AppendLogs") != pSettings.end())
+    it = pSettings.find("AppendLogs");
+    if (it != end)
     {
-        m_bAppendLogs = pSettings.find("AppendLogs")->second == "yes";
+        m_bAppendLogs = string_to_bool(it->second.c_str());
     }
 }
 
-map_plugin_settings_t CLogger::GetSettings()
-{
-    map_plugin_settings_t ret;
-
-    ret["LogPath"] = m_sLogPath;
-    ret["AppendLogs"] = m_bAppendLogs ? "yes" : "no";
-
-    return ret;
-}
+//ok to delete?
+//const map_plugin_settings_t& CLogger::GetSettings()
+//{
+//    m_pSettings["LogPath"] = m_sLogPath;
+//    m_pSettings["AppendLogs"] = m_bAppendLogs ? "yes" : "no";
+//
+//    return m_pSettings;
+//}
 
 std::string CLogger::Report(const map_crash_report_t& pCrashReport,
                             const map_plugin_settings_t& pSettings, const std::string& pArgs)

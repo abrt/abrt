@@ -1,21 +1,25 @@
+# translation of abrt.master.po to Dutch
 # abrt translation to Dutc.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#
+#: ../src/Gui/CCReporterDialog.py:191
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
-#
+# Richard van der Luit <nippur@fedoraproject.org>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt\n"
+"Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-23 09:49+0000\n"
-"PO-Revision-Date: 2009-10-23 17:28+0200\n"
-"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
-"Language-Team: nl <nl@li.org>\n"
+"POT-Creation-Date: 2009-11-11 09:31+0000\n"
+"PO-Revision-Date: 2009-11-11 13:12+0100\n"
+"Last-Translator: Richard van der Luit <nippur@fedoraproject.org>\n"
+"Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding:  \n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -23,8 +27,7 @@ msgstr "Andere client draait al, probeer het te wekken."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
-"Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
+msgstr "Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
 
 #: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
@@ -62,7 +65,7 @@ msgstr ""
 "Daemon gaf geen geldige rapport info terug\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/ccgui.glade.h:1 ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
@@ -98,7 +101,7 @@ msgstr "Wacht a.u.b..."
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
 msgid "Report"
 msgstr "Rapport"
 
@@ -164,8 +167,8 @@ msgid "Date"
 msgstr "Datum"
 
 #: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr "Crash rate"
+msgid "Crash count"
+msgstr "Crash count"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
@@ -230,11 +233,36 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:167
+#: ../src/Gui/CCReporterDialog.py:177
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
-#: ../src/Gui/CCReporterDialog.py:211
+#: ../src/Gui/CCReporterDialog.py:219
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> "
+"debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Rapportage uitgeschakeld omdat de backtrace onbruikbaar is!\n"
+"Probeer a.u.b. debuginfo handmatig te installeren met: <span color=\"blue\"> "
+"debuginfo-install %s </span>\n"
+"en gebruik dan de Verversen knop om de backtrace te hergenereren."
+
+#: ../src/Gui/CCReporterDialog.py:221
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
+
+#: ../src/Gui/CCReporterDialog.py:227
+msgid ""
+"The bactrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr ""
+"De backtrace is niet compleet, wees er zeker van om voor het genereren de "
+"juiste stappen op te volgen."
+
+#: ../src/Gui/CCReporterDialog.py:272
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -271,21 +299,17 @@ msgstr "combo box is niet geïmplementeertd"
 msgid "Nothing to hydrate!"
 msgstr "Kan het niet hard maken!"
 
-#: ../src/Gui/report.glade.h:1
+#: ../src/Gui/report.glade.h:2
 msgid "Comment"
 msgstr "Commentaar"
 
 #: ../src/Gui/report.glade.h:3
-msgid "Send"
-msgstr "Verzenden"
-
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
+msgid "How to reproduce (in a few simple steps)"
+msgstr "Hoe het te herhalen (in een paar simpele stappen)"
 
 #: ../src/Gui/report.glade.h:5
-msgid "gtk-refresh"
-msgstr "gtk-refresh"
+msgid "Send"
+msgstr "Verzenden"
 
 #: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
@@ -399,6 +423,10 @@ msgstr "Website:"
 msgid "gtk-add"
 msgstr "gtk-add"
 
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
 #: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -407,16 +435,16 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:71
+#: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Een crash in pakket %s is ontdekt"
 
-#: ../src/Applet/Applet.cpp:130
+#: ../src/Applet/Applet.cpp:138
 msgid "ABRT service has been started"
 msgstr "ABRT service is gestart"
 
-#: ../src/Applet/Applet.cpp:132 ../src/Applet/Applet.cpp:246
+#: ../src/Applet/Applet.cpp:140 ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
@@ -424,7 +452,7 @@ msgstr "ABRT service draait niet"
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/Daemon/Daemon.cpp:542
+#: ../src/Daemon/Daemon.cpp:520
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -432,40 +460,37 @@ msgstr ""
 "Rapport grootte overschreed quota. Controleer a.u.b. MaxCrashReportsSize "
 "waarde van het systeem in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:83
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
-
-#: ../lib/Plugins/Bugzilla.cpp:205
-msgid "Bug is already reported: "
-msgstr "Bug is al aangemeld: "
-
-#: ../lib/Plugins/Bugzilla.cpp:260
+#: ../lib/Plugins/Bugzilla.cpp:209
 #, c-format
-msgid "Binary file %s will not be reported."
-msgstr "Binair bestand %s wordt niet gerapporteerd."
+msgid "Bug is already reported: %i"
+msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:330
-msgid "New bug id: "
-msgstr "Nieuwe bug id: "
+#: ../lib/Plugins/Bugzilla.cpp:271
+#, c-format
+msgid "New bug id: %i"
+msgstr "Nieuwe bug id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:399
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:402 ../lib/Plugins/Bugzilla.cpp:413
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:405
+#: ../lib/Plugins/Bugzilla.cpp:371
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "Checking CC..."
 msgstr "Controleren van CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:425
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:430
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
@@ -473,64 +498,70 @@ msgstr "Uitloggen..."
 msgid "Getting local universal unique identification"
 msgstr "Verkrijgen van locale universele unieke identificatie"
 
-#: ../lib/Plugins/CCpp.cpp:246
+#: ../lib/Plugins/CCpp.cpp:254
 msgid "Getting backtrace..."
 msgstr "Backtrace ophalen..."
 
-#: ../lib/Plugins/CCpp.cpp:532 ../lib/Plugins/CCpp.cpp:657
+#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
 msgid "Searching for debug-info packages..."
 msgstr "Zoeken naar debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:594 ../lib/Plugins/CCpp.cpp:692
+#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
 msgid "Downloading and installing debug-info packages..."
 msgstr "Downloaden en installeren van debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:735
+#: ../lib/Plugins/CCpp.cpp:818
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:754
+#: ../lib/Plugins/CCpp.cpp:837
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:799
+#: ../lib/Plugins/CCpp.cpp:882
 msgid "Starting report creation..."
 msgstr "Beginnen met rapport aanmaken..."
 
-#: ../lib/Plugins/CCpp.cpp:830
+#: ../lib/Plugins/CCpp.cpp:912
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
 msgid "Creating and submitting a report..."
 msgstr "Aanmaken en indienen van rapport..."
 
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
+#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "Rapport aanmaken..."
 
-#: ../lib/Plugins/RunApp.cpp:62
+#: ../lib/Plugins/RunApp.cpp:64
 msgid "Executing RunApp plugin..."
 msgstr "RunApp plugin draaien..."
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:409
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "Bestandsoverdracht: URL niet opgegeven"
 
-#: ../lib/Plugins/FileTransfer.cpp:81
+#: ../lib/Plugins/FileTransfer.cpp:67
 #, c-format
-msgid "Sending archive %s via %s"
-msgstr "Versturen van archief %s via %s"
+msgid "Sending archive %s to %s"
+msgstr "Versturen van archief %s naar %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:336
+#: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
 msgstr "Bestandsoverdracht: Een rapport maken..."
 
-#: ../lib/Plugins/FileTransfer.cpp:358 ../lib/Plugins/FileTransfer.cpp:386
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): Kan geen archief maken en versturen: "
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Kan geen archief maken en versturen: %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Kan archief %s niet aanmaken en versturen"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
 msgstr "Aanmaken van kernel oops crash rapporten..."
 
@@ -538,81 +569,16 @@ msgstr "Aanmaken van kernel oops crash rapporten..."
 msgid "Sending an email..."
 msgstr "Versturen van email..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
+#: ../lib/Plugins/SOSreport.cpp:100
 msgid "Executing SOSreport plugin..."
 msgstr "Uitvoeren van SOSreport plugin..."
 
-#: ../lib/Plugins/SOSreport.cpp:135
-msgid "running sosreport: "
-msgstr "sosreport draaien: "
+#: ../lib/Plugins/SOSreport.cpp:122
+#, c-format
+msgid "running sosreport: %s"
+msgstr "sosreport draaien: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:150
+#: ../lib/Plugins/SOSreport.cpp:137
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
 
-#~ msgid "Check CC and add coment +1..."
-#~ msgstr "Controleer CC en voeg commentaar toe +1..."
-
-#~ msgid "Creating an archive..."
-#~ msgstr "Aanmaken van een archief..."
-
-#~ msgid "Pending events: %i"
-#~ msgstr "Gebeurtenissen in behandeling: %i"
-
-#~ msgid "Can't create menu from the description, popup won't be available!\n"
-#~ msgstr ""
-#~ "Kan geen menu maken van de beschrijving, pop-up zal niet beschikbaar "
-#~ "zijn!\n"
-
-#~ msgid "Getting local/global universal unique identification..."
-#~ msgstr "Verkrijgen van locale/globale universele unieke identificatie..."
-
-#~ msgid ""
-#~ "Error while opening plugin settings UI: \n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Fout tijdens het openen van plugin instellingen UI: \n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "unknown response from settings dialog"
-#~ msgstr "onbekende reactie van de instellingen dialoog"
-
-#~ msgid "Applet is already running."
-#~ msgstr "Applet draait al."
-
-#~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectCrashHandler"
-#~ msgstr ""
-#~ "Dit is de standaard afhandeling, je moet je eigen registreren bij "
-#~ "ConnectCrashHandler"
-
-#~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectQuotaExceedHandler"
-#~ msgstr ""
-#~ "Dit is de standaard afhandeling, je moet jouw eigen registreren met "
-#~ "ConnectQuotaExceedHandler"
-
-#~ msgid "Out of memory"
-#~ msgstr "Geen geheugen beschikbaar"
-
-#~ msgid "Can't load gui description for SettingsDialog!"
-#~ msgstr "Kan gui beschrijving voor SettingsDialog niet laden!"
-
-#~ msgid "Name"
-#~ msgstr "Naam"
-
-#~ msgid "Enabled"
-#~ msgstr "Aangezet"
-
-#~ msgid "Can't get plugin description"
-#~ msgstr "Kan plugin beschrijving niet krijgen."
-
-#~ msgid "Logging failed, trying to find a bug..."
-#~ msgstr "Inloggen mislukte, probeer het probleem te vinden..."
-
-#~ msgid "Daemon is not running."
-#~ msgstr "Daemon draait niet."

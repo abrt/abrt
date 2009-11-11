@@ -7,28 +7,24 @@
 #include <syslog.h>
 
 int xfunc_error_retval = EXIT_FAILURE;
-
 int g_verbose;
+int logmode = LOGMODE_STDIO;
+const char *msg_prefix = "";
+const char *msg_eol = "\n";
+void (*g_custom_logger)(const char*);
 
 void xfunc_die(void)
 {
 	exit(xfunc_error_retval);
 }
 
-const char *msg_prefix = "";
-const char *msg_eol = "\n";
-int logmode = LOGMODE_STDIO;
-
-void verror_msg(const char *s, va_list p, const char* strerr)
+static void verror_msg_helper(const char *s, va_list p, const char* strerr, int flags)
 {
 	char *msg;
 	int prefix_len, strerr_len, msgeol_len, used;
 
 	if (!logmode)
 		return;
-
-	if (!s) /* nomsg[_and_die] uses NULL fmt */
-		s = ""; /* some libc don't like printf(NULL) */
 
 	used = vasprintf(&msg, s, p);
 	if (used < 0)
@@ -51,7 +47,7 @@ void verror_msg(const char *s, va_list p, const char* strerr)
 		memcpy(msg, msg_prefix, prefix_len);
 	}
 	if (strerr) {
-		if (s[0]) { /* not perror_nomsg? */
+		if (s[0]) {
 			msg[used++] = ':';
 			msg[used++] = ' ';
 		}
@@ -60,24 +56,26 @@ void verror_msg(const char *s, va_list p, const char* strerr)
 	}
 	strcpy(&msg[used], msg_eol);
 
-	if (logmode & LOGMODE_STDIO) {
+	if (flags & LOGMODE_STDIO) {
 		fflush(stdout);
 		full_write(STDERR_FILENO, msg, used + msgeol_len);
 	}
-	if (logmode & LOGMODE_SYSLOG) {
+	if (flags & LOGMODE_SYSLOG) {
 		syslog(LOG_ERR, "%s", msg + prefix_len);
+	}
+	if ((flags & LOGMODE_CUSTOM) && g_custom_logger) {
+		g_custom_logger(msg + prefix_len);
 	}
 	free(msg);
 }
 
-void error_msg_and_die(const char *s, ...)
+void log_msg(const char *s, ...)
 {
 	va_list p;
 
 	va_start(p, s);
-	verror_msg(s, p, NULL);
+	verror_msg_helper(s, p, NULL, logmode);
 	va_end(p);
-	xfunc_die();
 }
 
 void error_msg(const char *s, ...)
@@ -85,8 +83,18 @@ void error_msg(const char *s, ...)
 	va_list p;
 
 	va_start(p, s);
-	verror_msg(s, p, NULL);
+	verror_msg_helper(s, p, NULL, (logmode | LOGMODE_CUSTOM));
 	va_end(p);
+}
+
+void error_msg_and_die(const char *s, ...)
+{
+	va_list p;
+
+	va_start(p, s);
+	verror_msg_helper(s, p, NULL, (logmode | LOGMODE_CUSTOM));
+	va_end(p);
+	xfunc_die();
 }
 
 void perror_msg_and_die(const char *s, ...)
@@ -95,7 +103,7 @@ void perror_msg_and_die(const char *s, ...)
 
 	va_start(p, s);
 	/* Guard against "<error message>: Success" */
-	verror_msg(s, p, errno ? strerror(errno) : NULL);
+	verror_msg_helper(s, p, errno ? strerror(errno) : NULL, (logmode | LOGMODE_CUSTOM));
 	va_end(p);
 	xfunc_die();
 }
@@ -106,7 +114,7 @@ void perror_msg(const char *s, ...)
 
 	va_start(p, s);
 	/* Guard against "<error message>: Success" */
-	verror_msg(s, p, errno ? strerror(errno) : NULL);
+	verror_msg_helper(s, p, errno ? strerror(errno) : NULL, (logmode | LOGMODE_CUSTOM));
 	va_end(p);
 }
 
@@ -122,5 +130,5 @@ void simple_perror_msg(const char *s)
 
 void die_out_of_memory(void)
 {
-    error_msg_and_die("Out of memory, exiting");
+	error_msg_and_die("Out of memory, exiting");
 }

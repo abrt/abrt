@@ -20,6 +20,7 @@
     */
 
 #include "abrtlib.h"
+#include "abrt_types.h"
 #include "Daemon.h"
 #include "Settings.h"
 #include "RPM.h"
@@ -60,7 +61,7 @@ static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
 static vector_pair_string_string_t s_vectorActionsAndReporters;
 
 
-static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir);
+static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir);
 
 
 /**
@@ -69,7 +70,7 @@ static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& 
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @param pCrashReport A created crash report.
  */
-static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_report_t& pCrashReport)
+static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t& pCrashReport)
 {
     std::string fileName;
     std::string content;
@@ -98,7 +99,8 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
                                            fileName,
                                            CD_BIN,
                                            CD_ISNOTEDITABLE,
-                                           pDebugDumpDir + "/" + fileName);
+                                           concat_path_file(pDebugDumpDir, fileName.c_str())
+            );
         }
         else
         {
@@ -137,8 +139,8 @@ static void DebugDumpToCrashReport(const std::string& pDebugDumpDir, map_crash_r
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @return A local UUID.
  */
-static std::string GetLocalUUID(const std::string& pAnalyzer,
-                                      const std::string& pDebugDumpDir)
+static std::string GetLocalUUID(const char *pAnalyzer,
+                                      const char *pDebugDumpDir)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->GetLocalUUID(pDebugDumpDir);
@@ -150,8 +152,8 @@ static std::string GetLocalUUID(const std::string& pAnalyzer,
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @return A global UUID.
  */
-static std::string GetGlobalUUID(const std::string& pAnalyzer,
-                                       const std::string& pDebugDumpDir)
+static std::string GetGlobalUUID(const char *pAnalyzer,
+                                       const char *pDebugDumpDir)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->GetGlobalUUID(pDebugDumpDir);
@@ -164,32 +166,32 @@ static std::string GetGlobalUUID(const std::string& pAnalyzer,
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
  */
-static void CreateReport(const std::string& pAnalyzer,
-                const std::string& pDebugDumpDir,
+static void CreateReport(const char *pAnalyzer,
+                const char *pDebugDumpDir,
                 int force)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
     analyzer->CreateReport(pDebugDumpDir, force);
 }
 
-mw_result_t CreateCrashReport(const std::string& pUUID,
-                const std::string& pUID,
+mw_result_t CreateCrashReport(const char *pUUID,
+                const char *pUID,
                 int force,
                 map_crash_report_t& pCrashReport)
 {
-    VERB2 log("CreateCrashReport('%s','%s',result)", pUUID.c_str(), pUID.c_str());
+    VERB2 log("CreateCrashReport('%s','%s',result)", pUUID, pUID);
 
     database_row_t row;
-    if (pUUID != "")
+    if (pUUID[0] != '\0')
     {
         CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
         database->Connect();
         row = database->GetUUIDData(pUUID, pUID);
         database->DisConnect();
     }
-    if (pUUID == "" || row.m_sUUID != pUUID)
+    if (pUUID[0] == '\0' || row.m_sUUID != pUUID)
     {
-        warn_client("CreateCrashReport(): UUID '"+pUUID+"' is not in database");
+        error_msg("UUID '%s' is not in database", pUUID);
         return MW_IN_DB_ERROR;
     }
 
@@ -202,7 +204,7 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
         std::string reproduce = "1.\n2.\n3.\n";
 
         VERB3 log(" LoadText(FILENAME_ANALYZER,'%s')", row.m_sDebugDumpDir.c_str());
-        dd.Open(row.m_sDebugDumpDir);
+        dd.Open(row.m_sDebugDumpDir.c_str());
         dd.LoadText(FILENAME_ANALYZER, analyzer);
         if (dd.Exist(FILENAME_COMMENT))
         {
@@ -215,15 +217,15 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
         dd.Close();
 
         VERB3 log(" CreateReport('%s')", analyzer.c_str());
-        CreateReport(analyzer, row.m_sDebugDumpDir, force);
+        CreateReport(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
 
-        gUUID = GetGlobalUUID(analyzer, row.m_sDebugDumpDir);
+        gUUID = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());
 
         VERB3 log(" RunAnalyzerActions");
-        RunAnalyzerActions(analyzer, row.m_sDebugDumpDir);
+        RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" DebugDumpToCrashReport");
-        DebugDumpToCrashReport(row.m_sDebugDumpDir, pCrashReport);
+        DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashReport);
 
         add_crash_data_to_crash_report(pCrashReport, CD_UUID, CD_TXT, CD_ISNOTEDITABLE, gUUID);
         add_crash_data_to_crash_report(pCrashReport, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
@@ -234,16 +236,16 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
     }
     catch (CABRTException& e)
     {
-        warn_client("CreateCrashReport(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_OPEN)
         {
             return MW_ERROR;
         }
-        else if (e.type() == EXCEP_DD_LOAD)
+        if (e.type() == EXCEP_DD_LOAD)
         {
             return MW_FILE_ERROR;
         }
-        else if (e.type() == EXCEP_PLUGIN)
+        if (e.type() == EXCEP_PLUGIN)
         {
             return MW_PLUGIN_ERROR;
         }
@@ -253,24 +255,22 @@ mw_result_t CreateCrashReport(const std::string& pUUID,
     return MW_OK;
 }
 
-void RunAction(const std::string& pActionDir,
-                            const std::string& pPluginName,
-                            const std::string& pPluginArgs)
+void RunAction(const char *pActionDir,
+                            const char *pPluginName,
+                            const char *pPluginArgs)
 {
     try
     {
         CAction* action = g_pPluginManager->GetAction(pPluginName);
-
         action->Run(pActionDir, pPluginArgs);
     }
     catch (CABRTException& e)
     {
-        warn_client("RunAction(): " + e.what());
-        update_client("Execution of '"+pPluginName+"' was not successful: " + e.what());
+        error_msg("Execution of '%s' was not successful: %s", pPluginName, e.what());
     }
 }
 
-void RunActionsAndReporters(const std::string& pDebugDumpDir)
+void RunActionsAndReporters(const char *pDebugDumpDir)
 {
     vector_pair_string_string_t::iterator it_ar = s_vectorActionsAndReporters.begin();
     map_plugin_settings_t plugin_settings;
@@ -278,24 +278,23 @@ void RunActionsAndReporters(const std::string& pDebugDumpDir)
     {
         try
         {
-            if (g_pPluginManager->GetPluginType((*it_ar).first) == REPORTER)
+            if (g_pPluginManager->GetPluginType(it_ar->first) == REPORTER)
             {
-                CReporter* reporter = g_pPluginManager->GetReporter((*it_ar).first);
+                CReporter* reporter = g_pPluginManager->GetReporter(it_ar->first);
 
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
-                reporter->Report(crashReport, plugin_settings, (*it_ar).second);
+                reporter->Report(crashReport, plugin_settings, it_ar->second);
             }
-            else if (g_pPluginManager->GetPluginType((*it_ar).first) == ACTION)
+            else if (g_pPluginManager->GetPluginType(it_ar->first) == ACTION)
             {
-                CAction* action = g_pPluginManager->GetAction((*it_ar).first);
-                action->Run(pDebugDumpDir, (*it_ar).second);
+                CAction* action = g_pPluginManager->GetAction(it_ar->first);
+                action->Run(pDebugDumpDir, it_ar->second.c_str());
             }
         }
         catch (CABRTException& e)
         {
-            warn_client("RunActionsAndReporters(): " + e.what());
-            update_client("Activation of plugin '"+(*it_ar).first+"' was not successful: " + e.what());
+            error_msg("Activation of plugin '%s' was not successful: %s", it_ar->first.c_str(), e.what());
         }
     }
 }
@@ -315,11 +314,11 @@ static bool CheckReport(const map_crash_report_t& pCrashReport)
     map_crash_report_t::const_iterator it_executable = pCrashReport.find(FILENAME_EXECUTABLE);
 
     map_crash_report_t::const_iterator end = pCrashReport.end();
-    
+
     // FIXME: bypass the test if it's kerneloops
-    if(it_package->second[CD_CONTENT] == "kernel")
+    if (it_package->second[CD_CONTENT] == "kernel")
         return true;
-    
+
     if (it_analyzer == end || it_mwuid == end ||
         it_mwuuid == end || it_package == end ||
         it_architecture == end || it_kernel == end ||
@@ -343,7 +342,7 @@ static bool CheckReport(const map_crash_report_t& pCrashReport)
 
 report_status_t Report(const map_crash_report_t& pCrashReport,
                        map_map_string_t& pSettings,
-                       const std::string& pUID)
+                       const char *pUID)
 {
     report_status_t ret;
 
@@ -361,18 +360,18 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     // Save comments and how to reproduciton
     map_crash_report_t::const_iterator it_comment = pCrashReport.find(CD_COMMENT);
     map_crash_report_t::const_iterator it_reproduce = pCrashReport.find(CD_REPRODUCE);
-    std::string pDumpDir = getDebugDumpDir(UUID,UID);
+    std::string pDumpDir = getDebugDumpDir(UUID.c_str(), UID.c_str());
 
     {
         CDebugDump dd;
-        dd.Open(pDumpDir);
+        dd.Open(pDumpDir.c_str());
         if (it_comment != pCrashReport.end())
         {
-            dd.SaveText(FILENAME_COMMENT, it_comment->second[CD_CONTENT]);
+            dd.SaveText(FILENAME_COMMENT, it_comment->second[CD_CONTENT].c_str());
         }
         if (it_reproduce != pCrashReport.end())
         {
-            dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT]);
+            dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT].c_str());
         }
     }
 
@@ -434,8 +433,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
             {
                 ret[pluginName].push_back("0");
                 ret[pluginName].push_back(e.what());
-                warn_client("Report(): " + e.what());
-                update_client("Reporting via '" + pluginName + "' was not successful: " + e.what());
+                update_client("Reporting via  %s' was not successful: %s", pluginName.c_str(), e.what());
             }
         }
     }
@@ -448,20 +446,19 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     return ret;
 }
 
-void DeleteDebugDumpDir(const std::string& pDebugDumpDir)
+void DeleteDebugDumpDir(const char *pDebugDumpDir)
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
     dd.Delete();
 }
 
-std::string DeleteCrashInfo(const std::string& pUUID,
-                                         const std::string& pUID)
+std::string DeleteCrashInfo(const char *pUUID,
+                                         const char *pUID)
 {
-    database_row_t row;
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->Delete(pUUID, pUID);
     database->DisConnect();
 
@@ -476,8 +473,8 @@ std::string DeleteCrashInfo(const std::string& pUUID,
  * @return It returns true if debugdump dir is already saved, otherwise
  * it returns false.
  */
-static bool IsDebugDumpSaved(const std::string& pUID,
-                                   const std::string& pDebugDumpDir)
+static bool IsDebugDumpSaved(const char *pUID,
+                                   const char *pDebugDumpDir)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
@@ -511,19 +508,19 @@ void LoadOpenGPGPublicKey(const char* key)
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecutable,
-                                                     const std::string& pDebugDumpDir)
+static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
+                                                     const char *pDebugDumpDir)
 {
     std::string package;
     std::string packageName;
 
-    if (pExecutable == "kernel")
+    if (strcmp(pExecutable, "kernel") == 0)
     {
         packageName = package = "kernel";
     }
     else
     {
-        package = GetPackage(pExecutable.c_str());
+        package = GetPackage(pExecutable);
         packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
         if (packageName == "" ||
             (g_setBlackList.find(packageName) != g_setBlackList.end()))
@@ -543,7 +540,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
                 error_msg("package isn't signed with proper key");
                 return MW_GPG_ERROR;
             }
-            if (!CheckHash(packageName.c_str(), pExecutable.c_str()))
+            if (!CheckHash(packageName.c_str(), pExecutable))
             {
                 error_msg("executable has bad hash");
                 return MW_GPG_ERROR;
@@ -552,19 +549,19 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
     }
 
     std::string description = GetDescription(packageName.c_str());
-    std::string component = GetComponent(pExecutable.c_str());
+    std::string component = GetComponent(pExecutable);
 
     try
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
-        dd.SaveText(FILENAME_PACKAGE, package);
-        dd.SaveText(FILENAME_DESCRIPTION, description);
-        dd.SaveText(FILENAME_COMPONENT, component);
+        dd.SaveText(FILENAME_PACKAGE, package.c_str());
+        dd.SaveText(FILENAME_DESCRIPTION, description.c_str());
+        dd.SaveText(FILENAME_COMPONENT, component.c_str());
     }
     catch (CABRTException& e)
     {
-        warn_client("SavePackageDescriptionToDebugDump(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             return MW_FILE_ERROR;
@@ -575,13 +572,28 @@ static mw_result_t SavePackageDescriptionToDebugDump(const std::string& pExecuta
     return MW_OK;
 }
 
+bool analyzer_has_InformAllUsers(const char *analyzer_name)
+{
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
+    if (!analyzer)
+    {
+        VERB1 log("Strange, asked for analyzer %s but it doesn't exist?", analyzer_name);
+        return false;
+    }
+    map_plugin_settings_t settings = analyzer->GetSettings();
+    map_plugin_settings_t::const_iterator it = settings.find("InformAllUsers");
+    if (it == settings.end())
+        return false;
+    return string_to_bool(it->second.c_str());
+}
+
 /**
  * Execute all action plugins, which are associated to
  * particular analyzer plugin.
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
  */
-static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& pDebugDumpDir)
+static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
 {
     map_analyzer_actions_and_reporters_t::iterator analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
     if (analyzer != s_mapAnalyzerActionsAndReporters.end())
@@ -595,13 +607,12 @@ static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& 
                 if (g_pPluginManager->GetPluginType(pluginName) == ACTION)
                 {
                     CAction* action = g_pPluginManager->GetAction(pluginName);
-                    action->Run(pDebugDumpDir, it_a->second);
+                    action->Run(pDebugDumpDir, it_a->second.c_str());
                 }
             }
             catch (CABRTException& e)
             {
-                warn_client("RunAnalyzerActions(): " + e.what());
-                update_client("Action performed by '" + pluginName + "' was not successful: " + e.what());
+                update_client("Action performed by '%s' was not successful: %s", pluginName.c_str(), e.what());
             }
         }
     }
@@ -618,20 +629,18 @@ static void RunAnalyzerActions(const std::string& pAnalyzer, const std::string& 
  * @param pCrashInfo A filled crash info.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
-                                                              const std::string& pUID,
-                                                              const std::string& pTime,
-                                                              const std::string& pDebugDumpDir,
+static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
+                                                              const char *pUID,
+                                                              const char *pTime,
+                                                              const char *pDebugDumpDir,
                                                               map_crash_info_t& pCrashInfo)
 {
-    mw_result_t res;
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database_row_t row;
     database->Connect();
     database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
-    res = GetCrashInfo(pUUID, pUID, pCrashInfo);
+    mw_result_t res = GetCrashInfo(pUUID, pUID, pCrashInfo);
     if (row.m_sReported == "1")
     {
         log("Crash is already reported");
@@ -645,33 +654,23 @@ static mw_result_t SaveDebugDumpToDatabase(const std::string& pUUID,
     return res;
 }
 
-std::string getDebugDumpDir( const std::string& pUUID,
-                             const std::string& pUID)
+std::string getDebugDumpDir(const char *pUUID,
+                             const char *pUID)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database_row_t row;
     database->Connect();
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
     return row.m_sDebugDumpDir;
 }
 
-mw_result_t SaveDebugDump(const std::string& pDebugDumpDir)
-{
-    map_crash_info_t info;
-    return SaveDebugDump(pDebugDumpDir, info);
-}
-
-mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
+mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                                                     map_crash_info_t& pCrashInfo)
 {
-    std::string lUUID;
     std::string UID;
     std::string time;
     std::string analyzer;
     std::string executable;
-    mw_result_t res;
-
     try
     {
         CDebugDump dd;
@@ -683,7 +682,7 @@ mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
     }
     catch (CABRTException& e)
     {
-        warn_client("SaveDebugDump(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_SAVE)
         {
             return MW_FILE_ERROR;
@@ -691,41 +690,41 @@ mw_result_t SaveDebugDump(const std::string& pDebugDumpDir,
         return MW_ERROR;
     }
 
-    if (IsDebugDumpSaved(UID, pDebugDumpDir))
+    if (IsDebugDumpSaved(UID.c_str(), pDebugDumpDir))
     {
         return MW_IN_DB;
     }
-    res = SavePackageDescriptionToDebugDump(executable, pDebugDumpDir);
+    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), pDebugDumpDir);
     if (res != MW_OK)
     {
         return res;
     }
 
-    lUUID = GetLocalUUID(analyzer, pDebugDumpDir);
-
-    return SaveDebugDumpToDatabase(lUUID, UID, time, pDebugDumpDir, pCrashInfo);
+    std::string lUUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
+    const char *uid_str = analyzer_has_InformAllUsers(analyzer.c_str())
+        ? "-1"
+        : UID.c_str();
+    return SaveDebugDumpToDatabase(lUUID.c_str(), uid_str, time.c_str(), pDebugDumpDir, pCrashInfo);
 }
 
-mw_result_t GetCrashInfo(const std::string& pUUID,
-                                                   const std::string& pUID,
-                                                   map_crash_info_t& pCrashInfo)
+mw_result_t GetCrashInfo(const char *pUUID,
+                const char *pUID,
+                map_crash_info_t& pCrashInfo)
 {
     pCrashInfo.clear();
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
-    database_row_t row;
     database->Connect();
-    row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
 
     std::string package;
     std::string executable;
     std::string description;
     std::string analyzer;
-
     try
     {
         CDebugDump dd;
-        dd.Open(row.m_sDebugDumpDir);
+        dd.Open(row.m_sDebugDumpDir.c_str());
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
         dd.LoadText(FILENAME_DESCRIPTION, description);
@@ -733,13 +732,14 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
     }
     catch (CABRTException& e)
     {
-        warn_client("GetCrashInfo(): " + e.what());
+        error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_LOAD)
         {
             return MW_FILE_ERROR;
         }
         return MW_ERROR;
     }
+
     add_crash_data_to_crash_info(pCrashInfo, CD_EXECUTABLE, executable);
     add_crash_data_to_crash_info(pCrashInfo, CD_PACKAGE, package);
     add_crash_data_to_crash_info(pCrashInfo, CD_DESCRIPTION, description);
@@ -755,7 +755,7 @@ mw_result_t GetCrashInfo(const std::string& pUUID,
     return MW_OK;
 }
 
-vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
+vector_pair_string_string_t GetUUIDsOfCrash(const char *pUID)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     vector_database_rows_t rows;
@@ -773,15 +773,15 @@ vector_pair_string_string_t GetUUIDsOfCrash(const std::string& pUID)
     return UUIDsUIDs;
 }
 
-void AddAnalyzerActionOrReporter(const std::string& pAnalyzer,
-                                              const std::string& pAnalyzerOrReporter,
-                                              const std::string& pArgs)
+void AddAnalyzerActionOrReporter(const char *pAnalyzer,
+                                              const char *pAnalyzerOrReporter,
+                                              const char *pArgs)
 {
-    s_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(pAnalyzerOrReporter, pArgs));
+    s_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(std::string(pAnalyzerOrReporter), std::string(pArgs)));
 }
 
-void AddActionOrReporter(const std::string& pActionOrReporter,
-                                      const std::string& pArgs)
+void AddActionOrReporter(const char *pActionOrReporter,
+                                      const char *pArgs)
 {
-    s_vectorActionsAndReporters.push_back(make_pair(pActionOrReporter, pArgs));
+    s_vectorActionsAndReporters.push_back(make_pair(std::string(pActionOrReporter), std::string(pArgs)));
 }

@@ -54,12 +54,12 @@ map_cron_t    g_settings_mapCron;
  * Loading
  */
 
-static set_string_t ParseList(const std::string& pList)
+static set_string_t ParseList(const char* pList)
 {
-    unsigned int ii;
-    std::string item  = "";
+    unsigned ii;
+    std::string item;
     set_string_t set;
-    for (ii = 0; ii < pList.size(); ii++)
+    for (ii = 0; pList[ii]; ii++)
     {
         if (pList[ii] == ',')
         {
@@ -78,19 +78,19 @@ static set_string_t ParseList(const std::string& pList)
     return set;
 }
 
-static vector_pair_string_string_t ParseListWithArgs(const std::string& pValue)
+static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
 {
     vector_pair_string_string_t pluginsWithArgs;
     unsigned int ii;
-    std::string item = "";
-    std::string action = "";
+    std::string item;
+    std::string action;
     bool is_quote = false;
     bool is_arg = false;
-    for (ii = 0; ii < pValue.size(); ii++)
+    for (ii = 0; pValue[ii]; ii++)
     {
         if (pValue[ii] == '\"')
         {
-            is_quote = is_quote == true ? false : true;
+            is_quote = !is_quote;
             item += pValue[ii];
         }
         else if (pValue[ii] == '(' && !is_quote)
@@ -132,17 +132,17 @@ static void ParseCommon()
     map_string_t::const_iterator end = s_mapSectionCommon.end();
     if (it != end)
     {
-        g_settings_bOpenGPGCheck = it->second == "yes";
+        g_settings_bOpenGPGCheck = string_to_bool(it->second.c_str());
     }
     it = s_mapSectionCommon.find("OpenGPGPublicKeys");
     if (it != end)
     {
-        g_settings_setOpenGPGPublicKeys = ParseList(it->second);
+        g_settings_setOpenGPGPublicKeys = ParseList(it->second.c_str());
     }
     it = s_mapSectionCommon.find("BlackList");
     if (it != end)
     {
-        g_settings_mapBlackList = ParseList(it->second);
+        g_settings_mapBlackList = ParseList(it->second.c_str());
     }
     it = s_mapSectionCommon.find("Database");
     if (it != end)
@@ -152,7 +152,7 @@ static void ParseCommon()
     it = s_mapSectionCommon.find("EnabledPlugins");
     if (it != end)
     {
-        g_settings_setEnabledPlugins = ParseList(it->second);
+        g_settings_setEnabledPlugins = ParseList(it->second.c_str());
     }
     it = s_mapSectionCommon.find("MaxCrashReportsSize");
     if (it != end)
@@ -162,7 +162,7 @@ static void ParseCommon()
     it = s_mapSectionCommon.find("ActionsAndReporters");
     if (it != end)
     {
-        g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second);
+        g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second.c_str());
     }
 }
 
@@ -171,23 +171,23 @@ static void ParseCron()
     map_string_t::iterator it = s_mapSectionCron.begin();
     for (; it != s_mapSectionCron.end(); it++)
     {
-        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second);
+        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str());
         g_settings_mapCron[it->first] = actionsAndReporters;
     }
 }
 
-static set_string_t ParseKey(const std::string& Key)
+static set_string_t ParseKey(const char *Key)
 {
     unsigned int ii;
-    std::string item  = "";
-    std::string key = "";
+    std::string item;
+    std::string key;
     set_string_t set;
     bool is_quote = false;
-    for (ii = 0; ii < Key.size(); ii++)
+    for (ii = 0; Key[ii]; ii++)
     {
         if (Key[ii] == '\"')
         {
-            is_quote = is_quote == true ? false : true;
+            is_quote = !is_quote;
         }
         else if (Key[ii] == ':' && !is_quote)
         {
@@ -223,8 +223,8 @@ static void ParseAnalyzerActionsAndReporters()
     map_string_t::iterator it = s_mapSectionAnalyzerActionsAndReporters.begin();
     for (; it != s_mapSectionAnalyzerActionsAndReporters.end(); it++)
     {
-        set_string_t keys = ParseKey(it->first);
-        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second);
+        set_string_t keys = ParseKey(it->first.c_str());
+        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str());
         set_string_t::iterator it_keys = keys.begin();
         for (; it_keys != keys.end(); it_keys++)
         {
@@ -241,7 +241,7 @@ void LoadSettings()
     if (fIn.is_open())
     {
         std::string line;
-        std::string section = "";
+        std::string section;
         while (!fIn.eof())
         {
             getline(fIn, line);
@@ -250,8 +250,8 @@ void LoadSettings()
             bool is_key = true;
             bool is_section = false;
             bool is_quote = false;
-            std::string key = "";
-            std::string value = "";
+            std::string key;
+            std::string value;
             for (ii = 0; ii < line.length(); ii++)
             {
                 if (isspace(line[ii]) && !is_quote)
@@ -269,7 +269,7 @@ void LoadSettings()
                 }
                 else if (line[ii] == '\"')
                 {
-                    is_quote = is_quote == true ? false : true;
+                    is_quote = !is_quote;
                     value += line[ii];
                 }
                 else if (is_section)
@@ -434,7 +434,7 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
                        "org.fedoraproject.abrt.change-daemon-settings");
     if (polkit_result != PolkitYes)
     {
-        log("user %s not authorized, returned %d", dbus_sender, polkit_result);
+        error_msg("user %s not authorized, returned %d", dbus_sender, polkit_result);
         return;
     }
     log("user %s succesfully authorized", dbus_sender);

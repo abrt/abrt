@@ -201,35 +201,42 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
 
 void CMailx::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("Subject") != pSettings.end())
+    m_pSettings = pSettings;
+
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("Subject");
+    if (it != end)
     {
-        m_sSubject = pSettings.find("Subject")->second;
+        m_sSubject = it->second;
     }
-    if (pSettings.find("EmailFrom") != pSettings.end())
+    it = pSettings.find("EmailFrom");
+    if (it != end)
     {
-        m_sEmailFrom = pSettings.find("EmailFrom")->second;
+        m_sEmailFrom = it->second;
     }
-    if (pSettings.find("EmailTo") != pSettings.end())
+    it = pSettings.find("EmailTo");
+    if (it != end)
     {
-        m_sEmailTo = pSettings.find("EmailTo")->second;
+        m_sEmailTo = it->second;
     }
-    if (pSettings.find("SendBinaryData") != pSettings.end())
+    it = pSettings.find("SendBinaryData");
+    if (it != end)
     {
-        m_bSendBinaryData = pSettings.find("SendBinaryData")->second == "yes";
+        m_bSendBinaryData = string_to_bool(it->second.c_str());
     }
 }
 
-map_plugin_settings_t CMailx::GetSettings()
-{
-    map_plugin_settings_t ret;
-
-    ret["Subject"] = m_sSubject;
-    ret["EmailFrom"] = m_sEmailFrom;
-    ret["EmailTo"] = m_sEmailTo;
-    ret["SendBinaryData"] = m_bSendBinaryData ? "yes" : "no";
-
-    return ret;
-}
+//ok to delete?
+//const map_plugin_settings_t& CMailx::GetSettings()
+//{
+//    m_pSettings["Subject"] = m_sSubject;
+//    m_pSettings["EmailFrom"] = m_sEmailFrom;
+//    m_pSettings["EmailTo"] = m_sEmailTo;
+//    m_pSettings["SendBinaryData"] = m_bSendBinaryData ? "yes" : "no";
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(REPORTER,
             CMailx,

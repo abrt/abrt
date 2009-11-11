@@ -47,7 +47,11 @@
  */
 class CPlugin
 {
+    protected:
+        map_plugin_settings_t m_pSettings;
+
     public:
+        CPlugin();
         /**
          * A destructor.
          */
@@ -69,7 +73,7 @@ class CPlugin
          * A method, which return current settings. It is not mandatory method.
          * @return Plugin's settings
          */
-        virtual map_plugin_settings_t GetSettings();
+        virtual const map_plugin_settings_t& GetSettings();
 };
 
 /**

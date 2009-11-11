@@ -34,9 +34,9 @@
 class CAnalyzerKerneloops : public CAnalyzer
 {
 	public:
-		virtual std::string GetLocalUUID(const std::string& pDebugDumpDir);
-		virtual std::string GetGlobalUUID(const std::string& pDebugDumpDir);
-		virtual void CreateReport(const std::string& pDebugDumpDir, int force) {}
+		virtual std::string GetLocalUUID(const char *pDebugDumpDir);
+		virtual std::string GetGlobalUUID(const char *pDebugDumpDir);
+		virtual void CreateReport(const char *pDebugDumpDir, int force) {}
 };
 
 #endif

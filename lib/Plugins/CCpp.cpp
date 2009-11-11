@@ -95,7 +95,6 @@ static std::string concat_str_vector(char **strings)
 static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
-    char buff[1024];
     pid_t child;
 
     struct passwd* pw = getpwuid(uid);
@@ -128,6 +127,18 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
         setreuid(uid, uid);
         setsid();
 
+        /* Nuke everything which may make setlocale() switch to non-POSIX locale:
+         * we need to avoid having gdb output in some obscure language.
+         */
+        unsetenv("LANG");
+        unsetenv("LC_ALL");
+        unsetenv("LC_COLLATE");
+        unsetenv("LC_CTYPE");
+        unsetenv("LC_MESSAGES");
+        unsetenv("LC_MONETARY");
+        unsetenv("LC_NUMERIC");
+        unsetenv("LC_TIME");
+
         execvp(pArgs[0], pArgs);
         /* VERB1 since sometimes we expect errors here */
         VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
@@ -137,6 +148,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     close(pipeout[1]); /* write side of the pipe */
 
     int r;
+    char buff[1024];
     while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
     {
         buff[r] = '\0';
@@ -160,17 +172,21 @@ enum LineRating
     BestRating = Good,
 };
 
-static LineRating rate_line(const std::string & line)
+static LineRating rate_line(const char *line)
 {
-#define FOUND(x) (line.find(x) != std::string::npos)
-    bool function = FOUND(" in ") && !FOUND(" in ??");
-    bool library = FOUND(" from ");
-    bool source_file = FOUND(" at ");
-#undef FOUND
-
+#define FOUND(x) (strstr(line, x) != NULL)
     /* see the "enum LineRating" comments for possible combinations */
-    if (function && source_file)
+    if (FOUND(" at "))
         return Good;
+    const char *function = strstr(line, " in ");
+    if (function)
+    {
+        if (function[4] == '?') /* " in ??" does not count */
+        {
+            function = NULL;
+        }
+    }
+    bool library = FOUND(" from ");
     if (function && library)
         return MissingSourceFile;
     if (function)
@@ -179,38 +195,48 @@ static LineRating rate_line(const std::string & line)
         return MissingFunction;
 
     return MissingEverything;
+#undef FOUND
 }
 
 /* returns number of "stars" to show */
-int rate_backtrace(const std::string & backtrace)
+static int rate_backtrace(const char *backtrace)
 {
-    int l = backtrace.length();
-    int i;
-    std::string s;
+    int i, j, len;
     int multiplier = 0;
     int rating = 0;
     int best_possible_rating = 0;
 
-    /* We look at the frames in reversed order, since
-     * - rate_line() looks at the first line of the frame
+    /* We look at the frames in reversed order, since:
+     * - rate_line() checks starting from the first line of the frame
+     * (note: it may need to look at more than one line!)
      * - we increase weight (multiplier) for every frame,
-     *   so that topmost frames end up most important.
+     *   so that topmost frames end up most important
      */
-    for (i = l-1; i >= 0; i--)
+    len = 0;
+    for (i = strlen(backtrace) - 1; i >= 0; i--)
     {
         if (backtrace[i] == '#') /* this separates frames from each other */
         {
+            std::string s(backtrace + i + 1, len);
+            for (j=0; j<len; j++) /* replace tabs with spaces */
+                if (s[j] == '\t')
+                    s[j] = ' ';
             multiplier++;
-            rating += rate_line(s) * multiplier;
+            rating += rate_line(s.c_str()) * multiplier;
             best_possible_rating += BestRating * multiplier;
-            s = ""; /* starting new line */
-        } else
+            len = 0; /* starting new line */
+        }
+        else
         {
-            s = backtrace[i] + s;
+            len++;
         }
     }
 
-    /* returning number of "stars" to show */
+    /* Bogus "backtrace" with zero frames? */
+    if (best_possible_rating == 0)
+        return 0;
+
+    /* Returning number of "stars" to show */
     if (rating*10 >= best_possible_rating*8) /* >= 0.8 */
         return 4;
     if (rating*10 >= best_possible_rating*6)
@@ -223,7 +249,7 @@ int rate_backtrace(const std::string & backtrace)
     return 0;
 }
 
-static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktrace)
+static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
 
@@ -258,7 +284,7 @@ static void GetBacktrace(const std::string& pDebugDumpDir, std::string& pBacktra
     args[4] = (char*)"-ex";
     args[5] = xasprintf("file %s", executable.c_str());
     args[6] = (char*)"-ex";
-    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
     args[8] = (char*)"-ex";
     args[9] = (char*)"thread apply all backtrace full";
     args[10] = NULL;
@@ -420,7 +446,7 @@ static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& 
     }
 }
 
-static std::string run_unstrip_n(const std::string& pDebugDumpDir)
+static std::string run_unstrip_n(const char *pDebugDumpDir)
 {
     std::string UID;
     {
@@ -431,7 +457,7 @@ static std::string run_unstrip_n(const std::string& pDebugDumpDir)
 
     char* args[4];
     args[0] = (char*)"eu-unstrip";
-    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, pDebugDumpDir);
     args[2] = (char*)"-n";
     args[3] = NULL;
 
@@ -455,7 +481,7 @@ static bool is_hexstr(const char* str)
     }
     return true;
 }
-static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");
     std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
@@ -610,8 +636,8 @@ Another application is holding the yum lock, cannot continue
         if (last >= 0 && buff[last] == '\n')
             buff[last] = '\0';
 
-        /* log(buff); - update_client logs it too */
-        update_client(buff); /* maybe only if buff != ""? */
+        log("%s", buff);
+        update_client("%s", buff); /* maybe only if buff != ""? */
 
 #ifdef COMPLAIN_IF_NO_DEBUGINFO
         if (already_installed == false)
@@ -648,7 +674,7 @@ Another application is holding the yum lock, cannot continue
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
  */
-static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
     update_client(_("Searching for debug-info packages..."));
 
@@ -673,7 +699,7 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
 
         setsid();
 
-        char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir.c_str());
+        char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
@@ -715,8 +741,8 @@ static void InstallDebugInfos(const std::string& pDebugDumpDir, std::string& bui
         }
         if (*p)
         {
-            /* log(buff); - update_client logs it too */
-            update_client(buff);
+            log("%s", buff);
+            update_client("%s", buff);
         }
     }
 
@@ -787,7 +813,7 @@ static void trim_debuginfo_cache(unsigned max_mb)
     }
 }
 
-std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting local universal unique identification..."));
 
@@ -806,7 +832,7 @@ std::string CAnalyzerCCpp::GetLocalUUID(const std::string& pDebugDumpDir)
     return CreateHash(package + executable + independentBuildIdPC);
 }
 
-std::string CAnalyzerCCpp::GetGlobalUUID(const std::string& pDebugDumpDir)
+std::string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
@@ -851,7 +877,7 @@ static bool DebuginfoCheckPolkit(int uid)
     return false;
 }
 
-void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
+void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
     update_client(_("Starting report creation..."));
 
@@ -889,13 +915,12 @@ void CAnalyzerCCpp::CreateReport(const std::string& pDebugDumpDir, int force)
     GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
-    dd.SaveText(FILENAME_BACKTRACE, build_ids + backtrace);
+    dd.SaveText(FILENAME_BACKTRACE, (build_ids + backtrace).c_str());
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
     }
-    std::string rating = ssprintf("%d", rate_backtrace(backtrace));
-    dd.SaveText(FILENAME_RATING, rating);
+    dd.SaveText(FILENAME_RATING, to_string(rate_backtrace(backtrace.c_str())).c_str());
     dd.Close();
 }
 
@@ -948,12 +973,14 @@ void CAnalyzerCCpp::DeInit()
 
 void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    m_pSettings = pSettings;
+
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
     it = pSettings.find("MemoryMap");
     if (it != end)
     {
-        m_bMemoryMap = it->second == "yes";
+        m_bMemoryMap = string_to_bool(it->second.c_str());
     }
     it = pSettings.find("DebugInfo");
     if (it != end)
@@ -970,21 +997,20 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
         it = pSettings.find("InstallDebuginfo");
     if (it != end)
     {
-        m_bInstallDebugInfo = it->second == "yes";
+        m_bInstallDebugInfo = string_to_bool(it->second.c_str());
     }
 }
 
-map_plugin_settings_t CAnalyzerCCpp::GetSettings()
-{
-    map_plugin_settings_t ret;
-
-    ret["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
-    ret["DebugInfo"] = m_sDebugInfo;
-    ret["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
-    ret["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
-
-    return ret;
-}
+//ok to delete?
+//const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
+//{
+//    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
+//    m_pSettings["DebugInfo"] = m_sDebugInfo;
+//    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
+//    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(ANALYZER,
             CAnalyzerCCpp,

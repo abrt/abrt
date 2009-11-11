@@ -43,7 +43,6 @@
 CKerneloopsScanner::CKerneloopsScanner()
 {
 	int cnt_FoundOopses;
-	m_sSysLogFile = "/var/log/messages";
 
 	/* Scan dmesg, on first call only */
 	cnt_FoundOopses = ScanDmesg();
@@ -51,19 +50,23 @@ CKerneloopsScanner::CKerneloopsScanner()
 		SaveOopsToDebugDump();
 }
 
-void CKerneloopsScanner::Run(const std::string& pActionDir,
-			     const std::string& pArgs)
+void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs)
 {
-	int cnt_FoundOopses;
+	const char *syslog_file = "/var/log/messages";
+	map_plugin_settings_t::const_iterator it = m_pSettings.find("SysLogFile");
+	if (it != m_pSettings.end())
+	{
+		syslog_file = it->second.c_str();
+	}
 
-	cnt_FoundOopses = ScanSysLogFile(m_sSysLogFile.c_str());
+	int cnt_FoundOopses = ScanSysLogFile(syslog_file);
 	if (cnt_FoundOopses > 0) {
 		SaveOopsToDebugDump();
 		/*
 		 * This marker in syslog file prevents us from
 		 * re-parsing old oopses (any oops before it is
 		 * ignored by ScanSysLogFile()). The only problem
-		 * is that we can't be sure here that m_sSysLogFile
+		 * is that we can't be sure here that syslog_file
 		 * is the file where syslog(xxx) stuff ends up.
 		 */
 		openlog("abrt", 0, LOG_KERN);
@@ -97,8 +100,7 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 		try
 		{
 			CDebugDump debugDump;
-			// UID of kerneloops is -1
-			debugDump.Create(path, -1);
+			debugDump.Create(path, 0);
 			debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
 			debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
 			debugDump.SaveText(FILENAME_KERNEL, first_line);
@@ -176,24 +178,6 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 	free(buffer);
 
 	return cnt_FoundOopses;
-}
-
-void CKerneloopsScanner::SetSettings(const map_plugin_settings_t& pSettings)
-{
-	map_plugin_settings_t::const_iterator it = pSettings.find("SysLogFile");
-	if (it != pSettings.end())
-	{
-		m_sSysLogFile = it->second;
-	}
-}
-
-map_plugin_settings_t CKerneloopsScanner::GetSettings()
-{
-	map_plugin_settings_t ret;
-
-	ret["SysLogFile"] = m_sSysLogFile;
-
-	return ret;
 }
 
 PLUGIN_INFO(ACTION,

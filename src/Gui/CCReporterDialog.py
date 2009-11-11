@@ -43,6 +43,10 @@ class ReporterDialog():
         self.tvComment = self.wTree.get_widget("tvComment")
         self.tvComment.connect("focus-in-event", self.on_comment_focus_cb)
         self.comment_changed = False
+        
+        # "how to reproduce" textview
+        self.tevHowToReproduce = self.wTree.get_widget("tevHowToReproduce")
+        self.how_to_changed = False
 
         self.tvReport = self.wTree.get_widget("tvReport")
 
@@ -76,6 +80,8 @@ class ReporterDialog():
         # connect the signals
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
         self.wTree.get_widget("bSend").connect("clicked", self.on_send_clicked)
+        # start with the warning hidden, so it's not visible when there is no rating
+        self.wTree.get_widget("ebErrors").hide()
         self.hydrate()
 
     # this callback is called when user press Cancel or Report button in Report dialog
@@ -180,6 +186,50 @@ class ReporterDialog():
 
                 self.tvComment.set_buffer(buff)
                 continue
+            if item == "How to reproduce":
+                buff = gtk.TextBuffer()
+                how_to_reproduce = _("")
+                try:
+                    if self.report[item][CONTENT]:
+                        how_to_reproduce = self.report[item][CONTENT]
+                        self.how_to_changed = True
+                except Exception, e:
+                    pass
+
+                buff.set_text(how_to_reproduce)
+
+                self.tevHowToReproduce.set_buffer(buff)
+                continue
+            # if an backtrace has rating use it
+            if item == "rating":
+                try:
+                    package = self.report["package"][CONTENT]
+                # if we don't have package for some reason
+                except:
+                    package = None
+                ebErrors = self.wTree.get_widget("ebErrors")
+                lErrors = self.wTree.get_widget("lErrors")
+                bSend = self.wTree.get_widget("bSend")
+                # not usable report
+                if int(self.report[item][CONTENT]) < 3:
+                    ebErrors.show()
+                    ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
+                    if package:
+                        lErrors.set_markup(
+                            "<span color=\"white\">%s</span>" % _("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
+                    else:
+                        lErrors.set_markup("<span color=\"white\">%s</span>" % _("The bactrace is unusable, you can't report this!"))
+                    bSend.set_sensitive(False)
+                # probably usable 3
+                elif int(self.report[item][CONTENT]) < 4:
+                    ebErrors.show()
+                    ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("yellow"))
+                    lErrors.set_markup("<span color=\"black\">%s</span>" % _("The bactrace is incomplete, please make sure you provide good steps to reproduce."))
+                    bSend.set_sensitive(True)
+                else:
+                    ebErrors.hide()
+                    bSend.set_sensitive(True)
+                
             if self.report[item][TYPE] != 's':
                 # item name 0| value 1| editable? 2| toggled? 3| visible?(attachment)4
                 if self.report[item][EDITABLE] == 'y':
@@ -200,11 +250,18 @@ class ReporterDialog():
                 self.report[rowe["item"]][CONTENT] = rowe["content"]
             else:
                 del self.report[rowe["item"]]
+        # handle comment
         if self.comment_changed:
             buff = self.tvComment.get_buffer()
             self.report["Comment"] = ['t', 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
         else:
             del self.report["Comment"]
+        # handle how to reproduce
+        if self.how_to_changed:
+            buff = self.tevHowToReproduce.get_buffer()
+            self.report["How to reproduce"] = ['t', 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
+        else:
+            del self.report["How to reproduce"]
 
     def on_send_clicked(self, button):
     #def on_apply_clicked(self, button, treeview):

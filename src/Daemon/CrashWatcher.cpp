@@ -22,16 +22,16 @@
 #include "ABRTException.h"
 #include "CrashWatcher.h"
 
-void CCrashWatcher::Status(const std::string& pMessage, const char* peer, uint64_t pJobID)
+void CCrashWatcher::Status(const char *pMessage, const char* peer, uint64_t pJobID)
 {
-    VERB1 log("Update('%s'): %s", peer, pMessage.c_str());
+    VERB1 log("Update('%s'): %s", peer, pMessage);
     if (g_pCommLayer != NULL)
         g_pCommLayer->Update(pMessage, peer, pJobID);
 }
 
-void CCrashWatcher::Warning(const std::string& pMessage, const char* peer, uint64_t pJobID)
+void CCrashWatcher::Warning(const char *pMessage, const char* peer, uint64_t pJobID)
 {
-    VERB1 log("Warning('%s'): %s", peer, pMessage.c_str());
+    VERB1 log("Warning('%s'): %s", peer, pMessage);
     if (g_pCommLayer != NULL)
         g_pCommLayer->Warning(pMessage, peer, pJobID);
 }
@@ -44,7 +44,7 @@ CCrashWatcher::~CCrashWatcher()
 {
 }
 
-vector_crash_infos_t GetCrashInfos(const std::string &pUID)
+vector_crash_infos_t GetCrashInfos(const char *pUID)
 {
     vector_crash_infos_t retval;
     log("Getting crash infos...");
@@ -58,25 +58,24 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
         {
             mw_result_t res;
             map_crash_info_t info;
+            const char *uuid = UUIDsUIDs[ii].first.c_str();
+            const char *uid = UUIDsUIDs[ii].second.c_str();
 
-            res = GetCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second, info);
+            res = GetCrashInfo(uuid, uid, info);
             switch (res)
             {
                 case MW_OK:
                     retval.push_back(info);
                     break;
                 case MW_ERROR:
-                    warn_client("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    update_client("Can not find debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting from database");
-                    DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
+                    error_msg("Can't find dump directory for UUID %s, deleting from database", uuid);
+                    DeleteCrashInfo(uuid, uid);
                     break;
                 case MW_FILE_ERROR:
+                    error_msg("Can't open file in dump directory for UUID %s, deleting", uuid);
                     {
-                        std::string debugDumpDir;
-                        warn_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting");
-                        update_client("Can not open file in debug dump directory for UUID: " + UUIDsUIDs[ii].first + ", deleting");
-                        debugDumpDir = DeleteCrashInfo(UUIDsUIDs[ii].first, UUIDsUIDs[ii].second);
-                        DeleteDebugDumpDir(debugDumpDir);
+                        std::string debugDumpDir = DeleteCrashInfo(uuid, uid);
+                        DeleteDebugDumpDir(debugDumpDir.c_str());
                     }
                     break;
                 default:
@@ -90,8 +89,7 @@ vector_crash_infos_t GetCrashInfos(const std::string &pUID)
         {
             throw e;
         }
-        warn_client(e.what());
-        update_client(e.what());
+        error_msg("%s", e.what());
     }
 
     //retval = GetCrashInfos(pUID);
@@ -124,17 +122,17 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
         case MW_OK:
             break;
         case MW_IN_DB_ERROR:
-            warn_client(std::string("Did not find crash with UUID ") + pUUID + " in database");
+            error_msg("Can't find crash with UUID %s in database", pUUID);
             break;
         case MW_PLUGIN_ERROR:
-            warn_client("Particular analyzer plugin isn't loaded or there is an error within plugin(s)");
+            error_msg("Particular analyzer plugin isn't loaded or there is an error within plugin(s)");
             break;
         case MW_CORRUPTED:
         case MW_FILE_ERROR:
         default:
-            warn_client(std::string("Corrupted crash with UUID ") + pUUID + ", deleting");
+            error_msg("Corrupted crash with UUID %s, deleting", pUUID);
             std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-            DeleteDebugDumpDir(debugDumpDir);
+            DeleteDebugDumpDir(debugDumpDir.c_str());
             break;
     }
     return crashReport;
@@ -163,7 +161,7 @@ static void* create_report(void* arg)
     }
     catch (CABRTException& e)
     {
-        warn_client(e.what());
+        error_msg("%s", e.what());
     }
     catch (...) {}
     set_client_name(NULL);
@@ -208,12 +206,12 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
     return r;
 }
 
-bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
+bool DeleteDebugDump(const char *pUUID, const char *pUID)
 {
     try
     {
         std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-        DeleteDebugDumpDir(debugDumpDir);
+        DeleteDebugDumpDir(debugDumpDir.c_str());
     }
     catch (CABRTException& e)
     {
@@ -221,8 +219,7 @@ bool DeleteDebugDump(const std::string& pUUID, const std::string& pUID)
         {
             throw e;
         }
-        warn_client(e.what());
-        update_client(e.what());
+        error_msg("%s", e.what());
         return false;
     }
     return true;
