@@ -10,6 +10,7 @@ AC_ARG_ENABLE(debug,
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CXX
+AC_PROG_YACC
 
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.17])
@@ -83,6 +84,7 @@ AC_CONFIG_FILES([
 	src/Applet/Makefile
 	src/Gui/Makefile
 	src/CLI/Makefile
+	src/Backtrace/Makefile
 	inc/Makefile
 	po/Makefile.in
 ])
