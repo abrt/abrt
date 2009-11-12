@@ -17,7 +17,6 @@
 */
 #include <getopt.h>
 #include "ABRTException.h"
-#include "ABRTSocket.h"
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "DBusCommon.h"
