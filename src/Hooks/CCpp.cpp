@@ -205,19 +205,19 @@ int main(int argc, char** argv)
             dd.Close();
             perror_msg_and_die("can't open '%s'", path);
         }
-        if (copyfd_eof(STDIN_FILENO, fd) < 0)
+        off_t size = copyfd_eof(STDIN_FILENO, fd);
+        if (size < 0 || close(fd) != 0)
         {
-            /* close(fd); - why bother? */
+            unlink(path);
             dd.Delete();
             dd.Close();
             /* copyfd_eof logs the error including errno string,
              * but it does not log file name */
             error_msg_and_die("error saving coredump to %s", path);
         }
-        /* close(fd); - why bother? */
-        /* free(executable); */
+        /* free(executable); - why bother? */
         /* free(cmdline); */
-        log("saved core dump of pid %u to %s", (int)pid, path);
+        log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
     }
     catch (CABRTException& e)
     {
