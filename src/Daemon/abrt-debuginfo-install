@@ -112,7 +112,7 @@ cleanup_and_report_missing() {
     # If cachedir is specified, tempdir is just a staging area. Delete it
     if test x"$cachedir" != x""; then
         $debug && echo "Removing $tempdir"
-        $debug || -rf "$tempdir"
+        $debug || rm -rf "$tempdir"
     fi
 
     for missing in $missing_build_ids; do
@@ -135,9 +135,9 @@ print_package_names() {
     else
 	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list" >&2
     fi
-    local cmd="yum $yumopts --enablerepo='*debuginfo*' --quiet provides $missing_debuginfo_files 2>&1"
+    local cmd="yum $yumopts --enablerepo='*debuginfo*' --quiet provides $missing_debuginfo_files"
     echo "$cmd" >"yum_provides.$1.OUT"
-    local yum_provides_OUT=`$cmd`
+    local yum_provides_OUT=`$cmd 2>&1`
     local err=$?
     printf "%s\nexitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
     test $err = 0 || exit 2
