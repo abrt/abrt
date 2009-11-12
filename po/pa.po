@@ -2,16 +2,17 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
+#: ../src/Gui/CCReporterDialog.py:191
 # Jaswinder Singh <jsingh@redhat.com>, 2009.
 # A S Alam <aalam@users.sf.net>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-07 09:49+0000\n"
-"PO-Revision-Date: 2009-11-07 18:51+0530\n"
-"Last-Translator: A S Alam <aalam@users.sf.net>\n"
-"Language-Team: Punjabi/Panjabi <punjabi-users@lists.sf.net>\n"
+"POT-Creation-Date: 2009-11-12 03:54+0000\n"
+"PO-Revision-Date: 2009-11-12 11:27+0530\n"
+"Last-Translator: Jaswinder Singh <jsingh@redhat.com>\n"
+"Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -98,7 +99,7 @@ msgstr "ਉਡੀਕੋ ਜੀ..."
 msgid "Plugins"
 msgstr "ਪਲੱਗਇਨ"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:3
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
 msgid "Report"
 msgstr "ਰਿਪੋਰਟ"
 
@@ -162,8 +163,8 @@ msgid "Date"
 msgstr "ਮਿਤੀ"
 
 #: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr "ਕਰੈਸ਼ ਰੇਟ"
+msgid "Crash count"
+msgstr "ਕਰੈਸ਼ ਕਾਊਂਟ"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
@@ -227,34 +228,32 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
 
-#: ../src/Gui/CCReporterDialog.py:173
+#: ../src/Gui/CCReporterDialog.py:177
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "ਇਸ ਨੂੰ ਪੈਦਾ ਕਰਨ ਬਾਰੇ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਜਾਂ ਤੁਸੀਂ ਕੀ ਕੀਤਾ ਹੈ..."
 
-#: ../src/Gui/CCReporterDialog.py:201
-#, python-format
+#: ../src/Gui/CCReporterDialog.py:219, python-format
 msgid ""
-"Reporting disabled because the backtrace is unusable!\n"
+"Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command:<span color=\"blue\"> "
 "debuginfo-install %s </span>\n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"ਰਿਪੋਰਟ ਦੇਣੀ ਆਯੋਗ ਹੈ, ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ!\n"
-"<span color=\"blue\"> debuginfo-install %s </span>: ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ "
-"ਕਰਕੇ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਇੰਸਟਾਲ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ\n"
-"ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
+"ਰਿਪੋਰਟ ਦੇਣੀ ਆਯੋਗ ਹੈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ!\n"
+"ਇਸ ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਇੰਸਟਾਲ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ: <span color=\"blue\"> "
+"debuginfo-install %s </span>\n ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
 
-#: ../src/Gui/CCReporterDialog.py:203
+#: ../src/Gui/CCReporterDialog.py:221
 msgid "The bactrace is unusable, you can't report this!"
 msgstr "ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ, ਤੁਸੀਂ ਇਹ ਰਿਪੋਰਟ ਨਹੀਂ ਭੇਜ ਸਕਦੇ ਹੋ!"
 
-#: ../src/Gui/CCReporterDialog.py:209
+#: ../src/Gui/CCReporterDialog.py:227
 msgid ""
 "The bactrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr "ਬੈਕਟਰੇਸ ਅਧੂਰਾ ਹੈ, ਯਕੀਨੀ ਬਣਾਉ ਕਿ ਤੁਸੀਂ ਇਹ ਬਣਾਉਣ ਲਈ ਠੀਕ ਕਦਮ ਚੁੱਕੇ ਹਨ।"
 
-#: ../src/Gui/CCReporterDialog.py:247
+#: ../src/Gui/CCReporterDialog.py:272
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -294,7 +293,11 @@ msgstr "ਹਾਈਡਰੇਟ ਕਰਨ ਲਈ ਕੁਝ ਨਹੀਂ!"
 msgid "Comment"
 msgstr "ਟਿੱਪਣੀ"
 
-#: ../src/Gui/report.glade.h:4
+#: ../src/Gui/report.glade.h:3
+msgid "How to reproduce (in a few simple steps)"
+msgstr "ਮੁੜ-ਪੈਦਾ ਕਿਵੇਂ ਕਰਨਾ ਹੈ (ਕੁੱਝ ਸਧਾਰਨ ਪਗਾਂ ਵਿੱਚ)"
+
+#: ../src/Gui/report.glade.h:5
 msgid "Send"
 msgstr "ਭੇਜੋ"
 
@@ -439,7 +442,7 @@ msgstr "ABRT ਸਰਵਿਸ ਨਹੀਂ ਚੱਲ ਰਹੀ ਹੈ"
 msgid "Warning"
 msgstr "ਚੇਤਾਵਨੀ"
 
-#: ../src/Daemon/Daemon.cpp:531
+#: ../src/Daemon/Daemon.cpp:520
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -447,35 +450,37 @@ msgstr ""
 "ਰਿਪੋਰਟ ਅਕਾਰ ਦਾ ਕੋਟਾ ਖਤਮ ਹੋ ਗਿਆ ਹੈ। abrt.conf ਵਿੱਚ ਸਿਸਟਮ MaxCrashReportsSize ਮੁੱਲ ਚੈੱਕ "
 "ਕਰੋ ਜੀ।"
 
-#: ../lib/Plugins/Bugzilla.cpp:316, c-format
+#: ../lib/Plugins/Bugzilla.cpp:209
+#, c-format
 msgid "Bug is already reported: %i"
 msgstr "ਬੱਗ ਪਹਿਲਾਂ ਹੀ ਰਿਪੋਰਟ ਕੀਤਾ ਹੈ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:378, c-format
+#: ../lib/Plugins/Bugzilla.cpp:271
+#, c-format
 msgid "New bug id: %i"
 msgstr "ਨਵਾਂ ਬੱਗ id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:471
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "ਡੁਪਲੀਕੇਟ ਲਈ ਜਾਂਚ ਜਾਰੀ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:474
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "ਬੱਗਜ਼ੀਲਾ ਉੱਤੇ ਲਾਗਇਨ ਕੀਤਾ ਜਾਂਦਾ ਹੈ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:478
+#: ../lib/Plugins/Bugzilla.cpp:371
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "ਖਾਲੀ ਲਾਗਇਨ ਅਤੇ ਪਾਸਵਰਡ। Bugzilla.conf ਵੇਖੋ ਜੀ।"
 
-#: ../lib/Plugins/Bugzilla.cpp:484
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "Checking CC..."
 msgstr "CC ਚੈੱਕ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:493
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "ਨਵਾਂ ਬੱਗ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:497
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "ਲਾਗਆਉਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
@@ -483,31 +488,31 @@ msgstr "ਲਾਗਆਉਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 msgid "Getting local universal unique identification"
 msgstr "ਲੋਕਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਖਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ"
 
-#: ../lib/Plugins/CCpp.cpp:228
+#: ../lib/Plugins/CCpp.cpp:254
 msgid "Getting backtrace..."
 msgstr "ਬੈਕਟਰੇਸ ਲੈ ਰਿਹਾ..."
 
-#: ../lib/Plugins/CCpp.cpp:526 ../lib/Plugins/CCpp.cpp:653
+#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
 msgid "Searching for debug-info packages..."
 msgstr "ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਪੈਕੇਜ ਲਈ ਖੋਜ ਜਾਰੀ..."
 
-#: ../lib/Plugins/CCpp.cpp:588 ../lib/Plugins/CCpp.cpp:687
+#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
 msgid "Downloading and installing debug-info packages..."
 msgstr "ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਪੈਕੇਜ ਡਾਊਨਲੋਡ ਤੇ ਇੰਸਟਾਲ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: ../lib/Plugins/CCpp.cpp:792
+#: ../lib/Plugins/CCpp.cpp:818
 msgid "Getting local universal unique identification..."
 msgstr "ਲੋਕਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਖਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/CCpp.cpp:811
+#: ../lib/Plugins/CCpp.cpp:837
 msgid "Getting global universal unique identification..."
 msgstr "ਗਲੋਬਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਕਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/CCpp.cpp:856
+#: ../lib/Plugins/CCpp.cpp:882
 msgid "Starting report creation..."
 msgstr "ਰਿਪੋਰਟ ਬਣਾਉਣੀ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/CCpp.cpp:886
+#: ../lib/Plugins/CCpp.cpp:912
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo ਇੰਸਟਾਲੇਸ਼ਨ ਛੱਡੀ ਜਾ ਰਹੀ ਹੈ"
 
@@ -515,7 +520,7 @@ msgstr "debuginfo ਇੰਸਟਾਲੇਸ਼ਨ ਛੱਡੀ ਜਾ ਰਹੀ ਹ�
 msgid "Creating and submitting a report..."
 msgstr "ਇੱਕ ਰਿਪੋਰਟ ਬਣਾਈ ਅਤੇ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/Logger.cpp:57 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "ਰਿਪੋਰਟ ਬਣਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
@@ -523,11 +528,12 @@ msgstr "ਰਿਪੋਰਟ ਬਣਾਈ ਜਾ ਰਹੀ ਹੈ..."
 msgid "Executing RunApp plugin..."
 msgstr "RunApp ਪਲੱਗਇਨ ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:381
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "ਫਾਇਲਟਰਾਂਸਫਰ: URL ਨਹੀਂ ਦਿੱਤਾ"
 
-#: ../lib/Plugins/FileTransfer.cpp:67, c-format
+#: ../lib/Plugins/FileTransfer.cpp:67
+#, c-format
 msgid "Sending archive %s to %s"
 msgstr "%s  ਅਕਾਇਵ %s ਨੂੰ ਭੇਜਿਆ ਜਾ ਰਿਹਾ ਹੈ"
 
@@ -535,11 +541,13 @@ msgstr "%s  ਅਕਾਇਵ %s ਨੂੰ ਭੇਜਿਆ ਜਾ ਰਿਹਾ ਹ
 msgid "File Transfer: Creating a report..."
 msgstr "ਫਾਇਲ ਟਰਾਂਸਫਰ: ਰਿਪੋਰਟ ਬਣਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334, c-format
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "%s :ਅਕਾਇਵ ਬਣਾਇਆ ਅਤੇ ਭੇਜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
-#: ../lib/Plugins/FileTransfer.cpp:359, c-format
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
 msgid "Can't create and send an archive %s"
 msgstr "%s ਅਕਾਇਵ ਬਣਾਇਆ ਅਤੇ ਭੇਜਿਆ ਨਹੀਂ ਜਾ ਸਕਦਾ"
 
@@ -555,7 +563,8 @@ msgstr "ਈਮੇਲ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport ਪਲੱਗਇਨ ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/SOSreport.cpp:122, c-format
+#: ../lib/Plugins/SOSreport.cpp:122
+#, c-format
 msgid "running sosreport: %s"
 msgstr "sosreport ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ: %s "
 
