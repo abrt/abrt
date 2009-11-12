@@ -33,46 +33,13 @@ CMailx::CMailx() :
     m_sEmailFrom("user@localhost"),
     m_sEmailTo("root@localhost"),
     m_sSubject("[abrt] full crash report"),
-    m_bSendBinaryData(false),
-    m_nArgs(0),
-    m_pArgs(NULL)
+    m_bSendBinaryData(false)
 {}
 
-void CMailx::FreeMailxArgs()
-{
-    int ii;
-    for (ii = 0; ii < m_nArgs; ii++)
-    {
-        free(m_pArgs[ii]);
-    }
-    free((void*) m_pArgs);
-    m_pArgs = NULL;
-    m_nArgs = 0;
-}
-
-void CMailx::AddMailxArg(const std::string& pArg)
-{
-    m_pArgs = (char**) realloc((void*)m_pArgs, (++m_nArgs) * (sizeof(char*)));
-    if (pArg == "")
-    {
-        m_pArgs[m_nArgs - 1] = NULL;
-    }
-    else
-    {
-        m_pArgs[m_nArgs - 1] = strdup(pArg.c_str());
-    }
-}
-
-void CMailx::ExecMailx(uid_t uid, const std::string& pText)
+static void exec_and_feed_input(uid_t uid, const char* pText, char **pArgs)
 {
     int pipein[2];
     pid_t child;
-
-    struct passwd* pw = getpwuid(uid);
-    if (!pw)
-    {
-        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
-    }
 
     xpipe(pipein);
     child = fork();
@@ -80,121 +47,129 @@ void CMailx::ExecMailx(uid_t uid, const std::string& pText)
     {
         close(pipein[0]);
         close(pipein[1]);
-        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": fork failed.");
+        throw CABRTException(EXCEP_PLUGIN, "Can't fork");
     }
     if (child == 0)
     {
-
         close(pipein[1]);
         xmove_fd(pipein[0], STDIN_FILENO);
 
-        setgroups(1, &pw->pw_gid);
-        setregid(pw->pw_gid, pw->pw_gid);
+        struct passwd* pw = getpwuid(uid);
+        gid_t gid = pw ? pw->pw_gid : uid;
+        setgroups(1, &gid);
+        setregid(gid, gid);
         setreuid(uid, uid);
-        setsid();
+        setsid(); /* why? I propose removing this */
 
-        execvp(MAILX_COMMAND, m_pArgs);
-        exit(0);
+        execvp(pArgs[0], pArgs);
+        exit(1); /* exec failed */
     }
 
     close(pipein[0]);
-    safe_write(pipein[1], pText.c_str(), pText.length());
+    safe_write(pipein[1], pText, strlen(pText));
     close(pipein[1]);
 
-    wait(NULL); /* why? */
+    wait(NULL); /* wait for command completion */
 }
 
-void CMailx::SendEmail(const std::string& pSubject, const std::string& pText, const std::string& pUID)
+static char** append_str_to_vector(char **vec, unsigned &size, const char *str)
 {
-    update_client(_("Sending an email..."));
-
-    AddMailxArg("-s");
-    AddMailxArg(pSubject);
-    AddMailxArg("-r");
-    AddMailxArg(m_sEmailFrom);
-    AddMailxArg(m_sEmailTo);
-    AddMailxArg("");
-
-    ExecMailx(atoi(pUID.c_str()), pText);
+    //log("old vec: %p", vec);
+    vec = (char**) xrealloc(vec, (size+2) * sizeof(vec[0]));
+    vec[size] = xstrdup(str);
+    //log("new vec: %p, added [%d] %p", vec, size, vec[size]);
+    size++;
+    vec[size] = NULL;
+    return vec;
 }
 
-std::string CMailx::Report(const map_crash_report_t& pCrashReport, 
+std::string CMailx::Report(const map_crash_report_t& pCrashReport,
                            const map_plugin_settings_t& pSettings, const std::string& pArgs)
 {
-    update_client(_("Creating a report..."));
+    char **args = NULL;
+    unsigned arg_size = 0;
+    args = append_str_to_vector(args, arg_size, MAILX_COMMAND);
 
-    std::stringstream emailBody;
-    std::stringstream binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
-
-    AddMailxArg(MAILX_COMMAND);
-
+    std::string binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {
-            if (it->first !=  CD_UUID &&
-                it->first !=  FILENAME_ARCHITECTURE &&
-                it->first !=  FILENAME_KERNEL &&
-                it->first !=  FILENAME_PACKAGE)
-            {
-                additionalFiles << it->first << std::endl;
-                additionalFiles << "-----" << std::endl;
-                additionalFiles << it->second[CD_CONTENT] << std::endl << std::endl;
+            if (it->first != CD_UUID
+             && it->first != FILENAME_ARCHITECTURE
+             && it->first != FILENAME_KERNEL
+             && it->first != FILENAME_PACKAGE
+            ) {
+                additionalFiles += it->first;
+                additionalFiles += "\n-----\n";
+                additionalFiles += it->second[CD_CONTENT];
+                additionalFiles += "\n\n";
             }
             else if (it->first == CD_UUID)
             {
-                UUIDFile << it->first << std::endl;
-                UUIDFile << "-----" << std::endl;
-                UUIDFile << it->second[CD_CONTENT] << std::endl << std::endl;
+                UUIDFile += it->first;
+                UUIDFile += "\n-----\n";
+                UUIDFile += it->second[CD_CONTENT];
+                UUIDFile += "\n\n";
             }
             else
             {
-                commonFiles << it->first << std::endl;
-                commonFiles << "-----" << std::endl;
-                commonFiles << it->second[CD_CONTENT] << std::endl << std::endl;
+                commonFiles += it->first;
+                commonFiles += "\n-----\n";
+                commonFiles += it->second[CD_CONTENT];
+                commonFiles += "\n\n";
             }
         }
         if (it->second[CD_TYPE] == CD_ATT)
         {
-            bigTextFiles << it->first << std::endl;
-            bigTextFiles << "-----" << std::endl;
-            bigTextFiles << it->second[CD_CONTENT] << std::endl << std::endl;
+            bigTextFiles += it->first;
+            bigTextFiles += "\n-----\n";
+            bigTextFiles += it->second[CD_CONTENT];
+            bigTextFiles += "\n\n";
         }
         if (it->second[CD_TYPE] == CD_BIN)
         {
-            binaryFiles << " -a " << it->second[CD_CONTENT];
+            binaryFiles += " -a ";
+            binaryFiles += it->second[CD_CONTENT];
             if (m_bSendBinaryData)
             {
-                AddMailxArg("-a");
-                AddMailxArg(it->second[CD_CONTENT]);
+                args = append_str_to_vector(args, arg_size, "-a");
+                args = append_str_to_vector(args, arg_size, it->second[CD_CONTENT].c_str());
             }
         }
     }
 
-    emailBody << "Duplicity check" << std::endl;
-    emailBody << "=====" << std::endl << std::endl;
-    emailBody << UUIDFile.str() << std::endl;
-    emailBody << "Common information" << std::endl;
-    emailBody << "=====" << std::endl << std::endl;
-    emailBody << commonFiles.str() << std::endl;
-    emailBody << "Additional information" << std::endl;
-    emailBody << "=====" << std::endl << std::endl;
-    emailBody << additionalFiles.str() << std::endl;
-    emailBody << "Other information" << std::endl;
-    emailBody << "=====" << std::endl << std::endl;
-    emailBody << bigTextFiles.str() << std::endl;
+    std::string emailBody = "Duplicity check\n";
+    emailBody += "=====\n\n";
+    emailBody += UUIDFile;
+    emailBody += "\nCommon information\n";
+    emailBody += "=====\n\n";
+    emailBody += commonFiles;
+    emailBody += "\nAdditional information\n";
+    emailBody += "=====\n\n";
+    emailBody += additionalFiles;
+    emailBody += "\nOther information\n";
+    emailBody += "=====\n\n";
+    emailBody += bigTextFiles;
+    emailBody += '\n';
 
-    if (pArgs != "")
-    {
-        SendEmail(pArgs, emailBody.str(), pCrashReport.find(CD_MWUID)->second[CD_CONTENT]);
-    }
-    else
-    {
-        SendEmail(m_sSubject, emailBody.str(), pCrashReport.find(CD_MWUID)->second[CD_CONTENT]);
-    }
+    args = append_str_to_vector(args, arg_size, "-s");
+    args = append_str_to_vector(args, arg_size, (pArgs != "" ? pArgs.c_str() : m_sSubject.c_str()));
+    args = append_str_to_vector(args, arg_size, "-r");
+    args = append_str_to_vector(args, arg_size, m_sEmailFrom.c_str());
+    args = append_str_to_vector(args, arg_size, m_sEmailTo.c_str());
 
-    FreeMailxArgs();
+    update_client(_("Sending an email..."));
+    const char *uid_str = pCrashReport.find(CD_MWUID)->second[CD_CONTENT].c_str();
+    exec_and_feed_input(atoi(uid_str), emailBody.c_str(), args);
+
+    while (*args)
+    {
+        free(*args++);
+    }
+    args -= arg_size;
+    free(args);
 
     return "Email was sent to: " + m_sEmailTo;
 }
