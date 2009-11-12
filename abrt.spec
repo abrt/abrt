@@ -27,6 +27,7 @@ BuildRequires: polkit-devel
 BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
+Prereq: /usr/sbin/groupadd 
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -241,6 +242,9 @@ desktop-file-install \
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre
+/usr/sbin/groupadd -f --system abrt
+
 %post
 /sbin/chkconfig --add %{name}d
 
@@ -267,7 +271,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
-%dir /var/cache/%{name}
+%dir %attr(1775, root, abrt) /var/cache/%{name}
 %dir /var/cache/%{name}-di
 %dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
@@ -377,7 +381,7 @@ fi
 
 %files addon-python
 %defattr(-,root,root,-)
-%{_bindir}/%{name}-pyhook-helper
+%attr(2755, root, abrt) %{_bindir}/%{name}-pyhook-helper
 %config(noreplace) %{_sysconfdir}/%{name}/pyhook.conf
 %{python_sitearch}/ABRTUtils.so
 %{_libdir}/%{name}/libPython.so*
