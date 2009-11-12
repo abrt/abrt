@@ -25,39 +25,10 @@
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
+#include "abrtlib.h"
 
 #define COMMAND     0
 #define FILENAME    1
-
-/* TODO: do not duplicate: SOSreport.cpp has same function too */
-static void ParseArgs(const char *psArgs, vector_string_t& pArgs)
-{
-    unsigned ii;
-    bool is_quote = false;
-    std::string item;
-
-    for (ii = 0; psArgs[ii]; ii++)
-    {
-        if (psArgs[ii] == '"')
-        {
-            is_quote = !is_quote;
-        }
-        else if (psArgs[ii] == ',' && !is_quote)
-        {
-            pArgs.push_back(item);
-            item.clear();
-        }
-        else
-        {
-            item += psArgs[ii];
-        }
-    }
-
-    if (item.size() != 0)
-    {
-        pArgs.push_back(item);
-    }
-}
 
 void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
 {
@@ -66,7 +37,7 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
     std::string output;
     vector_string_t args;
 
-    ParseArgs(pArgs, args);
+    parse_args(pArgs, args, '"');
 
     FILE *fp = popen(args[COMMAND].c_str(), "r");
     if (fp == NULL)

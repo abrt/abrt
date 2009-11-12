@@ -5,6 +5,7 @@ lib_LTLIBRARIES = libABRTUtils.la
 # xconnect.cpp
 
 libABRTUtils_la_SOURCES = \
+	stringops.cpp \
     xfuncs.cpp \
     encbase64.cpp \
     read_write.cpp \

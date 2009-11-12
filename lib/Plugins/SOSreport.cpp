@@ -65,36 +65,6 @@ static std::string ParseFilename(const std::string& pOutput)
     return pOutput.substr(filename_start, filename_end - filename_start + 1);
 }
 
-/* TODO: do not duplicate: RunApp.cpp has same function too */
-static void ParseArgs(const char *psArgs, vector_string_t& pArgs)
-{
-    unsigned ii;
-    bool is_quote = false;
-    std::string item;
-
-    for (ii = 0; psArgs[ii]; ii++)
-    {
-        if (psArgs[ii] == '"')
-        {
-            is_quote = !is_quote;
-        }
-        else if (psArgs[ii] == ',' && !is_quote)
-        {
-            pArgs.push_back(item);
-            item.clear();
-        }
-        else
-        {
-            item += psArgs[ii];
-        }
-    }
-
-    if (item.size() != 0)
-    {
-        pArgs.push_back(item);
-    }
-}
-
 void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
 {
     update_client(_("Executing SOSreport plugin..."));
@@ -108,7 +78,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
     std::string command;
 
     vector_string_t args;
-    ParseArgs(pArgs, args);
+    parse_args(pArgs, args, '"');
 
     if (args.size() == 0 || args[0] == "")
     {
