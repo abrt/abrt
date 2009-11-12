@@ -108,8 +108,8 @@ int main(int argc, char** argv)
   if (uuid)
     dd.SaveText("uuid", uuid);
 
-  char uid[16];
-  snprintf(uid, 16, "%d", (int)getuid());
+  char uid[sizeof(int) * 3 + 2];
+  sprintf(uid, "%d", (int)getuid());
   dd.SaveText("uid", uid);
 
   dd.SaveText("backtrace", bt);
