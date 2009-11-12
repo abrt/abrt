@@ -164,21 +164,19 @@ int main(int argc, char** argv)
 
     try
     {
-        char* executable;
-        char* cmdline;
-        executable = get_executable(pid);
-        cmdline = get_cmdline(pid);
-        if (executable == NULL || cmdline == NULL)
+        char* executable = get_executable(pid);
+        if (executable == NULL)
         {
-            error_msg_and_die("can not get proc info for pid %u", (int)pid);
+            error_msg_and_die("can't read /proc/%u/exe link", (int)pid);
         }
         if (strstr(executable, "/abrt"))
         {
             /* free(executable); - why bother? */
-            /* free(cmdline); */
             error_msg_and_die("pid %u is '%s', not dumping it to avoid abrt recursion",
                             (int)pid, executable);
         }
+
+        char* cmdline = get_cmdline(pid); /* never NULL */
 
         char path[PATH_MAX];
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
