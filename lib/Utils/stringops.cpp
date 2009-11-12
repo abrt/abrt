@@ -14,7 +14,6 @@ void parse_args(const char *psArgs, vector_string_t& pArgs, const char quote)
         }
         else if (psArgs[ii] == ',' && !is_quote)
         {
-            printf("%s\n", item.c_str());
             pArgs.push_back(item);
             item.clear();
         }
@@ -26,7 +25,6 @@ void parse_args(const char *psArgs, vector_string_t& pArgs, const char quote)
 
     if (item.size() != 0)
     {
-        printf("%s\n", item.c_str());
         pArgs.push_back(item);
     }
 }
