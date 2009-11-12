@@ -2,12 +2,13 @@
 # Piotr Drąg <piotrdrag@gmail.com>, 2009.
 # Tomasz Chrzczonowicz <chrzczonowicz@gmail.com>, 2009.
 #
+#: ../src/Gui/CCReporterDialog.py:191
 msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-07 09:22+0000\n"
-"PO-Revision-Date: 2009-11-07 10:45+0100\n"
+"POT-Creation-Date: 2009-11-09 23:17+0000\n"
+"PO-Revision-Date: 2009-11-10 00:19+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <fedora-trans-pl@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -96,7 +97,7 @@ msgstr "Proszę czekać..."
 msgid "Plugins"
 msgstr "Wtyczki"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:3
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
 msgid "Report"
 msgstr "Zgłoś"
 
@@ -164,8 +165,8 @@ msgid "Date"
 msgstr "Data"
 
 #: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr "Częstotliwość awarii"
+msgid "Crash count"
+msgstr "Liczba awarii"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
@@ -230,30 +231,30 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Błąd podczas uzyskiwania raportu: %s"
 
-#: ../src/Gui/CCReporterDialog.py:173
+#: ../src/Gui/CCReporterDialog.py:177
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
 "języku angielskim)..."
 
-#: ../src/Gui/CCReporterDialog.py:201
+#: ../src/Gui/CCReporterDialog.py:219
 #, python-format
 msgid ""
-"Reporting disabled because the backtrace is unusable!\n"
+"Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command:<span color=\"blue\"> "
 "debuginfo-install %s </span>\n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "Zgłaszanie zostało wyłączone, ponieważ nie można użyć tego wyjątku.\n"
-"Proszę spróbować ręcznie zainstalować pakiet debuginfo używając "
-"polecenia:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"Proszę spróbować ręcznie zainstalować pakiet debuginfo używając polecenia:"
+"<span color=\"blue\"> debuginfo-install %s </span>\n"
 "a następnie nacisnąć przycisk Odśwież, aby ponownie utworzyć wyjątek."
 
-#: ../src/Gui/CCReporterDialog.py:203
+#: ../src/Gui/CCReporterDialog.py:221
 msgid "The bactrace is unusable, you can't report this!"
 msgstr "Nie można użyć tego wyjątku. Nie można tego zgłosić."
 
-#: ../src/Gui/CCReporterDialog.py:209
+#: ../src/Gui/CCReporterDialog.py:227
 msgid ""
 "The bactrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -261,7 +262,7 @@ msgstr ""
 "Wyjątek jest niepełny. Proszę upewnić się, że podano właściwe kroki "
 "ponownego wywołania awarii."
 
-#: ../src/Gui/CCReporterDialog.py:247
+#: ../src/Gui/CCReporterDialog.py:272
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -303,7 +304,13 @@ msgstr "Brak danych do wyświetlenia."
 msgid "Comment"
 msgstr "Komentarz"
 
-#: ../src/Gui/report.glade.h:4
+#: ../src/Gui/report.glade.h:3
+msgid "How to reproduce (in a few simple steps)"
+msgstr ""
+"Jak ponownie wywołać tę awarię (w kilku prostych krokach, w języku "
+"angielskim)"
+
+#: ../src/Gui/report.glade.h:5
 msgid "Send"
 msgstr "Wyślij"
 
@@ -448,7 +455,7 @@ msgstr "Usługa ABRT nie jest uruchomiona"
 msgid "Warning"
 msgstr "Ostrzeżenie"
 
-#: ../src/Daemon/Daemon.cpp:531
+#: ../src/Daemon/Daemon.cpp:519
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -456,37 +463,37 @@ msgstr ""
 "Wielkość raportu przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
 "wartość zmiennej MaxCrashReportsSize w pliku abrt.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:316
+#: ../lib/Plugins/Bugzilla.cpp:240
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Błąd został już wcześniej zgłoszony: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:378
+#: ../lib/Plugins/Bugzilla.cpp:302
 #, c-format
 msgid "New bug id: %i"
 msgstr "Identyfikator nowego błędu: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:471
+#: ../lib/Plugins/Bugzilla.cpp:395
 msgid "Checking for duplicates..."
 msgstr "Sprawdzanie duplikatów..."
 
-#: ../lib/Plugins/Bugzilla.cpp:474
+#: ../lib/Plugins/Bugzilla.cpp:398
 msgid "Logging into bugzilla..."
 msgstr "Logowanie do Bugzilli..."
 
-#: ../lib/Plugins/Bugzilla.cpp:478
+#: ../lib/Plugins/Bugzilla.cpp:402
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Pola login i hasło są puste. Proszę sprawdzić plik Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:484
+#: ../lib/Plugins/Bugzilla.cpp:408
 msgid "Checking CC..."
 msgstr "Sprawdzanie listy CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:493
+#: ../lib/Plugins/Bugzilla.cpp:417
 msgid "Creating new bug..."
 msgstr "Dodawanie nowego błędu..."
 
-#: ../lib/Plugins/Bugzilla.cpp:497
+#: ../lib/Plugins/Bugzilla.cpp:421
 msgid "Logging out..."
 msgstr "Wylogowywanie..."
 
@@ -494,31 +501,31 @@ msgstr "Wylogowywanie..."
 msgid "Getting local universal unique identification"
 msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora"
 
-#: ../lib/Plugins/CCpp.cpp:228
+#: ../lib/Plugins/CCpp.cpp:254
 msgid "Getting backtrace..."
 msgstr "Uzyskiwanie wyjątku..."
 
-#: ../lib/Plugins/CCpp.cpp:526 ../lib/Plugins/CCpp.cpp:653
+#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
 msgid "Searching for debug-info packages..."
 msgstr "Wyszukiwanie pakietów debuginfo..."
 
-#: ../lib/Plugins/CCpp.cpp:588 ../lib/Plugins/CCpp.cpp:687
+#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
 msgid "Downloading and installing debug-info packages..."
 msgstr "Pobieranie i instalowanie pakietów debuginfo..."
 
-#: ../lib/Plugins/CCpp.cpp:792
+#: ../lib/Plugins/CCpp.cpp:818
 msgid "Getting local universal unique identification..."
 msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora..."
 
-#: ../lib/Plugins/CCpp.cpp:811
+#: ../lib/Plugins/CCpp.cpp:837
 msgid "Getting global universal unique identification..."
 msgstr "Uzyskiwanie globalnego uniwersalnego, unikalnego identyfikatora..."
 
-#: ../lib/Plugins/CCpp.cpp:856
+#: ../lib/Plugins/CCpp.cpp:882
 msgid "Starting report creation..."
 msgstr "Uruchamianie tworzenia raportu..."
 
-#: ../lib/Plugins/CCpp.cpp:886
+#: ../lib/Plugins/CCpp.cpp:912
 msgid "Skipping debuginfo installation"
 msgstr "Pomijanie instalacji pakietu debuginfo"
 

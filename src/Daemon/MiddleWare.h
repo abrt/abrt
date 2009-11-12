@@ -120,12 +120,6 @@ void DeleteDebugDumpDir(const char *pDebugDumpDir);
 std::string DeleteCrashInfo(const char *pUUID,
                             const char *pUID);
 /**
- * Saves debugdump into database.
- * @param pDebugDumpDir A debugdump directory.
- * @return It return results of operation. See mw_result_t.
- */
-mw_result_t SaveDebugDump(const char *pDebugDumpDir);
-/**
  * Saves debugdump into database. If saving is successful,
  * it fills crash info.
  * @param pDebugDumpDir A debugdump directory.
@@ -171,5 +165,6 @@ void AddAnalyzerActionOrReporter(const char *pAnalyzer,
 void AddActionOrReporter(const char *pActionOrReporter,
                          const char *pArgs);
 
+bool analyzer_has_InformAllUsers(const char *analyzer_name);
 
 #endif /*MIDDLEWARE_H_*/

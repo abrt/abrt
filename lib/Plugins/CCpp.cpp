@@ -127,6 +127,18 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
         setreuid(uid, uid);
         setsid();
 
+        /* Nuke everything which may make setlocale() switch to non-POSIX locale:
+         * we need to avoid having gdb output in some obscure language.
+         */
+        unsetenv("LANG");
+        unsetenv("LC_ALL");
+        unsetenv("LC_COLLATE");
+        unsetenv("LC_CTYPE");
+        unsetenv("LC_MESSAGES");
+        unsetenv("LC_MONETARY");
+        unsetenv("LC_NUMERIC");
+        unsetenv("LC_TIME");
+
         execvp(pArgs[0], pArgs);
         /* VERB1 since sometimes we expect errors here */
         VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
@@ -164,18 +176,14 @@ static LineRating rate_line(const char *line)
 {
 #define FOUND(x) (strstr(line, x) != NULL)
     /* see the "enum LineRating" comments for possible combinations */
+    if (FOUND(" at "))
+        return Good;
     const char *function = strstr(line, " in ");
     if (function)
     {
         if (function[4] == '?') /* " in ??" does not count */
         {
             function = NULL;
-        }
-        else
-        {
-            bool source_file = FOUND(" at ");
-            if (source_file)
-                return Good;
         }
     }
     bool library = FOUND(" from ");
@@ -193,7 +201,7 @@ static LineRating rate_line(const char *line)
 /* returns number of "stars" to show */
 static int rate_backtrace(const char *backtrace)
 {
-    int i, len;
+    int i, j, len;
     int multiplier = 0;
     int rating = 0;
     int best_possible_rating = 0;
@@ -210,6 +218,9 @@ static int rate_backtrace(const char *backtrace)
         if (backtrace[i] == '#') /* this separates frames from each other */
         {
             std::string s(backtrace + i + 1, len);
+            for (j=0; j<len; j++) /* replace tabs with spaces */
+                if (s[j] == '\t')
+                    s[j] = ' ';
             multiplier++;
             rating += rate_line(s.c_str()) * multiplier;
             best_possible_rating += BestRating * multiplier;
@@ -969,7 +980,7 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("MemoryMap");
     if (it != end)
     {
-        m_bMemoryMap = it->second == "yes";
+        m_bMemoryMap = string_to_bool(it->second.c_str());
     }
     it = pSettings.find("DebugInfo");
     if (it != end)
@@ -986,19 +997,20 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
         it = pSettings.find("InstallDebuginfo");
     if (it != end)
     {
-        m_bInstallDebugInfo = it->second == "yes";
+        m_bInstallDebugInfo = string_to_bool(it->second.c_str());
     }
 }
 
-const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
-{
-    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
-    m_pSettings["DebugInfo"] = m_sDebugInfo;
-    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
-    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
-
-    return m_pSettings;
-}
+//ok to delete?
+//const map_plugin_settings_t& CAnalyzerCCpp::GetSettings()
+//{
+//    m_pSettings["MemoryMap"] = m_bMemoryMap ? "yes" : "no";
+//    m_pSettings["DebugInfo"] = m_sDebugInfo;
+//    m_pSettings["DebugInfoCacheMB"] = to_string(m_nDebugInfoCacheMB);
+//    m_pSettings["InstallDebugInfo"] = m_bInstallDebugInfo ? "yes" : "no";
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(ANALYZER,
             CAnalyzerCCpp,

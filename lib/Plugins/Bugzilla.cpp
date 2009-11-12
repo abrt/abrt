@@ -1,67 +1,23 @@
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 #include "abrtlib.h"
+#include "abrt_xmlrpc.h"
 #include "Bugzilla.h"
 #include "CrashTypes.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 #ifdef HAVE_CONFIG_H
-    #include <config.h>
+# include <config.h>
 #endif
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
 
-static void get_product_and_version(const std::string& pRelease,
-                                          std::string& pProduct,
-                                          std::string& pVersion)
-{
-    if (pRelease.find("Rawhide") != std::string::npos)
-    {
-        pProduct = "Fedora";
-        pVersion = "rawhide";
-        return;
-    }
-    if (pRelease.find("Fedora") != std::string::npos)
-    {
-        pProduct = "Fedora";
-    }
-    else if (pRelease.find("Red Hat Enterprise Linux") != std::string::npos)
-    {
-        pProduct = "Red Hat Enterprise Linux ";
-    }
-    std::string::size_type pos = pRelease.find("release");
-    pos = pRelease.find(" ", pos) + 1;
-    while (pRelease[pos] != ' ')
-    {
-        pVersion += pRelease[pos];
-        if (pProduct == "Red Hat Enterprise Linux ")
-        {
-            pProduct += pRelease[pos];
-        }
-        pos++;
-    }
-}
-
 static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
     pDescription = "abrt detected a crash.\n\n";
     pDescription += make_description_bz(pCrashReport);
-}
-
-// FIXME: we still leak memory if this function detects a fault:
-// many instances when we leave non-freed or non-xmlrpc_DECREF'ed data behind.
-static void throw_if_xml_fault_occurred(xmlrpc_env *env)
-{
-    if (env->fault_occurred)
-    {
-        std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env->fault_string, env->fault_code);
-        xmlrpc_env_clean(env); // this is needed ONLY if fault_occurred
-        xmlrpc_env_init(env); // just in case user catches ex and _continues_ to use env
-        error_msg("%s", errmsg.c_str()); // show error in daemon log
-        throw CABRTException(EXCEP_PLUGIN, errmsg);
-    }
 }
 
 
@@ -72,80 +28,17 @@ static void throw_if_xml_fault_occurred(xmlrpc_env *env)
 
 namespace {
 
-struct ctx {
-	xmlrpc_client* client;
-	xmlrpc_server_info* server_info;
+struct ctx: public abrt_xmlrpc_conn {
+    ctx(const char* url, bool no_ssl_verify): abrt_xmlrpc_conn(url, no_ssl_verify) {}
 
-        ctx(const char* url, bool no_ssl_verify) { new_xmlrpc_client(url, no_ssl_verify); }
-	~ctx() { destroy_xmlrpc_client(); }
-
-	void new_xmlrpc_client(const char* url, bool no_ssl_verify);
-	void destroy_xmlrpc_client();
-
-	void login(const char* login, const char* passwd);
-	void logout();
-	int32_t check_uuid_in_bugzilla(const char* component, const char* UUID);
-	bool check_cc_and_reporter(uint32_t bug_id, const char* login);
-	void add_plus_one_cc(uint32_t bug_id, const char* login);
-	uint32_t new_bug(const map_crash_report_t& pCrashReport);
-	void add_attachments(const char* bug_id_str, const map_crash_report_t& pCrashReport);
+    void login(const char* login, const char* passwd);
+    void logout();
+    int32_t check_uuid_in_bugzilla(const char* component, const char* UUID);
+    bool check_cc_and_reporter(uint32_t bug_id, const char* login);
+    void add_plus_one_cc(uint32_t bug_id, const char* login);
+    uint32_t new_bug(const map_crash_report_t& pCrashReport);
+    void add_attachments(const char* bug_id_str, const map_crash_report_t& pCrashReport);
 };
-
-void ctx::new_xmlrpc_client(const char* url, bool no_ssl_verify)
-{
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-
-    /* This should be done at program startup, once.
-     * We do it in abrtd's main */
-    /* xmlrpc_client_setup_global_const(&env); */
-
-    struct xmlrpc_curl_xportparms curlParms;
-    memset(&curlParms, 0, sizeof(curlParms));
-    /* curlParms.network_interface = NULL; - done by memset */
-    curlParms.no_ssl_verifypeer = no_ssl_verify;
-    curlParms.no_ssl_verifyhost = no_ssl_verify;
-#ifdef VERSION
-    curlParms.user_agent        = PACKAGE_NAME"/"VERSION;
-#else
-    curlParms.user_agent        = "abrt";
-#endif
-
-    struct xmlrpc_clientparms clientParms;
-    memset(&clientParms, 0, sizeof(clientParms));
-    clientParms.transport          = "curl";
-    clientParms.transportparmsP    = &curlParms;
-    clientParms.transportparm_size = XMLRPC_CXPSIZE(user_agent);
-
-    client = NULL;
-    xmlrpc_client_create(&env, XMLRPC_CLIENT_NO_FLAGS,
-                        PACKAGE_NAME, VERSION,
-                        &clientParms, XMLRPC_CPSIZE(transportparm_size),
-                        &client);
-    throw_if_xml_fault_occurred(&env);
-
-    server_info = xmlrpc_server_info_new(&env, url);
-    if (env.fault_occurred)
-    {
-        xmlrpc_client_destroy(client);
-        client = NULL;
-    }
-    throw_if_xml_fault_occurred(&env);
-}
-
-void ctx::destroy_xmlrpc_client()
-{
-    if (server_info)
-    {
-        xmlrpc_server_info_free(server_info);
-        server_info = NULL;
-    }
-    if (client)
-    {
-        xmlrpc_client_destroy(client);
-        client = NULL;
-    }
-}
 
 void ctx::login(const char* login, const char* passwd)
 {
@@ -156,7 +49,7 @@ void ctx::login(const char* login, const char* passwd)
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, client, server_info, "User.login", param, &result);
+    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.login", param, &result);
     xmlrpc_DECREF(param);
     if (result)
         xmlrpc_DECREF(result);
@@ -179,7 +72,7 @@ void ctx::logout()
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, client, server_info, "User.logout", param, &result);
+    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.logout", param, &result);
     xmlrpc_DECREF(param);
     if (result)
         xmlrpc_DECREF(result);
@@ -195,7 +88,7 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, client, server_info, "bugzilla.getBug", param, &result);
+    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.getBug", param, &result);
     throw_if_xml_fault_occurred(&env);
     xmlrpc_DECREF(param);
 
@@ -263,7 +156,7 @@ void ctx::add_plus_one_cc(uint32_t bug_id, const char* login)
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, client, server_info, "Bug.update", param, &result);
+    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.update", param, &result);
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_DECREF(result);
@@ -281,7 +174,7 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, client, server_info, "Bug.search", param, &result);
+    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.search", param, &result);
     throw_if_xml_fault_occurred(&env);
     xmlrpc_DECREF(param);
 
@@ -348,7 +241,7 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
 
     std::string product;
     std::string version;
-    get_product_and_version(release, product, version);
+    parse_release(release.c_str(), product, version);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                                         "product", product.c_str(),
@@ -362,7 +255,7 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result;
-    xmlrpc_client_call2(&env, client, server_info, "Bug.create", param, &result);
+    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.create", param, &result);
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* id;
@@ -409,7 +302,7 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCra
             free(encoded64);
             throw_if_xml_fault_occurred(&env);
 
-            xmlrpc_client_call2(&env, client, server_info, "bugzilla.addAttachment", param, &result);
+            xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.addAttachment", param, &result);
             throw_if_xml_fault_occurred(&env);
             xmlrpc_DECREF(result);
             xmlrpc_DECREF(param);
@@ -444,14 +337,14 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
     std::string BugzillaURL;
     bool NoSSLVerify;
     map_plugin_settings_t settings = parse_settings(pSettings);
-    /* if parse_settings fails it returns an empty map so we need to use defaults*/
-    if(!settings.empty())
+    /* if parse_settings fails it returns an empty map so we need to use defaults */
+    if (!settings.empty())
     {
         Login = settings["Login"];
         Password = settings["Password"];
         BugzillaXMLRPC = settings["BugzillaXMLRPC"];
         BugzillaURL = settings["BugzillaURL"];
-        NoSSLVerify = settings["NoSSLVerify"] == "yes";
+        NoSSLVerify = string_to_bool(settings["NoSSLVerify"].c_str());
     }
     else
     {
@@ -513,9 +406,9 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
 map_plugin_settings_t CReporterBugzilla::parse_settings(const map_plugin_settings_t& pSettings)
 {
     map_plugin_settings_t plugin_settings;
-    map_plugin_settings_t::const_iterator it;
-    map_plugin_settings_t::const_iterator end = pSettings.end();
 
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
     it = pSettings.find("BugzillaURL");
     if (it != end)
     {
@@ -567,6 +460,8 @@ map_plugin_settings_t CReporterBugzilla::parse_settings(const map_plugin_setting
 
 void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    m_pSettings = pSettings;
+
 //BUG! This gets called when user's keyring contains login data,
 //then it takes precedence over /etc/abrt/plugins/Bugzilla.conf.
 //I got a case when keyring had a STALE password, and there was no way
@@ -574,9 +469,8 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 //(by hacking abrt source!), I don't know how to purge it from the keyring.
 //At the very least, log("SOMETHING") here.
 
-    map_plugin_settings_t::const_iterator it;
     map_plugin_settings_t::const_iterator end = pSettings.end();
-
+    map_plugin_settings_t::const_iterator it;
     it = pSettings.find("BugzillaURL");
     if (it != end)
     {
@@ -614,10 +508,11 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("NoSSLVerify");
     if (it != end)
     {
-        m_bNoSSLVerify = (it->second == "yes");
+        m_bNoSSLVerify = string_to_bool(it->second.c_str());
     }
 }
 
+/* Should not be deleted (why?) */
 const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
     m_pSettings["BugzillaURL"] = m_sBugzillaURL;

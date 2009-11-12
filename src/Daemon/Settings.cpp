@@ -132,7 +132,7 @@ static void ParseCommon()
     map_string_t::const_iterator end = s_mapSectionCommon.end();
     if (it != end)
     {
-        g_settings_bOpenGPGCheck = it->second == "yes";
+        g_settings_bOpenGPGCheck = string_to_bool(it->second.c_str());
     }
     it = s_mapSectionCommon.find("OpenGPGPublicKeys");
     if (it != end)

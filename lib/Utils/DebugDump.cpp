@@ -289,6 +289,13 @@ static void DeleteFileDir(const char *pDir)
 
 static bool IsTextFile(const char *name)
 {
+    /* Some files in our dump directories are known to always be textual */
+    if (strcmp(name, "backtrace") == 0
+     || strcmp(name, "cmdline") == 0
+    ) {
+        return true;
+    }
+
 /* This idiotic library thinks that file containing just "0" is not text (!!)
 
     magic_t m = magic_open(MAGIC_MIME_TYPE);
@@ -328,15 +335,22 @@ static bool IsTextFile(const char *name)
     int r = full_read(fd, buf, sizeof(buf));
     close(fd);
 
+    /* Every once in a while, even a text file contains a few garbled
+     * or unexpected non-ASCII chars. We should not declare it "binary".
+     */
+    const unsigned RATIO = 50;
+    unsigned total_chars = r + RATIO;
+    unsigned bad_chars = 1; /* 1 prevents division by 0 later */
     while (--r >= 0)
     {
-        if (buf[r] >= 0x7f)
-            return false;
-        /* Among control chars, only '\t','\n' etc are allowed */
-        if (buf[r] < ' ' && !isspace(buf[r]))
-            return false;
+        if (buf[r] >= 0x7f
+         /* among control chars, only '\t','\n' etc are allowed */
+         || (buf[r] < ' ' && !isspace(buf[r]))
+        ) {
+            bad_chars++;
+        }
     }
-    return true;
+    return (total_chars / bad_chars) >= RATIO;
 }
 
 void CDebugDump::Delete()
@@ -471,7 +485,7 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
     {
         if (is_regular_file(dent, m_sDebugDumpDir.c_str()))
         {
-            std::string fullname = m_sDebugDumpDir + '/' + dent->d_name;
+            std::string fullname = concat_path_file(m_sDebugDumpDir.c_str(), dent->d_name);
 
             pFileName = dent->d_name;
             if (IsTextFile(fullname.c_str()))

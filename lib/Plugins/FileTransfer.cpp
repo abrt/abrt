@@ -370,8 +370,11 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
 
 void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    m_pSettings = pSettings;
+
     map_plugin_settings_t::const_iterator end = pSettings.end();
-    map_plugin_settings_t::const_iterator it = pSettings.find("URL");
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("URL");
     if (it != end)
     {
         m_sURL = it->second;
@@ -405,15 +408,16 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-const map_plugin_settings_t& CFileTransfer::GetSettings()
-{
-    m_pSettings["URL"] = m_sURL;
-    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
-    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
-    m_pSettings["ArchiveType"] = m_sArchiveType;
-
-    return m_pSettings;
-}
+//ok to delete?
+//const map_plugin_settings_t& CFileTransfer::GetSettings()
+//{
+//    m_pSettings["URL"] = m_sURL;
+//    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
+//    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
+//    m_pSettings["ArchiveType"] = m_sArchiveType;
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(ACTION,
             CFileTransfer,

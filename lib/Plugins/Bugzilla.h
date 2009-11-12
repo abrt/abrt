@@ -19,11 +19,13 @@ class CReporterBugzilla : public CReporter
     public:
         CReporterBugzilla();
         virtual ~CReporterBugzilla();
-        virtual void SetSettings(const map_plugin_settings_t& pSettings);
-        virtual const map_plugin_settings_t& GetSettings();
+
         virtual std::string Report(const map_crash_report_t& pCrashReport,
                                    const map_plugin_settings_t& pSettings,
                                    const std::string& pArgs);
+
+        virtual void SetSettings(const map_plugin_settings_t& pSettings);
+        virtual const map_plugin_settings_t& GetSettings();
 };
 
 #endif /* BUGZILLA_H_ */

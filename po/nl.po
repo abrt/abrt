@@ -1,21 +1,25 @@
+# translation of abrt.master.po to Dutch
 # abrt translation to Dutc.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#
+#: ../src/Gui/CCReporterDialog.py:191
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
-#
+# Richard van der Luit <nippur@fedoraproject.org>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt\n"
+"Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-07 09:49+0000\n"
-"PO-Revision-Date: 2009-11-07 15:35+0100\n"
-"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
-"Language-Team: nl <fedora-trans-list@redhat.com>\n"
+"POT-Creation-Date: 2009-11-11 09:31+0000\n"
+"PO-Revision-Date: 2009-11-11 13:12+0100\n"
+"Last-Translator: Richard van der Luit <nippur@fedoraproject.org>\n"
+"Language-Team: Dutch <nl@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding:  \n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -23,8 +27,7 @@ msgstr "Andere client draait al, probeer het te wekken."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
-"Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
+msgstr "Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
 
 #: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
@@ -98,7 +101,7 @@ msgstr "Wacht a.u.b..."
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:3
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
 msgid "Report"
 msgstr "Rapport"
 
@@ -164,8 +167,8 @@ msgid "Date"
 msgstr "Datum"
 
 #: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr "Crash rate"
+msgid "Crash count"
+msgstr "Crash count"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
@@ -230,28 +233,28 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:173
+#: ../src/Gui/CCReporterDialog.py:177
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
-#: ../src/Gui/CCReporterDialog.py:201
+#: ../src/Gui/CCReporterDialog.py:219
 #, python-format
 msgid ""
-"Reporting disabled because the backtrace is unusable!\n"
+"Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command:<span color=\"blue\"> "
 "debuginfo-install %s </span>\n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"Rapportage afgebroken omdat de backtrace onbruikbaar is!\n"
+"Rapportage uitgeschakeld omdat de backtrace onbruikbaar is!\n"
 "Probeer a.u.b. debuginfo handmatig te installeren met: <span color=\"blue\"> "
 "debuginfo-install %s </span>\n"
-"en gebruik dan de Verversen knop om de backtrace "
+"en gebruik dan de Verversen knop om de backtrace te hergenereren."
 
-#: ../src/Gui/CCReporterDialog.py:203
+#: ../src/Gui/CCReporterDialog.py:221
 msgid "The bactrace is unusable, you can't report this!"
 msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
 
-#: ../src/Gui/CCReporterDialog.py:209
+#: ../src/Gui/CCReporterDialog.py:227
 msgid ""
 "The bactrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -259,7 +262,7 @@ msgstr ""
 "De backtrace is niet compleet, wees er zeker van om voor het genereren de "
 "juiste stappen op te volgen."
 
-#: ../src/Gui/CCReporterDialog.py:247
+#: ../src/Gui/CCReporterDialog.py:272
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -300,7 +303,11 @@ msgstr "Kan het niet hard maken!"
 msgid "Comment"
 msgstr "Commentaar"
 
-#: ../src/Gui/report.glade.h:4
+#: ../src/Gui/report.glade.h:3
+msgid "How to reproduce (in a few simple steps)"
+msgstr "Hoe het te herhalen (in een paar simpele stappen)"
+
+#: ../src/Gui/report.glade.h:5
 msgid "Send"
 msgstr "Verzenden"
 
@@ -445,7 +452,7 @@ msgstr "ABRT service draait niet"
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/Daemon/Daemon.cpp:531
+#: ../src/Daemon/Daemon.cpp:520
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -453,37 +460,37 @@ msgstr ""
 "Rapport grootte overschreed quota. Controleer a.u.b. MaxCrashReportsSize "
 "waarde van het systeem in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:316
+#: ../lib/Plugins/Bugzilla.cpp:209
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:378
+#: ../lib/Plugins/Bugzilla.cpp:271
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:471
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:474
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:478
+#: ../lib/Plugins/Bugzilla.cpp:371
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:484
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "Checking CC..."
 msgstr "Controleren van CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:493
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:497
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
@@ -491,31 +498,31 @@ msgstr "Uitloggen..."
 msgid "Getting local universal unique identification"
 msgstr "Verkrijgen van locale universele unieke identificatie"
 
-#: ../lib/Plugins/CCpp.cpp:228
+#: ../lib/Plugins/CCpp.cpp:254
 msgid "Getting backtrace..."
 msgstr "Backtrace ophalen..."
 
-#: ../lib/Plugins/CCpp.cpp:526 ../lib/Plugins/CCpp.cpp:653
+#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
 msgid "Searching for debug-info packages..."
 msgstr "Zoeken naar debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:588 ../lib/Plugins/CCpp.cpp:687
+#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
 msgid "Downloading and installing debug-info packages..."
 msgstr "Downloaden en installeren van debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:792
+#: ../lib/Plugins/CCpp.cpp:818
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:811
+#: ../lib/Plugins/CCpp.cpp:837
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:856
+#: ../lib/Plugins/CCpp.cpp:882
 msgid "Starting report creation..."
 msgstr "Beginnen met rapport aanmaken..."
 
-#: ../lib/Plugins/CCpp.cpp:886
+#: ../lib/Plugins/CCpp.cpp:912
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 
@@ -523,7 +530,7 @@ msgstr "Sla debuginfo installatie over"
 msgid "Creating and submitting a report..."
 msgstr "Aanmaken en indienen van rapport..."
 
-#: ../lib/Plugins/Logger.cpp:57 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
 msgid "Creating a report..."
 msgstr "Rapport aanmaken..."
 
@@ -531,7 +538,7 @@ msgstr "Rapport aanmaken..."
 msgid "Executing RunApp plugin..."
 msgstr "RunApp plugin draaien..."
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:381
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "Bestandsoverdracht: URL niet opgegeven"
 
@@ -575,75 +582,3 @@ msgstr "sosreport draaien: %s"
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
 
-#~ msgid "gtk-refresh"
-#~ msgstr "gtk-refresh"
-
-#~ msgid "Binary file %s will not be reported."
-#~ msgstr "Binair bestand %s wordt niet gerapporteerd."
-
-#~ msgid "Check CC and add coment +1..."
-#~ msgstr "Controleer CC en voeg commentaar toe +1..."
-
-#~ msgid "Creating an archive..."
-#~ msgstr "Aanmaken van een archief..."
-
-#~ msgid "Pending events: %i"
-#~ msgstr "Gebeurtenissen in behandeling: %i"
-
-#~ msgid "Can't create menu from the description, popup won't be available!\n"
-#~ msgstr ""
-#~ "Kan geen menu maken van de beschrijving, pop-up zal niet beschikbaar "
-#~ "zijn!\n"
-
-#~ msgid "Getting local/global universal unique identification..."
-#~ msgstr "Verkrijgen van locale/globale universele unieke identificatie..."
-
-#~ msgid ""
-#~ "Error while opening plugin settings UI: \n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Fout tijdens het openen van plugin instellingen UI: \n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "unknown response from settings dialog"
-#~ msgstr "onbekende reactie van de instellingen dialoog"
-
-#~ msgid "Applet is already running."
-#~ msgstr "Applet draait al."
-
-#~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectCrashHandler"
-#~ msgstr ""
-#~ "Dit is de standaard afhandeling, je moet je eigen registreren bij "
-#~ "ConnectCrashHandler"
-
-#~ msgid ""
-#~ "This is default handler, you should register your own with "
-#~ "ConnectQuotaExceedHandler"
-#~ msgstr ""
-#~ "Dit is de standaard afhandeling, je moet jouw eigen registreren met "
-#~ "ConnectQuotaExceedHandler"
-
-#~ msgid "Out of memory"
-#~ msgstr "Geen geheugen beschikbaar"
-
-#~ msgid "Can't load gui description for SettingsDialog!"
-#~ msgstr "Kan gui beschrijving voor SettingsDialog niet laden!"
-
-#~ msgid "Name"
-#~ msgstr "Naam"
-
-#~ msgid "Enabled"
-#~ msgstr "Aangezet"
-
-#~ msgid "Can't get plugin description"
-#~ msgstr "Kan plugin beschrijving niet krijgen."
-
-#~ msgid "Logging failed, trying to find a bug..."
-#~ msgstr "Inloggen mislukte, probeer het probleem te vinden..."
-
-#~ msgid "Daemon is not running."
-#~ msgstr "Daemon draait niet."

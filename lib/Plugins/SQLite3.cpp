@@ -398,18 +398,24 @@ database_row_t CSQLite3::GetUUIDData(const std::string& pUUID, const std::string
 
 void CSQLite3::SetSettings(const map_plugin_settings_t& pSettings)
 {
-    if (pSettings.find("DBPath") != pSettings.end())
+    m_pSettings = pSettings;
+
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("DBPath");
+    if (it != end)
     {
-        m_sDBPath = pSettings.find("DBPath")->second;
+        m_sDBPath = it->second;
     }
 }
 
-const map_plugin_settings_t& CSQLite3::GetSettings()
-{
-    m_pSettings["DBPath"] = m_sDBPath;
-
-    return m_pSettings;
-}
+//ok to delete?
+//const map_plugin_settings_t& CSQLite3::GetSettings()
+//{
+//    m_pSettings["DBPath"] = m_sDBPath;
+//
+//    return m_pSettings;
+//}
 
 PLUGIN_INFO(DATABASE,
             CSQLite3,

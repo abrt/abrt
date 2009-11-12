@@ -75,7 +75,6 @@ struct line_info {
 int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 {
 	char *c;
-	enum { maybe, no, yes } syslog_format = maybe;
 	int linecount = 0;
 	int lines_info_alloc = 0;
 	struct line_info *lines_info = NULL;
@@ -86,86 +85,73 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 		buffer[buflen - 1] = '\n';  /* the buffer usually ends with \n, but let's make sure */
 	c = buffer;
 	while (c < buffer + buflen) {
-		char v, linelevel;
-		int len = 0;
+		char linelevel;
 		char *c9;
 		char *linepointer;
 
 		c9 = (char*)memchr(c, '\n', buffer + buflen - c); /* a \n will always be found */
 		assert(c9);
-		len = c9 - c;
+		*c9 = '\0'; /* turn the \n into a string termination */
+		if (c9 == c)
+			goto next_line;
 
 		/* in /var/log/messages, we need to strip the first part off, upto the 3rd ':' */
-		if (syslog_format == yes
-		 || (syslog_format == maybe
-		     && len > sizeof("Jul  4 11:11:41")
-		     && c[3] == ' ' && c[6] == ' ' && c[9] == ':' && c[12] == ':'
-		     && (v = (c[5] | c[7]|c[8] | c[10]|c[11] | c[13]|c[14])) <= '9'
-		     && v >= '0'
-		     && (v = (c[5] & c[7]&c[8] & c[10]&c[11] & c[13]&c[14])) <= '9'
-		     && v >= '0'
-		    )
+		/*                     01234567890123456 */
+		if ((c9 - c) > sizeof("Jul  4 11:11:11 ")
+		 && c[3] == ' '
+		 && (c[4] == ' ' || isdigit(c[4]))
+		 && isdigit(c[5])
+		 && c[6] == ' '
+		 && isdigit(c[7])
+		 && isdigit(c[8])
+		 && c[9] == ':'
+		 && isdigit(c[10])
+		 && isdigit(c[11])
+		 && c[12] == ':'
+		 && isdigit(c[13])
+		 && isdigit(c[14])
+		 && c[15] == ' '
 		) {
 			/* It's syslog file, not a bare dmesg */
-			syslog_format = yes;
 
-			char *c2;
-			int i;
+			/* Skip over timestamp */
+			c += 16;
 
-			/* skip non-kernel lines */
-			c2 = (char*)memmem(c, len, "kernel:", 7);
-			if (!c2)
-				c2 = (char*)memmem(c, len, "abrt:", 5);
-			if (!c2)
+			/* Skip non-kernel lines */
+			char *kernel_str = strstr(c, "kernel: ");
+			if (kernel_str == NULL) {
+				/* if we see our own marker:
+				 * "hostname abrt: Kerneloops: Reported 1 kernel oopses to Abrt"
+				 * we know we submitted everything upto here already */
+				if (strstr(c, "abrt:") && strstr(c, "Abrt")) {
+					linecount = 0;
+					lines_info_alloc = 0;
+					free(lines_info);
+					lines_info = NULL;
+				}
 				goto next_line;
-
-			/* skip to message in "Jan 01 01:23:45 hostname kernel: message" */
-			for (i = 0; i < 3; i++) {
-				c = (char*)memchr(c, ':', len);
-				if (!c)
-					goto next_line;
-				c++;
-				len = c9 - c;
 			}
-			c++;
-			len--;
-		} else if (len) {
-			syslog_format = no;
+			c = kernel_str + sizeof("kernel: ")-1;
 		}
 
-		linepointer = c;
 		linelevel = 0;
 		/* store and remove kernel log level */
-		if (len >= 3 && *c == '<' && *(c+2) == '>') {
-			linelevel = *(c+1);
+		if (*c == '<' && c[1] && c[2] == '>') {
+			linelevel = c[1];
 			c += 3;
-			len -= 3;
-			linepointer = c;
 		}
 		/* remove jiffies time stamp counter if present */
 		if (*c == '[') {
 			char *c2, *c3;
-			c2 = (char*)memchr(c, '.', len);
-			c3 = (char*)memchr(c, ']', len);
+			c2 = strchr(c, '.');
+			c3 = strchr(c, ']');
 			if (c2 && c3 && (c2 < c3) && (c3-c) < 14 && (c2-c) < 8) {
 				c = c3 + 1;
 				if (*c == ' ')
 					c++;
-				len = c9 - c;
-				linepointer = c;
 			}
 		}
-
-		assert(c + len == c9);
-		*c9 = '\0'; /* turn the \n into a string termination */
-
-		/* if we see our own marker, we know we submitted everything upto here already */
-		if (len >= 4 && memmem(linepointer, len, "Abrt", 4)) {
-			linecount = 0;
-			lines_info_alloc = 0;
-			free(lines_info);
-			lines_info = NULL;
-		}
+		linepointer = c;
 
 		if (linecount >= lines_info_alloc) {
 			lines_info_alloc += REALLOC_CHUNK;

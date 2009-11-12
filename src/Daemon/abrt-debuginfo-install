@@ -80,22 +80,39 @@ count_words() {
     echo $#
 }
 
-cleanup_and_report_missing() {
-# Which debuginfo files are still missing, including those we just unpacked?
-    missing_build_ids=`for build_id in $build_ids; do
+print_missing_build_ids() {
+    for build_id in $build_ids; do
 	build_id1=${build_id:0:2}
 	build_id2=${build_id:2}
 	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
 	test -f "/$file" && continue
 	test -f "$cachedir/$file" && continue
 	echo -n "$build_id "
-    done`
+    done
+}
+
+print_missing_debuginfos() {
+    for build_id in $build_ids; do
+	build_id1=${build_id:0:2}
+	build_id2=${build_id:2}
+	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+	if test x"$cachedir" != x"" && test x"$cachedir" != x"/" ; then
+	    test -f "$cachedir/$file" && continue
+	fi
+	test -f "/$file" && continue
+	echo -n "/$file "
+    done
+}
+
+cleanup_and_report_missing() {
+# Which debuginfo files are still missing, including those we just unpacked?
+    missing_build_ids=`print_missing_build_ids`
     $debug && echo "missing_build_ids:$missing_build_ids"
 
     # If cachedir is specified, tempdir is just a staging area. Delete it
     if test x"$cachedir" != x""; then
         $debug && echo "Removing $tempdir"
-        rm -rf "$tempdir"
+        $debug || rm -rf "$tempdir"
     fi
 
     for missing in $missing_build_ids; do
@@ -103,6 +120,98 @@ cleanup_and_report_missing() {
     done
 
     test x"$missing_build_ids" != x"" && echo "`count_words $missing_build_ids` debuginfos can't be found"
+}
+
+# $1: iteration (1,2...)
+print_package_names() {
+    # We'll run something like:
+    #   yum --enablerepo='*debuginfo*' --quiet provides \
+    #   /usr/lib/debug/.build-id/bb/11528d59940983f495e9cb099cafb0cb206051.debug \
+    #   /usr/lib/debug/.build-id/c5/b84c0ad3676509dc30bfa7d42191574dac5b06.debug ...
+    local yumopts=""
+    if test x"$1" = x"1"; then
+	yumopts="-C"
+	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list from cache" >&2
+    else
+	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list" >&2
+    fi
+    local cmd="yum $yumopts --enablerepo='*debuginfo*' --quiet provides $missing_debuginfo_files"
+    echo "$cmd" >"yum_provides.$1.OUT"
+    local yum_provides_OUT=`$cmd 2>&1`
+    local err=$?
+    printf "%s\nexitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
+    test $err = 0 || exit 2
+
+    # The output is pretty machine-unfriendly:
+    #   glibc-debuginfo-2.10.90-24.x86_64 : Debug information for package glibc
+    #   Repo        : rawhide-debuginfo
+    #   Matched from:
+    #   Filename    : /usr/lib/debug/.build-id/5b/c784c8d63f87dbdeb747a773940956a18ecd2f.debug
+    #
+    #   1:dbus-debuginfo-1.2.12-2.fc11.x86_64 : Debug information for package dbus
+    #   Repo        : updates-debuginfo
+    #   Matched from:
+    #   Filename    : /usr/lib/debug/.build-id/bc/da7d09eb6c9ee380dae0ed3d591d4311decc31.debug
+    # Need to massage it a lot.
+    # There can be duplicates (one package may provide many debuginfos).
+    printf "%s\n" "$yum_provides_OUT" \
+    | grep -- -debuginfo- \
+    | sed 's/^[0-9]*://' \
+    | sed -e 's/ .*//' -e 's/:.*//' \
+    | sort | uniq | xargs
+}
+
+download_packages() {
+    ## Download with one command (too silent):
+    ## Redirecting, since progress bar stuff only messes up our output
+    ##yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
+    ##err=$?
+    ##echo "exitcode:$err" >>yumdownloader.OUT
+    ##test $err = 0 || exit 2
+    >yumdownloader.OUT
+    i=1
+    for pkg in $packages; do
+	echo "Download $i/$num_packages: $pkg"
+	echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
+	yumdownloader --enablerepo='*debuginfo*' --quiet $pkg >>yumdownloader.OUT 2>&1
+	err=$?
+	echo "exitcode:$err" >>yumdownloader.OUT
+	echo >>yumdownloader.OUT
+	test $err = 0 || { echo "Download of $pkg failed!"; sleep 1; }
+	: $((i++))
+    done
+
+    for f in *.rpm; do
+	# Happens if no .rpm's were downloaded (yumdownloader problem)
+	# In this case, $f is the literal "*.rpm" string
+	test -f "$f" || exit 2
+	echo "Unpacking: $f"
+	echo "Processing: $f" >>unpack.OUT
+	rpm2cpio <"$f" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
+    done
+
+    # Copy debuginfo files to cachedir
+    if test x"$cachedir" != x"" && test -d "$cachedir"; then
+	for build_id in $build_ids; do
+	    build_id1=${build_id:0:2}
+	    build_id2=${build_id:2}
+
+	    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+
+	    test -f "/$file" && continue
+	    test x"$cachedir" != x"/" && test -f "$cachedir/$file" && continue
+
+	    if test -f "$file"; then
+		# file is one of those we just installed.
+		# Cache it if cachedir is specified.
+		mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
+		# Note: this does not preserve symlinks. This is intentional
+		$debug && echo Copying2 "$file" to "$cachedir/$file" >&2
+		cp --remove-destination "$file" "$cachedir/$file"
+		continue
+	    fi
+	done
+    fi
 }
 
 
@@ -138,113 +247,39 @@ build_ids=`printf "%s\n" "$eu_unstrip_OUT" \
 done | sort | uniq | xargs`
 $debug && echo "build_ids:$build_ids"
 
-# Which debuginfo files are missing?
-missing_debuginfo_files=`for build_id in $build_ids; do
-    build_id1=${build_id:0:2}
-    build_id2=${build_id:2}
-    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-    if test x"$cachedir" != x"" && test x"$cachedir" != x"/" ; then
-	test -f "$cachedir/$file" && continue
+# We try to not run yum without -C unless absolutely necessary.
+# Therefore we loop. yum is run by print_package_names function,
+# on first iteration it is run with -C, on second - without,
+# which usually causes yum to download updated filelists,
+# which in turn takes several minutes and annoys users.
+iter=0
+while true; do
+    : $((iter++))
+    test $iter -gt 2 && break
+
+    # Analyze $build_ids and check which debuginfos are present
+    missing_debuginfo_files=`print_missing_debuginfos`
+    $debug && echo "missing_debuginfo_files:$missing_debuginfo_files"
+
+    if test x"$missing_debuginfo_files" = x""; then
+	break
     fi
-    test -f "/$file" && continue
-    echo -n "/$file "
-done`
-$debug && echo "missing_debuginfo_files:$missing_debuginfo_files"
 
-if test x"$missing_debuginfo_files" = x""; then
-    cleanup_and_report_missing
-    exit 0
-fi
+    # Map $missing_debuginfo_files to package names.
+    # yum is run here.
+    packages=`print_package_names $iter`
+    $debug && echo "packages ($iter):$packages"
 
-# We'll run something like:
-#   yum --enablerepo='*debuginfo*' --quiet provides \
-#   /usr/lib/debug/.build-id/bb/11528d59940983f495e9cb099cafb0cb206051.debug \
-#   /usr/lib/debug/.build-id/c5/b84c0ad3676509dc30bfa7d42191574dac5b06.debug ...
-echo "Determining list of packages for `count_words $missing_debuginfo_files` missing debuginfos"
-yum_provides_OUT=`yum --enablerepo='*debuginfo*' --quiet provides $missing_debuginfo_files 2>&1`
-err=$?
-printf "%s\nexitcode:%s\n" "$yum_provides_OUT" $err >yum_provides.OUT
-test $err = 0 || exit 2
+    # yum may return "" here if it found no packages (say, if coredump
+    # is from a new, unreleased package fresh from koji).
+    if test x"$packages" = x""; then
+	continue
+    fi
 
-# The output is pretty machine-unfriendly:
-#   glibc-debuginfo-2.10.90-24.x86_64 : Debug information for package glibc
-#   Repo        : rawhide-debuginfo
-#   Matched from:
-#   Filename    : /usr/lib/debug/.build-id/5b/c784c8d63f87dbdeb747a773940956a18ecd2f.debug
-#
-#   1:dbus-debuginfo-1.2.12-2.fc11.x86_64 : Debug information for package dbus
-#   Repo        : updates-debuginfo
-#   Matched from:
-#   Filename    : /usr/lib/debug/.build-id/bc/da7d09eb6c9ee380dae0ed3d591d4311decc31.debug
-# Need to massage it a lot.
-# There can be duplicates (one package may provide many debuginfos).
-packages=`printf "%s\n" "$yum_provides_OUT" \
-| grep -- -debuginfo- \
-| sed 's/^[0-9]*://' \
-| sed -e 's/ .*//' -e 's/:.*//' \
-| sort | uniq | xargs`
-$debug && echo "packages:$packages"
-
-# yum may return "" here if it found no packages (say, if coredump is from a new,
-# unreleased package fresh from koji).
-if test x"$packages" = x""; then
-    cleanup_and_report_missing
-    exit 1
-fi
-
-num_packages=`count_words $packages`
-echo "Downloading $num_packages packages"
-## Download with one command (too silent):
-## Redirecting, since progress bar stuff only messes up our output
-##yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
-##err=$?
-##echo "exitcode:$err" >>yumdownloader.OUT
-##test $err = 0 || exit 2
->yumdownloader.OUT
-i=1
-for pkg in $packages; do
-    echo "Download $i/$num_packages: $pkg"
-    echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
-    yumdownloader --enablerepo='*debuginfo*' --quiet $pkg >>yumdownloader.OUT 2>&1
-    err=$?
-    echo "exitcode:$err" >>yumdownloader.OUT
-    echo >>yumdownloader.OUT
-    test $err = 0 || { echo "Download of $pkg failed!"; sleep 1; }
-    : $((i++))
+    num_packages=`count_words $packages`
+    echo "Downloading $num_packages packages"
+    download_packages
 done
-
-for f in *.rpm; do
-    # Happens if no .rpm's were downloaded (yumdownloader problem)
-    # In this case, $f is the literal "*.rpm" string
-    test -f "$f" || exit 2
-    echo "Unpacking: $f"
-    echo "Processing: $f" >>unpack.OUT
-    rpm2cpio <"$f" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
-done
-
-# Copy debuginfo files to cachedir
-if test x"$cachedir" != x"" && test -d "$cachedir"; then
-    for build_id in $build_ids; do
-	build_id1=${build_id:0:2}
-	build_id2=${build_id:2}
-
-	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-
-	test -f "/$file" && continue
-	test x"$cachedir" != x"/" && test -f "$cachedir/$file" && continue
-
-	if test -f "$file"; then
-	    # file is one of those we just installed.
-	    # Cache it if cachedir is specified.
-	    mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
-	    # Note: this does not preserve symlinks. This is intentional
-	    $debug && echo Copying2 "$file" to "$cachedir/$file" >&2
-	    cp --remove-destination "$file" "$cachedir/$file"
-	    continue
-	fi
-    done
-fi
-$debug && echo "missing_build_ids:$missing_build_ids"
 
 cleanup_and_report_missing
 

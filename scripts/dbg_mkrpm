@@ -23,5 +23,8 @@ rm -rf "$T" || exit
 
 gzip "abrt-$ABRTVER".tar || exit
 
-
-./dbg_rpmbuildlocal -bb abrt.spec 2>&1 | tee -a "$0.log"
+# Less ugly way to pass exitcode (without bashisms)?
+{ ./dbg_rpmbuildlocal -bb abrt.spec 2>&1; echo $? >"EXITCODE"; } | tee -a "$0.log"
+ret=`cat EXITCODE`
+rm EXITCODE
+exit "$ret"

@@ -42,6 +42,8 @@
 #include <sstream>
 #include <iostream>
 
+#include "abrt_types.h"
+
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
 #if defined(__GLIBC__) && __GLIBC__ < 2
@@ -201,7 +203,6 @@ bool dot_or_dotdot(const char *filename);
 char *last_char_is(const char *s, int c);
 bool string_to_bool(const char *s);
 
-
 /* C++ style stuff */
 
 std::string ssprintf(const char *format, ...);
@@ -216,5 +217,9 @@ to_string(T x)
     o << x;
     return o.str();
 }
+
+std::string popen_and_save_output(const char *cmd);
+void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
+void parse_release(const char *pRelease, std::string& pProduct, std::string& pVersion);
 
 #endif

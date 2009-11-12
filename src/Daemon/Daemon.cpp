@@ -165,18 +165,6 @@ static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL
     return size;
 }
 
-static bool analyzer_has_InformAllUsers(const char *analyzer_name)
-{
-    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
-    if (!analyzer)
-        return false;
-    map_plugin_settings_t settings = analyzer->GetSettings();
-    map_plugin_settings_t::const_iterator it = settings.find("InformAllUsers");
-    if (it == settings.end())
-        return false;
-    return string_to_bool(it->second.c_str());
-}
-
 static void cron_delete_callback_data_cb(gpointer data)
 {
     cron_callback_data_t* cronDeleteCallbackData = static_cast<cron_callback_data_t*>(data);
@@ -388,23 +376,24 @@ static void FindNewDumps(const char* pPath)
             switch (res)
             {
                 case MW_OK:
-                    VERB1 log("Saving into database (%s)", itt->c_str());
+                    VERB1 log("Saving %s into database", itt->c_str());
                     RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
                     break;
                 case MW_IN_DB:
-                    VERB1 log("Already saved in database (%s)", itt->c_str());
+                    VERB1 log("%s is already saved in database", itt->c_str());
                     break;
                 case MW_REPORTED:
                 case MW_OCCURED:
+                    VERB1 log("Already saved crash %s, deleting", itt->c_str());
+                    DeleteDebugDumpDir(itt->c_str());
+                    break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
                 case MW_PACKAGE_ERROR:
                 case MW_GPG_ERROR:
                 case MW_FILE_ERROR:
                 default:
-//Perhaps corrupted & bad needs to be logged unconditionally,
-//already saved one - only on VERB1
-                    VERB1 log("Corrupted, bad or already saved crash, deleting");
+                    log("Corrupted or bad crash %s (res:%d), deleting", itt->c_str(), (int)res);
                     DeleteDebugDumpDir(itt->c_str());
                     break;
             }
@@ -556,7 +545,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                             : crashinfo[CD_UID][CD_CONTENT].c_str();
                         g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
                     }
-                    //DeleteDebugDumpDir(fullname.c_str());
                     break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
@@ -670,29 +658,36 @@ static void start_syslog_logging()
     logmode = LOGMODE_SYSLOG;
 }
 
-static void ensure_root_writable_dir(const char *dir)
+static void ensure_writable_dir(const char *dir, mode_t mode, const char *group)
 {
     struct stat sb;
 
-    if (mkdir(dir, 0755) != 0 && errno != EEXIST)
+    if (mkdir(dir, mode) != 0 && errno != EEXIST)
         perror_msg_and_die("Can't create '%s'", dir);
     if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
         error_msg_and_die("'%s' is not a directory", dir);
-    if ((sb.st_uid != 0 || sb.st_gid != 0) && chown(dir, 0, 0) != 0)
+
+    struct group *gr = getgrnam(group);
+    if (!gr)
+        perror_msg_and_die("Can't find group '%s'", group);
+
+    if ((sb.st_uid != 0 || sb.st_gid != gr->gr_gid) && chown(dir, 0, gr->gr_gid) != 0)
         perror_msg_and_die("Can't set owner 0:0 on '%s'", dir);
-    /* We can't allow anyone to create dumps: otherwise users can flood
-     * us with thousands of bogus or malicious dumps */
-    /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
-    /* 00777 bits are usual "rwxrwxrwx" access rights */
-    if ((sb.st_mode & 07777) != 0755 && chmod(dir, 0755) != 0)
-        perror_msg_and_die("Can't set mode rwxr-xr-x on '%s'", dir);
+    if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
+        perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
 }
 
 static void sanitize_dump_dir_rights()
 {
-    ensure_root_writable_dir(DEBUG_DUMPS_DIR);
-    ensure_root_writable_dir(DEBUG_DUMPS_DIR"-di"); /* debuginfo cache */
-    ensure_root_writable_dir(VAR_RUN"/abrt"); /* temp dir */
+    /* We can't allow anyone to create dumps: otherwise users can flood
+     * us with thousands of bogus or malicious dumps */
+    /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
+    /* 00777 bits are usual "rwxrwxrwx" access rights */
+    ensure_writable_dir(DEBUG_DUMPS_DIR, 0775, "abrt");
+    /* debuginfo cache */
+    ensure_writable_dir(DEBUG_DUMPS_DIR"-di", 0755, "root"); 
+    /* temp dir */
+    ensure_writable_dir(VAR_RUN"/abrt", 0755, "root"); 
 }
 
 int main(int argc, char** argv)
@@ -806,11 +801,6 @@ int main(int argc, char** argv)
         pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
         VERB1 log("Initializing inotify");
-// Enabled again since we have new abrt-pyhook-helper, remove comment when verified to work
-        /* FIXME: python hook runs with ordinary user privileges,
-         * so it fails if everyone doesn't have write acces
-         * to DEBUG_DUMPS_DIR
-         */
         sanitize_dump_dir_rights();
         errno = 0;
         int inotify_fd = inotify_init();
