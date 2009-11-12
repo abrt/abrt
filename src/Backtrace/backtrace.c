@@ -96,6 +96,10 @@ struct thread *thread_add_sibling(struct thread *a, struct thread *b)
   return a;
 }
 
+static void thread_print_tree(struct thread *thread)
+{
+}
+
 struct backtrace *backtrace_new()
 {
   struct backtrace *bt = malloc(sizeof(struct backtrace));
@@ -135,4 +139,10 @@ static int backtrace_get_thread_count(struct backtrace *bt)
 void backtrace_print_tree(struct backtrace *bt)
 {
   printf("Thread count: %d\n", backtrace_get_thread_count(bt));
+  struct thread *thread = bt->threads;
+  while (thread)
+  {
+    thread_print_tree(thread);
+    thread = thread->next;
+  }
 }
