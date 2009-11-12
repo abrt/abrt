@@ -1,6 +1,6 @@
 #include "abrtlib.h"
 
-void parse_args(const char *psArgs, vector_string_t& pArgs, const char quote)
+void parse_args(const char *psArgs, vector_string_t& pArgs, int quote)
 {
     unsigned ii;
     bool is_quote = false;
