@@ -401,7 +401,7 @@ fi
 %defattr(-,root,root,-)
 %attr(2755, root, abrt) %{_bindir}/%{name}-pyhook-helper
 %config(noreplace) %{_sysconfdir}/%{name}/pyhook.conf
-%{python_sitearch}/ABRTUtils.so
+#%{python_sitearch}/ABRTUtils.so
 %{_libdir}/%{name}/libPython.so*
 %{python_site}/*.py*
 
