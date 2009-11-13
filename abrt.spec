@@ -271,7 +271,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
-%dir %attr(1775, root, abrt) /var/cache/%{name}
+%dir %attr(0775, root, abrt) /var/cache/%{name}
 %dir /var/cache/%{name}-di
 %dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
