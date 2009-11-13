@@ -164,21 +164,19 @@ int main(int argc, char** argv)
 
     try
     {
-        char* executable;
-        char* cmdline;
-        executable = get_executable(pid);
-        cmdline = get_cmdline(pid);
-        if (executable == NULL || cmdline == NULL)
+        char* executable = get_executable(pid);
+        if (executable == NULL)
         {
-            error_msg_and_die("can not get proc info for pid %u", (int)pid);
+            error_msg_and_die("can't read /proc/%u/exe link", (int)pid);
         }
         if (strstr(executable, "/abrt"))
         {
             /* free(executable); - why bother? */
-            /* free(cmdline); */
             error_msg_and_die("pid %u is '%s', not dumping it to avoid abrt recursion",
                             (int)pid, executable);
         }
+
+        char* cmdline = get_cmdline(pid); /* never NULL */
 
         char path[PATH_MAX];
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
@@ -205,19 +203,19 @@ int main(int argc, char** argv)
             dd.Close();
             perror_msg_and_die("can't open '%s'", path);
         }
-        if (copyfd_eof(STDIN_FILENO, fd) < 0)
+        off_t size = copyfd_eof(STDIN_FILENO, fd);
+        if (size < 0 || close(fd) != 0)
         {
-            /* close(fd); - why bother? */
+            unlink(path);
             dd.Delete();
             dd.Close();
             /* copyfd_eof logs the error including errno string,
              * but it does not log file name */
             error_msg_and_die("error saving coredump to %s", path);
         }
-        /* close(fd); - why bother? */
-        /* free(executable); */
+        /* free(executable); - why bother? */
         /* free(cmdline); */
-        log("saved core dump of pid %u to %s", (int)pid, path);
+        log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
     }
     catch (CABRTException& e)
     {

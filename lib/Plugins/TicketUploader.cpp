@@ -295,28 +295,47 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
     }
 
     // generate a reciept telling md5sum and encryption key
-    ostringstream msgbuf;
+    // note: do not internationalize these strings!
+    string msg;
     if (have_ticket_name)
-        msgbuf << _("Please copy this into ticket: ") << ticket_name << endl;
+    {
+        msg += "Please copy this into ticket: ";
+        msg += ticket_name;
+        msg += '\n';
+    }
     else
-        msgbuf << _("Please send this to your technical support: ") << endl;
+    {
+        msg += "Please send this to your technical support:\n";
+    }
     if (do_upload)
-        msgbuf << _("RHUPLOAD: This report was sent to ") + upload_url << endl;
+    {
+        msg += "RHUPLOAD: This report was sent to ";
+        msg += upload_url;
+        msg += '\n';
+    }
     else
-        msgbuf << _("RHUPLOAD: This report was copied into /tmp/: ") << endl;
+    {
+        msg += "RHUPLOAD: This report was copied into /tmp/:\n";
+    }
     if (have_ticket_name)
-        msgbuf << _("TICKET: ") << ticket_name << endl;
-    msgbuf << _("FILE: ") << outfile_basename << endl;
-    msgbuf << _("MD5SUM: ") << endl;
-    msgbuf << md5sum;
+    {
+        msg += "TICKET: ";
+        msg += ticket_name;
+        msg += '\n';
+    }
+    msg += "FILE: ";
+    msg += outfile_basename;
+    msg += "\nMD5SUM:\n";
+    msg += md5sum;
     if (do_encrypt)
     {
-        msgbuf << _("KEY: aes-128-cbc") << endl;
-        msgbuf << key;
+        msg += "KEY: aes-128-cbc\n";
+        msg += key;
     }
-    msgbuf << _("END: ") << endl;
+    msg += "END:\n";
 
-    error_msg("%s", msgbuf.str().c_str());
+    /* warn the client: */
+    error_msg("%s", msg.c_str());
 
     string ret;
     if (do_upload)

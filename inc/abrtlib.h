@@ -203,8 +203,6 @@ bool dot_or_dotdot(const char *filename);
 char *last_char_is(const char *s, int c);
 bool string_to_bool(const char *s);
 
-void parse_args(const char *psArgs, vector_string_t& pArgs, const char quote = -1);
-
 /* C++ style stuff */
 
 std::string ssprintf(const char *format, ...);
@@ -220,6 +218,8 @@ to_string(T x)
     return o.str();
 }
 
+std::string popen_and_save_output(const char *cmd);
+void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
 void parse_release(const char *pRelease, std::string& pProduct, std::string& pVersion);
 
 #endif

@@ -4,16 +4,17 @@ lib_LTLIBRARIES = libABRTUtils.la
 # time.cpp
 # xconnect.cpp
 
+# removed: CrashTypesSocket.cpp
 libABRTUtils_la_SOURCES = \
-	stringops.cpp \
+    stringops.cpp \
     xfuncs.cpp \
     encbase64.cpp \
     read_write.cpp \
     logging.cpp \
     copyfd.cpp \
     skip_whitespace.cpp \
+    popen_and_save_output.cpp \
     parse_release.cpp \
-    CrashTypesSocket.cpp \
     DebugDump.h DebugDump.cpp \
     CommLayerInner.h CommLayerInner.cpp \
     abrt_dbus.h abrt_dbus.cpp \

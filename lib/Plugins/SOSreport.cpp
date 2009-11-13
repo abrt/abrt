@@ -18,7 +18,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include <ext/stdio_filebuf.h>
 #include <fstream>
 #include <sstream>
 #include "abrtlib.h"
@@ -56,7 +55,7 @@ static std::string ParseFilename(const std::string& pOutput)
     int filename_start = pOutput.find_first_not_of(" \n\t", p);
     ErrorCheck(p);
 
-    int line_end = pOutput.find_first_of('\n',filename_start);
+    int line_end = pOutput.find_first_of('\n', filename_start);
     ErrorCheck(p);
 
     int filename_end = pOutput.find_last_not_of(" \n\t", line_end);
@@ -90,23 +89,10 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
     }
 
     update_client(_("running sosreport: %s"), command.c_str());
-    FILE *fp = popen(command.c_str(), "r");
-    if (fp == NULL)
-    {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't execute '%s'", command.c_str()));
-    }
-
-//vda TODO: fix this mess
-    std::ostringstream output_stream;
-    __gnu_cxx::stdio_filebuf<char> command_output_buffer(fp, std::ios_base::in);
-
-    output_stream << command << std::endl;
-    output_stream << &command_output_buffer;
-
-    pclose(fp);
+    std::string output = command;
+    output += '\n';
+    output += popen_and_save_output(command.c_str());
     update_client(_("done running sosreport"));
-
-    std::string output = output_stream.str();
 
     std::string sosreport_filename = ParseFilename(output);
     std::string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar.bz2");

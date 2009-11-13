@@ -62,6 +62,8 @@ Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
 Obsoletes: bug-buddy
 Provides: bug-buddy
+#FIXME: upgrade workaround
+Requires: abrt-desktop
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -198,7 +200,8 @@ Summary: Virtual package to install all necessary packages for usage from deskto
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
-Requires: %{name}-gui
+# FIXME: upgrade workaround
+#Requires: %{name}-gui
 Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
 
