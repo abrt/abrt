@@ -217,7 +217,7 @@ PLUGIN_INFO(REPORTER,
             CMailx,
             "Mailx",
             "0.0.2",
-            "Sends an email with a report via mailx command",
+            "Sends an email with a report (via mailx command)",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/Mailx.GTKBuilder");

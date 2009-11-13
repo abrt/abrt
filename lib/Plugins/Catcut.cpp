@@ -573,7 +573,7 @@ PLUGIN_INFO(REPORTER,
             CReporterCatcut,
             "Catcut",
             "0.0.1",
-            "Test plugin to report bugs to catcut and if not, report it.",
+            "Reports bugs to catcut",
             "dvlasenk@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/Catcut.GTKBuilder");

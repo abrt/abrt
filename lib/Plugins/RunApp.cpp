@@ -63,8 +63,7 @@ PLUGIN_INFO(ACTION,
             CActionRunApp,
             "RunApp",
             "0.0.1",
-            "Simple action plugin which runs a command "
-            "and it can save command's output",
+            "Runs a command, saves its output",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

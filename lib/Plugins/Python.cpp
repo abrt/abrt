@@ -51,7 +51,7 @@ PLUGIN_INFO(ANALYZER,
             CAnalyzerPython,
             "Python",
             "0.0.1",
-            "Simple Python analyzer plugin.",
+            "Analyzes crashes in Python programs",
             "zprikryl@redhat.com, jmoskovc@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

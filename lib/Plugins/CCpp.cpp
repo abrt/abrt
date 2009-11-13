@@ -1016,7 +1016,7 @@ PLUGIN_INFO(ANALYZER,
             CAnalyzerCCpp,
             "CCpp",
             "0.0.1",
-            "Simple C/C++ analyzer plugin.",
+            "Analyzes crashes in C/C++ programs",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

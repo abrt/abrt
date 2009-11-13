@@ -67,7 +67,7 @@ PLUGIN_INFO(ANALYZER,
             CAnalyzerKerneloops,
             "Kerneloops",
             "0.0.2",
-            "Abrt's Kerneloops plugin.",
+            "Analyzes kernel oopses",
             "anton@redhat.com",
             "https://people.redhat.com/aarapov",
             "");
