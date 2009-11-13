@@ -2,18 +2,21 @@
 # Copyright (C) 2009 abrt's COPYRIGHT HOLDER
 # This file is distributed under the same license as the abrt package.
 # Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>, 2009.
+#: ../src/Gui/CCReporterDialog.py:191
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-08 20:52+0000\n"
-"PO-Revision-Date: 2009-11-08 23:07+0200\n"
+"POT-Creation-Date: 2009-11-13 15:23+0000\n"
+"PO-Revision-Date: 2009-11-13 20:41+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.4.1\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -96,7 +99,7 @@ msgstr "Odota hetki..."
 msgid "Plugins"
 msgstr "Liitännäiset"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:3
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
 msgid "Report"
 msgstr "Raportti"
 
@@ -161,8 +164,8 @@ msgid "Date"
 msgstr "Päiväys"
 
 #: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr "Kaatumisaste"
+msgid "Crash count"
+msgstr "Kaatumisten määrä"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
@@ -228,15 +231,15 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Raportin noutaminen epäonnistui: %s"
 
-#: ../src/Gui/CCReporterDialog.py:173
+#: ../src/Gui/CCReporterDialog.py:177
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Lyhyt kuvaus siitä, miten tämän pystyy toistamaan tai mitä olit tekemässä..."
 
-#: ../src/Gui/CCReporterDialog.py:201
+#: ../src/Gui/CCReporterDialog.py:219
 #, python-format
 msgid ""
-"Reporting disabled because the backtrace is unusable!\n"
+"Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command:<span color=\"blue\"> "
 "debuginfo-install %s </span>\n"
 "then use Refresh button to regenerate the backtrace."
@@ -248,11 +251,11 @@ msgstr ""
 "Käytä sitten Päivitä-painiketta virheenjäljitystietojen generoimiseksi "
 "uudelleen."
 
-#: ../src/Gui/CCReporterDialog.py:203
+#: ../src/Gui/CCReporterDialog.py:221
 msgid "The bactrace is unusable, you can't report this!"
 msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
 
-#: ../src/Gui/CCReporterDialog.py:209
+#: ../src/Gui/CCReporterDialog.py:227
 msgid ""
 "The bactrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -260,7 +263,7 @@ msgstr ""
 "Virheenjäljitystiedot ovat epätäydelliset, varmista että olet kertonut "
 "tarkat vaiheet virheen toistamiseen."
 
-#: ../src/Gui/CCReporterDialog.py:247
+#: ../src/Gui/CCReporterDialog.py:272
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -301,7 +304,11 @@ msgstr "Graafista käyttöliittymää ei voi näyttää!"
 msgid "Comment"
 msgstr "Kommentti"
 
-#: ../src/Gui/report.glade.h:4
+#: ../src/Gui/report.glade.h:3
+msgid "How to reproduce (in a few simple steps)"
+msgstr "Kuinka tämän voi toistaa (muutamalla helpolla toimenpiteellä)"
+
+#: ../src/Gui/report.glade.h:5
 msgid "Send"
 msgstr "Lähetä"
 
@@ -446,7 +453,7 @@ msgstr "ABRT-palvelu ei ole käytössä"
 msgid "Warning"
 msgstr "Varoitus"
 
-#: ../src/Daemon/Daemon.cpp:531
+#: ../src/Daemon/Daemon.cpp:520
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -454,37 +461,37 @@ msgstr ""
 "Raportin koko ylitti sille annetun rajan. Tarkista järjestelmän "
 "MaxCrashReportsSize-arvo abrt.conf-tiedostossa."
 
-#: ../lib/Plugins/Bugzilla.cpp:316
+#: ../lib/Plugins/Bugzilla.cpp:209
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:378
+#: ../lib/Plugins/Bugzilla.cpp:271
 #, c-format
 msgid "New bug id: %i"
 msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:471
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "Etsitään samanlaisia..."
 
-#: ../lib/Plugins/Bugzilla.cpp:474
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "Kirjaudutaan bugzillaan..."
 
-#: ../lib/Plugins/Bugzilla.cpp:478
+#: ../lib/Plugins/Bugzilla.cpp:371
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Käyttäjätunnus ja salasana ovat tyhjiä. Tarkista Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:484
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "Checking CC..."
 msgstr "Tarkistetaan CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:493
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
-#: ../lib/Plugins/Bugzilla.cpp:497
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "Kirjaudutaan ulos..."
 
@@ -492,31 +499,31 @@ msgstr "Kirjaudutaan ulos..."
 msgid "Getting local universal unique identification"
 msgstr "Haetaan paikallinen ainutkertainen tunnus"
 
-#: ../lib/Plugins/CCpp.cpp:228
+#: ../lib/Plugins/CCpp.cpp:254
 msgid "Getting backtrace..."
 msgstr "Haetaan pinolistausta..."
 
-#: ../lib/Plugins/CCpp.cpp:526 ../lib/Plugins/CCpp.cpp:653
+#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
 msgid "Searching for debug-info packages..."
 msgstr "Etsitään debug-info-paketteja..."
 
-#: ../lib/Plugins/CCpp.cpp:588 ../lib/Plugins/CCpp.cpp:687
+#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
 msgid "Downloading and installing debug-info packages..."
 msgstr "Ladataan ja asennetaan debug-info-paketteja..."
 
-#: ../lib/Plugins/CCpp.cpp:792
+#: ../lib/Plugins/CCpp.cpp:818
 msgid "Getting local universal unique identification..."
 msgstr "Haetaan paikallinen ainutkertainen tunnus..."
 
-#: ../lib/Plugins/CCpp.cpp:811
+#: ../lib/Plugins/CCpp.cpp:837
 msgid "Getting global universal unique identification..."
 msgstr "Haetaan yleinen ainutkertainen tunnus..."
 
-#: ../lib/Plugins/CCpp.cpp:856
+#: ../lib/Plugins/CCpp.cpp:882
 msgid "Starting report creation..."
 msgstr "Aloitetaan ilmoituksen tekeminen..."
 
-#: ../lib/Plugins/CCpp.cpp:886
+#: ../lib/Plugins/CCpp.cpp:912
 msgid "Skipping debuginfo installation"
 msgstr "Ohitetaan debuginfon asennus"
 
@@ -524,15 +531,15 @@ msgstr "Ohitetaan debuginfon asennus"
 msgid "Creating and submitting a report..."
 msgstr "Luodaan ja lähetetään ilmoitus..."
 
-#: ../lib/Plugins/Logger.cpp:57 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "Luodaan ilmoitus..."
 
-#: ../lib/Plugins/RunApp.cpp:64
+#: ../lib/Plugins/RunApp.cpp:35
 msgid "Executing RunApp plugin..."
 msgstr "Suoritetaan RunApp-liitännäinen..."
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:381
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL:ää ei ole määritelty"
 
@@ -559,20 +566,20 @@ msgstr "Ei voitu luoda ja lähettää arkistoa %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "Luodaan kernel oops -kaatumisilmoituksia..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:163
 msgid "Sending an email..."
 msgstr "Lähetetään sähköpostia..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "Suoritetaan SOSreport-liitännäinen..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "suoritetaan sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "sosreportin suoritus valmistui"
 
