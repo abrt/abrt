@@ -43,7 +43,7 @@ class ReporterDialog():
         self.tvComment = self.wTree.get_widget("tvComment")
         self.tvComment.connect("focus-in-event", self.on_comment_focus_cb)
         self.comment_changed = False
-        
+
         # "how to reproduce" textview
         self.tevHowToReproduce = self.wTree.get_widget("tevHowToReproduce")
         self.how_to_changed = False
@@ -229,7 +229,7 @@ class ReporterDialog():
                 else:
                     ebErrors.hide()
                     bSend.set_sensitive(True)
-                
+
             if self.report[item][TYPE] != 's':
                 # item name 0| value 1| editable? 2| toggled? 3| visible?(attachment)4
                 if self.report[item][EDITABLE] == 'y':
