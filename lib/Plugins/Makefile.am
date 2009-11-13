@@ -14,7 +14,8 @@ pluginslib_LTLIBRARIES = \
     libCatcut.la \
     libTicketUploader.la \
     libPython.la \
-    libFileTransfer.la
+    libFileTransfer.la \
+    libFirefox.la
 
 dist_pluginslib_DATA = \
     KerneloopsReporter.GTKBuilder Logger.GTKBuilder \
@@ -53,6 +54,17 @@ libCCpp_la_SOURCES = CCpp.cpp CCpp.h
 libCCpp_la_LDFLAGS = -avoid-version
 libCCpp_la_LIBADD = $(NSS_LIBS)
 libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
+    -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    $(NSS_CFLAGS)
+
+
+# Firefox
+libFirefox_la_SOURCES = Firefox.cpp Firefox.h
+libFirefox_la_LDFLAGS = -avoid-version
+libFirefox_la_LIBADD = $(NSS_LIBS)
+libFirefox_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
     -DCCPP_HOOK_PATH=\"${libexecdir}/hookCCpp\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"' \
