@@ -44,7 +44,7 @@ class CApplet
         CApplet();
         ~CApplet();
         void ShowIcon();
-//        void HideIcon();
+        void HideIcon();
         //void DisableIcon();
 //        void BlinkIcon(bool pBlink);
         void SetIconTooltip(const char *format, ...);

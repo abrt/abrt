@@ -243,10 +243,10 @@ void CApplet::onAbout_cb(GtkMenuItem *menuitem, gpointer dialog)
     gtk_widget_hide(GTK_WIDGET(dialog));
 }
 
-//void CApplet::HideIcon()
-//{
-//    gtk_status_icon_set_visible(m_pStatusIcon, false);
-//}
+void CApplet::HideIcon()
+{
+    gtk_status_icon_set_visible(m_pStatusIcon, false);
+}
 
 void CApplet::Disable(const char *reason)
 {
