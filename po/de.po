@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-30 10:16+0000\n"
-"PO-Revision-Date: 2009-10-30 14:53+0100\n"
+"POT-Creation-Date: 2009-11-14 20:31+0000\n"
+"PO-Revision-Date: 2009-11-15 01:13+0100\n"
 "Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -69,6 +69,7 @@ msgstr ""
 "Fehlt Debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
@@ -106,7 +107,7 @@ msgid "Plugins"
 msgstr "Plugins"
 
 #: ../src/Gui/ccgui.glade.h:10
-#: ../src/Gui/report.glade.h:2
+#: ../src/Gui/report.glade.h:4
 msgid "Report"
 msgstr "Bericht"
 
@@ -158,8 +159,8 @@ msgid "Date"
 msgstr "Datum"
 
 #: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr "Absturzrate"
+msgid "Crash count"
+msgstr "Absturz-Anzahl"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
@@ -224,11 +225,27 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Fehler beim Abrufen des Berichts: %s"
 
-#: ../src/Gui/CCReporterDialog.py:171
+#: ../src/Gui/CCReporterDialog.py:177
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
 
-#: ../src/Gui/CCReporterDialog.py:215
+#: ../src/Gui/CCReporterDialog.py:219
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:221
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "Der Backtrace ist unbrauchbar, Sie können dies nicht melden!"
+
+#: ../src/Gui/CCReporterDialog.py:227
+msgid "The bactrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "Der Backtrace ist unvollständig, bitte stellen  Sie sicher, dass alle Schritt zu reproduzieren vorhanden sind."
+
+#: ../src/Gui/CCReporterDialog.py:272
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -265,22 +282,17 @@ msgstr "Combo-Box ist nicht implementiert"
 msgid "Nothing to hydrate!"
 msgstr "Nichts zum Hydrieren!"
 
-#: ../src/Gui/report.glade.h:1
+#: ../src/Gui/report.glade.h:2
 msgid "Comment"
 msgstr "Kommentar"
 
 #: ../src/Gui/report.glade.h:3
-msgid "Send"
-msgstr "Senden"
-
-#: ../src/Gui/report.glade.h:4
-#: ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
+msgid "How to reproduce (in a few simple steps)"
+msgstr "Wie kann der Fehler wieder erzeugt werden (in einfachen Schritten)"
 
 #: ../src/Gui/report.glade.h:5
-msgid "gtk-refresh"
-msgstr "gtk-refresh"
+msgid "Send"
+msgstr "Senden"
 
 #: ../src/Gui/SettingsDialog.py:33
 #: ../src/Gui/SettingsDialog.py:50
@@ -395,6 +407,10 @@ msgstr "Webseite:"
 msgid "gtk-add"
 msgstr "gtk-add"
 
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
 #: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -403,17 +419,17 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:76
+#: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "In Paket %s wurde ein Absturz entdeckt!"
 
-#: ../src/Applet/Applet.cpp:135
+#: ../src/Applet/Applet.cpp:138
 msgid "ABRT service has been started"
 msgstr "ABRT-Dienst wurde gestartet"
 
-#: ../src/Applet/Applet.cpp:137
-#: ../src/Applet/Applet.cpp:251
+#: ../src/Applet/Applet.cpp:140
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "ABRT-Dienst wird nicht ausgeführt."
 
@@ -421,44 +437,41 @@ msgstr "ABRT-Dienst wird nicht ausgeführt."
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../src/Daemon/Daemon.cpp:543
+#: ../src/Daemon/Daemon.cpp:520
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie Ihren MaxCrashReportsSize-Wert in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:253
-msgid "Bug is already reported: "
-msgstr "Fehler wurde bereits gemeldet:"
-
-#: ../lib/Plugins/Bugzilla.cpp:317
+#: ../lib/Plugins/Bugzilla.cpp:209
 #, c-format
-msgid "Binary file %s will not be reported."
-msgstr "Binärdatei %s wird nicht gemeldet."
+msgid "Bug is already reported: %i"
+msgstr "Fehler wurde bereits gemeldet: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:398
-msgid "New bug id: "
-msgstr "Neue Fehler-ID:"
+#: ../lib/Plugins/Bugzilla.cpp:271
+#, c-format
+msgid "New bug id: %i"
+msgstr "Neue Fehler-ID: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:447
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "Auf Duplikate überprüfen ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:450
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "Bei Bugzilla anmelden ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:454
+#: ../lib/Plugins/Bugzilla.cpp:371
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Leerer Benutzername und Passwort. Bitte überprüfen Sie Bugzilla.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:460
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "Checking CC..."
 msgstr "CC überprüfen ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "Neuen Fehlerbericht erstellen ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:473
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "Abmelden ..."
 
@@ -466,88 +479,97 @@ msgstr "Abmelden ..."
 msgid "Getting local universal unique identification"
 msgstr "Rufe lokale, universelle, eindeutige Identifikation ab"
 
-#: ../lib/Plugins/CCpp.cpp:235
+#: ../lib/Plugins/CCpp.cpp:254
 msgid "Getting backtrace..."
 msgstr "Backtrace abrufen ..."
 
-#: ../lib/Plugins/CCpp.cpp:523
-#: ../lib/Plugins/CCpp.cpp:650
+#: ../lib/Plugins/CCpp.cpp:552
+#: ../lib/Plugins/CCpp.cpp:679
 msgid "Searching for debug-info packages..."
 msgstr "debug-info-Pakete suchen ..."
 
-#: ../lib/Plugins/CCpp.cpp:585
-#: ../lib/Plugins/CCpp.cpp:683
+#: ../lib/Plugins/CCpp.cpp:614
+#: ../lib/Plugins/CCpp.cpp:713
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info-Pakete herunterladen und installieren ..."
 
-#: ../lib/Plugins/CCpp.cpp:725
+#: ../lib/Plugins/CCpp.cpp:818
 msgid "Getting local universal unique identification..."
 msgstr "Lokale, universelle, eindeutige Identifikation abrufen ..."
 
-#: ../lib/Plugins/CCpp.cpp:744
+#: ../lib/Plugins/CCpp.cpp:837
 msgid "Getting global universal unique identification..."
 msgstr "Globale, universelle, eindeutige Identifikation abrufen ..."
 
-#: ../lib/Plugins/CCpp.cpp:789
+#: ../lib/Plugins/CCpp.cpp:882
 msgid "Starting report creation..."
 msgstr "Berichterstellung beginnen ..."
 
-#: ../lib/Plugins/CCpp.cpp:820
+#: ../lib/Plugins/CCpp.cpp:912
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo-Installation wird übersprungen"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
 msgid "Creating and submitting a report..."
 msgstr "Einen Bericht erstellen und einreichen ..."
 
-#: ../lib/Plugins/Logger.cpp:58
-#: ../lib/Plugins/Mailx.cpp:123
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "Einen Bericht erstellen ..."
 
-#: ../lib/Plugins/RunApp.cpp:62
+#: ../lib/Plugins/RunApp.cpp:35
 msgid "Executing RunApp plugin..."
 msgstr "RunApp-Plugin ausführen ..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:408
+#: ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "Dateiübertragung: URL nicht angegeben"
 
-#: ../lib/Plugins/FileTransfer.cpp:80
+#: ../lib/Plugins/FileTransfer.cpp:67
 #, c-format
-msgid "Sending archive %s via %s"
+msgid "Sending archive %s to %s"
 msgstr "Archiv %s via %s senden"
 
-#: ../lib/Plugins/FileTransfer.cpp:335
+#: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
 msgstr "Dateiübertragung: Einen Bericht erstellen ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:357
-#: ../lib/Plugins/FileTransfer.cpp:385
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): Kann kein Archiv erzeugen und senden: "
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Kann kein Archiv erzeugen und senden: %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:81
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Kann kein Archiv erzeugen und senden %s"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
 msgstr "Kernel-Oops-Crash-Berichte erzeugen ..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:163
 msgid "Sending an email..."
 msgstr "Eine E-Mail senden ..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport-Plugin ausführen ..."
 
-#: ../lib/Plugins/SOSreport.cpp:135
-msgid "running sosreport: "
-msgstr "sosreport ausführen: "
+#: ../lib/Plugins/SOSreport.cpp:91
+#, c-format
+msgid "running sosreport: %s"
+msgstr "sosreport ausführen: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:150
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "Ausführung von sosreport abgeschlossen"
 
+#~ msgid "gtk-refresh"
+#~ msgstr "gtk-refresh"
+#~ msgid "Binary file %s will not be reported."
+#~ msgstr "Binärdatei %s wird nicht gemeldet."
 #~ msgid "Check CC and add coment +1..."
 #~ msgstr "CC überprüfen und Kommentar hinzufügen +1 ..."
 #~ msgid "Pending events: %i"
