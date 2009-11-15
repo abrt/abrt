@@ -76,7 +76,6 @@ AC_CONFIG_FILES([
 	lib/Makefile
 	lib/Utils/Makefile
 	lib/Plugins/Makefile
-	lib/Python/Makefile
 	src/Makefile
 	src/Daemon/Makefile
 	src/Hooks/Makefile
