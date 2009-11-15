@@ -22,6 +22,9 @@ pixmap_DATA = abrt.png
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
 
+abrt.desktop:
+	intltool-merge -d ../../po abrt.desktop.in abrt.desktop
+
 install-exec-hook:
 	for b in $(bin_SCRIPTS); do \
 	    sed 's:/usr/share:$(datadir):g' -i $(DESTDIR)$(bindir)/$$b || exit $$?; \
