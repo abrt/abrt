@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-09 23:24+0000\n"
-"PO-Revision-Date: 2009-11-10 00:46-0300\n"
+"POT-Creation-Date: 2009-11-15 20:29+0000\n"
+"PO-Revision-Date: 2009-11-15 19:59-0300\n"
 "Last-Translator: Igor Pires Soares <igor@projetofedora.org>\n"
 "Language-Team: Brazilian Portuguese <fedora-trans-pt_br@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -86,6 +86,7 @@ msgid "About ABRT"
 msgstr "Sobre o ABRT"
 
 #: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Ferramenta para o relato automático de erros"
 
@@ -417,6 +418,10 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Veja e relate travamentos de aplicativos"
+
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
@@ -435,41 +440,41 @@ msgstr "O serviço do ABRT não está em execução"
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:519
+#: ../src/Daemon/Daemon.cpp:520
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "O tamanho do relatório excedeu a cota. Por favor, verifique o valor MaxCrashReportsSize do sistema no abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:240
+#: ../lib/Plugins/Bugzilla.cpp:209
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "O erro já foi relatado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:302
+#: ../lib/Plugins/Bugzilla.cpp:271
 #, c-format
 msgid "New bug id: %i"
 msgstr "Novo id do erro: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:395
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "Verificando duplicatas..."
 
-#: ../lib/Plugins/Bugzilla.cpp:398
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "Autenticando no bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:402
+#: ../lib/Plugins/Bugzilla.cpp:371
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Nome de usuário e senha vazios. Por favor, verifique o Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:408
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "Checking CC..."
 msgstr "Verificando CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:417
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "Criando novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "Encerrando sessão..."
 
@@ -511,17 +516,16 @@ msgstr "Pulando instalação do debuginfo"
 msgid "Creating and submitting a report..."
 msgstr "Criando e enviando um relatório..."
 
-#: ../lib/Plugins/Logger.cpp:57
-#: ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "Criando um relatório..."
 
-#: ../lib/Plugins/RunApp.cpp:64
+#: ../lib/Plugins/RunApp.cpp:35
 msgid "Executing RunApp plugin..."
 msgstr "Executando o plugin RunApp..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:381
+#: ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL não especificada"
 
@@ -548,20 +552,20 @@ msgstr "Não foi possível criar e enviar o pacote %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "Criando relatórios de oops do kernel no travamento..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:163
 msgid "Sending an email..."
 msgstr "Enviando email..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "Executando o plugin SOSreport..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "executando o sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "Execução do sosreport realizada"
 
