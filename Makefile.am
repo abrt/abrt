@@ -1,4 +1,4 @@
-SUBDIRS = lib src inc po
+SUBDIRS = lib src inc po icons
 
 EXTRA_DIST = doc/CodingStyle abrt.spec
 

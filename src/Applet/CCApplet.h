@@ -39,6 +39,22 @@ class CApplet
         NotifyNotification *m_pNotification;
 //        std::map<int, std::string> m_mapEvents;
         bool m_bDaemonRunning;
+        GtkStatusIcon *tray_icon;
+        int animation_stage;
+        guint animator;
+		
+        enum ICON_STAGES
+        {
+            ICON_DEFAULT,
+            ICON_STAGE1,
+            ICON_STAGE2,
+            ICON_STAGE3,
+            ICON_STAGE4,
+            ICON_STAGE5,
+            /* this must be always the last */
+            ICON_STAGE_LAST
+        } icon_stages;
+        GdkPixbuf *icon_stages_buff[ICON_STAGE_LAST];
 
     public:
         CApplet();
@@ -67,6 +83,10 @@ class CApplet
                             gpointer       user_data);
         static void onHide_cb(GtkMenuItem *menuitem, gpointer applet);
         static void onAbout_cb(GtkMenuItem *menuitem, gpointer applet);
+        static gboolean update_icon(void *data);
+        void animate_icon();
+        void stop_animate_icon();
+        void load_icons();
 };
 
 #endif

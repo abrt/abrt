@@ -313,6 +313,7 @@ fi
 %{_datadir}/%{name}
 %{_datadir}/applications/fedora-%{name}.desktop
 %{_datadir}/pixmaps/abrt.png
+%{_datadir}/icons/hicolor/48x48/apps/*.png
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 

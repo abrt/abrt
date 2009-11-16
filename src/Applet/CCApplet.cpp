@@ -108,9 +108,13 @@ You should have received a copy of the GNU General Public License along with thi
 
 CApplet::CApplet()
 {
-    m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
     m_bDaemonRunning = true;
-
+    /* set-up icon buffers */
+    animator = 0;
+    animation_stage = ICON_DEFAULT;
+    load_icons();
+    /* - animation - */
+    m_pStatusIcon = gtk_status_icon_new_from_pixbuf(icon_stages_buff[ICON_DEFAULT]);
     notify_init("ABRT");
     m_pNotification = notify_notification_new_with_status_icon("Warning", NULL, NULL, m_pStatusIcon);
     notify_notification_set_urgency(m_pNotification, NOTIFY_URGENCY_CRITICAL);
@@ -215,18 +219,26 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          activate_time,
                             gpointer       user_data)
 {
-    if (((CApplet *)user_data)->m_pMenu != NULL)
+    CApplet *applet = (CApplet *)user_data;
+    /* stop the animation */
+    applet->stop_animate_icon();
+    gtk_status_icon_set_from_pixbuf(applet->m_pStatusIcon, applet->icon_stages_buff[ICON_DEFAULT]);
+    
+    if (applet->m_pMenu != NULL)
     {
         gtk_menu_popup(GTK_MENU(((CApplet *)user_data)->m_pMenu),
                 NULL, NULL,
                 gtk_status_icon_position_menu,
                 status_icon, button, activate_time);
     }
+    
 }
 
 void CApplet::ShowIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon, true);
+    animate_icon();
+    //gtk_status_icon_set_visible(m_pStatusIcon, true);
     //Active wait for icon to be REALLY visible in status area
     //while(!gtk_status_icon_is_embedded(m_pStatusIcon)) continue;
 }
@@ -246,6 +258,7 @@ void CApplet::onAbout_cb(GtkMenuItem *menuitem, gpointer dialog)
 void CApplet::HideIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon, false);
+    stop_animate_icon();
 }
 
 void CApplet::Disable(const char *reason)
@@ -278,6 +291,52 @@ void CApplet::Enable(const char *reason)
     gtk_status_icon_set_from_stock(m_pStatusIcon, GTK_STOCK_DIALOG_WARNING);
     ShowIcon();
 }
+
+gboolean CApplet::update_icon(void *applet)
+{
+    if(((CApplet*)applet)->m_pStatusIcon && ((CApplet*)applet)->animation_stage < ICON_STAGE_LAST){
+        gtk_status_icon_set_from_pixbuf(((CApplet*)applet)->m_pStatusIcon,
+                                        ((CApplet*)applet)->icon_stages_buff[((CApplet*)applet)->animation_stage++]);
+    }
+    else
+        error_msg("icon is null");
+    if(((CApplet*)applet)->animation_stage == ICON_STAGE_LAST){
+        ((CApplet*)applet)->animation_stage = 0;
+    }
+    return true;
+}
+
+void CApplet::animate_icon()
+{
+    if(animator == 0)
+    {
+        animator = g_timeout_add(100, update_icon, this);
+    }
+}
+
+void CApplet::stop_animate_icon()
+{
+    if(animator != 0){
+        g_source_remove(animator);
+        animator = 0;
+    }
+}
+
+void CApplet::load_icons()
+{
+    int stage = ICON_DEFAULT;
+    for(stage = ICON_DEFAULT; stage < ICON_STAGE_LAST; stage++)
+    {
+        char *name;
+        GError *error = NULL;
+        name = g_strdup_printf(ICON_DIR"/abrt%02d.png", stage);
+        icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
+        if(error != NULL)
+            error_msg("Can't load pixbuf from %s\n", name);
+        g_free(name);
+    }
+}
+
 
 //int CApplet::AddEvent(int pUUID, const std::string& pProgname)
 //{

@@ -84,6 +84,8 @@ AC_CONFIG_FILES([
 	src/CLI/Makefile
 	inc/Makefile
 	po/Makefile.in
+	icons/Makefile
+	icons/48/Makefile
 ])
 
 AC_OUTPUT
