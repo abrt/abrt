@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-13 03:07+0000\n"
-"PO-Revision-Date: 2009-11-13 13:03+0530\n"
+"POT-Creation-Date: 2009-11-16 03:07+0000\n"
+"PO-Revision-Date: 2009-11-16 13:51+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -82,7 +82,7 @@ msgstr "<span color=\"white\">वर्णन</span>"
 msgid "About ABRT"
 msgstr "ABRT विषयी"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "स्वयं बग रिपोर्टींग उपकरन"
 
@@ -242,8 +242,8 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "बॅकट्रेस् अस्थीर असल्यामुळे अहवाल कळवणे असमर्थीत आहे.\n"
-"कृपया आदेश:<span color=\"blue\"> "
-"debuginfo-install %s </span> याचा वापर करून debuginfo स्वतः प्रतिष्ठापीत करण्याचा प्रयत्न करा\n"
+"कृपया आदेश:<span color=\"blue\"> debuginfo-install %s </span> याचा वापर करून "
+"debuginfo स्वतः प्रतिष्ठापीत करण्याचा प्रयत्न करा\n"
 "व त्यानंतर बॅकट्रेस पुनःनिर्माण करण्यासाठी ताजे करा बटणाचा वापर करा."
 
 #: ../src/Gui/CCReporterDialog.py:221
@@ -428,16 +428,16 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "ऍप्लिकेशन क्रॅशचे दृष्य व अहवाल"
+
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "संकुल %s मधील क्रॅश ओळखले गेले आहे"
 
-#: ../src/Applet/Applet.cpp:138
-msgid "ABRT service has been started"
-msgstr "ABRT सेवा सुरू झाली आहे"
-
-#: ../src/Applet/Applet.cpp:140 ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "ABRT सेवा कार्यरत नाही"
 
