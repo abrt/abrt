@@ -113,7 +113,7 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
 
     /* FIXME: starting from here, any shared data must be protected with a mutex.
      * For example, CreateCrashReport does:
-     * g_pPluginManager->GetDatabase(g_settings_sDatabase);
+     * g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
      * which is unsafe wrt concurrent updates to g_pPluginManager state.
      */
     mw_result_t res = CreateCrashReport(pUUID, pUID, force, crashReport);

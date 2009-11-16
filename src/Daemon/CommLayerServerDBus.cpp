@@ -352,7 +352,7 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
     long unix_uid = get_remote_uid(call);
     VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid));
+    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid).c_str());
 
     DBusMessageIter iter;
     dbus_message_iter_init_append(reply, &iter);
