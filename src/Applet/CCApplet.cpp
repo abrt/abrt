@@ -110,11 +110,18 @@ CApplet::CApplet()
 {
     m_bDaemonRunning = true;
     /* set-up icon buffers */
-    animator = 0;
-    animation_stage = ICON_DEFAULT;
-    load_icons();
+    m_iAnimator = 0;
+    m_iAnimationStage = ICON_DEFAULT;
+    m_bIconsLoaded = load_icons();
     /* - animation - */
-    m_pStatusIcon = gtk_status_icon_new_from_pixbuf(icon_stages_buff[ICON_DEFAULT]);
+    if(m_bIconsLoaded == true)
+    {
+        m_pStatusIcon = gtk_status_icon_new_from_pixbuf(icon_stages_buff[ICON_DEFAULT]);
+    }
+    else
+    {
+        m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
+    }
     notify_init("ABRT");
     m_pNotification = notify_notification_new_with_status_icon("Warning", NULL, NULL, m_pStatusIcon);
     notify_notification_set_urgency(m_pNotification, NOTIFY_URGENCY_CRITICAL);
@@ -190,7 +197,7 @@ void CApplet::CrashNotify(const char *format, ...)
     if (gtk_status_icon_is_embedded(m_pStatusIcon))
         notify_notification_show(m_pNotification, &err);
     if (err != NULL)
-        g_print(err->message);
+        error_msg(err->message);
 }
 
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data)
@@ -222,7 +229,6 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
     CApplet *applet = (CApplet *)user_data;
     /* stop the animation */
     applet->stop_animate_icon();
-    gtk_status_icon_set_from_pixbuf(applet->m_pStatusIcon, applet->icon_stages_buff[ICON_DEFAULT]);
     
     if (applet->m_pMenu != NULL)
     {
@@ -237,10 +243,9 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
 void CApplet::ShowIcon()
 {
     gtk_status_icon_set_visible(m_pStatusIcon, true);
-    animate_icon();
-    //gtk_status_icon_set_visible(m_pStatusIcon, true);
-    //Active wait for icon to be REALLY visible in status area
-    //while(!gtk_status_icon_is_embedded(m_pStatusIcon)) continue;
+    /* only animate if all icons are loaded, use the "gtk-warning" instead */
+    if(m_bIconsLoaded)
+        animate_icon();
 }
 
 void CApplet::onHide_cb(GtkMenuItem *menuitem, gpointer applet)
@@ -292,49 +297,55 @@ void CApplet::Enable(const char *reason)
     ShowIcon();
 }
 
-gboolean CApplet::update_icon(void *applet)
+gboolean CApplet::update_icon(void *user_data)
 {
-    if(((CApplet*)applet)->m_pStatusIcon && ((CApplet*)applet)->animation_stage < ICON_STAGE_LAST){
-        gtk_status_icon_set_from_pixbuf(((CApplet*)applet)->m_pStatusIcon,
-                                        ((CApplet*)applet)->icon_stages_buff[((CApplet*)applet)->animation_stage++]);
+    CApplet* applet = (CApplet*)user_data;
+    if(applet->m_pStatusIcon && applet->m_iAnimationStage < ICON_STAGE_LAST){
+        gtk_status_icon_set_from_pixbuf(applet->m_pStatusIcon,
+                                        applet->icon_stages_buff[applet->m_iAnimationStage++]);
     }
     else
         error_msg("icon is null");
-    if(((CApplet*)applet)->animation_stage == ICON_STAGE_LAST){
-        ((CApplet*)applet)->animation_stage = 0;
+    if(applet->m_iAnimationStage == ICON_STAGE_LAST){
+        applet->m_iAnimationStage = 0;
     }
     return true;
 }
 
 void CApplet::animate_icon()
 {
-    if(animator == 0)
+    if(m_iAnimator == 0)
     {
-        animator = g_timeout_add(100, update_icon, this);
+        m_iAnimator = g_timeout_add(100, update_icon, this);
     }
 }
 
 void CApplet::stop_animate_icon()
 {
-    if(animator != 0){
-        g_source_remove(animator);
-        animator = 0;
+    /* animator should be 0 if icons are not loaded, so this should be safe */
+    if(m_iAnimator != 0){
+        g_source_remove(m_iAnimator);
+        gtk_status_icon_set_from_pixbuf(m_pStatusIcon, icon_stages_buff[ICON_DEFAULT]);
+        m_iAnimator = 0;
     }
 }
 
-void CApplet::load_icons()
+bool CApplet::load_icons()
 {
-    int stage = ICON_DEFAULT;
+    int stage;
     for(stage = ICON_DEFAULT; stage < ICON_STAGE_LAST; stage++)
     {
-        char *name;
+        char name[sizeof(ICON_DIR"/abrt%02d.png")];
         GError *error = NULL;
-        name = g_strdup_printf(ICON_DIR"/abrt%02d.png", stage);
-        icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
-        if(error != NULL)
-            error_msg("Can't load pixbuf from %s\n", name);
-        g_free(name);
+        if(snprintf(name, sizeof(ICON_DIR"/abrt%02d.png"),ICON_DIR"/abrt%02d.png", stage) > 0){
+            icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
+            if(error != NULL){
+                error_msg("Can't load pixbuf from %s, animation is disabled!", name);
+                return false;
+            }
+        }
     }
+    return true;
 }
 
 

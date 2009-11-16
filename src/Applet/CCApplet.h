@@ -39,9 +39,9 @@ class CApplet
         NotifyNotification *m_pNotification;
 //        std::map<int, std::string> m_mapEvents;
         bool m_bDaemonRunning;
-        GtkStatusIcon *tray_icon;
-        int animation_stage;
-        guint animator;
+        int m_iAnimationStage;
+        guint m_iAnimator;
+        bool m_bIconsLoaded;
 		
         enum ICON_STAGES
         {
@@ -86,7 +86,7 @@ class CApplet
         static gboolean update_icon(void *data);
         void animate_icon();
         void stop_animate_icon();
-        void load_icons();
+        bool load_icons();
 };
 
 #endif
