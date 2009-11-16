@@ -228,6 +228,7 @@ static void ParseAnalyzerActionsAndReporters()
         set_string_t::iterator it_keys = keys.begin();
         for (; it_keys != keys.end(); it_keys++)
         {
+            VERB2 log("AnalyzerActionsAndReporters['%s']=...", it_keys->c_str());
             g_settings_mapAnalyzerActionsAndReporters[*it_keys] = actionsAndReporters;
         }
     }

@@ -107,14 +107,19 @@ The key dbus calls served by abrt-process are:
 	Development plan
 
 Since current code does not match the planned design, we need to gradually
-change the code to "morph" it into the desired shape. Planned steps:
+change the code to "morph" it into the desired shape.
+
+Done:
+
+* Make abrtd dbus startable.
+* Add -t TIMEOUT_SEC option to abrtd. {done}
+* Make abrt-gui start abrtd on demand, so that abrt-gui can be started
+  even if abrtd does not run at the moment.
+
+Planned steps:
 
 * make kerneloops plugin into separate daemon (convert it to a hook
   and get rid of "cron plugins" which are wrong idea since the begining)
-* Make abrtd dbus startable
-* Make abrt-gui start abrtd on demand, so that abrt-gui can be started
-  even if abrtd does not run at the moment.
-* Add -t TIMEOUT_SEC option to abrtd.
 * ???
 * ???
 * ???

@@ -278,17 +278,21 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
     {
         try
         {
-            if (g_pPluginManager->GetPluginType(it_ar->first) == REPORTER)
+            VERB3 log("RunActionsAndReporters: checking %s", it_ar->first.c_str());
+            plugin_type_t tp = g_pPluginManager->GetPluginType(it_ar->first);
+            if (tp == REPORTER)
             {
                 CReporter* reporter = g_pPluginManager->GetReporter(it_ar->first);
 
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
+                VERB2 log("%s.Report(...)", it_ar->first.c_str());
                 reporter->Report(crashReport, plugin_settings, it_ar->second);
             }
-            else if (g_pPluginManager->GetPluginType(it_ar->first) == ACTION)
+            else if (tp == ACTION)
             {
                 CAction* action = g_pPluginManager->GetAction(it_ar->first);
+                VERB2 log("%s.Run('%s','%s')", it_ar->first.c_str(), pDebugDumpDir, it_ar->second.c_str());
                 action->Run(pDebugDumpDir, it_ar->second.c_str());
             }
         }
@@ -375,18 +379,22 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
         }
     }
 
-    // analyzer with package name (CCpp:xrog-x11-app) has higher priority
+    // analyzer with package name (CCpp:xorg-x11-app) has higher priority
     std::string key = analyzer + ":" + packageName;
+    map_analyzer_actions_and_reporters_t::iterator end = s_mapAnalyzerActionsAndReporters.end();
     map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
-    if (keyPtr == s_mapAnalyzerActionsAndReporters.end())
+    if (keyPtr == end)
     {
         // if there is no such settings, then try default analyzer
         keyPtr = s_mapAnalyzerActionsAndReporters.find(analyzer);
+        key = analyzer;
     }
 
     std::string message;
-    if (keyPtr != s_mapAnalyzerActionsAndReporters.end())
+    if (keyPtr != end)
     {
+        VERB2 log("Found AnalyzerActionsAndReporters for '%s'", key.c_str());
+
         vector_pair_string_string_t::iterator it_r = keyPtr->second.begin();
         for (; it_r != keyPtr->second.end(); it_r++)
         {
@@ -433,7 +441,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
             {
                 ret[pluginName].push_back("0");
                 ret[pluginName].push_back(e.what());
-                update_client("Reporting via  %s' was not successful: %s", pluginName.c_str(), e.what());
+                update_client("Reporting via '%s' was not successful: %s", pluginName.c_str(), e.what());
             }
         }
     }
@@ -764,7 +772,7 @@ vector_pair_string_string_t GetUUIDsOfCrash(const char *pUID)
     database->DisConnect();
 
     vector_pair_string_string_t UUIDsUIDs;
-    int ii;
+    unsigned ii;
     for (ii = 0; ii < rows.size(); ii++)
     {
         UUIDsUIDs.push_back(make_pair(rows[ii].m_sUUID, rows[ii].m_sUID));
@@ -783,5 +791,6 @@ void AddAnalyzerActionOrReporter(const char *pAnalyzer,
 void AddActionOrReporter(const char *pActionOrReporter,
                                       const char *pArgs)
 {
+    VERB3 log("AddActionOrReporter('%s','%s')", pActionOrReporter, pArgs);
     s_vectorActionsAndReporters.push_back(make_pair(std::string(pActionOrReporter), std::string(pArgs)));
 }
