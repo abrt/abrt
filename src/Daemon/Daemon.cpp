@@ -223,7 +223,7 @@ static void SetUpMW()
     set_string_t::iterator it_p = g_settings_setEnabledPlugins.begin();
     for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
     {
-        g_pPluginManager->RegisterPlugin(*it_p);
+        g_pPluginManager->RegisterPlugin(it_p->c_str());
     }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();

@@ -30,7 +30,7 @@
 /**
  * Text representation of plugin types.
  */
-static const char* const plugin_type_str[] = {
+static const char *const plugin_type_str[] = {
     "Analyzer",
     "Action",
     "Reporter",
@@ -38,61 +38,60 @@ static const char* const plugin_type_str[] = {
 };
 
 
-bool LoadPluginSettings(const std::string& pPath, map_plugin_settings_t& pSettings)
+bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings)
 {
     std::ifstream fIn;
-    fIn.open(pPath.c_str());
-    if (fIn.is_open())
-    {
-        std::string line;
-        while (!fIn.eof())
-        {
-            getline(fIn, line);
+    fIn.open(pPath);
+    if (!fIn.is_open())
+        return false;
 
-            int ii;
-            bool is_value = false;
-            bool valid = false;
-            bool in_quote = false;
-            std::string key = "";
-            std::string value = "";
-            for (ii = 0; ii < line.length(); ii++)
+    std::string line;
+    while (!fIn.eof())
+    {
+        getline(fIn, line);
+
+        int ii;
+        bool is_value = false;
+        bool valid = false;
+        bool in_quote = false;
+        std::string key;
+        std::string value;
+        for (ii = 0; ii < line.length(); ii++)
+        {
+            if (line[ii] == '\"')
             {
-                if (line[ii] == '\"')
-                {
-                    in_quote = in_quote == true ? false : true;
-                }
-                if (isspace(line[ii]) && !in_quote)
-                {
-                    continue;
-                }
-                if (line[ii] == '#' && !in_quote && key == "")
-                {
-                    break;
-                }
-                if (line[ii] == '=' && !in_quote)
-                {
-                    is_value = true;
-                    continue;
-                }
-                if (!is_value)
-                {
-                    key += line[ii];
-                }
-                else
-                {
-                    valid = true;
-                    value += line[ii];
-                }
+                in_quote = in_quote == true ? false : true;
             }
-            if (valid && !in_quote)
+            if (isspace(line[ii]) && !in_quote)
             {
-                pSettings[key] = value;
+                continue;
+            }
+            if (line[ii] == '#' && !in_quote && key == "")
+            {
+                break;
+            }
+            if (line[ii] == '=' && !in_quote)
+            {
+                is_value = true;
+                continue;
+            }
+            if (!is_value)
+            {
+                key += line[ii];
+            }
+            else
+            {
+                valid = true;
+                value += line[ii];
             }
         }
-        fIn.close();
-        return true;
+        if (valid && !in_quote)
+        {
+            pSettings[key] = value;
+        }
     }
-    return false;
+    fIn.close();
+    return true;
 }
 
 /**
@@ -101,9 +100,9 @@ bool LoadPluginSettings(const std::string& pPath, map_plugin_settings_t& pSettin
  * @param settings Plugin's settings.
  * @return if it success it returns true, otherwise it returns false.
  */
-static bool SavePluginSettings(const std::string& pPath, const map_plugin_settings_t& pSettings)
+static bool SavePluginSettings(const char *pPath, const map_plugin_settings_t& pSettings)
 {
-    FILE* fOut = fopen(pPath.c_str(), "w");
+    FILE* fOut = fopen(pPath, "w");
     if (fOut)
     {
         fprintf(fOut, "# Settings were written by abrt\n");
@@ -141,7 +140,7 @@ void CPluginManager::LoadPlugins()
                 {
                     name.erase(0, sizeof(PLUGINS_LIB_PREFIX) - 1);
                     name.erase(name.length() - sizeof(PLUGINS_LIB_EXTENSION));
-                    LoadPlugin(name);
+                    LoadPlugin(name.c_str());
                 }
             }
         }
@@ -151,40 +150,39 @@ void CPluginManager::LoadPlugins()
 
 void CPluginManager::UnLoadPlugins()
 {
-    map_abrt_plugins_t::iterator it_p;
-    while ((it_p = m_mapABRTPlugins.begin()) != m_mapABRTPlugins.end())
+    map_abrt_plugins_t::iterator it_p = m_mapABRTPlugins.begin();
+    while (it_p != m_mapABRTPlugins.end())
     {
-        std::string pluginName = it_p->first;
-        UnLoadPlugin(pluginName);
+        UnLoadPlugin(it_p->first.c_str());
     }
 }
 
-void CPluginManager::LoadPlugin(const std::string& pName)
+void CPluginManager::LoadPlugin(const char *pName)
 {
     if (m_mapABRTPlugins.find(pName) == m_mapABRTPlugins.end())
     {
         CABRTPlugin* abrtPlugin = NULL;
         try
         {
-            std::string libPath = PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX + pName + "."PLUGINS_LIB_EXTENSION;
+            std::string libPath = ssprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
             abrtPlugin = new CABRTPlugin(libPath.c_str());
             if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER ||
                 (abrtPlugin->GetType() < ANALYZER && abrtPlugin->GetType() > DATABASE))
             {
                 throw CABRTException(EXCEP_PLUGIN, "CPluginManager::LoadPlugin(): non-compatible plugin");
             }
-            log("Plugin %s (%s) succesfully loaded", pName.c_str(), abrtPlugin->GetVersion());
+            log("Plugin %s (%s) succesfully loaded", pName, abrtPlugin->GetVersion());
             m_mapABRTPlugins[pName] = abrtPlugin;
         }
         catch (CABRTException& e)
         {
             delete abrtPlugin;
-            error_msg("Failed to load plugin %s: %s", pName.c_str(), e.what());
+            error_msg("Failed to load plugin %s: %s", pName, e.what());
         }
     }
 }
 
-void CPluginManager::UnLoadPlugin(const std::string& pName)
+void CPluginManager::UnLoadPlugin(const char *pName)
 {
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
     if (abrt_plugin != m_mapABRTPlugins.end())
@@ -192,11 +190,11 @@ void CPluginManager::UnLoadPlugin(const std::string& pName)
         UnRegisterPlugin(pName);
         delete abrt_plugin->second;
         m_mapABRTPlugins.erase(abrt_plugin);
-        log("Plugin %s successfully unloaded", pName.c_str());
+        log("Plugin %s successfully unloaded", pName);
     }
 }
 
-void CPluginManager::RegisterPlugin(const std::string& pName)
+void CPluginManager::RegisterPlugin(const char *pName)
 {
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
     if (abrt_plugin != m_mapABRTPlugins.end())
@@ -206,7 +204,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             CPlugin* plugin = abrt_plugin->second->PluginNew();
             map_plugin_settings_t pluginSettings;
 
-            LoadPluginSettings(PLUGINS_CONF_DIR"/" + pName + "."PLUGINS_CONF_EXTENSION, pluginSettings);
+            LoadPluginSettings(ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, pName).c_str(), pluginSettings);
             try
             {
                 plugin->Init();
@@ -215,7 +213,7 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
             catch (CABRTException& e)
             {
                 log("Can't initialize plugin %s(%s): %s",
-                        pName.c_str(),
+                        pName,
                         plugin_type_str[abrt_plugin->second->GetType()],
                         e.what()
                 );
@@ -223,13 +221,12 @@ void CPluginManager::RegisterPlugin(const std::string& pName)
                 return;
             }
             m_mapPlugins[pName] = plugin;
-            log("Registered plugin %s(%s)", pName.c_str(), plugin_type_str[abrt_plugin->second->GetType()]);
+            log("Registered plugin %s(%s)", pName, plugin_type_str[abrt_plugin->second->GetType()]);
         }
     }
 }
 
-void CPluginManager::RegisterPluginDBUS(const std::string& pName,
-                     const char * pDBUSSender)
+void CPluginManager::RegisterPluginDBUS(const char *pName, const char *pDBUSSender)
 {
     int polkit_result = polkit_check_authorization(pDBUSSender,
                            "org.fedoraproject.abrt.change-daemon-settings");
@@ -242,7 +239,7 @@ void CPluginManager::RegisterPluginDBUS(const std::string& pName,
     }
 }
 
-void CPluginManager::UnRegisterPlugin(const std::string& pName)
+void CPluginManager::UnRegisterPlugin(const char *pName)
 {
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
     if (abrt_plugin != m_mapABRTPlugins.end())
@@ -253,13 +250,12 @@ void CPluginManager::UnRegisterPlugin(const std::string& pName)
             plugin->second->DeInit();
             delete plugin->second;
             m_mapPlugins.erase(plugin);
-            log("UnRegistered plugin %s(%s)", pName.c_str(), plugin_type_str[abrt_plugin->second->GetType()]);
+            log("UnRegistered plugin %s(%s)", pName, plugin_type_str[abrt_plugin->second->GetType()]);
         }
     }
 }
 
-void CPluginManager::UnRegisterPluginDBUS(const std::string& pName,
-                     const char * pDBUSSender)
+void CPluginManager::UnRegisterPluginDBUS(const char *pName, const char *pDBUSSender)
 {
     int polkit_result = polkit_check_authorization(pDBUSSender,
                            "org.fedoraproject.abrt.change-daemon-settings");
@@ -273,68 +269,68 @@ void CPluginManager::UnRegisterPluginDBUS(const std::string& pName,
 }
 
 
-CAnalyzer* CPluginManager::GetAnalyzer(const std::string& pName)
+CAnalyzer* CPluginManager::GetAnalyzer(const char *pName)
 {
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not registered");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
     }
     if (m_mapABRTPlugins[pName]->GetType() != ANALYZER)
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not an analyzer plugin");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not an analyzer plugin", pName));
     }
     return (CAnalyzer*)(plugin->second);
 }
 
-CReporter* CPluginManager::GetReporter(const std::string& pName)
+CReporter* CPluginManager::GetReporter(const char *pName)
 {
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not registered");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
     }
     if (m_mapABRTPlugins[pName]->GetType() != REPORTER)
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not a reporter plugin");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not a reporter plugin", pName));
     }
     return (CReporter*)(plugin->second);
 }
 
-CAction* CPluginManager::GetAction(const std::string& pName)
+CAction* CPluginManager::GetAction(const char *pName)
 {
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not registered");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
     }
     if (m_mapABRTPlugins[pName]->GetType() != ACTION)
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not an action plugin");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not an action plugin", pName));
     }
     return (CAction*)(plugin->second);
 }
 
-CDatabase* CPluginManager::GetDatabase(const std::string& pName)
+CDatabase* CPluginManager::GetDatabase(const char *pName)
 {
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not registered");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
     }
     if (m_mapABRTPlugins[pName]->GetType() != DATABASE)
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not a database plugin");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not a database plugin", pName));
     }
     return (CDatabase*)(plugin->second);
 }
 
-plugin_type_t CPluginManager::GetPluginType(const std::string& pName)
+plugin_type_t CPluginManager::GetPluginType(const char *pName)
 {
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, "Plugin '"+pName+"' is not registered");
+        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
     }
     return m_mapABRTPlugins[pName]->GetType();
 }
@@ -361,8 +357,8 @@ vector_map_string_t CPluginManager::GetPluginsInfo()
     return ret;
 }
 
-void CPluginManager::SetPluginSettings(const std::string& pName,
-                                       const std::string& pUID,
+void CPluginManager::SetPluginSettings(const char *pName,
+                                       const char *pUID,
                                        const map_plugin_settings_t& pSettings)
 {
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
@@ -435,8 +431,8 @@ void CPluginManager::SetPluginSettings(const std::string& pName,
 #endif
 }
 
-map_plugin_settings_t CPluginManager::GetPluginSettings(const std::string& pName,
-                                                        const std::string& pUID)
+map_plugin_settings_t CPluginManager::GetPluginSettings(const char *pName,
+                                                        const char *pUID)
 {
     map_plugin_settings_t ret;
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);

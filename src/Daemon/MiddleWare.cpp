@@ -184,7 +184,7 @@ mw_result_t CreateCrashReport(const char *pUUID,
     database_row_t row;
     if (pUUID[0] != '\0')
     {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
         database->Connect();
         row = database->GetUUIDData(pUUID, pUID);
         database->DisConnect();
@@ -279,10 +279,10 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
         try
         {
             VERB3 log("RunActionsAndReporters: checking %s", it_ar->first.c_str());
-            plugin_type_t tp = g_pPluginManager->GetPluginType(it_ar->first);
+            plugin_type_t tp = g_pPluginManager->GetPluginType(it_ar->first.c_str());
             if (tp == REPORTER)
             {
-                CReporter* reporter = g_pPluginManager->GetReporter(it_ar->first);
+                CReporter* reporter = g_pPluginManager->GetReporter(it_ar->first.c_str());
 
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
@@ -291,7 +291,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
             }
             else if (tp == ACTION)
             {
-                CAction* action = g_pPluginManager->GetAction(it_ar->first);
+                CAction* action = g_pPluginManager->GetAction(it_ar->first.c_str());
                 VERB2 log("%s.Run('%s','%s')", it_ar->first.c_str(), pDebugDumpDir, it_ar->second.c_str());
                 action->Run(pDebugDumpDir, it_ar->second.c_str());
             }
@@ -401,9 +401,9 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
             std::string pluginName = it_r->first;
             try
             {
-                if (g_pPluginManager->GetPluginType(pluginName) == REPORTER)
+                if (g_pPluginManager->GetPluginType(pluginName.c_str()) == REPORTER)
                 {
-                    CReporter* reporter = g_pPluginManager->GetReporter(pluginName);
+                    CReporter* reporter = g_pPluginManager->GetReporter(pluginName.c_str());
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
                     std::string home = "";
                     map_plugin_settings_t oldSettings;
@@ -446,7 +446,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
         }
     }
 
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     database->SetReported(UUID, UID, message);
     database->DisConnect();
@@ -464,7 +464,7 @@ void DeleteDebugDumpDir(const char *pDebugDumpDir)
 std::string DeleteCrashInfo(const char *pUUID,
                                          const char *pUID)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->Delete(pUUID, pUID);
@@ -484,7 +484,7 @@ std::string DeleteCrashInfo(const char *pUUID,
 static bool IsDebugDumpSaved(const char *pUID,
                                    const char *pDebugDumpDir)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     vector_database_rows_t rows = database->GetUIDData(pUID);
     database->DisConnect();
@@ -612,9 +612,9 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
             std::string pluginName = it_a->first;
             try
             {
-                if (g_pPluginManager->GetPluginType(pluginName) == ACTION)
+                if (g_pPluginManager->GetPluginType(pluginName.c_str()) == ACTION)
                 {
-                    CAction* action = g_pPluginManager->GetAction(pluginName);
+                    CAction* action = g_pPluginManager->GetAction(pluginName.c_str());
                     action->Run(pDebugDumpDir, it_a->second.c_str());
                 }
             }
@@ -643,7 +643,7 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
                                                               const char *pDebugDumpDir,
                                                               map_crash_info_t& pCrashInfo)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
     database_row_t row = database->GetUUIDData(pUUID, pUID);
@@ -665,7 +665,7 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
 std::string getDebugDumpDir(const char *pUUID,
                              const char *pUID)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
@@ -720,7 +720,7 @@ mw_result_t GetCrashInfo(const char *pUUID,
                 map_crash_info_t& pCrashInfo)
 {
     pCrashInfo.clear();
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     database_row_t row = database->GetUUIDData(pUUID, pUID);
     database->DisConnect();
@@ -765,7 +765,7 @@ mw_result_t GetCrashInfo(const char *pUUID,
 
 vector_pair_string_string_t GetUUIDsOfCrash(const char *pUID)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     vector_database_rows_t rows;
     database->Connect();
     rows = database->GetUIDData(pUID);
