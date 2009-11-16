@@ -25,6 +25,7 @@ BuildRequires: gettext
 BuildRequires: nss-devel
 BuildRequires: polkit-devel
 BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
+BuildRequires: intltool
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Prereq: /usr/sbin/groupadd 
@@ -80,16 +81,16 @@ Requires: %{name} = %{version}-%{release}
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
 analyzer plugin.
 
-%package plugin-firefox
-Summary: %{name}'s Firefox analyzer plugin
-Group: System Environment/Libraries
-Requires: gdb >= 7.0-3
-Requires: elfutils
-Requires: yum-utils
-Requires: %{name} = %{version}-%{release}
+#%package plugin-firefox
+#Summary: %{name}'s Firefox analyzer plugin
+#Group: System Environment/Libraries
+#Requires: gdb >= 7.0-3
+#Requires: elfutils
+#Requires: yum-utils
+#Requires: %{name} = %{version}-%{release}
 
-%description plugin-firefox
-This package contains hook for Firefox
+#%description plugin-firefox
+#This package contains hook for Firefox
 
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
@@ -215,7 +216,7 @@ Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
 #Requires: %{name}-gui
 Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
-Requires: %{name}-plugin-firefox
+#Requires: %{name}-plugin-firefox
 
 %description desktop
 Virtual package to make easy default instalation on desktop environments.
@@ -323,8 +324,8 @@ fi
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/hookCCpp
 
-%files plugin-firefox
-%{_libdir}/%{name}/libFirefox.so*
+#%files plugin-firefox
+#%{_libdir}/%{name}/libFirefox.so*
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
