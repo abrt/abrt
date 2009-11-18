@@ -251,7 +251,7 @@ static int rate_backtrace(const char *backtrace)
     return 0;
 }
 
-static void GetBacktrace(const char *pDebugDumpDir, string& pBacktrace)
+static void GetBacktrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
 
@@ -277,7 +277,7 @@ static void GetBacktrace(const char *pDebugDumpDir, string& pBacktrace)
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
     string dfd = "set debug-file-directory /usr/lib/debug";
-    const char *p = m_sDebugInfoDirs.c_str();
+    const char *p = pDebugInfoDirs;
     while (1)
     {
         const char *colon_or_nul = strchrnul(p, ':');
@@ -286,9 +286,9 @@ static void GetBacktrace(const char *pDebugDumpDir, string& pBacktrace)
         dfd += "/usr/lib/debug";
         if (*colon_or_nul != ':')
             break;
-        p = colon + 1;
+        p = colon_or_nul + 1;
     }
-    args[3] = (char*)dfd.c_str()
+    args[3] = (char*)dfd.c_str();
 
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
@@ -932,7 +932,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         VERB1 log(_("Skipping debuginfo installation"));
     }
 
-    GetBacktrace(pDebugDumpDir, backtrace);
+    GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace);
 
     dd.Open(pDebugDumpDir);
     dd.SaveText(FILENAME_BACKTRACE, (build_ids + backtrace).c_str());
