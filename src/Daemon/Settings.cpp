@@ -118,7 +118,7 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
         }
         if (pValue[ii] == ')' && is_arg)
         {
-	    VERB3 log(" adding (%s,%s)", action.c_str(), item.c_str());
+            VERB3 log(" adding (%s,%s)", action.c_str(), item.c_str());
             pluginsWithArgs.push_back(make_pair(action, item));
             item = "";
             is_arg = false;
@@ -129,7 +129,7 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
         {
             if (item != "")
             {
-	        VERB3 log(" adding (%s,%s)", item.c_str(), "");
+                VERB3 log(" adding (%s,%s)", item.c_str(), "");
                 pluginsWithArgs.push_back(make_pair(item, ""));
                 item = "";
             }
@@ -139,7 +139,7 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
     }
     if (item != "")
     {
-	VERB3 log(" adding (%s,%s)", item.c_str(), "");
+        VERB3 log(" adding (%s,%s)", item.c_str(), "");
         pluginsWithArgs.push_back(make_pair(item, ""));
     }
     return pluginsWithArgs;

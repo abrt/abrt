@@ -201,7 +201,7 @@ int main(int argc, char** argv)
         default:
             error_msg_and_die(
                 "Usage: abrt-applet [-v]\n"
-        	"\nOptions:"
+                "\nOptions:"
                 "\n\t-v\tVerbose"
             );
         }

@@ -75,7 +75,7 @@ string make_description_bz(const map_crash_report_t& pCrashReport)
              && filename != FILENAME_RELEASE
              && filename != CD_REPRODUCE
              && filename != CD_COMMENT
-	    ) {
+            ) {
                 add_content(was_multiline, description, filename.c_str(), content.c_str());
             }
         }

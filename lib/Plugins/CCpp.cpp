@@ -903,7 +903,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 
     std::string build_ids;
     if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str()))) {
-	if (m_nDebugInfoCacheMB > 0)
+        if (m_nDebugInfoCacheMB > 0)
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
         InstallDebugInfos(pDebugDumpDir, build_ids);
     }

@@ -229,7 +229,7 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
     CApplet *applet = (CApplet *)user_data;
     /* stop the animation */
     applet->stop_animate_icon();
-    
+
     if (applet->m_pMenu != NULL)
     {
         gtk_menu_popup(GTK_MENU(((CApplet *)user_data)->m_pMenu),
@@ -237,7 +237,6 @@ void CApplet::OnMenuPopup_cb(GtkStatusIcon *status_icon,
                 gtk_status_icon_position_menu,
                 status_icon, button, activate_time);
     }
-    
 }
 
 void CApplet::ShowIcon()
