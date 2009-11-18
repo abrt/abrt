@@ -275,7 +275,7 @@ class ReporterDialog():
                                         "Do you really want to send <b>%s</b>?\n" % rowe["item"]), self.window)
                 if result == gtk.RESPONSE_NO:
                     row[attributes.index("send")] = False
-                if result == (gtk.RESPONSE_CANCEL or gtk.RESPONSE_DELETE_EVENT):
+                if result in (gtk.RESPONSE_CANCEL, gtk.RESPONSE_DELETE_EVENT):
                     return False
         self.dehydrate()
         return True
