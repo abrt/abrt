@@ -150,10 +150,10 @@ void CPluginManager::LoadPlugins()
 
 void CPluginManager::UnLoadPlugins()
 {
-    map_abrt_plugins_t::iterator it_p = m_mapABRTPlugins.begin();
-    while (it_p != m_mapABRTPlugins.end())
+    map_abrt_plugins_t::iterator it;
+    while ((it = m_mapABRTPlugins.begin()) != m_mapABRTPlugins.end())
     {
-        UnLoadPlugin(it_p->first.c_str());
+        UnLoadPlugin(it->first.c_str());
     }
 }
 
