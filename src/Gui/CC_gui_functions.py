@@ -143,7 +143,7 @@ def gui_question_dialog ( message, parent_dialog=None,
                                gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT,
                                message_type, gtk.BUTTONS_YES_NO,
                                message )
-
+    dialog.add_button("gtk-cancel", gtk.RESPONSE_CANCEL)
     dialog.set_markup(message)
     if parent_dialog:
         dialog.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
