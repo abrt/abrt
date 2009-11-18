@@ -33,7 +33,7 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
                  "-----\n" +
                  pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
     }
-    pDescription = "\nabrt detected a crash.\n" +
+    pDescription = "\nabrt "VERSION" detected a crash.\n" +
                    howToReproduce +
                    comment +
                    "\n\nAdditional information\n"

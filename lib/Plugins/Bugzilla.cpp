@@ -16,7 +16,7 @@
 
 static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
-    pDescription = "abrt detected a crash.\n\n";
+    pDescription = "abrt "VERSION" detected a crash.\n\n";
     pDescription += make_description_bz(pCrashReport);
 }
 
