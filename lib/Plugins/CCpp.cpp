@@ -50,7 +50,7 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
     m_nDebugInfoCacheMB(4000)
 {}
 
-static string CreateHash(const string& pInput)
+static string CreateHash(const char *pInput)
 {
     string ret;
     HASHContext* hc;
@@ -63,7 +63,7 @@ static string CreateHash(const string& pInput)
         error_msg_and_die("HASH_Create(HASH_AlgSHA1) failed"); /* paranoia */
     }
     HASH_Begin(hc);
-    HASH_Update(hc, reinterpret_cast<const unsigned char*>(pInput.c_str()), pInput.length());
+    HASH_Update(hc, (const unsigned char*)pInput, strlen(pInput));
     HASH_End(hc, hash, &len, sizeof(hash));
     HASH_Destroy(hc);
 
@@ -312,7 +312,7 @@ static void GetBacktrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, 
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
 }
 
-static string GetIndependentBacktrace(const string& pBacktrace)
+static string GetIndependentBacktrace(const char *pBacktrace)
 {
     string header;
     bool in_bracket = false;
@@ -345,7 +345,7 @@ static string GetIndependentBacktrace(const string& pBacktrace)
             seconds = 1260
             ok = true
     */
-    const char *bk = pBacktrace.c_str();
+    const char *bk = pBacktrace;
     while (*bk)
     {
         if (bk[0] == '#'
@@ -433,33 +433,29 @@ static string GetIndependentBacktrace(const string& pBacktrace)
     return pIndependentBacktrace;
 }
 
-static void GetIndependentBuildIdPC(const string& pBuildIdPC, string& pIndependentBuildIdPC)
+static void GetIndependentBuildIdPC(const char *unstrip_n_output, string& pIndependentBuildIdPC)
 {
-    int ii = 0;
-    while (ii < pBuildIdPC.length())
+    // lines look like this:
+    // 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
+    // 0x400000+0x209000 ab3c8286aac6c043fd1bb1cc2a0b88ec29517d3e@0x40024c /bin/sleep /usr/lib/debug/bin/sleep.debug [exe]
+    // 0x7fff313ff000+0x1000 389c7475e3d5401c55953a425a2042ef62c4c7df@0x7fff313ff2f8 . - linux-vdso.so.1
+    const char *line = unstrip_n_output;
+    while (*line)
     {
-        string line;
-        int jj = 0;
-
-        while (pBuildIdPC[ii] != '\n' && ii < pBuildIdPC.length())
+        const char *eol = strchrnul(line, '\n');
+        const char *plus = (char*)memchr(line, '+', eol - line);
+        if (plus)
         {
-            line += pBuildIdPC[ii];
-            ii++;
-        }
-        while (line[jj] != '+' && jj < line.length())
-        {
-            jj++;
-        }
-        jj++;
-        while (line[jj] != '@' && jj < line.length())
-        {
-            if (!isspace(line[jj]))
+            while (++plus < eol && *plus != '@')
             {
-                pIndependentBuildIdPC += line[jj];
+                if (!isspace(*plus))
+                {
+                    pIndependentBuildIdPC += *plus;
+                }
             }
-            jj++;
         }
-        ii++;
+        if (*eol != '\n') break;
+        line = eol + 1;
     }
 }
 
@@ -843,10 +839,10 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
         dd.LoadText(FILENAME_PACKAGE, package);
     }
 
-    string buildIdPC = run_unstrip_n(pDebugDumpDir);
+    string unstrip_n_output = run_unstrip_n(pDebugDumpDir);
     string independentBuildIdPC;
-    GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
-    return CreateHash(package + executable + independentBuildIdPC);
+    GetIndependentBuildIdPC(unstrip_n_output.c_str(), independentBuildIdPC);
+    return CreateHash((package + executable + independentBuildIdPC).c_str());
 }
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
@@ -863,8 +859,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
     }
-    string independentBacktrace = GetIndependentBacktrace(backtrace);
-    return CreateHash(package + executable + independentBacktrace);
+    string independentBacktrace = GetIndependentBacktrace(backtrace.c_str());
+    return CreateHash((package + executable + independentBacktrace).c_str());
 }
 
 static bool DebuginfoCheckPolkit(int uid)
