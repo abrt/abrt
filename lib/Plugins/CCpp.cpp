@@ -33,6 +33,8 @@
 #include "CommLayerInner.h"
 #include "Polkit.h"
 
+using namespace std;
+
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
 
@@ -48,9 +50,9 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
     m_nDebugInfoCacheMB(4000)
 {}
 
-static std::string CreateHash(const std::string& pInput)
+static string CreateHash(const string& pInput)
 {
-    std::string ret = "";
+    string ret;
     HASHContext* hc;
     unsigned char hash[SHA1_LENGTH];
     unsigned int len;
@@ -80,9 +82,9 @@ static std::string CreateHash(const std::string& pInput)
     return hash_str;
 }
 
-static std::string concat_str_vector(char **strings)
+static string concat_str_vector(char **strings)
 {
-    std::string result;
+    string result;
     while (*strings)
     {
         result += *strings++;
@@ -92,7 +94,7 @@ static std::string concat_str_vector(char **strings)
     return result;
 }
 
-static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
+static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
 {
     int pipeout[2];
     pid_t child;
@@ -100,7 +102,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     struct passwd* pw = getpwuid(uid);
     if (!pw)
     {
-        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
+        throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot get GID for UID.");
     }
 
     xpipe(pipeout);
@@ -217,7 +219,7 @@ static int rate_backtrace(const char *backtrace)
     {
         if (backtrace[i] == '#') /* this separates frames from each other */
         {
-            std::string s(backtrace + i + 1, len);
+            string s(backtrace + i + 1, len);
             for (j=0; j<len; j++) /* replace tabs with spaces */
                 if (s[j] == '\t')
                     s[j] = ' ';
@@ -249,12 +251,12 @@ static int rate_backtrace(const char *backtrace)
     return 0;
 }
 
-static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
+static void GetBacktrace(const char *pDebugDumpDir, string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
 
-    std::string UID;
-    std::string executable;
+    string UID;
+    string executable;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -270,10 +272,24 @@ static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
     char* args[11];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
+
     // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
-    args[3] = (char*)"set debug-file-directory /usr/lib/debug:" DEBUGINFO_CACHE_DIR"/usr/lib/debug";
+    string dfd = "set debug-file-directory /usr/lib/debug";
+    const char *p = m_sDebugInfoDirs.c_str();
+    while (1)
+    {
+        const char *colon_or_nul = strchrnul(p, ':');
+        dfd += ':';
+        dfd.append(p, colon_or_nul - p);
+        dfd += "/usr/lib/debug";
+        if (*colon_or_nul != ':')
+            break;
+        p = colon + 1;
+    }
+    args[3] = (char*)dfd.c_str()
+
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -282,22 +298,23 @@ static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
      */
     args[4] = (char*)"-ex";
-    args[5] = xasprintf("file %s", executable.c_str());
+    string file = ssprintf("file %s", executable.c_str());
+    args[5] = (char*)file.c_str();
+
     args[6] = (char*)"-ex";
-    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
+    string corefile = ssprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
+    args[7] = (char*)corefile.c_str();
+
     args[8] = (char*)"-ex";
     args[9] = (char*)"thread apply all backtrace full";
     args[10] = NULL;
 
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
-
-    free(args[5]);
-    free(args[7]);
 }
 
-static std::string GetIndependentBacktrace(const std::string& pBacktrace)
+static string GetIndependentBacktrace(const string& pBacktrace)
 {
-    std::string header;
+    string header;
     bool in_bracket = false;
     bool in_quote = false;
     bool in_header = false;
@@ -305,7 +322,7 @@ static std::string GetIndependentBacktrace(const std::string& pBacktrace)
     bool has_at = false;
     bool has_filename = false;
     bool has_bracket = false;
-    std::set<std::string> set_headers;
+    set<string> set_headers;
 
     /* Backtrace example:
     #0  0x00007f047e21af70 in __nanosleep_nocancel () from /lib64/libc-2.10.1.so
@@ -348,11 +365,11 @@ static std::string GetIndependentBacktrace(const std::string& pBacktrace)
             {
                 in_digit = true;
             }
-            else if (bk[0] == '\\' && bk[1] == '\"')
+            else if (bk[0] == '\\' && bk[1] == '"')
             {
                 bk++;
             }
-            else if (*bk == '\"')
+            else if (*bk == '"')
             {
                 in_quote = in_quote == true ? false : true;
             }
@@ -406,8 +423,8 @@ static std::string GetIndependentBacktrace(const std::string& pBacktrace)
         bk++;
     }
 
-    std::string pIndependentBacktrace;
-    std::set<std::string>::iterator it = set_headers.begin();
+    string pIndependentBacktrace;
+    set<string>::iterator it = set_headers.begin();
     for (; it != set_headers.end(); it++)
     {
         pIndependentBacktrace += *it;
@@ -416,12 +433,12 @@ static std::string GetIndependentBacktrace(const std::string& pBacktrace)
     return pIndependentBacktrace;
 }
 
-static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
+static void GetIndependentBuildIdPC(const string& pBuildIdPC, string& pIndependentBuildIdPC)
 {
     int ii = 0;
     while (ii < pBuildIdPC.length())
     {
-        std::string line;
+        string line;
         int jj = 0;
 
         while (pBuildIdPC[ii] != '\n' && ii < pBuildIdPC.length())
@@ -446,9 +463,9 @@ static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& 
     }
 }
 
-static std::string run_unstrip_n(const char *pDebugDumpDir)
+static string run_unstrip_n(const char *pDebugDumpDir)
 {
-    std::string UID;
+    string UID;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -461,7 +478,7 @@ static std::string run_unstrip_n(const char *pDebugDumpDir)
     args[2] = (char*)"-n";
     args[3] = NULL;
 
-    std::string output;
+    string output;
     ExecVP(args, atoi(UID.c_str()), output);
 
     free(args[1]);
@@ -481,10 +498,10 @@ static bool is_hexstr(const char* str)
     }
     return true;
 }
-static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_dirs, string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");
-    std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
+    string unstrip_list = run_unstrip_n(pDebugDumpDir);
 
     log("Builting list of missing debuginfos");
     // lines look like this:
@@ -542,7 +559,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     }
     //missing vector is unused for now, but TODO: use it to install only needed debuginfos
 
-    std::string package;
+    string package;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -629,7 +646,7 @@ Another application is holding the yum lock, cannot continue
     bool already_installed = false;
 #endif
     char buff[1024];
-    std::string packageName = package.substr(0, package.rfind("-", package.rfind("-")-1));
+    string packageName = package.substr(0, package.rfind("-", package.rfind("-")-1));
     while (fgets(buff, sizeof(buff), pipeout_fp))
     {
         int last = strlen(buff) - 1;
@@ -662,7 +679,7 @@ Another application is holding the yum lock, cannot continue
             fclose(pipeout_fp);
             kill(child, SIGTERM);
             wait(NULL);
-            throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
+            throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot install debuginfos for " + pPackage);
         }
 #endif
     }
@@ -674,7 +691,7 @@ Another application is holding the yum lock, cannot continue
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
  */
-static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_dirs, string& build_ids)
 {
     update_client(_("Searching for debug-info packages..."));
 
@@ -703,8 +720,8 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
-        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR);
-        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR, NULL);
+        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
+        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
         exit(1);
     }
 
@@ -750,7 +767,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     wait(NULL);
 }
 
-static double get_dir_size(const char *dirname, std::string *worst_file, double *maxsz)
+static double get_dir_size(const char *dirname, string *worst_file, double *maxsz)
 {
     DIR *dp = opendir(dirname);
     if (dp == NULL)
@@ -763,7 +780,7 @@ static double get_dir_size(const char *dirname, std::string *worst_file, double 
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
-        std::string dname = concat_path_file(dirname, ep->d_name);
+        string dname = concat_path_file(dirname, ep->d_name);
         if (lstat(dname.c_str(), &stats) != 0)
             continue;
         if (S_ISDIR(stats.st_mode))
@@ -801,7 +818,7 @@ static void trim_debuginfo_cache(unsigned max_mb)
 {
     while (1)
     {
-        std::string worst_file;
+        string worst_file;
         double maxsz = 0;
         double cache_sz = get_dir_size(DEBUGINFO_CACHE_DIR, &worst_file, &maxsz);
         if (cache_sz / (1024 * 1024) < max_mb)
@@ -813,12 +830,12 @@ static void trim_debuginfo_cache(unsigned max_mb)
     }
 }
 
-std::string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
+string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting local universal unique identification..."));
 
-    std::string executable;
-    std::string package;
+    string executable;
+    string package;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -826,19 +843,19 @@ std::string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
         dd.LoadText(FILENAME_PACKAGE, package);
     }
 
-    std::string buildIdPC = run_unstrip_n(pDebugDumpDir);
-    std::string independentBuildIdPC;
+    string buildIdPC = run_unstrip_n(pDebugDumpDir);
+    string independentBuildIdPC;
     GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
     return CreateHash(package + executable + independentBuildIdPC);
 }
 
-std::string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
+string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
-    std::string backtrace;
-    std::string executable;
-    std::string package;
+    string backtrace;
+    string executable;
+    string package;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -846,7 +863,7 @@ std::string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
     }
-    std::string independentBacktrace = GetIndependentBacktrace(backtrace);
+    string independentBacktrace = GetIndependentBacktrace(backtrace);
     return CreateHash(package + executable + independentBacktrace);
 }
 
@@ -881,9 +898,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
     update_client(_("Starting report creation..."));
 
-    std::string package;
-    std::string backtrace;
-    std::string UID;
+    string package;
+    string backtrace;
+    string UID;
 
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
@@ -901,11 +918,14 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.LoadText(FILENAME_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
-    std::string build_ids;
-    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str()))) {
+    string build_ids;
+    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str())))
+    {
         if (m_nDebugInfoCacheMB > 0)
+        {
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
-        InstallDebugInfos(pDebugDumpDir, build_ids);
+        }
+        InstallDebugInfos(pDebugDumpDir, m_sDebugInfoDirs.c_str(), build_ids);
     }
     else
     {
@@ -926,7 +946,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 
 void CAnalyzerCCpp::Init()
 {
-    std::ifstream fInCorePattern;
+    ifstream fInCorePattern;
     fInCorePattern.open(CORE_PATTERN_IFACE);
     if (fInCorePattern.is_open())
     {
@@ -951,22 +971,22 @@ void CAnalyzerCCpp::Init()
         }
     }
 
-    std::ofstream fOutCorePattern;
+    ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);
     if (fOutCorePattern.is_open())
     {
-        fOutCorePattern << CORE_PATTERN << std::endl;
+        fOutCorePattern << CORE_PATTERN << endl;
         fOutCorePattern.close();
     }
 }
 
 void CAnalyzerCCpp::DeInit()
 {
-    std::ofstream fOutCorePattern;
+    ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);
     if (fOutCorePattern.is_open())
     {
-        fOutCorePattern << m_sOldCorePattern << std::endl;
+        fOutCorePattern << m_sOldCorePattern << endl;
         fOutCorePattern.close();
     }
 }
@@ -998,6 +1018,13 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     if (it != end)
     {
         m_bInstallDebugInfo = string_to_bool(it->second.c_str());
+    }
+    m_sDebugInfoDirs = DEBUGINFO_CACHE_DIR;
+    it = pSettings.find("ReadonlyLocalDebugInfoDirs");
+    if (it != end)
+    {
+        m_sDebugInfoDirs += ':';
+        m_sDebugInfoDirs += it->second;
     }
 }
 

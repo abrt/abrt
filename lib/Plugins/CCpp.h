@@ -35,6 +35,7 @@ class CAnalyzerCCpp : public CAnalyzer
         unsigned m_nDebugInfoCacheMB;
         std::string m_sOldCorePattern;
         std::string m_sDebugInfo;
+        std::string m_sDebugInfoDirs;
 
     public:
         CAnalyzerCCpp();
