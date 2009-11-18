@@ -72,7 +72,7 @@ void update_client(const char *fmt, ...)
     int used = vasprintf(&msg, fmt, p);
     va_end(p);
     if (used < 0)
-	return;
+        return;
 
     s_pObs->Status(msg, peer, key);
 }

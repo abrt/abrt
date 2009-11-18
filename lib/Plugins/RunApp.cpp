@@ -52,6 +52,7 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
      */
 //Can do it using chdir() in child if we'd open-code popen
     string cd_and_cmd = ssprintf("cd '%s'; %s", pActionDir, cmd);
+    VERB1 log("RunApp: executing '%s'", cd_and_cmd.c_str());
     FILE *fp = popen(cd_and_cmd.c_str(), "r");
     if (fp == NULL)
     {
@@ -65,7 +66,8 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
     char line[1024];
     while (fgets(line, 1024, fp) != NULL)
     {
-        output += line;
+        if (args.size() > FILENAME)
+            output += line;
     }
     pclose(fp);
 

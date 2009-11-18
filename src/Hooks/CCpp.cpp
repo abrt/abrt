@@ -65,7 +65,7 @@ static char* get_cmdline(pid_t pid)
         if (len > 0)
         {
             /* In Linux, there is always one trailing NUL byte,
-	     * prevent it from being replaced by space below.
+             * prevent it from being replaced by space below.
              */
             if (cmdline[len - 1] == '\0')
                 len--;
