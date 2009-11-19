@@ -45,13 +45,17 @@ int main(int argc, char **argv)
 	/* Parse options */
 	bool opt_d = 0, opt_s = 0;
 	int opt;
-	while ((opt = getopt(argc, argv, "ds")) != -1) {
+	while ((opt = getopt(argc, argv, "dsv")) != -1) {
 		switch (opt) {
 		case 'd':
 			opt_d = 1;
 			break;
 		case 's':
 			opt_s = 1;
+			break;
+		case 'v':
+			/* Kerneloops code uses VERB3, thus: */
+			g_verbose = 3;
 			break;
 		default:
  usage:
@@ -60,6 +64,7 @@ int main(int argc, char **argv)
 				"Options:\n"
 				"\t-d\tCreate ABRT dump for every oops found\n"
 				"\t-s\tPrint found oopses on standard output\n"
+				"\t-v\tVerbose\n"
 				, program_name
 			);
 		}
