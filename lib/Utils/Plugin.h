@@ -83,8 +83,8 @@ typedef enum {
     ANALYZER,    /**< An analyzer plugin*/
     ACTION,      /**< An action plugin*/
     REPORTER,    /**< A reporter plugin*/
-    DATABASE     /**< A database plugin*/
-    MAX_PLUGIN_TYPE = DATABASE
+    DATABASE,    /**< A database plugin*/
+    MAX_PLUGIN_TYPE = DATABASE,
 } plugin_type_t;
 
 /**
