@@ -15,9 +15,15 @@ from PluginList import getPluginInfoList
 from abrt_utils import _
 
 # FIXME - create method or smth that returns type|editable|content
-TYPE = 0
-EDITABLE = 1
-CONTENT = 2
+CD_TYPE = 0
+CD_EDITABLE = 1
+CD_CONTENT = 2
+
+CD_SYS = "s"
+CD_BIN = "b"
+CD_TXT = "t"
+CD_ATT = "a"
+
 # response
 REFRESH = -50
 
@@ -175,8 +181,8 @@ class ReporterDialog():
                 buff = gtk.TextBuffer()
                 comment = _("Brief description how to reproduce this or what you did...")
                 try:
-                    if self.report[item][CONTENT]:
-                        comment = self.report[item][CONTENT]
+                    if self.report[item][CD_CONTENT]:
+                        comment = self.report[item][CD_CONTENT]
                         self.comment_changed = True
                 except Exception, e:
                     pass
@@ -189,8 +195,8 @@ class ReporterDialog():
                 buff = gtk.TextBuffer()
                 how_to_reproduce = _("")
                 try:
-                    if self.report[item][CONTENT]:
-                        how_to_reproduce = self.report[item][CONTENT]
+                    if self.report[item][CD_CONTENT]:
+                        how_to_reproduce = self.report[item][CD_CONTENT]
                         self.how_to_changed = True
                 except Exception, e:
                     pass
@@ -202,7 +208,7 @@ class ReporterDialog():
             # if an backtrace has rating use it
             if item == "rating":
                 try:
-                    package = self.report["package"][CONTENT]
+                    package = self.report["package"][CD_CONTENT]
                 # if we don't have package for some reason
                 except:
                     package = None
@@ -210,7 +216,7 @@ class ReporterDialog():
                 lErrors = self.wTree.get_widget("lErrors")
                 bSend = self.wTree.get_widget("bSend")
                 # not usable report
-                if int(self.report[item][CONTENT]) < 3:
+                if int(self.report[item][CD_CONTENT]) < 3:
                     ebErrors.show()
                     ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
                     if package:
@@ -220,7 +226,7 @@ class ReporterDialog():
                         lErrors.set_markup("<span color=\"white\">%s</span>" % _("The bactrace is unusable, you can't report this!"))
                     bSend.set_sensitive(False)
                 # probably usable 3
-                elif int(self.report[item][CONTENT]) < 4:
+                elif int(self.report[item][CD_CONTENT]) < 4:
                     ebErrors.show()
                     ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("yellow"))
                     lErrors.set_markup("<span color=\"black\">%s</span>" % _("The bactrace is incomplete, please make sure you provide good steps to reproduce."))
@@ -229,24 +235,24 @@ class ReporterDialog():
                     ebErrors.hide()
                     bSend.set_sensitive(True)
 
-            if self.report[item][TYPE] != 's':
+            if self.report[item][CD_TYPE] != CD_SYS:
                 # item name 0| value 1| editable? 2| toggled? 3| visible?(attachment)4
-                if self.report[item][EDITABLE] == 'y':
+                if self.report[item][CD_EDITABLE] == 'y':
                     self.editable.append(item)
-                self.row_dict[item] = self.reportListStore.append([item, self.report[item][CONTENT],
+                self.row_dict[item] = self.reportListStore.append([item, self.report[item][CD_CONTENT],
                                                                     item in self.editable, True,
-                                                                    self.report[item][TYPE] in ['a','b']])
+                                                                    self.report[item][CD_TYPE] in [CD_ATT,CD_BIN]])
 
     def dehydrate(self):
         attributes = ["item", "content", "editable", "send", "attachment"]
         for row in self.reportListStore:
             rowe = dict(zip(attributes, row))
             if not rowe["editable"] and not rowe["attachment"]:
-                self.report[rowe["item"]][CONTENT] = rowe["content"]
+                self.report[rowe["item"]][CD_CONTENT] = rowe["content"]
             elif rowe["editable"] and not rowe["attachment"]:
-                self.report[rowe["item"]][CONTENT] = rowe["content"]
+                self.report[rowe["item"]][CD_CONTENT] = rowe["content"]
             elif (rowe["attachment"] or (rowe["editable"] and rowe["attachment"])) and rowe["send"]:
-                self.report[rowe["item"]][CONTENT] = rowe["content"]
+                self.report[rowe["item"]][CD_CONTENT] = rowe["content"]
             else:
                 del self.report[rowe["item"]]
         # handle comment
