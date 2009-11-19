@@ -90,6 +90,7 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
     unsigned arg_size = 0;
     args = append_str_to_vector(args, arg_size, MAILX_COMMAND);
 
+//TODO: move email body generation to make_descr.cpp
     std::string binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)

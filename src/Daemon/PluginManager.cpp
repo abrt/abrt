@@ -58,9 +58,9 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings)
         std::string value;
         for (ii = 0; ii < line.length(); ii++)
         {
-            if (line[ii] == '\"')
+            if (line[ii] == '"')
             {
-                in_quote = in_quote == true ? false : true;
+                in_quote = !in_quote;
             }
             if (isspace(line[ii]) && !in_quote)
             {

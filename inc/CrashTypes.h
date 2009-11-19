@@ -7,6 +7,8 @@
 // BIN - binary value, should be displayed as a path to binary file
 // TXT - text value, should be displayed
 // ATT - text value which can be sent as attachment via reporters
+// TODO: maybe we don't need separate CD_ATT - can simply look at strlen(content)
+// in all places which want to handle "long" and "short" texts differently
 #define CD_SYS          "s"
 #define CD_BIN          "b"
 #define CD_TXT          "t"

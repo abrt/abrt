@@ -23,7 +23,6 @@
 #include <iostream>
 #include <sstream>
 #include <sys/utsname.h>
-//#include <magic.h>
 #include "abrtlib.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
@@ -287,72 +286,6 @@ static void DeleteFileDir(const char *pDir)
     }
 }
 
-static bool IsTextFile(const char *name)
-{
-    /* Some files in our dump directories are known to always be textual */
-    if (strcmp(name, "backtrace") == 0
-     || strcmp(name, "cmdline") == 0
-    ) {
-        return true;
-    }
-
-/* This idiotic library thinks that file containing just "0" is not text (!!)
-
-    magic_t m = magic_open(MAGIC_MIME_TYPE);
-
-    if (m == NULL)
-    {
-        throw CABRTException(EXCEP_ERROR, std::string(__func__) + "Cannot open magic cookie: " + magic_error(m));
-    }
-
-    int r = magic_load(m, NULL);
-
-    if (r == -1)
-    {
-        magic_close(m);
-        throw CABRTException(EXCEP_ERROR, std::string(__func__) + "Cannot load magic db: " + magic_error(m));
-    }
-
-    char* ch = (char *) magic_file(m, pName.c_str());
-
-    if (ch == NULL)
-    {
-        magic_close(m);
-        throw CABRTException(EXCEP_ERROR, std::string(__func__) + "Cannot determine file type: " + magic_error(m));
-    }
-
-    bool isText = (strncmp(ch, "text", 4) == 0);
-
-    magic_close(m);
-
-    return isText;
- */
-    int fd = open(name, O_RDONLY);
-    if (fd < 0)
-        return false;
-
-    unsigned char buf[4*1024];
-    int r = full_read(fd, buf, sizeof(buf));
-    close(fd);
-
-    /* Every once in a while, even a text file contains a few garbled
-     * or unexpected non-ASCII chars. We should not declare it "binary".
-     */
-    const unsigned RATIO = 50;
-    unsigned total_chars = r + RATIO;
-    unsigned bad_chars = 1; /* 1 prevents division by 0 later */
-    while (--r >= 0)
-    {
-        if (buf[r] >= 0x7f
-         /* among control chars, only '\t','\n' etc are allowed */
-         || (buf[r] < ' ' && !isspace(buf[r]))
-        ) {
-            bad_chars++;
-        }
-    }
-    return (total_chars / bad_chars) >= RATIO;
-}
-
 void CDebugDump::Delete()
 {
     if (!ExistFileDir(m_sDebugDumpDir.c_str()))
@@ -460,7 +393,7 @@ void CDebugDump::InitGetNextFile()
 {
     if (!m_bOpened)
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::InitGetNextFile(): DebugDump is not opened.");
+        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
     }
     if (m_pGetNextFileDir != NULL)
     {
@@ -469,11 +402,11 @@ void CDebugDump::InitGetNextFile()
     m_pGetNextFileDir = opendir(m_sDebugDumpDir.c_str());
     if (m_pGetNextFileDir == NULL)
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::InitGetNextFile(): Cannot open dir " + m_sDebugDumpDir);
+        throw CABRTException(EXCEP_DD_OPEN, "Can't open dir " + m_sDebugDumpDir);
     }
 }
 
-bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile)
+bool CDebugDump::GetNextFile(std::string *short_name, std::string *full_name)
 {
     if (m_pGetNextFileDir == NULL)
     {
@@ -485,19 +418,10 @@ bool CDebugDump::GetNextFile(std::string& pFileName, std::string& pContent, bool
     {
         if (is_regular_file(dent, m_sDebugDumpDir.c_str()))
         {
-            std::string fullname = concat_path_file(m_sDebugDumpDir.c_str(), dent->d_name);
-
-            pFileName = dent->d_name;
-            if (IsTextFile(fullname.c_str()))
-            {
-                LoadText(dent->d_name, pContent);
-                pIsTextFile = true;
-            }
-            else
-            {
-                pContent.clear();
-                pIsTextFile = false;
-            }
+            if (short_name)
+                *short_name = dent->d_name;
+            if (full_name)
+                *full_name = concat_path_file(m_sDebugDumpDir.c_str(), dent->d_name);
             return true;
         }
     }

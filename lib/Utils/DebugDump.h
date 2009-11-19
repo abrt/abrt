@@ -72,7 +72,8 @@ class CDebugDump
         void SaveBinary(const char* pName, const char* pData, unsigned pSize);
 
         void InitGetNextFile();
-        bool GetNextFile(std::string& pFileName, std::string& pContent, bool& pIsTextFile);
+        /* Pointers may be NULL */
+        bool GetNextFile(std::string *short_name, std::string *full_name);
 };
 
 #endif /*DEBUGDUMP_H_*/

@@ -64,6 +64,62 @@ static vector_pair_string_string_t s_vectorActionsAndReporters;
 static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir);
 
 
+static char* is_text_file(const char *name, ssize_t *sz)
+{
+    /* We were using magic.h API to check for file being text, but it thinks
+     * that file containing just "0" is not text (!!)
+     * So, we do it ourself.
+     */
+
+    int fd = open(name, O_RDONLY);
+    if (fd < 0)
+        return NULL; /* it's not text (because it does not exist! :) */
+
+    char *buf = (char*)xmalloc(*sz);
+    ssize_t r = *sz = full_read(fd, buf, *sz);
+    close(fd);
+    if (r < 0)
+    {
+        free(buf);
+        return NULL; /* it's not text (because we can't read it) */
+    }
+
+    /* Some files in our dump directories are known to always be textual */
+    if (strcmp(name, "backtrace") == 0
+     || strcmp(name, "cmdline") == 0
+    ) {
+        return buf;
+    }
+
+    /* Every once in a while, even a text file contains a few garbled
+     * or unexpected non-ASCII chars. We should not declare it "binary".
+     */
+    const unsigned RATIO = 50;
+    unsigned total_chars = r + RATIO;
+    unsigned bad_chars = 1; /* 1 prevents division by 0 later */
+    while (--r >= 0)
+    {
+        if (buf[r] >= 0x7f
+         /* among control chars, only '\t','\n' etc are allowed */
+         || (buf[r] < ' ' && !isspace(buf[r]))
+        ) {
+            if (buf[r] == '\0')
+            {
+                /* We don't like NULs very much. Not text for sure! */
+                free(buf);
+                return NULL;
+            }
+            bad_chars++;
+        }
+    }
+
+    if ((total_chars / bad_chars) >= RATIO)
+        return buf; /* looks like text to me */
+
+    free(buf);
+    return NULL; /* it's binary */
+}
+
 /**
  * Transforms a debugdump direcortry to inner crash
  * report form. This form is used for later reporting.
@@ -72,63 +128,69 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
  */
 static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t& pCrashReport)
 {
-    std::string fileName;
-    std::string content;
-    bool isTextFile;
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-
-    if (!dd.Exist(FILENAME_ARCHITECTURE) ||
-        !dd.Exist(FILENAME_KERNEL) ||
-        !dd.Exist(FILENAME_PACKAGE) ||
-        !dd.Exist(FILENAME_COMPONENT) ||
-        !dd.Exist(FILENAME_RELEASE) ||
-        !dd.Exist(FILENAME_EXECUTABLE))
-    {
-        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s)'re missing");
+    if (!dd.Exist(FILENAME_ARCHITECTURE)
+     || !dd.Exist(FILENAME_KERNEL)
+     || !dd.Exist(FILENAME_PACKAGE)
+     || !dd.Exist(FILENAME_COMPONENT)
+     || !dd.Exist(FILENAME_RELEASE)
+     || !dd.Exist(FILENAME_EXECUTABLE)
+    ) {
+        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s) are missing");
     }
 
+    std::string short_name;
+    std::string full_name;
     pCrashReport.clear();
     dd.InitGetNextFile();
-    while (dd.GetNextFile(fileName, content, isTextFile))
+    while (dd.GetNextFile(&short_name, &full_name))
     {
-        //VERB3 log(" file:'%s' text:%d", fileName.c_str(), isTextFile);
-        if (!isTextFile)
+        ssize_t sz = 4*1024;
+        char *text = is_text_file(full_name.c_str(), &sz);
+        if (!text)
         {
             add_crash_data_to_crash_report(pCrashReport,
-                                           fileName,
+                                           short_name,
                                            CD_BIN,
                                            CD_ISNOTEDITABLE,
-                                           concat_path_file(pDebugDumpDir, fileName.c_str())
+                                           full_name
             );
+            continue;
         }
-        else
-        {
-            if (fileName == FILENAME_ARCHITECTURE ||
-                fileName == FILENAME_KERNEL ||
-                fileName == FILENAME_PACKAGE ||
-                fileName == FILENAME_COMPONENT ||
-                fileName == FILENAME_RELEASE ||
-                fileName == FILENAME_EXECUTABLE)
-            {
-                add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISNOTEDITABLE, content);
-            }
-            else if (fileName != FILENAME_UID &&
-                     fileName != FILENAME_ANALYZER &&
-                     fileName != FILENAME_TIME &&
-                     fileName != FILENAME_DESCRIPTION &&
-                     fileName != FILENAME_REPRODUCE &&
-                     fileName != FILENAME_COMMENT)
-            {
-                if (content.length() < CD_ATT_SIZE)
-                {
-                    add_crash_data_to_crash_report(pCrashReport, fileName, CD_TXT, CD_ISEDITABLE, content);
-                }
-                else
-                {
-                    add_crash_data_to_crash_report(pCrashReport, fileName, CD_ATT, CD_ISEDITABLE, content);
-                }
-            }
+
+        std::string content;
+        if (sz < 4*1024) /* is_text_file did read entire file */
+            content.assign(text, sz);
+        else /* no, need to read it all */
+            dd.LoadText(short_name.c_str(), content);
+        free(text);
+
+        if (short_name == FILENAME_ARCHITECTURE
+         || short_name == FILENAME_KERNEL
+         || short_name == FILENAME_PACKAGE
+         || short_name == FILENAME_COMPONENT
+         || short_name == FILENAME_RELEASE
+         || short_name == FILENAME_EXECUTABLE
+        ) {
+            add_crash_data_to_crash_report(pCrashReport, short_name, CD_TXT, CD_ISNOTEDITABLE, content);
+            continue;
+        }
+
+        if (short_name != FILENAME_UID
+         && short_name != FILENAME_ANALYZER
+         && short_name != FILENAME_TIME
+         && short_name != FILENAME_DESCRIPTION
+         && short_name != FILENAME_REPRODUCE
+         && short_name != FILENAME_COMMENT
+        ) {
+            add_crash_data_to_crash_report(
+                    pCrashReport,
+                    short_name,
+                    (content.length() < CD_ATT_SIZE ? CD_TXT : CD_ATT),
+                    CD_ISEDITABLE,
+                    content
+            );
         }
     }
 }
@@ -139,8 +201,7 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @return A local UUID.
  */
-static std::string GetLocalUUID(const char *pAnalyzer,
-                                      const char *pDebugDumpDir)
+static std::string GetLocalUUID(const char *pAnalyzer, const char *pDebugDumpDir)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
     return analyzer->GetLocalUUID(pDebugDumpDir);
