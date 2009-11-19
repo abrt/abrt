@@ -258,13 +258,13 @@ class ReporterDialog():
         # handle comment
         if self.comment_changed:
             buff = self.tvComment.get_buffer()
-            self.report["Comment"] = ['t', 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
+            self.report["Comment"] = [CD_TXT, 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
         else:
             del self.report["Comment"]
         # handle how to reproduce
         if self.how_to_changed:
             buff = self.tevHowToReproduce.get_buffer()
-            self.report["How to reproduce"] = ['t', 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
+            self.report["How to reproduce"] = [CD_TXT, 'y', buff.get_text(buff.get_start_iter(),buff.get_end_iter())]
         else:
             del self.report["How to reproduce"]
 
