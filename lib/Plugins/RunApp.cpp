@@ -21,7 +21,6 @@
 
 
 #include "RunApp.h"
-#include <stdio.h>
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
@@ -30,28 +29,49 @@
 #define COMMAND     0
 #define FILENAME    1
 
+using namespace std;
+
 void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
 {
-    update_client(_("Executing RunApp plugin..."));
+    /* Don't update_client() - actions run at crash time */
+    log("RunApp('%s','%s')", pActionDir, pArgs);
 
-    std::string output;
     vector_string_t args;
-
     parse_args(pArgs, args, '"');
 
-    FILE *fp = popen(args[COMMAND].c_str(), "r");
+    const char *cmd = args[COMMAND].c_str();
+    if (!cmd[0])
+    {
+        return;
+    }
+
+//FIXME: need to be able to escape " in .conf
+    /* Chdir to the dump dir. Command can analyze component and such.
+     * Example:
+     * test x"`cat component`" = x"xorg-x11-apps" && cp /var/log/Xorg.0.log .
+     */
+//Can do it using chdir() in child if we'd open-code popen
+    string cd_and_cmd = ssprintf("cd '%s'; %s", pActionDir, cmd);
+    VERB1 log("RunApp: executing '%s'", cd_and_cmd.c_str());
+    FILE *fp = popen(cd_and_cmd.c_str(), "r");
     if (fp == NULL)
     {
-        throw CABRTException(EXCEP_PLUGIN, "Can't execute " + args[COMMAND]);
+        /* Happens only on resource starvation (fork fails or out-of-mem) */
+        return;
     }
+
+//FIXME: RunApp("gzip -9 </var/log/Xorg.0.log", "Xorg.0.log.gz") fails
+//since we mangle NULs.
+    string output;
     char line[1024];
     while (fgets(line, 1024, fp) != NULL)
     {
-        output += line;
+        if (args.size() > FILENAME)
+            output += line;
     }
     pclose(fp);
 
-    if (args.size() > 1)
+    if (args.size() > FILENAME)
     {
         CDebugDump dd;
         dd.Open(pActionDir);
@@ -63,8 +83,7 @@ PLUGIN_INFO(ACTION,
             CActionRunApp,
             "RunApp",
             "0.0.1",
-            "Simple action plugin which runs a command "
-            "and it can save command's output",
+            "Runs a command, saves its output",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

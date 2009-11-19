@@ -25,6 +25,7 @@ BuildRequires: gettext
 BuildRequires: nss-devel
 BuildRequires: polkit-devel
 BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
+BuildRequires: intltool
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Prereq: /usr/sbin/groupadd 
@@ -62,6 +63,8 @@ Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
 Obsoletes: bug-buddy
 Provides: bug-buddy
+#FIXME: upgrade workaround
+Requires: abrt-desktop
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -77,6 +80,17 @@ Requires: %{name} = %{version}-%{release}
 %description addon-ccpp
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
 analyzer plugin.
+
+#%package plugin-firefox
+#Summary: %{name}'s Firefox analyzer plugin
+#Group: System Environment/Libraries
+#Requires: gdb >= 7.0-3
+#Requires: elfutils
+#Requires: yum-utils
+#Requires: %{name} = %{version}-%{release}
+
+#%description plugin-firefox
+#This package contains hook for Firefox
 
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
@@ -198,9 +212,11 @@ Summary: Virtual package to install all necessary packages for usage from deskto
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
-Requires: %{name}-gui
+# FIXME: upgrade workaround
+#Requires: %{name}-gui
 Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
+#Requires: %{name}-plugin-firefox
 
 %description desktop
 Virtual package to make easy default instalation on desktop environments.
@@ -272,7 +288,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
-%dir %attr(1775, root, abrt) /var/cache/%{name}
+%dir %attr(0775, root, abrt) /var/cache/%{name}
 %dir /var/cache/%{name}-di
 %dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
@@ -299,6 +315,7 @@ fi
 %{_datadir}/%{name}
 %{_datadir}/applications/fedora-%{name}.desktop
 %{_datadir}/pixmaps/abrt.png
+%{_datadir}/icons/hicolor/48x48/apps/*.png
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 
@@ -307,6 +324,9 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/hookCCpp
+
+#%files plugin-firefox
+#%{_libdir}/%{name}/libFirefox.so*
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
@@ -384,7 +404,7 @@ fi
 %defattr(-,root,root,-)
 %attr(2755, root, abrt) %{_bindir}/%{name}-pyhook-helper
 %config(noreplace) %{_sysconfdir}/%{name}/pyhook.conf
-%{python_sitearch}/ABRTUtils.so
+#%{python_sitearch}/ABRTUtils.so
 %{_libdir}/%{name}/libPython.so*
 %{python_site}/*.py*
 

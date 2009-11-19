@@ -77,7 +77,6 @@ AC_CONFIG_FILES([
 	lib/Makefile
 	lib/Utils/Makefile
 	lib/Plugins/Makefile
-	lib/Python/Makefile
 	src/Makefile
 	src/Daemon/Makefile
 	src/Hooks/Makefile
@@ -87,6 +86,8 @@ AC_CONFIG_FILES([
 	src/Backtrace/Makefile
 	inc/Makefile
 	po/Makefile.in
+	icons/Makefile
+	icons/48/Makefile
 ])
 
 AC_OUTPUT

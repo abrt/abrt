@@ -1,5 +1,5 @@
 /*
-    CCpp.cpp
+    Firefox.cpp
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -27,13 +27,11 @@
 #include <nss.h>
 #include <sechash.h>
 #include "abrtlib.h"
-#include "CCpp.h"
+#include "Firefox.h"
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "CommLayerInner.h"
 #include "Polkit.h"
-
-using namespace std;
 
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
@@ -44,15 +42,15 @@ using namespace std;
 
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
-CAnalyzerCCpp::CAnalyzerCCpp() :
+CAnalyzerFirefox::CAnalyzerFirefox() :
     m_bMemoryMap(false),
     m_bInstallDebugInfo(true),
     m_nDebugInfoCacheMB(4000)
 {}
 
-static string CreateHash(const char *pInput)
+static std::string CreateHash(const std::string& pInput)
 {
-    string ret;
+    std::string ret = "";
     HASHContext* hc;
     unsigned char hash[SHA1_LENGTH];
     unsigned int len;
@@ -63,7 +61,7 @@ static string CreateHash(const char *pInput)
         error_msg_and_die("HASH_Create(HASH_AlgSHA1) failed"); /* paranoia */
     }
     HASH_Begin(hc);
-    HASH_Update(hc, (const unsigned char*)pInput, strlen(pInput));
+    HASH_Update(hc, reinterpret_cast<const unsigned char*>(pInput.c_str()), pInput.length());
     HASH_End(hc, hash, &len, sizeof(hash));
     HASH_Destroy(hc);
 
@@ -82,9 +80,9 @@ static string CreateHash(const char *pInput)
     return hash_str;
 }
 
-static string concat_str_vector(char **strings)
+static std::string concat_str_vector(char **strings)
 {
-    string result;
+    std::string result;
     while (*strings)
     {
         result += *strings++;
@@ -94,7 +92,7 @@ static string concat_str_vector(char **strings)
     return result;
 }
 
-static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
+static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
 {
     int pipeout[2];
     pid_t child;
@@ -102,7 +100,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
     struct passwd* pw = getpwuid(uid);
     if (!pw)
     {
-        throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot get GID for UID.");
+        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
     }
 
     xpipe(pipeout);
@@ -219,7 +217,7 @@ static int rate_backtrace(const char *backtrace)
     {
         if (backtrace[i] == '#') /* this separates frames from each other */
         {
-            string s(backtrace + i + 1, len);
+            std::string s(backtrace + i + 1, len);
             for (j=0; j<len; j++) /* replace tabs with spaces */
                 if (s[j] == '\t')
                     s[j] = ' ';
@@ -251,12 +249,12 @@ static int rate_backtrace(const char *backtrace)
     return 0;
 }
 
-static void GetBacktrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, string& pBacktrace)
+static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
 
-    string UID;
-    string executable;
+    std::string UID;
+    std::string executable;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -272,24 +270,10 @@ static void GetBacktrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, 
     char* args[11];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
-
     // when/if gdb supports it:
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
-    string dfd = "set debug-file-directory /usr/lib/debug";
-    const char *p = pDebugInfoDirs;
-    while (1)
-    {
-        const char *colon_or_nul = strchrnul(p, ':');
-        dfd += ':';
-        dfd.append(p, colon_or_nul - p);
-        dfd += "/usr/lib/debug";
-        if (*colon_or_nul != ':')
-            break;
-        p = colon_or_nul + 1;
-    }
-    args[3] = (char*)dfd.c_str();
-
+    args[3] = (char*)"set debug-file-directory /usr/lib/debug:" DEBUGINFO_CACHE_DIR"/usr/lib/debug";
     /*
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
@@ -298,23 +282,22 @@ static void GetBacktrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, 
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
      */
     args[4] = (char*)"-ex";
-    string file = ssprintf("file %s", executable.c_str());
-    args[5] = (char*)file.c_str();
-
+    args[5] = xasprintf("file %s", executable.c_str());
     args[6] = (char*)"-ex";
-    string corefile = ssprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
-    args[7] = (char*)corefile.c_str();
-
+    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
     args[8] = (char*)"-ex";
     args[9] = (char*)"thread apply all backtrace full";
     args[10] = NULL;
 
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
+
+    free(args[5]);
+    free(args[7]);
 }
 
-static string GetIndependentBacktrace(const char *pBacktrace)
+static std::string GetIndependentBacktrace(const std::string& pBacktrace)
 {
-    string header;
+    std::string header;
     bool in_bracket = false;
     bool in_quote = false;
     bool in_header = false;
@@ -322,7 +305,7 @@ static string GetIndependentBacktrace(const char *pBacktrace)
     bool has_at = false;
     bool has_filename = false;
     bool has_bracket = false;
-    set<string> set_headers;
+    std::set<std::string> set_headers;
 
     /* Backtrace example:
     #0  0x00007f047e21af70 in __nanosleep_nocancel () from /lib64/libc-2.10.1.so
@@ -345,7 +328,7 @@ static string GetIndependentBacktrace(const char *pBacktrace)
             seconds = 1260
             ok = true
     */
-    const char *bk = pBacktrace;
+    const char *bk = pBacktrace.c_str();
     while (*bk)
     {
         if (bk[0] == '#'
@@ -365,11 +348,11 @@ static string GetIndependentBacktrace(const char *pBacktrace)
             {
                 in_digit = true;
             }
-            else if (bk[0] == '\\' && bk[1] == '"')
+            else if (bk[0] == '\\' && bk[1] == '\"')
             {
                 bk++;
             }
-            else if (*bk == '"')
+            else if (*bk == '\"')
             {
                 in_quote = in_quote == true ? false : true;
             }
@@ -423,8 +406,8 @@ static string GetIndependentBacktrace(const char *pBacktrace)
         bk++;
     }
 
-    string pIndependentBacktrace;
-    set<string>::iterator it = set_headers.begin();
+    std::string pIndependentBacktrace;
+    std::set<std::string>::iterator it = set_headers.begin();
     for (; it != set_headers.end(); it++)
     {
         pIndependentBacktrace += *it;
@@ -433,35 +416,39 @@ static string GetIndependentBacktrace(const char *pBacktrace)
     return pIndependentBacktrace;
 }
 
-static void GetIndependentBuildIdPC(const char *unstrip_n_output, string& pIndependentBuildIdPC)
+static void GetIndependentBuildIdPC(const std::string& pBuildIdPC, std::string& pIndependentBuildIdPC)
 {
-    // lines look like this:
-    // 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
-    // 0x400000+0x209000 ab3c8286aac6c043fd1bb1cc2a0b88ec29517d3e@0x40024c /bin/sleep /usr/lib/debug/bin/sleep.debug [exe]
-    // 0x7fff313ff000+0x1000 389c7475e3d5401c55953a425a2042ef62c4c7df@0x7fff313ff2f8 . - linux-vdso.so.1
-    const char *line = unstrip_n_output;
-    while (*line)
+    int ii = 0;
+    while (ii < pBuildIdPC.length())
     {
-        const char *eol = strchrnul(line, '\n');
-        const char *plus = (char*)memchr(line, '+', eol - line);
-        if (plus)
+        std::string line;
+        int jj = 0;
+
+        while (pBuildIdPC[ii] != '\n' && ii < pBuildIdPC.length())
         {
-            while (++plus < eol && *plus != '@')
-            {
-                if (!isspace(*plus))
-                {
-                    pIndependentBuildIdPC += *plus;
-                }
-            }
+            line += pBuildIdPC[ii];
+            ii++;
         }
-        if (*eol != '\n') break;
-        line = eol + 1;
+        while (line[jj] != '+' && jj < line.length())
+        {
+            jj++;
+        }
+        jj++;
+        while (line[jj] != '@' && jj < line.length())
+        {
+            if (!isspace(line[jj]))
+            {
+                pIndependentBuildIdPC += line[jj];
+            }
+            jj++;
+        }
+        ii++;
     }
 }
 
-static string run_unstrip_n(const char *pDebugDumpDir)
+static std::string run_unstrip_n(const char *pDebugDumpDir)
 {
-    string UID;
+    std::string UID;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -474,7 +461,7 @@ static string run_unstrip_n(const char *pDebugDumpDir)
     args[2] = (char*)"-n";
     args[3] = NULL;
 
-    string output;
+    std::string output;
     ExecVP(args, atoi(UID.c_str()), output);
 
     free(args[1]);
@@ -494,10 +481,10 @@ static bool is_hexstr(const char* str)
     }
     return true;
 }
-static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_dirs, string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
     log("Getting module names, file names, build IDs from core file");
-    string unstrip_list = run_unstrip_n(pDebugDumpDir);
+    std::string unstrip_list = run_unstrip_n(pDebugDumpDir);
 
     log("Builting list of missing debuginfos");
     // lines look like this:
@@ -555,7 +542,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_d
     }
     //missing vector is unused for now, but TODO: use it to install only needed debuginfos
 
-    string package;
+    std::string package;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -642,7 +629,7 @@ Another application is holding the yum lock, cannot continue
     bool already_installed = false;
 #endif
     char buff[1024];
-    string packageName = package.substr(0, package.rfind("-", package.rfind("-")-1));
+    std::string packageName = package.substr(0, package.rfind("-", package.rfind("-")-1));
     while (fgets(buff, sizeof(buff), pipeout_fp))
     {
         int last = strlen(buff) - 1;
@@ -675,7 +662,7 @@ Another application is holding the yum lock, cannot continue
             fclose(pipeout_fp);
             kill(child, SIGTERM);
             wait(NULL);
-            throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot install debuginfos for " + pPackage);
+            throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
         }
 #endif
     }
@@ -687,7 +674,7 @@ Another application is holding the yum lock, cannot continue
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
  */
-static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_dirs, string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
     update_client(_("Searching for debug-info packages..."));
 
@@ -716,8 +703,8 @@ static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_d
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
-        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
-        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
+        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR);
+        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR, NULL);
         exit(1);
     }
 
@@ -763,7 +750,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_d
     wait(NULL);
 }
 
-static double get_dir_size(const char *dirname, string *worst_file, double *maxsz)
+static double get_dir_size(const char *dirname, std::string *worst_file, double *maxsz)
 {
     DIR *dp = opendir(dirname);
     if (dp == NULL)
@@ -776,7 +763,7 @@ static double get_dir_size(const char *dirname, string *worst_file, double *maxs
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
-        string dname = concat_path_file(dirname, ep->d_name);
+        std::string dname = concat_path_file(dirname, ep->d_name);
         if (lstat(dname.c_str(), &stats) != 0)
             continue;
         if (S_ISDIR(stats.st_mode))
@@ -814,7 +801,7 @@ static void trim_debuginfo_cache(unsigned max_mb)
 {
     while (1)
     {
-        string worst_file;
+        std::string worst_file;
         double maxsz = 0;
         double cache_sz = get_dir_size(DEBUGINFO_CACHE_DIR, &worst_file, &maxsz);
         if (cache_sz / (1024 * 1024) < max_mb)
@@ -826,12 +813,12 @@ static void trim_debuginfo_cache(unsigned max_mb)
     }
 }
 
-string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
+std::string CAnalyzerFirefox::GetLocalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting local universal unique identification..."));
 
-    string executable;
-    string package;
+    std::string executable;
+    std::string package;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -839,19 +826,19 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
         dd.LoadText(FILENAME_PACKAGE, package);
     }
 
-    string unstrip_n_output = run_unstrip_n(pDebugDumpDir);
-    string independentBuildIdPC;
-    GetIndependentBuildIdPC(unstrip_n_output.c_str(), independentBuildIdPC);
-    return CreateHash((package + executable + independentBuildIdPC).c_str());
+    std::string buildIdPC = run_unstrip_n(pDebugDumpDir);
+    std::string independentBuildIdPC;
+    GetIndependentBuildIdPC(buildIdPC, independentBuildIdPC);
+    return CreateHash(package + executable + independentBuildIdPC);
 }
 
-string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
+std::string CAnalyzerFirefox::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
-    string backtrace;
-    string executable;
-    string package;
+    std::string backtrace;
+    std::string executable;
+    std::string package;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
@@ -859,8 +846,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
     }
-    string independentBacktrace = GetIndependentBacktrace(backtrace.c_str());
-    return CreateHash((package + executable + independentBacktrace).c_str());
+    std::string independentBacktrace = GetIndependentBacktrace(backtrace);
+    return CreateHash(package + executable + independentBacktrace);
 }
 
 static bool DebuginfoCheckPolkit(int uid)
@@ -890,13 +877,13 @@ static bool DebuginfoCheckPolkit(int uid)
     return false;
 }
 
-void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
+void CAnalyzerFirefox::CreateReport(const char *pDebugDumpDir, int force)
 {
     update_client(_("Starting report creation..."));
 
-    string package;
-    string backtrace;
-    string UID;
+    std::string package;
+    std::string backtrace;
+    std::string UID;
 
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
@@ -914,21 +901,18 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.LoadText(FILENAME_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
-    string build_ids;
-    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str())))
-    {
+    std::string build_ids;
+    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str()))) {
         if (m_nDebugInfoCacheMB > 0)
-        {
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
-        }
-        InstallDebugInfos(pDebugDumpDir, m_sDebugInfoDirs.c_str(), build_ids);
+        InstallDebugInfos(pDebugDumpDir, build_ids);
     }
     else
     {
         VERB1 log(_("Skipping debuginfo installation"));
     }
 
-    GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace);
+    GetBacktrace(pDebugDumpDir, backtrace);
 
     dd.Open(pDebugDumpDir);
     dd.SaveText(FILENAME_BACKTRACE, (build_ids + backtrace).c_str());
@@ -940,9 +924,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.Close();
 }
 
-void CAnalyzerCCpp::Init()
+void CAnalyzerFirefox::Init()
 {
-    ifstream fInCorePattern;
+    std::ifstream fInCorePattern;
     fInCorePattern.open(CORE_PATTERN_IFACE);
     if (fInCorePattern.is_open())
     {
@@ -967,27 +951,27 @@ void CAnalyzerCCpp::Init()
         }
     }
 
-    ofstream fOutCorePattern;
+    std::ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);
     if (fOutCorePattern.is_open())
     {
-        fOutCorePattern << CORE_PATTERN << endl;
+        fOutCorePattern << CORE_PATTERN << std::endl;
         fOutCorePattern.close();
     }
 }
 
-void CAnalyzerCCpp::DeInit()
+void CAnalyzerFirefox::DeInit()
 {
-    ofstream fOutCorePattern;
+    std::ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);
     if (fOutCorePattern.is_open())
     {
-        fOutCorePattern << m_sOldCorePattern << endl;
+        fOutCorePattern << m_sOldCorePattern << std::endl;
         fOutCorePattern.close();
     }
 }
 
-void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
+void CAnalyzerFirefox::SetSettings(const map_plugin_settings_t& pSettings)
 {
     m_pSettings = pSettings;
 
@@ -1015,13 +999,6 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     {
         m_bInstallDebugInfo = string_to_bool(it->second.c_str());
     }
-    m_sDebugInfoDirs = DEBUGINFO_CACHE_DIR;
-    it = pSettings.find("ReadonlyLocalDebugInfoDirs");
-    if (it != end)
-    {
-        m_sDebugInfoDirs += ':';
-        m_sDebugInfoDirs += it->second;
-    }
 }
 
 //ok to delete?
@@ -1036,10 +1013,10 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 //}
 
 PLUGIN_INFO(ANALYZER,
-            CAnalyzerCCpp,
-            "CCpp",
+            CAnalyzerFirefox,
+            "Firefox",
             "0.0.1",
-            "Analyzes crashes in C/C++ programs",
+            "Firefox analyzer plugin.",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

@@ -9,7 +9,7 @@
 # - debuginfo-install aborts if yum lock is busy
 # - pk-debuginfo-install was observed to hang
 #
-# Usage: abrt-debuginfo-install CORE TEMPDIR [CACHEDIR]
+# Usage: abrt-debuginfo-install CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]]
 # If CACHEDIR is specified, debuginfos should be installed there.
 # If not, debuginfos should be installed into TEMPDIR.
 #
@@ -60,7 +60,8 @@
 
 core=$1
 tempdir=$2
-cachedir=$3
+debuginfodirs="${3//:/ }"
+cachedir="${3%%:*}"
 debug=false
 
 exec 2>&1
@@ -81,25 +82,39 @@ count_words() {
 }
 
 print_missing_build_ids() {
+    local build_id
+    local build_id1
+    local build_id2
+    local file
+    local d
     for build_id in $build_ids; do
 	build_id1=${build_id:0:2}
 	build_id2=${build_id:2}
 	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
 	test -f "/$file" && continue
-	test -f "$cachedir/$file" && continue
+	for d in $debuginfodirs; do
+	    test -f "$d/$file" && continue 2
+	done
 	echo -n "$build_id "
     done
 }
 
 print_missing_debuginfos() {
+    local build_id
+    local build_id1
+    local build_id2
+    local file
+    local d
     for build_id in $build_ids; do
 	build_id1=${build_id:0:2}
 	build_id2=${build_id:2}
 	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-	if test x"$cachedir" != x"" && test x"$cachedir" != x"/" ; then
-	    test -f "$cachedir/$file" && continue
-	fi
 	test -f "/$file" && continue
+	if test x"$cachedir" != x""; then
+	    for d in $debuginfodirs; do
+		test -f "$d/$file" && continue 2
+	    done
+	fi
 	echo -n "/$file "
     done
 }
@@ -162,6 +177,14 @@ print_package_names() {
 }
 
 download_packages() {
+    local pkg
+    local err
+    local file
+    local build_id
+    local build_id1
+    local build_id2
+    local d
+
     ## Download with one command (too silent):
     ## Redirecting, since progress bar stuff only messes up our output
     ##yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
@@ -181,13 +204,13 @@ download_packages() {
 	: $((i++))
     done
 
-    for f in *.rpm; do
+    for file in *.rpm; do
 	# Happens if no .rpm's were downloaded (yumdownloader problem)
 	# In this case, $f is the literal "*.rpm" string
-	test -f "$f" || exit 2
-	echo "Unpacking: $f"
-	echo "Processing: $f" >>unpack.OUT
-	rpm2cpio <"$f" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
+	test -f "$file" || exit 2
+	echo "Unpacking: $file"
+	echo "Processing: $file" >>unpack.OUT
+	rpm2cpio <"$file" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
     done
 
     # Copy debuginfo files to cachedir
@@ -198,15 +221,19 @@ download_packages() {
 
 	    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
 
+	    # Do not copy it if it can be found in any of $debuginfodirs
 	    test -f "/$file" && continue
-	    test x"$cachedir" != x"/" && test -f "$cachedir/$file" && continue
+	    if test x"$cachedir" != x""; then
+		for d in $debuginfodirs; do
+		    test -f "$d/$file" && continue 2
+		done
+	    fi
 
 	    if test -f "$file"; then
-		# file is one of those we just installed.
-		# Cache it if cachedir is specified.
+		# File is one of those we just installed, cache it.
 		mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
 		# Note: this does not preserve symlinks. This is intentional
-		$debug && echo Copying2 "$file" to "$cachedir/$file" >&2
+		$debug && echo Copying "$file" to "$cachedir/$file" >&2
 		cp --remove-destination "$file" "$cachedir/$file"
 		continue
 	    fi
@@ -253,17 +280,12 @@ $debug && echo "build_ids:$build_ids"
 # which usually causes yum to download updated filelists,
 # which in turn takes several minutes and annoys users.
 iter=0
-while true; do
-    : $((iter++))
-    test $iter -gt 2 && break
-
+while test $((++iter)) -le 2; do
     # Analyze $build_ids and check which debuginfos are present
     missing_debuginfo_files=`print_missing_debuginfos`
     $debug && echo "missing_debuginfo_files:$missing_debuginfo_files"
 
-    if test x"$missing_debuginfo_files" = x""; then
-	break
-    fi
+    test x"$missing_debuginfo_files" = x"" && break
 
     # Map $missing_debuginfo_files to package names.
     # yum is run here.
@@ -272,9 +294,7 @@ while true; do
 
     # yum may return "" here if it found no packages (say, if coredump
     # is from a new, unreleased package fresh from koji).
-    if test x"$packages" = x""; then
-	continue
-    fi
+    test x"$packages" = x"" && continue
 
     num_packages=`count_words $packages`
     echo "Downloading $num_packages packages"

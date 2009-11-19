@@ -15,6 +15,7 @@ abrt_applet_CPPFLAGS = \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -DICON_DIR=\"${datadir}/icons/hicolor/48x48/apps\" \
     $(GTK_CFLAGS) \
     $(DBUS_CFLAGS) \
     -D_GNU_SOURCE

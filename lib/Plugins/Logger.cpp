@@ -91,7 +91,7 @@ PLUGIN_INFO(REPORTER,
             CLogger,
             "Logger",
             "0.0.1",
-            "Write a report to a specific file",
+            "Writes report to a file",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/Logger.GTKBuilder");

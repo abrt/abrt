@@ -163,7 +163,7 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 	 */
 	sz = statb.st_size + 1024;
 	if (statb.st_size > (32*1024*1024 - 1024)) {
-		xlseek(fd, -(32*1024*1024 - 1024), SEEK_END);
+		xlseek(fd, statb.st_size - (32*1024*1024 - 1024), SEEK_SET);
 		sz = 32*1024*1024;
 	}
 	buffer = (char*)xzalloc(sz);
@@ -184,7 +184,7 @@ PLUGIN_INFO(ACTION,
             CKerneloopsScanner,
             "KerneloopsScanner",
             "0.0.1",
-            "Save new Kerneloops crashes into debug dump dir",
+            "Periodically scans for and saves kernel oopses",
             "anton@redhat.com",
             "http://people.redhat.com/aarapov",
             "");

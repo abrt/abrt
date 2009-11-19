@@ -2,12 +2,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # Eunju Kim <eukim@redhat.com>, 2009.
 # cyrushmh <cyrushmh@vip.qq.com;cyrusyzgtt@gmail.com>, 2009.
+#: ../src/Gui/CCReporterDialog.py:191
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-08 04:40+0000\n"
-"PO-Revision-Date: 2009-10-08 15:08+0800\n"
+"POT-Creation-Date: 2009-11-18 08:52+0000\n"
+"PO-Revision-Date: 2009-11-18 17:28+0800\n"
 "Last-Translator: cyrushmh <cyrushmh@vip.qq.com;cyrusyzgtt@gmail.com>\n"
 "Language-Team: cvsl10n <>\n"
 "MIME-Version: 1.0\n"
@@ -27,23 +28,23 @@ msgstr "另一用户机已在运行中，尝试唤醒中。"
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "从Daemon得到非预期的数据（数据库有否正确更新？）"
 
-#: ../src/Gui/ABRTPlugin.py:48
+#: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
 msgstr "Analyzer 插件  "
 
-#: ../src/Gui/ABRTPlugin.py:49
+#: ../src/Gui/ABRTPlugin.py:56
 msgid "Action plugins"
 msgstr "Action 插件  "
 
-#: ../src/Gui/ABRTPlugin.py:50
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Reporter plugins"
 msgstr "Reporter 插件  "
 
-#: ../src/Gui/ABRTPlugin.py:51
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Database plugins"
 msgstr "Database 插件 "
 
-#: ../src/Gui/ABRTPlugin.py:90
+#: ../src/Gui/ABRTPlugin.py:97
 msgid "Plugin name is not set, can't load it's settings"
 msgstr "插件名未设定，无法装载其设置。"
 
@@ -63,7 +64,7 @@ msgstr ""
 "Daemon没有返回有效的报告内容。\n"
 "调试内容是否缺失？"
 
-#: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/ccgui.glade.h:1 ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
@@ -71,7 +72,7 @@ msgstr " "
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:240
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:244
 msgid "<b>Not reported!</b>"
 msgstr "<b>没有报告!</b>  "
 
@@ -83,7 +84,7 @@ msgstr "<span color=\"white\">说明</span>  "
 msgid "About ABRT"
 msgstr "关于 ABRT  "
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "自动错误回报工具 (ABRT) "
 
@@ -99,7 +100,7 @@ msgstr "请稍候……"
 msgid "Plugins"
 msgstr "插件"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
 msgid "Report"
 msgstr "报告  "
 
@@ -162,14 +163,23 @@ msgid "Date"
 msgstr "日期  "
 
 #: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr "当机比率"
+msgid "Crash count"
+msgstr "崩溃计数"
 
 #: ../src/Gui/CCMainWindow.py:93
 msgid "User"
 msgstr "用户 "
 
-#: ../src/Gui/CCMainWindow.py:178
+#: ../src/Gui/CCMainWindow.py:160
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"不能显示设置对话框\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:181
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -178,7 +188,7 @@ msgstr ""
 "不能完结现有程序！\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:195
+#: ../src/Gui/CCMainWindow.py:198
 #, python-format
 msgid ""
 "Error while loading the dumplist, please check if abrt daemon is running\n"
@@ -187,16 +197,16 @@ msgstr ""
 "dumplist装入时发生错误，请检查 abrt daemon是否运行中\n"
 " %s "
 
-#: ../src/Gui/CCMainWindow.py:205
+#: ../src/Gui/CCMainWindow.py:208
 #, python-format
 msgid "Can't get username for uid %s"
 msgstr "找不到 uid %s 的用户名称"
 
-#: ../src/Gui/CCMainWindow.py:232
+#: ../src/Gui/CCMainWindow.py:236
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>这个错误已经报告，你可以在这个地点找到这个报告：</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:292
+#: ../src/Gui/CCMainWindow.py:296
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -204,7 +214,7 @@ msgstr ""
 "未能取得报告书！\n"
 "会是因为调试数据的缺失吗？"
 
-#: ../src/Gui/CCMainWindow.py:308
+#: ../src/Gui/CCMainWindow.py:314
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -213,12 +223,39 @@ msgstr ""
 "报告失败！\n"
 "%s "
 
-#: ../src/Gui/CCMainWindow.py:340
+#: ../src/Gui/CCMainWindow.py:333 ../src/Gui/CCMainWindow.py:360
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "取得报告时出错：%s"
 
-#: ../src/Gui/CCReporterDialog.py:98
+#: ../src/Gui/CCReporterDialog.py:177
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "简述如何可以再次让这问题出现，或描述你做过什么……"
+
+#: ../src/Gui/CCReporterDialog.py:219
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> "
+"debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"报告功能被禁用因为向后追踪是不可用的。\n"
+"请尝试用命令来手动安装 debuginfo：<span color=\"blue\"> debuginfo-install %s "
+"</span>\n"
+"然后按刷新按钮来重新生成向后追踪信息。"
+
+#: ../src/Gui/CCReporterDialog.py:221
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "向后追踪信息是不可用的，您不能报告此错误！"
+
+#: ../src/Gui/CCReporterDialog.py:227
+msgid ""
+"The bactrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr "向后追踪信息是不完全的，请确定您提供了用于再现（错误）的好步骤。"
+
+#: ../src/Gui/CCReporterDialog.py:272
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -227,10 +264,6 @@ msgid ""
 msgstr ""
 "<b>警告</b>，将要传送的数据可能含有机密情报。\n"
 "你确定要传送<b>%s</b>吗？\n"
-
-#: ../src/Gui/CCReporterDialog.py:111
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "简述如何可以再次让这问题出现，或描述你做过什么……"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
@@ -250,39 +283,39 @@ msgstr "找不到 PluginDialog 的用户界面说明！"
 msgid "No UI for plugin %s"
 msgstr "插件 %s 并未有用户界面"
 
-#: ../src/Gui/PluginSettingsUI.py:41 ../src/Gui/PluginSettingsUI.py:67
+#: ../src/Gui/PluginSettingsUI.py:55 ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "combo box还未被建构"
 
-#: ../src/Gui/PluginSettingsUI.py:50
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
 msgstr "没有需要hydrate的东西！"
 
-#: ../src/Gui/report.glade.h:1
+#: ../src/Gui/report.glade.h:2
 msgid "Comment"
 msgstr "注释"
 
 #: ../src/Gui/report.glade.h:3
+msgid "How to reproduce (in a few simple steps)"
+msgstr "如何（以简单步骤）再现"
+
+#: ../src/Gui/report.glade.h:5
 msgid "Send"
 msgstr "发送"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>选择插件</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>选择数据库的后台</b>"
 
-#: ../src/Gui/SettingsDialog.py:168
+#: ../src/Gui/SettingsDialog.py:165
 msgid "Remove this job"
 msgstr "删除这项工作"
 
-#: ../src/Gui/SettingsDialog.py:211
+#: ../src/Gui/SettingsDialog.py:208
 msgid "Remove this action"
 msgstr "删除这个动作"
 
@@ -382,6 +415,10 @@ msgstr "网站："
 msgid "gtk-add"
 msgstr "gtk-add"
 
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-cancel"
+msgstr "gtk-cancel"
+
 #: ../src/Gui/settings.glade.h:26
 msgid "gtk-close"
 msgstr "gtk-close"
@@ -390,63 +427,60 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
-#: ../src/Applet/Applet.cpp:71
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "查看和报告应用程序崩溃情况"
+
+#: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "发现了%s软件包的错误记录！"
 
-#: ../src/Applet/Applet.cpp:130
-msgid "ABRT service has been started"
-msgstr "ABRT 服务已经引导了"
-
-#: ../src/Applet/Applet.cpp:132 ../src/Applet/Applet.cpp:246
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "ABRT服务并未设置为运行"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:196
 msgid "Warning"
 msgstr "警告"
 
-#: ../src/Daemon/Daemon.cpp:546
+#: ../src/Daemon/Daemon.cpp:520
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr "配额超出。请检查您在 abrt.conf 中的 MaxCrashReportsSize 数值。"
 
-#: ../lib/Plugins/Bugzilla.cpp:83
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "没有设置登录及口令。请检查Bugzilla.conf文件"
-
-#: ../lib/Plugins/Bugzilla.cpp:227
-msgid "Bug is already reported: "
-msgstr "错误已报告了："
-
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: ../lib/Plugins/Bugzilla.cpp:209
 #, c-format
-msgid "Binary file %s will not be reported."
-msgstr "%s 是二进制文件，将不会随报告提交。"
+msgid "Bug is already reported: %i"
+msgstr "错误已报告了：%i"
 
-#: ../lib/Plugins/Bugzilla.cpp:352
-msgid "New bug id: "
-msgstr "新的错误 id:   "
+#: ../lib/Plugins/Bugzilla.cpp:271
+#, c-format
+msgid "New bug id: %i"
+msgstr "新的错误 id：%i"
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "检查有否重复……"
 
-#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "往bugzilla登录中……"
 
-#: ../lib/Plugins/Bugzilla.cpp:427
-msgid "Check CC and add coment +1..."
-msgstr "确认 CC 后注释 +1 增加...  "
+#: ../lib/Plugins/Bugzilla.cpp:371
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "没有设置登录及口令。请检查Bugzilla.conf文件"
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:377
+msgid "Checking CC..."
+msgstr "检查 CC……"
+
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "新的错误报告生成中……"
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "正在登出……"
 
@@ -454,82 +488,97 @@ msgstr "正在登出……"
 msgid "Getting local universal unique identification"
 msgstr "正在取得局域的UUID"
 
-#: ../lib/Plugins/CCpp.cpp:146
+#: ../lib/Plugins/CCpp.cpp:254
 msgid "Getting backtrace..."
 msgstr "正在取得逆向跟踪数据……"
 
-#: ../lib/Plugins/CCpp.cpp:415
+#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
 msgid "Searching for debug-info packages..."
 msgstr "debug-info 软件包寻找中……"
 
-#: ../lib/Plugins/CCpp.cpp:451
+#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info 软件包下载及安装中……"
 
-#: ../lib/Plugins/CCpp.cpp:513
+#: ../lib/Plugins/CCpp.cpp:818
 msgid "Getting local universal unique identification..."
 msgstr "正在取得局域的UUID……"
 
-#: ../lib/Plugins/CCpp.cpp:532
+#: ../lib/Plugins/CCpp.cpp:837
 msgid "Getting global universal unique identification..."
 msgstr "正在取得全局的UUID……"
 
-#: ../lib/Plugins/CCpp.cpp:583
+#: ../lib/Plugins/CCpp.cpp:882
 msgid "Starting report creation..."
 msgstr "报告书生成引导……"
 
-#: ../lib/Plugins/CCpp.cpp:612
+#: ../lib/Plugins/CCpp.cpp:912
 msgid "Skipping debuginfo installation"
 msgstr "省略 %s 软件包的调试数据安装"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
 msgid "Creating and submitting a report..."
 msgstr "报告书生成及传送中……"
 
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "报告书生成中……"
 
-#: ../lib/Plugins/RunApp.cpp:62
-msgid "Executing RunApp plugin..."
-msgstr "RunApp 插件执行中..."
-
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:409
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "文件传送： URL未指定"
 
-#: ../lib/Plugins/FileTransfer.cpp:81
+#: ../lib/Plugins/FileTransfer.cpp:67
 #, c-format
-msgid "Sending archive %s via %s"
-msgstr "传送压缩档 %s，通过 %s"
+msgid "Sending archive %s to %s"
+msgstr "正在传送归档 %s 至 %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:336
+#: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
 msgstr "文件传送：报告书生成中……"
 
-#: ../lib/Plugins/FileTransfer.cpp:358 ../lib/Plugins/FileTransfer.cpp:386
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr "CFileTransfer::Run(): 不能创建及传送压缩档："
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "不能创建及发送归档：%s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "不能创建及传送归档 %s"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
 msgstr "内核 oops 错误报告书生成中……"
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:163
 msgid "Sending an email..."
 msgstr "电邮传送中……"
 
-#: ../lib/Plugins/SOSreport.cpp:113
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport 插件执行中……"
 
-#: ../lib/Plugins/SOSreport.cpp:135
-msgid "running sosreport: "
-msgstr "sosreport 执行中……"
+#: ../lib/Plugins/SOSreport.cpp:91
+#, c-format
+msgid "running sosreport: %s"
+msgstr "sosreport 执行中：%s"
 
-#: ../lib/Plugins/SOSreport.cpp:150
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "sosreport 执行完结"
+
+#~ msgid "ABRT service has been started"
+#~ msgstr "ABRT 服务已经引导了"
+
+#~ msgid "Binary file %s will not be reported."
+#~ msgstr "%s 是二进制文件，将不会随报告提交。"
+
+#~ msgid "Check CC and add coment +1..."
+#~ msgstr "确认 CC 后注释 +1 增加...  "
+
+#~ msgid "Executing RunApp plugin..."
+#~ msgstr "RunApp 插件执行中..."
 
 #~ msgid "Applet is already running."
 #~ msgstr "小桯式已在运行中。"

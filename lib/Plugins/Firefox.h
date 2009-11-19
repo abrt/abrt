@@ -1,6 +1,6 @@
 /*
-    CCpp.h - header file for C/C++ analyzer plugin
-           - it can ger UUID and memory maps from core files
+    Firefox.h - header file for Firefox analyzer plugin
+           - it can get UUID and memory maps from core files
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -27,7 +27,7 @@
 #include "Plugin.h"
 #include "Analyzer.h"
 
-class CAnalyzerCCpp : public CAnalyzer
+class CAnalyzerFirefox : public CAnalyzer
 {
     private:
         bool m_bMemoryMap;
@@ -35,10 +35,9 @@ class CAnalyzerCCpp : public CAnalyzer
         unsigned m_nDebugInfoCacheMB;
         std::string m_sOldCorePattern;
         std::string m_sDebugInfo;
-        std::string m_sDebugInfoDirs;
 
     public:
-        CAnalyzerCCpp();
+        CAnalyzerFirefox();
         virtual std::string GetLocalUUID(const char *pDebugDumpDir);
         virtual std::string GetGlobalUUID(const char *pDebugDumpDir);
         virtual void CreateReport(const char *pDebugDumpDir, int force);

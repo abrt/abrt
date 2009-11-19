@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-09 20:50+0000\n"
+"POT-Creation-Date: 2009-11-17 14:56+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Rui Gouveia <rui.gouveia@globaltek.pt>\n"
 "Language-Team: PT <fedora-trans-pt@redhat.com>\n"
@@ -81,6 +81,7 @@ msgid "About ABRT"
 msgstr "Acerca do ABRT"
 
 #: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Ferramenta Automática para Reportar Erros"
 
@@ -412,59 +413,58 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Ver e reportar crashes de aplicações"
+
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Foi detectado um crash no pacote %s"
 
-#: ../src/Applet/Applet.cpp:138
-msgid "ABRT service has been started"
-msgstr "O serviço ABRT foi iniciado"
-
-#: ../src/Applet/Applet.cpp:140
-#: ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "O serviço ABRT não está a correr"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:196
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:519
+#: ../src/Daemon/Daemon.cpp:520
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "O relatório excedeu a cota. Por favor, verifique o valor MaxCrashReportsSize em abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:240
+#: ../lib/Plugins/Bugzilla.cpp:209
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Erro já foi reportado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:302
+#: ../lib/Plugins/Bugzilla.cpp:271
 #, c-format
 msgid "New bug id: %i"
 msgstr "Novo ID de erro: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:395
+#: ../lib/Plugins/Bugzilla.cpp:364
 msgid "Checking for duplicates..."
 msgstr "A procurar por duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:398
+#: ../lib/Plugins/Bugzilla.cpp:367
 msgid "Logging into bugzilla..."
 msgstr "A iniciar sessão no bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:402
+#: ../lib/Plugins/Bugzilla.cpp:371
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Nome de utilizador e senha vazios. Por favor, verifique Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:408
+#: ../lib/Plugins/Bugzilla.cpp:377
 msgid "Checking CC..."
 msgstr "A verificar CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:417
+#: ../lib/Plugins/Bugzilla.cpp:386
 msgid "Creating new bug..."
 msgstr "A criar novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:421
+#: ../lib/Plugins/Bugzilla.cpp:390
 msgid "Logging out..."
 msgstr "A Terminar Sessão..."
 
@@ -506,17 +506,12 @@ msgstr "A passar à frente a instalação do debuginfo"
 msgid "Creating and submitting a report..."
 msgstr "A criar e enviar relatório..."
 
-#: ../lib/Plugins/Logger.cpp:57
-#: ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "A criar relatório..."
 
-#: ../lib/Plugins/RunApp.cpp:64
-msgid "Executing RunApp plugin..."
-msgstr "A executar plugin RunApp..."
-
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:381
+#: ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL não especificado"
 
@@ -543,23 +538,27 @@ msgstr "Não foi possível criar e enviar um arquivo %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "A criar relatório oops de crash do kernel..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:163
 msgid "Sending an email..."
 msgstr "A enviar E-mail..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "A executar plugin do SOSreport..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "A executar sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "execução do sosreport terminou"
 
+#~ msgid "ABRT service has been started"
+#~ msgstr "O serviço ABRT foi iniciado"
+#~ msgid "Executing RunApp plugin..."
+#~ msgstr "A executar plugin RunApp..."
 #~ msgid "gtk-refresh"
 #~ msgstr "gtk-refresh"
 #~ msgid "Binary file %s will not be reported."

@@ -223,7 +223,7 @@ static void SetUpMW()
     set_string_t::iterator it_p = g_settings_setEnabledPlugins.begin();
     for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
     {
-        g_pPluginManager->RegisterPlugin(*it_p);
+        g_pPluginManager->RegisterPlugin(it_p->c_str());
     }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
@@ -685,9 +685,9 @@ static void sanitize_dump_dir_rights()
     /* 00777 bits are usual "rwxrwxrwx" access rights */
     ensure_writable_dir(DEBUG_DUMPS_DIR, 0775, "abrt");
     /* debuginfo cache */
-    ensure_writable_dir(DEBUG_DUMPS_DIR"-di", 0755, "root"); 
+    ensure_writable_dir(DEBUG_DUMPS_DIR"-di", 0755, "root");
     /* temp dir */
-    ensure_writable_dir(VAR_RUN"/abrt", 0755, "root"); 
+    ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
 
 int main(int argc, char** argv)

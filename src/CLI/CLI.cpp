@@ -17,7 +17,6 @@
 */
 #include <getopt.h>
 #include "ABRTException.h"
-#include "ABRTSocket.h"
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "DBusCommon.h"
@@ -99,20 +98,19 @@ static const struct option longopts[] =
 };
 
 /* Gets the program name from the first command line argument. */
-static char *progname(char *argv0)
+static const char *progname(const char *argv0)
 {
-    char* name = strrchr(argv0, '/');
+    const char* name = strrchr(argv0, '/');
     if (name)
         return ++name;
-    else
-        return argv0;
+    return argv0;
 }
 
 /* Prints abrt-cli version and some help text. */
 static void usage(char *argv0)
 {
-    char *name = progname(argv0);
-    printf("%s " VERSION "\n\n", name);
+    const char *name = progname(argv0);
+    printf("%s "VERSION"\n\n", name);
 
     /* Message has embedded tabs. */
     printf(_("Usage: %s [OPTION]\n\n"
@@ -167,7 +165,7 @@ int main(int argc, char** argv)
                 return 1;
             case 'V':
             case OPT_VERSION:
-                printf("%s " VERSION "\n", progname(argv[0]));
+                printf("%s "VERSION"\n", progname(argv[0]));
                 return 0;
         }
         if (c == -1)

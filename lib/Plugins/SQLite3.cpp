@@ -34,7 +34,7 @@
 
 // after a while, we can drop support for update, so a table can stay in
 // normal limits
-static const char* upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
+static const char *const upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
     // v0 -> *
     {
         // v0 -> v0
@@ -421,7 +421,7 @@ PLUGIN_INFO(DATABASE,
             CSQLite3,
             "SQLite3",
             "0.0.2",
-            "SQLite3 database plugin.",
+            "Keeps SQLite3 database about all crashes",
             "zprikryl@redhat.com,jmoskovc@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

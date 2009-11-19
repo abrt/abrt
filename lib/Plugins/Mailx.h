@@ -35,14 +35,6 @@ class CMailx : public CReporter
         std::string m_sSubject;
         bool m_bSendBinaryData;
 
-        int m_nArgs;
-        char** m_pArgs;
-
-        void FreeMailxArgs();
-        void AddMailxArg(const std::string& pArg);
-        void ExecMailx(uid_t uid, const std::string& pText);
-        void SendEmail(const std::string& pSubject, const std::string& pText, const std::string& pUID);
-
     public:
         CMailx();
 
@@ -54,4 +46,4 @@ class CMailx : public CReporter
                                    const std::string& pArgs);
 };
 
-#endif /* MAILX_H_ */
+#endif

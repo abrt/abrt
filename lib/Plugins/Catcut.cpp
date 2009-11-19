@@ -33,7 +33,7 @@ static void create_new_bug_description(const map_crash_report_t& pCrashReport, s
                  "-----\n" +
                  pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
     }
-    pDescription = "\nabrt detected a crash.\n" +
+    pDescription = "\nabrt "VERSION" detected a crash.\n" +
                    howToReproduce +
                    comment +
                    "\n\nAdditional information\n"
@@ -573,7 +573,7 @@ PLUGIN_INFO(REPORTER,
             CReporterCatcut,
             "Catcut",
             "0.0.1",
-            "Test plugin to report bugs to catcut and if not, report it.",
+            "Reports bugs to catcut",
             "dvlasenk@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/Catcut.GTKBuilder");

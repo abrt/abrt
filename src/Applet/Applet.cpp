@@ -134,10 +134,9 @@ static void NameOwnerChanged(DBusMessage* signal)
         return;
     }
 
-    if (new_owner[0])
-        applet->Enable(_("ABRT service has been started"));
-    else
-        applet->Disable(_("ABRT service is not running"));
+// hide icon if it's visible - as NM and don't show it, if it's not
+    if(!new_owner[0])
+        applet->HideIcon();
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
@@ -202,7 +201,7 @@ int main(int argc, char** argv)
         default:
             error_msg_and_die(
                 "Usage: abrt-applet [-v]\n"
-        	"\nOptions:"
+                "\nOptions:"
                 "\n\t-v\tVerbose"
             );
         }

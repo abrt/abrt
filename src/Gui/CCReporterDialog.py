@@ -43,7 +43,7 @@ class ReporterDialog():
         self.tvComment = self.wTree.get_widget("tvComment")
         self.tvComment.connect("focus-in-event", self.on_comment_focus_cb)
         self.comment_changed = False
-        
+
         # "how to reproduce" textview
         self.tevHowToReproduce = self.wTree.get_widget("tevHowToReproduce")
         self.how_to_changed = False
@@ -79,7 +79,6 @@ class ReporterDialog():
         self.tvReport.insert_column(column,0)
         # connect the signals
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
-        self.wTree.get_widget("bSend").connect("clicked", self.on_send_clicked)
         # start with the warning hidden, so it's not visible when there is no rating
         self.wTree.get_widget("ebErrors").hide()
         self.hydrate()
@@ -88,10 +87,10 @@ class ReporterDialog():
     def on_response(self, dialog, response_id, daemon ):
         # thu button has been pressed (probably)
         if response_id == gtk.RESPONSE_APPLY:
-            if not self.check_settings(daemon):
+            if not (self.check_settings(daemon) and self.check_report()):
                 dialog.stop_emission("response")
                 self.wTree.get_widget("bSend").stop_emission("clicked")
-
+    
     def on_send_toggled(self, cell, path, model):
         model[path][3] = not model[path][3]
 
@@ -229,7 +228,7 @@ class ReporterDialog():
                 else:
                     ebErrors.hide()
                     bSend.set_sensitive(True)
-                
+
             if self.report[item][TYPE] != 's':
                 # item name 0| value 1| editable? 2| toggled? 3| visible?(attachment)4
                 if self.report[item][EDITABLE] == 'y':
@@ -263,8 +262,11 @@ class ReporterDialog():
         else:
             del self.report["How to reproduce"]
 
-    def on_send_clicked(self, button):
-    #def on_apply_clicked(self, button, treeview):
+    def check_report(self):
+    # FIXME: what to do if user press "Not to send BT and then press cancel"
+    # it uncheck the backtrace and let him to edit it, and then user might 
+    # not noticed, that he is not sending the BT, so should we warn user about this
+    # or check the BT automatically?
         attributes = ["item", "content", "editable", "send", "attachment"]
         for row in self.reportListStore:
             rowe = dict(zip(attributes, row))
@@ -273,8 +275,10 @@ class ReporterDialog():
                                         "Do you really want to send <b>%s</b>?\n" % rowe["item"]), self.window)
                 if result == gtk.RESPONSE_NO:
                     row[attributes.index("send")] = False
+                if result in (gtk.RESPONSE_CANCEL, gtk.RESPONSE_DELETE_EVENT):
+                    return False
         self.dehydrate()
-        self.window.response(gtk.RESPONSE_APPLY)
+        return True
 
     def run(self):
         result = self.window.run()

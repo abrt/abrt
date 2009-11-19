@@ -1,1 +1,1 @@
-SUBDIRS = Utils Plugins Python
+SUBDIRS = Utils Plugins

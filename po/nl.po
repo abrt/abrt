@@ -4,20 +4,21 @@
 # This file is distributed under the same license as the PACKAGE package.
 #
 #
-#: ../src/Gui/CCReporterDialog.py:191
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
 # Richard van der Luit <nippur@fedoraproject.org>, 2009.
+# Geert Warrink <geert.warrink@onsnet.nu>, 2009.
+#: ../src/Gui/CCReporterDialog.py:191
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-11 09:31+0000\n"
-"PO-Revision-Date: 2009-11-11 13:12+0100\n"
-"Last-Translator: Richard van der Luit <nippur@fedoraproject.org>\n"
-"Language-Team: Dutch <nl@li.org>\n"
+"POT-Creation-Date: 2009-11-15 14:58+0000\n"
+"PO-Revision-Date: 2009-11-15 20:02+0100\n"
+"Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
+"Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding:  \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
@@ -27,7 +28,8 @@ msgstr "Andere client draait al, probeer het te wekken."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
+msgstr ""
+"Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
 
 #: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
@@ -85,7 +87,7 @@ msgstr "<span color=\"white\">Beschrijving</span>"
 msgid "About ABRT"
 msgstr "Over ABRT"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisch bug rapporteer gereedschap"
 
@@ -435,6 +437,10 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Bekijk en rapporteer crashes van toepassingen"
+
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
@@ -530,11 +536,11 @@ msgstr "Sla debuginfo installatie over"
 msgid "Creating and submitting a report..."
 msgstr "Aanmaken en indienen van rapport..."
 
-#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "Rapport aanmaken..."
 
-#: ../lib/Plugins/RunApp.cpp:64
+#: ../lib/Plugins/RunApp.cpp:35
 msgid "Executing RunApp plugin..."
 msgstr "RunApp plugin draaien..."
 
@@ -565,20 +571,19 @@ msgstr "Kan archief %s niet aanmaken en versturen"
 msgid "Creating kernel oops crash reports..."
 msgstr "Aanmaken van kernel oops crash rapporten..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:163
 msgid "Sending an email..."
 msgstr "Versturen van email..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "Uitvoeren van SOSreport plugin..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "sosreport draaien: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
-

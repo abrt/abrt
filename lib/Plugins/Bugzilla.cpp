@@ -16,7 +16,7 @@
 
 static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
 {
-    pDescription = "abrt detected a crash.\n\n";
+    pDescription = "abrt "VERSION" detected a crash.\n\n";
     pDescription += make_description_bz(pCrashReport);
 }
 
@@ -527,8 +527,7 @@ PLUGIN_INFO(REPORTER,
             CReporterBugzilla,
             "Bugzilla",
             "0.0.4",
-            "Check if a bug isn't already reported in a bugzilla "
-            "and if not, report it.",
+            "Reports bugs to bugzilla",
             "npajkovs@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/Bugzilla.GTKBuilder");

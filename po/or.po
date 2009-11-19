@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.or\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-12 03:54+0000\n"
-"PO-Revision-Date: 2009-11-12 18:06+0530\n"
+"POT-Creation-Date: 2009-11-18 08:52+0000\n"
+"PO-Revision-Date: 2009-11-18 18:04+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -94,7 +95,7 @@ msgstr "<span color=\"white\">ବର୍ଣ୍ଣନା</span>"
 msgid "About ABRT"
 msgstr "ABRT ବିଷୟରେ"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "ସ୍ୱୟଂଚାଳିତ ତ୍ରୁଟି ନିବାରଣ ସାଧନ"
 
@@ -252,8 +253,8 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "ଖବର କରିବା ପ୍ରକ୍ରିୟାକୁ ନିଷ୍କ୍ରିୟ କରାଯାଇଛି କାରଣ ବ୍ୟାକଟ୍ରେସଟି ବ୍ୟବହାର ଉପଯୋଗୀ ନୁହଁ।\n"
-"ଦୟାକରି ତ୍ରୁଟି ନିବାରଣ ସୂଚନାକୁ ଏହି ନିର୍ଦ୍ଦେଶକୁ ବ୍ୟବହାର କରି ହସ୍ତକୃତ ଭାବରେ ସ୍ଥାପନ କରନ୍ତୁ:<span color=\"blue\"> "
-"debuginfo-install %s </span>\n"
+"ଦୟାକରି ତ୍ରୁଟି ନିବାରଣ ସୂଚନାକୁ ଏହି ନିର୍ଦ୍ଦେଶକୁ ବ୍ୟବହାର କରି ହସ୍ତକୃତ ଭାବରେ ସ୍ଥାପନ କରନ୍ତୁ:<span "
+"color=\"blue\"> debuginfo-install %s </span>\n"
 "ତାପରେ ବ୍ୟାକଟ୍ରେସକୁ ପୁନଃନିର୍ମାଣ କରିବା ପାଇଁ ସତେଜନ କରିବା ବଟନକୁ ବ୍ୟବହାର କରନ୍ତୁ।"
 
 #: ../src/Gui/CCReporterDialog.py:221
@@ -265,8 +266,8 @@ msgid ""
 "The bactrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr ""
-"ବ୍ୟାକଟ୍ରେସଟି ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ, ଦୟାକରି ନିଶ୍ଚିତ କରନ୍ତୁ ଯେ ଆପଣ ପୁନଃ ଉତ୍ପାଦନ କରିବା ପାଇଁ "
-"ଉତ୍ତମ ପଦକ୍ଷେପ ପ୍ରଦାନ କରିଛନ୍ତି।"
+"ବ୍ୟାକଟ୍ରେସଟି ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ, ଦୟାକରି ନିଶ୍ଚିତ କରନ୍ତୁ ଯେ ଆପଣ ପୁନଃ ଉତ୍ପାଦନ କରିବା ପାଇଁ ଉତ୍ତମ "
+"ପଦକ୍ଷେପ ପ୍ରଦାନ କରିଛନ୍ତି।"
 
 #: ../src/Gui/CCReporterDialog.py:272
 #, python-format
@@ -440,20 +441,20 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "ପ୍ରୟୋଗ ବିନାଶକୁ ଦେଖନ୍ତୁ ଏବଂ ଖବର କରନ୍ତୁ"
+
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "ପ୍ୟାକେଜ %s ରେ ଗୋଟିଏ ବିନାଶ ଚିହ୍ନାପଡ଼ିଛି"
 
-#: ../src/Applet/Applet.cpp:138
-msgid "ABRT service has been started"
-msgstr "ABRT ସର୍ଭିସ ଆରମ୍ଭ ହୋଇସାରିଛି"
-
-#: ../src/Applet/Applet.cpp:140 ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "ABRT ସର୍ଭିସଟି ଚାଲୁନାହିଁ"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:196
 msgid "Warning"
 msgstr "ଚେତାବନୀ"
 
@@ -535,13 +536,9 @@ msgstr "ତ୍ରୁଟିନିବାରଣ ସୂଚନା ସ୍ଥାପନ�
 msgid "Creating and submitting a report..."
 msgstr "ବିବରଣୀ ନିର୍ମାଣ କରି ଦାଖଲ କରୁଅଛି..."
 
-#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "ବିବରଣୀ ନିର୍ମାଣ କରୁଅଛି..."
-
-#: ../lib/Plugins/RunApp.cpp:64
-msgid "Executing RunApp plugin..."
-msgstr "RunApp ପ୍ଲଗଇନକୁ ନିଷ୍ପାଦନ କରୁଅଛି..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
@@ -570,20 +567,20 @@ msgstr "ଗୋଟିଏ ଅଭିଲେଖ ନିର୍ମାଣ କରି ପ�
 msgid "Creating kernel oops crash reports..."
 msgstr "କର୍ଣ୍ଣଲ oops ନଷ୍ଟ ବିବରଣୀଗୁଡ଼ିକୁ ନିର୍ମାଣ କରୁଅଛି..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:163
 msgid "Sending an email..."
 msgstr "ଗୋଟିଏ ଇମେଲ ପଠାଉଅଛି..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport ପ୍ଲଗଇନକୁ ନିଷ୍ପାଦନ କରୁଅଛି..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "sosreport ଚାଲୁଅଛି: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "sosreport ଚଲାଇବା ସମାପ୍ତ ହେଲା"
 

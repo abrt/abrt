@@ -74,68 +74,66 @@ class CPluginManager
          * A method, which loads particular plugin.
          * @param pName A plugin name.
          */
-        void LoadPlugin(const std::string& pName);
+        void LoadPlugin(const char *pName);
         /**
          * A method, which unloads particular plugin.
          * @param pName A plugin name.
          */
-        void UnLoadPlugin(const std::string& pName);
+        void UnLoadPlugin(const char *pName);
         /**
          * A method, which registers particular plugin.
          * @param pName A plugin name.
          */
-        void RegisterPlugin(const std::string& pName);
+        void RegisterPlugin(const char *pName);
         /**
          * A method, which unregister particular plugin.
          * @param pName A plugin name.
          */
-        void UnRegisterPlugin(const std::string& pName);
+        void UnRegisterPlugin(const char *pName);
         /**
          * A method, which registers particular plugin,
          * called via DBUS
          * @param pName A plugin name.
          * @param pDBUSSender DBUS user identification
          */
-        void RegisterPluginDBUS(const std::string& pName,
-             const char * pDBUSSender);
+        void RegisterPluginDBUS(const char *pName, const char *pDBUSSender);
         /**
          * A method, which unregister particular plugin,
          * called via DBUS
          * @param pName A plugin name.
          * @param pDBUSSender DBUS user identification
          */
-        void UnRegisterPluginDBUS(const std::string& pName,
-             const char * pDBUSSender);
+        void UnRegisterPluginDBUS(const char *pName, const char *pDBUSSender);
         /**
          * A method, which returns instance of particular analyzer plugin.
          * @param pName A plugin name.
          * @return An analyzer plugin.
          */
-        CAnalyzer* GetAnalyzer(const std::string& pName);
+        CAnalyzer* GetAnalyzer(const char *pName);
         /**
          * A method, which returns instance of particular reporter plugin.
          * @param pName A plugin name.
          * @return A reporter plugin.
          */
-        CReporter* GetReporter(const std::string& pName);
+        CReporter* GetReporter(const char *pName);
         /**
          * A method, which returns instance of particular action plugin.
          * @param pName A plugin name.
          * @return An action plugin.
          */
-        CAction* GetAction(const std::string& pName);
+        CAction* GetAction(const char *pName);
         /**
          * A method, which returns instance of particular database plugin.
          * @param pName A plugin name.
          * @return A database plugin.
          */
-        CDatabase* GetDatabase(const std::string& pName);
+        CDatabase* GetDatabase(const char *pName);
         /**
          * A method, which returns type of particular plugin.
          * @param pName A plugin name.
          * @return A plugin type.
          */
-        plugin_type_t GetPluginType(const std::string& pName);
+        plugin_type_t GetPluginType(const char *pName);
         /**
          * A method, which gets all plugins info (event those plugins which are
          * disabled). It can be send via DBus to GUI and displayed to an user.
@@ -150,8 +148,8 @@ class CPluginManager
          * @param pUID An uid of user.
          * @param pSettings A plugin's settings.
          */
-        void SetPluginSettings(const std::string& pName,
-                               const std::string& pUID,
+        void SetPluginSettings(const char *pName,
+                               const char *pUID,
                                const map_plugin_settings_t& pSettings);
         /**
          * A method, which returns plugin's settings according to user.
@@ -159,8 +157,8 @@ class CPluginManager
          * @param pUID An uid of user.
          * @return Plugin's settings accorting to user.
          */
-        map_plugin_settings_t GetPluginSettings(const std::string& pName,
-                                                const std::string& pUID);
+        map_plugin_settings_t GetPluginSettings(const char *pName,
+                                                const char *pUID);
 };
 
 /**
@@ -170,6 +168,6 @@ class CPluginManager
  * @param settings A readed plugin's settings.
  * @return if it success it returns true, otherwise it returns false.
  */
-bool LoadPluginSettings(const std::string& pPath,
+bool LoadPluginSettings(const char *pPath,
                         map_plugin_settings_t& pSettings);
 #endif /*PLUGINMANAGER_H_*/
