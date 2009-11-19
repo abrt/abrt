@@ -9,64 +9,11 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 #ifdef HAVE_CONFIG_H
-    #include "config.h"
+# include "config.h"
 #endif
 
 using namespace std;
 
-
-//TODO: move to make_descr.cpp
-static void create_new_bug_description(const map_crash_report_t& pCrashReport, string& pDescription)
-{
-    string howToReproduce;
-    string comment;
-
-    if (pCrashReport.find(CD_REPRODUCE) != pCrashReport.end())
-    {
-        howToReproduce = "\n\nHow to reproduce\n"
-                         "-----\n" +
-                         pCrashReport.find(CD_REPRODUCE)->second[CD_CONTENT];
-    }
-    if (pCrashReport.find(CD_COMMENT) != pCrashReport.end())
-    {
-        comment = "\n\nComment\n"
-                 "-----\n" +
-                 pCrashReport.find(CD_COMMENT)->second[CD_CONTENT];
-    }
-    pDescription = "\nabrt "VERSION" detected a crash.\n" +
-                   howToReproduce +
-                   comment +
-                   "\n\nAdditional information\n"
-                   "======\n";
-
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
-    {
-        if (it->second[CD_TYPE] == CD_TXT)
-        {
-            if (it->first != CD_UUID &&
-                it->first != FILENAME_ARCHITECTURE &&
-                it->first != FILENAME_RELEASE &&
-                it->first != CD_REPRODUCE &&
-                it->first != CD_COMMENT)
-            {
-                pDescription += "\n" + it->first + "\n";
-                pDescription += "-----\n";
-                pDescription += it->second[CD_CONTENT] + "\n\n";
-            }
-        }
-        else if (it->second[CD_TYPE] == CD_ATT)
-        {
-            pDescription += "\n\nAttached files\n"
-                            "----\n";
-            pDescription += it->first + "\n";
-        }
-        else if (it->second[CD_TYPE] == CD_BIN)
-        {
-            error_msg(_("Binary file %s will not be reported"), it->first.c_str());
-        }
-    }
-}
 
 static int
 put_stream(const char *pURL, FILE* f, size_t content_length)
@@ -324,8 +271,7 @@ ctx::new_bug(const char *auth_cookie, const map_crash_report_t& pCrashReport)
     string summary = "[abrt] crash detected in " + package;
     string status_whiteboard = "abrt_hash:" + uuid;
 
-    string description;
-    create_new_bug_description(pCrashReport, description);
+    string description = make_description_catcut(pCrashReport);
 
     string product;
     string version;

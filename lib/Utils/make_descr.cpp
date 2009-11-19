@@ -2,6 +2,15 @@
 //#include "abrt_types.h"
 #include "CrashTypes.h"
 #include "DebugDump.h" /* FILENAME_ARCHITECTURE etc */
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
+#if ENABLE_NLS
+# include <libintl.h>
+# define _(S) gettext(S)
+#else
+# define _(S) (S)
+#endif
 
 using namespace std;
 
@@ -130,4 +139,66 @@ string make_description_logger(const map_crash_report_t& pCrashReport)
     }
 
     return description;
+}
+
+/* This needs more work to make the result less ugly */
+string make_description_catcut(const map_crash_report_t& pCrashReport)
+{
+    map_crash_report_t::const_iterator end = pCrashReport.end();
+    map_crash_report_t::const_iterator it;
+
+    string howToReproduce;
+    it = pCrashReport.find(CD_REPRODUCE);
+    if (it != end)
+    {
+        howToReproduce = "\n\nHow to reproduce\n"
+                         "-----\n";
+        howToReproduce += it->second[CD_CONTENT];
+    }
+    string comment;
+    it = pCrashReport.find(CD_COMMENT);
+    if (it != end)
+    {
+        comment = "\n\nComment\n"
+                 "-----\n";
+        comment += it->second[CD_CONTENT];
+    }
+
+    string pDescription = "\nabrt "VERSION" detected a crash.\n";
+    pDescription += howToReproduce;
+    pDescription += comment;
+    pDescription += "\n\nAdditional information\n"
+                    "======\n";
+
+    for (it = pCrashReport.begin(); it != end; it++)
+    {
+        if (it->second[CD_TYPE] == CD_TXT)
+        {
+            if (it->first != CD_UUID
+             && it->first != FILENAME_ARCHITECTURE
+             && it->first != FILENAME_RELEASE
+             && it->first != CD_REPRODUCE
+             && it->first != CD_COMMENT
+            ) {
+                pDescription += '\n';
+                pDescription += it->first;
+                pDescription += "\n-----\n";
+                pDescription += it->second[CD_CONTENT];
+                pDescription += "\n\n";
+            }
+        }
+        else if (it->second[CD_TYPE] == CD_ATT)
+        {
+            pDescription += "\n\nAttached files\n"
+                            "----\n";
+            pDescription += it->first;
+            pDescription += '\n';
+        }
+        else if (it->second[CD_TYPE] == CD_BIN)
+        {
+            error_msg(_("Binary file %s will not be reported"), it->first.c_str());
+        }
+    }
+
+    return pDescription;
 }
