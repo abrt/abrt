@@ -90,7 +90,9 @@ class PluginsSettingsDialog:
         #print "settings hydrate"
         self.pluginsListStore.clear()
         try:
-            pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
+            #pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
+            # don't force refresh as it will overwrite settings if g-k is not available
+            pluginlist = getPluginInfoList(self.ccdaemon)
         except Exception, e:
             print e
             #gui_error_message("Error while loading plugins info, please check if abrt daemon is running\n %s" % e)
