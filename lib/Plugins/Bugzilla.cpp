@@ -14,13 +14,6 @@
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
 
-static void create_new_bug_description(const map_crash_report_t& pCrashReport, std::string& pDescription)
-{
-    pDescription = "abrt "VERSION" detected a crash.\n\n";
-    pDescription += make_description_bz(pCrashReport);
-}
-
-
 /*
  * Static namespace for xmlrpc stuff.
  * Used mainly to ensure we always destroy xmlrpc client and server_info.
@@ -236,8 +229,8 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
     std::string summary = "[abrt] crash detected in " + package;
     std::string status_whiteboard = "abrt_hash:" + uuid;
 
-    std::string description;
-    create_new_bug_description(pCrashReport, description);
+    std::string description = "abrt "VERSION" detected a crash.\n\n";
+    description += make_description_bz(pCrashReport);
 
     std::string product;
     std::string version;
@@ -287,15 +280,17 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCra
     map_crash_report_t::const_iterator it = pCrashReport.begin();
     for (; it != pCrashReport.end(); it++)
     {
-        if (it->second[CD_TYPE] == CD_ATT)
+        const std::string &filename = it->first;
+        const std::string &type = it->second[CD_TYPE];
+        const std::string &content = it->second[CD_CONTENT];
+
+        if (type == CD_ATT)
         {
-            std::string description = "File: " + it->first;
-            const std::string& to_encode = it->second[CD_CONTENT];
-            char *encoded64 = encode_base64(to_encode.c_str(), to_encode.length());
+            char *encoded64 = encode_base64(content.c_str(), content.length());
             xmlrpc_value* param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
                                               bug_id_str,
-                                              "description", description.c_str(),
-                                              "filename", it->first.c_str(),
+                                              "description", ("File: " + filename).c_str(),
+                                              "filename", filename.c_str(),
                                               "contenttype", "text/plain",
                                               "data", encoded64
                                       );

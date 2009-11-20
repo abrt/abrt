@@ -305,7 +305,9 @@ class MainWindow():
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
                 reporters_settings = {}
-                self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
+                # self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
+                # don't force refresh!
+                self.pluginlist = getPluginInfoList(self.ccdaemon)
                 for plugin in self.pluginlist.getReporterPlugins():
                     reporters_settings[str(plugin)] = plugin.Settings
                 self.ccdaemon.Report(result, reporters_settings)

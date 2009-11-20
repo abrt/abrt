@@ -26,13 +26,13 @@
 #include "abrt_types.h"
 #include "CrashTypes.h"
 #if HAVE_CONFIG_H
-    #include <config.h>
+# include <config.h>
 #endif
 #if ENABLE_NLS
-    #include <libintl.h>
-    #define _(S) gettext(S)
+# include <libintl.h>
+# define _(S) gettext(S)
 #else
-    #define _(S) (S)
+# define _(S) (S)
 #endif
 
 #define PLUGINS_MAGIC_NUMBER 6
@@ -83,7 +83,8 @@ typedef enum {
     ANALYZER,    /**< An analyzer plugin*/
     ACTION,      /**< An action plugin*/
     REPORTER,    /**< A reporter plugin*/
-    DATABASE     /**< A database plugin*/
+    DATABASE,    /**< A database plugin*/
+    MAX_PLUGIN_TYPE = DATABASE,
 } plugin_type_t;
 
 /**
@@ -121,5 +122,6 @@ typedef struct SPluginInfo
 /* helper finctions */
 std::string make_description_bz(const map_crash_report_t& pCrashReport);
 std::string make_description_logger(const map_crash_report_t& pCrashReport);
+std::string make_description_catcut(const map_crash_report_t& pCrashReport);
 
 #endif

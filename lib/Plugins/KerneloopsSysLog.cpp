@@ -87,7 +87,6 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 	while (c < buffer + buflen) {
 		char linelevel;
 		char *c9;
-		char *linepointer;
 
 		c9 = (char*)memchr(c, '\n', buffer + buflen - c); /* a \n will always be found */
 		assert(c9);
@@ -124,6 +123,7 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 				 * "hostname abrt: Kerneloops: Reported 1 kernel oopses to Abrt"
 				 * we know we submitted everything upto here already */
 				if (strstr(c, "abrt:") && strstr(c, "Abrt")) {
+					VERB3 log("Found our marker at line %d, restarting line count from 0", linecount);
 					linecount = 0;
 					lines_info_alloc = 0;
 					free(lines_info);
@@ -142,23 +142,20 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 		}
 		/* remove jiffies time stamp counter if present */
 		if (*c == '[') {
-			char *c2, *c3;
-			c2 = strchr(c, '.');
-			c3 = strchr(c, ']');
+			char *c2 = strchr(c, '.');
+			char *c3 = strchr(c, ']');
 			if (c2 && c3 && (c2 < c3) && (c3-c) < 14 && (c2-c) < 8) {
 				c = c3 + 1;
 				if (*c == ' ')
 					c++;
 			}
 		}
-		linepointer = c;
-
 		if (linecount >= lines_info_alloc) {
 			lines_info_alloc += REALLOC_CHUNK;
 			lines_info = (line_info*)xrealloc(lines_info,
 					lines_info_alloc * sizeof(struct line_info));
 		}
-		lines_info[linecount].ptr = linepointer;
+		lines_info[linecount].ptr = c;
 		lines_info[linecount].level = linelevel;
 		linecount++;
 next_line:
@@ -170,68 +167,66 @@ next_line:
 	int i;
 	char prevlevel = 0;
 	int oopsstart = -1;
-	int oopsend = linecount;
 	int inbacktrace = 0;
 	int oopsesfound = 0;
 
 	i = 0;
 	while (i < linecount) {
-		char *c = lines_info[i].ptr;
+		char *const curline = lines_info[i].ptr;
 
-		if (c == NULL) {
+		if (curline == NULL) {
 			i++;
 			continue;
 		}
 		if (oopsstart < 0) {
 			/* find start-of-oops markers */
-			if (strstr(c, "general protection fault:"))
+			if (strstr(curline, "general protection fault:"))
 				oopsstart = i;
-			else if (strstr(c, "BUG:"))
+			else if (strstr(curline, "BUG:"))
 				oopsstart = i;
-			else if (strstr(c, "kernel BUG at"))
+			else if (strstr(curline, "kernel BUG at"))
 				oopsstart = i;
-			else if (strstr(c, "do_IRQ: stack overflow:"))
+			else if (strstr(curline, "do_IRQ: stack overflow:"))
 				oopsstart = i;
-			else if (strstr(c, "RTNL: assertion failed"))
+			else if (strstr(curline, "RTNL: assertion failed"))
 				oopsstart = i;
-			else if (strstr(c, "Eeek! page_mapcount(page) went negative!"))
+			else if (strstr(curline, "Eeek! page_mapcount(page) went negative!"))
 				oopsstart = i;
-			else if (strstr(c, "near stack overflow (cur:"))
+			else if (strstr(curline, "near stack overflow (cur:"))
 				oopsstart = i;
-			else if (strstr(c, "double fault:"))
+			else if (strstr(curline, "double fault:"))
 				oopsstart = i;
-			else if (strstr(c, "Badness at"))
+			else if (strstr(curline, "Badness at"))
 				oopsstart = i;
-			else if (strstr(c, "NETDEV WATCHDOG"))
+			else if (strstr(curline, "NETDEV WATCHDOG"))
 				oopsstart = i;
-			else if (strstr(c, "WARNING:") &&
-				!strstr(c, "appears to be on the same physical disk"))
+			else if (strstr(curline, "WARNING:")
+			 && !strstr(curline, "appears to be on the same physical disk")
+			) {
 				oopsstart = i;
-			else if (strstr(c, "Unable to handle kernel"))
-				oopsstart = i;
-			else if (strstr(c, "sysctl table check failed"))
-				oopsstart = i;
-			else if (strstr(c, "------------[ cut here ]------------"))
-				oopsstart = i;
-			else if (strstr(c, "list_del corruption."))
-				oopsstart = i;
-			else if (strstr(c, "list_add corruption."))
-				oopsstart = i;
-			if (strstr(c, "Oops:") && i >= 3)
-				oopsstart = i-3;
-#if DEBUG
-			/* debug information */
-			if (oopsstart >= 0) {
-				printf("Found start of oops at line %i\n", oopsstart);
-				printf("    start line is -%s-\n", lines_info[oopsstart].ptr);
-				if (oopsstart != i)
-					printf("    trigger line is -%s-\n", c);
 			}
-#endif
-			/* try to find the end marker */
+			else if (strstr(curline, "Unable to handle kernel"))
+				oopsstart = i;
+			else if (strstr(curline, "sysctl table check failed"))
+				oopsstart = i;
+			else if (strstr(curline, "------------[ cut here ]------------"))
+				oopsstart = i;
+			else if (strstr(curline, "list_del corruption."))
+				oopsstart = i;
+			else if (strstr(curline, "list_add corruption."))
+				oopsstart = i;
+			if (strstr(curline, "Oops:") && i >= 3)
+				oopsstart = i-3;
+
 			if (oopsstart >= 0) {
-				int i2;
-				i2 = i+1;
+				/* debug information */
+				VERB3 {
+					log("Found oops at line %d: '%s'", oopsstart, lines_info[oopsstart].ptr);
+					if (oopsstart != i)
+						log("Trigger line is %d: '%s'", i, c);
+				}
+				/* try to find the end marker */
+				int i2 = i + 1;
 				while (i2 < linecount && i2 < (i+50)) {
 					if (strstr(lines_info[i2].ptr, "---[ end trace")) {
 						inbacktrace = 1;
@@ -243,61 +238,58 @@ next_line:
 			}
 		}
 
-		/* a calltrace starts with "Call Trace:" or with the " [<.......>] function+0xFF/0xAA" pattern */
-		if (oopsstart >= 0 && strstr(lines_info[i].ptr, "Call Trace:"))
-			inbacktrace = 1;
-
-		else if (oopsstart >= 0 && inbacktrace == 0 && strlen(lines_info[i].ptr) > 8) {
-			char *c1, *c2, *c3;
-			c1 = strstr(lines_info[i].ptr, ">]");
-			c2 = strstr(lines_info[i].ptr, "+0x");
-			c3 = strstr(lines_info[i].ptr, "/0x");
-			if (lines_info[i].ptr[0] == ' '
-			 && lines_info[i].ptr[1] == '['
-			 && lines_info[i].ptr[2] == '<'
-			 && c1 && c2 && c3
+		/* Are we entering a call trace part? */
+		/* a call trace starts with "Call Trace:" or with the " [<.......>] function+0xFF/0xAA" pattern */
+		if (oopsstart >= 0 && !inbacktrace) {
+			if (strstr(curline, "Call Trace:"))
+				inbacktrace = 1;
+			else
+			if (strnlen(curline, 9) > 8
+			 && curline[0] == ' ' && curline[1] == '[' && curline[2] == '<'
+			 && strstr(curline, ">]")
+			 && strstr(curline, "+0x")
+			 && strstr(curline, "/0x")
 			) {
 				inbacktrace = 1;
 			}
 		}
 
-		/* try to see if we're at the end of an oops */
-		else if (oopsstart >= 0 && inbacktrace > 0) {
-			char c2, c3;
-			c2 = lines_info[i].ptr[0];
-			c3 = lines_info[i].ptr[1];
+		/* Are we at the end of an oops? */
+		else if (oopsstart >= 0 && inbacktrace) {
+			int oopsend = INT_MAX;
 
-			/* line needs to start with " [" or have "] ["*/
-			if ((c2 != ' ' || c3 != '[')
-			 && strstr(lines_info[i].ptr, "] [") == NULL
-			 && strstr(lines_info[i].ptr, "--- Exception") == NULL
-			 && strstr(lines_info[i].ptr, "    LR =") == NULL
-			 && strstr(lines_info[i].ptr, "<#DF>") == NULL
-			 && strstr(lines_info[i].ptr, "<IRQ>") == NULL
-			 && strstr(lines_info[i].ptr, "<EOI>") == NULL
-			 && strstr(lines_info[i].ptr, "<<EOE>>") == NULL
+			/* The Code: line means we're done with the backtrace */
+			if (strstr(curline, "Code:") != NULL)
+				oopsend = i;
+			/* line needs to start with " [" or have "] [" if it is still a call trace */
+			/* example: "[<ffffffffa006c156>] radeon_get_ring_head+0x16/0x41 [radeon]" */
+			else if ((curline[0] != ' ' || curline[1] != '[')
+			 && curline[0] != '[' /* in syslog format, leading space is lost */
+			 && strstr(curline, "] [") == NULL
+			 && strstr(curline, "--- Exception") == NULL
+			 && strstr(curline, "    LR =") == NULL
+			 && strstr(curline, "<#DF>") == NULL
+			 && strstr(curline, "<IRQ>") == NULL
+			 && strstr(curline, "<EOI>") == NULL
+			 && strstr(curline, "<<EOE>>") == NULL
 			) {
-				oopsend = i-1;
+				oopsend = i-1; /* not a call trace line */
 			}
-
-			/* oops lines are always more than 8 long */
-			if (strlen(lines_info[i].ptr) < 8)
+			/* oops lines are always more than 8 chars long */
+			else if (strnlen(curline, 8) < 8)
 				oopsend = i-1;
 			/* single oopses are of the same loglevel */
-			if (lines_info[i].level != prevlevel)
+			else if (lines_info[i].level != prevlevel)
 				oopsend = i-1;
-			/* The Code: line means we're done with the backtrace */
-			if (strstr(lines_info[i].ptr, "Code:") != NULL)
-				oopsend = i;
-			if (strstr(lines_info[i].ptr, "Instruction dump::") != NULL)
+			else if (strstr(curline, "Instruction dump::") != NULL) /* why "::"? is it a typo? */
 				oopsend = i;
 			/* if a new oops starts, this one has ended */
-			if (strstr(lines_info[i].ptr, "WARNING:") != NULL && oopsstart != i)
+			else if (strstr(curline, "WARNING:") != NULL && oopsstart != i)
 				oopsend = i-1;
-			if (strstr(lines_info[i].ptr, "Unable to handle") != NULL && oopsstart != i)
+			else if (strstr(curline, "Unable to handle") != NULL && oopsstart != i)
 				oopsend = i-1;
 			/* kernel end-of-oops marker */
-			if (strstr(lines_info[i].ptr, "---[ end trace") != NULL)
+			else if (strstr(curline, "---[ end trace") != NULL)
 				oopsend = i;
 
 			if (oopsend <= i) {
@@ -306,6 +298,8 @@ next_line:
 				int is_version;
 				char *oops;
 				char *version;
+
+				VERB3 log("End of oops at line %d (%d): '%s'", oopsend, i, lines_info[oopsend].ptr);
 
 				len = 2;
 				for (q = oopsstart; q <= oopsend; q++)
@@ -327,27 +321,38 @@ next_line:
 				if (strlen(oops) > 100) {
 					queue_oops(oopses, oops, version);
 					oopsesfound++;
+				} else {
+					VERB3 log("Dropped oops: too short");
 				}
 				oopsstart = -1;
 				inbacktrace = 0;
-				oopsend = linecount;
 				free(oops);
 				free(version);
 			}
 		}
+
 		prevlevel = lines_info[i].level;
 		i++;
-		if (oopsstart > 0 && i-oopsstart > 50) {
-			oopsstart = -1;
-			inbacktrace = 0;
-			oopsend = linecount;
+
+		if (oopsstart >= 0) {
+			/* Do we have a suspiciously long oops? Cancel it */
+			if (i-oopsstart > 50) {
+				inbacktrace = 0;
+				oopsstart = -1;
+				VERB3 log("Dropped oops, too long");
+				continue;
+			}
+			if (!inbacktrace && i-oopsstart > 30) {
+				/*inbacktrace = 0; - already is */
+				oopsstart = -1;
+				VERB3 log("Dropped oops, too long");
+				continue;
+			}
 		}
-		if (oopsstart > 0 && !inbacktrace && i-oopsstart > 30) {
-			oopsstart = -1;
-			inbacktrace = 0;
-			oopsend = linecount;
-		}
-	}
+	} /* while (i < linecount) */
+
+	/* process last oops if we have one */
+// TODO: do not duplicate code
 	if (oopsstart >= 0)  {
 		int q;
 		int len;
@@ -355,7 +360,9 @@ next_line:
 		char *oops;
 		char *version;
 
-		oopsend = i-1;
+		int oopsend = i-1;
+
+		VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
 
 		len = 2;
 		while (oopsend > 0 && lines_info[oopsend].ptr == NULL)
@@ -377,10 +384,9 @@ next_line:
 		if (strlen(oops) > 100) {
 			queue_oops(oopses, oops, version);
 			oopsesfound++;
+		} else {
+			VERB3 log("Dropped oops: too short");
 		}
-		oopsstart = -1;
-		inbacktrace = 0;
-		oopsend = linecount;
 		free(oops);
 		free(version);
 	}

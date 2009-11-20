@@ -2,15 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:191
+#: ../src/Gui/CCReporterDialog.py:196
 # Jaswinder Singh <jsingh@redhat.com>, 2009.
 # A S Alam <aalam@users.sf.net>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-12 03:54+0000\n"
-"PO-Revision-Date: 2009-11-12 11:27+0530\n"
+"POT-Creation-Date: 2009-11-20 08:48+0000\n"
+"PO-Revision-Date: 2009-11-20 16:12+0530\n"
 "Last-Translator: Jaswinder Singh <jsingh@redhat.com>\n"
 "Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -83,7 +83,7 @@ msgstr "<span color=\"white\">ਵੇਰਵਾ</span>"
 msgid "About ABRT"
 msgstr "ABRT ਬਾਰੇ"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "ਆਟੋਮੈਟਿਕ ਬੱਗ ਰਿਪੋਰਟਿੰਗ ਟੂਲ"
 
@@ -228,11 +228,12 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
 
-#: ../src/Gui/CCReporterDialog.py:177
+#: ../src/Gui/CCReporterDialog.py:182
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "ਇਸ ਨੂੰ ਪੈਦਾ ਕਰਨ ਬਾਰੇ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਜਾਂ ਤੁਸੀਂ ਕੀ ਕੀਤਾ ਹੈ..."
 
-#: ../src/Gui/CCReporterDialog.py:219, python-format
+#: ../src/Gui/CCReporterDialog.py:224
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command:<span color=\"blue\"> "
@@ -241,19 +242,20 @@ msgid ""
 msgstr ""
 "ਰਿਪੋਰਟ ਦੇਣੀ ਆਯੋਗ ਹੈ ਕਿਉਂਕਿ ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ!\n"
 "ਇਸ ਕਮਾਂਡ ਦੀ ਵਰਤੋਂ ਕਰਕੇ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਇੰਸਟਾਲ ਕਰਕੇ ਕੋਸ਼ਿਸ਼ ਕਰੋ ਜੀ: <span color=\"blue\"> "
-"debuginfo-install %s </span>\n ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
+"debuginfo-install %s </span>\n"
+" ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
 
-#: ../src/Gui/CCReporterDialog.py:221
+#: ../src/Gui/CCReporterDialog.py:226
 msgid "The bactrace is unusable, you can't report this!"
 msgstr "ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ, ਤੁਸੀਂ ਇਹ ਰਿਪੋਰਟ ਨਹੀਂ ਭੇਜ ਸਕਦੇ ਹੋ!"
 
-#: ../src/Gui/CCReporterDialog.py:227
+#: ../src/Gui/CCReporterDialog.py:232
 msgid ""
 "The bactrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr "ਬੈਕਟਰੇਸ ਅਧੂਰਾ ਹੈ, ਯਕੀਨੀ ਬਣਾਉ ਕਿ ਤੁਸੀਂ ਇਹ ਬਣਾਉਣ ਲਈ ਠੀਕ ਕਦਮ ਚੁੱਕੇ ਹਨ।"
 
-#: ../src/Gui/CCReporterDialog.py:272
+#: ../src/Gui/CCReporterDialog.py:280
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -425,20 +427,20 @@ msgstr "gtk-close"
 msgid "gtk-remove"
 msgstr "gtk-remove"
 
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "ਐਪਲੀਕੇਸ਼ਨ ਕਰੈਸ਼ ਵੇਖੋ ਅਤੇ ਰਿਪੋਰਟ ਕਰੋ"
+
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "ਪੈਕੇਜ %s ਵਿੱਚ ਇੱਕ ਕਰੈਸ ਮਿਲਿਆ"
 
-#: ../src/Applet/Applet.cpp:138
-msgid "ABRT service has been started"
-msgstr "ABRT ਸਰਵਿਸ ਚਾਲੂ ਹੋ ਗਈ ਹੈ"
-
-#: ../src/Applet/Applet.cpp:140 ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "ABRT ਸਰਵਿਸ ਨਹੀਂ ਚੱਲ ਰਹੀ ਹੈ"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:196
 msgid "Warning"
 msgstr "ਚੇਤਾਵਨੀ"
 
@@ -450,37 +452,37 @@ msgstr ""
 "ਰਿਪੋਰਟ ਅਕਾਰ ਦਾ ਕੋਟਾ ਖਤਮ ਹੋ ਗਿਆ ਹੈ। abrt.conf ਵਿੱਚ ਸਿਸਟਮ MaxCrashReportsSize ਮੁੱਲ ਚੈੱਕ "
 "ਕਰੋ ਜੀ।"
 
-#: ../lib/Plugins/Bugzilla.cpp:209
+#: ../lib/Plugins/Bugzilla.cpp:202
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ਬੱਗ ਪਹਿਲਾਂ ਹੀ ਰਿਪੋਰਟ ਕੀਤਾ ਹੈ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:271
+#: ../lib/Plugins/Bugzilla.cpp:264
 #, c-format
 msgid "New bug id: %i"
 msgstr "ਨਵਾਂ ਬੱਗ id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:364
+#: ../lib/Plugins/Bugzilla.cpp:359
 msgid "Checking for duplicates..."
 msgstr "ਡੁਪਲੀਕੇਟ ਲਈ ਜਾਂਚ ਜਾਰੀ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:367
+#: ../lib/Plugins/Bugzilla.cpp:362
 msgid "Logging into bugzilla..."
 msgstr "ਬੱਗਜ਼ੀਲਾ ਉੱਤੇ ਲਾਗਇਨ ਕੀਤਾ ਜਾਂਦਾ ਹੈ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:371
+#: ../lib/Plugins/Bugzilla.cpp:366
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "ਖਾਲੀ ਲਾਗਇਨ ਅਤੇ ਪਾਸਵਰਡ। Bugzilla.conf ਵੇਖੋ ਜੀ।"
 
-#: ../lib/Plugins/Bugzilla.cpp:377
+#: ../lib/Plugins/Bugzilla.cpp:372
 msgid "Checking CC..."
 msgstr "CC ਚੈੱਕ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:386
+#: ../lib/Plugins/Bugzilla.cpp:381
 msgid "Creating new bug..."
 msgstr "ਨਵਾਂ ਬੱਗ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:390
+#: ../lib/Plugins/Bugzilla.cpp:385
 msgid "Logging out..."
 msgstr "ਲਾਗਆਉਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
@@ -488,31 +490,31 @@ msgstr "ਲਾਗਆਉਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 msgid "Getting local universal unique identification"
 msgstr "ਲੋਕਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਖਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ"
 
-#: ../lib/Plugins/CCpp.cpp:254
+#: ../lib/Plugins/CCpp.cpp:256
 msgid "Getting backtrace..."
 msgstr "ਬੈਕਟਰੇਸ ਲੈ ਰਿਹਾ..."
 
-#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
+#: ../lib/Plugins/CCpp.cpp:565 ../lib/Plugins/CCpp.cpp:692
 msgid "Searching for debug-info packages..."
 msgstr "ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਪੈਕੇਜ ਲਈ ਖੋਜ ਜਾਰੀ..."
 
-#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
+#: ../lib/Plugins/CCpp.cpp:627 ../lib/Plugins/CCpp.cpp:726
 msgid "Downloading and installing debug-info packages..."
 msgstr "ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਪੈਕੇਜ ਡਾਊਨਲੋਡ ਤੇ ਇੰਸਟਾਲ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: ../lib/Plugins/CCpp.cpp:818
+#: ../lib/Plugins/CCpp.cpp:831
 msgid "Getting local universal unique identification..."
 msgstr "ਲੋਕਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਖਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/CCpp.cpp:837
+#: ../lib/Plugins/CCpp.cpp:850
 msgid "Getting global universal unique identification..."
 msgstr "ਗਲੋਬਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਕਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/CCpp.cpp:882
+#: ../lib/Plugins/CCpp.cpp:895
 msgid "Starting report creation..."
 msgstr "ਰਿਪੋਰਟ ਬਣਾਉਣੀ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/CCpp.cpp:912
+#: ../lib/Plugins/CCpp.cpp:928
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo ਇੰਸਟਾਲੇਸ਼ਨ ਛੱਡੀ ਜਾ ਰਹੀ ਹੈ"
 
@@ -520,13 +522,9 @@ msgstr "debuginfo ਇੰਸਟਾਲੇਸ਼ਨ ਛੱਡੀ ਜਾ ਰਹੀ ਹ�
 msgid "Creating and submitting a report..."
 msgstr "ਇੱਕ ਰਿਪੋਰਟ ਬਣਾਈ ਅਤੇ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
 msgstr "ਰਿਪੋਰਟ ਬਣਾਈ ਜਾ ਰਹੀ ਹੈ..."
-
-#: ../lib/Plugins/RunApp.cpp:64
-msgid "Executing RunApp plugin..."
-msgstr "RunApp ਪਲੱਗਇਨ ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
@@ -555,22 +553,28 @@ msgstr "%s ਅਕਾਇਵ ਬਣਾਇਆ ਅਤੇ ਭੇਜਿਆ ਨਹੀ�
 msgid "Creating kernel oops crash reports..."
 msgstr "ਕਰਨਲ oops ਕਰੈਸ਼ ਰਿਪੋਰਟਾਂ ਬਣਾਈਆਂ ਜਾ ਰਹੀਆਂ ਹਨ..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
 msgstr "ਈਮੇਲ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport ਪਲੱਗਇਨ ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "sosreport ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ: %s "
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "sosreport ਚਲਾਉਣਾ ਮੁਕੰਮਲ"
+
+#~ msgid "ABRT service has been started"
+#~ msgstr "ABRT ਸਰਵਿਸ ਚਾਲੂ ਹੋ ਗਈ ਹੈ"
+
+#~ msgid "Executing RunApp plugin..."
+#~ msgstr "RunApp ਪਲੱਗਇਨ ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
 #~ msgid "Binary file %s will not be reported."
 #~ msgstr "ਬਾਇਨਰੀ ਫਾਇਲ %s ਦੀ ਰਿਪੋਰਟ ਨਹੀਂ ਕੀਤੀ ਜਾਵੇਗੀ।"
