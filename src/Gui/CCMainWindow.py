@@ -202,10 +202,12 @@ class MainWindow():
             except:
                 icon = None
             if os.getuid() == 0:
-                try:
-                    user = pwd.getpwuid(int(entry.getUID()))[0]
-                except Exception, e:
-                    user = _("Can't get username for uid %s" % entry.getUID())
+                user = "N/A"
+                if entry.getUID() != "-1":
+                    try:
+                        user = pwd.getpwuid(int(entry.getUID()))[0]
+                    except Exception, e:
+                        user = "UID: %s" % entry.getUID()
                 n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                                 entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry])
             else:
