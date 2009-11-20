@@ -314,8 +314,8 @@ void CSQLite3::Delete(const std::string& pUUID, const std::string& pUID)
     {
         Exec("DELETE FROM "ABRT_TABLE" "
              "WHERE "DATABASE_COLUMN_UUID" = '"+pUUID+"' "
-             "AND "DATABASE_COLUMN_UID" = '"+pUID+"' "
-             "OR "DATABASE_COLUMN_UID" = '-1';");
+             "AND ("DATABASE_COLUMN_UID" = '"+pUID+"' "
+             "OR "DATABASE_COLUMN_UID" = '-1');");
     }
     else
     {
