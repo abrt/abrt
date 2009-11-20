@@ -144,8 +144,8 @@ def gui_question_dialog ( message, parent_dialog=None,
                                message_type, gtk.BUTTONS_NONE,
                                message )
     dialog.add_button("gtk-cancel", gtk.RESPONSE_CANCEL)
-    dialog.add_button("gtk-yes", gtk.RESPONSE_YES)
     dialog.add_button("gtk-no", gtk.RESPONSE_NO)
+    dialog.add_button("gtk-yes", gtk.RESPONSE_YES)
     dialog.set_markup(message)
     if parent_dialog:
         dialog.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
