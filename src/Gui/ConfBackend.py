@@ -52,6 +52,8 @@ class ConfBackendGnomeKeyring(ConfBackend):
         except gkey.NoMatchError:
             # nothing found
             pass
+        except gkey.DeniedError:
+            print _("Acces to gnome-keyring has been denied, plugins settings won't be saved.")
 
         # delete all items containg "AbrtPluginInfo":<plugin_name>, so we always have only 1 item per plugin
         for item in item_list:
