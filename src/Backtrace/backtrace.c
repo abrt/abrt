@@ -60,6 +60,21 @@ struct frame *frame_add_sibling(struct frame *a, struct frame *b)
   return a;
 }
 
+static void frame_print_tree(struct frame *frame)
+{
+  printf(" #%d", frame->number);
+  if (frame->function)
+    printf(" %s", frame->function);
+  if (frame->sourcefile)
+  {
+    if (frame->function)
+      printf(" at");
+    printf(" %s", frame->sourcefile);
+  }
+
+  puts(""); /* newline */
+}
+
 struct thread *thread_new()
 {
   struct thread *t = malloc(sizeof(struct thread));
@@ -96,8 +111,28 @@ struct thread *thread_add_sibling(struct thread *a, struct thread *b)
   return a;
 }
 
+static int thread_get_frame_count(struct thread *thread)
+{
+  struct frame *f = thread->frames;
+  int count = 0;
+  while (f)
+  {
+    f = f->next;
+    ++count;
+  }
+  return count;
+}
+
 static void thread_print_tree(struct thread *thread)
 {
+  int framecount = thread_get_frame_count(thread);
+  printf("Thread no. %d (%d frames)\n", thread->number, framecount);
+  struct frame *frame = thread->frames;
+  while (frame)
+  {
+    frame_print_tree(frame);
+    frame = frame->next;
+  }
 }
 
 struct backtrace *backtrace_new()

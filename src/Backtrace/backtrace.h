@@ -23,12 +23,19 @@
 
 struct frame
 {
+  /* Function name, or NULL. */
   char *function;
+  /* Arguments of the function call, or NULL. */
   char *args;
+  /* Frame number. */
   int number;
+  /* ?? */
   char *binfile;
+  /* Name of the source file, or NULL. */
   char *sourcefile;
+  /* True if this is the frame where the crash happened.  */ 
   bool crash;
+  /* Sibling frame, or NULL if this is the last frame in a thread. */
   struct frame *next;
 };
 
@@ -36,6 +43,7 @@ struct thread
 {
   int number;
   struct frame *frames;
+  /* Sibling thread, or NULL if this is the last thread in a backtrace. */
   struct thread *next;
 };
 

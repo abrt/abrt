@@ -49,12 +49,18 @@ void yyerror(char const *s)
 %type <backtrace> backtrace ignoredpart_backtrace
 %type <thread> threads thread
 %type <frame> frames frame
-%type <strbuf> identifier hexadecimal_digit_sequence hexadecimal_number file_name function_call function_name digit_sequence
+%type <strbuf> identifier hexadecimal_digit_sequence hexadecimal_number file_name file_location function_call function_name digit_sequence frame_address_in_function
 %type <c> nondigit digit hexadecimal_digit file_name_char '(' ')' '+' '-' '/' '.' 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' '_' '0' '1' '2' '3' '4' '5' '6' '7' '8' '9' '\'' '`' ',' '#' '@' '<' '>' '=' ':' '"' ';' ' ' '\n' '\t' '\\' '!' '*' '%' '|' '^' '&' '$'
+%type <num> frame_head
+
+%destructor { thread_free($$); } <thread>
+%destructor { frame_free($$); } <frame>
+%destructor { strbuf_free($$); } <strbuf>
 
 %start backtrace
 %glr-parser
 %error-verbose
+%locations
 
 %% /* The grammar follows.  */
 
@@ -75,28 +81,90 @@ threads   : thread             { $$ = $1; }
           | threads wsa thread { $$ = thread_add_sibling($1, $3); }
 ;
 
-thread    : keyword_thread wss digit_sequence wsa '(' keyword_thread wss digit_sequence wsa ')' ':' wsa frames { $$ = thread_new(); $$->frames = $13; }
+thread    : keyword_thread wss digit_sequence wsa '(' keyword_thread wss digit_sequence wsa ')' ':' wsa frames 
+              { 
+                $$ = thread_new(); 
+                $$->frames = $13; 
+		
+		if (sscanf($3->buf, "%d", &$$->number) != 1)
+		{
+		  printf("Error while parsing thread number '%s'", $3->buf);
+		  exit(5);
+		}
+		strbuf_free($3);
+		strbuf_free($8);
+              }
 ;
 
 frames    : frame            { $$ = $1; }
           | frames wsa frame { $$ = frame_add_sibling($1, $3); }
 ;
 
-frame     : frame_head wss function_call wsa keyword_at wss file_location wss variables %dprec 2 { $$ = frame_new(); }
-	  | frame_head wss frame_address_in_function wss keyword_at wss file_location wss variables %dprec 3 { $$ = frame_new(); }
-	  | frame_head wss frame_address_in_function wss keyword_from wss file_location wss variables %dprec 3 { $$ = frame_new(); }
-          | frame_head wss frame_address_in_function wss variables %dprec 1 { $$ = frame_new(); }
-          | frame_head wss keyword_sighandler wss variables { $$ = frame_new(); }
+frame     : frame_head wss function_call wsa keyword_at wss file_location wss variables %dprec 2 
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+               $$->function = $3->buf; 
+               strbuf_free_nobuf($3); 
+	       $$->sourcefile = $7->buf;
+               strbuf_free_nobuf($7); 
+             }
+	  | frame_head wss frame_address_in_function wss keyword_at wss file_location wss variables %dprec 3 
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+               $$->function = $3->buf; 
+               strbuf_free_nobuf($3); 
+	       $$->sourcefile = $7->buf;
+               strbuf_free_nobuf($7); 
+             }
+	  | frame_head wss frame_address_in_function wss keyword_from wss file_location wss variables %dprec 3 
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+               $$->function = $3->buf; 
+               strbuf_free_nobuf($3); 
+	       $$->sourcefile = $7->buf;
+               strbuf_free_nobuf($7); 
+             }
+          | frame_head wss frame_address_in_function wss variables %dprec 1 
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+               $$->function = $3->buf; 
+               strbuf_free_nobuf($3); 
+             }
+          | frame_head wss keyword_sighandler wss variables 
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+             }
 ;
 
 
-frame_head : '#' digit_sequence
+frame_head : '#' digit_sequence 
+                 { 
+                   if (sscanf($2->buf, "%d", &$$) != 1)
+		   {
+		     printf("Error while parsing frame number '%s'.\n", $2->buf);
+		     exit(5);
+		   }
+		   strbuf_free($2); 
+                 }
 ;
 
-frame_address_in_function : hexadecimal_number wss keyword_in wss function_call
+frame_address_in_function : hexadecimal_number wss keyword_in wss function_call 
+                              {
+                                strbuf_free($1); 
+                                $$ = $5; 
+                              }
 ;
 
-file_location : file_name ':' digit_sequence
+file_location : file_name ':' digit_sequence 
+                  {
+                    $$ = $1; 
+                    strbuf_free($3); /* line number not needed for now */
+                  }
               | file_name
 ;
 
@@ -129,19 +197,26 @@ function_call : function_name wsa function_args
 ;
 
 function_name : identifier
-              | '?' '?' { $$ = strbuf_new(); strbuf_append_str($$, "??"); }
+              | '?' '?' 
+                { 
+                  $$ = strbuf_new(); 
+                  strbuf_append_str($$, "??"); 
+                }
 ;
 
 function_args : '(' wsa ')'
               | '(' wsa function_args_sequence wsa ')'
 ;
 
+  /* TODO: function arguments can contain strings in "". As the string can 
+     contain any ascii-visible character (nonvisible chars are escaped),
+     this must be somehow handled, especially characters ( and ). */
 function_args_sequence : function_args_char
                        | function_args_sequence wsa function_args_char
 ;
 
-function_args_char : digit | nondigit | '{' | '}' | '<' | '>' 
-                   | '=' | '-' | '+' | '@' | ',' | '.'
+function_args_char : digit | nondigit | '{' | '}' | '<' | '>' | '"'
+                   | '=' | '-' | '+' | '@' | ',' | '.' | '[' | ']' | '/'
 ;
 
 file_name : file_name_char { $$ = strbuf_new(); strbuf_append_char($$, $1); }
@@ -164,12 +239,25 @@ digit_sequence : digit { $$ = strbuf_new(); strbuf_append_char($$, $1); }
                | digit_sequence digit { $$ = strbuf_append_char($1, $2); }
 ;
 
-hexadecimal_number : '0' 'x' hexadecimal_digit_sequence { $$ = strbuf_new(); strbuf_append_str($$, "0x"); strbuf_append_str($$, $3->buf); }
-                   | '0' 'X' hexadecimal_digit_sequence { $$ = strbuf_new(); strbuf_append_str($$, "0X"); strbuf_append_str($$, $3->buf); }
+hexadecimal_number : '0' 'x' hexadecimal_digit_sequence 
+                     { 
+                       $$ = $3;
+                       strbuf_prepend_str($$, "0x"); 
+                     }
+                   | '0' 'X' hexadecimal_digit_sequence 
+                     { 
+                       $$ = $3;
+                       strbuf_prepend_str($$, "0X"); 
+                     }
 ;
 
-hexadecimal_digit_sequence : hexadecimal_digit { $$ = strbuf_new(); strbuf_append_char($$, $1); }
-                           | hexadecimal_digit_sequence hexadecimal_digit { $$ = strbuf_append_char($1, $2); }
+hexadecimal_digit_sequence : hexadecimal_digit 
+                               { 
+                                 $$ = strbuf_new(); 
+                                 strbuf_append_char($$, $1); 
+                               }
+                           | hexadecimal_digit_sequence hexadecimal_digit 
+                               { $$ = strbuf_append_char($1, $2); }
 ;
 
 hexadecimal_digit : digit
@@ -232,6 +320,8 @@ int yylex()
   /* Debug output. */
   if (scanner_echo)
     putchar(c);
+
+  yylval.c = c;
 
   /* Return a single char. */
   return c;

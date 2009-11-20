@@ -44,31 +44,37 @@ struct strbuf *strbuf_new()
   return buf;
 }
 
-void strbuf_free(struct strbuf *buf)
+void strbuf_free(struct strbuf *strbuf)
 {
-  free(buf->buf);
-  free(buf);
+  free(strbuf->buf);
+  free(strbuf);
 }
 
-void strbuf_clear(struct strbuf *buf)
+void strbuf_free_nobuf(struct strbuf *strbuf)
 {
-  assert(buf->alloc > 0);
-  buf->len = 0;
-  buf->buf[0] = '\0';
+  free(strbuf);
+}
+
+
+void strbuf_clear(struct strbuf *strbuf)
+{
+  assert(strbuf->alloc > 0);
+  strbuf->len = 0;
+  strbuf->buf[0] = '\0';
 }
 
 /* Ensures that the buffer can be extended by num characters
  * without touching malloc/realloc.
  */
-static void strbuf_grow(struct strbuf *buf, int num)
+static void strbuf_grow(struct strbuf *strbuf, int num)
 {
-  if (buf->len + num + 1 > buf->alloc)
+  if (strbuf->len + num + 1 > strbuf->alloc)
   {
-    while (buf->len + num + 1 > buf->alloc)
-      buf->alloc *= 2; /* huge grow = infinite loop */
+    while (strbuf->len + num + 1 > strbuf->alloc)
+      strbuf->alloc *= 2; /* huge grow = infinite loop */
 
-    buf->buf = realloc(buf->buf, buf->alloc);
-    if (!buf->buf)
+    strbuf->buf = realloc(strbuf->buf, strbuf->alloc);
+    if (!strbuf->buf)
     {
       puts("Error while allocating memory for string buffer.");
       exit(5);
@@ -76,20 +82,29 @@ static void strbuf_grow(struct strbuf *buf, int num)
   }
 }
 
-struct strbuf *strbuf_append_char(struct strbuf *buf, char c)
+struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c)
 {
-  strbuf_grow(buf, 1);
-  buf->buf[buf->len++] = c;
-  buf->buf[buf->len] = '\0';
-  return buf;
+  strbuf_grow(strbuf, 1);
+  strbuf->buf[strbuf->len++] = c;
+  strbuf->buf[strbuf->len] = '\0';
+  return strbuf;
 }
 
-struct strbuf *strbuf_append_str(struct strbuf *buf, char *str)
+struct strbuf *strbuf_append_str(struct strbuf *strbuf, char *str)
 {
   int len = strlen(str);
-  strbuf_grow(buf, len);
-  assert(buf->len + len < buf->alloc);
-  strcpy(buf->buf + buf->len, str);
-  buf->len += len;
-  return buf;
+  strbuf_grow(strbuf, len);
+  assert(strbuf->len + len < strbuf->alloc);
+  strcpy(strbuf->buf + strbuf->len, str);
+  strbuf->len += len;
+  return strbuf;
+}
+
+struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, char *str)
+{
+  int len = strlen(str);
+  strbuf_grow(strbuf, len);
+  assert(strbuf->len + len < strbuf->alloc);
+  memmove(strbuf->buf + len, strbuf->buf, strbuf->len + 1);
+  memcpy(strbuf->buf, str, len);
 }
