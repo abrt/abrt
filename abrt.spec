@@ -28,7 +28,7 @@ BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
 BuildRequires: intltool
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
-Prereq: /usr/sbin/groupadd 
+Requires(pre): /usr/sbin/groupadd 
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -212,7 +212,7 @@ Summary: Virtual package to install all necessary packages for usage from deskto
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
-# FIXME: upgrade workaround
+#workaround for broken upgrade, remove!
 #Requires: %{name}-gui
 Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
@@ -445,6 +445,9 @@ fi
 - InformAllUsers support. enabled by default for Kerneloops. Tested wuth CCpp. (vda.linux@googlemail.com)
 - abrtd: call res_init() if /etc/resolv.conf or friends were changed rhbz#533589 (vda.linux@googlemail.com)
 - supress errors in python hook to not colide with the running script (jmoskovc@redhat.com)
+
+* Tue Nov 10 2009 Jiri Moskovcak <jmoskovc@redhat.com> 0.0.11-2
+- spec file fixes
 
 * Mon Nov  2 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.11-1
 - re-enabled kerneloops
