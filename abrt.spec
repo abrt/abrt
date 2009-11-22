@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 0.0.11
+Version: 1.0.0
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -417,6 +417,35 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Fri Nov 20 2009  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.0-1
+- new version
+- comment input wraps words rhbz#531276
+- fixed hiding password dialog rhbz#529583
+- easier kerneloops reporting rhbz#528395
+- made menu entry translatable rhbz#536878 (jmoskovc@redhat.com)
+- GUI: don't read the g-k every time we want to use the setting (jmoskovc@redhat.com)
+- GUI: survive if g-k access is denied rhbz#534171 (jmoskovc@redhat.com)
+- include more info into oops (we were losing the stack dump) (vda.linux@googlemail.com)
+- make BZ insert small text attachments inline; move text file detection code (vda.linux@googlemail.com)
+- GUI: fixed text wrapping in comment field rhbz#531276 (jmoskovc@redhat.com)
+- GUI: added cancel to send dialog rhbz#537238 (jmoskovc@redhat.com)
+- include abrt version in bug descriptions (vda.linux@googlemail.com)
+- ccpp hook: implemented ReadonlyLocalDebugInfoDirs directive (vda.linux@googlemail.com)
+- GUI: added window icon rhbz#537240 (jmoskovc@redhat.com)
+- add support for \" escaping in config file (vda.linux@googlemail.com)
+- add experimental saving of /var/log/Xorg*.log for X crashes (vda.linux@googlemail.com)
+- APPLET: changed icon from default gtk-warning to abrt specific, add animation (jmoskovc@redhat.com)
+- don't show icon on abrtd start/stop rhbz#537630 (jmoskovc@redhat.com)
+- /var/cache/abrt permissions 1775 -> 0775 in spec file (kklic@redhat.com)
+- Daemon properly checks /var/cache/abrt attributes (kklic@redhat.com)
+- abrt user group; used by abrt-pyhook-helper (kklic@redhat.com)
+- pyhook-helper: uid taken from system instead of command line (kklic@redhat.com)
+- KerneloopsSysLog: fix breakage in code which detects abrt marker (vda.linux@googlemail.com)
+- GUI: added support for backtrace rating (jmoskovc@redhat.com)
+- InformAllUsers support. enabled by default for Kerneloops. Tested wuth CCpp. (vda.linux@googlemail.com)
+- abrtd: call res_init() if /etc/resolv.conf or friends were changed rhbz#533589 (vda.linux@googlemail.com)
+- supress errors in python hook to not colide with the running script (jmoskovc@redhat.com)
+
 * Mon Nov  2 2009  Jiri Moskovcak <jmoskovc@redhat.com> 0.0.11-1
 - re-enabled kerneloops
 - abrt-debuginfo-install: download packages one-by-one - better logging (vda.linux@googlemail.com)
