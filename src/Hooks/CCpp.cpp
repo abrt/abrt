@@ -219,7 +219,7 @@ int main(int argc, char** argv)
         {
             /* If abrtd crashes, we don't want to create a _directory_,
              * since that can make new copy of abrtd to process it,
-             * and crash again...
+             * and maybe crash again...
              * On the contrary, mere files are ignored by abrtd.
              */
             snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
@@ -236,7 +236,19 @@ int main(int argc, char** argv)
             return 0;
         }
 
+        /* rhbz#539551: "abrt going crazy when crashing process is respawned".
+         * Do we want to protect against or ameliorate this? How? Ideas:
+         * (1) nice ourself?
+         * (2) check total size of dump dir, if it overflows, either abort dump
+         *     or delete oldest/biggest dumps? [abort would be simpler,
+         *     abrtd already does "delete on overflow" thing]
+         * (3) detect parallel dumps in progress and back off
+         *     (pause/renice further/??)
+         */
+
         char* cmdline = get_cmdline(pid); /* never NULL */
+        const char *signame = strsignal(atoi(signal_str));
+        char *reason = xasprintf("Process was terminated by signal %s (%s)", signal_str, signame ? signame : signal_str);
 
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
         CDebugDump dd;
@@ -244,7 +256,7 @@ int main(int argc, char** argv)
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
-        dd.SaveText(FILENAME_REASON, ssprintf("Process was terminated by signal %s", signal_str).c_str());
+        dd.SaveText(FILENAME_REASON, reason);
 
         int len = strlen(path);
         snprintf(path + len, sizeof(path) - len, "/"FILENAME_COREDUMP);
