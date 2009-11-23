@@ -95,22 +95,14 @@ analyzer plugin.
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
-Requires: %{name}-plugin-kerneloopsreporter = %{version}-%{release}
+Requires: curl
 Requires: %{name} = %{version}-%{release}
 Obsoletes: kerneloops
 Obsoletes: abrt-plugin-kerneloops
 
 %description addon-kerneloops
-This package contains plugins for kernel crashes information collecting.
-
-%package plugin-kerneloopsreporter
-Summary: %{name}'s kerneloops reporter plugin
-Group: System Environment/Libraries
-Requires: curl
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-kerneloopsreporter
-This package contains reporter plugin, that sends, collected by %{name}'s kerneloops
+This package contains plugins for kernel crashes information collecting and
+ reporter plugin, that sends, collected by %{name}'s kerneloops
 addon, information about kernel crashes to specified server, e.g. kerneloops.org.
 
 %package plugin-sqlite3
