@@ -330,15 +330,10 @@ fi
 %files addon-kerneloops
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsScanner.conf
 %{_bindir}/dumpoops
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
-
-%files plugin-kerneloopsreporter
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/KerneloopsReporter.conf
 %{_libdir}/%{name}/libKerneloopsReporter.so*
 %{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
 %{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
