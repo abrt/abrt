@@ -1,8 +1,8 @@
 /*
     CCpp.cpp - the hook for C/C++ crashing program
 
-    Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2009	Zdenek Prikryl (zprikryl@redhat.com)
+    Copyright (C) 2009	RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,17 +19,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 #include "abrtlib.h"
-
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include <syslog.h>
-#include <string>
 
 #define FILENAME_EXECUTABLE     "executable"
 #define FILENAME_CMDLINE        "cmdline"
 #define FILENAME_COREDUMP       "coredump"
 
-#define VAR_RUN_PID_FILE         VAR_RUN"/abrt.pid"
+#define VAR_RUN_PID_FILE        VAR_RUN"/abrt.pid"
 
 static char* get_executable(pid_t pid)
 {
@@ -46,16 +44,71 @@ static char* get_executable(pid_t pid)
     return NULL;
 }
 
+static char *append_escaped(char *start, const char *s)
+{
+    char hex_char_buf[] = "\\x00";
+
+    *start++ = ' ';
+    char *dst = start;
+    const unsigned char *p = (unsigned char *)s;
+
+    while (1)
+    {
+        const unsigned char *old_p = p;
+        while (*p > ' ' && *p <= 0x7e && *p != '\"' && *p != '\'' && *p != '\\')
+            p++;
+        if (dst == start)
+        {
+            if (p != (unsigned char *)s && *p == '\0')
+            {
+                /* entire word does not need escaping and quoting */
+                strcpy(dst, s);
+                dst += strlen(s);
+                return dst;
+            }
+            *dst++ = '\'';
+        }
+
+        strncpy(dst, s, (p - old_p));
+        dst += (p - old_p);
+
+        if (*p == '\0')
+        {
+            *dst++ = '\'';
+            *dst = '\0';
+            return dst;
+        }
+        const char *a;
+        switch (*p)
+        {
+        case '\r': a = "\\r"; break;
+        case '\n': a = "\\n"; break;
+        case '\t': a = "\\t"; break;
+        case '\'': a = "\\\'"; break;
+        case '\"': a = "\\\""; break;
+        case '\\': a = "\\\\"; break;
+        case ' ': a = " "; break;
+        default:
+            hex_char_buf[2] = "0123456789abcdef"[*p >> 4];
+            hex_char_buf[3] = "0123456789abcdef"[*p & 0xf];
+            a = hex_char_buf;
+        }
+        strcpy(dst, a);
+        dst += strlen(a);
+        p++;
+    }
+}
+
 // taken from kernel
 #define COMMAND_LINE_SIZE 2048
-
 static char* get_cmdline(pid_t pid)
 {
-    char path[PATH_MAX];
+    char path[sizeof("/proc/%u/cmdline") + sizeof(int)*3];
     char cmdline[COMMAND_LINE_SIZE];
-    snprintf(path, sizeof(path), "/proc/%u/cmdline", (int)pid);
-    int idx = 0;
+    char escaped_cmdline[COMMAND_LINE_SIZE*4 + 4];
 
+    escaped_cmdline[1] = '\0';
+    sprintf(path, "/proc/%u/cmdline", (int)pid);
     int fd = open(path, O_RDONLY);
     if (fd >= 0)
     {
@@ -64,33 +117,18 @@ static char* get_cmdline(pid_t pid)
 
         if (len > 0)
         {
-            /* In Linux, there is always one trailing NUL byte,
-             * prevent it from being replaced by space below.
-             */
-            if (cmdline[len - 1] == '\0')
-                len--;
-
-            while (idx < len)
+            cmdline[len] = '\0';
+            char *src = cmdline;
+            char *dst = escaped_cmdline;
+            while ((src - cmdline) < len)
             {
-                unsigned char ch = cmdline[idx];
-                if (ch == '\0')
-                {
-                    cmdline[idx++] = ' ';
-                }
-                else if (ch >= ' ' && ch <= 0x7e)
-                {
-                    cmdline[idx++] = ch;
-                }
-                else
-                {
-                    cmdline[idx++] = '?';
-                }
+                dst = append_escaped(dst, src);
+                src += strlen(src) + 1;
             }
         }
     }
-    cmdline[idx] = '\0';
 
-    return xstrdup(cmdline);
+    return xstrdup(escaped_cmdline + 1); /* +1 skips extraneous leading space */
 }
 
 static int daemon_is_ok()
