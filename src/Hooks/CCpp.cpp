@@ -207,18 +207,38 @@ int main(int argc, char** argv)
         {
             error_msg_and_die("can't read /proc/%u/exe link", (int)pid);
         }
-        if (strstr(executable, "/abrt"))
+        if (strstr(executable, "/hookCCpp"))
         {
-            /* free(executable); - why bother? */
-            error_msg_and_die("pid %u is '%s', not dumping it to avoid abrt recursion",
+            error_msg_and_die("pid %u is '%s', not dumping it to avoid recursion",
                             (int)pid, executable);
+        }
+
+        char path[PATH_MAX];
+
+        if (strstr(executable, "/abrtd"))
+        {
+            /* If abrtd crashes, we don't want to create a _directory_,
+             * since that can make new copy of abrtd to process it,
+             * and crash again...
+             * On the contrary, mere files are ignored by abrtd.
+             */
+            snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
+            int fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            off_t size = copyfd_eof(STDIN_FILENO, fd);
+            if (size < 0 || close(fd) != 0)
+            {
+                unlink(path);
+                /* copyfd_eof logs the error including errno string,
+                 * but it does not log file name */
+                error_msg_and_die("error saving coredump to %s", path);
+            }
+            log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
+            return 0;
         }
 
         char* cmdline = get_cmdline(pid); /* never NULL */
 
-        char path[PATH_MAX];
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
-
         CDebugDump dd;
         dd.Create(path, uid);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
@@ -229,12 +249,11 @@ int main(int argc, char** argv)
         int len = strlen(path);
         snprintf(path + len, sizeof(path) - len, "/"FILENAME_COREDUMP);
 
-        int fd;
         /* We need coredumps to be readable by all, because
          * process producing backtraces is run under the same UID
          * as the crashed process.
          * Thus 644, not 600 */
-        fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd < 0)
         {
             dd.Delete();
@@ -254,6 +273,7 @@ int main(int argc, char** argv)
         /* free(executable); - why bother? */
         /* free(cmdline); */
         log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
+        return 0;
     }
     catch (CABRTException& e)
     {
