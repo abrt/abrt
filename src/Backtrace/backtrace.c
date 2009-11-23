@@ -28,11 +28,8 @@ struct frame *frame_new()
   }
 
   f->function = NULL;
-  f->args = NULL;
   f->number = 0;
-  f->binfile = NULL;
   f->sourcefile = NULL;
-  f->crash = false;
   f->next = NULL;
   return f;
 }
@@ -41,10 +38,6 @@ void frame_free(struct frame *f)
 {
   if (f->function)
     free(f->function);
-  if (f->args)
-    free(f->args);
-  if (f->binfile)
-    free(f->binfile);
   if (f->sourcefile)
     free(f->sourcefile);
   free(f);
@@ -145,6 +138,7 @@ struct backtrace *backtrace_new()
   }
 
   bt->threads = NULL;
+  bt->crash = NULL;
 }
 
 void backtrace_free(struct backtrace *bt)
@@ -155,6 +149,9 @@ void backtrace_free(struct backtrace *bt)
     bt->threads = rm->next;
     thread_free(rm);
   }
+
+  if (bt->crash)
+    frame_free(bt->crash);
 
   free(bt);
 }
@@ -174,10 +171,116 @@ static int backtrace_get_thread_count(struct backtrace *bt)
 void backtrace_print_tree(struct backtrace *bt)
 {
   printf("Thread count: %d\n", backtrace_get_thread_count(bt));
+  if (bt->crash)
+  {
+    printf("Crash frame: ");
+    frame_print_tree(bt->crash);
+  }
+
   struct thread *thread = bt->threads;
   while (thread)
   {
     thread_print_tree(thread);
     thread = thread->next;
   }
+}
+
+/*
+ * Checks whether the thread it contains some known "abort" function.
+ * Nonrecursive.
+ */
+static bool thread_contain_abort_frame(struct thread *thread)
+{
+  int depth = 15; /* check only 15 top frames on the stack */
+  struct frame *frame = thread->frames;
+  while (frame && depth)
+  {
+    if (frame->function
+	&& 0 == strcmp(frame->function, "raise") 
+	&& frame->sourcefile 
+	&& 0 == strcmp(frame->sourcefile, "../nptl/sysdeps/unix/sysv/linux/pt-raise.c"))
+    {
+      return true;
+    }
+
+    --depth;
+    frame = frame->next;
+  }
+
+  return false;
+}
+
+/*
+ * Loop through all threads and if a single one contains the crash frame on the top,
+ * return it. Otherwise, return NULL.
+ *
+ * If require_abort is true, it is also required that the thread containing 
+ * the crash frame contains some known "abort" function. In this case there can be
+ * multiple threads with the crash frame on the top, but only one of them might
+ * contain the abort function to succeed.
+ */
+static struct thread *backtrace_find_crash_thread_from_crash_frame(struct thread *first_thread,
+								   struct frame *crash_frame,
+								   bool require_abort)
+{
+  /*
+   * This code can be extended to compare something else when the function
+   * name is not available.
+   */
+  if (!first_thread || !crash_frame || !crash_frame->function)
+    return NULL;
+
+  struct thread *result = NULL;
+  struct thread *thread = first_thread;
+  while (thread)
+  {
+    if (thread->frames 
+	&& thread->frames->function
+	&& 0 == strcmp(thread->frames->funciton, backtrace->crash->function)
+        && (!require_abort || thread_contain_abort_frame(thread)))
+    {
+      if (result == NULL)
+	result = thread;
+      else
+      {
+	/* Second frame with the same function. Failure. */
+	return NULL;
+      }
+    }
+
+    thread = thread->next;
+  }
+  
+  return result;
+}
+
+struct thread *backtrace_find_crash_thread(struct backtrace *backtrace)
+{
+  /* If there is no thread, be silent and report NULL. */
+  if (!backtrace->threads)
+    return NULL;
+  
+  /* If there is just one thread, it is simple. */
+  if (!backtrace->threads->next)
+    return backtrace->threads;
+
+  /* If we have a crash frame *and* there is just one thread which has 
+   * this frame on the top, it is also simple. 
+   */
+  struct thread *thread;
+  thread = backtrace_find_crash_thread_from_crash_frame(backtrace->threads,
+							backtrace->crash, 
+							false);
+  if (thread)
+    return thread;
+
+  /* There are multiple threads with a frame indistinguishable from 
+   * the crash frame on the top of stack.
+   * Try to search for known abort functions.
+   */
+  thread = backtrace_find_crash_thread_from_crash_frame(backtrace->threads,
+							backtrace->crash, 
+							true);
+  
+  return thread; /* result or null */
 }

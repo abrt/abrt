@@ -25,16 +25,10 @@ struct frame
 {
   /* Function name, or NULL. */
   char *function;
-  /* Arguments of the function call, or NULL. */
-  char *args;
   /* Frame number. */
   int number;
-  /* ?? */
-  char *binfile;
-  /* Name of the source file, or NULL. */
+  /* Name of the source file, or binary file, or NULL. */
   char *sourcefile;
-  /* True if this is the frame where the crash happened.  */ 
-  bool crash;
   /* Sibling frame, or NULL if this is the last frame in a thread. */
   struct frame *next;
 };
@@ -50,6 +44,12 @@ struct thread
 struct backtrace
 {
   struct thread *threads;
+  /* 
+   * The frame where the crash happened according to GDB. 
+   * It might be that we can not tell to which thread this frame belongs,
+   * because all threads end with mutually indistinguishable frames.
+   */
+  struct frame *crash;
 };
 
 extern struct frame *frame_new();
@@ -64,6 +64,12 @@ extern struct backtrace *backtrace_new();
 extern void backtrace_free(struct backtrace *bt);
 /* Prints how internal backtrace representation looks to stdout. */
 extern void backtrace_print_tree(struct backtrace *bt);
+
+/* 
+ * Search all threads and tries to find the one that caused the crash. 
+ * It might return NULL if the thread cannot be determined.
+ */
+extern struct thread *backtrace_find_crash_thread(struct backtrace *backtrace);
 
 /* Defined in parser.y. */
 extern struct backtrace *do_parse(FILE *input, bool debug_parser, bool debug_scanner);

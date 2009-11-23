@@ -48,10 +48,18 @@ void yyerror(char const *s)
 /* Bison declarations.  */
 %type <backtrace> backtrace ignoredpart_backtrace
 %type <thread> threads thread
-%type <frame> frames frame
+%type <frame> frames frame frame_head frame_head_1 frame_head_2 frame_head_3 frame_head_4 frame_head_5
 %type <strbuf> identifier hexadecimal_digit_sequence hexadecimal_number file_name file_location function_call function_name digit_sequence frame_address_in_function
-%type <c> nondigit digit hexadecimal_digit file_name_char '(' ')' '+' '-' '/' '.' 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' '_' '0' '1' '2' '3' '4' '5' '6' '7' '8' '9' '\'' '`' ',' '#' '@' '<' '>' '=' ':' '"' ';' ' ' '\n' '\t' '\\' '!' '*' '%' '|' '^' '&' '$'
-%type <num> frame_head
+%type <c> nondigit digit hexadecimal_digit file_name_char 
+          '(' ')' '+' '-' '/' '.' '_' '~'
+          'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 
+          'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 
+          'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 
+          'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' 
+          '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
+          '\'' '`' ',' '#' '@' '<' '>' '=' ':' '"' ';' ' ' 
+          '\n' '\t' '\\' '!' '*' '%' '|' '^' '&' '$'
+%type <num> frame_start
 
 %destructor { thread_free($$); } <thread>
 %destructor { frame_free($$); } <frame>
@@ -69,7 +77,18 @@ backtrace : /* empty */  { $$ = g_backtrace = backtrace_new(); }
 ;
 
 /**/
-ignoredpart_backtrace : threads { $$ = backtrace_new(); $$->threads = $1; }
+ignoredpart_backtrace : frame_head wss threads
+                          { 
+                            $$ = backtrace_new(); 
+                            $$->threads = $3; 
+			    $$->crash = $1;
+                          }
+                      | frame wss threads
+                          { 
+                            $$ = backtrace_new(); 
+                            $$->threads = $3; 
+			    $$->crash = $1;
+                          }
                       | anychar ignoredpart_backtrace { $$ = $2; }
 ;
 
@@ -100,7 +119,14 @@ frames    : frame            { $$ = $1; }
           | frames wsa frame { $$ = frame_add_sibling($1, $3); }
 ;
 
-frame     : frame_head wss function_call wsa keyword_at wss file_location wss variables %dprec 2 
+frame : frame_head_1 wss variables %dprec 2 
+      | frame_head_2 wss variables %dprec 3 
+      | frame_head_3 wss variables %dprec 3 
+      | frame_head_4 wss variables %dprec 1 
+      | frame_head_5 wss variables
+;
+
+frame_head_1 : frame_start wss function_call wsa keyword_at wss file_location
              { 
                $$ = frame_new(); 
                $$->number = $1; 
@@ -108,41 +134,54 @@ frame     : frame_head wss function_call wsa keyword_at wss file_location wss va
                strbuf_free_nobuf($3); 
 	       $$->sourcefile = $7->buf;
                strbuf_free_nobuf($7); 
-             }
-	  | frame_head wss frame_address_in_function wss keyword_at wss file_location wss variables %dprec 3 
-             { 
-               $$ = frame_new(); 
-               $$->number = $1; 
-               $$->function = $3->buf; 
-               strbuf_free_nobuf($3); 
-	       $$->sourcefile = $7->buf;
-               strbuf_free_nobuf($7); 
-             }
-	  | frame_head wss frame_address_in_function wss keyword_from wss file_location wss variables %dprec 3 
-             { 
-               $$ = frame_new(); 
-               $$->number = $1; 
-               $$->function = $3->buf; 
-               strbuf_free_nobuf($3); 
-	       $$->sourcefile = $7->buf;
-               strbuf_free_nobuf($7); 
-             }
-          | frame_head wss frame_address_in_function wss variables %dprec 1 
-             { 
-               $$ = frame_new(); 
-               $$->number = $1; 
-               $$->function = $3->buf; 
-               strbuf_free_nobuf($3); 
-             }
-          | frame_head wss keyword_sighandler wss variables 
-             { 
-               $$ = frame_new(); 
-               $$->number = $1; 
              }
 ;
 
+frame_head_2 : frame_start wss frame_address_in_function wss keyword_at wss file_location
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+               $$->function = $3->buf; 
+               strbuf_free_nobuf($3); 
+	       $$->sourcefile = $7->buf;
+               strbuf_free_nobuf($7); 
+             }
+;
 
-frame_head : '#' digit_sequence 
+frame_head_3 : frame_start wss frame_address_in_function wss keyword_from wss file_location
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+               $$->function = $3->buf; 
+               strbuf_free_nobuf($3); 
+	       $$->sourcefile = $7->buf;
+               strbuf_free_nobuf($7); 
+             }
+;
+
+frame_head_4 : frame_start wss frame_address_in_function
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+               $$->function = $3->buf; 
+               strbuf_free_nobuf($3); 
+             }
+;
+
+frame_head_5 : frame_start wss keyword_sighandler
+             { 
+               $$ = frame_new(); 
+               $$->number = $1; 
+             }
+
+frame_head : frame_head_1 %dprec 2 
+	   | frame_head_2 %dprec 3 
+	   | frame_head_3 %dprec 3 
+           | frame_head_4 %dprec 1 
+           | frame_head_5
+;
+
+frame_start: '#' digit_sequence 
                  { 
                    if (sscanf($2->buf, "%d", &$$) != 1)
 		   {
@@ -168,13 +207,16 @@ file_location : file_name ':' digit_sequence
               | file_name
 ;
 
-variables : variables_char
-          | variables variables_char
-          | variables variables_wss variables_char
-          | variables '\n' variables_char_no_framestart
-          | variables variables_wss '\n' variables_wss variables_char_no_framestart
-          | variables variables_wss '\n' variables_char_no_framestart
-          | variables '\n' variables_wss variables_char_no_framestart
+variables : variables_line '\n'
+          | variables_line variables_wss '\n'
+          | variables variables_line '\n'
+          | variables variables_wss variables_line '\n'
+          | variables variables_wss variables_line variables_wss '\n'
+;
+
+variables_line : variables_char_no_framestart
+               | variables_line variables_char
+               | variables_line variables_wss variables_char
 ;
 
 variables_ws : '\t' | ' '
@@ -184,14 +226,14 @@ variables_wss : variables_ws
               | variables_wss variables_ws
 ;
 
- /* We hope variables in frame never contain # character. */
 variables_char : '#' | variables_char_no_framestart
 ;
 
 variables_char_no_framestart : digit | nondigit | '(' | ')' | '+' | '-' | '<' 
                              | '>' | '"' | '/' | '.' | '[' | ']' | '?' | '\'' 
                              | '`' | ',' | '=' | '{' | '}' | '^' | '&' | '$'
-                             | ':' | ';' | '\\' | '!' | '@' | '*' | '%' | '|'
+                             | ':' | ';' | '\\' | '!' | '@' | '*' | '%' | '|' 
+                             | '~'
 
 function_call : function_name wsa function_args
 ;
@@ -215,8 +257,9 @@ function_args_sequence : function_args_char
                        | function_args_sequence wsa function_args_char
 ;
 
-function_args_char : digit | nondigit | '{' | '}' | '<' | '>' | '"'
-                   | '=' | '-' | '+' | '@' | ',' | '.' | '[' | ']' | '/'
+function_args_char : digit | nondigit | '{' | '}' | '<' | '>' | '"' | ':' | '~'
+                   | '=' | '-' | '+' | '@' | ',' | '.' | '[' | ']' | '/' | '%'
+                   | '\\'
 ;
 
 file_name : file_name_char { $$ = strbuf_new(); strbuf_append_char($$, $1); }
