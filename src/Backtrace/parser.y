@@ -77,19 +77,24 @@ backtrace : /* empty */  { $$ = g_backtrace = backtrace_new(); }
 ;
 
 /**/
-ignoredpart_backtrace : frame_head wss threads
+ignoredpart_backtrace : threads %dprec 2
+                          { 
+                            $$ = backtrace_new(); 
+                            $$->threads = $1; 
+                          }
+                      |  frame_head wss threads %dprec 4
                           { 
                             $$ = backtrace_new(); 
                             $$->threads = $3; 
 			    $$->crash = $1;
                           }
-                      | frame wss threads
+                      | frame wss threads %dprec 3
                           { 
                             $$ = backtrace_new(); 
                             $$->threads = $3; 
 			    $$->crash = $1;
                           }
-                      | anychar ignoredpart_backtrace { $$ = $2; }
+                      | anychar ignoredpart_backtrace %dprec 1 { $$ = $2; }
 ;
 
 anychar   : ws | digit | nondigit | '(' | ')' | '+' | '-' | '#' | '=' | ':' | ';'
@@ -119,11 +124,18 @@ frames    : frame            { $$ = $1; }
           | frames wsa frame { $$ = frame_add_sibling($1, $3); }
 ;
 
-frame : frame_head_1 wss variables %dprec 2 
-      | frame_head_2 wss variables %dprec 3 
-      | frame_head_3 wss variables %dprec 3 
-      | frame_head_4 wss variables %dprec 1 
-      | frame_head_5 wss variables
+frame : frame_head_1 wss variables %dprec 3
+      | frame_head_2 wss variables %dprec 4
+      | frame_head_3 wss variables %dprec 5 
+      | frame_head_4 wss variables %dprec 2 
+      | frame_head_5 wss variables %dprec 1
+;
+
+frame_head : frame_head_1 %dprec 3 
+	   | frame_head_2 %dprec 4 
+	   | frame_head_3 %dprec 5 
+           | frame_head_4 %dprec 2 
+           | frame_head_5 %dprec 1
 ;
 
 frame_head_1 : frame_start wss function_call wsa keyword_at wss file_location
@@ -174,13 +186,6 @@ frame_head_5 : frame_start wss keyword_sighandler
                $$->number = $1; 
 	       $$->signal_handler_called = true;
              }
-
-frame_head : frame_head_1 %dprec 2 
-	   | frame_head_2 %dprec 3 
-	   | frame_head_3 %dprec 3 
-           | frame_head_4 %dprec 1 
-           | frame_head_5
-;
 
 frame_start: '#' digit_sequence 
                  { 
@@ -375,6 +380,7 @@ int yylex()
  * @returns
  *   Backtrace structure. Caller is responsible for calling
  *   backtrace_free() on this.
+ *   Returns NULL when parsing failed.
  */
 struct backtrace *do_parse(FILE *input, bool debug_parser, bool debug_scanner)
 {
@@ -397,9 +403,11 @@ struct backtrace *do_parse(FILE *input, bool debug_parser, bool debug_scanner)
   if (failure)
   {
     if (g_backtrace)
+    {
       backtrace_free(g_backtrace);
-    puts("Error while parsing backtrace.");
-    exit(6);
+      g_backtrace = NULL;
+    }
+    fprintf(stderr, "Error while parsing backtrace.\n");
   }
 
   return g_backtrace;
