@@ -52,7 +52,7 @@ static void add_content(bool &was_multiline, string& description, const char *he
 }
 
 /* Text attachments smaller than this will be also included in descrition */
-#define INLINE_TEXT_ATT_SIZE 1024
+#define INLINE_TEXT_ATT_SIZE (2*1024)
 
 string make_description_bz(const map_crash_report_t& pCrashReport)
 {

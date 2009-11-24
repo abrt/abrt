@@ -99,10 +99,11 @@ static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
     int pipeout[2];
     pid_t child;
 
+    gid_t gid = uid;
     struct passwd* pw = getpwuid(uid);
-    if (!pw)
+    if (pw)
     {
-        throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot get GID for UID.");
+        gid = pw->pw_gid;
     }
 
     xpipe(pipeout);
@@ -124,8 +125,8 @@ static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
-        setgroups(1, &pw->pw_gid);
-        setregid(pw->pw_gid, pw->pw_gid);
+        setgroups(1, &gid);
+        setregid(gid, gid);
         setreuid(uid, uid);
         setsid();
 

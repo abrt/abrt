@@ -29,8 +29,6 @@ dist_pluginsconf_DATA = \
     SQLite3.conf \
     Logger.conf \
     Kerneloops.conf \
-    KerneloopsScanner.conf \
-    KerneloopsReporter.conf \
     Bugzilla.conf \
     Catcut.conf \
     TicketUploader.conf \

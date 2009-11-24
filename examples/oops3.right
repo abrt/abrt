@@ -51,6 +51,8 @@ Call Trace:
 [<ffffffff810116a9>] do_notify_resume+0x2a/0x7c
 [<ffffffff81011fc1>] int_signal+0x12/0x17
 Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6 
+RIP  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
+RSP <ffff88007a7c5ad0>
 
 Version: 2.6.32-0.51.rc7.git2.fc13.x86_64
 general protection fault: 0000 [#1] SMP 
@@ -103,6 +105,8 @@ Call Trace:
 [<ffffffff810116a9>] do_notify_resume+0x2a/0x7c
 [<ffffffff81011fc1>] int_signal+0x12/0x17
 Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6 
+RIP  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
+RSP <ffff88007a3d9ad0>
 
 Version: 2.6.32-0.51.rc7.git2.fc13.x86_64
 general protection fault: 0000 [#1] SMP 
@@ -155,3 +159,5 @@ Call Trace:
 [<ffffffff810116a9>] do_notify_resume+0x2a/0x7c
 [<ffffffff81011fc1>] int_signal+0x12/0x17
 Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6 
+RIP  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
+RSP <ffff88007a3b3ad0>

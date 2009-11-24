@@ -1,8 +1,8 @@
 /*
     CCpp.cpp - the hook for C/C++ crashing program
 
-    Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2009	Zdenek Prikryl (zprikryl@redhat.com)
+    Copyright (C) 2009	RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -19,17 +19,15 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 #include "abrtlib.h"
-
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include <syslog.h>
-#include <string>
 
 #define FILENAME_EXECUTABLE     "executable"
 #define FILENAME_CMDLINE        "cmdline"
 #define FILENAME_COREDUMP       "coredump"
 
-#define VAR_RUN_PID_FILE         VAR_RUN"/abrt.pid"
+#define VAR_RUN_PID_FILE        VAR_RUN"/abrt.pid"
 
 static char* get_executable(pid_t pid)
 {
@@ -46,16 +44,71 @@ static char* get_executable(pid_t pid)
     return NULL;
 }
 
+static char *append_escaped(char *start, const char *s)
+{
+    char hex_char_buf[] = "\\x00";
+
+    *start++ = ' ';
+    char *dst = start;
+    const unsigned char *p = (unsigned char *)s;
+
+    while (1)
+    {
+        const unsigned char *old_p = p;
+        while (*p > ' ' && *p <= 0x7e && *p != '\"' && *p != '\'' && *p != '\\')
+            p++;
+        if (dst == start)
+        {
+            if (p != (unsigned char *)s && *p == '\0')
+            {
+                /* entire word does not need escaping and quoting */
+                strcpy(dst, s);
+                dst += strlen(s);
+                return dst;
+            }
+            *dst++ = '\'';
+        }
+
+        strncpy(dst, s, (p - old_p));
+        dst += (p - old_p);
+
+        if (*p == '\0')
+        {
+            *dst++ = '\'';
+            *dst = '\0';
+            return dst;
+        }
+        const char *a;
+        switch (*p)
+        {
+        case '\r': a = "\\r"; break;
+        case '\n': a = "\\n"; break;
+        case '\t': a = "\\t"; break;
+        case '\'': a = "\\\'"; break;
+        case '\"': a = "\\\""; break;
+        case '\\': a = "\\\\"; break;
+        case ' ': a = " "; break;
+        default:
+            hex_char_buf[2] = "0123456789abcdef"[*p >> 4];
+            hex_char_buf[3] = "0123456789abcdef"[*p & 0xf];
+            a = hex_char_buf;
+        }
+        strcpy(dst, a);
+        dst += strlen(a);
+        p++;
+    }
+}
+
 // taken from kernel
 #define COMMAND_LINE_SIZE 2048
-
 static char* get_cmdline(pid_t pid)
 {
-    char path[PATH_MAX];
+    char path[sizeof("/proc/%u/cmdline") + sizeof(int)*3];
     char cmdline[COMMAND_LINE_SIZE];
-    snprintf(path, sizeof(path), "/proc/%u/cmdline", (int)pid);
-    int idx = 0;
+    char escaped_cmdline[COMMAND_LINE_SIZE*4 + 4];
 
+    escaped_cmdline[1] = '\0';
+    sprintf(path, "/proc/%u/cmdline", (int)pid);
     int fd = open(path, O_RDONLY);
     if (fd >= 0)
     {
@@ -64,33 +117,18 @@ static char* get_cmdline(pid_t pid)
 
         if (len > 0)
         {
-            /* In Linux, there is always one trailing NUL byte,
-             * prevent it from being replaced by space below.
-             */
-            if (cmdline[len - 1] == '\0')
-                len--;
-
-            while (idx < len)
+            cmdline[len] = '\0';
+            char *src = cmdline;
+            char *dst = escaped_cmdline;
+            while ((src - cmdline) < len)
             {
-                unsigned char ch = cmdline[idx];
-                if (ch == '\0')
-                {
-                    cmdline[idx++] = ' ';
-                }
-                else if (ch >= ' ' && ch <= 0x7e)
-                {
-                    cmdline[idx++] = ch;
-                }
-                else
-                {
-                    cmdline[idx++] = '?';
-                }
+                dst = append_escaped(dst, src);
+                src += strlen(src) + 1;
             }
         }
     }
-    cmdline[idx] = '\0';
 
-    return xstrdup(cmdline);
+    return xstrdup(escaped_cmdline + 1); /* +1 skips extraneous leading space */
 }
 
 static int daemon_is_ok()
@@ -169,34 +207,65 @@ int main(int argc, char** argv)
         {
             error_msg_and_die("can't read /proc/%u/exe link", (int)pid);
         }
-        if (strstr(executable, "/abrt"))
+        if (strstr(executable, "/hookCCpp"))
         {
-            /* free(executable); - why bother? */
-            error_msg_and_die("pid %u is '%s', not dumping it to avoid abrt recursion",
+            error_msg_and_die("pid %u is '%s', not dumping it to avoid recursion",
                             (int)pid, executable);
         }
 
-        char* cmdline = get_cmdline(pid); /* never NULL */
-
         char path[PATH_MAX];
-        snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
 
+        if (strstr(executable, "/abrtd"))
+        {
+            /* If abrtd crashes, we don't want to create a _directory_,
+             * since that can make new copy of abrtd to process it,
+             * and maybe crash again...
+             * On the contrary, mere files are ignored by abrtd.
+             */
+            snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
+            int fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            off_t size = copyfd_eof(STDIN_FILENO, fd);
+            if (size < 0 || close(fd) != 0)
+            {
+                unlink(path);
+                /* copyfd_eof logs the error including errno string,
+                 * but it does not log file name */
+                error_msg_and_die("error saving coredump to %s", path);
+            }
+            log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
+            return 0;
+        }
+
+        /* rhbz#539551: "abrt going crazy when crashing process is respawned".
+         * Do we want to protect against or ameliorate this? How? Ideas:
+         * (1) nice ourself?
+         * (2) check total size of dump dir, if it overflows, either abort dump
+         *     or delete oldest/biggest dumps? [abort would be simpler,
+         *     abrtd already does "delete on overflow" thing]
+         * (3) detect parallel dumps in progress and back off
+         *     (pause/renice further/??)
+         */
+
+        char* cmdline = get_cmdline(pid); /* never NULL */
+        const char *signame = strsignal(atoi(signal_str));
+        char *reason = xasprintf("Process was terminated by signal %s (%s)", signal_str, signame ? signame : signal_str);
+
+        snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
         CDebugDump dd;
         dd.Create(path, uid);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
         dd.SaveText(FILENAME_EXECUTABLE, executable);
         dd.SaveText(FILENAME_CMDLINE, cmdline);
-        dd.SaveText(FILENAME_REASON, ssprintf("Process was terminated by signal %s", signal_str).c_str());
+        dd.SaveText(FILENAME_REASON, reason);
 
         int len = strlen(path);
         snprintf(path + len, sizeof(path) - len, "/"FILENAME_COREDUMP);
 
-        int fd;
         /* We need coredumps to be readable by all, because
          * process producing backtraces is run under the same UID
          * as the crashed process.
          * Thus 644, not 600 */
-        fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+        int fd = open(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (fd < 0)
         {
             dd.Delete();
@@ -216,6 +285,7 @@ int main(int argc, char** argv)
         /* free(executable); - why bother? */
         /* free(cmdline); */
         log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
+        return 0;
     }
     catch (CABRTException& e)
     {

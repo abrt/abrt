@@ -205,7 +205,19 @@ void CPluginManager::RegisterPlugin(const char *pName)
             CPlugin* plugin = abrt_plugin->second->PluginNew();
             map_plugin_settings_t pluginSettings;
 
-            LoadPluginSettings(ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, pName).c_str(), pluginSettings);
+            if ((strcmp(pName, "Kerneloops") == 0)
+                || (strcmp(pName, "KerneloopsReporter") == 0)
+                || (strcmp(pName, "KerneloopsScanner") == 0)
+                )
+            {
+                LoadPluginSettings(PLUGINS_CONF_DIR"/Kerneloops."PLUGINS_CONF_EXTENSION, pluginSettings);
+                VERB3 log("Load kerneloops.conf settings");
+            }
+            else
+            {
+                LoadPluginSettings(ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, pName).c_str(), pluginSettings);
+                VERB3 log("Load %s.conf settings", pName);
+            }
             try
             {
                 plugin->Init();

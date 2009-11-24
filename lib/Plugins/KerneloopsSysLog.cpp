@@ -41,11 +41,11 @@ static int extract_version(const char *linepointer, char *version)
 	int ret;
 
 	ret = 0;
-	if ((strstr(linepointer, "Pid") != NULL)
-	 || (strstr(linepointer, "comm") != NULL)
-	 || (strstr(linepointer, "CPU") != NULL)
-	 || (strstr(linepointer, "REGS") != NULL)
-	 || (strstr(linepointer, "EFLAGS") != NULL)
+	if (strstr(linepointer, "Pid")
+	 || strstr(linepointer, "comm")
+	 || strstr(linepointer, "CPU")
+	 || strstr(linepointer, "REGS")
+	 || strstr(linepointer, "EFLAGS")
 	) {
 		char* start;
 		char* end;
@@ -71,6 +71,42 @@ struct line_info {
 	char *ptr;
 	char level;
 };
+static int record_oops(vector_string_t &oopses, struct line_info* lines_info, int oopsstart, int oopsend)
+{
+	int q;
+	int len;
+	int is_version;
+	char *oops;
+	char *version;
+
+	len = 2;
+	for (q = oopsstart; q <= oopsend; q++)
+		len += strlen(lines_info[q].ptr) + 1;
+
+	oops = (char*)xzalloc(len);
+	version = (char*)xzalloc(len);
+
+	is_version = 0;
+	for (q = oopsstart; q <= oopsend; q++) {
+		if (!is_version)
+			is_version = extract_version(lines_info[q].ptr, version);
+		if (lines_info[q].ptr[0]) {
+			strcat(oops, lines_info[q].ptr);
+			strcat(oops, "\n");
+		}
+	}
+	int rv = 1;
+	/* too short oopses are invalid */
+	if (strlen(oops) > 100) {
+		queue_oops(oopses, oops, version);
+	} else {
+		VERB3 log("Dropped oops: too short");
+		rv = 0;
+	}
+	free(oops);
+	free(version);
+	return rv;
+}
 #define REALLOC_CHUNK 1000
 int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 {
@@ -172,12 +208,15 @@ next_line:
 
 	i = 0;
 	while (i < linecount) {
-		char *const curline = lines_info[i].ptr;
+		char *curline = lines_info[i].ptr;
 
 		if (curline == NULL) {
 			i++;
 			continue;
 		}
+		while (*curline == ' ')
+			curline++;
+
 		if (oopsstart < 0) {
 			/* find start-of-oops markers */
 			if (strstr(curline, "general protection fault:"))
@@ -245,7 +284,7 @@ next_line:
 				inbacktrace = 1;
 			else
 			if (strnlen(curline, 9) > 8
-			 && curline[0] == ' ' && curline[1] == '[' && curline[2] == '<'
+			 && curline[0] == '[' && curline[1] == '<'
 			 && strstr(curline, ">]")
 			 && strstr(curline, "+0x")
 			 && strstr(curline, "/0x")
@@ -258,20 +297,19 @@ next_line:
 		else if (oopsstart >= 0 && inbacktrace) {
 			int oopsend = INT_MAX;
 
-			/* The Code: line means we're done with the backtrace */
-			if (strstr(curline, "Code:") != NULL)
-				oopsend = i;
 			/* line needs to start with " [" or have "] [" if it is still a call trace */
 			/* example: "[<ffffffffa006c156>] radeon_get_ring_head+0x16/0x41 [radeon]" */
-			else if ((curline[0] != ' ' || curline[1] != '[')
-			 && curline[0] != '[' /* in syslog format, leading space is lost */
-			 && strstr(curline, "] [") == NULL
-			 && strstr(curline, "--- Exception") == NULL
-			 && strstr(curline, "    LR =") == NULL
-			 && strstr(curline, "<#DF>") == NULL
-			 && strstr(curline, "<IRQ>") == NULL
-			 && strstr(curline, "<EOI>") == NULL
-			 && strstr(curline, "<<EOE>>") == NULL
+			if (curline[0] != '['
+			 && !strstr(curline, "] [")
+			 && !strstr(curline, "--- Exception")
+			 && !strstr(curline, "LR =")
+			 && !strstr(curline, "<#DF>")
+			 && !strstr(curline, "<IRQ>")
+			 && !strstr(curline, "<EOI>")
+			 && !strstr(curline, "<<EOE>>")
+			 && strncmp(curline, "Code: ", 6) != 0
+			 && strncmp(curline, "RIP ", 4) != 0
+			 && strncmp(curline, "RSP ", 4) != 0
 			) {
 				oopsend = i-1; /* not a call trace line */
 			}
@@ -281,53 +319,23 @@ next_line:
 			/* single oopses are of the same loglevel */
 			else if (lines_info[i].level != prevlevel)
 				oopsend = i-1;
-			else if (strstr(curline, "Instruction dump::") != NULL) /* why "::"? is it a typo? */
+			else if (strstr(curline, "Instruction dump::")) /* why "::"? is it a typo? */
 				oopsend = i;
 			/* if a new oops starts, this one has ended */
-			else if (strstr(curline, "WARNING:") != NULL && oopsstart != i)
+			else if (strstr(curline, "WARNING:") && oopsstart != i)
 				oopsend = i-1;
-			else if (strstr(curline, "Unable to handle") != NULL && oopsstart != i)
+			else if (strstr(curline, "Unable to handle") && oopsstart != i)
 				oopsend = i-1;
-			/* kernel end-of-oops marker */
-			else if (strstr(curline, "---[ end trace") != NULL)
-				oopsend = i;
+			/* kernel end-of-oops marker (not including marker itself) */
+			else if (strstr(curline, "---[ end trace"))
+				oopsend = i-1;
 
 			if (oopsend <= i) {
-				int q;
-				int len;
-				int is_version;
-				char *oops;
-				char *version;
-
 				VERB3 log("End of oops at line %d (%d): '%s'", oopsend, i, lines_info[oopsend].ptr);
-
-				len = 2;
-				for (q = oopsstart; q <= oopsend; q++)
-					len += strlen(lines_info[q].ptr) + 1;
-
-				oops = (char*)xzalloc(len);
-				version = (char*)xzalloc(len);
-
-				is_version = 0;
-				for (q = oopsstart; q <= oopsend; q++) {
-					if (!is_version)
-						is_version = extract_version(lines_info[q].ptr, version);
-					if (lines_info[q].ptr[0]) {
-						strcat(oops, lines_info[q].ptr);
-						strcat(oops, "\n");
-					}
-				}
-				/* too short oopses are invalid */
-				if (strlen(oops) > 100) {
-					queue_oops(oopses, oops, version);
+				if (record_oops(oopses, lines_info, oopsstart, oopsend))
 					oopsesfound++;
-				} else {
-					VERB3 log("Dropped oops: too short");
-				}
 				oopsstart = -1;
 				inbacktrace = 0;
-				free(oops);
-				free(version);
 			}
 		}
 
@@ -336,13 +344,13 @@ next_line:
 
 		if (oopsstart >= 0) {
 			/* Do we have a suspiciously long oops? Cancel it */
-			if (i-oopsstart > 50) {
+			if (i-oopsstart > 60) {
 				inbacktrace = 0;
 				oopsstart = -1;
 				VERB3 log("Dropped oops, too long");
 				continue;
 			}
-			if (!inbacktrace && i-oopsstart > 30) {
+			if (!inbacktrace && i-oopsstart > 40) {
 				/*inbacktrace = 0; - already is */
 				oopsstart = -1;
 				VERB3 log("Dropped oops, too long");
@@ -352,43 +360,11 @@ next_line:
 	} /* while (i < linecount) */
 
 	/* process last oops if we have one */
-// TODO: do not duplicate code
-	if (oopsstart >= 0)  {
-		int q;
-		int len;
-		int is_version;
-		char *oops;
-		char *version;
-
+	if (oopsstart >= 0) {
 		int oopsend = i-1;
-
 		VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
-
-		len = 2;
-		while (oopsend > 0 && lines_info[oopsend].ptr == NULL)
-			oopsend--;
-		for (q = oopsstart; q <= oopsend; q++)
-			len += strlen(lines_info[q].ptr) + 1;
-
-		oops = (char*)xzalloc(len);
-		version = (char*)xzalloc(len);
-
-		is_version = 0;
-		for (q = oopsstart; q <= oopsend; q++) {
-			if (!is_version)
-				is_version = extract_version(lines_info[q].ptr, version);
-			strcat(oops, lines_info[q].ptr);
-			strcat(oops, "\n");
-		}
-		/* too short oopses are invalid */
-		if (strlen(oops) > 100) {
-			queue_oops(oopses, oops, version);
+		if (record_oops(oopses, lines_info, oopsstart, oopsend))
 			oopsesfound++;
-		} else {
-			VERB3 log("Dropped oops: too short");
-		}
-		free(oops);
-		free(version);
 	}
 
 	free(lines_info);
