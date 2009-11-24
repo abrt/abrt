@@ -172,6 +172,7 @@ frame_head_5 : frame_start wss keyword_sighandler
              { 
                $$ = frame_new(); 
                $$->number = $1; 
+	       $$->signal_handler_called = true;
              }
 
 frame_head : frame_head_1 %dprec 2 
@@ -329,7 +330,7 @@ wss : ws
     | wss ws
 ;
  
-/* whitespace sequence allowed */
+ /* whitespace sequence allowed */
 wsa : 
     | wss
 ;

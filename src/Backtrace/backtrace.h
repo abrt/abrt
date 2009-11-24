@@ -29,6 +29,7 @@ struct frame
   int number;
   /* Name of the source file, or binary file, or NULL. */
   char *sourcefile;
+  bool signal_handler_called;
   /* Sibling frame, or NULL if this is the last frame in a thread. */
   struct frame *next;
 };
@@ -62,14 +63,30 @@ extern struct thread *thread_add_sibling(struct thread *a, struct thread *b);
 
 extern struct backtrace *backtrace_new();
 extern void backtrace_free(struct backtrace *bt);
+
 /* Prints how internal backtrace representation looks to stdout. */
-extern void backtrace_print_tree(struct backtrace *bt);
+extern void backtrace_print_tree(struct backtrace *backtrace, bool verbose);
+
+/* 
+ * Frees all threads except the one provided as parameters. 
+ * It does not check whether one is a member of backtrace.
+ * Caller must know that.
+ */
+extern void backtrace_remove_threads_except_one(struct backtrace *backtrace, 
+						struct thread *one);
 
 /* 
  * Search all threads and tries to find the one that caused the crash. 
  * It might return NULL if the thread cannot be determined.
  */
 extern struct thread *backtrace_find_crash_thread(struct backtrace *backtrace);
+
+extern void backtrace_limit_frame_depth(struct backtrace *backtrace, int depth);
+
+/*
+ * Exit handlers are all stack frames above  __run_exit_handlers()
+ */
+extern void backtrace_remove_exit_handlers(struct backtrace *backtrace);
 
 /* Defined in parser.y. */
 extern struct backtrace *do_parse(FILE *input, bool debug_parser, bool debug_scanner);

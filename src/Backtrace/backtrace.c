@@ -17,6 +17,7 @@
 */
 #include "backtrace.h"
 #include <stdlib.h>
+#include <string.h>
 
 struct frame *frame_new()
 {
@@ -30,6 +31,7 @@ struct frame *frame_new()
   f->function = NULL;
   f->number = 0;
   f->sourcefile = NULL;
+  f->signal_handler_called = false;
   f->next = NULL;
   return f;
 }
@@ -53,9 +55,13 @@ struct frame *frame_add_sibling(struct frame *a, struct frame *b)
   return a;
 }
 
-static void frame_print_tree(struct frame *frame)
+static void frame_print_tree(struct frame *frame, bool verbose)
 {
-  printf(" #%d", frame->number);
+  if (verbose)
+    printf(" #%d", frame->number);
+  else
+    printf(" ");
+
   if (frame->function)
     printf(" %s", frame->function);
   if (frame->sourcefile)
@@ -65,7 +71,18 @@ static void frame_print_tree(struct frame *frame)
     printf(" %s", frame->sourcefile);
   }
 
+  if (frame->signal_handler_called)
+    printf(" <signal handler called>");
+
   puts(""); /* newline */
+}
+
+static bool frame_is_exit_handler(struct frame *frame)
+{
+  return (frame->function
+	  && frame->sourcefile
+	  && 0 == strcmp(frame->function, "__run_exit_handlers")
+	  && NULL != strstr(frame->sourcefile, "exit.c"));
 }
 
 struct thread *thread_new()
@@ -116,14 +133,72 @@ static int thread_get_frame_count(struct thread *thread)
   return count;
 }
 
-static void thread_print_tree(struct thread *thread)
+static void thread_print_tree(struct thread *thread, bool verbose)
 {
   int framecount = thread_get_frame_count(thread);
-  printf("Thread no. %d (%d frames)\n", thread->number, framecount);
+  if (verbose)
+    printf("Thread no. %d (%d frames)\n", thread->number, framecount);
+  else
+    printf("Thread\n");
   struct frame *frame = thread->frames;
   while (frame)
   {
-    frame_print_tree(frame);
+    frame_print_tree(frame, verbose);
+    frame = frame->next;
+  }
+}
+
+/*
+ * Checks whether the thread it contains some known "abort" function.
+ * If a frame with the function is found, it is returned.
+ * If there are multiple frames with abort function, the lowest 
+ * one is returned.
+ * Nonrecursive.
+ */
+static struct frame *thread_find_abort_frame(struct thread *thread)
+{
+  struct frame *frame = thread->frames;
+  struct frame *result = NULL;
+  while (frame)
+  {
+    if (frame->function && frame->sourcefile)
+    {
+      if (0 == strcmp(frame->function, "raise") 
+	  && NULL != strstr(frame->sourcefile, "pt-raise.c"))
+	result = frame;
+      else if (0 == strcmp(frame->function, "exit")
+	       && NULL != strstr(frame->sourcefile, "exit.c"))
+	result = frame;
+      else if (0 == strcmp(frame->function, "abort")
+	       && NULL != strstr(frame->sourcefile, "abort.c"))
+	result = frame;
+      else if (frame_is_exit_handler(frame))
+	result = frame;
+    }
+  
+    frame = frame->next;
+  }
+
+  return result;
+}
+
+static void thread_remove_exit_handlers(struct thread *thread)
+{
+  struct frame *frame = thread->frames;
+  while (frame)
+  {
+    if (frame_is_exit_handler(frame))
+    {
+      /* Delete all frames from the beginning to this frame. */
+      while (thread->frames != frame)
+      {
+        struct frame *rm = thread->frames;
+        thread->frames = thread->frames->next;
+        frame_free(rm);
+      }
+      return;
+    }
+
     frame = frame->next;
   }
 }
@@ -168,46 +243,38 @@ static int backtrace_get_thread_count(struct backtrace *bt)
   return count;
 }
 
-void backtrace_print_tree(struct backtrace *bt)
+void backtrace_print_tree(struct backtrace *backtrace, bool verbose)
 {
-  printf("Thread count: %d\n", backtrace_get_thread_count(bt));
-  if (bt->crash)
+  if (verbose)
+    printf("Thread count: %d\n", backtrace_get_thread_count(backtrace));
+
+  if (backtrace->crash && verbose)
   {
     printf("Crash frame: ");
-    frame_print_tree(bt->crash);
+    frame_print_tree(backtrace->crash, verbose);
   }
 
-  struct thread *thread = bt->threads;
+  struct thread *thread = backtrace->threads;
   while (thread)
   {
-    thread_print_tree(thread);
+    thread_print_tree(thread, verbose);
     thread = thread->next;
   }
 }
 
-/*
- * Checks whether the thread it contains some known "abort" function.
- * Nonrecursive.
- */
-static bool thread_contain_abort_frame(struct thread *thread)
+void backtrace_remove_threads_except_one(struct backtrace *backtrace, 
+					 struct thread *one)
 {
-  int depth = 15; /* check only 15 top frames on the stack */
-  struct frame *frame = thread->frames;
-  while (frame && depth)
+  while (backtrace->threads)
   {
-    if (frame->function
-	&& 0 == strcmp(frame->function, "raise") 
-	&& frame->sourcefile 
-	&& 0 == strcmp(frame->sourcefile, "../nptl/sysdeps/unix/sysv/linux/pt-raise.c"))
-    {
-      return true;
-    }
-
-    --depth;
-    frame = frame->next;
+    struct thread *rm = backtrace->threads;
+    backtrace->threads = rm->next;
+    if (rm != one)
+      thread_free(rm);
   }
 
-  return false;
+  one->next = NULL;
+  backtrace->threads = one;
 }
 
 /*
@@ -219,25 +286,24 @@ static bool thread_contain_abort_frame(struct thread *thread)
  * multiple threads with the crash frame on the top, but only one of them might
  * contain the abort function to succeed.
  */
-static struct thread *backtrace_find_crash_thread_from_crash_frame(struct thread *first_thread,
-								   struct frame *crash_frame,
+static struct thread *backtrace_find_crash_thread_from_crash_frame(struct backtrace *backtrace,
 								   bool require_abort)
 {
   /*
    * This code can be extended to compare something else when the function
    * name is not available.
    */
-  if (!first_thread || !crash_frame || !crash_frame->function)
+  if (!backtrace->threads || !backtrace->crash || !backtrace->crash->function)
     return NULL;
 
   struct thread *result = NULL;
-  struct thread *thread = first_thread;
+  struct thread *thread = backtrace->threads;
   while (thread)
   {
     if (thread->frames 
 	&& thread->frames->function
-	&& 0 == strcmp(thread->frames->funciton, backtrace->crash->function)
-        && (!require_abort || thread_contain_abort_frame(thread)))
+	&& 0 == strcmp(thread->frames->function, backtrace->crash->function)
+        && (!require_abort || thread_find_abort_frame(thread)))
     {
       if (result == NULL)
 	result = thread;
@@ -268,9 +334,7 @@ struct thread *backtrace_find_crash_thread(struct backtrace *backtrace)
    * this frame on the top, it is also simple. 
    */
   struct thread *thread;
-  thread = backtrace_find_crash_thread_from_crash_frame(backtrace->threads,
-							backtrace->crash, 
-							false);
+  thread = backtrace_find_crash_thread_from_crash_frame(backtrace, false);
   if (thread)
     return thread;
 
@@ -278,9 +342,55 @@ struct thread *backtrace_find_crash_thread(struct backtrace *backtrace)
    * the crash frame on the top of stack.
    * Try to search for known abort functions.
    */
-  thread = backtrace_find_crash_thread_from_crash_frame(backtrace->threads,
-							backtrace->crash, 
-							true);
+  thread = backtrace_find_crash_thread_from_crash_frame(backtrace, true);
   
   return thread; /* result or null */
 }
+
+void backtrace_limit_frame_depth(struct backtrace *backtrace, int depth)
+{
+  if (depth <= 0)
+    return;
+
+  struct thread *thread = backtrace->threads;
+  while (thread)
+  {
+    struct frame *frame = thread_find_abort_frame(thread);
+    if (frame)
+      frame = frame->next; /* Start counting from the frame following the abort fr. */
+    else
+      frame = thread->frames; /* Start counting from the first frame. */
+
+    /* Skip some frames to get the required stack depth. */
+    int i = depth;
+    struct frame *last_frame;
+    while (frame && i)
+    {
+      last_frame = frame;
+      frame = frame->next;
+      --i;
+    }
+
+    /* Delete the remaining frames. */
+    last_frame->next = NULL;
+    while (frame)
+    {
+      struct frame *rm = frame;
+      frame = frame->next;
+      frame_free(rm);
+    }
+
+    thread = thread->next;
+  }
+}
+
+void backtrace_remove_exit_handlers(struct backtrace *backtrace)
+{
+  struct thread *thread = backtrace->threads;
+  while (thread)
+  {
+    thread_remove_exit_handlers(thread);
+    thread = thread->next;
+  }  
+}
+
