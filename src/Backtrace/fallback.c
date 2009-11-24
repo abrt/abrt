@@ -44,7 +44,8 @@ static struct header *header_new()
 /* Recursively frees siblings. */
 static void header_free(struct header *head)
 {
-  strbuf_free(head->text);
+  if (head->text)
+    strbuf_free(head->text);
   if (head->next)
     header_free(head->next);
   free(head);
@@ -189,6 +190,8 @@ struct strbuf *independent_backtrace(FILE *fp)
     loop = loop->next;
   }
 
-  header_free(headers); /* recursive */
+  if (headers)
+    header_free(headers); /* recursive */
+
   return result;
 }
