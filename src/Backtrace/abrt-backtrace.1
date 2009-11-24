@@ -1,0 +1,52 @@
+.TH abrt\-backtrace "1" "23 Nov 2009" ""
+.SH NAME
+abrt\-backtrace \- a backtrace analyzer for abrt
+.SH SYNOPSIS
+.B abrt\-backtrace
+[option]... [FILE]
+.SH DESCRIPTION
+.I abrt\-backtrace
+is a command line tool that analyzes backtraces produced by 
+GDB and provides their textual representation useful for 
+crash duplication detection.
+
+By default, abrt\-backtrace prints the backtrace tree created by
+parsing the input file.
+
+.SH OPTIONS
+.B Basic startup options
+.IP "\-V, \-\-version"
+Displays version of abrt\-backtrace.
+.IP "\-?, \-\-help"
+Print a help message describing all of abrt-backtrace’s command-line options.
+
+.PP
+.B Actions
+.IP "\-i, \-\-independent"
+Prints independent backtrace fallback. The "independent backtrace"
+is used as a fallback internal representation of backtrace
+when the internal parser fails to process the input due to
+unsupported format.
+
+.PP
+.B Various options
+.IP "\-n, \-\-single-thread"
+Removes all threads except the one that caused the crash from 
+the internal representation of the backtrace.
+.IP "\-d=N, \-\-frame-depth=N"
+Display only the top N frames in every thread.
+Frames that are a part of system error handling do not count to the N.
+So more than N frames can be displayed, but N of them are useful for examination.
+N must be larger than 1.
+.IP "\-r, \-\-remove-exit-handlers"
+Do not display exit handlers and frames that comes after them in the backtrace.
+.IP "\-p, \-\-debug-parser"
+Prints debug information when parsing the backtrace.
+.IP "\-s, \-\-debug-scanner"
+Prints debug information when scanning the input file for the parser.
+
+.SH "SEE ALSO"
+.IR abrtd (8),
+.IR abrt.conf (5),
+.IR abrt-cli (1),
+.IR abrt-plugins (7)
