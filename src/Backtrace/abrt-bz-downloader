@@ -47,6 +47,18 @@ for buginfo in buginfos:
     print "Skipping {0} (already exists).".format(filename)
     continue
 
+  # Skip bugs with broken or Python backtraces
+  broken_backtrace_bugs = [ 517116, 518511, 518516, 518708, 518923,
+                            518923, 518981, 519134, 519367, 520287,
+                            521582, 521923, 521953, 522047, 522048,
+                            522973, 523194, 523198, 523226, 523230,
+                            523272, 523274, 523295, 523301, 523328,
+                            523676, 523685, 523686, 523687, 523688,
+                            523866, 523994, 524128, 524294, 524322,
+                            524341, 524700, 524715, 525094, 525674 ]
+  if buginfo.bug_id in broken_backtrace_bugs:
+    continue
+
   # Get backtrace from bug and store it as a file.
   bug = bz.getbug(buginfo.bug_id)
   for attachment in bug.attachments:
