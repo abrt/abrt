@@ -46,6 +46,8 @@ void yyerror(char const *s)
 }
 
 /* Bison declarations.  */
+%token END 0 "end of file"
+
 %type <backtrace> backtrace ignoredpart_backtrace
 %type <thread> threads thread
 %type <frame> frames frame frame_head frame_head_1 frame_head_2 frame_head_3 frame_head_4 frame_head_5
@@ -214,10 +216,15 @@ file_location : file_name ':' digit_sequence
 ;
 
 variables : variables_line '\n'
+          | variables_line END
           | variables_line variables_wss '\n'
+          | variables_line variables_wss END
           | variables variables_line '\n'
+          | variables variables_line END
           | variables variables_wss variables_line '\n'
+          | variables variables_wss variables_line END
           | variables variables_wss variables_line variables_wss '\n'
+          | variables variables_wss variables_line variables_wss END
 ;
 
 variables_line : variables_char_no_framestart
@@ -261,12 +268,26 @@ function_args : '(' wsa ')'
      this must be somehow handled, especially characters ( and ). */
 function_args_sequence : function_args_char
                        | function_args_sequence wsa function_args_char
+                       | function_args_sequence wsa function_args_string
 ;
 
-function_args_char : digit | nondigit | '{' | '}' | '<' | '>' | '"' | ':' | '~'
-                   | '=' | '-' | '+' | '@' | ',' | '.' | '[' | ']' | '/' | '%'
-                   | '\\'
+function_args_string : '"' function_args_string_sequence '"'
 ;
+
+function_args_char : digit | nondigit | '{' | '}' | '<' | '>' | ':' | '~'
+                   | '=' | '-' | '+' | '@' | ',' | '.' | '[' | ']' | '/' | '%'
+                   | '\\' | '&'
+;
+
+function_args_string_sequence : function_args_string_char
+                    | function_args_string_sequence function_args_string_char
+                    | function_args_string_sequence '\t' function_args_string_char
+                    | function_args_string_sequence ' ' function_args_string_char
+;
+
+function_args_string_char : function_args_char | '(' | ')'
+;
+
 
 file_name : file_name_char { $$ = strbuf_new(); strbuf_append_char($$, $1); }
           | file_name file_name_char { $$ = strbuf_append_char($1, $2); }
