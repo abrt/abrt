@@ -227,7 +227,7 @@ variables_line : variables_char_no_framestart
 variables_char : '#' | variables_char_no_framestart
 ;
 
-/* Manually synchronized with function_args_char. */
+/* Manually synchronized with function_args_char, except the first line. */
 variables_char_no_framestart : digit | nondigit | '"' | '(' | ')'
                              | '+' | '-' | '<' | '>' | '/' | '.' 
                              | '[' | ']' | '?' | '\'' | '`' | ',' 
@@ -258,12 +258,14 @@ function_args_sequence : function_args_char
                        | function_args_sequence wsa function_args_string
 ;
 
-function_args_string : '"' function_args_string_sequence '"'
-                     | '"' '"'
+function_args_string : '"' wsa function_args_string_sequence wsa '"'
+                     | '"' wsa '"'
 ;
 
-/* Manually synchronized with variables_char_no_framestart. */
-function_args_char : digit | nondigit 
+/* Manually synchronized with variables_char_no_framestart,
+ * except the first line. 
+ */
+function_args_char : digit | nondigit | '#'
                    | '+' | '-' | '<' | '>' | '/' | '.' 
                    | '[' | ']' | '?' | '\'' | '`' | ',' 
                    | '=' | '{' | '}' | '^' | '&' | '$'
