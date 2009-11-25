@@ -17,7 +17,8 @@ abrt_cli_CPPFLAGS = \
 #    $(GTK_CFLAGS)
 
 abrt_cli_LDADD = \
-    ../../lib/Utils/libABRTUtils.la
+    ../../lib/Utils/libABRTUtils.la \
+    ../../lib/Utils/libABRTdUtils.la
 
 man_MANS = abrt-cli.1
 EXTRA_DIST = $(man_MANS)
