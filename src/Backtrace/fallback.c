@@ -19,9 +19,6 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-/* Too large files are trimmed. */
-#define FILE_SIZE_LIMIT 10000000 /* ~ 10 MB */
-
 struct header
 {
   struct strbuf *text;
@@ -70,30 +67,8 @@ static void header_set_insert(struct header *cur, struct strbuf *new)
   header_set_insert(cur->next, new);
 }
 
-struct strbuf *independent_backtrace(FILE *fp)
+struct strbuf *independent_backtrace(char *input)
 {
-  long pos = ftell(fp);
-  fseek(fp, 0, SEEK_END);
-  long size = ftell(fp) - pos;
-  fseek(fp, pos, SEEK_SET);
-
-  /* Silently handle large files. */
-  if (size > FILE_SIZE_LIMIT)
-    size = FILE_SIZE_LIMIT;
-
-  char *contents = malloc(size);
-  if (!contents)
-  {
-    puts("Error while allocating memory for independent backtrace.");
-    exit(5);
-  }
-
-  if (fread(contents, size, 1, fp) != 1)
-  {
-    puts("Error while reading input file.");
-    exit(6);
-  }
-
   struct strbuf *header = strbuf_new();
   bool in_bracket = false;
   bool in_quote = false;
@@ -104,7 +79,7 @@ struct strbuf *independent_backtrace(FILE *fp)
   bool has_bracket = false;
   struct header *headers = NULL;
 
-  const char *bk = contents;
+  const char *bk = input;
   while (*bk)
   {
     if (bk[0] == '#'
@@ -179,7 +154,6 @@ struct strbuf *independent_backtrace(FILE *fp)
   }
   
   strbuf_free(header);
-  free(contents);
 
   struct strbuf *result = strbuf_new();
   struct header *loop = headers;

@@ -89,6 +89,6 @@ extern void backtrace_limit_frame_depth(struct backtrace *backtrace, int depth);
 extern void backtrace_remove_exit_handlers(struct backtrace *backtrace);
 
 /* Defined in parser.y. */
-extern struct backtrace *do_parse(FILE *input, bool debug_parser, bool debug_scanner);
+extern struct backtrace *do_parse(char *input, bool debug_parser, bool debug_scanner);
 
 #endif

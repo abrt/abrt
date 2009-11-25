@@ -27,6 +27,6 @@
  *   The independent backtrace. Caller is responsible for calling
  *   strbuf_free() on it.
  */
-extern struct strbuf *independent_backtrace(FILE *fp);
+extern struct strbuf *independent_backtrace(char *input);
 
 #endif

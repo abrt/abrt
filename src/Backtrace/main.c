@@ -20,9 +20,13 @@
 #include <argp.h>
 #include <stdlib.h>
 #include <sysexits.h>
+#include <string.h>
 #include "config.h"
 #include "backtrace.h"
 #include "fallback.h"
+
+/* Too large files are trimmed. */
+#define FILE_SIZE_LIMIT 20000000 /* ~ 20 MB */
 
 #define EX_PARSINGFAILED EX__MAX + 1
 #define EX_THREADDETECTIONFAILED EX__MAX + 2
@@ -125,7 +129,7 @@ int main(int argc, char **argv)
   arguments.filename = 0;
   argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
-  /* Open input file and parse it. */
+  /* Open input file, and parse it. */
   FILE *fp = fopen(arguments.filename, "r");
   if (!fp)
   {
@@ -133,33 +137,85 @@ int main(int argc, char **argv)
     exit(EX_NOINPUT); /* No such file or directory */
   }
 
+  /* Header and footer of the backtrace is stripped to simplify the parser. 
+   * A drawback is that the backtrace must be loaded to memory.
+   */
+  fseek(fp, 0, SEEK_END);
+  size_t size = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
+
+  if (size > FILE_SIZE_LIMIT)
+  {
+    fprintf(stderr, "Input file too big (%zd). Maximum size is %zd", 
+	    size, FILE_SIZE_LIMIT);
+    exit(EX_IOERR);
+  }
+
+  char *bttext = malloc(size + 1);
+  if (1 != fread(bttext, size, 1, fp))
+  {
+    fprintf(stderr, "Unable to read from '%s'.\n", arguments.filename);
+    exit(EX_IOERR); /* IO Error */
+  }
+  
+  bttext[size] = '\0';
+  fclose(fp);
+
   /* Print independent backtrace and exit. */
   if (arguments.independent)
   {
-    struct strbuf *ibt = independent_backtrace(fp);
-    fclose(fp);
+    struct strbuf *ibt = independent_backtrace(bttext);
     puts(ibt->buf);
     strbuf_free(ibt);
+    free(bttext);
     return 0; /* OK */
   }
 
+  /* Skip the backtrace header information. */
+  char *btnoheader_a = strstr(bttext, "\nThread ");
+  char *btnoheader_b = strstr(bttext, "#");
+  char *btnoheader = bttext;
+  if (btnoheader < btnoheader_a)
+    btnoheader = btnoheader_a + 1;
+  if (btnoheader < btnoheader_b)
+    btnoheader = btnoheader_b;
+
+  /* Cut the backtrace footer.
+   * Footer: lines not starting with # or "Thread", and separated from
+   * the backtrace body by a newline. 
+   */
+  int i;
+  for (i = size - 1; i > 0; --i)
+  {
+    if (bttext[i] != '\n')
+      continue;
+    if (strncmp(bttext + i + 1, "Thread", strlen("Thread")) == 0)
+      break;
+    if (bttext[i + 1] == '#')
+      break;
+    if (bttext[i - 1] == '\n')
+    {
+      bttext[i] = '\0';
+      break;
+    }
+  }
+  
   /* Try to parse the backtrace. */
   struct backtrace *backtrace;
-  backtrace = do_parse(fp, arguments.debug_parser, arguments.debug_scanner);
+  backtrace = do_parse(btnoheader, arguments.debug_parser, arguments.debug_scanner);
 
   /* If the parser failed print independent backtrace. */
   if (!backtrace)
   {
-    fseek(fp, 0, SEEK_SET);
-    struct strbuf *ibt = independent_backtrace(fp);
-    fclose(fp);
+    struct strbuf *ibt = independent_backtrace(bttext);
     puts(ibt->buf);
     strbuf_free(ibt);
-    /* PARSING FAILED, BUT OUTPUT CAN BE USED */
+    free(bttext);
+    /* Parsing failed, but the output can be used. */
     return EX_PARSINGFAILED; 
   }
 
-  fclose(fp);
+  free(bttext);
 
   /* If a single thread is requested, remove all other threads. */
   int retval = 0;

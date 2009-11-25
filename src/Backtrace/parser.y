@@ -48,7 +48,7 @@ void yyerror(char const *s)
 /* Bison declarations.  */
 %token END 0 "end of file"
 
-%type <backtrace> backtrace ignoredpart_backtrace
+%type <backtrace> backtrace
 %type <thread> threads thread
 %type <frame> frames frame frame_head frame_head_1 frame_head_2 frame_head_3 frame_head_4 frame_head_5
 %type <strbuf> identifier hexadecimal_digit_sequence hexadecimal_number file_name file_location function_call function_name digit_sequence frame_address_in_function
@@ -74,33 +74,25 @@ void yyerror(char const *s)
 
 %% /* The grammar follows.  */
 
-backtrace : /* empty */  { $$ = g_backtrace = backtrace_new(); }
-          | ignoredpart_backtrace wsa { $$ = g_backtrace = $1; }
-;
-
-/**/
-ignoredpart_backtrace : threads %dprec 2
-                          { 
-                            $$ = backtrace_new(); 
-                            $$->threads = $1; 
-                          }
-                      |  frame_head wss threads %dprec 4
-                          { 
-                            $$ = backtrace_new(); 
-                            $$->threads = $3; 
-			    $$->crash = $1;
-                          }
-                      | frame wss threads %dprec 3
-                          { 
-                            $$ = backtrace_new(); 
-                            $$->threads = $3; 
-			    $$->crash = $1;
-                          }
-                      | anychar ignoredpart_backtrace %dprec 1 { $$ = $2; }
-;
-
-anychar   : ws | digit | nondigit | '(' | ')' | '+' | '-' | '#' | '=' | ':' | ';'
-          | '/' | '.' | '[' | ']' | '?' | '\'' | '`' | ',' | '<' | '>' | '"'
+backtrace : /* empty */ %dprec 1 
+             { $$ = g_backtrace = backtrace_new(); }
+          | threads wsa %dprec 2
+             { 
+               $$ = g_backtrace = backtrace_new(); 
+               $$->threads = $1; 
+             }
+          |  frame_head wss threads wsa %dprec 4
+             { 
+               $$ = g_backtrace = backtrace_new(); 
+               $$->threads = $3; 
+               $$->crash = $1;
+             }
+          | frame wss threads wsa %dprec 3
+             { 
+               $$ = g_backtrace = backtrace_new(); 
+               $$->threads = $3; 
+               $$->crash = $1;
+             }
 ;
 
 threads   : thread             { $$ = $1; }
@@ -217,36 +209,32 @@ file_location : file_name ':' digit_sequence
 
 variables : variables_line '\n'
           | variables_line END
-          | variables_line variables_wss '\n'
-          | variables_line variables_wss END
+          | variables_line wss_nonl '\n'
+          | variables_line wss_nonl END
           | variables variables_line '\n'
           | variables variables_line END
-          | variables variables_wss variables_line '\n'
-          | variables variables_wss variables_line END
-          | variables variables_wss variables_line variables_wss '\n'
-          | variables variables_wss variables_line variables_wss END
+          | variables wss_nonl variables_line '\n'
+          | variables wss_nonl variables_line END
+          | variables wss_nonl variables_line wss_nonl '\n'
+          | variables wss_nonl variables_line wss_nonl END
 ;
 
 variables_line : variables_char_no_framestart
                | variables_line variables_char
-               | variables_line variables_wss variables_char
-;
-
-variables_ws : '\t' | ' '
-;
-
-variables_wss : variables_ws
-              | variables_wss variables_ws
+               | variables_line wss_nonl variables_char
 ;
 
 variables_char : '#' | variables_char_no_framestart
 ;
 
-variables_char_no_framestart : digit | nondigit | '(' | ')' | '+' | '-' | '<' 
-                             | '>' | '"' | '/' | '.' | '[' | ']' | '?' | '\'' 
-                             | '`' | ',' | '=' | '{' | '}' | '^' | '&' | '$'
-                             | ':' | ';' | '\\' | '!' | '@' | '*' | '%' | '|' 
-                             | '~'
+/* Manually synchronized with function_args_char. */
+variables_char_no_framestart : digit | nondigit | '"' | '(' | ')'
+                             | '+' | '-' | '<' | '>' | '/' | '.' 
+                             | '[' | ']' | '?' | '\'' | '`' | ',' 
+                             | '=' | '{' | '}' | '^' | '&' | '$'
+                             | ':' | ';' | '\\' | '!' | '@' | '*' 
+                             | '%' | '|' | '~'
+;
 
 function_call : function_name wsa function_args
 ;
@@ -263,20 +251,24 @@ function_args : '(' wsa ')'
               | '(' wsa function_args_sequence wsa ')'
 ;
 
-  /* TODO: function arguments can contain strings in "". As the string can 
-     contain any ascii-visible character (nonvisible chars are escaped),
-     this must be somehow handled, especially characters ( and ). */
 function_args_sequence : function_args_char
+                       | function_args_sequence wsa '(' wsa ')'
+                       | function_args_sequence wsa '(' wsa function_args_sequence wsa ')'
                        | function_args_sequence wsa function_args_char
                        | function_args_sequence wsa function_args_string
 ;
 
 function_args_string : '"' function_args_string_sequence '"'
+                     | '"' '"'
 ;
 
-function_args_char : digit | nondigit | '{' | '}' | '<' | '>' | ':' | '~'
-                   | '=' | '-' | '+' | '@' | ',' | '.' | '[' | ']' | '/' | '%'
-                   | '\\' | '&'
+/* Manually synchronized with variables_char_no_framestart. */
+function_args_char : digit | nondigit 
+                   | '+' | '-' | '<' | '>' | '/' | '.' 
+                   | '[' | ']' | '?' | '\'' | '`' | ',' 
+                   | '=' | '{' | '}' | '^' | '&' | '$'
+                   | ':' | ';' | '\\' | '!' | '@' | '*' 
+                   | '%' | '|' | '~'
 ;
 
 function_args_string_sequence : function_args_string_char
@@ -348,7 +340,16 @@ nondigit : 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k'
 ;
 
  /* whitespace */
-ws : '\t' | ' ' | '\n' | '\r'
+ws : ws_nonl | '\n' | '\r'
+;
+
+ /* No newline.*/
+ws_nonl : '\t' | ' '
+;
+
+ /* whitespace sequence without a newline */
+wss_nonl : ws_nonl
+         | wss_nonl ws_nonl
 ;
 
  /* whitespace sequence */
@@ -379,13 +380,14 @@ keyword_sighandler: '<' 's' 'i' 'g' 'n' 'a' 'l' ' ' 'h' 'a' 'n' 'd' 'l' 'e' 'r' 
 %%
 
 static bool scanner_echo = false;
-static FILE *yyin;
+static char *yyin;
 
 int yylex()
 {
-  int c = fgetc(yyin);
-  if (c == EOF)
-    return 0;
+  char c = *yyin;
+  if (c == '\0')
+    return END;
+  ++yyin;
 
   /* Debug output. */
   if (scanner_echo)
@@ -403,7 +405,7 @@ int yylex()
  *   backtrace_free() on this.
  *   Returns NULL when parsing failed.
  */
-struct backtrace *do_parse(FILE *input, bool debug_parser, bool debug_scanner)
+struct backtrace *do_parse(char *input, bool debug_parser, bool debug_scanner)
 {
   /* Prepare for running parser. */
   g_backtrace = 0;
