@@ -520,13 +520,6 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     return ret;
 }
 
-void DeleteDebugDumpDir(const char *pDebugDumpDir)
-{
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    dd.Delete();
-}
-
 std::string DeleteCrashInfo(const char *pUUID,
                                          const char *pUID)
 {

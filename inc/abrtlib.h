@@ -208,6 +208,11 @@ bool string_to_bool(const char *s);
 std::string ssprintf(const char *format, ...);
 std::string get_home_dir(int uid);
 std::string concat_path_file(const char *path, const char *filename);
+double get_dirsize(const char *pPath);
+double get_dirsize_find_largest_dir(
+                const char *pPath,
+                std::string *worst_dir = NULL,
+                const char *excluded = NULL);
 
 template <class T>
 std::string

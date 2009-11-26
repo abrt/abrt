@@ -41,6 +41,7 @@
 #include "abrtlib.h"
 #include "ABRTException.h"
 #include "CrashWatcher.h"
+#include "DebugDump.h"
 #include "Daemon.h"
 
 
@@ -117,53 +118,6 @@ static bool s_exiting;
 
 CCommLayerServer* g_pCommLayer;
 
-
-static double GetDirSize(const std::string &pPath, std::string *worst_dir = NULL, const char *excluded = NULL)
-{
-    DIR *dp = opendir(pPath.c_str());
-    if (dp == NULL)
-        return 0;
-
-    struct dirent *ep;
-    struct stat stats;
-    double size = 0;
-    double maxsz = 0;
-    while ((ep = readdir(dp)) != NULL)
-    {
-        if (dot_or_dotdot(ep->d_name))
-            continue;
-        std::string dname = pPath + "/" + ep->d_name;
-        if (lstat(dname.c_str(), &stats) != 0)
-            continue;
-        if (S_ISDIR(stats.st_mode))
-        {
-            double sz = GetDirSize(dname);
-            size += sz;
-
-            if (worst_dir && strcmp(excluded, ep->d_name) != 0)
-            {
-                /* Calculate "weighted" size and age
-                 * w = sz_kbytes * age_mins */
-                sz /= 1024;
-                long age = (time(NULL) - stats.st_mtime) / 60;
-                if (age > 0)
-                    sz *= age;
-
-                if (sz > maxsz)
-                {
-                    maxsz = sz;
-                    *worst_dir = ep->d_name;
-                }
-            }
-        }
-        else if (S_ISREG(stats.st_mode))
-        {
-            size += stats.st_size;
-        }
-    }
-    closedir(dp);
-    return size;
-}
 
 static void cron_delete_callback_data_cb(gpointer data)
 {
@@ -385,7 +339,7 @@ static void FindNewDumps(const char* pPath)
                 case MW_REPORTED:
                 case MW_OCCURED:
                     VERB1 log("Already saved crash %s, deleting", itt->c_str());
-                    DeleteDebugDumpDir(itt->c_str());
+                    delete_debug_dump_dir(itt->c_str());
                     break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
@@ -394,7 +348,7 @@ static void FindNewDumps(const char* pPath)
                 case MW_FILE_ERROR:
                 default:
                     log("Corrupted or bad crash %s (res:%d), deleting", itt->c_str(), (int)res);
-                    DeleteDebugDumpDir(itt->c_str());
+                    delete_debug_dump_dir(itt->c_str());
                     break;
             }
         }
@@ -513,12 +467,12 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
         std::string worst_dir;
         while (g_settings_nMaxCrashReportsSize > 0
-         && GetDirSize(DEBUG_DUMPS_DIR, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
+         && get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
          && worst_dir != ""
         ) {
             log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir.c_str());
             g_pCommLayer->QuotaExceed(_("Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
-            DeleteDebugDumpDir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
+            delete_debug_dump_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
             worst_dir = "";
         }
 
@@ -554,7 +508,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 case MW_FILE_ERROR:
                 default:
                     log("Corrupted or bad crash, deleting");
-                    DeleteDebugDumpDir(fullname.c_str());
+                    delete_debug_dump_dir(fullname.c_str());
                     break;
             }
         }

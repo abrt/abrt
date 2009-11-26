@@ -29,6 +29,8 @@
 
 #define VAR_RUN_PID_FILE        VAR_RUN"/abrt.pid"
 
+using namespace std;
+
 static char* get_executable(pid_t pid)
 {
     char buf[PATH_MAX + 1];
@@ -282,9 +284,58 @@ int main(int argc, char** argv)
              * but it does not log file name */
             error_msg_and_die("error saving coredump to %s", path);
         }
-        /* free(executable); - why bother? */
-        /* free(cmdline); */
+        free(executable);
+        free(cmdline);
         log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
+        path[len] = '\0'; /* path now contains directory name */
+
+        /* We close dumpdir before we start catering for crash storm case.
+         * Otherwise, delete_debug_dump_dir's from other concurrent
+         * CCpp's won't be able to delete our dump (their delete_debug_dump_dir
+         * will wait for us), and we won't be able to delete their dumps.
+         * Classic deadlock.
+         */
+        dd.Close();
+
+        /* Get it from abrt.conf */
+        unsigned setting_MaxCrashReportsSize = 0;
+        FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
+        if (fp)
+        {
+            char line[256];
+            while (fgets(line, sizeof(line), fp) != NULL)
+            {
+                const char *p = skip_whitespace(line);
+                if (strncmp(p, "MaxCrashReportsSize", sizeof("MaxCrashReportsSize")-1) == 0)
+                {
+                    p = skip_whitespace(p + sizeof("MaxCrashReportsSize")-1);
+                    if (*p != '=')
+                        continue;
+                    p = skip_whitespace(p + 1);
+                    if (isdigit(*p))
+                        setting_MaxCrashReportsSize = (unsigned long)atoi(p);
+                    continue;
+                }
+                /* add more 'if (strncmp(p, "xx", sizeof("xx")-1) == 0)' here... */
+            }
+            fclose(fp);
+        }
+        if (setting_MaxCrashReportsSize > 0)
+        {
+            string worst_dir;
+            while (1)
+            {
+                const char *base_dirname = strrchr(path, '/') + 1; /* never NULL */
+                /* We exclude our own dump from candidates for deletion (3rd param): */
+                double dirsize = get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, base_dirname);
+                if (dirsize / (1024*1024) < setting_MaxCrashReportsSize || worst_dir == "")
+                    break;
+                log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir.c_str());
+                delete_debug_dump_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
+                worst_dir = "";
+            }
+        }
+
         return 0;
     }
     catch (CABRTException& e)

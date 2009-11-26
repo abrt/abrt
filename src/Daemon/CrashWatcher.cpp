@@ -20,6 +20,7 @@
 #include "abrtlib.h"
 #include "Daemon.h"
 #include "ABRTException.h"
+#include "DebugDump.h"
 #include "CrashWatcher.h"
 
 void CCrashWatcher::Status(const char *pMessage, const char* peer, uint64_t pJobID)
@@ -75,7 +76,7 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
                     error_msg("Can't open file in dump directory for UUID %s, deleting", uuid);
                     {
                         std::string debugDumpDir = DeleteCrashInfo(uuid, uid);
-                        DeleteDebugDumpDir(debugDumpDir.c_str());
+                        delete_debug_dump_dir(debugDumpDir.c_str());
                     }
                     break;
                 default:
@@ -132,7 +133,7 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
         default:
             error_msg("Corrupted crash with UUID %s, deleting", pUUID);
             std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-            DeleteDebugDumpDir(debugDumpDir.c_str());
+            delete_debug_dump_dir(debugDumpDir.c_str());
             break;
     }
     return crashReport;
@@ -211,7 +212,7 @@ bool DeleteDebugDump(const char *pUUID, const char *pUID)
     try
     {
         std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-        DeleteDebugDumpDir(debugDumpDir.c_str());
+        delete_debug_dump_dir(debugDumpDir.c_str());
     }
     catch (CABRTException& e)
     {

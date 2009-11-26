@@ -76,4 +76,10 @@ class CDebugDump
         bool GetNextFile(std::string *short_name, std::string *full_name);
 };
 
-#endif /*DEBUGDUMP_H_*/
+/**
+ * Deletes particular debugdump directory.
+ * @param pDebugDumpDir A debugdump directory.
+ */
+void delete_debug_dump_dir(const char *pDebugDumpDir);
+
+#endif
