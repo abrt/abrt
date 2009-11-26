@@ -242,6 +242,8 @@ variables : variables_line '\n'
           | variables_line wss_nonl END
           | variables variables_line '\n'
           | variables variables_line END
+          | variables variables_line wss_nonl '\n'
+          | variables variables_line wss_nonl END
           | variables wss_nonl variables_line '\n'
           | variables wss_nonl variables_line END
           | variables wss_nonl variables_line wss_nonl '\n'
