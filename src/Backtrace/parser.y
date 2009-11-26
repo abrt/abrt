@@ -49,19 +49,44 @@ void yyerror(char const *s)
 %token END 0 "end of file"
 
 %type <backtrace> backtrace
-%type <thread> threads thread
-%type <frame> frames frame frame_head frame_head_1 frame_head_2 frame_head_3 frame_head_4 frame_head_5
-%type <strbuf> identifier hexadecimal_digit_sequence hexadecimal_number file_name file_location function_call function_name digit_sequence frame_address_in_function
-%type <c> nondigit digit hexadecimal_digit file_name_char 
-          '(' ')' '+' '-' '/' '.' '_' '~'
-          'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 
-          'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 
-          'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 
-          'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' 
-          '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
-          '\'' '`' ',' '#' '@' '<' '>' '=' ':' '"' ';' ' ' 
-          '\n' '\t' '\\' '!' '*' '%' '|' '^' '&' '$'
-%type <num> frame_start
+%type <thread> threads 
+               thread
+%type <frame>  frames 
+               frame 
+               frame_head 
+               frame_head_1 
+               frame_head_2 
+               frame_head_3 
+               frame_head_4 
+               frame_head_5
+%type <strbuf> identifier 
+               hexadecimal_digit_sequence 
+               hexadecimal_number 
+               file_name 
+               file_location 
+               function_call 
+               function_name 
+               digit_sequence 
+               frame_address_in_function
+               identifier_braces
+               identifier_braces_inside
+%type <c>      nondigit 
+               digit 
+               hexadecimal_digit 
+               file_name_char 
+               identifier_char 
+               identifier_braces_inside_char
+               ws
+               ws_nonl
+               '(' ')' '+' '-' '/' '.' '_' '~' '[' ']'
+               'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 
+               'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 
+               'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 
+               'O' 'P' 'Q' 'R' 'S' 'T' 'U' 'V' 'W' 'X' 'Y' 'Z' 
+               '0' '1' '2' '3' '4' '5' '6' '7' '8' '9'
+               '\'' '`' ',' '#' '@' '<' '>' '=' ':' '"' ';' ' ' 
+               '\n' '\t' '\\' '!' '*' '%' '|' '^' '&' '$'
+%type <num>    frame_start
 
 %destructor { thread_free($$); } <thread>
 %destructor { frame_free($$); } <frame>
@@ -236,7 +261,7 @@ variables_char_no_framestart : digit | nondigit | '"' | '(' | ')'
                              | '%' | '|' | '~'
 ;
 
-function_call : function_name wsa function_args
+function_call : function_name wss function_args
 ;
 
 function_name : identifier
@@ -275,8 +300,7 @@ function_args_char : digit | nondigit | '#'
 
 function_args_string_sequence : function_args_string_char
                     | function_args_string_sequence function_args_string_char
-                    | function_args_string_sequence '\t' function_args_string_char
-                    | function_args_string_sequence ' ' function_args_string_char
+                    | function_args_string_sequence wss_nonl function_args_string_char
 ;
 
 function_args_string_char : function_args_char | '(' | ')'
@@ -290,13 +314,67 @@ file_name : file_name_char { $$ = strbuf_new(); strbuf_append_char($$, $1); }
 file_name_char : digit | nondigit | '-' | '+' | '/' | '.'
 ;
 
- /* Mangled function name.  */
-identifier : nondigit  { $$ = strbuf_new(); strbuf_append_char($$, $1); }
-           | identifier nondigit { $$ = strbuf_append_char($1, $2); }
-           | identifier digit { $$ = strbuf_append_char($1, $2); }
-           | identifier '@' { $$ = strbuf_append_char($1, $2); }
-           | identifier '.' { $$ = strbuf_append_char($1, $2); }
-           | identifier ':' { $$ = strbuf_append_char($1, $2); }
+ /* Function name, sometimes mangled.  
+  * Example: something@GLIB_2_2
+  * CClass::operator=
+  */
+identifier : nondigit  
+              {
+		$$ = strbuf_new(); 
+		strbuf_append_char($$, $1); 
+	      }
+           | identifier_braces /* e.g. (anonymous namespace)::WorkerThread */
+           | identifier identifier_char 
+	      { $$ = strbuf_append_char($1, $2); }
+           | identifier identifier_braces 
+              { 
+		$$ = strbuf_append_str($1, $2->buf); 
+		strbuf_free($2);
+	      }
+;
+
+/* Most of the special characters are required to support C++ 
+ * operator overloading.
+ */
+identifier_char : digit | nondigit | '@' | '.' | ':' | '=' 
+		| '!' | '>' | '<' | '*' | '+' | '-' | '[' | ']'
+                | '~' | '&' | '/' | '%' | '^'
+                | '|' | ','
+;
+
+identifier_braces : '(' ')'
+                      {
+			$$ = strbuf_new();
+			strbuf_append_char($$, $1);
+			strbuf_append_char($$, $2);
+		      }
+                  | '(' identifier_braces_inside ')' 
+                      {
+			$$ = strbuf_new();
+			strbuf_append_char($$, $1);
+			strbuf_append_str($$, $2->buf);
+			strbuf_free($2);
+			strbuf_append_char($$, $3);
+                      }
+;
+
+identifier_braces_inside : identifier_braces_inside_char 
+                            {
+	                      $$ = strbuf_new(); 
+		              strbuf_append_char($$, $1); 
+	                    }                         
+                         | identifier_braces_inside identifier_braces_inside_char
+			    { $$ = strbuf_append_char($1, $2); }
+                         | identifier_braces_inside '(' identifier_braces_inside ')'
+			    { 
+			      $$ = strbuf_append_char($1, $2); 
+			      $$ = strbuf_append_str($1, $3->buf); 
+			      strbuf_free($3);
+			      $$ = strbuf_append_char($1, $4); 
+			    }
+;
+
+identifier_braces_inside_char : identifier_char | ws_nonl
 ;
 
 digit_sequence : digit { $$ = strbuf_new(); strbuf_append_char($$, $1); }
