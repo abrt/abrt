@@ -26,8 +26,10 @@ dumpoops_CPPFLAGS = \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -D_GNU_SOURCE
+# build will succeed, but at runtime plugins do need ABRT*d*Utils
 dumpoops_LDADD = \
-    ../../lib/Utils/libABRTUtils.la
+    ../../lib/Utils/libABRTUtils.la \
+    ../../lib/Utils/libABRTdUtils.la
 
 # abrt-pyhook-helper
 abrt_pyhook_helper_SOURCES = \

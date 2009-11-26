@@ -29,6 +29,7 @@ abrtd_CPPFLAGS = \
     -D_GNU_SOURCE
 abrtd_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
+    ../../lib/Utils/libABRTdUtils.la \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
     $(RPM_LIBS) \

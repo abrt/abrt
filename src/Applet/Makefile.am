@@ -23,6 +23,7 @@ abrt_applet_CPPFLAGS = \
 #    $(DBUS_GLIB_CFLAGS)
 abrt_applet_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
+    ../../lib/Utils/libABRTdUtils.la \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \
