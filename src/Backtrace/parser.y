@@ -70,15 +70,19 @@ void yyerror(char const *s)
                frame_address_in_function
                identifier_braces
                identifier_braces_inside
+               identifier_template
+               identifier_template_inside
 %type <c>      nondigit 
                digit 
                hexadecimal_digit 
                file_name_char 
                identifier_char 
+               identifier_char_no_templates 
                identifier_braces_inside_char
+               identifier_template_inside_char
                ws
                ws_nonl
-               '(' ')' '+' '-' '/' '.' '_' '~' '[' ']'
+               '(' ')' '+' '-' '/' '.' '_' '~' '[' ']' '\r'
                'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 
                'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 
                'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 
@@ -262,6 +266,10 @@ variables_char_no_framestart : digit | nondigit | '"' | '(' | ')'
 ;
 
 function_call : function_name wss function_args
+              | return_type wss_nonl function_name wss function_args { $$ = $3; }
+;
+
+return_type : identifier { strbuf_free($1); }
 ;
 
 function_name : identifier
@@ -318,28 +326,36 @@ file_name_char : digit | nondigit | '-' | '+' | '/' | '.'
   * Example: something@GLIB_2_2
   * CClass::operator=
   */
-identifier : nondigit  
+identifier : nondigit %dprec 1
               {
 		$$ = strbuf_new(); 
 		strbuf_append_char($$, $1); 
 	      }
-           | identifier_braces /* e.g. (anonymous namespace)::WorkerThread */
-           | identifier identifier_char 
+           | identifier_braces %dprec 1 /* e.g. (anonymous namespace)::WorkerThread */
+           | identifier identifier_char %dprec 1
 	      { $$ = strbuf_append_char($1, $2); }
-           | identifier identifier_braces 
+           | identifier identifier_braces %dprec 1
+              { 
+		$$ = strbuf_append_str($1, $2->buf); 
+		strbuf_free($2);
+	      }
+           | identifier identifier_template %dprec 2
               { 
 		$$ = strbuf_append_str($1, $2->buf); 
 		strbuf_free($2);
 	      }
 ;
 
+identifier_char_no_templates : digit | nondigit | '@' | '.' | ':' | '=' 
+	                     | '!' | '*' | '+' | '-' | '[' | ']'
+                             | '~' | '&' | '/' | '%' | '^'
+                             | '|' | ','
+;
+
 /* Most of the special characters are required to support C++ 
  * operator overloading.
  */
-identifier_char : digit | nondigit | '@' | '.' | ':' | '=' 
-		| '!' | '>' | '<' | '*' | '+' | '-' | '[' | ']'
-                | '~' | '&' | '/' | '%' | '^'
-                | '|' | ','
+identifier_char : identifier_char_no_templates | '>' | '<'
 ;
 
 identifier_braces : '(' ')'
@@ -375,6 +391,35 @@ identifier_braces_inside : identifier_braces_inside_char
 ;
 
 identifier_braces_inside_char : identifier_char | ws_nonl
+;
+
+identifier_template : '<' identifier_template_inside '>'
+                      {
+			$$ = strbuf_new();
+			strbuf_append_char($$, $1);
+			strbuf_append_str($$, $2->buf);
+			strbuf_free($2);
+			strbuf_append_char($$, $3);
+		      }
+;
+
+identifier_template_inside : identifier_template_inside_char
+                              {
+	                        $$ = strbuf_new(); 
+		                strbuf_append_char($$, $1); 
+	                      }           
+                           | identifier_template_inside identifier_template_inside_char
+			        { $$ = strbuf_append_char($1, $2); }
+                           | identifier_template_inside '<' identifier_template_inside '>'
+			    { 
+			      $$ = strbuf_append_char($1, $2); 
+			      $$ = strbuf_append_str($1, $3->buf); 
+			      strbuf_free($3);
+			      $$ = strbuf_append_char($1, $4); 
+			    }
+;
+
+identifier_template_inside_char : identifier_char_no_templates | ws_nonl
 ;
 
 digit_sequence : digit { $$ = strbuf_new(); strbuf_append_char($$, $1); }
