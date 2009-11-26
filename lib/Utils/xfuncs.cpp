@@ -368,3 +368,14 @@ bool string_to_bool(const char *s)
 		return true;
 	return false;
 }
+
+bool xgetpwnam(const char* login, uid_t *uid)
+{
+    struct passwd* pwd = getpwnam(login);
+    if (pwd == NULL)
+        return false;
+
+    *uid = pwd->pw_uid;
+    return true;
+}
+

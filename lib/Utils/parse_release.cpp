@@ -11,6 +11,7 @@ void parse_release(const char *pRelease, string& pProduct, string& pVersion)
     {
         pProduct = "Fedora";
         pVersion = "rawhide";
+        VERB3 log("%s:Version is '%s' and product is '%s'",__func__, pVersion.c_str(), pProduct.c_str());
         return;
     }
     if (strstr(pRelease, "Fedora"))
@@ -35,4 +36,5 @@ void parse_release(const char *pRelease, string& pProduct, string& pVersion)
         }
         space++;
     }
+    VERB3 log("%s:Version is '%s' and product is '%s'",__func__, pVersion.c_str(), pProduct.c_str());
 }
