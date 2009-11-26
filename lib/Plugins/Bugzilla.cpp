@@ -226,7 +226,7 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
     std::string arch = pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
     std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
 
-    std::string summary = "[abrt] crash detected in " + package;
+    std::string summary = "[abrt] crash in " + package;
     std::string status_whiteboard = "abrt_hash:" + uuid;
 
     std::string description = "abrt "VERSION" detected a crash.\n\n";
@@ -363,7 +363,7 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
         if ((Login == "") && (Password == ""))
         {
             VERB3 log("Empty login and password");
-            throw CABRTException(EXCEP_PLUGIN, std::string(_("Empty login and password. Please check Bugzilla.conf")));
+            throw CABRTException(EXCEP_PLUGIN, _("Empty login and password. Please check Bugzilla.conf"));
         }
         bz_server.login(Login.c_str(), Password.c_str());
 
