@@ -329,18 +329,18 @@ int main(int argc, char** argv)
             char line[256];
             while (1)
             {
-		if (fgets(line, sizeof(line), fp) == NULL)
-		{
-		    /* Next .conf file plz */
-		    if (abrt_conf)
-		    {
-			abrt_conf = false;
-			fp = fopen(CONF_DIR"/plugins/CCpp.conf", "r");
-			if (fp)
-			    continue;
-		    }
-		    break;
-		}
+                if (fgets(line, sizeof(line), fp) == NULL)
+                {
+                    /* Next .conf file plz */
+                    if (abrt_conf)
+                    {
+                        abrt_conf = false;
+                        fp = fopen(CONF_DIR"/plugins/CCpp.conf", "r");
+                        if (fp)
+                            continue;
+                    }
+                    break;
+                }
 
                 unsigned len = strlen(line);
                 if (len > 0 && line[len-1] == '\n')
@@ -397,7 +397,7 @@ int main(int argc, char** argv)
                 double dirsize = get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, base_dirname);
                 if (dirsize / (1024*1024) < setting_MaxCrashReportsSize || worst_dir == "")
                     break;
-                log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir.c_str());
+                log("size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir.c_str());
                 delete_debug_dump_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
                 worst_dir = "";
             }
@@ -418,6 +418,28 @@ int main(int argc, char** argv)
 
  create_user_core:
     /* Write a core file for user */
+
+    errno = 0;
+    if (setuid(uid) != 0
+     || user_pwd == NULL
+     || chdir(user_pwd) != 0
+    ) {
+        perror_msg_and_die("can't cd to %s", user_pwd);
+    }
+
+    /* Mimic "core.PID" if requested */
+    char core_basename[sizeof("core.%u") + sizeof(int)*3] = "core";
+    char buf[] = "0\n";
+    int fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
+    if (fd >= 0)
+    {
+        read(fd, buf, sizeof(buf));
+        close(fd);
+    }
+    if (strcmp(buf, "1\n") == 0)
+    {
+        sprintf(core_basename, "core.%u", (int)pid);
+    }
 
     /* man core:
      * There are various circumstances in which a core dump file
@@ -450,28 +472,6 @@ int main(int argc, char** argv)
      * and the description of the /proc/sys/fs/suid_dumpable file in proc(5).)
      */
 
-    errno = 0;
-    if (setuid(uid) != 0
-     || user_pwd == NULL
-     || chdir(user_pwd) != 0
-    ) {
-        perror_msg_and_die("can't cd to %s", user_pwd);
-    }
-
-    /* Mimic "core.PID" if requested */
-    char core_basename[sizeof("core.%u") + sizeof(int)*3] = "core";
-    char buf[] = "0\n";
-    int fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
-    if (fd >= 0)
-    {
-	read(fd, buf, sizeof(buf));
-	close(fd);
-    }
-    if (strcmp(buf, "1\n") == 0)
-    {
-	sprintf(core_basename, "core.%u", (int)pid);
-    }
-
     /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
     errno = 0;
     int usercore_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW, 0600); /* kernel makes 0600 too */
@@ -480,16 +480,16 @@ int main(int argc, char** argv)
      || fstat(usercore_fd, &sb) != 0
      || !S_ISREG(sb.st_mode)
      || sb.st_nlink != 1
-    /* || kernel internal dumper checks this too: if (inode->i_uid != current->fsuid) <fail>, need to mimic? */
+    /* kernel internal dumper checks this too: if (inode->i_uid != current->fsuid) <fail>, need to mimic? */
     ) {
-        perror_msg("%s/%s is not a regular file with link count 1", user_pwd, core_basename);
-        return 1;
+        perror_msg_and_die("%s/%s is not a regular file with link count 1", user_pwd, core_basename);
     }
 
     if (ftruncate(usercore_fd, 0) != 0
      || copyfd_eof(core_fd, usercore_fd) < 0
      || close(usercore_fd) != 0
     ) {
+        /* perror first, otherwise unlink may trash errno */
         perror_msg("write error writing %s/%s", user_pwd, core_basename);
         unlink(core_basename);
         return 1;
