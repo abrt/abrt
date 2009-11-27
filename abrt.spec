@@ -28,7 +28,8 @@ BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
 BuildRequires: intltool
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
-Requires(pre): /usr/sbin/groupadd 
+Requires(pre): /usr/sbin/groupadd
+Obsoletes: abrt-plugin-sqlite3
 
 %description
 %{name} is a tool to help users to detect defects in applications and
@@ -99,20 +100,12 @@ Requires: curl
 Requires: %{name} = %{version}-%{release}
 Obsoletes: kerneloops
 Obsoletes: abrt-plugin-kerneloops
+Obsoletes: abrt-plugin-kerneloopsreporter
 
 %description addon-kerneloops
 This package contains plugins for kernel crashes information collecting and
  reporter plugin, that sends, collected by %{name}'s kerneloops
 addon, information about kernel crashes to specified server, e.g. kerneloops.org.
-
-%package plugin-sqlite3
-Summary: %{name}'s SQLite3 database plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-sqlite3
-This package contains SQLite3 database plugin. It is used for storing the data
-required for creating a bug report.
 
 %package plugin-logger
 Summary: %{name}'s logger reporter plugin
@@ -203,7 +196,7 @@ the sockets.
 Summary: Virtual package to install all necessary packages for usage from desktop environment
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-plugin-sqlite3, %{name}-plugin-bugzilla, %{name}-plugin-logger
+Requires: %{name}-plugin-bugzilla, %{name}-plugin-logger
 #workaround for broken upgrade, remove!
 #Requires: %{name}-gui
 Requires: %{name}-addon-kerneloops
@@ -276,7 +269,6 @@ fi
 %doc README COPYING
 %{_sbindir}/%{name}d
 %{_bindir}/%{name}-debuginfo-install
-%{_bindir}/%{name}-backtrace
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
@@ -292,6 +284,9 @@ fi
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/polkit-1/actions/org.fedoraproject.abrt.policy
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/SQLite3.conf
+%{_libdir}/%{name}/libSQLite3.so*
+%{_mandir}/man7/%{name}-SQLite3.7.gz
 
 %files libs
 %defattr(-,root,root,-)
@@ -330,12 +325,6 @@ fi
 %{_libdir}/%{name}/libKerneloopsReporter.so*
 %{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
 %{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
-
-%files plugin-sqlite3
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/SQLite3.conf
-%{_libdir}/%{name}/libSQLite3.so*
-%{_mandir}/man7/%{name}-SQLite3.7.gz
 
 %files plugin-logger
 %defattr(-,root,root,-)
