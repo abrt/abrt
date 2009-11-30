@@ -369,7 +369,7 @@ bool string_to_bool(const char *s)
 	return false;
 }
 
-bool xgetpwnam(const char* login, uid_t *uid)
+bool getuidbyname(const char* login, uid_t *uid)
 {
     struct passwd* pwd = getpwnam(login);
     if (pwd == NULL)

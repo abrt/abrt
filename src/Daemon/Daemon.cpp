@@ -495,7 +495,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     /* Send dbus signal */
                     {
                         // I don't see any usable usecase for other plugin to be able automatic report.
-                        if (analyzer_has_AutoReportUIDs(/*crashinfo[CD_MWANALYZER][CD_CONTENT].c_str()*/"Kerneloops",crashinfo[CD_UID][CD_CONTENT].c_str()))
+                        if (analyzer_has_AutoReportUIDs(crashinfo[CD_MWANALYZER][CD_CONTENT].c_str(), crashinfo[CD_UID][CD_CONTENT].c_str()))
                         {
                             map_crash_report_t crash_report;
                             VERB3 log("Create autoreport for user with uid %s",crashinfo[CD_UID][CD_CONTENT].c_str());
