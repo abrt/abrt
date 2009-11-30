@@ -19,6 +19,7 @@
 */
 #include "strbuf.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <assert.h>
 #include <string.h>
 
@@ -107,4 +108,5 @@ struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, char *str)
   assert(strbuf->len + len < strbuf->alloc);
   memmove(strbuf->buf + len, strbuf->buf, strbuf->len + 1);
   memcpy(strbuf->buf, str, len);
+  return strbuf;
 }

@@ -97,6 +97,7 @@ struct thread *thread_new()
   t->number = 0;
   t->frames = NULL;
   t->next = NULL;
+  return t;
 }
 
 void thread_free(struct thread *t)
@@ -214,6 +215,7 @@ struct backtrace *backtrace_new()
 
   bt->threads = NULL;
   bt->crash = NULL;
+  return bt;
 }
 
 void backtrace_free(struct backtrace *bt)
@@ -363,7 +365,7 @@ void backtrace_limit_frame_depth(struct backtrace *backtrace, int depth)
 
     /* Skip some frames to get the required stack depth. */
     int i = depth;
-    struct frame *last_frame;
+    struct frame *last_frame = NULL;
     while (frame && i)
     {
       last_frame = frame;
@@ -372,7 +374,9 @@ void backtrace_limit_frame_depth(struct backtrace *backtrace, int depth)
     }
 
     /* Delete the remaining frames. */
-    last_frame->next = NULL;
+    if (last_frame)
+      last_frame->next = NULL;
+
     while (frame)
     {
       struct frame *rm = frame;

@@ -18,6 +18,9 @@
 #include "fallback.h"
 #include <stdlib.h>
 #include <stdbool.h>
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
 
 struct header
 {

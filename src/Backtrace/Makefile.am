@@ -4,6 +4,8 @@ bin_PROGRAMS = abrt-backtrace
 #AM_YFLAGS = -d
 AM_YFLAGS = --verbose
 
+abrt_backtrace_CFLAGS = -Wall
+
 abrt_backtrace_SOURCES = \
     main.c \
     backtrace.h backtrace.c \

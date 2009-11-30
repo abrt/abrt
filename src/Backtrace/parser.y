@@ -1,5 +1,4 @@
 %{ /* -*- mode: yacc -*-
-/*
     Copyright (C) 2009  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -30,6 +29,8 @@ void yyerror(char const *s)
 {
   fprintf (stderr, "\nParser error: %s\n", s);
 }
+
+int yylex();
 
 %}
      
