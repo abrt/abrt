@@ -487,41 +487,47 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 case MW_OK:
                     log("New crash, saving");
                     RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
-                    /* Fall through to "send dbus signal" */
+                    /* Fall through */
                 case MW_REPORTED:
                 case MW_OCCURED:
+                {
                     if (res != MW_OK)
                         log("Already saved crash, just sending dbus signal");
-                    /* Send dbus signal */
-                    {
-                        // I don't see any usable usecase for other plugin to be able automatic report.
-                        if (analyzer_has_AutoReportUIDs(crashinfo[CD_MWANALYZER][CD_CONTENT].c_str(), crashinfo[CD_UID][CD_CONTENT].c_str()))
-                        {
-                            map_crash_report_t crash_report;
-                            VERB3 log("Create autoreport for user with uid %s",crashinfo[CD_UID][CD_CONTENT].c_str());
-                            mw_result_t crash_result = CreateCrashReport(crashinfo[CD_UUID][CD_CONTENT].c_str(), crashinfo[CD_UID][CD_CONTENT].c_str(), 0, crash_report);
-                            if (crash_result == MW_OK)
-                            {
-                                map_analyzer_actions_and_reporters_t::const_iterator it = g_settings_mapAnalyzerActionsAndReporters.find("Kerneloops");
-                                map_analyzer_actions_and_reporters_t::const_iterator end = g_settings_mapAnalyzerActionsAndReporters.end();
-                                if (it != end)
-                                {
-                                    vector_pair_string_string_t keys = it->second;
 
-                                    uint32_t size = keys.size();
-                                    for (uint32_t ii = 0; ii < size; ii++)
-                                    {
-                                        autoreport(keys[ii], crash_report);
-                                    }
+                    const char *analyzer = crashinfo[CD_MWANALYZER][CD_CONTENT].c_str();
+                    const char *uid_str = crashinfo[CD_UID][CD_CONTENT].c_str();
+
+                    /* Autoreport it if configured to do so */
+                    if (analyzer_has_AutoReportUIDs(analyzer, uid_str))
+                    {
+                        VERB1 log("Reporting the crash automatically");
+                        map_crash_report_t crash_report;
+                        mw_result_t crash_result = CreateCrashReport(
+                                        crashinfo[CD_UUID][CD_CONTENT].c_str(),
+                                        uid_str, /*force:*/ 0, crash_report
+                        );
+                        if (crash_result == MW_OK)
+                        {
+                            map_analyzer_actions_and_reporters_t::const_iterator it = g_settings_mapAnalyzerActionsAndReporters.find(analyzer);
+                            map_analyzer_actions_and_reporters_t::const_iterator end = g_settings_mapAnalyzerActionsAndReporters.end();
+                            if (it != end)
+                            {
+                                vector_pair_string_string_t keys = it->second;
+                                unsigned size = keys.size();
+                                for (unsigned ii = 0; ii < size; ii++)
+                                {
+                                    autoreport(keys[ii], crash_report);
                                 }
                             }
                         }
-                        const char *uid_str = analyzer_has_InformAllUsers(crashinfo[CD_MWANALYZER][CD_CONTENT].c_str())
-                            ? NULL
-                            : crashinfo[CD_UID][CD_CONTENT].c_str();
-                        g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
                     }
+
+                    /* Send dbus signal */
+                    if (analyzer_has_InformAllUsers(analyzer))
+                        uid_str = NULL;
+                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
                     break;
+                }
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
                 case MW_PACKAGE_ERROR:

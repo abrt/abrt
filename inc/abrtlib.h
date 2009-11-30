@@ -193,10 +193,10 @@ char* xmalloc_sockaddr2host_noport(const struct sockaddr *sa);
 char* xmalloc_sockaddr2hostonly_noport(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
-bool getuidbyname(const char* login, uid_t *uid);
 
 
 /* Random utility functions */
+uid_t getuidbyname(const char* login);
 
 /* Returns malloc'ed block */
 char *encode_base64(const void *src, int length);
