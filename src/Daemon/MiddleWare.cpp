@@ -656,6 +656,7 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name)
 
 bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
 {
+
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
     if (!analyzer)
     {
@@ -667,6 +668,10 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
     if (it == settings.end())
         return false;
 
+    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid, "-1") == 0))
+        return true;
+
+/*
     vector_string_t logins;
     parse_args(it->second.c_str(), logins);
 
@@ -674,19 +679,16 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
     if (size == 0)
         return false;
 
-    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid, "-1") == 0))
-        return true;
-
     uid_t id;
     for (uint32_t ii = 0; ii < size; ii++)
     {
-        if (!xgetpwnam(logins[ii].c_str(), &id))
+        if (!getuidbyname(logins[ii].c_str(), &id))
             continue;
 
         if (strcmp(uid, to_string(id).c_str()) == 0)
             return true;
     }
-
+*/
     return false;
 }
 

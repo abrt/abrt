@@ -193,7 +193,7 @@ char* xmalloc_sockaddr2host_noport(const struct sockaddr *sa);
 char* xmalloc_sockaddr2hostonly_noport(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
-bool xgetpwnam(const char* login, uid_t *uid);
+bool getuidbyname(const char* login, uid_t *uid);
 
 
 /* Random utility functions */

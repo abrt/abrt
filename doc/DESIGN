@@ -53,9 +53,9 @@ which processes it according to configuration in /etc/abrt/*.conf.
 
 In order to catch binary crashes, we install a handler for it
 in /proc/sys/kernel/core_pattern (by setting it to
-"|/usr/libexec/hookCCpp /var/cache/abrt %p %s %u").
+"|/usr/libexec/abrt-hook-ccpp /var/cache/abrt %p %s %u").
 When process dumps core, the dump is written into /var/cache/abrt/DIR.
-After this, hookCCpp spawns "abrt-process -d /var/cache/abrt/DIR"
+After this, abrt-hook-ccpp spawns "abrt-process -d /var/cache/abrt/DIR"
 and terminates.
 
 When python program crashes, it invokes internel python subroutine
