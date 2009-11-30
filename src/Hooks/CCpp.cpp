@@ -190,6 +190,9 @@ static int daemon_is_ok()
 
 int main(int argc, char** argv)
 {
+    int fd;
+    struct stat sb;
+
     const char* program_name = argv[0];
     if (argc < 4)
     {
@@ -238,7 +241,7 @@ int main(int argc, char** argv)
         {
             error_msg_and_die("can't read /proc/%u/exe link", (int)pid);
         }
-        if (strstr(executable, "/hookCCpp"))
+        if (strstr(executable, "/abrt-hook-ccpp"))
         {
             error_msg_and_die("pid %u is '%s', not dumping it to avoid recursion",
                             (int)pid, executable);
@@ -246,12 +249,40 @@ int main(int argc, char** argv)
 
         char path[PATH_MAX];
 
+        /* Check /var/cache/abrt/last-ccpp marker, do not dump repeated crashes
+         * if they happen too often. Else, write new marker value.
+         */
+        snprintf(path, sizeof(path), "%s/last-ccpp", dddir);
+        fd = open(path, O_RDWR | O_CREAT, 0666);
+        if (fd >= 0)
+        {
+            int sz;
+            fstat(fd, &sb); /* !paranoia. this can't fail. */
+
+            if (sb.st_size != 0 /* if it wasn't created by us just now... */
+	     && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
+            ) {
+                sz = read(fd, path, sizeof(path)-1); /* (ab)using path as scratch buf */
+                if (sz > 0)
+                {
+                    path[sz] = '\0';
+                    if (strcmp(executable, path) == 0)
+                        error_msg_and_die("not dumping repeating crash in '%s'", executable);
+                }
+                lseek(fd, 0, SEEK_SET);
+            }
+            sz = write(fd, executable, strlen(executable));
+            if (sz >= 0)
+                ftruncate(fd, sz);
+            close(fd);
+        }
+
         if (strstr(executable, "/abrtd"))
         {
             /* If abrtd crashes, we don't want to create a _directory_,
              * since that can make new copy of abrtd to process it,
              * and maybe crash again...
-             * On the contrary, mere files are ignored by abrtd.
+             * Unlike dirs, mere files are ignored by abrtd.
              */
             snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
             core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
@@ -263,7 +294,7 @@ int main(int argc, char** argv)
                  * but it does not log file name */
                 error_msg_and_die("error saving coredump to %s", path);
             }
-            log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
+            log("saved core dump of pid %u (%s) to %s (%llu bytes)", (int)pid, executable, path, (long long)size);
             return 0;
         }
 
@@ -306,9 +337,9 @@ int main(int argc, char** argv)
         }
         lseek(core_fd, 0, SEEK_SET);
         /* note: core_fd is still open, we may use it later to copy core to user's dir */
+        log("saved core dump of pid %u (%s) to %s (%llu bytes)", (int)pid, executable, path, (long long)size);
         free(executable);
         free(cmdline);
-        log("saved core dump of pid %u to %s (%llu bytes)", (int)pid, path, (long long)size);
         path[len] = '\0'; /* path now contains directory name */
 
         /* We close dumpdir before we start catering for crash storm case.
@@ -430,7 +461,7 @@ int main(int argc, char** argv)
     /* Mimic "core.PID" if requested */
     char core_basename[sizeof("core.%u") + sizeof(int)*3] = "core";
     char buf[] = "0\n";
-    int fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
+    fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
     if (fd >= 0)
     {
         read(fd, buf, sizeof(buf));
@@ -475,7 +506,6 @@ int main(int argc, char** argv)
     /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
     errno = 0;
     int usercore_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW, 0600); /* kernel makes 0600 too */
-    struct stat sb;
     if (usercore_fd < 0
      || fstat(usercore_fd, &sb) != 0
      || !S_ISREG(sb.st_mode)

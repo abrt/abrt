@@ -1,17 +1,17 @@
-libexec_PROGRAMS = hookCCpp
+libexec_PROGRAMS = abrt-hook-ccpp
 bin_PROGRAMS = dumpoops abrt-pyhook-helper
 
 # CCpp
-hookCCpp_SOURCES = \
+abrt_hook_ccpp_SOURCES = \
     CCpp.cpp
-hookCCpp_CPPFLAGS = \
+abrt_hook_ccpp_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -D_GNU_SOURCE
-hookCCpp_LDADD = \
+abrt_hook_ccpp_LDADD = \
     ../../lib/Utils/libABRTUtils.la
 
 # dumpoops

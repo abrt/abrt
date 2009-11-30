@@ -311,7 +311,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
 %{_libdir}/%{name}/libCCpp.so*
-%{_libexecdir}/hookCCpp
+%{_libexecdir}/abrt-hook-ccpp
 
 #%files plugin-firefox
 #%{_libdir}/%{name}/libFirefox.so*
