@@ -78,11 +78,14 @@ void yyerror(char const *s)
                file_name_char 
                identifier_char 
                identifier_char_no_templates 
+               identifier_first_char
                identifier_braces_inside_char
                identifier_template_inside_char
+               variables_char
+               variables_char_no_framestart
                ws
                ws_nonl
-               '(' ')' '+' '-' '/' '.' '_' '~' '[' ']' '\r'
+               '(' ')' '+' '-' '/' '.' '_' '~' '[' ']' '\r' '?' '{' '}'
                'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j' 'k' 'l' 
                'm' 'n' 'o' 'p' 'q' 'r' 's' 't' 'u' 'v' 'w' 'x' 'y' 'z' 
                'A' 'B' 'C' 'D' 'E' 'F' 'G' 'H' 'I' 'J' 'K' 'L' 'M' 'N' 
@@ -124,7 +127,7 @@ backtrace : /* empty */ %dprec 1
              }
 ;
 
-threads   : thread             { $$ = $1; }
+threads   : thread
           | threads wsa thread { $$ = thread_add_sibling($1, $3); }
 ;
 
@@ -226,6 +229,11 @@ frame_address_in_function : hexadecimal_number wss keyword_in wss function_call
                                 strbuf_free($1); 
                                 $$ = $5; 
                               }
+                          | hexadecimal_number wss keyword_in wss keyword_vtable wss keyword_for wss function_call
+                              {
+                                strbuf_free($1); 
+                                $$ = $9; 
+                              }
 ;
 
 file_location : file_name ':' digit_sequence 
@@ -237,17 +245,17 @@ file_location : file_name ':' digit_sequence
 ;
 
 variables : variables_line '\n'
-          | variables_line END
-          | variables_line wss_nonl '\n'
-          | variables_line wss_nonl END
-          | variables variables_line '\n'
-          | variables variables_line END
-          | variables variables_line wss_nonl '\n'
-          | variables variables_line wss_nonl END
+          | variables_line END 
+          | variables_line wss_nonl '\n' 
+          | variables_line wss_nonl END  
+          | variables variables_line '\n' 
+          | variables variables_line END  
+          | variables variables_line wss_nonl '\n' 
+          | variables variables_line wss_nonl END  
           | variables wss_nonl variables_line '\n'
-          | variables wss_nonl variables_line END
-          | variables wss_nonl variables_line wss_nonl '\n'
-          | variables wss_nonl variables_line wss_nonl END
+          | variables wss_nonl variables_line END  
+          | variables wss_nonl variables_line wss_nonl '\n' 
+          | variables wss_nonl variables_line wss_nonl END  
 ;
 
 variables_line : variables_char_no_framestart
@@ -267,8 +275,11 @@ variables_char_no_framestart : digit | nondigit | '"' | '(' | ')'
                              | '%' | '|' | '~'
 ;
 
-function_call : function_name wss function_args
-              | return_type wss_nonl function_name wss function_args { $$ = $3; }
+function_call : function_name wss function_args %dprec 3
+              | return_type wss_nonl function_name wss function_args %dprec 2
+                  { $$ = $3; }
+              | function_name wss_nonl identifier_template wss function_args %dprec 1
+	      { $$ = $1; strbuf_free($3); }
 ;
 
 return_type : identifier { strbuf_free($1); }
@@ -328,7 +339,7 @@ file_name_char : digit | nondigit | '-' | '+' | '/' | '.'
   * Example: something@GLIB_2_2
   * CClass::operator=
   */
-identifier : nondigit %dprec 1
+identifier : identifier_first_char %dprec 1
               {
 		$$ = strbuf_new(); 
 		strbuf_append_char($$, $1); 
@@ -348,6 +359,11 @@ identifier : nondigit %dprec 1
 	      }
 ;
 
+identifier_first_char: nondigit 
+                     | '~' /* destructor */
+                     | '*'
+;
+
 identifier_char_no_templates : digit | nondigit | '@' | '.' | ':' | '=' 
 	                     | '!' | '*' | '+' | '-' | '[' | ']'
                              | '~' | '&' | '/' | '%' | '^'
@@ -357,7 +373,7 @@ identifier_char_no_templates : digit | nondigit | '@' | '.' | ':' | '='
 /* Most of the special characters are required to support C++ 
  * operator overloading.
  */
-identifier_char : identifier_char_no_templates | '>' | '<'
+identifier_char : identifier_char_no_templates | '<'| '>'
 ;
 
 identifier_braces : '(' ')'
@@ -376,20 +392,25 @@ identifier_braces : '(' ')'
                       }
 ;
 
-identifier_braces_inside : identifier_braces_inside_char 
+identifier_braces_inside : identifier_braces_inside_char %dprec 1
                             {
 	                      $$ = strbuf_new(); 
 		              strbuf_append_char($$, $1); 
 	                    }                         
-                         | identifier_braces_inside identifier_braces_inside_char
+                         | identifier_braces_inside identifier_braces_inside_char %dprec 1
 			    { $$ = strbuf_append_char($1, $2); }
-                         | identifier_braces_inside '(' identifier_braces_inside ')'
+                         | identifier_braces_inside '(' identifier_braces_inside ')' %dprec 1
 			    { 
 			      $$ = strbuf_append_char($1, $2); 
 			      $$ = strbuf_append_str($1, $3->buf); 
 			      strbuf_free($3);
 			      $$ = strbuf_append_char($1, $4); 
 			    }
+                         | identifier_braces_inside identifier_template %dprec 2
+			    {
+			      $$ = strbuf_append_str($1, $2->buf); 
+			      strbuf_free($2);
+			    }	
 ;
 
 identifier_braces_inside_char : identifier_char | ws_nonl
@@ -411,14 +432,19 @@ identifier_template_inside : identifier_template_inside_char
 		                strbuf_append_char($$, $1); 
 	                      }           
                            | identifier_template_inside identifier_template_inside_char
-			        { $$ = strbuf_append_char($1, $2); }
+			      { $$ = strbuf_append_char($1, $2); }
                            | identifier_template_inside '<' identifier_template_inside '>'
-			    { 
-			      $$ = strbuf_append_char($1, $2); 
-			      $$ = strbuf_append_str($1, $3->buf); 
-			      strbuf_free($3);
-			      $$ = strbuf_append_char($1, $4); 
-			    }
+			      { 
+				$$ = strbuf_append_char($1, $2); 
+				$$ = strbuf_append_str($1, $3->buf); 
+				strbuf_free($3);
+				$$ = strbuf_append_char($1, $4); 
+			      }
+                           | identifier_template_inside identifier_braces
+			      {
+				$$ = strbuf_append_str($1, $2->buf); 
+				strbuf_free($2);
+			      }			
 ;
 
 identifier_template_inside_char : identifier_char_no_templates | ws_nonl
@@ -493,6 +519,12 @@ keyword_in : 'i' 'n'
 ;
 
 keyword_at : 'a' 't'
+;
+
+keyword_for : 'f' 'o' 'r'
+;
+
+keyword_vtable : 'v' 't' 'a' 'b' 'l' 'e'
 ;
 
 keyword_from : 'f' 'r' 'o' 'm'
