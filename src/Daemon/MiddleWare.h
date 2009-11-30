@@ -105,11 +105,6 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 std::string getDebugDumpDir( const char *pUUID,
                              const char *pUID);
 /**
- * Deletes particular debugdump directory.
- * @param pDebugDumpDir A debugdump directory.
- */
-void DeleteDebugDumpDir(const char *pDebugDumpDir);
-/**
  * Deletes a row from database. If a deleting is
  * successfull, it returns a debugdump directort, which is not
  * deleted. Otherwise, it returns empty string.
@@ -167,4 +162,7 @@ void AddActionOrReporter(const char *pActionOrReporter,
 
 bool analyzer_has_InformAllUsers(const char *analyzer_name);
 
+bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid);
+
+void autoreport(const pair_string_string_t& reporter_options, const map_crash_report_t& crash_report);
 #endif /*MIDDLEWARE_H_*/

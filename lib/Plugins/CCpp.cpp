@@ -932,7 +932,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace);
 
     dd.Open(pDebugDumpDir);
-    dd.SaveText(FILENAME_BACKTRACE, (build_ids + backtrace).c_str());
+    dd.SaveText(FILENAME_BACKTRACE, (backtrace + build_ids).c_str());
     if (m_bMemoryMap)
     {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");

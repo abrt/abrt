@@ -1,5 +1,5 @@
 # ABRTUtils has small set of deps. This reduces deps of smaller abrt binaries
-# ABRTdUtils has more. It is used by daemon and plugins only
+# ABRTdUtils has much more. It is used by daemon and plugins only
 lib_LTLIBRARIES = libABRTUtils.la libABRTdUtils.la
 
 # Not used just yet:
@@ -8,7 +8,6 @@ lib_LTLIBRARIES = libABRTUtils.la libABRTdUtils.la
 
 # removed: CrashTypesSocket.cpp
 libABRTUtils_la_SOURCES = \
-    stringops.cpp \
     xfuncs.cpp \
     encbase64.cpp \
     read_write.cpp \
@@ -16,6 +15,8 @@ libABRTUtils_la_SOURCES = \
     copyfd.cpp \
     skip_whitespace.cpp \
     popen_and_save_output.cpp \
+    stringops.cpp \
+    dirsize.cpp \
     DebugDump.h DebugDump.cpp
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
@@ -35,10 +36,11 @@ libABRTUtils_la_LIBADD =
 
 libABRTdUtils_la_SOURCES = \
     parse_release.cpp \
+    make_descr.cpp \
     CommLayerInner.h CommLayerInner.cpp \
     abrt_dbus.h abrt_dbus.cpp \
     abrt_xmlrpc.h abrt_xmlrpc.cpp \
-    Plugin.h Plugin.cpp make_descr.cpp \
+    Plugin.h Plugin.cpp \
     Polkit.h Polkit.cpp \
     Action.h Database.h Reporter.h Analyzer.h \
     Observer.h \

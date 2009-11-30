@@ -21,7 +21,7 @@ put_stream(const char *pURL, FILE* f, size_t content_length)
     CURL* curl = curl_easy_init();
     if (!curl)
     {
-        throw CABRTException(EXCEP_PLUGIN, "put_stream: Curl library error.");
+        throw CABRTException(EXCEP_PLUGIN, "put_stream: can't initialize curl library");
     }
     /* enable uploading */
     curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
@@ -31,7 +31,7 @@ put_stream(const char *pURL, FILE* f, size_t content_length)
     curl_easy_setopt(curl, CURLOPT_READDATA, f);
     /* get file size */
     curl_easy_setopt(curl, CURLOPT_INFILESIZE, content_length);
-    /*everything is done here; result 0 means success*/
+    /* everything is done here; result 0 means success */
     int result = curl_easy_perform(curl);
     /* goodbye */
     curl_easy_cleanup(curl);
@@ -56,7 +56,7 @@ send_string(const char *pURL,
         FILE* f = fmemopen((void*)pContent, content_length, "r");
         if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, "send_string: could not open string stream");
+            throw CABRTException(EXCEP_PLUGIN, "send_string: can't open string stream");
         }
         int result = put_stream(pURL, f, content_length);
         fclose(f);
@@ -67,7 +67,7 @@ send_string(const char *pURL,
     /*retry the upload if not succesful, wait a bit before next try*/
     while (--retryCount != 0 && (sleep(retryDelaySeconds), 1));
 
-    throw CABRTException(EXCEP_PLUGIN, "send_string: could not send string");
+    throw CABRTException(EXCEP_PLUGIN, "send_string: can't send string");
 }
 
 static void
@@ -89,7 +89,7 @@ send_file(const char *pURL,
         FILE* f = fopen(pFilename, "r");
         if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, "send_file: could not open string stream");
+            throw CABRTException(EXCEP_PLUGIN, "send_file: can't open string stream");
         }
         struct stat buf;
         fstat(fileno(f), &buf); /* can't fail */
@@ -103,7 +103,7 @@ send_file(const char *pURL,
     /*retry the upload if not succesful, wait a bit before next try*/
     while (--retryCount != 0 && (sleep(retryDelaySeconds), 1));
 
-    throw CABRTException(EXCEP_PLUGIN, "send_file: could not send file");
+    throw CABRTException(EXCEP_PLUGIN, "send_file: can't send file");
 }
 
 static string
@@ -268,7 +268,7 @@ ctx::new_bug(const char *auth_cookie, const map_crash_report_t& pCrashReport)
     string arch = pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
     string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
 
-    string summary = "[abrt] crash detected in " + package;
+    string summary = "[abrt] crash in " + package;
     string status_whiteboard = "abrt_hash:" + uuid;
 
     string description = make_description_catcut(pCrashReport);
@@ -462,12 +462,12 @@ string CReporterCatcut::Report(const map_crash_report_t& pCrashReport,
             }
             else
             {
-                message = "Error could not create ticket";
+                message = "Error: can't create ticket";
             }
         }
         else
         {
-            message = "Error could not create ticket";
+            message = "Error: can't create ticket";
         }
         return message;
     }

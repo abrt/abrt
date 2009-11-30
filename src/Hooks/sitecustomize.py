@@ -21,6 +21,7 @@ try:
         # this should strip
         line = config.readline().lower().replace(' ','').strip('\n').split('=')
         conf[line[0]] = line[1]
+        config.close()
 except:
     # Ignore silently everything, because we don't want to bother user
     # if this hook doesn't work.

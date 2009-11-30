@@ -113,7 +113,7 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
 		/* FIXME: be more informative */
 		throw CABRTException(EXCEP_PLUGIN, std::string("CKerneloopsReporter::Report(): Report has not been sent..."));
 	}
-	return "Kernel oops report was uploaded to: " + m_sSubmitURL;
+	return "Kernel oops report was uploaded.";
 }
 
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)

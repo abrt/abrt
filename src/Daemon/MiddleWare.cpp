@@ -520,13 +520,6 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     return ret;
 }
 
-void DeleteDebugDumpDir(const char *pDebugDumpDir)
-{
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    dd.Delete();
-}
-
 std::string DeleteCrashInfo(const char *pUUID,
                                          const char *pUID)
 {
@@ -659,6 +652,55 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name)
     if (it == settings.end())
         return false;
     return string_to_bool(it->second.c_str());
+}
+
+bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
+{
+    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
+    if (!analyzer)
+    {
+        VERB1 log("Strange, asked for analyzer %s but it doesn't exist?", analyzer_name);
+        return false;
+    }
+    map_plugin_settings_t settings = analyzer->GetSettings();
+    map_plugin_settings_t::const_iterator it = settings.find("AutoReportUIDs");
+    if (it == settings.end())
+        return false;
+
+    vector_string_t logins;
+    parse_args(it->second.c_str(), logins);
+
+    uint32_t size = logins.size();
+    if (size == 0)
+        return false;
+
+    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid, "-1") == 0))
+        return true;
+
+    uid_t id;
+    for (uint32_t ii = 0; ii < size; ii++)
+    {
+        if (!xgetpwnam(logins[ii].c_str(), &id))
+            continue;
+
+        if (strcmp(uid, to_string(id).c_str()) == 0)
+            return true;
+    }
+
+    return false;
+}
+
+void autoreport(const pair_string_string_t& reporter_options, const map_crash_report_t& crash_report)
+{
+    CReporter* reporter = g_pPluginManager->GetReporter(reporter_options.first.c_str());
+    if (!reporter)
+    {
+        VERB1 log("Strange, asked for reporter %s but it doesn't exist?", reporter_options.first.c_str());
+        return;
+    }
+
+    map_plugin_settings_t plugin_settings;
+    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second);
 }
 
 /**

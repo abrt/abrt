@@ -46,7 +46,19 @@ static std::string RemoveBackSlashes(const char *pDir)
     return std::string(pDir, len);
 }
 
-static bool ExistFileDir(const char* pPath);
+static bool ExistFileDir(const char *pPath)
+{
+    struct stat buf;
+    if (stat(pPath, &buf) == 0)
+    {
+        if (S_ISDIR(buf.st_mode) || S_ISREG(buf.st_mode))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 static void LoadTextFile(const char *pPath, std::string& pData);
 
 CDebugDump::CDebugDump() :
@@ -60,12 +72,12 @@ void CDebugDump::Open(const char *pDir)
 {
     if (m_bOpened)
     {
-        throw CABRTException(EXCEP_ERROR, "CDebugDump::CDebugDump(): DebugDump is already opened.");
+        throw CABRTException(EXCEP_ERROR, "CDebugDump is already opened");
     }
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
     if (!ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::CDebugDump(): " + m_sDebugDumpDir + " does not exist.");
+        throw CABRTException(EXCEP_DD_OPEN, m_sDebugDumpDir + " does not exist");
     }
     Lock();
     m_bOpened = true;
@@ -75,20 +87,6 @@ bool CDebugDump::Exist(const char* pPath)
 {
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pPath);
     return ExistFileDir(fullPath.c_str());
-}
-
-
-static bool ExistFileDir(const char* pPath)
-{
-    struct stat buf;
-    if (stat(pPath, &buf) == 0)
-    {
-        if (S_ISDIR(buf.st_mode) || S_ISREG(buf.st_mode))
-        {
-            return true;
-        }
-    }
-    return false;
 }
 
 static bool GetAndSetLock(const char* pLockFile, const char* pPID)
@@ -428,4 +426,19 @@ bool CDebugDump::GetNextFile(std::string *short_name, std::string *full_name)
     closedir(m_pGetNextFileDir);
     m_pGetNextFileDir = NULL;
     return false;
+}
+
+/* Utility function */
+void delete_debug_dump_dir(const char *pDebugDumpDir)
+{
+    try
+    {
+        CDebugDump dd;
+        dd.Open(pDebugDumpDir);
+        dd.Delete();
+    }
+    catch (CABRTException& e)
+    {
+        /* Ignoring "directory already deleted" and such */
+    }
 }
