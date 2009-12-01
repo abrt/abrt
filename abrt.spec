@@ -26,6 +26,7 @@ BuildRequires: nss-devel
 BuildRequires: polkit-devel
 BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
 BuildRequires: intltool
+BuildRequires: bison
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires(pre): /usr/sbin/groupadd
