@@ -10,7 +10,14 @@ AC_ARG_ENABLE(debug,
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CXX
-AC_PROG_YACC
+AC_CHECK_PROGS(YACC, 'bison -y', [no])
+[if test "$YACC" = "no"]
+[then]
+    [echo "bison not found in the search path. Please ensure that it is"]
+    [echo "installed and its directory is included in the search path."]
+    [echo "Then run configure again before attempting to build ABRT."]
+    [exit 1]
+[fi]
 
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.17])
