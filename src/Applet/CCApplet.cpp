@@ -218,6 +218,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data
             perror_msg_and_die("Can't exec abrt-gui");
         }
         gtk_status_icon_set_visible(applet->m_pStatusIcon, false);
+        stop_animate_icon();
     }
 }
 
