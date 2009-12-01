@@ -656,7 +656,6 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name)
 
 bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
 {
-
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
     if (!analyzer)
     {
@@ -675,16 +674,15 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
     vector_string_t logins;
     parse_args(it->second.c_str(), logins);
 
-    uint32_t size = logins.size();
+    unsigned size = logins.size();
     if (size == 0)
         return false;
 
-    uid_t id;
-    for (uint32_t ii = 0; ii < size; ii++)
+    for (unsigned ii = 0; ii < size; ii++)
     {
-        if (!getuidbyname(logins[ii].c_str(), &id))
+        uid_t id = getuidbyname(logins[ii].c_str())
+        if (id == (uid_t)-1)
             continue;
-
         if (strcmp(uid, to_string(id).c_str()) == 0)
             return true;
     }
