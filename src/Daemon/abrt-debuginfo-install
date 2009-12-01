@@ -140,7 +140,7 @@ cleanup_and_report_missing() {
 # $1: iteration (1,2...)
 print_package_names() {
     # We'll run something like:
-    #   yum --enablerepo='*debuginfo*' --quiet provides \
+    #   yum --enablerepo=*debuginfo* --quiet provides \
     #   /usr/lib/debug/.build-id/bb/11528d59940983f495e9cb099cafb0cb206051.debug \
     #   /usr/lib/debug/.build-id/c5/b84c0ad3676509dc30bfa7d42191574dac5b06.debug ...
     local yumopts=""
@@ -150,9 +150,9 @@ print_package_names() {
     else
 	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list" >&2
     fi
-    local cmd="yum $yumopts --enablerepo='*debuginfo*' --quiet provides $missing_debuginfo_files"
+    local cmd="yum $yumopts --enablerepo=*debuginfo* --quiet provides $missing_debuginfo_files"
     echo "$cmd" >"yum_provides.$1.OUT"
-    local yum_provides_OUT=`eval $cmd 2>&1`
+    local yum_provides_OUT="`$cmd 2>&1`"
     local err=$?
     printf "%s\nexitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
     test $err = 0 || exit 2
@@ -187,7 +187,7 @@ download_packages() {
 
     ## Download with one command (too silent):
     ## Redirecting, since progress bar stuff only messes up our output
-    ##yumdownloader --enablerepo='*debuginfo*' --quiet $packages >yumdownloader.OUT 2>&1
+    ##yumdownloader --enablerepo=*debuginfo* --quiet $packages >yumdownloader.OUT 2>&1
     ##err=$?
     ##echo "exitcode:$err" >>yumdownloader.OUT
     ##test $err = 0 || exit 2
@@ -196,7 +196,7 @@ download_packages() {
     for pkg in $packages; do
 	echo "Download $i/$num_packages: $pkg"
 	echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
-	yumdownloader --enablerepo='*debuginfo*' --quiet $pkg >>yumdownloader.OUT 2>&1
+	yumdownloader '--enablerepo=*debuginfo*' --quiet $pkg >>yumdownloader.OUT 2>&1
 	err=$?
 	echo "exitcode:$err" >>yumdownloader.OUT
 	echo >>yumdownloader.OUT
