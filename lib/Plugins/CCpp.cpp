@@ -26,6 +26,7 @@
 #include <iomanip>
 #include <nss.h>
 #include <sechash.h>
+#include <sysexits.h>
 #include "abrtlib.h"
 #include "CCpp.h"
 #include "ABRTException.h"
@@ -95,7 +96,7 @@ static string concat_str_vector(char **strings)
 }
 
 /* Returns status. See `man 2 wait` for status information. */
-static int ExecVP(char** pArgs, uid_t uid, string& pOutput)
+static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
 {
     int pipeout[2];
     pid_t child;
@@ -276,7 +277,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     unsetenv("TERM");
     putenv((char*)"TERM=dumb");
 
-    char* args[11];
+    char *args[11];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
 
@@ -317,127 +318,6 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[10] = NULL;
 
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
-}
-
-static string GetIndependentBacktrace(const char *pBacktrace)
-{
-    string header;
-    bool in_bracket = false;
-    bool in_quote = false;
-    bool in_header = false;
-    bool in_digit = false;
-    bool has_at = false;
-    bool has_filename = false;
-    bool has_bracket = false;
-    set<string> set_headers;
-
-    /* Backtrace example:
-    #0  0x00007f047e21af70 in __nanosleep_nocancel () from /lib64/libc-2.10.1.so
-
-    Thread 1 (Thread 30750):
-    #0  0x00007f047e21af70 in __nanosleep_nocancel () from /lib64/libc-2.10.1.so
-    No symbol table info available.
-    #1  0x00000000004037bb in rpl_nanosleep (requested_delay=0x7fff8999e400,
-        remaining_delay=0x0) at nanosleep.c:69
-            r = -516
-            delay = {tv_sec = 1260, tv_nsec = 0}
-            t0 = {tv_sec = 12407, tv_nsec = 291505364}
-    #2  0x000000000040322b in xnanosleep (seconds=<value optimized out>)
-        at xnanosleep.c:112
-            overflow = false
-            ts_sleep = {tv_sec = 1260, tv_nsec = 0}
-            __PRETTY_FUNCTION__ = "xnanosleep"
-    #3  0x0000000000401779 in main (argc=2, argv=0x7fff8999e598) at sleep.c:147
-            i = 2
-            seconds = 1260
-            ok = true
-    */
-    const char *bk = pBacktrace;
-    while (*bk)
-    {
-        if (bk[0] == '#'
-         && bk[1] >= '0' && bk[1] <= '7'
-         && bk[2] == ' ' /* take only #0...#7 (8 last stack frames) */
-         && !in_quote
-        ) {
-            if (in_header && !has_filename)
-            {
-                header = "";
-            }
-            in_header = true;
-        }
-        if (in_header)
-        {
-            if (isdigit(*bk) && !in_quote && !has_at)
-            {
-                in_digit = true;
-            }
-            else if (bk[0] == '\\' && bk[1] == '"')
-            {
-                bk++;
-            }
-            else if (*bk == '"')
-            {
-                in_quote = in_quote == true ? false : true;
-            }
-            else if (*bk == '(' && !in_quote)
-            {
-                in_bracket = true;
-                in_digit = false;
-                header += '(';
-            }
-            else if (*bk == ')' && !in_quote)
-            {
-                in_bracket = false;
-                has_bracket = true;
-                in_digit = false;
-                header += ')';
-            }
-            else if (*bk == '\n' && has_filename)
-            {
-                set_headers.insert(header);
-                in_bracket = false;
-                in_quote = false;
-                in_header = false;
-                in_digit = false;
-                has_at = false;
-                has_filename = false;
-                has_bracket = false;
-                header = "";
-            }
-            else if (*bk == ',' && !in_quote)
-            {
-                in_digit = false;
-            }
-            else if (isspace(*bk) && !in_quote)
-            {
-                in_digit = false;
-            }
-            else if (bk[0] == 'a' && bk[1] == 't' && has_bracket && !in_quote)
-            {
-                has_at = true;
-                header += 'a';
-            }
-            else if (bk[0] == ':' && has_at && isdigit(bk[1]) && !in_quote)
-            {
-                has_filename = true;
-            }
-            else if (in_header && !in_digit && !in_quote && !in_bracket)
-            {
-                header += *bk;
-            }
-        }
-        bk++;
-    }
-
-    string pIndependentBacktrace;
-    set<string>::iterator it = set_headers.begin();
-    for (; it != set_headers.end(); it++)
-    {
-        pIndependentBacktrace += *it;
-    }
-    VERB3 log("IndependentBacktrace:'%s'", pIndependentBacktrace.c_str());
-    return pIndependentBacktrace;
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output, 
@@ -662,15 +542,101 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     string backtrace;
     string executable;
     string package;
+    string uid_str;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_BACKTRACE, backtrace);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
+        dd.LoadText(FILENAME_UID, uid_str);
     }
-    string independentBacktrace = GetIndependentBacktrace(backtrace.c_str());
-    return CreateHash((package + executable + independentBacktrace).c_str());
+
+    /* Run abrt-backtrace to get independent backtrace suitable
+       to UUID calculation. */
+    char *args[5];
+    args[0] = (char*)"abrt-backtrace";
+    args[1] = (char*)"--single-thread";
+    args[2] = (char*)"--remove-exit-handlers";
+    args[3] = (char*)"--frame-depth=5";
+    args[4] = NULL;
+
+    uid_t uid = atoi(uid_str.c_str());
+    gid_t gid = uid;
+    struct passwd* pw = getpwuid(uid);
+    if (pw)
+        gid = pw->pw_gid;
+
+    int pipein[2], pipeout[2];
+    xpipe(pipein); /* stdin of abrt-backtrace */
+    xpipe(pipeout); /* stdout of abrt-backtrace */
+    pid_t child = fork();
+    if (child == -1)
+        perror_msg_and_die("fork");
+    if (child == 0)
+    {
+        VERB1 log("Executing: %s", concat_str_vector(args).c_str());
+        /* Attach proper ends of pipes to stdin and stdout, 
+           close the other ones. */
+        xmove_fd(pipein[0], STDIN_FILENO);
+        close(pipein[1]); /* write side of the pipe */
+        xmove_fd(pipeout[1], STDOUT_FILENO);
+        close(pipeout[0]); /* read side of the pipe */
+        
+        /* abrt-backtrace is executed under the user's 
+           uid and gid. */
+        setgroups(1, &gid);
+        setregid(gid, gid);
+        setreuid(uid, uid);
+        setsid();
+
+        execvp(args[0], args);
+        VERB1 perror_msg("Can't execute '%s'", args[0]);
+        exit(1);
+    }
+
+    close(pipein[0]); /* read side of the pipe */
+    close(pipeout[1]); /* write side of the pipe */
+
+    /* Send the backtrace to abrt-backtrace program. */
+    size_t len = backtrace.length();
+    ssize_t result = write(pipein[1], backtrace.c_str(), len);
+    if (result != len)
+    {
+        perror_msg_and_die("Unable to write %d bytes to pipe, "
+                           " returned value is %d", 
+                           (int)len, (int)result);
+    }
+    close(pipein[1]);
+
+    /* Read the result from abrt-backtrace. */
+    int r;
+    char buff[1024];
+    string independent_backtrace;
+    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+    {
+        buff[r] = '\0';
+        independent_backtrace += buff;
+    }
+    close(pipeout[0]);
+
+    /* Wait until it ends, and check the exit status. */
+    int status;
+    wait(&status); /* prevent having zombie child process */
+    if (!WIFEXITED(status))
+    {
+        perror_msg_and_die("abrt-backtrace not executed properly, "
+                           "status: %d", status);
+    }
+    int exit_status = WEXITSTATUS(status);
+    if (exit_status > 0 && exit_status <= EX__MAX)
+    {
+        perror_msg_and_die("abrt-backtrace run failed, exit value: %d", 
+                           exit_status);
+    }
+
+    string hash_base = package + executable + independent_backtrace;
+    return CreateHash(hash_base.c_str());
 }
 
 static bool DebuginfoCheckPolkit(int uid)
