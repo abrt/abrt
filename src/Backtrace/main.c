@@ -1,4 +1,4 @@
-/*
+/* -*-mode:c++;c-file-style:"bsd";c-basic-offset:2;indent-tabs-mode:nil-*-
     main.cpp - parses command line arguments
 
     Copyright (C) 2009  RedHat inc.
@@ -97,12 +97,6 @@ parse_opt (int key, char *arg, struct argp_state *state)
     break;
 
   case ARGP_KEY_END:
-    if (!arguments->filename)
-    {
-      /* Not enough arguments. */
-      argp_usage(state);
-      exit(EX_USAGE); /* is there a better errno? */
-    }
     break;
     
   default:
@@ -131,37 +125,55 @@ int main(int argc, char **argv)
   arguments.filename = 0;
   argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
-  /* Open input file, and parse it. */
-  FILE *fp = fopen(arguments.filename, "r");
-  if (!fp)
-  {
-    fprintf(stderr, "Unable to open '%s'.\n", arguments.filename);
-    exit(EX_NOINPUT); /* No such file or directory */
-  }
+  char *bttext = NULL;
 
-  /* Header and footer of the backtrace is stripped to simplify the parser. 
-   * A drawback is that the backtrace must be loaded to memory.
-   */
-  fseek(fp, 0, SEEK_END);
-  size_t size = ftell(fp);
-  fseek(fp, 0, SEEK_SET);
-
-  if (size > FILE_SIZE_LIMIT)
+  /* If a filename was provided, read input from file. 
+     Otherwise read from stdin. */
+  if (arguments.filename)
   {
-    fprintf(stderr, "Input file too big (%zd). Maximum size is %zd", 
-	    size, FILE_SIZE_LIMIT);
-    exit(EX_IOERR);
-  }
+    /* Open input file, and parse it. */
+    FILE *fp = fopen(arguments.filename, "r");
+    if (!fp)
+    {
+      fprintf(stderr, "Unable to open '%s'.\n", arguments.filename);
+      exit(EX_NOINPUT); /* No such file or directory */
+    }
 
-  char *bttext = malloc(size + 1);
-  if (1 != fread(bttext, size, 1, fp))
-  {
-    fprintf(stderr, "Unable to read from '%s'.\n", arguments.filename);
-    exit(EX_IOERR); /* IO Error */
-  }
+    /* Header and footer of the backtrace is stripped to simplify the parser. 
+     * A drawback is that the backtrace must be loaded to memory.
+     */
+    fseek(fp, 0, SEEK_END);
+    size_t size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    if (size > FILE_SIZE_LIMIT)
+    {
+      fprintf(stderr, "Input file too big (%zd). Maximum size is %zd", 
+              size, FILE_SIZE_LIMIT);
+      exit(EX_IOERR);
+    }
+
+    char *bttext = malloc(size + 1);
+    if (1 != fread(bttext, size, 1, fp))
+    {
+      fprintf(stderr, "Unable to read from '%s'.\n", arguments.filename);
+      exit(EX_IOERR); /* IO Error */
+    }
   
-  bttext[size] = '\0';
-  fclose(fp);
+    bttext[size] = '\0';
+    fclose(fp);
+  }
+  else
+  {
+    struct strbuf *btin = strbuf_new();
+    int c;
+    while ((c = getchar()) != EOF && c != '\0')
+      strbuf_append_char(btin, (char)c);
+
+    strbuf_append_char(btin, '\0');
+    bttext = btin->buf;
+    strbuf_free_nobuf(btin); /* free btin, but not its internal buffer */
+  }
 
   /* Detect Python backtraces. If it is a Python backtrace, 
    * silently exit for now.
