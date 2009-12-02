@@ -223,13 +223,13 @@ class ReporterDialog():
                         lErrors.set_markup(
                             "<span color=\"white\">%s</span>" % _("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                     else:
-                        lErrors.set_markup("<span color=\"white\">%s</span>" % _("The bactrace is unusable, you can't report this!"))
+                        lErrors.set_markup("<span color=\"white\">%s</span>" % _("The backtrace is unusable, you can't report this!"))
                     bSend.set_sensitive(False)
                 # probably usable 3
                 elif int(self.report[item][CD_CONTENT]) < 4:
                     ebErrors.show()
                     ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("yellow"))
-                    lErrors.set_markup("<span color=\"black\">%s</span>" % _("The bactrace is incomplete, please make sure you provide good steps to reproduce."))
+                    lErrors.set_markup("<span color=\"black\">%s</span>" % _("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
                     bSend.set_sensitive(True)
                 else:
                     ebErrors.hide()
