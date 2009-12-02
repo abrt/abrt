@@ -48,7 +48,19 @@ for buginfo in buginfos:
     continue
 
   # Skip bugs with broken or Python backtraces
-  broken_backtrace_bugs = [ 528529, 532264, 533475 ]
+  broken_backtrace_bugs = [ 517116, # binary file :)
+                            518516, # not a backtrace, GDB fail
+                            524259, # multiple backtraces in single file
+                            524427, # multiple backtraces in single file
+                            528529, # just [New Thread xx] lines
+                            #528915, 10000 frames, out of memory, to be fixed
+                            #529422, 10000 frames, out of memory, to be fixed
+                            #530239, 10000 frames, out of memory, to be fixed
+                            532264, # no header
+                            533475, # no backtrace
+                            #537819, 50000 frames, out of memory, to be fixed
+                            #539699, to be fixed, parser bug
+                            539992] # completely broken backtrace
   if buginfo.bug_id in broken_backtrace_bugs:
     continue
 
