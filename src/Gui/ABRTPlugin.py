@@ -94,7 +94,7 @@ class PluginInfo():
         if self.Name:
             self.Settings.load(self.Name, default_settings)
         else:
-            print _("Plugin name is not set, can't load it's settings")
+            print _("Plugin name is not set, can't load its settings")
 
     def save_settings(self):
         self.Settings.save(str(self.Name))
