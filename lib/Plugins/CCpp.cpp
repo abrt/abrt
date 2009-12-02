@@ -1,4 +1,4 @@
-/*
+/* -*-mode:c++;c-file-style:"bsd";c-basic-offset:4;indent-tabs-mode:nil-*-
     CCpp.cpp
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
@@ -94,7 +94,8 @@ static string concat_str_vector(char **strings)
     return result;
 }
 
-static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
+/* Returns status. See `man 2 wait` for status information. */
+static int ExecVP(char** pArgs, uid_t uid, string& pOutput)
 {
     int pipeout[2];
     pid_t child;
@@ -120,8 +121,10 @@ static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
         /* Make sure stdin is safely open to nothing */
         close(STDIN_FILENO);
         if (open("/dev/null", O_RDONLY))
-                if (open("/", O_RDONLY))
-                        abort(); /* never happens */
+        {
+            if (open("/", O_RDONLY))
+                abort(); /* never happens */
+        }
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
@@ -159,9 +162,10 @@ static pid_t ExecVP(char** pArgs, uid_t uid, string& pOutput)
     }
 
     close(pipeout[0]);
-    wait(NULL); /* prevent having zombie child process */
+    int status;
+    wait(&status); /* prevent having zombie child process */
 
-    return 0;
+    return status;
 }
 
 enum LineRating
@@ -252,7 +256,9 @@ static int rate_backtrace(const char *backtrace)
     return 0;
 }
 
-static void GetBacktrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, string& pBacktrace)
+static void GetBacktrace(const char *pDebugDumpDir, 
+                         const char *pDebugInfoDirs, 
+                         string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
 
@@ -434,7 +440,8 @@ static string GetIndependentBacktrace(const char *pBacktrace)
     return pIndependentBacktrace;
 }
 
-static void GetIndependentBuildIdPC(const char *unstrip_n_output, string& pIndependentBuildIdPC)
+static void GetIndependentBuildIdPC(const char *unstrip_n_output, 
+                                    string& pIndependentBuildIdPC)
 {
     // lines look like this:
     // 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
@@ -483,212 +490,12 @@ static string run_unstrip_n(const char *pDebugDumpDir)
     return output;
 }
 
-#if 0
-/* older code */
-static bool is_hexstr(const char* str)
-{
-    while (*str)
-    {
-        if (!isxdigit(*str))
-            return false;
-        str++;
-    }
-    return true;
-}
-static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_dirs, string& build_ids)
-{
-    log("Getting module names, file names, build IDs from core file");
-    string unstrip_list = run_unstrip_n(pDebugDumpDir);
-
-    log("Builting list of missing debuginfos");
-    // lines look like this:
-    // 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
-    // 0x400000+0x209000 ab3c8286aac6c043fd1bb1cc2a0b88ec29517d3e@0x40024c /bin/sleep /usr/lib/debug/bin/sleep.debug [exe]
-    // 0x7fff313ff000+0x1000 389c7475e3d5401c55953a425a2042ef62c4c7df@0x7fff313ff2f8 . - linux-vdso.so.1
-    vector_string_t missing;
-    char *dup = xstrdup(unstrip_list.c_str());
-    char *p = dup;
-    char c;
-    do {
-        char* end = strchrnul(p, '\n');
-        c = *end;
-        *end = '\0';
-        char* word2 = strchr(p, ' ');
-        if (!word2)
-            continue;
-        word2++;
-        char* endsp = strchr(word2, ' ');
-        if (!endsp)
-            continue;
-        /* endsp points to 2nd space in the line now*/
-
-        /* This filters out linux-vdso.so, among others */
-        if (strstr(endsp, "[exe]") == NULL && endsp[1] != '/')
-            continue;
-        *endsp = '\0';
-        char* at = strchrnul(word2, '@');
-        *at = '\0';
-
-        bool file_exists = 1;
-        if (word2[0] && word2[1] && is_hexstr(word2))
-        {
-            struct stat sb;
-            char *fn = xasprintf("/usr/lib/debug/.build-id/%.2s/%s.debug", word2, word2 + 2);
-            /* Not lstat: this is a symlink and we want link's TARGET to exist */
-            file_exists = stat(fn, &sb) == 0 && S_ISREG(sb.st_mode);
-            free(fn);
-            build_ids += "build-id ";
-            build_ids += word2;
-            build_ids += file_exists ? " (debuginfo present)\n" : " (debuginfo absent)\n";
-        }
-        log("build_id:%s exists:%d", word2, (int)file_exists);
-        if (!file_exists)
-            missing.push_back(word2);
-
-        p = end + 1;
-    } while (c);
-    free(dup);
-
-    if (missing.size() == 0)
-    {
-        log("All debuginfos are present, not installing debuginfo packages");
-        return;
-    }
-    //missing vector is unused for now, but TODO: use it to install only needed debuginfos
-
-    string package;
-    {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
-        dd.LoadText(FILENAME_PACKAGE, package);
-    }
-
-    update_client(_("Searching for debug-info packages..."));
-
-    int pipein[2], pipeout[2];
-    xpipe(pipein);
-    xpipe(pipeout);
-
-    pid_t child = fork();
-    if (child < 0)
-    {
-        /*close(pipein[0]); close(pipeout[0]); - why bother */
-        /*close(pipein[1]); close(pipeout[1]); */
-        perror_msg_and_die("fork");
-    }
-    if (child == 0)
-    {
-        close(pipein[1]);
-        close(pipeout[0]);
-        xmove_fd(pipein[0], STDIN_FILENO);
-        xmove_fd(pipeout[1], STDOUT_FILENO);
-        /* Not a good idea, we won't see any error messages */
-        /*close(STDERR_FILENO);*/
-
-        setsid();
-/* Honestly, I do not know what is worse, pk-debuginfo-install or debuginfo-install:
-
-# pk-debuginfo-install -y -- coreutils-7.2-4.fc11
-1. Getting sources list...OK. Found 16 enabled and 23 disabled sources.
-2. Finding debugging sources...OK. Found 0 disabled debuginfo repos.
-3. Enabling debugging sources...OK. Enabled 0 debugging sources.
-4. Finding debugging packages...Failed to find the package : more than one package found for
-Failed to find the package : more than one package found for
-FAILED. Found no packages to install.
-5. Disabling sources previously enabled...OK. Disabled 0 debugging sources.
-
-:( FAIL!
-
-# debuginfo-install -y -- coreutils-7.2-4.fc11
-Loaded plugins: refresh-packagekit
-Another application is holding the yum lock, cannot continue
-
-:( FAIL!
-
-# debuginfo-install -y -- coreutils-7.2-4.fc11
-(second time in a row - it worked)
-
-*/
-        /* log() goes to stderr/syslog, it's ok to use it here */
-        VERB1 log("Executing: %s %s %s %s", "pk-debuginfo-install", "-y", "--", package.c_str());
-        execlp("pk-debuginfo-install", "pk-debuginfo-install", "-y", "--", package.c_str(), NULL);
-        /* fall back */
-        VERB1 log("Executing: %s %s %s %s", "debuginfo-install", "-y", "--", package.c_str());
-        execlp("debuginfo-install", "debuginfo-install", "-y", "--", package.c_str(), NULL);
-        exit(1);
-    }
-
-    close(pipein[0]);
-    close(pipeout[1]);
-
-    /* Should not be needed (we use -y option), but just in case: */
-    safe_write(pipein[1], "y\n", sizeof("y\n")-1);
-    close(pipein[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
-
-    FILE *pipeout_fp = fdopen(pipeout[0], "r");
-    if (pipeout_fp == NULL) /* never happens */
-    {
-        close(pipeout[0]);
-        wait(NULL);
-        return;
-    }
-
-/* glx-utils, for example, do not have glx-utils-debuginfo package.
- * Disabled code was causing failures in backtrace decoding.
- * This does not seem to be useful.
- */
-#ifdef COMPLAIN_IF_NO_DEBUGINFO
-    bool already_installed = false;
-#endif
-    char buff[1024];
-    string packageName = package.substr(0, package.rfind("-", package.rfind("-")-1));
-    while (fgets(buff, sizeof(buff), pipeout_fp))
-    {
-        int last = strlen(buff) - 1;
-        if (last >= 0 && buff[last] == '\n')
-            buff[last] = '\0';
-
-        log("%s", buff);
-        update_client("%s", buff); /* maybe only if buff != ""? */
-
-#ifdef COMPLAIN_IF_NO_DEBUGINFO
-        if (already_installed == false)
-        {
-            /* "Package foo-debuginfo-1.2-5.ARCH already installed and latest version" */
-            char* pn = strstr(buff, packageName.c_str());
-            if (pn)
-            {
-                char* already_str = strstr(pn, "already installed and latest version");
-                if (already_str)
-                {
-                    already_installed = true;
-                }
-            }
-        }
-
-        if (already_installed == false &&
-            (strstr(buff, "No debuginfo packages available to install") != NULL ||
-             strstr(buff, "Could not find debuginfo for main pkg") != NULL ||
-             strstr(buff, "Could not find debuginfo pkg for dependency package") != NULL))
-        {
-            fclose(pipeout_fp);
-            kill(child, SIGTERM);
-            wait(NULL);
-            throw CABRTException(EXCEP_PLUGIN, string(__func__) + ": cannot install debuginfos for " + pPackage);
-        }
-#endif
-    }
-
-    fclose(pipeout_fp);
-    wait(NULL);
-}
-#endif
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
  */
-static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_dirs, string& build_ids)
+static void InstallDebugInfos(const char *pDebugDumpDir, 
+                              const char *debuginfo_dirs, 
+                              string& build_ids)
 {
     update_client(_("Searching for debug-info packages..."));
 
@@ -764,7 +571,9 @@ static void InstallDebugInfos(const char *pDebugDumpDir, const char *debuginfo_d
     wait(NULL);
 }
 
-static double get_dir_size(const char *dirname, string *worst_file, double *maxsz)
+static double get_dir_size(const char *dirname, 
+                           string *worst_file, 
+                           double *maxsz)
 {
     DIR *dp = opendir(dirname);
     if (dp == NULL)
