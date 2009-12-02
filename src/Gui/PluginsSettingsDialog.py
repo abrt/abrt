@@ -135,6 +135,8 @@ class PluginsSettingsDialog:
                 if pluginfo.Settings:
                     try:
                         pluginfo.save_settings()
+                        # FIXME: do we need to call this? all reporters set their settings
+                        # when Report() is called
                         self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)
                     except Exception, e:
                         gui_error_message(_("Can't save plugin settings:\n %s" % e))

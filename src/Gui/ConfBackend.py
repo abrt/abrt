@@ -15,6 +15,15 @@ class ConfBackendInitError(Exception):
 
     def __str__(self):
         return self.what
+        
+class ConfBackendSaveError(Exception):
+    def __init__(self, msg):
+        Exception.__init__(self)
+        self.what = msg
+
+    def __str__(self):
+        return self.what
+
 
 class ConfBackend(object):
     def __init__(self):
@@ -53,7 +62,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
             # nothing found
             pass
         except gkey.DeniedError:
-            print _("Acces to gnome-keyring has been denied, plugins settings won't be saved.")
+            raise ConfBackendSaveError(_("Acces to gnome-keyring has been denied, plugins settings won't be saved."))
 
         # delete all items containg "AbrtPluginInfo":<plugin_name>, so we always have only 1 item per plugin
         for item in item_list:
@@ -62,13 +71,15 @@ class ConfBackendGnomeKeyring(ConfBackend):
         if "Password" in settings_tmp:
             password = settings_tmp["Password"]
             del settings_tmp["Password"]
-        gkey.item_create_sync(self.default_key_ring,
-                                    gkey.ITEM_GENERIC_SECRET,
-                                    "abrt:%s" % name,
-                                    settings_tmp,
-                                    password,
-                                    True)
-
+        try:
+            gkey.item_create_sync(self.default_key_ring,
+                                        gkey.ITEM_GENERIC_SECRET,
+                                        "abrt:%s" % name,
+                                        settings_tmp,
+                                        password,
+                                        True)
+        except gkey.DeniedError, e:
+            raise ConfBackendSaveError(_("Acces to gnome-keyring has been denied, plugins settings won't be saved."))
 
     def load(self, name):
         item_list = None

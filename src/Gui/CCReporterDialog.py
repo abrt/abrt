@@ -121,8 +121,11 @@ class ReporterDialog():
         response = ui.run()
         if response == gtk.RESPONSE_APPLY:
             ui.dehydrate()
-            plugin.save_settings()
             if plugin.Settings.check():
+                try:
+                    plugin.save_settings()
+                except Exception, e:
+                    gui_error_message(_("Can't save plugin settings:\n %s" % e))
                 box = image.get_parent()
                 im = gtk.Image()
                 im.set_from_stock(gtk.STOCK_APPLY, gtk.ICON_SIZE_MENU)
