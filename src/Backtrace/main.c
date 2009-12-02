@@ -153,7 +153,7 @@ int main(int argc, char **argv)
       exit(EX_IOERR);
     }
 
-    char *bttext = malloc(size + 1);
+    bttext = malloc(size + 1);
     if (1 != fread(bttext, size, 1, fp))
     {
       fprintf(stderr, "Unable to read from '%s'.\n", arguments.filename);
