@@ -635,6 +635,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
                            exit_status);
     }
 
+    /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
+
     string hash_base = package + executable + independent_backtrace;
     return CreateHash(hash_base.c_str());
 }
