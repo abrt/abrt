@@ -132,17 +132,13 @@ void CPluginManager::LoadPlugins()
         struct dirent *dent;
         while ((dent = readdir(dir)) != NULL)
         {
-            if (is_regular_file(dent, PLUGINS_LIB_DIR))
-            {
-                std::string name = dent->d_name;
-                std::string extension = name.substr(name.length() - sizeof(PLUGINS_LIB_EXTENSION) + 1);
-                if (extension == PLUGINS_LIB_EXTENSION)
-                {
-                    name.erase(0, sizeof(PLUGINS_LIB_PREFIX) - 1);
-                    name.erase(name.length() - sizeof(PLUGINS_LIB_EXTENSION));
-                    LoadPlugin(name.c_str());
-                }
-            }
+            if (!is_regular_file(dent, PLUGINS_LIB_DIR))
+                continue;
+            char *ext = strrchr(dent->d_name, '.');
+            if (!ext || strcmp(ext + 1, PLUGINS_LIB_EXTENSION) != 0)
+                continue;
+            *ext = '\0';
+            LoadPlugin(dent->d_name + sizeof(PLUGINS_LIB_PREFIX)-1);
         }
         closedir(dir);
     }
@@ -195,13 +191,14 @@ void CPluginManager::UnLoadPlugin(const char *pName)
     }
 }
 
-void CPluginManager::RegisterPlugin(const char *pName)
+int CPluginManager::RegisterPlugin(const char *pName)
 {
     map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
     if (abrt_plugin != m_mapABRTPlugins.end())
     {
         if (m_mapPlugins.find(pName) == m_mapPlugins.end())
         {
+            /* Loaded, but not registered yet */
             CPlugin* plugin = abrt_plugin->second->PluginNew();
             map_plugin_settings_t pluginSettings;
 
@@ -224,18 +221,21 @@ void CPluginManager::RegisterPlugin(const char *pName)
             }
             catch (CABRTException& e)
             {
-                log("Can't initialize plugin %s(%s): %s",
+                error_msg("Can't initialize plugin %s(%s): %s",
                         pName,
                         plugin_type_str[abrt_plugin->second->GetType()],
                         e.what()
                 );
                 UnLoadPlugin(pName);
-                return;
+                return -1; /* failure */
             }
             m_mapPlugins[pName] = plugin;
             log("Registered plugin %s(%s)", pName, plugin_type_str[abrt_plugin->second->GetType()]);
         }
+        return 0; /* success */
     }
+    error_msg("Can't initialize plugin %s: no such plugin installed", pName);
+    return -1; /* failure */
 }
 
 void CPluginManager::RegisterPluginDBUS(const char *pName, const char *pDBUSSender)
