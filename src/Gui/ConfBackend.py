@@ -15,7 +15,7 @@ class ConfBackendInitError(Exception):
 
     def __str__(self):
         return self.what
-        
+
 class ConfBackendSaveError(Exception):
     def __init__(self, msg):
         Exception.__init__(self)

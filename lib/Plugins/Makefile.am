@@ -40,7 +40,7 @@ man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7 \
 # + abrt-Catcut.7
 
 EXTRA_DIST = $(man_MANS)
-    
+
 $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
 

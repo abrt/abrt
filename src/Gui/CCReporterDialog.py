@@ -96,7 +96,7 @@ class ReporterDialog():
             if not (self.check_settings(daemon) and self.check_report()):
                 dialog.stop_emission("response")
                 self.wTree.get_widget("bSend").stop_emission("clicked")
-    
+
     def on_send_toggled(self, cell, path, model):
         model[path][3] = not model[path][3]
 
@@ -273,7 +273,7 @@ class ReporterDialog():
 
     def check_report(self):
     # FIXME: what to do if user press "Not to send BT and then press cancel"
-    # it uncheck the backtrace and let him to edit it, and then user might 
+    # it uncheck the backtrace and let him to edit it, and then user might
     # not noticed, that he is not sending the BT, so should we warn user about this
     # or check the BT automatically?
         attributes = ["item", "content", "editable", "send", "attachment"]

@@ -3,9 +3,9 @@ Nov 19 12:33:59 localhost restorecond: Unable to watch (/home/jmoskovc/public_ht
 Nov 19 12:34:38 localhost kernel: [drm] Num pipes: 1
 Nov 19 12:34:38 localhost kernel: Process 1473(Xorg) has RLIMIT_CORE set to 0
 Nov 19 12:34:38 localhost kernel: Aborting core
-Nov 19 12:34:38 localhost kernel: general protection fault: 0000 [#1] SMP 
+Nov 19 12:34:38 localhost kernel: general protection fault: 0000 [#1] SMP
 Nov 19 12:34:38 localhost kernel: last sysfs file: /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
-Nov 19 12:34:38 localhost kernel: CPU 0 
+Nov 19 12:34:38 localhost kernel: CPU 0
 Nov 19 12:34:38 localhost kernel: Modules linked in: ipt_MASQUERADE iptable_nat nf_nat bridge stp llc sunrpc xt_physdev ip6t_REJECT nf_conntrack_ipv6 ip6table_filter ip6_tables ipv6 cpufreq_ondemand acpi_cpufreq freq_table dm_multipath kvm_intel kvm snd_hda_codec_analog snd_hda_intel snd_hda_codec btusb snd_hwdep joydev ppdev bluetooth snd_seq arc4 snd_seq_device i2c_i801 thinkpad_acpi hwmon ecb parport_pc irda parport crc_ccitt snd_pcm iTCO_wdt iTCO_vendor_support iwl3945 iwlcore snd_timer snd mac80211 soundcore e1000e cfg80211 snd_page_alloc rfkill yenta_socket rsrc_nonstatic video output radeon ttm drm_kms_helper drm i2c_algo_bit i2c_core [last unloaded: microcode]
 Nov 19 12:34:38 localhost kernel: Pid: 1473, comm: Xorg Not tainted 2.6.32-0.51.rc7.git2.fc13.x86_64 #1 2007CTO
 Nov 19 12:34:38 localhost kernel: RIP: 0010:[<ffffffffa006c13c>]  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
@@ -52,7 +52,7 @@ Nov 19 12:34:38 localhost kernel: [<ffffffff8147c67d>] ? trace_hardirqs_on_thunk
 Nov 19 12:34:38 localhost kernel: [<ffffffff81011d09>] ? sysret_signal+0x5/0x4e
 Nov 19 12:34:38 localhost kernel: [<ffffffff810116a9>] do_notify_resume+0x2a/0x7c
 Nov 19 12:34:38 localhost kernel: [<ffffffff81011fc1>] int_signal+0x12/0x17
-Nov 19 12:34:38 localhost kernel: Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6 
+Nov 19 12:34:38 localhost kernel: Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6
 Nov 19 12:34:38 localhost kernel: RIP  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
 Nov 19 12:34:38 localhost kernel: RSP <ffff88007a7c5ad0>
 Nov 19 12:34:38 localhost kernel: ---[ end trace f1c5b8d28f1b5165 ]---
@@ -83,9 +83,9 @@ Nov 19 12:39:51 localhost abrtd: Getting local universal unique identification
 Nov 19 12:39:52 localhost kernel: [drm] Num pipes: 1
 Nov 19 12:39:52 localhost kernel: Process 1525(Xorg) has RLIMIT_CORE set to 0
 Nov 19 12:39:52 localhost kernel: Aborting core
-Nov 19 12:39:52 localhost kernel: general protection fault: 0000 [#1] SMP 
+Nov 19 12:39:52 localhost kernel: general protection fault: 0000 [#1] SMP
 Nov 19 12:39:52 localhost kernel: last sysfs file: /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
-Nov 19 12:39:52 localhost kernel: CPU 0 
+Nov 19 12:39:52 localhost kernel: CPU 0
 Nov 19 12:39:52 localhost kernel: Modules linked in: ipt_MASQUERADE iptable_nat nf_nat bridge stp llc sunrpc xt_physdev ip6t_REJECT nf_conntrack_ipv6 ip6table_filter ip6_tables ipv6 cpufreq_ondemand acpi_cpufreq freq_table dm_multipath kvm_intel kvm arc4 snd_hda_codec_analog ecb snd_hda_intel snd_hda_codec iwl3945 snd_hwdep iwlcore snd_seq snd_seq_device mac80211 snd_pcm btusb snd_timer bluetooth snd iTCO_wdt soundcore iTCO_vendor_support ppdev thinkpad_acpi cfg80211 e1000e snd_page_alloc joydev i2c_i801 parport_pc irda hwmon parport rfkill crc_ccitt yenta_socket rsrc_nonstatic video output radeon ttm drm_kms_helper drm i2c_algo_bit i2c_core [last unloaded: microcode]
 Nov 19 12:39:52 localhost kernel: Pid: 1525, comm: Xorg Not tainted 2.6.32-0.51.rc7.git2.fc13.x86_64 #1 2007CTO
 Nov 19 12:39:52 localhost kernel: RIP: 0010:[<ffffffffa006c13c>]  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
@@ -132,7 +132,7 @@ Nov 19 12:39:52 localhost kernel: [<ffffffff8147c67d>] ? trace_hardirqs_on_thunk
 Nov 19 12:39:52 localhost kernel: [<ffffffff81011d09>] ? sysret_signal+0x5/0x4e
 Nov 19 12:39:52 localhost kernel: [<ffffffff810116a9>] do_notify_resume+0x2a/0x7c
 Nov 19 12:39:52 localhost kernel: [<ffffffff81011fc1>] int_signal+0x12/0x17
-Nov 19 12:39:52 localhost kernel: Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6 
+Nov 19 12:39:52 localhost kernel: Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6
 Nov 19 12:39:52 localhost kernel: RIP  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
 Nov 19 12:39:52 localhost kernel: RSP <ffff88007a3d9ad0>
 Nov 19 12:39:52 localhost kernel: ---[ end trace 371f75a80de6ae14 ]---
@@ -160,9 +160,9 @@ Nov 19 16:03:39 localhost restorecond: Unable to watch (/home/jmoskovc/public_ht
 Nov 19 16:04:03 localhost kernel: [drm] Num pipes: 1
 Nov 19 16:04:04 localhost kernel: Process 1503(Xorg) has RLIMIT_CORE set to 0
 Nov 19 16:04:04 localhost kernel: Aborting core
-Nov 19 16:04:04 localhost kernel: general protection fault: 0000 [#1] SMP 
+Nov 19 16:04:04 localhost kernel: general protection fault: 0000 [#1] SMP
 Nov 19 16:04:04 localhost kernel: last sysfs file: /sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq
-Nov 19 16:04:04 localhost kernel: CPU 1 
+Nov 19 16:04:04 localhost kernel: CPU 1
 Nov 19 16:04:04 localhost kernel: Modules linked in: ipt_MASQUERADE iptable_nat nf_nat bridge stp llc vboxnetadp vboxnetflt vboxdrv sunrpc xt_physdev ip6t_REJECT nf_conntrack_ipv6 ip6table_filter ip6_tables ipv6 cpufreq_ondemand acpi_cpufreq freq_table dm_multipath kvm_intel kvm snd_hda_codec_analog snd_hda_intel snd_hda_codec snd_hwdep snd_seq snd_seq_device arc4 ppdev snd_pcm btusb ecb bluetooth irda crc_ccitt thinkpad_acpi hwmon parport_pc parport joydev i2c_i801 iwl3945 iwlcore mac80211 snd_timer iTCO_wdt cfg80211 iTCO_vendor_support snd rfkill soundcore e1000e snd_page_alloc yenta_socket rsrc_nonstatic video output radeon ttm drm_kms_helper drm i2c_algo_bit i2c_core [last unloaded: microcode]
 Nov 19 16:04:04 localhost kernel: Pid: 1503, comm: Xorg Not tainted 2.6.32-0.51.rc7.git2.fc13.x86_64 #1 2007CTO
 Nov 19 16:04:04 localhost kernel: RIP: 0010:[<ffffffffa006c13c>]  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
@@ -209,7 +209,7 @@ Nov 19 16:04:04 localhost kernel: [<ffffffff8147c67d>] ? trace_hardirqs_on_thunk
 Nov 19 16:04:04 localhost kernel: [<ffffffff81011d09>] ? sysret_signal+0x5/0x4e
 Nov 19 16:04:04 localhost kernel: [<ffffffff810116a9>] do_notify_resume+0x2a/0x7c
 Nov 19 16:04:04 localhost kernel: [<ffffffff81011fc1>] int_signal+0x12/0x17
-Nov 19 16:04:04 localhost kernel: Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6 
+Nov 19 16:04:04 localhost kernel: Code: 1f 44 00 00 f6 87 0e 04 00 00 08 48 8b 87 10 01 00 00 74 0a 89 f6 48 03 70 18 8b 06 eb 0f c1 ee 02 89 f6 48 c1 e6 02 48 03 70 18 <8b> 06 c9 c3 55 48 89 e5 0f 1f 44 00 00 83 7f 74 00 74 09 31 f6
 Nov 19 16:04:04 localhost kernel: RIP  [<ffffffffa006c13c>] radeon_read_ring_rptr+0x30/0x34 [radeon]
 Nov 19 16:04:04 localhost kernel: RSP <ffff88007a3b3ad0>
 Nov 19 16:04:04 localhost kernel: ---[ end trace f5193fb73929a56e ]---

@@ -42,7 +42,7 @@ class CApplet
         int m_iAnimationStage;
         guint m_iAnimator;
         bool m_bIconsLoaded;
-		
+
         enum ICON_STAGES
         {
             ICON_DEFAULT,
