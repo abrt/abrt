@@ -23,8 +23,9 @@ class DumpList(list):
                     self.append(entry)
                     self.ddict[entry.getUUID()] = entry
             except Exception, e:
-                print e
-                return
+                # FIXME handle exception better
+                # this is just temporary workaround for rhbz#543725
+                raise
         else:
             print "db == None!"
 

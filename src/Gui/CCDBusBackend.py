@@ -95,7 +95,11 @@ class DBusManager(gobject.GObject):
             self.bus = dbus.SystemBus()
         if not self.bus:
             raise Exception(_("Can't connect to system dbus"))
-        proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
+        try:
+            proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
+        except DBusException:
+            proxy = None
+            raise Exception("Can't connect to abrt daemon.")
         if not proxy:
             raise Exception(_("Please check if abrt daemon is running"))
         daemon = dbus.Interface(proxy, dbus_interface=CC_IFACE)
