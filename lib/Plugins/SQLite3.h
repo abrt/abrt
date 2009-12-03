@@ -47,15 +47,16 @@ class CSQLite3 : public CDatabase
         virtual void Connect();
         virtual void DisConnect();
 
-        virtual void Insert(const std::string& pUUID,
-                            const std::string& pUID,
-                            const std::string& pDebugDumpPath,
-                            const std::string& pTime);
+        virtual void Insert_or_Update(const char *pUUID,
+                        const char *pUID,
+                        const char *pDebugDumpPath,
+                        const char *pTime);
 
-        virtual void Delete(const std::string& pUUID, const std::string& pUID);
+        virtual void DeleteRow(const std::string& pUUID, const std::string& pUID);
+        virtual void DeleteRows_by_dir(const char *dump_dir);
         virtual void SetReported(const std::string& pUUID, const std::string& pUID, const std::string& pMessage);
         virtual vector_database_rows_t GetUIDData(const std::string& pUID);
-        virtual database_row_t GetUUIDData(const std::string& pUUID, const std::string& pUID);
+        virtual database_row_t GetRow(const std::string& pUUID, const std::string& pUID);
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 //ok to delete?

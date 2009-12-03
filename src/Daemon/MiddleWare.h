@@ -112,8 +112,9 @@ std::string getDebugDumpDir( const char *pUUID,
  * @param pUID An UID of an user.
  * @return A debugdump directory.
  */
-std::string DeleteCrashInfo(const char *pUUID,
-                            const char *pUID);
+std::string DeleteCrashInfoInDB(const char *pUUID,
+                        const char *pUID);
+void DeleteCrashInfosInDB_by_dir(const char *dump_dir);
 /**
  * Saves debugdump into database. If saving is successful,
  * it fills crash info.
@@ -122,7 +123,7 @@ std::string DeleteCrashInfo(const char *pUUID,
  * @return It return results of operation. See mw_result_t.
  */
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
-                          map_crash_info_t& pCrashInfo);
+                        map_crash_info_t& pCrashInfo);
 /**
  * Get one crash info. If getting is successful,
  * then crash info is filled.
@@ -131,9 +132,9 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
  * @param pCrashInfo A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t GetCrashInfo(const char *pUUID,
-                         const char *pUID,
-                         map_crash_info_t& pCrashInfo);
+mw_result_t FillCrashInfo(const char *pUUID,
+                        const char *pUID,
+                        map_crash_info_t& pCrashInfo);
 /**
  * Gets all local UUIDs and UIDs of crashes. These crashes
  * occurred when a particular user was logged in.

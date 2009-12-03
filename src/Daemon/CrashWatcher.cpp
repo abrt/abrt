@@ -62,7 +62,7 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
             const char *uuid = UUIDsUIDs[ii].first.c_str();
             const char *uid = UUIDsUIDs[ii].second.c_str();
 
-            res = GetCrashInfo(uuid, uid, info);
+            res = FillCrashInfo(uuid, uid, info);
             switch (res)
             {
                 case MW_OK:
@@ -70,12 +70,12 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
                     break;
                 case MW_ERROR:
                     error_msg("Can't find dump directory for UUID %s, deleting from database", uuid);
-                    DeleteCrashInfo(uuid, uid);
+                    DeleteCrashInfoInDB(uuid, uid);
                     break;
                 case MW_FILE_ERROR:
                     error_msg("Can't open file in dump directory for UUID %s, deleting", uuid);
                     {
-                        std::string debugDumpDir = DeleteCrashInfo(uuid, uid);
+                        std::string debugDumpDir = DeleteCrashInfoInDB(uuid, uid);
                         delete_debug_dump_dir(debugDumpDir.c_str());
                     }
                     break;
@@ -132,7 +132,7 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
         case MW_FILE_ERROR:
         default:
             error_msg("Corrupted crash with UUID %s, deleting", pUUID);
-            std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
+            std::string debugDumpDir = DeleteCrashInfoInDB(pUUID, pUID);
             delete_debug_dump_dir(debugDumpDir.c_str());
             break;
     }
@@ -211,8 +211,27 @@ bool DeleteDebugDump(const char *pUUID, const char *pUID)
 {
     try
     {
-        std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
+        std::string debugDumpDir = DeleteCrashInfoInDB(pUUID, pUID);
         delete_debug_dump_dir(debugDumpDir.c_str());
+    }
+    catch (CABRTException& e)
+    {
+        if (e.type() == EXCEP_FATAL)
+        {
+            throw e;
+        }
+        error_msg("%s", e.what());
+        return false;
+    }
+    return true;
+}
+
+bool DeleteDebugDump_by_dir(const char *dump_dir)
+{
+    try
+    {
+        DeleteCrashInfosInDB_by_dir(dump_dir);
+        delete_debug_dump_dir(dump_dir);
     }
     catch (CABRTException& e)
     {
