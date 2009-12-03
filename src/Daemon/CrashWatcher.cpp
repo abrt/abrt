@@ -99,16 +99,14 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
 }
 
 /*
- * "GetJobResult" is a bit of a misnomer.
- * It actually _creates_ a_ report_ and returns the result.
- * It is called in two cases:
- * (1) by CreateReport dbus call -> CreateReportThread(), in the thread
- * (2) by GetJobResult dbus call
+ * Called in two cases:
+ * (1) by StartJob dbus call -> CreateReportThread(), in the thread
+ * (2) by CreateReport dbus call
  * In the second case, it finishes quickly, because previous
- * CreateReport dbus call already did all the processing, and we just retrieve
+ * StartJob dbus call already did all the processing, and we just retrieve
  * the result from dump directory, which is fast.
  */
-map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
+map_crash_report_t CreateReport(const char* pUUID, const char* pUID, int force)
 {
     map_crash_info_t crashReport;
 
@@ -155,9 +153,8 @@ static void* create_report(void* arg)
 
     try
     {
-        /* "GetJobResult" is a bit of a misnomer */
         log("Creating report...");
-        map_crash_info_t crashReport = GetJobResult(thread_data->UUID, thread_data->UID, thread_data->force);
+        map_crash_info_t crashReport = CreateReport(thread_data->UUID, thread_data->UID, thread_data->force);
         g_pCommLayer->JobDone(thread_data->peer, thread_data->UUID);
     }
     catch (CABRTException& e)

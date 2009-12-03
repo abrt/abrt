@@ -145,7 +145,7 @@ static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
+static int handle_StartJob(DBusMessage* call, DBusMessage* reply)
 {
     int r;
     DBusMessageIter in_iter;
@@ -178,7 +178,7 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
-static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
+static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 {
     int r;
     DBusMessageIter in_iter;
@@ -192,7 +192,7 @@ static int handle_GetJobResult(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    map_crash_report_t report = GetJobResult(pUUID, to_string(unix_uid).c_str(), /*force:*/ 0);
+    map_crash_report_t report = CreateReport(pUUID, to_string(unix_uid).c_str(), /*force:*/ 0);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
@@ -482,14 +482,14 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
     int r = -1;
     if (strcmp(member, "GetCrashInfos") == 0)
         r = handle_GetCrashInfos(msg, reply);
-    else if (strcmp(member, "CreateReport") == 0)
-        r = handle_CreateReport(msg, reply);
+    else if (strcmp(member, "StartJob") == 0)
+        r = handle_StartJob(msg, reply);
     else if (strcmp(member, "Report") == 0)
         r = handle_Report(msg, reply);
     else if (strcmp(member, "DeleteDebugDump") == 0)
         r = handle_DeleteDebugDump(msg, reply);
-    else if (strcmp(member, "GetJobResult") == 0)
-        r = handle_GetJobResult(msg, reply);
+    else if (strcmp(member, "CreateReport") == 0)
+        r = handle_CreateReport(msg, reply);
     else if (strcmp(member, "GetPluginsInfo") == 0)
         r = handle_GetPluginsInfo(msg, reply);
     else if (strcmp(member, "GetPluginSettings") == 0)

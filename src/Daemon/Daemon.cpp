@@ -55,11 +55,11 @@
  * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - CreateReport(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
+ * - StartJob(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
  *      Returns job id (uint64).
  *      After thread returns, when report creation thread has finished,
  *      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
- * - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
+ * - CreateReport(UUID): returns map_crash_report_t (map_vector_string_t)
  * - Report(map_crash_report_t (map_vector_string_t[, map_map_string_t])):
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
@@ -75,8 +75,8 @@
  *
  * DBus signals we emit:
  * - Crash(progname,uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
- * - JobDone(client_dbus_ID,UUID) - see CreateReport above.
- *      Sent as unicast to the client which did CreateReport.
+ * - JobDone(client_dbus_ID,UUID) - see StartJob above.
+ *      Sent as unicast to the client which did StartJob.
  * - Warning(msg,job_id)
  * - Update(msg,job_id)
  *      Both are sent as unicast to last client set by set_client_name(name).
@@ -84,7 +84,7 @@
  *
  * TODO:
  * - JobDone signal does not need to pass any parameters
- *   - our clients never send multiple CreateReport's.
+ *   - our clients never send multiple StartJob's.
  */
 
 
