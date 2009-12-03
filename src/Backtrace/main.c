@@ -148,12 +148,18 @@ int main(int argc, char **argv)
 
     if (size > FILE_SIZE_LIMIT)
     {
-      fprintf(stderr, "Input file too big (%zd). Maximum size is %zd", 
+      fprintf(stderr, "Input file too big (%zd). Maximum size is %zd.\n", 
               size, FILE_SIZE_LIMIT);
       exit(EX_IOERR);
     }
 
     bttext = malloc(size + 1);
+    if (!bttext)
+    {
+      fputs("malloc failed", stderr);
+      exit(EX_OSERR);
+    }
+
     if (1 != fread(bttext, size, 1, fp))
     {
       fprintf(stderr, "Unable to read from '%s'.\n", arguments.filename);
