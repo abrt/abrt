@@ -58,15 +58,12 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: dbus-python, pygtk2, pygtk2-libglade,
 Requires: gnome-python2-gnomevfs, gnome-python2-gnomekeyring
-# only if gtk2 version < 2.17
+# only if gtk2 version < 2.17:
 #Requires: python-sexy
+# we used to have abrt-applet, now abrt-gui includes it:
 Provides: abrt-applet = %{version}-%{release}
 Obsoletes: abrt-applet < 0.0.5
 Conflicts: abrt-applet < 0.0.5
-Obsoletes: bug-buddy
-Provides: bug-buddy
-#FIXME: upgrade workaround
-Requires: abrt-desktop
 
 %description gui
 GTK+ wizard for convenient bug reporting.
@@ -104,9 +101,9 @@ Obsoletes: abrt-plugin-kerneloops
 Obsoletes: abrt-plugin-kerneloopsreporter
 
 %description addon-kerneloops
-This package contains plugins for kernel crashes information collecting and
- reporter plugin, that sends, collected by %{name}'s kerneloops
-addon, information about kernel crashes to specified server, e.g. kerneloops.org.
+This package contains plugin for collecting kernel crash information
+and reporter plugin which sends this information to specified server,
+usually to kerneloops.org.
 
 %package plugin-logger
 Summary: %{name}'s logger reporter plugin
@@ -114,7 +111,7 @@ Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description plugin-logger
-The simple reporter plugin, which writes a report to a specified file.
+The simple reporter plugin which writes a report to a specified file.
 
 %package plugin-mailx
 Summary: %{name}'s mailx reporter plugin
@@ -123,8 +120,8 @@ Requires: %{name} = %{version}-%{release}
 Requires: mailx
 
 %description plugin-mailx
-The simple reporter plugin, which sends a report via mailx to a specified
-email.
+The simple reporter plugin which sends a report via mailx to a specified
+email address.
 
 %package plugin-runapp
 Summary: %{name}'s runapp plugin
@@ -196,13 +193,19 @@ the sockets.
 %package desktop
 Summary: Virtual package to install all necessary packages for usage from desktop environment
 Group: User Interface/Desktops
+# This package gets installed when anything requests bug-buddy -
+# happens when users upgrade Fn to Fn+1;
+# or if user just wants "typical desktop installation".
+# Installing abrt-desktop should result in the abrt which works without
+# any tweaking in abrt.conf (IOW: all plugins mentioned there must be installed)
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-plugin-bugzilla, %{name}-plugin-logger
-#workaround for broken upgrade, remove!
-#Requires: %{name}-gui
 Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
+Requires: %{name}-gui
+Requires: %{name}-plugin-bugzilla, %{name}-plugin-logger, %{name}-plugin-runapp
 #Requires: %{name}-plugin-firefox
+Obsoletes: bug-buddy
+Provides: bug-buddy
 
 %description desktop
 Virtual package to make easy default instalation on desktop environments.

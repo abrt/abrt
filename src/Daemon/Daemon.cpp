@@ -161,7 +161,7 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
     return FALSE;
 }
 
-static void SetUpMW()
+static int SetUpMW()
 {
     set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
@@ -177,7 +177,8 @@ static void SetUpMW()
     set_string_t::iterator it_p = g_settings_setEnabledPlugins.begin();
     for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
     {
-        g_pPluginManager->RegisterPlugin(it_p->c_str());
+        if (g_pPluginManager->RegisterPlugin(it_p->c_str()) != 0)
+            return -1;
     }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
@@ -195,6 +196,7 @@ static void SetUpMW()
             AddAnalyzerActionOrReporter(it_aar->first.c_str(), it_ar->first.c_str(), it_ar->second.c_str());
         }
     }
+    return 0;
 }
 
 static int SetUpCron()
@@ -779,9 +781,11 @@ int main(int argc, char** argv)
         xmlrpc_client_setup_global_const(&env);
         if (env.fault_occurred)
             error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
+
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
+
         VERB1 log("Initializing inotify");
         sanitize_dump_dir_rights();
         errno = 0;
@@ -790,14 +794,19 @@ int main(int argc, char** argv)
             perror_msg_and_die("inotify_init failed");
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
-        VERB1 log("Loading settings");
-        LoadSettings();
-        VERB1 log("Loading plugins");
+
+        VERB1 log("Loading all plugins in "PLUGINS_LIB_DIR);
         g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
-        SetUpMW(); /* logging is inside */
+
+        VERB1 log("Loading settings");
+        LoadSettings();
+
+        if (SetUpMW() != 0) /* logging is inside */
+            throw 1;
         if (SetUpCron() != 0)
             throw 1;
+
 #if 1 //def ENABLE_DBUS
         VERB1 log("Initializing dbus");
         g_pCommLayer = new CCommLayerServerDBus();
@@ -806,14 +815,17 @@ int main(int argc, char** argv)
 #endif
         if (g_pCommLayer->m_init_error)
             throw 1;
+
         VERB1 log("Adding inotify watch to glib main loop");
         pGiochannel_inotify = g_io_channel_unix_new(inotify_fd);
         g_io_add_watch(pGiochannel_inotify, G_IO_IN, handle_inotify_cb, NULL);
         /* Add an event source which waits for INT/TERM signal */
+
         VERB1 log("Adding signal pipe watch to glib main loop");
         pGiochannel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
         g_io_add_watch(pGiochannel_signal, G_IO_IN, handle_signal_cb, NULL);
         /* Mark the territory */
+
         VERB1 log("Creating lock file");
         if (Lock() != 0)
             throw 1;

@@ -84,7 +84,7 @@ class CPluginManager
          * A method, which registers particular plugin.
          * @param pName A plugin name.
          */
-        void RegisterPlugin(const char *pName);
+        int RegisterPlugin(const char *pName);
         /**
          * A method, which unregister particular plugin.
          * @param pName A plugin name.
