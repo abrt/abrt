@@ -248,7 +248,8 @@ desktop-file-install \
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-/usr/sbin/groupadd -f --system abrt
+getent group abrt >/dev/null || groupadd -f --system abrt
+exit 0
 
 %post
 /sbin/chkconfig --add %{name}d
