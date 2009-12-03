@@ -29,7 +29,7 @@ BuildRequires: intltool
 BuildRequires: bison
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
-Requires(pre): /usr/sbin/groupadd
+Requires(pre): shadow-utils
 Obsoletes: abrt-plugin-sqlite3
 
 %description
