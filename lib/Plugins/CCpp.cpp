@@ -539,14 +539,13 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
-    string backtrace;
+    string backtrace_path = (string)pDebugDumpDir + "/" + FILENAME_BACKTRACE;
     string executable;
     string package;
     string uid_str;
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
-        dd.LoadText(FILENAME_BACKTRACE, backtrace);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
         dd.LoadText(FILENAME_UID, uid_str);
@@ -554,12 +553,13 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 
     /* Run abrt-backtrace to get independent backtrace suitable
        to UUID calculation. */
-    char *args[5];
+    char *args[6];
     args[0] = (char*)"abrt-backtrace";
     args[1] = (char*)"--single-thread";
     args[2] = (char*)"--remove-exit-handlers";
     args[3] = (char*)"--frame-depth=5";
-    args[4] = NULL;
+    args[4] = (char*)backtrace_path.c_str();
+    args[5] = NULL;
 
     uid_t uid = atoi(uid_str.c_str());
     gid_t gid = uid;
@@ -567,8 +567,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     if (pw)
         gid = pw->pw_gid;
 
-    int pipein[2], pipeout[2];
-    xpipe(pipein); /* stdin of abrt-backtrace */
+    int pipeout[2];
     xpipe(pipeout); /* stdout of abrt-backtrace */
     pid_t child = fork();
     if (child == -1)
@@ -576,10 +575,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     if (child == 0)
     {
         VERB1 log("Executing: %s", concat_str_vector(args).c_str());
-        /* Attach proper ends of pipes to stdin and stdout, 
-           close the other ones. */
-        xmove_fd(pipein[0], STDIN_FILENO);
-        close(pipein[1]); /* write side of the pipe */
+
         xmove_fd(pipeout[1], STDOUT_FILENO);
         close(pipeout[0]); /* read side of the pipe */
         
@@ -595,19 +591,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         exit(1);
     }
 
-    close(pipein[0]); /* read side of the pipe */
     close(pipeout[1]); /* write side of the pipe */
-
-    /* Send the backtrace to abrt-backtrace program. */
-    size_t len = backtrace.length();
-    ssize_t result = write(pipein[1], backtrace.c_str(), len);
-    if (result != len)
-    {
-        perror_msg_and_die("Unable to write %d bytes to pipe, "
-                           " returned value is %d", 
-                           (int)len, (int)result);
-    }
-    close(pipein[1]);
 
     /* Read the result from abrt-backtrace. */
     int r;
@@ -631,8 +615,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     int exit_status = WEXITSTATUS(status);
     if (exit_status > 0 && exit_status <= EX__MAX)
     {
-        perror_msg_and_die("abrt-backtrace run failed, exit value: %d", 
-                           exit_status);
+        error_msg_and_die("abrt-backtrace run failed, exit value: %d", 
+                          exit_status);
     }
 
     /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
