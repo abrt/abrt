@@ -28,21 +28,12 @@
 class CSQLite3 : public CDatabase
 {
     private:
-
         std::string m_sDBPath;
         sqlite3* m_pDB;
 
-        bool OpenDB();
-        bool CheckTable();
-        void UpdateABRTTable(const int pOldVersion);
-        void CreateDB();
-        void CreateTable();
-        void Exec(const std::string& pCommand);
-        void GetTable(const std::string& pCommand, vector_database_rows_t& pTable);
-        bool Exist(const std::string& pUUID, const std::string& pUID);
-
     public:
         CSQLite3();
+        ~CSQLite3();
 
         virtual void Connect();
         virtual void DisConnect();
@@ -52,15 +43,13 @@ class CSQLite3 : public CDatabase
                         const char *pDebugDumpPath,
                         const char *pTime);
 
-        virtual void DeleteRow(const std::string& pUUID, const std::string& pUID);
+        virtual void DeleteRow(const char *pUUID, const char *pUID);
         virtual void DeleteRows_by_dir(const char *dump_dir);
-        virtual void SetReported(const std::string& pUUID, const std::string& pUID, const std::string& pMessage);
-        virtual vector_database_rows_t GetUIDData(const std::string& pUID);
-        virtual database_row_t GetRow(const std::string& pUUID, const std::string& pUID);
+        virtual void SetReported(const char *pUUID, const char *pUID, const char *pMessage);
+        virtual vector_database_rows_t GetUIDData(const char *pUID);
+        virtual database_row_t GetRow(const char *pUUID, const char *pUID);
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-//ok to delete?
-//        virtual const map_plugin_settings_t& GetSettings();
 };
 
-#endif /* SQLITE3_H_ */
+#endif

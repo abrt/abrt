@@ -141,28 +141,22 @@ off_t xlseek(int fd, off_t offset, int whence)
 	return off;
 }
 
-// Die with an error message if we can't malloc() enough space and do an
-// sprintf() into that space.
-char* xasprintf(const char *format, ...)
+char* xvasprintf(const char *format, va_list p)
 {
-	va_list p;
 	int r;
 	char *string_ptr;
 
 #if 1
 	// GNU extension
-	va_start(p, format);
 	r = vasprintf(&string_ptr, format, p);
-	va_end(p);
 #else
 	// Bloat for systems that haven't got the GNU extension.
-	va_start(p, format);
+	va_list p2;
 	r = vsnprintf(NULL, 0, format, p);
-	va_end(p);
+	va_copy(p2, p);
 	string_ptr = xmalloc(r+1);
-	va_start(p, format);
-	r = vsnprintf(string_ptr, r+1, format, p);
-	va_end(p);
+	r = vsnprintf(string_ptr, r+1, format, p2);
+	va_end(p2);
 #endif
 
 	if (r < 0)
@@ -170,30 +164,29 @@ char* xasprintf(const char *format, ...)
 	return string_ptr;
 }
 
+// Die with an error message if we can't malloc() enough space and do an
+// sprintf() into that space.
+char* xasprintf(const char *format, ...)
+{
+	va_list p;
+	char *string_ptr;
+
+	va_start(p, format);
+	string_ptr = xvasprintf(format, p);
+	va_end(p);
+
+	return string_ptr;
+}
+
 std::string ssprintf(const char *format, ...)
 {
 	va_list p;
-	int r;
 	char *string_ptr;
 
-#if 1
-	// GNU extension
 	va_start(p, format);
-	r = vasprintf(&string_ptr, format, p);
+	string_ptr = xvasprintf(format, p);
 	va_end(p);
-#else
-	// Bloat for systems that haven't got the GNU extension.
-	va_start(p, format);
-	r = vsnprintf(NULL, 0, format, p);
-	va_end(p);
-	string_ptr = xmalloc(r+1);
-	va_start(p, format);
-	r = vsnprintf(string_ptr, r+1, format, p);
-	va_end(p);
-#endif
 
-	if (r < 0)
-		die_out_of_memory();
 	std::string res = string_ptr;
 	free(string_ptr);
 	return res;

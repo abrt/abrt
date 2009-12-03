@@ -84,8 +84,8 @@ class CDatabase : public CPlugin
          * @param pUUID A lodal UUID of a crash.
          * @param pUID An UID of an user.
          */
-        virtual void DeleteRow(const std::string& pUUID,
-                            const std::string& pUID) = 0;
+        virtual void DeleteRow(const char *pUUID,
+                            const char *pUID) = 0;
         virtual void DeleteRows_by_dir(const char *dump_dir) = 0;
         /**
          * A method, which sets that particular row was reported.
@@ -94,9 +94,9 @@ class CDatabase : public CPlugin
          * @param pMessage A text explanation of reported problem
          * (where it is stored etc)...
          */
-        virtual void SetReported(const std::string& pUUID,
-                                 const std::string& pUID,
-                                 const std::string& pMessage) = 0;
+        virtual void SetReported(const char *pUUID,
+                                 const char *pUID,
+                                 const char *pMessage) = 0;
         /**
          * A method, which gets all rows which belongs to particular user.
          * If the user is root, then all rows are returned. If there are no
@@ -104,7 +104,7 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A vector of matched rows.
          */
-        virtual vector_database_rows_t GetUIDData(const std::string& pUID) = 0;
+        virtual vector_database_rows_t GetUIDData(const char *pUID) = 0;
         /**
          * A method, which returns one row accordind to UUID of a crash and
          * UID of an user. If there are no row, empty row is returned.
@@ -112,8 +112,8 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A matched row.
          */
-        virtual database_row_t GetRow(const std::string& pUUID,
-                                                 const std::string& pUID) = 0;
+        virtual database_row_t GetRow(const char *pUUID,
+                                                 const char *pUID) = 0;
 };
 
-#endif /* DATABASE_H_ */
+#endif

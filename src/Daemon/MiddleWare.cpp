@@ -514,7 +514,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database->SetReported(UUID, UID, message);
+    database->SetReported(UUID.c_str(), UID.c_str(), message.c_str());
     database->DisConnect();
 
     return ret;
