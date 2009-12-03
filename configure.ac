@@ -54,10 +54,18 @@ PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
 
 DEBUG_DUMPS_DIR='${localstatedir}/cache/${PACKAGE_NAME}'
+DEBUG_INFO_DIR='${localstatedir}/cache/${PACKAGE_NAME}-di'
+
 AC_ARG_WITH(debugdumpsdir,
             [AS_HELP_STRING([--with-debugdumpdir=DIR],
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
+            
+AC_ARG_WITH(debuginfosdir,
+            [AS_HELP_STRING([--with-debuginfodir=DIR],
+                           [Directory where debuginfo is stored])],
+            [DEBUG_INFO_DIR="$withval"])
+
 
 AC_ARG_ENABLE(socket,
               [AC_HELP_STRING([--enable-socket],
@@ -75,6 +83,7 @@ AC_SUBST(VAR_RUN)
 AC_SUBST(PLUGINS_CONF_DIR)
 AC_SUBST(PLUGINS_LIB_DIR)
 AC_SUBST(DEBUG_DUMPS_DIR)
+AC_SUBST(DEBUG_INFO_DIR)
 AC_SUBST(DL_LIBS, -ldl)
 
 AC_CONFIG_HEADERS([config.h])

@@ -66,7 +66,8 @@ libABRTdUtils_la_LIBADD = \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     $(POLKIT_LIBS)
 
-
-install-data-local:
-	$(mkdir_p) '$(DESTDIR)/$(DEBUG_DUMPS_DIR)'
-	chmod 1777 '$(DESTDIR)/$(DEBUG_DUMPS_DIR)'
+$(DESTDIR)/$(DEBUG_DUMPS_DIR):
+	$(mkdir_p) '$@'
+# no need to chmod it here
+#chmod 1777 '$@'
+install-data-local: $(DESTDIR)/$(DEBUG_DUMPS_DIR)

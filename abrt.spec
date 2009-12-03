@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 1.0.0
-Release: 1%{?dist}
+Release: 4%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -278,8 +278,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
-%dir %attr(0775, root, abrt) /var/cache/%{name}
-%dir /var/cache/%{name}-di
+%dir %attr(0775, root, abrt) %{_localstatedir}/cache/%{name}
 %dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
@@ -315,6 +314,7 @@ fi
 %files addon-ccpp
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
+%dir %{_localstatedir}/cache/%{name}-di
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
 

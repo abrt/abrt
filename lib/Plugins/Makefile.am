@@ -40,8 +40,11 @@ man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7 \
 # + abrt-Catcut.7
 
 EXTRA_DIST = $(man_MANS)
+    
+$(DESTDIR)/$(DEBUG_INFO_DIR):
+	$(mkdir_p) '$@'
 
-install-data-hook:
+install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	chmod 0600 $(DESTDIR)$(sysconfdir)/abrt/plugins/Bugzilla.conf
 	sed 's: = /var/: = $(localstatedir)/:g' -i \
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf \
