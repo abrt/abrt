@@ -157,6 +157,7 @@ class SettingsDialog:
 
     def add_CronJob(self, job=None):
         hbox = gtk.HBox()
+        hbox.set_spacing(6)
         time = gtk.Entry()
         remove_image = gtk.Image()
         remove_image.set_from_stock("gtk-remove",gtk.ICON_SIZE_MENU)
@@ -193,6 +194,7 @@ class SettingsDialog:
     def add_AnalyzerAction(self, action=None):
         #print "add_AnalyzerAction"
         hbox = gtk.HBox()
+        hbox.set_spacing(6)
         action_list = gtk.Entry()
         edit_actions = gtk.Button()
         edit_actions.set_tooltip_text("Edit actions")

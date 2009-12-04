@@ -27,43 +27,13 @@
             <child>
               <object class="GtkTable" id="table1">
                 <property name="visible">True</property>
-                <property name="n_rows">4</property>
+                <property name="n_rows">3</property>
                 <property name="n_columns">2</property>
                 <child>
                   <object class="GtkLabel" id="lSubject">
                     <property name="visible">True</property>
                     <property name="label" translatable="yes">Subject:</property>
                   </object>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="lParameters">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Parameters:</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">1</property>
-                    <property name="bottom_attach">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="lEmailFrom">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Your Email:</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">2</property>
-                    <property name="bottom_attach">3</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkLabel" id="lEmailTo">
-                    <property name="visible">True</property>
-                    <property name="label" translatable="yes">Recipient's Email:</property>
-                  </object>
-                  <packing>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
-                  </packing>
                 </child>
                 <child>
                   <object class="GtkEntry" id="conf_Subject">
@@ -77,7 +47,7 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="conf_Parameters">
+                  <object class="GtkEntry" id="conf_EmailFrom">
                     <property name="visible">True</property>
                     <property name="can_focus">True</property>
                     <property name="invisible_char">&#x25CF;</property>
@@ -90,14 +60,21 @@
                   </packing>
                 </child>
                 <child>
-                  <object class="GtkEntry" id="conf_EmailFrom">
+                  <object class="GtkLabel" id="lEmailFrom">
                     <property name="visible">True</property>
-                    <property name="can_focus">True</property>
-                    <property name="invisible_char">&#x25CF;</property>
+                    <property name="label" translatable="yes">Your Email:</property>
                   </object>
                   <packing>
-                    <property name="left_attach">1</property>
-                    <property name="right_attach">2</property>
+                    <property name="top_attach">1</property>
+                    <property name="bottom_attach">2</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lEmailTo">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Recipient's Email:</property>
+                  </object>
+                  <packing>
                     <property name="top_attach">2</property>
                     <property name="bottom_attach">3</property>
                   </packing>
@@ -111,8 +88,8 @@
                   <packing>
                     <property name="left_attach">1</property>
                     <property name="right_attach">2</property>
-                    <property name="top_attach">3</property>
-                    <property name="bottom_attach">4</property>
+                    <property name="top_attach">2</property>
+                    <property name="bottom_attach">3</property>
                   </packing>
                 </child>
               </object>
@@ -143,7 +120,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="button1">
-                <property name="label" translatable="yes">gtk-apply</property>
+                <property name="label">gtk-apply</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -157,7 +134,7 @@
             </child>
             <child>
               <object class="GtkButton" id="button2">
-                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>

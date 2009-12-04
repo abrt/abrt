@@ -69,27 +69,15 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
                     retval.push_back(info);
                     break;
                 case MW_ERROR:
-                    error_msg("Can't find dump directory for UUID %s, deleting from database", uuid);
-                    DeleteCrashInfoInDB(uuid, uid);
-                    break;
-                case MW_FILE_ERROR:
-                    error_msg("Can't open file in dump directory for UUID %s, deleting", uuid);
-                    {
-                        std::string debugDumpDir = DeleteCrashInfoInDB(uuid, uid);
-                        delete_debug_dump_dir(debugDumpDir.c_str());
-                    }
-                    break;
-                default:
+                    error_msg("Dump directory for UUID %s doesn't exist or misses crucial files, deleting", uuid);
+                    /* Deletes both DB record and dump dir */
+                    DeleteDebugDump(uuid, uid);
                     break;
             }
         }
     }
     catch (CABRTException& e)
     {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
         error_msg("%s", e.what());
     }
 
@@ -126,12 +114,9 @@ map_crash_report_t CreateReport(const char* pUUID, const char* pUID, int force)
         case MW_PLUGIN_ERROR:
             error_msg("Particular analyzer plugin isn't loaded or there is an error within plugin(s)");
             break;
-        case MW_CORRUPTED:
-        case MW_FILE_ERROR:
         default:
             error_msg("Corrupted crash with UUID %s, deleting", pUUID);
-            std::string debugDumpDir = DeleteCrashInfoInDB(pUUID, pUID);
-            delete_debug_dump_dir(debugDumpDir.c_str());
+            DeleteDebugDump(pUUID, pUID);
             break;
     }
     return crashReport;
@@ -204,40 +189,39 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
     return r;
 }
 
-bool DeleteDebugDump(const char *pUUID, const char *pUID)
+
+/* Remove dump dir and its DB record */
+void DeleteDebugDump(const char *pUUID, const char *pUID)
 {
     try
     {
-        std::string debugDumpDir = DeleteCrashInfoInDB(pUUID, pUID);
-        delete_debug_dump_dir(debugDumpDir.c_str());
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        database->Connect();
+        database_row_t row = database->GetRow(pUUID, pUID);
+        database->DeleteRow(pUUID, pUID);
+        database->DisConnect();
+
+        delete_debug_dump_dir(row.m_sDebugDumpDir.c_str());
     }
     catch (CABRTException& e)
     {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
         error_msg("%s", e.what());
-        return false;
     }
-    return true;
 }
 
-bool DeleteDebugDump_by_dir(const char *dump_dir)
+void DeleteDebugDump_by_dir(const char *dump_dir)
 {
     try
     {
-        DeleteCrashInfosInDB_by_dir(dump_dir);
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        database->Connect();
+        database->DeleteRows_by_dir(dump_dir);
+        database->DisConnect();
+
         delete_debug_dump_dir(dump_dir);
     }
     catch (CABRTException& e)
     {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
         error_msg("%s", e.what());
-        return false;
     }
-    return true;
 }
