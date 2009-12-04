@@ -257,11 +257,9 @@ class MainWindow():
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         try:
-            if self.ccdaemon.DeleteDebugDump(dump.getUUID()):
-                self.hydrate()
-                treeview.emit("cursor-changed")
-            else:
-                print "Couldn't delete"
+            self.ccdaemon.DeleteDebugDump(dump.getUUID())
+            self.hydrate()
+            treeview.emit("cursor-changed")
         except Exception, e:
             print e
 

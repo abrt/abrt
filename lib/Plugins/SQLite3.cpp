@@ -100,14 +100,16 @@ static void get_table(vector_database_rows_t& pTable,
 
     char **table;
     int ncol, nrow;
-    char *err;
+    char *err = NULL;
     int ret = sqlite3_get_table(db, sql, &table, &nrow, &ncol, &err);
     if (ret != SQLITE_OK)
     {
         string errstr = ssprintf("Error in SQL:'%s' error: %s", sql, err);
         free(sql);
+        sqlite3_free(err);
         throw CABRTException(EXCEP_PLUGIN, errstr);
     }
+    VERB2 log("%d rows returned by SQL:%s", nrow, sql);
     free(sql);
 
     pTable.clear();
@@ -143,14 +145,16 @@ static void execute_sql(sqlite3 *db, const char *fmt, ...)
     char *sql = xvasprintf(fmt, p);
     va_end(p);
 
-    char *err;
-    int ret = sqlite3_exec(db, sql, 0, 0, &err);
+    char *err = NULL;
+    int ret = sqlite3_exec(db, sql, /*callback:*/ NULL, /*callback param:*/ NULL, &err);
     if (ret != SQLITE_OK)
     {
         string errstr = ssprintf("Error in SQL:'%s' error: %s", sql, err);
         free(sql);
+        sqlite3_free(err);
         throw CABRTException(EXCEP_PLUGIN, errstr);
     }
+    VERB2 log("%d rows affected by SQL:%s", sqlite3_changes(db), sql);
     free(sql);
 }
 
@@ -184,7 +188,7 @@ static bool check_table(sqlite3 *db)
         /* Should never happen */
         error_msg_and_die("SQLite3 database is corrupted");
     }
-    if (!nrow || !nrow)
+    if (!nrow)
     {
         return false;
     }
@@ -201,7 +205,7 @@ static bool check_table(sqlite3 *db)
         return true;
     }
 
-    // TODO: after some time could be removed, and if a table is that old,
+    // TODO: after some time could be removed, and if the table is that old,
     // then simply drop it and create new one
 
     // hack for version 0 and 1
