@@ -433,6 +433,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
             build_ids += "Debuginfo absent: ";
             build_ids += buff + 8;
             build_ids += "\n";
+            continue;
         }
 
         const char *p = buff;

@@ -148,7 +148,7 @@ print_package_names() {
 	yumopts="-C"
 	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list from cache" >&2
     else
-	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list" >&2
+	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list from repositories" >&2
     fi
     local cmd="yum $yumopts --enablerepo=*debuginfo* --quiet provides $missing_debuginfo_files"
     echo "$cmd" >"yum_provides.$1.OUT"
