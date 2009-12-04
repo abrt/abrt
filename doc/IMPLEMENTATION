@@ -1,0 +1,88 @@
+Implementation:
+
+C/C++ handling:
+==============
+
+we change /proc/sys/kernel/core_pattern to invoke abrtd helper to save 
+the coredump of crashing app:
+* helper source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Hooks/abrt-pyhook-helper.cpp
+the code responsible for this:
+
+    #define CORE_PATTERN            "|/usr/libexec/abrt-hook-ccpp" "/var/cache/abrt" %p %s %u"
+    ofstream fOutCorePattern;
+    fOutCorePattern.open(CORE_PATTERN_IFACE);
+    if (fOutCorePattern.is_open())
+    {
+        fOutCorePattern << CORE_PATTERN << endl;
+        fOutCorePattern.close();
+    }
+    
+%p - pid
+%s - signal
+%u - uid
+
+when some crash occures abrt-hook-ccpp is invoked to store the coredump and some other info
+read from /proc/<pid>/:
+
+executable: 
+    char buf[sizeof("/proc/%u/exe") + sizeof(int)*3];
+    sprintf(buf, "/proc/%u/exe", (int)pid);
+    readlink(buf);
+
+cmdline:
+    char path[sizeof("/proc/%u/cmdline") + sizeof(int)*3];
+    sprintf(path, "/proc/%u/cmdline", (int)pid);
+    
+both is saved to file in /var/cache/abrt/ccpp-<time>-<pid> readable
+only by owner the crashed process:
+    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    if(fd){
+        do {
+            n = write(fd, buf, count);
+        } while (n < 0 && errno == EINTR);
+    }
+    
+when the hook is done it signalize the daemon (be removing the lock file) and
+daemon process the written info and saves some aditional information:
+        analyzer        : name of the plugin used to analyze the crash (ccpp, python)
+        component       : source package name
+        description     : package description (will be removed soon)
+        kernel          : kernel version
+        release         : Fedora release string
+        uid             : uid of the owner of the crashed app
+        architecture    : architecture (i386, x86_64,etc)
+        package         : package name
+        reason          : e.g "Process was terminated by signal 11 (Segmentation fault)"
+        time            : unix time if the crash
+
+2. send dbus signal (broadcast) about new crash, this signal contains two informations:
+    1. uid of the app owner
+    2. package name
+
+This is all what happens when some app crashes, the next step is to process 
+the coredump and extract the backtrace. This is done on user demand by calling 
+getReport(UUID) method or automatically if admin sets it in /etc/abrt/abrt.conf
+* UUID is unique id of the crash in the database, every user is allowed to see only
+  his own crashes or kerneloops crashes
+- see http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob;f=lib/Plugins/SQLite3.cpp line 394
+  for more details
+
+1. processing coredump:
+    a) determine if the crashed binary belongs to some installed package
+    if it does then:
+    b) daemon tries to install the debuginfo issuing this command:
+
+execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
+
+abrt-debuginfo-install is a shell script using elfutils to get build-ids from coredump and the use
+"yum provides" and "yumdownloader" to determine and download the missing debuginfo packages
+* script source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Daemon/abrt-debuginfo-install
+    c) run gdb and get backtrace from coredump:
+    see http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=lib/Plugins/CCpp.cpp line 260
+    d) BT is saved to same directory where the coredump is
+    
+Once the backtrace is processed all data from the /var/cache/abrt/ccpp-<time>-<pid> is sent
+over dbus to the client and then user can edit the backtrace. When user is happy about
+the report and command the client (gui, tui) to send the it, the client sends the data back
+to the daemon calling the Report(data) method over the dbus. The actual reporting is done by
+the respective plugin which is loaded in daemon.
