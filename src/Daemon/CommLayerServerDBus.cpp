@@ -315,11 +315,7 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    bool argout1 = DeleteDebugDump(argin1, to_string(unix_uid).c_str());
-
-    dbus_message_append_args(reply,
-                DBUS_TYPE_BOOLEAN, &argout1,
-                DBUS_TYPE_INVALID);
+    DeleteDebugDump(argin1, to_string(unix_uid).c_str());
 
     send_flush_and_unref(reply);
     return 0;
