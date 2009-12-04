@@ -520,26 +520,6 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     return ret;
 }
 
-std::string DeleteCrashInfoInDB(const char *pUUID,
-                const char *pUID)
-{
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
-    database->Connect();
-    database_row_t row = database->GetRow(pUUID, pUID);
-    database->DeleteRow(pUUID, pUID);
-    database->DisConnect();
-
-    return row.m_sDebugDumpDir;
-}
-
-void DeleteCrashInfosInDB_by_dir(const char *dump_dir)
-{
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
-    database->Connect();
-    database->DeleteRows_by_dir(dump_dir);
-    database->DisConnect();
-}
-
 /**
  * Check whether particular debugdump directory is saved
  * in database. This check is done together with an UID of an user.
@@ -861,10 +841,6 @@ mw_result_t FillCrashInfo(const char *pUUID,
     catch (CABRTException& e)
     {
         error_msg("%s", e.what());
-        if (e.type() == EXCEP_DD_LOAD)
-        {
-            return MW_FILE_ERROR;
-        }
         return MW_ERROR;
     }
 

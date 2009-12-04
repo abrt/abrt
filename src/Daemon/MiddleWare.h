@@ -105,17 +105,6 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 std::string getDebugDumpDir( const char *pUUID,
                              const char *pUID);
 /**
- * Deletes a row from database. If a deleting is
- * successfull, it returns a debugdump directort, which is not
- * deleted. Otherwise, it returns empty string.
- * @param pUUID A local UUID of a crash.
- * @param pUID An UID of an user.
- * @return A debugdump directory.
- */
-std::string DeleteCrashInfoInDB(const char *pUUID,
-                        const char *pUID);
-void DeleteCrashInfosInDB_by_dir(const char *dump_dir);
-/**
  * Saves debugdump into database. If saving is successful,
  * it fills crash info.
  * @param pDebugDumpDir A debugdump directory.

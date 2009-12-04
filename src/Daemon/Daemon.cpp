@@ -343,11 +343,6 @@ static void FindNewDumps(const char* pPath)
                     VERB1 log("Already saved crash %s, deleting", itt->c_str());
                     delete_debug_dump_dir(itt->c_str());
                     break;
-                case MW_BLACKLISTED:
-                case MW_CORRUPTED:
-                case MW_PACKAGE_ERROR:
-                case MW_GPG_ERROR:
-                case MW_FILE_ERROR:
                 default:
                     log("Corrupted or bad crash %s (res:%d), deleting", itt->c_str(), (int)res);
                     delete_debug_dump_dir(itt->c_str());
@@ -356,10 +351,6 @@ static void FindNewDumps(const char* pPath)
         }
         catch (CABRTException& e)
         {
-            if (e.type() == EXCEP_FATAL)
-            {
-                throw e;
-            }
             error_msg("%s", e.what());
         }
     }
@@ -545,12 +536,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         }
         catch (CABRTException& e)
         {
-            error_msg(e.what());
-            if (e.type() == EXCEP_FATAL)
-            {
-                free(buf);
-                return -1;
-            }
+            error_msg("%s", e.what());
         }
         catch (...)
         {

@@ -12,7 +12,6 @@ typedef enum {
     EXCEP_DL,
     EXCEP_PLUGIN,
     EXCEP_ERROR,
-    EXCEP_FATAL,
 } abrt_exception_t;
 
 /* std::exception is a class with virtual members.
