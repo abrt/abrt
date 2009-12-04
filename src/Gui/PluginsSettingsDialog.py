@@ -104,6 +104,7 @@ class PluginsSettingsDialog:
             n = self.pluginsListStore.append(plugin_rows[entry.getType()],["<b>%s</b>\n%s" % (entry.getName(), entry.Description), entry.Enabled == "yes", 1, 0, "white", entry])
         self.pluginlist.expand_all()
 
+
     def dehydrate(self):
         # we have nothing to save, plugin's does the work
         pass
