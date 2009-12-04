@@ -1,4 +1,4 @@
-/*
+/* -*-mode:c++;c-file-style:"bsd";c-basic-offset:4;indent-tabs-mode:nil-*-
     Copyright (C) 2009  Jiri Moskovcak (jmoskovc@redhat.com)
     Copyright (C) 2009  RedHat inc.
 
@@ -657,7 +657,7 @@ static void ensure_writable_dir(const char *dir, mode_t mode, const char *group)
         perror_msg_and_die("Can't find group '%s'", group);
 
     if ((sb.st_uid != 0 || sb.st_gid != gr->gr_gid) && chown(dir, 0, gr->gr_gid) != 0)
-        perror_msg_and_die("Can't set owner 0:0 on '%s'", dir);
+        perror_msg_and_die("Can't set owner 0:%u on '%s'", (unsigned int)gr->gr_gid, dir);
     if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
         perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
 }
