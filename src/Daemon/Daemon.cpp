@@ -64,7 +64,7 @@
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
- * - DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool
+ * - DeleteDebugDump(UUID): delete it from DB and delete corresponding /var/cache/abrt/DIR
  * - GetPluginsInfo(): returns vector_map_string_t
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void

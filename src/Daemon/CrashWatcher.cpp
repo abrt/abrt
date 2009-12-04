@@ -201,7 +201,9 @@ void DeleteDebugDump(const char *pUUID, const char *pUID)
         database->DeleteRow(pUUID, pUID);
         database->DisConnect();
 
-        delete_debug_dump_dir(row.m_sDebugDumpDir.c_str());
+        const char *dump_dir = row.m_sDebugDumpDir.c_str();
+        if (dump_dir[0] != '\0')
+            delete_debug_dump_dir(dump_dir);
     }
     catch (CABRTException& e)
     {

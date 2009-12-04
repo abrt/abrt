@@ -160,8 +160,6 @@ void call_DeleteDebugDump(const char* uuid)
             DBUS_TYPE_INVALID);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
-    //it returns a single boolean value,
-    //but we don't use it (yet?)
 
     dbus_message_unref(reply);
 }
