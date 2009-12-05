@@ -1,0 +1,555 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ABRT\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2009-11-29 20:23+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Elad <el.il@doom.co.il>\n"
+"Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Hebrew\n"
+"X-Poedit-Country: ISRAEL\n"
+
+#: ../src/Gui/ABRTExceptions.py:6
+msgid "Another client is already running, trying to wake it."
+msgstr "לקוח אחר כבר רץ, מנסה להעיר אותו."
+
+#: ../src/Gui/ABRTExceptions.py:13
+msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr "מידע לא צפוי הוחזר מתהליך הרקע (האם מסד הנתונים מעודכן כראוי?)"
+
+#: ../src/Gui/ABRTPlugin.py:55
+msgid "Analyzer plugins"
+msgstr "תוספי ניתוח"
+
+#: ../src/Gui/ABRTPlugin.py:56
+msgid "Action plugins"
+msgstr "תוספי פעולות"
+
+#: ../src/Gui/ABRTPlugin.py:57
+msgid "Reporter plugins"
+msgstr "תוספי דיווח"
+
+#: ../src/Gui/ABRTPlugin.py:58
+msgid "Database plugins"
+msgstr "תוספי מסד-נתונים"
+
+#: ../src/Gui/ABRTPlugin.py:97
+msgid "Plugin name is not set, can't load it's settings"
+msgstr "שם התוסף לא הוגדר, לא ניתן לטעון את ההגדרות שלו"
+
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "לא יכול להתחבר ל-system bus"
+
+#: ../src/Gui/CCDBusBackend.py:100
+#: ../src/Gui/CCDBusBackend.py:103
+msgid "Please check if abrt daemon is running"
+msgstr "אנא בדוק אם תהליך השירות של abrt פועל"
+
+#: ../src/Gui/CCDBusBackend.py:155
+msgid ""
+"Daemon did't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
+"תהליך הרקע החזיר דיווח לא תקין\n"
+"מידע ניפוי השגיאות חסר?"
+
+#: ../src/Gui/ccgui.glade.h:1
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/CCMainWindow.py:246
+msgid "<b>Not reported!</b>"
+msgstr "<b>לא דווח!</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<span color=\"white\">Description</span>"
+msgstr "<span color=\"white\">תיאור</span>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "About ABRT"
+msgstr "אודות ABRT"
+
+#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/abrt.desktop.in.h:1
+msgid "Automatic Bug Reporting Tool"
+msgstr "כלי דיווח באגים אוטומטי"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Delete"
+msgstr "מחק"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "Please wait.."
+msgstr "אנא המתן..."
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Plugins"
+msgstr "תוספים"
+
+#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/report.glade.h:4
+msgid "Report"
+msgstr "לדווח"
+
+#: ../src/Gui/ccgui.glade.h:11
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "Working..."
+msgstr "עובד..."
+
+#: ../src/Gui/ccgui.glade.h:17
+msgid "_Edit"
+msgstr "_עריכה"
+
+#: ../src/Gui/ccgui.glade.h:18
+msgid "_File"
+msgstr "_קובץ"
+
+#: ../src/Gui/ccgui.glade.h:19
+msgid "_Help"
+msgstr "ע_זרה"
+
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:80
+msgid "Icon"
+msgstr "סמל"
+
+#: ../src/Gui/CCMainWindow.py:88
+msgid "Package"
+msgstr "חבילה"
+
+#: ../src/Gui/CCMainWindow.py:89
+msgid "Application"
+msgstr "יישום"
+
+#: ../src/Gui/CCMainWindow.py:90
+msgid "Date"
+msgstr "תאריך"
+
+#: ../src/Gui/CCMainWindow.py:91
+msgid "Crash count"
+msgstr "מספר קריסות"
+
+#: ../src/Gui/CCMainWindow.py:93
+msgid "User"
+msgstr "משתמש"
+
+#: ../src/Gui/CCMainWindow.py:160
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"לא ניתן להציג את חלון ההגדרות\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:181
+#, python-format
+msgid ""
+"Unable to finish current task!\n"
+"%s"
+msgstr ""
+"לא ניתן לסיים משימה נוכחית!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:198
+#, python-format
+msgid ""
+"Error while loading the dumplist, please check if abrt daemon is running\n"
+" %s"
+msgstr ""
+"שגיאה במהלך טעינת dumplist, אנא בדוק אם תהליך הרקע של abrt פועל\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:238
+msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
+msgstr "<b>הקריסה הזאת דווחה, אתה יכול למצוא את הדיווח ב:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:298
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"לא ניתן להשיג דיווח\n"
+"מידע ניפוי שגיאות חסר?"
+
+#: ../src/Gui/CCMainWindow.py:318
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"הדיווח נכשל!\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:337
+#: ../src/Gui/CCMainWindow.py:364
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "שגיאה בקבלת הדיווח: %s"
+
+#: ../src/Gui/CCReporterDialog.py:182
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "תיאור קצר (עדיף באנגלית) שמסביר מה עשית כשהיישום קרס או איך ניתן לשחזר את הקריסה..."
+
+#: ../src/Gui/CCReporterDialog.py:224
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"הדיווח מנוטרל בגלל שמידע הקריסה לא שמיש. \n"
+"אנא נסה להתקין מידע ניפוי שגיאות ידנית באמצעות הפקודה:<span color=\"blue\"> debuginfo-install %s </span>\n"
+"לאחר מכן השתמש  בכפתור \"רענן\" כדי ליצור מחדש את מידע הקריסה."
+
+#: ../src/Gui/CCReporterDialog.py:226
+msgid "The bactrace is unusable, you can't report this!"
+msgstr "מידע הקריסה לא שמיש, אתה לא יכול לדווח על זה!"
+
+#: ../src/Gui/CCReporterDialog.py:232
+msgid "The bactrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "מידע הקריסה לא שלם. אנא וודא שסיפקת מספיק מידע לשחזור הקריסה."
+
+#: ../src/Gui/CCReporterDialog.py:280
+#, python-format
+msgid ""
+"<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
+"Do you really want to send <b>%s</b>?\n"
+msgstr ""
+"<b>אזהרה</b>, אתה עומד לשלוח מידע שעלול להכיל מידע רגיש.\n"
+"אתה באמת רוצה לשלוח את <b>%s</b>?\n"
+
+#: ../src/Gui/dialogs.glade.h:1
+msgid "Report done"
+msgstr "דיווח הושלם"
+
+#: ../src/Gui/dialogs.glade.h:2
+#: ../src/Gui/settings.glade.h:27
+msgid "gtk-ok"
+msgstr "אישור"
+
+#: ../src/Gui/PluginSettingsUI.py:18
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr "לא ניתן למצוא פריט PluginDialog בתיאור הממשק!"
+
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid "No UI for plugin %s"
+msgstr "אין ממשק לתוסף %s"
+
+#: ../src/Gui/PluginSettingsUI.py:55
+#: ../src/Gui/PluginSettingsUI.py:81
+msgid "combo box is not implemented"
+msgstr "תיבה משולבת לא מיושמת"
+
+# אין לי מושג איך לתרגם את זה. מה הקשר בין דיווח באגים לhydrate? זה בכלל משהו שקשור למים.
+# I have no idea how to translate this. What is the meaning of hydrate in this context?
+#: ../src/Gui/PluginSettingsUI.py:64
+msgid "Nothing to hydrate!"
+msgstr "Nothing to hydrate!"
+
+#: ../src/Gui/report.glade.h:2
+msgid "Comment"
+msgstr "הערה"
+
+#: ../src/Gui/report.glade.h:3
+msgid "How to reproduce (in a few simple steps)"
+msgstr "איך לשחזר קריסה (במספר צעדים פשוטים)"
+
+#: ../src/Gui/report.glade.h:5
+msgid "Send"
+msgstr "שלח"
+
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
+msgid "<b>Select plugin</b>"
+msgstr "<b>בחר תוסף</b>"
+
+#: ../src/Gui/SettingsDialog.py:36
+msgid "<b>Select database backend</b>"
+msgstr "<b>בחר מנוע מסד נתונים</b>"
+
+#: ../src/Gui/SettingsDialog.py:165
+msgid "Remove this job"
+msgstr "הסר משימה זו"
+
+#: ../src/Gui/SettingsDialog.py:208
+msgid "Remove this action"
+msgstr "הסר פעולה זו"
+
+#: ../src/Gui/settings.glade.h:1
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>תוסף ניתוח</b>"
+
+#: ../src/Gui/settings.glade.h:2
+msgid "<b>Associated action</b>"
+msgstr "<b>פעולה מקושרת</b>"
+
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin</b>"
+msgstr "<b>תוסף</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Time (or period)</b>"
+msgstr "זמן (או תקופה)"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "Analyzers, Actions, Reporters"
+msgstr "מנתחים, פעולות, מדווחים"
+
+#: ../src/Gui/settings.glade.h:6
+msgid "Author:"
+msgstr "יוצר:"
+
+#: ../src/Gui/settings.glade.h:7
+msgid "Blacklisted packages: "
+msgstr "רשימה שחורה של חבילות:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "C_onfigure plugin"
+msgstr "ה_גדר תוסף"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "Check package GPG signature"
+msgstr "בדוק את חתימת הGPG של החבילה"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Common"
+msgstr "נפוץ"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Database backend: "
+msgstr "מנוע מסד נתונים:"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Edit blacklisted packages"
+msgstr "ערוך את הרשימה השחורה של החבילות (קריסות בחבילות אלו לא יתועדו): "
+
+#: ../src/Gui/settings.glade.h:14
+msgid "GPG Keys"
+msgstr "מפתחות GPG"
+
+#: ../src/Gui/settings.glade.h:15
+msgid "GPG keys: "
+msgstr "מפתחות GPG:"
+
+#: ../src/Gui/settings.glade.h:16
+msgid "Global Settings"
+msgstr "הגדרות כלליות"
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "גודל אחסון coredump מירבי"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Nothing selected"
+msgstr "לא נבחר דבר"
+
+#: ../src/Gui/settings.glade.h:19
+msgid "Plugin Details"
+msgstr "פרטי התוסף"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Settings"
+msgstr "הגדרות"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "This function is not implemented yet!"
+msgstr "הפונקציה הזאת עדיין לא מיושמת!"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Version:"
+msgstr "גרסה:"
+
+#: ../src/Gui/settings.glade.h:23
+msgid "Web Site:"
+msgstr "אתר אינטרנט:"
+
+#: ../src/Gui/settings.glade.h:24
+msgid "gtk-add"
+msgstr "הוסף"
+
+#: ../src/Gui/settings.glade.h:25
+msgid "gtk-cancel"
+msgstr "ביטול"
+
+#: ../src/Gui/settings.glade.h:26
+msgid "gtk-close"
+msgstr "סגור"
+
+#: ../src/Gui/settings.glade.h:28
+msgid "gtk-remove"
+msgstr "מחק"
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "צפה ברשימת היישומים שקרסו ודווח על הקריסות"
+
+#: ../src/Applet/Applet.cpp:79
+#, c-format
+msgid "A crash in package %s has been detected"
+msgstr "קריסה בחבילה %s התגלתה"
+
+#: ../src/Applet/Applet.cpp:253
+msgid "ABRT service is not running"
+msgstr "שירות ABRT לא פועל"
+
+#: ../src/Applet/CCApplet.cpp:196
+msgid "Warning"
+msgstr "אזהרה"
+
+#: ../src/Daemon/Daemon.cpp:474
+msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
+msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:202
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "הבאג דווח בעבר: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:264
+#, c-format
+msgid "New bug id: %i"
+msgstr "מזהה באג חדש: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:359
+msgid "Checking for duplicates..."
+msgstr "מחפש כפילויות..."
+
+#: ../lib/Plugins/Bugzilla.cpp:362
+msgid "Logging into bugzilla..."
+msgstr "מתחבר לבאגזילה..."
+
+#: ../lib/Plugins/Bugzilla.cpp:366
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "שם משתמש וסיסמה ריקים. אנא בדוק את הקובץ bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:372
+msgid "Checking CC..."
+msgstr "בודק שדה CC..."
+
+#: ../lib/Plugins/Bugzilla.cpp:381
+msgid "Creating new bug..."
+msgstr "יוצר באג חדש..."
+
+#: ../lib/Plugins/Bugzilla.cpp:385
+msgid "Logging out..."
+msgstr "מתנתק..."
+
+#: ../lib/Plugins/Kerneloops.cpp:37
+msgid "Getting local universal unique identification"
+msgstr "מקבל זהות מקומית ייחודית"
+
+#: ../lib/Plugins/CCpp.cpp:257
+msgid "Getting backtrace..."
+msgstr "מקבל מידע קריסה..."
+
+#: ../lib/Plugins/CCpp.cpp:566
+#: ../lib/Plugins/CCpp.cpp:693
+msgid "Searching for debug-info packages..."
+msgstr "מחפש חבילות debug-info..."
+
+#: ../lib/Plugins/CCpp.cpp:628
+#: ../lib/Plugins/CCpp.cpp:727
+msgid "Downloading and installing debug-info packages..."
+msgstr "מוריד ומתקין חבילות מידע ניפוי באגים..."
+
+#: ../lib/Plugins/CCpp.cpp:832
+msgid "Getting local universal unique identification..."
+msgstr "מקבל זהות מקומית ייחודית..."
+
+#: ../lib/Plugins/CCpp.cpp:851
+msgid "Getting global universal unique identification..."
+msgstr "מקבל זהות גלובלית ייחודית..."
+
+#: ../lib/Plugins/CCpp.cpp:896
+msgid "Starting report creation..."
+msgstr "מתחיל בהכנת הדיווח..."
+
+#: ../lib/Plugins/CCpp.cpp:929
+msgid "Skipping debuginfo installation"
+msgstr "מדלג על התקנת מידע ניפוי שגיאות"
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:102
+msgid "Creating and submitting a report..."
+msgstr "יוצר ושולח דיווח..."
+
+#: ../lib/Plugins/Logger.cpp:65
+msgid "Creating a report..."
+msgstr "יוצר דיווח"
+
+#: ../lib/Plugins/FileTransfer.cpp:63
+#: ../lib/Plugins/FileTransfer.cpp:384
+msgid "FileTransfer: URL not specified"
+msgstr "העברת קובץ: כתובת לא צוינה"
+
+#: ../lib/Plugins/FileTransfer.cpp:67
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "שולח ארכיון %s ל-%s"
+
+#: ../lib/Plugins/FileTransfer.cpp:309
+msgid "File Transfer: Creating a report..."
+msgstr "העברת קובץ: יוצר דיווח..."
+
+#: ../lib/Plugins/FileTransfer.cpp:334
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "לא יכול ליצור ולשלוח ארכיון: %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:359
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "לא יכול ליצור ולשלוח ארכיון %s"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:84
+msgid "Creating kernel oops crash reports..."
+msgstr "יוצר דיווחי קריסה של kernel oops..."
+
+#: ../lib/Plugins/Mailx.cpp:164
+msgid "Sending an email..."
+msgstr "שולח דוא\"ל"
+
+#: ../lib/Plugins/SOSreport.cpp:69
+msgid "Executing SOSreport plugin..."
+msgstr "מריץ את תוסף SOSreport..."
+
+#: ../lib/Plugins/SOSreport.cpp:91
+#, c-format
+msgid "running sosreport: %s"
+msgstr "מריץ sosreport: %s"
+
+#: ../lib/Plugins/SOSreport.cpp:95
+msgid "done running sosreport"
+msgstr "הרצת sosreport הסתיימה"
+
