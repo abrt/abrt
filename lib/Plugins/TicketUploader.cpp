@@ -117,12 +117,12 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
         FILE* f = fopen(pFilename, "r");
         if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
         struct stat buf;
-        if (fstat(fileno(f), &buf) == -1)
+        if (fstat(fileno(f), &buf) == -1) /* TODO: never fails */
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't stat archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
         }
         CURL* curl = curl_easy_init();
         if (!curl)
@@ -225,10 +225,9 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
             if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str()) < 0)
             {
                 throw CABRTException(EXCEP_PLUGIN,
-                        ssprintf("Can't copy '%s' to '%s'",
-                                it->second[CD_CONTENT].c_str(),
-                                ofile_name.c_str()
-                        )
+                        "Can't copy '%s' to '%s'",
+                        it->second[CD_CONTENT].c_str(),
+                        ofile_name.c_str()
                 );
             }
         }

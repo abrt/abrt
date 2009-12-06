@@ -79,12 +79,12 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         f = fopen(pFilename, "r");
         if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
         if (fstat(fileno(f), &buf) == -1)
         {
             fclose(f);
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't stat archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
         }
         curl = curl_easy_init();
         if (!curl)
@@ -282,7 +282,7 @@ void CFileTransfer::CreateArchive(const char *pArchiveName, const char *pDir)
     }
     else
     {
-        throw CABRTException(EXCEP_PLUGIN, "Unknown/unsupported archive type " + m_sArchiveType);
+        throw CABRTException(EXCEP_PLUGIN, "Unknown/unsupported archive type %s", m_sArchiveType.c_str());
     }
 }
 
