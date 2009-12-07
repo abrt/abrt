@@ -246,12 +246,19 @@ Zdenek Prikryl &lt;zprikryl@redhat.com&gt;</property>
                     <property name="resize_mode">queue</property>
                     <property name="shadow_type">none</property>
                     <child>
-                      <widget class="GtkLabel" id="lReported">
+                      <widget class="GtkAlignment" id="alignment1">
                         <property name="visible">True</property>
-                        <property name="xalign">0</property>
-                        <property name="yalign">0</property>
-                        <property name="label" translatable="yes">Not Reported</property>
-                        <property name="selectable">True</property>
+                        <property name="top_padding">6</property>
+                        <property name="left_padding">6</property>
+                        <child>
+                          <widget class="GtkLabel" id="lReported">
+                            <property name="visible">True</property>
+                            <property name="xalign">0</property>
+                            <property name="yalign">0</property>
+                            <property name="label" translatable="yes">Not Reported</property>
+                            <property name="selectable">True</property>
+                          </widget>
+                        </child>
                       </widget>
                     </child>
                   </widget>
