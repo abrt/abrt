@@ -349,7 +349,7 @@ bool CApplet::load_icons()
 }
 
 
-//int CApplet::AddEvent(int pUUID, const std::string& pProgname)
+//int CApplet::AddEvent(int pUUID, const char *pProgname)
 //{
 //    m_mapEvents[pUUID] = "pProgname";
 //    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());

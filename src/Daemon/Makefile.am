@@ -26,7 +26,8 @@ abrtd_CPPFLAGS = \
     $(DBUS_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(ENABLE_SOCKET_OR_DBUS) \
-    -D_GNU_SOURCE
+    -D_GNU_SOURCE \
+    -Wall
 abrtd_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
     ../../lib/Utils/libABRTdUtils.la \
