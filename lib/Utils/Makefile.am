@@ -17,7 +17,8 @@ libABRTUtils_la_SOURCES = \
     popen_and_save_output.cpp \
     stringops.cpp \
     dirsize.cpp \
-    DebugDump.h DebugDump.cpp
+    DebugDump.h DebugDump.cpp \
+    ABRTException.cpp
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \

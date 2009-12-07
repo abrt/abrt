@@ -5,24 +5,47 @@
   <object class="GtkDialog" id="WrongSettings">
     <property name="border_width">5</property>
     <property name="title" translatable="yes">Wrong Settings Detected</property>
+    <property name="resizable">False</property>
+    <property name="window_position">center-on-parent</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
       <object class="GtkVBox" id="dialog-vbox3">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">6</property>
         <child>
           <object class="GtkVBox" id="ws_vbox1">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
+            <property name="spacing">6</property>
             <child>
-              <object class="GtkLabel" id="lWrongSettingsWarning">
+              <object class="GtkHBox" id="hbox1">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;WARNING:&lt;/b&gt; Wrong settings detected for some of the enabled reporter plugins, please use the buttons below to open respective configuration and fix it before you proceed, otherwise the reporting process can fail.
+                <property name="spacing">12</property>
+                <child>
+                  <object class="GtkImage" id="image1">
+                    <property name="visible">True</property>
+                    <property name="stock">gtk-dialog-warning</property>
+                    <property name="icon-size">6</property>
+                  </object>
+                  <packing>
+                    <property name="position">0</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkLabel" id="lWrongSettingsWarning">
+                    <property name="visible">True</property>
+                    <property name="label" translatable="yes">Wrong settings detected for some of the enabled reporter plugins, please use the buttons below to open respective configuration and fix it before you proceed, otherwise the reporting process can fail.
 </property>
-                <property name="use_markup">True</property>
-                <property name="wrap">True</property>
+                    <property name="use_markup">True</property>
+                    <property name="justify">fill</property>
+                    <property name="wrap">True</property>
+                  </object>
+                  <packing>
+                    <property name="position">1</property>
+                  </packing>
+                </child>
               </object>
               <packing>
                 <property name="position">0</property>
@@ -32,6 +55,7 @@
               <object class="GtkVBox" id="vbWrongSettings">
                 <property name="visible">True</property>
                 <property name="orientation">vertical</property>
+                <property name="spacing">6</property>
                 <child>
                   <placeholder/>
                 </child>

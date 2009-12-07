@@ -60,7 +60,7 @@ AC_ARG_WITH(debugdumpsdir,
             [AS_HELP_STRING([--with-debugdumpdir=DIR],
                            [Directory where debugdumps are created])],
             [DEBUG_DUMPS_DIR="$withval"])
-            
+
 AC_ARG_WITH(debuginfosdir,
             [AS_HELP_STRING([--with-debuginfodir=DIR],
                            [Directory where debuginfo is stored])],

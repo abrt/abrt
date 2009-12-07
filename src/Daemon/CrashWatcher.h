@@ -50,7 +50,8 @@ class CCrashWatcher
 
 vector_crash_infos_t GetCrashInfos(const char *pUID);
 int CreateReportThread(const char* pUUID, const char* pUID, int force, const char* pSender);
-map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force);
-bool DeleteDebugDump(const char *pUUID, const char *pUID);
+map_crash_report_t CreateReport(const char* pUUID, const char* pUID, int force);
+void DeleteDebugDump(const char *pUUID, const char *pUID);
+void DeleteDebugDump_by_dir(const char *dump_dir);
 
-#endif /*CRASHWATCHER_H_*/
+#endif

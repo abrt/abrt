@@ -35,18 +35,10 @@
  * primary key (UUID, UID)
  */
 
-#define DATABASE_COLUMN_UUID            "UUID"
-#define DATABASE_COLUMN_UID             "UID"
-#define DATABASE_COLUMN_DEBUG_DUMP_PATH "DebugDumpPath"
-#define DATABASE_COLUMN_COUNT           "Count"
-#define DATABASE_COLUMN_REPORTED        "Reported"
-#define DATABASE_COLUMN_TIME            "Time"
-#define DATABASE_COLUMN_MESSAGE         "Message"
-
 /**
  * A struct contains one database row.
  */
-typedef struct SDatabaseRow
+typedef struct database_row_t
 {
     std::string m_sUUID; /**< A local UUID.*/
     std::string m_sUID; /**< An UID of an user.*/
@@ -83,27 +75,28 @@ class CDatabase : public CPlugin
          * @param pDebugDumpPath A debugdump path.
          * @param pTime Time when a crash occurs.
          */
-        virtual void Insert(const std::string& pUUID,
-                            const std::string& pUID,
-                            const std::string& pDebugDumpPath,
-                            const std::string& pTime) = 0;
+        virtual void Insert_or_Update(const char *pUUID,
+                        const char *pUID,
+                        const char *pDebugDumpPath,
+                        const char *pTime) = 0;
         /**
          * A method, which deletes one row in a database.
          * @param pUUID A lodal UUID of a crash.
          * @param pUID An UID of an user.
          */
-        virtual void Delete(const std::string& pUUID,
-                            const std::string& pUID) = 0;
+        virtual void DeleteRow(const char *pUUID,
+                            const char *pUID) = 0;
+        virtual void DeleteRows_by_dir(const char *dump_dir) = 0;
         /**
          * A method, which sets that particular row was reported.
          * @param pUUID A local UUID of a crash.
          * @param pUID An UID of an user.
-         * @param pMessga A text explanation of reported problem (where
-         * it is stored etc...
+         * @param pMessage A text explanation of reported problem
+         * (where it is stored etc)...
          */
-        virtual void SetReported(const std::string& pUUID,
-                                 const std::string& pUID,
-                                 const std::string& pMessage) = 0;
+        virtual void SetReported(const char *pUUID,
+                                 const char *pUID,
+                                 const char *pMessage) = 0;
         /**
          * A method, which gets all rows which belongs to particular user.
          * If the user is root, then all rows are returned. If there are no
@@ -111,7 +104,7 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A vector of matched rows.
          */
-        virtual vector_database_rows_t GetUIDData(const std::string& pUID) = 0;
+        virtual vector_database_rows_t GetUIDData(const char *pUID) = 0;
         /**
          * A method, which returns one row accordind to UUID of a crash and
          * UID of an user. If there are no row, empty row is returned.
@@ -119,8 +112,8 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A matched row.
          */
-        virtual database_row_t GetUUIDData(const std::string& pUUID,
-                                                 const std::string& pUID) = 0;
+        virtual database_row_t GetRow(const char *pUUID,
+                                                 const char *pUID) = 0;
 };
 
-#endif /* DATABASE_H_ */
+#endif

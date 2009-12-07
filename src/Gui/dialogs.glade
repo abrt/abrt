@@ -3,8 +3,9 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkDialog" id="ReportDialog">
-    <property name="border_width">5</property>
+    <property name="border_width">6</property>
     <property name="title" translatable="yes">Report done</property>
+    <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="destroy_with_parent">True</property>
@@ -14,13 +15,17 @@
       <object class="GtkVBox" id="dialog-vbox2">
         <property name="visible">True</property>
         <property name="orientation">vertical</property>
-        <property name="spacing">2</property>
+        <property name="spacing">12</property>
         <child>
           <object class="GtkHBox" id="main_hbox">
             <property name="visible">True</property>
+            <property name="border_width">6</property>
+            <property name="spacing">12</property>
             <child>
               <object class="GtkImage" id="image1">
                 <property name="visible">True</property>
+                <property name="xalign">0</property>
+                <property name="yalign">0</property>
                 <property name="stock">gtk-dialog-info</property>
                 <property name="icon-size">6</property>
               </object>

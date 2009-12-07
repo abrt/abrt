@@ -95,7 +95,7 @@ CKerneloopsReporter::CKerneloopsReporter() :
 
 std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
                                         const map_plugin_settings_t& pSettings,
-                                        const std::string& pArgs)
+                                        const char *pArgs)
 {
 	int ret = -1;
 
@@ -111,7 +111,7 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
 
 	if (ret) {
 		/* FIXME: be more informative */
-		throw CABRTException(EXCEP_PLUGIN, std::string("CKerneloopsReporter::Report(): Report has not been sent..."));
+		throw CABRTException(EXCEP_PLUGIN, "CKerneloopsReporter::Report(): Report has not been sent");
 	}
 	return "Kernel oops report was uploaded.";
 }

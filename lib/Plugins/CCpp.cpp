@@ -257,8 +257,8 @@ static int rate_backtrace(const char *backtrace)
     return 0;
 }
 
-static void GetBacktrace(const char *pDebugDumpDir, 
-                         const char *pDebugInfoDirs, 
+static void GetBacktrace(const char *pDebugDumpDir,
+                         const char *pDebugInfoDirs,
                          string& pBacktrace)
 {
     update_client(_("Getting backtrace..."));
@@ -320,7 +320,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
 }
 
-static void GetIndependentBuildIdPC(const char *unstrip_n_output, 
+static void GetIndependentBuildIdPC(const char *unstrip_n_output,
                                     string& pIndependentBuildIdPC)
 {
     // lines look like this:
@@ -373,8 +373,8 @@ static string run_unstrip_n(const char *pDebugDumpDir)
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
  */
-static void InstallDebugInfos(const char *pDebugDumpDir, 
-                              const char *debuginfo_dirs, 
+static void InstallDebugInfos(const char *pDebugDumpDir,
+                              const char *debuginfo_dirs,
                               string& build_ids)
 {
     update_client(_("Searching for debug-info packages..."));
@@ -433,6 +433,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
             build_ids += "Debuginfo absent: ";
             build_ids += buff + 8;
             build_ids += "\n";
+            continue;
         }
 
         const char *p = buff;
@@ -451,8 +452,8 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     wait(NULL);
 }
 
-static double get_dir_size(const char *dirname, 
-                           string *worst_file, 
+static double get_dir_size(const char *dirname,
+                           string *worst_file,
                            double *maxsz)
 {
     DIR *dp = opendir(dirname);
@@ -578,8 +579,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 
         xmove_fd(pipeout[1], STDOUT_FILENO);
         close(pipeout[0]); /* read side of the pipe */
-        
-        /* abrt-backtrace is executed under the user's 
+
+        /* abrt-backtrace is executed under the user's
            uid and gid. */
         setgroups(1, &gid);
         setregid(gid, gid);
@@ -610,12 +611,12 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     if (!WIFEXITED(status))
     {
         perror_msg_and_die("abrt-backtrace not executed properly, "
-                           "status: %d", status);
+                           "status: %x", status);
     }
     int exit_status = WEXITSTATUS(status);
     if (exit_status > 0 && exit_status <= EX__MAX)
     {
-        error_msg_and_die("abrt-backtrace run failed, exit value: %d", 
+        error_msg_and_die("abrt-backtrace run failed, exit value: %d",
                           exit_status);
     }
 

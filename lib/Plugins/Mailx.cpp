@@ -84,7 +84,8 @@ static char** append_str_to_vector(char **vec, unsigned &size, const char *str)
 }
 
 std::string CMailx::Report(const map_crash_report_t& pCrashReport,
-                           const map_plugin_settings_t& pSettings, const std::string& pArgs)
+                const map_plugin_settings_t& pSettings,
+                const char *pArgs)
 {
     char **args = NULL;
     unsigned arg_size = 0;
@@ -156,7 +157,7 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
     emailBody += '\n';
 
     args = append_str_to_vector(args, arg_size, "-s");
-    args = append_str_to_vector(args, arg_size, (pArgs != "" ? pArgs.c_str() : m_sSubject.c_str()));
+    args = append_str_to_vector(args, arg_size, (pArgs[0] != '\0' ? pArgs : m_sSubject.c_str()));
     args = append_str_to_vector(args, arg_size, "-r");
     args = append_str_to_vector(args, arg_size, m_sEmailFrom.c_str());
     args = append_str_to_vector(args, arg_size, m_sEmailTo.c_str());

@@ -139,6 +139,7 @@ int ndelay_on(int fd);
 int ndelay_off(int fd);
 int close_on_exec_on(int fd);
 char* xasprintf(const char *format, ...);
+char* xvasprintf(const char *format, va_list p);
 
 int xopen(const char *pathname, int flags);
 int xopen3(const char *pathname, int flags, int mode);

@@ -96,7 +96,7 @@ class ReporterDialog():
             if not (self.check_settings(daemon) and self.check_report()):
                 dialog.stop_emission("response")
                 self.wTree.get_widget("bSend").stop_emission("clicked")
-    
+
     def on_send_toggled(self, cell, path, model):
         model[path][3] = not model[path][3]
 
@@ -130,7 +130,7 @@ class ReporterDialog():
                 im = gtk.Image()
                 im.set_from_stock(gtk.STOCK_APPLY, gtk.ICON_SIZE_MENU)
                 box.remove(image)
-                box.pack_start(im)
+                box.pack_start(im, expand = False, fill = False)
                 im.show()
                 image.destroy()
                 button.set_sensitive(False)
@@ -155,12 +155,13 @@ class ReporterDialog():
             vbWrongSettings = builder.get_object("vbWrongSettings")
             for plugin in wrong_conf_plugs:
                 hbox = gtk.HBox()
+                hbox.set_spacing(6)
                 image = gtk.Image()
                 image.set_from_stock(gtk.STOCK_CANCEL, gtk.ICON_SIZE_MENU)
                 button = gtk.Button(plugin.getName())
                 button.connect("clicked", self.on_config_plugin_clicked, plugin, image)
                 hbox.pack_start(button)
-                hbox.pack_start(image)
+                hbox.pack_start(image, expand = False, fill = False)
                 vbWrongSettings.pack_start(hbox)
             vbWrongSettings.show_all()
             dialog.set_transient_for(self.window)
@@ -216,26 +217,32 @@ class ReporterDialog():
                 except:
                     package = None
                 ebErrors = self.wTree.get_widget("ebErrors")
+                fReproducer = self.wTree.get_widget("fReproducer")
+                fComments = self.wTree.get_widget("fComments")
                 lErrors = self.wTree.get_widget("lErrors")
                 bSend = self.wTree.get_widget("bSend")
                 # not usable report
                 if int(self.report[item][CD_CONTENT]) < 3:
                     ebErrors.show()
-                    ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("red"))
+                    fReproducer.hide()
+                    fComments.hide()
                     if package:
                         lErrors.set_markup(
-                            "<span color=\"white\">%s</span>" % _("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command:<span color=\"blue\"> debuginfo-install %s </span>\nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
+                            _("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command: <b>debuginfo-install %s</b> \nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                     else:
-                        lErrors.set_markup("<span color=\"white\">%s</span>" % _("The backtrace is unusable, you can't report this!"))
+                        lErrors.set_markup(_("The backtrace is unusable, you can't report this!"))
                     bSend.set_sensitive(False)
                 # probably usable 3
                 elif int(self.report[item][CD_CONTENT]) < 4:
                     ebErrors.show()
-                    ebErrors.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("yellow"))
-                    lErrors.set_markup("<span color=\"black\">%s</span>" % _("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
+                    fReproducer.hide()
+                    fComments.hide()
+                    lErrors.set_markup(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
                     bSend.set_sensitive(True)
                 else:
                     ebErrors.hide()
+                    fReproducer.show()
+                    fComments.show()
                     bSend.set_sensitive(True)
 
             if self.report[item][CD_TYPE] != CD_SYS:
@@ -273,7 +280,7 @@ class ReporterDialog():
 
     def check_report(self):
     # FIXME: what to do if user press "Not to send BT and then press cancel"
-    # it uncheck the backtrace and let him to edit it, and then user might 
+    # it uncheck the backtrace and let him to edit it, and then user might
     # not noticed, that he is not sending the BT, so should we warn user about this
     # or check the BT automatically?
         attributes = ["item", "content", "editable", "send", "attachment"]

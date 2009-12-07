@@ -42,7 +42,7 @@ class CApplet
         int m_iAnimationStage;
         guint m_iAnimator;
         bool m_bIconsLoaded;
-		
+
         enum ICON_STAGES
         {
             ICON_DEFAULT,
@@ -71,7 +71,7 @@ class CApplet
         // or ask the daemon every time?
         // maybe just events which occured during current session
         // map::
-//        int AddEvent(int pUUID, const std::string& pProgname);
+//        int AddEvent(int pUUID, const char *pProgname);
 //        int RemoveEvent(int pUUID);
 
     protected:

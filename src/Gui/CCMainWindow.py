@@ -60,18 +60,11 @@ class MainWindow():
         self.pBarWindow.set_transient_for(self.window)
         self.pBar = self.wTree.get_widget("pBar")
 
-        # set colours for description heading
-        self.wTree.get_widget("evDescription").modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("black"))
-
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
         #rows of items with:
-        #icon, package_name, application, date, crash_rate, user (only if root), is_reported, ?object?
-        if os.getuid() == 0:
-            # root
-            self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str,bool, object)
-        else:
-            self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,bool, object)
+        #icon, package_name, application, date, crash_rate, user, is_reported, ?object?
+        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str,bool, object)
         # set filter
         self.modelfilter = self.dumpsListStore.filter_new()
         self.modelfilter.set_visible_func(self.filter_dumps, None)
@@ -82,16 +75,15 @@ class MainWindow():
         icon_column.cell.set_property('cell-background', "#C9C9C9")
         n = self.dlist.append_column(icon_column)
         icon_column.pack_start(icon_column.cell, False)
-        icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=5+(os.getuid() == 0))
+        icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=6)
         # ===============================================
         columns = [None]*4
         columns[0] = gtk.TreeViewColumn(_("Package"))
         columns[1] = gtk.TreeViewColumn(_("Application"))
         columns[2] = gtk.TreeViewColumn(_("Date"))
         columns[3] = gtk.TreeViewColumn(_("Crash count"))
-        if os.getuid() == 0:
-            column = gtk.TreeViewColumn(_("User"))
-            columns.append(column)
+        column = gtk.TreeViewColumn(_("User"))
+        columns.append(column)
         # create list
         for column in columns:
             n = self.dlist.append_column(column)
@@ -100,7 +92,7 @@ class MainWindow():
             #column.set_attributes(column.cell, )
             # FIXME: use some relative indexing
             column.cell.set_property('cell-background', "#C9C9C9")
-            column.set_attributes(column.cell, text=(n-1), cell_background_set=5+(os.getuid() == 0))
+            column.set_attributes(column.cell, text=(n-1), cell_background_set=6)
             column.set_resizable(True)
         #connect signals
         self.dlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
@@ -204,18 +196,14 @@ class MainWindow():
                 icon = get_icon_for_package(self.theme, entry.getPackageName())
             except:
                 icon = None
-            if os.getuid() == 0:
-                user = "N/A"
-                if entry.getUID() != "-1":
-                    try:
-                        user = pwd.getpwuid(int(entry.getUID()))[0]
-                    except Exception, e:
-                        user = "UID: %s" % entry.getUID()
-                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                                entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry])
-            else:
-                n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                                entry.getTime("%c"), entry.getCount(), entry.isReported(), entry])
+            user = "N/A"
+            if entry.getUID() != "-1":
+                try:
+                    user = pwd.getpwuid(int(entry.getUID()))[0]
+                except Exception, e:
+                    user = "UID: %s" % entry.getUID()
+            n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
+                                            entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry])
         # activate the first row if any..
         if n:
             # we can use (0,) as path for the first row, but what if API changes?
@@ -230,7 +218,6 @@ class MainWindow():
         if not path:
             self.wTree.get_widget("bDelete").set_sensitive(False)
             self.wTree.get_widget("bReport").set_sensitive(False)
-            self.wTree.get_widget("lDescription").set_label("")
             return
         self.wTree.get_widget("bDelete").set_sensitive(True)
         self.wTree.get_widget("bReport").set_sensitive(True)
@@ -248,7 +235,6 @@ class MainWindow():
         else:
             self.wTree.get_widget("lReported").set_markup(_("<b>Not reported!</b>"))
         lPackage = self.wTree.get_widget("lPackage")
-        self.wTree.get_widget("lDescription").set_label(dump.getDescription())
 
     def on_bDelete_clicked(self, button, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
@@ -257,11 +243,9 @@ class MainWindow():
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         try:
-            if self.ccdaemon.DeleteDebugDump(dump.getUUID()):
-                self.hydrate()
-                treeview.emit("cursor-changed")
-            else:
-                print "Couldn't delete"
+            self.ccdaemon.DeleteDebugDump(dump.getUUID())
+            self.hydrate()
+            treeview.emit("cursor-changed")
         except Exception, e:
             print e
 

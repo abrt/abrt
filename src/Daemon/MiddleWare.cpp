@@ -247,7 +247,7 @@ mw_result_t CreateCrashReport(const char *pUUID,
     {
         CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
         database->Connect();
-        row = database->GetUUIDData(pUUID, pUID);
+        row = database->GetRow(pUUID, pUID);
         database->DisConnect();
     }
     if (pUUID[0] == '\0' || row.m_sUUID != pUUID)
@@ -348,7 +348,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
                 VERB2 log("%s.Report(...)", it_ar->first.c_str());
-                reporter->Report(crashReport, plugin_settings, it_ar->second);
+                reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
             }
             else if (tp == ACTION)
             {
@@ -490,7 +490,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                     }
 #endif
                     map_plugin_settings_t plugin_settings = pSettings[pluginName];
-                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second);
+                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second.c_str());
 
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
                     if (home != "")
@@ -514,22 +514,10 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database->SetReported(UUID, UID, message);
+    database->SetReported(UUID.c_str(), UID.c_str(), message.c_str());
     database->DisConnect();
 
     return ret;
-}
-
-std::string DeleteCrashInfo(const char *pUUID,
-                                         const char *pUID)
-{
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
-    database->Connect();
-    database_row_t row = database->GetUUIDData(pUUID, pUID);
-    database->Delete(pUUID, pUID);
-    database->DisConnect();
-
-    return row.m_sDebugDumpDir;
 }
 
 /**
@@ -700,7 +688,7 @@ void autoreport(const pair_string_string_t& reporter_options, const map_crash_re
     }
 
     map_plugin_settings_t plugin_settings;
-    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second);
+    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second.c_str());
 }
 
 /**
@@ -746,26 +734,31 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
  * @return It return results of operation. See mw_result_t.
  */
 static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
-                                                              const char *pUID,
-                                                              const char *pTime,
-                                                              const char *pDebugDumpDir,
-                                                              map_crash_info_t& pCrashInfo)
+                const char *pUID,
+                const char *pTime,
+                const char *pDebugDumpDir,
+                map_crash_info_t& pCrashInfo)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database->Insert(pUUID, pUID, pDebugDumpDir, pTime);
-    database_row_t row = database->GetUUIDData(pUUID, pUID);
+    /* note: if [UUID,UID] record exists, pDebugDumpDir is not updated in the record */
+    database->Insert_or_Update(pUUID, pUID, pDebugDumpDir, pTime);
+    database_row_t row = database->GetRow(pUUID, pUID);
     database->DisConnect();
-    mw_result_t res = GetCrashInfo(pUUID, pUID, pCrashInfo);
-    if (row.m_sReported == "1")
+
+    mw_result_t res = FillCrashInfo(pUUID, pUID, pCrashInfo);
+    if (res == MW_OK)
     {
-        log("Crash is already reported");
-        return MW_REPORTED;
-    }
-    if (row.m_sCount != "1")
-    {
-        log("Crash is in database already");
-        return MW_OCCURED;
+        if (row.m_sReported == "1")
+        {
+            log("Crash is already reported");
+            return MW_REPORTED;
+        }
+        if (row.m_sCount != "1")
+        {
+            log("Crash is in database already");
+            return MW_OCCURED;
+        }
     }
     return res;
 }
@@ -775,13 +768,13 @@ std::string getDebugDumpDir(const char *pUUID,
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database_row_t row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetRow(pUUID, pUID);
     database->DisConnect();
     return row.m_sDebugDumpDir;
 }
 
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
-                                                    map_crash_info_t& pCrashInfo)
+                map_crash_info_t& pCrashInfo)
 {
     std::string UID;
     std::string time;
@@ -823,14 +816,13 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     return SaveDebugDumpToDatabase(lUUID.c_str(), uid_str, time.c_str(), pDebugDumpDir, pCrashInfo);
 }
 
-mw_result_t GetCrashInfo(const char *pUUID,
+mw_result_t FillCrashInfo(const char *pUUID,
                 const char *pUID,
                 map_crash_info_t& pCrashInfo)
 {
-    pCrashInfo.clear();
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database_row_t row = database->GetUUIDData(pUUID, pUID);
+    database_row_t row = database->GetRow(pUUID, pUID);
     database->DisConnect();
 
     std::string package;
@@ -849,13 +841,10 @@ mw_result_t GetCrashInfo(const char *pUUID,
     catch (CABRTException& e)
     {
         error_msg("%s", e.what());
-        if (e.type() == EXCEP_DD_LOAD)
-        {
-            return MW_FILE_ERROR;
-        }
         return MW_ERROR;
     }
 
+    pCrashInfo.clear();
     add_crash_data_to_crash_info(pCrashInfo, CD_EXECUTABLE, executable);
     add_crash_data_to_crash_info(pCrashInfo, CD_PACKAGE, package);
     add_crash_data_to_crash_info(pCrashInfo, CD_DESCRIPTION, description);

@@ -152,7 +152,7 @@ class DBusManager(gobject.GObject):
         # TODO: check that it is indeed OUR job:
         # remember uuid in getReport and compare here
         print "Our job for UUID %s is done." % uuid
-        dump = self.daemon().GetJobResult(uuid)
+        dump = self.daemon().CreateReport(uuid)
         if dump:
             self.emit("analyze-complete", dump)
         else:
@@ -163,7 +163,7 @@ class DBusManager(gobject.GObject):
 
     def getReport(self, UUID, force=0):
         # 2nd param is "force recreating of backtrace etc"
-        self.daemon().CreateReport(UUID, force, timeout=60)
+        self.daemon().StartJob(UUID, force, timeout=60)
 
     def Report(self, report, reporters_settings = None):
         # map < Plguin_name vec <status, message> >

@@ -1,7 +1,7 @@
 #ifndef ABRTEXCEPTION_H_
 #define ABRTEXCEPTION_H_
 
-#include <string>
+#include "abrtlib.h"
 
 typedef enum {
     EXCEP_UNKNOW,
@@ -12,7 +12,6 @@ typedef enum {
     EXCEP_DL,
     EXCEP_PLUGIN,
     EXCEP_ERROR,
-    EXCEP_FATAL,
 } abrt_exception_t;
 
 /* std::exception is a class with virtual members.
@@ -22,21 +21,19 @@ typedef enum {
 class CABRTException /*: public std::exception*/
 {
     private:
-        std::string m_sWhat;
-        abrt_exception_t m_Type;
+        abrt_exception_t m_type;
+        char *m_what;
+
+        /* Not defined. You can't use it */
+        CABRTException& operator= (const CABRTException&);
 
     public:
-        /* virtual ~CABRTException() throw() {} */
-        CABRTException(abrt_exception_t pType, const char* pWhat) :
-            m_sWhat(pWhat),
-            m_Type(pType)
-        {}
-        CABRTException(abrt_exception_t pType, const std::string& pWhat) :
-            m_sWhat(pWhat),
-            m_Type(pType)
-        {}
-        abrt_exception_t type() { return m_Type; }
-        const char* what() const { return m_sWhat.c_str(); }
+        ~CABRTException() { free(m_what); }
+        CABRTException(abrt_exception_t type, const char* fmt, ...);
+        CABRTException(const CABRTException& rhs);
+
+        abrt_exception_t type() { return m_type; }
+        const char* what() const { return m_what; }
 };
 
 #endif

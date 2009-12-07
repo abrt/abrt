@@ -62,22 +62,16 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
             const char *uuid = UUIDsUIDs[ii].first.c_str();
             const char *uid = UUIDsUIDs[ii].second.c_str();
 
-            res = GetCrashInfo(uuid, uid, info);
+            res = FillCrashInfo(uuid, uid, info);
             switch (res)
             {
                 case MW_OK:
                     retval.push_back(info);
                     break;
                 case MW_ERROR:
-                    error_msg("Can't find dump directory for UUID %s, deleting from database", uuid);
-                    DeleteCrashInfo(uuid, uid);
-                    break;
-                case MW_FILE_ERROR:
-                    error_msg("Can't open file in dump directory for UUID %s, deleting", uuid);
-                    {
-                        std::string debugDumpDir = DeleteCrashInfo(uuid, uid);
-                        delete_debug_dump_dir(debugDumpDir.c_str());
-                    }
+                    error_msg("Dump directory for UUID %s doesn't exist or misses crucial files, deleting", uuid);
+                    /* Deletes both DB record and dump dir */
+                    DeleteDebugDump(uuid, uid);
                     break;
                 default:
                     break;
@@ -86,10 +80,6 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
     }
     catch (CABRTException& e)
     {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
         error_msg("%s", e.what());
     }
 
@@ -99,16 +89,14 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
 }
 
 /*
- * "GetJobResult" is a bit of a misnomer.
- * It actually _creates_ a_ report_ and returns the result.
- * It is called in two cases:
- * (1) by CreateReport dbus call -> CreateReportThread(), in the thread
- * (2) by GetJobResult dbus call
+ * Called in two cases:
+ * (1) by StartJob dbus call -> CreateReportThread(), in the thread
+ * (2) by CreateReport dbus call
  * In the second case, it finishes quickly, because previous
- * CreateReport dbus call already did all the processing, and we just retrieve
+ * StartJob dbus call already did all the processing, and we just retrieve
  * the result from dump directory, which is fast.
  */
-map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
+map_crash_report_t CreateReport(const char* pUUID, const char* pUID, int force)
 {
     map_crash_info_t crashReport;
 
@@ -128,12 +116,9 @@ map_crash_report_t GetJobResult(const char* pUUID, const char* pUID, int force)
         case MW_PLUGIN_ERROR:
             error_msg("Particular analyzer plugin isn't loaded or there is an error within plugin(s)");
             break;
-        case MW_CORRUPTED:
-        case MW_FILE_ERROR:
         default:
             error_msg("Corrupted crash with UUID %s, deleting", pUUID);
-            std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-            delete_debug_dump_dir(debugDumpDir.c_str());
+            DeleteDebugDump(pUUID, pUID);
             break;
     }
     return crashReport;
@@ -155,9 +140,8 @@ static void* create_report(void* arg)
 
     try
     {
-        /* "GetJobResult" is a bit of a misnomer */
         log("Creating report...");
-        map_crash_info_t crashReport = GetJobResult(thread_data->UUID, thread_data->UID, thread_data->force);
+        map_crash_info_t crashReport = CreateReport(thread_data->UUID, thread_data->UID, thread_data->force);
         g_pCommLayer->JobDone(thread_data->peer, thread_data->UUID);
     }
     catch (CABRTException& e)
@@ -207,21 +191,41 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
     return r;
 }
 
-bool DeleteDebugDump(const char *pUUID, const char *pUID)
+
+/* Remove dump dir and its DB record */
+void DeleteDebugDump(const char *pUUID, const char *pUID)
 {
     try
     {
-        std::string debugDumpDir = DeleteCrashInfo(pUUID, pUID);
-        delete_debug_dump_dir(debugDumpDir.c_str());
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        database->Connect();
+        database_row_t row = database->GetRow(pUUID, pUID);
+        database->DeleteRow(pUUID, pUID);
+        database->DisConnect();
+
+        const char *dump_dir = row.m_sDebugDumpDir.c_str();
+        if (dump_dir[0] != '\0')
+            delete_debug_dump_dir(dump_dir);
     }
     catch (CABRTException& e)
     {
-        if (e.type() == EXCEP_FATAL)
-        {
-            throw e;
-        }
         error_msg("%s", e.what());
-        return false;
     }
-    return true;
+}
+
+void DeleteDebugDump_by_dir(const char *dump_dir)
+{
+    try
+    {
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        database->Connect();
+        database->DeleteRows_by_dir(dump_dir);
+        database->DisConnect();
+
+        delete_debug_dump_dir(dump_dir);
+    }
+    catch (CABRTException& e)
+    {
+        error_msg("%s", e.what());
+    }
 }

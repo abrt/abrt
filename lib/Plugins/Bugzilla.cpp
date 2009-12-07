@@ -52,7 +52,7 @@ void ctx::login(const char* login, const char* passwd)
         std::string errmsg = ssprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
         xmlrpc_env_clean(&env);
         error_msg("%s", errmsg.c_str()); // show error in daemon log
-        throw CABRTException(EXCEP_PLUGIN, errmsg);
+        throw CABRTException(EXCEP_PLUGIN, errmsg.c_str());
     }
 }
 
@@ -323,7 +323,7 @@ CReporterBugzilla::~CReporterBugzilla()
 
 std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
                                       const map_plugin_settings_t& pSettings,
-                                      const std::string& pArgs)
+                                      const char *pArgs)
 {
     int32_t bug_id = -1;
     std::string Login;

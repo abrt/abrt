@@ -1,67 +1,63 @@
-# translation of abrt.master.es.po to Spanish
-# Fernando Gonzalez <f.gonz.blanco@gmail.com>, 2009.
-# Gladys Guerrero Lozano <gguerrer@redhat.com>, 2009.
-# Fernando Gonzalez <fgonz@fedoraproject.org>, 2009.
-# Fernando Gonzalez Blanco <fgonz@fedoraproject.org>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.es\n"
+"Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-06 14:21+0000\n"
-"PO-Revision-Date: 2009-12-06 11:40-0300\n"
-"Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
-"Language-Team: Spanish <fedora-trans-es@redhat.com>\n"
+"POT-Creation-Date: 2009-12-06 08:18+0000\n"
+"PO-Revision-Date: \n"
+"Last-Translator: Elad <el.il@doom.co.il>\n"
+"Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Spanish\n"
-"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-Language: Hebrew\n"
+"X-Poedit-Country: ISRAEL\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr "Otro cliente ya está siendo ejecutado, intentando despertarlo."
+msgstr "לקוח אחר כבר רץ, מנסה להעיר אותו."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Se obtienen datos inesperados desde el demonio (¿está la Base de Datos correctamente actualizada?)"
+msgstr "מידע לא צפוי הוחזר מתהליך הרקע (האם מסד הנתונים מעודכן כראוי?)"
 
 #: ../src/Gui/ABRTPlugin.py:55
 msgid "Analyzer plugins"
-msgstr "Complementos analizadores"
+msgstr "תוספי ניתוח"
 
 #: ../src/Gui/ABRTPlugin.py:56
 msgid "Action plugins"
-msgstr "Complementos de acción"
+msgstr "תוספי פעולות"
 
 #: ../src/Gui/ABRTPlugin.py:57
 msgid "Reporter plugins"
-msgstr "Complementos de informes"
+msgstr "תוספי דיווח"
 
 #: ../src/Gui/ABRTPlugin.py:58
 msgid "Database plugins"
-msgstr "Complementos de Bases de Datos"
+msgstr "תוספי מסד-נתונים"
 
 #: ../src/Gui/ABRTPlugin.py:97
 msgid "Plugin name is not set, can't load its settings"
-msgstr "No se puso el nombre del complemento, no se puede cargar su configuración"
+msgstr "שם התוסף לא הוגדר, לא ניתן לטעון את ההגדרות שלו"
 
 #: ../src/Gui/CCDBusBackend.py:74
 #: ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
-msgstr "No es posible conectarse con system dbus"
+msgstr "לא יכול להתחבר ל-system bus"
 
 #: ../src/Gui/CCDBusBackend.py:104
 #: ../src/Gui/CCDBusBackend.py:107
 msgid "Please check if abrt daemon is running"
-msgstr "Por favor compruebe si el demonio ABRT se está ejecutando."
+msgstr "אנא בדוק אם תהליך השירות של abrt פועל"
 
 #: ../src/Gui/CCDBusBackend.py:159
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
-"El demonio no devuelve un informe válido\n"
-"¿Falta la información de la depuración (debuginfo)?"
+"תהליך הרקע לא החזיר מידע דיווח תקין\n"
+"מידע ניפוי השגיאות חסר?"
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009 Red Hat, Inc."
@@ -69,33 +65,33 @@ msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:2
 msgid "About ABRT"
-msgstr "Acerca de ABRT"
+msgstr "אודות ABRT"
 
 #: ../src/Gui/ccgui.glade.h:3
 #: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
-msgstr "Herramienta de Informe de Errores Automática"
+msgstr "כלי דיווח באגים אוטומטי"
 
 #: ../src/Gui/ccgui.glade.h:4
 msgid "Delete"
-msgstr "Eliminar"
+msgstr "מחק"
 
 #: ../src/Gui/ccgui.glade.h:5
 msgid "Not Reported"
-msgstr "No informado"
+msgstr "לא דווח"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Please wait.."
-msgstr "Por favor aguarde..."
+msgstr "אנא המתן..."
 
 #: ../src/Gui/ccgui.glade.h:7
 msgid "Plugins"
-msgstr "Complementos"
+msgstr "תוספים"
 
 #: ../src/Gui/ccgui.glade.h:8
 #: ../src/Gui/report.glade.h:5
 msgid "Report"
-msgstr "Informe"
+msgstr "לדווח"
 
 #: ../src/Gui/ccgui.glade.h:9
 msgid ""
@@ -105,51 +101,48 @@ msgid ""
 "\n"
 "You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de Bibliotecas de GNU, como fueron publicadas por la Fundación de Software Libre; ya sea la versión 2 o (a su elección) alguna posterior.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"Este programa se distribuye con la esperanza de que será útil, pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita de MERCANTIBILIDAD o AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de Bibliotecas de GNU para más detalles.\n"
-"\n"
-"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas de GNU junto con este programa; sino, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:14
 msgid "_Edit"
-msgstr "_Editar"
+msgstr "_עריכה"
 
 #: ../src/Gui/ccgui.glade.h:15
 msgid "_File"
-msgstr "_Archivo"
+msgstr "_קובץ"
 
 #: ../src/Gui/ccgui.glade.h:16
 msgid "_Help"
-msgstr "Ay_uda"
+msgstr "ע_זרה"
 
-# Revisar si hay que traducir.
-# Ver como referencia los botones gtk que no habia que traducirlos
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:73
 msgid "Icon"
-msgstr "Icono"
+msgstr "סמל"
 
 #: ../src/Gui/CCMainWindow.py:81
 msgid "Package"
-msgstr "Paquete"
+msgstr "חבילה"
 
 #: ../src/Gui/CCMainWindow.py:82
 msgid "Application"
-msgstr "Aplicación"
+msgstr "יישום"
 
 #: ../src/Gui/CCMainWindow.py:83
 msgid "Date"
-msgstr "Fecha"
+msgstr "תאריך"
 
 #: ../src/Gui/CCMainWindow.py:84
 msgid "Crash count"
-msgstr "Cantidad de caídas"
+msgstr "מספר קריסות"
 
 #: ../src/Gui/CCMainWindow.py:85
 msgid "User"
-msgstr "Usuario"
+msgstr "משתמש"
 
 #: ../src/Gui/CCMainWindow.py:152
 #, python-format
@@ -157,7 +150,7 @@ msgid ""
 "Can't show the settings dialog\n"
 "%s"
 msgstr ""
-"No se puede mostrar el diálogo de configuración\n"
+"לא ניתן להציג את חלון ההגדרות\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:173
@@ -166,7 +159,7 @@ msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
-"¡No se pudo finalizar la tarea actual!\n"
+"לא ניתן לסיים משימה נוכחית!\n"
 "%s"
 
 #. there is something wrong with the daemon if we can get the dumplist
@@ -176,24 +169,24 @@ msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
-"Error intentando cargar la lista  de volcado.\n"
+"שגיאה במהלך טעינת dumplist.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:228
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b> Esta caída ha sido reportada, usted puede encontrar el informe en:</b>\n"
+msgstr "<b>הקריסה הזאת דווחה, אתה יכול למצוא את הדיווח ב:</b>\n"
 
 #: ../src/Gui/CCMainWindow.py:236
 msgid "<b>Not reported!</b>"
-msgstr "<b>¡No informado!</b>"
+msgstr "<b>לא דווח!</b>"
 
 #: ../src/Gui/CCMainWindow.py:285
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"Incapaz de conseguir el informe!\n"
-"¿Falta la información de la depuración?"
+"לא ניתן להשיג דיווח\n"
+"מידע ניפוי שגיאות חסר?"
 
 #: ../src/Gui/CCMainWindow.py:305
 #, python-format
@@ -201,14 +194,14 @@ msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
-"¡El informe falló!\n"
+"הדיווח נכשל!\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:324
 #: ../src/Gui/CCMainWindow.py:351
 #, python-format
 msgid "Error getting the report: %s"
-msgstr "Error al obtener el informe: %s"
+msgstr "שגיאה בקבלת הדיווח: %s"
 
 #: ../src/Gui/CCReporterDialog.py:128
 #, python-format
@@ -216,12 +209,12 @@ msgid ""
 "Can't save plugin settings:\n"
 " %s"
 msgstr ""
-"No se pudo guardar la configuración del complemento:\n"
+"לא ניתן לשמור את הגדרות התוסף\n"
 "%s"
 
 #: ../src/Gui/CCReporterDialog.py:186
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
+msgstr "תיאור קצר (עדיף באנגלית) שמסביר מה עשית כשהיישום קרס או איך ניתן לשחזר את הקריסה..."
 
 #: ../src/Gui/CCReporterDialog.py:231
 #, python-format
@@ -230,18 +223,17 @@ msgid ""
 "Please try to install debuginfo manually using command: <b>debuginfo-install %s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"El informe está deshabilitado porque el trazado no es útil.\n"
-"Por favor, intente instalar el paquete debuginfo manualmente\n"
-"usando el comando <b> debuginfo-install %s </b>\n"
-"y luego use el botón Actualizar para regenerar el trazado."
+"הדיווח מנוטרל בגלל שמידע הקריסה לא שמיש.\n"
+"אנא נסה להתקין מידע ניפוי שגיאות ידנית באמצעות הפקודה:<b> debuginfo-install %s <b>\n"
+"לאחר מכן השתמש  בכפתור \"רענן\" כדי ליצור מחדש את מידע הקריסה."
 
 #: ../src/Gui/CCReporterDialog.py:233
 msgid "The backtrace is unusable, you can't report this!"
-msgstr "¡El trazado no es útil, no se puede informar esto!"
+msgstr "מידע הקריסה לא שמיש, אתה לא יכול לדווח על זה!"
 
 #: ../src/Gui/CCReporterDialog.py:240
 msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
-msgstr "El trazado está incompleto, por favor, asegúrese de proveer bien los pasos para reproducir el error."
+msgstr "מידע הקריסה לא שלם. אנא וודא שסיפקת הסבר טוב על איך לגרום לקריסה."
 
 #: ../src/Gui/CCReporterDialog.py:290
 #, python-format
@@ -249,31 +241,33 @@ msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
-"<b>ADVERTENCIA</b>, ¡está por enviar datos que pueden contener información sensible!\n"
-"¿Realmente quiere enviar <b>%s</b>?\n"
+"<b>אזהרה</b>, אתה עומד לשלוח מידע שעלול להכיל מידע רגיש.\n"
+"אתה באמת רוצה לשלוח את <b>%s</b>?\n"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
-msgstr "Informe terminado"
+msgstr "דיווח הושלם"
 
 #: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "No se encuentra el control visual de PluginDialog en la descripción de la interfaz del usuario."
+msgstr "לא ניתן למצוא פריט PluginDialog בתיאור הממשק!"
 
 #. we shouldn't get here, but just to be safe
 #: ../src/Gui/PluginSettingsUI.py:24
 #, python-format
 msgid "No UI for plugin %s"
-msgstr "No hay interfase del usuario para el complemento %s"
+msgstr "אין ממשק לתוסף %s"
 
 #: ../src/Gui/PluginSettingsUI.py:55
 #: ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
-msgstr "el combo box no está implementado"
+msgstr "תיבה משולבת לא מיושמת"
 
+# אין לי מושג איך לתרגם את זה. מה הקשר בין דיווח באגים לhydrate? זה בכלל משהו שקשור למים.
+# I have no idea how to translate this. What is the meaning of hydrate in this context?
 #: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
-msgstr "¡Nada para hidratar!"
+msgstr "Nothing to hydrate!"
 
 #: ../src/Gui/report.glade.h:1
 msgid " "
@@ -281,80 +275,80 @@ msgstr " "
 
 #: ../src/Gui/report.glade.h:2
 msgid "<b>Comment</b>"
-msgstr "<b>Comentario</b>"
+msgstr "<b>הערה</b>"
 
 #: ../src/Gui/report.glade.h:3
 msgid "<b>Following items will be send</b>"
-msgstr "<b>Los siguientes items se enviarán</b>"
+msgstr "<b>הפריטים הבאים יישלחו</b>"
 
 #: ../src/Gui/report.glade.h:4
 msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Como reproducirlo (en unos pocos y simples pasos)</b>"
+msgstr "<b>איך לגרום לקריסה להתרחש שנית (במספר צעדים פשוטים)</b>"
 
 #: ../src/Gui/report.glade.h:6
 msgid "Send"
-msgstr "Enviar"
+msgstr "שלח"
 
 #: ../src/Gui/SettingsDialog.py:33
 #: ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
-msgstr "<b>Seleccione un complemento</b>"
+msgstr "<b>בחר תוסף</b>"
 
 #: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
-msgstr "<b>Seleccione la base de datos de fondo</b>"
+msgstr "<b>בחר מנוע מסד נתונים</b>"
 
 #: ../src/Gui/SettingsDialog.py:166
 msgid "Remove this job"
-msgstr "Eliminar este trabajo"
+msgstr "הסר משימה זו"
 
 #: ../src/Gui/SettingsDialog.py:210
 msgid "Remove this action"
-msgstr "Eliminar esta acción"
+msgstr "הסר פעולה זו"
 
 #: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Complementos analizadores</b>"
+msgstr "<b>תוסף ניתוח</b>"
 
 #: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
-msgstr "<b>Acción asociada</b>"
+msgstr "<b>פעולה מקושרת</b>"
 
 #: ../src/Gui/settings.glade.h:3
 msgid "<b>Plugin details</b>"
-msgstr "<b>Detalles del complemento</b>"
+msgstr "<b>פרטי תוסף:</b>"
 
 #: ../src/Gui/settings.glade.h:4
 msgid "<b>Plugin</b>"
-msgstr "<b>complemento</b>"
+msgstr "<b>תוסף</b>"
 
 #: ../src/Gui/settings.glade.h:5
 msgid "<b>Time (or period)</b>"
-msgstr "<b>Tiempo (o periodo)</b>"
+msgstr "זמן (או תקופה)"
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
-msgstr "Analizadores, Acciones, Informadores"
+msgstr "מנתחים, פעולות, מדווחים"
 
 #: ../src/Gui/settings.glade.h:7
 msgid "Author:"
-msgstr "Autor:"
+msgstr "יוצר:"
 
 #: ../src/Gui/settings.glade.h:8
 msgid "Blacklisted packages: "
-msgstr "Paquetes en la Blacklist"
+msgstr "רשימה שחורה של חבילות:"
 
 #: ../src/Gui/settings.glade.h:9
 msgid "C_onfigure plugin"
-msgstr "C_onfigurar Complemento"
+msgstr "ה_גדר תוסף"
 
 #: ../src/Gui/settings.glade.h:10
 msgid "Check package GPG signature"
-msgstr "Compruebe la firma GPG del paquete"
+msgstr "בדוק את חתימת הGPG של החבילה"
 
 #: ../src/Gui/settings.glade.h:11
 msgid "Common"
-msgstr "Común"
+msgstr "נפוץ"
 
 #: ../src/Gui/settings.glade.h:12
 msgid "Cron"
@@ -362,206 +356,208 @@ msgstr "Cron"
 
 #: ../src/Gui/settings.glade.h:13
 msgid "Database backend: "
-msgstr "Backend de la Base de Datos"
+msgstr "מנוע מסד נתונים:"
 
 #: ../src/Gui/settings.glade.h:14
 msgid "Description:"
-msgstr "Descripción:"
+msgstr "תיאור:"
 
 #: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
-msgstr "LLaves GPG"
+msgstr "מפתחות GPG"
 
 #: ../src/Gui/settings.glade.h:16
 msgid "GPG keys: "
-msgstr "LLaves GPG:"
+msgstr "מפתחות GPG:"
 
 #: ../src/Gui/settings.glade.h:17
 msgid "Global Settings"
-msgstr "Preferencias globales"
+msgstr "הגדרות כלליות"
 
 #: ../src/Gui/settings.glade.h:18
 msgid "Max coredump storage size(MB):"
-msgstr "Capacidad máxima de almacenamiento del volcado del núcleo (MB):"
+msgstr "גודל אחסון coredump מירבי"
 
 #: ../src/Gui/settings.glade.h:19
 msgid "Name:"
-msgstr "Nombre:"
+msgstr "שם:"
 
 #: ../src/Gui/settings.glade.h:20
 msgid "Settings"
-msgstr "Preferencias"
+msgstr "הגדרות"
 
 #: ../src/Gui/settings.glade.h:21
 msgid "Version:"
-msgstr "Versión:"
+msgstr "גרסה:"
 
 #: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
-msgstr "Página Web:"
+msgstr "אתר אינטרנט:"
 
-# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/settings.glade.h:23
 msgid "gtk-cancel"
-msgstr "gtk-cancel"
+msgstr "ביטול"
 
-# NO TRADUCIR, hacen referencia al boton gkt
 #: ../src/Gui/settings.glade.h:24
 msgid "gtk-ok"
-msgstr "gtk-ok"
+msgstr "אישור"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Ver e informar el cuelgue de una aplicación"
+msgstr "צפה ברשימת היישומים שקרסו ודווח על הקריסות"
 
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
-msgstr "Ha sido detectado una caída en el paquete %s."
+msgstr "קריסה בחבילה %s התגלתה"
 
 #: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
-msgstr "El servicio ABRT no se está ejecutando"
+msgstr "שירות ABRT לא פועל"
 
 #: ../src/Applet/CCApplet.cpp:196
 msgid "Warning"
-msgstr "Aviso"
+msgstr "אזהרה"
 
 #: ../src/Daemon/Daemon.cpp:467
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
-msgstr "El tamaño del informe excede la cuota. Por favor, verifique el valor de MaxCrashReportsSize del sistema en abrt.conf."
+msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:202
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "El error ya ha sido informado: %i"
+msgstr "הבאג דווח בעבר: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:264
 #, c-format
 msgid "New bug id: %i"
-msgstr "Nuevo id del error: %i"
+msgstr "מזהה באג חדש: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:359
 msgid "Checking for duplicates..."
-msgstr "Chequeando si hay duplicados..."
+msgstr "מחפש כפילויות..."
 
 #: ../lib/Plugins/Bugzilla.cpp:362
 msgid "Logging into bugzilla..."
-msgstr "Ingresando a bugzilla..."
+msgstr "מתחבר לבאגזילה..."
 
 #: ../lib/Plugins/Bugzilla.cpp:366
 msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
+msgstr "שם משתמש וסיסמה ריקים. אנא בדוק את הקובץ bugzilla.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:372
 msgid "Checking CC..."
-msgstr "Chequeando CC..."
+msgstr "בודק שדה CC..."
 
 #: ../lib/Plugins/Bugzilla.cpp:381
 msgid "Creating new bug..."
-msgstr "Creando un nuevo informe..."
+msgstr "יוצר באג חדש..."
 
 #: ../lib/Plugins/Bugzilla.cpp:385
 msgid "Logging out..."
-msgstr "Saliendo..."
+msgstr "מתנתק..."
 
 #: ../lib/Plugins/Kerneloops.cpp:37
 msgid "Getting local universal unique identification"
-msgstr "Obteniendo la identificación única universal local"
+msgstr "מקבל זהות מקומית ייחודית"
 
 #: ../lib/Plugins/CCpp.cpp:264
 msgid "Getting backtrace..."
-msgstr "Obteniendo el backtrace..."
+msgstr "מקבל מידע קריסה..."
 
 #: ../lib/Plugins/CCpp.cpp:380
 msgid "Searching for debug-info packages..."
-msgstr "Buscando paquetes de información del depurador..."
+msgstr "מחפש חבילות debug-info..."
 
 #: ../lib/Plugins/CCpp.cpp:414
 msgid "Downloading and installing debug-info packages..."
-msgstr "Descargando e instalando paquetes de información del depurador..."
+msgstr "מוריד ומתקין חבילות מידע ניפוי באגים..."
 
 #: ../lib/Plugins/CCpp.cpp:522
 msgid "Getting local universal unique identification..."
-msgstr "Obteniendo la identificación única universal local..."
+msgstr "מקבל זהות מקומית ייחודית..."
 
 #: ../lib/Plugins/CCpp.cpp:541
 msgid "Getting global universal unique identification..."
-msgstr "Obteniendo la identificación única universal global..."
+msgstr "מקבל זהות גלובלית ייחודית..."
 
 #: ../lib/Plugins/CCpp.cpp:658
 msgid "Starting report creation..."
-msgstr "Iniciando la creación del informe..."
+msgstr "מתחיל בהכנת הדיווח..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
-msgstr "Omita la instalación de la información de depuración"
+msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:102
 msgid "Creating and submitting a report..."
-msgstr "Creando y enviando un informe..."
+msgstr "יוצר ושולח דיווח..."
 
 #: ../lib/Plugins/Logger.cpp:65
 msgid "Creating a report..."
-msgstr "Creando un informe..."
+msgstr "יוצר דיווח"
 
 #: ../lib/Plugins/FileTransfer.cpp:63
 #: ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
-msgstr "Transferencia de archivo: URL no especificada"
+msgstr "העברת קובץ: כתובת לא צוינה"
 
 #: ../lib/Plugins/FileTransfer.cpp:67
 #, c-format
 msgid "Sending archive %s to %s"
-msgstr "Enviando archivo %s a %s"
+msgstr "שולח ארכיון %s ל-%s"
 
 #: ../lib/Plugins/FileTransfer.cpp:309
 msgid "File Transfer: Creating a report..."
-msgstr "Transferencia de archivo: Creando un informe..."
+msgstr "העברת קובץ: יוצר דיווח..."
 
 #: ../lib/Plugins/FileTransfer.cpp:334
 #, c-format
 msgid "Can't create and send an archive: %s"
-msgstr "No se puede crear y enviar un archivo: %s"
+msgstr "לא יכול ליצור ולשלוח ארכיון: %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:359
 #, c-format
 msgid "Can't create and send an archive %s"
-msgstr "No se puede crear y enviar un archivo %s"
+msgstr "לא יכול ליצור ולשלוח ארכיון %s"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:84
 msgid "Creating kernel oops crash reports..."
-msgstr "Creando un informe de cuelgue de kernel oops..."
+msgstr "יוצר דיווחי קריסה של kernel oops..."
 
 #: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
-msgstr "Enviando un correo..."
+msgstr "שולח דוא\"ל"
 
 #: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
-msgstr "Ejecutando complemento SOSreport..."
+msgstr "מריץ את תוסף SOSreport..."
 
 #: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
-msgstr "ejecutando sosreport: %s"
+msgstr "מריץ sosreport: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
-msgstr "Sosreport corriendo"
+msgstr "הרצת sosreport הסתיימה"
 
 #~ msgid "<span color=\"white\">Description</span>"
-#~ msgstr "<span color=\"white\">Descripción</span>"
+#~ msgstr "<span color=\"white\">תיאור</span>"
 #~ msgid "Working..."
-#~ msgstr "Trabajando..."
-#~ msgid "Can't get username for uid %s"
-#~ msgstr "No se pudo obtener nombre de usuario para el uid %s"
+#~ msgstr "עובד..."
 #~ msgid "Edit blacklisted packages"
-#~ msgstr "Edite los paquetes de la Blacklist"
+#~ msgstr "ערוך את הרשימה השחורה של החבילות (קריסות בחבילות אלו לא יתועדו): "
 #~ msgid "Nothing selected"
-#~ msgstr "Nada seleccionado"
+#~ msgstr "לא נבחר דבר"
 #~ msgid "Plugin Details"
-#~ msgstr "Detalles de Complemento"
+#~ msgstr "פרטי התוסף"
 #~ msgid "This function is not implemented yet!"
-#~ msgstr "¡Esta función no está implementada todavía! :-("
+#~ msgstr "הפונקציה הזאת עדיין לא מיושמת!"
+#~ msgid "gtk-add"
+#~ msgstr "הוסף"
+#~ msgid "gtk-close"
+#~ msgstr "סגור"
+#~ msgid "gtk-remove"
+#~ msgstr "מחק"
 

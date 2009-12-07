@@ -55,16 +55,16 @@
  * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - CreateReport(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
+ * - StartJob(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
  *      Returns job id (uint64).
  *      After thread returns, when report creation thread has finished,
  *      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
- * - GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
+ * - CreateReport(UUID): returns map_crash_report_t (map_vector_string_t)
  * - Report(map_crash_report_t (map_vector_string_t[, map_map_string_t])):
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
- * - DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool
+ * - DeleteDebugDump(UUID): delete it from DB and delete corresponding /var/cache/abrt/DIR
  * - GetPluginsInfo(): returns vector_map_string_t
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
@@ -75,8 +75,8 @@
  *
  * DBus signals we emit:
  * - Crash(progname,uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
- * - JobDone(client_dbus_ID,UUID) - see CreateReport above.
- *      Sent as unicast to the client which did CreateReport.
+ * - JobDone(client_dbus_ID,UUID) - see StartJob above.
+ *      Sent as unicast to the client which did StartJob.
  * - Warning(msg,job_id)
  * - Update(msg,job_id)
  *      Both are sent as unicast to last client set by set_client_name(name).
@@ -84,7 +84,7 @@
  *
  * TODO:
  * - JobDone signal does not need to pass any parameters
- *   - our clients never send multiple CreateReport's.
+ *   - our clients never send multiple StartJob's.
  */
 
 
@@ -343,11 +343,6 @@ static void FindNewDumps(const char* pPath)
                     VERB1 log("Already saved crash %s, deleting", itt->c_str());
                     delete_debug_dump_dir(itt->c_str());
                     break;
-                case MW_BLACKLISTED:
-                case MW_CORRUPTED:
-                case MW_PACKAGE_ERROR:
-                case MW_GPG_ERROR:
-                case MW_FILE_ERROR:
                 default:
                     log("Corrupted or bad crash %s (res:%d), deleting", itt->c_str(), (int)res);
                     delete_debug_dump_dir(itt->c_str());
@@ -356,10 +351,6 @@ static void FindNewDumps(const char* pPath)
         }
         catch (CABRTException& e)
         {
-            if (e.type() == EXCEP_FATAL)
-            {
-                throw e;
-            }
             error_msg("%s", e.what());
         }
     }
@@ -474,7 +465,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         ) {
             log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir.c_str());
             g_pCommLayer->QuotaExceed(_("Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
-            delete_debug_dump_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
+            /* deletes both directory and DB record */
+            DeleteDebugDump_by_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
             worst_dir = "";
         }
 
@@ -544,12 +536,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         }
         catch (CABRTException& e)
         {
-            error_msg(e.what());
-            if (e.type() == EXCEP_FATAL)
-            {
-                free(buf);
-                return -1;
-            }
+            error_msg("%s", e.what());
         }
         catch (...)
         {
