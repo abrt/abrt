@@ -44,21 +44,18 @@ class MainWindow():
 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window3")
-        self.window.set_default_size(700, 480)
         if (self.window):
+            self.window.set_default_size(700, 480)
             self.window.connect("delete_event", self.delete_event_cb)
             self.window.connect("destroy", self.destroy)
             self.window.connect("focus-in-event", self.focus_in_cb)
 
-        self.statusWindow = self.wTree.get_widget("pBarWindow")
-        if self.statusWindow:
-            self.statusWindow.connect("delete_event", self.sw_delete_event_cb)
-
-        self.appBar = self.wTree.get_widget("appBar")
         # pregress bar window to show while bt is being extracted
         self.pBarWindow = self.wTree.get_widget("pBarWindow")
-        self.pBarWindow.set_transient_for(self.window)
-        self.pBar = self.wTree.get_widget("pBar")
+        if self.pBarWindow:
+            self.pBarWindow.connect("delete_event", self.sw_delete_event_cb)
+            self.pBarWindow.set_transient_for(self.window)
+            self.pBar = self.wTree.get_widget("pBar")
 
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
@@ -187,7 +184,7 @@ class MainWindow():
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
         except Exception, e:
-            # there is something wrong with the daemon if we can get the dumplist
+            # there is something wrong with the daemon if we cant get the dumplist
             gui_error_message(_("Error while loading the dumplist.\n%s" % e))
             # so we shouldn't continue..
             sys.exit()
@@ -290,7 +287,6 @@ class MainWindow():
 
         if response == gtk.RESPONSE_APPLY:
             try:
-                self.update_pBar = False
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
                 reporters_settings = {}
@@ -308,9 +304,8 @@ class MainWindow():
             self.refresh_report(report)
 
     def refresh_report(self, report):
-        self.update_pBar = False
         self.pBarWindow.show_all()
-        self.timer = gobject.timeout_add (100,self.progress_update_cb)
+        self.timer = gobject.timeout_add(100, self.progress_update_cb)
 
         # show the report window with selected report
         try:
@@ -333,10 +328,9 @@ class MainWindow():
         dumpsListStore, path = treeview.get_selection().get_selected_rows()
         if not path:
             return
-        self.update_pBar = False
         #self.pBar.show()
         self.pBarWindow.show_all()
-        self.timer = gobject.timeout_add (100,self.progress_update_cb)
+        self.timer = gobject.timeout_add(100, self.progress_update_cb)
 
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         # show the report window with selected dump
