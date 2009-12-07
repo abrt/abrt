@@ -4,7 +4,6 @@
 #include "ABRTException.h"
 
 #define FILENAME_BACKTRACE      "backtrace"
-#define PYHOOK_CONFIG          "/etc/abrt/pyhook.conf"
 
 static std::string CreateHash(const char *pDebugDumpDir)
 {
@@ -26,25 +25,10 @@ std::string CAnalyzerPython::GetGlobalUUID(const char *pDebugDumpDir)
 
 void CAnalyzerPython::Init()
 {
-	std::ofstream fOutPySiteCustomize;
-	fOutPySiteCustomize.open(PYHOOK_CONFIG);
-	if (fOutPySiteCustomize.is_open())
-	{
-		fOutPySiteCustomize << "enabled = yes" << std::endl;
-		fOutPySiteCustomize.close();
-	}
 }
 
 void CAnalyzerPython::DeInit()
 {
-	// TODO: remove copied abrt exception handler
-	std::ofstream fOutPySiteCustomize;
-	fOutPySiteCustomize.open(PYHOOK_CONFIG);
-	if (fOutPySiteCustomize.is_open())
-	{
-		fOutPySiteCustomize << "enabled = no" << std::endl;
-		fOutPySiteCustomize.close();
-	}
 }
 
 PLUGIN_INFO(ANALYZER,

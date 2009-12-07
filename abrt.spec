@@ -285,7 +285,7 @@ fi
 %dir %{_libdir}/%{name}
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
-%{_mandir}/man5/pyhook.conf.5.gz
+#%{_mandir}/man5/pyhook.conf.5.gz
 %{_mandir}/man7/%{name}-plugins.7.gz
 %{_datadir}/polkit-1/actions/org.fedoraproject.abrt.policy
 %{_datadir}/dbus-1/system-services/com.redhat.abrt.service
@@ -385,8 +385,6 @@ fi
 %files addon-python
 %defattr(-,root,root,-)
 %attr(2755, root, abrt) %{_bindir}/%{name}-pyhook-helper
-%config(noreplace) %{_sysconfdir}/%{name}/pyhook.conf
-#%{python_sitearch}/ABRTUtils.so
 %{_libdir}/%{name}/libPython.so*
 %{python_site}/*.py*
 

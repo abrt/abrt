@@ -45,13 +45,8 @@ abrt_pyhook_helper_CPPFLAGS = \
 abrt_pyhook_helper_LDADD = \
     ../../lib/Utils/libABRTUtils.la
 
-man_MANS = pyhook.conf.5
-
 python_PYTHON = sitecustomize.py abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
-
-pyhookconfdir = $(CONF_DIR)
-dist_pyhookconf_DATA = pyhook.conf
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
 
