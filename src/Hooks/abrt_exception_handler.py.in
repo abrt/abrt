@@ -129,7 +129,7 @@ def __dump_exception(out, text, tracebk):
     out.write ("\nLocal variables in innermost frame:\n")
     try:
         for (key, value) in frame.f_locals.items():
-            out.write ("%s: %s\n" % (key, value))
+            out.write ("%s: %s\n" % (key, repr(value)))
     except:
         pass
 
