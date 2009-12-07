@@ -51,7 +51,7 @@ class CTicketUploader : public CReporter
 
         virtual std::string Report(const map_crash_report_t& pCrashReport,
                               const map_plugin_settings_t& pSettings,
-                              const std::string& pArgs);
+                              const char *pArgs);
 };
 
 #endif

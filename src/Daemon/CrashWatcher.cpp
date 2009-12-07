@@ -73,6 +73,8 @@ vector_crash_infos_t GetCrashInfos(const char *pUID)
                     /* Deletes both DB record and dump dir */
                     DeleteDebugDump(uuid, uid);
                     break;
+                default:
+                    break;
             }
         }
     }

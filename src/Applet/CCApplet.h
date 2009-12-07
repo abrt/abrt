@@ -71,7 +71,7 @@ class CApplet
         // or ask the daemon every time?
         // maybe just events which occured during current session
         // map::
-//        int AddEvent(int pUUID, const std::string& pProgname);
+//        int AddEvent(int pUUID, const char *pProgname);
 //        int RemoveEvent(int pUUID);
 
     protected:

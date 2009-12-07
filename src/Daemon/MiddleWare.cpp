@@ -348,7 +348,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
                 VERB2 log("%s.Report(...)", it_ar->first.c_str());
-                reporter->Report(crashReport, plugin_settings, it_ar->second);
+                reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
             }
             else if (tp == ACTION)
             {
@@ -490,7 +490,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                     }
 #endif
                     map_plugin_settings_t plugin_settings = pSettings[pluginName];
-                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second);
+                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second.c_str());
 
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
                     if (home != "")
@@ -688,7 +688,7 @@ void autoreport(const pair_string_string_t& reporter_options, const map_crash_re
     }
 
     map_plugin_settings_t plugin_settings;
-    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second);
+    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second.c_str());
 }
 
 /**

@@ -88,23 +88,21 @@ void CCommLayerServerDBus::JobDone(const char* peer, const char* pUUID)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Update(const std::string& pMessage, const char* peer, uint64_t job_id)
+void CCommLayerServerDBus::Update(const char* pMessage, const char* peer, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("Update", peer);
-    const char* c_message = pMessage.c_str();
     dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &c_message,
+            DBUS_TYPE_STRING, &pMessage,
             DBUS_TYPE_UINT64, &job_id, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Warning(const std::string& pMessage, const char* peer, uint64_t job_id)
+void CCommLayerServerDBus::Warning(const char* pMessage, const char* peer, uint64_t job_id)
 {
     DBusMessage* msg = new_signal_msg("Warning", peer);
-    const char* c_message = pMessage.c_str();
     dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &c_message,
+            DBUS_TYPE_STRING, &pMessage,
             DBUS_TYPE_UINT64, &job_id, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
