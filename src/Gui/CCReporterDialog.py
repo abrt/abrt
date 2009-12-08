@@ -80,8 +80,8 @@ class ReporterDialog():
         toggle_renderer.set_property('activatable', True)
         toggle_renderer.connect( 'toggled', self.on_send_toggled, self.reportListStore )
         column = gtk.TreeViewColumn('Send', toggle_renderer)
-        column.add_attribute( toggle_renderer, "active", 3)
-        column.add_attribute( toggle_renderer, "visible", 4)
+        column.add_attribute(toggle_renderer, "active", 3)
+        column.add_attribute(toggle_renderer, "visible", 4)
         self.tvReport.insert_column(column,0)
         # connect the signals
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
@@ -90,8 +90,9 @@ class ReporterDialog():
         self.hydrate()
 
     # this callback is called when user press Cancel or Report button in Report dialog
-    def on_response(self, dialog, response_id, daemon ):
-        # thu button has been pressed (probably)
+    def on_response(self, dialog, response_id, daemon):
+        # the button has been pressed (probably)
+        print "response_id", response_id
         if response_id == gtk.RESPONSE_APPLY:
             if not (self.check_settings(daemon) and self.check_report()):
                 dialog.stop_emission("response")
