@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:191
+#: ../src/Gui/CCReporterDialog.py:200
 # Krishna Babu K <kkrothap@redhat.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-12 03:54+0000\n"
-"PO-Revision-Date: 2009-11-12 12:17+0530\n"
+"POT-Creation-Date: 2009-12-08 08:32+0000\n"
+"PO-Revision-Date: 2009-12-08 16:45+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -48,66 +49,58 @@ msgid "Database plugins"
 msgstr "డాటాబేస్ ప్లగిన్సు"
 
 #: ../src/Gui/ABRTPlugin.py:97
-msgid "Plugin name is not set, can't load it's settings"
+msgid "Plugin name is not set, can't load its settings"
 msgstr "ప్లగిన్ నామము అమర్చబడలేదు, దాని అమరికలను లోడు చేయలేదు"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "సిస్టమ్ dbusకు అనుసంధానము కాలేకపోయింది"
 
-#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+#: ../src/Gui/CCDBusBackend.py:104 ../src/Gui/CCDBusBackend.py:107
 msgid "Please check if abrt daemon is running"
 msgstr "abrt డెమోన్ నడుస్తుంటే దయచేసి పరిశీలించుము"
 
-#: ../src/Gui/CCDBusBackend.py:155
+#: ../src/Gui/CCDBusBackend.py:159
 msgid ""
-"Daemon did't return valid report info\n"
+"Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
 "డెమోన్ చెల్లునటువంటి నివేదిక సమాచారమును తిరిగియిచ్చుట లేదు\n"
 "డీబగ్‌సమాచారము తప్పిపోయిందా?"
 
-#: ../src/Gui/ccgui.glade.h:1 ../src/Gui/report.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/ccgui.glade.h:2
+#: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:244
-msgid "<b>Not reported!</b>"
-msgstr "<b>నివేదించబడలేదు!</b>"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">వివరణ</span>"
-
-#: ../src/Gui/ccgui.glade.h:5
+#: ../src/Gui/ccgui.glade.h:2
 msgid "About ABRT"
 msgstr "ABRT గురించి"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "స్వయంచాలక బగ్ నివేదీకరణ సాధనము"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:4
 msgid "Delete"
 msgstr "తొలగించు"
 
-#: ../src/Gui/ccgui.glade.h:8
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Not Reported"
+msgstr "నివేదించబడలేదు"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Please wait.."
 msgstr "దయచేసి వేచివుండు..."
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Plugins"
 msgstr "ప్లగిన్లు"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
+#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
 msgid "Report"
 msgstr "నివేదించు"
 
-#: ../src/Gui/ccgui.glade.h:11
+#: ../src/Gui/ccgui.glade.h:9
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -133,48 +126,44 @@ msgstr ""
 "ఈ ప్రోగ్రామ్ తో మీరు GNU జనరల్ పబ్లిక్ లైసెన్సు నకలును పొంది ఉంటారు. పొందకపోతే, <http://www.gnu."
 "org/licenses/> చూడండి."
 
-#: ../src/Gui/ccgui.glade.h:16
-msgid "Working..."
-msgstr "పనిచేయుచున్నది..."
-
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:14
 msgid "_Edit"
 msgstr "సరికూర్చు (_E)"
 
-#: ../src/Gui/ccgui.glade.h:18
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_File"
 msgstr "దస్త్రము (_F)"
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_Help"
 msgstr "సహాయము (_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:70
 msgid "Icon"
 msgstr "ప్రతిమ"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:78
 msgid "Package"
 msgstr "ప్యాకేజీ"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Application"
 msgstr "అనువర్తనము"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Date"
 msgstr "తేది"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Crash count"
 msgstr "క్రాష్ కౌంట్"
 
-#: ../src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:82
 msgid "User"
 msgstr "వినియోగదారి"
 
-#: ../src/Gui/CCMainWindow.py:160
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -183,7 +172,7 @@ msgstr ""
 "అమరికల డైలాగ్‌ను చూపలేదు\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:181
+#: ../src/Gui/CCMainWindow.py:170
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -192,25 +181,25 @@ msgstr ""
 "ప్రస్తుత కర్తవ్యమును పూర్తిచేయలేక పోయింది!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:198
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:188
 #, python-format
 msgid ""
-"Error while loading the dumplist, please check if abrt daemon is running\n"
-" %s"
+"Error while loading the dumplist.\n"
+"%s"
 msgstr ""
-"డంపుజాబితాను లోడుచేయుటలో దోషము, దయచేసి abrt డెమోన్ నడుస్తున్నదో లేదో పరిశీలించండి\n"
-" %s"
+"డంపుజాబితాను లోడుచేయుటలో దోషము.\n"
+"%s"
 
-#: ../src/Gui/CCMainWindow.py:208
-#, python-format
-msgid "Can't get username for uid %s"
-msgstr "uid %s కొరకు వినియోగదారి నామమును పొందలేకపోయింది"
-
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:225
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>ఈ క్రాష్ నివేదించబడింది, మీరు నివేదికలను దీనివద్ద కనుగొనవచ్చును:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:296
+#: ../src/Gui/CCMainWindow.py:233
+msgid "<b>Not reported!</b>"
+msgstr "<b>నివేదించబడలేదు!</b>"
+
+#: ../src/Gui/CCMainWindow.py:282
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -218,7 +207,7 @@ msgstr ""
 "నివేదికను పొందలేక పోయింది!\n"
 "డీబగ్‌సమాచారము తప్పిపోయిందా?"
 
-#: ../src/Gui/CCMainWindow.py:314
+#: ../src/Gui/CCMainWindow.py:301
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -227,41 +216,50 @@ msgstr ""
 "నివేదించుట విఫలమైంది!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:333 ../src/Gui/CCMainWindow.py:360
+#: ../src/Gui/CCMainWindow.py:319 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "నివేదికను పొందుటలో దోషము: %s"
 
-#: ../src/Gui/CCReporterDialog.py:177
+#: ../src/Gui/CCReporterDialog.py:128
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"ప్లగిన్ అమరికలను దాయలేదు:\n"
+" %s"
+
+#: ../src/Gui/CCReporterDialog.py:186
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "దీనిని మరలా యెలా రాబట్టాలి అనేదాని గురించి మరియు మీరు యేమి చేయాలి అనేదాని గురించి సోదాహరణము..."
 
-#: ../src/Gui/CCReporterDialog.py:219
+#: ../src/Gui/CCReporterDialog.py:231
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command:<span color=\"blue\"> "
-"debuginfo-install %s </span>\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "బాక్‌ట్రేస్ నిరుపయోగమైంది కనుక నివేదీకరణ అచేతనమైంది.\n"
-"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్‌ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <span color=\"blue\"> "
-"debuginfo-install %s </span>\n"
+"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
+"%s</b> \n"
 "అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
-#: ../src/Gui/CCReporterDialog.py:221
-msgid "The bactrace is unusable, you can't report this!"
-msgstr "బాక్‌ట్రేస్ వుపయోగించుటకు వీలుకానిది, దీనిని మీరు నివేదించ లేదు!"
+#: ../src/Gui/CCReporterDialog.py:233
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "బాక్‌ట్రేస్ వుపయోగించుటకు వీలుకానిది, దీనిని మీరు నివేదించలేరు!"
 
-#: ../src/Gui/CCReporterDialog.py:227
+#: ../src/Gui/CCReporterDialog.py:240
 msgid ""
-"The bactrace is incomplete, please make sure you provide good steps to "
+"The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr ""
-"బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు మంచి "
-"స్టెప్సును యిచ్చునట్లు చూచుకోండి."
+"బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు మంచి స్టెప్సును యిచ్చునట్లు "
+"చూచుకోండి."
 
-#: ../src/Gui/CCReporterDialog.py:272
+#: ../src/Gui/CCReporterDialog.py:290
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -274,10 +272,6 @@ msgstr ""
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
 msgstr "నివేదిక అయినది"
-
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
-msgid "gtk-ok"
-msgstr "gtk-ok"
 
 #: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
@@ -297,15 +291,23 @@ msgstr "కాంబో పెట్టె అభివృద్ది పరచ
 msgid "Nothing to hydrate!"
 msgstr "హైడ్రేట్ అగుటకు ఏమీలేదు!"
 
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
+
 #: ../src/Gui/report.glade.h:2
-msgid "Comment"
-msgstr "వ్యాఖ్యానము"
+msgid "<b>Comment</b>"
+msgstr "<b>వ్యాఖ్య</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "How to reproduce (in a few simple steps)"
-msgstr "ఎలా తిరిగివుత్పన్నం చేయాలి (కొద్ది స్టెప్సులో)"
+msgid "<b>Following items will be send</b>"
+msgstr "<b>క్రింది అంశములు పంపబడతాయి</b>"
 
-#: ../src/Gui/report.glade.h:5
+#: ../src/Gui/report.glade.h:4
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>ఎలా తిరిగివుత్పన్నం చేయాలి (కొద్ది స్టెప్సులో)</b>"
+
+#: ../src/Gui/report.glade.h:6
 msgid "Send"
 msgstr "పంపుము"
 
@@ -317,11 +319,11 @@ msgstr "<b>ప్లగిన్ యెంచుకొనుము</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>డాటాబేస్ బ్యాకెండ్ యెంపికచేయుము</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:166
 msgid "Remove this job"
 msgstr "ఈ జాబ్‌ను తీసివేయుము"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:210
 msgid "Remove this action"
 msgstr "ఈ చర్యను తీసివేయుము"
 
@@ -334,123 +336,111 @@ msgid "<b>Associated action</b>"
 msgstr "<b>సంభందిత చర్య</b>"
 
 #: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>ప్లగిన్ వివరములు</b>"
+
+#: ../src/Gui/settings.glade.h:4
 msgid "<b>Plugin</b>"
 msgstr "<b>ప్లగిన్</b>"
 
-#: ../src/Gui/settings.glade.h:4
+#: ../src/Gui/settings.glade.h:5
 msgid "<b>Time (or period)</b>"
 msgstr "<b>సమయం (లేదా కాలం)</b>"
 
-#: ../src/Gui/settings.glade.h:5
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "విశ్లేషకిలు, చర్యలు, నివేదికలు"
 
-#: ../src/Gui/settings.glade.h:6
+#: ../src/Gui/settings.glade.h:7
 msgid "Author:"
 msgstr "మూలకర్త:"
 
-#: ../src/Gui/settings.glade.h:7
+#: ../src/Gui/settings.glade.h:8
 msgid "Blacklisted packages: "
 msgstr "బ్లాక్‌లిస్టైన ప్యాకేజీలు: "
 
-#: ../src/Gui/settings.glade.h:8
+#: ../src/Gui/settings.glade.h:9
 msgid "C_onfigure plugin"
 msgstr "ప్లగిన్ ఆకృతీకరించుము (_o)"
 
-#: ../src/Gui/settings.glade.h:9
+#: ../src/Gui/settings.glade.h:10
 msgid "Check package GPG signature"
 msgstr "ప్యాకేజీ GPG సంతకమును పరిశీలించుము"
 
-#: ../src/Gui/settings.glade.h:10
+#: ../src/Gui/settings.glade.h:11
 msgid "Common"
 msgstr "ఉమ్మడి"
 
-#: ../src/Gui/settings.glade.h:11
+#: ../src/Gui/settings.glade.h:12
 msgid "Cron"
 msgstr "క్రాన్"
 
-#: ../src/Gui/settings.glade.h:12
+#: ../src/Gui/settings.glade.h:13
 msgid "Database backend: "
 msgstr "డాటాబేస్ బ్యాకెండ్: "
 
-#: ../src/Gui/settings.glade.h:13
-msgid "Edit blacklisted packages"
-msgstr "బ్లాక్‌లిస్టు చేసిన ప్యాకేజీలను సరికూర్చుము"
-
 #: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "వివరణ:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG కీలు"
 
-#: ../src/Gui/settings.glade.h:15
+#: ../src/Gui/settings.glade.h:16
 msgid "GPG keys: "
 msgstr "GPG కీలు: "
 
-#: ../src/Gui/settings.glade.h:16
+#: ../src/Gui/settings.glade.h:17
 msgid "Global Settings"
 msgstr "సార్వత్రిక అమరికలు"
 
-#: ../src/Gui/settings.glade.h:17
+#: ../src/Gui/settings.glade.h:18
 msgid "Max coredump storage size(MB):"
 msgstr "గరిష్ట కొర్‌డంప్ నిల్వ పరిమాణము(MB):"
 
-#: ../src/Gui/settings.glade.h:18
-msgid "Nothing selected"
-msgstr "ఏదీ యెంపికకాలేదు"
-
 #: ../src/Gui/settings.glade.h:19
-msgid "Plugin Details"
-msgstr "ప్లగిన్ వివరములు"
+msgid "Name:"
+msgstr "నామము:"
 
 #: ../src/Gui/settings.glade.h:20
 msgid "Settings"
 msgstr "అమరికలు"
 
 #: ../src/Gui/settings.glade.h:21
-msgid "This function is not implemented yet!"
-msgstr "ఈ ప్రమేయం యింకా అమలులోకి రాలేదు!"
-
-#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "వర్షన్:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "వెబ్ సైటు:"
 
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-add"
-msgstr "gtk-add"
-
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:23
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/settings.glade.h:26
-msgid "gtk-close"
-msgstr "gtk-close"
+#: ../src/Gui/settings.glade.h:24
+msgid "gtk-ok"
+msgstr "gtk-ok"
 
-#: ../src/Gui/settings.glade.h:28
-msgid "gtk-remove"
-msgstr "gtk-remove"
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "అనువర్తనము క్రాషెస్‌ను దర్శించుము మరియు నివేదించుము"
 
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "ప్యాకేజీ %s నందు వొక క్రాష్ గుర్తించబడింది"
 
-#: ../src/Applet/Applet.cpp:138
-msgid "ABRT service has been started"
-msgstr "ABRT సేవ ప్రారంభించబడింది"
-
-#: ../src/Applet/Applet.cpp:140 ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "ABRT సేవ నడుచుటలేదు"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:196
 msgid "Warning"
 msgstr "హెచ్చరిక"
 
-#: ../src/Daemon/Daemon.cpp:520
+#: ../src/Daemon/Daemon.cpp:467
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -458,37 +448,37 @@ msgstr ""
 "నివేదిక పరిమాణము కోటాను మించినది. abrt.conf నందు సిస్టమ్ యొక్క MaxCrashReportsSize విలువను "
 "పరిశీలించండి."
 
-#: ../lib/Plugins/Bugzilla.cpp:209
+#: ../lib/Plugins/Bugzilla.cpp:202
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "బగ్ యిప్పటికే నివేదించబడింది: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:271
+#: ../lib/Plugins/Bugzilla.cpp:264
 #, c-format
 msgid "New bug id: %i"
 msgstr "కొత్త బగ్ id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:364
+#: ../lib/Plugins/Bugzilla.cpp:359
 msgid "Checking for duplicates..."
 msgstr "నకిలీల కొరకు పరిశీలించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:367
+#: ../lib/Plugins/Bugzilla.cpp:362
 msgid "Logging into bugzilla..."
 msgstr "బగ్‌జిల్లా లోనికి లాగిన్ అవుతోంది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:371
+#: ../lib/Plugins/Bugzilla.cpp:366
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "ఖాళీ లాగిన్ మరియు సంకేతపదము. దయచేసి Bugzilla.conf పరిశీలించండి"
 
-#: ../lib/Plugins/Bugzilla.cpp:377
+#: ../lib/Plugins/Bugzilla.cpp:372
 msgid "Checking CC..."
 msgstr "CC పరిశీలించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:386
+#: ../lib/Plugins/Bugzilla.cpp:381
 msgid "Creating new bug..."
 msgstr "కొత్త బగ్‌ను సృష్టించుచున్నది..."
 
-#: ../lib/Plugins/Bugzilla.cpp:390
+#: ../lib/Plugins/Bugzilla.cpp:385
 msgid "Logging out..."
 msgstr "లాగ్అవుట్ అవుచున్నది..."
 
@@ -496,31 +486,31 @@ msgstr "లాగ్అవుట్ అవుచున్నది..."
 msgid "Getting local universal unique identification"
 msgstr "లోకల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుతోంది"
 
-#: ../lib/Plugins/CCpp.cpp:254
+#: ../lib/Plugins/CCpp.cpp:264
 msgid "Getting backtrace..."
 msgstr "బాక్‌ట్రేస్ పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
+#: ../lib/Plugins/CCpp.cpp:380
 msgid "Searching for debug-info packages..."
 msgstr "డీబగ్-సమాచార ప్యాకేజీల కొరకు శోధించుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
+#: ../lib/Plugins/CCpp.cpp:414
 msgid "Downloading and installing debug-info packages..."
 msgstr "డీబగ్-సమాచార ప్యాకేజీలను డౌన్‌లోడు చేయుచున్నది మరియు సంస్థాపించుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:818
+#: ../lib/Plugins/CCpp.cpp:522
 msgid "Getting local universal unique identification..."
 msgstr "లోకల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:837
+#: ../lib/Plugins/CCpp.cpp:541
 msgid "Getting global universal unique identification..."
 msgstr "గ్లోబల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:882
+#: ../lib/Plugins/CCpp.cpp:658
 msgid "Starting report creation..."
 msgstr "నివేదిక సృష్టీకరణను ప్రారంభించుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:912
+#: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
 msgstr "డీబగ్‌సమాచార సంస్థాపనను దాటవేస్తోంది"
 
@@ -528,13 +518,9 @@ msgstr "డీబగ్‌సమాచార సంస్థాపనను ద�
 msgid "Creating and submitting a report..."
 msgstr "నివేదికను సృష్టించుచున్నది మరియు అప్పజెప్పుచున్నది..."
 
-#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:66
 msgid "Creating a report..."
 msgstr "నివేదికను సృష్టించుచున్నది..."
-
-#: ../lib/Plugins/RunApp.cpp:64
-msgid "Executing RunApp plugin..."
-msgstr "RunApp ప్లగిన్ నిర్వర్తించుచున్నది..."
 
 #: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
@@ -563,20 +549,20 @@ msgstr "ఆర్చివు %sను సృష్టించలేదు మ�
 msgid "Creating kernel oops crash reports..."
 msgstr "కెర్నల్ oops క్రాష్ నివేదికలను సృష్టించుచున్నది..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:165
 msgid "Sending an email..."
 msgstr "ఈమెయిల్ పంపుచున్నది..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport ప్లగిన్ నిర్వర్తించుచున్నది..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "sosreport నడుపుచున్నది: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "sosreport నడుపుట అయినది"
 
