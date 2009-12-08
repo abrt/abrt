@@ -3,8 +3,8 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.0.0
-Release: 4%{?dist}
+Version: 1.0.1
+Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -398,6 +398,31 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Tue Dec  8 2009  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.1-1
+- PyHook: better logic for checking if abrtd is running rhbz#539987 (jmoskovc@redhat.com)
+- re-enabled gpg sign checking (jmoskovc@redhat.com)
+- PyHook: use repr() for displaying variables rhbz#545070 (jmoskovc@redhat.com)
+- kerneloops: fix the linux kernel version identification (aarapov@redhat.com)
+- gui review (rrakus@redhat.com)
+- when we trim the dir, we must delete it from DB too rhbz#541854 (vda.linux@googlemail.com)
+- improved dupe checking (kklic@redhat.com)
+- GUI: handle cases when gui fails to start daemon on demand rhbz#543725 (jmoskovc@redhat.com)
+- Add abrt group only if it is missing; fixes rhbz#543250 (kklic@redhat.com)
+- GUI: more string fixes rhbz#543266 (jmoskovc@redhat.com)
+- abrt.spec: straighten out relations between abrt-desktop and abrt-gui (vda.linux@googlemail.com)
+- refuse to start if some required plugins are missing rhbz#518422 (vda.linux@googlemail.com)
+- GUI: survive gnome-keyring access denial rhbz#543200 (jmoskovc@redhat.com)
+- typo fixes rhbz#543266 (jmoskovc@redhat.com)
+- abrt-debuginfo-install: better fix for incorrect passing double quotes (vda.linux@googlemail.com)
+- APPLET: stop animation when it's not needed rhbz#542157 (jmoskovc@redhat.com)
+- ccpp hook: reanme it, and add "crash storm protection" (see rhbz#542003) (vda.linux@googlemail.com)
+- Hooks/CCpp.cpp: add MakeCompatCore = yes/no directive. Fixes rhbz#541707 (vda.linux@googlemail.com)
+- SPEC: removed sqlite3 package, fixed some update problems (jmoskovc@redhat.com)
+- Kerneloops are reported automaticky now when AutoReportUIDs = root is in Kerneloops.conf (npajkovs@redhat.com)
+- remove word 'detected' from description rhbz#541459 (vda.linux@googlemail.com)
+- src/Hooks/CCpp.cpp: do save abrtd's own coredumps, but carefully... (vda.linux@googlemail.com)
+- CCpp.cpp: quote parameters if needed rhbz#540164 (vda.linux@googlemail.com)
+
 * Fri Nov 20 2009  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.0-1
 - new version
 - comment input wraps words rhbz#531276
