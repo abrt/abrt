@@ -45,9 +45,12 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         plugin_label = Label()
         plugin_label.set_markup("<b>%s</b>: " % plugin)
         plugin_label.set_justify(gtk.JUSTIFY_RIGHT)
+        plugin_label.set_alignment(0, 0)
         status_label = Label()
         status_label.set_max_width_chars(MAX_WIDTH)
         status_label.set_selectable(True)
+        status_label.set_line_wrap(True)
+        status_label.set_alignment(0, 0)
         status_hbox.pack_start(plugin_label, expand=False)
         status_hbox.pack_start(status_label, expand=False)
         # 0 means not succesfull

@@ -96,7 +96,7 @@ class ReporterDialog():
     # this callback is called when user press Cancel or Report button in Report dialog
     def on_response(self, dialog, response_id, daemon):
         # the button has been pressed (probably)
-        print "response_id", response_id
+        # print "response_id", response_id
         if response_id == gtk.RESPONSE_APPLY:
             if not (self.check_settings(daemon) and self.check_report()):
                 dialog.stop_emission("response")
