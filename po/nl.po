@@ -7,13 +7,13 @@
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
 # Richard van der Luit <nippur@fedoraproject.org>, 2009.
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-07 14:20+0000\n"
-"PO-Revision-Date: 2009-12-07 17:52+0100\n"
+"POT-Creation-Date: 2009-12-09 14:40+0000\n"
+"PO-Revision-Date: 2009-12-09 17:05+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -84,22 +84,26 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "Details"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "Niet gerapporteerd"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "Wacht a.u.b..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "Rapport"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -127,40 +131,40 @@ msgstr ""
 "Je moet een kopie van de GNU General Public License tezamen met dit "
 "programma ontvangen hebben.  Zo niet, zie <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "Be_werken"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "_Bestand"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "_Hulp"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "Icoon"
 
-#: ../src/Gui/CCMainWindow.py:78
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "Toepassing"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "Crash count"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "Gebruiker"
 
@@ -173,7 +177,7 @@ msgstr ""
 "Kan de instellingen dialoog niet tonen\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:170
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -183,7 +187,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:188
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -192,15 +196,15 @@ msgstr ""
 "Fout tijdens het laden van de dumplijst.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:225
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>Deze crash is gerapporteerd, je kunt het rapport vinden op:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>Deze crash is gerapporteerd:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:233
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
-#: ../src/Gui/CCMainWindow.py:282
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -208,7 +212,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:301
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -217,12 +221,12 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:319 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128
+#: ../src/Gui/CCReporterDialog.py:136
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -231,11 +235,11 @@ msgstr ""
 "Kan de plugin instellingen niet opslaan:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
-#: ../src/Gui/CCReporterDialog.py:231
+#: ../src/Gui/CCReporterDialog.py:239
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -248,11 +252,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:248
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -260,7 +264,7 @@ msgstr ""
 "De backtrace is niet compleet, wees er zeker van om voor het genereren de "
 "juiste stappen op te volgen."
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:298
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -271,7 +275,11 @@ msgstr ""
 "informatie kan bevatten\n"
 "Wil je <b>%s</b> echt versturen?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "Log"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "Rapport klaar"
 
@@ -309,7 +317,7 @@ msgstr "<b>De volgende items zullen verzonden worden</b>"
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>Hoe het te reproduceren (in een paar eenvoudige stappen)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "Verzenden"
 
@@ -492,25 +500,21 @@ msgstr "Verkrijgen van locale universele unieke identificatie"
 msgid "Getting backtrace..."
 msgstr "Backtrace ophalen..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "Zoeken naar debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "Downloaden en installeren van debug-info pakketten..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "Beginnen met rapport aanmaken..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
@@ -568,6 +572,9 @@ msgstr "sosreport draaien: %s"
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
 
+#~ msgid "Starting report creation..."
+#~ msgstr "Beginnen met rapport aanmaken..."
+
 #~ msgid "<span color=\"white\">Description</span>"
 #~ msgstr "<span color=\"white\">Beschrijving</span>"
 
@@ -582,9 +589,6 @@ msgstr "klaar met het draaien van sosreport"
 
 #~ msgid "Nothing selected"
 #~ msgstr "Niets geselecteerd"
-
-#~ msgid "Plugin Details"
-#~ msgstr "Plugin details"
 
 #~ msgid "This function is not implemented yet!"
 #~ msgstr "Deze functie is nog niet geïmplementeerd!"
