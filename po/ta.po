@@ -2,33 +2,25 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:191
 # I. Felix <ifelix@redhat.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-12 09:30+0000\n"
-"PO-Revision-Date: 2009-11-13 15:49+0530\n"
-"Last-Translator: I. Felix <ifelix@redhat.com>\n"
-"Language-Team: Tamil <fedora-trans-ta@redhat.com>\n"
+"POT-Creation-Date: 2009-12-08 08:32+0000\n"
+"PO-Revision-Date: 2009-12-09 16:37+0530\n"
+"Last-Translator: \n"
+"Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
-"\n"
+"X-Generator: Lokalize 1.0\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\n"
 "\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr "வேறு கிளையன் ஏற்கனவே இயங்கிக்கொண்டிருக்கிறது, அதனை எழுப்ப முயற்சிக்கிறது."
+msgstr "வேறு கிளையன்ட் ஏற்கனவே இயங்கிக்கொண்டிருக்கிறது, அதனை எழுப்ப முயற்சிக்கிறது."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
@@ -51,135 +43,113 @@ msgid "Database plugins"
 msgstr "தரவுத்தள கூடுதல் இணைப்புகள்"
 
 #: ../src/Gui/ABRTPlugin.py:97
-msgid "Plugin name is not set, can't load it's settings"
+msgid "Plugin name is not set, can't load its settings"
 msgstr "கூடுதல் இணைப்பு பெயர் அமைக்கப்படவில்லை, அதன் அமைவுகளை ஏற்ற முடியவில்லை"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "கணினி dbusஉடன் இணைக்க முடியவில்லை"
 
-#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+#: ../src/Gui/CCDBusBackend.py:104
+#: ../src/Gui/CCDBusBackend.py:107
 msgid "Please check if abrt daemon is running"
 msgstr "abrt டீமான் இயங்கினால் சோதிக்கவும்."
 
-#: ../src/Gui/CCDBusBackend.py:155
+#: ../src/Gui/CCDBusBackend.py:159
 msgid ""
-"Daemon did't return valid report info\n"
+"Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
-"டீமான் சரியான அறிக்கை தகவலை கொடுக்கவில்லை\n"
-"Debuginfo விடுபட்டதா?"
+"டீமான் சரியான அறிக்கைத் தகவலை கொடுக்கவில்லை\n"
+"பிழை தகவல் விடுபட்டதா?"
 
-#: ../src/Gui/ccgui.glade.h:1 ../src/Gui/report.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/ccgui.glade.h:2
+#: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:244
-msgid "<b>Not reported!</b>"
-msgstr "<b>அறிக்கையிடப்படவில்லை!</b>"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">விளக்கம்</span>"
-
-#: ../src/Gui/ccgui.glade.h:5
+#: ../src/Gui/ccgui.glade.h:2
 msgid "About ABRT"
 msgstr "ABRT பற்றி"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "தானியக்க பிழை அறிக்கையிடும் கருவி"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:4
 msgid "Delete"
 msgstr "நீக்கு"
 
-#: ../src/Gui/ccgui.glade.h:8
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Not Reported"
+msgstr "அறிக்கையிடப்படவில்லை"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Please wait.."
 msgstr "காத்திருக்கவும்.."
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Plugins"
 msgstr "கூடுதல் இணைப்புகள்"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
+#: ../src/Gui/ccgui.glade.h:8
+#: ../src/Gui/report.glade.h:5
 msgid "Report"
 msgstr "அறிக்கை"
 
-#: ../src/Gui/ccgui.glade.h:11
+#: ../src/Gui/ccgui.glade.h:9
 msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:16
-msgid "Working..."
-msgstr "வேலை செய்கிறது..."
-
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:14
 msgid "_Edit"
 msgstr "திருத்தவும் (_E)"
 
-#: ../src/Gui/ccgui.glade.h:18
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_File"
 msgstr "கோப்பு (_F)"
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_Help"
 msgstr "உதவி (_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:70
 msgid "Icon"
 msgstr "சின்னம்"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:78
 msgid "Package"
 msgstr "தொகுப்பு"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Application"
 msgstr "பயன்பாடு"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Date"
 msgstr "தேதி"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Crash count"
 msgstr "சேதம் விகிதம்"
 
-#: ../src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:82
 msgid "User"
 msgstr "பயனர்"
 
-#: ../src/Gui/CCMainWindow.py:160
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -188,7 +158,7 @@ msgstr ""
 "அமைவுகள் உரையாடலை காட்ட முடியவில்லை\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:181
+#: ../src/Gui/CCMainWindow.py:170
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -197,25 +167,25 @@ msgstr ""
 "நடப்பு பணியை முடிக்க முடியவில்லை!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:198
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:188
 #, python-format
 msgid ""
-"Error while loading the dumplist, please check if abrt daemon is running\n"
-" %s"
+"Error while loading the dumplist.\n"
+"%s"
 msgstr ""
-"இந்த dumplistஐ ஏற்றும் போது பிழை, abrt டீமான் இயங்குகிறதா என பார்க்கவும்\n"
+"இந்த dumplistஐ ஏற்றும் போது பிழை.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:208
-#, python-format
-msgid "Can't get username for uid %s"
-msgstr "uid %sக்கு பயனர்பெயரை பெற முடியவில்லை"
-
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:225
 msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
 msgstr "<b>இந்த சேதம் அறிக்கையிடப்பட்டுள்ளது, நீங்கள் அறிக்கை(களை) இதில் தேடலாம்:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:296
+#: ../src/Gui/CCMainWindow.py:233
+msgid "<b>Not reported!</b>"
+msgstr "<b>அறிக்கையிடப்படவில்லை!</b>"
+
+#: ../src/Gui/CCMainWindow.py:282
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -223,7 +193,7 @@ msgstr ""
 "அறிக்கையை பெற முடியவில்லை!\n"
 "Debuginfo விடுபட்டுள்ளதா?"
 
-#: ../src/Gui/CCMainWindow.py:314
+#: ../src/Gui/CCMainWindow.py:301
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -232,45 +202,48 @@ msgstr ""
 "அறிக்கையிடுதல் தோல்வியுற்றது!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:333 ../src/Gui/CCMainWindow.py:360
+#: ../src/Gui/CCMainWindow.py:319
+#: ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "அறிக்கையை பெறும் போது பிழை: %s"
 
-#: ../src/Gui/CCReporterDialog.py:177
+#: ../src/Gui/CCReporterDialog.py:128
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"கூடுதல் இணைப்பு அமைவுகளை சேமிக்க முடியவில்லை:\n"
+"%s"
+
+#: ../src/Gui/CCReporterDialog.py:186
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "இதனை மீண்டும் உருவாக்குவதற்கான சுருக்க விளக்கம் அல்லது நீங்கள் என்ன செய்தீர்கள்..."
 
-#: ../src/Gui/CCReporterDialog.py:219
+#: ../src/Gui/CCReporterDialog.py:231
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command:<span color=\"blue\"> "
-"debuginfo-install %s </span>\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install %s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command:<span color=\"blue\"> "
-"debuginfo-install %s </span>\n"
-"then use Refresh button to regenerate the backtrace."
+"backtrace பயன்படுத்தபடவில்லை ஆகையால் அறிக்கை செயல்நீக்கப்பட்டுள்ளது.\n"
+"இந்தக் கட்டளையைப் பயன்பட்டுத்தி பிழைதிருத்த தகவலை கைமுறையாக நிறுவவும்:<span color=\"blue\"> debuginfo-install %s </span>\n"
+" பின் backtraceஐ மீண்டும் உருவாக்க புதுப்பி பொத்தானை பயன்படுத்து."
 
-#: ../src/Gui/CCReporterDialog.py:221
-msgid "The bactrace is unusable, you can't report this!"
-msgstr "bactraceஐ பயன்படுத்த முடியவில்லை, இதனை நீங்கள் அறிக்கையிட முடியாது!"
+#: ../src/Gui/CCReporterDialog.py:233
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "bactraceஐ பயன்படுத்த முடியவில்லை, இதனை நீங்கள் அறிக்கையிட முடியாது !"
 
-#: ../src/Gui/CCReporterDialog.py:227
-msgid ""
-"The bactrace is incomplete, please make sure you provide good steps to "
-"reproduce."
-msgstr ""
-"The bactrace is incomplete, please make sure you provide good steps to "
-"reproduce."
+#: ../src/Gui/CCReporterDialog.py:240
+msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "bactrace முடிக்கப்படாமல் உள்ளது, மறுஉற்பத்திக்கு நீங்கள் சரியான படிகளை செய்திருக்கிளீர்கள் என உறுதிசெய்யவும்."
 
-#: ../src/Gui/CCReporterDialog.py:272
+#: ../src/Gui/CCReporterDialog.py:290
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
+"<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
 "Do you really want to send <b>%s</b>?\n"
 msgstr ""
 "<b>எச்சரிக்கை</b>, நீங்கள் அனுப்ப இருக்கும் தரவு சில உணர்வார்ந்த தகவல்களை கொண்டிருக்கும்.\n"
@@ -279,10 +252,6 @@ msgstr ""
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Report done"
 msgstr "அறிக்கை முடிந்தது"
-
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
-msgid "gtk-ok"
-msgstr "gtk-ok"
 
 #: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
@@ -294,7 +263,8 @@ msgstr "PluginDialog விட்ஜெட்டை UI விளக்கத்�
 msgid "No UI for plugin %s"
 msgstr "UI கூடுதல் இணைப்பு %sஇல் இல்லை"
 
-#: ../src/Gui/PluginSettingsUI.py:55 ../src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:55
+#: ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "காம்போ பெட்டி செயல்படுத்தப்படவில்லை"
 
@@ -302,19 +272,28 @@ msgstr "காம்போ பெட்டி செயல்படுத்த�
 msgid "Nothing to hydrate!"
 msgstr "hydrate செய்ய ஒன்றுமில்லை!"
 
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
+
 #: ../src/Gui/report.glade.h:2
-msgid "Comment"
-msgstr "குறிப்பு"
+msgid "<b>Comment</b>"
+msgstr "<b>குறிப்பு</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "How to reproduce (in a few simple steps)"
-msgstr "எவ்வாறு மறுஉற்பத்தி செய்வது (சில எளிய வழிமுறைகளில்)"
+msgid "<b>Following items will be send</b>"
+msgstr "<b>பின்வரும் உருப்படிகள் அனுப்பப்படும்</b>"
 
-#: ../src/Gui/report.glade.h:5
+#: ../src/Gui/report.glade.h:4
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>எவ்வாறு மறுஉற்பத்தி செய்வது (சில எளிய வழிமுறைகளில்)</b>"
+
+#: ../src/Gui/report.glade.h:6
 msgid "Send"
 msgstr "அனுப்பு"
 
-#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>கூடுதல் இணைப்பை தேர்ந்தெடு</b>"
 
@@ -322,11 +301,11 @@ msgstr "<b>கூடுதல் இணைப்பை தேர்ந்தெ�
 msgid "<b>Select database backend</b>"
 msgstr "<b>தரவுத்தள பின்தளத்தை தேர்ந்தெடு</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:166
 msgid "Remove this job"
 msgstr "இந்த பணியை நீக்கு"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:210
 msgid "Remove this action"
 msgstr "இந்த செயலை நீக்கு"
 
@@ -339,161 +318,145 @@ msgid "<b>Associated action</b>"
 msgstr "<b>தொடர்புடைய செயல்</b>"
 
 #: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>கூடுதல் இணைப்பு விவரங்கள்</b>"
+
+#: ../src/Gui/settings.glade.h:4
 msgid "<b>Plugin</b>"
 msgstr "<b>கூடுதல் இணைப்பு</b>"
 
-#: ../src/Gui/settings.glade.h:4
+#: ../src/Gui/settings.glade.h:5
 msgid "<b>Time (or period)</b>"
 msgstr "<b>நேரம் (அல்லது காலம்)</b>"
 
-#: ../src/Gui/settings.glade.h:5
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "பகுப்பாய்விகள், செயல்கள், அறிக்கையாளர்கள்"
 
-#: ../src/Gui/settings.glade.h:6
+#: ../src/Gui/settings.glade.h:7
 msgid "Author:"
 msgstr "ஆசிரியர்"
 
-#: ../src/Gui/settings.glade.h:7
+#: ../src/Gui/settings.glade.h:8
 msgid "Blacklisted packages: "
 msgstr "நீக்கப்பட்ட தொகுப்புகள்:"
 
-#: ../src/Gui/settings.glade.h:8
+#: ../src/Gui/settings.glade.h:9
 msgid "C_onfigure plugin"
 msgstr "கூடுதல் இணைப்பை கட்டமை (_o)"
 
-#: ../src/Gui/settings.glade.h:9
+#: ../src/Gui/settings.glade.h:10
 msgid "Check package GPG signature"
 msgstr "தொகுப்பு GPG கையொப்பத்தை சரிபார்"
 
-#: ../src/Gui/settings.glade.h:10
+#: ../src/Gui/settings.glade.h:11
 msgid "Common"
 msgstr "பொது"
 
-#: ../src/Gui/settings.glade.h:11
+#: ../src/Gui/settings.glade.h:12
 msgid "Cron"
 msgstr "Cron"
 
-#: ../src/Gui/settings.glade.h:12
+#: ../src/Gui/settings.glade.h:13
 msgid "Database backend: "
 msgstr "தரவுத்தள பின்தளம்:"
 
-#: ../src/Gui/settings.glade.h:13
-msgid "Edit blacklisted packages"
-msgstr "நீக்கப்பட்ட தொகுப்புகளை திருத்து"
-
 #: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "விளக்கம்:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG விசைகள்"
 
-#: ../src/Gui/settings.glade.h:15
+#: ../src/Gui/settings.glade.h:16
 msgid "GPG keys: "
 msgstr "GPG விசைகள்: "
 
-#: ../src/Gui/settings.glade.h:16
+#: ../src/Gui/settings.glade.h:17
 msgid "Global Settings"
 msgstr "பொதுவான அமைவுகள்"
 
-#: ../src/Gui/settings.glade.h:17
+#: ../src/Gui/settings.glade.h:18
 msgid "Max coredump storage size(MB):"
 msgstr "அதிகபட்ச coredump சேமிப்பக அளவு(MB):"
 
-#: ../src/Gui/settings.glade.h:18
-msgid "Nothing selected"
-msgstr "எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
-
 #: ../src/Gui/settings.glade.h:19
-msgid "Plugin Details"
-msgstr "கூடுதல் இணைப்பு விவரங்கள்"
+msgid "Name:"
+msgstr "பெயர்:"
 
 #: ../src/Gui/settings.glade.h:20
 msgid "Settings"
 msgstr "அமைவுகள்"
 
 #: ../src/Gui/settings.glade.h:21
-msgid "This function is not implemented yet!"
-msgstr "இந்த செயல்பாடு இதுவரை செயல்படுத்தப்படவில்லை!"
-
-#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "பதிப்பு:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "இணைய தளம்:"
 
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-add"
-msgstr "gtk-add"
-
-#: ../src/Gui/settings.glade.h:25
+#: ../src/Gui/settings.glade.h:23
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
-#: ../src/Gui/settings.glade.h:26
-msgid "gtk-close"
-msgstr "gtk-close"
+#: ../src/Gui/settings.glade.h:24
+msgid "gtk-ok"
+msgstr "gtk-ok"
 
-#: ../src/Gui/settings.glade.h:28
-msgid "gtk-remove"
-msgstr "gtk-remove"
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "பயன்பாட்டு கிரஷ்களை பார்த்து அறிக்கையிடவும் "
 
 #: ../src/Applet/Applet.cpp:79
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "தொகுப்பு %s இல் ஒரு சேதம் கண்டறியப்பட்டது"
 
-#: ../src/Applet/Applet.cpp:138
-msgid "ABRT service has been started"
-msgstr "ABRT சேவை துவக்கப்பட்டது"
-
-#: ../src/Applet/Applet.cpp:140 ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "ABRT சேவை இயங்கவில்லை"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:196
 msgid "Warning"
 msgstr "எச்சரிக்கை"
 
-#: ../src/Daemon/Daemon.cpp:520
-msgid ""
-"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
-"value in abrt.conf."
-msgstr ""
-"அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை abrt.conf.இல் "
-"சரிபார்க்கவும்."
+#: ../src/Daemon/Daemon.cpp:467
+msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
+msgstr "அறிக்கை அளவு ஒதுக்கீட்டை தாண்டியது. உங்கள் MaxCrashReportsSize மதிப்பை abrt.conf.இல் சரிபார்க்கவும்."
 
-#: ../lib/Plugins/Bugzilla.cpp:209
+#: ../lib/Plugins/Bugzilla.cpp:202
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "பிழை ஏற்கனவே அறிக்கையிடப்பட்டது: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:271
+#: ../lib/Plugins/Bugzilla.cpp:264
 #, c-format
 msgid "New bug id: %i"
 msgstr "புதிய பிழை குறியீடு: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:364
+#: ../lib/Plugins/Bugzilla.cpp:359
 msgid "Checking for duplicates..."
 msgstr "போலிகளுக்கு சரிபார்க்கிறது..."
 
-#: ../lib/Plugins/Bugzilla.cpp:367
+#: ../lib/Plugins/Bugzilla.cpp:362
 msgid "Logging into bugzilla..."
 msgstr "bugzillaவில் உள்நுழைகிறது..."
 
-#: ../lib/Plugins/Bugzilla.cpp:371
+#: ../lib/Plugins/Bugzilla.cpp:366
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "வெற்று புகுபதிவு மற்றும் கடவுச்சொல். Bugzilla.confஐ சரி பார்க்கவும்"
 
-#: ../lib/Plugins/Bugzilla.cpp:377
+#: ../lib/Plugins/Bugzilla.cpp:372
 msgid "Checking CC..."
 msgstr "CCக்கு சரிபார்க்கிறது..."
 
-#: ../lib/Plugins/Bugzilla.cpp:386
+#: ../lib/Plugins/Bugzilla.cpp:381
 msgid "Creating new bug..."
 msgstr "புதிய பிழையை உருவாக்குகிறது..."
 
-#: ../lib/Plugins/Bugzilla.cpp:390
+#: ../lib/Plugins/Bugzilla.cpp:385
 msgid "Logging out..."
 msgstr "வெளியேறுகிறது..."
 
@@ -501,31 +464,31 @@ msgstr "வெளியேறுகிறது..."
 msgid "Getting local universal unique identification"
 msgstr "உள்ளமை உலகளாவிய தனி அடையாளத்தை பெறுகிறது"
 
-#: ../lib/Plugins/CCpp.cpp:254
+#: ../lib/Plugins/CCpp.cpp:264
 msgid "Getting backtrace..."
 msgstr "backtraceஐ பெறுகிறது..."
 
-#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
+#: ../lib/Plugins/CCpp.cpp:380
 msgid "Searching for debug-info packages..."
 msgstr "debug-info தொகுப்புகளுக்கு தேடுகிறது..."
 
-#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
+#: ../lib/Plugins/CCpp.cpp:414
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info தொகுப்புகளை பதிவிறக்கி நிறுவுகிறது..."
 
-#: ../lib/Plugins/CCpp.cpp:818
+#: ../lib/Plugins/CCpp.cpp:522
 msgid "Getting local universal unique identification..."
 msgstr "உள்ளமை உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
 
-#: ../lib/Plugins/CCpp.cpp:837
+#: ../lib/Plugins/CCpp.cpp:541
 msgid "Getting global universal unique identification..."
 msgstr "முழுமையான உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
 
-#: ../lib/Plugins/CCpp.cpp:882
+#: ../lib/Plugins/CCpp.cpp:658
 msgid "Starting report creation..."
 msgstr "அறிக்கை உருவாக்கத்தை துவக்குகிறது..."
 
-#: ../lib/Plugins/CCpp.cpp:912
+#: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo நிறுவலை தவிர்த்தது"
 
@@ -533,15 +496,12 @@ msgstr "debuginfo நிறுவலை தவிர்த்தது"
 msgid "Creating and submitting a report..."
 msgstr "ஒரு அறிக்கையை உருவாக்கி சமர்ப்பிக்கிறது..."
 
-#: ../lib/Plugins/Logger.cpp:65 ../lib/Plugins/Mailx.cpp:124
+#: ../lib/Plugins/Logger.cpp:66
 msgid "Creating a report..."
 msgstr "ஒரு அறிக்கையை உருவாக்குகிறது..."
 
-#: ../lib/Plugins/RunApp.cpp:64
-msgid "Executing RunApp plugin..."
-msgstr "RunApp கூடுதல் இணைப்பை இயக்குகிறது..."
-
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:63
+#: ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
 msgstr "கோப்பு இடமாற்றம்: URL குறிப்பிடப்படவில்லை"
 
@@ -568,20 +528,45 @@ msgstr "ஒரு காப்பு %s உருவாக்க மற்று
 msgid "Creating kernel oops crash reports..."
 msgstr "கர்னல் oops க்ரஷ்களை அறிக்கைகளை உருவாக்குகிறது..."
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:165
 msgid "Sending an email..."
 msgstr "ஒரு மின்னஞ்சல் அனுப்புகிறது..."
 
-#: ../lib/Plugins/SOSreport.cpp:100
+#: ../lib/Plugins/SOSreport.cpp:69
 msgid "Executing SOSreport plugin..."
 msgstr "SOSreport கூடுதல் இணைப்பை இயக்குகிறது..."
 
-#: ../lib/Plugins/SOSreport.cpp:122
+#: ../lib/Plugins/SOSreport.cpp:91
 #, c-format
 msgid "running sosreport: %s"
 msgstr "sosreportஐ இயக்குகிறது: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:137
+#: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "sosreportஐ இயக்கியது"
+
+#~ msgid "<span color=\"white\">Description</span>"
+#~ msgstr "<span color=\"white\">விளக்கம்</span>"
+#~ msgid "Working..."
+#~ msgstr "வேலை செய்கிறது..."
+#~ msgid "Can't get username for uid %s"
+#~ msgstr "uid %sக்கு பயனர்பெயரை பெற முடியவில்லை"
+#~ msgid "Edit blacklisted packages"
+#~ msgstr "நீக்கப்பட்ட தொகுப்புகளை திருத்து"
+#~ msgid "Nothing selected"
+#~ msgstr "எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
+#~ msgid "Plugin Details"
+#~ msgstr "கூடுதல் இணைப்பு விவரங்கள்"
+#~ msgid "This function is not implemented yet!"
+#~ msgstr "இந்த செயல்பாடு இதுவரை செயல்படுத்தப்படவில்லை!"
+#~ msgid "gtk-add"
+#~ msgstr "gtk-add"
+#~ msgid "gtk-close"
+#~ msgstr "gtk-close"
+#~ msgid "gtk-remove"
+#~ msgstr "gtk-remove"
+#~ msgid "ABRT service has been started"
+#~ msgstr "ABRT சேவை துவக்கப்பட்டது"
+#~ msgid "Executing RunApp plugin..."
+#~ msgstr "RunApp கூடுதல் இணைப்பை இயக்குகிறது..."
 
