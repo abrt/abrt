@@ -655,8 +655,6 @@ static bool DebuginfoCheckPolkit(int uid)
 
 void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
-    update_client(_("Starting report creation..."));
-
     string package;
     string backtrace;
     string UID;

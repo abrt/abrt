@@ -879,8 +879,6 @@ static bool DebuginfoCheckPolkit(int uid)
 
 void CAnalyzerFirefox::CreateReport(const char *pDebugDumpDir, int force)
 {
-    update_client(_("Starting report creation..."));
-
     std::string package;
     std::string backtrace;
     std::string UID;
