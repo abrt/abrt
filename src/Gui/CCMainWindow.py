@@ -45,7 +45,7 @@ class MainWindow():
 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window3")
-        if (self.window):
+        if self.window:
             self.window.set_default_size(700, 480)
             self.window.connect("delete_event", self.delete_event_cb)
             self.window.connect("destroy", self.destroy)
@@ -108,7 +108,6 @@ class MainWindow():
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.ccdaemon.connect("abrt-error", self.error_cb)
-        #self.ccdaemon.connect("warning", self.warning_cb)
         self.ccdaemon.connect("update", self.update_cb)
         self.ccdaemon.connect("show", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
@@ -150,16 +149,6 @@ class MainWindow():
             gui_error_message(_("Can't show the settings dialog\n%s" % e))
             return
         dialog.show()
-
-    def warning_cb(self, daemon, message=None):
-        # try to hide the progressbar, we dont really care if it was visible ..
-        try:
-            #gobject.source_remove(self.timer)
-            #self.pBarWindow.hide()
-            pass
-        except Exception, e:
-            pass
-        gui_error_message("%s" % message, parent_dialog=self.window)
 
     def error_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
