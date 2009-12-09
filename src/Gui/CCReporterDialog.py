@@ -243,8 +243,6 @@ class ReporterDialog():
                 # probably usable 3
                 elif int(self.report[item][CD_CONTENT]) < 4:
                     ebErrors.show()
-                    fReproducer.hide()
-                    fComments.hide()
                     lErrors.set_markup(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
                     bSend.set_sensitive(True)
                 else:
