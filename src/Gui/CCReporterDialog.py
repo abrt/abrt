@@ -26,10 +26,11 @@ CD_ATT = "a"
 
 # response
 REFRESH = -50
+SHOW_LOG = -60
 
 class ReporterDialog():
     """Reporter window"""
-    def __init__(self, report, daemon, parent=None):
+    def __init__(self, report, daemon, log=None, parent=None):
         self.editable = []
         self.row_dict = {}
         self.report = report
@@ -87,8 +88,11 @@ class ReporterDialog():
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
         # start with the warning hidden, so it's not visible when there is no rating
         self.wTree.get_widget("ebErrors").hide()
+        self.wTree.get_widget("bLog").connect("clicked", self.show_log_cb, log)
         self.hydrate()
 
+    def show_log_cb(self, widget, log):
+        show_log(log, parent=self.window)
     # this callback is called when user press Cancel or Report button in Report dialog
     def on_response(self, dialog, response_id, daemon):
         # the button has been pressed (probably)
@@ -97,6 +101,9 @@ class ReporterDialog():
             if not (self.check_settings(daemon) and self.check_report()):
                 dialog.stop_emission("response")
                 self.wTree.get_widget("bSend").stop_emission("clicked")
+        if response_id == SHOW_LOG:
+        # prevent dialog from quitting the run()
+            dialog.stop_emission("response")
 
     def on_send_toggled(self, cell, path, model):
         model[path][3] = not model[path][3]

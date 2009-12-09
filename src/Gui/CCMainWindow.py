@@ -28,6 +28,7 @@ class MainWindow():
     ccdaemon = None
     def __init__(self):
         self.theme = gtk.icon_theme_get_default()
+        self.updates = ""
         try:
             self.ccdaemon = CCDBusBackend.DBusManager()
         except ABRTExceptions.IsRunning, e:
@@ -170,8 +171,14 @@ class MainWindow():
         gui_error_message(_("Unable to finish current task!\n%s" % message), parent_dialog=self.window)
 
     def update_cb(self, daemon, message):
+        self.updates += message
+        if self.updates[-1] != '\n':
+            self.updates += '\n'
         message = message.replace('\n',' ')
         self.wTree.get_widget("lStatus").set_text(message)
+        buff = gtk.TextBuffer()
+        buff.set_text(self.updates)
+        self.wTree.get_widget("tvUpdates").set_buffer(buff)
 
     # call to update the progressbar
     def progress_update_cb(self, *args):
@@ -281,7 +288,7 @@ class MainWindow():
         if not report:
             gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
             return
-        report_dialog = ReporterDialog(report, self.ccdaemon, parent=self.window)
+        report_dialog = ReporterDialog(report, self.ccdaemon, log=self.updates, parent=self.window)
         # (response, report)
         response, result = report_dialog.run()
 
@@ -304,6 +311,7 @@ class MainWindow():
             self.refresh_report(report)
 
     def refresh_report(self, report):
+        self.updates = ""
         self.pBarWindow.show_all()
         self.timer = gobject.timeout_add(100, self.progress_update_cb)
 
@@ -324,6 +332,7 @@ class MainWindow():
         self.on_dumpRowActivated(self.dlist, None, path, None)
 
     def on_dumpRowActivated(self, treeview, iter, path, user_data=None):
+        self.updates = ""
         # FIXME don't duplicate the code, move to function
         dumpsListStore, path = treeview.get_selection().get_selected_rows()
         if not path:
