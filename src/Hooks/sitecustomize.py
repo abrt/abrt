@@ -13,12 +13,12 @@ def abrt_daemon_ok():
     except Exception, ex:
         # log the exception?
         return False
-        
+
     pid = pidfile.readline()
     pidfile.close()
     if not pid:
         return False
-    
+
     try:
         # pid[:-1] strips the trailing '\n'
         cmdline = open("/proc/%s/cmdline" % pid[:-1], "r").readline()
@@ -27,7 +27,7 @@ def abrt_daemon_ok():
         return False
     if not ("abrtd" in cmdline):
         return False
-        
+
     return True
 
 if abrt_daemon_ok():

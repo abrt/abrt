@@ -113,7 +113,12 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
 		/* FIXME: be more informative */
 		throw CABRTException(EXCEP_PLUGIN, "CKerneloopsReporter::Report(): Report has not been sent");
 	}
-	return "Kernel oops report was uploaded.";
+        /* Server replies with:
+         * 200 thank you for submitting the kernel oops information
+         * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
+         * - no URL or bug ID apparently...
+         */
+	return "Kernel oops report was uploaded";
 }
 
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)

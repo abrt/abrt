@@ -206,24 +206,24 @@ def get_icon_for_package(theme,package):
             return gtk.gdk.pixbuf_new_from_file_at_size(icon_filename,22,22)
         else:
             return None
-            
+
 def show_log(log, parent=None):
     builder = gtk.Builder()
     builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
     dialog = builder.get_object("LogViewer")
     tevLog = builder.get_object("tevLog")
-    
+
     if parent:
         dialog.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
         dialog.set_transient_for(parent)
     else:
         dialog.set_position (gtk.WIN_POS_CENTER)
-    
+
     buff = gtk.TextBuffer()
     buff.set_text(log)
     tevLog.set_buffer(buff)
-    
+
     dialog.run()
     dialog.destroy()
 
