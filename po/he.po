@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-06 08:18+0000\n"
+"POT-Creation-Date: 2009-12-09 14:40+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -77,23 +77,27 @@ msgid "Delete"
 msgstr "מחק"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "פרטים"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "לא דווח"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "אנא המתן..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "תוספים"
 
-#: ../src/Gui/ccgui.glade.h:8
-#: ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "לדווח"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
@@ -107,44 +111,44 @@ msgstr ""
 "\n"
 "You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "_עריכה"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "_קובץ"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "ע_זרה"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "סמל"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "חבילה"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "יישום"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "תאריך"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "מספר קריסות"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "משתמש"
 
-#: ../src/Gui/CCMainWindow.py:152
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -153,7 +157,7 @@ msgstr ""
 "לא ניתן להציג את חלון ההגדרות\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -162,8 +166,8 @@ msgstr ""
 "לא ניתן לסיים משימה נוכחית!\n"
 "%s"
 
-#. there is something wrong with the daemon if we can get the dumplist
-#: ../src/Gui/CCMainWindow.py:191
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -172,15 +176,15 @@ msgstr ""
 "שגיאה במהלך טעינת dumplist.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:228
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>הקריסה הזאת דווחה, אתה יכול למצוא את הדיווח ב:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>הקריסה הזאת דווחה:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>לא דווח!</b>"
 
-#: ../src/Gui/CCMainWindow.py:285
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -188,7 +192,7 @@ msgstr ""
 "לא ניתן להשיג דיווח\n"
 "מידע ניפוי שגיאות חסר?"
 
-#: ../src/Gui/CCMainWindow.py:305
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -197,13 +201,13 @@ msgstr ""
 "הדיווח נכשל!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:324
-#: ../src/Gui/CCMainWindow.py:351
+#: ../src/Gui/CCMainWindow.py:318
+#: ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "שגיאה בקבלת הדיווח: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128
+#: ../src/Gui/CCReporterDialog.py:136
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -212,11 +216,11 @@ msgstr ""
 "לא ניתן לשמור את הגדרות התוסף\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "תיאור קצר (עדיף באנגלית) שמסביר מה עשית כשהיישום קרס או איך ניתן לשחזר את הקריסה..."
 
-#: ../src/Gui/CCReporterDialog.py:231
+#: ../src/Gui/CCReporterDialog.py:239
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -227,15 +231,15 @@ msgstr ""
 "אנא נסה להתקין מידע ניפוי שגיאות ידנית באמצעות הפקודה:<b> debuginfo-install %s <b>\n"
 "לאחר מכן השתמש  בכפתור \"רענן\" כדי ליצור מחדש את מידע הקריסה."
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "מידע הקריסה לא שמיש, אתה לא יכול לדווח על זה!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:248
 msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
 msgstr "מידע הקריסה לא שלם. אנא וודא שסיפקת הסבר טוב על איך לגרום לקריסה."
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:298
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -245,6 +249,11 @@ msgstr ""
 "אתה באמת רוצה לשלוח את <b>%s</b>?\n"
 
 #: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "רישום"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "דיווח הושלם"
 
@@ -285,7 +294,7 @@ msgstr "<b>הפריטים הבאים יישלחו</b>"
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>איך לגרום לקריסה להתרחש שנית (במספר צעדים פשוטים)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "שלח"
 
@@ -465,25 +474,21 @@ msgstr "מקבל זהות מקומית ייחודית"
 msgid "Getting backtrace..."
 msgstr "מקבל מידע קריסה..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "מחפש חבילות debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "מוריד ומתקין חבילות מידע ניפוי באגים..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "מקבל זהות מקומית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "מקבל זהות גלובלית ייחודית..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "מתחיל בהכנת הדיווח..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
@@ -493,7 +498,7 @@ msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 msgid "Creating and submitting a report..."
 msgstr "יוצר ושולח דיווח..."
 
-#: ../lib/Plugins/Logger.cpp:65
+#: ../lib/Plugins/Logger.cpp:66
 msgid "Creating a report..."
 msgstr "יוצר דיווח"
 
@@ -525,7 +530,7 @@ msgstr "לא יכול ליצור ולשלוח ארכיון %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "יוצר דיווחי קריסה של kernel oops..."
 
-#: ../lib/Plugins/Mailx.cpp:164
+#: ../lib/Plugins/Mailx.cpp:165
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
 
@@ -542,6 +547,8 @@ msgstr "מריץ sosreport: %s"
 msgid "done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
+#~ msgid "Starting report creation..."
+#~ msgstr "מתחיל בהכנת הדיווח..."
 #~ msgid "<span color=\"white\">Description</span>"
 #~ msgstr "<span color=\"white\">תיאור</span>"
 #~ msgid "Working..."
@@ -550,8 +557,6 @@ msgstr "הרצת sosreport הסתיימה"
 #~ msgstr "ערוך את הרשימה השחורה של החבילות (קריסות בחבילות אלו לא יתועדו): "
 #~ msgid "Nothing selected"
 #~ msgstr "לא נבחר דבר"
-#~ msgid "Plugin Details"
-#~ msgstr "פרטי התוסף"
 #~ msgid "This function is not implemented yet!"
 #~ msgstr "הפונקציה הזאת עדיין לא מיושמת!"
 #~ msgid "gtk-add"

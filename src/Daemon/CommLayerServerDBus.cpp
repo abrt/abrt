@@ -538,7 +538,8 @@ static void handle_dbus_err(bool error_flag, DBusError *err)
         return;
     error_msg_and_die(
             "Error requesting DBus name %s, possible reasons: "
-            "abrt run by non-root; dbus config is incorrect",
+            "abrt run by non-root; dbus config is incorrect; "
+            "or dbus daemon needs to be restarted to reload dbus config",
             ABRTD_DBUS_NAME);
 }
 

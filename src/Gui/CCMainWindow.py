@@ -218,7 +218,9 @@ class MainWindow():
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         #move this to Dump class
         if dump.isReported():
-            report_label = _("<b>This crash has been reported, you can find the report(s) at:</b>\n")
+            report_label = _("<b>This crash has been reported:</b>\n")
+            # plugin message follows, but at least in case of kerneloops,
+            # it is not informative (no URL to the report)
             for message in dump.getMessage().split('\n'):
                 if message:
                     if "http" in message[0:5] or "file:///"[0:8] in message:

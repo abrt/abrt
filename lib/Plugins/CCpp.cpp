@@ -277,7 +277,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     unsetenv("TERM");
     putenv((char*)"TERM=dumb");
 
-    char *args[11];
+    char *args[13];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
 
@@ -315,7 +315,9 @@ static void GetBacktrace(const char *pDebugDumpDir,
 
     args[8] = (char*)"-ex";
     args[9] = (char*)"thread apply all backtrace full";
-    args[10] = NULL;
+    args[10] = (char*)"-ex";
+    args[11] = (char*)"info sharedlib";
+    args[12] = NULL;
 
     ExecVP(args, atoi(UID.c_str()), pBacktrace);
 }
