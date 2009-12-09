@@ -3,20 +3,21 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 # Yulia <ypoyarko@redhat.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-07 19:37+0000\n"
-"PO-Revision-Date: 2009-12-08 11:49+1100\n"
+"POT-Creation-Date: 2009-12-09 19:30+0000\n"
+"PO-Revision-Date: 2009-12-10 09:09+1100\n"
 "Last-Translator: Yulia <ypoyarko@redhat.com>\n"
 "Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -81,22 +82,26 @@ msgid "Delete"
 msgstr "Удалить"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "Подробности"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "Не сообщено"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "Пожалуйста, подождите..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "Модули"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "Сообщить"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -125,40 +130,40 @@ msgstr ""
 "Копия лицензии GNU предоставляется вместе с этой программой. \n"
 "Её также можно найти на сайте <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "_Правка"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "_Файл"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "_Справка"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "Значок"
 
-#: ../src/Gui/CCMainWindow.py:78
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "Пакет"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "Приложение"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "Дата"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "Счётчик сбоев"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "Пользователь"
 
@@ -171,7 +176,7 @@ msgstr ""
 "Не удалось показать окно настроек\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:170
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -181,24 +186,22 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:188
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
 "%s"
-msgstr ""
-"Ошибка при загрузке dumplist. \\n"
-"%s"
+msgstr "Ошибка при загрузке dumplist. \\n%s"
 
-#: ../src/Gui/CCMainWindow.py:225
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>Создан отчёт для этого сбоя. Просмотреть его можно здесь:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>Создан отчёт для этого сбоя:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:233
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>Не сообщено!</b>"
 
-#: ../src/Gui/CCMainWindow.py:282
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -206,7 +209,7 @@ msgstr ""
 "Не удалось получить отчёт!\n"
 "Отсутствует debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:301
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -215,12 +218,12 @@ msgstr ""
 "Не удалось отправить отчёт!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:319 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Ошибка при получении отчёта: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128
+#: ../src/Gui/CCReporterDialog.py:136
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -229,11 +232,11 @@ msgstr ""
 "Не удалось сохранить настройки модуля:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Кратко опишите действия, которые привели к ошибке..."
 
-#: ../src/Gui/CCReporterDialog.py:231
+#: ../src/Gui/CCReporterDialog.py:239
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -242,15 +245,14 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "Создание запроса отменено, так как сведения трассировки непригодны.\n"
-"Попытайтесь установить debuginfo вручную: <b>debuginfo-"
-"install %s</b>\n"
+"Попытайтесь установить debuginfo вручную: <b>debuginfo-install %s</b>\n"
 "и нажмите кнопку обновления для повторной генерации трассировки."
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Непригодные для использования сведения трассировки. Они не будут отправлены."
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:246
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -258,7 +260,7 @@ msgstr ""
 "Неполные сведения трассировки. Убедитесь, что указанные действия "
 "действительно помогают воспроизвести ошибку."
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -269,7 +271,11 @@ msgstr ""
 "содержать конфиденциальную информацию.\n"
 "Вы действительно хотите отправить <b>%s</b>?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "Журнал"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "Отчёт отправлен"
 
@@ -307,7 +313,7 @@ msgstr "<b>Будут отправлены следующие данные</b>"
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>Как повторить (набор действий)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "Отправить"
 
@@ -490,25 +496,21 @@ msgstr "Получение локальных идентификационных
 msgid "Getting backtrace..."
 msgstr "Получение трассировки..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "Выполняется поиск пакетов debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "Загружаются и устанавливаются пакеты debug-info..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "Получение локальных данных идентификации..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "Получение глобальных данных идентификации..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "Начинается создание отчёта..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
