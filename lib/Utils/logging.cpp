@@ -118,16 +118,6 @@ void perror_msg(const char *s, ...)
 	va_end(p);
 }
 
-void simple_perror_msg_and_die(const char *s)
-{
-	perror_msg_and_die("%s", s);
-}
-
-void simple_perror_msg(const char *s)
-{
-	perror_msg("%s", s);
-}
-
 void die_out_of_memory(void)
 {
 	error_msg_and_die("Out of memory, exiting");

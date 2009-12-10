@@ -427,12 +427,12 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
 
-    // Save comments and how to reproduciton
+    // Save comment and "how to reproduce"
     map_crash_report_t::const_iterator it_comment = pCrashReport.find(CD_COMMENT);
     map_crash_report_t::const_iterator it_reproduce = pCrashReport.find(CD_REPRODUCE);
-    std::string pDumpDir = getDebugDumpDir(UUID.c_str(), UID.c_str());
-
+    if (it_comment != pCrashReport.end() || it_reproduce != pCrashReport.end())
     {
+        std::string pDumpDir = getDebugDumpDir(UUID.c_str(), UID.c_str());
         CDebugDump dd;
         dd.Open(pDumpDir.c_str());
         if (it_comment != pCrashReport.end())
