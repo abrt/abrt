@@ -41,6 +41,7 @@ class CApplet
         bool m_bDaemonRunning;
         int m_iAnimationStage;
         guint m_iAnimator;
+        unsigned m_iAnimCountdown;
         bool m_bIconsLoaded;
 
         enum ICON_STAGES

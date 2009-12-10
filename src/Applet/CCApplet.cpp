@@ -309,6 +309,9 @@ gboolean CApplet::update_icon(void *user_data)
     if(applet->m_iAnimationStage == ICON_STAGE_LAST){
         applet->m_iAnimationStage = 0;
     }
+    if (--applet->m_iAnimCountdown == 0) {
+        applet->stop_animate_icon();
+    }
     return true;
 }
 
@@ -317,6 +320,7 @@ void CApplet::animate_icon()
     if(m_iAnimator == 0)
     {
         m_iAnimator = g_timeout_add(100, update_icon, this);
+        m_iAnimCountdown = 10 * 60; /* 60 sec */
     }
 }
 
