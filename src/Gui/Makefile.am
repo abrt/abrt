@@ -2,7 +2,7 @@
 
 bin_SCRIPTS = abrt-gui
 
-PYTHON_FILES = CCDBusBackend.py  CCDumpList.py  CCDump.py  CC_gui_functions.py \
+PYTHON_FILES = CCDBusBackend.py CCDumpList.py CCDump.py CC_gui_functions.py \
                CCReporterDialog.py CCReport.py abrt_utils.py \
                CCMainWindow.py CellRenderers.py ABRTExceptions.py \
                SettingsDialog.py ABRTPlugin.py PluginList.py PluginSettingsUI.py \
@@ -28,4 +28,5 @@ abrt.desktop:
 install-exec-hook:
 	for b in $(bin_SCRIPTS); do \
 	    sed 's:/usr/share:$(datadir):g' -i $(DESTDIR)$(bindir)/$$b || exit $$?; \
+	    sed 's:VERSION:@VERSION@:g' -i $(DESTDIR)$(bindir)/$$b || exit $$?; \
 	done
