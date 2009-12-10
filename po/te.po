@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 # Krishna Babu K <kkrothap@redhat.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-08 08:32+0000\n"
-"PO-Revision-Date: 2009-12-08 16:45+0530\n"
+"POT-Creation-Date: 2009-12-10 02:17+0000\n"
+"PO-Revision-Date: 2009-12-10 12:35+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -85,22 +86,26 @@ msgid "Delete"
 msgstr "తొలగించు"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "వివరములు"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "నివేదించబడలేదు"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "దయచేసి వేచివుండు..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "ప్లగిన్లు"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "నివేదించు"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -126,40 +131,40 @@ msgstr ""
 "ఈ ప్రోగ్రామ్ తో మీరు GNU జనరల్ పబ్లిక్ లైసెన్సు నకలును పొంది ఉంటారు. పొందకపోతే, <http://www.gnu."
 "org/licenses/> చూడండి."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "సరికూర్చు (_E)"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "దస్త్రము (_F)"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "సహాయము (_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "ప్రతిమ"
 
-#: ../src/Gui/CCMainWindow.py:78
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "ప్యాకేజీ"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "అనువర్తనము"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "తేది"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "క్రాష్ కౌంట్"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "వినియోగదారి"
 
@@ -172,7 +177,7 @@ msgstr ""
 "అమరికల డైలాగ్‌ను చూపలేదు\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:170
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -182,7 +187,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:188
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -191,15 +196,15 @@ msgstr ""
 "డంపుజాబితాను లోడుచేయుటలో దోషము.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:225
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>ఈ క్రాష్ నివేదించబడింది, మీరు నివేదికలను దీనివద్ద కనుగొనవచ్చును:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>ఈ క్రాష్ నివేదించబడింది:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:233
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>నివేదించబడలేదు!</b>"
 
-#: ../src/Gui/CCMainWindow.py:282
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -207,7 +212,7 @@ msgstr ""
 "నివేదికను పొందలేక పోయింది!\n"
 "డీబగ్‌సమాచారము తప్పిపోయిందా?"
 
-#: ../src/Gui/CCMainWindow.py:301
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -216,12 +221,12 @@ msgstr ""
 "నివేదించుట విఫలమైంది!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:319 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "నివేదికను పొందుటలో దోషము: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128
+#: ../src/Gui/CCReporterDialog.py:136
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -230,11 +235,11 @@ msgstr ""
 "ప్లగిన్ అమరికలను దాయలేదు:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "దీనిని మరలా యెలా రాబట్టాలి అనేదాని గురించి మరియు మీరు యేమి చేయాలి అనేదాని గురించి సోదాహరణము..."
 
-#: ../src/Gui/CCReporterDialog.py:231
+#: ../src/Gui/CCReporterDialog.py:239
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -243,15 +248,15 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "బాక్‌ట్రేస్ నిరుపయోగమైంది కనుక నివేదీకరణ అచేతనమైంది.\n"
-"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
-"%s</b> \n"
+"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install %"
+"s</b> \n"
 "అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "బాక్‌ట్రేస్ వుపయోగించుటకు వీలుకానిది, దీనిని మీరు నివేదించలేరు!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:246
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -259,7 +264,7 @@ msgstr ""
 "బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు మంచి స్టెప్సును యిచ్చునట్లు "
 "చూచుకోండి."
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -269,7 +274,11 @@ msgstr ""
 "<b>హెచ్చరిక</b>, మీరు సున్నితమైన సమాచారము కలిగివుండు డాటాను పంపుబోవుచున్నారు.\n"
 "మీరు నిజంగా పంపాలని అనుకొనుచున్నారా <b>%s</b>?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "లాగ్"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "నివేదిక అయినది"
 
@@ -307,7 +316,7 @@ msgstr "<b>క్రింది అంశములు పంపబడతాయ�
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>ఎలా తిరిగివుత్పన్నం చేయాలి (కొద్ది స్టెప్సులో)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "పంపుము"
 
@@ -490,25 +499,21 @@ msgstr "లోకల్ యూనివర్సల్ యునిక్ గు
 msgid "Getting backtrace..."
 msgstr "బాక్‌ట్రేస్ పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "డీబగ్-సమాచార ప్యాకేజీల కొరకు శోధించుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "డీబగ్-సమాచార ప్యాకేజీలను డౌన్‌లోడు చేయుచున్నది మరియు సంస్థాపించుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "లోకల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుచున్నది..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "గ్లోబల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుచున్నది..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "నివేదిక సృష్టీకరణను ప్రారంభించుచున్నది..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
