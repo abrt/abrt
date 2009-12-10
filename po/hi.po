@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 # Rajesh Ranjan <rajesh672@gmail.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-08 02:44+0000\n"
-"PO-Revision-Date: 2009-12-08 13:12+0530\n"
+"POT-Creation-Date: 2009-12-10 02:17+0000\n"
+"PO-Revision-Date: 2009-12-10 13:29+0530\n"
 "Last-Translator: Rajesh Ranjan <rajesh672@gmail.com>\n"
 "Language-Team: Hindi <hindi.sf.net>\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +17,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -86,22 +87,26 @@ msgid "Delete"
 msgstr "मिटाएँ"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "विवरण"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "रिपोर्ट नहीं किया हुआ!"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "कृपया इंतजार करें..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "प्लगिन"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "रिपोर्ट"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -129,40 +134,40 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "संपादन (_E)"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "फ़ाइल (_F)"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "मदद (_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "प्रतीक"
 
-#: ../src/Gui/CCMainWindow.py:78
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "पैकेज"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "अनुप्रयोग"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "तारीख़"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "क्रेश गिनती"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "उपयोक्ता"
 
@@ -175,7 +180,7 @@ msgstr ""
 "सेटिंग संवाद नहीं दिखा सकता है\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:170
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -185,7 +190,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:188
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -194,15 +199,15 @@ msgstr ""
 "डंपलिस्ट लोड करने के दौरान त्रुटि.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:225
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>यह क्रैश रिपोर्ट किया गया है, आप रिपोर्ट को यहाँ पा सकते हैं:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>यह क्रैश रिपोर्ट किया गया है:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:233
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>रिपोर्ट नहीं किया हुआ!</b>"
 
-#: ../src/Gui/CCMainWindow.py:282
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -210,7 +215,7 @@ msgstr ""
 "रिपोर्ट पाने में असमर्थ!\n"
 "डिबगइंफो अनुपस्थित है?"
 
-#: ../src/Gui/CCMainWindow.py:301
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -219,12 +224,12 @@ msgstr ""
 "रिपोर्टिंग विफल!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:319 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "रिपोर्ट पाने में त्रुटि: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128
+#: ../src/Gui/CCReporterDialog.py:136
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -233,11 +238,11 @@ msgstr ""
 "प्लग-इन सेटिंग सहेज नहीं सकता है\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "संक्षिप्त विवरण कि कैसे इसे फिर लाएँ और आपने क्या किया..."
 
-#: ../src/Gui/CCReporterDialog.py:231
+#: ../src/Gui/CCReporterDialog.py:239
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -246,21 +251,21 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "रिपोर्टिंग निष्क्रिय किया गया क्योंकि बैकट्रैस अप्रयोज्य है.\n"
-"कृपया डिबगइंफो को कमांड के प्रयोग से दस्ती रूप से संस्थापित करने की कोशिश करें:<b>debuginfo-install "
-"%s</b> \n"
+"कृपया डिबगइंफो को कमांड के प्रयोग से दस्ती रूप से संस्थापित करने की कोशिश करें:"
+"<b>debuginfo-install %s</b> \n"
 "फिर बैकट्रैस को फिर बनाने के लिए ताज़ा बटन का प्रयोग करें."
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "bactrace अप्रयोज्य है, आप इसे रिपोर्ट नहीं कर सकते हैं!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:246
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr "bactrace अपूर्ण है, कृपया सुनिश्चित करें कि आप फिर बनाने के लिए बेहतर चरण देते हैं."
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -270,7 +275,11 @@ msgstr ""
 "<b>चेतावनी</b>, आप उन आँकड़ों को भेजने वाले हैं जो कि संवेदनशील सूचना समाहित कर सकता है.\n"
 "क्या आप वाकई भेजना चाहते हैं <b>%s</b>?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "लॉग"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "रिपोर्ट संपन्न"
 
@@ -308,7 +317,7 @@ msgstr "<b>निम्नलिखित मद भेजी जाएँगी
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>कैसे फिर तैयार करें (कुछ सरल चरण में)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "भेजें"
 
@@ -491,25 +500,21 @@ msgstr "स्थानीय सार्वभौमिक अद्वित�
 msgid "Getting backtrace..."
 msgstr "बैकट्रैस पा रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "डिबगइंफो संकुल के लिए खोज रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "डिबग सूचना संकुल डाउनलोड और संस्थापित किया जा रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "स्थानीय सार्वभौमिक अद्वितीय पहचान पा रहा है..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "वैश्विक सार्वभौमिक अद्वितीय पहचान पा रहा है..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "रिपोर्ट निर्माण आरंभ कर रहा है..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
