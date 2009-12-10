@@ -20,7 +20,7 @@
 */
 
 /* Make all file ops "large" and make off_t 64-bit.
- * No need to use O_LORGEFILE anywhere
+ * No need to use O_LARGEFILE anywhere
  */
 #define _LARGEFILE_SOURCE
 #define _LARGEFILE64_SOURCE

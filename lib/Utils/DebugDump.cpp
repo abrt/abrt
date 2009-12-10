@@ -197,7 +197,7 @@ void CDebugDump::Lock()
     sprintf(pid_buf, "%u", (unsigned)getpid());
     while ((m_bLocked = GetAndSetLock(lockFile.c_str(), pid_buf)) != true)
     {
-        usleep(500000);
+        sleep(1); /* was 0.5 seconds */
     }
 }
 

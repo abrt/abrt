@@ -456,6 +456,12 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             continue;
         }
 
+//TODO: make it possible to detect when ccpp didn't finish dumping yet.
+//We are seeing it *before* ccpp finished, and it can take LONG time
+//(users saw 100+ seconds).
+//This floods syslog with "Lock file 'XXXXXX' is locked by process NNN"
+//Maybe ccpp should use XXXXXX.new name for incomplete dumps
+//and abrtd should watch for renames XXXXXX.new -> XXXXXX?
         log("Directory '%s' creation detected", name);
 
         std::string worst_dir;
