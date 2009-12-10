@@ -135,9 +135,9 @@ static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
     long unix_uid = get_remote_uid(call);
     vector_crash_infos_t argout1 = GetCrashInfos(to_string(unix_uid).c_str());
 
-    DBusMessageIter iter;
-    dbus_message_iter_init_append(reply, &iter);
-    store_val(&iter, argout1);
+    DBusMessageIter out_iter;
+    dbus_message_iter_init_append(reply, &out_iter);
+    store_val(&out_iter, argout1);
 
     send_flush_and_unref(reply);
     return 0;
@@ -313,7 +313,11 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    DeleteDebugDump(argin1, to_string(unix_uid).c_str());
+    int32_t result = DeleteDebugDump(argin1, to_string(unix_uid).c_str());
+
+    DBusMessageIter out_iter;
+    dbus_message_iter_init_append(reply, &out_iter);
+    store_val(&out_iter, result);
 
     send_flush_and_unref(reply);
     return 0;
@@ -323,9 +327,9 @@ static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 {
     vector_map_string_t plugins_info = g_pPluginManager->GetPluginsInfo();
 
-    DBusMessageIter iter;
-    dbus_message_iter_init_append(reply, &iter);
-    store_val(&iter, plugins_info);
+    DBusMessageIter out_iter;
+    dbus_message_iter_init_append(reply, &out_iter);
+    store_val(&out_iter, plugins_info);
 
     send_flush_and_unref(reply);
     return 0;
@@ -348,9 +352,10 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
     VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
     map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid).c_str());
 
-    DBusMessageIter iter;
-    dbus_message_iter_init_append(reply, &iter);
-    store_val(&iter, plugin_settings);
+    DBusMessageIter out_iter;
+    dbus_message_iter_init_append(reply, &out_iter);
+    store_val(&out_iter, plugin_settings);
+
     send_flush_and_unref(reply);
     return 0;
 }
@@ -432,9 +437,10 @@ static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
 {
     map_abrt_settings_t result = GetSettings();
 
-    DBusMessageIter iter;
-    dbus_message_iter_init_append(reply, &iter);
-    store_val(&iter, result);
+    DBusMessageIter out_iter;
+    dbus_message_iter_init_append(reply, &out_iter);
+    store_val(&out_iter, result);
+
     send_flush_and_unref(reply);
     return 0;
 }

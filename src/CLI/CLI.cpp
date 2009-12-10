@@ -183,6 +183,7 @@ int main(int argc, char** argv)
     ABRTDaemon.Connect(VAR_RUN"/abrt.socket");
 #endif
 
+    int exitcode = 0;
     switch (op)
     {
         case OPT_GET_LIST:
@@ -200,7 +201,11 @@ int main(int argc, char** argv)
             break;
         case OPT_DELETE:
         {
-            call_DeleteDebugDump(uuid);
+            if (call_DeleteDebugDump(uuid) != 0)
+            {
+                log("Can't delete debug dump with UUID '%s'", uuid);
+                exitcode = 1;
+            }
             break;
         }
     }
@@ -209,5 +214,5 @@ int main(int argc, char** argv)
     ABRTDaemon.Disconnect();
 #endif
 
-    return 0;
+    return exitcode;
 }

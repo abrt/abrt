@@ -26,7 +26,7 @@ extern DBusConnection* s_dbus_conn;
 extern vector_crash_infos_t call_GetCrashInfos();
 extern map_crash_report_t call_CreateReport(const char *uuid);
 extern void call_Report(const map_crash_report_t& report);
-extern void call_DeleteDebugDump(const char* uuid);
+extern int32_t call_DeleteDebugDump(const char* uuid);
 
 /* Gets basic data about all installed plugins.
  */

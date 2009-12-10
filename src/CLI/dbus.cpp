@@ -106,41 +106,45 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
 
 vector_crash_infos_t call_GetCrashInfos()
 {
-    DBusMessage* msg = new_call_msg("GetCrashInfos");
+    DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessage *reply = send_get_reply_and_unref(msg);
 
-    vector_crash_infos_t argout;
     DBusMessageIter in_iter;
     dbus_message_iter_init(reply, &in_iter);
+
+    vector_crash_infos_t argout;
     int r = load_val(&in_iter, argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", "GetCrashInfos");
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
     dbus_message_unref(reply);
     return argout;
 }
 
 map_crash_report_t call_CreateReport(const char* uuid)
 {
-    DBusMessage* msg = new_call_msg("CreateReport");
+    DBusMessage* msg = new_call_msg(__func__ + 5);
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &uuid,
             DBUS_TYPE_INVALID);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
 
-    map_crash_report_t argout;
     DBusMessageIter in_iter;
     dbus_message_iter_init(reply, &in_iter);
+
+    map_crash_report_t argout;
     int r = load_val(&in_iter, argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-        error_msg_and_die("dbus call %s: return type mismatch", "CreateReport");
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
     dbus_message_unref(reply);
     return argout;
 }
 
 void call_Report(const map_crash_report_t& report)
 {
-    DBusMessage* msg = new_call_msg("Report");
+    DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(msg, &out_iter);
     store_val(&out_iter, report);
@@ -152,31 +156,42 @@ void call_Report(const map_crash_report_t& report)
     dbus_message_unref(reply);
 }
 
-void call_DeleteDebugDump(const char* uuid)
+int32_t call_DeleteDebugDump(const char* uuid)
 {
-    DBusMessage* msg = new_call_msg("DeleteDebugDump");
+    DBusMessage* msg = new_call_msg(__func__ + 5);
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &uuid,
             DBUS_TYPE_INVALID);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
 
+    DBusMessageIter in_iter;
+    dbus_message_iter_init(reply, &in_iter);
+
+    int32_t result;
+    int r = load_val(&in_iter, result);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
     dbus_message_unref(reply);
+    return result;
 }
 
 vector_map_string_t call_GetPluginsInfo()
 {
-  DBusMessage *msg = new_call_msg("GetPluginsInfo");
-  DBusMessage *reply = send_get_reply_and_unref(msg);
+    DBusMessage *msg = new_call_msg(__func__ + 5);
+    DBusMessage *reply = send_get_reply_and_unref(msg);
 
-  vector_map_string_t argout;
-  DBusMessageIter in_iter;
-  dbus_message_iter_init(reply, &in_iter);
-  int r = load_val(&in_iter, argout);
-  if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
-    error_msg_and_die("dbus call GetPluginsInfo: return type mismatch");
-  dbus_message_unref(reply);
-  return argout;
+    DBusMessageIter in_iter;
+    dbus_message_iter_init(reply, &in_iter);
+
+    vector_map_string_t argout;
+    int r = load_val(&in_iter, argout);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
+    dbus_message_unref(reply);
+    return argout;
 }
 
 void handle_dbus_err(bool error_flag, DBusError *err)
@@ -191,6 +206,7 @@ void handle_dbus_err(bool error_flag, DBusError *err)
         return;
     error_msg_and_die(
             "error requesting DBus name %s, possible reasons: "
-            "abrt run by non-root; dbus config is incorrect",
+            "abrt run by non-root; dbus config is incorrect; "
+            "or dbus daemon needs to be restarted to reload dbus config",
             ABRTD_DBUS_NAME);
 }

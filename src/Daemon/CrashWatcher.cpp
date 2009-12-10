@@ -193,7 +193,7 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
 
 
 /* Remove dump dir and its DB record */
-void DeleteDebugDump(const char *pUUID, const char *pUID)
+int DeleteDebugDump(const char *pUUID, const char *pUID)
 {
     try
     {
@@ -205,12 +205,16 @@ void DeleteDebugDump(const char *pUUID, const char *pUID)
 
         const char *dump_dir = row.m_sDebugDumpDir.c_str();
         if (dump_dir[0] != '\0')
+        {
             delete_debug_dump_dir(dump_dir);
+            return 0; /* success */
+        }
     }
     catch (CABRTException& e)
     {
         error_msg("%s", e.what());
     }
+    return -1; /* failure */
 }
 
 void DeleteDebugDump_by_dir(const char *dump_dir)
