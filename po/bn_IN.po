@@ -1,15 +1,15 @@
-# translation of abrt.master.bn_IN.po to Bengali INDIA
+# translation of abrt.master.po to Bengali INDIA
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 # Runa Bhattacharjee <runab@redhat.com>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.bn_IN\n"
+"Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-07 08:17+0000\n"
-"PO-Revision-Date: 2009-12-08 10:46+0530\n"
+"POT-Creation-Date: 2009-12-10 02:17+0000\n"
+"PO-Revision-Date: 2009-12-10 14:08+0530\n"
 "Last-Translator: Runa Bhattacharjee <runab@redhat.com>\n"
 "Language-Team: Bengali INDIA <anubad@lists.ankur.org.in>\n"
 "MIME-Version: 1.0\n"
@@ -79,22 +79,26 @@ msgid "Delete"
 msgstr "মুছে ফেলুন"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "বিবরণ"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "রিপোর্ট করা হয়নি"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "অনুগ্রহ করে অপেক্ষা করুন..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "প্লাগ-ইন"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "রিপোর্ট"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -120,44 +124,44 @@ msgstr ""
 "এটির সাথে GNU General Public License-র একটি প্রতিলিপি উপলব্ধ হওয়া উচিত; না "
 "থাকলে <http://www.gnu.org/licenses/> দেখুন।"
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "সম্পাদনা (_E)"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "ফাইল (_F)"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "সাহায্য (_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "আইকন"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "প্যাকেজ"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "অ্যাপ্লিকেশন"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "তারিখ"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "বিপর্যয়ের হার"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "ব্যবহারকারী"
 
-#: ../src/Gui/CCMainWindow.py:152
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -166,7 +170,7 @@ msgstr ""
 "বৈশিষ্ট্যের ডায়লগ প্রদর্শন করা সম্ভব নয়\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -175,8 +179,8 @@ msgstr ""
 "বর্তমান কর্ম সমাপ্ত করতে ব্যর্থ!\n"
 "%s"
 
-#. there is something wrong with the daemon if we can get the dumplist
-#: ../src/Gui/CCMainWindow.py:191
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -185,17 +189,15 @@ msgstr ""
 "dumplist লোড করতে সমস্যা।\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:228
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr ""
-"<b>বিপর্যয়ের তথ্য দায়ের করা হয়েছে। রিপোর্ট(গুলি) নিম্নলিখিত অবস্থান উপস্থিত রয়েছে:</"
-"b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>এই বিপর্যয়ের তথ্য দায়ের করা হয়েছে।</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>রিপোর্ট করা হয়নি!</b>"
 
-#: ../src/Gui/CCMainWindow.py:285
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -203,7 +205,7 @@ msgstr ""
 "রিপোর্ট প্রাপ্ত করতে ব্যর্থ!\n"
 "Debuginfo কি অনুপস্থিত?"
 
-#: ../src/Gui/CCMainWindow.py:305
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -212,12 +214,12 @@ msgstr ""
 "রিপোর্ট করতে ব্যর্থ!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:324 ../src/Gui/CCMainWindow.py:351
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "রিপোর্ট প্রাপ্ত করতে ব্যর্থ: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128
+#: ../src/Gui/CCReporterDialog.py:136
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -226,11 +228,11 @@ msgstr ""
 "প্লাগ-ইনের বৈশিষ্ট্য সংরক্ষণ করা সম্ভব নয়:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "এটি পুনরায় সঞ্চালনের সংক্ষিপ্ত বিবরণ অথবা আপনার সঞ্চালিত কর্মের তথ্য..."
 
-#: ../src/Gui/CCReporterDialog.py:231
+#: ../src/Gui/CCReporterDialog.py:239
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -243,17 +245,19 @@ msgstr ""
 "%s</b> \n"
 "ও Refresh বাটন সহযোগে পুনরায় ব্যাক-ট্রেস উৎপন্ন করুন।"
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ব্যাক-ট্রেসটি ব্যবহারযোগ্য নয়, এটি সম্পর্কে রিপোর্ট দায়ের করা যাবে না!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:246
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
-msgstr "ব্যাক-ট্রেসের তথ্য সম্পূর্ণ নয়, অনুগ্রহ করে পুনরাবৃত্তির জন্য প্রয়োজনীয় ধাপগুলি সঠিকরূপে চিহ্নিত করুন।"
+msgstr ""
+"ব্যাক-ট্রেসের তথ্য সম্পূর্ণ নয়, অনুগ্রহ করে পুনরাবৃত্তির জন্য প্রয়োজনীয় ধাপগুলি সঠিকরূপে "
+"চিহ্নিত করুন।"
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -263,7 +267,11 @@ msgstr ""
 "<b>সতর্কবার্তা</b>, সংবেদনশীল তথ্য বিশিষ্ট কিছু তথ্য প্রেরণের প্রচেষ্টা করা হচ্ছে।\n"
 "আপনি কি নিশ্চিতরূপে <b>%s</b> পাঠাতে ইচ্ছুক?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "লগ"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "রিপোর্ট দায়ের করা হয়েছে"
 
@@ -301,7 +309,7 @@ msgstr "<b>নিম্নলিখিত সামগ্রী পাঠান�
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>পুনাবৃত্তির প্রক্রিয়া (সাধারণ কয়েকটি ধাপে)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "প্রেরণ করুন"
 
@@ -484,25 +492,21 @@ msgstr "স্থানীয় ইউনিভার্সেল ইউনিক 
 msgid "Getting backtrace..."
 msgstr "ব্যাক-ট্রেস প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "debug-info প্যাকেজ অনুসন্ধান করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info প্যাকেজ ডাউনলোড ও ইনস্টল করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "স্থানীয় ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "গ্লোবাল ইউনিভার্সেল ইউনিক আইডেন্টিফিকেশন প্রাপ্ত করা হচ্ছে..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "রিপোর্ট নির্মাণ আরম্ভ করা হচ্ছে..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
@@ -512,7 +516,7 @@ msgstr "debuginfo ইনস্টলেশন উপেক্ষা করা �
 msgid "Creating and submitting a report..."
 msgstr "রিপোর্ট নির্মাণ করে দায়ের করুন..."
 
-#: ../lib/Plugins/Logger.cpp:65
+#: ../lib/Plugins/Logger.cpp:66
 msgid "Creating a report..."
 msgstr "রিপোর্ট নির্মাণ করুন..."
 
@@ -543,7 +547,7 @@ msgstr "আর্কাইভ নির্মাণ করে প্রেরণ
 msgid "Creating kernel oops crash reports..."
 msgstr "kernel oops বিপর্যয়ের রিপোর্ট নির্মাণ করা হচ্ছে..."
 
-#: ../lib/Plugins/Mailx.cpp:164
+#: ../lib/Plugins/Mailx.cpp:165
 msgid "Sending an email..."
 msgstr "ই-মেইল পাঠানো হচ্ছে..."
 
