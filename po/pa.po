@@ -2,15 +2,15 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 # Jaswinder Singh <jsingh@redhat.com>, 2009.
 # A S Alam <aalam@users.sf.net>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-07 08:17+0000\n"
-"PO-Revision-Date: 2009-12-07 14:23+0530\n"
+"POT-Creation-Date: 2009-12-10 08:15+0000\n"
+"PO-Revision-Date: 2009-12-10 16:31+0530\n"
 "Last-Translator: Jaswinder Singh <jsingh@redhat.com>\n"
 "Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -80,22 +80,26 @@ msgid "Delete"
 msgstr "ਹਟਾਓ"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "ਵੇਰਵਾ"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "ਰਿਪੋਰਟ ਨਹੀਂ ਕੀਤਾ!"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "ਉਡੀਕੋ ਜੀ..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "ਪਲੱਗਇਨ"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "ਰਿਪੋਰਟ"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -121,44 +125,44 @@ msgstr ""
 "ਤੁਹਾਨੂੰ ਇਸ ਪਰੋਗਰਾਮ ਨਾਲ GNU ਜਨਰਲ ਪਬਲਿਕ ਲਾਈਸੈਂਸ ਦੀ ਕਾਪੀ ਵੀ ਮਿਲਣੀ ਚਾਹੀਦੀ ਹੈ।  ਜੇ ਨਹੀਂ, "
 "ਤਾਂ <http://www.gnu.org/licenses/> ਵੇਖੋ।"
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "ਸੋਧ(_E)"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "ਫਾਇਲ(_F)"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "ਮੱਦਦ(_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "ਆਈਕਾਨ"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "ਪੈਕੇਜ"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "ਐਪਲੀਕੇਸ਼ਨ"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "ਮਿਤੀ"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "ਕਰੈਸ਼ ਕਾਊਂਟ"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "ਯੂਜ਼ਰ"
 
-#: ../src/Gui/CCMainWindow.py:152
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -167,7 +171,7 @@ msgstr ""
 "%s\n"
 "ਸੈਟਿੰਗ ਡਾਈਲਾਗ ਨਹੀਂ ਵੇਖਾਇਆ ਜਾ ਸਕਦਾ"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -176,8 +180,9 @@ msgstr ""
 "ਮੌਜੂਦਾ ਕਾਰਜ ਮੁਕੰਮਲ ਕਰਨ ਵਿੱਚ ਅਸਫਲ!\n"
 "%s"
 
-#. there is something wrong with the daemon if we can get the dumplist
-#: ../src/Gui/CCMainWindow.py:191, python-format
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:184
+#, python-format
 msgid ""
 "Error while loading the dumplist.\n"
 "%s"
@@ -185,15 +190,15 @@ msgstr ""
 "ਡੰਪ-ਲਿਸਟ ਲੋਡ ਕਰਨ ਵੇਲੇ ਗਲਤੀ\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:228
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b> ਇਹ ਕਰੈਸ਼ ਰਿਪੋਰਟ ਕੀਤਾ ਗਿਆ ਹੈ, ਤੁਸੀਂ ਰਿਪੋਰਟ ਇੱਥੇ ਲੱਭ ਸਕਦੇ ਹੋ:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b> ਇਹ ਕਰੈਸ਼ ਰਿਪੋਰਟ ਕੀਤਾ ਗਿਆ ਹੈ:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>ਰਿਪੋਰਟ ਨਹੀਂ ਕੀਤਾ!</b>"
 
-#: ../src/Gui/CCMainWindow.py:285
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -201,7 +206,7 @@ msgstr ""
 "ਰਿਪਰੋਟ ਲੈਣ ਵਿੱਚ ਅਸਮਰੱਥ!\n"
 "ਕੀ ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਮੌਜੂਦ ਨਹੀਂ ਹੈ?"
 
-#: ../src/Gui/CCMainWindow.py:305
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -210,12 +215,13 @@ msgstr ""
 "ਰਿਪੋਰਟਿੰਗ ਫੇਲ੍ਹ ਹੋਈ!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:324 ../src/Gui/CCMainWindow.py:351
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "ਰਿਪੋਰਟ ਲੈਣ ਵੇਲੇ ਗਲਤੀ: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128, python-format
+#: ../src/Gui/CCReporterDialog.py:136
+#, python-format
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
@@ -223,11 +229,12 @@ msgstr ""
 "ਪਲੱਗਇਨ ਸੈਟਿੰਗ ਸੰਭਾਲ ਨਹੀਂ ਸਕਦਾ\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "ਇਸ ਨੂੰ ਪੈਦਾ ਕਰਨ ਬਾਰੇ ਸੰਖੇਪ ਜਾਣਕਾਰੀ ਜਾਂ ਤੁਸੀਂ ਕੀ ਕੀਤਾ ਹੈ..."
 
-#: ../src/Gui/CCReporterDialog.py:231, python-format
+#: ../src/Gui/CCReporterDialog.py:239
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command: <b>debuginfo-install "
@@ -239,17 +246,17 @@ msgstr ""
 "debuginfo-install %s </span>\n"
 " ਤਦ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਤਾਜ਼ਾ ਕਰੋ ਬਟਨ ਵਰਤੋਂ।"
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ਬੈਕਟਰੇਸ ਬੇਕਾਰ ਹੈ, ਤੁਸੀਂ ਇਹ ਰਿਪੋਰਟ ਨਹੀਂ ਭੇਜ ਸਕਦੇ ਹੋ!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:246
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr "ਬੈਕਟਰੇਸ ਅਧੂਰਾ ਹੈ, ਯਕੀਨੀ ਬਣਾਉ ਕਿ ਤੁਸੀਂ ਇਹ ਬਣਾਉਣ ਲਈ ਠੀਕ ਕਦਮ ਚੁੱਕੇ ਹਨ।"
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -259,7 +266,11 @@ msgstr ""
 "<b>ਚੇਤਾਵਨੀ</b>, ਤੁਸੀਂ ਡਾਟਾ ਭੇਜ ਰਹੇ ਹੋ ਜਿਸ ਵਿੱਚ ਜਰੂਰੀ ਜਾਣਕਾਰੀ ਹੋ ਸਕਦੀ ਹੈ।\n"
 "ਕੀ ਤੁਸੀਂ ਯਕੀਨਨ ਭੇਜਣਾ ਚਾਹੁੰਦੇ ਹੋ <b>%s</b>?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "ਲਾਗ"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "ਰਿਪੋਰਟ ਮੁਕੰਮਲ"
 
@@ -297,7 +308,7 @@ msgstr "<b>ਹੇਠਲੀਆਂ ਇਕਾਈਆਂ ਭੇਜੀਆਂ ਜਾਣ
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>ਮੁੜ-ਪੈਦਾ ਕਿਵੇਂ ਕਰਨਾ ਹੈ (ਕੁੱਝ ਸਧਾਰਨ ਪਗਾਂ ਵਿੱਚ)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "ਭੇਜੋ"
 
@@ -480,25 +491,21 @@ msgstr "ਲੋਕਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਖਣ ਪਛਾਣ �
 msgid "Getting backtrace..."
 msgstr "ਬੈਕਟਰੇਸ ਲੈ ਰਿਹਾ..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਪੈਕੇਜ ਲਈ ਖੋਜ ਜਾਰੀ..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "ਡੀਬੱਗ-ਜਾਣਕਾਰੀ ਪੈਕੇਜ ਡਾਊਨਲੋਡ ਤੇ ਇੰਸਟਾਲ ਕੀਤੇ ਜਾ ਰਹੇ ਹਨ..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "ਲੋਕਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਖਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "ਗਲੋਬਲ ਯੂਨੀਵਰਸਲ ਵਿਲੱਕਣ ਪਛਾਣ ਲਈ ਜਾ ਰਹੀ ਹੈ..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "ਰਿਪੋਰਟ ਬਣਾਉਣੀ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
@@ -508,7 +515,7 @@ msgstr "debuginfo ਇੰਸਟਾਲੇਸ਼ਨ ਛੱਡੀ ਜਾ ਰਹੀ ਹ�
 msgid "Creating and submitting a report..."
 msgstr "ਇੱਕ ਰਿਪੋਰਟ ਬਣਾਈ ਅਤੇ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 
-#: ../lib/Plugins/Logger.cpp:65
+#: ../lib/Plugins/Logger.cpp:66
 msgid "Creating a report..."
 msgstr "ਰਿਪੋਰਟ ਬਣਾਈ ਜਾ ਰਹੀ ਹੈ..."
 
@@ -539,7 +546,7 @@ msgstr "%s ਅਕਾਇਵ ਬਣਾਇਆ ਅਤੇ ਭੇਜਿਆ ਨਹੀ�
 msgid "Creating kernel oops crash reports..."
 msgstr "ਕਰਨਲ oops ਕਰੈਸ਼ ਰਿਪੋਰਟਾਂ ਬਣਾਈਆਂ ਜਾ ਰਹੀਆਂ ਹਨ..."
 
-#: ../lib/Plugins/Mailx.cpp:164
+#: ../lib/Plugins/Mailx.cpp:165
 msgid "Sending an email..."
 msgstr "ਈਮੇਲ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 
@@ -556,6 +563,9 @@ msgstr "sosreport ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ: %s "
 msgid "done running sosreport"
 msgstr "sosreport ਚਲਾਉਣਾ ਮੁਕੰਮਲ"
 
+#~ msgid "Starting report creation..."
+#~ msgstr "ਰਿਪੋਰਟ ਬਣਾਉਣੀ ਸ਼ੁਰੂ ਕੀਤੀ ਜਾ ਰਹੀ ਹੈ..."
+
 #~ msgid "<span color=\"white\">Description</span>"
 #~ msgstr "<span color=\"white\">ਵੇਰਵਾ</span>"
 
@@ -570,9 +580,6 @@ msgstr "sosreport ਚਲਾਉਣਾ ਮੁਕੰਮਲ"
 
 #~ msgid "Nothing selected"
 #~ msgstr "ਕੁਝ ਨਹੀਂ ਚੁਣਿਆ"
-
-#~ msgid "Plugin Details"
-#~ msgstr "ਪਲੱਗਇਨ ਵੇਰਵਾ"
 
 #~ msgid "This function is not implemented yet!"
 #~ msgstr "ਇਹ ਫੰਕਸ਼ਨ ਹਾਲੇ ਲਾਗੂ ਨਹੀਂ ਕੀਤਾ ਹੈ!"
