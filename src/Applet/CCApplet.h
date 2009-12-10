@@ -77,7 +77,7 @@ class CApplet
 
     protected:
         //@@TODO applet menus
-        static void OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data);
+        static void OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data);
         static void OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          button,
                             guint          activate_time,

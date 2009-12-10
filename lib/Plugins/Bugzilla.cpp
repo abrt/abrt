@@ -287,7 +287,7 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCra
         if (type == CD_ATT)
         {
             char *encoded64 = encode_base64(content.c_str(), content.length());
-            xmlrpc_value* param = xmlrpc_build_value(&env,"(s{s:s,s:s,s:s,s:s})",
+            xmlrpc_value* param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s})",
                                               bug_id_str,
                                               "description", ("File: " + filename).c_str(),
                                               "filename", filename.c_str(),
@@ -483,7 +483,7 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
             m_sBugzillaURL.erase(m_sBugzillaURL.length() - 1);
         }
         /*
-        if(*(--m_sBugzillaURL.end()) == '/')
+        if (*(--m_sBugzillaURL.end()) == '/')
         {
             m_sBugzillaURL.erase(--m_sBugzillaURL.end());
         }

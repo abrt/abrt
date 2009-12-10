@@ -114,7 +114,7 @@ now used in create_zip, but can be useful for some future
 archivers as well
 */
 static void traverse_directory(const char * directory, void * something,
-                               void (*func)(void *,const char *) )
+                               void (*func)(void *, const char *) )
 {
     DIR * dp;
     struct dirent * dirp;
@@ -225,7 +225,7 @@ static void create_tarbz2(const char * archive_name, const char * directory)
 #define BLOCK_MULTIPLIER 7
 
     name_without_bz2 = xstrdup(archive_name);
-    strrchr(name_without_bz2,'.')[0] = '\0';
+    strrchr(name_without_bz2, '.')[0] = '\0';
     create_tar(name_without_bz2, directory);
 
     tarFD = open(name_without_bz2, O_RDONLY);

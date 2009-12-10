@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     char* uuid = NULL;
     int op = -1;
 
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL, "");
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);

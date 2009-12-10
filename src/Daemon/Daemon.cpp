@@ -667,7 +667,7 @@ int main(int argc, char** argv)
     int opt;
     int parent_pid = getpid();
 
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL, "");
 
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);

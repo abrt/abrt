@@ -198,7 +198,7 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
     }
     string tmptar_name = concat_path_file(tmpdir_name, file_name.c_str());
 
-    if (mkdir(tmptar_name.c_str(),S_IRWXU))
+    if (mkdir(tmptar_name.c_str(), S_IRWXU))
     {
         Error(ssprintf("Can't mkdir '%s'", tmptar_name.c_str()).c_str());
     }

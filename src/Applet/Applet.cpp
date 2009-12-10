@@ -135,7 +135,7 @@ static void NameOwnerChanged(DBusMessage* signal)
     }
 
 // hide icon if it's visible - as NM and don't show it, if it's not
-    if(!new_owner[0])
+    if (!new_owner[0])
         applet->HideIcon();
 }
 
