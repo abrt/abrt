@@ -4,13 +4,13 @@
 # This file is distributed under the same license as the PACKAGE package.
 # ANI PETER <apeter@redhat.com>, 2009
 #
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-07 08:17+0000\n"
-"PO-Revision-Date: 2009-12-07 16:53+0530\n"
+"POT-Creation-Date: 2009-12-10 19:32+0000\n"
+"PO-Revision-Date: 2009-12-11 12:26+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -79,22 +79,26 @@ msgid "Delete"
 msgstr "വെട്ടി നീക്കുക"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "വിശദാംശങ്ങള്‍"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "രേഖപ്പെടുത്തിയിട്ടില്ല"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "ദയവായി കാത്തിരിക്കുക..."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "പ്ലഗിനുകള്‍"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "റിപോര്‍ട്ട്"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -120,44 +124,44 @@ msgstr ""
 "ഈ പ്രോഗ്രാമിനൊപ്പം നിങ്ങള്‍ക്കു് ഗ്നു ജനറല്‍ പബ്ളിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പും ലഭിച്ചിരിക്കണം, "
 "ഇല്ലായെങ്കില്‍,  <http://www.gnu.org/licenses/> കാണുക."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "_ചിട്ടപ്പെടുത്തുക"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "_ഫയല്‍"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "_സഹായം"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "ചിഹ്നം"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "പാക്കേജ്"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "പ്രയോഗം"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "തീയതി"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "ക്രാഷ് കൌണ്ട്"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "ഉപയോക്താവു്"
 
-#: ../src/Gui/CCMainWindow.py:152
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -166,7 +170,7 @@ msgstr ""
 "സജ്ജീകരണങ്ങള്‍ക്കുള്ള ഡയലോഗ് കാണിക്കുവാന്‍ സാധ്യമല്ല\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -175,8 +179,8 @@ msgstr ""
 "നിലവിലുള്ള ജോലി പൂര്‍ത്തിയാക്കുവാന്‍ സാധിച്ചില്ല!\n"
 "%s"
 
-#. there is something wrong with the daemon if we can get the dumplist
-#: ../src/Gui/CCMainWindow.py:191
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -185,15 +189,15 @@ msgstr ""
 "dumplist ലഭ്യമാക്കുമ്പോള്‍ പിശക്.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:228
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>ഈ തകരാറു് രേഖപ്പെടുത്തിയിട്ടുണ്ടു്. ഈ റിപോര്‍ട്ട് ഇവിടെ ലഭ്യമാണു്:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>ഈ തകരാറു് രേഖപ്പെടുത്തിയിട്ടുണ്ടു്. </b>\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>രേഖപ്പെടുത്തിയിട്ടില്ല!</b>"
 
-#: ../src/Gui/CCMainWindow.py:285
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -201,7 +205,7 @@ msgstr ""
 "റിപോര്‍ട്ട് ലഭിക്കുവാന്‍ സാധിച്ചില്ല!\n"
 "Debuginfo ലഭ്യമല്ലേ?"
 
-#: ../src/Gui/CCMainWindow.py:305
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -210,12 +214,12 @@ msgstr ""
 "റിപോര്‍ട്ട് പരാജയപ്പെട്ടു!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:324 ../src/Gui/CCMainWindow.py:351
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128
+#: ../src/Gui/CCReporterDialog.py:136
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -224,11 +228,11 @@ msgstr ""
 "പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിക്കുവാന്‍ സാധ്യമല്ല:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "ഇതെങ്ങനെ ഉണ്ടായി എന്നു് വിവരിക്കുന്നു..."
 
-#: ../src/Gui/CCReporterDialog.py:231
+#: ../src/Gui/CCReporterDialog.py:239
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -237,23 +241,21 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "ബാക്ക്ട്രെയിസ് ഉപയോഗപ്രദമല്ലാത്തതിനാല്‍ റിപോര്‍ട്ടിങ് പ്രവര്‍ത്തന രഹിതമാണു്.\n"
-"ദയവായി debuginfo ഈ കമാന്‍ഡ് ഉപയോഗിച്ചു് ഇന്‍സ്റ്റോള്‍ ചെയ്യുവാന്‍ ശ്രമിക്കുക: "
-"<b>debuginfo-install %s</b> \n"
+"ദയവായി debuginfo ഈ കമാന്‍ഡ് ഉപയോഗിച്ചു് ഇന്‍സ്റ്റോള്‍ ചെയ്യുവാന്‍ ശ്രമിക്കുക: <b>debuginfo-"
+"install %s</b> \n"
 "ശേഷം പുതുക്കുക ബട്ടണ്‍ ഉപയോഗിച്ചു് ബാക്ക്ട്രെയിസ് തയ്യാറാക്കുവാന്‍ ശ്രമിക്കുക."
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗിക്കുവാന്‍ സാധ്യമല്ല, നിങ്ങള്‍ക്കിതു് രേഖപ്പെടുത്തുവാന്‍ സാധ്യമല്ല!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:246
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
-msgstr ""
-"ബാക്ക്ട്രെയിസ് പൂര്‍ണ്ണമല്ല, തയ്യാറാക്കുന്നതിനുള്ള ഉത്തമ രീതികള്‍ ദയവായി "
-"നല്‍കുക."
+msgstr "ബാക്ക്ട്രെയിസ് പൂര്‍ണ്ണമല്ല, തയ്യാറാക്കുന്നതിനുള്ള ഉത്തമ രീതികള്‍ ദയവായി നല്‍കുക."
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -263,7 +265,11 @@ msgstr ""
 "<b>മുന്നറിയിപ്പു്</b>, പ്രധാന വിവരങ്ങളടങ്ങുന്ന ഡേറ്റാ നിങ്ങള്‍ അയയ്ക്കുവാന്‍ തുടങ്ങുന്നു.\n"
 "നിങ്ങള്‍ക്ക് <b>%s</b> അയയ്ക്കണമോ?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "ലോഗ്"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "റിപോര്‍ട്ട് പൂര്‍ത്തിയായി"
 
@@ -294,14 +300,14 @@ msgid "<b>Comment</b>"
 msgstr "<b>അഭിപ്രായം</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "<b>Following items will be send</b>"
+msgid "<b>Following items will be sent</b>"
 msgstr "<b>ഈ വസ്തുക്കള്‍ അയയ്ക്കുന്നതാണു്</b>"
 
 #: ../src/Gui/report.glade.h:4
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>എങ്ങനെ ലഭ്യമാക്കാം (ലളിതമായ രീതിയില്‍)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "അയയ്ക്കുക"
 
@@ -434,7 +440,7 @@ msgstr "ABRT സര്‍വീസ് പ്രവര്‍ത്തിക്ക
 msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
-#: ../src/Daemon/Daemon.cpp:467
+#: ../src/Daemon/Daemon.cpp:473
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -484,25 +490,21 @@ msgstr "ലോക്കല്‍ യൂണിവേഴ്സല്‍ യുണ�
 msgid "Getting backtrace..."
 msgstr "ബാക്ക്ട്രെയിസ് ലഭിക്കുന്നു..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "debug-info പാക്കേജുകള്‍ക്കായി തെരയുന്നു..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "debug-info പാക്കേജുകള്‍ ഡൌണ്‍ലോട് ചെയ്തു് ഇന്‍സ്റ്റോള്‍ ചെയ്യുന്നു..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "ലോക്കല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "ഗ്ലോബല്‍ യൂണിവേഴ്സല്‍ യുണീക്ക് തിരിച്ചറിയല്‍ ലഭിക്കുന്നു..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "റിപോര്‍ട്ട് ഉണ്ടാക്കുവാന്‍ തുടങ്ങുന്നു..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
@@ -512,7 +514,7 @@ msgstr "debuginfo ഇന്‍സ്റ്റലേഷന്‍ ഉപേക്�
 msgid "Creating and submitting a report..."
 msgstr "ഒരു റിപോര്‍ട്ട് ഉണ്ടാക്കി സമര്‍പ്പിക്കുന്നു..."
 
-#: ../lib/Plugins/Logger.cpp:65
+#: ../lib/Plugins/Logger.cpp:66
 msgid "Creating a report..."
 msgstr "ഒരു റിപോര്‍ട്ട് ഉണ്ടാക്കുന്നു..."
 
@@ -543,7 +545,7 @@ msgstr "ഒരു ആര്‍ക്കൈവ് %s ഉണ്ടാക്കി 
 msgid "Creating kernel oops crash reports..."
 msgstr "കേര്‍ണല്‍ oops ക്രാഷ് റിപോര്‍ട്ടുകള്‍ ഉണ്ടാക്കുന്നു..."
 
-#: ../lib/Plugins/Mailx.cpp:164
+#: ../lib/Plugins/Mailx.cpp:165
 msgid "Sending an email..."
 msgstr "ഒരു ഈമെയില്‍ അയയ്ക്കുന്നു..."
 
