@@ -142,7 +142,8 @@ static void NameOwnerChanged(DBusMessage* signal)
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
 {
     const char* member = dbus_message_get_member(msg);
-    log("%s(member:'%s')", __func__, member);
+
+    VERB1 log("%s(member:'%s')", __func__, member);
 
     int type = dbus_message_get_type(msg);
     if (type != DBUS_MESSAGE_TYPE_SIGNAL)
