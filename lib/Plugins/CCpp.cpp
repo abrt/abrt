@@ -445,7 +445,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
         }
         if (*p)
         {
-            log("%s", buff);
+            VERB1 log("%s", buff);
             update_client("%s", buff);
         }
     }
