@@ -604,6 +604,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
     }
 
     std::string description = GetDescription(packageName.c_str());
+//TODO: if executable in /usr/bin/python, /bin/sh and such,
+//we need to extract component using argv[1]
     std::string component = GetComponent(pExecutable);
 
     try
