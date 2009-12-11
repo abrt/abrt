@@ -384,7 +384,7 @@ fi
 
 %files addon-python
 %defattr(-,root,root,-)
-%attr(2755, root, abrt) %{_bindir}/%{name}-pyhook-helper
+%attr(2755, root, abrt) %{_libexecdir}/abrt-hook-python
 %{_libdir}/%{name}/libPython.so*
 %{python_site}/*.py*
 

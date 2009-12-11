@@ -5,7 +5,7 @@ C/C++ handling:
 
 we change /proc/sys/kernel/core_pattern to invoke abrtd helper to save 
 the coredump of crashing app:
-* helper source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Hooks/abrt-pyhook-helper.cpp
+* helper source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Hooks/abrt-hook-python.cpp
 the code responsible for this:
 
     #define CORE_PATTERN            "|/usr/libexec/abrt-hook-ccpp" "/var/cache/abrt" %p %s %u"
@@ -21,7 +21,7 @@ the code responsible for this:
 %s - signal
 %u - uid
 
-when some crash occures abrt-hook-ccpp is invoked to store the coredump and some other info
+when some crash occurs abrt-hook-ccpp is invoked to store the coredump and some other info
 read from /proc/<pid>/:
 
 executable: 

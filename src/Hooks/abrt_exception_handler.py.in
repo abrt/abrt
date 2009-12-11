@@ -107,7 +107,7 @@ def write_dump(pid, tb_uuid, tb):
     if sys.argv[0]:
         executable = os.path.abspath(sys.argv[0])
 
-    command = ["abrt-pyhook-helper"]
+    command = ["/usr/libexec/abrt-hook-python"]
     command.append("--pid=%s" % pid)
     command.append("--executable=%s" % executable)
     command.append("--uuid=%s" % tb_uuid)
