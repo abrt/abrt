@@ -1,5 +1,5 @@
-libexec_PROGRAMS = abrt-hook-ccpp
-bin_PROGRAMS = dumpoops abrt-hook-python
+libexec_PROGRAMS = abrt-hook-ccpp abrt-hook-python
+bin_PROGRAMS = dumpoops
 
 # CCpp
 abrt_hook_ccpp_SOURCES = \
