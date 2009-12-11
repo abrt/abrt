@@ -498,15 +498,15 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                         reporter->SetSettings(oldSettings);
                     }
 #endif
-                    ret[pluginName].push_back("1");
-                    ret[pluginName].push_back(res);
+                    ret[pluginName].push_back("1"); // REPORT_STATUS_IDX_FLAG
+                    ret[pluginName].push_back(res); // REPORT_STATUS_IDX_MSG
                     message += res + "\n";
                 }
             }
             catch (CABRTException& e)
             {
-                ret[pluginName].push_back("0");
-                ret[pluginName].push_back(e.what());
+                ret[pluginName].push_back("0");      // REPORT_STATUS_IDX_FLAG
+                ret[pluginName].push_back(e.what()); // REPORT_STATUS_IDX_MSG
                 update_client("Reporting via '%s' was not successful: %s", pluginName.c_str(), e.what());
             }
         }

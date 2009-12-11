@@ -194,10 +194,10 @@ int main(int argc, char** argv)
             break;
         }
         case OPT_REPORT:
-            report(uuid, false);
+            exitcode = report(uuid, false);
             break;
         case OPT_REPORT_ALWAYS:
-            report(uuid, true);
+            exitcode = report(uuid, true);
             break;
         case OPT_DELETE:
         {

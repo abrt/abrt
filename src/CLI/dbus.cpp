@@ -142,7 +142,7 @@ map_crash_report_t call_CreateReport(const char* uuid)
     return argout;
 }
 
-void call_Report(const map_crash_report_t& report)
+report_status_t call_Report(const map_crash_report_t& report)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessageIter out_iter;
@@ -150,10 +150,17 @@ void call_Report(const map_crash_report_t& report)
     store_val(&out_iter, report);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
-    //it returns a single value of report_status_t type,
-    //but we don't use it (yet?)
+
+    DBusMessageIter in_iter;
+    dbus_message_iter_init(reply, &in_iter);
+
+    report_status_t result;
+    int r = load_val(&in_iter, result);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
 
     dbus_message_unref(reply);
+    return result;
 }
 
 int32_t call_DeleteDebugDump(const char* uuid)

@@ -60,6 +60,7 @@ static void verror_msg_helper(const char *s, va_list p, const char* strerr, int 
 		fflush(stdout);
 		full_write(STDERR_FILENO, msg, used + msgeol_len);
 	}
+	msg[used] = '\0'; /* remove msg_eol (usually "\n") */
 	if (flags & LOGMODE_SYSLOG) {
 		syslog(LOG_ERR, "%s", msg + prefix_len);
 	}

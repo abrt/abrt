@@ -332,88 +332,98 @@ int report(const char *uuid, bool always)
 {
   // Ask for an initial report.
   map_crash_report_t cr = call_CreateReport(uuid);
+//TODO: error check?
 
-  if (always)
+  if (!always)
   {
-    // Send the report immediately.
-    call_Report(cr);
-    return 0;
+    /* Open a temporary file and write the crash report to it. */
+    char filename[] = "/tmp/abrt-report.XXXXXX";
+    int fd = mkstemp(filename);
+    if (fd == -1)
+    {
+      error_msg("can't generate temporary file name");
+      return 1;
+    }
+
+    FILE *fp = fdopen(fd, "w");
+    if (!fp)
+    {
+      error_msg("can't open '%s' to save the crash report", filename);
+      return 1;
+    }
+
+    write_crash_report(cr, fp);
+
+    if (fclose(fp))
+    {
+      error_msg("can't close '%s'", filename);
+      return 2;
+    }
+
+    // Start a text editor on the temporary file.
+    launch_editor(filename);
+
+    // Read the file back and update the report from the file.
+    fp = fopen(filename, "r");
+    if (!fp)
+    {
+      error_msg("can't open '%s' to read the crash report", filename);
+      return 1;
+    }
+
+    fseek(fp, 0, SEEK_END);
+    long size = ftell(fp);
+    fseek(fp, 0, SEEK_SET);
+
+    char *text = (char*)xmalloc(size + 1);
+    if (fread(text, 1, size, fp) != size)
+    {
+      error_msg("can't read '%s'", filename);
+      return 1;
+    }
+    text[size] = '\0';
+    fclose(fp);
+
+    remove_comments_and_unescape(text);
+    // Updates the crash report from the file text.
+    int report_changed = read_crash_report(cr, text);
+    if (report_changed)
+      puts(_("\nThe report has been updated."));
+    else
+      puts(_("\nNo changes were detected in the report."));
+
+    free(text);
+
+    if (unlink(filename) != 0) // Delete the tempfile.
+      perror_msg("can't unlink %s", filename);
+
+    // Report only if the user is sure.
+    printf(_("Do you want to send the report? [y/N]: "));
+    fflush(NULL);
+    char answer[16] = "n";
+    fgets(answer, sizeof(answer), stdin);
+    if ((answer[0] | 0x20) != 'y')
+    {
+      puts(_("Crash report was not sent."));
+      return 0;
+    }
   }
 
-  /* Open a temporary file and write the crash report to it. */
-  char filename[] = "/tmp/abrt-report.XXXXXX";
-  int fd = mkstemp(filename);
-  if (fd == -1)
+  int errors = 0;
+  int plugins = 0;
+  puts(_("Reporting..."));
+  report_status_t r = call_Report(cr);
+  report_status_t::iterator it = r.begin();
+  while (it != r.end())
   {
-    error_msg("can't generate temporary file name");
-    return 1;
+    vector_string_t &v = it->second;
+    printf("%s: %s\n", it->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+    plugins++;
+    if (v[REPORT_STATUS_IDX_FLAG] != "0")
+      errors++;
+    it++;
   }
+  printf(_("Crash reported via %d plugins (%d errors)\n"), plugins, errors);
 
-  FILE *fp = fdopen(fd, "w");
-  if (!fp)
-  {
-    error_msg("can't open '%s' to save the crash report", filename);
-    return 1;
-  }
-
-  write_crash_report(cr, fp);
-
-  if (fclose(fp))
-  {
-    error_msg("can't close '%s'", filename);
-    return 2;
-  }
-
-  // Start a text editor on the temporary file.
-  launch_editor(filename);
-
-  // Read the file back and update the report from the file.
-  fp = fopen(filename, "r");
-  if (!fp)
-  {
-    error_msg("can't open '%s' to read the crash report", filename);
-    return 1;
-  }
-
-  fseek(fp, 0, SEEK_END);
-  long size = ftell(fp);
-  fseek(fp, 0, SEEK_SET);
-
-  char *text = (char*)xmalloc(size + 1);
-  if (fread(text, 1, size, fp) != size)
-  {
-    error_msg("can't read '%s'", filename);
-    return 1;
-  }
-  text[size] = '\0';
-  fclose(fp);
-
-  remove_comments_and_unescape(text);
-  // Updates the crash report from the file text.
-  int report_changed = read_crash_report(cr, text);
-  if (report_changed)
-    puts(_("\nThe report has been updated."));
-  else
-    puts(_("\nNo changes were detected in the report."));
-
-  free(text);
-
-  if (unlink(filename) != 0) // Delete the tempfile.
-    perror_msg("can't unlink %s", filename);
-
-  // Report only if the user is sure.
-  printf(_("Do you want to send the report? [y/N]: "));
-  fflush(NULL);
-  char answer[16] = "n";
-  fgets(answer, sizeof(answer), stdin);
-  if (answer[0] == 'Y' || answer[0] == 'y')
-  {
-    puts(_("Reporting..."));
-    call_Report(cr);
-    puts(_("Crash report was successfully sent."));
-  }
-  else
-    puts(_("Crash report was not sent."));
-
-  return 0;
+  return errors != 0;
 }
