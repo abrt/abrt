@@ -2,14 +2,14 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:200
+#: ../src/Gui/CCReporterDialog.py:208
 # Shankar Prasad <svenkate@redhat.com>, 2009.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-07 02:24+0000\n"
-"PO-Revision-Date: 2009-12-07 23:34+0530\n"
+"POT-Creation-Date: 2009-12-10 19:32+0000\n"
+"PO-Revision-Date: 2009-12-11 12:48+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: Kannada <kde-l10n-kn@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -81,22 +81,26 @@ msgid "Delete"
 msgstr "ಅಳಿಸು"
 
 #: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "ವಿವರಗಳು"
+
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "ವರದಿ ಮಾಡಲಾಗಿಲ್ಲ"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "ದಯವಿಟ್ಟು ಕಾಯಿರಿ.."
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:8
 msgid "Plugins"
 msgstr "ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/report.glade.h:5
+#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
 msgid "Report"
 msgstr "ವರದಿ"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -124,44 +128,44 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "ಸಂಪಾದನೆ (_E)"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "ಕಡತ(_F)"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "ಸಹಾಯ (_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Icon"
 msgstr "ಚಿಹ್ನೆ"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Package"
 msgstr "ಪ್ಯಾಕೇಜ್"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:80
 msgid "Application"
 msgstr "ಅನ್ವಯ"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Date"
 msgstr "ದಿನಾಂಕ"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Crash count"
 msgstr "ಕುಸಿತದ ಎಣಿಕೆ"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:83
 msgid "User"
 msgstr "ಬಳಕೆದಾರ"
 
-#: ../src/Gui/CCMainWindow.py:152
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -170,7 +174,7 @@ msgstr ""
 "ಸಿದ್ಧತೆಗಳ ಸಂವಾದವನ್ನು ತೋರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:173
+#: ../src/Gui/CCMainWindow.py:160
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -179,8 +183,9 @@ msgstr ""
 "ಪ್ರಸಕ್ತ ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿಲ್ಲ!\n"
 "%s"
 
-#. there is something wrong with the daemon if we can get the dumplist
-#: ../src/Gui/CCMainWindow.py:191, python-format
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:184
+#, python-format
 msgid ""
 "Error while loading the dumplist.\n"
 "%s"
@@ -188,15 +193,15 @@ msgstr ""
 "ಬಿಸುಡುಪಟ್ಟಿಯನ್ನು(ಡಂಪ್‌ಲಿಸ್ಟ್) ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:228
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr "<b>ಈ ಕುಸಿತವನ್ನು ವರದಿ ಮಾಡಲಾಗಿದೆ, ಈ ವರದಿಯನ್ನು ನೀವು ಇಲ್ಲಿ ಕಾಣಬಹುದಾಗಿದೆ:</b>\n"
+#: ../src/Gui/CCMainWindow.py:221
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>ಈ ಕುಸಿತವನ್ನು ವರದಿ ಮಾಡಲಾಗಿದೆ:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>Not reported!</b>"
 msgstr "<b>ವರದಿ ಮಾಡಲಾಗಿಲ್ಲ!</b>"
 
-#: ../src/Gui/CCMainWindow.py:285
+#: ../src/Gui/CCMainWindow.py:280
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -204,7 +209,7 @@ msgstr ""
 "ವರದಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ!\n"
 "ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿ ಕಾಣೆಯಾಗಿದೆ?"
 
-#: ../src/Gui/CCMainWindow.py:305
+#: ../src/Gui/CCMainWindow.py:299
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -213,12 +218,13 @@ msgstr ""
 "ವರದಿ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:324 ../src/Gui/CCMainWindow.py:351
+#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "ವರದಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s"
 
-#: ../src/Gui/CCReporterDialog.py:128, python-format
+#: ../src/Gui/CCReporterDialog.py:136
+#, python-format
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
@@ -226,13 +232,14 @@ msgstr ""
 "ಪ್ಲಗ್ಇನ್ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:186
+#: ../src/Gui/CCReporterDialog.py:194
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "ಇದನ್ನು ಪುನಃ ಮಾಡುವುದು ಹೇಗೆ ಅಥವ ನೀವು ಏನು ಮಾಡಿದ್ದೀರಿ ಎನ್ನುವುದರ ಬಗೆಗಿನ ಸಂಕ್ಷಿಪ್ತ "
 "ವಿವರಣೆ..."
 
-#: ../src/Gui/CCReporterDialog.py:231, python-format
+#: ../src/Gui/CCReporterDialog.py:239
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command: <b>debuginfo-install "
@@ -244,11 +251,11 @@ msgstr ""
 "ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯನ್ನು ಅನುಸ್ಥಾಪಿಸಿ ನಂತರ ಪುನಶ್ಚೇತನಗೊಳಿಸು ಗುಂಡಿಯನ್ನು ಬಳಸಿಕೊಂಡು "
 "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಿ."
 
-#: ../src/Gui/CCReporterDialog.py:233
+#: ../src/Gui/CCReporterDialog.py:241
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿಲ್ಲ. ನೀವು ಇದನ್ನು ವರದಿ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ!"
 
-#: ../src/Gui/CCReporterDialog.py:240
+#: ../src/Gui/CCReporterDialog.py:246
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -256,7 +263,7 @@ msgstr ""
 "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅಪೂರ್ಣಗೊಂಡಿದೆ, ಇದನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಲು ಉತ್ತಮವಾದ ವಿವರಣೆಯುಕ್ತ ಸೂಚನೆಗಳನ್ನು "
 "ಒದಗಿಸಿದ್ದೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ."
 
-#: ../src/Gui/CCReporterDialog.py:290
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive "
@@ -267,7 +274,11 @@ msgstr ""
 "ಕಳುಹಿಸಲಿದ್ದೀರಿ.\n"
 "ನೀವು ನಿಜವಾಗಿಯೂ <b>%s</b> ಅನ್ನು ಕಳುಹಿಸಬೇಕೆ?\n"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+msgid "Log"
+msgstr "ದಾಖಲೆ"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "ವರದಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿದೆ"
 
@@ -298,14 +309,14 @@ msgid "<b>Comment</b>"
 msgstr "<b>ಟಿಪ್ಪಣಿ</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "<b>Following items will be send</b>"
-msgstr "<b>ಈ ಕೆಳಗಿನ ಅಂಶಗಳನ್ನು ಕಳುಹಿಸಲಾಗಿದೆ</b>"
+msgid "<b>Following items will be sent</b>"
+msgstr "<b>ಈ ಕೆಳಗಿನ ಅಂಶಗಳನ್ನು ಕಳುಹಿಸಲಾಗುತ್ತದೆ</b>"
 
 #: ../src/Gui/report.glade.h:4
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು (ಕೆಲವು ಸರಳ ಹಂತಗಳಲ್ಲಿ)</b>"
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/Gui/report.glade.h:7
 msgid "Send"
 msgstr "ಕಳುಹಿಸು"
 
@@ -438,7 +449,7 @@ msgstr "ABRT ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲ"
 msgid "Warning"
 msgstr "ಎಚ್ಚರಿಕೆ"
 
-#: ../src/Daemon/Daemon.cpp:467
+#: ../src/Daemon/Daemon.cpp:473
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -488,25 +499,21 @@ msgstr "ಸ್ಥಳೀಯ ಜಾಗತಿಕ ವಿಶಿಷ್ಟ ಗುರು
 msgid "Getting backtrace..."
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/CCpp.cpp:380
+#: ../lib/Plugins/CCpp.cpp:382
 msgid "Searching for debug-info packages..."
 msgstr "ದೋಷ ನಿವಾರಣ ಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳಿಗಾಗಿ ಹುಡುಕಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/CCpp.cpp:414
+#: ../lib/Plugins/CCpp.cpp:416
 msgid "Downloading and installing debug-info packages..."
 msgstr "ದೋಷ ನಿವಾರಣ ಮಾಹಿತಿ ಪ್ಯಾಕೇಜುಗಳನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
 msgstr "ಸ್ಥಳೀಯ ಜಾಗತಿಕ ವಿಶಿಷ್ಟ ಗುರುತನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
 msgstr "ಸಾರ್ವತ್ರಿಕ ಜಾಗತಿಕ ವಿಶಿಷ್ಟ ಗುರುತನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ..."
-
-#: ../lib/Plugins/CCpp.cpp:658
-msgid "Starting report creation..."
-msgstr "ವರದಿ ರಚನೆಯನ್ನು ಆರಂಭಿಸಲಾಗುತ್ತಿದೆ..."
 
 #: ../lib/Plugins/CCpp.cpp:691
 msgid "Skipping debuginfo installation"
@@ -516,7 +523,7 @@ msgstr "debuginfo ಅನುಸ್ಥಾಪನೆಯನ್ನು ಉಪೇಕ್�
 msgid "Creating and submitting a report..."
 msgstr "ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಿ ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Logger.cpp:65
+#: ../lib/Plugins/Logger.cpp:66
 msgid "Creating a report..."
 msgstr "ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
@@ -547,7 +554,7 @@ msgstr "ಒಂದು ಆರ್ಕೈವ್ %s ಅನ್ನು ರಚಿಸಲು
 msgid "Creating kernel oops crash reports..."
 msgstr "ಕರ್ನಲ್ oops ಕುಸಿತ ವರದಿಗಳನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Mailx.cpp:164
+#: ../lib/Plugins/Mailx.cpp:165
 msgid "Sending an email..."
 msgstr "ಒಂದು ಇಮೈಲ್ ಅನ್ನು ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ..."
 
@@ -564,6 +571,9 @@ msgstr "sosreport ಅನ್ನು ಚಲಾಯಿಸಲಾಗುತ್ತಿದ�
 msgid "done running sosreport"
 msgstr "sosreport ಅನ್ನು ಚಲಾಯಿಸುವುದು ಪೂರ್ಣಗೊಂಡಿದೆ"
 
+#~ msgid "Starting report creation..."
+#~ msgstr "ವರದಿ ರಚನೆಯನ್ನು ಆರಂಭಿಸಲಾಗುತ್ತಿದೆ..."
+
 #~ msgid "<span color=\"white\">Description</span>"
 #~ msgstr "<span color=\"white\">ವಿವರಣೆ</span>"
 
@@ -578,9 +588,6 @@ msgstr "sosreport ಅನ್ನು ಚಲಾಯಿಸುವುದು ಪೂರ್
 
 #~ msgid "Nothing selected"
 #~ msgstr "ಏನನ್ನೂ ಆರಿಸಲಾಗಿಲ್ಲ"
-
-#~ msgid "Plugin Details"
-#~ msgstr "ಪ್ಲಗ್‌ಇನ್‌ ವಿವರಗಳು"
 
 #~ msgid "This function is not implemented yet!"
 #~ msgstr "ಈ ಕ್ರಿಯೆಯನ್ನು ಇನ್ನೂ ಸಹ ಅನ್ವಯಿಸಲಾಗಿಲ್ಲ!"
