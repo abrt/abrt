@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-10 19:32+0000\n"
-"PO-Revision-Date: 2009-12-11 10:00+1100\n"
+"POT-Creation-Date: 2009-12-12 08:18+0000\n"
+"PO-Revision-Date: 2009-12-14 10:26+1100\n"
 "Last-Translator: Yulia <ypoyarko@redhat.com>\n"
 "Language-Team: Russian <fedora-trans-ru@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -438,7 +438,7 @@ msgstr "Сбой приложения создания отчёта и прос�
 msgid "A crash in package %s has been detected"
 msgstr "Сбой в пакете %s"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "Служба ABRT не работает"
 
@@ -520,9 +520,10 @@ msgstr "Пропускается установка debuginfo"
 msgid "Creating and submitting a report..."
 msgstr "Создание и отправка отчёта..."
 
-#: ../lib/Plugins/Logger.cpp:66
-msgid "Creating a report..."
-msgstr "Создаётся отчёт..."
+#: ../lib/Plugins/Logger.cpp:82
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "Отчёт записывается в «%s»"
 
 #: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
