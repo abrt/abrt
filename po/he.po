@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-09 14:40+0000\n"
+"POT-Creation-Date: 2009-12-12 08:18+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -235,11 +235,11 @@ msgstr ""
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "מידע הקריסה לא שמיש, אתה לא יכול לדווח על זה!"
 
-#: ../src/Gui/CCReporterDialog.py:248
+#: ../src/Gui/CCReporterDialog.py:246
 msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
 msgstr "מידע הקריסה לא שלם. אנא וודא שסיפקת הסבר טוב על איך לגרום לקריסה."
 
-#: ../src/Gui/CCReporterDialog.py:298
+#: ../src/Gui/CCReporterDialog.py:296
 #, python-format
 msgid ""
 "<b>WARNING</b>, you're about to send data which might contain sensitive information.\n"
@@ -287,7 +287,7 @@ msgid "<b>Comment</b>"
 msgstr "<b>הערה</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "<b>Following items will be send</b>"
+msgid "<b>Following items will be sent</b>"
 msgstr "<b>הפריטים הבאים יישלחו</b>"
 
 #: ../src/Gui/report.glade.h:4
@@ -420,7 +420,7 @@ msgstr "צפה ברשימת היישומים שקרסו ודווח על הקרי
 msgid "A crash in package %s has been detected"
 msgstr "קריסה בחבילה %s התגלתה"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "שירות ABRT לא פועל"
 
@@ -428,7 +428,7 @@ msgstr "שירות ABRT לא פועל"
 msgid "Warning"
 msgstr "אזהרה"
 
-#: ../src/Daemon/Daemon.cpp:467
+#: ../src/Daemon/Daemon.cpp:473
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
 
@@ -498,9 +498,10 @@ msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 msgid "Creating and submitting a report..."
 msgstr "יוצר ושולח דיווח..."
 
-#: ../lib/Plugins/Logger.cpp:66
-msgid "Creating a report..."
-msgstr "יוצר דיווח"
+#: ../lib/Plugins/Logger.cpp:82
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "כותב דיווח ל'%s'"
 
 #: ../lib/Plugins/FileTransfer.cpp:63
 #: ../lib/Plugins/FileTransfer.cpp:384
@@ -547,6 +548,8 @@ msgstr "מריץ sosreport: %s"
 msgid "done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
+#~ msgid "Creating a report..."
+#~ msgstr "יוצר דיווח"
 #~ msgid "Starting report creation..."
 #~ msgstr "מתחיל בהכנת הדיווח..."
 #~ msgid "<span color=\"white\">Description</span>"
