@@ -251,7 +251,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
                          const char *pDebugInfoDirs,
                          string& pBacktrace)
 {
-    update_client(_("Getting backtrace..."));
+    update_client(_("Generating backtrace"));
 
     string UID;
     string executable;
@@ -369,7 +369,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
                               const char *debuginfo_dirs,
                               string& build_ids)
 {
-    update_client(_("Searching for debug-info packages..."));
+    update_client(_("Starting debuginfo installation"));
 
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
@@ -401,8 +401,6 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     }
 
     close(pipeout[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */

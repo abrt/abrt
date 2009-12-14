@@ -541,7 +541,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
         dd.LoadText(FILENAME_PACKAGE, package);
     }
 
-    update_client(_("Searching for debug-info packages..."));
+    update_client(_("Starting debuginfo installation"));
 
     int pipein[2], pipeout[2];
     xpipe(pipein);
@@ -602,8 +602,6 @@ Another application is holding the yum lock, cannot continue
     /* Should not be needed (we use -y option), but just in case: */
     safe_write(pipein[1], "y\n", sizeof("y\n")-1);
     close(pipein[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */
@@ -668,7 +666,7 @@ Another application is holding the yum lock, cannot continue
  */
 static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
-    update_client(_("Searching for debug-info packages..."));
+    update_client(_("Starting debuginfo installation"));
 
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
@@ -700,8 +698,6 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     }
 
     close(pipeout[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */
