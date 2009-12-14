@@ -101,13 +101,6 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
     int pipeout[2];
     pid_t child;
 
-    gid_t gid = uid;
-    struct passwd* pw = getpwuid(uid);
-    if (pw)
-    {
-        gid = pw->pw_gid;
-    }
-
     xpipe(pipeout);
     child = fork();
     if (child == -1)
@@ -124,9 +117,11 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
+        struct passwd* pw = getpwuid(uid);
+        gid_t gid = pw ? pw->pw_gid : uid;
         setgroups(1, &gid);
-        setregid(gid, gid);
-        setreuid(uid, uid);
+        xsetregid(gid, gid);
+        xsetreuid(uid, uid);
         setsid();
 
         /* Nuke everything which may make setlocale() switch to non-POSIX locale:
@@ -558,12 +553,6 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     args[4] = (char*)backtrace_path.c_str();
     args[5] = NULL;
 
-    uid_t uid = atoi(uid_str.c_str());
-    gid_t gid = uid;
-    struct passwd* pw = getpwuid(uid);
-    if (pw)
-        gid = pw->pw_gid;
-
     int pipeout[2];
     xpipe(pipeout); /* stdout of abrt-backtrace */
     pid_t child = fork();
@@ -576,12 +565,13 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         xmove_fd(pipeout[1], STDOUT_FILENO);
         close(pipeout[0]); /* read side of the pipe */
 
-        /* abrt-backtrace is executed under the user's
-           uid and gid. */
+        /* abrt-backtrace is executed under the user's uid and gid. */
+        uid_t uid = atoi(uid_str.c_str());
+        struct passwd* pw = getpwuid(uid);
+        gid_t gid = pw ? pw->pw_gid : uid;
         setgroups(1, &gid);
-        setregid(gid, gid);
-        setreuid(uid, uid);
-        setsid();
+        xsetregid(gid, gid);
+        xsetreuid(uid, uid);
 
         execvp(args[0], args);
         VERB1 perror_msg("Can't execute '%s'", args[0]);
@@ -632,8 +622,7 @@ static bool DebuginfoCheckPolkit(int uid)
     if (child_pid == 0)
     {
         //child
-        if (setuid(uid))
-            exit(1); //paranoia
+        xsetreuid(uid, uid);
         PolkitResult result = polkit_check_authorization(getpid(),
                  "org.fedoraproject.abrt.install-debuginfos");
         exit(result != PolkitYes); //exit 1 (failure) if not allowed

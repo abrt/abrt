@@ -97,12 +97,6 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     int pipeout[2];
     pid_t child;
 
-    struct passwd* pw = getpwuid(uid);
-    if (!pw)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "%s: can't get GID for UID", __func__);
-    }
-
     xpipe(pipeout);
     child = fork();
     if (child == -1)
@@ -119,10 +113,11 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
-        setgroups(1, &pw->pw_gid);
-        setregid(pw->pw_gid, pw->pw_gid);
-        setreuid(uid, uid);
-        setsid();
+        struct passwd* pw = getpwuid(uid);
+        gid_t gid = pw ? pw->pw_gid : uid;
+        setgroups(1, &gid);
+        xsetregid(gid, gid);
+        xsetreuid(uid, uid);
 
         /* Nuke everything which may make setlocale() switch to non-POSIX locale:
          * we need to avoid having gdb output in some obscure language.
@@ -856,8 +851,7 @@ static bool DebuginfoCheckPolkit(int uid)
     if (child_pid == 0)
     {
         //child
-        if (setuid(uid))
-            exit(1); //paranoia
+        xsetreuid(uid, uid);
         PolkitResult result = polkit_check_authorization(getpid(),
                  "org.fedoraproject.abrt.install-debuginfos");
         exit(result != PolkitYes); //exit 1 (failure) if not allowed

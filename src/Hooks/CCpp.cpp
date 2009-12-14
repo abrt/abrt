@@ -216,7 +216,7 @@ int main(int argc, char** argv)
         /* not an error, exit silently */
         return 0;
     }
-    if (pid <= 0 || uid < 0)
+    if (pid <= 0 || (int)uid < 0)
     {
         error_msg_and_die("pid '%s' or uid '%s' are bogus", argv[2], argv[4]);
     }
@@ -450,9 +450,14 @@ int main(int argc, char** argv)
  create_user_core:
     /* Write a core file for user */
 
+    struct passwd* pw = getpwuid(uid);
+    gid_t gid = pw ? pw->pw_gid : uid;
+    setgroups(1, &gid);
+    xsetregid(gid, gid);
+    xsetreuid(uid, uid);
+
     errno = 0;
-    if (setuid(uid) != 0
-     || user_pwd == NULL
+    if (user_pwd == NULL
      || chdir(user_pwd) != 0
     ) {
         perror_msg_and_die("can't cd to %s", user_pwd);

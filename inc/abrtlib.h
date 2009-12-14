@@ -150,6 +150,10 @@ void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
 off_t copy_file(const char *src_name, const char *dst_name);
 
 
+void xsetreuid(uid_t ruid, uid_t euid);
+void xsetregid(gid_t rgid, uid_t egid);
+
+
 unsigned long long monotonic_ns(void);
 unsigned long long monotonic_us(void);
 unsigned monotonic_sec(void);
