@@ -112,7 +112,7 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
     string wholeURL = concat_path_file(pURL, base);
     int count = m_nRetryCount;
     int result;
-    do
+    while (1)
     {
         FILE* f = fopen(pFilename, "r");
         if (!f)
@@ -144,9 +144,11 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
         {
             update_client(_("Sending failed, trying again. %s"), curl_easy_strerror((CURLcode)result));
         }
+        if (result == 0 || --count <= 0)
+            break;
+        /* retry the upload if not succesful, wait a bit before next try */
+        sleep(m_nRetryDelay);
     }
-    /*retry the upload if not succesful, wait a bit before next try*/
-    while (result != 0 && --count != 0 && (sleep(m_nRetryDelay), 1));
 
     if (count <= 0 && result != 0)
     {
