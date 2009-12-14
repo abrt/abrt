@@ -243,7 +243,7 @@ static int rate_backtrace(const char *backtrace)
 
 static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
 {
-    update_client(_("Getting backtrace..."));
+    update_client(_("Generating backtrace"));
 
     std::string UID;
     std::string executable;
