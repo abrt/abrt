@@ -397,7 +397,9 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
         /* log() goes to stderr/syslog, it's ok to use it here */
         VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
         execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
-        exit(1);
+        perror_msg("Can't execute '%s'", "abrt-debuginfo-install");
+        /* Serious error (1 means "some debuginfos not found") */
+        exit(2);
     }
 
     close(pipeout[1]);
@@ -436,9 +438,20 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
             update_client("%s", buff);
         }
     }
-
     fclose(pipeout_fp);
-    wait(NULL);
+
+    int status = 0;
+    while (waitpid(child, &status, 0) < 0 && errno == EINTR)
+        continue;
+    if (WIFEXITED(status))
+    {
+        if (WEXITSTATUS(status) > 1)
+            error_msg("abrt-debuginfo-install exited with %u", (int)WEXITSTATUS(status));
+    }
+    else
+    {
+        error_msg("abrt-debuginfo-install killed by signal %u", (int)WTERMSIG(status));
+    }
 }
 
 static double get_dir_size(const char *dirname,

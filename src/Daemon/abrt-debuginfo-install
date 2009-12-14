@@ -21,8 +21,7 @@
 # Output goes to GUI as debuginfo install log. The script should be careful
 # to give useful, but not overly cluttered info to stdout.
 # Additionally, abrt daemon handles "MISSING:xxxx" messages specially:
-# xxxx will be prepended to backtrace. This is used to inform about
-# missing debuginfos.
+# it is used to inform about missing debuginfos.
 #
 # Exitcodes:
 # 0 - all debuginfos are installed
@@ -64,18 +63,14 @@ debuginfodirs="${3//:/ }"
 cachedir="${3%%:*}"
 debug=false
 
+
+# stderr may be used for status messages too
 exec 2>&1
 
-test -f "$core" || exit 2
-# cachedir is optional
-test x"$cachedir" = x"" || test -d "$cachedir" || exit 2
-# tempdir must not exist
-test -e "$tempdir" && exit 2
-
-mkdir -- "$tempdir" || exit 2
-cd "$tempdir" || exit 2
-$debug && echo "Installing rpms to $tempdir"
-
+error_msg_and_die() {
+    echo "$*"
+    exit 2
+}
 
 count_words() {
     echo $#
@@ -99,6 +94,7 @@ print_missing_build_ids() {
     done
 }
 
+# Note: it is run in `backticks`, use >&2 for error messages
 print_missing_debuginfos() {
     local build_id
     local build_id1
@@ -138,6 +134,7 @@ cleanup_and_report_missing() {
 }
 
 # $1: iteration (1,2...)
+# Note: it is run in `backticks`, use >&2 for error messages
 print_package_names() {
     # We'll run something like:
     #   yum --enablerepo=*debuginfo* --quiet provides \
@@ -154,8 +151,9 @@ print_package_names() {
     echo "$cmd" >"yum_provides.$1.OUT"
     local yum_provides_OUT="`$cmd 2>&1`"
     local err=$?
-    printf "%s\nexitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
-    test $err = 0 || exit 2
+    printf "%s\nyum exitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
+    test $err = 0 || error_msg_and_die "yum provides... exited with $err:
+`head yum_provides.$1.OUT`" >&2
 
     # The output is pretty machine-unfriendly:
     #   glibc-debuginfo-2.10.90-24.x86_64 : Debug information for package glibc
@@ -190,7 +188,7 @@ download_packages() {
     ##yumdownloader --enablerepo=*debuginfo* --quiet $packages >yumdownloader.OUT 2>&1
     ##err=$?
     ##echo "exitcode:$err" >>yumdownloader.OUT
-    ##test $err = 0 || exit 2
+    ##test $err = 0 || error_msg_and_die ...
     >yumdownloader.OUT
     i=1
     for pkg in $packages; do
@@ -207,7 +205,7 @@ download_packages() {
     for file in *.rpm; do
 	# Happens if no .rpm's were downloaded (yumdownloader problem)
 	# In this case, $f is the literal "*.rpm" string
-	test -f "$file" || exit 2
+	test -f "$file" || error_msg_and_die "not a rpm file: '$file'"
 	echo "Unpacking: $file"
 	echo "Processing: $file" >>unpack.OUT
 	rpm2cpio <"$file" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
@@ -242,6 +240,18 @@ download_packages() {
 }
 
 
+# Sanity checking
+test -f "$core" || error_msg_and_die "not a file: '$core'"
+# cachedir is optional
+test x"$cachedir" = x"" || test -d "$cachedir" || error_msg_and_die "bad cachedir '$cachedir'"
+# tempdir must not exist
+test -e "$tempdir" && error_msg_and_die "tempdir exists: '$tempdir'"
+
+mkdir -- "$tempdir" || exit 2
+cd "$tempdir" || exit 2
+$debug && echo "Installing rpms to $tempdir"
+
+
 # eu-unstrip output example:
 # 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
 #   or
@@ -254,8 +264,9 @@ echo "Getting list of build IDs"
 # eu-unstrip: /var/cache/abrt/ccpp-1256301004-2754/coredump: Callback returned failure
 eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
 err=$?
-printf "%s\nexitcode:%s\n" "$eu_unstrip_OUT" $err >eu_unstrip.OUT
-test $err = 0 || exit 2
+printf "%s\neu-unstrip exitcode:%s\n" "$eu_unstrip_OUT" $err >eu_unstrip.OUT
+test $err = 0 || error_msg_and_die "eu-unstrip exited with $err:
+`head eu_unstrip.OUT`"
 
 # Get space-separated list of all build-ids
 # There can be duplicates (observed in real world)
@@ -283,6 +294,8 @@ iter=0
 while test $((++iter)) -le 2; do
     # Analyze $build_ids and check which debuginfos are present
     missing_debuginfo_files=`print_missing_debuginfos`
+    # Did print_missing_debuginfos fail?
+    test $? = 0 || exit 2
     $debug && echo "missing_debuginfo_files:$missing_debuginfo_files"
 
     test x"$missing_debuginfo_files" = x"" && break
@@ -290,6 +303,8 @@ while test $((++iter)) -le 2; do
     # Map $missing_debuginfo_files to package names.
     # yum is run here.
     packages=`print_package_names $iter`
+    # Did print_package_names fail?
+    test $? = 0 || exit 2
     $debug && echo "packages ($iter):$packages"
 
     # yum may return "" here if it found no packages (say, if coredump
@@ -304,4 +319,5 @@ done
 cleanup_and_report_missing
 
 test x"$missing_build_ids" != x"" && exit 1
+echo "All needed debuginfos are present"
 exit 0
