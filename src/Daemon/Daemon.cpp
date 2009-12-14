@@ -623,14 +623,11 @@ static void run_main_loop(GMainLoop* loop)
 static void start_syslog_logging()
 {
     /* Open stdin to /dev/null */
-    close(STDIN_FILENO);
-    xopen("/dev/null", O_RDWR);
+    xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
     /* We must not leave fds 0,1,2 closed.
      * Otherwise fprintf(stderr) dumps messages into random fds, etc. */
-    close(STDOUT_FILENO);
-    close(STDERR_FILENO);
-    xdup(0);
-    xdup(0);
+    xdup2(STDIN_FILENO, STDOUT_FILENO);
+    xdup2(STDIN_FILENO, STDERR_FILENO);
     openlog("abrtd", 0, LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
 }

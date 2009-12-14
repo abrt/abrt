@@ -120,12 +120,7 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
         close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
-        close(STDIN_FILENO);
-        if (open("/dev/null", O_RDONLY))
-        {
-            if (open("/", O_RDONLY))
-                abort(); /* never happens */
-        }
+        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
@@ -395,8 +390,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     {
         close(pipeout[0]);
         xmove_fd(pipeout[1], STDOUT_FILENO);
-        close(STDIN_FILENO);
-        xopen("/dev/null", O_RDONLY);
+        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
         /* Not a good idea, we won't see any error messages */
         /*close(STDERR_FILENO);*/
 
