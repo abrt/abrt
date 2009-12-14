@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-10 19:32+0000\n"
-"PO-Revision-Date: 2009-12-11 09:37+0900\n"
+"POT-Creation-Date: 2009-12-12 08:18+0000\n"
+"PO-Revision-Date: 2009-12-14 09:37+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -443,7 +444,7 @@ msgstr "アプリケーションクラッシュを表示して報告"
 msgid "A crash in package %s has been detected"
 msgstr "パッケージ %s のクラッシュが検出されました"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "ABRT サービスは稼働していません。"
 
@@ -525,9 +526,10 @@ msgstr "debuginfo のインストールをスキップします"
 msgid "Creating and submitting a report..."
 msgstr "報告の作成と提出をしています..."
 
-#: ../lib/Plugins/Logger.cpp:66
-msgid "Creating a report..."
-msgstr "報告を作成しています..."
+#: ../lib/Plugins/Logger.cpp:82
+#, c-format
+msgid "Writing report to '%s'"
+msgstr " %s へのレポートを書き込み中"
 
 #: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
 msgid "FileTransfer: URL not specified"
