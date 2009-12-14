@@ -50,7 +50,7 @@ send_string(const char *pURL,
         return;
     }
 
-    do
+    while (1)
     {
         int content_length = strlen(pContent);
         FILE* f = fmemopen((void*)pContent, content_length, "r");
@@ -63,9 +63,11 @@ send_string(const char *pURL,
         if (!result)
             return;
         update_client(_("Sending failed, try it again: %s"), curl_easy_strerror((CURLcode)result));
+        if (--retryCount <= 0)
+            break;
+        /* retry the upload if not succesful, wait a bit before next try */
+        sleep(retryDelaySeconds);
     }
-    /*retry the upload if not succesful, wait a bit before next try*/
-    while (--retryCount != 0 && (sleep(retryDelaySeconds), 1));
 
     throw CABRTException(EXCEP_PLUGIN, "send_string: can't send string");
 }
@@ -84,7 +86,7 @@ send_file(const char *pURL,
 
     update_client(_("Sending file %s to %s"), pFilename, pURL);
 
-    do
+    while (1)
     {
         FILE* f = fopen(pFilename, "r");
         if (!f)
@@ -99,9 +101,11 @@ send_file(const char *pURL,
         if (!result)
             return;
         update_client(_("Sending failed, try it again: %s"), curl_easy_strerror((CURLcode)result));
+        if (--retryCount <= 0)
+            break;
+        /* retry the upload if not succesful, wait a bit before next try */
+        sleep(retryDelaySeconds);
     }
-    /*retry the upload if not succesful, wait a bit before next try*/
-    while (--retryCount != 0 && (sleep(retryDelaySeconds), 1));
 
     throw CABRTException(EXCEP_PLUGIN, "send_file: can't send file");
 }

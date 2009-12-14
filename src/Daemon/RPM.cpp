@@ -100,16 +100,12 @@ bool CheckHash(const char* pPackage, const char* pPath)
             if (strcmp(pPath, rpmfiFN(fi)) == 0)
             {
                 headerHash = rpmfiFDigestHex(fi, &hashAlgo);
+                rpmDoDigest(hashAlgo, pPath, 1, (unsigned char*) computedHash, NULL);
+                ret = (headerHash != "" && headerHash == computedHash);
+                break;
             }
         }
         rpmfiFree(fi);
-
-        rpmDoDigest(hashAlgo, pPath, 1, (unsigned char*) computedHash, NULL);
-
-        if (headerHash != "" && headerHash == computedHash)
-        {
-            ret = true;
-        }
     }
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
@@ -118,7 +114,7 @@ bool CheckHash(const char* pPackage, const char* pPath)
 
 std::string GetDescription(const char* pPackage)
 {
-    std::string pDescription = "";
+    std::string pDescription;
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage, 0);
     Header header = rpmdbNextIterator(iter);
@@ -139,7 +135,7 @@ std::string GetDescription(const char* pPackage)
 
 std::string GetComponent(const char* pFileName)
 {
-    std::string ret = "";
+    std::string ret;
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName, 0);
     Header header = rpmdbNextIterator(iter);
@@ -161,20 +157,15 @@ std::string GetComponent(const char* pFileName)
     return ret;
 }
 
-std::string GetPackage(const char* pFileName)
+char* GetPackage(const char* pFileName)
 {
-    std::string ret = "";
+    char* ret = NULL;
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName, 0);
     Header header = rpmdbNextIterator(iter);
     if (header != NULL)
     {
-        char* nerv = headerGetNEVR(header, NULL);
-        if (nerv != NULL)
-        {
-            ret = nerv;
-            free(nerv);
-        }
+        ret = headerGetNEVR(header, NULL);
     }
 
     rpmdbFreeIterator(iter);

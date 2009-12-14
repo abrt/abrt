@@ -97,12 +97,6 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     int pipeout[2];
     pid_t child;
 
-    struct passwd* pw = getpwuid(uid);
-    if (!pw)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "%s: can't get GID for UID", __func__);
-    }
-
     xpipe(pipeout);
     child = fork();
     if (child == -1)
@@ -115,17 +109,15 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
         close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
-        close(STDIN_FILENO);
-        if (open("/dev/null", O_RDONLY))
-                if (open("/", O_RDONLY))
-                        abort(); /* never happens */
+        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
-        setgroups(1, &pw->pw_gid);
-        setregid(pw->pw_gid, pw->pw_gid);
-        setreuid(uid, uid);
-        setsid();
+        struct passwd* pw = getpwuid(uid);
+        gid_t gid = pw ? pw->pw_gid : uid;
+        setgroups(1, &gid);
+        xsetregid(gid, gid);
+        xsetreuid(uid, uid);
 
         /* Nuke everything which may make setlocale() switch to non-POSIX locale:
          * we need to avoid having gdb output in some obscure language.
@@ -251,7 +243,7 @@ static int rate_backtrace(const char *backtrace)
 
 static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
 {
-    update_client(_("Getting backtrace..."));
+    update_client(_("Generating backtrace"));
 
     std::string UID;
     std::string executable;
@@ -549,7 +541,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
         dd.LoadText(FILENAME_PACKAGE, package);
     }
 
-    update_client(_("Searching for debug-info packages..."));
+    update_client(_("Starting debuginfo installation"));
 
     int pipein[2], pipeout[2];
     xpipe(pipein);
@@ -610,8 +602,6 @@ Another application is holding the yum lock, cannot continue
     /* Should not be needed (we use -y option), but just in case: */
     safe_write(pipein[1], "y\n", sizeof("y\n")-1);
     close(pipein[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */
@@ -676,7 +666,7 @@ Another application is holding the yum lock, cannot continue
  */
 static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 {
-    update_client(_("Searching for debug-info packages..."));
+    update_client(_("Starting debuginfo installation"));
 
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
@@ -692,8 +682,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     {
         close(pipeout[0]);
         xmove_fd(pipeout[1], STDOUT_FILENO);
-        close(STDIN_FILENO);
-        xopen("/dev/null", O_RDONLY);
+        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
         /* Not a good idea, we won't see any error messages */
         /*close(STDERR_FILENO);*/
 
@@ -709,8 +698,6 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     }
 
     close(pipeout[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */
@@ -860,8 +847,7 @@ static bool DebuginfoCheckPolkit(int uid)
     if (child_pid == 0)
     {
         //child
-        if (setuid(uid))
-            exit(1); //paranoia
+        xsetreuid(uid, uid);
         PolkitResult result = polkit_check_authorization(getpid(),
                  "org.fedoraproject.abrt.install-debuginfos");
         exit(result != PolkitYes); //exit 1 (failure) if not allowed

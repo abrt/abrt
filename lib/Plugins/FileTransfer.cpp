@@ -68,9 +68,8 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
 
     string wholeURL = concat_path_file(pURL, pFilename);
 
-    int result;
     int count = m_nRetryCount;
-    do
+    while (1)
     {
         FILE *f;
         struct stat buf;
@@ -99,12 +98,14 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
         curl_easy_setopt(curl, CURLOPT_INFILESIZE, buf.st_size);
         /* everything is done here; result 0 means success */
-        result = curl_easy_perform(curl);
+        int result = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(f);
+        if (result == 0 || --count <= 0)
+            break;
+        /* retry the upload if not succesful, wait a bit before next try */
+        sleep(m_nRetryDelay);
     }
-    /*retry the upload if not succesful, wait a bit before next try*/
-    while (result != 0 && --count >= 0 && (sleep(m_nRetryDelay), 1));
 }
 
 /*

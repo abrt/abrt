@@ -575,29 +575,35 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
     }
     else
     {
-        package = GetPackage(pExecutable);
-        packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
-        if (packageName == "" ||
-            (g_setBlackList.find(packageName) != g_setBlackList.end()))
+        char *rpm_pkg = GetPackage(pExecutable);
+        if (rpm_pkg == NULL)
         {
-            if (packageName == "")
-            {
-                error_msg("Executable doesn't belong to any package");
-                return MW_PACKAGE_ERROR;
-            }
-            log("Blacklisted package");
+            log("Executable '%s' doesn't belong to any package", pExecutable);
+            return MW_PACKAGE_ERROR;
+        }
+
+        package = rpm_pkg;
+        packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
+        VERB2 log("Package:'%s' short:'%s'", rpm_pkg, packageName.c_str());
+        free(rpm_pkg);
+
+	if (g_setBlackList.find(packageName) != g_setBlackList.end())
+        {
+            log("Blacklisted package '%s'", packageName.c_str());
             return MW_BLACKLISTED;
         }
         if (g_settings_bOpenGPGCheck)
         {
             if (!s_RPM.CheckFingerprint(packageName.c_str()))
             {
-                error_msg("package isn't signed with proper key");
+                log("Package '%s' isn't signed with proper key", packageName.c_str());
                 return MW_GPG_ERROR;
             }
             if (!CheckHash(packageName.c_str(), pExecutable))
             {
-                error_msg("executable has bad hash");
+                error_msg("Executable '%s' seems to be modified, "
+                                "doesn't match one from package '%s'",
+                                pExecutable, packageName.c_str());
                 return MW_GPG_ERROR;
             }
         }

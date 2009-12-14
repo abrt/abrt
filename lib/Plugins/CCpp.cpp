@@ -101,13 +101,6 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
     int pipeout[2];
     pid_t child;
 
-    gid_t gid = uid;
-    struct passwd* pw = getpwuid(uid);
-    if (pw)
-    {
-        gid = pw->pw_gid;
-    }
-
     xpipe(pipeout);
     child = fork();
     if (child == -1)
@@ -120,18 +113,15 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
         close(pipeout[0]); /* read side of the pipe */
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
-        close(STDIN_FILENO);
-        if (open("/dev/null", O_RDONLY))
-        {
-            if (open("/", O_RDONLY))
-                abort(); /* never happens */
-        }
+        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
         /* Not a good idea, we won't see any error messages */
         /* close(STDERR_FILENO); */
 
+        struct passwd* pw = getpwuid(uid);
+        gid_t gid = pw ? pw->pw_gid : uid;
         setgroups(1, &gid);
-        setregid(gid, gid);
-        setreuid(uid, uid);
+        xsetregid(gid, gid);
+        xsetreuid(uid, uid);
         setsid();
 
         /* Nuke everything which may make setlocale() switch to non-POSIX locale:
@@ -261,7 +251,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
                          const char *pDebugInfoDirs,
                          string& pBacktrace)
 {
-    update_client(_("Getting backtrace..."));
+    update_client(_("Generating backtrace"));
 
     string UID;
     string executable;
@@ -379,7 +369,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
                               const char *debuginfo_dirs,
                               string& build_ids)
 {
-    update_client(_("Searching for debug-info packages..."));
+    update_client(_("Starting debuginfo installation"));
 
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
@@ -395,8 +385,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     {
         close(pipeout[0]);
         xmove_fd(pipeout[1], STDOUT_FILENO);
-        close(STDIN_FILENO);
-        xopen("/dev/null", O_RDONLY);
+        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
         /* Not a good idea, we won't see any error messages */
         /*close(STDERR_FILENO);*/
 
@@ -412,8 +401,6 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     }
 
     close(pipeout[1]);
-
-    update_client(_("Downloading and installing debug-info packages..."));
 
     FILE *pipeout_fp = fdopen(pipeout[0], "r");
     if (pipeout_fp == NULL) /* never happens */
@@ -564,12 +551,6 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     args[4] = (char*)backtrace_path.c_str();
     args[5] = NULL;
 
-    uid_t uid = atoi(uid_str.c_str());
-    gid_t gid = uid;
-    struct passwd* pw = getpwuid(uid);
-    if (pw)
-        gid = pw->pw_gid;
-
     int pipeout[2];
     xpipe(pipeout); /* stdout of abrt-backtrace */
     pid_t child = fork();
@@ -582,12 +563,13 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         xmove_fd(pipeout[1], STDOUT_FILENO);
         close(pipeout[0]); /* read side of the pipe */
 
-        /* abrt-backtrace is executed under the user's
-           uid and gid. */
+        /* abrt-backtrace is executed under the user's uid and gid. */
+        uid_t uid = atoi(uid_str.c_str());
+        struct passwd* pw = getpwuid(uid);
+        gid_t gid = pw ? pw->pw_gid : uid;
         setgroups(1, &gid);
-        setregid(gid, gid);
-        setreuid(uid, uid);
-        setsid();
+        xsetregid(gid, gid);
+        xsetreuid(uid, uid);
 
         execvp(args[0], args);
         VERB1 perror_msg("Can't execute '%s'", args[0]);
@@ -638,8 +620,7 @@ static bool DebuginfoCheckPolkit(int uid)
     if (child_pid == 0)
     {
         //child
-        if (setuid(uid))
-            exit(1); //paranoia
+        xsetreuid(uid, uid);
         PolkitResult result = polkit_check_authorization(getpid(),
                  "org.fedoraproject.abrt.install-debuginfos");
         exit(result != PolkitYes); //exit 1 (failure) if not allowed

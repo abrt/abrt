@@ -57,9 +57,8 @@ static void exec_and_feed_input(uid_t uid, const char* pText, char **pArgs)
         struct passwd* pw = getpwuid(uid);
         gid_t gid = pw ? pw->pw_gid : uid;
         setgroups(1, &gid);
-        setregid(gid, gid);
-        setreuid(uid, uid);
-        setsid(); /* why? I propose removing this */
+        xsetregid(gid, gid);
+        xsetreuid(uid, uid);
 
         execvp(pArgs[0], pArgs);
         exit(1); /* exec failed */
