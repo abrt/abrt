@@ -82,9 +82,9 @@ std::string GetDescription(const char* pPackage);
  * file. If the file doesn't belong to any package, empty string is
  * returned.
  * @param pFileName A file name.
- * @return A package name.
+ * @return A package name (malloced string)
  */
-std::string GetPackage(const char* pFileName);
+char* GetPackage(const char* pFileName);
 /**
  * Finds a main package for given file. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
