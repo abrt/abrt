@@ -52,7 +52,9 @@ static int extract_version(const char *linepointer, char *version)
 
 		start = strstr((char*)linepointer, "2.6.");
 		if (start) {
-			end = strchrnul(start, ' ');
+			end = strchr(start, ')');
+			if (!end)
+				end = strchrnul(start, ' ');
 			strncpy(version, start, end-start);
 			ret = 1;
 		}

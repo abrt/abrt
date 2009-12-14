@@ -64,7 +64,7 @@
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
- * - DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool
+ * - DeleteDebugDump(UUID): delete it from DB and delete corresponding /var/cache/abrt/DIR
  * - GetPluginsInfo(): returns vector_map_string_t
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
@@ -456,6 +456,12 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             continue;
         }
 
+//TODO: make it possible to detect when ccpp didn't finish dumping yet.
+//We are seeing it *before* ccpp finished, and it can take LONG time
+//(users saw 100+ seconds).
+//This floods syslog with "Lock file 'XXXXXX' is locked by process NNN"
+//Maybe ccpp should use XXXXXX.new name for incomplete dumps
+//and abrtd should watch for renames XXXXXX.new -> XXXXXX?
         log("Directory '%s' creation detected", name);
 
         std::string worst_dir;
@@ -667,7 +673,7 @@ int main(int argc, char** argv)
     int opt;
     int parent_pid = getpid();
 
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL, "");
 
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);

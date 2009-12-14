@@ -60,9 +60,9 @@ void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
 //}
 
 std::string CLogger::Report(const map_crash_report_t& pCrashReport,
-                            const map_plugin_settings_t& pSettings, const std::string& pArgs)
+                const map_plugin_settings_t& pSettings,
+                const char *pArgs)
 {
-    update_client(_("Creating a report..."));
 
     std::string description = make_description_logger(pCrashReport);
     description += "\n\n\n";
@@ -79,12 +79,13 @@ std::string CLogger::Report(const map_crash_report_t& pCrashReport,
 
     if (fOut)
     {
+        update_client(_("Writing report to '%s'"), m_sLogPath.c_str());
         fputs(description.c_str(), fOut);
         fclose(fOut);
         return "file://" + m_sLogPath;
     }
 
-    throw CABRTException(EXCEP_PLUGIN, "CLogger::Report(): Cannot open file: " + m_sLogPath);
+    throw CABRTException(EXCEP_PLUGIN, "Can't open '%s'", m_sLogPath.c_str());
 }
 
 PLUGIN_INFO(REPORTER,

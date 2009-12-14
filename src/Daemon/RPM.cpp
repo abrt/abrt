@@ -146,7 +146,7 @@ std::string GetComponent(const char* pFileName)
     if (header != NULL)
     {
         rpmtd td = rpmtdNew();
-        headerGet(header,RPMTAG_SOURCERPM, td, HEADERGET_DEFAULT);
+        headerGet(header, RPMTAG_SOURCERPM, td, HEADERGET_DEFAULT);
         const char * srpm = rpmtdGetString(td);
         if (srpm != NULL)
         {

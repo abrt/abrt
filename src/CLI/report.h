@@ -19,6 +19,6 @@
 #define ABRT_CLI_REPORT_H
 
 /* Reports the crash with corresponding uuid over DBus. */
-extern int report(const char *uuid, bool always);
+int report(const char *uuid, bool always);
 
 #endif

@@ -1,5 +1,5 @@
 /*
-    abrt-pyhook-helper.cpp - writes data to the /var/cache/abrt directory
+    abrt-hook-python.cpp - writes data to the /var/cache/abrt directory
     with SUID bit
 
     Copyright (C) 2009  RedHat inc.
@@ -67,7 +67,7 @@ int main(int argc, char** argv)
     default:
  usage:
       error_msg_and_die(
-                "Usage: abrt-pyhook-helper [OPTIONS] <BACKTRACE\n"
+                "Usage: abrt-hook-python [OPTIONS] <BACKTRACE\n"
                 "\nOptions:\n"
                 "	-p,--pid PID		PID of process that caused the crash\n"
                 "	-p,--executable	PATH	absolute path to the program that crashed\n"

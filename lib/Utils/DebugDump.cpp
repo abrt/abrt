@@ -77,7 +77,7 @@ void CDebugDump::Open(const char *pDir)
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
     if (!ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, m_sDebugDumpDir + " does not exist");
+        throw CABRTException(EXCEP_DD_OPEN, "'%s' does not exist", m_sDebugDumpDir.c_str());
     }
     Lock();
     m_bOpened = true;
@@ -197,7 +197,7 @@ void CDebugDump::Lock()
     sprintf(pid_buf, "%u", (unsigned)getpid());
     while ((m_bLocked = GetAndSetLock(lockFile.c_str(), pid_buf)) != true)
     {
-        usleep(500000);
+        sleep(1); /* was 0.5 seconds */
     }
 }
 
@@ -222,7 +222,7 @@ void CDebugDump::Create(const char *pDir, int64_t uid)
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
     if (ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, ssprintf("'%s' already exists", m_sDebugDumpDir.c_str()));
+        throw CABRTException(EXCEP_DD_OPEN, "'%s' already exists", m_sDebugDumpDir.c_str());
     }
 
     Lock();
@@ -232,13 +232,13 @@ void CDebugDump::Create(const char *pDir, int64_t uid)
     {
         UnLock();
         m_bOpened = false;
-        throw CABRTException(EXCEP_DD_OPEN, ssprintf("Can't create dir '%s'", pDir));
+        throw CABRTException(EXCEP_DD_OPEN, "Can't create dir '%s'", pDir);
     }
     if (chmod(m_sDebugDumpDir.c_str(), 0700) == -1)
     {
         UnLock();
         m_bOpened = false;
-        throw CABRTException(EXCEP_DD_OPEN, ssprintf("Can't change mode of '%s'", pDir));
+        throw CABRTException(EXCEP_DD_OPEN, "Can't change mode of '%s'", pDir);
     }
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
@@ -272,7 +272,7 @@ static void DeleteFileDir(const char *pDir)
             if (errno != EISDIR)
             {
                 closedir(dir);
-                throw CABRTException(EXCEP_DD_DELETE, ssprintf("Can't remove dir %s", fullPath.c_str()));
+                throw CABRTException(EXCEP_DD_DELETE, "Can't remove dir %s", fullPath.c_str());
             }
             DeleteFileDir(fullPath.c_str());
         }
@@ -280,7 +280,7 @@ static void DeleteFileDir(const char *pDir)
     closedir(dir);
     if (remove(pDir) == -1)
     {
-        throw CABRTException(EXCEP_DD_DELETE, ssprintf("Can't remove dir %s", pDir));
+        throw CABRTException(EXCEP_DD_DELETE, "Can't remove dir %s", pDir);
     }
 }
 
@@ -325,7 +325,7 @@ static void LoadTextFile(const char *pPath, std::string& pData)
     FILE *fp = fopen(pPath, "r");
     if (!fp)
     {
-        throw CABRTException(EXCEP_DD_LOAD, ssprintf("Can't open file '%s'", pPath));
+        throw CABRTException(EXCEP_DD_LOAD, "Can't open file '%s'", pPath);
     }
     pData = "";
     int ch;
@@ -348,13 +348,13 @@ static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize)
     int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0666);
     if (fd < 0)
     {
-        throw CABRTException(EXCEP_DD_SAVE, ssprintf("Can't open file '%s'", pPath));
+        throw CABRTException(EXCEP_DD_SAVE, "Can't open file '%s'", pPath);
     }
     unsigned r = full_write(fd, pData, pSize);
     close(fd);
     if (r != pSize)
     {
-        throw CABRTException(EXCEP_DD_SAVE, ssprintf("Can't save file '%s'", pPath));
+        throw CABRTException(EXCEP_DD_SAVE, "Can't save file '%s'", pPath);
     }
 }
 
@@ -362,7 +362,7 @@ void CDebugDump::LoadText(const char* pName, std::string& pData)
 {
     if (!m_bOpened)
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::LoadText(): DebugDump is not opened.");
+        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
     }
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
     LoadTextFile(fullPath.c_str(), pData);
@@ -372,7 +372,7 @@ void CDebugDump::SaveText(const char* pName, const char* pData)
 {
     if (!m_bOpened)
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::SaveText(): DebugDump is not opened.");
+        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
     }
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
     SaveBinaryFile(fullPath.c_str(), pData, strlen(pData));
@@ -381,7 +381,7 @@ void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize
 {
     if (!m_bOpened)
     {
-        throw CABRTException(EXCEP_DD_OPEN, "CDebugDump::SaveBinary(): DebugDump is not opened.");
+        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
     }
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
     SaveBinaryFile(fullPath.c_str(), pData, pSize);
@@ -400,7 +400,7 @@ void CDebugDump::InitGetNextFile()
     m_pGetNextFileDir = opendir(m_sDebugDumpDir.c_str());
     if (m_pGetNextFileDir == NULL)
     {
-        throw CABRTException(EXCEP_DD_OPEN, "Can't open dir " + m_sDebugDumpDir);
+        throw CABRTException(EXCEP_DD_OPEN, "Can't open dir '%s'", m_sDebugDumpDir.c_str());
     }
 }
 

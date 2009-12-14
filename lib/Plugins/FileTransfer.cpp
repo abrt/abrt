@@ -79,12 +79,12 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         f = fopen(pFilename, "r");
         if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
         if (fstat(fileno(f), &buf) == -1)
         {
             fclose(f);
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't stat archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
         }
         curl = curl_easy_init();
         if (!curl)
@@ -114,7 +114,7 @@ now used in create_zip, but can be useful for some future
 archivers as well
 */
 static void traverse_directory(const char * directory, void * something,
-                               void (*func)(void *,const char *) )
+                               void (*func)(void *, const char *) )
 {
     DIR * dp;
     struct dirent * dirp;
@@ -225,7 +225,7 @@ static void create_tarbz2(const char * archive_name, const char * directory)
 #define BLOCK_MULTIPLIER 7
 
     name_without_bz2 = xstrdup(archive_name);
-    strrchr(name_without_bz2,'.')[0] = '\0';
+    strrchr(name_without_bz2, '.')[0] = '\0';
     create_tar(name_without_bz2, directory);
 
     tarFD = open(name_without_bz2, O_RDONLY);
@@ -282,7 +282,7 @@ void CFileTransfer::CreateArchive(const char *pArchiveName, const char *pDir)
     }
     else
     {
-        throw CABRTException(EXCEP_PLUGIN, "Unknown/unsupported archive type " + m_sArchiveType);
+        throw CABRTException(EXCEP_PLUGIN, "Unknown/unsupported archive type %s", m_sArchiveType.c_str());
     }
 }
 

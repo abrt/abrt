@@ -107,7 +107,7 @@ static void get_table(vector_database_rows_t& pTable,
         string errstr = ssprintf("Error in SQL:'%s' error: %s", sql, err);
         free(sql);
         sqlite3_free(err);
-        throw CABRTException(EXCEP_PLUGIN, errstr);
+        throw CABRTException(EXCEP_PLUGIN, errstr.c_str());
     }
     VERB2 log("%d rows returned by SQL:%s", nrow, sql);
     free(sql);
@@ -152,7 +152,7 @@ static void execute_sql(sqlite3 *db, const char *fmt, ...)
         string errstr = ssprintf("Error in SQL:'%s' error: %s", sql, err);
         free(sql);
         sqlite3_free(err);
-        throw CABRTException(EXCEP_PLUGIN, errstr);
+        throw CABRTException(EXCEP_PLUGIN, errstr.c_str());
     }
     VERB2 log("%d rows affected by SQL:%s", sqlite3_changes(db), sql);
     free(sql);
@@ -262,7 +262,7 @@ void CSQLite3::Connect()
     {
         if (ret != SQLITE_CANTOPEN)
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("CheckDB: Can't open database: %s", sqlite3_errmsg(m_pDB)));
+            throw CABRTException(EXCEP_PLUGIN, "Can't open database: %s", sqlite3_errmsg(m_pDB));
         }
 
         ret = sqlite3_open_v2(m_sDBPath.c_str(),
@@ -272,7 +272,7 @@ void CSQLite3::Connect()
         );
         if (ret != SQLITE_OK)
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't create database: %s", sqlite3_errmsg(m_pDB)));
+            throw CABRTException(EXCEP_PLUGIN, "Can't create database: %s", sqlite3_errmsg(m_pDB));
         }
     }
 

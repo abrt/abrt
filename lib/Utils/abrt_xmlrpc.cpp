@@ -13,7 +13,7 @@ void throw_if_xml_fault_occurred(xmlrpc_env *env)
         xmlrpc_env_clean(env); // this is needed ONLY if fault_occurred
         xmlrpc_env_init(env); // just in case user catches ex and _continues_ to use env
         error_msg("%s", errmsg.c_str()); // show error in daemon log
-        throw CABRTException(EXCEP_PLUGIN, errmsg);
+        throw CABRTException(EXCEP_PLUGIN, errmsg.c_str());
     }
 }
 

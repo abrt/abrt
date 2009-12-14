@@ -131,7 +131,7 @@ int main(int argc, char** argv)
     char* uuid = NULL;
     int op = -1;
 
-    setlocale(LC_ALL,"");
+    setlocale(LC_ALL, "");
 #if ENABLE_NLS
     bindtextdomain(PACKAGE, LOCALEDIR);
     textdomain(PACKAGE);
@@ -183,6 +183,7 @@ int main(int argc, char** argv)
     ABRTDaemon.Connect(VAR_RUN"/abrt.socket");
 #endif
 
+    int exitcode = 0;
     switch (op)
     {
         case OPT_GET_LIST:
@@ -193,14 +194,18 @@ int main(int argc, char** argv)
             break;
         }
         case OPT_REPORT:
-            report(uuid, false);
+            exitcode = report(uuid, false);
             break;
         case OPT_REPORT_ALWAYS:
-            report(uuid, true);
+            exitcode = report(uuid, true);
             break;
         case OPT_DELETE:
         {
-            call_DeleteDebugDump(uuid);
+            if (call_DeleteDebugDump(uuid) != 0)
+            {
+                log("Can't delete debug dump with UUID '%s'", uuid);
+                exitcode = 1;
+            }
             break;
         }
     }
@@ -209,5 +214,5 @@ int main(int argc, char** argv)
     ABRTDaemon.Disconnect();
 #endif
 
-    return 0;
+    return exitcode;
 }

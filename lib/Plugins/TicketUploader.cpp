@@ -117,12 +117,12 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
         FILE* f = fopen(pFilename, "r");
         if (!f)
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't open archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
         struct stat buf;
-        if (fstat(fileno(f), &buf) == -1)
+        if (fstat(fileno(f), &buf) == -1) /* TODO: never fails */
         {
-            throw CABRTException(EXCEP_PLUGIN, ssprintf("Can't stat archive file '%s'", pFilename));
+            throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
         }
         CURL* curl = curl_easy_init();
         if (!curl)
@@ -156,7 +156,8 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
 
 
 string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
-                               const map_plugin_settings_t& pSettings, const string& pArgs)
+                const map_plugin_settings_t& pSettings,
+                const char *pArgs)
 {
     update_client(_("Creating an TicketUploader report..."));
 
@@ -197,7 +198,7 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
     }
     string tmptar_name = concat_path_file(tmpdir_name, file_name.c_str());
 
-    if (mkdir(tmptar_name.c_str(),S_IRWXU))
+    if (mkdir(tmptar_name.c_str(), S_IRWXU))
     {
         Error(ssprintf("Can't mkdir '%s'", tmptar_name.c_str()).c_str());
     }
@@ -225,10 +226,9 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
             if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str()) < 0)
             {
                 throw CABRTException(EXCEP_PLUGIN,
-                        ssprintf("Can't copy '%s' to '%s'",
-                                it->second[CD_CONTENT].c_str(),
-                                ofile_name.c_str()
-                        )
+                        "Can't copy '%s' to '%s'",
+                        it->second[CD_CONTENT].c_str(),
+                        ofile_name.c_str()
                 );
             }
         }

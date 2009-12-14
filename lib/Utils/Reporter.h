@@ -42,7 +42,7 @@ class CReporter : public CPlugin
          */
         virtual std::string Report(const map_crash_report_t& pCrashReport,
                                    const map_plugin_settings_t& pSettings,
-                                   const std::string& pArgs) = 0;
+                                   const char *pArgs) = 0;
 };
 
 #endif /* REPORTER_H_ */

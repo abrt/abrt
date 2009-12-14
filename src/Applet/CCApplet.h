@@ -41,6 +41,7 @@ class CApplet
         bool m_bDaemonRunning;
         int m_iAnimationStage;
         guint m_iAnimator;
+        unsigned m_iAnimCountdown;
         bool m_bIconsLoaded;
 
         enum ICON_STAGES
@@ -71,12 +72,12 @@ class CApplet
         // or ask the daemon every time?
         // maybe just events which occured during current session
         // map::
-//        int AddEvent(int pUUID, const std::string& pProgname);
+//        int AddEvent(int pUUID, const char *pProgname);
 //        int RemoveEvent(int pUUID);
 
     protected:
         //@@TODO applet menus
-        static void OnAppletActivate_CB(GtkStatusIcon *status_icon,gpointer user_data);
+        static void OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data);
         static void OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          button,
                             guint          activate_time,

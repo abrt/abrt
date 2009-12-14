@@ -286,11 +286,11 @@ CAnalyzer* CPluginManager::GetAnalyzer(const char *pName)
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
     if (m_mapABRTPlugins[pName]->GetType() != ANALYZER)
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not an analyzer plugin", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not an analyzer plugin", pName);
     }
     return (CAnalyzer*)(plugin->second);
 }
@@ -300,11 +300,11 @@ CReporter* CPluginManager::GetReporter(const char *pName)
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
     if (m_mapABRTPlugins[pName]->GetType() != REPORTER)
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not a reporter plugin", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not a reporter plugin", pName);
     }
     return (CReporter*)(plugin->second);
 }
@@ -314,11 +314,11 @@ CAction* CPluginManager::GetAction(const char *pName)
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
     if (m_mapABRTPlugins[pName]->GetType() != ACTION)
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not an action plugin", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not an action plugin", pName);
     }
     return (CAction*)(plugin->second);
 }
@@ -328,11 +328,11 @@ CDatabase* CPluginManager::GetDatabase(const char *pName)
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
     if (m_mapABRTPlugins[pName]->GetType() != DATABASE)
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not a database plugin", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not a database plugin", pName);
     }
     return (CDatabase*)(plugin->second);
 }
@@ -342,7 +342,7 @@ plugin_type_t CPluginManager::GetPluginType(const char *pName)
     map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
     if (plugin == m_mapPlugins.end())
     {
-        throw CABRTException(EXCEP_PLUGIN, ssprintf("Plugin '%s' is not registered", pName));
+        throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
     return m_mapABRTPlugins[pName]->GetType();
 }

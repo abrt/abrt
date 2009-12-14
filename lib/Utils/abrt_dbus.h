@@ -194,17 +194,19 @@ static int load_vector(DBusMessageIter* iter, std::vector<E>& val)
 
     int r;
 //int cnt = 0;
-    //type = dbus_message_iter_get_arg_type(&sub_iter);
-    /* here "type" is the element's type, and it will be checked by load_val */
-    // if (type != DBUS_TYPE_INVALID) - not needed?
-    do {
-        E elem;
+    /* When the vector has 0 elements, we see DBUS_TYPE_INVALID here */
+    type = dbus_message_iter_get_arg_type(&sub_iter);
+    if (type != DBUS_TYPE_INVALID)
+    {
+        do {
+            E elem;
 //cnt++;
-        r = load_val(&sub_iter, elem);
-        if (r < 0)
-            return r;
-        val.push_back(elem);
-    } while (r == ABRT_DBUS_MORE_FIELDS);
+            r = load_val(&sub_iter, elem);
+            if (r < 0)
+                return r;
+            val.push_back(elem);
+        } while (r == ABRT_DBUS_MORE_FIELDS);
+    }
 //log("%s: %d elems", __func__, cnt);
 
     return dbus_message_iter_next(iter);

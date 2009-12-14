@@ -107,7 +107,7 @@ def write_dump(pid, tb_uuid, tb):
     if sys.argv[0]:
         executable = os.path.abspath(sys.argv[0])
 
-    command = ["abrt-pyhook-helper"]
+    command = ["/usr/libexec/abrt-hook-python"]
     command.append("--pid=%s" % pid)
     command.append("--executable=%s" % executable)
     command.append("--uuid=%s" % tb_uuid)
@@ -129,13 +129,9 @@ def __dump_exception(out, text, tracebk):
     out.write ("\nLocal variables in innermost frame:\n")
     try:
         for (key, value) in frame.f_locals.items():
-            out.write ("%s: %s\n" % (key, value))
+            out.write ("%s: %s\n" % (key, repr(value)))
     except:
         pass
-
-
-def __exception_window(title, text, component_name):
-    pass
 
 __ACTION_STR = ""
 def action(what):

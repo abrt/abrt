@@ -348,7 +348,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
                 VERB2 log("%s.Report(...)", it_ar->first.c_str());
-                reporter->Report(crashReport, plugin_settings, it_ar->second);
+                reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
             }
             else if (tp == ACTION)
             {
@@ -427,12 +427,12 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
     std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
 
-    // Save comments and how to reproduciton
+    // Save comment and "how to reproduce"
     map_crash_report_t::const_iterator it_comment = pCrashReport.find(CD_COMMENT);
     map_crash_report_t::const_iterator it_reproduce = pCrashReport.find(CD_REPRODUCE);
-    std::string pDumpDir = getDebugDumpDir(UUID.c_str(), UID.c_str());
-
+    if (it_comment != pCrashReport.end() || it_reproduce != pCrashReport.end())
     {
+        std::string pDumpDir = getDebugDumpDir(UUID.c_str(), UID.c_str());
         CDebugDump dd;
         dd.Open(pDumpDir.c_str());
         if (it_comment != pCrashReport.end())
@@ -490,7 +490,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                     }
 #endif
                     map_plugin_settings_t plugin_settings = pSettings[pluginName];
-                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second);
+                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second.c_str());
 
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
                     if (home != "")
@@ -498,15 +498,15 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                         reporter->SetSettings(oldSettings);
                     }
 #endif
-                    ret[pluginName].push_back("1");
-                    ret[pluginName].push_back(res);
+                    ret[pluginName].push_back("1"); // REPORT_STATUS_IDX_FLAG
+                    ret[pluginName].push_back(res); // REPORT_STATUS_IDX_MSG
                     message += res + "\n";
                 }
             }
             catch (CABRTException& e)
             {
-                ret[pluginName].push_back("0");
-                ret[pluginName].push_back(e.what());
+                ret[pluginName].push_back("0");      // REPORT_STATUS_IDX_FLAG
+                ret[pluginName].push_back(e.what()); // REPORT_STATUS_IDX_MSG
                 update_client("Reporting via '%s' was not successful: %s", pluginName.c_str(), e.what());
             }
         }
@@ -604,6 +604,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
     }
 
     std::string description = GetDescription(packageName.c_str());
+//TODO: if executable in /usr/bin/python, /bin/sh and such,
+//we need to extract component using argv[1]
     std::string component = GetComponent(pExecutable);
 
     try
@@ -688,7 +690,7 @@ void autoreport(const pair_string_string_t& reporter_options, const map_crash_re
     }
 
     map_plugin_settings_t plugin_settings;
-    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second);
+    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second.c_str());
 }
 
 /**

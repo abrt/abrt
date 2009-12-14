@@ -73,7 +73,7 @@ std::string crash_data_to_string(const map_crash_data_t& pCrashData)
     std::stringstream sCD;
     map_crash_data_t::const_iterator it_cd;
     sCD << "(" << pCrashData.size() << ")";
-    for(it_cd = pCrashData.begin(); it_cd != pCrashData.end(); it_cd++)
+    for (it_cd = pCrashData.begin(); it_cd != pCrashData.end(); it_cd++)
     {
         sCD << "(" << it_cd->first.length() << ")";
         sCD << it_cd->first;
@@ -150,7 +150,7 @@ map_crash_data_t string_to_crash_data(const std::string& pMessage, int& len)
         sField = message.substr(ii, nSize);
         message.erase(0, ii + nSize);
         len += ii + nSize;
-        switch(nField % 4)
+        switch (nField % 4)
         {
             case 0:
                 name = sField;

@@ -1,5 +1,5 @@
-libexec_PROGRAMS = abrt-hook-ccpp
-bin_PROGRAMS = dumpoops abrt-pyhook-helper
+libexec_PROGRAMS = abrt-hook-ccpp abrt-hook-python
+bin_PROGRAMS = dumpoops
 
 # CCpp
 abrt_hook_ccpp_SOURCES = \
@@ -32,26 +32,21 @@ dumpoops_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
     ../../lib/Utils/libABRTdUtils.la
 
-# abrt-pyhook-helper
-abrt_pyhook_helper_SOURCES = \
-    abrt-pyhook-helper.cpp
-abrt_pyhook_helper_CPPFLAGS = \
+# abrt-hook-python
+abrt_hook_python_SOURCES = \
+    abrt-hook-python.cpp
+abrt_hook_python_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -D_GNU_SOURCE
-abrt_pyhook_helper_LDADD = \
+abrt_hook_python_LDADD = \
     ../../lib/Utils/libABRTUtils.la
-
-man_MANS = pyhook.conf.5
 
 python_PYTHON = sitecustomize.py abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
-
-pyhookconfdir = $(CONF_DIR)
-dist_pyhookconf_DATA = pyhook.conf
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
 

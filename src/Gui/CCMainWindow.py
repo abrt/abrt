@@ -28,6 +28,7 @@ class MainWindow():
     ccdaemon = None
     def __init__(self):
         self.theme = gtk.icon_theme_get_default()
+        self.updates = ""
         try:
             self.ccdaemon = CCDBusBackend.DBusManager()
         except ABRTExceptions.IsRunning, e:
@@ -44,21 +45,18 @@ class MainWindow():
 
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window3")
-        self.window.set_default_size(700, 480)
-        if (self.window):
+        if self.window:
+            self.window.set_default_size(700, 480)
             self.window.connect("delete_event", self.delete_event_cb)
             self.window.connect("destroy", self.destroy)
             self.window.connect("focus-in-event", self.focus_in_cb)
 
-        self.statusWindow = self.wTree.get_widget("pBarWindow")
-        if self.statusWindow:
-            self.statusWindow.connect("delete_event", self.sw_delete_event_cb)
-
-        self.appBar = self.wTree.get_widget("appBar")
         # pregress bar window to show while bt is being extracted
         self.pBarWindow = self.wTree.get_widget("pBarWindow")
-        self.pBarWindow.set_transient_for(self.window)
-        self.pBar = self.wTree.get_widget("pBar")
+        if self.pBarWindow:
+            self.pBarWindow.connect("delete_event", self.sw_delete_event_cb)
+            self.pBarWindow.set_transient_for(self.window)
+            self.pBar = self.wTree.get_widget("pBar")
 
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
@@ -110,7 +108,6 @@ class MainWindow():
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.ccdaemon.connect("abrt-error", self.error_cb)
-        #self.ccdaemon.connect("warning", self.warning_cb)
         self.ccdaemon.connect("update", self.update_cb)
         self.ccdaemon.connect("show", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
@@ -153,16 +150,6 @@ class MainWindow():
             return
         dialog.show()
 
-    def warning_cb(self, daemon, message=None):
-        # try to hide the progressbar, we dont really care if it was visible ..
-        try:
-            #gobject.source_remove(self.timer)
-            #self.pBarWindow.hide()
-            pass
-        except Exception, e:
-            pass
-        gui_error_message("%s" % message, parent_dialog=self.window)
-
     def error_cb(self, daemon, message=None):
         # try to hide the progressbar, we dont really care if it was visible ..
         try:
@@ -173,8 +160,14 @@ class MainWindow():
         gui_error_message(_("Unable to finish current task!\n%s" % message), parent_dialog=self.window)
 
     def update_cb(self, daemon, message):
+        self.updates += message
+        if self.updates[-1] != '\n':
+            self.updates += '\n'
         message = message.replace('\n',' ')
         self.wTree.get_widget("lStatus").set_text(message)
+        buff = gtk.TextBuffer()
+        buff.set_text(self.updates)
+        self.wTree.get_widget("tvUpdates").set_buffer(buff)
 
     # call to update the progressbar
     def progress_update_cb(self, *args):
@@ -187,7 +180,7 @@ class MainWindow():
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
         except Exception, e:
-            # there is something wrong with the daemon if we can get the dumplist
+            # there is something wrong with the daemon if we cant get the dumplist
             gui_error_message(_("Error while loading the dumplist.\n%s" % e))
             # so we shouldn't continue..
             sys.exit()
@@ -225,7 +218,9 @@ class MainWindow():
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         #move this to Dump class
         if dump.isReported():
-            report_label = _("<b>This crash has been reported, you can find the report(s) at:</b>\n")
+            report_label = _("<b>This crash has been reported:</b>\n")
+            # plugin message follows, but at least in case of kerneloops,
+            # it is not informative (no URL to the report)
             for message in dump.getMessage().split('\n'):
                 if message:
                     if "http" in message[0:5] or "file:///"[0:8] in message:
@@ -284,13 +279,12 @@ class MainWindow():
         if not report:
             gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
             return
-        report_dialog = ReporterDialog(report, self.ccdaemon, parent=self.window)
+        report_dialog = ReporterDialog(report, self.ccdaemon, log=self.updates, parent=self.window)
         # (response, report)
         response, result = report_dialog.run()
 
         if response == gtk.RESPONSE_APPLY:
             try:
-                self.update_pBar = False
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
                 reporters_settings = {}
@@ -308,9 +302,9 @@ class MainWindow():
             self.refresh_report(report)
 
     def refresh_report(self, report):
-        self.update_pBar = False
+        self.updates = ""
         self.pBarWindow.show_all()
-        self.timer = gobject.timeout_add (100,self.progress_update_cb)
+        self.timer = gobject.timeout_add(100, self.progress_update_cb)
 
         # show the report window with selected report
         try:
@@ -329,14 +323,14 @@ class MainWindow():
         self.on_dumpRowActivated(self.dlist, None, path, None)
 
     def on_dumpRowActivated(self, treeview, iter, path, user_data=None):
+        self.updates = ""
         # FIXME don't duplicate the code, move to function
         dumpsListStore, path = treeview.get_selection().get_selected_rows()
         if not path:
             return
-        self.update_pBar = False
         #self.pBar.show()
         self.pBarWindow.show_all()
-        self.timer = gobject.timeout_add (100,self.progress_update_cb)
+        self.timer = gobject.timeout_add(100, self.progress_update_cb)
 
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         # show the report window with selected dump

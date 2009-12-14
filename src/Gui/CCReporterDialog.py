@@ -26,10 +26,11 @@ CD_ATT = "a"
 
 # response
 REFRESH = -50
+SHOW_LOG = -60
 
 class ReporterDialog():
     """Reporter window"""
-    def __init__(self, report, daemon, parent=None):
+    def __init__(self, report, daemon, log=None, parent=None):
         self.editable = []
         self.row_dict = {}
         self.report = report
@@ -80,22 +81,29 @@ class ReporterDialog():
         toggle_renderer.set_property('activatable', True)
         toggle_renderer.connect( 'toggled', self.on_send_toggled, self.reportListStore )
         column = gtk.TreeViewColumn('Send', toggle_renderer)
-        column.add_attribute( toggle_renderer, "active", 3)
-        column.add_attribute( toggle_renderer, "visible", 4)
+        column.add_attribute(toggle_renderer, "active", 3)
+        column.add_attribute(toggle_renderer, "visible", 4)
         self.tvReport.insert_column(column,0)
         # connect the signals
         self.tvReport.connect_after("size-allocate", self.on_window_resize)
         # start with the warning hidden, so it's not visible when there is no rating
         self.wTree.get_widget("ebErrors").hide()
+        self.wTree.get_widget("bLog").connect("clicked", self.show_log_cb, log)
         self.hydrate()
 
+    def show_log_cb(self, widget, log):
+        show_log(log, parent=self.window)
     # this callback is called when user press Cancel or Report button in Report dialog
-    def on_response(self, dialog, response_id, daemon ):
-        # thu button has been pressed (probably)
+    def on_response(self, dialog, response_id, daemon):
+        # the button has been pressed (probably)
+        # print "response_id", response_id
         if response_id == gtk.RESPONSE_APPLY:
             if not (self.check_settings(daemon) and self.check_report()):
                 dialog.stop_emission("response")
                 self.wTree.get_widget("bSend").stop_emission("clicked")
+        if response_id == SHOW_LOG:
+        # prevent dialog from quitting the run()
+            dialog.stop_emission("response")
 
     def on_send_toggled(self, cell, path, model):
         model[path][3] = not model[path][3]
@@ -235,8 +243,6 @@ class ReporterDialog():
                 # probably usable 3
                 elif int(self.report[item][CD_CONTENT]) < 4:
                     ebErrors.show()
-                    fReproducer.hide()
-                    fComments.hide()
                     lErrors.set_markup(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
                     bSend.set_sensitive(True)
                 else:

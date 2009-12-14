@@ -135,14 +135,15 @@ static void NameOwnerChanged(DBusMessage* signal)
     }
 
 // hide icon if it's visible - as NM and don't show it, if it's not
-    if(!new_owner[0])
+    if (!new_owner[0])
         applet->HideIcon();
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
 {
     const char* member = dbus_message_get_member(msg);
-    log("%s(member:'%s')", __func__, member);
+
+    VERB1 log("%s(member:'%s')", __func__, member);
 
     int type = dbus_message_get_type(msg);
     if (type != DBUS_MESSAGE_TYPE_SIGNAL)

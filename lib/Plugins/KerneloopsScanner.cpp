@@ -109,7 +109,7 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 		}
 		catch (CABRTException& e)
 		{
-			throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": " + e.what());
+			throw CABRTException(EXCEP_PLUGIN, "%s: %s", __func__, e.what());
 		}
 		oopsList.pop_back();
 	}

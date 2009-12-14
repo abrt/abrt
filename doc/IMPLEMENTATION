@@ -5,7 +5,7 @@ C/C++ handling:
 
 we change /proc/sys/kernel/core_pattern to invoke abrtd helper to save 
 the coredump of crashing app:
-* helper source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Hooks/abrt-pyhook-helper.cpp
+* helper source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Hooks/abrt-hook-python.cpp
 the code responsible for this:
 
     #define CORE_PATTERN            "|/usr/libexec/abrt-hook-ccpp" "/var/cache/abrt" %p %s %u"
@@ -21,7 +21,7 @@ the code responsible for this:
 %s - signal
 %u - uid
 
-when some crash occures abrt-hook-ccpp is invoked to store the coredump and some other info
+when some crash occurs abrt-hook-ccpp is invoked to store the coredump and some other info
 read from /proc/<pid>/:
 
 executable: 
@@ -53,7 +53,7 @@ daemon process the written info and saves some aditional information:
         architecture    : architecture (i386, x86_64,etc)
         package         : package name
         reason          : e.g "Process was terminated by signal 11 (Segmentation fault)"
-        time            : unix time if the crash
+        time            : unix time of the crash
 
 2. send dbus signal (broadcast) about new crash, this signal contains two informations:
     1. uid of the app owner
@@ -79,6 +79,7 @@ abrt-debuginfo-install is a shell script using elfutils to get build-ids from co
 * script source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Daemon/abrt-debuginfo-install
     c) run gdb and get backtrace from coredump:
     see http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=lib/Plugins/CCpp.cpp line 260
+    - gdb is run with the same privileges as the crashed app (setregid, setreuid)
     d) BT is saved to same directory where the coredump is
     
 Once the backtrace is processed all data from the /var/cache/abrt/ccpp-<time>-<pid> is sent

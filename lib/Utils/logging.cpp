@@ -60,6 +60,7 @@ static void verror_msg_helper(const char *s, va_list p, const char* strerr, int 
 		fflush(stdout);
 		full_write(STDERR_FILENO, msg, used + msgeol_len);
 	}
+	msg[used] = '\0'; /* remove msg_eol (usually "\n") */
 	if (flags & LOGMODE_SYSLOG) {
 		syslog(LOG_ERR, "%s", msg + prefix_len);
 	}
@@ -116,16 +117,6 @@ void perror_msg(const char *s, ...)
 	/* Guard against "<error message>: Success" */
 	verror_msg_helper(s, p, errno ? strerror(errno) : NULL, (logmode | LOGMODE_CUSTOM));
 	va_end(p);
-}
-
-void simple_perror_msg_and_die(const char *s)
-{
-	perror_msg_and_die("%s", s);
-}
-
-void simple_perror_msg(const char *s)
-{
-	perror_msg("%s", s);
 }
 
 void die_out_of_memory(void)

@@ -100,7 +100,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     struct passwd* pw = getpwuid(uid);
     if (!pw)
     {
-        throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot get GID for UID.");
+        throw CABRTException(EXCEP_PLUGIN, "%s: can't get GID for UID", __func__);
     }
 
     xpipe(pipeout);
@@ -662,7 +662,7 @@ Another application is holding the yum lock, cannot continue
             fclose(pipeout_fp);
             kill(child, SIGTERM);
             wait(NULL);
-            throw CABRTException(EXCEP_PLUGIN, std::string(__func__) + ": cannot install debuginfos for " + pPackage);
+            throw CABRTException(EXCEP_PLUGIN, "%s: can't install debuginfos for %s", __func__, pPackage);
         }
 #endif
     }
@@ -879,8 +879,6 @@ static bool DebuginfoCheckPolkit(int uid)
 
 void CAnalyzerFirefox::CreateReport(const char *pDebugDumpDir, int force)
 {
-    update_client(_("Starting report creation..."));
-
     std::string package;
     std::string backtrace;
     std::string UID;

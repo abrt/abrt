@@ -40,7 +40,7 @@ std::string CCommLayerServerSocket::GetSenderUID(int pSenderSocket)
     socklen_t len = sizeof(creds);
     if (getsockopt(pSenderSocket, SOL_SOCKET, SO_PEERCRED, &creds, &len) == -1)
     {
-        throw CABRTException(EXCEP_ERROR, "CCommLayerServerSocket::GetSenderUID(): Error can get sender uid.");
+        throw CABRTException(EXCEP_ERROR, "CCommLayerServerSocket::GetSenderUID(): error getting sender uid");
     }
     return to_string(creds.uid);
 }
@@ -219,7 +219,7 @@ vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pS
 }
 
 //reimplement as CreateReportThread(...)?
-//map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID,const std::string &pSender)
+//map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID, const std::string &pSender)
 //{
 //    map_crash_report_t crashReport;
 //    crashReport = ::CreateReport(pUUID, pSender);
