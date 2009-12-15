@@ -783,23 +783,24 @@ std::string getDebugDumpDir(const char *pUUID,
 
 static char *guess_app_path(const char* cmdline)
 {
-    const char *path_start = NULL;
+    const char *path_start;
     char *app_path = NULL;
-    // +1 to skip the space
+
     path_start = strchr(cmdline, ' ');
-    /* we found space in cmdline, so it might contain
-       path to some script like:
-        /usr/bin/python /usr/bin/system-control-network
-    */
-    if(path_start != NULL)
+    if (path_start != NULL)
     {
-        // skip the space
+        /* we found space in cmdline, so it might contain
+           path to some script like:
+            /usr/bin/python /usr/bin/system-control-network
+        */
+        /* +1 to skip the space */
         path_start++;
         /* if the string following the space doesn't start
            with '/' it's probably not a full path to app and
            we can't use it to determine the package name
         */
-        if(*path_start == '/'){
+        if (*path_start == '/')
+        {
             int len = strchrnul(path_start,' ') - path_start;
             // cut the cmdline arguments
             app_path = xstrndup(path_start, len);
