@@ -216,14 +216,14 @@ static int SetUpCron()
             std::string sM = "";
 
             sH = it_c->first.substr(0, pos);
-            nH = atoi(sH.c_str());
+            nH = xatou(sH.c_str());
             nH = nH > 23 ? 23 : nH;
             nH = nH < 0 ? 0 : nH;
             nM = nM > 59 ? 59 : nM;
             nM = nM < 0 ? 0 : nM;
             timeout += nH * 60 * 60;
             sM = it_c->first.substr(pos + 1);
-            nM = atoi(sM.c_str());
+            nM = xatou(sM.c_str());
             timeout += nM * 60;
         }
         else
@@ -231,7 +231,7 @@ static int SetUpCron()
             std::string sS = "";
 
             sS = it_c->first;
-            nS = atoi(sS.c_str());
+            nS = xatou(sS.c_str());
             nS = nS <= 0 ? 1 : nS;
             timeout = nS;
         }

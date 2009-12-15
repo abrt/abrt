@@ -14,6 +14,7 @@ libABRTUtils_la_SOURCES = \
     logging.cpp \
     copyfd.cpp \
     skip_whitespace.cpp \
+    xatonum.cpp \
     popen_and_save_output.cpp \
     stringops.cpp \
     dirsize.cpp \

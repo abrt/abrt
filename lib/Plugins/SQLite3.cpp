@@ -198,9 +198,9 @@ static bool check_table(sqlite3 *db)
     if (pos != string::npos)
     {
         string tableVersion = tableName.substr(pos + 2);
-        if (atoi(tableVersion.c_str()) < ABRT_TABLE_VERSION)
+        if (xatoi_u(tableVersion.c_str()) < ABRT_TABLE_VERSION)
         {
-            update_from_old_ver(db, atoi(tableVersion.c_str()));
+            update_from_old_ver(db, xatoi_u(tableVersion.c_str()));
         }
         return true;
     }

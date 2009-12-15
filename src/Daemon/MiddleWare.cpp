@@ -477,7 +477,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 
                     if (pUID != "")
                     {
-                        home = get_home_dir(atoi(pUID.c_str()));
+                        home = get_home_dir(xatoi_u(pUID.c_str()));
                         if (home != "")
                         {
                             oldSettings = reporter->GetSettings();

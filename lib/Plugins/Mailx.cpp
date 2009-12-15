@@ -163,7 +163,7 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
 
     update_client(_("Sending an email..."));
     const char *uid_str = pCrashReport.find(CD_MWUID)->second[CD_CONTENT].c_str();
-    exec_and_feed_input(atoi(uid_str), emailBody.c_str(), args);
+    exec_and_feed_input(xatoi_u(uid_str), emailBody.c_str(), args);
 
     while (*args)
     {

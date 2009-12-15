@@ -394,12 +394,12 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("RetryCount");
     if (it != end)
     {
-        m_nRetryCount = atoi(it->second.c_str());
+        m_nRetryCount = xatoi_u(it->second.c_str());
     }
     it = pSettings.find("RetryDelay");
     if (it != end)
     {
-        m_nRetryDelay = atoi(it->second.c_str());
+        m_nRetryDelay = xatoi_u(it->second.c_str());
     }
 }
 

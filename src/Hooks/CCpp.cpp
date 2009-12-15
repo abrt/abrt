@@ -202,24 +202,25 @@ int main(int argc, char** argv)
     logmode = LOGMODE_SYSLOG;
 
     const char* dddir = argv[1];
-    pid_t pid = atoi(argv[2]);
+    pid_t pid = xatoi_u(argv[2]);
     const char* signal_str = argv[3];
-    int signal = atoi(argv[3]);
-    uid_t uid = atoi(argv[4]);
+    int signal_no = xatoi_u(argv[3]);
+    uid_t uid = xatoi_u(argv[4]);
 
-    if (signal != SIGQUIT
-     && signal != SIGILL
-     && signal != SIGABRT
-     && signal != SIGFPE
-     && signal != SIGSEGV
+    if (signal_no != SIGQUIT
+     && signal_no != SIGILL
+     && signal_no != SIGABRT
+     && signal_no != SIGFPE
+     && signal_no != SIGSEGV
     ) {
         /* not an error, exit silently */
         return 0;
     }
-    if (pid <= 0 || (int)uid < 0)
+    if (pid <= 0)
     {
-        error_msg_and_die("pid '%s' or uid '%s' are bogus", argv[2], argv[4]);
+        error_msg_and_die("pid '%s' is bogus", argv[2]);
     }
+
 
     char *user_pwd = get_cwd(pid); /* may be NULL on error */
     int core_fd = STDIN_FILENO;
@@ -299,7 +300,7 @@ int main(int argc, char** argv)
         }
 
         char* cmdline = get_cmdline(pid); /* never NULL */
-        const char *signame = strsignal(atoi(signal_str));
+        const char *signame = strsignal(signal_no);
         char *reason = xasprintf("Process was terminated by signal %s (%s)", signal_str, signame ? signame : signal_str);
 
         snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
@@ -388,7 +389,7 @@ int main(int argc, char** argv)
                     if (isdigit(*p))
                         /* x1.25: go a bit up, so that usual in-daemon trimming
                          * kicks in first, and we don't "fight" with it. */
-                        setting_MaxCrashReportsSize = (unsigned long)atoi(p) * 5 / 4;
+                        setting_MaxCrashReportsSize = (unsigned long)xatou(p) * 5 / 4;
                     continue;
                 }
 #undef DIRECTIVE

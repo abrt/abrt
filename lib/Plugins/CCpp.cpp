@@ -309,7 +309,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[11] = (char*)"info sharedlib";
     args[12] = NULL;
 
-    ExecVP(args, atoi(UID.c_str()), pBacktrace);
+    ExecVP(args, xatoi_u(UID.c_str()), pBacktrace);
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output,
@@ -355,7 +355,7 @@ static string run_unstrip_n(const char *pDebugDumpDir)
     args[3] = NULL;
 
     string output;
-    ExecVP(args, atoi(UID.c_str()), output);
+    ExecVP(args, xatoi_u(UID.c_str()), output);
 
     free(args[1]);
 
@@ -575,7 +575,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         close(pipeout[0]); /* read side of the pipe */
 
         /* abrt-backtrace is executed under the user's uid and gid. */
-        uid_t uid = atoi(uid_str.c_str());
+        uid_t uid = xatoi_u(uid_str.c_str());
         struct passwd* pw = getpwuid(uid);
         gid_t gid = pw ? pw->pw_gid : uid;
         setgroups(1, &gid);
@@ -670,7 +670,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.Close(); /* do not keep dir locked longer than needed */
 
     string build_ids;
-    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str())))
+    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str())))
     {
         if (m_nDebugInfoCacheMB > 0)
         {
@@ -761,7 +761,7 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("DebugInfoCacheMB");
     if (it != end)
     {
-        m_nDebugInfoCacheMB = atoi(it->second.c_str());
+        m_nDebugInfoCacheMB = xatou(it->second.c_str());
     }
     it = pSettings.find("InstallDebugInfo");
     if (it == end) //compat, remove after 0.0.11
