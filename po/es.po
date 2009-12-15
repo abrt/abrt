@@ -1,14 +1,16 @@
 # Fedora Spanish translation of abrt.master
+# This file is distributed under the same license as the abrt.master package.
 #
 # Gladys Guerrero Lozano <gguerrer@redhat.com>, 2009.
 # Fernando Gonzalez <fgonz@fedoraproject.org>, 2009.
 # Héctor Daniel Cabrera <logan@fedoraproject.org>
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-11 08:18+0000\n"
-"PO-Revision-Date: 2009-12-11 10:26-0300\n"
+"POT-Creation-Date: 2009-12-15 10:52+0000\n"
+"PO-Revision-Date: 2009-12-15 11:51-0300\n"
 "Last-Translator: Héctor Daniel Cabrera <logan@fedoraproject.org>\n"
 "Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -429,7 +431,7 @@ msgstr "Ver e informar el cuelgue de una aplicación"
 msgid "A crash in package %s has been detected"
 msgstr "Ha sido detectado una caída en el paquete %s."
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
@@ -479,17 +481,13 @@ msgstr "Saliendo..."
 msgid "Getting local universal unique identification"
 msgstr "Obteniendo la identificación única universal local"
 
-#: ../lib/Plugins/CCpp.cpp:264
-msgid "Getting backtrace..."
-msgstr "Obteniendo el backtrace..."
+#: ../lib/Plugins/CCpp.cpp:254
+msgid "Generating backtrace"
+msgstr "Generando seguimiento..."
 
-#: ../lib/Plugins/CCpp.cpp:382
-msgid "Searching for debug-info packages..."
-msgstr "Buscando paquetes de información del depurador..."
-
-#: ../lib/Plugins/CCpp.cpp:416
-msgid "Downloading and installing debug-info packages..."
-msgstr "Descargando e instalando paquetes de información del depurador..."
+#: ../lib/Plugins/CCpp.cpp:372
+msgid "Starting debuginfo installation"
+msgstr "Iniciando la instalación de la información de depuración"
 
 #: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
@@ -499,7 +497,7 @@ msgstr "Obteniendo la identificación única universal local..."
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:691
+#: ../lib/Plugins/CCpp.cpp:685
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
@@ -507,12 +505,13 @@ msgstr "Omita la instalación de la información de depuración"
 msgid "Creating and submitting a report..."
 msgstr "Creando y enviando un informe..."
 
-#: ../lib/Plugins/Logger.cpp:66
-msgid "Creating a report..."
-msgstr "Creando un informe..."
+#: ../lib/Plugins/Logger.cpp:82
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "Escribiendo reporte en '%s'"
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:385
 msgid "FileTransfer: URL not specified"
 msgstr "Transferencia de archivo: URL no especificada"
 
@@ -521,16 +520,16 @@ msgstr "Transferencia de archivo: URL no especificada"
 msgid "Sending archive %s to %s"
 msgstr "Enviando archivo %s a %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:310
 msgid "File Transfer: Creating a report..."
 msgstr "Transferencia de archivo: Creando un informe..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:335
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "No se puede crear y enviar un archivo: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:360
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "No se puede crear y enviar un archivo %s"
@@ -539,7 +538,7 @@ msgstr "No se puede crear y enviar un archivo %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "Creando un informe de cuelgue de kernel oops..."
 
-#: ../lib/Plugins/Mailx.cpp:165
+#: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
 msgstr "Enviando un correo..."
 
@@ -556,6 +555,12 @@ msgstr "ejecutando sosreport: %s"
 msgid "done running sosreport"
 msgstr "Sosreport corriendo"
 
+#~ msgid "Searching for debug-info packages..."
+#~ msgstr "Buscando paquetes de información del depurador..."
+#~ msgid "Downloading and installing debug-info packages..."
+#~ msgstr "Descargando e instalando paquetes de información del depurador..."
+#~ msgid "Creating a report..."
+#~ msgstr "Creando un informe..."
 #~ msgid "Starting report creation..."
 #~ msgstr "Iniciando la creación del informe..."
 #~ msgid "<span color=\"white\">Description</span>"
