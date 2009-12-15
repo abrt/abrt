@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.0.1
+Version: 1.0.2
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -398,6 +398,21 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Mon Dec 14 2009  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.2-1
+- disabled GPG check again (jmoskovc@redhat.com)
+- abrt-pyhook-helper rename (vda.linux@googlemail.com)
+- abrt-cli: report success/failure of reporting. closes bug 71 (vda.linux@googlemail.com)
+- less logging (vda.linux@googlemail.com)
+- mkde abrt-gui --help and --version behave as expected. closes bug 85 (vda.linux@googlemail.com)
+- dbus lib: fix parsing of 0-element arrays. Fixes bug 95 (vda.linux@googlemail.com)
+- make "abrt-cli --delete randomuuid" report that deletion failed. closes bug 59 (vda.linux@googlemail.com)
+- applet: make animation stop after 1 minute. (closes bug 108) (vda.linux@googlemail.com)
+- show comment and how to reproduce fields, when BT rating > 3 (jmoskovc@redhat.com)
+- Gui: make report status window's text wrap. Fixes bug 82 (vda.linux@googlemail.com)
+- CCpp analyzer: added "info sharedlib" (https://fedorahosted.org/abrt/ticket/90) (vda.linux@googlemail.com)
+- added link to bugzilla new account page to Bugzilla config dialog (jmoskovc@redhat.com)
+- GUI: added log window (jmoskovc@redhat.com)
+
 * Tue Dec  8 2009  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.1-1
 - PyHook: better logic for checking if abrtd is running rhbz#539987 (jmoskovc@redhat.com)
 - re-enabled gpg sign checking (jmoskovc@redhat.com)
