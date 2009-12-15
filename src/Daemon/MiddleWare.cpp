@@ -781,6 +781,33 @@ std::string getDebugDumpDir(const char *pUUID,
     return row.m_sDebugDumpDir;
 }
 
+static char *guess_app_path(const char* cmdline)
+{
+    const char *path_start = NULL;
+    char *app_path = NULL;
+    // +1 to skip the space
+    path_start = strchr(cmdline, ' ');
+    /* we found space in cmdline, so it might contain
+       path to some script like:
+        /usr/bin/python /usr/bin/system-control-network
+    */
+    if(path_start != NULL)
+    {
+        // skip the space
+        path_start++;
+        /* if the string following the space doesn't start
+           with '/' it's probably not a full path to app and
+           we can't use it to determine the package name
+        */
+        if(*path_start == '/'){
+            int len = strchrnul(path_start,' ') - path_start;
+            // cut the cmdline arguments
+            app_path = xstrndup(path_start, len);
+        }
+    }
+    return app_path;
+}
+
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                 map_crash_info_t& pCrashInfo)
 {
@@ -788,6 +815,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     std::string time;
     std::string analyzer;
     std::string executable;
+    std::string cmdline;
     try
     {
         CDebugDump dd;
@@ -796,6 +824,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         dd.LoadText(FILENAME_UID, UID);
         dd.LoadText(FILENAME_ANALYZER, analyzer);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.LoadText(FILENAME_CMDLINE, cmdline);
     }
     catch (CABRTException& e)
     {
@@ -811,11 +840,30 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     {
         return MW_IN_DB;
     }
-    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), pDebugDumpDir);
+        /* first try to find package for the application guessed from cmdline
+       this will work only of the cmdline contains the whole path to the aplication
+       like:
+           /usr/bin/python /usr/bin/system-control-network
+    */
+    mw_result_t res = MW_PACKAGE_ERROR;
+    char *application = guess_app_path(cmdline.c_str());
+    if(application != NULL)
+    {
+        res = SavePackageDescriptionToDebugDump(application, pDebugDumpDir);
+        free(application);
+    }
+    if(res != MW_OK)
+    /*  we didn't find the package, so the guess was probably wrong
+        try again with the executable
+    */
+    {
+        res = SavePackageDescriptionToDebugDump(executable.c_str(), pDebugDumpDir);
+    }
     if (res != MW_OK)
     {
         return res;
     }
+
 
     std::string lUUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
     const char *uid_str = analyzer_has_InformAllUsers(analyzer.c_str())
