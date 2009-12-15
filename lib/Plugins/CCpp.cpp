@@ -385,11 +385,9 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     {
         close(pipeout[0]);
         xmove_fd(pipeout[1], STDOUT_FILENO);
+        /* We want parent to see errors in the same stream */
+        xdup2(STDOUT_FILENO, STDERR_FILENO);
         xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
-        /* Not a good idea, we won't see any error messages */
-        /*close(STDERR_FILENO);*/
-
-        setsid();
 
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
