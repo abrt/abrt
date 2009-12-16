@@ -96,7 +96,7 @@ static string concat_str_vector(char **strings)
 }
 
 /* Returns status. See `man 2 wait` for status information. */
-static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
+static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
 {
     int pipeout[2];
     pid_t child;
@@ -114,8 +114,6 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
         xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
-        /* Not a good idea, we won't see any error messages */
-        /* close(STDERR_FILENO); */
 
         struct passwd* pw = getpwuid(uid);
         gid_t gid = pw ? pw->pw_gid : uid;
@@ -136,6 +134,11 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
         unsetenv("LC_NUMERIC");
         unsetenv("LC_TIME");
 
+        if (redirect_stderr)
+        {
+            /* We want parent to see errors in the same stream */
+            xdup2(STDOUT_FILENO, STDERR_FILENO);
+        }
         execvp(pArgs[0], pArgs);
         /* VERB1 since sometimes we expect errors here */
         VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
@@ -309,7 +312,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[11] = (char*)"info sharedlib";
     args[12] = NULL;
 
-    ExecVP(args, xatoi_u(UID.c_str()), pBacktrace);
+    ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output,
@@ -355,7 +358,7 @@ static string run_unstrip_n(const char *pDebugDumpDir)
     args[3] = NULL;
 
     string output;
-    ExecVP(args, xatoi_u(UID.c_str()), output);
+    ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 0, output);
 
     free(args[1]);
 
@@ -385,8 +388,6 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     {
         close(pipeout[0]);
         xmove_fd(pipeout[1], STDOUT_FILENO);
-        /* We want parent to see errors in the same stream */
-        xdup2(STDOUT_FILENO, STDERR_FILENO);
         xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
 
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
@@ -394,6 +395,8 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
         VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
+        /* We want parent to see errors in the same stream */
+        xdup2(STDOUT_FILENO, STDERR_FILENO);
         execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
         perror_msg("Can't execute '%s'", "abrt-debuginfo-install");
         /* Serious error (1 means "some debuginfos not found") */
@@ -444,11 +447,11 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     if (WIFEXITED(status))
     {
         if (WEXITSTATUS(status) > 1)
-            error_msg("abrt-debuginfo-install exited with %u", (int)WEXITSTATUS(status));
+            error_msg("%s exited with %u", "abrt-debuginfo-install", (int)WEXITSTATUS(status));
     }
     else
     {
-        error_msg("abrt-debuginfo-install killed by signal %u", (int)WTERMSIG(status));
+        error_msg("%s killed by signal %u", "abrt-debuginfo-install", (int)WTERMSIG(status));
     }
 }
 
