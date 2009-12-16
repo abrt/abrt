@@ -563,11 +563,38 @@ void LoadOpenGPGPublicKey(const char* key)
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
-                                                     const char *pDebugDumpDir)
+static char *get_argv1_if_full_path(const char* cmdline)
+{
+    char *argv1 = (char*) strchr(cmdline, ' ');
+    if (argv1 != NULL)
+    {
+        /* we found space in cmdline, so it might contain
+         * path to some script like:
+         * /usr/bin/python /usr/bin/system-control-network
+         */
+        argv1++;
+        /* if the string following the space doesn't start
+         * with '/' it's probably not a full path to script
+         * and we can't use it to determine the package name
+         */
+        if (*argv1 != '/')
+        {
+            return NULL;
+        }
+        int len = strchrnul(argv1, ' ') - argv1;
+        /* cut the cmdline arguments */
+        argv1 = xstrndup(argv1, len);
+    }
+    return argv1;
+}
+static mw_result_t SavePackageDescriptionToDebugDump(
+                const char *pExecutable,
+                const char *cmdline,
+                const char *pDebugDumpDir)
 {
     std::string package;
     std::string packageName;
+    std::string scriptName; /* only if "interpreter /path/to/script" */
 
     if (strcmp(pExecutable, "kernel") == 0)
     {
@@ -580,6 +607,42 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
         {
             log("Executable '%s' doesn't belong to any package", pExecutable);
             return MW_PACKAGE_ERROR;
+        }
+
+        /* Check well-known interpreter names */
+
+        const char *basename = strrchr(pExecutable, '/');
+        if (basename) basename++; else basename = pExecutable;
+
+        /* Add "perl" and such as needed */
+        if (strcmp(basename, "python") == 0)
+        {
+// TODO: we don't verify that python executable is not modified
+// or that python package is properly signed
+// (see CheckFingerprint/CheckHash below)
+
+            /* Try to find package for the script by looking at argv[1].
+             * This will work only of the cmdline contains the whole path.
+             * Example: python /usr/bin/system-control-network
+             */
+            char *script_name = get_argv1_if_full_path(cmdline);
+            if (script_name)
+            {
+                char *script_pkg = GetPackage(script_name);
+                if (script_pkg)
+                {
+                    /* There is a well-formed script name in argv[1],
+                     * and it does belong to some package.
+                     * Replace interpreter's rpm_pkg and pExecutable
+                     * with data pertaining to the script.
+                     */
+                    free(rpm_pkg);
+                    rpm_pkg = script_pkg;
+                    scriptName = script_name;
+                    pExecutable = scriptName.c_str();
+                }
+                free(script_name);
+            }
         }
 
         package = rpm_pkg;
@@ -610,10 +673,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
     }
 
     std::string description = GetDescription(packageName.c_str());
-//TODO: if executable in /usr/bin/python, /bin/sh and such,
-//we need to extract component using argv[1]
     std::string component = GetComponent(pExecutable);
-
     try
     {
         CDebugDump dd;
@@ -781,34 +841,6 @@ std::string getDebugDumpDir(const char *pUUID,
     return row.m_sDebugDumpDir;
 }
 
-static char *guess_app_path(const char* cmdline)
-{
-    const char *path_start;
-    char *app_path = NULL;
-
-    path_start = strchr(cmdline, ' ');
-    if (path_start != NULL)
-    {
-        /* we found space in cmdline, so it might contain
-           path to some script like:
-            /usr/bin/python /usr/bin/system-control-network
-        */
-        /* +1 to skip the space */
-        path_start++;
-        /* if the string following the space doesn't start
-           with '/' it's probably not a full path to app and
-           we can't use it to determine the package name
-        */
-        if (*path_start == '/')
-        {
-            int len = strchrnul(path_start,' ') - path_start;
-            // cut the cmdline arguments
-            app_path = xstrndup(path_start, len);
-        }
-    }
-    return app_path;
-}
-
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                 map_crash_info_t& pCrashInfo)
 {
@@ -841,30 +873,12 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     {
         return MW_IN_DB;
     }
-        /* first try to find package for the application guessed from cmdline
-       this will work only of the cmdline contains the whole path to the aplication
-       like:
-           /usr/bin/python /usr/bin/system-control-network
-    */
-    mw_result_t res = MW_PACKAGE_ERROR;
-    char *application = guess_app_path(cmdline.c_str());
-    if(application != NULL)
-    {
-        res = SavePackageDescriptionToDebugDump(application, pDebugDumpDir);
-        free(application);
-    }
-    if(res != MW_OK)
-    /*  we didn't find the package, so the guess was probably wrong
-        try again with the executable
-    */
-    {
-        res = SavePackageDescriptionToDebugDump(executable.c_str(), pDebugDumpDir);
-    }
+
+    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), cmdline.c_str(), pDebugDumpDir);
     if (res != MW_OK)
     {
         return res;
     }
-
 
     std::string lUUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
     const char *uid_str = analyzer_has_InformAllUsers(analyzer.c_str())
