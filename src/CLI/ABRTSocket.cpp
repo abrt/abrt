@@ -13,7 +13,17 @@ CABRTSocket::CABRTSocket() : m_nSocket(-1)
 
 CABRTSocket::~CABRTSocket()
 {
-    Disconnect();
+    /* Paranoia. In C++, destructor will abort() if it was called while unwinding
+     * the stack and it throws an exception.
+     */
+    try
+    {
+        Disconnect();
+    }
+    catch (...)
+    {
+        error_msg_and_die("Internal error");
+    }
 }
 
 void CABRTSocket::Send(const std::string& pMessage)

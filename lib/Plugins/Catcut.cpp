@@ -1,6 +1,3 @@
-#include <xmlrpc-c/base.h>
-#include <xmlrpc-c/client.h>
-#include <curl/curl.h>
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
 #include "Catcut.h"
@@ -18,11 +15,7 @@ using namespace std;
 static int
 put_stream(const char *pURL, FILE* f, size_t content_length)
 {
-    CURL* curl = curl_easy_init();
-    if (!curl)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "put_stream: can't initialize curl library");
-    }
+    CURL* curl = xcurl_easy_init();
     /* enable uploading */
     curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
     /* specify target */

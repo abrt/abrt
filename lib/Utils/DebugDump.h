@@ -59,7 +59,7 @@ class CDebugDump
 
     public:
         CDebugDump();
-        ~CDebugDump() { Close(); }
+        ~CDebugDump();
 
         void Open(const char *pDir);
         void Create(const char *pDir, int64_t uid);

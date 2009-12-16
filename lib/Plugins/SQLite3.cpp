@@ -238,7 +238,18 @@ CSQLite3::CSQLite3() :
 
 CSQLite3::~CSQLite3()
 {
-    DisConnect();
+    /* Paranoia. In C++, destructor will abort() if it was called while unwinding
+     * the stack and it throws an exception.
+     */
+    try
+    {
+        DisConnect();
+        m_sDBPath.clear();
+    }
+    catch (...)
+    {
+        error_msg_and_die("Internal error");
+    }
 }
 
 void CSQLite3::DisConnect()
