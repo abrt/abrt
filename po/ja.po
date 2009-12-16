@@ -1,4 +1,4 @@
-# translation of ja.po to Japanese
+# translation of abrt.ja.po to Japanese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
@@ -7,10 +7,10 @@
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: ja\n"
+"Project-Id-Version: abrt.ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-12 08:18+0000\n"
-"PO-Revision-Date: 2009-12-14 09:37+0900\n"
+"POT-Creation-Date: 2009-12-15 22:00+0000\n"
+"PO-Revision-Date: 2009-12-16 10:39+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -192,7 +193,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:187
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -201,15 +202,15 @@ msgstr ""
 "dumplist のロード中にエラーが発生。\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:221
+#: ../src/Gui/CCMainWindow.py:224
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>このクラッシュは報告済みです:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:234
 msgid "<b>Not reported!</b>"
 msgstr "<b>報告がありません!</b>"
 
-#: ../src/Gui/CCMainWindow.py:280
+#: ../src/Gui/CCMainWindow.py:283
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -217,7 +218,7 @@ msgstr ""
 "報告を取得できません\n"
 "Debuginfo が無いですか ?"
 
-#: ../src/Gui/CCMainWindow.py:299
+#: ../src/Gui/CCMainWindow.py:302
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -226,7 +227,7 @@ msgstr ""
 "報告が失敗しました!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:321 ../src/Gui/CCMainWindow.py:348
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "報告の取得中にエラーです: %s"
@@ -498,27 +499,23 @@ msgstr "ログアウトしています..."
 msgid "Getting local universal unique identification"
 msgstr "ローカルで普遍的な独特の識別を取得しています"
 
-#: ../lib/Plugins/CCpp.cpp:264
-msgid "Getting backtrace..."
-msgstr "バックトレース取得中..."
+#: ../lib/Plugins/CCpp.cpp:254
+msgid "Generating backtrace"
+msgstr "バックトレース生成中"
 
-#: ../lib/Plugins/CCpp.cpp:382
-msgid "Searching for debug-info packages..."
-msgstr "debug-info パッケージを探しています..."
+#: ../lib/Plugins/CCpp.cpp:372
+msgid "Starting debuginfo installation"
+msgstr "debuginfo のインストールをスタート中"
 
-#: ../lib/Plugins/CCpp.cpp:416
-msgid "Downloading and installing debug-info packages..."
-msgstr "debug-info パッケージをダウンロードしてインストール中..."
-
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:522
 msgid "Getting local universal unique identification..."
 msgstr "ローカルで普遍的な独特の識別を取得しています..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:541
 msgid "Getting global universal unique identification..."
 msgstr "グローバルで普遍的な独特の識別を取得しています..."
 
-#: ../lib/Plugins/CCpp.cpp:691
+#: ../lib/Plugins/CCpp.cpp:683
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo のインストールをスキップします"
 
@@ -531,7 +528,7 @@ msgstr "報告の作成と提出をしています..."
 msgid "Writing report to '%s'"
 msgstr " %s へのレポートを書き込み中"
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:385
 msgid "FileTransfer: URL not specified"
 msgstr "ファイル転送: URL が示されていません"
 
@@ -540,16 +537,16 @@ msgstr "ファイル転送: URL が示されていません"
 msgid "Sending archive %s to %s"
 msgstr "アーカイブ %s を %s に送信中"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:310
 msgid "File Transfer: Creating a report..."
 msgstr "ファイル転送: 報告を作成中..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:335
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "アーカイブを作成して送信できません: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:360
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "アーカイブを作成して送信できません: %s"
@@ -558,7 +555,7 @@ msgstr "アーカイブを作成して送信できません: %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "カーネル oops クラッシュ報告を作成中..."
 
-#: ../lib/Plugins/Mailx.cpp:165
+#: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
 msgstr "電子メールを送信中..."
 
