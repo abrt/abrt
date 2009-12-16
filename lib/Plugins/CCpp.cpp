@@ -37,7 +37,7 @@
 using namespace std;
 
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
+#define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u %c"
 
 #define FILENAME_COREDUMP       "coredump"
 #define FILENAME_BACKTRACE      "backtrace"
