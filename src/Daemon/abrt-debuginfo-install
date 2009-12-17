@@ -45,20 +45,10 @@
 # For better debuggability, eu_unstrip.OUT, yum_provides.OUT etc files
 # are saved in TEMPDIR, and TEMPDIR is not deleted if we exit with exitcode 2
 # ("serious problem").
-#
-# In the future, we may want to use a separate CACHEDIR (say, /var/cache/abrt-di)
-# and use it with this gdb command:
-#   set debug-file-directory /usr/lib/debug/.build-id:CACHEDIR/usr/lib/debug/.build-id
-# but current gdb can't handle DIR1:DIR2.
-# So, currently we are called with CACHEDIR set to "/", and don't pass
-# "set debug-file-directory" to gdb.
-# This is ugly, since it messes up /usr/lib/debug/.build-id over time
-# by piling up debuginfos there without any means to control their amount,
-# but it's the only way to make it work with current gdb.
 
 
-core=$1
-tempdir=$2
+core="$1"
+tempdir="$2"
 debuginfodirs="${3//:/ }"
 cachedir="${3%%:*}"
 debug=false
