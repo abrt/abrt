@@ -399,11 +399,15 @@ static int Lock()
 
 static void handle_fatal_signal(int signo)
 {
-    s_sig_caught = signo;
-    // Enable for debug only, malloc & printf are unsafe in signal handlers
+    // Enable for debugging only, malloc/printf are unsafe in signal handlers
     //VERB3 log("Got signal %d", signo);
+
+    uint8_t l_sig_caught;
+    s_sig_caught = l_sig_caught = signo;
+    /* Using local copy of s_sig_caught so that concurrent signal
+     * won't change it under us */
     if (s_signal_pipe_write >= 0)
-        write(s_signal_pipe_write, &s_sig_caught, 1);
+        write(s_signal_pipe_write, &l_sig_caught, 1);
 }
 
 /* Signal pipe handler */
