@@ -77,6 +77,9 @@ print_missing_build_ids() {
 	build_id2=${build_id:2}
 	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
 	test -f "/$file" && continue
+	# On 2nd pass, we may already have some debuginfos in tempdir
+	test -f "$tempdir/$file" && continue
+	# Check cachedir if we have one
 	for d in $debuginfodirs; do
 	    test -f "$d/$file" && continue 2
 	done
@@ -96,6 +99,9 @@ print_missing_debuginfos() {
 	build_id2=${build_id:2}
 	file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
 	test -f "/$file" && continue
+	# On 2nd pass, we may already have some debuginfos in tempdir
+	test -f "$tempdir/$file" && continue
+	# Check cachedir if we have one
 	if test x"$cachedir" != x""; then
 	    for d in $debuginfodirs; do
 		test -f "$d/$file" && continue 2
@@ -199,6 +205,7 @@ download_packages() {
 	echo "Unpacking: $file"
 	echo "Processing: $file" >>unpack.OUT
 	rpm2cpio <"$file" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
+#TODO: error check?
     done
 
     # Copy debuginfo files to cachedir
@@ -223,6 +230,7 @@ download_packages() {
 		# Note: this does not preserve symlinks. This is intentional
 		$debug && echo Copying "$file" to "$cachedir/$file" >&2
 		cp --remove-destination "$file" "$cachedir/$file"
+#TODO: error check?
 		continue
 	    fi
 	done
@@ -256,6 +264,7 @@ eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
 err=$?
 printf "%s\neu-unstrip exitcode:%s\n" "$eu_unstrip_OUT" $err >eu_unstrip.OUT
 test $err = 0 || error_msg_and_die "eu-unstrip exited with $err:
+`cat eu_unstrip.ERR`
 `head eu_unstrip.OUT`"
 
 # Get space-separated list of all build-ids
