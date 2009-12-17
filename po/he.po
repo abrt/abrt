@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-12 08:18+0000\n"
+"POT-Creation-Date: 2009-12-17 10:27+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -167,7 +167,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:187
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -176,15 +176,15 @@ msgstr ""
 "שגיאה במהלך טעינת dumplist.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:221
+#: ../src/Gui/CCMainWindow.py:224
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>הקריסה הזאת דווחה:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:234
 msgid "<b>Not reported!</b>"
 msgstr "<b>לא דווח!</b>"
 
-#: ../src/Gui/CCMainWindow.py:280
+#: ../src/Gui/CCMainWindow.py:283
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -192,7 +192,7 @@ msgstr ""
 "לא ניתן להשיג דיווח\n"
 "מידע ניפוי שגיאות חסר?"
 
-#: ../src/Gui/CCMainWindow.py:299
+#: ../src/Gui/CCMainWindow.py:302
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -201,8 +201,8 @@ msgstr ""
 "הדיווח נכשל!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:318
-#: ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:321
+#: ../src/Gui/CCMainWindow.py:348
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "שגיאה בקבלת הדיווח: %s"
@@ -470,27 +470,23 @@ msgstr "מתנתק..."
 msgid "Getting local universal unique identification"
 msgstr "מקבל זהות מקומית ייחודית"
 
-#: ../lib/Plugins/CCpp.cpp:264
-msgid "Getting backtrace..."
-msgstr "מקבל מידע קריסה..."
+#: ../lib/Plugins/CCpp.cpp:257
+msgid "Generating backtrace"
+msgstr "יוצר מידע קריסה"
 
-#: ../lib/Plugins/CCpp.cpp:382
-msgid "Searching for debug-info packages..."
-msgstr "מחפש חבילות debug-info..."
+#: ../lib/Plugins/CCpp.cpp:375
+msgid "Starting debuginfo installation"
+msgstr "מתחיל התקנת מידע ניפוי שגיאות"
 
-#: ../lib/Plugins/CCpp.cpp:416
-msgid "Downloading and installing debug-info packages..."
-msgstr "מוריד ומתקין חבילות מידע ניפוי באגים..."
-
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:525
 msgid "Getting local universal unique identification..."
 msgstr "מקבל זהות מקומית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:544
 msgid "Getting global universal unique identification..."
 msgstr "מקבל זהות גלובלית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:691
+#: ../lib/Plugins/CCpp.cpp:686
 msgid "Skipping debuginfo installation"
 msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 
@@ -504,7 +500,7 @@ msgid "Writing report to '%s'"
 msgstr "כותב דיווח ל'%s'"
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:381
 msgid "FileTransfer: URL not specified"
 msgstr "העברת קובץ: כתובת לא צוינה"
 
@@ -513,16 +509,16 @@ msgstr "העברת קובץ: כתובת לא צוינה"
 msgid "Sending archive %s to %s"
 msgstr "שולח ארכיון %s ל-%s"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:306
 msgid "File Transfer: Creating a report..."
 msgstr "העברת קובץ: יוצר דיווח..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:331
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "לא יכול ליצור ולשלוח ארכיון: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:356
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "לא יכול ליצור ולשלוח ארכיון %s"
@@ -531,7 +527,7 @@ msgstr "לא יכול ליצור ולשלוח ארכיון %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "יוצר דיווחי קריסה של kernel oops..."
 
-#: ../lib/Plugins/Mailx.cpp:165
+#: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
 
@@ -548,6 +544,10 @@ msgstr "מריץ sosreport: %s"
 msgid "done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
+#~ msgid "Searching for debug-info packages..."
+#~ msgstr "מחפש חבילות debug-info..."
+#~ msgid "Downloading and installing debug-info packages..."
+#~ msgstr "מוריד ומתקין חבילות מידע ניפוי באגים..."
 #~ msgid "Creating a report..."
 #~ msgstr "יוצר דיווח"
 #~ msgid "Starting report creation..."
