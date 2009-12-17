@@ -400,7 +400,8 @@ static int Lock()
 static void handle_fatal_signal(int signo)
 {
     s_sig_caught = signo;
-    VERB3 log("Got signal %d", signo);
+    // Enable for debug only, malloc & printf are unsafe in signal handlers
+    //VERB3 log("Got signal %d", signo);
     if (s_signal_pipe_write >= 0)
         write(s_signal_pipe_write, &s_sig_caught, 1);
 }
