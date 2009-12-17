@@ -110,7 +110,7 @@ typedef struct cron_callback_data_t
 } cron_callback_data_t;
 
 
-static uint8_t s_sig_caught; /* must be one byte */
+static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
 static unsigned s_timeout;
