@@ -477,7 +477,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 
                     if (pUID != "")
                     {
-                        home = get_home_dir(atoi(pUID.c_str()));
+                        home = get_home_dir(xatoi_u(pUID.c_str()));
                         if (home != "")
                         {
                             oldSettings = reporter->GetSettings();
@@ -563,11 +563,38 @@ void LoadOpenGPGPublicKey(const char* key)
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
-                                                     const char *pDebugDumpDir)
+static char *get_argv1_if_full_path(const char* cmdline)
+{
+    char *argv1 = (char*) strchr(cmdline, ' ');
+    if (argv1 != NULL)
+    {
+        /* we found space in cmdline, so it might contain
+         * path to some script like:
+         * /usr/bin/python /usr/bin/system-control-network
+         */
+        argv1++;
+        /* if the string following the space doesn't start
+         * with '/' it's probably not a full path to script
+         * and we can't use it to determine the package name
+         */
+        if (*argv1 != '/')
+        {
+            return NULL;
+        }
+        int len = strchrnul(argv1, ' ') - argv1;
+        /* cut the cmdline arguments */
+        argv1 = xstrndup(argv1, len);
+    }
+    return argv1;
+}
+static mw_result_t SavePackageDescriptionToDebugDump(
+                const char *pExecutable,
+                const char *cmdline,
+                const char *pDebugDumpDir)
 {
     std::string package;
     std::string packageName;
+    std::string scriptName; /* only if "interpreter /path/to/script" */
 
     if (strcmp(pExecutable, "kernel") == 0)
     {
@@ -580,6 +607,42 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
         {
             log("Executable '%s' doesn't belong to any package", pExecutable);
             return MW_PACKAGE_ERROR;
+        }
+
+        /* Check well-known interpreter names */
+
+        const char *basename = strrchr(pExecutable, '/');
+        if (basename) basename++; else basename = pExecutable;
+
+        /* Add "perl" and such as needed */
+        if (strcmp(basename, "python") == 0)
+        {
+// TODO: we don't verify that python executable is not modified
+// or that python package is properly signed
+// (see CheckFingerprint/CheckHash below)
+
+            /* Try to find package for the script by looking at argv[1].
+             * This will work only of the cmdline contains the whole path.
+             * Example: python /usr/bin/system-control-network
+             */
+            char *script_name = get_argv1_if_full_path(cmdline);
+            if (script_name)
+            {
+                char *script_pkg = GetPackage(script_name);
+                if (script_pkg)
+                {
+                    /* There is a well-formed script name in argv[1],
+                     * and it does belong to some package.
+                     * Replace interpreter's rpm_pkg and pExecutable
+                     * with data pertaining to the script.
+                     */
+                    free(rpm_pkg);
+                    rpm_pkg = script_pkg;
+                    scriptName = script_name;
+                    pExecutable = scriptName.c_str();
+                }
+                free(script_name);
+            }
         }
 
         package = rpm_pkg;
@@ -610,10 +673,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(const char *pExecutable,
     }
 
     std::string description = GetDescription(packageName.c_str());
-//TODO: if executable in /usr/bin/python, /bin/sh and such,
-//we need to extract component using argv[1]
     std::string component = GetComponent(pExecutable);
-
     try
     {
         CDebugDump dd;
@@ -788,6 +848,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     std::string time;
     std::string analyzer;
     std::string executable;
+    std::string cmdline;
     try
     {
         CDebugDump dd;
@@ -796,6 +857,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         dd.LoadText(FILENAME_UID, UID);
         dd.LoadText(FILENAME_ANALYZER, analyzer);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.LoadText(FILENAME_CMDLINE, cmdline);
     }
     catch (CABRTException& e)
     {
@@ -811,7 +873,8 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     {
         return MW_IN_DB;
     }
-    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), pDebugDumpDir);
+
+    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), cmdline.c_str(), pDebugDumpDir);
     if (res != MW_OK)
     {
         return res;

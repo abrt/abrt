@@ -111,7 +111,6 @@ def write_dump(pid, tb_uuid, tb):
     command.append("--pid=%s" % pid)
     command.append("--executable=%s" % executable)
     command.append("--uuid=%s" % tb_uuid)
-    command.append("--cmdline=%s" % open("/proc/%s/cmdline" % pid).read().replace('\x00',' '))
 
     helper = subprocess.Popen(command, stdin=subprocess.PIPE)
     helper.communicate(tb)

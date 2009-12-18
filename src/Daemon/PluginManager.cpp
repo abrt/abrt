@@ -391,7 +391,7 @@ void CPluginManager::SetPluginSettings(const char *pName,
         return;
     }
 
-    std::string home = get_home_dir(atoi(pUID.c_str()));
+    std::string home = get_home_dir(xatoi_u(pUID.c_str()));
     if (home == "")
     {
         return;
@@ -399,7 +399,7 @@ void CPluginManager::SetPluginSettings(const char *pName,
 
     std::string confDir = home + "/.abrt";
     std::string confPath = confDir + "/" + pName + "."PLUGINS_CONF_EXTENSION;
-    uid_t uid = atoi(pUID.c_str());
+    uid_t uid = xatoi_u(pUID.c_str());
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
 
@@ -461,7 +461,7 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const char *pName,
               /*
             if (abrt_plugin->second->GetType() == REPORTER)
             {
-                std::string home = get_home_dir(atoi(pUID.c_str()));
+                std::string home = get_home_dir(xatoi_u(pUID.c_str()));
                 if (home != "")
                 {
                     LoadPluginSettings(home + "/.abrt/" + pName + "."PLUGINS_CONF_EXTENSION, ret);

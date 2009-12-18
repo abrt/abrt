@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-11 08:18+0000\n"
-"PO-Revision-Date: 2009-12-11 14:30+0100\n"
+"POT-Creation-Date: 2009-12-15 16:54+0000\n"
+"PO-Revision-Date: 2009-12-15 18:05+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -187,7 +187,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:187
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -196,15 +196,15 @@ msgstr ""
 "Fout tijdens het laden van de dumplijst.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:221
+#: ../src/Gui/CCMainWindow.py:224
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Deze crash is gerapporteerd:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:234
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
-#: ../src/Gui/CCMainWindow.py:280
+#: ../src/Gui/CCMainWindow.py:283
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -212,7 +212,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:299
+#: ../src/Gui/CCMainWindow.py:302
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -221,7 +221,7 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:321 ../src/Gui/CCMainWindow.py:348
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -442,7 +442,7 @@ msgstr "Bekijk en rapporteer crashes van toepassingen"
 msgid "A crash in package %s has been detected"
 msgstr "Een crash in pakket %s is ontdekt"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
@@ -496,27 +496,23 @@ msgstr "Uitloggen..."
 msgid "Getting local universal unique identification"
 msgstr "Verkrijgen van locale universele unieke identificatie"
 
-#: ../lib/Plugins/CCpp.cpp:264
-msgid "Getting backtrace..."
-msgstr "Backtrace ophalen..."
+#: ../lib/Plugins/CCpp.cpp:254
+msgid "Generating backtrace"
+msgstr "Aangemaakte backtrace"
 
-#: ../lib/Plugins/CCpp.cpp:382
-msgid "Searching for debug-info packages..."
-msgstr "Zoeken naar debug-info pakketten..."
+#: ../lib/Plugins/CCpp.cpp:372
+msgid "Starting debuginfo installation"
+msgstr "Start debuginfo installatie"
 
-#: ../lib/Plugins/CCpp.cpp:416
-msgid "Downloading and installing debug-info packages..."
-msgstr "Downloaden en installeren van debug-info pakketten..."
-
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:522
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:541
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:691
+#: ../lib/Plugins/CCpp.cpp:683
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 
@@ -524,11 +520,12 @@ msgstr "Sla debuginfo installatie over"
 msgid "Creating and submitting a report..."
 msgstr "Aanmaken en indienen van rapport..."
 
-#: ../lib/Plugins/Logger.cpp:66
-msgid "Creating a report..."
-msgstr "Rapport aanmaken..."
+#: ../lib/Plugins/Logger.cpp:82
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "Rapport schrijven naar: '%s'"
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:385
 msgid "FileTransfer: URL not specified"
 msgstr "Bestandsoverdracht: URL niet opgegeven"
 
@@ -537,16 +534,16 @@ msgstr "Bestandsoverdracht: URL niet opgegeven"
 msgid "Sending archive %s to %s"
 msgstr "Versturen van archief %s naar %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:310
 msgid "File Transfer: Creating a report..."
 msgstr "Bestandsoverdracht: Een rapport maken..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:335
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Kan geen archief maken en versturen: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:360
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Kan archief %s niet aanmaken en versturen"
@@ -555,7 +552,7 @@ msgstr "Kan archief %s niet aanmaken en versturen"
 msgid "Creating kernel oops crash reports..."
 msgstr "Aanmaken van kernel oops crash rapporten..."
 
-#: ../lib/Plugins/Mailx.cpp:165
+#: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
 msgstr "Versturen van email..."
 
@@ -571,6 +568,15 @@ msgstr "sosreport draaien: %s"
 #: ../lib/Plugins/SOSreport.cpp:95
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
+
+#~ msgid "Searching for debug-info packages..."
+#~ msgstr "Zoeken naar debug-info pakketten..."
+
+#~ msgid "Downloading and installing debug-info packages..."
+#~ msgstr "Downloaden en installeren van debug-info pakketten..."
+
+#~ msgid "Creating a report..."
+#~ msgstr "Rapport aanmaken..."
 
 #~ msgid "Starting report creation..."
 #~ msgstr "Beginnen met rapport aanmaken..."

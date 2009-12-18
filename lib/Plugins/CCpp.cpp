@@ -37,7 +37,7 @@
 using namespace std;
 
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
-#define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
+#define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u %c"
 
 #define FILENAME_COREDUMP       "coredump"
 #define FILENAME_BACKTRACE      "backtrace"
@@ -96,7 +96,7 @@ static string concat_str_vector(char **strings)
 }
 
 /* Returns status. See `man 2 wait` for status information. */
-static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
+static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
 {
     int pipeout[2];
     pid_t child;
@@ -114,8 +114,6 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
         xmove_fd(pipeout[1], STDOUT_FILENO);
         /* Make sure stdin is safely open to nothing */
         xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
-        /* Not a good idea, we won't see any error messages */
-        /* close(STDERR_FILENO); */
 
         struct passwd* pw = getpwuid(uid);
         gid_t gid = pw ? pw->pw_gid : uid;
@@ -136,6 +134,11 @@ static int ExecVP(char **pArgs, uid_t uid, string& pOutput)
         unsetenv("LC_NUMERIC");
         unsetenv("LC_TIME");
 
+        if (redirect_stderr)
+        {
+            /* We want parent to see errors in the same stream */
+            xdup2(STDOUT_FILENO, STDERR_FILENO);
+        }
         execvp(pArgs[0], pArgs);
         /* VERB1 since sometimes we expect errors here */
         VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
@@ -309,7 +312,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[11] = (char*)"info sharedlib";
     args[12] = NULL;
 
-    ExecVP(args, atoi(UID.c_str()), pBacktrace);
+    ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output,
@@ -355,7 +358,7 @@ static string run_unstrip_n(const char *pDebugDumpDir)
     args[3] = NULL;
 
     string output;
-    ExecVP(args, atoi(UID.c_str()), output);
+    ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 0, output);
 
     free(args[1]);
 
@@ -386,18 +389,18 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
         close(pipeout[0]);
         xmove_fd(pipeout[1], STDOUT_FILENO);
         xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
-        /* Not a good idea, we won't see any error messages */
-        /*close(STDERR_FILENO);*/
-
-        setsid();
 
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
         VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
+        /* We want parent to see errors in the same stream */
+        xdup2(STDOUT_FILENO, STDERR_FILENO);
         execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
-        exit(1);
+        perror_msg("Can't execute '%s'", "abrt-debuginfo-install");
+        /* Serious error (1 means "some debuginfos not found") */
+        exit(2);
     }
 
     close(pipeout[1]);
@@ -436,9 +439,20 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
             update_client("%s", buff);
         }
     }
-
     fclose(pipeout_fp);
-    wait(NULL);
+
+    int status = 0;
+    while (waitpid(child, &status, 0) < 0 && errno == EINTR)
+        continue;
+    if (WIFEXITED(status))
+    {
+        if (WEXITSTATUS(status) > 1)
+            error_msg("%s exited with %u", "abrt-debuginfo-install", (int)WEXITSTATUS(status));
+    }
+    else
+    {
+        error_msg("%s killed by signal %u", "abrt-debuginfo-install", (int)WTERMSIG(status));
+    }
 }
 
 static double get_dir_size(const char *dirname,
@@ -564,7 +578,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         close(pipeout[0]); /* read side of the pipe */
 
         /* abrt-backtrace is executed under the user's uid and gid. */
-        uid_t uid = atoi(uid_str.c_str());
+        uid_t uid = xatoi_u(uid_str.c_str());
         struct passwd* pw = getpwuid(uid);
         gid_t gid = pw ? pw->pw_gid : uid;
         setgroups(1, &gid);
@@ -659,7 +673,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.Close(); /* do not keep dir locked longer than needed */
 
     string build_ids;
-    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str())))
+    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str())))
     {
         if (m_nDebugInfoCacheMB > 0)
         {
@@ -750,7 +764,7 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("DebugInfoCacheMB");
     if (it != end)
     {
-        m_nDebugInfoCacheMB = atoi(it->second.c_str());
+        m_nDebugInfoCacheMB = xatou(it->second.c_str());
     }
     it = pSettings.find("InstallDebugInfo");
     if (it == end) //compat, remove after 0.0.11

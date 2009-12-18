@@ -41,6 +41,8 @@
 #define FILENAME_COMMENT            "comment"
 #define FILENAME_REPRODUCE          "reproduce"
 #define FILENAME_RATING             "rating"
+#define FILENAME_CMDLINE            "cmdline"
+
 
 class CDebugDump
 {
@@ -57,7 +59,7 @@ class CDebugDump
 
     public:
         CDebugDump();
-        ~CDebugDump() { Close(); }
+        ~CDebugDump();
 
         void Open(const char *pDir);
         void Create(const char *pDir, int64_t uid);

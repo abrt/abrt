@@ -102,6 +102,15 @@ char* xstrndup(const char *s, int n);
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);
 
+unsigned xatou(const char *numstr);
+int xatoi(const char *numstr);
+/* Using xatoi() instead of naive atoi() is not always convenient -
+ * in many places people want *non-negative* values, but store them
+ * in signed int. Therefore we need this one:
+ * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc */
+int xatoi_u(const char *numstr);
+
+
 extern ssize_t safe_read(int fd, void *buf, size_t count);
 // NB: will return short read on error, not -1,
 // if some data was read before error occurred
@@ -200,6 +209,16 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 
 /* Random utility functions */
 uid_t getuidbyname(const char* login);
+
+/* Returns command line of running program.
+ * Caller is responsible to free() the returned value.
+ * If the pid is not valid or command line can not be obtained,
+ * empty string is returned.
+ */
+char* get_cmdline(pid_t pid);
+
+/* Returns 1 if abrtd daemon is running, 0 otherwise. */
+int daemon_is_ok();
 
 /* Returns malloc'ed block */
 char *encode_base64(const void *src, int length);

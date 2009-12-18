@@ -68,6 +68,22 @@ CDebugDump::CDebugDump() :
     m_bLocked(false)
 {}
 
+CDebugDump::~CDebugDump()
+{
+    /* Paranoia. In C++, destructor will abort() if it was called while unwinding
+     * the stack and it throws an exception.
+     */
+    try
+    {
+        Close();
+        m_sDebugDumpDir.clear();
+    }
+    catch (...)
+    {
+        error_msg_and_die("Internal error");
+    }
+}
+
 void CDebugDump::Open(const char *pDir)
 {
     if (m_bOpened)

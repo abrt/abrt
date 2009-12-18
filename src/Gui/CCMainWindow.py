@@ -167,7 +167,10 @@ class MainWindow():
         self.wTree.get_widget("lStatus").set_text(message)
         buff = gtk.TextBuffer()
         buff.set_text(self.updates)
-        self.wTree.get_widget("tvUpdates").set_buffer(buff)
+        end = buff.get_insert()
+        tvUpdates = self.wTree.get_widget("tvUpdates")
+        tvUpdates.set_buffer(buff)
+        tvUpdates.scroll_mark_onscreen(end)
 
     # call to update the progressbar
     def progress_update_cb(self, *args):

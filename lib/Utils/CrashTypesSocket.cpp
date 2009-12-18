@@ -114,7 +114,7 @@ static int get_number_from_string(const std::string& pMessage, int& len)
         }
     }
     len = ii + 1;
-    return atoi(sNumber.c_str());
+    return xatoi(sNumber.c_str());
 }
 
 //TODO: remove constant 4 and place it in a message

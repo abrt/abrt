@@ -1,6 +1,3 @@
-#include <xmlrpc-c/base.h>
-#include <xmlrpc-c/client.h>
-#include <curl/curl.h>
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
 #include "Catcut.h"
@@ -18,11 +15,7 @@ using namespace std;
 static int
 put_stream(const char *pURL, FILE* f, size_t content_length)
 {
-    CURL* curl = curl_easy_init();
-    if (!curl)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "put_stream: can't initialize curl library");
-    }
+    CURL* curl = xcurl_easy_init();
     /* enable uploading */
     curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
     /* specify target */
@@ -510,12 +503,12 @@ void CReporterCatcut::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("RetryCount");
     if (it != end)
     {
-        m_nRetryCount = atoi(it->second.c_str());
+        m_nRetryCount = xatoi_u(it->second.c_str());
     }
     it = pSettings.find("RetryDelay");
     if (it != end)
     {
-        m_nRetryDelay = atoi(it->second.c_str());
+        m_nRetryDelay = xatoi_u(it->second.c_str());
     }
 }
 

@@ -34,21 +34,23 @@
 static char *pid;
 static char *executable;
 static char *uuid;
-static char *cmdline;
 
 int main(int argc, char** argv)
 {
+  // Error if daemon is not running.
+  if (!daemon_is_ok())
+    error_msg_and_die("Daemon is not running.");
+
   // Parse options
   static const struct option longopts[] = {
     // name       , has_arg          , flag, val
     { "pid"       , required_argument, NULL, 'p' },
     { "executable", required_argument, NULL, 'e' },
     { "uuid"      , required_argument, NULL, 'u' },
-    { "cmdline"   , required_argument, NULL, 'c' },
     { 0 },
   };
   int opt;
-  while ((opt = getopt_long(argc, argv, "p:e:u:c:l:", longopts, NULL)) != -1)
+  while ((opt = getopt_long(argc, argv, "p:e:u:l:", longopts, NULL)) != -1)
   {
     switch (opt)
     {
@@ -61,9 +63,6 @@ int main(int argc, char** argv)
     case 'u':
       uuid = optarg;
       break;
-    case 'c':
-      cmdline = optarg;
-      break;
     default:
  usage:
       error_msg_and_die(
@@ -72,7 +71,6 @@ int main(int argc, char** argv)
                 "	-p,--pid PID		PID of process that caused the crash\n"
                 "	-p,--executable	PATH	absolute path to the program that crashed\n"
                 "	-u,--uuid UUID		hash generated from the backtrace\n"
-                "	-c,--cmdline TEXT	command line of the crashed program\n"
       );
     }
   }
@@ -103,8 +101,12 @@ int main(int argc, char** argv)
   dd.SaveText(FILENAME_ANALYZER, "Python");
   if (executable)
     dd.SaveText(FILENAME_EXECUTABLE, executable);
-  if (cmdline)
-    dd.SaveText("cmdline", cmdline);
+
+  pid_t pidt = xatoi(pid);
+  char *cmdline = get_cmdline(pidt);
+  dd.SaveText("cmdline", cmdline);
+  free(cmdline);
+
   if (uuid)
     dd.SaveText("uuid", uuid);
 

@@ -281,7 +281,7 @@ static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
     args[9] = (char*)"thread apply all backtrace full";
     args[10] = NULL;
 
-    ExecVP(args, atoi(UID.c_str()), pBacktrace);
+    ExecVP(args, xatoi_u(UID.c_str()), pBacktrace);
 
     free(args[5]);
     free(args[7]);
@@ -454,7 +454,7 @@ static std::string run_unstrip_n(const char *pDebugDumpDir)
     args[3] = NULL;
 
     std::string output;
-    ExecVP(args, atoi(UID.c_str()), output);
+    ExecVP(args, xatoi_u(UID.c_str()), output);
 
     free(args[1]);
 
@@ -886,7 +886,7 @@ void CAnalyzerFirefox::CreateReport(const char *pDebugDumpDir, int force)
     dd.Close(); /* do not keep dir locked longer than needed */
 
     std::string build_ids;
-    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(atoi(UID.c_str()))) {
+    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str()))) {
         if (m_nDebugInfoCacheMB > 0)
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
         InstallDebugInfos(pDebugDumpDir, build_ids);
@@ -974,7 +974,7 @@ void CAnalyzerFirefox::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("DebugInfoCacheMB");
     if (it != end)
     {
-        m_nDebugInfoCacheMB = atoi(it->second.c_str());
+        m_nDebugInfoCacheMB = xatou(it->second.c_str());
     }
     it = pSettings.find("InstallDebugInfo");
     if (it == end) //compat, remove after 0.0.11

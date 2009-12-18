@@ -35,8 +35,8 @@
 #include <libtar.h>
 #include <bzlib.h>
 #include <zlib.h>
-#include <curl/curl.h>
 #include "abrtlib.h"
+#include "abrt_xmlrpc.h" /* for xcurl_easy_init */
 #include "FileTransfer.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
@@ -85,11 +85,7 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
             fclose(f);
             throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
         }
-        curl = curl_easy_init();
-        if (!curl)
-        {
-            throw CABRTException(EXCEP_PLUGIN, "Curl library init error");
-        }
+        curl = xcurl_easy_init();
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
         /* specify target */
@@ -388,13 +384,13 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("RetryCount");
     if (it != end)
     {
-        m_nRetryCount = atoi(it->second.c_str());
+        m_nRetryCount = xatoi_u(it->second.c_str());
     }
 
     it = pSettings.find("RetryDelay");
     if (it != end)
     {
-        m_nRetryDelay = atoi(it->second.c_str());
+        m_nRetryDelay = xatoi_u(it->second.c_str());
     }
 
     it = pSettings.find("ArchiveType");

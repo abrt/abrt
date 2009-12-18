@@ -25,9 +25,9 @@
  */
 
 #include "abrtlib.h"
+#include "abrt_xmlrpc.h" /* for xcurl_easy_init */
 #include "KerneloopsReporter.h"
 #include "CommLayerInner.h"
-#include <curl/curl.h>
 #include "ABRTException.h"
 
 #define FILENAME_KERNELOOPS "kerneloops"
@@ -64,7 +64,7 @@ static int http_post_to_kerneloops_site(const char *url, const char *oopsdata)
 	struct curl_httppost *post = NULL;
 	struct curl_httppost *last = NULL;
 
-	handle = curl_easy_init();
+	handle = xcurl_easy_init();
 	curl_easy_setopt(handle, CURLOPT_URL, url);
 
 	curl_formadd(&post, &last,

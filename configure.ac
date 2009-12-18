@@ -1,4 +1,4 @@
-AC_INIT([abrt], [1.0.1], [crash-catcher@fedorahosted.org])
+AC_INIT([abrt], [1.0.2], [crash-catcher@fedorahosted.org])
 
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
@@ -10,6 +10,10 @@ AC_ARG_ENABLE(debug,
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
 AC_PROG_CXX
+
+AC_SYS_LARGEFILE
+CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64"
+
 AC_CHECK_PROGS(YACC, 'bison -y', [no])
 [if test "$YACC" = "no"]
 [then]

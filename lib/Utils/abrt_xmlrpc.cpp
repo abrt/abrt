@@ -5,6 +5,16 @@
 #include "abrt_xmlrpc.h"
 #include "ABRTException.h"
 
+CURL* xcurl_easy_init()
+{
+    CURL* curl = curl_easy_init();
+    if (!curl)
+    {
+        error_msg_and_die("Can't create curl handle");
+    }
+    return curl;
+}
+
 void throw_if_xml_fault_occurred(xmlrpc_env *env)
 {
     if (env->fault_occurred)

@@ -110,7 +110,7 @@ typedef struct cron_callback_data_t
 } cron_callback_data_t;
 
 
-static uint8_t s_sig_caught; /* must be one byte */
+static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
 static unsigned s_timeout;
@@ -216,14 +216,14 @@ static int SetUpCron()
             std::string sM = "";
 
             sH = it_c->first.substr(0, pos);
-            nH = atoi(sH.c_str());
+            nH = xatou(sH.c_str());
             nH = nH > 23 ? 23 : nH;
             nH = nH < 0 ? 0 : nH;
             nM = nM > 59 ? 59 : nM;
             nM = nM < 0 ? 0 : nM;
             timeout += nH * 60 * 60;
             sM = it_c->first.substr(pos + 1);
-            nM = atoi(sM.c_str());
+            nM = xatou(sM.c_str());
             timeout += nM * 60;
         }
         else
@@ -231,7 +231,7 @@ static int SetUpCron()
             std::string sS = "";
 
             sS = it_c->first;
-            nS = atoi(sS.c_str());
+            nS = xatou(sS.c_str());
             nS = nS <= 0 ? 1 : nS;
             timeout = nS;
         }
@@ -399,10 +399,15 @@ static int Lock()
 
 static void handle_fatal_signal(int signo)
 {
-    s_sig_caught = signo;
-    VERB3 log("Got signal %d", signo);
+    // Enable for debugging only, malloc/printf are unsafe in signal handlers
+    //VERB3 log("Got signal %d", signo);
+
+    uint8_t l_sig_caught;
+    s_sig_caught = l_sig_caught = signo;
+    /* Using local copy of s_sig_caught so that concurrent signal
+     * won't change it under us */
     if (s_signal_pipe_write >= 0)
-        write(s_signal_pipe_write, &s_sig_caught, 1);
+        write(s_signal_pipe_write, &l_sig_caught, 1);
 }
 
 /* Signal pipe handler */
