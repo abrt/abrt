@@ -88,6 +88,12 @@ extern void backtrace_limit_frame_depth(struct backtrace *backtrace, int depth);
  */
 extern void backtrace_remove_exit_handlers(struct backtrace *backtrace);
 
+/*
+ * Removes frames known as not causing crash, but that are often 
+ * a part of a backtrace.
+ */
+extern void backtrace_remove_noncrash_frames(struct backtrace *backtrace);
+
 /* Defined in parser.y. */
 extern struct backtrace *do_parse(char *input, bool debug_parser, bool debug_scanner);
 

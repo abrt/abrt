@@ -85,6 +85,56 @@ static bool frame_is_exit_handler(struct frame *frame)
 	  && NULL != strstr(frame->sourcefile, "exit.c"));
 }
 
+static bool frame_is_noncrash_frame(struct frame *frame)
+{
+  if (!frame->function)
+    return false;
+
+  if (0 == strcmp(frame->function, "__kernel_vsyscall"))
+    return true;
+
+  if (!frame->sourcefile)
+    return false;
+
+  if (0 == strcmp(frame->function, "_XReply") 
+      && 0 == strcmp(frame->sourcefile, "xcb_io.c"))
+    return true;
+
+  if (0 == strcmp(frame->function, "_XError") 
+      && 0 == strcmp(frame->sourcefile, "XlibInt.c"))
+    return true;
+
+  if (0 == strcmp(frame->function, "gdk_x_error") 
+      && 0 == strcmp(frame->sourcefile, "gdkmain-x11.c"))
+    return true;
+
+  if (0 == strcmp(frame->function, "IA__g_log") 
+      && 0 == strcmp(frame->sourcefile, "gmessages.c"))
+    return true;
+
+  if (0 == strcmp(frame->function, "IA__g_logv") 
+      && 0 == strcmp(frame->sourcefile, "gmessages.c"))
+    return true;
+
+  if (0 == strcmp(frame->function, "process_responses") 
+      && 0 == strcmp(frame->sourcefile, "xcb_io.c"))
+    return true;
+
+  if (0 == strcmp(frame->function, "XSync") 
+      && 0 == strcmp(frame->sourcefile, "Sync.c"))
+    return true;
+
+  /* DBus */
+  if (0 == strcmp(frame->function, "gerror_to_dbus_error_message") 
+      && 0 == strcmp(frame->sourcefile, "dbus-gobject.c"))
+    return true;
+  if (0 == strcmp(frame->function, "dbus_g_method_return_error") 
+      && 0 == strcmp(frame->sourcefile, "dbus-gobject.c"))
+    return true;
+
+  return false;
+}
+
 struct thread *thread_new()
 {
   struct thread *t = malloc(sizeof(struct thread));
@@ -201,6 +251,36 @@ static void thread_remove_exit_handlers(struct thread *thread)
     }
 
     frame = frame->next;
+  }
+}
+
+void thread_remove_noncrash_frames(struct thread *thread)
+{
+  struct frame *prev = NULL;
+  struct frame *cur = thread->frames;
+  while (cur)
+  {
+    if (frame_is_noncrash_frame(cur))
+    {
+      /* This frame must be skipped, because it will 
+         be deleted. */
+      if (prev)
+	prev->next = cur->next;
+      else
+	thread->frames = cur->next;
+
+      frame_free(cur);
+
+      /* Set cur to be valid, as it will be used to 
+         advance to next item. */
+      if (prev)
+	cur = prev;
+      else
+	cur = thread->frames;
+    }
+
+    prev = cur;
+    cur = cur->next;
   }
 }
 
@@ -394,6 +474,16 @@ void backtrace_remove_exit_handlers(struct backtrace *backtrace)
   while (thread)
   {
     thread_remove_exit_handlers(thread);
+    thread = thread->next;
+  }  
+}
+
+void backtrace_remove_noncrash_frames(struct backtrace *backtrace)
+{
+  struct thread *thread = backtrace->threads;
+  while (thread)
+  {
+    thread_remove_noncrash_frames(thread);
     thread = thread->next;
   }  
 }

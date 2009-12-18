@@ -40,13 +40,14 @@ static char doc[] = "abrt-backtrace -- backtrace analyzer";
 static char args_doc[] = "FILE";
 
 static struct argp_option options[] = {
-  {"independent"          , 'i', 0  , 0, "Prints independent backtrace (fallback)" },
-  {"single-thread"        , 'n', 0  , 0, "Display the crash thread only in the backtrace" },
-  {"frame-depth"          , 'd', "N", 0, "Display only top N frames under the crash frame" },
-  {"remove-exit-handlers" , 'r', 0  , 0, "Removes exit handlers from the displayed backtrace" },
-  {"debug-parser"         , 'p', 0  , 0, "Prints parser debug information"}, 
-  {"debug-scanner"        , 's', 0  , 0, "Prints scanner debug information"}, 
-  {"verbose"              , 'v', 0  , 0, "Print human-friendly superfluous output."}, 
+  {"independent"           , 'i', 0  , 0, "Prints independent backtrace (fallback)"},
+  {"single-thread"         , 'n', 0  , 0, "Display the crash thread only in the backtrace"},
+  {"frame-depth"           , 'd', "N", 0, "Display only top N frames under the crash frame"},
+  {"remove-exit-handlers"  , 'r', 0  , 0, "Removes exit handler frames from the displayed backtrace"},
+  {"remove-noncrash-frames", 'm', 0  , 0, "Removes common frames known as not causing crash"},
+  {"debug-parser"          , 'p', 0  , 0, "Prints parser debug information"}, 
+  {"debug-scanner"         , 's', 0  , 0, "Prints scanner debug information"}, 
+  {"verbose"               , 'v', 0  , 0, "Print human-friendly superfluous output."}, 
   { 0 }
 };
 
@@ -56,6 +57,7 @@ struct arguments
   bool single_thread;
   int frame_depth; /* negative == do not limit the depth */
   bool remove_exit_handlers;
+  bool remove_noncrash_frames;
   bool debug_parser;
   bool debug_scanner;
   bool verbose;
@@ -82,6 +84,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
     }
     break;
   case 'r': arguments->remove_exit_handlers = true; break;
+  case 'm': arguments->remove_noncrash_frames = true; break;
   case 'p': arguments->debug_parser = true; break;
   case 's': arguments->debug_scanner = true; break;
   case 'v': arguments->verbose = true; break;
@@ -119,6 +122,7 @@ int main(int argc, char **argv)
   arguments.frame_depth = -1;
   arguments.single_thread = false;
   arguments.remove_exit_handlers = false;
+  arguments.remove_noncrash_frames = false;
   arguments.debug_parser = false;
   arguments.debug_scanner = false;
   arguments.verbose = false;
@@ -309,6 +313,9 @@ int main(int argc, char **argv)
       retval = EX_THREADDETECTIONFAILED; 
     }
   }
+
+  if (arguments.remove_noncrash_frames)
+    backtrace_remove_noncrash_frames(backtrace);
 
   /* If a frame removal is requested, do it now. */
   if (arguments.frame_depth > 0)
