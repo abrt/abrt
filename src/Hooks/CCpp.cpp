@@ -18,14 +18,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
-/* Make all file ops "large" and make off_t 64-bit.
- * No need to use O_LARGEFILE anywhere
- */
-#define _LARGEFILE_SOURCE
-#define _LARGEFILE64_SOURCE
-#define _FILE_OFFSET_BITS 64
-
 #include "abrtlib.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
