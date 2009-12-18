@@ -13,6 +13,7 @@ libABRTUtils_la_SOURCES = \
     read_write.cpp \
     logging.cpp \
     copyfd.cpp \
+    daemon.cpp \
     skip_whitespace.cpp \
     xatonum.cpp \
     popen_and_save_output.cpp \

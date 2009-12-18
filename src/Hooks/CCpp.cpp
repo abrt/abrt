@@ -24,10 +24,7 @@
 #include <syslog.h>
 
 #define FILENAME_EXECUTABLE     "executable"
-#define FILENAME_CMDLINE        "cmdline"
 #define FILENAME_COREDUMP       "coredump"
-
-#define VAR_RUN_PID_FILE        VAR_RUN"/abrt.pid"
 
 using namespace std;
 
@@ -59,125 +56,6 @@ static char* get_cwd(pid_t pid)
 
     sprintf(buf, "/proc/%u/cwd", (int)pid);
     return malloc_readlink(buf);
-}
-
-static char *append_escaped(char *start, const char *s)
-{
-    char hex_char_buf[] = "\\x00";
-
-    *start++ = ' ';
-    char *dst = start;
-    const unsigned char *p = (unsigned char *)s;
-
-    while (1)
-    {
-        const unsigned char *old_p = p;
-        while (*p > ' ' && *p <= 0x7e && *p != '\"' && *p != '\'' && *p != '\\')
-            p++;
-        if (dst == start)
-        {
-            if (p != (unsigned char *)s && *p == '\0')
-            {
-                /* entire word does not need escaping and quoting */
-                strcpy(dst, s);
-                dst += strlen(s);
-                return dst;
-            }
-            *dst++ = '\'';
-        }
-
-        strncpy(dst, s, (p - old_p));
-        dst += (p - old_p);
-
-        if (*p == '\0')
-        {
-            *dst++ = '\'';
-            *dst = '\0';
-            return dst;
-        }
-        const char *a;
-        switch (*p)
-        {
-        case '\r': a = "\\r"; break;
-        case '\n': a = "\\n"; break;
-        case '\t': a = "\\t"; break;
-        case '\'': a = "\\\'"; break;
-        case '\"': a = "\\\""; break;
-        case '\\': a = "\\\\"; break;
-        case ' ': a = " "; break;
-        default:
-            hex_char_buf[2] = "0123456789abcdef"[*p >> 4];
-            hex_char_buf[3] = "0123456789abcdef"[*p & 0xf];
-            a = hex_char_buf;
-        }
-        strcpy(dst, a);
-        dst += strlen(a);
-        p++;
-    }
-}
-
-// taken from kernel
-#define COMMAND_LINE_SIZE 2048
-static char* get_cmdline(pid_t pid)
-{
-    char path[sizeof("/proc/%u/cmdline") + sizeof(int)*3];
-    char cmdline[COMMAND_LINE_SIZE];
-    char escaped_cmdline[COMMAND_LINE_SIZE*4 + 4];
-
-    escaped_cmdline[1] = '\0';
-    sprintf(path, "/proc/%u/cmdline", (int)pid);
-    int fd = open(path, O_RDONLY);
-    if (fd >= 0)
-    {
-        int len = read(fd, cmdline, sizeof(cmdline) - 1);
-        close(fd);
-
-        if (len > 0)
-        {
-            cmdline[len] = '\0';
-            char *src = cmdline;
-            char *dst = escaped_cmdline;
-            while ((src - cmdline) < len)
-            {
-                dst = append_escaped(dst, src);
-                src += strlen(src) + 1;
-            }
-        }
-    }
-
-    return xstrdup(escaped_cmdline + 1); /* +1 skips extraneous leading space */
-}
-
-static int daemon_is_ok()
-{
-    int fd = open(VAR_RUN_PID_FILE, O_RDONLY);
-    if (fd < 0)
-    {
-        return 0;
-    }
-
-    char pid[sizeof(pid_t)*3 + 2];
-    int len = read(fd, pid, sizeof(pid)-1);
-    close(fd);
-    if (len <= 0)
-        return 0;
-
-    pid[len] = '\0';
-    *strchrnul(pid, '\n') = '\0';
-    /* paranoia: we don't want to check /proc//stat or /proc///stat */
-    if (pid[0] == '\0' || pid[0] == '/')
-        return 0;
-
-    /* TODO: maybe readlink and check that it is "xxx/abrt"? */
-    char path[sizeof("/proc/%s/stat") + sizeof(pid)];
-    sprintf(path, "/proc/%s/stat", pid);
-    struct stat sb;
-    if (stat(path, &sb) == -1)
-    {
-        return 0;
-    }
-
-    return 1;
 }
 
 int main(int argc, char** argv)

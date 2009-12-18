@@ -210,6 +210,16 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 /* Random utility functions */
 uid_t getuidbyname(const char* login);
 
+/* Returns command line of running program.
+ * Caller is responsible to free() the returned value.
+ * If the pid is not valid or command line can not be obtained,
+ * empty string is returned.
+ */
+char* get_cmdline(pid_t pid);
+
+/* Returns 1 if abrtd daemon is running, 0 otherwise. */
+int daemon_is_ok();
+
 /* Returns malloc'ed block */
 char *encode_base64(const void *src, int length);
 bool dot_or_dotdot(const char *filename);
