@@ -20,5 +20,5 @@ abrt_backtrace_SOURCES = \
 #abrt_backtrace_LDADD = \
 #    ../../lib/Utils/libABRTUtils.la
 
-#man_MANS = abrt-backtrace.1
-#EXTRA_DIST = $(man_MANS)
+man_MANS = abrt-backtrace.1
+EXTRA_DIST = $(man_MANS)

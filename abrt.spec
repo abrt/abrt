@@ -283,6 +283,7 @@ fi
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_libdir}/%{name}
+%{_mandir}/man1/%{name}-backtrace.1.gz
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
 #%{_mandir}/man5/pyhook.conf.5.gz
