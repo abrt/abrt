@@ -557,13 +557,14 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 
     /* Run abrt-backtrace to get independent backtrace suitable
        to UUID calculation. */
-    char *args[6];
+    char *args[7];
     args[0] = (char*)"abrt-backtrace";
     args[1] = (char*)"--single-thread";
     args[2] = (char*)"--remove-exit-handlers";
     args[3] = (char*)"--frame-depth=5";
-    args[4] = (char*)backtrace_path.c_str();
-    args[5] = NULL;
+    args[4] = (char*)"--remove-noncrash-frames";
+    args[5] = (char*)backtrace_path.c_str();
+    args[6] = NULL;
 
     int pipeout[2];
     xpipe(pipeout); /* stdout of abrt-backtrace */
