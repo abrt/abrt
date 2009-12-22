@@ -12,8 +12,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-12 08:18+0000\n"
-"PO-Revision-Date: 2009-12-14 10:42+0100\n"
+"POT-Creation-Date: 2009-12-22 04:56+0000\n"
+"PO-Revision-Date: 2009-12-22 11:24+0100\n"
 "Last-Translator: Marcus Nitzschke <kenda@fedoraproject.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -174,7 +174,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:187
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -183,15 +183,15 @@ msgstr ""
 "Fehler beim Laden der Dump-Liste.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:221
+#: ../src/Gui/CCMainWindow.py:224
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Dieser Absturz wurde gemeldet:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:234
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nicht berichtet!</b>"
 
-#: ../src/Gui/CCMainWindow.py:280
+#: ../src/Gui/CCMainWindow.py:283
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -199,7 +199,7 @@ msgstr ""
 "Konnte Bericht nicht abrufen!\n"
 "Fehlt Debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:299
+#: ../src/Gui/CCMainWindow.py:302
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -208,8 +208,8 @@ msgstr ""
 "Berichterstellung fehlgeschlagen!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:318
-#: ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:321
+#: ../src/Gui/CCMainWindow.py:348
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fehler beim Abrufen des Berichts: %s"
@@ -433,7 +433,7 @@ msgstr "ABRT-Dienst wird nicht ausgeführt."
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../src/Daemon/Daemon.cpp:473
+#: ../src/Daemon/Daemon.cpp:478
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie Ihren MaxCrashReportsSize-Wert in abrt.conf."
 
@@ -475,27 +475,23 @@ msgstr "Abmelden ..."
 msgid "Getting local universal unique identification"
 msgstr "Rufe lokale, universelle, eindeutige Identifikation ab"
 
-#: ../lib/Plugins/CCpp.cpp:264
-msgid "Getting backtrace..."
-msgstr "Backtrace abrufen ..."
+#: ../lib/Plugins/CCpp.cpp:257
+msgid "Generating backtrace"
+msgstr "Backtrace wird generiert"
 
-#: ../lib/Plugins/CCpp.cpp:382
-msgid "Searching for debug-info packages..."
-msgstr "debug-info-Pakete suchen ..."
+#: ../lib/Plugins/CCpp.cpp:375
+msgid "Starting debuginfo installation"
+msgstr "debuginfo-Installation wird gestartet"
 
-#: ../lib/Plugins/CCpp.cpp:416
-msgid "Downloading and installing debug-info packages..."
-msgstr "debug-info-Pakete herunterladen und installieren ..."
-
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:525
 msgid "Getting local universal unique identification..."
 msgstr "Lokale, universelle, eindeutige Identifikation abrufen ..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:544
 msgid "Getting global universal unique identification..."
 msgstr "Globale, universelle, eindeutige Identifikation abrufen ..."
 
-#: ../lib/Plugins/CCpp.cpp:691
+#: ../lib/Plugins/CCpp.cpp:687
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo-Installation wird übersprungen"
 
@@ -509,7 +505,7 @@ msgid "Writing report to '%s'"
 msgstr "Bericht wird nach '%s' geschrieben"
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:381
 msgid "FileTransfer: URL not specified"
 msgstr "Dateiübertragung: URL nicht angegeben"
 
@@ -518,16 +514,16 @@ msgstr "Dateiübertragung: URL nicht angegeben"
 msgid "Sending archive %s to %s"
 msgstr "Archiv %s via %s senden"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:306
 msgid "File Transfer: Creating a report..."
 msgstr "Dateiübertragung: Einen Bericht erstellen ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:331
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Kann kein Archiv erzeugen und senden: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:356
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Kann kein Archiv erzeugen und senden %s"
@@ -536,7 +532,7 @@ msgstr "Kann kein Archiv erzeugen und senden %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "Kernel-Oops-Crash-Berichte erzeugen ..."
 
-#: ../lib/Plugins/Mailx.cpp:165
+#: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
 msgstr "Eine E-Mail senden ..."
 
@@ -553,6 +549,10 @@ msgstr "sosreport ausführen: %s"
 msgid "done running sosreport"
 msgstr "Ausführung von sosreport abgeschlossen"
 
+#~ msgid "Searching for debug-info packages..."
+#~ msgstr "debug-info-Pakete suchen ..."
+#~ msgid "Downloading and installing debug-info packages..."
+#~ msgstr "debug-info-Pakete herunterladen und installieren ..."
 #~ msgid "Starting report creation..."
 #~ msgstr "Berichterstellung beginnen ..."
 #~ msgid "Creating a report..."
