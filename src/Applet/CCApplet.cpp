@@ -80,7 +80,15 @@ static const gchar menu_xml[] =
 This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n\
 \n\
 You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</property>\
-    <property name=\"authors\">Jiri Moskovcak  &lt;jmoskovc@redhat.com&gt;</property>\
+        <property name=\"authors\">Anton Arapov &lt;aarapov@redhat.com&gt;\n\
+Karel Klic &lt;kklic@redhat.com&gt;\n\
+Jiri Moskovcak &lt;jmoskovc@redhat.com&gt;\n\
+Nikola Pajkovsky &lt;npajkovs@redhat.com&gt;\n\
+Zdenek Prikryl &lt;zprikryl@redhat.com&gt;\n\
+Denys Vlasenko &lt;dvlasenk@redhat.com&gt;\n\
+\n\
+Art:\n\
+Patrick Connelly &lt;pcon@fedoraproject.org&gt;</property>\
     <property name=\"wrap_license\">True</property>\
     <child internal-child=\"vbox\">\
       <object class=\"GtkVBox\" id=\"dialog-vbox1\">\
