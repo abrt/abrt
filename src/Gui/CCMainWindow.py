@@ -5,7 +5,12 @@ import pwd
 import pygtk
 pygtk.require("2.0")
 import gobject
-import gtk
+try:
+    import gtk
+except RuntimeError,e:
+    # rhbz#552039
+    print e
+    os.exit()
 import gtk.glade
 import CCDBusBackend
 from CC_gui_functions import *
