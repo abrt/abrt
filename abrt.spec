@@ -410,7 +410,7 @@ fi
 - made s_signal_caught volatile (vda.linux@googlemail.com)
 - abrt-debuginfo-install: fixes for runs w/o cachedir (vda.linux@googlemail.com)
 - remove unsafe log() from signal handler (vda.linux@googlemail.com)
-- src/Hooks/CCpp.cpp: use and honour %c (core limit size). (vda.linux@googlemail.com)
+- src/Hooks/CCpp.cpp: use and honour 'c' (core limit size). (vda.linux@googlemail.com)
 - lib/Plugins/CCpp.cpp: save gdb error messages too (vda.linux@googlemail.com)
 - prevent destructors from throwing exceptions; check curl_easy_init errors (vda.linux@googlemail.com)
 - don't blame python for every crash in /usr/bin/python rhbz#533521 trac#109 (jmoskovc@redhat.com)
