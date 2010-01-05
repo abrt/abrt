@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.0.2
+Version: 1.0.3
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -399,6 +399,28 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Tue Jan  5 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.3-1
+- speed optimalization of abrt-debuginfo-install (jmoskovc@redhat.com)
+- updated credits (jmoskovc@redhat.com)
+- GUI: fixed crash when abrt-gui is run without X server rhbz#552039 (jmoskovc@redhat.com)
+- abrt-backtrace manpage installed (kklic@redhat.com)
+- cmdline and daemon checking is done by abrt-python-hook (kklic@redhat.com)
+- moved get_cmdline() and daemon_is_ok() to abrtlib (kklic@redhat.com)
+- large file support for whole abrt (kklic@redhat.com)
+- made s_signal_caught volatile (vda.linux@googlemail.com)
+- abrt-debuginfo-install: fixes for runs w/o cachedir (vda.linux@googlemail.com)
+- remove unsafe log() from signal handler (vda.linux@googlemail.com)
+- src/Hooks/CCpp.cpp: use and honour %c (core limit size). (vda.linux@googlemail.com)
+- lib/Plugins/CCpp.cpp: save gdb error messages too (vda.linux@googlemail.com)
+- prevent destructors from throwing exceptions; check curl_easy_init errors (vda.linux@googlemail.com)
+- don't blame python for every crash in /usr/bin/python rhbz#533521 trac#109 (jmoskovc@redhat.com)
+- GUI: autoscroll log window (jmoskovc@redhat.com)
+- Kerneloops.conf: better comments (vda.linux@googlemail.com)
+- applet: reduce blinking time to 30 seconds (vda.linux@googlemail.com)
+- add paranoia checks on setuid/setgid (vda.linux@googlemail.com)
+- more "obviously correct" code for secure opening of /dev/null (vda.linux@googlemail.com)
+- get rid of ugly sleep call inside while() (vda.linux@googlemail.com)
+
 * Mon Dec 14 2009  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.2-1
 - disabled GPG check again (jmoskovc@redhat.com)
 - abrt-pyhook-helper rename (vda.linux@googlemail.com)
