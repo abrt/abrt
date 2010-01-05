@@ -278,7 +278,8 @@ static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
     args[6] = (char*)"-ex";
     args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
     args[8] = (char*)"-ex";
-    args[9] = (char*)"thread apply all backtrace full";
+    /* max 3000 frames: with no limit, gdb sometimes OOMs the machine */
+    args[9] = (char*)"thread apply all backtrace 3000 full";
     args[10] = NULL;
 
     ExecVP(args, xatoi_u(UID.c_str()), pBacktrace);

@@ -307,7 +307,8 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[7] = (char*)corefile.c_str();
 
     args[8] = (char*)"-ex";
-    args[9] = (char*)"thread apply all backtrace full";
+    /* max 3000 frames: with no limit, gdb sometimes OOMs the machine */
+    args[9] = (char*)"thread apply all backtrace 3000 full";
     args[10] = (char*)"-ex";
     args[11] = (char*)"info sharedlib";
     args[12] = NULL;
