@@ -1,4 +1,4 @@
-/*
+/* -*-mode:c++;c-file-style:"bsd";c-basic-offset:2;indent-tabs-mode:nil-*-
     Copyright (C) 2009  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
@@ -85,12 +85,45 @@ static bool frame_is_exit_handler(struct frame *frame)
 	  && NULL != strstr(frame->sourcefile, "exit.c"));
 }
 
+/* Checks if a frame contains abort function used
+ * by operating system to exit application.
+ * E.g. in C it's called "abort" or "raise".
+ */
+static bool frame_is_abort_frame(struct frame *frame)
+{
+  if (!frame->function || !frame->sourcefile)
+    return false;
+
+  if (0 == strcmp(frame->function, "raise") 
+      && (NULL != strstr(frame->sourcefile, "pt-raise.c")
+          || NULL != strstr(frame->sourcefile, "/libc.so.6")))
+    return true;
+  else if (0 == strcmp(frame->function, "exit")
+           && NULL != strstr(frame->sourcefile, "exit.c"))
+    return true;
+  else if (0 == strcmp(frame->function, "abort")
+           && (NULL != strstr(frame->sourcefile, "abort.c")
+               || NULL != strstr(frame->sourcefile, "/libc.so.6")))
+    return true;
+  else if (frame_is_exit_handler(frame))
+    return true;
+  
+  return false;
+}
+
 static bool frame_is_noncrash_frame(struct frame *frame)
 {
+  /* Abort frames. */
+  if (frame_is_abort_frame(frame))
+    return true;
+
   if (!frame->function)
     return false;
 
   if (0 == strcmp(frame->function, "__kernel_vsyscall"))
+    return true;
+
+  if (0 == strcmp(frame->function, "__assert_fail"))
     return true;
 
   if (!frame->sourcefile)
@@ -212,20 +245,8 @@ static struct frame *thread_find_abort_frame(struct thread *thread)
   struct frame *result = NULL;
   while (frame)
   {
-    if (frame->function && frame->sourcefile)
-    {
-      if (0 == strcmp(frame->function, "raise") 
-	  && NULL != strstr(frame->sourcefile, "pt-raise.c"))
-	result = frame;
-      else if (0 == strcmp(frame->function, "exit")
-	       && NULL != strstr(frame->sourcefile, "exit.c"))
-	result = frame;
-      else if (0 == strcmp(frame->function, "abort")
-	       && NULL != strstr(frame->sourcefile, "abort.c"))
-	result = frame;
-      else if (frame_is_exit_handler(frame))
-	result = frame;
-    }
+    if (frame_is_abort_frame(frame))
+      result = frame;
   
     frame = frame->next;
   }
@@ -276,7 +297,10 @@ void thread_remove_noncrash_frames(struct thread *thread)
       if (prev)
 	cur = prev;
       else
+      {
 	cur = thread->frames;
+        continue;
+      }
     }
 
     prev = cur;
