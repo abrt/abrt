@@ -4,13 +4,13 @@
 #
 #: ../src/Gui/CCReporterDialog.py:208
 # Igor Pires Soares <igor@projetofedora.org>, 2009.
-# Glaucia Cintra <gcintra@redhat.com>, 2009.
+# Glaucia Cintra <gcintra@redhat.com>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-12 08:18+0000\n"
-"PO-Revision-Date: 2009-12-14 11:14+1000\n"
+"POT-Creation-Date: 2010-01-05 21:32+0000\n"
+"PO-Revision-Date: 2010-01-06 11:49+1000\n"
 "Last-Translator: Glaucia Cintra <gcintra@redhat.com>\n"
 "Language-Team: Portuguese <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -146,31 +146,31 @@ msgid "_Help"
 msgstr "Aj_uda"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:71
+#: ../src/Gui/CCMainWindow.py:76
 msgid "Icon"
 msgstr "Ícone"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:84
 msgid "Package"
 msgstr "Pacote"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Application"
 msgstr "Aplicativo"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:86
 msgid "Date"
 msgstr "Data"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Crash count"
 msgstr "Contagem de travamentos"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:88
 msgid "User"
 msgstr "Usuário"
 
-#: ../src/Gui/CCMainWindow.py:149
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -179,7 +179,7 @@ msgstr ""
 "Não foi possível mostrar o diálogo de configurações\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:160
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -189,7 +189,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:192
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -198,15 +198,15 @@ msgstr ""
 "Erro ao carregar a lista de despejo.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:221
+#: ../src/Gui/CCMainWindow.py:229
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Este travamento foi relatado:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:239
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não relatado!</b>"
 
-#: ../src/Gui/CCMainWindow.py:280
+#: ../src/Gui/CCMainWindow.py:288
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -214,7 +214,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "O debuginfo está faltando?"
 
-#: ../src/Gui/CCMainWindow.py:299
+#: ../src/Gui/CCMainWindow.py:307
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -223,7 +223,7 @@ msgstr ""
 "Falha no relato!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:326 ../src/Gui/CCMainWindow.py:353
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
@@ -450,11 +450,11 @@ msgstr "Um travamento no pacote %s foi detectado"
 msgid "ABRT service is not running"
 msgstr "O serviço do ABRT não está em execução"
 
-#: ../src/Applet/CCApplet.cpp:196
+#: ../src/Applet/CCApplet.cpp:204
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:473
+#: ../src/Daemon/Daemon.cpp:478
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -500,27 +500,23 @@ msgstr "Encerrando sessão..."
 msgid "Getting local universal unique identification"
 msgstr "Obtendo identificação universal local única"
 
-#: ../lib/Plugins/CCpp.cpp:264
-msgid "Getting backtrace..."
-msgstr "Obtendo backtrace..."
+#: ../lib/Plugins/CCpp.cpp:257
+msgid "Generating backtrace"
+msgstr "Obtendo backtrace... "
 
-#: ../lib/Plugins/CCpp.cpp:382
-msgid "Searching for debug-info packages..."
-msgstr "Pesquisando por pacotes debug-info..."
+#: ../lib/Plugins/CCpp.cpp:376
+msgid "Starting debuginfo installation"
+msgstr "Iniciando instalação do debuginfo"
 
-#: ../lib/Plugins/CCpp.cpp:416
-msgid "Downloading and installing debug-info packages..."
-msgstr "Baixando e instalando pacotes debug-info..."
-
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:526
 msgid "Getting local universal unique identification..."
 msgstr "Obtendo identificação universal local única..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:545
 msgid "Getting global universal unique identification..."
 msgstr "Obtendo identificação universal global única..."
 
-#: ../lib/Plugins/CCpp.cpp:691
+#: ../lib/Plugins/CCpp.cpp:688
 msgid "Skipping debuginfo installation"
 msgstr "Pulando instalação do debuginfo"
 
@@ -533,7 +529,7 @@ msgstr "Criando e enviando um relatório..."
 msgid "Writing report to '%s'"
 msgstr "Gravando um relato para '%s'"
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:381
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL não especificada"
 
@@ -542,16 +538,16 @@ msgstr "FileTransfer: URL não especificada"
 msgid "Sending archive %s to %s"
 msgstr "Enviando o pacote %s para %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:306
 msgid "File Transfer: Creating a report..."
 msgstr "File Transfer: Criando um relatório..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:331
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Não foi possível criar e enviar o pacote: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:356
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Não foi possível criar e enviar o pacote %s"
@@ -560,7 +556,7 @@ msgstr "Não foi possível criar e enviar o pacote %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "Criando relatórios de oops do kernel no travamento..."
 
-#: ../lib/Plugins/Mailx.cpp:165
+#: ../lib/Plugins/Mailx.cpp:164
 msgid "Sending an email..."
 msgstr "Enviando email..."
 
