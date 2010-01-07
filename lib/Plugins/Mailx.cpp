@@ -68,7 +68,7 @@ static void exec_and_feed_input(uid_t uid, const char* pText, char **pArgs)
     safe_write(pipein[1], pText, strlen(pText));
     close(pipein[1]);
 
-    wait(NULL); /* wait for command completion */
+    waitpid(child, NULL, 0); /* wait for command completion */
 }
 
 static char** append_str_to_vector(char **vec, unsigned &size, const char *str)

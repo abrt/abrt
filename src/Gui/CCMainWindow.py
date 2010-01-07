@@ -114,6 +114,8 @@ class MainWindow():
         self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.ccdaemon.connect("abrt-error", self.error_cb)
         self.ccdaemon.connect("update", self.update_cb)
+        # for now, just treat them the same (w/o this, we don't even see daemon warnings in logs!):
+        self.ccdaemon.connect("warning", self.update_cb)
         self.ccdaemon.connect("show", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         self.ccdaemon.connect("report-done", self.on_report_done_cb)

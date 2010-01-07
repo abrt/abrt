@@ -46,6 +46,7 @@ using namespace std;
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
+    m_bBacktrace(true),
     m_bMemoryMap(false),
     m_bInstallDebugInfo(true),
     m_nDebugInfoCacheMB(4000)
@@ -157,7 +158,7 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
 
     close(pipeout[0]);
     int status;
-    wait(&status); /* prevent having zombie child process */
+    waitpid(child, &status, 0); /* prevent having zombie child process */
 
     return status;
 }
@@ -410,7 +411,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     if (pipeout_fp == NULL) /* never happens */
     {
         close(pipeout[0]);
-        wait(NULL);
+        waitpid(child, NULL, 0);
         return;
     }
 
@@ -544,7 +545,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
-    string backtrace_path = (string)pDebugDumpDir + "/" + FILENAME_BACKTRACE;
+    string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
     string executable;
     string package;
     string uid_str;
@@ -553,74 +554,82 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
-        dd.LoadText(FILENAME_UID, uid_str);
+        if (m_bBacktrace)
+            dd.LoadText(FILENAME_UID, uid_str);
     }
 
-    /* Run abrt-backtrace to get independent backtrace suitable
-       to UUID calculation. */
-    char *args[7];
-    args[0] = (char*)"abrt-backtrace";
-    args[1] = (char*)"--single-thread";
-    args[2] = (char*)"--remove-exit-handlers";
-    args[3] = (char*)"--frame-depth=5";
-    args[4] = (char*)"--remove-noncrash-frames";
-    args[5] = (char*)backtrace_path.c_str();
-    args[6] = NULL;
-
-    int pipeout[2];
-    xpipe(pipeout); /* stdout of abrt-backtrace */
-    pid_t child = fork();
-    if (child == -1)
-        perror_msg_and_die("fork");
-    if (child == 0)
-    {
-        VERB1 log("Executing: %s", concat_str_vector(args).c_str());
-
-        xmove_fd(pipeout[1], STDOUT_FILENO);
-        close(pipeout[0]); /* read side of the pipe */
-
-        /* abrt-backtrace is executed under the user's uid and gid. */
-        uid_t uid = xatoi_u(uid_str.c_str());
-        struct passwd* pw = getpwuid(uid);
-        gid_t gid = pw ? pw->pw_gid : uid;
-        setgroups(1, &gid);
-        xsetregid(gid, gid);
-        xsetreuid(uid, uid);
-
-        execvp(args[0], args);
-        VERB1 perror_msg("Can't execute '%s'", args[0]);
-        exit(1);
-    }
-
-    close(pipeout[1]); /* write side of the pipe */
-
-    /* Read the result from abrt-backtrace. */
-    int r;
-    char buff[1024];
     string independent_backtrace;
-    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+    if (m_bBacktrace)
     {
-        buff[r] = '\0';
-        independent_backtrace += buff;
-    }
-    close(pipeout[0]);
+        /* Run abrt-backtrace to get independent backtrace suitable
+           to UUID calculation. */
+        char *args[7];
+        args[0] = (char*)"abrt-backtrace";
+        args[1] = (char*)"--single-thread";
+        args[2] = (char*)"--remove-exit-handlers";
+        args[3] = (char*)"--frame-depth=5";
+        args[4] = (char*)"--remove-noncrash-frames";
+        args[5] = (char*)backtrace_path.c_str();
+        args[6] = NULL;
 
-    /* Wait until it ends, and check the exit status. */
-    int status;
-    wait(&status); /* prevent having zombie child process */
-    if (!WIFEXITED(status))
-    {
-        perror_msg_and_die("abrt-backtrace not executed properly, "
-                           "status: %x", status);
-    }
-    int exit_status = WEXITSTATUS(status);
-    if (exit_status > 0 && exit_status <= EX__MAX)
-    {
-        error_msg_and_die("abrt-backtrace run failed, exit value: %d",
-                          exit_status);
-    }
+        int pipeout[2];
+        xpipe(pipeout); /* stdout of abrt-backtrace */
+        pid_t child = fork();
+        if (child == -1)
+            perror_msg_and_die("fork");
+        if (child == 0)
+        {
+            VERB1 log("Executing: %s", concat_str_vector(args).c_str());
 
-    /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
+            xmove_fd(pipeout[1], STDOUT_FILENO);
+            close(pipeout[0]); /* read side of the pipe */
+
+            /* abrt-backtrace is executed under the user's uid and gid. */
+            uid_t uid = xatoi_u(uid_str.c_str());
+            struct passwd* pw = getpwuid(uid);
+            gid_t gid = pw ? pw->pw_gid : uid;
+            setgroups(1, &gid);
+            xsetregid(gid, gid);
+            xsetreuid(uid, uid);
+
+            execvp(args[0], args);
+            VERB1 perror_msg("Can't execute '%s'", args[0]);
+            exit(1);
+        }
+
+        close(pipeout[1]); /* write side of the pipe */
+
+        /* Read the result from abrt-backtrace. */
+        int r;
+        char buff[1024];
+        while ((r = safe_read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+        {
+            buff[r] = '\0';
+            independent_backtrace += buff;
+        }
+        close(pipeout[0]);
+
+        /* Wait until it exits, and check the exit status. */
+        errno = 0;
+        int status;
+        waitpid(child, &status, 0);
+        if (!WIFEXITED(status))
+        {
+            perror_msg("abrt-backtrace not executed properly, "
+                               "status: %x signal: %d", status, WIFSIGNALED(status));
+        } else
+        {
+            int exit_status = WEXITSTATUS(status);
+            if (exit_status != 0)
+            {
+                error_msg("abrt-backtrace run failed, exit value: %d",
+                              exit_status);
+            }
+        }
+
+        /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
+    }
+    /* else: no backtrace, independent_backtrace == "" */
 
     string hash_base = package + executable + independent_backtrace;
     return CreateHash(hash_base.c_str());
@@ -660,6 +669,11 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
+
+    if (!m_bBacktrace)
+    {
+        return;
+    }
 
     if (!force)
     {
@@ -753,6 +767,11 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
 
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("Backtrace");
+    if (it != end)
+    {
+        m_bBacktrace = string_to_bool(it->second.c_str());
+    }
     it = pSettings.find("MemoryMap");
     if (it != end)
     {

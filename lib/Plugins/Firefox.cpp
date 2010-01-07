@@ -43,6 +43,7 @@
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 CAnalyzerFirefox::CAnalyzerFirefox() :
+    m_bBacktrace(true),
     m_bMemoryMap(false),
     m_bInstallDebugInfo(true),
     m_nDebugInfoCacheMB(4000)
@@ -148,7 +149,7 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     }
 
     close(pipeout[0]);
-    wait(NULL); /* prevent having zombie child process */
+    waitpid(child, NULL, 0); /* prevent having zombie child process */
 
     return 0;
 }
@@ -608,7 +609,7 @@ Another application is holding the yum lock, cannot continue
     if (pipeout_fp == NULL) /* never happens */
     {
         close(pipeout[0]);
-        wait(NULL);
+        waitpid(child, NULL, 0);
         return;
     }
 
@@ -652,14 +653,14 @@ Another application is holding the yum lock, cannot continue
         {
             fclose(pipeout_fp);
             kill(child, SIGTERM);
-            wait(NULL);
+            waitpid(child, NULL, 0);
             throw CABRTException(EXCEP_PLUGIN, "%s: can't install debuginfos for %s", __func__, pPackage);
         }
 #endif
     }
 
     fclose(pipeout_fp);
-    wait(NULL);
+    waitpid(child, NULL, 0);
 }
 #endif
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
@@ -704,7 +705,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     if (pipeout_fp == NULL) /* never happens */
     {
         close(pipeout[0]);
-        wait(NULL);
+        waitpid(child, NULL, 0);
         return;
     }
 
@@ -735,7 +736,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     }
 
     fclose(pipeout_fp);
-    wait(NULL);
+    waitpid(child, NULL, 0);
 }
 
 static double get_dir_size(const char *dirname, std::string *worst_file, double *maxsz)
@@ -873,6 +874,11 @@ void CAnalyzerFirefox::CreateReport(const char *pDebugDumpDir, int force)
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
 
+    if (!m_bBacktrace)
+    {
+        return;
+    }
+
     if (!force)
     {
         bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
@@ -962,6 +968,11 @@ void CAnalyzerFirefox::SetSettings(const map_plugin_settings_t& pSettings)
 
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("Backtrace");
+    if (it != end)
+    {
+        m_bBacktrace = string_to_bool(it->second.c_str());
+    }
     it = pSettings.find("MemoryMap");
     if (it != end)
     {

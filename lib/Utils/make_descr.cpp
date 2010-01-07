@@ -1,5 +1,4 @@
 #include "abrtlib.h"
-//#include "abrt_types.h"
 #include "CrashTypes.h"
 #include "DebugDump.h" /* FILENAME_ARCHITECTURE etc */
 #ifdef HAVE_CONFIG_H

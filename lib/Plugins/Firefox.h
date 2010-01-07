@@ -30,6 +30,7 @@
 class CAnalyzerFirefox : public CAnalyzer
 {
     private:
+        bool m_bBacktrace;
         bool m_bMemoryMap;
         bool m_bInstallDebugInfo;
         unsigned m_nDebugInfoCacheMB;
