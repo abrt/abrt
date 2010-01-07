@@ -146,96 +146,93 @@ void CPluginManager::LoadPlugins()
 
 void CPluginManager::UnLoadPlugins()
 {
-    map_abrt_plugins_t::iterator it;
-    while ((it = m_mapABRTPlugins.begin()) != m_mapABRTPlugins.end())
+    map_loaded_module_t::iterator it_module;
+    while ((it_module = m_mapLoadedModules.begin()) != m_mapLoadedModules.end())
     {
-        UnLoadPlugin(it->first.c_str());
+        UnLoadPlugin(it_module->first.c_str());
     }
 }
 
 void CPluginManager::LoadPlugin(const char *pName)
 {
-    if (m_mapABRTPlugins.find(pName) == m_mapABRTPlugins.end())
+    if (m_mapLoadedModules.find(pName) != m_mapLoadedModules.end())
     {
-        CABRTPlugin* abrtPlugin = NULL;
-        try
-        {
-            std::string libPath = ssprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
-            abrtPlugin = new CABRTPlugin(libPath.c_str());
-            if (abrtPlugin->GetMagicNumber() != PLUGINS_MAGIC_NUMBER
-             || abrtPlugin->GetType() < 0
-             || abrtPlugin->GetType() > MAX_PLUGIN_TYPE
-            ) {
-                throw CABRTException(EXCEP_PLUGIN, "CPluginManager::LoadPlugin(): non-compatible plugin");
-            }
-            log("Plugin %s (%s) succesfully loaded", pName, abrtPlugin->GetVersion());
-            m_mapABRTPlugins[pName] = abrtPlugin;
-        }
-        catch (CABRTException& e)
-        {
-            delete abrtPlugin;
-            error_msg("Failed to load plugin %s: %s", pName, e.what());
-        }
+        return;
     }
+
+    std::string libPath = ssprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
+    CLoadedModule* module = new CLoadedModule(libPath.c_str());
+
+    if (module->GetMagicNumber() != PLUGINS_MAGIC_NUMBER
+     || module->GetType() < 0
+     || module->GetType() > MAX_PLUGIN_TYPE
+    ) {
+        error_msg("Can't load non-compatible plugin %s: magic %d != %d or type %d is not in [0,%d]",
+                pName,
+                module->GetMagicNumber(), PLUGINS_MAGIC_NUMBER,
+                module->GetType(), MAX_PLUGIN_TYPE);
+        delete module;
+        return;
+    }
+
+    log("Plugin %s (%s) succesfully loaded", pName, module->GetVersion());
+    m_mapLoadedModules[pName] = module;
 }
 
 void CPluginManager::UnLoadPlugin(const char *pName)
 {
-    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
-    if (abrt_plugin != m_mapABRTPlugins.end())
+    map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
+    if (it_module != m_mapLoadedModules.end())
     {
         UnRegisterPlugin(pName);
-        delete abrt_plugin->second;
-        m_mapABRTPlugins.erase(abrt_plugin);
+        delete it_module->second;
+        m_mapLoadedModules.erase(it_module);
         log("Plugin %s successfully unloaded", pName);
     }
 }
 
 int CPluginManager::RegisterPlugin(const char *pName)
 {
-    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
-    if (abrt_plugin != m_mapABRTPlugins.end())
+    map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
+    if (it_module == m_mapLoadedModules.end())
     {
-        if (m_mapPlugins.find(pName) == m_mapPlugins.end())
-        {
-            /* Loaded, but not registered yet */
-            CPlugin* plugin = abrt_plugin->second->PluginNew();
-            map_plugin_settings_t pluginSettings;
-
-            if (strcmp(pName, "Kerneloops") == 0
-             || strcmp(pName, "KerneloopsReporter") == 0
-             || strcmp(pName, "KerneloopsScanner") == 0
-            ) {
-                LoadPluginSettings(PLUGINS_CONF_DIR"/Kerneloops."PLUGINS_CONF_EXTENSION, pluginSettings);
-                VERB3 log("Load kerneloops.conf settings");
-            }
-            else
-            {
-                LoadPluginSettings(ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, pName).c_str(), pluginSettings);
-                VERB3 log("Load %s.conf settings", pName);
-            }
-            try
-            {
-                plugin->Init();
-                plugin->SetSettings(pluginSettings);
-            }
-            catch (CABRTException& e)
-            {
-                error_msg("Can't initialize plugin %s(%s): %s",
-                        pName,
-                        plugin_type_str[abrt_plugin->second->GetType()],
-                        e.what()
-                );
-                UnLoadPlugin(pName);
-                return -1; /* failure */
-            }
-            m_mapPlugins[pName] = plugin;
-            log("Registered plugin %s(%s)", pName, plugin_type_str[abrt_plugin->second->GetType()]);
-        }
-        return 0; /* success */
+        error_msg("Can't initialize plugin %s: no such plugin installed", pName);
+        return -1; /* failure */
     }
-    error_msg("Can't initialize plugin %s: no such plugin installed", pName);
-    return -1; /* failure */
+    if (m_mapPlugins.find(pName) != m_mapPlugins.end())
+    {
+        return 0; /* already registered, success */
+    }
+
+    /* Loaded, but not registered yet */
+    CPlugin* plugin = it_module->second->PluginNew();
+    map_plugin_settings_t pluginSettings;
+
+    const char *conf_name = pName;
+    if (strncmp(pName, "Kerneloops", sizeof("Kerneloops")-1) == 0) {
+        /* Kerneloops{,Scanner,Reporter} share the same .conf file */
+        conf_name = "Kerneloops";
+    }
+    LoadPluginSettings(ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, conf_name).c_str(), pluginSettings);
+    VERB3 log("Loaded %s.conf", conf_name);
+    try
+    {
+        plugin->Init();
+        plugin->SetSettings(pluginSettings);
+    }
+    catch (CABRTException& e)
+    {
+        error_msg("Can't initialize plugin %s(%s): %s",
+                pName,
+                plugin_type_str[it_module->second->GetType()],
+                e.what()
+        );
+        UnLoadPlugin(pName);
+        return -1; /* failure */
+    }
+    m_mapPlugins[pName] = plugin;
+    log("Registered plugin %s(%s)", pName, plugin_type_str[it_module->second->GetType()]);
+    return 0; /* success */
 }
 
 void CPluginManager::RegisterPluginDBUS(const char *pName, const char *pDBUSSender)
@@ -253,16 +250,16 @@ void CPluginManager::RegisterPluginDBUS(const char *pName, const char *pDBUSSend
 
 void CPluginManager::UnRegisterPlugin(const char *pName)
 {
-    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
-    if (abrt_plugin != m_mapABRTPlugins.end())
+    map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
+    if (it_module != m_mapLoadedModules.end())
     {
-        map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-        if (plugin != m_mapPlugins.end())
+        map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+        if (it_plugin != m_mapPlugins.end())
         {
-            plugin->second->DeInit();
-            delete plugin->second;
-            m_mapPlugins.erase(plugin);
-            log("UnRegistered plugin %s(%s)", pName, plugin_type_str[abrt_plugin->second->GetType()]);
+            it_plugin->second->DeInit();
+            delete it_plugin->second;
+            m_mapPlugins.erase(it_plugin);
+            log("UnRegistered plugin %s(%s)", pName, plugin_type_str[it_module->second->GetType()]);
         }
     }
 }
@@ -283,87 +280,87 @@ void CPluginManager::UnRegisterPluginDBUS(const char *pName, const char *pDBUSSe
 
 CAnalyzer* CPluginManager::GetAnalyzer(const char *pName)
 {
-    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-    if (plugin == m_mapPlugins.end())
+    map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+    if (it_plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
-    if (m_mapABRTPlugins[pName]->GetType() != ANALYZER)
+    if (m_mapLoadedModules[pName]->GetType() != ANALYZER)
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not an analyzer plugin", pName);
     }
-    return (CAnalyzer*)(plugin->second);
+    return (CAnalyzer*)(it_plugin->second);
 }
 
 CReporter* CPluginManager::GetReporter(const char *pName)
 {
-    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-    if (plugin == m_mapPlugins.end())
+    map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+    if (it_plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
-    if (m_mapABRTPlugins[pName]->GetType() != REPORTER)
+    if (m_mapLoadedModules[pName]->GetType() != REPORTER)
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not a reporter plugin", pName);
     }
-    return (CReporter*)(plugin->second);
+    return (CReporter*)(it_plugin->second);
 }
 
 CAction* CPluginManager::GetAction(const char *pName)
 {
-    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-    if (plugin == m_mapPlugins.end())
+    map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+    if (it_plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
-    if (m_mapABRTPlugins[pName]->GetType() != ACTION)
+    if (m_mapLoadedModules[pName]->GetType() != ACTION)
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not an action plugin", pName);
     }
-    return (CAction*)(plugin->second);
+    return (CAction*)(it_plugin->second);
 }
 
 CDatabase* CPluginManager::GetDatabase(const char *pName)
 {
-    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-    if (plugin == m_mapPlugins.end())
+    map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+    if (it_plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
-    if (m_mapABRTPlugins[pName]->GetType() != DATABASE)
+    if (m_mapLoadedModules[pName]->GetType() != DATABASE)
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not a database plugin", pName);
     }
-    return (CDatabase*)(plugin->second);
+    return (CDatabase*)(it_plugin->second);
 }
 
 plugin_type_t CPluginManager::GetPluginType(const char *pName)
 {
-    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-    if (plugin == m_mapPlugins.end())
+    map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+    if (it_plugin == m_mapPlugins.end())
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
     }
-    return m_mapABRTPlugins[pName]->GetType();
+    return m_mapLoadedModules[pName]->GetType();
 }
 
 vector_map_string_t CPluginManager::GetPluginsInfo()
 {
     vector_map_string_t ret;
-    map_abrt_plugins_t::iterator it_abrt_plugin = m_mapABRTPlugins.begin();
-    for (; it_abrt_plugin != m_mapABRTPlugins.end(); it_abrt_plugin++)
+    map_loaded_module_t::iterator it_module = m_mapLoadedModules.begin();
+    for (; it_module != m_mapLoadedModules.end(); it_module++)
     {
         map_string_t plugin_info;
 
-        plugin_info["Enabled"] = (m_mapPlugins.find(it_abrt_plugin->second->GetName()) != m_mapPlugins.end()) ?
+        plugin_info["Enabled"] = (m_mapPlugins.find(it_module->second->GetName()) != m_mapPlugins.end()) ?
                                  "yes" : "no";
-        plugin_info["Type"] = plugin_type_str[it_abrt_plugin->second->GetType()];
-        plugin_info["Name"] = it_abrt_plugin->second->GetName();
-        plugin_info["Version"] = it_abrt_plugin->second->GetVersion();
-        plugin_info["Description"] = it_abrt_plugin->second->GetDescription();
-        plugin_info["Email"] = it_abrt_plugin->second->GetEmail();
-        plugin_info["WWW"] = it_abrt_plugin->second->GetWWW();
-        plugin_info["GTKBuilder"] = it_abrt_plugin->second->GetGTKBuilder();
+        plugin_info["Type"] = plugin_type_str[it_module->second->GetType()];
+        plugin_info["Name"] = it_module->second->GetName();
+        plugin_info["Version"] = it_module->second->GetVersion();
+        plugin_info["Description"] = it_module->second->GetDescription();
+        plugin_info["Email"] = it_module->second->GetEmail();
+        plugin_info["WWW"] = it_module->second->GetWWW();
+        plugin_info["GTKBuilder"] = it_module->second->GetGTKBuilder();
         ret.push_back(plugin_info);
     }
     return ret;
@@ -373,20 +370,20 @@ void CPluginManager::SetPluginSettings(const char *pName,
                                        const char *pUID,
                                        const map_plugin_settings_t& pSettings)
 {
-    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
-    if (abrt_plugin == m_mapABRTPlugins.end())
+    map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
+    if (it_module == m_mapLoadedModules.end())
     {
         return;
     }
-    map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-    if (plugin == m_mapPlugins.end())
+    map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+    if (it_plugin == m_mapPlugins.end())
     {
         return;
     }
-    plugin->second->SetSettings(pSettings);
+    it_plugin->second->SetSettings(pSettings);
 
 #if 0 /* Writing to ~user/.abrt/ is bad wrt security */
-    if (abrt_plugin->second->GetType() != REPORTER)
+    if (it_module->second->GetType() != REPORTER)
     {
         return;
     }
@@ -447,19 +444,19 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const char *pName,
                                                         const char *pUID)
 {
     map_plugin_settings_t ret;
-    map_abrt_plugins_t::iterator abrt_plugin = m_mapABRTPlugins.find(pName);
-    if (abrt_plugin != m_mapABRTPlugins.end())
+    map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
+    if (it_module != m_mapLoadedModules.end())
     {
-        map_plugins_t::iterator plugin = m_mapPlugins.find(pName);
-        if (plugin != m_mapPlugins.end())
+        map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
+        if (it_plugin != m_mapPlugins.end())
         {
-            ret = plugin->second->GetSettings();
+            ret = it_plugin->second->GetSettings();
             /** we don't want to load it from daemon if it's running under root
                 but wi might get back to this once we make the daemon to not run
                 with root privileges
             */
               /*
-            if (abrt_plugin->second->GetType() == REPORTER)
+            if (it_module->second->GetType() == REPORTER)
             {
                 std::string home = get_home_dir(xatoi_u(pUID.c_str()));
                 if (home != "")

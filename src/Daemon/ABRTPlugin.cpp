@@ -23,7 +23,7 @@
 #include "ABRTPlugin.h"
 #include <dlfcn.h>
 
-CABRTPlugin::CABRTPlugin(const char* pLibPath)
+CLoadedModule::CLoadedModule(const char* pLibPath)
 {
     /* All errors are fatal */
     m_pHandle = dlopen(pLibPath, RTLD_NOW);
@@ -40,7 +40,7 @@ CABRTPlugin::CABRTPlugin(const char* pLibPath)
     LOADSYM(m_pFnPluginNew, m_pHandle, "plugin_new");
 }
 
-CABRTPlugin::~CABRTPlugin()
+CLoadedModule::~CLoadedModule()
 {
     dlclose(m_pHandle);
 }

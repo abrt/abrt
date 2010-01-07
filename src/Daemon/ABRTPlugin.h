@@ -27,9 +27,9 @@
 #include "Plugin.h"
 
 /**
- * CABRTPlugin class. A class which contains a loaded plugin.
+ * CLoadedModule class. A class which contains a loaded plugin.
  */
-class CABRTPlugin
+class CLoadedModule
 {
     private:
         /**
@@ -51,11 +51,11 @@ class CABRTPlugin
          * The constructor loads a plugin
          * @param pLibPath a path to a plugin
          */
-        CABRTPlugin(const char* pLibPath);
+        CLoadedModule(const char* pLibPath);
         /**
          * A destructor.
          */
-        ~CABRTPlugin();
+        ~CLoadedModule();
         /**
          * It is used for getting loaded plugin's version.
          * @return plugin version
@@ -105,55 +105,55 @@ class CABRTPlugin
 };
 
 inline
-const char* CABRTPlugin::GetVersion()
+const char* CLoadedModule::GetVersion()
 {
     return m_pPluginInfo->m_sVersion;
 }
 
 inline
-int CABRTPlugin::GetMagicNumber()
+int CLoadedModule::GetMagicNumber()
 {
     return m_pPluginInfo->m_nMagicNumber;
 }
 
 inline
-const char* CABRTPlugin::GetName()
+const char* CLoadedModule::GetName()
 {
     return m_pPluginInfo->m_sName;
 }
 
 inline
-const char* CABRTPlugin::GetDescription()
+const char* CLoadedModule::GetDescription()
 {
     return m_pPluginInfo->m_sDescription;
 }
 
 inline
-const char* CABRTPlugin::GetEmail()
+const char* CLoadedModule::GetEmail()
 {
     return m_pPluginInfo->m_sEmail;
 }
 
 inline
-const char* CABRTPlugin::GetWWW()
+const char* CLoadedModule::GetWWW()
 {
     return m_pPluginInfo->m_sWWW;
 }
 
 inline
-const char* CABRTPlugin::GetGTKBuilder()
+const char* CLoadedModule::GetGTKBuilder()
 {
     return m_pPluginInfo->m_sGTKBuilder;
 }
 
 inline
-plugin_type_t CABRTPlugin::GetType()
+plugin_type_t CLoadedModule::GetType()
 {
     return m_pPluginInfo->m_Type;
 }
 
 inline
-CPlugin* CABRTPlugin::PluginNew()
+CPlugin* CLoadedModule::PluginNew()
 {
     return m_pFnPluginNew();
 }

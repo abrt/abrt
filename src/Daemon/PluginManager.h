@@ -39,17 +39,17 @@
 class CPluginManager
 {
     private:
-        typedef std::map<std::string, CABRTPlugin*> map_abrt_plugins_t;
-        typedef std::map<std::string, CPlugin*> map_plugins_t;
+        typedef std::map<std::string, CLoadedModule*> map_loaded_module_t;
+        typedef std::map<std::string, CPlugin*> map_plugin_t;
 
         /**
          * Loaded plugins. A key is a plugin name.
          */
-        map_abrt_plugins_t m_mapABRTPlugins;
+        map_loaded_module_t m_mapLoadedModules;
         /**
          * Registered plugins. A key is a plugin name.
          */
-        map_plugins_t m_mapPlugins;
+        map_plugin_t m_mapPlugins;
 
     public:
         /**
@@ -135,10 +135,10 @@ class CPluginManager
          */
         plugin_type_t GetPluginType(const char *pName);
         /**
-         * A method, which gets all plugins info (event those plugins which are
-         * disabled). It can be send via DBus to GUI and displayed to an user.
-         * Then a user can fill all needed informations like URLs etc.
-         * @return A vector of maps <key, vaule>
+         * A method, which gets all plugins info (even those plugins which are
+         * disabled). It can be sent via DBus to GUI and displayed to an user.
+         * Then user can fill all needed informations like URLs etc.
+         * @return A vector of maps <key, value>
          */
         vector_map_string_t GetPluginsInfo();
         /**
