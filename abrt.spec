@@ -71,7 +71,6 @@ GTK+ wizard for convenient bug reporting.
 %package addon-ccpp
 Summary: %{name}'s C/C++ addon
 Group: System Environment/Libraries
-Requires: gdb >= 7.0-3
 Requires: elfutils
 Requires: yum-utils
 Requires: %{name} = %{version}-%{release}
@@ -201,6 +200,8 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: %{name}-addon-kerneloops
 Requires: %{name}-addon-ccpp, %{name}-addon-python
+# Default config of addon-ccpp requires gdb
+Requires: gdb >= 7.0-3
 Requires: %{name}-gui
 Requires: %{name}-plugin-bugzilla, %{name}-plugin-logger, %{name}-plugin-runapp
 #Requires: %{name}-plugin-firefox
