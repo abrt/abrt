@@ -337,29 +337,29 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
     map_plugin_settings_t plugin_settings;
     for (; it_ar != s_vectorActionsAndReporters.end(); it_ar++)
     {
+        const char *plugin_name = it_ar->first.c_str();
         try
         {
-            VERB3 log("RunActionsAndReporters: checking %s", it_ar->first.c_str());
-            plugin_type_t tp = g_pPluginManager->GetPluginType(it_ar->first.c_str());
+            VERB3 log("RunActionsAndReporters: checking %s", plugin_name);
+            plugin_type_t tp = g_pPluginManager->GetPluginType(plugin_name);
             if (tp == REPORTER)
             {
-                CReporter* reporter = g_pPluginManager->GetReporter(it_ar->first.c_str());
-
+                CReporter* reporter = g_pPluginManager->GetReporter(plugin_name); /* can't be NULL */
                 map_crash_report_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
-                VERB2 log("%s.Report(...)", it_ar->first.c_str());
+                VERB2 log("%s.Report(...)", plugin_name);
                 reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
             }
             else if (tp == ACTION)
             {
-                CAction* action = g_pPluginManager->GetAction(it_ar->first.c_str());
-                VERB2 log("%s.Run('%s','%s')", it_ar->first.c_str(), pDebugDumpDir, it_ar->second.c_str());
+                CAction* action = g_pPluginManager->GetAction(plugin_name); /* can't be NULL */
+                VERB2 log("%s.Run('%s','%s')", plugin_name, pDebugDumpDir, it_ar->second.c_str());
                 action->Run(pDebugDumpDir, it_ar->second.c_str());
             }
         }
         catch (CABRTException& e)
         {
-            error_msg("Activation of plugin '%s' was not successful: %s", it_ar->first.c_str(), e.what());
+            error_msg("Activation of plugin '%s' was not successful: %s", plugin_name, e.what());
         }
     }
 }
@@ -464,14 +464,14 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
         vector_pair_string_string_t::iterator it_r = keyPtr->second.begin();
         for (; it_r != keyPtr->second.end(); it_r++)
         {
-            std::string pluginName = it_r->first;
+            const char *plugin_name = it_r->first.c_str();
             try
             {
-                if (g_pPluginManager->GetPluginType(pluginName.c_str()) == REPORTER)
+                if (g_pPluginManager->GetPluginType(plugin_name) == REPORTER)
                 {
-                    CReporter* reporter = g_pPluginManager->GetReporter(pluginName.c_str());
+                    CReporter* reporter = g_pPluginManager->GetReporter(plugin_name); /* can't be NULL */
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
-                    std::string home = "";
+                    std::string home;
                     map_plugin_settings_t oldSettings;
                     map_plugin_settings_t newSettings;
 
@@ -482,14 +482,14 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                         {
                             oldSettings = reporter->GetSettings();
 
-                            if (LoadPluginSettings(home + "/.abrt/" + pluginName + "."PLUGINS_CONF_EXTENSION, newSettings))
+                            if (LoadPluginSettings(home + "/.abrt/" + plugin_name + "."PLUGINS_CONF_EXTENSION, newSettings))
                             {
                                 reporter->SetSettings(newSettings);
                             }
                         }
                     }
 #endif
-                    map_plugin_settings_t plugin_settings = pSettings[pluginName];
+                    map_plugin_settings_t plugin_settings = pSettings[plugin_name];
                     std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second.c_str());
 
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
@@ -498,16 +498,16 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                         reporter->SetSettings(oldSettings);
                     }
 #endif
-                    ret[pluginName].push_back("1"); // REPORT_STATUS_IDX_FLAG
-                    ret[pluginName].push_back(res); // REPORT_STATUS_IDX_MSG
+                    ret[plugin_name].push_back("1"); // REPORT_STATUS_IDX_FLAG
+                    ret[plugin_name].push_back(res); // REPORT_STATUS_IDX_MSG
                     message += res + "\n";
                 }
             }
             catch (CABRTException& e)
             {
-                ret[pluginName].push_back("0");      // REPORT_STATUS_IDX_FLAG
-                ret[pluginName].push_back(e.what()); // REPORT_STATUS_IDX_MSG
-                update_client("Reporting via '%s' was not successful: %s", pluginName.c_str(), e.what());
+                ret[plugin_name].push_back("0");      // REPORT_STATUS_IDX_FLAG
+                ret[plugin_name].push_back(e.what()); // REPORT_STATUS_IDX_MSG
+                update_client("Reporting via '%s' was not successful: %s", plugin_name, e.what());
             }
         }
     }
@@ -700,7 +700,6 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name)
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
     if (!analyzer)
     {
-        VERB1 log("Strange, asked for analyzer %s but it doesn't exist?", analyzer_name);
         return false;
     }
     map_plugin_settings_t settings = analyzer->GetSettings();
@@ -715,7 +714,6 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
     if (!analyzer)
     {
-        VERB1 log("Strange, asked for analyzer %s but it doesn't exist?", analyzer_name);
         return false;
     }
     map_plugin_settings_t settings = analyzer->GetSettings();
@@ -751,12 +749,10 @@ void autoreport(const pair_string_string_t& reporter_options, const map_crash_re
     CReporter* reporter = g_pPluginManager->GetReporter(reporter_options.first.c_str());
     if (!reporter)
     {
-        VERB1 log("Strange, asked for reporter %s but it doesn't exist?", reporter_options.first.c_str());
         return;
     }
-
     map_plugin_settings_t plugin_settings;
-    std::string res = reporter->Report(crash_report, plugin_settings, reporter_options.second.c_str());
+    /*std::string res =*/ reporter->Report(crash_report, plugin_settings, reporter_options.second.c_str());
 }
 
 /**
@@ -773,18 +769,18 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
         vector_pair_string_string_t::iterator it_a = analyzer->second.begin();
         for (; it_a != analyzer->second.end(); it_a++)
         {
-            std::string pluginName = it_a->first;
+            const char *plugin_name = it_a->first.c_str();
             try
             {
-                if (g_pPluginManager->GetPluginType(pluginName.c_str()) == ACTION)
+                if (g_pPluginManager->GetPluginType(plugin_name) == ACTION)
                 {
-                    CAction* action = g_pPluginManager->GetAction(pluginName.c_str());
+                    CAction* action = g_pPluginManager->GetAction(plugin_name);
                     action->Run(pDebugDumpDir, it_a->second.c_str());
                 }
             }
             catch (CABRTException& e)
             {
-                update_client("Action performed by '%s' was not successful: %s", pluginName.c_str(), e.what());
+                update_client("Action performed by '%s' was not successful: %s", plugin_name, e.what());
             }
         }
     }

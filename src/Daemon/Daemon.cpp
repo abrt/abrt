@@ -790,7 +790,7 @@ int main(int argc, char** argv)
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
 
-        VERB1 log("Loading all plugins in "PLUGINS_LIB_DIR);
+        VERB1 log("Loading plugins from "PLUGINS_LIB_DIR);
         g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
 
