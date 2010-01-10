@@ -204,7 +204,11 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t
 static std::string GetLocalUUID(const char *pAnalyzer, const char *pDebugDumpDir)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
-    return analyzer->GetLocalUUID(pDebugDumpDir);
+    if (analyzer)
+    {
+        return analyzer->GetLocalUUID(pDebugDumpDir);
+    }
+    throw CABRTException(EXCEP_PLUGIN, "Error running '%s'", pAnalyzer);
 }
 
 /**
@@ -217,7 +221,11 @@ static std::string GetGlobalUUID(const char *pAnalyzer,
                                        const char *pDebugDumpDir)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
-    return analyzer->GetGlobalUUID(pDebugDumpDir);
+    if (analyzer)
+    {
+        return analyzer->GetGlobalUUID(pDebugDumpDir);
+    }
+    throw CABRTException(EXCEP_PLUGIN, "Error running '%s'", pAnalyzer);
 }
 
 /**
@@ -232,7 +240,11 @@ static void CreateReport(const char *pAnalyzer,
                 int force)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
-    analyzer->CreateReport(pDebugDumpDir, force);
+    if (analyzer)
+    {
+        analyzer->CreateReport(pDebugDumpDir, force);
+    }
+    /* else: GetAnalyzer() already complained, no need to handle it here */
 }
 
 mw_result_t CreateCrashReport(const char *pUUID,
@@ -320,9 +332,14 @@ void RunAction(const char *pActionDir,
                             const char *pPluginName,
                             const char *pPluginArgs)
 {
+    CAction* action = g_pPluginManager->GetAction(pPluginName);
+    if (!action)
+    {
+        /* GetAction() already complained */
+        return;
+    }
     try
     {
-        CAction* action = g_pPluginManager->GetAction(pPluginName);
         action->Run(pActionDir, pPluginArgs);
     }
     catch (CABRTException& e)
@@ -770,13 +787,17 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
         for (; it_a != analyzer->second.end(); it_a++)
         {
             const char *plugin_name = it_a->first.c_str();
+            CAction* action = g_pPluginManager->GetAction(plugin_name, /*silent:*/ true);
+            if (!action)
+            {
+                /* GetAction() already complained if no such plugin.
+		 * If plugin exists but isn't an Action, it's not an error.
+		 */
+                continue;
+            }
             try
             {
-                if (g_pPluginManager->GetPluginType(plugin_name) == ACTION)
-                {
-                    CAction* action = g_pPluginManager->GetAction(plugin_name);
-                    action->Run(pDebugDumpDir, it_a->second.c_str());
-                }
+                action->Run(pDebugDumpDir, it_a->second.c_str());
             }
             catch (CABRTException& e)
             {

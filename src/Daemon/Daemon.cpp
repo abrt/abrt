@@ -173,13 +173,6 @@ static int SetUpMW()
     {
         g_setBlackList.insert(*it_b);
     }
-    VERB1 log("Registering plugins");
-    set_string_t::iterator it_p = g_settings_setEnabledPlugins.begin();
-    for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
-    {
-        if (g_pPluginManager->RegisterPlugin(it_p->c_str()) != 0)
-            return -1;
-    }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)

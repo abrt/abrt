@@ -74,7 +74,7 @@ class CPluginManager
          * A method, which loads particular plugin.
          * @param pName A plugin name.
          */
-        void LoadPlugin(const char *pName);
+        CPlugin* LoadPlugin(const char *pName, bool enabled_only = false);
         /**
          * A method, which unloads particular plugin.
          * @param pName A plugin name.
@@ -83,18 +83,6 @@ class CPluginManager
         /**
          * A method, which registers particular plugin.
          * @param pName A plugin name.
-         */
-        int RegisterPlugin(const char *pName);
-        /**
-         * A method, which unregister particular plugin.
-         * @param pName A plugin name.
-         */
-        void UnRegisterPlugin(const char *pName);
-        /**
-         * A method, which registers particular plugin,
-         * called via DBUS
-         * @param pName A plugin name.
-         * @param pDBUSSender DBUS user identification
          */
         void RegisterPluginDBUS(const char *pName, const char *pDBUSSender);
         /**
@@ -121,7 +109,7 @@ class CPluginManager
          * @param pName A plugin name.
          * @return An action plugin.
          */
-        CAction* GetAction(const char *pName);
+        CAction* GetAction(const char *pName, bool silent = false);
         /**
          * A method, which returns instance of particular database plugin.
          * @param pName A plugin name.
