@@ -51,7 +51,7 @@ install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
 
 # CCpp
-libCCpp_la_SOURCES = CCpp.cpp CCpp.h
+libCCpp_la_SOURCES = CCpp.cpp CCpp.h CCpp_sha1.cpp CCpp_sha1.h
 libCCpp_la_LDFLAGS = -avoid-version
 libCCpp_la_LIBADD = $(NSS_LIBS)
 libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \

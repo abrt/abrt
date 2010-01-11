@@ -34,6 +34,8 @@
 #include "CommLayerInner.h"
 #include "Polkit.h"
 
+#include "CCpp_sha1.h"
+
 using namespace std;
 
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
@@ -55,10 +57,13 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
 static string CreateHash(const char *pInput)
 {
     string ret;
-    HASHContext* hc;
-    unsigned char hash[SHA1_LENGTH];
+    char hash_str[SHA1_LENGTH*2 + 1];
     unsigned int len;
 
+#if 0
+{
+    unsigned char hash[SHA1_LENGTH];
+    HASHContext *hc;
     hc = HASH_Create(HASH_AlgSHA1);
     if (!hc)
     {
@@ -69,7 +74,6 @@ static string CreateHash(const char *pInput)
     HASH_End(hc, hash, &len, sizeof(hash));
     HASH_Destroy(hc);
 
-    char hash_str[SHA1_LENGTH*2 + 1];
     char *d = hash_str;
     unsigned char *s = hash;
     while (len)
@@ -80,6 +84,28 @@ static string CreateHash(const char *pInput)
         len--;
     }
     *d = '\0';
+//log("hash1:%s str:'%s'", hash_str, pInput);
+}
+#endif
+
+    unsigned char hash2[SHA1_LENGTH];
+    sha1_ctx_t sha1ctx;
+    sha1_begin(&sha1ctx);
+    sha1_hash(pInput, strlen(pInput), &sha1ctx);
+    sha1_end(hash2, &sha1ctx);
+    len = SHA1_LENGTH;
+
+    char *d = hash_str;
+    unsigned char *s = hash2;
+    while (len)
+    {
+        *d++ = "0123456789abcdef"[*s >> 4];
+        *d++ = "0123456789abcdef"[*s & 0xf];
+        s++;
+        len--;
+    }
+    *d = '\0';
+//log("hash2:%s str:'%s'", hash_str, pInput);
 
     return hash_str;
 }
