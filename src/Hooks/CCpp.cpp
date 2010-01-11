@@ -19,9 +19,11 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
+#include "hooklib.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include <syslog.h>
+#include <sys/statvfs.h>
 
 #define FILENAME_EXECUTABLE     "executable"
 #define FILENAME_COREDUMP       "coredump"
@@ -63,9 +65,9 @@ int main(int argc, char** argv)
     int fd;
     struct stat sb;
 
-    const char* program_name = argv[0];
     if (argc < 5)
     {
+        const char* program_name = argv[0];
         error_msg_and_die("Usage: %s: DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT", program_name);
     }
     openlog("abrt", 0, LOG_DAEMON);
@@ -124,61 +126,12 @@ int main(int argc, char** argv)
         /* Parse abrt.conf and plugins/CCpp.conf */
         unsigned setting_MaxCrashReportsSize = 0;
         bool setting_MakeCompatCore = false;
-        bool abrt_conf = true;
-        FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
-        if (fp)
+        parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore);
+
+        if (setting_MaxCrashReportsSize > 0)
         {
-            char line[256];
-            while (1)
-            {
-                if (fgets(line, sizeof(line), fp) == NULL)
-                {
-                    /* Next .conf file plz */
-                    if (abrt_conf)
-                    {
-                        abrt_conf = false;
-                        fp = fopen(CONF_DIR"/plugins/CCpp.conf", "r");
-                        if (fp)
-                            continue;
-                    }
-                    break;
-                }
-
-                unsigned len = strlen(line);
-                if (len > 0 && line[len-1] == '\n')
-                    line[--len] = '\0';
-                const char *p = skip_whitespace(line);
-#undef DIRECTIVE
-#define DIRECTIVE "MaxCrashReportsSize"
-                if (strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)
-                {
-                    p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
-                    if (*p != '=')
-                        continue;
-                    p = skip_whitespace(p + 1);
-                    if (isdigit(*p))
-                        /* x1.25: go a bit up, so that usual in-daemon trimming
-                         * kicks in first, and we don't "fight" with it. */
-                        setting_MaxCrashReportsSize = (unsigned long)xatou(p) * 5 / 4;
-                    continue;
-                }
-#undef DIRECTIVE
-#define DIRECTIVE "MakeCompatCore"
-                if (strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)
-                {
-                    p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
-                    if (*p != '=')
-                        continue;
-                    p = skip_whitespace(p + 1);
-                    setting_MakeCompatCore = string_to_bool(p);
-                    continue;
-                }
-#undef DIRECTIVE
-                /* add more 'if (strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)' here... */
-            }
-            fclose(fp);
+            check_free_space(setting_MaxCrashReportsSize);
         }
-
 
         char path[PATH_MAX];
 
@@ -288,30 +241,10 @@ int main(int argc, char** argv)
          */
         dd.Close();
 
-        /* rhbz#539551: "abrt going crazy when crashing process is respawned".
-         * Do we want to protect against or ameliorate this? How? Ideas:
-         * (1) nice ourself?
-         * (2) check total size of dump dir, if it overflows, either abort dump
-         *     or delete oldest/biggest dumps? [abort would be simpler,
-         *     abrtd already does "delete on overflow" thing]
-         * (3) detect parallel dumps in progress and back off
-         *     (pause/renice further/??)
-         */
-
+        /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
         if (setting_MaxCrashReportsSize > 0)
         {
-            string worst_dir;
-            while (1)
-            {
-                const char *base_dirname = strrchr(path, '/') + 1; /* never NULL */
-                /* We exclude our own dump from candidates for deletion (3rd param): */
-                double dirsize = get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, base_dirname);
-                if (dirsize / (1024*1024) < setting_MaxCrashReportsSize || worst_dir == "")
-                    break;
-                log("size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir.c_str());
-                delete_debug_dump_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
-                worst_dir = "";
-            }
+            trim_debug_dumps(setting_MaxCrashReportsSize, path);
         }
 
         if (!setting_MakeCompatCore)

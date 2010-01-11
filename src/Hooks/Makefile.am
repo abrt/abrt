@@ -1,9 +1,10 @@
 libexec_PROGRAMS = abrt-hook-ccpp abrt-hook-python
 bin_PROGRAMS = dumpoops
 
-# CCpp
+# abrt-hook-ccpp
 abrt_hook_ccpp_SOURCES = \
-    CCpp.cpp
+    CCpp.cpp \
+    hooklib.h hooklib.cpp
 abrt_hook_ccpp_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
@@ -34,7 +35,8 @@ dumpoops_LDADD = \
 
 # abrt-hook-python
 abrt_hook_python_SOURCES = \
-    abrt-hook-python.cpp
+    abrt-hook-python.cpp \
+    hooklib.h hooklib.cpp
 abrt_hook_python_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \
