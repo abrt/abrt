@@ -18,6 +18,8 @@
  * ---------------------------------------------------------------------------
  */
 
+#define SHA1_RESULT_LEN (5 * 4)
+
 typedef struct sha1_ctx_t {
 	uint32_t hash[8];    /* 5, +3 elements for sha256 */
 	uint64_t total64;

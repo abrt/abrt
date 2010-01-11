@@ -16,13 +16,12 @@ BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: sqlite-devel > 3.0
 BuildRequires: desktop-file-utils
-BuildRequires: nss-devel
+#BuildRequires: nss-devel
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
-BuildRequires: nss-devel
 BuildRequires: polkit-devel
 BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
 BuildRequires: intltool

@@ -24,9 +24,8 @@
 #include <sstream>
 #include <set>
 #include <iomanip>
-#include <nss.h>
-#include <sechash.h>
-#include <sysexits.h>
+//#include <nss.h>
+//#include <sechash.h>
 #include "abrtlib.h"
 #include "CCpp.h"
 #include "ABRTException.h"
@@ -56,12 +55,11 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
 
 static string CreateHash(const char *pInput)
 {
-    string ret;
-    char hash_str[SHA1_LENGTH*2 + 1];
     unsigned int len;
 
 #if 0
 {
+    char hash_str[SHA1_LENGTH*2 + 1];
     unsigned char hash[SHA1_LENGTH];
     HASHContext *hc;
     hc = HASH_Create(HASH_AlgSHA1);
@@ -88,12 +86,13 @@ static string CreateHash(const char *pInput)
 }
 #endif
 
-    unsigned char hash2[SHA1_LENGTH];
+    char hash_str[SHA1_RESULT_LEN*2 + 1];
+    unsigned char hash2[SHA1_RESULT_LEN];
     sha1_ctx_t sha1ctx;
     sha1_begin(&sha1ctx);
     sha1_hash(pInput, strlen(pInput), &sha1ctx);
     sha1_end(hash2, &sha1ctx);
-    len = SHA1_LENGTH;
+    len = SHA1_RESULT_LEN;
 
     char *d = hash_str;
     unsigned char *s = hash2;
