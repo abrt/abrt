@@ -106,7 +106,7 @@ off_t copyfd_eof(int fd1, int fd2)
 	return full_fd_action(fd1, fd2, 0);
 }
 
-off_t copy_file(const char *src_name, const char *dst_name)
+off_t copy_file(const char *src_name, const char *dst_name, int mode)
 {
     off_t r;
     int src = open(src_name, O_RDONLY);
@@ -115,7 +115,7 @@ off_t copy_file(const char *src_name, const char *dst_name)
         perror_msg("Can't open '%s'", src_name);
         return -1;
     }
-    int dst = open(dst_name, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    int dst = open(dst_name, O_WRONLY | O_TRUNC | O_CREAT, mode);
     if (dst < 0)
     {
         close(src);

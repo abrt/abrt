@@ -157,7 +157,7 @@ void xunlink(const char *pathname);
 off_t copyfd_eof(int src_fd, int dst_fd);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
-off_t copy_file(const char *src_name, const char *dst_name);
+off_t copy_file(const char *src_name, const char *dst_name, int mode);
 
 
 void xsetreuid(uid_t ruid, uid_t euid);

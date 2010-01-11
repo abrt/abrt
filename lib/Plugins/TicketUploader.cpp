@@ -221,7 +221,7 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
         else if (it->second[CD_TYPE] == CD_BIN)
         {
             string ofile_name = concat_path_file(tmptar_name.c_str(), it->first.c_str());
-            if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str()) < 0)
+            if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str(), 0644) < 0)
             {
                 throw CABRTException(EXCEP_PLUGIN,
                         "Can't copy '%s' to '%s'",

@@ -103,8 +103,9 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
     dd.Open(pActionDir);
     //Not useful
     //dd.SaveText("sosreportoutput", output);
-    if (copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str()) < 0)
+    if (copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str(), 0644) < 0)
     {
+        dd.Close();
         throw CABRTException(EXCEP_PLUGIN,
                 "Can't copy '%s' to '%s'",
                 sosreport_filename.c_str(),
