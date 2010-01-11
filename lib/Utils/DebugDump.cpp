@@ -244,13 +244,18 @@ void CDebugDump::Create(const char *pDir, int64_t uid)
     Lock();
     m_bOpened = true;
 
-    if (mkdir(m_sDebugDumpDir.c_str(), 0700) == -1)
+    /* Was creating it with mode 0700, but this allows the user to replace
+     * any file in the directory, changing security-sensitive data
+     * (e.g. "uid", "analyzer", "executable")
+     */
+    if (mkdir(m_sDebugDumpDir.c_str(), 0500) == -1)
     {
         UnLock();
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "Can't create dir '%s'", pDir);
     }
-    if (chmod(m_sDebugDumpDir.c_str(), 0700) == -1)
+    /* paranoia? mkdir should have done it already */
+    if (chmod(m_sDebugDumpDir.c_str(), 0500) == -1)
     {
         UnLock();
         m_bOpened = false;
@@ -361,7 +366,12 @@ static void LoadTextFile(const char *pPath, std::string& pData)
 
 static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize)
 {
-    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    /* Was creating it with mode 0666, but this allows the user to replace
+     * file's contents, changing security-sensitive data
+     * (e.g. "uid", "analyzer", "executable")
+     */
+    unlink(pPath);
+    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0444);
     if (fd < 0)
     {
         throw CABRTException(EXCEP_DD_SAVE, "Can't open file '%s'", pPath);
@@ -393,6 +403,7 @@ void CDebugDump::SaveText(const char* pName, const char* pData)
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
     SaveBinaryFile(fullPath.c_str(), pData, strlen(pData));
 }
+
 void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize)
 {
     if (!m_bOpened)
