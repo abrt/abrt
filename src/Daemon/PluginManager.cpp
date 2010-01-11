@@ -412,7 +412,7 @@ void CPluginManager::SetPluginSettings(const char *pName,
         }
         if (chown(confDir.c_str(), uid, gid) == -1)
         {
-            perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+            perror_msg("Can't change '%s' ownership to %lu:%lu", confPath.c_str(), (long)uid, (long)gid);
             return;
         }
     }
@@ -430,7 +430,7 @@ void CPluginManager::SetPluginSettings(const char *pName,
     SavePluginSettings(confPath, pSettings);
     if (chown(confPath.c_str(), uid, gid) == -1)
     {
-        perror_msg("Can't change '%s' ownership to %u:%u", confPath.c_str(), (int)uid, (int)gid);
+        perror_msg("Can't change '%s' ownership to %lu:%lu", confPath.c_str(), (long)uid, (long)gid);
         return;
     }
     */

@@ -361,8 +361,8 @@ static int CreatePidFile()
     if (fd >= 0)
     {
         /* write our pid to it */
-        char buf[sizeof(int)*3 + 2];
-        int len = sprintf(buf, "%u\n", (unsigned)getpid());
+        char buf[sizeof(long)*3 + 2];
+        int len = sprintf(buf, "%lu\n", (long)getpid());
         write(fd, buf, len);
         close(fd);
         return 0;

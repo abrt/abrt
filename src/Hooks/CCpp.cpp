@@ -46,17 +46,17 @@ static char* malloc_readlink(const char *linkname)
 
 static char* get_executable(pid_t pid)
 {
-    char buf[sizeof("/proc/%u/exe") + sizeof(int)*3];
+    char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
 
-    sprintf(buf, "/proc/%u/exe", (int)pid);
+    sprintf(buf, "/proc/%lu/exe", (long)pid);
     return malloc_readlink(buf);
 }
 
 static char* get_cwd(pid_t pid)
 {
-    char buf[sizeof("/proc/%u/cwd") + sizeof(int)*3];
+    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
 
-    sprintf(buf, "/proc/%u/cwd", (int)pid);
+    sprintf(buf, "/proc/%lu/cwd", (long)pid);
     return malloc_readlink(buf);
 }
 
@@ -115,12 +115,12 @@ int main(int argc, char** argv)
         char* executable = get_executable(pid);
         if (executable == NULL)
         {
-            error_msg_and_die("can't read /proc/%u/exe link", (int)pid);
+            error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
         }
         if (strstr(executable, "/abrt-hook-ccpp"))
         {
-            error_msg_and_die("pid %u is '%s', not dumping it to avoid recursion",
-                            (int)pid, executable);
+            error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
+                            (long)pid, executable);
         }
 
         /* Parse abrt.conf and plugins/CCpp.conf */
@@ -185,7 +185,7 @@ int main(int argc, char** argv)
                  * but it does not log file name */
                 error_msg_and_die("error saving coredump to %s", path);
             }
-            log("saved core dump of pid %u (%s) to %s (%llu bytes)", (int)pid, executable, path, (long long)core_size);
+            log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
             return 0;
         }
 
@@ -193,7 +193,7 @@ int main(int argc, char** argv)
         const char *signame = strsignal(signal_no);
         char *reason = xasprintf("Process was terminated by signal %s (%s)", signal_str, signame ? signame : signal_str);
 
-        snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
+        snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu", dddir, (long)time(NULL), (long)pid);
         CDebugDump dd;
         dd.Create(path, uid);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
@@ -228,7 +228,7 @@ int main(int argc, char** argv)
         }
         lseek(core_fd, 0, SEEK_SET);
         /* note: core_fd is still open, we may use it later to copy core to user's dir */
-        log("saved core dump of pid %u (%s) to %s (%llu bytes)", (int)pid, executable, path, (long long)core_size);
+        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
         free(executable);
         free(cmdline);
         path[len] = '\0'; /* path now contains directory name */
@@ -282,7 +282,7 @@ int main(int argc, char** argv)
     }
 
     /* Mimic "core.PID" if requested */
-    char core_basename[sizeof("core.%u") + sizeof(int)*3] = "core";
+    char core_basename[sizeof("core.%lu") + sizeof(long)*3] = "core";
     char buf[] = "0\n";
     fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
     if (fd >= 0)
@@ -292,7 +292,7 @@ int main(int argc, char** argv)
     }
     if (strcmp(buf, "1\n") == 0)
     {
-        sprintf(core_basename, "core.%u", (int)pid);
+        sprintf(core_basename, "core.%lu", (long)pid);
     }
 
     /* man core:
@@ -358,7 +358,7 @@ int main(int argc, char** argv)
         unlink(core_basename);
         return 1;
     }
-    log("saved core dump of pid %u to %s/%s (%llu bytes)", (int)pid, user_pwd, core_basename, (long long)size);
+    log("saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)size);
 
     return 0;
 }

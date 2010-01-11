@@ -368,7 +368,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
 
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-        char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
+        char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
         VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
         /* We want parent to see errors in the same stream */

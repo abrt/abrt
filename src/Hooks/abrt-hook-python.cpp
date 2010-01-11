@@ -115,8 +115,8 @@ int main(int argc, char** argv)
   dd.SaveText("cmdline", cmdline);
   free(cmdline);
   dd.SaveText("uuid", uuid);
-  char uid[sizeof(int) * 3 + 2];
-  sprintf(uid, "%u", (unsigned)getuid());
+  char uid[sizeof(long) * 3 + 2];
+  sprintf(uid, "%lu", (long)getuid());
   dd.SaveText("uid", uid);
 
   dd.Close();

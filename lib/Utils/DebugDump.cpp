@@ -209,8 +209,8 @@ void CDebugDump::Lock()
         error_msg_and_die("Locking bug on '%s'", m_sDebugDumpDir.c_str());
 
     std::string lockFile = m_sDebugDumpDir + ".lock";
-    char pid_buf[sizeof(int)*3 + 2];
-    sprintf(pid_buf, "%u", (unsigned)getpid());
+    char pid_buf[sizeof(long)*3 + 2];
+    sprintf(pid_buf, "%lu", (long)getpid());
     while ((m_bLocked = GetAndSetLock(lockFile.c_str(), pid_buf)) != true)
     {
         sleep(1); /* was 0.5 seconds */
@@ -267,7 +267,7 @@ void CDebugDump::Create(const char *pDir, int64_t uid)
     {
         /* if /var/cache/abrt is writable by all, _aborting_ here is not useful */
         /* let's just warn */
-        perror_msg("can't change '%s' ownership to %u:%u", m_sDebugDumpDir.c_str(), (int)uid, (int)gid);
+        perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(), (long)uid, (long)gid);
     }
 
     SaveText(FILENAME_UID, to_string(uid).c_str());
