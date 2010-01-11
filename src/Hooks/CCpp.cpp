@@ -216,6 +216,10 @@ int main(int argc, char** argv)
             dd.Close();
             perror_msg_and_die("can't open '%s'", path);
         }
+//TODO: chown to uid:abrt?
+//Currently it is owned by 0:0 but is readable by anyone, so the owner
+//of the crashed binary still can access it, as he has
+//r-x access to the dump dir.
         core_size = copyfd_eof(STDIN_FILENO, core_fd);
         if (core_size < 0 || fsync(core_fd) != 0)
         {

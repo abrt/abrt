@@ -520,6 +520,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
+//TODO: convert to fork_execv_on_steroids(), nuke static concat_str_vector
+
     string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
     string executable;
     string package;

@@ -5,6 +5,19 @@
  */
 #include "abrtlib.h"
 
+using namespace std;
+
+static string concat_str_vector(char **strings)
+{
+	string result;
+	while (*strings) {
+	        result += *strings++;
+		if (*strings)
+			result += ' ';
+	}
+	return result;
+}
+
 /* Returns pid */
 pid_t fork_execv_on_steroids(int flags,
 		char **argv,
@@ -71,6 +84,7 @@ pid_t fork_execv_on_steroids(int flags,
 		if (dir)
 			xchdir(dir);
 
+		VERB1 log("Executing: %s", concat_str_vector(argv).c_str());
 		execvp(argv[0], argv);
 		if (!(flags & EXECFLG_QUIET))
 			perror_msg("Can't execute '%s'", argv[0]);
