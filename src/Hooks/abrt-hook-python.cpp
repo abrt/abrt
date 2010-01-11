@@ -26,6 +26,7 @@
 #include "abrtlib.h"
 #include "hooklib.h"
 #include "DebugDump.h"
+#include "ABRTException.h"
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -108,7 +109,12 @@ int main(int argc, char** argv)
   snprintf(path, sizeof(path), DEBUG_DUMPS_DIR"/pyhook-%ld-%s",
 	   (long)time(NULL), pid);
   CDebugDump dd;
-  dd.Create(path, geteuid());
+
+  try {
+    dd.Create(path, geteuid());
+  } catch (CABRTException &e) {
+    error_msg_and_die("Error while creating debug dump: %s", e.what());
+  }
 
   dd.SaveText(FILENAME_ANALYZER, "Python");
   dd.SaveText(FILENAME_EXECUTABLE, executable);
