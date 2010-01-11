@@ -68,11 +68,9 @@ void update_client(const char *fmt, ...)
 
     va_list p;
     va_start(p, fmt);
-    char *msg;
-    int used = vasprintf(&msg, fmt, p);
+    char *msg = xvasprintf(fmt, p);
     va_end(p);
-    if (used < 0)
-        return;
 
     s_pObs->Status(msg, peer, key);
+    free(msg);
 }

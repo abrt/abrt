@@ -115,7 +115,15 @@ static bool GetAndSetLock(const char* pLockFile, const char* pPID)
         char pid_buf[sizeof(pid_t)*3 + 4];
         ssize_t r = readlink(pLockFile, pid_buf, sizeof(pid_buf) - 1);
         if (r < 0)
+        {
+            if (errno == ENOENT)
+            {
+                /* Looks like pLockFile was deleted */
+                usleep(10 * 1000); /* avoid CPU eating loop */
+                continue;
+            }
             perror_msg_and_die("Can't read lock file '%s'", pLockFile);
+        }
         pid_buf[r] = '\0';
 
         if (strcmp(pid_buf, pPID) == 0)
@@ -228,7 +236,7 @@ void CDebugDump::UnLock()
     }
 }
 
-void CDebugDump::Create(const char *pDir, int64_t uid)
+void CDebugDump::Create(const char *pDir, uid_t uid)
 {
     if (m_bOpened)
     {

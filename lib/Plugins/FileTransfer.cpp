@@ -110,13 +110,11 @@ parameter "something" to each filename,
 now used in create_zip, but can be useful for some future
 archivers as well
 */
-static void traverse_directory(const char * directory, void * something,
-                               void (*func)(void *, const char *) )
+static void traverse_directory(const char *directory, void *something,
+                               void (*func)(void *, const char *))
 {
-    DIR * dp;
-    struct dirent * dirp;
-    char complete_name[BUFSIZ];
-    char * end;
+    DIR *dp;
+    struct dirent *dirp;
 
     dp = opendir(directory);
     if (dp == NULL)
@@ -127,14 +125,8 @@ static void traverse_directory(const char * directory, void * something,
     {
         if (is_regular_file(dirp, directory))
         {
-            end = stpcpy(complete_name, directory);
-            if (end[-1] != '/')
-            {
-                *end++ = '/';
-            }
-            end = stpcpy(end, dirp->d_name);
-
-            func(something, complete_name);
+            string complete_name = concat_path_file(directory, dirp->d_name);
+            func(something, complete_name.c_str());
         }
     }
     closedir(dp);

@@ -40,6 +40,10 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
     vector_string_t args;
     parse_args(pArgs, args, '"');
 
+    if (args.size() <= COMMAND)
+    {
+        return;
+    }
     const char *cmd = args[COMMAND].c_str();
     if (!cmd[0])
     {

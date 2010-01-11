@@ -62,7 +62,7 @@ class CDebugDump
         ~CDebugDump();
 
         void Open(const char *pDir);
-        void Create(const char *pDir, int64_t uid);
+        void Create(const char *pDir, uid_t uid);
         void Delete();
         void Close();
 

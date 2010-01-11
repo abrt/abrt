@@ -627,7 +627,7 @@ static bool DebuginfoCheckPolkit(int uid)
 
     //parent
     int status;
-    if (waitpid(child_pid, &status, 0) > 0 && WEXITSTATUS(status) == 0)
+    if (waitpid(child_pid, &status, 0) > 0 && WIFEXITED(status) &&  WEXITSTATUS(status) == 0)
     {
         return true; //authorization OK
     }

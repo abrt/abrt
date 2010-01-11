@@ -79,6 +79,8 @@ int main(int argc, char** argv)
   if (!pid || !executable || !uuid)
     goto usage;
 
+//TODO: sanitize uuid and executable (size, valid chars etc)
+
   unsigned setting_MaxCrashReportsSize = 0;
   parse_conf(NULL, &setting_MaxCrashReportsSize, NULL);
   if (setting_MaxCrashReportsSize > 0)

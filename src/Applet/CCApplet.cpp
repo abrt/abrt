@@ -205,7 +205,7 @@ void CApplet::CrashNotify(const char *format, ...)
     if (gtk_status_icon_is_embedded(m_pStatusIcon))
         notify_notification_show(m_pNotification, &err);
     if (err != NULL)
-        error_msg(err->message);
+        error_msg("%s", err->message);
 }
 
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data)

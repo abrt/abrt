@@ -145,9 +145,11 @@ print_package_names() {
     fi
     # when we look for debuginfo we need only -debuginfo* repos, so we can disable the rest and thus make it faster
     # also we want only fedora repositories, because abrt won't work for other packages anyway
-    local cmd="yum $yumopts --disablerepo=* --enablerepo=fedora-debuginfo* --enablerepo=updates-debuginfo* --quiet provides $missing_debuginfo_files"
+    local cmd="yum $yumopts '--disablerepo=*' '--enablerepo=fedora-debuginfo*' '--enablerepo=updates-debuginfo*' --quiet provides $missing_debuginfo_files"
     echo "$cmd" >"yum_provides.$1.OUT"
-    local yum_provides_OUT="`$cmd 2>&1`"
+    # eval is needed to strip away ''s; cant remove them above and just use
+    # $cmd, that would perform globbing on '*'
+    local yum_provides_OUT="`eval $cmd 2>&1`"
     local err=$?
     printf "%s\nyum exitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
     test $err = 0 || error_msg_and_die "yum provides... exited with $err:

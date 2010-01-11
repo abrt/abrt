@@ -70,7 +70,7 @@ int main(int argc, char** argv)
         const char* program_name = argv[0];
         error_msg_and_die("Usage: %s: DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT", program_name);
     }
-    openlog("abrt", 0, LOG_DAEMON);
+    openlog("abrt", 0, LOG_PID | LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
 
     errno = 0;

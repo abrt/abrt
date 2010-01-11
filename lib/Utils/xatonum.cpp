@@ -9,7 +9,7 @@
 
 unsigned xatou(const char *numstr)
 {
-	unsigned r;
+	unsigned long r;
 	int old_errno;
 	char *e;
 
@@ -19,7 +19,7 @@ unsigned xatou(const char *numstr)
 	old_errno = errno;
 	errno = 0;
 	r = strtoul(numstr, &e, 10);
-	if (errno || numstr == e || *e != '\0')
+	if (errno || numstr == e || *e != '\0' || r > UINT_MAX)
 		goto inval; /* error / no digits / illegal trailing chars */
 	errno = old_errno; /* Ok.  So restore errno. */
 	return r;

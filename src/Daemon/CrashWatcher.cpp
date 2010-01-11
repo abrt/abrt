@@ -168,12 +168,11 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
     thread_data->force = force;
     thread_data->peer = xstrdup(pSender);
 
-//TODO: do we need this?
-//pthread_attr_t attr;
-//pthread_attr_init(&attr);
-//pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
-
-    int r = pthread_create(&thread_data->thread_id, NULL, create_report, thread_data);
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_DETACHED);
+    int r = pthread_create(&thread_data->thread_id, &attr, create_report, thread_data);
+    pthread_attr_destroy(&attr);
     if (r != 0)
     {
         free(thread_data->UUID);
@@ -187,7 +186,6 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
         return r;
     }
     VERB3 log("Thread %llx created", (unsigned long long)thread_data->thread_id);
-//pthread_attr_destroy(&attr);
     return r;
 }
 
