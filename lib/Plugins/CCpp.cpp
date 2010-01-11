@@ -99,54 +99,28 @@ static string concat_str_vector(char **strings)
 /* Returns status. See `man 2 wait` for status information. */
 static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
 {
+    /* Nuke everything which may make setlocale() switch to non-POSIX locale:
+     * we need to avoid having gdb output in some obscure language.
+     */
+    static const char *const unsetenv_vec[] = {
+        "LANG",
+        "LC_ALL",
+        "LC_COLLATE",
+        "LC_CTYPE",
+        "LC_MESSAGES",
+        "LC_MONETARY",
+        "LC_NUMERIC",
+        "LC_TIME",
+        NULL
+    };
+
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETGUID | EXECFLG_SETSID | EXECFLG_QUIET;
+    if (redirect_stderr)
+        flags |= EXECFLG_ERR2OUT;
+    VERB1 flags &= ~EXECFLG_QUIET;
+
     int pipeout[2];
-    pid_t child;
-
-    xpipe(pipeout);
-    child = fork();
-    if (child == -1)
-    {
-        perror_msg_and_die("fork");
-    }
-    if (child == 0)
-    {
-        VERB1 log("Executing: %s", concat_str_vector(pArgs).c_str());
-        close(pipeout[0]); /* read side of the pipe */
-        xmove_fd(pipeout[1], STDOUT_FILENO);
-        /* Make sure stdin is safely open to nothing */
-        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
-
-        struct passwd* pw = getpwuid(uid);
-        gid_t gid = pw ? pw->pw_gid : uid;
-        setgroups(1, &gid);
-        xsetregid(gid, gid);
-        xsetreuid(uid, uid);
-        setsid();
-
-        /* Nuke everything which may make setlocale() switch to non-POSIX locale:
-         * we need to avoid having gdb output in some obscure language.
-         */
-        unsetenv("LANG");
-        unsetenv("LC_ALL");
-        unsetenv("LC_COLLATE");
-        unsetenv("LC_CTYPE");
-        unsetenv("LC_MESSAGES");
-        unsetenv("LC_MONETARY");
-        unsetenv("LC_NUMERIC");
-        unsetenv("LC_TIME");
-
-        if (redirect_stderr)
-        {
-            /* We want parent to see errors in the same stream */
-            xdup2(STDOUT_FILENO, STDERR_FILENO);
-        }
-        execvp(pArgs[0], pArgs);
-        /* VERB1 since sometimes we expect errors here */
-        VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
-        exit(1);
-    }
-
-    close(pipeout[1]); /* write side of the pipe */
+    pid_t child = fork_execv_on_steroids(flags, pArgs, pipeout, (char**)unsetenv_vec, /*dir:*/ NULL, uid);
 
     int r;
     char buff[1024];
@@ -155,8 +129,8 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
         buff[r] = '\0';
         pOutput += buff;
     }
-
     close(pipeout[0]);
+
     int status;
     waitpid(child, &status, 0); /* prevent having zombie child process */
 

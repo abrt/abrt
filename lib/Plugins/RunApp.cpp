@@ -33,7 +33,8 @@ using namespace std;
 
 void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
 {
-    /* Don't update_client() - actions run at crash time */
+    /* Don't update_client() - actions run at crash time, there is no client
+     * to talk to at that point */
     log("RunApp('%s','%s')", pActionDir, pArgs);
 
     vector_string_t args;
@@ -45,38 +46,21 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
         return;
     }
 
-//FIXME: need to be able to escape " in .conf
-    /* Chdir to the dump dir. Command can analyze component and such.
+    /* NB: we chdir to the dump dir. Command can analyze component and such.
      * Example:
      * test x"`cat component`" = x"xorg-x11-apps" && cp /var/log/Xorg.0.log .
      */
-//Can do it using chdir() in child if we'd open-code popen
-    string cd_and_cmd = ssprintf("cd '%s'; %s", pActionDir, cmd);
-    VERB1 log("RunApp: executing '%s'", cd_and_cmd.c_str());
-    FILE *fp = popen(cd_and_cmd.c_str(), "r");
-    if (fp == NULL)
-    {
-        /* Happens only on resource starvation (fork fails or out-of-mem) */
-        return;
-    }
-
-//FIXME: RunApp("gzip -9 </var/log/Xorg.0.log", "Xorg.0.log.gz") fails
-//since we mangle NULs.
-    string output;
-    char line[1024];
-    while (fgets(line, 1024, fp) != NULL)
-    {
-        if (args.size() > FILENAME)
-            output += line;
-    }
-    pclose(fp);
+    size_t cmd_out_size;
+    char *cmd_out = run_in_shell_and_save_output(/*flags:*/ 0, cmd, pActionDir, &cmd_out_size);
 
     if (args.size() > FILENAME)
     {
         CDebugDump dd;
         dd.Open(pActionDir);
-        dd.SaveText(args[FILENAME].c_str(), output.c_str());
+        dd.SaveBinary(args[FILENAME].c_str(), cmd_out, cmd_out_size);
     }
+
+    free(cmd_out);
 }
 
 PLUGIN_INFO(ACTION,

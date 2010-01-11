@@ -132,6 +132,7 @@ int xsocket(int domain, int type, int protocol);
 void xbind(int sockfd, struct sockaddr *my_addr, socklen_t addrlen);
 void xlisten(int s, int backlog);
 ssize_t xsendto(int s, const void *buf, size_t len, const struct sockaddr *to, socklen_t tolen);
+void xchdir(const char *path);
 void xstat(const char *name, struct stat *stat_buf);
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
@@ -161,6 +162,30 @@ off_t copy_file(const char *src_name, const char *dst_name);
 
 void xsetreuid(uid_t ruid, uid_t euid);
 void xsetregid(gid_t rgid, uid_t egid);
+enum {
+	EXECFLG_INPUT      = 1 << 0,
+	EXECFLG_OUTPUT     = 1 << 1,
+	EXECFLG_INPUT_NUL  = 1 << 2,
+	EXECFLG_OUTPUT_NUL = 1 << 3,
+	EXECFLG_ERR2OUT    = 1 << 4,
+	EXECFLG_ERR_NUL    = 1 << 5,
+	EXECFLG_QUIET      = 1 << 6,
+	EXECFLG_SETGUID    = 1 << 7,
+	EXECFLG_SETSID     = 1 << 8,
+};
+/* Returns pid */
+pid_t fork_execv_on_steroids(int flags,
+                char **argv,
+                int *pipefds,
+                char **unsetenv_vec,
+                const char *dir,
+                uid_t uid);
+/* Returns malloc'ed string. NULs are retained, and extra one is appended
+ * after the last byte (this NUL is not accounted for in *size_p) */
+char *run_in_shell_and_save_output(int flags,
+		const char *cmd,
+		const char *dir,
+		size_t *size_p);
 
 
 unsigned long long monotonic_ns(void);
@@ -246,7 +271,6 @@ to_string(T x)
     return o.str();
 }
 
-std::string popen_and_save_output(const char *cmd);
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
 void parse_release(const char *pRelease, std::string& pProduct, std::string& pVersion);
 

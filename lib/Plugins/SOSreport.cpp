@@ -91,7 +91,9 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
     update_client(_("running sosreport: %s"), command.c_str());
     std::string output = command;
     output += '\n';
-    output += popen_and_save_output(command.c_str());
+    char *command_out = run_in_shell_and_save_output(/*flags:*/ 0, command.c_str(), /*dir:*/ NULL, /*size_p:*/ NULL);
+    output += command_out;
+    free(command_out);
     update_client(_("done running sosreport"));
 
     std::string sosreport_filename = ParseFilename(output);

@@ -16,7 +16,7 @@ libABRTUtils_la_SOURCES = \
     daemon.cpp \
     skip_whitespace.cpp \
     xatonum.cpp \
-    popen_and_save_output.cpp \
+    spawn.cpp \
     stringops.cpp \
     dirsize.cpp \
     DebugDump.h DebugDump.cpp \
