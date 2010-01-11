@@ -27,6 +27,7 @@ pid_t fork_execv_on_steroids(int flags,
 	if (flags & EXECFLG_OUTPUT)
 		xpipe(pipe_fm_child);
 
+	fflush(NULL);
 	child = fork();
 	if (child == -1) {
 		perror_msg_and_die("fork");

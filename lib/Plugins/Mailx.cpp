@@ -39,33 +39,16 @@ CMailx::CMailx() :
 static void exec_and_feed_input(uid_t uid, const char* pText, char **pArgs)
 {
     int pipein[2];
-    pid_t child;
 
-    xpipe(pipein);
-    child = fork();
-    if (child == -1)
-    {
-        close(pipein[0]);
-        close(pipein[1]);
-        throw CABRTException(EXCEP_PLUGIN, "Can't fork");
-    }
-    if (child == 0)
-    {
-        close(pipein[1]);
-        xmove_fd(pipein[0], STDIN_FILENO);
+    pid_t child = fork_execv_on_steroids(
+		EXECFLG_INPUT | EXECFLG_QUIET | EXECFLG_SETGUID,
+                pArgs,
+                pipein,
+                /*unsetenv_vec:*/ NULL,
+                /*dir:*/ NULL,
+                uid);
 
-        struct passwd* pw = getpwuid(uid);
-        gid_t gid = pw ? pw->pw_gid : uid;
-        setgroups(1, &gid);
-        xsetregid(gid, gid);
-        xsetreuid(uid, uid);
-
-        execvp(pArgs[0], pArgs);
-        exit(1); /* exec failed */
-    }
-
-    close(pipein[0]);
-    safe_write(pipein[1], pText, strlen(pText));
+    full_write(pipein[1], pText, strlen(pText));
     close(pipein[1]);
 
     waitpid(child, NULL, 0); /* wait for command completion */

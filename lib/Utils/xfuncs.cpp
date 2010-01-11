@@ -158,8 +158,8 @@ char* xvasprintf(const char *format, va_list p)
 #else
 	// Bloat for systems that haven't got the GNU extension.
 	va_list p2;
-	r = vsnprintf(NULL, 0, format, p);
 	va_copy(p2, p);
+	r = vsnprintf(NULL, 0, format, p);
 	string_ptr = xmalloc(r+1);
 	r = vsnprintf(string_ptr, r+1, format, p2);
 	va_end(p2);
@@ -374,7 +374,7 @@ void xsetreuid(uid_t ruid, uid_t euid)
 		perror_msg_and_die("can't set %cid %lu", 'u', (long)ruid);
 }
 
-void xsetregid(gid_t rgid, uid_t egid)
+void xsetregid(gid_t rgid, gid_t egid)
 {
 	if (setregid(rgid, egid) != 0)
 		perror_msg_and_die("can't set %cid %lu", 'g', (long)rgid);

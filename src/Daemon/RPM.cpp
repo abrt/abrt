@@ -4,8 +4,8 @@
 
 CRPM::CRPM()
 {
-    char *argv[] = { (char*)"" };
-    m_poptContext = rpmcliInit(0, argv, NULL);
+    static const char *const argv[] = { "", NULL };
+    m_poptContext = rpmcliInit(1, (char**)argv, NULL);
 }
 
 CRPM::~CRPM()

@@ -203,10 +203,12 @@ static int SetUpCron()
         int nM = -1;
         int nS = -1;
 
+//TODO: rewrite using good old sscanf?
+
         if (pos != std::string::npos)
         {
-            std::string sH = "";
-            std::string sM = "";
+            std::string sH;
+            std::string sM;
 
             sH = it_c->first.substr(0, pos);
             nH = xatou(sH.c_str());
@@ -221,7 +223,7 @@ static int SetUpCron()
         }
         else
         {
-            std::string sS = "";
+            std::string sS;
 
             sS = it_c->first;
             nS = xatou(sS.c_str());

@@ -147,8 +147,10 @@ int CKerneloopsScanner::ScanSysLogFile(const char *filename)
 	if (fd < 0)
 		return 0;
 	statb.st_size = 0; /* paranoia */
-	if (fstat(fd, &statb) != 0 || statb.st_size < 1)
+	if (fstat(fd, &statb) != 0 || statb.st_size < 1) {
+		close(fd);
 		return 0;
+	}
 
 	/*
 	 * in theory there's a race here, since someone could spew

@@ -192,20 +192,21 @@ void CApplet::SetIconTooltip(const char *format, ...)
 void CApplet::CrashNotify(const char *format, ...)
 {
     va_list args;
-    char *buf;
-    int n;
-    GError *err = NULL;
 
     va_start(args, format);
-    buf = NULL;
-    n = vasprintf(&buf, format, args);
+    char *buf = xvasprintf(format, args);
     va_end(args);
 
     notify_notification_update(m_pNotification, _("Warning"), buf, NULL);
+
+    GError *err = NULL;
     if (gtk_status_icon_is_embedded(m_pStatusIcon))
         notify_notification_show(m_pNotification, &err);
     if (err != NULL)
+    {
         error_msg("%s", err->message);
+        g_error_free(err);
+    }
 }
 
 void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data)

@@ -161,7 +161,7 @@ off_t copy_file(const char *src_name, const char *dst_name, int mode);
 
 
 void xsetreuid(uid_t ruid, uid_t euid);
-void xsetregid(gid_t rgid, uid_t egid);
+void xsetregid(gid_t rgid, gid_t egid);
 enum {
 	EXECFLG_INPUT      = 1 << 0,
 	EXECFLG_OUTPUT     = 1 << 1,

@@ -120,17 +120,14 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
             throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
         struct stat buf;
-        if (fstat(fileno(f), &buf) == -1) /* TODO: never fails */
-        {
-            throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
-        }
+        fstat(fileno(f), &buf); /* never fails */
         CURL* curl = xcurl_easy_init();
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
         /* specify target */
         curl_easy_setopt(curl, CURLOPT_URL, wholeURL.c_str());
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
-        curl_easy_setopt(curl, CURLOPT_INFILESIZE, buf.st_size);
+        curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)buf.st_size);
         /* everything is done here; result 0 means success */
         result = curl_easy_perform(curl);
         /* goodbye */

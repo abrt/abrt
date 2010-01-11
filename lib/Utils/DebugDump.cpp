@@ -307,7 +307,7 @@ static void DeleteFileDir(const char *pDir)
         }
     }
     closedir(dir);
-    if (remove(pDir) == -1)
+    if (rmdir(pDir) == -1)
     {
         throw CABRTException(EXCEP_DD_DELETE, "Can't remove dir %s", pDir);
     }

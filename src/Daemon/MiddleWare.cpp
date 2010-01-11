@@ -548,6 +548,8 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 static bool IsDebugDumpSaved(const char *pUID,
                                    const char *pDebugDumpDir)
 {
+    /* TODO: use database query instead of dumping all rows and searching in them */
+
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     vector_database_rows_t rows = database->GetUIDData(pUID);

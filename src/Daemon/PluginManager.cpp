@@ -138,6 +138,8 @@ void CPluginManager::LoadPlugins()
             if (!ext || strcmp(ext + 1, PLUGINS_LIB_EXTENSION) != 0)
                 continue;
             *ext = '\0';
+            if (strncmp(dent->d_name, PLUGINS_LIB_PREFIX, sizeof(PLUGINS_LIB_PREFIX)-1) != 0)
+                continue;
             LoadPlugin(dent->d_name + sizeof(PLUGINS_LIB_PREFIX)-1, /*enabled_only:*/ true);
         }
         closedir(dir);

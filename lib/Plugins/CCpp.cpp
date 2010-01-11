@@ -353,6 +353,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
 
+    fflush(NULL);
     pid_t child = fork();
     if (child < 0)
     {
@@ -548,6 +549,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 
         int pipeout[2];
         xpipe(pipeout); /* stdout of abrt-backtrace */
+
+	fflush(NULL);
         pid_t child = fork();
         if (child == -1)
             perror_msg_and_die("fork");
@@ -609,8 +612,9 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     return CreateHash(hash_base.c_str());
 }
 
-static bool DebuginfoCheckPolkit(int uid)
+static bool DebuginfoCheckPolkit(uid_t uid)
 {
+    fflush(NULL);
     int child_pid = fork();
     if (child_pid < 0)
     {
@@ -627,8 +631,10 @@ static bool DebuginfoCheckPolkit(int uid)
 
     //parent
     int status;
-    if (waitpid(child_pid, &status, 0) > 0 && WIFEXITED(status) &&  WEXITSTATUS(status) == 0)
-    {
+    if (waitpid(child_pid, &status, 0) > 0
+     && WIFEXITED(status)
+     && WEXITSTATUS(status) == 0
+    ) {
         return true; //authorization OK
     }
     log("UID %d is not authorized to install debuginfos", uid);

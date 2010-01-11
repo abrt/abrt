@@ -139,7 +139,7 @@ int main(int argc, char** argv)
          * if they happen too often. Else, write new marker value.
          */
         snprintf(path, sizeof(path), "%s/last-ccpp", dddir);
-        fd = open(path, O_RDWR | O_CREAT, 0666);
+        fd = open(path, O_RDWR | O_CREAT, 0600);
         if (fd >= 0)
         {
             int sz;

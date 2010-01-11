@@ -13,7 +13,7 @@ using namespace std;
 
 
 static int
-put_stream(const char *pURL, FILE* f, size_t content_length)
+put_stream(const char *pURL, FILE* f, off_t content_length)
 {
     CURL* curl = xcurl_easy_init();
     /* enable uploading */
@@ -22,8 +22,8 @@ put_stream(const char *pURL, FILE* f, size_t content_length)
     curl_easy_setopt(curl, CURLOPT_URL, pURL);
     /* file handle: passed to the default callback, it will fread() it */
     curl_easy_setopt(curl, CURLOPT_READDATA, f);
-    /* get file size */
-    curl_easy_setopt(curl, CURLOPT_INFILESIZE, content_length);
+    /* file size */
+    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)content_length);
     /* everything is done here; result 0 means success */
     int result = curl_easy_perform(curl);
     /* goodbye */
@@ -43,9 +43,9 @@ send_string(const char *pURL,
         return;
     }
 
+    size_t content_length = strlen(pContent);
     while (1)
     {
-        int content_length = strlen(pContent);
         FILE* f = fmemopen((void*)pContent, content_length, "r");
         if (!f)
         {
@@ -53,7 +53,7 @@ send_string(const char *pURL,
         }
         int result = put_stream(pURL, f, content_length);
         fclose(f);
-        if (!result)
+        if (result == 0)
             return;
         update_client(_("Sending failed, try it again: %s"), curl_easy_strerror((CURLcode)result));
         if (--retryCount <= 0)
@@ -88,10 +88,9 @@ send_file(const char *pURL,
         }
         struct stat buf;
         fstat(fileno(f), &buf); /* can't fail */
-        int content_length = buf.st_size;
-        int result = put_stream(pURL, f, content_length);
+        int result = put_stream(pURL, f, buf.st_size);
         fclose(f);
-        if (!result)
+        if (result == 0)
             return;
         update_client(_("Sending failed, try it again: %s"), curl_easy_strerror((CURLcode)result));
         if (--retryCount <= 0)
@@ -122,6 +121,7 @@ resolve_relative_url(const char *url, const char *base)
     }
 
     const char *end_of_protocol = strchr(base, ':');
+//TODO: why is this safe?!!
     string protocol(base, end_of_protocol - base);
 
     end_of_protocol += 3; /* skip "://" */

@@ -80,11 +80,7 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         {
             throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
-        if (fstat(fileno(f), &buf) == -1)
-        {
-            fclose(f);
-            throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
-        }
+        fstat(fileno(f), &buf); /* never fails */
         curl = xcurl_easy_init();
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
@@ -92,7 +88,7 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         curl_easy_setopt(curl, CURLOPT_URL, wholeURL.c_str());
         /* FILE handle: passed to the default callback, it will fread() it */
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
-        curl_easy_setopt(curl, CURLOPT_INFILESIZE, buf.st_size);
+        curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)buf.st_size);
         /* everything is done here; result 0 means success */
         int result = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
@@ -181,6 +177,7 @@ static void create_targz(const char * archive_name, const char * directory)
     f = fopen(name_without_gz, "r");
     if (f == NULL)
     {
+//TODO: we leak uncompressed tar file on disk??
         free(name_without_gz);
         return;
     }
@@ -226,6 +223,7 @@ static void create_tarbz2(const char * archive_name, const char * directory)
     f = fopen(archive_name, "w");
     if (f == NULL)
     {
+//TODO: we leak uncompressed tar file on disk??
         close(tarFD);
         free(name_without_bz2);
         return;
@@ -312,6 +310,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
     else if (strcmp(pArgs, "one") == 0)
     {
         /* just send one archive */
+//TODO: where are we creating it??!! In cwd, which may well be / ??!!!
         string archivename = ssprintf("%s-%s%s", hostname, DirBase(pActionDir).c_str(), m_sArchiveType.c_str());
         try
         {

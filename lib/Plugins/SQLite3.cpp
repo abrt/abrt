@@ -375,15 +375,15 @@ void CSQLite3::DeleteRow(const char *pUUID, const char *pUID)
         execute_sql(m_pDB,
                 "DELETE FROM "ABRT_TABLE" "
                 "WHERE "COL_UUID" = '%s';",
-                pUUID, pUID
+                pUUID
         );
     }
     else if (exists_uuid_uid(m_pDB, pUUID, pUID))
     {
         execute_sql(m_pDB, "DELETE FROM "ABRT_TABLE" "
-             "WHERE "COL_UUID" = '%s' "
-             "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-             pUUID, pUID
+                "WHERE "COL_UUID" = '%s' "
+                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
+                pUUID, pUID
         );
     }
     else
