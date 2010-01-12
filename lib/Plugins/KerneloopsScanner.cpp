@@ -99,13 +99,14 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
               	*second_line++ = '\0';
 		try
 		{
-			CDebugDump debugDump;
-			debugDump.Create(path, 0);
-			debugDump.SaveText(FILENAME_ANALYZER, "Kerneloops");
-			debugDump.SaveText(FILENAME_EXECUTABLE, "kernel");
-			debugDump.SaveText(FILENAME_KERNEL, first_line);
-			debugDump.SaveText(FILENAME_PACKAGE, "not_applicable");
-			debugDump.SaveText(FILENAME_KERNELOOPS, second_line);
+			CDebugDump dd;
+			dd.Create(path, 0);
+			dd.SaveText(FILENAME_ANALYZER, "Kerneloops");
+			dd.SaveText(FILENAME_EXECUTABLE, "kernel");
+			dd.SaveText(FILENAME_KERNEL, first_line);
+			dd.SaveText(FILENAME_PACKAGE, "not_applicable");
+			dd.SaveText(FILENAME_CMDLINE, "not_applicable");
+			dd.SaveText(FILENAME_KERNELOOPS, second_line);
 		}
 		catch (CABRTException& e)
 		{
