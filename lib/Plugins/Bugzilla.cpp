@@ -82,8 +82,8 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.getBug", param, &result);
-    throw_if_xml_fault_occurred(&env);
     xmlrpc_DECREF(param);
+    throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* reporter_member = NULL;
     xmlrpc_struct_find_value(&env, result, "reporter", &reporter_member);
@@ -298,9 +298,9 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCra
             throw_if_xml_fault_occurred(&env);
 
             xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.addAttachment", param, &result);
-            throw_if_xml_fault_occurred(&env);
             xmlrpc_DECREF(result);
             xmlrpc_DECREF(param);
+            throw_if_xml_fault_occurred(&env);
         }
     }
 }

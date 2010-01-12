@@ -1,5 +1,5 @@
 /*
-    CCpp.cpp - the hook for C/C++ crashing program
+    abrt_hook_ccpp.cpp - the hook for C/C++ crashing program
 
     Copyright (C) 2009	Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009	RedHat inc.
