@@ -111,7 +111,7 @@ int main(int argc, char** argv)
   CDebugDump dd;
 
   try {
-    dd.Create(path, geteuid());
+    dd.Create(path, getuid());
   } catch (CABRTException &e) {
     error_msg_and_die("Error while creating debug dump: %s", e.what());
   }

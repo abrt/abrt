@@ -632,7 +632,7 @@ static void start_syslog_logging()
     logmode = LOGMODE_SYSLOG;
 }
 
-static void ensure_writable_dir(const char *dir, mode_t mode, const char *group)
+static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
 {
     struct stat sb;
 
@@ -641,12 +641,12 @@ static void ensure_writable_dir(const char *dir, mode_t mode, const char *group)
     if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
         error_msg_and_die("'%s' is not a directory", dir);
 
-    struct group *gr = getgrnam(group);
-    if (!gr)
-        perror_msg_and_die("Can't find group '%s'", group);
+    struct passwd *pw = getpwnam(user);
+    if (!pw)
+        perror_msg_and_die("Can't find user '%s'", user);
 
-    if ((sb.st_uid != 0 || sb.st_gid != gr->gr_gid) && chown(dir, 0, gr->gr_gid) != 0)
-        perror_msg_and_die("Can't set owner 0:%u on '%s'", (unsigned int)gr->gr_gid, dir);
+    if ((sb.st_uid != pw->pw_uid || sb.st_gid != pw->pw_gid) && chown(dir, pw->pw_uid, pw->pw_gid) != 0)
+        perror_msg_and_die("Can't set owner %u:%u on '%s'", (unsigned int)pw->pw_uid, (unsigned int)pw->pw_gid, dir);
     if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
         perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
 }
@@ -657,7 +657,7 @@ static void sanitize_dump_dir_rights()
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
     /* 00777 bits are usual "rwxrwxrwx" access rights */
-    ensure_writable_dir(DEBUG_DUMPS_DIR, 0775, "abrt");
+    ensure_writable_dir(DEBUG_DUMPS_DIR, 0755, "abrt");
     /* debuginfo cache */
     ensure_writable_dir(DEBUG_DUMPS_DIR"-di", 0755, "root");
     /* temp dir */

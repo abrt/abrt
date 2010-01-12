@@ -251,6 +251,9 @@ void CDebugDump::UnLock()
  *
  * Security: we should not allow users to write new files or write
  * into existing ones, but they should be able to read them.
+ * 
+ * @param uid
+ *   Crashed application's User Id
  *
  * We currently have only three callers:
  * kernel oops hook: uid=0
@@ -258,11 +261,10 @@ void CDebugDump::UnLock()
  * ccpp hook: uid=uid of crashed user's binary
  *  this hook runs under 0:0
  * python hook: uid=uid of crashed user's script
- *  this hook runs under uid:abrt
+ *  this hook runs under abrt:gid
  *
- * Currently, we set dir's uid to uid parameter, but we do not allow
- * write acces to the owner; and we set gid to abrt's group id
- * and we give write access to _group_.
+ * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
+ * abrt's user id. We do not allow write access to group.
  */
 void CDebugDump::Create(const char *pDir, uid_t uid)
 {
@@ -280,36 +282,45 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
     Lock();
     m_bOpened = true;
 
-    /* Was creating it with mode 0700, but this allows the user to replace
-     * any file in the directory, changing security-sensitive data
+    /* Was creating it with mode 0700 and user as the owner, but this allows 
+     * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (mkdir(m_sDebugDumpDir.c_str(), 0570) == -1)
+    if (mkdir(m_sDebugDumpDir.c_str(), 0750) == -1)
     {
         UnLock();
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "Can't create dir '%s'", pDir);
     }
-#if 0
-    /* paranoia. mkdir did it already */
-    if (chmod(m_sDebugDumpDir.c_str(), 0570) == -1)
+
+    /* mkdir's mode (above) can be affected by umask, fix it */
+    if (chmod(m_sDebugDumpDir.c_str(), 0750) == -1)
     {
         UnLock();
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "Can't change mode of '%s'", pDir);
     }
-#endif
 
-    m_uid = uid;
-    m_gid = 0;
-    struct group *gr = getgrnam("abrt");
-    if (gr)
-        m_gid = gr->gr_gid;
+    /* Get ABRT's user id */
+    m_uid = 0; 
+    struct passwd *pw = getpwnam("abrt");
+    if (pw)
+        m_uid = pw->pw_uid;
     else
-        error_msg("Group 'abrt' does not exist, using gid 0");
+        error_msg("User 'abrt' does not exist, using uid 0");
+
+    /* Get crashed application's group id */
+    m_gid = 0;
+    pw = getpwuid(uid);
+    if (pw)
+        m_gid = pw->pw_gid;
+    else
+      error_msg("User %lu does not exist, using gid 0", (long)uid);
+
     if (chown(m_sDebugDumpDir.c_str(), m_uid, m_gid) == -1)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(), (long)m_uid, (long)m_gid);
+        perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(), 
+		   (long)m_uid, (long)m_gid);
     }
 
     SaveText(FILENAME_UID, to_string(uid).c_str());
@@ -408,12 +419,12 @@ static void LoadTextFile(const char *pPath, std::string& pData)
 
 static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize, uid_t uid, gid_t gid)
 {
-    /* "Why 0460?!" See ::Create() for security analysis */
+    /* "Why 0640?!" See ::Create() for security analysis */
     unlink(pPath);
-    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0460);
+    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0640);
     if (fd < 0)
     {
-        throw CABRTException(EXCEP_DD_SAVE, "Can't open file '%s'", pPath);
+        throw CABRTException(EXCEP_DD_SAVE, "Can't open file '%s': %s", pPath, errno ? strerror(errno) : "errno == 0");
     }
     if (fchown(fd, uid, gid) == -1)
     {
