@@ -3,7 +3,7 @@ bin_PROGRAMS = dumpoops
 
 # abrt-hook-ccpp
 abrt_hook_ccpp_SOURCES = \
-    abrt_hook_ccpp.cpp \
+    abrt-hook-ccpp.cpp \
     hooklib.h hooklib.cpp
 abrt_hook_ccpp_CPPFLAGS = \
     -I$(srcdir)/../../inc \
