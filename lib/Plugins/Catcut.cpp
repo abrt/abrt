@@ -167,11 +167,14 @@ struct_find_int(xmlrpc_env* env, xmlrpc_value* result,
 {
     xmlrpc_value* an_xmlrpc_value;
     xmlrpc_struct_find_value(env, result, fieldName, &an_xmlrpc_value);
-    throw_if_xml_fault_occurred(env);
+    if (env->fault_occurred)
+        throw_xml_fault(env);
+
     if (an_xmlrpc_value)
     {
         xmlrpc_read_int(env, an_xmlrpc_value, &value);
-        throw_if_xml_fault_occurred(env);
+        if (env->fault_occurred)
+            throw_xml_fault(env);
         xmlrpc_DECREF(an_xmlrpc_value);
         return true;
     }
@@ -184,12 +187,14 @@ struct_find_string(xmlrpc_env* env, xmlrpc_value* result,
 {
     xmlrpc_value* an_xmlrpc_value;
     xmlrpc_struct_find_value(env, result, fieldName, &an_xmlrpc_value);
-    throw_if_xml_fault_occurred(env);
+    if (env->fault_occurred)
+        throw_xml_fault(env);
     if (an_xmlrpc_value)
     {
         const char* value_s;
         xmlrpc_read_string(env, an_xmlrpc_value, &value_s);
-        throw_if_xml_fault_occurred(env);
+        if (env->fault_occurred)
+            throw_xml_fault(env);
         value = value_s;
         xmlrpc_DECREF(an_xmlrpc_value);
         free((void*)value_s);
@@ -228,20 +233,24 @@ ctx::login(const char* login, const char* passwd)
     xmlrpc_env_init(&env);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "(ss)", login, passwd);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Catcut.auth", param, &result);
     xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value *cookie_xml;
     const char *cookie;
     string cookie_str;
     xmlrpc_struct_find_value(&env, result, "cookie", &cookie_xml);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     xmlrpc_read_string(&env, cookie_xml, &cookie);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     cookie_str = cookie;
     /* xmlrpc_read_string returns *malloc'ed ptr*.
      * doc is not very clear on it, but I looked in xmlrpc sources. */
@@ -284,20 +293,24 @@ ctx::new_bug(const char *auth_cookie, const map_crash_report_t& pCrashReport)
                 "status_whiteboard", status_whiteboard.c_str(),
                 "platform", arch.c_str()
                 );
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value *result;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Catcut.createTicket", param, &result);
     xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value *bug_id_xml;
     const char *bug_id;
     string bug_id_str;
     xmlrpc_struct_find_value(&env, result, "ticket", &bug_id_xml);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     xmlrpc_read_string(&env, bug_id_xml, &bug_id);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     bug_id_str = bug_id;
     log("New bug id: %s", bug_id);
     update_client(_("New bug id: %s"), bug_id);
@@ -321,12 +334,14 @@ ctx::request_upload(const char* auth_cookie, const char* pTicketName,
                 pTicketName,
                 fileName,
                 description);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Catcut.requestUpload", param, &result);
     xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     string URL;
     bool has_URL = struct_find_string(&env, result, "uri", URL);
