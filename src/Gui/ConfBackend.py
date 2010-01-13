@@ -1,5 +1,8 @@
 from abrt_utils import _
 
+# Doc on Gnome keyring API:
+# http://library.gnome.org/devel/gnome-keyring/stable/
+
 #FIXME: add some backend factory
 
 try:
