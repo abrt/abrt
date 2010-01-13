@@ -48,7 +48,7 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
     authority = polkit_authority_get();
     cancellable = g_cancellable_new();
 
-    g_timeout_add(POLKIT_TIMEOUT * 1000,
+    guint cancel_timeout = g_timeout_add(POLKIT_TIMEOUT * 1000,
                    (GSourceFunc) do_cancel,
                    cancellable);
 
@@ -60,7 +60,7 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
                 cancellable,
                 &error);
     g_object_unref(authority);
-
+    g_source_remove(cancel_timeout);
     if (error)
     {
         g_error_free(error);
