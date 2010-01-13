@@ -32,7 +32,8 @@ dist_pluginsconf_DATA = \
     Bugzilla.conf \
     Catcut.conf \
     TicketUploader.conf \
-    FileTransfer.conf
+    FileTransfer.conf \
+    Python.conf
 
 man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7 \
            abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7 \
