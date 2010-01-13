@@ -621,13 +621,29 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         {
             perror_msg("abrt-backtrace not executed properly, "
                                "status: %x signal: %d", status, WIFSIGNALED(status));
-        } else
+        } 
+        else
         {
             int exit_status = WEXITSTATUS(status);
-            if (exit_status != 0)
+            if (exit_status == 79) /* EX_PARSINGFAILED */
             {
+                /* abrt-backtrace returns alternative backtrace 
+                   representation in this case, so everything will work 
+                   as expected except worse duplication detection */
+                log_msg("abrt-backtrace failed to parse the backtrace");
+            }
+            else if (exit_status == 80) /* EX_THREADDETECTIONFAILED */
+            {
+                /* abrt-backtrace returns backtrace with all threads 
+                   in this case, so everything will work as expected 
+                   except worse duplication detection */
+                log_msg("abrt-backtrace failed to determine crash frame");
+            }
+            else if (exit_status != 0)
+            {
+                /* this is unexpected problem and it should be investigated */
                 error_msg("abrt-backtrace run failed, exit value: %d",
-                              exit_status);
+                          exit_status);
             }
         }
 
