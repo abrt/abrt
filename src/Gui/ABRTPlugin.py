@@ -16,39 +16,40 @@ from ConfBackend import ConfBackendGnomeKeyring, ConfBackendInitError
 class PluginSettings(dict):
     def __init__(self):
         dict.__init__(self)
-        self.conf = None
+        self.client_side_conf = None
         try:
-            self.conf = ConfBackendGnomeKeyring()
+            self.client_side_conf = ConfBackendGnomeKeyring()
         except ConfBackendInitError, e:
             print e
             pass
 
     def check(self):
+        # if present, these should be non-empty
         for key in ["Password", "Login"]:
             if key in self.keys():
-                # some of the required keys is missing
                 if not self[key]:
+                    # some of the required keys are missing
                     return False
         # settings are OK
         return True
 
-    def load(self, name, default_settings):
+    def load_daemon_settings(self, name, daemon_settings):
         # load settings from daemon
-        for key in default_settings.keys():
-            self[str(key)] = str(default_settings[key])
+        for key in daemon_settings.keys():
+            self[str(key)] = str(daemon_settings[key])
 
-        if self.conf:
-            settings = self.conf.load(name)
-            # overwrite defaluts with user setting
+        if self.client_side_conf:
+            settings = self.client_side_conf.load(name)
+            # overwrite daemon data with user setting
             for key in settings.keys():
-                # only rewrite keys needed by the plugin
-                # e.g we don't want a pass field for logger
-                if key in default_settings.keys():
+                # only rewrite keys which exist in plugin's keys.
+                # e.g. we don't want a password field for logger plugin
+                if key in daemon_settings.keys():
                     self[str(key)] = str(settings[key])
 
-    def save(self, name):
-        if self.conf:
-            self.conf.save(name, self)
+    def save_on_client_side(self, name):
+        if self.client_side_conf:
+            self.client_side_conf.save(name, self)
 
 class PluginInfo():
     """Class to represent common plugin info"""
@@ -90,11 +91,11 @@ class PluginInfo():
     def __getitem__(self, item):
         return self.__dict__[item]
 
-    def load_settings(self, default_settings):
+    def load_daemon_settings(self, daemon_settings):
         if self.Name:
-            self.Settings.load(self.Name, default_settings)
+            self.Settings.load_daemon_settings(self.Name, daemon_settings)
         else:
             print _("Plugin name is not set, can't load its settings")
 
-    def save_settings(self):
-        self.Settings.save(str(self.Name))
+    def save_settings_on_client_side(self):
+        self.Settings.save_on_client_side(str(self.Name))

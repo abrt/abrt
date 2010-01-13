@@ -517,7 +517,9 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
 #endif
                     ret[plugin_name].push_back("1"); // REPORT_STATUS_IDX_FLAG
                     ret[plugin_name].push_back(res); // REPORT_STATUS_IDX_MSG
-                    message += res + "\n";
+                    if (message != "")
+                        message += "; ";
+                    message += res;
                 }
             }
             catch (CABRTException& e)

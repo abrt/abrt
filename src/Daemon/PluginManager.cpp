@@ -241,6 +241,7 @@ void CPluginManager::UnLoadPlugin(const char *pName)
     }
 }
 
+#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
 void CPluginManager::RegisterPluginDBUS(const char *pName, const char *pDBUSSender)
 {
     int polkit_result = polkit_check_authorization(pDBUSSender,
@@ -267,7 +268,7 @@ void CPluginManager::UnRegisterPluginDBUS(const char *pName, const char *pDBUSSe
         log("user %s not authorized, returned %d", pDBUSSender, polkit_result);
     }
 }
-
+#endif
 
 CAnalyzer* CPluginManager::GetAnalyzer(const char *pName)
 {

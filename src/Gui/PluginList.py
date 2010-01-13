@@ -20,8 +20,8 @@ class PluginInfoList(list):
                     entry.__dict__[column] = row[column]
                 if entry.Enabled == "yes":
                     #entry.Settings = PluginSettings(self.dm.getPluginSettings(str(entry)))
-                    default_settings = self.dm.getPluginSettings(str(entry))
-                    entry.load_settings(default_settings)
+                    daemon_settings = self.dm.getPluginSettings(str(entry))
+                    entry.load_daemon_settings(daemon_settings)
                 self.append(entry)
                 self.ddict[entry.getName()] = entry
         else:

@@ -131,7 +131,7 @@ class ReporterDialog():
             ui.dehydrate()
             if plugin.Settings.check():
                 try:
-                    plugin.save_settings()
+                    plugin.save_settings_on_client_side()
                 except Exception, e:
                     gui_error_message(_("Can't save plugin settings:\n %s" % e))
                 box = image.get_parent()

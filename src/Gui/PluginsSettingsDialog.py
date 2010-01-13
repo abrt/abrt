@@ -44,20 +44,21 @@ class PluginsSettingsDialog:
             column.set_attributes(column.gray_background, visible=3, cell_background=4)
             column.set_resizable(True)
 
-        # toggle
-        group_name_renderer = gtk.CellRendererText()
-        toggle_renderer = gtk.CellRendererToggle()
-        toggle_renderer.set_property('activatable', True)
-        toggle_renderer.connect( 'toggled', self.on_enabled_toggled, self.pluginsListStore )
-        column = gtk.TreeViewColumn(_('Enabled'))
-        column.pack_start(toggle_renderer, True)
-        column.pack_start(group_name_renderer, True)
-        column.add_attribute( toggle_renderer, "active", 1)
-        column.add_attribute( toggle_renderer, "visible", 2)
-        column.add_attribute( group_name_renderer, "visible", 3)
-        column.add_attribute( group_name_renderer, "markup", 0)
-        column.add_attribute( group_name_renderer, "cell_background", 4)
-        self.pluginlist.insert_column(column, 0)
+# "Enable" toggle column is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD
+#        # toggle
+#        group_name_renderer = gtk.CellRendererText()
+#        toggle_renderer = gtk.CellRendererToggle()
+#        toggle_renderer.set_property('activatable', True)
+#        toggle_renderer.connect( 'toggled', self.on_enabled_toggled, self.pluginsListStore )
+#        column = gtk.TreeViewColumn(_('Enabled'))
+#        column.pack_start(toggle_renderer, True)
+#        column.pack_start(group_name_renderer, True)
+#        column.add_attribute( toggle_renderer, "active", 1)
+#        column.add_attribute( toggle_renderer, "visible", 2)
+#        column.add_attribute( group_name_renderer, "visible", 3)
+#        column.add_attribute( group_name_renderer, "markup", 0)
+#        column.add_attribute( group_name_renderer, "cell_background", 4)
+#        self.pluginlist.insert_column(column, 0)
 
         #connect signals
         self.pluginlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
@@ -65,24 +66,25 @@ class PluginsSettingsDialog:
         self.builder.get_object("bClose").connect("clicked", self.on_bClose_clicked)
         self.builder.get_object("bConfigurePlugin").set_sensitive(False)
 
-    def on_enabled_toggled(self,cell, path, model):
-        plugin = model[path][model.get_n_columns()-1]
-        if plugin:
-            if model[path][1]:
-                #print "self.ccdaemon.UnRegisterPlugin(%s)" % (plugin.getName())
-                self.ccdaemon.unRegisterPlugin(plugin.getName())
-                # FIXME: create class plugin and move this into method Plugin.Enable()
-                plugin.Enabled = "no"
-                plugin.Settings = None
-            else:
-                #print "self.ccdaemon.RegisterPlugin(%s)" % (model[path][model.get_n_columns()-1])
-                self.ccdaemon.registerPlugin(plugin.getName())
-                # FIXME: create class plugin and move this into method Plugin.Enable()
-                plugin.Enabled = "yes"
-                default_settings = self.ccdaemon.getPluginSettings(plugin.getName())
-                plugin.Settings = PluginSettings()
-                plugin.Settings.load(plugin.getName(), default_settings)
-            model[path][1] = not model[path][1]
+# "Enable" toggle column is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD
+#    def on_enabled_toggled(self,cell, path, model):
+#        plugin = model[path][model.get_n_columns()-1]
+#        if plugin:
+#            if model[path][1]:
+#                #print "self.ccdaemon.UnRegisterPlugin(%s)" % (plugin.getName())
+#                self.ccdaemon.unRegisterPlugin(plugin.getName())
+#                # FIXME: create class plugin and move this into method Plugin.Enable()
+#                plugin.Enabled = "no"
+#                plugin.Settings = None
+#            else:
+#                #print "self.ccdaemon.RegisterPlugin(%s)" % (model[path][model.get_n_columns()-1])
+#                self.ccdaemon.registerPlugin(plugin.getName())
+#                # FIXME: create class plugin and move this into method Plugin.Enable()
+#                plugin.Enabled = "yes"
+#                default_settings = self.ccdaemon.getPluginSettings(plugin.getName())
+#                plugin.Settings = PluginSettings()
+#                plugin.Settings.load(plugin.getName(), default_settings)
+#            model[path][1] = not model[path][1]
 
     def filter_plugins(self, model, miter, data):
         return True
@@ -135,7 +137,7 @@ class PluginsSettingsDialog:
                 ui.dehydrate()
                 if pluginfo.Settings:
                     try:
-                        pluginfo.save_settings()
+                        pluginfo.save_settings_on_client_side()
                         # FIXME: do we need to call this? all reporters set their settings
                         # when Report() is called
                         self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)

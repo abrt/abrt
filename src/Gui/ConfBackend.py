@@ -38,6 +38,22 @@ class ConfBackend(object):
         raise NotImplementedError
 
 
+# We use Gnome keyring in the following way:
+# we store passwords for each plugin in a key named "abrt:<plugin_name>".
+# The value of the key becomes the value of "Password" setting.
+# Other settings (if plugin has them) are stored as attributes of this key.
+#
+# Example: Key "abrt:Bugzilla" with bugzilla password as value, and with attributes:
+#
+# AbrtPluginInfo: Bugzilla
+# NoSSLVerify: yes
+# Login: user@host.com
+# BugzillaURL: https://host.with.bz.com/
+#
+# The attribute "AbrtPluginInfo" is special, it is used for retrieving
+# the key via keyring API find_items_sync() function.
+
+
 class ConfBackendGnomeKeyring(ConfBackend):
     def __init__(self):
         ConfBackend.__init__(self)
@@ -47,7 +63,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
             self.default_key_ring = gkey.get_default_keyring_sync()
         except:
             # could happen if keyring daemon is running, but we run gui under
-            # user who is not owner is the running session - using su
+            # user who is not the owner of the running session - using su
             raise ConfBackendInitError(_("Can't get default keyring"))
 
     def save(self, name, settings):
@@ -62,7 +78,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
             # nothing found
             pass
         except gkey.DeniedError:
-            raise ConfBackendSaveError(_("Acces to gnome-keyring has been denied, plugins settings won't be saved."))
+            raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings won't be saved."))
 
         # delete all items containg "AbrtPluginInfo":<plugin_name>, so we always have only 1 item per plugin
         for item in item_list:
@@ -79,7 +95,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
                                         password,
                                         True)
         except gkey.DeniedError, e:
-            raise ConfBackendSaveError(_("Acces to gnome-keyring has been denied, plugins settings won't be saved."))
+            raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings won't be saved."))
 
     def load(self, name):
         item_list = None

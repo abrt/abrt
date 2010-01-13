@@ -393,6 +393,7 @@ static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
+#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
 static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
 {
     int r;
@@ -432,6 +433,7 @@ static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
     send_flush_and_unref(reply);
     return 0;
 }
+#endif
 
 static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
 {
@@ -496,10 +498,12 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_GetPluginSettings(msg, reply);
     else if (strcmp(member, "SetPluginSettings") == 0)
         r = handle_SetPluginSettings(msg, reply);
+#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
     else if (strcmp(member, "RegisterPlugin") == 0)
         r = handle_RegisterPlugin(msg, reply);
     else if (strcmp(member, "UnRegisterPlugin") == 0)
         r = handle_UnRegisterPlugin(msg, reply);
+#endif
     else if (strcmp(member, "GetSettings") == 0)
         r = handle_GetSettings(msg, reply);
     else if (strcmp(member, "SetSettings") == 0)

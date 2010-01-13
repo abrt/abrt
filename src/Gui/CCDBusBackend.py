@@ -167,7 +167,10 @@ class DBusManager(gobject.GObject):
 
     def Report(self, report, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
-        self.daemon().Report(report, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+        if reporters_settings:
+            self.daemon().Report(report, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+        else:
+            self.daemon().Report(report, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
 
     def DeleteDebugDump(self,UUID):
         return self.daemon().DeleteDebugDump(UUID)
@@ -192,11 +195,12 @@ class DBusManager(gobject.GObject):
         #    print i
         return settings
 
-    def registerPlugin(self, plugin_name):
-        return self.daemon().RegisterPlugin(plugin_name)
-
-    def unRegisterPlugin(self, plugin_name):
-        return self.daemon().UnRegisterPlugin(plugin_name)
+# "Enable" toggling in GUI is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD
+#    def registerPlugin(self, plugin_name):
+#        return self.daemon().RegisterPlugin(plugin_name)
+#
+#    def unRegisterPlugin(self, plugin_name):
+#        return self.daemon().UnRegisterPlugin(plugin_name)
 
     def setPluginSettings(self, plugin_name, plugin_settings):
         return self.daemon().SetPluginSettings(plugin_name, plugin_settings)
