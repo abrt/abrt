@@ -13,6 +13,9 @@
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
+/*
+ *  TODO: npajkovs: better deallocation of xmlrpc value
+ */
 
 /*
  * Static namespace for xmlrpc stuff.
