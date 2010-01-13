@@ -69,9 +69,9 @@ class MainWindow():
         #icon, package_name, application, date, crash_rate, user, is_reported, ?object?
         self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str,bool, object)
         # set filter
-        self.modelfilter = self.dumpsListStore.filter_new()
-        self.modelfilter.set_visible_func(self.filter_dumps, None)
-        self.dlist.set_model(self.modelfilter)
+        modelfilter = self.dumpsListStore.filter_new()
+        modelfilter.set_visible_func(self.filter_dumps, None)
+        self.dlist.set_model(modelfilter)
         # add pixbuff separatelly
         icon_column = gtk.TreeViewColumn(_("Icon"))
         icon_column.cell = gtk.CellRendererPixbuf()

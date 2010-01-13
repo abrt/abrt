@@ -6,10 +6,12 @@ from PluginSettingsUI import PluginSettingsUI
 from ABRTPlugin import PluginSettings, PluginInfo
 from abrt_utils import _
 
+
 class PluginsSettingsDialog:
     def __init__(self, parent, daemon):
         #print "Settings dialog init"
         self.ccdaemon = daemon
+
         self.builder = gtk.Builder()
         builderfile = "%s%ssettings.glade" % (sys.path[0],"/")
         #print builderfile
@@ -22,43 +24,41 @@ class PluginsSettingsDialog:
             raise Exception(_("Can't load gui description for SettingsDialog!"))
         #self.window.set_parent(parent)
 
-        self.pluginlist = self.builder.get_object("tvSettings")
+        self.pluginlist = self.builder.get_object("tvSettings") # a TreeView
         # cell_text, toggle_active, toggle_visible, group_name_visible, color, plugin
         self.pluginsListStore = gtk.TreeStore(str, bool, bool, bool, str, object)
         # set filter
-        self.modelfilter = self.pluginsListStore.filter_new()
-        self.modelfilter.set_visible_func(self.filter_plugins, None)
-        self.pluginlist.set_model(self.modelfilter)
-        # ===============================================
-        columns = [None]*1
-        columns[0] = gtk.TreeViewColumn(_("Name"))
+        modelfilter = self.pluginsListStore.filter_new()
+        modelfilter.set_visible_func(self.filter_plugins, None)
+        self.pluginlist.set_model(modelfilter)
 
-        # create list
-        for column in columns:
-            n = self.pluginlist.append_column(column)
-            column.cell = gtk.CellRendererText()
-            column.gray_background = gtk.CellRendererText()
-            column.pack_start(column.cell, True)
-            column.pack_start(column.gray_background, True)
-            column.set_attributes(column.cell, markup=(n-1), visible=2)
-            column.set_attributes(column.gray_background, visible=3, cell_background=4)
-            column.set_resizable(True)
+        # Create/configure columns and add them to pluginlist
+        # column "name" has two kind of cells:
+        column = gtk.TreeViewColumn(_("Name"))
+        # cells for individual plugins (white)
+        cell_name = gtk.CellRendererText()
+        column.pack_start(cell_name, True)
+        column.set_attributes(cell_name, markup=0, visible=2) # show 0th field (plugin name) from data items if 2th field is true
+        # cells for plugin types (gray)
+        cell_plugin_type = gtk.CellRendererText()
+        column.pack_start(cell_plugin_type, True)
+        column.add_attribute(cell_plugin_type, "visible", 3)
+        column.add_attribute(cell_plugin_type, "markup", 0)
+        column.add_attribute(cell_plugin_type, "cell_background", 4)
+        # column "name" is ready, insert
+        column.set_resizable(True)
+        self.pluginlist.append_column(column)
 
 # "Enable" toggle column is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD
-#        # toggle
-#        group_name_renderer = gtk.CellRendererText()
-#        toggle_renderer = gtk.CellRendererToggle()
-#        toggle_renderer.set_property('activatable', True)
-#        toggle_renderer.connect( 'toggled', self.on_enabled_toggled, self.pluginsListStore )
-#        column = gtk.TreeViewColumn(_('Enabled'))
-#        column.pack_start(toggle_renderer, True)
-#        column.pack_start(group_name_renderer, True)
-#        column.add_attribute( toggle_renderer, "active", 1)
-#        column.add_attribute( toggle_renderer, "visible", 2)
-#        column.add_attribute( group_name_renderer, "visible", 3)
-#        column.add_attribute( group_name_renderer, "markup", 0)
-#        column.add_attribute( group_name_renderer, "cell_background", 4)
-#        self.pluginlist.insert_column(column, 0)
+#        column = gtk.TreeViewColumn(_("Enabled"))
+#        # column "enabled" has one kind of cells:
+#        cell_toggle_enable = gtk.CellRendererToggle()
+#        cell_toggle_enable.set_property("activatable", True)
+#        cell_toggle_enable.connect("toggled", self.on_enabled_toggled, self.pluginsListStore)
+#        column.pack_start(cell_toggle_enable, True)
+#        column.add_attribute(cell_toggle_enable, "active", 1)
+#        column.add_attribute(cell_toggle_enable, "visible", 2)
+#        self.pluginlist.append_column(column)
 
         #connect signals
         self.pluginlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
@@ -88,6 +88,7 @@ class PluginsSettingsDialog:
 
     def filter_plugins(self, model, miter, data):
         return True
+
     def hydrate(self):
         #print "settings hydrate"
         self.pluginsListStore.clear()
@@ -100,12 +101,12 @@ class PluginsSettingsDialog:
             #gui_error_message("Error while loading plugins info, please check if abrt daemon is running\n %s" % e)
         plugin_rows = {}
         for plugin_type in PluginInfo.types.keys():
-            it = self.pluginsListStore.append(None, ["<b>%s</b>" % (PluginInfo.types[plugin_type]),0 , 0, 1,"gray", None])
+            it = self.pluginsListStore.append(None, ["<b>%s</b>" % PluginInfo.types[plugin_type], 0, 0, 1, "gray", None])
             plugin_rows[plugin_type] = it
         for entry in pluginlist:
-            n = self.pluginsListStore.append(plugin_rows[entry.getType()],["<b>%s</b>\n%s" % (entry.getName(), entry.Description), entry.Enabled == "yes", 1, 0, "white", entry])
+            self.pluginsListStore.append(plugin_rows[entry.getType()],
+                        ["<b>%s</b>\n%s" % (entry.getName(), entry.Description), entry.Enabled == "yes", 1, 0, "white", entry])
         self.pluginlist.expand_all()
-
 
     def dehydrate(self):
         # we have nothing to save, plugin's does the work
