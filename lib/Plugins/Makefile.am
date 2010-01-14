@@ -10,7 +10,6 @@ pluginslib_LTLIBRARIES = \
     libKerneloops.la \
     libRunApp.la \
     libSOSreport.la \
-    libBugzilla.la \
     libCatcut.la \
     libTicketUploader.la \
     libPython.la \
@@ -19,7 +18,7 @@ pluginslib_LTLIBRARIES = \
 
 dist_pluginslib_DATA = \
     KerneloopsReporter.GTKBuilder Logger.GTKBuilder \
-    Mailx.GTKBuilder Bugzilla.GTKBuilder \
+    Mailx.GTKBuilder \
     TicketUploader.GTKBuilder Catcut.GTKBuilder
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
@@ -29,13 +28,12 @@ dist_pluginsconf_DATA = \
     SQLite3.conf \
     Logger.conf \
     Kerneloops.conf \
-    Bugzilla.conf \
     Catcut.conf \
     TicketUploader.conf \
     FileTransfer.conf \
     Python.conf
 
-man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7 \
+man_MANS = abrt-FileTransfer.7 abrt-KerneloopsReporter.7 \
            abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7 \
            abrt-SQLite3.7  abrt-RunApp.7 abrt-TicketUploader.7
 # + abrt-Catcut.7
@@ -46,7 +44,6 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
 
 install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
-	chmod 0600 $(DESTDIR)$(sysconfdir)/abrt/plugins/Bugzilla.conf
 	sed 's: = /var/: = $(localstatedir)/:g' -i \
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf \
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
@@ -111,11 +108,12 @@ libRunApp_la_LDFLAGS = -avoid-version
 libSOSreport_la_SOURCES = SOSreport.cpp SOSreport.h
 libSOSreport_la_LDFLAGS = -avoid-version
 
+# We don't use bugzilla to report RHEL bugs
 # Bugzilla
-libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
-libBugzilla_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
-libBugzilla_la_LDFLAGS = -avoid-version
-libBugzilla_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+#libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
+#libBugzilla_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
+#libBugzilla_la_LDFLAGS = -avoid-version
+#libBugzilla_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # Catcut
 libCatcut_la_SOURCES = Catcut.h Catcut.cpp
