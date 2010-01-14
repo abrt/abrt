@@ -138,13 +138,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-sosreport
 Plugin to include an sosreport in an abrt report.
 
-%package plugin-bugzilla
-Summary: %{name}'s bugzilla plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
+# Remove, we don't use bz in rhel
+#%package plugin-bugzilla
+#Summary: %{name}'s bugzilla plugin
+#Group: System Environment/Libraries
+#Requires: %{name} = %{version}-%{release}
 
-%description plugin-bugzilla
-Plugin to report bugs into the bugzilla.
+#%description plugin-bugzilla
+#Plugin to report bugs into the bugzilla.
 
 %package plugin-catcut
 Summary: %{name}'s catcut plugin
@@ -202,7 +203,7 @@ Requires: %{name}-addon-ccpp, %{name}-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: %{name}-gui
-Requires: %{name}-plugin-bugzilla, %{name}-plugin-logger, %{name}-plugin-runapp
+Requires: %{name}-plugin-logger, %{name}-plugin-ticketuploader, %{name}-plugin-sosreport
 #Requires: %{name}-plugin-firefox
 Obsoletes: bug-buddy
 Provides: bug-buddy
@@ -224,8 +225,6 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 %find_lang %{name}
 
-#rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
-#rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
@@ -330,9 +329,9 @@ fi
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
-%{_libdir}/%{name}/libKerneloopsReporter.so*
-%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
-%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
+#%{_libdir}/%{name}/libKerneloopsReporter.so*
+#%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
+#%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
 
 %files plugin-logger
 %defattr(-,root,root,-)
@@ -357,12 +356,12 @@ fi
 %defattr(-,root,root,-)
 %{_libdir}/%{name}/libSOSreport.so*
 
-%files plugin-bugzilla
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
-%{_libdir}/%{name}/libBugzilla.so*
-%{_libdir}/%{name}/Bugzilla.GTKBuilder
-%{_mandir}/man7/%{name}-Bugzilla.7.gz
+#%files plugin-bugzilla
+#%defattr(-,root,root,-)
+#%config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
+#%{_libdir}/%{name}/libBugzilla.so*
+#%{_libdir}/%{name}/Bugzilla.GTKBuilder
+#%{_mandir}/man7/%{name}-Bugzilla.7.gz
 
 %files plugin-catcut
 %defattr(-,root,root,-)

@@ -6,7 +6,6 @@ pluginslib_LTLIBRARIES = \
     libSQLite3.la \
     libLogger.la \
     libKerneloopsScanner.la\
-    libKerneloopsReporter.la\
     libKerneloops.la \
     libRunApp.la \
     libSOSreport.la \
@@ -17,9 +16,10 @@ pluginslib_LTLIBRARIES = \
 #    libFirefox.la
 
 dist_pluginslib_DATA = \
-    KerneloopsReporter.GTKBuilder Logger.GTKBuilder \
+    Logger.GTKBuilder \
     Mailx.GTKBuilder \
-    TicketUploader.GTKBuilder Catcut.GTKBuilder
+    TicketUploader.GTKBuilder \
+    Catcut.GTKBuilder
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = \
@@ -33,7 +33,7 @@ dist_pluginsconf_DATA = \
     FileTransfer.conf \
     Python.conf
 
-man_MANS = abrt-FileTransfer.7 abrt-KerneloopsReporter.7 \
+man_MANS = abrt-FileTransfer.7 \
            abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7 \
            abrt-SQLite3.7  abrt-RunApp.7 abrt-TicketUploader.7
 # + abrt-Catcut.7
@@ -74,10 +74,10 @@ libKerneloops_la_LDFLAGS = -avoid-version
 libKerneloops_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 
 # KerneloopsReporter
-libKerneloopsReporter_la_SOURCES = KerneloopsReporter.cpp KerneloopsReporter.h
-libKerneloopsReporter_la_LDFLAGS = -avoid-version
-libKerneloopsReporter_la_LIBADD = $(CURL_LIBS)
-libKerneloopsReporter_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+#libKerneloopsReporter_la_SOURCES = KerneloopsReporter.cpp KerneloopsReporter.h
+#libKerneloopsReporter_la_LDFLAGS = -avoid-version
+#libKerneloopsReporter_la_LIBADD = $(CURL_LIBS)
+#libKerneloopsReporter_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # KerneloopsScanner
 libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h
