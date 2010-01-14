@@ -10,7 +10,7 @@ Type
 Email
 Description
 """
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 from ConfBackend import ConfBackendGnomeKeyring, ConfBackendInitError
 
 class PluginSettings(dict):
@@ -63,7 +63,6 @@ class PluginInfo():
             "Type", "Email", "Description"]
 
     def __init__(self):
-        #print "Init PluginInfo"
         self.WWW = None
         self.Name = None
         self.Enabled = None
@@ -96,7 +95,7 @@ class PluginInfo():
         if self.Name:
             self.Settings.load_daemon_settings(self.Name, daemon_settings)
         else:
-            print _("Plugin name is not set, can't load its settings")
+            log("Plugin name is not set, can't load its settings")
 
     def save_settings_on_client_side(self):
         self.Settings.save_on_client_side(str(self.Name))

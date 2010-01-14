@@ -4,7 +4,7 @@ from PluginList import getPluginInfoList, PluginInfoList
 from CC_gui_functions import *
 from PluginSettingsUI import PluginSettingsUI
 from ABRTPlugin import PluginSettings, PluginInfo
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 
 class PluginsSettingsDialog:
@@ -13,7 +13,7 @@ class PluginsSettingsDialog:
         self.ccdaemon = daemon
 
         self.builder = gtk.Builder()
-        builderfile = "%s%ssettings.glade" % (sys.path[0],"/")
+        builderfile = "%s%ssettings.glade" % (sys.path[0], "/")
         #print builderfile
         try:
             self.builder.add_from_file(builderfile)
@@ -99,13 +99,20 @@ class PluginsSettingsDialog:
         except Exception, e:
             print e
             #gui_error_message("Error while loading plugins info, please check if abrt daemon is running\n %s" % e)
+            return
         plugin_rows = {}
         for plugin_type in PluginInfo.types.keys():
-            it = self.pluginsListStore.append(None, ["<b>%s</b>" % PluginInfo.types[plugin_type], 0, 0, 1, "gray", None])
+            it = self.pluginsListStore.append(None,
+                        ["<b>%s</b>" % PluginInfo.types[plugin_type], 0, 0, 1, "gray", None])
             plugin_rows[plugin_type] = it
         for entry in pluginlist:
+            if entry.Description:
+                text = "<b>%s</b>\n%s" % (entry.getName(), entry.Description)
+            else:
+                # non-loaded plugins have empty description
+                text = "<b>%s</b>" % entry.getName()
             self.pluginsListStore.append(plugin_rows[entry.getType()],
-                        ["<b>%s</b>\n%s" % (entry.getName(), entry.Description), entry.Enabled == "yes", 1, 0, "white", entry])
+                        [text, entry.Enabled == "yes", 1, 0, "white", entry])
         self.pluginlist.expand_all()
 
     def dehydrate(self):
@@ -149,7 +156,7 @@ class PluginsSettingsDialog:
             elif response == gtk.RESPONSE_CANCEL:
                 pass
             else:
-                print _("unknown response from settings dialog")
+                log("unknown response from settings dialog:%d", response)
             ui.destroy()
 
     def on_bClose_clicked(self, button):

@@ -1,4 +1,4 @@
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 # Doc on Gnome keyring API:
 # http://library.gnome.org/devel/gnome-keyring/stable/

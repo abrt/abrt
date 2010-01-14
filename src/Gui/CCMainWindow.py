@@ -2,6 +2,7 @@
 import sys
 import os
 import pwd
+import getopt
 import pygtk
 pygtk.require("2.0")
 import gobject
@@ -12,6 +13,11 @@ except RuntimeError,e:
     print e
     os.exit()
 import gtk.glade
+try:
+    import rpm
+except Exception, ex:
+    rpm = None
+
 import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
@@ -21,12 +27,7 @@ from SettingsDialog import SettingsDialog
 from CCReport import Report
 from PluginList import getPluginInfoList
 import ABRTExceptions
-from abrt_utils import _
-
-try:
-    import rpm
-except Exception, ex:
-    rpm = None
+from abrt_utils import _, init_logging, log, log1, log2
 
 
 class MainWindow():
@@ -381,8 +382,19 @@ class MainWindow():
             self.window.present()
 
 if __name__ == "__main__":
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "v")
+    except getopt.GetoptError, err:
+        print str(err) # prints something like "option -a not recognized"
+        sys.exit(2)
+    verbose = 0
+    for opt, arg in opts:
+        if opt == "-v":
+            verbose += 1
+    init_logging("abrt-gui", verbose)
+    log1("log level:%d", verbose)
+
     cc = MainWindow()
     cc.hydrate()
     cc.show()
     gtk.main()
-

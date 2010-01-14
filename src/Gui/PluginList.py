@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import CCDBusBackend
 from ABRTPlugin import PluginInfo, PluginSettings
+from abrt_utils import _, log, log1, log2
 
 class PluginInfoList(list):
     """Class to store list of PluginInfos"""
@@ -9,20 +10,18 @@ class PluginInfoList(list):
 
     def load(self):
         if self.dm:
-            #print "loading PluginList"
             rows = self.dm.getPluginsInfo()
-            #print rows
             for plugin_name in rows:
                 row = rows[plugin_name]
                 entry = PluginInfo()
                 for attr_name in row:
-                    #print "PluginInfoList adding %s[%s]:%s" % (plugin_name, attr_name, row[attr_name])
+                    log2("PluginInfoList: adding %s[%s]:%s", plugin_name, attr_name, row[attr_name])
                     entry.__dict__[attr_name] = row[attr_name]
                 daemon_settings = self.dm.getPluginSettings(plugin_name)
                 entry.load_daemon_settings(daemon_settings)
                 self.append(entry)
         else:
-            print "db == None!"
+            log("PluginInfoList: db == None")
 
     def getEnabledPlugins(self):
         return [x for x in self if x["Enabled"] == 'yes']

@@ -12,7 +12,7 @@ from ABRTPlugin import PluginInfo
 from PluginSettingsUI import PluginSettingsUI
 from PluginList import getPluginInfoList
 #from CCDumpList import getDumpList, DumpList
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 # FIXME - create method or smth that returns type|editable|content
 CD_TYPE = 0
