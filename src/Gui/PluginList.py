@@ -6,24 +6,21 @@ class PluginInfoList(list):
     """Class to store list of PluginInfos"""
     def __init__(self,dbus_manager=None):
         self.dm = dbus_manager
-        self.ddict = {}
 
     def load(self):
         if self.dm:
             #print "loading PluginList"
             rows = self.dm.getPluginsInfo()
             #print rows
-            for row in rows:
+            for plugin_name in rows:
+                row = rows[plugin_name]
                 entry = PluginInfo()
-                for column in row:
-                    #print "PluginInfoList adding %s:%s" % (column,row[column])
-                    entry.__dict__[column] = row[column]
-                if entry.Enabled == "yes":
-                    #entry.Settings = PluginSettings(self.dm.getPluginSettings(str(entry)))
-                    daemon_settings = self.dm.getPluginSettings(str(entry))
-                    entry.load_daemon_settings(daemon_settings)
+                for attr_name in row:
+                    print "PluginInfoList adding %s[%s]:%s" % (plugin_name, attr_name, row[attr_name])
+                    entry.__dict__[attr_name] = row[attr_name]
+                daemon_settings = self.dm.getPluginSettings(plugin_name)
+                entry.load_daemon_settings(daemon_settings)
                 self.append(entry)
-                self.ddict[entry.getName()] = entry
         else:
             print "db == None!"
 

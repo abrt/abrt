@@ -28,15 +28,17 @@ map_crash_report_t call_CreateReport(const char *uuid);
 report_status_t call_Report(const map_crash_report_t& report);
 int32_t call_DeleteDebugDump(const char* uuid);
 
+#ifdef UNUSED
 /* Gets basic data about all installed plugins.
  */
-vector_map_string_t call_GetPluginsInfo();
+map_map_string_t call_GetPluginsInfo();
 
 /** Gets default plugin settings.
  * @param name
- *    Corresponds to name obtained from  call_GetPluginsInfo.
+ *    Corresponds to name obtained from call_GetPluginsInfo.
  */
 map_plugin_settings_t call_GetPluginSettings(const char *name);
+#endif
 
 void handle_dbus_err(bool error_flag, DBusError *err);
 

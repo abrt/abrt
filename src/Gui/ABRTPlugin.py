@@ -53,7 +53,8 @@ class PluginSettings(dict):
 
 class PluginInfo():
     """Class to represent common plugin info"""
-    types = {"Analyzer":_("Analyzer plugins"),
+    types = {"":_("Not loaded plugins"),
+             "Analyzer":_("Analyzer plugins"),
              "Action":_("Action plugins"),
              "Reporter":_("Reporter plugins"),
              "Database":_("Database plugins")}

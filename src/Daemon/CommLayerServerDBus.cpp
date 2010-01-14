@@ -325,11 +325,9 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
 
 static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 {
-    vector_map_string_t plugins_info = g_pPluginManager->GetPluginsInfo();
-
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, plugins_info);
+    store_val(&out_iter, g_pPluginManager->GetPluginsInfo());
 
     send_flush_and_unref(reply);
     return 0;
@@ -348,9 +346,9 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid).c_str());
+    //long unix_uid = get_remote_uid(call);
+    //VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
+    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName); //, to_string(unix_uid).c_str());
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);

@@ -6,7 +6,6 @@ class DumpList(list):
     """Class to store list of debug dumps"""
     def __init__(self,dbus_manager=None):
         self.dm = dbus_manager
-        self.ddict = {}
 
     def load(self):
         if self.dm:
@@ -21,7 +20,6 @@ class DumpList(list):
                         #    print "DumpList adding %s:%s" % (column,row[column])
                         entry.__dict__[column] = row[column]
                     self.append(entry)
-                    self.ddict[entry.getUUID()] = entry
             except Exception, e:
                 # FIXME handle exception better
                 # this is just temporary workaround for rhbz#543725

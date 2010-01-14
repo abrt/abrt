@@ -191,8 +191,6 @@ class DBusManager(gobject.GObject):
 
     def getPluginSettings(self, plugin_name):
         settings = self.daemon().GetPluginSettings(plugin_name)
-        #for i in settings.keys():
-        #    print i
         return settings
 
 # "Enable" toggling in GUI is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD

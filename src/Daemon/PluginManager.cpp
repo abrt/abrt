@@ -27,6 +27,8 @@
 #include "Polkit.h"
 #include "PluginManager.h"
 
+using namespace std;
+
 /**
  * Text representation of plugin types.
  */
@@ -40,12 +42,12 @@ static const char *const plugin_type_str[] = {
 
 bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings)
 {
-    std::ifstream fIn;
+    ifstream fIn;
     fIn.open(pPath);
     if (!fIn.is_open())
         return false;
 
-    std::string line;
+    string line;
     while (!fIn.eof())
     {
         getline(fIn, line);
@@ -54,8 +56,8 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings)
         bool is_value = false;
         bool valid = false;
         bool in_quote = false;
-        std::string key;
-        std::string value;
+        string key;
+        string value;
         for (ii = 0; ii < line.length(); ii++)
         {
             if (line[ii] == '"')
@@ -157,6 +159,10 @@ void CPluginManager::UnLoadPlugins()
 
 CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
 {
+    map_string_t plugin_info;
+
+    plugin_info["Name"] = pName;
+
     map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
     if (it_plugin != m_mapPlugins.end())
     {
@@ -170,8 +176,9 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
         conf_name = "Kerneloops";
     }
     map_plugin_settings_t pluginSettings;
-    std::string conf_fullname = ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, conf_name);
+    string conf_fullname = ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, conf_name);
     LoadPluginSettings(conf_fullname.c_str(), pluginSettings);
+    m_map_plugin_settings[pName] = pluginSettings;
     VERB3 log("Loaded %s.conf", conf_name);
 
     if (enabled_only)
@@ -179,12 +186,21 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
         map_plugin_settings_t::iterator it = pluginSettings.find("Enabled");
         if (it == pluginSettings.end() || !string_to_bool(it->second.c_str()))
         {
+            plugin_info["Enabled"] = "no";
+            string empty;
+            plugin_info["Type"] = empty;
+            plugin_info["Version"] = empty;
+            plugin_info["Description"] = empty;
+            plugin_info["Email"] = empty;
+            plugin_info["WWW"] = empty;
+            plugin_info["GTKBuilder"] = empty;
+            m_map_plugin_info[pName] = plugin_info;
             VERB3 log("Plugin %s: 'Enabled' is not set, not loading it (yet)", pName);
             return NULL; /* error */
         }
     }
 
-    std::string libPath = ssprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
+    string libPath = ssprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
     CLoadedModule* module = new CLoadedModule(libPath.c_str());
     if (module->GetMagicNumber() != PLUGINS_MAGIC_NUMBER
      || module->GetType() < 0
@@ -217,6 +233,16 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
         return NULL; /* error */
     }
 
+    plugin_info["Enabled"] = "yes";
+    plugin_info["Type"] = plugin_type_str[module->GetType()];
+    //plugin_info["Name"] = module->GetName();
+    plugin_info["Version"] = module->GetVersion();
+    plugin_info["Description"] = module->GetDescription();
+    plugin_info["Email"] = module->GetEmail();
+    plugin_info["WWW"] = module->GetWWW();
+    plugin_info["GTKBuilder"] = module->GetGTKBuilder();
+
+    m_map_plugin_info[pName] = plugin_info;
     m_mapLoadedModules[pName] = module;
     m_mapPlugins[pName] = plugin;
     log("Registered %s plugin '%s'", plugin_type_str[module->GetType()], pName);
@@ -344,28 +370,6 @@ plugin_type_t CPluginManager::GetPluginType(const char *pName)
     return it_module->second->GetType();
 }
 
-vector_map_string_t CPluginManager::GetPluginsInfo()
-{
-    vector_map_string_t ret;
-    map_loaded_module_t::iterator it_module = m_mapLoadedModules.begin();
-    for (; it_module != m_mapLoadedModules.end(); it_module++)
-    {
-        map_string_t plugin_info;
-
-        plugin_info["Enabled"] = (m_mapPlugins.find(it_module->second->GetName()) != m_mapPlugins.end()) ?
-                                 "yes" : "no";
-        plugin_info["Type"] = plugin_type_str[it_module->second->GetType()];
-        plugin_info["Name"] = it_module->second->GetName();
-        plugin_info["Version"] = it_module->second->GetVersion();
-        plugin_info["Description"] = it_module->second->GetDescription();
-        plugin_info["Email"] = it_module->second->GetEmail();
-        plugin_info["WWW"] = it_module->second->GetWWW();
-        plugin_info["GTKBuilder"] = it_module->second->GetGTKBuilder();
-        ret.push_back(plugin_info);
-    }
-    return ret;
-}
-
 void CPluginManager::SetPluginSettings(const char *pName,
                                        const char *pUID,
                                        const map_plugin_settings_t& pSettings)
@@ -388,14 +392,14 @@ void CPluginManager::SetPluginSettings(const char *pName,
         return;
     }
 
-    std::string home = get_home_dir(xatoi_u(pUID.c_str()));
+    string home = get_home_dir(xatoi_u(pUID.c_str()));
     if (home == "")
     {
         return;
     }
 
-    std::string confDir = home + "/.abrt";
-    std::string confPath = confDir + "/" + pName + "."PLUGINS_CONF_EXTENSION;
+    string confDir = home + "/.abrt";
+    string confPath = confDir + "/" + pName + "."PLUGINS_CONF_EXTENSION;
     uid_t uid = xatoi_u(pUID.c_str());
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
@@ -440,33 +444,31 @@ void CPluginManager::SetPluginSettings(const char *pName,
 #endif
 }
 
-map_plugin_settings_t CPluginManager::GetPluginSettings(const char *pName,
-                                                        const char *pUID)
+map_plugin_settings_t CPluginManager::GetPluginSettings(const char *pName)
 {
     map_plugin_settings_t ret;
+
     map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
     if (it_module != m_mapLoadedModules.end())
     {
         map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
         if (it_plugin != m_mapPlugins.end())
         {
+            VERB3 log("Returning settings for loaded plugin %s", pName);
             ret = it_plugin->second->GetSettings();
-            /** we don't want to load it from daemon if it's running under root
-                but wi might get back to this once we make the daemon to not run
-                with root privileges
-            */
-              /*
-            if (it_module->second->GetType() == REPORTER)
-            {
-                std::string home = get_home_dir(xatoi_u(pUID.c_str()));
-                if (home != "")
-                {
-                    LoadPluginSettings(home + "/.abrt/" + pName + "."PLUGINS_CONF_EXTENSION, ret);
-                }
-            }
-            */
             return ret;
         }
     }
+    /* else: module is not loaded */
+    map_map_string_t::iterator it_settings = m_map_plugin_settings.find(pName);
+    if (it_settings != m_map_plugin_settings.end())
+    {
+	/* but it exists, its settings are available nevertheless */
+        VERB3 log("Returning settings for non-loaded plugin %s", pName);
+        ret = it_settings->second;
+        return ret;
+    }
+
+    VERB3 log("Request for settings of unknown plugin %s, returning null result", pName);
     return ret;
 }

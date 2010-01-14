@@ -50,6 +50,11 @@ class CPluginManager
          * Registered plugins. A key is a plugin name.
          */
         map_plugin_t m_mapPlugins;
+        /**
+         * List of all possible plugins (loaded or not), with some attributes.
+         */
+	map_map_string_t m_map_plugin_info;
+        map_map_string_t m_map_plugin_settings;
 
     public:
         /**
@@ -130,7 +135,7 @@ class CPluginManager
          * Then user can fill all needed informations like URLs etc.
          * @return A vector of maps <key, value>
          */
-        vector_map_string_t GetPluginsInfo();
+        const map_map_string_t& GetPluginsInfo() { return m_map_plugin_info; }
         /**
          * A method, which sets up a plugin. The settings are also saved in home
          * directory of an user.
@@ -144,11 +149,9 @@ class CPluginManager
         /**
          * A method, which returns plugin's settings according to user.
          * @param pName A plugin name.
-         * @param pUID An uid of user.
-         * @return Plugin's settings accorting to user.
+         * @return Plugin's settings.
          */
-        map_plugin_settings_t GetPluginSettings(const char *pName,
-                                                const char *pUID);
+        map_plugin_settings_t GetPluginSettings(const char *pName);
 };
 
 /**

@@ -65,7 +65,8 @@
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
  * - DeleteDebugDump(UUID): delete it from DB and delete corresponding /var/cache/abrt/DIR
- * - GetPluginsInfo(): returns vector_map_string_t
+ * - GetPluginsInfo(): returns map_map_string_t
+ *      map["plugin"] = { "Name": "plugin", "Enabled": "yes" ... }
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
  * - RegisterPlugin(PluginName): returns void
