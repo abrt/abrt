@@ -16,7 +16,7 @@ class PluginInfoList(list):
                 row = rows[plugin_name]
                 entry = PluginInfo()
                 for attr_name in row:
-                    print "PluginInfoList adding %s[%s]:%s" % (plugin_name, attr_name, row[attr_name])
+                    #print "PluginInfoList adding %s[%s]:%s" % (plugin_name, attr_name, row[attr_name])
                     entry.__dict__[attr_name] = row[attr_name]
                 daemon_settings = self.dm.getPluginSettings(plugin_name)
                 entry.load_daemon_settings(daemon_settings)
