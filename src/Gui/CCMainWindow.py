@@ -18,6 +18,7 @@ try:
 except Exception, ex:
     rpm = None
 
+from ConfBackend import ConfBackendGnomeKeyring, ConfBackendInitError
 import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
@@ -42,11 +43,10 @@ class MainWindow():
             sys.exit()
         except Exception, e:
             # show error message if connection fails
-            # FIXME add an option to start the daemon
             gui_error_message("%s" % e)
             sys.exit()
         #Set the Glade file
-        self.gladefile = "%s%sccgui.glade" % (sys.path[0],"/")
+        self.gladefile = "%s/ccgui.glade" % sys.path[0]
         self.wTree = gtk.glade.XML(self.gladefile)
 
         #Get the Main Window, and connect the "destroy" event
@@ -304,6 +304,10 @@ class MainWindow():
                 self.pluginlist = getPluginInfoList(self.ccdaemon)
                 for plugin in self.pluginlist.getReporterPlugins():
                     reporters_settings[str(plugin)] = plugin.Settings
+                # TODO: this way, we don't need to talk to daemon in order to get
+                # all plugin settings:
+                #reporters_settings2 = ConfBackendGnomeKeyring().load_all()
+                #log1("reporters_settings2:%s", str(reporters_settings2))
                 self.ccdaemon.Report(result, reporters_settings)
                 #self.hydrate()
             except Exception, e:

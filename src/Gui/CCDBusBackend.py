@@ -40,7 +40,7 @@ class DBusManager(gobject.GObject):
 
         if session:
             try:
-                app_proxy = session.get_object(APP_NAME,APP_PATH)
+                app_proxy = session.get_object(APP_NAME, APP_PATH)
                 app_iface = dbus.Interface(app_proxy, dbus_interface=APP_IFACE)
                 # app is running, so make it show it self
                 app_iface.show()
