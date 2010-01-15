@@ -4,8 +4,6 @@ from abrt_utils import _, log, log1, log2
 # http://library.gnome.org/devel/gnome-keyring/stable/
 # Python bindings are in gnome-python2-desktop package
 
-#FIXME: add some backend factory
-
 try:
     import gnomekeyring as gkey
 except ImportError, e:
@@ -49,13 +47,14 @@ class ConfBackend(object):
 #
 # Example: Key "abrt:Bugzilla" with bugzilla password as value, and with attributes:
 #
+# Application: abrt
 # AbrtPluginInfo: Bugzilla
 # NoSSLVerify: yes
 # Login: user@host.com
 # BugzillaURL: https://host.with.bz.com/
 #
-# The attribute "AbrtPluginInfo" is special, it is used for retrieving
-# the key via keyring API find_items_sync() function.
+# Attributes "Application" and "AbrtPluginInfo" are special, they are used
+# for efficient key retrieval via keyring API find_items_sync() function.
 
 g_default_key_ring = None
 
@@ -66,7 +65,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
         ConfBackend.__init__(self)
         if g_default_key_ring:
             return
-        if not gkey.is_available():
+        if not gkey or not gkey.is_available():
             raise ConfBackendInitError(_("Can't connect to Gnome Keyring daemon"))
         try:
             g_default_key_ring = gkey.get_default_keyring_sync()
@@ -77,9 +76,8 @@ class ConfBackendGnomeKeyring(ConfBackend):
 
     def save(self, name, settings):
         settings_tmp = settings.copy()
-        settings_tmp["AbrtPluginInfo"] = name # old way
         settings_tmp["Application"] = "abrt"
-        settings_tmp["AbrtPluginName"] = name
+        settings_tmp["AbrtPluginInfo"] = name
 
         # delete all keyring items containg "AbrtPluginInfo":"<plugin_name>",
         # so we always have only 1 item per plugin
@@ -144,6 +142,37 @@ class ConfBackendGnomeKeyring(ConfBackend):
     def load_all(self):
         retval = {}
         item_list = {}
+
+        # UGLY compat cludge for users who has saved items without "Application" attr
+        # (abrt <= 1.0.3 was saving those)
+        item_ids = gkey.list_item_ids_sync(g_default_key_ring)
+        log2("all keyring item ids:%s", item_ids)
+        for item_id in item_ids:
+            info = gkey.item_get_info_sync(g_default_key_ring, item_id)
+            attrs = gkey.item_get_attributes_sync(g_default_key_ring, item_id)
+            log2("keyring item %s: attrs:%s", item_id, str(attrs))
+            if "AbrtPluginInfo" in attrs:
+                if not "Application" in attrs:
+                    log2("updating old-style keyring item")
+                    attrs["Application"] = "abrt"
+                    try:
+                        gkey.item_set_attributes_sync(g_default_key_ring, item_id, attrs)
+                    except:
+                        log2("error updating old-style keyring item")
+                plugin_name = attrs["AbrtPluginInfo"]
+                # If plugin has a "Password" setting, we handle it specially: in keyring,
+                # it is stored as item.secret, not as one of attributes
+                if info.get_secret():
+                    attrs["Password"] = info.get_secret()
+                # avoiding sending useless duplicate info over dbus...
+                del attrs["AbrtPluginInfo"]
+                try:
+                    del attrs["Application"]
+                except:
+                    pass
+                retval[plugin_name] = attrs;
+        # end of UGLY compat cludge
+
         try:
             log2("looking for keyring items with 'Application:abrt' attr")
             item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, { "Application": "abrt" })
@@ -165,15 +194,28 @@ class ConfBackendGnomeKeyring(ConfBackend):
                     item.keyring, item.item_id, str(item.attributes) #, item.secret, info.get_display_name()
             )
             attrs = item.attributes.copy()
-            if "AbrtPluginName" in attrs:
-                plugin_name = attrs["AbrtPluginName"]
+            if "AbrtPluginInfo" in attrs:
+                plugin_name = attrs["AbrtPluginInfo"]
                 # If plugin has a "Password" setting, we handle it specially: in keyring,
                 # it is stored as item.secret, not as one of attributes
                 if item.secret:
                     attrs["Password"] = item.secret
                 # avoiding sending useless duplicate info over dbus...
-                del attrs["Application"]
                 del attrs["AbrtPluginInfo"]
-                del attrs["AbrtPluginName"]
+                try:
+                    del attrs["Application"]
+                except:
+                    pass
                 retval[plugin_name] = attrs;
         return retval
+
+
+# Rudimentary backend factory
+
+currentConfBackend = None
+
+def getCurrentConfBackend():
+    global currentConfBackend
+    if not currentConfBackend:
+        currentConfBackend = ConfBackendGnomeKeyring()
+    return currentConfBackend

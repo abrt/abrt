@@ -11,14 +11,14 @@ Email
 Description
 """
 from abrt_utils import _, log, log1, log2
-from ConfBackend import ConfBackendGnomeKeyring, ConfBackendInitError
+from ConfBackend import getCurrentConfBackend, ConfBackendInitError
 
 class PluginSettings(dict):
     def __init__(self):
         dict.__init__(self)
         self.client_side_conf = None
         try:
-            self.client_side_conf = ConfBackendGnomeKeyring()
+            self.client_side_conf = getCurrentConfBackend()
         except ConfBackendInitError, e:
             print e
             pass

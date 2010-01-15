@@ -18,7 +18,7 @@ try:
 except Exception, ex:
     rpm = None
 
-from ConfBackend import ConfBackendGnomeKeyring, ConfBackendInitError
+from ConfBackend import getCurrentConfBackend, ConfBackendInitError
 import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
@@ -234,9 +234,11 @@ class MainWindow():
             # it is not informative (no URL to the report)
             for message in dump.getMessage().split('\n'):
                 if message:
-                    if "http" in message[0:5] or "file:///"[0:8] in message:
-                        message = "<a href=\"%s\">%s</a>" % (message, message)
+                    #Doesn't work (far too easy to make it worse, not better):
+                    #if "http" in message[0:5] or "file:///"[0:8] in message:
+                    #    message = "<a href=\"%s\">%s</a>" % (message, message)
                     report_label += "%s\n" % message
+            log2("setting markup '%s'", report_label)
             self.wTree.get_widget("lReported").set_markup(report_label)
         else:
             self.wTree.get_widget("lReported").set_markup(_("<b>Not reported!</b>"))
@@ -298,17 +300,20 @@ class MainWindow():
             try:
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
-                reporters_settings = {}
-                # self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
-                # don't force refresh!
-                self.pluginlist = getPluginInfoList(self.ccdaemon)
-                for plugin in self.pluginlist.getReporterPlugins():
-                    reporters_settings[str(plugin)] = plugin.Settings
-                # TODO: this way, we don't need to talk to daemon in order to get
-                # all plugin settings:
-                #reporters_settings2 = ConfBackendGnomeKeyring().load_all()
-                #log1("reporters_settings2:%s", str(reporters_settings2))
+                # Old way: it needs to talk to daemon
+                #reporters_settings = {}
+                ## self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
+                ## don't force refresh!
+                #self.pluginlist = getPluginInfoList(self.ccdaemon)
+                #for plugin in self.pluginlist.getReporterPlugins():
+                #    reporters_settings[str(plugin)] = plugin.Settings
+                reporters_settings = getCurrentConfBackend().load_all()
+                log2("Report(result,settings):")
+                log2("  result:%s", str(result))
+                # Careful, this will print reporters_settings["Password"] too
+                log2("  settings:%s", str(reporters_settings))
                 self.ccdaemon.Report(result, reporters_settings)
+                log2("Report() returned")
                 #self.hydrate()
             except Exception, e:
                 gui_error_message(_("Reporting failed!\n%s" % e))
