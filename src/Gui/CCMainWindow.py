@@ -11,7 +11,7 @@ try:
 except RuntimeError,e:
     # rhbz#552039
     print e
-    os.exit()
+    sys.exit()
 import gtk.glade
 try:
     import rpm
