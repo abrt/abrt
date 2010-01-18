@@ -6,14 +6,14 @@
 #
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
 # Richard van der Luit <nippur@fedoraproject.org>, 2009.
-# Geert Warrink <geert.warrink@onsnet.nu>, 2009.
+# Geert Warrink <geert.warrink@onsnet.nu>, 2009, 2010.
 #: ../src/Gui/CCReporterDialog.py:208
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-15 16:54+0000\n"
-"PO-Revision-Date: 2009-12-15 18:05+0100\n"
+"POT-Creation-Date: 2010-01-14 15:35+0000\n"
+"PO-Revision-Date: 2010-01-14 17:50+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -31,23 +31,27 @@ msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
 
-#: ../src/Gui/ABRTPlugin.py:55
+#: ../src/Gui/ABRTPlugin.py:56
+msgid "Not loaded plugins"
+msgstr "Niet geladen plugins"
+
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Analyzer plugins"
 msgstr "Analyse plugins"
 
-#: ../src/Gui/ABRTPlugin.py:56
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Action plugins"
 msgstr "Actie plugins"
 
-#: ../src/Gui/ABRTPlugin.py:57
+#: ../src/Gui/ABRTPlugin.py:59
 msgid "Reporter plugins"
 msgstr "Rapporteer plugins"
 
-#: ../src/Gui/ABRTPlugin.py:58
+#: ../src/Gui/ABRTPlugin.py:60
 msgid "Database plugins"
 msgstr "Databse plugins"
 
-#: ../src/Gui/ABRTPlugin.py:97
+#: ../src/Gui/ABRTPlugin.py:99
 msgid "Plugin name is not set, can't load its settings"
 msgstr "Plugin naam is niet ingesteld, kan zijn instellingen niet laden"
 
@@ -144,31 +148,31 @@ msgid "_Help"
 msgstr "_Hulp"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:71
+#: ../src/Gui/CCMainWindow.py:76
 msgid "Icon"
 msgstr "Icoon"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:84
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Application"
 msgstr "Toepassing"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:86
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Crash count"
 msgstr "Crash count"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:88
 msgid "User"
 msgstr "Gebruiker"
 
-#: ../src/Gui/CCMainWindow.py:149
+#: ../src/Gui/CCMainWindow.py:156
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -177,7 +181,7 @@ msgstr ""
 "Kan de instellingen dialoog niet tonen\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:160
+#: ../src/Gui/CCMainWindow.py:167
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -187,7 +191,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:187
+#: ../src/Gui/CCMainWindow.py:194
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -196,15 +200,15 @@ msgstr ""
 "Fout tijdens het laden van de dumplijst.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:224
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Deze crash is gerapporteerd:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:234
+#: ../src/Gui/CCMainWindow.py:241
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
-#: ../src/Gui/CCMainWindow.py:283
+#: ../src/Gui/CCMainWindow.py:290
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -212,7 +216,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:302
+#: ../src/Gui/CCMainWindow.py:309
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -221,7 +225,7 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:321 ../src/Gui/CCMainWindow.py:348
+#: ../src/Gui/CCMainWindow.py:328 ../src/Gui/CCMainWindow.py:355
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -446,11 +450,11 @@ msgstr "Een crash in pakket %s is ontdekt"
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
-#: ../src/Applet/CCApplet.cpp:196
+#: ../src/Applet/CCApplet.cpp:200
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/Daemon/Daemon.cpp:473
+#: ../src/Daemon/Daemon.cpp:474
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -458,37 +462,37 @@ msgstr ""
 "Rapport grootte overschreed quota. Controleer a.u.b. MaxCrashReportsSize "
 "waarde van het systeem in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:202
+#: ../lib/Plugins/Bugzilla.cpp:265
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:264
+#: ../lib/Plugins/Bugzilla.cpp:341
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:359
+#: ../lib/Plugins/Bugzilla.cpp:442
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:362
+#: ../lib/Plugins/Bugzilla.cpp:445
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:366
+#: ../lib/Plugins/Bugzilla.cpp:449
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:372
+#: ../lib/Plugins/Bugzilla.cpp:455
 msgid "Checking CC..."
 msgstr "Controleren van CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:381
+#: ../lib/Plugins/Bugzilla.cpp:464
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:385
+#: ../lib/Plugins/Bugzilla.cpp:468
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
@@ -496,23 +500,23 @@ msgstr "Uitloggen..."
 msgid "Getting local universal unique identification"
 msgstr "Verkrijgen van locale universele unieke identificatie"
 
-#: ../lib/Plugins/CCpp.cpp:254
+#: ../lib/Plugins/CCpp.cpp:257
 msgid "Generating backtrace"
 msgstr "Aangemaakte backtrace"
 
-#: ../lib/Plugins/CCpp.cpp:372
+#: ../lib/Plugins/CCpp.cpp:376
 msgid "Starting debuginfo installation"
 msgstr "Start debuginfo installatie"
 
-#: ../lib/Plugins/CCpp.cpp:522
+#: ../lib/Plugins/CCpp.cpp:527
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:541
+#: ../lib/Plugins/CCpp.cpp:546
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:683
+#: ../lib/Plugins/CCpp.cpp:725
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 
@@ -525,7 +529,7 @@ msgstr "Aanmaken en indienen van rapport..."
 msgid "Writing report to '%s'"
 msgstr "Rapport schrijven naar: '%s'"
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:385
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:372
 msgid "FileTransfer: URL not specified"
 msgstr "Bestandsoverdracht: URL niet opgegeven"
 
@@ -534,16 +538,16 @@ msgstr "Bestandsoverdracht: URL niet opgegeven"
 msgid "Sending archive %s to %s"
 msgstr "Versturen van archief %s naar %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:310
+#: ../lib/Plugins/FileTransfer.cpp:296
 msgid "File Transfer: Creating a report..."
 msgstr "Bestandsoverdracht: Een rapport maken..."
 
-#: ../lib/Plugins/FileTransfer.cpp:335
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Kan geen archief maken en versturen: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:360
+#: ../lib/Plugins/FileTransfer.cpp:347
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Kan archief %s niet aanmaken en versturen"
@@ -552,7 +556,7 @@ msgstr "Kan archief %s niet aanmaken en versturen"
 msgid "Creating kernel oops crash reports..."
 msgstr "Aanmaken van kernel oops crash rapporten..."
 
-#: ../lib/Plugins/Mailx.cpp:164
+#: ../lib/Plugins/Mailx.cpp:147
 msgid "Sending an email..."
 msgstr "Versturen van email..."
 
@@ -565,7 +569,7 @@ msgstr "Uitvoeren van SOSreport plugin..."
 msgid "running sosreport: %s"
 msgstr "sosreport draaien: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:95
+#: ../lib/Plugins/SOSreport.cpp:97
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
 

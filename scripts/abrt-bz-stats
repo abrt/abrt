@@ -1,0 +1,79 @@
+#!/usr/bin/python
+# -*- mode:python -*-
+
+from bugzilla import RHBugzilla
+from optparse import OptionParser
+import sys
+import os.path
+import subprocess
+import datetime
+import pickle
+
+parser = OptionParser(version="%prog 1.0")
+parser.add_option("-u", "--user", dest="user",
+                  help="Bugzilla user name (REQUIRED)", metavar="USERNAME")
+parser.add_option("-p", "--password", dest="password",
+                  help="Bugzilla password (REQUIRED)", metavar="PASSWORD")
+parser.add_option("-b", "--bugzilla", dest="bugzilla",
+                  help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
+(options, args) = parser.parse_args()
+
+if not options.user or len(options.user) == 0:
+  parser.error("User name is required.\nTry {0} --help".format(sys.argv[0]))
+if not options.password or len(options.password) == 0:
+  parser.error("Password is required.\nTry {0} --help".format(sys.argv[0]))
+if not options.bugzilla or len(options.bugzilla) == 0:
+  options.bugzilla = "https://bugzilla.redhat.com/xmlrpc.cgi"
+
+bz = RHBugzilla()
+bz.connect(options.bugzilla)
+bz.login(options.user, options.password)
+
+buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboard':'abrt_hash'})
+total = len(buginfos)
+print "{0} bugs found.".format(total)
+
+buginfos_loaded = {}
+if os.path.isfile("cache"):
+  f = open("cache", 'r')
+  buginfos_loaded = pickle.load(f)
+  f.close()
+
+count = 0
+for buginfo in buginfos:
+  count += 1
+  print "{0}/{1}".format(count, total)
+  dtkey = buginfo.delta_ts[0:7] # YEAR-MONTH
+  statuskey = buginfo.bug_status
+  if buginfo.resolution != "":
+    statuskey += "_" + buginfo.resolution
+  if not buginfos_loaded.has_key(buginfo.bug_id):
+    buginfos_loaded[buginfo.bug_id] = (dtkey, statuskey)
+  if count % 100 == 0:
+    f = open("cache", 'w')
+    pickle.dump(buginfos_loaded, f, 2)
+    f.close()
+bz.logout()
+
+stats = {}
+for buginfo in buginfos_loaded.values():
+  if buginfo[0] in stats:
+    stat = stats[buginfo[0]]
+    if buginfo[1] in stat:
+      stat[buginfo[1]] += 1
+    else:
+      stat[buginfo[1]] = 1
+  else:
+    stats[buginfo[0]] = { buginfo[1]:1 }
+
+print "STATS"
+print "=========================================================================="
+months = stats.keys()
+months.sort()
+for month in months:
+  stat = stats[month]
+  statuses = stat.keys()
+  statuses.sort()
+  print "Month ", month
+  for status in statuses:
+    print status, stat[status]

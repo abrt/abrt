@@ -6,7 +6,7 @@ from dbus.mainloop.glib import DBusGMainLoop
 import gtk
 from dbus.exceptions import *
 import ABRTExceptions
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 CC_NAME = 'com.redhat.abrt'
 CC_IFACE = 'com.redhat.abrt'
@@ -40,7 +40,7 @@ class DBusManager(gobject.GObject):
 
         if session:
             try:
-                app_proxy = session.get_object(APP_NAME,APP_PATH)
+                app_proxy = session.get_object(APP_NAME, APP_PATH)
                 app_iface = dbus.Interface(app_proxy, dbus_interface=APP_IFACE)
                 # app is running, so make it show it self
                 app_iface.show()
@@ -111,13 +111,13 @@ class DBusManager(gobject.GObject):
 #    def disconnected(self, *args):
 #        print "disconnect"
 
-    def error_handler_cb(self,error):
-        self.emit("abrt-error",error)
+    def error_handler_cb(self, error):
+        self.emit("abrt-error", error)
 
-    def warning_handler_cb(self,arg):
-        self.emit("warning",arg)
+    def warning_handler_cb(self, arg):
+        self.emit("warning", arg)
 
-    def error_handler(self,arg):
+    def error_handler(self, arg):
         # used to silently ingore dbus timeouts
         pass
 
@@ -134,11 +134,11 @@ class DBusManager(gobject.GObject):
         self.emit("crash")
 
     def update_cb(self, message, job_id=0):
-        print "Update >>%s<<" % message
+        log1("Update:%s", message)
         self.emit("update", message)
 
     def warning_cb(self, message, job_id=0):
-        print "Warning >>%s<<" % message
+        log1("Warning:%s", message)
         self.emit("warning", message)
 
     def owner_changed_cb(self,name, old_owner, new_owner):
@@ -151,7 +151,7 @@ class DBusManager(gobject.GObject):
     def jobdone_cb(self, dest, uuid):
         # TODO: check that it is indeed OUR job:
         # remember uuid in getReport and compare here
-        print "Our job for UUID %s is done." % uuid
+        log1("Our job for UUID %s is done", uuid)
         dump = self.daemon().CreateReport(uuid)
         if dump:
             self.emit("analyze-complete", dump)
@@ -191,8 +191,6 @@ class DBusManager(gobject.GObject):
 
     def getPluginSettings(self, plugin_name):
         settings = self.daemon().GetPluginSettings(plugin_name)
-        #for i in settings.keys():
-        #    print i
         return settings
 
 # "Enable" toggling in GUI is disabled for now. Grep for PLUGIN_DYNAMIC_LOAD_UNLOAD
@@ -210,6 +208,6 @@ class DBusManager(gobject.GObject):
 
     def setSettings(self, settings):
         # FIXME: STUB!!!!
-        print "setSettings stub"
+        log1("setSettings stub")
         retval = self.daemon().SetSettings(self.daemon().GetSettings())
         print ">>>", retval

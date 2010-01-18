@@ -122,7 +122,7 @@ int CKerneloopsScanner::ScanDmesg()
 
 	int cnt_FoundOopses;
 	char *buffer;
-	int pagesz = sysconf(_SC_PAGESIZE);
+	long pagesz = sysconf(_SC_PAGESIZE);
 
 	buffer = (char*)xzalloc(pagesz + 1);
 

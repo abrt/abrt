@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-17 10:27+0000\n"
+"POT-Creation-Date: 2010-01-18 09:58+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -21,25 +21,25 @@ msgstr "לקוח אחר כבר רץ, מנסה להעיר אותו."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "מידע לא צפוי הוחזר מתהליך הרקע (האם מסד הנתונים מעודכן כראוי?)"
 
-#: ../src/Gui/ABRTPlugin.py:55
+#: ../src/Gui/ABRTPlugin.py:56
+msgid "Not loaded plugins"
+msgstr "תוספים לא טעונים"
+
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Analyzer plugins"
 msgstr "תוספי ניתוח"
 
-#: ../src/Gui/ABRTPlugin.py:56
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Action plugins"
 msgstr "תוספי פעולות"
 
-#: ../src/Gui/ABRTPlugin.py:57
+#: ../src/Gui/ABRTPlugin.py:59
 msgid "Reporter plugins"
 msgstr "תוספי דיווח"
 
-#: ../src/Gui/ABRTPlugin.py:58
+#: ../src/Gui/ABRTPlugin.py:60
 msgid "Database plugins"
 msgstr "תוספי מסד-נתונים"
-
-#: ../src/Gui/ABRTPlugin.py:97
-msgid "Plugin name is not set, can't load its settings"
-msgstr "שם התוסף לא הוגדר, לא ניתן לטעון את ההגדרות שלו"
 
 #: ../src/Gui/CCDBusBackend.py:74
 #: ../src/Gui/CCDBusBackend.py:97
@@ -124,31 +124,31 @@ msgid "_Help"
 msgstr "ע_זרה"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:71
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Icon"
 msgstr "סמל"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Package"
 msgstr "חבילה"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:86
 msgid "Application"
 msgstr "יישום"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Date"
 msgstr "תאריך"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:88
 msgid "Crash count"
 msgstr "מספר קריסות"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:89
 msgid "User"
 msgstr "משתמש"
 
-#: ../src/Gui/CCMainWindow.py:149
+#: ../src/Gui/CCMainWindow.py:157
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -157,7 +157,7 @@ msgstr ""
 "לא ניתן להציג את חלון ההגדרות\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:160
+#: ../src/Gui/CCMainWindow.py:168
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -167,7 +167,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:187
+#: ../src/Gui/CCMainWindow.py:195
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -176,15 +176,15 @@ msgstr ""
 "שגיאה במהלך טעינת dumplist.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:224
+#: ../src/Gui/CCMainWindow.py:232
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>הקריסה הזאת דווחה:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:234
+#: ../src/Gui/CCMainWindow.py:244
 msgid "<b>Not reported!</b>"
 msgstr "<b>לא דווח!</b>"
 
-#: ../src/Gui/CCMainWindow.py:283
+#: ../src/Gui/CCMainWindow.py:293
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -192,7 +192,7 @@ msgstr ""
 "לא ניתן להשיג דיווח\n"
 "מידע ניפוי שגיאות חסר?"
 
-#: ../src/Gui/CCMainWindow.py:302
+#: ../src/Gui/CCMainWindow.py:319
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -201,8 +201,8 @@ msgstr ""
 "הדיווח נכשל!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:321
-#: ../src/Gui/CCMainWindow.py:348
+#: ../src/Gui/CCMainWindow.py:338
+#: ../src/Gui/CCMainWindow.py:365
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "שגיאה בקבלת הדיווח: %s"
@@ -424,45 +424,45 @@ msgstr "קריסה בחבילה %s התגלתה"
 msgid "ABRT service is not running"
 msgstr "שירות ABRT לא פועל"
 
-#: ../src/Applet/CCApplet.cpp:196
+#: ../src/Applet/CCApplet.cpp:200
 msgid "Warning"
 msgstr "אזהרה"
 
-#: ../src/Daemon/Daemon.cpp:473
+#: ../src/Daemon/Daemon.cpp:474
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:202
+#: ../lib/Plugins/Bugzilla.cpp:265
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "הבאג דווח בעבר: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:264
+#: ../lib/Plugins/Bugzilla.cpp:341
 #, c-format
 msgid "New bug id: %i"
 msgstr "מזהה באג חדש: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:359
+#: ../lib/Plugins/Bugzilla.cpp:442
 msgid "Checking for duplicates..."
 msgstr "מחפש כפילויות..."
 
-#: ../lib/Plugins/Bugzilla.cpp:362
+#: ../lib/Plugins/Bugzilla.cpp:445
 msgid "Logging into bugzilla..."
 msgstr "מתחבר לבאגזילה..."
 
-#: ../lib/Plugins/Bugzilla.cpp:366
+#: ../lib/Plugins/Bugzilla.cpp:449
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "שם משתמש וסיסמה ריקים. אנא בדוק את הקובץ bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:372
+#: ../lib/Plugins/Bugzilla.cpp:455
 msgid "Checking CC..."
 msgstr "בודק שדה CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:381
+#: ../lib/Plugins/Bugzilla.cpp:464
 msgid "Creating new bug..."
 msgstr "יוצר באג חדש..."
 
-#: ../lib/Plugins/Bugzilla.cpp:385
+#: ../lib/Plugins/Bugzilla.cpp:468
 msgid "Logging out..."
 msgstr "מתנתק..."
 
@@ -474,19 +474,19 @@ msgstr "מקבל זהות מקומית ייחודית"
 msgid "Generating backtrace"
 msgstr "יוצר מידע קריסה"
 
-#: ../lib/Plugins/CCpp.cpp:375
+#: ../lib/Plugins/CCpp.cpp:376
 msgid "Starting debuginfo installation"
 msgstr "מתחיל התקנת מידע ניפוי שגיאות"
 
-#: ../lib/Plugins/CCpp.cpp:525
+#: ../lib/Plugins/CCpp.cpp:527
 msgid "Getting local universal unique identification..."
 msgstr "מקבל זהות מקומית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:544
+#: ../lib/Plugins/CCpp.cpp:546
 msgid "Getting global universal unique identification..."
 msgstr "מקבל זהות גלובלית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:686
+#: ../lib/Plugins/CCpp.cpp:725
 msgid "Skipping debuginfo installation"
 msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 
@@ -500,7 +500,7 @@ msgid "Writing report to '%s'"
 msgstr "כותב דיווח ל'%s'"
 
 #: ../lib/Plugins/FileTransfer.cpp:63
-#: ../lib/Plugins/FileTransfer.cpp:381
+#: ../lib/Plugins/FileTransfer.cpp:372
 msgid "FileTransfer: URL not specified"
 msgstr "העברת קובץ: כתובת לא צוינה"
 
@@ -509,16 +509,16 @@ msgstr "העברת קובץ: כתובת לא צוינה"
 msgid "Sending archive %s to %s"
 msgstr "שולח ארכיון %s ל-%s"
 
-#: ../lib/Plugins/FileTransfer.cpp:306
+#: ../lib/Plugins/FileTransfer.cpp:296
 msgid "File Transfer: Creating a report..."
 msgstr "העברת קובץ: יוצר דיווח..."
 
-#: ../lib/Plugins/FileTransfer.cpp:331
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "לא יכול ליצור ולשלוח ארכיון: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:356
+#: ../lib/Plugins/FileTransfer.cpp:347
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "לא יכול ליצור ולשלוח ארכיון %s"
@@ -527,7 +527,7 @@ msgstr "לא יכול ליצור ולשלוח ארכיון %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "יוצר דיווחי קריסה של kernel oops..."
 
-#: ../lib/Plugins/Mailx.cpp:164
+#: ../lib/Plugins/Mailx.cpp:147
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
 
@@ -540,10 +540,12 @@ msgstr "מריץ את תוסף SOSreport..."
 msgid "running sosreport: %s"
 msgstr "מריץ sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:95
+#: ../lib/Plugins/SOSreport.cpp:97
 msgid "done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
+#~ msgid "Plugin name is not set, can't load its settings"
+#~ msgstr "שם התוסף לא הוגדר, לא ניתן לטעון את ההגדרות שלו"
 #~ msgid "Searching for debug-info packages..."
 #~ msgstr "מחפש חבילות debug-info..."
 #~ msgid "Downloading and installing debug-info packages..."

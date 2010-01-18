@@ -10,15 +10,15 @@ Type
 Email
 Description
 """
-from abrt_utils import _
-from ConfBackend import ConfBackendGnomeKeyring, ConfBackendInitError
+from abrt_utils import _, log, log1, log2
+from ConfBackend import getCurrentConfBackend, ConfBackendInitError
 
 class PluginSettings(dict):
     def __init__(self):
         dict.__init__(self)
         self.client_side_conf = None
         try:
-            self.client_side_conf = ConfBackendGnomeKeyring()
+            self.client_side_conf = getCurrentConfBackend()
         except ConfBackendInitError, e:
             print e
             pass
@@ -53,7 +53,8 @@ class PluginSettings(dict):
 
 class PluginInfo():
     """Class to represent common plugin info"""
-    types = {"Analyzer":_("Analyzer plugins"),
+    types = {"":_("Not loaded plugins"),
+             "Analyzer":_("Analyzer plugins"),
              "Action":_("Action plugins"),
              "Reporter":_("Reporter plugins"),
              "Database":_("Database plugins")}
@@ -62,7 +63,6 @@ class PluginInfo():
             "Type", "Email", "Description"]
 
     def __init__(self):
-        #print "Init PluginInfo"
         self.WWW = None
         self.Name = None
         self.Enabled = None
@@ -95,7 +95,7 @@ class PluginInfo():
         if self.Name:
             self.Settings.load_daemon_settings(self.Name, daemon_settings)
         else:
-            print _("Plugin name is not set, can't load its settings")
+            log("Plugin name is not set, can't load its settings")
 
     def save_settings_on_client_side(self):
         self.Settings.save_on_client_side(str(self.Name))

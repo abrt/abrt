@@ -2,6 +2,7 @@
 import sys
 import os
 import pwd
+import getopt
 import pygtk
 pygtk.require("2.0")
 import gobject
@@ -10,8 +11,14 @@ try:
 except RuntimeError,e:
     # rhbz#552039
     print e
-    os.exit()
+    sys.exit()
 import gtk.glade
+try:
+    import rpm
+except Exception, ex:
+    rpm = None
+
+from ConfBackend import getCurrentConfBackend, ConfBackendInitError
 import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
@@ -21,12 +28,7 @@ from SettingsDialog import SettingsDialog
 from CCReport import Report
 from PluginList import getPluginInfoList
 import ABRTExceptions
-from abrt_utils import _
-
-try:
-    import rpm
-except Exception, ex:
-    rpm = None
+from abrt_utils import _, init_logging, log, log1, log2
 
 
 class MainWindow():
@@ -41,11 +43,10 @@ class MainWindow():
             sys.exit()
         except Exception, e:
             # show error message if connection fails
-            # FIXME add an option to start the daemon
             gui_error_message("%s" % e)
             sys.exit()
         #Set the Glade file
-        self.gladefile = "%s%sccgui.glade" % (sys.path[0],"/")
+        self.gladefile = "%s/ccgui.glade" % sys.path[0]
         self.wTree = gtk.glade.XML(self.gladefile)
 
         #Get the Main Window, and connect the "destroy" event
@@ -233,9 +234,11 @@ class MainWindow():
             # it is not informative (no URL to the report)
             for message in dump.getMessage().split('\n'):
                 if message:
-                    if "http" in message[0:5] or "file:///"[0:8] in message:
-                        message = "<a href=\"%s\">%s</a>" % (message, message)
+                    #Doesn't work (far too easy to make it worse, not better):
+                    #if "http" in message[0:5] or "file:///"[0:8] in message:
+                    #    message = "<a href=\"%s\">%s</a>" % (message, message)
                     report_label += "%s\n" % message
+            log2("setting markup '%s'", report_label)
             self.wTree.get_widget("lReported").set_markup(report_label)
         else:
             self.wTree.get_widget("lReported").set_markup(_("<b>Not reported!</b>"))
@@ -297,13 +300,20 @@ class MainWindow():
             try:
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
-                reporters_settings = {}
-                # self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
-                # don't force refresh!
-                self.pluginlist = getPluginInfoList(self.ccdaemon)
-                for plugin in self.pluginlist.getReporterPlugins():
-                    reporters_settings[str(plugin)] = plugin.Settings
+                # Old way: it needs to talk to daemon
+                #reporters_settings = {}
+                ## self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
+                ## don't force refresh!
+                #self.pluginlist = getPluginInfoList(self.ccdaemon)
+                #for plugin in self.pluginlist.getReporterPlugins():
+                #    reporters_settings[str(plugin)] = plugin.Settings
+                reporters_settings = getCurrentConfBackend().load_all()
+                log2("Report(result,settings):")
+                log2("  result:%s", str(result))
+                # Careful, this will print reporters_settings["Password"] too
+                log2("  settings:%s", str(reporters_settings))
                 self.ccdaemon.Report(result, reporters_settings)
+                log2("Report() returned")
                 #self.hydrate()
             except Exception, e:
                 gui_error_message(_("Reporting failed!\n%s" % e))
@@ -381,8 +391,19 @@ class MainWindow():
             self.window.present()
 
 if __name__ == "__main__":
+    try:
+        opts, args = getopt.getopt(sys.argv[1:], "v")
+    except getopt.GetoptError, err:
+        print str(err) # prints something like "option -a not recognized"
+        sys.exit(2)
+    verbose = 0
+    for opt, arg in opts:
+        if opt == "-v":
+            verbose += 1
+    init_logging("abrt-gui", verbose)
+    log1("log level:%d", verbose)
+
     cc = MainWindow()
     cc.hydrate()
     cc.show()
     gtk.main()
-

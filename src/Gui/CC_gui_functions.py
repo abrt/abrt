@@ -15,13 +15,15 @@ try:
     import rpm
 except:
     rpm = None
+from abrt_utils import _, log, log1, log2
+
 
 def on_url_clicked(label, url):
     import gnomevfs
     file_mimetype = gnomevfs.get_mime_type(url)
     default_app = gnomevfs.mime_get_default_application(file_mimetype)
     if default_app:
-        #print "Default Application:", default_app[2]
+        log2("default application:%s", default_app[2])
         subprocess.Popen([default_app[2], url])
 
 def gui_report_dialog ( report_status_dict, parent_dialog,
@@ -160,8 +162,8 @@ def gui_question_dialog ( message, parent_dialog=None,
     dialog.destroy()
     return ret
 
-def get_icon_for_package(theme,package):
-    #print package
+def get_icon_for_package(theme, package):
+    log2("get_icon_for_package('%s')", package)
     try:
         return theme.load_icon(package, 22, gtk.ICON_LOOKUP_USE_BUILTIN)
     except:
@@ -169,7 +171,7 @@ def get_icon_for_package(theme,package):
         if not rpm:
             return None
         ts = rpm.TransactionSet()
-        mi = ts.dbMatch( 'name', package )
+        mi = ts.dbMatch('name', package)
         possible_icons = []
         icon_filename = ""
         filenames = ""
@@ -180,19 +182,19 @@ def get_icon_for_package(theme,package):
             if filename.rfind(".png") != -1:
                 possible_icons.append(filename)
             if filename.rfind(".desktop") != -1:
-                #print filename
+                log2("desktop file:'%s'", filename)
                 desktop_file = open(filename, 'r')
                 lines = desktop_file.readlines()
                 for line in lines:
                     if line.find("Icon=") != -1:
-                        #print line[5:-1]
+                        log2("Icon='%s'", line[5:-1])
                         icon_filename = line[5:-1]
                         break
                 desktop_file.close()
                 # .dektop file found
                 for filename in h['filenames']:
                     if filename.rfind("%s.png" % icon_filename) != -1:
-                        #print filename
+            		log2("png file:'%s'", filename)
                         icon_filename = filename
                         break
             #we didn't find the .desktop file
@@ -205,8 +207,8 @@ def get_icon_for_package(theme,package):
             if icon_filename:
                 break
         if icon_filename:
-            #print "icon created form %s" % icon_filename
-            return gtk.gdk.pixbuf_new_from_file_at_size(icon_filename,22,22)
+            log1("icon created from %s", icon_filename)
+            return gtk.gdk.pixbuf_new_from_file_at_size(icon_filename, 22, 22)
         else:
             return None
 
