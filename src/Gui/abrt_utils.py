@@ -1,5 +1,4 @@
 import sys
-import gtk.glade
 
 PROGNAME = "abrt"
 g_verbose = 0
@@ -10,6 +9,7 @@ import gettext
 _ = lambda x: gettext.lgettext(x)
 
 def init_logging(progname, v):
+    import gtk.glade
     global PROGNAME, g_verbose
     PROGNAME = progname
     g_verbose = v
