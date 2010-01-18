@@ -3,9 +3,12 @@ import sys
 import os
 import pwd
 import getopt
+
+from abrt_utils import _, init_logging, log, log1, log2
+import gobject
+gobject.set_prgname(_("Automatic Bug Reporting Tool"))
 import pygtk
 pygtk.require("2.0")
-import gobject
 try:
     import gtk
 except RuntimeError,e:
@@ -28,7 +31,6 @@ from SettingsDialog import SettingsDialog
 from CCReport import Report
 from PluginList import getPluginInfoList
 import ABRTExceptions
-from abrt_utils import _, init_logging, log, log1, log2
 
 
 class MainWindow():
