@@ -65,7 +65,9 @@ CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
     m_pGetNextFileDir(NULL),
     m_bOpened(false),
-    m_bLocked(false)
+    m_bLocked(false),
+    m_uid(0),
+    m_gid(0)
 {}
 
 CDebugDump::~CDebugDump()
@@ -97,6 +99,15 @@ void CDebugDump::Open(const char *pDir)
     }
     Lock();
     m_bOpened = true;
+    /* In case caller would want to create more files, he'll need uid:gid */
+    m_uid = 0;
+    m_gid = 0;
+    struct stat stat_buf;
+    if (stat(m_sDebugDumpDir.c_str(), &stat_buf) == 0)
+    {
+        m_uid = stat_buf.st_uid;
+        m_gid = stat_buf.st_gid;
+    }
 }
 
 bool CDebugDump::Exist(const char* pPath)
@@ -115,7 +126,15 @@ static bool GetAndSetLock(const char* pLockFile, const char* pPID)
         char pid_buf[sizeof(pid_t)*3 + 4];
         ssize_t r = readlink(pLockFile, pid_buf, sizeof(pid_buf) - 1);
         if (r < 0)
+        {
+            if (errno == ENOENT)
+            {
+                /* Looks like pLockFile was deleted */
+                usleep(10 * 1000); /* avoid CPU eating loop */
+                continue;
+            }
             perror_msg_and_die("Can't read lock file '%s'", pLockFile);
+        }
         pid_buf[r] = '\0';
 
         if (strcmp(pid_buf, pPID) == 0)
@@ -209,8 +228,8 @@ void CDebugDump::Lock()
         error_msg_and_die("Locking bug on '%s'", m_sDebugDumpDir.c_str());
 
     std::string lockFile = m_sDebugDumpDir + ".lock";
-    char pid_buf[sizeof(int)*3 + 2];
-    sprintf(pid_buf, "%u", (unsigned)getpid());
+    char pid_buf[sizeof(long)*3 + 2];
+    sprintf(pid_buf, "%lu", (long)getpid());
     while ((m_bLocked = GetAndSetLock(lockFile.c_str(), pid_buf)) != true)
     {
         sleep(1); /* was 0.5 seconds */
@@ -228,7 +247,26 @@ void CDebugDump::UnLock()
     }
 }
 
-void CDebugDump::Create(const char *pDir, int64_t uid)
+/* Create a fresh empty debug dump dir.
+ *
+ * Security: we should not allow users to write new files or write
+ * into existing ones, but they should be able to read them.
+ * 
+ * @param uid
+ *   Crashed application's User Id
+ *
+ * We currently have only three callers:
+ * kernel oops hook: uid=0
+ *  this hook runs under 0:0
+ * ccpp hook: uid=uid of crashed user's binary
+ *  this hook runs under 0:0
+ * python hook: uid=uid of crashed user's script
+ *  this hook runs under abrt:gid
+ *
+ * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
+ * abrt's user id. We do not allow write access to group.
+ */
+void CDebugDump::Create(const char *pDir, uid_t uid)
 {
     if (m_bOpened)
     {
@@ -244,25 +282,45 @@ void CDebugDump::Create(const char *pDir, int64_t uid)
     Lock();
     m_bOpened = true;
 
-    if (mkdir(m_sDebugDumpDir.c_str(), 0700) == -1)
+    /* Was creating it with mode 0700 and user as the owner, but this allows 
+     * the user to replace any file in the directory, changing security-sensitive data
+     * (e.g. "uid", "analyzer", "executable")
+     */
+    if (mkdir(m_sDebugDumpDir.c_str(), 0750) == -1)
     {
         UnLock();
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "Can't create dir '%s'", pDir);
     }
-    if (chmod(m_sDebugDumpDir.c_str(), 0700) == -1)
+
+    /* mkdir's mode (above) can be affected by umask, fix it */
+    if (chmod(m_sDebugDumpDir.c_str(), 0750) == -1)
     {
         UnLock();
         m_bOpened = false;
         throw CABRTException(EXCEP_DD_OPEN, "Can't change mode of '%s'", pDir);
     }
-    struct passwd* pw = getpwuid(uid);
-    gid_t gid = pw ? pw->pw_gid : uid;
-    if (chown(m_sDebugDumpDir.c_str(), uid, gid) == -1)
+
+    /* Get ABRT's user id */
+    m_uid = 0; 
+    struct passwd *pw = getpwnam("abrt");
+    if (pw)
+        m_uid = pw->pw_uid;
+    else
+        error_msg("User 'abrt' does not exist, using uid 0");
+
+    /* Get crashed application's group id */
+    m_gid = 0;
+    pw = getpwuid(uid);
+    if (pw)
+        m_gid = pw->pw_gid;
+    else
+      error_msg("User %lu does not exist, using gid 0", (long)uid);
+
+    if (chown(m_sDebugDumpDir.c_str(), m_uid, m_gid) == -1)
     {
-        /* if /var/cache/abrt is writable by all, _aborting_ here is not useful */
-        /* let's just warn */
-        perror_msg("can't change '%s' ownership to %u:%u", m_sDebugDumpDir.c_str(), (int)uid, (int)gid);
+        perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(), 
+		   (long)m_uid, (long)m_gid);
     }
 
     SaveText(FILENAME_UID, to_string(uid).c_str());
@@ -294,7 +352,7 @@ static void DeleteFileDir(const char *pDir)
         }
     }
     closedir(dir);
-    if (remove(pDir) == -1)
+    if (rmdir(pDir) == -1)
     {
         throw CABRTException(EXCEP_DD_DELETE, "Can't remove dir %s", pDir);
     }
@@ -359,12 +417,18 @@ static void LoadTextFile(const char *pPath, std::string& pData)
     fclose(fp);
 }
 
-static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize)
+static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize, uid_t uid, gid_t gid)
 {
-    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    /* "Why 0640?!" See ::Create() for security analysis */
+    unlink(pPath);
+    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0640);
     if (fd < 0)
     {
-        throw CABRTException(EXCEP_DD_SAVE, "Can't open file '%s'", pPath);
+        throw CABRTException(EXCEP_DD_SAVE, "Can't open file '%s': %s", pPath, errno ? strerror(errno) : "errno == 0");
+    }
+    if (fchown(fd, uid, gid) == -1)
+    {
+        perror_msg("can't change '%s' ownership to %lu:%lu", pPath, (long)uid, (long)gid);
     }
     unsigned r = full_write(fd, pData, pSize);
     close(fd);
@@ -391,8 +455,9 @@ void CDebugDump::SaveText(const char* pName, const char* pData)
         throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
     }
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    SaveBinaryFile(fullPath.c_str(), pData, strlen(pData));
+    SaveBinaryFile(fullPath.c_str(), pData, strlen(pData), m_uid, m_gid);
 }
+
 void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize)
 {
     if (!m_bOpened)
@@ -400,7 +465,7 @@ void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize
         throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
     }
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    SaveBinaryFile(fullPath.c_str(), pData, pSize);
+    SaveBinaryFile(fullPath.c_str(), pData, pSize, m_uid, m_gid);
 }
 
 void CDebugDump::InitGetNextFile()

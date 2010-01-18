@@ -16,13 +16,12 @@ BuildRequires: curl-devel
 BuildRequires: rpm-devel >= 4.6
 BuildRequires: sqlite-devel > 3.0
 BuildRequires: desktop-file-utils
-BuildRequires: nss-devel
+#BuildRequires: nss-devel
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
-BuildRequires: nss-devel
 BuildRequires: polkit-devel
 BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
 BuildRequires: intltool
@@ -250,6 +249,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 getent group abrt >/dev/null || groupadd -f --system abrt
+getent passwd abrt >/dev/null || useradd --system -g abrt -d /etc/abrt -s /sbin/nologin abrt
 exit 0
 
 %post
@@ -279,7 +279,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
-%dir %attr(0775, root, abrt) %{_localstatedir}/cache/%{name}
+%dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
 %dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
@@ -386,9 +386,11 @@ fi
 
 %files addon-python
 %defattr(-,root,root,-)
-%attr(2755, root, abrt) %{_libexecdir}/abrt-hook-python
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
+%attr(4755, abrt, abrt) %{_libexecdir}/abrt-hook-python
 %{_libdir}/%{name}/libPython.so*
 %{python_site}/*.py*
+
 
 %files cli
 %defattr(-,root,root,-)

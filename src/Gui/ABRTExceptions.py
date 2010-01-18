@@ -1,4 +1,4 @@
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 class IsRunning(Exception):
     def __init__(self):

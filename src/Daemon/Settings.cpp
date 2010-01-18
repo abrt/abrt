@@ -37,7 +37,6 @@ bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
 set_string_t  g_settings_setOpenGPGPublicKeys;
 set_string_t  g_settings_mapBlackList;
-set_string_t  g_settings_setEnabledPlugins;
 std::string   g_settings_sDatabase;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 /* one line: "ActionsAndReporters = aa_first,bb_first(bb_second),cc_first" */
@@ -167,11 +166,6 @@ static void ParseCommon()
     if (it != end)
     {
         g_settings_sDatabase = it->second;
-    }
-    it = s_mapSectionCommon.find("EnabledPlugins");
-    if (it != end)
-    {
-        g_settings_setEnabledPlugins = ParseList(it->second.c_str());
     }
     it = s_mapSectionCommon.find("MaxCrashReportsSize");
     if (it != end)
@@ -434,7 +428,6 @@ void SaveSettings()
         SaveBool("OpenGPGCheck", g_settings_bOpenGPGCheck, fOut);
         SaveSetString("OpenGPGPublicKeys", g_settings_setOpenGPGPublicKeys, fOut);
         SaveSetString("BlackList", g_settings_mapBlackList, fOut);
-        SaveSetString("EnabledPlugins", g_settings_setEnabledPlugins, fOut);
         fprintf(fOut, "Database = %s\n", g_settings_sDatabase.c_str());
         fprintf(fOut, "MaxCrashReportsSize = %u\n", g_settings_nMaxCrashReportsSize);
         SaveVectorPairStrings("ActionsAndReporters", g_settings_vectorActionsAndReporters, fOut);

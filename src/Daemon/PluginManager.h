@@ -50,6 +50,11 @@ class CPluginManager
          * Registered plugins. A key is a plugin name.
          */
         map_plugin_t m_mapPlugins;
+        /**
+         * List of all possible plugins (loaded or not), with some attributes.
+         */
+	map_map_string_t m_map_plugin_info;
+        map_map_string_t m_map_plugin_settings;
 
     public:
         /**
@@ -74,27 +79,16 @@ class CPluginManager
          * A method, which loads particular plugin.
          * @param pName A plugin name.
          */
-        void LoadPlugin(const char *pName);
+        CPlugin* LoadPlugin(const char *pName, bool enabled_only = false);
         /**
          * A method, which unloads particular plugin.
          * @param pName A plugin name.
          */
         void UnLoadPlugin(const char *pName);
+#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
         /**
          * A method, which registers particular plugin.
          * @param pName A plugin name.
-         */
-        int RegisterPlugin(const char *pName);
-        /**
-         * A method, which unregister particular plugin.
-         * @param pName A plugin name.
-         */
-        void UnRegisterPlugin(const char *pName);
-        /**
-         * A method, which registers particular plugin,
-         * called via DBUS
-         * @param pName A plugin name.
-         * @param pDBUSSender DBUS user identification
          */
         void RegisterPluginDBUS(const char *pName, const char *pDBUSSender);
         /**
@@ -104,6 +98,7 @@ class CPluginManager
          * @param pDBUSSender DBUS user identification
          */
         void UnRegisterPluginDBUS(const char *pName, const char *pDBUSSender);
+#endif
         /**
          * A method, which returns instance of particular analyzer plugin.
          * @param pName A plugin name.
@@ -121,7 +116,7 @@ class CPluginManager
          * @param pName A plugin name.
          * @return An action plugin.
          */
-        CAction* GetAction(const char *pName);
+        CAction* GetAction(const char *pName, bool silent = false);
         /**
          * A method, which returns instance of particular database plugin.
          * @param pName A plugin name.
@@ -140,7 +135,7 @@ class CPluginManager
          * Then user can fill all needed informations like URLs etc.
          * @return A vector of maps <key, value>
          */
-        vector_map_string_t GetPluginsInfo();
+        const map_map_string_t& GetPluginsInfo() { return m_map_plugin_info; }
         /**
          * A method, which sets up a plugin. The settings are also saved in home
          * directory of an user.
@@ -154,11 +149,9 @@ class CPluginManager
         /**
          * A method, which returns plugin's settings according to user.
          * @param pName A plugin name.
-         * @param pUID An uid of user.
-         * @return Plugin's settings accorting to user.
+         * @return Plugin's settings.
          */
-        map_plugin_settings_t GetPluginSettings(const char *pName,
-                                                const char *pUID);
+        map_plugin_settings_t GetPluginSettings(const char *pName);
 };
 
 /**

@@ -46,13 +46,11 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
     GCancellable * cancellable;
 
     authority = polkit_authority_get();
-
     cancellable = g_cancellable_new();
 
-    g_timeout_add(POLKIT_TIMEOUT * 1000,
+    guint cancel_timeout = g_timeout_add(POLKIT_TIMEOUT * 1000,
                    (GSourceFunc) do_cancel,
                    cancellable);
-
 
     result = polkit_authority_check_authorization_sync(authority,
                 subject,
@@ -61,7 +59,8 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
                 POLKIT_CHECK_AUTHORIZATION_FLAGS_ALLOW_USER_INTERACTION,
                 cancellable,
                 &error);
-
+    g_object_unref(authority);
+    g_source_remove(cancel_timeout);
     if (error)
     {
         g_error_free(error);
@@ -71,11 +70,18 @@ static PolkitResult do_check(PolkitSubject *subject, const char *action_id)
     if (result)
     {
         if (polkit_authorization_result_get_is_challenge(result))
+        {
             /* Can't happen (happens only with
              * POLKIT_CHECK_AUTHORIZATION_FLAGS_NONE flag) */
+            g_object_unref(result);
             return PolkitChallenge;
+        }
         if (polkit_authorization_result_get_is_authorized(result))
+        {
+            g_object_unref(result);
             return PolkitYes;
+        }
+        g_object_unref(result);
         return PolkitNo;
     }
 

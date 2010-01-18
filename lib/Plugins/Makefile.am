@@ -32,7 +32,8 @@ dist_pluginsconf_DATA = \
     Bugzilla.conf \
     Catcut.conf \
     TicketUploader.conf \
-    FileTransfer.conf
+    FileTransfer.conf \
+    Python.conf
 
 man_MANS = abrt-FileTransfer.7 abrt-Bugzilla.7 abrt-KerneloopsReporter.7 \
            abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7 \
@@ -51,14 +52,13 @@ install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
 
 # CCpp
-libCCpp_la_SOURCES = CCpp.cpp CCpp.h
+libCCpp_la_SOURCES = CCpp.cpp CCpp.h CCpp_sha1.cpp CCpp_sha1.h
 libCCpp_la_LDFLAGS = -avoid-version
-libCCpp_la_LIBADD = $(NSS_LIBS)
+#libCCpp_la_LIBADD =
 libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
     -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"' \
-    $(NSS_CFLAGS)
+    -DLOCALSTATEDIR='"$(localstatedir)"'
 
 
 # Firefox - disabled for now
@@ -133,7 +133,7 @@ libTicketUploader_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CUR
 libPython_la_SOURCES = Python.h Python.cpp
 #libPython_la_LIBADD = $(NSS_LIBS)
 libPython_la_LDFLAGS = -avoid-version
-libPython_la_CPPFLAGS = $(NSS_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils
+libPython_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 
 # FileTrasfer
 libFileTransfer_la_SOURCES = FileTransfer.cpp FileTransfer.h

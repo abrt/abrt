@@ -99,6 +99,8 @@ static pid_t ExecVP(char** pArgs, uid_t uid, std::string& pOutput)
     pid_t child;
 
     xpipe(pipeout);
+
+    fflush(NULL);
     child = fork();
     if (child == -1)
     {
@@ -549,6 +551,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     xpipe(pipein);
     xpipe(pipeout);
 
+    fflush(NULL);
     pid_t child = fork();
     if (child < 0)
     {
@@ -673,6 +676,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
 
+    fflush(NULL);
     pid_t child = fork();
     if (child < 0)
     {
@@ -692,7 +696,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
 
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-        char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
+        char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
         VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR);
         execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, DEBUGINFO_CACHE_DIR, NULL);
@@ -839,8 +843,9 @@ std::string CAnalyzerFirefox::GetGlobalUUID(const char *pDebugDumpDir)
     return CreateHash(package + executable + independentBacktrace);
 }
 
-static bool DebuginfoCheckPolkit(int uid)
+static bool DebuginfoCheckPolkit(uid_t uid)
 {
+    fflush(NULL);
     int child_pid = fork();
     if (child_pid < 0)
     {
@@ -857,8 +862,10 @@ static bool DebuginfoCheckPolkit(int uid)
 
     //parent
     int status;
-    if (waitpid(child_pid, &status, 0) > 0 && WEXITSTATUS(status) == 0)
-    {
+    if (waitpid(child_pid, &status, 0) > 0
+     && WIFEXITED(status)
+     && WEXITSTATUS(status) == 0
+    ) {
         return true; //authorization OK
     }
     log("UID %d is not authorized to install debuginfos", uid);

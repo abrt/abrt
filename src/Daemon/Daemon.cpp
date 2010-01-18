@@ -65,7 +65,8 @@
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
  * - DeleteDebugDump(UUID): delete it from DB and delete corresponding /var/cache/abrt/DIR
- * - GetPluginsInfo(): returns vector_map_string_t
+ * - GetPluginsInfo(): returns map_map_string_t
+ *      map["plugin"] = { "Name": "plugin", "Enabled": "yes" ... }
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
  * - SetPluginSettings(PluginName, map_plugin_settings_t): returns void
  * - RegisterPlugin(PluginName): returns void
@@ -173,13 +174,6 @@ static int SetUpMW()
     {
         g_setBlackList.insert(*it_b);
     }
-    VERB1 log("Registering plugins");
-    set_string_t::iterator it_p = g_settings_setEnabledPlugins.begin();
-    for (; it_p != g_settings_setEnabledPlugins.end(); it_p++)
-    {
-        if (g_pPluginManager->RegisterPlugin(it_p->c_str()) != 0)
-            return -1;
-    }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
@@ -210,10 +204,12 @@ static int SetUpCron()
         int nM = -1;
         int nS = -1;
 
+//TODO: rewrite using good old sscanf?
+
         if (pos != std::string::npos)
         {
-            std::string sH = "";
-            std::string sM = "";
+            std::string sH;
+            std::string sM;
 
             sH = it_c->first.substr(0, pos);
             nH = xatou(sH.c_str());
@@ -228,7 +224,7 @@ static int SetUpCron()
         }
         else
         {
-            std::string sS = "";
+            std::string sS;
 
             sS = it_c->first;
             nS = xatou(sS.c_str());
@@ -368,8 +364,8 @@ static int CreatePidFile()
     if (fd >= 0)
     {
         /* write our pid to it */
-        char buf[sizeof(int)*3 + 2];
-        int len = sprintf(buf, "%u\n", (unsigned)getpid());
+        char buf[sizeof(long)*3 + 2];
+        int len = sprintf(buf, "%lu\n", (long)getpid());
         write(fd, buf, len);
         close(fd);
         return 0;
@@ -637,7 +633,7 @@ static void start_syslog_logging()
     logmode = LOGMODE_SYSLOG;
 }
 
-static void ensure_writable_dir(const char *dir, mode_t mode, const char *group)
+static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
 {
     struct stat sb;
 
@@ -646,12 +642,12 @@ static void ensure_writable_dir(const char *dir, mode_t mode, const char *group)
     if (stat(dir, &sb) != 0 || !S_ISDIR(sb.st_mode))
         error_msg_and_die("'%s' is not a directory", dir);
 
-    struct group *gr = getgrnam(group);
-    if (!gr)
-        perror_msg_and_die("Can't find group '%s'", group);
+    struct passwd *pw = getpwnam(user);
+    if (!pw)
+        perror_msg_and_die("Can't find user '%s'", user);
 
-    if ((sb.st_uid != 0 || sb.st_gid != gr->gr_gid) && chown(dir, 0, gr->gr_gid) != 0)
-        perror_msg_and_die("Can't set owner 0:%u on '%s'", (unsigned int)gr->gr_gid, dir);
+    if ((sb.st_uid != pw->pw_uid || sb.st_gid != pw->pw_gid) && chown(dir, pw->pw_uid, pw->pw_gid) != 0)
+        perror_msg_and_die("Can't set owner %u:%u on '%s'", (unsigned int)pw->pw_uid, (unsigned int)pw->pw_gid, dir);
     if ((sb.st_mode & 07777) != mode && chmod(dir, mode) != 0)
         perror_msg_and_die("Can't set mode %o on '%s'", mode, dir);
 }
@@ -662,7 +658,7 @@ static void sanitize_dump_dir_rights()
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
     /* 00777 bits are usual "rwxrwxrwx" access rights */
-    ensure_writable_dir(DEBUG_DUMPS_DIR, 0775, "abrt");
+    ensure_writable_dir(DEBUG_DUMPS_DIR, 0755, "abrt");
     /* debuginfo cache */
     ensure_writable_dir(DEBUG_DUMPS_DIR"-di", 0755, "root");
     /* temp dir */

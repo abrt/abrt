@@ -24,15 +24,16 @@
 #include <sstream>
 #include <set>
 #include <iomanip>
-#include <nss.h>
-#include <sechash.h>
-#include <sysexits.h>
+//#include <nss.h>
+//#include <sechash.h>
 #include "abrtlib.h"
 #include "CCpp.h"
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "CommLayerInner.h"
 #include "Polkit.h"
+
+#include "CCpp_sha1.h"
 
 using namespace std;
 
@@ -54,11 +55,13 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
 
 static string CreateHash(const char *pInput)
 {
-    string ret;
-    HASHContext* hc;
-    unsigned char hash[SHA1_LENGTH];
     unsigned int len;
 
+#if 0
+{
+    char hash_str[SHA1_LENGTH*2 + 1];
+    unsigned char hash[SHA1_LENGTH];
+    HASHContext *hc;
     hc = HASH_Create(HASH_AlgSHA1);
     if (!hc)
     {
@@ -69,7 +72,6 @@ static string CreateHash(const char *pInput)
     HASH_End(hc, hash, &len, sizeof(hash));
     HASH_Destroy(hc);
 
-    char hash_str[SHA1_LENGTH*2 + 1];
     char *d = hash_str;
     unsigned char *s = hash;
     while (len)
@@ -80,6 +82,29 @@ static string CreateHash(const char *pInput)
         len--;
     }
     *d = '\0';
+//log("hash1:%s str:'%s'", hash_str, pInput);
+}
+#endif
+
+    char hash_str[SHA1_RESULT_LEN*2 + 1];
+    unsigned char hash2[SHA1_RESULT_LEN];
+    sha1_ctx_t sha1ctx;
+    sha1_begin(&sha1ctx);
+    sha1_hash(pInput, strlen(pInput), &sha1ctx);
+    sha1_end(hash2, &sha1ctx);
+    len = SHA1_RESULT_LEN;
+
+    char *d = hash_str;
+    unsigned char *s = hash2;
+    while (len)
+    {
+        *d++ = "0123456789abcdef"[*s >> 4];
+        *d++ = "0123456789abcdef"[*s & 0xf];
+        s++;
+        len--;
+    }
+    *d = '\0';
+//log("hash2:%s str:'%s'", hash_str, pInput);
 
     return hash_str;
 }
@@ -99,54 +124,28 @@ static string concat_str_vector(char **strings)
 /* Returns status. See `man 2 wait` for status information. */
 static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
 {
+    /* Nuke everything which may make setlocale() switch to non-POSIX locale:
+     * we need to avoid having gdb output in some obscure language.
+     */
+    static const char *const unsetenv_vec[] = {
+        "LANG",
+        "LC_ALL",
+        "LC_COLLATE",
+        "LC_CTYPE",
+        "LC_MESSAGES",
+        "LC_MONETARY",
+        "LC_NUMERIC",
+        "LC_TIME",
+        NULL
+    };
+
+    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETGUID | EXECFLG_SETSID | EXECFLG_QUIET;
+    if (redirect_stderr)
+        flags |= EXECFLG_ERR2OUT;
+    VERB1 flags &= ~EXECFLG_QUIET;
+
     int pipeout[2];
-    pid_t child;
-
-    xpipe(pipeout);
-    child = fork();
-    if (child == -1)
-    {
-        perror_msg_and_die("fork");
-    }
-    if (child == 0)
-    {
-        VERB1 log("Executing: %s", concat_str_vector(pArgs).c_str());
-        close(pipeout[0]); /* read side of the pipe */
-        xmove_fd(pipeout[1], STDOUT_FILENO);
-        /* Make sure stdin is safely open to nothing */
-        xmove_fd(xopen("/dev/null", O_RDONLY), STDIN_FILENO);
-
-        struct passwd* pw = getpwuid(uid);
-        gid_t gid = pw ? pw->pw_gid : uid;
-        setgroups(1, &gid);
-        xsetregid(gid, gid);
-        xsetreuid(uid, uid);
-        setsid();
-
-        /* Nuke everything which may make setlocale() switch to non-POSIX locale:
-         * we need to avoid having gdb output in some obscure language.
-         */
-        unsetenv("LANG");
-        unsetenv("LC_ALL");
-        unsetenv("LC_COLLATE");
-        unsetenv("LC_CTYPE");
-        unsetenv("LC_MESSAGES");
-        unsetenv("LC_MONETARY");
-        unsetenv("LC_NUMERIC");
-        unsetenv("LC_TIME");
-
-        if (redirect_stderr)
-        {
-            /* We want parent to see errors in the same stream */
-            xdup2(STDOUT_FILENO, STDERR_FILENO);
-        }
-        execvp(pArgs[0], pArgs);
-        /* VERB1 since sometimes we expect errors here */
-        VERB1 perror_msg("Can't execute '%s'", pArgs[0]);
-        exit(1);
-    }
-
-    close(pipeout[1]); /* write side of the pipe */
+    pid_t child = fork_execv_on_steroids(flags, pArgs, pipeout, (char**)unsetenv_vec, /*dir:*/ NULL, uid);
 
     int r;
     char buff[1024];
@@ -155,8 +154,8 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
         buff[r] = '\0';
         pOutput += buff;
     }
-
     close(pipeout[0]);
+
     int status;
     waitpid(child, &status, 0); /* prevent having zombie child process */
 
@@ -379,6 +378,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
 
+    fflush(NULL);
     pid_t child = fork();
     if (child < 0)
     {
@@ -394,7 +394,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
 
         char *coredump = xasprintf("%s/"FILENAME_COREDUMP, pDebugDumpDir);
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-        char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%u-%lu", (int)getpid(), (long)time(NULL));
+        char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
         VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
         /* We want parent to see errors in the same stream */
@@ -545,6 +545,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     log(_("Getting global universal unique identification..."));
 
+//TODO: convert to fork_execv_on_steroids(), nuke static concat_str_vector
+
     string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
     string executable;
     string package;
@@ -574,6 +576,8 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 
         int pipeout[2];
         xpipe(pipeout); /* stdout of abrt-backtrace */
+
+	fflush(NULL);
         pid_t child = fork();
         if (child == -1)
             perror_msg_and_die("fork");
@@ -617,13 +621,29 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         {
             perror_msg("abrt-backtrace not executed properly, "
                                "status: %x signal: %d", status, WIFSIGNALED(status));
-        } else
+        } 
+        else
         {
             int exit_status = WEXITSTATUS(status);
-            if (exit_status != 0)
+            if (exit_status == 79) /* EX_PARSINGFAILED */
             {
+                /* abrt-backtrace returns alternative backtrace 
+                   representation in this case, so everything will work 
+                   as expected except worse duplication detection */
+                log_msg("abrt-backtrace failed to parse the backtrace");
+            }
+            else if (exit_status == 80) /* EX_THREADDETECTIONFAILED */
+            {
+                /* abrt-backtrace returns backtrace with all threads 
+                   in this case, so everything will work as expected 
+                   except worse duplication detection */
+                log_msg("abrt-backtrace failed to determine crash frame");
+            }
+            else if (exit_status != 0)
+            {
+                /* this is unexpected problem and it should be investigated */
                 error_msg("abrt-backtrace run failed, exit value: %d",
-                              exit_status);
+                          exit_status);
             }
         }
 
@@ -635,8 +655,9 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     return CreateHash(hash_base.c_str());
 }
 
-static bool DebuginfoCheckPolkit(int uid)
+static bool DebuginfoCheckPolkit(uid_t uid)
 {
+    fflush(NULL);
     int child_pid = fork();
     if (child_pid < 0)
     {
@@ -653,8 +674,10 @@ static bool DebuginfoCheckPolkit(int uid)
 
     //parent
     int status;
-    if (waitpid(child_pid, &status, 0) > 0 && WEXITSTATUS(status) == 0)
-    {
+    if (waitpid(child_pid, &status, 0) > 0
+     && WIFEXITED(status)
+     && WEXITSTATUS(status) == 0
+    ) {
         return true; //authorization OK
     }
     log("UID %d is not authorized to install debuginfos", uid);

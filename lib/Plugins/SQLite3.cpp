@@ -90,6 +90,26 @@ static const char *const upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
     },
 };
 
+
+/* Is this string safe wrt SQL injection?
+ * PHP's mysql_real_escape_string() treats \, ', ", \x00, \n, \r, and \x1a as special.
+ * We are a bit more paranoid and disallow any control chars.
+ */
+static bool is_string_safe(const char *str)
+{
+    const char *p = str;
+    while (*p)
+    {
+        if ((unsigned char)(*p) < ' ' || strchr("\\\"\'", *p))
+        {
+            error_msg("Probable SQL injection: '%s'", str);
+            return false;
+        }
+        p++;
+    }
+    return true;
+}
+
 static void get_table(vector_database_rows_t& pTable,
                 sqlite3 *db, const char *fmt, ...)
 {
@@ -308,6 +328,14 @@ void CSQLite3::Insert_or_Update(const char *pUUID,
                 const char *pDebugDumpPath,
                 const char *pTime)
 {
+    if (!is_string_safe(pUUID)
+     || !is_string_safe(pUID)
+     || !is_string_safe(pDebugDumpPath)
+     || !is_string_safe(pTime)
+    ) {
+        return;
+    }
+
     if (!exists_uuid_uid(m_pDB, pUUID, pUID))
     {
         execute_sql(m_pDB,
@@ -336,20 +364,26 @@ void CSQLite3::Insert_or_Update(const char *pUUID,
 
 void CSQLite3::DeleteRow(const char *pUUID, const char *pUID)
 {
+    if (!is_string_safe(pUUID)
+     || !is_string_safe(pUID)
+    ) {
+        return;
+    }
+
     if (pUID[0] == '0' && !pUID[1])
     {
         execute_sql(m_pDB,
                 "DELETE FROM "ABRT_TABLE" "
                 "WHERE "COL_UUID" = '%s';",
-                pUUID, pUID
+                pUUID
         );
     }
     else if (exists_uuid_uid(m_pDB, pUUID, pUID))
     {
         execute_sql(m_pDB, "DELETE FROM "ABRT_TABLE" "
-             "WHERE "COL_UUID" = '%s' "
-             "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-             pUUID, pUID
+                "WHERE "COL_UUID" = '%s' "
+                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
+                pUUID, pUID
         );
     }
     else
@@ -360,6 +394,11 @@ void CSQLite3::DeleteRow(const char *pUUID, const char *pUID)
 
 void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
 {
+    if (!is_string_safe(dump_dir))
+    {
+        return;
+    }
+
     execute_sql(m_pDB,
                 "DELETE FROM "ABRT_TABLE" "
                 "WHERE "COL_DEBUG_DUMP_PATH" = '%s'",
@@ -369,6 +408,13 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
 
 void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMessage)
 {
+    if (!is_string_safe(pUUID)
+     || !is_string_safe(pUID)
+     || !is_string_safe(pMessage)
+    ) {
+        return;
+    }
+
     if (pUID[0] == '0' && !pUID[1])
     {
         execute_sql(m_pDB,
@@ -409,6 +455,12 @@ void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMes
 vector_database_rows_t CSQLite3::GetUIDData(const char *pUID)
 {
     vector_database_rows_t table;
+
+    if (!is_string_safe(pUID))
+    {
+        return table;
+    }
+
     if (pUID[0] == '0' && !pUID[1])
     {
         get_table(table, m_pDB, "SELECT * FROM "ABRT_TABLE";");
@@ -426,6 +478,12 @@ vector_database_rows_t CSQLite3::GetUIDData(const char *pUID)
 
 database_row_t CSQLite3::GetRow(const char *pUUID, const char *pUID)
 {
+    if (!is_string_safe(pUUID)
+     || !is_string_safe(pUID)
+    ) {
+        return database_row_t();
+    }
+
     vector_database_rows_t table;
 
     if (pUID[0] == '0' && !pUID[1])

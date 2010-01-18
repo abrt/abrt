@@ -120,17 +120,14 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
             throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
         struct stat buf;
-        if (fstat(fileno(f), &buf) == -1) /* TODO: never fails */
-        {
-            throw CABRTException(EXCEP_PLUGIN, "Can't stat archive file '%s'", pFilename);
-        }
+        fstat(fileno(f), &buf); /* never fails */
         CURL* curl = xcurl_easy_init();
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
         /* specify target */
         curl_easy_setopt(curl, CURLOPT_URL, wholeURL.c_str());
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
-        curl_easy_setopt(curl, CURLOPT_INFILESIZE, buf.st_size);
+        curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)buf.st_size);
         /* everything is done here; result 0 means success */
         result = curl_easy_perform(curl);
         /* goodbye */
@@ -221,7 +218,7 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
         else if (it->second[CD_TYPE] == CD_BIN)
         {
             string ofile_name = concat_path_file(tmptar_name.c_str(), it->first.c_str());
-            if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str()) < 0)
+            if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str(), 0644) < 0)
             {
                 throw CABRTException(EXCEP_PLUGIN,
                         "Can't copy '%s' to '%s'",
@@ -399,19 +396,18 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-//ok to delete?
-//const map_plugin_settings_t& CTicketUploader::GetSettings()
-//{
-//    m_pSettings["Customer"] = m_sCustomer;
-//    m_pSettings["Ticket"] = m_sTicket;
-//    m_pSettings["URL"] = m_sURL;
-//    m_pSettings["Encrypt"] = m_bEncrypt ? "yes" : "no";
-//    m_pSettings["Upload"] = m_bEncrypt ? "yes" : "no";
-//    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
-//    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
-//
-//    return m_pSettings;
-//}
+const map_plugin_settings_t& CTicketUploader::GetSettings()
+{
+    m_pSettings["Customer"] = m_sCustomer;
+    m_pSettings["Ticket"] = m_sTicket;
+    m_pSettings["URL"] = m_sURL;
+    m_pSettings["Encrypt"] = m_bEncrypt ? "yes" : "no";
+    m_pSettings["Upload"] = m_bEncrypt ? "yes" : "no";
+    m_pSettings["RetryCount"] = to_string(m_nRetryCount);
+    m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
+
+    return m_pSettings;
+}
 
 PLUGIN_INFO(REPORTER,
             CTicketUploader,

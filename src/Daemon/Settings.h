@@ -9,7 +9,6 @@ typedef map_map_string_t map_abrt_settings_t;
 
 extern set_string_t  g_settings_setOpenGPGPublicKeys;
 extern set_string_t  g_settings_mapBlackList;
-extern set_string_t  g_settings_setEnabledPlugins;
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern bool          g_settings_bOpenGPGCheck;
 extern std::string   g_settings_sDatabase;

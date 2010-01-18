@@ -3,7 +3,7 @@ import gtk
 from PluginList import getPluginInfoList
 from CC_gui_functions import *
 #from PluginSettingsUI import PluginSettingsUI
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 
 #FIXME: create a better struct, to automatize hydrate/dehydrate process

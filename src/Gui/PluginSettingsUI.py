@@ -1,5 +1,5 @@
 import gtk
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 class PluginSettingsUI(gtk.Dialog):
     def __init__(self, pluginfo, parent=None):

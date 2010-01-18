@@ -13,6 +13,9 @@
 
 #define XML_RPC_SUFFIX "/xmlrpc.cgi"
 
+/*
+ *  TODO: npajkovs: better deallocation of xmlrpc value
+ */
 
 /*
  * Static namespace for xmlrpc stuff.
@@ -39,7 +42,8 @@ void ctx::login(const char* login, const char* passwd)
     xmlrpc_env_init(&env);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.login", param, &result);
@@ -62,14 +66,16 @@ void ctx::logout()
     xmlrpc_env_init(&env);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", "");
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.logout", param, &result);
     xmlrpc_DECREF(param);
     if (result)
         xmlrpc_DECREF(result);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 }
 
 bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
@@ -77,23 +83,36 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
+    // fails only when you write query. when it's done it never fails.
     xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", to_string(bug_id).c_str());
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.getBug", param, &result);
-    throw_if_xml_fault_occurred(&env);
+    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
     xmlrpc_DECREF(param);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* reporter_member = NULL;
     xmlrpc_struct_find_value(&env, result, "reporter", &reporter_member);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+    {
+        xmlrpc_DECREF(result);
+        throw_xml_fault(&env);
+    }
 
     if (reporter_member)
     {
         const char* reporter = NULL;
         xmlrpc_read_string(&env, reporter_member, &reporter);
-        throw_if_xml_fault_occurred(&env);
+        if (env.fault_occurred)
+        {
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(reporter_member);
+            throw_xml_fault(&env);
+        }
 
         bool eq = (strcmp(reporter, login) == 0);
         free((void*)reporter);
@@ -107,7 +126,11 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
 
     xmlrpc_value* cc_member = NULL;
     xmlrpc_struct_find_value(&env, result, "cc", &cc_member);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+    {
+        xmlrpc_DECREF(result);
+        throw_xml_fault(&env);
+    }
 
     if (cc_member)
     {
@@ -117,11 +140,22 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
         {
             xmlrpc_value* item = NULL;
             xmlrpc_array_read_item(&env, cc_member, i, &item); // Correct
-            throw_if_xml_fault_occurred(&env);
+            if (env.fault_occurred)
+            {
+                xmlrpc_DECREF(result);
+                xmlrpc_DECREF(cc_member);
+                throw_xml_fault(&env);
+            }
 
             const char* cc = NULL;
             xmlrpc_read_string(&env, item, &cc);
-            throw_if_xml_fault_occurred(&env);
+            if (env.fault_occurred)
+            {
+                xmlrpc_DECREF(result);
+                xmlrpc_DECREF(cc_member);
+                xmlrpc_DECREF(item);
+                throw_xml_fault(&env);
+            }
 
             bool eq = (strcmp(cc, login) == 0);
             free((void*)cc);
@@ -145,15 +179,19 @@ void ctx::add_plus_one_cc(uint32_t bug_id, const char* login)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
-    throw_if_xml_fault_occurred(&env);
+    // fails only when you write query. when it's done it never fails.
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login); 
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.update", param, &result);
-    throw_if_xml_fault_occurred(&env);
+    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
+    xmlrpc_DECREF(param);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_DECREF(result);
-    xmlrpc_DECREF(param);
 }
 
 int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
@@ -163,36 +201,61 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
 
     std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
 
+    // fails only when you write query. when it's done it never fails.
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query.c_str());
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.search", param, &result);
-    throw_if_xml_fault_occurred(&env);
+    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
     xmlrpc_DECREF(param);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* bugs_member = NULL;
     xmlrpc_struct_find_value(&env, result, "bugs", &bugs_member);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+    {
+        xmlrpc_DECREF(result);
+        throw_xml_fault(&env);
+    }
 
     if (bugs_member)
     {
         // when array size is equal 0 that means no bug reported
         uint32_t array_size = xmlrpc_array_size(&env, bugs_member);
-        throw_if_xml_fault_occurred(&env);
-        if (array_size == 0)
+        if (env.fault_occurred)
         {
-            xmlrpc_DECREF(bugs_member);
             xmlrpc_DECREF(result);
+            xmlrpc_DECREF(bugs_member);
+            throw_xml_fault(&env);
+        }
+        else if (array_size == 0)
+        {
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(bugs_member);
             return -1;
         }
 
         xmlrpc_value* item = NULL;
         xmlrpc_array_read_item(&env, bugs_member, 0, &item); // Correct
-        throw_if_xml_fault_occurred(&env);
+        if (env.fault_occurred)
+        {
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(bugs_member);
+            throw_xml_fault(&env);
+        }
+
         xmlrpc_value* bug = NULL;
         xmlrpc_struct_find_value(&env, item, "bug_id", &bug);
-        throw_if_xml_fault_occurred(&env);
+        if (env.fault_occurred)
+        {
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(bugs_member);
+            xmlrpc_DECREF(item);
+            throw_xml_fault(&env);
+        }
 
         if (bug)
         {
@@ -236,6 +299,7 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
     std::string version;
     parse_release(release.c_str(), product, version);
 
+    // fails only when you write query. when it's done it never fails.
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                                         "product", product.c_str(),
                                         "component", component.c_str(),
@@ -245,27 +309,39 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
                                         "status_whiteboard", status_whiteboard.c_str(),
                                         "platform", arch.c_str()
                               );
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.create", param, &result);
-    throw_if_xml_fault_occurred(&env);
+    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
+    xmlrpc_DECREF(param);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* id;
     xmlrpc_struct_find_value(&env, result, "id", &id);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+    {
+        xmlrpc_DECREF(result);
+        throw_xml_fault(&env);
+    }
 
     xmlrpc_int bug_id = -1;
     if (id)
     {
         xmlrpc_read_int(&env, id, &bug_id);
-        throw_if_xml_fault_occurred(&env);
+        if (env.fault_occurred)
+        {
+            xmlrpc_DECREF(result);
+            xmlrpc_DECREF(id);
+            throw_xml_fault(&env);
+        }
         log("New bug id: %i", bug_id);
         update_client(_("New bug id: %i"), bug_id);
     }
 
     xmlrpc_DECREF(result);
-    xmlrpc_DECREF(param);
     xmlrpc_DECREF(id);
     return bug_id;
 }
@@ -287,6 +363,7 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCra
         if (type == CD_ATT)
         {
             char *encoded64 = encode_base64(content.c_str(), content.length());
+            // fails only when you write query. when it's done it never fails.
             xmlrpc_value* param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s})",
                                               bug_id_str,
                                               "description", ("File: " + filename).c_str(),
@@ -295,12 +372,18 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCra
                                               "data", encoded64
                                       );
             free(encoded64);
-            throw_if_xml_fault_occurred(&env);
+            if (env.fault_occurred)
+                throw_xml_fault(&env);
 
             xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.addAttachment", param, &result);
-            throw_if_xml_fault_occurred(&env);
-            xmlrpc_DECREF(result);
+            // we don't need anymore xml structure for calling xmlrpc query(calls only once)
             xmlrpc_DECREF(param);
+            if (env.fault_occurred)
+            {
+                xmlrpc_DECREF(result);
+                throw_xml_fault(&env);
+            }
+            xmlrpc_DECREF(result);
         }
     }
 }

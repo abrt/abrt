@@ -51,6 +51,8 @@ class CDebugDump
         DIR* m_pGetNextFileDir;
         bool m_bOpened;
         bool m_bLocked;
+        uid_t m_uid;
+        gid_t m_gid;
 
         void SaveKernelArchitectureRelease();
 
@@ -62,7 +64,7 @@ class CDebugDump
         ~CDebugDump();
 
         void Open(const char *pDir);
-        void Create(const char *pDir, int64_t uid);
+        void Create(const char *pDir, uid_t uid);
         void Delete();
         void Close();
 

@@ -28,8 +28,8 @@
 /* Too large files are trimmed. */
 #define FILE_SIZE_LIMIT 20000000 /* ~ 20 MB */
 
-#define EX_PARSINGFAILED EX__MAX + 1
-#define EX_THREADDETECTIONFAILED EX__MAX + 2
+#define EX_PARSINGFAILED EX__MAX + 1  /* = 79 */
+#define EX_THREADDETECTIONFAILED EX__MAX + 2 /* = 80 */
 
 const char *argp_program_version = "abrt-backtrace " VERSION;
 const char *argp_program_bug_address = "<crash-catcher@lists.fedorahosted.org>";

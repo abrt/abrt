@@ -154,6 +154,9 @@ enum {
     ABRT_DBUS_ERROR = -1,
     ABRT_DBUS_LAST_FIELD = 0,
     ABRT_DBUS_MORE_FIELDS = 1,
+    /* note that dbus_message_iter_next() returns FALSE on last field
+     * and TRUE if there are more fields.
+     * It maps exactly on the above constants. */
 };
 /* Checks type, loads data, advances to the next arg.
  * Returns TRUE if next arg exists.

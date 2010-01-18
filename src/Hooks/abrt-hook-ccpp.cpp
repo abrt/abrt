@@ -1,5 +1,5 @@
 /*
-    CCpp.cpp - the hook for C/C++ crashing program
+    abrt-hook-ccpp.cpp - the hook for C/C++ crashing program
 
     Copyright (C) 2009	Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009	RedHat inc.
@@ -19,6 +19,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
+#include "hooklib.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include <syslog.h>
@@ -44,17 +45,17 @@ static char* malloc_readlink(const char *linkname)
 
 static char* get_executable(pid_t pid)
 {
-    char buf[sizeof("/proc/%u/exe") + sizeof(int)*3];
+    char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
 
-    sprintf(buf, "/proc/%u/exe", (int)pid);
+    sprintf(buf, "/proc/%lu/exe", (long)pid);
     return malloc_readlink(buf);
 }
 
 static char* get_cwd(pid_t pid)
 {
-    char buf[sizeof("/proc/%u/cwd") + sizeof(int)*3];
+    char buf[sizeof("/proc/%lu/cwd") + sizeof(long)*3];
 
-    sprintf(buf, "/proc/%u/cwd", (int)pid);
+    sprintf(buf, "/proc/%lu/cwd", (long)pid);
     return malloc_readlink(buf);
 }
 
@@ -63,12 +64,12 @@ int main(int argc, char** argv)
     int fd;
     struct stat sb;
 
-    const char* program_name = argv[0];
     if (argc < 5)
     {
+        const char* program_name = argv[0];
         error_msg_and_die("Usage: %s: DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT", program_name);
     }
-    openlog("abrt", 0, LOG_DAEMON);
+    openlog("abrt", LOG_PID, LOG_DAEMON);
     logmode = LOGMODE_SYSLOG;
 
     errno = 0;
@@ -113,72 +114,23 @@ int main(int argc, char** argv)
         char* executable = get_executable(pid);
         if (executable == NULL)
         {
-            error_msg_and_die("can't read /proc/%u/exe link", (int)pid);
+            error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
         }
         if (strstr(executable, "/abrt-hook-ccpp"))
         {
-            error_msg_and_die("pid %u is '%s', not dumping it to avoid recursion",
-                            (int)pid, executable);
+            error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
+                            (long)pid, executable);
         }
 
         /* Parse abrt.conf and plugins/CCpp.conf */
         unsigned setting_MaxCrashReportsSize = 0;
         bool setting_MakeCompatCore = false;
-        bool abrt_conf = true;
-        FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
-        if (fp)
+        parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore);
+
+        if (setting_MaxCrashReportsSize > 0)
         {
-            char line[256];
-            while (1)
-            {
-                if (fgets(line, sizeof(line), fp) == NULL)
-                {
-                    /* Next .conf file plz */
-                    if (abrt_conf)
-                    {
-                        abrt_conf = false;
-                        fp = fopen(CONF_DIR"/plugins/CCpp.conf", "r");
-                        if (fp)
-                            continue;
-                    }
-                    break;
-                }
-
-                unsigned len = strlen(line);
-                if (len > 0 && line[len-1] == '\n')
-                    line[--len] = '\0';
-                const char *p = skip_whitespace(line);
-#undef DIRECTIVE
-#define DIRECTIVE "MaxCrashReportsSize"
-                if (strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)
-                {
-                    p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
-                    if (*p != '=')
-                        continue;
-                    p = skip_whitespace(p + 1);
-                    if (isdigit(*p))
-                        /* x1.25: go a bit up, so that usual in-daemon trimming
-                         * kicks in first, and we don't "fight" with it. */
-                        setting_MaxCrashReportsSize = (unsigned long)xatou(p) * 5 / 4;
-                    continue;
-                }
-#undef DIRECTIVE
-#define DIRECTIVE "MakeCompatCore"
-                if (strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)
-                {
-                    p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
-                    if (*p != '=')
-                        continue;
-                    p = skip_whitespace(p + 1);
-                    setting_MakeCompatCore = string_to_bool(p);
-                    continue;
-                }
-#undef DIRECTIVE
-                /* add more 'if (strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)' here... */
-            }
-            fclose(fp);
+            check_free_space(setting_MaxCrashReportsSize);
         }
-
 
         char path[PATH_MAX];
 
@@ -186,7 +138,7 @@ int main(int argc, char** argv)
          * if they happen too often. Else, write new marker value.
          */
         snprintf(path, sizeof(path), "%s/last-ccpp", dddir);
-        fd = open(path, O_RDWR | O_CREAT, 0666);
+        fd = open(path, O_RDWR | O_CREAT, 0600);
         if (fd >= 0)
         {
             int sz;
@@ -232,7 +184,7 @@ int main(int argc, char** argv)
                  * but it does not log file name */
                 error_msg_and_die("error saving coredump to %s", path);
             }
-            log("saved core dump of pid %u (%s) to %s (%llu bytes)", (int)pid, executable, path, (long long)core_size);
+            log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
             return 0;
         }
 
@@ -240,7 +192,7 @@ int main(int argc, char** argv)
         const char *signame = strsignal(signal_no);
         char *reason = xasprintf("Process was terminated by signal %s (%s)", signal_str, signame ? signame : signal_str);
 
-        snprintf(path, sizeof(path), "%s/ccpp-%ld-%u", dddir, (long)time(NULL), (int)pid);
+        snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu", dddir, (long)time(NULL), (long)pid);
         CDebugDump dd;
         dd.Create(path, uid);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
@@ -263,6 +215,10 @@ int main(int argc, char** argv)
             dd.Close();
             perror_msg_and_die("can't open '%s'", path);
         }
+//TODO: chown to uid:abrt?
+//Currently it is owned by 0:0 but is readable by anyone, so the owner
+//of the crashed binary still can access it, as he has
+//r-x access to the dump dir.
         core_size = copyfd_eof(STDIN_FILENO, core_fd);
         if (core_size < 0 || fsync(core_fd) != 0)
         {
@@ -275,7 +231,7 @@ int main(int argc, char** argv)
         }
         lseek(core_fd, 0, SEEK_SET);
         /* note: core_fd is still open, we may use it later to copy core to user's dir */
-        log("saved core dump of pid %u (%s) to %s (%llu bytes)", (int)pid, executable, path, (long long)core_size);
+        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
         free(executable);
         free(cmdline);
         path[len] = '\0'; /* path now contains directory name */
@@ -288,30 +244,10 @@ int main(int argc, char** argv)
          */
         dd.Close();
 
-        /* rhbz#539551: "abrt going crazy when crashing process is respawned".
-         * Do we want to protect against or ameliorate this? How? Ideas:
-         * (1) nice ourself?
-         * (2) check total size of dump dir, if it overflows, either abort dump
-         *     or delete oldest/biggest dumps? [abort would be simpler,
-         *     abrtd already does "delete on overflow" thing]
-         * (3) detect parallel dumps in progress and back off
-         *     (pause/renice further/??)
-         */
-
+        /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
         if (setting_MaxCrashReportsSize > 0)
         {
-            string worst_dir;
-            while (1)
-            {
-                const char *base_dirname = strrchr(path, '/') + 1; /* never NULL */
-                /* We exclude our own dump from candidates for deletion (3rd param): */
-                double dirsize = get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, base_dirname);
-                if (dirsize / (1024*1024) < setting_MaxCrashReportsSize || worst_dir == "")
-                    break;
-                log("size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir.c_str());
-                delete_debug_dump_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
-                worst_dir = "";
-            }
+            trim_debug_dumps(setting_MaxCrashReportsSize, path);
         }
 
         if (!setting_MakeCompatCore)
@@ -349,7 +285,7 @@ int main(int argc, char** argv)
     }
 
     /* Mimic "core.PID" if requested */
-    char core_basename[sizeof("core.%u") + sizeof(int)*3] = "core";
+    char core_basename[sizeof("core.%lu") + sizeof(long)*3] = "core";
     char buf[] = "0\n";
     fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
     if (fd >= 0)
@@ -359,7 +295,7 @@ int main(int argc, char** argv)
     }
     if (strcmp(buf, "1\n") == 0)
     {
-        sprintf(core_basename, "core.%u", (int)pid);
+        sprintf(core_basename, "core.%lu", (long)pid);
     }
 
     /* man core:
@@ -425,7 +361,7 @@ int main(int argc, char** argv)
         unlink(core_basename);
         return 1;
     }
-    log("saved core dump of pid %u to %s/%s (%llu bytes)", (int)pid, user_pwd, core_basename, (long long)size);
+    log("saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)size);
 
     return 0;
 }

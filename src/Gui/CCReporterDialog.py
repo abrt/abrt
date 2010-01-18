@@ -12,7 +12,7 @@ from ABRTPlugin import PluginInfo
 from PluginSettingsUI import PluginSettingsUI
 from PluginList import getPluginInfoList
 #from CCDumpList import getDumpList, DumpList
-from abrt_utils import _
+from abrt_utils import _, log, log1, log2
 
 # FIXME - create method or smth that returns type|editable|content
 CD_TYPE = 0
@@ -131,7 +131,7 @@ class ReporterDialog():
             ui.dehydrate()
             if plugin.Settings.check():
                 try:
-                    plugin.save_settings()
+                    plugin.save_settings_on_client_side()
                 except Exception, e:
                     gui_error_message(_("Can't save plugin settings:\n %s" % e))
                 box = image.get_parent()

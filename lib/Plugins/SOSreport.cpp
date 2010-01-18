@@ -91,7 +91,9 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
     update_client(_("running sosreport: %s"), command.c_str());
     std::string output = command;
     output += '\n';
-    output += popen_and_save_output(command.c_str());
+    char *command_out = run_in_shell_and_save_output(/*flags:*/ 0, command.c_str(), /*dir:*/ NULL, /*size_p:*/ NULL);
+    output += command_out;
+    free(command_out);
     update_client(_("done running sosreport"));
 
     std::string sosreport_filename = ParseFilename(output);
@@ -101,8 +103,9 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
     dd.Open(pActionDir);
     //Not useful
     //dd.SaveText("sosreportoutput", output);
-    if (copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str()) < 0)
+    if (copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str(), 0644) < 0)
     {
+        dd.Close();
         throw CABRTException(EXCEP_PLUGIN,
                 "Can't copy '%s' to '%s'",
                 sosreport_filename.c_str(),

@@ -13,7 +13,7 @@ using namespace std;
 
 
 static int
-put_stream(const char *pURL, FILE* f, size_t content_length)
+put_stream(const char *pURL, FILE* f, off_t content_length)
 {
     CURL* curl = xcurl_easy_init();
     /* enable uploading */
@@ -22,8 +22,8 @@ put_stream(const char *pURL, FILE* f, size_t content_length)
     curl_easy_setopt(curl, CURLOPT_URL, pURL);
     /* file handle: passed to the default callback, it will fread() it */
     curl_easy_setopt(curl, CURLOPT_READDATA, f);
-    /* get file size */
-    curl_easy_setopt(curl, CURLOPT_INFILESIZE, content_length);
+    /* file size */
+    curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)content_length);
     /* everything is done here; result 0 means success */
     int result = curl_easy_perform(curl);
     /* goodbye */
@@ -43,9 +43,9 @@ send_string(const char *pURL,
         return;
     }
 
+    size_t content_length = strlen(pContent);
     while (1)
     {
-        int content_length = strlen(pContent);
         FILE* f = fmemopen((void*)pContent, content_length, "r");
         if (!f)
         {
@@ -53,7 +53,7 @@ send_string(const char *pURL,
         }
         int result = put_stream(pURL, f, content_length);
         fclose(f);
-        if (!result)
+        if (result == 0)
             return;
         update_client(_("Sending failed, try it again: %s"), curl_easy_strerror((CURLcode)result));
         if (--retryCount <= 0)
@@ -88,10 +88,9 @@ send_file(const char *pURL,
         }
         struct stat buf;
         fstat(fileno(f), &buf); /* can't fail */
-        int content_length = buf.st_size;
-        int result = put_stream(pURL, f, content_length);
+        int result = put_stream(pURL, f, buf.st_size);
         fclose(f);
-        if (!result)
+        if (result == 0)
             return;
         update_client(_("Sending failed, try it again: %s"), curl_easy_strerror((CURLcode)result));
         if (--retryCount <= 0)
@@ -122,6 +121,7 @@ resolve_relative_url(const char *url, const char *base)
     }
 
     const char *end_of_protocol = strchr(base, ':');
+//TODO: why is this safe?!!
     string protocol(base, end_of_protocol - base);
 
     end_of_protocol += 3; /* skip "://" */
@@ -167,11 +167,14 @@ struct_find_int(xmlrpc_env* env, xmlrpc_value* result,
 {
     xmlrpc_value* an_xmlrpc_value;
     xmlrpc_struct_find_value(env, result, fieldName, &an_xmlrpc_value);
-    throw_if_xml_fault_occurred(env);
+    if (env->fault_occurred)
+        throw_xml_fault(env);
+
     if (an_xmlrpc_value)
     {
         xmlrpc_read_int(env, an_xmlrpc_value, &value);
-        throw_if_xml_fault_occurred(env);
+        if (env->fault_occurred)
+            throw_xml_fault(env);
         xmlrpc_DECREF(an_xmlrpc_value);
         return true;
     }
@@ -184,12 +187,14 @@ struct_find_string(xmlrpc_env* env, xmlrpc_value* result,
 {
     xmlrpc_value* an_xmlrpc_value;
     xmlrpc_struct_find_value(env, result, fieldName, &an_xmlrpc_value);
-    throw_if_xml_fault_occurred(env);
+    if (env->fault_occurred)
+        throw_xml_fault(env);
     if (an_xmlrpc_value)
     {
         const char* value_s;
         xmlrpc_read_string(env, an_xmlrpc_value, &value_s);
-        throw_if_xml_fault_occurred(env);
+        if (env->fault_occurred)
+            throw_xml_fault(env);
         value = value_s;
         xmlrpc_DECREF(an_xmlrpc_value);
         free((void*)value_s);
@@ -228,20 +233,24 @@ ctx::login(const char* login, const char* passwd)
     xmlrpc_env_init(&env);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "(ss)", login, passwd);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Catcut.auth", param, &result);
     xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value *cookie_xml;
     const char *cookie;
     string cookie_str;
     xmlrpc_struct_find_value(&env, result, "cookie", &cookie_xml);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     xmlrpc_read_string(&env, cookie_xml, &cookie);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     cookie_str = cookie;
     /* xmlrpc_read_string returns *malloc'ed ptr*.
      * doc is not very clear on it, but I looked in xmlrpc sources. */
@@ -284,20 +293,24 @@ ctx::new_bug(const char *auth_cookie, const map_crash_report_t& pCrashReport)
                 "status_whiteboard", status_whiteboard.c_str(),
                 "platform", arch.c_str()
                 );
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value *result;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Catcut.createTicket", param, &result);
     xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value *bug_id_xml;
     const char *bug_id;
     string bug_id_str;
     xmlrpc_struct_find_value(&env, result, "ticket", &bug_id_xml);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     xmlrpc_read_string(&env, bug_id_xml, &bug_id);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
     bug_id_str = bug_id;
     log("New bug id: %s", bug_id);
     update_client(_("New bug id: %s"), bug_id);
@@ -321,12 +334,14 @@ ctx::request_upload(const char* auth_cookie, const char* pTicketName,
                 pTicketName,
                 fileName,
                 description);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Catcut.requestUpload", param, &result);
     xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
+    if (env.fault_occurred)
+        throw_xml_fault(&env);
 
     string URL;
     bool has_URL = struct_find_string(&env, result, "uri", URL);

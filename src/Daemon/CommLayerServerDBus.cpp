@@ -325,11 +325,9 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
 
 static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 {
-    vector_map_string_t plugins_info = g_pPluginManager->GetPluginsInfo();
-
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, plugins_info);
+    store_val(&out_iter, g_pPluginManager->GetPluginsInfo());
 
     send_flush_and_unref(reply);
     return 0;
@@ -348,9 +346,9 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    long unix_uid = get_remote_uid(call);
-    VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName, to_string(unix_uid).c_str());
+    //long unix_uid = get_remote_uid(call);
+    //VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
+    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName); //, to_string(unix_uid).c_str());
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
@@ -393,6 +391,7 @@ static int handle_SetPluginSettings(DBusMessage* call, DBusMessage* reply)
     return 0;
 }
 
+#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
 static int handle_RegisterPlugin(DBusMessage* call, DBusMessage* reply)
 {
     int r;
@@ -432,6 +431,7 @@ static int handle_UnRegisterPlugin(DBusMessage* call, DBusMessage* reply)
     send_flush_and_unref(reply);
     return 0;
 }
+#endif
 
 static int handle_GetSettings(DBusMessage* call, DBusMessage* reply)
 {
@@ -496,10 +496,12 @@ static DBusHandlerResult message_received(DBusConnection* conn, DBusMessage* msg
         r = handle_GetPluginSettings(msg, reply);
     else if (strcmp(member, "SetPluginSettings") == 0)
         r = handle_SetPluginSettings(msg, reply);
+#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
     else if (strcmp(member, "RegisterPlugin") == 0)
         r = handle_RegisterPlugin(msg, reply);
     else if (strcmp(member, "UnRegisterPlugin") == 0)
         r = handle_UnRegisterPlugin(msg, reply);
+#endif
     else if (strcmp(member, "GetSettings") == 0)
         r = handle_GetSettings(msg, reply);
     else if (strcmp(member, "SetSettings") == 0)

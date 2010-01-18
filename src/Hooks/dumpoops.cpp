@@ -83,6 +83,7 @@ int main(int argc, char **argv)
 	void *handle;
 
 	errno = 0;
+//TODO: use it directly, not via dlopen?
 	handle = dlopen(PLUGINS_LIB_DIR"/libKerneloopsScanner.so", RTLD_NOW);
 	if (!handle)
 		perror_msg_and_die("can't load %s", PLUGINS_LIB_DIR"/libKerneloopsScanner.so");

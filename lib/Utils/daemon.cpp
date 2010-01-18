@@ -78,12 +78,12 @@ static char *append_escaped(char *start, const char *s)
 #define COMMAND_LINE_SIZE 2048
 char* get_cmdline(pid_t pid)
 {
-    char path[sizeof("/proc/%u/cmdline") + sizeof(int)*3];
+    char path[sizeof("/proc/%lu/cmdline") + sizeof(long)*3];
     char cmdline[COMMAND_LINE_SIZE];
     char escaped_cmdline[COMMAND_LINE_SIZE*4 + 4];
 
     escaped_cmdline[1] = '\0';
-    sprintf(path, "/proc/%u/cmdline", (int)pid);
+    sprintf(path, "/proc/%lu/cmdline", (long)pid);
     int fd = open(path, O_RDONLY);
     if (fd >= 0)
     {
