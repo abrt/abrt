@@ -6,7 +6,6 @@ import gtk.glade
 import pango
 import sys
 from CC_gui_functions import *
-from CCReport import Report
 import CellRenderers
 from ABRTPlugin import PluginInfo
 from PluginSettingsUI import PluginSettingsUI

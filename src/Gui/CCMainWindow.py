@@ -28,7 +28,6 @@ from CCDumpList import getDumpList, DumpList
 from CCReporterDialog import ReporterDialog
 from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
-from CCReport import Report
 from PluginList import getPluginInfoList
 import ABRTExceptions
 

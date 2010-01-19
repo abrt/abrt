@@ -20,7 +20,6 @@
 #include <dbus/dbus-shared.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
-#include <limits.h>
 #if HAVE_CONFIG_H
     #include <config.h>
 #endif
