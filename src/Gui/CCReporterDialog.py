@@ -21,7 +21,6 @@ CD_CONTENT = 2
 CD_SYS = "s"
 CD_BIN = "b"
 CD_TXT = "t"
-CD_ATT = "a"
 
 # response
 REFRESH = -50
@@ -256,7 +255,7 @@ class ReporterDialog():
                     self.editable.append(item)
                 self.row_dict[item] = self.reportListStore.append([item, self.report[item][CD_CONTENT],
                                                                     item in self.editable, True,
-                                                                    self.report[item][CD_TYPE] in [CD_ATT,CD_BIN]])
+                                                                    self.report[item][CD_TYPE] == CD_BIN])
 
     def dehydrate(self):
         attributes = ["item", "content", "editable", "send", "attachment"]

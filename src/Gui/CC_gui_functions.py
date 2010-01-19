@@ -234,5 +234,5 @@ def show_log(log, parent=None):
 
 if __name__ == "__main__":
     window = gtk.Window()
-    gui_report_dialog("<b>Bugzilla</b>: <span foreground='red'>CReporterBugzilla::Report(): CReporterBugzilla::Login(): RPC response indicates failure.  The username or password you entered is not valid.</span>\n<b>Logger</b>: Report was stored into: /var/log/abrt-logger", window)
+    gui_report_dialog("<b>Bugzilla</b>: <span foreground='red'>CReporterBugzilla::Report(): CReporterBugzilla::Login(): RPC response indicates failure.  The username or password you entered is not valid.</span>\n<b>Logger</b>: Report was stored into: /var/log/abrt.log", window)
     gtk.main()

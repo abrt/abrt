@@ -74,7 +74,7 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
     args = append_str_to_vector(args, arg_size, MAILX_COMMAND);
 
 //TODO: move email body generation to make_descr.cpp
-    std::string binaryFiles, commonFiles, bigTextFiles, additionalFiles, UUIDFile;
+    std::string binaryFiles, commonFiles, additionalFiles, UUIDFile;
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
@@ -105,13 +105,6 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
                 commonFiles += "\n\n";
             }
         }
-        if (it->second[CD_TYPE] == CD_ATT)
-        {
-            bigTextFiles += it->first;
-            bigTextFiles += "\n-----\n";
-            bigTextFiles += it->second[CD_CONTENT];
-            bigTextFiles += "\n\n";
-        }
         if (it->second[CD_TYPE] == CD_BIN)
         {
             binaryFiles += " -a ";
@@ -133,9 +126,6 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
     emailBody += "\nAdditional information\n";
     emailBody += "=====\n\n";
     emailBody += additionalFiles;
-    emailBody += "\nOther information\n";
-    emailBody += "=====\n\n";
-    emailBody += bigTextFiles;
     emailBody += '\n';
 
     args = append_str_to_vector(args, arg_size, "-s");

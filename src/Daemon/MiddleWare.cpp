@@ -187,7 +187,7 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t
             add_crash_data_to_crash_report(
                     pCrashReport,
                     short_name,
-                    (content.length() < CD_ATT_SIZE ? CD_TXT : CD_ATT),
+                    CD_TXT,
                     CD_ISEDITABLE,
                     content
             );
@@ -432,6 +432,8 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                        const char *pUID)
 {
     report_status_t ret;
+
+    /* dbus handler passes pCrashReport from user without checking it */
 
     if (!CheckReport(pCrashReport))
     {
