@@ -60,13 +60,13 @@ void LoadOpenGPGPublicKey(const char* key);
  * is successful, then  a crash report is filled.
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
- * @param pCrashReport A filled crash report.
+ * @param pCrashData A filled crash report.
  * @return It return results of operation. See mw_result_t.
  */
 mw_result_t CreateCrashReport(const char *pUUID,
                               const char *pUID,
                               int force,
-                              map_crash_report_t& pCrashReport);
+                              map_crash_data_t& pCrashData);
 /**
  * Activates particular action plugin.
  * @param pActionDir A directory, which is passed as working to a action plugin.
@@ -88,11 +88,11 @@ void RunActionsAndReporters(const char *pDebugDumpDir);
  * fails, then default config is used. If pUID is emply string, default
  * config is used.
  * ...).
- * @param pCrashReport A crash report.
+ * @param pCrashData A crash report.
  * @param pUID An user uid
  * @return A report status, which reporters ends successfuly with messages.
  */
-report_status_t Report(const map_crash_report_t& pCrashReport,
+report_status_t Report(const map_crash_data_t& pCrashData,
                        map_map_string_t& pSettings,
                        const char *pUID);
 /**
@@ -108,22 +108,22 @@ std::string getDebugDumpDir( const char *pUUID,
  * Saves debugdump into database. If saving is successful,
  * it fills crash info.
  * @param pDebugDumpDir A debugdump directory.
- * @param pCrashInfo A crash info.
+ * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
-                        map_crash_info_t& pCrashInfo);
+                        map_crash_data_t& pCrashData);
 /**
  * Get one crash info. If getting is successful,
  * then crash info is filled.
  * @param pUUID A local UUID of a crash.
  * @param pUID An UID of an user.
- * @param pCrashInfo A crash info.
+ * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
 mw_result_t FillCrashInfo(const char *pUUID,
                         const char *pUID,
-                        map_crash_info_t& pCrashInfo);
+                        map_crash_data_t& pCrashData);
 /**
  * Gets all local UUIDs and UIDs of crashes. These crashes
  * occurred when a particular user was logged in.
@@ -154,5 +154,5 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name);
 
 bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid);
 
-void autoreport(const pair_string_string_t& reporter_options, const map_crash_report_t& crash_report);
+void autoreport(const pair_string_string_t& reporter_options, const map_crash_data_t& crash_report);
 #endif /*MIDDLEWARE_H_*/

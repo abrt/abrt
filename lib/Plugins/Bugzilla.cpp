@@ -32,8 +32,8 @@ struct ctx: public abrt_xmlrpc_conn {
     int32_t check_uuid_in_bugzilla(const char* component, const char* UUID);
     bool check_cc_and_reporter(uint32_t bug_id, const char* login);
     void add_plus_one_cc(uint32_t bug_id, const char* login);
-    uint32_t new_bug(const map_crash_report_t& pCrashReport);
-    void add_attachments(const char* bug_id_str, const map_crash_report_t& pCrashReport);
+    uint32_t new_bug(const map_crash_data_t& pCrashData);
+    void add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData);
 };
 
 void ctx::login(const char* login, const char* passwd)
@@ -278,22 +278,22 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
     return -1;
 }
 
-uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
+uint32_t ctx::new_bug(const map_crash_data_t& pCrashData)
 {
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    std::string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-    std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
-    std::string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];
-    std::string arch = pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
-    std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
+    std::string package = pCrashData.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+    std::string component = pCrashData.find(FILENAME_COMPONENT)->second[CD_CONTENT];
+    std::string release = pCrashData.find(FILENAME_RELEASE)->second[CD_CONTENT];
+    std::string arch = pCrashData.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
+    std::string uuid = pCrashData.find(CD_UUID)->second[CD_CONTENT];
 
     std::string summary = "[abrt] crash in " + package;
     std::string status_whiteboard = "abrt_hash:" + uuid;
 
     std::string description = "abrt "VERSION" detected a crash.\n\n";
-    description += make_description_bz(pCrashReport);
+    description += make_description_bz(pCrashData);
 
     std::string product;
     std::string version;
@@ -346,15 +346,15 @@ uint32_t ctx::new_bug(const map_crash_report_t& pCrashReport)
     return bug_id;
 }
 
-void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCrashReport)
+void ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData)
 {
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
     xmlrpc_value* result = NULL;
 
-    map_crash_report_t::const_iterator it = pCrashReport.begin();
-    for (; it != pCrashReport.end(); it++)
+    map_crash_data_t::const_iterator it = pCrashData.begin();
+    for (; it != pCrashData.end(); it++)
     {
         const std::string &filename = it->first;
         const std::string &type = it->second[CD_TYPE];
@@ -404,7 +404,7 @@ CReporterBugzilla::CReporterBugzilla() :
 CReporterBugzilla::~CReporterBugzilla()
 {}
 
-std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
+std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
                                       const map_plugin_settings_t& pSettings,
                                       const char *pArgs)
 {
@@ -433,8 +433,8 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
         NoSSLVerify = m_bNoSSLVerify;
     }
 
-    std::string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
-    std::string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
+    std::string component = pCrashData.find(FILENAME_COMPONENT)->second[CD_CONTENT];
+    std::string uuid = pCrashData.find(CD_UUID)->second[CD_CONTENT];
     try
     {
         ctx bz_server(BugzillaXMLRPC.c_str(), NoSSLVerify);
@@ -462,8 +462,8 @@ std::string CReporterBugzilla::Report(const map_crash_report_t& pCrashReport,
         }
 
         update_client(_("Creating new bug..."));
-        bug_id = bz_server.new_bug(pCrashReport);
-        bz_server.add_attachments(to_string(bug_id).c_str(), pCrashReport);
+        bug_id = bz_server.new_bug(pCrashData);
+        bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
 
         update_client(_("Logging out..."));
         bz_server.logout();

@@ -1,5 +1,15 @@
 #!/usr/bin/python
 # -*- mode:python -*-
+# ABRT Bugzilla Duplication Checker
+# Downloads all backtraces reported by ABRT from Bugzilla,
+# and search for duplicates using the newest ABRT duplication 
+# checker.
+#
+# Some bugs in Bugzilla were reported by older ABRT
+# versions, which had poor duplication detection.
+#
+# Please do not run this script unless it's neccessary to do so. 
+# It forces Bugzilla to send data related to thousands of bug reports.
 
 from bugzilla import RHBugzilla
 from optparse import OptionParser

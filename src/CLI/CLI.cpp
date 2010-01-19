@@ -47,12 +47,12 @@ enum
     OPT_DELETE
 };
 
-static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
+static void print_crash_infos(vector_map_crash_data_t& pCrashInfos, int pMode)
 {
     unsigned int ii;
     for (ii = 0; ii < pCrashInfos.size(); ii++)
     {
-        map_crash_info_t& info = pCrashInfos[ii];
+        map_crash_data_t& info = pCrashInfos[ii];
         if (pMode == OPT_GET_LIST_FULL || info[CD_REPORTED][CD_CONTENT] != "1")
         {
             const char *timestr = info[CD_TIME][CD_CONTENT].c_str();
@@ -189,7 +189,7 @@ int main(int argc, char** argv)
         case OPT_GET_LIST:
         case OPT_GET_LIST_FULL:
         {
-            vector_crash_infos_t ci = call_GetCrashInfos();
+            vector_map_crash_data_t ci = call_GetCrashInfos();
             print_crash_infos(ci, op);
             break;
         }

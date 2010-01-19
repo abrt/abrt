@@ -150,7 +150,7 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
 }
 
 
-string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
+string CTicketUploader::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
@@ -200,8 +200,8 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
 
     // Copy each entry into the tarball root,
     //   files are simply copied, strings are written to a file
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    map_crash_data_t::const_iterator it;
+    for (it = pCrashData.begin(); it != pCrashData.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {

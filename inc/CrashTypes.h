@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2009  Abrt team.
+    Copyright (C) 2009  RedHat inc.
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 #ifndef CRASHTYPES_H_
 #define CRASHTYPES_H_
 
@@ -40,29 +58,19 @@
 // <key, data>
 typedef map_vector_string_t map_crash_data_t;
 
-typedef map_crash_data_t map_crash_info_t;
-typedef map_crash_data_t map_crash_report_t;
-typedef std::vector<map_crash_info_t> vector_crash_infos_t;
+typedef std::vector<map_crash_data_t> vector_map_crash_data_t;
 
-inline void add_crash_data_to_crash_info(map_crash_info_t& pCrashInfo,
-                                         const std::string& pItem,
-                                         const std::string& pContent)
-{
-    pCrashInfo[pItem].push_back(CD_TXT);
-    pCrashInfo[pItem].push_back(CD_ISNOTEDITABLE);
-    pCrashInfo[pItem].push_back(pContent);
-}
+void add_to_crash_data(map_crash_data_t& pCrashData,
+		const char *pItem,
+		const char *pContent);
 
-inline void add_crash_data_to_crash_report(map_crash_report_t& pCrashReport,
-                                           const std::string& pItem,
-                                           const std::string& pType,
-                                           const std::string& pEditable,
-                                           const std::string& pContent)
-{
-    pCrashReport[pItem].push_back(pType);
-    pCrashReport[pItem].push_back(pEditable);
-    pCrashReport[pItem].push_back(pContent);
-}
+void add_to_crash_data_ext(map_crash_data_t& pCrashData,
+		const char *pItem,
+		const char *pType,
+		const char *pEditable,
+		const char *pContent);
 
+const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data,
+		const char *key);
 
-#endif /* CRASHTYPES_H_ */
+#endif
