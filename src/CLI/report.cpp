@@ -19,7 +19,8 @@
 #include "run-command.h"
 #include "dbus.h"
 #include "abrtlib.h"
-#include "DebugDump.h" // FILENAME_* defines
+#include "DebugDump.h"
+#include "CrashTypes.h" // FILENAME_* defines
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -195,13 +196,13 @@ static void write_crash_report(const map_crash_data_t &report, FILE *fp)
 			   _("# Describe the circumstances of this crash below."));
   write_crash_report_field(fp, report, CD_REPRODUCE,
 			   _("# How to reproduce the crash?"));
-  write_crash_report_field(fp, report, "backtrace",
+  write_crash_report_field(fp, report, FILENAME_BACKTRACE,
 			   _("# Stack trace: a list of active stack frames at the time the crash occurred\n# Check that it does not contain any sensitive data such as passwords."));
   write_crash_report_field(fp, report, CD_UUID, _("# UUID"));
   write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
-  write_crash_report_field(fp, report, "cmdline", _("# Command line"));
+  write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
   write_crash_report_field(fp, report, FILENAME_COMPONENT, _("# Component"));
-  write_crash_report_field(fp, report, "coredump", _("# Core dump"));
+  write_crash_report_field(fp, report, FILENAME_COREDUMP, _("# Core dump"));
   write_crash_report_field(fp, report, FILENAME_EXECUTABLE, _("# Executable"));
   write_crash_report_field(fp, report, FILENAME_KERNEL, _("# Kernel version"));
   write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
@@ -283,12 +284,12 @@ static int read_crash_report(map_crash_data_t &report, const char *text)
   int result = 0;
   result |= read_crash_report_field(text, report, CD_COMMENT);
   result |= read_crash_report_field(text, report, CD_REPRODUCE);
-  result |= read_crash_report_field(text, report, "backtrace");
+  result |= read_crash_report_field(text, report, FILENAME_BACKTRACE);
   result |= read_crash_report_field(text, report, CD_UUID);
   result |= read_crash_report_field(text, report, FILENAME_ARCHITECTURE);
-  result |= read_crash_report_field(text, report, "cmdline");
+  result |= read_crash_report_field(text, report, FILENAME_CMDLINE);
   result |= read_crash_report_field(text, report, FILENAME_COMPONENT);
-  result |= read_crash_report_field(text, report, "coredump");
+  result |= read_crash_report_field(text, report, FILENAME_COREDUMP);
   result |= read_crash_report_field(text, report, FILENAME_EXECUTABLE);
   result |= read_crash_report_field(text, report, FILENAME_KERNEL);
   result |= read_crash_report_field(text, report, FILENAME_PACKAGE);

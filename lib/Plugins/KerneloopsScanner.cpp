@@ -36,8 +36,6 @@
 
 #include <limits.h>
 
-#define FILENAME_KERNELOOPS  "kerneloops"
-
 // TODO: https://fedorahosted.org/abrt/ticket/78
 
 CKerneloopsScanner::CKerneloopsScanner()

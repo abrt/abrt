@@ -26,6 +26,7 @@
 #include "abrtlib.h"
 #include "hooklib.h"
 #include "DebugDump.h"
+#include "CrashTypes.h"
 #include "ABRTException.h"
 #if HAVE_CONFIG_H
 # include <config.h>
@@ -149,14 +150,14 @@ int main(int argc, char** argv)
 
   dd.SaveText(FILENAME_ANALYZER, "Python");
   dd.SaveText(FILENAME_EXECUTABLE, executable);
-  dd.SaveText("backtrace", bt);
+  dd.SaveText(FILENAME_BACKTRACE, bt);
   free(bt);
-  dd.SaveText("cmdline", cmdline);
+  dd.SaveText(FILENAME_CMDLINE, cmdline);
   free(cmdline);
-  dd.SaveText("uuid", uuid);
+  dd.SaveText(FILENAME_UUID, uuid);
   char uid[sizeof(long) * 3 + 2];
   sprintf(uid, "%lu", (long)getuid());
-  dd.SaveText("uid", uid);
+  dd.SaveText(FILENAME_UID, uid);
 
   dd.Close();
   log("saved python crash dump of pid %s to %s", pid, path);

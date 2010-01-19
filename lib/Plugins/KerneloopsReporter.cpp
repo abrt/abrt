@@ -30,8 +30,6 @@
 #include "CommLayerInner.h"
 #include "ABRTException.h"
 
-#define FILENAME_KERNELOOPS "kerneloops"
-
 /* helpers */
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 {

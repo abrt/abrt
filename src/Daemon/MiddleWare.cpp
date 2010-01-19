@@ -85,8 +85,8 @@ static char* is_text_file(const char *name, ssize_t *sz)
     }
 
     /* Some files in our dump directories are known to always be textual */
-    if (strcmp(name, "backtrace") == 0
-     || strcmp(name, "cmdline") == 0
+    if (strcmp(name, FILENAME_BACKTRACE) == 0
+     || strcmp(name, FILENAME_CMDLINE) == 0
     ) {
         return buf;
     }

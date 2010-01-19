@@ -21,22 +21,29 @@
 
 #include "abrt_types.h"
 
-// SYS - system value, should not be displayed
-// BIN - binary data
-// TXT - text data, can be displayed
-#define CD_SYS          "s"
-#define CD_BIN          "b"
-#define CD_TXT          "t"
-
-/* Text bigger than this usually is attached, not added inline */
-#define CD_TEXT_ATT_SIZE (2*1024)
-
-#define CD_ISEDITABLE       "y"
-#define CD_ISNOTEDITABLE    "n"
-
-#define CD_TYPE         (0)
-#define CD_EDITABLE     (1)
-#define CD_CONTENT      (2)
+// Filenames in dump directory
+#define FILENAME_ARCHITECTURE "architecture"
+#define FILENAME_KERNEL       "kernel"
+#define FILENAME_TIME         "time"
+#define FILENAME_UID          "uid"
+// uuid _file_ exists for Python analyzer only - remove, follow ccpp's example?
+// (ccpp keeps uuid in DB)
+#define FILENAME_UUID         "uuid"
+#define FILENAME_PACKAGE      "package"
+#define FILENAME_COMPONENT    "component"
+#define FILENAME_DESCRIPTION  "description"
+#define FILENAME_ANALYZER     "analyzer"
+#define FILENAME_RELEASE      "release"
+#define FILENAME_EXECUTABLE   "executable"
+#define FILENAME_REASON       "reason"
+#define FILENAME_COMMENT      "comment"
+#define FILENAME_REPRODUCE    "reproduce"
+#define FILENAME_RATING       "rating"
+#define FILENAME_CMDLINE      "cmdline"
+#define FILENAME_COREDUMP     "coredump"
+#define FILENAME_BACKTRACE    "backtrace"
+#define FILENAME_MEMORYMAP    "memorymap"
+#define FILENAME_KERNELOOPS   "kerneloops"
 
 #define CD_UUID         "UUID"
 #define CD_UID          "UID"
@@ -53,6 +60,23 @@
 #define CD_MWUID        "_MWUID"
 #define CD_MWUUID       "_MWUUID"
 #define CD_MWDDD        "_MWDDD"
+
+// SYS - system value, should not be displayed
+// BIN - binary data
+// TXT - text data, can be displayed
+#define CD_SYS          "s"
+#define CD_BIN          "b"
+#define CD_TXT          "t"
+
+/* Text bigger than this usually is attached, not added inline */
+#define CD_TEXT_ATT_SIZE (2*1024)
+
+#define CD_ISEDITABLE       "y"
+#define CD_ISNOTEDITABLE    "n"
+
+#define CD_TYPE         (0)
+#define CD_EDITABLE     (1)
+#define CD_CONTENT      (2)
 
 // currently, vector always has exactly 3 elements -> <type, editable, content>
 // <key, data>

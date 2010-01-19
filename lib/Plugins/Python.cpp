@@ -1,15 +1,14 @@
+#include "abrtlib.h"
 #include "Python.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
-
-#define FILENAME_BACKTRACE      "backtrace"
 
 static std::string CreateHash(const char *pDebugDumpDir)
 {
 	std::string uuid;
 	CDebugDump dd;
 	dd.Open(pDebugDumpDir);
-	dd.LoadText("uuid", uuid);
+	dd.LoadText(FILENAME_UUID, uuid);
 	return uuid;
 }
 

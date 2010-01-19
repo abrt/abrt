@@ -21,11 +21,9 @@
 #include "abrtlib.h"
 #include "hooklib.h"
 #include "DebugDump.h"
+#include "CrashTypes.h"
 #include "ABRTException.h"
 #include <syslog.h>
-
-#define FILENAME_EXECUTABLE     "executable"
-#define FILENAME_COREDUMP       "coredump"
 
 using namespace std;
 
