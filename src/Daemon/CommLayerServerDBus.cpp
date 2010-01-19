@@ -215,8 +215,8 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     }
 
     map_crash_data_t::const_iterator it_comment = argin1.find(CD_COMMENT);
-    map_crash_data_t::const_iterator it_reproduce = argin1.find(CD_REPRODUCE);
     const char* comment = (it_comment != argin1.end()) ? it_comment->second[CD_CONTENT].c_str() : "";
+    map_crash_data_t::const_iterator it_reproduce = argin1.find(CD_REPRODUCE);
     const char* reproduce = (it_reproduce != argin1.end()) ? it_reproduce->second[CD_CONTENT].c_str() : "";
     const char* errmsg = NULL;
     if (strlen(comment) > LIMIT_MESSAGE)

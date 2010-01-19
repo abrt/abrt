@@ -268,11 +268,11 @@ ctx::new_bug(const char *auth_cookie, const map_crash_data_t& pCrashData)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    string package = pCrashData.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-    string component = pCrashData.find(FILENAME_COMPONENT)->second[CD_CONTENT];
-    string release = pCrashData.find(FILENAME_RELEASE)->second[CD_CONTENT];
-    string arch = pCrashData.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
-    string uuid = pCrashData.find(CD_UUID)->second[CD_CONTENT];
+    const string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
+    const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
+    const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
+    const string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
+    const string& uuid      = get_crash_data_item_content(pCrashData, CD_UUID);
 
     string summary = "[abrt] crash in " + package;
     string status_whiteboard = "abrt_hash:" + uuid;

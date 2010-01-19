@@ -444,10 +444,10 @@ report_status_t Report(const map_crash_data_t& pCrashData,
         throw CABRTException(EXCEP_ERROR, "Report(): Some of mandatory report data are missing.");
     }
 
-    std::string analyzer = pCrashData.find(CD_MWANALYZER)->second[CD_CONTENT];
-    std::string UID = pCrashData.find(CD_MWUID)->second[CD_CONTENT];
-    std::string UUID = pCrashData.find(CD_MWUUID)->second[CD_CONTENT];
-    std::string packageNVR = pCrashData.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+    const std::string& analyzer    = get_crash_data_item_content(pCrashData, CD_MWANALYZER);
+    const std::string& UID         = get_crash_data_item_content(pCrashData, CD_MWUID);
+    const std::string& UUID        = get_crash_data_item_content(pCrashData, CD_MWUUID);
+    const std::string& packageNVR  = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
     std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
 
     // Save comment and "how to reproduce"
