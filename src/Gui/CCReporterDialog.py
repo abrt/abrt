@@ -39,7 +39,6 @@ class ReporterDialog():
         self.builder.add_from_file(builderfile)
         #Get the Main Window, and connect the "destroy" event
         self.window = self.builder.get_object("reporter_dialog")
-        self.window.set_default_size(640, 480)
         self.window.connect("response", self.on_response, daemon)
         if parent:
             self.window.set_transient_for(parent)
@@ -54,7 +53,7 @@ class ReporterDialog():
         self.tevHowToReproduce = self.builder.get_object("tevHowToReproduce")
         self.how_to_changed = False
 
-        self.builder.get_object("ebErrors").hide()
+        self.builder.get_object("fErrors").hide()
         self.builder.get_object("bLog").connect("clicked", self.show_log_cb, log)
         self.builder.get_object("cbSendBacktrace").connect("toggled", self.on_send_backtrace_toggled)
         self.allow_send()
@@ -65,7 +64,7 @@ class ReporterDialog():
     
     def warn_user(self, warnings):
         # FIXME: show in lError
-        ebErrors = self.builder.get_object("ebErrors")
+        fErrors = self.builder.get_object("fErrors")
         lErrors = self.builder.get_object("lErrors")
         warning_lbl = None
         for warning in warnings:
@@ -74,12 +73,12 @@ class ReporterDialog():
             else:
                 warning_lbl = "* %s" % warning
         lErrors.set_label(warning_lbl)
-        ebErrors.show_all()
+        fErrors.show_all()
         
     def hide_warning(self):
-        ebErrors = self.builder.get_object("ebErrors")
+        fErrors = self.builder.get_object("fErrors")
         lErrors = self.builder.get_object("lErrors")
-        ebErrors.hide()
+        fErrors.hide()
         
     def allow_send(self):
         self.hide_warning()
@@ -201,7 +200,11 @@ class ReporterDialog():
                 return True
         return True
 
-
+    def set_label(self, label_widget, text):
+        if len(text) > label_widget.get_max_width_chars():
+            label_widget.set_tooltip_text(text)
+        label_widget.set_text(text)
+            
     def hydrate(self):
         self.editable = []
         for item in self.report:
@@ -254,7 +257,7 @@ class ReporterDialog():
                     continue
                 item_label = self.builder.get_object("l%s" % item)
                 if item_label:
-                    item_label.set_text(self.report[item][CD_CONTENT])
+                    self.set_label(item_label, self.report[item][CD_CONTENT])
                 else:
                     # no widget to show this item
                     # probably some new item need to adjust the GUI!
