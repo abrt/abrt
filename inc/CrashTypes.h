@@ -4,17 +4,14 @@
 #include "abrt_types.h"
 
 // SYS - system value, should not be displayed
-// BIN - binary value, should be displayed as a path to binary file
-// TXT - text value, should be displayed
-// ATT - text value which can be sent as attachment via reporters
-// TODO: maybe we don't need separate CD_ATT - can simply look at strlen(content)
-// in all places which want to handle "long" and "short" texts differently
+// BIN - binary data
+// TXT - text data, can be displayed
 #define CD_SYS          "s"
 #define CD_BIN          "b"
 #define CD_TXT          "t"
-#define CD_ATT          "a"
 
-#define CD_ATT_SIZE     (256)
+/* Text bigger than this usually is attached, not added inline */
+#define CD_TEXT_ATT_SIZE (2*1024)
 
 #define CD_ISEDITABLE       "y"
 #define CD_ISNOTEDITABLE    "n"

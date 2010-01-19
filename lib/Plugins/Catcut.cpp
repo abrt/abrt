@@ -390,9 +390,9 @@ ctx::add_attachments(const char* xmlrpc_URL,
     map_crash_report_t::const_iterator it = pCrashReport.begin();
     for (; it != pCrashReport.end(); it++)
     {
-        if (it->second[CD_TYPE] == CD_ATT)
+        if (it->second[CD_TYPE] == CD_TXT && it->second[CD_TYPE].size() > CD_TEXT_ATT_SIZE)
         {
-            update_client(_("Attaching (CD_ATT): %s"), it->first.c_str());
+            update_client(_("Attaching (text): %s"), it->first.c_str());
 
             string description = "File: " + it->first;
             string URL = request_upload(auth_cookie,
@@ -410,7 +410,7 @@ ctx::add_attachments(const char* xmlrpc_URL,
         }
         else if (it->second[CD_TYPE] == CD_BIN)
         {
-            update_client(_("Attaching (CD_ATT): %s"), it->first.c_str());
+            update_client(_("Attaching binary: %s"), it->first.c_str());
 
             string description = "File: " + it->first;
             string URL = request_upload(auth_cookie,

@@ -2,6 +2,8 @@
 import CCDBusBackend
 from CCDump import Dump
 
+from abrt_utils import _, init_logging, log, log1, log2
+
 class DumpList(list):
     """Class to store list of debug dumps"""
     def __init__(self,dbus_manager=None):
@@ -16,8 +18,7 @@ class DumpList(list):
                 for row in rows:
                     entry = Dump()
                     for column in row:
-                        #if column == "Reported":
-                        #    print "DumpList adding %s:%s" % (column,row[column])
+                        log2(" DumpList.%s='%s'", column, row[column])
                         entry.__dict__[column] = row[column]
                     self.append(entry)
             except Exception, e:

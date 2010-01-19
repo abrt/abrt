@@ -6,7 +6,6 @@ import gtk.glade
 import pango
 import sys
 from CC_gui_functions import *
-from CCReport import Report
 import CellRenderers
 from ABRTPlugin import PluginInfo
 from PluginSettingsUI import PluginSettingsUI
@@ -22,7 +21,6 @@ CD_CONTENT = 2
 CD_SYS = "s"
 CD_BIN = "b"
 CD_TXT = "t"
-CD_ATT = "a"
 
 # response
 REFRESH = -50
@@ -245,7 +243,7 @@ class ReporterDialog():
             if self.report[item][CD_TYPE] != CD_SYS:
                 # item name 0| value 1| editable? 2| toggled? 3| visible?(attachment)4
                 # FIXME: handle editable fields
-                if self.report[item][CD_TYPE] in [CD_ATT,CD_BIN]:
+                if self.report[item][CD_TYPE] == CD_BIN:
                     self.builder.get_object("fAttachment").show()
                     vbAttachments = self.builder.get_object("vbAttachments")
                     toggle = gtk.CheckButton(self.report[item][CD_CONTENT])

@@ -28,7 +28,7 @@
 #include "ABRTException.h"
 
 CLogger::CLogger() :
-    m_sLogPath("/var/log/abrt-logger"),
+    m_sLogPath("/var/log/abrt.log"),
     m_bAppendLogs(true)
 {}
 
