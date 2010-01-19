@@ -21,7 +21,6 @@
 #include <pthread.h>
 #include <resolv.h> /* res_init */
 #include <string>
-#include <limits.h>
 #include <sys/inotify.h>
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>

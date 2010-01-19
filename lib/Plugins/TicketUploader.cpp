@@ -203,9 +203,8 @@ string CTicketUploader::Report(const map_crash_report_t& pCrashReport,
     map_crash_report_t::const_iterator it;
     for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
     {
-        if (it->second[CD_TYPE] == CD_TXT
-         || it->second[CD_TYPE] == CD_ATT
-        ) {
+        if (it->second[CD_TYPE] == CD_TXT)
+        {
             string ofile_name = concat_path_file(tmptar_name.c_str(), it->first.c_str());
             ofstream ofile(ofile_name.c_str(), fstream::trunc|fstream::binary);
             if (!ofile)

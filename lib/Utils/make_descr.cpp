@@ -50,9 +50,6 @@ static void add_content(bool &was_multiline, string& description, const char *he
     }
 }
 
-/* Text attachments smaller than this will be also included in descrition */
-#define INLINE_TEXT_ATT_SIZE (2*1024)
-
 string make_description_bz(const map_crash_report_t& pCrashReport)
 {
     string description;
@@ -79,22 +76,21 @@ string make_description_bz(const map_crash_report_t& pCrashReport)
         const string &filename = it->first;
         const string &type = it->second[CD_TYPE];
         const string &content = it->second[CD_CONTENT];
-        if (type == CD_TXT
-         || (type == CD_ATT && content.size() < INLINE_TEXT_ATT_SIZE)
-        ) {
-            if (filename != CD_UUID
-             && filename != FILENAME_ARCHITECTURE
-             && filename != FILENAME_RELEASE
-             && filename != CD_REPRODUCE
-             && filename != CD_COMMENT
-            ) {
-                add_content(was_multiline, description, filename.c_str(), content.c_str());
-            }
-            continue;
-        }
-        if (type == CD_ATT)
+        if (type == CD_TXT)
         {
-            add_content(was_multiline, description, "Attached file", filename.c_str());
+            if (content.size() <= CD_TEXT_ATT_SIZE)
+            {
+                if (filename != CD_UUID
+                 && filename != FILENAME_ARCHITECTURE
+                 && filename != FILENAME_RELEASE
+                 && filename != CD_REPRODUCE
+                 && filename != CD_COMMENT
+                ) {
+                    add_content(was_multiline, description, filename.c_str(), content.c_str());
+                }
+            } else {
+                add_content(was_multiline, description, "Attached file", filename.c_str());
+            }
         }
     }
 
@@ -113,7 +109,6 @@ string make_description_logger(const map_crash_report_t& pCrashReport)
         const string &type = it->second[CD_TYPE];
         const string &content = it->second[CD_CONTENT];
         if (type == CD_TXT
-         || type == CD_ATT
          || type == CD_BIN
         ) {
             if (content == "1.\n2.\n3.\n")
@@ -181,25 +176,26 @@ string make_description_catcut(const map_crash_report_t& pCrashReport)
         const string &content = it->second[CD_CONTENT];
         if (type == CD_TXT)
         {
-            if (filename != CD_UUID
-             && filename != FILENAME_ARCHITECTURE
-             && filename != FILENAME_RELEASE
-             && filename != CD_REPRODUCE
-             && filename != CD_COMMENT
-            ) {
-                pDescription += '\n';
+            if (content.length() <= CD_TEXT_ATT_SIZE)
+            {
+                if (filename != CD_UUID
+                 && filename != FILENAME_ARCHITECTURE
+                 && filename != FILENAME_RELEASE
+                 && filename != CD_REPRODUCE
+                 && filename != CD_COMMENT
+                ) {
+                    pDescription += '\n';
+                    pDescription += filename;
+                    pDescription += "\n-----\n";
+                    pDescription += content;
+                    pDescription += "\n\n";
+                }
+            } else {
+                pDescription += "\n\nAttached files\n"
+                                "----\n";
                 pDescription += filename;
-                pDescription += "\n-----\n";
-                pDescription += content;
-                pDescription += "\n\n";
+                pDescription += '\n';
             }
-        }
-        else if (type == CD_ATT)
-        {
-            pDescription += "\n\nAttached files\n"
-                            "----\n";
-            pDescription += filename;
-            pDescription += '\n';
         }
         else if (type == CD_BIN)
         {

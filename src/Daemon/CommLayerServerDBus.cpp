@@ -205,10 +205,8 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(call, &in_iter);
-    map_crash_report_t argin1;
-    const char* comment;
-    const char* reproduce;
 
+    map_crash_report_t argin1;
     r = load_val(&in_iter, argin1);
     if (r == ABRT_DBUS_ERROR)
     {
@@ -218,9 +216,8 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
 
     map_crash_report_t::const_iterator it_comment = argin1.find(CD_COMMENT);
     map_crash_report_t::const_iterator it_reproduce = argin1.find(CD_REPRODUCE);
-    comment = (it_comment != argin1.end()) ? it_comment->second[CD_CONTENT].c_str() : "";
-    reproduce = (it_reproduce != argin1.end()) ? it_reproduce->second[CD_CONTENT].c_str() : "";
-
+    const char* comment = (it_comment != argin1.end()) ? it_comment->second[CD_CONTENT].c_str() : "";
+    const char* reproduce = (it_reproduce != argin1.end()) ? it_reproduce->second[CD_CONTENT].c_str() : "";
     const char* errmsg = NULL;
     if (strlen(comment) > LIMIT_MESSAGE)
     {

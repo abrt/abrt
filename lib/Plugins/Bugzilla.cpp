@@ -360,7 +360,7 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_report_t& pCra
         const std::string &type = it->second[CD_TYPE];
         const std::string &content = it->second[CD_CONTENT];
 
-        if (type == CD_ATT)
+        if (type == CD_TXT && content.length() > CD_TEXT_ATT_SIZE)
         {
             char *encoded64 = encode_base64(content.c_str(), content.length());
             // fails only when you write query. when it's done it never fails.

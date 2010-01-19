@@ -270,7 +270,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     unsetenv("TERM");
     putenv((char*)"TERM=dumb");
 
-    char *args[13];
+    char *args[15];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
 
@@ -311,7 +311,10 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[9] = (char*)"thread apply all backtrace 3000 full";
     args[10] = (char*)"-ex";
     args[11] = (char*)"info sharedlib";
-    args[12] = NULL;
+    /* glibc's abort() stores its message in this variable */
+    args[12] = (char*)"-ex";
+    args[13] = (char*)"print (char*)__abort_msg";
+    args[14] = NULL;
 
     ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
 }
@@ -687,7 +690,6 @@ static bool DebuginfoCheckPolkit(uid_t uid)
 void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
     string package;
-    string backtrace;
     string UID;
 
     CDebugDump dd;
@@ -725,6 +727,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         VERB1 log(_("Skipping debuginfo installation"));
     }
 
+    string backtrace;
     GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace);
 
     dd.Open(pDebugDumpDir);

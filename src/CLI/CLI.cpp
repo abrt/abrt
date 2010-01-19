@@ -53,7 +53,7 @@ static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
     for (ii = 0; ii < pCrashInfos.size(); ii++)
     {
         map_crash_info_t& info = pCrashInfos[ii];
-        if (pMode == OPT_GET_LIST_FULL || info.find(CD_REPORTED)->second[CD_CONTENT] != "1")
+        if (pMode == OPT_GET_LIST_FULL || info[CD_REPORTED][CD_CONTENT] != "1")
         {
             const char *timestr = info[CD_TIME][CD_CONTENT].c_str();
             long time = strtol(timestr, NULL, 10);

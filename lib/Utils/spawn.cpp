@@ -48,6 +48,22 @@ pid_t fork_execv_on_steroids(int flags,
 	if (child == 0) {
 		/* Child */
 
+		if (dir)
+			xchdir(dir);
+
+		if (flags & EXECFLG_SETGUID) {
+			struct passwd* pw = getpwuid(uid);
+			gid_t gid = pw ? pw->pw_gid : uid;
+			setgroups(1, &gid);
+			xsetregid(gid, gid);
+			xsetreuid(uid, uid);
+		}
+
+		if (unsetenv_vec) {
+			while (*unsetenv_vec)
+				unsetenv(*unsetenv_vec++);
+		}
+
 		/* Play with stdio descriptors */
 		if (flags & EXECFLG_INPUT) {
 			xmove_fd(pipe_to_child[0], STDIN_FILENO);
@@ -59,6 +75,10 @@ pid_t fork_execv_on_steroids(int flags,
 		} else if (flags & EXECFLG_OUTPUT_NUL) {
 			xmove_fd(xopen("/dev/null", O_RDWR), STDOUT_FILENO);
 		}
+
+		/* This should be done BEFORE stderr redirect */
+		VERB1 log("Executing: %s", concat_str_vector(argv).c_str());
+
 		if (flags & EXECFLG_ERR2OUT) {
 			/* Want parent to see errors in the same stream */
 			xdup2(STDOUT_FILENO, STDERR_FILENO);
@@ -66,25 +86,9 @@ pid_t fork_execv_on_steroids(int flags,
 			xmove_fd(xopen("/dev/null", O_RDWR), STDERR_FILENO);
 		}
 
-		if (flags & EXECFLG_SETGUID) {
-			struct passwd* pw = getpwuid(uid);
-			gid_t gid = pw ? pw->pw_gid : uid;
-			setgroups(1, &gid);
-			xsetregid(gid, gid);
-			xsetreuid(uid, uid);
-		}
 		if (flags & EXECFLG_SETSID)
 			setsid();
 
-		if (unsetenv_vec) {
-			while (*unsetenv_vec)
-				unsetenv(*unsetenv_vec++);
-		}
-
-		if (dir)
-			xchdir(dir);
-
-		VERB1 log("Executing: %s", concat_str_vector(argv).c_str());
 		execvp(argv[0], argv);
 		if (!(flags & EXECFLG_QUIET))
 			perror_msg("Can't execute '%s'", argv[0]);
