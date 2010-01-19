@@ -1,6 +1,6 @@
 /*
     Logger.h - header file for Logger reporter plugin
-             - it simple writes report to specific file
+             - it simply writes report to specific file
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -37,7 +37,7 @@ class CLogger : public CReporter
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 //ok to delete?
 //        virtual const map_plugin_settings_t& GetSettings();
-        virtual std::string Report(const map_crash_report_t& pCrashReport,
+        virtual std::string Report(const map_crash_data_t& pCrashData,
                                    const map_plugin_settings_t& pSettings,
                                    const char *pArgs);
 };

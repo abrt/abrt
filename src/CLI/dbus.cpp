@@ -104,7 +104,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
     }
 }
 
-vector_crash_infos_t call_GetCrashInfos()
+vector_map_crash_data_t call_GetCrashInfos()
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessage *reply = send_get_reply_and_unref(msg);
@@ -112,7 +112,7 @@ vector_crash_infos_t call_GetCrashInfos()
     DBusMessageIter in_iter;
     dbus_message_iter_init(reply, &in_iter);
 
-    vector_crash_infos_t argout;
+    vector_map_crash_data_t argout;
     int r = load_val(&in_iter, argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
         error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
@@ -121,7 +121,7 @@ vector_crash_infos_t call_GetCrashInfos()
     return argout;
 }
 
-map_crash_report_t call_CreateReport(const char* uuid)
+map_crash_data_t call_CreateReport(const char* uuid)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     dbus_message_append_args(msg,
@@ -133,7 +133,7 @@ map_crash_report_t call_CreateReport(const char* uuid)
     DBusMessageIter in_iter;
     dbus_message_iter_init(reply, &in_iter);
 
-    map_crash_report_t argout;
+    map_crash_data_t argout;
     int r = load_val(&in_iter, argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
         error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
@@ -142,7 +142,7 @@ map_crash_report_t call_CreateReport(const char* uuid)
     return argout;
 }
 
-report_status_t call_Report(const map_crash_report_t& report)
+report_status_t call_Report(const map_crash_data_t& report)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessageIter out_iter;

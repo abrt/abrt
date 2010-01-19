@@ -50,27 +50,27 @@ static void add_content(bool &was_multiline, string& description, const char *he
     }
 }
 
-string make_description_bz(const map_crash_report_t& pCrashReport)
+string make_description_bz(const map_crash_data_t& pCrashData)
 {
     string description;
 
-    map_crash_report_t::const_iterator it;
-    map_crash_report_t::const_iterator end = pCrashReport.end();
+    map_crash_data_t::const_iterator it;
+    map_crash_data_t::const_iterator end = pCrashData.end();
 
     bool was_multiline = 0;
-    it = pCrashReport.find(CD_REPRODUCE);
+    it = pCrashData.find(CD_REPRODUCE);
     if (it != end && it->second[CD_CONTENT] != "1.\n2.\n3.\n")
     {
         add_content(was_multiline, description, "How to reproduce", it->second[CD_CONTENT].c_str());
     }
 
-    it = pCrashReport.find(CD_COMMENT);
+    it = pCrashData.find(CD_COMMENT);
     if (it != end)
     {
         add_content(was_multiline, description, "Comment", it->second[CD_CONTENT].c_str());
     }
 
-    it = pCrashReport.begin();
+    it = pCrashData.begin();
     for (; it != end; it++)
     {
         const string &filename = it->first;
@@ -97,13 +97,13 @@ string make_description_bz(const map_crash_report_t& pCrashReport)
     return description;
 }
 
-string make_description_logger(const map_crash_report_t& pCrashReport)
+string make_description_logger(const map_crash_data_t& pCrashData)
 {
     string description;
     string long_description;
 
-    map_crash_report_t::const_iterator it = pCrashReport.begin();
-    for (; it != pCrashReport.end(); it++)
+    map_crash_data_t::const_iterator it = pCrashData.begin();
+    for (; it != pCrashData.end(); it++)
     {
         const string &filename = it->first;
         const string &type = it->second[CD_TYPE];
@@ -141,13 +141,13 @@ string make_description_logger(const map_crash_report_t& pCrashReport)
 }
 
 /* This needs more work to make the result less ugly */
-string make_description_catcut(const map_crash_report_t& pCrashReport)
+string make_description_catcut(const map_crash_data_t& pCrashData)
 {
-    map_crash_report_t::const_iterator end = pCrashReport.end();
-    map_crash_report_t::const_iterator it;
+    map_crash_data_t::const_iterator end = pCrashData.end();
+    map_crash_data_t::const_iterator it;
 
     string howToReproduce;
-    it = pCrashReport.find(CD_REPRODUCE);
+    it = pCrashData.find(CD_REPRODUCE);
     if (it != end)
     {
         howToReproduce = "\n\nHow to reproduce\n"
@@ -155,7 +155,7 @@ string make_description_catcut(const map_crash_report_t& pCrashReport)
         howToReproduce += it->second[CD_CONTENT];
     }
     string comment;
-    it = pCrashReport.find(CD_COMMENT);
+    it = pCrashData.find(CD_COMMENT);
     if (it != end)
     {
         comment = "\n\nComment\n"
@@ -169,7 +169,7 @@ string make_description_catcut(const map_crash_report_t& pCrashReport)
     pDescription += "\n\nAdditional information\n"
                     "======\n";
 
-    for (it = pCrashReport.begin(); it != end; it++)
+    for (it = pCrashData.begin(); it != end; it++)
     {
         const string &filename = it->first;
         const string &type = it->second[CD_TYPE];

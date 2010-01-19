@@ -80,7 +80,7 @@ int main(int argc, char** argv)
             std::cout << "-------------------------------------------" << std::endl;
         }
         /* Try to save it into DB */
-        map_crash_info_t crashInfo;
+        map_crash_data_t crashInfo;
         if (middleWare.SaveDebugDump(argv[1], crashInfo))
         {
             std::cout << "Application Crashed! " <<
@@ -91,7 +91,7 @@ int main(int argc, char** argv)
             /* Get Report, so user can change data (remove private stuff)
              * If we do not want user interaction, just send data immediately
              */
-            map_crash_report_t crashReport;
+            map_crash_data_t crashReport;
             middleWare.CreateCrashReport(crashInfo[CD_UUID][CD_CONTENT],
                                          crashInfo[CD_UID][CD_CONTENT],
                                          crashReport);

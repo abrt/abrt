@@ -65,7 +65,7 @@ static char** append_str_to_vector(char **vec, unsigned &size, const char *str)
     return vec;
 }
 
-std::string CMailx::Report(const map_crash_report_t& pCrashReport,
+std::string CMailx::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
@@ -75,8 +75,8 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
 
 //TODO: move email body generation to make_descr.cpp
     std::string binaryFiles, commonFiles, additionalFiles, UUIDFile;
-    map_crash_report_t::const_iterator it;
-    for (it = pCrashReport.begin(); it != pCrashReport.end(); it++)
+    map_crash_data_t::const_iterator it;
+    for (it = pCrashData.begin(); it != pCrashData.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {
@@ -135,7 +135,7 @@ std::string CMailx::Report(const map_crash_report_t& pCrashReport,
     args = append_str_to_vector(args, arg_size, m_sEmailTo.c_str());
 
     update_client(_("Sending an email..."));
-    const char *uid_str = pCrashReport.find(CD_MWUID)->second[CD_CONTENT].c_str();
+    const char *uid_str = get_crash_data_item_content(pCrashData, CD_MWUID).c_str();
     exec_and_feed_input(xatoi_u(uid_str), emailBody.c_str(), args);
 
     while (*args)

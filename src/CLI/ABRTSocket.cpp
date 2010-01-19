@@ -106,7 +106,7 @@ void CABRTSocket::Disconnect()
         close(m_nSocket);
 }
 
-vector_crash_infos_t CABRTSocket::GetCrashInfos()
+vector_map_crash_data_t CABRTSocket::GetCrashInfos()
 {
     std::string message = MESSAGE_GET_CRASH_INFOS;
     Send(message);
@@ -115,7 +115,7 @@ vector_crash_infos_t CABRTSocket::GetCrashInfos()
     return string_to_crash_infos(message);
 }
 
-map_crash_report_t CABRTSocket::CreateReport(const std::string &pUUID)
+map_crash_data_t CABRTSocket::CreateReport(const std::string &pUUID)
 {
     std::string message = MESSAGE_CREATE_REPORT + pUUID;
     Send(message);
@@ -124,7 +124,7 @@ map_crash_report_t CABRTSocket::CreateReport(const std::string &pUUID)
     return string_to_crash_report(message);
 }
 
-void CABRTSocket::Report(const map_crash_report_t& pReport)
+void CABRTSocket::Report(const map_crash_data_t& pReport)
 {
     std::string message = MESSAGE_REPORT + crash_report_to_string(pReport);
     Send(message);

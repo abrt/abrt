@@ -151,10 +151,10 @@ static void remove_comments_and_unescape(char *str)
  * Writes a field of crash report to a file.
  * Field must be writable.
  */
-static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
+static void write_crash_report_field(FILE *fp, const map_crash_data_t &report,
 				     const char *field, const char *description)
 {
-  const map_crash_report_t::const_iterator it = report.find(field);
+  const map_crash_data_t::const_iterator it = report.find(field);
   if (it == report.end())
   {
     // exit silently, all fields are optional for now
@@ -186,7 +186,7 @@ static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
  *  If the report is successfully stored to the file, a zero value is returned.
  *  On failure, nonzero value is returned.
  */
-static void write_crash_report(const map_crash_report_t &report, FILE *fp)
+static void write_crash_report(const map_crash_data_t &report, FILE *fp)
 {
   fprintf(fp, "# Please check this report. Lines starting with '#' will be ignored.\n"
 	  "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
@@ -217,7 +217,7 @@ static void write_crash_report(const map_crash_report_t &report, FILE *fp)
  *  1 if the field was changed.
  *  Changes to read-only fields are ignored.
  */
-static int read_crash_report_field(const char *text, map_crash_report_t &report,
+static int read_crash_report_field(const char *text, map_crash_data_t &report,
 				   const char *field)
 {
   char separator[strlen("\n" FIELD_SEP) + strlen(field) + 2]; // 2 = '\n\0'
@@ -234,7 +234,7 @@ static int read_crash_report_field(const char *text, map_crash_report_t &report,
   else
     length = end - textfield;
 
-  const map_crash_report_t::iterator it = report.find(field);
+  const map_crash_data_t::iterator it = report.find(field);
   if (it == report.end())
   {
     error_msg("Field %s not found.\n", field);
@@ -278,7 +278,7 @@ static int read_crash_report_field(const char *text, map_crash_report_t &report,
  *  1 if any field was changed.
  *  Changes to read-only fields are ignored.
  */
-static int read_crash_report(map_crash_report_t &report, const char *text)
+static int read_crash_report(map_crash_data_t &report, const char *text)
 {
   int result = 0;
   result |= read_crash_report_field(text, report, CD_COMMENT);
@@ -331,7 +331,7 @@ static int launch_editor(const char *path)
 int report(const char *uuid, bool always)
 {
   // Ask for an initial report.
-  map_crash_report_t cr = call_CreateReport(uuid);
+  map_crash_data_t cr = call_CreateReport(uuid);
 //TODO: error check?
 
   if (!always)

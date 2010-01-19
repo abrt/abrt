@@ -74,8 +74,8 @@ it on some web tool...)
 
 You have to override this method:
 
-virtual void Report(const crash_report_t& pCrashReport,
-                    const std::string& pArgs);
+virtual void Report(const map_crash_data_t& pCrashData,
+                    const char *pArgs);
 -It is self-explanatory, that this method takes the report
  and presents it somewhere to the world.
  The second argument is a string with arguments specified for the reporter.

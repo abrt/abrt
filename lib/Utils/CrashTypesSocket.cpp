@@ -87,13 +87,13 @@ std::string crash_data_to_string(const map_crash_data_t& pCrashData)
     return sCD.str();
 }
 
-std::string crash_infos_to_string(const vector_crash_infos_t& pCrashInfos)
+std::string crash_infos_to_string(const vector_map_crash_data_t& pCrashDatas)
 {
     std::stringstream sCI;
     unsigned int ii;
-    for (ii = 0; ii < pCrashInfos.size(); ii++)
+    for (ii = 0; ii < pCrashDatas.size(); ii++)
     {
-        sCI << crash_data_to_string(pCrashInfos[ii]);
+        sCI << crash_data_to_string(pCrashDatas[ii]);
     }
     return sCI.str();
 }
@@ -164,15 +164,15 @@ map_crash_data_t string_to_crash_data(const std::string& pMessage, int& len)
     return ci;
 }
 
-vector_crash_infos_t string_to_crash_infos(const std::string& pMessage)
+vector_map_crash_data_t string_to_crash_infos(const std::string& pMessage)
 {
-    vector_crash_infos_t vci;
+    vector_map_crash_data_t vci;
     std::string message = pMessage;
     int len;
 
     while (message != "")
     {
-        map_crash_info_t crash_info = string_to_crash_data(message, len);
+        map_crash_data_t crash_info = string_to_crash_data(message, len);
         if (crash_info.size() == 0)
         {
             return vci;

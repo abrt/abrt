@@ -124,9 +124,9 @@ static char* is_text_file(const char *name, ssize_t *sz)
  * Transforms a debugdump direcortry to inner crash
  * report form. This form is used for later reporting.
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
- * @param pCrashReport A created crash report.
+ * @param pCrashData A created crash report.
  */
-static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t& pCrashReport)
+static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& pCrashData)
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
@@ -142,7 +142,7 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t
 
     std::string short_name;
     std::string full_name;
-    pCrashReport.clear();
+    pCrashData.clear();
     dd.InitGetNextFile();
     while (dd.GetNextFile(&short_name, &full_name))
     {
@@ -150,11 +150,11 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t
         char *text = is_text_file(full_name.c_str(), &sz);
         if (!text)
         {
-            add_crash_data_to_crash_report(pCrashReport,
-                                           short_name,
-                                           CD_BIN,
-                                           CD_ISNOTEDITABLE,
-                                           full_name
+            add_to_crash_data_ext(pCrashData,
+                    short_name.c_str(),
+                    CD_BIN,
+                    CD_ISNOTEDITABLE,
+                    full_name.c_str()
             );
             continue;
         }
@@ -173,7 +173,12 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t
          || short_name == FILENAME_RELEASE
          || short_name == FILENAME_EXECUTABLE
         ) {
-            add_crash_data_to_crash_report(pCrashReport, short_name, CD_TXT, CD_ISNOTEDITABLE, content);
+            add_to_crash_data_ext(pCrashData,
+                    short_name.c_str(),
+                    CD_TXT,
+                    CD_ISNOTEDITABLE,
+                    content.c_str()
+            );
             continue;
         }
 
@@ -184,12 +189,12 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_report_t
          && short_name != FILENAME_REPRODUCE
          && short_name != FILENAME_COMMENT
         ) {
-            add_crash_data_to_crash_report(
-                    pCrashReport,
-                    short_name,
+            add_to_crash_data_ext(
+                    pCrashData,
+                    short_name.c_str(),
                     CD_TXT,
                     CD_ISEDITABLE,
-                    content
+                    content.c_str()
             );
         }
     }
@@ -250,7 +255,7 @@ static void CreateReport(const char *pAnalyzer,
 mw_result_t CreateCrashReport(const char *pUUID,
                 const char *pUID,
                 int force,
-                map_crash_report_t& pCrashReport)
+                map_crash_data_t& pCrashData)
 {
     VERB2 log("CreateCrashReport('%s','%s',result)", pUUID, pUID);
 
@@ -272,7 +277,6 @@ mw_result_t CreateCrashReport(const char *pUUID,
     {
         CDebugDump dd;
         std::string analyzer;
-        std::string gUUID;
         std::string comment;
         std::string reproduce = "1.\n2.\n3.\n";
 
@@ -292,20 +296,20 @@ mw_result_t CreateCrashReport(const char *pUUID,
         VERB3 log(" CreateReport('%s')", analyzer.c_str());
         CreateReport(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
 
-        gUUID = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
+        std::string gUUID = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());
 
         VERB3 log(" RunAnalyzerActions");
         RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" DebugDumpToCrashReport");
-        DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashReport);
+        DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
 
-        add_crash_data_to_crash_report(pCrashReport, CD_UUID, CD_TXT, CD_ISNOTEDITABLE, gUUID);
-        add_crash_data_to_crash_report(pCrashReport, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer);
-        add_crash_data_to_crash_report(pCrashReport, CD_MWUID, CD_SYS, CD_ISNOTEDITABLE, pUID);
-        add_crash_data_to_crash_report(pCrashReport, CD_MWUUID, CD_SYS, CD_ISNOTEDITABLE, pUUID);
-        add_crash_data_to_crash_report(pCrashReport, CD_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
-        add_crash_data_to_crash_report(pCrashReport, CD_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
+        add_to_crash_data_ext(pCrashData, CD_UUID      , CD_TXT, CD_ISNOTEDITABLE, gUUID.c_str()    );
+        add_to_crash_data_ext(pCrashData, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer.c_str() );
+        add_to_crash_data_ext(pCrashData, CD_MWUID     , CD_SYS, CD_ISNOTEDITABLE, pUID             );
+        add_to_crash_data_ext(pCrashData, CD_MWUUID    , CD_SYS, CD_ISNOTEDITABLE, pUUID            );
+        add_to_crash_data_ext(pCrashData, CD_COMMENT   , CD_TXT, CD_ISEDITABLE   , comment.c_str()  );
+        add_to_crash_data_ext(pCrashData, CD_REPRODUCE , CD_TXT, CD_ISEDITABLE   , reproduce.c_str());
     }
     catch (CABRTException& e)
     {
@@ -362,7 +366,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
             if (tp == REPORTER)
             {
                 CReporter* reporter = g_pPluginManager->GetReporter(plugin_name); /* can't be NULL */
-                map_crash_report_t crashReport;
+                map_crash_data_t crashReport;
                 DebugDumpToCrashReport(pDebugDumpDir, crashReport);
                 VERB2 log("%s.Report(...)", plugin_name);
                 reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
@@ -382,20 +386,20 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
 }
 
 
-static bool CheckReport(const map_crash_report_t& pCrashReport)
+static bool CheckReport(const map_crash_data_t& pCrashData)
 {
-    map_crash_report_t::const_iterator it_analyzer = pCrashReport.find(CD_MWANALYZER);
-    map_crash_report_t::const_iterator it_mwuid = pCrashReport.find(CD_MWUID);
-    map_crash_report_t::const_iterator it_mwuuid = pCrashReport.find(CD_MWUUID);
+    map_crash_data_t::const_iterator it_analyzer = pCrashData.find(CD_MWANALYZER);
+    map_crash_data_t::const_iterator it_mwuid = pCrashData.find(CD_MWUID);
+    map_crash_data_t::const_iterator it_mwuuid = pCrashData.find(CD_MWUUID);
 
-    map_crash_report_t::const_iterator it_package = pCrashReport.find(FILENAME_PACKAGE);
-    map_crash_report_t::const_iterator it_architecture = pCrashReport.find(FILENAME_ARCHITECTURE);
-    map_crash_report_t::const_iterator it_kernel = pCrashReport.find(FILENAME_KERNEL);
-    map_crash_report_t::const_iterator it_component = pCrashReport.find(FILENAME_COMPONENT);
-    map_crash_report_t::const_iterator it_release = pCrashReport.find(FILENAME_RELEASE);
-    map_crash_report_t::const_iterator it_executable = pCrashReport.find(FILENAME_EXECUTABLE);
+    map_crash_data_t::const_iterator it_package = pCrashData.find(FILENAME_PACKAGE);
+    map_crash_data_t::const_iterator it_architecture = pCrashData.find(FILENAME_ARCHITECTURE);
+    map_crash_data_t::const_iterator it_kernel = pCrashData.find(FILENAME_KERNEL);
+    map_crash_data_t::const_iterator it_component = pCrashData.find(FILENAME_COMPONENT);
+    map_crash_data_t::const_iterator it_release = pCrashData.find(FILENAME_RELEASE);
+    map_crash_data_t::const_iterator it_executable = pCrashData.find(FILENAME_EXECUTABLE);
 
-    map_crash_report_t::const_iterator end = pCrashReport.end();
+    map_crash_data_t::const_iterator end = pCrashData.end();
 
     if (it_package == end)
     {
@@ -427,38 +431,38 @@ static bool CheckReport(const map_crash_report_t& pCrashReport)
     return true;
 }
 
-report_status_t Report(const map_crash_report_t& pCrashReport,
+report_status_t Report(const map_crash_data_t& pCrashData,
                        map_map_string_t& pSettings,
                        const char *pUID)
 {
     report_status_t ret;
 
-    /* dbus handler passes pCrashReport from user without checking it */
+    /* dbus handler passes pCrashData from user without checking it */
 
-    if (!CheckReport(pCrashReport))
+    if (!CheckReport(pCrashData))
     {
         throw CABRTException(EXCEP_ERROR, "Report(): Some of mandatory report data are missing.");
     }
 
-    std::string analyzer = pCrashReport.find(CD_MWANALYZER)->second[CD_CONTENT];
-    std::string UID = pCrashReport.find(CD_MWUID)->second[CD_CONTENT];
-    std::string UUID = pCrashReport.find(CD_MWUUID)->second[CD_CONTENT];
-    std::string packageNVR = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
+    std::string analyzer = pCrashData.find(CD_MWANALYZER)->second[CD_CONTENT];
+    std::string UID = pCrashData.find(CD_MWUID)->second[CD_CONTENT];
+    std::string UUID = pCrashData.find(CD_MWUUID)->second[CD_CONTENT];
+    std::string packageNVR = pCrashData.find(FILENAME_PACKAGE)->second[CD_CONTENT];
     std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
 
     // Save comment and "how to reproduce"
-    map_crash_report_t::const_iterator it_comment = pCrashReport.find(CD_COMMENT);
-    map_crash_report_t::const_iterator it_reproduce = pCrashReport.find(CD_REPRODUCE);
-    if (it_comment != pCrashReport.end() || it_reproduce != pCrashReport.end())
+    map_crash_data_t::const_iterator it_comment = pCrashData.find(CD_COMMENT);
+    map_crash_data_t::const_iterator it_reproduce = pCrashData.find(CD_REPRODUCE);
+    if (it_comment != pCrashData.end() || it_reproduce != pCrashData.end())
     {
         std::string pDumpDir = getDebugDumpDir(UUID.c_str(), UID.c_str());
         CDebugDump dd;
         dd.Open(pDumpDir.c_str());
-        if (it_comment != pCrashReport.end())
+        if (it_comment != pCrashData.end())
         {
             dd.SaveText(FILENAME_COMMENT, it_comment->second[CD_CONTENT].c_str());
         }
-        if (it_reproduce != pCrashReport.end())
+        if (it_reproduce != pCrashData.end())
         {
             dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT].c_str());
         }
@@ -509,7 +513,7 @@ report_status_t Report(const map_crash_report_t& pCrashReport,
                     }
 #endif
                     map_plugin_settings_t plugin_settings = pSettings[plugin_name];
-                    std::string res = reporter->Report(pCrashReport, plugin_settings, it_r->second.c_str());
+                    std::string res = reporter->Report(pCrashData, plugin_settings, it_r->second.c_str());
 
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
                     if (home != "")
@@ -767,7 +771,7 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
     return false;
 }
 
-void autoreport(const pair_string_string_t& reporter_options, const map_crash_report_t& crash_report)
+void autoreport(const pair_string_string_t& reporter_options, const map_crash_data_t& crash_report)
 {
     CReporter* reporter = g_pPluginManager->GetReporter(reporter_options.first.c_str());
     if (!reporter)
@@ -821,14 +825,14 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
  * @param pUID An UID of an user.
  * @param pTime Time when a crash occurs.
  * @param pDebugDumpPath A debugdump path.
- * @param pCrashInfo A filled crash info.
+ * @param pCrashData A filled crash info.
  * @return It return results of operation. See mw_result_t.
  */
 static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
                 const char *pUID,
                 const char *pTime,
                 const char *pDebugDumpDir,
-                map_crash_info_t& pCrashInfo)
+                map_crash_data_t& pCrashData)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
@@ -837,7 +841,7 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
     database_row_t row = database->GetRow(pUUID, pUID);
     database->DisConnect();
 
-    mw_result_t res = FillCrashInfo(pUUID, pUID, pCrashInfo);
+    mw_result_t res = FillCrashInfo(pUUID, pUID, pCrashData);
     if (res == MW_OK)
     {
         if (row.m_sReported == "1")
@@ -865,7 +869,7 @@ std::string getDebugDumpDir(const char *pUUID,
 }
 
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
-                map_crash_info_t& pCrashInfo)
+                map_crash_data_t& pCrashData)
 {
     std::string UID;
     std::string time;
@@ -907,12 +911,12 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     const char *uid_str = analyzer_has_InformAllUsers(analyzer.c_str())
         ? "-1"
         : UID.c_str();
-    return SaveDebugDumpToDatabase(lUUID.c_str(), uid_str, time.c_str(), pDebugDumpDir, pCrashInfo);
+    return SaveDebugDumpToDatabase(lUUID.c_str(), uid_str, time.c_str(), pDebugDumpDir, pCrashData);
 }
 
 mw_result_t FillCrashInfo(const char *pUUID,
                 const char *pUID,
-                map_crash_info_t& pCrashInfo)
+                map_crash_data_t& pCrashData)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
@@ -938,18 +942,18 @@ mw_result_t FillCrashInfo(const char *pUUID,
         return MW_ERROR;
     }
 
-    pCrashInfo.clear();
-    add_crash_data_to_crash_info(pCrashInfo, CD_EXECUTABLE, executable);
-    add_crash_data_to_crash_info(pCrashInfo, CD_PACKAGE, package);
-    add_crash_data_to_crash_info(pCrashInfo, CD_DESCRIPTION, description);
-    add_crash_data_to_crash_info(pCrashInfo, CD_UUID, row.m_sUUID);
-    add_crash_data_to_crash_info(pCrashInfo, CD_UID, row.m_sUID);
-    add_crash_data_to_crash_info(pCrashInfo, CD_COUNT, row.m_sCount);
-    add_crash_data_to_crash_info(pCrashInfo, CD_TIME, row.m_sTime);
-    add_crash_data_to_crash_info(pCrashInfo, CD_REPORTED, row.m_sReported);
-    add_crash_data_to_crash_info(pCrashInfo, CD_MESSAGE, row.m_sMessage);
-    add_crash_data_to_crash_info(pCrashInfo, CD_MWDDD, row.m_sDebugDumpDir);
-    add_crash_data_to_crash_info(pCrashInfo, CD_MWANALYZER, analyzer);
+    pCrashData.clear();
+    add_to_crash_data(pCrashData, CD_EXECUTABLE , executable.c_str()         );
+    add_to_crash_data(pCrashData, CD_PACKAGE    , package.c_str()            );
+    add_to_crash_data(pCrashData, CD_DESCRIPTION, description.c_str()        );
+    add_to_crash_data(pCrashData, CD_UUID       , row.m_sUUID.c_str()        );
+    add_to_crash_data(pCrashData, CD_UID        , row.m_sUID.c_str()         );
+    add_to_crash_data(pCrashData, CD_COUNT      , row.m_sCount.c_str()       );
+    add_to_crash_data(pCrashData, CD_TIME       , row.m_sTime.c_str()        );
+    add_to_crash_data(pCrashData, CD_REPORTED   , row.m_sReported.c_str()    );
+    add_to_crash_data(pCrashData, CD_MESSAGE    , row.m_sMessage.c_str()     );
+    add_to_crash_data(pCrashData, CD_MWDDD      , row.m_sDebugDumpDir.c_str());
+    add_to_crash_data(pCrashData, CD_MWANALYZER , analyzer.c_str()           );
 
     return MW_OK;
 }

@@ -93,7 +93,7 @@ CKerneloopsReporter::CKerneloopsReporter() :
 	m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
 {}
 
-std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
+std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
                                         const map_plugin_settings_t& pSettings,
                                         const char *pArgs)
 {
@@ -101,8 +101,8 @@ std::string CKerneloopsReporter::Report(const map_crash_report_t& pCrashReport,
 
 	update_client(_("Creating and submitting a report..."));
 
-	map_crash_report_t::const_iterator it = pCrashReport.find(FILENAME_KERNELOOPS);
-	if (it != pCrashReport.end()) {
+	map_crash_data_t::const_iterator it = pCrashData.find(FILENAME_KERNELOOPS);
+	if (it != pCrashData.end()) {
 		ret = http_post_to_kerneloops_site(
 			m_sSubmitURL.c_str(),
 			it->second[CD_CONTENT].c_str()
