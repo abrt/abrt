@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.0.3
+Version: 1.0.4
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -402,6 +402,34 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed Jan 20 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.4-1
+- GUI: redesign of reporter dialog (jmoskovc@redhat.com)
+- Set the prgname to "Automatic Bug Reporting Tool" fixes rhbz#550357 (jmoskovc@redhat.com)
+- CCpp analyzer: display __abort_msg in backtrace. closes rhbz#549735 (vda.linux@googlemail.com)
+- s/os.exit/sys.exit - closes rhbz#556313 (vda.linux@googlemail.com)
+- use repr() to print variable values in python hook rhbz#545070 (jmoskovc@redhat.com)
+- gui: add logging infrastructure (vda.linux@googlemail.com)
+- Added "Enabled = yes" to all plugin's config files (jmoskovc@redhat.com)
+- *: disable plugin loading/unloading through GUI. Document keyring a bit (vda.linux@googlemail.com)
+- fix memory leaks in catcut plugin (npajkovs@redhat.com)
+- fix memory leaks in bugzilla (npajkovs@redhat.com)
+- abrt-hook-python: sanitize input more; log to syslog (vda.linux@googlemail.com)
+- Fixed /var/cache/abrt/ permissions (kklic@redhat.com)
+- Kerneloops: we require commandline for every crash, save dummy one for oopses (vda.linux@googlemail.com)
+- *: remove nss dependencies (vda.linux@googlemail.com)
+- CCpp: use our own sha1 implementation (less pain with nss libs) (vda.linux@googlemail.com)
+- DebugDump: more consistent logic in setting mode and uid:gid on dump dir (vda.linux@googlemail.com)
+- fixes based on security review (vda.linux@googlemail.com)
+- SOSreport/TicketUploader: use more restrictive file modes (vda.linux@googlemail.com)
+- abrt-hook-python: add input sanitization and directory size guard (vda.linux@googlemail.com)
+- RunApp: safer chdir. Overhauled "sparn a child and get its output" in general (vda.linux@googlemail.com)
+- DebugDump: use more restrictive modes (vda.linux@googlemail.com)
+- SQLite3: check for SQL injection (vda.linux@googlemail.com)
+- replace plugin enabling via EnabledPlugins by par-plugin Enabled = yes/no (vda.linux@googlemail.com)
+- abrt.spec: move "requires: gdb" to abrt-desktop (vda.linux@googlemail.com)
+- ccpp: add a possibility to disable backtrace generation (vda.linux@googlemail.com)
+- abrtd: limit the number of frames in backtrace to 3000 (vda.linux@googlemail.com)
+
 * Tue Jan  5 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.3-1
 - speed optimalization of abrt-debuginfo-install (jmoskovc@redhat.com)
 - updated credits (jmoskovc@redhat.com)
