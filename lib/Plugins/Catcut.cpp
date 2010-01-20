@@ -215,13 +215,13 @@ struct ctx: public abrt_xmlrpc_conn {
     ctx(const char* url, bool no_ssl_verify): abrt_xmlrpc_conn(url, no_ssl_verify) {}
 
     string login(const char* login, const char* passwd);
-    string new_bug(const char *auth_cookie, const map_crash_report_t& pCrashReport);
+    string new_bug(const char *auth_cookie, const map_crash_data_t& pCrashData);
     string request_upload(const char* auth_cookie, const char* pTicketName,
                 const char* fileName, const char* description);
     void add_attachments(const char* xmlrpc_URL,
                 const char* auth_cookie,
                 const char* pTicketName,
-                const map_crash_report_t& pCrashReport,
+                const map_crash_data_t& pCrashData,
                 int retryCount,
                 int retryDelaySeconds);
 };
@@ -263,21 +263,21 @@ ctx::login(const char* login, const char* passwd)
 }
 
 string
-ctx::new_bug(const char *auth_cookie, const map_crash_report_t& pCrashReport)
+ctx::new_bug(const char *auth_cookie, const map_crash_data_t& pCrashData)
 {
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    string package = pCrashReport.find(FILENAME_PACKAGE)->second[CD_CONTENT];
-    string component = pCrashReport.find(FILENAME_COMPONENT)->second[CD_CONTENT];
-    string release = pCrashReport.find(FILENAME_RELEASE)->second[CD_CONTENT];
-    string arch = pCrashReport.find(FILENAME_ARCHITECTURE)->second[CD_CONTENT];
-    string uuid = pCrashReport.find(CD_UUID)->second[CD_CONTENT];
+    const string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
+    const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
+    const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
+    const string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
+    const string& uuid      = get_crash_data_item_content(pCrashData, CD_UUID);
 
     string summary = "[abrt] crash in " + package;
     string status_whiteboard = "abrt_hash:" + uuid;
 
-    string description = make_description_catcut(pCrashReport);
+    string description = make_description_catcut(pCrashData);
 
     string product;
     string version;
@@ -382,13 +382,13 @@ void
 ctx::add_attachments(const char* xmlrpc_URL,
                 const char* auth_cookie,
                 const char* pTicketName,
-                const map_crash_report_t& pCrashReport,
+                const map_crash_data_t& pCrashData,
                 int retryCount,
                 int retryDelaySeconds)
 {
 
-    map_crash_report_t::const_iterator it = pCrashReport.begin();
-    for (; it != pCrashReport.end(); it++)
+    map_crash_data_t::const_iterator it = pCrashData.begin();
+    for (; it != pCrashData.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_TXT && it->second[CD_TYPE].size() > CD_TEXT_ATT_SIZE)
         {
@@ -446,7 +446,7 @@ CReporterCatcut::CReporterCatcut() :
 CReporterCatcut::~CReporterCatcut()
 {}
 
-string CReporterCatcut::Report(const map_crash_report_t& pCrashReport,
+string CReporterCatcut::Report(const map_crash_data_t& pCrashData,
                                const map_plugin_settings_t& pSettings,
                                const char *pArgs)
 {
@@ -459,14 +459,14 @@ string CReporterCatcut::Report(const map_crash_report_t& pCrashReport,
         string message;
         if (auth_cookie != "")
         {
-            string ticket_name = catcut_server.new_bug(auth_cookie.c_str(), pCrashReport);
+            string ticket_name = catcut_server.new_bug(auth_cookie.c_str(), pCrashData);
             if (ticket_name != "")
             {
                 catcut_server.add_attachments(
                         m_sCatcutURL.c_str(),
                         auth_cookie.c_str(),
                         ticket_name.c_str(),
-                        pCrashReport,
+                        pCrashData,
                         m_nRetryCount,
                         m_nRetryDelay
                 );

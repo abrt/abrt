@@ -84,7 +84,7 @@ if no new dbus calls are arriving to it.
 
 The key dbus calls served by abrt-process are:
 
-- GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
+- GetCrashInfos(): returns a vector_map_crash_data_t (vector_map_vector_string_t)
      of crashes for given uid
      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
 [see above the problem with producing this list]
@@ -97,8 +97,8 @@ The key dbus calls served by abrt-process are:
     abrt should be run by root anyway
     - debuginfo gets installed using pk-debuginfo-install, which cares about
     privileges itself, so no problem here
-- GetJobResult(UUID): returns map_crash_report_t (map_vector_string_t)
-- Report(map_crash_report_t (map_vector_string_t)):
+- GetJobResult(UUID): returns map_crash_data_t (map_vector_string_t)
+- Report(map_crash_data_t (map_vector_string_t)):
      "Please report this crash": calls Report() of all registered reporter plugins
      Returns report_status_t (map_vector_string_t) - the status of each call
 - DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool

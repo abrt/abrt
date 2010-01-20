@@ -30,8 +30,6 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 
-#define FILENAME_KERNELOOPS  "kerneloops"
-
 std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
 {
 	log(_("Getting local universal unique identification"));

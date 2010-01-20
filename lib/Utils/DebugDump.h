@@ -24,25 +24,6 @@
 #define DEBUGDUMP_H_
 
 #include <string>
-#include <dirent.h>
-#include <stdint.h>
-
-#define FILENAME_ARCHITECTURE       "architecture"
-#define FILENAME_KERNEL             "kernel"
-#define FILENAME_TIME               "time"
-#define FILENAME_UID                "uid"
-#define FILENAME_PACKAGE            "package"
-#define FILENAME_COMPONENT          "component"
-#define FILENAME_DESCRIPTION        "description"
-#define FILENAME_ANALYZER           "analyzer"
-#define FILENAME_RELEASE            "release"
-#define FILENAME_EXECUTABLE         "executable"
-#define FILENAME_REASON             "reason"
-#define FILENAME_COMMENT            "comment"
-#define FILENAME_REPRODUCE          "reproduce"
-#define FILENAME_RATING             "rating"
-#define FILENAME_CMDLINE            "cmdline"
-
 
 class CDebugDump
 {

@@ -16,11 +16,12 @@
           <object class="GtkVBox" id="vbox1">
             <property name="visible">True</property>
             <property name="orientation">vertical</property>
+            <property name="spacing">5</property>
             <child>
               <object class="GtkFrame" id="fSysInfo">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
-                <property name="shadow_type">none</property>
+                <property name="shadow_type">in</property>
                 <child>
                   <object class="GtkAlignment" id="alignment1">
                     <property name="visible">True</property>
@@ -32,6 +33,7 @@
                           <object class="GtkVBox" id="vbox3">
                             <property name="visible">True</property>
                             <property name="orientation">vertical</property>
+                            <property name="homogeneous">True</property>
                             <child>
                               <object class="GtkLabel" id="l">
                                 <property name="visible">True</property>
@@ -78,6 +80,8 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">0</property>
                           </packing>
                         </child>
@@ -92,6 +96,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">0</property>
@@ -103,6 +108,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -114,6 +120,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">2</property>
@@ -125,6 +132,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">3</property>
@@ -139,6 +147,7 @@
                           <object class="GtkVBox" id="vbox5">
                             <property name="visible">True</property>
                             <property name="orientation">vertical</property>
+                            <property name="homogeneous">True</property>
                             <child>
                               <object class="GtkLabel" id="label4">
                                 <property name="visible">True</property>
@@ -185,6 +194,8 @@
                             </child>
                           </object>
                           <packing>
+                            <property name="expand">False</property>
+                            <property name="fill">False</property>
                             <property name="position">2</property>
                           </packing>
                         </child>
@@ -198,6 +209,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">0</property>
@@ -209,6 +221,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">1</property>
@@ -220,6 +233,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">2</property>
@@ -231,6 +245,7 @@
                                 <property name="xalign">0</property>
                                 <property name="xpad">5</property>
                                 <property name="label" translatable="yes">N/A</property>
+                                <property name="max_width_chars">40</property>
                               </object>
                               <packing>
                                 <property name="position">3</property>
@@ -245,13 +260,8 @@
                     </child>
                   </object>
                 </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label1">
-                    <property name="visible">True</property>
-                    <property name="ypad">5</property>
-                    <property name="label" translatable="yes">&lt;b&gt;General information&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
+                <child type="label_item">
+                  <placeholder/>
                 </child>
               </object>
               <packing>
@@ -322,7 +332,7 @@
               </packing>
             </child>
             <child>
-              <object class="GtkFrame" id="frame2">
+              <object class="GtkFrame" id="fUserInfo">
                 <property name="visible">True</property>
                 <property name="label_xalign">0</property>
                 <property name="shadow_type">none</property>
@@ -381,8 +391,6 @@
                                 </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
                                 <property name="position">0</property>
                               </packing>
                             </child>
@@ -427,8 +435,6 @@
                                 </child>
                               </object>
                               <packing>
-                                <property name="expand">False</property>
-                                <property name="fill">False</property>
                                 <property name="position">1</property>
                               </packing>
                             </child>
@@ -441,13 +447,8 @@
                     </child>
                   </object>
                 </child>
-                <child type="label">
-                  <object class="GtkLabel" id="label3">
-                    <property name="visible">True</property>
-                    <property name="ypad">5</property>
-                    <property name="label" translatable="yes">&lt;b&gt;User information&lt;/b&gt;</property>
-                    <property name="use_markup">True</property>
-                  </object>
+                <child type="label_item">
+                  <placeholder/>
                 </child>
               </object>
               <packing>
@@ -482,75 +483,87 @@
                 </child>
               </object>
               <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
                 <property name="position">3</property>
               </packing>
             </child>
             <child>
-              <object class="GtkHBox" id="ebErrors">
+              <object class="GtkFrame" id="fErrors">
                 <property name="visible">True</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">in</property>
                 <child>
-                  <object class="GtkAlignment" id="alignment7">
+                  <object class="GtkHBox" id="ebErrors">
                     <property name="visible">True</property>
                     <child>
-                      <placeholder/>
-                    </child>
-                  </object>
-                  <packing>
-                    <property name="position">0</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkImage" id="image1">
-                    <property name="visible">True</property>
-                    <property name="stock">gtk-dialog-warning</property>
-                    <property name="icon-size">6</property>
-                  </object>
-                  <packing>
-                    <property name="expand">False</property>
-                    <property name="fill">False</property>
-                    <property name="position">1</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkVBox" id="vbox8">
-                    <property name="visible">True</property>
-                    <property name="orientation">vertical</property>
-                    <child>
-                      <object class="GtkLabel" id="label12">
+                      <object class="GtkAlignment" id="alignment7">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes">&lt;b&gt;Please fix the following problems&lt;/b&gt;</property>
-                        <property name="use_markup">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
                       </object>
                       <packing>
                         <property name="position">0</property>
                       </packing>
                     </child>
                     <child>
-                      <object class="GtkLabel" id="lErrors">
+                      <object class="GtkImage" id="image1">
                         <property name="visible">True</property>
-                        <property name="label" translatable="yes"> </property>
-                        <property name="use_markup">True</property>
-                        <property name="selectable">True</property>
+                        <property name="stock">gtk-dialog-warning</property>
+                        <property name="icon-size">6</property>
                       </object>
                       <packing>
+                        <property name="expand">False</property>
+                        <property name="fill">False</property>
                         <property name="position">1</property>
                       </packing>
                     </child>
-                  </object>
-                  <packing>
-                    <property name="position">2</property>
-                  </packing>
-                </child>
-                <child>
-                  <object class="GtkAlignment" id="alignment8">
-                    <property name="visible">True</property>
                     <child>
-                      <placeholder/>
+                      <object class="GtkVBox" id="vbox8">
+                        <property name="visible">True</property>
+                        <property name="orientation">vertical</property>
+                        <child>
+                          <object class="GtkLabel" id="label12">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes">&lt;b&gt;Please fix the following problems&lt;/b&gt;</property>
+                            <property name="use_markup">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLabel" id="lErrors">
+                            <property name="visible">True</property>
+                            <property name="label" translatable="yes"> </property>
+                            <property name="use_markup">True</property>
+                            <property name="selectable">True</property>
+                          </object>
+                          <packing>
+                            <property name="position">1</property>
+                          </packing>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">2</property>
+                      </packing>
+                    </child>
+                    <child>
+                      <object class="GtkAlignment" id="alignment8">
+                        <property name="visible">True</property>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                      <packing>
+                        <property name="position">3</property>
+                      </packing>
                     </child>
                   </object>
-                  <packing>
-                    <property name="position">3</property>
-                  </packing>
+                </child>
+                <child type="label_item">
+                  <placeholder/>
                 </child>
               </object>
               <packing>

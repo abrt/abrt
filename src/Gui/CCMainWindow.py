@@ -233,12 +233,14 @@ class MainWindow():
             report_label = _("<b>This crash has been reported:</b>\n")
             # plugin message follows, but at least in case of kerneloops,
             # it is not informative (no URL to the report)
-            for message in dump.getMessage().split('\n'):
-                if message:
-                    #Doesn't work (far too easy to make it worse, not better):
-                    #if "http" in message[0:5] or "file:///"[0:8] in message:
-                    #    message = "<a href=\"%s\">%s</a>" % (message, message)
-                    report_label += "%s\n" % message
+            for message in dump.getMessage().split(';'):
+                 if message:
+                    message_clean = message.strip()
+                    if "http" in message_clean[0:5] or "file:///"[0:8] in message_clean:
+                        report_message = "<a href=\"%s\">%s</a>" % (message_clean, message_clean)
+                    else:
+                        report_message = message_clean
+                    report_label += "%s\n" % report_message
             log2("setting markup '%s'", report_label)
             self.wTree.get_widget("lReported").set_markup(report_label)
         else:

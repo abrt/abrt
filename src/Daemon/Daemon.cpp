@@ -51,15 +51,15 @@
  * - signal: we got SIGTERM or SIGINT
  *
  * DBus methods we have:
- * - GetCrashInfos(): returns a vector_crash_infos_t (vector_map_vector_string_t)
+ * - GetCrashInfos(): returns a vector_map_crash_data_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
  * - StartJob(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
  *      Returns job id (uint64).
  *      After thread returns, when report creation thread has finished,
  *      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
- * - CreateReport(UUID): returns map_crash_report_t (map_vector_string_t)
- * - Report(map_crash_report_t (map_vector_string_t[, map_map_string_t])):
+ * - CreateReport(UUID): returns map_crash_data_t (map_vector_string_t)
+ * - Report(map_crash_data_t (map_vector_string_t[, map_map_string_t])):
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
@@ -320,9 +320,9 @@ static void FindNewDumps(const char* pPath)
     vector_string_t::iterator itt = dirs.begin();
     for (; itt != dirs.end(); ++itt)
     {
-        map_crash_info_t crashinfo;
         try
         {
+            map_crash_data_t crashinfo;
             mw_result_t res = SaveDebugDump(itt->c_str(), crashinfo);
             switch (res)
             {
@@ -476,11 +476,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             worst_dir = "";
         }
 
-        map_crash_info_t crashinfo;
         try
         {
             std::string fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-
+            map_crash_data_t crashinfo;
+//todo: rename SaveDebugDump to ???? it does not save crashinfo, it FETCHES crashinfo
             mw_result_t res = SaveDebugDump(fullname.c_str(), crashinfo);
             switch (res)
             {
@@ -501,7 +501,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     if (analyzer_has_AutoReportUIDs(analyzer, uid_str))
                     {
                         VERB1 log("Reporting the crash automatically");
-                        map_crash_report_t crash_report;
+                        map_crash_data_t crash_report;
                         mw_result_t crash_result = CreateCrashReport(
                                         crashinfo[CD_UUID][CD_CONTENT].c_str(),
                                         uid_str, /*force:*/ 0, crash_report

@@ -19,7 +19,8 @@
 #include "run-command.h"
 #include "dbus.h"
 #include "abrtlib.h"
-#include "DebugDump.h" // FILENAME_* defines
+#include "DebugDump.h"
+#include "CrashTypes.h" // FILENAME_* defines
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -151,10 +152,10 @@ static void remove_comments_and_unescape(char *str)
  * Writes a field of crash report to a file.
  * Field must be writable.
  */
-static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
+static void write_crash_report_field(FILE *fp, const map_crash_data_t &report,
 				     const char *field, const char *description)
 {
-  const map_crash_report_t::const_iterator it = report.find(field);
+  const map_crash_data_t::const_iterator it = report.find(field);
   if (it == report.end())
   {
     // exit silently, all fields are optional for now
@@ -186,7 +187,7 @@ static void write_crash_report_field(FILE *fp, const map_crash_report_t &report,
  *  If the report is successfully stored to the file, a zero value is returned.
  *  On failure, nonzero value is returned.
  */
-static void write_crash_report(const map_crash_report_t &report, FILE *fp)
+static void write_crash_report(const map_crash_data_t &report, FILE *fp)
 {
   fprintf(fp, "# Please check this report. Lines starting with '#' will be ignored.\n"
 	  "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
@@ -195,13 +196,13 @@ static void write_crash_report(const map_crash_report_t &report, FILE *fp)
 			   _("# Describe the circumstances of this crash below."));
   write_crash_report_field(fp, report, CD_REPRODUCE,
 			   _("# How to reproduce the crash?"));
-  write_crash_report_field(fp, report, "backtrace",
+  write_crash_report_field(fp, report, FILENAME_BACKTRACE,
 			   _("# Stack trace: a list of active stack frames at the time the crash occurred\n# Check that it does not contain any sensitive data such as passwords."));
   write_crash_report_field(fp, report, CD_UUID, _("# UUID"));
   write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
-  write_crash_report_field(fp, report, "cmdline", _("# Command line"));
+  write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
   write_crash_report_field(fp, report, FILENAME_COMPONENT, _("# Component"));
-  write_crash_report_field(fp, report, "coredump", _("# Core dump"));
+  write_crash_report_field(fp, report, FILENAME_COREDUMP, _("# Core dump"));
   write_crash_report_field(fp, report, FILENAME_EXECUTABLE, _("# Executable"));
   write_crash_report_field(fp, report, FILENAME_KERNEL, _("# Kernel version"));
   write_crash_report_field(fp, report, FILENAME_PACKAGE, _("# Package"));
@@ -217,7 +218,7 @@ static void write_crash_report(const map_crash_report_t &report, FILE *fp)
  *  1 if the field was changed.
  *  Changes to read-only fields are ignored.
  */
-static int read_crash_report_field(const char *text, map_crash_report_t &report,
+static int read_crash_report_field(const char *text, map_crash_data_t &report,
 				   const char *field)
 {
   char separator[strlen("\n" FIELD_SEP) + strlen(field) + 2]; // 2 = '\n\0'
@@ -234,7 +235,7 @@ static int read_crash_report_field(const char *text, map_crash_report_t &report,
   else
     length = end - textfield;
 
-  const map_crash_report_t::iterator it = report.find(field);
+  const map_crash_data_t::iterator it = report.find(field);
   if (it == report.end())
   {
     error_msg("Field %s not found.\n", field);
@@ -278,17 +279,17 @@ static int read_crash_report_field(const char *text, map_crash_report_t &report,
  *  1 if any field was changed.
  *  Changes to read-only fields are ignored.
  */
-static int read_crash_report(map_crash_report_t &report, const char *text)
+static int read_crash_report(map_crash_data_t &report, const char *text)
 {
   int result = 0;
   result |= read_crash_report_field(text, report, CD_COMMENT);
   result |= read_crash_report_field(text, report, CD_REPRODUCE);
-  result |= read_crash_report_field(text, report, "backtrace");
+  result |= read_crash_report_field(text, report, FILENAME_BACKTRACE);
   result |= read_crash_report_field(text, report, CD_UUID);
   result |= read_crash_report_field(text, report, FILENAME_ARCHITECTURE);
-  result |= read_crash_report_field(text, report, "cmdline");
+  result |= read_crash_report_field(text, report, FILENAME_CMDLINE);
   result |= read_crash_report_field(text, report, FILENAME_COMPONENT);
-  result |= read_crash_report_field(text, report, "coredump");
+  result |= read_crash_report_field(text, report, FILENAME_COREDUMP);
   result |= read_crash_report_field(text, report, FILENAME_EXECUTABLE);
   result |= read_crash_report_field(text, report, FILENAME_KERNEL);
   result |= read_crash_report_field(text, report, FILENAME_PACKAGE);
@@ -331,7 +332,7 @@ static int launch_editor(const char *path)
 int report(const char *uuid, bool always)
 {
   // Ask for an initial report.
-  map_crash_report_t cr = call_CreateReport(uuid);
+  map_crash_data_t cr = call_CreateReport(uuid);
 //TODO: error check?
 
   if (!always)

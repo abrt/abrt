@@ -146,8 +146,8 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
 
 static void ParseCommon()
 {
-    map_string_t::const_iterator it = s_mapSectionCommon.find("OpenGPGCheck");
     map_string_t::const_iterator end = s_mapSectionCommon.end();
+    map_string_t::const_iterator it = s_mapSectionCommon.find("OpenGPGCheck");
     if (it != end)
     {
         g_settings_bOpenGPGCheck = string_to_bool(it->second.c_str());

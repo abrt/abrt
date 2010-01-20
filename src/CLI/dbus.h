@@ -23,9 +23,9 @@
 
 extern DBusConnection* s_dbus_conn;
 
-vector_crash_infos_t call_GetCrashInfos();
-map_crash_report_t call_CreateReport(const char *uuid);
-report_status_t call_Report(const map_crash_report_t& report);
+vector_map_crash_data_t call_GetCrashInfos();
+map_crash_data_t call_CreateReport(const char *uuid);
+report_status_t call_Report(const map_crash_data_t& report);
 int32_t call_DeleteDebugDump(const char* uuid);
 
 #ifdef UNUSED

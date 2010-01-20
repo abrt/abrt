@@ -20,6 +20,7 @@ libABRTUtils_la_SOURCES = \
     stringops.cpp \
     dirsize.cpp \
     DebugDump.h DebugDump.cpp \
+    CrashTypes.cpp \
     ABRTException.cpp
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \

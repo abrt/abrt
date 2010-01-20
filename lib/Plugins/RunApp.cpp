@@ -19,7 +19,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-
+#include "abrtlib.h"
 #include "RunApp.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
