@@ -38,7 +38,12 @@ class PluginInfoList(list):
     def getReporterPlugins(self):
         return [x for x in self if x["Enabled"] == 'yes' and x["Type"] == 'Reporter']
 
-
+    def getReporterPluginsSettings(self):
+        reporters_settings = {}
+        for plugin in self.getReporterPlugins():
+            reporters_settings[str(plugin)] = plugin.Settings
+        return reporters_settings
+                
 
 __PFList = None
 __PFList_dbmanager = None

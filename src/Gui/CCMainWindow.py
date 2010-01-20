@@ -303,14 +303,8 @@ class MainWindow():
             try:
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
-                # Old way: it needs to talk to daemon
-                #reporters_settings = {}
-                ## self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
-                ## don't force refresh!
-                #self.pluginlist = getPluginInfoList(self.ccdaemon)
-                #for plugin in self.pluginlist.getReporterPlugins():
-                #    reporters_settings[str(plugin)] = plugin.Settings
-                reporters_settings = getCurrentConfBackend().load_all()
+                pluginlist = getPluginInfoList(self.ccdaemon)
+                reporters_settings = pluginlist.getReporterPluginsSettings()
                 log2("Report(result,settings):")
                 log2("  result:%s", str(result))
                 # Careful, this will print reporters_settings["Password"] too
