@@ -96,7 +96,7 @@ class ReporterDialog():
             send = False
             error_msgs.append(_("You must agree with submitting the backtrace."))
         # we have both SendBacktrace and rating
-        elif rating:
+        if rating:
             try:
                 package = self.report["package"][CD_CONTENT]
             # if we don't have package for some reason
