@@ -328,7 +328,7 @@ static void FindNewDumps(const char* pPath)
             {
                 case MW_OK:
                     VERB1 log("Saving %s into database", itt->c_str());
-                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
+                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_MWDDD).c_str());
                     break;
                 case MW_IN_DB:
                     VERB1 log("%s is already saved in database", itt->c_str());
@@ -486,7 +486,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             {
                 case MW_OK:
                     log("New crash, saving");
-                    RunActionsAndReporters(crashinfo[CD_MWDDD][CD_CONTENT].c_str());
+                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_MWDDD).c_str());
                     /* Fall through */
                 case MW_REPORTED:
                 case MW_OCCURED:
@@ -494,8 +494,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     if (res != MW_OK)
                         log("Already saved crash, just sending dbus signal");
 
-                    const char *analyzer = crashinfo[CD_MWANALYZER][CD_CONTENT].c_str();
-                    const char *uid_str = crashinfo[CD_UID][CD_CONTENT].c_str();
+                    const char *analyzer = get_crash_data_item_content(crashinfo, CD_MWANALYZER).c_str();
+                    const char *uid_str = get_crash_data_item_content(crashinfo, CD_UID).c_str();
 
                     /* Autoreport it if configured to do so */
                     if (analyzer_has_AutoReportUIDs(analyzer, uid_str))
@@ -503,7 +503,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                         VERB1 log("Reporting the crash automatically");
                         map_crash_data_t crash_report;
                         mw_result_t crash_result = CreateCrashReport(
-                                        crashinfo[CD_UUID][CD_CONTENT].c_str(),
+                                        get_crash_data_item_content(crashinfo, CD_UUID).c_str(),
                                         uid_str, /*force:*/ 0, crash_report
                         );
                         if (crash_result == MW_OK)
@@ -525,7 +525,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     /* Send dbus signal */
                     if (analyzer_has_InformAllUsers(analyzer))
                         uid_str = NULL;
-                    g_pCommLayer->Crash(crashinfo[CD_PACKAGE][CD_CONTENT].c_str(), uid_str);
+                    g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, CD_PACKAGE).c_str(), uid_str);
                     break;
                 }
                 case MW_BLACKLISTED:

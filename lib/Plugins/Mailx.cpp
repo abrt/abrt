@@ -117,7 +117,7 @@ std::string CMailx::Report(const map_crash_data_t& pCrashData,
         }
     }
 
-    std::string emailBody = "Duplicity check\n";
+    std::string emailBody = "Duplicate check\n";
     emailBody += "=====\n\n";
     emailBody += UUIDFile;
     emailBody += "\nCommon information\n";
