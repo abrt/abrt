@@ -56,9 +56,14 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         status_hbox.pack_start(plugin_label, expand=False)
         status_hbox.pack_start(status_label, expand=False)
         # 0 means not succesfull
-        if report_status_dict[plugin][0] == '0':
-            status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][1])
-        elif report_status_dict[plugin][0] == '1':
+        #if report_status_dict[plugin][0] == '0':
+        # this first one is actually a fallback to set at least
+        # a raw text in case when set_markup() fails
+        status_label.set_text(report_status_dict[plugin][1])
+        status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][1])
+        # if the report was not succesful then this won't pass so this runs only
+        # if report succeds and gets overwriten by the status message
+        if report_status_dict[plugin][0] == '1':
             if "http" in report_status_dict[plugin][1][0:4] or "file://" in report_status_dict[plugin][1][0:7]:
                 status_label.set_markup("<a href=\"%s\">%s</a>" % (report_status_dict[plugin][1], report_status_dict[plugin][1]))
                 # FIXME: make a new branch for rawhide with gtk 2.17 and remove this
