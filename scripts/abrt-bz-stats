@@ -13,6 +13,9 @@ import subprocess
 import datetime
 import pickle
 
+#
+# Parse the command line input
+#
 parser = OptionParser(version="%prog 1.0")
 parser.add_option("-u", "--user", dest="user",
                   help="Bugzilla user name (REQUIRED)", metavar="USERNAME")
@@ -21,7 +24,6 @@ parser.add_option("-p", "--password", dest="password",
 parser.add_option("-b", "--bugzilla", dest="bugzilla",
                   help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
 (options, args) = parser.parse_args()
-
 if not options.user or len(options.user) == 0:
   parser.error("User name is required.\nTry {0} --help".format(sys.argv[0]))
 if not options.password or len(options.password) == 0:
@@ -29,6 +31,9 @@ if not options.password or len(options.password) == 0:
 if not options.bugzilla or len(options.bugzilla) == 0:
   options.bugzilla = "https://bugzilla.redhat.com/xmlrpc.cgi"
 
+#
+# Connect to Bugzilla and get the list of all bugs reported by ABRT
+#
 bz = RHBugzilla()
 bz.connect(options.bugzilla)
 bz.login(options.user, options.password)
@@ -37,47 +42,148 @@ buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboar
 total = len(buginfos)
 print "{0} bugs found.".format(total)
 
+#
+# Load cache from previous run. Speeds up the case Bugzilla closes connection.
+#
 buginfos_loaded = {}
 if os.path.isfile("cache"):
   f = open("cache", 'r')
   buginfos_loaded = pickle.load(f)
   f.close()
 
+def save_to_cache():
+  global buginfos_loaded
+  f = open("cache", 'w')
+  pickle.dump(buginfos_loaded, f, 2)
+  f.close()  
+
+#
+# Load data from Bugzilla
+#
 count = 0
 for buginfo in buginfos:
   count += 1
   print "{0}/{1}".format(count, total)
-  dtkey = buginfo.delta_ts[0:7] # YEAR-MONTH
-  statuskey = buginfo.bug_status
-  if buginfo.resolution != "":
-    statuskey += "_" + buginfo.resolution
-  if not buginfos_loaded.has_key(buginfo.bug_id):
-    buginfos_loaded[buginfo.bug_id] = (dtkey, statuskey)
+
   if count % 100 == 0:
-    f = open("cache", 'w')
-    pickle.dump(buginfos_loaded, f, 2)
-    f.close()
+    save_to_cache()
+
+  if buginfos_loaded.has_key(buginfo.bug_id):
+    continue
+
+  # creation date, format YEAR-MONTH
+  created = buginfo.creation_ts[0:7].replace(".", "-") 
+  # last change to bug, format YEAR-MONTH
+  lastchange = buginfo.delta_ts[0:7].replace(".", "-")
+  status = buginfo.bug_status # status during the last change
+  if buginfo.resolution != "":
+    status += "_" + buginfo.resolution
+  buginfos_loaded[buginfo.bug_id] = {
+    'created':created, 
+    'lastchange':lastchange, 
+    'status':status, 
+    'component':buginfo.component}
+
 bz.logout()
+save_to_cache()
 
-stats = {}
-for buginfo in buginfos_loaded.values():
-  if buginfo[0] in stats:
-    stat = stats[buginfo[0]]
-    if buginfo[1] in stat:
-      stat[buginfo[1]] += 1
+#
+# Interpret data from Bugzilla
+#
+# Bugs reported this month by ABRT
+# Bugs closed as useful this month by ABRT
+# Bugs closed as waste this month by ABRT
+# Top crashers this month.
+#
+class Month:
+  def __init__(self):
+    # Number of bugs reported to certain component this month.
+    self.components = {}
+
+    self.closed_as_useful = 0
+    self.closed_as_waste = 0
+    self.closed_as_other = 0
+
+  def bugs_reported(self):
+    result = 0
+    for component in self.components.values():
+      result += component
+    return result
+
+  def top_crashers(self):
+    """
+    Top five components causing crash this month.
+    Returns list of tuples (component, number of crashes)
+    """
+    return reversed(sorted(self.components.items(), key=lambda x: x[1]))[0:5]
+
+  def closed_as_useful_percentage(self):
+    return int(100 * self.closed_as_useful / self.closed())
+
+  def closed_as_waste_percentage(self):
+    return int(100 * self.closed_as_waste / self.closed())
+
+  def closed_as_other_percentage(self):
+    return int(100 * self.closed_as_other / self.closed())
+
+  def closed(self):
+    return self.closed_as_useful + self.closed_as_waste + self.closed_as_other
+
+  def add_component_crash(self, component):
+    if component in self.components:
+      self.components[component] += 1
     else:
-      stat[buginfo[1]] = 1
-  else:
-    stats[buginfo[0]] = { buginfo[1]:1 }
+      self.components[component] = 1
 
+  def add_resolution(self, resolution):
+    if resolution in ["CLOSED_NOTABUG", "CLOSED_WONTFIX", "CLOSED_DEFERRED", "CLOSED_WORKSFORME"]:
+      self.closed_as_other += 1
+    elif resolution in ["CLOSED_CURRENTRELEASE", "CLOSED_RAWHIDE", "CLOSED_ERRATA", \
+                          "CLOSED_UPSTREAM", "CLOSED_NEXTRELEASE"]:
+      self.closed_as_useful += 1
+    elif resolution in ["CLOSED_DUPLICATE", "CLOSED_CANTFIX", "CLOSED_INSUFFICIENT_DATA"]:
+      self.closed_as_waste += 1
+
+
+stats = {} # key == YEAR-MONTH, value == Month()
+
+def get_month(month):
+  global stats
+  if month in stats:
+    return stats[month]
+  else:
+    stats[month] = Month()
+    return stats[month]
+
+for buginfo in buginfos_loaded.values():
+  # Bugs reported this month by ABRT
+  # Top crashers this month
+  month = get_month(buginfo['created'])
+  month.add_component_crash(buginfo['component'])
+
+  # Bugs closed as useful this month by ABRT
+  # Bugs closed as waste this month by ABRT
+  month = get_month(buginfo['lastchange'])
+  month.add_resolution(buginfo['status'])
+
+#
+# Print interpreted data
+#
 print "STATS"
 print "=========================================================================="
 months = stats.keys()
 months.sort()
 for month in months:
-  stat = stats[month]
-  statuses = stat.keys()
-  statuses.sort()
-  print "Month ", month
-  for status in statuses:
-    print status, stat[status]
+  m = stats[month]
+  print "MONTH ", month
+  print " -", m.bugs_reported(), "bugs reported"
+  if m.closed_as_useful > 0:
+    print " -", m.closed_as_useful, "bugs (" + str(m.closed_as_useful_percentage()) + "%) closed (ABRT was useful)"
+  if m.closed_as_waste > 0:
+    print " -", m.closed_as_waste, "bugs (" + str(m.closed_as_waste_percentage())+ "%) closed (ABRT was not useful)"
+  if m.closed_as_other > 0:
+    print " -", m.closed_as_other, "bugs (" + str(m.closed_as_other_percentage()) + "%) closed other way"
+  if len(m.top_crashers()) > 0:
+    print " - top crashers:"
+    for (component, num_crashes) in m.top_crashers():
+      print "    # ", component + ":", num_crashes, "crashes"
