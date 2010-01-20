@@ -863,8 +863,7 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
     return res;
 }
 
-std::string getDebugDumpDir(const char *pUUID,
-                             const char *pUID)
+std::string getDebugDumpDir(const char *pUUID, const char *pUID)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
