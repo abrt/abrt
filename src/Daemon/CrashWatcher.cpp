@@ -98,13 +98,12 @@ vector_map_crash_data_t GetCrashInfos(const char *pUID)
  */
 map_crash_data_t CreateReport(const char* pUUID, const char* pUID, int force)
 {
-    map_crash_data_t crashReport;
-
     /* FIXME: starting from here, any shared data must be protected with a mutex.
      * For example, CreateCrashReport does:
      * g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
      * which is unsafe wrt concurrent updates to g_pPluginManager state.
      */
+    map_crash_data_t crashReport;
     mw_result_t res = CreateCrashReport(pUUID, pUID, force, crashReport);
     switch (res)
     {

@@ -442,12 +442,12 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         update_client(_("Checking for duplicates..."));
         bug_id = bz_server.check_uuid_in_bugzilla(component.c_str(), uuid.c_str());
 
-        update_client(_("Logging into bugzilla..."));
         if ((Login == "") && (Password == ""))
         {
             VERB3 log("Empty login and password");
             throw CABRTException(EXCEP_PLUGIN, _("Empty login and password. Please check Bugzilla.conf"));
         }
+        update_client(_("Logging into bugzilla..."));
         bz_server.login(Login.c_str(), Password.c_str());
 
         if (bug_id > 0)
@@ -458,7 +458,9 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
                 bz_server.add_plus_one_cc(bug_id, Login.c_str());
             }
             bz_server.logout();
-            return BugzillaURL + "/show_bug.cgi?id=" + to_string(bug_id);
+            BugzillaURL += "/show_bug.cgi?id=";
+            BugzillaURL += to_string(bug_id);
+            return BugzillaURL;
         }
 
         update_client(_("Creating new bug..."));
@@ -475,12 +477,16 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
 
     if (bug_id > 0)
     {
-        return BugzillaURL + "/show_bug.cgi?id=" + to_string(bug_id);
+        BugzillaURL += "/show_bug.cgi?id=";
+        BugzillaURL += to_string(bug_id);
+        return BugzillaURL;
     }
 
-    return BugzillaURL + "/show_bug.cgi?id=";
+    BugzillaURL += "/show_bug.cgi?id=";
+    return BugzillaURL;
 }
 
+//todo: make static
 map_plugin_settings_t CReporterBugzilla::parse_settings(const map_plugin_settings_t& pSettings)
 {
     map_plugin_settings_t plugin_settings;

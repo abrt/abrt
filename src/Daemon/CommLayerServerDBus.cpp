@@ -249,15 +249,14 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         }
     }
 
+#if 0
     //const char * sender = dbus_message_get_sender(call);
     if (!user_conf_data.empty())
     {
-        std::string PluginName;
         map_map_string_t::const_iterator it_user_conf_data = user_conf_data.begin();
         for (; it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
         {
-            PluginName = it_user_conf_data->first;
-#if DEBUG
+            std::string PluginName = it_user_conf_data->first;
             std::cout << "plugin name: " << it_user_conf_data->first;
             map_string_t::const_iterator it_plugin_config;
             for    (it_plugin_config = it_user_conf_data->second.begin();
@@ -266,11 +265,11 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
             {
                 std::cout << " key: " << it_plugin_config->first << " value: " << it_plugin_config->second << std::endl;
             }
-#endif
             // this would overwrite the default settings
             //g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
         }
     }
+#endif
 
     long unix_uid = get_remote_uid(call);
     report_status_t argout1;

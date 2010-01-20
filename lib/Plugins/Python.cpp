@@ -5,9 +5,9 @@
 
 static std::string CreateHash(const char *pDebugDumpDir)
 {
-	std::string uuid;
 	CDebugDump dd;
 	dd.Open(pDebugDumpDir);
+	std::string uuid;
 	dd.LoadText(FILENAME_UUID, uuid);
 	return uuid;
 }

@@ -34,8 +34,6 @@
 #include "KerneloopsSysLog.h"
 #include "KerneloopsScanner.h"
 
-#include <limits.h>
-
 // TODO: https://fedorahosted.org/abrt/ticket/78
 
 CKerneloopsScanner::CKerneloopsScanner()

@@ -120,29 +120,11 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-/**
- * Transforms a debugdump direcortry to inner crash
- * report form. This form is used for later reporting.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
- * @param pCrashData A created crash report.
- */
-static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& pCrashData)
+static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& data)
 {
-    CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-    if (!dd.Exist(FILENAME_ARCHITECTURE)
-     || !dd.Exist(FILENAME_KERNEL)
-     || !dd.Exist(FILENAME_PACKAGE)
-     || !dd.Exist(FILENAME_COMPONENT)
-     || !dd.Exist(FILENAME_RELEASE)
-     || !dd.Exist(FILENAME_EXECUTABLE)
-    ) {
-        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s) are missing");
-    }
-
     std::string short_name;
     std::string full_name;
-    pCrashData.clear();
+
     dd.InitGetNextFile();
     while (dd.GetNextFile(&short_name, &full_name))
     {
@@ -150,7 +132,7 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
         char *text = is_text_file(full_name.c_str(), &sz);
         if (!text)
         {
-            add_to_crash_data_ext(pCrashData,
+            add_to_crash_data_ext(data,
                     short_name.c_str(),
                     CD_BIN,
                     CD_ISNOTEDITABLE,
@@ -173,7 +155,7 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
          || short_name == FILENAME_RELEASE
          || short_name == FILENAME_EXECUTABLE
         ) {
-            add_to_crash_data_ext(pCrashData,
+            add_to_crash_data_ext(data,
                     short_name.c_str(),
                     CD_TXT,
                     CD_ISNOTEDITABLE,
@@ -190,7 +172,7 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
          && short_name != FILENAME_COMMENT
         ) {
             add_to_crash_data_ext(
-                    pCrashData,
+                    data,
                     short_name.c_str(),
                     CD_TXT,
                     CD_ISEDITABLE,
@@ -198,6 +180,29 @@ static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
             );
         }
     }
+}
+
+/**
+ * Transforms a debugdump directory to inner crash
+ * report form. This form is used for later reporting.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @param pCrashData A created crash report.
+ */
+static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& pCrashData)
+{
+    CDebugDump dd;
+    dd.Open(pDebugDumpDir);
+    if (!dd.Exist(FILENAME_ARCHITECTURE)
+     || !dd.Exist(FILENAME_KERNEL)
+     || !dd.Exist(FILENAME_PACKAGE)
+     || !dd.Exist(FILENAME_COMPONENT)
+     || !dd.Exist(FILENAME_RELEASE)
+     || !dd.Exist(FILENAME_EXECUTABLE)
+    ) {
+        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s) are missing");
+    }
+
+    load_crash_data_from_debug_dump(dd, pCrashData);
 }
 
 /**
@@ -299,7 +304,7 @@ mw_result_t CreateCrashReport(const char *pUUID,
         std::string gUUID = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());
 
-        VERB3 log(" RunAnalyzerActions");
+        VERB3 log(" RunAnalyzerActions('%s','%s')", analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" DebugDumpToCrashReport");
         DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
