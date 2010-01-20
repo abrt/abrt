@@ -320,9 +320,9 @@ static void FindNewDumps(const char* pPath)
     vector_string_t::iterator itt = dirs.begin();
     for (; itt != dirs.end(); ++itt)
     {
-        map_crash_data_t crashinfo;
         try
         {
+            map_crash_data_t crashinfo;
             mw_result_t res = SaveDebugDump(itt->c_str(), crashinfo);
             switch (res)
             {
@@ -476,11 +476,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             worst_dir = "";
         }
 
-        map_crash_data_t crashinfo;
         try
         {
             std::string fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-
+            map_crash_data_t crashinfo;
+//todo: rename SaveDebugDump to ???? it does not save crashinfo, it FETCHES crashinfo
             mw_result_t res = SaveDebugDump(fullname.c_str(), crashinfo);
             switch (res)
             {
