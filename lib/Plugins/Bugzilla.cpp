@@ -125,6 +125,12 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
             return true;
         }
     }
+    else
+    {
+        VERB3 log("Missing member 'reporter'");
+        xmlrpc_DECREF(result);
+        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'bugs'"));
+    }
 
     xmlrpc_value* cc_member = NULL;
     xmlrpc_struct_find_value(&env, result, "cc", &cc_member);
@@ -170,6 +176,12 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
             }
         }
         xmlrpc_DECREF(cc_member);
+    }
+    else
+    {
+        VERB3 log("Missing member 'bugs'");
+        xmlrpc_DECREF(result);
+        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'cc'"));
     }
 
     xmlrpc_DECREF(result);
@@ -275,6 +287,8 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
         else
         {
             VERB3 log("Missing member 'bug_id'");
+            xmlrpc_DECREF(result);
+            throw CABRTException(EXCEP_PLUGIN, _("Missing member 'bug_id'"));
         }
         xmlrpc_DECREF(item);
         xmlrpc_DECREF(bugs_member);
@@ -282,6 +296,8 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
     else
     {
         VERB3 log("Missing member 'bugs'");
+        xmlrpc_DECREF(result);
+        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'bugs'"));
     }
 
     xmlrpc_DECREF(result);
@@ -474,12 +490,9 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             return BugzillaURL;
         }
 
-        if (bug_id == NEW_BUG)
-        {
-            update_client(_("Creating new bug..."));
-            bug_id = bz_server.new_bug(pCrashData);
-            bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
-        }
+        update_client(_("Creating new bug..."));
+        bug_id = bz_server.new_bug(pCrashData);
+        bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
 
         update_client(_("Logging out..."));
         bz_server.logout();
