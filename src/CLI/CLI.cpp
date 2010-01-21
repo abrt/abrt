@@ -55,7 +55,7 @@ static void print_crash_infos(vector_map_crash_data_t& pCrashInfos, int pMode)
         map_crash_data_t& info = pCrashInfos[ii];
         if (pMode == OPT_GET_LIST_FULL || get_crash_data_item_content(info, CD_REPORTED) != "1")
         {
-            const char *timestr = get_crash_data_item_content(info, CD_TIME).c_str();
+            const char *timestr = get_crash_data_item_content(info, FILENAME_TIME).c_str();
             long time = strtol(timestr, NULL, 10);
             if (time == 0)
                 error_msg_and_die("Error while converting time string.");
@@ -73,10 +73,10 @@ static void print_crash_infos(vector_map_crash_data_t& pCrashInfos, int pMode)
                    "\tCrash Time : %s\n"
                    "\tCrash Count: %s\n"),
                 ii,
-                get_crash_data_item_content(info, CD_UID).c_str(),
+                get_crash_data_item_content(info, FILENAME_UID).c_str(),
                 get_crash_data_item_content(info, CD_UUID).c_str(),
-                get_crash_data_item_content(info, CD_PACKAGE).c_str(),
-                get_crash_data_item_content(info, CD_EXECUTABLE).c_str(),
+                get_crash_data_item_content(info, FILENAME_PACKAGE).c_str(),
+                get_crash_data_item_content(info, FILENAME_EXECUTABLE).c_str(),
                 timeloc,
                 get_crash_data_item_content(info, CD_COUNT).c_str()
             );

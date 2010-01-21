@@ -190,7 +190,8 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    map_crash_data_t report = CreateReport(pUUID, to_string(unix_uid).c_str(), /*force:*/ 0);
+    map_crash_data_t report;
+    CreateReport(pUUID, to_string(unix_uid).c_str(), /*force:*/ 0, report);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
@@ -214,9 +215,9 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    map_crash_data_t::const_iterator it_comment = argin1.find(CD_COMMENT);
+    map_crash_data_t::const_iterator it_comment = argin1.find(FILENAME_COMMENT);
     const char* comment = (it_comment != argin1.end()) ? it_comment->second[CD_CONTENT].c_str() : "";
-    map_crash_data_t::const_iterator it_reproduce = argin1.find(CD_REPRODUCE);
+    map_crash_data_t::const_iterator it_reproduce = argin1.find(FILENAME_REPRODUCE);
     const char* reproduce = (it_reproduce != argin1.end()) ? it_reproduce->second[CD_CONTENT].c_str() : "";
     const char* errmsg = NULL;
     if (strlen(comment) > LIMIT_MESSAGE)

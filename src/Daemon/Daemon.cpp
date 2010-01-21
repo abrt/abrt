@@ -328,7 +328,7 @@ static void FindNewDumps(const char* pPath)
             {
                 case MW_OK:
                     VERB1 log("Saving %s into database", itt->c_str());
-                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_MWDDD).c_str());
+                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str());
                     break;
                 case MW_IN_DB:
                     VERB1 log("%s is already saved in database", itt->c_str());
@@ -479,14 +479,14 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         try
         {
             std::string fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-            map_crash_data_t crashinfo;
 //todo: rename SaveDebugDump to ???? it does not save crashinfo, it FETCHES crashinfo
+            map_crash_data_t crashinfo;
             mw_result_t res = SaveDebugDump(fullname.c_str(), crashinfo);
             switch (res)
             {
                 case MW_OK:
                     log("New crash, saving");
-                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_MWDDD).c_str());
+                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str());
                     /* Fall through */
                 case MW_REPORTED:
                 case MW_OCCURED:
@@ -494,8 +494,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     if (res != MW_OK)
                         log("Already saved crash, just sending dbus signal");
 
-                    const char *analyzer = get_crash_data_item_content(crashinfo, CD_MWANALYZER).c_str();
-                    const char *uid_str = get_crash_data_item_content(crashinfo, CD_UID).c_str();
+                    const char *analyzer = get_crash_data_item_content(crashinfo, FILENAME_ANALYZER).c_str();
+                    const char *uid_str = get_crash_data_item_content(crashinfo, FILENAME_UID).c_str();
 
                     /* Autoreport it if configured to do so */
                     if (analyzer_has_AutoReportUIDs(analyzer, uid_str))
@@ -525,7 +525,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     /* Send dbus signal */
                     if (analyzer_has_InformAllUsers(analyzer))
                         uid_str = NULL;
-                    g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, CD_PACKAGE).c_str(), uid_str);
+                    g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, FILENAME_PACKAGE).c_str(), uid_str);
                     break;
                 }
                 case MW_BLACKLISTED:

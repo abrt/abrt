@@ -192,13 +192,13 @@ static void write_crash_report(const map_crash_data_t &report, FILE *fp)
   fprintf(fp, "# Please check this report. Lines starting with '#' will be ignored.\n"
 	  "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
 
-  write_crash_report_field(fp, report, CD_COMMENT,
+  write_crash_report_field(fp, report, FILENAME_COMMENT,
 			   _("# Describe the circumstances of this crash below."));
-  write_crash_report_field(fp, report, CD_REPRODUCE,
+  write_crash_report_field(fp, report, FILENAME_REPRODUCE,
 			   _("# How to reproduce the crash?"));
   write_crash_report_field(fp, report, FILENAME_BACKTRACE,
 			   _("# Stack trace: a list of active stack frames at the time the crash occurred\n# Check that it does not contain any sensitive data such as passwords."));
-  write_crash_report_field(fp, report, CD_UUID, _("# UUID"));
+  write_crash_report_field(fp, report, CD_DUPHASH, "# DUPHASH");
   write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
   write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
   write_crash_report_field(fp, report, FILENAME_COMPONENT, _("# Component"));
@@ -282,10 +282,10 @@ static int read_crash_report_field(const char *text, map_crash_data_t &report,
 static int read_crash_report(map_crash_data_t &report, const char *text)
 {
   int result = 0;
-  result |= read_crash_report_field(text, report, CD_COMMENT);
-  result |= read_crash_report_field(text, report, CD_REPRODUCE);
+  result |= read_crash_report_field(text, report, FILENAME_COMMENT);
+  result |= read_crash_report_field(text, report, FILENAME_REPRODUCE);
   result |= read_crash_report_field(text, report, FILENAME_BACKTRACE);
-  result |= read_crash_report_field(text, report, CD_UUID);
+  result |= read_crash_report_field(text, report, CD_DUPHASH);
   result |= read_crash_report_field(text, report, FILENAME_ARCHITECTURE);
   result |= read_crash_report_field(text, report, FILENAME_CMDLINE);
   result |= read_crash_report_field(text, report, FILENAME_COMPONENT);

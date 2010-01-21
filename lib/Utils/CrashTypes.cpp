@@ -20,6 +20,40 @@
 #include "abrtlib.h"
 #include "CrashTypes.h"
 
+const char *const must_have_files[] = {
+	FILENAME_ARCHITECTURE,
+	FILENAME_KERNEL      ,
+	FILENAME_PACKAGE     ,
+	FILENAME_COMPONENT   ,
+	FILENAME_RELEASE     ,
+	FILENAME_EXECUTABLE  ,
+	NULL
+};
+
+static const char *const editable_files[] = {
+	FILENAME_DESCRIPTION,
+	FILENAME_COMMENT    ,
+	FILENAME_REPRODUCE  ,
+	FILENAME_BACKTRACE  ,
+	NULL
+};
+
+static bool is_editable(const char *name, const char *const *v)
+{
+	while (*v) {
+		if (strcmp(*v, name) == 0)
+			return true;
+		v++;
+	}
+	return false;
+}
+
+bool is_editable_file(const char *file_name)
+{
+	return is_editable(file_name, editable_files);
+}
+
+
 void add_to_crash_data_ext(map_crash_data_t& pCrashData,
                 const char *pItem,
                 const char *pType,
@@ -58,4 +92,18 @@ const std::string& get_crash_data_item_content(const map_crash_data_t& crash_dat
 		error_msg_and_die("Error accessing crash data: no ['%s'][%d]", key, CD_CONTENT);
 	}
 	return it->second[CD_CONTENT];
+}
+
+void log_map_crash_data(const map_crash_data_t& data, const char *name)
+{
+	map_crash_data_t::const_iterator itc = data.begin();
+	while (itc != data.end())
+	{
+		log("%s[%s]:%s/%s/'%.20s'",
+			name, itc->first.c_str(),
+			itc->second[0].c_str(), itc->second[1].c_str(),
+			itc->second[2].c_str()
+		);
+		itc++;
+	}
 }

@@ -145,7 +145,8 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     else if (!strncmp(pMessage.c_str(), MESSAGE_CREATE_REPORT, sizeof(MESSAGE_CREATE_REPORT) - 1))
     {
 //        std::string UUID = pMessage.substr(sizeof(MESSAGE_CREATE_REPORT) - 1);
-//        map_crash_data_t crashReport = CreateReport(UUID, UID);
+//        map_crash_data_t crashReport;
+//        CreateReport(UUID, UID, crashReport);
 //use CreateReportThread instead of CreateReport?
 //        std::string message = MESSAGE_CREATE_REPORT + crash_report_to_string(crashReport);
 //        Send(message, pSource);

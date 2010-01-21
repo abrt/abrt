@@ -45,21 +45,18 @@
 #define FILENAME_MEMORYMAP    "memorymap"
 #define FILENAME_KERNELOOPS   "kerneloops"
 
+#define CD_DUPHASH      "DUPHASH"
 #define CD_UUID         "UUID"
-#define CD_UID          "UID"
+#define CD_DUMPDIR      "DumpDir"
 #define CD_COUNT        "Count"
-#define CD_EXECUTABLE   "Executable"
-#define CD_PACKAGE      "Package"
-#define CD_DESCRIPTION  "Description"
-#define CD_TIME         "Time"
 #define CD_REPORTED     "Reported"
 #define CD_MESSAGE      "Message"
-#define CD_COMMENT      "Comment"
-#define CD_REPRODUCE    "How to reproduce"
-#define CD_MWANALYZER   "_MWAnalyzer"
-#define CD_MWUID        "_MWUID"
-#define CD_MWUUID       "_MWUUID"
-#define CD_MWDDD        "_MWDDD"
+
+
+// crash data is a map of 3-element vectors of strings: type, editable, content
+#define CD_TYPE         0
+#define CD_EDITABLE     1
+#define CD_CONTENT      2
 
 // SYS - system value, should not be displayed
 // BIN - binary data
@@ -67,18 +64,18 @@
 #define CD_SYS          "s"
 #define CD_BIN          "b"
 #define CD_TXT          "t"
-
 /* Text bigger than this usually is attached, not added inline */
 #define CD_TEXT_ATT_SIZE (2*1024)
 
-#define CD_ISEDITABLE       "y"
-#define CD_ISNOTEDITABLE    "n"
+#define CD_ISEDITABLE    "y"
+#define CD_ISNOTEDITABLE "n"
 
-#define CD_TYPE         (0)
-#define CD_EDITABLE     (1)
-#define CD_CONTENT      (2)
 
-// currently, vector always has exactly 3 elements -> <type, editable, content>
+extern const char *const must_have_files[];
+
+
+bool is_editable_file(const char *file_name);
+
 // <key, data>
 typedef map_vector_string_t map_crash_data_t;
 
@@ -96,5 +93,7 @@ void add_to_crash_data_ext(map_crash_data_t& pCrashData,
 
 const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data,
 		const char *key);
+
+void log_map_crash_data(const map_crash_data_t& data, const char *name);
 
 #endif

@@ -58,13 +58,13 @@ string make_description_bz(const map_crash_data_t& pCrashData)
     map_crash_data_t::const_iterator end = pCrashData.end();
 
     bool was_multiline = 0;
-    it = pCrashData.find(CD_REPRODUCE);
+    it = pCrashData.find(FILENAME_REPRODUCE);
     if (it != end && it->second[CD_CONTENT] != "1.\n2.\n3.\n")
     {
         add_content(was_multiline, description, "How to reproduce", it->second[CD_CONTENT].c_str());
     }
 
-    it = pCrashData.find(CD_COMMENT);
+    it = pCrashData.find(FILENAME_COMMENT);
     if (it != end)
     {
         add_content(was_multiline, description, "Comment", it->second[CD_CONTENT].c_str());
@@ -80,11 +80,11 @@ string make_description_bz(const map_crash_data_t& pCrashData)
         {
             if (content.size() <= CD_TEXT_ATT_SIZE)
             {
-                if (filename != CD_UUID
+                if (filename != CD_DUPHASH
                  && filename != FILENAME_ARCHITECTURE
                  && filename != FILENAME_RELEASE
-                 && filename != CD_REPRODUCE
-                 && filename != CD_COMMENT
+                 && filename != FILENAME_REPRODUCE
+                 && filename != FILENAME_COMMENT
                 ) {
                     add_content(was_multiline, description, filename.c_str(), content.c_str());
                 }
@@ -147,7 +147,7 @@ string make_description_catcut(const map_crash_data_t& pCrashData)
     map_crash_data_t::const_iterator it;
 
     string howToReproduce;
-    it = pCrashData.find(CD_REPRODUCE);
+    it = pCrashData.find(FILENAME_REPRODUCE);
     if (it != end)
     {
         howToReproduce = "\n\nHow to reproduce\n"
@@ -155,7 +155,7 @@ string make_description_catcut(const map_crash_data_t& pCrashData)
         howToReproduce += it->second[CD_CONTENT];
     }
     string comment;
-    it = pCrashData.find(CD_COMMENT);
+    it = pCrashData.find(FILENAME_COMMENT);
     if (it != end)
     {
         comment = "\n\nComment\n"
@@ -178,11 +178,11 @@ string make_description_catcut(const map_crash_data_t& pCrashData)
         {
             if (content.length() <= CD_TEXT_ATT_SIZE)
             {
-                if (filename != CD_UUID
+                if (filename != CD_DUPHASH
                  && filename != FILENAME_ARCHITECTURE
                  && filename != FILENAME_RELEASE
-                 && filename != CD_REPRODUCE
-                 && filename != CD_COMMENT
+                 && filename != FILENAME_REPRODUCE
+                 && filename != FILENAME_COMMENT
                 ) {
                     pDescription += '\n';
                     pDescription += filename;

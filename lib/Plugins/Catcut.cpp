@@ -272,7 +272,7 @@ ctx::new_bug(const char *auth_cookie, const map_crash_data_t& pCrashData)
     const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
     const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
     const string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
-    const string& uuid      = get_crash_data_item_content(pCrashData, CD_UUID);
+    const string& uuid      = get_crash_data_item_content(pCrashData, CD_DUPHASH);
 
     string summary = "[abrt] crash in " + package;
     string status_whiteboard = "abrt_hash:" + uuid;
