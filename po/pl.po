@@ -2,13 +2,12 @@
 # Piotr Drąg <piotrdrag@gmail.com>, 2009.
 # Tomasz Chrzczonowicz <chrzczonowicz@gmail.com>, 2009.
 #
-#: ../src/Gui/CCReporterDialog.py:233
 msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-19 21:16+0000\n"
-"PO-Revision-Date: 2010-01-19 22:28+0100\n"
+"POT-Creation-Date: 2010-01-21 17:08+0000\n"
+"PO-Revision-Date: 2010-01-21 18:09+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -193,15 +192,19 @@ msgstr ""
 "Błąd podczas wczytywania listy zrzutów.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:233
+#: ../src/Gui/CCMainWindow.py:234
+msgid "This crash has been reported:\n"
+msgstr "Ta awaria została zgłoszona:\n"
+
+#: ../src/Gui/CCMainWindow.py:235
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Ta awaria została zgłoszona:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:247
+#: ../src/Gui/CCMainWindow.py:254
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nie zgłoszono.</b>"
 
-#: ../src/Gui/CCMainWindow.py:296
+#: ../src/Gui/CCMainWindow.py:302
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -223,11 +226,11 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Błąd podczas uzyskiwania raportu: %s"
 
-#: ../src/Gui/CCReporterDialog.py:97
+#: ../src/Gui/CCReporterDialog.py:90
 msgid "You must agree with submitting the backtrace."
 msgstr "Należy wyrazić zgodę na wysłanie wyjątku."
 
-#: ../src/Gui/CCReporterDialog.py:108
+#: ../src/Gui/CCReporterDialog.py:101
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -240,11 +243,11 @@ msgstr ""
 "<b>debuginfo-install %s</b>, \n"
 "a następnie nacisnąć przycisk Odśwież, aby ponownie utworzyć wyjątek."
 
-#: ../src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Nie można użyć tego wyjątku, więc nie można tego zgłosić."
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:106
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -252,7 +255,7 @@ msgstr ""
 "Wyjątek jest niepełny. Proszę upewnić się, że podano właściwe kroki "
 "ponownego wywołania awarii."
 
-#: ../src/Gui/CCReporterDialog.py:153
+#: ../src/Gui/CCReporterDialog.py:148
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -261,7 +264,7 @@ msgstr ""
 "Nie można zapisać ustawień wtyczki:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:219
+#: ../src/Gui/CCReporterDialog.py:266
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
@@ -502,37 +505,37 @@ msgstr ""
 "Wielkość raportu przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
 "wartość zmiennej MaxCrashReportsSize w pliku abrt.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:265
+#: ../lib/Plugins/Bugzilla.cpp:267
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Błąd został już wcześniej zgłoszony: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:341
+#: ../lib/Plugins/Bugzilla.cpp:351
 #, c-format
 msgid "New bug id: %i"
 msgstr "Identyfikator nowego błędu: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:442
+#: ../lib/Plugins/Bugzilla.cpp:452
 msgid "Checking for duplicates..."
 msgstr "Sprawdzanie duplikatów..."
 
-#: ../lib/Plugins/Bugzilla.cpp:445
-msgid "Logging into bugzilla..."
-msgstr "Logowanie do Bugzilli..."
-
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:458
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Pola login i hasło są puste. Proszę sprawdzić plik Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:455
+#: ../lib/Plugins/Bugzilla.cpp:461
+msgid "Logging into bugzilla..."
+msgstr "Logowanie do Bugzilli..."
+
+#: ../lib/Plugins/Bugzilla.cpp:466
 msgid "Checking CC..."
 msgstr "Sprawdzanie listy CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:464
+#: ../lib/Plugins/Bugzilla.cpp:479
 msgid "Creating new bug..."
 msgstr "Dodawanie nowego błędu..."
 
-#: ../lib/Plugins/Bugzilla.cpp:468
+#: ../lib/Plugins/Bugzilla.cpp:484
 msgid "Logging out..."
 msgstr "Wylogowywanie..."
 
@@ -569,30 +572,30 @@ msgstr "Tworzenie i wysyłanie raportu..."
 msgid "Writing report to '%s'"
 msgstr "Zapisywanie raportu do \"%s\""
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:372
+#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/FileTransfer.cpp:366
 msgid "FileTransfer: URL not specified"
 msgstr "Wtyczka przesyłania plików: nie podano adresu URL"
 
-#: ../lib/Plugins/FileTransfer.cpp:67
+#: ../lib/Plugins/FileTransfer.cpp:61
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Wysyłanie archiwum %s do %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:296
+#: ../lib/Plugins/FileTransfer.cpp:290
 msgid "File Transfer: Creating a report..."
 msgstr "Wtyczka przesyłania plików: tworzenie raportu..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322
+#: ../lib/Plugins/FileTransfer.cpp:316
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Nie można utworzyć i wysłać archiwum: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:347
+#: ../lib/Plugins/FileTransfer.cpp:341
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Nie można utworzyć i wysłać archiwum %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:81
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "Tworzenie raportów awarii \"kernel oops\""
 
