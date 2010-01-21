@@ -11,7 +11,9 @@
 # include <config.h>
 #endif
 
-#define XML_RPC_SUFFIX "/xmlrpc.cgi"
+#define XML_RPC_SUFFIX      "/xmlrpc.cgi"
+#define NEW_BUG             -1
+#define MISSING_MEMBER      -2
 
 /*
  *  TODO: npajkovs: better deallocation of xmlrpc value
@@ -235,7 +237,7 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
         {
             xmlrpc_DECREF(result);
             xmlrpc_DECREF(bugs_member);
-            return -1;
+            return NEW_BUG;
         }
 
         xmlrpc_value* item = NULL;
@@ -270,12 +272,20 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
             xmlrpc_DECREF(result);
             return bug_id;
         }
+        else
+        {
+            VERB3 log("Missing member 'bug_id'");
+        }
         xmlrpc_DECREF(item);
         xmlrpc_DECREF(bugs_member);
     }
+    else
+    {
+        VERB3 log("Missing member 'bugs'");
+    }
 
     xmlrpc_DECREF(result);
-    return -1;
+    return MISSING_MEMBER;
 }
 
 uint32_t ctx::new_bug(const map_crash_data_t& pCrashData)
@@ -447,6 +457,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             VERB3 log("Empty login and password");
             throw CABRTException(EXCEP_PLUGIN, _("Empty login and password. Please check Bugzilla.conf"));
         }
+
         update_client(_("Logging into bugzilla..."));
         bz_server.login(Login.c_str(), Password.c_str());
 
@@ -463,9 +474,12 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             return BugzillaURL;
         }
 
-        update_client(_("Creating new bug..."));
-        bug_id = bz_server.new_bug(pCrashData);
-        bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
+        if (bug_id == NEW_BUG)
+        {
+            update_client(_("Creating new bug..."));
+            bug_id = bz_server.new_bug(pCrashData);
+            bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
+        }
 
         update_client(_("Logging out..."));
         bz_server.logout();
