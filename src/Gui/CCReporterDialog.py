@@ -267,8 +267,12 @@ class ReporterDialog():
         else:
             buff.set_text(self.old_comment)
         self.tvComment.set_buffer(buff)
+
         buff = gtk.TextBuffer()
-        buff.set_text(self.old_how_to_reproduce)
+        if self.old_how_to_reproduce == "":
+            buff.set_text("1.\n2.\n3.\n")
+        else:
+            buff.set_text(self.old_how_to_reproduce)
         self.tevHowToReproduce.set_buffer(buff)
 
     def dehydrate(self):
