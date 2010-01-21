@@ -382,18 +382,19 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrash
     map_crash_data_t::const_iterator it = pCrashData.begin();
     for (; it != pCrashData.end(); it++)
     {
-        const std::string &filename = it->first;
+        const std::string &itemname = it->first;
         const std::string &type = it->second[CD_TYPE];
         const std::string &content = it->second[CD_CONTENT];
 
-        if (type == CD_TXT && content.length() > CD_TEXT_ATT_SIZE)
-        {
+        if (type == CD_TXT
+         && (content.length() > CD_TEXT_ATT_SIZE || itemname == FILENAME_BACKTRACE)
+        ) {
             char *encoded64 = encode_base64(content.c_str(), content.length());
             // fails only when you write query. when it's done it never fails.
             xmlrpc_value* param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s})",
                                               bug_id_str,
-                                              "description", ("File: " + filename).c_str(),
-                                              "filename", filename.c_str(),
+                                              "description", ("File: " + itemname).c_str(),
+                                              "filename", itemname.c_str(),
                                               "contenttype", "text/plain",
                                               "data", encoded64
                                       );
