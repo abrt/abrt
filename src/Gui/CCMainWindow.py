@@ -229,6 +229,7 @@ class MainWindow():
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         #move this to Dump class
+        lReported = self.wTree.get_widget("lReported")
         if dump.isReported():
             report_label_raw = _("This crash has been reported:\n")
             report_label = _("<b>This crash has been reported:</b>\n")
@@ -244,10 +245,13 @@ class MainWindow():
                     report_label += "%s\n" % report_message
                     report_label_raw += "%s\n" % message_clean
             log2("setting markup '%s'", report_label)
-            self.wTree.get_widget("lReported").set_text(report_label_raw)
-            self.wTree.get_widget("lReported").set_markup(report_label)
+            lReported.set_text(report_label_raw)
+            # Sometimes (!) set_markup() fails with
+            # "GtkWarning: Failed to set text from markup due to error parsing markup: Unknown tag 'a'"
+            # If it does, then set_text() above acts as a fallback
+            lReported.set_markup(report_label)
         else:
-            self.wTree.get_widget("lReported").set_markup(_("<b>Not reported!</b>"))
+            lReported.set_markup(_("<b>Not reported!</b>"))
 
     def on_bDelete_clicked(self, button, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()

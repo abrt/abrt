@@ -43,7 +43,7 @@ class PluginInfoList(list):
         for plugin in self.getReporterPlugins():
             reporters_settings[str(plugin)] = plugin.Settings
         return reporters_settings
-                
+
 
 __PFList = None
 __PFList_dbmanager = None

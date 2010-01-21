@@ -25,12 +25,6 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
-//#include <stdio.h>
-//#include <string.h>
-//#include <dirent.h>
-//#include <sys/types.h>
-//#include <sys/stat.h>
-//#include <fcntl.h>
 #include <zip.h>
 #include <libtar.h>
 #include <bzlib.h>

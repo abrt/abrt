@@ -62,9 +62,10 @@ void add_to_crash_data_ext(map_crash_data_t& pCrashData,
 {
 	map_crash_data_t::iterator it = pCrashData.find(pItem);
 	if (it == pCrashData.end()) {
-		pCrashData[pItem].push_back(pType);
-		pCrashData[pItem].push_back(pEditable);
-		pCrashData[pItem].push_back(pContent);
+		vector_string_t& v = pCrashData[pItem]; /* create empty vector */
+		v.push_back(pType);
+		v.push_back(pEditable);
+		v.push_back(pContent);
 		return;
 	}
 	vector_string_t& v = it->second;
@@ -82,28 +83,50 @@ void add_to_crash_data(map_crash_data_t& pCrashData,
 	add_to_crash_data_ext(pCrashData, pItem, CD_TXT, CD_ISNOTEDITABLE, pContent);
 }
 
-const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key)
+static const std::string* helper_get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key)
 {
 	map_crash_data_t::const_iterator it = crash_data.find(key);
 	if (it == crash_data.end()) {
-		error_msg_and_die("Error accessing crash data: no ['%s']", key);
+		return NULL;
 	}
 	if (it->second.size() <= CD_CONTENT) {
+		return NULL;
+	}
+	return &it->second[CD_CONTENT];
+}
+
+const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key)
+{
+	const std::string* sp = helper_get_crash_data_item_content(crash_data, key);
+	if (sp == NULL) {
+		if (crash_data.find(key) == crash_data.end())
+			error_msg_and_die("Error accessing crash data: no ['%s']", key);
 		error_msg_and_die("Error accessing crash data: no ['%s'][%d]", key, CD_CONTENT);
 	}
-	return it->second[CD_CONTENT];
+	return *sp;
+}
+
+const char *get_crash_data_item_content_or_NULL(const map_crash_data_t& crash_data, const char *key)
+{
+	const std::string* sp = helper_get_crash_data_item_content(crash_data, key);
+	if (!sp) {
+		return NULL;
+	}
+	return sp->c_str();
 }
 
 void log_map_crash_data(const map_crash_data_t& data, const char *name)
 {
-	map_crash_data_t::const_iterator itc = data.begin();
-	while (itc != data.end())
+	map_crash_data_t::const_iterator it = data.begin();
+	while (it != data.end())
 	{
+		ssize_t sz = it->second.size();
 		log("%s[%s]:%s/%s/'%.20s'",
-			name, itc->first.c_str(),
-			itc->second[0].c_str(), itc->second[1].c_str(),
-			itc->second[2].c_str()
+			name, it->first.c_str(),
+			sz > 0 ? it->second[0].c_str() : "<NO [0]>",
+			sz > 1 ? it->second[1].c_str() : "<NO [1]>",
+			sz > 2 ? it->second[2].c_str() : "<NO [2]>"
 		);
-		itc++;
+		it++;
 	}
 }

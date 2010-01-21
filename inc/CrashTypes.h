@@ -53,7 +53,7 @@
 #define CD_MESSAGE      "Message"
 
 
-// crash data is a map of 3-element vectors of strings: type, editable, content
+// Crash data is a map of 3-element vectors of strings: type, editable, content
 #define CD_TYPE         0
 #define CD_EDITABLE     1
 #define CD_CONTENT      2
@@ -64,7 +64,7 @@
 #define CD_SYS          "s"
 #define CD_BIN          "b"
 #define CD_TXT          "t"
-/* Text bigger than this usually is attached, not added inline */
+// Text bigger than this usually is attached, not added inline
 #define CD_TEXT_ATT_SIZE (2*1024)
 
 #define CD_ISEDITABLE    "y"
@@ -73,26 +73,25 @@
 
 extern const char *const must_have_files[];
 
-
 bool is_editable_file(const char *file_name);
 
 // <key, data>
 typedef map_vector_string_t map_crash_data_t;
-
 typedef std::vector<map_crash_data_t> vector_map_crash_data_t;
-
-void add_to_crash_data(map_crash_data_t& pCrashData,
-		const char *pItem,
-		const char *pContent);
 
 void add_to_crash_data_ext(map_crash_data_t& pCrashData,
 		const char *pItem,
 		const char *pType,
 		const char *pEditable,
 		const char *pContent);
+// Uses type:CD_TXT, editable:CD_ISNOTEDITABLE
+void add_to_crash_data(map_crash_data_t& pCrashData,
+		const char *pItem,
+		const char *pContent);
 
-const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data,
-		const char *key);
+const char *get_crash_data_item_content_or_NULL(const map_crash_data_t& crash_data, const char *key);
+// Aborts if key is not found:
+const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key);
 
 void log_map_crash_data(const map_crash_data_t& data, const char *name);
 

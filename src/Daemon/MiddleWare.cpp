@@ -259,36 +259,31 @@ mw_result_t CreateCrashReport(const char *pUUID,
     mw_result_t r = MW_OK;
     try
     {
-        CDebugDump dd;
-        std::string analyzer;
-        std::string comment;
-        std::string reproduce = "1.\n2.\n3.\n";
-
-        VERB3 log(" LoadText(FILENAME_ANALYZER,'%s')", row.m_sDebugDumpDir.c_str());
-        dd.Open(row.m_sDebugDumpDir.c_str());
-        dd.LoadText(FILENAME_ANALYZER, analyzer);
-        if (dd.Exist(FILENAME_COMMENT))
         {
-            dd.LoadText(FILENAME_COMMENT, comment);
+            CDebugDump dd;
+            dd.Open(row.m_sDebugDumpDir.c_str());
+            load_crash_data_from_debug_dump(dd, pCrashData);
         }
-        if (dd.Exist(FILENAME_REPRODUCE))
-        {
-            dd.LoadText(FILENAME_REPRODUCE, reproduce);
-        }
-        load_crash_data_from_debug_dump(dd, pCrashData);
-        dd.Close();
 
-        VERB3 log(" CreateReport('%s')", analyzer.c_str());
+        std::string analyzer = get_crash_data_item_content(pCrashData, FILENAME_ANALYZER);
+
+        // TODO: explain what run_analyser_CreateReport and RunAnalyzerActions are expected to do.
+        // Do they potentially add more files to dump dir?
+        // Why we calculate dup_hash after run_analyser_CreateReport but before RunAnalyzerActions?
+        // Why do we reload dump dir's data via DebugDumpToCrashReport?
+
+        VERB3 log(" run_analyser_CreateReport('%s')", analyzer.c_str());
         run_analyser_CreateReport(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
 
-        std::string gUUID = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
-        VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());
+        std::string dup_hash = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
+        VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
 
         VERB3 log(" RunAnalyzerActions('%s','%s')", analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
+
         DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
 
-        add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, gUUID.c_str());
+        add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
         add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, pUUID);
     }
     catch (CABRTException& e)
@@ -373,54 +368,50 @@ report_status_t Report(const map_crash_data_t& client_report,
                        map_map_string_t& pSettings,
                        const char *pUID)
 {
-    map_crash_data_t::const_iterator itc_end = client_report.end();
-
     // Get ID fields
-    map_crash_data_t::const_iterator itc_UID = client_report.find(FILENAME_UID);
-    map_crash_data_t::const_iterator itc_UUID = client_report.find(CD_UUID);
-    if (itc_UID == itc_end  /* || !exists itc_UID->second[CD_CONTENT] (TODO) */
-     || itc_UUID == itc_end
-    ) {
+    const char *UID = get_crash_data_item_content_or_NULL(client_report, FILENAME_UID);
+    const char *UUID = get_crash_data_item_content_or_NULL(client_report, CD_UUID);
+    if (!UID || !UUID) {
         throw CABRTException(EXCEP_ERROR, "Report(): UID or UUID is missing in client's report data");
     }
 
     // Retrieve corresponding stored record
-    std::string UID = itc_UID->second[CD_CONTENT];
-    std::string UUID = itc_UUID->second[CD_CONTENT];
-
     map_crash_data_t stored_report;
-    mw_result_t r = FillCrashInfo(UUID.c_str(), UID.c_str(), stored_report);
+    mw_result_t r = FillCrashInfo(UUID, UID, stored_report);
     if (r != MW_OK)
         return report_status_t();
     const std::string& pDumpDir = get_crash_data_item_content(stored_report, CD_DUMPDIR);
 
-    // Save comment and "how to reproduce"
-    map_crash_data_t::const_iterator itc_COMMENT = client_report.find(FILENAME_COMMENT);
-    map_crash_data_t::const_iterator itc_REPRODUCE = client_report.find(FILENAME_REPRODUCE);
-    if (itc_COMMENT != itc_end || itc_REPRODUCE != itc_end)
+    // Save comment, "how to reproduce", backtrace
+    const char *comment = get_crash_data_item_content_or_NULL(client_report, FILENAME_COMMENT);
+    const char *reproduce = get_crash_data_item_content_or_NULL(client_report, FILENAME_REPRODUCE);
+    const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
+    if (comment || reproduce || backtrace)
     {
         CDebugDump dd;
         dd.Open(pDumpDir.c_str());
-        if (itc_COMMENT != itc_end && itc_COMMENT->second.size() > CD_CONTENT)
+        if (comment)
         {
-            const char *comment = itc_COMMENT->second[CD_CONTENT].c_str();
             dd.SaveText(FILENAME_COMMENT, comment);
             add_to_crash_data_ext(stored_report, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
         }
-        if (itc_REPRODUCE != itc_end && itc_REPRODUCE->second.size() > CD_CONTENT)
+        if (reproduce)
         {
-            const char *reproduce = itc_REPRODUCE->second[CD_CONTENT].c_str();
             dd.SaveText(FILENAME_REPRODUCE, reproduce);
             add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
         }
+        if (backtrace)
+        {
+            dd.SaveText(FILENAME_BACKTRACE, backtrace);
+            add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
+        }
     }
 
-    map_crash_data_t::const_iterator its_ANALYZER = stored_report.find(FILENAME_ANALYZER);
-    std::string analyzer = its_ANALYZER->second[CD_CONTENT];
+    const std::string& analyzer = get_crash_data_item_content(stored_report, FILENAME_ANALYZER);
 
-    std::string gUUID = GetGlobalUUID(analyzer.c_str(), pDumpDir.c_str());
-    VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());
-    add_to_crash_data_ext(stored_report, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, gUUID.c_str());
+    std::string dup_hash = GetGlobalUUID(analyzer.c_str(), pDumpDir.c_str());
+    VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
+    add_to_crash_data_ext(stored_report, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
 
     // Run reporters
 
@@ -507,7 +498,7 @@ report_status_t Report(const map_crash_data_t& client_report,
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database->SetReported(UUID.c_str(), UID.c_str(), message.c_str());
+    database->SetReported(UUID, UID, message.c_str());
     database->DisConnect();
 
     return ret;
