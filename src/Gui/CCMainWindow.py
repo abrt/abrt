@@ -25,6 +25,7 @@ from ConfBackend import getCurrentConfBackend, ConfBackendInitError
 import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList, DumpList
+from CCDump import *   # FILENAME_xxx, CD_xxx
 from CCReporterDialog import ReporterDialog
 from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
@@ -331,7 +332,7 @@ class MainWindow():
 
         # show the report window with selected report
         try:
-            self.ccdaemon.getReport(report["_MWUUID"][2], force=1)
+            self.ccdaemon.getReport(report[CD_UUID][CD_CONTENT], force=1)
         except Exception, e:
             # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
