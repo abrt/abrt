@@ -115,7 +115,9 @@ class Month:
     Top five components causing crash this month.
     Returns list of tuples (component, number of crashes)
     """
-    return reversed(sorted(self.components.items(), key=lambda x: x[1]))[0:5]
+    result = sorted(self.components.items(), key=lambda x: x[1])
+    result.reverse()
+    return result[0:5]
 
   def closed_as_useful_percentage(self):
     return int(100 * self.closed_as_useful / self.closed())
