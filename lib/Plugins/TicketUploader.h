@@ -39,7 +39,8 @@ class CTicketUploader : public CReporter
         int m_nRetryCount;
         int m_nRetryDelay;
 
-        void SendFile(const char *pURL, const char *pFilename);
+        void SendFile(const char *pURL, const char *pFilename, int retry_count, int retry_delay);
+        map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettings);
 
     public:
         CTicketUploader();

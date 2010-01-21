@@ -91,7 +91,7 @@ static void WriteCommand(const char *cmd, const char *input)
     }
 }
 
-void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
+void CTicketUploader::SendFile(const char *pURL, const char *pFilename, int retry_count, int retry_delay)
 {
     if (pURL[0] == '\0')
     {
@@ -103,7 +103,7 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
 
     const char *base = (strrchr(pFilename, '/') ? : pFilename-1) + 1;
     string wholeURL = concat_path_file(pURL, base);
-    int count = m_nRetryCount;
+    int count = retry_count;
     int result;
     while (1)
     {
@@ -133,7 +133,7 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
         if (result == 0 || --count <= 0)
             break;
         /* retry the upload if not succesful, wait a bit before next try */
-        sleep(m_nRetryDelay);
+        sleep(retry_delay);
     }
 
     if (count <= 0 && result != 0)
@@ -159,14 +159,38 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
-    update_client(_("Creating a TicketUploader report..."));
-
+    string customer_name;
+    string ticket_name;
+    string upload_url;
+    bool do_encrypt;
+    bool do_upload;
+    int retry_count;
+    int retry_delay;
+    
+    /* if parse_settings fails it returns an empty map so we need to use defaults */
+    map_plugin_settings_t settings = parse_settings(pSettings);
     // Get ticket name, customer name, and do_encrypt from config settings
-    string customer_name = m_sCustomer;
-    string ticket_name = m_sTicket;
-    string upload_url = m_sURL;
-    bool do_encrypt = m_bEncrypt;
-    bool do_upload = m_bUpload;
+    if (!settings.empty())
+    {
+        customer_name = settings["Customer"];
+        ticket_name = settings["Ticket"];
+        upload_url = settings["URL"];
+        do_encrypt = string_to_bool(settings["Encrypt"].c_str());
+        do_upload =  string_to_bool(settings["Upload"].c_str());
+        retry_count = xatoi_u(settings["RetryCount"].c_str());
+        retry_delay = xatoi_u(settings["RetryDelay"].c_str());
+    }
+    else
+    {
+        customer_name = m_sCustomer;
+        ticket_name = m_sTicket;
+        upload_url = m_sURL;
+        do_encrypt = m_bEncrypt;
+        do_upload = m_bUpload;
+        retry_count = m_nRetryCount;
+        retry_delay = m_nRetryDelay;
+    }
+    update_client(_("Creating an TicketUploader report..."));
 
     bool have_ticket_name = (ticket_name != "");
     if (!have_ticket_name)
@@ -258,7 +282,7 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     if (do_upload)
     {
         // FIXME: SendFile isn't working sometime (scp)
-        SendFile(upload_url.c_str(), outfile_name.c_str());
+        SendFile(upload_url.c_str(), outfile_name.c_str(), retry_count, retry_delay);
     }
     else
     {
@@ -402,11 +426,79 @@ const map_plugin_settings_t& CTicketUploader::GetSettings()
     m_pSettings["Ticket"] = m_sTicket;
     m_pSettings["URL"] = m_sURL;
     m_pSettings["Encrypt"] = m_bEncrypt ? "yes" : "no";
-    m_pSettings["Upload"] = m_bEncrypt ? "yes" : "no";
+    m_pSettings["Upload"] = m_bUpload ? "yes" : "no";
     m_pSettings["RetryCount"] = to_string(m_nRetryCount);
     m_pSettings["RetryDelay"] = to_string(m_nRetryDelay);
 
     return m_pSettings;
+}
+
+//todo: make static
+map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_t& pSettings)
+{
+    map_plugin_settings_t plugin_settings;
+
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+   
+    it = pSettings.find("Customer");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["Customer"] = it->second;
+    
+    it = pSettings.find("Ticket");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["Ticket"] = it->second;
+    
+    it = pSettings.find("URL");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["URL"] = it->second;
+    
+    it = pSettings.find("Encrypt");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["Encrypt"] = it->second;
+    
+    it = pSettings.find("Upload");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["Upload"] = it->second;
+    
+    it = pSettings.find("RetryCount");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["RetryCount"] = it->second;
+    
+    it = pSettings.find("RetryDelay");
+    if (it == end)
+    {
+        plugin_settings.clear();
+        return plugin_settings;
+    }
+    plugin_settings["RetryDelay"] = it->second;
+    
+    VERB1 log("User settings ok, using them instead of defaults");
+    return plugin_settings;
 }
 
 PLUGIN_INFO(REPORTER,
