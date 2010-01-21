@@ -297,7 +297,7 @@ uint32_t ctx::new_bug(const map_crash_data_t& pCrashData)
     const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
     const std::string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
     const std::string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
-    const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_UUID);
+    const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_DUPHASH);
 
     std::string summary = "[abrt] crash in " + package;
     std::string status_whiteboard = "abrt_hash:" + uuid;
@@ -444,7 +444,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     }
 
     const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
-    const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_UUID);
+    const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_DUPHASH);
     try
     {
         ctx bz_server(BugzillaXMLRPC.c_str(), NoSSLVerify);

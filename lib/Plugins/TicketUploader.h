@@ -27,7 +27,6 @@
 
 #include "Plugin.h"
 #include "Reporter.h"
-//#include "CrashTypes.h"
 
 class CTicketUploader : public CReporter
 {

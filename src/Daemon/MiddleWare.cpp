@@ -148,37 +148,12 @@ static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& da
             dd.LoadText(short_name.c_str(), content);
         free(text);
 
-        if (short_name == FILENAME_ARCHITECTURE
-         || short_name == FILENAME_KERNEL
-         || short_name == FILENAME_PACKAGE
-         || short_name == FILENAME_COMPONENT
-         || short_name == FILENAME_RELEASE
-         || short_name == FILENAME_EXECUTABLE
-        ) {
-            add_to_crash_data_ext(data,
-                    short_name.c_str(),
-                    CD_TXT,
-                    CD_ISNOTEDITABLE,
-                    content.c_str()
-            );
-            continue;
-        }
-
-        if (short_name != FILENAME_UID
-         && short_name != FILENAME_ANALYZER
-         && short_name != FILENAME_TIME
-         && short_name != FILENAME_DESCRIPTION
-         && short_name != FILENAME_REPRODUCE
-         && short_name != FILENAME_COMMENT
-        ) {
-            add_to_crash_data_ext(
-                    data,
-                    short_name.c_str(),
-                    CD_TXT,
-                    CD_ISEDITABLE,
-                    content.c_str()
-            );
-        }
+        add_to_crash_data_ext(data,
+                short_name.c_str(),
+                CD_TXT,
+                is_editable_file(short_name.c_str()) ? CD_ISEDITABLE : CD_ISNOTEDITABLE,
+                content.c_str()
+        );
     }
 }
 
@@ -190,16 +165,19 @@ static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& da
  */
 static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& pCrashData)
 {
+    VERB3 log(" DebugDumpToCrashReport('%s')", pDebugDumpDir);
+
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    if (!dd.Exist(FILENAME_ARCHITECTURE)
-     || !dd.Exist(FILENAME_KERNEL)
-     || !dd.Exist(FILENAME_PACKAGE)
-     || !dd.Exist(FILENAME_COMPONENT)
-     || !dd.Exist(FILENAME_RELEASE)
-     || !dd.Exist(FILENAME_EXECUTABLE)
-    ) {
-        throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): One or more of important file(s) are missing");
+
+    const char *const *v = must_have_files;
+    while (*v)
+    {
+        if (!dd.Exist(*v))
+        {
+            throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): important file '%s' is missing", *v);
+        }
+        v++;
     }
 
     load_crash_data_from_debug_dump(dd, pCrashData);
@@ -245,7 +223,7 @@ static std::string GetGlobalUUID(const char *pAnalyzer,
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
  */
-static void CreateReport(const char *pAnalyzer,
+static void run_analyser_CreateReport(const char *pAnalyzer,
                 const char *pDebugDumpDir,
                 int force)
 {
@@ -278,63 +256,56 @@ mw_result_t CreateCrashReport(const char *pUUID,
         return MW_IN_DB_ERROR;
     }
 
+    mw_result_t r = MW_OK;
     try
     {
-        CDebugDump dd;
-        std::string analyzer;
-        std::string comment;
-        std::string reproduce = "1.\n2.\n3.\n";
-
-        VERB3 log(" LoadText(FILENAME_ANALYZER,'%s')", row.m_sDebugDumpDir.c_str());
-        dd.Open(row.m_sDebugDumpDir.c_str());
-        dd.LoadText(FILENAME_ANALYZER, analyzer);
-        if (dd.Exist(FILENAME_COMMENT))
         {
-            dd.LoadText(FILENAME_COMMENT, comment);
+            CDebugDump dd;
+            dd.Open(row.m_sDebugDumpDir.c_str());
+            load_crash_data_from_debug_dump(dd, pCrashData);
         }
-        if (dd.Exist(FILENAME_REPRODUCE))
-        {
-            dd.LoadText(FILENAME_REPRODUCE, reproduce);
-        }
-        dd.Close();
 
-        VERB3 log(" CreateReport('%s')", analyzer.c_str());
-        CreateReport(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
+        std::string analyzer = get_crash_data_item_content(pCrashData, FILENAME_ANALYZER);
 
-        std::string gUUID = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
-        VERB3 log(" GetGlobalUUID:'%s'", gUUID.c_str());
+        // TODO: explain what run_analyser_CreateReport and RunAnalyzerActions are expected to do.
+        // Do they potentially add more files to dump dir?
+        // Why we calculate dup_hash after run_analyser_CreateReport but before RunAnalyzerActions?
+        // Why do we reload dump dir's data via DebugDumpToCrashReport?
+
+        VERB3 log(" run_analyser_CreateReport('%s')", analyzer.c_str());
+        run_analyser_CreateReport(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
+
+        std::string dup_hash = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
+        VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
 
         VERB3 log(" RunAnalyzerActions('%s','%s')", analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
-        VERB3 log(" DebugDumpToCrashReport");
+
         DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
 
-        add_to_crash_data_ext(pCrashData, CD_UUID      , CD_TXT, CD_ISNOTEDITABLE, gUUID.c_str()    );
-        add_to_crash_data_ext(pCrashData, CD_MWANALYZER, CD_SYS, CD_ISNOTEDITABLE, analyzer.c_str() );
-        add_to_crash_data_ext(pCrashData, CD_MWUID     , CD_SYS, CD_ISNOTEDITABLE, pUID             );
-        add_to_crash_data_ext(pCrashData, CD_MWUUID    , CD_SYS, CD_ISNOTEDITABLE, pUUID            );
-        add_to_crash_data_ext(pCrashData, CD_COMMENT   , CD_TXT, CD_ISEDITABLE   , comment.c_str()  );
-        add_to_crash_data_ext(pCrashData, CD_REPRODUCE , CD_TXT, CD_ISEDITABLE   , reproduce.c_str());
+        add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
+        add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, pUUID);
     }
     catch (CABRTException& e)
     {
+        r = MW_CORRUPTED;
         error_msg("%s", e.what());
         if (e.type() == EXCEP_DD_OPEN)
         {
-            return MW_ERROR;
+            r = MW_ERROR;
         }
-        if (e.type() == EXCEP_DD_LOAD)
+        else if (e.type() == EXCEP_DD_LOAD)
         {
-            return MW_FILE_ERROR;
+            r = MW_FILE_ERROR;
         }
-        if (e.type() == EXCEP_PLUGIN)
+        else if (e.type() == EXCEP_PLUGIN)
         {
-            return MW_PLUGIN_ERROR;
+            r = MW_PLUGIN_ERROR;
         }
-        return MW_CORRUPTED;
     }
 
-    return MW_OK;
+    VERB3 log("CreateCrashReport() returns %d", r);
+    return r;
 }
 
 void RunAction(const char *pActionDir,
@@ -391,87 +362,69 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
 }
 
 
-static bool CheckReport(const map_crash_data_t& pCrashData)
-{
-    map_crash_data_t::const_iterator it_analyzer = pCrashData.find(CD_MWANALYZER);
-    map_crash_data_t::const_iterator it_mwuid = pCrashData.find(CD_MWUID);
-    map_crash_data_t::const_iterator it_mwuuid = pCrashData.find(CD_MWUUID);
-
-    map_crash_data_t::const_iterator it_package = pCrashData.find(FILENAME_PACKAGE);
-    map_crash_data_t::const_iterator it_architecture = pCrashData.find(FILENAME_ARCHITECTURE);
-    map_crash_data_t::const_iterator it_kernel = pCrashData.find(FILENAME_KERNEL);
-    map_crash_data_t::const_iterator it_component = pCrashData.find(FILENAME_COMPONENT);
-    map_crash_data_t::const_iterator it_release = pCrashData.find(FILENAME_RELEASE);
-    map_crash_data_t::const_iterator it_executable = pCrashData.find(FILENAME_EXECUTABLE);
-
-    map_crash_data_t::const_iterator end = pCrashData.end();
-
-    if (it_package == end)
-    {
-        return false;
-    }
-
-    // FIXME: bypass the test if it's kerneloops
-    if (it_package->second[CD_CONTENT] == "kernel")
-        return true;
-
-    if (it_analyzer == end || it_mwuid == end ||
-        it_mwuuid == end || /* it_package == end || */
-        it_architecture == end || it_kernel == end ||
-        it_component == end || it_release == end ||
-        it_executable == end)
-    {
-        return false;
-    }
-
-    if (it_analyzer->second[CD_CONTENT] == "" || it_mwuid->second[CD_CONTENT] == "" ||
-        it_mwuuid->second[CD_CONTENT] == "" || it_package->second[CD_CONTENT] == "" ||
-        it_architecture->second[CD_CONTENT] == "" || it_kernel->second[CD_CONTENT] == "" ||
-        it_component->second[CD_CONTENT] == "" || it_release->second[CD_CONTENT] == "" ||
-        it_executable->second[CD_CONTENT] == "")
-    {
-        return false;
-    }
-
-    return true;
-}
-
-report_status_t Report(const map_crash_data_t& pCrashData,
+// We must not trust client_report here!
+// dbus handler passes it from user without checking
+report_status_t Report(const map_crash_data_t& client_report,
                        map_map_string_t& pSettings,
                        const char *pUID)
 {
-    report_status_t ret;
-
-    /* dbus handler passes pCrashData from user without checking it */
-
-    if (!CheckReport(pCrashData))
-    {
-        throw CABRTException(EXCEP_ERROR, "Report(): Some of mandatory report data are missing.");
+    // Get ID fields
+    const char *UID = get_crash_data_item_content_or_NULL(client_report, FILENAME_UID);
+    const char *UUID = get_crash_data_item_content_or_NULL(client_report, CD_UUID);
+    if (!UID || !UUID) {
+        throw CABRTException(EXCEP_ERROR, "Report(): UID or UUID is missing in client's report data");
     }
 
-    const std::string& analyzer    = get_crash_data_item_content(pCrashData, CD_MWANALYZER);
-    const std::string& UID         = get_crash_data_item_content(pCrashData, CD_MWUID);
-    const std::string& UUID        = get_crash_data_item_content(pCrashData, CD_MWUUID);
-    const std::string& packageNVR  = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
-    std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
+    // Retrieve corresponding stored record
+    map_crash_data_t stored_report;
+    mw_result_t r = FillCrashInfo(UUID, UID, stored_report);
+    if (r != MW_OK)
+        return report_status_t();
+    const std::string& pDumpDir = get_crash_data_item_content(stored_report, CD_DUMPDIR);
 
-    // Save comment and "how to reproduce"
-    map_crash_data_t::const_iterator it_comment = pCrashData.find(CD_COMMENT);
-    map_crash_data_t::const_iterator it_reproduce = pCrashData.find(CD_REPRODUCE);
-    if (it_comment != pCrashData.end() || it_reproduce != pCrashData.end())
+    // Save comment, "how to reproduce", backtrace
+    const char *comment = get_crash_data_item_content_or_NULL(client_report, FILENAME_COMMENT);
+    const char *reproduce = get_crash_data_item_content_or_NULL(client_report, FILENAME_REPRODUCE);
+    const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
+    if (comment || reproduce || backtrace)
     {
-        std::string pDumpDir = getDebugDumpDir(UUID.c_str(), UID.c_str());
         CDebugDump dd;
         dd.Open(pDumpDir.c_str());
-        if (it_comment != pCrashData.end())
+        if (comment)
         {
-            dd.SaveText(FILENAME_COMMENT, it_comment->second[CD_CONTENT].c_str());
+            dd.SaveText(FILENAME_COMMENT, comment);
+            add_to_crash_data_ext(stored_report, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
         }
-        if (it_reproduce != pCrashData.end())
+        if (reproduce)
         {
-            dd.SaveText(FILENAME_REPRODUCE, it_reproduce->second[CD_CONTENT].c_str());
+            dd.SaveText(FILENAME_REPRODUCE, reproduce);
+            add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
+        }
+        if (backtrace)
+        {
+            dd.SaveText(FILENAME_BACKTRACE, backtrace);
+            add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
         }
     }
+
+    const std::string& analyzer = get_crash_data_item_content(stored_report, FILENAME_ANALYZER);
+
+    std::string dup_hash = GetGlobalUUID(analyzer.c_str(), pDumpDir.c_str());
+    VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
+    add_to_crash_data_ext(stored_report, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
+
+    // Run reporters
+
+    VERB3 {
+        log("Run reporters");
+        log_map_crash_data(client_report, " client_report");
+        log_map_crash_data(stored_report, " stored_report");
+    }
+#define client_report client_report_must_not_be_used_below
+
+    map_crash_data_t::const_iterator its_PACKAGE = stored_report.find(FILENAME_PACKAGE);
+    std::string packageNVR = its_PACKAGE->second[CD_CONTENT];
+    std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
 
     // analyzer with package name (CCpp:xorg-x11-app) has higher priority
     std::string key = analyzer + ":" + packageName;
@@ -484,6 +437,7 @@ report_status_t Report(const map_crash_data_t& pCrashData,
         key = analyzer;
     }
 
+    report_status_t ret;
     std::string message;
     if (keyPtr != end)
     {
@@ -518,7 +472,7 @@ report_status_t Report(const map_crash_data_t& pCrashData,
                     }
 #endif
                     map_plugin_settings_t plugin_settings = pSettings[plugin_name];
-                    std::string res = reporter->Report(pCrashData, plugin_settings, it_r->second.c_str());
+                    std::string res = reporter->Report(stored_report, plugin_settings, it_r->second.c_str());
 
 #if 0 /* Using ~user/.abrt/ is bad wrt security */
                     if (home != "")
@@ -544,10 +498,11 @@ report_status_t Report(const map_crash_data_t& pCrashData,
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database->SetReported(UUID.c_str(), UID.c_str(), message.c_str());
+    database->SetReported(UUID, UID, message.c_str());
     database->DisConnect();
 
     return ret;
+#undef client_report
 }
 
 /**
@@ -863,8 +818,7 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
     return res;
 }
 
-std::string getDebugDumpDir(const char *pUUID,
-                             const char *pUID)
+std::string getDebugDumpDir(const char *pUUID, const char *pUID)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
@@ -936,10 +890,7 @@ mw_result_t FillCrashInfo(const char *pUUID,
     {
         CDebugDump dd;
         dd.Open(row.m_sDebugDumpDir.c_str());
-        dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_PACKAGE, package);
-        dd.LoadText(FILENAME_DESCRIPTION, description);
-        dd.LoadText(FILENAME_ANALYZER, analyzer);
+        load_crash_data_from_debug_dump(dd, pCrashData);
     }
     catch (CABRTException& e)
     {
@@ -947,18 +898,14 @@ mw_result_t FillCrashInfo(const char *pUUID,
         return MW_ERROR;
     }
 
-    pCrashData.clear();
-    add_to_crash_data(pCrashData, CD_EXECUTABLE , executable.c_str()         );
-    add_to_crash_data(pCrashData, CD_PACKAGE    , package.c_str()            );
-    add_to_crash_data(pCrashData, CD_DESCRIPTION, description.c_str()        );
-    add_to_crash_data(pCrashData, CD_UUID       , row.m_sUUID.c_str()        );
-    add_to_crash_data(pCrashData, CD_UID        , row.m_sUID.c_str()         );
-    add_to_crash_data(pCrashData, CD_COUNT      , row.m_sCount.c_str()       );
-    add_to_crash_data(pCrashData, CD_TIME       , row.m_sTime.c_str()        );
-    add_to_crash_data(pCrashData, CD_REPORTED   , row.m_sReported.c_str()    );
-    add_to_crash_data(pCrashData, CD_MESSAGE    , row.m_sMessage.c_str()     );
-    add_to_crash_data(pCrashData, CD_MWDDD      , row.m_sDebugDumpDir.c_str());
-    add_to_crash_data(pCrashData, CD_MWANALYZER , analyzer.c_str()           );
+    add_to_crash_data(pCrashData, CD_UUID             , row.m_sUUID.c_str()        );
+    add_to_crash_data(pCrashData, CD_COUNT            , row.m_sCount.c_str()       );
+    add_to_crash_data(pCrashData, CD_REPORTED         , row.m_sReported.c_str()    );
+    add_to_crash_data(pCrashData, CD_MESSAGE          , row.m_sMessage.c_str()     );
+    add_to_crash_data(pCrashData, CD_DUMPDIR          , row.m_sDebugDumpDir.c_str());
+//TODO: why do we keep uid and time in DB and in dumpdir?!
+    add_to_crash_data(pCrashData, FILENAME_UID        , row.m_sUID.c_str()         );
+    add_to_crash_data(pCrashData, FILENAME_TIME       , row.m_sTime.c_str()        );
 
     return MW_OK;
 }

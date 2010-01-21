@@ -74,13 +74,13 @@ std::string CMailx::Report(const map_crash_data_t& pCrashData,
     args = append_str_to_vector(args, arg_size, MAILX_COMMAND);
 
 //TODO: move email body generation to make_descr.cpp
-    std::string binaryFiles, commonFiles, additionalFiles, UUIDFile;
+    std::string binaryFiles, commonFiles, additionalFiles, DUPHASHFile;
     map_crash_data_t::const_iterator it;
     for (it = pCrashData.begin(); it != pCrashData.end(); it++)
     {
         if (it->second[CD_TYPE] == CD_TXT)
         {
-            if (it->first != CD_UUID
+            if (it->first != CD_DUPHASH
              && it->first != FILENAME_ARCHITECTURE
              && it->first != FILENAME_KERNEL
              && it->first != FILENAME_PACKAGE
@@ -90,12 +90,12 @@ std::string CMailx::Report(const map_crash_data_t& pCrashData,
                 additionalFiles += it->second[CD_CONTENT];
                 additionalFiles += "\n\n";
             }
-            else if (it->first == CD_UUID)
+            else if (it->first == CD_DUPHASH)
             {
-                UUIDFile += it->first;
-                UUIDFile += "\n-----\n";
-                UUIDFile += it->second[CD_CONTENT];
-                UUIDFile += "\n\n";
+                DUPHASHFile += it->first;
+                DUPHASHFile += "\n-----\n";
+                DUPHASHFile += it->second[CD_CONTENT];
+                DUPHASHFile += "\n\n";
             }
             else
             {
@@ -117,9 +117,9 @@ std::string CMailx::Report(const map_crash_data_t& pCrashData,
         }
     }
 
-    std::string emailBody = "Duplicity check\n";
+    std::string emailBody = "Duplicate check\n";
     emailBody += "=====\n\n";
-    emailBody += UUIDFile;
+    emailBody += DUPHASHFile;
     emailBody += "\nCommon information\n";
     emailBody += "=====\n\n";
     emailBody += commonFiles;
@@ -135,7 +135,7 @@ std::string CMailx::Report(const map_crash_data_t& pCrashData,
     args = append_str_to_vector(args, arg_size, m_sEmailTo.c_str());
 
     update_client(_("Sending an email..."));
-    const char *uid_str = get_crash_data_item_content(pCrashData, CD_MWUID).c_str();
+    const char *uid_str = get_crash_data_item_content(pCrashData, FILENAME_UID).c_str();
     exec_and_feed_input(xatoi_u(uid_str), emailBody.c_str(), args);
 
     while (*args)

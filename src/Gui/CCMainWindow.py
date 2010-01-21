@@ -229,23 +229,29 @@ class MainWindow():
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         #move this to Dump class
+        lReported = self.wTree.get_widget("lReported")
         if dump.isReported():
+            report_label_raw = _("This crash has been reported:\n")
             report_label = _("<b>This crash has been reported:</b>\n")
             # plugin message follows, but at least in case of kerneloops,
             # it is not informative (no URL to the report)
             for message in dump.getMessage().split(';'):
-                 if message:
+                if message:
                     message_clean = message.strip()
                     if "http" in message_clean[0:5] or "file:///"[0:8] in message_clean:
                         report_message = "<a href=\"%s\">%s</a>" % (message_clean, message_clean)
                     else:
                         report_message = message_clean
                     report_label += "%s\n" % report_message
+                    report_label_raw += "%s\n" % message_clean
             log2("setting markup '%s'", report_label)
-            self.wTree.get_widget("lReported").set_markup(report_label)
+            lReported.set_text(report_label_raw)
+            # Sometimes (!) set_markup() fails with
+            # "GtkWarning: Failed to set text from markup due to error parsing markup: Unknown tag 'a'"
+            # If it does, then set_text() above acts as a fallback
+            lReported.set_markup(report_label)
         else:
-            self.wTree.get_widget("lReported").set_markup(_("<b>Not reported!</b>"))
-        lPackage = self.wTree.get_widget("lPackage")
+            lReported.set_markup(_("<b>Not reported!</b>"))
 
     def on_bDelete_clicked(self, button, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
@@ -303,14 +309,8 @@ class MainWindow():
             try:
                 self.pBarWindow.show_all()
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
-                # Old way: it needs to talk to daemon
-                #reporters_settings = {}
-                ## self.pluginlist = getPluginInfoList(self.ccdaemon, refresh=True)
-                ## don't force refresh!
-                #self.pluginlist = getPluginInfoList(self.ccdaemon)
-                #for plugin in self.pluginlist.getReporterPlugins():
-                #    reporters_settings[str(plugin)] = plugin.Settings
-                reporters_settings = getCurrentConfBackend().load_all()
+                pluginlist = getPluginInfoList(self.ccdaemon)
+                reporters_settings = pluginlist.getReporterPluginsSettings()
                 log2("Report(result,settings):")
                 log2("  result:%s", str(result))
                 # Careful, this will print reporters_settings["Password"] too
