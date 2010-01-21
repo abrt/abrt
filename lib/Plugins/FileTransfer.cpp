@@ -22,9 +22,6 @@
 #ifndef _GNU_SOURCE
 # define _GNU_SOURCE
 #endif
-#include <iostream>
-#include <sstream>
-#include <fstream>
 #include <zip.h>
 #include <libtar.h>
 #include <bzlib.h>
@@ -60,22 +57,21 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
 
     update_client(_("Sending archive %s to %s"), pFilename, pURL);
 
-    string wholeURL = concat_path_file(pURL, pFilename);
+    string wholeURL = concat_path_file(pURL, strrchr(pFilename, '/') ? : pFilename);
 
     int count = m_nRetryCount;
     while (1)
     {
-        FILE *f;
-        struct stat buf;
-        CURL *curl;
-
-        f = fopen(pFilename, "r");
+        FILE *f = fopen(pFilename, "r");
         if (!f)
         {
             throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
+
+        struct stat buf;
         fstat(fileno(f), &buf); /* never fails */
-        curl = xcurl_easy_init();
+
+        CURL *curl = xcurl_easy_init();
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
         /* specify target */
@@ -83,8 +79,10 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         /* FILE handle: passed to the default callback, it will fread() it */
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
         curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)buf.st_size);
+
         /* everything is done here; result 0 means success */
         int result = curl_easy_perform(curl);
+
         curl_easy_cleanup(curl);
         fclose(f);
         if (result == 0 || --count <= 0)
@@ -95,11 +93,9 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
 }
 
 /*
-walks through the directory and applies a function with one
-parameter "something" to each filename,
-now used in create_zip, but can be useful for some future
-archivers as well
-*/
+ * Walks through the directory and applies a function with one
+ * parameter "something" to each filename.
+ */
 static void traverse_directory(const char *directory, void *something,
                                void (*func)(void *, const char *))
 {
@@ -122,20 +118,26 @@ static void traverse_directory(const char *directory, void *something,
     closedir(dp);
 }
 
-static void add_to_zip(void * z, const char * filename)
+static void add_to_zip(void *z, const char *filename)
 {
     struct zip_source *s;
 
-    s = zip_source_file( (struct zip *)z, filename, 0, 0);
-    zip_add( (struct zip *)z, filename, s);
+    s = zip_source_file((struct zip *)z, filename, /*start:*/ 0, /*len:*/ 0);
+    if (s)
+    {
+        if (zip_add((struct zip *)z, filename, s) == -1)
+        {
+            zip_source_free(s);
+        }
+        /* else: don't call zip_source_free(s), successful zip_add consumes it */
+    }
 }
 
-
-static void create_zip(const char * archive_name, const char * directory)
+static void create_zip(const char *archive_name, const char *directory)
 {
-    struct zip * z;
+    struct zip *z;
 
-    z = zip_open(archive_name, ZIP_CREATE, NULL);
+    z = zip_open(archive_name, ZIP_CREATE, /*errorp:*/ NULL);
     if (z == NULL)
     {
         return;
@@ -144,7 +146,7 @@ static void create_zip(const char * archive_name, const char * directory)
     zip_close(z);
 }
 
-static void create_tar(const char * archive_name, const char * directory)
+static void create_tar(const char *archive_name, const char *directory)
 {
     TAR *tar;
 
@@ -156,89 +158,86 @@ static void create_tar(const char * archive_name, const char * directory)
     tar_close(tar);
 }
 
-static void create_targz(const char * archive_name, const char * directory)
+static void create_targz(const char *archive_name, const char *directory)
 {
-    char * name_without_gz;
-    char buf[BUFSIZ];
-    FILE * f;
-    ssize_t bytesRead;
-    gzFile gz;
-
-    name_without_gz = xstrdup(archive_name);
+    char *name_without_gz = xstrdup(archive_name);
     strrchr(name_without_gz, '.')[0] = '\0';
+
     create_tar(name_without_gz, directory);
 
-    f = fopen(name_without_gz, "r");
-    if (f == NULL)
+    int fd = open(name_without_gz, O_RDONLY);
+    if (fd < 0)
     {
-//TODO: we leak uncompressed tar file on disk??
-        free(name_without_gz);
-        return;
-    }
-    gz = gzopen(archive_name, "w");
-    if (gz == NULL)
-    {
-        fclose(f);
+        remove(name_without_gz);
         free(name_without_gz);
         return;
     }
 
-    while ((bytesRead = fread(buf, 1, BUFSIZ, f)) > 0)
+    gzFile gz = gzopen(archive_name, "w");
+    if (gz == NULL)
     {
-        gzwrite(gz, buf, bytesRead);
+        close(fd);
+        remove(name_without_gz);
+        free(name_without_gz);
+        return;
     }
+
+    char buf[BUFSIZ];
+    ssize_t bytesRead;
+    while ((bytesRead = full_read(fd, buf, BUFSIZ)) > 0)
+    {
+        gzwrite(gz, buf, bytesRead); // TODO: check that return value == bytesRead
+    }
+
     gzclose(gz);
-    fclose(f);
+    close(fd);
     remove(name_without_gz);
     free(name_without_gz);
 }
 
 static void create_tarbz2(const char * archive_name, const char * directory)
 {
-    char * name_without_bz2;
-    char buf[BUFSIZ];
-    FILE * f;
-    ssize_t bytesRead;
-    int tarFD;
-    int bzError;
-    BZFILE * bz;
-#define BLOCK_MULTIPLIER 7
-
-    name_without_bz2 = xstrdup(archive_name);
+    char *name_without_bz2 = xstrdup(archive_name);
     strrchr(name_without_bz2, '.')[0] = '\0';
+
     create_tar(name_without_bz2, directory);
 
-    tarFD = open(name_without_bz2, O_RDONLY);
+    int tarFD = open(name_without_bz2, O_RDONLY);
     if (tarFD == -1)
     {
+        remove(name_without_bz2);
         free(name_without_bz2);
         return;
     }
-    f = fopen(archive_name, "w");
+    FILE *f = fopen(archive_name, "w");
     if (f == NULL)
     {
-//TODO: we leak uncompressed tar file on disk??
         close(tarFD);
+        remove(name_without_bz2);
         free(name_without_bz2);
         return;
     }
-    bz = BZ2_bzWriteOpen(&bzError, f, BLOCK_MULTIPLIER, 0, 0);
+    int bzError;
+    BZFILE *bz = BZ2_bzWriteOpen(&bzError, f, /*BLOCK_MULTIPLIER:*/ 7, 0, 0);
     if (bz == NULL)
     {
-        close(tarFD);
         fclose(f);
+        close(tarFD);
+        remove(name_without_bz2);
         free(name_without_bz2);
         return;
     }
 
+    char buf[BUFSIZ];
+    ssize_t bytesRead;
     while ((bytesRead = read(tarFD, buf, BUFSIZ)) > 0)
     {
         BZ2_bzWrite(&bzError, bz, buf, bytesRead);
     }
-    BZ2_bzWriteClose(&bzError, bz, 0, NULL, NULL);
 
-    close(tarFD);
+    BZ2_bzWriteClose(&bzError, bz, 0, NULL, NULL);
     fclose(f);
+    close(tarFD);
     remove(name_without_bz2);
     free(name_without_bz2);
 }
@@ -289,23 +288,31 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
 {
     update_client(_("File Transfer: Creating a report..."));
 
+    if (strcmp(pArgs, "store") == 0)
+    {
+        /* Remember pActiveDir for later sending */
+        FILE *dirlist = fopen(FILETRANSFER_DIRLIST, "a");
+        fprintf(dirlist, "%s\n", pActionDir);
+        fclose(dirlist);
+        VERB3 log("Remembered '%s' for future file transfer", pActionDir);
+        return;
+    }
+
     char hostname[HBLEN];
     gethostname(hostname, HBLEN-1);
     hostname[HBLEN-1] = '\0';
 
-    fstream dirlist;
-    if (strcmp(pArgs, "store") == 0)
+    char tmpdir_name[] = "/tmp/abrtuploadXXXXXX";
+    /* mkdtemp does mkdir(xxx, 0700), should be safe (is it?) */
+    if (mkdtemp(tmpdir_name) == NULL)
     {
-        /* store pActiveDir for later sending */
-        dirlist.open(FILETRANSFER_DIRLIST, fstream::out | fstream::app);
-        dirlist << pActionDir << endl;
-        dirlist.close();
+        throw CABRTException(EXCEP_PLUGIN, "Can't mkdir a temporary directory in /tmp");
     }
-    else if (strcmp(pArgs, "one") == 0)
+
+    if (strcmp(pArgs, "one") == 0)
     {
-        /* just send one archive */
-//TODO: where are we creating it??!! In cwd, which may well be / ??!!!
-        string archivename = ssprintf("%s-%s%s", hostname, DirBase(pActionDir).c_str(), m_sArchiveType.c_str());
+        /* Just send one archive */
+        string archivename = ssprintf("%s/%s-%s%s", tmpdir_name, hostname, DirBase(pActionDir).c_str(), m_sArchiveType.c_str());
         try
         {
             CreateArchive(archivename.c_str(), pActionDir);
@@ -319,35 +326,43 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
     }
     else
     {
-        dirlist.open(FILETRANSFER_DIRLIST, fstream::in);
-        if (dirlist.fail())
+        /* Tar up and send all remebered directories */
+        FILE *dirlist = fopen(FILETRANSFER_DIRLIST, "r");
+        if (!dirlist)
         {
-            /* this means there are no reports to send (no crashes, hurray)
-               which is perfectly OK */
-            return;
+            /* not an error */
+            VERB3 log("No saved crashes to transfer");
+            goto del_tmp_dir;
         }
 
-        string dirname;
-        while (getline(dirlist, dirname), dirlist.good())
+        char dirname[PATH_MAX];
+        while (fgets(dirname, sizeof(dirname), dirlist) != NULL)
         {
-            string archivename = ssprintf("%s-%s%s", hostname, DirBase(dirname.c_str()).c_str(), m_sArchiveType.c_str());
+            strchrnul(dirname, '\n')[0] = '\0';
+            string archivename = ssprintf("%s/%s-%s%s", tmpdir_name, hostname, DirBase(dirname).c_str(), m_sArchiveType.c_str());
             try
             {
-                CreateArchive(archivename.c_str(), dirname.c_str());
+        	VERB3 log("Creating archive '%s' of dir '%s'", archivename.c_str(), dirname);
+                CreateArchive(archivename.c_str(), dirname);
+                VERB3 log("Sending archive to '%s'", m_sURL.c_str());
                 SendFile(m_sURL.c_str(), archivename.c_str());
             }
             catch (CABRTException& e)
             {
                 error_msg(_("Can't create and send an archive %s"), e.what());
             }
+            VERB3 log("Deleting archive '%s'", archivename.c_str());
             unlink(archivename.c_str());
         }
 
-        dirlist.close();
+        fclose(dirlist);
         /* all the files we're able to send should be sent now,
            starting over with clean table */
         unlink(FILETRANSFER_DIRLIST);
     }
+
+ del_tmp_dir:
+    rmdir(tmpdir_name);
 }
 
 void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
@@ -360,10 +375,6 @@ void CFileTransfer::SetSettings(const map_plugin_settings_t& pSettings)
     if (it != end)
     {
         m_sURL = it->second;
-    }
-    else
-    {
-        error_msg(_("FileTransfer: URL not specified"));
     }
 
     it = pSettings.find("RetryCount");

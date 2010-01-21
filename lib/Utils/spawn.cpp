@@ -115,7 +115,7 @@ char *run_in_shell_and_save_output(int flags,
 	flags |= EXECFLG_OUTPUT;
 	flags &= ~EXECFLG_INPUT;
 
-	const char *argv[] = { "/bin/sh", "sh", "-c", cmd, NULL };
+	const char *argv[] = { "/bin/sh", "-c", cmd, NULL };
 	int pipeout[2];
 	pid_t child = fork_execv_on_steroids(flags, (char **)argv, pipeout,
 		/*unsetenv_vec:*/ NULL, dir, /*uid (unused):*/ 0);

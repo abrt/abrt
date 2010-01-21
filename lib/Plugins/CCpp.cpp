@@ -417,9 +417,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     char buff[1024];
     while (fgets(buff, sizeof(buff), pipeout_fp))
     {
-        int last = strlen(buff) - 1;
-        if (last >= 0 && buff[last] == '\n')
-            buff[last] = '\0';
+        strchrnul(buff, '\n')[0] = '\0';
 
         if (strncmp(buff, "MISSING:", 8) == 0)
         {

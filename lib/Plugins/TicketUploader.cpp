@@ -18,8 +18,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 #include <string>
-#include <fstream>
-#include <sstream>
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h" /* for xcurl_easy_init */
 #include "TicketUploader.h"
@@ -41,18 +39,12 @@ CTicketUploader::~CTicketUploader()
 {}
 
 
-static void Error(const char *msg)
-{
-    update_client("%s", msg);
-    throw CABRTException(EXCEP_PLUGIN, msg);
-}
-
 static void RunCommand(const char *cmd)
 {
     int retcode = system(cmd);
     if (retcode)
     {
-        Error(ssprintf("'%s' exited with %d", cmd, retcode).c_str());
+        throw CABRTException(EXCEP_PLUGIN, "'%s' exited with %d", cmd, retcode);
     }
 }
 
@@ -61,20 +53,21 @@ static string ReadCommand(const char *cmd)
     FILE* fp = popen(cmd, "r");
     if (!fp)
     {
-        Error(ssprintf("error running '%s'", cmd).c_str());
+        throw CABRTException(EXCEP_PLUGIN, "Error running '%s'", cmd);
     }
 
     string result;
     char buff[1024];
     while (fgets(buff, sizeof(buff), fp) != NULL)
     {
+        strchrnul(buff, '\n')[0] = '\0';
         result += buff;
     }
 
     int retcode = pclose(fp);
     if (retcode)
     {
-        Error(ssprintf("'%s' exited with %d", cmd, retcode).c_str());
+        throw CABRTException(EXCEP_PLUGIN, "'%s' exited with %d", cmd, retcode);
     }
 
     return result;
@@ -85,7 +78,7 @@ static void WriteCommand(const char *cmd, const char *input)
     FILE* fp = popen(cmd, "w");
     if (!fp)
     {
-        Error(ssprintf("error running '%s'", cmd).c_str());
+        throw CABRTException(EXCEP_PLUGIN, "error running '%s'", cmd);
     }
 
     /* Hoping it's not too big to get us forever blocked... */
@@ -94,7 +87,7 @@ static void WriteCommand(const char *cmd, const char *input)
     int retcode = pclose(fp);
     if (retcode)
     {
-        Error(ssprintf("'%s' exited with %d", cmd, retcode).c_str());
+        throw CABRTException(EXCEP_PLUGIN, "'%s' exited with %d", cmd, retcode);
     }
 }
 
@@ -150,11 +143,23 @@ void CTicketUploader::SendFile(const char *pURL, const char *pFilename)
 }
 
 
+static void write_str_to_file(const char *str, const char *path, const char *fname)
+{
+    string ofile_name = concat_path_file(path, fname);
+    FILE *ofile = fopen(ofile_name.c_str(), "w");
+    if (!ofile)
+    {
+        throw CABRTException(EXCEP_PLUGIN, "Can't open '%s'", ofile_name.c_str());
+    }
+    fprintf(ofile, "%s\n", str);
+    fclose(ofile);
+}
+
 string CTicketUploader::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
-    update_client(_("Creating an TicketUploader report..."));
+    update_client(_("Creating a TicketUploader report..."));
 
     // Get ticket name, customer name, and do_encrypt from config settings
     string customer_name = m_sCustomer;
@@ -163,65 +168,52 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     bool do_encrypt = m_bEncrypt;
     bool do_upload = m_bUpload;
 
-    bool have_ticket_name = false;
-    if (ticket_name == "")
+    bool have_ticket_name = (ticket_name != "");
+    if (!have_ticket_name)
     {
         ticket_name = "TicketUploader-newticket";
     }
-    else
-    {
-        have_ticket_name = true;
-    }
 
     // Format the time to add to the file name
-    const int timebufmax = 256;
-    char timebuf[timebufmax];
+    char timebuf[256];
     time_t curtime = time(NULL);
-    if (!strftime(timebuf, timebufmax, "-%G%m%d%k%M%S", gmtime(&curtime)))
-    {
-        Error("Can't format time");
-    }
+    strftime(timebuf, sizeof(timebuf), "-%Y%m%d%H%M%S", gmtime(&curtime));
 
-    // Create a tmp work directory, and within that the directory
-    //   that will be the root of the tarball
+    // Create a tmp work directory, and within that
+    // create the "<ticketname>-yyyymmddhhmmss" directory
+    // which will be the root of the tarball
     string file_name = ticket_name + timebuf;
 
-    char tmpdir_name[] = "/tmp/rhuploadXXXXXX";
+    char tmpdir_name[] = "/tmp/abrtuploadXXXXXX";
     if (mkdtemp(tmpdir_name) == NULL)
     {
-        Error("Can't mkdir a temporary directory in /tmp");
+        throw CABRTException(EXCEP_PLUGIN, "Can't mkdir a temporary directory in /tmp");
     }
     string tmptar_name = concat_path_file(tmpdir_name, file_name.c_str());
 
-    if (mkdir(tmptar_name.c_str(), S_IRWXU))
+    if (mkdir(tmptar_name.c_str(), 0700))
     {
-        Error(ssprintf("Can't mkdir '%s'", tmptar_name.c_str()).c_str());
+        throw CABRTException(EXCEP_PLUGIN, "Can't mkdir '%s'", tmptar_name.c_str());
     }
 
-    // Copy each entry into the tarball root,
-    //   files are simply copied, strings are written to a file
+    // Copy each entry into the tarball root.
+    // Files are simply copied, strings are written to a file
     map_crash_data_t::const_iterator it;
     for (it = pCrashData.begin(); it != pCrashData.end(); it++)
     {
+        const char *content = it->second[CD_CONTENT].c_str();
         if (it->second[CD_TYPE] == CD_TXT)
         {
-            string ofile_name = concat_path_file(tmptar_name.c_str(), it->first.c_str());
-            ofstream ofile(ofile_name.c_str(), fstream::trunc|fstream::binary);
-            if (!ofile)
-            {
-                Error(ssprintf("Can't open '%s'", ofile_name.c_str()).c_str());
-            }
-            ofile << it->second[CD_CONTENT] << endl;
-            ofile.close();
+            write_str_to_file(content, tmptar_name.c_str(), it->first.c_str());
         }
         else if (it->second[CD_TYPE] == CD_BIN)
         {
             string ofile_name = concat_path_file(tmptar_name.c_str(), it->first.c_str());
-            if (copy_file(it->second[CD_CONTENT].c_str(), ofile_name.c_str(), 0644) < 0)
+            if (copy_file(content, ofile_name.c_str(), 0644) < 0)
             {
                 throw CABRTException(EXCEP_PLUGIN,
                         "Can't copy '%s' to '%s'",
-                        it->second[CD_CONTENT].c_str(),
+                        content,
                         ofile_name.c_str()
                 );
             }
@@ -231,25 +223,11 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     // add ticket_name and customer name to tarball
     if (have_ticket_name)
     {
-        string ofile_name = tmptar_name + "/TICKET";
-        ofstream ofile(ofile_name.c_str(), fstream::trunc|fstream::binary);
-        if (!ofile)
-        {
-            Error(ssprintf("Can't open '%s'", ofile_name.c_str()).c_str());
-        }
-        ofile << ticket_name << endl;
-        ofile.close();
+        write_str_to_file(ticket_name.c_str(), tmptar_name.c_str(), "TICKET");
     }
     if (customer_name != "")
     {
-        string ofile_name = tmptar_name + "/CUSTOMER";
-        ofstream ofile(ofile_name.c_str(), fstream::trunc|fstream::binary);
-        if (!ofile)
-        {
-            Error(ssprintf("Can't open '%s'", ofile_name.c_str()).c_str());
-        }
-        ofile << customer_name << endl;
-        ofile.close();
+        write_str_to_file(customer_name.c_str(), tmptar_name.c_str(), "CUSTOMER");
     }
 
     // Create the compressed tarball
@@ -328,21 +306,19 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     }
     msg += "END:\n";
 
-    /* warn the client: */
+    // warn the client (why _warn_? it's not an error, maybe update_client?):
     error_msg("%s", msg.c_str());
 
     string ret;
     if (do_upload)
     {
-        string xx = _("report sent to ") + upload_url + '/' + outfile_basename;
-        update_client("%s", xx.c_str());
-        ret = xx;
+        ret = _("report sent to ") + upload_url + '/' + outfile_basename;
+        update_client("%s", ret.c_str());
     }
     else
     {
-        string xx = _("report copied to /tmp/") + outfile_basename;
-        update_client("%s", xx.c_str());
-        ret = xx;
+        ret = _("report copied to /tmp/") + outfile_basename;
+        update_client("%s", ret.c_str());
     }
 
     // delete the temporary directory
@@ -350,6 +326,28 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     RunCommand(cmd.c_str());
 
     return ret;
+}
+
+static bool is_string_safe(const char *str)
+{
+    const char *p = str;
+    while (*p)
+    {
+        unsigned char c = *p;
+        if ((c < '0' || c > '9')
+         && c != '_'
+         && c != '-'
+        ) {
+            c |= 0x20; // tolower
+            if (c < 'a' || c > 'z')
+            {
+                return false;
+            }
+        }
+        // only 0-9, -, _, A-Z, a-z reach this point
+        p++;
+    }
+    return true;
 }
 
 void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
@@ -363,8 +361,11 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     {
         m_sCustomer = it->second;
     }
+    // We use m_sTicket as part of filename,
+    // and we use resulting filename in system("cd %s; ...", filename) etc,
+    // so we are very paraniod about allowed chars
     it = pSettings.find("Ticket");
-    if (it != end)
+    if (it != end && is_string_safe(it->second.c_str()))
     {
         m_sTicket = it->second;
     }
