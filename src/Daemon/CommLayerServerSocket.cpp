@@ -130,14 +130,14 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
 
     if (!strncmp(pMessage.c_str(), MESSAGE_GET_CRASH_INFOS, sizeof(MESSAGE_GET_CRASH_INFOS) - 1))
     {
-        vector_crash_infos_t crashInfos = GetCrashInfos(UID);
+        vector_map_crash_data_t crashInfos = GetCrashInfos(UID);
         std::string message = MESSAGE_GET_CRASH_INFOS + crash_infos_to_string(crashInfos);
         Send(message, pSource);
     }
     else if (!strncmp(pMessage.c_str(), MESSAGE_REPORT, sizeof(MESSAGE_REPORT) - 1))
     {
         std::string message = pMessage.substr(sizeof(MESSAGE_REPORT) - 1);
-        map_crash_report_t report = string_to_crash_report(message);
+        map_crash_data_t report = string_to_crash_report(message);
         map_plugin_settings_t plugin_settings;
         //FIXME: another hack to make this compile
 //        Report(report, plugin_settings, UID);
@@ -145,7 +145,8 @@ void CCommLayerServerSocket::ProcessMessage(const std::string& pMessage, GIOChan
     else if (!strncmp(pMessage.c_str(), MESSAGE_CREATE_REPORT, sizeof(MESSAGE_CREATE_REPORT) - 1))
     {
 //        std::string UUID = pMessage.substr(sizeof(MESSAGE_CREATE_REPORT) - 1);
-//        map_crash_report_t crashReport = CreateReport(UUID, UID);
+//        map_crash_data_t crashReport;
+//        CreateReport(UUID, UID, crashReport);
 //use CreateReportThread instead of CreateReport?
 //        std::string message = MESSAGE_CREATE_REPORT + crash_report_to_string(crashReport);
 //        Send(message, pSource);
@@ -211,22 +212,22 @@ CCommLayerServerSocket::~CCommLayerServerSocket()
     close(m_nSocket);
 }
 
-vector_crash_infos_t CCommLayerServerSocket::GetCrashInfos(const std::string &pSender)
+vector_map_crash_data_t CCommLayerServerSocket::GetCrashInfos(const std::string &pSender)
 {
-    vector_crash_infos_t crashInfos;
+    vector_map_crash_data_t crashInfos;
     crashInfos = ::GetCrashInfos(pSender);
     return crashInfos;
 }
 
 //reimplement as CreateReportThread(...)?
-//map_crash_report_t CCommLayerServerSocket::CreateReport(const std::string &pUUID, const std::string &pSender)
+//map_crash_data_t CCommLayerServerSocket::CreateReport(const std::string &pUUID, const std::string &pSender)
 //{
-//    map_crash_report_t crashReport;
+//    map_crash_data_t crashReport;
 //    crashReport = ::CreateReport(pUUID, pSender);
 //    return crashReport;
 //}
 
-report_status_t CCommLayerServerSocket::Report(const map_crash_report_t& pReport, const std::string& pSender)
+report_status_t CCommLayerServerSocket::Report(const map_crash_data_t& pReport, const std::string& pSender)
 {
     report_status_t rs;
     //FIXME: a hack to make this compile, but we don't use sockets anyway

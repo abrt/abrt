@@ -59,12 +59,12 @@ void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
 //    return m_pSettings;
 //}
 
-std::string CLogger::Report(const map_crash_report_t& pCrashReport,
+std::string CLogger::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
 
-    std::string description = make_description_logger(pCrashReport);
+    std::string description = make_description_logger(pCrashData);
     description += "\n\n\n";
 
     FILE *fOut;

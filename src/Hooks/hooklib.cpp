@@ -47,9 +47,7 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
             break;
         }
 
-        unsigned len = strlen(line);
-        if (len > 0 && line[len-1] == '\n')
-            line[--len] = '\0';
+        strchrnul(line, '\n')[0] = '\0';
         const char *p = skip_whitespace(line);
 #undef DIRECTIVE
 #define DIRECTIVE "MaxCrashReportsSize"

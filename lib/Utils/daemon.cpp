@@ -16,7 +16,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#define FILENAME_CMDLINE        "cmdline"
+
 #define VAR_RUN_PID_FILE        VAR_RUN"/abrt.pid"
 
 static char *append_escaped(char *start, const char *s)

@@ -77,7 +77,7 @@ static set_string_t ParseList(const char* pList)
     return set;
 }
 
-/* (What format do we parse here?) */
+/* Format: name, name(param),name("param with spaces \"and quotes\"") */
 static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
 {
     VERB3 log(" ParseListWithArgs(%s)", pValue);
@@ -92,7 +92,6 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
     {
         if (is_quote && pValue[ii] == '\\' && pValue[ii+1])
         {
-            item += pValue[ii];
             ii++;
             item += pValue[ii];
             continue;
@@ -100,7 +99,7 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
         if (pValue[ii] == '"')
         {
             is_quote = !is_quote;
-            item += pValue[ii];
+            /*item += pValue[ii]; - wrong! name("param") must be == name(param) */
             continue;
         }
         if (is_quote)
@@ -146,8 +145,8 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
 
 static void ParseCommon()
 {
-    map_string_t::const_iterator it = s_mapSectionCommon.find("OpenGPGCheck");
     map_string_t::const_iterator end = s_mapSectionCommon.end();
+    map_string_t::const_iterator it = s_mapSectionCommon.find("OpenGPGCheck");
     if (it != end)
     {
         g_settings_bOpenGPGCheck = string_to_bool(it->second.c_str());

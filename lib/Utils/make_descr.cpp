@@ -50,60 +50,95 @@ static void add_content(bool &was_multiline, string& description, const char *he
     }
 }
 
-string make_description_bz(const map_crash_report_t& pCrashReport)
-{
-    string description;
+static const char *const blacklisted_items_bz[] = {
+    FILENAME_TIME     ,
+    FILENAME_UID      ,
+    FILENAME_UUID     ,
+    FILENAME_ANALYZER ,
+    FILENAME_COREDUMP ,
+    FILENAME_DESCRIPTION, /* package description - basically useless */
+    CD_DUPHASH        ,
+    CD_UUID           ,
+    CD_DUMPDIR        ,
+    CD_COUNT          ,
+    CD_REPORTED       ,
+    CD_MESSAGE        ,
+    NULL
+};
 
-    map_crash_report_t::const_iterator it;
-    map_crash_report_t::const_iterator end = pCrashReport.end();
-
-    bool was_multiline = 0;
-    it = pCrashReport.find(CD_REPRODUCE);
-    if (it != end && it->second[CD_CONTENT] != "1.\n2.\n3.\n")
-    {
-        add_content(was_multiline, description, "How to reproduce", it->second[CD_CONTENT].c_str());
-    }
-
-    it = pCrashReport.find(CD_COMMENT);
-    if (it != end)
-    {
-        add_content(was_multiline, description, "Comment", it->second[CD_CONTENT].c_str());
-    }
-
-    it = pCrashReport.begin();
-    for (; it != end; it++)
-    {
-        const string &filename = it->first;
-        const string &type = it->second[CD_TYPE];
-        const string &content = it->second[CD_CONTENT];
-        if (type == CD_TXT)
-        {
-            if (content.size() <= CD_TEXT_ATT_SIZE)
-            {
-                if (filename != CD_UUID
-                 && filename != FILENAME_ARCHITECTURE
-                 && filename != FILENAME_RELEASE
-                 && filename != CD_REPRODUCE
-                 && filename != CD_COMMENT
-                ) {
-                    add_content(was_multiline, description, filename.c_str(), content.c_str());
-                }
-            } else {
-                add_content(was_multiline, description, "Attached file", filename.c_str());
-            }
-        }
-    }
-
-    return description;
-}
-
-string make_description_logger(const map_crash_report_t& pCrashReport)
+string make_description_bz(const map_crash_data_t& pCrashData)
 {
     string description;
     string long_description;
 
-    map_crash_report_t::const_iterator it = pCrashReport.begin();
-    for (; it != pCrashReport.end(); it++)
+    map_crash_data_t::const_iterator it = pCrashData.begin();
+    for (; it != pCrashData.end(); it++)
+    {
+        const string& itemname = it->first;
+        const string& type = it->second[CD_TYPE];
+        const string& content = it->second[CD_CONTENT];
+        if (type == CD_TXT)
+        {
+            /* Skip items we are not interested in */
+            const char *const *bl = blacklisted_items_bz;
+            while (*bl)
+            {
+                if (itemname == *bl)
+                    break;
+                bl++;
+            }
+            if (*bl)
+                continue; /* blacklisted */
+            if (content == "1.\n2.\n3.\n")
+                continue; /* user did not change default "How to reproduce" */
+
+            if (content.size() <= CD_TEXT_ATT_SIZE)
+            {
+                /* Add small (less than few kb) text items inline */
+                bool was_multiline = 0;
+                string tmp;
+                add_content(was_multiline,
+                        tmp,
+			/* "reproduce: blah" looks ugly, fixing: */
+                        itemname == FILENAME_REPRODUCE ? "How to reproduce" : itemname.c_str(),
+                        content.c_str()
+                );
+
+                if (was_multiline)
+                {
+                    /* Not one-liner */
+                    if (long_description.size() != 0)
+                        long_description += '\n';
+                    long_description += tmp;
+                }
+                else
+                {
+                    description += tmp;
+                }
+            } else {
+                bool was_multiline = 0;
+                add_content(was_multiline, description, "Attached file", itemname.c_str());
+            }
+        }
+    }
+
+    /* One-liners go first, then multi-line items */
+    if (description.size() != 0 && long_description.size() != 0)
+    {
+        description += '\n';
+    }
+    description += long_description;
+
+    return description;
+}
+
+string make_description_logger(const map_crash_data_t& pCrashData)
+{
+    string description;
+    string long_description;
+
+    map_crash_data_t::const_iterator it = pCrashData.begin();
+    for (; it != pCrashData.end(); it++)
     {
         const string &filename = it->first;
         const string &type = it->second[CD_TYPE];
@@ -134,20 +169,20 @@ string make_description_logger(const map_crash_report_t& pCrashReport)
     if (description.size() != 0 && long_description.size() != 0)
     {
         description += '\n';
-        description += long_description;
     }
+    description += long_description;
 
     return description;
 }
 
 /* This needs more work to make the result less ugly */
-string make_description_catcut(const map_crash_report_t& pCrashReport)
+string make_description_catcut(const map_crash_data_t& pCrashData)
 {
-    map_crash_report_t::const_iterator end = pCrashReport.end();
-    map_crash_report_t::const_iterator it;
+    map_crash_data_t::const_iterator end = pCrashData.end();
+    map_crash_data_t::const_iterator it;
 
     string howToReproduce;
-    it = pCrashReport.find(CD_REPRODUCE);
+    it = pCrashData.find(FILENAME_REPRODUCE);
     if (it != end)
     {
         howToReproduce = "\n\nHow to reproduce\n"
@@ -155,7 +190,7 @@ string make_description_catcut(const map_crash_report_t& pCrashReport)
         howToReproduce += it->second[CD_CONTENT];
     }
     string comment;
-    it = pCrashReport.find(CD_COMMENT);
+    it = pCrashData.find(FILENAME_COMMENT);
     if (it != end)
     {
         comment = "\n\nComment\n"
@@ -169,7 +204,7 @@ string make_description_catcut(const map_crash_report_t& pCrashReport)
     pDescription += "\n\nAdditional information\n"
                     "======\n";
 
-    for (it = pCrashReport.begin(); it != end; it++)
+    for (it = pCrashData.begin(); it != end; it++)
     {
         const string &filename = it->first;
         const string &type = it->second[CD_TYPE];
@@ -178,11 +213,11 @@ string make_description_catcut(const map_crash_report_t& pCrashReport)
         {
             if (content.length() <= CD_TEXT_ATT_SIZE)
             {
-                if (filename != CD_UUID
+                if (filename != CD_DUPHASH
                  && filename != FILENAME_ARCHITECTURE
                  && filename != FILENAME_RELEASE
-                 && filename != CD_REPRODUCE
-                 && filename != CD_COMMENT
+                 && filename != FILENAME_REPRODUCE
+                 && filename != FILENAME_COMMENT
                 ) {
                     pDescription += '\n';
                     pDescription += filename;

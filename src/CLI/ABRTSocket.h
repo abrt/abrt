@@ -20,9 +20,9 @@ class CABRTSocket
         void Connect(const char *pPath);
         void Disconnect();
 
-        vector_crash_infos_t GetCrashInfos();
-        map_crash_report_t CreateReport(const char *pUUID);
-        void Report(const map_crash_report_t& pReport);
+        vector_map_crash_data_t GetCrashInfos();
+        map_crash_data_t CreateReport(const char *pUUID);
+        void Report(const map_crash_data_t& pReport);
         int32_t DeleteDebugDump(const char *pUUID);
 };
 

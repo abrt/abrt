@@ -40,10 +40,6 @@ using namespace std;
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u %c"
 
-#define FILENAME_COREDUMP       "coredump"
-#define FILENAME_BACKTRACE      "backtrace"
-#define FILENAME_MEMORYMAP      "memorymap"
-
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
@@ -233,7 +229,7 @@ static int rate_backtrace(const char *backtrace)
         }
     }
 
-    /* Bogus "backtrace" with zero frames? */
+    /* Bogus 'backtrace' with zero frames? */
     if (best_possible_rating == 0)
         return 0;
 
@@ -421,9 +417,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     char buff[1024];
     while (fgets(buff, sizeof(buff), pipeout_fp))
     {
-        int last = strlen(buff) - 1;
-        if (last >= 0 && buff[last] == '\n')
-            buff[last] = '\0';
+        strchrnul(buff, '\n')[0] = '\0';
 
         if (strncmp(buff, "MISSING:", 8) == 0)
         {

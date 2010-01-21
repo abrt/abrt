@@ -36,11 +36,11 @@ class CReporter : public CPlugin
          * A method, which reports a crash report to particular receiver.
          * The plugin can takes arguments, but the plugin  has to parse them
          * by itself.
-         * @param pCrashReport A crash report.
+         * @param pCrashData A crash report.
          * @param pArgs Plugin's arguments.
          * @retun A message which can be displayed after a report is created.
          */
-        virtual std::string Report(const map_crash_report_t& pCrashReport,
+        virtual std::string Report(const map_crash_data_t& pCrashData,
                                    const map_plugin_settings_t& pSettings,
                                    const char *pArgs) = 0;
 };

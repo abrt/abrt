@@ -36,10 +36,6 @@
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u"
 
-#define FILENAME_COREDUMP       "coredump"
-#define FILENAME_BACKTRACE      "backtrace"
-#define FILENAME_MEMORYMAP      "memorymap"
-
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 CAnalyzerFirefox::CAnalyzerFirefox() :
@@ -227,7 +223,7 @@ static int rate_backtrace(const char *backtrace)
         }
     }
 
-    /* Bogus "backtrace" with zero frames? */
+    /* Bogus 'backtrace' with zero frames? */
     if (best_possible_rating == 0)
         return 0;
 
@@ -627,9 +623,7 @@ Another application is holding the yum lock, cannot continue
     std::string packageName = package.substr(0, package.rfind("-", package.rfind("-")-1));
     while (fgets(buff, sizeof(buff), pipeout_fp))
     {
-        int last = strlen(buff) - 1;
-        if (last >= 0 && buff[last] == '\n')
-            buff[last] = '\0';
+        strchrnul(buff, '\n')[0] = '\0';
 
         log("%s", buff);
         update_client("%s", buff); /* maybe only if buff != ""? */
@@ -716,9 +710,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir, std::string& build_ids)
     char buff[1024];
     while (fgets(buff, sizeof(buff), pipeout_fp))
     {
-        int last = strlen(buff) - 1;
-        if (last >= 0 && buff[last] == '\n')
-            buff[last] = '\0';
+        strchrnul(buff, '\n')[0] = '\0';
 
         if (strncmp(buff, "MISSING:", 8) == 0)
         {

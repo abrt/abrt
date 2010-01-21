@@ -48,9 +48,9 @@ class CCrashWatcher
         virtual void Warning(const char *pMessage, const char* peer, uint64_t pJobID);
 };
 
-vector_crash_infos_t GetCrashInfos(const char *pUID);
+vector_map_crash_data_t GetCrashInfos(const char *pUID);
 int CreateReportThread(const char* pUUID, const char* pUID, int force, const char* pSender);
-map_crash_report_t CreateReport(const char* pUUID, const char* pUID, int force);
+void CreateReport(const char* pUUID, const char* pUID, int force, map_crash_data_t&);
 int DeleteDebugDump(const char *pUUID, const char *pUID);
 void DeleteDebugDump_by_dir(const char *dump_dir);
 

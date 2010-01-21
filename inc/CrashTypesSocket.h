@@ -70,19 +70,19 @@
 #define MESSAGE_CREATE_REPORT       "(CREATE_REPORT)"
 #define MESSAGE_END_MARKER          23
 
-std::string crash_infos_to_string(const vector_crash_infos_t& pCrashInfos);
+std::string crash_infos_to_string(const vector_map_crash_data_t& pCrashDatas);
 std::string crash_data_to_string(const map_crash_data_t& pCrashData);
-inline std::string crash_report_to_string(const map_crash_report_t& pCrashReport)
+inline std::string crash_report_to_string(const map_crash_data_t& pCrashData)
 {
-    return crash_data_to_string(pCrashReport);
+    return crash_data_to_string(pCrashData);
 }
 
-vector_crash_infos_t string_to_crash_infos(const std::string& pMessage);
+vector_map_crash_data_t string_to_crash_infos(const std::string& pMessage);
 map_crash_data_t string_to_crash_data(const std::string& pMessage, int& len);
-inline map_crash_report_t string_to_crash_report(const std::string& pMessage)
+inline map_crash_data_t string_to_crash_report(const std::string& pMessage)
 {
     int len;
     return string_to_crash_data(pMessage, len);
 }
 
-#endif /* SOCKETCRASHTYPES_H_ */
+#endif

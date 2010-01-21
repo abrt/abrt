@@ -47,15 +47,15 @@ enum
     OPT_DELETE
 };
 
-static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
+static void print_crash_infos(vector_map_crash_data_t& pCrashInfos, int pMode)
 {
     unsigned int ii;
     for (ii = 0; ii < pCrashInfos.size(); ii++)
     {
-        map_crash_info_t& info = pCrashInfos[ii];
-        if (pMode == OPT_GET_LIST_FULL || info[CD_REPORTED][CD_CONTENT] != "1")
+        map_crash_data_t& info = pCrashInfos[ii];
+        if (pMode == OPT_GET_LIST_FULL || get_crash_data_item_content(info, CD_REPORTED) != "1")
         {
-            const char *timestr = info[CD_TIME][CD_CONTENT].c_str();
+            const char *timestr = get_crash_data_item_content(info, FILENAME_TIME).c_str();
             long time = strtol(timestr, NULL, 10);
             if (time == 0)
                 error_msg_and_die("Error while converting time string.");
@@ -72,13 +72,13 @@ static void print_crash_infos(vector_crash_infos_t& pCrashInfos, int pMode)
                    "\tExecutable : %s\n"
                    "\tCrash Time : %s\n"
                    "\tCrash Count: %s\n"),
-                 ii,
-                 info[CD_UID][CD_CONTENT].c_str(),
-                 info[CD_UUID][CD_CONTENT].c_str(),
-                 info[CD_PACKAGE][CD_CONTENT].c_str(),
-                 info[CD_EXECUTABLE][CD_CONTENT].c_str(),
-                 timeloc,
-                 info[CD_COUNT][CD_CONTENT].c_str()
+                ii,
+                get_crash_data_item_content(info, FILENAME_UID).c_str(),
+                get_crash_data_item_content(info, CD_UUID).c_str(),
+                get_crash_data_item_content(info, FILENAME_PACKAGE).c_str(),
+                get_crash_data_item_content(info, FILENAME_EXECUTABLE).c_str(),
+                timeloc,
+                get_crash_data_item_content(info, CD_COUNT).c_str()
             );
         }
     }
@@ -189,7 +189,7 @@ int main(int argc, char** argv)
         case OPT_GET_LIST:
         case OPT_GET_LIST_FULL:
         {
-            vector_crash_infos_t ci = call_GetCrashInfos();
+            vector_map_crash_data_t ci = call_GetCrashInfos();
             print_crash_infos(ci, op);
             break;
         }

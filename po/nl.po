@@ -7,13 +7,12 @@
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
 # Richard van der Luit <nippur@fedoraproject.org>, 2009.
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009, 2010.
-#: ../src/Gui/CCReporterDialog.py:208
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-14 15:35+0000\n"
-"PO-Revision-Date: 2010-01-14 17:50+0100\n"
+"POT-Creation-Date: 2010-01-21 04:02+0000\n"
+"PO-Revision-Date: 2010-01-21 15:21+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -51,10 +50,6 @@ msgstr "Rapporteer plugins"
 msgid "Database plugins"
 msgstr "Databse plugins"
 
-#: ../src/Gui/ABRTPlugin.py:99
-msgid "Plugin name is not set, can't load its settings"
-msgstr "Plugin naam is niet ingesteld, kan zijn instellingen niet laden"
-
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Kan niet verbinden met systeem dbus"
@@ -79,7 +74,8 @@ msgstr "(C) 2009 Red Hat, Inc."
 msgid "About ABRT"
 msgstr "Over ABRT"
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/report.glade.h:15 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisch bug rapporteer gereedschap"
 
@@ -103,7 +99,7 @@ msgstr "Wacht a.u.b..."
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
+#: ../src/Gui/ccgui.glade.h:9
 msgid "Report"
 msgstr "Rapport"
 
@@ -148,31 +144,31 @@ msgid "_Help"
 msgstr "_Hulp"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:76
+#: ../src/Gui/CCMainWindow.py:78
 msgid "Icon"
 msgstr "Icoon"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:86
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Application"
 msgstr "Toepassing"
 
-#: ../src/Gui/CCMainWindow.py:86
+#: ../src/Gui/CCMainWindow.py:88
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Crash count"
 msgstr "Crash count"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:90
 msgid "User"
 msgstr "Gebruiker"
 
-#: ../src/Gui/CCMainWindow.py:156
+#: ../src/Gui/CCMainWindow.py:158
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -181,7 +177,7 @@ msgstr ""
 "Kan de instellingen dialoog niet tonen\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:167
+#: ../src/Gui/CCMainWindow.py:169
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -191,7 +187,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:194
+#: ../src/Gui/CCMainWindow.py:196
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -200,15 +196,19 @@ msgstr ""
 "Fout tijdens het laden van de dumplijst.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:233
+msgid "This crash has been reported:\n"
+msgstr "Deze crash is gerapporteerd:\n"
+
+#: ../src/Gui/CCMainWindow.py:234
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Deze crash is gerapporteerd:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:250
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
-#: ../src/Gui/CCMainWindow.py:290
+#: ../src/Gui/CCMainWindow.py:298
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -216,7 +216,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:309
+#: ../src/Gui/CCMainWindow.py:318
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -225,25 +225,16 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:328 ../src/Gui/CCMainWindow.py:355
+#: ../src/Gui/CCMainWindow.py:337 ../src/Gui/CCMainWindow.py:364
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:136
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-"Kan de plugin instellingen niet opslaan:\n"
-" %s"
+#: ../src/Gui/CCReporterDialog.py:90
+msgid "You must agree with submitting the backtrace."
+msgstr "Je moet het goed vinden om de backtrace op te sturen."
 
-#: ../src/Gui/CCReporterDialog.py:194
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
-
-#: ../src/Gui/CCReporterDialog.py:239
+#: ../src/Gui/CCReporterDialog.py:101
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -256,11 +247,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#: ../src/Gui/CCReporterDialog.py:241
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
 
-#: ../src/Gui/CCReporterDialog.py:246
+#: ../src/Gui/CCReporterDialog.py:106
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -268,18 +259,20 @@ msgstr ""
 "De backtrace is niet compleet, wees er zeker van om voor het genereren de "
 "juiste stappen op te volgen."
 
-#: ../src/Gui/CCReporterDialog.py:296
+#: ../src/Gui/CCReporterDialog.py:148
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
-"Do you really want to send <b>%s</b>?\n"
+"Can't save plugin settings:\n"
+" %s"
 msgstr ""
-"<b>WAARSCHUWING</b>, je staat op het punt om data te versturen die gevoelige "
-"informatie kan bevatten\n"
-"Wil je <b>%s</b> echt versturen?\n"
+"Kan de plugin instellingen niet opslaan:\n"
+" %s"
 
-#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+#: ../src/Gui/CCReporterDialog.py:266
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
+
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:17
 msgid "Log"
 msgstr "Log"
 
@@ -310,18 +303,68 @@ msgid " "
 msgstr " "
 
 #: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Bijlagen</b>"
+
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>Backtrace</b>"
+
+#: ../src/Gui/report.glade.h:4
 msgid "<b>Comment</b>"
 msgstr "<b>Commentaar</b>"
 
-#: ../src/Gui/report.glade.h:3
-msgid "<b>Following items will be sent</b>"
-msgstr "<b>De volgende items zullen verzonden worden</b>"
-
-#: ../src/Gui/report.glade.h:4
+#: ../src/Gui/report.glade.h:5
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>Hoe het te reproduceren (in een paar eenvoudige stappen)</b>"
 
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Los a.u.b. de volgende problemen op</b>"
+
 #: ../src/Gui/report.glade.h:7
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">Architectuur:</span>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Cmdregel:</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Onderdeel:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Uitvoerbaar programma:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">Kernel:</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Pakket:</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">Reden:</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Vrijgave:</span>"
+
+#: ../src/Gui/report.glade.h:16
+msgid "I agree to submit this backtrace, which could contain sensitive data"
+msgstr ""
+"Ik ben er mee eens om deze backtrace in te dienen, hoewel hij gevoelige data "
+"kan bevatten"
+
+#: ../src/Gui/report.glade.h:18
+msgid "N/A"
+msgstr "n.v.t."
+
+#: ../src/Gui/report.glade.h:19
 msgid "Send"
 msgstr "Verzenden"
 
@@ -441,12 +484,12 @@ msgstr "gtk-ok"
 msgid "View and report application crashes"
 msgstr "Bekijk en rapporteer crashes van toepassingen"
 
-#: ../src/Applet/Applet.cpp:79
+#: ../src/Applet/Applet.cpp:78
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Een crash in pakket %s is ontdekt"
 
-#: ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
@@ -454,7 +497,7 @@ msgstr "ABRT service draait niet"
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/Daemon/Daemon.cpp:474
+#: ../src/Daemon/Daemon.cpp:473
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -476,51 +519,51 @@ msgstr "Nieuwe bug id: %i"
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:445
-msgid "Logging into bugzilla..."
-msgstr "Inloggen bij bugzilla..."
-
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:450
+msgid "Logging into bugzilla..."
+msgstr "Inloggen bij bugzilla..."
 
 #: ../lib/Plugins/Bugzilla.cpp:455
 msgid "Checking CC..."
 msgstr "Controleren van CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:464
+#: ../lib/Plugins/Bugzilla.cpp:466
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:468
+#: ../lib/Plugins/Bugzilla.cpp:470
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
-#: ../lib/Plugins/Kerneloops.cpp:37
+#: ../lib/Plugins/Kerneloops.cpp:35
 msgid "Getting local universal unique identification"
 msgstr "Verkrijgen van locale universele unieke identificatie"
 
-#: ../lib/Plugins/CCpp.cpp:257
+#: ../lib/Plugins/CCpp.cpp:253
 msgid "Generating backtrace"
 msgstr "Aangemaakte backtrace"
 
-#: ../lib/Plugins/CCpp.cpp:376
+#: ../lib/Plugins/CCpp.cpp:375
 msgid "Starting debuginfo installation"
 msgstr "Start debuginfo installatie"
 
-#: ../lib/Plugins/CCpp.cpp:527
+#: ../lib/Plugins/CCpp.cpp:526
 msgid "Getting local universal unique identification..."
 msgstr "Verkrijgen van locale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:546
+#: ../lib/Plugins/CCpp.cpp:545
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:725
+#: ../lib/Plugins/CCpp.cpp:723
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:102
+#: ../lib/Plugins/KerneloopsReporter.cpp:100
 msgid "Creating and submitting a report..."
 msgstr "Aanmaken en indienen van rapport..."
 
@@ -552,11 +595,11 @@ msgstr "Kan geen archief maken en versturen: %s"
 msgid "Can't create and send an archive %s"
 msgstr "Kan archief %s niet aanmaken en versturen"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:84
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "Aanmaken van kernel oops crash rapporten..."
 
-#: ../lib/Plugins/Mailx.cpp:147
+#: ../lib/Plugins/Mailx.cpp:137
 msgid "Sending an email..."
 msgstr "Versturen van email..."
 
@@ -573,6 +616,21 @@ msgstr "sosreport draaien: %s"
 msgid "done running sosreport"
 msgstr "klaar met het draaien van sosreport"
 
+#~ msgid "Plugin name is not set, can't load its settings"
+#~ msgstr "Plugin naam is niet ingesteld, kan zijn instellingen niet laden"
+
+#~ msgid ""
+#~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
+#~ "information.\n"
+#~ "Do you really want to send <b>%s</b>?\n"
+#~ msgstr ""
+#~ "<b>WAARSCHUWING</b>, je staat op het punt om data te versturen die "
+#~ "gevoelige informatie kan bevatten\n"
+#~ "Wil je <b>%s</b> echt versturen?\n"
+
+#~ msgid "<b>Following items will be sent</b>"
+#~ msgstr "<b>De volgende items zullen verzonden worden</b>"
+
 #~ msgid "Searching for debug-info packages..."
 #~ msgstr "Zoeken naar debug-info pakketten..."
 
@@ -584,9 +642,6 @@ msgstr "klaar met het draaien van sosreport"
 
 #~ msgid "Starting report creation..."
 #~ msgstr "Beginnen met rapport aanmaken..."
-
-#~ msgid "<span color=\"white\">Description</span>"
-#~ msgstr "<span color=\"white\">Beschrijving</span>"
 
 #~ msgid "Working..."
 #~ msgstr "Ben bezig..."
