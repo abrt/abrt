@@ -57,12 +57,11 @@ vector_map_crash_data_t GetCrashInfos(const char *pUID)
         unsigned int ii;
         for (ii = 0; ii < UUIDsUIDs.size(); ii++)
         {
-            mw_result_t res;
-            map_crash_data_t info;
             const char *uuid = UUIDsUIDs[ii].first.c_str();
             const char *uid = UUIDsUIDs[ii].second.c_str();
 
-            res = FillCrashInfo(uuid, uid, info);
+            map_crash_data_t info;
+            mw_result_t res = FillCrashInfo(uuid, uid, info);
             switch (res)
             {
                 case MW_OK:
@@ -96,18 +95,18 @@ vector_map_crash_data_t GetCrashInfos(const char *pUID)
  * StartJob dbus call already did all the processing, and we just retrieve
  * the result from dump directory, which is fast.
  */
-map_crash_data_t CreateReport(const char* pUUID, const char* pUID, int force)
+void CreateReport(const char* pUUID, const char* pUID, int force, map_crash_data_t& crashReport)
 {
     /* FIXME: starting from here, any shared data must be protected with a mutex.
      * For example, CreateCrashReport does:
      * g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
      * which is unsafe wrt concurrent updates to g_pPluginManager state.
      */
-    map_crash_data_t crashReport;
     mw_result_t res = CreateCrashReport(pUUID, pUID, force, crashReport);
     switch (res)
     {
         case MW_OK:
+            VERB2 log_map_crash_data(crashReport, "crashReport");
             break;
         case MW_IN_DB_ERROR:
             error_msg("Can't find crash with UUID %s in database", pUUID);
@@ -120,7 +119,6 @@ map_crash_data_t CreateReport(const char* pUUID, const char* pUID, int force)
             DeleteDebugDump(pUUID, pUID);
             break;
     }
-    return crashReport;
 }
 
 typedef struct thread_data_t {
@@ -140,7 +138,8 @@ static void* create_report(void* arg)
     try
     {
         log("Creating report...");
-        map_crash_data_t crashReport = CreateReport(thread_data->UUID, thread_data->UID, thread_data->force);
+        map_crash_data_t crashReport;
+        CreateReport(thread_data->UUID, thread_data->UID, thread_data->force, crashReport);
         g_pCommLayer->JobDone(thread_data->peer, thread_data->UUID);
     }
     catch (CABRTException& e)

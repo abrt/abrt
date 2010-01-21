@@ -7,13 +7,12 @@
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009.
 # Richard van der Luit <nippur@fedoraproject.org>, 2009.
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009, 2010.
-#: ../src/Gui/CCReporterDialog.py:233
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-20 09:57+0000\n"
-"PO-Revision-Date: 2010-01-20 17:54+0100\n"
+"POT-Creation-Date: 2010-01-21 04:02+0000\n"
+"PO-Revision-Date: 2010-01-21 15:21+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -198,14 +197,18 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:233
+msgid "This crash has been reported:\n"
+msgstr "Deze crash is gerapporteerd:\n"
+
+#: ../src/Gui/CCMainWindow.py:234
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Deze crash is gerapporteerd:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:247
+#: ../src/Gui/CCMainWindow.py:250
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
-#: ../src/Gui/CCMainWindow.py:296
+#: ../src/Gui/CCMainWindow.py:298
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -213,7 +216,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:322
+#: ../src/Gui/CCMainWindow.py:318
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -222,16 +225,16 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:341 ../src/Gui/CCMainWindow.py:368
+#: ../src/Gui/CCMainWindow.py:337 ../src/Gui/CCMainWindow.py:364
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:97
+#: ../src/Gui/CCReporterDialog.py:90
 msgid "You must agree with submitting the backtrace."
 msgstr "Je moet het goed vinden om de backtrace op te sturen."
 
-#: ../src/Gui/CCReporterDialog.py:108
+#: ../src/Gui/CCReporterDialog.py:101
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -244,11 +247,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#: ../src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:106
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -256,7 +259,7 @@ msgstr ""
 "De backtrace is niet compleet, wees er zeker van om voor het genereren de "
 "juiste stappen op te volgen."
 
-#: ../src/Gui/CCReporterDialog.py:153
+#: ../src/Gui/CCReporterDialog.py:148
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -265,7 +268,7 @@ msgstr ""
 "Kan de plugin instellingen niet opslaan:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:219
+#: ../src/Gui/CCReporterDialog.py:266
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
@@ -516,23 +519,23 @@ msgstr "Nieuwe bug id: %i"
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:445
-msgid "Logging into bugzilla..."
-msgstr "Inloggen bij bugzilla..."
-
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:450
+msgid "Logging into bugzilla..."
+msgstr "Inloggen bij bugzilla..."
 
 #: ../lib/Plugins/Bugzilla.cpp:455
 msgid "Checking CC..."
 msgstr "Controleren van CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:464
+#: ../lib/Plugins/Bugzilla.cpp:466
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:468
+#: ../lib/Plugins/Bugzilla.cpp:470
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
@@ -592,7 +595,7 @@ msgstr "Kan geen archief maken en versturen: %s"
 msgid "Can't create and send an archive %s"
 msgstr "Kan archief %s niet aanmaken en versturen"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:81
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "Aanmaken van kernel oops crash rapporten..."
 
