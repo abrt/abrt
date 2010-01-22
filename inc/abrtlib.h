@@ -233,7 +233,6 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 
 
 /* Random utility functions */
-uid_t getuidbyname(const char* login);
 
 /* Returns command line of running program.
  * Caller is responsible to free() the returned value.

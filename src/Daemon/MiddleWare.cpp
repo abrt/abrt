@@ -696,7 +696,7 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name)
     return string_to_bool(it->second.c_str());
 }
 
-bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
+bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
     if (!analyzer)
@@ -715,16 +715,14 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid)
     vector_string_t logins;
     parse_args(it->second.c_str(), logins);
 
+    uid_t uid = xatoi_u(uid_str);
     unsigned size = logins.size();
-    if (size == 0)
-        return false;
-
     for (unsigned ii = 0; ii < size; ii++)
     {
-        uid_t id = getuidbyname(logins[ii].c_str())
-        if (id == (uid_t)-1)
+        struct passwd* pw = getpwnam(logins[ii].c_str());
+        if (!pw)
             continue;
-        if (strcmp(uid, to_string(id).c_str()) == 0)
+        if (pw->pw_uid == uid)
             return true;
     }
 */

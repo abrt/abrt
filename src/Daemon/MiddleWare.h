@@ -152,7 +152,7 @@ void AddActionOrReporter(const char *pActionOrReporter,
 
 bool analyzer_has_InformAllUsers(const char *analyzer_name);
 
-bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char* uid);
+bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str);
 
 void autoreport(const pair_string_string_t& reporter_options, const map_crash_data_t& crash_report);
 #endif /*MIDDLEWARE_H_*/
