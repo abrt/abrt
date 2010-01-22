@@ -304,6 +304,7 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     else
     {
         msg += "Please send this to your technical support:\n";
+        msg += "========cut here=========";
     }
     if (do_upload)
     {
