@@ -249,7 +249,10 @@ class ReporterDialog():
                 vbAttachments.pack_start(toggle)
                 # bind item to checkbox
                 toggle.item = item
-                toggle.show()
+                #FIXME: temporary workaround, in 1.0.4 reporters don't care
+                # about this, they just send what they want to
+                # TicketUploader even sends coredump!!
+                #toggle.show()
                 continue
 
             # It must be CD_TXT field
