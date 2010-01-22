@@ -354,7 +354,9 @@ fi
 
 %files plugin-sosreport
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/SOSreport.conf
 %{_libdir}/%{name}/libSOSreport.so*
+
 
 #%files plugin-bugzilla
 #%defattr(-,root,root,-)
@@ -402,6 +404,8 @@ fi
 
 %changelog
 * Wed Jan 20 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.4-1
+- enabled sosreport
+- fixes in ticketuploader
 - GUI: redesign of reporter dialog (jmoskovc@redhat.com)
 - Set the prgname to "Automatic Bug Reporting Tool" fixes rhbz#550357 (jmoskovc@redhat.com)
 - CCpp analyzer: display __abort_msg in backtrace. closes rhbz#549735 (vda.linux@googlemail.com)
