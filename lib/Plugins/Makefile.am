@@ -31,7 +31,8 @@ dist_pluginsconf_DATA = \
     Catcut.conf \
     TicketUploader.conf \
     FileTransfer.conf \
-    Python.conf
+    Python.conf \
+    SOSreport.conf
 
 man_MANS = abrt-FileTransfer.7 \
            abrt-KerneloopsScanner.7 abrt-Logger.7 abrt-Mailx.7  abrt-plugins.7 \
