@@ -708,7 +708,7 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
     if (it == settings.end())
         return false;
 
-    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid, "-1") == 0))
+    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid_str, "-1") == 0))
         return true;
 
 /*
