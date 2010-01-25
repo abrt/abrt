@@ -110,14 +110,14 @@ class Month:
       result += component
     return result
 
-  def top_crashers(self):
+  def top_crashers(self, n = 10):
     """
-    Top five components causing crash this month.
+    Top n components causing crash this month.
     Returns list of tuples (component, number of crashes)
     """
     result = sorted(self.components.items(), key=lambda x: x[1])
     result.reverse()
-    return result[0:5]
+    return result[0:n]
 
   def closed_as_useful_percentage(self):
     return int(100 * self.closed_as_useful / self.closed())
