@@ -46,14 +46,15 @@ print "{0} bugs found.".format(total)
 # Load cache from previous run. Speeds up the case Bugzilla closes connection.
 #
 buginfos_loaded = {}
-if os.path.isfile("cache"):
-  f = open("cache", 'r')
+CACHE_FILE = "abrt-bz-stats-cache.tmp"
+if os.path.isfile(CACHE_FILE):
+  f = open(CACHE_FILE, 'r')
   buginfos_loaded = pickle.load(f)
   f.close()
 
 def save_to_cache():
   global buginfos_loaded
-  f = open("cache", 'w')
+  f = open(CACHE_FILE, 'w')
   pickle.dump(buginfos_loaded, f, 2)
   f.close()  
 
@@ -179,12 +180,14 @@ for month in months:
   m = stats[month]
   print "MONTH ", month
   print " -", m.bugs_reported(), "bugs reported"
-  if m.closed_as_useful > 0:
-    print " -", m.closed_as_useful, "bugs (" + str(m.closed_as_useful_percentage()) + "%) closed (ABRT was useful)"
-  if m.closed_as_waste > 0:
-    print " -", m.closed_as_waste, "bugs (" + str(m.closed_as_waste_percentage())+ "%) closed (ABRT was not useful)"
-  if m.closed_as_other > 0:
-    print " -", m.closed_as_other, "bugs (" + str(m.closed_as_other_percentage()) + "%) closed other way"
+  if m.closed() > 0:
+    print " -", m.closed(), "bugs closed"
+    if m.closed_as_useful > 0:
+      print "   -", m.closed_as_useful, "bugs (" + str(m.closed_as_useful_percentage()) + "%) as fixed, so ABRT was useful"
+      if m.closed_as_waste > 0:
+        print "   -", m.closed_as_waste, "bugs (" + str(m.closed_as_waste_percentage())+ "%) as duplicate, can't fix, insuf. data, so ABRT was not useful"
+        if m.closed_as_other > 0:
+          print "   -", m.closed_as_other, "bugs (" + str(m.closed_as_other_percentage()) + "%) as notabug, wontfix, worksforme"
   if len(m.top_crashers()) > 0:
     print " - top crashers:"
     for (component, num_crashes) in m.top_crashers():
