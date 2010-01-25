@@ -20,6 +20,10 @@ from abrt_utils import _, log, log1, log2
 REFRESH = -50
 SHOW_LOG = -60
 
+# default texts
+COMMENT_HINT_TEXT = _("Brief description how to reproduce this or what you did...")
+HOW_TO_HINT_TEXT = "1.\n2.\n3.\n"
+
 class ReporterDialog():
     """Reporter window"""
     def __init__(self, report, daemon, log=None, parent=None):
@@ -202,8 +206,8 @@ class ReporterDialog():
 
     def hydrate(self):
         self.editable = []
-        self.old_comment = ""
-        self.old_how_to_reproduce = ""
+        self.old_comment = COMMENT_HINT_TEXT
+        self.old_how_to_reproduce = HOW_TO_HINT_TEXT
         for item in self.report:
             try:
                 log2("report[%s]:%s/%s/%s", item, self.report[item][0], self.report[item][1], self.report[item][2][0:20])
@@ -245,7 +249,10 @@ class ReporterDialog():
                 vbAttachments.pack_start(toggle)
                 # bind item to checkbox
                 toggle.item = item
-                toggle.show()
+                #FIXME: temporary workaround, in 1.0.4 reporters don't care
+                # about this, they just send what they want to
+                # TicketUploader even sends coredump!!
+                #toggle.show()
                 continue
 
             # It must be CD_TXT field
@@ -261,16 +268,16 @@ class ReporterDialog():
         #end for
 
         buff = gtk.TextBuffer()
-        self.show_hint_comment = (self.old_comment == "")
+        self.show_hint_comment = (self.old_comment == COMMENT_HINT_TEXT)
         if self.show_hint_comment:
-            buff.set_text(_("Brief description how to reproduce this or what you did..."))
+            buff.set_text(COMMENT_HINT_TEXT)
         else:
             buff.set_text(self.old_comment)
         self.tvComment.set_buffer(buff)
 
         buff = gtk.TextBuffer()
         if self.old_how_to_reproduce == "":
-            buff.set_text("1.\n2.\n3.\n")
+            buff.set_text(HOW_TO_HINT_TEXT)
         else:
             buff.set_text(self.old_how_to_reproduce)
         self.tevHowToReproduce.set_buffer(buff)

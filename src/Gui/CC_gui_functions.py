@@ -43,18 +43,18 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
     message = ""
     status_vbox = gtk.VBox()
     for plugin, res in report_status_dict.iteritems():
-        status_hbox = gtk.HBox()
-        plugin_label = Label()
+        plugin_status_vbox = gtk.VBox()
+        plugin_label = gtk.Label()
         plugin_label.set_markup("<b>%s</b>: " % plugin)
         plugin_label.set_justify(gtk.JUSTIFY_RIGHT)
         plugin_label.set_alignment(0, 0)
-        status_label = Label()
+        status_label = gtk.Label()
         status_label.set_max_width_chars(MAX_WIDTH)
         status_label.set_selectable(True)
         status_label.set_line_wrap(True)
         status_label.set_alignment(0, 0)
-        status_hbox.pack_start(plugin_label, expand=False)
-        status_hbox.pack_start(status_label, expand=False)
+        plugin_status_vbox.pack_start(plugin_label, expand=False)
+        plugin_status_vbox.pack_start(status_label, expand=False)
         # 0 means not succesfull
         #if report_status_dict[plugin][0] == '0':
         # this first one is actually a fallback to set at least
@@ -73,7 +73,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
                 status_label.set_text("%s" % report_status_dict[plugin][1])
         if len(report_status_dict[plugin][1]) > MAX_WIDTH:
             status_label.set_tooltip_text(report_status_dict[plugin][1])
-        status_vbox.pack_start(status_hbox, expand=False)
+        status_vbox.pack_start(plugin_status_vbox, expand=False)
     main_hbox.pack_start(status_vbox)
 
     if widget != None:

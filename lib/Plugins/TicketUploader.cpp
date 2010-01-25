@@ -298,10 +298,13 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
         msg += "Please copy this into ticket: ";
         msg += ticket_name;
         msg += '\n';
+        msg += "========cut here=========";
+        msg += '\n';
     }
     else
     {
         msg += "Please send this to your technical support:\n";
+        msg += "========cut here=========";
     }
     if (do_upload)
     {
@@ -321,35 +324,25 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     }
     msg += "FILE: ";
     msg += outfile_basename;
-    msg += "\nMD5SUM:\n";
+    msg += "\nMD5SUM:";
     msg += md5sum;
+    msg += '\n';
     if (do_encrypt)
     {
         msg += "KEY: aes-128-cbc\n";
         msg += key;
+        msg += '\n';
     }
-    msg += "END:\n";
+    msg += "==========end===========\n";
 
     // warn the client (why _warn_? it's not an error, maybe update_client?):
-    error_msg("%s", msg.c_str());
-
-    string ret;
-    if (do_upload)
-    {
-        ret = _("report sent to ") + upload_url + '/' + outfile_basename;
-        update_client("%s", ret.c_str());
-    }
-    else
-    {
-        ret = _("report copied to /tmp/") + outfile_basename;
-        update_client("%s", ret.c_str());
-    }
-
+    //error_msg("%s", msg.c_str());
+    
     // delete the temporary directory
     cmd = ssprintf("rm -rf %s", tmpdir_name);
     RunCommand(cmd.c_str());
 
-    return ret;
+    return msg;
 }
 
 static bool is_string_safe(const char *str)

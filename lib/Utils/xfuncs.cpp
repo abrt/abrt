@@ -379,12 +379,3 @@ void xsetregid(gid_t rgid, gid_t egid)
 	if (setregid(rgid, egid) != 0)
 		perror_msg_and_die("can't set %cid %lu", 'g', (long)rgid);
 }
-
-uid_t getuidbyname(const char* login)
-{
-    struct passwd* pwd = getpwnam(login);
-    if (pwd == NULL)
-        return -1;
-
-    return pwd->pw_uid;
-}
