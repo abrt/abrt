@@ -95,16 +95,23 @@ static const char *const upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
  */
 static bool is_string_safe(const char *str)
 {
+// Apparently SQLite allows unescaped newlines. More surprisingly,
+// it does not unescape escaped ones - I see lines ending with \ when I do it.
+// I wonder whether this is a bug in SQLite, and whether using unescaped
+// newlines is a danger with other SQL servers.
+// For now, I disabled newline escaping...
     const char *p = str;
     while (*p)
     {
-        if (*p == '\\' && p[1] != '\0')
-        {
-            p += 2;
-            continue;
-        }
-        if ((unsigned char)(*p) < ' ' || strchr("\\\"\'", *p))
-        {
+        unsigned char c = *p;
+//        if (c == '\\' && p[1] != '\0')
+//        {
+//            p += 2;
+//            continue;
+//        }
+        if ((c < ' ' && c != '\n')
+         || strchr("\\\"\'", c)
+        ) {
             error_msg("Probable SQL injection: '%s'", str);
             return false;
         }
@@ -113,6 +120,7 @@ static bool is_string_safe(const char *str)
     return true;
 }
 
+#ifdef UNUSED_FOR_NOW
 /* Escape \n */
 static string sql_escape(const char *str)
 {
@@ -137,6 +145,7 @@ static string sql_escape(const char *str)
 
     return buf;
 }
+#endif
 
 static void get_table(vector_database_rows_t& pTable,
                 sqlite3 *db, const char *fmt, ...)
@@ -436,12 +445,12 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
 
 void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMessage)
 {
-    string escaped_msg = sql_escape(pMessage);
-#define pMessage pMessage_must_not_be_used_below
+//    string escaped_msg = sql_escape(pMessage);
+//#define pMessage pMessage_must_not_be_used_below
 
     if (!is_string_safe(pUUID)
      || !is_string_safe(pUID)
-     || !is_string_safe(escaped_msg.c_str())
+     || !is_string_safe(pMessage)
     ) {
         return;
     }
@@ -457,7 +466,7 @@ void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMes
         execute_sql(m_pDB, "UPDATE "ABRT_TABLE" "
                 "SET "COL_MESSAGE" = '%s' "
                 "WHERE "COL_UUID" = '%s';",
-                escaped_msg.c_str(), pUUID
+                pMessage, pUUID
         );
     }
     else if (exists_uuid_uid(m_pDB, pUUID, pUID))
@@ -474,14 +483,13 @@ void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMes
                 "SET "COL_MESSAGE" = '%s' "
                 "WHERE "COL_UUID" = '%s' "
                 "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                escaped_msg.c_str(), pUUID, pUID
+                pMessage, pUUID, pUID
         );
     }
     else
     {
         error_msg("UUID,UID %s,%s is not found in DB", pUUID, pUID);
     }
-#undef pMessage
 }
 
 vector_database_rows_t CSQLite3::GetUIDData(const char *pUID)
