@@ -601,15 +601,16 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         const char *basename = strrchr(pExecutable, '/');
         if (basename) basename++; else basename = pExecutable;
 
-        /* Add "perl" and such as needed */
-        if (strcmp(basename, "python") == 0)
-        {
+        /* Add more interpreters as needed */
+        if (strcmp(basename, "python") == 0
+         || strcmp(basename, "perl") == 0
+        ) {
 // TODO: we don't verify that python executable is not modified
 // or that python package is properly signed
 // (see CheckFingerprint/CheckHash below)
 
             /* Try to find package for the script by looking at argv[1].
-             * This will work only of the cmdline contains the whole path.
+             * This will work only if the cmdline contains the whole path.
              * Example: python /usr/bin/system-control-network
              */
             char *script_name = get_argv1_if_full_path(cmdline);
@@ -708,7 +709,7 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
     if (it == settings.end())
         return false;
 
-    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid, "-1") == 0))
+    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid_str, "-1") == 0))
         return true;
 
 /*
