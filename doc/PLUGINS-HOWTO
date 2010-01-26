@@ -21,12 +21,56 @@ their output files there, if any.
 Plugin types in detail:
 
 
+Analyzer Plugin
+---------------
+Crashes differ, depending on where they occur, for example crashes
+in the kernel differ from crashes in userspace binaries, which differ
+from crashes in python scripts. Therefore, there is a plugin
+for each type of application that you want abrt to handle.
+
+You have to override these methods:
+
+virtual std::string GetLocalUUID(const char *pDebugDumpPath);
+- This method is invoked immediately after crash is detected
+  and its data is saved by the corresponding hook.
+  It needs to compute an unique hash (UUID) of the crash.
+  When a crash occurs and abrt finds an earlier crash with the same
+  UUID, new crash is discarded as a duplicate, it doesn't show up
+  in abrt's crash list, but instead a crash count for the earlier
+  crash is incremented.
+
+virtual void CreateReport(const char *pDebugDumpDir, int force)
+- This method is called when user wants to report a crash
+  ([Reoprt] button in GUI, etc). Analyzer can perform additional,
+  more CPU/disk intensive, or interactive processing at this point.
+  For example, CCpp plugin's CreateReport() processes coredump file,
+  produces a textual backtrace, and saves it to crash dump directory.
+
+virtual std::string GetGlobalUUID(const char *pDebugDumpPath);
+- This method computes a "duplicate hash" which is used search for
+  duplicates in remote bug databases such as Bugzilla. They are
+  "less unique" than LocalUUIDs: ideally, the same crash
+  on different architecture or with slightly different backtrace
+  will still have the same GlobalUUID.
+  [TODO: renaming it to DUPHASH]
+
+
 Action Plugin
 -------------
-This type of plugin is useful when you need some action to be performed
-immediately when a crash is encountered (using ActionsAndReporters = ...
-directive in abrt.conf), or if you need some action to be performed
-periodically ([Cron] section in the same file).
+This type of plugin is useful when you need some action to be performed.
+Action plugins can be invoked in three ways:
+
+* Immediately when a crash is encountered (using ActionsAndReporters = ...
+  directive in abrt.conf). These action plugins are run on every crash
+  (regardless of crash type).
+
+* After Analyzer plugin processed a crash (by specifying plugin in
+  [AnalyzerActionsAndReporters] section, for example: "CCpp = AnActionPlugin").
+  In this case, action plugin's Run() method will be run after analyzer
+  plugin's CreateReport() and GetGlobalUUID() methods have finished.
+
+* If you need some action to be performed periodically ([Cron] section
+  in the same file).
 
 You have to override one method:
 
@@ -35,35 +79,6 @@ virtual void Run(const char *dir, const char *args);
 The first argument is a directory that contains the current debug
 dump, or all debug dumps for periodic actions.
 The second argument is a string with arguments (specified in config file).
-
-
-Analyzer Plugin
----------------
-This plugin has to compute the UUID of the crash. Crashes differ, depending on
-where they occur, for example crashes in the kernel differ from crashes in
-userspace binaries, which differ from crashes in python scripts. Therefore,
-you need a plugin for each type of application that you want abrt to handle.
-
-You have to override these methods:
-
-virtual std::string GetLocalUUID(const std::string& pDebugDumpPath);
-- This method computes the local UUID of the crash.
-
-virtual std::string GetGlobalUUID(const std::string& pDebugDumpPath);
-- This method computes the global UUID of the crash.
-
-{something is fishy here}
-
-NOTE: The difference between local and global UUID is that the local UUID
-is specific for the machine architecture on which the crash is encountered.
-When the crash is reported, abrt has to use the "-debuginfo" packages
-to render a global UUID, which should be independent of the specific
-system (the same crash on different architectures/configurations can
-yield different local UUIDs but has to have the same global UUID).
-
-virtual void CreateReport(const std::string& pDebugDumpPath);
-- This method creates the report about the crash and stores it
-  in the crash's directory.
 
 
 Reporter Plugin
@@ -76,19 +91,18 @@ You have to override this method:
 
 virtual void Report(const map_crash_data_t& pCrashData,
                     const char *pArgs);
--It is self-explanatory, that this method takes the report
- and presents it somewhere to the world.
- The second argument is a string with arguments specified for the reporter.
+- This method takes the report and presents it somewhere to the world.
+  The second argument is a string with arguments specified for the reporter.
 
 
 Database Plugin
 ---------------
-You use this plugin to store the metadata about the crash. The metadata
+This plugin is used to store the metadata about the crash. The metadata
 has to be in a database, to distinguish whether the current crash is or
 is not the same as some crash before. The database can be local, or in
 some centralized location on the network.
 
-you have to override these methods:
+You have to override these methods:
 virtual void Connect();
 virtual void DisConnect();
 - connect and disconnect from the database

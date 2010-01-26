@@ -16,10 +16,9 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-    */
-
-#include <fstream>
-#include <sstream>
+*/
+//#include <fstream>
+//#include <sstream>
 #include "abrtlib.h"
 #include "abrt_types.h"
 #include "ABRTException.h"
@@ -27,6 +26,8 @@
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
+
+using namespace std;
 
 static void ErrorCheck(int pos)
 {
@@ -36,7 +37,7 @@ static void ErrorCheck(int pos)
     }
 }
 
-static std::string ParseFilename(const std::string& pOutput)
+static string ParseFilename(const string& pOutput)
 {
     /*
     the sosreport's filename is embedded in sosreport's output.
@@ -64,9 +65,19 @@ static std::string ParseFilename(const std::string& pOutput)
     return pOutput.substr(filename_start, filename_end - filename_start + 1);
 }
 
-void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
+void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
 {
-    update_client(_("Executing SOSreport plugin..."));
+    if (!force)
+    {
+        CDebugDump dd;
+        dd.Open(pActionDir);
+        bool bt_exists = dd.Exist("sosreport.tar.bz2");
+        if (bt_exists)
+        {
+            VERB3 log("%s already exists, not regenerating", "sosreport.tar.bz2");
+            return;
+        }
+    }
 
     static const char command_default[] = "sosreport --batch --no-progressbar --only=anaconda --only=bootloader"
                                             " --only=devicemapper --only=filesys --only=hardware --only=kernel"
@@ -74,7 +85,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
                                             " --only=pam --only=process --only=rpm -k rpm.rpmva=off --only=ssh"
                                             " --only=startup --only=yum 2>&1";
     static const char command_prefix[] = "sosreport --batch --no-progressbar";
-    std::string command;
+    string command;
 
     vector_string_t args;
     parse_args(pArgs, args, '"');
@@ -88,16 +99,17 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs)
         command = ssprintf("%s %s 2>&1", command_prefix, args[0].c_str());
     }
 
-    update_client(_("running sosreport: %s"), command.c_str());
-    std::string output = command;
+    update_client(_("Running sosreport: %s"), command.c_str());
+    string output = command;
     output += '\n';
     char *command_out = run_in_shell_and_save_output(/*flags:*/ 0, command.c_str(), /*dir:*/ NULL, /*size_p:*/ NULL);
     output += command_out;
     free(command_out);
-    update_client(_("done running sosreport"));
+    update_client(_("Done running sosreport"));
+    VERB3 log("sosreport output:'%s'", output.c_str());
 
-    std::string sosreport_filename = ParseFilename(output);
-    std::string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar.bz2");
+    string sosreport_filename = ParseFilename(output);
+    string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar.bz2");
 
     CDebugDump dd;
     dd.Open(pActionDir);
