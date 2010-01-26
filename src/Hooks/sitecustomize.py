@@ -7,7 +7,11 @@
 
 try:
     from abrt_exception_handler import installExceptionHandler
-    installExceptionHandler(debug = 1)
+    installExceptionHandler()
 except Exception, e:
-    # FIXME: log errors?
+    # TODO: log errors?
+    # OTOH, if abrt is deinstalled uncleanly
+    # and this file (sitecustomize.py) exists but
+    # abrt_exception_handler module does not exist, we probably
+    # don't want to irritate admins...
     pass

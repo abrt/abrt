@@ -19,92 +19,20 @@
 
 """
 Module for a userfriendly exception handling
-
-Example code:
-
-import sys
-
-from exception import action, error, exitcode, installExceptionHandler
-
-installExceptionHandler("test", "1.0", gui=0, debug=0)
-
-def exception_function():
-    action("Trying to divide by zero")
-
-    try:
-        local_var_1 = 1
-        local_var_2 = 0
-        # test exception raised to show the effect
-        local_var_3 = local_var_1 / local_var_2
-    except:
-        error("Does not seem to work!? :-)")
-        exitcode(15)
-        raise
-
 """
+
 import sys
 import os
 import syslog
 import subprocess
 
-__DUMPHASH = {}
-# FIXME: do length limits on obj dumps.
-def __dump_class(instance, fd, level=0):
-    "dumps all classes"
-    import types
-    # protect from loops
-    if not __DUMPHASH.has_key(instance):
-        __DUMPHASH[instance] = True
-    else:
-        fd.write("Already dumped\n")
-        return
-    if (instance.__class__.__dict__.has_key("__str__") or
-        instance.__class__.__dict__.has_key("__repr__")):
-        fd.write("%s\n" % (instance,))
-        return
-    fd.write("%s instance, containing members:\n" %
-             (instance.__class__.__name__))
-    pad = ' ' * ((level) * 2)
-    for key, value in instance.__dict__.items():
-        if type(value) == types.ListType:
-            fd.write("%s%s: [" % (pad, key))
-            first = 1
-            for item in value:
-                if not first:
-                    fd.write(", ")
-                else:
-                    first = 0
-                if type(item) == types.InstanceType:
-                    __dump_class(item, fd, level + 1)
-                else:
-                    fd.write("%s" % (item,))
-            fd.write("]\n")
-        elif type(value) == types.DictType:
-            fd.write("%s%s: {" % (pad, key))
-            first = 1
-            for k, v in value.items():
-                if not first:
-                    fd.write(", ")
-                else:
-                    first = 0
-                if type(k) == types.StringType:
-                    fd.write("'%s': " % (k,))
-                else:
-                    fd.write("%s: " % (k,))
-                if type(v) == types.InstanceType:
-                    __dump_class(v, fd, level + 1)
-                else:
-                    fd.write("%s" % (v,))
-            fd.write("}\n")
-        elif type(value) == types.InstanceType:
-            fd.write("%s%s: " % (pad, key))
-            __dump_class(value, fd, level + 1)
-        else:
-            fd.write("%s%s: %s\n" % (pad, key, value))
 
 def write_dump(pid, tb_uuid, tb):
     executable = "Exception raised from python shell"
     if sys.argv[0]:
+        # FIXME: is this reliable?!
+        # what if argv[0] is relative and we chdir'ed somewhere
+        # during execution?
         executable = os.path.abspath(sys.argv[0])
 
     command = ["/usr/libexec/abrt-hook-python"]
@@ -116,50 +44,7 @@ def write_dump(pid, tb_uuid, tb):
     helper.communicate(tb)
     helper.wait()
 
-def __dump_exception(out, text, tracebk):
-    'write a traceback to "out"'
 
-    out.write(text)
-
-    trace = tracebk
-    while trace.tb_next:
-        trace = trace.tb_next
-    frame = trace.tb_frame
-    out.write ("\nLocal variables in innermost frame:\n")
-    try:
-        for (key, value) in frame.f_locals.items():
-            out.write ("%s: %s\n" % (key, repr(value)))
-    except:
-        pass
-
-__ACTION_STR = ""
-def action(what):
-    """Describe what you want to do actually.
-    what - string
-    """
-    global __ACTION_STR # pylint: disable-msg=W0603
-    __ACTION_STR = what
-
-__ERROR_STR = ""
-def error(what):
-    """Describe what went wrong with a userfriendly text.
-    what - string
-    """
-    global __ERROR_STR # pylint: disable-msg=W0603
-    __ERROR_STR = what
-
-__EXITCODE = 10
-def exitcode(num):
-    """The exitcode, with which the exception handling routine should call
-    sys.exit().
-    num - int(exitcode)
-    """
-    global __EXITCODE # pylint: disable-msg=W0603
-    __EXITCODE = int(num)
-
-#
-# handleMyException function
-#
 def handleMyException((etype, value, tb)):
     """
     The exception handling function.
@@ -179,14 +64,19 @@ def handleMyException((etype, value, tb)):
         from hashlib import md5
         import traceback
 
-        syslog.syslog("abrt: Pyhook: Detected unhandled exception in %s " % sys.argv[0])
-        elist = traceback.format_exception (etype, value, tb)
+        # "-c" appears in this case:
+        # $ python -c 'import sys; print "argv0 is:%s" % sys.argv[0]'
+        # argv0 is:-c
+        if sys.argv[0] and sys.argv[0] != "-c":
+            syslog.syslog("abrt: detected unhandled Python exception in %s" % sys.argv[0])
+        else: # interactive Python etc
+            syslog.syslog("abrt: detected unhandled Python exception")
+
+        elist = traceback.format_exception(etype, value, tb)
         tblast = traceback.extract_tb(tb, limit=None)
         if len(tblast):
             tblast = tblast[len(tblast)-1]
         extxt = traceback.format_exception_only(etype, value)
-        text = ""
-        text = text + "Summary: TB"
         if tblast and len(tblast) > 3:
             ll = []
             ll.extend(tblast[:3])
@@ -198,10 +88,9 @@ def handleMyException((etype, value, tb)):
         for t in tblast:
             ntext += str(t) + ":"
             m.update(str(t))
-
         tb_uuid = str(m.hexdigest())[:8]
-        text += tb_uuid + " " + ntext
 
+        text = "Summary: TB" + tb_uuid + " " + ntext
         text += extxt[0]
         text += "\n"
         text += "".join(elist)
@@ -219,81 +108,25 @@ def handleMyException((etype, value, tb)):
 
         # add coredump saving
         write_dump(os.getpid(), tb_uuid, text)
-    except: #silently ignore any error in this hook, to not interfere with the python scripts
+
+    except:
+        # silently ignore any error in this hook,
+        # to not interfere with the python scripts
         pass
+
     return sys.__excepthook__(etype, value, tb)
 
-def installExceptionHandler(debug = 1):
+
+def installExceptionHandler():
     """
     Install the exception handling function.
-
-    progname - the name of the application
-    version  - the version of the application
-    debug    - show the full traceback (with "Save to file" in GUI)
     """
-    sys.excepthook = lambda etype, value, tb: \
-        handleMyException((etype, value, tb))
+    sys.excepthook = lambda etype, value, tb: handleMyException((etype, value, tb))
+
 
 if __name__ == '__main__':
-    def _exception_function():
-        action("Trying to divide by zero")
-
-        try:
-            local_var_1 = 1
-            local_var_2 = 0
-            # test exception raised to show the effect
-            local_var_3 = local_var_1 / local_var_2 # pylint: disable-msg=W0612
-        except:
-            error("Does not seem to work!? :-)")
-            exitcode(15)
-            raise
-
-    def _usage():
-        print """%s [-dgh] [--debug] [--gui] [--help]
-    -d, --debug
-        Show the whole backtrace
-
-    -h, --help
-        Display this message""" % (sys.argv[0])
-
-    import getopt
-    __debug = 1
-
-    installExceptionHandler(__debug)
-
-    __debug = 0
-
-    class BadUsage(Exception):
-        "exception for a bad command line usage"
-
-    try:
-        __opts, __args = getopt.getopt(sys.argv[1:], "dgh",
-                                   [
-                                    "debug",
-                                    "help",
-                                    "gui",
-                                    ])
-
-        for __opt, __val in __opts:
-            if __opt == '-d' or __opt == '--debug':
-                __debug = 1
-                continue
-
-            if __opt == '-g' or __opt == '--gui':
-                __gui = 1
-                continue
-
-            if __opt == '-h' or __opt == '--help':
-                _usage()
-                sys.exit(0)
-
-    except (getopt.error, BadUsage):
-        _usage()
-        sys.exit(1)
-
-    installExceptionHandler(__debug)
-
-    _exception_function()
+    # test exception raised to show the effect
+    div0 = 1 / 0 # pylint: disable-msg=W0612
     sys.exit(0)
 
 
