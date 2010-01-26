@@ -98,6 +98,11 @@ static bool is_string_safe(const char *str)
     const char *p = str;
     while (*p)
     {
+        if (*p == '\\' && p[1] != '\0')
+        {
+            p += 2;
+            continue;
+        }
         if ((unsigned char)(*p) < ' ' || strchr("\\\"\'", *p))
         {
             error_msg("Probable SQL injection: '%s'", str);
@@ -106,6 +111,31 @@ static bool is_string_safe(const char *str)
         p++;
     }
     return true;
+}
+
+/* Escape \n */
+static string sql_escape(const char *str)
+{
+    const char *s = str;
+    unsigned len = 0;
+    do
+    {
+        if (*s == '\n')
+            len++;
+        len++;
+    } while (*s++);
+
+    char buf[len];
+    s = str;
+    char *d = buf;
+    do
+    {
+        if (*s == '\n')
+            *d++ = '\\';
+        *d++ = *s;
+    } while (*s++);
+
+    return buf;
 }
 
 static void get_table(vector_database_rows_t& pTable,
@@ -406,9 +436,12 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
 
 void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMessage)
 {
+    string escaped_msg = sql_escape(pMessage);
+#define pMessage pMessage_must_not_be_used_below
+
     if (!is_string_safe(pUUID)
      || !is_string_safe(pUID)
-     || !is_string_safe(pMessage)
+     || !is_string_safe(escaped_msg.c_str())
     ) {
         return;
     }
@@ -424,7 +457,7 @@ void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMes
         execute_sql(m_pDB, "UPDATE "ABRT_TABLE" "
                 "SET "COL_MESSAGE" = '%s' "
                 "WHERE "COL_UUID" = '%s';",
-                pMessage, pUUID
+                escaped_msg.c_str(), pUUID
         );
     }
     else if (exists_uuid_uid(m_pDB, pUUID, pUID))
@@ -441,13 +474,14 @@ void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMes
                 "SET "COL_MESSAGE" = '%s' "
                 "WHERE "COL_UUID" = '%s' "
                 "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                pMessage, pUUID, pUID
+                escaped_msg.c_str(), pUUID, pUID
         );
     }
     else
     {
         error_msg("UUID,UID %s,%s is not found in DB", pUUID, pUID);
     }
+#undef pMessage
 }
 
 vector_database_rows_t CSQLite3::GetUIDData(const char *pUID)
