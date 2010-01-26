@@ -43,7 +43,7 @@ class CFileTransfer : public CAction
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 //ok to delete?
 //        virtual const map_plugin_settings_t& GetSettings();
-        virtual void Run(const char *pActionDir, const char *pArgs);
+        virtual void Run(const char *pActionDir, const char *pArgs, int force);
 };
 
 #endif /* FILETRANSFER_H_ */

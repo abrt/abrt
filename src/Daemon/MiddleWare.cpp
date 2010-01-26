@@ -61,7 +61,7 @@ static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
 static vector_pair_string_string_t s_vectorActionsAndReporters;
 
 
-static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir);
+static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir, int force);
 
 
 static char* is_text_file(const char *name, ssize_t *sz)
@@ -278,8 +278,8 @@ mw_result_t CreateCrashReport(const char *pUUID,
         std::string dup_hash = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
 
-        VERB3 log(" RunAnalyzerActions('%s','%s')", analyzer.c_str(), row.m_sDebugDumpDir.c_str());
-        RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
+        VERB3 log(" RunAnalyzerActions('%s','%s',force=%d)", analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
+        RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
 
         DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
 
@@ -320,7 +320,7 @@ void RunAction(const char *pActionDir,
     }
     try
     {
-        action->Run(pActionDir, pPluginArgs);
+        action->Run(pActionDir, pPluginArgs, /*force:*/ 0);
     }
     catch (CABRTException& e)
     {
@@ -351,7 +351,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
             {
                 CAction* action = g_pPluginManager->GetAction(plugin_name); /* can't be NULL */
                 VERB2 log("%s.Run('%s','%s')", plugin_name, pDebugDumpDir, it_ar->second.c_str());
-                action->Run(pDebugDumpDir, it_ar->second.c_str());
+                action->Run(pDebugDumpDir, it_ar->second.c_str(), /*force:*/ 0);
             }
         }
         catch (CABRTException& e)
@@ -747,7 +747,7 @@ void autoreport(const pair_string_string_t& reporter_options, const map_crash_da
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
  */
-static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
+static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir, int force)
 {
     map_analyzer_actions_and_reporters_t::iterator analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
     if (analyzer != s_mapAnalyzerActionsAndReporters.end())
@@ -766,7 +766,7 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir)
             }
             try
             {
-                action->Run(pDebugDumpDir, it_a->second.c_str());
+                action->Run(pDebugDumpDir, it_a->second.c_str(), force);
             }
             catch (CABRTException& e)
             {

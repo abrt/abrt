@@ -166,7 +166,7 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     bool do_upload;
     int retry_count;
     int retry_delay;
-    
+
     /* if parse_settings fails it returns an empty map so we need to use defaults */
     map_plugin_settings_t settings = parse_settings(pSettings);
     // Get ticket name, customer name, and do_encrypt from config settings
@@ -275,7 +275,7 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     }
 
     // generate md5sum
-    cmd = ssprintf("cd %s; md5sum %s", tmpdir_name, outfile_basename.c_str());
+    cmd = ssprintf("cd %s; md5sum <%s", tmpdir_name, outfile_basename.c_str());
     string md5sum = ReadCommand(cmd.c_str());
 
     // upload or cp to /tmp
@@ -298,13 +298,12 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
         msg += "Please copy this into ticket: ";
         msg += ticket_name;
         msg += '\n';
-        msg += "========cut here=========";
-        msg += '\n';
+        msg += "========cut here========\n";
     }
     else
     {
         msg += "Please send this to your technical support:\n";
-        msg += "========cut here=========";
+        msg += "========cut here========\n";
     }
     if (do_upload)
     {
@@ -324,7 +323,7 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
     }
     msg += "FILE: ";
     msg += outfile_basename;
-    msg += "\nMD5SUM:";
+    msg += "\nMD5SUM: ";
     msg += md5sum;
     msg += '\n';
     if (do_encrypt)
@@ -337,7 +336,7 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
 
     // warn the client (why _warn_? it's not an error, maybe update_client?):
     //error_msg("%s", msg.c_str());
-    
+
     // delete the temporary directory
     cmd = ssprintf("rm -rf %s", tmpdir_name);
     RunCommand(cmd.c_str());

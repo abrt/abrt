@@ -39,7 +39,7 @@ class CAction : public CPlugin
          * @param pActionDir An actual directory.
          * @param pArgs Plugin's arguments.
          */
-        virtual void Run(const char *pActionDir, const char *pArgs) = 0;
+        virtual void Run(const char *pActionDir, const char *pArgs, int force) = 0;
 };
 
 #endif

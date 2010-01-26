@@ -26,7 +26,7 @@
 class CActionSOSreport : public CAction
 {
     public:
-        virtual void Run(const char *pActionDir, const char *pArgs);
+        virtual void Run(const char *pActionDir, const char *pArgs, int force);
 };
 
 #endif

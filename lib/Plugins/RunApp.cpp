@@ -31,7 +31,7 @@
 
 using namespace std;
 
-void CActionRunApp::Run(const char *pActionDir, const char *pArgs)
+void CActionRunApp::Run(const char *pActionDir, const char *pArgs, int force)
 {
     /* Don't update_client() - actions run at crash time, there is no client
      * to talk to at that point */

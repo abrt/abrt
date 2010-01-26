@@ -46,7 +46,7 @@ class CKerneloopsScanner : public CAction
 		/* Plugin interface */
 	public:
 		CKerneloopsScanner();
-		virtual void Run(const char *pActionDir, const char *pArgs);
+		virtual void Run(const char *pActionDir, const char *pArgs, int force);
 };
 
 #endif

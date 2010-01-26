@@ -284,7 +284,7 @@ static string DirBase(const char *pStr)
     return string(pStr + beg, end - beg);
 }
 
-void CFileTransfer::Run(const char *pActionDir, const char *pArgs)
+void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
 {
     update_client(_("File Transfer: Creating a report..."));
 

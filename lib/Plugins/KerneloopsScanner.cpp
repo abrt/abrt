@@ -46,7 +46,7 @@ CKerneloopsScanner::CKerneloopsScanner()
 		SaveOopsToDebugDump();
 }
 
-void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs)
+void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs, int force)
 {
 	const char *syslog_file = "/var/log/messages";
 	map_plugin_settings_t::const_iterator it = m_pSettings.find("SysLogFile");
