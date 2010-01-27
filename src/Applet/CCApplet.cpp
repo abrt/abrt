@@ -329,7 +329,7 @@ void CApplet::animate_icon()
     if (m_iAnimator == 0)
     {
         m_iAnimator = g_timeout_add(100, update_icon, this);
-        m_iAnimCountdown = 10 * 30; /* 30 sec */
+        m_iAnimCountdown = 10 * 3; /* 3 sec */
     }
 }
 
