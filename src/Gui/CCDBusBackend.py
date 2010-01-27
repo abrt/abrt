@@ -1,16 +1,17 @@
 # -*- coding: utf-8 -*-
+import time  # for sleep()
+import gobject
 import dbus
 import dbus.service
-import gobject
 from dbus.mainloop.glib import DBusGMainLoop
 import gtk
 from dbus.exceptions import *
 import ABRTExceptions
 from abrt_utils import _, log, log1, log2
 
-CC_NAME = 'com.redhat.abrt'
-CC_IFACE = 'com.redhat.abrt'
-CC_PATH = '/com/redhat/abrt'
+ABRTD_DBUS_NAME = 'com.redhat.abrt'
+ABRTD_DBUS_PATH = '/com/redhat/abrt'
+ABRTD_DBUS_IFACE = 'com.redhat.abrt'
 
 APP_NAME = 'com.redhat.abrt.gui'
 APP_PATH = '/com/redhat/abrt/gui'
@@ -74,16 +75,16 @@ class DBusManager(gobject.GObject):
             raise Exception(_("Can't connect to system dbus"))
         self.bus.add_signal_receiver(self.owner_changed_cb, "NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
         # new crash notification
-        self.bus.add_signal_receiver(self.crash_cb, "Crash", dbus_interface=CC_IFACE)
+        self.bus.add_signal_receiver(self.crash_cb, "Crash", dbus_interface=ABRTD_DBUS_IFACE)
         # watch for updates
-        self.bus.add_signal_receiver(self.update_cb, "Update", dbus_interface=CC_IFACE)
+        self.bus.add_signal_receiver(self.update_cb, "Update", dbus_interface=ABRTD_DBUS_IFACE)
         # watch for warnings
-        self.bus.add_signal_receiver(self.warning_cb, "Warning", dbus_interface=CC_IFACE)
+        self.bus.add_signal_receiver(self.warning_cb, "Warning", dbus_interface=ABRTD_DBUS_IFACE)
         # watch for job-done signals
-        self.bus.add_signal_receiver(self.jobdone_cb, "JobDone", dbus_interface=CC_IFACE)
+        self.bus.add_signal_receiver(self.jobdone_cb, "JobDone", dbus_interface=ABRTD_DBUS_IFACE)
 
     # We use this function instead of caching and reusing of
-    # dbus.Interface(proxy, dbus_interface=CC_IFACE) because we want
+    # dbus.Interface(proxy, dbus_interface=ABRTD_DBUS_IFACE) because we want
     # to restart abrtd in this scenario:
     # (1) abrt-gui was run
     # (2) user generated the report, then left for coffee break
@@ -93,16 +94,34 @@ class DBusManager(gobject.GObject):
     def daemon(self):
         if not self.bus:
             self.bus = dbus.SystemBus()
-        if not self.bus:
-            raise Exception(_("Can't connect to system dbus"))
+            if not self.bus:
+                raise Exception(_("Can't connect to system dbus"))
+        # Autostart hack
+        # Theoretically, this is not needed, the first dbus call
+        # should autostart daemon if needed. In practice,
+        # without this code autostart is not reliable. Apparently
+        # dbus fails to check that the first call after autostart
+        # does not fail because daemon did not finish its initialization yet.
+        # (strace says abrt-gui -> dbus_daemon transfer is ok,
+        # I suspect dbus_daemon -> freshly_started_abrtd isn't)
         try:
-            proxy = self.bus.get_object(CC_IFACE, CC_PATH, introspect=False)
+            (always_true, rc) = self.bus.start_service_by_name(ABRTD_DBUS_NAME, flags=0)
+            # rc is either self.bus.START_REPLY_SUCCESS or self.bus.START_REPLY_ALREADY_RUNNING
+            if rc == self.bus.START_REPLY_SUCCESS:
+                # Better solution may be to have daemon emit a signal and wait for it
+                log1("dbus auto-started abrt daemon, giving it 1 sec to initialize");
+                time.sleep(1)
         except DBusException:
-            proxy = None
-            raise Exception("Can't connect to abrt daemon.")
+            raise Exception("abrt daemon is not running, and DBus can't start it")
+        # End of autostart hack
+        try:
+            # follow_name_owner_changes=True: switch to new daemon if daemon is restarted
+            proxy = self.bus.get_object(ABRTD_DBUS_NAME, ABRTD_DBUS_PATH, introspect=False, follow_name_owner_changes=True)
+        except DBusException:
+            raise Exception("Can't connect to abrt daemon")
         if not proxy:
             raise Exception(_("Please check if abrt daemon is running"))
-        daemon = dbus.Interface(proxy, dbus_interface=CC_IFACE)
+        daemon = dbus.Interface(proxy, dbus_interface=ABRTD_DBUS_IFACE)
         if not daemon:
             raise Exception(_("Please check if abrt daemon is running"))
         return daemon
@@ -141,8 +160,8 @@ class DBusManager(gobject.GObject):
         log1("Warning:%s", message)
         self.emit("warning", message)
 
-    def owner_changed_cb(self,name, old_owner, new_owner):
-        if name == CC_NAME:
+    def owner_changed_cb(self, name, old_owner, new_owner):
+        if name == ABRTD_DBUS_NAME:
             if new_owner:
                 self.emit("daemon-state-changed", "up")
             else:
