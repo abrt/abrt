@@ -138,14 +138,13 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-sosreport
 Plugin to include an sosreport in an abrt report.
 
-# Remove, we don't use bz in rhel
-#%package plugin-bugzilla
-#Summary: %{name}'s bugzilla plugin
-#Group: System Environment/Libraries
-#Requires: %{name} = %{version}-%{release}
+%package plugin-bugzilla
+Summary: %{name}'s bugzilla plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
 
-#%description plugin-bugzilla
-#Plugin to report bugs into the bugzilla.
+%description plugin-bugzilla
+Plugin to report bugs into the bugzilla.
 
 %package plugin-catcut
 Summary: %{name}'s catcut plugin
@@ -358,12 +357,12 @@ fi
 %{_libdir}/%{name}/libSOSreport.so*
 
 
-#%files plugin-bugzilla
-#%defattr(-,root,root,-)
-#%config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
-#%{_libdir}/%{name}/libBugzilla.so*
-#%{_libdir}/%{name}/Bugzilla.GTKBuilder
-#%{_mandir}/man7/%{name}-Bugzilla.7.gz
+%files plugin-bugzilla
+%defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
+%{_libdir}/%{name}/libBugzilla.so*
+%{_libdir}/%{name}/Bugzilla.GTKBuilder
+%{_mandir}/man7/%{name}-Bugzilla.7.gz
 
 %files plugin-catcut
 %defattr(-,root,root,-)
