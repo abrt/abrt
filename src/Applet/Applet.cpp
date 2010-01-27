@@ -255,6 +255,14 @@ int main(int argc, char** argv)
         applet->Disable(msg);
     }
 
+    /* dbus_bus_request_name can already read some data. Thus while dbus fd hasn't
+     * any data anymore, dbus library can buffer a message or two.
+     * If we don't do this, the data won't be processed until next dbus data arrives.
+     */
+    int cnt = 10;
+    while (dbus_connection_dispatch(system_conn) != DBUS_DISPATCH_COMPLETE && --cnt)
+        continue;
+
     /* Enter main loop */
     gtk_main();
 

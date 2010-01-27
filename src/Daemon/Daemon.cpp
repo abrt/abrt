@@ -797,15 +797,6 @@ int main(int argc, char** argv)
         if (SetUpCron() != 0)
             throw 1;
 
-#if 1 //def ENABLE_DBUS
-        VERB1 log("Initializing dbus");
-        g_pCommLayer = new CCommLayerServerDBus();
-#elif ENABLE_SOCKET
-        g_pCommLayer = new CCommLayerServerSocket();
-#endif
-        if (g_pCommLayer->m_init_error)
-            throw 1;
-
         VERB1 log("Adding inotify watch to glib main loop");
         pGiochannel_inotify = g_io_channel_unix_new(inotify_fd);
         g_io_add_watch(pGiochannel_inotify, G_IO_IN, handle_inotify_cb, NULL);
@@ -824,6 +815,18 @@ int main(int argc, char** argv)
         if (CreatePidFile() != 0)
             throw 1;
         pidfile_created = true;
+
+        /* Note: this already may process a few dbus messages,
+         * therefore it should be the last thing to initialize.
+         */
+#if 1 //def ENABLE_DBUS
+        VERB1 log("Initializing dbus");
+        g_pCommLayer = new CCommLayerServerDBus();
+#elif ENABLE_SOCKET
+        g_pCommLayer = new CCommLayerServerSocket();
+#endif
+        if (g_pCommLayer->m_init_error)
+            throw 1;
     }
     catch (...)
     {

@@ -565,6 +565,17 @@ CCommLayerServerDBus::CCommLayerServerDBus()
 //maybe check that r == DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER instead?
     handle_dbus_err(rc < 0, &err);
     VERB3 log("dbus init done");
+
+    /* dbus_bus_request_name can already read some data. For example,
+     * if we were autostarted, the call which caused autostart arrives
+     * at this moment. Thus while dbus fd hasn't any data anymore,
+     * dbus library can buffer a message or two.
+     * If we don't do this, the data won't be processed
+     * until next dbus data arrives.
+     */
+    int cnt = 10;
+    while (dbus_connection_dispatch(conn) != DBUS_DISPATCH_COMPLETE && --cnt)
+        VERB3 log("processed initial buffered dbus message");
 }
 
 CCommLayerServerDBus::~CCommLayerServerDBus()
