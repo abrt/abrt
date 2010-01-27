@@ -289,6 +289,7 @@
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
                             <property name="vscrollbar_policy">automatic</property>
+                            <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="tvBacktrace">
                                 <property name="height_request">200</property>
@@ -358,7 +359,6 @@
                                 <child>
                                   <object class="GtkAlignment" id="alignment5">
                                     <property name="visible">True</property>
-                                    <property name="left_padding">12</property>
                                     <child>
                                       <object class="GtkScrolledWindow" id="scrolledwindow3">
                                         <property name="visible">True</property>
@@ -402,7 +402,6 @@
                                 <child>
                                   <object class="GtkAlignment" id="alignment6">
                                     <property name="visible">True</property>
-                                    <property name="left_padding">12</property>
                                     <child>
                                       <object class="GtkScrolledWindow" id="scrolledwindow2">
                                         <property name="visible">True</property>
@@ -583,7 +582,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="bLog">
-                <property name="label" translatable="yes">Log</property>
+                <property name="label" translatable="yes">Show log</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -624,7 +623,7 @@
             </child>
             <child>
               <object class="GtkButton" id="bSend">
-                <property name="label" translatable="yes">Send</property>
+                <property name="label" translatable="yes">Send report</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
