@@ -437,6 +437,7 @@ report_status_t Report(const map_crash_data_t& client_report,
         key = analyzer;
     }
 
+    bool at_least_one_reporter_succeeded = false;
     report_status_t ret;
     std::string message;
     if (keyPtr != end)
@@ -485,6 +486,7 @@ report_status_t Report(const map_crash_data_t& client_report,
                     if (message != "")
                         message += "; ";
                     message += res;
+                    at_least_one_reporter_succeeded = true;
                 }
             }
             catch (CABRTException& e)
@@ -493,13 +495,16 @@ report_status_t Report(const map_crash_data_t& client_report,
                 ret[plugin_name].push_back(e.what()); // REPORT_STATUS_IDX_MSG
                 update_client("Reporting via '%s' was not successful: %s", plugin_name, e.what());
             }
-        }
-    }
+        } // for
+    } // if
 
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
-    database->Connect();
-    database->SetReported(UUID, UID, message.c_str());
-    database->DisConnect();
+    if (at_least_one_reporter_succeeded)
+    {
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        database->Connect();
+        database->SetReported(UUID, UID, message.c_str());
+        database->DisConnect();
+    }
 
     return ret;
 #undef client_report
