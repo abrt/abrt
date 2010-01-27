@@ -222,6 +222,9 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
 
     // Copy each entry into the tarball root.
     // Files are simply copied, strings are written to a file
+    // TODO: some files are totally useless:
+    // "Reported", "Message" (plugin's output), "DumpDir",
+    // "Description" (package description) - maybe skip those?
     map_crash_data_t::const_iterator it;
     for (it = pCrashData.begin(); it != pCrashData.end(); it++)
     {

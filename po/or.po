@@ -2,14 +2,13 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
-#: ../src/Gui/CCReporterDialog.py:208
-# Manoj Kumar Giri <mgiri@redhat.com>, 2009.
+# Manoj Kumar Giri <mgiri@redhat.com>, 2009, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.or\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-12-10 19:32+0000\n"
-"PO-Revision-Date: 2009-12-11 12:16+0530\n"
+"POT-Creation-Date: 2010-01-21 04:02+0000\n"
+"PO-Revision-Date: 2010-01-27 11:25+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <oriya-it@googlegroups.com>\n"
 "MIME-Version: 1.0\n"
@@ -17,6 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=2; plural=(n!=1);\n\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -43,25 +43,25 @@ msgstr "ଅନ୍ୟ ଏକ କ୍ଲାଏଣ୍ଟ ପୂର୍ବରୁ ଚ�
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "ଡେମନରୁ ଅପ୍ରତ୍ୟାଶିତ ତଥ୍ୟ ଗ୍ରହଣ କରୁଅଛି (ତଥ୍ୟାଧାରଟି ସଠିକ ଭାବରେ ଅଦ୍ୟତିତ ହୋଇଛି କି?)."
 
-#: ../src/Gui/ABRTPlugin.py:55
+#: ../src/Gui/ABRTPlugin.py:56
+msgid "Not loaded plugins"
+msgstr "ଧାରଣ ହୋଇଥିବା କୌଣସି ପ୍ଲଗଇନ ନାହିଁ"
+
+#: ../src/Gui/ABRTPlugin.py:57
 msgid "Analyzer plugins"
 msgstr "ବିଶ୍ଳେଷକ ପ୍ଲଗଇନଗୁଡ଼ିକ"
 
-#: ../src/Gui/ABRTPlugin.py:56
+#: ../src/Gui/ABRTPlugin.py:58
 msgid "Action plugins"
 msgstr "କାର୍ଯ୍ୟ ପ୍ଲଗଇନଗୁଡ଼ିକ"
 
-#: ../src/Gui/ABRTPlugin.py:57
+#: ../src/Gui/ABRTPlugin.py:59
 msgid "Reporter plugins"
 msgstr "ଖବରକାରୀ ପ୍ଲଗଇନଗୁଡ଼ିକ"
 
-#: ../src/Gui/ABRTPlugin.py:58
+#: ../src/Gui/ABRTPlugin.py:60
 msgid "Database plugins"
 msgstr "ତଥ୍ୟାଧାର ପ୍ଲଗଇନଗୁଡ଼ିକ"
-
-#: ../src/Gui/ABRTPlugin.py:97
-msgid "Plugin name is not set, can't load its settings"
-msgstr "ପ୍ଲଗଇନ ନାମକୁ ସେଟ କରାଯାଇନାହିଁ, ଏହାର ସଂରଚନାକୁ ଧାରଣ କରିପାରିବେ ନାହିଁ"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
@@ -87,7 +87,8 @@ msgstr "(C) 2009 Red Hat, Inc."
 msgid "About ABRT"
 msgstr "ABRT ବିଷୟରେ"
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/report.glade.h:15 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "ସ୍ୱୟଂଚାଳିତ ତ୍ରୁଟି ନିବାରଣ ସାଧନ"
 
@@ -111,7 +112,7 @@ msgstr "ଦୟାକରି ଅପେକ୍ଷା କରନ୍ତୁ.."
 msgid "Plugins"
 msgstr "ପ୍ଲଗଇନଗୁଡ଼ିକ"
 
-#: ../src/Gui/ccgui.glade.h:9 ../src/Gui/report.glade.h:6
+#: ../src/Gui/ccgui.glade.h:9
 msgid "Report"
 msgstr "ରିପୋର୍ଟ"
 
@@ -154,31 +155,31 @@ msgid "_Help"
 msgstr "ସହାୟତା (_H)"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:71
+#: ../src/Gui/CCMainWindow.py:78
 msgid "Icon"
 msgstr "ଚିତ୍ର ସଂକେତ"
 
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:86
 msgid "Package"
 msgstr "ପ୍ଯାକେଜ"
 
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Application"
 msgstr "ପ୍ରୟୋଗ"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:88
 msgid "Date"
 msgstr "ତାରିଖ"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Crash count"
 msgstr "କ୍ଷତି ହାର"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:90
 msgid "User"
 msgstr "ଚାଳକ"
 
-#: ../src/Gui/CCMainWindow.py:149
+#: ../src/Gui/CCMainWindow.py:158
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -187,7 +188,7 @@ msgstr ""
 "ସଂରଚନା ସଂଳାପକୁ ଦର୍ଶାଇପାରିବେ ନାହିଁ\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:160
+#: ../src/Gui/CCMainWindow.py:169
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -197,7 +198,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:196
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -206,15 +207,19 @@ msgstr ""
 "dumplist କୁ ଧାରଣ କରିବା ସମୟରେ ତ୍ରୁଟି।\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:221
+#: ../src/Gui/CCMainWindow.py:233
+msgid "This crash has been reported:\n"
+msgstr "ଏହି ନଷ୍ଟକୁ ଖବର କରାଯାଇଛି:\n"
+
+#: ../src/Gui/CCMainWindow.py:234
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>ଏହି ନଷ୍ଟକୁ ଖବର କରାଯାଇଛି:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:250
 msgid "<b>Not reported!</b>"
 msgstr "<b>ଖବର କରାହୋଇନଥିଲା!</b>"
 
-#: ../src/Gui/CCMainWindow.py:280
+#: ../src/Gui/CCMainWindow.py:298
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -222,7 +227,7 @@ msgstr ""
 "ବିବରଣୀ ପ୍ରାପ୍ତ କରିବାରେ ଅସମର୍ଥ!\n"
 "ତ୍ରୁଟି ନିବରଣୀ ସୂଚନା ଅନୁପସ୍ଥିତ ଅଛି କି?"
 
-#: ../src/Gui/CCMainWindow.py:299
+#: ../src/Gui/CCMainWindow.py:318
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -231,25 +236,16 @@ msgstr ""
 "ଖବର କରିବାରେ ବିଫଳ!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:318 ../src/Gui/CCMainWindow.py:345
+#: ../src/Gui/CCMainWindow.py:337 ../src/Gui/CCMainWindow.py:364
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "ବିବରଣୀ ପାଇବାରେ ତ୍ରୁଟି: %s"
 
-#: ../src/Gui/CCReporterDialog.py:136
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-"ପ୍ଲଗଇନ ସଂରଚନାକୁ ସଂରକ୍ଷଣ କରାଯାଇପାରିବ ନାହିଁ:\n"
-" %s"
+#: ../src/Gui/CCReporterDialog.py:90
+msgid "You must agree with submitting the backtrace."
+msgstr "ଆପଣ ବ୍ୟାକଟ୍ରାସକୁ ଦାଖଲ କରିବା ପାଇଁ ସହମତି ହେବା ଉଚିତ।"
 
-#: ../src/Gui/CCReporterDialog.py:194
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "ଏହାକୁ କିପରି ପୁନଃପ୍ରାପ୍ତି କରାଯିବ ଏବଂ ଆପଣ କଣ କରିଥିଲେ ତାହା ବିଷୟରେ ବିସ୍ତୃତ ବିବରଣୀ ପ୍ରଦାନ କରନ୍ତୁ..."
-
-#: ../src/Gui/CCReporterDialog.py:239
+#: ../src/Gui/CCReporterDialog.py:101
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -262,11 +258,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "ତାପରେ ବ୍ୟାକଟ୍ରେସକୁ ପୁନଃନିର୍ମାଣ କରିବା ପାଇଁ ସତେଜନ କରିବା ବଟନକୁ ବ୍ୟବହାର କରନ୍ତୁ।"
 
-#: ../src/Gui/CCReporterDialog.py:241
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ବ୍ୟାକ ଟ୍ରେଶଟି ବ୍ୟବହାର ଉପଯୋଗୀ ନୁହଁ, ଆପଣ ଏହାକୁ ଖବର କରି ପାରିବେ ନାହିଁ!"
 
-#: ../src/Gui/CCReporterDialog.py:246
+#: ../src/Gui/CCReporterDialog.py:106
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -274,17 +270,20 @@ msgstr ""
 "ବ୍ୟାକଟ୍ରେସଟି ସମ୍ପୂର୍ଣ୍ଣ ହୋଇନାହିଁ, ଦୟାକରି ନିଶ୍ଚିତ କରନ୍ତୁ ଯେ ଆପଣ ପୁନଃ ଉତ୍ପାଦନ କରିବା ପାଇଁ ଉତ୍ତମ "
 "ପଦକ୍ଷେପ ପ୍ରଦାନ କରିଛନ୍ତି।"
 
-#: ../src/Gui/CCReporterDialog.py:296
+#: ../src/Gui/CCReporterDialog.py:148
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
-"Do you really want to send <b>%s</b>?\n"
+"Can't save plugin settings:\n"
+" %s"
 msgstr ""
-"<b>ଚେତାବନୀ</b>, ଆପଣ ତଥ୍ୟ ପଠାଇବାକୁ ଯାଉଛନ୍ତି ଯାହାକି ସମ୍ବେଦନଶୀଳ ସୂଚନା ଧାରଣ କରିଥାଇପାରେ।\n"
-"ଆପଣ ପ୍ରକୃତରେ ପଠାଇବାକୁ ଚାହୁଁଛନ୍ତି କି <b>%s</b>?\n"
+"ପ୍ଲଗଇନ ସଂରଚନାକୁ ସଂରକ୍ଷଣ କରାଯାଇପାରିବ ନାହିଁ:\n"
+" %s"
 
-#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:5
+#: ../src/Gui/CCReporterDialog.py:266
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "ଏହାକୁ କିପରି ପୁନଃପ୍ରାପ୍ତି କରାଯିବ ଏବଂ ଆପଣ କଣ କରିଥିଲେ ତାହା ବିଷୟରେ ବିସ୍ତୃତ ବିବରଣୀ ପ୍ରଦାନ କରନ୍ତୁ..."
+
+#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:17
 msgid "Log"
 msgstr "ଲଗ"
 
@@ -315,18 +314,66 @@ msgid " "
 msgstr " "
 
 #: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>ସଂଲଗ୍ନକଗୁଡ଼ିକ</b>"
+
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>ବ୍ୟାକଟ୍ରେସ</b>"
+
+#: ../src/Gui/report.glade.h:4
 msgid "<b>Comment</b>"
 msgstr "<b>ଟିପ୍ପଣୀ</b>"
 
-#: ../src/Gui/report.glade.h:3
-msgid "<b>Following items will be sent</b>"
-msgstr "<b>ନିମ୍ନଲିଖିତ ବସ୍ତୁଗୁଡ଼ିକୁ ପଠାଯିବ</b>"
-
-#: ../src/Gui/report.glade.h:4
+#: ../src/Gui/report.glade.h:5
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>କିପରି ପୁନଃ ଉତ୍ପାଦନ କରିବି (କିଛି ସରଳ ପଦକ୍ଷେପରେ)</b>"
 
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>ଦୟାକରି ନିମ୍ନଲିଖିତ ସମସ୍ୟାଗୁଡ଼ିକୁ ସମାଧାନ କରନ୍ତୁ</b>"
+
 #: ../src/Gui/report.glade.h:7
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">ସଂରଚନା:</span>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Cmdline:</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">ଉପାଦାନ:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">ନିଷ୍ପାଦ୍ୟ:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">କର୍ଣ୍ଣଲ:</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">ପ୍ୟାକେଜ:</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">କାରଣ:</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">ପ୍ରକାଶନ:</span>"
+
+#: ../src/Gui/report.glade.h:16
+msgid "I agree to submit this backtrace, which could contain sensitive data"
+msgstr "ମୁଁ ଏହି ବ୍ୟାକଟ୍ରେସକୁ ଦାଖଲ କରିବା ପାଇଁ ସହମତ, ଯାହାକି ସ୍ପର୍ଷକାତର ତଥ୍ୟ ଧାରଣ କରିପାରେ"
+
+#: ../src/Gui/report.glade.h:18
+msgid "N/A"
+msgstr "N/A"
+
+#: ../src/Gui/report.glade.h:19
 msgid "Send"
 msgstr "ପଠାନ୍ତୁ"
 
@@ -446,7 +493,7 @@ msgstr "gtk-ok"
 msgid "View and report application crashes"
 msgstr "ପ୍ରୟୋଗ ବିନାଶକୁ ଦେଖନ୍ତୁ ଏବଂ ଖବର କରନ୍ତୁ"
 
-#: ../src/Applet/Applet.cpp:79
+#: ../src/Applet/Applet.cpp:78
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "ପ୍ୟାକେଜ %s ରେ ଗୋଟିଏ ବିନାଶ ଚିହ୍ନାପଡ଼ିଛି"
@@ -455,7 +502,7 @@ msgstr "ପ୍ୟାକେଜ %s ରେ ଗୋଟିଏ ବିନାଶ ଚି�
 msgid "ABRT service is not running"
 msgstr "ABRT ସର୍ଭିସଟି ଚାଲୁନାହିଁ"
 
-#: ../src/Applet/CCApplet.cpp:196
+#: ../src/Applet/CCApplet.cpp:200
 msgid "Warning"
 msgstr "ଚେତାବନୀ"
 
@@ -467,77 +514,74 @@ msgstr ""
 "ବିବରଣୀ ଆକାର ସଂରକ୍ଷଣକୁ ଅତିକ୍ରମ କରିଛି। ଦୟାକରି ତନ୍ତ୍ରର MaxCrashReportsSize ମୂଲ୍ୟକୁ abrt.conf "
 "ରେ ଯାଞ୍ଚ କରନ୍ତୁ।"
 
-#: ../lib/Plugins/Bugzilla.cpp:202
+#: ../lib/Plugins/Bugzilla.cpp:265
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ତ୍ରୁଟିକୁ ପୂର୍ବରୁ ଖବର କରାଯାଇଛି: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:264
+#: ../lib/Plugins/Bugzilla.cpp:341
 #, c-format
 msgid "New bug id: %i"
 msgstr "ନୂତନ ତ୍ରୁଟି id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:359
+#: ../lib/Plugins/Bugzilla.cpp:442
 msgid "Checking for duplicates..."
 msgstr "ନକଲିଗୁଡ଼ିକୁ ଯାଞ୍ଚ କରୁଅଛି..."
 
-#: ../lib/Plugins/Bugzilla.cpp:362
-msgid "Logging into bugzilla..."
-msgstr "ବଗଜିଲ୍ଲାରେ ଲଗଇନ କରୁଅଛି..."
-
-#: ../lib/Plugins/Bugzilla.cpp:366
+#: ../lib/Plugins/Bugzilla.cpp:448
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "ଖାଲି ଲଗଇନ ଏବଂ ପ୍ରବେଶ ସଂକେତ। ଦୟାକରି Bugzilla.conf କୁ ଯାଞ୍ଚ କରନ୍ତୁ"
 
-#: ../lib/Plugins/Bugzilla.cpp:372
+#: ../lib/Plugins/Bugzilla.cpp:450
+msgid "Logging into bugzilla..."
+msgstr "ବଗଜିଲ୍ଲାରେ ଲଗଇନ କରୁଅଛି..."
+
+#: ../lib/Plugins/Bugzilla.cpp:455
 msgid "Checking CC..."
 msgstr "CC କୁ ଯାଞ୍ଚ କରୁଅଛି..."
 
-#: ../lib/Plugins/Bugzilla.cpp:381
+#: ../lib/Plugins/Bugzilla.cpp:466
 msgid "Creating new bug..."
 msgstr "ନୂତନ ତ୍ରୁଟି ନିର୍ମାଣ କରୁଅଛି..."
 
-#: ../lib/Plugins/Bugzilla.cpp:385
+#: ../lib/Plugins/Bugzilla.cpp:470
 msgid "Logging out..."
 msgstr "ଲଗଆଉଟ କରୁଅଛି..."
 
-#: ../lib/Plugins/Kerneloops.cpp:37
+#: ../lib/Plugins/Kerneloops.cpp:35
 msgid "Getting local universal unique identification"
 msgstr "ସ୍ଥାନୀୟ ଜାଗତିକ ଅନନ୍ୟ ପରିଚୟକୁ ଗ୍ରହଣ କରୁଅଛି"
 
-#: ../lib/Plugins/CCpp.cpp:264
-msgid "Getting backtrace..."
-msgstr "ପଛୁଆ ଯାଞ୍ଚ ବିବରଣୀ ଗ୍ରହଣ କରୁଅଛି..."
+#: ../lib/Plugins/CCpp.cpp:253
+msgid "Generating backtrace"
+msgstr "ପଛୁଆ ଯାଞ୍ଚ ବିବରଣୀ ଗ୍ରହଣ କରୁଅଛି"
 
-#: ../lib/Plugins/CCpp.cpp:382
-msgid "Searching for debug-info packages..."
-msgstr "ତ୍ରୁଟି-ନିବାରଣ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ସନ୍ଧାନ କରୁଅଛି..."
+#: ../lib/Plugins/CCpp.cpp:375
+msgid "Starting debuginfo installation"
+msgstr "ତ୍ରୁଟିନିବାରଣ ସୂଚନା ସ୍ଥାପନକୁ ଆରମ୍ଭ କରୁଅଛି"
 
-#: ../lib/Plugins/CCpp.cpp:416
-msgid "Downloading and installing debug-info packages..."
-msgstr "ତ୍ରୁଟି-ନିବାରଣ ପ୍ୟାକେଜଗୁଡ଼ିକୁ ଆହରଣ କରୁଅଛି ଏବଂ ସ୍ଥାପନ କରୁଅଛି..."
-
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:526
 msgid "Getting local universal unique identification..."
 msgstr "ସ୍ଥାନୀୟ ଜାଗତିକ ଅନନ୍ୟ ପରିଚୟକୁ ଗ୍ରହଣ କରୁଅଛି..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:545
 msgid "Getting global universal unique identification..."
 msgstr "ଜାଗତିକ ଅନନ୍ୟ ପରିଚୟକୁ ଗ୍ରହଣ କରୁଅଛି..."
 
-#: ../lib/Plugins/CCpp.cpp:691
+#: ../lib/Plugins/CCpp.cpp:723
 msgid "Skipping debuginfo installation"
 msgstr "ତ୍ରୁଟିନିବାରଣ ସୂଚନା ସ୍ଥାପନକୁ ଏଡ଼ାଇ ଦେଉଛି"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:102
+#: ../lib/Plugins/KerneloopsReporter.cpp:100
 msgid "Creating and submitting a report..."
 msgstr "ବିବରଣୀ ନିର୍ମାଣ କରି ଦାଖଲ କରୁଅଛି..."
 
-#: ../lib/Plugins/Logger.cpp:66
-msgid "Creating a report..."
-msgstr "ବିବରଣୀ ନିର୍ମାଣ କରୁଅଛି..."
+#: ../lib/Plugins/Logger.cpp:82
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "'%s' କୁ ବିବରଣୀ ଲେଖୁଅଛି"
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:372
 msgid "FileTransfer: URL not specified"
 msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋଇନାହିଁ"
 
@@ -546,25 +590,25 @@ msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋ�
 msgid "Sending archive %s to %s"
 msgstr "ଅଭିଲେଖ %s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:296
 msgid "File Transfer: Creating a report..."
 msgstr "ଫାଇଲ ପରିବହନ: ଗୋଟିଏ ବିବରଣୀ ନିର୍ମାଣ କରୁଅଛି..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "ଗୋଟିଏ ଅଭିଲେଖ ନିର୍ମାଣ କରି ପାରିବେ ନାହିଁ କିମ୍ବା ପଠାଇପାରିବେ ନାହିଁ: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:347
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "ଗୋଟିଏ ଅଭିଲେଖ ନିର୍ମାଣ କରି ପାରିବେ ନାହିଁ କିମ୍ବା ପଠାଇପାରିବେ ନାହିଁ: %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:84
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "କର୍ଣ୍ଣଲ oops ନଷ୍ଟ ବିବରଣୀଗୁଡ଼ିକୁ ନିର୍ମାଣ କରୁଅଛି..."
 
-#: ../lib/Plugins/Mailx.cpp:165
+#: ../lib/Plugins/Mailx.cpp:137
 msgid "Sending an email..."
 msgstr "ଗୋଟିଏ ଇମେଲ ପଠାଉଅଛି..."
 
@@ -577,7 +621,7 @@ msgstr "SOSreport ପ୍ଲଗଇନକୁ ନିଷ୍ପାଦନ କରୁଅ
 msgid "running sosreport: %s"
 msgstr "sosreport ଚାଲୁଅଛି: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:95
+#: ../lib/Plugins/SOSreport.cpp:97
 msgid "done running sosreport"
 msgstr "sosreport ଚଲାଇବା ସମାପ୍ତ ହେଲା"
 
