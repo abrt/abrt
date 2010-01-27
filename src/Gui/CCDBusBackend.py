@@ -99,11 +99,9 @@ class DBusManager(gobject.GObject):
         # Autostart hack
         # Theoretically, this is not needed, the first dbus call
         # should autostart daemon if needed. In practice,
-        # without this code autostart is not reliable. Apparently
-        # dbus fails to check that the first call after autostart
-        # does not fail because daemon did not finish its initialization yet.
-        # (strace says abrt-gui -> dbus_daemon transfer is ok,
-        # I suspect dbus_daemon -> freshly_started_abrtd isn't)
+        # without this code autostart is not reliable.
+        # Update: fixed the problem on daemon side,
+        # but retaining this code for now. More stability won't hurt us...
         try:
             (always_true, rc) = self.bus.start_service_by_name(ABRTD_DBUS_NAME, flags=0)
             # rc is either self.bus.START_REPLY_SUCCESS or self.bus.START_REPLY_ALREADY_RUNNING

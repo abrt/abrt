@@ -148,7 +148,7 @@ static gboolean handle_dbus_fd(GIOChannel *gio, GIOCondition condition, gpointer
 
     while (dbus_connection_dispatch(g_dbus_conn) == DBUS_DISPATCH_DATA_REMAINS)
         VERB3 log("%s: more data to process, looping", __func__);
-    return TRUE; /* "glib, do not remove this even source!" */
+    return TRUE; /* "glib, do not remove this event source!" */
 }
 
 struct watch_app_info_t
@@ -170,10 +170,8 @@ static void toggled_watch(DBusWatch *watch, void* data)
             app_info->watch_enabled = true;
             int dbus_flags = dbus_watch_get_flags(watch);
             int glib_flags = 0;
-            if (dbus_flags & DBUS_WATCH_READABLE)
-                glib_flags |= G_IO_IN;
-            if (dbus_flags & DBUS_WATCH_WRITABLE)
-                glib_flags |= G_IO_OUT;
+            if (dbus_flags & DBUS_WATCH_READABLE) glib_flags |= G_IO_IN;
+            if (dbus_flags & DBUS_WATCH_WRITABLE) glib_flags |= G_IO_OUT;
             VERB3 log(" adding watch to glib main loop. dbus_flags:%x glib_flags:%x", dbus_flags, glib_flags);
             app_info->event_source_id = g_io_add_watch(app_info->channel, GIOCondition(glib_flags), handle_dbus_fd, watch);
         }
