@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-22 10:02+0000\n"
-"PO-Revision-Date: 2010-01-22 17:41+0100\n"
+"POT-Creation-Date: 2010-01-27 13:02+0000\n"
+"PO-Revision-Date: 2010-01-27 14:12+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgstr "Wtyczki analizy"
 
 #: ../src/Gui/ABRTPlugin.py:58
 msgid "Action plugins"
-msgstr "Wtyczki działań"
+msgstr "Wtyczki czynności"
 
 #: ../src/Gui/ABRTPlugin.py:59
 msgid "Reporter plugins"
@@ -66,7 +66,7 @@ msgstr "(C) 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:2
 msgid "About ABRT"
-msgstr "Informacje o ABRT"
+msgstr "O programie ABRT"
 
 #: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:9
 #: ../src/Gui/report.glade.h:15 ../src/Gui/abrt.desktop.in.h:1
@@ -226,11 +226,18 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Błąd podczas uzyskiwania raportu: %s"
 
-#: ../src/Gui/CCReporterDialog.py:90
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
+msgid "Brief description how to reproduce this or what you did..."
+msgstr ""
+"Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
+"języku angielskim)..."
+
+#: ../src/Gui/CCReporterDialog.py:94
 msgid "You must agree with submitting the backtrace."
 msgstr "Należy wyrazić zgodę na wysłanie wyjątku."
 
-#: ../src/Gui/CCReporterDialog.py:101
+#: ../src/Gui/CCReporterDialog.py:105
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -243,11 +250,11 @@ msgstr ""
 "<b>debuginfo-install %s</b>, \n"
 "a następnie nacisnąć przycisk Odśwież, aby ponownie utworzyć wyjątek."
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:107
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Nie można użyć tego wyjątku, więc nie można tego zgłosić."
 
-#: ../src/Gui/CCReporterDialog.py:106
+#: ../src/Gui/CCReporterDialog.py:110
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -255,7 +262,7 @@ msgstr ""
 "Wyjątek jest niepełny. Proszę upewnić się, że podano właściwe kroki "
 "ponownego wywołania awarii."
 
-#: ../src/Gui/CCReporterDialog.py:148
+#: ../src/Gui/CCReporterDialog.py:152
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -263,12 +270,6 @@ msgid ""
 msgstr ""
 "Nie można zapisać ustawień wtyczki:\n"
 " %s"
-
-#: ../src/Gui/CCReporterDialog.py:266
-msgid "Brief description how to reproduce this or what you did..."
-msgstr ""
-"Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
-"języku angielskim)..."
 
 #: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:17
 msgid "Log"
@@ -390,7 +391,7 @@ msgstr "<b>Wtyczka analizy</b>"
 
 #: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
-msgstr "<b>Powiązane działanie</b>"
+msgstr "<b>Powiązana czynność</b>"
 
 #: ../src/Gui/settings.glade.h:3
 msgid "<b>Plugin details</b>"
@@ -406,7 +407,7 @@ msgstr "<b>Czas (lub okres czasu)</b>"
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
-msgstr "Analizy, działania, zgłaszający"
+msgstr "Analizy, czynności, zgłaszający"
 
 #: ../src/Gui/settings.glade.h:7
 msgid "Author:"
@@ -414,7 +415,7 @@ msgstr "Autor:"
 
 #: ../src/Gui/settings.glade.h:8
 msgid "Blacklisted packages: "
-msgstr "Czarna lista pakietów: "
+msgstr "Wykluczone pakiety: "
 
 #: ../src/Gui/settings.glade.h:9
 msgid "C_onfigure plugin"
@@ -446,7 +447,7 @@ msgstr "Klucze GPG"
 
 #: ../src/Gui/settings.glade.h:16
 msgid "GPG keys: "
-msgstr "klucze GPG: "
+msgstr "Klucze GPG: "
 
 #: ../src/Gui/settings.glade.h:17
 msgid "Global Settings"
@@ -503,7 +504,7 @@ msgid ""
 "value in abrt.conf."
 msgstr ""
 "Wielkość raportu przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
-"wartość zmiennej MaxCrashReportsSize w pliku abrt.conf"
+"wartość zmiennej MaxCrashReportsSize w pliku abrt.conf."
 
 #: ../lib/Plugins/Bugzilla.cpp:132 ../lib/Plugins/Bugzilla.cpp:300
 msgid "Missing member 'bugs'"
@@ -553,7 +554,7 @@ msgstr "Wylogowywanie..."
 
 #: ../lib/Plugins/Kerneloops.cpp:35
 msgid "Getting local universal unique identification"
-msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora"
+msgstr "Uzyskiwanie lokalnego UUID"
 
 #: ../lib/Plugins/CCpp.cpp:253
 msgid "Generating backtrace"
@@ -565,11 +566,11 @@ msgstr "Uruchamianie instalacji pakietów debuginfo"
 
 #: ../lib/Plugins/CCpp.cpp:524
 msgid "Getting local universal unique identification..."
-msgstr "Uzyskiwanie lokalnego uniwersalnego, unikalnego identyfikatora..."
+msgstr "Uzyskiwanie lokalnego UUID..."
 
 #: ../lib/Plugins/CCpp.cpp:543
 msgid "Getting global universal unique identification..."
-msgstr "Uzyskiwanie globalnego uniwersalnego, unikalnego identyfikatora..."
+msgstr "Uzyskiwanie globalnego UUID..."
 
 #: ../lib/Plugins/CCpp.cpp:721
 msgid "Skipping debuginfo installation"
@@ -609,21 +610,17 @@ msgstr "Nie można utworzyć i wysłać archiwum %s"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
-msgstr "Tworzenie raportów awarii \"kernel oops\""
+msgstr "Tworzenie raportów awarii jądra typu \"oops\"..."
 
 #: ../lib/Plugins/Mailx.cpp:137
 msgid "Sending an email..."
 msgstr "Wysłanie wiadomości e-mail..."
 
-#: ../lib/Plugins/SOSreport.cpp:69
-msgid "Executing SOSreport plugin..."
-msgstr "Wykonywanie wtyczki SOSreport..."
-
-#: ../lib/Plugins/SOSreport.cpp:91
+#: ../lib/Plugins/SOSreport.cpp:102
 #, c-format
-msgid "running sosreport: %s"
-msgstr "wykonywanie sosreport: %s"
+msgid "Running sosreport: %s"
+msgstr "Wykonywanie sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:97
-msgid "done running sosreport"
-msgstr "ukończono wykonywanie sosreport"
+#: ../lib/Plugins/SOSreport.cpp:108
+msgid "Done running sosreport"
+msgstr "Ukończono wykonywanie sosreport"
