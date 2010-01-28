@@ -44,8 +44,7 @@ void ctx::login(const char* login, const char* passwd)
     xmlrpc_env_init(&env);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.login", param, &result);
@@ -68,16 +67,13 @@ void ctx::logout()
     xmlrpc_env_init(&env);
 
     xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", "");
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.logout", param, &result);
     xmlrpc_DECREF(param);
-    if (result)
-        xmlrpc_DECREF(result);
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    xmlrpc_DECREF(result);
+    throw_if_xml_fault_occurred(&env);
 }
 
 bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
@@ -85,17 +81,13 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    // fails only when you write query. when it's done it never fails.
     xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", to_string(bug_id).c_str());
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env); // failed to allocate memory
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.getBug", param, &result);
-    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
     xmlrpc_DECREF(param);
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value* reporter_member = NULL;
     xmlrpc_struct_find_value(&env, result, "reporter", &reporter_member);
@@ -129,7 +121,7 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
     {
         VERB3 log("Missing member 'reporter'");
         xmlrpc_DECREF(result);
-        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'bugs'"));
+        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'reporter'"));
     }
 
     xmlrpc_value* cc_member = NULL;
@@ -179,7 +171,7 @@ bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
     }
     else
     {
-        VERB3 log("Missing member 'bugs'");
+        VERB3 log("Missing member 'cc'");
         xmlrpc_DECREF(result);
         throw CABRTException(EXCEP_PLUGIN, _("Missing member 'cc'"));
     }
@@ -193,19 +185,14 @@ void ctx::add_plus_one_cc(uint32_t bug_id, const char* login)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    // fails only when you write query. when it's done it never fails.
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login); 
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env); // failed to allocate memory
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.update", param, &result);
-    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
     xmlrpc_DECREF(param);
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
-
     xmlrpc_DECREF(result);
+    throw_if_xml_fault_occurred(&env);
 }
 
 int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
@@ -215,17 +202,13 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
 
     std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
 
-    // fails only when you write query. when it's done it never fails.
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query.c_str());
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env); // failed to allocate memory
 
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.search", param, &result);
-    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
     xmlrpc_DECREF(param);
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env); // on error result is NULL, no need to DECREF
 
     xmlrpc_value* bugs_member = NULL;
     xmlrpc_struct_find_value(&env, result, "bugs", &bugs_member);
@@ -237,7 +220,7 @@ int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
 
     if (bugs_member)
     {
-        // when array size is equal 0 that means no bug reported
+        // when array size is 0 that means no bug reported
         uint32_t array_size = xmlrpc_array_size(&env, bugs_member);
         if (env.fault_occurred)
         {
@@ -325,7 +308,6 @@ uint32_t ctx::new_bug(const map_crash_data_t& pCrashData)
     std::string version;
     parse_release(release.c_str(), product, version);
 
-    // fails only when you write query. when it's done it never fails.
     xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                                         "product", product.c_str(),
                                         "component", component.c_str(),
@@ -335,17 +317,14 @@ uint32_t ctx::new_bug(const map_crash_data_t& pCrashData)
                                         "status_whiteboard", status_whiteboard.c_str(),
                                         "platform", arch.c_str()
                               );
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env); // failed to allocate memory
 
-    xmlrpc_value* result;
+    xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.create", param, &result);
-    // we don't need anymore xml structure for calling xmlrpc query(calls only once)
     xmlrpc_DECREF(param);
-    if (env.fault_occurred)
-        throw_xml_fault(&env);
+    throw_if_xml_fault_occurred(&env);
 
-    xmlrpc_value* id;
+    xmlrpc_value* id = NULL;
     xmlrpc_struct_find_value(&env, result, "id", &id);
     if (env.fault_occurred)
     {
@@ -377,8 +356,6 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrash
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    xmlrpc_value* result = NULL;
-
     map_crash_data_t::const_iterator it = pCrashData.begin();
     for (; it != pCrashData.end(); it++)
     {
@@ -390,7 +367,6 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrash
          && (content.length() > CD_TEXT_ATT_SIZE || itemname == FILENAME_BACKTRACE)
         ) {
             char *encoded64 = encode_base64(content.c_str(), content.length());
-            // fails only when you write query. when it's done it never fails.
             xmlrpc_value* param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s})",
                                               bug_id_str,
                                               "description", ("File: " + itemname).c_str(),
@@ -399,18 +375,13 @@ void ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrash
                                               "data", encoded64
                                       );
             free(encoded64);
-            if (env.fault_occurred)
-                throw_xml_fault(&env);
+            throw_if_xml_fault_occurred(&env); // failed to allocate memory
 
+            xmlrpc_value* result = NULL;
             xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.addAttachment", param, &result);
-            // we don't need anymore xml structure for calling xmlrpc query(calls only once)
             xmlrpc_DECREF(param);
-            if (env.fault_occurred)
-            {
-                xmlrpc_DECREF(result);
-                throw_xml_fault(&env);
-            }
             xmlrpc_DECREF(result);
+            throw_if_xml_fault_occurred(&env);
         }
     }
 }

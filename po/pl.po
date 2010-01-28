@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-27 13:02+0000\n"
-"PO-Revision-Date: 2010-01-27 14:12+0100\n"
+"POT-Creation-Date: 2010-01-27 19:29+0000\n"
+"PO-Revision-Date: 2010-01-27 20:34+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -44,15 +44,15 @@ msgstr "Wtyczki zgłaszania"
 msgid "Database plugins"
 msgstr "Wtyczki baz danych"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
 msgid "Can't connect to system dbus"
 msgstr "Nie można połączyć się z systemową magistralą D-Bus"
 
-#: ../src/Gui/CCDBusBackend.py:104 ../src/Gui/CCDBusBackend.py:107
+#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if abrt daemon is running"
 msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony"
 
-#: ../src/Gui/CCDBusBackend.py:159
+#: ../src/Gui/CCDBusBackend.py:176
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -271,7 +271,7 @@ msgstr ""
 "Nie można zapisać ustawień wtyczki:\n"
 " %s"
 
-#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:17
+#: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
 msgstr "Dziennik"
 
@@ -361,13 +361,17 @@ msgid "I agree to submit this backtrace, which could contain sensitive data"
 msgstr ""
 "Wyrażam zgodę na wysłanie tego wyjątku, który może zawierać prywatne dane"
 
-#: ../src/Gui/report.glade.h:18
+#: ../src/Gui/report.glade.h:17
 msgid "N/A"
 msgstr "Nie dotyczy"
 
+#: ../src/Gui/report.glade.h:18
+msgid "Send report"
+msgstr "Wyślij raport"
+
 #: ../src/Gui/report.glade.h:19
-msgid "Send"
-msgstr "Wyślij"
+msgid "Show log"
+msgstr "Wyświetl dziennik"
 
 #: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"

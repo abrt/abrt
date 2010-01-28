@@ -15,7 +15,6 @@ CURL* xcurl_easy_init()
     return curl;
 }
 
-#if 1
 void throw_xml_fault(xmlrpc_env *env)
 {
     std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env->fault_string, env->fault_code);
@@ -24,19 +23,13 @@ void throw_xml_fault(xmlrpc_env *env)
     error_msg("%s", errmsg.c_str()); // show error in daemon log
     throw CABRTException(EXCEP_PLUGIN, errmsg.c_str());
 }
-#else
 void throw_if_xml_fault_occurred(xmlrpc_env *env)
 {
     if (env->fault_occurred)
     {
-        std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env->fault_string, env->fault_code);
-        xmlrpc_env_clean(env); // this is needed ONLY if fault_occurred
-        xmlrpc_env_init(env); // just in case user catches ex and _continues_ to use env
-        error_msg("%s", errmsg.c_str()); // show error in daemon log
-        throw CABRTException(EXCEP_PLUGIN, errmsg.c_str());
+        throw_xml_fault(env);
     }
 }
-#endif
 
 void abrt_xmlrpc_conn::new_xmlrpc_client(const char* url, bool no_ssl_verify)
 {

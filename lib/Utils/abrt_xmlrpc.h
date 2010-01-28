@@ -25,6 +25,7 @@ struct abrt_xmlrpc_conn {
 
 /* Utility functions */
 void throw_xml_fault(xmlrpc_env *env);
+void throw_if_xml_fault_occurred(xmlrpc_env *env);
 CURL* xcurl_easy_init();
 
 #endif
