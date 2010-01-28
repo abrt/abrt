@@ -79,12 +79,13 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
         }
     }
 
-    static const char command_default[] = "sosreport --batch --no-progressbar --only=anaconda --only=bootloader"
+    static const char command_default[] = "nice sosreport --batch --no-progressbar"
+                                            " --only=anaconda --only=bootloader"
                                             " --only=devicemapper --only=filesys --only=hardware --only=kernel"
                                             " --only=libraries --only=memory --only=networking --only=nfsserver"
                                             " --only=pam --only=process --only=rpm -k rpm.rpmva=off --only=ssh"
                                             " --only=startup --only=yum 2>&1";
-    static const char command_prefix[] = "sosreport --batch --no-progressbar";
+    static const char command_prefix[] = "nice sosreport --batch --no-progressbar";
     string command;
 
     vector_string_t args;
