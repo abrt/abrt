@@ -655,6 +655,12 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                 log("Package '%s' isn't signed with proper key", packageName.c_str());
                 return MW_GPG_ERROR;
             }
+            /*
+              Checking the MD5 sum requires to run prelink to "un-prelink" the
+              binaries - this is considered potential security risk so we don't
+              use it, until we find some non-intrusive way
+            */
+            /*
             if (!CheckHash(packageName.c_str(), pExecutable))
             {
                 error_msg("Executable '%s' seems to be modified, "
@@ -662,6 +668,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                                 pExecutable, packageName.c_str());
                 return MW_GPG_ERROR;
             }
+            */
         }
     }
 
