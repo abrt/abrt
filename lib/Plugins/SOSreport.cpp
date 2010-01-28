@@ -109,14 +109,19 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
     update_client(_("Done running sosreport"));
     VERB3 log("sosreport output:'%s'", output.c_str());
 
+    // Parse:
+    // "Your sosreport has been generated and saved in:
+    //  /tmp/sosreport-XXXX.tar.bz2"
     string sosreport_filename = ParseFilename(output);
     string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar.bz2");
 
     CDebugDump dd;
     dd.Open(pActionDir);
-    //Not useful
-    //dd.SaveText("sosreportoutput", output);
-    if (copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str(), 0644) < 0)
+    //Not useful: dd.SaveText("sosreportoutput", output);
+    off_t sz = copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str(), 0644);
+    unlink(sosreport_filename.c_str());            // don't want to leave sosreport-XXXX.tar.bz2 in /tmp
+    unlink((sosreport_filename + ".md5").c_str()); // sosreport-XXXX.tar.bz2.md5 too
+    if (sz < 0)
     {
         dd.Close();
         throw CABRTException(EXCEP_PLUGIN,
