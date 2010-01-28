@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-25 09:58+0000\n"
+"POT-Creation-Date: 2010-01-28 09:57+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -41,17 +41,17 @@ msgstr "תוספי דיווח"
 msgid "Database plugins"
 msgstr "תוספי מסד-נתונים"
 
-#: ../src/Gui/CCDBusBackend.py:74
-#: ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75
+#: ../src/Gui/CCDBusBackend.py:98
 msgid "Can't connect to system dbus"
 msgstr "לא יכול להתחבר ל-system bus"
 
-#: ../src/Gui/CCDBusBackend.py:104
-#: ../src/Gui/CCDBusBackend.py:107
+#: ../src/Gui/CCDBusBackend.py:121
+#: ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if abrt daemon is running"
 msgstr "אנא בדוק אם תהליך השירות של abrt פועל"
 
-#: ../src/Gui/CCDBusBackend.py:159
+#: ../src/Gui/CCDBusBackend.py:176
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -250,7 +250,6 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/dialogs.glade.h:1
-#: ../src/Gui/report.glade.h:17
 msgid "Log"
 msgstr "רישום"
 
@@ -339,13 +338,17 @@ msgstr "<span fgcolor=\"blue\">שחרור:</span>"
 msgid "I agree to submit this backtrace, which could contain sensitive data"
 msgstr "אני מסכים לשלוח את מידע הקריסה, שעלול להכיל מידע רגיש"
 
-#: ../src/Gui/report.glade.h:18
+#: ../src/Gui/report.glade.h:17
 msgid "N/A"
 msgstr "לא זמין"
 
+#: ../src/Gui/report.glade.h:18
+msgid "Send report"
+msgstr "שלח דיווח"
+
 #: ../src/Gui/report.glade.h:19
-msgid "Send"
-msgstr "שלח"
+msgid "Show log"
+msgstr "הצג יומן"
 
 #: ../src/Gui/SettingsDialog.py:33
 #: ../src/Gui/SettingsDialog.py:50
@@ -592,19 +595,19 @@ msgstr "יוצר דיווחי קריסה של kernel oops..."
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
 
-#: ../lib/Plugins/SOSreport.cpp:69
-msgid "Executing SOSreport plugin..."
-msgstr "מריץ את תוסף SOSreport..."
-
-#: ../lib/Plugins/SOSreport.cpp:91
+#: ../lib/Plugins/SOSreport.cpp:102
 #, c-format
-msgid "running sosreport: %s"
+msgid "Running sosreport: %s"
 msgstr "מריץ sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:97
-msgid "done running sosreport"
+#: ../lib/Plugins/SOSreport.cpp:108
+msgid "Done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
+#~ msgid "Send"
+#~ msgstr "שלח"
+#~ msgid "Executing SOSreport plugin..."
+#~ msgstr "מריץ את תוסף SOSreport..."
 #~ msgid ""
 #~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
 #~ "information.\n"
