@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.0.4
+Version: 1.0.5
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -403,6 +403,27 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Fri Jan 29 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.5-1
+- moved the gpg key list from abrt.conf to gpg_keys file (jmoskovc@redhat.com)
+- Logger: create log file with mode 0600 (vda.linux@googlemail.com)
+- GUI: fixed the rating logic, to prevent sending BT with rating < 3 (jmoskovc@redhat.com)
+- Report GUI: made more fields copyable - closed rhbz#526209; tweaked wording (vda.linux@googlemail.com)
+- GUI: fixed bug caused by failed gk-authorization (jmoskovc@redhat.com)
+- fix bug 559881 (kerneloops not shown in "new" GUI) (vda.linux@googlemail.com)
+- GUI ReporterDialog: hide log button (vda.linux@googlemail.com)
+- added valgrind and strace to blacklist (jmoskovc@redhat.com)
+- SOSreport: do not leave stray files in /tmp (vda.linux@googlemail.com)
+- Save the core where it belongs if ulimit -c is > 0 (jmoskovc@redhat.com)
+- reenabled gpg check (jmoskovc@redhat.com)
+- SOSreport: run it niced (vda.linux@googlemail.com)
+- report GUI: rename buttons: Log -> Show log, Send -> Send report (vda.linux@googlemail.com)
+- applet: reduce blinking timeout to 3 sec (vda.linux@googlemail.com)
+- fix dbus autostart (vda.linux@googlemail.com)
+- abrtd: set "Reported" status only if at least one reporter succeeded (vda.linux@googlemail.com)
+- SQLite3: disable newline escaping, SQLite does not handle it (vda.linux@googlemail.com)
+- SOSreport: make it avoid double runs; add forced regeneration; upd PLUGINS-HOWTO (vda.linux@googlemail.com)
+- attribute SEGVs in perl to script's package, like we already do for python (vda.linux@googlemail.com)
+
 * Wed Jan 20 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.4-1
 - enabled sosreport
 - fixes in ticketuploader
