@@ -383,10 +383,13 @@ report_status_t Report(const map_crash_data_t& client_report,
     const std::string& pDumpDir = get_crash_data_item_content(stored_report, CD_DUMPDIR);
 
     // Save comment, "how to reproduce", backtrace
+//TODO: we should iterate through stored_report and modify all
+//modifiable fields which have new data in client_report
     const char *comment = get_crash_data_item_content_or_NULL(client_report, FILENAME_COMMENT);
     const char *reproduce = get_crash_data_item_content_or_NULL(client_report, FILENAME_REPRODUCE);
     const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
-    if (comment || reproduce || backtrace)
+    const char *kerneloops = get_crash_data_item_content_or_NULL(client_report, FILENAME_KERNELOOPS);
+    if (comment || reproduce || backtrace || kerneloops)
     {
         CDebugDump dd;
         dd.Open(pDumpDir.c_str());
@@ -404,6 +407,11 @@ report_status_t Report(const map_crash_data_t& client_report,
         {
             dd.SaveText(FILENAME_BACKTRACE, backtrace);
             add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
+        }
+        if (kerneloops)
+        {
+            dd.SaveText(FILENAME_KERNELOOPS, kerneloops);
+            add_to_crash_data_ext(stored_report, FILENAME_KERNELOOPS, CD_TXT, CD_ISEDITABLE, kerneloops);
         }
     }
 

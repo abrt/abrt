@@ -190,7 +190,7 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
         retry_count = m_nRetryCount;
         retry_delay = m_nRetryDelay;
     }
-    update_client(_("Creating an TicketUploader report..."));
+    update_client(_("Creating a TicketUploader report..."));
 
     bool have_ticket_name = (ticket_name != "");
     if (!have_ticket_name)
