@@ -103,10 +103,13 @@ class SettingsDialog:
         ## MaxCrashSize
         self.builder.get_object("sbMaxCrashReportsSize").set_value(float(common["MaxCrashReportsSize"]))
         ## GPG keys
-        self.builder.get_object("eOpenGPGPublicKeys").set_text(common["OpenGPGPublicKeys"])
-        self.gpgkeys = common["OpenGPGPublicKeys"].split(',')
-        for gpgkey in self.gpgkeys:
-            self.GPGKeysListStore.append([gpgkey])
+        try:
+            self.builder.get_object("eOpenGPGPublicKeys").set_text(common["OpenGPGPublicKeys"])
+            self.gpgkeys = common["OpenGPGPublicKeys"].split(',')
+            for gpgkey in self.gpgkeys:
+                self.GPGKeysListStore.append([gpgkey])
+        except:
+            pass
 
         ## blacklist
         self.builder.get_object("eBlacklist").set_text(common["BlackList"])
