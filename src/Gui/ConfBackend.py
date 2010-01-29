@@ -26,6 +26,14 @@ class ConfBackendSaveError(Exception):
     def __str__(self):
         return self.what
 
+class ConfBackendLoadError(Exception):
+    def __init__(self, msg):
+        Exception.__init__(self)
+        self.what = msg
+
+    def __str__(self):
+        return self.what
+
 
 class ConfBackend(object):
     def __init__(self):
@@ -111,26 +119,41 @@ class ConfBackendGnomeKeyring(ConfBackend):
 
     def load(self, name):
         item_list = None
-        try:
-            log2("looking for keyring items with 'AbrtPluginInfo:%s' attr", str(name))
-            item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, {"AbrtPluginInfo":str(name)})
-            for item in item_list:
-                # gnome keyring is weeeeird. why display_name, type, mtime, ctime
-                # aren't available in find_items_sync() results? why we need to
-                # get them via additional call, item_get_info_sync()?
-                # internally, item has GNOME_KEYRING_TYPE_FOUND type,
-                # and info has GNOME_KEYRING_TYPE_ITEM_INFO type.
-                # why not use the same type for both?
-                #
-                # and worst of all, this information took four hours of googling...
-                #
-                #info = gkey.item_get_info_sync(item.keyring, item.item_id)
-                log2("found keyring item: ring:'%s' item_id:%s attrs:%s", # "secret:'%s' display_name:'%s'"
-                        item.keyring, item.item_id, str(item.attributes) #, item.secret, info.get_display_name()
-                )
-        except gkey.NoMatchError:
-            # nothing found
-            pass
+        #FIXME: make this configurable
+        # this actually makes GUI to ask twice per every plugin
+        # which have it's settings stored in keyring
+        attempts = 2
+        while attempts:
+            try:
+                log2("looking for keyring items with 'AbrtPluginInfo:%s' attr", str(name))
+                item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, {"AbrtPluginInfo":str(name)})
+                for item in item_list:
+                    # gnome keyring is weeeeird. why display_name, type, mtime, ctime
+                    # aren't available in find_items_sync() results? why we need to
+                    # get them via additional call, item_get_info_sync()?
+                    # internally, item has GNOME_KEYRING_TYPE_FOUND type,
+                    # and info has GNOME_KEYRING_TYPE_ITEM_INFO type.
+                    # why not use the same type for both?
+                    #
+                    # and worst of all, this information took four hours of googling...
+                    #
+                    #info = gkey.item_get_info_sync(item.keyring, item.item_id)
+                    log2("found keyring item: ring:'%s' item_id:%s attrs:%s", # "secret:'%s' display_name:'%s'"
+                            item.keyring, item.item_id, str(item.attributes) #, item.secret, info.get_display_name()
+                    )
+            except gkey.NoMatchError:
+                # nothing found
+                pass
+            except gkey.DeniedError, e:
+                attempts -= 1
+                log2("gk-authorization has failed %i time(s)", 2-attempts)
+                if attempts == 0:
+                    # we tried 2 times, so giving up the authorization
+                    print "raising exception"
+                    raise ConfBackendLoadError(_("Access to gnome-keyring has been denied, can't load the settings for %s!" % name))
+                continue
+            break
+
         if item_list:
             retval = item_list[0].attributes.copy()
             retval["Password"] = item_list[0].secret

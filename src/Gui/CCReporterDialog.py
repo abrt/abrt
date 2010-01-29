@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pygtk
 pygtk.require("2.0")
-import gtk #, pango
+import gtk
 import gtk.glade
 import pango
 import sys
@@ -12,7 +12,7 @@ from PluginSettingsUI import PluginSettingsUI
 from PluginList import getPluginInfoList
 #from CCDumpList import getDumpList, DumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
-from abrt_utils import _, log, log1, log2
+from abrt_utils import _, log, log1, log2, get_verbose_level, g_verbose
 
 # FIXME - create method or smth that returns type|editable|content
 
@@ -51,7 +51,12 @@ class ReporterDialog():
         self.tevHowToReproduce = self.builder.get_object("tevHowToReproduce")
 
         self.builder.get_object("fErrors").hide()
-        self.builder.get_object("bLog").connect("clicked", self.show_log_cb, log)
+        bLog = self.builder.get_object("bLog")
+        #if g_verbose > 0: - doesn't work! why?!
+        if get_verbose_level() > 0:
+            bLog.connect("clicked", self.show_log_cb, log)
+        else:
+            bLog.unset_flags(gtk.VISIBLE)
         self.builder.get_object("cbSendBacktrace").connect("toggled", self.on_send_backtrace_toggled)
         self.allow_send()
         self.hydrate()
@@ -84,16 +89,16 @@ class ReporterDialog():
         send = True
         error_msgs = []
         try:
-            rating = self.report[FILENAME_RATING]
+            rating = int(self.report[FILENAME_RATING][CD_CONTENT])
         except:
             rating = None
         # active buttons acording to required fields
         # if an backtrace has rating use it
         if not SendBacktrace:
             send = False
-            error_msgs.append(_("You must agree with submitting the backtrace."))
+            error_msgs.append(_("You must check backtrace for sensitive data"))
         # we have both SendBacktrace and rating
-        if rating:
+        if rating != None:
             try:
                 package = self.report[FILENAME_PACKAGE][CD_CONTENT]
             # if we don't have package for some reason
@@ -105,6 +110,7 @@ class ReporterDialog():
                     error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command: <b>debuginfo-install %s</b> \nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                 else:
                     error_msgs.append(_("The backtrace is unusable, you can't report this!"))
+                send = False
             # probably usable 3
             elif int(self.report[FILENAME_RATING][CD_CONTENT]) < 4:
                 error_msgs.append(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
@@ -214,7 +220,8 @@ class ReporterDialog():
             except:
                 pass
 
-            if item == FILENAME_BACKTRACE:
+            if item == FILENAME_BACKTRACE or item == FILENAME_KERNELOOPS:
+                self.is_oops = item == FILENAME_KERNELOOPS
                 buff = gtk.TextBuffer()
                 tvBacktrace = self.builder.get_object("tvBacktrace")
                 buff.set_text(self.report[item][CD_CONTENT])
@@ -303,7 +310,10 @@ class ReporterDialog():
         tev_backtrace = self.builder.get_object("tvBacktrace")
         buff = tev_backtrace.get_buffer()
         text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
-        self.report[FILENAME_BACKTRACE] = [CD_TXT, 'y', text]
+        if self.is_oops:
+            self.report[FILENAME_KERNELOOPS] = [CD_TXT, 'y', text]
+        else:
+            self.report[FILENAME_BACKTRACE] = [CD_TXT, 'y', text]
 
     def check_report(self):
     # FIXME: check the report for passwords and some other potentially

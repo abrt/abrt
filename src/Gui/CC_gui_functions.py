@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import gtk
+import pango
 import subprocess
 import sys
 # url markup is supported from gtk 2.17 so we need to use libsexy
@@ -34,7 +35,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
     builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
     dialog = builder.get_object("ReportDialog")
-    dialog.set_default_size(200, 50)
+    dialog.set_default_size(360, 50)
     dialog.set_resizable(False)
     main_hbox = builder.get_object("main_hbox")
 
@@ -50,11 +51,13 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         plugin_label.set_alignment(0, 0)
         status_label = gtk.Label()
         status_label.set_max_width_chars(MAX_WIDTH)
+        status_label.set_size_request(360,-1)
         status_label.set_selectable(True)
         status_label.set_line_wrap(True)
+        status_label.set_line_wrap_mode(pango.WRAP_CHAR)
         status_label.set_alignment(0, 0)
         plugin_status_vbox.pack_start(plugin_label, expand=False)
-        plugin_status_vbox.pack_start(status_label, expand=False)
+        plugin_status_vbox.pack_start(status_label, fill=True, expand=True)
         # 0 means not succesfull
         #if report_status_dict[plugin][0] == '0':
         # this first one is actually a fallback to set at least
@@ -72,8 +75,9 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
             else:
                 status_label.set_text("%s" % report_status_dict[plugin][1])
         if len(report_status_dict[plugin][1]) > MAX_WIDTH:
+            print "setting tooltip for %s" % report_status_dict[plugin][1]
             status_label.set_tooltip_text(report_status_dict[plugin][1])
-        status_vbox.pack_start(plugin_status_vbox, expand=False)
+        status_vbox.pack_start(plugin_status_vbox, fill=True, expand=False)
     main_hbox.pack_start(status_vbox)
 
     if widget != None:

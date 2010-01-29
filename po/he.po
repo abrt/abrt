@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-28 09:57+0000\n"
+"POT-Creation-Date: 2010-01-29 10:00+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -484,50 +484,53 @@ msgstr "אזהרה"
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:132
-#: ../lib/Plugins/Bugzilla.cpp:300
-msgid "Missing member 'bugs'"
-msgstr "חסר שדה 'bugs'"
+#: ../lib/Plugins/Bugzilla.cpp:124
+msgid "Missing member 'reporter'"
+msgstr "חסר שדה 'reporter'"
 
-#: ../lib/Plugins/Bugzilla.cpp:184
+#: ../lib/Plugins/Bugzilla.cpp:176
 msgid "Missing member 'cc'"
 msgstr "חסר שדה 'cc'"
 
-#: ../lib/Plugins/Bugzilla.cpp:279
+#: ../lib/Plugins/Bugzilla.cpp:262
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "הבאג דווח בעבר: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:291
+#: ../lib/Plugins/Bugzilla.cpp:274
 msgid "Missing member 'bug_id'"
 msgstr "חסר שדה 'bug_id'"
 
-#: ../lib/Plugins/Bugzilla.cpp:367
+#: ../lib/Plugins/Bugzilla.cpp:283
+msgid "Missing member 'bugs'"
+msgstr "חסר שדה 'bugs'"
+
+#: ../lib/Plugins/Bugzilla.cpp:346
 #, c-format
 msgid "New bug id: %i"
 msgstr "מזהה באג חדש: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:440
 msgid "Checking for duplicates..."
 msgstr "מחפש כפילויות..."
 
-#: ../lib/Plugins/Bugzilla.cpp:475
+#: ../lib/Plugins/Bugzilla.cpp:446
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "שם משתמש וסיסמה ריקים. אנא בדוק את הקובץ bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:478
+#: ../lib/Plugins/Bugzilla.cpp:449
 msgid "Logging into bugzilla..."
 msgstr "מתחבר לבאגזילה..."
 
-#: ../lib/Plugins/Bugzilla.cpp:483
+#: ../lib/Plugins/Bugzilla.cpp:454
 msgid "Checking CC..."
 msgstr "בודק שדה CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:494
+#: ../lib/Plugins/Bugzilla.cpp:465
 msgid "Creating new bug..."
 msgstr "יוצר באג חדש..."
 
-#: ../lib/Plugins/Bugzilla.cpp:498
+#: ../lib/Plugins/Bugzilla.cpp:469
 msgid "Logging out..."
 msgstr "מתנתק..."
 
@@ -595,12 +598,12 @@ msgstr "יוצר דיווחי קריסה של kernel oops..."
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
 
-#: ../lib/Plugins/SOSreport.cpp:102
+#: ../lib/Plugins/SOSreport.cpp:103
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "מריץ sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:108
+#: ../lib/Plugins/SOSreport.cpp:109
 msgid "Done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
