@@ -40,7 +40,9 @@ dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf
 
 daemonconfdir = $(CONF_DIR)
-dist_daemonconf_DATA = abrt.conf
+dist_daemonconf_DATA = \
+    abrt.conf \
+    gpg_keys
 
 polkitconfdir = ${datadir}/polkit-1/actions
 dist_polkitconf_DATA = org.fedoraproject.abrt.policy

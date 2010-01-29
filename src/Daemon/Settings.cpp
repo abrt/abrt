@@ -151,11 +151,6 @@ static void ParseCommon()
     {
         g_settings_bOpenGPGCheck = string_to_bool(it->second.c_str());
     }
-    it = s_mapSectionCommon.find("OpenGPGPublicKeys");
-    if (it != end)
-    {
-        g_settings_setOpenGPGPublicKeys = ParseList(it->second.c_str());
-    }
     it = s_mapSectionCommon.find("BlackList");
     if (it != end)
     {
@@ -246,6 +241,26 @@ static void ParseAnalyzerActionsAndReporters()
     }
 }
 
+static void LoadGPGKeys()
+{
+    std::ifstream fIn;
+    fIn.open(CONF_DIR"/gpg_keys");
+    if (fIn.is_open())
+    {
+        std::string line;
+        /* every line is one key
+         FIXME: make it more robust, it doesn't handle comments
+        */
+        while (fIn.good())
+        {
+            getline(fIn, line);
+            if (line[0] == '/') // probably the begining of path, so let's handle it as a key
+                g_settings_setOpenGPGPublicKeys.insert(line);
+        }
+        fIn.close();
+    }
+}
+
 /* abrt daemon loads .conf file */
 void LoadSettings()
 {
@@ -255,7 +270,7 @@ void LoadSettings()
     {
         std::string line;
         std::string section;
-        while (!fIn.eof())
+        while (fIn.good())
         {
             getline(fIn, line);
 
@@ -345,6 +360,8 @@ void LoadSettings()
     ParseCommon();
     ParseAnalyzerActionsAndReporters();
     ParseCron();
+    if(g_settings_bOpenGPGCheck)
+        LoadGPGKeys();
 }
 
 /* dbus call to retrieve .conf file data from daemon */

@@ -275,6 +275,7 @@ fi
 %{_bindir}/%{name}-debuginfo-install
 %{_bindir}/%{name}-backtrace
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
+%config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
