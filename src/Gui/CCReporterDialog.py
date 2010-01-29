@@ -96,7 +96,7 @@ class ReporterDialog():
         # if an backtrace has rating use it
         if not SendBacktrace:
             send = False
-            error_msgs.append(_("You must agree with submitting the backtrace."))
+            error_msgs.append(_("You must check backtrace for sensitive data"))
         # we have both SendBacktrace and rating
         if rating:
             try:
