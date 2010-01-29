@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import pygtk
 pygtk.require("2.0")
-import gtk #, pango
+import gtk
 import gtk.glade
 import pango
 import sys
@@ -12,7 +12,7 @@ from PluginSettingsUI import PluginSettingsUI
 from PluginList import getPluginInfoList
 #from CCDumpList import getDumpList, DumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
-from abrt_utils import _, log, log1, log2
+from abrt_utils import _, log, log1, log2, get_verbose_level, g_verbose
 
 # FIXME - create method or smth that returns type|editable|content
 
@@ -51,7 +51,12 @@ class ReporterDialog():
         self.tevHowToReproduce = self.builder.get_object("tevHowToReproduce")
 
         self.builder.get_object("fErrors").hide()
-        self.builder.get_object("bLog").connect("clicked", self.show_log_cb, log)
+        bLog = self.builder.get_object("bLog")
+        #if g_verbose > 0: - doesn't work! why?!
+        if get_verbose_level() > 0:
+            bLog.connect("clicked", self.show_log_cb, log)
+        else:
+            bLog.unset_flags(gtk.VISIBLE)
         self.builder.get_object("cbSendBacktrace").connect("toggled", self.on_send_backtrace_toggled)
         self.allow_send()
         self.hydrate()

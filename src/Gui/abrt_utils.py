@@ -25,6 +25,11 @@ def init_logging(progname, v):
     gtk.glade.textdomain(PROGNAME)
     gettext.textdomain(PROGNAME)
 
+def get_verbose_level():
+    # Just importing g_verbose from another module doesn't work (why!?),
+    # need to use a function
+    return g_verbose
+
 def log(fmt, *args):
     sys.stderr.write("%s: %s\n" % (PROGNAME, fmt % args))
 
