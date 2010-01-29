@@ -688,7 +688,9 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         dd.Open(pDebugDumpDir);
         dd.SaveText(FILENAME_PACKAGE, package.c_str());
         dd.SaveText(FILENAME_DESCRIPTION, description.c_str());
-        dd.SaveText(FILENAME_COMPONENT, component.c_str());
+        /* For oopses, pExecutable == "kernel" gives "" here. Don't write it */
+        if (component.size() != 0)
+            dd.SaveText(FILENAME_COMPONENT, component.c_str());
     }
     catch (CABRTException& e)
     {
