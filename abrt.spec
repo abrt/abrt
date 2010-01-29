@@ -203,6 +203,8 @@ Requires: %{name}-addon-ccpp, %{name}-addon-python
 Requires: gdb >= 7.0-3
 Requires: %{name}-gui
 Requires: %{name}-plugin-logger, %{name}-plugin-ticketuploader, %{name}-plugin-sosreport
+# remove for GA
+Requires: %{name}-plugin-bugzilla
 #Requires: %{name}-plugin-firefox
 Obsoletes: bug-buddy
 Provides: bug-buddy
