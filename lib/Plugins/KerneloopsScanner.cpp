@@ -101,6 +101,7 @@ void CKerneloopsScanner::SaveOopsToDebugDump()
 			dd.SaveText(FILENAME_KERNEL, first_line);
 			dd.SaveText(FILENAME_PACKAGE, "not_applicable");
 			dd.SaveText(FILENAME_CMDLINE, "not_applicable");
+			dd.SaveText(FILENAME_COMPONENT, "kernel");
 			dd.SaveText(FILENAME_KERNELOOPS, second_line);
 		}
 		catch (CABRTException& e)
