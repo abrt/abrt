@@ -35,7 +35,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
     builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
     dialog = builder.get_object("ReportDialog")
-    dialog.set_default_size(360, 50)
+    dialog.set_default_size(400, 50)
     dialog.set_resizable(False)
     main_hbox = builder.get_object("main_hbox")
 
@@ -51,7 +51,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         plugin_label.set_alignment(0, 0)
         status_label = gtk.Label()
         status_label.set_max_width_chars(MAX_WIDTH)
-        status_label.set_size_request(360,-1)
+        status_label.set_size_request(400,-1)
         status_label.set_selectable(True)
         status_label.set_line_wrap(True)
         status_label.set_line_wrap_mode(pango.WRAP_CHAR)
