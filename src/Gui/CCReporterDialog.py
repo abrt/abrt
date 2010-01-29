@@ -219,7 +219,8 @@ class ReporterDialog():
             except:
                 pass
 
-            if item == FILENAME_BACKTRACE:
+            if item == FILENAME_BACKTRACE or item == FILENAME_KERNELOOPS:
+                self.is_oops = item == FILENAME_KERNELOOPS
                 buff = gtk.TextBuffer()
                 tvBacktrace = self.builder.get_object("tvBacktrace")
                 buff.set_text(self.report[item][CD_CONTENT])
@@ -308,7 +309,10 @@ class ReporterDialog():
         tev_backtrace = self.builder.get_object("tvBacktrace")
         buff = tev_backtrace.get_buffer()
         text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
-        self.report[FILENAME_BACKTRACE] = [CD_TXT, 'y', text]
+        if self.is_oops:
+            self.report[FILENAME_KERNELOOPS] = [CD_TXT, 'y', text]
+        else:
+            self.report[FILENAME_BACKTRACE] = [CD_TXT, 'y', text]
 
     def check_report(self):
     # FIXME: check the report for passwords and some other potentially
