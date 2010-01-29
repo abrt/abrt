@@ -39,7 +39,15 @@ class PluginSettings(dict):
             self[str(key)] = str(daemon_settings[key])
 
         if self.client_side_conf:
-            settings = self.client_side_conf.load(name)
+            # FIXME: this fails when gk-authoriaztion fails
+            # we need to show a dialog to user and let him know
+            # for now just silently ignore it to avoid rhbz#559342
+            settings = {}
+            try:
+                settings = self.client_side_conf.load(name)
+            except Exception, e:
+                print e
+                pass
             # overwrite daemon data with user setting
             for key in settings.keys():
                 # only rewrite keys which exist in plugin's keys.
