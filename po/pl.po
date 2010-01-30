@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-27 19:29+0000\n"
-"PO-Revision-Date: 2010-01-27 20:34+0100\n"
+"POT-Creation-Date: 2010-01-30 17:28+0000\n"
+"PO-Revision-Date: 2010-01-30 18:32+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,23 +24,23 @@ msgstr ""
 "Otrzymano nieoczekiwane dane od demona (czy baza danych została właściwie "
 "zaktualizowana?)."
 
-#: ../src/Gui/ABRTPlugin.py:56
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "Nie wczytano wtyczek"
 
-#: ../src/Gui/ABRTPlugin.py:57
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "Wtyczki analizy"
 
-#: ../src/Gui/ABRTPlugin.py:58
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "Wtyczki czynności"
 
-#: ../src/Gui/ABRTPlugin.py:59
+#: ../src/Gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
 msgstr "Wtyczki zgłaszania"
 
-#: ../src/Gui/ABRTPlugin.py:60
+#: ../src/Gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "Wtyczki baz danych"
 
@@ -233,11 +233,11 @@ msgstr ""
 "Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
 "języku angielskim)..."
 
-#: ../src/Gui/CCReporterDialog.py:94
-msgid "You must agree with submitting the backtrace."
-msgstr "Należy wyrazić zgodę na wysłanie wyjątku."
+#: ../src/Gui/CCReporterDialog.py:99
+msgid "You must check backtrace for sensitive data"
+msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane"
 
-#: ../src/Gui/CCReporterDialog.py:105
+#: ../src/Gui/CCReporterDialog.py:110
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -250,11 +250,11 @@ msgstr ""
 "<b>debuginfo-install %s</b>, \n"
 "a następnie nacisnąć przycisk Odśwież, aby ponownie utworzyć wyjątek."
 
-#: ../src/Gui/CCReporterDialog.py:107
+#: ../src/Gui/CCReporterDialog.py:112
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Nie można użyć tego wyjątku, więc nie można tego zgłosić."
 
-#: ../src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:116
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -262,7 +262,7 @@ msgstr ""
 "Wyjątek jest niepełny. Proszę upewnić się, że podano właściwe kroki "
 "ponownego wywołania awarii."
 
-#: ../src/Gui/CCReporterDialog.py:152
+#: ../src/Gui/CCReporterDialog.py:158
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -357,9 +357,8 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Wydanie:</span>"
 
 #: ../src/Gui/report.glade.h:16
-msgid "I agree to submit this backtrace, which could contain sensitive data"
-msgstr ""
-"Wyrażam zgodę na wysłanie tego wyjątku, który może zawierać prywatne dane"
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr "Sprawdzono wyjątek i usunięto prywatne dane (hasła itp.)"
 
 #: ../src/Gui/report.glade.h:17
 msgid "N/A"
@@ -381,11 +380,11 @@ msgstr "<b>Wybór wtyczki</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>Wybór zaplecza bazy danych</b>"
 
-#: ../src/Gui/SettingsDialog.py:166
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Usuń te zadanie"
 
-#: ../src/Gui/SettingsDialog.py:210
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Usuń tę czynność"
 
@@ -510,49 +509,53 @@ msgstr ""
 "Wielkość raportu przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
 "wartość zmiennej MaxCrashReportsSize w pliku abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:132 ../lib/Plugins/Bugzilla.cpp:300
-msgid "Missing member 'bugs'"
-msgstr "Brak elementu \"bugs\""
+#: ../lib/Plugins/Bugzilla.cpp:124
+msgid "Missing member 'reporter'"
+msgstr "Brak elementu \"reporter\""
 
-#: ../lib/Plugins/Bugzilla.cpp:184
+#: ../lib/Plugins/Bugzilla.cpp:176
 msgid "Missing member 'cc'"
 msgstr "Brak elementu \"cc\""
 
-#: ../lib/Plugins/Bugzilla.cpp:279
+#: ../lib/Plugins/Bugzilla.cpp:262
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Błąd został już wcześniej zgłoszony: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:291
+#: ../lib/Plugins/Bugzilla.cpp:274
 msgid "Missing member 'bug_id'"
 msgstr "Brak elementu \"bug_id\""
 
-#: ../lib/Plugins/Bugzilla.cpp:367
+#: ../lib/Plugins/Bugzilla.cpp:283
+msgid "Missing member 'bugs'"
+msgstr "Brak elementu \"bugs\""
+
+#: ../lib/Plugins/Bugzilla.cpp:346
 #, c-format
 msgid "New bug id: %i"
 msgstr "Identyfikator nowego błędu: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:440
 msgid "Checking for duplicates..."
 msgstr "Sprawdzanie duplikatów..."
 
-#: ../lib/Plugins/Bugzilla.cpp:475
+#: ../lib/Plugins/Bugzilla.cpp:446
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Pola login i hasło są puste. Proszę sprawdzić plik Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:478
+#: ../lib/Plugins/Bugzilla.cpp:449
 msgid "Logging into bugzilla..."
 msgstr "Logowanie do Bugzilli..."
 
-#: ../lib/Plugins/Bugzilla.cpp:483
+#: ../lib/Plugins/Bugzilla.cpp:454
 msgid "Checking CC..."
 msgstr "Sprawdzanie listy CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:494
+#: ../lib/Plugins/Bugzilla.cpp:465
 msgid "Creating new bug..."
 msgstr "Dodawanie nowego błędu..."
 
-#: ../lib/Plugins/Bugzilla.cpp:498
+#: ../lib/Plugins/Bugzilla.cpp:469
 msgid "Logging out..."
 msgstr "Wylogowywanie..."
 
@@ -584,7 +587,7 @@ msgstr "Pomijanie instalacji pakietu debuginfo"
 msgid "Creating and submitting a report..."
 msgstr "Tworzenie i wysyłanie raportu..."
 
-#: ../lib/Plugins/Logger.cpp:82
+#: ../lib/Plugins/Logger.cpp:76
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Zapisywanie raportu do \"%s\""
@@ -620,11 +623,11 @@ msgstr "Tworzenie raportów awarii jądra typu \"oops\"..."
 msgid "Sending an email..."
 msgstr "Wysłanie wiadomości e-mail..."
 
-#: ../lib/Plugins/SOSreport.cpp:102
+#: ../lib/Plugins/SOSreport.cpp:103
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Wykonywanie sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:108
+#: ../lib/Plugins/SOSreport.cpp:109
 msgid "Done running sosreport"
 msgstr "Ukończono wykonywanie sosreport"
