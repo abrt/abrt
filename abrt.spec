@@ -183,6 +183,11 @@ uncaught exception in python programs.
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
+# FIXME: make this into group?
+Requires: %{name}-plugin-logger, %{name}-plugin-ticketuploader, %{name}-plugin-sosreport
+# remove for GA
+Requires: %{name}-plugin-bugzilla
+
 
 %description cli
 This package contains simple command line client for controling abrt daemon over
@@ -203,6 +208,8 @@ Requires: %{name}-addon-ccpp, %{name}-addon-python
 Requires: gdb >= 7.0-3
 Requires: %{name}-gui
 Requires: %{name}-plugin-logger, %{name}-plugin-ticketuploader, %{name}-plugin-sosreport
+# remove for GA
+Requires: %{name}-plugin-bugzilla
 #Requires: %{name}-plugin-firefox
 Obsoletes: bug-buddy
 Provides: bug-buddy
