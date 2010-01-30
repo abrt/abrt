@@ -19,6 +19,9 @@ except:
 from abrt_utils import _, log, log1, log2
 
 
+def on_label_resize(label, allocation):
+    label.set_size_request(allocation.width,-1)
+
 def on_url_clicked(label, url):
     import gnomevfs
     file_mimetype = gnomevfs.get_mime_type(url)
@@ -35,8 +38,8 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
     builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
     dialog = builder.get_object("ReportDialog")
-    dialog.set_default_size(400, 50)
-    dialog.set_resizable(False)
+    dialog.set_geometry_hints(dialog, min_width=450, min_height=150)
+    dialog.set_resizable(True)
     main_hbox = builder.get_object("main_hbox")
 
     STATUS = 0
@@ -50,6 +53,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         plugin_label.set_justify(gtk.JUSTIFY_RIGHT)
         plugin_label.set_alignment(0, 0)
         status_label = gtk.Label()
+        status_label.connect("size-allocate",on_label_resize)
         status_label.set_max_width_chars(MAX_WIDTH)
         status_label.set_size_request(400,-1)
         status_label.set_selectable(True)
@@ -75,7 +79,6 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
             else:
                 status_label.set_text("%s" % report_status_dict[plugin][1])
         if len(report_status_dict[plugin][1]) > MAX_WIDTH:
-            print "setting tooltip for %s" % report_status_dict[plugin][1]
             status_label.set_tooltip_text(report_status_dict[plugin][1])
         status_vbox.pack_start(plugin_status_vbox, fill=True, expand=False)
     main_hbox.pack_start(status_vbox)
