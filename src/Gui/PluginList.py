@@ -6,6 +6,7 @@ from abrt_utils import _, log, log1, log2
 class PluginInfoList(list):
     """Class to store list of PluginInfos"""
     def __init__(self,dbus_manager=None):
+        list.__init__(self)
         self.dm = dbus_manager
 
     def load(self):

@@ -14,7 +14,7 @@ else:
 try:
     # we don't want to add dependency to rpm, but if we have it, we can use it
     import rpm
-except:
+except ImportError:
     rpm = None
 from abrt_utils import _, log, log1, log2
 
@@ -44,7 +44,6 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
 
     STATUS = 0
     MESSAGE = 1
-    message = ""
     status_vbox = gtk.VBox()
     for plugin, res in report_status_dict.iteritems():
         plugin_status_vbox = gtk.VBox()
@@ -63,16 +62,16 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         plugin_status_vbox.pack_start(plugin_label, expand=False)
         plugin_status_vbox.pack_start(status_label, fill=True, expand=True)
         # 0 means not succesfull
-        #if report_status_dict[plugin][0] == '0':
+        #if report_status_dict[plugin][STATUS] == '0':
         # this first one is actually a fallback to set at least
         # a raw text in case when set_markup() fails
-        status_label.set_text(report_status_dict[plugin][1])
-        status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][1])
+        status_label.set_text(report_status_dict[plugin][MESSAGE])
+        status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][MESSAGE])
         # if the report was not succesful then this won't pass so this runs only
         # if report succeds and gets overwriten by the status message
-        if report_status_dict[plugin][0] == '1':
-            if "http" in report_status_dict[plugin][1][0:4] or "file://" in report_status_dict[plugin][1][0:7]:
-                status_label.set_markup("<a href=\"%s\">%s</a>" % (report_status_dict[plugin][1], report_status_dict[plugin][1]))
+        if report_status_dict[plugin][STATUS] == '1':
+            if "http" in report_status_dict[plugin][MESSAGE][0:4] or "file://" in report_status_dict[plugin][MESSAGE][0:7]:
+                status_label.set_markup("<a href=\"%s\">%s</a>" % (report_status_dict[plugin][MESSAGE], report_status_dict[plugin][MESSAGE]))
                 # FIXME: make a new branch for rawhide with gtk 2.17 and remove this
                 if gtk.gtk_version[1] < 17:
                     status_label.connect(on_url_clicked_signal, on_url_clicked)
@@ -206,7 +205,7 @@ def get_icon_for_package(theme, package):
                 # .dektop file found
                 for filename in h['filenames']:
                     if filename.rfind("%s.png" % icon_filename) != -1:
-            		log2("png file:'%s'", filename)
+                        log2("png file:'%s'", filename)
                         icon_filename = filename
                         break
             #we didn't find the .desktop file
@@ -224,7 +223,7 @@ def get_icon_for_package(theme, package):
         else:
             return None
 
-def show_log(log, parent=None):
+def show_log(message_log, parent=None):
     builder = gtk.Builder()
     builderfile = "%s%sdialogs.glade" % (sys.path[0],"/")
     builder.add_from_file(builderfile)
@@ -238,7 +237,7 @@ def show_log(log, parent=None):
         dialog.set_position (gtk.WIN_POS_CENTER)
 
     buff = gtk.TextBuffer()
-    buff.set_text(log)
+    buff.set_text(message_log)
     tevLog.set_buffer(buff)
 
     dialog.run()

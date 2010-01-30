@@ -21,7 +21,6 @@ class PluginSettings(dict):
             self.client_side_conf = getCurrentConfBackend()
         except ConfBackendInitError, e:
             print e
-            pass
 
     def check(self):
         # if present, these should be non-empty
@@ -47,7 +46,6 @@ class PluginSettings(dict):
                 settings = self.client_side_conf.load(name)
             except Exception, e:
                 print e
-                pass
             # overwrite daemon data with user setting
             for key in settings.keys():
                 # only rewrite keys which exist in plugin's keys.

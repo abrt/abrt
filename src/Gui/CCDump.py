@@ -79,11 +79,11 @@ class Dump():
         #return self.Message[CD_CONTENT].split('\n')
         return self.Message[CD_CONTENT]
 
-    def getTime(self, format):
+    def getTime(self, fmt):
         #print format
-        if format:
+        if fmt:
             try:
-                return datetime.fromtimestamp(int(self.time[CD_CONTENT])).strftime(format)
+                return datetime.fromtimestamp(int(self.time[CD_CONTENT])).strftime(fmt)
             except Exception, e:
                 print e
         return int(self.time[CD_CONTENT])

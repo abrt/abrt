@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-import CCDBusBackend
 from CCDump import Dump
 
 from abrt_utils import _, init_logging, log, log1, log2
@@ -7,6 +6,7 @@ from abrt_utils import _, init_logging, log, log1, log2
 class DumpList(list):
     """Class to store list of debug dumps"""
     def __init__(self,dbus_manager=None):
+        list.__init__(self)
         self.dm = dbus_manager
 
     def load(self):
@@ -21,7 +21,7 @@ class DumpList(list):
                         log2(" DumpList.%s='%s'", column, row[column])
                         entry.__dict__[column] = row[column]
                     self.append(entry)
-            except Exception, e:
+            except Exception:
                 # FIXME handle exception better
                 # this is just temporary workaround for rhbz#543725
                 raise
