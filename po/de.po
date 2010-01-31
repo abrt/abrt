@@ -13,9 +13,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-30 17:28+0000\n"
-"PO-Revision-Date: 2010-01-30 20:31+0100\n"
-"Last-Translator: Jens Maucher <jensm@fedoraproject.org>\n"
+"POT-Creation-Date: 2010-01-31 09:40+0000\n"
+"PO-Revision-Date: 2010-01-31 16:58+0100\n"
+"Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,37 +31,37 @@ msgstr "Ein anderer Client läuft bereits, versuche ihn zu wecken."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Unerwartete Daten vom Daemon erhalten (ist die Datenbank korrekt aktualisisert?)"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "Nicht geladene Plugins"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Analyse-Plugins"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Aktion-Plugins"
 
-#: ../src/Gui/ABRTPlugin.py:67
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Bericht-Plugins"
 
-#: ../src/Gui/ABRTPlugin.py:68
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Datenbank-Plugins"
 
-#: ../src/Gui/CCDBusBackend.py:75
-#: ../src/Gui/CCDBusBackend.py:98
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Kann nicht mit System-Dbus verbinden"
 
-#: ../src/Gui/CCDBusBackend.py:121
-#: ../src/Gui/CCDBusBackend.py:124
+#: ../src/Gui/CCDBusBackend.py:120
+#: ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Bitte überprüfen Sie, ob der abrt-Daemon läuft"
 
-#: ../src/Gui/CCDBusBackend.py:176
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -78,7 +78,7 @@ msgid "About ABRT"
 msgstr "Über ABRT"
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:15
 #: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -135,38 +135,38 @@ msgid "_Help"
 msgstr "_Hilfe"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:74
 msgid "Icon"
 msgstr "Symbol"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Package"
 msgstr "Paket"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:83
 msgid "Application"
 msgstr "Anwendung"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:84
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Crash count"
 msgstr "Absturz-Anzahl"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:86
 msgid "User"
 msgstr "Benutzer"
 
-#: ../src/Gui/CCMainWindow.py:159
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
 "%s"
 msgstr "Der Einstellungsdialog %s kann nicht angezeigt werden"
 
-#: ../src/Gui/CCMainWindow.py:170
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -176,7 +176,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:197
+#: ../src/Gui/CCMainWindow.py:192
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -185,19 +185,19 @@ msgstr ""
 "Fehler beim Laden der Dump-Liste.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:235
+#: ../src/Gui/CCMainWindow.py:230
 msgid "This crash has been reported:\n"
 msgstr "Dieser Absturz wurde gemeldet:\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Dieser Absturz wurde gemeldet:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:255
+#: ../src/Gui/CCMainWindow.py:250
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nicht berichtet!</b>"
 
-#: ../src/Gui/CCMainWindow.py:303
+#: ../src/Gui/CCMainWindow.py:298
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -205,7 +205,7 @@ msgstr ""
 "Konnte Bericht nicht abrufen!\n"
 "Fehlt Debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:323
+#: ../src/Gui/CCMainWindow.py:318
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -214,8 +214,8 @@ msgstr ""
 "Berichterstellung fehlgeschlagen!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:342
-#: ../src/Gui/CCMainWindow.py:369
+#: ../src/Gui/CCMainWindow.py:337
+#: ../src/Gui/CCMainWindow.py:364
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fehler beim Abrufen des Berichts: %s"
@@ -227,7 +227,7 @@ msgstr "Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten
 
 #: ../src/Gui/CCReporterDialog.py:99
 msgid "You must check backtrace for sensitive data"
-msgstr ""
+msgstr "Überprüfen Sie den Backtrace auf sensible Daten"
 
 #: ../src/Gui/CCReporterDialog.py:110
 #, python-format
@@ -294,7 +294,7 @@ msgstr "<b>Anlagen</b>"
 
 #: ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
-msgstr ""
+msgstr "<b>Backtrace</b>"
 
 #: ../src/Gui/report.glade.h:4
 msgid "<b>Comment</b>"
@@ -314,7 +314,7 @@ msgstr "<span fgcolor=\"blue\">Architektur:</span>"
 
 #: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr ""
+msgstr "<span fgcolor=\"blue\">Kommandozeile:</span>"
 
 #: ../src/Gui/report.glade.h:9
 msgid "<span fgcolor=\"blue\">Component:</span>"
@@ -322,7 +322,7 @@ msgstr "<span fgcolor=\"blue\">Komponente:</span>"
 
 #: ../src/Gui/report.glade.h:10
 msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr ""
+msgstr "<span fgcolor=\"blue\">Ausführbar:</span>"
 
 #: ../src/Gui/report.glade.h:11
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
@@ -338,11 +338,11 @@ msgstr "<span fgcolor=\"blue\">Grund:</span>"
 
 #: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr ""
+msgstr "<span fgcolor=\"blue\">Version:</span>"
 
 #: ../src/Gui/report.glade.h:16
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
+msgstr "Ich habe den Backtrace geprüft und alle sensitiven Daten (Passwörter, usw.) entfernt"
 
 #: ../src/Gui/report.glade.h:17
 msgid "N/A"
@@ -350,7 +350,7 @@ msgstr "N/A"
 
 #: ../src/Gui/report.glade.h:18
 msgid "Send report"
-msgstr ""
+msgstr "Bericht abschicken"
 
 #: ../src/Gui/report.glade.h:19
 msgid "Show log"
@@ -492,11 +492,11 @@ msgstr "Berichtgröße überschreitet die maximale Größe. Bitte überprüfen S
 
 #: ../lib/Plugins/Bugzilla.cpp:124
 msgid "Missing member 'reporter'"
-msgstr ""
+msgstr "Fehlender Teil 'reporter'"
 
 #: ../lib/Plugins/Bugzilla.cpp:176
 msgid "Missing member 'cc'"
-msgstr ""
+msgstr "Fehlender Teil 'cc'"
 
 #: ../lib/Plugins/Bugzilla.cpp:262
 #, c-format
@@ -505,11 +505,11 @@ msgstr "Fehler wurde bereits gemeldet: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:274
 msgid "Missing member 'bug_id'"
-msgstr ""
+msgstr "Fehlender Teil 'bug_id'"
 
 #: ../lib/Plugins/Bugzilla.cpp:283
 msgid "Missing member 'bugs'"
-msgstr ""
+msgstr "Fehlender Teil 'bugs'"
 
 #: ../lib/Plugins/Bugzilla.cpp:346
 #, c-format
@@ -605,12 +605,11 @@ msgid "Sending an email..."
 msgstr "Eine E-Mail senden ..."
 
 #: ../lib/Plugins/SOSreport.cpp:103
-#, fuzzy, c-format
+#, c-format
 msgid "Running sosreport: %s"
 msgstr "sosreport ausführen: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:109
-#, fuzzy
 msgid "Done running sosreport"
 msgstr "Ausführung von sosreport abgeschlossen"
 
