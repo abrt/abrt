@@ -10,7 +10,7 @@ from optparse import OptionParser
 import sys
 import os.path
 import subprocess
-import datetime
+from datetime import datetime
 import pickle
 
 #
@@ -23,6 +23,15 @@ parser.add_option("-p", "--password", dest="password",
                   help="Bugzilla password (REQUIRED)", metavar="PASSWORD")
 parser.add_option("-b", "--bugzilla", dest="bugzilla",
                   help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
+# Weekly stats shows the impact of changes in ABRT early.
+parser.add_option("-w", "--weekly", help="Generate weekly report instead of monthly", 
+                  action="store_true", default=False, dest="weekly")
+# HTML output for blogs etc.
+parser.add_option("-t", "--html", help="Generate HTML output", 
+                  action="store_true", default=False, dest="html")
+# Newest stats first
+parser.add_option("-r", "--reversed", help="Display the newest stats first", 
+                  action="store_true", default=False, dest="reversed")
 (options, args) = parser.parse_args()
 if not options.user or len(options.user) == 0:
   parser.error("User name is required.\nTry {0} --help".format(sys.argv[0]))
@@ -72,10 +81,10 @@ for buginfo in buginfos:
   if buginfos_loaded.has_key(buginfo.bug_id):
     continue
 
-  # creation date, format YEAR-MONTH
-  created = buginfo.creation_ts[0:7].replace(".", "-") 
-  # last change to bug, format YEAR-MONTH
-  lastchange = buginfo.delta_ts[0:7].replace(".", "-")
+  # creation date, format YEAR-MONTH-DAY
+  created = buginfo.creation_ts[0:10].replace(".", "-") 
+  # last change to bug, format YEAR-MONTH-DAY
+  lastchange = buginfo.delta_ts[0:10].replace(".", "-")
   status = buginfo.bug_status # status during the last change
   if buginfo.resolution != "":
     status += "_" + buginfo.resolution
@@ -91,12 +100,15 @@ save_to_cache()
 #
 # Interpret data from Bugzilla
 #
-# Bugs reported this month by ABRT
-# Bugs closed as useful this month by ABRT
-# Bugs closed as waste this month by ABRT
-# Top crashers this month.
+# Bugs reported this month/week by ABRT
+# Bugs closed as useful this month/week by ABRT
+# Bugs closed as waste this month/week by ABRT
+# Top crashers this month/week.
 #
-class Month:
+class TimeSpan:
+  """
+  It's either a week or month.
+  """
   def __init__(self):
     # Number of bugs reported to certain component this month.
     self.components = {}
@@ -147,48 +159,132 @@ class Month:
     elif resolution in ["CLOSED_DUPLICATE", "CLOSED_CANTFIX", "CLOSED_INSUFFICIENT_DATA"]:
       self.closed_as_waste += 1
 
+  def __str__(self):
+    def bug(count):
+      if count == 1:
+        return "%d bug" % count
+      else:
+        return "%d bugs" % count
 
-stats = {} # key == YEAR-MONTH, value == Month()
+    def crash(count):
+      if count == 1:
+        return "%d crash" % count
+      else:
+        return "%d crashes" % count
+
+    start = ""
+    bugs_reported = " - %s reported\n"
+    bugs_closed = " - %s closed\n"
+    bugs_cl_useful =  "   - %s (%d%%) as fixed, so ABRT was useful\n"
+    bugs_cl_notuseful = "   - %s (%d%%) as duplicate, can't fix, insuf. data, so ABRT was not useful\n"
+    bugs_cl_other = "   - %s (%d%%) as notabug, wontfix, worksforme\n"
+    bugs_closed_end = ""
+    top_crashers = " - top crashers:\n"
+    top_crasher_item = "    # %s: %s\n"
+    top_crashers_end = ""
+    end = ""
+    if options.html:
+      start = "<ul>\n"
+      bugs_reported = "<li>%s reported</li>\n"
+      bugs_closed = "<li>%s closed\n<ul>\n"
+      bugs_cl_useful = "  <li>%s (%d%%) as fixed, so ABRT was useful</li>\n"
+      bugs_cl_notuseful = "   <li>%s (%d%%) as duplicate, can't fix, insuf. data, so ABRT was not useful</li>\n"
+      bugs_cl_other = "   <li>%s (%d%%) as notabug, wontfix, worksforme</li>\n"
+      bugs_closed_end = "</ul></li>\n"
+      top_crashers = "<li>top crashers:\n<ol>\n"
+      top_crasher_item = "    <li>%s: %s</li>\n"
+      top_crashers_end = "</ol></li>\n"
+      end = "</ul>\n"
+
+    str = start
+    str += bugs_reported % bug(self.bugs_reported())
+    if self.closed() > 0:
+      str += bugs_closed % bug(self.closed())
+      if self.closed_as_useful > 0:
+        str += bugs_cl_useful % (bug(self.closed_as_useful), self.closed_as_useful_percentage())
+      if self.closed_as_waste > 0:
+        str += bugs_cl_notuseful % (bug(self.closed_as_waste), self.closed_as_waste_percentage())
+      if self.closed_as_other > 0:
+        str += bugs_cl_other % (bug(self.closed_as_other), self.closed_as_other_percentage())
+      str += bugs_closed_end
+    if len(self.top_crashers()) > 0:
+      str += top_crashers
+      for (component, num_crashes) in self.top_crashers():
+        str += top_crasher_item % (component, crash(num_crashes))
+      str += top_crashers_end
+    str += end
+    return str
+
+monthly_stats = {} # key == YEAR-MONTH, value == Month()
+weekly_stats = {} # key == YEAR-WEEK, value == Month()
 
 def get_month(month):
-  global stats
-  if month in stats:
-    return stats[month]
+  global monthly_stats
+  if month in monthly_stats:
+    return monthly_stats[month]
   else:
-    stats[month] = Month()
-    return stats[month]
+    monthly_stats[month] = TimeSpan()
+    return monthly_stats[month]
+
+def get_week(week):
+  global weekly_stats
+  if week in weekly_stats:
+    return weekly_stats[week]
+  else:
+    weekly_stats[week] = TimeSpan()
+    return weekly_stats[week]
 
 for buginfo in buginfos_loaded.values():
   # Bugs reported this month by ABRT
   # Top crashers this month
-  month = get_month(buginfo['created'])
+  month_key = buginfo['created'][0:7]
+  month = get_month(month_key)
   month.add_component_crash(buginfo['component'])
+
+  # Bugs reported this week by ABRT
+  # Top crashers this week
+  week_key = datetime.strptime(buginfo['created'], "%Y-%m-%d").strftime("%Y-%W")
+  week = get_week(week_key)
+  week.add_component_crash(buginfo['component'])
 
   # Bugs closed as useful this month by ABRT
   # Bugs closed as waste this month by ABRT
-  month = get_month(buginfo['lastchange'])
+  month_key = buginfo['lastchange'][0:7]
+  month = get_month(month_key)
   month.add_resolution(buginfo['status'])
+
+  # Bugs closed as useful this week by ABRT
+  # Bugs closed as waste this week by ABRT
+  week_key = datetime.strptime(buginfo['lastchange'], "%Y-%m-%d").strftime("%Y-%W")
+  week = get_week(week_key)
+  week.add_resolution(buginfo['status'])
 
 #
 # Print interpreted data
 #
 print "STATS"
 print "=========================================================================="
-months = stats.keys()
-months.sort()
-for month in months:
-  m = stats[month]
-  print "MONTH ", month
-  print " -", m.bugs_reported(), "bugs reported"
-  if m.closed() > 0:
-    print " -", m.closed(), "bugs closed"
-    if m.closed_as_useful > 0:
-      print "   -", m.closed_as_useful, "bugs (" + str(m.closed_as_useful_percentage()) + "%) as fixed, so ABRT was useful"
-      if m.closed_as_waste > 0:
-        print "   -", m.closed_as_waste, "bugs (" + str(m.closed_as_waste_percentage())+ "%) as duplicate, can't fix, insuf. data, so ABRT was not useful"
-        if m.closed_as_other > 0:
-          print "   -", m.closed_as_other, "bugs (" + str(m.closed_as_other_percentage()) + "%) as notabug, wontfix, worksforme"
-  if len(m.top_crashers()) > 0:
-    print " - top crashers:"
-    for (component, num_crashes) in m.top_crashers():
-      print "    # ", component + ":", num_crashes, "crashes"
+if not options.weekly:
+  months = monthly_stats.keys()
+  months.sort()
+  if options.reversed:
+    months.reverse()
+  for month in months:
+    m = monthly_stats[month]
+    if options.html:
+      print "<h2>Month %s</h2>" % month
+    else:
+      print "MONTH %s" % month
+    print m
+else:
+  weeks = weekly_stats.keys()
+  weeks.sort()
+  if options.reversed:
+    weeks.reverse()
+  for week in weeks:
+    w = weekly_stats[week]
+    if options.html:
+      print "<h2>Week %s</h2>" % week
+    else:
+      print "WEEK %s" % week
+    print w
