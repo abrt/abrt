@@ -77,9 +77,14 @@ int main(int argc, char** argv)
     int signal_no = xatoi_u(argv[3]);
     uid_t uid = xatoi_u(argv[4]);
     off_t ulimit_c = strtoull(argv[5], NULL, 10);
+    if (ulimit_c < 0) /* unlimited? */
+    {
+        /* set to max possible >0 value */
+        ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
+    }
     off_t core_size = 0;
 
-    if (errno || pid <= 0 || ulimit_c < 0)
+    if (errno || pid <= 0)
     {
         error_msg_and_die("pid '%s' or limit '%s' is bogus", argv[2], argv[5]);
     }
