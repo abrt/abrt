@@ -287,12 +287,25 @@ static void GetBacktrace(const char *pDebugDumpDir,
     }
     args[3] = (char*)dfd.c_str();
 
-    /*
+    /* "file BINARY_FILE" is needed, without it gdb cannot properly
+     * unwind the stack. Currently the unwind information is located
+     * in .eh_frame which is stored only in binary, not in coredump
+     * or debuginfo.
+     *
+     * Fedora GDB does not strictly need it, it will find the binary
+     * by its build-id.  But for binaries either without build-id
+     * (=built on non-Fedora GCC) or which do not have
+     * their debuginfo rpm installed gdb would not find BINARY_FILE
+     * so it is still makes sense to supply "file BINARY_FILE".
+     *
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
      * gdb uses specified BINARY_FILE
      * even if it is completely unrelated to the coredump
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
+     *
+     * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
+     * BINARY_FILE if it is newer (to at least avoid gdb complaining).
      */
     args[4] = (char*)"-ex";
     string file = ssprintf("file %s", executable.c_str());

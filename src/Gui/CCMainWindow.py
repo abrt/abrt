@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 import sys
-import os
 import pwd
 import getopt
 
@@ -16,15 +15,11 @@ except RuntimeError,e:
     print e
     sys.exit()
 import gtk.glade
-try:
-    import rpm
-except Exception, ex:
-    rpm = None
 
 from ConfBackend import getCurrentConfBackend, ConfBackendInitError
 import CCDBusBackend
 from CC_gui_functions import *
-from CCDumpList import getDumpList, DumpList
+from CCDumpList import getDumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
 from CCReporterDialog import ReporterDialog
 from PluginsSettingsDialog import PluginsSettingsDialog
@@ -40,12 +35,12 @@ class MainWindow():
         self.updates = ""
         try:
             self.ccdaemon = CCDBusBackend.DBusManager()
-        except ABRTExceptions.IsRunning, e:
+        except ABRTExceptions.IsRunning:
             # another instance is running, so exit quietly
             sys.exit()
-        except Exception, e:
+        except Exception, ex:
             # show error message if connection fails
-            gui_error_message("%s" % e)
+            gui_error_message("%s" % ex)
             sys.exit()
         #Set the Glade file
         self.gladefile = "%s/ccgui.glade" % sys.path[0]
@@ -165,7 +160,7 @@ class MainWindow():
         try:
             gobject.source_remove(self.timer)
             self.pBarWindow.hide()
-        except Exception, e:
+        except Exception:
             pass
         gui_error_message(_("Unable to finish current task!\n%s" % message), parent_dialog=self.window)
 
@@ -192,9 +187,9 @@ class MainWindow():
         self.dumpsListStore.clear()
         try:
             dumplist = getDumpList(self.ccdaemon, refresh=True)
-        except Exception, e:
+        except Exception, ex:
             # there is something wrong with the daemon if we cant get the dumplist
-            gui_error_message(_("Error while loading the dumplist.\n%s" % e))
+            gui_error_message(_("Error while loading the dumplist.\n%s" % ex))
             # so we shouldn't continue..
             sys.exit()
         for entry in dumplist[::-1]:
@@ -206,7 +201,7 @@ class MainWindow():
             if entry.getUID() != "-1":
                 try:
                     user = pwd.getpwuid(int(entry.getUID()))[0]
-                except Exception, e:
+                except Exception, ex:
                     user = "UID: %s" % entry.getUID()
             n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
                                             entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry])
@@ -264,8 +259,8 @@ class MainWindow():
             self.ccdaemon.DeleteDebugDump(dump.getUUID())
             self.hydrate()
             treeview.emit("cursor-changed")
-        except Exception, e:
-            print e
+        except Exception, ex:
+            print ex
 
     def destroy(self, widget, data=None):
         gtk.main_quit()
@@ -319,8 +314,8 @@ class MainWindow():
                 self.ccdaemon.Report(result, reporters_settings)
                 log2("Report() returned")
                 #self.hydrate()
-            except Exception, e:
-                gui_error_message(_("Reporting failed!\n%s" % e))
+            except Exception, ex:
+                gui_error_message(_("Reporting failed!\n%s" % ex))
         # -50 == REFRESH
         elif response == -50:
             self.refresh_report(report)
@@ -333,13 +328,13 @@ class MainWindow():
         # show the report window with selected report
         try:
             self.ccdaemon.getReport(report[CD_UUID][CD_CONTENT], force=1)
-        except Exception, e:
+        except Exception, ex:
             # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
             if self.timer:
                 gobject.source_remove(self.timer)
             self.pBarWindow.hide()
-            gui_error_message(_("Error getting the report: %s" % e))
+            gui_error_message(_("Error getting the report: %s" % ex))
         return
 
     def on_bReport_clicked(self, button):
@@ -360,13 +355,13 @@ class MainWindow():
         # show the report window with selected dump
         try:
             self.ccdaemon.getReport(dump.getUUID())
-        except Exception, e:
+        except Exception, ex:
             # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
             if self.timer:
                 gobject.source_remove(self.timer)
             self.pBarWindow.hide()
-            gui_error_message(_("Error getting the report: %s" % e))
+            gui_error_message(_("Error getting the report: %s" % ex))
         return
 
     def sw_delete_event_cb(self, widget, event, data=None):

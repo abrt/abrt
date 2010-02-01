@@ -4,7 +4,6 @@ import gobject
 import dbus
 import dbus.service
 from dbus.mainloop.glib import DBusGMainLoop
-import gtk
 from dbus.exceptions import *
 import ABRTExceptions
 from abrt_utils import _, log, log1, log2
@@ -35,7 +34,7 @@ class DBusManager(gobject.GObject):
                 self.dbusmanager.emit("show")
         try:
             session = dbus.SessionBus()
-        except Exception, e:
+        except Exception:
             # probably run after "$ su"
             pass
 
@@ -107,7 +106,7 @@ class DBusManager(gobject.GObject):
             # rc is either self.bus.START_REPLY_SUCCESS or self.bus.START_REPLY_ALREADY_RUNNING
             if rc == self.bus.START_REPLY_SUCCESS:
                 # Better solution may be to have daemon emit a signal and wait for it
-                log1("dbus auto-started abrt daemon, giving it 1 sec to initialize");
+                log1("dbus auto-started abrt daemon, giving it 1 sec to initialize")
                 time.sleep(1)
         except DBusException:
             raise Exception("abrt daemon is not running, and DBus can't start it")
@@ -200,7 +199,7 @@ class DBusManager(gobject.GObject):
             row_dict = {}
             for column in row:
                 row_dict[column] = row[column]
-            rows.append(row_dict);
+            rows.append(row_dict)
         return rows
 
     def getPluginsInfo(self):

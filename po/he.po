@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-29 10:00+0000\n"
+"POT-Creation-Date: 2010-01-31 03:57+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -21,37 +21,37 @@ msgstr "לקוח אחר כבר רץ, מנסה להעיר אותו."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "מידע לא צפוי הוחזר מתהליך הרקע (האם מסד הנתונים מעודכן כראוי?)"
 
-#: ../src/Gui/ABRTPlugin.py:56
+#: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "תוספים לא טעונים"
 
-#: ../src/Gui/ABRTPlugin.py:57
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "תוספי ניתוח"
 
-#: ../src/Gui/ABRTPlugin.py:58
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "תוספי פעולות"
 
-#: ../src/Gui/ABRTPlugin.py:59
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "תוספי דיווח"
 
-#: ../src/Gui/ABRTPlugin.py:60
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "תוספי מסד-נתונים"
 
-#: ../src/Gui/CCDBusBackend.py:75
-#: ../src/Gui/CCDBusBackend.py:98
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "לא יכול להתחבר ל-system bus"
 
-#: ../src/Gui/CCDBusBackend.py:121
-#: ../src/Gui/CCDBusBackend.py:124
+#: ../src/Gui/CCDBusBackend.py:120
+#: ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "אנא בדוק אם תהליך השירות של abrt פועל"
 
-#: ../src/Gui/CCDBusBackend.py:176
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -68,7 +68,7 @@ msgid "About ABRT"
 msgstr "אודות ABRT"
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:15
 #: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -125,31 +125,31 @@ msgid "_Help"
 msgstr "ע_זרה"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:74
 msgid "Icon"
 msgstr "סמל"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Package"
 msgstr "חבילה"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:83
 msgid "Application"
 msgstr "יישום"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:84
 msgid "Date"
 msgstr "תאריך"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Crash count"
 msgstr "מספר קריסות"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:86
 msgid "User"
 msgstr "משתמש"
 
-#: ../src/Gui/CCMainWindow.py:159
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -158,7 +158,7 @@ msgstr ""
 "לא ניתן להציג את חלון ההגדרות\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:170
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -168,7 +168,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:197
+#: ../src/Gui/CCMainWindow.py:192
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -177,19 +177,19 @@ msgstr ""
 "שגיאה במהלך טעינת dumplist.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:235
+#: ../src/Gui/CCMainWindow.py:230
 msgid "This crash has been reported:\n"
 msgstr "הקריסה הזאת דווחה:\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>הקריסה הזאת דווחה:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:255
+#: ../src/Gui/CCMainWindow.py:250
 msgid "<b>Not reported!</b>"
 msgstr "<b>לא דווח!</b>"
 
-#: ../src/Gui/CCMainWindow.py:303
+#: ../src/Gui/CCMainWindow.py:298
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -197,7 +197,7 @@ msgstr ""
 "לא ניתן להשיג דיווח\n"
 "מידע ניפוי שגיאות חסר?"
 
-#: ../src/Gui/CCMainWindow.py:323
+#: ../src/Gui/CCMainWindow.py:318
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -206,8 +206,8 @@ msgstr ""
 "הדיווח נכשל!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:342
-#: ../src/Gui/CCMainWindow.py:369
+#: ../src/Gui/CCMainWindow.py:337
+#: ../src/Gui/CCMainWindow.py:364
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "שגיאה בקבלת הדיווח: %s"
@@ -217,11 +217,11 @@ msgstr "שגיאה בקבלת הדיווח: %s"
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "תיאור קצר (עדיף באנגלית) שמסביר מה עשית כשהיישום קרס או איך ניתן לשחזר את הקריסה..."
 
-#: ../src/Gui/CCReporterDialog.py:94
-msgid "You must agree with submitting the backtrace."
-msgstr "אני מסכים לשלוח את מידע הקריסה."
+#: ../src/Gui/CCReporterDialog.py:99
+msgid "You must check backtrace for sensitive data"
+msgstr "אתה חייב לבדוק אם יש מידע רגיש במידע הקריסה"
 
-#: ../src/Gui/CCReporterDialog.py:105
+#: ../src/Gui/CCReporterDialog.py:110
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -232,15 +232,15 @@ msgstr ""
 "אנא נסה להתקין מידע ניפוי שגיאות ידנית באמצעות הפקודה:<b> debuginfo-install %s <b>\n"
 "לאחר מכן השתמש  בכפתור \"רענן\" כדי ליצור מחדש את מידע הקריסה."
 
-#: ../src/Gui/CCReporterDialog.py:107
+#: ../src/Gui/CCReporterDialog.py:112
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "מידע הקריסה לא שמיש, אתה לא יכול לדווח על זה!"
 
-#: ../src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:116
 msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
 msgstr "מידע הקריסה לא שלם. אנא וודא שסיפקת הסבר טוב על איך לגרום לקריסה."
 
-#: ../src/Gui/CCReporterDialog.py:152
+#: ../src/Gui/CCReporterDialog.py:158
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -335,8 +335,8 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">שחרור:</span>"
 
 #: ../src/Gui/report.glade.h:16
-msgid "I agree to submit this backtrace, which could contain sensitive data"
-msgstr "אני מסכים לשלוח את מידע הקריסה, שעלול להכיל מידע רגיש"
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr "בדקתי את מידע הקריסה והסרתי מידע רגיש (ססמאות וכו')"
 
 #: ../src/Gui/report.glade.h:17
 msgid "N/A"
@@ -359,11 +359,11 @@ msgstr "<b>בחר תוסף</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>בחר מנוע מסד נתונים</b>"
 
-#: ../src/Gui/SettingsDialog.py:166
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "הסר משימה זו"
 
-#: ../src/Gui/SettingsDialog.py:210
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "הסר פעולה זו"
 
@@ -562,7 +562,7 @@ msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 msgid "Creating and submitting a report..."
 msgstr "יוצר ושולח דיווח..."
 
-#: ../lib/Plugins/Logger.cpp:82
+#: ../lib/Plugins/Logger.cpp:76
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "כותב דיווח ל'%s'"
@@ -607,6 +607,10 @@ msgstr "מריץ sosreport: %s"
 msgid "Done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
+#~ msgid "You must agree with submitting the backtrace."
+#~ msgstr "אני מסכים לשלוח את מידע הקריסה."
+#~ msgid "I agree to submit this backtrace, which could contain sensitive data"
+#~ msgstr "אני מסכים לשלוח את מידע הקריסה, שעלול להכיל מידע רגיש"
 #~ msgid "Send"
 #~ msgstr "שלח"
 #~ msgid "Executing SOSreport plugin..."

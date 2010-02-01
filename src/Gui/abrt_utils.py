@@ -15,7 +15,7 @@ def init_logging(progname, v):
     g_verbose = v
     try:
         locale.setlocale(locale.LC_ALL, "")
-    except locale.Error, e:
+    except locale.Error:
         import os
         os.environ['LC_ALL'] = 'C'
         locale.setlocale(locale.LC_ALL, "")

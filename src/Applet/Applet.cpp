@@ -247,12 +247,11 @@ int main(int argc, char** argv)
     die_if_dbus_error(r != DBUS_REQUEST_NAME_REPLY_PRIMARY_OWNER, &err,
         "Problem connecting to dbus, or applet is already running");
 
-    /* Show disabled icon if daemon is not running */
+    /* show the warning in terminal, as nm-applet does */
     if (!dbus_bus_name_has_owner(system_conn, ABRTD_DBUS_NAME, &err))
     {
         const char* msg = _("ABRT service is not running");
         puts(msg);
-        applet->Disable(msg);
     }
 
     /* dbus_bus_request_name can already read some data. Thus while dbus fd hasn't

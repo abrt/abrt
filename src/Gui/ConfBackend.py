@@ -114,7 +114,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
                                         settings_tmp, # attrs
                                         password, # secret
                                         True)
-        except gkey.DeniedError, e:
+        except gkey.DeniedError:
             raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings won't be saved."))
 
     def load(self, name):
@@ -144,12 +144,11 @@ class ConfBackendGnomeKeyring(ConfBackend):
             except gkey.NoMatchError:
                 # nothing found
                 pass
-            except gkey.DeniedError, e:
+            except gkey.DeniedError:
                 attempts -= 1
                 log2("gk-authorization has failed %i time(s)", 2-attempts)
                 if attempts == 0:
                     # we tried 2 times, so giving up the authorization
-                    print "raising exception"
                     raise ConfBackendLoadError(_("Access to gnome-keyring has been denied, can't load the settings for %s!" % name))
                 continue
             break
@@ -229,7 +228,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
                     del attrs["Application"]
                 except:
                     pass
-                retval[plugin_name] = attrs;
+                retval[plugin_name] = attrs
         return retval
 
 
