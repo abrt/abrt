@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-22 10:02+0000\n"
-"PO-Revision-Date: 2010-01-22 16:22+0100\n"
+"POT-Creation-Date: 2010-01-30 10:01+0000\n"
+"PO-Revision-Date: 2010-01-30 15:02+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -30,35 +30,35 @@ msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
 
-#: ../src/Gui/ABRTPlugin.py:56
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "Niet geladen plugins"
 
-#: ../src/Gui/ABRTPlugin.py:57
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "Analyse plugins"
 
-#: ../src/Gui/ABRTPlugin.py:58
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "Actie plugins"
 
-#: ../src/Gui/ABRTPlugin.py:59
+#: ../src/Gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
-msgstr "Rapporteer plugins"
+msgstr "Aanmeld plugins"
 
-#: ../src/Gui/ABRTPlugin.py:60
+#: ../src/Gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "Databse plugins"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
 msgid "Can't connect to system dbus"
 msgstr "Kan niet verbinden met systeem dbus"
 
-#: ../src/Gui/CCDBusBackend.py:104 ../src/Gui/CCDBusBackend.py:107
+#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
 msgid "Please check if abrt daemon is running"
 msgstr "Controleer a.u.b. of de abrt daemon draait"
 
-#: ../src/Gui/CCDBusBackend.py:159
+#: ../src/Gui/CCDBusBackend.py:176
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -230,11 +230,16 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
-#: ../src/Gui/CCReporterDialog.py:90
-msgid "You must agree with submitting the backtrace."
-msgstr "Je moet het goed vinden om de backtrace op te sturen."
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
-#: ../src/Gui/CCReporterDialog.py:101
+#: ../src/Gui/CCReporterDialog.py:99
+msgid "You must check backtrace for sensitive data"
+msgstr "Je moet de backtrace controleren op gevoelige data"
+
+#: ../src/Gui/CCReporterDialog.py:110
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -247,11 +252,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:112
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
 
-#: ../src/Gui/CCReporterDialog.py:106
+#: ../src/Gui/CCReporterDialog.py:116
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -259,7 +264,7 @@ msgstr ""
 "De backtrace is niet compleet, wees er zeker van om voor het genereren de "
 "juiste stappen op te volgen."
 
-#: ../src/Gui/CCReporterDialog.py:148
+#: ../src/Gui/CCReporterDialog.py:158
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -268,11 +273,7 @@ msgstr ""
 "Kan de plugin instellingen niet opslaan:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:266
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
-
-#: ../src/Gui/dialogs.glade.h:1 ../src/Gui/report.glade.h:17
+#: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
 msgstr "Log"
 
@@ -355,18 +356,22 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Vrijgave:</span>"
 
 #: ../src/Gui/report.glade.h:16
-msgid "I agree to submit this backtrace, which could contain sensitive data"
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
-"Ik ben er mee eens om deze backtrace in te dienen, hoewel hij gevoelige data "
-"kan bevatten"
+"Ik heb de backtrace gecontroleerd en gevoelige data verwijderd "
+"(wachtwoorden, enz.)"
 
-#: ../src/Gui/report.glade.h:18
+#: ../src/Gui/report.glade.h:17
 msgid "N/A"
 msgstr "n.v.t."
 
+#: ../src/Gui/report.glade.h:18
+msgid "Send report"
+msgstr "Verstuur rapport"
+
 #: ../src/Gui/report.glade.h:19
-msgid "Send"
-msgstr "Verzenden"
+msgid "Show log"
+msgstr "Laat log zien"
 
 #: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
@@ -376,11 +381,11 @@ msgstr "<b>Selecteer een plugin</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>Selecteer database back-end</b>"
 
-#: ../src/Gui/SettingsDialog.py:166
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Verwijder deze taak"
 
-#: ../src/Gui/SettingsDialog.py:210
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Verwijder deze actie"
 
@@ -406,7 +411,7 @@ msgstr "<b>Tijd (of periode)</b>"
 
 #: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
-msgstr "Analisten, acties, rapporteurs"
+msgstr "Analisten, acties, aanmelders"
 
 #: ../src/Gui/settings.glade.h:7
 msgid "Author:"
@@ -505,49 +510,53 @@ msgstr ""
 "Rapport grootte overschreed quota. Controleer a.u.b. MaxCrashReportsSize "
 "waarde van het systeem in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:132 ../lib/Plugins/Bugzilla.cpp:300
-msgid "Missing member 'bugs'"
-msgstr "Onderdeel 'bugs' ontbreekt"
+#: ../lib/Plugins/Bugzilla.cpp:124
+msgid "Missing member 'reporter'"
+msgstr "Onderdeel 'aanmelder' ontbreekt"
 
-#: ../lib/Plugins/Bugzilla.cpp:184
+#: ../lib/Plugins/Bugzilla.cpp:176
 msgid "Missing member 'cc'"
 msgstr "Onderdeel 'cc' ontbreekt"
 
-#: ../lib/Plugins/Bugzilla.cpp:279
+#: ../lib/Plugins/Bugzilla.cpp:262
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:291
+#: ../lib/Plugins/Bugzilla.cpp:274
 msgid "Missing member 'bug_id'"
 msgstr "Onderdeel 'bug_id' ontbreekt"
 
-#: ../lib/Plugins/Bugzilla.cpp:367
+#: ../lib/Plugins/Bugzilla.cpp:283
+msgid "Missing member 'bugs'"
+msgstr "Onderdeel 'bugs' ontbreekt"
+
+#: ../lib/Plugins/Bugzilla.cpp:346
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:440
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:475
+#: ../lib/Plugins/Bugzilla.cpp:446
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:478
+#: ../lib/Plugins/Bugzilla.cpp:449
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:483
+#: ../lib/Plugins/Bugzilla.cpp:454
 msgid "Checking CC..."
 msgstr "Controleren van CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:494
+#: ../lib/Plugins/Bugzilla.cpp:465
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:498
+#: ../lib/Plugins/Bugzilla.cpp:469
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
@@ -579,7 +588,7 @@ msgstr "Sla debuginfo installatie over"
 msgid "Creating and submitting a report..."
 msgstr "Aanmaken en indienen van rapport..."
 
-#: ../lib/Plugins/Logger.cpp:82
+#: ../lib/Plugins/Logger.cpp:76
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Rapport schrijven naar: '%s'"
@@ -615,18 +624,28 @@ msgstr "Aanmaken van kernel oops crash rapporten..."
 msgid "Sending an email..."
 msgstr "Versturen van email..."
 
-#: ../lib/Plugins/SOSreport.cpp:69
-msgid "Executing SOSreport plugin..."
-msgstr "Uitvoeren van SOSreport plugin..."
-
-#: ../lib/Plugins/SOSreport.cpp:91
+#: ../lib/Plugins/SOSreport.cpp:103
 #, c-format
-msgid "running sosreport: %s"
-msgstr "sosreport draaien: %s"
+msgid "Running sosreport: %s"
+msgstr "Sosreport draaien: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:97
-msgid "done running sosreport"
-msgstr "klaar met het draaien van sosreport"
+#: ../lib/Plugins/SOSreport.cpp:109
+msgid "Done running sosreport"
+msgstr "Klaar met het draaien van sosreport"
+
+#~ msgid "You must agree with submitting the backtrace."
+#~ msgstr "Je moet het goed vinden om de backtrace op te sturen."
+
+#~ msgid "I agree to submit this backtrace, which could contain sensitive data"
+#~ msgstr ""
+#~ "Ik ben er mee eens om deze backtrace in te dienen, hoewel hij gevoelige "
+#~ "data kan bevatten"
+
+#~ msgid "Send"
+#~ msgstr "Verzenden"
+
+#~ msgid "Executing SOSreport plugin..."
+#~ msgstr "Uitvoeren van SOSreport plugin..."
 
 #~ msgid "Plugin name is not set, can't load its settings"
 #~ msgstr "Plugin naam is niet ingesteld, kan zijn instellingen niet laden"
