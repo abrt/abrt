@@ -356,7 +356,9 @@ fi
 
 %files plugin-sosreport
 %defattr(-,root,root,-)
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/SOSreport.conf
 %{_libdir}/%{name}/libSOSreport.so*
+
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)

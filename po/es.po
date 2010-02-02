@@ -20,13 +20,15 @@ msgstr ""
 "X-Generator: KBabel 1.11.4\n"
 "X-Poedit-Country: ARGENTINA\n"
 
-#: ../src/Gui/ABRTExceptions.py:6
+#: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "Otro cliente ya está siendo ejecutado, intentando despertarlo."
 
-#: ../src/Gui/ABRTExceptions.py:13
+#: src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Se obtienen datos inesperados desde el demonio (¿está la Base de Datos correctamente actualizada?)"
+msgstr ""
+"Se obtienen datos inesperados desde el demonio (¿está la Base de Datos "
+"correctamente actualizada?)"
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -48,8 +50,7 @@ msgstr "Complementos de informes"
 msgid "Database plugins"
 msgstr "Complementos de Bases de Datos"
 
-#: ../src/Gui/CCDBusBackend.py:74
-#: ../src/Gui/CCDBusBackend.py:97
+#: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "No es posible conectarse con system dbus"
 
@@ -85,52 +86,78 @@ msgstr "Herramienta de Informe de Errores Automática"
 msgid "Delete"
 msgstr "Eliminar"
 
-#: ../src/Gui/ccgui.glade.h:5
+#: src/Gui/ccgui.glade:60
 msgid "Details"
 msgstr "Detalles"
 
-#: ../src/Gui/ccgui.glade.h:6
-msgid "Not Reported"
-msgstr "No informado"
+#: src/Gui/ccgui.glade:76
+msgid "About ABRT"
+msgstr "Acerca de ABRT"
 
-#: ../src/Gui/ccgui.glade.h:7
-msgid "Please wait.."
-msgstr "Por favor aguarde..."
+#: src/Gui/ccgui.glade:82
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:8
-msgid "Plugins"
-msgstr "Complementos"
-
-#: ../src/Gui/ccgui.glade.h:9
-msgid "Report"
-msgstr "Informe"
-
-#: ../src/Gui/ccgui.glade.h:10
+#: src/Gui/ccgui.glade:83
 msgid ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de Bibliotecas de GNU, como fueron publicadas por la Fundación de Software Libre; ya sea la versión 2 o (a su elección) alguna posterior.\n"
+"Este programa es software libre; puede redistribuirlo y/o modificarlo bajo "
+"los términos de la Licencia Pública General de Bibliotecas de GNU, como "
+"fueron publicadas por la Fundación de Software Libre; ya sea la versión 2 o "
+"(a su elección) alguna posterior.\n"
 "\n"
 "\n"
-"Este programa se distribuye con la esperanza de que será útil, pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita de MERCANTIBILIDAD o AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de Bibliotecas de GNU para más detalles.\n"
+"Este programa se distribuye con la esperanza de que será útil, pero SIN "
+"NINGUNA GARANTÍA; sin siquiera la garantía implícita de MERCANTIBILIDAD o "
+"AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de "
+"Bibliotecas de GNU para más detalles.\n"
 "\n"
-"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas de GNU junto con este programa; sino, see <http://www.gnu.org/licenses/>."
+"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas "
+"de GNU junto con este programa; sino, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:15
-msgid "_Edit"
-msgstr "_Editar"
+#: src/Gui/ccgui.glade:121 src/Gui/CCMainWindow.py:8 src/Gui/report.glade:7
+msgid "Automatic Bug Reporting Tool"
+msgstr "Herramienta de Informe de Errores Automática"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: src/Gui/ccgui.glade:134
 msgid "_File"
 msgstr "_Archivo"
 
-#: ../src/Gui/ccgui.glade.h:17
+#: src/Gui/ccgui.glade:155
+msgid "_Edit"
+msgstr "_Editar"
+
+#: src/Gui/ccgui.glade:163
+msgid "Plugins"
+msgstr "Complementos"
+
+#: src/Gui/ccgui.glade:182
 msgid "_Help"
 msgstr "Ay_uda"
+
+#: src/Gui/ccgui.glade:214 src/Gui/ccgui.glade:215
+msgid "Delete"
+msgstr "Eliminar"
+
+#: src/Gui/ccgui.glade:227 src/Gui/ccgui.glade:228 src/Gui/ccgui.glade:342
+msgid "Report"
+msgstr "Informe"
+
+#: src/Gui/ccgui.glade:298
+msgid "Not Reported"
+msgstr "No informado"
 
 # Revisar si hay que traducir.
 # Ver como referencia los botones gtk que no habia que traducirlos
@@ -222,8 +249,7 @@ msgstr ""
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
 
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:24
+#: src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
 
@@ -235,7 +261,8 @@ msgstr "Debe verificar los informes en busca de datos importantes"
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command: <b>debuginfo-install %s</b> \n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "El informe está deshabilitado porque el trazado no es útil.\n"
@@ -268,80 +295,70 @@ msgstr "Registro"
 msgid "Report done"
 msgstr "Informe terminado"
 
-#: ../src/Gui/PluginSettingsUI.py:18
-msgid "Can't find PluginDialog widget in UI description!"
-msgstr "No se encuentra el control visual de PluginDialog en la descripción de la interfaz del usuario."
+#: src/Gui/dialogs.glade:78
+msgid "Log"
+msgstr "Registro"
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:24
+#: src/Gui/PluginSettingsUI.py:18
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr ""
+"No se encuentra el control visual de PluginDialog en la descripción de la "
+"interfaz del usuario."
+
+#: src/Gui/PluginSettingsUI.py:24
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "No hay interfase del usuario para el complemento %s"
 
-#: ../src/Gui/PluginSettingsUI.py:55
-#: ../src/Gui/PluginSettingsUI.py:81
+#: src/Gui/PluginSettingsUI.py:55 src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "el combo box no está implementado"
 
-#: ../src/Gui/PluginSettingsUI.py:64
+#: src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
 msgstr "¡Nada para hidratar!"
 
-#: ../src/Gui/report.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/report.glade.h:2
-msgid "<b>Attachments</b>"
-msgstr "<b>Adjuntos</b>"
-
-#: ../src/Gui/report.glade.h:3
-msgid "<b>Backtrace</b>"
-msgstr "<b>Trazado</b>"
-
-#: ../src/Gui/report.glade.h:4
-msgid "<b>Comment</b>"
-msgstr "<b>Comentario</b>"
-
-#: ../src/Gui/report.glade.h:5
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Como reproducirlo (en unos pocos y simples pasos)</b>"
-
-#: ../src/Gui/report.glade.h:6
-msgid "<b>Please fix the following problems</b>"
-msgstr "<b>Por favor corregir los siguientes problemas</b>"
-
-#: ../src/Gui/report.glade.h:7
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span color=\"white\">Arquitectura</span>"
-
-#: ../src/Gui/report.glade.h:8
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span color=\"white\">Línea de comandos</span>"
-
-#: ../src/Gui/report.glade.h:9
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span color=\"white\">Componente</span>"
-
-#: ../src/Gui/report.glade.h:10
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span color=\"white\">Ejecutable</span>"
-
-#: ../src/Gui/report.glade.h:11
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span color=\"white\">Núcleo</span>"
-
-#: ../src/Gui/report.glade.h:12
+#: src/Gui/report.glade:41
 msgid "<span fgcolor=\"blue\">Package:</span>"
 msgstr "<span color=\"white\">Paquete</span>"
 
-#: ../src/Gui/report.glade.h:13
+#: src/Gui/report.glade:52
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span color=\"white\">Componente</span>"
+
+#: src/Gui/report.glade:63
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span color=\"white\">Ejecutable</span>"
+
+#: src/Gui/report.glade:74
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span color=\"white\">Línea de comandos</span>"
+
+#: src/Gui/report.glade:98 src/Gui/report.glade:111 src/Gui/report.glade:124
+#: src/Gui/report.glade:137 src/Gui/report.glade:215 src/Gui/report.glade:228
+#: src/Gui/report.glade:241 src/Gui/report.glade:254
+msgid "N/A"
+msgstr "N/A"
+
+#: src/Gui/report.glade:159
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span color=\"white\">Arquitectura</span>"
+
+#: src/Gui/report.glade:170
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span color=\"white\">Núcleo</span>"
+
+#: src/Gui/report.glade:181
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span color=\"white\">Release</span>"
+
+#: src/Gui/report.glade:192
 msgid "<span fgcolor=\"blue\">Reason:</span>"
 msgstr "<span color=\"white\">Razón</span>"
 
-#: ../src/Gui/report.glade.h:14
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span color=\"white\">Release</span>"
+#: src/Gui/report.glade:315
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr ""
 
 #: ../src/Gui/report.glade.h:16
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
@@ -359,12 +376,31 @@ msgstr "Enviando informe"
 msgid "Show log"
 msgstr "Mostrar registro"
 
-#: ../src/Gui/SettingsDialog.py:33
-#: ../src/Gui/SettingsDialog.py:50
+#: src/Gui/report.glade:487
+msgid "<b>Attachments</b>"
+msgstr "<b>Adjuntos</b>"
+
+#: src/Gui/report.glade:536
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Por favor corregir los siguientes problemas</b>"
+
+#: src/Gui/report.glade:546
+msgid " "
+msgstr " "
+
+#: src/Gui/report.glade:593
+msgid "Show log"
+msgstr ""
+
+#: src/Gui/report.glade:635
+msgid "Send report"
+msgstr ""
+
+#: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Seleccione un complemento</b>"
 
-#: ../src/Gui/SettingsDialog.py:36
+#: src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Seleccione la base de datos de fondo</b>"
 
@@ -376,124 +412,124 @@ msgstr "Eliminar este trabajo"
 msgid "Remove this action"
 msgstr "Eliminar esta acción"
 
-#: ../src/Gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Complementos analizadores</b>"
-
-#: ../src/Gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>Acción asociada</b>"
-
-#: ../src/Gui/settings.glade.h:3
-msgid "<b>Plugin details</b>"
-msgstr "<b>Detalles del complemento</b>"
-
-#: ../src/Gui/settings.glade.h:4
-msgid "<b>Plugin</b>"
-msgstr "<b>complemento</b>"
-
-#: ../src/Gui/settings.glade.h:5
-msgid "<b>Time (or period)</b>"
-msgstr "<b>Tiempo (o periodo)</b>"
-
-#: ../src/Gui/settings.glade.h:6
-msgid "Analyzers, Actions, Reporters"
-msgstr "Analizadores, Acciones, Informadores"
-
-#: ../src/Gui/settings.glade.h:7
-msgid "Author:"
-msgstr "Autor:"
-
-#: ../src/Gui/settings.glade.h:8
-msgid "Blacklisted packages: "
-msgstr "Paquetes en la Blacklist"
-
-#: ../src/Gui/settings.glade.h:9
-msgid "C_onfigure plugin"
-msgstr "C_onfigurar Complemento"
-
-#: ../src/Gui/settings.glade.h:10
-msgid "Check package GPG signature"
-msgstr "Compruebe la firma GPG del paquete"
-
-#: ../src/Gui/settings.glade.h:11
-msgid "Common"
-msgstr "Común"
-
-#: ../src/Gui/settings.glade.h:12
-msgid "Cron"
-msgstr "Cron"
-
-#: ../src/Gui/settings.glade.h:13
-msgid "Database backend: "
-msgstr "Backend de la Base de Datos"
-
-#: ../src/Gui/settings.glade.h:14
-msgid "Description:"
-msgstr "Descripción:"
-
-#: ../src/Gui/settings.glade.h:15
-msgid "GPG Keys"
-msgstr "LLaves GPG"
-
-#: ../src/Gui/settings.glade.h:16
-msgid "GPG keys: "
-msgstr "LLaves GPG:"
-
-#: ../src/Gui/settings.glade.h:17
-msgid "Global Settings"
-msgstr "Preferencias globales"
-
-#: ../src/Gui/settings.glade.h:18
-msgid "Max coredump storage size(MB):"
-msgstr "Capacidad máxima de almacenamiento del volcado del núcleo (MB):"
-
-#: ../src/Gui/settings.glade.h:19
-msgid "Name:"
-msgstr "Nombre:"
-
-#: ../src/Gui/settings.glade.h:20
+#: src/Gui/settings.glade:6
 msgid "Settings"
 msgstr "Preferencias"
 
-#: ../src/Gui/settings.glade.h:21
-msgid "Version:"
-msgstr "Versión:"
-
-#: ../src/Gui/settings.glade.h:22
+#: src/Gui/settings.glade:63
 msgid "Web Site:"
 msgstr "Página Web:"
 
+#: src/Gui/settings.glade:75
+msgid "Author:"
+msgstr "Autor:"
+
+#: src/Gui/settings.glade:87
+msgid "Version:"
+msgstr "Versión:"
+
+#: src/Gui/settings.glade:141
+msgid "Description:"
+msgstr "Descripción:"
+
+#: src/Gui/settings.glade:153
+msgid "Name:"
+msgstr "Nombre:"
+
+#: src/Gui/settings.glade:197
+msgid "<b>Plugin details</b>"
+msgstr "<b>Detalles del complemento</b>"
+
+#: src/Gui/settings.glade:220
+msgid "C_onfigure plugin"
+msgstr "C_onfigurar Complemento"
+
+#: src/Gui/settings.glade:257
+msgid "Global Settings"
+msgstr "Preferencias globales"
+
+#: src/Gui/settings.glade:283
+msgid "Check package GPG signature"
+msgstr "Compruebe la firma GPG del paquete"
+
+#: src/Gui/settings.glade:299
+msgid "Database backend: "
+msgstr "Backend de la Base de Datos"
+
+#: src/Gui/settings.glade:325
+msgid "Blacklisted packages: "
+msgstr "Paquetes en la Blacklist"
+
+#: src/Gui/settings.glade:339
+msgid "Max coredump storage size(MB):"
+msgstr "Capacidad máxima de almacenamiento del volcado del núcleo (MB):"
+
+#: src/Gui/settings.glade:353
+msgid "GPG keys: "
+msgstr "LLaves GPG:"
+
+#: src/Gui/settings.glade:456
+msgid "Common"
+msgstr "Común"
+
+#: src/Gui/settings.glade:489
+msgid "<b>Plugin</b>"
+msgstr "<b>complemento</b>"
+
+#: src/Gui/settings.glade:499
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Tiempo (o periodo)</b>"
+
+#: src/Gui/settings.glade:567
+msgid "Cron"
+msgstr "Cron"
+
+#: src/Gui/settings.glade:601
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>Complementos analizadores</b>"
+
+#: src/Gui/settings.glade:611
+msgid "<b>Associated action</b>"
+msgstr "<b>Acción asociada</b>"
+
+#: src/Gui/settings.glade:690
+msgid "Analyzers, Actions, Reporters"
+msgstr "Analizadores, Acciones, Informadores"
+
 # NO TRADUCIR, hacen referencia al boton gkt
-#: ../src/Gui/settings.glade.h:23
+#: src/Gui/settings.glade:709
 msgid "gtk-cancel"
 msgstr "gtk-cancel"
 
 # NO TRADUCIR, hacen referencia al boton gkt
-#: ../src/Gui/settings.glade.h:24
+#: src/Gui/settings.glade:723
 msgid "gtk-ok"
 msgstr "gtk-ok"
 
-#: ../src/Gui/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "Ver e informar el cuelgue de una aplicación"
+#: src/Gui/settings.glade:751
+msgid "GPG Keys"
+msgstr "LLaves GPG"
 
-#: ../src/Applet/Applet.cpp:78
+#: src/Applet/Applet.cpp:78
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Ha sido detectado una caída en el paquete %s."
 
-#: ../src/Applet/Applet.cpp:253
+#: src/Applet/Applet.cpp:253
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
-#: ../src/Applet/CCApplet.cpp:200
+#: src/Applet/CCApplet.cpp:200
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:473
-msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
-msgstr "El tamaño del informe excede la cuota. Por favor, verifique el valor de MaxCrashReportsSize del sistema en abrt.conf."
+#: src/Daemon/Daemon.cpp:473
+msgid ""
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
+msgstr ""
+"El tamaño del informe excede la cuota. Por favor, verifique el valor de "
+"MaxCrashReportsSize del sistema en abrt.conf."
 
 #: ../lib/Plugins/Bugzilla.cpp:124
 msgid "Missing member 'reporter'"
@@ -527,7 +563,8 @@ msgstr "Chequeando si hay duplicados..."
 
 #: ../lib/Plugins/Bugzilla.cpp:446
 msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
+msgstr ""
+"Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:449
 msgid "Logging into bugzilla..."
@@ -545,11 +582,11 @@ msgstr "Creando un nuevo informe..."
 msgid "Logging out..."
 msgstr "Saliendo..."
 
-#: ../lib/Plugins/Kerneloops.cpp:35
+#: lib/Plugins/Kerneloops.cpp:35
 msgid "Getting local universal unique identification"
 msgstr "Obteniendo la identificación única universal local"
 
-#: ../lib/Plugins/CCpp.cpp:253
+#: lib/Plugins/CCpp.cpp:253
 msgid "Generating backtrace"
 msgstr "Generando seguimiento..."
 
@@ -569,7 +606,7 @@ msgstr "Obteniendo la identificación única universal global..."
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:100
+#: lib/Plugins/KerneloopsReporter.cpp:100
 msgid "Creating and submitting a report..."
 msgstr "Creando y enviando un informe..."
 
@@ -578,34 +615,34 @@ msgstr "Creando y enviando un informe..."
 msgid "Writing report to '%s'"
 msgstr "Escribiendo reporte en '%s'"
 
-#: ../lib/Plugins/FileTransfer.cpp:54
+#: lib/Plugins/FileTransfer.cpp:54
 msgid "FileTransfer: URL not specified"
 msgstr "Transferencia de archivo: URL no especificada"
 
-#: ../lib/Plugins/FileTransfer.cpp:58
+#: lib/Plugins/FileTransfer.cpp:58
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Enviando archivo %s a %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:289
+#: lib/Plugins/FileTransfer.cpp:289
 msgid "File Transfer: Creating a report..."
 msgstr "Transferencia de archivo: Creando un informe..."
 
-#: ../lib/Plugins/FileTransfer.cpp:323
+#: lib/Plugins/FileTransfer.cpp:323
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "No se puede crear y enviar un archivo: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:352
+#: lib/Plugins/FileTransfer.cpp:352
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "No se puede crear y enviar un archivo %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "Creando un informe de cuelgue de kernel oops..."
 
-#: ../lib/Plugins/Mailx.cpp:137
+#: lib/Plugins/Mailx.cpp:137
 msgid "Sending an email..."
 msgstr "Enviando un correo..."
 
@@ -628,6 +665,7 @@ msgstr "Sosreport ya esta corriendo"
 #~ msgstr "Enviar"
 #~ msgid "Executing SOSreport plugin..."
 #~ msgstr "Ejecutando complemento SOSreport..."
+
 #~ msgid ""
 #~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
 #~ "information.\n"
@@ -636,27 +674,37 @@ msgstr "Sosreport ya esta corriendo"
 #~ "<b>ADVERTENCIA</b>, ¡está por enviar datos que pueden contener "
 #~ "información sensible!\n"
 #~ "¿Realmente quiere enviar <b>%s</b>?\n"
+
 #~ msgid "<b>Following items will be sent</b>"
 #~ msgstr "<b>Serán enviados los siguientes elementos</b>"
+
 #~ msgid "Plugin name is not set, can't load its settings"
 #~ msgstr ""
 #~ "No se puso el nombre del complemento, no se puede cargar su configuración"
+
 #~ msgid "Searching for debug-info packages..."
 #~ msgstr "Buscando paquetes de información del depurador..."
+
 #~ msgid "Downloading and installing debug-info packages..."
 #~ msgstr "Descargando e instalando paquetes de información del depurador..."
+
 #~ msgid "Creating a report..."
 #~ msgstr "Creando un informe..."
+
 #~ msgid "Starting report creation..."
 #~ msgstr "Iniciando la creación del informe..."
+
 #~ msgid "Working..."
 #~ msgstr "Trabajando..."
+
 #~ msgid "Can't get username for uid %s"
 #~ msgstr "No se pudo obtener nombre de usuario para el uid %s"
+
 #~ msgid "Edit blacklisted packages"
 #~ msgstr "Edite los paquetes de la Blacklist"
+
 #~ msgid "Nothing selected"
 #~ msgstr "Nada seleccionado"
+
 #~ msgid "This function is not implemented yet!"
 #~ msgstr "¡Esta función no está implementada todavía! :-("
-
