@@ -827,6 +827,14 @@ static int set_limits()
 			    log("warning: can't write limit to: %s", limits_name);
 			close(fd);
 		}
+		else
+		{
+		/* 
+		   give up when we failed to open /proc/<pid>/limits for writing
+		   because it probably means, that the kernel doesn't support it
+		*/
+		return 1;
+		}
 	}
     return 0;
 }
