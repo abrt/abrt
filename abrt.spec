@@ -183,11 +183,13 @@ uncaught exception in python programs.
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-# FIXME: make this into group?
+# analyzers
+Requires: %{name}-addon-kerneloops
+Requires: %{name}-addon-ccpp, %{name}-addon-python
+# reporters
 Requires: %{name}-plugin-logger, %{name}-plugin-ticketuploader, %{name}-plugin-sosreport
 # remove for GA
 Requires: %{name}-plugin-bugzilla
-
 
 %description cli
 This package contains simple command line client for controlling abrt daemon over
