@@ -795,7 +795,7 @@ static int set_limits()
 		fclose(limits_fp);
 		if (!ulimit_c || ulimit_c[0] != '0' || ulimit_c[1] != '\0') {
 			/*process has nonzero ulimit -c, so need to modify it*/
-			return 0;
+			continue;
 		}
 		/* echo -n 'Max core file size=1:unlimited' >/proc/PID/limits */
 		int fd = open(limits_name, O_WRONLY);
@@ -804,17 +804,13 @@ static int set_limits()
 			/*full_*/
 			ssize_t n = write(fd, CORE_SIZE_PATTERN, sizeof(CORE_SIZE_PATTERN)-1);
 			if (n < sizeof(CORE_SIZE_PATTERN)-1)
-				log("warning: can't write limit to: %s", limits_name);
+				log("warning: can't write core_size limit to: %s", limits_name);
 			close(fd);
 		}
-		else
-		{
-		/* 
-		   give up when we failed to open /proc/<pid>/limits for writing
-		   because it probably means, that the kernel doesn't support it
-		*/
-		return 1;
-		}
+        else
+        {
+            log("warning: can't open %s for writing", limits_name);
+        }
 	}
 	closedir(dir);
 	return 0;
