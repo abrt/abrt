@@ -752,26 +752,6 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 */
 #ifdef HOSTILE_KERNEL
 #define CORE_SIZE_PATTERN "Max core file size=1:unlimited"
-static char *skip_whitespace(char *str)
-{
-	while (*str) {
-		if (*str != ' ' && *str != '\t')
-			return str;
-		str++;
-	}
-	return str;
-}
-
-static char *skip_non_whitespace(char *str)
-{
-	while (*str) {
-		if (*str == ' ' || *str == '\t')
-			return str;
-		str++;
-	}
-	return str;
-}
-
 static int isdigit_str(char *str)
 {
 	do {
@@ -785,7 +765,7 @@ static int set_limits()
 {
     	DIR *dir = opendir("/proc");
 	if (!dir) {
-	    /* this shouldn't fail, but to be safe.. */
+		/* this shouldn't fail, but to be safe.. */
 		return 1;
 	}
 
@@ -814,7 +794,7 @@ static int set_limits()
 		}
 		fclose(limits_fp);
 		if (!ulimit_c || ulimit_c[0] != '0' || ulimit_c[1] != '\0') {
-		    /*process has nonzero ulimit -c, so need to modify it*/
+			/*process has nonzero ulimit -c, so need to modify it*/
 			return 0;
 		}
 		/* echo -n 'Max core file size=1:unlimited' >/proc/PID/limits */
@@ -823,15 +803,16 @@ static int set_limits()
 			errno = 0;
 			/*full_*/
 			ssize_t n = write(fd, CORE_SIZE_PATTERN, sizeof(CORE_SIZE_PATTERN)-1);
-			if(n < sizeof(CORE_SIZE_PATTERN)-1)
-			    log("warning: can't write limit to: %s", limits_name);
+			if (n < sizeof(CORE_SIZE_PATTERN)-1)
+				log("warning: can't write limit to: %s", limits_name);
 			close(fd);
 		}
 	}
-    return 0;
+	closedir(dir);
+	return 0;
 }
-
 #endif /* HOSTILE_KERNEL */
+
 void CAnalyzerCCpp::Init()
 {
     ifstream fInCorePattern;
