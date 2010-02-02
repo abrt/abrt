@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-01 15:49+0000\n"
+"POT-Creation-Date: 2010-02-02 13:25+0100\n"
 "PO-Revision-Date: 2010-02-01 12:59-0300\n"
 "Last-Translator: Héctor Daniel Cabrera <logan@fedoraproject.org>\n"
 "Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
@@ -30,23 +30,23 @@ msgstr ""
 "Se obtienen datos inesperados desde el demonio (¿está la Base de Datos "
 "correctamente actualizada?)"
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "Complementos no cargados"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Complementos analizadores"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Complementos de acción"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Complementos de informes"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Complementos de Bases de Datos"
 
@@ -54,12 +54,11 @@ msgstr "Complementos de Bases de Datos"
 msgid "Can't connect to system dbus"
 msgstr "No es posible conectarse con system dbus"
 
-#: ../src/Gui/CCDBusBackend.py:120
-#: ../src/Gui/CCDBusBackend.py:123
+#: src/Gui/CCDBusBackend.py:120 src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Por favor compruebe si el demonio ABRT se está ejecutando."
 
-#: ../src/Gui/CCDBusBackend.py:175
+#: src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -67,24 +66,9 @@ msgstr ""
 "El demonio no devuelve un informe válido\n"
 "¿Falta la información de la depuración (debuginfo)?"
 
-#: ../src/Gui/ccgui.glade.h:1
-msgid "(C) 2009 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
-
-#: ../src/Gui/ccgui.glade.h:2
-msgid "About ABRT"
-msgstr "Acerca de ABRT"
-
-#: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:8
-#: ../src/Gui/report.glade.h:15
-#: ../src/Gui/abrt.desktop.in.h:1
-msgid "Automatic Bug Reporting Tool"
-msgstr "Herramienta de Informe de Errores Automática"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "Delete"
-msgstr "Eliminar"
+#: src/Gui/ccgui.glade:8
+msgid "Please wait.."
+msgstr ""
 
 #: src/Gui/ccgui.glade:60
 msgid "Details"
@@ -161,32 +145,31 @@ msgstr "No informado"
 
 # Revisar si hay que traducir.
 # Ver como referencia los botones gtk que no habia que traducirlos
-#. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:74
+#: src/Gui/CCMainWindow.py:74
 msgid "Icon"
 msgstr "Icono"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: src/Gui/CCMainWindow.py:82
 msgid "Package"
 msgstr "Paquete"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: src/Gui/CCMainWindow.py:83
 msgid "Application"
 msgstr "Aplicación"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: src/Gui/CCMainWindow.py:84
 msgid "Date"
 msgstr "Fecha"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: src/Gui/CCMainWindow.py:85
 msgid "Crash count"
 msgstr "Cantidad de caídas"
 
-#: ../src/Gui/CCMainWindow.py:86
+#: src/Gui/CCMainWindow.py:86
 msgid "User"
 msgstr "Usuario"
 
-#: ../src/Gui/CCMainWindow.py:154
+#: src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -195,7 +178,7 @@ msgstr ""
 "No se puede mostrar el diálogo de configuración\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -204,8 +187,7 @@ msgstr ""
 "¡No se pudo finalizar la tarea actual!\n"
 "%s"
 
-#. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:192
+#: src/Gui/CCMainWindow.py:192
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -214,19 +196,19 @@ msgstr ""
 "Error intentando cargar la lista  de volcado.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:230
+#: src/Gui/CCMainWindow.py:230
 msgid "This crash has been reported:\n"
 msgstr "Esta caída ha sido reportada:\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b> Esta caída ha sido reportada:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:250
+#: src/Gui/CCMainWindow.py:250
 msgid "<b>Not reported!</b>"
 msgstr "<b>¡No informado!</b>"
 
-#: ../src/Gui/CCMainWindow.py:298
+#: src/Gui/CCMainWindow.py:298
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -234,7 +216,7 @@ msgstr ""
 "Incapaz de conseguir el informe!\n"
 "¿Falta la información de la depuración?"
 
-#: ../src/Gui/CCMainWindow.py:318
+#: src/Gui/CCMainWindow.py:318
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -243,8 +225,7 @@ msgstr ""
 "¡El informe falló!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
-#: ../src/Gui/CCMainWindow.py:364
+#: src/Gui/CCMainWindow.py:337 src/Gui/CCMainWindow.py:364
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
@@ -253,11 +234,11 @@ msgstr "Error al obtener el informe: %s"
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
 
-#: ../src/Gui/CCReporterDialog.py:99
+#: src/Gui/CCReporterDialog.py:99
 msgid "You must check backtrace for sensitive data"
 msgstr "Debe verificar los informes en busca de datos importantes"
 
-#: ../src/Gui/CCReporterDialog.py:110
+#: src/Gui/CCReporterDialog.py:110
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -270,15 +251,19 @@ msgstr ""
 "usando el comando <b> debuginfo-install %s </b>\n"
 "y luego use el botón Actualizar para regenerar el trazado."
 
-#: ../src/Gui/CCReporterDialog.py:112
+#: src/Gui/CCReporterDialog.py:112
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "¡El trazado es inútil, no se puede informar esto!"
 
-#: ../src/Gui/CCReporterDialog.py:116
-msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
-msgstr "El trazado está incompleto, por favor, asegúrese de proveer bien los pasos para reproducir el error."
+#: src/Gui/CCReporterDialog.py:116
+msgid ""
+"The backtrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr ""
+"El trazado está incompleto, por favor, asegúrese de proveer bien los pasos "
+"para reproducir el error."
 
-#: ../src/Gui/CCReporterDialog.py:158
+#: src/Gui/CCReporterDialog.py:158
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -287,11 +272,7 @@ msgstr ""
 "No se pudo guardar la configuración del complemento:\n"
 "%s"
 
-#: ../src/Gui/dialogs.glade.h:1
-msgid "Log"
-msgstr "Registro"
-
-#: ../src/Gui/dialogs.glade.h:2
+#: src/Gui/dialogs.glade:7
 msgid "Report done"
 msgstr "Informe terminado"
 
@@ -359,22 +340,21 @@ msgstr "<span color=\"white\">Razón</span>"
 #: src/Gui/report.glade:315
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
+"He verificado los informes y eliminado datos importantes (contraseñas, etc.)"
 
-#: ../src/Gui/report.glade.h:16
-msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr "He verificado los informes y eliminado datos importantes (contraseñas, etc.)"
+#: src/Gui/report.glade:334
+#, fuzzy
+msgid "<b>Backtrace</b>"
+msgstr "<b>Adjuntos</b>"
 
-#: ../src/Gui/report.glade.h:17
-msgid "N/A"
-msgstr "N/A"
+#: src/Gui/report.glade:396
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr ""
 
-#: ../src/Gui/report.glade.h:18
-msgid "Send report"
-msgstr "Enviando informe"
-
-#: ../src/Gui/report.glade.h:19
-msgid "Show log"
-msgstr "Mostrar registro"
+#: src/Gui/report.glade:439
+#, fuzzy
+msgid "<b>Comment</b>"
+msgstr "<b>Adjuntos</b>"
 
 #: src/Gui/report.glade:487
 msgid "<b>Attachments</b>"
@@ -390,11 +370,11 @@ msgstr " "
 
 #: src/Gui/report.glade:593
 msgid "Show log"
-msgstr ""
+msgstr "Mostrar registro"
 
 #: src/Gui/report.glade:635
 msgid "Send report"
-msgstr ""
+msgstr "Enviando informe"
 
 #: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
@@ -404,11 +384,11 @@ msgstr "<b>Seleccione un complemento</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>Seleccione la base de datos de fondo</b>"
 
-#: ../src/Gui/SettingsDialog.py:169
+#: src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Eliminar este trabajo"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Eliminar esta acción"
 
@@ -531,54 +511,54 @@ msgstr ""
 "El tamaño del informe excede la cuota. Por favor, verifique el valor de "
 "MaxCrashReportsSize del sistema en abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:124
+#: lib/Plugins/Bugzilla.cpp:124
 msgid "Missing member 'reporter'"
 msgstr "No se encuentra el miembro 'informante'"
 
-#: ../lib/Plugins/Bugzilla.cpp:176
+#: lib/Plugins/Bugzilla.cpp:176
 msgid "Missing member 'cc'"
 msgstr "Facltante de miembro 'cc'"
 
-#: ../lib/Plugins/Bugzilla.cpp:262
+#: lib/Plugins/Bugzilla.cpp:262
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "El error ya ha sido informado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:274
+#: lib/Plugins/Bugzilla.cpp:274
 msgid "Missing member 'bug_id'"
 msgstr "Faltante de miembro 'bug_id'"
 
-#: ../lib/Plugins/Bugzilla.cpp:283
+#: lib/Plugins/Bugzilla.cpp:283
 msgid "Missing member 'bugs'"
 msgstr "Faltante de miembro 'bugs'"
 
-#: ../lib/Plugins/Bugzilla.cpp:346
+#: lib/Plugins/Bugzilla.cpp:346
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nuevo id del error: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:440
+#: lib/Plugins/Bugzilla.cpp:440
 msgid "Checking for duplicates..."
 msgstr "Chequeando si hay duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:446
+#: lib/Plugins/Bugzilla.cpp:446
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr ""
 "Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: lib/Plugins/Bugzilla.cpp:449
 msgid "Logging into bugzilla..."
 msgstr "Ingresando a bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:454
+#: lib/Plugins/Bugzilla.cpp:454
 msgid "Checking CC..."
 msgstr "Chequeando CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:465
+#: lib/Plugins/Bugzilla.cpp:465
 msgid "Creating new bug..."
 msgstr "Creando un nuevo informe..."
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: lib/Plugins/Bugzilla.cpp:469
 msgid "Logging out..."
 msgstr "Saliendo..."
 
@@ -590,19 +570,19 @@ msgstr "Obteniendo la identificación única universal local"
 msgid "Generating backtrace"
 msgstr "Generando seguimiento..."
 
-#: ../lib/Plugins/CCpp.cpp:388
+#: lib/Plugins/CCpp.cpp:388
 msgid "Starting debuginfo installation"
 msgstr "Iniciando la instalación de la información de depuración"
 
-#: ../lib/Plugins/CCpp.cpp:537
+#: lib/Plugins/CCpp.cpp:537
 msgid "Getting local universal unique identification..."
 msgstr "Obteniendo la identificación única universal local..."
 
-#: ../lib/Plugins/CCpp.cpp:556
+#: lib/Plugins/CCpp.cpp:556
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:734
+#: lib/Plugins/CCpp.cpp:734
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
@@ -610,7 +590,7 @@ msgstr "Omita la instalación de la información de depuración"
 msgid "Creating and submitting a report..."
 msgstr "Creando y enviando un informe..."
 
-#: ../lib/Plugins/Logger.cpp:76
+#: lib/Plugins/Logger.cpp:76
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Escribiendo reporte en '%s'"
@@ -646,23 +626,26 @@ msgstr "Creando un informe de cuelgue de kernel oops..."
 msgid "Sending an email..."
 msgstr "Enviando un correo..."
 
-#: ../lib/Plugins/SOSreport.cpp:103
+#: lib/Plugins/SOSreport.cpp:103
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Corriendo sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:109
+#: lib/Plugins/SOSreport.cpp:109
 msgid "Done running sosreport"
 msgstr "Sosreport ya esta corriendo"
 
 #~ msgid "You must agree with submitting the backtrace."
 #~ msgstr "Usted debe estar de acuerdo con rendir informe del trazado"
+
 #~ msgid "I agree to submit this backtrace, which could contain sensitive data"
 #~ msgstr ""
 #~ "Estoy de acuerdo en rendir el siguiente trazado, el cual podría contene "
 #~ "datos sensibles"
+
 #~ msgid "Send"
 #~ msgstr "Enviar"
+
 #~ msgid "Executing SOSreport plugin..."
 #~ msgstr "Ejecutando complemento SOSreport..."
 
