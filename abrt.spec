@@ -183,6 +183,9 @@ uncaught exception in python programs.
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
+Requires: %{name}-addon-kerneloops
+Requires: %{name}-addon-ccpp, %{name}-addon-python
+Requires: %{name}-plugin-bugzilla, %{name}-plugin-logger, %{name}-plugin-runapp
 
 %description cli
 This package contains simple command line client for controlling abrt daemon over
