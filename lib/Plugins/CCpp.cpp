@@ -287,12 +287,25 @@ static void GetBacktrace(const char *pDebugDumpDir,
     }
     args[3] = (char*)dfd.c_str();
 
-    /*
+    /* "file BINARY_FILE" is needed, without it gdb cannot properly
+     * unwind the stack. Currently the unwind information is located
+     * in .eh_frame which is stored only in binary, not in coredump
+     * or debuginfo.
+     *
+     * Fedora GDB does not strictly need it, it will find the binary
+     * by its build-id.  But for binaries either without build-id
+     * (=built on non-Fedora GCC) or which do not have
+     * their debuginfo rpm installed gdb would not find BINARY_FILE
+     * so it is still makes sense to supply "file BINARY_FILE".
+     *
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
      * gdb uses specified BINARY_FILE
      * even if it is completely unrelated to the coredump
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
+     *
+     * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
+     * BINARY_FILE if it is newer (to at least avoid gdb complaining).
      */
     args[4] = (char*)"-ex";
     string file = ssprintf("file %s", executable.c_str());
@@ -733,7 +746,92 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.SaveText(FILENAME_RATING, to_string(rate_backtrace(backtrace.c_str())).c_str());
     dd.Close();
 }
+/*
+ this is just a workaround until kernel changes it's behavior
+ when handling pipes in core_pattern
+*/
+#ifdef HOSTILE_KERNEL
+#define CORE_SIZE_PATTERN "Max core file size=1:unlimited"
+static char *skip_whitespace(char *str)
+{
+	while (*str) {
+		if (*str != ' ' && *str != '\t')
+			return str;
+		str++;
+	}
+	return str;
+}
 
+static char *skip_non_whitespace(char *str)
+{
+	while (*str) {
+		if (*str == ' ' || *str == '\t')
+			return str;
+		str++;
+	}
+	return str;
+}
+
+static int isdigit_str(char *str)
+{
+	do {
+		if (*str < '0' || *str > '9')
+			return 0;
+	} while (*++str);
+	return 1;
+}
+
+static int set_limits()
+{
+    	DIR *dir = opendir("/proc");
+	if (!dir) {
+	    /* this shouldn't fail, but to be safe.. */
+		return 1;
+	}
+
+	struct dirent *ent;
+	while ((ent = readdir(dir)) != NULL) {
+		if (!isdigit_str(ent->d_name))
+			continue;
+
+		char limits_name[sizeof("/proc/%s/limits") + sizeof(int)];
+		snprintf(limits_name, sizeof(limits_name), "/proc/%s/limits", ent->d_name);
+		FILE *limits_fp = fopen(limits_name, "r");
+		if (!limits_fp) {
+			break;
+		}
+
+		char line[128];
+		char *ulimit_c = NULL;
+		while (1) {
+			if (fgets(line, sizeof(line)-1, limits_fp) == NULL)
+				break;
+			if (strncmp(line, "Max core file size", sizeof("Max core file size")-1) == 0) {
+				ulimit_c = skip_whitespace(line + sizeof("Max core file size")-1);
+				skip_non_whitespace(ulimit_c)[0] = '\0';
+				break;
+			}
+		}
+		fclose(limits_fp);
+		if (!ulimit_c || ulimit_c[0] != '0' || ulimit_c[1] != '\0') {
+		    /*process has nonzero ulimit -c, so need to modify it*/
+			return 0;
+		}
+		/* echo -n 'Max core file size=1:unlimited' >/proc/PID/limits */
+		int fd = open(limits_name, O_WRONLY);
+		if (fd >= 0) {
+			errno = 0;
+			/*full_*/
+			ssize_t n = write(fd, CORE_SIZE_PATTERN, sizeof(CORE_SIZE_PATTERN)-1);
+			if(n < sizeof(CORE_SIZE_PATTERN)-1)
+			    log("warning: can't write limit to: %s", limits_name);
+			close(fd);
+		}
+	}
+    return 0;
+}
+
+#endif /* HOSTILE_KERNEL */
 void CAnalyzerCCpp::Init()
 {
     ifstream fInCorePattern;
@@ -760,6 +858,11 @@ void CAnalyzerCCpp::Init()
                 CORE_PATTERN_IFACE, CORE_PATTERN);
         }
     }
+#ifdef HOSTILE_KERNEL
+    if(set_limits() != 0)
+        log("warning: failed to set core_size limit, ABRT won't detect crashes in"
+            "compiled apps");
+#endif
 
     ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);

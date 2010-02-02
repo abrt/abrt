@@ -176,7 +176,7 @@ Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
 %description addon-python
-This package contains python hook and python analyzer plugin for hadnling
+This package contains python hook and python analyzer plugin for handling
 uncaught exception in python programs.
 
 %package cli
@@ -190,7 +190,7 @@ Requires: %{name}-plugin-bugzilla
 
 
 %description cli
-This package contains simple command line client for controling abrt daemon over
+This package contains simple command line client for controlling abrt daemon over
 the sockets.
 
 %package desktop
@@ -215,7 +215,7 @@ Obsoletes: bug-buddy
 Provides: bug-buddy
 
 %description desktop
-Virtual package to make easy default instalation on desktop environments.
+Virtual package to make easy default installation on desktop environments.
 
 %prep
 %setup -q
