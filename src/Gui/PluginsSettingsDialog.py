@@ -97,22 +97,34 @@ class PluginsSettingsDialog:
             # don't force refresh as it will overwrite settings if g-k is not available
             pluginlist = getPluginInfoList(self.ccdaemon)
         except Exception, e:
-            print e
+            log("Error while loading plugins info: %s", e)
             #gui_error_message("Error while loading plugins info, please check if abrt daemon is running\n %s" % e)
             return
         plugin_rows = {}
+        group_empty = {}
         for plugin_type in PluginInfo.types.keys():
             it = self.pluginsListStore.append(None,
+                        # cell_text, toggle_active, toggle_visible, group_name_visible, color, plugin
                         ["<b>%s</b>" % PluginInfo.types[plugin_type], 0, 0, 1, "gray", None])
             plugin_rows[plugin_type] = it
+            group_empty[plugin_type] = 1
         for entry in pluginlist:
             if entry.Description:
                 text = "<b>%s</b>\n%s" % (entry.getName(), entry.Description)
             else:
                 # non-loaded plugins have empty description
                 text = "<b>%s</b>" % entry.getName()
-            self.pluginsListStore.append(plugin_rows[entry.getType()],
+            plugin_type = entry.getType()
+            self.pluginsListStore.append(plugin_rows[plugin_type],
+                        # cell_text, toggle_active, toggle_visible, group_name_visible, color, plugin
                         [text, entry.Enabled == "yes", 1, 0, "white", entry])
+            group_empty[plugin_type] = 0
+        # rhbz#560971 "Don't show empty 'Not loaded plugins' section"
+        for plugin_type in group_empty.keys():
+            if group_empty[plugin_type]:
+                self.pluginsListStore.append(plugin_rows[plugin_type],
+                        # cell_text, toggle_active, toggle_visible, group_name_visible, color, plugin
+                        ["(none)", 0, 1, 0, "white", None])
         self.pluginlist.expand_all()
 
     def dehydrate(self):
