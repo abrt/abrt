@@ -261,8 +261,8 @@ void CPluginManager::UnLoadPlugin(const char *pName)
             m_mapPlugins.erase(it_plugin);
         }
         log("UnRegistered %s plugin %s", plugin_type_str[it_module->second->GetType()], pName);
-        m_mapLoadedModules.erase(it_module);
         delete it_module->second;
+        m_mapLoadedModules.erase(it_module);
     }
 }
 
