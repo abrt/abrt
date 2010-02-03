@@ -374,16 +374,10 @@
                                         <property name="hscrollbar_policy">automatic</property>
                                         <property name="vscrollbar_policy">automatic</property>
                                         <child>
-                                          <object class="GtkViewport" id="viewport1">
+                                          <object class="GtkTextView" id="tevHowToReproduce">
                                             <property name="visible">True</property>
-                                            <property name="resize_mode">queue</property>
-                                            <child>
-                                              <object class="GtkTextView" id="tevHowToReproduce">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="wrap_mode">word-char</property>
-                                              </object>
-                                            </child>
+                                            <property name="can_focus">True</property>
+                                            <property name="wrap_mode">word-char</property>
                                           </object>
                                         </child>
                                       </object>
@@ -417,16 +411,10 @@
                                         <property name="hscrollbar_policy">automatic</property>
                                         <property name="vscrollbar_policy">automatic</property>
                                         <child>
-                                          <object class="GtkViewport" id="viewport2">
+                                          <object class="GtkTextView" id="tvComment">
                                             <property name="visible">True</property>
-                                            <property name="resize_mode">queue</property>
-                                            <child>
-                                              <object class="GtkTextView" id="tvComment">
-                                                <property name="visible">True</property>
-                                                <property name="can_focus">True</property>
-                                                <property name="wrap_mode">word-char</property>
-                                              </object>
-                                            </child>
+                                            <property name="can_focus">True</property>
+                                            <property name="wrap_mode">word-char</property>
                                           </object>
                                         </child>
                                       </object>
