@@ -409,6 +409,7 @@ fi
 
 %changelog
 * Tue Feb  2 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.6-1
+- print __glib_assert_msg (rhbz#549735);
 - SPEC: added some requires to abrt-cli to make it work out-of-the-box (jmoskovc@redhat.com)
 - abrt-hook-ccpp: fix rhbz#560612 "limit '18446744073709551615' is bogus" rhbz#560612(vda.linux@googlemail.com)
 - APPLET: don't show the icon when abrtd is not running rhbz#557866 (jmoskovc@redhat.com)
