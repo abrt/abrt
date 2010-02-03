@@ -575,7 +575,37 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
     string unstrip_n_output = run_unstrip_n(pDebugDumpDir);
     string independentBuildIdPC;
     GetIndependentBuildIdPC(unstrip_n_output.c_str(), independentBuildIdPC);
-    return CreateHash((package + executable + independentBuildIdPC).c_str());
+
+    /* package variable has "firefox-3.5.6-1.fc11[.1]" format */
+    /* Remove distro suffix and maybe least significant version number */
+    char *trimmed_package = xstrdup(package.c_str());
+    char *p = trimmed_package;
+    while (*p)
+    {
+        if (*p == '.' && (p[1] < '0' || p[1] > '9'))
+        {
+            /* We found "XXXX.nondigitXXXX", trim this part */
+            *p = '\0';
+            break;
+        }
+        p++;
+    }
+    char *first_dot = strchr(trimmed_package, '.');
+    if (first_dot)
+    {
+        char *last_dot = strrchr(first_dot, '.');
+        if (last_dot != first_dot)
+        {
+            /* There are more than one dot: "1.2.3"
+             * Strip last part, we don't want to distinquish crashes
+             * in packages which differ only by minor release number.
+             */
+            *last_dot = '\0';
+        }
+    }
+    string hash_str = trimmed_package + executable + independentBuildIdPC;
+    free(trimmed_package);
+    return CreateHash(hash_str.c_str());
 }
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
