@@ -300,6 +300,7 @@ function_args : '(' wsa ')'
 
 function_args_sequence : function_args_char
                        | function_args_sequence wsa '(' wsa ')'
+                       | function_args_sequence wsa '(' wsa function_args_string wsa ')'
                        | function_args_sequence wsa '(' wsa function_args_sequence wsa ')'
                        | function_args_sequence wsa function_args_char
                        | function_args_sequence wsa function_args_string
