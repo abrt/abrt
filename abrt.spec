@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.0.5
+Version: 1.0.6
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -412,9 +412,24 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
-* Fri Jan 29 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.5-1
+* Tue Feb  2 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.6-1
+- SPEC: added some requires to abrt-cli to make it work out-of-the-box (jmoskovc@redhat.com)
+- abrt-hook-ccpp: fix rhbz#560612 "limit '18446744073709551615' is bogus" rhbz#560612(vda.linux@googlemail.com)
+- APPLET: don't show the icon when abrtd is not running rhbz#557866 (jmoskovc@redhat.com)
+- GUI: made report message labels wrap (jmoskovc@redhat.com)
+- GUI: don't die if daemon doesn't send the gpg keys (jmoskovc@redhat.com)
+- disabled the autoreporting of kerneloopses (jmoskovc@redhat.com)
+- Kerneloops: fix BZ reporting of oopses (vda.linux@googlemail.com)
+- GUI: wider report message dialog (jmoskovc@redhat.com)
 - moved the gpg key list from abrt.conf to gpg_keys file (jmoskovc@redhat.com)
 - Logger: create log file with mode 0600 (vda.linux@googlemail.com)
+- GUI: fixed the rating logic, to prevent sending BT with rating < 3 (jmoskovc@redhat.com)
+- Report GUI: made more fields copyable - closed rhbz#526209; tweaked wording (vda.linux@googlemail.com)
+- GUI: fixed bug caused by failed gk-authorization (jmoskovc@redhat.com)
+
+* Fri Jan 29 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.5-1
+- moved the gpg key list from abrt.conf to gpg_keys file (jmoskovc@redhat.com)
+- Logger: create log file with mode 0600 rhbz#559545 (vda.linux@googlemail.com)
 - GUI: fixed the rating logic, to prevent sending BT with rating < 3 (jmoskovc@redhat.com)
 - Report GUI: made more fields copyable - closed rhbz#526209; tweaked wording (vda.linux@googlemail.com)
 - GUI: fixed bug caused by failed gk-authorization (jmoskovc@redhat.com)

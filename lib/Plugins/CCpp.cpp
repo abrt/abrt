@@ -266,7 +266,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     unsetenv("TERM");
     putenv((char*)"TERM=dumb");
 
-    char *args[15];
+    char *args[17];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
 
@@ -294,14 +294,14 @@ static void GetBacktrace(const char *pDebugDumpDir,
      *
      * Fedora GDB does not strictly need it, it will find the binary
      * by its build-id.  But for binaries either without build-id
-     * (=built on non-Fedora GCC) or which do not have
+     * (= built on non-Fedora GCC) or which do not have
      * their debuginfo rpm installed gdb would not find BINARY_FILE
      * so it is still makes sense to supply "file BINARY_FILE".
      *
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
      * gdb uses specified BINARY_FILE
-     * even if it is completely unrelated to the coredump
+     * even if it is completely unrelated to the coredump.
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
      *
      * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
@@ -316,16 +316,43 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[7] = (char*)corefile.c_str();
 
     args[8] = (char*)"-ex";
-    /* max 3000 frames: with no limit, gdb sometimes OOMs the machine */
-    args[9] = (char*)"thread apply all backtrace 3000 full";
+    /*args[9] = ... see below */
     args[10] = (char*)"-ex";
     args[11] = (char*)"info sharedlib";
     /* glibc's abort() stores its message in this variable */
     args[12] = (char*)"-ex";
     args[13] = (char*)"print (char*)__abort_msg";
-    args[14] = NULL;
+    args[14] = (char*)"-ex";
+    args[15] = (char*)"print (char*)__glib_assert_msg";
+    args[16] = NULL;
 
-    ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
+    /* Get the backtrace, but try to cap its size */
+    /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
+    unsigned bt_depth = 2048;
+    const char *thread_apply_all = "thread apply all ";
+    const char *full = " full";
+    while (1)
+    {
+        string cmd = ssprintf("%sbacktrace %u%s", thread_apply_all, bt_depth, full);
+        args[9] = (char*)cmd.c_str();
+        pBacktrace = "";
+        ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
+        if (bt_depth <= 64 || pBacktrace.size() < 256*1024)
+            return;
+        bt_depth /= 2;
+        if (bt_depth <= 64 && thread_apply_all[0] != '\0')
+        {
+            /* This program likely has gazillion threads, dont try to bt them all */
+            bt_depth = 256;
+            thread_apply_all = "";
+        }
+        if (bt_depth <= 64 && full[0] != '\0')
+        {
+            /* Looks like there are gigantic local structures or arrays, disable "full" bt */
+            bt_depth = 256;
+            full = "";
+        }
+    }
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output,
@@ -795,7 +822,7 @@ static int set_limits()
 		fclose(limits_fp);
 		if (!ulimit_c || ulimit_c[0] != '0' || ulimit_c[1] != '\0') {
 			/*process has nonzero ulimit -c, so need to modify it*/
-			return 0;
+			continue;
 		}
 		/* echo -n 'Max core file size=1:unlimited' >/proc/PID/limits */
 		int fd = open(limits_name, O_WRONLY);
@@ -804,9 +831,13 @@ static int set_limits()
 			/*full_*/
 			ssize_t n = write(fd, CORE_SIZE_PATTERN, sizeof(CORE_SIZE_PATTERN)-1);
 			if (n < sizeof(CORE_SIZE_PATTERN)-1)
-				log("warning: can't write limit to: %s", limits_name);
+				log("warning: can't write core_size limit to: %s", limits_name);
 			close(fd);
 		}
+        else
+        {
+            log("warning: can't open %s for writing", limits_name);
+        }
 	}
 	closedir(dir);
 	return 0;
