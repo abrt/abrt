@@ -566,13 +566,19 @@ void LoadOpenGPGPublicKey(const char* key)
 static char *get_argv1_if_full_path(const char* cmdline)
 {
     char *argv1 = (char*) strchr(cmdline, ' ');
-    if (argv1 != NULL)
+    while (argv1 != NULL)
     {
         /* we found space in cmdline, so it might contain
          * path to some script like:
-         * /usr/bin/python /usr/bin/system-control-network
+         * /usr/bin/python [-XXX] /usr/bin/system-control-network
          */
         argv1++;
+        if (*argv1 == '-')
+        {
+            /* looks like -XXX in "perl -XXX /usr/bin/script.pl", skip */
+            argv1 = strchr(argv1, ' ');
+            continue;
+        }
         /* if the string following the space doesn't start
          * with '/' it's probably not a full path to script
          * and we can't use it to determine the package name
@@ -584,6 +590,7 @@ static char *get_argv1_if_full_path(const char* cmdline)
         int len = strchrnul(argv1, ' ') - argv1;
         /* cut the cmdline arguments */
         argv1 = xstrndup(argv1, len);
+        break;
     }
     return argv1;
 }
