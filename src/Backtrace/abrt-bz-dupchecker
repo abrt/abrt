@@ -62,6 +62,8 @@ for buginfo in buginfos:
       print "Bug {0} has status {1}, skipping.".format(buginfo.bug_id, buginfo.bug_status)
     continue
 
+  bug = bz.getbug(buginfo.bug_id)
+
   # Skip bugs with already downloaded backtraces.
   filename = "{0}.bt".format(buginfo.bug_id)
   if os.path.isfile(filename):
@@ -69,7 +71,6 @@ for buginfo in buginfos:
       print "Skipping {0} (already exists).".format(filename)
   else:
     # Get backtrace from bug and store it as a file.
-    bug = bz.getbug(buginfo.bug_id)
     downloaded = False
     for attachment in bug.attachments:
       if attachment['filename'] == 'backtrace':
@@ -95,7 +96,7 @@ for buginfo in buginfos:
   command.append("--remove-noncrash-frames")
 
   helper = subprocess.Popen(command, stdout=subprocess.PIPE)
-  out, err = helper.communicate()
+  backtrace, err = helper.communicate()
   helper.wait()
 
   if helper.returncode != 0:
@@ -103,16 +104,21 @@ for buginfo in buginfos:
     continue
 
   # Empty backtrace is provided by Python apps.
-  if len(out) == 0:
+  if len(backtrace) == 0:
     continue
 
-  if out in database:
-    database[out].append(buginfo.bug_id)
-    if options.verbose:
-      print "Duplicate found: {0}".format(database[out])
-      print "Backtrace: {0}".format(out)
+  bugitem = {'id':buginfo.bug_id, 'comments':len(bug.longdescs)}
+  if backtrace in database:
+    components = database[backtrace]
+    if buginfo.component in components:
+      components[buginfo.component].append(bugitem)
+      if options.verbose:
+        print "Duplicate found: {0}".format(database[out]['id'])
+        print "Backtrace: {0}".format(out)
+    else:
+      components[buginfo.component] = [ bugitem ]
   else:
-    database[out] = [ buginfo.bug_id ]
+    database[backtrace] = { buginfo.component: [ bugitem ] }
 
 bz.logout()
 
@@ -121,18 +127,18 @@ print "=========================================================================
 
 # The number of duplicates.
 dupcount = 0
-for key, value in database.items():
-  if len(value) > 1:
-    dupcount += len(value) - 1
+for backtrace, components in database.items():
+  for component, bugitems in components.items():
+    if len(bugitems) > 1:
+      dupcount += len(value) - 1
 
 print "Total number of duplicate bugs detected: {0}".format(dupcount)
 print "------------------------------"
 
-dupcount = 0
-for key, value in database.items():
-  if len(value) > 1:
-    dupcount += len(value) - 1
-    print "Duplicates: {0}".format(value)
-    print "Backtrace: {0}".format(key)
-
-print "{0} duplicates found.".format(dupcount)
+# Print the duplicates
+for backtrace, components in database.items():
+  for component, bugitems in components.items():
+    if len(bugitems) > 1:
+      print "Component: {0}".format(component)
+      print "Duplicates: {0}".format(map(lambda x: "{0} ({1})".format(x['id'],x['comments']), bugitems).join(", "))
+      print "Backtrace: {0}".format(backtrace)
