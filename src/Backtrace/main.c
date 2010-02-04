@@ -232,7 +232,7 @@ int main(int argc, char **argv)
     ++thread_fixer;
   }
 
-  /* Bug fixing hack for GDB.
+  /* Bug fixing hack for GDB - remove wrongly placed newlines from the backtrace.
    * Sometimes there is a newline in the local variable section.
    * This is caused by some GDB hooks.
    * Example: rhbz#538440
@@ -248,10 +248,26 @@ int main(int argc, char **argv)
    *     __PRETTY_FUNCTION__ = "sync_deletions"
    * #2  0x0000000000423e6b in refresh_folder (stub=0x1b77f10 [MailStubExchange], 
    * ...
+   *
+   * The code removes every empty line (also those containing only spaces),
+   * which is not followed by a new Thread section.
+   * 
+   * rhbz#555251 contains empty lines with spaces
    */
   char *empty_line = btnoheader; 
-/* TODO SPACES ON LINES AS WELL, rhbz#555251 !!!!!!!!
-/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+  char *c = btnoheader;
+  while (*c)
+  {
+    if (*c == '\n')
+    {
+      char *cend = c + 1;
+      while (*cend == ' ' || *cend == '\t')
+        ++cend;
+      if (*cend == '\n' && 0 != strncmp(cend, "\nThread", strlen("\nThread")))
+        memmove(c, cend, strlen(cend) + 1);
+    }
+    ++c;
+  }
   while ((empty_line = strstr(empty_line, "\n\n")) != NULL)
   {
     if (0 != strncmp(empty_line, "\n\nThread", strlen("\n\nThread")))
