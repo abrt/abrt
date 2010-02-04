@@ -129,7 +129,7 @@ backtrace : /* empty */ %dprec 1
 ;
 
 threads   : thread
-          | threads wsa thread { $$ = thread_add_sibling($1, $3); }
+          | threads '\n' thread { $$ = thread_add_sibling($1, $3); }
 ;
 
 thread    : keyword_thread wss digit_sequence wsa '(' keyword_thread wss digit_sequence wsa ')' ':' wsa frames 
