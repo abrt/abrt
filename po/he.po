@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-31 03:57+0000\n"
+"POT-Creation-Date: 2010-02-04 10:01+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -91,12 +91,13 @@ msgid "Please wait.."
 msgstr "אנא המתן..."
 
 #: ../src/Gui/ccgui.glade.h:8
+#: ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "תוספים"
 
 #: ../src/Gui/ccgui.glade.h:9
 msgid "Report"
-msgstr "לדווח"
+msgstr "דווח"
 
 #: ../src/Gui/ccgui.glade.h:10
 msgid ""
@@ -432,20 +433,16 @@ msgid "GPG keys: "
 msgstr "מפתחות GPG:"
 
 #: ../src/Gui/settings.glade.h:17
-msgid "Global Settings"
-msgstr "הגדרות כלליות"
-
-#: ../src/Gui/settings.glade.h:18
 msgid "Max coredump storage size(MB):"
 msgstr "גודל אחסון coredump מירבי"
 
-#: ../src/Gui/settings.glade.h:19
+#: ../src/Gui/settings.glade.h:18
 msgid "Name:"
 msgstr "שם:"
 
 #: ../src/Gui/settings.glade.h:20
-msgid "Settings"
-msgstr "הגדרות"
+msgid "Preferences"
+msgstr "העדפות"
 
 #: ../src/Gui/settings.glade.h:21
 msgid "Version:"
@@ -454,14 +451,6 @@ msgstr "גרסה:"
 #: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "אתר אינטרנט:"
-
-#: ../src/Gui/settings.glade.h:23
-msgid "gtk-cancel"
-msgstr "ביטול"
-
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-ok"
-msgstr "אישור"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -480,7 +469,7 @@ msgstr "שירות ABRT לא פועל"
 msgid "Warning"
 msgstr "אזהרה"
 
-#: ../src/Daemon/Daemon.cpp:473
+#: ../src/Daemon/Daemon.cpp:474
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
 
@@ -542,19 +531,19 @@ msgstr "מקבל זהות מקומית ייחודית"
 msgid "Generating backtrace"
 msgstr "יוצר מידע קריסה"
 
-#: ../lib/Plugins/CCpp.cpp:375
+#: ../lib/Plugins/CCpp.cpp:415
 msgid "Starting debuginfo installation"
 msgstr "מתחיל התקנת מידע ניפוי שגיאות"
 
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:564
 msgid "Getting local universal unique identification..."
 msgstr "מקבל זהות מקומית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:613
 msgid "Getting global universal unique identification..."
 msgstr "מקבל זהות גלובלית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:721
+#: ../lib/Plugins/CCpp.cpp:791
 msgid "Skipping debuginfo installation"
 msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 
@@ -607,14 +596,30 @@ msgstr "מריץ sosreport: %s"
 msgid "Done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 
+#~ msgid "Global Settings"
+#~ msgstr "הגדרות כלליות"
+
+#~ msgid "Settings"
+#~ msgstr "הגדרות"
+
+#~ msgid "gtk-cancel"
+#~ msgstr "ביטול"
+
+#~ msgid "gtk-ok"
+#~ msgstr "אישור"
+
 #~ msgid "You must agree with submitting the backtrace."
 #~ msgstr "אני מסכים לשלוח את מידע הקריסה."
+
 #~ msgid "I agree to submit this backtrace, which could contain sensitive data"
 #~ msgstr "אני מסכים לשלוח את מידע הקריסה, שעלול להכיל מידע רגיש"
+
 #~ msgid "Send"
 #~ msgstr "שלח"
+
 #~ msgid "Executing SOSreport plugin..."
 #~ msgstr "מריץ את תוסף SOSreport..."
+
 #~ msgid ""
 #~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
 #~ "information.\n"
@@ -622,30 +627,42 @@ msgstr "הרצת sosreport הסתיימה"
 #~ msgstr ""
 #~ "<b>אזהרה</b>, אתה עומד לשלוח מידע שעלול להכיל מידע רגיש.\n"
 #~ "אתה באמת רוצה לשלוח את <b>%s</b>?\n"
+
 #~ msgid "<b>Following items will be sent</b>"
 #~ msgstr "<b>הפריטים הבאים יישלחו</b>"
+
 #~ msgid "Plugin name is not set, can't load its settings"
 #~ msgstr "שם התוסף לא הוגדר, לא ניתן לטעון את ההגדרות שלו"
+
 #~ msgid "Searching for debug-info packages..."
 #~ msgstr "מחפש חבילות debug-info..."
+
 #~ msgid "Downloading and installing debug-info packages..."
 #~ msgstr "מוריד ומתקין חבילות מידע ניפוי באגים..."
+
 #~ msgid "Creating a report..."
 #~ msgstr "יוצר דיווח"
+
 #~ msgid "Starting report creation..."
 #~ msgstr "מתחיל בהכנת הדיווח..."
+
 #~ msgid "Working..."
 #~ msgstr "עובד..."
+
 #~ msgid "Edit blacklisted packages"
 #~ msgstr "ערוך את הרשימה השחורה של החבילות (קריסות בחבילות אלו לא יתועדו): "
+
 #~ msgid "Nothing selected"
 #~ msgstr "לא נבחר דבר"
+
 #~ msgid "This function is not implemented yet!"
 #~ msgstr "הפונקציה הזאת עדיין לא מיושמת!"
+
 #~ msgid "gtk-add"
 #~ msgstr "הוסף"
+
 #~ msgid "gtk-close"
 #~ msgstr "סגור"
+
 #~ msgid "gtk-remove"
 #~ msgstr "מחק"
-
