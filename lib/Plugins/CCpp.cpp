@@ -561,8 +561,6 @@ static void trim_debuginfo_cache(unsigned max_mb)
 
 string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
-    log(_("Getting local universal unique identification..."));
-
     string executable;
     string package;
     {
