@@ -195,7 +195,11 @@ int main(int argc, char** argv)
         const char *signame = strsignal(signal_no);
         char *reason = xasprintf("Process was terminated by signal %s (%s)", signal_str, signame ? signame : signal_str);
 
-        snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu", dddir, (long)time(NULL), (long)pid);
+        unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu.new",
+                dddir, (long)time(NULL), (long)pid);
+        if (path_len >= sizeof(path))
+            exit(1);
+
         CDebugDump dd;
         dd.Create(path, uid);
         dd.SaveText(FILENAME_ANALYZER, "CCpp");
@@ -246,6 +250,10 @@ int main(int argc, char** argv)
          * Classic deadlock.
          */
         dd.Close();
+        char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
+        if (rename(path, newpath) != 0)
+            strcpy(path, newpath);
+        free(newpath);
 
         /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
         if (setting_MaxCrashReportsSize > 0)

@@ -290,12 +290,9 @@ static int SetUpCron()
 
 static void FindNewDumps(const char* pPath)
 {
-    VERB1 log("Scanning for unsaved entries");
-    struct stat stats;
-    DIR *dp;
+    /* Get all debugdump directories in the pPath directory */
     vector_string_t dirs;
-    /* Get all debugdump directories in the pPath directory. */
-    dp = opendir(pPath);
+    DIR *dp = opendir(pPath);
     if (dp == NULL)
     {
         perror_msg("Can't open directory '%s'", pPath);
@@ -306,42 +303,49 @@ static void FindNewDumps(const char* pPath)
     {
         if (dot_or_dotdot(ep->d_name))
             continue; /* skip "." and ".." */
-        std::string dname = ssprintf("%s/%s", pPath, ep->d_name);
+        std::string dname = concat_path_file(pPath, ep->d_name);
+        struct stat stats;
         if (lstat(dname.c_str(), &stats) == 0)
         {
             if (S_ISDIR(stats.st_mode))
             {
+                VERB1 log("Will check directory '%s'", ep->d_name);
                 dirs.push_back(dname);
             }
         }
     }
     closedir(dp);
 
-    // get potential unsaved debugdumps
+    log("Checking for unsaved crashdumps (%u dirs to check)", (unsigned)dirs.size());
+
+    /* Get potential unsaved debugdumps */
     vector_string_t::iterator itt = dirs.begin();
     for (; itt != dirs.end(); ++itt)
     {
         try
         {
+            const char *dir_name = itt->c_str();
             map_crash_data_t crashinfo;
-            mw_result_t res = SaveDebugDump(itt->c_str(), crashinfo);
+            mw_result_t res = SaveDebugDump(dir_name, crashinfo);
             switch (res)
             {
                 case MW_OK:
-                    VERB1 log("Saving %s into database", itt->c_str());
+                    /* Not VERB1: this is new, unprocessed crash dump.
+                     * Last abrtd somehow missed it - need to inform user */
+                    log("Non-processed crashdump in %s, saving into database", dir_name);
                     RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str());
                     break;
                 case MW_IN_DB:
-                    VERB1 log("%s is already saved in database", itt->c_str());
+                    VERB1 log("%s is already saved in database", dir_name);
                     break;
                 case MW_REPORTED:
                 case MW_OCCURED:
-                    VERB1 log("Already saved crash %s, deleting", itt->c_str());
-                    delete_debug_dump_dir(itt->c_str());
+                    VERB1 log("Already saved crash %s, deleting", dir_name);
+                    delete_debug_dump_dir(dir_name);
                     break;
                 default:
-                    log("Corrupted or bad crash %s (res:%d), deleting", itt->c_str(), (int)res);
-                    delete_debug_dump_dir(itt->c_str());
+                    log("Corrupted or bad crashdump %s (res:%d), deleting", dir_name, (int)res);
+                    delete_debug_dump_dir(dir_name);
                     break;
             }
         }
@@ -426,6 +430,7 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
     /* 128 simultaneous actions */
+//TODO: use ioctl(FIONREAD) to determine how much to read
 #define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event) + FILENAME_MAX)*128)
     char *buf = (char*)xmalloc(INOTIFY_BUFF_SIZE);
     gsize len;
@@ -456,13 +461,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             //VERB3 log("File '%s' creation detected, ignoring", name);
             continue;
         }
-
-//TODO: make it possible to detect when ccpp didn't finish dumping yet.
-//We are seeing it *before* ccpp finished, and it can take LONG time
-//(users saw 100+ seconds).
-//This floods syslog with "Lock file 'XXXXXX' is locked by process NNN"
-//Maybe ccpp should use XXXXXX.new name for incomplete dumps
-//and abrtd should watch for renames XXXXXX.new -> XXXXXX?
+        if (strcmp(strchrnul(name, '.'), ".new") == 0)
+        {
+            VERB3 log("Directory '%s' creation detected, ignoring", name);
+            continue;
+        }
         log("Directory '%s' creation detected", name);
 
         std::string worst_dir;
@@ -783,7 +786,7 @@ int main(int argc, char** argv)
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
-        if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE) == -1)
+        if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
 
         VERB1 log("Loading plugins from "PLUGINS_LIB_DIR);

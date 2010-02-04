@@ -139,8 +139,10 @@ int main(int argc, char** argv)
 
   // Create directory with the debug dump
   char path[PATH_MAX];
-  snprintf(path, sizeof(path), DEBUG_DUMPS_DIR"/pyhook-%ld-%s",
+  unsigned path_len = snprintf(path, sizeof(path), DEBUG_DUMPS_DIR"/pyhook-%ld-%s.new",
 	   (long)time(NULL), pid);
+  if (path_len >= sizeof(path))
+    exit(1);
   CDebugDump dd;
   try {
     dd.Create(path, getuid());
@@ -160,6 +162,12 @@ int main(int argc, char** argv)
   dd.SaveText(FILENAME_UID, uid);
 
   dd.Close();
+
+  char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
+  if (rename(path, newpath) != 0)
+    strcpy(path, newpath);
+  free(newpath);
+
   log("saved python crash dump of pid %s to %s", pid, path);
 
   if (setting_MaxCrashReportsSize > 0)
