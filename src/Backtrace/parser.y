@@ -147,8 +147,8 @@ thread    : keyword_thread wss digit_sequence wsa '(' keyword_thread wss digit_s
               }
 ;
 
-frames    : frame            { $$ = $1; }
-          | frames wsa frame { $$ = frame_add_sibling($1, $3); }
+frames    : frame        { $$ = $1; }
+          | frames frame { $$ = frame_add_sibling($1, $2); }
 ;
 
 frame : frame_head_1 wss variables %dprec 3
