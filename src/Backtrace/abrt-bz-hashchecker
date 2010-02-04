@@ -41,7 +41,12 @@ print "{0} bugs found.".format(len(buginfos))
 
 hashes = {}
 for buginfo in buginfos:
-    hash = re.match("abrt_hash:([^ ]+)", buginfo.status_whiteboard).group(1)
+    match = re.search("abrt_hash:([^ ]+)", buginfo.status_whiteboard)
+    if not match:
+      continue
+    hash = match.group(1)
+    if not hash:
+      continue
     if hash in hashes:
         hashes[hash].append(buginfo.bug_id)
     else:
