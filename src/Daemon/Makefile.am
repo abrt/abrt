@@ -4,7 +4,6 @@ sbin_PROGRAMS = abrtd
 
 # disabled: CommLayerServerSocket.h CommLayerServerSocket.cpp
 abrtd_SOURCES = \
-    ABRTPlugin.h ABRTPlugin.cpp \
     PluginManager.h PluginManager.cpp \
     RPM.h RPM.cpp \
     MiddleWare.h MiddleWare.cpp \

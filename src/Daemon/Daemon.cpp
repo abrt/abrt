@@ -294,7 +294,7 @@ static void FindNewDumps(const char* pPath)
     struct stat stats;
     DIR *dp;
     vector_string_t dirs;
-    // get potential unsaved debugdumps
+    /* Get all debugdump directories in the pPath directory. */
     dp = opendir(pPath);
     if (dp == NULL)
     {
@@ -305,7 +305,7 @@ static void FindNewDumps(const char* pPath)
     while ((ep = readdir(dp)))
     {
         if (dot_or_dotdot(ep->d_name))
-            continue;
+            continue; /* skip "." and ".." */
         std::string dname = ssprintf("%s/%s", pPath, ep->d_name);
         if (lstat(dname.c_str(), &stats) == 0)
         {
@@ -317,6 +317,7 @@ static void FindNewDumps(const char* pPath)
     }
     closedir(dp);
 
+    // get potential unsaved debugdumps
     vector_string_t::iterator itt = dirs.begin();
     for (; itt != dirs.end(); ++itt)
     {

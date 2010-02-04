@@ -21,6 +21,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <dlfcn.h>
 #include "abrtlib.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
@@ -28,6 +29,48 @@
 #include "PluginManager.h"
 
 using namespace std;
+
+
+/**
+ * CLoadedModule class. A class which contains a loaded plugin.
+ */
+class CLoadedModule
+{
+    private:
+        /* dlopen'ed library */
+        void *m_pHandle;
+        const plugin_info_t *m_pPluginInfo;
+        CPlugin* (*m_pFnPluginNew)();
+
+    public:
+        CLoadedModule(void *handle, const char *mod_name);
+        ~CLoadedModule()             { dlclose(m_pHandle); }
+        int GetMagicNumber()         { return m_pPluginInfo->m_nMagicNumber; }
+        const char *GetVersion()     { return m_pPluginInfo->m_sVersion; }
+        const char *GetName()        { return m_pPluginInfo->m_sName; }
+        const char *GetDescription() { return m_pPluginInfo->m_sDescription; }
+        const char *GetEmail()       { return m_pPluginInfo->m_sEmail; }
+        const char *GetWWW()         { return m_pPluginInfo->m_sWWW; }
+        const char *GetGTKBuilder()  { return m_pPluginInfo->m_sGTKBuilder; }
+        plugin_type_t GetType()      { return m_pPluginInfo->m_Type; }
+        CPlugin *PluginNew()         { return m_pFnPluginNew(); }
+};
+CLoadedModule::CLoadedModule(void *handle, const char *mod_name)
+{
+    m_pHandle = handle;
+    /* All errors are fatal */
+#define LOADSYM(fp, handle, name) \
+    do { \
+        fp = (typeof(fp)) (dlsym(handle, name)); \
+        if (!fp) \
+            error_msg_and_die("'%s' has no %s entry", mod_name, name); \
+    } while (0)
+
+    LOADSYM(m_pPluginInfo, handle, "plugin_info");
+    LOADSYM(m_pFnPluginNew, handle, "plugin_new");
+#undef LOADSYM
+}
+
 
 /**
  * Text representation of plugin types.
@@ -200,7 +243,13 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
     }
 
     string libPath = ssprintf(PLUGINS_LIB_DIR"/"PLUGINS_LIB_PREFIX"%s."PLUGINS_LIB_EXTENSION, pName);
-    CLoadedModule* module = new CLoadedModule(libPath.c_str());
+    void *handle = dlopen(libPath.c_str(), RTLD_NOW);
+    if (!handle)
+    {
+        error_msg("Can't load '%s': %s", libPath.c_str(), dlerror());
+        return NULL; /* error */
+    }
+    CLoadedModule *module = new CLoadedModule(handle, pName);
     if (module->GetMagicNumber() != PLUGINS_MAGIC_NUMBER
      || module->GetType() < 0
      || module->GetType() > MAX_PLUGIN_TYPE
@@ -214,7 +263,7 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
     }
     VERB3 log("Loaded plugin %s v.%s", pName, module->GetVersion());
 
-    CPlugin* plugin = NULL;
+    CPlugin *plugin = NULL;
     try
     {
         plugin = module->PluginNew();
@@ -261,8 +310,8 @@ void CPluginManager::UnLoadPlugin(const char *pName)
             m_mapPlugins.erase(it_plugin);
         }
         log("UnRegistered %s plugin %s", plugin_type_str[it_module->second->GetType()], pName);
-        m_mapLoadedModules.erase(it_module);
         delete it_module->second;
+        m_mapLoadedModules.erase(it_module);
     }
 }
 
@@ -297,7 +346,7 @@ void CPluginManager::UnRegisterPluginDBUS(const char *pName, const char *pDBUSSe
 
 CAnalyzer* CPluginManager::GetAnalyzer(const char *pName)
 {
-    CPlugin* plugin = LoadPlugin(pName);
+    CPlugin *plugin = LoadPlugin(pName);
     if (!plugin)
     {
         error_msg("Plugin '%s' is not registered", pName);
@@ -313,7 +362,7 @@ CAnalyzer* CPluginManager::GetAnalyzer(const char *pName)
 
 CReporter* CPluginManager::GetReporter(const char *pName)
 {
-    CPlugin* plugin = LoadPlugin(pName);
+    CPlugin *plugin = LoadPlugin(pName);
     if (!plugin)
     {
         error_msg("Plugin '%s' is not registered", pName);
@@ -329,7 +378,7 @@ CReporter* CPluginManager::GetReporter(const char *pName)
 
 CAction* CPluginManager::GetAction(const char *pName, bool silent)
 {
-    CPlugin* plugin = LoadPlugin(pName);
+    CPlugin *plugin = LoadPlugin(pName);
     if (!plugin)
     {
         error_msg("Plugin '%s' is not registered", pName);
@@ -346,7 +395,7 @@ CAction* CPluginManager::GetAction(const char *pName, bool silent)
 
 CDatabase* CPluginManager::GetDatabase(const char *pName)
 {
-    CPlugin* plugin = LoadPlugin(pName);
+    CPlugin *plugin = LoadPlugin(pName);
     if (!plugin)
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
@@ -360,7 +409,7 @@ CDatabase* CPluginManager::GetDatabase(const char *pName)
 
 plugin_type_t CPluginManager::GetPluginType(const char *pName)
 {
-    CPlugin* plugin = LoadPlugin(pName);
+    CPlugin *plugin = LoadPlugin(pName);
     if (!plugin)
     {
         throw CABRTException(EXCEP_PLUGIN, "Plugin '%s' is not registered", pName);
