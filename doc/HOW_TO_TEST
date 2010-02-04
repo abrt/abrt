@@ -1,0 +1,32 @@
+How to test before releasing new update:
+
+I. Build and install
+===================
+a) build the packages as scratch in koji
+b) download and install (the best is to create a local repo and try to install it using yum)
+c) start the daemon and check logs for any sign of a problem
+
+II. Crash detection
+=====================
+    == 1. Default crash detection ==
+    a) kill some C/C++ app with kill -9 and watch if it's detected by abrt
+    b) edit some packaged python script to raise an exception and watch is abrt
+       detects it
+    c) use our saved kerneloopses and test detection of oopses
+    
+    == 2. Advanced crash detection ==
+    a) crash some app that comes from unsigned package - abrt should ignore it
+    b) disable the gpg chcek and try repeat step a) - abrt shouldn't ignore it
+
+III. Reporting
+=============
+    == 1. Reporting to bugzilla ==
+    a) try to report some crash to bz using gui 
+        - gui should ask for login+pass
+        - crash should be reported  after filling the right credentials
+    b) try to report using gui without gnome-keyring
+        - gui should ask for login+pass
+        - crash should be reported  after filling the right credentials
+        - login+pass won't be saved
+    c) try to report every supported crash abrt detects C/C++, oops, python script
+    d) repeat this with cli
