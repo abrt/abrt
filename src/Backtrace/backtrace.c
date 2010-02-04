@@ -129,32 +129,37 @@ static bool frame_is_noncrash_frame(struct frame *frame)
   if (!frame->sourcefile)
     return false;
 
-  if (0 == strcmp(frame->function, "_XReply") 
-      && 0 == strcmp(frame->sourcefile, "xcb_io.c"))
-    return true;
-
-  if (0 == strcmp(frame->function, "_XError") 
-      && 0 == strcmp(frame->sourcefile, "XlibInt.c"))
-    return true;
-
+  /* GDK */
   if (0 == strcmp(frame->function, "gdk_x_error") 
       && 0 == strcmp(frame->sourcefile, "gdkmain-x11.c"))
     return true;
 
-  if (0 == strcmp(frame->function, "IA__g_log") 
-      && 0 == strcmp(frame->sourcefile, "gmessages.c"))
+  /* X.org */
+  if (0 == strcmp(frame->function, "_XReply") 
+      && 0 == strcmp(frame->sourcefile, "xcb_io.c"))
     return true;
-
-  if (0 == strcmp(frame->function, "IA__g_logv") 
-      && 0 == strcmp(frame->sourcefile, "gmessages.c"))
+  if (0 == strcmp(frame->function, "_XError") 
+      && 0 == strcmp(frame->sourcefile, "XlibInt.c"))
     return true;
-
+  if (0 == strcmp(frame->function, "XSync") 
+      && 0 == strcmp(frame->sourcefile, "Sync.c"))
+    return true;
   if (0 == strcmp(frame->function, "process_responses") 
       && 0 == strcmp(frame->sourcefile, "xcb_io.c"))
     return true;
 
-  if (0 == strcmp(frame->function, "XSync") 
-      && 0 == strcmp(frame->sourcefile, "Sync.c"))
+  /* glib */
+  if (0 == strcmp(frame->function, "IA__g_log") 
+      && 0 == strcmp(frame->sourcefile, "gmessages.c"))
+    return true;
+  if (0 == strcmp(frame->function, "IA__g_logv") 
+      && 0 == strcmp(frame->sourcefile, "gmessages.c"))
+    return true;
+  if (0 == strcmp(frame->function, "IA__g_assertion_message") 
+      && 0 == strcmp(frame->sourcefile, "gtestutils.c"))
+    return true;
+  if (0 == strcmp(frame->function, "IA__g_assertion_message_expr") 
+      && 0 == strcmp(frame->sourcefile, "gtestutils.c"))
     return true;
 
   /* DBus */
@@ -163,6 +168,20 @@ static bool frame_is_noncrash_frame(struct frame *frame)
     return true;
   if (0 == strcmp(frame->function, "dbus_g_method_return_error") 
       && 0 == strcmp(frame->sourcefile, "dbus-gobject.c"))
+    return true;
+
+  /* libstdc++ */
+  if (0 == strcmp(frame->function, "__gnu_cxx::__verbose_terminate_handler") 
+      && NULL != strstr(frame->sourcefile, "/vterminate.cc"))
+    return true;
+  if (0 == strcmp(frame->function, "__cxxabiv1::__terminate") 
+      && NULL != strstr(frame->sourcefile, "/eh_terminate.cc"))
+    return true;
+  if (0 == strcmp(frame->function, "std::terminate") 
+      && NULL != strstr(frame->sourcefile, "/eh_terminate.cc"))
+    return true;
+  if (0 == strcmp(frame->function, "__cxxabiv1::__cxa_throw") 
+      && NULL != strstr(frame->sourcefile, "/eh_throw.cc"))
     return true;
 
   return false;
