@@ -7,6 +7,7 @@
     <property name="resizable">False</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
+    <property name="icon">/usr/share/pixmaps/abrt.png</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -165,8 +166,8 @@
             <property name="visible">True</property>
             <property name="layout_style">end</property>
             <child>
-              <object class="GtkButton" id="bApply">
-                <property name="label">gtk-apply</property>
+              <object class="GtkButton" id="button2">
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -179,8 +180,8 @@
               </packing>
             </child>
             <child>
-              <object class="GtkButton" id="button2">
-                <property name="label">gtk-cancel</property>
+              <object class="GtkButton" id="bApply">
+                <property name="label">gtk-apply</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -202,8 +203,8 @@
       </object>
     </child>
     <action-widgets>
-      <action-widget response="-10">bApply</action-widget>
       <action-widget response="-6">button2</action-widget>
+      <action-widget response="-10">bApply</action-widget>
     </action-widgets>
   </object>
 </interface>
