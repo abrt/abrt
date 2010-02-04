@@ -24,12 +24,13 @@
 #define PLUGINMANAGER_H_
 
 #include "abrt_types.h"
-#include "ABRTPlugin.h"
 #include "Plugin.h"
 #include "Analyzer.h"
 #include "Reporter.h"
 #include "Database.h"
 #include "Action.h"
+
+class CLoadedModule; /* opaque */
 
 /**
  * A class. It takes care of loading, registering and manipulating with
