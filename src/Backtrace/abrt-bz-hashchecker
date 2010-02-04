@@ -1,0 +1,54 @@
+#!/usr/bin/python
+# -*- mode:python -*-
+# Checks how many bugs in Bugzilla have the same hash.
+#
+# Please do not run this script unless it's neccessary to do so. 
+# It forces Bugzilla to send data related to thousands of bug reports.
+
+from bugzilla import RHBugzilla
+from optparse import OptionParser
+import sys
+import os.path
+import subprocess
+import re
+
+parser = OptionParser(version="%prog 1.0")
+parser.add_option("-u", "--user", dest="user",
+                  help="Bugzilla user name (REQUIRED)", metavar="USERNAME")
+parser.add_option("-p", "--password", dest="password",
+                  help="Bugzilla password (REQUIRED)", metavar="PASSWORD")
+parser.add_option("-b", "--bugzilla", dest="bugzilla",
+                  help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
+
+(options, args) = parser.parse_args()
+
+if not options.user or len(options.user) == 0:
+  parser.error("User name is required.\nTry {0} --help".format(sys.argv[0]))
+
+if not options.password or len(options.password) == 0:
+  parser.error("Password is required.\nTry {0} --help".format(sys.argv[0]))
+
+if not options.bugzilla or len(options.bugzilla) == 0:
+  options.bugzilla = "https://bugzilla.redhat.com/xmlrpc.cgi"
+
+bz = RHBugzilla()
+bz.connect(options.bugzilla)
+bz.login(options.user, options.password)
+
+buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboard':'abrt_hash'})
+
+print "{0} bugs found.".format(len(buginfos))
+
+hashes = {}
+for buginfo in buginfos:
+    hash = re.match("abrt_hash:([^ ]+)", buginfo.status_whiteboard).group(1)
+    if hash in hashes:
+        hashes[hash].append(buginfo.bug_id)
+    else:
+        hashes[hash] = [ buginfo.bug_id ]
+    print hash
+bz.logout()
+
+for hash, ids in hashes.items():
+    if len(ids) > 1:
+      print "Duplicates found: ", ids.join(", ")
