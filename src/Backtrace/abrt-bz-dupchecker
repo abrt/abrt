@@ -128,7 +128,11 @@ for key, value in database.items():
 print "Total number of duplicate bugs detected: {0}".format(dupcount)
 print "------------------------------"
 
+dupcount = 0
 for key, value in database.items():
   if len(value) > 1:
+    dupcount += len(value) - 1
     print "Duplicates: {0}".format(value)
     print "Backtrace: {0}".format(key)
+
+print "{0} duplicates found."
