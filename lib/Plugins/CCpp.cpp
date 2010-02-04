@@ -266,7 +266,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     unsetenv("TERM");
     putenv((char*)"TERM=dumb");
 
-    char *args[15];
+    char *args[17];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
 
@@ -294,14 +294,14 @@ static void GetBacktrace(const char *pDebugDumpDir,
      *
      * Fedora GDB does not strictly need it, it will find the binary
      * by its build-id.  But for binaries either without build-id
-     * (=built on non-Fedora GCC) or which do not have
+     * (= built on non-Fedora GCC) or which do not have
      * their debuginfo rpm installed gdb would not find BINARY_FILE
      * so it is still makes sense to supply "file BINARY_FILE".
      *
      * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
      * was deleted (as often happens during system updates):
      * gdb uses specified BINARY_FILE
-     * even if it is completely unrelated to the coredump
+     * even if it is completely unrelated to the coredump.
      * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
      *
      * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
@@ -316,16 +316,43 @@ static void GetBacktrace(const char *pDebugDumpDir,
     args[7] = (char*)corefile.c_str();
 
     args[8] = (char*)"-ex";
-    /* max 3000 frames: with no limit, gdb sometimes OOMs the machine */
-    args[9] = (char*)"thread apply all backtrace 3000 full";
+    /*args[9] = ... see below */
     args[10] = (char*)"-ex";
     args[11] = (char*)"info sharedlib";
     /* glibc's abort() stores its message in this variable */
     args[12] = (char*)"-ex";
     args[13] = (char*)"print (char*)__abort_msg";
-    args[14] = NULL;
+    args[14] = (char*)"-ex";
+    args[15] = (char*)"print (char*)__glib_assert_msg";
+    args[16] = NULL;
 
-    ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
+    /* Get the backtrace, but try to cap its size */
+    /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
+    unsigned bt_depth = 2048;
+    const char *thread_apply_all = "thread apply all ";
+    const char *full = " full";
+    while (1)
+    {
+        string cmd = ssprintf("%sbacktrace %u%s", thread_apply_all, bt_depth, full);
+        args[9] = (char*)cmd.c_str();
+        pBacktrace = "";
+        ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
+        if (bt_depth <= 64 || pBacktrace.size() < 256*1024)
+            return;
+        bt_depth /= 2;
+        if (bt_depth <= 64 && thread_apply_all[0] != '\0')
+        {
+            /* This program likely has gazillion threads, dont try to bt them all */
+            bt_depth = 256;
+            thread_apply_all = "";
+        }
+        if (bt_depth <= 64 && full[0] != '\0')
+        {
+            /* Looks like there are gigantic local structures or arrays, disable "full" bt */
+            bt_depth = 256;
+            full = "";
+        }
+    }
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output,
@@ -548,7 +575,37 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
     string unstrip_n_output = run_unstrip_n(pDebugDumpDir);
     string independentBuildIdPC;
     GetIndependentBuildIdPC(unstrip_n_output.c_str(), independentBuildIdPC);
-    return CreateHash((package + executable + independentBuildIdPC).c_str());
+
+    /* package variable has "firefox-3.5.6-1.fc11[.1]" format */
+    /* Remove distro suffix and maybe least significant version number */
+    char *trimmed_package = xstrdup(package.c_str());
+    char *p = trimmed_package;
+    while (*p)
+    {
+        if (*p == '.' && (p[1] < '0' || p[1] > '9'))
+        {
+            /* We found "XXXX.nondigitXXXX", trim this part */
+            *p = '\0';
+            break;
+        }
+        p++;
+    }
+    char *first_dot = strchr(trimmed_package, '.');
+    if (first_dot)
+    {
+        char *last_dot = strrchr(first_dot, '.');
+        if (last_dot != first_dot)
+        {
+            /* There are more than one dot: "1.2.3"
+             * Strip last part, we don't want to distinquish crashes
+             * in packages which differ only by minor release number.
+             */
+            *last_dot = '\0';
+        }
+    }
+    string hash_str = trimmed_package + executable + independentBuildIdPC;
+    free(trimmed_package);
+    return CreateHash(hash_str.c_str());
 }
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
@@ -746,6 +803,76 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.SaveText(FILENAME_RATING, to_string(rate_backtrace(backtrace.c_str())).c_str());
     dd.Close();
 }
+/*
+ this is just a workaround until kernel changes it's behavior
+ when handling pipes in core_pattern
+*/
+#ifdef HOSTILE_KERNEL
+#define CORE_SIZE_PATTERN "Max core file size=1:unlimited"
+static int isdigit_str(char *str)
+{
+	do {
+		if (*str < '0' || *str > '9')
+			return 0;
+	} while (*++str);
+	return 1;
+}
+
+static int set_limits()
+{
+    	DIR *dir = opendir("/proc");
+	if (!dir) {
+		/* this shouldn't fail, but to be safe.. */
+		return 1;
+	}
+
+	struct dirent *ent;
+	while ((ent = readdir(dir)) != NULL) {
+		if (!isdigit_str(ent->d_name))
+			continue;
+
+		char limits_name[sizeof("/proc/%s/limits") + sizeof(int)];
+		snprintf(limits_name, sizeof(limits_name), "/proc/%s/limits", ent->d_name);
+		FILE *limits_fp = fopen(limits_name, "r");
+		if (!limits_fp) {
+			break;
+		}
+
+		char line[128];
+		char *ulimit_c = NULL;
+		while (1) {
+			if (fgets(line, sizeof(line)-1, limits_fp) == NULL)
+				break;
+			if (strncmp(line, "Max core file size", sizeof("Max core file size")-1) == 0) {
+				ulimit_c = skip_whitespace(line + sizeof("Max core file size")-1);
+				skip_non_whitespace(ulimit_c)[0] = '\0';
+				break;
+			}
+		}
+		fclose(limits_fp);
+		if (!ulimit_c || ulimit_c[0] != '0' || ulimit_c[1] != '\0') {
+			/*process has nonzero ulimit -c, so need to modify it*/
+			continue;
+		}
+		/* echo -n 'Max core file size=1:unlimited' >/proc/PID/limits */
+		int fd = open(limits_name, O_WRONLY);
+		if (fd >= 0) {
+			errno = 0;
+			/*full_*/
+			ssize_t n = write(fd, CORE_SIZE_PATTERN, sizeof(CORE_SIZE_PATTERN)-1);
+			if (n < sizeof(CORE_SIZE_PATTERN)-1)
+				log("warning: can't write core_size limit to: %s", limits_name);
+			close(fd);
+		}
+        else
+        {
+            log("warning: can't open %s for writing", limits_name);
+        }
+	}
+	closedir(dir);
+	return 0;
+}
+#endif /* HOSTILE_KERNEL */
 
 void CAnalyzerCCpp::Init()
 {
@@ -773,6 +900,11 @@ void CAnalyzerCCpp::Init()
                 CORE_PATTERN_IFACE, CORE_PATTERN);
         }
     }
+#ifdef HOSTILE_KERNEL
+    if(set_limits() != 0)
+        log("warning: failed to set core_size limit, ABRT won't detect crashes in"
+            "compiled apps");
+#endif
 
     ofstream fOutCorePattern;
     fOutCorePattern.open(CORE_PATTERN_IFACE);

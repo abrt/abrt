@@ -6,7 +6,7 @@ FAIL=0
 for file in *.bt
 do
   #echo "$file"
-  ./abrt-backtrace $file &> /dev/null
+  ./abrt-backtrace $file 1> /dev/null
   if [ "$?" -eq "0" ]
   then
       echo -n "."
@@ -17,3 +17,4 @@ do
   fi
 done 
 echo ""
+echo "Passed $PASS and failed $FAIL."

@@ -267,12 +267,12 @@ variables_line : variables_char_no_framestart
 variables_char : '#' | variables_char_no_framestart
 ;
 
-/* Manually synchronized with function_args_char, except the first line. */
-variables_char_no_framestart : digit | nondigit | '"' | '(' | ')'
+/* Manually synchronized with function_args_char_base, except the first line. */
+variables_char_no_framestart : digit | nondigit | '"' | '(' | ')' | '\\'
                              | '+' | '-' | '<' | '>' | '/' | '.' 
                              | '[' | ']' | '?' | '\'' | '`' | ',' 
                              | '=' | '{' | '}' | '^' | '&' | '$'
-                             | ':' | ';' | '\\' | '!' | '@' | '*' 
+                             | ':' | ';' | '!' | '@' | '*' 
                              | '%' | '|' | '~'
 ;
 
@@ -300,6 +300,7 @@ function_args : '(' wsa ')'
 
 function_args_sequence : function_args_char
                        | function_args_sequence wsa '(' wsa ')'
+                       | function_args_sequence wsa '(' wsa function_args_string wsa ')'
                        | function_args_sequence wsa '(' wsa function_args_sequence wsa ')'
                        | function_args_sequence wsa function_args_char
                        | function_args_sequence wsa function_args_string
@@ -312,13 +313,21 @@ function_args_string : '"' wsa function_args_string_sequence wsa '"'
 /* Manually synchronized with variables_char_no_framestart,
  * except the first line. 
  */
-function_args_char : digit | nondigit | '#'
+function_args_char_base : digit | nondigit | '#'
                    | '+' | '-' | '<' | '>' | '/' | '.' 
                    | '[' | ']' | '?' | '\'' | '`' | ',' 
                    | '=' | '{' | '}' | '^' | '&' | '$'
-                   | ':' | ';' | '\\' | '!' | '@' | '*' 
+                   | ':' | ';' | '!' | '@' | '*' 
                    | '%' | '|' | '~'
 ;
+function_args_escaped_char : '\\' function_args_char_base
+                           | '\\' '\\'
+                           | '\\' '"'
+;
+function_args_char : function_args_char_base
+                   | function_args_escaped_char
+;
+
 
 function_args_string_sequence : function_args_string_char
                     | function_args_string_sequence function_args_string_char
@@ -327,7 +336,6 @@ function_args_string_sequence : function_args_string_char
 
 function_args_string_char : function_args_char | '(' | ')'
 ;
-
 
 file_name : file_name_char { $$ = strbuf_new(); strbuf_append_char($$, $1); }
           | file_name file_name_char { $$ = strbuf_append_char($1, $2); }
@@ -406,6 +414,11 @@ identifier_braces_inside : identifier_braces_inside_char %dprec 1
 			      $$ = strbuf_append_str($1, $3->buf); 
 			      strbuf_free($3);
 			      $$ = strbuf_append_char($1, $4); 
+			    }
+                         | identifier_braces_inside '(' ')' %dprec 1
+			    { 
+			      $$ = strbuf_append_char($1, $2); 
+			      $$ = strbuf_append_char($1, $3); 
 			    }
                          | identifier_braces_inside identifier_template %dprec 2
 			    {

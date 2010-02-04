@@ -249,7 +249,9 @@ int main(int argc, char **argv)
    * #2  0x0000000000423e6b in refresh_folder (stub=0x1b77f10 [MailStubExchange], 
    * ...
    */
-  char *empty_line = btnoheader;
+  char *empty_line = btnoheader; 
+/* TODO SPACES ON LINES AS WELL, rhbz#555251 !!!!!!!!
+/* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */
   while ((empty_line = strstr(empty_line, "\n\n")) != NULL)
   {
     if (0 != strncmp(empty_line, "\n\nThread", strlen("\n\nThread")))

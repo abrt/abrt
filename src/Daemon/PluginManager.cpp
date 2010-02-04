@@ -159,15 +159,14 @@ void CPluginManager::UnLoadPlugins()
 
 CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
 {
-    map_string_t plugin_info;
-
-    plugin_info["Name"] = pName;
-
     map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
     if (it_plugin != m_mapPlugins.end())
     {
         return it_plugin->second; /* ok */
     }
+
+    map_string_t plugin_info;
+    plugin_info["Name"] = pName;
 
     const char *conf_name = pName;
     if (strncmp(pName, "Kerneloops", sizeof("Kerneloops")-1) == 0)
@@ -262,8 +261,8 @@ void CPluginManager::UnLoadPlugin(const char *pName)
             m_mapPlugins.erase(it_plugin);
         }
         log("UnRegistered %s plugin %s", plugin_type_str[it_module->second->GetType()], pName);
-        m_mapLoadedModules.erase(it_module);
         delete it_module->second;
+        m_mapLoadedModules.erase(it_module);
     }
 }
 

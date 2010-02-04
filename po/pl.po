@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-01-30 17:28+0000\n"
-"PO-Revision-Date: 2010-01-30 18:32+0100\n"
+"POT-Creation-Date: 2010-02-03 22:13+0000\n"
+"PO-Revision-Date: 2010-02-03 23:16+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -24,35 +24,35 @@ msgstr ""
 "Otrzymano nieoczekiwane dane od demona (czy baza danych została właściwie "
 "zaktualizowana?)."
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "Nie wczytano wtyczek"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Wtyczki analizy"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Wtyczki czynności"
 
-#: ../src/Gui/ABRTPlugin.py:67
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Wtyczki zgłaszania"
 
-#: ../src/Gui/ABRTPlugin.py:68
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Wtyczki baz danych"
 
-#: ../src/Gui/CCDBusBackend.py:75 ../src/Gui/CCDBusBackend.py:98
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Nie można połączyć się z systemową magistralą D-Bus"
 
-#: ../src/Gui/CCDBusBackend.py:121 ../src/Gui/CCDBusBackend.py:124
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony"
 
-#: ../src/Gui/CCDBusBackend.py:176
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -68,7 +68,7 @@ msgstr "(C) 2009 Red Hat, Inc."
 msgid "About ABRT"
 msgstr "O programie ABRT"
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:15 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Narzędzie do automatycznego zgłaszania błędów"
@@ -89,7 +89,7 @@ msgstr "Nie zgłoszono"
 msgid "Please wait.."
 msgstr "Proszę czekać..."
 
-#: ../src/Gui/ccgui.glade.h:8
+#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Wtyczki"
 
@@ -140,31 +140,31 @@ msgid "_Help"
 msgstr "Pomo_c"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:74
 msgid "Icon"
 msgstr "Ikona"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:82
 msgid "Package"
 msgstr "Pakiet"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:83
 msgid "Application"
 msgstr "Aplikacja"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:84
 msgid "Date"
 msgstr "Data"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Crash count"
 msgstr "Liczba awarii"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:86
 msgid "User"
 msgstr "Użytkownik"
 
-#: ../src/Gui/CCMainWindow.py:159
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -173,7 +173,7 @@ msgstr ""
 "Nie można wyświetlić okna dialogowego ustawień\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:170
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -183,7 +183,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:197
+#: ../src/Gui/CCMainWindow.py:192
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -192,19 +192,19 @@ msgstr ""
 "Błąd podczas wczytywania listy zrzutów.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:235
+#: ../src/Gui/CCMainWindow.py:230
 msgid "This crash has been reported:\n"
 msgstr "Ta awaria została zgłoszona:\n"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: ../src/Gui/CCMainWindow.py:231
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Ta awaria została zgłoszona:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:255
+#: ../src/Gui/CCMainWindow.py:250
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nie zgłoszono.</b>"
 
-#: ../src/Gui/CCMainWindow.py:303
+#: ../src/Gui/CCMainWindow.py:298
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -212,7 +212,7 @@ msgstr ""
 "Nie można uzyskać raportu.\n"
 "Brak pakietów debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:323
+#: ../src/Gui/CCMainWindow.py:318
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -221,7 +221,7 @@ msgstr ""
 "Zgłoszenie nie powiodło się.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:342 ../src/Gui/CCMainWindow.py:369
+#: ../src/Gui/CCMainWindow.py:337 ../src/Gui/CCMainWindow.py:364
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Błąd podczas uzyskiwania raportu: %s"
@@ -426,7 +426,7 @@ msgstr "Sk_onfiguruj wtyczkę"
 
 #: ../src/Gui/settings.glade.h:10
 msgid "Check package GPG signature"
-msgstr "Sprawdzanie podpisu GPG pakietu"
+msgstr "Sprawdzanie podpisów GPG pakietów"
 
 #: ../src/Gui/settings.glade.h:11
 msgid "Common"
@@ -453,20 +453,16 @@ msgid "GPG keys: "
 msgstr "Klucze GPG: "
 
 #: ../src/Gui/settings.glade.h:17
-msgid "Global Settings"
-msgstr "Ustawienia globalne"
-
-#: ../src/Gui/settings.glade.h:18
 msgid "Max coredump storage size(MB):"
 msgstr "Ograniczenie miejsca na zrzuty pamięci (MB):"
 
-#: ../src/Gui/settings.glade.h:19
+#: ../src/Gui/settings.glade.h:18
 msgid "Name:"
 msgstr "Nazwa:"
 
 #: ../src/Gui/settings.glade.h:20
-msgid "Settings"
-msgstr "Ustawienia"
+msgid "Preferences"
+msgstr "Preferencje"
 
 #: ../src/Gui/settings.glade.h:21
 msgid "Version:"
@@ -475,14 +471,6 @@ msgstr "Wersja:"
 #: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "Strona WWW:"
-
-#: ../src/Gui/settings.glade.h:23
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-ok"
-msgstr "gtk-ok"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -567,19 +555,19 @@ msgstr "Uzyskiwanie lokalnego UUID"
 msgid "Generating backtrace"
 msgstr "Tworzenie wyjątku"
 
-#: ../lib/Plugins/CCpp.cpp:375
+#: ../lib/Plugins/CCpp.cpp:415
 msgid "Starting debuginfo installation"
 msgstr "Uruchamianie instalacji pakietów debuginfo"
 
-#: ../lib/Plugins/CCpp.cpp:524
+#: ../lib/Plugins/CCpp.cpp:564
 msgid "Getting local universal unique identification..."
 msgstr "Uzyskiwanie lokalnego UUID..."
 
-#: ../lib/Plugins/CCpp.cpp:543
+#: ../lib/Plugins/CCpp.cpp:613
 msgid "Getting global universal unique identification..."
 msgstr "Uzyskiwanie globalnego UUID..."
 
-#: ../lib/Plugins/CCpp.cpp:721
+#: ../lib/Plugins/CCpp.cpp:791
 msgid "Skipping debuginfo installation"
 msgstr "Pomijanie instalacji pakietu debuginfo"
 

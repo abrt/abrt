@@ -38,26 +38,25 @@
  * Trims whitespace characters both from left and right side of a string.
  * Modifies the string in-place. Returns the trimmed string.
  */
-char *trim(char *str)
+static char *trim(char *str)
 {
   if (!str)
     return NULL;
 
   // Remove leading spaces.
   char *ibuf;
-  for (ibuf = str; *ibuf && isspace(*ibuf); ++ibuf)
-    continue;
+  ibuf = skip_whitespace(str);
+  int i = strlen(ibuf);
   if (str != ibuf)
-    memmove(str, ibuf, ibuf - str);
+    memmove(str, ibuf, i + 1);
 
   // Remove trailing spaces.
-  int i = strlen(str);
   while (--i >= 0)
   {
     if (!isspace(str[i]))
       break;
   }
-  str[++i] = NULL;
+  str[++i] = '\0';
   return str;
 }
 
@@ -198,6 +197,8 @@ static void write_crash_report(const map_crash_data_t &report, FILE *fp)
 			   _("# How to reproduce the crash?"));
   write_crash_report_field(fp, report, FILENAME_BACKTRACE,
 			   _("# Stack trace: a list of active stack frames at the time the crash occurred\n# Check that it does not contain any sensitive data such as passwords."));
+  write_crash_report_field(fp, report, FILENAME_KERNELOOPS,
+			   _("# Kernel oops: kernel log snippet\n# Check that it does not contain any sensitive data such as passwords."));
   write_crash_report_field(fp, report, CD_DUPHASH, "# DUPHASH");
   write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
   write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
@@ -221,7 +222,7 @@ static void write_crash_report(const map_crash_data_t &report, FILE *fp)
 static int read_crash_report_field(const char *text, map_crash_data_t &report,
 				   const char *field)
 {
-  char separator[strlen("\n" FIELD_SEP) + strlen(field) + 2]; // 2 = '\n\0'
+  char separator[sizeof("\n" FIELD_SEP)-1 + strlen(field) + 2]; // 2 = '\n\0'
   sprintf(separator, "\n%s%s\n", FIELD_SEP, field);
   const char *textfield = strstr(text, separator);
   if (!textfield)
@@ -285,6 +286,7 @@ static int read_crash_report(map_crash_data_t &report, const char *text)
   result |= read_crash_report_field(text, report, FILENAME_COMMENT);
   result |= read_crash_report_field(text, report, FILENAME_REPRODUCE);
   result |= read_crash_report_field(text, report, FILENAME_BACKTRACE);
+  result |= read_crash_report_field(text, report, FILENAME_KERNELOOPS);
   result |= read_crash_report_field(text, report, CD_DUPHASH);
   result |= read_crash_report_field(text, report, FILENAME_ARCHITECTURE);
   result |= read_crash_report_field(text, report, FILENAME_CMDLINE);

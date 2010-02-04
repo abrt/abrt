@@ -435,7 +435,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
 
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
-   
+
     it = pSettings.find("Customer");
     if (it == end)
     {
@@ -443,7 +443,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
         return plugin_settings;
     }
     plugin_settings["Customer"] = it->second;
-    
+
     it = pSettings.find("Ticket");
     if (it == end)
     {
@@ -451,7 +451,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
         return plugin_settings;
     }
     plugin_settings["Ticket"] = it->second;
-    
+
     it = pSettings.find("URL");
     if (it == end)
     {
@@ -459,7 +459,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
         return plugin_settings;
     }
     plugin_settings["URL"] = it->second;
-    
+
     it = pSettings.find("Encrypt");
     if (it == end)
     {
@@ -467,7 +467,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
         return plugin_settings;
     }
     plugin_settings["Encrypt"] = it->second;
-    
+
     it = pSettings.find("Upload");
     if (it == end)
     {
@@ -475,7 +475,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
         return plugin_settings;
     }
     plugin_settings["Upload"] = it->second;
-    
+
     it = pSettings.find("RetryCount");
     if (it == end)
     {
@@ -483,7 +483,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
         return plugin_settings;
     }
     plugin_settings["RetryCount"] = it->second;
-    
+
     it = pSettings.find("RetryDelay");
     if (it == end)
     {
@@ -491,7 +491,7 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
         return plugin_settings;
     }
     plugin_settings["RetryDelay"] = it->second;
-    
+
     VERB1 log("User settings ok, using them instead of defaults");
     return plugin_settings;
 }
@@ -500,7 +500,7 @@ PLUGIN_INFO(REPORTER,
             CTicketUploader,
             "TicketUploader",
             "0.0.1",
-            "Asks ticket# and customer name from user, sends report to FTP",
+            "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc",
             "gavin@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/TicketUploader.GTKBuilder");

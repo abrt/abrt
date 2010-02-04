@@ -10,6 +10,14 @@
 #
 # Please do not run this script unless it's neccessary to do so. 
 # It forces Bugzilla to send data related to thousands of bug reports.
+#
+#
+# Useful text to be pasted to Bugzilla:
+"""
+This bug appears to have been filled using a buggy version of ABRT, because
+it contains unusable backtrace. Sorry for the inconvenience.
+Closing as INSUFFICIENT_DATA.
+"""
 
 from bugzilla import RHBugzilla
 from optparse import OptionParser
@@ -62,16 +70,24 @@ for buginfo in buginfos:
   else:
     # Get backtrace from bug and store it as a file.
     bug = bz.getbug(buginfo.bug_id)
+    downloaded = False
     for attachment in bug.attachments:
       if attachment['filename'] == 'backtrace':
         data = bz.openattachment(attachment['id'])
         f = open(filename, 'w')
         f.write(data.read())
         f.close()
+        downloaded = True
         if options.verbose:
           print "Attachment {0} downloaded.".format(filename)
+
+    # Silently skip bugs without backtrace.
+    # Those are usually duplicates of bugs; the duplication copies
+    # abrt_hash, but it does not copy the attachment.
+    if not downloaded:
+      continue
   
-  command = ["/usr/bin/abrt-backtrace"]
+  command = ["./abrt-backtrace"]
   command.append(filename)
   command.append("--single-thread")
   command.append("--frame-depth=5")

@@ -3,11 +3,12 @@
   <requires lib="gtk+" version="2.16"/>
   <!-- interface-naming-policy project-wide -->
   <object class="GtkWindow" id="wPluginsSettings">
-    <property name="title" translatable="yes">Settings</property>
+    <property name="title" translatable="yes">Plugins</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">450</property>
     <property name="default_height">400</property>
+    <property name="icon">/usr/share/pixmaps/abrt.png</property>
     <child>
       <object class="GtkVBox" id="vboxabc1">
         <property name="visible">True</property>
@@ -254,11 +255,12 @@
     </child>
   </object>
   <object class="GtkWindow" id="wGlobalSettings">
-    <property name="title" translatable="yes">Global Settings</property>
+    <property name="title" translatable="yes">Preferences</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="default_width">450</property>
     <property name="default_height">400</property>
+    <property name="icon">/usr/share/pixmaps/abrt.png</property>
     <child>
       <object class="GtkVBox" id="gsvbox1">
         <property name="visible">True</property>
@@ -706,7 +708,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="bCancelSettings">
-                <property name="label" translatable="yes">gtk-cancel</property>
+                <property name="label">gtk-cancel</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -720,7 +722,7 @@
             </child>
             <child>
               <object class="GtkButton" id="bSaveSettings">
-                <property name="label" translatable="yes">gtk-ok</property>
+                <property name="label">gtk-ok</property>
                 <property name="visible">True</property>
                 <property name="sensitive">False</property>
                 <property name="can_focus">True</property>
@@ -753,6 +755,7 @@
     <property name="window_position">center-on-parent</property>
     <property name="default_width">400</property>
     <property name="default_height">400</property>
+    <property name="icon">/usr/share/pixmaps/abrt.png</property>
     <property name="transient_for">wGlobalSettings</property>
     <child>
       <object class="GtkVBox" id="gpgkeys_vbox">
