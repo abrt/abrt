@@ -412,10 +412,63 @@ int report(const char *uuid, bool always)
     }
   }
 
+  map_map_string_t pluginSettings;
+  if (!always)
+  {
+    // Get informations about all plugins.
+    map_map_string_t plugins = call_GetPluginsInfo();
+    // Check the configuration of each enabled Reporter plugin.
+    map_map_string_t::iterator it, itend = plugins.end();
+    for (it = plugins.begin(); it != itend; ++it)
+    {
+      // Skip disabled plugins.
+      if (0 != strcmp(it->second["Enabled"].c_str(), "yes"))
+	continue;
+      // Skip nonReporter plugins.
+      if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
+	continue;
+      
+      map_string_t settings = call_GetPluginSettings(it->first.c_str());
+      // Login information is missing.
+      bool loginMissing = settings.find("Login") != settings.end() 
+	&& 0 == strcmp(settings["Login"].c_str(), "");
+      bool passwordMissing = settings.find("Password") != settings.end() 
+	&& 0 == strcmp(settings["Password"].c_str(), "");
+      if (!loginMissing && !passwordMissing)
+	continue;
+
+      // Copy the received settings as defaults.
+      // Plugins won't work without it, if some value is missing
+      // they use their default values for all fields.
+      pluginSettings[it->first] = settings;
+
+      printf(_("Wrong settings were detected for plugin %s.\n"), it->second["Name"].c_str());
+      if (loginMissing)
+      {
+	printf(_("Enter your login: "));
+	fflush(NULL);
+	char answer[64] = "";
+	fgets(answer, sizeof(answer), stdin);
+	if (strlen(answer) > 0)
+	  pluginSettings[it->first]["Login"] = answer;
+      }
+      if (passwordMissing)
+      {
+// TODO: echo off, see http://fixunix.com/unix/84474-echo-off.html
+	printf(_("Enter your password: "));
+	fflush(NULL);
+	char answer[64] = "";
+	fgets(answer, sizeof(answer), stdin);
+	if (strlen(answer) > 0)
+	  pluginSettings[it->first]["Password"] = answer;
+      }      
+    }
+  }
+
   int errors = 0;
   int plugins = 0;
   puts(_("Reporting..."));
-  report_status_t r = call_Report(cr);
+  report_status_t r = call_Report(cr, pluginSettings);
   report_status_t::iterator it = r.begin();
   while (it != r.end())
   {

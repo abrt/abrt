@@ -142,12 +142,15 @@ map_crash_data_t call_CreateReport(const char* uuid)
     return argout;
 }
 
-report_status_t call_Report(const map_crash_data_t& report)
+report_status_t call_Report(const map_crash_data_t& report,
+			    const map_map_string_t &plugins)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(msg, &out_iter);
     store_val(&out_iter, report);
+    if (!plugins.empty())
+      store_val(&out_iter, plugins);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
 
@@ -184,7 +187,6 @@ int32_t call_DeleteDebugDump(const char* uuid)
     return result;
 }
 
-#ifdef UNUSED
 map_map_string_t call_GetPluginsInfo()
 {
     DBusMessage *msg = new_call_msg(__func__ + 5);
@@ -201,7 +203,27 @@ map_map_string_t call_GetPluginsInfo()
     dbus_message_unref(reply);
     return argout;
 }
-#endif
+
+map_plugin_settings_t call_GetPluginSettings(const char *name)
+{
+    DBusMessage *msg = new_call_msg(__func__ + 5);
+    dbus_message_append_args(msg,
+            DBUS_TYPE_STRING, &name,
+            DBUS_TYPE_INVALID);
+
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+
+    DBusMessageIter in_iter;
+    dbus_message_iter_init(reply, &in_iter);
+
+    map_string_t argout;
+    int r = load_val(&in_iter, argout);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
+    dbus_message_unref(reply);
+    return argout;
+}
 
 void handle_dbus_err(bool error_flag, DBusError *err)
 {
