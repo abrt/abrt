@@ -316,9 +316,12 @@ static void FindNewDumps(const char* pPath)
     }
     closedir(dp);
 
-    log("Checking for unsaved crashdumps (%u dirs to check)", (unsigned)dirs.size());
+    unsigned size = dirs.size();
+    if (size == 0)
+        return;
+    log("Checking for unsaved crashes (dirs to check:%u)", size);
 
-    /* Get potential unsaved debugdumps */
+    /* Get potentially non-processed debugdumps */
     vector_string_t::iterator itt = dirs.begin();
     for (; itt != dirs.end(); ++itt)
     {
@@ -332,19 +335,22 @@ static void FindNewDumps(const char* pPath)
                 case MW_OK:
                     /* Not VERB1: this is new, unprocessed crash dump.
                      * Last abrtd somehow missed it - need to inform user */
-                    log("Non-processed crashdump in %s, saving into database", dir_name);
-                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str());
+                    log("Non-processed crash in %s, saving into database", dir_name);
+                    /* Run automatic actions and reporters on it (if we have them configured) */
+                    RunActionsAndReporters(dir_name);
                     break;
                 case MW_IN_DB:
+                    /* This debugdump was found in DB, nothing else was done
+                     * by SaveDebugDump or needs to be done by us */
                     VERB1 log("%s is already saved in database", dir_name);
                     break;
-                case MW_REPORTED:
-                case MW_OCCURED:
-                    VERB1 log("Already saved crash %s, deleting", dir_name);
+                case MW_REPORTED: /* already reported dup */
+                case MW_OCCURRED: /* not-yet-reported dup */
+                    VERB1 log("Duplicate crash %s, deleting", dir_name);
                     delete_debug_dump_dir(dir_name);
                     break;
                 default:
-                    log("Corrupted or bad crashdump %s (res:%d), deleting", dir_name, (int)res);
+                    log("Corrupted or bad crash %s (res:%d), deleting", dir_name, (int)res);
                     delete_debug_dump_dir(dir_name);
                     break;
             }
@@ -354,6 +360,7 @@ static void FindNewDumps(const char* pPath)
             error_msg("%s", e.what());
         }
     }
+    log("Done checking for unsaved crashes");
 }
 
 static int CreatePidFile()
@@ -483,27 +490,37 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         try
         {
             std::string fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
-//todo: rename SaveDebugDump to ???? it does not save crashinfo, it FETCHES crashinfo
+            /* Note: SaveDebugDump does not save crashinfo, it _fetches_ crashinfo */
             map_crash_data_t crashinfo;
             mw_result_t res = SaveDebugDump(fullname.c_str(), crashinfo);
             switch (res)
             {
                 case MW_OK:
-                    log("New crash, saving");
-                    RunActionsAndReporters(get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str());
+                    log("New crash %s, processing", fullname.c_str());
+                    /* Run automatic actions and reporters on it (if we have them configured) */
+                    RunActionsAndReporters(fullname.c_str());
                     /* Fall through */
-                case MW_REPORTED:
-                case MW_OCCURED:
+
+                case MW_REPORTED: /* already reported dup */
+                case MW_OCCURRED: /* not-yet-reported dup */
                 {
                     if (res != MW_OK)
-                        log("Already saved crash, just sending dbus signal");
+                    {
+                        const char *first = get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str();
+                        log("Deleting crash %s (dup of %s), sending dbus signal",
+                                strrchr(fullname.c_str(), '/') + 1,
+                                strrchr(first, '/') + 1);
+                        delete_debug_dump_dir(fullname.c_str());
+                    }
+#define fullname fullname_should_not_be_used_here
 
                     const char *analyzer = get_crash_data_item_content(crashinfo, FILENAME_ANALYZER).c_str();
                     const char *uid_str = get_crash_data_item_content(crashinfo, FILENAME_UID).c_str();
 
                     /* Autoreport it if configured to do so */
-                    if (analyzer_has_AutoReportUIDs(analyzer, uid_str))
-                    {
+                    if (res != MW_REPORTED
+                     && analyzer_has_AutoReportUIDs(analyzer, uid_str)
+                    ) {
                         VERB1 log("Reporting the crash automatically");
                         map_crash_data_t crash_report;
                         mw_result_t crash_result = CreateCrashReport(
@@ -531,15 +548,18 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                         uid_str = NULL;
                     g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, FILENAME_PACKAGE).c_str(), uid_str);
                     break;
+#undef fullname
                 }
+                case MW_IN_DB:
+                    log("Huh, this crash is already in db?! Nothing to do");
+                    break;
                 case MW_BLACKLISTED:
                 case MW_CORRUPTED:
                 case MW_PACKAGE_ERROR:
                 case MW_GPG_ERROR:
-                case MW_IN_DB:
                 case MW_FILE_ERROR:
                 default:
-                    log("Corrupted or bad crash, deleting");
+                    log("Corrupted or bad crash %s (res:%d), deleting", fullname.c_str(), (int)res);
                     delete_debug_dump_dir(fullname.c_str());
                     break;
             }
@@ -859,7 +879,7 @@ int main(int argc, char** argv)
     {
         /* This may take a while, therefore we don't do it in init section */
         FindNewDumps(DEBUG_DUMPS_DIR);
-        log("Running...");
+        log("Init complete, entering main loop");
         run_main_loop(pMainloop);
     }
     catch (CABRTException& e)
