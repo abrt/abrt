@@ -19,7 +19,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
     */
 
-#include <sys/wait.h>
 #include <fstream>
 #include <sstream>
 #include <set>
@@ -198,10 +197,11 @@ static LineRating rate_line(const char *line)
 /* returns number of "stars" to show */
 static int rate_backtrace(const char *backtrace)
 {
-    int i, j, len;
+    int i, len;
     int multiplier = 0;
     int rating = 0;
     int best_possible_rating = 0;
+    char last_lvl = 0;
 
     /* We look at the frames in reversed order, since:
      * - rate_line() checks starting from the first line of the frame
@@ -212,15 +212,31 @@ static int rate_backtrace(const char *backtrace)
     len = 0;
     for (i = strlen(backtrace) - 1; i >= 0; i--)
     {
-        if (backtrace[i] == '#') /* this separates frames from each other */
-        {
-            string s(backtrace + i + 1, len);
-            for (j=0; j<len; j++) /* replace tabs with spaces */
-                if (s[j] == '\t')
-                    s[j] = ' ';
+        if (backtrace[i] == '#'
+         && (backtrace[i+1] >= '0' && backtrace[i+1] <= '9') /* #N */
+         && (i == 0 || backtrace[i-1] == '\n') /* it's at line start */
+        ) {
+            /* For one, "#0 xxx" always repeats, skip repeats */
+            if (backtrace[i+1] == last_lvl)
+                continue;
+            last_lvl = backtrace[i+1];
+
+            char *s = xstrndup(backtrace + i + 1, len);
+            /* Replace tabs with spaces, rate_line() does not expect tabs.
+             * Actually, even newlines may be there. Example of multiline frame
+             * where " at SRCFILE" is on 2nd line:
+             * #3  0x0040b35d in __libc_message (do_abort=<value optimized out>,
+             *     fmt=<value optimized out>) at ../sysdeps/unix/sysv/linux/libc_fatal.c:186
+             */
+            for (char *p = s; *p; p++)
+                if (*p == '\t' || *p == '\n')
+                    *p = ' ';
+            int lrate = rate_line(s);
             multiplier++;
-            rating += rate_line(s.c_str()) * multiplier;
+            rating += lrate * multiplier;
             best_possible_rating += BestRating * multiplier;
+            //log("lrate:%d rating:%d best_possible_rating:%d s:'%-.40s'", lrate, rating, best_possible_rating, s);
+            free(s);
             len = 0; /* starting new line */
         }
         else
