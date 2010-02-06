@@ -702,10 +702,6 @@ static mw_result_t SavePackageDescriptionToDebugDump(
     catch (CABRTException& e)
     {
         error_msg("%s", e.what());
-        if (e.type() == EXCEP_DD_SAVE)
-        {
-            return MW_FILE_ERROR;
-        }
         return MW_ERROR;
     }
 
@@ -832,15 +828,16 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
     mw_result_t res = FillCrashInfo(pUUID, pUID, pCrashData);
     if (res == MW_OK)
     {
+        const char *first = get_crash_data_item_content(pCrashData, CD_DUMPDIR).c_str();
         if (row.m_sReported == "1")
         {
-            log("Crash is already reported");
+            log("Crash is in database already (dup of %s) and is reported", first);
             return MW_REPORTED;
         }
         if (row.m_sCount != "1")
         {
-            log("Crash is in database already");
-            return MW_OCCURED;
+            log("Crash is in database already (dup of %s)", first);
+            return MW_OCCURRED;
         }
     }
     return res;
@@ -876,10 +873,6 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     catch (CABRTException& e)
     {
         error_msg("%s", e.what());
-        if (e.type() == EXCEP_DD_SAVE)
-        {
-            return MW_FILE_ERROR;
-        }
         return MW_ERROR;
     }
 
@@ -898,6 +891,13 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     const char *uid_str = analyzer_has_InformAllUsers(analyzer.c_str())
         ? "-1"
         : UID.c_str();
+    /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
+     * Returns:
+     * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
+     * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
+     * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
+     * else: an error code
+     */
     return SaveDebugDumpToDatabase(lUUID.c_str(), uid_str, time.c_str(), pDebugDumpDir, pCrashData);
 }
 

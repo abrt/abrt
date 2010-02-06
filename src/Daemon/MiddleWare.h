@@ -37,7 +37,7 @@ typedef enum {
     MW_PACKAGE_ERROR,    /**< Cannot determine package name.*/
     MW_GPG_ERROR,        /**< Package is not signed properly.*/
     MW_REPORTED,         /**< Crash is already reported.*/
-    MW_OCCURED,          /**< Crash occurred in the past, but it is not reported yet.*/
+    MW_OCCURRED,         /**< Crash occurred in the past, but it is not reported yet.*/
     MW_IN_DB,            /**< Debugdump directory is already saved in a database.*/
     MW_IN_DB_ERROR,      /**< Error while working with a database.*/
     MW_PLUGIN_ERROR,     /**< plugin wasn't found or error within plugin*/
@@ -105,8 +105,11 @@ report_status_t Report(const map_crash_data_t& pCrashData,
 std::string getDebugDumpDir( const char *pUUID,
                              const char *pUID);
 /**
- * Saves debugdump into database. If saving is successful,
- * it fills crash info.
+ * Adds package name and description to debugdump dir.
+ * Saves debugdump into database.
+ * Detects whether it's a duplicate crash.
+ * Fills crash info.
+ * Note that if it's a dup, loads _first crash_ info, not this one's.
  * @param pDebugDumpDir A debugdump directory.
  * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
