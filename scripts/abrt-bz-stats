@@ -29,6 +29,8 @@ parser.add_option("-w", "--weekly", help="Generate weekly report instead of mont
 # HTML output for blogs etc.
 parser.add_option("-t", "--html", help="Generate HTML output", 
                   action="store_true", default=False, dest="html")
+parser.add_option("-i", "--wiki", help="Generate output in wiki syntax", 
+                  action="store_true", default=False, dest="wiki")
 # Newest stats first
 parser.add_option("-r", "--reversed", help="Display the newest stats first", 
                   action="store_true", default=False, dest="reversed")
@@ -139,7 +141,8 @@ class TimeSpan:
     return int(100 * self.closed_as_waste / self.closed())
 
   def closed_as_other_percentage(self):
-    return int(100 * self.closed_as_other / self.closed())
+    return 100 - self.closed_as_useful_percentage() \
+        - self.closed_as_waste_percentage()
 
   def closed(self):
     return self.closed_as_useful + self.closed_as_waste + self.closed_as_other
@@ -151,13 +154,16 @@ class TimeSpan:
       self.components[component] = 1
 
   def add_resolution(self, resolution):
-    if resolution in ["CLOSED_NOTABUG", "CLOSED_WONTFIX", "CLOSED_DEFERRED", "CLOSED_WORKSFORME"]:
-      self.closed_as_other += 1
-    elif resolution in ["CLOSED_CURRENTRELEASE", "CLOSED_RAWHIDE", "CLOSED_ERRATA", \
-                          "CLOSED_UPSTREAM", "CLOSED_NEXTRELEASE"]:
+    # Catches only resolutions starting with "CLOSED_"
+    if resolution in ["CLOSED_CURRENTRELEASE", "CLOSED_RAWHIDE", "CLOSED_ERRATA",
+                      "CLOSED_UPSTREAM", "CLOSED_NEXTRELEASE"]:
       self.closed_as_useful += 1
-    elif resolution in ["CLOSED_DUPLICATE", "CLOSED_CANTFIX", "CLOSED_INSUFFICIENT_DATA"]:
+    elif resolution in ["CLOSED_DUPLICATE", "CLOSED_CANTFIX", 
+                        "CLOSED_INSUFFICIENT_DATA"]:
       self.closed_as_waste += 1
+    elif resolution in ["CLOSED_NOTABUG", "CLOSED_WONTFIX", 
+                           "CLOSED_DEFERRED", "CLOSED_WORKSFORME"]:
+      self.closed_as_other += 1
 
   def __str__(self):
     def bug(count):
@@ -195,6 +201,19 @@ class TimeSpan:
       top_crasher_item = "    <li>%s: %s</li>\n"
       top_crashers_end = "</ol></li>\n"
       end = "</ul>\n"
+    elif options.wiki:
+      start = ""
+      bugs_reported = "* %s reported\n"
+      bugs_closed = "* %s closed\n"
+      bugs_cl_useful =  "** %s (%d%%) as fixed, so ABRT was useful\n"
+      bugs_cl_notuseful = "** %s (%d%%) as duplicate, can't fix, insuf. data, so ABRT was not useful\n"
+      bugs_cl_other = "** %s (%d%%) as notabug, wontfix, worksforme\n"
+      bugs_closed_end = ""
+      top_crashers = "* top crashers:\n"
+      top_crasher_item = "*# %s: %s\n"
+      top_crashers_end = ""
+      end = ""
+
 
     str = start
     str += bugs_reported % bug(self.bugs_reported())
@@ -273,6 +292,8 @@ if not options.weekly:
     m = monthly_stats[month]
     if options.html:
       print "<h2>Month %s</h2>" % month
+    elif options.wiki:
+      print "==Month %s==" % month
     else:
       print "MONTH %s" % month
     print m
@@ -285,6 +306,8 @@ else:
     w = weekly_stats[week]
     if options.html:
       print "<h2>Week %s</h2>" % week
+    elif options.wiki:
+      print "==Week %s==" % week
     else:
       print "WEEK %s" % week
     print w

@@ -130,7 +130,7 @@ dupcount = 0
 for backtrace, components in database.items():
   for component, bugitems in components.items():
     if len(bugitems) > 1:
-      dupcount += len(value) - 1
+      dupcount += len(bugitems) - 1
 
 print "Total number of duplicate bugs detected: {0}".format(dupcount)
 print "------------------------------"
@@ -140,5 +140,8 @@ for backtrace, components in database.items():
   for component, bugitems in components.items():
     if len(bugitems) > 1:
       print "Component: {0}".format(component)
-      print "Duplicates: {0}".format(map(lambda x: "{0} ({1})".format(x['id'],x['comments']), bugitems).join(", "))
+      print "Duplicates: {0}".format(
+        reduce(lambda x,y: x+", "+y, 
+               map(lambda x: "{0} ({1})".format(x['id'],x['comments']), 
+                   bugitems)))
       print "Backtrace: {0}".format(backtrace)
