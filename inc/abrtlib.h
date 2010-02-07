@@ -39,8 +39,6 @@
 #include <grp.h>
 /* C++ bits */
 #include <string>
-#include <sstream>
-#include <iostream>
 
 #include "abrt_types.h"
 
@@ -261,13 +259,14 @@ double get_dirsize_find_largest_dir(
                 std::string *worst_dir = NULL,
                 const char *excluded = NULL);
 
+std::string unsigned_to_string(unsigned long long x);
+std::string signed_to_string(long long x);
 template <class T>
-std::string
-to_string(T x)
+std::string to_string(T x)
 {
-    std::ostringstream o;
-    o << x;
-    return o.str();
+    if (T(~T(0)) < T(0)) /* T is a signed type */
+        return unsigned_to_string(x);
+    return signed_to_string(x);
 }
 
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);

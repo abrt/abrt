@@ -25,10 +25,19 @@ extern DBusConnection* s_dbus_conn;
 
 vector_map_crash_data_t call_GetCrashInfos();
 map_crash_data_t call_CreateReport(const char *uuid);
-report_status_t call_Report(const map_crash_data_t& report);
+
+/** Sends report using enabled Reporter plugins.
+ * @param plugins
+ *  Optional settings for plugins, can be empty.
+ *  Format: plugins["PluginName"]["SettingsKey"] = "SettingsValue"
+ *  If it contains settings for some plugin, it must contain _all fields_
+ *  obtained by call_GetPluginSettings, otherwise the plugin might ignore
+ *  the settings.
+ */
+report_status_t call_Report(const map_crash_data_t& report, 
+			    const map_map_string_t &plugins);
 int32_t call_DeleteDebugDump(const char* uuid);
 
-#ifdef UNUSED
 /* Gets basic data about all installed plugins.
  */
 map_map_string_t call_GetPluginsInfo();
@@ -38,7 +47,6 @@ map_map_string_t call_GetPluginsInfo();
  *    Corresponds to name obtained from call_GetPluginsInfo.
  */
 map_plugin_settings_t call_GetPluginSettings(const char *name);
-#endif
 
 void handle_dbus_err(bool error_flag, DBusError *err);
 

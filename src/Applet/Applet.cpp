@@ -15,22 +15,21 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-    */
-
+*/
 #include <dbus/dbus-shared.h>
 #include <dbus/dbus-glib.h>
 #include <dbus/dbus-glib-lowlevel.h>
 #if HAVE_CONFIG_H
-    #include <config.h>
+# include <config.h>
 #endif
 #if HAVE_LOCALE_H
-    #include <locale.h>
+# include <locale.h>
 #endif
 #if ENABLE_NLS
-    #include <libintl.h>
-    #define _(S) gettext(S)
+# include <libintl.h>
+# define _(S) gettext(S)
 #else
-    #define _(S) (S)
+# define _(S) (S)
 #endif
 #include "abrtlib.h"
 #include "abrt_dbus.h"

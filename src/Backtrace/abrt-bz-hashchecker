@@ -56,4 +56,4 @@ bz.logout()
 
 for hash, ids in hashes.items():
     if len(ids) > 1:
-      print "Duplicates found: ", ids.join(", ")
+      print "Duplicates found: ", reduce(lambda x,y: str(x)+", "+str(y), ids)

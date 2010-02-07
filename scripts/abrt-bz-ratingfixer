@@ -1,0 +1,146 @@
+#!/usr/bin/python
+# -*- mode:python -*-
+#
+# Please do not run this script unless it's neccessary to do so. 
+# It forces Bugzilla to send data related to thousands of bug reports.
+
+from bugzilla import RHBugzilla
+from optparse import OptionParser
+import sys
+import os.path
+import subprocess
+import cPickle
+
+parser = OptionParser(version="%prog 1.0")
+parser.add_option("-u", "--user", dest="user",
+                  help="Bugzilla user name (REQUIRED)", metavar="USERNAME")
+parser.add_option("-p", "--password", dest="password",
+                  help="Bugzilla password (REQUIRED)", metavar="PASSWORD")
+parser.add_option("-b", "--bugzilla", dest="bugzilla",
+                  help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
+parser.add_option("-i", "--wiki", help="Generate output in wiki syntax", 
+                  action="store_true", default=False, dest="wiki")
+
+(options, args) = parser.parse_args()
+
+if not options.user or len(options.user) == 0:
+  parser.error("User name is required.\nTry {0} --help".format(sys.argv[0]))
+
+if not options.password or len(options.password) == 0:
+  parser.error("Password is required.\nTry {0} --help".format(sys.argv[0]))
+
+if not options.bugzilla or len(options.bugzilla) == 0:
+  options.bugzilla = "https://bugzilla.redhat.com/xmlrpc.cgi"
+
+bz = RHBugzilla()
+bz.connect(options.bugzilla)
+bz.login(options.user, options.password)
+
+buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboard':'abrt_hash'})
+
+print "{0} bugs found.".format(len(buginfos))
+
+#
+# Load cache from previous run. Speeds up the case Bugzilla closes connection.
+# The cache should be manually removed after a day or so, because the data in it 
+# are no longer valid.
+#
+ids = {}
+CACHE_FILE = "abrt-bz-ratingfixer-cache.tmp"
+if os.path.isfile(CACHE_FILE):
+  f = open(CACHE_FILE, 'r')
+  ids = cPickle.load(f)
+  f.close()
+
+def save_to_cache():
+  global database
+  f = open(CACHE_FILE, 'w')
+  cPickle.dump(ids, f, 2)
+  f.close()  
+
+count = 0
+for buginfo in buginfos:
+  count += 1
+  print "{0}/{1}".format(count, len(buginfos))
+  if count % 100 == 0:
+    save_to_cache()
+
+  if ids.has_key(buginfo.bug_id):
+    continue
+
+  if not buginfo.bug_status in ["NEW", "ASSIGNED"]:
+    continue
+
+  # By default: rating 4, no comments. Do not touch strange bugs.
+  ids[buginfo.bug_id] = ( 4, 0 )
+
+  # Skip bugs with already downloaded backtraces.
+  filename = "{0}.bt".format(buginfo.bug_id)
+  if not os.path.isfile(filename):
+    # Get backtrace from bug and store it as a file.
+    downloaded = False
+    bug = bz.getbug(buginfo.bug_id)
+    for attachment in bug.attachments:
+      if attachment['filename'] == 'backtrace':
+        data = bz.openattachment(attachment['id'])
+        f = open(filename, 'w')
+        f.write(data.read())
+        f.close()
+        downloaded = True
+
+    # Silently skip bugs without backtrace.
+    # Those are usually duplicates of bugs; the duplication copies
+    # abrt_hash, but it does not copy the attachment.
+    if not downloaded:
+      continue
+
+  command = ["./abrt-rate-backtrace"]
+  command.append(filename)
+
+  helper = subprocess.Popen(command, stdout=subprocess.PIPE)
+  rating, err = helper.communicate()
+  helper.wait()
+
+  if helper.returncode != 0:
+    print "Problems with rating {0}".format(filename)
+    continue
+
+  bug = bz.getbug(buginfo.bug_id)
+  comments = 0
+  for comment in bug.longdescs:
+    # Do not count "rawhide" comments from Bug Zappers
+    if comment["body"].find("against 'rawhide' during") > 0:
+      continue
+    comments += 1
+
+  ids[buginfo.bug_id] = ( int(rating), comments )
+
+bz.logout()
+
+print "============= SUMMARY"
+count = 0
+closedcount = 0
+bugids = ids.keys()
+bugids.sort()
+if options.wiki:
+  print "{|"
+  print " ! Bug !! Backtrace rating !! Comment count"
+  print " |-"
+for bugid in bugids:
+  rating = ids[bugid]
+  if rating[0] < 3:
+    count += 1
+    if rating[1] <= 2:
+      closedcount += 1
+    if options.wiki:
+      print " | #[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] || {1}/4 || {2}".format(bugid, rating[0], rating[1])
+      print " |-"
+    else:
+      print "#{0} has a backtrace with rating {1}/4 and {2} comments".format(bugid, rating[0], rating[1])
+
+if options.wiki:
+  print " |}"
+
+
+print "{0} bugs are included.".format(count)
+print "{0} bugs should be closed.".format(closedcount)

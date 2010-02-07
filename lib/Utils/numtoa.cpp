@@ -1,6 +1,8 @@
 /*
-    Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
-    Copyright (C) 2009  RedHat inc.
+    Number to string conversions
+
+    Copyright (C) 2010  ABRT team
+    Copyright (C) 2010  RedHat inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -16,20 +18,17 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "Plugin.h"
+#include "abrtlib.h"
 
-CPlugin::CPlugin() {}
-
-/* class CPlugin's virtuals */
-CPlugin::~CPlugin() {}
-void CPlugin::Init() {}
-void CPlugin::DeInit() {}
-void CPlugin::SetSettings(const map_plugin_settings_t& pSettings)
+std::string unsigned_to_string(unsigned long long x)
 {
-    m_pSettings = pSettings;
+	char buf[sizeof(x)*3];
+	sprintf(buf, "%llu", x);
+	return buf;
 }
-
-const map_plugin_settings_t& CPlugin::GetSettings()
+std::string signed_to_string(long long x)
 {
-    return m_pSettings;
+	char buf[sizeof(x)*3];
+	sprintf(buf, "%lld", x);
+	return buf;
 }
