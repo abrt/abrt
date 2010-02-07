@@ -119,6 +119,7 @@ bz.logout()
 
 print "============= SUMMARY"
 count = 0
+closedcount = 0
 bugids = ids.keys()
 bugids.sort()
 if options.wiki:
@@ -127,8 +128,10 @@ if options.wiki:
   print " |-"
 for bugid in bugids:
   rating = ids[bugid]
-  if rating[0] < 3 and rating[1] <= 2:
+  if rating[0] < 3:
     count += 1
+    if rating[1] <= 2:
+      closedcount += 1
     if options.wiki:
       print " | #[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] || {1}/4 || {2}".format(bugid, rating[0], rating[1])
       print " |-"
@@ -139,4 +142,5 @@ if options.wiki:
   print " |}"
 
 
-print "{0} bugs should be closed.".format(count)
+print "{0} bugs are included.".format(count)
+print "{0} bugs should be closed.".format(closedcount)
