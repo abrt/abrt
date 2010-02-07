@@ -1,3 +1,21 @@
+/*
+    Copyright (C) 2010  ABRT team
+    Copyright (C) 2010  RedHat Inc
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 #include "abrtlib.h"
@@ -185,7 +203,7 @@ void ctx::add_plus_one_cc(uint32_t bug_id, const char* login)
     xmlrpc_env env;
     xmlrpc_env_init(&env);
 
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login); 
+    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
     throw_if_xml_fault_occurred(&env); // failed to allocate memory
 
     xmlrpc_value* result = NULL;

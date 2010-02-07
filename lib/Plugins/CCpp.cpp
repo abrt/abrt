@@ -17,10 +17,7 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-    */
-
-#include <fstream>
-#include <sstream>
+*/
 #include <set>
 #include <iomanip>
 //#include <nss.h>
@@ -702,21 +699,21 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         {
             perror_msg("abrt-backtrace not executed properly, "
                                "status: %x signal: %d", status, WIFSIGNALED(status));
-        } 
+        }
         else
         {
             int exit_status = WEXITSTATUS(status);
             if (exit_status == 79) /* EX_PARSINGFAILED */
             {
-                /* abrt-backtrace returns alternative backtrace 
-                   representation in this case, so everything will work 
+                /* abrt-backtrace returns alternative backtrace
+                   representation in this case, so everything will work
                    as expected except worse duplication detection */
                 log_msg("abrt-backtrace failed to parse the backtrace");
             }
             else if (exit_status == 80) /* EX_THREADDETECTIONFAILED */
             {
-                /* abrt-backtrace returns backtrace with all threads 
-                   in this case, so everything will work as expected 
+                /* abrt-backtrace returns backtrace with all threads
+                   in this case, so everything will work as expected
                    except worse duplication detection */
                 log_msg("abrt-backtrace failed to determine crash frame");
             }
@@ -890,12 +887,13 @@ static int set_limits()
 
 void CAnalyzerCCpp::Init()
 {
-    ifstream fInCorePattern;
-    fInCorePattern.open(CORE_PATTERN_IFACE);
-    if (fInCorePattern.is_open())
+    FILE *fp = fopen(CORE_PATTERN_IFACE, "r");
+    if (fp)
     {
-        getline(fInCorePattern, m_sOldCorePattern);
-        fInCorePattern.close();
+        char line[PATH_MAX];
+        if (fgets(line, sizeof(line), fp))
+            m_sOldCorePattern = line;
+        fclose(fp);
     }
     if (m_sOldCorePattern[0] == '|')
     {
@@ -915,28 +913,26 @@ void CAnalyzerCCpp::Init()
         }
     }
 #ifdef HOSTILE_KERNEL
-    if(set_limits() != 0)
+    if (set_limits() != 0)
         log("warning: failed to set core_size limit, ABRT won't detect crashes in"
             "compiled apps");
 #endif
 
-    ofstream fOutCorePattern;
-    fOutCorePattern.open(CORE_PATTERN_IFACE);
-    if (fOutCorePattern.is_open())
+    fp = fopen(CORE_PATTERN_IFACE, "w");
+    if (fp)
     {
-        fOutCorePattern << CORE_PATTERN << endl;
-        fOutCorePattern.close();
+        fputs(CORE_PATTERN, fp);
+        fclose(fp);
     }
 }
 
 void CAnalyzerCCpp::DeInit()
 {
-    ofstream fOutCorePattern;
-    fOutCorePattern.open(CORE_PATTERN_IFACE);
-    if (fOutCorePattern.is_open())
+    FILE *fp = fopen(CORE_PATTERN_IFACE, "w");
+    if (fp)
     {
-        fOutCorePattern << m_sOldCorePattern << endl;
-        fOutCorePattern.close();
+        fputs(m_sOldCorePattern.c_str(), fp);
+        fclose(fp);
     }
 }
 

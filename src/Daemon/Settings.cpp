@@ -1,4 +1,21 @@
-#include <fstream>
+/*
+    Copyright (C) 2010  ABRT team
+    Copyright (C) 2010  RedHat Inc
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+*/
 #include "Settings.h"
 #include "abrtlib.h"
 #include "abrt_types.h"
@@ -243,46 +260,45 @@ static void ParseAnalyzerActionsAndReporters()
 
 static void LoadGPGKeys()
 {
-    std::ifstream fIn;
-    fIn.open(CONF_DIR"/gpg_keys");
-    if (fIn.is_open())
+    FILE *fp = fopen(CONF_DIR"/gpg_keys", "r");
+    if (fp)
     {
-        std::string line;
         /* every line is one key
-         FIXME: make it more robust, it doesn't handle comments
-        */
-        while (fIn.good())
+         * FIXME: make it more robust, it doesn't handle comments
+         */
+        char line[512];
+        while (fgets(line, sizeof(line), fp))
         {
-            getline(fIn, line);
             if (line[0] == '/') // probably the begining of path, so let's handle it as a key
+            {
+                strchrnul(line, '\n')[0] = '\0';
                 g_settings_setOpenGPGPublicKeys.insert(line);
+            }
         }
-        fIn.close();
+        fclose(fp);
     }
 }
 
 /* abrt daemon loads .conf file */
 void LoadSettings()
 {
-    std::ifstream fIn;
-    fIn.open(CONF_DIR"/abrt.conf");
-    if (fIn.is_open())
+    FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
+    if (fp)
     {
-        std::string line;
+        char line[512];
         std::string section;
-        while (fIn.good())
+        while (fgets(line, sizeof(line), fp))
         {
-            getline(fIn, line);
-
-            unsigned int ii;
+            strchrnul(line, '\n')[0] = '\0';
+            unsigned ii;
             bool is_key = true;
             bool is_section = false;
             bool is_quote = false;
             std::string key;
             std::string value;
-            for (ii = 0; ii < line.length(); ii++)
+            for (ii = 0; line[ii] != '\0'; ii++)
             {
-                if (is_quote && line[ii] == '\\' && ii+1 < line.length())
+                if (is_quote && line[ii] == '\\' && line[ii+1] != '\0')
                 {
                     value += line[ii];
                     ii++;
@@ -355,7 +371,7 @@ void LoadSettings()
                 }
             }
         }
-        fIn.close();
+        fclose(fp);
     }
     ParseCommon();
     ParseAnalyzerActionsAndReporters();

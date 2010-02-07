@@ -17,10 +17,7 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-    */
-
-#include <fstream>
-#include <iostream>
+*/
 #include <dlfcn.h>
 #include "abrtlib.h"
 #include "ABRTException.h"
@@ -85,23 +82,21 @@ static const char *const plugin_type_str[] = {
 
 bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings)
 {
-    ifstream fIn;
-    fIn.open(pPath);
-    if (!fIn.is_open())
+    FILE *fp = fopen(pPath, "r");
+    if (!fp)
         return false;
 
-    string line;
-    while (!fIn.eof())
+    char line[512];
+    while (fgets(line, sizeof(line), fp))
     {
-        getline(fIn, line);
-
-        int ii;
+        strchrnul(line, '\n')[0] = '\0';
+        unsigned ii;
         bool is_value = false;
         bool valid = false;
         bool in_quote = false;
         string key;
         string value;
-        for (ii = 0; ii < line.length(); ii++)
+        for (ii = 0; line[ii] != '\0'; ii++)
         {
             if (line[ii] == '"')
             {
@@ -135,7 +130,7 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings)
             pSettings[key] = value;
         }
     }
-    fIn.close();
+    fclose(fp);
     return true;
 }
 

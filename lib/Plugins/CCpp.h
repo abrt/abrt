@@ -1,6 +1,6 @@
 /*
     CCpp.h - header file for C/C++ analyzer plugin
-           - it can ger UUID and memory maps from core files
+           - it can get UUID and memory maps from core files
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
     Copyright (C) 2009  RedHat inc.
@@ -18,8 +18,7 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-    */
-
+*/
 #ifndef CCPP_H_
 #define CCPP_H_
 

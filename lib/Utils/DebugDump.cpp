@@ -17,11 +17,7 @@
     You should have received a copy of the GNU General Public License along
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
-    */
-
-#include <fstream>
-#include <iostream>
-#include <sstream>
+*/
 #include <sys/utsname.h>
 #include "abrtlib.h"
 #include "DebugDump.h"
@@ -251,7 +247,7 @@ void CDebugDump::UnLock()
  *
  * Security: we should not allow users to write new files or write
  * into existing ones, but they should be able to read them.
- * 
+ *
  * @param uid
  *   Crashed application's User Id
  *
@@ -282,7 +278,7 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
     Lock();
     m_bOpened = true;
 
-    /* Was creating it with mode 0700 and user as the owner, but this allows 
+    /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
@@ -302,7 +298,7 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
     }
 
     /* Get ABRT's user id */
-    m_uid = 0; 
+    m_uid = 0;
     struct passwd *pw = getpwnam("abrt");
     if (pw)
         m_uid = pw->pw_uid;
@@ -319,7 +315,7 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
 
     if (chown(m_sDebugDumpDir.c_str(), m_uid, m_gid) == -1)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(), 
+        perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(),
 		   (long)m_uid, (long)m_gid);
     }
 
