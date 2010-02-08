@@ -88,16 +88,22 @@ int main(int argc, char** argv)
     {
         error_msg_and_die("pid '%s' or limit '%s' is bogus", argv[2], argv[5]);
     }
-    if (signal_no != SIGQUIT
-     && signal_no != SIGILL
-     && signal_no != SIGABRT
-     && signal_no != SIGFPE
-     && signal_no != SIGSEGV
-    ) {
-        /* not an error, exit silently */
+
+    const char *signame = NULL;
+    /* Tried to use array for this but C++ does not support v[] = { [IDX] = "str" } */
+    switch (signal_no)
+    {
+        case SIGQUIT: signame = "QUIT"; break;
+        case SIGILL : signame = "ILL" ; break;
+        case SIGABRT: signame = "ABRT"; break;
+        case SIGFPE : signame = "FPE" ; break;
+        case SIGSEGV: signame = "SEGV"; break;
+    }
+    if (signame == NULL)
+    {
+        /* not a signal we care about, exit silently */
         return 0;
     }
-
 
     char *user_pwd = get_cwd(pid); /* may be NULL on error */
     int core_fd = STDIN_FILENO;
@@ -192,8 +198,7 @@ int main(int argc, char** argv)
         }
 
         char* cmdline = get_cmdline(pid); /* never NULL */
-        const char *signame = strsignal(signal_no);
-        char *reason = xasprintf("Process was terminated by signal %s (%s)", signal_str, signame ? signame : signal_str);
+        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
 
         unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu.new",
                 dddir, (long)time(NULL), (long)pid);
