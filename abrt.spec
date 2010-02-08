@@ -205,7 +205,7 @@ Requires: %{name}-addon-ccpp, %{name}-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: %{name}-gui
-Requires: %{name}-plugin-logger, %{name}-plugin-ticketuploader, %{name}-plugin-sosreport
+Requires: %{name}-plugin-logger, %{name}-plugin-bugzilla, %{name}-plugin-runapp
 #Requires: %{name}-plugin-firefox
 Obsoletes: bug-buddy
 Provides: bug-buddy
@@ -227,6 +227,8 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 %find_lang %{name}
 
+#rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
+#rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
