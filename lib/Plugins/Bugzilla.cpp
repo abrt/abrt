@@ -315,8 +315,14 @@ uint32_t ctx::new_bug(const map_crash_data_t& pCrashData)
     const std::string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
     const std::string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
     const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_DUPHASH);
+    const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
 
     std::string summary = "[abrt] crash in " + package;
+    if (reason != NULL)
+    {
+        summary += ": ";
+        summary += reason;
+    }
     std::string status_whiteboard = "abrt_hash:" + uuid;
 
     std::string description = "abrt "VERSION" detected a crash.\n\n";
