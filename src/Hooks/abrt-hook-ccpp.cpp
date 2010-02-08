@@ -99,8 +99,7 @@ int main(int argc, char** argv)
         case SIGFPE : signame = "FPE" ; break;
         case SIGSEGV: signame = "SEGV"; break;
     }
-    if (signame == NULL)
-    {
+    if (signame == NULL) {
         /* not a signal we care about, exit silently */
         return 0;
     }
@@ -223,8 +222,10 @@ int main(int argc, char** argv)
         core_fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
         if (core_fd < 0)
         {
+            int sv_errno = errno;
             dd.Delete();
             dd.Close();
+            errno = sv_errno;
             perror_msg_and_die("can't open '%s'", path);
         }
 //TODO: chown to uid:abrt?

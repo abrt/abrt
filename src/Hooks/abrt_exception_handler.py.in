@@ -27,7 +27,7 @@ import syslog
 import subprocess
 
 
-def write_dump(pid, tb_uuid, tb):
+def write_dump(pid, tb):
     executable = "Exception raised from python shell"
     if sys.argv[0]:
         # FIXME: is this reliable?!
@@ -38,7 +38,6 @@ def write_dump(pid, tb_uuid, tb):
     command = ["/usr/libexec/abrt-hook-python"]
     command.append("--pid=%s" % pid)
     command.append("--executable=%s" % executable)
-    command.append("--uuid=%s" % tb_uuid)
 
     helper = subprocess.Popen(command, stdin=subprocess.PIPE)
     helper.communicate(tb)
@@ -61,7 +60,6 @@ def handleMyException((etype, value, tb)):
 
     try:
         import os.path
-        from hashlib import md5
         import traceback
 
         # "-c" appears in this case:
@@ -83,14 +81,11 @@ def handleMyException((etype, value, tb)):
             ll[0] = os.path.basename(tblast[0])
             tblast = ll
 
-        m = md5()
         ntext = ""
         for t in tblast:
             ntext += str(t) + ":"
-            m.update(str(t))
-        tb_uuid = str(m.hexdigest())[:8]
 
-        text = "Summary: TB" + tb_uuid + " " + ntext
+        text = ntext
         text += extxt[0]
         text += "\n"
         text += "".join(elist)
@@ -107,7 +102,7 @@ def handleMyException((etype, value, tb)):
             pass
 
         # add coredump saving
-        write_dump(os.getpid(), tb_uuid, text)
+        write_dump(os.getpid(), text)
 
     except:
         # silently ignore any error in this hook,
