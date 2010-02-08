@@ -752,10 +752,6 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
     if (it == settings.end())
         return false;
 
-    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid_str, "-1") == 0))
-        return true;
-
-/*
     vector_string_t logins;
     parse_args(it->second.c_str(), logins);
 
@@ -769,7 +765,7 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
         if (pw->pw_uid == uid)
             return true;
     }
-*/
+
     return false;
 }
 
