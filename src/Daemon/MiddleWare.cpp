@@ -414,6 +414,25 @@ report_status_t Report(const map_crash_data_t& client_report,
         }
     }
 
+    /* Remove BIN filenames from stored_report if they are not present in client's data */
+    map_crash_data_t::const_iterator its = stored_report.begin();
+    while (its != stored_report.end())
+    {
+        if (its->second[CD_TYPE] == CD_BIN)
+        {
+            std::string key = its->first;
+            if (get_crash_data_item_content_or_NULL(client_report, key.c_str()) == NULL)
+            {
+                /* client does not have it -> does not want it passed to reporters */
+                VERB3 log("Won't report BIN file %s:'%s'", key.c_str(), its->second[CD_CONTENT].c_str());
+                its++; /* move off the element we will erase */
+                stored_report.erase(key);
+                continue;
+            }
+        }
+        its++;
+    }
+
     const std::string& analyzer = get_crash_data_item_content(stored_report, FILENAME_ANALYZER);
 
     std::string dup_hash = GetGlobalUUID(analyzer.c_str(), pDumpDir.c_str());
@@ -733,10 +752,6 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
     if (it == settings.end())
         return false;
 
-    if ((strcmp(analyzer_name, "Kerneloops") == 0) && (strcmp(uid_str, "-1") == 0))
-        return true;
-
-/*
     vector_string_t logins;
     parse_args(it->second.c_str(), logins);
 
@@ -750,7 +765,7 @@ bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
         if (pw->pw_uid == uid)
             return true;
     }
-*/
+
     return false;
 }
 

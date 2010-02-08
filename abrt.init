@@ -16,7 +16,8 @@
 
 # Source function library.
 . /etc/rc.d/init.d/functions
-
+ABRT_BIN="/usr/sbin/abrtd"
+LOCK="/var/lock/subsys/abrtd"
 RETVAL=0
 
 #
@@ -28,7 +29,7 @@ check() {
 	[ `id -u` = 0 ] || exit 4
 
 	# Check if abrt is executable
-	test -x /usr/sbin/abrtd || exit 5
+	test -x $ABRT_BIN || exit 5
 }
 
 start() {
@@ -36,11 +37,11 @@ start() {
 	check
 
 	# Check if it is already running
-	if [ ! -f /var/lock/subsys/abrt ]; then
+	if [ ! -f $LOCK ]; then
 		echo -n $"Starting abrt daemon: "
-		daemon /usr/sbin/abrtd
+		daemon $ABRT_BIN
 		RETVAL=$?
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/abrt
+		[ $RETVAL -eq 0 ] && touch $LOCK
 		echo
 	fi
 	return $RETVAL
@@ -51,9 +52,9 @@ stop() {
 	check
 
 	echo -n $"Stopping abrt daemon: "
-	killproc /usr/sbin/abrtd
+	killproc $ABRT_BIN
 	RETVAL=$?
-	[ $RETVAL -eq 0 ] && rm -f /var/lock/subsys/abrt
+	[ $RETVAL -eq 0 ] && rm -f $LOCK
 	echo
 	return $RETVAL
 }
@@ -86,7 +87,7 @@ restart)
 	restart
 	;;
 condrestart)
-	if [ -f /var/lock/subsys/abrt ]; then
+	if [ -f $LOCK ]; then
 	    restart
 	fi
 	;;
