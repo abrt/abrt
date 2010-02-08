@@ -58,8 +58,8 @@ libCCpp_la_LDFLAGS = -avoid-version
 libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
     -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"'
-#    -DHOSTILE_KERNEL
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DHOSTILE_KERNEL
 
 
 # Firefox - disabled for now
