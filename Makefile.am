@@ -8,4 +8,5 @@ rpm: dist
 				--define "_specdir `pwd`" \
 				--define "_builddir `pwd`" \
 				--define "_srcrpmdir `pwd`" \
+				--define "dist .el6" \
 				-ba abrt.spec
