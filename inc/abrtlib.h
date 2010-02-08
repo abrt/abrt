@@ -261,12 +261,12 @@ double get_dirsize_find_largest_dir(
 
 std::string unsigned_to_string(unsigned long long x);
 std::string signed_to_string(long long x);
-template <class T>
+template <class T> inline
 std::string to_string(T x)
 {
-    if (T(~T(0)) < T(0)) /* T is a signed type */
-        return unsigned_to_string(x);
-    return signed_to_string(x);
+    if ((T)~(T)0 < (T)0) /* T is a signed type */
+        return signed_to_string(x);
+    return unsigned_to_string(x);
 }
 
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
