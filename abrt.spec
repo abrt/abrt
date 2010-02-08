@@ -233,6 +233,8 @@ rm -rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 %find_lang %{name}
 
+#rm -rf $RPM_BUILD_ROOT/%{_libdir}/lib*.la
+#rm -rf $RPM_BUILD_ROOT/%{_libdir}/%{name}/lib*.la
 # remove all .la and .a files
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
