@@ -25,6 +25,8 @@ import sys
 import os.path
 import subprocess
 import cPickle
+import urllib
+import json
 
 parser = OptionParser(version="%prog 1.0")
 parser.add_option("-u", "--user", dest="user",
@@ -87,6 +89,7 @@ for buginfo in buginfos:
 
   if ids.has_key(buginfo.bug_id):
     continue
+
   ids[buginfo.bug_id] = True
 
   if not buginfo.bug_status in ["NEW", "ASSIGNED", "MODIFIED", "VERIFIED"]:
@@ -177,9 +180,17 @@ print "------------------------------"
 for backtrace, components in database.items():
   for component, bugitems in components.items():
     if len(bugitems) > 1:
+       # Get the component owner
+      component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/packages/name/{0}?tg_format=json".format(buginfo.component)))
+      component_packages = component_info['packageListings']
+      component_f12 = filter(lambda x:x["collection"]["version"]=="12", component_packages)
+      owner = "Failed to get component owner"
+      if len(component_f12) == 1:
+        owner = component_f12["owner"]
+
       if options.wiki:
         print "----"
-        print "* component: '''{0}'''".format(component)
+        print "* component: '''{0}''' ({1})".format(component, owner)
         print "* duplicates: {0}".format(
           reduce(lambda x,y: x+", "+y, 
                  map(lambda x: "#[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] ({1} comments)".format(x['id'],x['comments']), 
@@ -188,7 +199,7 @@ for backtrace, components in database.items():
         for line in backtrace.replace("Thread\n", "").splitlines():
           print "*# {0}".format(line)
       else:
-        print "Component: {0}".format(component)
+        print "Component: {0} ({1})".format(component, owner)
         print "Duplicates: {0}".format(
           reduce(lambda x,y: x+", "+y, 
                  map(lambda x: "{0} ({1})".format(x['id'],x['comments']), 
