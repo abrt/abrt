@@ -20,8 +20,8 @@
 */
 #include <getopt.h>
 #include <syslog.h>
-/* We can easily get rid of abrtlib (libABRTUtils.so) usage in this file,
- * but DebugDump will pull it in anyway */
+// We can easily get rid of abrtlib (libABRTUtils.so) usage in this file,
+// but DebugDump will pull it in anyway
 #include "abrtlib.h"
 #include "hooklib.h"
 #include "DebugDump.h"
@@ -36,14 +36,13 @@
 
 static char *pid;
 static char *executable;
-static char *uuid;
 
-/* Note: "" will return false */
+// Note: "" will return false
 static bool isxdigit_str(const char *str)
 {
   do {
-    if ((*str < '0' || *str > '9') /* not a digit */
-     && ((*str | 0x20) < 'a' || (*str | 0x20) > 'f') /* not A-F or a-f */
+    if ((*str < '0' || *str > '9') // not a digit
+     && ((*str | 0x20) < 'a' || (*str | 0x20) > 'f') // not A-F or a-f
     )
     {
       return false;
@@ -70,7 +69,6 @@ int main(int argc, char** argv)
     // name       , has_arg          , flag, val
     { "pid"       , required_argument, NULL, 'p' },
     { "executable", required_argument, NULL, 'e' },
-    { "uuid"      , required_argument, NULL, 'u' },
     { 0 },
   };
   int opt;
@@ -84,9 +82,6 @@ int main(int argc, char** argv)
     case 'e':
       executable = optarg;
       break;
-    case 'u':
-      uuid = optarg;
-      break;
     default:
  usage:
       error_msg_and_die(
@@ -94,13 +89,10 @@ int main(int argc, char** argv)
                 "\nOptions:\n"
                 "	-p,--pid PID		PID of process that caused the crash\n"
                 "	-p,--executable	PATH	absolute path to the program that crashed\n"
-                "	-u,--uuid UUID		hash generated from the backtrace\n"
       );
     }
   }
-  if (!pid || !executable || !uuid)
-    goto usage;
-  if (strlen(uuid) > 128 || !isxdigit_str(uuid))
+  if (!pid || !executable)
     goto usage;
   if (strlen(executable) > PATH_MAX || !printable_str(executable))
     goto usage;
@@ -134,7 +126,7 @@ int main(int argc, char** argv)
   }
 
   // This also checks that pid is a valid numeric string
-  char *cmdline = get_cmdline(xatou(pid)); /* never NULL */
+  char *cmdline = get_cmdline(xatou(pid)); // never NULL
 
   // Create directory with the debug dump
   char path[PATH_MAX];
@@ -146,16 +138,21 @@ int main(int argc, char** argv)
   try {
     dd.Create(path, getuid());
   } catch (CABRTException &e) {
+    dd.Delete();
+    dd.Close();
     error_msg_and_die("error while creating crash dump %s: %s", path, e.what());
   }
 
   dd.SaveText(FILENAME_ANALYZER, "Python");
   dd.SaveText(FILENAME_EXECUTABLE, executable);
   dd.SaveText(FILENAME_BACKTRACE, bt);
+  // python handler puts a short(er) crash descr in 1st line. Example:
+  // "CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero"
+  strchrnul(bt, '\n')[0] = '\0';
+  dd.SaveText(FILENAME_REASON, bt);
   free(bt);
   dd.SaveText(FILENAME_CMDLINE, cmdline);
   free(cmdline);
-  dd.SaveText(FILENAME_UUID, uuid);
   char uid[sizeof(long) * 3 + 2];
   sprintf(uid, "%lu", (long)getuid());
   dd.SaveText(FILENAME_UID, uid);
