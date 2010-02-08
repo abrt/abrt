@@ -193,6 +193,38 @@ string make_description_logger(const map_crash_data_t& pCrashData)
     return description;
 }
 
+string make_description_reproduce_comment(const map_crash_data_t& pCrashData)
+{
+    map_crash_data_t::const_iterator end = pCrashData.end();
+    map_crash_data_t::const_iterator it;
+
+    string howToReproduce;
+    it = pCrashData.find(FILENAME_REPRODUCE);
+    if (it != end)
+    {
+        VERB3 log("make_description_reproduce_comment %s", it->second[CD_CONTENT].c_str());
+        if ((it->second[CD_CONTENT].size() > 0)
+            &&  (it->second[CD_CONTENT] != "1.\n2.\n3.\n"))
+        {
+            howToReproduce = "\n\nHow to reproduce\n"
+                             "-----\n";
+            howToReproduce += it->second[CD_CONTENT];
+        }
+    }
+    string comment;
+    it = pCrashData.find(FILENAME_COMMENT);
+    if (it != end)
+    {
+        if (it->second[CD_CONTENT].size() > 0)
+        {
+            comment = "\n\nComment\n"
+                     "-----\n";
+            comment += it->second[CD_CONTENT];
+        }
+    }
+    return howToReproduce + comment;
+}
+
 /* This needs more work to make the result less ugly */
 string make_description_catcut(const map_crash_data_t& pCrashData)
 {

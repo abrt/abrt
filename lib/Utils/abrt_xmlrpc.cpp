@@ -35,12 +35,13 @@ CURL* xcurl_easy_init()
 
 void throw_xml_fault(xmlrpc_env *env)
 {
-    std::string errmsg = ssprintf("XML-RPC Fault: %s(%d)", env->fault_string, env->fault_code);
+    std::string errmsg = ssprintf("XML-RPC Fault(%d): %s", env->fault_code, env->fault_string);
     xmlrpc_env_clean(env); // this is needed ONLY if fault_occurred
     xmlrpc_env_init(env); // just in case user catches ex and _continues_ to use env
     error_msg("%s", errmsg.c_str()); // show error in daemon log
     throw CABRTException(EXCEP_PLUGIN, errmsg.c_str());
 }
+
 void throw_if_xml_fault_occurred(xmlrpc_env *env)
 {
     if (env->fault_occurred)

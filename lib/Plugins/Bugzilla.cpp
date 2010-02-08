@@ -30,12 +30,86 @@
 #endif
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
-#define NEW_BUG             -1
-#define MISSING_MEMBER      -2
+#define MAX_HOPPS            5
+
+static int32_t abrt_errno;
+
+typedef enum {
+    ABRTE_BUGZILLA_OK = 0,
+    ABRTE_BUGZILLA_NEW_BUG,                             /* 1 */
+    ABRTE_BUGZILLA_NO_DATA,                             /* 2 */
+    ABRTE_BUGZILLA_XMLRPC_ERROR,                        /* 3 */
+    ABRTE_BUGZILLA_XMLRPC_MISSING_MEMBER                /* 4 */
+}bugzilla_codes;
+
+
+static const char* abrt_strerror(bugzilla_codes code)
+{
+    return NULL;
+}
 
 /*
  *  TODO: npajkovs: better deallocation of xmlrpc value
+ *        npajkovs: better gathering function which collects all information from bugzilla
+ *        npajkovs: figure out how to deal with cloning bugs
+ *        npajkovs: check if attachment was uploaded successul an if not try it again(max 3 times)
+ *                  and if it still fails. retrun successful, but mention that attaching failed
+ *        npajkovs: add new fce to add comments
  */
+
+struct bug_info {
+    const char* bug_status;
+    const char* bug_resolution;
+    const char* bug_reporter;
+    uint32_t bug_dup_id;
+    std::vector<const char*> bug_cc;
+};
+
+static void bug_info_init(struct bug_info* bz);
+static void bug_info_destroy(struct bug_info* bz);
+
+static int32_t am_i_in_cc(const struct bug_info* bz, const char* login);
+
+static void bug_info_init(struct bug_info* bz)
+{
+    bz->bug_status = NULL;
+    bz->bug_resolution = NULL;
+    bz->bug_reporter = NULL;
+}
+
+static void bug_info_destroy(struct bug_info* bz)
+{
+    if (bz->bug_status != NULL)
+        free((void*)bz->bug_status);
+
+    if (bz->bug_resolution != NULL)
+        free((void*)bz->bug_resolution);
+
+    if (bz->bug_reporter != NULL)
+        free((void*)bz->bug_reporter);
+
+    if (!bz->bug_cc.empty())
+    {
+        for( int32_t ii = 0; ii < bz->bug_cc.size(); ii++)
+            free((void*)bz->bug_cc[ii]);
+
+        bz->bug_cc.clear();
+    }
+}
+
+static int32_t am_i_in_cc(const struct bug_info* bz, const char* login)
+{
+    if (bz->bug_cc.empty())
+        return -1;
+
+    int32_t size = bz->bug_cc.size();
+    for (int32_t ii = 0; ii < size; ii++)
+    {
+        if (strcmp(login, bz->bug_cc[ii]) == 0)
+            return 0;
+    }
+    return -1;
+}
 
 /*
  * Static namespace for xmlrpc stuff.
@@ -47,15 +121,467 @@ namespace {
 struct ctx: public abrt_xmlrpc_conn {
     ctx(const char* url, bool no_ssl_verify): abrt_xmlrpc_conn(url, no_ssl_verify) {}
 
+    bool check_cc_and_reporter(uint32_t bug_id, const char* login);
     void login(const char* login, const char* passwd);
     void logout();
-    int32_t check_uuid_in_bugzilla(const char* component, const char* UUID);
-    bool check_cc_and_reporter(uint32_t bug_id, const char* login);
-    void add_plus_one_cc(uint32_t bug_id, const char* login);
-    uint32_t new_bug(const map_crash_data_t& pCrashData);
-    void add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData);
+
+    const char* get_bug_status(xmlrpc_env* env, xmlrpc_value* result_xml);
+    const char* get_bug_resolution(xmlrpc_env* env, xmlrpc_value* result_xml);
+    const char* get_bug_reporter(xmlrpc_env* env, xmlrpc_value* result_xml);
+
+    xmlrpc_value* call_quicksearch_uuid(xmlrpc_env* env, const char* component, const char* uuid);
+    xmlrpc_value* get_cc_member(xmlrpc_env* env, xmlrpc_value* result_xml);
+    xmlrpc_value* get_member(xmlrpc_env* env, const char* member, xmlrpc_value* result_xml);
+
+    int32_t get_array_size(xmlrpc_env* env, xmlrpc_value* result_xml);
+    int32_t get_bug_id(xmlrpc_env* env, xmlrpc_value* result_xml);
+    int32_t get_bug_dup_id(xmlrpc_env* env, xmlrpc_value* result_xml);
+    int32_t get_bug_cc(xmlrpc_env* env, xmlrpc_value* result_xml, struct bug_info* bz);
+    int32_t add_plus_one_cc(xmlrpc_env* env, uint32_t bug_id, const char* login);
+    int32_t new_bug(xmlrpc_env* env, const map_crash_data_t& pCrashData);
+    int32_t add_attachments(xmlrpc_env* env, const char* bug_id_str, const map_crash_data_t& pCrashData);
+    int32_t get_bug_info(xmlrpc_env* env, struct bug_info* bz, uint32_t bug_id);
+    int32_t add_comment(xmlrpc_env* env, uint32_t bug_id, const char* comment);
 };
 
+xmlrpc_value* ctx::get_member(xmlrpc_env* env, const char* member, xmlrpc_value* result_xml)
+{
+    xmlrpc_value* cc_member = NULL;
+    xmlrpc_struct_find_value(env, result_xml, member, &cc_member);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return NULL;
+    }
+
+    if (cc_member)
+        return cc_member;
+
+    abrt_errno = ABRTE_BUGZILLA_XMLRPC_MISSING_MEMBER;
+    return NULL;
+}
+
+int32_t ctx::get_array_size(xmlrpc_env* env, xmlrpc_value* result_xml)
+{
+    // The only way this can fail is if 'bugs_member' is not actually an array XML-RPC value. So it is usually not worth checking 'env'.
+    int32_t size = xmlrpc_array_size(env, result_xml);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+    return size;
+}
+
+int32_t ctx::get_bug_dup_id(xmlrpc_env* env, xmlrpc_value* result_xml)
+{
+    xmlrpc_value* dup_id = get_member(env, "dup_id", result_xml);
+    if (!dup_id)
+        return -1;
+
+    xmlrpc_int dup_id_int = -1;
+    xmlrpc_read_int(env, dup_id, &dup_id_int);
+    xmlrpc_DECREF(dup_id);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+    VERB3 log("get dup_id: %i", dup_id_int);
+    abrt_errno = ABRTE_BUGZILLA_OK;
+    return dup_id_int;
+}
+
+const char* ctx::get_bug_reporter(xmlrpc_env* env, xmlrpc_value* result_xml)
+{
+    xmlrpc_value* reporter_member = get_member(env, "reporter", result_xml);
+    if (!reporter_member)
+        return NULL;
+
+    const char* reporter = NULL;
+    xmlrpc_read_string(env, reporter_member, &reporter);
+    xmlrpc_DECREF(reporter_member);
+
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return NULL;
+    }
+
+    if (*reporter != '\0')
+    {
+        VERB3 log("get bug reporter: %s", reporter);
+        abrt_errno = ABRTE_BUGZILLA_OK;
+        return reporter;
+    }
+    free((void*)reporter);
+    abrt_errno = ABRTE_BUGZILLA_NO_DATA;
+    return NULL;
+}
+
+const char* ctx::get_bug_resolution(xmlrpc_env* env, xmlrpc_value* result_xml)
+{
+    xmlrpc_value* bug_resolution = get_member(env, "resolution", result_xml);
+    if (!bug_resolution)
+        return NULL;
+
+    const char* resolution_str = NULL;
+    xmlrpc_read_string(env, bug_resolution, &resolution_str);
+    xmlrpc_DECREF(bug_resolution);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return NULL;
+    }
+
+    if (*resolution_str != '\0')
+    {
+        VERB3 log("get resolution: %s", resolution_str);
+        abrt_errno = ABRTE_BUGZILLA_OK;
+        return resolution_str;
+    }
+    free((void*)resolution_str);
+    abrt_errno = ABRTE_BUGZILLA_NO_DATA;
+    return NULL;
+}
+
+const char* ctx::get_bug_status(xmlrpc_env* env, xmlrpc_value* result_xml)
+{
+    xmlrpc_value* bug_status = get_member(env, "bug_status", result_xml);
+    if (!bug_status)
+        return NULL;
+
+    const char* status_str = NULL;
+    xmlrpc_read_string(env, bug_status, &status_str);
+    xmlrpc_DECREF(bug_status);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return NULL;
+    }
+
+    if (*status_str != '\0')
+    {
+        VERB3 log("get bug_status: %s", status_str);
+        abrt_errno = ABRTE_BUGZILLA_OK;
+        return status_str;
+    }
+    free((void*)status_str);
+    abrt_errno = ABRTE_BUGZILLA_NO_DATA;
+    return NULL;
+}
+
+int32_t ctx::get_bug_cc(xmlrpc_env* env, xmlrpc_value* result_xml, struct bug_info* bz)
+{
+    xmlrpc_value* cc_member = get_member(env, "cc", result_xml);
+    if (!cc_member)
+        return -1;
+
+    int32_t array_size = xmlrpc_array_size(env, cc_member);
+    if (array_size == -1)
+        return -1;
+
+    VERB3 log("count members on cc %i", array_size);
+
+    int32_t real_read = 0;
+
+    for (int32_t i = 0; i < array_size; i++)
+    {
+        xmlrpc_value* item = NULL;
+        xmlrpc_array_read_item(env, cc_member, i, &item);
+        if (env->fault_occurred)
+        {
+            abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+            return -1;
+        }
+
+        if (item)
+        {
+            const char* cc = NULL;
+            xmlrpc_read_string(env, item, &cc);
+            xmlrpc_DECREF(item);
+            if (env->fault_occurred)
+            {
+                xmlrpc_DECREF(cc_member);
+                abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+                return -1;
+            }
+
+            if (*cc != '\0')
+            {
+                bz->bug_cc.push_back(cc);
+                VERB3 log("member on cc is %s", cc);
+                ++real_read;
+                continue;
+            }
+            free((void*)cc);
+        }
+    }
+    xmlrpc_DECREF(cc_member);
+    return real_read;
+}
+
+xmlrpc_value* ctx::call_quicksearch_uuid(xmlrpc_env* env, const char* component, const char* uuid)
+{
+    std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, uuid);
+
+    // fails only on memory allocation
+    xmlrpc_value* param = xmlrpc_build_value(env, "({s:s})", "quicksearch", query.c_str());
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return NULL;
+    }
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(env, m_pClient, m_pServer_info, "Bug.search", param, &result);
+    xmlrpc_DECREF(param);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return NULL;
+    }
+    return result;
+}
+
+int32_t ctx::get_bug_id(xmlrpc_env* env, xmlrpc_value* result_xml)
+{
+        xmlrpc_value* item = NULL;
+        xmlrpc_array_read_item(env, result_xml, 0, &item);
+        if (env->fault_occurred)
+        {
+            abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+            return -1;
+        }
+
+        xmlrpc_value* bug = get_member(env, "bug_id", item);
+        xmlrpc_DECREF(item);
+        if (!bug)
+            return -1;
+
+        xmlrpc_int bug_id = -1;
+        xmlrpc_read_int(env, bug, &bug_id);
+        xmlrpc_DECREF(bug);
+        if (env->fault_occurred)
+        {
+            abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+            return -1;
+        }
+        log("Bug is already reported: %i", (int)bug_id);
+        update_client(_("Bug is already reported: %i"), (int)bug_id);
+
+        return bug_id;
+}
+
+int32_t ctx::add_plus_one_cc(xmlrpc_env* env, uint32_t bug_id, const char* login)
+{
+    xmlrpc_value* param = xmlrpc_build_value(env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(env, m_pClient, m_pServer_info, "Bug.update", param, &result);
+    xmlrpc_DECREF(param);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    xmlrpc_DECREF(result);
+    return ABRTE_BUGZILLA_OK;
+}
+
+int32_t ctx::add_comment(xmlrpc_env* env, uint32_t bug_id, const char* comment)
+{
+    xmlrpc_value* param = xmlrpc_build_value(env, "({s:i,s:{s:s}})", "ids", bug_id, "updates", "comment", comment);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(env, m_pClient, m_pServer_info, "Bug.update", param, &result);
+    xmlrpc_DECREF(param);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    return ABRTE_BUGZILLA_OK;
+}
+
+int32_t ctx::new_bug(xmlrpc_env* env, const map_crash_data_t& pCrashData)
+{
+
+    const std::string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
+    const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
+    const std::string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
+    const std::string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
+    const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_DUPHASH);
+    const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
+
+    std::string summary = "[abrt] crash in " + package;
+    if (reason != NULL)
+    {
+        summary += ": ";
+        summary += reason;
+    }
+    std::string status_whiteboard = "abrt_hash:" + uuid;
+
+    std::string description = "abrt "VERSION" detected a crash.\n\n";
+    description += make_description_bz(pCrashData);
+
+    std::string product;
+    std::string version;
+    parse_release(release.c_str(), product, version);
+
+    xmlrpc_value* param = xmlrpc_build_value(env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+                                        "product", product.c_str(),
+                                        "component", component.c_str(),
+                                        "version", version.c_str(),
+                                        "summary", summary.c_str(),
+                                        "description", description.c_str(),
+                                        "status_whiteboard", status_whiteboard.c_str(),
+                                        "platform", arch.c_str()
+                              );
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(env, m_pClient, m_pServer_info, "Bug.create", param, &result);
+    xmlrpc_DECREF(param);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    xmlrpc_value* id = get_member(env, "id", result);
+    xmlrpc_DECREF(result);
+    if (!id)
+        return -1;
+
+    xmlrpc_int bug_id = -1;
+    xmlrpc_read_int(env, id, &bug_id);
+    if (env->fault_occurred)
+    {
+        xmlrpc_DECREF(id);
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+    log("New bug id: %i", bug_id);
+    update_client(_("New bug id: %i"), bug_id);
+
+    xmlrpc_DECREF(id);
+    return bug_id;
+}
+
+int32_t ctx::add_attachments(xmlrpc_env* env, const char* bug_id_str, const map_crash_data_t& pCrashData)
+{
+    xmlrpc_value* result = NULL;
+
+    map_crash_data_t::const_iterator it = pCrashData.begin();
+    for (; it != pCrashData.end(); it++)
+    {
+        const std::string &itemname = it->first;
+        const std::string &type = it->second[CD_TYPE];
+        const std::string &content = it->second[CD_CONTENT];
+
+        if (type == CD_TXT
+         && (content.length() > CD_TEXT_ATT_SIZE || itemname == FILENAME_BACKTRACE)
+        ) {
+            char *encoded64 = encode_base64(content.c_str(), content.length());
+            xmlrpc_value* param = xmlrpc_build_value(env, "(s{s:s,s:s,s:s,s:s})",
+                                              bug_id_str,
+                                              "description", ("File: " + itemname).c_str(),
+                                              "filename", itemname.c_str(),
+                                              "contenttype", "text/plain",
+                                              "data", encoded64
+                                      );
+            free(encoded64);
+            if (env->fault_occurred)
+            {
+                abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+                return -1;
+            }
+
+            xmlrpc_client_call2(env, m_pClient, m_pServer_info, "bugzilla.addAttachment", param, &result);
+            xmlrpc_DECREF(param);
+            if (result)
+                xmlrpc_DECREF(result);
+
+            if (env->fault_occurred)
+            {
+                abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+                return -1;
+            }
+        }
+    }
+    return ABRTE_BUGZILLA_OK;
+}
+
+int32_t ctx::get_bug_info(xmlrpc_env* env, struct bug_info* bz, uint32_t bug_id)
+{
+    xmlrpc_value* param = xmlrpc_build_value(env, "(s)", to_string(bug_id).c_str());
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(env, m_pClient, m_pServer_info, "bugzilla.getBug", param, &result);
+    xmlrpc_DECREF(param);
+    if (env->fault_occurred)
+    {
+        abrt_errno = ABRTE_BUGZILLA_XMLRPC_ERROR;
+        return -1;
+    }
+
+    if (result)
+    {
+        // mandatory
+        bz->bug_status = get_bug_status(env, result);
+        if (bz->bug_status == NULL)
+            return -1;
+
+        // mandatory when bug status is CLOSED
+        bz->bug_resolution = get_bug_resolution(env, result);
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            return -1;
+
+        bz->bug_dup_id = get_bug_dup_id(env, result);
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            return -1;
+
+        bz->bug_reporter = get_bug_reporter(env, result);
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            return -1;
+
+        get_bug_cc(env, result, bz);
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            return -1;
+        xmlrpc_DECREF(result);
+     }
+}
+
+//-------------------------------------------------------------------
+//                           ^
+//                           |  nice
+// -------------------------------------------------------------------
+//                           |  BAD
+//                           v
+//-------------------------------------------------------------------
+//TODO: need to rewrite
 void ctx::login(const char* login, const char* passwd)
 {
     xmlrpc_env env;
@@ -90,324 +616,10 @@ void ctx::logout()
     xmlrpc_value* result = NULL;
     xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.logout", param, &result);
     xmlrpc_DECREF(param);
-    xmlrpc_DECREF(result);
+    if (result)
+        xmlrpc_DECREF(result);
+
     throw_if_xml_fault_occurred(&env);
-}
-
-bool ctx::check_cc_and_reporter(uint32_t bug_id, const char* login)
-{
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-
-    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", to_string(bug_id).c_str());
-    throw_if_xml_fault_occurred(&env); // failed to allocate memory
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.getBug", param, &result);
-    xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
-
-    xmlrpc_value* reporter_member = NULL;
-    xmlrpc_struct_find_value(&env, result, "reporter", &reporter_member);
-    if (env.fault_occurred)
-    {
-        xmlrpc_DECREF(result);
-        throw_xml_fault(&env);
-    }
-
-    if (reporter_member)
-    {
-        const char* reporter = NULL;
-        xmlrpc_read_string(&env, reporter_member, &reporter);
-        if (env.fault_occurred)
-        {
-            xmlrpc_DECREF(result);
-            xmlrpc_DECREF(reporter_member);
-            throw_xml_fault(&env);
-        }
-
-        bool eq = (strcmp(reporter, login) == 0);
-        free((void*)reporter);
-        xmlrpc_DECREF(reporter_member);
-        if (eq)
-        {
-            xmlrpc_DECREF(result);
-            return true;
-        }
-    }
-    else
-    {
-        VERB3 log("Missing member 'reporter'");
-        xmlrpc_DECREF(result);
-        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'reporter'"));
-    }
-
-    xmlrpc_value* cc_member = NULL;
-    xmlrpc_struct_find_value(&env, result, "cc", &cc_member);
-    if (env.fault_occurred)
-    {
-        xmlrpc_DECREF(result);
-        throw_xml_fault(&env);
-    }
-
-    if (cc_member)
-    {
-        uint32_t array_size = xmlrpc_array_size(&env, cc_member);
-
-        for (uint32_t i = 0; i < array_size; i++)
-        {
-            xmlrpc_value* item = NULL;
-            xmlrpc_array_read_item(&env, cc_member, i, &item); // Correct
-            if (env.fault_occurred)
-            {
-                xmlrpc_DECREF(result);
-                xmlrpc_DECREF(cc_member);
-                throw_xml_fault(&env);
-            }
-
-            const char* cc = NULL;
-            xmlrpc_read_string(&env, item, &cc);
-            if (env.fault_occurred)
-            {
-                xmlrpc_DECREF(result);
-                xmlrpc_DECREF(cc_member);
-                xmlrpc_DECREF(item);
-                throw_xml_fault(&env);
-            }
-
-            bool eq = (strcmp(cc, login) == 0);
-            free((void*)cc);
-            xmlrpc_DECREF(item);
-            if (eq)
-            {
-                xmlrpc_DECREF(cc_member);
-                xmlrpc_DECREF(result);
-                return true;
-            }
-        }
-        xmlrpc_DECREF(cc_member);
-    }
-    else
-    {
-        VERB3 log("Missing member 'cc'");
-        xmlrpc_DECREF(result);
-        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'cc'"));
-    }
-
-    xmlrpc_DECREF(result);
-    return false;
-}
-
-void ctx::add_plus_one_cc(uint32_t bug_id, const char* login)
-{
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
-    throw_if_xml_fault_occurred(&env); // failed to allocate memory
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.update", param, &result);
-    xmlrpc_DECREF(param);
-    xmlrpc_DECREF(result);
-    throw_if_xml_fault_occurred(&env);
-}
-
-int32_t ctx::check_uuid_in_bugzilla(const char* component, const char* UUID)
-{
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-
-    std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, UUID);
-
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query.c_str());
-    throw_if_xml_fault_occurred(&env); // failed to allocate memory
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.search", param, &result);
-    xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env); // on error result is NULL, no need to DECREF
-
-    xmlrpc_value* bugs_member = NULL;
-    xmlrpc_struct_find_value(&env, result, "bugs", &bugs_member);
-    if (env.fault_occurred)
-    {
-        xmlrpc_DECREF(result);
-        throw_xml_fault(&env);
-    }
-
-    if (bugs_member)
-    {
-        // when array size is 0 that means no bug reported
-        uint32_t array_size = xmlrpc_array_size(&env, bugs_member);
-        if (env.fault_occurred)
-        {
-            xmlrpc_DECREF(result);
-            xmlrpc_DECREF(bugs_member);
-            throw_xml_fault(&env);
-        }
-        else if (array_size == 0)
-        {
-            xmlrpc_DECREF(result);
-            xmlrpc_DECREF(bugs_member);
-            return NEW_BUG;
-        }
-
-        xmlrpc_value* item = NULL;
-        xmlrpc_array_read_item(&env, bugs_member, 0, &item); // Correct
-        if (env.fault_occurred)
-        {
-            xmlrpc_DECREF(result);
-            xmlrpc_DECREF(bugs_member);
-            throw_xml_fault(&env);
-        }
-
-        xmlrpc_value* bug = NULL;
-        xmlrpc_struct_find_value(&env, item, "bug_id", &bug);
-        if (env.fault_occurred)
-        {
-            xmlrpc_DECREF(result);
-            xmlrpc_DECREF(bugs_member);
-            xmlrpc_DECREF(item);
-            throw_xml_fault(&env);
-        }
-
-        if (bug)
-        {
-            xmlrpc_int bug_id;
-            xmlrpc_read_int(&env, bug, &bug_id);
-            log("Bug is already reported: %i", (int)bug_id);
-            update_client(_("Bug is already reported: %i"), (int)bug_id);
-
-            xmlrpc_DECREF(bug);
-            xmlrpc_DECREF(item);
-            xmlrpc_DECREF(bugs_member);
-            xmlrpc_DECREF(result);
-            return bug_id;
-        }
-        else
-        {
-            VERB3 log("Missing member 'bug_id'");
-            xmlrpc_DECREF(result);
-            throw CABRTException(EXCEP_PLUGIN, _("Missing member 'bug_id'"));
-        }
-        xmlrpc_DECREF(item);
-        xmlrpc_DECREF(bugs_member);
-    }
-    else
-    {
-        VERB3 log("Missing member 'bugs'");
-        xmlrpc_DECREF(result);
-        throw CABRTException(EXCEP_PLUGIN, _("Missing member 'bugs'"));
-    }
-
-    xmlrpc_DECREF(result);
-    return MISSING_MEMBER;
-}
-
-uint32_t ctx::new_bug(const map_crash_data_t& pCrashData)
-{
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-
-    const std::string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
-    const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
-    const std::string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
-    const std::string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
-    const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_DUPHASH);
-    const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
-
-    std::string summary = "[abrt] crash in " + package;
-    if (reason != NULL)
-    {
-        summary += ": ";
-        summary += reason;
-    }
-    std::string status_whiteboard = "abrt_hash:" + uuid;
-
-    std::string description = "abrt "VERSION" detected a crash.\n\n";
-    description += make_description_bz(pCrashData);
-
-    std::string product;
-    std::string version;
-    parse_release(release.c_str(), product, version);
-
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
-                                        "product", product.c_str(),
-                                        "component", component.c_str(),
-                                        "version", version.c_str(),
-                                        "summary", summary.c_str(),
-                                        "description", description.c_str(),
-                                        "status_whiteboard", status_whiteboard.c_str(),
-                                        "platform", arch.c_str()
-                              );
-    throw_if_xml_fault_occurred(&env); // failed to allocate memory
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.create", param, &result);
-    xmlrpc_DECREF(param);
-    throw_if_xml_fault_occurred(&env);
-
-    xmlrpc_value* id = NULL;
-    xmlrpc_struct_find_value(&env, result, "id", &id);
-    if (env.fault_occurred)
-    {
-        xmlrpc_DECREF(result);
-        throw_xml_fault(&env);
-    }
-
-    xmlrpc_int bug_id = -1;
-    if (id)
-    {
-        xmlrpc_read_int(&env, id, &bug_id);
-        if (env.fault_occurred)
-        {
-            xmlrpc_DECREF(result);
-            xmlrpc_DECREF(id);
-            throw_xml_fault(&env);
-        }
-        log("New bug id: %i", bug_id);
-        update_client(_("New bug id: %i"), bug_id);
-    }
-
-    xmlrpc_DECREF(result);
-    xmlrpc_DECREF(id);
-    return bug_id;
-}
-
-void ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData)
-{
-    xmlrpc_env env;
-    xmlrpc_env_init(&env);
-
-    map_crash_data_t::const_iterator it = pCrashData.begin();
-    for (; it != pCrashData.end(); it++)
-    {
-        const std::string &itemname = it->first;
-        const std::string &type = it->second[CD_TYPE];
-        const std::string &content = it->second[CD_CONTENT];
-
-        if (type == CD_TXT
-         && (content.length() > CD_TEXT_ATT_SIZE || itemname == FILENAME_BACKTRACE)
-        ) {
-            char *encoded64 = encode_base64(content.c_str(), content.length());
-            xmlrpc_value* param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s})",
-                                              bug_id_str,
-                                              "description", ("File: " + itemname).c_str(),
-                                              "filename", itemname.c_str(),
-                                              "contenttype", "text/plain",
-                                              "data", encoded64
-                                      );
-            free(encoded64);
-            throw_if_xml_fault_occurred(&env); // failed to allocate memory
-
-            xmlrpc_value* result = NULL;
-            xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.addAttachment", param, &result);
-            xmlrpc_DECREF(param);
-            xmlrpc_DECREF(result);
-            throw_if_xml_fault_occurred(&env);
-        }
-    }
 }
 
 } /* namespace */
@@ -457,55 +669,189 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
 
     const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
     const std::string& uuid      = get_crash_data_item_content(pCrashData, CD_DUPHASH);
-    try
+
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+
+    ctx bz_server(BugzillaXMLRPC.c_str(), NoSSLVerify);
+
+    update_client(_("Logging into bugzilla..."));
+    if ((Login == "") && (Password == ""))
     {
-        ctx bz_server(BugzillaXMLRPC.c_str(), NoSSLVerify);
+        VERB3 log("Empty login and password");
+        throw CABRTException(EXCEP_PLUGIN, _("Empty login and password. Please check Bugzilla.conf"));
+    }
 
-        update_client(_("Checking for duplicates..."));
-        bug_id = bz_server.check_uuid_in_bugzilla(component.c_str(), uuid.c_str());
+    bz_server.login(Login.c_str(), Password.c_str());
+    update_client(_("Checking for duplicates..."));
 
-        if ((Login == "") && (Password == ""))
+    xmlrpc_value* result = bz_server.call_quicksearch_uuid(&env, component.c_str(), uuid.c_str());
+    if (!result)
+    {
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            throw_if_xml_fault_occurred(&env);
+        else
         {
-            VERB3 log("Empty login and password");
-            throw CABRTException(EXCEP_PLUGIN, _("Empty login and password. Please check Bugzilla.conf"));
+                // TODO: check ours returned value
         }
+    }
 
-        update_client(_("Logging into bugzilla..."));
-        bz_server.login(Login.c_str(), Password.c_str());
+    xmlrpc_value* all_bugs = bz_server.get_member(&env, "bugs", result);
+    xmlrpc_DECREF(result);
 
-        if (bug_id > 0)
+    if (!all_bugs)
+    {
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            throw_if_xml_fault_occurred(&env);
+        else
         {
-            update_client(_("Checking CC..."));
-            if (!bz_server.check_cc_and_reporter(bug_id, Login.c_str()))
-            {
-                bz_server.add_plus_one_cc(bug_id, Login.c_str());
-            }
-            bz_server.logout();
-            BugzillaURL += "/show_bug.cgi?id=";
-            BugzillaURL += to_string(bug_id);
-            return BugzillaURL;
+            // TODO: check ours returned value
         }
+    }
 
+    int32_t all_bugs_size = bz_server.get_array_size(&env, all_bugs);
+
+    if (all_bugs_size == -1)
+    {
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            throw_if_xml_fault_occurred(&env);
+        else
+        {
+            // TODO: check ours returned value
+        }
+    }
+    else if (all_bugs_size == 0) // Create new bug
+    {
         update_client(_("Creating new bug..."));
-        bug_id = bz_server.new_bug(pCrashData);
-        bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
+        bug_id = bz_server.new_bug(&env, pCrashData);
+        int32_t ret = bz_server.add_attachments(&env, to_string(bug_id).c_str(), pCrashData);
 
         update_client(_("Logging out..."));
         bz_server.logout();
+
+        BugzillaURL += "/show_bug.cgi?id=";
+        BugzillaURL += to_string(bug_id);
+        return BugzillaURL;
     }
-    catch (CABRTException& e)
+    else if (all_bugs_size > 1)
     {
-        throw CABRTException(EXCEP_PLUGIN, e.what());
+        // When someone clones bug it has same uuid, so we can find more then 1. Need to be checked if component is same.
+        VERB3 log("Bugzilla has %i same uuids(%s)", all_bugs_size, uuid.c_str());
     }
 
-    if (bug_id > 0)
+    // desicition based on state
+    bug_id = bz_server.get_bug_id(&env, all_bugs);
+    xmlrpc_DECREF(all_bugs);
+    if (bug_id == -1)
     {
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            throw_if_xml_fault_occurred(&env);
+        else
+        {
+            // TODO: check ours returned value
+        }
+
+    }
+
+    struct bug_info bz;
+    bug_info_init(&bz);
+    if (bz_server.get_bug_info(&env, &bz, bug_id) == -1)
+    {
+        if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+            throw_if_xml_fault_occurred(&env);
+        else
+        {
+            // TODO: check ours returned value
+        }
+    }
+
+    int32_t original_bug_id = bug_id;
+    if ((strcmp(bz.bug_status, "CLOSED") == 0) && (strcmp(bz.bug_resolution, "DUPLICATE") == 0))
+    {
+        for (int32_t ii = 0; ii <= MAX_HOPPS; ii++)
+        {
+            if (ii == MAX_HOPPS)
+            {
+                VERB3 log("Bugzilla couldn't find parent of bug(%d)", original_bug_id);
+                bug_info_destroy(&bz);
+                throw CABRTException(EXCEP_PLUGIN, _("Bugzilla couldn't find parent of bug(%d)"), original_bug_id);
+            }
+
+            VERB3 log("Bugzilla(%d): Jump to bug %d", bug_id, bz.bug_dup_id);
+            bug_id = bz.bug_dup_id;
+            update_client(_("Jump to bug %d"), bug_id);
+            bug_info_destroy(&bz);
+            bug_info_init(&bz);
+
+            if (bz_server.get_bug_info(&env, &bz, bug_id) == -1)
+            {
+                if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+                {
+                    bug_info_destroy(&bz);
+                    throw_if_xml_fault_occurred(&env);
+                }
+                else
+                {
+                    // TODO: check ours returned value
+                }
+            }
+
+            // found a bug which is not CLOSED as DUPLICATE
+            if (bz.bug_dup_id == -1)
+                break;
+        }
+    }
+
+    if (strcmp(bz.bug_status, "CLOSED") != 0)
+    {
+        int32_t status = 0;
+        if ((strcmp(bz.bug_reporter, Login.c_str()) != 0) && (am_i_in_cc(&bz, Login.c_str())))
+        {
+            VERB2 log(_("Add %s to CC list"), Login.c_str());
+            update_client(_("Add %s to CC list"), Login.c_str());
+            status = bz_server.add_plus_one_cc(&env, bug_id, Login.c_str());
+        }
+
+        bug_info_destroy(&bz);
+        if (status == -1)
+        {
+            if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+                throw_if_xml_fault_occurred(&env);
+            else
+            {
+                // TODO: check ours returned value
+            }
+
+        }
+
+        std::string description = make_description_reproduce_comment(pCrashData);
+        if (!description.empty())
+        {
+            VERB3 log("Add new comment into bug(%d)", bug_id);
+            update_client(_("Add new comment into bug(%d)"),bug_id);
+            if (bz_server.add_comment(&env, bug_id, description.c_str()) == -1)
+            {
+                if (abrt_errno == ABRTE_BUGZILLA_XMLRPC_ERROR)
+                    throw_if_xml_fault_occurred(&env);
+                else
+                {
+                    // TODO: check ours returned value
+                }
+            }
+        }
+
+        update_client(_("Logging out..."));
+        bz_server.logout();
         BugzillaURL += "/show_bug.cgi?id=";
         BugzillaURL += to_string(bug_id);
         return BugzillaURL;
     }
 
+    update_client(_("Logging out..."));
+    bz_server.logout();
+
     BugzillaURL += "/show_bug.cgi?id=";
+    BugzillaURL += to_string(bug_id);
     return BugzillaURL;
 }
 
