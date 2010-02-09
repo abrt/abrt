@@ -141,7 +141,7 @@ class PluginsSettingsDialog:
     def on_bConfigurePlugin_clicked(self, button, pluginview):
         pluginsListStore, path = pluginview.get_selection().get_selected_rows()
         if not path:
-            self.builder.get_object("lDescription").set_label(_("Can't get plugin description"))
+            gui_info_dialog(_("Please select a plugin from the list to edit it's options."), self.window)
             return
         # this should work until we keep the row object in the last position
         pluginfo = pluginsListStore.get_value(pluginsListStore.get_iter(path[0]), pluginsListStore.get_n_columns()-1)

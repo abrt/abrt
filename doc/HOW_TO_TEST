@@ -4,7 +4,9 @@ I. Build and install
 ===================
 a) build the packages as scratch in koji
 b) download and install (the best is to create a local repo and try to install it using yum)
-c) start the daemon and check logs for any sign of a problem
+c) create a repository and try to update from previous packages
+d) start the daemon and check logs for any sign of a problem
+e) try to update from previous Fedora version using created repository
 
 II. Crash detection
 =====================
@@ -29,4 +31,5 @@ III. Reporting
         - crash should be reported  after filling the right credentials
         - login+pass won't be saved
     c) try to report every supported crash abrt detects C/C++, oops, python script
-    d) repeat this with cli
+    d) try to report some crash with bad backtrace - this should fail
+    e) repeat this with cli
