@@ -234,7 +234,7 @@ class MainWindow():
             for message in dump.getMessage().split(';'):
                 if message:
                     message_clean = message.strip()
-                    if "http" in message_clean[0:5] or "file:///"[0:8] in message_clean:
+                    if "http" in message_clean[0:5] or "file:///" in message_clean[0:8]:
                         report_message = "<a href=\"%s\">%s</a>" % (message_clean, message_clean)
                     else:
                         report_message = message_clean

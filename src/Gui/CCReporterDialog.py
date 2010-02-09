@@ -290,11 +290,11 @@ class ReporterDialog():
         self.tevHowToReproduce.set_buffer(buff)
 
     def dehydrate(self):
-        # handle attachments
-        vbAttachments = self.builder.get_object("vbAttachments")
-        for attachment in vbAttachments.get_children():
-            #print "%s file %s" % (["not sending","sending"][attachment.get_active()], attachment.get_label())
-            del self.report[attachment.item]
+        ## # handle attachments
+        ## vbAttachments = self.builder.get_object("vbAttachments")
+        ## for attachment in vbAttachments.get_children():
+        ##     #print "%s file %s" % (["not sending","sending"][attachment.get_active()], attachment.get_label())
+        ##     del self.report[attachment.item]
 
         # handle comment
         buff = self.tvComment.get_buffer()
