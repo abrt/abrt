@@ -26,9 +26,6 @@
 #define FILENAME_KERNEL       "kernel"
 #define FILENAME_TIME         "time"
 #define FILENAME_UID          "uid"
-// uuid _file_ exists for Python analyzer only - remove, follow ccpp's example?
-// (ccpp keeps uuid in DB)
-#define FILENAME_UUID         "uuid"
 #define FILENAME_PACKAGE      "package"
 #define FILENAME_COMPONENT    "component"
 #define FILENAME_DESCRIPTION  "description"
