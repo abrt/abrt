@@ -14,6 +14,7 @@
  */
 #include "abrtlib.h"
 #include "Python_hash.h"
+#include <byteswap.h>
 
 #if defined(__BIG_ENDIAN__) && __BIG_ENDIAN__
 # define MD5_BIG_ENDIAN 1
@@ -27,6 +28,16 @@
 #else
 # error "Can't determine endianness"
 #endif
+
+/* SWAP_LEnn means "convert CPU<->little_endian if needed (by swapping bytes)" */
+#if MD5_BIG_ENDIAN
+# define SWAP_BE32(x) (x)
+# define SWAP_LE32(x) bswap_32(x)
+#else
+# define SWAP_BE32(x) bswap_32(x)
+# define SWAP_LE32(x) (x)
+#endif
+
 
 /* 0: fastest, 3: smallest */
 #define MD5_SIZE_VS_SPEED 3
@@ -123,11 +134,7 @@ static void md5_hash_block(const void *buffer, md5_ctx_t *ctx)
 	uint32_t temp;
 
 	for (i = 0; i < 16; i++) {
-#if MD5_BIG_ENDIAN
-		cwp[i] = bswap_32(words[i]);
-#else
-		cwp[i] = words[i];
-#endif
+		cwp[i] = SWAP_LE32(words[i]);
 	}
 	words += 16;
 
