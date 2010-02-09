@@ -38,7 +38,27 @@ string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 	unsigned char hash2[MD5_RESULT_LEN];
 	md5_ctx_t md5ctx;
 	md5_begin(&md5ctx);
-	md5_hash(bt_str, bt_end - bt_str, &md5ctx);
+	// Better:
+	// "example.py:1:<module>:ZeroDivisionError: integer division or modulo by zero"
+	//md5_hash(bt_str, bt_end - bt_str, &md5ctx);
+	// For now using compat version:
+	{
+		char *copy = xstrndup(bt_str, bt_end - bt_str);
+		char *s = copy;
+		char *d = copy;
+		unsigned colon_cnt = 0;
+		while (*s && colon_cnt < 3) {
+			if (*s != ':')
+				*d++ = *s;
+			else
+				colon_cnt++;
+			s++;
+		}
+		// "example.py1<module>"
+		md5_hash(copy, d - copy, &md5ctx);
+//*d = '\0'; log("str:'%s'", copy);
+		free(copy);
+	}
 	md5_end(hash2, &md5ctx);
 
 	// Hash is MD5_RESULT_LEN bytes long, but we use only first 4
@@ -56,7 +76,6 @@ string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 //log("hash2:%s str:'%.*s'", hash_str, (int)(bt_end - bt_str), bt_str);
 
 	return hash_str;
-
 }
 string CAnalyzerPython::GetGlobalUUID(const char *pDebugDumpDir)
 {

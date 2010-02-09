@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-04 10:01+0000\n"
-"PO-Revision-Date: 2010-02-04 10:19-0300\n"
-"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
+"POT-Creation-Date: 2010-02-09 10:00+0000\n"
+"PO-Revision-Date: 2010-02-09 09:23-0400\n"
+"Last-Translator: Dennis Tobar <dennis.tobar@gmail.com>\n"
 "Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr "Otro cliente ya está siendo ejecutado, intentando despertarlo."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Se obtienen datos inesperados desde el demonio (¿está la Base de Datos correctamente actualizada?)"
+msgstr "Se obtienen datos inesperados desde el demonio (¿está la base de datos correctamente actualizada?)"
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -46,7 +46,7 @@ msgstr "Complementos de informes"
 
 #: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
-msgstr "Complementos de Bases de Datos"
+msgstr "Complementos de bases de datos"
 
 #: ../src/Gui/CCDBusBackend.py:74
 #: ../src/Gui/CCDBusBackend.py:97
@@ -185,7 +185,7 @@ msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
-"Error intentando cargar la lista  de volcado.\n"
+"Error intentando cargar la lista de volcado.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:230
@@ -205,7 +205,7 @@ msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"Incapaz de conseguir el informe!\n"
+"¡Incapaz de conseguir el informe!\n"
 "¿Falta la información de la depuración?"
 
 #: ../src/Gui/CCMainWindow.py:318
@@ -277,7 +277,7 @@ msgstr "No se encuentra el control visual de PluginDialog en la descripción de 
 #: ../src/Gui/PluginSettingsUI.py:24
 #, python-format
 msgid "No UI for plugin %s"
-msgstr "No hay interfase del usuario para el complemento %s"
+msgstr "No hay interfaz de usuario para el complemento %s"
 
 #: ../src/Gui/PluginSettingsUI.py:55
 #: ../src/Gui/PluginSettingsUI.py:81
@@ -318,31 +318,31 @@ msgstr "<span color=\"white\">Arquitectura</span>"
 
 #: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span color=\"white\">Línea de comandos</span>"
+msgstr "<span color=\"white\">Línea de comandos:</span>"
 
 #: ../src/Gui/report.glade.h:9
 msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span color=\"white\">Componente</span>"
+msgstr "<span color=\"white\">Componente:</span>"
 
 #: ../src/Gui/report.glade.h:10
 msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span color=\"white\">Ejecutable</span>"
+msgstr "<span color=\"white\">Ejecutable:</span>"
 
 #: ../src/Gui/report.glade.h:11
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span color=\"white\">Núcleo</span>"
+msgstr "<span color=\"white\">Núcleo:</span>"
 
 #: ../src/Gui/report.glade.h:12
 msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span color=\"white\">Paquete</span>"
+msgstr "<span color=\"white\">Paquete:</span>"
 
 #: ../src/Gui/report.glade.h:13
 msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span color=\"white\">Razón</span>"
+msgstr "<span color=\"white\">Razón:</span>"
 
 #: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span color=\"white\">Release</span>"
+msgstr "<span color=\"white\">Release:</span>"
 
 #: ../src/Gui/report.glade.h:16
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
@@ -354,7 +354,7 @@ msgstr "N/A"
 
 #: ../src/Gui/report.glade.h:18
 msgid "Send report"
-msgstr "Enviando informe"
+msgstr "Enviar informe"
 
 #: ../src/Gui/report.glade.h:19
 msgid "Show log"
@@ -427,7 +427,7 @@ msgstr "Cron"
 
 #: ../src/Gui/settings.glade.h:13
 msgid "Database backend: "
-msgstr "Backend de la Base de Datos"
+msgstr "Backend de la base de datos"
 
 #: ../src/Gui/settings.glade.h:14
 msgid "Description:"
@@ -465,70 +465,70 @@ msgstr "Página Web:"
 msgid "View and report application crashes"
 msgstr "Ver y reportar las caídas de las aplicaciones"
 
-#: ../src/Applet/Applet.cpp:78
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Ha sido detectado una caída en el paquete %s."
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
-#: ../src/Applet/CCApplet.cpp:200
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:474
+#: ../src/Daemon/Daemon.cpp:483
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "El tamaño del informe excede la cuota. Por favor, verifique el valor de MaxCrashReportsSize del sistema en abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:124
+#: ../lib/Plugins/Bugzilla.cpp:142
 msgid "Missing member 'reporter'"
 msgstr "No se encuentra el miembro 'informante'"
 
-#: ../lib/Plugins/Bugzilla.cpp:176
+#: ../lib/Plugins/Bugzilla.cpp:194
 msgid "Missing member 'cc'"
 msgstr "Facltante de miembro 'cc'"
 
-#: ../lib/Plugins/Bugzilla.cpp:262
+#: ../lib/Plugins/Bugzilla.cpp:280
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "El error ya ha sido informado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:274
+#: ../lib/Plugins/Bugzilla.cpp:292
 msgid "Missing member 'bug_id'"
 msgstr "Faltante de miembro 'bug_id'"
 
-#: ../lib/Plugins/Bugzilla.cpp:283
+#: ../lib/Plugins/Bugzilla.cpp:301
 msgid "Missing member 'bugs'"
 msgstr "Faltante de miembro 'bugs'"
 
-#: ../lib/Plugins/Bugzilla.cpp:346
+#: ../lib/Plugins/Bugzilla.cpp:370
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nuevo id del error: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:440
+#: ../lib/Plugins/Bugzilla.cpp:464
 msgid "Checking for duplicates..."
 msgstr "Chequeando si hay duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:446
+#: ../lib/Plugins/Bugzilla.cpp:470
 msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Usuario y contraseña vacios. Por favor compruebe el archivo Bugzilla.conf"
+msgstr "Usuario y contraseña vacíos. Por favor compruebe el archivo Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:473
 msgid "Logging into bugzilla..."
 msgstr "Ingresando a bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:454
+#: ../lib/Plugins/Bugzilla.cpp:478
 msgid "Checking CC..."
 msgstr "Chequeando CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:465
+#: ../lib/Plugins/Bugzilla.cpp:489
 msgid "Creating new bug..."
 msgstr "Creando un nuevo informe..."
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:493
 msgid "Logging out..."
 msgstr "Saliendo..."
 
@@ -536,23 +536,19 @@ msgstr "Saliendo..."
 msgid "Getting local universal unique identification"
 msgstr "Obteniendo la identificación única universal local"
 
-#: ../lib/Plugins/CCpp.cpp:253
+#: ../lib/Plugins/CCpp.cpp:266
 msgid "Generating backtrace"
 msgstr "Generando seguimiento..."
 
-#: ../lib/Plugins/CCpp.cpp:415
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Starting debuginfo installation"
 msgstr "Iniciando la instalación de la información de depuración"
 
-#: ../lib/Plugins/CCpp.cpp:564
-msgid "Getting local universal unique identification..."
-msgstr "Obteniendo la identificación única universal local..."
-
-#: ../lib/Plugins/CCpp.cpp:613
+#: ../lib/Plugins/CCpp.cpp:624
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:791
+#: ../lib/Plugins/CCpp.cpp:802
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
@@ -560,30 +556,30 @@ msgstr "Omita la instalación de la información de depuración"
 msgid "Creating and submitting a report..."
 msgstr "Creando y enviando un informe..."
 
-#: ../lib/Plugins/Logger.cpp:76
+#: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Escribiendo reporte en '%s'"
 
-#: ../lib/Plugins/FileTransfer.cpp:54
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "Transferencia de archivo: URL no especificada"
 
-#: ../lib/Plugins/FileTransfer.cpp:58
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Enviando archivo %s a %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:289
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Transferencia de archivo: Creando un informe..."
 
-#: ../lib/Plugins/FileTransfer.cpp:323
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "No se puede crear y enviar un archivo: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:352
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "No se puede crear y enviar un archivo %s"
@@ -592,19 +588,21 @@ msgstr "No se puede crear y enviar un archivo %s"
 msgid "Creating kernel oops crash reports..."
 msgstr "Creando un informe de caída de kernel oops..."
 
-#: ../lib/Plugins/Mailx.cpp:137
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Enviando un correo..."
 
-#: ../lib/Plugins/SOSreport.cpp:103
+#: ../lib/Plugins/SOSreport.cpp:101
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Corriendo sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:109
+#: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "Sosreport ya esta corriendo"
 
+#~ msgid "Getting local universal unique identification..."
+#~ msgstr "Obteniendo la identificación única universal local..."
 #~ msgid "Global Settings"
 #~ msgstr "Preferencias globales"
 #~ msgid "Settings"
