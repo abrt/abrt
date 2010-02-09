@@ -11,7 +11,7 @@
 # Default-Stop: 0 1 2 6
 # Default-Start: 3 5
 # Short-Description: start and stop abrt daemon
-# Description: Listen and dispatch crash events
+# Description: Listen to and dispatch crash events
 ### END INIT INFO
 
 # Source function library.
@@ -21,12 +21,18 @@ LOCK="/var/lock/subsys/abrtd"
 RETVAL=0
 
 #
+# Set these variables if you are behind proxy
+#
+#export http_proxy=
+#export https_proxy=
+
+#
 # See how we were called.
 #
 
 check() {
 	# Check that we're a privileged user
-	[ `id -u` = 0 ] || exit 4
+	[ "`id -u`" = 0 ] || exit 4
 
 	# Check if abrt is executable
 	test -x $ABRT_BIN || exit 5
