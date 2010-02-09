@@ -202,7 +202,6 @@ string make_description_reproduce_comment(const map_crash_data_t& pCrashData)
     it = pCrashData.find(FILENAME_REPRODUCE);
     if (it != end)
     {
-        VERB3 log("make_description_reproduce_comment %s", it->second[CD_CONTENT].c_str());
         if ((it->second[CD_CONTENT].size() > 0)
             &&  (it->second[CD_CONTENT] != "1.\n2.\n3.\n"))
         {
