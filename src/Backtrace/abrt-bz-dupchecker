@@ -157,9 +157,6 @@ for buginfo in buginfos:
 
 bz.logout()
 
-print "SUMMARY"
-print "=========================================================================="
-
 # The number of duplicates.
 dupcount = 0
 # The number of duplicates that can be closed.
@@ -172,36 +169,56 @@ for backtrace, components in database.items():
                                         bugitems))),
                          len(bugitems) - 1)
     
-print "Total number of duplicate bugs detected: {0}".format(dupcount)
-print "Number of duplicate bugs that will be closed : {0}".format(dupclosecount)
-print "------------------------------"
-
-# Print the duplicates
+# Sort the duplicates by the component owner, and
+# filter out those which should not be printed.
+dups = []
 for backtrace, components in database.items():
   for component, bugitems in components.items():
     if len(bugitems) > 1:
        # Get the component owner
-      component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/packages/name/{0}?tg_format=json".format(buginfo.component)))
-      component_packages = component_info['packageListings']
-      component_f12 = filter(lambda x:x["collection"]["version"]=="12", component_packages)
       owner = "Failed to get component owner"
-      if len(component_f12) == 1:
-        owner = component_f12["owner"]
+      try:
+        component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/packages/name/{0}?tg_format=json".format(component)))
+        component_packages = component_info['packageListings']
+        component_f12 = filter(lambda x:x["collection"]["version"]=="12", component_packages)
+        if len(component_f12) == 1:
+          owner = component_f12[0]["owner"]
+      except KeyError:
+        pass
+      
+      dups.append((component, owner, bugitems, backtrace))
+      print ".",
 
-      if options.wiki:
-        print "----"
-        print "* component: '''{0}''' ({1})".format(component, owner)
-        print "* duplicates: {0}".format(
-          reduce(lambda x,y: x+", "+y, 
-                 map(lambda x: "#[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] ({1} comments)".format(x['id'],x['comments']), 
-                     bugitems)))
-        print "* backtrace:"
-        for line in backtrace.replace("Thread\n", "").splitlines():
-          print "*# {0}".format(line)
-      else:
-        print "Component: {0} ({1})".format(component, owner)
-        print "Duplicates: {0}".format(
-          reduce(lambda x,y: x+", "+y, 
-                 map(lambda x: "{0} ({1})".format(x['id'],x['comments']), 
-                     bugitems)))
-        print "Backtrace: {0}".format(backtrace)
+print
+print "SUMMARY"
+print "=========================================================================="
+print "Total number of duplicate bugs detected: {0}".format(dupcount)
+print "Number of duplicate bugs that will be closed : {0}".format(dupclosecount)
+print "------------------------------"
+
+# Print the duplicates sorted by package owner.
+def cmp(x, y):
+  if x[1] < y[1]:
+    return -1
+  elif x[1] == y[1]:
+    return 0
+  else:
+    return 1
+for (component, owner, bugitems, backtrace) in sorted(dups, cmp):
+  if options.wiki:
+    print "----"
+    print "* component: '''{0}''' ({1})".format(component, owner)
+    print "* duplicates: {0}".format(
+      reduce(lambda x,y: x+", "+y, 
+             map(lambda x: "#[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] ({1} comments)".format(x['id'],x['comments']), 
+                 bugitems)))
+    print "* backtrace:"
+    for line in backtrace.replace("Thread\n", "").splitlines():
+      print "*# {0}".format(line)
+  else:
+    print "Component: {0} ({1})".format(component, owner)
+    print "Duplicates: {0}".format(
+      reduce(lambda x,y: x+", "+y, 
+             map(lambda x: "{0} ({1})".format(x['id'],x['comments']), 
+                 bugitems)))
+    print "Backtrace: {0}".format(backtrace)
