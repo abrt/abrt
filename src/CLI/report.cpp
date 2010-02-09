@@ -427,12 +427,12 @@ int report(const char *uuid, bool always)
       // Skip nonReporter plugins.
       if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
 	continue;
-      
+
       map_string_t settings = call_GetPluginSettings(it->first.c_str());
       // Login information is missing.
-      bool loginMissing = settings.find("Login") != settings.end() 
+      bool loginMissing = settings.find("Login") != settings.end()
 	&& 0 == strcmp(settings["Login"].c_str(), "");
-      bool passwordMissing = settings.find("Password") != settings.end() 
+      bool passwordMissing = settings.find("Password") != settings.end()
 	&& 0 == strcmp(settings["Password"].c_str(), "");
       if (!loginMissing && !passwordMissing)
 	continue;
@@ -461,7 +461,7 @@ int report(const char *uuid, bool always)
 	fgets(answer, sizeof(answer), stdin);
 	if (strlen(answer) > 0)
 	  pluginSettings[it->first]["Password"] = answer;
-      }      
+      }
     }
   }
 
@@ -475,7 +475,7 @@ int report(const char *uuid, bool always)
     vector_string_t &v = it->second;
     printf("%s: %s\n", it->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
     plugins++;
-    if (v[REPORT_STATUS_IDX_FLAG] != "0")
+    if (v[REPORT_STATUS_IDX_FLAG] == "0")
       errors++;
     it++;
   }
