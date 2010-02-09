@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from glib import markup_escape_text
 import gtk
 import pango
 import subprocess
@@ -66,7 +67,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         # this first one is actually a fallback to set at least
         # a raw text in case when set_markup() fails
         status_label.set_text(report_status_dict[plugin][MESSAGE])
-        status_label.set_markup("<span foreground='red'>%s</span>" % report_status_dict[plugin][MESSAGE])
+        status_label.set_markup("<span foreground='red'>%s</span>" % markup_escape_text(report_status_dict[plugin][MESSAGE]))
         # if the report was not succesful then this won't pass so this runs only
         # if report succeds and gets overwriten by the status message
         if report_status_dict[plugin][STATUS] == '1':

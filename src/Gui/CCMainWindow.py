@@ -2,6 +2,7 @@
 import sys
 import pwd
 import getopt
+from glib import markup_escape_text
 
 from abrt_utils import _, init_logging, log, log1, log2
 import gobject
@@ -233,7 +234,7 @@ class MainWindow():
             # it is not informative (no URL to the report)
             for message in dump.getMessage().split(';'):
                 if message:
-                    message_clean = message.strip()
+                    message_clean = markup_escape_text(message.strip())
                     if "http" in message_clean[0:5] or "file:///" in message_clean[0:8]:
                         report_message = "<a href=\"%s\">%s</a>" % (message_clean, message_clean)
                     else:
