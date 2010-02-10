@@ -18,3 +18,6 @@ srpm: dist
 				--define "_builddir `pwd`" \
 				--define "_srcrpmdir `pwd`" \
 				-bs abrt.spec
+				
+scratch-build: srpm
+	koji build --scratch dist-f12 $(PACKAGE)-$(VERSION)-1.fc12.src.rpm
