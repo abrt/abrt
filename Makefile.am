@@ -17,7 +17,8 @@ srpm: dist
 				--define "_specdir `pwd`" \
 				--define "_builddir `pwd`" \
 				--define "_srcrpmdir `pwd`" \
+				--define "dist .el6" \
 				-bs abrt.spec
 				
 scratch-build: srpm
-	koji build --scratch dist-f12 $(PACKAGE)-$(VERSION)-1.fc12.src.rpm
+	brew build --scratch RHEL-6-build $(PACKAGE)-$(VERSION)-1.el6.src.rpm
