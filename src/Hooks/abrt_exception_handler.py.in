@@ -59,8 +59,22 @@ def handleMyException((etype, value, tb)):
         return sys.__excepthook__(etype, value, tb)
 
     try:
+        import os
         import os.path
         import traceback
+        import errno
+
+        # EPIPE is not a crash, it happens all the time
+        # Testcase: script.py | true, where script.py is:
+        ## #!/usr/bin/python
+        ## import os
+        ## import time
+        ## time.sleep(1)
+        ## os.write(1, "Hello\n")  # print "Hello" wouldn't be the same
+        #
+        if etype == IOError or etype == OSError:
+            if value.errno == errno.EPIPE:
+                return sys.__excepthook__(etype, value, tb)
 
         # "-c" appears in this case:
         # $ python -c 'import sys; print "argv0 is:%s" % sys.argv[0]'
