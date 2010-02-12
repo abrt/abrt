@@ -92,6 +92,13 @@ class ReporterDialog():
             rating = int(self.report[FILENAME_RATING][CD_CONTENT])
         except:
             rating = None
+            
+        # we don't care about rating in rhel6
+        # FIXME: this must be handled better (per plugin)
+        # otherwise we'll get many useless reports from rhel
+        # as it doesn't download debuginfos
+        #rating = None
+        
         # active buttons acording to required fields
         # if an backtrace has rating use it
         if not SendBacktrace:
@@ -107,10 +114,10 @@ class ReporterDialog():
             # not usable report
             if int(self.report[FILENAME_RATING][CD_CONTENT]) < 3:
                 if package:
-                    error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command: <b>debuginfo-install %s</b> \nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
+                    error_msgs.append(_("The backtrace is unusable.\nPlease try to install debuginfo manually using command: <b>debuginfo-install %s</b> \nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                 else:
-                    error_msgs.append(_("The backtrace is unusable, you can't report this!"))
-                send = False
+                    error_msgs.append(_("The backtrace is unusable, you shouldn't report this!"))
+                #send = False
             # probably usable 3
             elif int(self.report[FILENAME_RATING][CD_CONTENT]) < 4:
                 error_msgs.append(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
