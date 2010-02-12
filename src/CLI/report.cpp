@@ -21,6 +21,7 @@
 #include "abrtlib.h"
 #include "DebugDump.h"
 #include "CrashTypes.h" // FILENAME_* defines
+#include "Plugin.h" // LoadPluginSettings
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -414,6 +415,115 @@ static int run_report_editor(map_crash_data_t &cr)
   return 0;
 }
 
+/**
+ * Asks user for a text response. 
+ * @param question
+ *  Question displayed to user.
+ * @param result
+ *  Output array.
+ * @param result_size
+ *  Maximum byte count to be written.
+ */
+static void read_from_stdin(const char *question, char *result, int result_size)
+{
+  printf(question);
+  fflush(NULL);
+  fgets(result, result_size, stdin);
+  // Remove the newline from the login.
+  char *newline = strchr(result, '\n');
+  if (newline)
+    *newline = '\0';
+}
+
+/**
+ * Gets reporter plugin settings. 
+ * @param ask_user
+ *   If it's set to true and some reporter plugin settings are found to be missing
+ *   (like login name or password), user is asked to provide the missing parts.
+ * @param settings
+ *   A structure filled with reporter plugin settings.
+ */
+static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_user)
+{
+  /* First of all, load system-wide report plugin settings. */
+  // Get informations about all plugins.
+  map_map_string_t plugins = call_GetPluginsInfo();
+  // Check the configuration of each enabled Reporter plugin.
+  map_map_string_t::iterator it, itend = plugins.end();
+  for (it = plugins.begin(); it != itend; ++it)
+  {
+    // Skip disabled plugins.
+    if (0 != strcmp(it->second["Enabled"].c_str(), "yes"))
+      continue;
+    // Skip nonReporter plugins.
+    if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
+      continue;
+    map_string_t single_plugin_settings = call_GetPluginSettings(it->first.c_str());
+    // Copy the received settings as defaults.
+    // Plugins won't work without it, if some value is missing
+    // they use their default values for all fields.
+    settings[it->first] = single_plugin_settings;
+  }
+
+  /* Second, load user-specific settings, which override 
+     the system-wide settings. */
+  struct passwd* pw = getpwuid(geteuid());
+  const char* homedir = pw ? pw->pw_dir : NULL;
+  if (homedir)
+  {
+    itend = settings.end();
+    for (it = settings.begin(); it != itend; ++it)
+    {
+      map_string_t single_plugin_settings;
+      std::string path = std::string(homedir) + "/.abrt/" 
+	+ it->first + "."PLUGINS_CONF_EXTENSION;
+      /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
+         because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
+         enter it every time he reports. */
+      bool success = LoadPluginSettings(path.c_str(), single_plugin_settings, false);
+      if (!success)
+	continue;
+      // Merge user's plugin settings into already loaded settings.
+      map_string_t::const_iterator valit, valitend = single_plugin_settings.end();
+      for (valit = single_plugin_settings.begin(); valit != valitend; ++valit)
+	it->second[valit->first] = valit->second;
+    }
+  }
+
+  if (!ask_user)
+    return;
+
+  /* Third, check if a login or password is missing, 
+     and ask for it. */
+  itend = settings.end();
+  for (it = settings.begin(); it != itend; ++it)
+  {
+    map_string_t &single_plugin_settings = it->second;
+    // Login information is missing.
+    bool loginMissing = single_plugin_settings.find("Login") != single_plugin_settings.end()
+      && 0 == strcmp(single_plugin_settings["Login"].c_str(), "");
+    bool passwordMissing = single_plugin_settings.find("Password") != single_plugin_settings.end()
+      && 0 == strcmp(single_plugin_settings["Password"].c_str(), "");
+    if (!loginMissing && !passwordMissing)
+      continue;
+    
+    // Read the missing information and push it to plugin settings.
+    printf(_("Wrong settings were detected for plugin %s.\n"), it->first.c_str());
+    char result[64];
+    if (loginMissing)
+    {
+      read_from_stdin(_("Enter your login: "), result, 64);
+      single_plugin_settings["Login"] = std::string(result);
+    }
+    if (passwordMissing)
+    {
+// TODO: echo off, see http://fixunix.com/unix/84474-echo-off.html
+      read_from_stdin(_("Enter your password: "), result, 64);
+      single_plugin_settings["Password"] = std::string(result);
+    }
+  }
+}
+
 /* Reports the crash with corresponding uuid over DBus. */
 int report(const char *uuid, bool always)
 {
@@ -429,6 +539,10 @@ int report(const char *uuid, bool always)
       return result;
   }
 
+  /* Read the plugin settings. */
+  map_map_string_t pluginSettings;
+  get_reporter_plugin_settings(pluginSettings, !always);
+
   /* Ask if user really want to send the report. */
   if (!always)
   {
@@ -441,88 +555,6 @@ int report(const char *uuid, bool always)
     {
       puts(_("Crash report was not sent."));
       return 0;
-    }
-  }
-
-  map_map_string_t pluginSettings;
-/*
-  std::string home;
-  map_plugin_settings_t oldSettings;
-  map_plugin_settings_t newSettings;
-
-  if (pUID != "")
-  {
-    home = get_home_dir(xatoi_u(pUID.c_str()));
-    if (home != "")
-    {
-      oldSettings = reporter->GetSettings();
-      
-      if (LoadPluginSettings(home + "/.abrt/" + plugin_name + "."PLUGINS_CONF_EXTENSION, newSettings))
-      {
-	reporter->SetSettings(newSettings);
-      }
-    }
-  }
-*/
-  if (!always)
-  {
-    // Get informations about all plugins.
-    map_map_string_t plugins = call_GetPluginsInfo();
-    // Check the configuration of each enabled Reporter plugin.
-    map_map_string_t::iterator it, itend = plugins.end();
-    for (it = plugins.begin(); it != itend; ++it)
-    {
-      // Skip disabled plugins.
-      if (0 != strcmp(it->second["Enabled"].c_str(), "yes"))
-	continue;
-      // Skip nonReporter plugins.
-      if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
-	continue;
-
-      map_string_t settings = call_GetPluginSettings(it->first.c_str());
-      // Login information is missing.
-      bool loginMissing = settings.find("Login") != settings.end()
-	&& 0 == strcmp(settings["Login"].c_str(), "");
-      bool passwordMissing = settings.find("Password") != settings.end()
-	&& 0 == strcmp(settings["Password"].c_str(), "");
-      if (!loginMissing && !passwordMissing)
-	continue;
-
-      // Copy the received settings as defaults.
-      // Plugins won't work without it, if some value is missing
-      // they use their default values for all fields.
-      pluginSettings[it->first] = settings;
-
-      printf(_("Wrong settings were detected for plugin %s.\n"), it->second["Name"].c_str());
-      if (loginMissing)
-      {
-	printf(_("Enter your login: "));
-	fflush(NULL);
-	char answer[64] = "";
-	fgets(answer, sizeof(answer), stdin);
-	// Remove the newline from the login.
-	char *newline = strchr(answer, '\n');
-	if (newline)
-	  *newline = '\0';
-	// Push it to plugin settings.
-	if (strlen(answer) > 0)
-	  pluginSettings[it->first]["Login"] = answer;
-      }
-      if (passwordMissing)
-      {
-// TODO: echo off, see http://fixunix.com/unix/84474-echo-off.html
-	printf(_("Enter your password: "));
-	fflush(NULL);
-	char answer[64] = "";
-	fgets(answer, sizeof(answer), stdin);
-	// Remove the newline from the login.
-	char *newline = strchr(answer, '\n');
-	if (newline)
-	  *newline = '\0';
-	// Push it to plugin settings.
-	if (strlen(answer) > 0)
-	  pluginSettings[it->first]["Password"] = answer;
-      }
     }
   }
 

@@ -252,7 +252,7 @@ void xstat(const char *name, struct stat *stat_buf)
 		perror_msg_and_die("can't stat '%s'", name);
 }
 
-std::string get_home_dir(int uid)
+std::string get_home_dir(uid_t uid)
 {
     struct passwd* pw = getpwuid(uid);
     return pw ? pw->pw_dir : "";

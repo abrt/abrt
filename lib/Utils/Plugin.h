@@ -118,9 +118,23 @@ typedef struct SPluginInfo
         PLUGINS_MAGIC_NUMBER,\
     };
 
-/* helper finctions */
+/* helper functions */
 std::string make_description_bz(const map_crash_data_t& pCrashData);
 std::string make_description_logger(const map_crash_data_t& pCrashData);
 std::string make_description_catcut(const map_crash_data_t& pCrashData);
+
+/**
+ * Loads settings and stores it in second parameter. On success it
+ * returns true, otherwise returns false.
+ * 
+ * @param path A path of config file.
+ *  Config file consists of "key=value" lines.
+ *  Lines in format "key=" (without value) are skipped.
+ * @param settings A readed plugin's settings.
+ * @return if it success it returns true, otherwise it returns false.
+ */
+extern bool LoadPluginSettings(const char *pPath,
+			       map_plugin_settings_t& pSettings,
+			       bool skipKeysWithoutValue = true);
 
 #endif
