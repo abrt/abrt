@@ -129,8 +129,10 @@ std::string make_description_catcut(const map_crash_data_t& pCrashData);
  * 
  * @param path A path of config file.
  *  Config file consists of "key=value" lines.
- *  Lines in format "key=" (without value) are skipped.
  * @param settings A readed plugin's settings.
+ * @param skipKeysWithoutValue
+ *  If true, lines in format "key=" (without value) are skipped.
+ *  Otherwise empty value "" is inserted into pSettings.
  * @return if it success it returns true, otherwise it returns false.
  */
 extern bool LoadPluginSettings(const char *pPath,
