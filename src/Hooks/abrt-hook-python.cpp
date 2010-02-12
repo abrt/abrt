@@ -37,21 +37,6 @@
 static char *pid;
 static char *executable;
 
-// Note: "" will return false
-static bool isxdigit_str(const char *str)
-{
-  do {
-    if ((*str < '0' || *str > '9') // not a digit
-     && ((*str | 0x20) < 'a' || (*str | 0x20) > 'f') // not A-F or a-f
-    )
-    {
-      return false;
-    }
-    str++;
-  } while (*str);
-  return true;
-}
-
 static bool printable_str(const char *str)
 {
   do {

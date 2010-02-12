@@ -52,6 +52,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #define NORETURN __attribute__ ((noreturn))
 
 
+#undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
 

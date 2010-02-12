@@ -82,30 +82,51 @@ int main(int argc, char** argv)
         /* set to max possible >0 value */
         ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
     }
-    off_t core_size = 0;
-
     if (errno || pid <= 0)
     {
         error_msg_and_die("pid '%s' or limit '%s' is bogus", argv[2], argv[5]);
     }
 
+    char* executable = get_executable(pid);
+    if (executable == NULL)
+    {
+        error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
+    }
+    if (strstr(executable, "/abrt-hook-ccpp"))
+    {
+        error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
+                        (long)pid, executable);
+    }
+
+    char *user_pwd = get_cwd(pid); /* may be NULL on error */
+
+    /* Parse abrt.conf and plugins/CCpp.conf */
+    unsigned setting_MaxCrashReportsSize = 0;
+    bool setting_MakeCompatCore = false;
+    parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore);
+
+    int core_fd = STDIN_FILENO;
+    off_t core_size = 0;
+
     const char *signame = NULL;
     /* Tried to use array for this but C++ does not support v[] = { [IDX] = "str" } */
     switch (signal_no)
     {
-        case SIGQUIT: signame = "QUIT"; break;
         case SIGILL : signame = "ILL" ; break;
-        case SIGABRT: signame = "ABRT"; break;
         case SIGFPE : signame = "FPE" ; break;
         case SIGSEGV: signame = "SEGV"; break;
+        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
+        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
+      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
+      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
+      //case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
+      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
+      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
     }
     if (signame == NULL) {
-        /* not a signal we care about, exit silently */
-        return 0;
+        /* not a signal we care about */
+        goto create_user_core;
     }
-
-    char *user_pwd = get_cwd(pid); /* may be NULL on error */
-    int core_fd = STDIN_FILENO;
 
     if (!daemon_is_ok())
     {
@@ -119,22 +140,6 @@ int main(int argc, char** argv)
 
     try
     {
-        char* executable = get_executable(pid);
-        if (executable == NULL)
-        {
-            error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
-        }
-        if (strstr(executable, "/abrt-hook-ccpp"))
-        {
-            error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
-                            (long)pid, executable);
-        }
-
-        /* Parse abrt.conf and plugins/CCpp.conf */
-        unsigned setting_MaxCrashReportsSize = 0;
-        bool setting_MakeCompatCore = false;
-        parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore);
-
         if (setting_MaxCrashReportsSize > 0)
         {
             check_free_space(setting_MaxCrashReportsSize);
@@ -267,8 +272,6 @@ int main(int argc, char** argv)
             trim_debug_dumps(setting_MaxCrashReportsSize, path);
         }
 
-        if (!setting_MakeCompatCore)
-            return 0;
         /* fall through to creating user core */
     }
     catch (CABRTException& e)
@@ -282,6 +285,9 @@ int main(int argc, char** argv)
 
 
  create_user_core:
+    if (!setting_MakeCompatCore)
+        return 0;
+
     /* note: core_size may be == 0 ("unknown") */
     if (core_size > ulimit_c || ulimit_c == 0)
         return 0;
