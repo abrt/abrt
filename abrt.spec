@@ -334,9 +334,9 @@ fi
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
-#%{_libdir}/%{name}/libKerneloopsReporter.so*
-#%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
-#%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
+%{_libdir}/%{name}/libKerneloopsReporter.so*
+%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
+%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
 
 %files plugin-logger
 %defattr(-,root,root,-)
