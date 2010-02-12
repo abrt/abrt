@@ -300,7 +300,12 @@ static int read_crash_report(map_crash_data_t &report, const char *text)
   return result;
 }
 
-/* Runs external editor. */
+/**
+ * Runs external editor.
+ * Returns:
+ *  0 if the launch was successful
+ *  1 if it failed. The error reason is logged using error_msg()
+ */
 static int launch_editor(const char *path)
 {
   const char *editor, *terminal;
@@ -330,6 +335,85 @@ static int launch_editor(const char *path)
   return 0;
 }
 
+/**
+ * Returns:
+ *  0 on success, crash data has been updated
+ *  2 on failure, unable to create, open, or close temporary file
+ *  3 on failure, cannot launch text editor
+ */
+static int run_report_editor(map_crash_data_t &cr)
+{
+  /* Open a temporary file and write the crash report to it. */
+  char filename[] = "/tmp/abrt-report.XXXXXX";
+  int fd = mkstemp(filename);
+  if (fd == -1) /* errno is set */
+  {
+    perror_msg("can't generate temporary file name");
+    return 2;
+  }
+  
+  FILE *fp = fdopen(fd, "w");
+  if (!fp) /* errno is set */
+  {
+    perror_msg("can't open '%s' to save the crash report", filename);
+    return 2;
+  }
+  
+  write_crash_report(cr, fp);
+  
+  if (fclose(fp)) /* errno is set */
+  {
+    perror_msg("can't close '%s'", filename);
+    return 2;
+  }
+  
+  // Start a text editor on the temporary file.
+  if (launch_editor(filename) != 0)
+    return 3; /* exit with error */
+  
+  // Read the file back and update the report from the file.
+  fp = fopen(filename, "r");
+  if (!fp) /* errno is set */
+  {
+    perror_msg("can't open '%s' to read the crash report", filename);
+    return 2;
+  }
+  
+  fseek(fp, 0, SEEK_END);
+  long size = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
+  
+  char *text = (char*)xmalloc(size + 1);
+  if (fread(text, 1, size, fp) != size)
+  {
+    error_msg("can't read '%s'", filename);
+    return 2;
+  }
+  text[size] = '\0';
+  if (fclose(fp) != 0) /* errno is set */
+  {
+    perror_msg("can't close '%s'", filename);
+    return 2;
+  }
+  
+  // Delete the tempfile.
+  if (unlink(filename) == -1) /* errno is set */
+  {
+    perror_msg("can't unlink %s", filename);
+  }
+
+  remove_comments_and_unescape(text);
+  // Updates the crash report from the file text.
+  int report_changed = read_crash_report(cr, text);
+  free(text);
+  if (report_changed)
+    puts(_("\nThe report has been updated."));
+  else
+    puts(_("\nNo changes were detected in the report."));
+  
+  return 0;
+}
+
 /* Reports the crash with corresponding uuid over DBus. */
 int report(const char *uuid, bool always)
 {
@@ -337,69 +421,17 @@ int report(const char *uuid, bool always)
   map_crash_data_t cr = call_CreateReport(uuid);
 //TODO: error check?
 
+  /* Open text editor and give a chance to review the backtrace etc. */
   if (!always)
   {
-    /* Open a temporary file and write the crash report to it. */
-    char filename[] = "/tmp/abrt-report.XXXXXX";
-    int fd = mkstemp(filename);
-    if (fd == -1)
-    {
-      error_msg("can't generate temporary file name");
-      return 1;
-    }
+    int result = run_report_editor(cr);
+    if (result != 0)
+      return result;
+  }
 
-    FILE *fp = fdopen(fd, "w");
-    if (!fp)
-    {
-      error_msg("can't open '%s' to save the crash report", filename);
-      return 1;
-    }
-
-    write_crash_report(cr, fp);
-
-    if (fclose(fp))
-    {
-      error_msg("can't close '%s'", filename);
-      return 2;
-    }
-
-    // Start a text editor on the temporary file.
-    launch_editor(filename);
-
-    // Read the file back and update the report from the file.
-    fp = fopen(filename, "r");
-    if (!fp)
-    {
-      error_msg("can't open '%s' to read the crash report", filename);
-      return 1;
-    }
-
-    fseek(fp, 0, SEEK_END);
-    long size = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-
-    char *text = (char*)xmalloc(size + 1);
-    if (fread(text, 1, size, fp) != size)
-    {
-      error_msg("can't read '%s'", filename);
-      return 1;
-    }
-    text[size] = '\0';
-    fclose(fp);
-
-    remove_comments_and_unescape(text);
-    // Updates the crash report from the file text.
-    int report_changed = read_crash_report(cr, text);
-    if (report_changed)
-      puts(_("\nThe report has been updated."));
-    else
-      puts(_("\nNo changes were detected in the report."));
-
-    free(text);
-
-    if (unlink(filename) != 0) // Delete the tempfile.
-      perror_msg("can't unlink %s", filename);
-
+  /* Ask if user really want to send the report. */
+  if (!always)
+  {
     // Report only if the user is sure.
     printf(_("Do you want to send the report? [y/N]: "));
     fflush(NULL);
@@ -413,6 +445,25 @@ int report(const char *uuid, bool always)
   }
 
   map_map_string_t pluginSettings;
+/*
+  std::string home;
+  map_plugin_settings_t oldSettings;
+  map_plugin_settings_t newSettings;
+
+  if (pUID != "")
+  {
+    home = get_home_dir(xatoi_u(pUID.c_str()));
+    if (home != "")
+    {
+      oldSettings = reporter->GetSettings();
+      
+      if (LoadPluginSettings(home + "/.abrt/" + plugin_name + "."PLUGINS_CONF_EXTENSION, newSettings))
+      {
+	reporter->SetSettings(newSettings);
+      }
+    }
+  }
+*/
   if (!always)
   {
     // Get informations about all plugins.
@@ -449,6 +500,11 @@ int report(const char *uuid, bool always)
 	fflush(NULL);
 	char answer[64] = "";
 	fgets(answer, sizeof(answer), stdin);
+	// Remove the newline from the login.
+	char *newline = strchr(answer, '\n');
+	if (newline)
+	  *newline = '\0';
+	// Push it to plugin settings.
 	if (strlen(answer) > 0)
 	  pluginSettings[it->first]["Login"] = answer;
       }
@@ -459,6 +515,11 @@ int report(const char *uuid, bool always)
 	fflush(NULL);
 	char answer[64] = "";
 	fgets(answer, sizeof(answer), stdin);
+	// Remove the newline from the login.
+	char *newline = strchr(answer, '\n');
+	if (newline)
+	  *newline = '\0';
+	// Push it to plugin settings.
 	if (strlen(answer) > 0)
 	  pluginSettings[it->first]["Password"] = answer;
       }
