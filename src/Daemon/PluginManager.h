@@ -154,13 +154,4 @@ class CPluginManager
         map_plugin_settings_t GetPluginSettings(const char *pName);
 };
 
-/**
- * Loads settings and stores it in second parameter. On success it
- * returns true, otherwise returns false.
- * @param path A path of config file.
- * @param settings A readed plugin's settings.
- * @return if it success it returns true, otherwise it returns false.
- */
-bool LoadPluginSettings(const char *pPath,
-                        map_plugin_settings_t& pSettings);
 #endif /*PLUGINMANAGER_H_*/
