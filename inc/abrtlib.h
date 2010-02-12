@@ -76,6 +76,7 @@ void log_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 /* error_msg family will use g_custom_logger. log_msg does not. */
 void error_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 void error_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
+/* Reports error message with libc's errno error description attached. */
 void perror_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 void perror_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
 void perror_nomsg_and_die(void) NORETURN;
