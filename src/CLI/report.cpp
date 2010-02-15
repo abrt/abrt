@@ -21,6 +21,7 @@
 #include "abrtlib.h"
 #include "DebugDump.h"
 #include "CrashTypes.h" // FILENAME_* defines
+#include "Plugin.h" // LoadPluginSettings
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -300,7 +301,12 @@ static int read_crash_report(map_crash_data_t &report, const char *text)
   return result;
 }
 
-/* Runs external editor. */
+/**
+ * Runs external editor.
+ * Returns:
+ *  0 if the launch was successful
+ *  1 if it failed. The error reason is logged using error_msg()
+ */
 static int launch_editor(const char *path)
 {
   const char *editor, *terminal;
@@ -330,6 +336,194 @@ static int launch_editor(const char *path)
   return 0;
 }
 
+/**
+ * Returns:
+ *  0 on success, crash data has been updated
+ *  2 on failure, unable to create, open, or close temporary file
+ *  3 on failure, cannot launch text editor
+ */
+static int run_report_editor(map_crash_data_t &cr)
+{
+  /* Open a temporary file and write the crash report to it. */
+  char filename[] = "/tmp/abrt-report.XXXXXX";
+  int fd = mkstemp(filename);
+  if (fd == -1) /* errno is set */
+  {
+    perror_msg("can't generate temporary file name");
+    return 2;
+  }
+  
+  FILE *fp = fdopen(fd, "w");
+  if (!fp) /* errno is set */
+  {
+    perror_msg("can't open '%s' to save the crash report", filename);
+    return 2;
+  }
+  
+  write_crash_report(cr, fp);
+  
+  if (fclose(fp)) /* errno is set */
+  {
+    perror_msg("can't close '%s'", filename);
+    return 2;
+  }
+  
+  // Start a text editor on the temporary file.
+  if (launch_editor(filename) != 0)
+    return 3; /* exit with error */
+  
+  // Read the file back and update the report from the file.
+  fp = fopen(filename, "r");
+  if (!fp) /* errno is set */
+  {
+    perror_msg("can't open '%s' to read the crash report", filename);
+    return 2;
+  }
+  
+  fseek(fp, 0, SEEK_END);
+  long size = ftell(fp);
+  fseek(fp, 0, SEEK_SET);
+  
+  char *text = (char*)xmalloc(size + 1);
+  if (fread(text, 1, size, fp) != size)
+  {
+    error_msg("can't read '%s'", filename);
+    return 2;
+  }
+  text[size] = '\0';
+  if (fclose(fp) != 0) /* errno is set */
+  {
+    perror_msg("can't close '%s'", filename);
+    return 2;
+  }
+  
+  // Delete the tempfile.
+  if (unlink(filename) == -1) /* errno is set */
+  {
+    perror_msg("can't unlink %s", filename);
+  }
+
+  remove_comments_and_unescape(text);
+  // Updates the crash report from the file text.
+  int report_changed = read_crash_report(cr, text);
+  free(text);
+  if (report_changed)
+    puts(_("\nThe report has been updated."));
+  else
+    puts(_("\nNo changes were detected in the report."));
+  
+  return 0;
+}
+
+/**
+ * Asks user for a text response. 
+ * @param question
+ *  Question displayed to user.
+ * @param result
+ *  Output array.
+ * @param result_size
+ *  Maximum byte count to be written.
+ */
+static void read_from_stdin(const char *question, char *result, int result_size)
+{
+  printf(question);
+  fflush(NULL);
+  fgets(result, result_size, stdin);
+  // Remove the newline from the login.
+  char *newline = strchr(result, '\n');
+  if (newline)
+    *newline = '\0';
+}
+
+/**
+ * Gets reporter plugin settings. 
+ * @param ask_user
+ *   If it's set to true and some reporter plugin settings are found to be missing
+ *   (like login name or password), user is asked to provide the missing parts.
+ * @param settings
+ *   A structure filled with reporter plugin settings.
+ */
+static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_user)
+{
+  /* First of all, load system-wide report plugin settings. */
+  // Get informations about all plugins.
+  map_map_string_t plugins = call_GetPluginsInfo();
+  // Check the configuration of each enabled Reporter plugin.
+  map_map_string_t::iterator it, itend = plugins.end();
+  for (it = plugins.begin(); it != itend; ++it)
+  {
+    // Skip disabled plugins.
+    if (0 != strcmp(it->second["Enabled"].c_str(), "yes"))
+      continue;
+    // Skip nonReporter plugins.
+    if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
+      continue;
+    map_string_t single_plugin_settings = call_GetPluginSettings(it->first.c_str());
+    // Copy the received settings as defaults.
+    // Plugins won't work without it, if some value is missing
+    // they use their default values for all fields.
+    settings[it->first] = single_plugin_settings;
+  }
+
+  /* Second, load user-specific settings, which override 
+     the system-wide settings. */
+  struct passwd* pw = getpwuid(geteuid());
+  const char* homedir = pw ? pw->pw_dir : NULL;
+  if (homedir)
+  {
+    itend = settings.end();
+    for (it = settings.begin(); it != itend; ++it)
+    {
+      map_string_t single_plugin_settings;
+      std::string path = std::string(homedir) + "/.abrt/" 
+	+ it->first + "."PLUGINS_CONF_EXTENSION;
+      /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
+         because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
+         enter it every time he reports. */
+      bool success = LoadPluginSettings(path.c_str(), single_plugin_settings, false);
+      if (!success)
+	continue;
+      // Merge user's plugin settings into already loaded settings.
+      map_string_t::const_iterator valit, valitend = single_plugin_settings.end();
+      for (valit = single_plugin_settings.begin(); valit != valitend; ++valit)
+	it->second[valit->first] = valit->second;
+    }
+  }
+
+  if (!ask_user)
+    return;
+
+  /* Third, check if a login or password is missing, 
+     and ask for it. */
+  itend = settings.end();
+  for (it = settings.begin(); it != itend; ++it)
+  {
+    map_string_t &single_plugin_settings = it->second;
+    // Login information is missing.
+    bool loginMissing = single_plugin_settings.find("Login") != single_plugin_settings.end()
+      && 0 == strcmp(single_plugin_settings["Login"].c_str(), "");
+    bool passwordMissing = single_plugin_settings.find("Password") != single_plugin_settings.end()
+      && 0 == strcmp(single_plugin_settings["Password"].c_str(), "");
+    if (!loginMissing && !passwordMissing)
+      continue;
+    
+    // Read the missing information and push it to plugin settings.
+    printf(_("Wrong settings were detected for plugin %s.\n"), it->first.c_str());
+    char result[64];
+    if (loginMissing)
+    {
+      read_from_stdin(_("Enter your login: "), result, 64);
+      single_plugin_settings["Login"] = std::string(result);
+    }
+    if (passwordMissing)
+    {
+// TODO: echo off, see http://fixunix.com/unix/84474-echo-off.html
+      read_from_stdin(_("Enter your password: "), result, 64);
+      single_plugin_settings["Password"] = std::string(result);
+    }
+  }
+}
+
 /* Reports the crash with corresponding uuid over DBus. */
 int report(const char *uuid, bool always)
 {
@@ -337,69 +531,21 @@ int report(const char *uuid, bool always)
   map_crash_data_t cr = call_CreateReport(uuid);
 //TODO: error check?
 
+  /* Open text editor and give a chance to review the backtrace etc. */
   if (!always)
   {
-    /* Open a temporary file and write the crash report to it. */
-    char filename[] = "/tmp/abrt-report.XXXXXX";
-    int fd = mkstemp(filename);
-    if (fd == -1)
-    {
-      error_msg("can't generate temporary file name");
-      return 1;
-    }
+    int result = run_report_editor(cr);
+    if (result != 0)
+      return result;
+  }
 
-    FILE *fp = fdopen(fd, "w");
-    if (!fp)
-    {
-      error_msg("can't open '%s' to save the crash report", filename);
-      return 1;
-    }
+  /* Read the plugin settings. */
+  map_map_string_t pluginSettings;
+  get_reporter_plugin_settings(pluginSettings, !always);
 
-    write_crash_report(cr, fp);
-
-    if (fclose(fp))
-    {
-      error_msg("can't close '%s'", filename);
-      return 2;
-    }
-
-    // Start a text editor on the temporary file.
-    launch_editor(filename);
-
-    // Read the file back and update the report from the file.
-    fp = fopen(filename, "r");
-    if (!fp)
-    {
-      error_msg("can't open '%s' to read the crash report", filename);
-      return 1;
-    }
-
-    fseek(fp, 0, SEEK_END);
-    long size = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-
-    char *text = (char*)xmalloc(size + 1);
-    if (fread(text, 1, size, fp) != size)
-    {
-      error_msg("can't read '%s'", filename);
-      return 1;
-    }
-    text[size] = '\0';
-    fclose(fp);
-
-    remove_comments_and_unescape(text);
-    // Updates the crash report from the file text.
-    int report_changed = read_crash_report(cr, text);
-    if (report_changed)
-      puts(_("\nThe report has been updated."));
-    else
-      puts(_("\nNo changes were detected in the report."));
-
-    free(text);
-
-    if (unlink(filename) != 0) // Delete the tempfile.
-      perror_msg("can't unlink %s", filename);
-
+  /* Ask if user really want to send the report. */
+  if (!always)
+  {
     // Report only if the user is sure.
     printf(_("Do you want to send the report? [y/N]: "));
     fflush(NULL);
@@ -409,59 +555,6 @@ int report(const char *uuid, bool always)
     {
       puts(_("Crash report was not sent."));
       return 0;
-    }
-  }
-
-  map_map_string_t pluginSettings;
-  if (!always)
-  {
-    // Get informations about all plugins.
-    map_map_string_t plugins = call_GetPluginsInfo();
-    // Check the configuration of each enabled Reporter plugin.
-    map_map_string_t::iterator it, itend = plugins.end();
-    for (it = plugins.begin(); it != itend; ++it)
-    {
-      // Skip disabled plugins.
-      if (0 != strcmp(it->second["Enabled"].c_str(), "yes"))
-	continue;
-      // Skip nonReporter plugins.
-      if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
-	continue;
-      
-      map_string_t settings = call_GetPluginSettings(it->first.c_str());
-      // Login information is missing.
-      bool loginMissing = settings.find("Login") != settings.end() 
-	&& 0 == strcmp(settings["Login"].c_str(), "");
-      bool passwordMissing = settings.find("Password") != settings.end() 
-	&& 0 == strcmp(settings["Password"].c_str(), "");
-      if (!loginMissing && !passwordMissing)
-	continue;
-
-      // Copy the received settings as defaults.
-      // Plugins won't work without it, if some value is missing
-      // they use their default values for all fields.
-      pluginSettings[it->first] = settings;
-
-      printf(_("Wrong settings were detected for plugin %s.\n"), it->second["Name"].c_str());
-      if (loginMissing)
-      {
-	printf(_("Enter your login: "));
-	fflush(NULL);
-	char answer[64] = "";
-	fgets(answer, sizeof(answer), stdin);
-	if (strlen(answer) > 0)
-	  pluginSettings[it->first]["Login"] = answer;
-      }
-      if (passwordMissing)
-      {
-// TODO: echo off, see http://fixunix.com/unix/84474-echo-off.html
-	printf(_("Enter your password: "));
-	fflush(NULL);
-	char answer[64] = "";
-	fgets(answer, sizeof(answer), stdin);
-	if (strlen(answer) > 0)
-	  pluginSettings[it->first]["Password"] = answer;
-      }      
     }
   }
 
@@ -475,7 +568,7 @@ int report(const char *uuid, bool always)
     vector_string_t &v = it->second;
     printf("%s: %s\n", it->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
     plugins++;
-    if (v[REPORT_STATUS_IDX_FLAG] != "0")
+    if (v[REPORT_STATUS_IDX_FLAG] == "0")
       errors++;
     it++;
   }

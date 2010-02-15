@@ -145,7 +145,9 @@ print_package_names() {
     fi
     # when we look for debuginfo we need only -debuginfo* repos, so we can disable the rest and thus make it faster
     # also we want only fedora repositories, because abrt won't work for other packages anyway
-    local cmd="yum $yumopts '--disablerepo=*' '--enablerepo=fedora-debuginfo*' '--enablerepo=updates-debuginfo*' --quiet provides $missing_debuginfo_files"
+    # --showduplicates: do not just show the latest package
+    # -R2: wait two minutes max (hopefully this prevents infinite hang on yum lock)
+    local cmd="yum $yumopts '--disablerepo=*' '--enablerepo=fedora-debuginfo*' '--enablerepo=updates-debuginfo*' --showduplicates -R2 --quiet provides $missing_debuginfo_files"
     echo "$cmd" >"yum_provides.$1.OUT"
     # eval is needed to strip away ''s; cant remove them above and just use
     # $cmd, that would perform globbing on '*'
@@ -194,53 +196,56 @@ download_packages() {
     for pkg in $packages; do
 	echo "Download $i/$num_packages: $pkg"
 	echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
-	# we can't handle packages from non Fedora repos, so we look and download only
+	# We can't handle packages from non Fedora repos, so we look and download only
 	# from Fedora repos which makes it faster
 	yumdownloader --disablerepo="*" --enablerepo="fedora-debuginfo*" --enablerepo="updates-debuginfo*" --quiet $pkg >>yumdownloader.OUT 2>&1
 	err=$?
 	echo "exitcode:$err" >>yumdownloader.OUT
 	echo >>yumdownloader.OUT
 	test $err = 0 || { echo "Download of $pkg failed!"; sleep 1; }
-	: $((i++))
-    done
-
-    for file in *.rpm; do
-	# Happens if no .rpm's were downloaded (yumdownloader problem)
-	# In this case, $f is the literal "*.rpm" string
-	test -f "$file" || error_msg_and_die "not a rpm file: '$file'"
-	echo "Unpacking: $file"
-	echo "Processing: $file" >>unpack.OUT
-	rpm2cpio <"$file" 2>>unpack.OUT | cpio -id >>unpack.OUT 2>&1
-#TODO: error check?
-    done
-
-    # Copy debuginfo files to cachedir
-    if test x"$cachedir" != x"" && test -d "$cachedir"; then
-	for build_id in $build_ids; do
-	    build_id1=${build_id:0:2}
-	    build_id2=${build_id:2}
-
-	    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
-
-	    # Do not copy it if it can be found in any of $debuginfodirs
-	    test -f "/$file" && continue
-	    if test x"$cachedir" != x""; then
-		for d in $debuginfodirs; do
-		    test -f "$d/$file" && continue 2
+	# Process and delete the *.rpm file just downloaded
+	# We do it right after download: some users have smallish disks...
+	for file in *.rpm; do
+	    # Happens if no .rpm's were downloaded (yumdownloader problem)
+	    # In this case, $f is the literal "*.rpm" string
+	    test -f "$file" || { echo "No rpm file downloaded"; continue; }
+	    echo "Unpacking: $file"
+	    echo "Processing: $file" >>unpack.OUT
+	    rpm2cpio <"$file" >"unpacked.cpio" 2>>unpack.OUT || error_msg_and_die "Can't convert '$file' to cpio"
+	    rm "$file"
+	    cpio -id <"unpacked.cpio" >>unpack.OUT 2>&1 || error_msg_and_die "Can't unpack '$file' cpio archive"
+	    rm "unpacked.cpio"
+	    # Copy debuginfo files to cachedir
+	    if test x"$cachedir" != x"" && test -d "$cachedir"; then
+		# For every needed debuginfo, check whether we have it
+		for build_id in $build_ids; do
+		    build_id1=${build_id:0:2}
+		    build_id2=${build_id:2}
+		    file="usr/lib/debug/.build-id/$build_id1/$build_id2.debug"
+		    # Do not copy it if it can be found in any of $debuginfodirs
+		    test -f "/$file" && continue
+		    if test x"$cachedir" != x""; then
+			for d in $debuginfodirs; do
+			    test -f "$d/$file" && continue 2
+			done
+		    fi
+		    if test -f "$file"; then
+			# File is one of those we just installed, cache it
+			mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
+			# Note: this does not preserve symlinks. This is intentional
+			$debug && echo Copying "$file" to "$cachedir/$file" >&2
+			echo "Caching debuginfo: $file"
+			cp --remove-destination "$file" "$cachedir/$file" || error_msg_and_die "Can't copy $file (disk full?)"
+			continue
+		    fi
 		done
 	    fi
-
-	    if test -f "$file"; then
-		# File is one of those we just installed, cache it.
-		mkdir -p "$cachedir/usr/lib/debug/.build-id/$build_id1"
-		# Note: this does not preserve symlinks. This is intentional
-		$debug && echo Copying "$file" to "$cachedir/$file" >&2
-		cp --remove-destination "$file" "$cachedir/$file"
-#TODO: error check?
-		continue
-	    fi
+	    # Delete remaining files unpacked from .cpio
+	    # which we didn't need after all
+	    rm -r etc bin sbin usr var opt 2>/dev/null
 	done
-    fi
+	: $((i++))
+    done
 }
 
 

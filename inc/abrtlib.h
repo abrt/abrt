@@ -52,6 +52,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #define NORETURN __attribute__ ((noreturn))
 
 
+#undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
 
@@ -76,6 +77,7 @@ void log_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 /* error_msg family will use g_custom_logger. log_msg does not. */
 void error_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 void error_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
+/* Reports error message with libc's errno error description attached. */
 void perror_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 void perror_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
 void perror_nomsg_and_die(void) NORETURN;
@@ -254,7 +256,7 @@ bool string_to_bool(const char *s);
 /* C++ style stuff */
 
 std::string ssprintf(const char *format, ...);
-std::string get_home_dir(int uid);
+std::string get_home_dir(uid_t uid);
 std::string concat_path_file(const char *path, const char *filename);
 double get_dirsize(const char *pPath);
 double get_dirsize_find_largest_dir(

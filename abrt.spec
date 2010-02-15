@@ -334,9 +334,9 @@ fi
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
-#%{_libdir}/%{name}/libKerneloopsReporter.so*
-#%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
-#%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
+%{_libdir}/%{name}/libKerneloopsReporter.so*
+%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
+%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
 
 %files plugin-logger
 %defattr(-,root,root,-)
@@ -408,6 +408,33 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Fri Feb 12 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.7-1
+- Load plugin settings also from ~/.abrt/*.conf (kklic@redhat.com)
+- fix bz#541088 "abrt should not catch python excp EPIPE" (vda.linux@googlemail.com)
+- fix bz#554242 "Cannot tab between input areas in report dialog" (vda.linux@googlemail.com)
+- fix bz#563484 "abrt uses unnecessary disk space when getting debug info" (vda.linux@googlemail.com)
+- Don't show empty 'Not loaded plugins' section - fix#2 rhbz#560971 (jmoskovc@redhat.com)
+- fix big-endian build problem (vda.linux@googlemail.com)
+- Fixes, displays package owners (kklic@redhat.com)
+- GUI: fixed exception in plugin settings dialog rhbz#560851 (jmoskovc@redhat.com)
+- GUI: respect system settings for toolbars rhbz#552161 (jmoskovc@redhat.com)
+- python hook: move UUID generation to abrtd; generate REASON, add it to bz title (vda.linux@googlemail.com)
+- make "reason" field less verbose; bz reporter: include it in "summary" (vda.linux@googlemail.com)
+- added avant-window-navigator to blacklist per maintainer request (jmoskovc@redhat.com)
+- CCpp analyzer: fix rhbz#552435 (bt rating misinterpreting # chars) (vda.linux@googlemail.com)
+- Ask for login and password if missing from reporter plugin. (kklic@redhat.com)
+- abrtd: fix handling of dupes (weren't deleting dup's directory); better logging (vda.linux@googlemail.com)
+- abrtd: handle "perl -w /usr/bin/script" too (vda.linux@googlemail.com)
+- Component-wise duplicates (kklic@redhat.com)
+- abrtd: fix rhbz#560642 - don't die on bad plugin names (vda.linux@googlemail.com)
+- Fixed parsing backtrace from rhbz#549293 (kklic@redhat.com)
+- GUI: fixed scrolling in reporter dialog rhbz#559687 (jmoskovc@redhat.com)
+- fixed button order in plugins windows rhbz#560961 (jmoskovc@redhat.com)
+- GUI: fixed windows icons and titles rhbz#537240, rhbz#560964 (jmoskovc@redhat.com)
+- Fix to successfully parse a backtrace from rhbz#550642 (kklic@redhat.com)
+- cli: fix the problem of not showing oops text in editor (vda.linux@googlemail.com)
+- GUI: fix rhbz#560971 "Don't show empty 'Not loaded plugins' section" (vda.linux@googlemail.com)
+
 * Tue Feb  2 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.6-1
 - print __glib_assert_msg (rhbz#549735);
 - SPEC: added some requires to abrt-cli to make it work out-of-the-box (jmoskovc@redhat.com)
