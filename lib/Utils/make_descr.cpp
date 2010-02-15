@@ -71,7 +71,6 @@ static void add_content(bool &was_multiline, string& description, const char *he
 static const char *const blacklisted_items_bz[] = {
     FILENAME_TIME     ,
     FILENAME_UID      ,
-    FILENAME_UUID     ,
     FILENAME_ANALYZER ,
     FILENAME_COREDUMP ,
     FILENAME_DESCRIPTION, /* package description - basically useless */

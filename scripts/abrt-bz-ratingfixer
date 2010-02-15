@@ -1,6 +1,9 @@
 #!/usr/bin/python
 # -*- mode:python -*-
 #
+# Finds bugs with incomplete backtraces in Buzilla.
+# Incomplete backtraces are caused by missing debuginfo.
+#
 # Please do not run this script unless it's neccessary to do so. 
 # It forces Bugzilla to send data related to thousands of bug reports.
 
@@ -10,17 +13,24 @@ import sys
 import os.path
 import subprocess
 import cPickle
+import urllib
+import json
 
+#
+# Parse command line options.
+# Exit if mandatory options are missing.
+#
 parser = OptionParser(version="%prog 1.0")
 parser.add_option("-u", "--user", dest="user",
                   help="Bugzilla user name (REQUIRED)", metavar="USERNAME")
 parser.add_option("-p", "--password", dest="password",
                   help="Bugzilla password (REQUIRED)", metavar="PASSWORD")
-parser.add_option("-b", "--bugzilla", dest="bugzilla",
+parser.add_option("-b", "--bugzilla", dest="bugzilla", default="https://bugzilla.redhat.com/xmlrpc.cgi",
                   help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
 parser.add_option("-i", "--wiki", help="Generate output in wiki syntax", 
                   action="store_true", default=False, dest="wiki")
-
+parser.add_option("-c", "--close", help="Close some of the bugs in Bugzilla (DANGEROUS)", 
+                  action="store_true", default=False, dest="close")
 (options, args) = parser.parse_args()
 
 if not options.user or len(options.user) == 0:
@@ -29,19 +39,18 @@ if not options.user or len(options.user) == 0:
 if not options.password or len(options.password) == 0:
   parser.error("Password is required.\nTry {0} --help".format(sys.argv[0]))
 
-if not options.bugzilla or len(options.bugzilla) == 0:
-  options.bugzilla = "https://bugzilla.redhat.com/xmlrpc.cgi"
-
+#
+# Connect to the Bugzilla and get all bugs reported by ABRT
+#
 bz = RHBugzilla()
 bz.connect(options.bugzilla)
 bz.login(options.user, options.password)
 
 buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboard':'abrt_hash'})
-
 print "{0} bugs found.".format(len(buginfos))
 
 #
-# Load cache from previous run. Speeds up the case Bugzilla closes connection.
+# Load cache from previous run. It speeds up the case Bugzilla closes connection.
 # The cache should be manually removed after a day or so, because the data in it 
 # are no longer valid.
 #
@@ -58,21 +67,35 @@ def save_to_cache():
   cPickle.dump(ids, f, 2)
   f.close()  
 
+#
+# Go through all bugs, and get the rating for their backtraces.
+# The result is stored into ids map.
+#
 count = 0
 for buginfo in buginfos:
+  # The progress indicator.
   count += 1
   print "{0}/{1}".format(count, len(buginfos))
+
+  # Save to cache for the case the connection will be closed by the Bugzilla.
+  # This happens pretty often.
   if count % 100 == 0:
     save_to_cache()
 
+  # Skip the bugs already loaded from cache.
   if ids.has_key(buginfo.bug_id):
     continue
 
+  # We handle only unprocessed bugs.
   if not buginfo.bug_status in ["NEW", "ASSIGNED"]:
     continue
 
   # By default: rating 4, no comments. Do not touch strange bugs.
-  ids[buginfo.bug_id] = ( 4, 0 )
+  ids[buginfo.bug_id] = { 
+    'rating': 4, 
+    'comment_count': 0, 
+    'component': buginfo.component 
+    }
 
   # Skip bugs with already downloaded backtraces.
   filename = "{0}.bt".format(buginfo.bug_id)
@@ -94,26 +117,40 @@ for buginfo in buginfos:
     if not downloaded:
       continue
 
+  # Rate the backtrace using external program.
   command = ["./abrt-rate-backtrace"]
   command.append(filename)
-
   helper = subprocess.Popen(command, stdout=subprocess.PIPE)
   rating, err = helper.communicate()
   helper.wait()
-
   if helper.returncode != 0:
     print "Problems with rating {0}".format(filename)
     continue
-
+  
+  # Get the comment count. We do not want to close bugs which
+  # are in the middle of a discussion.
   bug = bz.getbug(buginfo.bug_id)
-  comments = 0
+  comment_count = 0
   for comment in bug.longdescs:
     # Do not count "rawhide" comments from Bug Zappers
     if comment["body"].find("against 'rawhide' during") > 0:
       continue
-    comments += 1
+    comment_count += 1
 
-  ids[buginfo.bug_id] = ( int(rating), comments )
+  # Put the result to the database.
+  ids[buginfo.bug_id] = { 
+    'rating': int(rating), 
+    'comment_count': comment_count, 
+    'component': buginfo.component 
+    }
+
+  # Close the bug if it's appropriate.
+  if options.close and comment_count <= 2 and int(rating) < 3:
+    print "Closing bug #{0} with {1} comments and rating {2}/4.".format(buginfo.bug_id, comment_count, int(rating))
+    bug.close("INSUFFICIENT_DATA", 0, "", 
+                "This bug appears to have been filled using a buggy version of ABRT, because\n" +
+                "it contains unusable backtrace. Sorry for the inconvenience.\n\n" +
+                "Closing as INSUFFICIENT_DATA.")
 
 bz.logout()
 
@@ -124,19 +161,31 @@ bugids = ids.keys()
 bugids.sort()
 if options.wiki:
   print "{|"
-  print " ! Bug !! Backtrace rating !! Comment count"
+  print " ! Bug !! Backtrace rating !! Comment count !! Component !! Owner"
   print " |-"
 for bugid in bugids:
-  rating = ids[bugid]
-  if rating[0] < 3:
+  bug = ids[bugid]
+  if bug['rating'] < 3:
     count += 1
-    if rating[1] <= 2:
+    if bug['comment_count'] <= 2:
       closedcount += 1
+
+    # Get the component owner
+    owner = "Failed to get component owner"
+    try:
+      component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/packages/name/{0}?tg_format=json".format(bug['component'])))
+      component_packages = component_info['packageListings']
+      component_f12 = filter(lambda x:x["collection"]["version"]=="12", component_packages)
+      if len(component_f12) == 1:
+        owner = component_f12[0]["owner"]
+    except KeyError:
+      pass
+
     if options.wiki:
-      print " | #[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] || {1}/4 || {2}".format(bugid, rating[0], rating[1])
+      print " | #[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] || {1}/4 || {2} || {3} || {4}".format(bugid, bug['rating'], bug['comment_count'], bug['component'], owner)
       print " |-"
     else:
-      print "#{0} has a backtrace with rating {1}/4 and {2} comments".format(bugid, rating[0], rating[1])
+      print "#{0} has a backtrace with rating {1}/4 and {2} comments, component {3}, owner {4}".format(bugid, bug['rating'], bug['comment_count'], bug['component'], owner)
 
 if options.wiki:
   print " |}"

@@ -297,12 +297,12 @@
                             <property name="can_focus">True</property>
                             <property name="hscrollbar_policy">automatic</property>
                             <property name="vscrollbar_policy">automatic</property>
-                            <property name="shadow_type">in</property>
                             <child>
                               <object class="GtkTextView" id="tvBacktrace">
                                 <property name="height_request">200</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
+                                <property name="accepts_tab">False</property>
                               </object>
                             </child>
                           </object>
@@ -378,6 +378,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="wrap_mode">word-char</property>
+                                            <property name="accepts_tab">False</property>
                                           </object>
                                         </child>
                                       </object>
@@ -415,6 +416,7 @@
                                             <property name="visible">True</property>
                                             <property name="can_focus">True</property>
                                             <property name="wrap_mode">word-char</property>
+                                            <property name="accepts_tab">False</property>
                                           </object>
                                         </child>
                                       </object>

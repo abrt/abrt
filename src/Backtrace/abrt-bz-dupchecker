@@ -25,16 +25,20 @@ import sys
 import os.path
 import subprocess
 import cPickle
+import urllib
+import json
 
 parser = OptionParser(version="%prog 1.0")
 parser.add_option("-u", "--user", dest="user",
                   help="Bugzilla user name (REQUIRED)", metavar="USERNAME")
 parser.add_option("-p", "--password", dest="password",
                   help="Bugzilla password (REQUIRED)", metavar="PASSWORD")
-parser.add_option("-b", "--bugzilla", dest="bugzilla",
+parser.add_option("-b", "--bugzilla", dest="bugzilla", default="https://bugzilla.redhat.com/xmlrpc.cgi",
                   help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
 parser.add_option("-v", "--verbose", dest="verbose",
                   help="Detailed output")
+parser.add_option("-c", "--close", help="Close some of the bugs in Bugzilla (DANGEROUS)", 
+                  action="store_true", default=False, dest="close")
 parser.add_option("-i", "--wiki", help="Generate output in wiki syntax", 
                   action="store_true", default=False, dest="wiki")
 
@@ -45,9 +49,6 @@ if not options.user or len(options.user) == 0:
 
 if not options.password or len(options.password) == 0:
   parser.error("Password is required.\nTry {0} --help".format(sys.argv[0]))
-
-if not options.bugzilla or len(options.bugzilla) == 0:
-  options.bugzilla = "https://bugzilla.redhat.com/xmlrpc.cgi"
 
 bz = RHBugzilla()
 bz.connect(options.bugzilla)
@@ -87,6 +88,7 @@ for buginfo in buginfos:
 
   if ids.has_key(buginfo.bug_id):
     continue
+
   ids[buginfo.bug_id] = True
 
   if not buginfo.bug_status in ["NEW", "ASSIGNED", "MODIFIED", "VERIFIED"]:
@@ -152,11 +154,6 @@ for buginfo in buginfos:
   else:
     database[backtrace] = { buginfo.component: [ bugitem ] }
 
-bz.logout()
-
-print "SUMMARY"
-print "=========================================================================="
-
 # The number of duplicates.
 dupcount = 0
 # The number of duplicates that can be closed.
@@ -168,29 +165,99 @@ for backtrace, components in database.items():
                                     map(lambda x: x["comments"], 
                                         bugitems))),
                          len(bugitems) - 1)
+
+# Get the component owner.    
+# Sort the duplicates by the component owner, and
+# filter out those which should not be printed.
+dups = []
+for backtrace, components in database.items():
+  for component, bugitems in components.items():
+    if len(bugitems) <= 1:
+      continue
+
+    # Get the component owner
+    owner = "Failed to get component owner"
+    try:
+      component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/packages/name/{0}?tg_format=json".format(component)))
+      component_packages = component_info['packageListings']
+      component_f12 = filter(lambda x:x["collection"]["version"]=="12", component_packages)
+      if len(component_f12) == 1:
+        owner = component_f12[0]["owner"]
+    except KeyError:
+      pass
+      
+    dups.append((component, owner, bugitems, backtrace))
+    print "."
+
+# Close all bugs where it is appropriate.
+if options.close:
+  for (component, owner, bugitems, backtrace) in dups:
+    # Find the master bug item
+    # Its the one with the most comments.
     
+    # Sort function sorting by comment count.
+    def commentCmp(x, y):
+      if x['comments'] < y['comments']:
+        return 1
+      elif x['comments'] == y['comments']: 
+        # Sort by bug id, older bugs should became the master bug
+        if x['id'] > y['id']:
+          return 1
+        elif x['id'] == y['id']:
+          return 0
+        else:
+          return -1
+      else:
+        return -1
+
+    sorteditems = sorted(bugitems, commentCmp)
+
+    master = sorteditems[0]
+    for item in sorteditems[1:]:
+      if item['comments'] > 2:
+        continue
+
+      print "Closing bug #{0} with {1} comments as a duplicate of #{2}.".format(item['id'], item['comments'], master['id'])
+      bug = bz.getbug(int(item['id']))
+      bug.close("DUPLICATE", int(master['id']), "", 
+                "This bug appears to have been filled using a buggy version of ABRT, because\n" +
+                "it contains a backtrace which is considered as a duplicate of the backtrace in #{0}." +
+                "Sorry for the inconvenience.\n\n" +
+                "Closing as a duplicate of #{0}.".format(master['id']))
+      
+bz.logout()
+
+print
+print "SUMMARY"
+print "=========================================================================="
 print "Total number of duplicate bugs detected: {0}".format(dupcount)
 print "Number of duplicate bugs that will be closed : {0}".format(dupclosecount)
 print "------------------------------"
 
-# Print the duplicates
-for backtrace, components in database.items():
-  for component, bugitems in components.items():
-    if len(bugitems) > 1:
-      if options.wiki:
-        print "----"
-        print "* component: '''{0}'''".format(component)
-        print "* duplicates: {0}".format(
-          reduce(lambda x,y: x+", "+y, 
-                 map(lambda x: "#[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] ({1} comments)".format(x['id'],x['comments']), 
-                     bugitems)))
-        print "* backtrace:"
-        for line in backtrace.replace("Thread\n", "").splitlines():
-          print "*# {0}".format(line)
-      else:
-        print "Component: {0}".format(component)
-        print "Duplicates: {0}".format(
-          reduce(lambda x,y: x+", "+y, 
-                 map(lambda x: "{0} ({1})".format(x['id'],x['comments']), 
-                     bugitems)))
-        print "Backtrace: {0}".format(backtrace)
+# Print the duplicates sorted by package owner.
+def cmp(x, y):
+  if x[1] < y[1]:
+    return -1
+  elif x[1] == y[1]:
+    return 0
+  else:
+    return 1
+
+for (component, owner, bugitems, backtrace) in sorted(dups, cmp):
+  if options.wiki:
+    print "----"
+    print "* component: '''{0}''' ({1})".format(component, owner)
+    print "* duplicates: {0}".format(
+      reduce(lambda x,y: x+", "+y, 
+             map(lambda x: "#[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] ({1} comments)".format(x['id'],x['comments']), 
+                 bugitems)))
+    print "* backtrace:"
+    for line in backtrace.replace("Thread\n", "").splitlines():
+      print "*# {0}".format(line)
+  else:
+    print "Component: {0} ({1})".format(component, owner)
+    print "Duplicates: {0}".format(
+      reduce(lambda x,y: x+", "+y, 
+             map(lambda x: "{0} ({1})".format(x['id'],x['comments']), 
+                 bugitems)))
+    print "Backtrace: {0}".format(backtrace)

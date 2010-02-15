@@ -80,60 +80,6 @@ static const char *const plugin_type_str[] = {
 };
 
 
-bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings)
-{
-    FILE *fp = fopen(pPath, "r");
-    if (!fp)
-        return false;
-
-    char line[512];
-    while (fgets(line, sizeof(line), fp))
-    {
-        strchrnul(line, '\n')[0] = '\0';
-        unsigned ii;
-        bool is_value = false;
-        bool valid = false;
-        bool in_quote = false;
-        string key;
-        string value;
-        for (ii = 0; line[ii] != '\0'; ii++)
-        {
-            if (line[ii] == '"')
-            {
-                in_quote = !in_quote;
-            }
-            if (isspace(line[ii]) && !in_quote)
-            {
-                continue;
-            }
-            if (line[ii] == '#' && !in_quote && key == "")
-            {
-                break;
-            }
-            if (line[ii] == '=' && !in_quote)
-            {
-                is_value = true;
-                continue;
-            }
-            if (!is_value)
-            {
-                key += line[ii];
-            }
-            else
-            {
-                valid = true;
-                value += line[ii];
-            }
-        }
-        if (valid && !in_quote)
-        {
-            pSettings[key] = value;
-        }
-    }
-    fclose(fp);
-    return true;
-}
-
 /**
  * A function. It saves settings. On success it returns true, otherwise returns false.
  * @param path A path of config file.
