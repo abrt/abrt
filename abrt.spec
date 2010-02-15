@@ -3,7 +3,7 @@
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.0.7
+Version: 1.0.8
 Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
@@ -409,6 +409,7 @@ fi
 
 %changelog
 * Fri Feb 12 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.7-1
+- enabled column sorting rhbz#541853
 - Load plugin settings also from ~/.abrt/*.conf (kklic@redhat.com)
 - fix bz#541088 "abrt should not catch python excp EPIPE" (vda.linux@googlemail.com)
 - fix bz#554242 "Cannot tab between input areas in report dialog" (vda.linux@googlemail.com)
