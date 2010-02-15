@@ -65,12 +65,18 @@ class MainWindow():
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
         #rows of items with:
-        #icon, package_name, application, date, crash_rate, user, is_reported, ?object?
-        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str,bool, object)
-        # set filter
-        modelfilter = self.dumpsListStore.filter_new()
-        modelfilter.set_visible_func(self.filter_dumps, None)
-        self.dlist.set_model(modelfilter)
+        ICON_COL = 0
+        PACKAGE_COL = 1
+        APPLICATION_COL = 2
+        TIME_STR_COL = 3
+        CRASH_RATE_COL = 4
+        USER_COL = 5
+        IS_REPORTED_COL = 6
+        UNIX_TIME_COL = 7
+        DUMP_OBJECT_COL = 8
+        #icon, package_name, application, date, crash_rate, user, is_reported, time_in_sec ?object?
+        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str,bool, int, object)
+        self.dlist.set_model(self.dumpsListStore)
         # add pixbuff separatelly
         icon_column = gtk.TreeViewColumn(_("Icon"))
         icon_column.cell = gtk.CellRendererPixbuf()
@@ -79,13 +85,17 @@ class MainWindow():
         icon_column.pack_start(icon_column.cell, False)
         icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=6)
         # ===============================================
-        columns = [None]*4
-        columns[0] = gtk.TreeViewColumn(_("Package"))
-        columns[1] = gtk.TreeViewColumn(_("Application"))
-        columns[2] = gtk.TreeViewColumn(_("Date"))
-        columns[3] = gtk.TreeViewColumn(_("Crash count"))
-        column = gtk.TreeViewColumn(_("User"))
-        columns.append(column)
+        columns = []
+        columns.append(gtk.TreeViewColumn(_("Package")))
+        columns[-1].set_sort_column_id(PACKAGE_COL)
+        columns.append(gtk.TreeViewColumn(_("Application")))
+        columns[-1].set_sort_column_id(APPLICATION_COL)
+        columns.append(gtk.TreeViewColumn(_("Date")))
+        columns[-1].set_sort_column_id(UNIX_TIME_COL)
+        columns.append(gtk.TreeViewColumn(_("Crash count")))
+        columns[-1].set_sort_column_id(CRASH_RATE_COL)
+        columns.append(gtk.TreeViewColumn(_("User")))
+        columns[-1].set_sort_column_id(USER_COL)
         # create list
         for column in columns:
             n = self.dlist.append_column(column)
@@ -205,7 +215,7 @@ class MainWindow():
                 except Exception, ex:
                     user = "UID: %s" % entry.getUID()
             n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                            entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry])
+                                            entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry.getTime(""), entry])
         # activate the first row if any..
         if n:
             # we can use (0,) as path for the first row, but what if API changes?
