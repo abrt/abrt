@@ -175,10 +175,10 @@ for bugid in bugids:
       pass
 
     if options.wiki:
-      print " | #[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] || {1}/4 || {2}".format(bugid, bug['rating'], bug['comment_count'], bug['component'], owner)
+      print " | #[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] || {1}/4 || {2} || {3} || {4}".format(bugid, bug['rating'], bug['comment_count'], bug['component'], owner)
       print " |-"
     else:
-      print "#{0} has a backtrace with rating {1}/4 and {2} comments".format(bugid, bug['rating'], bug['comment_count'], bug['component'], owner)
+      print "#{0} has a backtrace with rating {1}/4 and {2} comments, component {3}, owner {4}".format(bugid, bug['rating'], bug['comment_count'], bug['component'], owner)
 
 if options.wiki:
   print " |}"
