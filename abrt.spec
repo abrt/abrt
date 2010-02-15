@@ -409,6 +409,7 @@ fi
 
 %changelog
 * Fri Feb 12 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.7-1
+- enabled column sorting rhbz#541853
 - Load plugin settings also from ~/.abrt/*.conf (kklic@redhat.com)
 - fix bz#541088 "abrt should not catch python excp EPIPE" (vda.linux@googlemail.com)
 - fix bz#554242 "Cannot tab between input areas in report dialog" (vda.linux@googlemail.com)
