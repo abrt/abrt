@@ -130,7 +130,42 @@ struct ctx: public abrt_xmlrpc_conn {
     int32_t add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData);
     int32_t get_bug_info(struct bug_info* bz, uint32_t bug_id);
     int32_t add_comment(uint32_t bug_id, const char* comment);
+
+    xmlrpc_value* call(const char* method, const char* format, ...);
 };
+
+xmlrpc_value* ctx::call(const char* method, const char* format, ...)
+{
+    va_list args;
+    xmlrpc_value* param;
+    const char* suffix;
+
+    va_start(args, format);
+    xmlrpc_build_value_va(&env, format, args, &param, &suffix);
+    va_end(args);
+
+    if (!env.fault_occurred) {
+        if (*suffix != '\0')
+            xmlrpc_env_set_fault_formatted(
+                &env, XMLRPC_INTERNAL_ERROR, "Junk after the argument "
+                "specifier: '%s'.  There must be exactly one arument.",
+                suffix);
+
+        if (env.fault_occurred)
+        {
+            xmlrpc_DECREF(param);
+            return NULL;
+        }
+    }
+
+    xmlrpc_value* result = NULL;
+    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, method, param, &result);
+    xmlrpc_DECREF(param);
+    if (env.fault_occurred)
+        return NULL;
+
+    return result;
+}
 
 xmlrpc_value* ctx::get_member(const char* member, xmlrpc_value* result_xml)
 {
@@ -280,19 +315,7 @@ int32_t ctx::get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz)
 xmlrpc_value* ctx::call_quicksearch_uuid(const char* component, const char* uuid)
 {
     std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, uuid);
-
-    // fails only on memory allocation
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s})", "quicksearch", query.c_str());
-    if (env.fault_occurred)
-        return NULL;
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.search", param, &result);
-    xmlrpc_DECREF(param);
-    if (env.fault_occurred)
-        return NULL;
-
-    return result;
+    return call("Bug.search", "({s:s})", "quicksearch", query.c_str());
 }
 
 int32_t ctx::get_bug_id(xmlrpc_value* result_xml)
@@ -321,40 +344,14 @@ int32_t ctx::get_bug_id(xmlrpc_value* result_xml)
 
 int32_t ctx::add_plus_one_cc(uint32_t bug_id, const char* login)
 {
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
-    if (env.fault_occurred)
-        return -1;
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.update", param, &result);
-    xmlrpc_DECREF(param);
-
-    if (result)
-        xmlrpc_DECREF(result);
-
-    if (env.fault_occurred)
-        return -1;
-
-    return 0;
+    xmlrpc_value* result = call("Bug.update", "({s:i,s:{s:(s)}})", "ids", bug_id, "updates", "add_cc", login);
+    return (!result)? -1:0;
 }
 
 int32_t ctx::add_comment(uint32_t bug_id, const char* comment)
 {
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:i,s:{s:s}})", "ids", bug_id, "updates", "comment", comment);
-    if (env.fault_occurred)
-        return -1;
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.update", param, &result);
-    xmlrpc_DECREF(param);
-
-    if (result)
-        xmlrpc_DECREF(result);
-
-    if (env.fault_occurred)
-        return -1;
-
-    return 0;
+    xmlrpc_value* result = call("Bug.update", "({s:i,s:{s:s}})", "ids", bug_id, "updates", "comment", comment);
+    return (!result)? -1:0;
 }
 
 int32_t ctx::new_bug(const map_crash_data_t& pCrashData)
@@ -382,22 +379,16 @@ int32_t ctx::new_bug(const map_crash_data_t& pCrashData)
     std::string version;
     parse_release(release.c_str(), product, version);
 
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
-                                        "product", product.c_str(),
-                                        "component", component.c_str(),
-                                        "version", version.c_str(),
-                                        "summary", summary.c_str(),
-                                        "description", description.c_str(),
-                                        "status_whiteboard", status_whiteboard.c_str(),
-                                        "platform", arch.c_str()
+    xmlrpc_value* result = call("Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+                                "product", product.c_str(),
+                                "component", component.c_str(),
+                                "version", version.c_str(),
+                                "summary", summary.c_str(),
+                                "description", description.c_str(),
+                                "status_whiteboard", status_whiteboard.c_str(),
+                                "platform", arch.c_str()
                               );
-    if (env.fault_occurred)
-        return -1;
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "Bug.create", param, &result);
-    xmlrpc_DECREF(param);
-    if (env.fault_occurred)
+    if (!result)
         return -1;
 
     xmlrpc_value* id = get_member("id", result);
@@ -432,25 +423,17 @@ int32_t ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCr
          && (content.length() > CD_TEXT_ATT_SIZE || itemname == FILENAME_BACKTRACE)
         ) {
             char *encoded64 = encode_base64(content.c_str(), content.length());
-            xmlrpc_value* param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s})",
-                                              bug_id_str,
-                                              "description", ("File: " + itemname).c_str(),
-                                              "filename", itemname.c_str(),
-                                              "contenttype", "text/plain",
-                                              "data", encoded64
+            xmlrpc_value* result = call("bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s})", bug_id_str,
+                                        "description", ("File: " + itemname).c_str(),
+                                        "filename", itemname.c_str(),
+                                        "contenttype", "text/plain",
+                                        "data", encoded64
                                       );
             free(encoded64);
-            if (env.fault_occurred)
+            if (!result)
                 return -1;
 
-            xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.addAttachment", param, &result);
-            xmlrpc_DECREF(param);
-
-            if (result)
-                xmlrpc_DECREF(result);
-
-            if (env.fault_occurred)
-                return -1;
+            xmlrpc_DECREF(result);
         }
     }
     return 0;
@@ -458,14 +441,8 @@ int32_t ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCr
 
 int32_t ctx::get_bug_info(struct bug_info* bz, uint32_t bug_id)
 {
-    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", to_string(bug_id).c_str());
-    if (env.fault_occurred)
-        return -1;
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "bugzilla.getBug", param, &result);
-    xmlrpc_DECREF(param);
-    if (env.fault_occurred)
+    xmlrpc_value* result = call("bugzilla.getBug", "(s)", to_string(bug_id).c_str());
+    if (!result)
         return -1;
 
     if (result)
@@ -519,35 +496,21 @@ void ctx::login(const char* login, const char* passwd)
 {
     xmlrpc_env_init(&env);
 
-    xmlrpc_value* param = xmlrpc_build_value(&env, "({s:s,s:s})", "login", login, "password", passwd);
-    throw_if_xml_fault_occurred(&env);
+    xmlrpc_value* result = call("User.login", "({s:s,s:s})", "login", login, "password", passwd);
 
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.login", param, &result);
-    xmlrpc_DECREF(param);
-    if (result)
-        xmlrpc_DECREF(result);
-
-    if (env.fault_occurred)
+    if (!result)
     {
         std::string errmsg = ssprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
         xmlrpc_env_clean(&env);
         error_msg("%s", errmsg.c_str()); // show error in daemon log
         throw CABRTException(EXCEP_PLUGIN, errmsg.c_str());
     }
+    xmlrpc_DECREF(result);
 }
 
 void ctx::logout()
 {
-    xmlrpc_env_init(&env);
-
-    xmlrpc_value* param = xmlrpc_build_value(&env, "(s)", "");
-    throw_if_xml_fault_occurred(&env);
-
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, "User.logout", param, &result);
-    xmlrpc_DECREF(param);
-
+    xmlrpc_value* result = call("User.logout", "(s)", "");
     if (result)
         xmlrpc_DECREF(result);
 
