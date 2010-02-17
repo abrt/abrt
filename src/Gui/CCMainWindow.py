@@ -244,13 +244,9 @@ class MainWindow():
             # it is not informative (no URL to the report)
             for message in dump.getMessage().split(';'):
                 if message:
-                    message_clean = markup_escape_text(message.strip())
-                    if "http" in message_clean[0:5] or "file:///" in message_clean[0:8]:
-                        report_message = "<a href=\"%s\">%s</a>" % (message_clean, message_clean)
-                    else:
-                        report_message = message_clean
+                    report_message = tag_urls_in_text(message)
                     report_label += "%s\n" % report_message
-                    report_label_raw += "%s\n" % message_clean
+                    report_label_raw += "%s\n" % message
             log2("setting markup '%s'", report_label)
             lReported.set_text(report_label_raw)
             # Sometimes (!) set_markup() fails with

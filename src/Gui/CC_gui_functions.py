@@ -20,6 +20,31 @@ except ImportError:
 from abrt_utils import _, log, log1, log2
 
 
+def tag_urls_in_text(text):
+    url_marks = ["http://", "https://", "ftp://", "ftps://", "file://"]
+    text = markup_escape_text(text)
+    lines = text.split('\n')
+    lines_dict = {}
+    for index in xrange(len(lines)):
+        lines_dict[index] = lines[index]
+    
+    for mark in url_marks:
+        for ix,line in lines_dict.items():
+            last_mark = line.find(mark)
+            if last_mark != -1:
+                url_end = line.find(' ',last_mark)
+                if url_end == -1:
+                    url_end = len(line)
+                url = line[last_mark:url_end]
+                tagged_url = "<a href=\"%s\">%s</a>" % (url, url)
+                lines_dict[ix] = line.replace(url, tagged_url)
+    retval = ""
+    for line in lines_dict.itervalues():
+        retval += line
+        retval +='\n'
+    # strip the trailing \n
+    return retval[:-1]
+
 def on_label_resize(label, allocation):
     label.set_size_request(allocation.width,-1)
 
@@ -71,13 +96,8 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         # if the report was not succesful then this won't pass so this runs only
         # if report succeds and gets overwriten by the status message
         if report_status_dict[plugin][STATUS] == '1':
-            if "http" in report_status_dict[plugin][MESSAGE][0:4] or "file://" in report_status_dict[plugin][MESSAGE][0:7]:
-                status_label.set_markup("<a href=\"%s\">%s</a>" % (report_status_dict[plugin][MESSAGE], report_status_dict[plugin][MESSAGE]))
-                # FIXME: make a new branch for rawhide with gtk 2.17 and remove this
-                if gtk.gtk_version[1] < 17:
-                    status_label.connect(on_url_clicked_signal, on_url_clicked)
-            else:
-                status_label.set_text("%s" % report_status_dict[plugin][1])
+            status_label.set_markup(tag_urls_in_text(report_status_dict[plugin][MESSAGE]))
+            
         if len(report_status_dict[plugin][1]) > MAX_WIDTH:
             status_label.set_tooltip_text(report_status_dict[plugin][1])
         status_vbox.pack_start(plugin_status_vbox, fill=True, expand=False)
