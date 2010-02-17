@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-07 16:55+0000\n"
-"PO-Revision-Date: 2010-02-07 19:02+0100\n"
+"POT-Creation-Date: 2010-02-17 15:37+0000\n"
+"PO-Revision-Date: 2010-02-17 19:18+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -74,7 +74,7 @@ msgstr "(C) 2009 Red Hat, Inc."
 msgid "About ABRT"
 msgstr "Over ABRT"
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:9
 #: ../src/Gui/report.glade.h:15 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisch bug rapporteer gereedschap"
@@ -144,31 +144,31 @@ msgid "_Help"
 msgstr "_Hulp"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:74
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Icon"
 msgstr "Icoon"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:91
 msgid "Application"
 msgstr "Toepassing"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:93
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:95
 msgid "Crash count"
 msgstr "Crash count"
 
-#: ../src/Gui/CCMainWindow.py:86
+#: ../src/Gui/CCMainWindow.py:97
 msgid "User"
 msgstr "Gebruiker"
 
-#: ../src/Gui/CCMainWindow.py:154
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -177,7 +177,7 @@ msgstr ""
 "Kan de instellingen dialoog niet tonen\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -187,7 +187,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:192
+#: ../src/Gui/CCMainWindow.py:203
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -196,19 +196,19 @@ msgstr ""
 "Fout tijdens het laden van de dumplijst.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:230
+#: ../src/Gui/CCMainWindow.py:241
 msgid "This crash has been reported:\n"
 msgstr "Deze crash is gerapporteerd:\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:242
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Deze crash is gerapporteerd:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:250
+#: ../src/Gui/CCMainWindow.py:257
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
-#: ../src/Gui/CCMainWindow.py:298
+#: ../src/Gui/CCMainWindow.py:305
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -216,7 +216,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:318
+#: ../src/Gui/CCMainWindow.py:325
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -225,7 +225,7 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337 ../src/Gui/CCMainWindow.py:364
+#: ../src/Gui/CCMainWindow.py:344 ../src/Gui/CCMainWindow.py:371
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -477,20 +477,20 @@ msgstr "Website:"
 msgid "View and report application crashes"
 msgstr "Bekijk en rapporteer crashes van toepassingen"
 
-#: ../src/Applet/Applet.cpp:78
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Een crash in pakket %s is ontdekt"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
-#: ../src/Applet/CCApplet.cpp:200
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "Waarschuwing"
 
-#: ../src/Daemon/Daemon.cpp:484
+#: ../src/Daemon/Daemon.cpp:483
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -498,124 +498,145 @@ msgstr ""
 "Rapport grootte overschreed quota. Controleer a.u.b. MaxCrashReportsSize "
 "waarde van het systeem in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:124
-msgid "Missing member 'reporter'"
-msgstr "Onderdeel 'aanmelder' ontbreekt"
-
-#: ../lib/Plugins/Bugzilla.cpp:176
-msgid "Missing member 'cc'"
-msgstr "Onderdeel 'cc' ontbreekt"
-
-#: ../lib/Plugins/Bugzilla.cpp:262
+#: ../lib/Plugins/Bugzilla.cpp:340
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:274
-msgid "Missing member 'bug_id'"
-msgstr "Onderdeel 'bug_id' ontbreekt"
-
-#: ../lib/Plugins/Bugzilla.cpp:283
-msgid "Missing member 'bugs'"
-msgstr "Onderdeel 'bugs' ontbreekt"
-
-#: ../lib/Plugins/Bugzilla.cpp:346
+#: ../lib/Plugins/Bugzilla.cpp:406
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:440
-msgid "Checking for duplicates..."
-msgstr "Controleren voor dubbele..."
-
-#: ../lib/Plugins/Bugzilla.cpp:446
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
-
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:565
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:454
-msgid "Checking CC..."
-msgstr "Controleren van CC..."
+#: ../lib/Plugins/Bugzilla.cpp:569
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Leeg login en wachtwoord. Check a.u.b. Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:465
+#: ../lib/Plugins/Bugzilla.cpp:579
+msgid "Checking for duplicates..."
+msgstr "Controleren voor dubbele..."
+
+#: ../lib/Plugins/Bugzilla.cpp:592
+msgid "Missing mandatory member 'bugs'"
+msgstr "Verplicht onderdeel 'bugs' ontbreekt"
+
+#: ../lib/Plugins/Bugzilla.cpp:602
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:610 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
-#: ../lib/Plugins/Kerneloops.cpp:35
+#: ../lib/Plugins/Bugzilla.cpp:638 ../lib/Plugins/Bugzilla.cpp:666
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
+
+#: ../lib/Plugins/Bugzilla.cpp:650
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr "Bugzilla kon de ouder van bug(%d) niet vinden"
+
+#: ../lib/Plugins/Bugzilla.cpp:655
+#, c-format
+msgid "Jump to bug %d"
+msgstr "Ga naar bug %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:680 ../lib/Plugins/Bugzilla.cpp:681
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Voeg %s toe aan CC lijst"
+
+#: ../lib/Plugins/Bugzilla.cpp:695
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "voeg nieuw commentaar toe aan bug(%d)"
+
+#: ../lib/Plugins/Kerneloops.cpp:28
 msgid "Getting local universal unique identification"
 msgstr "Verkrijgen van locale universele unieke identificatie"
 
-#: ../lib/Plugins/CCpp.cpp:269
+#: ../lib/Plugins/CCpp.cpp:266
 msgid "Generating backtrace"
 msgstr "Aangemaakte backtrace"
 
-#: ../lib/Plugins/CCpp.cpp:431
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Starting debuginfo installation"
 msgstr "Start debuginfo installatie"
 
-#: ../lib/Plugins/CCpp.cpp:627
+#: ../lib/Plugins/CCpp.cpp:624
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van golbale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:805
+#: ../lib/Plugins/CCpp.cpp:802
 msgid "Skipping debuginfo installation"
 msgstr "Sla debuginfo installatie over"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:100
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr "Aanmaken en indienen van rapport..."
 
-#: ../lib/Plugins/Logger.cpp:76
+#: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Rapport schrijven naar: '%s'"
 
-#: ../lib/Plugins/FileTransfer.cpp:54
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "Bestandsoverdracht: URL niet opgegeven"
 
-#: ../lib/Plugins/FileTransfer.cpp:58
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Versturen van archief %s naar %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:289
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Bestandsoverdracht: Een rapport maken..."
 
-#: ../lib/Plugins/FileTransfer.cpp:323
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Kan geen archief maken en versturen: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:352
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Kan archief %s niet aanmaken en versturen"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:72
 msgid "Creating kernel oops crash reports..."
 msgstr "Aanmaken van kernel oops crash rapporten..."
 
-#: ../lib/Plugins/Mailx.cpp:137
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Versturen van email..."
 
-#: ../lib/Plugins/SOSreport.cpp:103
+#: ../lib/Plugins/SOSreport.cpp:101
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Sosreport draaien: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:109
+#: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "Klaar met het draaien van sosreport"
+
+#~ msgid "Missing member 'reporter'"
+#~ msgstr "Onderdeel 'aanmelder' ontbreekt"
+
+#~ msgid "Missing member 'cc'"
+#~ msgstr "Onderdeel 'cc' ontbreekt"
+
+#~ msgid "Missing member 'bug_id'"
+#~ msgstr "Onderdeel 'bug_id' ontbreekt"
+
+#~ msgid "Checking CC..."
+#~ msgstr "Controleren van CC..."
 
 #~ msgid "Settings"
 #~ msgstr "Instellingen"
