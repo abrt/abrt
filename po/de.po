@@ -13,10 +13,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-04 10:01+0000\n"
-"PO-Revision-Date: 2010-02-04 11:45+0100\n"
-"Last-Translator: Marcus Nitzschke <kenda@fedoraproject.org>\n"
-"Language-Team: \n"
+"POT-Creation-Date: 2010-02-17 15:37+0000\n"
+"PO-Revision-Date: 2010-02-17 17:23+0100\n"
+"Last-Translator: Jens Maucher <jensm@fedoraproject.org>\n"
+"Language-Team: German <fedora-trans-de@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +29,7 @@ msgstr "Ein anderer Client läuft bereits, versuche ihn zu wecken."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Unerwartete Daten vom Daemon erhalten (ist die Datenbank korrekt aktualisisert?)"
+msgstr "Unerwartete Daten vom Daemon erhalten (wurde die Datenbank richtig aktualisisert?)"
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -78,7 +78,7 @@ msgid "About ABRT"
 msgstr "Über ABRT"
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/CCMainWindow.py:9
 #: ../src/Gui/report.glade.h:15
 #: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -136,38 +136,38 @@ msgid "_Help"
 msgstr "_Hilfe"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:74
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Icon"
 msgstr "Symbol"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Package"
 msgstr "Paket"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:91
 msgid "Application"
 msgstr "Anwendung"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:93
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:95
 msgid "Crash count"
 msgstr "Absturz-Anzahl"
 
-#: ../src/Gui/CCMainWindow.py:86
+#: ../src/Gui/CCMainWindow.py:97
 msgid "User"
 msgstr "Benutzer"
 
-#: ../src/Gui/CCMainWindow.py:154
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
 "%s"
 msgstr "Der Einstellungsdialog %s kann nicht angezeigt werden"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -177,7 +177,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:192
+#: ../src/Gui/CCMainWindow.py:203
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -186,19 +186,19 @@ msgstr ""
 "Fehler beim Laden der Dump-Liste.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:230
+#: ../src/Gui/CCMainWindow.py:241
 msgid "This crash has been reported:\n"
 msgstr "Dieser Absturz wurde gemeldet:\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:242
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Dieser Absturz wurde gemeldet:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:250
+#: ../src/Gui/CCMainWindow.py:257
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nicht berichtet!</b>"
 
-#: ../src/Gui/CCMainWindow.py:298
+#: ../src/Gui/CCMainWindow.py:305
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -206,7 +206,7 @@ msgstr ""
 "Konnte Bericht nicht abrufen!\n"
 "Fehlt Debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:318
+#: ../src/Gui/CCMainWindow.py:325
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -215,8 +215,8 @@ msgstr ""
 "Berichterstellung fehlgeschlagen!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
-#: ../src/Gui/CCMainWindow.py:364
+#: ../src/Gui/CCMainWindow.py:344
+#: ../src/Gui/CCMainWindow.py:371
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fehler beim Abrufen des Berichts: %s"
@@ -462,157 +462,185 @@ msgstr "Webseite:"
 msgid "View and report application crashes"
 msgstr "Anwendungsabstürze einsehen und berichten"
 
-#: ../src/Applet/Applet.cpp:78
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "In Paket %s wurde ein Absturz entdeckt!"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
 msgstr "ABRT-Dienst wird nicht ausgeführt."
 
-#: ../src/Applet/CCApplet.cpp:200
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../src/Daemon/Daemon.cpp:474
+#: ../src/Daemon/Daemon.cpp:483
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie Ihren MaxCrashReportsSize-Wert in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:124
-msgid "Missing member 'reporter'"
-msgstr "Fehlender Teil 'reporter'"
-
-#: ../lib/Plugins/Bugzilla.cpp:176
-msgid "Missing member 'cc'"
-msgstr "Fehlender Teil 'cc'"
-
-#: ../lib/Plugins/Bugzilla.cpp:262
+#: ../lib/Plugins/Bugzilla.cpp:340
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Fehler wurde bereits gemeldet: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:274
-msgid "Missing member 'bug_id'"
-msgstr "Fehlender Teil 'bug_id'"
-
-#: ../lib/Plugins/Bugzilla.cpp:283
-msgid "Missing member 'bugs'"
-msgstr "Fehlender Teil 'bugs'"
-
-#: ../lib/Plugins/Bugzilla.cpp:346
+#: ../lib/Plugins/Bugzilla.cpp:406
 #, c-format
 msgid "New bug id: %i"
 msgstr "Neue Fehler-ID: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:440
-msgid "Checking for duplicates..."
-msgstr "Auf Duplikate überprüfen ..."
-
-#: ../lib/Plugins/Bugzilla.cpp:446
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Leerer Benutzername und Passwort. Bitte überprüfen Sie Bugzilla.conf."
-
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:565
 msgid "Logging into bugzilla..."
 msgstr "Bei Bugzilla anmelden ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:454
-msgid "Checking CC..."
-msgstr "CC überprüfen ..."
+#: ../lib/Plugins/Bugzilla.cpp:569
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Leerer Benutzername und Passwort. Bitte überprüfen Sie Bugzilla.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:465
+#: ../lib/Plugins/Bugzilla.cpp:579
+msgid "Checking for duplicates..."
+msgstr "Auf Duplikate überprüfen ..."
+
+#: ../lib/Plugins/Bugzilla.cpp:592
+#, fuzzy
+msgid "Missing mandatory member 'bugs'"
+msgstr "Fehlender Teil 'bugs'"
+
+#: ../lib/Plugins/Bugzilla.cpp:602
 msgid "Creating new bug..."
 msgstr "Neuen Fehlerbericht erstellen ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:610
+#: ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Abmelden ..."
 
-#: ../lib/Plugins/Kerneloops.cpp:35
+#: ../lib/Plugins/Bugzilla.cpp:638
+#: ../lib/Plugins/Bugzilla.cpp:666
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:650
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:655
+#, c-format
+msgid "Jump to bug %d"
+msgstr "Springe zu Bug %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:680
+#: ../lib/Plugins/Bugzilla.cpp:681
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Füge %s in die CC-Liste hinzu"
+
+#: ../lib/Plugins/Bugzilla.cpp:695
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "Füge neuen Kommentar in Bug(%d) hinzu"
+
+#: ../lib/Plugins/Kerneloops.cpp:28
 msgid "Getting local universal unique identification"
 msgstr "Rufe lokale, universelle, eindeutige Identifikation ab"
 
-#: ../lib/Plugins/CCpp.cpp:253
+#: ../lib/Plugins/CCpp.cpp:266
 msgid "Generating backtrace"
 msgstr "Backtrace wird generiert"
 
-#: ../lib/Plugins/CCpp.cpp:415
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Starting debuginfo installation"
 msgstr "debuginfo-Installation wird gestartet"
 
-#: ../lib/Plugins/CCpp.cpp:564
-msgid "Getting local universal unique identification..."
-msgstr "Lokale, universelle, eindeutige Identifikation abrufen ..."
-
-#: ../lib/Plugins/CCpp.cpp:613
+#: ../lib/Plugins/CCpp.cpp:624
 msgid "Getting global universal unique identification..."
 msgstr "Globale, universelle, eindeutige Identifikation abrufen ..."
 
-#: ../lib/Plugins/CCpp.cpp:791
+#: ../lib/Plugins/CCpp.cpp:802
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo-Installation wird übersprungen"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:100
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr "Einen Bericht erstellen und einreichen ..."
 
-#: ../lib/Plugins/Logger.cpp:76
+#: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Bericht wird nach '%s' geschrieben"
 
-#: ../lib/Plugins/FileTransfer.cpp:54
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "Dateiübertragung: URL nicht angegeben"
 
-#: ../lib/Plugins/FileTransfer.cpp:58
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Archiv %s via %s senden"
 
-#: ../lib/Plugins/FileTransfer.cpp:289
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Dateiübertragung: Einen Bericht erstellen ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:323
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Kann kein Archiv erzeugen und senden: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:352
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Kann kein Archiv erzeugen und senden %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:72
 msgid "Creating kernel oops crash reports..."
 msgstr "Kernel-Oops-Crash-Berichte erzeugen ..."
 
-#: ../lib/Plugins/Mailx.cpp:137
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Eine E-Mail senden ..."
 
-#: ../lib/Plugins/SOSreport.cpp:103
+#: ../lib/Plugins/SOSreport.cpp:101
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "sosreport ausführen: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:109
+#: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "Ausführung von sosreport abgeschlossen"
 
+#~ msgid "Missing member 'reporter'"
+#~ msgstr "Fehlender Teil 'reporter'"
+
+#~ msgid "Missing member 'cc'"
+#~ msgstr "Fehlender Teil 'cc'"
+
+#~ msgid "Missing member 'bug_id'"
+#~ msgstr "Fehlender Teil 'bug_id'"
+
+#~ msgid "Checking CC..."
+#~ msgstr "CC überprüfen ..."
+
+#~ msgid "Getting local universal unique identification..."
+#~ msgstr "Lokale, universelle, eindeutige Identifikation abrufen ..."
+
 #~ msgid "Settings"
 #~ msgstr "Einstellungen"
+
 #~ msgid "Global Settings"
 #~ msgstr "Globale Einstellungen"
+
 #~ msgid "gtk-cancel"
 #~ msgstr "gtk-cancel"
+
 #~ msgid "gtk-ok"
 #~ msgstr "gtk-ok"
+
 #~ msgid "Plugin name is not set, can't load its settings"
 #~ msgstr ""
 #~ "Plugin-Name nicht gesetzt, Einstellungen können nicht geladen werden."
+
 #~ msgid ""
 #~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
 #~ "information.\n"
@@ -621,18 +649,24 @@ msgstr "Ausführung von sosreport abgeschlossen"
 #~ "<b>WARNUNG</b>, Sie sind im Begriff, möglicherweise sensible Daten zu "
 #~ "senden.\n"
 #~ "Möchten Sie wirklich senden<b>%s</b>?\n"
+
 #~ msgid "<b>Following items will be sent</b>"
 #~ msgstr "<b>Folgendes wird gesendet werden</b> "
+
 #~ msgid "Send"
 #~ msgstr "Senden"
+
 #~ msgid "Executing SOSreport plugin..."
 #~ msgstr "SOSreport-Plugin ausführen ..."
+
 #~ msgid "Searching for debug-info packages..."
 #~ msgstr "debug-info-Pakete suchen ..."
+
 #~ msgid "Downloading and installing debug-info packages..."
 #~ msgstr "debug-info-Pakete herunterladen und installieren ..."
+
 #~ msgid "Starting report creation..."
 #~ msgstr "Berichterstellung beginnen ..."
+
 #~ msgid "Creating a report..."
 #~ msgstr "Einen Bericht erstellen ..."
-
