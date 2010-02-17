@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-04 10:01+0000\n"
+"POT-Creation-Date: 2010-02-16 15:42+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -68,7 +68,7 @@ msgid "About ABRT"
 msgstr "אודות ABRT"
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/CCMainWindow.py:9
 #: ../src/Gui/report.glade.h:15
 #: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -126,31 +126,31 @@ msgid "_Help"
 msgstr "ע_זרה"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:74
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Icon"
 msgstr "סמל"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Package"
 msgstr "חבילה"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:91
 msgid "Application"
 msgstr "יישום"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:93
 msgid "Date"
 msgstr "תאריך"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:95
 msgid "Crash count"
 msgstr "מספר קריסות"
 
-#: ../src/Gui/CCMainWindow.py:86
+#: ../src/Gui/CCMainWindow.py:97
 msgid "User"
 msgstr "משתמש"
 
-#: ../src/Gui/CCMainWindow.py:154
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -159,7 +159,7 @@ msgstr ""
 "לא ניתן להציג את חלון ההגדרות\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -169,7 +169,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:192
+#: ../src/Gui/CCMainWindow.py:203
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -178,19 +178,19 @@ msgstr ""
 "שגיאה במהלך טעינת dumplist.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:230
+#: ../src/Gui/CCMainWindow.py:241
 msgid "This crash has been reported:\n"
 msgstr "הקריסה הזאת דווחה:\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:242
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>הקריסה הזאת דווחה:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:250
+#: ../src/Gui/CCMainWindow.py:261
 msgid "<b>Not reported!</b>"
 msgstr "<b>לא דווח!</b>"
 
-#: ../src/Gui/CCMainWindow.py:298
+#: ../src/Gui/CCMainWindow.py:309
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -198,7 +198,7 @@ msgstr ""
 "לא ניתן להשיג דיווח\n"
 "מידע ניפוי שגיאות חסר?"
 
-#: ../src/Gui/CCMainWindow.py:318
+#: ../src/Gui/CCMainWindow.py:329
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -207,8 +207,8 @@ msgstr ""
 "הדיווח נכשל!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
-#: ../src/Gui/CCMainWindow.py:364
+#: ../src/Gui/CCMainWindow.py:348
+#: ../src/Gui/CCMainWindow.py:375
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "שגיאה בקבלת הדיווח: %s"
@@ -456,145 +456,167 @@ msgstr "אתר אינטרנט:"
 msgid "View and report application crashes"
 msgstr "צפה ברשימת היישומים שקרסו ודווח על הקריסות"
 
-#: ../src/Applet/Applet.cpp:78
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "קריסה בחבילה %s התגלתה"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
 msgstr "שירות ABRT לא פועל"
 
-#: ../src/Applet/CCApplet.cpp:200
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "אזהרה"
 
-#: ../src/Daemon/Daemon.cpp:474
+#: ../src/Daemon/Daemon.cpp:483
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:124
-msgid "Missing member 'reporter'"
-msgstr "חסר שדה 'reporter'"
-
-#: ../lib/Plugins/Bugzilla.cpp:176
-msgid "Missing member 'cc'"
-msgstr "חסר שדה 'cc'"
-
-#: ../lib/Plugins/Bugzilla.cpp:262
+#: ../lib/Plugins/Bugzilla.cpp:317
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "הבאג דווח בעבר: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:274
-msgid "Missing member 'bug_id'"
-msgstr "חסר שדה 'bug_id'"
-
-#: ../lib/Plugins/Bugzilla.cpp:283
-msgid "Missing member 'bugs'"
-msgstr "חסר שדה 'bugs'"
-
-#: ../lib/Plugins/Bugzilla.cpp:346
+#: ../lib/Plugins/Bugzilla.cpp:415
 #, c-format
 msgid "New bug id: %i"
 msgstr "מזהה באג חדש: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:440
-msgid "Checking for duplicates..."
-msgstr "מחפש כפילויות..."
-
-#: ../lib/Plugins/Bugzilla.cpp:446
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "שם משתמש וסיסמה ריקים. אנא בדוק את הקובץ bugzilla.conf"
-
-#: ../lib/Plugins/Bugzilla.cpp:449
+#: ../lib/Plugins/Bugzilla.cpp:602
 msgid "Logging into bugzilla..."
 msgstr "מתחבר לבאגזילה..."
 
-#: ../lib/Plugins/Bugzilla.cpp:454
-msgid "Checking CC..."
-msgstr "בודק שדה CC..."
+#: ../lib/Plugins/Bugzilla.cpp:606
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "שם משתמש וסיסמה ריקים. אנא בדוק את הקובץ bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:465
+#: ../lib/Plugins/Bugzilla.cpp:616
+msgid "Checking for duplicates..."
+msgstr "מחפש כפילויות..."
+
+#: ../lib/Plugins/Bugzilla.cpp:629
+msgid "Missing mandatory member 'bugs'"
+msgstr "חסר שדה חוסה 'bugs'"
+
+#: ../lib/Plugins/Bugzilla.cpp:639
 msgid "Creating new bug..."
 msgstr "יוצר באג חדש..."
 
-#: ../lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:647
+#: ../lib/Plugins/Bugzilla.cpp:741
 msgid "Logging out..."
 msgstr "מתנתק..."
 
-#: ../lib/Plugins/Kerneloops.cpp:35
+#: ../lib/Plugins/Bugzilla.cpp:675
+#: ../lib/Plugins/Bugzilla.cpp:703
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:687
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr "‏Bugzilla לא הצליחה למצוא את ההורה של הבאג(%d)"
+
+#: ../lib/Plugins/Bugzilla.cpp:692
+#, c-format
+msgid "Jump to bug %d"
+msgstr "עבור לבאג %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:717
+#: ../lib/Plugins/Bugzilla.cpp:718
+#, c-format
+msgid "Add %s to CC list"
+msgstr "הוסף %s לרשימת הCC"
+
+#: ../lib/Plugins/Bugzilla.cpp:732
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "הוסף הערה חדשה לבאג(%d)"
+
+#: ../lib/Plugins/Kerneloops.cpp:28
 msgid "Getting local universal unique identification"
 msgstr "מקבל זהות מקומית ייחודית"
 
-#: ../lib/Plugins/CCpp.cpp:253
+#: ../lib/Plugins/CCpp.cpp:266
 msgid "Generating backtrace"
 msgstr "יוצר מידע קריסה"
 
-#: ../lib/Plugins/CCpp.cpp:415
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Starting debuginfo installation"
 msgstr "מתחיל התקנת מידע ניפוי שגיאות"
 
-#: ../lib/Plugins/CCpp.cpp:564
-msgid "Getting local universal unique identification..."
-msgstr "מקבל זהות מקומית ייחודית..."
-
-#: ../lib/Plugins/CCpp.cpp:613
+#: ../lib/Plugins/CCpp.cpp:624
 msgid "Getting global universal unique identification..."
 msgstr "מקבל זהות גלובלית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:791
+#: ../lib/Plugins/CCpp.cpp:802
 msgid "Skipping debuginfo installation"
 msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:100
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr "יוצר ושולח דיווח..."
 
-#: ../lib/Plugins/Logger.cpp:76
+#: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "כותב דיווח ל'%s'"
 
-#: ../lib/Plugins/FileTransfer.cpp:54
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "העברת קובץ: כתובת לא צוינה"
 
-#: ../lib/Plugins/FileTransfer.cpp:58
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "שולח ארכיון %s ל-%s"
 
-#: ../lib/Plugins/FileTransfer.cpp:289
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "העברת קובץ: יוצר דיווח..."
 
-#: ../lib/Plugins/FileTransfer.cpp:323
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "לא יכול ליצור ולשלוח ארכיון: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:352
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "לא יכול ליצור ולשלוח ארכיון %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:72
 msgid "Creating kernel oops crash reports..."
 msgstr "יוצר דיווחי קריסה של kernel oops..."
 
-#: ../lib/Plugins/Mailx.cpp:137
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
 
-#: ../lib/Plugins/SOSreport.cpp:103
+#: ../lib/Plugins/SOSreport.cpp:101
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "מריץ sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:109
+#: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
+
+#~ msgid "Missing member 'reporter'"
+#~ msgstr "חסר שדה 'reporter'"
+
+#~ msgid "Missing member 'cc'"
+#~ msgstr "חסר שדה 'cc'"
+
+#~ msgid "Missing member 'bug_id'"
+#~ msgstr "חסר שדה 'bug_id'"
+
+#~ msgid "Checking CC..."
+#~ msgstr "בודק שדה CC..."
+
+#~ msgid "Getting local universal unique identification..."
+#~ msgstr "מקבל זהות מקומית ייחודית..."
 
 #~ msgid "Global Settings"
 #~ msgstr "הגדרות כלליות"
