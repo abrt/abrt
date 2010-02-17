@@ -575,6 +575,27 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     VERB3 log("dbus_bus_get");
     conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
     handle_dbus_err(conn == NULL, &err);
+    // dbus api says:
+    // "If dbus_bus_get obtains a new connection object never before returned
+    // from dbus_bus_get(), it will call dbus_connection_set_exit_on_disconnect(),
+    // so the application will exit if the connection closes. You can undo this
+    // by calling dbus_connection_set_exit_on_disconnect() yourself after you get
+    // the connection."
+    // ...
+    // "When a connection is disconnected, you are guaranteed to get a signal
+    // "Disconnected" from the interface DBUS_INTERFACE_LOCAL, path DBUS_PATH_LOCAL"
+    //
+    // dbus-daemon drops connections if it recvs a malformed message
+    // (we actually observed this when we sent bad UTF-8 string).
+    // Currently, in this case abrtd just exits with exitcode 1.
+    // (symptom: last two log messages are "abrtd: remove_watch()")
+    // If we want to have better logging or other nontrivial handling,
+    // here we need to do:
+    //
+    //dbus_connection_set_exit_on_disconnect(conn, FALSE);
+    //dbus_connection_add_filter(conn, handle_message, NULL, NULL);
+    //
+    // and need to code up handle_message to check for "Disconnected" dbus signal
 
     attach_dbus_conn_to_glib_main_loop(conn, "/com/redhat/abrt", message_received);
 
