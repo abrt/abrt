@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-02-16 20:38+0000\n"
-"PO-Revision-Date: 2010-02-17 12:56+1100\n"
+"PO-Revision-Date: 2010-02-17 13:04+1100\n"
 "Last-Translator: Yulia <ypoyarko@redhat.com>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -20,16 +20,15 @@ msgstr ""
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr "Выполняется другой клиент. Будет выполнена попытка его активировать."
+msgstr "Другой клиент уже работает. Будет выполнена попытка его активировать."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Получены непредвиденные данные от демона. Убедитесь, что база данных обновлена."
+msgstr "Получены неожиданные данные от демона. Убедитесь, что база данных обновлена."
 
 #: ../src/Gui/ABRTPlugin.py:62
-#, fuzzy
 msgid "Not loaded plugins"
-msgstr "Нет UI для модуля %s"
+msgstr "Модули не загружены"
 
 #: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
@@ -529,7 +528,7 @@ msgstr "Выполняется выход..."
 
 #: ../lib/Plugins/Bugzilla.cpp:675 ../lib/Plugins/Bugzilla.cpp:703
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
+msgstr "Сбой get_bug_info(). Не удалось собрать всю необходимую информацию."
 
 #: ../lib/Plugins/Bugzilla.cpp:687
 #, c-format
@@ -539,31 +538,30 @@ msgstr ""
 #: ../lib/Plugins/Bugzilla.cpp:692
 #, c-format
 msgid "Jump to bug %d"
-msgstr ""
+msgstr "Перейти к запросу %d"
 
 #: ../lib/Plugins/Bugzilla.cpp:717 ../lib/Plugins/Bugzilla.cpp:718
 #, c-format
 msgid "Add %s to CC list"
-msgstr ""
+msgstr "Добавить %s в список CC"
 
 #: ../lib/Plugins/Bugzilla.cpp:732
 #, c-format
 msgid "Add new comment into bug(%d)"
-msgstr ""
+msgstr "Добавить комментарий к запросу (%d)"
 
 #: ../lib/Plugins/Kerneloops.cpp:28
+#, fuzzy
 msgid "Getting local universal unique identification"
 msgstr "Получение локальных идентификационных данных"
 
 #: ../lib/Plugins/CCpp.cpp:266
-#, fuzzy
 msgid "Generating backtrace"
-msgstr "Получение трассировки..."
+msgstr "Генерация трассировки..."
 
 #: ../lib/Plugins/CCpp.cpp:428
-#, fuzzy
 msgid "Starting debuginfo installation"
-msgstr "Пропускается установка debuginfo"
+msgstr "Запускается установка debuginfo"
 
 #: ../lib/Plugins/CCpp.cpp:624
 msgid "Getting global universal unique identification..."
@@ -603,7 +601,7 @@ msgstr "Не удалось создать и отправить архив: %s"
 #: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
-msgstr "Не удалось создать и отправить архив: %s"
+msgstr "Не удалось создать и отправить архив %s"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:72
 msgid "Creating kernel oops crash reports..."
@@ -614,12 +612,11 @@ msgid "Sending an email..."
 msgstr "Отправляется почтовое сообщение..."
 
 #: ../lib/Plugins/SOSreport.cpp:101
-#, fuzzy, c-format
+#, c-format
 msgid "Running sosreport: %s"
-msgstr "выполняется sosreport: %s"
+msgstr "Выполняется sosreport: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:107
-#, fuzzy
 msgid "Done running sosreport"
-msgstr "sosreport завершён"
+msgstr "sosreport завершил работу"
 
