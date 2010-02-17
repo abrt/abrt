@@ -44,7 +44,7 @@ static char *append_escaped(char *start, const char *s)
             *dst++ = '\'';
         }
 
-        strncpy(dst, s, (p - old_p));
+        strncpy(dst, (char *)old_p, (p - old_p));
         dst += (p - old_p);
 
         if (*p == '\0')
