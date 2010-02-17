@@ -510,7 +510,7 @@ report_status_t Report(const map_crash_data_t& client_report,
                     ret[plugin_name].push_back("1"); // REPORT_STATUS_IDX_FLAG
                     ret[plugin_name].push_back(res); // REPORT_STATUS_IDX_MSG
                     if (message != "")
-                        message += "; ";
+                        message += ";";
                     message += res;
                     at_least_one_reporter_succeeded = true;
                 }
