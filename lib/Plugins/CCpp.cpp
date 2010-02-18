@@ -35,6 +35,15 @@ using namespace std;
 
 #define CORE_PATTERN_IFACE      "/proc/sys/kernel/core_pattern"
 #define CORE_PATTERN            "|"CCPP_HOOK_PATH" "DEBUG_DUMPS_DIR" %p %s %u %c"
+#define CORE_PIPE_LIMIT_IFACE   "/proc/sys/kernel/core_pipe_limit"
+/* core_pipe_limit specifies how many dump_helpers might run at the same time
+0 - means unlimited, but the it's not guaranteed that /proc/<pid> of crashing
+process might not be available for dump_helper
+4 - means that 4 dump_helpers can run at the same time, which should be enough
+for ABRT, we can miss some crashes, but what are the odds that more processes 
+crash at the same time? This value has been recommended by nhorman
+*/
+#define CORE_PIPE_LIMIT "4"
 
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
@@ -924,10 +933,44 @@ void CAnalyzerCCpp::Init()
         fputs(CORE_PATTERN, fp);
         fclose(fp);
     }
+    
+    /* read the core_pipe_limit and change it if it's == 0
+       otherwise the abrt-hook-ccpp won't be able to read /proc/<pid>
+       of the crashing process
+    */
+    fp = fopen(CORE_PIPE_LIMIT_IFACE, "r");
+    if (fp)
+    {
+        /* we care only about the first char, if it's
+            not '0' then we don't have to change it,
+            because it means that it's already != 0
+        */
+        char pipe_limit[2];
+        if (fgets(pipe_limit, sizeof(pipe_limit), fp))
+            m_sOldCorePipeLimit = pipe_limit;
+        fclose(fp);
+        if(m_sOldCorePipeLimit[0] == '0')
+        {
+            fp = fopen(CORE_PIPE_LIMIT_IFACE, "w");
+            if(fp)
+            {
+                fputs(CORE_PIPE_LIMIT, fp);
+                fclose(fp);
+            }
+            else
+            {
+                log("warning: failed to set core_pipe_limit, ABRT won't detect"
+                    "crashes in compiled apps if kernel > 2.6.31");
+            }
+        }
+    }
 }
 
 void CAnalyzerCCpp::DeInit()
 {
+    /* no need to restore the core_pipe_limit, because it's only used 
+       when there is s pipe in core_pattern
+    */
     FILE *fp = fopen(CORE_PATTERN_IFACE, "w");
     if (fp)
     {
