@@ -4,85 +4,106 @@
 # Eunju Kim <eukim@redhat.com>, 2009.
 # cyrushmh <cyrushmh@vip.qq.com;cyrusyzgtt@gmail.com>, 2009.
 # Leah Liu <lliu@redhat.com>, 2009.
+# chenhuan <chenhuan.gt@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-02 15:17+0100\n"
-"PO-Revision-Date: 2009-12-09 11:46+1000\n"
-"Last-Translator: Leah Liu <lliu@redhat.com>\n"
-"Language-Team: Simplified Chinese <zh@li.org>\n"
+"POT-Creation-Date: 2010-02-17 09:25+0000\n"
+"PO-Revision-Date: 2010-02-18 16:03+0800\n"
+"Last-Translator: chenhuan <chenhuan.gt@gmail.com>\n"
+"Language-Team: https://fedoraproject.org/wiki/Zh/Main_Page\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Virtaal 0.5.1\n"
 "X-Poedit-Language: Chinese\n"
 "X-Poedit-Country: CHINA\n"
 
-#: src/Gui/ABRTExceptions.py:6
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "另一用户机已在运行中，尝试唤醒中。"
 
-#: src/Gui/ABRTExceptions.py:13
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "从Daemon得到非预期的数据（数据库有否正确更新？）"
+msgstr "从守护进程得到非预期的数据（数据库有否正确更新？）。"
 
-#: src/Gui/ABRTPlugin.py:62
-#, fuzzy
+#: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
-msgstr "插件 %s 并未有用户界面"
+msgstr "未载入插件"
 
-#: src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
-msgstr "Analyzer 插件  "
+msgstr "分析者插件"
 
-#: src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
-msgstr "Action 插件  "
+msgstr "动作插件"
 
-#: src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
-msgstr "Reporter 插件  "
+msgstr "报告者插件"
 
-#: src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
-msgstr "Database 插件 "
+msgstr "数据库插件"
 
-#: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
-msgstr "未能连结到系统dbus"
+msgstr "不能连上系统 dbus"
 
-#: src/Gui/CCDBusBackend.py:120 src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
-msgstr "请检查abrt daemon是否运行中"
+msgstr "请检查 abrt 守护进程是否在运行"
 
-#: src/Gui/CCDBusBackend.py:175
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
-"守护进程没有返回有效的报告内容。\n"
-"调试内容是否缺失？"
+"守护进程没有返回有效的信息\n"
+"缺少 Debuginfo？"
 
-#: src/Gui/ccgui.glade:8
-msgid "Please wait.."
-msgstr "请稍候……"
-
-#: src/Gui/ccgui.glade:60
-msgid "Details"
-msgstr ""
-
-#: src/Gui/ccgui.glade:76
-msgid "About ABRT"
-msgstr "关于 ABRT  "
-
-#: src/Gui/ccgui.glade:82
+#: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: src/Gui/ccgui.glade:83
+#: ../src/Gui/ccgui.glade.h:2
+msgid "About ABRT"
+msgstr "关于 ABRT"
+
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/report.glade.h:15 ../src/Gui/abrt.desktop.in.h:1
+msgid "Automatic Bug Reporting Tool"
+msgstr "自动错误报告工具"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "Delete"
+msgstr "删除"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "细节"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Not Reported"
+msgstr "未报告"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Please wait.."
+msgstr "请稍候……"
+
+#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/settings.glade.h:19
+msgid "Plugins"
+msgstr "插件"
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Report"
+msgstr "报告"
+
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -97,73 +118,51 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"本程序为自由软件；您可依据自由软件基金会所发表的 GNU 通用公共许可证就本程序再"
-"为发布与／或修改；无论您依据的是本授权的第二版或（您自行选择的）任一日后发行"
-"之版本。\n"
+"本程序为自由软件；您可依据自由软件基金会所发表的 GNU "
+"通用公共许可证对本程序再发布与／或修改；无论您依据的是本授权的第二版或（您自行选择的）任一日后发行之版本。\n"
 "\n"
-"本程序是基於使用目的而加以发布，然而不负任何担保责任；亦无对适售性或特定目的"
-"适用性所为的默示性担保。详情请引用 GNU 通用公共许可证。\n"
+"本程序是基于使用目的而加以发布，然而不负任何担保责任；亦无对适售性或特定目的适用性所为的默示性担保。详情请参考 GNU 通用公共许可证。\n"
 "\n"
-"您应该已收到了附随於本程序的 GNU 通用公共授权的副本。若没有收到的话，请至 "
-"<http://www.gnu.org/licenses/>。"
+"您应该已收到了附于本程序的 GNU 通用公共授权的副本。若没有收到，请参看 <http://www.gnu.org/licenses/>。"
 
-#: src/Gui/ccgui.glade:121 src/Gui/CCMainWindow.py:8 src/Gui/report.glade:7
-msgid "Automatic Bug Reporting Tool"
-msgstr "自动错误回报工具 (ABRT) "
-
-#: src/Gui/ccgui.glade:134
-msgid "_File"
-msgstr "文件(_F)  "
-
-#: src/Gui/ccgui.glade:155
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
-msgstr "编辑(_E)  "
+msgstr "编辑(_E)"
 
-#: src/Gui/ccgui.glade:163
-msgid "Plugins"
-msgstr "插件"
+#: ../src/Gui/ccgui.glade.h:16
+msgid "_File"
+msgstr "文件(_F)"
 
-#: src/Gui/ccgui.glade:182
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
-msgstr "求助(_H)  "
+msgstr "帮助(_H)"
 
-#: src/Gui/ccgui.glade:214 src/Gui/ccgui.glade:215
-msgid "Delete"
-msgstr "删除 "
-
-#: src/Gui/ccgui.glade:227 src/Gui/ccgui.glade:228 src/Gui/ccgui.glade:342
-msgid "Report"
-msgstr "报告  "
-
-#: src/Gui/ccgui.glade:298
-msgid "Not Reported"
-msgstr "没有报告"
-
-#: src/Gui/CCMainWindow.py:74
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Icon"
-msgstr "图示"
+msgstr "图标"
 
-#: src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Package"
-msgstr "软件包  "
+msgstr "软件包"
 
-#: src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:91
 msgid "Application"
-msgstr "应用程序  "
+msgstr "应用程序"
 
-#: src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:93
 msgid "Date"
-msgstr "日期  "
+msgstr "日期"
 
-#: src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:95
 msgid "Crash count"
 msgstr "崩溃计数"
 
-#: src/Gui/CCMainWindow.py:86
+#: ../src/Gui/CCMainWindow.py:97
 msgid "User"
-msgstr "用户 "
+msgstr "用户"
 
-#: src/Gui/CCMainWindow.py:154
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -172,69 +171,69 @@ msgstr ""
 "不能显示设置对话框\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
-"不能完结现有程序！\n"
+"无法完成当前任务！\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:192
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:203
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
-"载入 dumplist 出错。\n"
-" %s "
+"载入 dumplist 时出错。\n"
+"%s"
 
-#: src/Gui/CCMainWindow.py:230
-#, fuzzy
+#: ../src/Gui/CCMainWindow.py:241
 msgid "This crash has been reported:\n"
-msgstr "<b>这个错误已经报告，你可以在这个地点找到这个报告：</b>\n"
+msgstr "这个错误已经报告：\n"
 
-#: src/Gui/CCMainWindow.py:231
-#, fuzzy
+#: ../src/Gui/CCMainWindow.py:242
 msgid "<b>This crash has been reported:</b>\n"
-msgstr "<b>这个错误已经报告，你可以在这个地点找到这个报告：</b>\n"
+msgstr "<b>这个错误已经报告：</b>\n"
 
-#: src/Gui/CCMainWindow.py:250
+#: ../src/Gui/CCMainWindow.py:261
 msgid "<b>Not reported!</b>"
-msgstr "<b>没有报告!</b>  "
+msgstr "<b>未报告！</b>"
 
-#: src/Gui/CCMainWindow.py:298
+#: ../src/Gui/CCMainWindow.py:309
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"未能取得报告书！\n"
-"会是因为调试数据的缺失吗？"
+"无法取得报告书！\n"
+"Debuginfo 缺失？"
 
-#: src/Gui/CCMainWindow.py:318
+#: ../src/Gui/CCMainWindow.py:329
 #, python-format
 msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
-"报告失败！\n"
-"%s "
+"报告功能失败！\n"
+"%s"
 
-#: src/Gui/CCMainWindow.py:337 src/Gui/CCMainWindow.py:364
+#: ../src/Gui/CCMainWindow.py:348 ../src/Gui/CCMainWindow.py:375
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "取得报告时出错：%s"
 
-#: src/Gui/CCReporterDialog.py:24
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "简述如何可以再次让这问题出现，或描述你做过什么……"
+msgstr "简述如何再现这个错误，或你做过什么……"
 
-#: src/Gui/CCReporterDialog.py:99
+#: ../src/Gui/CCReporterDialog.py:99
 msgid "You must check backtrace for sensitive data"
-msgstr ""
+msgstr "你必须检查回溯中是否包含敏感数据"
 
-#: src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:110
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -242,385 +241,394 @@ msgid ""
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"报告功能被禁用因为向后追踪不可用。\n"
-"请尝试用命令来手动安装 debuginfo：<b> debuginfo-install %s </b>\n"
-"然后按刷新按钮来重新生成向后追踪信息。"
+"报告功能被禁用，因为回溯不可用。\n"
+"请尝试用命令来手动安装 debuginfo：<b>debuginfo-install %s</b> \n"
+"然后按刷新按钮来重新生成回溯。"
 
-#: src/Gui/CCReporterDialog.py:112
+#: ../src/Gui/CCReporterDialog.py:112
 msgid "The backtrace is unusable, you can't report this!"
-msgstr "向后追踪不可用，您不能报告此错误！"
+msgstr "回溯不可用，您不能报告这个错误！"
 
-#: src/Gui/CCReporterDialog.py:116
+#: ../src/Gui/CCReporterDialog.py:116
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
-msgstr "向后追踪信息是不完全的，请确定您提供了用于再现（错误）的步骤。"
+msgstr "回溯是不完全的，请确定您提供了可以再现错误的最佳步骤。"
 
-#: src/Gui/CCReporterDialog.py:158
+#: ../src/Gui/CCReporterDialog.py:158
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
 msgstr ""
-"无法保存插件设置：\n"
-"%s"
+"不能保存插件设置：\n"
+" %s"
 
-#: src/Gui/dialogs.glade:7
+#: ../src/Gui/dialogs.glade.h:1
+msgid "Log"
+msgstr "日志"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "报告完成"
 
-#: src/Gui/dialogs.glade:78
-msgid "Log"
-msgstr ""
-
-#: src/Gui/PluginSettingsUI.py:18
+#: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "找不到 PluginDialog 的用户界面说明！"
+msgstr "在用户界面说明中找不到 PluginDialog 小工具！"
 
-#: src/Gui/PluginSettingsUI.py:24
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:24
 #, python-format
 msgid "No UI for plugin %s"
-msgstr "插件 %s 并未有用户界面"
+msgstr "没有插件 %s 的用户界面"
 
-#: src/Gui/PluginSettingsUI.py:55 src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:55 ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
-msgstr "combo box还未被建构"
+msgstr "组合框没有实现"
 
-#: src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
-msgstr "没有需要hydrate的东西！"
+msgstr "没有需要水合的东西！"
 
-#: src/Gui/report.glade:41
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:52
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:63
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:74
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:98 src/Gui/report.glade:111 src/Gui/report.glade:124
-#: src/Gui/report.glade:137 src/Gui/report.glade:215 src/Gui/report.glade:228
-#: src/Gui/report.glade:241 src/Gui/report.glade:254
-msgid "N/A"
-msgstr ""
-
-#: src/Gui/report.glade:159
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:170
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:181
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:192
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr ""
-
-#: src/Gui/report.glade:315
-msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-
-#: src/Gui/report.glade:334
-msgid "<b>Backtrace</b>"
-msgstr ""
-
-#: src/Gui/report.glade:396
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>如何（以简单步骤）再现</b>"
-
-#: src/Gui/report.glade:439
-msgid "<b>Comment</b>"
-msgstr "<b>注释</b>"
-
-#: src/Gui/report.glade:487
-#, fuzzy
-msgid "<b>Attachments</b>"
-msgstr "<b>注释</b>"
-
-#: src/Gui/report.glade:536
-msgid "<b>Please fix the following problems</b>"
-msgstr ""
-
-#: src/Gui/report.glade:546
+#: ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
-#: src/Gui/report.glade:593
-msgid "Show log"
-msgstr ""
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>附件</b>"
 
-#: src/Gui/report.glade:635
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>回溯</b>"
+
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>注释</b>"
+
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>如何（以简单几步）再现错误</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>请修复以下问题</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">架构：</span>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">命令行：</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">组件：</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">可执行文件：</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">内核：</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">软件包：</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">理由：</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">发布名：</span>"
+
+#: ../src/Gui/report.glade.h:16
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr "我检查了回溯并删除了敏感数据（密码之类）"
+
+#: ../src/Gui/report.glade.h:17
+msgid "N/A"
+msgstr "N/A"
+
+#: ../src/Gui/report.glade.h:18
 msgid "Send report"
-msgstr ""
+msgstr "发送报告"
 
-#: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
+#: ../src/Gui/report.glade.h:19
+msgid "Show log"
+msgstr "显示日志"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>选择插件</b>"
 
-#: src/Gui/SettingsDialog.py:36
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
-msgstr "<b>选择数据库的后台</b>"
+msgstr "<b>选择数据库后台</b>"
 
-#: src/Gui/SettingsDialog.py:169
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "删除这项工作"
 
-#: src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "删除这个动作"
 
-#: src/Gui/settings.glade:6
-msgid "Settings"
-msgstr "设置"
-
-#: src/Gui/settings.glade:63
-msgid "Web Site:"
-msgstr "网站："
-
-#: src/Gui/settings.glade:75
-msgid "Author:"
-msgstr "作者："
-
-#: src/Gui/settings.glade:87
-msgid "Version:"
-msgstr "版本："
-
-#: src/Gui/settings.glade:141
-msgid "Description:"
-msgstr "描述："
-
-#: src/Gui/settings.glade:153
-msgid "Name:"
-msgstr "名称："
-
-#: src/Gui/settings.glade:197
-msgid "<b>Plugin details</b>"
-msgstr "<b>插件详情</b>"
-
-#: src/Gui/settings.glade:220
-msgid "C_onfigure plugin"
-msgstr "设置插件(_O)"
-
-#: src/Gui/settings.glade:257
-msgid "Global Settings"
-msgstr "全局设置"
-
-#: src/Gui/settings.glade:283
-msgid "Check package GPG signature"
-msgstr "检查软件包的 GPG 签章"
-
-#: src/Gui/settings.glade:299
-msgid "Database backend: "
-msgstr "数据库的后台："
-
-#: src/Gui/settings.glade:325
-msgid "Blacklisted packages: "
-msgstr "黑名单中的软件包："
-
-#: src/Gui/settings.glade:339
-msgid "Max coredump storage size(MB):"
-msgstr "最大核心转储尺寸（MB）："
-
-#: src/Gui/settings.glade:353
-msgid "GPG keys: "
-msgstr "GPG 金钥："
-
-#: src/Gui/settings.glade:456
-msgid "Common"
-msgstr "一般"
-
-#: src/Gui/settings.glade:489
-msgid "<b>Plugin</b>"
-msgstr "<b>插件</b>"
-
-#: src/Gui/settings.glade:499
-msgid "<b>Time (or period)</b>"
-msgstr "<b>时间（或期间）</b>"
-
-#: src/Gui/settings.glade:567
-msgid "Cron"
-msgstr "克隆"
-
-#: src/Gui/settings.glade:601
+#: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Analyzer 插件</b>"
+msgstr "<b>分析者插件</b>"
 
-#: src/Gui/settings.glade:611
+#: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
 msgstr "<b>关联的动作</b>"
 
-#: src/Gui/settings.glade:690
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>插件详情</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Plugin</b>"
+msgstr "<b>插件</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "<b>Time (or period)</b>"
+msgstr "<b>时间（或时段）</b>"
+
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
-msgstr "分析, 操作, 记录"
+msgstr "分析者, 动作, 记录者"
 
-#: src/Gui/settings.glade:709
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "作者："
 
-#: src/Gui/settings.glade:723
-msgid "gtk-ok"
-msgstr "gtk-ok"
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "黑名单中的软件包："
 
-#: src/Gui/settings.glade:751
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure plugin"
+msgstr "设置插件(_O)"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "检查软件包的 GPG 签名"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "常规"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "使用Cron"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "数据库后台："
+
+#: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "描述："
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG 金钥"
 
-#: src/Applet/Applet.cpp:78
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "GPG 金钥："
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "核心转储最大存储大小（MB）："
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Name:"
+msgstr "名称："
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "首选项"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "版本："
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "网站："
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "查看和报告应用程序崩溃事件"
+
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
-msgstr "发现了%s软件包的错误记录！"
+msgstr "发现了 %s 软件包的崩溃事件！"
 
-#: src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
-msgstr "ABRT服务并未设置为运行"
+msgstr "ABRT服务不在运行"
 
-#: src/Applet/CCApplet.cpp:200
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "警告"
 
-#: src/Daemon/Daemon.cpp:473
+#: ../src/Daemon/Daemon.cpp:483
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
-msgstr "配额超出。请检查您在 abrt.conf 中的 MaxCrashReportsSize 数值。"
+msgstr "报告大小已超出配额。请检查在 abrt.conf 中系统的 MaxCrashReportsSize 值。"
 
-#: lib/Plugins/Bugzilla.cpp:124
-msgid "Missing member 'reporter'"
-msgstr ""
-
-#: lib/Plugins/Bugzilla.cpp:176
-msgid "Missing member 'cc'"
-msgstr ""
-
-#: lib/Plugins/Bugzilla.cpp:262
+#: ../lib/Plugins/Bugzilla.cpp:317
 #, c-format
 msgid "Bug is already reported: %i"
-msgstr "错误已报告了：%i"
+msgstr "错误已报告：%i"
 
-#: lib/Plugins/Bugzilla.cpp:274
-msgid "Missing member 'bug_id'"
-msgstr ""
-
-#: lib/Plugins/Bugzilla.cpp:283
-msgid "Missing member 'bugs'"
-msgstr ""
-
-#: lib/Plugins/Bugzilla.cpp:346
+#: ../lib/Plugins/Bugzilla.cpp:415
 #, c-format
 msgid "New bug id: %i"
 msgstr "新的错误 id：%i"
 
-#: lib/Plugins/Bugzilla.cpp:440
+#: ../lib/Plugins/Bugzilla.cpp:602
+msgid "Logging into bugzilla..."
+msgstr "正在登录 bugzilla……"
+
+#: ../lib/Plugins/Bugzilla.cpp:606
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "空的登录名和密码。请检查 Bugzilla.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:616
 msgid "Checking for duplicates..."
 msgstr "检查有否重复……"
 
-#: lib/Plugins/Bugzilla.cpp:446
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "没有设置登录及口令。请检查Bugzilla.conf文件"
+#: ../lib/Plugins/Bugzilla.cpp:629
+msgid "Missing mandatory member 'bugs'"
+msgstr "缺少必需成员\"错误“"
 
-#: lib/Plugins/Bugzilla.cpp:449
-msgid "Logging into bugzilla..."
-msgstr "往bugzilla登录中……"
-
-#: lib/Plugins/Bugzilla.cpp:454
-msgid "Checking CC..."
-msgstr "检查 CC……"
-
-#: lib/Plugins/Bugzilla.cpp:465
+#: ../lib/Plugins/Bugzilla.cpp:639
 msgid "Creating new bug..."
-msgstr "新的错误报告生成中……"
+msgstr "正在创建新的错误报告……"
 
-#: lib/Plugins/Bugzilla.cpp:469
+#: ../lib/Plugins/Bugzilla.cpp:647 ../lib/Plugins/Bugzilla.cpp:741
 msgid "Logging out..."
 msgstr "正在登出……"
 
-#: lib/Plugins/Kerneloops.cpp:35
+#: ../lib/Plugins/Bugzilla.cpp:675 ../lib/Plugins/Bugzilla.cpp:703
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() 失败。不能收集所有必需信息"
+
+#: ../lib/Plugins/Bugzilla.cpp:687
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr "Bugzilla 不能找到错误的根源（%d）"
+
+#: ../lib/Plugins/Bugzilla.cpp:692
+#, c-format
+msgid "Jump to bug %d"
+msgstr "跳转到错误 %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:717 ../lib/Plugins/Bugzilla.cpp:718
+#, c-format
+msgid "Add %s to CC list"
+msgstr "把 %s 增加到转发列表"
+
+#: ../lib/Plugins/Bugzilla.cpp:732
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "给错误增加新的注释（%d）"
+
+#: ../lib/Plugins/Kerneloops.cpp:28
 msgid "Getting local universal unique identification"
-msgstr "正在取得局域的UUID"
+msgstr "正在取得局域的通用唯一标识符"
 
-#: lib/Plugins/CCpp.cpp:253
-#, fuzzy
+#: ../lib/Plugins/CCpp.cpp:266
 msgid "Generating backtrace"
-msgstr "正在取得逆向跟踪数据……"
+msgstr "正在生成回溯"
 
-#: lib/Plugins/CCpp.cpp:388
-#, fuzzy
+#: ../lib/Plugins/CCpp.cpp:428
 msgid "Starting debuginfo installation"
-msgstr "省略 %s 软件包的调试数据安装"
+msgstr "正在开始安装 debuginfo"
 
-#: lib/Plugins/CCpp.cpp:537
-msgid "Getting local universal unique identification..."
-msgstr "正在取得局域的UUID……"
-
-#: lib/Plugins/CCpp.cpp:556
+#: ../lib/Plugins/CCpp.cpp:624
 msgid "Getting global universal unique identification..."
 msgstr "正在取得全局的UUID……"
 
-#: lib/Plugins/CCpp.cpp:734
+#: ../lib/Plugins/CCpp.cpp:802
 msgid "Skipping debuginfo installation"
-msgstr "省略 %s 软件包的调试数据安装"
+msgstr "跳过安装 debuginfo"
 
-#: lib/Plugins/KerneloopsReporter.cpp:100
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
-msgstr "报告书生成及传送中……"
+msgstr "正在创建及传送报告……"
 
-#: lib/Plugins/Logger.cpp:76
-#, fuzzy, c-format
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
 msgid "Writing report to '%s'"
-msgstr "sosreport 执行中：%s"
+msgstr "把报告写入 '%s'"
 
-#: lib/Plugins/FileTransfer.cpp:54
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
-msgstr "文件传送： URL未指定"
+msgstr "文件传送： URL 未指定"
 
-#: lib/Plugins/FileTransfer.cpp:58
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "正在传送归档 %s 至 %s"
 
-#: lib/Plugins/FileTransfer.cpp:289
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
-msgstr "文件传送：报告书生成中……"
+msgstr "文件传送：正在创建报告……"
 
-#: lib/Plugins/FileTransfer.cpp:323
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "不能创建及发送归档：%s"
 
-#: lib/Plugins/FileTransfer.cpp:352
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
-msgstr "不能创建及传送归档 %s"
+msgstr "不能创建及发送归档 %s"
 
-#: lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:72
 msgid "Creating kernel oops crash reports..."
-msgstr "内核 oops 错误报告书生成中……"
+msgstr "正在创建内核哎呀错误报告……"
 
-#: lib/Plugins/Mailx.cpp:137
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
-msgstr "电邮传送中……"
+msgstr "正在发送电邮……"
 
-#: lib/Plugins/SOSreport.cpp:103
-#, fuzzy, c-format
+#: ../lib/Plugins/SOSreport.cpp:101
+#, c-format
 msgid "Running sosreport: %s"
-msgstr "sosreport 执行中：%s"
+msgstr "正在运行 sosreport：%s"
 
-#: lib/Plugins/SOSreport.cpp:109
-#, fuzzy
+#: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
-msgstr "sosreport 执行完结"
+msgstr "sosreport运行完毕"
+
+#~ msgid "Settings"
+#~ msgstr "设置"
+
+#~ msgid "Global Settings"
+#~ msgstr "全局设置"
+
+#~ msgid "gtk-cancel"
+#~ msgstr "gtk-cancel"
+
+#~ msgid "gtk-ok"
+#~ msgstr "gtk-ok"
+
+#~ msgid "Checking CC..."
+#~ msgstr "检查 CC……"
+
+#~ msgid "Getting local universal unique identification..."
+#~ msgstr "正在取得局域的UUID……"
 
 #~ msgid "Plugin name is not set, can't load its settings"
 #~ msgstr "插件名未设定，无法载入其设置。"
@@ -638,9 +646,6 @@ msgstr "sosreport 执行完结"
 
 #~ msgid "Send"
 #~ msgstr "发送"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "查看和报告应用程序崩溃情况"
 
 #~ msgid "Searching for debug-info packages..."
 #~ msgstr "debug-info 软件包寻找中……"
