@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-09 10:00+0000\n"
-"PO-Revision-Date: 2010-02-09 09:23-0400\n"
-"Last-Translator: Dennis Tobar <dennis.tobar@gmail.com>\n"
+"POT-Creation-Date: 2010-02-18 15:37+0000\n"
+"PO-Revision-Date: 2010-02-18 13:16-0300\n"
+"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
 "Language-Team: Fedora Spanish <fedora-trans-es@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,7 +75,7 @@ msgid "About ABRT"
 msgstr "Acerca de ABRT"
 
 #: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/CCMainWindow.py:9
 #: ../src/Gui/report.glade.h:15
 #: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
@@ -136,31 +136,31 @@ msgstr "Ay_uda"
 # Revisar si hay que traducir.
 # Ver como referencia los botones gtk que no habia que traducirlos
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:74
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Icon"
 msgstr "Icono"
 
-#: ../src/Gui/CCMainWindow.py:82
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Package"
 msgstr "Paquete"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:91
 msgid "Application"
 msgstr "Aplicación"
 
-#: ../src/Gui/CCMainWindow.py:84
+#: ../src/Gui/CCMainWindow.py:93
 msgid "Date"
 msgstr "Fecha"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:95
 msgid "Crash count"
 msgstr "Cantidad de caídas"
 
-#: ../src/Gui/CCMainWindow.py:86
+#: ../src/Gui/CCMainWindow.py:97
 msgid "User"
 msgstr "Usuario"
 
-#: ../src/Gui/CCMainWindow.py:154
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -169,7 +169,7 @@ msgstr ""
 "No se puede mostrar el diálogo de configuración\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -179,7 +179,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:192
+#: ../src/Gui/CCMainWindow.py:203
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -188,19 +188,19 @@ msgstr ""
 "Error intentando cargar la lista de volcado.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:230
+#: ../src/Gui/CCMainWindow.py:241
 msgid "This crash has been reported:\n"
 msgstr "Esta caída ha sido reportada:\n"
 
-#: ../src/Gui/CCMainWindow.py:231
+#: ../src/Gui/CCMainWindow.py:242
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b> Esta caída ha sido reportada:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:250
+#: ../src/Gui/CCMainWindow.py:257
 msgid "<b>Not reported!</b>"
 msgstr "<b>¡No informado!</b>"
 
-#: ../src/Gui/CCMainWindow.py:298
+#: ../src/Gui/CCMainWindow.py:305
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -208,7 +208,7 @@ msgstr ""
 "¡Incapaz de conseguir el informe!\n"
 "¿Falta la información de la depuración?"
 
-#: ../src/Gui/CCMainWindow.py:318
+#: ../src/Gui/CCMainWindow.py:325
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -217,8 +217,8 @@ msgstr ""
 "¡El informe falló!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
-#: ../src/Gui/CCMainWindow.py:364
+#: ../src/Gui/CCMainWindow.py:344
+#: ../src/Gui/CCMainWindow.py:371
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
@@ -482,77 +482,88 @@ msgstr "Aviso"
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "El tamaño del informe excede la cuota. Por favor, verifique el valor de MaxCrashReportsSize del sistema en abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:142
-msgid "Missing member 'reporter'"
-msgstr "No se encuentra el miembro 'informante'"
-
-#: ../lib/Plugins/Bugzilla.cpp:194
-msgid "Missing member 'cc'"
-msgstr "Facltante de miembro 'cc'"
-
-#: ../lib/Plugins/Bugzilla.cpp:280
+#: ../lib/Plugins/Bugzilla.cpp:340
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "El error ya ha sido informado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:292
-msgid "Missing member 'bug_id'"
-msgstr "Faltante de miembro 'bug_id'"
-
-#: ../lib/Plugins/Bugzilla.cpp:301
-msgid "Missing member 'bugs'"
-msgstr "Faltante de miembro 'bugs'"
-
-#: ../lib/Plugins/Bugzilla.cpp:370
+#: ../lib/Plugins/Bugzilla.cpp:406
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nuevo id del error: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:464
-msgid "Checking for duplicates..."
-msgstr "Chequeando si hay duplicados..."
-
-#: ../lib/Plugins/Bugzilla.cpp:470
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Usuario y contraseña vacíos. Por favor compruebe el archivo Bugzilla.conf"
-
-#: ../lib/Plugins/Bugzilla.cpp:473
+#: ../lib/Plugins/Bugzilla.cpp:565
 msgid "Logging into bugzilla..."
 msgstr "Ingresando a bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:478
-msgid "Checking CC..."
-msgstr "Chequeando CC..."
+#: ../lib/Plugins/Bugzilla.cpp:569
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Usuario y contraseña vacíos. Por favor compruebe el archivo Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:489
+#: ../lib/Plugins/Bugzilla.cpp:579
+msgid "Checking for duplicates..."
+msgstr "Chequeando si hay duplicados..."
+
+#: ../lib/Plugins/Bugzilla.cpp:592
+msgid "Missing mandatory member 'bugs'"
+msgstr "Falta miembro obligatorio 'bugs'"
+
+#: ../lib/Plugins/Bugzilla.cpp:602
 msgid "Creating new bug..."
 msgstr "Creando un nuevo informe..."
 
-#: ../lib/Plugins/Bugzilla.cpp:493
+#: ../lib/Plugins/Bugzilla.cpp:610
+#: ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Saliendo..."
 
-#: ../lib/Plugins/Kerneloops.cpp:35
+#: ../lib/Plugins/Bugzilla.cpp:638
+#: ../lib/Plugins/Bugzilla.cpp:666
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "Fallo get_bug_info(). No se ha podido reunir todas la información obligatoria"
+
+#: ../lib/Plugins/Bugzilla.cpp:650
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr "Bugzilla no pudo encontrar la causa del error (%d) "
+
+#: ../lib/Plugins/Bugzilla.cpp:655
+#, c-format
+msgid "Jump to bug %d"
+msgstr "Saltar al error %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:680
+#: ../lib/Plugins/Bugzilla.cpp:681
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Agregar %s a la lista CC"
+
+#: ../lib/Plugins/Bugzilla.cpp:695
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "Agregar comentario en el error(%d)"
+
+#: ../lib/Plugins/Kerneloops.cpp:28
 msgid "Getting local universal unique identification"
 msgstr "Obteniendo la identificación única universal local"
 
-#: ../lib/Plugins/CCpp.cpp:266
+#: ../lib/Plugins/CCpp.cpp:275
 msgid "Generating backtrace"
 msgstr "Generando seguimiento..."
 
-#: ../lib/Plugins/CCpp.cpp:428
+#: ../lib/Plugins/CCpp.cpp:437
 msgid "Starting debuginfo installation"
 msgstr "Iniciando la instalación de la información de depuración"
 
-#: ../lib/Plugins/CCpp.cpp:624
+#: ../lib/Plugins/CCpp.cpp:633
 msgid "Getting global universal unique identification..."
 msgstr "Obteniendo la identificación única universal global..."
 
-#: ../lib/Plugins/CCpp.cpp:802
+#: ../lib/Plugins/CCpp.cpp:811
 msgid "Skipping debuginfo installation"
 msgstr "Omita la instalación de la información de depuración"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:100
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr "Creando y enviando un informe..."
 
@@ -584,7 +595,7 @@ msgstr "No se puede crear y enviar un archivo: %s"
 msgid "Can't create and send an archive %s"
 msgstr "No se puede crear y enviar un archivo %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:72
 msgid "Creating kernel oops crash reports..."
 msgstr "Creando un informe de caída de kernel oops..."
 
@@ -601,10 +612,23 @@ msgstr "Corriendo sosreport: %s"
 msgid "Done running sosreport"
 msgstr "Sosreport ya esta corriendo"
 
+#~ msgid "Missing member 'reporter'"
+#~ msgstr "No se encuentra el miembro 'informante'"
+
+#~ msgid "Missing member 'cc'"
+#~ msgstr "Facltante de miembro 'cc'"
+
+#~ msgid "Missing member 'bug_id'"
+#~ msgstr "Faltante de miembro 'bug_id'"
+
+#~ msgid "Checking CC..."
+#~ msgstr "Chequeando CC..."
+
 #~ msgid "Getting local universal unique identification..."
 #~ msgstr "Obteniendo la identificación única universal local..."
+
 #~ msgid "Global Settings"
 #~ msgstr "Preferencias globales"
+
 #~ msgid "Settings"
 #~ msgstr "Preferencias"
-
