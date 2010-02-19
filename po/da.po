@@ -1,15 +1,14 @@
 # Danish translation of abrt
 # Copyright (C) 2009 abrt
 # This file is distributed under the same license as the abrt package.
-# Kris Thomsen <lakristho@gmail.com>, 2009.
+# Kris Thomsen <lakristho@gmail.com>, 2009, 2010.
 #
-#: ../src/Gui/CCReporterDialog.py:191
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-11-16 14:52+0000\n"
-"PO-Revision-Date: 2009-11-16 16:19+0100\n"
+"POT-Creation-Date: 2010-02-15 15:38+0000\n"
+"PO-Revision-Date: 2010-02-15 18:53+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -24,85 +23,80 @@ msgstr "En anden klient kører allerede, prøver at vække den."
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Modtog uventede data fra dæmon (er databasen opdateret rigtigt?)."
 
-#: ../src/Gui/ABRTPlugin.py:55
+#: ../src/Gui/ABRTPlugin.py:62
+msgid "Not loaded plugins"
+msgstr "Ikke-indlæste udvidelsesmoduler"
+
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Analyseringsudvidelsesmoduler"
 
-#: ../src/Gui/ABRTPlugin.py:56
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Handlingsudvidelsesmoduler"
 
-#: ../src/Gui/ABRTPlugin.py:57
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Rapporteringsudvidelsesmoduler"
 
-#: ../src/Gui/ABRTPlugin.py:58
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Databaseudvidelsesmoduler"
-
-#: ../src/Gui/ABRTPlugin.py:97
-msgid "Plugin name is not set, can't load it's settings"
-msgstr ""
-"Navn for udvidelsesmodul er ikke indstillet, kan ikke indlæse dets "
-"indstillinger"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Kan ikke forbinde til system-dbus"
 
-#: ../src/Gui/CCDBusBackend.py:100 ../src/Gui/CCDBusBackend.py:103
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Kontrollér venligst om abrt-dæmonen kører"
 
-#: ../src/Gui/CCDBusBackend.py:155
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
-"Daemon did't return valid report info\n"
+"Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
 "Dæmonen returnerede ikke gyldig rapportinformation\n"
 "Mangler fejlsøgningsinformation?"
 
-#: ../src/Gui/ccgui.glade.h:1 ../src/Gui/report.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/ccgui.glade.h:2
+#: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:244
-msgid "<b>Not reported!</b>"
-msgstr "<b>Ikke rapporteret!</b>"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">Beskrivelse</span>"
-
-#: ../src/Gui/ccgui.glade.h:5
+#: ../src/Gui/ccgui.glade.h:2
 msgid "About ABRT"
 msgstr "Om ABRT"
 
-#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/report.glade.h:15 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisk værktøj til fejlrapportering"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:4
 msgid "Delete"
 msgstr "Slet"
 
-#: ../src/Gui/ccgui.glade.h:8
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "Detaljer"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Not Reported"
+msgstr "Ikke rapporteret"
+
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Please wait.."
 msgstr "Vent venligst.."
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:8 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Udvidelsesmoduler"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:4
+#: ../src/Gui/ccgui.glade.h:9
 msgid "Report"
 msgstr "Rapportér"
 
-#: ../src/Gui/ccgui.glade.h:11
+#: ../src/Gui/ccgui.glade.h:10
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -130,48 +124,44 @@ msgstr ""
 "Du bør have modtaget en kopi af GNU General Public License sammen med dette "
 "program. Hvis ikke, se <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:16
-msgid "Working..."
-msgstr "Arbejder..."
-
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Edit"
 msgstr "_Redigér"
 
-#: ../src/Gui/ccgui.glade.h:18
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_File"
 msgstr "_Fil"
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:17
 msgid "_Help"
 msgstr "_Hjælp"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Icon"
 msgstr "Ikon"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Package"
 msgstr "Pakke"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:91
 msgid "Application"
 msgstr "Program"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:93
 msgid "Date"
 msgstr "Dato"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:95
 msgid "Crash count"
 msgstr "Nedbrudsantal"
 
-#: ../src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:97
 msgid "User"
 msgstr "Bruger"
 
-#: ../src/Gui/CCMainWindow.py:160
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -180,7 +170,7 @@ msgstr ""
 "Kan ikke vise indstillingsdialogen\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:181
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -189,27 +179,29 @@ msgstr ""
 "Kunne ikke afslutte nuværende handling!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:198
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:203
 #, python-format
 msgid ""
-"Error while loading the dumplist, please check if abrt daemon is running\n"
-" %s"
+"Error while loading the dumplist.\n"
+"%s"
 msgstr ""
-"Fejl opstod under indlæsning af dumplisten, kontrollér om abrt-dæmonen "
-"kører\n"
-" %s"
+"Fejl opstod under indlæsning af dumplisten.\n"
+"%s"
 
-#: ../src/Gui/CCMainWindow.py:208
-#, python-format
-msgid "Can't get username for uid %s"
-msgstr "Kan ikke hente brugernavn for uid %s"
+#: ../src/Gui/CCMainWindow.py:241
+msgid "This crash has been reported:\n"
+msgstr "Dette nedbrud er blevet rapporteret:\n"
 
-#: ../src/Gui/CCMainWindow.py:236
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr ""
-"<b>Dette nedbrud er blevet rapporteret, du kan finde rapporten på: </b>\n"
+#: ../src/Gui/CCMainWindow.py:242
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>Dette nedbrud er blevet rapporteret:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:296
+#: ../src/Gui/CCMainWindow.py:261
+msgid "<b>Not reported!</b>"
+msgstr "<b>Ikke rapporteret!</b>"
+
+#: ../src/Gui/CCMainWindow.py:309
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -217,7 +209,7 @@ msgstr ""
 "Kunne ikke hente rapport!\n"
 "Mangler fejlsøgningsinformation?"
 
-#: ../src/Gui/CCMainWindow.py:314
+#: ../src/Gui/CCMainWindow.py:329
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -226,62 +218,62 @@ msgstr ""
 "Rapportering fejlede!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:333 ../src/Gui/CCMainWindow.py:360
+#: ../src/Gui/CCMainWindow.py:348 ../src/Gui/CCMainWindow.py:375
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fejl under hentning af rapporten: %s"
 
-#: ../src/Gui/CCReporterDialog.py:177
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Kort beskrivelse om hvordan fejlen kan gentages eller hvad du gjorde..."
 
-#: ../src/Gui/CCReporterDialog.py:219
+#: ../src/Gui/CCReporterDialog.py:99
+msgid "You must check backtrace for sensitive data"
+msgstr "Du bør kontrollere backtracen for følsomme data"
+
+#: ../src/Gui/CCReporterDialog.py:110
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command:<span color=\"blue\"> "
-"debuginfo-install %s </span>\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"Rapportering er deaktiveret fordi backtracen ikke indeholder brugbare "
-"informationer!\n"
-"Prøv venligst at installere debuginfo manuelt ved at bruge kommandoen:<span "
-"color=\"blue\"> debuginfo-install %s </span>\n"
+"Rapportering er deaktiveret fordi backtracen ikke indeholder brugbare informationer.\n"
+"Prøv venligst at installere debuginfo manuelt ved at bruge kommandoen: <b>debuginfo-install "
+"%s</b> \n"
 "brug derefter Genopfrisk-knappen til at regenerere backtracen."
 
-#: ../src/Gui/CCReporterDialog.py:221
-msgid "The bactrace is unusable, you can't report this!"
-msgstr ""
-"Backtracen indeholder ikke brugbare informationer. Du får intet ud af at "
-"indsende den!"
+#: ../src/Gui/CCReporterDialog.py:112
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "Backtracen indeholder ikke brugbare informationer. Du kan ikke rapportere dette!"
 
-#: ../src/Gui/CCReporterDialog.py:227
+#: ../src/Gui/CCReporterDialog.py:116
 msgid ""
-"The bactrace is incomplete, please make sure you provide good steps to "
+"The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr ""
 "Backtracen er ufuldstændig. Husk at angive en god vejledning til hvordan man "
 "reproducerer fejlen."
 
-#: ../src/Gui/CCReporterDialog.py:272
+#: ../src/Gui/CCReporterDialog.py:158
 #, python-format
 msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
-"Do you really want to send <b>%s</b>?\n"
-msgstr ""
-"<b>ADVARSEL</b>, du er i gang med at sende data som kan indeholde følsom "
-"information!\n"
-"Vil du virkelig sende <b>%s</b>?\n"
+"Can't save plugin settings:\n"
+" %s"
+msgstr "" 
+"Kan ikke gemme indstillinger for udvidelsesmodul:\n"
+" %s"
 
 #: ../src/Gui/dialogs.glade.h:1
+msgid "Log"
+msgstr "Log"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "Rapportering færdiggjort"
-
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
-msgid "gtk-ok"
-msgstr "gtk-ok"
 
 #: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
@@ -301,17 +293,77 @@ msgstr "comboboks er ikke implementeret"
 msgid "Nothing to hydrate!"
 msgstr "Intet at hydrere!"
 
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
+
 #: ../src/Gui/report.glade.h:2
-msgid "Comment"
-msgstr "Kommentér"
+msgid "<b>Attachments</b>"
+msgstr "<b>Vedhæftninger</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "How to reproduce (in a few simple steps)"
-msgstr "Hvordan man reproducerer (i få simple trin)"
+msgid "<b>Backtrace</b>"
+msgstr "<b>Backtrace</b>"
+
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>Kommentér</b>"
 
 #: ../src/Gui/report.glade.h:5
-msgid "Send"
-msgstr "Send"
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Hvordan man reproducerer (i få simple trin)</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Ret venligst følgende problemer</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">Arkitektur:</span>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Kommandolinje:</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Komponent:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Kørbar:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">Kerne:</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Pakke:</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">Grund:</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Udgivelse:</span>"
+
+#: ../src/Gui/report.glade.h:16
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr "Jeg kontrollerede backtracen og fjernede følsomme data (adgangskoder osv.)"
+
+#: ../src/Gui/report.glade.h:17
+msgid "N/A"
+msgstr "N/A"
+
+#: ../src/Gui/report.glade.h:18
+msgid "Send report"
+msgstr "Send rapport"
+
+#: ../src/Gui/report.glade.h:19
+msgid "Show log"
+msgstr "Vis logfil"
 
 #: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
@@ -321,11 +373,11 @@ msgstr "<b>Vælg udvidelsesmodul</b>"
 msgid "<b>Select database backend</b>"
 msgstr "<b>Vælg databasebackend</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Fjern dette job"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Fjern denne handling"
 
@@ -338,123 +390,99 @@ msgid "<b>Associated action</b>"
 msgstr "<b>Tilknyttet handling</b>"
 
 #: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>Detaljer for udvidelsesmodul</b>"
+
+#: ../src/Gui/settings.glade.h:4
 msgid "<b>Plugin</b>"
 msgstr "<b>Udvidelsesmodul</b>"
 
-#: ../src/Gui/settings.glade.h:4
+#: ../src/Gui/settings.glade.h:5
 msgid "<b>Time (or period)</b>"
 msgstr "<b>Tid (eller periode)</b>"
 
-#: ../src/Gui/settings.glade.h:5
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "Analyser, handlinger og rapporter"
 
-#: ../src/Gui/settings.glade.h:6
+#: ../src/Gui/settings.glade.h:7
 msgid "Author:"
 msgstr "Forfatter:"
 
-#: ../src/Gui/settings.glade.h:7
+#: ../src/Gui/settings.glade.h:8
 msgid "Blacklisted packages: "
 msgstr "Sortlistede pakker: "
 
-#: ../src/Gui/settings.glade.h:8
+#: ../src/Gui/settings.glade.h:9
 msgid "C_onfigure plugin"
 msgstr "K_onfigurér udvidelsesmodul"
 
-#: ../src/Gui/settings.glade.h:9
+#: ../src/Gui/settings.glade.h:10
 msgid "Check package GPG signature"
 msgstr "Kontrollér GPG-signatur for pakke"
 
-#: ../src/Gui/settings.glade.h:10
+#: ../src/Gui/settings.glade.h:11
 msgid "Common"
 msgstr "Almindelig"
 
-#: ../src/Gui/settings.glade.h:11
+#: ../src/Gui/settings.glade.h:12
 msgid "Cron"
 msgstr "Cron"
 
-#: ../src/Gui/settings.glade.h:12
+#: ../src/Gui/settings.glade.h:13
 msgid "Database backend: "
 msgstr "Databasebackend: "
 
-#: ../src/Gui/settings.glade.h:13
-msgid "Edit blacklisted packages"
-msgstr "Redigér sortlistede pakker"
-
 #: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "Beskrivelse:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG-nøgler"
 
-#: ../src/Gui/settings.glade.h:15
+#: ../src/Gui/settings.glade.h:16
 msgid "GPG keys: "
 msgstr "GPG-nøgler: "
-
-#: ../src/Gui/settings.glade.h:16
-msgid "Global Settings"
-msgstr "Globale indstillinger"
 
 #: ../src/Gui/settings.glade.h:17
 msgid "Max coredump storage size(MB):"
 msgstr "Maks. kernedump-opbevaringsstørrelse (MB):"
 
 #: ../src/Gui/settings.glade.h:18
-msgid "Nothing selected"
-msgstr "Intet valgt"
-
-#: ../src/Gui/settings.glade.h:19
-msgid "Plugin Details"
-msgstr "Detaljer om udvidelsesmodul"
+msgid "Name:"
+msgstr "Navn:"
 
 #: ../src/Gui/settings.glade.h:20
-msgid "Settings"
+msgid "Preferences"
 msgstr "Indstillinger"
 
 #: ../src/Gui/settings.glade.h:21
-msgid "This function is not implemented yet!"
-msgstr "Denne funktion er ikke implementeret endnu!"
-
-#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "Version:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "Websted:"
-
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-add"
-msgstr "gtk-add"
-
-#: ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
-
-#: ../src/Gui/settings.glade.h:26
-msgid "gtk-close"
-msgstr "gtk-close"
-
-#: ../src/Gui/settings.glade.h:28
-msgid "gtk-remove"
-msgstr "gtk-remove"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Vis og rapportér programnedbrud"
 
-#: ../src/Applet/Applet.cpp:79
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Der blev fundet et nedbrud i pakke %s"
 
-#: ../src/Applet/Applet.cpp:253
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
 msgstr "ABRT-service kører ikke"
 
-#: ../src/Applet/CCApplet.cpp:189
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "Advarsel"
 
-#: ../src/Daemon/Daemon.cpp:520
+#: ../src/Daemon/Daemon.cpp:483
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -462,127 +490,198 @@ msgstr ""
 "Rapportstørrelse overskred den tilladte størrelse. Kontrollér systemets "
 "MaxCrashReportsSize-værdien i abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:209
+#: ../lib/Plugins/Bugzilla.cpp:142
+msgid "Missing member 'reporter'"
+msgstr "Manglende medlem \"reporter\""
+
+#: ../lib/Plugins/Bugzilla.cpp:194
+msgid "Missing member 'cc'"
+msgstr "Manglende medlem \"cc\""
+
+#: ../lib/Plugins/Bugzilla.cpp:280
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Fejlen er allerede rapporteret: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:271
+#: ../lib/Plugins/Bugzilla.cpp:292
+msgid "Missing member 'bug_id'"
+msgstr "Manglende medlem \"bug_id\""
+
+#: ../lib/Plugins/Bugzilla.cpp:301
+msgid "Missing member 'bugs'"
+msgstr "Manglende medlem \"bugs\""
+
+#: ../lib/Plugins/Bugzilla.cpp:370
 #, c-format
 msgid "New bug id: %i"
 msgstr "Ny bug-id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:364
+#: ../lib/Plugins/Bugzilla.cpp:464
 msgid "Checking for duplicates..."
 msgstr "Kontrollerer for dubletter..."
 
-#: ../lib/Plugins/Bugzilla.cpp:367
-msgid "Logging into bugzilla..."
-msgstr "Logger ind på bugzilla..."
-
-#: ../lib/Plugins/Bugzilla.cpp:371
+#: ../lib/Plugins/Bugzilla.cpp:470
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Tom logind og adgangskode. Kontrollér Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:377
+#: ../lib/Plugins/Bugzilla.cpp:473
+msgid "Logging into bugzilla..."
+msgstr "Logger ind på bugzilla..."
+
+#: ../lib/Plugins/Bugzilla.cpp:478
 msgid "Checking CC..."
 msgstr "Kontrollerer for CC..."
 
-#: ../lib/Plugins/Bugzilla.cpp:386
+#: ../lib/Plugins/Bugzilla.cpp:489
 msgid "Creating new bug..."
 msgstr "Opretter ny fejl..."
 
-#: ../lib/Plugins/Bugzilla.cpp:390
+#: ../lib/Plugins/Bugzilla.cpp:493
 msgid "Logging out..."
 msgstr "Logger ud..."
 
-#: ../lib/Plugins/Kerneloops.cpp:37
+#: ../lib/Plugins/Kerneloops.cpp:35
 msgid "Getting local universal unique identification"
 msgstr "Henter lokal, universal, unik identifikation"
 
-#: ../lib/Plugins/CCpp.cpp:254
-msgid "Getting backtrace..."
-msgstr "Henter backtrace..."
+#: ../lib/Plugins/CCpp.cpp:266
+msgid "Generating backtrace"
+msgstr "Genererer backtrace"
 
-#: ../lib/Plugins/CCpp.cpp:552 ../lib/Plugins/CCpp.cpp:679
-msgid "Searching for debug-info packages..."
-msgstr "Søger efter pakker med fejlsøgningsinformation..."
+#: ../lib/Plugins/CCpp.cpp:428
+msgid "Starting debuginfo installation"
+msgstr "Starter fejlsøgningsinfo-installation"
 
-#: ../lib/Plugins/CCpp.cpp:614 ../lib/Plugins/CCpp.cpp:713
-msgid "Downloading and installing debug-info packages..."
-msgstr "Henter og installerer pakker med fejlsøgningsinformation..."
-
-#: ../lib/Plugins/CCpp.cpp:818
-msgid "Getting local universal unique identification..."
-msgstr "Henter lokal, universal, unik identifikation..."
-
-#: ../lib/Plugins/CCpp.cpp:837
+#: ../lib/Plugins/CCpp.cpp:624
 msgid "Getting global universal unique identification..."
 msgstr "Henter global, universal, unik identifikation..."
 
-#: ../lib/Plugins/CCpp.cpp:882
-msgid "Starting report creation..."
-msgstr "Starter rapportoprettelse..."
-
-#: ../lib/Plugins/CCpp.cpp:912
+#: ../lib/Plugins/CCpp.cpp:802
 msgid "Skipping debuginfo installation"
 msgstr "Springer over fejlsøgningsinfo-installation"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:102
+#: ../lib/Plugins/KerneloopsReporter.cpp:100
 msgid "Creating and submitting a report..."
 msgstr "Opretter og indsender en rapport..."
 
-#: ../lib/Plugins/Logger.cpp:65
-msgid "Creating a report..."
-msgstr "Opretter en rapport..."
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "Skriver rapport til \"%s\""
 
-#: ../lib/Plugins/RunApp.cpp:35
-msgid "Executing RunApp plugin..."
-msgstr "Udfører RunApp-udvidelsesmodul..."
-
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:384
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "Filoverførsel: URL ikke angivet"
 
-#: ../lib/Plugins/FileTransfer.cpp:67
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Sender arkiv %s til %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:309
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Filoverførsel: Opretter en rapport..."
 
-#: ../lib/Plugins/FileTransfer.cpp:334
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Kan ikke oprette og sende arkiv: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Kan ikke oprette og sende arkiv %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:84
+#: ../lib/Plugins/KerneloopsScanner.cpp:79
 msgid "Creating kernel oops crash reports..."
 msgstr "Opretter rapporter om kerne-oops-nedbrud..."
 
-#: ../lib/Plugins/Mailx.cpp:163
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Sender en e-post..."
 
-#: ../lib/Plugins/SOSreport.cpp:69
-msgid "Executing SOSreport plugin..."
-msgstr "Udfører SOSreport-udvidelsesmodul..."
-
-#: ../lib/Plugins/SOSreport.cpp:91
+#: ../lib/Plugins/SOSreport.cpp:101
 #, c-format
-msgid "running sosreport: %s"
-msgstr "kører sosreport: %s"
+msgid "Running sosreport: %s"
+msgstr "Kører sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:95
-msgid "done running sosreport"
-msgstr "færdig med at køre sosreport"
+#: ../lib/Plugins/SOSreport.cpp:107
+msgid "Done running sosreport"
+msgstr "Færdig med at køre sosreport"
+
+#~ msgid "Plugin name is not set, can't load it's settings"
+#~ msgstr ""
+#~ "Navn for udvidelsesmodul er ikke indstillet, kan ikke indlæse dets "
+#~ "indstillinger"
+
+#~ msgid "Working..."
+#~ msgstr "Arbejder..."
+
+#~ msgid "Can't get username for uid %s"
+#~ msgstr "Kan ikke hente brugernavn for uid %s"
+
+#~ msgid ""
+#~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
+#~ "information.\n"
+#~ "Do you really want to send <b>%s</b>?\n"
+#~ msgstr ""
+#~ "<b>ADVARSEL</b>, du er i gang med at sende data som kan indeholde følsom "
+#~ "information!\n"
+#~ "Vil du virkelig sende <b>%s</b>?\n"
+
+#~ msgid "gtk-ok"
+#~ msgstr "gtk-ok"
+
+#~ msgid "Send"
+#~ msgstr "Send"
+
+#~ msgid "Edit blacklisted packages"
+#~ msgstr "Redigér sortlistede pakker"
+
+#~ msgid "Global Settings"
+#~ msgstr "Globale indstillinger"
+
+#~ msgid "Nothing selected"
+#~ msgstr "Intet valgt"
+
+#~ msgid "Settings"
+#~ msgstr "Indstillinger"
+
+#~ msgid "This function is not implemented yet!"
+#~ msgstr "Denne funktion er ikke implementeret endnu!"
+
+#~ msgid "gtk-add"
+#~ msgstr "gtk-add"
+
+#~ msgid "gtk-cancel"
+#~ msgstr "gtk-cancel"
+
+#~ msgid "gtk-close"
+#~ msgstr "gtk-close"
+
+#~ msgid "gtk-remove"
+#~ msgstr "gtk-remove"
+
+#~ msgid "Searching for debug-info packages..."
+#~ msgstr "Søger efter pakker med fejlsøgningsinformation..."
+
+#~ msgid "Downloading and installing debug-info packages..."
+#~ msgstr "Henter og installerer pakker med fejlsøgningsinformation..."
+
+#~ msgid "Getting local universal unique identification..."
+#~ msgstr "Henter lokal, universal, unik identifikation..."
+
+#~ msgid "Starting report creation..."
+#~ msgstr "Starter rapportoprettelse..."
+
+#~ msgid "Creating a report..."
+#~ msgstr "Opretter en rapport..."
+
+#~ msgid "Executing RunApp plugin..."
+#~ msgstr "Udfører RunApp-udvidelsesmodul..."
+
+#~ msgid "Executing SOSreport plugin..."
+#~ msgstr "Udfører SOSreport-udvidelsesmodul..."
 
 #~ msgid "ABRT service has been started"
 #~ msgstr "ABRT-tjenesten er blevet startet"
@@ -610,14 +709,8 @@ msgstr "færdig med at køre sosreport"
 #~ msgid "Can't load gui description for SettingsDialog!"
 #~ msgstr "Kan ikke indlæse gui-beskrivelse for SettingsDialog!"
 
-#~ msgid "Name"
-#~ msgstr "Navn"
-
 #~ msgid "Enabled"
 #~ msgstr "Aktiveret"
-
-#~ msgid "Can't get plugin description"
-#~ msgstr "Kan ikke hente beskrivelse af udvidelsesmodul"
 
 #~ msgid ""
 #~ "Error while opening plugin settings UI: \n"
