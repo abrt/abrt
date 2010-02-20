@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-15 15:38+0000\n"
-"PO-Revision-Date: 2010-02-15 18:53+0100\n"
+"POT-Creation-Date: 2010-02-19 20:49+0000\n"
+"PO-Revision-Date: 2010-02-19 23:01+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -197,11 +197,11 @@ msgstr "Dette nedbrud er blevet rapporteret:\n"
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Dette nedbrud er blevet rapporteret:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:261
+#: ../src/Gui/CCMainWindow.py:257
 msgid "<b>Not reported!</b>"
 msgstr "<b>Ikke rapporteret!</b>"
 
-#: ../src/Gui/CCMainWindow.py:309
+#: ../src/Gui/CCMainWindow.py:305
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -209,7 +209,7 @@ msgstr ""
 "Kunne ikke hente rapport!\n"
 "Mangler fejlsøgningsinformation?"
 
-#: ../src/Gui/CCMainWindow.py:329
+#: ../src/Gui/CCMainWindow.py:325
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -218,7 +218,7 @@ msgstr ""
 "Rapportering fejlede!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:348 ../src/Gui/CCMainWindow.py:375
+#: ../src/Gui/CCMainWindow.py:344 ../src/Gui/CCMainWindow.py:371
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fejl under hentning af rapporten: %s"
@@ -241,14 +241,17 @@ msgid ""
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"Rapportering er deaktiveret fordi backtracen ikke indeholder brugbare informationer.\n"
-"Prøv venligst at installere debuginfo manuelt ved at bruge kommandoen: <b>debuginfo-install "
-"%s</b> \n"
+"Rapportering er deaktiveret fordi backtracen ikke indeholder brugbare "
+"informationer.\n"
+"Prøv venligst at installere debuginfo manuelt ved at bruge kommandoen: "
+"<b>debuginfo-install %s</b> \n"
 "brug derefter Genopfrisk-knappen til at regenerere backtracen."
 
 #: ../src/Gui/CCReporterDialog.py:112
 msgid "The backtrace is unusable, you can't report this!"
-msgstr "Backtracen indeholder ikke brugbare informationer. Du kan ikke rapportere dette!"
+msgstr ""
+"Backtracen indeholder ikke brugbare informationer. Du kan ikke rapportere "
+"dette!"
 
 #: ../src/Gui/CCReporterDialog.py:116
 msgid ""
@@ -263,7 +266,7 @@ msgstr ""
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
-msgstr "" 
+msgstr ""
 "Kan ikke gemme indstillinger for udvidelsesmodul:\n"
 " %s"
 
@@ -351,7 +354,8 @@ msgstr "<span fgcolor=\"blue\">Udgivelse:</span>"
 
 #: ../src/Gui/report.glade.h:16
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr "Jeg kontrollerede backtracen og fjernede følsomme data (adgangskoder osv.)"
+msgstr ""
+"Jeg kontrollerede backtracen og fjernede følsomme data (adgangskoder osv.)"
 
 #: ../src/Gui/report.glade.h:17
 msgid "N/A"
@@ -490,77 +494,85 @@ msgstr ""
 "Rapportstørrelse overskred den tilladte størrelse. Kontrollér systemets "
 "MaxCrashReportsSize-værdien i abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:142
-msgid "Missing member 'reporter'"
-msgstr "Manglende medlem \"reporter\""
-
-#: ../lib/Plugins/Bugzilla.cpp:194
-msgid "Missing member 'cc'"
-msgstr "Manglende medlem \"cc\""
-
-#: ../lib/Plugins/Bugzilla.cpp:280
+#: ../lib/Plugins/Bugzilla.cpp:340
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Fejlen er allerede rapporteret: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:292
-msgid "Missing member 'bug_id'"
-msgstr "Manglende medlem \"bug_id\""
-
-#: ../lib/Plugins/Bugzilla.cpp:301
-msgid "Missing member 'bugs'"
-msgstr "Manglende medlem \"bugs\""
-
-#: ../lib/Plugins/Bugzilla.cpp:370
+#: ../lib/Plugins/Bugzilla.cpp:406
 #, c-format
 msgid "New bug id: %i"
 msgstr "Ny bug-id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:464
-msgid "Checking for duplicates..."
-msgstr "Kontrollerer for dubletter..."
-
-#: ../lib/Plugins/Bugzilla.cpp:470
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Tom logind og adgangskode. Kontrollér Bugzilla.conf"
-
-#: ../lib/Plugins/Bugzilla.cpp:473
+#: ../lib/Plugins/Bugzilla.cpp:565
 msgid "Logging into bugzilla..."
 msgstr "Logger ind på bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:478
-msgid "Checking CC..."
-msgstr "Kontrollerer for CC..."
+#: ../lib/Plugins/Bugzilla.cpp:569
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Tom logind og adgangskode. Kontrollér Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:489
+#: ../lib/Plugins/Bugzilla.cpp:579
+msgid "Checking for duplicates..."
+msgstr "Kontrollerer for dubletter..."
+
+#: ../lib/Plugins/Bugzilla.cpp:592
+msgid "Missing mandatory member 'bugs'"
+msgstr "Manglende nødvendigt medlem \"bugs\""
+
+#: ../lib/Plugins/Bugzilla.cpp:602
 msgid "Creating new bug..."
 msgstr "Opretter ny fejl..."
 
-#: ../lib/Plugins/Bugzilla.cpp:493
+#: ../lib/Plugins/Bugzilla.cpp:610 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Logger ud..."
 
-#: ../lib/Plugins/Kerneloops.cpp:35
+#: ../lib/Plugins/Bugzilla.cpp:638 ../lib/Plugins/Bugzilla.cpp:666
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() mislykkedes. Kunne ikke samle alle nødvendige informationer"
+
+#: ../lib/Plugins/Bugzilla.cpp:650
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr "Bugzilla kunne ikke finde overliggende fejlrapport for rapport(%d)"
+
+#: ../lib/Plugins/Bugzilla.cpp:655
+#, c-format
+msgid "Jump to bug %d"
+msgstr "Spring til fejlrapport %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:680 ../lib/Plugins/Bugzilla.cpp:681
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Tilføj %s til CC-liste"
+
+#: ../lib/Plugins/Bugzilla.cpp:695
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "Tilføj ny kommentar til fejlrapport(%d)"
+
+#: ../lib/Plugins/Kerneloops.cpp:28
 msgid "Getting local universal unique identification"
 msgstr "Henter lokal, universal, unik identifikation"
 
-#: ../lib/Plugins/CCpp.cpp:266
+#: ../lib/Plugins/CCpp.cpp:275
 msgid "Generating backtrace"
 msgstr "Genererer backtrace"
 
-#: ../lib/Plugins/CCpp.cpp:428
+#: ../lib/Plugins/CCpp.cpp:437
 msgid "Starting debuginfo installation"
 msgstr "Starter fejlsøgningsinfo-installation"
 
-#: ../lib/Plugins/CCpp.cpp:624
+#: ../lib/Plugins/CCpp.cpp:633
 msgid "Getting global universal unique identification..."
 msgstr "Henter global, universal, unik identifikation..."
 
-#: ../lib/Plugins/CCpp.cpp:802
+#: ../lib/Plugins/CCpp.cpp:811
 msgid "Skipping debuginfo installation"
 msgstr "Springer over fejlsøgningsinfo-installation"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:100
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr "Opretter og indsender en rapport..."
 
@@ -592,7 +604,7 @@ msgstr "Kan ikke oprette og sende arkiv: %s"
 msgid "Can't create and send an archive %s"
 msgstr "Kan ikke oprette og sende arkiv %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
+#: ../lib/Plugins/KerneloopsScanner.cpp:72
 msgid "Creating kernel oops crash reports..."
 msgstr "Opretter rapporter om kerne-oops-nedbrud..."
 
@@ -608,6 +620,18 @@ msgstr "Kører sosreport: %s"
 #: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "Færdig med at køre sosreport"
+
+#~ msgid "Missing member 'reporter'"
+#~ msgstr "Manglende medlem \"reporter\""
+
+#~ msgid "Missing member 'cc'"
+#~ msgstr "Manglende medlem \"cc\""
+
+#~ msgid "Missing member 'bug_id'"
+#~ msgstr "Manglende medlem \"bug_id\""
+
+#~ msgid "Checking CC..."
+#~ msgstr "Kontrollerer for CC..."
 
 #~ msgid "Plugin name is not set, can't load it's settings"
 #~ msgstr ""
