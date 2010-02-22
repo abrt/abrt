@@ -410,8 +410,6 @@ int32_t ctx::new_bug(const map_crash_data_t& pCrashData)
 
 int32_t ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData)
 {
-    xmlrpc_value* result = NULL;
-
     map_crash_data_t::const_iterator it = pCrashData.begin();
     for (; it != pCrashData.end(); it++)
     {
