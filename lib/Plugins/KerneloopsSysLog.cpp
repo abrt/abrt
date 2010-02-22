@@ -314,10 +314,10 @@ next_line:
 			/* single oopses are of the same loglevel */
 			else if (lines_info[i].level != prevlevel)
 				oopsend = i-1;
-			else if (strstr(curline, "Instruction dump::")) /* why "::"? is it a typo? */
+			else if (strstr(curline, "Instruction dump:"))
 				oopsend = i;
 			/* if a new oops starts, this one has ended */
-			else if (strstr(curline, "WARNING:") && oopsstart != i)
+			else if (strstr(curline, "WARNING: at ") && oopsstart != i) /* WARN_ON() generated messages */
 				oopsend = i-1;
 			else if (strstr(curline, "Unable to handle") && oopsstart != i)
 				oopsend = i-1;
