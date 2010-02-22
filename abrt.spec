@@ -4,7 +4,7 @@
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 1.0.8
-Release: 1%{?dist}
+Release: 0.git20100222%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
@@ -19,6 +19,7 @@ BuildRequires: desktop-file-utils
 #BuildRequires: nss-devel
 BuildRequires: libnotify-devel
 BuildRequires: xmlrpc-c-devel
+BuildRequires: xmlrpc-c-client
 BuildRequires: file-devel
 BuildRequires: python-devel
 BuildRequires: gettext
@@ -408,6 +409,11 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Mon Feb 22 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.8-0.git-20100222
+- Kerneloops: make hashing more likely to produce same hash on different oopses (vda.linux@googlemail.com)
+- make abrt work with the latest kernels (>= 2.6.33) (jmoskovc@redhat.com)
+- lib/Utils/abrt_dbus: utf8-sanitize all strings in dbus messages (fixes #565876) (vda.linux@googlemail.com)
+
 * Fri Feb 12 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.7-1
 - enabled column sorting rhbz#541853
 - Load plugin settings also from ~/.abrt/*.conf (kklic@redhat.com)
