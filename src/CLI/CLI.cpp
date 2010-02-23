@@ -128,7 +128,7 @@ static void usage(char *argv0)
 
 int main(int argc, char** argv)
 {
-    char* uuid = NULL;
+    const char* uuid = NULL;
     int op = -1;
 
     setlocale(LC_ALL, "");
@@ -194,10 +194,39 @@ int main(int argc, char** argv)
             break;
         }
         case OPT_REPORT:
-            exitcode = report(uuid, false);
-            break;
         case OPT_REPORT_ALWAYS:
-            exitcode = report(uuid, true);
+            exitcode = report(uuid, op == OPT_REPORT_ALWAYS);
+            if (exitcode == -1) /* no such UUID */
+            {
+                vector_map_crash_data_t ci = call_GetCrashInfos();
+                unsigned num_crashinfos = ci.size();
+                if (uuid[0] == '@') /* "--report @N" syntax */
+                {
+                    unsigned position = xatoi_u(uuid + 1);
+                    if (position >= num_crashinfos)
+                        error_msg_and_die("There are only %u crash infos", num_crashinfos);
+                    map_crash_data_t& info = ci[position];
+                    uuid = get_crash_data_item_content(info, CD_UUID).c_str();
+                } else {
+                    unsigned uuid_len = strlen(uuid);
+                    unsigned ii;
+                    for (ii = 0; ii < num_crashinfos; ii++)
+                    {
+                        map_crash_data_t& info = ci[ii];
+                        const char *this_uuid = get_crash_data_item_content(info, CD_UUID).c_str();
+                        if (strncmp(uuid, this_uuid, uuid_len) == 0)
+                        {
+                            uuid = this_uuid;
+                            goto do_report;
+                        }
+                    }
+                    error_msg_and_die("Crash '%s' not found", uuid);
+                }
+ do_report:
+                exitcode = report(uuid, op == OPT_REPORT_ALWAYS);
+                if (exitcode == -1)
+                    error_msg_and_die("Crash '%s' not found", uuid);
+            }
             break;
         case OPT_DELETE:
         {

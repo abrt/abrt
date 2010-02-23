@@ -352,26 +352,26 @@ static int run_report_editor(map_crash_data_t &cr)
     perror_msg("can't generate temporary file name");
     return 2;
   }
-  
+
   FILE *fp = fdopen(fd, "w");
   if (!fp) /* errno is set */
   {
     perror_msg("can't open '%s' to save the crash report", filename);
     return 2;
   }
-  
+
   write_crash_report(cr, fp);
-  
+
   if (fclose(fp)) /* errno is set */
   {
     perror_msg("can't close '%s'", filename);
     return 2;
   }
-  
+
   // Start a text editor on the temporary file.
   if (launch_editor(filename) != 0)
     return 3; /* exit with error */
-  
+
   // Read the file back and update the report from the file.
   fp = fopen(filename, "r");
   if (!fp) /* errno is set */
@@ -379,11 +379,11 @@ static int run_report_editor(map_crash_data_t &cr)
     perror_msg("can't open '%s' to read the crash report", filename);
     return 2;
   }
-  
+
   fseek(fp, 0, SEEK_END);
   long size = ftell(fp);
   fseek(fp, 0, SEEK_SET);
-  
+
   char *text = (char*)xmalloc(size + 1);
   if (fread(text, 1, size, fp) != size)
   {
@@ -396,7 +396,7 @@ static int run_report_editor(map_crash_data_t &cr)
     perror_msg("can't close '%s'", filename);
     return 2;
   }
-  
+
   // Delete the tempfile.
   if (unlink(filename) == -1) /* errno is set */
   {
@@ -411,12 +411,12 @@ static int run_report_editor(map_crash_data_t &cr)
     puts(_("\nThe report has been updated."));
   else
     puts(_("\nNo changes were detected in the report."));
-  
+
   return 0;
 }
 
 /**
- * Asks user for a text response. 
+ * Asks user for a text response.
  * @param question
  *  Question displayed to user.
  * @param result
@@ -436,7 +436,7 @@ static void read_from_stdin(const char *question, char *result, int result_size)
 }
 
 /**
- * Gets reporter plugin settings. 
+ * Gets reporter plugin settings.
  * @param ask_user
  *   If it's set to true and some reporter plugin settings are found to be missing
  *   (like login name or password), user is asked to provide the missing parts.
@@ -465,7 +465,7 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
     settings[it->first] = single_plugin_settings;
   }
 
-  /* Second, load user-specific settings, which override 
+  /* Second, load user-specific settings, which override
      the system-wide settings. */
   struct passwd* pw = getpwuid(geteuid());
   const char* homedir = pw ? pw->pw_dir : NULL;
@@ -475,7 +475,7 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
     for (it = settings.begin(); it != itend; ++it)
     {
       map_string_t single_plugin_settings;
-      std::string path = std::string(homedir) + "/.abrt/" 
+      std::string path = std::string(homedir) + "/.abrt/"
 	+ it->first + "."PLUGINS_CONF_EXTENSION;
       /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
          because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
@@ -493,8 +493,7 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
   if (!ask_user)
     return;
 
-  /* Third, check if a login or password is missing, 
-     and ask for it. */
+  /* Third, check if a login or password is missing, and ask for it. */
   itend = settings.end();
   for (it = settings.begin(); it != itend; ++it)
   {
@@ -506,7 +505,7 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
       && 0 == strcmp(single_plugin_settings["Password"].c_str(), "");
     if (!loginMissing && !passwordMissing)
       continue;
-    
+
     // Read the missing information and push it to plugin settings.
     printf(_("Wrong settings were detected for plugin %s.\n"), it->first.c_str());
     char result[64];
@@ -529,7 +528,10 @@ int report(const char *uuid, bool always)
 {
   // Ask for an initial report.
   map_crash_data_t cr = call_CreateReport(uuid);
-//TODO: error check?
+  if (cr.size() == 0)
+  {
+    return -1;
+  }
 
   /* Open text editor and give a chance to review the backtrace etc. */
   if (!always)
@@ -543,7 +545,7 @@ int report(const char *uuid, bool always)
   map_map_string_t pluginSettings;
   get_reporter_plugin_settings(pluginSettings, !always);
 
-  /* Ask if user really want to send the report. */
+  /* Ask if user really wants to send the report. */
   if (!always)
   {
     // Report only if the user is sure.

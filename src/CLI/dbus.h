@@ -34,7 +34,7 @@ map_crash_data_t call_CreateReport(const char *uuid);
  *  obtained by call_GetPluginSettings, otherwise the plugin might ignore
  *  the settings.
  */
-report_status_t call_Report(const map_crash_data_t& report, 
+report_status_t call_Report(const map_crash_data_t& report,
 			    const map_map_string_t &plugins);
 int32_t call_DeleteDebugDump(const char* uuid);
 

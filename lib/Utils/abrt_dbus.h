@@ -259,6 +259,9 @@ static int load_map(DBusMessageIter* iter, std::map<K,V>& val)
         type = dbus_message_iter_get_arg_type(&sub_iter);
         if (type != DBUS_TYPE_DICT_ENTRY)
         {
+            /* When the map has 0 elements, we see DBUS_TYPE_INVALID (on the first iteration) */
+            if (type == DBUS_TYPE_INVALID)
+                break;
             error_msg("sub_iter type is not DBUS_TYPE_DICT_ENTRY (%c)!", type);
             return -1;
         }
