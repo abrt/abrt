@@ -75,8 +75,8 @@ int main(int argc, char **argv)
 	/* Load KerneloopsScanner plugin */
 //	const plugin_info_t *plugin_info;
 	CPlugin* (*plugin_newf)(void);
-	int (*scan_syslog_file)(CKerneloopsScanner *This, const char *filename);
-	void (*save_oops_to_debug_dump)(CKerneloopsScanner *This);
+	int (*scan_syslog_file)(vector_string_t& oopsList, const char *filename);
+	void (*save_oops_to_debug_dump)(const vector_string_t& oopsList);
 	void *handle;
 
 	errno = 0;
@@ -94,20 +94,21 @@ int main(int argc, char **argv)
 //	scanner->LoadSettings(path);
 
 	/* Use it: parse and dump the oops */
-	int cnt = scan_syslog_file(scanner, argv[0]);
+	vector_string_t oopsList;
+	int cnt = scan_syslog_file(oopsList, argv[0]);
 	log("found oopses: %d", cnt);
 
 	if (cnt > 0) {
 		if (opt_s) {
 			int i = 0;
-			while (i < scanner->m_pOopsList.size()) {
-				printf("\nVersion: %s", scanner->m_pOopsList[i].c_str());
+			while (i < oopsList.size()) {
+				printf("\nVersion: %s", oopsList[i].c_str());
 				i++;
 			}
 		}
 		if (opt_d) {
 			log("dumping oopses");
-			save_oops_to_debug_dump(scanner);
+			save_oops_to_debug_dump(oopsList);
 		}
 	}
 

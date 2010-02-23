@@ -33,17 +33,6 @@
 
 class CKerneloopsScanner : public CAction
 {
-		/* For "dumpoops" tool */
-	public:
-		vector_string_t m_pOopsList;
-
-		/* For "dumpoops" tool */
-	public:
-		void SaveOopsToDebugDump();
-		int ScanDmesg();
-		int ScanSysLogFile(const char *filename);
-
-		/* Plugin interface */
 	public:
 		CKerneloopsScanner();
 		virtual void Run(const char *pActionDir, const char *pArgs, int force);
