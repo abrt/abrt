@@ -8,7 +8,7 @@ Release: 1%{?dist}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
-Source: http://jmoskovc.fedorapeople.org/%{name}-%{version}.tar.gz
+Source: https://fedorahosted.org/released/%{name}/%{name}-%{version}.tar.gz
 Source1: abrt.init
 BuildRequires: dbus-devel
 BuildRequires: gtk2-devel
