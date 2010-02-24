@@ -44,7 +44,7 @@ start() {
 	check
 
     # Check if it is already running
-	if [ ! -f $LOCK || ! -f $OLD_LOCK ]; then
+	if [ ! -f $LOCK ] && [! -f $OLD_LOCK ]; then
 		echo -n $"Starting abrt daemon: "
 		daemon $ABRT_BIN
 		RETVAL=$?

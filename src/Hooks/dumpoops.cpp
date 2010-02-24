@@ -89,7 +89,8 @@ int main(int argc, char **argv)
 	LOADSYM(plugin_newf, "plugin_new");
 	LOADSYM(scan_syslog_file, "scan_syslog_file");
 	LOADSYM(save_oops_to_debug_dump, "save_oops_to_debug_dump");
-	CKerneloopsScanner* scanner = (CKerneloopsScanner*) plugin_newf();
+
+//	CKerneloopsScanner* scanner = (CKerneloopsScanner*) plugin_newf();
 //	scanner->Init();
 //	scanner->LoadSettings(path);
 

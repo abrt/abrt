@@ -127,6 +127,9 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 
 		/* in /var/log/messages, we need to strip the first part off, upto the 3rd ':' */
 		/*                     01234567890123456 */
+// Gaack! Some users run syslog in non-C locale:
+// 2010-02-22T09:24:08.156534-08:00 gnu-4 gnome-session[2048]: blah blah
+// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ !!!
 		if ((c9 - c) > sizeof("Jul  4 11:11:11 ")
 		 && c[3] == ' '
 		 && (c[4] == ' ' || isdigit(c[4]))
@@ -234,7 +237,7 @@ next_line:
 				oopsstart = i;
 			else if (strstr(curline, "NETDEV WATCHDOG"))
 				oopsstart = i;
-			else if (strstr(curline, "WARNING:")
+			else if (strstr(curline, "WARNING: at ") /* WARN_ON() generated message */
 			 && !strstr(curline, "appears to be on the same physical disk")
 			) {
 				oopsstart = i;
@@ -317,7 +320,7 @@ next_line:
 			else if (strstr(curline, "Instruction dump:"))
 				oopsend = i;
 			/* if a new oops starts, this one has ended */
-			else if (strstr(curline, "WARNING: at ") && oopsstart != i) /* WARN_ON() generated messages */
+			else if (strstr(curline, "WARNING: at ") && oopsstart != i) /* WARN_ON() generated message */
 				oopsend = i-1;
 			else if (strstr(curline, "Unable to handle") && oopsstart != i)
 				oopsend = i-1;
