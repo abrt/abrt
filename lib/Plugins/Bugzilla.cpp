@@ -126,7 +126,8 @@ struct ctx: public abrt_xmlrpc_conn {
 xmlrpc_value* ctx::call(const char* method, const char* format, ...)
 {
     va_list args;
-    xmlrpc_value* param;
+    xmlrpc_value* param = NULL;
+    xmlrpc_value* result = NULL;
     const char* suffix;
 
     va_start(args, format);
@@ -141,20 +142,17 @@ xmlrpc_value* ctx::call(const char* method, const char* format, ...)
                 &env, XMLRPC_INTERNAL_ERROR, "Junk after the argument "
                 "specifier: '%s'.  There must be exactly one arument.",
                 suffix);
-        }
 
-        if (env.fault_occurred)
-        {
             xmlrpc_DECREF(param);
             return NULL;
         }
+
+        xmlrpc_client_call2(&env, m_pClient, m_pServer_info, method, param, &result);
+        xmlrpc_DECREF(param);
+        if (env.fault_occurred)
+            return NULL;
     }
 
-    xmlrpc_value* result = NULL;
-    xmlrpc_client_call2(&env, m_pClient, m_pServer_info, method, param, &result);
-    xmlrpc_DECREF(param);
-    if (env.fault_occurred)
-        return NULL;
 
     return result;
 }
