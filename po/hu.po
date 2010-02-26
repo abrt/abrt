@@ -3,61 +3,62 @@
 # This file is distributed under the same license as the ABRT package.
 # Zoltan Hoppar <hopparz@gmail.com>, 2009.
 # Nagy István Zoltán <nagyesta@gmail.com>, 2009.
-#
+# Nikolas Slivka <snicore@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-22 14:03+0100\n"
-"PO-Revision-Date: 2010-02-16 13:01+0100\n"
+"POT-Creation-Date: 2010-02-26 15:42+0000\n"
+"PO-Revision-Date: 2010-02-26 17:57+0100\n"
 "Last-Translator: Nikolas Slivka <snicore@gmail.com>\n"
-"Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat."
-"com>\n"
+"Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Poedit-Language: Hungarian\n"
 "X-Poedit-Country: HUNGARY\n"
 "X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: src/Gui/ABRTExceptions.py:6
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "Egy másik klienspéldány már fut, megpróbálom feléleszteni."
 
-#: src/Gui/ABRTExceptions.py:13
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
-"Ismeretlen adat a kiszolgálótól (az adatbázis helyesen lett frissítve?)."
+msgstr "Ismeretlen adat a kiszolgálótól (az adatbázis helyesen lett frissítve?)."
 
-#: src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "Nincsenek betöltve beépülők"
 
-#: src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Analizáló modulok"
 
-#: src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Műveleti modulok"
 
-#: src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Jelentés-generáló modulok"
 
-#: src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Adatbázis modulok"
 
-#: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "A rendszer dbus nem elérhető"
 
-#: src/Gui/CCDBusBackend.py:120 src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120
+#: ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Kérem ellenőrizze, hogy az ABRT kiszolgáló működik."
 
-#: src/Gui/CCDBusBackend.py:175
+#: ../src/Gui/CCDBusBackend.py:175
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -65,108 +66,99 @@ msgstr ""
 "A kiszolgáló nem adott vissza érvényes jelentés információt\n"
 "A debuginfo hiányzik?"
 
-#: src/Gui/ccgui.glade:8
-msgid "Please wait.."
-msgstr "Kérem várjon.."
-
-#: src/Gui/ccgui.glade:61
-msgid "Details"
-msgstr "Részletek"
-
-#: src/Gui/ccgui.glade:77
-msgid "About ABRT"
-msgstr "Az ABRT-ről"
-
-#: src/Gui/ccgui.glade:84
+#: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: src/Gui/ccgui.glade:85
-#, fuzzy
-msgid ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
-msgstr ""
-"This program is free software; you can redistribute it and/or modify it "
-"under the terms of the GNU General Public License as published by the Free "
-"Software Foundation; either version 2 of the License, or (at your option) "
-"any later version.\n"
-"\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT "
-"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
-"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
-"more details.\n"
-"\n"
-"You should have received a copy of the GNU General Public License along with "
-"this program.  If not, see <http://www.gnu.org/licenses/>."
+#: ../src/Gui/ccgui.glade.h:2
+msgid "About ABRT"
+msgstr "Az ABRT-ről"
 
-#: src/Gui/ccgui.glade:123 src/Gui/CCMainWindow.py:9 src/Gui/report.glade:7
+#: ../src/Gui/ccgui.glade.h:3
+#: ../src/Gui/CCMainWindow.py:9
+#: ../src/Gui/report.glade.h:15
+#: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automata Hibabejelentő Eszköz"
 
-#: src/Gui/ccgui.glade:136
-msgid "_File"
-msgstr "_Fájl"
-
-#: src/Gui/ccgui.glade:157
-msgid "_Edit"
-msgstr "Sz_erkesztés"
-
-#: src/Gui/ccgui.glade:165 src/Gui/settings.glade:6
-msgid "Plugins"
-msgstr "Modulok"
-
-#: src/Gui/ccgui.glade:184
-msgid "_Help"
-msgstr "_Súgó"
-
-#: src/Gui/ccgui.glade:215 src/Gui/ccgui.glade:216
+#: ../src/Gui/ccgui.glade.h:4
 msgid "Delete"
 msgstr "Törlés"
 
-#: src/Gui/ccgui.glade:227 src/Gui/ccgui.glade:228 src/Gui/ccgui.glade:344
-msgid "Report"
-msgstr "Jelentés"
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Details"
+msgstr "Részletek"
 
-#: src/Gui/ccgui.glade:300
+#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "Nincs bejelentve"
 
-#: src/Gui/CCMainWindow.py:81
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Please wait.."
+msgstr "Kérem várjon.."
+
+#: ../src/Gui/ccgui.glade.h:8
+#: ../src/Gui/settings.glade.h:19
+msgid "Plugins"
+msgstr "Modulok"
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "Report"
+msgstr "Jelentés"
+
+#: ../src/Gui/ccgui.glade.h:10
+#, fuzzy
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+
+#: ../src/Gui/ccgui.glade.h:15
+msgid "_Edit"
+msgstr "Sz_erkesztés"
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "_File"
+msgstr "_Fájl"
+
+#: ../src/Gui/ccgui.glade.h:17
+msgid "_Help"
+msgstr "_Súgó"
+
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Icon"
 msgstr "Ikon"
 
-#: src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:89
 msgid "Package"
 msgstr "Csomag"
 
-#: src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:91
 msgid "Application"
 msgstr "Alkalmazás"
 
-#: src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:93
 msgid "Date"
 msgstr "Dátum"
 
-#: src/Gui/CCMainWindow.py:95
+#: ../src/Gui/CCMainWindow.py:95
 msgid "Crash count"
 msgstr "Összeomlások száma"
 
-#: src/Gui/CCMainWindow.py:97
+#: ../src/Gui/CCMainWindow.py:97
 msgid "User"
 msgstr "Felhasználó"
 
-#: src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:165
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -175,7 +167,7 @@ msgstr ""
 "A beállítások ablak nem megjeleníthető:\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:176
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -184,7 +176,8 @@ msgstr ""
 "Jelenlegi feladat befejezése nem lehetséges!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:203
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:203
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -193,19 +186,19 @@ msgstr ""
 "Hiba történt a hibaadatok betöltése közben.\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:241
 msgid "This crash has been reported:\n"
 msgstr "Ez a hiba be van jelentve:\n"
 
-#: src/Gui/CCMainWindow.py:242
+#: ../src/Gui/CCMainWindow.py:242
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Ez a hiba be van jelentve:</b>\n"
 
-#: src/Gui/CCMainWindow.py:257
+#: ../src/Gui/CCMainWindow.py:257
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nincs bejelentve!</b>"
 
-#: src/Gui/CCMainWindow.py:305
+#: ../src/Gui/CCMainWindow.py:305
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -213,7 +206,7 @@ msgstr ""
 "Jelentés összeállítása nem lehetséges!\n"
 "Debuginfo hiányzik?"
 
-#: src/Gui/CCMainWindow.py:325
+#: ../src/Gui/CCMainWindow.py:325
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -222,49 +215,41 @@ msgstr ""
 "Bejelentés nem sikerült!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:344 src/Gui/CCMainWindow.py:371
+#: ../src/Gui/CCMainWindow.py:344
+#: ../src/Gui/CCMainWindow.py:371
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Jelentés összeállítása nem sikerült: %s"
 
-#: src/Gui/CCReporterDialog.py:24
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
-msgstr ""
-"Egy rövid leírás angolul, hogy hogyan lehet reprodukálni ezt, vagy mi volt "
-"az amit előtte tettél..."
+msgstr "Egy rövid leírás angolul, hogy hogyan lehet reprodukálni ezt, vagy mi volt az amit előtte tettél..."
 
-#: src/Gui/CCReporterDialog.py:99
+#: ../src/Gui/CCReporterDialog.py:99
 msgid "You must check backtrace for sensitive data"
 msgstr "Ellenőriznie kell a jelentést az érzékeny adatok miatt"
 
-#: src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:110
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command: <b>debuginfo-install "
-"%s</b> \n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install %s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"A hibajelentés küldése nem lehetséges, mert a nyomkövetési információk "
-"használhatatlanok.\n"
-"Kérem próbálja meg manuálisan telepíteni a debuginfo csomagot: <b>debuginfo-"
-"install %s</b> \n"
-"majd használja a Frissítés gombot a nyomkövetési információk ismételt "
-"legenerálásához."
+"A hibajelentés küldése nem lehetséges, mert a nyomkövetési információk használhatatlanok.\n"
+"Kérem próbálja meg manuálisan telepíteni a debuginfo csomagot: <b>debuginfo-install %s</b> \n"
+"majd használja a Frissítés gombot a nyomkövetési információk ismételt legenerálásához."
 
-#: src/Gui/CCReporterDialog.py:112
+#: ../src/Gui/CCReporterDialog.py:112
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "A nyomkövetés haszontalan, ezt nem jelentheti!"
 
-#: src/Gui/CCReporterDialog.py:116
-msgid ""
-"The backtrace is incomplete, please make sure you provide good steps to "
-"reproduce."
-msgstr ""
-"A nyomkövetés nem teljes, kérem ellenőrizze, hogy a megfelelő lépéseket "
-"követi-e a reprodukálásához."
+#: ../src/Gui/CCReporterDialog.py:116
+msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
+msgstr "A nyomkövetés nem teljes, kérem ellenőrizze, hogy a megfelelő lépéseket követi-e a reprodukálásához."
 
-#: src/Gui/CCReporterDialog.py:158
+#: ../src/Gui/CCReporterDialog.py:158
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -273,358 +258,355 @@ msgstr ""
 "A plugin beállításainak mentése sikertelen:\n"
 " %s"
 
-#: src/Gui/dialogs.glade:7
-msgid "Report done"
-msgstr "Jelentés kész"
-
-#: src/Gui/dialogs.glade:78
+#: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
 msgstr "Napló"
 
-#: src/Gui/PluginSettingsUI.py:18
+#: ../src/Gui/dialogs.glade.h:2
+msgid "Report done"
+msgstr "Jelentés kész"
+
+#: ../src/Gui/PluginSettingsUI.py:18
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Nem találom a PluginDialog widgetet a UI leírójában!"
 
-#: src/Gui/PluginSettingsUI.py:24
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:24
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "Nincs UI a %s pluginhoz"
 
-#: src/Gui/PluginSettingsUI.py:55 src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:55
+#: ../src/Gui/PluginSettingsUI.py:81
 msgid "combo box is not implemented"
 msgstr "Combo box nincs beépítve"
 
-#: src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:64
 msgid "Nothing to hydrate!"
 msgstr "Nincs további feladat."
 
-#: src/Gui/report.glade:41
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span fgcolor=\"blue\">Csomag:</span>"
-
-#: src/Gui/report.glade:52
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">Komponens:</span>"
-
-#: src/Gui/report.glade:63
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">Futtatható állomány:</span>"
-
-#: src/Gui/report.glade:74
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">Parancssor:</span>"
-
-#: src/Gui/report.glade:98 src/Gui/report.glade:111 src/Gui/report.glade:124
-#: src/Gui/report.glade:137 src/Gui/report.glade:215 src/Gui/report.glade:228
-#: src/Gui/report.glade:241 src/Gui/report.glade:254
-msgid "N/A"
-msgstr "N/A"
-
-#: src/Gui/report.glade:159
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span fgcolor=\"blue\">Architektúra:</span>"
-
-#: src/Gui/report.glade:170
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span fgcolor=\"blue\">Kernel:</span>"
-
-#: src/Gui/report.glade:181
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span fgcolor=\"blue\">Kiadás:</span>"
-
-#: src/Gui/report.glade:192
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span fgcolor=\"blue\">Ok:</span>"
-
-#: src/Gui/report.glade:315
-msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-"Ellenőriztem a jelentést és eltávolítottam minden érzékeny adatot "
-"(jelszavak, stb)"
-
-#: src/Gui/report.glade:334
-msgid "<b>Backtrace</b>"
-msgstr "<b>Nyomkövetés</b>"
-
-#: src/Gui/report.glade:391
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Hogyan reprodukálja (pár lépésben)</b>"
-
-#: src/Gui/report.glade:429
-msgid "<b>Comment</b>"
-msgstr "<b>Megjegyzés</b>"
-
-#: src/Gui/report.glade:477
-msgid "<b>Attachments</b>"
-msgstr "<b>Csatolmányok</b>"
-
-#: src/Gui/report.glade:526
-msgid "<b>Please fix the following problems</b>"
-msgstr "<b>Kérem orvosolja a következő problémákat</b>"
-
-#: src/Gui/report.glade:536
+#: ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
-#: src/Gui/report.glade:583
-msgid "Show log"
-msgstr "Napló megtekintése"
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Csatolmányok</b>"
 
-#: src/Gui/report.glade:625
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>Nyomkövetés</b>"
+
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>Megjegyzés</b>"
+
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Hogyan reprodukálja (pár lépésben)</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Kérem orvosolja a következő problémákat</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">Architektúra:</span>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Parancssor:</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Komponens:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Futtatható állomány:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">Kernel:</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Csomag:</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">Ok:</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Kiadás:</span>"
+
+#: ../src/Gui/report.glade.h:16
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr "Ellenőriztem a jelentést és eltávolítottam minden érzékeny adatot (jelszavak, stb)"
+
+#: ../src/Gui/report.glade.h:17
+msgid "N/A"
+msgstr "N/A"
+
+#: ../src/Gui/report.glade.h:18
 msgid "Send report"
 msgstr "Jelentés küldése"
 
-#: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
+#: ../src/Gui/report.glade.h:19
+msgid "Show log"
+msgstr "Napló megtekintése"
+
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Válasszon modult</b>"
 
-#: src/Gui/SettingsDialog.py:36
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Válasszon adatbázis backed-et</b>"
 
-#: src/Gui/SettingsDialog.py:169
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Feladat eltávolítása"
 
-#: src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Művelet eltávolítása"
 
-#: src/Gui/settings.glade:64
-msgid "Web Site:"
-msgstr "Weboldal:"
-
-#: src/Gui/settings.glade:76
-msgid "Author:"
-msgstr "Szerző:"
-
-#: src/Gui/settings.glade:88
-msgid "Version:"
-msgstr "Verzió:"
-
-#: src/Gui/settings.glade:142
-msgid "Description:"
-msgstr "Leírás:"
-
-#: src/Gui/settings.glade:154
-msgid "Name:"
-msgstr "Név:"
-
-#: src/Gui/settings.glade:198
-msgid "<b>Plugin details</b>"
-msgstr "<b>Beépülő részletek</b>"
-
-#: src/Gui/settings.glade:221
-msgid "C_onfigure plugin"
-msgstr "_Modul beállítása"
-
-#: src/Gui/settings.glade:258
-msgid "Preferences"
-msgstr "Beállítások"
-
-#: src/Gui/settings.glade:285
-msgid "Check package GPG signature"
-msgstr "A csomag GPG aláírásának ellenőrzése"
-
-#: src/Gui/settings.glade:301
-msgid "Database backend: "
-msgstr "Adatbázis backend"
-
-#: src/Gui/settings.glade:327
-msgid "Blacklisted packages: "
-msgstr "Feketelistás csomagok:"
-
-#: src/Gui/settings.glade:341
-msgid "Max coredump storage size(MB):"
-msgstr "Memóriakép-tárhely maximális mérete (MB):"
-
-#: src/Gui/settings.glade:355
-msgid "GPG keys: "
-msgstr "GPG kulcsok: "
-
-#: src/Gui/settings.glade:458
-msgid "Common"
-msgstr "Gyakori"
-
-#: src/Gui/settings.glade:491
-msgid "<b>Plugin</b>"
-msgstr "<b>Modul</b>"
-
-#: src/Gui/settings.glade:501
-msgid "<b>Time (or period)</b>"
-msgstr "<b>Idő (vagy periódus)</b>"
-
-#: src/Gui/settings.glade:569
-msgid "Cron"
-msgstr "Cron"
-
-#: src/Gui/settings.glade:603
+#: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
 msgstr "<b>Analizáló modul</b>"
 
-#: src/Gui/settings.glade:613
+#: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
 msgstr "<b>Hozzárendelt akció</b>"
 
-#: src/Gui/settings.glade:692
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>Beépülő részletek</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Plugin</b>"
+msgstr "<b>Modul</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Idő (vagy periódus)</b>"
+
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "Analizálók, Akciók, Jelentők"
 
-#: src/Gui/settings.glade:753
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "Szerző:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "Feketelistás csomagok:"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure plugin"
+msgstr "_Modul beállítása"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "A csomag GPG aláírásának ellenőrzése"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "Gyakori"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "Adatbázis backend"
+
+#: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "Leírás:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG Kulcsok"
 
-#: src/Applet/Applet.cpp:77
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "GPG kulcsok: "
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "Memóriakép-tárhely maximális mérete (MB):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Name:"
+msgstr "Név:"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "Beállítások"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "Verzió:"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "Weboldal:"
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Alkalmazáshibák megtekintése és jelentése"
+
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Összeomlás volt érzékelhető a %s csomagban"
 
-#: src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
 msgstr "ABRT szolgáltatás nem fut"
 
-#: src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
-#: src/Daemon/Daemon.cpp:483
-msgid ""
-"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
-"value in abrt.conf."
-msgstr ""
-"A jelentés mérete elérte a kvótát. Kérem ellenőrizze a MaxCrashReportsSize "
-"értékeket az abrt.conf-ban"
+#: ../src/Daemon/Daemon.cpp:483
+msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
+msgstr "A jelentés mérete elérte a kvótát. Kérem ellenőrizze a MaxCrashReportsSize értékeket az abrt.conf-ban"
 
-#: lib/Plugins/Bugzilla.cpp:340
+#: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "A hiba már jelentésre került: %i"
 
-#: lib/Plugins/Bugzilla.cpp:406
+#: ../lib/Plugins/Bugzilla.cpp:395
 #, c-format
 msgid "New bug id: %i"
 msgstr "Új hiba azonosító: %i"
 
-#: lib/Plugins/Bugzilla.cpp:563
+#: ../lib/Plugins/Bugzilla.cpp:549
 msgid "Logging into bugzilla..."
 msgstr "Bejelentkezés a bugzillába..."
 
-#: lib/Plugins/Bugzilla.cpp:567
+#: ../lib/Plugins/Bugzilla.cpp:553
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Üres bejelentkezési név és jelszó. Ellenőrizze a Bugzilla.conf-ot"
 
-#: lib/Plugins/Bugzilla.cpp:577
+#: ../lib/Plugins/Bugzilla.cpp:563
 msgid "Checking for duplicates..."
 msgstr "Duplikátok ellenőrzése..."
 
-#: lib/Plugins/Bugzilla.cpp:590
-#, fuzzy
+#: ../lib/Plugins/Bugzilla.cpp:576
 msgid "Missing mandatory member 'bugs'"
-msgstr "Hiányzó tag 'hibák'"
+msgstr "Hiányzik a kötelező tag \"hiba\""
 
-#: lib/Plugins/Bugzilla.cpp:600
+#: ../lib/Plugins/Bugzilla.cpp:586
 msgid "Creating new bug..."
 msgstr "Új hiba készítése..."
 
-#: lib/Plugins/Bugzilla.cpp:608 lib/Plugins/Bugzilla.cpp:702
+#: ../lib/Plugins/Bugzilla.cpp:594
+#: ../lib/Plugins/Bugzilla.cpp:690
 msgid "Logging out..."
 msgstr "Kijelentkezés..."
 
-#: lib/Plugins/Bugzilla.cpp:636 lib/Plugins/Bugzilla.cpp:664
+#: ../lib/Plugins/Bugzilla.cpp:624
+#: ../lib/Plugins/Bugzilla.cpp:652
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
+msgstr "get_bug_info() sikertelen. Nem lehet összegyűjteni az összes kötelező információt"
 
-#: lib/Plugins/Bugzilla.cpp:648
+#: ../lib/Plugins/Bugzilla.cpp:636
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
-msgstr ""
+msgstr "A Bugzilla nem talalja a(z) (%d) hiba szülőjét."
 
-#: lib/Plugins/Bugzilla.cpp:653
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Jump to bug %d"
-msgstr ""
+msgstr "Ugrás a(z) %d hibához"
 
-#: lib/Plugins/Bugzilla.cpp:678 lib/Plugins/Bugzilla.cpp:679
-#, c-format
+#: ../lib/Plugins/Bugzilla.cpp:666
+#: ../lib/Plugins/Bugzilla.cpp:667
+#, fuzzy, c-format
 msgid "Add %s to CC list"
-msgstr ""
+msgstr "%s hozzáadása a CC listához"
 
-#: lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:681
 #, c-format
 msgid "Add new comment into bug(%d)"
-msgstr ""
+msgstr "Új megjegyzés hozzáadása a(z) (%d) hibához"
 
-#: lib/Plugins/Kerneloops.cpp:100
+#: ../lib/Plugins/Kerneloops.cpp:100
 msgid "Getting local universal unique identification"
 msgstr "Helyi univerzális egyedi azonosító beszerzése"
 
-#: lib/Plugins/CCpp.cpp:275
+#: ../lib/Plugins/CCpp.cpp:275
 msgid "Generating backtrace"
 msgstr "Nyomkövetés begyűjtése"
 
-#: lib/Plugins/CCpp.cpp:437
+#: ../lib/Plugins/CCpp.cpp:437
 msgid "Starting debuginfo installation"
 msgstr "Debuginfo telepítésének indítása"
 
-#: lib/Plugins/CCpp.cpp:633
+#: ../lib/Plugins/CCpp.cpp:633
 msgid "Getting global universal unique identification..."
 msgstr "Globális univerzális egyedi azonosító beszerzése..."
 
-#: lib/Plugins/CCpp.cpp:811
+#: ../lib/Plugins/CCpp.cpp:811
 msgid "Skipping debuginfo installation"
 msgstr "Debuginfo telepítésének kihagyása"
 
-#: lib/Plugins/KerneloopsReporter.cpp:93
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr "Jelentés elkészítése és beküldése..."
 
-#: lib/Plugins/Logger.cpp:73
+#: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Jelentés írása: '%s'"
 
-#: lib/Plugins/FileTransfer.cpp:53
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "URL nincs megadva"
 
-#: lib/Plugins/FileTransfer.cpp:57
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "A(z) %s archívum küldése %s keresztül"
 
-#: lib/Plugins/FileTransfer.cpp:288
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Jelentés készítése..."
 
-#: lib/Plugins/FileTransfer.cpp:322
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Archívum elkészítése és küldése sikertelen: %s"
 
-#: lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Archívum elkészítése és küldése sikertelen %s"
 
-#: lib/Plugins/KerneloopsScanner.cpp:72
-msgid "Creating kernel oops crash reports..."
-msgstr "Kernel ütközési jelentés készítése..."
-
-#: lib/Plugins/Mailx.cpp:134
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Email küldés..."
 
-#: lib/Plugins/SOSreport.cpp:101
+#: ../lib/Plugins/SOSreport.cpp:101
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "SOSreport futtatása: %s"
 
-#: lib/Plugins/SOSreport.cpp:107
+#: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "SOSreport lefutott"
 
-#~ msgid "View and report application crashes"
-#~ msgstr "Alkalmazáshibák megtekintése és jelentése"
+#~ msgid "Creating kernel oops crash reports..."
+#~ msgstr "Kernel ütközési jelentés készítése..."
 
 #~ msgid "Missing member 'reporter'"
 #~ msgstr "Hiányzó tag 'reporter'"
