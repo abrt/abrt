@@ -288,7 +288,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     unsetenv("TERM");
     putenv((char*)"TERM=dumb");
 
-    char *args[17];
+    char *args[21];
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
 
@@ -341,12 +341,16 @@ static void GetBacktrace(const char *pDebugDumpDir,
     /*args[9] = ... see below */
     args[10] = (char*)"-ex";
     args[11] = (char*)"info sharedlib";
-    /* glibc's abort() stores its message in this variable */
+    /* glibc's abort() stores its message in __abort_msg variable */
     args[12] = (char*)"-ex";
     args[13] = (char*)"print (char*)__abort_msg";
     args[14] = (char*)"-ex";
     args[15] = (char*)"print (char*)__glib_assert_msg";
-    args[16] = NULL;
+    args[16] = (char*)"-ex";
+    args[17] = (char*)"info registers";
+    args[18] = (char*)"-ex";
+    args[19] = (char*)"disassemble";
+    args[20] = NULL;
 
     /* Get the backtrace, but try to cap its size */
     /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
