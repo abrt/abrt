@@ -25,9 +25,10 @@
 
 using namespace std;
 
-#define ABRT_TABLE_VERSION      2
-#define ABRT_TABLE_VERSION_STR "2"
+#define ABRT_TABLE_VERSION      3
+#define ABRT_TABLE_VERSION_STR "3"
 #define ABRT_TABLE             "abrt_v"ABRT_TABLE_VERSION_STR
+#define ABRT_REPRESULT_TABLE   "abrt_v"ABRT_TABLE_VERSION_STR"_reportresult"
 #define SQLITE3_MASTER_TABLE   "sqlite_master"
 
 #define COL_UUID               "UUID"
@@ -38,54 +39,7 @@ using namespace std;
 #define COL_TIME               "Time"
 #define COL_MESSAGE            "Message"
 
-// after a while, we can drop support for update, so a table can stay in
-// normal limits
-static const char *const upate_sql_commands[][ABRT_TABLE_VERSION + 1] = {
-    // v0 -> *
-    {
-        // v0 -> v0
-        ";",
-        // v0 -> v1
-        "ALTER TABLE abrt ADD "COL_MESSAGE" VARCHAR NOT NULL DEFAULT '';",
-        // v0 -> v2
-        "BEGIN TRANSACTION;"
-        "ALTER TABLE abrt RENAME TO abrt_v2;"
-        "ALTER TABLE abrt_v2 ADD "COL_MESSAGE" VARCHAR NOT NULL DEFAULT '';"
-        "COMMIT;",
-
-    },
-    //v1 -> *
-    {
-        // v1 -> v0
-        // TODO: does it make sense to support downgrade?
-        ";",
-        // v1 -> v1
-        ";",
-        // v1 -> v2
-        "BEGIN TRANSACTION;"
-        "CREATE TABLE abrt_v2 ("
-                 COL_UUID" VARCHAR NOT NULL,"
-                 COL_UID" VARCHAR NOT NULL,"
-                 COL_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
-                 COL_COUNT" INT NOT NULL DEFAULT 1,"
-                 COL_REPORTED" INT NOT NULL DEFAULT 0,"
-                 COL_TIME" VARCHAR NOT NULL DEFAULT 0,"
-                 COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
-                 "PRIMARY KEY ("COL_UUID","COL_UID"));"
-        "INSERT INTO abrt_v2 "
-            "SELECT "COL_UUID","
-                     COL_UID","
-                     COL_DEBUG_DUMP_PATH","
-                     COL_COUNT","
-                     COL_REPORTED","
-                     COL_TIME","
-                     COL_MESSAGE
-            " FROM abrt;"
-        "DROP TABLE abrt;"
-        "COMMIT;",
-    },
-};
-
+#define COL_REPORTER           "Reporter"
 
 /* Is this string safe wrt SQL injection?
  * PHP's mysql_real_escape_string() treats \, ', ", \x00, \n, \r, and \x1a as special.
@@ -225,15 +179,74 @@ static bool exists_uuid_uid(sqlite3 *db, const char *pUUID, const char *pUID)
     return !table.empty();
 }
 
-static void update_from_old_ver(sqlite3 *db, int pOldVersion)
+static void update_from_old_ver(sqlite3 *db, int old_version)
 {
-    execute_sql(db, upate_sql_commands[pOldVersion][ABRT_TABLE_VERSION]);
+    static const char *const update_sql_commands[] = {
+        // v0 -> v1
+        NULL,
+        // v1 -> v2
+        "BEGIN TRANSACTION;"
+        "CREATE TABLE abrt_v2 ("
+                COL_UUID" VARCHAR NOT NULL,"
+                COL_UID" VARCHAR NOT NULL,"
+                COL_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
+                COL_COUNT" INT NOT NULL DEFAULT 1,"
+                COL_REPORTED" INT NOT NULL DEFAULT 0,"
+                COL_TIME" VARCHAR NOT NULL DEFAULT 0,"
+                COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
+                "PRIMARY KEY ("COL_UUID","COL_UID"));"
+        "INSERT INTO abrt_v2 "
+            "SELECT "COL_UUID","
+                    COL_UID","
+                    COL_DEBUG_DUMP_PATH","
+                    COL_COUNT","
+                    COL_REPORTED","
+                    COL_TIME","
+                    COL_MESSAGE
+            " FROM abrt;"
+        "DROP TABLE abrt;"
+        "COMMIT;",
+        // v2 -> v3
+        "BEGIN TRANSACTION;"
+        "CREATE TABLE abrt_v3 ("
+                COL_UUID" VARCHAR NOT NULL,"
+                COL_UID" VARCHAR NOT NULL,"
+                COL_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
+                COL_COUNT" INT NOT NULL DEFAULT 1,"
+                COL_REPORTED" INT NOT NULL DEFAULT 0,"
+                COL_TIME" VARCHAR NOT NULL DEFAULT 0,"
+                COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
+                "PRIMARY KEY ("COL_UUID","COL_UID"));"
+        "INSERT INTO abrt_v3 "
+            "SELECT "COL_UUID","
+                    COL_UID","
+                    COL_DEBUG_DUMP_PATH","
+                    COL_COUNT","
+                    COL_REPORTED","
+                    COL_TIME","
+                    COL_MESSAGE
+            " FROM abrt_v2;"
+        "DROP TABLE abrt_v2;"
+        "CREATE TABLE "ABRT_REPRESULT_TABLE" ("
+                COL_UUID" VARCHAR NOT NULL,"
+                COL_UID" VARCHAR NOT NULL,"
+                COL_REPORTER" VARCHAR NOT NULL,"
+                COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
+                "PRIMARY KEY ("COL_UUID","COL_UID","COL_REPORTER"));"
+        "COMMIT;",
+    };
+
+    while (old_version < ABRT_TABLE_VERSION)
+    {
+        execute_sql(db, update_sql_commands[old_version]);
+        old_version++;
+    }
 }
 
 static bool check_table(sqlite3 *db)
 {
-    const char *command = "SELECT NAME, SQL FROM "SQLITE3_MASTER_TABLE" "
-                          "WHERE TYPE='table';";
+    const char *command = "SELECT NAME FROM "SQLITE3_MASTER_TABLE" "
+                          "WHERE TYPE='table' AND NAME like 'abrt_v%';";
     char **table;
     int ncol, nrow;
     char *err;
@@ -245,45 +258,29 @@ static bool check_table(sqlite3 *db)
     }
     if (!nrow)
     {
+        sqlite3_free_table(table);
         return false;
     }
 
-    string tableName = table[0 + ncol];
-    string::size_type pos = tableName.find("_");
-    if (pos != string::npos)
+    // table format:
+    // table[0]:"NAME"     // table[1]:"SQL"       <== field names from SELECT
+    // table[2]:"abrt_vNN" // table[3]:"sql"
+    char *tableName = table[0 + ncol];
+    char *underscore = strchr(tableName, '_');
+    if (underscore)
     {
-        string tableVersion = tableName.substr(pos + 2);
-        if (xatoi_u(tableVersion.c_str()) < ABRT_TABLE_VERSION)
+        int tableVersion = xatoi_u(underscore + 2);
+        sqlite3_free_table(table);
+        if (tableVersion < ABRT_TABLE_VERSION)
         {
-            update_from_old_ver(db, xatoi_u(tableVersion.c_str()));
+            update_from_old_ver(db, tableVersion);
         }
         return true;
     }
-
-    // TODO: after some time could be removed, and if the table is that old,
-    // then simply drop it and create new one
-
-    // hack for version 0 and 1
-    string sql = table[1 + ncol];
-    if (sql.find(COL_MESSAGE) != string::npos)
-    {
-        update_from_old_ver(db, 1);
-        return true;
-    }
-    update_from_old_ver(db, 0);
+    sqlite3_free_table(table);
+    update_from_old_ver(db, 1);
     return true;
 }
-/*
-static bool check_table()
-{
-    vector_database_rows_t table;
-    get_table(table, m_pDB,
-             "SELECT NAME FROM "SQLITE3_MASTER_TABLE" "
-             "WHERE TYPE='table' AND NAME='"ABRT_TABLE"';");
-
-    return table.size() == 1;
-}
-*/
 
 
 CSQLite3::CSQLite3() :
@@ -355,6 +352,14 @@ void CSQLite3::Connect()
                 COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
                 "PRIMARY KEY ("COL_UUID","COL_UID"));"
         );
+        execute_sql(m_pDB,
+                "CREATE TABLE "ABRT_REPRESULT_TABLE" ("
+                COL_UUID" VARCHAR NOT NULL,"
+                COL_UID" VARCHAR NOT NULL,"
+                COL_REPORTER" VARCHAR NOT NULL,"
+                COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
+                "PRIMARY KEY ("COL_UUID","COL_UID","COL_REPORTER"));"
+        );
     }
 }
 
@@ -412,10 +417,20 @@ void CSQLite3::DeleteRow(const char *pUUID, const char *pUID)
                 "WHERE "COL_UUID" = '%s';",
                 pUUID
         );
+        execute_sql(m_pDB,
+                "DELETE FROM "ABRT_REPRESULT_TABLE" "
+                "WHERE "COL_UUID" = '%s';",
+                pUUID
+        );
     }
     else if (exists_uuid_uid(m_pDB, pUUID, pUID))
     {
         execute_sql(m_pDB, "DELETE FROM "ABRT_TABLE" "
+                "WHERE "COL_UUID" = '%s' "
+                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
+                pUUID, pUID
+        );
+        execute_sql(m_pDB, "DELETE FROM "ABRT_REPRESULT_TABLE" "
                 "WHERE "COL_UUID" = '%s' "
                 "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
                 pUUID, pUID
@@ -434,6 +449,29 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
         return;
     }
 
+    /* Get UID:UUID pair(s) to delete */
+    vector_database_rows_t table;
+    get_table(table, m_pDB,
+                "SELECT * FROM "ABRT_TABLE" "
+                "WHERE "COL_DEBUG_DUMP_PATH" = '%s'",
+                dump_dir
+    );
+    if (table.empty())
+    {
+        return;
+    }
+
+    /* Delete from both tables */
+    vector_database_rows_t::iterator it = table.begin();
+    while (it != table.end())
+    {
+        execute_sql(m_pDB,
+                "DELETE FROM "ABRT_REPRESULT_TABLE" "
+                "WHERE "COL_UUID" = '%s' "
+                "AND ("COL_UID" = '%s');",
+                it->m_sUUID.c_str(), it->m_sUID.c_str()
+        );
+    }
     execute_sql(m_pDB,
                 "DELETE FROM "ABRT_TABLE" "
                 "WHERE "COL_DEBUG_DUMP_PATH" = '%s'",
