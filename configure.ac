@@ -107,7 +107,6 @@ AC_CONFIG_FILES([
 	inc/Makefile
 	po/Makefile.in
 	icons/Makefile
-	icons/48/Makefile
 ])
 
 AC_OUTPUT

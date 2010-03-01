@@ -259,6 +259,13 @@ exit 0
 %post
 /sbin/chkconfig --add %{name}d
 
+%post gui
+# update icon cache
+touch --no-create %{_datadir}/icons/hicolor || :
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+  %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor || :
+fi
+
 %post libs -p /sbin/ldconfig
 
 %preun
@@ -268,6 +275,12 @@ if [ "$1" -eq "0" ] ; then
 fi
 
 %postun libs -p /sbin/ldconfig
+
+%postun gui
+touch --no-create %{_datadir}/icons/hicolor || :
+if [ -x %{_bindir}/gtk-update-icon-cache ]; then
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
+fi
 
 %posttrans
 if [ "$1" -eq "0" ]; then
@@ -313,8 +326,8 @@ fi
 %{_bindir}/%{name}-gui
 %{_datadir}/%{name}
 %{_datadir}/applications/fedora-%{name}.desktop
-%{_datadir}/pixmaps/abrt.png
-%{_datadir}/icons/hicolor/48x48/apps/*.png
+%{_datadir}/icons/hicolor/*/apps/abrt.png
+%{_datadir}/%{name}/icons/hicolor/*/status/*.png
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 

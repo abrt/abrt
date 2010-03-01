@@ -17,7 +17,7 @@ applicationsdir = $(datadir)/applications
 applications_DATA = abrt.desktop
 pkgdata_PYTHON = $(PYTHON_FILES)
 pkgdata_DATA = $(GLADE_FILES)
-pixmapdir = $(datadir)/pixmaps
+pixmapdir = $(datadir)/icons/hicolor/48x48/apps/
 pixmap_DATA = abrt.png
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
