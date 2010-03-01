@@ -227,12 +227,11 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
 
     map_crash_data_t argin1;
     r = load_val(&in_iter, argin1);
-    if (r == ABRT_DBUS_ERROR)
+    if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
         return -1;
     }
-
     const char* comment = get_crash_data_item_content_or_NULL(argin1, FILENAME_COMMENT) ? : "";
     const char* reproduce = get_crash_data_item_content_or_NULL(argin1, FILENAME_REPRODUCE) ? : "";
     const char* errmsg = NULL;
@@ -254,7 +253,16 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         return 0;
     }
 
-    /* Second parameter is optional */
+    /* Second parameter: reporters to use */
+    vector_string_t reporters;
+    r = load_val(&in_iter, reporters);
+    if (r == ABRT_DBUS_ERROR)
+    {
+        error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
+        return -1;
+    }
+
+    /* Third parameter is optional */
     map_map_string_t user_conf_data;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {
