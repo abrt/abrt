@@ -263,7 +263,7 @@ exit 0
 # update icon cache
 touch --no-create %{_datadir}/icons/hicolor || :
 if [ -x %{_bindir}/gtk-update-icon-cache ]; then
-  %{_bindir}/gtk-update-icon-cache %{_datadir}/icons/hicolor || :
+  %{_bindir}/gtk-update-icon-cache --quiet %{_datadir}/icons/hicolor || :
 fi
 
 %post libs -p /sbin/ldconfig
