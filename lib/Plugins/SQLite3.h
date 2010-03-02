@@ -45,6 +45,10 @@ class CSQLite3 : public CDatabase
         virtual void DeleteRow(const char *pUUID, const char *pUID);
         virtual void DeleteRows_by_dir(const char *dump_dir);
         virtual void SetReported(const char *pUUID, const char *pUID, const char *pMessage);
+        virtual void SetReportedPerReporter(const char *pUUID,
+                                 const char *pUID,
+                                 const char *reporter,
+                                 const char *pMessage);
         virtual vector_database_rows_t GetUIDData(const char *pUID);
         virtual database_row_t GetRow(const char *pUUID, const char *pUID);
 

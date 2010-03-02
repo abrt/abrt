@@ -147,7 +147,7 @@ static void get_table(vector_database_rows_t& pTable,
     sqlite3_free_table(table);
 }
 
-static void execute_sql(sqlite3 *db, const char *fmt, ...)
+static int execute_sql(sqlite3 *db, const char *fmt, ...)
 {
     va_list p;
     va_start(p, fmt);
@@ -163,8 +163,11 @@ static void execute_sql(sqlite3 *db, const char *fmt, ...)
         sqlite3_free(err);
         throw CABRTException(EXCEP_PLUGIN, errstr.c_str());
     }
-    VERB2 log("%d rows affected by SQL:%s", sqlite3_changes(db), sql);
+    int affected = sqlite3_changes(db);
+    VERB2 log("%d rows affected by SQL:%s", affected, sql);
     free(sql);
+
+    return affected;
 }
 
 static bool exists_uuid_uid(sqlite3 *db, const char *pUUID, const char *pUID)
@@ -481,9 +484,6 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
 
 void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMessage)
 {
-//    string escaped_msg = sql_escape(pMessage);
-//#define pMessage pMessage_must_not_be_used_below
-
     if (!is_string_safe(pUUID)
      || !is_string_safe(pUID)
      || !is_string_safe(pMessage)
@@ -525,6 +525,37 @@ void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMes
     else
     {
         error_msg("UUID,UID %s,%s is not found in DB", pUUID, pUID);
+    }
+}
+
+void CSQLite3::SetReportedPerReporter(const char *pUUID,
+                                 const char *pUID,
+                                 const char *reporter,
+                                 const char *pMessage)
+{
+    if (!is_string_safe(pUUID)
+     || !is_string_safe(pUID)
+     || !is_string_safe(reporter)
+     || !is_string_safe(pMessage)
+    ) {
+        return;
+    }
+
+    int affected_rows = execute_sql(m_pDB,
+                "UPDATE "ABRT_REPRESULT_TABLE
+                " SET "COL_MESSAGE"='%s'"
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s' AND "COL_REPORTER"='%s'",
+                pMessage,
+                pUUID, pUID, reporter
+    );
+    if (!affected_rows)
+    {
+        execute_sql(m_pDB,
+                "INSERT INTO "ABRT_REPRESULT_TABLE
+                " ("COL_UUID","COL_UID","COL_REPORTER","COL_MESSAGE")"
+                " VALUES ('%s','%s','%s','%s');",
+                pUUID, pUID, reporter, pMessage
+	);
     }
 }
 

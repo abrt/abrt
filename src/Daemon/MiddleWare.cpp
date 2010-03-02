@@ -28,6 +28,7 @@
 #include "CommLayerInner.h"
 #include "MiddleWare.h"
 
+using namespace std;
 
 /**
  * An instance of CPluginManager. When MiddleWare wants to do something
@@ -528,6 +529,17 @@ report_status_t Report(const map_crash_data_t& client_report,
     {
         CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
         database->Connect();
+        report_status_t::iterator ret_it = ret.begin();
+        while (ret_it != ret.end())
+        {
+            const string &plugin_name = ret_it->first;
+            const vector_string_t &v = ret_it->second;
+            if (v[REPORT_STATUS_IDX_FLAG] == "1")
+            {
+                database->SetReportedPerReporter(UUID, UID, plugin_name.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+            }
+            ret_it++;
+        }
         database->SetReported(UUID, UID, message.c_str());
         database->DisConnect();
     }

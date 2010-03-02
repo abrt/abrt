@@ -95,6 +95,10 @@ class CDatabase : public CPlugin
         virtual void SetReported(const char *pUUID,
                                  const char *pUID,
                                  const char *pMessage) = 0;
+        virtual void SetReportedPerReporter(const char *pUUID,
+                                 const char *pUID,
+                                 const char *reporter,
+                                 const char *pMessage) = 0;
         /**
          * A method, which gets all rows which belongs to particular user.
          * If the user is root, then all rows are returned. If there are no
