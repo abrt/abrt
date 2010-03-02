@@ -426,7 +426,7 @@ static int run_report_editor(map_crash_data_t &cr)
  */
 static void read_from_stdin(const char *question, char *result, int result_size)
 {
-  printf(question);
+  printf("%s", question);
   fflush(NULL);
   fgets(result, result_size, stdin);
   // Remove the newline from the login.

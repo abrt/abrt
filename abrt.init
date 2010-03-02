@@ -62,7 +62,7 @@ stop() {
 	killproc $ABRT_BIN
 	RETVAL=$?
 	[ $RETVAL -eq 0 ] && rm -f $LOCK
-    [ $RETVAL -eq 0 ] && rm -f $OLD_LOCK
+	[ $RETVAL -eq 0 ] && rm -f $OLD_LOCK
 	echo
 	return $RETVAL
 }
@@ -96,12 +96,12 @@ restart)
 	;;
 condrestart)
 	if [ -f $LOCK ]; then
-	    restart
+		restart
 	fi
-    # update from older version
-    if [ -f $OLD_LOCK ]; then
-        restart
-    fi
+	# update from older version
+	if [ -f $OLD_LOCK ]; then
+		restart
+	fi
 	;;
 status)
 	status abrt

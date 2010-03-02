@@ -181,12 +181,12 @@ class DBusManager(gobject.GObject):
         # 2nd param is "force recreating of backtrace etc"
         self.daemon().StartJob(UUID, force, timeout=60)
 
-    def Report(self, report, reporters_settings = None):
+    def Report(self, report, reporters, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
         if reporters_settings:
-            self.daemon().Report(report, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+            self.daemon().Report(report, reporters, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
         else:
-            self.daemon().Report(report, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+            self.daemon().Report(report, reporters, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
 
     def DeleteDebugDump(self,UUID):
         return self.daemon().DeleteDebugDump(UUID)

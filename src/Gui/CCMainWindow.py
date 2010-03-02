@@ -314,11 +314,11 @@ class MainWindow():
                 self.timer = gobject.timeout_add(100, self.progress_update_cb)
                 pluginlist = getPluginInfoList(self.ccdaemon)
                 reporters_settings = pluginlist.getReporterPluginsSettings()
-                log2("Report(result,settings):")
+                log2("Report(result,reporters,settings):")
                 log2("  result:%s", str(result))
                 # Careful, this will print reporters_settings["Password"] too
                 log2("  settings:%s", str(reporters_settings))
-                self.ccdaemon.Report(result, reporters_settings)
+                self.ccdaemon.Report(result, ["reporter1", "reporter2"], reporters_settings)
                 log2("Report() returned")
                 #self.hydrate()
             except Exception, ex:

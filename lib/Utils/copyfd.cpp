@@ -71,14 +71,14 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size)
 			break;
 		}
 		if (rd < 0) {
-			perror_msg(msg_read_error);
+			perror_msg("%s", msg_read_error);
 			break;
 		}
 		/* dst_fd == -1 is a fake, else... */
 		if (dst_fd >= 0) {
 			ssize_t wr = full_write(dst_fd, buffer, rd);
 			if (wr < rd) {
-				perror_msg(msg_write_error);
+				perror_msg("%s", msg_write_error);
 				break;
 			}
 		}
