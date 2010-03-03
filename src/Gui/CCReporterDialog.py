@@ -214,6 +214,7 @@ class ReporterDialog():
         self.editable = []
         self.old_comment = COMMENT_HINT_TEXT
         self.old_how_to_reproduce = HOW_TO_HINT_TEXT
+        self.is_oops = False
         for item in self.report:
             try:
                 log2("report[%s]:%s/%s/%s", item, self.report[item][0], self.report[item][1], self.report[item][2][0:20])
@@ -306,7 +307,7 @@ class ReporterDialog():
         text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
         if self.old_how_to_reproduce != text:
             self.report[FILENAME_REPRODUCE] = [CD_TXT, 'y', text]
-        #handle backtrace
+        # handle backtrace
         tev_backtrace = self.builder.get_object("tvBacktrace")
         buff = tev_backtrace.get_buffer()
         text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
