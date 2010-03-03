@@ -52,6 +52,8 @@ tempdir="$2"
 debuginfodirs="${3//:/ }"
 cachedir="${3%%:*}"
 debug=false
+# Useful if you need to see saved rpms, command outputs etc
+keep_tmp=false
 
 
 # stderr may be used for status messages too
@@ -114,19 +116,19 @@ print_missing_debuginfos() {
 cleanup_and_report_missing() {
 # Which debuginfo files are still missing, including those we just unpacked?
     missing_build_ids=`print_missing_build_ids`
-    $debug && echo "missing_build_ids:$missing_build_ids"
+    $debug && echo "missing_build_ids:$missing_build_ids" >&2
 
     # If cachedir is specified, tempdir is just a staging area. Delete it
     if test x"$cachedir" != x""; then
-        $debug && echo "Removing $tempdir"
-        $debug || rm -rf "$tempdir"
+        $keep_tmp && echo "NOT removing $tempdir (keep_tmp debugging is on)" >&2
+        $keep_tmp || { $debug && echo "Removing $tempdir" >&2; rm -rf "$tempdir"; }
     fi
 
     for missing in $missing_build_ids; do
-        echo "MISSING:$missing"
+        echo "MISSING:$missing" >&2
     done
 
-    test x"$missing_build_ids" != x"" && echo "`count_words $missing_build_ids` debuginfos can't be found"
+    test x"$missing_build_ids" != x"" && echo "`count_words $missing_build_ids` debuginfos can't be found" >&2
 }
 
 # $1: iteration (1,2...)
@@ -146,11 +148,12 @@ print_package_names() {
     # when we look for debuginfo we need only -debuginfo* repos, so we can disable the rest and thus make it faster
     # also we want only fedora repositories, because abrt won't work for other packages anyway
     # --showduplicates: do not just show the latest package
-    # -R2: wait two minutes max (hopefully this prevents infinite hang on yum lock)
-    local cmd="yum $yumopts '--disablerepo=*' '--enablerepo=fedora-debuginfo*' '--enablerepo=updates-debuginfo*' --showduplicates -R2 --quiet provides $missing_debuginfo_files"
+    # (tried to use -R2 to abort on stuck yum lock but -R is not about that)
+    local cmd="yum $yumopts '--disablerepo=*' '--enablerepo=fedora-debuginfo*' '--enablerepo=updates-debuginfo*' --showduplicates --quiet provides $missing_debuginfo_files"
     echo "$cmd" >"yum_provides.$1.OUT"
+    $debug && echo "Running: $cmd" >&2
     # eval is needed to strip away ''s; cant remove them above and just use
-    # $cmd, that would perform globbing on '*'
+    # unquoted $cmd, that would perform globbing on '*'
     local yum_provides_OUT="`eval $cmd 2>&1`"
     local err=$?
     printf "%s\nyum exitcode:%s\n" "$yum_provides_OUT" $err >>"yum_provides.$1.OUT"
@@ -212,7 +215,7 @@ download_packages() {
 	    echo "Unpacking: $file"
 	    echo "Processing: $file" >>unpack.OUT
 	    rpm2cpio <"$file" >"unpacked.cpio" 2>>unpack.OUT || error_msg_and_die "Can't convert '$file' to cpio"
-	    rm "$file"
+	    $keep_tmp || rm "$file"
 	    cpio -id <"unpacked.cpio" >>unpack.OUT 2>&1 || error_msg_and_die "Can't unpack '$file' cpio archive"
 	    rm "unpacked.cpio"
 	    # Copy debuginfo files to cachedir
@@ -256,9 +259,10 @@ test x"$cachedir" = x"" || test -d "$cachedir" || error_msg_and_die "bad cachedi
 # tempdir must not exist
 test -e "$tempdir" && error_msg_and_die "tempdir exists: '$tempdir'"
 
+# Intentionally not using -p: we want to abort if tempdir exists
 mkdir -- "$tempdir" || exit 2
 cd "$tempdir" || exit 2
-$debug && echo "Installing rpms to $tempdir"
+$debug && echo "Downloading rpms to $tempdir"
 
 
 # eu-unstrip output example:
