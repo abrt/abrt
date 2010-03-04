@@ -4,14 +4,7 @@ import gtk
 import pango
 import subprocess
 import sys
-# url markup is supported from gtk 2.17 so we need to use libsexy
-# FIXME: make a new branch for rawhide with gtk 2.17 and remove this
-if gtk.gtk_version[1] < 17:
-    from sexy import UrlLabel as Label
-    on_url_clicked_signal = "url-activated"
-else:
-    from gtk import Label
-    on_url_clicked_signal = "activate-link"
+
 try:
     # we don't want to add dependency to rpm, but if we have it, we can use it
     import rpm
@@ -27,7 +20,7 @@ def tag_urls_in_text(text):
     lines_dict = {}
     for index in xrange(len(lines)):
         lines_dict[index] = lines[index]
-    
+
     for mark in url_marks:
         for ix,line in lines_dict.items():
             last_mark = line.find(mark)
@@ -47,14 +40,6 @@ def tag_urls_in_text(text):
 
 def on_label_resize(label, allocation):
     label.set_size_request(allocation.width,-1)
-
-def on_url_clicked(label, url):
-    import gnomevfs
-    file_mimetype = gnomevfs.get_mime_type(url)
-    default_app = gnomevfs.mime_get_default_application(file_mimetype)
-    if default_app:
-        log2("default application:%s", default_app[2])
-        subprocess.Popen([default_app[2], url])
 
 def gui_report_dialog ( report_status_dict, parent_dialog,
                       message_type=gtk.MESSAGE_INFO,
@@ -97,7 +82,7 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
         # if report succeds and gets overwriten by the status message
         if report_status_dict[plugin][STATUS] == '1':
             status_label.set_markup(tag_urls_in_text(report_status_dict[plugin][MESSAGE]))
-            
+
         if len(report_status_dict[plugin][1]) > MAX_WIDTH:
             status_label.set_tooltip_text(report_status_dict[plugin][1])
         status_vbox.pack_start(plugin_status_vbox, fill=True, expand=False)
