@@ -151,7 +151,7 @@ class PluginsSettingsDialog:
         pluginfo = pluginsListStore.get_value(pluginsListStore.get_iter(path[0]), pluginsListStore.get_n_columns()-1)
         if pluginfo:
             try:
-                ui = PluginSettingsUI(pluginfo)
+                ui = PluginSettingsUI(pluginfo, parent=self.window)
             except Exception, e:
                 gui_error_message(_("Error while opening plugin settings UI: \n\n%s" % e))
                 return

@@ -1,10 +1,9 @@
 import gtk
 from abrt_utils import _, log, log1, log2
 
-class PluginSettingsUI(gtk.Dialog):
+class PluginSettingsUI():
     def __init__(self, pluginfo, parent=None):
         #print "Init PluginSettingsUI"
-        gtk.Dialog.__init__(self)
         self.plugin_name = pluginfo.Name
         self.Settings = pluginfo.Settings
         self.pluginfo = pluginfo
@@ -25,8 +24,10 @@ class PluginSettingsUI(gtk.Dialog):
             self.add(no_ui_label)
             no_ui_label.show()
 
-        #connect show_pass buttons if present
-
+        if parent:
+            self.dialog.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+            self.dialog.set_transient_for(parent)
+            self.dialog.set_modal(True)
 
     def on_show_pass_toggled(self, button, entry=None):
         if entry:
