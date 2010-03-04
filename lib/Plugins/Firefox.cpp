@@ -246,7 +246,7 @@ static void GetBacktrace(const char *pDebugDumpDir, std::string& pBacktrace)
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_UID, UID);
+        dd.LoadText(CD_UID, UID);
     }
 
     // Workaround for
@@ -440,7 +440,7 @@ static std::string run_unstrip_n(const char *pDebugDumpDir)
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
-        dd.LoadText(FILENAME_UID, UID);
+        dd.LoadText(CD_UID, UID);
     }
 
     char* args[4];
@@ -884,7 +884,7 @@ void CAnalyzerFirefox::CreateReport(const char *pDebugDumpDir, int force)
     }
 
     dd.LoadText(FILENAME_PACKAGE, package);
-    dd.LoadText(FILENAME_UID, UID);
+    dd.LoadText(CD_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
     std::string build_ids;

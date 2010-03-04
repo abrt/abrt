@@ -514,7 +514,7 @@ class ReporterSelector():
 
         # show the report window with selected report
         try:
-            self.daemon.getReport(report[CD_UUID][CD_CONTENT], force=1)
+            self.daemon.start_job("%s:%s" % (report[CD_UID][CD_CONTENT], report[CD_UUID][CD_CONTENT]), force=1)
         except Exception, ex:
             # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal
@@ -535,7 +535,7 @@ class ReporterSelector():
         # when getReport is done it emits "analyze-complete" and on_analyze_complete_cb is called
         # FIXME: does it make sense to change it to use callback rather then signal emitting?
         try:
-            self.daemon.getReport(self.dump.getUUID())
+            self.daemon.start_job("%s:%s" % (self.dump.getUID(), self.dump.getUUID()))
         except Exception, ex:
             # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
             # do this async and wait for yum to end with debuginfoinstal

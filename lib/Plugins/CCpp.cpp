@@ -280,7 +280,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_UID, UID);
+        dd.LoadText(CD_UID, UID);
     }
 
     // Workaround for
@@ -414,7 +414,7 @@ static string run_unstrip_n(const char *pDebugDumpDir)
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
-        dd.LoadText(FILENAME_UID, UID);
+        dd.LoadText(CD_UID, UID);
     }
 
     char* args[4];
@@ -648,7 +648,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_PACKAGE, package);
         if (m_bBacktrace)
-            dd.LoadText(FILENAME_UID, uid_str);
+            dd.LoadText(CD_UID, uid_str);
     }
 
     string independent_backtrace;
@@ -798,7 +798,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     }
 
     dd.LoadText(FILENAME_PACKAGE, package);
-    dd.LoadText(FILENAME_UID, UID);
+    dd.LoadText(CD_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
     string build_ids;

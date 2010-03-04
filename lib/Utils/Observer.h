@@ -26,8 +26,8 @@
 class CObserver {
     public:
         virtual ~CObserver() {}
-        virtual void Status(const char *pMessage, const char* peer, uint64_t pDest) = 0;
-        virtual void Warning(const char *pMessage, const char* peer, uint64_t pDest) = 0;
+        virtual void Status(const char *pMessage, const char* peer) = 0;
+        virtual void Warning(const char *pMessage, const char* peer) = 0;
 };
 
 #endif

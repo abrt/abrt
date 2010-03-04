@@ -37,20 +37,18 @@ class CSQLite3 : public CDatabase
         virtual void Connect();
         virtual void DisConnect();
 
-        virtual void Insert_or_Update(const char *pUUID,
-                        const char *pUID,
+        virtual void Insert_or_Update(const char *crash_id,
+                        bool inform_all_users,
                         const char *pDebugDumpPath,
                         const char *pTime);
-
-        virtual void DeleteRow(const char *pUUID, const char *pUID);
+        virtual void DeleteRow(const char *crash_id);
         virtual void DeleteRows_by_dir(const char *dump_dir);
-        virtual void SetReported(const char *pUUID, const char *pUID, const char *pMessage);
-        virtual void SetReportedPerReporter(const char *pUUID,
-                                 const char *pUID,
+        virtual void SetReported(const char *crash_id, const char *pMessage);
+        virtual void SetReportedPerReporter(const char *crash_id,
                                  const char *reporter,
                                  const char *pMessage);
-        virtual vector_database_rows_t GetUIDData(const char *pUID);
-        virtual database_row_t GetRow(const char *pUUID, const char *pUID);
+        virtual vector_database_rows_t GetUIDData(long caller_uid);
+        virtual database_row_t GetRow(const char *crash_id);
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 };

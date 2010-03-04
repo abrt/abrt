@@ -190,7 +190,7 @@ class MainWindow():
             except:
                 icon = None
             user = "N/A"
-            if entry.getUID() != "-1":
+            if entry.getUID() != "-1":   # compat: only abrt <= 1.0.9 used UID = -1
                 try:
                     user = pwd.getpwuid(int(entry.getUID()))[0]
                 except Exception, ex:
@@ -244,7 +244,7 @@ class MainWindow():
         # this should work until we keep the row object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         try:
-            self.ccdaemon.DeleteDebugDump(dump.getUUID())
+            self.ccdaemon.DeleteDebugDump("%s:%s" % (dump.getUID(), dump.getUUID()))
             self.hydrate()
             treeview.emit("cursor-changed")
         except Exception, ex:

@@ -31,11 +31,11 @@ class CCommLayerServer {
 
         /* just stubs to be called when not implemented in specific comm layer */
         virtual void Crash(const char *progname, const char *uid_str) {}
-        virtual void JobDone(const char* pDest, const char* pUUID) = 0;
+        virtual void JobDone(const char* peer) = 0;
         virtual void QuotaExceed(const char* str) {}
 
-        virtual void Update(const char* pMessage, const char* peer, uint64_t pJobID) {};
-        virtual void Warning(const char* pMessage, const char* peer, uint64_t pJobID) {};
+        virtual void Update(const char* pMessage, const char* peer) {};
+        virtual void Warning(const char* pMessage, const char* peer) {};
 };
 
 #endif

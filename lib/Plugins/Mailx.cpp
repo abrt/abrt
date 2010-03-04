@@ -132,7 +132,7 @@ std::string CMailx::Report(const map_crash_data_t& pCrashData,
     args = append_str_to_vector(args, arg_size, m_sEmailTo.c_str());
 
     update_client(_("Sending an email..."));
-    const char *uid_str = get_crash_data_item_content(pCrashData, FILENAME_UID).c_str();
+    const char *uid_str = get_crash_data_item_content(pCrashData, CD_UID).c_str();
     exec_and_feed_input(xatoi_u(uid_str), emailBody.c_str(), args);
 
     while (*args)

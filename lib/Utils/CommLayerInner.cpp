@@ -42,7 +42,7 @@ static void warn_client(const char *msg)
     pthread_mutex_unlock(&s_map_mutex);
 
     if (peer)
-        s_pObs->Warning(msg, peer, key);
+        s_pObs->Warning(msg, peer);
 }
 
 void init_daemon_logging(CObserver *pObs)
@@ -89,6 +89,6 @@ void update_client(const char *fmt, ...)
     char *msg = xvasprintf(fmt, p);
     va_end(p);
 
-    s_pObs->Status(msg, peer, key);
+    s_pObs->Status(msg, peer);
     free(msg);
 }

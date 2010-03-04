@@ -95,33 +95,27 @@ void CCommLayerServerDBus::QuotaExceed(const char* str)
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::JobDone(const char* peer, const char* pUUID)
+void CCommLayerServerDBus::JobDone(const char* peer)
 {
     DBusMessage* msg = new_signal_msg("JobDone", peer);
-    dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &peer, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_STRING, &pUUID, /* TODO: redundant parameter, remove from API */
-            DBUS_TYPE_INVALID);
-    VERB2 log("Sending signal JobDone('%s','%s')", peer, pUUID);
+    VERB2 log("Sending signal JobDone() to peer %s", peer);
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Update(const char* pMessage, const char* peer, uint64_t job_id)
+void CCommLayerServerDBus::Update(const char* pMessage, const char* peer)
 {
     DBusMessage* msg = new_signal_msg("Update", peer);
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &pMessage,
-            DBUS_TYPE_UINT64, &job_id, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
 }
 
-void CCommLayerServerDBus::Warning(const char* pMessage, const char* peer, uint64_t job_id)
+void CCommLayerServerDBus::Warning(const char* pMessage, const char* peer)
 {
     DBusMessage* msg = new_signal_msg("Warning", peer);
     dbus_message_append_args(msg,
             DBUS_TYPE_STRING, &pMessage,
-            DBUS_TYPE_UINT64, &job_id, /* TODO: redundant parameter, remove from API */
             DBUS_TYPE_INVALID);
     send_flush_and_unref(msg);
 }
@@ -151,7 +145,7 @@ static long get_remote_uid(DBusMessage* call, const char** ppSender = NULL)
 static int handle_GetCrashInfos(DBusMessage* call, DBusMessage* reply)
 {
     long unix_uid = get_remote_uid(call);
-    vector_map_crash_data_t argout1 = GetCrashInfos(to_string(unix_uid).c_str());
+    vector_map_crash_data_t argout1 = GetCrashInfos(unix_uid);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
@@ -166,8 +160,8 @@ static int handle_StartJob(DBusMessage* call, DBusMessage* reply)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(call, &in_iter);
-    const char* pUUID;
-    r = load_val(&in_iter, pUUID);
+    const char* crash_id;
+    r = load_val(&in_iter, crash_id);
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
@@ -183,12 +177,8 @@ static int handle_StartJob(DBusMessage* call, DBusMessage* reply)
 
     const char* sender;
     long unix_uid = get_remote_uid(call, &sender);
-    if (CreateReportThread(pUUID, to_string(unix_uid).c_str(), force, sender) != 0)
+    if (CreateReportThread(crash_id, unix_uid, force, sender) != 0)
         return -1; /* can't create thread (err msg is already logged) */
-
-    dbus_message_append_args(reply,
-                DBUS_TYPE_STRING, &pUUID, /* redundant, eliminate from API */
-                DBUS_TYPE_INVALID);
 
     send_flush_and_unref(reply);
     return 0;
@@ -199,8 +189,8 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(call, &in_iter);
-    const char* pUUID;
-    r = load_val(&in_iter, pUUID);
+    const char* crash_id;
+    r = load_val(&in_iter, crash_id);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
@@ -209,7 +199,7 @@ static int handle_CreateReport(DBusMessage* call, DBusMessage* reply)
 
     long unix_uid = get_remote_uid(call);
     map_crash_data_t report;
-    CreateReport(pUUID, to_string(unix_uid).c_str(), /*force:*/ 0, report);
+    CreateReport(crash_id, unix_uid, /*force:*/ 0, report);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
@@ -300,7 +290,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     report_status_t argout1;
     try
     {
-        argout1 = Report(argin1, user_conf_data, to_string(unix_uid).c_str());
+        argout1 = Report(argin1, user_conf_data, unix_uid);
     }
     catch (CABRTException &e)
     {
@@ -325,8 +315,8 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(call, &in_iter);
-    const char* argin1;
-    r = load_val(&in_iter, argin1);
+    const char* crash_id;
+    r = load_val(&in_iter, crash_id);
     if (r != ABRT_DBUS_LAST_FIELD)
     {
         error_msg("dbus call %s: parameter type mismatch", __func__ + 7);
@@ -334,7 +324,7 @@ static int handle_DeleteDebugDump(DBusMessage* call, DBusMessage* reply)
     }
 
     long unix_uid = get_remote_uid(call);
-    int32_t result = DeleteDebugDump(argin1, to_string(unix_uid).c_str());
+    int32_t result = DeleteDebugDump(crash_id, unix_uid);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);

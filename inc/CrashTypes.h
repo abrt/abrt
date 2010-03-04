@@ -25,7 +25,6 @@
 #define FILENAME_ARCHITECTURE "architecture"
 #define FILENAME_KERNEL       "kernel"
 #define FILENAME_TIME         "time"
-#define FILENAME_UID          "uid"
 #define FILENAME_PACKAGE      "package"
 #define FILENAME_COMPONENT    "component"
 #define FILENAME_DESCRIPTION  "description"
@@ -42,8 +41,15 @@
 #define FILENAME_MEMORYMAP    "memorymap"
 #define FILENAME_KERNELOOPS   "kerneloops"
 
-#define CD_DUPHASH      "DUPHASH"
+// Apart from CD_UID, which is also stored as a file in dump directory,
+// these items only exist in db. (CD_UID is also a file because
+// dump directory is created before its DB entry, and DB has to learn
+// CD_UID from _somewhere_ in order to be able to store it in DB record,
+// right?)
+#define CD_UID          "uid"   /* lowercase: compat with older versions */
 #define CD_UUID         "UUID"
+#define CD_INFORMALL    "InformAll"
+#define CD_DUPHASH      "DUPHASH"
 #define CD_DUMPDIR      "DumpDir"
 #define CD_COUNT        "Count"
 #define CD_REPORTED     "Reported"

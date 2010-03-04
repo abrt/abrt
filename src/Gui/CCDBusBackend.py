@@ -149,11 +149,11 @@ class DBusManager(gobject.GObject):
         #print "crash"
         self.emit("crash")
 
-    def update_cb(self, message, job_id=0):
+    def update_cb(self, message):
         log1("Update:%s", message)
         self.emit("update", message)
 
-    def warning_cb(self, message, job_id=0):
+    def warning_cb(self, message):
         log1("Warning:%s", message)
         self.emit("warning", message)
 
@@ -164,22 +164,21 @@ class DBusManager(gobject.GObject):
             else:
                 self.emit("daemon-state-changed", "down")
 
-    def jobdone_cb(self, dest, uuid):
-        # TODO: check that it is indeed OUR job:
-        # remember uuid in getReport and compare here
-        log1("Our job for UUID %s is done", uuid)
-        dump = self.daemon().CreateReport(uuid)
+    def jobdone_cb(self):
+        log1("Our job for crash_id %s is done", self.job_crash_id)
+        dump = self.daemon().CreateReport(self.job_crash_id)
         if dump:
             self.emit("analyze-complete", dump)
         else:
-            self.emit("abrt-error",_("Daemon didn't return valid report info\nDebuginfo is missing?"))
+            self.emit("abrt-error", _("Daemon didn't return valid report info\nDebuginfo is missing?"))
 
     def report_done(self, result):
         self.emit("report-done", result)
 
-    def getReport(self, UUID, force=0):
+    def start_job(self, crash_id, force=0):
         # 2nd param is "force recreating of backtrace etc"
-        self.daemon().StartJob(UUID, force, timeout=60)
+        self.daemon().StartJob(crash_id, force, timeout=60)
+        self.job_crash_id = crash_id
 
     def Report(self, report, reporters, reporters_settings = None):
         # map < Plguin_name vec <status, message> >
@@ -188,8 +187,8 @@ class DBusManager(gobject.GObject):
         else:
             self.daemon().Report(report, reporters, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
 
-    def DeleteDebugDump(self,UUID):
-        return self.daemon().DeleteDebugDump(UUID)
+    def DeleteDebugDump(self, crash_id):
+        return self.daemon().DeleteDebugDump(crash_id)
 
     def getDumps(self):
         row_dict = None

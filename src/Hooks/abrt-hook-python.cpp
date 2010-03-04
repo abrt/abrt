@@ -140,7 +140,7 @@ int main(int argc, char** argv)
   free(cmdline);
   char uid[sizeof(long) * 3 + 2];
   sprintf(uid, "%lu", (long)getuid());
-  dd.SaveText(FILENAME_UID, uid);
+  dd.SaveText(CD_UID, uid);
 
   dd.Close();
 

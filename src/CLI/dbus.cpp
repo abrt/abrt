@@ -121,11 +121,11 @@ vector_map_crash_data_t call_GetCrashInfos()
     return argout;
 }
 
-map_crash_data_t call_CreateReport(const char* uuid)
+map_crash_data_t call_CreateReport(const char* crash_id)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &uuid,
+            DBUS_TYPE_STRING, &crash_id,
             DBUS_TYPE_INVALID);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
@@ -166,11 +166,11 @@ report_status_t call_Report(const map_crash_data_t& report,
     return result;
 }
 
-int32_t call_DeleteDebugDump(const char* uuid)
+int32_t call_DeleteDebugDump(const char* crash_id)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
     dbus_message_append_args(msg,
-            DBUS_TYPE_STRING, &uuid,
+            DBUS_TYPE_STRING, &crash_id,
             DBUS_TYPE_INVALID);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);

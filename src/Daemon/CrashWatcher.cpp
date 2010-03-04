@@ -22,18 +22,18 @@
 #include "DebugDump.h"
 #include "CrashWatcher.h"
 
-void CCrashWatcher::Status(const char *pMessage, const char* peer, uint64_t pJobID)
+void CCrashWatcher::Status(const char *pMessage, const char* peer)
 {
     VERB1 log("Update('%s'): %s", peer, pMessage);
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Update(pMessage, peer, pJobID);
+        g_pCommLayer->Update(pMessage, peer);
 }
 
-void CCrashWatcher::Warning(const char *pMessage, const char* peer, uint64_t pJobID)
+void CCrashWatcher::Warning(const char *pMessage, const char* peer)
 {
     VERB1 log("Warning('%s'): %s", peer, pMessage);
     if (g_pCommLayer != NULL)
-        g_pCommLayer->Warning(pMessage, peer, pJobID);
+        g_pCommLayer->Warning(pMessage, peer);
 }
 
 CCrashWatcher::CCrashWatcher()
@@ -44,32 +44,31 @@ CCrashWatcher::~CCrashWatcher()
 {
 }
 
-vector_map_crash_data_t GetCrashInfos(const char *pUID)
+vector_map_crash_data_t GetCrashInfos(long caller_uid)
 {
     vector_map_crash_data_t retval;
     log("Getting crash infos...");
     try
     {
-        vector_pair_string_string_t UUIDsUIDs;
-        UUIDsUIDs = GetUUIDsOfCrash(pUID);
+        vector_string_t crash_ids;
+        GetUUIDsOfCrash(caller_uid, crash_ids);
 
         unsigned int ii;
-        for (ii = 0; ii < UUIDsUIDs.size(); ii++)
+        for (ii = 0; ii < crash_ids.size(); ii++)
         {
-            const char *uuid = UUIDsUIDs[ii].first.c_str();
-            const char *uid = UUIDsUIDs[ii].second.c_str();
+            const char *crash_id = crash_ids[ii].c_str();
 
             map_crash_data_t info;
-            mw_result_t res = FillCrashInfo(uuid, uid, info);
+            mw_result_t res = FillCrashInfo(crash_id, info);
             switch (res)
             {
                 case MW_OK:
                     retval.push_back(info);
                     break;
                 case MW_ERROR:
-                    error_msg("Dump directory for UUID %s doesn't exist or misses crucial files, deleting", uuid);
+                    error_msg("Dump directory for crash_id %s doesn't exist or misses crucial files, deleting", crash_id);
                     /* Deletes both DB record and dump dir */
-                    DeleteDebugDump(uuid, uid);
+                    DeleteDebugDump(crash_id, /*caller_uid:*/ 0);
                     break;
                 default:
                     break;
@@ -81,8 +80,6 @@ vector_map_crash_data_t GetCrashInfos(const char *pUID)
         error_msg("%s", e.what());
     }
 
-    //retval = GetCrashInfos(pUID);
-    //Notify("Sent crash info");
     return retval;
 }
 
@@ -94,37 +91,37 @@ vector_map_crash_data_t GetCrashInfos(const char *pUID)
  * StartJob dbus call already did all the processing, and we just retrieve
  * the result from dump directory, which is fast.
  */
-void CreateReport(const char* pUUID, const char* pUID, int force, map_crash_data_t& crashReport)
+void CreateReport(const char* crash_id, long caller_uid, int force, map_crash_data_t& crashReport)
 {
     /* FIXME: starting from here, any shared data must be protected with a mutex.
      * For example, CreateCrashReport does:
      * g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
      * which is unsafe wrt concurrent updates to g_pPluginManager state.
      */
-    mw_result_t res = CreateCrashReport(pUUID, pUID, force, crashReport);
+    mw_result_t res = CreateCrashReport(crash_id, caller_uid, force, crashReport);
     switch (res)
     {
         case MW_OK:
             VERB2 log_map_crash_data(crashReport, "crashReport");
             break;
         case MW_IN_DB_ERROR:
-            error_msg("Can't find crash with UUID %s in database", pUUID);
+            error_msg("Can't find crash with id %s in database", crash_id);
             break;
         case MW_PLUGIN_ERROR:
             error_msg("Particular analyzer plugin isn't loaded or there is an error within plugin(s)");
             break;
         default:
-            error_msg("Corrupted crash with UUID %s, deleting", pUUID);
-            DeleteDebugDump(pUUID, pUID);
+            error_msg("Corrupted crash with id %s, deleting", crash_id);
+            DeleteDebugDump(crash_id, /*caller_uid:*/ 0);
             break;
     }
 }
 
 typedef struct thread_data_t {
     pthread_t thread_id;
-    char* UUID;
-    char* UID;
+    long caller_uid;
     int force;
+    char* crash_id;
     char* peer;
 } thread_data_t;
 static void* create_report(void* arg)
@@ -138,8 +135,8 @@ static void* create_report(void* arg)
     {
         log("Creating report...");
         map_crash_data_t crashReport;
-        CreateReport(thread_data->UUID, thread_data->UID, thread_data->force, crashReport);
-        g_pCommLayer->JobDone(thread_data->peer, thread_data->UUID);
+        CreateReport(thread_data->crash_id, thread_data->caller_uid, thread_data->force, crashReport);
+        g_pCommLayer->JobDone(thread_data->peer);
     }
     catch (CABRTException& e)
     {
@@ -149,19 +146,18 @@ static void* create_report(void* arg)
     set_client_name(NULL);
 
     /* free strduped strings */
-    free(thread_data->UUID);
-    free(thread_data->UID);
+    free(thread_data->crash_id);
     free(thread_data->peer);
     free(thread_data);
 
     /* Bogus value. pthreads require us to return void* */
     return NULL;
 }
-int CreateReportThread(const char* pUUID, const char* pUID, int force, const char* pSender)
+int CreateReportThread(const char* crash_id, long caller_uid, int force, const char* pSender)
 {
     thread_data_t *thread_data = (thread_data_t *)xzalloc(sizeof(thread_data_t));
-    thread_data->UUID = xstrdup(pUUID);
-    thread_data->UID = xstrdup(pUID);
+    thread_data->crash_id = xstrdup(crash_id);
+    thread_data->caller_uid = caller_uid;
     thread_data->force = force;
     thread_data->peer = xstrdup(pSender);
 
@@ -172,8 +168,7 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
     pthread_attr_destroy(&attr);
     if (r != 0)
     {
-        free(thread_data->UUID);
-        free(thread_data->UID);
+        free(thread_data->crash_id);
         free(thread_data->peer);
         free(thread_data);
         /* The only reason this may happen is system-wide resource starvation,
@@ -188,16 +183,27 @@ int CreateReportThread(const char* pUUID, const char* pUID, int force, const cha
 
 
 /* Remove dump dir and its DB record */
-int DeleteDebugDump(const char *pUUID, const char *pUID)
+int DeleteDebugDump(const char *crash_id, long caller_uid)
 {
     try
     {
         CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
         database->Connect();
-        database_row_t row = database->GetRow(pUUID, pUID);
-        database->DeleteRow(pUUID, pUID);
+        database_row_t row = database->GetRow(crash_id);
+        if (row.m_sUUID == "")
+        {
+            database->DisConnect();
+            return ENOENT;
+        }
+        if (caller_uid != 0 /* not called by root */
+         && row.m_sInformAll != "1"
+         && to_string(caller_uid) != row.m_sUID
+        ) {
+            database->DisConnect();
+            return EPERM;
+        }
+        database->DeleteRow(crash_id);
         database->DisConnect();
-
         const char *dump_dir = row.m_sDebugDumpDir.c_str();
         if (dump_dir[0] != '\0')
         {
@@ -209,7 +215,7 @@ int DeleteDebugDump(const char *pUUID, const char *pUID)
     {
         error_msg("%s", e.what());
     }
-    return -1; /* failure */
+    return EIO; /* generic failure code */
 }
 
 void DeleteDebugDump_by_dir(const char *dump_dir)

@@ -40,6 +40,7 @@ typedef struct database_row_t
 {
     std::string m_sUUID; /**< A local UUID.*/
     std::string m_sUID; /**< An UID of an user.*/
+    std::string m_sInformAll;
     std::string m_sDebugDumpDir; /**< A debugdump directory of a crash.*/
     std::string m_sCount; /**< Crash rate.*/
     std::string m_sReported; /**< Is a row reported?*/
@@ -73,8 +74,8 @@ class CDatabase : public CPlugin
          * @param pDebugDumpPath A debugdump path.
          * @param pTime Time when a crash occurs.
          */
-        virtual void Insert_or_Update(const char *pUUID,
-                        const char *pUID,
+        virtual void Insert_or_Update(const char *crash_id,
+                        bool inform_all_users,
                         const char *pDebugDumpPath,
                         const char *pTime) = 0;
         /**
@@ -82,8 +83,7 @@ class CDatabase : public CPlugin
          * @param pUUID A lodal UUID of a crash.
          * @param pUID An UID of an user.
          */
-        virtual void DeleteRow(const char *pUUID,
-                            const char *pUID) = 0;
+        virtual void DeleteRow(const char *crash_id) = 0;
         virtual void DeleteRows_by_dir(const char *dump_dir) = 0;
         /**
          * A method, which sets that particular row was reported.
@@ -92,11 +92,9 @@ class CDatabase : public CPlugin
          * @param pMessage A text explanation of reported problem
          * (where it is stored etc)...
          */
-        virtual void SetReported(const char *pUUID,
-                                 const char *pUID,
+        virtual void SetReported(const char *crash_id,
                                  const char *pMessage) = 0;
-        virtual void SetReportedPerReporter(const char *pUUID,
-                                 const char *pUID,
+        virtual void SetReportedPerReporter(const char *crash_id,
                                  const char *reporter,
                                  const char *pMessage) = 0;
         /**
@@ -106,7 +104,7 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A vector of matched rows.
          */
-        virtual vector_database_rows_t GetUIDData(const char *pUID) = 0;
+        virtual vector_database_rows_t GetUIDData(long caller_uid) = 0;
         /**
          * A method, which returns one row accordind to UUID of a crash and
          * UID of an user. If there are no row, empty row is returned.
@@ -114,8 +112,7 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A matched row.
          */
-        virtual database_row_t GetRow(const char *pUUID,
-                                                 const char *pUID) = 0;
+        virtual database_row_t GetRow(const char *crash_id) = 0;
 };
 
 #endif

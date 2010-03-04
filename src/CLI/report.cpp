@@ -523,11 +523,11 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
   }
 }
 
-/* Reports the crash with corresponding uuid over DBus. */
-int report(const char *uuid, bool always)
+/* Reports the crash with corresponding crash_id over DBus. */
+int report(const char *crash_id, bool always)
 {
   // Ask for an initial report.
-  map_crash_data_t cr = call_CreateReport(uuid);
+  map_crash_data_t cr = call_CreateReport(crash_id);
   if (cr.size() == 0)
   {
     return -1;

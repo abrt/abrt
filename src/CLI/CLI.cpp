@@ -73,7 +73,7 @@ static void print_crash_infos(vector_map_crash_data_t& pCrashInfos, int pMode)
                    "\tCrash Time : %s\n"
                    "\tCrash Count: %s\n"),
                 ii,
-                get_crash_data_item_content(info, FILENAME_UID).c_str(),
+                get_crash_data_item_content(info, CD_UID).c_str(),
                 get_crash_data_item_content(info, CD_UUID).c_str(),
                 get_crash_data_item_content(info, FILENAME_PACKAGE).c_str(),
                 get_crash_data_item_content(info, FILENAME_EXECUTABLE).c_str(),
@@ -82,6 +82,39 @@ static void print_crash_infos(vector_map_crash_data_t& pCrashInfos, int pMode)
             );
         }
     }
+}
+
+static char *guess_crash_id(const char *str)
+{
+    vector_map_crash_data_t ci = call_GetCrashInfos();
+    unsigned num_crashinfos = ci.size();
+    if (str[0] == '@') /* "--report @N" syntax */
+    {
+        unsigned position = xatoi_u(str + 1);
+        if (position >= num_crashinfos)
+            error_msg_and_die("There are only %u crash infos", num_crashinfos);
+        map_crash_data_t& info = ci[position];
+        return xasprintf("%s:%s",
+                get_crash_data_item_content(info, CD_UID).c_str(),
+                get_crash_data_item_content(info, CD_UUID).c_str()
+        );
+    }
+
+    unsigned len = strlen(str);
+    unsigned ii;
+    for (ii = 0; ii < num_crashinfos; ii++)
+    {
+        map_crash_data_t& info = ci[ii];
+        const char *this_uuid = get_crash_data_item_content(info, CD_UUID).c_str();
+        if (strncmp(str, this_uuid, len) == 0)
+        {
+            return xasprintf("%s:%s",
+                    get_crash_data_item_content(info, CD_UID).c_str(),
+                    this_uuid
+            );
+        }
+    }
+    error_msg_and_die("Crash '%s' not found", str);
 }
 
 static const struct option longopts[] =
@@ -120,15 +153,20 @@ static void usage(char *argv0)
         "Actions:\n"
         "	--get-list		print list of crashes which are not reported yet\n"
         "	--get-list-full		print list of all crashes\n"
-        "	--report UUID		create and send a report\n"
-        "	--report-always UUID	create and send a report without asking\n"
-        "	--delete UUID		remove crash\n"),
+        "	--report CRASH_ID	create and send a report\n"
+        "	--report-always CRASH_ID create and send a report without asking\n"
+        "	--delete CRASH_ID	remove crash\n"
+        "CRASH_ID may be:\n"
+        "	an UID:UUID pair,\n"
+        "	an UUID prefix  - the first crash with matching UUID will be acted upon\n"
+        "	@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
+	),
         name, name);
 }
 
 int main(int argc, char** argv)
 {
-    const char* uuid = NULL;
+    const char* crash_id = NULL;
     int op = -1;
 
     setlocale(LC_ALL, "");
@@ -146,7 +184,7 @@ int main(int argc, char** argv)
             case OPT_REPORT:
             case OPT_REPORT_ALWAYS:
             case OPT_DELETE:
-                uuid = optarg;
+                crash_id = optarg;
                 /* fall through */
             case OPT_GET_LIST:
             case OPT_GET_LIST_FULL:
@@ -195,45 +233,30 @@ int main(int argc, char** argv)
         }
         case OPT_REPORT:
         case OPT_REPORT_ALWAYS:
-            exitcode = report(uuid, op == OPT_REPORT_ALWAYS);
-            if (exitcode == -1) /* no such UUID */
+            exitcode = report(crash_id, op == OPT_REPORT_ALWAYS);
+            if (exitcode == -1) /* no such crash_id */
             {
-                vector_map_crash_data_t ci = call_GetCrashInfos();
-                unsigned num_crashinfos = ci.size();
-                if (uuid[0] == '@') /* "--report @N" syntax */
-                {
-                    unsigned position = xatoi_u(uuid + 1);
-                    if (position >= num_crashinfos)
-                        error_msg_and_die("There are only %u crash infos", num_crashinfos);
-                    map_crash_data_t& info = ci[position];
-                    uuid = get_crash_data_item_content(info, CD_UUID).c_str();
-                } else {
-                    unsigned uuid_len = strlen(uuid);
-                    unsigned ii;
-                    for (ii = 0; ii < num_crashinfos; ii++)
-                    {
-                        map_crash_data_t& info = ci[ii];
-                        const char *this_uuid = get_crash_data_item_content(info, CD_UUID).c_str();
-                        if (strncmp(uuid, this_uuid, uuid_len) == 0)
-                        {
-                            uuid = this_uuid;
-                            goto do_report;
-                        }
-                    }
-                    error_msg_and_die("Crash '%s' not found", uuid);
-                }
- do_report:
-                exitcode = report(uuid, op == OPT_REPORT_ALWAYS);
+                crash_id = guess_crash_id(crash_id);
+                exitcode = report(crash_id, op == OPT_REPORT_ALWAYS);
                 if (exitcode == -1)
-                    error_msg_and_die("Crash '%s' not found", uuid);
+                    error_msg_and_die("Crash '%s' not found", crash_id);
             }
             break;
         case OPT_DELETE:
         {
-            if (call_DeleteDebugDump(uuid) != 0)
+            exitcode = call_DeleteDebugDump(crash_id);
+            if (exitcode == ENOENT)
             {
-                log("Can't delete debug dump with UUID '%s'", uuid);
-                exitcode = 1;
+                crash_id = guess_crash_id(crash_id);
+                exitcode = call_DeleteDebugDump(crash_id);
+                if (exitcode == ENOENT)
+                {
+                    error_msg_and_die("Crash '%s' not found", crash_id);
+                }
+            }
+            if (exitcode != 0)
+            {
+                error_msg_and_die("Can't delete debug dump '%s'", crash_id);
             }
             break;
         }

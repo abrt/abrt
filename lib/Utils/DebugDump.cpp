@@ -319,7 +319,7 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
 		   (long)m_uid, (long)m_gid);
     }
 
-    SaveText(FILENAME_UID, to_string(uid).c_str());
+    SaveText(CD_UID, to_string(uid).c_str());
     SaveKernelArchitectureRelease();
     time_t t = time(NULL);
     SaveText(FILENAME_TIME, to_string(t).c_str());

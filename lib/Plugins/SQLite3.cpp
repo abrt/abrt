@@ -25,14 +25,15 @@
 
 using namespace std;
 
-#define ABRT_TABLE_VERSION      3
-#define ABRT_TABLE_VERSION_STR "3"
+#define ABRT_TABLE_VERSION      4
+#define ABRT_TABLE_VERSION_STR "4"
 #define ABRT_TABLE             "abrt_v"ABRT_TABLE_VERSION_STR
 #define ABRT_REPRESULT_TABLE   "abrt_v"ABRT_TABLE_VERSION_STR"_reportresult"
 #define SQLITE3_MASTER_TABLE   "sqlite_master"
 
-#define COL_UUID               "UUID"
 #define COL_UID                "UID"
+#define COL_UUID               "UUID"
+#define COL_INFORMALL          "InformAll"
 #define COL_DEBUG_DUMP_PATH    "DebugDumpPath"
 #define COL_COUNT              "Count"
 #define COL_REPORTED           "Reported"
@@ -99,6 +100,9 @@ static string sql_escape(const char *str)
 }
 #endif
 
+/* Note:
+ * expects "SELECT * FROM ...", not "SELECT <only some fields> FROM ..."
+ */
 static void get_table(vector_database_rows_t& pTable,
                 sqlite3 *db, const char *fmt, ...)
 {
@@ -134,11 +138,12 @@ static void get_table(vector_database_rows_t& pTable,
             {
                 case 0: row.m_sUUID         = val; break;
                 case 1: row.m_sUID          = val; break;
-                case 2: row.m_sDebugDumpDir = val; break;
-                case 3: row.m_sCount        = val; break;
-                case 4: row.m_sReported     = val; break;
-                case 5: row.m_sTime         = val; break;
-                case 6: row.m_sMessage      = val; break;
+                case 2: row.m_sInformAll    = val; break;
+                case 3: row.m_sDebugDumpDir = val; break;
+                case 4: row.m_sCount        = val; break;
+                case 5: row.m_sReported     = val; break;
+                case 6: row.m_sTime         = val; break;
+                case 7: row.m_sMessage      = val; break;
             }
         }
         pTable.push_back(row);
@@ -170,14 +175,13 @@ static int execute_sql(sqlite3 *db, const char *fmt, ...)
     return affected;
 }
 
-static bool exists_uuid_uid(sqlite3 *db, const char *pUUID, const char *pUID)
+static bool exists_uuid_uid(sqlite3 *db, const char *UUID, const char *UID)
 {
     vector_database_rows_t table;
     get_table(table, db,
-                "SELECT "COL_REPORTED" FROM "ABRT_TABLE" WHERE "
-                COL_UUID" = '%s' "
-                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                pUUID, pUID
+                "SELECT * FROM "ABRT_TABLE
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                UUID, UID
     );
     return !table.empty();
 }
@@ -230,12 +234,48 @@ static void update_from_old_ver(sqlite3 *db, int old_version)
                     COL_MESSAGE
             " FROM abrt_v2;"
         "DROP TABLE abrt_v2;"
-        "CREATE TABLE "ABRT_REPRESULT_TABLE" ("
+        "CREATE TABLE abrt_v3_reportresult ("
                 COL_UUID" VARCHAR NOT NULL,"
                 COL_UID" VARCHAR NOT NULL,"
                 COL_REPORTER" VARCHAR NOT NULL,"
                 COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
                 "PRIMARY KEY ("COL_UUID","COL_UID","COL_REPORTER"));"
+        "COMMIT;",
+        // v3-> v4
+        "BEGIN TRANSACTION;"
+        "CREATE TABLE abrt_v4("
+                COL_UUID" VARCHAR NOT NULL,"
+                COL_UID" VARCHAR NOT NULL,"
+                COL_INFORMALL" INT NOT NULL DEFAULT 0,"
+                COL_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
+                COL_COUNT" INT NOT NULL DEFAULT 1,"
+                COL_REPORTED" INT NOT NULL DEFAULT 0,"
+                COL_TIME" VARCHAR NOT NULL DEFAULT 0,"
+                COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
+                "PRIMARY KEY ("COL_UUID","COL_UID"));"
+        "INSERT INTO abrt_v4 "
+            "SELECT "COL_UUID","
+                    COL_UID","
+                    "0," /* COL_INFORMALL */
+                    COL_DEBUG_DUMP_PATH","
+                    COL_COUNT","
+                    COL_REPORTED","
+                    COL_TIME","
+                    COL_MESSAGE
+            " FROM abrt_v3;"
+        "DROP TABLE abrt_v3;"
+        "UPDATE abrt_v4"
+        " SET "COL_UID"='0', "COL_INFORMALL"=1"
+        " WHERE "COL_UID"='-1';"
+        "CREATE TABLE abrt_v4_reportresult ("
+                COL_UUID" VARCHAR NOT NULL,"
+                COL_UID" VARCHAR NOT NULL,"
+                COL_REPORTER" VARCHAR NOT NULL,"
+                COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
+                "PRIMARY KEY ("COL_UUID","COL_UID","COL_REPORTER"));"
+        "INSERT INTO abrt_v4_reportresult "
+            "SELECT * FROM abrt_v3_reportresult;"
+        "DROP TABLE abrt_v3_reportresult;"
         "COMMIT;",
     };
 
@@ -266,13 +306,14 @@ static bool check_table(sqlite3 *db)
     }
 
     // table format:
-    // table[0]:"NAME"     // table[1]:"SQL"       <== field names from SELECT
+    // table[0]:"NAME"     // table[1]:"SQL"  <== field names from SELECT
     // table[2]:"abrt_vNN" // table[3]:"sql"
     char *tableName = table[0 + ncol];
     char *underscore = strchr(tableName, '_');
     if (underscore)
     {
-        int tableVersion = xatoi_u(underscore + 2);
+        // It can be "abrt_vNN_something", thus using atoi(), not xatoi()
+        int tableVersion = atoi(underscore + 2);
         sqlite3_free_table(table);
         if (tableVersion < ABRT_TABLE_VERSION)
         {
@@ -348,6 +389,7 @@ void CSQLite3::Connect()
                 "CREATE TABLE "ABRT_TABLE" ("
                 COL_UUID" VARCHAR NOT NULL,"
                 COL_UID" VARCHAR NOT NULL,"
+                COL_INFORMALL" INT NOT NULL DEFAULT 0,"
                 COL_DEBUG_DUMP_PATH" VARCHAR NOT NULL,"
                 COL_COUNT" INT NOT NULL DEFAULT 1,"
                 COL_REPORTED" INT NOT NULL DEFAULT 0,"
@@ -366,82 +408,83 @@ void CSQLite3::Connect()
     }
 }
 
-void CSQLite3::Insert_or_Update(const char *pUUID,
-                const char *pUID,
+void CSQLite3::Insert_or_Update(const char *crash_id,
+                bool inform_all_users,
                 const char *pDebugDumpPath,
                 const char *pTime)
 {
-    if (!is_string_safe(pUUID)
-     || !is_string_safe(pUID)
+    const char *UUID = strchr(crash_id, ':');
+    if (!UUID
+     || !is_string_safe(crash_id)
      || !is_string_safe(pDebugDumpPath)
      || !is_string_safe(pTime)
     ) {
         return;
     }
 
-    if (!exists_uuid_uid(m_pDB, pUUID, pUID))
+    /* Split crash_id into UID:UUID */
+    unsigned uid_len = UUID - crash_id;
+    UUID++;
+    char UID[uid_len + 1];
+    strncpy(UID, crash_id, uid_len);
+    UID[uid_len] = '\0';
+
+    if (!exists_uuid_uid(m_pDB, UUID, UID))
     {
         execute_sql(m_pDB,
                 "INSERT INTO "ABRT_TABLE" ("
                 COL_UUID","
                 COL_UID","
+                COL_INFORMALL","
                 COL_DEBUG_DUMP_PATH","
                 COL_TIME
                 ")"
-                " VALUES ('%s','%s','%s','%s');",
-                pUUID, pUID, pDebugDumpPath, pTime
+                " VALUES ('%s','%s',%u,'%s','%s');",
+                UUID, UID, (unsigned)inform_all_users, pDebugDumpPath, pTime
         );
     }
     else
     {
         execute_sql(m_pDB,
-                "UPDATE "ABRT_TABLE" SET "
-                COL_COUNT" = "COL_COUNT" + 1, "
-                COL_TIME" = '%s'"
-                " WHERE "COL_UUID" = '%s'"
-                    " AND "COL_UID" = '%s';",
-                pTime, pUUID, pUID
+                "UPDATE "ABRT_TABLE
+                " SET "COL_COUNT"="COL_COUNT"+1,"COL_TIME"='%s'"
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                pTime,
+                UUID, UID
         );
     }
 }
 
-void CSQLite3::DeleteRow(const char *pUUID, const char *pUID)
+void CSQLite3::DeleteRow(const char *crash_id)
 {
-    if (!is_string_safe(pUUID)
-     || !is_string_safe(pUID)
+    const char *UUID = strchr(crash_id, ':');
+    if (!UUID
+     || !is_string_safe(crash_id)
     ) {
         return;
     }
 
-    if (pUID[0] == '0' && !pUID[1])
+    /* Split crash_id into UID:UUID */
+    unsigned uid_len = UUID - crash_id;
+    UUID++;
+    char UID[uid_len + 1];
+    strncpy(UID, crash_id, uid_len);
+    UID[uid_len] = '\0';
+
+    if (exists_uuid_uid(m_pDB, UUID, UID))
     {
-        execute_sql(m_pDB,
-                "DELETE FROM "ABRT_TABLE" "
-                "WHERE "COL_UUID" = '%s';",
-                pUUID
+        execute_sql(m_pDB, "DELETE FROM "ABRT_TABLE
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                UUID, UID
         );
-        execute_sql(m_pDB,
-                "DELETE FROM "ABRT_REPRESULT_TABLE" "
-                "WHERE "COL_UUID" = '%s';",
-                pUUID
-        );
-    }
-    else if (exists_uuid_uid(m_pDB, pUUID, pUID))
-    {
-        execute_sql(m_pDB, "DELETE FROM "ABRT_TABLE" "
-                "WHERE "COL_UUID" = '%s' "
-                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                pUUID, pUID
-        );
-        execute_sql(m_pDB, "DELETE FROM "ABRT_REPRESULT_TABLE" "
-                "WHERE "COL_UUID" = '%s' "
-                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                pUUID, pUID
+        execute_sql(m_pDB, "DELETE FROM "ABRT_REPRESULT_TABLE
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                UUID, UID
         );
     }
     else
     {
-        error_msg("UUID,UID %s,%s is not found in DB", pUUID, pUID);
+        error_msg("crash_id %s is not found in DB", crash_id);
     }
 }
 
@@ -455,8 +498,8 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
     /* Get UID:UUID pair(s) to delete */
     vector_database_rows_t table;
     get_table(table, m_pDB,
-                "SELECT * FROM "ABRT_TABLE" "
-                "WHERE "COL_DEBUG_DUMP_PATH" = '%s'",
+                "SELECT * FROM "ABRT_TABLE
+                " WHERE "COL_DEBUG_DUMP_PATH"='%s';",
                 dump_dir
     );
     if (table.empty())
@@ -469,84 +512,82 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
     while (it != table.end())
     {
         execute_sql(m_pDB,
-                "DELETE FROM "ABRT_REPRESULT_TABLE" "
-                "WHERE "COL_UUID" = '%s' "
-                "AND ("COL_UID" = '%s');",
+                "DELETE FROM "ABRT_REPRESULT_TABLE
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
                 it->m_sUUID.c_str(), it->m_sUID.c_str()
         );
     }
     execute_sql(m_pDB,
-                "DELETE FROM "ABRT_TABLE" "
-                "WHERE "COL_DEBUG_DUMP_PATH" = '%s'",
+                "DELETE FROM "ABRT_TABLE
+                " WHERE "COL_DEBUG_DUMP_PATH"='%s'",
                 dump_dir
     );
 }
 
-void CSQLite3::SetReported(const char *pUUID, const char *pUID, const char *pMessage)
+void CSQLite3::SetReported(const char *crash_id, const char *pMessage)
 {
-    if (!is_string_safe(pUUID)
-     || !is_string_safe(pUID)
+    const char *UUID = strchr(crash_id, ':');
+    if (!UUID
+     || !is_string_safe(crash_id)
      || !is_string_safe(pMessage)
     ) {
         return;
     }
 
-    if (pUID[0] == '0' && !pUID[1])
+    /* Split crash_id into UID:UUID */
+    unsigned uid_len = UUID - crash_id;
+    UUID++;
+    char UID[uid_len + 1];
+    strncpy(UID, crash_id, uid_len);
+    UID[uid_len] = '\0';
+
+    if (exists_uuid_uid(m_pDB, UUID, UID))
     {
         execute_sql(m_pDB,
-                "UPDATE "ABRT_TABLE" "
-                "SET "COL_REPORTED" = 1 "
-                "WHERE "COL_UUID" = '%s';",
-                pUUID
-        );
-        execute_sql(m_pDB, "UPDATE "ABRT_TABLE" "
-                "SET "COL_MESSAGE" = '%s' "
-                "WHERE "COL_UUID" = '%s';",
-                pMessage, pUUID
-        );
-    }
-    else if (exists_uuid_uid(m_pDB, pUUID, pUID))
-    {
-        execute_sql(m_pDB,
-                "UPDATE "ABRT_TABLE" "
-                "SET "COL_REPORTED" = 1 "
-                "WHERE "COL_UUID" = '%s' "
-                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                pUUID, pUID
+                "UPDATE "ABRT_TABLE
+                " SET "COL_REPORTED"=1"
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                UUID, UID
         );
         execute_sql(m_pDB,
-                "UPDATE "ABRT_TABLE" "
-                "SET "COL_MESSAGE" = '%s' "
-                "WHERE "COL_UUID" = '%s' "
-                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                pMessage, pUUID, pUID
+                "UPDATE "ABRT_TABLE
+                " SET "COL_MESSAGE"='%s'"
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                pMessage, UUID, UID
         );
     }
     else
     {
-        error_msg("UUID,UID %s,%s is not found in DB", pUUID, pUID);
+        error_msg("crash_id %s is not found in DB", crash_id);
     }
 }
 
-void CSQLite3::SetReportedPerReporter(const char *pUUID,
-                                 const char *pUID,
+void CSQLite3::SetReportedPerReporter(const char *crash_id,
                                  const char *reporter,
                                  const char *pMessage)
 {
-    if (!is_string_safe(pUUID)
-     || !is_string_safe(pUID)
+    const char *UUID = strchr(crash_id, ':');
+    if (!UUID
+     || !is_string_safe(crash_id)
      || !is_string_safe(reporter)
      || !is_string_safe(pMessage)
     ) {
         return;
     }
 
+    /* Split crash_id into UID:UUID */
+    unsigned uid_len = UUID - crash_id;
+    UUID++;
+    char UID[uid_len + 1];
+    strncpy(UID, crash_id, uid_len);
+    UID[uid_len] = '\0';
+
     int affected_rows = execute_sql(m_pDB,
                 "UPDATE "ABRT_REPRESULT_TABLE
                 " SET "COL_MESSAGE"='%s'"
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s' AND "COL_REPORTER"='%s'",
                 pMessage,
-                pUUID, pUID, reporter
+                UUID, UID, reporter
     );
     if (!affected_rows)
     {
@@ -554,21 +595,16 @@ void CSQLite3::SetReportedPerReporter(const char *pUUID,
                 "INSERT INTO "ABRT_REPRESULT_TABLE
                 " ("COL_UUID","COL_UID","COL_REPORTER","COL_MESSAGE")"
                 " VALUES ('%s','%s','%s','%s');",
-                pUUID, pUID, reporter, pMessage
+                UUID, UID, reporter, pMessage
 	);
     }
 }
 
-vector_database_rows_t CSQLite3::GetUIDData(const char *pUID)
+vector_database_rows_t CSQLite3::GetUIDData(long caller_uid)
 {
     vector_database_rows_t table;
 
-    if (!is_string_safe(pUID))
-    {
-        return table;
-    }
-
-    if (pUID[0] == '0' && !pUID[1])
+    if (caller_uid == 0)
     {
         get_table(table, m_pDB, "SELECT * FROM "ABRT_TABLE";");
     }
@@ -576,40 +612,35 @@ vector_database_rows_t CSQLite3::GetUIDData(const char *pUID)
     {
         get_table(table, m_pDB,
                 "SELECT * FROM "ABRT_TABLE
-                " WHERE "COL_UID" = '%s' OR "COL_UID" = '-1';",
-                pUID
+                " WHERE "COL_UID"='%ld' OR "COL_INFORMALL"=1;",
+                caller_uid
         );
     }
     return table;
 }
 
-database_row_t CSQLite3::GetRow(const char *pUUID, const char *pUID)
+database_row_t CSQLite3::GetRow(const char *crash_id)
 {
-    if (!is_string_safe(pUUID)
-     || !is_string_safe(pUID)
+    const char *UUID = strchr(crash_id, ':');
+    if (!UUID
+     || !is_string_safe(crash_id)
     ) {
         return database_row_t();
     }
 
-    vector_database_rows_t table;
+    /* Split crash_id into UID:UUID */
+    unsigned uid_len = UUID - crash_id;
+    UUID++;
+    char UID[uid_len + 1];
+    strncpy(UID, crash_id, uid_len);
+    UID[uid_len] = '\0';
 
-    if (pUID[0] == '0' && !pUID[1])
-    {
-        get_table(table, m_pDB,
-                "SELECT * FROM "ABRT_TABLE" "
-                "WHERE "COL_UUID" = '%s';",
-                pUUID
-        );
-    }
-    else
-    {
-        get_table(table, m_pDB,
-                "SELECT * FROM "ABRT_TABLE" "
-                "WHERE "COL_UUID" = '%s' "
-                "AND ("COL_UID" = '%s' OR "COL_UID" = '-1');",
-                pUUID, pUID
-        );
-    }
+    vector_database_rows_t table;
+    get_table(table, m_pDB,
+                "SELECT * FROM "ABRT_TABLE
+                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                UUID, UID
+    );
 
     if (table.size() == 0)
     {

@@ -92,7 +92,7 @@ int main(int argc, char** argv)
              */
             map_crash_data_t crashReport;
             middleWare.CreateCrashReport(crashInfo[CD_DUPHASH][CD_CONTENT],
-                                         crashInfo[FILENAME_UID][CD_CONTENT],
+                                         crashInfo[CD_UID][CD_CONTENT],
                                          crashReport);
             /* Report crash */
             middleWare.Report(crashReport);

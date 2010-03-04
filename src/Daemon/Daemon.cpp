@@ -42,6 +42,8 @@
 #include "DebugDump.h"
 #include "Daemon.h"
 
+using namespace std;
+
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
@@ -53,16 +55,16 @@
  * - GetCrashInfos(): returns a vector_map_crash_data_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - StartJob(UUID,force): starts creating a report for /var/cache/abrt/DIR with this UUID.
+ * - StartJob(crash_id,force): starts creating a report for /var/cache/abrt/DIR with this UID:UUID.
  *      Returns job id (uint64).
  *      After thread returns, when report creation thread has finished,
- *      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
- * - CreateReport(UUID): returns map_crash_data_t (map_vector_string_t)
+ *      JobDone() dbus signal is emitted.
+ * - CreateReport(crash_id): returns map_crash_data_t (map_vector_string_t)
  * - Report(map_crash_data_t (map_vector_string_t[, map_map_string_t])):
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
- * - DeleteDebugDump(UUID): delete it from DB and delete corresponding /var/cache/abrt/DIR
+ * - DeleteDebugDump(crash_id): delete it from DB and delete corresponding /var/cache/abrt/DIR
  * - GetPluginsInfo(): returns map_map_string_t
  *      map["plugin"] = { "Name": "plugin", "Enabled": "yes" ... }
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
@@ -74,16 +76,12 @@
  *
  * DBus signals we emit:
  * - Crash(progname,uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
- * - JobDone(client_dbus_ID,UUID) - see StartJob above.
+ * - JobDone(client_dbus_ID) - see StartJob above.
  *      Sent as unicast to the client which did StartJob.
- * - Warning(msg,job_id)
- * - Update(msg,job_id)
+ * - Warning(msg)
+ * - Update(msg)
  *      Both are sent as unicast to last client set by set_client_name(name).
  *      If set_client_name(NULL) was done, they are not sent.
- *
- * TODO:
- * - JobDone signal does not need to pass any parameters
- *   - our clients never send multiple StartJob's.
  */
 
 
@@ -514,7 +512,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 #define fullname fullname_should_not_be_used_here
 
                     const char *analyzer = get_crash_data_item_content(crashinfo, FILENAME_ANALYZER).c_str();
-                    const char *uid_str = get_crash_data_item_content(crashinfo, FILENAME_UID).c_str();
+                    const char *uid_str = get_crash_data_item_content(crashinfo, CD_UID).c_str();
 
                     /* Autoreport it if configured to do so */
                     if (res != MW_REPORTED
@@ -522,9 +520,12 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     ) {
                         VERB1 log("Reporting the crash automatically");
                         map_crash_data_t crash_report;
+                        string crash_id = ssprintf("%s:%s", uid_str, get_crash_data_item_content(crashinfo, CD_UUID).c_str());
                         mw_result_t crash_result = CreateCrashReport(
-                                        get_crash_data_item_content(crashinfo, CD_UUID).c_str(),
-                                        uid_str, /*force:*/ 0, crash_report
+                                        crash_id.c_str(),
+                                        /*caller_uid:*/ 0,
+                                        /*force:*/ 0,
+                                        crash_report
                         );
                         if (crash_result == MW_OK)
                         {

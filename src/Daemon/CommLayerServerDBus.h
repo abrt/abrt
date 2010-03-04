@@ -30,11 +30,11 @@ class CCommLayerServerDBus
 
         /* DBus signal senders */
         virtual void Crash(const char *progname, const char *uid_str);
-        virtual void JobDone(const char* pDest, const char* pUUID);
+        virtual void JobDone(const char* peer);
         virtual void QuotaExceed(const char* str);
 
-        virtual void Update(const char* pMessage, const char* peer, uint64_t pJobID);
-        virtual void Warning(const char* pMessage, const char* peer, uint64_t pJobID);
+        virtual void Update(const char* pMessage, const char* peer);
+        virtual void Warning(const char* pMessage, const char* peer);
 };
 
 #endif

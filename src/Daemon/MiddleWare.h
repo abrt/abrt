@@ -29,8 +29,8 @@
  * An enum contains all return codes.
  */
 typedef enum {
-    MW_ERROR,            /**< Common error.*/
     MW_OK,               /**< No error.*/
+    MW_ERROR,            /**< Common error.*/
     MW_BLACKLISTED,      /**< Package is blacklisted.*/
     MW_CORRUPTED,        /**< Debugdump directory is corrupted.*/
     MW_PACKAGE_ERROR,    /**< Cannot determine package name.*/
@@ -62,8 +62,8 @@ void LoadOpenGPGPublicKey(const char* key);
  * @param pCrashData A filled crash report.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t CreateCrashReport(const char *pUUID,
-                              const char *pUID,
+mw_result_t CreateCrashReport(const char *crash_id,
+                              long caller_uid,
                               int force,
                               map_crash_data_t& pCrashData);
 /**
@@ -93,16 +93,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir);
  */
 report_status_t Report(const map_crash_data_t& pCrashData,
                        map_map_string_t& pSettings,
-                       const char *pUID);
-/**
- * Get debugdump direcotory. If debugdump is not found
- * in database it will return empty string.
- * @param pUUID A local UUID of a crash.
- * @param pUID An UID of an user.
- * @return A debugdump directory.
- */
-std::string getDebugDumpDir( const char *pUUID,
-                             const char *pUID);
+                       long caller_uid);
 /**
  * Adds package name and description to debugdump dir.
  * Saves debugdump into database.
@@ -123,8 +114,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
  * @param pCrashData A crash info.
  * @return It return results of operation. See mw_result_t.
  */
-mw_result_t FillCrashInfo(const char *pUUID,
-                        const char *pUID,
+mw_result_t FillCrashInfo(const char *crash_id,
                         map_crash_data_t& pCrashData);
 /**
  * Gets all local UUIDs and UIDs of crashes. These crashes
@@ -132,7 +122,7 @@ mw_result_t FillCrashInfo(const char *pUUID,
  * @param pUID an UID of an user.
  * @return A vector of pairs  (local UUID, UID).
  */
-vector_pair_string_string_t GetUUIDsOfCrash(const char *pUID);
+void GetUUIDsOfCrash(long caller_uid, vector_string_t &result);
 /**
  * Adds one association among alanyzer plugin and its
  * action and reporter plugins.

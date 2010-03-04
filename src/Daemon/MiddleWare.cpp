@@ -235,24 +235,34 @@ static void run_analyser_CreateReport(const char *pAnalyzer,
     /* else: GetAnalyzer() already complained, no need to handle it here */
 }
 
-mw_result_t CreateCrashReport(const char *pUUID,
-                const char *pUID,
+/*
+ * Called in three cases:
+ * (1) by StartJob dbus call -> CreateReportThread(), in the thread
+ * (2) by CreateReport dbus call
+ * (3) by daemon if AutoReportUID is set for this user's crashes
+ */
+mw_result_t CreateCrashReport(const char *crash_id,
+                long caller_uid,
                 int force,
                 map_crash_data_t& pCrashData)
 {
-    VERB2 log("CreateCrashReport('%s','%s',result)", pUUID, pUID);
+    VERB2 log("CreateCrashReport('%s',%ld,result)", crash_id, caller_uid);
 
     database_row_t row;
-    if (pUUID[0] != '\0')
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+    database->Connect();
+    row = database->GetRow(crash_id);
+    database->DisConnect();
+    if (row.m_sUUID == "")
     {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
-        database->Connect();
-        row = database->GetRow(pUUID, pUID);
-        database->DisConnect();
+        error_msg("crash '%s' is not in database", crash_id);
+        return MW_IN_DB_ERROR;
     }
-    if (pUUID[0] == '\0' || row.m_sUUID != pUUID)
-    {
-        error_msg("UUID '%s' is not in database", pUUID);
+    if (caller_uid != 0 /* not called by root */
+     && row.m_sInformAll != "1"
+     && to_string(caller_uid) != row.m_sUID
+    ) {
+        error_msg("crash '%s' can't be accessed by user with uid %ld", crash_id, caller_uid);
         return MW_IN_DB_ERROR;
     }
 
@@ -282,9 +292,8 @@ mw_result_t CreateCrashReport(const char *pUUID,
         RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
 
         DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
-
+        add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row.m_sUUID.c_str());
         add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
-        add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, pUUID);
     }
     catch (CABRTException& e)
     {
@@ -366,20 +375,34 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
 // dbus handler passes it from user without checking
 report_status_t Report(const map_crash_data_t& client_report,
                        map_map_string_t& pSettings,
-                       const char *pUID)
+                       long caller_uid)
 {
     // Get ID fields
-    const char *UID = get_crash_data_item_content_or_NULL(client_report, FILENAME_UID);
+    const char *UID = get_crash_data_item_content_or_NULL(client_report, CD_UID);
     const char *UUID = get_crash_data_item_content_or_NULL(client_report, CD_UUID);
-    if (!UID || !UUID) {
+    if (!UID || !UUID)
+    {
         throw CABRTException(EXCEP_ERROR, "Report(): UID or UUID is missing in client's report data");
     }
+    string crash_id = ssprintf("%s:%s", UID, UUID);
 
     // Retrieve corresponding stored record
     map_crash_data_t stored_report;
-    mw_result_t r = FillCrashInfo(UUID, UID, stored_report);
+    mw_result_t r = FillCrashInfo(crash_id.c_str(), stored_report);
     if (r != MW_OK)
+    {
         return report_status_t();
+    }
+
+    // Is it allowed for this user to report?
+    if (caller_uid != 0   // not called by root
+     && get_crash_data_item_content(stored_report, CD_INFORMALL) != "1"
+     && strcmp(to_string(caller_uid).c_str(), UID) != 0
+    ) {
+        throw CABRTException(EXCEP_ERROR, "Report(): user with uid %ld can't report crash %s",
+                        caller_uid, crash_id.c_str());
+    }
+
     const std::string& pDumpDir = get_crash_data_item_content(stored_report, CD_DUMPDIR);
 
     // Save comment, "how to reproduce", backtrace
@@ -536,11 +559,11 @@ report_status_t Report(const map_crash_data_t& client_report,
             const vector_string_t &v = ret_it->second;
             if (v[REPORT_STATUS_IDX_FLAG] == "1")
             {
-                database->SetReportedPerReporter(UUID, UID, plugin_name.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+                database->SetReportedPerReporter(crash_id.c_str(), plugin_name.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
             }
             ret_it++;
         }
-        database->SetReported(UUID, UID, message.c_str());
+        database->SetReported(crash_id.c_str(), message.c_str());
         database->DisConnect();
     }
 
@@ -556,14 +579,14 @@ report_status_t Report(const map_crash_data_t& client_report,
  * @return It returns true if debugdump dir is already saved, otherwise
  * it returns false.
  */
-static bool IsDebugDumpSaved(const char *pUID,
+static bool IsDebugDumpSaved(long uid,
                                    const char *pDebugDumpDir)
 {
     /* TODO: use database query instead of dumping all rows and searching in them */
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    vector_database_rows_t rows = database->GetUIDData(pUID);
+    vector_database_rows_t rows = database->GetUIDData(uid);
     database->DisConnect();
 
     int ii;
@@ -838,8 +861,8 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir,
  * @param pCrashData A filled crash info.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
-                const char *pUID,
+static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
+                bool inform_all_users,
                 const char *pTime,
                 const char *pDebugDumpDir,
                 map_crash_data_t& pCrashData)
@@ -847,11 +870,11 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
     /* note: if [UUID,UID] record exists, pDebugDumpDir is not updated in the record */
-    database->Insert_or_Update(pUUID, pUID, pDebugDumpDir, pTime);
-    database_row_t row = database->GetRow(pUUID, pUID);
+    database->Insert_or_Update(crash_id, inform_all_users, pDebugDumpDir, pTime);
+    database_row_t row = database->GetRow(crash_id);
     database->DisConnect();
 
-    mw_result_t res = FillCrashInfo(pUUID, pUID, pCrashData);
+    mw_result_t res = FillCrashInfo(crash_id, pCrashData);
     if (res == MW_OK)
     {
         const char *first = get_crash_data_item_content(pCrashData, CD_DUMPDIR).c_str();
@@ -869,15 +892,6 @@ static mw_result_t SaveDebugDumpToDatabase(const char *pUUID,
     return res;
 }
 
-std::string getDebugDumpDir(const char *pUUID, const char *pUID)
-{
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
-    database->Connect();
-    database_row_t row = database->GetRow(pUUID, pUID);
-    database->DisConnect();
-    return row.m_sDebugDumpDir;
-}
-
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                 map_crash_data_t& pCrashData)
 {
@@ -891,7 +905,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_TIME, time);
-        dd.LoadText(FILENAME_UID, UID);
+        dd.LoadText(CD_UID, UID);
         dd.LoadText(FILENAME_ANALYZER, analyzer);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_CMDLINE, cmdline);
@@ -902,7 +916,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         return MW_ERROR;
     }
 
-    if (IsDebugDumpSaved(UID.c_str(), pDebugDumpDir))
+    if (IsDebugDumpSaved(xatou(UID.c_str()), pDebugDumpDir))
     {
         return MW_IN_DB;
     }
@@ -913,10 +927,8 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         return res;
     }
 
-    std::string lUUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
-    const char *uid_str = analyzer_has_InformAllUsers(analyzer.c_str())
-        ? "-1"
-        : UID.c_str();
+    std::string UUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
+    std::string crash_id = ssprintf("%s:%s", UID.c_str(), UUID.c_str());
     /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
      * Returns:
      * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
@@ -924,16 +936,19 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
      * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
      * else: an error code
      */
-    return SaveDebugDumpToDatabase(lUUID.c_str(), uid_str, time.c_str(), pDebugDumpDir, pCrashData);
+    return SaveDebugDumpToDatabase(crash_id.c_str(),
+                analyzer_has_InformAllUsers(analyzer.c_str()),
+                time.c_str(),
+                pDebugDumpDir,
+                pCrashData);
 }
 
-mw_result_t FillCrashInfo(const char *pUUID,
-                const char *pUID,
+mw_result_t FillCrashInfo(const char *crash_id,
                 map_crash_data_t& pCrashData)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database_row_t row = database->GetRow(pUUID, pUID);
+    database_row_t row = database->GetRow(crash_id);
     database->DisConnect();
 
     std::string package;
@@ -952,34 +967,32 @@ mw_result_t FillCrashInfo(const char *pUUID,
         return MW_ERROR;
     }
 
+    add_to_crash_data(pCrashData, CD_UID              , row.m_sUID.c_str()         );
     add_to_crash_data(pCrashData, CD_UUID             , row.m_sUUID.c_str()        );
+    add_to_crash_data(pCrashData, CD_INFORMALL        , row.m_sInformAll.c_str()   );
     add_to_crash_data(pCrashData, CD_COUNT            , row.m_sCount.c_str()       );
     add_to_crash_data(pCrashData, CD_REPORTED         , row.m_sReported.c_str()    );
     add_to_crash_data(pCrashData, CD_MESSAGE          , row.m_sMessage.c_str()     );
     add_to_crash_data(pCrashData, CD_DUMPDIR          , row.m_sDebugDumpDir.c_str());
-//TODO: why do we keep uid and time in DB and in dumpdir?!
-    add_to_crash_data(pCrashData, FILENAME_UID        , row.m_sUID.c_str()         );
     add_to_crash_data(pCrashData, FILENAME_TIME       , row.m_sTime.c_str()        );
 
     return MW_OK;
 }
 
-vector_pair_string_string_t GetUUIDsOfCrash(const char *pUID)
+void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     vector_database_rows_t rows;
     database->Connect();
-    rows = database->GetUIDData(pUID);
+    rows = database->GetUIDData(caller_uid);
     database->DisConnect();
 
-    vector_pair_string_string_t UUIDsUIDs;
     unsigned ii;
     for (ii = 0; ii < rows.size(); ii++)
     {
-        UUIDsUIDs.push_back(make_pair(rows[ii].m_sUUID, rows[ii].m_sUID));
+        string crash_id = ssprintf("%s:%s", rows[ii].m_sUID.c_str(), rows[ii].m_sUUID.c_str());
+        result.push_back(crash_id);
     }
-
-    return UUIDsUIDs;
 }
 
 void AddAnalyzerActionOrReporter(const char *pAnalyzer,
