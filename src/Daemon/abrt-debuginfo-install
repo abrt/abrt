@@ -145,14 +145,12 @@ print_package_names() {
     else
 	echo "`count_words $missing_debuginfo_files` missing debuginfos, getting package list from repositories" >&2
     fi
-    # when we look for debuginfo we need only -debuginfo* repos, so we can disable the rest and thus make it faster
-    # also we want only fedora repositories, because abrt won't work for other packages anyway
     # --showduplicates: do not just show the latest package
     # (tried to use -R2 to abort on stuck yum lock but -R is not about that)
-    local cmd="yum $yumopts '--disablerepo=*' '--enablerepo=fedora-debuginfo*' '--enablerepo=updates-debuginfo*' --showduplicates --quiet provides $missing_debuginfo_files"
+    local cmd="yum $yumopts $yum_repo_opts --showduplicates --quiet provides $missing_debuginfo_files"
     echo "$cmd" >"yum_provides.$1.OUT"
     $debug && echo "Running: $cmd" >&2
-    # eval is needed to strip away ''s; cant remove them above and just use
+    # eval is needed to strip away ''s in $yum_repo_opts; cant remove them and just use
     # unquoted $cmd, that would perform globbing on '*'
     local yum_provides_OUT="`eval $cmd 2>&1`"
     local err=$?
@@ -199,9 +197,10 @@ download_packages() {
     for pkg in $packages; do
 	echo "Download $i/$num_packages: $pkg"
 	echo "Download $i/$num_packages: $pkg" >>yumdownloader.OUT
-	# We can't handle packages from non Fedora repos, so we look and download only
-	# from Fedora repos which makes it faster
-	yumdownloader --disablerepo="*" --enablerepo="fedora-debuginfo*" --enablerepo="updates-debuginfo*" --quiet $pkg >>yumdownloader.OUT 2>&1
+	cmd="yumdownloader $yum_repo_opts --quiet $pkg"
+	$debug && echo "Running: $cmd" >&2
+	# eval is needed to strip away ''s in $yum_repo_opts
+	eval $cmd >>yumdownloader.OUT 2>&1
 	err=$?
 	echo "exitcode:$err" >>yumdownloader.OUT
 	echo >>yumdownloader.OUT
@@ -298,6 +297,16 @@ build_ids=`printf "%s\n" "$eu_unstrip_OUT" \
     echo "$build_id"
 done | sort | uniq | xargs`
 $debug && echo "build_ids:$build_ids"
+
+
+# Prepare list of repos to use.
+# When we look for debuginfo we need only -debuginfo* repos, we can disable the rest
+# and thus make it faster.
+yum_repo_opts="'--disablerepo=*'"
+for enabled_repo in `yum repolist | grep 'enabled:' | cut -f1 -d' ' | grep -v -- '-debuginfo'`; do
+    yum_repo_opts="$yum_repo_opts '--enablerepo=${enabled_repo}-debuginfo*'"
+done
+
 
 # We try to not run yum without -C unless absolutely necessary.
 # Therefore we loop. yum is run by print_package_names function,
