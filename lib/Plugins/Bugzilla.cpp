@@ -682,7 +682,16 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         std::string description = make_description_reproduce_comment(pCrashData);
         if (!description.empty())
         {
-            VERB3 log("Add new comment into bug(%d)", (int)bug_id);
+	        const char* package   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
+	        const char* release   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
+	        const char* arch      = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
+
+	        description = ssprintf( "Package: %s\n"
+				                    "Architecture: %s\n"
+				                    "OS Release: %s\n"
+				                    "%s", package, arch, release, description.c_str()
+				                  );
+
             update_client(_("Add new comment into bug(%d)"), (int)bug_id);
             if (bz_server.add_comment(bug_id, description.c_str()) == -1)
             {
