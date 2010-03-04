@@ -653,6 +653,8 @@
   </object>
   <object class="GtkWindow" id="w_reporters">
     <property name="title" translatable="yes">Reporter Selector</property>
+    <property name="modal">True</property>
+    <property name="window_position">center-on-parent</property>
     <property name="icon_name">abrt</property>
     <child>
       <object class="GtkVBox" id="vb_main">

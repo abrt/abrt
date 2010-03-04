@@ -22,7 +22,11 @@ class PluginsSettingsDialog:
         self.window = self.builder.get_object("wPluginsSettings")
         if not self.window:
             raise Exception(_("Can't load gui description for SettingsDialog!"))
-        #self.window.set_parent(parent)
+
+        if parent:
+            self.window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+            self.window.set_transient_for(parent)
+            self.window.set_modal(True)
 
         self.pluginlist = self.builder.get_object("tvSettings") # a TreeView
         # cell_text, toggle_active, toggle_visible, group_name_visible, color, plugin
@@ -124,7 +128,7 @@ class PluginsSettingsDialog:
         # don't show any empty groups
         for it in group_empty.values():
             self.pluginsListStore.remove(it)
-        
+
         self.pluginlist.expand_all()
 
     def dehydrate(self):

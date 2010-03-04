@@ -39,6 +39,7 @@ class ReporterDialog():
         self.window = self.builder.get_object("reporter_dialog")
         self.window.connect("response", self.on_response, daemon)
         if parent:
+            self.window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
             self.window.set_transient_for(parent)
             self.window.set_modal(True)
 
@@ -349,6 +350,7 @@ class ReporterSelector():
         self.builder.add_from_file(builderfile)
         self.window = self.builder.get_object("w_reporters")
         if parent:
+            self.window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
             self.window.set_transient_for(parent)
             self.window.set_modal(True)
         self.connect_signal(self.window, "delete-event", self.on_window_delete)
