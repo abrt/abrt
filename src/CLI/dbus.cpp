@@ -50,8 +50,16 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
             continue;
         }
 
+        int tp = dbus_message_get_type(received);
+        const char *error_str = dbus_message_get_error_name(received);
+#if 0
         /* Debugging */
-        /*
+        printf("type:%u (CALL:%u, RETURN:%u, ERROR:%u, SIGNAL:%u)\n", tp,
+                                DBUS_MESSAGE_TYPE_METHOD_CALL,
+                                DBUS_MESSAGE_TYPE_METHOD_RETURN,
+                                DBUS_MESSAGE_TYPE_ERROR,
+                                DBUS_MESSAGE_TYPE_SIGNAL
+        );
         const char *sender = dbus_message_get_sender(received);
         if (sender)
             printf("sender: %s\n", sender);
@@ -67,7 +75,9 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
         const char *destination = dbus_message_get_destination(received);
         if (destination)
             printf("destination: %s\n", destination);
-        */
+        if (error_str)
+            printf("error: '%s'\n", error_str);
+#endif
 
         DBusError err;
         dbus_error_init(&err);
@@ -94,10 +104,17 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
             }
             printf(">! %s\n", warning_msg);
         }
-        else if (dbus_message_get_type(received) == DBUS_MESSAGE_TYPE_METHOD_RETURN &&
-                 dbus_message_get_reply_serial(received) == serial)
-        {
+        else
+        if (tp == DBUS_MESSAGE_TYPE_METHOD_RETURN
+         && dbus_message_get_reply_serial(received) == serial
+        ) {
             return received;
+        }
+        else
+        if (tp == DBUS_MESSAGE_TYPE_ERROR
+         && dbus_message_get_reply_serial(received) == serial
+        ) {
+            error_msg_and_die("Dbus call returned error: '%s'", error_str);
         }
 
         dbus_message_unref(received);
@@ -148,9 +165,15 @@ report_status_t call_Report(const map_crash_data_t& report,
     DBusMessage* msg = new_call_msg(__func__ + 5);
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(msg, &out_iter);
+
+    /* parameter #1: report data */
     store_val(&out_iter, report);
+    /* parameter #2: reporters to use */
+    vector_string_t reporters;
+    store_val(&out_iter, reporters); /* unused by daemon so far */
+    /* parameter #3 (opt): plugin config */
     if (!plugins.empty())
-      store_val(&out_iter, plugins);
+        store_val(&out_iter, plugins);
 
     DBusMessage *reply = send_get_reply_and_unref(msg);
 
