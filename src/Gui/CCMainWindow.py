@@ -2,7 +2,6 @@
 import sys
 import pwd
 import getopt
-from glib import markup_escape_text
 
 from abrt_utils import _, init_logging, log, log1, log2
 import gobject
@@ -22,7 +21,7 @@ import CCDBusBackend
 from CC_gui_functions import *
 from CCDumpList import getDumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
-from CCReporterDialog import ReporterDialog
+from CCReporterDialog import ReporterDialog, ReporterSelector
 from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
 from PluginList import getPluginInfoList
@@ -54,13 +53,6 @@ class MainWindow():
             self.window.connect("delete_event", self.delete_event_cb)
             self.window.connect("destroy", self.destroy)
             self.window.connect("focus-in-event", self.focus_in_cb)
-
-        # pregress bar window to show while bt is being extracted
-        self.pBarWindow = self.wTree.get_widget("pBarWindow")
-        if self.pBarWindow:
-            self.pBarWindow.connect("delete_event", self.sw_delete_event_cb)
-            self.pBarWindow.set_transient_for(self.window)
-            self.pBar = self.wTree.get_widget("pBar")
 
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
@@ -120,18 +112,18 @@ class MainWindow():
         self.wTree.get_widget("miDelete").connect("activate", self.on_bDelete_clicked, self.dlist)
         # connect handlers for daemon signals
         self.ccdaemon.connect("crash", self.on_data_changed_cb, None)
-        self.ccdaemon.connect("analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.ccdaemon.connect("abrt-error", self.error_cb)
-        self.ccdaemon.connect("update", self.update_cb)
+        #self.ccdaemon.connect("update", self.update_cb)
         # for now, just treat them the same (w/o this, we don't even see daemon warnings in logs!):
-        self.ccdaemon.connect("warning", self.update_cb)
+        #self.ccdaemon.connect("warning", self.update_cb)
         self.ccdaemon.connect("show", self.show_cb)
         self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
         self.ccdaemon.connect("report-done", self.on_report_done_cb)
 
-        # load data
-        #self.load()
         self.pluginlist = None
+
+    def on_report_done_cb(self, daemon, result):
+        self.hydrate()
 
     def on_daemon_state_changed_cb(self, widget, state):
         if state == "up":
@@ -161,18 +153,12 @@ class MainWindow():
         dialog = SettingsDialog(self.window, self.ccdaemon)
         try:
             dialog.hydrate()
-        except Exception, e:
-            gui_error_message(_("Can't show the settings dialog\n%s" % e))
+        except Exception, ex:
+            gui_error_message(_("Can't show the settings dialog\n%s" % ex))
             return
         dialog.show()
 
     def error_cb(self, daemon, message=None):
-        # try to hide the progressbar, we dont really care if it was visible ..
-        try:
-            gobject.source_remove(self.timer)
-            self.pBarWindow.hide()
-        except Exception:
-            pass
         gui_error_message(_("Unable to finish current task!\n%s" % message), parent_dialog=self.window)
 
     def update_cb(self, daemon, message):
@@ -187,11 +173,6 @@ class MainWindow():
         tvUpdates = self.wTree.get_widget("tvUpdates")
         tvUpdates.set_buffer(buff)
         tvUpdates.scroll_mark_onscreen(end)
-
-    # call to update the progressbar
-    def progress_update_cb(self, *args):
-        self.pBar.pulse()
-        return True
 
     def hydrate(self):
         n = None
@@ -272,7 +253,7 @@ class MainWindow():
     def destroy(self, widget, data=None):
         gtk.main_quit()
 
-    def on_data_changed_cb(self, *args):
+    def on_data_changed_cb(self, *_args):
         # FIXME mark the new entry somehow....
         # remember the selected row
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
@@ -281,101 +262,18 @@ class MainWindow():
             return
         self.dlist.set_cursor(path[0])
 
-    def on_report_done_cb(self, daemon, result):
-        try:
-            gobject.source_remove(self.timer)
-        except:
-            pass
-        self.pBarWindow.hide()
-        gui_report_dialog(result, self.window)
-        self.hydrate()
-
-    def on_analyze_complete_cb(self, daemon, report, pBarWindow):
-        try:
-            gobject.source_remove(self.timer)
-        except:
-            pass
-        self.pBarWindow.hide()
-#FIXME - why we need this?? -> timeout warnings
-#        try:
-#            dumplist = getDumpList(self.ccdaemon)
-#        except Exception, e:
-#            print e
-        if not report:
-            gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
-            return
-        report_dialog = ReporterDialog(report, self.ccdaemon, log=self.updates, parent=self.window)
-        # (response, report)
-        response, result = report_dialog.run()
-
-        if response == gtk.RESPONSE_APPLY:
-            try:
-                self.pBarWindow.show_all()
-                self.timer = gobject.timeout_add(100, self.progress_update_cb)
-                pluginlist = getPluginInfoList(self.ccdaemon)
-                reporters_settings = pluginlist.getReporterPluginsSettings()
-                log2("Report(result,reporters,settings):")
-                log2("  result:%s", str(result))
-                # Careful, this will print reporters_settings["Password"] too
-                log2("  settings:%s", str(reporters_settings))
-                self.ccdaemon.Report(result, ["reporter1", "reporter2"], reporters_settings)
-                log2("Report() returned")
-                #self.hydrate()
-            except Exception, ex:
-                gui_error_message(_("Reporting failed!\n%s" % ex))
-        # -50 == REFRESH
-        elif response == -50:
-            self.refresh_report(report)
-
-    def refresh_report(self, report):
-        self.updates = ""
-        self.pBarWindow.show_all()
-        self.timer = gobject.timeout_add(100, self.progress_update_cb)
-
-        # show the report window with selected report
-        try:
-            self.ccdaemon.getReport(report[CD_UUID][CD_CONTENT], force=1)
-        except Exception, ex:
-            # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
-            # do this async and wait for yum to end with debuginfoinstal
-            if self.timer:
-                gobject.source_remove(self.timer)
-            self.pBarWindow.hide()
-            gui_error_message(_("Error getting the report: %s" % ex))
-        return
-
     def on_bReport_clicked(self, button):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         self.on_dumpRowActivated(self.dlist, None, path, None)
 
-    def on_dumpRowActivated(self, treeview, iter, path, user_data=None):
-        self.updates = ""
-        # FIXME don't duplicate the code, move to function
+    def on_dumpRowActivated(self, treeview, it, path, user_data=None):
         dumpsListStore, path = treeview.get_selection().get_selected_rows()
         if not path:
             return
-        #self.pBar.show()
-        self.pBarWindow.show_all()
-        self.timer = gobject.timeout_add(100, self.progress_update_cb)
-
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
-        # show the report window with selected dump
-        try:
-            self.ccdaemon.getReport(dump.getUUID())
-        except Exception, ex:
-            # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
-            # do this async and wait for yum to end with debuginfoinstal
-            if self.timer:
-                gobject.source_remove(self.timer)
-            self.pBarWindow.hide()
-            gui_error_message(_("Error getting the report: %s" % ex))
-        return
 
-    def sw_delete_event_cb(self, widget, event, data=None):
-        if self.timer:
-            gobject.source_remove(self.timer)
-        widget.hide()
-        return True
+        rs = ReporterSelector(dump, self.ccdaemon, parent=self.window)
+        rs.show()
 
     def delete_event_cb(self, widget, event, data=None):
         gtk.main_quit()

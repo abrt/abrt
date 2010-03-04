@@ -54,6 +54,7 @@ class Dump():
         self.description = None
         self.Message = None
         self.Reported = None
+        self.analyzer = None
 
     def getUUID(self):
         return self.UUID[CD_CONTENT]
@@ -93,3 +94,6 @@ class Dump():
 
     def getDescription(self):
         return self.description[CD_CONTENT]
+
+    def getAnalyzerName(self):
+        return self.analyzer[CD_CONTENT]

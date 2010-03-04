@@ -18,7 +18,7 @@ class DumpList(list):
                 for row in rows:
                     entry = Dump()
                     for column in row:
-                        log2(" DumpList.%s='%s'", column, row[column])
+                        log2(" Dump.%s='%s'", column, row[column])
                         entry.__dict__[column] = row[column]
                     self.append(entry)
             except Exception:

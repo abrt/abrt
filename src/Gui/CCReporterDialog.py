@@ -2,8 +2,8 @@
 import pygtk
 pygtk.require("2.0")
 import gtk
+import gobject
 import gtk.glade
-import pango
 import sys
 from CC_gui_functions import *
 import CellRenderers
@@ -326,3 +326,224 @@ class ReporterDialog():
         result = self.window.run()
         self.window.destroy()
         return (result, self.report)
+
+class ReporterSelector():
+    def __init__(self, crashdump, daemon, log=None, parent=None):
+        self.connected_signals = []
+        self.updates = ""
+        self.daemon = daemon
+        self.dump = crashdump
+        self.selected_reporters = []
+        #FIXME: cache settings! Create some class to represent it like PluginList
+        self.settings = daemon.getSettings()
+        pluginlist = getPluginInfoList(daemon)
+        self.reporters = []
+        AnalyzerActionsAndReporters = self.settings["AnalyzerActionsAndReporters"]
+        for reporter_name in AnalyzerActionsAndReporters[crashdump.getAnalyzerName()].split(','):
+            reporter = pluginlist.getReporterByName(reporter_name)
+            if reporter:
+                self.reporters.append(reporter)
+
+        builderfile = "%s/report.glade" % sys.path[0]
+        self.builder = gtk.Builder()
+        self.builder.add_from_file(builderfile)
+        self.window = self.builder.get_object("w_reporters")
+        if parent:
+            self.window.set_transient_for(parent)
+            self.window.set_modal(True)
+        self.connect_signal(self.window, "delete-event", self.on_window_delete)
+        self.connect_signal(self.window, "destroy-event", self.on_window_delete)
+
+        self.pBarWindow = self.builder.get_object("pBarWindow")
+
+        b_cancel = self.builder.get_object("b_close")
+        self.connect_signal(b_cancel, "clicked", self.on_close_clicked)
+        reporters_vbox = self.builder.get_object("vb_reporters")
+        for reporter in self.reporters:
+            button = gtk.Button(str(reporter))
+            self.connect_signal(button, "clicked", self.on_reporter_clicked, data=reporter)
+            reporters_vbox.pack_start(button)
+
+        # progress bar window to show while bt is being extracted
+        self.pBarWindow = self.builder.get_object("pBarWindow")
+        if self.pBarWindow:
+            self.connect_signal(self.pBarWindow, "delete_event", self.sw_delete_event_cb)
+            if parent:
+                self.pBarWindow.set_transient_for(parent)
+            else:
+                self.pBarWindow.set_transient_for(self.window)
+            self.pBar = self.builder.get_object("pBar")
+
+        # connect handlers for daemon signals
+        #self.ccdaemon.connect("abrt-error", self.error_cb)
+        self.connect_signal(daemon, "update", self.update_cb)
+        # for now, just treat them the same (w/o this, we don't even see daemon warnings in logs!):
+        #self.ccdaemon.connect("warning", self.update_cb)
+        #self.ccdaemon.connect("show", self.show_cb)
+        #self.ccdaemon.connect("daemon-state-changed", self.on_daemon_state_changed_cb)
+        self.connect_signal(daemon, "report-done", self.on_report_done_cb)
+        self.connect_signal(daemon, "analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
+
+    def connect_signal(self, obj, signal, callback, data=None):
+        if data:
+            signal_id = obj.connect(signal, callback, data)
+        else:
+            signal_id = obj.connect(signal, callback)
+        self.connected_signals.append((obj, signal_id))
+
+    def disconnect_signals(self):
+    # we need to disconnect all signals in order to break all references
+    # to this object, otherwise python won't destroy this object and the
+    # signals emmited by daemon will get caught by multiple instances of
+    # this class
+        for obj, signal_id in self.connected_signals:
+            obj.disconnect(signal_id)
+
+    def update_cb(self, daemon, message):
+        self.updates += message
+        if self.updates[-1] != '\n':
+            self.updates += '\n'
+        message = message.replace('\n',' ')
+        self.builder.get_object("lStatus").set_text(message)
+        buff = gtk.TextBuffer()
+        buff.set_text(self.updates)
+        end = buff.get_insert()
+        tvUpdates = self.builder.get_object("tvUpdates")
+        tvUpdates.set_buffer(buff)
+        tvUpdates.scroll_mark_onscreen(end)
+
+    def sw_delete_event_cb(self, widget, event, data=None):
+        if self.timer:
+            gobject.source_remove(self.timer)
+        widget.hide()
+        return True
+
+    def show(self):
+        if not self.reporters:
+            gui_error_message(_("No reporter plugin available for this type of crash\n"
+                                 "Please check abrt.conf."))
+        elif len(self.reporters) > 1:
+            self.builder.get_object("vb_reporters").show_all()
+            self.window.show()
+        else:
+            # we have only one reporter in the list
+            self.selected_reporters = [str(self.reporters[0])]
+            self.show_report()
+
+    def on_reporter_clicked(self, widget, reporter):
+        self.selected_reporters = [str(reporter)]
+        self.show_report()
+
+    def on_close_clicked(self, widget):
+        self.disconnect_signals()
+        self.window.destroy()
+
+    def on_window_delete(self, window, event):
+        self.disconnect_signals()
+        return False
+
+    def on_report_done_cb(self, daemon, result):
+        try:
+            gobject.source_remove(self.timer)
+        except:
+            pass
+        self.pBarWindow.hide()
+        gui_report_dialog(result, self.window)
+
+        if not self.window.get_property("visible"):
+            self.disconnect_signals()
+
+    def on_analyze_complete_cb(self, daemon, report, pBarWindow):
+        try:
+            gobject.source_remove(self.timer)
+        except:
+            pass
+        self.pBarWindow.hide()
+#FIXME - why we need this?? -> timeout warnings
+#        try:
+#            dumplist = getDumpList(self.daemon)
+#        except Exception, e:
+#            print e
+        if not report:
+            gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
+            return
+
+        # if we have only one reporter enabled, the window with
+        # the selection is not shown, so we can't use it as a parent
+        # and we use the mainwindow instead
+        if self.window.get_property("visible"):
+            parent_window = self.window
+        else:
+            parent_window = self.window.get_transient_for()
+
+        report_dialog = ReporterDialog(report, self.daemon, log=self.updates, parent=parent_window)
+        # (response, report)
+        response, result = report_dialog.run()
+
+        if response == gtk.RESPONSE_APPLY:
+            try:
+                self.pBarWindow.show_all()
+                self.timer = gobject.timeout_add(100, self.progress_update_cb)
+                pluginlist = getPluginInfoList(self.daemon)
+                reporters_settings = pluginlist.getReporterPluginsSettings()
+                log2("Report(result,reporters,settings):")
+                log2("  result:%s", str(result))
+                # Careful, this will print reporters_settings["Password"] too
+                log2("  settings:%s", str(reporters_settings))
+                self.daemon.Report(result, self.selected_reporters, reporters_settings)
+                log2("Report() returned")
+                #self.hydrate()
+            except Exception, ex:
+                gui_error_message(_("Reporting failed!\n%s" % ex))
+        # -50 == REFRESH
+        elif response == -50:
+            self.refresh_report(report)
+
+        elif not self.window.get_property("visible"):
+            self.disconnect_signals()
+
+    # call to update the progressbar
+    def progress_update_cb(self, *args):
+        self.pBar.pulse()
+        return True
+
+    def refresh_report(self, report):
+        self.updates = ""
+        self.pBarWindow.show_all()
+        self.timer = gobject.timeout_add(100, self.progress_update_cb)
+
+        # show the report window with selected report
+        try:
+            self.daemon.getReport(report[CD_UUID][CD_CONTENT], force=1)
+        except Exception, ex:
+            # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
+            # do this async and wait for yum to end with debuginfoinstal
+            if self.timer:
+                gobject.source_remove(self.timer)
+            self.pBarWindow.hide()
+            gui_error_message(_("Error getting the report: %s" % ex))
+        return
+
+    def show_report(self):
+        self.updates = ""
+        # FIXME don't duplicate the code, move to function
+        #self.pBar.show()
+        self.pBarWindow.show_all()
+        self.timer = gobject.timeout_add(100, self.progress_update_cb)
+
+        # show the report window with selected dump
+        # when getReport is done it emits "analyze-complete" and on_analyze_complete_cb is called
+        # FIXME: does it make sense to change it to use callback rather then signal emitting?
+        try:
+            self.daemon.getReport(self.dump.getUUID())
+        except Exception, ex:
+            # FIXME #3  dbus.exceptions.DBusException: org.freedesktop.DBus.Error.NoReply: Did not receive a reply
+            # do this async and wait for yum to end with debuginfoinstal
+            if self.timer:
+                gobject.source_remove(self.timer)
+            self.pBarWindow.hide()
+            gui_error_message(_("Error getting the report: %s" % ex))
+        return
+
+    def __del__(self):
+        log1("ReporterSelector: instance is about to be garbage-collected")

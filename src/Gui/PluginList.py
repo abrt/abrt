@@ -24,6 +24,13 @@ class PluginInfoList(list):
         else:
             log("PluginInfoList: db == None")
 
+    def getReporterByName(self, name):
+        try:
+            return [x for x in self if x["Name"] == name][0]
+        except:
+            # if such reporter doesnt't exist return None
+            return None
+
     def getEnabledPlugins(self):
         return [x for x in self if x["Enabled"] == 'yes']
 
