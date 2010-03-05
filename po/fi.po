@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-22 14:03+0100\n"
-"PO-Revision-Date: 2010-02-18 21:03+0200\n"
+"POT-Creation-Date: 2010-03-05 03:51+0000\n"
+"PO-Revision-Date: 2010-03-05 11:04+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,44 +15,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/Gui/ABRTExceptions.py:6
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "Toinen asiakasohjelma on jo käynnissä, yritetään herättää sitä."
 
-#: src/Gui/ABRTExceptions.py:13
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "Saatiin odottamatonta dataa taustaprosessilta (onko tietokanta päivitetty?)"
 
-#: src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "Ei ladattuja liitännäisiä"
 
-#: src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Analysaattoriliitännäiset"
 
-#: src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Toimintoliitännäiset"
 
-#: src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Raportointiliitännäiset"
 
-#: src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Tietokantaliitännäiset"
 
-#: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Järjestelmäväylään ei saatu yhteyttä"
 
-#: src/Gui/CCDBusBackend.py:120 src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Tarkista onko abrt-taustaprosessi käynnissä"
 
-#: src/Gui/CCDBusBackend.py:175
+#: ../src/Gui/CCDBusBackend.py:173
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -60,23 +60,36 @@ msgstr ""
 "Taustaprosessi ei palauttanut kelvollista raporttitietoa\n"
 "Puuttuuko debuginfo?"
 
-#: src/Gui/ccgui.glade:8
-msgid "Please wait.."
-msgstr "Odota hetki..."
-
-#: src/Gui/ccgui.glade:61
-msgid "Details"
-msgstr "Lisätietoja"
-
-#: src/Gui/ccgui.glade:77
-msgid "About ABRT"
-msgstr "Tietoja ABRT:stä"
-
-#: src/Gui/ccgui.glade:84
+#: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009 Red Hat, Inc."
 msgstr "(C) 2009 Red Hat, Inc."
 
-#: src/Gui/ccgui.glade:85
+#: ../src/Gui/ccgui.glade.h:2
+msgid "About ABRT"
+msgstr "Tietoja ABRT:stä"
+
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
+msgid "Automatic Bug Reporting Tool"
+msgstr "Automaattinen ohjelmavikojen raportointiohjelma"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "Delete"
+msgstr "Poista"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Not Reported"
+msgstr "Ei raportoitu"
+
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/settings.glade.h:19
+msgid "Plugins"
+msgstr "Liitännäiset"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "Report"
+msgstr "Raportti"
+
+#: ../src/Gui/ccgui.glade.h:8
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -103,63 +116,44 @@ msgstr ""
 "Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä. Jos näin ei ole, "
 "katso <http://www.gnu.org/licenses/>."
 
-#: src/Gui/ccgui.glade:123 src/Gui/CCMainWindow.py:9 src/Gui/report.glade:7
-msgid "Automatic Bug Reporting Tool"
-msgstr "Automaattinen ohjelmavikojen raportointiohjelma"
-
-#: src/Gui/ccgui.glade:136
-msgid "_File"
-msgstr "_Tiedosto"
-
-#: src/Gui/ccgui.glade:157
+#: ../src/Gui/ccgui.glade.h:13
 msgid "_Edit"
 msgstr "_Muokkaa"
 
-#: src/Gui/ccgui.glade:165 src/Gui/settings.glade:6
-msgid "Plugins"
-msgstr "Liitännäiset"
+#: ../src/Gui/ccgui.glade.h:14
+msgid "_File"
+msgstr "_Tiedosto"
 
-#: src/Gui/ccgui.glade:184
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Help"
 msgstr "_Ohje"
 
-#: src/Gui/ccgui.glade:215 src/Gui/ccgui.glade:216
-msgid "Delete"
-msgstr "Poista"
-
-#: src/Gui/ccgui.glade:227 src/Gui/ccgui.glade:228 src/Gui/ccgui.glade:344
-msgid "Report"
-msgstr "Raportti"
-
-#: src/Gui/ccgui.glade:300
-msgid "Not Reported"
-msgstr "Ei raportoitu"
-
-#: src/Gui/CCMainWindow.py:81
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Icon"
 msgstr "Kuvake"
 
-#: src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Package"
 msgstr "Paketti"
 
-#: src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:83
 msgid "Application"
 msgstr "Ohjelma"
 
-#: src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Date"
 msgstr "Päiväys"
 
-#: src/Gui/CCMainWindow.py:95
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Crash count"
 msgstr "Kaatumisten määrä"
 
-#: src/Gui/CCMainWindow.py:97
+#: ../src/Gui/CCMainWindow.py:89
 msgid "User"
 msgstr "Käyttäjä"
 
-#: src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:157
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -168,7 +162,7 @@ msgstr ""
 "Asetusikkunaa ei voida näyttää\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:176
+#: ../src/Gui/CCMainWindow.py:162
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -177,7 +171,8 @@ msgstr ""
 "Nykyistä tehtävää ei saatu valmiiksi!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:203
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -186,50 +181,29 @@ msgstr ""
 "Vedosluetteloa ladattaessa tapahtui virhe.\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:222
 msgid "This crash has been reported:\n"
 msgstr "Tämä kaatuminen on raportoitu:\n"
 
-#: src/Gui/CCMainWindow.py:242
+#: ../src/Gui/CCMainWindow.py:223
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Tämä kaatuminen on raportoitu:</b>\n"
 
-#: src/Gui/CCMainWindow.py:257
+#: ../src/Gui/CCMainWindow.py:238
 msgid "<b>Not reported!</b>"
 msgstr "<b>Ei raportoitu!</b>"
 
-#: src/Gui/CCMainWindow.py:305
-msgid ""
-"Unable to get report!\n"
-"Debuginfo is missing?"
-msgstr ""
-"Raporttia ei saatu!\n"
-"Puuttuuko debuginfo?"
-
-#: src/Gui/CCMainWindow.py:325
-#, python-format
-msgid ""
-"Reporting failed!\n"
-"%s"
-msgstr ""
-"Raportin tekeminen epäonnistui!\n"
-"%s"
-
-#: src/Gui/CCMainWindow.py:344 src/Gui/CCMainWindow.py:371
-#, python-format
-msgid "Error getting the report: %s"
-msgstr "Raportin noutaminen epäonnistui: %s"
-
-#: src/Gui/CCReporterDialog.py:24
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Lyhyt kuvaus siitä, miten tämän pystyy toistamaan tai mitä olit tekemässä..."
 
-#: src/Gui/CCReporterDialog.py:99
+#: ../src/Gui/CCReporterDialog.py:100
 msgid "You must check backtrace for sensitive data"
 msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta"
 
-#: src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:111
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -244,11 +218,11 @@ msgstr ""
 "Käytä sitten Päivitä-painiketta virheenjäljitystietojen generoimiseksi "
 "uudelleen."
 
-#: src/Gui/CCReporterDialog.py:112
+#: ../src/Gui/CCReporterDialog.py:113
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
 
-#: src/Gui/CCReporterDialog.py:116
+#: ../src/Gui/CCReporterDialog.py:117
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -256,7 +230,7 @@ msgstr ""
 "Virheenjäljitystiedot ovat epätäydelliset, varmista että olet kertonut "
 "tarkat vaiheet virheen toistamiseen."
 
-#: src/Gui/CCReporterDialog.py:158
+#: ../src/Gui/CCReporterDialog.py:159
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -265,221 +239,270 @@ msgstr ""
 "Liitännäisen asetuksia ei voida tallentaa:\n"
 " %s"
 
-#: src/Gui/dialogs.glade:7
-msgid "Report done"
-msgstr "Raportti on valmis"
+#: ../src/Gui/CCReporterDialog.py:425
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"Tämäntyyppiselle kaatumiselle ei ole saatavilla raportoijaliitännäistä.\n"
+"Tarkista abrt.conf."
 
-#: src/Gui/dialogs.glade:78
+#: ../src/Gui/CCReporterDialog.py:470
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"Raporttia ei saatu!\n"
+"Puuttuuko debuginfo?"
+
+#: ../src/Gui/CCReporterDialog.py:499
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Raportin tekeminen epäonnistui!\n"
+"%s"
+
+#: ../src/Gui/CCReporterDialog.py:526 ../src/Gui/CCReporterDialog.py:547
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "Raportin noutaminen epäonnistui: %s"
+
+#: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
 msgstr "Loki"
 
-#: src/Gui/PluginSettingsUI.py:18
+#: ../src/Gui/dialogs.glade.h:2
+msgid "Report done"
+msgstr "Raportti on valmis"
+
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "PluginDialog-elementtiä ei löydy käyttöliittymäkuvauksesta!"
 
-#: src/Gui/PluginSettingsUI.py:24
+#. we shouldn't get here, but just to be safe
+#: ../src/Gui/PluginSettingsUI.py:23
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "Liitännäisellä %s ei ole käyttöliittymää"
 
-#: src/Gui/PluginSettingsUI.py:55 src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:56 ../src/Gui/PluginSettingsUI.py:82
 msgid "combo box is not implemented"
 msgstr "alasvetovalikkoa ei ole toteutettu"
 
-#: src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:65
 msgid "Nothing to hydrate!"
 msgstr "Graafista käyttöliittymää ei voi näyttää!"
 
-#: src/Gui/report.glade:41
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span fgcolor=\"blue\">Paketti:</span>"
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
 
-#: src/Gui/report.glade:52
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">Komponentti:</span>"
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Liitteet</b>"
 
-#: src/Gui/report.glade:63
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">Suoritettava tiedosto:</span>"
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>Pinolistaus</b>"
 
-#: src/Gui/report.glade:74
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">Komentorivi:</span>"
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>Kommentti</b>"
 
-#: src/Gui/report.glade:98 src/Gui/report.glade:111 src/Gui/report.glade:124
-#: src/Gui/report.glade:137 src/Gui/report.glade:215 src/Gui/report.glade:228
-#: src/Gui/report.glade:241 src/Gui/report.glade:254
-msgid "N/A"
-msgstr "Ei saatavilla"
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Kuinka tämän voi toistaa (muutamalla helpolla toimenpiteellä)</b>"
 
-#: src/Gui/report.glade:159
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Korjaa seuraavat ongelmat</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>Mihin haluat raportoida tämän ongelman?</b>"
+
+#: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
 msgstr "<span fgcolor=\"blue\">Arkkitehtuuri:</span>"
 
-#: src/Gui/report.glade:170
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Komentorivi:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Komponentti:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Suoritettava tiedosto:</span>"
+
+#: ../src/Gui/report.glade.h:12
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
 msgstr "<span fgcolor=\"blue\">Ydin:</span>"
 
-#: src/Gui/report.glade:181
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span fgcolor=\"blue\">Julkaisu:</span>"
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Paketti:</span>"
 
-#: src/Gui/report.glade:192
+#: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Reason:</span>"
 msgstr "<span fgcolor=\"blue\">Syy:</span>"
 
-#: src/Gui/report.glade:315
+#: ../src/Gui/report.glade.h:15
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Julkaisu:</span>"
+
+#: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "Lisätietoja"
+
+#: ../src/Gui/report.glade.h:18
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Pinolistaus on tarkistettu ja arkaluontoiset tiedot, kuten salasanat, on "
 "poistettu"
 
-#: src/Gui/report.glade:334
-msgid "<b>Backtrace</b>"
-msgstr "<b>Pinolistaus</b>"
+#: ../src/Gui/report.glade.h:19
+msgid "N/A"
+msgstr "Ei saatavilla"
 
-#: src/Gui/report.glade:391
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Kuinka tämän voi toistaa (muutamalla helpolla toimenpiteellä)</b>"
+#: ../src/Gui/report.glade.h:20
+msgid "Please wait.."
+msgstr "Odota hetki..."
 
-#: src/Gui/report.glade:429
-msgid "<b>Comment</b>"
-msgstr "<b>Kommentti</b>"
+#: ../src/Gui/report.glade.h:21
+msgid "Reporter Selector"
+msgstr "Raportoijan valitsin"
 
-#: src/Gui/report.glade:477
-msgid "<b>Attachments</b>"
-msgstr "<b>Liitteet</b>"
-
-#: src/Gui/report.glade:526
-msgid "<b>Please fix the following problems</b>"
-msgstr "<b>Korjaa seuraavat ongelmat</b>"
-
-#: src/Gui/report.glade:536
-msgid " "
-msgstr " "
-
-#: src/Gui/report.glade:583
-msgid "Show log"
-msgstr "Näytä loki"
-
-#: src/Gui/report.glade:625
+#: ../src/Gui/report.glade.h:22
 msgid "Send report"
 msgstr "Lähetä raportti"
 
-#: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
+#: ../src/Gui/report.glade.h:23
+msgid "Show log"
+msgstr "Näytä loki"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Valitse liitännäinen</b>"
 
-#: src/Gui/SettingsDialog.py:36
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Valitse tietokannan taustajärjestelmä</b>"
 
-#: src/Gui/SettingsDialog.py:169
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Poista tämä työ"
 
-#: src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Poista tämä toiminto"
 
-#: src/Gui/settings.glade:64
-msgid "Web Site:"
-msgstr "Verkkosivu:"
-
-#: src/Gui/settings.glade:76
-msgid "Author:"
-msgstr "Tekijä:"
-
-#: src/Gui/settings.glade:88
-msgid "Version:"
-msgstr "Versio:"
-
-#: src/Gui/settings.glade:142
-msgid "Description:"
-msgstr "Kuvaus:"
-
-#: src/Gui/settings.glade:154
-msgid "Name:"
-msgstr "Nimi:"
-
-#: src/Gui/settings.glade:198
-msgid "<b>Plugin details</b>"
-msgstr "<b>Liitännäisen tiedot</b>"
-
-#: src/Gui/settings.glade:221
-msgid "C_onfigure plugin"
-msgstr "Liitännäisen asetukset"
-
-#: src/Gui/settings.glade:258
-msgid "Preferences"
-msgstr "Asetukset"
-
-#: src/Gui/settings.glade:285
-msgid "Check package GPG signature"
-msgstr "Tarkista paketin GPG-allekirjoitus"
-
-#: src/Gui/settings.glade:301
-msgid "Database backend: "
-msgstr "Tietokannan taustajärjestelmä:"
-
-#: src/Gui/settings.glade:327
-msgid "Blacklisted packages: "
-msgstr "Mustalla listalla olevat paketit:"
-
-#: src/Gui/settings.glade:341
-msgid "Max coredump storage size(MB):"
-msgstr "Muistivedoksen tallennustilan suurin koko (Mt):"
-
-#: src/Gui/settings.glade:355
-msgid "GPG keys: "
-msgstr "GPG-avaimet:"
-
-#: src/Gui/settings.glade:458
-msgid "Common"
-msgstr "Yleinen"
-
-#: src/Gui/settings.glade:491
-msgid "<b>Plugin</b>"
-msgstr "<b>Liitännäinen</b>"
-
-#: src/Gui/settings.glade:501
-msgid "<b>Time (or period)</b>"
-msgstr "<b>Aika (tai ajanjakso)</b>"
-
-#: src/Gui/settings.glade:569
-msgid "Cron"
-msgstr "Cron"
-
-#: src/Gui/settings.glade:603
+#: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
 msgstr "Analysaattoriliitännäinen"
 
-#: src/Gui/settings.glade:613
+#: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
 msgstr "<b>Yhdistetty toiminto</b>"
 
-#: src/Gui/settings.glade:692
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>Liitännäisen tiedot</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Plugin</b>"
+msgstr "<b>Liitännäinen</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Aika (tai ajanjakso)</b>"
+
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "Analysaattorit, toiminnot, raportoijat"
 
-#: src/Gui/settings.glade:753
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "Tekijä:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "Mustalla listalla olevat paketit:"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure plugin"
+msgstr "Liitännäisen asetukset"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "Tarkista paketin GPG-allekirjoitus"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "Yleinen"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "Tietokannan taustajärjestelmä:"
+
+#: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "Kuvaus:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG-avaimet"
 
-#: src/Applet/Applet.cpp:77
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "GPG-avaimet:"
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "Muistivedoksen tallennustilan suurin koko (Mt):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Name:"
+msgstr "Nimi:"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "Asetukset"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "Versio:"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "Verkkosivu:"
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Katsele ja raportoi ohjelmien kaatumisia"
+
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Paketissa %s on huomattu kaatuminen"
 
-#: src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:252
 msgid "ABRT service is not running"
 msgstr "ABRT-palvelu ei ole käytössä"
 
-#: src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "Varoitus"
 
-#: src/Daemon/Daemon.cpp:483
+#: ../src/Daemon/Daemon.cpp:481
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -487,136 +510,132 @@ msgstr ""
 "Raportin koko ylitti sille annetun rajan. Tarkista järjestelmän "
 "MaxCrashReportsSize-arvo abrt.conf-tiedostossa."
 
-#: lib/Plugins/Bugzilla.cpp:340
+#: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
-#: lib/Plugins/Bugzilla.cpp:406
+#: ../lib/Plugins/Bugzilla.cpp:395
 #, c-format
 msgid "New bug id: %i"
 msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
 
-#: lib/Plugins/Bugzilla.cpp:563
+#: ../lib/Plugins/Bugzilla.cpp:549
 msgid "Logging into bugzilla..."
 msgstr "Kirjaudutaan bugzillaan..."
 
-#: lib/Plugins/Bugzilla.cpp:567
+#: ../lib/Plugins/Bugzilla.cpp:553
 msgid "Empty login and password. Please check Bugzilla.conf"
 msgstr "Käyttäjätunnus ja salasana ovat tyhjiä. Tarkista Bugzilla.conf"
 
-#: lib/Plugins/Bugzilla.cpp:577
+#: ../lib/Plugins/Bugzilla.cpp:563
 msgid "Checking for duplicates..."
 msgstr "Etsitään samanlaisia..."
 
-#: lib/Plugins/Bugzilla.cpp:590
+#: ../lib/Plugins/Bugzilla.cpp:576
 msgid "Missing mandatory member 'bugs'"
 msgstr "Puuttuva pakollinen osa ”bugs”"
 
-#: lib/Plugins/Bugzilla.cpp:600
+#: ../lib/Plugins/Bugzilla.cpp:586
 msgid "Creating new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
-#: lib/Plugins/Bugzilla.cpp:608 lib/Plugins/Bugzilla.cpp:702
+#: ../lib/Plugins/Bugzilla.cpp:594 ../lib/Plugins/Bugzilla.cpp:690
 msgid "Logging out..."
 msgstr "Kirjaudutaan ulos..."
 
-#: lib/Plugins/Bugzilla.cpp:636 lib/Plugins/Bugzilla.cpp:664
+#: ../lib/Plugins/Bugzilla.cpp:624 ../lib/Plugins/Bugzilla.cpp:652
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
-#: lib/Plugins/Bugzilla.cpp:648
+#: ../lib/Plugins/Bugzilla.cpp:636
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta (%d)"
 
-#: lib/Plugins/Bugzilla.cpp:653
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Siirry vikailmoitukseen %d"
 
-#: lib/Plugins/Bugzilla.cpp:678 lib/Plugins/Bugzilla.cpp:679
+#: ../lib/Plugins/Bugzilla.cpp:666 ../lib/Plugins/Bugzilla.cpp:667
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Lisää %s CC-luetteloon"
 
-#: lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:681
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
 
-#: lib/Plugins/Kerneloops.cpp:100
+#: ../lib/Plugins/Kerneloops.cpp:100
 msgid "Getting local universal unique identification"
 msgstr "Haetaan paikallinen ainutkertainen tunnus"
 
-#: lib/Plugins/CCpp.cpp:275
+#: ../lib/Plugins/CCpp.cpp:275
 msgid "Generating backtrace"
 msgstr "Luodaan pinolistausta"
 
-#: lib/Plugins/CCpp.cpp:437
+#: ../lib/Plugins/CCpp.cpp:441
 msgid "Starting debuginfo installation"
 msgstr "Aloitetaan debuginfon asennus"
 
-#: lib/Plugins/CCpp.cpp:633
+#: ../lib/Plugins/CCpp.cpp:637
 msgid "Getting global universal unique identification..."
 msgstr "Haetaan yleinen ainutkertainen tunnus..."
 
-#: lib/Plugins/CCpp.cpp:811
+#: ../lib/Plugins/CCpp.cpp:815
 msgid "Skipping debuginfo installation"
 msgstr "Ohitetaan debuginfon asennus"
 
-#: lib/Plugins/KerneloopsReporter.cpp:93
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr "Luodaan ja lähetetään ilmoitus..."
 
-#: lib/Plugins/Logger.cpp:73
+#: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Kirjoitetaan raportti kohteeseen ”%s”"
 
-#: lib/Plugins/FileTransfer.cpp:53
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL:ää ei ole määritelty"
 
-#: lib/Plugins/FileTransfer.cpp:57
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Lähetetään arkisto %s osoitteeseen %s"
 
-#: lib/Plugins/FileTransfer.cpp:288
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
 
-#: lib/Plugins/FileTransfer.cpp:322
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
 
-#: lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Ei voitu luoda ja lähettää arkistoa %s"
 
-#: lib/Plugins/KerneloopsScanner.cpp:72
-msgid "Creating kernel oops crash reports..."
-msgstr "Luodaan kernel oops -kaatumisilmoituksia..."
-
-#: lib/Plugins/Mailx.cpp:134
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Lähetetään sähköpostia..."
 
-#: lib/Plugins/SOSreport.cpp:101
+#: ../lib/Plugins/SOSreport.cpp:101
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Suoritetaan sosreport: %s"
 
-#: lib/Plugins/SOSreport.cpp:107
+#: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "Sosreportin suoritus valmistui"
 
-#~ msgid "View and report application crashes"
-#~ msgstr "Katsele ja raportoi ohjelmien kaatumisia"
+#~ msgid "Creating kernel oops crash reports..."
+#~ msgstr "Luodaan kernel oops -kaatumisilmoituksia..."
 
 #~ msgid "Settings"
 #~ msgstr "Asetukset"
