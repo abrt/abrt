@@ -516,6 +516,7 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
                 it->m_sUUID.c_str(), it->m_sUID.c_str()
         );
+        it++;
     }
     execute_sql(m_pDB,
                 "DELETE FROM "ABRT_TABLE
