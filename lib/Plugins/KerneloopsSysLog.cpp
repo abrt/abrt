@@ -118,6 +118,7 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 	while (c < buffer + buflen) {
 		char linelevel;
 		char *c9;
+		char *colon;
 
 		c9 = (char*)memchr(c, '\n', buffer + buflen - c); /* a \n will always be found */
 		assert(c9);
@@ -125,30 +126,24 @@ int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
 		if (c9 == c)
 			goto next_line;
 
-		/* in /var/log/messages, we need to strip the first part off, upto the 3rd ':' */
-		/*                     01234567890123456 */
-// Gaack! Some users run syslog in non-C locale:
-// 2010-02-22T09:24:08.156534-08:00 gnu-4 gnome-session[2048]: blah blah
-// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ !!!
-		if ((c9 - c) > sizeof("Jul  4 11:11:11 ")
-		 && c[3] == ' '
-		 && (c[4] == ' ' || isdigit(c[4]))
-		 && isdigit(c[5])
-		 && c[6] == ' '
-		 && isdigit(c[7])
-		 && isdigit(c[8])
-		 && c[9] == ':'
-		 && isdigit(c[10])
-		 && isdigit(c[11])
-		 && c[12] == ':'
-		 && isdigit(c[13])
-		 && isdigit(c[14])
-		 && c[15] == ' '
+		/* Is it a syslog file (/var/log/messages or similar)?
+		 * Even though _usually_ it looks like "Nov 19 12:34:38 localhost kernel: xxx",
+		 * some users run syslog in non-C locale:
+		 * "2010-02-22T09:24:08.156534-08:00 gnu-4 gnome-session[2048]: blah blah"
+		 *  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ !!!
+		 * We detect it by checking for N:NN:NN pattern in first 15 chars
+		 * (and this still is not good enough... false positive: "pci 0000:15:00.0: PME# disabled")
+		 */
+		colon = strchr(c, ':');
+		if (colon && colon > c && colon < c + 15
+		 && isdigit(colon[-1]) /* N:... */
+		 && isdigit(colon[1]) /* ...N:NN:... */
+		 && isdigit(colon[2])
+		 && colon[3] == ':'
+		 && isdigit(colon[4]) /* ...N:NN:NN... */
+		 && isdigit(colon[5])
 		) {
 			/* It's syslog file, not a bare dmesg */
-
-			/* Skip over timestamp */
-			c += 16;
 
 			/* Skip non-kernel lines */
 			char *kernel_str = strstr(c, "kernel: ");
