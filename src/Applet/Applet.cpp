@@ -45,8 +45,8 @@ static void Crash(DBusMessage* signal)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(signal, &in_iter);
-    const char* progname;
-    r = load_val(&in_iter, progname);
+    const char* package_name;
+    r = load_val(&in_iter, package_name);
     /* Optional 2nd param: uid */
     const char* uid_str = NULL;
     if (r == ABRT_DBUS_MORE_FIELDS)
@@ -75,10 +75,12 @@ static void Crash(DBusMessage* signal)
     }
 
     const char* message = _("A crash in package %s has been detected");
-    //applet->AddEvent(uid, progname);
-    applet->SetIconTooltip(message, progname);
+    if (package_name[0] == '\0')
+        message = _("A crash has been detected");
+    //applet->AddEvent(uid, package_name);
+    applet->SetIconTooltip(message, package_name);
     applet->ShowIcon();
-    applet->CrashNotify(message, progname);
+    applet->CrashNotify(message, package_name);
 }
 
 static void QuotaExceed(DBusMessage* signal)

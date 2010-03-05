@@ -391,8 +391,8 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
     if (env.fault_occurred)
         return -1;
 
-    log("New bug id: %i", bug_id);
-    update_client(_("New bug id: %i"), bug_id);
+    log("New bug id: %i", (int)bug_id);
+    update_client(_("New bug id: %i"), (int)bug_id);
 
     return bug_id;
 }
@@ -585,6 +585,11 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     {
         update_client(_("Creating new bug..."));
         bug_id = bz_server.new_bug(pCrashData);
+        if (bug_id < 0)
+        {
+            throw_if_xml_fault_occurred(&bz_server.env);
+            throw CABRTException(EXCEP_PLUGIN, _("Bugzilla entry creation failed"));
+        }
         int ret = bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
         if (ret == -1)
         {

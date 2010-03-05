@@ -320,7 +320,23 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
     }
 
     SaveText(CD_UID, to_string(uid).c_str());
-    SaveKernelArchitectureRelease();
+
+    {
+        struct utsname buf;
+        if (uname(&buf) != 0)
+        {
+            perror_msg_and_die("uname");
+        }
+        SaveText(FILENAME_KERNEL, buf.release);
+        SaveText(FILENAME_ARCHITECTURE, buf.machine);
+        std::string release;
+        LoadTextFile("/etc/redhat-release", release);
+        const char *release_ptr = release.c_str();
+        unsigned len_1st_str = strchrnul(release_ptr, '\n') - release_ptr;
+        release.erase(len_1st_str); /* usually simply removes trailing '\n' */
+        SaveText(FILENAME_RELEASE, release.c_str());
+    }
+
     time_t t = time(NULL);
     SaveText(FILENAME_TIME, to_string(t).c_str());
 }
@@ -372,22 +388,6 @@ void CDebugDump::Close()
         m_pGetNextFileDir = NULL;
     }
     m_bOpened = false;
-}
-
-void CDebugDump::SaveKernelArchitectureRelease()
-{
-    struct utsname buf;
-    if (uname(&buf) == 0)
-    {
-        SaveText(FILENAME_KERNEL, buf.release);
-        SaveText(FILENAME_ARCHITECTURE, buf.machine);
-    }
-    std::string release;
-    LoadTextFile("/etc/redhat-release", release);
-    const char *release_ptr = release.c_str();
-    unsigned len_1st_str = strchrnul(release_ptr, '\n') - release_ptr;
-    release.erase(len_1st_str); /* usually simply removes trailing '\n' */
-    SaveText(FILENAME_RELEASE, release.c_str());
 }
 
 static void LoadTextFile(const char *pPath, std::string& pData)

@@ -654,19 +654,41 @@ static mw_result_t SavePackageDescriptionToDebugDump(
 {
     std::string package;
     std::string packageName;
+    std::string component;
     std::string scriptName; /* only if "interpreter /path/to/script" */
 
     if (strcmp(pExecutable, "kernel") == 0)
     {
-        packageName = package = "kernel";
+        component = packageName = package = "kernel";
     }
     else
     {
         char *rpm_pkg = GetPackage(pExecutable);
         if (rpm_pkg == NULL)
         {
-            log("Executable '%s' doesn't belong to any package", pExecutable);
-            return MW_PACKAGE_ERROR;
+            if (g_settings_bProcessUnpackaged)
+            {
+                VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", pExecutable);
+                try
+                {
+                    CDebugDump dd;
+                    dd.Open(pDebugDumpDir);
+                    dd.SaveText(FILENAME_PACKAGE, "");
+                    dd.SaveText(FILENAME_COMPONENT, "");
+                    dd.SaveText(FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
+                    return MW_OK;
+                }
+                catch (CABRTException& e)
+                {
+                    error_msg("%s", e.what());
+                    return MW_ERROR;
+                }
+            }
+            else
+            {
+                log("Executable '%s' doesn't belong to any package", pExecutable);
+                return MW_PACKAGE_ERROR;
+            }
         }
 
         /* Check well-known interpreter names */
@@ -738,19 +760,17 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             }
             */
         }
+        component = GetComponent(pExecutable);
     }
 
     std::string description = GetDescription(packageName.c_str());
-    std::string component = GetComponent(pExecutable);
     try
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
         dd.SaveText(FILENAME_PACKAGE, package.c_str());
         dd.SaveText(FILENAME_DESCRIPTION, description.c_str());
-        /* For oopses, pExecutable == "kernel" gives "" here. Don't write it */
-        if (component.size() != 0)
-            dd.SaveText(FILENAME_COMPONENT, component.c_str());
+        dd.SaveText(FILENAME_COMPONENT, component.c_str());
     }
     catch (CABRTException& e)
     {

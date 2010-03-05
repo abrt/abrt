@@ -34,8 +34,6 @@ class CDebugDump
         uid_t m_uid;
         gid_t m_gid;
 
-        void SaveKernelArchitectureRelease();
-
         void Lock();
         void UnLock();
 

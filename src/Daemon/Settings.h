@@ -29,6 +29,7 @@ extern set_string_t  g_settings_setOpenGPGPublicKeys;
 extern set_string_t  g_settings_mapBlackList;
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern bool          g_settings_bOpenGPGCheck;
+extern bool          g_settings_bProcessUnpackaged;
 extern std::string   g_settings_sDatabase;
 extern map_cron_t    g_settings_mapCron;
 extern vector_pair_string_string_t g_settings_vectorActionsAndReporters;

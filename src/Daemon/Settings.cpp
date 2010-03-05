@@ -56,6 +56,8 @@ set_string_t  g_settings_setOpenGPGPublicKeys;
 set_string_t  g_settings_mapBlackList;
 std::string   g_settings_sDatabase;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
+bool          g_settings_bProcessUnpackaged = false;
+
 /* one line: "ActionsAndReporters = aa_first,bb_first(bb_second),cc_first" */
 vector_pair_string_string_t g_settings_vectorActionsAndReporters;
 /* [ AnalyzerActionsAndReporters ] */
@@ -187,6 +189,11 @@ static void ParseCommon()
     if (it != end)
     {
         g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second.c_str());
+    }
+    it = s_mapSectionCommon.find("ProcessUnpackaged");
+    if (it != end)
+    {
+        g_settings_bProcessUnpackaged = string_to_bool(it->second.c_str());
     }
 }
 

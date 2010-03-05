@@ -170,6 +170,7 @@ class DBusManager(gobject.GObject):
         if dump:
             self.emit("analyze-complete", dump)
         else:
+            # FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
             self.emit("abrt-error", _("Daemon didn't return valid report info\nDebuginfo is missing?"))
 
     def report_done(self, result):

@@ -21,25 +21,28 @@
 
 #include "abrt_types.h"
 
-// Filenames in dump directory
-#define FILENAME_ARCHITECTURE "architecture"
-#define FILENAME_KERNEL       "kernel"
-#define FILENAME_TIME         "time"
-#define FILENAME_PACKAGE      "package"
-#define FILENAME_COMPONENT    "component"
-#define FILENAME_DESCRIPTION  "description"
+// Filenames in dump directory:
+// filled by a hook:
 #define FILENAME_ANALYZER     "analyzer"
-#define FILENAME_RELEASE      "release"
 #define FILENAME_EXECUTABLE   "executable"
-#define FILENAME_REASON       "reason"
-#define FILENAME_COMMENT      "comment"
-#define FILENAME_REPRODUCE    "reproduce"
-#define FILENAME_RATING       "rating"
 #define FILENAME_CMDLINE      "cmdline"
+#define FILENAME_REASON       "reason"
 #define FILENAME_COREDUMP     "coredump"
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MEMORYMAP    "memorymap"
 #define FILENAME_KERNELOOPS   "kerneloops"
+// filled by CDebugDump::Create() (which also fills CD_UID):
+#define FILENAME_ARCHITECTURE "architecture"
+#define FILENAME_KERNEL       "kernel"
+#define FILENAME_TIME         "time"
+#define FILENAME_RELEASE      "release"  /* from /etc/redhat-release */
+// filled by <what?>
+#define FILENAME_PACKAGE      "package"
+#define FILENAME_COMPONENT    "component"
+#define FILENAME_DESCRIPTION  "description" /* package descr (not crash descr) */
+#define FILENAME_COMMENT      "comment"
+#define FILENAME_REPRODUCE    "reproduce"
+#define FILENAME_RATING       "rating"
 
 // Apart from CD_UID, which is also stored as a file in dump directory,
 // these items only exist in db. (CD_UID is also a file because
