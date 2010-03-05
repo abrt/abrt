@@ -122,7 +122,7 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 			dd.SaveText(FILENAME_EXECUTABLE, "kernel");
 			dd.SaveText(FILENAME_KERNEL, first_line);
 			dd.SaveText(FILENAME_CMDLINE, "not_applicable");
-			dd.SaveText(FILENAME_KERNELOOPS, second_line);
+			dd.SaveText(FILENAME_BACKTRACE, second_line);
 		}
 		catch (CABRTException& e)
 		{

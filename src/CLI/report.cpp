@@ -197,9 +197,7 @@ static void write_crash_report(const map_crash_data_t &report, FILE *fp)
   write_crash_report_field(fp, report, FILENAME_REPRODUCE,
 			   _("# How to reproduce the crash?"));
   write_crash_report_field(fp, report, FILENAME_BACKTRACE,
-			   _("# Stack trace: a list of active stack frames at the time the crash occurred\n# Check that it does not contain any sensitive data such as passwords."));
-  write_crash_report_field(fp, report, FILENAME_KERNELOOPS,
-			   _("# Kernel oops: kernel log snippet\n# Check that it does not contain any sensitive data such as passwords."));
+			   _("# Backtrace\n# Check that it does not contain any sensitive data such as passwords."));
   write_crash_report_field(fp, report, CD_DUPHASH, "# DUPHASH");
   write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
   write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
@@ -287,7 +285,6 @@ static int read_crash_report(map_crash_data_t &report, const char *text)
   result |= read_crash_report_field(text, report, FILENAME_COMMENT);
   result |= read_crash_report_field(text, report, FILENAME_REPRODUCE);
   result |= read_crash_report_field(text, report, FILENAME_BACKTRACE);
-  result |= read_crash_report_field(text, report, FILENAME_KERNELOOPS);
   result |= read_crash_report_field(text, report, CD_DUPHASH);
   result |= read_crash_report_field(text, report, FILENAME_ARCHITECTURE);
   result |= read_crash_report_field(text, report, FILENAME_CMDLINE);

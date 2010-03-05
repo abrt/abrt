@@ -35,7 +35,6 @@ static const char *const editable_files[] = {
 	FILENAME_COMMENT    ,
 	FILENAME_REPRODUCE  ,
 	FILENAME_BACKTRACE  ,
-	FILENAME_KERNELOOPS ,
 	NULL
 };
 

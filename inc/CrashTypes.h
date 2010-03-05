@@ -30,7 +30,6 @@
 #define FILENAME_COREDUMP     "coredump"
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MEMORYMAP    "memorymap"
-#define FILENAME_KERNELOOPS   "kerneloops"
 // filled by CDebugDump::Create() (which also fills CD_UID):
 #define FILENAME_ARCHITECTURE "architecture"
 #define FILENAME_KERNEL       "kernel"

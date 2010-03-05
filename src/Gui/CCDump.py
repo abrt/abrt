@@ -29,7 +29,6 @@ FILENAME_CMDLINE      = "cmdline"
 FILENAME_COREDUMP     = "coredump"
 FILENAME_BACKTRACE    = "backtrace"
 FILENAME_MEMORYMAP    = "memorymap"
-FILENAME_KERNELOOPS   = "kerneloops"
 
 CD_UID          = "uid"
 CD_UUID         = "UUID"

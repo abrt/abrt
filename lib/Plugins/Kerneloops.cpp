@@ -103,7 +103,7 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
 	{
 		CDebugDump dd;
 		dd.Open(pDebugDumpDir);
-		dd.LoadText(FILENAME_KERNELOOPS, oops);
+		dd.LoadText(FILENAME_BACKTRACE, oops);
 	}
 
 	unsigned hash = hash_oops_str(oops.c_str());

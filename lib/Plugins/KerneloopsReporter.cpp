@@ -92,7 +92,7 @@ std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
 
 	update_client(_("Creating and submitting a report..."));
 
-	map_crash_data_t::const_iterator it = pCrashData.find(FILENAME_KERNELOOPS);
+	map_crash_data_t::const_iterator it = pCrashData.find(FILENAME_BACKTRACE);
 	if (it != pCrashData.end()) {
 		ret = http_post_to_kerneloops_site(
 			m_sSubmitURL.c_str(),

@@ -215,15 +215,13 @@ class ReporterDialog():
         self.editable = []
         self.old_comment = COMMENT_HINT_TEXT
         self.old_how_to_reproduce = HOW_TO_HINT_TEXT
-        self.is_oops = False
         for item in self.report:
             try:
                 log2("report[%s]:%s/%s/%s", item, self.report[item][0], self.report[item][1], self.report[item][2][0:20])
             except:
                 pass
 
-            if item == FILENAME_BACKTRACE or item == FILENAME_KERNELOOPS:
-                self.is_oops = item == FILENAME_KERNELOOPS
+            if item == FILENAME_BACKTRACE:
                 buff = gtk.TextBuffer()
                 tvBacktrace = self.builder.get_object("tvBacktrace")
                 buff.set_text(self.report[item][CD_CONTENT])
@@ -312,10 +310,7 @@ class ReporterDialog():
         tev_backtrace = self.builder.get_object("tvBacktrace")
         buff = tev_backtrace.get_buffer()
         text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
-        if self.is_oops:
-            self.report[FILENAME_KERNELOOPS] = [CD_TXT, 'y', text]
-        else:
-            self.report[FILENAME_BACKTRACE] = [CD_TXT, 'y', text]
+        self.report[FILENAME_BACKTRACE] = [CD_TXT, 'y', text]
 
     def check_report(self):
     # FIXME: check the report for passwords and some other potentially
