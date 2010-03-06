@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-05 09:33+0000\n"
-"PO-Revision-Date: 2010-03-05 11:23+0100\n"
+"POT-Creation-Date: 2010-03-06 03:48+0000\n"
+"PO-Revision-Date: 2010-03-06 09:47+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -51,7 +51,8 @@ msgstr "Kan ikke forbinde til system-dbus"
 msgid "Please check if abrt daemon is running"
 msgstr "Kontrollér venligst om abrt-dæmonen kører"
 
-#: ../src/Gui/CCDBusBackend.py:173
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -240,7 +241,7 @@ msgstr ""
 "Kan ikke gemme indstillinger for udvidelsesmodul:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:425
+#: ../src/Gui/CCReporterDialog.py:420
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -248,7 +249,7 @@ msgstr ""
 "Intet rapporteringsudvidelsesmodul er tilgængelig for denne type nedbrud\n"
 "Kontrollér venligst abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:470
+#: ../src/Gui/CCReporterDialog.py:465
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -256,7 +257,7 @@ msgstr ""
 "Kunne ikke hente rapport!\n"
 "Mangler fejlsøgningsinformation?"
 
-#: ../src/Gui/CCReporterDialog.py:499
+#: ../src/Gui/CCReporterDialog.py:494
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -265,7 +266,7 @@ msgstr ""
 "Rapportering fejlede!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:526 ../src/Gui/CCReporterDialog.py:547
+#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fejl under hentning af rapporten: %s"
@@ -494,7 +495,11 @@ msgstr "Vis og rapportér programnedbrud"
 msgid "A crash in package %s has been detected"
 msgstr "Der blev fundet et nedbrud i pakke %s"
 
-#: ../src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:79
+msgid "A crash has been detected"
+msgstr "Der blev fundet et nedbrud"
+
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "ABRT-service kører ikke"
 
@@ -540,31 +545,35 @@ msgstr "Manglende nødvendigt medlem \"bugs\""
 msgid "Creating new bug..."
 msgstr "Opretter ny fejl..."
 
-#: ../lib/Plugins/Bugzilla.cpp:594 ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr "Oprettelse af Bugzilla-post mislykkedes"
+
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Logger ud..."
 
-#: ../lib/Plugins/Bugzilla.cpp:624 ../lib/Plugins/Bugzilla.cpp:652
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() mislykkedes. Kunne ikke samle alle nødvendige informationer"
 
-#: ../lib/Plugins/Bugzilla.cpp:636
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla kunne ikke finde overliggende fejlrapport for rapport(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:641
+#: ../lib/Plugins/Bugzilla.cpp:646
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Spring til fejlrapport %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:666 ../lib/Plugins/Bugzilla.cpp:667
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Tilføj %s til CC-liste"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:695
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Tilføj ny kommentar til fejlrapport(%d)"
