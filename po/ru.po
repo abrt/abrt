@@ -8,15 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-04 15:42+0000\n"
-"PO-Revision-Date: 2010-03-05 09:33+1100\n"
+"POT-Creation-Date: 2010-03-08 03:53+0000\n"
+"PO-Revision-Date: 2010-03-08 12:04+0300\n"
 "Last-Translator: Yulia <ypoyarko@redhat.com>\n"
-"Language-Team: Russian\n"
+"Language-Team: Russian <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -24,7 +25,8 @@ msgstr "Другой клиент уже работает. Будет выпол
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Получены неожиданные данные от демона. Убедитесь, что база данных обновлена."
+msgstr ""
+"Получены неожиданные данные от демона. Убедитесь, что база данных обновлена."
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -54,7 +56,8 @@ msgstr "Не удалось подключиться к dbus"
 msgid "Please check if abrt daemon is running"
 msgstr "Убедитесь, что демон abrt выполняется"
 
-#: ../src/Gui/CCDBusBackend.py:173
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -201,11 +204,11 @@ msgstr "<b>Не сообщено!</b>"
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Кратко опишите действия, которые привели к ошибке..."
 
-#: ../src/Gui/CCReporterDialog.py:99
+#: ../src/Gui/CCReporterDialog.py:100
 msgid "You must check backtrace for sensitive data"
 msgstr "Убедитесь, что текст трассировки не содержит конфиденциальных данных"
 
-#: ../src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:111
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -217,11 +220,11 @@ msgstr ""
 "Попытайтесь установить debuginfo вручную: <b>debuginfo-install %s</b>\n"
 "и нажмите кнопку обновления для повторной генерации трассировки."
 
-#: ../src/Gui/CCReporterDialog.py:112
+#: ../src/Gui/CCReporterDialog.py:113
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Непригодные сведения трассировки. Они не будут отправлены."
 
-#: ../src/Gui/CCReporterDialog.py:116
+#: ../src/Gui/CCReporterDialog.py:117
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -229,7 +232,7 @@ msgstr ""
 "Неполные сведения трассировки. Убедитесь, что описанные действия "
 "действительно помогают воспроизвести ошибку."
 
-#: ../src/Gui/CCReporterDialog.py:158
+#: ../src/Gui/CCReporterDialog.py:159
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -238,7 +241,7 @@ msgstr ""
 "Не удалось сохранить настройки модуля:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:423
+#: ../src/Gui/CCReporterDialog.py:420
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -246,7 +249,7 @@ msgstr ""
 "Нет модулей отчётности для этого сбоя\n"
 "Пожалуйста, проверьте abrt.conf"
 
-#: ../src/Gui/CCReporterDialog.py:468
+#: ../src/Gui/CCReporterDialog.py:465
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -254,7 +257,7 @@ msgstr ""
 "Не удалось получить отчёт.\n"
 "Отсутствует debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:497
+#: ../src/Gui/CCReporterDialog.py:494
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -263,7 +266,7 @@ msgstr ""
 "Не удалось отправить отчёт!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:524 ../src/Gui/CCReporterDialog.py:545
+#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Ошибка при получении отчёта: %s"
@@ -276,21 +279,21 @@ msgstr "Журнал"
 msgid "Report done"
 msgstr "Отчёт отправлен"
 
-#: ../src/Gui/PluginSettingsUI.py:18
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Не найден виджет PluginDialog в описании UI!"
 
 #. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:24
+#: ../src/Gui/PluginSettingsUI.py:23
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "Нет UI для модуля %s"
 
-#: ../src/Gui/PluginSettingsUI.py:55 ../src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:56 ../src/Gui/PluginSettingsUI.py:82
 msgid "combo box is not implemented"
 msgstr "поле ввода со списком недоступно"
 
-#: ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:65
 msgid "Nothing to hydrate!"
 msgstr "Нет данных для отображения!"
 
@@ -493,7 +496,11 @@ msgstr "Просмотреть сбои приложения и создать �
 msgid "A crash in package %s has been detected"
 msgstr "Обнаружен сбой в пакете %s"
 
-#: ../src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:79
+msgid "A crash has been detected"
+msgstr "Обнаружен сбой в пакете"
+
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "Служба ABRT не выполняется"
 
@@ -539,30 +546,34 @@ msgstr "Отсутствуют запросы с обязательным уча
 msgid "Creating new bug..."
 msgstr "Создаётся новый запрос..."
 
-#: ../lib/Plugins/Bugzilla.cpp:594 ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr "Не удалось создать запись в Bugzilla"
+
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Выполняется выход..."
 
-#: ../lib/Plugins/Bugzilla.cpp:624 ../lib/Plugins/Bugzilla.cpp:652
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Сбой get_bug_info(). Не удалось собрать всю необходимую информацию."
 
-#: ../lib/Plugins/Bugzilla.cpp:636
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Не удалось найти родительский запрос для %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:641
+#: ../lib/Plugins/Bugzilla.cpp:646
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Перейти к запросу %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:666 ../lib/Plugins/Bugzilla.cpp:667
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Добавить %s в список CC"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:695
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Добавить комментарий к запросу (%d)"
@@ -631,4 +642,3 @@ msgstr "Выполняется sosreport: %s"
 #: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "sosreport завершил работу"
-
