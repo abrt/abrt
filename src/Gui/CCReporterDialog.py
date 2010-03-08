@@ -42,6 +42,8 @@ class ReporterDialog():
             self.window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
             self.window.set_transient_for(parent)
             self.window.set_modal(True)
+        else:
+            self.window.set_position(gtk.WIN_POS_CENTER)
 
         # comment textview
         self.tvComment = self.builder.get_object("tvComment")
@@ -344,17 +346,26 @@ class ReporterSelector():
         self.builder = gtk.Builder()
         self.builder.add_from_file(builderfile)
         self.window = self.builder.get_object("w_reporters")
+        b_cancel = self.builder.get_object("b_close")
+
         if parent:
             self.window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
             self.window.set_transient_for(parent)
             self.window.set_modal(True)
-        self.connect_signal(self.window, "delete-event", self.on_window_delete)
-        self.connect_signal(self.window, "destroy-event", self.on_window_delete)
+            self.connect_signal(self.window, "delete-event", self.on_window_delete)
+            self.connect_signal(self.window, "destroy-event", self.on_window_delete)
+            self.connect_signal(b_cancel, "clicked", self.on_close_clicked)
+        else:
+            # if we don't have parent we want to quit the mainloop on close
+            self.window.set_position(gtk.WIN_POS_CENTER)
+            self.connect_signal(self.window, "delete-event", gtk.main_quit)
+            self.connect_signal(self.window, "destroy-event", gtk.main_quit)
+            self.connect_signal(b_cancel, "clicked", gtk.main_quit)
+
 
         self.pBarWindow = self.builder.get_object("pBarWindow")
 
-        b_cancel = self.builder.get_object("b_close")
-        self.connect_signal(b_cancel, "clicked", self.on_close_clicked)
+
         reporters_vbox = self.builder.get_object("vb_reporters")
         for reporter in self.reporters:
             button = gtk.Button(str(reporter))
@@ -395,6 +406,13 @@ class ReporterSelector():
     # this class
         for obj, signal_id in self.connected_signals:
             obj.disconnect(signal_id)
+
+    def cleanup_and_exit(self):
+        if not self.window.get_property("visible"):
+            self.disconnect_signals()
+            # if the reporter selector doesn't have a parent
+            if not self.window.get_transient_for():
+                gtk.main_quit()
 
     def update_cb(self, daemon, message):
         self.updates += message
@@ -447,8 +465,7 @@ class ReporterSelector():
         self.pBarWindow.hide()
         gui_report_dialog(result, self.window)
 
-        if not self.window.get_property("visible"):
-            self.disconnect_signals()
+        self.cleanup_and_exit()
 
     def on_analyze_complete_cb(self, daemon, report, pBarWindow):
         try:
@@ -495,9 +512,8 @@ class ReporterSelector():
         # -50 == REFRESH
         elif response == -50:
             self.refresh_report(report)
-
-        elif not self.window.get_property("visible"):
-            self.disconnect_signals()
+        else:
+            self.cleanup_and_exit()
 
     # call to update the progressbar
     def progress_update_cb(self, *args):

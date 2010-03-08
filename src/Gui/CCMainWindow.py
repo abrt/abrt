@@ -30,18 +30,10 @@ import ABRTExceptions
 
 class MainWindow():
     ccdaemon = None
-    def __init__(self):
+    def __init__(self, daemon):
         self.theme = gtk.icon_theme_get_default()
         self.updates = ""
-        try:
-            self.ccdaemon = CCDBusBackend.DBusManager()
-        except ABRTExceptions.IsRunning:
-            # another instance is running, so exit quietly
-            sys.exit()
-        except Exception, ex:
-            # show error message if connection fails
-            gui_error_message("%s" % ex)
-            sys.exit()
+        self.ccdaemon = daemon
         #Set the Glade file
         self.gladefile = "%s/ccgui.glade" % sys.path[0]
         self.wTree = gtk.glade.XML(self.gladefile)
@@ -295,19 +287,51 @@ class MainWindow():
             self.window.present()
 
 if __name__ == "__main__":
+    verbose = 0
+    crashid = None
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "v")
+        opts, args = getopt.getopt(sys.argv[1:], "vh", ["help","report="])
     except getopt.GetoptError, err:
         print str(err) # prints something like "option -a not recognized"
         sys.exit(2)
-    verbose = 0
+
     for opt, arg in opts:
         if opt == "-v":
             verbose += 1
+        elif opt == "--report":
+            crashid=arg
+        elif opt in ("-h","--help"):
+            print _("Usage: abrt-gui [OPTIONS]"
+            "\n\t-h, --help         \tthis help message"
+            "\n\t-v[vv]             \tverbosity level"
+            "\n\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+            )
+            sys.exit()
+
     init_logging("abrt-gui", verbose)
     log1("log level:%d", verbose)
 
-    cc = MainWindow()
-    cc.hydrate()
-    cc.show()
+    try:
+        daemon = CCDBusBackend.DBusManager()
+    except ABRTExceptions.IsRunning:
+        # another instance is running, so exit quietly
+        sys.exit()
+    except Exception, ex:
+        # show error message if connection fails
+        gui_error_message("%s" % ex)
+        sys.exit()
+
+    if crashid:
+        dumplist = getDumpList(daemon)
+        crashdump = dumplist.getDumpByCrashID(crashid)
+        if not crashdump:
+            gui_error_message(_("No such crash in database, probably wrong crashid."
+                                "\ncrashid=%s" % crashid))
+            sys.exit()
+        rs = ReporterSelector(crashdump, daemon, parent=None)
+        rs.show()
+    else:
+        cc = MainWindow(daemon)
+        cc.hydrate()
+        cc.show()
     gtk.main()

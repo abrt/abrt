@@ -28,6 +28,11 @@ class DumpList(list):
         else:
             print "db == None!"
 
+    def getDumpByCrashID(self, crashid):
+        for dump in self:
+            # crashid can be either hash or uid:hash
+            if crashid in (dump.getUUID(),dump.getUID()+":"+dump.getUUID()):
+                return dump
 
 __PFList = None
 __PFList_dbmanager = None
