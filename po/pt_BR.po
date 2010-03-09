@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-28 20:47+0000\n"
-"PO-Revision-Date: 2010-02-28 23:50-0300\n"
+"POT-Creation-Date: 2010-03-08 20:53+0000\n"
+"PO-Revision-Date: 2010-03-08 18:38-0300\n"
 "Last-Translator: Jorge <jlrmoc@gmail.com>\n"
 "Language-Team: Portuguese <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -26,7 +26,9 @@ msgstr "Outro cliente já está em execução, tentando acordá-lo."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Dados inesperados obtidos do daemon (o banco de dados está devidamente atualizado?)."
+msgstr ""
+"Dados inesperados obtidos do daemon (o banco de dados está devidamente "
+"atualizado?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -48,17 +50,16 @@ msgstr "Plugins de relato"
 msgid "Database plugins"
 msgstr "Plugins de banco de dados"
 
-#: ../src/Gui/CCDBusBackend.py:74
-#: ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Não foi possível conectar ao dbus do sistema"
 
-#: ../src/Gui/CCDBusBackend.py:120
-#: ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Por favor, verifique se o daemon do abrt está em execução"
 
-#: ../src/Gui/CCDBusBackend.py:175
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -74,10 +75,8 @@ msgstr "(C) 2009 Red Hat, Inc."
 msgid "About ABRT"
 msgstr "Sobre o ABRT"
 
-#: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:9
-#: ../src/Gui/report.glade.h:15
-#: ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Ferramenta para o relato automático de erros"
 
@@ -86,78 +85,83 @@ msgid "Delete"
 msgstr "Excluir"
 
 #: ../src/Gui/ccgui.glade.h:5
-msgid "Details"
-msgstr "Detalhes"
-
-#: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "Não relatado"
 
-#: ../src/Gui/ccgui.glade.h:7
-msgid "Please wait.."
-msgstr "Por favor aguarde..."
-
-#: ../src/Gui/ccgui.glade.h:8
-#: ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Report"
 msgstr "Relatar"
 
-#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/ccgui.glade.h:8
 msgid ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Este programa é um software livre; você pode redistribuí-lo e/ou modificá-lo sob os termos da Licença Pública Geral GNU (GNU GPL) como publicada pela Free Software Foundation; tanto a versão 2 da Licença ou (a sua escolha) qualquer versão posterior.\n"
+"Este programa é um software livre; você pode redistribuí-lo e/ou modificá-lo "
+"sob os termos da Licença Pública Geral GNU (GNU GPL) como publicada pela "
+"Free Software Foundation; tanto a versão 2 da Licença ou (a sua escolha) "
+"qualquer versão posterior.\n"
 "\n"
-"Este programa é distribuído na esperança de que será útil, mas SEM NENHUMA GARANTIA; até mesmo sem a garantia implícita de COMERCIALIZAÇÃO ou ADEQUAÇÃO A UM PROPÓSITO EM PARTICULAR. Veja a Licença Pública Geral GNU (GNU GPL) para mais detalhes.\n"
+"Este programa é distribuído na esperança de que será útil, mas SEM NENHUMA "
+"GARANTIA; até mesmo sem a garantia implícita de COMERCIALIZAÇÃO ou ADEQUAÇÃO "
+"A UM PROPÓSITO EM PARTICULAR. Veja a Licença Pública Geral GNU (GNU GPL) "
+"para mais detalhes.\n"
 "\n"
-"Você deve ter recebido uma cópia da GNU General Public License (GPL) junto com este programa. Se não, acesse <http://www.gnu.org/licenses/>."
+"Você deve ter recebido uma cópia da GNU General Public License (GPL) junto "
+"com este programa. Se não, acesse <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:13
 msgid "_Edit"
 msgstr "_Editar"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:14
 msgid "_File"
 msgstr "_Arquivo"
 
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Help"
 msgstr "Aj_uda"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Icon"
 msgstr "Ícone"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Package"
 msgstr "Pacote"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:83
 msgid "Application"
 msgstr "Aplicativo"
 
-#: ../src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Date"
 msgstr "Data"
 
-#: ../src/Gui/CCMainWindow.py:95
+#: ../src/Gui/CCMainWindow.py:87
 msgid "Crash count"
 msgstr "Contagem de travamentos"
 
-#: ../src/Gui/CCMainWindow.py:97
+#: ../src/Gui/CCMainWindow.py:89
 msgid "User"
 msgstr "Usuário"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:157
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -166,7 +170,7 @@ msgstr ""
 "Não foi possível mostrar o diálogo de configurações\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:176
+#: ../src/Gui/CCMainWindow.py:162
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -176,7 +180,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:203
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -185,19 +189,70 @@ msgstr ""
 "Erro ao carregar a lista de despejo.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:222
 msgid "This crash has been reported:\n"
 msgstr "Esse travamento foi reportado:\n"
 
-#: ../src/Gui/CCMainWindow.py:242
+#: ../src/Gui/CCMainWindow.py:223
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Este travamento foi relatado:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:257
+#: ../src/Gui/CCMainWindow.py:238
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não relatado!</b>"
 
-#: ../src/Gui/CCMainWindow.py:305
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
+
+#: ../src/Gui/CCReporterDialog.py:100
+msgid "You must check backtrace for sensitive data"
+msgstr "Você deve checar o Backtrace por dados críticos"
+
+#: ../src/Gui/CCReporterDialog.py:111
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Relato desabilitado porque o backtrace é inutilizável.\n"
+"Por favor, tente instalar o debuginfo manualmente usando o comando: "
+"<b>debuginfo-install %s</b> \n"
+"e depois use o botão Atualizar para regerar o backtrace."
+
+#: ../src/Gui/CCReporterDialog.py:113
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "O backtrace é inutilizável, você não pode reportá-lo!"
+
+#: ../src/Gui/CCReporterDialog.py:117
+msgid ""
+"The backtrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr ""
+"O backtrace está incompleto. Por favor, certifique-se de fornecer bons "
+"passos para a reprodução."
+
+#: ../src/Gui/CCReporterDialog.py:159
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"Não foi possível salvar as configurações do plugin:\n"
+" %s"
+
+#: ../src/Gui/CCReporterDialog.py:420
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"Nenhum plugin disponivel para reportar esse tipo de problema\n"
+"Por favor cheque o abrt.conf."
+
+#: ../src/Gui/CCReporterDialog.py:465
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -205,7 +260,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "O debuginfo está faltando?"
 
-#: ../src/Gui/CCMainWindow.py:325
+#: ../src/Gui/CCReporterDialog.py:494
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -214,48 +269,10 @@ msgstr ""
 "Falha no relato!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:344
-#: ../src/Gui/CCMainWindow.py:371
+#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
-
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:24
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
-
-#: ../src/Gui/CCReporterDialog.py:99
-msgid "You must check backtrace for sensitive data"
-msgstr "Você deve checar o Backtrace por dados críticos"
-
-#: ../src/Gui/CCReporterDialog.py:110
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command: <b>debuginfo-install %s</b> \n"
-"then use Refresh button to regenerate the backtrace."
-msgstr ""
-"Relato desabilitado porque o backtrace é inutilizável.\n"
-"Por favor, tente instalar o debuginfo manualmente usando o comando: <b>debuginfo-install %s</b> \n"
-"e depois use o botão Atualizar para regerar o backtrace."
-
-#: ../src/Gui/CCReporterDialog.py:112
-msgid "The backtrace is unusable, you can't report this!"
-msgstr "O backtrace é inutilizável, você não pode reportá-lo!"
-
-#: ../src/Gui/CCReporterDialog.py:116
-msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
-msgstr "O backtrace está incompleto. Por favor, certifique-se de fornecer bons passos para a reprodução."
-
-#: ../src/Gui/CCReporterDialog.py:158
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-"Não foi possível salvar as configurações do plugin:\n"
-" %s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -265,22 +282,23 @@ msgstr "Log"
 msgid "Report done"
 msgstr "Relato concluído"
 
-#: ../src/Gui/PluginSettingsUI.py:18
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "Não foi possível localizar o widget PluginDialog na descrição da interface de usuário!"
+msgstr ""
+"Não foi possível localizar o widget PluginDialog na descrição da interface "
+"de usuário!"
 
 #. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:24
+#: ../src/Gui/PluginSettingsUI.py:23
 #, python-format
 msgid "No UI for plugin %s"
 msgstr "Nenhuma interface de usuário para o plugin %s"
 
-#: ../src/Gui/PluginSettingsUI.py:55
-#: ../src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:56 ../src/Gui/PluginSettingsUI.py:82
 msgid "combo box is not implemented"
 msgstr "caixa de combinação não implementada"
 
-#: ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:65
 msgid "Nothing to hydrate!"
 msgstr "Nada a ser hidratado!"
 
@@ -309,55 +327,70 @@ msgid "<b>Please fix the following problems</b>"
 msgstr "<b>Por favor, resolva os problemas a seguir</b>"
 
 #: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>Onde você quer reportar esse incidente?</b>"
+
+#: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
 msgstr "<span fgcolor=\"blue\">Arquitetura:</span>"
 
-#: ../src/Gui/report.glade.h:8
+#: ../src/Gui/report.glade.h:9
 msgid "<span fgcolor=\"blue\">Cmdline:</span>"
 msgstr "<span fgcolor=\"blue\">Cmdline:</span>"
 
-#: ../src/Gui/report.glade.h:9
+#: ../src/Gui/report.glade.h:10
 msgid "<span fgcolor=\"blue\">Component:</span>"
 msgstr "<span fgcolor=\"blue\">Componente:</span>"
 
-#: ../src/Gui/report.glade.h:10
+#: ../src/Gui/report.glade.h:11
 msgid "<span fgcolor=\"blue\">Executable:</span>"
 msgstr "<span fgcolor=\"blue\">Executável:</span>"
 
-#: ../src/Gui/report.glade.h:11
+#: ../src/Gui/report.glade.h:12
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
 msgstr "<span fgcolor=\"blue\">Kernel:</span>"
 
-#: ../src/Gui/report.glade.h:12
+#: ../src/Gui/report.glade.h:13
 msgid "<span fgcolor=\"blue\">Package:</span>"
 msgstr "<span fgcolor=\"blue\">Pacote:</span>"
 
-#: ../src/Gui/report.glade.h:13
+#: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Reason:</span>"
 msgstr "<span fgcolor=\"blue\">Razão:</span>"
 
-#: ../src/Gui/report.glade.h:14
+#: ../src/Gui/report.glade.h:15
 msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Versão:</span>"
 
-#: ../src/Gui/report.glade.h:16
+#: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "Detalhes"
+
+#: ../src/Gui/report.glade.h:18
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "Eu checkei o Backtrace e removi dados críticos (senhas, ect)"
 
-#: ../src/Gui/report.glade.h:17
+#: ../src/Gui/report.glade.h:19
 msgid "N/A"
 msgstr "N/A"
 
-#: ../src/Gui/report.glade.h:18
+#: ../src/Gui/report.glade.h:20
+msgid "Please wait.."
+msgstr "Por favor aguarde..."
+
+#: ../src/Gui/report.glade.h:21
+msgid "Reporter Selector"
+msgstr "Selecionar report."
+
+#: ../src/Gui/report.glade.h:22
 msgid "Send report"
 msgstr "Enviar relatório"
 
-#: ../src/Gui/report.glade.h:19
+#: ../src/Gui/report.glade.h:23
 msgid "Show log"
 msgstr "Mostrar registros"
 
-#: ../src/Gui/SettingsDialog.py:33
-#: ../src/Gui/SettingsDialog.py:50
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Selecionar plugin</b>"
 
@@ -466,7 +499,11 @@ msgstr "Veja e relate travamentos de aplicativos"
 msgid "A crash in package %s has been detected"
 msgstr "Um travamento no pacote %s foi detectado"
 
-#: ../src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:79
+msgid "A crash has been detected"
+msgstr "Um problema foi detectado"
+
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
 msgstr "O serviço do ABRT não está em execução"
 
@@ -474,9 +511,13 @@ msgstr "O serviço do ABRT não está em execução"
 msgid "Warning"
 msgstr "Aviso"
 
-#: ../src/Daemon/Daemon.cpp:483
-msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
-msgstr "O tamanho do relatório excedeu a cota. Por favor, verifique o valor MaxCrashReportsSize do sistema no abrt.conf."
+#: ../src/Daemon/Daemon.cpp:481
+msgid ""
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
+msgstr ""
+"O tamanho do relatório excedeu a cota. Por favor, verifique o valor "
+"MaxCrashReportsSize do sistema no abrt.conf."
 
 #: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
@@ -508,33 +549,35 @@ msgstr "Faltando membro obrigatório 'bugs'"
 msgid "Creating new bug..."
 msgstr "Criando novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:594
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr "Criação da entrada no Bugzilla falhou"
+
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Encerrando sessão..."
 
-#: ../lib/Plugins/Bugzilla.cpp:624
-#: ../lib/Plugins/Bugzilla.cpp:652
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() falhou. Não foi possivel coletar todos os dados necessários"
+msgstr ""
+"get_bug_info() falhou. Não foi possivel coletar todos os dados necessários"
 
-#: ../lib/Plugins/Bugzilla.cpp:636
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla não pôde encontrar o bug pai(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:641
+#: ../lib/Plugins/Bugzilla.cpp:646
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Ir para o bug %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:666
-#: ../lib/Plugins/Bugzilla.cpp:667
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Adicionara %s para a lista de CC"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:695
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Adicionar novo comentário ao bug(%d)"

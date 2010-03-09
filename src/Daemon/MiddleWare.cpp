@@ -129,16 +129,22 @@ static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& da
     while (dd.GetNextFile(&short_name, &full_name))
     {
         ssize_t sz = 4*1024;
-        char *text = is_text_file(full_name.c_str(), &sz);
-        if (!text)
+        char *text = NULL;
+        bool editable = is_editable_file(short_name.c_str());
+
+        if (!editable)
         {
-            add_to_crash_data_ext(data,
-                    short_name.c_str(),
-                    CD_BIN,
-                    CD_ISNOTEDITABLE,
-                    full_name.c_str()
-            );
-            continue;
+            text = is_text_file(full_name.c_str(), &sz);
+            if (!text)
+            {
+                add_to_crash_data_ext(data,
+                        short_name.c_str(),
+                        CD_BIN,
+                        CD_ISNOTEDITABLE,
+                        full_name.c_str()
+                );
+                continue;
+            }
         }
 
         std::string content;
@@ -151,7 +157,7 @@ static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& da
         add_to_crash_data_ext(data,
                 short_name.c_str(),
                 CD_TXT,
-                is_editable_file(short_name.c_str()) ? CD_ISEDITABLE : CD_ISNOTEDITABLE,
+                editable ? CD_ISEDITABLE : CD_ISNOTEDITABLE,
                 content.c_str()
         );
     }
