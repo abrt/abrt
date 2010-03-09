@@ -102,19 +102,24 @@ static char *guess_crash_id(const char *str)
 
     unsigned len = strlen(str);
     unsigned ii;
+    char *result = NULL;
     for (ii = 0; ii < num_crashinfos; ii++)
     {
         map_crash_data_t& info = ci[ii];
         const char *this_uuid = get_crash_data_item_content(info, CD_UUID).c_str();
         if (strncmp(str, this_uuid, len) == 0)
         {
-            return xasprintf("%s:%s",
+            if (result)
+                error_msg_and_die("Crash prefix '%s' is not unique", str);
+            result = xasprintf("%s:%s",
                     get_crash_data_item_content(info, CD_UID).c_str(),
                     this_uuid
             );
         }
     }
-    error_msg_and_die("Crash '%s' not found", str);
+    if (!result)
+        error_msg_and_die("Crash '%s' not found", str);
+    return result;
 }
 
 static const struct option longopts[] =
@@ -156,9 +161,9 @@ static void usage(char *argv0)
         "	--report CRASH_ID	create and send a report\n"
         "	--report-always CRASH_ID create and send a report without asking\n"
         "	--delete CRASH_ID	remove crash\n"
-        "CRASH_ID may be:\n"
-        "	an UID:UUID pair,\n"
-        "	an UUID prefix  - the first crash with matching UUID will be acted upon\n"
+        "CRASH_ID can be:\n"
+        "	UID:UUID pair,\n"
+        "	unique UUID prefix  - the crash with matching UUID will be acted upon\n"
         "	@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
 	),
         name, name);
