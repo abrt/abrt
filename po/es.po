@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-06 20:50+0000\n"
-"PO-Revision-Date: 2010-03-06 19:05-0300\n"
-"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
+"POT-Creation-Date: 2010-03-09 15:48+0000\n"
+"PO-Revision-Date: 2010-03-09 14:53-0300\n"
+"Last-Translator: Héctor Daniel Cabrera <logan@fedoraproject.org>\n"
 "Language-Team: Fedora Spanish <trans-es@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -129,31 +129,31 @@ msgstr "Ay_uda"
 # Revisar si hay que traducir.
 # Ver como referencia los botones gtk que no habia que traducirlos
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Icono"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Paquete"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Aplicación"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Fecha"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "Cantidad de caídas"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Usuario"
 
-#: ../src/Gui/CCMainWindow.py:157
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -162,7 +162,7 @@ msgstr ""
 "No se puede mostrar el diálogo de configuración\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:162
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -172,7 +172,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -181,28 +181,49 @@ msgstr ""
 "Error intentando cargar la lista de volcado.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:222
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "Esta caída ha sido reportada:\n"
 
-#: ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b> Esta caída ha sido reportada:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:238
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>¡No informado!</b>"
+
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Utilización: gui de abrt [OPCIONES]\n"
+"\t-h, --help         \teste mensaje de ayuda\n"
+"\t-v[vv]             \tnivel de detalle\n"
+"\t--report=<crashid>\treporta la caída directamente con el id de la caída=<crashid>"
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"No existe tal caída en la base de datos, tal vez sea la caída equivocada.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descripción de cómo reproducir esto o lo que hizo..."
 
-#: ../src/Gui/CCReporterDialog.py:100
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "You must check backtrace for sensitive data"
 msgstr "Debe verificar los informes en busca de datos importantes"
 
-#: ../src/Gui/CCReporterDialog.py:111
+#: ../src/Gui/CCReporterDialog.py:114
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -214,15 +235,15 @@ msgstr ""
 "usando el comando <b> debuginfo-install %s </b>\n"
 "y luego use el botón Actualizar para regenerar el trazado."
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:116
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "¡El trazado es inútil, no se puede informar esto!"
 
-#: ../src/Gui/CCReporterDialog.py:117
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
 msgstr "El trazado está incompleto, por favor, asegúrese de proveer bien los pasos para reproducir el error."
 
-#: ../src/Gui/CCReporterDialog.py:159
+#: ../src/Gui/CCReporterDialog.py:162
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -231,7 +252,7 @@ msgstr ""
 "No se pudo guardar la configuración del complemento:\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:420
+#: ../src/Gui/CCReporterDialog.py:439
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -239,7 +260,7 @@ msgstr ""
 "No existe un disponible un complemento para generar un informe con este tipo de caída\n"
 "Por favor, verifique el archivo abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:465
+#: ../src/Gui/CCReporterDialog.py:483
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -247,7 +268,7 @@ msgstr ""
 "¡Incapaz de conseguir el informe!\n"
 "¿Falta la información de la depuración?"
 
-#: ../src/Gui/CCReporterDialog.py:494
+#: ../src/Gui/CCReporterDialog.py:512
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -256,8 +277,8 @@ msgstr ""
 "¡El informe falló!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:521
-#: ../src/Gui/CCReporterDialog.py:542
+#: ../src/Gui/CCReporterDialog.py:538
+#: ../src/Gui/CCReporterDialog.py:559
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
@@ -635,24 +656,18 @@ msgstr "Sosreport ya esta corriendo"
 
 #~ msgid "Creating kernel oops crash reports..."
 #~ msgstr "Creando un informe de caída de kernel oops..."
-
 #~ msgid "Missing member 'reporter'"
 #~ msgstr "No se encuentra el miembro 'informante'"
-
 #~ msgid "Missing member 'cc'"
 #~ msgstr "Facltante de miembro 'cc'"
-
 #~ msgid "Missing member 'bug_id'"
 #~ msgstr "Faltante de miembro 'bug_id'"
-
 #~ msgid "Checking CC..."
 #~ msgstr "Chequeando CC..."
-
 #~ msgid "Getting local universal unique identification..."
 #~ msgstr "Obteniendo la identificación única universal local..."
-
 #~ msgid "Global Settings"
 #~ msgstr "Preferencias globales"
-
 #~ msgid "Settings"
 #~ msgstr "Preferencias"
+
