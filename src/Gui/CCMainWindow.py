@@ -39,7 +39,7 @@ class MainWindow():
         self.wTree = gtk.glade.XML(self.gladefile)
 
         #Get the Main Window, and connect the "destroy" event
-        self.window = self.wTree.get_widget("main_window3")
+        self.window = self.wTree.get_widget("main_window")
         if self.window:
             self.window.set_default_size(700, 480)
             self.window.connect("delete_event", self.delete_event_cb)
