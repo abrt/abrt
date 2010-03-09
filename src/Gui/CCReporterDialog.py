@@ -37,6 +37,7 @@ class ReporterDialog():
         self.builder.add_from_file(builderfile)
         #Get the Main Window, and connect the "destroy" event
         self.window = self.builder.get_object("reporter_dialog")
+        self.window.set_default_size(-1, 800)
         self.window.connect("response", self.on_response, daemon)
         if parent:
             self.window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
