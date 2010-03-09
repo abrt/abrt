@@ -1,6 +1,7 @@
 import sys
 
-PROGNAME = "abrt"
+GETTEXT_PROGNAME = "abrt"
+PROGNAME = "abrt-gui"
 g_verbose = 0
 
 import locale
@@ -19,11 +20,11 @@ def init_logging(progname, v):
         import os
         os.environ['LC_ALL'] = 'C'
         locale.setlocale(locale.LC_ALL, "")
-    gettext.bind_textdomain_codeset(PROGNAME, locale.nl_langinfo(locale.CODESET))
-    gettext.bindtextdomain(PROGNAME, '/usr/share/locale')
-    gtk.glade.bindtextdomain(PROGNAME, '/usr/share/locale')
-    gtk.glade.textdomain(PROGNAME)
-    gettext.textdomain(PROGNAME)
+    gettext.bind_textdomain_codeset(GETTEXT_PROGNAME, locale.nl_langinfo(locale.CODESET))
+    gettext.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gtk.glade.bindtextdomain(GETTEXT_PROGNAME, '/usr/share/locale')
+    gtk.glade.textdomain(GETTEXT_PROGNAME)
+    gettext.textdomain(GETTEXT_PROGNAME)
 
 def get_verbose_level():
     # Just importing g_verbose from another module doesn't work (why!?),
