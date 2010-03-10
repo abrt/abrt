@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-08 03:53+0000\n"
-"PO-Revision-Date: 2010-03-08 12:04+0300\n"
+"POT-Creation-Date: 2010-03-09 15:48+0000\n"
+"PO-Revision-Date: 2010-03-09 22:10+0300\n"
 "Last-Translator: Yulia <ypoyarko@redhat.com>\n"
 "Language-Team: Russian <>\n"
 "MIME-Version: 1.0\n"
@@ -135,31 +135,31 @@ msgid "_Help"
 msgstr "_Справка"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Значок"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Пакет"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Приложение"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Дата"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "Счётчик сбоев"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Пользователь"
 
-#: ../src/Gui/CCMainWindow.py:157
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -168,7 +168,7 @@ msgstr ""
 "Не удалось показать окно настроек\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:162
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -178,7 +178,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -187,28 +187,50 @@ msgstr ""
 "Ошибка при загрузке dumplist. \n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:222
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "Создан отчёт для этого сбоя:\n"
 
-#: ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Создан отчёт для этого сбоя:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:238
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>Не сообщено!</b>"
+
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Использование: abrt-gui [ПАРАМЕТРЫ]\n"
+"\t-h, --help         \tэта справка\n"
+"\t-v[vv]             \tуровень детальности сообщений\n"
+"\t--report=<crashid>\tнепосредственно сообщать о сбое с "
+"идентификатором=<crashid>"
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"В базе данных нет такого сбоя, возможно, неверный crashid.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Кратко опишите действия, которые привели к ошибке..."
 
-#: ../src/Gui/CCReporterDialog.py:100
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "You must check backtrace for sensitive data"
 msgstr "Убедитесь, что текст трассировки не содержит конфиденциальных данных"
 
-#: ../src/Gui/CCReporterDialog.py:111
+#: ../src/Gui/CCReporterDialog.py:114
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -220,11 +242,11 @@ msgstr ""
 "Попытайтесь установить debuginfo вручную: <b>debuginfo-install %s</b>\n"
 "и нажмите кнопку обновления для повторной генерации трассировки."
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:116
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Непригодные сведения трассировки. Они не будут отправлены."
 
-#: ../src/Gui/CCReporterDialog.py:117
+#: ../src/Gui/CCReporterDialog.py:120
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -232,7 +254,7 @@ msgstr ""
 "Неполные сведения трассировки. Убедитесь, что описанные действия "
 "действительно помогают воспроизвести ошибку."
 
-#: ../src/Gui/CCReporterDialog.py:159
+#: ../src/Gui/CCReporterDialog.py:162
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -241,7 +263,7 @@ msgstr ""
 "Не удалось сохранить настройки модуля:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:420
+#: ../src/Gui/CCReporterDialog.py:439
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -249,7 +271,7 @@ msgstr ""
 "Нет модулей отчётности для этого сбоя\n"
 "Пожалуйста, проверьте abrt.conf"
 
-#: ../src/Gui/CCReporterDialog.py:465
+#: ../src/Gui/CCReporterDialog.py:483
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -257,7 +279,7 @@ msgstr ""
 "Не удалось получить отчёт.\n"
 "Отсутствует debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:494
+#: ../src/Gui/CCReporterDialog.py:512
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -266,7 +288,7 @@ msgstr ""
 "Не удалось отправить отчёт!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
+#: ../src/Gui/CCReporterDialog.py:538 ../src/Gui/CCReporterDialog.py:559
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Ошибка при получении отчёта: %s"

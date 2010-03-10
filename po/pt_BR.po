@@ -8,9 +8,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-08 20:53+0000\n"
-"PO-Revision-Date: 2010-03-08 18:38-0300\n"
-"Last-Translator: Jorge <jlrmoc@gmail.com>\n"
+"POT-Creation-Date: 2010-03-09 20:43+0000\n"
+"PO-Revision-Date: 2010-03-10 10:19+1000\n"
+"Last-Translator: Glaucia Cintra <gcintra@redhat.com>\n"
 "Language-Team: Portuguese <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -137,31 +137,31 @@ msgid "_Help"
 msgstr "Aj_uda"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Ícone"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Pacote"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Aplicativo"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Data"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "Contagem de travamentos"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Usuário"
 
-#: ../src/Gui/CCMainWindow.py:157
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -170,7 +170,7 @@ msgstr ""
 "Não foi possível mostrar o diálogo de configurações\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:162
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -180,7 +180,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -189,28 +189,49 @@ msgstr ""
 "Erro ao carregar a lista de despejo.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:222
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "Esse travamento foi reportado:\n"
 
-#: ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Este travamento foi relatado:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:238
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não relatado!</b>"
+
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"Não existe tal pane no banco de dados, este é provavelmente um crashid errado.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
 
-#: ../src/Gui/CCReporterDialog.py:100
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "You must check backtrace for sensitive data"
 msgstr "Você deve checar o Backtrace por dados críticos"
 
-#: ../src/Gui/CCReporterDialog.py:111
+#: ../src/Gui/CCReporterDialog.py:114
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -223,11 +244,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "e depois use o botão Atualizar para regerar o backtrace."
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:116
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "O backtrace é inutilizável, você não pode reportá-lo!"
 
-#: ../src/Gui/CCReporterDialog.py:117
+#: ../src/Gui/CCReporterDialog.py:120
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -235,7 +256,7 @@ msgstr ""
 "O backtrace está incompleto. Por favor, certifique-se de fornecer bons "
 "passos para a reprodução."
 
-#: ../src/Gui/CCReporterDialog.py:159
+#: ../src/Gui/CCReporterDialog.py:162
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -244,7 +265,7 @@ msgstr ""
 "Não foi possível salvar as configurações do plugin:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:420
+#: ../src/Gui/CCReporterDialog.py:439
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -252,7 +273,7 @@ msgstr ""
 "Nenhum plugin disponivel para reportar esse tipo de problema\n"
 "Por favor cheque o abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:465
+#: ../src/Gui/CCReporterDialog.py:483
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -260,7 +281,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "O debuginfo está faltando?"
 
-#: ../src/Gui/CCReporterDialog.py:494
+#: ../src/Gui/CCReporterDialog.py:512
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -269,7 +290,7 @@ msgstr ""
 "Falha no relato!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
+#: ../src/Gui/CCReporterDialog.py:538 ../src/Gui/CCReporterDialog.py:559
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
@@ -559,8 +580,7 @@ msgstr "Encerrando sessão..."
 
 #: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() falhou. Não foi possivel coletar todos os dados necessários"
+msgstr "get_bug_info() falhou. Não foi possivel coletar todos os dados necessários"
 
 #: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
@@ -647,46 +667,3 @@ msgstr "Executando o SOSreport: %s"
 msgid "Done running sosreport"
 msgstr "Execução do sosreport realizada"
 
-#~ msgid "Creating kernel oops crash reports..."
-#~ msgstr "Criando relatórios de oops do kernel no travamento..."
-
-#~ msgid "Checking CC..."
-#~ msgstr "Verificando CC..."
-
-#~ msgid "Settings"
-#~ msgstr "Configurações"
-
-#~ msgid "Global Settings"
-#~ msgstr "Configurações globais"
-
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-
-#~ msgid "Getting local universal unique identification..."
-#~ msgstr "Obtendo identificação universal local única..."
-
-#~ msgid "Plugin name is not set, can't load its settings"
-#~ msgstr ""
-#~ "O nome do plugin não está definido, não é possível carregar as "
-#~ "configurações dele"
-
-#~ msgid ""
-#~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
-#~ "information.\n"
-#~ "Do you really want to send <b>%s</b>?\n"
-#~ msgstr ""
-#~ "<b>AVISO</b>, você está prestes a enviar dados que podem conter "
-#~ "informações delicadas.\n"
-#~ "Você realmente deseja enviar o <b>%s</b>?\n"
-
-#~ msgid "<b>Following items will be sent</b>"
-#~ msgstr "<b>Os seguintes itens serão enviados</b> "
-
-#~ msgid "Send"
-#~ msgstr "Enviar"
-
-#~ msgid "Executing SOSreport plugin..."
-#~ msgstr "Executando o plugin SOSreport..."
