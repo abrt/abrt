@@ -324,10 +324,13 @@ fi
 %files gui
 %defattr(-,root,root,-)
 %{_bindir}/%{name}-gui
-%{_datadir}/%{name}
+%dir %{_datadir}/%{name}
+# all glade, gtkbuilder and py files for gui
+%{_datadir}/%{name}/*.py*
+%{_datadir}/%{name}/*.glade
 %{_datadir}/applications/fedora-%{name}.desktop
-%{_datadir}/icons/hicolor/*/apps/abrt.png
-%{_datadir}/%{name}/icons/hicolor/*/status/*.png
+%{_datadir}/icons/hicolor/*/apps/*
+%{_datadir}/%{name}/icons/hicolor/*/status/*
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 
