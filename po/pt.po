@@ -4,10 +4,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-07 09:39+0000\n"
-"PO-Revision-Date: 2010-03-07 14:34+0100\n"
+"POT-Creation-Date: 2010-03-11 09:40+0000\n"
+"PO-Revision-Date: 2010-03-11 16:01+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@gmail.com>\n"
-"Language-Team: trans-pt@fedoraproject.org\n"
+"Language-Team: fedora-trans-pt@redhat.com\n"
 "Language: pt\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -132,31 +132,31 @@ msgid "_Help"
 msgstr "_Ajuda"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Ícone"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Pacote"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Aplicação"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Data"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "Contagem de crashes"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Utilizador"
 
-#: ../src/Gui/CCMainWindow.py:157
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -165,7 +165,7 @@ msgstr ""
 "Impossível mostrar a janela de definições\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:162
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -175,7 +175,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -184,28 +184,49 @@ msgstr ""
 "Erro ao carregar a lista de dump.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:222
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "Este crash foi reportado:\n"
 
-#: ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Este crash foi reportado:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:238
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>Não reportado!</b>"
+
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Utilização: abrt-gui [OPÇÕES]\n"
+"\t-h, --help         \testa mensagem de ajuda\n"
+"\t-v[vv]             \tnível de verbosidade\n"
+"\t--report=<crashid>\treportar directamente crash com o crashid=<crashid>"
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"Crash não existe na base de dados. Provavelmente crashid errado.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:24
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descrição de como reproduzir isto ou o que fez..."
 
-#: ../src/Gui/CCReporterDialog.py:100
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "You must check backtrace for sensitive data"
 msgstr "Você deve verificar o backtrace por dados sensíveis"
 
-#: ../src/Gui/CCReporterDialog.py:111
+#: ../src/Gui/CCReporterDialog.py:114
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -214,15 +235,15 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "Relatórios desactivados porque a traçagem não é usável!\n"
-"Por favor, tente instalar o debuginfo manualmente utilizando o comando:<b"
-">debuginfo-install %s </b> \n"
+"Por favor, tente instalar o debuginfo manualmente utilizando o comando:"
+"<b>debuginfo-install %s </b> \n"
 "depois utilize o botão Recarregar para gerar uma nova traçagem."
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:116
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "A traçagem não é usável. Você não pode reportar isto!"
 
-#: ../src/Gui/CCReporterDialog.py:117
+#: ../src/Gui/CCReporterDialog.py:120
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -230,7 +251,7 @@ msgstr ""
 "A traçagem está incompleta. Por favor, garanta que fornece passos adequados "
 "para reproduzir."
 
-#: ../src/Gui/CCReporterDialog.py:159
+#: ../src/Gui/CCReporterDialog.py:162
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -239,7 +260,7 @@ msgstr ""
 "Incapaz de gravar as configurações do plugin\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:420
+#: ../src/Gui/CCReporterDialog.py:439
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -247,7 +268,7 @@ msgstr ""
 "Não está disponível nenhum plugin capaz de reportar este crash.\n"
 "Por favor, verifique o abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:465
+#: ../src/Gui/CCReporterDialog.py:483
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -255,7 +276,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "Debuginfo está em falta?"
 
-#: ../src/Gui/CCReporterDialog.py:494
+#: ../src/Gui/CCReporterDialog.py:512
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -264,7 +285,7 @@ msgstr ""
 "Relatório falhou!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
+#: ../src/Gui/CCReporterDialog.py:538 ../src/Gui/CCReporterDialog.py:559
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
