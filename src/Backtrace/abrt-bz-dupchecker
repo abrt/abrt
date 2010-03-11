@@ -191,6 +191,8 @@ for backtrace, components in database.items():
 
 # Close all bugs where it is appropriate.
 if options.close:
+  LIMIT = 1000
+  counter = 0
   for (component, owner, bugitems, backtrace) in dups:
     # Find the master bug item
     # Its the one with the most comments.
@@ -217,13 +219,20 @@ if options.close:
       if item['comments'] > 2:
         continue
 
-      print "Closing bug #{0} with {1} comments as a duplicate of #{2}.".format(item['id'], item['comments'], master['id'])
       bug = bz.getbug(int(item['id']))
+      # Check the bug status AGAIN to make sure the bug is still opened.
+      if not bug.bug_status in ["NEW", "ASSIGNED"]:
+        continue
+
+      print "Closing bug #{0} with {1} comments as a duplicate of #{2}.".format(item['id'], item['comments'], master['id'])
       bug.close("DUPLICATE", int(master['id']), "", 
-                "This bug appears to have been filled using a buggy version of ABRT, because\n" +
-                "it contains a backtrace which is considered as a duplicate of the backtrace in #{0}." +
-                "Sorry for the inconvenience.\n\n" +
-                "Closing as a duplicate of #{0}.".format(master['id']))
+                ("This bug appears to have been filled using a buggy version of ABRT, because\n" +
+                "it contains a backtrace which is a duplicate of backtrace from bug #{0}.\n\n" +
+                "Sorry for the inconvenience.").format(master['id']))
+
+      counter += 1
+      if counter > LIMIT:
+        sys.exit(0)
       
 bz.logout()
 
