@@ -30,7 +30,7 @@ class CCommLayerServer {
         virtual ~CCommLayerServer();
 
         /* just stubs to be called when not implemented in specific comm layer */
-        virtual void Crash(const char *package_name, const char *uid_str) {}
+        virtual void Crash(const char *package_name, const char* crash_id, const char *uid_str) {}
         virtual void JobDone(const char* peer) = 0;
         virtual void QuotaExceed(const char* str) {}
 

@@ -75,7 +75,7 @@ using namespace std;
  * - SetSettings(map_abrt_settings_t): returns void
  *
  * DBus signals we emit:
- * - Crash(progname,uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
+ * - Crash(progname, crash_id, uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
  * - JobDone(client_dbus_ID) - see StartJob above.
  *      Sent as unicast to the client which did StartJob.
  * - Warning(msg)
@@ -542,11 +542,17 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                             }
                         }
                     }
-
                     /* Send dbus signal */
                     if (analyzer_has_InformAllUsers(analyzer))
                         uid_str = NULL;
-                    g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, FILENAME_PACKAGE).c_str(), uid_str);
+                    char *crash_id = xasprintf("%s:%s",
+                                    get_crash_data_item_content(crashinfo, CD_UID).c_str(),
+                                    get_crash_data_item_content(crashinfo, CD_UUID).c_str()
+                    );
+                    g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, FILENAME_PACKAGE).c_str(),
+                                        crash_id,
+                                        uid_str);
+                    free(crash_id);
                     break;
 #undef fullname
                 }

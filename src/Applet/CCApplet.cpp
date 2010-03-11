@@ -113,7 +113,29 @@ Patrick Connelly &lt;pcon@fedoraproject.org&gt;</property>\
   </object>\
 </interface>";
 
-CApplet::CApplet()
+void static on_notify_close(NotifyNotification *notification, gpointer user_data)
+{
+    g_object_unref(notification);
+}
+
+static NotifyNotification *new_warn_notification()
+{
+    NotifyNotification *notification;
+    notification = notify_notification_new(_("Warning"), NULL, NULL, NULL);
+    g_signal_connect(notification, "closed", G_CALLBACK(on_notify_close), NULL);
+
+    GdkPixbuf *pixbuf = gtk_icon_theme_load_icon(gtk_icon_theme_get_default(),
+                GTK_STOCK_DIALOG_WARNING, 48, GTK_ICON_LOOKUP_USE_BUILTIN, NULL);
+
+    if (pixbuf)
+        notify_notification_set_icon_from_pixbuf(notification, pixbuf);
+    notify_notification_set_urgency(notification, NOTIFY_URGENCY_NORMAL);
+    notify_notification_set_timeout(notification, NOTIFY_EXPIRES_DEFAULT);
+
+    return notification;
+}
+
+CApplet::CApplet(const char* app_name)
 {
     m_bDaemonRunning = true;
     /* set-up icon buffers */
@@ -129,10 +151,7 @@ CApplet::CApplet()
     {
         m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
     }
-    notify_init("ABRT");
-    m_pNotification = notify_notification_new_with_status_icon("Warning", NULL, NULL, m_pStatusIcon);
-    notify_notification_set_urgency(m_pNotification, NOTIFY_URGENCY_CRITICAL);
-    notify_notification_set_timeout(m_pNotification, 5000);
+    notify_init(app_name);
 
     gtk_status_icon_set_visible(m_pStatusIcon, FALSE);
 
@@ -171,6 +190,8 @@ CApplet::CApplet()
 
 CApplet::~CApplet()
 {
+    if (notify_is_initted())
+        notify_uninit();
 }
 
 void CApplet::SetIconTooltip(const char *format, ...)
@@ -188,7 +209,93 @@ void CApplet::SetIconTooltip(const char *format, ...)
     free(buf);
 }
 
-void CApplet::CrashNotify(const char *format, ...)
+void CApplet::action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
+{
+    CApplet *applet = (CApplet *)user_data;
+    if (applet->m_bDaemonRunning)
+    {
+        pid_t pid = vfork();
+        if (pid < 0)
+            perror_msg("vfork");
+        if (pid == 0)
+        { /* child */
+            char *buf = xasprintf("--report=%s", applet->m_pLastCrashID);
+            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
+            execl(BIN_DIR"/abrt-gui", "abrt-gui", buf, (char*) NULL);
+            /* Did not find abrt-gui in installation directory. Oh well */
+            /* Trying to find it in PATH */
+            execlp("abrt-gui", "abrt-gui", buf, (char*) NULL);
+            perror_msg_and_die("Can't exec abrt-gui");
+        }
+        GError *err = NULL;
+        notify_notification_close(notification, &err);
+        if (err != NULL)
+        {
+            error_msg("%s", err->message);
+            g_error_free(err);
+        }
+        gtk_status_icon_set_visible(applet->m_pStatusIcon, false);
+        applet->stop_animate_icon();
+    }
+}
+
+void CApplet::action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data)
+{
+    CApplet *applet = (CApplet *)user_data;
+    if (applet->m_bDaemonRunning)
+    {
+        pid_t pid = vfork();
+        if (pid < 0)
+            perror_msg("vfork");
+        if (pid == 0)
+        { /* child */
+            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
+            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
+            /* Did not find abrt-gui in installation directory. Oh well */
+            /* Trying to find it in PATH */
+            execlp("abrt-gui", "abrt-gui", (char*) NULL);
+            perror_msg_and_die("Can't exec abrt-gui");
+        }
+        GError *err = NULL;
+        notify_notification_close(notification, &err);
+        if (err != NULL)
+        {
+            error_msg("%s", err->message);
+            g_error_free(err);
+        }
+        gtk_status_icon_set_visible(applet->m_pStatusIcon, false);
+        applet->stop_animate_icon();
+    }
+}
+
+void CApplet::CrashNotify(const char* crash_id, const char *format, ...)
+{
+    m_pLastCrashID = crash_id;
+    va_list args;
+    va_start(args, format);
+    char *buf = xvasprintf(format, args);
+    va_end(args);
+
+    NotifyNotification *notification = new_warn_notification();
+    notify_notification_add_action(notification, "REPORT", _("Report"),
+                                    NOTIFY_ACTION_CALLBACK(CApplet::action_report),
+                                    this, NULL);
+    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", "Open ABRT",
+                                    NOTIFY_ACTION_CALLBACK(CApplet::action_open_gui),
+                                    this, NULL);
+
+    notify_notification_update(notification, _("Warning"), buf, NULL);
+    free(buf);
+    GError *err = NULL;
+    notify_notification_show(notification, &err);
+    if (err != NULL)
+    {
+        error_msg("%s", err->message);
+        g_error_free(err);
+    }
+}
+
+void CApplet::MessageNotify(const char *format, ...)
 {
     va_list args;
 
@@ -196,11 +303,18 @@ void CApplet::CrashNotify(const char *format, ...)
     char *buf = xvasprintf(format, args);
     va_end(args);
 
-    notify_notification_update(m_pNotification, _("Warning"), buf, NULL);
-
+    /* we don't want to show any buttons now,
+       maybe later we can add action binded to message
+       like >>Clear old dumps<< for quota exceeded
+   */
+    NotifyNotification *notification = new_warn_notification();
+    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", "Open ABRT",
+                                    NOTIFY_ACTION_CALLBACK(CApplet::action_open_gui),
+                                    this, NULL);
+    notify_notification_update(notification, _("Warning"), buf, NULL);
+    free(buf);
     GError *err = NULL;
-    if (gtk_status_icon_is_embedded(m_pStatusIcon))
-        notify_notification_show(m_pNotification, &err);
+    notify_notification_show(notification, &err);
     if (err != NULL)
     {
         error_msg("%s", err->message);

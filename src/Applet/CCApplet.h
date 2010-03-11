@@ -35,13 +35,13 @@ class CApplet
         GObject *m_pmiAbout;
         GObject *m_pAboutDialog;
 
-        NotifyNotification *m_pNotification;
 //        std::map<int, std::string> m_mapEvents;
         bool m_bDaemonRunning;
         int m_iAnimationStage;
         guint m_iAnimator;
         unsigned m_iAnimCountdown;
         bool m_bIconsLoaded;
+        const char *m_pLastCrashID;
 
         enum ICON_STAGES
         {
@@ -57,14 +57,15 @@ class CApplet
         GdkPixbuf *icon_stages_buff[ICON_STAGE_LAST];
 
     public:
-        CApplet();
+        CApplet(const char* app_name);
         ~CApplet();
         void ShowIcon();
         void HideIcon();
         //void DisableIcon();
 //        void BlinkIcon(bool pBlink);
         void SetIconTooltip(const char *format, ...);
-        void CrashNotify(const char *format, ...);
+        void CrashNotify(const char* crash_id, const char *format, ...);
+        void MessageNotify(const char *format, ...);
         void Disable(const char *reason);
         void Enable(const char *reason);
         // create some event storage, to let user choose
@@ -77,6 +78,10 @@ class CApplet
     protected:
         //@@TODO applet menus
         static void OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data);
+        //this action should open the reporter dialog directly, without showing the main window
+        static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data);
+        //this action should open the main window
+        static void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data);
         static void OnMenuPopup_cb(GtkStatusIcon *status_icon,
                             guint          button,
                             guint          activate_time,

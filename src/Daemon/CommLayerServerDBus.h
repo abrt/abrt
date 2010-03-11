@@ -29,7 +29,9 @@ class CCommLayerServerDBus
         virtual ~CCommLayerServerDBus();
 
         /* DBus signal senders */
-        virtual void Crash(const char *package_name, const char *uid_str);
+        virtual void Crash(const char *package_name,
+                            const char *crash_id,
+                            const char *uid_str);
         virtual void JobDone(const char* peer);
         virtual void QuotaExceed(const char* str);
 

@@ -47,7 +47,18 @@ static void Crash(DBusMessage* signal)
     dbus_message_iter_init(signal, &in_iter);
     const char* package_name;
     r = load_val(&in_iter, package_name);
-    /* Optional 2nd param: uid */
+    /* 2nd param: crash_id */
+    const char* crash_id = NULL;
+    if (r == ABRT_DBUS_MORE_FIELDS)
+    {
+        r = load_val(&in_iter, crash_id);
+    }
+    else
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+    /* Optional 3rd param: uid */
     const char* uid_str = NULL;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {
@@ -80,7 +91,7 @@ static void Crash(DBusMessage* signal)
     //applet->AddEvent(uid, package_name);
     applet->SetIconTooltip(message, package_name);
     applet->ShowIcon();
-    applet->CrashNotify(message, package_name);
+    applet->CrashNotify(crash_id, message, package_name);
 }
 
 static void QuotaExceed(DBusMessage* signal)
@@ -99,7 +110,7 @@ static void QuotaExceed(DBusMessage* signal)
     //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
     //    return;
     applet->ShowIcon();
-    applet->CrashNotify("%s", str);
+    applet->MessageNotify("%s", str);
 }
 
 static void NameOwnerChanged(DBusMessage* signal)
@@ -178,6 +189,7 @@ static void die_if_dbus_error(bool error_flag, DBusError* err, const char* msg)
 
 int main(int argc, char** argv)
 {
+    const char * app_name = "abrt-gui";
     /* I18n */
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -237,7 +249,7 @@ int main(int argc, char** argv)
     /* Initialize GUI stuff.
      * Note: inside CApplet ctor, libnotify hooks session dbus
      * to glib main loop */
-    applet = new CApplet;
+    applet = new CApplet(app_name);
     /* dbus_abrt cannot handle more than one bus, and we don't really need to.
      * The only thing we want to do is to announce ourself on session dbus */
     DBusConnection* session_conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
