@@ -487,7 +487,3 @@ bool CApplet::load_icons()
 //     m_mapEvents.erase(pUUID);
 //     return 0;
 //}
-//void CApplet::BlinkIcon(bool pBlink)
-//{
-//    gtk_status_icon_set_blinking(m_pStatusIcon, pBlink);
-//}

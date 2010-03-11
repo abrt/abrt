@@ -61,8 +61,6 @@ class CApplet
         ~CApplet();
         void ShowIcon();
         void HideIcon();
-        //void DisableIcon();
-//        void BlinkIcon(bool pBlink);
         void SetIconTooltip(const char *format, ...);
         void CrashNotify(const char* crash_id, const char *format, ...);
         void MessageNotify(const char *format, ...);
