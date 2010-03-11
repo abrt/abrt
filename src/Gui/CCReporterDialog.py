@@ -61,7 +61,13 @@ class ReporterDialog():
             bLog.connect("clicked", self.show_log_cb, log)
         else:
             bLog.unset_flags(gtk.VISIBLE)
-        self.builder.get_object("cbSendBacktrace").connect("toggled", self.on_send_backtrace_toggled)
+        tb_send_bt = self.builder.get_object("cbSendBacktrace")
+        tb_send_bt.connect("toggled", self.on_send_backtrace_toggled)
+        try:
+            tb_send_bt.get_child().modify_fg(gtk.STATE_NORMAL,gtk.gdk.color_parse("red"))
+        except Exception, ex:
+            # we don't want gui to die if it fails to set the button color
+            log(ex)
         self.allow_send()
         self.hydrate()
 
@@ -122,6 +128,10 @@ class ReporterDialog():
         if error_msgs:
             self.warn_user(error_msgs)
         bSend.set_sensitive(send)
+        if not send:
+            bSend.set_tooltip_text(_("Reporting disabled, please fix the the problems shown above."))
+        else:
+            bSend.set_tooltip_text(_("Sends the report using selected plugin."))
 
     def on_send_backtrace_toggled(self, toggle_button):
         self.allow_send()
