@@ -303,7 +303,7 @@ $debug && echo "build_ids:$build_ids"
 # When we look for debuginfo we need only -debuginfo* repos, we can disable the rest
 # and thus make it faster.
 yum_repo_opts="'--disablerepo=*'"
-for enabled_repo in `yum repolist | grep 'enabled:' | cut -f1 -d' ' | grep -v -- '-debuginfo'`; do
+for enabled_repo in `yum repolist all | grep 'enabled:' | cut -f1 -d' ' | grep -v -- '-debuginfo'`; do
     yum_repo_opts="$yum_repo_opts '--enablerepo=${enabled_repo}-debuginfo*'"
 done
 
