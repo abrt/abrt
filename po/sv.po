@@ -1,100 +1,99 @@
 # Svenska translation of ABRT.
-# Copyright (C) 2009 Free Software Foundation, Inc.
+# Copyright © 2009-2010 Free Software Foundation, Inc.
+# This file is distributed under the same license as the ABRT package.
 # Magnus Larsson <fedoratrans@gmail.com>, 2009.
+# Göran Uddeborg <goeran@uddeborg.se>, 2010.
 #
+# $Id: abrt.po,v 1.2 2010-03-11 23:25:14+01 göran Exp $
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-09-23 14:58+0000\n"
-"PO-Revision-Date: 2009-09-23 14:23-0400\n"
-"Last-Translator: Magnus Larsson <fedoratrans@gmail.com>\n"
-"Language-Team: Swedish <sv@li.org>\n"
+"POT-Creation-Date: 2010-03-06 09:32+0000\n"
+"PO-Revision-Date: 2010-03-11 23:24+0100\n"
+"Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
+"Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: ../src/Gui/ABRTExceptions.py:4
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr ""
+msgstr "En annan klient kör redan, försöker väcka den."
 
-#: ../src/Gui/ABRTExceptions.py:10
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
+msgstr "Fick oväntade data från demonen (är databasen korrekt uppdaterad?)."
 
-#: ../src/Gui/ABRTPlugin.py:26
+#: ../src/Gui/ABRTPlugin.py:62
+msgid "Not loaded plugins"
+msgstr "Ej inlästa insticksmoduler"
+
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
-msgstr ""
+msgstr "Insticksmoduler för analys"
 
-#: ../src/Gui/ABRTPlugin.py:27
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
-msgstr ""
+msgstr "Insticksmoduler för åtgärder"
 
-#: ../src/Gui/ABRTPlugin.py:28
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
-msgstr ""
+msgstr "Insticksmoduler för rapporter"
 
-#: ../src/Gui/ABRTPlugin.py:29
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
-msgstr ""
+msgstr "Insticksmoduler för databaser"
 
-#: ../src/Gui/CCDBusBackend.py:140
-msgid "Can't connect to dbus"
-msgstr ""
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "Det går inte att ansluta till system-dbus:en"
 
-#: ../src/Gui/CCDBusBackend.py:144 ../src/Gui/CCDBusBackend.py:164
-msgid "Please check if abrt daemon is running."
-msgstr ""
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+msgid "Please check if abrt daemon is running"
+msgstr "Kontrollera om abrt-demonen kör"
 
-#: ../src/Gui/CCDBusBackend.py:182
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
-"Daemon did't return valid report info\n"
+"Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
+"Demonen returnerade inte giltig rapportinformation\n"
+"Felsökningsinformation saknas?"
 
 #: ../src/Gui/ccgui.glade.h:1
-msgid " "
-msgstr ""
+msgid "(C) 2009 Red Hat, Inc."
+msgstr "© 2009 Red Hat, Inc."
 
 #: ../src/Gui/ccgui.glade.h:2
-msgid "(C) 2009 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
-
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:236
-msgid "<b>Not reported!</b>"
-msgstr ""
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<span color=\"white\">Description</span>"
-msgstr ""
-
-#: ../src/Gui/ccgui.glade.h:5
 msgid "About ABRT"
 msgstr "Om ABRT"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
-msgstr ""
+msgstr "Automatiskt felrapporteringsverktyg"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:4
 msgid "Delete"
 msgstr "Radera"
 
-#: ../src/Gui/ccgui.glade.h:8
-msgid "Please wait.."
-msgstr "Var god vänta..."
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Not Reported"
+msgstr "Ej rapporterad"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Insticksmoduler"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
+#: ../src/Gui/ccgui.glade.h:7
 msgid "Report"
 msgstr "Rapport"
 
-#: ../src/Gui/ccgui.glade.h:11
+#: ../src/Gui/ccgui.glade.h:8
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -109,397 +108,523 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Detta program är fri programvara.  Du kan distribuera det och/eller modifiera det enligt villkoren i GNU General Public License, publicerad av Free Software Foundation, antingen version 2 eller (om du så vill) någon senare version.\n"
+"\n"
+"Detta program distribueras i hopp om att det ska vara användbart, men UTAN NÅGON GARANTI, även utan underförstådd garanti vid KÖP eller LÄMPLIGHET FÖR NÅGOT SPECIELLT ÄNDAMÅL.  Se GNU General Public License för ytterligare information.\n"
+"\n"
+"Du bör ha fått en kopia av GNU General Public License tillsammans med detta program. Om inte, se <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:16
-msgid "Working..."
-msgstr "Bearbetar..."
-
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:13
 msgid "_Edit"
 msgstr "_Redigera"
 
-#: ../src/Gui/ccgui.glade.h:18
+#: ../src/Gui/ccgui.glade.h:14
 msgid "_File"
 msgstr "_Fil"
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_Help"
 msgstr "_Hjälp"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:79
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Icon"
 msgstr "Ikon"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:81
 msgid "Package"
 msgstr "Paket"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:83
 msgid "Application"
 msgstr "Applikation"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:85
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:90
-msgid "Crash Rate"
-msgstr ""
+#: ../src/Gui/CCMainWindow.py:87
+msgid "Crash count"
+msgstr "Kraschräknare"
 
-#: ../src/Gui/CCMainWindow.py:92
+#: ../src/Gui/CCMainWindow.py:89
 msgid "User"
 msgstr "Användare"
 
-#: ../src/Gui/CCMainWindow.py:174
+#: ../src/Gui/CCMainWindow.py:157
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"Det går inte att visa inställningsdialogen\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:162
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
+"Det går inte att avsluta aktuell uppgift!\n"
+"%s"
 
-#: ../src/Gui/CCMainWindow.py:191
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:184
 #, python-format
 msgid ""
-"Error while loading the dumplist, please check if abrt daemon is running\n"
+"Error while loading the dumplist.\n"
+"%s"
+msgstr ""
+"Fel när dumplistan lästes in.\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:222
+msgid "This crash has been reported:\n"
+msgstr "Denna krash har rapporterats:\n"
+
+#: ../src/Gui/CCMainWindow.py:223
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>Denna krasch har rapporterats:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:238
+msgid "<b>Not reported!</b>"
+msgstr "<b>Inte rapportarad!</b>"
+
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:24
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Kort beskrivning hur man återskapar detta eller av vad du gjorde ..."
+
+#: ../src/Gui/CCReporterDialog.py:100
+msgid "You must check backtrace for sensitive data"
+msgstr "Du måste kontrollera om stackspåret innehåller någon känslig information"
+
+#: ../src/Gui/CCReporterDialog.py:111
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Rapporteringen avslagen för att stackspåret är oanvändbart.\n"
+"Försök installera felsökningsinformation manuellt med kommandot <b>debuginfo-install %s</b>\n"
+"och tryck sedan på Läs om-knappen för att återskapa stackspåret."
+
+#: ../src/Gui/CCReporterDialog.py:113
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "Stackspåret är oanvändbart, du kan inte rapportera detta!"
+
+#: ../src/Gui/CCReporterDialog.py:117
+msgid ""
+"The backtrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr "Stackspåret är ofullständigt, se till att du ger noggranna steg för att återskapa."
+
+#: ../src/Gui/CCReporterDialog.py:159
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
 " %s"
 msgstr ""
+"Det går inte att spara inställningar för insticksmoduler:\n"
+" %s"
 
-#: ../src/Gui/CCMainWindow.py:201
-#, python-format
-msgid "Can't get username for uid %s"
+#: ../src/Gui/CCReporterDialog.py:420
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
 msgstr ""
+"Ingen insticksmodul för rapportering tillgänglig för denna slags krash\n"
+"Kontrollera abrt.conf."
 
-#: ../src/Gui/CCMainWindow.py:228
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr ""
-
-#: ../src/Gui/CCMainWindow.py:288
+#: ../src/Gui/CCReporterDialog.py:465
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
+"Det går inte att rapportera!\n"
+"Saknas felsökningsinformation?"
 
-#: ../src/Gui/CCMainWindow.py:300
+#: ../src/Gui/CCReporterDialog.py:494
 #, python-format
 msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
+"Rapporteringen misslyckades!\n"
+"%s"
 
-#: ../src/Gui/CCMainWindow.py:332
+#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
 #, python-format
 msgid "Error getting the report: %s"
-msgstr ""
-
-#: ../src/Gui/CCReporterDialog.py:98
-#, python-format
-msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
-"Do you really want to send <b>%s</b>?\n"
-msgstr ""
-
-#: ../src/Gui/CCReporterDialog.py:111
-msgid "Brief description how to reproduce this or what you did..."
-msgstr ""
+msgstr "Fel när rapporten hämtades: %s"
 
 #: ../src/Gui/dialogs.glade.h:1
+msgid "Log"
+msgstr "Logg"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "Rapport klar"
 
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
-msgid "gtk-ok"
-msgstr "gtk-ok"
-
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr ""
+msgstr "Kan inte hitta Plugin-Dialogwidgeten i UI-beskrivningen!"
 
 #. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:21
+#: ../src/Gui/PluginSettingsUI.py:23
 #, python-format
 msgid "No UI for plugin %s"
-msgstr ""
+msgstr "Inget UI för insticksmodulen %s"
 
-#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:56 ../src/Gui/PluginSettingsUI.py:82
 msgid "combo box is not implemented"
-msgstr ""
+msgstr "combobox är inte implementerad"
 
-#: ../src/Gui/PluginSettingsUI.py:47
+#: ../src/Gui/PluginSettingsUI.py:65
 msgid "Nothing to hydrate!"
-msgstr ""
+msgstr "Inget att hydrera!"
 
 #: ../src/Gui/report.glade.h:1
-#, fuzzy
-msgid "Comment"
-msgstr "Kommentera"
+msgid " "
+msgstr " "
+
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Bilagor</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "Send"
-msgstr "Skicka"
+msgid "<b>Backtrace</b>"
+msgstr "<b>Stackspår</b>"
 
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
-msgstr "gtk-cancel"
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>Kommentar</b>"
 
-#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Hur man reproducerar (i några få enkla steg)</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Rätta till följande problem</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>Vart vill du rapportera denna incident?</b>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">Arkitektur:</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Kommandorad:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Komponent:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Program:</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">Kärna:</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Paket:</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">Anledning:</span>"
+
+#: ../src/Gui/report.glade.h:15
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Utgåva:</span>"
+
+#: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "Detaljer"
+
+#: ../src/Gui/report.glade.h:18
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr "Jag kontrollerade stackspåret och tog bort känslig information (lösenord o.dyl.)"
+
+#: ../src/Gui/report.glade.h:19
+msgid "N/A"
+msgstr "Ej tillämpligt"
+
+#: ../src/Gui/report.glade.h:20
+msgid "Please wait.."
+msgstr "Var god vänta..."
+
+#: ../src/Gui/report.glade.h:21
+msgid "Reporter Selector"
+msgstr "Rapportörväljare"
+
+#: ../src/Gui/report.glade.h:22
+msgid "Send report"
+msgstr "Skicka rapport"
+
+#: ../src/Gui/report.glade.h:23
+msgid "Show log"
+msgstr "Visa logg"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
-msgstr ""
+msgstr "<b>Välj insticksmodul</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
-msgstr ""
+msgstr "<b>Välj databasbakände</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
-msgstr ""
+msgstr "Ta bort detta jobb"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
-msgstr ""
+msgstr "Ta bort denna åtgärd"
 
 #: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
-msgstr ""
+msgstr "<b>Insticksmodul för analys</b>"
 
 #: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
-msgstr ""
+msgstr "<b>Tillhörande åtgärd</b>"
 
 #: ../src/Gui/settings.glade.h:3
-msgid "<b>Plugin</b>"
-msgstr ""
+msgid "<b>Plugin details</b>"
+msgstr "<b>Detaljer om insticksmodul</b>"
 
 #: ../src/Gui/settings.glade.h:4
-msgid "<b>Time (or period)</b>"
-msgstr ""
+msgid "<b>Plugin</b>"
+msgstr "<b>Insticksmodul</b>"
 
 #: ../src/Gui/settings.glade.h:5
-msgid "Analyzers, Actions, Reporters"
-msgstr ""
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Tid (eller period)</b>"
 
 #: ../src/Gui/settings.glade.h:6
+msgid "Analyzers, Actions, Reporters"
+msgstr "Analyserare, åtgärder, rapporterare"
+
+#: ../src/Gui/settings.glade.h:7
 msgid "Author:"
 msgstr "Författare:"
 
-#: ../src/Gui/settings.glade.h:7
-msgid "Blacklisted packages: "
-msgstr ""
-
 #: ../src/Gui/settings.glade.h:8
-msgid "C_onfigure plugin"
-msgstr ""
+msgid "Blacklisted packages: "
+msgstr "Svartlistade paket: "
 
 #: ../src/Gui/settings.glade.h:9
-msgid "Check package GPG signature"
-msgstr ""
+msgid "C_onfigure plugin"
+msgstr "K_onfigurera insticksmodul"
 
 #: ../src/Gui/settings.glade.h:10
-msgid "Common"
-msgstr ""
+msgid "Check package GPG signature"
+msgstr "Kontrollera pakets GPG-signaturer"
 
 #: ../src/Gui/settings.glade.h:11
-msgid "Cron"
-msgstr ""
+msgid "Common"
+msgstr "Allmänt"
 
 #: ../src/Gui/settings.glade.h:12
-msgid "Database backend: "
-msgstr ""
+msgid "Cron"
+msgstr "Cron"
 
 #: ../src/Gui/settings.glade.h:13
-msgid "Edit blacklisted packages"
-msgstr ""
+msgid "Database backend: "
+msgstr "Databasbakände: "
 
 #: ../src/Gui/settings.glade.h:14
-msgid "GPG Keys"
-msgstr ""
+msgid "Description:"
+msgstr "Beskrivning:"
 
 #: ../src/Gui/settings.glade.h:15
-msgid "GPG keys: "
-msgstr ""
+msgid "GPG Keys"
+msgstr "GPG-nycklar"
 
 #: ../src/Gui/settings.glade.h:16
-msgid "Global Settings"
-msgstr ""
+msgid "GPG keys: "
+msgstr "GPG-nycklar: "
 
 #: ../src/Gui/settings.glade.h:17
 msgid "Max coredump storage size(MB):"
-msgstr ""
+msgstr "Maximal lagringsstorlek för coredump (MB):"
 
 #: ../src/Gui/settings.glade.h:18
-msgid "Nothing selected"
-msgstr ""
-
-#: ../src/Gui/settings.glade.h:19
-msgid "Plugin Details"
-msgstr ""
+msgid "Name:"
+msgstr "Namn:"
 
 #: ../src/Gui/settings.glade.h:20
-msgid "Settings"
+msgid "Preferences"
 msgstr "Inställningar"
 
 #: ../src/Gui/settings.glade.h:21
-msgid "This function is not implemented yet!"
-msgstr ""
-
-#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "Version:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "Webbplats:"
 
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-add"
-msgstr "gtk-add"
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Visa och rapportera programkrascher"
 
-#: ../src/Gui/settings.glade.h:26
-msgid "gtk-close"
-msgstr "gtk-close"
-
-#: ../src/Gui/settings.glade.h:28
-msgid "gtk-remove"
-msgstr "gtk-remove"
-
-#: ../src/Applet/Applet.cpp:76
+#: ../src/Applet/Applet.cpp:77
 #, c-format
 msgid "A crash in package %s has been detected"
-msgstr ""
+msgstr "En krash i paketet %s har upptäckts"
 
-#: ../src/Applet/Applet.cpp:145
-msgid "ABRT service has been started"
-msgstr ""
+#: ../src/Applet/Applet.cpp:79
+msgid "A crash has been detected"
+msgstr "En krash har upptäckts"
 
-#: ../src/Applet/Applet.cpp:147 ../src/Applet/Applet.cpp:261
+#: ../src/Applet/Applet.cpp:254
 msgid "ABRT service is not running"
-msgstr ""
+msgstr "ABRT-tjänsten kör inte"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:199
 msgid "Warning"
 msgstr "Varning"
 
-#: ../src/Daemon/Daemon.cpp:545
+#: ../src/Daemon/Daemon.cpp:481
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
-msgstr ""
+msgstr "Rapportstorleken överstiger kvotan.  Kontrollera systemets MaxCrashReportsSize-värde i abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:83
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr ""
-
-#: ../lib/Plugins/Bugzilla.cpp:227
-msgid "Bug is already reported: "
-msgstr ""
-
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
-msgid "Binary file %s will not be reported."
-msgstr ""
+msgid "Bug is already reported: %i"
+msgstr "Felet är redan rapporterat: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:352
-msgid "New bug id: "
-msgstr ""
+#: ../lib/Plugins/Bugzilla.cpp:395
+#, c-format
+msgid "New bug id: %i"
+msgstr "Nytt fel-id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:421
-msgid "Checking for duplicates..."
-msgstr ""
-
-#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:549
 msgid "Logging into bugzilla..."
-msgstr ""
+msgstr "Loggar in i bugzilla ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
-msgid "Check CC and add coment +1..."
-msgstr ""
+#: ../lib/Plugins/Bugzilla.cpp:553
+msgid "Empty login and password. Please check Bugzilla.conf"
+msgstr "Tom inloggning och lösenord.  Kontrollera Bugzilla.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:563
+msgid "Checking for duplicates..."
+msgstr "Letar efter dubletter ..."
+
+#: ../lib/Plugins/Bugzilla.cpp:576
+msgid "Missing mandatory member 'bugs'"
+msgstr "Nödvändigt medlemskap i \"bugs\" saknas"
+
+#: ../lib/Plugins/Bugzilla.cpp:586
 msgid "Creating new bug..."
-msgstr ""
+msgstr "Skapar ett nytt fel ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr "Att skapa ett Bugzillaärende misslyckades"
+
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Loggar ut..."
 
-#: ../lib/Plugins/Kerneloops.cpp:37
-msgid "Getting local universal unique identification"
-msgstr ""
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() misslyckades.  Det gick inte att samla all nödvändig information"
 
-#: ../lib/Plugins/CCpp.cpp:146
-msgid "Getting backtrace..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:384
-msgid "Searching for debug-info packages..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:418
-msgid "Downloading and installing debug-info packages..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:480
-msgid "Getting local universal unique identification..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:499
-msgid "Getting global universal unique identification..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:551
-msgid "Starting report creation..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:580
-msgid "Skipping debuginfo installation"
-msgstr ""
-
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
-msgid "Creating and submitting a report..."
-msgstr ""
-
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
-msgid "Creating a report..."
-msgstr ""
-
-#: ../lib/Plugins/RunApp.cpp:62
-msgid "Executing RunApp plugin..."
-msgstr ""
-
-#: ../lib/Plugins/FileTransfer.cpp:60 ../lib/Plugins/FileTransfer.cpp:355
-msgid "FileTransfer: URL not specified"
-msgstr ""
-
-#: ../lib/Plugins/FileTransfer.cpp:77
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
-msgid "Sending archive %s via %s"
-msgstr ""
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr "Bugzilla kunde inte hitta föräldern till felet(%d)"
 
-#: ../lib/Plugins/FileTransfer.cpp:284
+#: ../lib/Plugins/Bugzilla.cpp:646
+#, c-format
+msgid "Jump to bug %d"
+msgstr "Hoppa till fel %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Lägg till %s till CC-listan"
+
+#: ../lib/Plugins/Bugzilla.cpp:695
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "Lägg till ny kommentar till fel(%d)"
+
+#: ../lib/Plugins/Kerneloops.cpp:100
+msgid "Getting local universal unique identification"
+msgstr "Hämtar lokal universellt unik identifikation"
+
+#: ../lib/Plugins/CCpp.cpp:275
+msgid "Generating backtrace"
+msgstr "Genererar stackspår"
+
+#: ../lib/Plugins/CCpp.cpp:441
+msgid "Starting debuginfo installation"
+msgstr "Startar installation av felsökningsinformation"
+
+#: ../lib/Plugins/CCpp.cpp:637
+msgid "Getting global universal unique identification..."
+msgstr "Hämtar global universellt unik identifikation ..."
+
+#: ../lib/Plugins/CCpp.cpp:815
+msgid "Skipping debuginfo installation"
+msgstr "Hoppar över installation av felsökningsinformation"
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
+msgid "Creating and submitting a report..."
+msgstr "Skapar och skickar en rapport ..."
+
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "Skriver rapport till \"%s\""
+
+#: ../lib/Plugins/FileTransfer.cpp:53
+msgid "FileTransfer: URL not specified"
+msgstr "Filöverföring: URL ej angiven"
+
+#: ../lib/Plugins/FileTransfer.cpp:57
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "Skickar arkiv %s till %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
-msgstr ""
+msgstr "Filöverföring: Skapar en rapport ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:305 ../lib/Plugins/FileTransfer.cpp:334
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
-msgstr ""
+#: ../lib/Plugins/FileTransfer.cpp:322
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Det går inte att skapa och skicka ett arkiv: %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
-msgid "Creating kernel oops crash reports..."
-msgstr ""
+#: ../lib/Plugins/FileTransfer.cpp:351
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Det går inte att skapa och skicka ett arkiv %s"
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
-msgstr ""
+msgstr "Skickar ett e-brev ..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
-msgid "Executing SOSreport plugin..."
-msgstr ""
+#: ../lib/Plugins/SOSreport.cpp:101
+#, c-format
+msgid "Running sosreport: %s"
+msgstr "Kör sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:135
-msgid "running sosreport: "
-msgstr ""
-
-#: ../lib/Plugins/SOSreport.cpp:150
-msgid "done running sosreport"
-msgstr ""
+#: ../lib/Plugins/SOSreport.cpp:107
+msgid "Done running sosreport"
+msgstr "Klar med att köra sosreport"
