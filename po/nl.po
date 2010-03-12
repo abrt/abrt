@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-10 09:00+0000\n"
-"PO-Revision-Date: 2010-03-10 10:29+0100\n"
+"POT-Creation-Date: 2010-03-12 07:54+0000\n"
+"PO-Revision-Date: 2010-03-12 13:30+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -92,7 +92,7 @@ msgstr "Niet gerapporteerd"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:7 ../src/Applet/CCApplet.cpp:280
 msgid "Report"
 msgstr "Rapport"
 
@@ -228,11 +228,11 @@ msgstr ""
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:109
 msgid "You must check backtrace for sensitive data"
 msgstr "Je moet de backtrace controleren op gevoelige data"
 
-#: ../src/Gui/CCReporterDialog.py:114
+#: ../src/Gui/CCReporterDialog.py:120
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -245,11 +245,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#: ../src/Gui/CCReporterDialog.py:116
+#: ../src/Gui/CCReporterDialog.py:122
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
 
-#: ../src/Gui/CCReporterDialog.py:120
+#: ../src/Gui/CCReporterDialog.py:126
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -257,7 +257,16 @@ msgstr ""
 "De backtrace is niet compleet, wees er zeker van om voor het genereren de "
 "juiste stappen op te volgen."
 
-#: ../src/Gui/CCReporterDialog.py:162
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Reporting disabled, please fix the the problems shown above."
+msgstr ""
+"Rapporteren is uitgezet, los a.u.b. de hierboven getoonde problemen op."
+
+#: ../src/Gui/CCReporterDialog.py:134
+msgid "Sends the report using selected plugin."
+msgstr "Verstuur het rapport met de geselecteerde plug-in."
+
+#: ../src/Gui/CCReporterDialog.py:172
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -266,7 +275,7 @@ msgstr ""
 "Kan de plugin instellingen niet opslaan:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:439
+#: ../src/Gui/CCReporterDialog.py:449
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -274,7 +283,7 @@ msgstr ""
 "Er is geen rapportage plug-in beschikbaar voor dit type crash\n"
 "Controleer abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:483
+#: ../src/Gui/CCReporterDialog.py:493
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -282,7 +291,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:512
+#: ../src/Gui/CCReporterDialog.py:522
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -291,7 +300,7 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:538 ../src/Gui/CCReporterDialog.py:559
+#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -387,28 +396,32 @@ msgid "Details"
 msgstr "Details"
 
 #: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Forceert ABRT om de backtrace opnieuw te genereren"
+
+#: ../src/Gui/report.glade.h:19
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Ik heb de backtrace gecontroleerd en gevoelige data verwijderd "
 "(wachtwoorden, enz.)"
 
-#: ../src/Gui/report.glade.h:19
+#: ../src/Gui/report.glade.h:20
 msgid "N/A"
 msgstr "n.v.t."
 
-#: ../src/Gui/report.glade.h:20
+#: ../src/Gui/report.glade.h:21
 msgid "Please wait.."
 msgstr "Wacht a.u.b..."
 
-#: ../src/Gui/report.glade.h:21
+#: ../src/Gui/report.glade.h:22
 msgid "Reporter Selector"
 msgstr "Aanmeld selectie"
 
-#: ../src/Gui/report.glade.h:22
+#: ../src/Gui/report.glade.h:23
 msgid "Send report"
 msgstr "Verstuur rapport"
 
-#: ../src/Gui/report.glade.h:23
+#: ../src/Gui/report.glade.h:24
 msgid "Show log"
 msgstr "Laat log zien"
 
@@ -516,20 +529,21 @@ msgstr "Website:"
 msgid "View and report application crashes"
 msgstr "Bekijk en rapporteer crashes van toepassingen"
 
-#: ../src/Applet/Applet.cpp:77
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Een crash in pakket %s is ontdekt"
 
-#: ../src/Applet/Applet.cpp:79
+#: ../src/Applet/Applet.cpp:90
 msgid "A crash has been detected"
 msgstr "Een crash is ontdekt"
 
-#: ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
-#: ../src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:314
 msgid "Warning"
 msgstr "Waarschuwing"
 
