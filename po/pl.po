@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-12 13:06+0000\n"
-"PO-Revision-Date: 2010-03-12 14:13+0100\n"
+"POT-Creation-Date: 2010-03-13 19:31+0000\n"
+"PO-Revision-Date: 2010-03-13 20:44+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -219,17 +219,17 @@ msgstr ""
 "id_awarii=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:24
+#: ../src/Gui/CCReporterDialog.py:22
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
 "języku angielskim)..."
 
-#: ../src/Gui/CCReporterDialog.py:109
+#: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane"
 
-#: ../src/Gui/CCReporterDialog.py:120
+#: ../src/Gui/CCReporterDialog.py:118
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -242,11 +242,11 @@ msgstr ""
 "<b>debuginfo-install %s</b>, \n"
 "a następnie nacisnąć przycisk Odśwież, aby ponownie utworzyć wyjątek."
 
-#: ../src/Gui/CCReporterDialog.py:122
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Nie można użyć tego wyjątku, więc nie można tego zgłosić."
 
-#: ../src/Gui/CCReporterDialog.py:126
+#: ../src/Gui/CCReporterDialog.py:124
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -254,15 +254,15 @@ msgstr ""
 "Wyjątek jest niepełny. Proszę upewnić się, że podano właściwe kroki "
 "ponownego wywołania awarii."
 
-#: ../src/Gui/CCReporterDialog.py:132
+#: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the the problems shown above."
 msgstr "Zgłaszanie jest wyłączone. Proszę naprawić powyższe problemy."
 
-#: ../src/Gui/CCReporterDialog.py:134
+#: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
 msgstr "Wysyła raport używając wybranej wtyczki."
 
-#: ../src/Gui/CCReporterDialog.py:172
+#: ../src/Gui/CCReporterDialog.py:170
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -271,7 +271,12 @@ msgstr ""
 "Nie można zapisać ustawień wtyczki:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:449
+#: ../src/Gui/CCReporterDialog.py:202
+#, python-format
+msgid "Configure %s options"
+msgstr "Skonfiguruj opcje %s"
+
+#: ../src/Gui/CCReporterDialog.py:444
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -279,7 +284,7 @@ msgstr ""
 "Brak dostępnej wtyczki zgłaszania dla tego typu awarii\n"
 "Proszę sprawdzić plik abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:493
+#: ../src/Gui/CCReporterDialog.py:488
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -287,7 +292,7 @@ msgstr ""
 "Nie można uzyskać raportu.\n"
 "Brak pakietów debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:522
+#: ../src/Gui/CCReporterDialog.py:517
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -296,7 +301,7 @@ msgstr ""
 "Zgłoszenie nie powiodło się.\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
+#: ../src/Gui/CCReporterDialog.py:543 ../src/Gui/CCReporterDialog.py:564
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Błąd podczas uzyskiwania raportu: %s"
@@ -314,17 +319,11 @@ msgid "Can't find PluginDialog widget in UI description!"
 msgstr ""
 "Nie można odnaleźć widgetu PluginDialog w opisie interfejsu użytkownika."
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:23
-#, python-format
-msgid "No UI for plugin %s"
-msgstr "Brak interfejsu użytkownika dla wtyczki %s"
-
-#: ../src/Gui/PluginSettingsUI.py:56 ../src/Gui/PluginSettingsUI.py:82
+#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "pole kombinowane nie jest zaimplementowane"
 
-#: ../src/Gui/PluginSettingsUI.py:65
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "Brak danych do wyświetlenia."
 
@@ -567,8 +566,12 @@ msgid "Logging into bugzilla..."
 msgstr "Logowanie do Bugzilli..."
 
 #: ../lib/Plugins/Bugzilla.cpp:553
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Pola login i hasło są puste. Proszę sprawdzić plik Bugzilla.conf"
+msgid ""
+"Empty login and password.\n"
+"Please check "
+msgstr ""
+"Pola login i hasło są puste.\n"
+"Proszę sprawdzić "
 
 #: ../lib/Plugins/Bugzilla.cpp:563
 msgid "Checking for duplicates..."

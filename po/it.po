@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-11 09:40+0000\n"
-"PO-Revision-Date: 2010-03-12 11:00+0100\n"
+"POT-Creation-Date: 2010-03-13 19:31+0000\n"
+"PO-Revision-Date: 2010-03-13 20:43+0100\n"
 "Last-Translator: Andrea La Fauci <andrea.lafauci@weproudlymanage.com>\n"
 "Language-Team: Italian <trans-it@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -89,7 +89,7 @@ msgstr "Non riportato"
 msgid "Plugins"
 msgstr "Plugin"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:7 ../src/Applet/CCApplet.cpp:280
 msgid "Report"
 msgstr "Report"
 
@@ -220,16 +220,17 @@ msgstr ""
 "crashid=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:24
+#: ../src/Gui/CCReporterDialog.py:22
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
-"Breve descrizione di come riprodurre il crash oppure di cosa si stava facendo..."
+"Breve descrizione di come riprodurre il crash oppure di cosa si stava "
+"facendo..."
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "E' necessario verificare il backtrace per trovare dati sensibili"
 
-#: ../src/Gui/CCReporterDialog.py:114
+#: ../src/Gui/CCReporterDialog.py:118
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -237,16 +238,16 @@ msgid ""
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"Riporto disabilitato poichè il backrace non è utilizzabile.\n"
+"Rapporto disabilitato poichè il backrace non è utilizzabile.\n"
 "Cercare di installare debuginfo manualmente usando il comando: <b>debuginfo-"
 "install %s</b> \n"
 "quindi premere il pulsante Aggiorna per rigenerare il backtrace."
 
-#: ../src/Gui/CCReporterDialog.py:116
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Il backtrace non è utilizzabile, non è possibile eseguire il report!"
 
-#: ../src/Gui/CCReporterDialog.py:120
+#: ../src/Gui/CCReporterDialog.py:124
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -254,7 +255,16 @@ msgstr ""
 "Il backtrace è incompleto, assicurarsi di fornire delle indicazioni precise "
 "su come riprodurre il crash."
 
-#: ../src/Gui/CCReporterDialog.py:162
+#: ../src/Gui/CCReporterDialog.py:130
+msgid "Reporting disabled, please fix the the problems shown above."
+msgstr ""
+"Reporting disabilitato, si prega di correggere il problema sopra riportato."
+
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Sends the report using selected plugin."
+msgstr "Invia il report tramite il plugin selezionato."
+
+#: ../src/Gui/CCReporterDialog.py:170
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -263,7 +273,12 @@ msgstr ""
 "Impossibile salvare le impostazioni del plugin:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:439
+#: ../src/Gui/CCReporterDialog.py:202
+#, python-format
+msgid "Configure %s options"
+msgstr "Configura le opzioni %s"
+
+#: ../src/Gui/CCReporterDialog.py:444
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -271,7 +286,7 @@ msgstr ""
 "Nessun plugin di reportistica disponibile per questa tipologia di crash\n"
 "Controllare abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:483
+#: ../src/Gui/CCReporterDialog.py:488
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -279,7 +294,7 @@ msgstr ""
 "Impossibile ottenere il report!\n"
 "Debuginfo mancanti?"
 
-#: ../src/Gui/CCReporterDialog.py:512
+#: ../src/Gui/CCReporterDialog.py:517
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -288,7 +303,7 @@ msgstr ""
 "Report fallito!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:538 ../src/Gui/CCReporterDialog.py:559
+#: ../src/Gui/CCReporterDialog.py:543 ../src/Gui/CCReporterDialog.py:564
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Errore nell'ottenere il report: %s"
@@ -305,17 +320,11 @@ msgstr "Report completato"
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Impossibile trovare il widget PluginDialog nella descrizione di UI!"
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:23
-#, python-format
-msgid "No UI for plugin %s"
-msgstr "Nessuna UI per il plugin %s"
-
-#: ../src/Gui/PluginSettingsUI.py:56 ../src/Gui/PluginSettingsUI.py:82
+#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "combo box non è implementato"
 
-#: ../src/Gui/PluginSettingsUI.py:65
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "Niente da hydrate!"
 
@@ -384,27 +393,31 @@ msgid "Details"
 msgstr "Dettagli"
 
 #: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Forza ABRT alla rigenerazione del backtrace"
+
+#: ../src/Gui/report.glade.h:19
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Ho controllato il backtrace ed ho rimosso i dati sensibili (password, etc)"
 
-#: ../src/Gui/report.glade.h:19
+#: ../src/Gui/report.glade.h:20
 msgid "N/A"
 msgstr "N/A"
 
-#: ../src/Gui/report.glade.h:20
+#: ../src/Gui/report.glade.h:21
 msgid "Please wait.."
 msgstr "Attendere prego.."
 
-#: ../src/Gui/report.glade.h:21
+#: ../src/Gui/report.glade.h:22
 msgid "Reporter Selector"
 msgstr "Reporter Selector"
 
-#: ../src/Gui/report.glade.h:22
+#: ../src/Gui/report.glade.h:23
 msgid "Send report"
 msgstr "Invia il report"
 
-#: ../src/Gui/report.glade.h:23
+#: ../src/Gui/report.glade.h:24
 msgid "Show log"
 msgstr "Mostra log"
 
@@ -512,20 +525,21 @@ msgstr "Sito web:"
 msgid "View and report application crashes"
 msgstr "Visualizza e riporta i crash applicativi"
 
-#: ../src/Applet/Applet.cpp:77
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "È stato rilevato un crash nel pacchetto %s"
 
-#: ../src/Applet/Applet.cpp:79
+#: ../src/Applet/Applet.cpp:90
 msgid "A crash has been detected"
 msgstr "È stato rilevato un crash"
 
-#: ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "Il servizio ABRT non è in esecuzione"
 
-#: ../src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:314
 msgid "Warning"
 msgstr "Attenzione"
 
@@ -552,8 +566,12 @@ msgid "Logging into bugzilla..."
 msgstr "Accesso in bugzilla in corso..."
 
 #: ../lib/Plugins/Bugzilla.cpp:553
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Login e password vuote. Controllare Bugzilla.conf"
+msgid ""
+"Empty login and password.\n"
+"Please check "
+msgstr ""
+"Login e password vuote.\n"
+"Si prega di controllare"
 
 #: ../lib/Plugins/Bugzilla.cpp:563
 msgid "Checking for duplicates..."
@@ -665,6 +683,9 @@ msgstr "Esecuzione di sosreport: %s"
 #: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "Esecuzione di sosreport completata"
+
+#~ msgid "No UI for plugin %s"
+#~ msgstr "Nessuna UI per il plugin %s"
 
 #~ msgid "Plugin name is not set, can't load its settings"
 #~ msgstr ""
