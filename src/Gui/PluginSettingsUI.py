@@ -20,9 +20,7 @@ class PluginSettingsUI():
                 self.dialog.set_transient_for(parent)
         else:
             # we shouldn't get here, but just to be safe
-            no_ui_label = gtk.Label(_("No UI for plugin %s" % pluginfo))
-            self.add(no_ui_label)
-            no_ui_label.show()
+            log1("No UI for plugin %s" % pluginfo)
 
         if parent:
             self.dialog.set_position(gtk.WIN_POS_CENTER_ON_PARENT)

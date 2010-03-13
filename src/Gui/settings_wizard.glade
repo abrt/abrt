@@ -7,6 +7,7 @@
     <property name="title" translatable="yes">Wrong Settings Detected</property>
     <property name="resizable">False</property>
     <property name="window_position">center-on-parent</property>
+    <property name="icon_name">abrt</property>
     <property name="type_hint">normal</property>
     <property name="has_separator">False</property>
     <child internal-child="vbox">
@@ -85,7 +86,7 @@
             <property name="layout_style">end</property>
             <child>
               <object class="GtkButton" id="bCancel">
-                <property name="label" translatable="yes">gtk-no</property>
+                <property name="label">gtk-no</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
@@ -99,7 +100,7 @@
             </child>
             <child>
               <object class="GtkButton" id="bContinue">
-                <property name="label" translatable="yes">gtk-yes</property>
+                <property name="label">gtk-yes</property>
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
