@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-05 03:51+0000\n"
-"PO-Revision-Date: 2010-03-05 11:04+0200\n"
+"POT-Creation-Date: 2010-03-13 08:05+0000\n"
+"PO-Revision-Date: 2010-03-13 13:56+0200\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
 "MIME-Version: 1.0\n"
@@ -52,7 +52,8 @@ msgstr "Järjestelmäväylään ei saatu yhteyttä"
 msgid "Please check if abrt daemon is running"
 msgstr "Tarkista onko abrt-taustaprosessi käynnissä"
 
-#: ../src/Gui/CCDBusBackend.py:173
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -85,7 +86,7 @@ msgstr "Ei raportoitu"
 msgid "Plugins"
 msgstr "Liitännäiset"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:7 ../src/Applet/CCApplet.cpp:280
 msgid "Report"
 msgstr "Raportti"
 
@@ -129,31 +130,31 @@ msgid "_Help"
 msgstr "_Ohje"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Kuvake"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Paketti"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Ohjelma"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Päiväys"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "Kaatumisten määrä"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Käyttäjä"
 
-#: ../src/Gui/CCMainWindow.py:157
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -162,7 +163,7 @@ msgstr ""
 "Asetusikkunaa ei voida näyttää\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:162
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -172,7 +173,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -181,17 +182,38 @@ msgstr ""
 "Vedosluetteloa ladattaessa tapahtui virhe.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:222
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "Tämä kaatuminen on raportoitu:\n"
 
-#: ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Tämä kaatuminen on raportoitu:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:238
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>Ei raportoitu!</b>"
+
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \ttämä ohjeviesti\n"
+"\t-v[vv]             \ttulosteiden määrä\n"
+"\t--report=<crashid>\traportoi kaatuminen heti crashid:llä <crashid>"
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"Tätä kaatumista ei ole tietokannassa, crashid on ehkä väärä.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:24
@@ -199,11 +221,11 @@ msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Lyhyt kuvaus siitä, miten tämän pystyy toistamaan tai mitä olit tekemässä..."
 
-#: ../src/Gui/CCReporterDialog.py:100
+#: ../src/Gui/CCReporterDialog.py:109
 msgid "You must check backtrace for sensitive data"
 msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta"
 
-#: ../src/Gui/CCReporterDialog.py:111
+#: ../src/Gui/CCReporterDialog.py:120
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -218,11 +240,11 @@ msgstr ""
 "Käytä sitten Päivitä-painiketta virheenjäljitystietojen generoimiseksi "
 "uudelleen."
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:122
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
 
-#: ../src/Gui/CCReporterDialog.py:117
+#: ../src/Gui/CCReporterDialog.py:126
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -230,7 +252,15 @@ msgstr ""
 "Virheenjäljitystiedot ovat epätäydelliset, varmista että olet kertonut "
 "tarkat vaiheet virheen toistamiseen."
 
-#: ../src/Gui/CCReporterDialog.py:159
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Reporting disabled, please fix the the problems shown above."
+msgstr "Raportointi on poistettu käytöstä, korjaa yllä mainitut ongelmat."
+
+#: ../src/Gui/CCReporterDialog.py:134
+msgid "Sends the report using selected plugin."
+msgstr "Lähettää raportin käyttäen valittua liitännäistä."
+
+#: ../src/Gui/CCReporterDialog.py:172
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -239,7 +269,7 @@ msgstr ""
 "Liitännäisen asetuksia ei voida tallentaa:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:425
+#: ../src/Gui/CCReporterDialog.py:449
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -247,7 +277,7 @@ msgstr ""
 "Tämäntyyppiselle kaatumiselle ei ole saatavilla raportoijaliitännäistä.\n"
 "Tarkista abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:470
+#: ../src/Gui/CCReporterDialog.py:493
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -255,7 +285,7 @@ msgstr ""
 "Raporttia ei saatu!\n"
 "Puuttuuko debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:499
+#: ../src/Gui/CCReporterDialog.py:522
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -264,7 +294,7 @@ msgstr ""
 "Raportin tekeminen epäonnistui!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:526 ../src/Gui/CCReporterDialog.py:547
+#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Raportin noutaminen epäonnistui: %s"
@@ -360,28 +390,32 @@ msgid "Details"
 msgstr "Lisätietoja"
 
 #: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Pakottaa ABRT:n tekemään pinolistauksen"
+
+#: ../src/Gui/report.glade.h:19
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Pinolistaus on tarkistettu ja arkaluontoiset tiedot, kuten salasanat, on "
 "poistettu"
 
-#: ../src/Gui/report.glade.h:19
+#: ../src/Gui/report.glade.h:20
 msgid "N/A"
 msgstr "Ei saatavilla"
 
-#: ../src/Gui/report.glade.h:20
+#: ../src/Gui/report.glade.h:21
 msgid "Please wait.."
 msgstr "Odota hetki..."
 
-#: ../src/Gui/report.glade.h:21
+#: ../src/Gui/report.glade.h:22
 msgid "Reporter Selector"
 msgstr "Raportoijan valitsin"
 
-#: ../src/Gui/report.glade.h:22
+#: ../src/Gui/report.glade.h:23
 msgid "Send report"
 msgstr "Lähetä raportti"
 
-#: ../src/Gui/report.glade.h:23
+#: ../src/Gui/report.glade.h:24
 msgid "Show log"
 msgstr "Näytä loki"
 
@@ -489,16 +523,21 @@ msgstr "Verkkosivu:"
 msgid "View and report application crashes"
 msgstr "Katsele ja raportoi ohjelmien kaatumisia"
 
-#: ../src/Applet/Applet.cpp:77
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Paketissa %s on huomattu kaatuminen"
 
-#: ../src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:90
+msgid "A crash has been detected"
+msgstr "Kaatuminen on huomattu"
+
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "ABRT-palvelu ei ole käytössä"
 
-#: ../src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:314
 msgid "Warning"
 msgstr "Varoitus"
 
@@ -540,31 +579,35 @@ msgstr "Puuttuva pakollinen osa ”bugs”"
 msgid "Creating new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
-#: ../lib/Plugins/Bugzilla.cpp:594 ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
+
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Kirjaudutaan ulos..."
 
-#: ../lib/Plugins/Bugzilla.cpp:624 ../lib/Plugins/Bugzilla.cpp:652
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
-#: ../lib/Plugins/Bugzilla.cpp:636
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta (%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:641
+#: ../lib/Plugins/Bugzilla.cpp:646
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Siirry vikailmoitukseen %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:666 ../lib/Plugins/Bugzilla.cpp:667
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Lisää %s CC-luetteloon"
 
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/Plugins/Bugzilla.cpp:695
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
