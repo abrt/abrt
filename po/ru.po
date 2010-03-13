@@ -8,15 +8,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-11 03:56+0000\n"
-"PO-Revision-Date: 2010-03-11 13:06+0800\n"
+"POT-Creation-Date: 2010-03-13 08:05+0000\n"
+"PO-Revision-Date: 2010-03-13 11:45+0300\n"
 "Last-Translator: Misha Shnurapet <zayzayats@yandex.ru>\n"
 "Language-Team: Russian <>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%"
+"10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -24,7 +25,8 @@ msgstr "Другой клиент уже работает. Будет выпол
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Получены неожиданные данные от демона. Убедитесь, что база данных обновлена."
+msgstr ""
+"Получены неожиданные данные от демона. Убедитесь, что база данных обновлена."
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -46,13 +48,11 @@ msgstr "Модули отчётности"
 msgid "Database plugins"
 msgstr "Модули базы данных"
 
-#: ../src/Gui/CCDBusBackend.py:74
-#: ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Не удалось подключиться к dbus"
 
-#: ../src/Gui/CCDBusBackend.py:120
-#: ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Убедитесь, что демон abrt выполняется"
 
@@ -73,10 +73,8 @@ msgstr "(C) 2009 Red Hat, Inc."
 msgid "About ABRT"
 msgstr "Об ABRT"
 
-#: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:8
-#: ../src/Gui/report.glade.h:16
-#: ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "ABRT — Автоматическая регистрация ошибок"
 
@@ -88,26 +86,38 @@ msgstr "Удалить"
 msgid "Not Reported"
 msgstr "Не сообщено"
 
-#: ../src/Gui/ccgui.glade.h:6
-#: ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:6 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Модули"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:7 ../src/Applet/CCApplet.cpp:280
 msgid "Report"
 msgstr "Сообщить"
 
 #: ../src/Gui/ccgui.glade.h:8
 msgid ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Эта программа — свободное программное обеспечение; её можно распространять и изменять в соответствии с условиями лицензии GNU General Public License версии 2 или любой более поздней версии, опубликованной Фондом свободного программного обеспечения.\n"
+"Эта программа — свободное программное обеспечение; её можно распространять и "
+"изменять в соответствии с условиями лицензии GNU General Public License "
+"версии 2 или любой более поздней версии, опубликованной Фондом свободного "
+"программного обеспечения.\n"
 "\n"
-"Эта программа распространяется в надежде, что она может быть полезной, но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВЫРАЖЕННЫХ ЯВНО ИЛИ ПОДРАЗУМЕВАЕМЫХ, В ТОМ ЧИСЛЕ БЕЗ ГАРАНТИЙ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Для получения дополнительных сведений обратитесь к лицензии GNU.\n"
+"Эта программа распространяется в надежде, что она может быть полезной, но "
+"БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ВЫРАЖЕННЫХ ЯВНО ИЛИ ПОДРАЗУМЕВАЕМЫХ, В ТОМ ЧИСЛЕ "
+"БЕЗ ГАРАНТИЙ КОММЕРЧЕСКОЙ ЦЕННОСТИ И ПРИГОДНОСТИ ДЛЯ КОНКРЕТНОЙ ЦЕЛИ. Для "
+"получения дополнительных сведений обратитесь к лицензии GNU.\n"
 "\n"
 "Копия лицензии GNU предоставляется вместе с этой программой. \n"
 "Её также можно найти на сайте <http://www.gnu.org/licenses/>."
@@ -199,7 +209,8 @@ msgstr ""
 "Использование: abrt-gui [ПАРАМЕТРЫ]\n"
 "\t-h, --help         \tэта справка\n"
 "\t-v[vv]             \tуровень детальности сообщений\n"
-"\t--report=<crashid>\tнепосредственно сообщать о сбое с идентификатором=<crashid>"
+"\t--report=<crashid>\tнепосредственно сообщать о сбое с "
+"идентификатором=<crashid>"
 
 #: ../src/Gui/CCMainWindow.py:328
 #, python-format
@@ -215,30 +226,43 @@ msgstr ""
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Кратко опишите действия, которые привели к ошибке..."
 
-#: ../src/Gui/CCReporterDialog.py:103
+#: ../src/Gui/CCReporterDialog.py:109
 msgid "You must check backtrace for sensitive data"
 msgstr "Убедитесь, что текст трассировки не содержит конфиденциальных данных"
 
-#: ../src/Gui/CCReporterDialog.py:114
+#: ../src/Gui/CCReporterDialog.py:120
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command: <b>debuginfo-install %s</b> \n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"Создание запроса отменено, так как сведения трассировки непригодны.\n"
+"Передача отчетов отключена, потому что сведения трассировки непригодны.\n"
 "Попытайтесь установить debuginfo вручную: <b>debuginfo-install %s</b>\n"
 "и нажмите кнопку обновления для повторной генерации трассировки."
 
-#: ../src/Gui/CCReporterDialog.py:116
+#: ../src/Gui/CCReporterDialog.py:122
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Непригодные сведения трассировки. Они не будут отправлены."
 
-#: ../src/Gui/CCReporterDialog.py:120
-msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
-msgstr "Неполные сведения трассировки. Убедитесь, что описанные действия действительно помогают воспроизвести ошибку."
+#: ../src/Gui/CCReporterDialog.py:126
+msgid ""
+"The backtrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr ""
+"Неполные сведения трассировки. Убедитесь, что описанные действия "
+"действительно помогают воспроизвести ошибку."
 
-#: ../src/Gui/CCReporterDialog.py:162
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Reporting disabled, please fix the the problems shown above."
+msgstr "Передача отчетов отключена, исправьте указанные выше проблемы."
+
+#: ../src/Gui/CCReporterDialog.py:134
+msgid "Sends the report using selected plugin."
+msgstr "Отправляет отчет, используя выбранный модуль расширения."
+
+#: ../src/Gui/CCReporterDialog.py:172
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -247,7 +271,7 @@ msgstr ""
 "Не удалось сохранить настройки модуля:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:439
+#: ../src/Gui/CCReporterDialog.py:449
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -255,7 +279,7 @@ msgstr ""
 "Нет модулей отчётности для этого сбоя\n"
 "Пожалуйста, проверьте abrt.conf"
 
-#: ../src/Gui/CCReporterDialog.py:483
+#: ../src/Gui/CCReporterDialog.py:493
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -263,7 +287,7 @@ msgstr ""
 "Не удалось получить отчёт.\n"
 "Отсутствует debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:512
+#: ../src/Gui/CCReporterDialog.py:522
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -272,8 +296,7 @@ msgstr ""
 "Не удалось отправить отчёт!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:538
-#: ../src/Gui/CCReporterDialog.py:559
+#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Ошибка при получении отчёта: %s"
@@ -296,8 +319,7 @@ msgstr "Не найден виджет PluginDialog в описании UI!"
 msgid "No UI for plugin %s"
 msgstr "Нет UI для модуля %s"
 
-#: ../src/Gui/PluginSettingsUI.py:56
-#: ../src/Gui/PluginSettingsUI.py:82
+#: ../src/Gui/PluginSettingsUI.py:56 ../src/Gui/PluginSettingsUI.py:82
 msgid "combo box is not implemented"
 msgstr "поле ввода со списком недоступно"
 
@@ -370,31 +392,36 @@ msgid "Details"
 msgstr "Подробности"
 
 #: ../src/Gui/report.glade.h:18
-msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr "Я проверил(а) текст трассировки и удалил(а) конфиденциальные данные (пароли и пр.)"
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Заставляет ABRT пересоздать трассировку"
 
 #: ../src/Gui/report.glade.h:19
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr ""
+"Я проверил(а) текст трассировки и удалил(а) конфиденциальные данные (пароли "
+"и пр.)"
+
+#: ../src/Gui/report.glade.h:20
 msgid "N/A"
 msgstr "нет"
 
-#: ../src/Gui/report.glade.h:20
+#: ../src/Gui/report.glade.h:21
 msgid "Please wait.."
 msgstr "Пожалуйста, подождите..."
 
-#: ../src/Gui/report.glade.h:21
+#: ../src/Gui/report.glade.h:22
 msgid "Reporter Selector"
 msgstr "Выбор модуля отчётности"
 
-#: ../src/Gui/report.glade.h:22
+#: ../src/Gui/report.glade.h:23
 msgid "Send report"
 msgstr "Отправить отчёт"
 
-#: ../src/Gui/report.glade.h:23
+#: ../src/Gui/report.glade.h:24
 msgid "Show log"
 msgstr "Показать журнал"
 
-#: ../src/Gui/SettingsDialog.py:33
-#: ../src/Gui/SettingsDialog.py:50
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Выбрать модуль</b>"
 
@@ -498,26 +525,31 @@ msgstr "Сайт:"
 msgid "View and report application crashes"
 msgstr "Просмотреть сбои приложения и создать отчёт"
 
-#: ../src/Applet/Applet.cpp:77
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Обнаружен сбой в пакете %s"
 
-#: ../src/Applet/Applet.cpp:79
+#: ../src/Applet/Applet.cpp:90
 msgid "A crash has been detected"
 msgstr "Обнаружен сбой в пакете"
 
-#: ../src/Applet/Applet.cpp:254
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "Служба ABRT не выполняется"
 
-#: ../src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:314
 msgid "Warning"
 msgstr "Предупреждение"
 
 #: ../src/Daemon/Daemon.cpp:481
-msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
-msgstr "Размер отчёта превысил допустимый. Проверьте значение MaxCrashReportsSize в файле abrt.conf"
+msgid ""
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
+msgstr ""
+"Размер отчёта превысил допустимый. Проверьте значение MaxCrashReportsSize в "
+"файле abrt.conf"
 
 #: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
@@ -553,13 +585,11 @@ msgstr "Создаётся новый запрос..."
 msgid "Bugzilla entry creation failed"
 msgstr "Не удалось создать запись в Bugzilla"
 
-#: ../lib/Plugins/Bugzilla.cpp:599
-#: ../lib/Plugins/Bugzilla.cpp:704
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Выполняется выход..."
 
-#: ../lib/Plugins/Bugzilla.cpp:629
-#: ../lib/Plugins/Bugzilla.cpp:657
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Сбой get_bug_info(). Не удалось собрать всю необходимую информацию."
 
@@ -573,8 +603,7 @@ msgstr "Не удалось найти родительский запрос д�
 msgid "Jump to bug %d"
 msgstr "Перейти к запросу %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:671
-#: ../lib/Plugins/Bugzilla.cpp:672
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Добавить %s в список CC"
@@ -649,4 +678,3 @@ msgstr "Выполняется sosreport: %s"
 #: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "sosreport завершил работу"
-
