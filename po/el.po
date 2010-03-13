@@ -2,15 +2,15 @@
 # Copyright (C) 2009 authors below.
 # This file is distributed under the same license as the Abrt package.
 #
-# Pierros Papadeas <ppapadeas@gmail.com>, 2009.
+# Pierros Papadeas <ppapadeas@gmail.com>, 2009, 2010.
 # Thalia Papoutsaki <saliyath@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-12 07:54+0000\n"
-"PO-Revision-Date: 2010-03-12 11:26+0200\n"
-"Last-Translator: Kostas Papadimas <pkst@gnome.org>\n"
+"POT-Creation-Date: 2010-03-13 14:00+0000\n"
+"PO-Revision-Date: 2010-03-13 16:33+0200\n"
+"Last-Translator: Pierros Papadeas <pierros@papadeas.gr>\n"
 "Language-Team: Greek Fedora team <fedora-trans-el@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -210,15 +210,15 @@ msgstr ""
 "crashid=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:24
+#: ../src/Gui/CCReporterDialog.py:22
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Μια σύντομη περιγραφή για το πως θα αναπαραχθεί το σφάλμα ή τι κάνατε όταν συνέβηκε..."
 
-#: ../src/Gui/CCReporterDialog.py:109
+#: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "Θα πρέπει να ελέγξετε το backtrace για ευαίσθητα δεδομένα"
 
-#: ../src/Gui/CCReporterDialog.py:120
+#: ../src/Gui/CCReporterDialog.py:118
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -229,23 +229,23 @@ msgstr ""
 "Παρακαλώ προσπαθήστε να επανεγκαταστήσετε το debuginfo με τη χρήση της εντολής <span color=\"blue\"> debuginfo-install %s </span>\n"
 "και μετά πατήστε το κουμπί Ανανέωση για την επαναδημιουργία του backtrace."
 
-#: ../src/Gui/CCReporterDialog.py:122
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Το backtrace δεν μπορεί χρησιμοποιηθεί, δεν μπορείτε να το στείλετε!"
 
-#: ../src/Gui/CCReporterDialog.py:126
+#: ../src/Gui/CCReporterDialog.py:124
 msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
 msgstr "Το backtrace είναι ημιτελές, βεβαιωθείτε ότι αναφέρετε τα βήματα για την αναπαραγωγή του."
 
-#: ../src/Gui/CCReporterDialog.py:132
+#: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the the problems shown above."
 msgstr "Η αποστολή αναφορών απενεργοποιήθηκε, παρακαλώ διορθώστε τα παραπάνω προβλήματα."
 
-#: ../src/Gui/CCReporterDialog.py:134
+#: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
 msgstr "Αποστέλλει την αναφορά με τη χρήση της επιλεγμένης πρόσθετης λειτουργίας."
 
-#: ../src/Gui/CCReporterDialog.py:172
+#: ../src/Gui/CCReporterDialog.py:170
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -254,7 +254,12 @@ msgstr ""
 "Αδυναμία αποθήκευσης ρυθμίσεων πρόσθετων λειτουργιών:\n"
 " %s "
 
-#: ../src/Gui/CCReporterDialog.py:449
+#: ../src/Gui/CCReporterDialog.py:202
+#, python-format
+msgid "Configure %s options"
+msgstr "Ρύ_θμιση %s επιλογών"
+
+#: ../src/Gui/CCReporterDialog.py:444
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -262,7 +267,7 @@ msgstr ""
 "Δεν υπάρχει πρόσθετη λειτουργία αποστολής αναφορών για αυτό τον τύπο κατάρρευσησ.\n"
 "Παρακαλώ ελέγξτε το abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:493
+#: ../src/Gui/CCReporterDialog.py:488
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -270,7 +275,7 @@ msgstr ""
 "Αδυναμία λήψης αναφοράς!\n"
 "Μήπως λείπει το Debuginfo;"
 
-#: ../src/Gui/CCReporterDialog.py:522
+#: ../src/Gui/CCReporterDialog.py:517
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -279,8 +284,8 @@ msgstr ""
 "Η αναφορά απέτυχε!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:548
-#: ../src/Gui/CCReporterDialog.py:569
+#: ../src/Gui/CCReporterDialog.py:543
+#: ../src/Gui/CCReporterDialog.py:564
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Σφάλμα λήψης της αναφοράς: %s"
@@ -297,18 +302,12 @@ msgstr "Η αναφορά ολοκληρώθηκε"
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Αδυναμία εύρεσης γραφικού συστατικού PluginDialog στην περιγραφή UI!"
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:23
-#, python-format
-msgid "No UI for plugin %s"
-msgstr "Δεν υπάρχει UI για την πρόσθετη λειτουργία %s"
-
-#: ../src/Gui/PluginSettingsUI.py:56
-#: ../src/Gui/PluginSettingsUI.py:82
+#: ../src/Gui/PluginSettingsUI.py:54
+#: ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "το πεδίο συνδυασμού combo δεν έχει εφαρμοστεί"
 
-#: ../src/Gui/PluginSettingsUI.py:65
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "Δεν υπάρχουν δεδομένα για εμφάνιση!"
 
@@ -662,14 +661,20 @@ msgstr "Εκτέλεση sosreport: %s "
 msgid "Done running sosreport"
 msgstr "Ολοκληρώθηκε η εκτέλεση του sosreport"
 
+#~ msgid "No UI for plugin %s"
+#~ msgstr "Δεν υπάρχει UI για την πρόσθετη λειτουργία %s"
+
 #~ msgid "Plugin name is not set, can't load it's settings"
 #~ msgstr ""
 #~ "Το όνομα πρόσθετης λειτουργίας δεν έχει οριστεί, αδυναμία φόρτωσης των "
 #~ "ρυθμίσεων της"
+
 #~ msgid "Working..."
 #~ msgstr "Σε λειτουργία..."
+
 #~ msgid "Can't get username for uid %s"
 #~ msgstr "Αδυναμία λήψης ονόματος χρήστη για uid %s"
+
 #~ msgid ""
 #~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
 #~ "information.\n"
@@ -678,48 +683,69 @@ msgstr "Ολοκληρώθηκε η εκτέλεση του sosreport"
 #~ "<b>ΠΡΟΕΙΔΟΠΟΙΗΣΗ</b>, πρόκειται να αποστείλετε δεδομένα που πιθανώς να "
 #~ "περιέχουν ευαίσθητες πληροφορίες.\n"
 #~ "Είστε σίγουροι ότι θέλετε να στείλετε το <b>%s</b>?\n"
+
 #~ msgid "gtk-ok"
 #~ msgstr "gtk-ok"
+
 #~ msgid "Send"
 #~ msgstr "Αποστολή"
+
 #~ msgid "Edit blacklisted packages"
 #~ msgstr "Επεξεργασία πακέτων της μαύρης λίστας"
+
 #~ msgid "Global Settings"
 #~ msgstr "Καθολικές ρυθμίσεις"
+
 #~ msgid "Nothing selected"
 #~ msgstr "Καμία επιλογή"
+
 #~ msgid "Settings"
 #~ msgstr "Ρυθμίσεις"
+
 #~ msgid "This function is not implemented yet!"
 #~ msgstr "Αυτή η λειτουργία δεν έχει ακόμα εφαρμοστεί!"
+
 #~ msgid "gtk-add"
 #~ msgstr "gtk-add"
+
 #~ msgid "gtk-cancel"
 #~ msgstr "gtk-cancel"
+
 #~ msgid "gtk-close"
 #~ msgstr "gtk-close"
+
 #~ msgid "gtk-remove"
 #~ msgstr "gtk-remove"
+
 #~ msgid "ABRT service has been started"
 #~ msgstr "Η υπηρεσία ABRT έχει ξεκινήσει"
+
 #~ msgid "Checking CC..."
 #~ msgstr "Έλεγχος CC..."
+
 #~ msgid "Searching for debug-info packages..."
 #~ msgstr "Αναζήτηση για πακέτα debug-info..."
+
 #~ msgid "Downloading and installing debug-info packages..."
 #~ msgstr "Λήψη και εγκατάσταση πακέτων debug-info..."
+
 #~ msgid "Getting local universal unique identification..."
 #~ msgstr "Λήψη τοπικού μοναδικού αναγνωριστικού..."
+
 #~ msgid "Starting report creation..."
 #~ msgstr "Εκκίνηση δημιουργίας αναφοράς..."
+
 #~ msgid "Creating a report..."
 #~ msgstr "Δημιουργία αναφοράς..."
+
 #~ msgid "Executing RunApp plugin..."
 #~ msgstr "Εκτέλεση πρόσθετης λειτουργίας RunApp..."
+
 #~ msgid "Creating kernel oops crash reports..."
 #~ msgstr "Δημιουργία αναφορών κατάρρευσης kernel oops..."
+
 #~ msgid "Executing SOSreport plugin..."
 #~ msgstr "Εκτέλεση  πρόσθετης λειτουργίας SOSreport..."
+
 #~ msgid "gtk-refresh"
 #~ msgstr "gtk-refresh"
-
