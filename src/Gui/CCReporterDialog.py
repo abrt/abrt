@@ -3,14 +3,12 @@ import pygtk
 pygtk.require("2.0")
 import gtk
 import gobject
-import gtk.glade
 import sys
 from CC_gui_functions import *
 import CellRenderers
 from ABRTPlugin import PluginInfo
 from PluginSettingsUI import PluginSettingsUI
 from PluginList import getPluginInfoList
-#from CCDumpList import getDumpList, DumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
 from abrt_utils import _, log, log1, log2, get_verbose_level, g_verbose
 
@@ -179,7 +177,7 @@ class ReporterDialog():
                 image.destroy()
                 button.set_sensitive(False)
         elif response == gtk.RESPONSE_CANCEL:
-            print "cancel"
+            log1("cancel")
         ui.destroy()
 
     def check_settings(self, daemon):
@@ -201,7 +199,7 @@ class ReporterDialog():
                 hbox.set_spacing(6)
                 image = gtk.Image()
                 image.set_from_stock(gtk.STOCK_CANCEL, gtk.ICON_SIZE_MENU)
-                button = gtk.Button(plugin.getName())
+                button = gtk.Button(_("Configure %s options" % plugin.getName()))
                 button.connect("clicked", self.on_config_plugin_clicked, plugin, image)
                 hbox.pack_start(button)
                 hbox.pack_start(image, expand = False, fill = False)
@@ -211,12 +209,9 @@ class ReporterDialog():
             dialog.set_modal(True)
             response = dialog.run()
             dialog.destroy()
-            if response == gtk.RESPONSE_NO:
+            if response != gtk.RESPONSE_YES:
                 # user cancelled reporting
                 return False
-            if response == gtk.RESPONSE_YES:
-                # "user wants to proceed with report"
-                return True
         return True
 
     def set_label(self, label_widget, text):
