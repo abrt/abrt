@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-06 03:48+0000\n"
-"PO-Revision-Date: 2010-03-06 09:47+0100\n"
+"POT-Creation-Date: 2010-03-09 20:43+0000\n"
+"PO-Revision-Date: 2010-03-10 01:26+0100\n"
 "Last-Translator: Kris Thomsen <lakristho@gmail.com>\n"
 "Language-Team: Danish <dansk@dansk-gruppen.dk>\n"
 "MIME-Version: 1.0\n"
@@ -130,31 +130,31 @@ msgid "_Help"
 msgstr "_Hjælp"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Ikon"
 
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Pakke"
 
-#: ../src/Gui/CCMainWindow.py:83
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Program"
 
-#: ../src/Gui/CCMainWindow.py:85
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Dato"
 
-#: ../src/Gui/CCMainWindow.py:87
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "Nedbrudsantal"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Bruger"
 
-#: ../src/Gui/CCMainWindow.py:157
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -163,7 +163,7 @@ msgstr ""
 "Kan ikke vise indstillingsdialogen\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:162
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -173,7 +173,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:184
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -182,17 +182,38 @@ msgstr ""
 "Fejl opstod under indlæsning af dumplisten.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:222
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "Dette nedbrud er blevet rapporteret:\n"
 
-#: ../src/Gui/CCMainWindow.py:223
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Dette nedbrud er blevet rapporteret:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:238
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>Ikke rapporteret!</b>"
+
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Brug: abrt-gui [TILVALG]\n"
+"\t-h, --help         \tdenne hjælpebesked\n"
+"\t-v[vv]             \tforklaringsniveau\n"
+"\t--report=<crashid>\trapporter nedbrud direkte med crashid=<crashid>"
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"Der er ikke et sådant nedbrud i databasen, muligvis forkert crashid.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:24
@@ -200,11 +221,11 @@ msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Kort beskrivelse om hvordan fejlen kan gentages eller hvad du gjorde..."
 
-#: ../src/Gui/CCReporterDialog.py:100
+#: ../src/Gui/CCReporterDialog.py:103
 msgid "You must check backtrace for sensitive data"
 msgstr "Du bør kontrollere backtracen for følsomme data"
 
-#: ../src/Gui/CCReporterDialog.py:111
+#: ../src/Gui/CCReporterDialog.py:114
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -218,13 +239,13 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "brug derefter Genopfrisk-knappen til at regenerere backtracen."
 
-#: ../src/Gui/CCReporterDialog.py:113
+#: ../src/Gui/CCReporterDialog.py:116
 msgid "The backtrace is unusable, you can't report this!"
 msgstr ""
 "Backtracen indeholder ikke brugbare informationer. Du kan ikke rapportere "
 "dette!"
 
-#: ../src/Gui/CCReporterDialog.py:117
+#: ../src/Gui/CCReporterDialog.py:120
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -232,7 +253,7 @@ msgstr ""
 "Backtracen er ufuldstændig. Husk at angive en god vejledning til hvordan man "
 "reproducerer fejlen."
 
-#: ../src/Gui/CCReporterDialog.py:159
+#: ../src/Gui/CCReporterDialog.py:162
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -241,7 +262,7 @@ msgstr ""
 "Kan ikke gemme indstillinger for udvidelsesmodul:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:420
+#: ../src/Gui/CCReporterDialog.py:439
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -249,7 +270,7 @@ msgstr ""
 "Intet rapporteringsudvidelsesmodul er tilgængelig for denne type nedbrud\n"
 "Kontrollér venligst abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:465
+#: ../src/Gui/CCReporterDialog.py:483
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -257,7 +278,7 @@ msgstr ""
 "Kunne ikke hente rapport!\n"
 "Mangler fejlsøgningsinformation?"
 
-#: ../src/Gui/CCReporterDialog.py:494
+#: ../src/Gui/CCReporterDialog.py:512
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -266,7 +287,7 @@ msgstr ""
 "Rapportering fejlede!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:521 ../src/Gui/CCReporterDialog.py:542
+#: ../src/Gui/CCReporterDialog.py:538 ../src/Gui/CCReporterDialog.py:559
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fejl under hentning af rapporten: %s"
