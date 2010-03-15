@@ -50,7 +50,7 @@ static int scan_dmesg(vector_string_t& oopsList)
 /* "dumpoops" tool uses these two functions too */
 extern "C" {
 
-int scan_syslog_file(vector_string_t& oopsList, const char *filename)
+int scan_syslog_file(vector_string_t& oopsList, const char *filename, time_t *last_changed_p)
 {
 	VERB1 log("Scanning syslog file '%s'", filename);
 
@@ -59,7 +59,6 @@ int scan_syslog_file(vector_string_t& oopsList, const char *filename)
 	int fd;
 	int cnt_FoundOopses;
 	ssize_t sz;
-
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 		return 0;
@@ -67,6 +66,15 @@ int scan_syslog_file(vector_string_t& oopsList, const char *filename)
 	if (fstat(fd, &statb) != 0 || statb.st_size < 1) {
 		close(fd);
 		return 0;
+	}
+
+	if (last_changed_p != NULL) {
+		if (*last_changed_p == statb.st_mtime) {
+			VERB1 log("Syslog file '%s' hasn't changed since last scan, skipping", filename);
+			close(fd);
+			return 0;
+		}
+		*last_changed_p = statb.st_mtime;
 	}
 
 	/*
@@ -137,6 +145,7 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 CKerneloopsScanner::CKerneloopsScanner()
 {
 	int cnt_FoundOopses;
+	m_syslog_last_change = 0;
 
 	/* Scan dmesg, on first call only */
 	vector_string_t oopsList;
@@ -155,7 +164,7 @@ void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs, int forc
 	}
 
 	vector_string_t oopsList;
-	int cnt_FoundOopses = scan_syslog_file(oopsList, syslog_file);
+	int cnt_FoundOopses = scan_syslog_file(oopsList, syslog_file, &m_syslog_last_change);
 	if (cnt_FoundOopses > 0) {
 		save_oops_to_debug_dump(oopsList);
 		/*
