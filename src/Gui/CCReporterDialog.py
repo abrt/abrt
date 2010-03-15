@@ -343,10 +343,15 @@ class ReporterSelector():
         pluginlist = getPluginInfoList(daemon)
         self.reporters = []
         AnalyzerActionsAndReporters = self.settings["AnalyzerActionsAndReporters"]
-        for reporter_name in AnalyzerActionsAndReporters[crashdump.getAnalyzerName()].split(','):
-            reporter = pluginlist.getReporterByName(reporter_name)
-            if reporter:
-                self.reporters.append(reporter)
+        try:
+            reporters = AnalyzerActionsAndReporters[crashdump.getAnalyzerName()]
+            for reporter_name in reporters.split(','):
+                reporter = pluginlist.getReporterByName(reporter_name)
+                if reporter:
+                    self.reporters.append(reporter)
+        except KeyError:
+            # Analyzer has no associated reporters.
+            pass
 
         builderfile = "%s/report.glade" % sys.path[0]
         self.builder = gtk.Builder()
