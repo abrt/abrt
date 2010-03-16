@@ -7,93 +7,92 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt 0.5\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2009-10-05 09:48+0000\n"
-"PO-Revision-Date: 2009-10-05 14:54+0200\n"
+"POT-Creation-Date: 2010-03-16 19:03+0000\n"
+"PO-Revision-Date: 2010-03-16 20:37+0100\n"
 "Last-Translator: Kjartan Maraas <kmaraas@broadpark.no>\n"
 "Language-Team: Norwegian bokmaal <i18n-nb@lister.ping.uio.no>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: ../src/Gui/ABRTExceptions.py:5
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr ""
 
-#: ../src/Gui/ABRTExceptions.py:11
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 
-#: ../src/Gui/ABRTPlugin.py:26
+#: ../src/Gui/ABRTPlugin.py:62
+#, fuzzy
+msgid "Not loaded plugins"
+msgstr "Tillegg for rapport"
+
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr ""
 
-#: ../src/Gui/ABRTPlugin.py:27
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Tillegg for handling"
 
-#: ../src/Gui/ABRTPlugin.py:28
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Tillegg for rapport"
 
-#: ../src/Gui/ABRTPlugin.py:29
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Databasetillegg"
 
-#: ../src/Gui/CCDBusBackend.py:138
-msgid "Can't connect to dbus"
-msgstr "Kan ikke koble til dbus"
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "Kan ikke koble til system-dbus"
 
-#: ../src/Gui/CCDBusBackend.py:148
-msgid "Please check if abrt daemon is running."
-msgstr "Sjekk om abrt-tjenesten kjører."
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+msgid "Please check if abrt daemon is running"
+msgstr "Sjekk om abrt-tjenesten kjører"
 
-#: ../src/Gui/CCDBusBackend.py:158
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
-"Daemon did't return valid report info\n"
+"Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
 
 #: ../src/Gui/ccgui.glade.h:1
-msgid " "
-msgstr " "
+msgid ""
+"(C) 2009 Red Hat, Inc.\n"
+"(C) 2010 Red Hat, Inc."
+msgstr ""
+"© 2009 Red Hat, Inc.\n"
+"© 2010 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:2
-msgid "(C) 2009 Red Hat, Inc."
-msgstr "© 2009 Red Hat, Inc."
-
-#: ../src/Gui/ccgui.glade.h:3 ../src/Gui/CCMainWindow.py:240
-msgid "<b>Not reported!</b>"
-msgstr "<b>Ikke rapportert!</b>"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<span color=\"white\">Description</span>"
-msgstr "<span color=\"white\">Beskrivelse</span>"
-
-#: ../src/Gui/ccgui.glade.h:5
+#: ../src/Gui/ccgui.glade.h:3
 msgid "About ABRT"
 msgstr "Om ABRT"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/Gui/ccgui.glade.h:4 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisk feilrapporteringsverktøy"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/Gui/ccgui.glade.h:5
 msgid "Delete"
 msgstr "Slett"
 
-#: ../src/Gui/ccgui.glade.h:8
-msgid "Please wait.."
-msgstr "Vennligst vent..."
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Not Reported"
+msgstr "Ikke rapportert"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:7 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Tillegg"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/report.glade.h:2
+#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:280
 msgid "Report"
 msgstr "Rapport"
 
-#: ../src/Gui/ccgui.glade.h:11
+#: ../src/Gui/ccgui.glade.h:9
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -109,151 +108,375 @@ msgid ""
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 
-#: ../src/Gui/ccgui.glade.h:16
-msgid "Working..."
-msgstr "Arbeider..."
-
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:14
 msgid "_Edit"
 msgstr "R_ediger"
 
-#: ../src/Gui/ccgui.glade.h:18
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_File"
 msgstr "_Fil"
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_Help"
 msgstr "_Hjelp"
 
+#: ../src/Gui/ccgui.glade.h:17
+msgid ""
+"aalam@fedoraproject.org\n"
+"amitakhya@fedoraproject.org\n"
+"andrealafauci@fedoraproject.org\n"
+"anipeter@fedoraproject.org\n"
+"astur@fedoraproject.org\n"
+"beckerde@fedoraproject.org\n"
+"bruce89@fedoraproject.org\n"
+"charnik@fedoraproject.org\n"
+"chenh@fedoraproject.org\n"
+"cyrushmh@fedoraproject.org\n"
+"dennistobar@fedoraproject.org\n"
+"dheche@fedoraproject.org\n"
+"diegobz@fedoraproject.org\n"
+"dominiksandjaja@fedoraproject.org\n"
+"elad@fedoraproject.org\n"
+"elsupergomez@fedoraproject.org\n"
+"eukim@fedoraproject.org\n"
+"fab@fedoraproject.org\n"
+"feonsu@fedoraproject.org\n"
+"fgonz@fedoraproject.org\n"
+"fvalen@fedoraproject.org\n"
+"gcintra@fedoraproject.org\n"
+"gguerrer@fedoraproject.org\n"
+"goeran@fedoraproject.org\n"
+"hedda@fedoraproject.org\n"
+"hyuuga@fedoraproject.org\n"
+"ifelix@fedoraproject.org\n"
+"igorbounov@fedoraproject.org\n"
+"igor@fedoraproject.org\n"
+"jassy@fedoraproject.org\n"
+"jensm@fedoraproject.org\n"
+"jmoskovc@redhat.com\n"
+"joe74@fedoraproject.org\n"
+"jorgelopes@fedoraproject.org\n"
+"kenda@fedoraproject.org\n"
+"khasida@fedoraproject.org\n"
+"kkrothap@fedoraproject.org\n"
+"kmaraas@fedoraproject.org\n"
+"kmilos@fedoraproject.org\n"
+"kristho@fedoraproject.org\n"
+"leahliu@fedoraproject.org\n"
+"logan@fedoraproject.org\n"
+"mgiri@fedoraproject.org\n"
+"mideal@fedoraproject.org\n"
+"nagyesta@fedoraproject.org\n"
+"nippur@fedoraproject.org\n"
+"perplex@fedoraproject.org\n"
+"peti@fedoraproject.org\n"
+"pkst@fedoraproject.org\n"
+"ppapadeas@fedoraproject.org\n"
+"ptr@fedoraproject.org\n"
+"raada@fedoraproject.org\n"
+"rajesh@fedoraproject.org\n"
+"ratal@fedoraproject.org\n"
+"raven@fedoraproject.org\n"
+"ricardopinto@fedoraproject.org\n"
+"ruigo@fedoraproject.org\n"
+"runab@fedoraproject.org\n"
+"samfreemanz@fedoraproject.org\n"
+"sandeeps@fedoraproject.org\n"
+"sergiomesquita@fedoraproject.org\n"
+"shanky@fedoraproject.org\n"
+"shnurapet@fedoraproject.org\n"
+"snicore@fedoraproject.org\n"
+"swkothar@fedoraproject.org\n"
+"tch@fedoraproject.org\n"
+"tchuang@fedoraproject.org\n"
+"thalia@fedoraproject.org\n"
+"tomchiukc@fedoraproject.org\n"
+"vpv@fedoraproject.org\n"
+"warrink@fedoraproject.org\n"
+"xconde@fedoraproject.org\n"
+"ypoyarko@fedoraproject.org\n"
+"zoltanh721@fedoraproject.org"
+msgstr ""
+
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:80
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Ikon"
 
-#: ../src/Gui/CCMainWindow.py:88
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Pakke"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Program"
 
-#: ../src/Gui/CCMainWindow.py:90
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Dato"
 
-#: ../src/Gui/CCMainWindow.py:91
-msgid "Crash Rate"
-msgstr ""
+#: ../src/Gui/CCMainWindow.py:79
+msgid "Crash count"
+msgstr "Antall krasj"
 
-#: ../src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Bruker"
 
-#: ../src/Gui/CCMainWindow.py:178
+#: ../src/Gui/CCMainWindow.py:149
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
 
-#: ../src/Gui/CCMainWindow.py:195
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
-"Error while loading the dumplist, please check if abrt daemon is running\n"
+"Error while loading the dumplist.\n"
+"%s"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:214
+msgid "This crash has been reported:\n"
+msgstr "Dette krasjet har blitt rapportert:\n"
+
+#: ../src/Gui/CCMainWindow.py:215
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>Dette krasjet har blitt rapportert:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:230
+msgid "<b>Not reported!</b>"
+msgstr "<b>Ikke rapportert!</b>"
+
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:22
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Kort beskrivelse av metode for å gjenskape problemet..."
+
+#: ../src/Gui/CCReporterDialog.py:107
+msgid "You must check backtrace for sensitive data"
+msgstr "Du må sjekke om feilsøkingsinformasjonen inneholder sensitive data"
+
+#: ../src/Gui/CCReporterDialog.py:118
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:120
+msgid "The backtrace is unusable, you can't report this!"
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:124
+msgid ""
+"The backtrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:130
+msgid "Reporting disabled, please fix the the problems shown above."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Sends the report using selected plugin."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:170
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
 " %s"
 msgstr ""
 
-#: ../src/Gui/CCMainWindow.py:205
+#: ../src/Gui/CCReporterDialog.py:202
 #, python-format
-msgid "Can't get username for uid %s"
+msgid "Configure %s options"
+msgstr "Konfigurer alternativer for %s"
+
+#: ../src/Gui/CCReporterDialog.py:449
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
 msgstr ""
 
-#: ../src/Gui/CCMainWindow.py:232
-msgid "<b>This crash has been reported, you can find the report(s) at:</b>\n"
-msgstr ""
-
-#: ../src/Gui/CCMainWindow.py:292
+#: ../src/Gui/CCReporterDialog.py:493
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
 
-#: ../src/Gui/CCMainWindow.py:307
+#: ../src/Gui/CCReporterDialog.py:522
 #, python-format
 msgid ""
 "Reporting failed!\n"
 "%s"
 msgstr ""
 
-#: ../src/Gui/CCMainWindow.py:339
+#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
 #, python-format
 msgid "Error getting the report: %s"
 msgstr ""
 
-#: ../src/Gui/CCReporterDialog.py:98
-#, python-format
-msgid ""
-"<b>WARNING</b>, you're about to send data which might contain sensitive "
-"information.\n"
-"Do you really want to send <b>%s</b>?\n"
-msgstr ""
-
-#: ../src/Gui/CCReporterDialog.py:111
-msgid "Brief description how to reproduce this or what you did..."
-msgstr ""
-
 #: ../src/Gui/dialogs.glade.h:1
+msgid "Log"
+msgstr "Logg"
+
+#: ../src/Gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "Rapport ferdig"
-
-#: ../src/Gui/dialogs.glade.h:2 ../src/Gui/settings.glade.h:27
-msgid "gtk-ok"
-msgstr ""
 
 #: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr ""
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:21
-#, python-format
-msgid "No UI for plugin %s"
-msgstr ""
-
-#: ../src/Gui/PluginSettingsUI.py:38 ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr ""
 
-#: ../src/Gui/PluginSettingsUI.py:47
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr ""
 
 #: ../src/Gui/report.glade.h:1
-msgid "Comment"
-msgstr "Kommentar"
+msgid " "
+msgstr " "
+
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Vedlegg</b>"
 
 #: ../src/Gui/report.glade.h:3
-msgid "Send"
-msgstr "Send"
-
-#: ../src/Gui/report.glade.h:4 ../src/Gui/settings.glade.h:25
-msgid "gtk-cancel"
+msgid "<b>Backtrace</b>"
 msgstr ""
 
-#: ../src/Gui/SettingsDialog.py:34 ../src/Gui/SettingsDialog.py:51
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>Kommentar</b>"
+
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Metode for å gjenskape (noen enkle steg)</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Vennligst rett opp følgende problemer</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>Hvor vil du rapportere dette problemet?</b>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">Arkitektur:</span>"
+
+#: ../src/Gui/report.glade.h:9
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
+
+#: ../src/Gui/report.glade.h:10
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
+
+#: ../src/Gui/report.glade.h:11
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
+
+#: ../src/Gui/report.glade.h:12
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
+
+#: ../src/Gui/report.glade.h:13
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
+
+#: ../src/Gui/report.glade.h:14
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
+
+#: ../src/Gui/report.glade.h:15
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span color=\"white\">Beskrivelse</span>"
+
+#: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "Detaljer"
+
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:19
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:20
+msgid "N/A"
+msgstr "I/T"
+
+#: ../src/Gui/report.glade.h:21
+msgid "Please wait.."
+msgstr "Vennligst vent..."
+
+#: ../src/Gui/report.glade.h:22
+#, fuzzy
+msgid "Reporter Selector"
+msgstr "Tillegg for rapport"
+
+#: ../src/Gui/report.glade.h:23
+msgid "Send report"
+msgstr "Send rapport"
+
+#: ../src/Gui/report.glade.h:24
+msgid "Show log"
+msgstr "Vis logg"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Velg tillegg</b>"
 
-#: ../src/Gui/SettingsDialog.py:37
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Velg databasemotor</b>"
 
-#: ../src/Gui/SettingsDialog.py:165
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Fjern denne jobben"
 
-#: ../src/Gui/SettingsDialog.py:208
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Fjern denne handlingen"
 
@@ -266,238 +489,234 @@ msgid "<b>Associated action</b>"
 msgstr ""
 
 #: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>Detaljer om tillegg</b>"
+
+#: ../src/Gui/settings.glade.h:4
 msgid "<b>Plugin</b>"
 msgstr "<b>Tillegg</b>"
 
-#: ../src/Gui/settings.glade.h:4
+#: ../src/Gui/settings.glade.h:5
 msgid "<b>Time (or period)</b>"
 msgstr ""
 
-#: ../src/Gui/settings.glade.h:5
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr ""
 
-#: ../src/Gui/settings.glade.h:6
-msgid "Author:"
-msgstr ""
-
 #: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "Forfatter:"
+
+#: ../src/Gui/settings.glade.h:8
 msgid "Blacklisted packages: "
 msgstr ""
 
-#: ../src/Gui/settings.glade.h:8
+#: ../src/Gui/settings.glade.h:9
 msgid "C_onfigure plugin"
 msgstr ""
 
-#: ../src/Gui/settings.glade.h:9
+#: ../src/Gui/settings.glade.h:10
 msgid "Check package GPG signature"
 msgstr ""
 
-#: ../src/Gui/settings.glade.h:10
+#: ../src/Gui/settings.glade.h:11
 msgid "Common"
 msgstr ""
 
-#: ../src/Gui/settings.glade.h:11
-msgid "Cron"
-msgstr ""
-
 #: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:13
 msgid "Database backend: "
 msgstr "Databasemotor: "
 
-#: ../src/Gui/settings.glade.h:13
-msgid "Edit blacklisted packages"
-msgstr ""
-
 #: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "Beskrivelse:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG-nøkler"
 
-#: ../src/Gui/settings.glade.h:15
+#: ../src/Gui/settings.glade.h:16
 msgid "GPG keys: "
 msgstr "GPG-nøkler: "
-
-#: ../src/Gui/settings.glade.h:16
-msgid "Global Settings"
-msgstr "Globale innstillinger"
 
 #: ../src/Gui/settings.glade.h:17
 msgid "Max coredump storage size(MB):"
 msgstr ""
 
 #: ../src/Gui/settings.glade.h:18
-msgid "Nothing selected"
-msgstr "Ingen ting valgt"
-
-#: ../src/Gui/settings.glade.h:19
-msgid "Plugin Details"
-msgstr ""
+msgid "Name:"
+msgstr "Navn:"
 
 #: ../src/Gui/settings.glade.h:20
-msgid "Settings"
-msgstr "Innstillinger"
+msgid "Preferences"
+msgstr "Brukervalg"
 
 #: ../src/Gui/settings.glade.h:21
-msgid "This function is not implemented yet!"
-msgstr ""
-
-#: ../src/Gui/settings.glade.h:22
 msgid "Version:"
 msgstr "Versjon:"
 
-#: ../src/Gui/settings.glade.h:23
+#: ../src/Gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "Nettsted:"
 
-#: ../src/Gui/settings.glade.h:24
-msgid "gtk-add"
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
 msgstr ""
 
-#: ../src/Gui/settings.glade.h:26
-msgid "gtk-close"
-msgstr ""
-
-#: ../src/Gui/settings.glade.h:28
-msgid "gtk-remove"
-msgstr ""
-
-#: ../src/Applet/Applet.cpp:71
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
-msgstr ""
+msgstr "Et krasj i pakke %s ble oppdaget"
 
-#: ../src/Applet/Applet.cpp:130
-msgid "ABRT service has been started"
-msgstr "ABRT-tjenesten er ikke startet"
+#: ../src/Applet/Applet.cpp:90
+msgid "A crash has been detected"
+msgstr "Et krasj ble oppdaget"
 
-#: ../src/Applet/Applet.cpp:132 ../src/Applet/Applet.cpp:246
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "ABRT-tjenesten kjører ikke"
 
-#: ../src/Applet/CCApplet.cpp:185
+#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:314
 msgid "Warning"
 msgstr "Advarsel"
 
-#: ../src/Daemon/Daemon.cpp:546
+#: ../src/Daemon/Daemon.cpp:481
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:83
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr ""
-
-#: ../lib/Plugins/Bugzilla.cpp:227
-msgid "Bug is already reported: "
-msgstr ""
-
-#: ../lib/Plugins/Bugzilla.cpp:282
+#: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
-msgid "Binary file %s will not be reported."
+msgid "Bug is already reported: %i"
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:352
-msgid "New bug id: "
+#: ../lib/Plugins/Bugzilla.cpp:395
+#, c-format
+msgid "New bug id: %i"
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:421
-msgid "Checking for duplicates..."
-msgstr "Sjekker duplikater..."
-
-#: ../lib/Plugins/Bugzilla.cpp:424 ../lib/Plugins/Bugzilla.cpp:436
+#: ../lib/Plugins/Bugzilla.cpp:549
 msgid "Logging into bugzilla..."
 msgstr "Logger inn i bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:427
-msgid "Check CC and add coment +1..."
+#: ../lib/Plugins/Bugzilla.cpp:553
+msgid ""
+"Empty login and password.\n"
+"Please check "
 msgstr ""
 
-#: ../lib/Plugins/Bugzilla.cpp:448
+#: ../lib/Plugins/Bugzilla.cpp:563
+msgid "Checking for duplicates..."
+msgstr "Sjekker duplikater..."
+
+#: ../lib/Plugins/Bugzilla.cpp:576
+msgid "Missing mandatory member 'bugs'"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:586
 msgid "Creating new bug..."
 msgstr "Lager ny feilrapport..."
 
-#: ../lib/Plugins/Bugzilla.cpp:453
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Logger ut..."
 
-#: ../lib/Plugins/Kerneloops.cpp:37
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:641
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:646
+#, c-format
+msgid "Jump to bug %d"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
+#, c-format
+msgid "Add %s to CC list"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:695
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr ""
+
+#: ../lib/Plugins/Kerneloops.cpp:100
 msgid "Getting local universal unique identification"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:146
-msgid "Getting backtrace..."
+#: ../lib/Plugins/CCpp.cpp:275
+msgid "Generating backtrace"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:410
-msgid "Searching for debug-info packages..."
+#: ../lib/Plugins/CCpp.cpp:441
+msgid "Starting debuginfo installation"
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:446
-msgid "Downloading and installing debug-info packages..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:508
-msgid "Getting local universal unique identification..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:527
+#: ../lib/Plugins/CCpp.cpp:637
 msgid "Getting global universal unique identification..."
 msgstr ""
 
-#: ../lib/Plugins/CCpp.cpp:578
-msgid "Starting report creation..."
-msgstr ""
-
-#: ../lib/Plugins/CCpp.cpp:607
+#: ../lib/Plugins/CCpp.cpp:815
 msgid "Skipping debuginfo installation"
 msgstr ""
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:101
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
 msgid "Creating and submitting a report..."
 msgstr ""
 
-#: ../lib/Plugins/Logger.cpp:58 ../lib/Plugins/Mailx.cpp:123
-msgid "Creating a report..."
-msgstr "Lager en rapport..."
-
-#: ../lib/Plugins/RunApp.cpp:62
-msgid "Executing RunApp plugin..."
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
+msgid "Writing report to '%s'"
 msgstr ""
 
-#: ../lib/Plugins/FileTransfer.cpp:63 ../lib/Plugins/FileTransfer.cpp:409
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr ""
 
-#: ../lib/Plugins/FileTransfer.cpp:81
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, c-format
-msgid "Sending archive %s via %s"
-msgstr "Sender arkiv %s via %s"
+msgid "Sending archive %s to %s"
+msgstr "Sender arkiv %s til %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:336
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr ""
 
-#: ../lib/Plugins/FileTransfer.cpp:358 ../lib/Plugins/FileTransfer.cpp:386
-msgid "CFileTransfer::Run(): Cannot create and send an archive: "
+#: ../lib/Plugins/FileTransfer.cpp:322
+#, c-format
+msgid "Can't create and send an archive: %s"
 msgstr ""
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:79
-msgid "Creating kernel oops crash reports..."
+#: ../lib/Plugins/FileTransfer.cpp:351
+#, c-format
+msgid "Can't create and send an archive %s"
 msgstr ""
 
-#: ../lib/Plugins/Mailx.cpp:109
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Sender en e-post..."
 
-#: ../lib/Plugins/SOSreport.cpp:113
-msgid "Executing SOSreport plugin..."
-msgstr ""
+#: ../lib/Plugins/SOSreport.cpp:101
+#, c-format
+msgid "Running sosreport: %s"
+msgstr "Kjører sosreport: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:135
-msgid "running sosreport: "
-msgstr "kjører sosreport: "
-
-#: ../lib/Plugins/SOSreport.cpp:150
-msgid "done running sosreport"
-msgstr ""
+#: ../lib/Plugins/SOSreport.cpp:107
+msgid "Done running sosreport"
+msgstr "Kjøring av sosreport fullført"
