@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-16 15:42+0000\n"
+"POT-Creation-Date: 2010-03-15 08:00+0000\n"
 "PO-Revision-Date: \n"
-"Last-Translator: Elad <el.il@doom.co.il>\n"
+"Last-Translator: elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +51,8 @@ msgstr "לא יכול להתחבר ל-system bus"
 msgid "Please check if abrt daemon is running"
 msgstr "אנא בדוק אם תהליך השירות של abrt פועל"
 
-#: ../src/Gui/CCDBusBackend.py:175
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -60,46 +61,43 @@ msgstr ""
 "מידע ניפוי השגיאות חסר?"
 
 #: ../src/Gui/ccgui.glade.h:1
-msgid "(C) 2009 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
+msgid ""
+"(C) 2009 Red Hat, Inc.\n"
+"(C) 2010 Red Hat, Inc."
+msgstr ""
+"(C) 2009 Red Hat, Inc.\n"
+"(C) 2010 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:2
+#: ../src/Gui/ccgui.glade.h:3
 msgid "About ABRT"
 msgstr "אודות ABRT"
 
-#: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:9
-#: ../src/Gui/report.glade.h:15
+#: ../src/Gui/ccgui.glade.h:4
+#: ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16
 #: ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "כלי דיווח באגים אוטומטי"
 
-#: ../src/Gui/ccgui.glade.h:4
+#: ../src/Gui/ccgui.glade.h:5
 msgid "Delete"
 msgstr "מחק"
-
-#: ../src/Gui/ccgui.glade.h:5
-msgid "Details"
-msgstr "פרטים"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "לא דווח"
 
 #: ../src/Gui/ccgui.glade.h:7
-msgid "Please wait.."
-msgstr "אנא המתן..."
-
-#: ../src/Gui/ccgui.glade.h:8
 #: ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "תוספים"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:8
+#: ../src/Applet/CCApplet.cpp:280
 msgid "Report"
 msgstr "דווח"
 
-#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/ccgui.glade.h:9
 msgid ""
 "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
 "\n"
@@ -113,44 +111,196 @@ msgstr ""
 "\n"
 "You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:14
 msgid "_Edit"
 msgstr "_עריכה"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_File"
 msgstr "_קובץ"
 
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_Help"
 msgstr "ע_זרה"
 
+#: ../src/Gui/ccgui.glade.h:17
+msgid ""
+"aalam@fedoraproject.org\n"
+"amitakhya@fedoraproject.org\n"
+"andrealafauci@fedoraproject.org\n"
+"anipeter@fedoraproject.org\n"
+"astur@fedoraproject.org\n"
+"beckerde@fedoraproject.org\n"
+"bruce89@fedoraproject.org\n"
+"charnik@fedoraproject.org\n"
+"chenh@fedoraproject.org\n"
+"cyrushmh@fedoraproject.org\n"
+"dennistobar@fedoraproject.org\n"
+"dheche@fedoraproject.org\n"
+"diegobz@fedoraproject.org\n"
+"dominiksandjaja@fedoraproject.org\n"
+"elad@fedoraproject.org\n"
+"elsupergomez@fedoraproject.org\n"
+"eukim@fedoraproject.org\n"
+"fab@fedoraproject.org\n"
+"feonsu@fedoraproject.org\n"
+"fgonz@fedoraproject.org\n"
+"fvalen@fedoraproject.org\n"
+"gcintra@fedoraproject.org\n"
+"gguerrer@fedoraproject.org\n"
+"goeran@fedoraproject.org\n"
+"hedda@fedoraproject.org\n"
+"hyuuga@fedoraproject.org\n"
+"ifelix@fedoraproject.org\n"
+"igorbounov@fedoraproject.org\n"
+"igor@fedoraproject.org\n"
+"jassy@fedoraproject.org\n"
+"jensm@fedoraproject.org\n"
+"jmoskovc@redhat.com\n"
+"joe74@fedoraproject.org\n"
+"jorgelopes@fedoraproject.org\n"
+"kenda@fedoraproject.org\n"
+"khasida@fedoraproject.org\n"
+"kkrothap@fedoraproject.org\n"
+"kmaraas@fedoraproject.org\n"
+"kmilos@fedoraproject.org\n"
+"kristho@fedoraproject.org\n"
+"leahliu@fedoraproject.org\n"
+"logan@fedoraproject.org\n"
+"mgiri@fedoraproject.org\n"
+"mideal@fedoraproject.org\n"
+"nagyesta@fedoraproject.org\n"
+"nippur@fedoraproject.org\n"
+"perplex@fedoraproject.org\n"
+"peti@fedoraproject.org\n"
+"pkst@fedoraproject.org\n"
+"ppapadeas@fedoraproject.org\n"
+"ptr@fedoraproject.org\n"
+"raada@fedoraproject.org\n"
+"rajesh@fedoraproject.org\n"
+"ratal@fedoraproject.org\n"
+"raven@fedoraproject.org\n"
+"ricardopinto@fedoraproject.org\n"
+"ruigo@fedoraproject.org\n"
+"runab@fedoraproject.org\n"
+"samfreemanz@fedoraproject.org\n"
+"sandeeps@fedoraproject.org\n"
+"sergiomesquita@fedoraproject.org\n"
+"shanky@fedoraproject.org\n"
+"shnurapet@fedoraproject.org\n"
+"snicore@fedoraproject.org\n"
+"swkothar@fedoraproject.org\n"
+"tch@fedoraproject.org\n"
+"tchuang@fedoraproject.org\n"
+"thalia@fedoraproject.org\n"
+"tomchiukc@fedoraproject.org\n"
+"vpv@fedoraproject.org\n"
+"warrink@fedoraproject.org\n"
+"xconde@fedoraproject.org\n"
+"ypoyarko@fedoraproject.org\n"
+"zoltanh721@fedoraproject.org"
+msgstr ""
+"aalam@fedoraproject.org\n"
+"amitakhya@fedoraproject.org\n"
+"andrealafauci@fedoraproject.org\n"
+"anipeter@fedoraproject.org\n"
+"astur@fedoraproject.org\n"
+"beckerde@fedoraproject.org\n"
+"bruce89@fedoraproject.org\n"
+"charnik@fedoraproject.org\n"
+"chenh@fedoraproject.org\n"
+"cyrushmh@fedoraproject.org\n"
+"dennistobar@fedoraproject.org\n"
+"dheche@fedoraproject.org\n"
+"diegobz@fedoraproject.org\n"
+"dominiksandjaja@fedoraproject.org\n"
+"elad@fedoraproject.org\n"
+"elsupergomez@fedoraproject.org\n"
+"eukim@fedoraproject.org\n"
+"fab@fedoraproject.org\n"
+"feonsu@fedoraproject.org\n"
+"fgonz@fedoraproject.org\n"
+"fvalen@fedoraproject.org\n"
+"gcintra@fedoraproject.org\n"
+"gguerrer@fedoraproject.org\n"
+"goeran@fedoraproject.org\n"
+"hedda@fedoraproject.org\n"
+"hyuuga@fedoraproject.org\n"
+"ifelix@fedoraproject.org\n"
+"igorbounov@fedoraproject.org\n"
+"igor@fedoraproject.org\n"
+"jassy@fedoraproject.org\n"
+"jensm@fedoraproject.org\n"
+"jmoskovc@redhat.com\n"
+"joe74@fedoraproject.org\n"
+"jorgelopes@fedoraproject.org\n"
+"kenda@fedoraproject.org\n"
+"khasida@fedoraproject.org\n"
+"kkrothap@fedoraproject.org\n"
+"kmaraas@fedoraproject.org\n"
+"kmilos@fedoraproject.org\n"
+"kristho@fedoraproject.org\n"
+"leahliu@fedoraproject.org\n"
+"logan@fedoraproject.org\n"
+"mgiri@fedoraproject.org\n"
+"mideal@fedoraproject.org\n"
+"nagyesta@fedoraproject.org\n"
+"nippur@fedoraproject.org\n"
+"perplex@fedoraproject.org\n"
+"peti@fedoraproject.org\n"
+"pkst@fedoraproject.org\n"
+"ppapadeas@fedoraproject.org\n"
+"ptr@fedoraproject.org\n"
+"raada@fedoraproject.org\n"
+"rajesh@fedoraproject.org\n"
+"ratal@fedoraproject.org\n"
+"raven@fedoraproject.org\n"
+"ricardopinto@fedoraproject.org\n"
+"ruigo@fedoraproject.org\n"
+"runab@fedoraproject.org\n"
+"samfreemanz@fedoraproject.org\n"
+"sandeeps@fedoraproject.org\n"
+"sergiomesquita@fedoraproject.org\n"
+"shanky@fedoraproject.org\n"
+"shnurapet@fedoraproject.org\n"
+"snicore@fedoraproject.org\n"
+"swkothar@fedoraproject.org\n"
+"tch@fedoraproject.org\n"
+"tchuang@fedoraproject.org\n"
+"thalia@fedoraproject.org\n"
+"tomchiukc@fedoraproject.org\n"
+"vpv@fedoraproject.org\n"
+"warrink@fedoraproject.org\n"
+"xconde@fedoraproject.org\n"
+"ypoyarko@fedoraproject.org\n"
+"zoltanh721@fedoraproject.org"
+
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "סמל"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "חבילה"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "יישום"
 
-#: ../src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "תאריך"
 
-#: ../src/Gui/CCMainWindow.py:95
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "מספר קריסות"
 
-#: ../src/Gui/CCMainWindow.py:97
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "משתמש"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -159,7 +309,7 @@ msgstr ""
 "לא ניתן להציג את חלון ההגדרות\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:176
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -169,7 +319,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:203
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -178,51 +328,49 @@ msgstr ""
 "שגיאה במהלך טעינת dumplist.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "הקריסה הזאת דווחה:\n"
 
-#: ../src/Gui/CCMainWindow.py:242
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>הקריסה הזאת דווחה:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:261
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>לא דווח!</b>"
 
-#: ../src/Gui/CCMainWindow.py:309
+#: ../src/Gui/CCMainWindow.py:304
 msgid ""
-"Unable to get report!\n"
-"Debuginfo is missing?"
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
 msgstr ""
-"לא ניתן להשיג דיווח\n"
-"מידע ניפוי שגיאות חסר?"
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
 
-#: ../src/Gui/CCMainWindow.py:329
+#: ../src/Gui/CCMainWindow.py:328
 #, python-format
 msgid ""
-"Reporting failed!\n"
-"%s"
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
 msgstr ""
-"הדיווח נכשל!\n"
-"%s"
-
-#: ../src/Gui/CCMainWindow.py:348
-#: ../src/Gui/CCMainWindow.py:375
-#, python-format
-msgid "Error getting the report: %s"
-msgstr "שגיאה בקבלת הדיווח: %s"
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:24
+#: ../src/Gui/CCReporterDialog.py:22
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "תיאור קצר (עדיף באנגלית) שמסביר מה עשית כשהיישום קרס או איך ניתן לשחזר את הקריסה..."
 
-#: ../src/Gui/CCReporterDialog.py:99
+#: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "אתה חייב לבדוק אם יש מידע רגיש במידע הקריסה"
 
-#: ../src/Gui/CCReporterDialog.py:110
+#: ../src/Gui/CCReporterDialog.py:118
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -233,15 +381,23 @@ msgstr ""
 "אנא נסה להתקין מידע ניפוי שגיאות ידנית באמצעות הפקודה:<b> debuginfo-install %s <b>\n"
 "לאחר מכן השתמש  בכפתור \"רענן\" כדי ליצור מחדש את מידע הקריסה."
 
-#: ../src/Gui/CCReporterDialog.py:112
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "מידע הקריסה לא שמיש, אתה לא יכול לדווח על זה!"
 
-#: ../src/Gui/CCReporterDialog.py:116
+#: ../src/Gui/CCReporterDialog.py:124
 msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
 msgstr "מידע הקריסה לא שלם. אנא וודא שסיפקת הסבר טוב על איך לגרום לקריסה."
 
-#: ../src/Gui/CCReporterDialog.py:158
+#: ../src/Gui/CCReporterDialog.py:130
+msgid "Reporting disabled, please fix the the problems shown above."
+msgstr "הדיווח מנוטרל, אנא תקן את הבעיות שצוינו למעלה."
+
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Sends the report using selected plugin."
+msgstr "שולח את הדיווח באמצעות התוסף הנבחר."
+
+#: ../src/Gui/CCReporterDialog.py:170
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -249,6 +405,42 @@ msgid ""
 msgstr ""
 "לא ניתן לשמור את הגדרות התוסף\n"
 "%s"
+
+#: ../src/Gui/CCReporterDialog.py:202
+#, python-format
+msgid "Configure %s options"
+msgstr "אפשרויות %s"
+
+#: ../src/Gui/CCReporterDialog.py:444
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"אין תוספי דיווח זמינים עבור סוג הקריסה הזה\n"
+"אנא בדוק את הקובץ abrt.conf"
+
+#: ../src/Gui/CCReporterDialog.py:488
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"לא ניתן להשיג דיווח\n"
+"מידע ניפוי שגיאות חסר?"
+
+#: ../src/Gui/CCReporterDialog.py:517
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"הדיווח נכשל!\n"
+"%s"
+
+#: ../src/Gui/CCReporterDialog.py:543
+#: ../src/Gui/CCReporterDialog.py:564
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "שגיאה בקבלת הדיווח: %s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -258,24 +450,18 @@ msgstr "רישום"
 msgid "Report done"
 msgstr "דיווח הושלם"
 
-#: ../src/Gui/PluginSettingsUI.py:18
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "לא ניתן למצוא פריט PluginDialog בתיאור הממשק!"
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:24
-#, python-format
-msgid "No UI for plugin %s"
-msgstr "אין ממשק לתוסף %s"
-
-#: ../src/Gui/PluginSettingsUI.py:55
-#: ../src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:54
+#: ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "תיבה משולבת לא מיושמת"
 
 # אין לי מושג איך לתרגם את זה. מה הקשר בין דיווח באגים לhydrate? זה בכלל משהו שקשור למים.
 # I have no idea how to translate this. What is the meaning of hydrate in this context?
-#: ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "Nothing to hydrate!"
 
@@ -304,50 +490,70 @@ msgid "<b>Please fix the following problems</b>"
 msgstr "<b>אנא תקן את הבעיות הבאות</b>"
 
 #: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>איפה אתה רוצה לדווח את התקרית הזו?</b>"
+
+#: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
 msgstr "<span fgcolor=\"blue\">ארכיטקטורה:</span>"
 
-#: ../src/Gui/report.glade.h:8
+#: ../src/Gui/report.glade.h:9
 msgid "<span fgcolor=\"blue\">Cmdline:</span>"
 msgstr "<span fgcolor=\"blue\">שורת פקודה:</span>"
 
-#: ../src/Gui/report.glade.h:9
+#: ../src/Gui/report.glade.h:10
 msgid "<span fgcolor=\"blue\">Component:</span>"
 msgstr "<span fgcolor=\"blue\">רכיב:</span>"
 
-#: ../src/Gui/report.glade.h:10
+#: ../src/Gui/report.glade.h:11
 msgid "<span fgcolor=\"blue\">Executable:</span>"
 msgstr "<span fgcolor=\"blue\">קובץ הרצה:</span>"
 
-#: ../src/Gui/report.glade.h:11
+#: ../src/Gui/report.glade.h:12
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
 msgstr "<span fgcolor=\"blue\">ליבה:</span>"
 
-#: ../src/Gui/report.glade.h:12
+#: ../src/Gui/report.glade.h:13
 msgid "<span fgcolor=\"blue\">Package:</span>"
 msgstr "<span fgcolor=\"blue\">חבילה:</span>"
 
-#: ../src/Gui/report.glade.h:13
+#: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Reason:</span>"
 msgstr "<span fgcolor=\"blue\">סיבה:</span>"
 
-#: ../src/Gui/report.glade.h:14
+#: ../src/Gui/report.glade.h:15
 msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">שחרור:</span>"
 
-#: ../src/Gui/report.glade.h:16
+#: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "פרטים"
+
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "מכריח את ABRT ליצור את מעקב השגיאות מחדש"
+
+#: ../src/Gui/report.glade.h:19
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "בדקתי את מידע הקריסה והסרתי מידע רגיש (ססמאות וכו')"
 
-#: ../src/Gui/report.glade.h:17
+#: ../src/Gui/report.glade.h:20
 msgid "N/A"
 msgstr "לא זמין"
 
-#: ../src/Gui/report.glade.h:18
+#: ../src/Gui/report.glade.h:21
+msgid "Please wait.."
+msgstr "אנא המתן..."
+
+#: ../src/Gui/report.glade.h:22
+msgid "Reporter Selector"
+msgstr "בחירת מדווח"
+
+#: ../src/Gui/report.glade.h:23
 msgid "Send report"
 msgstr "שלח דיווח"
 
-#: ../src/Gui/report.glade.h:19
+#: ../src/Gui/report.glade.h:24
 msgid "Show log"
 msgstr "הצג יומן"
 
@@ -456,101 +662,115 @@ msgstr "אתר אינטרנט:"
 msgid "View and report application crashes"
 msgstr "צפה ברשימת היישומים שקרסו ודווח על הקריסות"
 
-#: ../src/Applet/Applet.cpp:77
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "קריסה בחבילה %s התגלתה"
 
-#: ../src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:90
+msgid "A crash has been detected"
+msgstr "זוהתה קריסה"
+
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "שירות ABRT לא פועל"
 
-#: ../src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:124
+#: ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:314
 msgid "Warning"
 msgstr "אזהרה"
 
-#: ../src/Daemon/Daemon.cpp:483
+#: ../src/Daemon/Daemon.cpp:481
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ abrt.conf"
 
-#: ../lib/Plugins/Bugzilla.cpp:317
+#: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "הבאג דווח בעבר: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:415
+#: ../lib/Plugins/Bugzilla.cpp:395
 #, c-format
 msgid "New bug id: %i"
 msgstr "מזהה באג חדש: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:602
+#: ../lib/Plugins/Bugzilla.cpp:549
 msgid "Logging into bugzilla..."
 msgstr "מתחבר לבאגזילה..."
 
-#: ../lib/Plugins/Bugzilla.cpp:606
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "שם משתמש וסיסמה ריקים. אנא בדוק את הקובץ bugzilla.conf"
+#: ../lib/Plugins/Bugzilla.cpp:553
+msgid ""
+"Empty login and password.\n"
+"Please check "
+msgstr ""
+"שם משתמש וסיסמה ריקים.\n"
+"בדוק בעיה זו בבקשה."
 
-#: ../lib/Plugins/Bugzilla.cpp:616
+#: ../lib/Plugins/Bugzilla.cpp:563
 msgid "Checking for duplicates..."
 msgstr "מחפש כפילויות..."
 
-#: ../lib/Plugins/Bugzilla.cpp:629
+#: ../lib/Plugins/Bugzilla.cpp:576
 msgid "Missing mandatory member 'bugs'"
 msgstr "חסר שדה חוסה 'bugs'"
 
-#: ../lib/Plugins/Bugzilla.cpp:639
+#: ../lib/Plugins/Bugzilla.cpp:586
 msgid "Creating new bug..."
 msgstr "יוצר באג חדש..."
 
-#: ../lib/Plugins/Bugzilla.cpp:647
-#: ../lib/Plugins/Bugzilla.cpp:741
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr "יצירת ערך בBugzilla נכשלה."
+
+#: ../lib/Plugins/Bugzilla.cpp:599
+#: ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "מתנתק..."
 
-#: ../lib/Plugins/Bugzilla.cpp:675
-#: ../lib/Plugins/Bugzilla.cpp:703
+#: ../lib/Plugins/Bugzilla.cpp:629
+#: ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
+msgstr "get_bug_info() failed. Could not collect all mandatory information"
 
-#: ../lib/Plugins/Bugzilla.cpp:687
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "‏Bugzilla לא הצליחה למצוא את ההורה של הבאג(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:692
+#: ../lib/Plugins/Bugzilla.cpp:646
 #, c-format
 msgid "Jump to bug %d"
 msgstr "עבור לבאג %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:717
-#: ../lib/Plugins/Bugzilla.cpp:718
+#: ../lib/Plugins/Bugzilla.cpp:671
+#: ../lib/Plugins/Bugzilla.cpp:672
 #, c-format
 msgid "Add %s to CC list"
 msgstr "הוסף %s לרשימת הCC"
 
-#: ../lib/Plugins/Bugzilla.cpp:732
+#: ../lib/Plugins/Bugzilla.cpp:695
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "הוסף הערה חדשה לבאג(%d)"
 
-#: ../lib/Plugins/Kerneloops.cpp:28
+#: ../lib/Plugins/Kerneloops.cpp:100
 msgid "Getting local universal unique identification"
 msgstr "מקבל זהות מקומית ייחודית"
 
-#: ../lib/Plugins/CCpp.cpp:266
+#: ../lib/Plugins/CCpp.cpp:275
 msgid "Generating backtrace"
 msgstr "יוצר מידע קריסה"
 
-#: ../lib/Plugins/CCpp.cpp:428
+#: ../lib/Plugins/CCpp.cpp:441
 msgid "Starting debuginfo installation"
 msgstr "מתחיל התקנת מידע ניפוי שגיאות"
 
-#: ../lib/Plugins/CCpp.cpp:624
+#: ../lib/Plugins/CCpp.cpp:637
 msgid "Getting global universal unique identification..."
 msgstr "מקבל זהות גלובלית ייחודית..."
 
-#: ../lib/Plugins/CCpp.cpp:802
+#: ../lib/Plugins/CCpp.cpp:815
 msgid "Skipping debuginfo installation"
 msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 
@@ -586,10 +806,6 @@ msgstr "לא יכול ליצור ולשלוח ארכיון: %s"
 msgid "Can't create and send an archive %s"
 msgstr "לא יכול ליצור ולשלוח ארכיון %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:72
-msgid "Creating kernel oops crash reports..."
-msgstr "יוצר דיווחי קריסה של kernel oops..."
-
 #: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
@@ -602,6 +818,12 @@ msgstr "מריץ sosreport: %s"
 #: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
+
+#~ msgid "No UI for plugin %s"
+#~ msgstr "אין ממשק לתוסף %s"
+
+#~ msgid "Creating kernel oops crash reports..."
+#~ msgstr "יוצר דיווחי קריסה של kernel oops..."
 
 #~ msgid "Missing member 'reporter'"
 #~ msgstr "חסר שדה 'reporter'"
