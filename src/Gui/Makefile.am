@@ -30,3 +30,6 @@ install-exec-hook:
 	    sed 's:/usr/share:$(datadir):g' -i $(DESTDIR)$(bindir)/$$b || exit $$?; \
 	    sed 's:VERSION:@VERSION@:g' -i $(DESTDIR)$(bindir)/$$b || exit $$?; \
 	done
+
+install-data-hook:
+	sed 's:@VER@:$(VERSION):g' -i $(DESTDIR)$(pkgdatadir)/ccgui.glade || exit $$?
