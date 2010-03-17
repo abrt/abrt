@@ -353,7 +353,7 @@ next_line:
 	} /* while (i < linecount) */
 
 	/* process last oops if we have one */
-	if (oopsstart >= 0) {
+	if (oopsstart >= 0 && inbacktrace) {
 		int oopsend = i-1;
 		VERB3 log("End of oops at line %d (end of file): '%s'", oopsend, lines_info[oopsend].ptr);
 		if (record_oops(oopses, lines_info, oopsstart, oopsend))
