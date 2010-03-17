@@ -63,7 +63,7 @@ class Dump():
         return self.uid[CD_CONTENT]
 
     def getCount(self):
-        return self.Count[CD_CONTENT]
+        return int(self.Count[CD_CONTENT])
 
     def getExecutable(self):
         return self.executable[CD_CONTENT]
