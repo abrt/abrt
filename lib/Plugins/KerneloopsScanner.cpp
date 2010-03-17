@@ -131,6 +131,9 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 			dd.SaveText(FILENAME_KERNEL, first_line);
 			dd.SaveText(FILENAME_CMDLINE, "not_applicable");
 			dd.SaveText(FILENAME_BACKTRACE, second_line);
+			/* Optional, makes generated bz more informative */
+			strchrnul(second_line, '\n')[0] = '\0';
+			dd.SaveText(FILENAME_REASON, second_line);
 		}
 		catch (CABRTException& e)
 		{
