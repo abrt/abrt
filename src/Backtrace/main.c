@@ -157,15 +157,27 @@ int main(int argc, char **argv)
       exit(EX_IOERR);
     }
 
+    /* Handle the case that the input file is empty.
+     * The code is not designed to support completely empty backtrace.
+     * Silently exit indicating success.
+     */
+    if (size == 0)
+    {
+      fclose(fp);
+      exit(0);
+    }
+
     bttext = malloc(size + 1);
     if (!bttext)
     {
+      fclose(fp);
       fputs("malloc failed", stderr);
       exit(EX_OSERR);
     }
 
     if (1 != fread(bttext, size, 1, fp))
     {
+      fclose(fp);
       fprintf(stderr, "Unable to read from '%s'.\n", arguments.filename);
       exit(EX_IOERR); /* IO Error */
     }
