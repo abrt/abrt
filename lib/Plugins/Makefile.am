@@ -129,8 +129,8 @@ libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
 libBugzilla_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
 libBugzilla_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
-	-I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-	-DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
+    -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
 
 # Catcut
 libCatcut_la_SOURCES = Catcut.h Catcut.cpp

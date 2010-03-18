@@ -30,9 +30,6 @@ class CReporterBugzilla : public CReporter
         std::string m_sBugzillaXMLRPC;
         std::string m_sLogin;
         std::string m_sPassword;
-        std::string m_sAttchmentInBase64;
-
-        map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettings);
 
     public:
         CReporterBugzilla();
