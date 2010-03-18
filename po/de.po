@@ -1,3 +1,4 @@
+# translation of abrt.master.po to
 # translation of abrt.master.de.po to
 # German translation of abrt.
 # Copyright (C) 2009 Red Hat Inc.
@@ -9,14 +10,15 @@
 # Marcus Nitzschke <kenda@fedoraproject.org>, 2009-2010.
 # Dominik Sandjaja <dominiksandjaja@fedoraproject.org>, 2009.
 # Jens Maucher <jensm@fedoraproject.org>, 2010.
+# sknirT omiT <moc.tahder@sknirtt>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.de\n"
+"Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-02-23 09:09+0000\n"
-"PO-Revision-Date: 2010-02-23 10:33+0100\n"
-"Last-Translator: Fabian Affolter <fab@fedoraproject.org>\n"
-"Language-Team: German <fedora-trans-de@redhat.com>\n"
+"POT-Creation-Date: 2010-03-16 19:03+0000\n"
+"PO-Revision-Date: 2010-03-17 14:33+1000\n"
+"Last-Translator: sknirT omiT <moc.tahder@sknirtt>\n"
+"Language-Team:  <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -29,7 +31,9 @@ msgstr "Ein anderer Client läuft bereits, versuche ihn zu wecken."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Unerwartete Daten vom Daemon erhalten (wurde die Datenbank richtig aktualisisert?)"
+msgstr ""
+"Unerwartete Daten vom Daemon erhalten (wurde die Datenbank richtig "
+"aktualisiert?)"
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -51,17 +55,16 @@ msgstr "Bericht-Plugins"
 msgid "Database plugins"
 msgstr "Datenbank-Plugins"
 
-#: ../src/Gui/CCDBusBackend.py:74
-#: ../src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
-msgstr "Kann nicht mit System-Dbus verbinden"
+msgstr "Verbindung mit System-Dbus fehlgeschlagen"
 
-#: ../src/Gui/CCDBusBackend.py:120
-#: ../src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Bitte überprüfen Sie, ob der abrt-Daemon läuft"
 
-#: ../src/Gui/CCDBusBackend.py:175
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -70,104 +73,265 @@ msgstr ""
 "Fehlt Debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
-msgid "(C) 2009 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
+msgid ""
+"(C) 2009 Red Hat, Inc.\n"
+"(C) 2010 Red Hat, Inc."
+msgstr ""
+"(C) 2009 Red Hat, Inc.\n"
+"(C) 2010 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:2
+#: ../src/Gui/ccgui.glade.h:3
 msgid "About ABRT"
 msgstr "Über ABRT"
 
-#: ../src/Gui/ccgui.glade.h:3
-#: ../src/Gui/CCMainWindow.py:9
-#: ../src/Gui/report.glade.h:15
-#: ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:4 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
-msgstr "Automatic Bug Reporting Tool"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "Delete"
-msgstr "Löschen"
+msgstr "Automatisches Bug-Reporting-Tool"
 
 #: ../src/Gui/ccgui.glade.h:5
-msgid "Details"
-msgstr "Details"
+msgid "Delete"
+msgstr "Löschen"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "Not Reported"
 msgstr "Nicht berichtet"
 
-#: ../src/Gui/ccgui.glade.h:7
-msgid "Please wait.."
-msgstr "Bitte warten ..."
-
-#: ../src/Gui/ccgui.glade.h:8
-#: ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:7 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:280
 msgid "Report"
 msgstr "Bericht"
 
-#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/ccgui.glade.h:9
 msgid ""
-"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
 "\n"
-"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
 "\n"
-"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
-"Dieses Programm ist freie Software. Sie können es unter den Bedingungen der GNU General Public License, wie von der Free Software Foundation veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 2 der Lizenz oder (nach Ihrer Option) jeder späteren Version.\n"
+"Dieses Programm ist freie Software. Sie können es unter den Bedingungen der "
+"GNU General Public License, wie von der Free Software Foundation "
+"veröffentlicht, weitergeben und/oder modifizieren, entweder gemäß Version 2 "
+"der Lizenz oder (nach Ihrer Option) jeder späteren Version.\n"
 "\n"
-"Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass es Ihnen von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.\n"
+"Die Veröffentlichung dieses Programms erfolgt in der Hoffnung, dass es Ihnen "
+"von Nutzen sein wird, aber OHNE IRGENDEINE GARANTIE, sogar ohne die "
+"implizite Garantie der MARKTREIFE oder der VERWENDBARKEIT FÜR EINEN "
+"BESTIMMTEN ZWECK. Details finden Sie in der GNU General Public License.\n"
 "\n"
-"Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem Programm erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>."
+"Sie sollten ein Exemplar der GNU General Public License zusammen mit diesem "
+"Programm erhalten haben. Falls nicht, siehe <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:14
 msgid "_Edit"
 msgstr "_Bearbeiten"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:15
 msgid "_File"
 msgstr "_Datei"
 
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:16
 msgid "_Help"
 msgstr "_Hilfe"
 
+#: ../src/Gui/ccgui.glade.h:17
+msgid ""
+"aalam@fedoraproject.org\n"
+"amitakhya@fedoraproject.org\n"
+"andrealafauci@fedoraproject.org\n"
+"anipeter@fedoraproject.org\n"
+"astur@fedoraproject.org\n"
+"beckerde@fedoraproject.org\n"
+"bruce89@fedoraproject.org\n"
+"charnik@fedoraproject.org\n"
+"chenh@fedoraproject.org\n"
+"cyrushmh@fedoraproject.org\n"
+"dennistobar@fedoraproject.org\n"
+"dheche@fedoraproject.org\n"
+"diegobz@fedoraproject.org\n"
+"dominiksandjaja@fedoraproject.org\n"
+"elad@fedoraproject.org\n"
+"elsupergomez@fedoraproject.org\n"
+"eukim@fedoraproject.org\n"
+"fab@fedoraproject.org\n"
+"feonsu@fedoraproject.org\n"
+"fgonz@fedoraproject.org\n"
+"fvalen@fedoraproject.org\n"
+"gcintra@fedoraproject.org\n"
+"gguerrer@fedoraproject.org\n"
+"goeran@fedoraproject.org\n"
+"hedda@fedoraproject.org\n"
+"hyuuga@fedoraproject.org\n"
+"ifelix@fedoraproject.org\n"
+"igorbounov@fedoraproject.org\n"
+"igor@fedoraproject.org\n"
+"jassy@fedoraproject.org\n"
+"jensm@fedoraproject.org\n"
+"jmoskovc@redhat.com\n"
+"joe74@fedoraproject.org\n"
+"jorgelopes@fedoraproject.org\n"
+"kenda@fedoraproject.org\n"
+"khasida@fedoraproject.org\n"
+"kkrothap@fedoraproject.org\n"
+"kmaraas@fedoraproject.org\n"
+"kmilos@fedoraproject.org\n"
+"kristho@fedoraproject.org\n"
+"leahliu@fedoraproject.org\n"
+"logan@fedoraproject.org\n"
+"mgiri@fedoraproject.org\n"
+"mideal@fedoraproject.org\n"
+"nagyesta@fedoraproject.org\n"
+"nippur@fedoraproject.org\n"
+"perplex@fedoraproject.org\n"
+"peti@fedoraproject.org\n"
+"pkst@fedoraproject.org\n"
+"ppapadeas@fedoraproject.org\n"
+"ptr@fedoraproject.org\n"
+"raada@fedoraproject.org\n"
+"rajesh@fedoraproject.org\n"
+"ratal@fedoraproject.org\n"
+"raven@fedoraproject.org\n"
+"ricardopinto@fedoraproject.org\n"
+"ruigo@fedoraproject.org\n"
+"runab@fedoraproject.org\n"
+"samfreemanz@fedoraproject.org\n"
+"sandeeps@fedoraproject.org\n"
+"sergiomesquita@fedoraproject.org\n"
+"shanky@fedoraproject.org\n"
+"shnurapet@fedoraproject.org\n"
+"snicore@fedoraproject.org\n"
+"swkothar@fedoraproject.org\n"
+"tch@fedoraproject.org\n"
+"tchuang@fedoraproject.org\n"
+"thalia@fedoraproject.org\n"
+"tomchiukc@fedoraproject.org\n"
+"vpv@fedoraproject.org\n"
+"warrink@fedoraproject.org\n"
+"xconde@fedoraproject.org\n"
+"ypoyarko@fedoraproject.org\n"
+"zoltanh721@fedoraproject.org"
+msgstr ""
+"aalam@fedoraproject.org\n"
+"amitakhya@fedoraproject.org\n"
+"andrealafauci@fedoraproject.org\n"
+"anipeter@fedoraproject.org\n"
+"astur@fedoraproject.org\n"
+"beckerde@fedoraproject.org\n"
+"bruce89@fedoraproject.org\n"
+"charnik@fedoraproject.org\n"
+"chenh@fedoraproject.org\n"
+"cyrushmh@fedoraproject.org\n"
+"dennistobar@fedoraproject.org\n"
+"dheche@fedoraproject.org\n"
+"diegobz@fedoraproject.org\n"
+"dominiksandjaja@fedoraproject.org\n"
+"elad@fedoraproject.org\n"
+"elsupergomez@fedoraproject.org\n"
+"eukim@fedoraproject.org\n"
+"fab@fedoraproject.org\n"
+"feonsu@fedoraproject.org\n"
+"fgonz@fedoraproject.org\n"
+"fvalen@fedoraproject.org\n"
+"gcintra@fedoraproject.org\n"
+"gguerrer@fedoraproject.org\n"
+"goeran@fedoraproject.org\n"
+"hedda@fedoraproject.org\n"
+"hyuuga@fedoraproject.org\n"
+"ifelix@fedoraproject.org\n"
+"igorbounov@fedoraproject.org\n"
+"igor@fedoraproject.org\n"
+"jassy@fedoraproject.org\n"
+"jensm@fedoraproject.org\n"
+"jmoskovc@redhat.com\n"
+"joe74@fedoraproject.org\n"
+"jorgelopes@fedoraproject.org\n"
+"kenda@fedoraproject.org\n"
+"khasida@fedoraproject.org\n"
+"kkrothap@fedoraproject.org\n"
+"kmaraas@fedoraproject.org\n"
+"kmilos@fedoraproject.org\n"
+"kristho@fedoraproject.org\n"
+"leahliu@fedoraproject.org\n"
+"logan@fedoraproject.org\n"
+"mgiri@fedoraproject.org\n"
+"mideal@fedoraproject.org\n"
+"nagyesta@fedoraproject.org\n"
+"nippur@fedoraproject.org\n"
+"perplex@fedoraproject.org\n"
+"peti@fedoraproject.org\n"
+"pkst@fedoraproject.org\n"
+"ppapadeas@fedoraproject.org\n"
+"ptr@fedoraproject.org\n"
+"raada@fedoraproject.org\n"
+"rajesh@fedoraproject.org\n"
+"ratal@fedoraproject.org\n"
+"raven@fedoraproject.org\n"
+"ricardopinto@fedoraproject.org\n"
+"ruigo@fedoraproject.org\n"
+"runab@fedoraproject.org\n"
+"samfreemanz@fedoraproject.org\n"
+"sandeeps@fedoraproject.org\n"
+"sergiomesquita@fedoraproject.org\n"
+"shanky@fedoraproject.org\n"
+"shnurapet@fedoraproject.org\n"
+"snicore@fedoraproject.org\n"
+"swkothar@fedoraproject.org\n"
+"tch@fedoraproject.org\n"
+"tchuang@fedoraproject.org\n"
+"thalia@fedoraproject.org\n"
+"tomchiukc@fedoraproject.org\n"
+"vpv@fedoraproject.org\n"
+"warrink@fedoraproject.org\n"
+"xconde@fedoraproject.org\n"
+"ypoyarko@fedoraproject.org\n"
+"zoltanh721@fedoraproject.org"
+
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:81
+#: ../src/Gui/CCMainWindow.py:65
 msgid "Icon"
 msgstr "Symbol"
 
-#: ../src/Gui/CCMainWindow.py:89
+#: ../src/Gui/CCMainWindow.py:73
 msgid "Package"
 msgstr "Paket"
 
-#: ../src/Gui/CCMainWindow.py:91
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Application"
 msgstr "Anwendung"
 
-#: ../src/Gui/CCMainWindow.py:93
+#: ../src/Gui/CCMainWindow.py:77
 msgid "Date"
 msgstr "Datum"
 
-#: ../src/Gui/CCMainWindow.py:95
+#: ../src/Gui/CCMainWindow.py:79
 msgid "Crash count"
 msgstr "Absturz-Anzahl"
 
-#: ../src/Gui/CCMainWindow.py:97
+#: ../src/Gui/CCMainWindow.py:81
 msgid "User"
 msgstr "Benutzer"
 
-#: ../src/Gui/CCMainWindow.py:165
+#: ../src/Gui/CCMainWindow.py:149
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
 "%s"
-msgstr "Der Einstellungsdialog %s kann nicht angezeigt werden"
+msgstr ""
+"Der Einstellungsdialog %s kann\n"
+"nicht angezeigt werden"
 
-#: ../src/Gui/CCMainWindow.py:176
+#: ../src/Gui/CCMainWindow.py:154
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -177,7 +341,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:203
+#: ../src/Gui/CCMainWindow.py:176
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -186,19 +350,105 @@ msgstr ""
 "Fehler beim Laden der Dump-Liste.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/Gui/CCMainWindow.py:214
 msgid "This crash has been reported:\n"
 msgstr "Dieser Absturz wurde gemeldet:\n"
 
-#: ../src/Gui/CCMainWindow.py:242
+#: ../src/Gui/CCMainWindow.py:215
 msgid "<b>This crash has been reported:</b>\n"
 msgstr "<b>Dieser Absturz wurde gemeldet:</b>\n"
 
-#: ../src/Gui/CCMainWindow.py:257
+#: ../src/Gui/CCMainWindow.py:230
 msgid "<b>Not reported!</b>"
 msgstr "<b>Nicht berichtet!</b>"
 
-#: ../src/Gui/CCMainWindow.py:305
+#: ../src/Gui/CCMainWindow.py:304
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Verwendung: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+
+#: ../src/Gui/CCMainWindow.py:328
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"Kein derartiger Absturz in der Datenbank, falsche Crashid?\n"
+"crashid=%s"
+
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:22
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
+
+#: ../src/Gui/CCReporterDialog.py:107
+msgid "You must check backtrace for sensitive data"
+msgstr "Überprüfen Sie den Backtrace auf sensible Daten"
+
+#: ../src/Gui/CCReporterDialog.py:118
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Berichterstellung deaktiviert, da der Backtrace unbrauchbar ist.\n"
+"Bitte versuchen Sie, Debuginfo mittels folgendem Befehl manuell zu "
+"installieren:<b>debuginfo-install %s</b> \n"
+"nutzen Sie dann die Aktualisieren-Schaltfläche, um den Backtrace erneut zu "
+"generieren."
+
+#: ../src/Gui/CCReporterDialog.py:120
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "Der Backtrace ist unbrauchbar, Sie können dies nicht berichten!"
+
+#: ../src/Gui/CCReporterDialog.py:124
+msgid ""
+"The backtrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr ""
+"Der Backtrace ist unvollständig, bitte stellen Sie sicher, dass alle "
+"Schritte zum Reproduzieren vorhanden sind."
+
+#: ../src/Gui/CCReporterDialog.py:130
+msgid "Reporting disabled, please fix the the problems shown above."
+msgstr "Berichterstellung deaktiviert, bitte beheben Sie die oben aufgeführten Probleme."
+
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Sends the report using selected plugin."
+msgstr "Sendet den Bericht unter Verwendung des ausgwählten Plugins."
+
+#: ../src/Gui/CCReporterDialog.py:170
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"Plugin-Einstellungen konnten nicht gesichert werden:\n"
+" %s"
+
+#: ../src/Gui/CCReporterDialog.py:202
+#, python-format
+msgid "Configure %s options"
+msgstr "%s Optionen konfigurieren"
+
+#: ../src/Gui/CCReporterDialog.py:449
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"Kein Plugin zur Berichterstellung für diesen Crash-Typ verfügbar\n"
+"Bitte überprüfen Sie abrt.conf."
+
+#: ../src/Gui/CCReporterDialog.py:493
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -206,7 +456,7 @@ msgstr ""
 "Konnte Bericht nicht abrufen!\n"
 "Fehlt Debuginfo?"
 
-#: ../src/Gui/CCMainWindow.py:325
+#: ../src/Gui/CCReporterDialog.py:522
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -215,48 +465,10 @@ msgstr ""
 "Berichterstellung fehlgeschlagen!\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:344
-#: ../src/Gui/CCMainWindow.py:371
+#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fehler beim Abrufen des Berichts: %s"
-
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:24
-msgid "Brief description how to reproduce this or what you did..."
-msgstr "Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
-
-#: ../src/Gui/CCReporterDialog.py:99
-msgid "You must check backtrace for sensitive data"
-msgstr "Überprüfen Sie den Backtrace auf sensible Daten"
-
-#: ../src/Gui/CCReporterDialog.py:110
-#, python-format
-msgid ""
-"Reporting disabled because the backtrace is unusable.\n"
-"Please try to install debuginfo manually using command: <b>debuginfo-install %s</b> \n"
-"then use Refresh button to regenerate the backtrace."
-msgstr ""
-"Berichterstellung deaktiviert, da der Backtrace unbrauchbar ist.\n"
-"Bitte versuchen Sie, Debuginfo mittels folgendem Befehl manuell zu installieren:<b>debuginfo-install %s</b> \n"
-"nutzen Sie dann die Aktualisieren-Schaltfläche, um den Backtrace erneut zu generieren."
-
-#: ../src/Gui/CCReporterDialog.py:112
-msgid "The backtrace is unusable, you can't report this!"
-msgstr "Der Backtrace ist unbrauchbar, Sie können dies nicht berichten!"
-
-#: ../src/Gui/CCReporterDialog.py:116
-msgid "The backtrace is incomplete, please make sure you provide good steps to reproduce."
-msgstr "Der Backtrace ist unvollständig, bitte stellen Sie sicher, dass alle Schritte zum Reproduzieren vorhanden sind."
-
-#: ../src/Gui/CCReporterDialog.py:158
-#, python-format
-msgid ""
-"Can't save plugin settings:\n"
-" %s"
-msgstr ""
-"Plugin-Einstellungen konnten nicht gesichert werden:\n"
-"%s"
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -266,22 +478,15 @@ msgstr "Log"
 msgid "Report done"
 msgstr "Bericht fertiggestellt"
 
-#: ../src/Gui/PluginSettingsUI.py:18
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Kann PluginDialog-Widget nicht in UI-Beschreibung finden!"
 
-#. we shouldn't get here, but just to be safe
-#: ../src/Gui/PluginSettingsUI.py:24
-#, python-format
-msgid "No UI for plugin %s"
-msgstr "Kein UI für Plugin %s"
-
-#: ../src/Gui/PluginSettingsUI.py:55
-#: ../src/Gui/PluginSettingsUI.py:81
+#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "Combo-Box ist nicht implementiert"
 
-#: ../src/Gui/PluginSettingsUI.py:64
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "Nichts zum Hydrieren!"
 
@@ -310,55 +515,76 @@ msgid "<b>Please fix the following problems</b>"
 msgstr "<b>Bitte beheben Sie folgende Probleme</b>"
 
 #: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>Wo möchten Sie diesen Zwischenfall melden?</b>"
+
+#: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
 msgstr "<span fgcolor=\"blue\">Architektur:</span>"
 
-#: ../src/Gui/report.glade.h:8
+#: ../src/Gui/report.glade.h:9
 msgid "<span fgcolor=\"blue\">Cmdline:</span>"
 msgstr "<span fgcolor=\"blue\">Kommandozeile:</span>"
 
-#: ../src/Gui/report.glade.h:9
+#: ../src/Gui/report.glade.h:10
 msgid "<span fgcolor=\"blue\">Component:</span>"
 msgstr "<span fgcolor=\"blue\">Komponente:</span>"
 
-#: ../src/Gui/report.glade.h:10
+#: ../src/Gui/report.glade.h:11
 msgid "<span fgcolor=\"blue\">Executable:</span>"
 msgstr "<span fgcolor=\"blue\">Ausführbar:</span>"
 
-#: ../src/Gui/report.glade.h:11
+#: ../src/Gui/report.glade.h:12
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
 msgstr "<span fgcolor=\"blue\">Kernel:</span>"
 
-#: ../src/Gui/report.glade.h:12
+#: ../src/Gui/report.glade.h:13
 msgid "<span fgcolor=\"blue\">Package:</span>"
 msgstr "<span fgcolor=\"blue\">Paket:</span>"
 
-#: ../src/Gui/report.glade.h:13
+#: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Reason:</span>"
 msgstr "<span fgcolor=\"blue\">Grund:</span>"
 
-#: ../src/Gui/report.glade.h:14
+#: ../src/Gui/report.glade.h:15
 msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Version:</span>"
 
-#: ../src/Gui/report.glade.h:16
-msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr "Ich habe den Backtrace geprüft und alle sensitiven Daten (Passwörter, usw.) entfernt"
-
 #: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "Details"
+
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Zwingt ABRT zur erneuten Generierung des Backtrace"
+
+#: ../src/Gui/report.glade.h:19
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr ""
+"Ich habe den Backtrace geprüft und alle sensitiven Daten (Passwörter, usw.) "
+"entfernt"
+
+#: ../src/Gui/report.glade.h:20
 msgid "N/A"
 msgstr "N/A"
 
-#: ../src/Gui/report.glade.h:18
+#: ../src/Gui/report.glade.h:21
+msgid "Please wait.."
+msgstr "Bitte warten ..."
+
+#: ../src/Gui/report.glade.h:22
+msgid "Reporter Selector"
+msgstr "Bericht-Auswahl"
+
+#: ../src/Gui/report.glade.h:23
 msgid "Send report"
 msgstr "Bericht abschicken"
 
-#: ../src/Gui/report.glade.h:19
+#: ../src/Gui/report.glade.h:24
 msgid "Show log"
 msgstr "Log anzeigen"
 
-#: ../src/Gui/SettingsDialog.py:33
-#: ../src/Gui/SettingsDialog.py:50
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Plugin wählen</b>"
 
@@ -462,80 +688,96 @@ msgstr "Webseite:"
 msgid "View and report application crashes"
 msgstr "Anwendungsabstürze einsehen und berichten"
 
-#: ../src/Applet/Applet.cpp:77
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "In Paket %s wurde ein Absturz entdeckt!"
 
-#: ../src/Applet/Applet.cpp:252
+#: ../src/Applet/Applet.cpp:90
+msgid "A crash has been detected"
+msgstr "Es wurde ein Absturz entdeckt!"
+
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "ABRT-Dienst wird nicht ausgeführt."
 
-#: ../src/Applet/CCApplet.cpp:199
+#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:314
 msgid "Warning"
 msgstr "Warnung"
 
-#: ../src/Daemon/Daemon.cpp:483
-msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
-msgstr "Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie Ihren MaxCrashReportsSize-Wert in abrt.conf."
+#: ../src/Daemon/Daemon.cpp:481
+msgid ""
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
+msgstr ""
+"Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie Ihren "
+"MaxCrashReportsSize-Wert in abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:340
+#: ../lib/Plugins/Bugzilla.cpp:326
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Fehler wurde bereits gemeldet: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:406
+#: ../lib/Plugins/Bugzilla.cpp:395
 #, c-format
 msgid "New bug id: %i"
 msgstr "Neue Fehler-ID: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:563
+#: ../lib/Plugins/Bugzilla.cpp:549
 msgid "Logging into bugzilla..."
 msgstr "Bei Bugzilla anmelden ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:567
-msgid "Empty login and password. Please check Bugzilla.conf"
-msgstr "Leerer Benutzername und Passwort. Bitte überprüfen Sie Bugzilla.conf."
+#: ../lib/Plugins/Bugzilla.cpp:553
+msgid ""
+"Empty login and password.\n"
+"Please check "
+msgstr ""
+"Leerer Benutzername und Passwort.\n"
+"Bitte überprüfen!"
 
-#: ../lib/Plugins/Bugzilla.cpp:577
+#: ../lib/Plugins/Bugzilla.cpp:563
 msgid "Checking for duplicates..."
 msgstr "Auf Duplikate überprüfen ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:590
+#: ../lib/Plugins/Bugzilla.cpp:576
 msgid "Missing mandatory member 'bugs'"
 msgstr "Fehlender benötigter Teil 'bugs'"
 
-#: ../lib/Plugins/Bugzilla.cpp:600
+#: ../lib/Plugins/Bugzilla.cpp:586
 msgid "Creating new bug..."
 msgstr "Neuen Fehlerbericht erstellen ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:608
-#: ../lib/Plugins/Bugzilla.cpp:702
+#: ../lib/Plugins/Bugzilla.cpp:591
+msgid "Bugzilla entry creation failed"
+msgstr "Erstellung eines Bugzilla-Eintrags fehlgeschlagen"
+
+#: ../lib/Plugins/Bugzilla.cpp:599 ../lib/Plugins/Bugzilla.cpp:704
 msgid "Logging out..."
 msgstr "Abmelden ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:636
-#: ../lib/Plugins/Bugzilla.cpp:664
+#: ../lib/Plugins/Bugzilla.cpp:629 ../lib/Plugins/Bugzilla.cpp:657
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() fehlgeschlagen. Es konnten nicht alle relevanten Informationen gesammelt werden."
+msgstr ""
+"get_bug_info() fehlgeschlagen. Es konnten nicht alle relevanten "
+"Informationen gesammelt werden."
 
-#: ../lib/Plugins/Bugzilla.cpp:648
+#: ../lib/Plugins/Bugzilla.cpp:641
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla kann die Eltern des Fehlerberichts nicht finden(%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:653
+#: ../lib/Plugins/Bugzilla.cpp:646
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Springe zu Bug %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:678
-#: ../lib/Plugins/Bugzilla.cpp:679
+#: ../lib/Plugins/Bugzilla.cpp:671 ../lib/Plugins/Bugzilla.cpp:672
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Füge %s in die CC-Liste hinzu"
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/Plugins/Bugzilla.cpp:695
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Füge neuen Kommentar in Bug(%d) hinzu"
@@ -548,15 +790,15 @@ msgstr "Rufe lokale, universelle, eindeutige Identifikation ab"
 msgid "Generating backtrace"
 msgstr "Backtrace wird generiert"
 
-#: ../lib/Plugins/CCpp.cpp:437
+#: ../lib/Plugins/CCpp.cpp:441
 msgid "Starting debuginfo installation"
 msgstr "debuginfo-Installation wird gestartet"
 
-#: ../lib/Plugins/CCpp.cpp:633
+#: ../lib/Plugins/CCpp.cpp:637
 msgid "Getting global universal unique identification..."
 msgstr "Globale, universelle, eindeutige Identifikation abrufen ..."
 
-#: ../lib/Plugins/CCpp.cpp:811
+#: ../lib/Plugins/CCpp.cpp:815
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo-Installation wird übersprungen"
 
@@ -592,10 +834,6 @@ msgstr "Kann kein Archiv erzeugen und senden: %s"
 msgid "Can't create and send an archive %s"
 msgstr "Kann kein Archiv erzeugen und senden %s"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:72
-msgid "Creating kernel oops crash reports..."
-msgstr "Kernel-Oops-Crash-Berichte erzeugen ..."
-
 #: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Eine E-Mail senden ..."
@@ -608,48 +846,4 @@ msgstr "sosreport ausführen: %s"
 #: ../lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "Ausführung von sosreport abgeschlossen"
-
-#~ msgid "Missing member 'reporter'"
-#~ msgstr "Fehlender Teil 'reporter'"
-#~ msgid "Missing member 'cc'"
-#~ msgstr "Fehlender Teil 'cc'"
-#~ msgid "Missing member 'bug_id'"
-#~ msgstr "Fehlender Teil 'bug_id'"
-#~ msgid "Checking CC..."
-#~ msgstr "CC überprüfen ..."
-#~ msgid "Getting local universal unique identification..."
-#~ msgstr "Lokale, universelle, eindeutige Identifikation abrufen ..."
-#~ msgid "Settings"
-#~ msgstr "Einstellungen"
-#~ msgid "Global Settings"
-#~ msgstr "Globale Einstellungen"
-#~ msgid "gtk-cancel"
-#~ msgstr "gtk-cancel"
-#~ msgid "gtk-ok"
-#~ msgstr "gtk-ok"
-#~ msgid "Plugin name is not set, can't load its settings"
-#~ msgstr ""
-#~ "Plugin-Name nicht gesetzt, Einstellungen können nicht geladen werden."
-#~ msgid ""
-#~ "<b>WARNING</b>, you're about to send data which might contain sensitive "
-#~ "information.\n"
-#~ "Do you really want to send <b>%s</b>?\n"
-#~ msgstr ""
-#~ "<b>WARNUNG</b>, Sie sind im Begriff, möglicherweise sensible Daten zu "
-#~ "senden.\n"
-#~ "Möchten Sie wirklich senden<b>%s</b>?\n"
-#~ msgid "<b>Following items will be sent</b>"
-#~ msgstr "<b>Folgendes wird gesendet werden</b> "
-#~ msgid "Send"
-#~ msgstr "Senden"
-#~ msgid "Executing SOSreport plugin..."
-#~ msgstr "SOSreport-Plugin ausführen ..."
-#~ msgid "Searching for debug-info packages..."
-#~ msgstr "debug-info-Pakete suchen ..."
-#~ msgid "Downloading and installing debug-info packages..."
-#~ msgstr "debug-info-Pakete herunterladen und installieren ..."
-#~ msgid "Starting report creation..."
-#~ msgstr "Berichterstellung beginnen ..."
-#~ msgid "Creating a report..."
-#~ msgstr "Einen Bericht erstellen ..."
 

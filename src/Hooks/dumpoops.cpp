@@ -75,7 +75,7 @@ int main(int argc, char **argv)
 	/* Load KerneloopsScanner plugin */
 //	const plugin_info_t *plugin_info;
 	CPlugin* (*plugin_newf)(void);
-	int (*scan_syslog_file)(vector_string_t& oopsList, const char *filename);
+	int (*scan_syslog_file)(vector_string_t& oopsList, const char *filename, time_t *last_changed_p);
 	void (*save_oops_to_debug_dump)(const vector_string_t& oopsList);
 	void *handle;
 
@@ -96,7 +96,7 @@ int main(int argc, char **argv)
 
 	/* Use it: parse and dump the oops */
 	vector_string_t oopsList;
-	int cnt = scan_syslog_file(oopsList, argv[0]);
+	int cnt = scan_syslog_file(oopsList, argv[0], NULL);
 	log("found oopses: %d", cnt);
 
 	if (cnt > 0) {

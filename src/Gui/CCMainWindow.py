@@ -59,7 +59,7 @@ class MainWindow():
         UNIX_TIME_COL = 7
         DUMP_OBJECT_COL = 8
         #icon, package_name, application, date, crash_rate, user, is_reported, time_in_sec ?object?
-        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,str,str,bool, int, object)
+        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,int,str,bool, int, object)
         self.dlist.set_model(self.dumpsListStore)
         # add pixbuff separatelly
         icon_column = gtk.TreeViewColumn(_("Icon"))
