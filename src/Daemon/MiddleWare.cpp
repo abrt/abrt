@@ -27,6 +27,7 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 #include "MiddleWare.h"
+#include <algorithm>
 
 using namespace std;
 
@@ -377,10 +378,11 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
 }
 
 
-// We must not trust client_report here!
+// Do not trust client_report here!
 // dbus handler passes it from user without checking
 report_status_t Report(const map_crash_data_t& client_report,
-                       map_map_string_t& pSettings,
+                       const vector_string_t &reporters,
+                       map_map_string_t& settings,
                        long caller_uid)
 {
     // Get ID fields
@@ -498,39 +500,20 @@ report_status_t Report(const map_crash_data_t& client_report,
         for (; it_r != keyPtr->second.end(); it_r++)
         {
             const char *plugin_name = it_r->first.c_str();
+
+	    /* Check if the reporter is in the input list of allowed reporters. */
+	    if (reporters.end() == std::find(reporters.begin(), reporters.end(), plugin_name))
+	    {
+	        continue;
+	    }
+
             try
             {
                 if (g_pPluginManager->GetPluginType(plugin_name) == REPORTER)
                 {
                     CReporter* reporter = g_pPluginManager->GetReporter(plugin_name); /* can't be NULL */
-#if 0 /* Using ~user/.abrt/ is bad wrt security */
-                    std::string home;
-                    map_plugin_settings_t oldSettings;
-                    map_plugin_settings_t newSettings;
-
-                    if (pUID != "")
-                    {
-                        home = get_home_dir(xatoi_u(pUID.c_str()));
-                        if (home != "")
-                        {
-                            oldSettings = reporter->GetSettings();
-
-                            if (LoadPluginSettings(home + "/.abrt/" + plugin_name + "."PLUGINS_CONF_EXTENSION, newSettings))
-                            {
-                                reporter->SetSettings(newSettings);
-                            }
-                        }
-                    }
-#endif
-                    map_plugin_settings_t plugin_settings = pSettings[plugin_name];
+                    map_plugin_settings_t plugin_settings = settings[plugin_name];
                     std::string res = reporter->Report(stored_report, plugin_settings, it_r->second.c_str());
-
-#if 0 /* Using ~user/.abrt/ is bad wrt security */
-                    if (home != "")
-                    {
-                        reporter->SetSettings(oldSettings);
-                    }
-#endif
                     ret[plugin_name].push_back("1"); // REPORT_STATUS_IDX_FLAG
                     ret[plugin_name].push_back(res); // REPORT_STATUS_IDX_MSG
                     if (message != "")
@@ -589,7 +572,7 @@ static bool IsDebugDumpSaved(long uid,
     vector_database_rows_t rows = database->GetUIDData(uid);
     database->DisConnect();
 
-    int ii;
+    size_t ii;
     bool found = false;
     for (ii = 0; ii < rows.size(); ii++)
     {

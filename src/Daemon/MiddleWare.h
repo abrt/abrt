@@ -87,12 +87,20 @@ void RunActionsAndReporters(const char *pDebugDumpDir);
  * fails, then default config is used. If pUID is emply string, default
  * config is used.
  * ...).
- * @param pCrashData A crash report.
- * @param pUID An user uid
- * @return A report status, which reporters ends successfuly with messages.
+ * @param crash_data 
+ *  A crash report.
+ * @param reporters
+ *  List of allowed reporters. Which reporters will be used depends
+ *  on the analyzer of the crash_data. Reporters missing from this list 
+ *  will not be used.
+ * @param caller_uid 
+ *  An user uid.
+ * @return 
+ *  A report status, which reporters ends successfuly with messages.
  */
-report_status_t Report(const map_crash_data_t& pCrashData,
-                       map_map_string_t& pSettings,
+report_status_t Report(const map_crash_data_t& crash_data,
+                       const vector_string_t& reporters,
+                       map_map_string_t& settings,
                        long caller_uid);
 /**
  * Adds package name and description to debugdump dir.

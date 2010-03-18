@@ -22,6 +22,8 @@
 #include "DebugDump.h"
 #include "CrashTypes.h" // FILENAME_* defines
 #include "Plugin.h" // LoadPluginSettings
+#include <cassert>
+#include <algorithm>
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -423,26 +425,82 @@ static int run_report_editor(map_crash_data_t &cr)
  */
 static void read_from_stdin(const char *question, char *result, int result_size)
 {
+  assert(result_size > 1);
   printf("%s", question);
   fflush(NULL);
-  fgets(result, result_size, stdin);
+  if (NULL == fgets(result, result_size, stdin))
+    result[0] = '\0';
   // Remove the newline from the login.
   char *newline = strchr(result, '\n');
   if (newline)
     *newline = '\0';
 }
 
-/**
- * Gets reporter plugin settings.
- * @param ask_user
- *   If it's set to true and some reporter plugin settings are found to be missing
- *   (like login name or password), user is asked to provide the missing parts.
- * @param settings
- *   A structure filled with reporter plugin settings.
+/** Splits a string into substrings using chosen delimiters.
+ * @param delim
+ *  Specifies  a  set  of characters that delimit the
+ *  tokens in the parsed string
  */
-static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_user)
+static vector_string_t split(const std::string &s, const char *delim)
 {
-  /* First of all, load system-wide report plugin settings. */
+  std::vector<std::string> elems;
+  char str[s.length() + 1];
+  /* str is modified by the following strtok_r,
+     so s.c_str() cannot be used directly */
+  strcpy(str, s.c_str());
+  char *saveptr, *token;
+  token = strtok_r(str, delim, &saveptr);
+  while (token != NULL)
+  {
+    elems.push_back(token);
+    token = strtok_r(NULL, delim, &saveptr);
+  }
+  return elems;
+}
+
+/** Returns a list of enabled Reporter plugins, that are used to report
+ * a particular crash.
+ * @todo
+ *  Very similar code is used in the GUI, and also in the Daemon.
+ *  It should be shared.
+ */
+static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
+{
+  vector_string_t result;
+
+  /* Get global daemon settings. Analyzer->Reporters mapping is stored there. */
+  map_map_string_t settings = call_GetSettings();
+  /* Reporters are separated by comma in the following map. */
+  map_string_t &analyzer_to_reporters = settings["AnalyzerActionsAndReporters"];
+
+  /* Get the analyzer from the crash. */
+  const char *analyzer = get_crash_data_item_content_or_NULL(crash_data, FILENAME_ANALYZER);
+  if (!analyzer)
+    return result; /* No analyzer found in the crash data. */
+
+  /* First try to find package name dependent analyzer.
+   * nvr = name-version-release
+   * TODO: Similar code is in MiddleWare.cpp. It should not be duplicated.
+   */
+  const char *package_nvr = get_crash_data_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
+  if (!package_nvr)
+    return result; /* No package name found in the crash data. */
+  std::string str_package_nvr(package_nvr);
+  std::string package_name = str_package_nvr.substr(0, str_package_nvr.rfind("-", str_package_nvr.rfind("-") - 1));
+  // analyzer with package name (CCpp:xorg-x11-app) has higher priority
+  std::string package_specific_analyzer = std::string(analyzer) + ":" + package_name;
+
+  map_string_t::const_iterator reporters_iter = analyzer_to_reporters.find(package_specific_analyzer);
+  if (analyzer_to_reporters.end() == reporters_iter)
+  {
+    reporters_iter = analyzer_to_reporters.find(analyzer);
+    if (analyzer_to_reporters.end() == reporters_iter)
+      return result; /* No reporters found for the analyzer. */
+  }
+
+  /* Reporters found, now parse the list. */
+  vector_string_t reporter_vec = split(reporters_iter->second, ",");
+
   // Get informations about all plugins.
   map_map_string_t plugins = call_GetPluginsInfo();
   // Check the configuration of each enabled Reporter plugin.
@@ -455,11 +513,49 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
     // Skip nonReporter plugins.
     if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
       continue;
-    map_string_t single_plugin_settings = call_GetPluginSettings(it->first.c_str());
+    // Skip plugins not used in this particular crash.
+    if (reporter_vec.end() == std::find(reporter_vec.begin(), reporter_vec.end(), std::string(it->first)))
+      continue;
+    result.push_back(it->first);
+  }
+  return result;
+}
+
+/* Asks a [y/n] question on stdin/stdout.
+ * Returns true if the answer is yes, false otherwise.
+ */
+static bool ask_yesno(const char *question)
+{
+  printf(question);
+  fflush(NULL);
+  char answer[16] = "n";
+  fgets(answer, sizeof(answer), stdin);
+  /* TODO: localize 'y' */
+  return ((answer[0] | 0x20) == 'y');
+}
+
+/**
+ * Gets reporter plugin settings.
+ * @param reporters
+ *   List of reporter names. Settings of these reporters are handled.
+ * @param settings
+ *   A structure filled with reporter plugin settings.
+ * @param ask_user
+ *   If it's set to true and some reporter plugin settings are found to be missing
+ *   (like login name or password), user is asked to provide the missing parts.
+ */
+static void get_reporter_plugin_settings(const vector_string_t& reporters,
+					 map_map_string_t &settings,
+					 bool ask_user)
+{
+  /* First of all, load system-wide report plugin settings. */
+  for (vector_string_t::const_iterator it = reporters.begin(); it != reporters.end(); ++it)
+  {
+    map_string_t single_plugin_settings = call_GetPluginSettings(it->c_str());
     // Copy the received settings as defaults.
     // Plugins won't work without it, if some value is missing
     // they use their default values for all fields.
-    settings[it->first] = single_plugin_settings;
+    settings[it->c_str()] = single_plugin_settings;
   }
 
   /* Second, load user-specific settings, which override
@@ -468,14 +564,14 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
   const char* homedir = pw ? pw->pw_dir : NULL;
   if (homedir)
   {
-    itend = settings.end();
-    for (it = settings.begin(); it != itend; ++it)
+    map_map_string_t::const_iterator itend = settings.end();
+    for (map_map_string_t::iterator it = settings.begin(); it != itend; ++it)
     {
       map_string_t single_plugin_settings;
       std::string path = std::string(homedir) + "/.abrt/"
 	+ it->first + "."PLUGINS_CONF_EXTENSION;
       /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
-         because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
+         because user may want to override password from /etc/abrt/plugins/\*.conf, but he prefers to
          enter it every time he reports. */
       bool success = LoadPluginSettings(path.c_str(), single_plugin_settings, false);
       if (!success)
@@ -491,8 +587,8 @@ static void get_reporter_plugin_settings(map_map_string_t &settings, bool ask_us
     return;
 
   /* Third, check if a login or password is missing, and ask for it. */
-  itend = settings.end();
-  for (it = settings.begin(); it != itend; ++it)
+  map_map_string_t::const_iterator itend = settings.end();
+  for (map_map_string_t::iterator it = settings.begin(); it != itend; ++it)
   {
     map_string_t &single_plugin_settings = it->second;
     // Login information is missing.
@@ -538,40 +634,55 @@ int report(const char *crash_id, bool always)
       return result;
   }
 
-  /* Read the plugin settings. */
-  map_map_string_t pluginSettings;
-  get_reporter_plugin_settings(pluginSettings, !always);
-
-  /* Ask if user really wants to send the report. */
-  if (!always)
-  {
-    // Report only if the user is sure.
-    printf(_("Do you want to send the report? [y/N]: "));
-    fflush(NULL);
-    char answer[16] = "n";
-    fgets(answer, sizeof(answer), stdin);
-    if ((answer[0] | 0x20) != 'y')
-    {
-      puts(_("Crash report was not sent."));
-      return 0;
-    }
-  }
+  /* Get enabled reporters associated with this particular crash. */
+  vector_string_t reporters = get_enabled_reporters(cr);
 
   int errors = 0;
   int plugins = 0;
-  puts(_("Reporting..."));
-  report_status_t r = call_Report(cr, pluginSettings);
-  report_status_t::iterator it = r.begin();
-  while (it != r.end())
+  if (always)
   {
-    vector_string_t &v = it->second;
-    printf("%s: %s\n", it->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
-    plugins++;
-    if (v[REPORT_STATUS_IDX_FLAG] == "0")
-      errors++;
-    it++;
-  }
-  printf(_("Crash reported via %d plugins (%d errors)\n"), plugins, errors);
+    map_map_string_t reporters_settings; /* to be filled on the next line */
+    get_reporter_plugin_settings(reporters, reporters_settings, false);
 
+    puts(_("Reporting..."));
+    report_status_t r = call_Report(cr, reporters, reporters_settings);
+    report_status_t::iterator it = r.begin();
+    while (it != r.end())
+    {
+      vector_string_t &v = it->second;
+      printf("%s: %s\n", it->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+      plugins++;
+      if (v[REPORT_STATUS_IDX_FLAG] == "0")
+	errors++;
+      it++;
+    }
+  }
+  else
+  {
+    /* For every reporter, ask if user really wants to report using it. */
+    for (vector_string_t::const_iterator it = reporters.begin(); it != reporters.end(); ++it)
+    {
+      char question[255];
+      snprintf(question, 255, _("Report using %s? [y/N]: "), it->c_str());
+      if (!ask_yesno(question))
+      {
+	puts(_("Skipping..."));
+	continue;
+      }
+
+      vector_string_t cur_reporter(1, *it);
+      map_map_string_t reporters_settings; /* to be filled on the next line */
+      get_reporter_plugin_settings(cur_reporter, reporters_settings, true);
+      report_status_t r = call_Report(cr, cur_reporter, reporters_settings);
+      assert(r.size() == 1); /* one reporter --> one report status */
+      vector_string_t &v = r.begin()->second;
+      printf("%s: %s\n", r.begin()->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
+      plugins++;
+      if (v[REPORT_STATUS_IDX_FLAG] == "0")
+	errors++;
+    }
+  }
+
+  printf(_("Crash reported via %d plugins (%d errors)\n"), plugins, errors);
   return errors != 0;
 }

@@ -247,7 +247,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         return 0;
     }
 
-    /* Second parameter: reporters to use */
+    /* Second parameter: list of reporters to use */
     vector_string_t reporters;
     r = load_val(&in_iter, reporters);
     if (r == ABRT_DBUS_ERROR)
@@ -256,7 +256,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         return -1;
     }
 
-    /* Third parameter is optional */
+    /* Third parameter (optional): configuration data for plugins */
     map_map_string_t user_conf_data;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {
@@ -294,7 +294,7 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
     report_status_t argout1;
     try
     {
-        argout1 = Report(argin1, user_conf_data, unix_uid);
+        argout1 = Report(argin1, reporters, user_conf_data, unix_uid);
     }
     catch (CABRTException &e)
     {

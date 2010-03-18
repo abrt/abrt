@@ -160,6 +160,7 @@ map_crash_data_t call_CreateReport(const char* crash_id)
 }
 
 report_status_t call_Report(const map_crash_data_t& report,
+			    const vector_string_t& reporters,
 			    const map_map_string_t &plugins)
 {
     DBusMessage* msg = new_call_msg(__func__ + 5);
@@ -169,8 +170,7 @@ report_status_t call_Report(const map_crash_data_t& report,
     /* parameter #1: report data */
     store_val(&out_iter, report);
     /* parameter #2: reporters to use */
-    vector_string_t reporters;
-    store_val(&out_iter, reporters); /* unused by daemon so far */
+    store_val(&out_iter, reporters);
     /* parameter #3 (opt): plugin config */
     if (!plugins.empty())
         store_val(&out_iter, plugins);
@@ -240,6 +240,22 @@ map_plugin_settings_t call_GetPluginSettings(const char *name)
     dbus_message_iter_init(reply, &in_iter);
 
     map_string_t argout;
+    int r = load_val(&in_iter, argout);
+    if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
+        error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
+
+    dbus_message_unref(reply);
+    return argout;
+}
+
+map_map_string_t call_GetSettings()
+{
+    DBusMessage *msg = new_call_msg(__func__ + 5);
+    DBusMessage *reply = send_get_reply_and_unref(msg);
+
+    DBusMessageIter in_iter;
+    dbus_message_iter_init(reply, &in_iter);
+    map_map_string_t argout;
     int r = load_val(&in_iter, argout);
     if (r != ABRT_DBUS_LAST_FIELD) /* more values present, or bad type */
         error_msg_and_die("dbus call %s: return type mismatch", __func__ + 5);
