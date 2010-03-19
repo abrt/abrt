@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-18 16:08+0000\n"
-"PO-Revision-Date: 2010-03-18 17:10+0100\n"
+"POT-Creation-Date: 2010-03-19 15:47+0000\n"
+"PO-Revision-Date: 2010-03-19 16:56+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -90,7 +90,7 @@ msgstr "Nie zgłoszono"
 msgid "Plugins"
 msgstr "Wtyczki"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:280
+#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:251
 msgid "Report"
 msgstr "Zgłoś"
 
@@ -136,7 +136,7 @@ msgstr "_Plik"
 msgid "_Help"
 msgstr "Pomo_c"
 
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:17 ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
 msgstr ""
 "Piotr Drąg <piotrdrag@gmail.com>, 2009\n"
@@ -548,10 +548,20 @@ msgstr "Wykryto awarię"
 msgid "ABRT service is not running"
 msgstr "Usługa ABRT nie jest uruchomiona"
 
-#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
-#: ../src/Applet/CCApplet.cpp:314
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:258
+#: ../src/Applet/CCApplet.cpp:285
 msgid "Warning"
 msgstr "Ostrzeżenie"
+
+#: ../src/Applet/CCApplet.cpp:88
+msgid "Notification area applet to notify user about issues detected by ABRT"
+msgstr ""
+"Aplet obszaru powiadamiania informujący użytkownika o problemach wykrytych "
+"przez program ABRT"
+
+#: ../src/Applet/CCApplet.cpp:114
+msgid "Hide"
+msgstr "Ukryj"
 
 #: ../src/Daemon/Daemon.cpp:481
 msgid ""

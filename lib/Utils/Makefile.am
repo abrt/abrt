@@ -20,6 +20,7 @@ libABRTUtils_la_SOURCES = \
     stringops.cpp \
     dirsize.cpp \
     DebugDump.h DebugDump.cpp \
+    abrt_dbus.h abrt_dbus.cpp \
     CrashTypes.cpp \
     ABRTException.cpp
 libABRTUtils_la_CPPFLAGS = \
@@ -30,16 +31,20 @@ libABRTUtils_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
+    $(GLIB_CFLAGS) \
+    $(DBUS_CFLAGS) \
     -D_GNU_SOURCE
 libABRTUtils_la_LDFLAGS = \
     -version-info 0:1:0
-libABRTUtils_la_LIBADD =
+libABRTUtils_la_LIBADD = \
+    $(GLIB_LIBS) \
+    $(DBUS_LIBS)
+
 
 libABRTdUtils_la_SOURCES = \
     parse_release.cpp \
     make_descr.cpp \
     CommLayerInner.h CommLayerInner.cpp \
-    abrt_dbus.h abrt_dbus.cpp \
     abrt_xmlrpc.h abrt_xmlrpc.cpp \
     Plugin.h Plugin.cpp \
     Polkit.h Polkit.cpp \
@@ -54,14 +59,12 @@ libABRTdUtils_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(DBUS_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(POLKIT_CFLAGS) \
     -D_GNU_SOURCE
 libABRTdUtils_la_LDFLAGS = \
     -version-info 0:1:0
 libABRTdUtils_la_LIBADD = \
-    $(DBUS_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     $(POLKIT_LIBS)
 
