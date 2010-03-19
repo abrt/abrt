@@ -11,6 +11,7 @@ pluginslib_LTLIBRARIES = \
     libRunApp.la \
     libSOSreport.la \
     libBugzilla.la \
+    librhticket.la \
     libCatcut.la \
     libTicketUploader.la \
     libPython.la \
@@ -129,6 +130,14 @@ libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
 libBugzilla_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 libBugzilla_la_LDFLAGS = -avoid-version
 libBugzilla_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
+    -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
+
+# rhticket
+librhticket_la_SOURCES = rhticket.h rhticket.cpp
+librhticket_la_LIBADD =
+librhticket_la_LDFLAGS = -avoid-version
+librhticket_la_CPPFLAGS = \
     -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
 
