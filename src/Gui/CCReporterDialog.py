@@ -127,7 +127,7 @@ class ReporterDialog():
             self.warn_user(error_msgs)
         bSend.set_sensitive(send)
         if not send:
-            bSend.set_tooltip_text(_("Reporting disabled, please fix the the problems shown above."))
+            bSend.set_tooltip_text(_("Reporting disabled, please fix the problems shown above."))
         else:
             bSend.set_tooltip_text(_("Sends the report using selected plugin."))
 
@@ -141,11 +141,11 @@ class ReporterDialog():
     def on_response(self, dialog, response_id, daemon):
         # the button has been pressed (probably)
         if response_id == gtk.RESPONSE_APPLY:
-            if not (self.check_settings(daemon) and self.check_report()):
+            if not (self.check_report()):
                 dialog.stop_emission("response")
                 self.builder.get_object("bSend").stop_emission("clicked")
         if response_id == SHOW_LOG:
-        # prevent dialog from quitting the run()
+        # prevent the report dialog from quitting the run() and closing itself
             dialog.stop_emission("response")
 
     def on_send_toggled(self, cell, path, model):
@@ -156,63 +156,6 @@ class ReporterDialog():
             # clear "hint" text by supplying a fresh, empty TextBuffer
             widget.set_buffer(gtk.TextBuffer())
             self.show_hint_comment = 0
-
-    def on_config_plugin_clicked(self, button, plugin, image):
-        ui = PluginSettingsUI(plugin, parent=self.window)
-        ui.hydrate()
-        response = ui.run()
-        if response == gtk.RESPONSE_APPLY:
-            ui.dehydrate()
-            if plugin.Settings.check():
-                try:
-                    plugin.save_settings_on_client_side()
-                except Exception, e:
-                    gui_error_message(_("Can't save plugin settings:\n %s" % e))
-                box = image.get_parent()
-                im = gtk.Image()
-                im.set_from_stock(gtk.STOCK_APPLY, gtk.ICON_SIZE_MENU)
-                box.remove(image)
-                box.pack_start(im, expand = False, fill = False)
-                im.show()
-                image.destroy()
-                button.set_sensitive(False)
-        elif response == gtk.RESPONSE_CANCEL:
-            log1("cancel")
-        ui.destroy()
-
-    def check_settings(self, daemon):
-        pluginlist = getPluginInfoList(daemon)
-        reporters = pluginlist.getReporterPlugins()
-        wrong_conf_plugs = []
-        for reporter in reporters:
-            if reporter.Settings.check() == False:
-                wrong_conf_plugs.append(reporter)
-
-        if wrong_conf_plugs:
-            gladefile = "%s%ssettings_wizard.glade" % (sys.path[0],"/")
-            builder = gtk.Builder()
-            builder.add_from_file(gladefile)
-            dialog = builder.get_object("WrongSettings")
-            vbWrongSettings = builder.get_object("vbWrongSettings")
-            for plugin in wrong_conf_plugs:
-                hbox = gtk.HBox()
-                hbox.set_spacing(6)
-                image = gtk.Image()
-                image.set_from_stock(gtk.STOCK_CANCEL, gtk.ICON_SIZE_MENU)
-                button = gtk.Button(_("Configure %s options" % plugin.getName()))
-                button.connect("clicked", self.on_config_plugin_clicked, plugin, image)
-                hbox.pack_start(button)
-                hbox.pack_start(image, expand = False, fill = False)
-                vbWrongSettings.pack_start(hbox)
-            vbWrongSettings.show_all()
-            dialog.set_transient_for(self.window)
-            dialog.set_modal(True)
-            response = dialog.run()
-            dialog.destroy()
-            if response != gtk.RESPONSE_YES:
-                # user cancelled reporting
-                return False
-        return True
 
     def set_label(self, label_widget, text):
         if len(text) > label_widget.get_max_width_chars():
@@ -456,9 +399,65 @@ class ReporterSelector():
             self.selected_reporters = [str(self.reporters[0])]
             self.show_report()
 
+    def on_config_plugin_clicked(self, button, plugin, image):
+        ui = PluginSettingsUI(plugin, parent=self.window)
+        ui.hydrate()
+        response = ui.run()
+        if response == gtk.RESPONSE_APPLY:
+            ui.dehydrate()
+            if plugin.Settings.check():
+                try:
+                    plugin.save_settings_on_client_side()
+                except Exception, e:
+                    gui_error_message(_("Can't save plugin settings:\n %s" % e))
+                box = image.get_parent()
+                im = gtk.Image()
+                im.set_from_stock(gtk.STOCK_APPLY, gtk.ICON_SIZE_MENU)
+                box.remove(image)
+                box.pack_start(im, expand = False, fill = False)
+                im.show()
+                image.destroy()
+                button.set_sensitive(False)
+        elif response == gtk.RESPONSE_CANCEL:
+            log1("cancel")
+        ui.destroy()
+
+    def check_settings(self, reporters):
+        wrong_conf_plugs = []
+        for reporter in reporters:
+            if reporter.Settings.check() == False:
+                wrong_conf_plugs.append(reporter)
+
+        if wrong_conf_plugs:
+            gladefile = "%s%ssettings_wizard.glade" % (sys.path[0],"/")
+            builder = gtk.Builder()
+            builder.add_from_file(gladefile)
+            dialog = builder.get_object("WrongSettings")
+            vbWrongSettings = builder.get_object("vbWrongSettings")
+            for plugin in wrong_conf_plugs:
+                hbox = gtk.HBox()
+                hbox.set_spacing(6)
+                image = gtk.Image()
+                image.set_from_stock(gtk.STOCK_CANCEL, gtk.ICON_SIZE_MENU)
+                button = gtk.Button(_("Configure %s options" % plugin.getName()))
+                button.connect("clicked", self.on_config_plugin_clicked, plugin, image)
+                hbox.pack_start(button)
+                hbox.pack_start(image, expand = False, fill = False)
+                vbWrongSettings.pack_start(hbox)
+            vbWrongSettings.show_all()
+            dialog.set_transient_for(self.window)
+            dialog.set_modal(True)
+            response = dialog.run()
+            dialog.destroy()
+            if response != gtk.RESPONSE_YES:
+                # user cancelled reporting
+                return False
+        return True
+
     def on_reporter_clicked(self, widget, reporter):
-        self.selected_reporters = [str(reporter)]
-        self.show_report()
+        self.selected_reporters = [reporter]
+        if self.check_settings(self.selected_reporters):
+            self.show_report()
 
     def on_close_clicked(self, widget):
         self.disconnect_signals()

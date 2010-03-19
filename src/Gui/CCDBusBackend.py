@@ -182,11 +182,13 @@ class DBusManager(gobject.GObject):
         self.job_crash_id = crash_id
 
     def Report(self, report, reporters, reporters_settings = None):
-        # map < Plguin_name vec <status, message> >
+        # map < Plugin_name vec <status, message> >
+        # daemon expects plugin names, not the objects
+        reporters_names = [str(reporter) for reporter in reporters]
         if reporters_settings:
-            self.daemon().Report(report, reporters, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+            self.daemon().Report(report, reporters_names, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
         else:
-            self.daemon().Report(report, reporters, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+            self.daemon().Report(report, reporters_names, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
 
     def DeleteDebugDump(self, crash_id):
         return self.daemon().DeleteDebugDump(crash_id)
