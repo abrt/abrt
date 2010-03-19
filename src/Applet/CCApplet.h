@@ -28,12 +28,7 @@ class CApplet
 {
     private:
         GtkStatusIcon* m_pStatusIcon;
-        GObject *m_pMenu;
-        GtkBuilder *m_pBuilder;
-        GObject *m_pmiHide;
-        GObject *m_pmiQuit;
-        GObject *m_pmiAbout;
-        GObject *m_pAboutDialog;
+        GtkWidget *m_pMenu;
 
 //        std::map<int, std::string> m_mapEvents;
         bool m_bDaemonRunning;
@@ -84,8 +79,6 @@ class CApplet
                             guint          button,
                             guint          activate_time,
                             gpointer       user_data);
-        static void onHide_cb(GtkMenuItem *menuitem, gpointer applet);
-        static void onAbout_cb(GtkMenuItem *menuitem, gpointer applet);
         static gboolean update_icon(void *data);
         void animate_icon();
         void stop_animate_icon();

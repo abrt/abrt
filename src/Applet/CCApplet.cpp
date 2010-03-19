@@ -28,92 +28,7 @@
 #include "abrtlib.h"
 #include "CCApplet.h"
 
-
-static const gchar menu_xml[] =
-        "<?xml version=\"1.0\"?>\
-<interface>\
-  <requires lib=\"gtk+\" version=\"2.16\"/>\
-  <!-- interface-naming-policy project-wide -->\
-  <object class=\"GtkMenu\" id=\"popup_menu\">\
-    <property name=\"visible\">True</property>\
-    <child>\
-      <object class=\"GtkMenuItem\" id=\"miHide\">\
-        <property name=\"visible\">True</property>\
-        <property name=\"label\" translatable=\"yes\">Hide</property>\
-      </object>\
-    </child>\
-    <child>\
-      <object class=\"GtkImageMenuItem\" id=\"miQuit\">\
-        <property name=\"label\">gtk-quit</property>\
-        <property name=\"visible\">True</property>\
-        <property name=\"use_underline\">True</property>\
-        <property name=\"use_stock\">True</property>\
-        <property name=\"always_show_image\">True</property>\
-      </object>\
-    </child>\
-    <child>\
-      <object class=\"GtkSeparatorMenuItem\" id=\"miSep1\">\
-        <property name=\"visible\">True</property>\
-      </object>\
-    </child>\
-    <child>\
-      <object class=\"GtkImageMenuItem\" id=\"miAbout\">\
-        <property name=\"label\">gtk-about</property>\
-        <property name=\"visible\">True</property>\
-        <property name=\"use_underline\">True</property>\
-        <property name=\"use_stock\">True</property>\
-        <property name=\"always_show_image\">True</property>\
-      </object>\
-    </child>\
-  </object>\
-  <object class=\"GtkAboutDialog\" id=\"aboutdialog\">\
-    <property name=\"border_width\">5</property>\
-    <property name=\"type_hint\">normal</property>\
-    <property name=\"has_separator\">False</property>\
-    <property name=\"program_name\">Automatic Bug Reporting Tool</property>\
-    <property name=\"copyright\" translatable=\"yes\">Copyright &#xA9; 2009 Red Hat, Inc</property>\
-    <property name=\"website\">https://fedorahosted.org/abrt/</property>\
-    <property name=\"website_label\" translatable=\"yes\">Website</property>\
-    <property name=\"license\" translatable=\"yes\">This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n\
-\n\
-This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n\
-\n\
-You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</property>\
-        <property name=\"authors\">Anton Arapov &lt;aarapov@redhat.com&gt;\n\
-Karel Klic &lt;kklic@redhat.com&gt;\n\
-Jiri Moskovcak &lt;jmoskovc@redhat.com&gt;\n\
-Nikola Pajkovsky &lt;npajkovs@redhat.com&gt;\n\
-Zdenek Prikryl &lt;zprikryl@redhat.com&gt;\n\
-Denys Vlasenko &lt;dvlasenk@redhat.com&gt;\n\
-\n\
-Art:\n\
-Patrick Connelly &lt;pcon@fedoraproject.org&gt;</property>\
-    <property name=\"wrap_license\">True</property>\
-    <child internal-child=\"vbox\">\
-      <object class=\"GtkVBox\" id=\"dialog-vbox1\">\
-        <property name=\"visible\">True</property>\
-        <property name=\"orientation\">vertical</property>\
-        <property name=\"spacing\">2</property>\
-        <child>\
-          <placeholder/>\
-        </child>\
-        <child internal-child=\"action_area\">\
-          <object class=\"GtkHButtonBox\" id=\"dialog-action_area1\">\
-            <property name=\"visible\">True</property>\
-            <property name=\"layout_style\">end</property>\
-          </object>\
-          <packing>\
-            <property name=\"expand\">False</property>\
-            <property name=\"pack_type\">end</property>\
-            <property name=\"position\">0</property>\
-          </packing>\
-        </child>\
-      </object>\
-    </child>\
-  </object>\
-</interface>";
-
-void static on_notify_close(NotifyNotification *notification, gpointer user_data)
+static void on_notify_close(NotifyNotification *notification, gpointer user_data)
 {
     g_object_unref(notification);
 }
@@ -133,6 +48,87 @@ static NotifyNotification *new_warn_notification()
     notify_notification_set_timeout(notification, NOTIFY_EXPIRES_DEFAULT);
 
     return notification;
+}
+
+
+static void on_hide_cb(GtkMenuItem *menuitem, gpointer applet)
+{
+    if (applet)
+        ((CApplet*)applet)->HideIcon();
+}
+
+static void on_about_cb(GtkMenuItem *menuitem, gpointer dialog)
+{
+    if (dialog)
+    {
+        gtk_dialog_run(GTK_DIALOG(dialog));
+        gtk_widget_hide(GTK_WIDGET(dialog));
+    }
+}
+
+static GtkWidget *create_about_dialog()
+{
+    const char *copyright_str = "Copyright © 2009 Red Hat, Inc\nCopyright © 2010 Red Hat, Inc";
+    const char *license_str = "This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version."
+                         "\n\nThis program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details."
+                         "\n\nYou should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.";
+
+    const char *website_url = "https://fedorahosted.org/abrt/";
+    const char *authors[] = {"Anton Arapov <aarapov@redhat.com>",
+                     "Karel Klic <kklic@redhat.com>",
+                     "Jiri Moskovcak <jmoskovc@redhat.com>",
+                     "Nikola Pajkovsky <npajkovs@redhat.com>",
+                     "Zdenek Prikryl <zprikryl@redhat.com>",
+                     "Denys Vlasenko <dvlasenk@redhat.com>",
+                     NULL};
+
+    const char *artists[] = {"Patrick Connelly <pcon@fedoraproject.org>",
+                                NULL};
+
+    const char *comments = _("Notification area applet to notify user about "
+                               "issues detected by ABRT");
+    GtkWidget *about_d = gtk_about_dialog_new();
+    if (about_d)
+    {
+        gtk_window_set_default_icon_name("abrt");
+        gtk_about_dialog_set_version(GTK_ABOUT_DIALOG(about_d), VERSION);
+        gtk_about_dialog_set_logo_icon_name(GTK_ABOUT_DIALOG(about_d), "abrt");
+        gtk_about_dialog_set_comments(GTK_ABOUT_DIALOG(about_d), comments);
+        gtk_about_dialog_set_program_name(GTK_ABOUT_DIALOG(about_d), "ABRT");
+        gtk_about_dialog_set_copyright(GTK_ABOUT_DIALOG(about_d), copyright_str);
+        gtk_about_dialog_set_license(GTK_ABOUT_DIALOG(about_d), license_str);
+        gtk_about_dialog_set_wrap_license(GTK_ABOUT_DIALOG(about_d),true);
+        gtk_about_dialog_set_website(GTK_ABOUT_DIALOG(about_d), website_url);
+        gtk_about_dialog_set_authors(GTK_ABOUT_DIALOG(about_d), authors);
+        gtk_about_dialog_set_artists(GTK_ABOUT_DIALOG(about_d), artists);
+        gtk_about_dialog_set_translator_credits(GTK_ABOUT_DIALOG(about_d), _("translator-credits"));
+    }
+    return about_d;
+}
+
+static GtkWidget *create_menu(CApplet *applet)
+{
+    GtkWidget *menu = gtk_menu_new();
+    GtkWidget *b_quit = gtk_image_menu_item_new_from_stock(GTK_STOCK_QUIT, NULL);
+    g_signal_connect(b_quit, "activate", gtk_main_quit, NULL);
+    GtkWidget *b_hide = gtk_menu_item_new_with_label(_("Hide"));
+    g_signal_connect(b_hide, "activate", G_CALLBACK(on_hide_cb), applet);
+    GtkWidget *b_about = gtk_image_menu_item_new_from_stock(GTK_STOCK_ABOUT, NULL);
+    GtkWidget *about_dialog = create_about_dialog();
+    g_signal_connect(b_about, "activate", G_CALLBACK(on_about_cb), about_dialog);
+    GtkWidget *separator = gtk_separator_menu_item_new();
+    if(menu)
+    {
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu),b_hide);
+        gtk_widget_show(b_hide);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu),b_about);
+        gtk_widget_show(b_about);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu),separator);
+        gtk_widget_show(separator);
+        gtk_menu_shell_append(GTK_MENU_SHELL(menu),b_quit);
+        gtk_widget_show(b_quit);
+    }
+    return menu;
 }
 
 CApplet::CApplet(const char* app_name)
@@ -160,32 +156,7 @@ CApplet::CApplet(const char* app_name)
 
 //    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
 
-    m_pBuilder = gtk_builder_new();
-    if (!gtk_builder_add_from_string(m_pBuilder, menu_xml, sizeof(menu_xml)-1, NULL))
-    //if (!gtk_builder_add_from_file(m_pBuilder, "popup.GtkBuilder", NULL))
-    {
-        error_msg("Can't create menu from the description, popup won't be available");
-        return;
-    }
-
-    m_pMenu = gtk_builder_get_object(m_pBuilder, "popup_menu");
-    //gtk_menu_attach_to_widget(GTK_MENU(m_pMenu), GTK_WIDGET(m_pStatusIcon), NULL);
-    m_pmiHide = gtk_builder_get_object(m_pBuilder, "miHide");
-    if (m_pmiHide != NULL)
-    {
-        g_signal_connect(m_pmiHide, "activate", G_CALLBACK(CApplet::onHide_cb), this);
-    }
-    m_pmiQuit = gtk_builder_get_object(m_pBuilder, "miQuit");
-    if (m_pmiQuit != NULL)
-    {
-        g_signal_connect(m_pmiQuit, "activate", G_CALLBACK(gtk_main_quit), NULL);
-    }
-    m_pAboutDialog = gtk_builder_get_object(m_pBuilder, "aboutdialog");
-    m_pmiAbout = gtk_builder_get_object(m_pBuilder, "miAbout");
-    if (m_pmiAbout != NULL)
-    {
-        g_signal_connect(m_pmiAbout, "activate", G_CALLBACK(CApplet::onAbout_cb), m_pAboutDialog);
-    }
+    m_pMenu = create_menu(this);
 }
 
 CApplet::~CApplet()
@@ -368,18 +339,6 @@ void CApplet::ShowIcon()
     /* only animate if all icons are loaded, use the "gtk-warning" instead */
     if (m_bIconsLoaded)
         animate_icon();
-}
-
-void CApplet::onHide_cb(GtkMenuItem *menuitem, gpointer applet)
-{
-    gtk_status_icon_set_visible(((CApplet*)applet)->m_pStatusIcon, false);
-}
-
-void CApplet::onAbout_cb(GtkMenuItem *menuitem, gpointer dialog)
-{
-    if (dialog)
-        gtk_dialog_run(GTK_DIALOG(dialog));
-    gtk_widget_hide(GTK_WIDGET(dialog));
 }
 
 void CApplet::HideIcon()

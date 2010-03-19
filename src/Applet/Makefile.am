@@ -32,7 +32,7 @@ abrt_applet_LDADD = \
 #    $(DL_LIBS)
 #    $(GTK_LIBS)
 
-EXTRA_DIST = abrt-applet.desktop popup.GtkBuilder
+EXTRA_DIST = abrt-applet.desktop
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
