@@ -30,13 +30,10 @@ libABRTUtils_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 libABRTUtils_la_LDFLAGS = \
-    -version-info 0:1:0 \
-    $(DL_LIBS) \
+    -version-info 0:1:0
 libABRTUtils_la_LIBADD =
-
 
 libABRTdUtils_la_SOURCES = \
     parse_release.cpp \
@@ -57,18 +54,17 @@ libABRTdUtils_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
-    $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
     $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(POLKIT_CFLAGS) \
     -D_GNU_SOURCE
 libABRTdUtils_la_LDFLAGS = \
-    -version-info 0:1:0 \
-    $(DL_LIBS) \
-    $(DBUS_LIBS)
+    -version-info 0:1:0
 libABRTdUtils_la_LIBADD = \
+    $(DBUS_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     $(POLKIT_LIBS)
+
 
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 	$(mkdir_p) '$@'
