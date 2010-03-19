@@ -229,15 +229,30 @@ class MainWindow():
         else:
             lReported.set_markup(_("<b>Not reported!</b>"))
 
+    def mark_last_selected_row(self, dump_list_store, path, iter, last_selected_uuid):
+        # Get dump object from list (in our list it's in last col)
+        dump = dump_list_store.get_value(iter, dump_list_store.get_n_columns()-1)
+        if dump.getUUID() == last_selected_uuid:
+            self.dlist.set_cursor(dump_list_store.get_path(iter)[0])
+            return True # done, stop iteration
+        return False
+
     def on_bDelete_clicked(self, button, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
             return
-        # this should work until we keep the row object in the last position
+        # this should work until we keep the dump object in the last position
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
+        next_iter = dumpsListStore.iter_next(dumpsListStore.get_iter(path[0]))
+        last_dump = None
+        if next_iter:
+            last_dump = dumpsListStore.get_value(next_iter, dumpsListStore.get_n_columns()-1)
         try:
             self.ccdaemon.DeleteDebugDump("%s:%s" % (dump.getUID(), dump.getUUID()))
             self.hydrate()
+            if last_dump:
+                # we deleted the selected line, so we want to select the next one
+                dumpsListStore.foreach(self.mark_last_selected_row, last_dump.getUUID())
             treeview.emit("cursor-changed")
         except Exception, ex:
             print ex
@@ -248,11 +263,15 @@ class MainWindow():
     def on_data_changed_cb(self, *_args):
         # FIXME mark the new entry somehow....
         # remember the selected row
+        last_dump = None
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        if path and dumpsListStore:
+            last_dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         self.hydrate()
-        if not path:
-            return
-        self.dlist.set_cursor(path[0])
+        if last_dump:
+            # re-select the line that was selected before a new crash happened
+            dumpsListStore.foreach(self.mark_last_selected_row, last_dump.getUUID())
+
 
     def on_bReport_clicked(self, button):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
