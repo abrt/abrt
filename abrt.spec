@@ -147,6 +147,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
+%package plugin-rhticket
+Summary: %{name}'s rhticket plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-rhticket
+Plugin to report bugs into RH support system.
+
 %package plugin-catcut
 Summary: %{name}'s catcut plugin
 Group: System Environment/Libraries
@@ -386,6 +394,13 @@ fi
 %{_libdir}/%{name}/libBugzilla.so*
 %{_libdir}/%{name}/Bugzilla.GTKBuilder
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
+
+%files plugin-rhticket
+%defattr(-,root,root,-)
+#%config(noreplace) %{_sysconfdir}/%{name}/plugins/rhticket.conf
+%{_libdir}/%{name}/librhticket.so*
+#%{_libdir}/%{name}/rhticket.GTKBuilder
+#%{_mandir}/man7/%{name}-rhticket.7.gz
 
 %files plugin-catcut
 %defattr(-,root,root,-)
