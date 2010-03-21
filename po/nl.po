@@ -11,8 +11,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-18 14:06+0000\n"
-"PO-Revision-Date: 2010-03-18 17:09+0100\n"
+"POT-Creation-Date: 2010-03-21 14:12+0000\n"
+"PO-Revision-Date: 2010-03-21 20:08+0100\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: nl <fedora-trans-list@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -96,7 +96,7 @@ msgstr "Niet gerapporteerd"
 msgid "Plugins"
 msgstr "Plugins"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:280
+#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:251
 msgid "Report"
 msgstr "Rapport"
 
@@ -140,7 +140,7 @@ msgstr "_Bestand"
 msgid "_Help"
 msgstr "_Hulp"
 
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:17 ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
 msgstr "vertaling verdienste"
 
@@ -209,7 +209,7 @@ msgstr "<b>Deze crash is gerapporteerd:</b>\n"
 msgid "<b>Not reported!</b>"
 msgstr "<b>Niet gerapporteerd!</b>"
 
-#: ../src/Gui/CCMainWindow.py:304
+#: ../src/Gui/CCMainWindow.py:323
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-h, --help         \tthis help message\n"
@@ -221,7 +221,7 @@ msgstr ""
 "\t-v[vv]             \tniveau van uitgebreidheid\n"
 "\t--report=<crashid>\trapporteer crash direct met crashid=<crashid>"
 
-#: ../src/Gui/CCMainWindow.py:328
+#: ../src/Gui/CCMainWindow.py:347
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -266,7 +266,7 @@ msgstr ""
 "juiste stappen op te volgen."
 
 #: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the the problems shown above."
+msgid "Reporting disabled, please fix the problems shown above."
 msgstr ""
 "Rapporteren is uitgezet, los a.u.b. de hierboven getoonde problemen op."
 
@@ -274,7 +274,15 @@ msgstr ""
 msgid "Sends the report using selected plugin."
 msgstr "Verstuur het rapport met de geselecteerde plug-in."
 
-#: ../src/Gui/CCReporterDialog.py:170
+#: ../src/Gui/CCReporterDialog.py:392
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"Er is geen rapportage plug-in beschikbaar voor dit type crash\n"
+"Controleer abrt.conf."
+
+#: ../src/Gui/CCReporterDialog.py:412
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -283,20 +291,12 @@ msgstr ""
 "Kan de plugin instellingen niet opslaan:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:202
+#: ../src/Gui/CCReporterDialog.py:442
 #, python-format
 msgid "Configure %s options"
 msgstr "Configureer %s opties"
 
-#: ../src/Gui/CCReporterDialog.py:449
-msgid ""
-"No reporter plugin available for this type of crash\n"
-"Please check abrt.conf."
-msgstr ""
-"Er is geen rapportage plug-in beschikbaar voor dit type crash\n"
-"Controleer abrt.conf."
-
-#: ../src/Gui/CCReporterDialog.py:493
+#: ../src/Gui/CCReporterDialog.py:492
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -304,7 +304,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:522
+#: ../src/Gui/CCReporterDialog.py:521
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -313,7 +313,7 @@ msgstr ""
 "Rapporteren mislukte!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
+#: ../src/Gui/CCReporterDialog.py:547 ../src/Gui/CCReporterDialog.py:568
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -549,10 +549,20 @@ msgstr "Een crash is ontdekt"
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
-#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
-#: ../src/Applet/CCApplet.cpp:314
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:258
+#: ../src/Applet/CCApplet.cpp:285
 msgid "Warning"
 msgstr "Waarschuwing"
+
+#: ../src/Applet/CCApplet.cpp:88
+msgid "Notification area applet to notify user about issues detected by ABRT"
+msgstr ""
+"Medelings gebied applet om gebruiker te berichten over problemen ontdekt "
+"door ABRT"
+
+#: ../src/Applet/CCApplet.cpp:114
+msgid "Hide"
+msgstr "Verbergen"
 
 #: ../src/Daemon/Daemon.cpp:481
 msgid ""
