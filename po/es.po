@@ -9,9 +9,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-18 14:06+0000\n"
-"PO-Revision-Date: 2010-03-18 11:41-0300\n"
-"Last-Translator: Héctor Daniel Cabrera <logan@fedoraproject.org>\n"
+"POT-Creation-Date: 2010-03-21 02:19+0000\n"
+"PO-Revision-Date: 2010-03-21 00:29-0300\n"
+"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
 "Language-Team: Fedora Spanish <trans-es@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,7 +100,7 @@ msgid "Plugins"
 msgstr "Complementos"
 
 #: ../src/Gui/ccgui.glade.h:8
-#: ../src/Applet/CCApplet.cpp:280
+#: ../src/Applet/CCApplet.cpp:251
 msgid "Report"
 msgstr "Informe"
 
@@ -132,6 +132,7 @@ msgid "_Help"
 msgstr "Ay_uda"
 
 #: ../src/Gui/ccgui.glade.h:17
+#: ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
 msgstr "traductores: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>, Domingo Becker <domingobecker@gmail.com>, Héctor Daniel Cabrera <logan@fedoraproject.org>."
 
@@ -202,7 +203,7 @@ msgstr "<b> Esta caída ha sido reportada:</b>\n"
 msgid "<b>Not reported!</b>"
 msgstr "<b>¡No informado!</b>"
 
-#: ../src/Gui/CCMainWindow.py:304
+#: ../src/Gui/CCMainWindow.py:323
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-h, --help         \tthis help message\n"
@@ -214,7 +215,7 @@ msgstr ""
 "\t-v[vv]             \tnivel de detalle\n"
 "\t--report=<crashid>\treporta la caída directamente con el id de la caída=<crashid>"
 
-#: ../src/Gui/CCMainWindow.py:328
+#: ../src/Gui/CCMainWindow.py:347
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -253,14 +254,22 @@ msgid "The backtrace is incomplete, please make sure you provide good steps to r
 msgstr "El trazado está incompleto, por favor, asegúrese de proveer bien los pasos para reproducir el error."
 
 #: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the the problems shown above."
-msgstr "Se encuentra deshabilitada la función de creación de reportes. Por favor solucione los problemas indicados a continucación."
+msgid "Reporting disabled, please fix the problems shown above."
+msgstr "Creación de reportes deshabilitada. Por favor solucione los problemas indicados a continuación."
 
 #: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
 msgstr "Envía el informe utilizando el complemento indicado."
 
-#: ../src/Gui/CCReporterDialog.py:170
+#: ../src/Gui/CCReporterDialog.py:392
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"No existe un disponible un complemento para generar un informe con este tipo de caída\n"
+"Por favor, verifique el archivo abrt.conf."
+
+#: ../src/Gui/CCReporterDialog.py:412
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -269,20 +278,12 @@ msgstr ""
 "No se pudo guardar la configuración del complemento:\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:202
+#: ../src/Gui/CCReporterDialog.py:442
 #, python-format
 msgid "Configure %s options"
 msgstr "Configurar %s opciones"
 
-#: ../src/Gui/CCReporterDialog.py:449
-msgid ""
-"No reporter plugin available for this type of crash\n"
-"Please check abrt.conf."
-msgstr ""
-"No existe un disponible un complemento para generar un informe con este tipo de caída\n"
-"Por favor, verifique el archivo abrt.conf."
-
-#: ../src/Gui/CCReporterDialog.py:493
+#: ../src/Gui/CCReporterDialog.py:492
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -290,7 +291,7 @@ msgstr ""
 "¡Incapaz de conseguir el informe!\n"
 "¿Falta la información de la depuración?"
 
-#: ../src/Gui/CCReporterDialog.py:522
+#: ../src/Gui/CCReporterDialog.py:521
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -299,8 +300,8 @@ msgstr ""
 "¡El informe falló!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:548
-#: ../src/Gui/CCReporterDialog.py:569
+#: ../src/Gui/CCReporterDialog.py:547
+#: ../src/Gui/CCReporterDialog.py:568
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
@@ -536,11 +537,19 @@ msgstr "Ha sido detectado una caída"
 msgid "ABRT service is not running"
 msgstr "El servicio ABRT no se está ejecutando"
 
-#: ../src/Applet/CCApplet.cpp:124
-#: ../src/Applet/CCApplet.cpp:287
-#: ../src/Applet/CCApplet.cpp:314
+#: ../src/Applet/CCApplet.cpp:39
+#: ../src/Applet/CCApplet.cpp:258
+#: ../src/Applet/CCApplet.cpp:285
 msgid "Warning"
 msgstr "Aviso"
+
+#: ../src/Applet/CCApplet.cpp:88
+msgid "Notification area applet to notify user about issues detected by ABRT"
+msgstr "Icono del Área de Notificaciones para notificar al usuario los problemas detectados por ABRT"
+
+#: ../src/Applet/CCApplet.cpp:114
+msgid "Hide"
+msgstr "Ocultar"
 
 #: ../src/Daemon/Daemon.cpp:481
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
@@ -830,22 +839,30 @@ msgstr "Sosreport ya esta corriendo"
 #~ "xconde@fedoraproject.org\n"
 #~ "ypoyarko@fedoraproject.org\n"
 #~ "zoltanh721@fedoraproject.org"
+
 #~ msgid "No UI for plugin %s"
 #~ msgstr "No hay interfaz de usuario para el complemento %s"
+
 #~ msgid "Creating kernel oops crash reports..."
 #~ msgstr "Creando un informe de caída de kernel oops..."
+
 #~ msgid "Missing member 'reporter'"
 #~ msgstr "No se encuentra el miembro 'informante'"
+
 #~ msgid "Missing member 'cc'"
 #~ msgstr "Facltante de miembro 'cc'"
+
 #~ msgid "Missing member 'bug_id'"
 #~ msgstr "Faltante de miembro 'bug_id'"
+
 #~ msgid "Checking CC..."
 #~ msgstr "Chequeando CC..."
+
 #~ msgid "Getting local universal unique identification..."
 #~ msgstr "Obteniendo la identificación única universal local..."
+
 #~ msgid "Global Settings"
 #~ msgstr "Preferencias globales"
+
 #~ msgid "Settings"
 #~ msgstr "Preferencias"
-
