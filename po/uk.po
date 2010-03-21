@@ -1,0 +1,693 @@
+# Ukrainian translation of abrt
+# Copyright (C) Free Software Foundation, 2010
+# This file is distributed under the same license as the abrt package.
+# Maxim Dzumanenko <dziumanenko@gmail.com>, 2010
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: abrt\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2010-03-21 02:19+0000\n"
+"PO-Revision-Date: 2010-03-21 10:15+0300\n"
+"Last-Translator: Maxim V. Dziumanenko <dziumanenko@gmail.com>\n"
+"Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: ../src/Gui/ABRTExceptions.py:6
+msgid "Another client is already running, trying to wake it."
+msgstr "Інший клієнт вже працює. Буде виконано спробу його активувати."
+
+#: ../src/Gui/ABRTExceptions.py:13
+msgid "Got unexpected data from daemon (is the database properly updated?)."
+msgstr ""
+"Отримано неочікувані дані від служби. Перевірте, що базу даних оновлено."
+
+#: ../src/Gui/ABRTPlugin.py:62
+msgid "Not loaded plugins"
+msgstr "Модулі не завантажені"
+
+#: ../src/Gui/ABRTPlugin.py:63
+msgid "Analyzer plugins"
+msgstr "Модулі аналізу"
+
+#: ../src/Gui/ABRTPlugin.py:64
+msgid "Action plugins"
+msgstr "Модулі дій"
+
+#: ../src/Gui/ABRTPlugin.py:65
+msgid "Reporter plugins"
+msgstr "Модулі звіту"
+
+#: ../src/Gui/ABRTPlugin.py:66
+msgid "Database plugins"
+msgstr "Модулі бази даних"
+
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+msgid "Can't connect to system dbus"
+msgstr "Не вдається з'єднатися з dbus"
+
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+msgid "Please check if abrt daemon is running"
+msgstr "Перевірте, що служба abrt виконується"
+
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
+msgid ""
+"Daemon didn't return valid report info\n"
+"Debuginfo is missing?"
+msgstr ""
+"Служба не повернула очікувану інформацію зі звітом.\n"
+"Відсутній debuginfo?"
+
+#: ../src/Gui/ccgui.glade.h:1
+msgid ""
+"(C) 2009 Red Hat, Inc.\n"
+"(C) 2010 Red Hat, Inc."
+msgstr ""
+"(C) 2009 Red Hat, Inc.\n"
+"(C) 2010 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:3
+msgid "About ABRT"
+msgstr "Про ABRT"
+
+#: ../src/Gui/ccgui.glade.h:4 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
+msgid "Automatic Bug Reporting Tool"
+msgstr "ABRT — автоматична реєстрація помилок"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "Delete"
+msgstr "Видалити"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "Not Reported"
+msgstr "Не повідомляється"
+
+#: ../src/Gui/ccgui.glade.h:7 ../src/Gui/settings.glade.h:19
+msgid "Plugins"
+msgstr "Модулі"
+
+#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:251
+msgid "Report"
+msgstr "Повідомити"
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid ""
+"This program is free software; you can redistribute it and/or modify it "
+"under the terms of the GNU General Public License as published by the Free "
+"Software Foundation; either version 2 of the License, or (at your option) "
+"any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT "
+"ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or "
+"FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for "
+"more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with "
+"this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+"Ця програма є вільною; її можна поширювати та змінювати на умовах лицензії GNU General "
+"Public License версії 2 або старшої, що видана Фондом вільного програмного забезпечення.\n"
+"\n"
+"Ця програма поширюється зі сподіванням, що буде корисною, але  "
+"БЕЗ БУДЬ-ЯКИХ ГАРАНТІЙ, ЯВНИХ ЧИ НЕЯВНИХ, У ТОМУ ЧИСЛІ "
+"БЕЗ ГАРАНТІЙ КОМЕРЦІЙНОЇ ЦІННОСТІ ТА ПРИДАТНОСТІ ДЛЯ КОНКРЕТНОЇ МЕТИ. Для "
+"отримання додаткових відомостей зверніться до ліцензії GNU.\n"
+"\n"
+"Копія ліцензії GNU надається разом із цією програмою. \n"
+"Її також можна знайти на сайті <http://www.gnu.org/licenses/>."
+
+#: ../src/Gui/ccgui.glade.h:14
+msgid "_Edit"
+msgstr "_Правка"
+
+#: ../src/Gui/ccgui.glade.h:15
+msgid "_File"
+msgstr "_Файл"
+
+#: ../src/Gui/ccgui.glade.h:16
+msgid "_Help"
+msgstr "_Довідка"
+
+#: ../src/Gui/ccgui.glade.h:17 ../src/Applet/CCApplet.cpp:104
+msgid "translator-credits"
+msgstr "Максим Дзюманенко <dziumanenko@gmail.com>"
+
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:65
+msgid "Icon"
+msgstr "Значок"
+
+#: ../src/Gui/CCMainWindow.py:73
+msgid "Package"
+msgstr "Пакет"
+
+#: ../src/Gui/CCMainWindow.py:75
+msgid "Application"
+msgstr "Програма"
+
+#: ../src/Gui/CCMainWindow.py:77
+msgid "Date"
+msgstr "Дата"
+
+#: ../src/Gui/CCMainWindow.py:79
+msgid "Crash count"
+msgstr "Кількість збоїв"
+
+#: ../src/Gui/CCMainWindow.py:81
+msgid "User"
+msgstr "Користувач"
+
+#: ../src/Gui/CCMainWindow.py:149
+#, python-format
+msgid ""
+"Can't show the settings dialog\n"
+"%s"
+msgstr ""
+"Неможливо показати вікно параметрів\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:154
+#, python-format
+msgid ""
+"Unable to finish current task!\n"
+"%s"
+msgstr ""
+"Неможливо завершити поточну задачу.\n"
+"%s"
+
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:176
+#, python-format
+msgid ""
+"Error while loading the dumplist.\n"
+"%s"
+msgstr ""
+"Помилка при завантаженні dumplist. \n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:214
+msgid "This crash has been reported:\n"
+msgstr "Створено звіт для цього збою:\n"
+
+#: ../src/Gui/CCMainWindow.py:215
+msgid "<b>This crash has been reported:</b>\n"
+msgstr "<b>Створено звіт для цього збою:</b>\n"
+
+#: ../src/Gui/CCMainWindow.py:230
+msgid "<b>Not reported!</b>"
+msgstr "<b>Не надіслано повідомлення!</b>"
+
+#: ../src/Gui/CCMainWindow.py:323
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-h, --help         \tthis help message\n"
+"\t-v[vv]             \tverbosity level\n"
+"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+msgstr ""
+"Використання: abrt-gui [ПАРАМЕТРЫ]\n"
+"\t-h, --help         \t ця довідка\n"
+"\t-v[vv]             \t рівень докладності повідомлень\n"
+"\t--report=<crashid>\t повідомляти про збій з ідентифікатором <crashid>"
+
+#: ../src/Gui/CCMainWindow.py:347
+#, python-format
+msgid ""
+"No such crash in database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+"У базі даних немає такого збою, можливо, неправильний crashid.\n"
+"crashid=%s"
+
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:22
+msgid "Brief description how to reproduce this or what you did..."
+msgstr "Коротко опишіть дії, які призвели до помилки..."
+
+#: ../src/Gui/CCReporterDialog.py:107
+msgid "You must check backtrace for sensitive data"
+msgstr "Перевірте, що текст трасування не містить конфіденційних даних"
+
+#: ../src/Gui/CCReporterDialog.py:118
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using command: <b>debuginfo-install "
+"%s</b> \n"
+"then use Refresh button to regenerate the backtrace."
+msgstr ""
+"Передачу звітів вимкнено, оскільки відомості трасуванні непридатні.\n"
+"Спробуйте встановити debuginfo вручну: <b>debuginfo-install %s</b>\n"
+"та натисніть кнопку оновлення для повторної генерації трасування."
+
+#: ../src/Gui/CCReporterDialog.py:120
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "Непридатні відомості трасування. Вони не будуть надіслані."
+
+#: ../src/Gui/CCReporterDialog.py:124
+msgid ""
+"The backtrace is incomplete, please make sure you provide good steps to "
+"reproduce."
+msgstr ""
+"Неповні відомості трасування. Перевірте, що описані дії дійсно допомагають виявити помилку."
+
+#: ../src/Gui/CCReporterDialog.py:130
+msgid "Reporting disabled, please fix the problems shown above."
+msgstr "Передачу звітів вимкнено, виправте вказані вище проблеми."
+
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Sends the report using selected plugin."
+msgstr "Надсилає звіт, використовуючи обраний модуль розширення."
+
+#: ../src/Gui/CCReporterDialog.py:392
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"Немає модулів звіту для цього збою\n"
+"Будь ласка, перевірте abrt.conf"
+
+#: ../src/Gui/CCReporterDialog.py:412
+#, python-format
+msgid ""
+"Can't save plugin settings:\n"
+" %s"
+msgstr ""
+"Неможливо зберегти параметри модуля:\n"
+" %s"
+
+#: ../src/Gui/CCReporterDialog.py:442
+#, python-format
+msgid "Configure %s options"
+msgstr "Налаштувати параметри %s"
+
+#: ../src/Gui/CCReporterDialog.py:492
+msgid ""
+"Unable to get report!\n"
+"Debuginfo is missing?"
+msgstr ""
+"Не вдається отримати звіт.\n"
+"Відсутній debuginfo?"
+
+#: ../src/Gui/CCReporterDialog.py:521
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"Неможливо надіслати звіт!\n"
+"%s"
+
+#: ../src/Gui/CCReporterDialog.py:547 ../src/Gui/CCReporterDialog.py:568
+#, python-format
+msgid "Error getting the report: %s"
+msgstr "Помилка при отриманні звіту: %s"
+
+#: ../src/Gui/dialogs.glade.h:1
+msgid "Log"
+msgstr "Журнал"
+
+#: ../src/Gui/dialogs.glade.h:2
+msgid "Report done"
+msgstr "Звіт надіслано"
+
+#: ../src/Gui/PluginSettingsUI.py:17
+msgid "Can't find PluginDialog widget in UI description!"
+msgstr "Не знайдено віджет PluginDialog у описі графічного інтерфейсу!"
+
+#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
+msgid "combo box is not implemented"
+msgstr "поле вводу зі списком недоступне"
+
+#: ../src/Gui/PluginSettingsUI.py:63
+msgid "Nothing to hydrate!"
+msgstr "Немає даних для показу!"
+
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Вкладення</b>"
+
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>Трасування</b>"
+
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>Коментар</b>"
+
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Як повторити (набір дій)</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Будь ласка, виправте наступні проблеми</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>Куди треба надіслати звіт пропомилку?</b>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">Архітектура:</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Командний рядок:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Компонент:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Виконуваний файл:</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">Ядро:</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Пакет:</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">Причина:</span>"
+
+#: ../src/Gui/report.glade.h:15
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Випуск:</span>"
+
+#: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "Подробиці"
+
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Заставляє ABRT повторно створити трасування"
+
+#: ../src/Gui/report.glade.h:19
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr ""
+"Я перевірив текст трасування та видалив конфіденційні дані (паролі "
+"та інше)"
+
+#: ../src/Gui/report.glade.h:20
+msgid "N/A"
+msgstr "Н/Д"
+
+#: ../src/Gui/report.glade.h:21
+msgid "Please wait.."
+msgstr "Будь ласка, зачекайте ..."
+
+#: ../src/Gui/report.glade.h:22
+msgid "Reporter Selector"
+msgstr "Вибір модуля звіту"
+
+#: ../src/Gui/report.glade.h:23
+msgid "Send report"
+msgstr "Надіслати звіт"
+
+#: ../src/Gui/report.glade.h:24
+msgid "Show log"
+msgstr "Показати журнал"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+msgid "<b>Select plugin</b>"
+msgstr "<b>Оберіть модуль</b>"
+
+#: ../src/Gui/SettingsDialog.py:36
+msgid "<b>Select database backend</b>"
+msgstr "<b>Оберіть механізм бази даних</b>"
+
+#: ../src/Gui/SettingsDialog.py:169
+msgid "Remove this job"
+msgstr "Видалити це завдання"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "Видалити цю дію"
+
+#: ../src/Gui/settings.glade.h:1
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>Модуль аналізу</b>"
+
+#: ../src/Gui/settings.glade.h:2
+msgid "<b>Associated action</b>"
+msgstr "<b>Пов'язана дія</b>"
+
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>Відомості про модуль</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Plugin</b>"
+msgstr "<b>Дод. модуль</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Час (період часу)</b>"
+
+#: ../src/Gui/settings.glade.h:6
+msgid "Analyzers, Actions, Reporters"
+msgstr "Аналізатори, дії, укладачі звітів"
+
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "Автор:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "Чорний список пакетів:"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure plugin"
+msgstr "_Налаштувати модуль"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "Перевірити GPG-підпис пакету"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "Різне"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "База даних:"
+
+#: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "Опис:"
+
+#: ../src/Gui/settings.glade.h:15
+msgid "GPG Keys"
+msgstr "Ключі GPG"
+
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "Ключі GPG: "
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "Макс. розмір coredump (МБ):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Name:"
+msgstr "Назва:"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "Параметри"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "Версія:"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "Веб-сайт:"
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Переглянути збої програми та створити звіт"
+
+#: ../src/Applet/Applet.cpp:88
+#, c-format
+msgid "A crash in package %s has been detected"
+msgstr "Виявлено збій у пакеті %s"
+
+#: ../src/Applet/Applet.cpp:90
+msgid "A crash has been detected"
+msgstr "Виявлено збій у пакеті"
+
+#: ../src/Applet/Applet.cpp:266
+msgid "ABRT service is not running"
+msgstr "Службу ABRT не запущено"
+
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:258
+#: ../src/Applet/CCApplet.cpp:285
+msgid "Warning"
+msgstr "Попередження"
+
+#: ../src/Applet/CCApplet.cpp:88
+msgid "Notification area applet to notify user about issues detected by ABRT"
+msgstr ""
+"Аплет у області сповіщень для попередження користувача про виявлені проблеми"
+
+#: ../src/Applet/CCApplet.cpp:114
+msgid "Hide"
+msgstr "Сховати"
+
+#: ../src/Daemon/Daemon.cpp:481
+msgid ""
+"Report size exceeded the quota. Please check system's MaxCrashReportsSize "
+"value in abrt.conf."
+msgstr ""
+"Розмір звіту понад припустимою величиною. Перевірте значення MaxCrashReportsSize у "
+"файлі abrt.conf"
+
+#: ../lib/Plugins/Bugzilla.cpp:326
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Запит вже існує: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:395
+#, c-format
+msgid "New bug id: %i"
+msgstr "Новий ідентифікатор запиту: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:607
+msgid ""
+"Empty login and password.\n"
+"Please check "
+msgstr ""
+"Порожнє ім'я та пароль. \n"
+"Перевірте "
+
+#: ../lib/Plugins/Bugzilla.cpp:615
+msgid "Logging into bugzilla..."
+msgstr "Триває вхід у Bugzilla..."
+
+#: ../lib/Plugins/Bugzilla.cpp:618
+msgid "Checking for duplicates..."
+msgstr "Перевірка наявності дублікатів..."
+
+#: ../lib/Plugins/Bugzilla.cpp:631
+msgid "Missing mandatory member 'bugs'"
+msgstr "Відсутні запити з обов'язковою участю"
+
+#: ../lib/Plugins/Bugzilla.cpp:641
+msgid "Creating new bug..."
+msgstr "Створення нового запиту..."
+
+#: ../lib/Plugins/Bugzilla.cpp:646
+msgid "Bugzilla entry creation failed"
+msgstr "Не вдається створити запис у Bugzilla"
+
+#: ../lib/Plugins/Bugzilla.cpp:654 ../lib/Plugins/Bugzilla.cpp:761
+msgid "Logging out..."
+msgstr "Виконується вихід..."
+
+#: ../lib/Plugins/Bugzilla.cpp:686 ../lib/Plugins/Bugzilla.cpp:714
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "Збій get_bug_info(). Не вдається зібрати потрібну інформацію."
+
+#: ../lib/Plugins/Bugzilla.cpp:698
+#, c-format
+msgid "Bugzilla couldn't find parent of bug(%d)"
+msgstr "Не вдається знайти батьківський запит для %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:703
+#, c-format
+msgid "Jump to bug %d"
+msgstr "Перейти до запиту %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:728 ../lib/Plugins/Bugzilla.cpp:729
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Додати %s до списку CC"
+
+#: ../lib/Plugins/Bugzilla.cpp:752
+#, c-format
+msgid "Add new comment into bug(%d)"
+msgstr "Додати коментар до запиту (%d)"
+
+#: ../lib/Plugins/Kerneloops.cpp:100
+msgid "Getting local universal unique identification"
+msgstr "Отримання локальних даних ідентифікації"
+
+#: ../lib/Plugins/CCpp.cpp:275
+msgid "Generating backtrace"
+msgstr "Створюється трасування"
+
+#: ../lib/Plugins/CCpp.cpp:441
+msgid "Starting debuginfo installation"
+msgstr "Запускається встановлення debuginfo"
+
+#: ../lib/Plugins/CCpp.cpp:637
+msgid "Getting global universal unique identification..."
+msgstr "Отримання глобальних даних ідентифікації..."
+
+#: ../lib/Plugins/CCpp.cpp:815
+msgid "Skipping debuginfo installation"
+msgstr "Пропускається встановлення debuginfo"
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:93
+msgid "Creating and submitting a report..."
+msgstr "Створення та надсилання звіту..."
+
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "Звіт записується у «%s»"
+
+#: ../lib/Plugins/FileTransfer.cpp:53
+msgid "FileTransfer: URL not specified"
+msgstr "FileTransfer: Не вказано URL"
+
+#: ../lib/Plugins/FileTransfer.cpp:57
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "Архів %s надсилається %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:288
+msgid "File Transfer: Creating a report..."
+msgstr "File Transfer: Створюється звіт..."
+
+#: ../lib/Plugins/FileTransfer.cpp:322
+#, c-format
+msgid "Can't create and send an archive: %s"
+msgstr "Не вдається створити та надіслати архів: %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:351
+#, c-format
+msgid "Can't create and send an archive %s"
+msgstr "Не дається створити та надіслати архів %s"
+
+#: ../lib/Plugins/Mailx.cpp:134
+msgid "Sending an email..."
+msgstr "Відсилання пошти..."
+
+#: ../lib/Plugins/SOSreport.cpp:101
+#, c-format
+msgid "Running sosreport: %s"
+msgstr "Виконується sosreport: %s"
+
+#: ../lib/Plugins/SOSreport.cpp:107
+msgid "Done running sosreport"
+msgstr "sosreport завершив роботу"
+
+
