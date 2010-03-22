@@ -1,10 +1,24 @@
 %{!?python_site: %define python_site %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 # platform-dependent
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
+# Polite request for people who spin their own kernel rpms:
+# please modify the "_buildid" define in a way that identifies
+# that the built package isn't the stock distribution package,
+# for example, by setting the define to ".local" or ".bz123456"
+#
+# % define _buildid .local
+
+%if 0%{?_buildid}
+%define pkg_release 0.%{?_buildid}%{?dist}
+%else
+%define pkg_release 1%{?dist}
+%endif
+
 Summary: Automatic bug detection and reporting tool
 Name: abrt
 Version: 1.0.9
-Release: 1%{?dist}
+Release: %{?pkg_release}
 License: GPLv2+
 Group: Applications/System
 URL: https://fedorahosted.org/abrt/
