@@ -2,7 +2,6 @@
 # platform-dependent
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
 
-# Polite request for people who spin their own kernel rpms:
 # please modify the "_buildid" define in a way that identifies
 # that the built package isn't the stock distribution package,
 # for example, by setting the define to ".local" or ".bz123456"
