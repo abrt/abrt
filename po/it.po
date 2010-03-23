@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-18 19:06+0000\n"
-"PO-Revision-Date: 2010-03-19 10:35+1000\n"
+"POT-Creation-Date: 2010-03-23 02:12+0000\n"
+"PO-Revision-Date: 2010-03-23 13:35+1000\n"
 "Last-Translator: \n"
 "Language-Team:  <it@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -93,7 +93,7 @@ msgstr "Non riportato"
 msgid "Plugins"
 msgstr "Plugin"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:280
+#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:251
 msgid "Report"
 msgstr "Report"
 
@@ -137,7 +137,7 @@ msgstr "_File"
 msgid "_Help"
 msgstr "_Aiuto"
 
-#: ../src/Gui/ccgui.glade.h:17
+#: ../src/Gui/ccgui.glade.h:17 ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
 msgstr "crediti-traduttore"
 
@@ -206,7 +206,7 @@ msgstr "<b>Questo crash è stato inviato:</b>\n"
 msgid "<b>Not reported!</b>"
 msgstr "<b>Non riportato!</b>"
 
-#: ../src/Gui/CCMainWindow.py:304
+#: ../src/Gui/CCMainWindow.py:323
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-h, --help         \tthis help message\n"
@@ -218,7 +218,7 @@ msgstr ""
 "\t-v[vv]             \tlivello di dettaglio\n"
 "\t--report=<crashid>\tinvia il report del crash con crashid=<crashid>"
 
-#: ../src/Gui/CCMainWindow.py:328
+#: ../src/Gui/CCMainWindow.py:347
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -264,14 +264,22 @@ msgstr ""
 "su come riprodurre il crash."
 
 #: ../src/Gui/CCReporterDialog.py:130
-msgid "Reporting disabled, please fix the the problems shown above."
-msgstr "Reporting disabilitato, si prega di correggere il problema sopra riportato."
+msgid "Reporting disabled, please fix the problems shown above."
+msgstr "Riporto disabilitato, correggere i problemi sopra riportati."
 
 #: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
 msgstr "Invia il report tramite il plugin selezionato."
 
-#: ../src/Gui/CCReporterDialog.py:170
+#: ../src/Gui/CCReporterDialog.py:392
+msgid ""
+"No reporter plugin available for this type of crash\n"
+"Please check abrt.conf."
+msgstr ""
+"Nessun plugin di reportistica disponibile per questa tipologia di crash\n"
+"Controllare abrt.conf."
+
+#: ../src/Gui/CCReporterDialog.py:412
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -280,20 +288,12 @@ msgstr ""
 "Impossibile salvare le impostazioni del plugin:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:202
+#: ../src/Gui/CCReporterDialog.py:442
 #, python-format
 msgid "Configure %s options"
 msgstr "Configura le opzioni %s"
 
-#: ../src/Gui/CCReporterDialog.py:449
-msgid ""
-"No reporter plugin available for this type of crash\n"
-"Please check abrt.conf."
-msgstr ""
-"Nessun plugin di reportistica disponibile per questa tipologia di crash\n"
-"Controllare abrt.conf."
-
-#: ../src/Gui/CCReporterDialog.py:493
+#: ../src/Gui/CCReporterDialog.py:492
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -301,7 +301,7 @@ msgstr ""
 "Impossibile ottenere il report!\n"
 "Debuginfo mancanti?"
 
-#: ../src/Gui/CCReporterDialog.py:522
+#: ../src/Gui/CCReporterDialog.py:521
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -310,7 +310,7 @@ msgstr ""
 "Report fallito!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:548 ../src/Gui/CCReporterDialog.py:569
+#: ../src/Gui/CCReporterDialog.py:547 ../src/Gui/CCReporterDialog.py:568
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Errore nell'ottenere il report: %s"
@@ -544,10 +544,18 @@ msgstr "È stato rilevato un crash"
 msgid "ABRT service is not running"
 msgstr "Il servizio ABRT non è in esecuzione"
 
-#: ../src/Applet/CCApplet.cpp:124 ../src/Applet/CCApplet.cpp:287
-#: ../src/Applet/CCApplet.cpp:314
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:258
+#: ../src/Applet/CCApplet.cpp:285
 msgid "Warning"
 msgstr "Attenzione"
+
+#: ../src/Applet/CCApplet.cpp:88
+msgid "Notification area applet to notify user about issues detected by ABRT"
+msgstr "Applet area di notifica per notificare all'utente la presenza di problematiche da parte di ABRT"
+
+#: ../src/Applet/CCApplet.cpp:114
+msgid "Hide"
+msgstr "Nascondi"
 
 #: ../src/Daemon/Daemon.cpp:481
 msgid ""
