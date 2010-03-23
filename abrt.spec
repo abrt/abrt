@@ -92,17 +92,6 @@ Requires: %{name} = %{version}-%{release}
 This package contains hook for C/C++ crashed programs and %{name}'s C/C++
 analyzer plugin.
 
-#%package plugin-firefox
-#Summary: %{name}'s Firefox analyzer plugin
-#Group: System Environment/Libraries
-#Requires: gdb >= 7.0-3
-#Requires: elfutils
-#Requires: yum-utils
-#Requires: %{name} = %{version}-%{release}
-
-#%description plugin-firefox
-#This package contains hook for Firefox
-
 %package addon-kerneloops
 Summary: %{name}'s kerneloops addon
 Group: System Environment/Libraries
@@ -361,9 +350,6 @@ fi
 %dir %{_localstatedir}/cache/%{name}-di
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
-
-#%files plugin-firefox
-#%{_libdir}/%{name}/libFirefox.so*
 
 %files addon-kerneloops
 %defattr(-,root,root,-)

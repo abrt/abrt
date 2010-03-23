@@ -16,7 +16,6 @@ pluginslib_LTLIBRARIES = \
     libTicketUploader.la \
     libPython.la \
     libFileTransfer.la
-#    libFirefox.la
 
 dist_pluginslib_DATA = \
     Logger.GTKBuilder \
@@ -73,17 +72,6 @@ libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"'
 #    -DHOSTILE_KERNEL
-
-
-# Firefox - disabled for now
-#libFirefox_la_SOURCES = Firefox.cpp Firefox.h
-#libFirefox_la_LDFLAGS = -avoid-version
-#libFirefox_la_LIBADD = $(NSS_LIBS)
-#libFirefox_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
-#    -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
-#    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-#    -DLOCALSTATEDIR='"$(localstatedir)"' \
-#    $(NSS_CFLAGS)
 
 # Kerneloops
 libKerneloops_la_SOURCES = Kerneloops.cpp Kerneloops.h
