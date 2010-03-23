@@ -26,11 +26,7 @@
 #include "MiddleWare.h"
 #include "Settings.h"
 
-#ifdef ENABLE_DBUS
-    #include "CommLayerServerDBus.h"
-#elif ENABLE_SOCKET
-    #include "CommLayerServerSocket.h"
-#endif
+#include "CommLayerServerDBus.h"
 #include "CommLayerInner.h"
 
 

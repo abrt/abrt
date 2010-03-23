@@ -2,7 +2,6 @@ bin_SCRIPTS = abrt-debuginfo-install
 
 sbin_PROGRAMS = abrtd
 
-# disabled: CommLayerServerSocket.h CommLayerServerSocket.cpp
 abrtd_SOURCES = \
     PluginManager.h PluginManager.cpp \
     RPM.h RPM.cpp \

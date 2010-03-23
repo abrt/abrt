@@ -849,12 +849,8 @@ int main(int argc, char** argv)
         /* Note: this already may process a few dbus messages,
          * therefore it should be the last thing to initialize.
          */
-#if 1 //def ENABLE_DBUS
         VERB1 log("Initializing dbus");
         g_pCommLayer = new CCommLayerServerDBus();
-#elif ENABLE_SOCKET
-        g_pCommLayer = new CCommLayerServerSocket();
-#endif
         if (g_pCommLayer->m_init_error)
             throw 1;
     }

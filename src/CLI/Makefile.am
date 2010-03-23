@@ -1,6 +1,5 @@
 bin_PROGRAMS = abrt-cli
 
-# removed: ABRTSocket.h ABRTSocket.cpp
 abrt_cli_SOURCES = \
     CLI.cpp \
     run-command.h run-command.cpp \

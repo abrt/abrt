@@ -6,7 +6,6 @@ lib_LTLIBRARIES = libABRTUtils.la libABRTdUtils.la
 # time.cpp
 # xconnect.cpp
 
-# removed: CrashTypesSocket.cpp
 libABRTUtils_la_SOURCES = \
     xfuncs.cpp \
     encbase64.cpp \
