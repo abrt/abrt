@@ -69,7 +69,7 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
     char *h = xstrndup((char*)buffer_pv, size);
     strchrnul(h, '\r')[0] = '\0';
     strchrnul(h, '\n')[0] = '\0';
-    VERB3 log("save_headers: state:%p header %d: '%s'", state, cnt, h);
+    VERB3 log("save_headers: header %d: '%s'", cnt, h);
     state->headers[cnt] = h;
     state->header_cnt = ++cnt;
     state->headers[cnt] = NULL;
@@ -81,9 +81,9 @@ int
 curl_post(curl_post_state_t* state, const char* url, const char* data)
 {
     CURLcode curl_err;
+    long response_code;
     struct curl_slist *httpheader_list = NULL;
     FILE* body_stream = NULL;
-    long response_code;
     curl_post_state_t localstate;
 
     VERB3 log("curl_post('%s','%s')", url, data);
@@ -95,7 +95,6 @@ curl_post(curl_post_state_t* state, const char* url, const char* data)
     }
 
     state->http_resp_code = response_code = -1;
-    state->curl_error_msg = NULL;
 
     CURL *handle = xcurl_easy_init();
 
@@ -144,6 +143,8 @@ curl_post(curl_post_state_t* state, const char* url, const char* data)
     curl_err = curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &response_code);
     die_if_curl_error(curl_err);
     state->http_resp_code = response_code;
+
+    VERB3 log("after curl_easy_perform: http code %ld body:'%s'", response_code, state->body);
 
  ret:
     curl_easy_cleanup(handle);

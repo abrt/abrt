@@ -20,11 +20,11 @@
 #define _GNU_SOURCE 1    /* for stpcpy */
 #include "abrtlib.h"
 #include "abrt_curl.h"
-#include "rhticket.h"
 #include "CrashTypes.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
+#include "rhticket.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif

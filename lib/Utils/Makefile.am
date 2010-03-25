@@ -45,6 +45,7 @@ libABRTdUtils_la_SOURCES = \
     make_descr.cpp \
     CommLayerInner.h CommLayerInner.cpp \
     abrt_xmlrpc.h abrt_xmlrpc.cpp \
+    abrt_rh_support.h abrt_rh_support.cpp \
     abrt_curl.h abrt_curl.cpp \
     Plugin.h Plugin.cpp \
     Polkit.h Polkit.cpp \

@@ -149,6 +149,14 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
+%package plugin-rhfastcheck
+Summary: %{name}'s rhfastcheck plugin
+Group: System Environment/Libraries
+Requires: %{name} = %{version}-%{release}
+
+%description plugin-rhfastcheck
+Plugin to quickly check RH support DB for known solution.
+
 %package plugin-rhticket
 Summary: %{name}'s rhticket plugin
 Group: System Environment/Libraries
@@ -393,6 +401,13 @@ fi
 %{_libdir}/%{name}/libBugzilla.so*
 %{_libdir}/%{name}/Bugzilla.GTKBuilder
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
+
+%files plugin-rhfastcheck
+%defattr(-,root,root,-)
+#%config(noreplace) %{_sysconfdir}/%{name}/plugins/rhfastcheck.conf
+%{_libdir}/%{name}/librhfastcheck.so*
+#%{_libdir}/%{name}/rhfastcheck.GTKBuilder
+#%{_mandir}/man7/%{name}-rhfastcheck.7.gz
 
 %files plugin-rhticket
 %defattr(-,root,root,-)
