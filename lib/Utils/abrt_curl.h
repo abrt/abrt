@@ -16,33 +16,30 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef ABRT_XMLRPC_H_
-#define ABRT_XMLRPC_H_ 1
+#ifndef ABRT_CURL_H_
+#define ABRT_CURL_H_
 
 #include <curl/curl.h>
-#include <xmlrpc-c/base.h>
-#include <xmlrpc-c/client.h>
 
-/*
- * Simple class holding XMLRPC connection data.
- * Used mainly to ensure we always destroy xmlrpc client and server_info
- * on return or throw.
- */
+CURL* xcurl_easy_init();
 
-struct abrt_xmlrpc_conn {
-    xmlrpc_client* m_pClient;
-    xmlrpc_server_info* m_pServer_info;
-
-    abrt_xmlrpc_conn(const char* url, bool no_ssl_verify) { new_xmlrpc_client(url, no_ssl_verify); }
-    /* this never throws exceptions - calls C functions only */
-    ~abrt_xmlrpc_conn() { destroy_xmlrpc_client(); }
-
-    void new_xmlrpc_client(const char* url, bool no_ssl_verify);
-    void destroy_xmlrpc_client();
+typedef struct curl_post_state {
+    int      flags;
+    int      http_resp_code;
+    unsigned header_cnt;
+    char     **headers;
+    char     *curl_error_msg;
+    char     *body;
+    size_t   body_size;
+} curl_post_state_t;
+enum {
+    ABRT_CURL_POST_WANT_HEADERS   = (1 << 0),
+    ABRT_CURL_POST_WANT_ERROR_MSG = (1 << 1),
+    ABRT_CURL_POST_WANT_BODY      = (1 << 2),
 };
-
-/* Utility functions */
-void throw_xml_fault(xmlrpc_env *env);
-void throw_if_xml_fault_occurred(xmlrpc_env *env);
+curl_post_state_t *new_curl_post_state(int flags);
+void free_curl_post_state(curl_post_state_t *state);
+int curl_post(curl_post_state_t* state, const char* url, const char* data);
+char *find_header_in_curl_post_state(curl_post_state_t *state, const char *str);
 
 #endif

@@ -19,7 +19,7 @@
 
 #define _GNU_SOURCE 1    /* for stpcpy */
 #include "abrtlib.h"
-#include "abrt_xmlrpc.h" /* for xcurl_easy_handle */
+#include "abrt_curl.h"
 #include "rhticket.h"
 #include "CrashTypes.h"
 #include "DebugDump.h"
@@ -81,136 +81,6 @@ static char *xml_escape(const char *str)
     return result;
 }
 
-static char*
-check_curl_error(CURLcode err, const char* msg)
-{
-    if (err)
-    {
-        return xasprintf("%s: %s", msg, curl_easy_strerror(err));
-    }
-    return NULL;
-}
-
-//
-// Examine each header looking for "Location:" header
-//
-struct Headerdata {
-    char *location;
-};
-
-static size_t
-headerfunction(void *buffer_pv, size_t count, size_t nmemb, void *headerdata_pv)
-{
-    struct Headerdata* headerdata = (struct Headerdata*)headerdata_pv;
-    const char* buffer = (const char*)buffer_pv;
-    const char location_key[] = "Location:";
-    const size_t location_key_size = sizeof(location_key)-1;
-
-    size_t size = count * nmemb;
-    if (size >= location_key_size
-     && 0 == memcmp(buffer, location_key, location_key_size)
-    ) {
-        const char* start = (const char*) buffer + location_key_size + 1;
-        const char* end;
-
-        // skip over any leading space
-        while (start < buffer+size && isspace(*start))
-            ++start;
-
-        end = start;
-
-        // skip till we find the end of the url (first space or end of buffer)
-        while (end < buffer+size && !isspace(*end))
-            ++end;
-
-        headerdata->location = xstrndup(start, end - start);
-    }
-
-    return size;
-}
-
-static char*
-post(int *http_resp_code, const char* url, const char* data)
-{
-    char *retval;
-    CURLcode curl_err;
-    struct curl_slist *httpheader_list = NULL;
-    struct Headerdata headerdata = { NULL };
-
-    if (http_resp_code)
-        *http_resp_code = -1;
-
-    CURL *handle = xcurl_easy_init();
-
-    curl_err = curl_easy_setopt(handle, CURLOPT_VERBOSE, 0);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_VERBOSE)");
-    if (retval)
-        goto ret;
-
-    curl_err = curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 1);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_NOPROGRESS)");
-    if (retval)
-        goto ret;
-
-    curl_err = curl_easy_setopt(handle, CURLOPT_POST, 1);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_POST)");
-    if (retval)
-        goto ret;
-
-    curl_err = curl_easy_setopt(handle, CURLOPT_URL, url);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_URL)");
-    if (retval)
-        goto ret;
-
-    httpheader_list = curl_slist_append(httpheader_list, "Content-Type: application/xml");
-    curl_err = curl_easy_setopt(handle, CURLOPT_HTTPHEADER, httpheader_list);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_HTTPHEADER)");
-    if (retval)
-        goto ret;
-
-    curl_err = curl_easy_setopt(handle, CURLOPT_POSTFIELDS, data);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_POSTFIELDS)");
-    if (retval)
-        goto ret;
-
-    curl_err = curl_easy_setopt(handle, CURLOPT_HEADERFUNCTION, headerfunction);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_HEADERFUNCTION)");
-    if (retval)
-        goto ret;
-
-    curl_err = curl_easy_setopt(handle, CURLOPT_WRITEHEADER, &headerdata);
-    retval = check_curl_error(curl_err, "curl_easy_setopt(CURLOPT_WRITEHEADER)");
-    if (retval)
-        goto ret;
-
-    curl_err = curl_easy_perform(handle);
-    retval = check_curl_error(curl_err, "curl_easy_perform");
-    if (retval)
-        goto ret;
-
-    long response_code;
-    curl_err = curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &response_code);
-    retval = check_curl_error(curl_err, "curl_easy_getinfo(CURLINFO_RESPONSE_CODE)");
-    if (retval)
-        goto ret;
-
-    if (http_resp_code)
-        *http_resp_code = response_code;
-    switch (response_code)
-    {
-    case 200:
-    case 201:
-        retval = headerdata.location;
-        break;
-    /* default: */
-        /* TODO: extract meaningful error string from server reply */
-    }
-
- ret:
-    curl_easy_cleanup(handle);
-    curl_slist_free_all(httpheader_list);
-    return retval;
-}
 
 /*
  * CReporterRHticket
@@ -266,17 +136,22 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     free(xml_description);
     string url = concat_path_file(m_sStrataURL.c_str(), "cases");
 
-    int http_resp_code;
-    char *res = post(&http_resp_code, url.c_str(), postdata.c_str());
-    string result = res ? res : "";
-    free(res);
+    curl_post_state *state = new_curl_post_state(0
+                + ABRT_CURL_POST_WANT_HEADERS
+                + ABRT_CURL_POST_WANT_ERROR_MSG);
+    int http_resp_code = curl_post(state, url.c_str(), postdata.c_str());
+
     if (http_resp_code / 100 != 2)
     {
         /* not 2xx */
+        string errmsg = state->curl_error_msg ? state->curl_error_msg : "(none)";
+        free_curl_post_state(state);
         throw CABRTException(EXCEP_PLUGIN, _("server returned HTTP code %u, error message: %s"),
-                http_resp_code, res ? result.c_str() : "(none)");
+                http_resp_code, errmsg.c_str());
     }
 
+    string result = find_header_in_curl_post_state(state, "Location:") ? : "";
+    free_curl_post_state(state);
     return result;
 }
 

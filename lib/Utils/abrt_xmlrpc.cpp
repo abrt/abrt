@@ -23,16 +23,6 @@
 #include "abrt_xmlrpc.h"
 #include "ABRTException.h"
 
-CURL* xcurl_easy_init()
-{
-    CURL* curl = curl_easy_init();
-    if (!curl)
-    {
-        error_msg_and_die("Can't create curl handle");
-    }
-    return curl;
-}
-
 void throw_xml_fault(xmlrpc_env *env)
 {
     std::string errmsg = ssprintf("XML-RPC Fault(%d): %s", env->fault_code, env->fault_string);

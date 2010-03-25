@@ -26,7 +26,7 @@
 #include <bzlib.h>
 #include <zlib.h>
 #include "abrtlib.h"
-#include "abrt_xmlrpc.h" /* for xcurl_easy_init */
+#include "abrt_curl.h"
 #include "FileTransfer.h"
 #include "DebugDump.h"
 #include "ABRTException.h"

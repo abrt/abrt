@@ -18,7 +18,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_xmlrpc.h" /* for xcurl_easy_init */
+#include "abrt_curl.h"
 #include "TicketUploader.h"
 #include "DebugDump.h"
 #include "ABRTException.h"

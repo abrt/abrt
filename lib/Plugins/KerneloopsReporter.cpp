@@ -18,7 +18,7 @@
  */
 
 #include "abrtlib.h"
-#include "abrt_xmlrpc.h" /* for xcurl_easy_init */
+#include "abrt_curl.h"
 #include "KerneloopsReporter.h"
 #include "CommLayerInner.h"
 #include "ABRTException.h"
