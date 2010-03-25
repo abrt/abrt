@@ -1,3 +1,4 @@
+#:mode=python:
 # -*- coding: utf-8 -*-
 ## Copyright (C) 2001-2005 Red Hat, Inc.
 ## Copyright (C) 2001-2005 Harald Hoyer <harald@redhat.com>
@@ -25,7 +26,6 @@ import sys
 import os
 import syslog
 import subprocess
-
 
 def write_dump(pid, tb):
     executable = "Exception raised from python shell"
@@ -132,6 +132,17 @@ def installExceptionHandler():
     """
     sys.excepthook = lambda etype, value, tb: handleMyException((etype, value, tb))
 
+# install the exception handler when the abrt_exception_handler
+# module is imported
+try:
+    installExceptionHandler()
+except Exception, e:
+    # TODO: log errors?
+    # OTOH, if abrt is deinstalled uncleanly
+    # and this file (sitecustomize.py) exists but
+    # abrt_exception_handler module does not exist, we probably
+    # don't want to irritate admins...
+    pass
 
 if __name__ == '__main__':
     # test exception raised to show the effect

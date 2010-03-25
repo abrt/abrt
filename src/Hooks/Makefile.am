@@ -47,7 +47,7 @@ abrt_hook_python_CPPFLAGS = \
 abrt_hook_python_LDADD = \
     ../../lib/Utils/libABRTUtils.la
 
-python_PYTHON = sitecustomize.py abrt_exception_handler.py
+python_PYTHON = abrt.pth abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
