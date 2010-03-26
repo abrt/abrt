@@ -389,12 +389,12 @@ bool string_to_bool(const char *s)
 
 void xsetreuid(uid_t ruid, uid_t euid)
 {
-	if (setreuid(ruid, euid) != 0)
-		perror_msg_and_die("can't set %cid %lu", 'u', (long)ruid);
+    if (setreuid(ruid, euid) != 0)
+        perror_msg_and_die("can't set %cid %lu", 'u', (long)ruid);
 }
 
 void xsetregid(gid_t rgid, gid_t egid)
 {
-	if (setregid(rgid, egid) != 0)
-		perror_msg_and_die("can't set %cid %lu", 'g', (long)rgid);
+    if (setregid(rgid, egid) != 0)
+        perror_msg_and_die("can't set %cid %lu", 'g', (long)rgid);
 }

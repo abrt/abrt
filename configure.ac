@@ -9,6 +9,7 @@ AC_ARG_ENABLE(debug,
 
 AC_DISABLE_STATIC
 AC_PROG_LIBTOOL
+AC_PROG_CC
 AC_PROG_CXX
 
 AC_SYS_LARGEFILE
@@ -103,7 +104,7 @@ AC_CONFIG_FILES([
 	src/Applet/Makefile
 	src/Gui/Makefile
 	src/CLI/Makefile
-	src/Backtrace/Makefile
+	src/utils/Makefile
 	inc/Makefile
 	po/Makefile.in
 	icons/Makefile

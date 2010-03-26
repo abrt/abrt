@@ -2,12 +2,14 @@
 # ABRTdUtils has much more. It is used by daemon and plugins only
 lib_LTLIBRARIES = libABRTUtils.la libABRTdUtils.la
 
+AM_YFLAGS = --verbose
+
 # Not used just yet:
 # time.cpp
 # xconnect.cpp
 
 libABRTUtils_la_SOURCES = \
-    xfuncs.cpp \
+    xfuncs.h xfuncs.cpp \
     encbase64.cpp \
     read_write.cpp \
     logging.cpp \
@@ -21,7 +23,10 @@ libABRTUtils_la_SOURCES = \
     DebugDump.h DebugDump.cpp \
     abrt_dbus.h abrt_dbus.cpp \
     CrashTypes.cpp \
-    ABRTException.cpp
+    ABRTException.cpp \
+    backtrace.h backtrace.c \
+    backtrace_parser.y \
+    strbuf.h strbuf.c
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \

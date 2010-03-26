@@ -20,6 +20,10 @@
 #ifndef STRBUF_H
 #define STRBUF_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct strbuf {
   int alloc;
   int len;
@@ -32,7 +36,13 @@ extern void strbuf_free(struct strbuf *strbuf);
 extern void strbuf_free_nobuf(struct strbuf *strbuf);
 extern void strbuf_clear(struct strbuf *strbuf);
 extern struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c);
-extern struct strbuf *strbuf_append_str(struct strbuf *strbuf, char *str);
-extern struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, char *str);
+extern struct strbuf *strbuf_append_str(struct strbuf *strbuf, const char *str);
+extern struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str);
+extern struct strbuf *strbuf_append_strf(struct strbuf *strbuf, const char *format, ...);
+extern struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf, const char *format, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

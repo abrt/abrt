@@ -578,11 +578,85 @@ int yylex()
  *   backtrace_free() on this.
  *   Returns NULL when parsing failed.
  */
-struct backtrace *do_parse(char *input, bool debug_parser, bool debug_scanner)
+struct backtrace *backtrace_parse(char *input, bool debug_parser, bool debug_scanner)
 {
+  /* Skip the backtrace header information. */
+  char *btnoheader_a = strstr(input, "\nThread ");
+  char *btnoheader_b = strstr(input, "\n#");
+  char *btnoheader = input;
+  if (btnoheader_a)
+  {
+    if (btnoheader_b && btnoheader_b < btnoheader_a)
+      btnoheader = btnoheader_b + 1;
+    else
+      btnoheader = btnoheader_a + 1;
+  }
+  else if (btnoheader_b)
+    btnoheader = btnoheader_b + 1;
+
+  /* Bug fixing hack for broken backtraces.
+   * Sometimes the empty line is missing before new Thread section.
+   * This is against rules, but a bug (now fixed) in Linux kernel caused
+   * this.
+   */
+  char *thread_fixer = btnoheader + 1;
+  while ((thread_fixer = strstr(thread_fixer, "\nThread")) != NULL)
+  {
+    if (thread_fixer[-1] != '\n')
+      thread_fixer[-1] = '\n';
+
+    ++thread_fixer;
+  }
+
+  /* Bug fixing hack for GDB - remove wrongly placed newlines from the backtrace.
+   * Sometimes there is a newline in the local variable section.
+   * This is caused by some GDB hooks.
+   * Example: rhbz#538440
+   * #1  0x0000000000420939 in sync_deletions (mse=0x0, mfld=0x1b85020)
+   *    at mail-stub-exchange.c:1119
+   *     status = <value optimized out>
+   *     iter = 0x1af38d0
+   *     known_messages = 0x1b5c460Traceback (most recent call last):
+   *  File "/usr/share/glib-2.0/gdb/glib.py", line 98, in next
+   *    if long (node["key_hash"]) >= 2:
+   * RuntimeError: Cannot access memory at address 0x11
+   *
+   *     __PRETTY_FUNCTION__ = "sync_deletions"
+   * #2  0x0000000000423e6b in refresh_folder (stub=0x1b77f10 [MailStubExchange], 
+   * ...
+   *
+   * The code removes every empty line (also those containing only spaces),
+   * which is not followed by a new Thread section.
+   * 
+   * rhbz#555251 contains empty lines with spaces
+   */
+  char *empty_line = btnoheader; 
+  char *c = btnoheader;
+  while (*c)
+  {
+    if (*c == '\n')
+    {
+      char *cend = c + 1;
+      while (*cend == ' ' || *cend == '\t')
+        ++cend;
+      if (*cend == '\n' && 0 != strncmp(cend, "\nThread", strlen("\nThread")))
+        memmove(c, cend, strlen(cend) + 1);
+    }
+    ++c;
+  }
+  while ((empty_line = strstr(empty_line, "\n\n")) != NULL)
+  {
+    if (0 != strncmp(empty_line, "\n\nThread", strlen("\n\nThread")))
+    {
+      /* Remove the empty line by converting the first newline to char. */
+      empty_line[0] = 'X'; 
+    }
+    ++empty_line;
+  }
+
   /* Prepare for running parser. */
   g_backtrace = 0;
-  yyin = input;
+  yyin = btnoheader;
 #if YYDEBUG == 1
   if (debug_parser)
     yydebug = 1;

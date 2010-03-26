@@ -1,1 +1,1 @@
-SUBDIRS = Hooks Daemon Applet Gui CLI Backtrace
+SUBDIRS = Hooks Daemon Applet Gui CLI utils
