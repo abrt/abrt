@@ -118,7 +118,7 @@ for buginfo in buginfos:
       continue
 
   # Rate the backtrace using external program.
-  command = ["./abrt-rate-backtrace"]
+  command = ["abrt-backtrace", "--rate"]
   command.append(filename)
   helper = subprocess.Popen(command, stdout=subprocess.PIPE)
   rating, err = helper.communicate()
@@ -166,7 +166,7 @@ for id, bug in ids.items():
   # Get the component owner
   owner = "Failed to get component owner"
   try:
-    component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/packages/name/{0}?tg_format=json".format(bug['component'])))
+    component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/acls/name/{0}?tg_format=json".format(bug['component'])))
     component_packages = component_info['packageListings']
     component_f12 = filter(lambda x:x["collection"]["version"]=="12", component_packages)
     if len(component_f12) == 1:
