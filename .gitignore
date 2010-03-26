@@ -47,9 +47,9 @@ py-compile
 scripts/*.bt
 src/Applet/abrt-applet
 src/CLI/abrt-cli
-src/Backtrace/abrt-backtrace
-src/Backtrace/parser.c
-src/Backtrace/parser.output
+src/utils/abrt-backtrace
+lib/Utils/backtrace_parser.c
+lib/Utils/backtrace_parser.output
 src/Backtrace/*.bt
 src/Daemon/abrtd
 src/Gui/abrt.desktop
@@ -57,6 +57,7 @@ src/Hooks/abrt_exception_handler.py
 src/Hooks/dumpoops
 src/Hooks/abrt-hook-ccpp
 src/Hooks/abrt-hook-python
+scripts/abrt-rate-backtrace
 stamp-h1
 x86_64/
 *.pyc
