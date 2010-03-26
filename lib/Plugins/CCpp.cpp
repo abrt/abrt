@@ -23,12 +23,13 @@
 //#include <nss.h>
 //#include <sechash.h>
 #include "abrtlib.h"
+#include "strbuf.h"
 #include "CCpp.h"
 #include "ABRTException.h"
 #include "DebugDump.h"
 #include "CommLayerInner.h"
 #include "Polkit.h"
-
+#include "backtrace.h"
 #include "CCpp_sha1.h"
 
 using namespace std;
@@ -54,7 +55,7 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
     m_nDebugInfoCacheMB(4000)
 {}
 
-static string CreateHash(const char *pInput)
+static string create_hash(const char *pInput)
 {
     unsigned int len;
 
@@ -161,111 +162,6 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
     waitpid(child, &status, 0); /* prevent having zombie child process */
 
     return status;
-}
-
-enum LineRating
-{
-    // RATING              EXAMPLE
-    MissingEverything = 0, // #0 0x0000dead in ?? ()
-    MissingFunction   = 1, // #0 0x0000dead in ?? () from /usr/lib/libfoobar.so.4
-    MissingLibrary    = 2, // #0 0x0000dead in foobar()
-    MissingSourceFile = 3, // #0 0x0000dead in FooBar::FooBar () from /usr/lib/libfoobar.so.4
-    Good              = 4, // #0 0x0000dead in FooBar::crash (this=0x0) at /home/user/foobar.cpp:204
-    BestRating = Good,
-};
-
-static LineRating rate_line(const char *line)
-{
-#define FOUND(x) (strstr(line, x) != NULL)
-    /* see the "enum LineRating" comments for possible combinations */
-    if (FOUND(" at "))
-        return Good;
-    const char *function = strstr(line, " in ");
-    if (function)
-    {
-        if (function[4] == '?') /* " in ??" does not count */
-        {
-            function = NULL;
-        }
-    }
-    bool library = FOUND(" from ");
-    if (function && library)
-        return MissingSourceFile;
-    if (function)
-        return MissingLibrary;
-    if (library)
-        return MissingFunction;
-
-    return MissingEverything;
-#undef FOUND
-}
-
-/* returns number of "stars" to show */
-static int rate_backtrace(const char *backtrace)
-{
-    int i, len;
-    int multiplier = 0;
-    int rating = 0;
-    int best_possible_rating = 0;
-    char last_lvl = 0;
-
-    /* We look at the frames in reversed order, since:
-     * - rate_line() checks starting from the first line of the frame
-     * (note: it may need to look at more than one line!)
-     * - we increase weight (multiplier) for every frame,
-     *   so that topmost frames end up most important
-     */
-    len = 0;
-    for (i = strlen(backtrace) - 1; i >= 0; i--)
-    {
-        if (backtrace[i] == '#'
-         && (backtrace[i+1] >= '0' && backtrace[i+1] <= '9') /* #N */
-         && (i == 0 || backtrace[i-1] == '\n') /* it's at line start */
-        ) {
-            /* For one, "#0 xxx" always repeats, skip repeats */
-            if (backtrace[i+1] == last_lvl)
-                continue;
-            last_lvl = backtrace[i+1];
-
-            char *s = xstrndup(backtrace + i + 1, len);
-            /* Replace tabs with spaces, rate_line() does not expect tabs.
-             * Actually, even newlines may be there. Example of multiline frame
-             * where " at SRCFILE" is on 2nd line:
-             * #3  0x0040b35d in __libc_message (do_abort=<value optimized out>,
-             *     fmt=<value optimized out>) at ../sysdeps/unix/sysv/linux/libc_fatal.c:186
-             */
-            for (char *p = s; *p; p++)
-                if (*p == '\t' || *p == '\n')
-                    *p = ' ';
-            int lrate = rate_line(s);
-            multiplier++;
-            rating += lrate * multiplier;
-            best_possible_rating += BestRating * multiplier;
-            //log("lrate:%d rating:%d best_possible_rating:%d s:'%-.40s'", lrate, rating, best_possible_rating, s);
-            free(s);
-            len = 0; /* starting new line */
-        }
-        else
-        {
-            len++;
-        }
-    }
-
-    /* Bogus 'backtrace' with zero frames? */
-    if (best_possible_rating == 0)
-        return 0;
-
-    /* Returning number of "stars" to show */
-    if (rating*10 >= best_possible_rating*8) /* >= 0.8 */
-        return 4;
-    if (rating*10 >= best_possible_rating*6)
-        return 3;
-    if (rating*10 >= best_possible_rating*4)
-        return 2;
-    if (rating*10 >= best_possible_rating*2)
-        return 1;
-
-    return 0;
 }
 
 static void GetBacktrace(const char *pDebugDumpDir,
@@ -629,121 +525,16 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
     }
     string hash_str = trimmed_package + executable + independentBuildIdPC;
     free(trimmed_package);
-    return CreateHash(hash_str.c_str());
+    return create_hash(hash_str.c_str());
 }
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
-    log(_("Getting global universal unique identification..."));
-
-//TODO: convert to fork_execv_on_steroids(), nuke static concat_str_vector
-
-    string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
-    string executable;
-    string package;
-    string uid_str;
-    {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
-        dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_PACKAGE, package);
-        if (m_bBacktrace)
-            dd.LoadText(CD_UID, uid_str);
-    }
-
-    string independent_backtrace;
-    if (m_bBacktrace)
-    {
-        /* Run abrt-backtrace to get independent backtrace suitable
-           to UUID calculation. */
-        char *args[7];
-        args[0] = (char*)"abrt-backtrace";
-        args[1] = (char*)"--single-thread";
-        args[2] = (char*)"--remove-exit-handlers";
-        args[3] = (char*)"--frame-depth=5";
-        args[4] = (char*)"--remove-noncrash-frames";
-        args[5] = (char*)backtrace_path.c_str();
-        args[6] = NULL;
-
-        int pipeout[2];
-        xpipe(pipeout); /* stdout of abrt-backtrace */
-
-	fflush(NULL);
-        pid_t child = fork();
-        if (child == -1)
-            perror_msg_and_die("fork");
-        if (child == 0)
-        {
-            VERB1 log("Executing: %s", concat_str_vector(args).c_str());
-
-            xmove_fd(pipeout[1], STDOUT_FILENO);
-            close(pipeout[0]); /* read side of the pipe */
-
-            /* abrt-backtrace is executed under the user's uid and gid. */
-            uid_t uid = xatoi_u(uid_str.c_str());
-            struct passwd* pw = getpwuid(uid);
-            gid_t gid = pw ? pw->pw_gid : uid;
-            setgroups(1, &gid);
-            xsetregid(gid, gid);
-            xsetreuid(uid, uid);
-
-            execvp(args[0], args);
-            VERB1 perror_msg("Can't execute '%s'", args[0]);
-            exit(1);
-        }
-
-        close(pipeout[1]); /* write side of the pipe */
-
-        /* Read the result from abrt-backtrace. */
-        int r;
-        char buff[1024];
-        while ((r = safe_read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
-        {
-            buff[r] = '\0';
-            independent_backtrace += buff;
-        }
-        close(pipeout[0]);
-
-        /* Wait until it exits, and check the exit status. */
-        errno = 0;
-        int status;
-        waitpid(child, &status, 0);
-        if (!WIFEXITED(status))
-        {
-            perror_msg("abrt-backtrace not executed properly, "
-                               "status: %x signal: %d", status, WIFSIGNALED(status));
-        }
-        else
-        {
-            int exit_status = WEXITSTATUS(status);
-            if (exit_status == 79) /* EX_PARSINGFAILED */
-            {
-                /* abrt-backtrace returns alternative backtrace
-                   representation in this case, so everything will work
-                   as expected except worse duplication detection */
-                log_msg("abrt-backtrace failed to parse the backtrace");
-            }
-            else if (exit_status == 80) /* EX_THREADDETECTIONFAILED */
-            {
-                /* abrt-backtrace returns backtrace with all threads
-                   in this case, so everything will work as expected
-                   except worse duplication detection */
-                log_msg("abrt-backtrace failed to determine crash frame");
-            }
-            else if (exit_status != 0)
-            {
-                /* this is unexpected problem and it should be investigated */
-                error_msg("abrt-backtrace run failed, exit value: %d",
-                          exit_status);
-            }
-        }
-
-        /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
-    }
-    /* else: no backtrace, independent_backtrace == "" */
-
-    string hash_base = package + executable + independent_backtrace;
-    return CreateHash(hash_base.c_str());
+    CDebugDump dd;
+    dd.Open(pDebugDumpDir);
+    string uuid;
+    dd.LoadText(FILENAME_GLOBAL_UUID, uuid);
+    return uuid;
 }
 
 static bool DebuginfoCheckPolkit(uid_t uid)
@@ -777,27 +568,23 @@ static bool DebuginfoCheckPolkit(uid_t uid)
 
 void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
-    string package;
-    string UID;
+    string package, executable, UID;
 
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
 
     if (!m_bBacktrace)
-    {
         return;
-    }
 
     if (!force)
     {
         bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
         if (bt_exists)
-        {
             return; /* backtrace already exists */
-        }
     }
 
     dd.LoadText(FILENAME_PACKAGE, package);
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
     dd.LoadText(CD_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
@@ -805,28 +592,106 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str())))
     {
         if (m_nDebugInfoCacheMB > 0)
-        {
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
-        }
         InstallDebugInfos(pDebugDumpDir, m_sDebugInfoDirs.c_str(), build_ids);
     }
     else
-    {
         VERB1 log(_("Skipping debuginfo installation"));
-    }
 
-    string backtrace;
-    GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace);
-
+    /* Create and store backtrace. */
+    string backtrace_str;
+    GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace_str);
     dd.Open(pDebugDumpDir);
-    dd.SaveText(FILENAME_BACKTRACE, (backtrace + build_ids).c_str());
+    dd.SaveText(FILENAME_BACKTRACE, (backtrace_str + build_ids).c_str());
+
     if (m_bMemoryMap)
-    {
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
+
+    /* Compute and store UUID from the backtrace. */
+    char *backtrace_cpy = xstrdup(backtrace_str.c_str());
+    struct backtrace *backtrace = backtrace_parse(backtrace_cpy, false, false);
+    free(backtrace_cpy);
+    if (backtrace)
+    {
+        /* Get the quality of the full backtrace. */
+        float q1 = backtrace_quality(backtrace);
+
+        /* Remove all the other threads except the crash thread. */
+        struct thread *crash_thread = backtrace_find_crash_thread(backtrace);
+        if (crash_thread)
+            backtrace_remove_threads_except_one(backtrace, crash_thread);
+        else
+            log_msg("Detection of crash thread failed.\n");
+
+        /* Get the quality of the crash thread. */
+        float q2 = backtrace_quality(backtrace);
+
+        backtrace_remove_noncrash_frames(backtrace);
+
+        /* Do the frame removal now. */
+        backtrace_limit_frame_depth(backtrace, 5);
+        /* Frame removal can be done before removing exit handlers. */
+        backtrace_remove_exit_handlers(backtrace);
+
+        /* Get the quality of frames around the crash. */
+        float q3 = backtrace_quality(backtrace);
+
+        /* Compute UUID. */
+        struct strbuf *bt = backtrace_tree_as_str(backtrace, false);
+        strbuf_prepend_str(bt, executable.c_str());
+        strbuf_prepend_str(bt, package.c_str());
+        dd.SaveText(FILENAME_GLOBAL_UUID, create_hash(bt->buf).c_str());
+        strbuf_free(bt);
+
+        /* Compute and store backtrace rating. */
+        /* Compute and store backtrace rating. The crash frame
+           is more important that the others. The frames around 
+           the crash are more important than the rest.  */
+        float qtot = 0.25f * q1 + 0.35f * q2 + 0.4f * q3;
+
+        /* Turn the quality to rating. */
+        const char *rating;
+        if (qtot < 0.6f)      rating = "0";
+        else if (qtot < 0.7f) rating = "1";
+        else if (qtot < 0.8f) rating = "2";
+        else if (qtot < 0.9f) rating = "3";
+        else                  rating = "4";
+        dd.SaveText(FILENAME_RATING, rating);
+
+        /* Get the function name from the crash frame. */
+        if (crash_thread)
+        {
+            struct frame *abort_frame = thread_find_abort_frame(crash_thread);
+            if (abort_frame)
+            {
+                struct frame *crash_frame = abort_frame->next;
+                if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
+                    dd.SaveText(FILENAME_CRASH_FUNCTION, crash_frame->function);
+            }
+        }
+
+        backtrace_free(backtrace);
     }
-    dd.SaveText(FILENAME_RATING, to_string(rate_backtrace(backtrace.c_str())).c_str());
+    else
+    {
+        /* If the parser failed fall back to the independent backtrace. */
+        /* If we write and use a hand-written parser instead of the bison one, 
+           the parser never fails, and it will be possible to get rid of 
+           the independent_backtrace and backtrace_rate_old. */
+        struct strbuf *ibt = independent_backtrace(backtrace_str.c_str());
+        strbuf_prepend_str(ibt, executable.c_str());
+        strbuf_prepend_str(ibt, package.c_str());
+        dd.SaveText(FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
+        strbuf_free(ibt);
+
+        /* Compute and store backtrace rating. */
+        /* Crash frame is not known so store nothing. */
+        dd.SaveText(FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str.c_str())).c_str());
+    }
+
     dd.Close();
 }
+
 /*
  this is just a workaround until kernel changes it's behavior
  when handling pipes in core_pattern
@@ -835,66 +700,66 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 #define CORE_SIZE_PATTERN "Max core file size=1:unlimited"
 static int isdigit_str(char *str)
 {
-	do {
-		if (*str < '0' || *str > '9')
-			return 0;
-	} while (*++str);
-	return 1;
+    do {
+        if (*str < '0' || *str > '9')
+            return 0;
+    } while (*++str);
+    return 1;
 }
 
 static int set_limits()
 {
-    	DIR *dir = opendir("/proc");
-	if (!dir) {
-		/* this shouldn't fail, but to be safe.. */
-		return 1;
-	}
+    DIR *dir = opendir("/proc");
+    if (!dir) {
+        /* this shouldn't fail, but to be safe.. */
+        return 1;
+    }
+    
+    struct dirent *ent;
+    while ((ent = readdir(dir)) != NULL) {
+        if (!isdigit_str(ent->d_name))
+            continue;
 
-	struct dirent *ent;
-	while ((ent = readdir(dir)) != NULL) {
-		if (!isdigit_str(ent->d_name))
-			continue;
-
-		char limits_name[sizeof("/proc/%s/limits") + sizeof(int)];
-		snprintf(limits_name, sizeof(limits_name), "/proc/%s/limits", ent->d_name);
-		FILE *limits_fp = fopen(limits_name, "r");
-		if (!limits_fp) {
-			break;
-		}
-
-		char line[128];
-		char *ulimit_c = NULL;
-		while (1) {
-			if (fgets(line, sizeof(line)-1, limits_fp) == NULL)
-				break;
-			if (strncmp(line, "Max core file size", sizeof("Max core file size")-1) == 0) {
-				ulimit_c = skip_whitespace(line + sizeof("Max core file size")-1);
-				skip_non_whitespace(ulimit_c)[0] = '\0';
-				break;
-			}
-		}
-		fclose(limits_fp);
-		if (!ulimit_c || ulimit_c[0] != '0' || ulimit_c[1] != '\0') {
-			/*process has nonzero ulimit -c, so need to modify it*/
-			continue;
-		}
-		/* echo -n 'Max core file size=1:unlimited' >/proc/PID/limits */
-		int fd = open(limits_name, O_WRONLY);
-		if (fd >= 0) {
-			errno = 0;
-			/*full_*/
-			ssize_t n = write(fd, CORE_SIZE_PATTERN, sizeof(CORE_SIZE_PATTERN)-1);
-			if (n < sizeof(CORE_SIZE_PATTERN)-1)
-				log("warning: can't write core_size limit to: %s", limits_name);
-			close(fd);
-		}
+        char limits_name[sizeof("/proc/%s/limits") + sizeof(int)];
+        snprintf(limits_name, sizeof(limits_name), "/proc/%s/limits", ent->d_name);
+        FILE *limits_fp = fopen(limits_name, "r");
+        if (!limits_fp) {
+            break;
+        }
+        
+        char line[128];
+        char *ulimit_c = NULL;
+        while (1) {
+            if (fgets(line, sizeof(line)-1, limits_fp) == NULL)
+                break;
+            if (strncmp(line, "Max core file size", sizeof("Max core file size")-1) == 0) {
+                ulimit_c = skip_whitespace(line + sizeof("Max core file size")-1);
+                skip_non_whitespace(ulimit_c)[0] = '\0';
+                break;
+            }
+        }
+        fclose(limits_fp);
+        if (!ulimit_c || ulimit_c[0] != '0' || ulimit_c[1] != '\0') {
+            /*process has nonzero ulimit -c, so need to modify it*/
+            continue;
+        }
+        /* echo -n 'Max core file size=1:unlimited' >/proc/PID/limits */
+        int fd = open(limits_name, O_WRONLY);
+        if (fd >= 0) {
+            errno = 0;
+            /*full_*/
+            ssize_t n = write(fd, CORE_SIZE_PATTERN, sizeof(CORE_SIZE_PATTERN)-1);
+            if (n < sizeof(CORE_SIZE_PATTERN)-1)
+                log("warning: can't write core_size limit to: %s", limits_name);
+            close(fd);
+        }
         else
         {
             log("warning: can't open %s for writing", limits_name);
         }
-	}
-	closedir(dir);
-	return 0;
+    }
+    closedir(dir);
+    return 0;
 }
 #endif /* HOSTILE_KERNEL */
 
