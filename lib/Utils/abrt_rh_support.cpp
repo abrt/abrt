@@ -204,12 +204,21 @@ post_signature(const char* baseURL, const char* signature)
         strata_msg = find_header_in_curl_post_state(state, "Strata-Message:");
         if (strata_msg)
         {
-              retval = xasprintf("Error (HTTP response %d): %s",
+            retval = xasprintf("Error (HTTP response %d): %s",
                         http_resp_code,
                         strata_msg);
-              break;
+            break;
+        }
+        if (state->curl_error_msg)
+        {
+            if (http_resp_code >= 0)
+                retval = xasprintf("Error (HTTP response %d): %s", http_resp_code, state->curl_error_msg);
+            else
+                retval = xasprintf("Error in HTTP transaction: %s", state->curl_error_msg);
+            break;
         }
         retval = xasprintf("Error (HTTP response %d), body:\n%s", http_resp_code, state->body);
+        break;
     }
 
     free_curl_post_state(state);
