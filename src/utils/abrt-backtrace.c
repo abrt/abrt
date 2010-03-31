@@ -275,7 +275,7 @@ int main(int argc, char **argv)
             retval = EX_THREADDETECTIONFAILED;
         }
     }
-    
+
     /* [--rate] Get the quality of the crash thread. */
     float q2 = backtrace_quality(backtrace);
 
@@ -297,7 +297,7 @@ int main(int argc, char **argv)
     {
         /* Compute and store backtrace rating. */
         /* Compute and store backtrace rating. The crash frame
-           is more important that the others. The frames around 
+           is more important that the others. The frames around
            the crash are more important than the rest.  */
         float qtot = 0.25f * q1 + 0.35f * q2 + 0.4f * q3;
 

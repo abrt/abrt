@@ -2,7 +2,7 @@
 # -*- mode:python -*-
 # ABRT Bugzilla Statistics script
 #
-# Please do not run this script unless it's neccessary to do so. 
+# Please do not run this script unless it's neccessary to do so.
 # It forces Bugzilla to send info about thousands of bug reports.
 
 from bugzilla import RHBugzilla
@@ -24,15 +24,15 @@ parser.add_option("-p", "--password", dest="password",
 parser.add_option("-b", "--bugzilla", dest="bugzilla",
                   help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
 # Weekly stats shows the impact of changes in ABRT early.
-parser.add_option("-w", "--weekly", help="Generate weekly report instead of monthly", 
+parser.add_option("-w", "--weekly", help="Generate weekly report instead of monthly",
                   action="store_true", default=False, dest="weekly")
 # HTML output for blogs etc.
-parser.add_option("-t", "--html", help="Generate HTML output", 
+parser.add_option("-t", "--html", help="Generate HTML output",
                   action="store_true", default=False, dest="html")
-parser.add_option("-i", "--wiki", help="Generate output in wiki syntax", 
+parser.add_option("-i", "--wiki", help="Generate output in wiki syntax",
                   action="store_true", default=False, dest="wiki")
 # Newest stats first
-parser.add_option("-r", "--reversed", help="Display the newest stats first", 
+parser.add_option("-r", "--reversed", help="Display the newest stats first",
                   action="store_true", default=False, dest="reversed")
 (options, args) = parser.parse_args()
 if not options.user or len(options.user) == 0:
@@ -67,7 +67,7 @@ def save_to_cache():
   global buginfos_loaded
   f = open(CACHE_FILE, 'w')
   pickle.dump(buginfos_loaded, f, 2)
-  f.close()  
+  f.close()
 
 #
 # Load data from Bugzilla
@@ -84,16 +84,16 @@ for buginfo in buginfos:
     continue
 
   # creation date, format YEAR-MONTH-DAY
-  created = buginfo.creation_ts[0:10].replace(".", "-") 
+  created = buginfo.creation_ts[0:10].replace(".", "-")
   # last change to bug, format YEAR-MONTH-DAY
   lastchange = buginfo.delta_ts[0:10].replace(".", "-")
   status = buginfo.bug_status # status during the last change
   if buginfo.resolution != "":
     status += "_" + buginfo.resolution
   buginfos_loaded[buginfo.bug_id] = {
-    'created':created, 
-    'lastchange':lastchange, 
-    'status':status, 
+    'created':created,
+    'lastchange':lastchange,
+    'status':status,
     'component':buginfo.component}
 
 bz.logout()
@@ -158,10 +158,10 @@ class TimeSpan:
     if resolution in ["CLOSED_CURRENTRELEASE", "CLOSED_RAWHIDE", "CLOSED_ERRATA",
                       "CLOSED_UPSTREAM", "CLOSED_NEXTRELEASE"]:
       self.closed_as_useful += 1
-    elif resolution in ["CLOSED_DUPLICATE", "CLOSED_CANTFIX", 
+    elif resolution in ["CLOSED_DUPLICATE", "CLOSED_CANTFIX",
                         "CLOSED_INSUFFICIENT_DATA"]:
       self.closed_as_waste += 1
-    elif resolution in ["CLOSED_NOTABUG", "CLOSED_WONTFIX", 
+    elif resolution in ["CLOSED_NOTABUG", "CLOSED_WONTFIX",
                            "CLOSED_DEFERRED", "CLOSED_WORKSFORME"]:
       self.closed_as_other += 1
 

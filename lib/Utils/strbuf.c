@@ -63,7 +63,7 @@ static void strbuf_grow(struct strbuf *strbuf, int num)
     {
 	while (strbuf->len + num + 1 > strbuf->alloc)
 	    strbuf->alloc *= 2; /* huge grow = infinite loop */
-	    
+
 	strbuf->buf = realloc(strbuf->buf, strbuf->alloc);
 	if (!strbuf->buf)
 	{
@@ -105,11 +105,11 @@ struct strbuf *strbuf_append_strf(struct strbuf *strbuf, const char *format, ...
 {
     va_list p;
     char *string_ptr;
-    
+
     va_start(p, format);
     string_ptr = xvasprintf(format, p);
     va_end(p);
-    
+
     strbuf_append_str(strbuf, string_ptr);
     free(string_ptr);
     return strbuf;
@@ -119,11 +119,11 @@ struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf, const char *format, ..
 {
     va_list p;
     char *string_ptr;
-    
+
     va_start(p, format);
     string_ptr = xvasprintf(format, p);
     va_end(p);
-    
+
     strbuf_prepend_str(strbuf, string_ptr);
     free(string_ptr);
     return strbuf;

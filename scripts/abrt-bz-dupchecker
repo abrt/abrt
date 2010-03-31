@@ -2,13 +2,13 @@
 # -*- mode:python -*-
 # ABRT Bugzilla Duplication Checker
 # Downloads all backtraces reported by ABRT from Bugzilla,
-# and search for duplicates using the newest ABRT duplication 
+# and search for duplicates using the newest ABRT duplication
 # checker.
 #
 # Some bugs in Bugzilla were reported by older ABRT
 # versions, which had poor duplication detection.
 #
-# Please do not run this script unless it's neccessary to do so. 
+# Please do not run this script unless it's neccessary to do so.
 # It forces Bugzilla to send data related to thousands of bug reports.
 #
 #
@@ -37,9 +37,9 @@ parser.add_option("-b", "--bugzilla", dest="bugzilla", default="https://bugzilla
                   help="Bugzilla URL (defaults to Red Hat Bugzilla)", metavar="URL")
 parser.add_option("-v", "--verbose", dest="verbose",
                   help="Detailed output")
-parser.add_option("-c", "--close", help="Close some of the bugs in Bugzilla (DANGEROUS)", 
+parser.add_option("-c", "--close", help="Close some of the bugs in Bugzilla (DANGEROUS)",
                   action="store_true", default=False, dest="close")
-parser.add_option("-i", "--wiki", help="Generate output in wiki syntax", 
+parser.add_option("-i", "--wiki", help="Generate output in wiki syntax",
                   action="store_true", default=False, dest="wiki")
 
 (options, args) = parser.parse_args()
@@ -60,7 +60,7 @@ print "{0} bugs found.".format(len(buginfos))
 
 #
 # Load cache from previous run. Speeds up the case Bugzilla closes connection.
-# The cache should be manually removed after a day or so, because the data in it 
+# The cache should be manually removed after a day or so, because the data in it
 # are no longer valid.
 #
 database = {}
@@ -77,7 +77,7 @@ def save_to_cache():
   f = open(CACHE_FILE, 'w')
   cPickle.dump(database, f, 2)
   cPickle.dump(ids, f, 2)
-  f.close()  
+  f.close()
 
 count = 0
 for buginfo in buginfos:
@@ -121,7 +121,7 @@ for buginfo in buginfos:
     # abrt_hash, but it does not copy the attachment.
     if not downloaded:
       continue
-  
+
   command = ["./abrt-backtrace"]
   command.append(filename)
   command.append("--single-thread")
@@ -161,12 +161,12 @@ dupclosecount = 0
 for backtrace, components in database.items():
   for component, bugitems in components.items():
     dupcount += len(bugitems) - 1
-    dupclosecount += min(len(filter(lambda x: x <= 2, 
-                                    map(lambda x: x["comments"], 
+    dupclosecount += min(len(filter(lambda x: x <= 2,
+                                    map(lambda x: x["comments"],
                                         bugitems))),
                          len(bugitems) - 1)
 
-# Get the component owner.    
+# Get the component owner.
 # Sort the duplicates by the component owner, and
 # filter out those which should not be printed.
 dups = []
@@ -185,7 +185,7 @@ for backtrace, components in database.items():
         owner = component_f12[0]["owner"]
     except KeyError:
       pass
-      
+
     dups.append((component, owner, bugitems, backtrace))
     print "."
 
@@ -196,12 +196,12 @@ if options.close:
   for (component, owner, bugitems, backtrace) in dups:
     # Find the master bug item
     # Its the one with the most comments.
-    
+
     # Sort function sorting by comment count.
     def commentCmp(x, y):
       if x['comments'] < y['comments']:
         return 1
-      elif x['comments'] == y['comments']: 
+      elif x['comments'] == y['comments']:
         # Sort by bug id, older bugs should became the master bug
         if x['id'] > y['id']:
           return 1
@@ -225,7 +225,7 @@ if options.close:
         continue
 
       print "Closing bug #{0} with {1} comments as a duplicate of #{2}.".format(item['id'], item['comments'], master['id'])
-      bug.close("DUPLICATE", int(master['id']), "", 
+      bug.close("DUPLICATE", int(master['id']), "",
                 ("This bug appears to have been filled using a buggy version of ABRT, because\n" +
                 "it contains a backtrace which is a duplicate of backtrace from bug #{0}.\n\n" +
                 "Sorry for the inconvenience.").format(master['id']))
@@ -233,7 +233,7 @@ if options.close:
       counter += 1
       if counter > LIMIT:
         sys.exit(0)
-      
+
 bz.logout()
 
 print
@@ -257,8 +257,8 @@ for (component, owner, bugitems, backtrace) in sorted(dups, cmp):
     print "----"
     print "* component: '''{0}''' ({1})".format(component, owner)
     print "* duplicates: {0}".format(
-      reduce(lambda x,y: x+", "+y, 
-             map(lambda x: "#[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] ({1} comments)".format(x['id'],x['comments']), 
+      reduce(lambda x,y: x+", "+y,
+             map(lambda x: "#[https://bugzilla.redhat.com/show_bug.cgi?id={0} {0}] ({1} comments)".format(x['id'],x['comments']),
                  bugitems)))
     print "* backtrace:"
     for line in backtrace.replace("Thread\n", "").splitlines():
@@ -266,7 +266,7 @@ for (component, owner, bugitems, backtrace) in sorted(dups, cmp):
   else:
     print "Component: {0} ({1})".format(component, owner)
     print "Duplicates: {0}".format(
-      reduce(lambda x,y: x+", "+y, 
-             map(lambda x: "{0} ({1})".format(x['id'],x['comments']), 
+      reduce(lambda x,y: x+", "+y,
+             map(lambda x: "{0} ({1})".format(x['id'],x['comments']),
                  bugitems)))
     print "Backtrace: {0}".format(backtrace)

@@ -57,7 +57,7 @@ map_map_string_t call_GetPluginsInfo();
  */
 map_plugin_settings_t call_GetPluginSettings(const char *name);
 
-/** Gets global daemon settings. 
+/** Gets global daemon settings.
  * @todo
  *   Return more semantically structured output - maybe a struct instead of a map.
  */

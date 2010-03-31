@@ -41,7 +41,7 @@ using namespace std;
 0 - means unlimited, but the it's not guaranteed that /proc/<pid> of crashing
 process might not be available for dump_helper
 4 - means that 4 dump_helpers can run at the same time, which should be enough
-for ABRT, we can miss some crashes, but what are the odds that more processes 
+for ABRT, we can miss some crashes, but what are the odds that more processes
 crash at the same time? This value has been recommended by nhorman
 */
 #define CORE_PIPE_LIMIT "4"
@@ -645,7 +645,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 
         /* Compute and store backtrace rating. */
         /* Compute and store backtrace rating. The crash frame
-           is more important that the others. The frames around 
+           is more important that the others. The frames around
            the crash are more important than the rest.  */
         float qtot = 0.25f * q1 + 0.35f * q2 + 0.4f * q3;
 
@@ -675,8 +675,8 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     else
     {
         /* If the parser failed fall back to the independent backtrace. */
-        /* If we write and use a hand-written parser instead of the bison one, 
-           the parser never fails, and it will be possible to get rid of 
+        /* If we write and use a hand-written parser instead of the bison one,
+           the parser never fails, and it will be possible to get rid of
            the independent_backtrace and backtrace_rate_old. */
         struct strbuf *ibt = independent_backtrace(backtrace_str.c_str());
         strbuf_prepend_str(ibt, executable.c_str());
@@ -714,7 +714,7 @@ static int set_limits()
         /* this shouldn't fail, but to be safe.. */
         return 1;
     }
-    
+
     struct dirent *ent;
     while ((ent = readdir(dir)) != NULL) {
         if (!isdigit_str(ent->d_name))
@@ -726,7 +726,7 @@ static int set_limits()
         if (!limits_fp) {
             break;
         }
-        
+
         char line[128];
         char *ulimit_c = NULL;
         while (1) {
@@ -802,7 +802,7 @@ void CAnalyzerCCpp::Init()
         fputs(CORE_PATTERN, fp);
         fclose(fp);
     }
-    
+
     /* read the core_pipe_limit and change it if it's == 0
        otherwise the abrt-hook-ccpp won't be able to read /proc/<pid>
        of the crashing process
@@ -837,7 +837,7 @@ void CAnalyzerCCpp::Init()
 
 void CAnalyzerCCpp::DeInit()
 {
-    /* no need to restore the core_pipe_limit, because it's only used 
+    /* no need to restore the core_pipe_limit, because it's only used
        when there is s pipe in core_pattern
     */
     FILE *fp = fopen(CORE_PATTERN_IFACE, "w");

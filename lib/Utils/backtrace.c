@@ -77,7 +77,7 @@ static void frame_append_str(struct frame *frame, struct strbuf *str, bool verbo
 
     if (frame->signal_handler_called)
         strbuf_append_str(str, " <signal handler called>");
-    
+
     strbuf_append_str(str, "\n");
 }
 
@@ -98,7 +98,7 @@ static bool frame_is_abort_frame(struct frame *frame)
   if (!frame->function || !frame->sourcefile)
     return false;
 
-  if (0 == strcmp(frame->function, "raise") 
+  if (0 == strcmp(frame->function, "raise")
       && (NULL != strstr(frame->sourcefile, "pt-raise.c")
           || NULL != strstr(frame->sourcefile, "/libc.so.6")))
     return true;
@@ -111,7 +111,7 @@ static bool frame_is_abort_frame(struct frame *frame)
     return true;
   else if (frame_is_exit_handler(frame))
     return true;
-  
+
   return false;
 }
 
@@ -134,57 +134,57 @@ static bool frame_is_noncrash_frame(struct frame *frame)
     return false;
 
   /* GDK */
-  if (0 == strcmp(frame->function, "gdk_x_error") 
+  if (0 == strcmp(frame->function, "gdk_x_error")
       && 0 == strcmp(frame->sourcefile, "gdkmain-x11.c"))
     return true;
 
   /* X.org */
-  if (0 == strcmp(frame->function, "_XReply") 
+  if (0 == strcmp(frame->function, "_XReply")
       && 0 == strcmp(frame->sourcefile, "xcb_io.c"))
     return true;
-  if (0 == strcmp(frame->function, "_XError") 
+  if (0 == strcmp(frame->function, "_XError")
       && 0 == strcmp(frame->sourcefile, "XlibInt.c"))
     return true;
-  if (0 == strcmp(frame->function, "XSync") 
+  if (0 == strcmp(frame->function, "XSync")
       && 0 == strcmp(frame->sourcefile, "Sync.c"))
     return true;
-  if (0 == strcmp(frame->function, "process_responses") 
+  if (0 == strcmp(frame->function, "process_responses")
       && 0 == strcmp(frame->sourcefile, "xcb_io.c"))
     return true;
 
   /* glib */
-  if (0 == strcmp(frame->function, "IA__g_log") 
+  if (0 == strcmp(frame->function, "IA__g_log")
       && 0 == strcmp(frame->sourcefile, "gmessages.c"))
     return true;
-  if (0 == strcmp(frame->function, "IA__g_logv") 
+  if (0 == strcmp(frame->function, "IA__g_logv")
       && 0 == strcmp(frame->sourcefile, "gmessages.c"))
     return true;
-  if (0 == strcmp(frame->function, "IA__g_assertion_message") 
+  if (0 == strcmp(frame->function, "IA__g_assertion_message")
       && 0 == strcmp(frame->sourcefile, "gtestutils.c"))
     return true;
-  if (0 == strcmp(frame->function, "IA__g_assertion_message_expr") 
+  if (0 == strcmp(frame->function, "IA__g_assertion_message_expr")
       && 0 == strcmp(frame->sourcefile, "gtestutils.c"))
     return true;
 
   /* DBus */
-  if (0 == strcmp(frame->function, "gerror_to_dbus_error_message") 
+  if (0 == strcmp(frame->function, "gerror_to_dbus_error_message")
       && 0 == strcmp(frame->sourcefile, "dbus-gobject.c"))
     return true;
-  if (0 == strcmp(frame->function, "dbus_g_method_return_error") 
+  if (0 == strcmp(frame->function, "dbus_g_method_return_error")
       && 0 == strcmp(frame->sourcefile, "dbus-gobject.c"))
     return true;
 
   /* libstdc++ */
-  if (0 == strcmp(frame->function, "__gnu_cxx::__verbose_terminate_handler") 
+  if (0 == strcmp(frame->function, "__gnu_cxx::__verbose_terminate_handler")
       && NULL != strstr(frame->sourcefile, "/vterminate.cc"))
     return true;
-  if (0 == strcmp(frame->function, "__cxxabiv1::__terminate") 
+  if (0 == strcmp(frame->function, "__cxxabiv1::__terminate")
       && NULL != strstr(frame->sourcefile, "/eh_terminate.cc"))
     return true;
-  if (0 == strcmp(frame->function, "std::terminate") 
+  if (0 == strcmp(frame->function, "std::terminate")
       && NULL != strstr(frame->sourcefile, "/eh_terminate.cc"))
     return true;
-  if (0 == strcmp(frame->function, "__cxxabiv1::__cxa_throw") 
+  if (0 == strcmp(frame->function, "__cxxabiv1::__cxa_throw")
       && NULL != strstr(frame->sourcefile, "/eh_throw.cc"))
     return true;
 
@@ -259,7 +259,7 @@ static void thread_append_str(struct thread *thread, struct strbuf *str, bool ve
 /*
  * Checks whether the thread it contains some known "abort" function.
  * If a frame with the function is found, it is returned.
- * If there are multiple frames with abort function, the lowest 
+ * If there are multiple frames with abort function, the lowest
  * one is returned.
  * Nonrecursive.
  */
@@ -271,7 +271,7 @@ struct frame *thread_find_abort_frame(struct thread *thread)
   {
     if (frame_is_abort_frame(frame))
       result = frame;
-  
+
     frame = frame->next;
   }
 
@@ -307,7 +307,7 @@ static void thread_remove_noncrash_frames(struct thread *thread)
   {
     if (frame_is_noncrash_frame(cur))
     {
-      /* This frame must be skipped, because it will 
+      /* This frame must be skipped, because it will
          be deleted. */
       if (prev)
 	prev->next = cur->next;
@@ -316,7 +316,7 @@ static void thread_remove_noncrash_frames(struct thread *thread)
 
       frame_free(cur);
 
-      /* Set cur to be valid, as it will be used to 
+      /* Set cur to be valid, as it will be used to
          advance to next item. */
       if (prev)
 	cur = prev;
@@ -332,11 +332,11 @@ static void thread_remove_noncrash_frames(struct thread *thread)
   }
 }
 
-/* Counts the number of quality frames and the number of all frames 
+/* Counts the number of quality frames and the number of all frames
  * in a thread.
  * @param ok_count
  * @param all_count
- *   Not zeroed. This function just adds the numbers to 
+ *   Not zeroed. This function just adds the numbers to
  *   ok_count and all_count.
  */
 static void thread_rating(struct thread *thread, int *ok_count, int *all_count)
@@ -345,7 +345,7 @@ static void thread_rating(struct thread *thread, int *ok_count, int *all_count)
     while (frame)
     {
         *all_count += 1;
-        if (frame->signal_handler_called || 
+        if (frame->signal_handler_called ||
             (frame->function && 0 != strcmp(frame->function, "??")))
         {
             *ok_count += 1;
@@ -413,7 +413,7 @@ struct strbuf *backtrace_tree_as_str(struct backtrace *backtrace, bool verbose)
         strbuf_append_str(str, "Crash frame: ");
         frame_append_str(backtrace->crash, str, verbose);
     }
-    
+
     struct thread *thread = backtrace->threads;
     while (thread)
     {
@@ -424,7 +424,7 @@ struct strbuf *backtrace_tree_as_str(struct backtrace *backtrace, bool verbose)
     return str;
 }
 
-void backtrace_remove_threads_except_one(struct backtrace *backtrace, 
+void backtrace_remove_threads_except_one(struct backtrace *backtrace,
 					 struct thread *one)
 {
   while (backtrace->threads)
@@ -443,7 +443,7 @@ void backtrace_remove_threads_except_one(struct backtrace *backtrace,
  * Loop through all threads and if a single one contains the crash frame on the top,
  * return it. Otherwise, return NULL.
  *
- * If require_abort is true, it is also required that the thread containing 
+ * If require_abort is true, it is also required that the thread containing
  * the crash frame contains some known "abort" function. In this case there can be
  * multiple threads with the crash frame on the top, but only one of them might
  * contain the abort function to succeed.
@@ -462,7 +462,7 @@ static struct thread *backtrace_find_crash_thread_from_crash_frame(struct backtr
   struct thread *thread = backtrace->threads;
   while (thread)
   {
-    if (thread->frames 
+    if (thread->frames
 	&& thread->frames->function
 	&& 0 == strcmp(thread->frames->function, backtrace->crash->function)
         && (!require_abort || thread_find_abort_frame(thread)))
@@ -478,7 +478,7 @@ static struct thread *backtrace_find_crash_thread_from_crash_frame(struct backtr
 
     thread = thread->next;
   }
-  
+
   return result;
 }
 
@@ -487,25 +487,25 @@ struct thread *backtrace_find_crash_thread(struct backtrace *backtrace)
   /* If there is no thread, be silent and report NULL. */
   if (!backtrace->threads)
     return NULL;
-  
+
   /* If there is just one thread, it is simple. */
   if (!backtrace->threads->next)
     return backtrace->threads;
 
-  /* If we have a crash frame *and* there is just one thread which has 
-   * this frame on the top, it is also simple. 
+  /* If we have a crash frame *and* there is just one thread which has
+   * this frame on the top, it is also simple.
    */
   struct thread *thread;
   thread = backtrace_find_crash_thread_from_crash_frame(backtrace, false);
   if (thread)
     return thread;
 
-  /* There are multiple threads with a frame indistinguishable from 
+  /* There are multiple threads with a frame indistinguishable from
    * the crash frame on the top of stack.
    * Try to search for known abort functions.
    */
   thread = backtrace_find_crash_thread_from_crash_frame(backtrace, true);
-  
+
   return thread; /* result or null */
 }
 
@@ -555,7 +555,7 @@ void backtrace_remove_exit_handlers(struct backtrace *backtrace)
   {
     thread_remove_exit_handlers(thread);
     thread = thread->next;
-  }  
+  }
 }
 
 void backtrace_remove_noncrash_frames(struct backtrace *backtrace)
@@ -638,7 +638,7 @@ struct strbuf *independent_backtrace(const char *input)
     if (bk[0] == '#'
 	&& bk[1] >= '0' && bk[1] <= '7'
 	&& bk[2] == ' ' /* take only #0...#7 (8 last stack frames) */
-	&& !in_quote) 
+	&& !in_quote)
     {
       if (in_header && !has_filename)
 	strbuf_clear(header);
@@ -702,10 +702,10 @@ struct strbuf *independent_backtrace(const char *input)
       has_filename = true;
     else if (in_header && !in_digit && !in_quote && !in_bracket)
       strbuf_append_char(header, *bk);
-    
+
     bk++;
   }
-  
+
   strbuf_free(header);
 
   struct strbuf *result = strbuf_new();
@@ -758,7 +758,7 @@ static enum line_rating rate_line(const char *line)
 }
 
 /* just a fallback function, to be removed one day */
-int backtrace_rate_old(const char *backtrace) 
+int backtrace_rate_old(const char *backtrace)
 {
     int i, len;
     int multiplier = 0;
@@ -777,7 +777,7 @@ int backtrace_rate_old(const char *backtrace)
     {
         if (backtrace[i] == '#'
             && (backtrace[i+1] >= '0' && backtrace[i+1] <= '9') /* #N */
-            && (i == 0 || backtrace[i-1] == '\n')) /* it's at line start */ 
+            && (i == 0 || backtrace[i-1] == '\n')) /* it's at line start */
         {
             /* For one, "#0 xxx" always repeats, skip repeats */
             if (backtrace[i+1] == last_lvl)
@@ -801,7 +801,7 @@ int backtrace_rate_old(const char *backtrace)
             multiplier++;
             rating += lrate * multiplier;
             best_possible_rating += BestRating * multiplier;
-            //log("lrate:%d rating:%d best_possible_rating:%d s:'%-.40s'", 
+            //log("lrate:%d rating:%d best_possible_rating:%d s:'%-.40s'",
             //    lrate, rating, best_possible_rating, s);
             free(s);
             len = 0; /* starting new line */
