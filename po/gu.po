@@ -1,14 +1,14 @@
-# translation of abrt.po to Gujarati
+# translation of ABRT-master.po to Gujarati
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Sweta Kothari <swkothar@redhat.com>, 2009, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt\n"
+"Project-Id-Version: ABRT-master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-22 08:16+0000\n"
-"PO-Revision-Date: 2010-03-30 11:29+0530\n"
+"POT-Creation-Date: 2010-03-31 10:22+0000\n"
+"PO-Revision-Date: 2010-03-31 16:09+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -63,39 +63,55 @@ msgstr ""
 "Debuginfo ગુમ થયેલ છે?"
 
 #: ../src/Gui/ccgui.glade.h:1
-msgid ""
-"(C) 2009 Red Hat, Inc.\n"
-"(C) 2010 Red Hat, Inc."
-msgstr ""
-"(C) 2009 Red Hat, Inc.\n"
-"(C) 2010 Red Hat, Inc."
+msgid "(C) 2009, 2010 Red Hat, Inc."
+msgstr "(C) 2009, 2010 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "<b>Bug Reports:</b>"
+msgstr "<b>ભુલ અહેવાલ:</b>"
 
 #: ../src/Gui/ccgui.glade.h:3
+msgid "<b>Command:</b>"
+msgstr "<b>આદેશ:</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<b>Comment:</b>"
+msgstr "<b>ટિપ્પણી:</b>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "<b>Crash Count:</b>"
+msgstr "<b>ભંગાણ ગણતરી:</b>"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "<b>Latest Crash:</b>"
+msgstr "<b>તાજેતરનું ભંગાણ:</b>"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "<b>Reason:</b>"
+msgstr "<b>કારણ:</b>"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "<b>User:</b>"
+msgstr "<b>વપરાશકર્તા:</b>"
+
+#: ../src/Gui/ccgui.glade.h:9
 msgid "About ABRT"
 msgstr "ABRT વિશે"
 
-#: ../src/Gui/ccgui.glade.h:4 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "આપોઆપ ભૂલ અહેવાલીકરણ સાધન"
 
-#: ../src/Gui/ccgui.glade.h:5
-msgid "Delete"
-msgstr "કાઢી નાંખો"
-
-#: ../src/Gui/ccgui.glade.h:6
-msgid "Not Reported"
-msgstr "અહેવાલ થયેલ નથી"
-
-#: ../src/Gui/ccgui.glade.h:7 ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:11 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "પ્લગઇનો"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:251
+#: ../src/Gui/ccgui.glade.h:12 ../src/Applet/CCApplet.cpp:251
 msgid "Report"
 msgstr "અહેવાલ"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:13
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -123,48 +139,40 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:18
+msgid "View log"
+msgstr "લૉગને જુઓ"
+
+#: ../src/Gui/ccgui.glade.h:19
 msgid "_Edit"
 msgstr "ફેરફાર (_E)"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:20
 msgid "_File"
 msgstr "ફાઇલ (_F)"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:21
 msgid "_Help"
 msgstr "મદદ (_H)"
 
-#: ../src/Gui/ccgui.glade.h:17 ../src/Applet/CCApplet.cpp:104
+#: ../src/Gui/ccgui.glade.h:22 ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
 msgstr "શ્ર્વેતા કોઠારી <swkothar@redhat.com>"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:65
-msgid "Icon"
-msgstr "ચિહ્ન"
+#: ../src/Gui/CCMainWindow.py:61
+msgid "Reported"
+msgstr "અહેવાલ થયેલ"
 
-#: ../src/Gui/CCMainWindow.py:73
-msgid "Package"
-msgstr "પેકેજ"
-
-#: ../src/Gui/CCMainWindow.py:75
+#: ../src/Gui/CCMainWindow.py:69
 msgid "Application"
 msgstr "કાર્યક્રમ"
 
-#: ../src/Gui/CCMainWindow.py:77
-msgid "Date"
-msgstr "તારીખ"
+#: ../src/Gui/CCMainWindow.py:71
+msgid "Latest Crash"
+msgstr "તાજેતરનું ભંગાણ"
 
-#: ../src/Gui/CCMainWindow.py:79
-msgid "Crash count"
-msgstr "ભંગાણ ગણતરી"
-
-#: ../src/Gui/CCMainWindow.py:81
-msgid "User"
-msgstr "વપરાશકર્તા"
-
-#: ../src/Gui/CCMainWindow.py:149
+#: ../src/Gui/CCMainWindow.py:139
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -173,7 +181,7 @@ msgstr ""
 "સંવાદ સુયોજનોને બતાવી શકાતા નથી\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:154
+#: ../src/Gui/CCMainWindow.py:144
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -183,7 +191,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:176
+#: ../src/Gui/CCMainWindow.py:179
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -192,19 +200,20 @@ msgstr ""
 "જ્યારે ડમ્પયાદીને લાવી રહ્યા હોય ત્યારે ભૂલ.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:214
-msgid "This crash has been reported:\n"
-msgstr "આ ભંગાણનો અહેવાલ કરી દેવામાં આવ્યો છે:\n"
-
-#: ../src/Gui/CCMainWindow.py:215
-msgid "<b>This crash has been reported:</b>\n"
-msgstr "<b>આ ભંગાણનો અહેવાલ કરી દેવામાં આવ્યો છે:</b>\n"
-
-#: ../src/Gui/CCMainWindow.py:230
-msgid "<b>Not reported!</b>"
-msgstr "<b>અહેવાલ થયેલ નથી!</b>"
+#: ../src/Gui/CCMainWindow.py:227
+#, python-format
+msgid ""
+"<b>%s Crash</b>\n"
+"%s"
+msgstr ""
+"<b>%s ભંગાણ</b>\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:323
+msgid "You have to select a crash to copy."
+msgstr "તમારે નકલ કરવા માટે ભંગાણને પસંદ કરવુ જ પડશે."
+
+#: ../src/Gui/CCMainWindow.py:402
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-h, --help         \tthis help message\n"
@@ -216,7 +225,7 @@ msgstr ""
 "\t-v[vv]             \tverbosity level\n"
 "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
 
-#: ../src/Gui/CCMainWindow.py:347
+#: ../src/Gui/CCMainWindow.py:426
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -242,8 +251,7 @@ msgid ""
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"નિષ્ક્રિય થયેલ છે તેનો અહેવાલ કરી રહ્યા છે કારણ કે બેકટ્રેસ નો ઉપયોગ કરી શકાય તેવો "
-"નથી.\n"
+"નિષ્ક્રિય થયેલ છે તેનો અહેવાલ કરી રહ્યા છે કારણ કે બેકટ્રેસ નો ઉપયોગ કરી શકાય તેવો નથી.\n"
 "મહેરબાની કરીને આદેશની મદદથી જાતે જ debuginfo ને સ્થાપિત કરવા માટે પ્રયત્ન કરો:"
 "<b>debuginfo-install %s</b> \n"
 "\n"
@@ -258,8 +266,8 @@ msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr ""
-"બેકટ્રેસ એ અપૂરતુ છે, મહેરબાની કરીને ખાતરી કરો કે પુન:ઉત્પન્ન કરવા માટે સારાં પગલાઓ "
-"પૂરા પાડો છો."
+"બેકટ્રેસ એ અપૂરતુ છે, મહેરબાની કરીને ખાતરી કરો કે પુન:ઉત્પન્ન કરવા માટે સારાં પગલાઓ પૂરા "
+"પાડો છો."
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
