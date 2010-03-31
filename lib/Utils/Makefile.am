@@ -42,7 +42,8 @@ libABRTUtils_la_LDFLAGS = \
     -version-info 0:1:0
 libABRTUtils_la_LIBADD = \
     $(GLIB_LIBS) \
-    $(DBUS_LIBS)
+    $(DBUS_LIBS) \
+    -ldl
 
 
 libABRTdUtils_la_SOURCES = \
@@ -72,8 +73,8 @@ libABRTdUtils_la_LDFLAGS = \
     -version-info 0:1:0
 libABRTdUtils_la_LIBADD = \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
-    $(POLKIT_LIBS)
-
+    $(POLKIT_LIBS) \
+    -ldl
 
 $(DESTDIR)/$(DEBUG_DUMPS_DIR):
 	$(mkdir_p) '$@'
