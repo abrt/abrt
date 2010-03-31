@@ -532,9 +532,121 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
-    string uuid;
-    dd.LoadText(FILENAME_GLOBAL_UUID, uuid);
-    return uuid;
+    if (dd.Exist(FILENAME_GLOBAL_UUID))
+    {
+        string uuid;
+        dd.LoadText(FILENAME_GLOBAL_UUID, uuid);
+        return uuid;
+    }
+    else
+    {
+        // Compatibility code.
+        // This whole block should be deleted for Fedora 14.
+        log(_("Getting global universal unique identification..."));
+        
+        string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
+        string executable;
+        string package;
+        string uid_str;
+        dd.LoadText(FILENAME_EXECUTABLE, executable);
+        dd.LoadText(FILENAME_PACKAGE, package);
+        if (m_bBacktrace)
+            dd.LoadText(CD_UID, uid_str);
+
+        string independent_backtrace;
+        if (m_bBacktrace)
+        {
+            /* Run abrt-backtrace to get independent backtrace suitable
+               to UUID calculation. */
+            char *args[7];
+            args[0] = (char*)"abrt-backtrace";
+            args[1] = (char*)"--single-thread";
+            args[2] = (char*)"--remove-exit-handlers";
+            args[3] = (char*)"--frame-depth=5";
+            args[4] = (char*)"--remove-noncrash-frames";
+            args[5] = (char*)backtrace_path.c_str();
+            args[6] = NULL;
+
+            int pipeout[2];
+            xpipe(pipeout); /* stdout of abrt-backtrace */
+
+            fflush(NULL);
+            pid_t child = fork();
+            if (child == -1)
+                perror_msg_and_die("fork");
+            if (child == 0)
+            {
+                VERB1 log("Executing: %s", concat_str_vector(args).c_str());
+
+                xmove_fd(pipeout[1], STDOUT_FILENO);
+                close(pipeout[0]); /* read side of the pipe */
+
+                /* abrt-backtrace is executed under the user's uid and gid. */
+                uid_t uid = xatoi_u(uid_str.c_str());
+                struct passwd* pw = getpwuid(uid);
+                gid_t gid = pw ? pw->pw_gid : uid;
+                setgroups(1, &gid);
+                xsetregid(gid, gid);
+                xsetreuid(uid, uid);
+
+                execvp(args[0], args);
+                VERB1 perror_msg("Can't execute '%s'", args[0]);
+                exit(1);
+            }
+
+            close(pipeout[1]); /* write side of the pipe */
+
+            /* Read the result from abrt-backtrace. */
+            int r;
+            char buff[1024];
+            while ((r = safe_read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+            {
+                buff[r] = '\0';
+                independent_backtrace += buff;
+            }
+            close(pipeout[0]);
+
+            /* Wait until it exits, and check the exit status. */
+            errno = 0;
+            int status;
+            waitpid(child, &status, 0);
+            if (!WIFEXITED(status))
+            {
+                perror_msg("abrt-backtrace not executed properly, "
+                           "status: %x signal: %d", status, WIFSIGNALED(status));
+            }
+            else
+            {
+                int exit_status = WEXITSTATUS(status);
+                if (exit_status == 79) /* EX_PARSINGFAILED */
+                {
+                    /* abrt-backtrace returns alternative backtrace
+                       representation in this case, so everything will work
+                       as expected except worse duplication detection */
+                    log_msg("abrt-backtrace failed to parse the backtrace");
+                }
+                else if (exit_status == 80) /* EX_THREADDETECTIONFAILED */
+                {
+                    /* abrt-backtrace returns backtrace with all threads
+                       in this case, so everything will work as expected
+                       except worse duplication detection */
+                    log_msg("abrt-backtrace failed to determine crash frame");
+                }
+                else if (exit_status != 0)
+                {
+                    /* this is unexpected problem and it should be investigated */
+                    error_msg("abrt-backtrace run failed, exit value: %d",
+                              exit_status);
+                }
+            }
+
+            /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
+        }
+        /* else: no backtrace, independent_backtrace == "" */
+
+        string hash_base = package + executable + independent_backtrace;
+        return create_hash(hash_base.c_str());      
+    }
 }
 
 static bool DebuginfoCheckPolkit(uid_t uid)
