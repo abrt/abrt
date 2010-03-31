@@ -564,7 +564,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
                 perror_msg_and_die("fork");
             if (child == 0)
             {
-                VERB1 log("Executing: %s", concat_str_vector(args).c_str());
+                VERB1 log("Executing %s", args[0]);
 
                 xmove_fd(pipeout[1], STDOUT_FILENO);
                 close(pipeout[0]); /* read side of the pipe */
