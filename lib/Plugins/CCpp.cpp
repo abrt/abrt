@@ -111,18 +111,6 @@ static string create_hash(const char *pInput)
     return hash_str;
 }
 
-static string concat_str_vector(char **strings)
-{
-    string result;
-    while (*strings)
-    {
-        result += *strings++;
-        if (*strings)
-            result += ' ';
-    }
-    return result;
-}
-
 /* Returns status. See `man 2 wait` for status information. */
 static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
 {

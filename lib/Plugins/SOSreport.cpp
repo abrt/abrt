@@ -77,7 +77,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
         }
     }
 
-    static const char command_default[] = "nice sosreport --batch --no-progressbar"
+    static const char command_default[] = "nice sosreport --batch"
                                             " --only=anaconda --only=bootloader"
                                             " --only=devicemapper --only=filesys --only=hardware --only=kernel"
                                             " --only=libraries --only=memory --only=networking --only=nfsserver"
