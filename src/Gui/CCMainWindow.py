@@ -41,54 +41,41 @@ class MainWindow():
         #Get the Main Window, and connect the "destroy" event
         self.window = self.wTree.get_widget("main_window")
         if self.window:
-            self.window.set_default_size(700, 480)
+            self.window.set_default_size(600, 700)
             self.window.connect("delete_event", self.delete_event_cb)
             self.window.connect("destroy", self.destroy)
             self.window.connect("focus-in-event", self.focus_in_cb)
-
+        self.wTree.get_widget("vp_details").modify_bg(gtk.STATE_NORMAL,gtk.gdk.color_parse("#FFFFFF"))
         #init the dumps treeview
         self.dlist = self.wTree.get_widget("tvDumps")
         #rows of items with:
-        ICON_COL = 0
-        PACKAGE_COL = 1
-        APPLICATION_COL = 2
-        TIME_STR_COL = 3
-        CRASH_RATE_COL = 4
-        USER_COL = 5
-        IS_REPORTED_COL = 6
-        UNIX_TIME_COL = 7
-        DUMP_OBJECT_COL = 8
-        #icon, package_name, application, date, crash_rate, user, is_reported, time_in_sec ?object?
-        self.dumpsListStore = gtk.ListStore(gtk.gdk.Pixbuf, str,str,str,int,str,bool, int, object)
+        STATUS_COL      = 0
+        APP_NAME_COL    = 1
+        TIME_STR_COL    = 2
+        UNIX_TIME_COL   = 3
+        DUMP_OBJECT_COL = 4
+        #is_reported, application_name, date, time_in_sec ?object?
+        self.dumpsListStore = gtk.ListStore(str, str, str, int, object)
         self.dlist.set_model(self.dumpsListStore)
         # add pixbuff separatelly
-        icon_column = gtk.TreeViewColumn(_("Icon"))
+        icon_column = gtk.TreeViewColumn(_("Reported"))
         icon_column.cell = gtk.CellRendererPixbuf()
-        icon_column.cell.set_property('cell-background', "#C9C9C9")
+        #icon_column.cell.set_property('cell-background', "#C9C9C9")
         n = self.dlist.append_column(icon_column)
-        icon_column.pack_start(icon_column.cell, False)
-        icon_column.set_attributes(icon_column.cell, pixbuf=(n-1), cell_background_set=6)
+        icon_column.pack_start(icon_column.cell, True)
+        icon_column.set_attributes(icon_column.cell, stock_id=(n-1))# cell_background_set=6)
         # ===============================================
         columns = []
-        columns.append(gtk.TreeViewColumn(_("Package")))
-        columns[-1].set_sort_column_id(PACKAGE_COL)
         columns.append(gtk.TreeViewColumn(_("Application")))
-        columns[-1].set_sort_column_id(APPLICATION_COL)
-        columns.append(gtk.TreeViewColumn(_("Date")))
+        columns[-1].set_sort_column_id(APP_NAME_COL)
+        columns.append(gtk.TreeViewColumn(_("Latest Crash")))
         columns[-1].set_sort_column_id(UNIX_TIME_COL)
-        columns.append(gtk.TreeViewColumn(_("Crash count")))
-        columns[-1].set_sort_column_id(CRASH_RATE_COL)
-        columns.append(gtk.TreeViewColumn(_("User")))
-        columns[-1].set_sort_column_id(USER_COL)
-        # create list
+        # add cells to colums and bind cells to the liststore values
         for column in columns:
             n = self.dlist.append_column(column)
             column.cell = gtk.CellRendererText()
             column.pack_start(column.cell, False)
-            #column.set_attributes(column.cell, )
-            # FIXME: use some relative indexing
-            column.cell.set_property('cell-background', "#C9C9C9")
-            column.set_attributes(column.cell, text=(n-1), cell_background_set=6)
+            column.set_attributes(column.cell, text=(n-1))
             column.set_resizable(True)
         #connect signals
         self.dlist.connect("cursor-changed", self.on_tvDumps_cursor_changed)
@@ -96,6 +83,9 @@ class MainWindow():
         self.dlist.connect("button-press-event", self.on_popupActivate)
         self.wTree.get_widget("bDelete").connect("clicked", self.on_bDelete_clicked, self.dlist)
         self.wTree.get_widget("bReport").connect("clicked", self.on_bReport_clicked)
+        self.wTree.get_widget("b_close").connect("clicked", self.on_bQuit_clicked)
+        self.wTree.get_widget("b_copy").connect("clicked", self.on_b_copy_clicked)
+        self.wTree.get_widget("b_help").connect("clicked", self.on_miAbout_clicked)
         self.wTree.get_widget("miQuit").connect("activate", self.on_bQuit_clicked)
         self.wTree.get_widget("miAbout").connect("activate", self.on_miAbout_clicked)
         self.wTree.get_widget("miPlugins").connect("activate", self.on_miPreferences_clicked)
@@ -166,6 +156,19 @@ class MainWindow():
         tvUpdates.set_buffer(buff)
         tvUpdates.scroll_mark_onscreen(end)
 
+    def get_username_from_uid(self, uid):
+        # if uid == None or "" return it back
+        if not uid:
+            return uid
+        user = "N/A"
+        if uid != "-1":   # compat: only abrt <= 1.0.9 used UID = -1
+            try:
+                user = pwd.getpwuid(int(uid))[0]
+            except Exception, ex:
+                user = "UID: %s" % uid
+        return user
+
+
     def hydrate(self):
         n = None
         self.dumpsListStore.clear()
@@ -177,18 +180,11 @@ class MainWindow():
             # so we shouldn't continue..
             sys.exit()
         for entry in dumplist[::-1]:
-            try:
-                icon = get_icon_for_package(self.theme, entry.getPackageName())
-            except:
-                icon = None
-            user = "N/A"
-            if entry.getUID() != "-1":   # compat: only abrt <= 1.0.9 used UID = -1
-                try:
-                    user = pwd.getpwuid(int(entry.getUID()))[0]
-                except Exception, ex:
-                    user = "UID: %s" % entry.getUID()
-            n = self.dumpsListStore.append([icon, entry.getPackage(), entry.getExecutable(),
-                                            entry.getTime("%c"), entry.getCount(), user, entry.isReported(), entry.getTime(""), entry])
+            n = self.dumpsListStore.append([["gtk-no","gtk-yes"][entry.isReported()],
+                                            entry.getExecutable(),
+                                            entry.getTime("%c"),
+                                            entry.getTime(),
+                                            entry])
         # activate the first row if any..
         if n:
             # we can use (0,) as path for the first row, but what if API changes?
@@ -198,21 +194,78 @@ class MainWindow():
         # for later..
         return True
 
-    def on_tvDumps_cursor_changed(self,treeview):
+    def on_tvDumps_cursor_changed(self, treeview):
         dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
         if not path:
             self.wTree.get_widget("bDelete").set_sensitive(False)
             self.wTree.get_widget("bReport").set_sensitive(False)
+            self.wTree.get_widget("b_copy").set_sensitive(False)
+            # create an empty dump to fill the labels with empty strings
+            self.wTree.get_widget("sw_details").hide()
             return
-        self.wTree.get_widget("bDelete").set_sensitive(True)
-        self.wTree.get_widget("bReport").set_sensitive(True)
-        # this should work until we keep the row object in the last position
-        dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
+        else:
+            self.wTree.get_widget("sw_details").show()
+            self.wTree.get_widget("bDelete").set_sensitive(True)
+            self.wTree.get_widget("bReport").set_sensitive(True)
+            self.wTree.get_widget("b_copy").set_sensitive(True)
+            # this should work until we keep the row object in the last position
+            dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]),
+                                            dumpsListStore.get_n_columns()-1)
+
+        try:
+            icon = get_icon_for_package(self.theme, dump.getPackageName())
+        except:
+            icon = None
+
+        i_package_icon = self.wTree.get_widget("i_package_icon")
+        if icon:
+            i_package_icon.set_from_pixbuf(icon)
+        else:
+            i_package_icon.set_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_DIALOG)
+
+        l_heading = self.wTree.get_widget("l_detail_heading")
+        l_heading.set_markup(_("<b>%s Crash</b>\n%s") % (dump.getPackageName().title(),dump.getPackage()))
+
+        # process the labels in sw_details
+        # hide the fields that are not filled by daemon - e.g. comments
+        # and how to reproduce
+        for field in dump.not_required_fields:
+            self.wTree.get_widget("l_%s" % field.lower()).hide()
+            self.wTree.get_widget("l_%s_heading" % field.lower()).hide()
+
+        # fill the details
+        # read attributes from CCDump object and if a corresponding label is
+        # found, then the label text is set to the attribute's value
+        # field names in glade file:
+        #   heading label: l_<field>_heading
+        #   text label:    l_<field>
+        for att in dump.__dict__:
+            label = self.wTree.get_widget("l_%s" % str(att).lower())
+            if label:
+                label.show()
+                if att in dump.not_required_fields:
+                    try:
+                        lbl_heading = self.wTree.get_widget("l_%s_heading" % str(att).lower())
+                        lbl_heading.show()
+                    except:
+                        # we don't care if we fail to show the heading, it will
+                        # break the gui a little, but it's better then exit
+                        log2("failed to show the heading for >%s< : %s" % (att,e))
+                        pass
+                if dump.__dict__[att] != None:
+                    label.set_text(dump.__dict__[att])
+                else:
+                    label.set_text("")
+        self.wTree.get_widget("l_date").set_text(dump.getTime("%c"))
+        self.wTree.get_widget("l_user").set_text(self.get_username_from_uid(dump.getUID()))
+
         #move this to Dump class
-        lReported = self.wTree.get_widget("lReported")
+        hb_reports = self.wTree.get_widget("hb_reports")
+        lReported = self.wTree.get_widget("l_message")
         if dump.isReported():
-            report_label_raw = _("This crash has been reported:\n")
-            report_label = _("<b>This crash has been reported:</b>\n")
+            hb_reports.show()
+            report_label_raw = ""
+            report_label = ""
             # plugin message follows, but at least in case of kerneloops,
             # it is not informative (no URL to the report)
             for message in dump.getMessage().split(';'):
@@ -221,13 +274,13 @@ class MainWindow():
                     report_label += "%s\n" % report_message
                     report_label_raw += "%s\n" % message
             log2("setting markup '%s'", report_label)
-            lReported.set_text(report_label_raw)
             # Sometimes (!) set_markup() fails with
-            # "GtkWarning: Failed to set text from markup due to error parsing markup: Unknown tag 'a'"
-            # If it does, then set_text() above acts as a fallback
+            # "GtkWarning: Failed to set text from markup due to error parsing
+            # markup: Unknown tag 'a'" If it does, then set_text()
+            # in "fill the details" above acts as a fallback
             lReported.set_markup(report_label)
         else:
-            lReported.set_markup(_("<b>Not reported!</b>"))
+            hb_reports.hide()
 
     def mark_last_selected_row(self, dump_list_store, path, iter, last_selected_uuid):
         # Get dump object from list (in our list it's in last col)
@@ -256,6 +309,32 @@ class MainWindow():
             treeview.emit("cursor-changed")
         except Exception, ex:
             print ex
+
+    def dumplist_get_selected(self):
+        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        if path and dumpsListStore:
+            return dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
+        return None
+
+    def on_b_copy_clicked(self, button):
+        clipboard = gtk.clipboard_get()
+        dump = self.dumplist_get_selected()
+        if not dump:
+            gui_info_dialog(_("You have to select a crash to copy."), parent=self.window)
+            return
+        # dictionaries are not sorted, so we need this as a workaround
+        dumpinfo = [("Package:", dump.package),
+                    ("Latest Crash:", dump.date),
+                    ("Command:", dump.cmdline),
+                    ("Reason:", dump.reason),
+                    ("Comment:", dump.comment),
+                    ("Bug Reports:", dump.Message),
+        ]
+        dumpinfo_text = ""
+        for line in dumpinfo:
+            dumpinfo_text += ("%-12s\t%s" % (line[0], line[1])).replace('\n','\n\t\t')
+            dumpinfo_text += '\n'
+        clipboard.set_text(dumpinfo_text)
 
     def destroy(self, widget, data=None):
         gtk.main_quit()

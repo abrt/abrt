@@ -44,56 +44,73 @@ CD_MESSAGE      = "Message"
 
 class Dump():
     """Class for mapping the debug dump to python object"""
+    not_required_fields = ["comment", "Message"]
     def __init__(self):
-        self.UUID = None
-        self.uid = None
-        self.Count = None
-        self.executable = None
-        self.package = None
-        self.time = None
-        self.description = None
-        self.Message = None
-        self.Reported = None
-        self.analyzer = None
+        # we set all attrs dynamically, so no need to have it in init
+        for field in self.not_required_fields:
+            self.__dict__[field] = None
+
+    def __setattr__(self, name, value):
+        if value != None:
+            if name == "time":
+                try:
+                    self.__dict__["date"] = datetime.fromtimestamp(int(value[CD_CONTENT])).strftime("%c")
+                except Exception, ex:
+                    self.__dict__["date"] = value[CD_CONTENT]
+                    log2("can't convert timestamp to date: %s" % ex)
+            self.__dict__[name] = value[CD_CONTENT]
+        else:
+            self.__dict__[name] = value
 
     def getUUID(self):
-        return self.UUID[CD_CONTENT]
+        return self.UUID
 
     def getUID(self):
-        return self.uid[CD_CONTENT]
+        return self.uid
 
     def getCount(self):
-        return int(self.Count[CD_CONTENT])
+        return int(self.Count)
 
     def getExecutable(self):
-        return self.executable[CD_CONTENT]
+        return self.executable
 
     def getPackage(self):
-        return self.package[CD_CONTENT]
+        return self.package
 
     def isReported(self):
-        return self.Reported[CD_CONTENT] == "1"
+        return self.Reported == "1"
 
     def getMessage(self):
         if not self.Message:
             return "" #[]
         #return self.Message[CD_CONTENT].split('\n')
-        return self.Message[CD_CONTENT]
+        return self.Message
 
-    def getTime(self, fmt):
-        #print format
-        if fmt:
-            try:
-                return datetime.fromtimestamp(int(self.time[CD_CONTENT])).strftime(fmt)
-            except Exception, e:
-                print e
-        return int(self.time[CD_CONTENT])
+    def getTime(self, fmt=None):
+        if self.time:
+            if fmt:
+                try:
+                    return datetime.fromtimestamp(int(self.time)).strftime(fmt)
+                except Exception, ex:
+                    log1(ex)
+            return int(self.time)
+        return self.time
 
     def getPackageName(self):
-        return self.package[CD_CONTENT][:self.package[CD_CONTENT].find("-")]
+        name_delimiter_pos = self.package[:self.package.rfind("-")].rfind("-")
+        # fix for kerneloops
+        if name_delimiter_pos > 0:
+            return self.package[:name_delimiter_pos]
+        return self.package
 
     def getDescription(self):
-        return self.description[CD_CONTENT]
+        return self.description
 
     def getAnalyzerName(self):
-        return self.analyzer[CD_CONTENT]
+        return self.analyzer
+
+    def get_reason(self):
+        return self.reason
+
+    def get_comment(self):
+        return self.comment

@@ -109,11 +109,11 @@ def gui_report_dialog ( report_status_dict, parent_dialog,
     dialog.destroy()
     return ret
 
-def gui_info_dialog ( message, parent_dialog,
+def gui_info_dialog ( message, parent=None,
                       message_type=gtk.MESSAGE_INFO,
                       widget=None, page=0, broken_widget=None ):
 
-    dialog = gtk.MessageDialog( parent_dialog,
+    dialog = gtk.MessageDialog( parent,
                                gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT,
                                message_type, gtk.BUTTONS_OK,
                                message )
@@ -128,9 +128,9 @@ def gui_info_dialog ( message, parent_dialog,
         if isinstance (broken_widget, gtk.Entry):
             broken_widget.select_region (0, -1)
 
-    if parent_dialog:
+    if parent:
         dialog.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
-        dialog.set_transient_for(parent_dialog)
+        dialog.set_transient_for(parent)
     else:
         dialog.set_position (gtk.WIN_POS_CENTER)
 
@@ -182,7 +182,7 @@ def gui_question_dialog ( message, parent_dialog=None,
 def get_icon_for_package(theme, package):
     log2("get_icon_for_package('%s')", package)
     try:
-        return theme.load_icon(package, 22, gtk.ICON_LOOKUP_USE_BUILTIN)
+        return theme.load_icon(package, 48, gtk.ICON_LOOKUP_USE_BUILTIN)
     except:
         # try to find icon filename by manually
         if not rpm:
@@ -225,7 +225,7 @@ def get_icon_for_package(theme, package):
                 break
         if icon_filename:
             log1("icon created from %s", icon_filename)
-            return gtk.gdk.pixbuf_new_from_file_at_size(icon_filename, 22, 22)
+            return gtk.gdk.pixbuf_new_from_file_at_size(icon_filename, 48, 48)
         else:
             return None
 

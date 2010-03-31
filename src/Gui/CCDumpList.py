@@ -19,7 +19,7 @@ class DumpList(list):
                     entry = Dump()
                     for column in row:
                         log2(" Dump.%s='%s'", column, row[column])
-                        entry.__dict__[column] = row[column]
+                        entry.__setattr__(column, row[column])
                     self.append(entry)
             except Exception:
                 # FIXME handle exception better
