@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: abrt.master.pa\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-03-25 02:14+0000\n"
-"PO-Revision-Date: 2010-03-25 11:45+0530\n"
+"PO-Revision-Date: 2010-03-31 15:09+0530\n"
 "Last-Translator: Jaswinder Singh <jsingh@redhat.com>\n"
 "Language-Team: Punjabi/Panjabi <kde-i18n-doc@kde.org>\n"
 "MIME-Version: 1.0\n"
@@ -221,6 +221,8 @@ msgid ""
 "No such crash in database, probably wrong crashid.\n"
 "crashid=%s"
 msgstr ""
+"ਡਾਟਾਬੇਸ ਵਿੱਚ ਅਜਿਹਾ ਕੋਈ ਕਰੈਸ਼ ਨਹੀਂ ਹੈ, ਸੰਭਵ ਹੈ ਕਿ ਕੋਈ ਗਲਤ crashid ਹੈ।\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22
@@ -229,7 +231,7 @@ msgstr "ਇਸ ਨੂੰ ਪੈਦਾ ਕਰਨ ਬਾਰੇ ਸੰਖੇਪ ਜ
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
-msgstr ""
+msgstr "ਤੁਹਾਨੂੰ ਜਰੂਰੀ ਡਾਟੇ ਲਈ ਬੈਕਟਰੇਸ ਦੀ ਜਾਂਚ ਕਰਨੀ ਪਵੇਗੀ"
 
 #: ../src/Gui/CCReporterDialog.py:118
 #, python-format
@@ -256,17 +258,19 @@ msgstr "ਬੈਕਟਰੇਸ ਅਧੂਰਾ ਹੈ, ਯਕੀਨੀ ਬਣਾ�
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
+msgstr "ਰਿਪੋਰਟਿੰਗ ਅਯੋਗ ਹੈ, ਕਿਰਪਾ ਕਰਕੇ ਉੱਪਰ ਦਿੱਤੀ ਸਮੱਸਿਆ ਹੱਲ ਕਰੋ।"
 
 #: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
-msgstr ""
+msgstr "ਚੁਣੇ ਪਲੱਗਇਨ ਵਰਤ ਕੇ ਰਿਪੋਰਟ ਭੇਜਦਾ ਹੈ।"
 
 #: ../src/Gui/CCReporterDialog.py:392
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
 msgstr ""
+"ਕੋਈ ਰਿਪੋਰਟਰ ਪਲੱਗਇਨ ਇਸ ਕਿਸਮ ਦੇ ਕਰੈਸ਼ ਲਈ ਉਪਲੱਬਧ ਨਹੀਂ ਹੈ\n"
+"abrt.conf ਦੀ ਜਾਂਚ ਕਰੋ ਜੀ।"
 
 #: ../src/Gui/CCReporterDialog.py:412
 #, python-format
@@ -350,7 +354,7 @@ msgstr "<b>ਹੇਠਲੀਆਂ ਸਮੱਸਿਆਵਾਂ ਹੱਲ ਕਰੋ
 
 #: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
-msgstr ""
+msgstr "<b>ਤੁਸੀਂ ਇਸ ਘਟਨਾਂ ਨੂੰ ਕਿੱਤੇ ਰਿਪੋਰਟ ਕਰਨਾ ਚਾਹੁੰਦੇ ਹਨ?</b>"
 
 #: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
@@ -390,11 +394,11 @@ msgstr "ਵੇਰਵਾ"
 
 #: ../src/Gui/report.glade.h:18
 msgid "Forces ABRT to regenerate the backtrace"
-msgstr ""
+msgstr "ABRT ਨੂੰ ਬੈਕਟਰੇਸ ਮੁੜ-ਬਣਾਉਣ ਲਈ ਮਜਬੂਰ ਕਰੋ"
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
+msgstr "ਮੈਂ ਬੈਕਟਰੇਸ ਦੀ ਜਾਂਚ ਕੀਤੀ ਹੈ ਅਤੇ ਜਰੂਰੀ ਡਾਟਾ (ਪਾਸਵਰਡ, ਆਦਿ) ਹਟਾ ਦਿੱਤਾ ਹੈ"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -410,11 +414,11 @@ msgstr "ਰਿਪੋਰਟਰ ਚੋਣਕਾਰ"
 
 #: ../src/Gui/report.glade.h:23
 msgid "Send report"
-msgstr ""
+msgstr "ਰਿਪੋਰਟ ਭੇਜੋ"
 
 #: ../src/Gui/report.glade.h:24
 msgid "Show log"
-msgstr ""
+msgstr "ਲਾਗ ਵੇਖਾਓ"
 
 #: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
@@ -540,7 +544,7 @@ msgstr "ਚੇਤਾਵਨੀ"
 
 #: ../src/Applet/CCApplet.cpp:88
 msgid "Notification area applet to notify user about issues detected by ABRT"
-msgstr ""
+msgstr "ਸੂਚਨਾ ਖੇਤਰ ਐਪਲਿਟ ਜੋ ਯੂਜ਼ਰ ਨੂੰ ABRT ਦੁਆਰਾ ਲੱਭੇ ਮੁੱਦਿਆਂ ਬਾਰੇ ਦੱਸਦਾ ਹੈ"
 
 #: ../src/Applet/CCApplet.cpp:114
 msgid "Hide"
@@ -565,11 +569,12 @@ msgid "New bug id: %i"
 msgstr "ਨਵਾਂ ਬੱਗ id: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:607
-#, fuzzy
 msgid ""
 "Empty login and password.\n"
 "Please check "
-msgstr "ਖਾਲੀ ਲਾਗਇਨ ਅਤੇ ਪਾਸਵਰਡ। Bugzilla.conf ਵੇਖੋ ਜੀ।"
+msgstr ""
+"ਖਾਲੀ ਲਾਗਇਨ ਅਤੇ ਪਾਸਵਰਡ। \n"
+"ਜਾਂਚ ਕਰੋ ਜੀ "
 
 #: ../lib/Plugins/Bugzilla.cpp:615
 msgid "Logging into bugzilla..."
@@ -580,9 +585,8 @@ msgid "Checking for duplicates..."
 msgstr "ਡੁਪਲੀਕੇਟ ਲਈ ਜਾਂਚ ਜਾਰੀ..."
 
 #: ../lib/Plugins/Bugzilla.cpp:631
-#, fuzzy
 msgid "Missing mandatory member 'bugs'"
-msgstr "ਗੈਰ-ਮੌਜੂਦ ਮੈਂਬਰ 'ਬੱਗ'"
+msgstr "ਗੈਰ-ਮੌਜੂਦ ਜਰੂਰੀ ਮੈਂਬਰ 'ਬੱਗ'"
 
 #: ../lib/Plugins/Bugzilla.cpp:641
 msgid "Creating new bug..."
@@ -590,7 +594,7 @@ msgstr "ਨਵਾਂ ਬੱਗ ਬਣਾ ਰਿਹਾ ਹੈ..."
 
 #: ../lib/Plugins/Bugzilla.cpp:646
 msgid "Bugzilla entry creation failed"
-msgstr ""
+msgstr "ਬੱਗਜ਼ੀਲਾ ਐਂਟਰੀ ਬਣਾਉਣ ਵਿੱਚ ਫੇਲ"
 
 #: ../lib/Plugins/Bugzilla.cpp:654 ../lib/Plugins/Bugzilla.cpp:761
 msgid "Logging out..."
@@ -598,27 +602,27 @@ msgstr "ਲਾਗਆਉਟ ਕੀਤਾ ਜਾ ਰਿਹਾ ਹੈ..."
 
 #: ../lib/Plugins/Bugzilla.cpp:686 ../lib/Plugins/Bugzilla.cpp:714
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
+msgstr "get_bug_info() ਫੇਲ ਹੈ। ਸਭ ਜਰੂਰੀ ਜਾਣਕਾਰੀ ਇਕੱਠੀ ਨਹੀਂ ਕਰ ਸਕਿਆ"
 
 #: ../lib/Plugins/Bugzilla.cpp:698
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
-msgstr ""
+msgstr "ਬੱਗਜ਼ੀਲਾ ਨੂੰ bug(%d) ਦਾ ਅਧਾਰ ਨਹੀਂ ਲੱਭਿਆ"
 
 #: ../lib/Plugins/Bugzilla.cpp:703
 #, c-format
 msgid "Jump to bug %d"
-msgstr ""
+msgstr "ਬੱਗ %d ਤੇ ਜਾਓ"
 
 #: ../lib/Plugins/Bugzilla.cpp:728 ../lib/Plugins/Bugzilla.cpp:729
 #, c-format
 msgid "Add %s to CC list"
-msgstr ""
+msgstr "%s ਨੂੰ CC ਲਿਸਟ ਵਿੱਚ ਜੋੜੋ"
 
 #: ../lib/Plugins/Bugzilla.cpp:752
 #, c-format
 msgid "Add new comment into bug(%d)"
-msgstr ""
+msgstr "bug(%d) ਵਿੱਚ ਨਵੀਂ ਟਿੱਪਣੀ ਜੋੜੋ"
 
 #: ../lib/Plugins/Kerneloops.cpp:100
 msgid "Getting local universal unique identification"
@@ -677,12 +681,11 @@ msgid "Sending an email..."
 msgstr "ਈਮੇਲ ਭੇਜੀ ਜਾ ਰਹੀ ਹੈ..."
 
 #: ../lib/Plugins/SOSreport.cpp:101
-#, fuzzy, c-format
+#, c-format
 msgid "Running sosreport: %s"
-msgstr "sosreport ਚਲਾਈ ਜਾ ਰਹੀ ਹੈ: %s "
+msgstr "sosreport ਚਲਾ ਰਿਹਾ ਹੈ: %s "
 
 #: ../lib/Plugins/SOSreport.cpp:107
-#, fuzzy
 msgid "Done running sosreport"
 msgstr "sosreport ਚਲਾਉਣਾ ਮੁਕੰਮਲ"
 
