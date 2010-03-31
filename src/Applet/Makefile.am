@@ -37,3 +37,6 @@ DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = abrt-applet.desktop
+
+abrt-applet.desktop:
+	intltool-merge -d ../../po abrt-applet.desktop.in abrt-applet.desktop

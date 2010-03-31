@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-03-19 22:23+0000\n"
-"PO-Revision-Date: 2010-03-19 23:25+0100\n"
+"POT-Creation-Date: 2010-03-31 10:22+0000\n"
+"PO-Revision-Date: 2010-03-31 14:38+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -62,39 +62,55 @@ msgstr ""
 "Brak pakietów debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
-msgid ""
-"(C) 2009 Red Hat, Inc.\n"
-"(C) 2010 Red Hat, Inc."
-msgstr ""
-"(C) 2009 Red Hat, Inc.\n"
-"(C) 2010 Red Hat, Inc."
+msgid "(C) 2009, 2010 Red Hat, Inc."
+msgstr "(C) 2009, 2010 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "<b>Bug Reports:</b>"
+msgstr "<b>Zgłoszenia błędów:</b>"
 
 #: ../src/Gui/ccgui.glade.h:3
+msgid "<b>Command:</b>"
+msgstr "<b>Polecenie:</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<b>Comment:</b>"
+msgstr "<b>Komentarz:</b>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "<b>Crash Count:</b>"
+msgstr "<b>Liczba awarii:</b>"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "<b>Latest Crash:</b>"
+msgstr "<b>Ostatnia awaria:</b>"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "<b>Reason:</b>"
+msgstr "<b>Przyczyna:</b>"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "<b>User:</b>"
+msgstr "<b>Użytkownik:</b>"
+
+#: ../src/Gui/ccgui.glade.h:9
 msgid "About ABRT"
 msgstr "O programie ABRT"
 
-#: ../src/Gui/ccgui.glade.h:4 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
 msgid "Automatic Bug Reporting Tool"
 msgstr "Narzędzie do automatycznego zgłaszania błędów"
 
-#: ../src/Gui/ccgui.glade.h:5
-msgid "Delete"
-msgstr "Usuń"
-
-#: ../src/Gui/ccgui.glade.h:6
-msgid "Not Reported"
-msgstr "Nie zgłoszono"
-
-#: ../src/Gui/ccgui.glade.h:7 ../src/Gui/settings.glade.h:19
+#: ../src/Gui/ccgui.glade.h:11 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "Wtyczki"
 
-#: ../src/Gui/ccgui.glade.h:8 ../src/Applet/CCApplet.cpp:251
+#: ../src/Gui/ccgui.glade.h:12 ../src/Applet/CCApplet.cpp:251
 msgid "Report"
 msgstr "Zgłoś"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/Gui/ccgui.glade.h:13
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -124,50 +140,42 @@ msgstr ""
 "Powszechnej Licencji Publicznej GNU (GNU General Public License); jeśli nie "
 "- proszę odwiedzić stronę internetową <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/Gui/ccgui.glade.h:18
+msgid "View log"
+msgstr "Wyświetl dziennik"
+
+#: ../src/Gui/ccgui.glade.h:19
 msgid "_Edit"
 msgstr "_Edycja"
 
-#: ../src/Gui/ccgui.glade.h:15
+#: ../src/Gui/ccgui.glade.h:20
 msgid "_File"
 msgstr "_Plik"
 
-#: ../src/Gui/ccgui.glade.h:16
+#: ../src/Gui/ccgui.glade.h:21
 msgid "_Help"
 msgstr "Pomo_c"
 
-#: ../src/Gui/ccgui.glade.h:17 ../src/Applet/CCApplet.cpp:104
+#: ../src/Gui/ccgui.glade.h:22 ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
 msgstr ""
 "Piotr Drąg <piotrdrag@gmail.com>, 2009\n"
 "Tomasz Chrzczonowicz <chrzczonowicz@gmail.com>, 2009"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:65
-msgid "Icon"
-msgstr "Ikona"
+#: ../src/Gui/CCMainWindow.py:61
+msgid "Reported"
+msgstr "Zgłoszono"
 
-#: ../src/Gui/CCMainWindow.py:73
-msgid "Package"
-msgstr "Pakiet"
-
-#: ../src/Gui/CCMainWindow.py:75
+#: ../src/Gui/CCMainWindow.py:69
 msgid "Application"
 msgstr "Aplikacja"
 
-#: ../src/Gui/CCMainWindow.py:77
-msgid "Date"
-msgstr "Data"
+#: ../src/Gui/CCMainWindow.py:71
+msgid "Latest Crash"
+msgstr "Ostatnia awaria"
 
-#: ../src/Gui/CCMainWindow.py:79
-msgid "Crash count"
-msgstr "Liczba awarii"
-
-#: ../src/Gui/CCMainWindow.py:81
-msgid "User"
-msgstr "Użytkownik"
-
-#: ../src/Gui/CCMainWindow.py:149
+#: ../src/Gui/CCMainWindow.py:139
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -176,7 +184,7 @@ msgstr ""
 "Nie można wyświetlić okna dialogowego ustawień\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:154
+#: ../src/Gui/CCMainWindow.py:144
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -186,7 +194,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:176
+#: ../src/Gui/CCMainWindow.py:179
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -195,19 +203,20 @@ msgstr ""
 "Błąd podczas wczytywania listy zrzutów.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:214
-msgid "This crash has been reported:\n"
-msgstr "Ta awaria została zgłoszona:\n"
-
-#: ../src/Gui/CCMainWindow.py:215
-msgid "<b>This crash has been reported:</b>\n"
-msgstr "<b>Ta awaria została zgłoszona:</b>\n"
-
-#: ../src/Gui/CCMainWindow.py:230
-msgid "<b>Not reported!</b>"
-msgstr "<b>Nie zgłoszono.</b>"
+#: ../src/Gui/CCMainWindow.py:227
+#, python-format
+msgid ""
+"<b>%s Crash</b>\n"
+"%s"
+msgstr ""
+"<b>%s awaria</b>\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:323
+msgid "You have to select a crash to copy."
+msgstr "Należy wybrać awarię do skopiowania."
+
+#: ../src/Gui/CCMainWindow.py:402
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-h, --help         \tthis help message\n"
@@ -219,7 +228,7 @@ msgstr ""
 "\t-v[vv]              \tpoziom wyświetlania komunikatów\n"
 "\t--report=<id_awarii>\tbezpośrednio zgłasza awarię z id_awarii=<id_awarii>"
 
-#: ../src/Gui/CCMainWindow.py:347
+#: ../src/Gui/CCMainWindow.py:426
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"

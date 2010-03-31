@@ -135,8 +135,12 @@ curl_post(curl_post_state_t* state, const char* url, const char* data)
     curl_err = curl_easy_perform(handle);
     if (curl_err)
     {
+        VERB2 log("curl_easy_perform: error %d", (int)curl_err);
         if (state->flags & ABRT_CURL_POST_WANT_ERROR_MSG)
+        {
             state->curl_error_msg = check_curl_error(curl_err, "curl_easy_perform");
+            VERB3 log("curl_easy_perform: error_msg: %s", state->curl_error_msg);
+        }
         goto ret;
     }
 
