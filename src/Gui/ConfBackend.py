@@ -201,6 +201,9 @@ class ConfBackendGnomeKeyring(ConfBackend):
         except gkey.NoMatchError:
             # nothing found
             pass
+        except gkey.DeniedError:
+            raise ConfBackendLoadError(_("Access to gnome-keyring has been denied, can't load settings"))
+
         for item in item_list:
             # gnome keyring is weeeeird. why display_name, type, mtime, ctime
             # aren't available in find_items_sync() results? why we need to
