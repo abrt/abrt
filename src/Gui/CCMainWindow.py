@@ -372,7 +372,10 @@ class MainWindow():
         self.window.set_urgency_hint(False)
 
     def on_bQuit_clicked(self, widget):
-        gtk.main_quit()
+        try:
+            gtk.main_quit()
+        except: # prevent "RuntimeError: called outside of a mainloop"
+            sys.exit()
 
     def show(self):
         self.window.show()
