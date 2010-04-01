@@ -127,7 +127,7 @@ std::string make_description_catcut(const map_crash_data_t& pCrashData);
 /**
  * Loads settings and stores it in second parameter. On success it
  * returns true, otherwise returns false.
- * 
+ *
  * @param path A path of config file.
  *  Config file consists of "key=value" lines.
  * @param settings A readed plugin's settings.

@@ -383,13 +383,13 @@ void LoadSettings()
     ParseCommon();
     ParseAnalyzerActionsAndReporters();
     ParseCron();
-    
-    /* 
+
+    /*
         loading gpg keys will invoke LoadOpenGPGPublicKey() from rpm.cpp
         pgpReadPkts which makes nss to re-init and thus makes
         bugzilla plugin work :-/
     */
-    
+
     //FIXME FIXME FIXME FIXME FIXME FIXME!!!
     //if(g_settings_bOpenGPGCheck)
     LoadGPGKeys();

@@ -50,7 +50,7 @@ man_MANS = \
     abrt-SQLite3.7 \
     abrt-RunApp.7 \
     abrt-TicketUploader.7
-           
+
 # + abrt-Catcut.7
 
 EXTRA_DIST = $(man_MANS)

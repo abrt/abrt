@@ -484,6 +484,7 @@ report_status_t Report(const map_crash_data_t& client_report,
     map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
     if (keyPtr == end)
     {
+        VERB3 log("'%s' not found, looking for '%s'", key.c_str(), analyzer.c_str());
         // if there is no such settings, then try default analyzer
         keyPtr = s_mapAnalyzerActionsAndReporters.find(analyzer);
         key = analyzer;

@@ -126,7 +126,7 @@ for buginfo in buginfos:
   if helper.returncode != 0:
     print "Problems with rating {0}".format(filename)
     continue
-  
+
   # Get the comment count. We do not want to close bugs which
   # are in the middle of a discussion.
   bug = bz.getbug(buginfo.bug_id)
@@ -185,7 +185,7 @@ def ownerCmp(a, b):
     return 0
   else:
     return 1
-  
+
 print "============= SUMMARY"
 closedcount = 0
 if options.wiki:

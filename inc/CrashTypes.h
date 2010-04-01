@@ -31,7 +31,7 @@
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MEMORYMAP    "memorymap"
 // Used by CCpp analyzer to cache GetGlobalUUID() calls.
-#define FILENAME_GLOBAL_UUID    "global_uuid" 
+#define FILENAME_GLOBAL_UUID    "global_uuid"
 // Name of the function where the application crashed.
 // Optional.
 #define FILENAME_CRASH_FUNCTION "crash_function"

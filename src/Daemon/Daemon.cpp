@@ -835,8 +835,8 @@ int main(int argc, char** argv)
         VERB1 log("Adding signal pipe watch to glib main loop");
         pGiochannel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
         g_io_add_watch(pGiochannel_signal, G_IO_IN, handle_signal_cb, NULL);
-        /* Mark the territory */
 
+        /* Mark the territory */
         VERB1 log("Creating lock file");
         if (Lock() != 0)
             throw 1;

@@ -531,7 +531,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         // Compatibility code.
         // This whole block should be deleted for Fedora 14.
         log(_("Getting global universal unique identification..."));
-        
+
         string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
         string executable;
         string package;
@@ -633,7 +633,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         /* else: no backtrace, independent_backtrace == "" */
 
         string hash_base = package + executable + independent_backtrace;
-        return create_hash(hash_base.c_str());      
+        return create_hash(hash_base.c_str());
     }
 }
 
