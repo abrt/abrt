@@ -391,7 +391,7 @@ if __name__ == "__main__":
     verbose = 0
     crashid = None
     try:
-        opts, args = getopt.getopt(sys.argv[1:], "vh", ["help","report="])
+        opts, args = getopt.getopt(sys.argv[1:], "vh", ["help", "report="])
     except getopt.GetoptError, err:
         print str(err) # prints something like "option -a not recognized"
         sys.exit(2)
@@ -401,11 +401,10 @@ if __name__ == "__main__":
             verbose += 1
         elif opt == "--report":
             crashid=arg
-        elif opt in ("-h","--help"):
+        elif opt in ("-h", "--help"):
             print _("Usage: abrt-gui [OPTIONS]"
-            "\n\t-h, --help         \tthis help message"
-            "\n\t-v[vv]             \tverbosity level"
-            "\n\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+            "\n\t-v[vv]\t\t\tVerbose"
+            "\n\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
             )
             sys.exit()
 
