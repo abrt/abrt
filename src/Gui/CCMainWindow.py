@@ -194,8 +194,18 @@ class MainWindow():
         # for later..
         return True
 
+    def dumplist_get_selected(self):
+        selection = self.dlist.get_selection()
+        if selection:
+            # returns (dumpsListStore, path) tuple
+            dumpsListStore, path = selection.get_selected_rows()
+            print path
+            return dumpsListStore, path
+        else:
+            return None, None
+
     def on_tvDumps_cursor_changed(self, treeview):
-        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        dumpsListStore, path = self.dumplist_get_selected()
         if not path:
             self.wTree.get_widget("bDelete").set_sensitive(False)
             self.wTree.get_widget("bReport").set_sensitive(False)
@@ -291,7 +301,7 @@ class MainWindow():
         return False
 
     def on_bDelete_clicked(self, button, treeview):
-        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        dumpsListStore, path = self.dumplist_get_selected()
         if not path:
             return
         # this should work until we keep the dump object in the last position
@@ -310,15 +320,15 @@ class MainWindow():
         except Exception, ex:
             print ex
 
-    def dumplist_get_selected(self):
-        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+    def dumplist_get_selected_values(self):
+        dumpsListStore, path = self.dumplist_get_selected()
         if path and dumpsListStore:
             return dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         return None
 
     def on_b_copy_clicked(self, button):
         clipboard = gtk.clipboard_get()
-        dump = self.dumplist_get_selected()
+        dump = self.dumplist_get_selected_values()
         if not dump:
             gui_info_dialog(_("You have to select a crash to copy."), parent=self.window)
             return
@@ -343,7 +353,7 @@ class MainWindow():
         # FIXME mark the new entry somehow....
         # remember the selected row
         last_dump = None
-        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        dumpsListStore, path = self.dumplist_get_selected()
         if path and dumpsListStore:
             last_dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
         self.hydrate()
@@ -353,11 +363,11 @@ class MainWindow():
 
 
     def on_bReport_clicked(self, button):
-        dumpsListStore, path = self.dlist.get_selection().get_selected_rows()
+        dumpsListStore, path = self.dumplist_get_selected()
         self.on_dumpRowActivated(self.dlist, None, path, None)
 
     def on_dumpRowActivated(self, treeview, it, path, user_data=None):
-        dumpsListStore, path = treeview.get_selection().get_selected_rows()
+        dumpsListStore, path = self.dumplist_get_selected()
         if not path:
             return
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
