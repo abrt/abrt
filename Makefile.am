@@ -15,11 +15,11 @@ srpm: dist
 	rpmbuild $(RPM_DIRS) -bs abrt.spec
 
 test-rpm: dist
-	rpmbuild --define "_buildid `date +%G%m%e%k%M%S`" \
+	rpmbuild --define "_buildid `date +%G%m%d%k%M%S`" \
 		$(RPM_DIRS) -ba abrt.spec
 
 test-srpm: dist
-	rpmbuild --define "_buildid `date +%G%m%e%k%M%S`" \
+	rpmbuild --define "_buildid `date +%G%m%d%k%M%S`" \
 		$(RPM_DIRS) -bs abrt.spec
 
 scratch-build: srpm
