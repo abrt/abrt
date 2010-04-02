@@ -83,12 +83,20 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
 
 void check_free_space(unsigned setting_MaxCrashReportsSize)
 {
-    /* Check that at least MaxCrashReportsSize/4 MBs are free. */
     struct statvfs vfs;
-    if (statvfs(DEBUG_DUMPS_DIR, &vfs) != 0
-     || (vfs.f_bfree / (1024*1024 / 4)) * vfs.f_bsize < setting_MaxCrashReportsSize
-    ) {
-        error_msg_and_die("Low free disk space detected, aborting dump");
+    if (statvfs(DEBUG_DUMPS_DIR, &vfs) != 0)
+    {
+        perror_msg_and_die("statvfs('%s')", DEBUG_DUMPS_DIR);
+    }
+
+    /* Check that at least MaxCrashReportsSize/4 MBs are free */
+
+    /* fs_free_mb_x4 ~= vfs.f_bfree * vfs.f_bsize * 4, expressed in MBytes.
+     * Need to neither overflow nor round f_bfree down too much. */
+    unsigned long fs_free_mb_x4 = ((unsigned long long)vfs.f_bfree / (1024/4)) * vfs.f_bsize / 1024;
+    if (fs_free_mb_x4 < setting_MaxCrashReportsSize)
+    {
+        error_msg_and_die("aborting dump: only %luMiB is available on %s\n", fs_free_mb_x4 / 4, DEBUG_DUMPS_DIR);
     }
 }
 
