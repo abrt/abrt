@@ -199,7 +199,6 @@ class MainWindow():
         if selection:
             # returns (dumpsListStore, path) tuple
             dumpsListStore, path = selection.get_selected_rows()
-            print path
             return dumpsListStore, path
         else:
             return None, None
