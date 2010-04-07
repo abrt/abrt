@@ -352,8 +352,15 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
     const std::string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
     const std::string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
     const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
+    const char *function         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
 
     std::string summary = "[abrt] crash in " + package;
+    if (function != NULL && strlen(function) < 30)
+    {
+        summary += ": ";
+        summary += function;
+    }
+
     if (reason != NULL)
     {
         summary += ": ";
