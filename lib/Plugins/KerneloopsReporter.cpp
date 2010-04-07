@@ -102,7 +102,7 @@ std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
 
 	if (ret) {
 		/* FIXME: be more informative */
-		throw CABRTException(EXCEP_PLUGIN, "CKerneloopsReporter::Report(): Report has not been sent");
+		throw CABRTException(EXCEP_PLUGIN, "Kernel oops has not been sent");
 	}
         /* Server replies with:
          * 200 thank you for submitting the kernel oops information
