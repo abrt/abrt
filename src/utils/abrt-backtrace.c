@@ -1,4 +1,4 @@
-/* -*-mode:c++;c-file-style:"bsd";c-basic-offset:4;indent-tabs-mode:nil-*-
+/*
     main.cpp - parses command line arguments
 
     Copyright (C) 2009  RedHat inc.

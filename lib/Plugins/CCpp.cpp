@@ -1,4 +1,4 @@
-/* -*-mode:c++;c-file-style:"bsd";c-basic-offset:4;indent-tabs-mode:nil-*-
+/*
     CCpp.cpp
 
     Copyright (C) 2009  Zdenek Prikryl (zprikryl@redhat.com)
