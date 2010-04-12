@@ -48,7 +48,7 @@ static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 
 /* Send oops data to kerneloops.org-style site, using HTTP POST */
 /* Returns 0 on success */
-static int http_post_to_kerneloops_site(const char *url, const char *oopsdata)
+static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsdata)
 {
 	CURLcode ret;
 	CURL *handle;
@@ -67,6 +67,7 @@ static int http_post_to_kerneloops_site(const char *url, const char *oopsdata)
 		CURLFORM_COPYCONTENTS, "yes",
 		CURLFORM_END);
 
+
 	curl_easy_setopt(handle, CURLOPT_HTTPPOST, post);
 	curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, writefunction);
 
@@ -75,7 +76,7 @@ static int http_post_to_kerneloops_site(const char *url, const char *oopsdata)
 	curl_formfree(post);
 	curl_easy_cleanup(handle);
 
-	return ret != 0;
+	return ret;
 }
 
 
@@ -88,7 +89,7 @@ std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
                                         const map_plugin_settings_t& pSettings,
                                         const char *pArgs)
 {
-	int ret = -1;
+	CURLcode ret;
 
 	update_client(_("Creating and submitting a report..."));
 
@@ -100,9 +101,11 @@ std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
 		);
 	}
 
-	if (ret) {
-		/* FIXME: be more informative */
-		throw CABRTException(EXCEP_PLUGIN, "Kernel oops has not been sent");
+	if (ret != CURLE_OK) {
+                char* err_str = xasprintf("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
+                CABRTException e(EXCEP_PLUGIN, err_str);
+                free(err_str);
+		throw e;
 	}
         /* Server replies with:
          * 200 thank you for submitting the kernel oops information
