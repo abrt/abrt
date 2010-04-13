@@ -594,43 +594,51 @@ void LoadOpenGPGPublicKey(const char* key)
 }
 
 /**
- * Get a package name from executable name and save
- * package description to particular debugdump directory of a crash.
- * @param pExecutable A name of crashed application.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
- * @return It return results of operation. See mw_result_t.
+ * Returns the first full path argument in the command line or NULL.
+ * Skips options are in form "-XXX".
+ * Caller must delete the returned string using free().
  */
 static char *get_argv1_if_full_path(const char* cmdline)
 {
-    char *argv1 = (char*) strchr(cmdline, ' ');
+    const char *argv1 = strpbrk(cmdline, " \t");
     while (argv1 != NULL)
     {
         /* we found space in cmdline, so it might contain
          * path to some script like:
          * /usr/bin/python [-XXX] /usr/bin/system-control-network
          */
-        argv1++;
-        if (*argv1 == '-')
+        argv1++; /* skip the space */
+        if (*argv1 == '-') /* skip arguments */
         {
             /* looks like -XXX in "perl -XXX /usr/bin/script.pl", skip */
-            argv1 = strchr(argv1, ' ');
+            argv1 = strpbrk(argv1, " \t");
             continue;
         }
-        /* if the string following the space doesn't start
-         * with '/' it's probably not a full path to script
-         * and we can't use it to determine the package name
-         */
-        if (*argv1 != '/')
+        else if (*argv1 == ' ' || *argv1 == '\t') /* skip multiple spaces */
+            continue;
+        else if (*argv1 != '/')
         {
-            return NULL;
+            /* if the string following the space doesn't start
+             * with '/' it's probably not a full path to script
+             * and we can't use it to determine the package name
+             */
+            break;
         }
+
+        /* cut the rest of cmdline arguments */
         int len = strchrnul(argv1, ' ') - argv1;
-        /* cut the cmdline arguments */
-        argv1 = xstrndup(argv1, len);
-        break;
+        return xstrndup(argv1, len);
     }
-    return argv1;
+    return NULL;
 }
+
+/**
+ * Get a package name from executable name and save
+ * package description to particular debugdump directory of a crash.
+ * @param pExecutable A name of crashed application.
+ * @param pDebugDumpDir A debugdump dir containing all necessary data.
+ * @return It return results of operation. See mw_result_t.
+ */
 static mw_result_t SavePackageDescriptionToDebugDump(
                 const char *pExecutable,
                 const char *cmdline,
@@ -692,6 +700,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
              * This will work only if the cmdline contains the whole path.
              * Example: python /usr/bin/system-control-network
              */
+            bool knownOrigin = false;
             char *script_name = get_argv1_if_full_path(cmdline);
             if (script_name)
             {
@@ -707,8 +716,15 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                     rpm_pkg = script_pkg;
                     scriptName = script_name;
                     pExecutable = scriptName.c_str();
+                    knownOrigin = true;
                 }
                 free(script_name);
+            }
+
+            if (!knownOrigin && !g_settings_bProcessUnpackaged)
+            {
+                log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
+                return MW_PACKAGE_ERROR;
             }
         }
 
@@ -717,7 +733,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         VERB2 log("Package:'%s' short:'%s'", rpm_pkg, packageName.c_str());
         free(rpm_pkg);
 
-	if (g_setBlackList.find(packageName) != g_setBlackList.end())
+        if (g_setBlackList.find(packageName) != g_setBlackList.end())
         {
             log("Blacklisted package '%s'", packageName.c_str());
             return MW_BLACKLISTED;
@@ -838,8 +854,8 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir,
             if (!action)
             {
                 /* GetAction() already complained if no such plugin.
-		 * If plugin exists but isn't an Action, it's not an error.
-		 */
+                 * If plugin exists but isn't an Action, it's not an error.
+                 */
                 continue;
             }
             try
