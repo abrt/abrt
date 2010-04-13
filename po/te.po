@@ -8,14 +8,14 @@ msgstr ""
 "Project-Id-Version: te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-04-12 09:08+0000\n"
-"PO-Revision-Date: 2010-04-12 17:47+0530\n"
+"PO-Revision-Date: 2010-04-13 11:59+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 "\n"
 "\n"
@@ -229,6 +229,9 @@ msgid ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 msgstr ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-v[vv]\t\t\tVerbose\n"
+"\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 
 #: ../src/Gui/CCMainWindow.py:437
 #, python-format
@@ -249,20 +252,19 @@ msgid "You must check backtrace for sensitive data"
 msgstr "సెన్సిటివ్ డాటా కొరకు మీరు బ్యాక్‌ట్రేస్‌ను తప్పక పరిశీలించవలెను"
 
 #: ../src/Gui/CCReporterDialog.py:118
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command: <b>debuginfo-install "
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
+"నివేదీకరణ అచేతనము చేయబడింది యెంచేతంటే బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
 "ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install %"
 "s</b> \n"
 "అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
 #: ../src/Gui/CCReporterDialog.py:120
-#, fuzzy
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "బాక్‌ట్రేస్ వుపయోగించుటకు వీలుకాకుండా వుంది, దీనిని మీరు నివేదించకూడదు!"
 
@@ -657,9 +659,8 @@ msgstr "డీబగ్‌యిన్ఫో సంస్థాపనను ప�
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
 #: ../lib/Plugins/CCpp.cpp:533
-#, fuzzy
 msgid "Getting global universal unique identification..."
-msgstr "లోకల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుతోంది"
+msgstr "గ్లోబల్ యూనివర్సల్ యునిక్ గుర్తింపును పొందుతోంది..."
 
 #: ../lib/Plugins/CCpp.cpp:699
 msgid "Skipping debuginfo installation"
@@ -710,13 +711,3 @@ msgstr "sosreport నడుపుచున్నది: %s"
 msgid "Done running sosreport"
 msgstr "sosreport నడుపుట అయినది"
 
-#~ msgid ""
-#~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-h, --help         \tthis help message\n"
-#~ "\t-v[vv]             \tverbosity level\n"
-#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
-#~ msgstr ""
-#~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-h, --help         \tthis help message\n"
-#~ "\t-v[vv]             \tverbosity level\n"
-#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
