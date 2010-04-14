@@ -118,7 +118,7 @@ struct ctx: public abrt_xmlrpc_conn {
     xmlrpc_int32 new_bug(const map_crash_data_t& pCrashData);
     int          add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData);
     int          get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id);
-    int          add_comment(xmlrpc_int32 bug_id, const char* comment);
+    int          add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private);
 
     xmlrpc_value* call(const char* method, const char* format, ...);
 };
@@ -336,9 +336,11 @@ int ctx::add_plus_one_cc(xmlrpc_int32 bug_id, const char* login)
     return result ? 0 : -1;
 }
 
-int ctx::add_comment(xmlrpc_int32 bug_id, const char* comment)
+int ctx::add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private)
 {
-    xmlrpc_value* result = call("Bug.update", "({s:i,s:{s:s}})", "ids", (int)bug_id, "updates", "comment", comment);
+    xmlrpc_value* result = call("Bug.add_comment", "({s:i,s:s,s:b})", "id", (int)bug_id,
+                                                                      "comment", comment,
+                                                                      "private", is_private);
     if (result)
         xmlrpc_DECREF(result);
     return result ? 0 : -1;
@@ -746,9 +748,10 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         std::string description = make_description_reproduce_comment(pCrashData);
         if (!description.empty())
         {
-            const char* package   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
-            const char* release   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
-            const char* arch      = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
+            const char* package    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
+            const char* release    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
+            const char* arch       = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
+            const char* is_private = get_crash_data_item_content_or_NULL(pCrashData, "is_private");
 
             description = ssprintf("Package: %s\n"
                                 "Architecture: %s\n"
@@ -757,7 +760,9 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             );
 
             update_client(_("Add new comment into bug(%d)"), (int)bug_id);
-            if (bz_server.add_comment(bug_id, description.c_str()) == -1)
+
+            bool is_priv = is_private && (is_private[0] == '1');
+            if (bz_server.add_comment(bug_id, description.c_str(), is_priv) == -1)
             {
                 bug_info_destroy(&bz);
                 throw_if_xml_fault_occurred(&bz_server.env);
