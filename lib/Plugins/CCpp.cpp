@@ -761,13 +761,12 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         /* Get the function name from the crash frame. */
         if (crash_thread)
         {
+            struct frame *crash_frame = crash_thread->frames;
             struct frame *abort_frame = thread_find_abort_frame(crash_thread);
             if (abort_frame)
-            {
-                struct frame *crash_frame = abort_frame->next;
-                if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
-                    dd.SaveText(FILENAME_CRASH_FUNCTION, crash_frame->function);
-            }
+                crash_frame = abort_frame->next;
+            if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
+                dd.SaveText(FILENAME_CRASH_FUNCTION, crash_frame->function);
         }
 
         backtrace_free(backtrace);

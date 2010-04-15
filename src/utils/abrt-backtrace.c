@@ -1,5 +1,5 @@
 /*
-    main.cpp - parses command line arguments
+    abrt-backtrace.c - parses command line arguments
 
     Copyright (C) 2009  RedHat inc.
 
@@ -46,9 +46,10 @@ static struct argp_option options[] = {
     {"remove-exit-handlers"  , 'r', 0  , 0, "Removes exit handler frames from the displayed backtrace"},
     {"remove-noncrash-frames", 'm', 0  , 0, "Removes common frames known as not causing crash"},
     {"rate"                  , 'a', 0  , 0, "Prints the backtrace rating from 0 to 4"},
+    {"crash-function"        , 'c', 0  , 0, "Prints crash function"},
     {"debug-parser"          , 'p', 0  , 0, "Prints parser debug information"},
     {"debug-scanner"         , 's', 0  , 0, "Prints scanner debug information"},
-    {"verbose"               , 'v', 0  , 0, "Print human-friendly superfluous output."},
+    {"verbose"               , 'v', 0  , 0, "Prints human-friendly superfluous output."},
   { 0 }
 };
 
@@ -63,6 +64,7 @@ struct arguments
     bool debug_scanner;
     bool verbose;
     bool rate;
+    bool crash_function;
     char *filename;
 };
 
@@ -91,6 +93,7 @@ parse_opt (int key, char *arg, struct argp_state *state)
     case 's': arguments->debug_scanner = true; break;
     case 'v': arguments->verbose = true; break;
     case 'a': arguments->rate = true; break;
+    case 'c': arguments->crash_function = true; break;
 
     case ARGP_KEY_ARG:
         if (arguments->filename)
@@ -131,6 +134,7 @@ int main(int argc, char **argv)
     arguments.verbose = false;
     arguments.filename = 0;
     arguments.rate = false;
+    arguments.crash_function = false;
     argp_parse(&argp, argc, argv, 0, 0, &arguments);
 
     /* If we are about to rate a backtrace, the other values must be set accordingly,
@@ -142,6 +146,14 @@ int main(int argc, char **argv)
         arguments.single_thread = true;
         arguments.remove_exit_handlers = true;
         arguments.remove_noncrash_frames = true;
+    }
+
+    /* If we are about to print the crash function, the other values must be set 
+       accordingly. */
+    if (arguments.crash_function)
+    {
+        arguments.independent = false;
+        arguments.single_thread = true;
     }
 
     char *bttext = NULL;
@@ -310,9 +322,18 @@ int main(int argc, char **argv)
         else                  rating = "4";
         puts(rating);
     }
-    else
-        backtrace_print_tree(backtrace, arguments.verbose);
 
+    if (arguments.crash_function && crash_thread)
+    {
+        struct frame *crash_frame = crash_thread->frames;
+        struct frame *abort_frame = thread_find_abort_frame(crash_thread);
+        if (abort_frame)
+            crash_frame = abort_frame->next;
+        if (crash_frame && crash_frame->function)
+            puts(crash_frame->function);
+    }
+
+    backtrace_print_tree(backtrace, arguments.verbose);
     backtrace_free(backtrace);
     return retval;
 }
