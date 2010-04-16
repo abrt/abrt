@@ -17,11 +17,11 @@ msgstr ""
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr ""
+msgstr "Klient už běží, zkouším se připojit"
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
+msgstr "Neočekávaná data od démona (je databáze v pořádku?)"
 
 #: ../src/Gui/ABRTPlugin.py:62
 #, fuzzy
@@ -30,7 +30,7 @@ msgstr "Plugin %s nemá žádné UI"
 
 #: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
-msgstr ""
+msgstr "Pluginy pro anlýzu"
 
 #: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
@@ -61,7 +61,8 @@ msgstr ""
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
-msgstr "Nepodařilo se získat reportPravděpodobně chybí debuginfo."
+msgstr "Nepodařilo se získat zprávu\n"
+"Pravděpodobně chybí debuginfo."
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009, 2010 Red Hat, Inc."
@@ -70,36 +71,36 @@ msgstr ""
 #: ../src/Gui/ccgui.glade.h:2
 #, fuzzy
 msgid "<b>Bug Reports:</b>"
-msgstr "<b>Nereportováno</b>"
+msgstr "<b>Bug reporty:</b>"
 
 #: ../src/Gui/ccgui.glade.h:3
 #, fuzzy
 msgid "<b>Command:</b>"
-msgstr "Komentář"
+msgstr "<b>Příkaz:</b>"
 
 #: ../src/Gui/ccgui.glade.h:4
 #, fuzzy
 msgid "<b>Comment:</b>"
-msgstr "Komentář"
+msgstr "<b>Komentář</b>"
 
 #: ../src/Gui/ccgui.glade.h:5
 #, fuzzy
 msgid "<b>Crash Count:</b>"
-msgstr "Počet incidentů"
+msgstr "<b>Počet opakování:</b>"
 
 #: ../src/Gui/ccgui.glade.h:6
 msgid "<b>Latest Crash:</b>"
-msgstr ""
+msgstr "<b>Poslední pád:</b>"
 
 #: ../src/Gui/ccgui.glade.h:7
 #, fuzzy
 msgid "<b>Reason:</b>"
-msgstr "Komentář"
+msgstr "<b>Důvod:</b>"
 
 #: ../src/Gui/ccgui.glade.h:8
 #, fuzzy
 msgid "<b>User:</b>"
-msgstr "Komentář"
+msgstr "<b>Uživatel:</b>"
 
 #: ../src/Gui/ccgui.glade.h:9
 msgid "About ABRT"
@@ -112,7 +113,7 @@ msgstr ""
 
 #: ../src/Gui/ccgui.glade.h:11 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
-msgstr ""
+msgstr "Pluginy"
 
 #: ../src/Gui/ccgui.glade.h:12 ../src/Applet/CCApplet.cpp:251
 msgid "Report"
@@ -136,7 +137,7 @@ msgstr ""
 
 #: ../src/Gui/ccgui.glade.h:18
 msgid "View log"
-msgstr ""
+msgstr "Zobrazit log"
 
 #: ../src/Gui/ccgui.glade.h:19
 msgid "_Edit"
@@ -152,13 +153,13 @@ msgstr "_Pomoc"
 
 #: ../src/Gui/ccgui.glade.h:22 ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
-msgstr ""
+msgstr "přeložili"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:61
 #, fuzzy
 msgid "Reported"
-msgstr "Reportovat"
+msgstr "Nahlášeno"
 
 #: ../src/Gui/CCMainWindow.py:69
 msgid "Application"
@@ -166,7 +167,7 @@ msgstr "Aplikace"
 
 #: ../src/Gui/CCMainWindow.py:71
 msgid "Latest Crash"
-msgstr ""
+msgstr "Poslední chyba"
 
 #: ../src/Gui/CCMainWindow.py:139
 #, fuzzy, python-format
@@ -193,6 +194,8 @@ msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
+"Nepodařilo se získat dumplist.\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:236
 #, python-format
@@ -200,17 +203,22 @@ msgid ""
 "<b>%s Crash</b>\n"
 "%s"
 msgstr ""
+"<b>%s Chyba</b>\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:332
 msgid "You have to select a crash to copy."
-msgstr ""
+msgstr "Je potřeba vybrat chybu"
 
 #: ../src/Gui/CCMainWindow.py:414
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
-msgstr ""
+msgstr  ""
+"Použití: abrt-gui [OPTIONS]\n"
+"\t-v[vv]\t\t\tVerbose\n"
+"\t--report=CRASH_ID\tUložit jako CRASH_ID"
 
 #: ../src/Gui/CCMainWindow.py:437
 #, python-format
@@ -218,6 +226,8 @@ msgid ""
 "No such crash in database, probably wrong crashid.\n"
 "crashid=%s"
 msgstr ""
+"Nanelezeno dané id v databázi, chybné crashid.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22
@@ -226,7 +236,7 @@ msgstr "Zde stručně popište, jak došlo k pádu..."
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
-msgstr ""
+msgstr "Je potřeba zkontrolovat backtrace na citlivá data"
 
 #: ../src/Gui/CCReporterDialog.py:118
 #, python-format
@@ -236,6 +246,10 @@ msgid ""
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
+"Není možné odeslat zprávu kvůli chybějícím datům.\n"
+"Nalistujte debuginfo souboru manuálně: <b>debuginfo-install "
+"%s</b> \n"
+"a nakonec použijte Refresh pro přegenerování backtrace."
 
 #: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
@@ -260,6 +274,8 @@ msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
 msgstr ""
+"Pro tento plugin není přiřazený repotovací plugin\n"
+"Zkontrolujte nastavení v abrt.conf."
 
 #: ../src/Gui/CCReporterDialog.py:412
 #, fuzzy, python-format
