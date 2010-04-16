@@ -4,14 +4,15 @@
 #
 # Igor Pires Soares <igor@projetofedora.org>, 2009.
 # Glaucia Cintra <gcintra@redhat.com>, 2009, 2010.
+# Taylon Silmer <taylonsilva@gmail.com>, 2010.
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-04-10 03:41+0000\n"
-"PO-Revision-Date: 2010-04-12 14:45+1000\n"
-"Last-Translator: Glaucia Cintra <gcintra@redhat.com>\n"
-"Language-Team: Portuguese <en@li.org>\n"
+"POT-Creation-Date: 2010-04-16 08:46+0000\n"
+"PO-Revision-Date: 2010-04-16 09:25-0300\n"
+"Last-Translator: Taylon Silmer <taylonsilva@gmail.com>\n"
+"Language-Team: Brazilian Portuguese <gnome-l10n-br@listas.cipsga.org.br>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -162,7 +163,9 @@ msgstr "Aj_uda"
 
 #: ../src/Gui/ccgui.glade.h:22 ../src/Applet/CCApplet.cpp:104
 msgid "translator-credits"
-msgstr "Glaucia Cintra"
+msgstr ""
+"Glaucia Cintra\n"
+"Taylon Silmer <taylonsilva@gmail.com>"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:61
@@ -205,7 +208,7 @@ msgstr ""
 "Erro ao carregar a lista de despejo.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:227
+#: ../src/Gui/CCMainWindow.py:236
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -214,23 +217,21 @@ msgstr ""
 "<b>%sTravamento</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:323
+#: ../src/Gui/CCMainWindow.py:332
 msgid "You have to select a crash to copy."
 msgstr "Você selecionou um travamento para cópia"
 
-#: ../src/Gui/CCMainWindow.py:402
+#: ../src/Gui/CCMainWindow.py:414
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
-"\t-h, --help         \tthis help message\n"
-"\t-v[vv]             \tverbosity level\n"
-"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+"\t-v[vv]\t\t\tVerbose\n"
+"\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 msgstr ""
-"Usage: abrt-gui [OPTIONS]\n"
-"\t-h, --help         \tthis help message\n"
-"\t-v[vv]             \tverbosity level\n"
-"\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+"Uso: abrt-gui [OPÇÕES]\n"
+"\t-v[W]\t\t\tVerbose\n"
+"\t--report=CRASH_ID\tRelatar diretamente o problema com CRASH_ID"
 
-#: ../src/Gui/CCMainWindow.py:426
+#: ../src/Gui/CCMainWindow.py:437
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -244,28 +245,28 @@ msgstr ""
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descrição sobre como reproduzir isto ou o que você fazia..."
 
-#: ../src/Gui/CCReporterDialog.py:114
+#: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "Você precisa verificar o backtrace para dados sensíveis"
 
-#: ../src/Gui/CCReporterDialog.py:125
+#: ../src/Gui/CCReporterDialog.py:118
 #, python-format
 msgid ""
-"The backtrace is unusable.\n"
+"Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command: <b>debuginfo-install "
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"O backtrace é inutilizável.\n"
+"Relato desabilitado porque o backtrace está inutilizável.\n"
 "Por favor, tente instalar o debuginfo manualmente usando o comando: "
 "<b>debuginfo-install %s</b> \n"
 "e depois use o botão Atualizar para regerar o backtrace. "
 
-#: ../src/Gui/CCReporterDialog.py:127
-msgid "The backtrace is unusable, you shouldn't report this!"
-msgstr "O backtrace é inutilizável, você não pode reportá-lo! "
+#: ../src/Gui/CCReporterDialog.py:120
+msgid "The backtrace is unusable, you can't report this!"
+msgstr "O backtrace está inutilizável, você não pode reportá-lo! "
 
-#: ../src/Gui/CCReporterDialog.py:131
+#: ../src/Gui/CCReporterDialog.py:124
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -273,15 +274,16 @@ msgstr ""
 "O backtrace está incompleto. Por favor, certifique-se de fornecer bons "
 "passos para a reprodução."
 
-#: ../src/Gui/CCReporterDialog.py:137
+#: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr "Relatório desabilitado, por favor, repare os problemas demonstrados acima."
+msgstr ""
+"Relatório desabilitado, por favor, repare os problemas demonstrados acima."
 
-#: ../src/Gui/CCReporterDialog.py:139
+#: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
 msgstr "Envia um relato usando o plugin selecionado."
 
-#: ../src/Gui/CCReporterDialog.py:399
+#: ../src/Gui/CCReporterDialog.py:392
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -289,7 +291,7 @@ msgstr ""
 "Não existe nenhum plugin relatador disponível para este tipo de travamento\n"
 "Por favor verifique o abrt.conf."
 
-#: ../src/Gui/CCReporterDialog.py:419
+#: ../src/Gui/CCReporterDialog.py:412
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -298,12 +300,12 @@ msgstr ""
 "Não foi possível salvar as configurações do plugin:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:449
+#: ../src/Gui/CCReporterDialog.py:442
 #, python-format
 msgid "Configure %s options"
 msgstr "Configure %s opções"
 
-#: ../src/Gui/CCReporterDialog.py:499
+#: ../src/Gui/CCReporterDialog.py:492
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -311,7 +313,7 @@ msgstr ""
 "Não foi possível obter o relatório!\n"
 "O debuginfo está faltando?"
 
-#: ../src/Gui/CCReporterDialog.py:528
+#: ../src/Gui/CCReporterDialog.py:521
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -320,7 +322,7 @@ msgstr ""
 "Falha no relato!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:554 ../src/Gui/CCReporterDialog.py:575
+#: ../src/Gui/CCReporterDialog.py:547 ../src/Gui/CCReporterDialog.py:568
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
@@ -563,7 +565,9 @@ msgstr "Aviso"
 
 #: ../src/Applet/CCApplet.cpp:88
 msgid "Notification area applet to notify user about issues detected by ABRT"
-msgstr "O mini aplicativo da área de notificação para notificar o usuário sobre os problemas detectados pelo ABRT"
+msgstr ""
+"O mini aplicativo da área de notificação para notificar o usuário sobre os "
+"problemas detectados pelo ABRT"
 
 #: ../src/Applet/CCApplet.cpp:114
 msgid "Hide"
@@ -582,12 +586,12 @@ msgstr ""
 msgid "Bug is already reported: %i"
 msgstr "O erro já foi relatado: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:402
+#: ../lib/Plugins/Bugzilla.cpp:404
 #, c-format
 msgid "New bug id: %i"
 msgstr "Novo id do erro: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:614
+#: ../lib/Plugins/Bugzilla.cpp:616
 msgid ""
 "Empty login and password.\n"
 "Please check "
@@ -595,50 +599,52 @@ msgstr ""
 "Login e senha vagios.\n"
 "Por favor, verifique"
 
-#: ../lib/Plugins/Bugzilla.cpp:622
+#: ../lib/Plugins/Bugzilla.cpp:624
 msgid "Logging into bugzilla..."
 msgstr "Autenticando no bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:625
+#: ../lib/Plugins/Bugzilla.cpp:627
 msgid "Checking for duplicates..."
 msgstr "Verificando duplicatas..."
 
-#: ../lib/Plugins/Bugzilla.cpp:638
+#: ../lib/Plugins/Bugzilla.cpp:640
 msgid "Missing mandatory member 'bugs'"
 msgstr "Membro 'bugs' obrigatórios faltando"
 
-#: ../lib/Plugins/Bugzilla.cpp:648
+#: ../lib/Plugins/Bugzilla.cpp:650
 msgid "Creating new bug..."
 msgstr "Criando novo erro..."
 
-#: ../lib/Plugins/Bugzilla.cpp:653
+#: ../lib/Plugins/Bugzilla.cpp:655
 msgid "Bugzilla entry creation failed"
 msgstr "Criação da entrada do bugzilla falhou"
 
-#: ../lib/Plugins/Bugzilla.cpp:661 ../lib/Plugins/Bugzilla.cpp:768
+#: ../lib/Plugins/Bugzilla.cpp:663 ../lib/Plugins/Bugzilla.cpp:773
 msgid "Logging out..."
 msgstr "Encerrando sessão..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693 ../lib/Plugins/Bugzilla.cpp:721
+#: ../lib/Plugins/Bugzilla.cpp:695 ../lib/Plugins/Bugzilla.cpp:723
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info()falhou. Não foi possível coletar todas as informações obrigatórias."
+msgstr ""
+"get_bug_info()falhou. Não foi possível coletar todas as informações "
+"obrigatórias."
 
-#: ../lib/Plugins/Bugzilla.cpp:705
+#: ../lib/Plugins/Bugzilla.cpp:707
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "O Bugzilla não conseguiu encontrar o paii do bug (%d)"
 
-#: ../lib/Plugins/Bugzilla.cpp:710
+#: ../lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Ir para bug %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:735 ../lib/Plugins/Bugzilla.cpp:736
+#: ../lib/Plugins/Bugzilla.cpp:737 ../lib/Plugins/Bugzilla.cpp:738
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Adicionar o %s â lista CC"
 
-#: ../lib/Plugins/Bugzilla.cpp:759
+#: ../lib/Plugins/Bugzilla.cpp:762
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Adicionar novo comentário ao bug (%d)"
@@ -655,11 +661,17 @@ msgstr "Obtendo backtrace... "
 msgid "Starting debuginfo installation"
 msgstr "Iniciando instalação do debuginfo"
 
-#: ../lib/Plugins/CCpp.cpp:587
+#. Compatibility code.
+#. This whole block should be deleted for Fedora 14.
+#: ../lib/Plugins/CCpp.cpp:533
+msgid "Getting global universal unique identification..."
+msgstr "Obtendo identificação global universal única..."
+
+#: ../lib/Plugins/CCpp.cpp:699
 msgid "Skipping debuginfo installation"
 msgstr "Pulando instalação do debuginfo"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:93
+#: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "Criando e enviando um relatório..."
 
@@ -704,3 +716,13 @@ msgstr "Executando o sosreport: %s"
 msgid "Done running sosreport"
 msgstr "Execução do sosreport realizada "
 
+#~ msgid ""
+#~ "Usage: abrt-gui [OPTIONS]\n"
+#~ "\t-h, --help         \tthis help message\n"
+#~ "\t-v[vv]             \tverbosity level\n"
+#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
+#~ msgstr ""
+#~ "Usage: abrt-gui [OPTIONS]\n"
+#~ "\t-h, --help         \tthis help message\n"
+#~ "\t-v[vv]             \tverbosity level\n"
+#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
