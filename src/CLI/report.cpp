@@ -431,29 +431,24 @@ static void read_from_stdin(const char *question, char *result, int result_size)
   if (NULL == fgets(result, result_size, stdin))
     result[0] = '\0';
   // Remove the newline from the login.
-  char *newline = strchr(result, '\n');
-  if (newline)
-    *newline = '\0';
+  strchrnul(result, '\n')[0] = '\0';
 }
 
 /** Splits a string into substrings using chosen delimiters.
  * @param delim
- *  Specifies  a  set  of characters that delimit the
+ *  Specifies a set of characters that delimit the
  *  tokens in the parsed string
  */
-static vector_string_t split(const std::string &s, const char *delim)
+static vector_string_t split(const char *s, const char delim)
 {
   std::vector<std::string> elems;
-  char str[s.length() + 1];
-  /* str is modified by the following strtok_r,
-     so s.c_str() cannot be used directly */
-  strcpy(str, s.c_str());
-  char *saveptr, *token;
-  token = strtok_r(str, delim, &saveptr);
-  while (token != NULL)
+  while (1)
   {
-    elems.push_back(token);
-    token = strtok_r(NULL, delim, &saveptr);
+    const char *end = strchrnul(s, delim);
+    elems.push_back(std::string(s, end - s));
+    if (*end == '\0')
+      break;
+    s = end + 1;
   }
   return elems;
 }
@@ -499,7 +494,7 @@ static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
   }
 
   /* Reporters found, now parse the list. */
-  vector_string_t reporter_vec = split(reporters_iter->second, ",");
+  vector_string_t reporter_vec = split(reporters_iter->second.c_str(), ',');
 
   // Get informations about all plugins.
   map_map_string_t plugins = call_GetPluginsInfo();
@@ -508,7 +503,7 @@ static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
   for (it = plugins.begin(); it != itend; ++it)
   {
     // Skip disabled plugins.
-    if (0 != strcmp(it->second["Enabled"].c_str(), "yes"))
+    if (string_to_bool(it->second["Enabled"].c_str()) != true)
       continue;
     // Skip nonReporter plugins.
     if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
