@@ -1,22 +1,24 @@
-# translation of ja.po to Japanese
+# translation of abrt.po to Japanese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Kiyoto Hashida <khashida@redhat.com>, 2009, 2010.
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
+# Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: ja\n"
+"Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-04-12 09:08+0000\n"
-"PO-Revision-Date: 2010-04-12 21:47+0900\n"
-"Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
-"Language-Team: Japanese <jp@li.org>\n"
+"POT-Creation-Date: 2010-04-20 22:09+0000\n"
+"PO-Revision-Date: 2010-04-21 11:21+1000\n"
+"Last-Translator: Noriko Mizumoto <noriko@fedoraproject.org>\n"
+"Language-Team: Japanese <fedora-trans-ja@redhat.com>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n\n"
+"Plural-Forms:  nplurals=1; plural=0;\n"
+"\n"
 "\n"
 "\n"
 "\n"
@@ -35,8 +37,8 @@ msgstr "別のクライアントが稼働していますので、それを呼び
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
-"デーモンから予想外のデータを受け取りました（データベースは正常に更新されてい"
-"ますか？）。"
+"デーモンから予想外のデータを受け取りました (データベースは正常に更新されてい"
+"ますか?)。"
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -586,12 +588,12 @@ msgstr ""
 msgid "Bug is already reported: %i"
 msgstr "バグは既に報告済みです: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:402
+#: ../lib/Plugins/Bugzilla.cpp:404
 #, c-format
 msgid "New bug id: %i"
 msgstr "新しいバグ id: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:614
+#: ../lib/Plugins/Bugzilla.cpp:616
 msgid ""
 "Empty login and password.\n"
 "Please check "
@@ -599,50 +601,50 @@ msgstr ""
 "ログインとパスワードが空です。\n"
 "確認して下さい。"
 
-#: ../lib/Plugins/Bugzilla.cpp:622
+#: ../lib/Plugins/Bugzilla.cpp:624
 msgid "Logging into bugzilla..."
 msgstr "bugzilla にログインしています..."
 
-#: ../lib/Plugins/Bugzilla.cpp:625
+#: ../lib/Plugins/Bugzilla.cpp:627
 msgid "Checking for duplicates..."
 msgstr "重複をチェックしています..."
 
-#: ../lib/Plugins/Bugzilla.cpp:638
+#: ../lib/Plugins/Bugzilla.cpp:640
 msgid "Missing mandatory member 'bugs'"
 msgstr "必須のメンバー「バグ」の欠如"
 
-#: ../lib/Plugins/Bugzilla.cpp:648
+#: ../lib/Plugins/Bugzilla.cpp:650
 msgid "Creating new bug..."
 msgstr "新しいバグを作成中..."
 
-#: ../lib/Plugins/Bugzilla.cpp:653
+#: ../lib/Plugins/Bugzilla.cpp:655
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla エントリ作成に失敗しました"
 
-#: ../lib/Plugins/Bugzilla.cpp:661 ../lib/Plugins/Bugzilla.cpp:768
+#: ../lib/Plugins/Bugzilla.cpp:663 ../lib/Plugins/Bugzilla.cpp:773
 msgid "Logging out..."
 msgstr "ログアウトしています..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693 ../lib/Plugins/Bugzilla.cpp:721
+#: ../lib/Plugins/Bugzilla.cpp:695 ../lib/Plugins/Bugzilla.cpp:723
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() は失敗です。全ての必須情報を収集できませんでした"
 
-#: ../lib/Plugins/Bugzilla.cpp:705
+#: ../lib/Plugins/Bugzilla.cpp:707
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla はバグ (%d) の親を見つけることが出来ません。"
 
-#: ../lib/Plugins/Bugzilla.cpp:710
+#: ../lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Jump to bug %d"
 msgstr "バグ %d にジャンプ"
 
-#: ../lib/Plugins/Bugzilla.cpp:735 ../lib/Plugins/Bugzilla.cpp:736
+#: ../lib/Plugins/Bugzilla.cpp:737 ../lib/Plugins/Bugzilla.cpp:738
 #, c-format
 msgid "Add %s to CC list"
 msgstr "CC 一覧に %s を追加"
 
-#: ../lib/Plugins/Bugzilla.cpp:759
+#: ../lib/Plugins/Bugzilla.cpp:762
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "バグ (%d) に新規コメントを追加"
@@ -669,7 +671,7 @@ msgstr "グローバルで普遍的な特有の識別を取得しています...
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo のインストールをスキップします"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:93
+#: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "報告の作成と提出をしています..."
 
