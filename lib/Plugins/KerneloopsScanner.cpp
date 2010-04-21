@@ -12,10 +12,14 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+
     Authors:
-       Anton Arapov <anton@redhat.com>
-       Arjan van de Ven <arjan@linux.intel.com>
- */
+    Anton Arapov <anton@redhat.com>
+    Arjan van de Ven <arjan@linux.intel.com>
+*/
 
 #include <assert.h>
 #include <syslog.h>
@@ -31,19 +35,19 @@
 
 static int scan_dmesg(vector_string_t& oopsList)
 {
-	VERB1 log("Scanning dmesg");
+    VERB1 log("Scanning dmesg");
 
-	/* syslog(3) - read the last len bytes from the log buffer
-	 * (non-destructively), but dont read more than was written
-	 * into the buffer since the last"clear ring buffer" cmd.
-	 * Returns the number of bytes read.
-	 */
-	char *buffer = (char*)xzalloc(16*1024);
-	syscall(__NR_syslog, 3, buffer, 16*1024 - 1); /* always NUL terminated */
-	int cnt_FoundOopses = extract_oopses(oopsList, buffer, strlen(buffer));
-	free(buffer);
+    /* syslog(3) - read the last len bytes from the log buffer
+     * (non-destructively), but dont read more than was written
+     * into the buffer since the last"clear ring buffer" cmd.
+     * Returns the number of bytes read.
+     */
+    char *buffer = (char*)xzalloc(16*1024);
+    syscall(__NR_syslog, 3, buffer, 16*1024 - 1); /* always NUL terminated */
+    int cnt_FoundOopses = extract_oopses(oopsList, buffer, strlen(buffer));
+    free(buffer);
 
-	return cnt_FoundOopses;
+    return cnt_FoundOopses;
 }
 
 
@@ -52,94 +56,98 @@ extern "C" {
 
 int scan_syslog_file(vector_string_t& oopsList, const char *filename, time_t *last_changed_p)
 {
-	VERB1 log("Scanning syslog file '%s'", filename);
+    VERB1 log("Scanning syslog file '%s'", filename);
 
-	char *buffer;
-	struct stat statb;
-	int fd;
-	int cnt_FoundOopses;
-	ssize_t sz;
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		return 0;
-	statb.st_size = 0; /* paranoia */
-	if (fstat(fd, &statb) != 0 || statb.st_size < 1) {
-		close(fd);
-		return 0;
-	}
+    char *buffer;
+    struct stat statb;
+    int fd;
+    int cnt_FoundOopses;
+    ssize_t sz;
+    fd = open(filename, O_RDONLY);
+    if (fd < 0)
+        return 0;
+    statb.st_size = 0; /* paranoia */
+    if (fstat(fd, &statb) != 0 || statb.st_size < 1)
+    {
+        close(fd);
+        return 0;
+    }
 
-	if (last_changed_p != NULL) {
-		if (*last_changed_p == statb.st_mtime) {
-			VERB1 log("Syslog file '%s' hasn't changed since last scan, skipping", filename);
-			close(fd);
-			return 0;
-		}
-		*last_changed_p = statb.st_mtime;
-	}
+    if (last_changed_p != NULL)
+    {
+        if (*last_changed_p == statb.st_mtime)
+        {
+            VERB1 log("Syslog file '%s' hasn't changed since last scan, skipping", filename);
+            close(fd);
+            return 0;
+        }
+        *last_changed_p = statb.st_mtime;
+    }
 
-	/*
-	 * In theory we have a race here, since someone could spew
-	 * to /var/log/messages before we read it in... we try to
-	 * deal with it by reading at most 10kbytes extra. If there's
-	 * more than that.. any oops will be in dmesg anyway.
-	 * Do not try to allocate an absurd amount of memory; ignore
-	 * older log messages because they are unlikely to have
-	 * sufficiently recent data to be useful.  32MB is more
-	 * than enough; it's not worth looping through more log
-	 * if the log is larger than that.
-	 */
-	sz = statb.st_size + 10*1024;
-	if (statb.st_size > (32*1024*1024 - 10*1024)) {
-		xlseek(fd, statb.st_size - (32*1024*1024 - 10*1024), SEEK_SET);
-		sz = 32*1024*1024;
-	}
-	buffer = (char*)xzalloc(sz);
-	sz = full_read(fd, buffer, sz);
-	close(fd);
+    /*
+     * In theory we have a race here, since someone could spew
+     * to /var/log/messages before we read it in... we try to
+     * deal with it by reading at most 10kbytes extra. If there's
+     * more than that.. any oops will be in dmesg anyway.
+     * Do not try to allocate an absurd amount of memory; ignore
+     * older log messages because they are unlikely to have
+     * sufficiently recent data to be useful.  32MB is more
+     * than enough; it's not worth looping through more log
+     * if the log is larger than that.
+     */
+    sz = statb.st_size + 10*1024;
+    if (statb.st_size > (32*1024*1024 - 10*1024))
+    {
+        xlseek(fd, statb.st_size - (32*1024*1024 - 10*1024), SEEK_SET);
+        sz = 32*1024*1024;
+    }
+    buffer = (char*)xzalloc(sz);
+    sz = full_read(fd, buffer, sz);
+    close(fd);
 
-	cnt_FoundOopses = 0;
-	if (sz > 0) {
-		cnt_FoundOopses = extract_oopses(oopsList, buffer, sz);
-	}
-	free(buffer);
+    cnt_FoundOopses = 0;
+    if (sz > 0)
+        cnt_FoundOopses = extract_oopses(oopsList, buffer, sz);
+    free(buffer);
 
-	return cnt_FoundOopses;
+    return cnt_FoundOopses;
 }
 
 void save_oops_to_debug_dump(const vector_string_t& oopsList)
 {
-	unsigned countdown = 16; /* do not report hundreds of oopses */
-	unsigned idx = oopsList.size();
-	time_t t = time(NULL);
+    unsigned countdown = 16; /* do not report hundreds of oopses */
+    unsigned idx = oopsList.size();
+    time_t t = time(NULL);
 
-	VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
+    VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
 
-	while (idx != 0 && --countdown != 0) {
-		char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu") + 2 * sizeof(long)*3];
-		sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu", (long)t, (long)idx);
-		try
-		{
-			std::string oops = oopsList.at(--idx);
-			const char *first_line = oops.c_str();
-			char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
-              		*second_line++ = '\0';
+    while (idx != 0 && --countdown != 0)
+    {
+        char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu") + 2 * sizeof(long)*3];
+        sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu", (long)t, (long)idx);
+        try
+        {
+            std::string oops = oopsList.at(--idx);
+            const char *first_line = oops.c_str();
+            char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
+            *second_line++ = '\0';
 
-			CDebugDump dd;
-			dd.Create(path, /*uid:*/ 0);
-			dd.SaveText(FILENAME_ANALYZER, "Kerneloops");
-			dd.SaveText(FILENAME_EXECUTABLE, "kernel");
-			dd.SaveText(FILENAME_KERNEL, first_line);
-			dd.SaveText(FILENAME_CMDLINE, "not_applicable");
-			dd.SaveText(FILENAME_BACKTRACE, second_line);
-			/* Optional, makes generated bz more informative */
-			strchrnul(second_line, '\n')[0] = '\0';
-			dd.SaveText(FILENAME_REASON, second_line);
-		}
-		catch (CABRTException& e)
-		{
-			throw CABRTException(EXCEP_PLUGIN, "%s: %s", __func__, e.what());
-		}
-	}
+            CDebugDump dd;
+            dd.Create(path, /*uid:*/ 0);
+            dd.SaveText(FILENAME_ANALYZER, "Kerneloops");
+            dd.SaveText(FILENAME_EXECUTABLE, "kernel");
+            dd.SaveText(FILENAME_KERNEL, first_line);
+            dd.SaveText(FILENAME_CMDLINE, "not_applicable");
+            dd.SaveText(FILENAME_BACKTRACE, second_line);
+            /* Optional, makes generated bz more informative */
+            strchrnul(second_line, '\n')[0] = '\0';
+            dd.SaveText(FILENAME_REASON, second_line);
+        }
+        catch (CABRTException& e)
+        {
+            throw CABRTException(EXCEP_PLUGIN, "%s: %s", __func__, e.what());
+        }
+    }
 }
 
 } /* extern "C" */
@@ -147,44 +155,41 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 
 CKerneloopsScanner::CKerneloopsScanner()
 {
-	int cnt_FoundOopses;
-	m_syslog_last_change = 0;
+    int cnt_FoundOopses;
+    m_syslog_last_change = 0;
 
-	/* Scan dmesg, on first call only */
-	vector_string_t oopsList;
-	cnt_FoundOopses = scan_dmesg(oopsList);
-	if (cnt_FoundOopses > 0) {
-		save_oops_to_debug_dump(oopsList);
-	}
+    /* Scan dmesg, on first call only */
+    vector_string_t oopsList;
+    cnt_FoundOopses = scan_dmesg(oopsList);
+    if (cnt_FoundOopses > 0)
+        save_oops_to_debug_dump(oopsList);
 }
 
 void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs, int force)
 {
-	const char *syslog_file = "/var/log/messages";
-	map_plugin_settings_t::const_iterator it = m_pSettings.find("SysLogFile");
-	if (it != m_pSettings.end()) {
-		syslog_file = it->second.c_str();
-	}
+    const char *syslog_file = "/var/log/messages";
+    map_plugin_settings_t::const_iterator it = m_pSettings.find("SysLogFile");
+    if (it != m_pSettings.end())
+        syslog_file = it->second.c_str();
 
-	vector_string_t oopsList;
-	int cnt_FoundOopses = scan_syslog_file(oopsList, syslog_file, &m_syslog_last_change);
-	if (cnt_FoundOopses > 0) {
-		save_oops_to_debug_dump(oopsList);
-		/*
-		 * This marker in syslog file prevents us from
-		 * re-parsing old oopses (any oops before it is
-		 * ignored by scan_syslog_file()). The only problem
-		 * is that we can't be sure here that syslog_file
-		 * is the file where syslog(xxx) stuff ends up.
-		 */
-		openlog("abrt", 0, LOG_KERN);
-		syslog(
-			LOG_WARNING,
-			"Kerneloops: Reported %u kernel oopses to Abrt",
-			cnt_FoundOopses
-		);
-		closelog();
-	}
+    vector_string_t oopsList;
+    int cnt_FoundOopses = scan_syslog_file(oopsList, syslog_file, &m_syslog_last_change);
+    if (cnt_FoundOopses > 0)
+    {
+        save_oops_to_debug_dump(oopsList);
+        /*
+         * This marker in syslog file prevents us from
+         * re-parsing old oopses (any oops before it is
+         * ignored by scan_syslog_file()). The only problem
+         * is that we can't be sure here that syslog_file
+         * is the file where syslog(xxx) stuff ends up.
+         */
+        openlog("abrt", 0, LOG_KERN);
+        syslog(LOG_WARNING,
+               "Kerneloops: Reported %u kernel oopses to Abrt",
+               cnt_FoundOopses);
+        closelog();
+    }
 }
 
 PLUGIN_INFO(ACTION,
