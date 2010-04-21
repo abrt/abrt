@@ -610,10 +610,10 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         NoSSLVerify = m_bNoSSLVerify;
     }
 
-    if ((Login == "") && (Password == ""))
+    if ((Login == "") || (Password == ""))
     {
         VERB3 log("Empty login and password");
-        throw CABRTException(EXCEP_PLUGIN, _("Empty login and password.\nPlease check "PLUGINS_CONF_DIR"/Bugzilla.conf."));
+        throw CABRTException(EXCEP_PLUGIN, _("Empty login or password.\nPlease check "PLUGINS_CONF_DIR"/Bugzilla.conf."));
     }
 
     const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
