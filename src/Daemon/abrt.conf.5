@@ -14,7 +14,7 @@ several items in the format "Option = Value". A description of each
 section follows:
 .SS [Common]
 .TP
-.B EnableOpenGPG =  \fIyes\fP | \fIno\fP
+.B OpenGPGCheck =  \fIyes\fP | \fIno\fP
 When set to "yes",
 .I abrt
 will report crashes only in GPG signed packages. When set to "no",
@@ -24,7 +24,7 @@ it will report crashes also in unsigned packages. The default is "no".
 These are the trusted GPG keys with which packages have to be
 signed for
 .I abrt
-to report them if "EnableOpenGPG = yes".
+to report them if "OpenGPGCheck = yes".
 .TP
 .B BlackList = \fIpackageName\fP, \fIpackageName\fP ...
 .I abrt
