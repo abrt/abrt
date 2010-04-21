@@ -707,6 +707,9 @@ int main(int argc, char** argv)
     textdomain(PACKAGE);
 #endif
 
+    if (getuid() != 0)
+        error_msg_and_die("ABRT daemon must be run as root");
+
     while ((opt = getopt(argc, argv, "dsvt:")) != -1)
     {
         unsigned long ul;
