@@ -1,24 +1,22 @@
-# translation of abrt.po to Japanese
+# translation of ja.po to Japanese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 #
 # Kiyoto Hashida <khashida@redhat.com>, 2009, 2010.
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
-# Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt\n"
+"Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-04-20 22:09+0000\n"
-"PO-Revision-Date: 2010-04-21 11:21+1000\n"
-"Last-Translator: Noriko Mizumoto <noriko@fedoraproject.org>\n"
-"Language-Team: Japanese <fedora-trans-ja@redhat.com>\n"
+"POT-Creation-Date: 2010-04-23 02:35+0000\n"
+"PO-Revision-Date: 2010-04-23 17:01+0900\n"
+"Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
+"Language-Team: Japanese <jp@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=1; plural=0;\n"
-"\n"
+"Plural-Forms: Plural-Forms: nplurals=1; plural=0;\n\n"
 "\n"
 "\n"
 "\n"
@@ -37,8 +35,8 @@ msgstr "別のクライアントが稼働していますので、それを呼び
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
-"デーモンから予想外のデータを受け取りました (データベースは正常に更新されてい"
-"ますか?)。"
+"デーモンから予想外のデータを受け取りました（データベースは正常に更新されてい"
+"ますか？）。"
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -264,14 +262,14 @@ msgid ""
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
-"バックトレースが使用できないため、報告機能は無効になっています。\n"
+"バックトレースが使用できませんので、報告ができません。\n"
 "コマンド : <b>debuginfo-install %s</b> を使用して手動で debuginfo を インス"
 "トールしてから \n"
 "リフレッシュボタンを使用してバックトレースを再生成して下さい。"
 
 #: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
-msgstr "バックトレースが使用不可です。これは報告できません!"
+msgstr "バックトレースが使用不可です。これを報告しないで下さい!"
 
 #: ../src/Gui/CCReporterDialog.py:124
 msgid ""
@@ -595,10 +593,10 @@ msgstr "新しいバグ id: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:616
 msgid ""
-"Empty login and password.\n"
+"Empty login or password.\n"
 "Please check "
 msgstr ""
-"ログインとパスワードが空です。\n"
+"ログインかパスワードが空です。\n"
 "確認して下さい。"
 
 #: ../lib/Plugins/Bugzilla.cpp:624
@@ -665,7 +663,7 @@ msgstr "debuginfo のインストールをスタート中"
 #. This whole block should be deleted for Fedora 14.
 #: ../lib/Plugins/CCpp.cpp:533
 msgid "Getting global universal unique identification..."
-msgstr "グローバルで普遍的な特有の識別を取得しています..."
+msgstr "グローバルで普遍的な独自の識別を取得しています..."
 
 #: ../lib/Plugins/CCpp.cpp:699
 msgid "Skipping debuginfo installation"
