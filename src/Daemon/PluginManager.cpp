@@ -381,11 +381,9 @@ void CPluginManager::SetPluginSettings(const char *pName,
         return;
     }
 
-    string home = get_home_dir(xatoi_u(pUID.c_str()));
-    if (home == "")
-    {
+    const char *home = get_home_dir(xatoi_u(pUID.c_str()));
+    if (home == NULL || strlen(home) == 0)
         return;
-    }
 
     string confDir = home + "/.abrt";
     string confPath = confDir + "/" + pName + "."PLUGINS_CONF_EXTENSION;

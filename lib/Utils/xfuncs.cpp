@@ -276,11 +276,11 @@ void xstat(const char *name, struct stat *stat_buf)
         perror_msg_and_die("can't stat '%s'", name);
 }
 
-std::string get_home_dir(uid_t uid)
+const char *get_home_dir(uid_t uid)
 {
     struct passwd* pw = getpwuid(uid);
     // TODO: handle errno
-    return pw ? pw->pw_dir : "";
+    return pw ? pw->pw_dir : NULL;
 }
 
 // Die if we can't open a file and return a fd

@@ -79,6 +79,11 @@ extern bool string_to_bool(const char *s);
 extern void xsetreuid(uid_t ruid, uid_t euid);
 extern void xsetregid(gid_t rgid, gid_t egid);
 
+/* Do not pass the returned pointer to free().
+   Do not modify the contents of the returned string.
+   NULL is returned in the case of failure. */
+extern const char *get_home_dir(uid_t uid);
+
 #ifdef __cplusplus
 }
 #endif
@@ -86,7 +91,6 @@ extern void xsetregid(gid_t rgid, gid_t egid);
 #ifdef __cplusplus
 std::string ssprintf(const char *format, ...);
 std::string concat_path_file(const char *path, const char *filename);
-std::string get_home_dir(uid_t uid);
 #endif
 
 #endif
