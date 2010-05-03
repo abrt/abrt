@@ -4,15 +4,53 @@ public_icons_themes = \
 	hicolor	\
 	$(NULL)
 
-private_icons = hicolor_status_48x48_abrt00.png \
-		hicolor_status_48x48_abrt02.png \
-		hicolor_status_48x48_abrt04.png \
-		hicolor_status_48x48_abrt01.png \
-		hicolor_status_48x48_abrt03.png \
-		hicolor_status_48x48_abrt05.png
-		
+private_icons = \
+		hicolor_status_16x16_abrt00.png	\
+		hicolor_status_16x16_abrt01.png	\
+		hicolor_status_16x16_abrt02.png	\
+		hicolor_status_16x16_abrt03.png	\
+		hicolor_status_16x16_abrt04.png	\
+		hicolor_status_16x16_abrt05.png	\
+		hicolor_status_22x22_abrt00.png	\
+		hicolor_status_22x22_abrt01.png	\
+		hicolor_status_22x22_abrt02.png	\
+		hicolor_status_22x22_abrt03.png	\
+		hicolor_status_22x22_abrt04.png	\
+		hicolor_status_22x22_abrt05.png	\
+		hicolor_status_24x24_abrt00.png	\
+		hicolor_status_24x24_abrt01.png	\
+		hicolor_status_24x24_abrt02.png	\
+		hicolor_status_24x24_abrt03.png	\
+		hicolor_status_24x24_abrt04.png	\
+		hicolor_status_24x24_abrt05.png	\
+		hicolor_status_32x32_abrt00.png	\
+		hicolor_status_32x32_abrt01.png	\
+		hicolor_status_32x32_abrt02.png	\
+		hicolor_status_32x32_abrt03.png	\
+		hicolor_status_32x32_abrt04.png	\
+		hicolor_status_32x32_abrt05.png	\
+		hicolor_status_48x48_abrt00.png	\
+		hicolor_status_48x48_abrt01.png	\
+		hicolor_status_48x48_abrt02.png	\
+		hicolor_status_48x48_abrt03.png	\
+		hicolor_status_48x48_abrt04.png	\
+		hicolor_status_48x48_abrt05.png	\
+		$(NULL)
 
-EXTRA_DIST = $(private_icons)
+public_icons = hicolor_apps_16x16_abrt.png	\
+		hicolor_apps_22x22_abrt.png	\
+		hicolor_apps_24x24_abrt.png	\
+		hicolor_apps_32x32_abrt.png	\
+		hicolor_apps_48x48_abrt.png	\
+		hicolor_status_16x16_abrt.png	\
+		hicolor_status_22x22_abrt.png	\
+		hicolor_status_24x24_abrt.png	\
+		hicolor_status_32x32_abrt.png	\
+		hicolor_status_48x48_abrt.png	\
+		$(NULL)
+
+
+EXTRA_DIST = $(private_icons) $(public_icons)
 
 ###############################################################################
 
