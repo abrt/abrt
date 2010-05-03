@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-04-06 18:59+0200\n"
+"POT-Creation-Date: 2010-05-03 16:46+0200\n"
 "PO-Revision-Date: 2010-03-12 23:28+0100\n"
 "Last-Translator: Peter Bojtos <ptr@ulx.hu>\n"
 "Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat."
@@ -105,7 +105,7 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:104
+#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:105
 msgid "translator-credits"
 msgstr ""
 
@@ -169,7 +169,7 @@ msgstr "<b>Megjegyzés</b>"
 msgid "<b>Comment:</b>"
 msgstr "<b>Megjegyzés</b>"
 
-#: src/Gui/ccgui.glade:553 src/Gui/ccgui.glade:681 src/Applet/CCApplet.cpp:251
+#: src/Gui/ccgui.glade:553 src/Gui/ccgui.glade:681 src/Applet/CCApplet.cpp:253
 msgid "Report"
 msgstr "Jelentés"
 
@@ -560,16 +560,16 @@ msgstr "Összeomlás érzékelve a(z) %s csomagban"
 msgid "ABRT service is not running"
 msgstr "ABRT szolgáltatás nem fut"
 
-#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:258
-#: src/Applet/CCApplet.cpp:285
+#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:260
+#: src/Applet/CCApplet.cpp:287
 msgid "Warning"
 msgstr "Figyelmeztetés"
 
-#: src/Applet/CCApplet.cpp:88
+#: src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
 msgstr ""
 
-#: src/Applet/CCApplet.cpp:114
+#: src/Applet/CCApplet.cpp:115
 msgid "Hide"
 msgstr ""
 
@@ -586,64 +586,64 @@ msgstr ""
 msgid "Bug is already reported: %i"
 msgstr "A hibát már bejelentették: %i"
 
-#: lib/Plugins/Bugzilla.cpp:395
+#: lib/Plugins/Bugzilla.cpp:404
 #, c-format
 msgid "New bug id: %i"
 msgstr "Új hiba azonosító: %i"
 
-#: lib/Plugins/Bugzilla.cpp:607
+#: lib/Plugins/Bugzilla.cpp:616
 #, fuzzy
 msgid ""
-"Empty login and password.\n"
+"Empty login or password.\n"
 "Please check "
 msgstr "Üres bejelentkező név és jelszó. Ellenőrizze a Bugzilla.conf-ot"
 
-#: lib/Plugins/Bugzilla.cpp:615
+#: lib/Plugins/Bugzilla.cpp:624
 msgid "Logging into bugzilla..."
 msgstr "Bejelentkezés a bugzillába..."
 
-#: lib/Plugins/Bugzilla.cpp:618
+#: lib/Plugins/Bugzilla.cpp:627
 msgid "Checking for duplicates..."
 msgstr "Többszörözés ellenőrzése..."
 
-#: lib/Plugins/Bugzilla.cpp:631
+#: lib/Plugins/Bugzilla.cpp:640
 msgid "Missing mandatory member 'bugs'"
 msgstr "Kötelező „bugs” címke hiányzik"
 
-#: lib/Plugins/Bugzilla.cpp:641
+#: lib/Plugins/Bugzilla.cpp:650
 msgid "Creating new bug..."
 msgstr "Új hiba készítése..."
 
-#: lib/Plugins/Bugzilla.cpp:646
+#: lib/Plugins/Bugzilla.cpp:655
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla bejegyzés létrehozása sikertelen"
 
-#: lib/Plugins/Bugzilla.cpp:654 lib/Plugins/Bugzilla.cpp:761
+#: lib/Plugins/Bugzilla.cpp:663 lib/Plugins/Bugzilla.cpp:773
 msgid "Logging out..."
 msgstr "Kijelentkezés..."
 
-#: lib/Plugins/Bugzilla.cpp:686 lib/Plugins/Bugzilla.cpp:714
+#: lib/Plugins/Bugzilla.cpp:695 lib/Plugins/Bugzilla.cpp:723
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() sikertelen. Nem lehet összegyűjteni minden kötelező "
 "információt"
 
-#: lib/Plugins/Bugzilla.cpp:698
+#: lib/Plugins/Bugzilla.cpp:707
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla nem találta (%d) hiba szülőjét."
 
-#: lib/Plugins/Bugzilla.cpp:703
+#: lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Ugrik %d hibára"
 
-#: lib/Plugins/Bugzilla.cpp:728 lib/Plugins/Bugzilla.cpp:729
+#: lib/Plugins/Bugzilla.cpp:737 lib/Plugins/Bugzilla.cpp:738
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s hozzáadása a CC listához"
 
-#: lib/Plugins/Bugzilla.cpp:752
+#: lib/Plugins/Bugzilla.cpp:762
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Új megjegyzés hozzáadása (%d) hibához"
@@ -668,7 +668,7 @@ msgstr "Globális egyetemes egyedi azonosító beszerzése..."
 msgid "Skipping debuginfo installation"
 msgstr "Debuginfo telepítés kihagyása"
 
-#: lib/Plugins/KerneloopsReporter.cpp:93
+#: lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "Jelentés elkészítése és beküldése..."
 
