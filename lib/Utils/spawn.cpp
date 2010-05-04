@@ -67,11 +67,13 @@ pid_t fork_execv_on_steroids(int flags,
 		/* Play with stdio descriptors */
 		if (flags & EXECFLG_INPUT) {
 			xmove_fd(pipe_to_child[0], STDIN_FILENO);
+			close(pipe_to_child[1]);
 		} else if (flags & EXECFLG_INPUT_NUL) {
 			xmove_fd(xopen("/dev/null", O_RDWR), STDIN_FILENO);
 		}
 		if (flags & EXECFLG_OUTPUT) {
 			xmove_fd(pipe_fm_child[1], STDOUT_FILENO);
+			close(pipe_to_child[0]);
 		} else if (flags & EXECFLG_OUTPUT_NUL) {
 			xmove_fd(xopen("/dev/null", O_RDWR), STDOUT_FILENO);
 		}

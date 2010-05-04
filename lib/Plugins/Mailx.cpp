@@ -38,7 +38,7 @@ static void exec_and_feed_input(uid_t uid, const char* pText, char **pArgs)
     int pipein[2];
 
     pid_t child = fork_execv_on_steroids(
-		EXECFLG_INPUT | EXECFLG_QUIET | EXECFLG_SETGUID,
+                EXECFLG_INPUT | EXECFLG_QUIET | EXECFLG_SETGUID,
                 pArgs,
                 pipein,
                 /*unsetenv_vec:*/ NULL,
