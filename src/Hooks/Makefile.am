@@ -1,4 +1,4 @@
-libexec_PROGRAMS = abrt-hook-ccpp abrt-hook-python
+libexec_PROGRAMS = abrt-hook-ccpp
 bin_PROGRAMS = dumpoops
 
 # abrt-hook-ccpp
@@ -29,18 +29,6 @@ dumpoops_CPPFLAGS = \
 dumpoops_LDADD = \
     ../../lib/Utils/libABRTUtils.la \
     ../../lib/Utils/libABRTdUtils.la
-
-# abrt-hook-python
-abrt_hook_python_SOURCES = abrt-hook-python.cpp
-abrt_hook_python_CPPFLAGS = \
-    -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/Utils \
-    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
-    -DCONF_DIR=\"$(CONF_DIR)\" \
-    -DVAR_RUN=\"$(VAR_RUN)\" \
-    -D_GNU_SOURCE
-abrt_hook_python_LDADD = \
-    ../../lib/Utils/libABRTUtils.la
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
