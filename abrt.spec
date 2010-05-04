@@ -347,8 +347,9 @@ fi
 %{_datadir}/%{name}/*.py*
 %{_datadir}/%{name}/*.glade
 %{_datadir}/applications/fedora-%{name}.desktop
-%{_datadir}/icons/hicolor/*/apps/*
-%{_datadir}/%{name}/icons/hicolor/*/status/*
+%{_datadir}/icons/*/*/apps/*
+%{_datadir}/icons/*/*/status/*
+%{_datadir}/%{name}/icons/*/*/status/*
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 

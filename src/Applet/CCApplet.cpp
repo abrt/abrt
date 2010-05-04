@@ -83,6 +83,7 @@ static GtkWidget *create_about_dialog()
                      NULL};
 
     const char *artists[] = {"Patrick Connelly <pcon@fedoraproject.org>",
+                             "Lapo Calamandrei",
                                 NULL};
 
     const char *comments = _("Notification area applet to notify user about "
@@ -141,11 +142,12 @@ CApplet::CApplet(const char* app_name)
     /* - animation - */
     if (m_bIconsLoaded == true)
     {
+        //FIXME: animation is disabled for now
         m_pStatusIcon = gtk_status_icon_new_from_pixbuf(icon_stages_buff[ICON_DEFAULT]);
     }
     else
     {
-        m_pStatusIcon = gtk_status_icon_new_from_stock(GTK_STOCK_DIALOG_WARNING);
+        m_pStatusIcon = gtk_status_icon_new_from_icon_name("abrt");
     }
     notify_init(app_name);
 
@@ -417,6 +419,8 @@ void CApplet::stop_animate_icon()
 
 bool CApplet::load_icons()
 {
+    //FIXME: just a tmp workaround
+    return false;
     int stage;
     for (stage = ICON_DEFAULT; stage < ICON_STAGE_LAST; stage++)
     {

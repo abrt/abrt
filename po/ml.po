@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-04-06 18:59+0200\n"
+"POT-Creation-Date: 2010-05-03 16:46+0200\n"
 "PO-Revision-Date: 2010-03-25 17:30+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -99,7 +99,7 @@ msgstr ""
 "ഈ പ്രോഗ്രാമിനൊപ്പം നിങ്ങള്‍ക്കു് ഗ്നു ജനറല്‍ പബ്ളിക് ലൈസന്‍സിന്റെ ഒരു പകര്‍പ്പും ലഭിച്ചിരിക്കണം, "
 "ഇല്ലായെങ്കില്‍,  <http://www.gnu.org/licenses/> കാണുക."
 
-#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:104
+#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:105
 msgid "translator-credits"
 msgstr "Ani Peter | അനി പീറ്റര്‍ <apeter@redhat.com>"
 
@@ -163,7 +163,7 @@ msgstr "<b>അഭിപ്രായം</b>"
 msgid "<b>Comment:</b>"
 msgstr "<b>അഭിപ്രായം</b>"
 
-#: src/Gui/ccgui.glade:553 src/Gui/ccgui.glade:681 src/Applet/CCApplet.cpp:251
+#: src/Gui/ccgui.glade:553 src/Gui/ccgui.glade:681 src/Applet/CCApplet.cpp:253
 msgid "Report"
 msgstr "റിപോര്‍ട്ട്"
 
@@ -547,18 +547,18 @@ msgstr "ഒരു തകരാര്‍ കണ്ടുപിടിച്ചി�
 msgid "ABRT service is not running"
 msgstr "ABRT സര്‍വീസ് പ്രവര്‍ത്തിക്കുന്നില്ല"
 
-#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:258
-#: src/Applet/CCApplet.cpp:285
+#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:260
+#: src/Applet/CCApplet.cpp:287
 msgid "Warning"
 msgstr "മുന്നറിയിപ്പു്"
 
-#: src/Applet/CCApplet.cpp:88
+#: src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
 msgstr ""
 "ABRT കണ്ടുപിടിക്കുന്ന പ്രശ്നങ്ങളെപ്പറ്റി ഉപയോക്താവിനെ അറിയിക്കുന്നതിനായുള്ള അറിയിപ്പിനുള്ള "
 "ആപ്ലെറ്റ്"
 
-#: src/Applet/CCApplet.cpp:114
+#: src/Applet/CCApplet.cpp:115
 msgid "Hide"
 msgstr "അദൃശ്യമാക്കുക"
 
@@ -575,65 +575,66 @@ msgstr ""
 msgid "Bug is already reported: %i"
 msgstr "ബഗ് രേഖപ്പെടുത്തിയിട്ടുണ്ടു്: %i"
 
-#: lib/Plugins/Bugzilla.cpp:395
+#: lib/Plugins/Bugzilla.cpp:404
 #, c-format
 msgid "New bug id: %i"
 msgstr "പുതിയ ബഗ് id: %i"
 
-#: lib/Plugins/Bugzilla.cpp:607
+#: lib/Plugins/Bugzilla.cpp:616
+#, fuzzy
 msgid ""
-"Empty login and password.\n"
+"Empty login or password.\n"
 "Please check "
 msgstr ""
 "ലോഗിനും അടയാളവാക്കും ശൂന്യം.\n"
 "ദയവായി പരിശോധിക്കുക "
 
-#: lib/Plugins/Bugzilla.cpp:615
+#: lib/Plugins/Bugzilla.cpp:624
 msgid "Logging into bugzilla..."
 msgstr "ബഗ്സിലയിലേക്ക് പ്രവേശിക്കുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:618
+#: lib/Plugins/Bugzilla.cpp:627
 msgid "Checking for duplicates..."
 msgstr "ഒരേപോലുള്ളവയ്ക്കായി തെരയുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:631
+#: lib/Plugins/Bugzilla.cpp:640
 msgid "Missing mandatory member 'bugs'"
 msgstr "നിര്‍ബന്ധമായും ആവശ്യമുള്ള 'ബഗുകള്‍' ലഭ്യമല്ല"
 
-#: lib/Plugins/Bugzilla.cpp:641
+#: lib/Plugins/Bugzilla.cpp:650
 msgid "Creating new bug..."
 msgstr "പുതിയ ബഗ് ഉണ്ടാക്കുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:646
+#: lib/Plugins/Bugzilla.cpp:655
 msgid "Bugzilla entry creation failed"
 msgstr "ബഗ്സിലാ എന്‍ട്രി തയ്യാറാക്കല്‍ പരാജയപ്പെട്ടു"
 
-#: lib/Plugins/Bugzilla.cpp:654 lib/Plugins/Bugzilla.cpp:761
+#: lib/Plugins/Bugzilla.cpp:663 lib/Plugins/Bugzilla.cpp:773
 msgid "Logging out..."
 msgstr "ലോഗൌട്ട് ചെയ്യുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:686 lib/Plugins/Bugzilla.cpp:714
+#: lib/Plugins/Bugzilla.cpp:695 lib/Plugins/Bugzilla.cpp:723
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() പരാജയപ്പെട്ടു. നിര്‍ബന്ധമായും ആവശ്യമുള്ള എല്ലാ വിവരങ്ങളും ശേഖരിക്കുവാന്‍ "
 "സാധ്യമായില്ല"
 
-#: lib/Plugins/Bugzilla.cpp:698
+#: lib/Plugins/Bugzilla.cpp:707
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "ബഗിന്റെ പേരന്റ് കണ്ടുപിടിക്കുവാന്‍ ബഗ്സിലയ്ക്കു് സാധ്യമായില്ല(%d)"
 
-#: lib/Plugins/Bugzilla.cpp:703
+#: lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Jump to bug %d"
 msgstr "ബഗ് %d-ലേക്കു് നീങ്ങുക"
 
-#: lib/Plugins/Bugzilla.cpp:728 lib/Plugins/Bugzilla.cpp:729
+#: lib/Plugins/Bugzilla.cpp:737 lib/Plugins/Bugzilla.cpp:738
 #, c-format
 msgid "Add %s to CC list"
 msgstr "CC പട്ടികയിലേക്കു് %s ചേര്‍ക്കുക"
 
-#: lib/Plugins/Bugzilla.cpp:752
+#: lib/Plugins/Bugzilla.cpp:762
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "ബഗിലേക്കു് പുതിയ കമന്റ് ചേര്‍ക്കുക(%d)"
@@ -658,7 +659,7 @@ msgstr "ഗ്ലോബല്‍ യൂണിവേഴ്സല്‍ യുണ�
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo ഇന്‍സ്റ്റലേഷന്‍ ഉപേക്ഷിക്കുന്നു"
 
-#: lib/Plugins/KerneloopsReporter.cpp:93
+#: lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "ഒരു റിപോര്‍ട്ട് ഉണ്ടാക്കി സമര്‍പ്പിക്കുന്നു..."
 

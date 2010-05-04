@@ -10,15 +10,15 @@ PYTHON_FILES = CCDBusBackend.py CCDumpList.py CCDump.py CC_gui_functions.py \
 
 GLADE_FILES = ccgui.glade report.glade settings.glade dialogs.glade settings_wizard.glade
 
-EXTRA_DIST = $(PYTHON_FILES) $(GLADE_FILES) abrt-gui abrt.desktop abrt.png
+EXTRA_DIST = $(PYTHON_FILES) $(GLADE_FILES) abrt-gui abrt.desktop
 
 #ccguidir = $(pkgdatadir)
 applicationsdir = $(datadir)/applications
 applications_DATA = abrt.desktop
 pkgdata_PYTHON = $(PYTHON_FILES)
 pkgdata_DATA = $(GLADE_FILES)
-pixmapdir = $(datadir)/icons/hicolor/48x48/apps/
-pixmap_DATA = abrt.png
+#pixmapdir = $(datadir)/icons/hicolor/48x48/apps/
+#pixmap_DATA = abrt.png
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
 

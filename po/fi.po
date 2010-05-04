@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-04-06 18:59+0200\n"
+"POT-Creation-Date: 2010-05-03 16:46+0200\n"
 "PO-Revision-Date: 2010-04-02 02:11+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <laatu@lokalisointi.org>\n"
@@ -95,7 +95,7 @@ msgstr ""
 "Tämän ohjelman mukana pitäisi tulla kopio GPL-lisenssistä. Jos näin ei ole, "
 "katso <http://www.gnu.org/licenses/>."
 
-#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:104
+#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:105
 msgid "translator-credits"
 msgstr "Ville-Pekka Vainio, 2009-2010."
 
@@ -151,7 +151,7 @@ msgstr "<b>Syy:</b>"
 msgid "<b>Comment:</b>"
 msgstr "<b>Kommentti:</b>"
 
-#: src/Gui/ccgui.glade:553 src/Gui/ccgui.glade:681 src/Applet/CCApplet.cpp:251
+#: src/Gui/ccgui.glade:553 src/Gui/ccgui.glade:681 src/Applet/CCApplet.cpp:253
 msgid "Report"
 msgstr "Raportti"
 
@@ -541,17 +541,17 @@ msgstr "Kaatuminen on huomattu"
 msgid "ABRT service is not running"
 msgstr "ABRT-palvelu ei ole käytössä"
 
-#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:258
-#: src/Applet/CCApplet.cpp:285
+#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:260
+#: src/Applet/CCApplet.cpp:287
 msgid "Warning"
 msgstr "Varoitus"
 
-#: src/Applet/CCApplet.cpp:88
+#: src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
 msgstr ""
 "Ilmoitusalueen kuvake, joka kertoo käyttäjälle ABRT:n huomaamista ongelmista"
 
-#: src/Applet/CCApplet.cpp:114
+#: src/Applet/CCApplet.cpp:115
 msgid "Hide"
 msgstr "Piilota"
 
@@ -568,64 +568,65 @@ msgstr ""
 msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
-#: lib/Plugins/Bugzilla.cpp:395
+#: lib/Plugins/Bugzilla.cpp:404
 #, c-format
 msgid "New bug id: %i"
 msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
 
-#: lib/Plugins/Bugzilla.cpp:607
+#: lib/Plugins/Bugzilla.cpp:616
+#, fuzzy
 msgid ""
-"Empty login and password.\n"
+"Empty login or password.\n"
 "Please check "
 msgstr ""
 "Käyttäjätunnus ja salasana ovat tyhjiä.\n"
 "Tarkista "
 
-#: lib/Plugins/Bugzilla.cpp:615
+#: lib/Plugins/Bugzilla.cpp:624
 msgid "Logging into bugzilla..."
 msgstr "Kirjaudutaan bugzillaan..."
 
-#: lib/Plugins/Bugzilla.cpp:618
+#: lib/Plugins/Bugzilla.cpp:627
 msgid "Checking for duplicates..."
 msgstr "Etsitään samanlaisia..."
 
-#: lib/Plugins/Bugzilla.cpp:631
+#: lib/Plugins/Bugzilla.cpp:640
 msgid "Missing mandatory member 'bugs'"
 msgstr "Puuttuva pakollinen osa ”bugs”"
 
-#: lib/Plugins/Bugzilla.cpp:641
+#: lib/Plugins/Bugzilla.cpp:650
 msgid "Creating new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
-#: lib/Plugins/Bugzilla.cpp:646
+#: lib/Plugins/Bugzilla.cpp:655
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
 
-#: lib/Plugins/Bugzilla.cpp:654 lib/Plugins/Bugzilla.cpp:761
+#: lib/Plugins/Bugzilla.cpp:663 lib/Plugins/Bugzilla.cpp:773
 msgid "Logging out..."
 msgstr "Kirjaudutaan ulos..."
 
-#: lib/Plugins/Bugzilla.cpp:686 lib/Plugins/Bugzilla.cpp:714
+#: lib/Plugins/Bugzilla.cpp:695 lib/Plugins/Bugzilla.cpp:723
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
-#: lib/Plugins/Bugzilla.cpp:698
+#: lib/Plugins/Bugzilla.cpp:707
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta (%d)"
 
-#: lib/Plugins/Bugzilla.cpp:703
+#: lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Siirry vikailmoitukseen %d"
 
-#: lib/Plugins/Bugzilla.cpp:728 lib/Plugins/Bugzilla.cpp:729
+#: lib/Plugins/Bugzilla.cpp:737 lib/Plugins/Bugzilla.cpp:738
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Lisää %s CC-luetteloon"
 
-#: lib/Plugins/Bugzilla.cpp:752
+#: lib/Plugins/Bugzilla.cpp:762
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
@@ -650,7 +651,7 @@ msgstr "Haetaan yleinen ainutkertainen tunnus..."
 msgid "Skipping debuginfo installation"
 msgstr "Ohitetaan debuginfon asennus"
 
-#: lib/Plugins/KerneloopsReporter.cpp:93
+#: lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "Luodaan ja lähetetään ilmoitus..."
 
