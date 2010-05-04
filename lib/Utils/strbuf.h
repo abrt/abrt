@@ -24,10 +24,13 @@
 extern "C" {
 #endif
 
-struct strbuf {
-  int alloc;
-  int len;
-  char *buf;
+struct strbuf
+{
+    /* Size of the allocated buffer. */
+    int alloc;
+    /* Length of the message. */
+    int len;
+    char *buf;
 };
 
 extern struct strbuf *strbuf_new();
