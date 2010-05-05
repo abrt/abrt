@@ -496,6 +496,5 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
     {
         s_mapSectionCron = it->second;
         ParseCron();
-        dirty = true;
     }
 }
