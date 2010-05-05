@@ -318,7 +318,7 @@ class ReporterSelector():
 
 
         self.pBarWindow = self.builder.get_object("pBarWindow")
-
+        self.pBarWindow.set_transient_for(self.window)
 
         reporters_vbox = self.builder.get_object("vb_reporters")
         for reporter in self.reporters:
