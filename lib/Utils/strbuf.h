@@ -26,9 +26,9 @@ extern "C" {
 
 struct strbuf
 {
-    /* Size of the allocated buffer. */
+    /* Size of the allocated buffer. Always > 0. */
     int alloc;
-    /* Length of the message. */
+    /* Length of the message, without the ending \0. */
     int len;
     char *buf;
 };
