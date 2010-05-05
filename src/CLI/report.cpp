@@ -530,18 +530,23 @@ static bool ask_yesno(const char *question)
   return ((answer[0] | 0x20) == 'y');
 }
 
-static void set_echo(bool enabled)
+/* Returns true if echo has been changed from another state. */
+static bool set_echo(bool enabled)
 {
     if (isatty(STDIN_FILENO) == 0)
     {
         /* Clean errno, which is set by isatty. */
         errno = 0;
-        return;
+        return false;
     }
 
     struct termios t;
     if (tcgetattr(STDIN_FILENO, &t) < 0)
-        perror_msg_and_die("tcgetattr failed");
+        return false;
+
+    /* No change needed. */
+    if ((bool)(t.c_lflag & ECHO) == enabled)
+        return false;
 
     if (enabled)
         t.c_lflag |= ECHO;
@@ -550,6 +555,8 @@ static void set_echo(bool enabled)
 
     if (tcsetattr(STDIN_FILENO, TCSANOW, &t) < 0)
         perror_msg_and_die("tcsetattr failed");
+
+    return true;
 }
 
 /**
@@ -627,9 +634,11 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
     }
     if (passwordMissing)
     {
-      set_echo(false);
+      bool changed = set_echo(false);
       read_from_stdin(_("Enter your password: "), result, 64);
-      set_echo(true);
+      if (changed)
+          set_echo(true);
+
       // Newline was not added by pressing Enter because ECHO was disabled, so add it now.
       puts("");
       single_plugin_settings["Password"] = std::string(result);
