@@ -464,38 +464,9 @@ static void SaveBool(const char* pKey, bool pBool, FILE* pFOut)
     fprintf(pFOut, "%s = %s\n", pKey, (pBool ? "yes" : "no"));
 }
 
-/* Rewrite .conf file */
-void SaveSettings()
-{
-    FILE* fOut = fopen(CONF_DIR"/abrt.conf.NEW", "w");
-
-    if (fOut)
-    {
-        SaveSectionHeader(SECTION_COMMON, fOut);
-        SaveBool("OpenGPGCheck", g_settings_bOpenGPGCheck, fOut);
-        SaveSetString("OpenGPGPublicKeys", g_settings_setOpenGPGPublicKeys, fOut);
-        SaveSetString("BlackList", g_settings_mapBlackList, fOut);
-        fprintf(fOut, "Database = %s\n", g_settings_sDatabase.c_str());
-        fprintf(fOut, "MaxCrashReportsSize = %u\n", g_settings_nMaxCrashReportsSize);
-        SaveVectorPairStrings("ActionsAndReporters", g_settings_vectorActionsAndReporters, fOut);
-        SaveSectionHeader(SECTION_ANALYZER_ACTIONS_AND_REPORTERS, fOut);
-        SaveMapVectorPairStrings(g_settings_mapAnalyzerActionsAndReporters, fOut);
-        SaveSectionHeader(SECTION_CRON, fOut);
-        SaveMapVectorPairStrings(g_settings_mapCron, fOut);
-        if (fclose(fOut) == 0 && rename(CONF_DIR"/abrt.conf.NEW", CONF_DIR"/abrt.conf") == 0)
-        {
-            return; /* success */
-        }
-    }
-    perror_msg("Error saving '%s'", CONF_DIR"/abrt.conf");
-    if (fOut)
-        unlink(CONF_DIR"/abrt.conf.NEW");
-}
-
 /* dbus call to change some .conf file data */
 void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
 {
-    bool dirty = false;
     int polkit_result;
 
     polkit_result = polkit_check_authorization(dbus_sender,
@@ -513,14 +484,12 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
     {
         s_mapSectionCommon = it->second;
         ParseCommon();
-        dirty = true;
     }
     it = pSettings.find(SECTION_ANALYZER_ACTIONS_AND_REPORTERS);
     if (it != end)
     {
         s_mapSectionAnalyzerActionsAndReporters = it->second;
         ParseAnalyzerActionsAndReporters();
-        dirty = true;
     }
     it = pSettings.find(SECTION_CRON);
     if (it != end)
@@ -528,9 +497,5 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
         s_mapSectionCron = it->second;
         ParseCron();
         dirty = true;
-    }
-    if (dirty)
-    {
-        SaveSettings();
     }
 }
