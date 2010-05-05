@@ -24,6 +24,7 @@
 #include "Plugin.h" // LoadPluginSettings
 #include <cassert>
 #include <algorithm>
+#include <termios.h>
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -529,6 +530,28 @@ static bool ask_yesno(const char *question)
   return ((answer[0] | 0x20) == 'y');
 }
 
+static void set_echo(bool enabled)
+{
+    if (isatty(STDIN_FILENO) == 0)
+    {
+        /* Clean errno, which is set by isatty. */
+        errno = 0;
+        return;
+    }
+
+    struct termios t;
+    if (tcgetattr(STDIN_FILENO, &t) < 0)
+        perror_msg_and_die("tcgetattr failed");
+
+    if (enabled)
+        t.c_lflag |= ECHO;
+    else
+        t.c_lflag &= ~ECHO;
+
+    if (tcsetattr(STDIN_FILENO, TCSANOW, &t) < 0)
+        perror_msg_and_die("tcsetattr failed");
+}
+
 /**
  * Gets reporter plugin settings.
  * @param reporters
@@ -604,8 +627,11 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
     }
     if (passwordMissing)
     {
-// TODO: echo off, see http://fixunix.com/unix/84474-echo-off.html
+      set_echo(false);
       read_from_stdin(_("Enter your password: "), result, 64);
+      set_echo(true);
+      // Newline was not added by pressing Enter because ECHO was disabled, so add it now.
+      puts("");
       single_plugin_settings["Password"] = std::string(result);
     }
   }
