@@ -86,10 +86,15 @@ static char* is_text_file(const char *name, ssize_t *sz)
     }
 
     /* Some files in our dump directories are known to always be textual */
-    if (strcmp(name, FILENAME_BACKTRACE) == 0
-     || strcmp(name, FILENAME_CMDLINE) == 0
-    ) {
-        return buf;
+    const char *base = strrchr(name, '/');
+    if (base)
+    {
+        base++;
+        if (strcmp(base, FILENAME_BACKTRACE) == 0
+         || strcmp(base, FILENAME_CMDLINE) == 0
+        ) {
+            return buf;
+        }
     }
 
     /* Every once in a while, even a text file contains a few garbled
