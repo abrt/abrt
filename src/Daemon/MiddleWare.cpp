@@ -18,6 +18,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <fnmatch.h>
+#include <algorithm>
 #include "abrtlib.h"
 #include "abrt_types.h"
 #include "Daemon.h"
@@ -27,7 +29,6 @@
 #include "ABRTException.h"
 #include "CommLayerInner.h"
 #include "MiddleWare.h"
-#include <algorithm>
 
 using namespace std;
 
@@ -633,6 +634,21 @@ static char *get_argv1_if_full_path(const char* cmdline)
     return NULL;
 }
 
+static bool is_path_blacklisted(const char *path)
+{
+    set_string_t::iterator it = g_settings_setBlackListedPaths.begin();
+    while (it != g_settings_setBlackListedPaths.end())
+    {
+        if (fnmatch(it->c_str(), path, /*flags:*/ 0) == 0)
+        {
+            return true;
+        }
+        it++;
+    }
+    return false;
+}
+
+
 /**
  * Get a package name from executable name and save
  * package description to particular debugdump directory of a crash.
@@ -656,6 +672,12 @@ static mw_result_t SavePackageDescriptionToDebugDump(
     }
     else
     {
+        if (is_path_blacklisted(pExecutable))
+        {
+            log("Blacklisted executable '%s'", pExecutable);
+            return MW_BLACKLISTED;
+        }
+
         char *rpm_pkg = GetPackage(pExecutable);
         if (rpm_pkg == NULL)
         {
@@ -718,6 +740,12 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                     scriptName = script_name;
                     pExecutable = scriptName.c_str();
                     knownOrigin = true;
+                    /* pExecutable has changed, check it again */
+                    if (is_path_blacklisted(pExecutable))
+                    {
+                        log("Blacklisted executable '%s'", pExecutable);
+                        return MW_BLACKLISTED;
+                    }
                 }
                 free(script_name);
             }

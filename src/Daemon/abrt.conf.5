@@ -30,6 +30,11 @@ to report them if "OpenGPGCheck = yes".
 .I abrt
 will ignore packages in this list and will not handle their crashes.
 .TP
+.B BlackListedPaths = \fI/path/to/ignore/*\fP, \fI*/another/ignored/path*\fP ...
+.I abrt
+will ignore crashes in executables whose absolute path matches
+one of specified patterns.
+.TP
 .B Database = \fIdatabasePlugin\fP
 This specifies which database plugin
 .I abrt
