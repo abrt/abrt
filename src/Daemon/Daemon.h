@@ -33,9 +33,4 @@ extern CCommLayerServer *g_pCommLayer;
 /* Collection of loaded plugins */
 extern CPluginManager* g_pPluginManager;
 
-/**
- * A set of blacklisted packages.
- */
-extern set_string_t g_setBlackList;
-
 #endif

@@ -26,7 +26,7 @@ typedef map_vector_pair_string_string_t map_cron_t;
 typedef map_map_string_t map_abrt_settings_t;
 
 extern set_string_t  g_settings_setOpenGPGPublicKeys;
-extern set_string_t  g_settings_mapBlackList;
+extern set_string_t  g_settings_setBlackListedPkgs;
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern bool          g_settings_bOpenGPGCheck;
 extern bool          g_settings_bProcessUnpackaged;

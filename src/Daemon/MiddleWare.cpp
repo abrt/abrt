@@ -38,10 +38,6 @@ using namespace std;
  */
 CPluginManager* g_pPluginManager;
 /**
- * A set of blacklisted packages.
- */
-set_string_t g_setBlackList;
-/**
  * An instance of CRPM used for package checking.
  * @see RPM.h
  */
@@ -738,7 +734,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         VERB2 log("Package:'%s' short:'%s'", rpm_pkg, packageName.c_str());
         free(rpm_pkg);
 
-        if (g_setBlackList.find(packageName) != g_setBlackList.end())
+        if (g_settings_setBlackListedPkgs.find(packageName) != g_settings_setBlackListedPkgs.end())
         {
             log("Blacklisted package '%s'", packageName.c_str());
             return MW_BLACKLISTED;

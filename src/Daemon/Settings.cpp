@@ -53,7 +53,7 @@ static map_string_t s_mapSectionCron;
 bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
 set_string_t  g_settings_setOpenGPGPublicKeys;
-set_string_t  g_settings_mapBlackList;
+set_string_t  g_settings_setBlackListedPkgs;
 std::string   g_settings_sDatabase;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
@@ -173,7 +173,7 @@ static void ParseCommon()
     it = s_mapSectionCommon.find("BlackList");
     if (it != end)
     {
-        g_settings_mapBlackList = ParseList(it->second.c_str());
+        g_settings_setBlackListedPkgs = ParseList(it->second.c_str());
     }
     it = s_mapSectionCommon.find("Database");
     if (it != end)

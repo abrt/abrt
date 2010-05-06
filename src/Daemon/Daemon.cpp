@@ -165,11 +165,6 @@ static int SetUpMW()
     {
         LoadOpenGPGPublicKey(it_k->c_str());
     }
-    set_string_t::iterator it_b = g_settings_mapBlackList.begin();
-    for (; it_b != g_settings_mapBlackList.end(); it_b++)
-    {
-        g_setBlackList.insert(*it_b);
-    }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
