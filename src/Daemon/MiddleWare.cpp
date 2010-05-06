@@ -937,7 +937,19 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         return MW_ERROR;
     }
 
-    if (IsDebugDumpSaved(xatou(UID.c_str()), pDebugDumpDir))
+    /* Convert UID string to number uid_num. The UID string can be modified by user or
+       wrongly saved (empty or non-numeric), so xatou() cannot be used here,
+       because it would kill the daemon. */
+    char *endptr;
+    errno = 0;
+    unsigned long uid_num = strtoul(UID.c_str(), &endptr, 10);
+    if (errno || UID.c_str() == endptr || *endptr != '\0' || uid_num > UINT_MAX)
+    {
+        error_msg("Invalid UID '%s' loaded from %s", UID.c_str(), pDebugDumpDir);
+        return MW_ERROR;
+    }
+
+    if (IsDebugDumpSaved(uid_num, pDebugDumpDir))
     {
         return MW_IN_DB;
     }
