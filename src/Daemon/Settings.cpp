@@ -407,63 +407,6 @@ map_abrt_settings_t GetSettings()
     return ABRTSettings;
 }
 
-
-/*
- * Saving
- */
-
-static void SaveSetString(const char* pKey, const set_string_t& pSet, FILE* pFOut)
-{
-    fprintf(pFOut, "%s =", pKey);
-
-    const char* fmt = " %s";
-    set_string_t::const_iterator it_set = pSet.begin();
-    for (; it_set != pSet.end(); it_set++)
-    {
-        fprintf(pFOut, fmt, it_set->c_str());
-        fmt = ",%s";
-    }
-    fputc('\n', pFOut);
-}
-
-static void SaveVectorPairStrings(const char* pKey, const vector_pair_string_string_t& pVector, FILE* pFOut)
-{
-    fprintf(pFOut, "%s =", pKey);
-
-    const char* fmt = " %s";
-    int ii;
-    for (ii = 0; ii < pVector.size(); ii++)
-    {
-        fprintf(pFOut, fmt, pVector[ii].first.c_str());
-        if (pVector[ii].second != "")
-        {
-            fprintf(pFOut, "(%s)", pVector[ii].second.c_str());
-        }
-        fmt = ",%s";
-    }
-    fputc('\n', pFOut);
-}
-
-static void SaveMapVectorPairStrings(const map_vector_pair_string_string_t& pMap, FILE* pFOut)
-{
-    map_vector_pair_string_string_t::const_iterator it = pMap.begin();
-    for (; it != pMap.end(); it++)
-    {
-        SaveVectorPairStrings(it->first.c_str(), it->second, pFOut);
-    }
-    fputc('\n', pFOut);
-}
-
-static void SaveSectionHeader(const char* pSection, FILE* pFOut)
-{
-    fprintf(pFOut, "\n[%s]\n\n", pSection);
-}
-
-static void SaveBool(const char* pKey, bool pBool, FILE* pFOut)
-{
-    fprintf(pFOut, "%s = %s\n", pKey, (pBool ? "yes" : "no"));
-}
-
 /* dbus call to change some .conf file data */
 void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
 {
