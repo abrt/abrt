@@ -356,7 +356,7 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
     const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
     const char *function         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
 
-    std::string summary = "[abrt] crash in " + package;
+    std::string summary = "[abrt] " + package;
     if (function != NULL && strlen(function) < 30)
     {
         summary += ": ";
@@ -370,7 +370,7 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
     }
     std::string status_whiteboard = "abrt_hash:" + duphash;
 
-    std::string description = "abrt "VERSION" detected a crash.\n\n";
+    std::string description = "abrt version: "VERSION"\n";
     description += make_description_bz(pCrashData);
 
     std::string product;
