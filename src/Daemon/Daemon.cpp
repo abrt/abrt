@@ -86,8 +86,8 @@ using namespace std;
  */
 
 
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt.lock"
-#define VAR_RUN_PIDFILE     VAR_RUN"/abrt.pid"
+#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrtd.lock"
+#define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
 
 
 //FIXME: add some struct to be able to join all threads!
