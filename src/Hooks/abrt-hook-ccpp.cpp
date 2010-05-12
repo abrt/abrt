@@ -189,7 +189,7 @@ int main(int argc, char** argv)
              */
             snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
             core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            core_size = copyfd_eof(STDIN_FILENO, core_fd);
+            core_size = copyfd_eof(STDIN_FILENO, core_fd, COPYFD_SPARSE);
             if (core_size < 0 || close(core_fd) != 0)
             {
                 unlink(path);
@@ -237,7 +237,7 @@ int main(int argc, char** argv)
 //Currently it is owned by 0:0 but is readable by anyone, so the owner
 //of the crashed binary still can access it, as he has
 //r-x access to the dump dir.
-        core_size = copyfd_eof(STDIN_FILENO, core_fd);
+        core_size = copyfd_eof(STDIN_FILENO, core_fd, COPYFD_SPARSE);
         if (core_size < 0 || fsync(core_fd) != 0)
         {
             unlink(path);
@@ -367,7 +367,7 @@ int main(int argc, char** argv)
     /* Note: we do not copy more than ulimit_c */
     off_t size;
     if (ftruncate(usercore_fd, 0) != 0
-     || (size = copyfd_size(core_fd, usercore_fd, ulimit_c)) < 0
+     || (size = copyfd_size(core_fd, usercore_fd, ulimit_c, COPYFD_SPARSE)) < 0
      || close(usercore_fd) != 0
     ) {
         /* perror first, otherwise unlink may trash errno */

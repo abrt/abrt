@@ -119,8 +119,11 @@ extern ssize_t safe_write(int fd, const void *buf, size_t count);
 extern ssize_t full_write(int fd, const void *buf, size_t count);
 
 /* copyfd_XX print read/write errors and return -1 if they occur */
-off_t copyfd_eof(int src_fd, int dst_fd);
-off_t copyfd_size(int src_fd, int dst_fd, off_t size);
+enum {
+	COPYFD_SPARSE = 1 << 0,
+};
+off_t copyfd_eof(int src_fd, int dst_fd, int flags = 0);
+off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags = 0);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
 off_t copy_file(const char *src_name, const char *dst_name, int mode);
 

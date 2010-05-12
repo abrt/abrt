@@ -29,10 +29,11 @@
 static const char msg_write_error[] = "write error";
 static const char msg_read_error[] = "read error";
 
-static off_t full_fd_action(int src_fd, int dst_fd, off_t size)
+static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags = 0)
 {
 	int status = -1;
 	off_t total = 0;
+	int last_was_seek = 0;
 #if CONFIG_FEATURE_COPYBUF_KB <= 4
 	char buffer[CONFIG_FEATURE_COPYBUF_KB * 1024];
 	enum { buffer_size = sizeof(buffer) };
@@ -67,6 +68,14 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size)
 		rd = safe_read(src_fd, buffer, size > buffer_size ? buffer_size : size);
 
 		if (!rd) { /* eof - all done */
+			if (last_was_seek) {
+				if (lseek(dst_fd, -1, SEEK_CUR) < 0
+				 || safe_write(dst_fd, "", 1) != 1
+				) {
+					perror_msg("%s", msg_write_error);
+					break;
+				}
+			}
 			status = 0;
 			break;
 		}
@@ -76,10 +85,24 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size)
 		}
 		/* dst_fd == -1 is a fake, else... */
 		if (dst_fd >= 0) {
-			ssize_t wr = full_write(dst_fd, buffer, rd);
-			if (wr < rd) {
-				perror_msg("%s", msg_write_error);
-				break;
+			if (flags & COPYFD_SPARSE) {
+				ssize_t cnt = rd;
+				while (--cnt >= 0)
+					if (buffer[cnt] != 0)
+						goto need2write;
+				if (lseek(dst_fd, rd, SEEK_CUR) < 0) {
+					flags &= ~COPYFD_SPARSE;
+					goto need2write;
+				}
+				last_was_seek = 1;
+			} else {
+ need2write:
+				ssize_t wr = full_write(dst_fd, buffer, rd);
+				if (wr < rd) {
+					perror_msg("%s", msg_write_error);
+					break;
+				}
+				last_was_seek = 0;
 			}
 		}
 		total += rd;
@@ -101,10 +124,10 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size)
 	return status ? -1 : total;
 }
 
-off_t copyfd_size(int fd1, int fd2, off_t size)
+off_t copyfd_size(int fd1, int fd2, off_t size, int flags)
 {
 	if (size) {
-		return full_fd_action(fd1, fd2, size);
+		return full_fd_action(fd1, fd2, size, flags);
 	}
 	return 0;
 }
@@ -120,9 +143,9 @@ void copyfd_exact_size(int fd1, int fd2, off_t size)
 	xfunc_die();
 }
 
-off_t copyfd_eof(int fd1, int fd2)
+off_t copyfd_eof(int fd1, int fd2, int flags)
 {
-	return full_fd_action(fd1, fd2, 0);
+	return full_fd_action(fd1, fd2, 0, flags);
 }
 
 off_t copy_file(const char *src_name, const char *dst_name, int mode)
