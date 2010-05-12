@@ -207,6 +207,25 @@ print_package_names() {
     | sort | uniq | xargs
 }
 
+abort_if_low_on_disk_space() {
+    local mb
+    # free_blocks * block_size / (1024*1024), careful to not overflow:
+    mb=$((`stat -f -c "%a / 8192 * %S / 128" "$tempdir"`))
+    if test $mb -lt $1; then
+	$debug && echo "Removing $tempdir" >&2
+	rm -rf "$tempdir"
+        error_msg_and_die "Less than $1 Mb of free space in $tempdir: $mb Mb"
+    fi
+    if test x"$cachedir" != x"" && test -d "$cachedir"; then
+	mb=$((`stat -f -c "%a / 8192 * %S / 128" "$cachedir"`))
+	if test $mb -lt $1; then
+	    $debug && echo "Removing $tempdir" >&2
+	    rm -rf "$tempdir"
+	    error_msg_and_die "Less than $1 Mb of free space in $cachedir: $mb Mb"
+	fi
+    fi
+}
+
 download_packages() {
     local pkg
     local err
@@ -234,7 +253,9 @@ download_packages() {
 	err=$?
 	echo "exitcode:$err" >>yumdownloader.OUT
 	echo >>yumdownloader.OUT
-	test $err = 0 || { echo "Download of $pkg failed!"; sleep 1; }
+	test $err = 0 || echo "Download of $pkg failed!"
+	abort_if_low_on_disk_space 256
+
 	# Process and delete the *.rpm file just downloaded
 	# We do it right after download: some users have smallish disks...
 	for file in *.rpm; do
@@ -245,8 +266,10 @@ download_packages() {
 	    echo "Processing: $file" >>unpack.OUT
 	    rpm2cpio <"$file" >"unpacked.cpio" 2>>unpack.OUT || error_msg_and_die "Can't convert '$file' to cpio"
 	    $keep_tmp || rm "$file"
+	    abort_if_low_on_disk_space 256
 	    cpio -id <"unpacked.cpio" >>unpack.OUT 2>&1 || error_msg_and_die "Can't unpack '$file' cpio archive"
 	    rm "unpacked.cpio"
+	    abort_if_low_on_disk_space 256
 	    # Copy debuginfo files to cachedir
 	    if test x"$cachedir" != x"" && test -d "$cachedir"; then
 		# For every needed debuginfo, check whether we have it
@@ -291,16 +314,14 @@ test -e "$tempdir" && error_msg_and_die "tempdir exists: '$tempdir'"
 # Intentionally not using -p: we want to abort if tempdir exists
 mkdir -- "$tempdir" || exit 2
 cd "$tempdir" || exit 2
+
+
+abort_if_low_on_disk_space 1024
+
+
 $debug && echo "Downloading rpms to $tempdir"
 
 
-# eu-unstrip output example:
-# 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
-#   or
-# 0x400000+0x20d000 233aa1a57e9ffda65f53efdaf5e5058657a39993@0x40024c /usr/libexec/im-settings-daemon /usr/lib/debug/usr/libexec/im-settings-daemon.debug [exe]
-# 0x7fff5cdff000+0x1000 0d3eb4326fd7489fcf9b598269f1edc420e2c560@0x7fff5cdff2f8 . - linux-vdso.so.1
-# 0x3d15600000+0x208000 20196628d1bc062279622615cc9955554e5bb227@0x3d156001a0 /usr/lib64/libnotify.so.1.1.3 /usr/lib/debug/usr/lib64/libnotify.so.1.1.3.debug libnotify.so.1
-# 0x7fd8ae931000+0x62d000 dd49f44f958b5a11a1635523b2f09cb2e45c1734@0x7fd8ae9311a0 /usr/lib64/libgtk-x11-2.0.so.0.1600.6 /usr/lib/debug/usr/lib64/libgtk-x11-2.0.so.0.1600.6.debug
 echo "Getting list of build IDs"
 # Observed errors:
 # eu-unstrip: /var/cache/abrt/ccpp-1256301004-2754/coredump: Callback returned failure
@@ -311,6 +332,14 @@ test $err = 0 || error_msg_and_die "eu-unstrip exited with $err:
 `cat eu_unstrip.ERR`
 `head eu_unstrip.OUT`"
 
+# eu-unstrip output example:
+# 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
+#   or
+# 0x400000+0x20d000 233aa1a57e9ffda65f53efdaf5e5058657a39993@0x40024c /usr/libexec/im-settings-daemon /usr/lib/debug/usr/libexec/im-settings-daemon.debug [exe]
+# 0x7fff5cdff000+0x1000 0d3eb4326fd7489fcf9b598269f1edc420e2c560@0x7fff5cdff2f8 . - linux-vdso.so.1
+# 0x3d15600000+0x208000 20196628d1bc062279622615cc9955554e5bb227@0x3d156001a0 /usr/lib64/libnotify.so.1.1.3 /usr/lib/debug/usr/lib64/libnotify.so.1.1.3.debug libnotify.so.1
+# 0x7fd8ae931000+0x62d000 dd49f44f958b5a11a1635523b2f09cb2e45c1734@0x7fd8ae9311a0 /usr/lib64/libgtk-x11-2.0.so.0.1600.6 /usr/lib/debug/usr/lib64/libgtk-x11-2.0.so.0.1600.6.debug
+#
 # Get space-separated list of all build-ids
 # There can be duplicates (observed in real world)
 build_ids=`printf "%s\n" "$eu_unstrip_OUT" \
