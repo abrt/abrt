@@ -17,7 +17,7 @@
 */
 #include "abrtlib.h"
 
-#define VAR_RUN_PID_FILE        VAR_RUN"/abrt.pid"
+#define VAR_RUN_PID_FILE        VAR_RUN"/abrtd.pid"
 
 static char *append_escaped(char *start, const char *s)
 {
