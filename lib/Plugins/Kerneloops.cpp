@@ -28,8 +28,26 @@ static unsigned hash_oops_str(const char *oops_ptr)
 	unsigned char old_c;
 	unsigned char c = 0;
 	unsigned hash = 0;
-	while (1)
-	{
+
+	/* Special-case: if the first line is of form:
+	 * WARNING: at net/wireless/core.c:614 wdev_cleanup_work+0xe9/0x120 [cfg80211]() (Not tainted)
+	 * then hash only "file:line func+ofs/len" part.
+	 */
+	if (strncmp(oops_ptr, "WARNING: at ", sizeof("WARNING: at ")-1) == 0) {
+		const char *p = oops_ptr + sizeof("WARNING: at ")-1;
+		p = strchr(p, ' '); /* skip filename:NNN */
+		if (p) {
+			p = strchrnul(p + 1, ' '); /* skip function_name+0xNN/0xNNN */
+			oops_ptr += sizeof("WARNING: at ")-1;
+			while (oops_ptr < p) {
+				c = *oops_ptr++;
+				hash = ((hash << 5) ^ (hash >> 27)) ^ c;
+			}
+			return hash;
+		}
+	}
+
+	while (1) {
 		old_c = c;
 		c = *oops_ptr++;
 		if (!c)
