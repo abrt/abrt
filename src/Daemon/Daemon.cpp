@@ -678,13 +678,19 @@ static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
 
 static void sanitize_dump_dir_rights()
 {
-    /* We can't allow anyone to create dumps: otherwise users can flood
+    /* Compat kludge, remove after 1.3.0
+     * (and remove DEBUG_DUMPS_DIR_OLD define everywhere)
+     */
+    if (rename(DEBUG_DUMPS_DIR_OLD, DEBUG_DUMPS_DIR) == 0)
+	    symlink(DEBUG_DUMPS_DIR, DEBUG_DUMPS_DIR_OLD);
+
+    /* We can't allow everyone to create dumps: otherwise users can flood
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
     /* 00777 bits are usual "rwxrwxrwx" access rights */
     ensure_writable_dir(DEBUG_DUMPS_DIR, 0755, "abrt");
     /* debuginfo cache */
-    ensure_writable_dir(DEBUG_DUMPS_DIR"-di", 0755, "root");
+    ensure_writable_dir(DEBUG_INFO_DIR, 0755, "root");
     /* temp dir */
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
