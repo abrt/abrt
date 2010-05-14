@@ -440,6 +440,7 @@ fi
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
+%attr(4755, abrt, abrt) %{_libexecdir}/abrt-hook-python
 %{_libdir}/%{name}/libPython.so*
 %{python_site}/*.py*
 %{python_site}/abrt.pth
