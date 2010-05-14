@@ -41,6 +41,7 @@
 #include "CrashWatcher.h"
 #include "DebugDump.h"
 #include "Daemon.h"
+#include "dumpsocket.h"
 
 using namespace std;
 
@@ -848,6 +849,9 @@ int main(int argc, char** argv)
             throw 1;
         pidfile_created = true;
 
+        /* Open socket to receive new crashes. */
+        dumpsocket_init();
+
         /* Note: this already may process a few dbus messages,
          * therefore it should be the last thing to initialize.
          */
@@ -899,6 +903,7 @@ int main(int argc, char** argv)
     /* Error or INT/TERM. Clean up, in reverse order.
      * Take care to not undo things we did not do.
      */
+    dumpsocket_shutdown();
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);
     if (lockfile_created)
