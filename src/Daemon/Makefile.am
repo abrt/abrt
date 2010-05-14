@@ -10,8 +10,7 @@ abrtd_SOURCES = \
     CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Daemon.h Daemon.cpp \
-    Settings.h Settings.cpp \
-    dumpsocket.h dumpsocket.cpp
+    Settings.h Settings.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/Utils \

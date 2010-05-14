@@ -47,10 +47,9 @@ EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
 
-# Must be synchronized with another sed call below.
 abrt_exception_handler.py:
-	sed s,\@VAR_RUN\@,\"$(VAR_RUN)\",g abrt_exception_handler.py.in > abrt_exception_handler.py
+	sed s,@DEBUG_DUMP_DIR@,$(DEBUG_DUMPS_DIR),g abrt_exception_handler.py.in  > abrt_exception_handler.py
 
 # RPM fix: we need to regenerate abrt_exception_handler.py, because it has the default ddir
 install-data-local:
-	sed s,\@VAR_RUN\@,\"$(VAR_RUN)\",g abrt_exception_handler.py.in > abrt_exception_handler.py
+	sed s,@DEBUG_DUMP_DIR@,$(DEBUG_DUMPS_DIR),g abrt_exception_handler.py.in  > abrt_exception_handler.py
