@@ -249,8 +249,12 @@ download_packages() {
 	cmd="yumdownloader $yum_repo_opts --quiet $pkg"
 	$debug && echo "Running: $cmd" >&2
 	# eval is needed to strip away ''s in $yum_repo_opts
-	eval $cmd >>yumdownloader.OUT 2>&1
+	eval $cmd >>yumdownloader.OUT 2>&1 &
+	# using EXIT handler and this, make sure we kill yumdownloader if we exit:
+	CHILD_PID=$!
+	wait
 	err=$?
+	CHILD_PID=""
 	echo "exitcode:$err" >>yumdownloader.OUT
 	echo >>yumdownloader.OUT
 	test $err = 0 || echo "Download of $pkg failed!"
@@ -317,6 +321,11 @@ cd "$tempdir" || exit 2
 
 
 abort_if_low_on_disk_space 1024
+
+
+# A hook to stop yumdownloader, in case we are terminated by kill -TERM etc.
+CHILD_PID=""
+trap 'test x"$CHILD_PID" != x"" && kill -- "$CHILD_PID"' EXIT
 
 
 $debug && echo "Downloading rpms to $tempdir"
