@@ -1,0 +1,51 @@
+=============================================
+[ INFO: possible recursive locking detected ]
+2.6.33.1-19.fc13.x86_64 #1
+---------------------------------------------
+94cpufreq/3017 is trying to acquire lock:
+ (s_active){++++.+}, at: [<ffffffff81177332>] sysfs_addrm_finish+0x36/0x55
+
+but task is already holding lock:
+ (s_active){++++.+}, at: [<ffffffff811774ee>] sysfs_get_active_two+0x24/0x48
+
+other info that might help us debug this:
+4 locks held by 94cpufreq/3017:
+ #0:  (&buffer->mutex){+.+.+.}, at: [<ffffffff81175edb>]
+sysfs_write_file+0x3c/0x144
+ #1:  (s_active){++++.+}, at: [<ffffffff811774ee>]
+sysfs_get_active_two+0x24/0x48
+ #2:  (s_active){++++.+}, at: [<ffffffff811774fb>]
+sysfs_get_active_two+0x31/0x48
+ #3:  (dbs_mutex){+.+.+.}, at: [<ffffffffa012cda2>]
+cpufreq_governor_dbs+0x2a0/0x352 [cpufreq_ondemand]
+
+stack backtrace:
+Pid: 3017, comm: 94cpufreq Not tainted 2.6.33.1-19.fc13.x86_64 #1
+Call Trace:
+ [<ffffffff8107e96b>] __lock_acquire+0xcb5/0xd2c
+ [<ffffffff8107cf64>] ? mark_held_locks+0x52/0x70
+ [<ffffffff8107d345>] ? debug_check_no_locks_freed+0x12e/0x145
+ [<ffffffff8107d1e4>] ? trace_hardirqs_on_caller+0x111/0x135
+ [<ffffffff8107eabe>] lock_acquire+0xdc/0x102
+ [<ffffffff81177332>] ? sysfs_addrm_finish+0x36/0x55
+ [<ffffffff8107c31c>] ? lockdep_init_map+0x9e/0x113
+ [<ffffffff81176b02>] sysfs_deactivate+0x9a/0x103
+ [<ffffffff81177332>] ? sysfs_addrm_finish+0x36/0x55
+ [<ffffffff81071226>] ? sched_clock_cpu+0xc3/0xce
+ [<ffffffff8147748c>] ? __mutex_unlock_slowpath+0x120/0x132
+ [<ffffffff81177332>] sysfs_addrm_finish+0x36/0x55
+ [<ffffffff81175590>] sysfs_hash_and_remove+0x53/0x6a
+ [<ffffffff81178729>] sysfs_remove_group+0x91/0xca
+ [<ffffffffa012cdb6>] cpufreq_governor_dbs+0x2b4/0x352 [cpufreq_ondemand]
+ [<ffffffff8107d215>] ? trace_hardirqs_on+0xd/0xf
+ [<ffffffff813a2e37>] __cpufreq_governor+0x9b/0xde
+ [<ffffffff813a3c83>] __cpufreq_set_policy+0x1ce/0x275
+ [<ffffffff813a41a7>] store_scaling_governor+0x1a7/0x1fb
+ [<ffffffff813a44b0>] ? handle_update+0x0/0x39
+ [<ffffffff81477da7>] ? down_write+0x7a/0x81
+ [<ffffffff813a3a90>] store+0x61/0x86
+ [<ffffffff81175fa7>] sysfs_write_file+0x108/0x144
+ [<ffffffff8111f0e5>] vfs_write+0xae/0x10b
+ [<ffffffff8107d1e4>] ? trace_hardirqs_on_caller+0x111/0x135
+ [<ffffffff8111f202>] sys_write+0x4a/0x6e
+ [<ffffffff81009c72>] system_call_fastpath+0x16/0x1b
