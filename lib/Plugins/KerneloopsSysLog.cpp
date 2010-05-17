@@ -232,14 +232,13 @@ next_line:
 				oopsstart = i;
 			else if (strstr(curline, "NETDEV WATCHDOG"))
 				oopsstart = i;
-			else if (strstr(curline, "WARNING: at ") /* WARN_ON() generated message */
-			 && !strstr(curline, "appears to be on the same physical disk")
-			) {
+			else if (strstr(curline, "WARNING: at ")) /* WARN_ON() generated message */
 				oopsstart = i;
-			}
 			else if (strstr(curline, "Unable to handle kernel"))
 				oopsstart = i;
 			else if (strstr(curline, "sysctl table check failed"))
+				oopsstart = i;
+			else if (strstr(curline, "INFO: possible recursive locking detected"))
 				oopsstart = i;
 			else if (strstr(curline, "------------[ cut here ]------------"))
 				oopsstart = i;
