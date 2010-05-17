@@ -41,9 +41,11 @@ void strbuf_free(struct strbuf *strbuf)
     free(strbuf);
 }
 
-void strbuf_free_nobuf(struct strbuf *strbuf)
+char* strbuf_free_nobuf(struct strbuf *strbuf)
 {
+    char *ret = strbuf->buf;
     free(strbuf);
+    return ret;
 }
 
 

@@ -36,7 +36,7 @@ struct strbuf
 extern struct strbuf *strbuf_new();
 extern void strbuf_free(struct strbuf *strbuf);
 /* Releases strbuf, but not the internal buffer. */
-extern void strbuf_free_nobuf(struct strbuf *strbuf);
+extern char* strbuf_free_nobuf(struct strbuf *strbuf);
 extern void strbuf_clear(struct strbuf *strbuf);
 extern struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c);
 extern struct strbuf *strbuf_append_str(struct strbuf *strbuf, const char *str);
