@@ -79,14 +79,14 @@ def handleMyException((etype, value, tb)):
         if not sys.argv[0] or sys.argv[0] == "-c":
             # Looks like interactive Python - abort dumping
             syslog.syslog("abrt: detected unhandled Python exception")
-            throw
+            raise Exception
         syslog.syslog("abrt: detected unhandled Python exception in %s" % sys.argv[0])
         if sys.argv[0][0] != "/":
             # Relative path - can't reliably determine package
             # this script belongs to - abort dumping
             # TODO: check abrt.conf and abort only if
             # ProcessUnpackaged = no?
-            throw
+            raise Exception
 
         elist = traceback.format_exception(etype, value, tb)
         tblast = traceback.extract_tb(tb, limit=None)
