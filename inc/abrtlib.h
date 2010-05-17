@@ -230,6 +230,6 @@ std::string to_string(T x)
 }
 
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
-void parse_release(const char *pRelease, std::string& pProduct, std::string& pVersion);
+void parse_release(const char *pRelease, char **product, char **version);
 
 #endif

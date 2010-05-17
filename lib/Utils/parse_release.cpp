@@ -21,38 +21,44 @@
 # include "config.h"
 #endif
 
-using namespace std;
+#include "strbuf.h"
 
-void parse_release(const char *pRelease, string& pProduct, string& pVersion)
+// caller is reposible for freeing *product* and *version*
+void parse_release(const char *release, char** product, char** version)
 {
-    if (strstr(pRelease, "Rawhide"))
+    if (strstr(release, "Rawhide"))
     {
-        pProduct = "Fedora";
-        pVersion = "rawhide";
-        VERB3 log("%s: version:'%s' product:'%s'", __func__, pVersion.c_str(), pProduct.c_str());
+        *product = xstrdup("Fedora");
+        *version = xstrdup("rawhide");
+        VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
         return;
     }
-    if (strstr(pRelease, "Fedora"))
-    {
-        pProduct = "Fedora";
-    }
-    else if (strstr(pRelease, "Red Hat Enterprise Linux"))
-    {
-        pProduct = "Red Hat Enterprise Linux ";
-    }
 
-    const char *release = strstr(pRelease, "release");
-    const char *space = release ? strchr(release, ' ') : NULL;
+    struct strbuf *buf_product = strbuf_new();
+    if (strstr(release, "Fedora"))
+        strbuf_append_str(buf_product, "Fedora");
+    else if (strstr(release, "Red Hat Enterprise Linux"))
+        strbuf_append_str(buf_product, "Red Hat Enterprise Linux ");
 
-    if (space++) while (*space != '\0' && *space != ' ')
+    const char *r = strstr(release, "release");
+    const char *space = r ? strchr(r, ' ') : NULL;
+
+    struct strbuf *buf_version = strbuf_new();
+    if (space++)
     {
-        /* Eat string like "5.2" */
-        pVersion += *space;
-        if (pProduct == "Red Hat Enterprise Linux ")
+        while (*space != '\0' && *space != ' ')
         {
-            pProduct += *space;
+            /* Eat string like "5.2" */
+            strbuf_append_char(buf_version, *space);
+            if ((strcmp(buf_product->buf, "Red Hat Enterprise Linux ") == 0))
+                strbuf_append_char(buf_product, *space);
+
+            space++;
         }
-        space++;
     }
-    VERB3 log("%s: version:'%s' product:'%s'", __func__, pVersion.c_str(), pProduct.c_str());
+
+    *version = strbuf_free_nobuf(buf_version);
+    *product = strbuf_free_nobuf(buf_product);
+
+    VERB3 log("%s: version:'%s' product:'%s'", __func__, *version, *product);
 }

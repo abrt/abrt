@@ -300,8 +300,10 @@ void ctx::get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz)
 
 xmlrpc_value* ctx::call_quicksearch_duphash(const char* component, const char* duphash)
 {
-    std::string query = ssprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, duphash);
-    return call("Bug.search", "({s:s})", "quicksearch", query.c_str());
+    char *query = xasprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, duphash);
+    xmlrpc_value *ret = call("Bug.search", "({s:s})", "quicksearch", query);
+    free(query);
+    return ret;
 }
 
 xmlrpc_int32 ctx::get_bug_id(xmlrpc_value* result_xml)
@@ -373,19 +375,22 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
     std::string description = "abrt version: "VERSION"\n";
     description += make_description_bz(pCrashData);
 
-    std::string product;
-    std::string version;
-    parse_release(release.c_str(), product, version);
+    char *product = NULL;
+    char *version = NULL;
+    parse_release(release.c_str(), &product, &version);
 
     xmlrpc_value* result = call("Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
-                                "product", product.c_str(),
+                                "product", product,
                                 "component", component.c_str(),
-                                "version", version.c_str(),
+                                "version", version,
                                 "summary", summary.c_str(),
                                 "description", description.c_str(),
                                 "status_whiteboard", status_whiteboard.c_str(),
                                 "platform", arch.c_str()
                               );
+    free(product);
+    free(version);
+
     if (!result)
         return -1;
 

@@ -290,20 +290,22 @@ ctx::new_bug(const char *auth_cookie, const map_crash_data_t& pCrashData)
 
     string description = make_description_catcut(pCrashData);
 
-    string product;
-    string version;
-    parse_release(release.c_str(), product, version);
+    char *product = NULL;
+    char *version = NULL;
+    parse_release(release.c_str(), &product, &version);
 
     xmlrpc_value *param = xmlrpc_build_value(&env, "(s{s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                 auth_cookie,
-                "product", product.c_str(),
+                "product", product,
                 "component", component.c_str(),
-                "version", version.c_str(),
+                "version", version,
                 "summary", summary.c_str(),
                 "description", description.c_str(),
                 "status_whiteboard", status_whiteboard.c_str(),
                 "platform", arch.c_str()
                 );
+    free(product);
+    free(version);
     throw_if_xml_fault_occurred(&env);
 
     xmlrpc_value *result;
