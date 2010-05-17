@@ -30,9 +30,6 @@ import subprocess
 def write_dump(pid, tb):
     executable = "Exception raised from python shell"
     if sys.argv[0]:
-        # FIXME: is this reliable?!
-        # what if argv[0] is relative and we chdir'ed somewhere
-        # during execution?
         executable = os.path.abspath(sys.argv[0])
 
     command = ["/usr/libexec/abrt-hook-python"]
@@ -79,10 +76,17 @@ def handleMyException((etype, value, tb)):
         # "-c" appears in this case:
         # $ python -c 'import sys; print "argv0 is:%s" % sys.argv[0]'
         # argv0 is:-c
-        if sys.argv[0] and sys.argv[0] != "-c":
-            syslog.syslog("abrt: detected unhandled Python exception in %s" % sys.argv[0])
-        else: # interactive Python etc
+        if not sys.argv[0] or sys.argv[0] == "-c":
+            # Looks like interactive Python - abort dumping
             syslog.syslog("abrt: detected unhandled Python exception")
+            throw
+        syslog.syslog("abrt: detected unhandled Python exception in %s" % sys.argv[0])
+        if sys.argv[0][0] != "/":
+            # Relative path - can't reliably determine package
+            # this script belongs to - abort dumping
+            # TODO: check abrt.conf and abort only if
+            # ProcessUnpackaged = no?
+            throw
 
         elist = traceback.format_exception(etype, value, tb)
         tblast = traceback.extract_tb(tb, limit=None)
