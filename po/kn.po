@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.kn\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-13 09:34+0000\n"
+"POT-Creation-Date: 2010-05-19 00:22+0200\n"
 "PO-Revision-Date: 2010-05-13 15:19+0530\n"
 "Last-Translator: Shankar Prasad <svenkate@redhat.com>\n"
 "Language-Team: kn-IN <>\n"
@@ -17,46 +17,45 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: ../src/Gui/ABRTExceptions.py:6
+#: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "ಇನ್ನೊಂದು ಕ್ಲೈಂಟ್‌ ಈಗಾಗಲೆ ಚಾಲನೆಯಲ್ಲಿದೆ, ಅದನ್ನು ಎಚ್ಚರಗೊಳಿಸಲು ಪ್ರಯತ್ನಿಸಲಾಗುತ್ತಿದೆ."
 
-#: ../src/Gui/ABRTExceptions.py:13
+#: src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "ಡೆಮನ್‌ನಿಂದ ಅನಿರೀಕ್ಷಿತವಾದ ದತ್ತಾಂಶವು ಮರಳಿದೆ (ದತ್ತಸಂಚಯವನ್ನು ಸಮರ್ಪಕವಾಗಿ ಅಪ್‌ಡೇಟ್ "
 "ಮಾಡಲಾಗಿದೆಯೆ?)."
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "ಲೋಡ್ ಮಾಡಲಾದ ಪ್ಲಗ್‌ಇನ್‌ಗಳಲ್ಲ"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "ವಿಶ್ಲೇಷಕದ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "ಕ್ರಿಯೆಯ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "ವರದಿಗಾರ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "ದತ್ತಸಂಚಯ ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "ವ್ಯವಸ್ಥೆಯ dbus ನೊಂದಿಗೆ ಸಂಪರ್ಕ ಕಲ್ಪಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: src/Gui/CCDBusBackend.py:120 src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "abrt ಡೆಮನ್ ಚಾಲನೆಯಲ್ಲಿದೆಯೆ ಎಂದು ಪರಿಶೀಲಿಸಿ."
 
-#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/Gui/CCDBusBackend.py:174
+#: src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -64,60 +63,15 @@ msgstr ""
 "ಡೀಮನ್‌ ಒಂದು ಮಾನ್ಯವಾದ ವರದಿ ಮಾಹಿತಿಯನ್ನು ಮರಳಿಸಿಲ್ಲ\n"
 "ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯು ಕಾಣಿಸುತ್ತಿಲ್ಲವೆ?"
 
-#: ../src/Gui/ccgui.glade.h:1
-msgid "(C) 2009, 2010 Red Hat, Inc."
-msgstr "(C) 2009, 2010 Red Hat, Inc."
-
-#: ../src/Gui/ccgui.glade.h:2
-msgid "<b>Bug Reports:</b>"
-msgstr "<b>ದೋಷ ವರದಿಗಳು:</b>"
-
-#: ../src/Gui/ccgui.glade.h:3
-msgid "<b>Command:</b>"
-msgstr "<b>ಆಜ್ಞೆ:</b>"
-
-#: ../src/Gui/ccgui.glade.h:4
-msgid "<b>Comment:</b>"
-msgstr "<b>ಟಿಪ್ಪಣಿ:</b>"
-
-#: ../src/Gui/ccgui.glade.h:5
-msgid "<b>Crash Count:</b>"
-msgstr "<b>ಕುಸಿತದ ಎಣಿಕೆ:</b>"
-
-#: ../src/Gui/ccgui.glade.h:6
-msgid "<b>Latest Crash:</b>"
-msgstr "<b>ಇತ್ತೀಚಿನ ಕುಸಿತ:</b>"
-
-#: ../src/Gui/ccgui.glade.h:7
-msgid "<b>Reason:</b>"
-msgstr "<b>ಕಾರಣ:</b>"
-
-#: ../src/Gui/ccgui.glade.h:8
-msgid "<b>User:</b>"
-msgstr "<b>ಬಳಕೆದಾರ:</b>"
-
-#: ../src/Gui/ccgui.glade.h:9
+#: src/Gui/ccgui.glade:7
 msgid "About ABRT"
 msgstr "ABRT ಬಗೆಗಿನ ಮಾಹಿತಿ"
 
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
-#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
-msgid "Automatic Bug Reporting Tool"
-msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ ಉಪಕರಣ"
+#: src/Gui/ccgui.glade:15
+msgid "(C) 2009, 2010 Red Hat, Inc."
+msgstr "(C) 2009, 2010 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:11
-msgid "Copy to Clipboard"
-msgstr "ನಕಲುಫಲಕಕ್ಕೆ(ಕ್ಲಿಪ್‌ಬೋರ್ಡಿಗೆ) ಕಾಪಿ ಮಾಡು"
-
-#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
-msgid "Plugins"
-msgstr "ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
-
-#: ../src/Gui/ccgui.glade.h:13 ../src/Applet/CCApplet.cpp:253
-msgid "Report"
-msgstr "ವರದಿ"
-
-#: ../src/Gui/ccgui.glade.h:14
+#: src/Gui/ccgui.glade:17
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -145,40 +99,83 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:19
-msgid "View log"
-msgstr "ದಾಖಲೆಯನ್ನು ನೋಡು"
-
-#: ../src/Gui/ccgui.glade.h:20
-msgid "_Edit"
-msgstr "ಸಂಪಾದನೆ (_E)"
-
-#: ../src/Gui/ccgui.glade.h:21
-msgid "_File"
-msgstr "ಕಡತ(_F)"
-
-#: ../src/Gui/ccgui.glade.h:22
-msgid "_Help"
-msgstr "ಸಹಾಯ (_H)"
-
-#: ../src/Gui/ccgui.glade.h:23 ../src/Applet/CCApplet.cpp:105
+#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:105
 msgid "translator-credits"
 msgstr "ಶಂಕರ್ ಪ್ರಸಾದ್ <svenkate@redhat.com>"
 
-#. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:61
+#: src/Gui/ccgui.glade:58 src/Gui/CCMainWindow.py:8 src/Gui/report.glade:7
+msgid "Automatic Bug Reporting Tool"
+msgstr "ಸ್ವಯಂಚಾಲಿತ ದೋಷ ವರದಿ ಮಾಡುವ ಉಪಕರಣ"
+
+#: src/Gui/ccgui.glade:71
+msgid "_File"
+msgstr "ಕಡತ(_F)"
+
+#: src/Gui/ccgui.glade:92
+msgid "_Edit"
+msgstr "ಸಂಪಾದನೆ (_E)"
+
+#: src/Gui/ccgui.glade:100 src/Gui/settings.glade:6
+msgid "Plugins"
+msgstr "ಪ್ಲಗ್‌ಇನ್‌ಗಳು"
+
+#: src/Gui/ccgui.glade:119
+msgid "_Help"
+msgstr "ಸಹಾಯ (_H)"
+
+#: src/Gui/ccgui.glade:126
+msgid "View log"
+msgstr "ದಾಖಲೆಯನ್ನು ನೋಡು"
+
+#: src/Gui/ccgui.glade:237
+msgid "<b>Bug Reports:</b>"
+msgstr "<b>ದೋಷ ವರದಿಗಳು:</b>"
+
+#: src/Gui/ccgui.glade:277
+msgid "<b>Latest Crash:</b>"
+msgstr "<b>ಇತ್ತೀಚಿನ ಕುಸಿತ:</b>"
+
+#: src/Gui/ccgui.glade:290
+msgid "<b>Command:</b>"
+msgstr "<b>ಆಜ್ಞೆ:</b>"
+
+#: src/Gui/ccgui.glade:305
+msgid "<b>User:</b>"
+msgstr "<b>ಬಳಕೆದಾರ:</b>"
+
+#: src/Gui/ccgui.glade:320
+msgid "<b>Crash Count:</b>"
+msgstr "<b>ಕುಸಿತದ ಎಣಿಕೆ:</b>"
+
+#: src/Gui/ccgui.glade:436
+msgid "<b>Reason:</b>"
+msgstr "<b>ಕಾರಣ:</b>"
+
+#: src/Gui/ccgui.glade:462
+msgid "<b>Comment:</b>"
+msgstr "<b>ಟಿಪ್ಪಣಿ:</b>"
+
+#: src/Gui/ccgui.glade:542
+msgid "Copy to Clipboard"
+msgstr "ನಕಲುಫಲಕಕ್ಕೆ(ಕ್ಲಿಪ್‌ಬೋರ್ಡಿಗೆ) ಕಾಪಿ ಮಾಡು"
+
+#: src/Gui/ccgui.glade:554 src/Gui/ccgui.glade:682 src/Applet/CCApplet.cpp:253
+msgid "Report"
+msgstr "ವರದಿ"
+
+#: src/Gui/CCMainWindow.py:61
 msgid "Reported"
 msgstr "ವರದಿ ಮಾಡಲಾಗಿದೆ"
 
-#: ../src/Gui/CCMainWindow.py:69
+#: src/Gui/CCMainWindow.py:69
 msgid "Application"
 msgstr "ಅನ್ವಯ"
 
-#: ../src/Gui/CCMainWindow.py:71
+#: src/Gui/CCMainWindow.py:71
 msgid "Latest Crash"
 msgstr "ಇತ್ತೀಚಿನ ಕುಸಿತ"
 
-#: ../src/Gui/CCMainWindow.py:139
+#: src/Gui/CCMainWindow.py:139
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -187,7 +184,7 @@ msgstr ""
 "ಸಿದ್ಧತೆಗಳ ಸಂವಾದವನ್ನು ತೋರಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:144
+#: src/Gui/CCMainWindow.py:144
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -196,8 +193,7 @@ msgstr ""
 "ಪ್ರಸಕ್ತ ಕಾರ್ಯವನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿಲ್ಲ!\n"
 "%s"
 
-#. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:179
+#: src/Gui/CCMainWindow.py:179
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -206,7 +202,7 @@ msgstr ""
 "ಬಿಸುಡುಪಟ್ಟಿಯನ್ನು(ಡಂಪ್‌ಲಿಸ್ಟ್) ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ.\n"
 " %s"
 
-#: ../src/Gui/CCMainWindow.py:236
+#: src/Gui/CCMainWindow.py:236
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -215,11 +211,11 @@ msgstr ""
 "<b>%s ಕುಸಿತ</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:332
+#: src/Gui/CCMainWindow.py:332
 msgid "You have to select a crash to copy."
 msgstr "ನೀವು ಒಂದು ಕುಸಿತದ ಪ್ರತಿಯನ್ನು ಆಯ್ಕೆ ಮಾಡಬೇಕು."
 
-#: ../src/Gui/CCMainWindow.py:414
+#: src/Gui/CCMainWindow.py:414
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -229,7 +225,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 
-#: ../src/Gui/CCMainWindow.py:437
+#: src/Gui/CCMainWindow.py:437
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -238,18 +234,17 @@ msgstr ""
 "ದತ್ತಸಂಚಯದಲ್ಲಿ ಅಂತಹ ಯಾವುದೆ ಕುಸಿತವಿಲ್ಲ, ಬಹುಷಃ crashid ತಪ್ಪಾಗಿದೆ.\n"
 "crashid=%s"
 
-#. default texts
-#: ../src/Gui/CCReporterDialog.py:22
+#: src/Gui/CCReporterDialog.py:22
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "ಇದನ್ನು ಪುನಃ ಮಾಡುವುದು ಹೇಗೆ ಅಥವ ನೀವು ಏನು ಮಾಡಿದ್ದೀರಿ ಎನ್ನುವುದರ ಬಗೆಗಿನ ಸಂಕ್ಷಿಪ್ತ "
 "ವಿವರಣೆ..."
 
-#: ../src/Gui/CCReporterDialog.py:107
+#: src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "ಸಂವೇದಾತ್ಮಕವಾದ ದತ್ತಾಂಶಕ್ಕಾಗಿ ನೀವು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ನೋಡಬೇಕು"
 
-#: ../src/Gui/CCReporterDialog.py:118
+#: src/Gui/CCReporterDialog.py:118
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -262,11 +257,11 @@ msgstr ""
 "ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿಯನ್ನು ಅನುಸ್ಥಾಪಿಸಿ ನಂತರ ಪುನಶ್ಚೇತನಗೊಳಿಸು ಗುಂಡಿಯನ್ನು ಬಳಸಿಕೊಂಡು "
 "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಿ."
 
-#: ../src/Gui/CCReporterDialog.py:120
+#: src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಬಳಸಲು ಯೋಗ್ಯವಾಗಿಲ್ಲ. ನೀವು ಇದನ್ನು ವರದಿ ಮಾಡಲು ಸಾಧ್ಯವಿಲ್ಲ!"
 
-#: ../src/Gui/CCReporterDialog.py:124
+#: src/Gui/CCReporterDialog.py:124
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -274,15 +269,16 @@ msgstr ""
 "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅಪೂರ್ಣಗೊಂಡಿದೆ, ಇದನ್ನು ಮರಳಿ ಉತ್ಪಾದಿಸಲು ಉತ್ತಮವಾದ ವಿವರಣೆಯುಕ್ತ ಸೂಚನೆಗಳನ್ನು "
 "ಒದಗಿಸಿದ್ದೀರಿ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ."
 
-#: ../src/Gui/CCReporterDialog.py:130
+#: src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr "ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು ಮೇಲೆ ತಿಳಿಸಲಾದ ತೊಂದರೆಗಳನ್ನು ಸರಿಪಡಿಸಿ."
+msgstr ""
+"ವರದಿ ಮಾಡುವುದನ್ನು ಅಶಕ್ತಗೊಳಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು ಮೇಲೆ ತಿಳಿಸಲಾದ ತೊಂದರೆಗಳನ್ನು ಸರಿಪಡಿಸಿ."
 
-#: ../src/Gui/CCReporterDialog.py:132
+#: src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
 msgstr "ಆಯ್ಕೆ ಮಾಡಲಾದ ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಬಳಸಿಕೊಂಡು ವರದಿಯನ್ನು ಕಳಿಸುತ್ತದೆ."
 
-#: ../src/Gui/CCReporterDialog.py:392
+#: src/Gui/CCReporterDialog.py:392
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -290,7 +286,7 @@ msgstr ""
 "ದಯವಿಟ್ಟು ಈ ಬಗೆಯ ಕುಸಿತಕ್ಕಾಗಿ ಒಂದು ವರದಿಗಾರ ಪ್ಲಗ್‌ಇನ್ ಲಭ್ಯವಿಲ್ಲ\n"
 "ದಯವಿಟ್ಟು abrt.conf ಅನ್ನು ಪರೀಕ್ಷಿಸಿ."
 
-#: ../src/Gui/CCReporterDialog.py:412
+#: src/Gui/CCReporterDialog.py:412
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -299,12 +295,12 @@ msgstr ""
 "ಪ್ಲಗ್ಇನ್ ಸಿದ್ಧತೆಗಳನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಿಲ್ಲ:\n"
 " %s"
 
-#: ../src/Gui/CCReporterDialog.py:442
+#: src/Gui/CCReporterDialog.py:442
 #, python-format
 msgid "Configure %s options"
 msgstr "%s ಆಯ್ಕೆಗಳನ್ನು ಸಂರಚಿಸು"
 
-#: ../src/Gui/CCReporterDialog.py:492
+#: src/Gui/CCReporterDialog.py:492
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -312,7 +308,7 @@ msgstr ""
 "ವರದಿಯನ್ನು ಪಡೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ!\n"
 "ದೋಷನಿವಾರಣಾ ಮಾಹಿತಿ ಕಾಣೆಯಾಗಿದೆ?"
 
-#: ../src/Gui/CCReporterDialog.py:521
+#: src/Gui/CCReporterDialog.py:521
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -321,256 +317,254 @@ msgstr ""
 "ವರದಿ ಮಾಡುವಲ್ಲಿ ವಿಫಲಗೊಂಡಿದೆ!\n"
 "%s"
 
-#: ../src/Gui/CCReporterDialog.py:547 ../src/Gui/CCReporterDialog.py:568
+#: src/Gui/CCReporterDialog.py:547 src/Gui/CCReporterDialog.py:568
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "ವರದಿಯನ್ನು ಪಡೆಯುವಲ್ಲಿ ದೋಷ ಉಂಟಾಗಿದೆ: %s"
 
-#: ../src/Gui/dialogs.glade.h:1
-msgid "Log"
-msgstr "ದಾಖಲೆ"
-
-#: ../src/Gui/dialogs.glade.h:2
+#: src/Gui/dialogs.glade:7
 msgid "Report done"
 msgstr "ವರದಿಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲಾಗಿದೆ"
 
-#: ../src/Gui/PluginSettingsUI.py:17
+#: src/Gui/dialogs.glade:79
+msgid "Log"
+msgstr "ದಾಖಲೆ"
+
+#: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "UI ವಿವರಣೆಯಲ್ಲಿ PluginDialog ವಿಜೆಟ್ ಕಂಡು ಬಂದಿಲ್ಲ!"
 
-#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
+#: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "ಸಂಯೋಜನಾ ಚೌಕವನ್ನು ಅನ್ವಯಿಸಲಾಗಿಲ್ಲ"
 
-#: ../src/Gui/PluginSettingsUI.py:63
+#: src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "ಹೈಡ್ರೇಟ್ ಮಾಡಲು ಏನೂ ಇಲ್ಲ!"
 
-#: ../src/Gui/report.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/report.glade.h:2
-msgid "<b>Attachments</b>"
-msgstr "<b>ಲಗತ್ತುಗಳು</b>"
-
-#: ../src/Gui/report.glade.h:3
-msgid "<b>Backtrace</b>"
-msgstr "<b>ಬ್ಯಾಕ್‌ಟ್ರೇಸ್</b>"
-
-#: ../src/Gui/report.glade.h:4
-msgid "<b>Comment</b>"
-msgstr "<b>ಟಿಪ್ಪಣಿ</b>"
-
-#: ../src/Gui/report.glade.h:5
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು (ಕೆಲವು ಸರಳ ಹಂತಗಳಲ್ಲಿ)</b>"
-
-#: ../src/Gui/report.glade.h:6
-msgid "<b>Please fix the following problems</b>"
-msgstr "<b>ದಯವಿಟ್ಟು ಕೆಳಗಿನ ತೊಂದರೆಗಳನ್ನು ಪರಿಹರಿಸಿ</b>"
-
-#: ../src/Gui/report.glade.h:7
-msgid "<b>Where do you want to report this incident?</b>"
-msgstr "<b>ಈ ಘಟನೆಯನ್ನು ಎಲ್ಲಿ ವರದಿ ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?</b>"
-
-#: ../src/Gui/report.glade.h:8
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span fgcolor=\"blue\">ಆರ್ಕಿಟೆಕ್ಚರ್:</span>"
-
-#: ../src/Gui/report.glade.h:9
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">Cmdline:</span>"
-
-#: ../src/Gui/report.glade.h:10
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">ಘಟಕ:</span>"
-
-#: ../src/Gui/report.glade.h:11
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">ಕಾರ್ಯಗತಗೊಳಿಸಬಲ್ಲ:</span>"
-
-#: ../src/Gui/report.glade.h:12
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span fgcolor=\"blue\">ಕರ್ನಲ್:</span>"
-
-#: ../src/Gui/report.glade.h:13
+#: src/Gui/report.glade:54
 msgid "<span fgcolor=\"blue\">Package:</span>"
 msgstr "<span fgcolor=\"blue\">ಪ್ಯಾಕೇಜ್:</span>"
 
-#: ../src/Gui/report.glade.h:14
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span fgcolor=\"blue\">ಕಾರಣ:</span>"
+#: src/Gui/report.glade:65
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">ಘಟಕ:</span>"
 
-#: ../src/Gui/report.glade.h:15
+#: src/Gui/report.glade:76
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">ಕಾರ್ಯಗತಗೊಳಿಸಬಲ್ಲ:</span>"
+
+#: src/Gui/report.glade:87
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Cmdline:</span>"
+
+#: src/Gui/report.glade:111 src/Gui/report.glade:124 src/Gui/report.glade:137
+#: src/Gui/report.glade:150 src/Gui/report.glade:228 src/Gui/report.glade:241
+#: src/Gui/report.glade:254 src/Gui/report.glade:267
+msgid "N/A"
+msgstr "ಅನ್ವಯಿಸದ"
+
+#: src/Gui/report.glade:172
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">ಆರ್ಕಿಟೆಕ್ಚರ್:</span>"
+
+#: src/Gui/report.glade:183
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">ಕರ್ನಲ್:</span>"
+
+#: src/Gui/report.glade:194
 msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">ಬಿಡುಗಡೆ:</span>"
 
-#: ../src/Gui/report.glade.h:17
-msgid "Details"
-msgstr "ವಿವರಗಳು"
+#: src/Gui/report.glade:205
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">ಕಾರಣ:</span>"
 
-#: ../src/Gui/report.glade.h:18
-msgid "Forces ABRT to regenerate the backtrace"
-msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು  ಮರಳಿ ಉತ್ಪಾದಿಸುವಂತೆ ABRT ಒತ್ತಾಯಿಸುತ್ತದೆ"
-
-#: ../src/Gui/report.glade.h:19
+#: src/Gui/report.glade:331
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "ನಾನು ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಪರಿಶೀಲಿಸಿದ್ದೀನಿ ಹಾಗು ಸಂವೇದಿ ಮಾಹಿತಿಯನ್ನು (ಗುಪ್ತಪದಗಳು, ಇತ್ಯಾದಿ) "
 "ತೆಗೆದು ಹಾಕಿದ್ದೇನೆ"
 
-#: ../src/Gui/report.glade.h:20
-msgid "N/A"
-msgstr "ಅನ್ವಯಿಸದ"
+#: src/Gui/report.glade:369
+msgid "<b>Backtrace</b>"
+msgstr "<b>ಬ್ಯಾಕ್‌ಟ್ರೇಸ್</b>"
 
-#: ../src/Gui/report.glade.h:21
-msgid "Please wait.."
-msgstr "ದಯವಿಟ್ಟು ಕಾಯಿರಿ.."
+#: src/Gui/report.glade:426
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>ಹೇಗೆ ಮರಳಿ ಉತ್ಪಾದಿಸಬಹುದು (ಕೆಲವು ಸರಳ ಹಂತಗಳಲ್ಲಿ)</b>"
 
-#: ../src/Gui/report.glade.h:22
-msgid "Reporter Selector"
-msgstr "ವರದಿಗಾರರ ಆಯ್ಕೆಗಾರ"
+#: src/Gui/report.glade:464
+msgid "<b>Comment</b>"
+msgstr "<b>ಟಿಪ್ಪಣಿ</b>"
 
-#: ../src/Gui/report.glade.h:23
-msgid "Send report"
-msgstr "ವರದಿಯನ್ನು ತೋರಿಸು"
+#: src/Gui/report.glade:512
+msgid "<b>Attachments</b>"
+msgstr "<b>ಲಗತ್ತುಗಳು</b>"
 
-#: ../src/Gui/report.glade.h:24
+#: src/Gui/report.glade:561
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>ದಯವಿಟ್ಟು ಕೆಳಗಿನ ತೊಂದರೆಗಳನ್ನು ಪರಿಹರಿಸಿ</b>"
+
+#: src/Gui/report.glade:571
+msgid " "
+msgstr " "
+
+#: src/Gui/report.glade:622
 msgid "Show log"
 msgstr "ದಾಖಲೆಯನ್ನು ತೋರಿಸು"
 
-#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+#: src/Gui/report.glade:654
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು  ಮರಳಿ ಉತ್ಪಾದಿಸುವಂತೆ ABRT ಒತ್ತಾಯಿಸುತ್ತದೆ"
+
+#: src/Gui/report.glade:665
+msgid "Send report"
+msgstr "ವರದಿಯನ್ನು ತೋರಿಸು"
+
+#: src/Gui/report.glade:693
+msgid "Reporter Selector"
+msgstr "ವರದಿಗಾರರ ಆಯ್ಕೆಗಾರ"
+
+#: src/Gui/report.glade:706
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>ಈ ಘಟನೆಯನ್ನು ಎಲ್ಲಿ ವರದಿ ಮಾಡಲು ಬಯಸುತ್ತೀರಿ?</b>"
+
+#: src/Gui/report.glade:764
+msgid "Please wait.."
+msgstr "ದಯವಿಟ್ಟು ಕಾಯಿರಿ.."
+
+#: src/Gui/report.glade:817
+msgid "Details"
+msgstr "ವಿವರಗಳು"
+
+#: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ಅನ್ನು ಆರಿಸಿ</b>"
 
-#: ../src/Gui/SettingsDialog.py:36
+#: src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್ ಅನ್ನು ಆರಿಸಿ</b>"
 
-#: ../src/Gui/SettingsDialog.py:169
+#: src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "ಈ ಕಾರ್ಯವನ್ನು ತೆಗೆದು ಹಾಕಿ"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "ಈ ಕ್ರಿಯೆಯನ್ನು ತೆಗೆದು ಹಾಕಿ"
 
-#: ../src/Gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>ವಿಶ್ಲೇಷಕದ ಪ್ಲಗ್‌ಇನ್‌ಗಳು</b>"
-
-#: ../src/Gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>ಸಂಬಂಧಿತ ಕಾರ್ಯ</b>"
-
-#: ../src/Gui/settings.glade.h:3
-msgid "<b>Plugin details</b>"
-msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ವಿವರಗಳು</b>"
-
-#: ../src/Gui/settings.glade.h:4
-msgid "<b>Plugin</b>"
-msgstr "<b>ಪ್ಲಗ್‌ಇನ್</b>"
-
-#: ../src/Gui/settings.glade.h:5
-msgid "<b>Time (or period)</b>"
-msgstr "<b>ಸಮಯ (ಅಥವ ಕಾಲಾವಧಿ)</b>"
-
-#: ../src/Gui/settings.glade.h:6
-msgid "Analyzers, Actions, Reporters"
-msgstr "ವಿಶ್ಲೇಷಕಗಳು, ಕ್ರಿಯೆಗಳು, ವರದಿಗಾರರು"
-
-#: ../src/Gui/settings.glade.h:7
-msgid "Author:"
-msgstr "ಕತೃ:"
-
-#: ../src/Gui/settings.glade.h:8
-msgid "Blacklisted packages: "
-msgstr "ಕಪ್ಪುಪಟ್ಟಿಗೆ ಸೇರಿಸಲಾದ ಪ್ಯಾಕೇಜುಗಳು: "
-
-#: ../src/Gui/settings.glade.h:9
-msgid "C_onfigure plugin"
-msgstr "ಪ್ಲಗ್‌ಇನ್‌ ಅನ್ನು ಸಂರಚಿಸು(_o)"
-
-#: ../src/Gui/settings.glade.h:10
-msgid "Check package GPG signature"
-msgstr "ಪ್ಯಾಕೇಜಿನ GPG ಸಹಿಯನ್ನು ಪರಿಶೀಲಿಸು"
-
-#: ../src/Gui/settings.glade.h:11
-msgid "Common"
-msgstr "ಸಾಮಾನ್ಯ"
-
-#: ../src/Gui/settings.glade.h:12
-msgid "Cron"
-msgstr "Cron"
-
-#: ../src/Gui/settings.glade.h:13
-msgid "Database backend: "
-msgstr "ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್: "
-
-#: ../src/Gui/settings.glade.h:14
-msgid "Description:"
-msgstr "ವಿವರಣೆ:"
-
-#: ../src/Gui/settings.glade.h:15
-msgid "GPG Keys"
-msgstr "GPG ಕೀಲಿಗಳು"
-
-#: ../src/Gui/settings.glade.h:16
-msgid "GPG keys: "
-msgstr "GPG ಕೀಲಿಗಳು: "
-
-#: ../src/Gui/settings.glade.h:17
-msgid "Max coredump storage size(MB):"
-msgstr "ಗರಿಷ್ಟ ಕೋರ್ ಬಿಸುಡು ಶೇಖರಣಾ ಗಾತ್ರ(MB):"
-
-#: ../src/Gui/settings.glade.h:18
-msgid "Name:"
-msgstr "ಹೆಸರು:"
-
-#: ../src/Gui/settings.glade.h:20
-msgid "Preferences"
-msgstr "ಆದ್ಯತೆಗಳು"
-
-#: ../src/Gui/settings.glade.h:21
-msgid "Version:"
-msgstr "ಆವೃತ್ತಿ:"
-
-#: ../src/Gui/settings.glade.h:22
+#: src/Gui/settings.glade:64
 msgid "Web Site:"
 msgstr "ಜಾಲತಾಣ:"
 
-#: ../src/Gui/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "ಅನ್ವಯದ ಕುಸಿತವನ್ನು ನೋಡಿ ಹಾಗು ವರದಿ ಮಾಡಿ"
+#: src/Gui/settings.glade:76
+msgid "Author:"
+msgstr "ಕತೃ:"
 
-#: ../src/Applet/Applet.cpp:88
+#: src/Gui/settings.glade:88
+msgid "Version:"
+msgstr "ಆವೃತ್ತಿ:"
+
+#: src/Gui/settings.glade:142
+msgid "Description:"
+msgstr "ವಿವರಣೆ:"
+
+#: src/Gui/settings.glade:154
+msgid "Name:"
+msgstr "ಹೆಸರು:"
+
+#: src/Gui/settings.glade:198
+msgid "<b>Plugin details</b>"
+msgstr "<b>ಪ್ಲಗ್‌ಇನ್ ವಿವರಗಳು</b>"
+
+#: src/Gui/settings.glade:221
+msgid "C_onfigure plugin"
+msgstr "ಪ್ಲಗ್‌ಇನ್‌ ಅನ್ನು ಸಂರಚಿಸು(_o)"
+
+#: src/Gui/settings.glade:258
+msgid "Preferences"
+msgstr "ಆದ್ಯತೆಗಳು"
+
+#: src/Gui/settings.glade:285
+msgid "Check package GPG signature"
+msgstr "ಪ್ಯಾಕೇಜಿನ GPG ಸಹಿಯನ್ನು ಪರಿಶೀಲಿಸು"
+
+#: src/Gui/settings.glade:301
+msgid "Database backend: "
+msgstr "ದತ್ತಸಂಚಯ ಬ್ಯಾಕೆಂಡ್: "
+
+#: src/Gui/settings.glade:327
+msgid "Blacklisted packages: "
+msgstr "ಕಪ್ಪುಪಟ್ಟಿಗೆ ಸೇರಿಸಲಾದ ಪ್ಯಾಕೇಜುಗಳು: "
+
+#: src/Gui/settings.glade:341
+msgid "Max coredump storage size(MB):"
+msgstr "ಗರಿಷ್ಟ ಕೋರ್ ಬಿಸುಡು ಶೇಖರಣಾ ಗಾತ್ರ(MB):"
+
+#: src/Gui/settings.glade:355
+msgid "GPG keys: "
+msgstr "GPG ಕೀಲಿಗಳು: "
+
+#: src/Gui/settings.glade:458
+msgid "Common"
+msgstr "ಸಾಮಾನ್ಯ"
+
+#: src/Gui/settings.glade:491
+msgid "<b>Plugin</b>"
+msgstr "<b>ಪ್ಲಗ್‌ಇನ್</b>"
+
+#: src/Gui/settings.glade:501
+msgid "<b>Time (or period)</b>"
+msgstr "<b>ಸಮಯ (ಅಥವ ಕಾಲಾವಧಿ)</b>"
+
+#: src/Gui/settings.glade:569
+msgid "Cron"
+msgstr "Cron"
+
+#: src/Gui/settings.glade:603
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>ವಿಶ್ಲೇಷಕದ ಪ್ಲಗ್‌ಇನ್‌ಗಳು</b>"
+
+#: src/Gui/settings.glade:613
+msgid "<b>Associated action</b>"
+msgstr "<b>ಸಂಬಂಧಿತ ಕಾರ್ಯ</b>"
+
+#: src/Gui/settings.glade:692
+msgid "Analyzers, Actions, Reporters"
+msgstr "ವಿಶ್ಲೇಷಕಗಳು, ಕ್ರಿಯೆಗಳು, ವರದಿಗಾರರು"
+
+#: src/Gui/settings.glade:753
+msgid "GPG Keys"
+msgstr "GPG ಕೀಲಿಗಳು"
+
+#: src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "ಪ್ಯಾಕೇಜ್‌ %s ನಲ್ಲಿ ಒಂದು ಕುಸಿತವು ಕಂಡುಬಂದಿದೆ"
 
-#: ../src/Applet/Applet.cpp:90
+#: src/Applet/Applet.cpp:90
 msgid "A crash has been detected"
 msgstr "ಒಂದು ಕುಸಿತವನ್ನು ಪತ್ತೆ ಮಾಡಲಾಗಿದೆ"
 
-#: ../src/Applet/Applet.cpp:266
+#: src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "ABRT ಸೇವೆಯು ಚಾಲನೆಯಲ್ಲಿಲ್ಲ"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:260
+#: src/Applet/CCApplet.cpp:287
 msgid "Warning"
 msgstr "ಎಚ್ಚರಿಕೆ"
 
-#: ../src/Applet/CCApplet.cpp:89
+#: src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
 msgstr "ABRT ಇಂದ ಪತ್ತೆ ಮಾಡಲಾದ ತೊಂದರೆಗಳನ್ನು ಬಳಕೆದಾರರಿಗೆ ಸೂಚಿಸುವ ಸೂಚನಾ ಸ್ಥಳದ ಆಪ್ಲೆಟ್"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: src/Applet/CCApplet.cpp:115
 msgid "Hide"
 msgstr "ಅಡಗಿಸು"
 
-#: ../src/Daemon/Daemon.cpp:477
+#: src/Daemon/Daemon.cpp:476
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -578,17 +572,17 @@ msgstr ""
 "ವರದಿಯ ಗಾತ್ರವು ಕೋಟವನ್ನು ಮೀರಿದೆ. abrt.conf ನಲ್ಲಿ ವ್ಯವಸ್ಥೆಯ MaxCrashReportsSize ಅನ್ನು "
 "ಪರಿಶೀಲಿಸಿ."
 
-#: ../lib/Plugins/Bugzilla.cpp:326
+#: lib/Plugins/Bugzilla.cpp:328
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "ದೋಷವನ್ನು ಈಗಾಗಲೆ ವರದಿ ಮಾಡಲಾಗಿದೆ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:404
+#: lib/Plugins/Bugzilla.cpp:409
 #, c-format
 msgid "New bug id: %i"
 msgstr "ಹೊಸ ದೋಷ ವರದಿಯ ಐಡಿ: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:616
+#: lib/Plugins/Bugzilla.cpp:621
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -596,120 +590,121 @@ msgstr ""
 "ಬಳಕೆದಾರ ಹೆಸರು ಅಥವ ಗುಪ್ತಪದವು ಖಾಲಿ ಇದೆ.\n"
 "ದಯವಿಟ್ಟು ಇದನ್ನು ಪರಿಶೀಲಿಸಿ "
 
-#: ../lib/Plugins/Bugzilla.cpp:624
+#: lib/Plugins/Bugzilla.cpp:629
 msgid "Logging into bugzilla..."
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾಗೆ ಪ್ರವೇಶಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:627
+#: lib/Plugins/Bugzilla.cpp:632
 msgid "Checking for duplicates..."
 msgstr "ದ್ವಿಪ್ರತಿಗಳಿಗಾಗಿ ಪರಿಶೀಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:640
+#: lib/Plugins/Bugzilla.cpp:645
 msgid "Missing mandatory member 'bugs'"
 msgstr "'ದೋಷಗಳು' ಎಂಬ ಅಗತ್ಯ ನಮೂದು ಕಾಣಿಸುತ್ತಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:650
+#: lib/Plugins/Bugzilla.cpp:655
 msgid "Creating new bug..."
 msgstr "ಹೊಸ ದೋಷ ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:655
+#: lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
 msgstr "ಬಗ್‌ಝಿಲ್ಲಾ ನಮೂದನ್ನು ರಚಿಸುವಿಕೆಯು ವಿಫಲಗೊಂಡಿದೆ"
 
-#: ../lib/Plugins/Bugzilla.cpp:663 ../lib/Plugins/Bugzilla.cpp:773
+#: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
 msgid "Logging out..."
 msgstr "ನಿರ್ಗಮಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Bugzilla.cpp:695 ../lib/Plugins/Bugzilla.cpp:723
+#: lib/Plugins/Bugzilla.cpp:700 lib/Plugins/Bugzilla.cpp:728
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ವಿಫಲಗೊಂಡಿದೆ. ಎಲ್ಲಾ ಅಗತ್ಯ ಮಾಹಿತಿಯನ್ನು ಸಂಗ್ರಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:707
+#: lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "ದೋಷದ(%d) ಮೂಲವನ್ನು ಪತ್ತೆ ಮಾಡಲು ಬಗ್‌ಝಿಲ್ಲಾದಿಂದ ಪತ್ತೆ ಮಾಡಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Bugzilla.cpp:712
+#: lib/Plugins/Bugzilla.cpp:717
 #, c-format
 msgid "Jump to bug %d"
 msgstr "ದೋಷ %d ಕ್ಕೆ ಹೋಗು"
 
-#: ../lib/Plugins/Bugzilla.cpp:737 ../lib/Plugins/Bugzilla.cpp:738
+#: lib/Plugins/Bugzilla.cpp:742 lib/Plugins/Bugzilla.cpp:743
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s ರವರನ್ನು CC ಪಟ್ಟಿಗೆ ಸೇರಿಸು"
 
-#: ../lib/Plugins/Bugzilla.cpp:762
+#: lib/Plugins/Bugzilla.cpp:767
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "ದೋಷಕ್ಕೆ(%d) ಒಂದು ಹೊಸ ಟಿಪ್ಪಣಿಯನ್ನು ಸೇರಿಸಿ"
 
-#: ../lib/Plugins/Kerneloops.cpp:100
+#: lib/Plugins/Kerneloops.cpp:118
 msgid "Getting local universal unique identification"
 msgstr "ಸ್ಥಳೀಯ ಜಾಗತಿಕ ವಿಶಿಷ್ಟ ಗುರುತನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/CCpp.cpp:159
+#: lib/Plugins/CCpp.cpp:159
 msgid "Generating backtrace"
 msgstr "ಬ್ಯಾಕ್‌ಟ್ರೇಸ್ ಅನ್ನು ಉತ್ಪಾದಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/CCpp.cpp:325
+#: lib/Plugins/CCpp.cpp:325
 msgid "Starting debuginfo installation"
 msgstr "debuginfo ಅನುಸ್ಥಾಪನೆಯನ್ನು ಆರಂಭಿಸಲಾಗುತ್ತಿದೆ"
 
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:533
+#: lib/Plugins/CCpp.cpp:533
 msgid "Getting global universal unique identification..."
 msgstr "ಸಾರ್ವತ್ರಿಕ ಜಾಗತಿಕ ವಿಶಿಷ್ಟ ಗುರುತನ್ನು ಪಡೆಯಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/CCpp.cpp:699
+#: lib/Plugins/CCpp.cpp:699
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo ಅನುಸ್ಥಾಪನೆಯನ್ನು ಉಪೇಕ್ಷಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:94
+#: lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಿ ಸಲ್ಲಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/Logger.cpp:73
+#: lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "'%s' ಗೆ ವರದಿಯನ್ನು ಬರೆಯಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/FileTransfer.cpp:53
+#: lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "ಕಡತ ವರ್ಗಾವಣೆ: URL ಅನ್ನು ಸೂಚಿಸಲಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/FileTransfer.cpp:57
+#: lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "ಆರ್ಕೈವ್ %s ಅನ್ನು %s ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ"
 
-#: ../lib/Plugins/FileTransfer.cpp:288
+#: lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "ಕಡತ ವರ್ಗಾವಣೆ: ಒಂದು ವರದಿಯನ್ನು ರಚಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322
+#: lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "ಒಂದು ಆರ್ಕೈವ್ ಅನ್ನು ರಚಿಸಲು ಹಾಗು ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:351
+#: lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "ಒಂದು ಆರ್ಕೈವ್ %s ಅನ್ನು ರಚಿಸಲು ಹಾಗು ಕಳುಹಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ"
 
-#: ../lib/Plugins/Mailx.cpp:134
+#: lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "ಒಂದು ಇಮೈಲ್ ಅನ್ನು ಕಳುಹಿಸಲಾಗುತ್ತಿದೆ..."
 
-#: ../lib/Plugins/SOSreport.cpp:101
+#: lib/Plugins/SOSreport.cpp:101
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "sosreport ಅನ್ನು ಚಲಾಯಿಸಲಾಗುತ್ತಿದೆ:  %s"
 
-#: ../lib/Plugins/SOSreport.cpp:107
+#: lib/Plugins/SOSreport.cpp:107
 msgid "Done running sosreport"
 msgstr "sosreport ಅನ್ನು ಚಲಾಯಿಸುವುದು ಪೂರ್ಣಗೊಂಡಿದೆ"
+
+#~ msgid "View and report application crashes"
+#~ msgstr "ಅನ್ವಯದ ಕುಸಿತವನ್ನು ನೋಡಿ ಹಾಗು ವರದಿ ಮಾಡಿ"
 
 #~ msgid ""
 #~ "Usage: abrt-gui [OPTIONS]\n"
