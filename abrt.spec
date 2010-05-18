@@ -16,7 +16,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.1.1
+Version: 1.1.2
 Release: %{?pkg_release}
 License: GPLv2+
 Group: Applications/System
@@ -348,9 +348,9 @@ fi
 %{_datadir}/%{name}/*.py*
 %{_datadir}/%{name}/*.glade
 %{_datadir}/applications/fedora-%{name}.desktop
-%{_datadir}/icons/*/*/apps/*
-%{_datadir}/icons/*/*/status/*
-%{_datadir}/%{name}/icons/*/*/status/*
+%{_datadir}/icons/hicolor/*/apps/*
+%{_datadir}/icons/hicolor/*/status/*
+%{_datadir}/%{name}/icons/hicolor/*/status/*
 %{_bindir}/%{name}-applet
 %{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
 
@@ -457,6 +457,54 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed May 19 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.2-1
+- updated translation
+- obsolete gnome-python2-bugbuddy rhbz#579748 (jmoskovc@redhat.com)
+- Report "INFO: possible recursive locking detected rhbz#582378 (vda.linux@googlemail.com)
+- kill yumdownloader if abrt-debuginfo-install is terminated mid-flight (vda.linux@googlemail.com)
+- do not create Python dumps if argv[0] is not absolute (vda.linux@googlemail.com)
+- improve kerneloops hash (vda.linux@googlemail.com)
+- Move /var/cache/abrt to /var/spool/abrt. rhbz#568101. (vda.linux@googlemail.com)
+- bugzilla: better summary and decription messages (npajkovs@redhat.com)
+- renamed daemon pid and lock file rhbz#588315 (jmoskovc@redhat.com)
+- Daemon socket for reporting crashes (kklic@redhat.com)
+- Move hooklib from src/Hooks to lib/Utils (kklic@redhat.com)
+
+* Thu May 13 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.1-1
+- updated translations
+- removed avant-window-navigator from blacklist (jmoskovc@redhat.com)
+- Abort debuginfo download if low on disk space (partially addresses #564451) (vda.linux@googlemail.com)
+- fix bug 588945 - sparse core files performance hit (vda.linux@googlemail.com)
+- Add BlackListedPaths option to abrt.conf. Fixes #582421 (vda.linux@googlemail.com)
+- Do not die when /var/cache/abrt/*/uid does not contain a number (rhbz#580899) (kklic@redhat.com)
+- rid of rewriting config in /etc/abrt/abrt.conf (npajkovs@redhat.com)
+- fix bug 571411: backtrace attachment of the form /var/cache/abrt/foo-12345-67890/backtrace (vda.linux@googlemail.com)
+- Do not echo password to terminal in abrt-cli (kklic@redhat.com)
+- improved daemon error messages (kklic@redhat.com)
+
+* Mon May 03 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.0-1
+- updated transaltions
+- added Hebrew into languages
+- updated icons rhbz#587698 (jmoskovc@redhat.com)
+- Bugzilla login/password emptiness check uses 'or' instead of 'and' (kklic@redhat.com)
+- Show error message when abrtd service is run as non-root. rhbz#584352 (kklic@redhat.com)
+- Rename EnableOpenGPG to OpenGPGCheck in the man page rhbz#584332 (kklic@redhat.com)
+- Document ProcessUnpackaged in abrt.conf.5. Document default values. (kklic@redhat.com)
+- Crash function is now detected even for threads without an abort frame (kklic@redhat.com)
+- comment can be private (npajkovs@redhat.com)
+- do not catch perl/python crashes when the script is not of known package origin (kklic@redhat.com)
+- kerneloop is more informative when failed (npajkovs@redhat.com)
+- add function name into summary(if it's found) (npajkovs@redhat.com)
+- Change kerneloops message when it fails (npajkovs@redhat.com)
+
+* Fri Apr 30 2010 Karel Klic <kklic@redhat.com> 1.0.9-3
+- fixed crash function detection (a part of duplication detection)
+
+* Wed Apr 14 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.0.9-2
+- fixed problem with localized yum messages rhbz#581804
+- better bugzilla summary (napjkovs@redhat.com)
+- ignore interpreter (py,perl) crashes caused by unpackaged scripts (kklic@redhat.com)
+
 * Tue Apr 06 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.0.9-1
 - hooklib: fix excessive rounding down in free space calculation (bz#575644) (vda.linux@googlemail.com)
 - gui: fix 551989 "crash detected in abrt-gui-1.0.0-1.fc12" and such (vda.linux@googlemail.com)
@@ -465,42 +513,49 @@ fi
 - fixed some compilation problems on F13 (jmoskovc@redhat.com)
 - updated translations (jmoskovc@redhat.com)
 - minor fix to sosreport to make it work with latest sos rhbz#576861 (jmoskovc@redhat.com)
-- minor gui fixes (jmoskovc@redhat.com)
+
+* Wed Mar 31 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.0.9-0.201003312045.1
+- test day build
+- updated translation
+- minor fix to sosreport to make it work with latest sos rhbz#576861 (jmoskovc@redhat.com)
 - GUI: total rewrite based on design from Mairin Duffy (jmoskovc@redhat.com)
-- improved backtrace rating (kklic@redhat.com)
+- trivial: better HTTP/curl error reporting (vda.linux@googlemail.com)
+- Use backtrace parser from abrtutils, new backtrace rating algorithm, store crash function if it's known (kklic@redhat.com)
+- abrt-rate-backtrace is replaced by abrt-backtrace --rate (kklic@redhat.com)
+- Ignore some temp files (kklic@redhat.com)
 - PYHOOK: don't use sitecustomize.py rhbz#539497 (jmoskovc@redhat.com)
 - rhfastcheck: a new reporter plugin based on Gavin's work (vda.linux@googlemail.com)
 - rhticket: new reporter plugin (vda.linux@googlemail.com)
-- GUI: fixed some window icons (jmoskovc@redhat.com)
-- GUI: moved the reporters settings check before the reporter dialog (jmoskovc@redhat.com)
-- GUI: stay at selected line when new crash occurs (jmoskovc@redhat.com)
-- added option to select the reporter in cli (kklic@redhat.com)
+- GUI: fixed few window icons (jmoskovc@redhat.com)
+- Allow user to select which reporter he wants to use to report a crash using CLI.(kklic@redhat.com)
+- bz reporter: s/uuid/duphash; more understandable message; simplify result str generation; fix indentation (vda.linux@googlemail.com)
 - GUI: fixed crash count column sorting rhbz#573139 (jmoskovc@redhat.com)
 - Kerneloops: use 1st line of oops as REASON. Closes rhbz#574196. (vda.linux@googlemail.com)
 - Kerneloops: fix a case when we file an oops w/o backtrace (vda.linux@googlemail.com)
-- don't read syslog if it didn't change (jmoskovc@redhat.com)
-- Do not throw if there is no reporter for some action. (kklic@redhat.com)
 - minor fix in abrt-debuginfo-install to make it work with yum >= 3.2.26 (jmoskovc@redhat.com)
 - GUI: added action to applet to directly report last crash (jmoskovc@redhat.com)
-- GUI: fixed the report window height on small display rhbz#563919 (jmoskovc@redhat.com)
 - Never flag backtrace as binary file (fixes problem observed in bz#571411) (vda.linux@googlemail.com)
 - improve syslog file detection. closes bz#565983 (vda.linux@googlemail.com)
 - add arch, package and release in comment (npajkovs@redhat.com)
 - add ProcessUnpackaged option to abrt.conf (vda.linux@googlemail.com)
 - abrt-debuginfo-install: use -debuginfo repos which match enabled "usual" repos (vda.linux@googlemail.com)
-- fix bz#570081 (self.is_oops is not defined) (vda.linux@googlemail.com)
-- abrt-debuginfo-install: remove -R2 from yum! it's not "anti-yum-lock" option! (vda.linux@googlemail.com)
 - fix format security error (fcrozat@mandriva.com)
 - icons repackaging (jmoskovc@redhat.com)
-- add reporters param to dbus call Report() (vda.linux@googlemail.com)
-- ccpp analyser: add registers and disasm to gdb commands (bz#568686) (vda.linux@googlemail.com)
-- fixed init script (jmoskovc@redhat.com)
-- Bugzilla: fix a few memory leaks (vda.linux@googlemail.com)
 - partial fix for bz#565983 (vda.linux@googlemail.com)
 - SPEC: Updated source URL (jmoskovc@redhat.com)
-- simplify kerneloops/dumpoops a bit (vda.linux@googlemail.com)
-- cli: add support for "--report @N" and "--report PARTIAL_UUID" (vda.linux@googlemail.com)
-- Kerneloops: be more specific looking for "WARNING:" string (vda.linux@googlemail.com)
+- removed unneeded patches
+- and much more ...
+
+* Sat Mar 13 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.8-3
+- fixed kerneloops reporting rhbz#570081
+- fixed Source url
+- fixed debuginfo-install to work on F13
+  - improved debuginfo-install (vda.linux@googlemail.com)
+  - fix debuginfo-install to work with yum >= 3.2.26 (jmoskovc@redhat.com)
+
+* Wed Mar  3 2010  Denys Vlasenko <dvlasenk@redhat.com> 1.0.8-2
+- fix initscript even more (npajkovs@redhat.com)
+- remove -R2 from yum command line
 
 * Mon Feb 22 2010  Jiri Moskovcak <jmoskovc@redhat.com> 1.0.8-1
 - fix initscript (npajkovs@redhat.com)
