@@ -1,5 +1,5 @@
 AC_INIT([abrt], [1.1.1], [crash-catcher@fedorahosted.org])
-
+AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
 AC_ARG_ENABLE(debug,
@@ -48,6 +48,9 @@ PKG_CHECK_MODULES([ZIP],[libzip])
 
 AC_CHECK_HEADER([libtar.h], [],
    [AC_MSG_ERROR([libtar.h is needed to build abrt])])
+
+AC_CHECK_HEADER([bzlib.h], [],
+   [AC_MSG_ERROR([bzlib.h is needed to build abrt])])
 
 AC_CHECK_HEADER([sys/inotify.h], [],
    [AC_MSG_ERROR([sys/inotify.h is needed to build abrt])])

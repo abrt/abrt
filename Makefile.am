@@ -1,3 +1,4 @@
+ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = lib src inc po icons
 
 EXTRA_DIST = doc/CodingStyle abrt.spec
