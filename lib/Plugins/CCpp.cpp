@@ -171,7 +171,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
     // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
     unsetenv("TERM");
     // This is not necessary, and was observed to cause
-    // environmant corruption (because we run in a thead?):
+    // environmant corruption (because we run in a thread?):
     //putenv((char*)"TERM=dumb");
 
     char *args[21];
