@@ -28,6 +28,8 @@ CRPM::CRPM()
 
 CRPM::~CRPM()
 {
+    rpmFreeCrypto();
+    rpmFreeRpmrc();
     rpmcliFini(m_poptContext);
 }
 
@@ -48,6 +50,7 @@ void CRPM::LoadOpenGPGPublicKey(const char* pFileName)
         if (fedoraFingerprint != NULL)
         {
             m_setFingerprints.insert(fedoraFingerprint);
+            free(fedoraFingerprint);
         }
     }
     free(pkt);
@@ -71,6 +74,7 @@ bool CRPM::CheckFingerprint(const char* pPackage)
                 rpmtd td = rpmtdNew();
                 headerGet(header, rpmTags[ii] , td, HEADERGET_DEFAULT);
                 char* pgpsig = rpmtdFormat(td, RPMTD_FORMAT_PGPSIG , NULL);
+                rpmtdFree(td);
                 if (pgpsig)
                 {
                     std::string PGPSignatureText = pgpsig;
@@ -81,7 +85,6 @@ bool CRPM::CheckFingerprint(const char* pPackage)
                     {
                         std::string headerFingerprint = PGPSignatureText.substr(Key_ID_pos + sizeof (" Key ID ") - 1);
 
-                        rpmtdFree(td);
                         if (headerFingerprint != "")
                         {
                             if (m_setFingerprints.find(headerFingerprint) != m_setFingerprints.end())
