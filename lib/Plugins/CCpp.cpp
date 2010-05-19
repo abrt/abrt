@@ -170,7 +170,9 @@ static void GetBacktrace(const char *pDebugDumpDir,
     // Workaround for
     // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
     unsetenv("TERM");
-    putenv((char*)"TERM=dumb");
+    // This is not necessary, and was observed to cause
+    // environmant corruption (because we run in a thead?):
+    //putenv((char*)"TERM=dumb");
 
     char *args[21];
     args[0] = (char*)"gdb";
