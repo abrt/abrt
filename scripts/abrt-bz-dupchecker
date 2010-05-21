@@ -54,7 +54,7 @@ bz = RHBugzilla()
 bz.connect(options.bugzilla)
 bz.login(options.user, options.password)
 
-buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboard':'abrt_hash'})
+buginfos = bz.query({'status_whiteboard_type':'allwordssubstr','status_whiteboard':'abrt_hash', 'product':'Fedora'})
 
 print "{0} bugs found.".format(len(buginfos))
 
@@ -122,7 +122,7 @@ for buginfo in buginfos:
     if not downloaded:
       continue
 
-  command = ["./abrt-backtrace"]
+  command = ["abrt-backtrace"]
   command.append(filename)
   command.append("--single-thread")
   command.append("--frame-depth=5")
@@ -178,7 +178,7 @@ for backtrace, components in database.items():
     # Get the component owner
     owner = "Failed to get component owner"
     try:
-      component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/packages/name/{0}?tg_format=json".format(component)))
+      component_info = json.load(urllib.urlopen("https://admin.fedoraproject.org/pkgdb/acls/name/{0}?tg_format=json".format(component)))
       component_packages = component_info['packageListings']
       component_f12 = filter(lambda x:x["collection"]["version"]=="12", component_packages)
       if len(component_f12) == 1:
@@ -191,7 +191,7 @@ for backtrace, components in database.items():
 
 # Close all bugs where it is appropriate.
 if options.close:
-  LIMIT = 1000
+  LIMIT = 10000 # infinite
   counter = 0
   for (component, owner, bugitems, backtrace) in dups:
     # Find the master bug item
