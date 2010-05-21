@@ -678,12 +678,6 @@ static void ensure_writable_dir(const char *dir, mode_t mode, const char *user)
 
 static void sanitize_dump_dir_rights()
 {
-    /* Compat kludge, remove after 1.3.0
-     * (and remove DEBUG_DUMPS_DIR_OLD define everywhere)
-     */
-    if (rename(DEBUG_DUMPS_DIR_OLD, DEBUG_DUMPS_DIR) == 0)
-	    symlink(DEBUG_DUMPS_DIR, DEBUG_DUMPS_DIR_OLD);
-
     /* We can't allow everyone to create dumps: otherwise users can flood
      * us with thousands of bogus or malicious dumps */
     /* 07000 bits are setuid, setgit, and sticky, and they must be unset */
