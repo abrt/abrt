@@ -147,7 +147,7 @@ int main(int argc, char** argv)
 
         char path[PATH_MAX];
 
-        /* Check /var/cache/abrt/last-ccpp marker, do not dump repeated crashes
+        /* Check /var/spool/abrt/last-ccpp marker, do not dump repeated crashes
          * if they happen too often. Else, write new marker value.
          */
         snprintf(path, sizeof(path), "%s/last-ccpp", dddir);

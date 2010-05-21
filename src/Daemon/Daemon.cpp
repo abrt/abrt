@@ -47,7 +47,7 @@ using namespace std;
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
  * Events can be:
- * - inotify: something new appeared under /var/cache/abrt
+ * - inotify: something new appeared under /var/spool/abrt
  * - DBus: dbus message arrived
  * - signal: we got SIGTERM or SIGINT
  *
@@ -55,7 +55,7 @@ using namespace std;
  * - GetCrashInfos(): returns a vector_map_crash_data_t (vector_map_vector_string_t)
  *      of crashes for given uid
  *      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
- * - StartJob(crash_id,force): starts creating a report for /var/cache/abrt/DIR with this UID:UUID.
+ * - StartJob(crash_id,force): starts creating a report for /var/spool/abrt/DIR with this UID:UUID.
  *      Returns job id (uint64).
  *      After thread returns, when report creation thread has finished,
  *      JobDone() dbus signal is emitted.
@@ -64,7 +64,7 @@ using namespace std;
  *      "Please report this crash": calls Report() of all registered reporter plugins.
  *      Returns report_status_t (map_vector_string_t) - the status of each call.
  *      2nd parameter is the contents of user's abrt.conf.
- * - DeleteDebugDump(crash_id): delete it from DB and delete corresponding /var/cache/abrt/DIR
+ * - DeleteDebugDump(crash_id): delete it from DB and delete corresponding /var/spool/abrt/DIR
  * - GetPluginsInfo(): returns map_map_string_t
  *      map["plugin"] = { "Name": "plugin", "Enabled": "yes" ... }
  * - GetPluginSettings(PluginName): returns map_plugin_settings_t (map_string_t)
@@ -75,7 +75,7 @@ using namespace std;
  * - SetSettings(map_abrt_settings_t): returns void
  *
  * DBus signals we emit:
- * - Crash(progname, crash_id, uid) - a new crash occurred (new /var/cache/abrt/DIR is found)
+ * - Crash(progname, crash_id, uid) - a new crash occurred (new /var/spool/abrt/DIR is found)
  * - JobDone(client_dbus_ID) - see StartJob above.
  *      Sent as unicast to the client which did StartJob.
  * - Warning(msg)

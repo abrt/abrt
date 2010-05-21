@@ -47,25 +47,25 @@ it to achieve design goals.
 Since currently we do not know how to dump oops on demand,
 we can only poll for it. There is a small daemon which polls
 kernel message buffer and dumps oopses when it sees them.
-The dump is written into /var/cache/abrt/DIR.
-After this, daemon spawns "abrt-process -d /var/cache/abrt/DIR"
+The dump is written into /var/spool/abrt/DIR.
+After this, daemon spawns "abrt-process -d /var/spool/abrt/DIR"
 which processes it according to configuration in /etc/abrt/*.conf.
 
 In order to catch binary crashes, we install a handler for it
 in /proc/sys/kernel/core_pattern (by setting it to
-"|/usr/libexec/abrt-hook-ccpp /var/cache/abrt %p %s %u").
-When process dumps core, the dump is written into /var/cache/abrt/DIR.
-After this, abrt-hook-ccpp spawns "abrt-process -d /var/cache/abrt/DIR"
+"|/usr/libexec/abrt-hook-ccpp /var/spool/abrt %p %s %u").
+When process dumps core, the dump is written into /var/spool/abrt/DIR.
+After this, abrt-hook-ccpp spawns "abrt-process -d /var/spool/abrt/DIR"
 and terminates.
 
 When python program crashes, it invokes internel python subroutine
 which dumps crash info into ~/abrt/cache/DIR.
-[this is a tentative plan, currently we dump in /var/cache/abrt/DIR]
+[this is a tentative plan, currently we dump in /var/spool/abrt/DIR]
 After this, it spawns "abrt-process -d ~/abrt/cache/DIR"
 and terminates.
 
-[Problem: dumping to /var/cache/abrt/DIR needs world-writable
-/var/cache/abrt and allows user to go way over his
+[Problem: dumping to /var/spool/abrt/DIR needs world-writable
+/var/spool/abrt and allows user to go way over his
 disk quota. Dumping to ~/abrt/cache/DIR makes it difficult
 to present a list of all crashes which happened on the machine -
 for example, root-owned processes cannot even access user data
@@ -88,7 +88,7 @@ The key dbus calls served by abrt-process are:
      of crashes for given uid
      v[N]["executable"/"uid"/"kernel"/"backtrace"][N] = "contents"
 [see above the problem with producing this list]
-- CreateReport(UUID): starts creating a report for /var/cache/abrt/DIR with this UUID.
+- CreateReport(UUID): starts creating a report for /var/spool/abrt/DIR with this UUID.
      Returns job id (uint64).
      After it returns, when report creation thread has finished,
      JobDone(client_dbus_ID,UUID) dbus signal is emitted.
@@ -101,7 +101,7 @@ The key dbus calls served by abrt-process are:
 - Report(map_crash_data_t (map_vector_string_t)):
      "Please report this crash": calls Report() of all registered reporter plugins
      Returns report_status_t (map_vector_string_t) - the status of each call
-- DeleteDebugDump(UUID): delete corresponding /var/cache/abrt/DIR. Returns bool
+- DeleteDebugDump(UUID): delete corresponding /var/spool/abrt/DIR. Returns bool
 
 
 	Development plan

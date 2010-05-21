@@ -333,7 +333,7 @@ $debug && echo "Downloading rpms to $tempdir"
 
 echo "Getting list of build IDs"
 # Observed errors:
-# eu-unstrip: /var/cache/abrt/ccpp-1256301004-2754/coredump: Callback returned failure
+# eu-unstrip: /var/spool/abrt/ccpp-1256301004-2754/coredump: Callback returned failure
 eu_unstrip_OUT=`eu-unstrip "--core=$core" -n 2>eu_unstrip.ERR`
 err=$?
 printf "%s\neu-unstrip exitcode:%s\n" "$eu_unstrip_OUT" $err >eu_unstrip.OUT

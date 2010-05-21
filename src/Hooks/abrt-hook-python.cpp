@@ -1,5 +1,5 @@
 /*
-    abrt-hook-python.cpp - writes data to the /var/cache/abrt directory
+    abrt-hook-python.cpp - writes data to the /var/spool/abrt directory
     with SUID bit
 
     Copyright (C) 2009  RedHat inc.
