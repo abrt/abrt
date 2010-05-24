@@ -212,15 +212,24 @@ if options.close:
       else:
         return -1
 
+    # Sort the duplicates by the number of comments.
+    # Select the bug with the highest number of comments as the master bug.
+    # All other bugs without user comments will be closed as a duplicate of
+    # the master bug.
     sorteditems = sorted(bugitems, commentCmp)
-
     master = sorteditems[0]
+
+    # Check the master bug status AGAIN to make sure the bug is still opened.
+    bug = bz.getbug(int(master['id']))
+    if not bug.bug_status in ["NEW", "ASSIGNED"]:
+      continue
+
     for item in sorteditems[1:]:
       if item['comments'] > 2:
         continue
 
-      bug = bz.getbug(int(item['id']))
       # Check the bug status AGAIN to make sure the bug is still opened.
+      bug = bz.getbug(int(item['id']))
       if not bug.bug_status in ["NEW", "ASSIGNED"]:
         continue
 
