@@ -27,15 +27,7 @@
 
 using namespace std;
 
-static void ErrorCheck(int pos)
-{
-    if (pos < 0)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "Can't find filename in sosreport output");
-    }
-}
-
-static string ParseFilename(const string& pOutput)
+static char *ParseFilename(char *p)
 {
     /*
     the sosreport's filename is embedded in sosreport's output.
@@ -46,21 +38,14 @@ static string ParseFilename(const string& pOutput)
     static const char sosreport_filename_marker[] =
           "Your sosreport has been generated and saved in:";
 
-    int p = pOutput.find(sosreport_filename_marker);
-    ErrorCheck(p);
-
-    p += sizeof(sosreport_filename_marker)-1;
-
-    int filename_start = pOutput.find_first_not_of(" \n\t", p);
-    ErrorCheck(p);
-
-    int line_end = pOutput.find_first_of('\n', filename_start);
-    ErrorCheck(p);
-
-    int filename_end = pOutput.find_last_not_of(" \n\t", line_end);
-    ErrorCheck(p);
-
-    return pOutput.substr(filename_start, filename_end - filename_start + 1);
+    p = strstr(p, sosreport_filename_marker);
+    if (!p)
+        return p;
+    p = skip_whitespace(p + sizeof(sosreport_filename_marker)-1);
+    char *end = strchrnul(p, '\n');
+    while (end > p && isspace(*end))
+        *end-- = '\0';
+    return p[0] == '/' ? p : NULL;
 }
 
 void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
@@ -103,31 +88,52 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
     output += '\n';
     char *command_out = run_in_shell_and_save_output(/*flags:*/ 0, command.c_str(), /*dir:*/ NULL, /*size_p:*/ NULL);
     output += command_out;
-    free(command_out);
     update_client(_("Done running sosreport"));
     VERB3 log("sosreport output:'%s'", output.c_str());
-
     // Parse:
     // "Your sosreport has been generated and saved in:
     //  /tmp/sosreport-XXXX.tar.bz2"
-    string sosreport_filename = ParseFilename(output);
-    string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar.bz2");
+    // Note: ParseFilename modifies its parameter and returns pointer
+    // which points somewhere inside it.
+    char *sosreport_filename = xstrdup(ParseFilename(command_out));
+    free(command_out);
+    if (!sosreport_filename)
+    {
+        throw CABRTException(EXCEP_PLUGIN, "Can't find filename in sosreport output");
+    }
 
+    string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar");
+    char *ext = strrchr(sosreport_filename, '.');
+    if (ext && strcmp(ext, ".tar") != 0)
+    {
+        // Assuming it's .bz2, .gz or some such
+        sosreport_dd_filename += ext;
+    }
     CDebugDump dd;
     dd.Open(pActionDir);
     //Not useful: dd.SaveText("sosreportoutput", output);
-    off_t sz = copy_file(sosreport_filename.c_str(), sosreport_dd_filename.c_str(), 0644);
-    unlink(sosreport_filename.c_str());            // don't want to leave sosreport-XXXX.tar.bz2 in /tmp
-    unlink((sosreport_filename + ".md5").c_str()); // sosreport-XXXX.tar.bz2.md5 too
+    off_t sz = copy_file(sosreport_filename, sosreport_dd_filename.c_str(), 0644);
+
+    // don't want to leave sosreport-XXXX.tar.bz2 in /tmp
+    unlink(sosreport_filename);
+    // sosreport-XXXX.tar.bz2.md5 too
+    unsigned len = strlen(sosreport_filename);
+    sosreport_filename = (char*)xrealloc(sosreport_filename, len + sizeof(".md5")-1 + 1);
+    strcpy(sosreport_filename + len, ".md5");
+    unlink(sosreport_filename);
+
     if (sz < 0)
     {
         dd.Close();
-        throw CABRTException(EXCEP_PLUGIN,
+        CABRTException e(EXCEP_PLUGIN,
                 "Can't copy '%s' to '%s'",
-                sosreport_filename.c_str(),
+                sosreport_filename,
                 sosreport_dd_filename.c_str()
         );
+        free(sosreport_filename);
+        throw e;
     }
+    free(sosreport_filename);
 }
 
 PLUGIN_INFO(ACTION,
