@@ -287,7 +287,13 @@ class ReporterSelector():
         self.reporters = []
         AnalyzerActionsAndReporters = self.settings["AnalyzerActionsAndReporters"]
         try:
-            reporters = AnalyzerActionsAndReporters[crashdump.getAnalyzerName()]
+            reporters = None
+            try:
+                reporters = AnalyzerActionsAndReporters[self.dump.getAnalyzerName()+":"+self.dump.getPackageName()]
+            except KeyError:
+                pass
+            if not reporters:
+                reporters = AnalyzerActionsAndReporters[crashdump.getAnalyzerName()]
             for reporter_name in reporters.split(','):
                 reporter = pluginlist.getReporterByName(reporter_name)
                 if reporter:
