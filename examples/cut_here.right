@@ -1,0 +1,44 @@
+dumpoops: found oopses: 1
+
+Version: 2.6.32-19.el6.x86_64
+------------[ cut here ]------------
+WARNING: at arch/x86/kernel/cpu/mtrr/generic.c:467
+generic_get_mtrr+0x11e/0x140() (Not tainted)
+Hardware name: ProLiant BL460c G1
+mtrr: your BIOS has set up an incorrect mask, fixing it up.
+Modules linked in: radeon(+)(U) ttm(U) drm_kms_helper(U) drm(U) i2c_algo_bit(U)
+i2c_core(U) dm_mod(U)
+Pid: 143, comm: modprobe Not tainted 2.6.32-19.el6.x86_64 #1
+Call Trace:
+[<ffffffff81067c33>] warn_slowpath_common+0x83/0xc0
+[<ffffffff81067cd1>] warn_slowpath_fmt+0x41/0x50
+[<ffffffff81028e4e>] generic_get_mtrr+0x11e/0x140
+[<ffffffff8102793b>] mtrr_add_page+0xdb/0x470
+[<ffffffff810d0e99>] ? request_threaded_irq+0x1c9/0x2e0
+[<ffffffff81027d26>] mtrr_add+0x56/0x70
+[<ffffffffa00c866e>] radeon_bo_init+0x2e/0x90 [radeon]
+[<ffffffffa00e5d22>] r100_init+0x102/0x2a0 [radeon]
+[<ffffffff81310d72>] ? vga_client_register+0x82/0x90
+[<ffffffffa00b63ba>] radeon_device_init+0x25a/0x330 [radeon]
+[<ffffffffa00b715f>] radeon_driver_load_kms+0x9f/0x1d0 [radeon]
+[<ffffffffa003f2e8>] drm_get_dev+0x328/0x550 [drm]
+[<ffffffffa011c4e8>] radeon_pci_probe+0x15/0x269 [radeon]
+[<ffffffff81262677>] local_pci_probe+0x17/0x20
+[<ffffffff81263129>] pci_device_probe+0x119/0x120
+[<ffffffff813213d2>] ? driver_sysfs_add+0x62/0x90
+[<ffffffff81321570>] driver_probe_device+0xa0/0x2a0
+[<ffffffff8132181b>] __driver_attach+0xab/0xb0
+[<ffffffff81321770>] ? __driver_attach+0x0/0xb0
+[<ffffffff81320ae4>] bus_for_each_dev+0x64/0x90
+[<ffffffff8132130e>] driver_attach+0x1e/0x20
+[<ffffffff813202e0>] bus_add_driver+0x200/0x300
+[<ffffffff812484d8>] ? kset_find_obj+0x38/0x80
+[<ffffffff81321b46>] driver_register+0x76/0x140
+[<ffffffff81263366>] __pci_register_driver+0x56/0xd0
+[<ffffffff814bfe69>] ? printk+0x41/0x48
+[<ffffffffa0039ae1>] drm_init+0x111/0x120 [drm]
+[<ffffffffa0151000>] ? radeon_init+0x0/0xc1 [radeon]
+[<ffffffffa01510bf>] radeon_init+0xbf/0xc1 [radeon]
+[<ffffffff8100a04c>] do_one_initcall+0x3c/0x1d0
+[<ffffffff810abcff>] sys_init_module+0xdf/0x250
+[<ffffffff81013172>] system_call_fastpath+0x16/0x1b
