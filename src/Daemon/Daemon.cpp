@@ -392,6 +392,7 @@ static int Lock()
         perror_msg("Can't lock file '%s'", VAR_RUN_LOCK_FILE);
         return -1;
     }
+    close_on_exec_on(lfd);
     return 0;
     /* we leak opened lfd intentionally */
 }
