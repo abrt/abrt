@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.gu\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-19 00:22+0200\n"
+"POT-Creation-Date: 2010-05-25 10:33+0200\n"
 "PO-Revision-Date: 2010-05-14 11:11+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
@@ -163,19 +163,19 @@ msgstr "ક્લિપબોર્ડ માં નકલ કરો"
 msgid "Report"
 msgstr "અહેવાલ"
 
-#: src/Gui/CCMainWindow.py:61
+#: src/Gui/CCMainWindow.py:62
 msgid "Reported"
 msgstr "અહેવાલ થયેલ"
 
-#: src/Gui/CCMainWindow.py:69
+#: src/Gui/CCMainWindow.py:70
 msgid "Application"
 msgstr "કાર્યક્રમ"
 
-#: src/Gui/CCMainWindow.py:71
+#: src/Gui/CCMainWindow.py:72
 msgid "Latest Crash"
 msgstr "તાજેતરનું ભંગાણ"
 
-#: src/Gui/CCMainWindow.py:139
+#: src/Gui/CCMainWindow.py:140
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -184,7 +184,7 @@ msgstr ""
 "સંવાદ સુયોજનોને બતાવી શકાતા નથી\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:144
+#: src/Gui/CCMainWindow.py:145
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -193,7 +193,7 @@ msgstr ""
 "હાલનાં કાર્યને સમાપ્ત કરવાનું અસમર્થ!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:179
+#: src/Gui/CCMainWindow.py:180
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -202,7 +202,7 @@ msgstr ""
 "જ્યારે ડમ્પયાદીને લાવી રહ્યા હોય ત્યારે ભૂલ.\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:236
+#: src/Gui/CCMainWindow.py:237
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -211,11 +211,11 @@ msgstr ""
 "<b>%s ભંગાણ</b>\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:332
+#: src/Gui/CCMainWindow.py:333
 msgid "You have to select a crash to copy."
 msgstr "તમારે નકલ કરવા માટે ભંગાણને પસંદ કરવુ જ પડશે."
 
-#: src/Gui/CCMainWindow.py:414
+#: src/Gui/CCMainWindow.py:418
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -225,7 +225,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 
-#: src/Gui/CCMainWindow.py:437
+#: src/Gui/CCMainWindow.py:441
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -298,7 +298,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "%s વિકલ્પોને રૂપરેખાંકિત કરો"
 
-#: src/Gui/CCReporterDialog.py:492
+#: src/Gui/CCReporterDialog.py:492 src/Gui/CReporterAssistant.py:494
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -316,6 +316,7 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:547 src/Gui/CCReporterDialog.py:568
+#: src/Gui/CReporterAssistant.py:526
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "અહેવાલને મેળવી રહ્યા હોય ત્યારે ભૂલ: %s"
@@ -382,7 +383,7 @@ msgstr "<span fgcolor=\"blue\">કારણ:</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "મેં બેકટ્રેસને ચકાસેલ છે અને સંવેદનશીલ માહિતીને દૂર કરેલ છે (પાસવર્ડો, વગેરે)"
 
-#: src/Gui/report.glade:369
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:403
 msgid "<b>Backtrace</b>"
 msgstr "<b>બેકટ્રેસ્ટ્રેસ</b>"
 
@@ -426,11 +427,11 @@ msgstr "રિપૉર્ટર પસંદ કરનાર"
 msgid "<b>Where do you want to report this incident?</b>"
 msgstr "<b>ક્યાં તમે આ ઘટનાનો અહેવાલ કરવા માંગો છો?</b>"
 
-#: src/Gui/report.glade:764
+#: src/Gui/report.glade:764 src/Gui/progress_window.glade:8
 msgid "Please wait.."
 msgstr "મહેરબાની કરીને થોભો.."
 
-#: src/Gui/report.glade:817
+#: src/Gui/report.glade:817 src/Gui/progress_window.glade:60
 msgid "Details"
 msgstr "વિગતો"
 
@@ -533,6 +534,152 @@ msgstr "વિશ્લેષકો, ક્રિયાઓ, સંવાદદ�
 #: src/Gui/settings.glade:753
 msgid "GPG Keys"
 msgstr "GPG કીઓ"
+
+#: src/Gui/CReporterAssistant.py:175
+#, python-format
+msgid ""
+"It looks like an application from the package <b>%s</b> has crashed on your "
+"system. It's a good idea to send a bug report about this issue. The report "
+"will provide software maintainers with information essential in figuring out "
+"how to provide a bug fix for you\n"
+"\n"
+"Please review the information that follows and modify it as needed to ensure "
+"your bug report does not contain any sensitive date you'd rather not share\n"
+"\n"
+"Select where you would like to report the bug, and press 'Forward' to "
+"continue."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:217
+#, fuzzy
+msgid "Send a bug report"
+msgstr "અહેવાલ મોકલો"
+
+#: src/Gui/CReporterAssistant.py:228
+msgid ""
+"Below is the backtrace associated with your crash. A crash backtrace "
+"provides developers with details about how a crash happen, helping them "
+"track down the source of the problem\n"
+"\n"
+"Please review the backtrace below and modify it as needed to ensure your bug "
+"report does not contain any sensitive date you'd rather not share:"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:255
+msgid "Refresh"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:257
+msgid "Copy"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:262
+msgid "I agree with submitting the backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:267
+msgid "Approve backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:290
+msgid "How this crash happen, step-by-step? How would you reproduce it?"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:306
+msgid ""
+"Are there any comment you'd like to share with the software maintainers?"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:322
+msgid "Provide additional details"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:329
+msgid ""
+"<b>Tip:</b> Your comments are not private. Please monitor what you say "
+"accordingly"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:370
+msgid "Confirm and send report"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:372
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:377
+#, fuzzy
+msgid "<b>Basic details</b>"
+msgstr "<b>પ્લગઇન વિગતો</b>"
+
+#: src/Gui/CReporterAssistant.py:384
+#, fuzzy
+msgid "Component"
+msgstr "સામાન્ય"
+
+#: src/Gui/CReporterAssistant.py:385
+msgid "Package"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:386
+msgid "Executable"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:387
+msgid "Cmdline"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:389
+msgid "Architecture"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:390
+msgid "Kernel"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:391
+msgid "Release"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:392
+#, fuzzy
+msgid "Reason"
+msgstr "<b>કારણ:</b>"
+
+#: src/Gui/CReporterAssistant.py:406
+msgid "Click to view ..."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:417
+#, fuzzy
+msgid "<b>Steps to reporoduce:</b>"
+msgstr "<b>સમય (અથવા સમયગાળો)</b>"
+
+#: src/Gui/CReporterAssistant.py:435
+#, fuzzy
+msgid "<b>Comments:</b>"
+msgstr "<b>ટિપ્પણી:</b>"
+
+#: src/Gui/CReporterAssistant.py:438
+msgid "This bug really sucks!"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:461
+msgid "Finish sending the bug report"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:462
+msgid ""
+"Thank you for your bug report. It has been succesfully submitted. You may "
+"view your bug report online using the web adress below:"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:470
+#, fuzzy
+msgid "<b>Bug reports:</b>"
+msgstr "<b>ભુલ અહેવાલ:</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -642,15 +789,15 @@ msgstr "સ્થાનિક વિશ્ર્વવ્યાપક અનન�
 msgid "Generating backtrace"
 msgstr "બેકટ્રેસને ઉત્પન્ન કરી રહ્યા છે"
 
-#: lib/Plugins/CCpp.cpp:325
+#: lib/Plugins/CCpp.cpp:327
 msgid "Starting debuginfo installation"
 msgstr "ડિબગ જાણકારી સ્થાપન ને શરૂ કરી રહ્યા છે"
 
-#: lib/Plugins/CCpp.cpp:533
+#: lib/Plugins/CCpp.cpp:535
 msgid "Getting global universal unique identification..."
 msgstr "વૈશ્ર્વિક વિશ્ર્વવ્યાપક અનન્ય ઓળખાણને મેળવી રહ્યા છે..."
 
-#: lib/Plugins/CCpp.cpp:699
+#: lib/Plugins/CCpp.cpp:701
 msgid "Skipping debuginfo installation"
 msgstr "ડિબગ જાણકારી સ્થાપન ને છોડી રહ્યા છે"
 

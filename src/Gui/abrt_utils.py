@@ -41,3 +41,6 @@ def log1(fmt, *args):
 def log2(fmt, *args):
     if g_verbose >= 2:
         sys.stderr.write("%s: %s\n" % (PROGNAME, fmt % args))
+
+def warn(fmt, *args):
+    sys.stderr.write("WARNING: %s: %s\n" % (PROGNAME, fmt % args))

@@ -109,8 +109,23 @@ class Dump():
     def getAnalyzerName(self):
         return self.analyzer
 
+    def get_release(self):
+        return self.release
+
     def get_reason(self):
         return self.reason
 
     def get_comment(self):
         return self.comment
+
+    def get_component(self):
+        return self.component
+
+    def get_cmdline(self):
+        return self.cmdline
+
+    def get_arch(self):
+        return self.architecture
+
+    def get_kernel(self):
+        return self.kernel

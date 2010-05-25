@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt 0.0.8.5\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-19 00:22+0200\n"
+"POT-Creation-Date: 2010-05-25 10:33+0200\n"
 "PO-Revision-Date: 2010-05-17 16:36+0200\n"
 "Last-Translator: Petr Pisar <petr.pisar@atlas.cz>\n"
 "Language-Team: CZECH <ll@li.org>\n"
@@ -164,19 +164,19 @@ msgstr "Zkopírovat do schránky"
 msgid "Report"
 msgstr "Nahlásit"
 
-#: src/Gui/CCMainWindow.py:61
+#: src/Gui/CCMainWindow.py:62
 msgid "Reported"
 msgstr "Nahlášeno"
 
-#: src/Gui/CCMainWindow.py:69
+#: src/Gui/CCMainWindow.py:70
 msgid "Application"
 msgstr "Aplikace"
 
-#: src/Gui/CCMainWindow.py:71
+#: src/Gui/CCMainWindow.py:72
 msgid "Latest Crash"
 msgstr "Poslední pád"
 
-#: src/Gui/CCMainWindow.py:139
+#: src/Gui/CCMainWindow.py:140
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -185,7 +185,7 @@ msgstr ""
 "Nastavovací dialog nelze zobrazit\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:144
+#: src/Gui/CCMainWindow.py:145
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -194,7 +194,7 @@ msgstr ""
 "Současnou úlohu není možné dokončit!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:179
+#: src/Gui/CCMainWindow.py:180
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -203,7 +203,7 @@ msgstr ""
 "Nepodařilo se získat dumplist.\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:236
+#: src/Gui/CCMainWindow.py:237
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -212,11 +212,11 @@ msgstr ""
 "<b>%s Pád</b>\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:332
+#: src/Gui/CCMainWindow.py:333
 msgid "You have to select a crash to copy."
 msgstr "Je potřeba vybrat pád na kopii."
 
-#: src/Gui/CCMainWindow.py:414
+#: src/Gui/CCMainWindow.py:418
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -226,7 +226,7 @@ msgstr ""
 "\t-v[vv]\t\t\tPodrobný režim\n"
 "\t--report=ID_PÁDU\tNahlásit rovnou pád s ID_PÁDU"
 
-#: src/Gui/CCMainWindow.py:437
+#: src/Gui/CCMainWindow.py:441
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -298,7 +298,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Nastavit modul %s"
 
-#: src/Gui/CCReporterDialog.py:492
+#: src/Gui/CCReporterDialog.py:492 src/Gui/CReporterAssistant.py:494
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -316,6 +316,7 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:547 src/Gui/CCReporterDialog.py:568
+#: src/Gui/CReporterAssistant.py:526
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Chyba při získávání hlášení: %s"
@@ -383,7 +384,7 @@ msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Zkontroloval(a) jsem výpis volání a odstranil(a) citlivá data (hesla atd.)"
 
-#: src/Gui/report.glade:369
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:403
 msgid "<b>Backtrace</b>"
 msgstr "<b>Výpis volání</b>"
 
@@ -427,11 +428,11 @@ msgstr "Výběr ohlašovatele"
 msgid "<b>Where do you want to report this incident?</b>"
 msgstr "<b>Kam chcete ohlásit tento problém?</b>"
 
-#: src/Gui/report.glade:764
+#: src/Gui/report.glade:764 src/Gui/progress_window.glade:8
 msgid "Please wait.."
 msgstr "Prosím, počkejte…"
 
-#: src/Gui/report.glade:817
+#: src/Gui/report.glade:817 src/Gui/progress_window.glade:60
 msgid "Details"
 msgstr "Podrobnosti"
 
@@ -534,6 +535,153 @@ msgstr "Analyzátory, Akce, Ohlašovatelé"
 #: src/Gui/settings.glade:753
 msgid "GPG Keys"
 msgstr "Klíče GPG"
+
+#: src/Gui/CReporterAssistant.py:175
+#, python-format
+msgid ""
+"It looks like an application from the package <b>%s</b> has crashed on your "
+"system. It's a good idea to send a bug report about this issue. The report "
+"will provide software maintainers with information essential in figuring out "
+"how to provide a bug fix for you\n"
+"\n"
+"Please review the information that follows and modify it as needed to ensure "
+"your bug report does not contain any sensitive date you'd rather not share\n"
+"\n"
+"Select where you would like to report the bug, and press 'Forward' to "
+"continue."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:217
+#, fuzzy
+msgid "Send a bug report"
+msgstr "Poslat hlášení"
+
+#: src/Gui/CReporterAssistant.py:228
+msgid ""
+"Below is the backtrace associated with your crash. A crash backtrace "
+"provides developers with details about how a crash happen, helping them "
+"track down the source of the problem\n"
+"\n"
+"Please review the backtrace below and modify it as needed to ensure your bug "
+"report does not contain any sensitive date you'd rather not share:"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:255
+msgid "Refresh"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:257
+msgid "Copy"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:262
+msgid "I agree with submitting the backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:267
+msgid "Approve backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:290
+msgid "How this crash happen, step-by-step? How would you reproduce it?"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:306
+msgid ""
+"Are there any comment you'd like to share with the software maintainers?"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:322
+msgid "Provide additional details"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:329
+msgid ""
+"<b>Tip:</b> Your comments are not private. Please monitor what you say "
+"accordingly"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:370
+msgid "Confirm and send report"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:372
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:377
+#, fuzzy
+msgid "<b>Basic details</b>"
+msgstr "<b>Podrobnosti o modulu</b>"
+
+#: src/Gui/CReporterAssistant.py:384
+#, fuzzy
+msgid "Component"
+msgstr "Společné"
+
+#: src/Gui/CReporterAssistant.py:385
+msgid "Package"
+msgstr "Balíček"
+
+#: src/Gui/CReporterAssistant.py:386
+msgid "Executable"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:387
+msgid "Cmdline"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:389
+msgid "Architecture"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:390
+msgid "Kernel"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:391
+#, fuzzy
+msgid "Release"
+msgstr "Smazat"
+
+#: src/Gui/CReporterAssistant.py:392
+#, fuzzy
+msgid "Reason"
+msgstr "<b>Důvod:</b>"
+
+#: src/Gui/CReporterAssistant.py:406
+msgid "Click to view ..."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:417
+#, fuzzy
+msgid "<b>Steps to reporoduce:</b>"
+msgstr "<b>Čas (nebo interval)</b>"
+
+#: src/Gui/CReporterAssistant.py:435
+#, fuzzy
+msgid "<b>Comments:</b>"
+msgstr "<b>Komentář:</b>"
+
+#: src/Gui/CReporterAssistant.py:438
+msgid "This bug really sucks!"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:461
+msgid "Finish sending the bug report"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:462
+msgid ""
+"Thank you for your bug report. It has been succesfully submitted. You may "
+"view your bug report online using the web adress below:"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:470
+#, fuzzy
+msgid "<b>Bug reports:</b>"
+msgstr "<b>Chybová hlášení:</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -643,15 +791,15 @@ msgstr "Vytváří se místně jedinečný identifikátor"
 msgid "Generating backtrace"
 msgstr "Vytváří se výpis volání"
 
-#: lib/Plugins/CCpp.cpp:325
+#: lib/Plugins/CCpp.cpp:327
 msgid "Starting debuginfo installation"
 msgstr "Zahajuje se instalaci ladicích informací"
 
-#: lib/Plugins/CCpp.cpp:533
+#: lib/Plugins/CCpp.cpp:535
 msgid "Getting global universal unique identification..."
 msgstr "Vytváří se celosvětově jedinečný identifikátor…"
 
-#: lib/Plugins/CCpp.cpp:699
+#: lib/Plugins/CCpp.cpp:701
 msgid "Skipping debuginfo installation"
 msgstr "Instalace ladicích informací se vynechá"
 
@@ -704,12 +852,6 @@ msgstr "sosreport dokončen"
 
 #~ msgid "View and report application crashes"
 #~ msgstr "Prohlédni si a nahlas chyby v aplikacích"
-
-#~ msgid "Delete"
-#~ msgstr "Smazat"
-
-#~ msgid "Package"
-#~ msgstr "Balíček"
 
 #~ msgid "Date"
 #~ msgstr "Datum"

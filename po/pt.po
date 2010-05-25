@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-19 00:22+0200\n"
+"POT-Creation-Date: 2010-05-25 10:33+0200\n"
 "PO-Revision-Date: 2010-05-14 17:38+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@gmail.com>\n"
 "Language-Team: trans-pt@lists.fedoraproject.org\n"
@@ -161,19 +161,19 @@ msgstr "Copiar para a área de transferência"
 msgid "Report"
 msgstr "Relatório"
 
-#: src/Gui/CCMainWindow.py:61
+#: src/Gui/CCMainWindow.py:62
 msgid "Reported"
 msgstr "Reportado"
 
-#: src/Gui/CCMainWindow.py:69
+#: src/Gui/CCMainWindow.py:70
 msgid "Application"
 msgstr "Aplicação"
 
-#: src/Gui/CCMainWindow.py:71
+#: src/Gui/CCMainWindow.py:72
 msgid "Latest Crash"
 msgstr "Último crash"
 
-#: src/Gui/CCMainWindow.py:139
+#: src/Gui/CCMainWindow.py:140
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -182,7 +182,7 @@ msgstr ""
 "Impossível mostrar a janela de definições\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:144
+#: src/Gui/CCMainWindow.py:145
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -191,7 +191,7 @@ msgstr ""
 "Impossível terminar a tarefa actual!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:179
+#: src/Gui/CCMainWindow.py:180
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -200,7 +200,7 @@ msgstr ""
 "Erro ao carregar a lista de dump.\n"
 " %s"
 
-#: src/Gui/CCMainWindow.py:236
+#: src/Gui/CCMainWindow.py:237
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -209,11 +209,11 @@ msgstr ""
 "<b>%s Crash</b>\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:332
+#: src/Gui/CCMainWindow.py:333
 msgid "You have to select a crash to copy."
 msgstr "Tem de seleccionar um crash para copiar."
 
-#: src/Gui/CCMainWindow.py:414
+#: src/Gui/CCMainWindow.py:418
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -223,7 +223,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerboso\n"
 "\t--report=CRASH_ID\tReportar directamente crash com CRASH_ID"
 
-#: src/Gui/CCMainWindow.py:437
+#: src/Gui/CCMainWindow.py:441
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -296,7 +296,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Configurar %s opções"
 
-#: src/Gui/CCReporterDialog.py:492
+#: src/Gui/CCReporterDialog.py:492 src/Gui/CReporterAssistant.py:494
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -314,6 +314,7 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:547 src/Gui/CCReporterDialog.py:568
+#: src/Gui/CReporterAssistant.py:526
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Erro ao obter o relatório: %s"
@@ -380,7 +381,7 @@ msgstr "<span fgcolor=\"blue\">Razão:</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "Eu verifiquei o backtrace e removi os dados sensíveis (senhas, etc)"
 
-#: src/Gui/report.glade:369
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:403
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
@@ -424,11 +425,11 @@ msgstr "Seleccionador de relatórios"
 msgid "<b>Where do you want to report this incident?</b>"
 msgstr "<b>Onde quer reportar este incidente?</b>"
 
-#: src/Gui/report.glade:764
+#: src/Gui/report.glade:764 src/Gui/progress_window.glade:8
 msgid "Please wait.."
 msgstr "Por favor, aguarde..."
 
-#: src/Gui/report.glade:817
+#: src/Gui/report.glade:817 src/Gui/progress_window.glade:60
 msgid "Details"
 msgstr "Detalhes"
 
@@ -531,6 +532,154 @@ msgstr "Analisadores, acções, relatórios"
 #: src/Gui/settings.glade:753
 msgid "GPG Keys"
 msgstr "Chaves GPG"
+
+#: src/Gui/CReporterAssistant.py:175
+#, python-format
+msgid ""
+"It looks like an application from the package <b>%s</b> has crashed on your "
+"system. It's a good idea to send a bug report about this issue. The report "
+"will provide software maintainers with information essential in figuring out "
+"how to provide a bug fix for you\n"
+"\n"
+"Please review the information that follows and modify it as needed to ensure "
+"your bug report does not contain any sensitive date you'd rather not share\n"
+"\n"
+"Select where you would like to report the bug, and press 'Forward' to "
+"continue."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:217
+#, fuzzy
+msgid "Send a bug report"
+msgstr "Enviar relatório"
+
+#: src/Gui/CReporterAssistant.py:228
+msgid ""
+"Below is the backtrace associated with your crash. A crash backtrace "
+"provides developers with details about how a crash happen, helping them "
+"track down the source of the problem\n"
+"\n"
+"Please review the backtrace below and modify it as needed to ensure your bug "
+"report does not contain any sensitive date you'd rather not share:"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:255
+#, fuzzy
+msgid "Refresh"
+msgstr "gtk-refresh"
+
+#: src/Gui/CReporterAssistant.py:257
+msgid "Copy"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:262
+msgid "I agree with submitting the backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:267
+msgid "Approve backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:290
+msgid "How this crash happen, step-by-step? How would you reproduce it?"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:306
+msgid ""
+"Are there any comment you'd like to share with the software maintainers?"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:322
+msgid "Provide additional details"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:329
+msgid ""
+"<b>Tip:</b> Your comments are not private. Please monitor what you say "
+"accordingly"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:370
+msgid "Confirm and send report"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:372
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:377
+#, fuzzy
+msgid "<b>Basic details</b>"
+msgstr "<b>Detalhes do plugin</b>"
+
+#: src/Gui/CReporterAssistant.py:384
+#, fuzzy
+msgid "Component"
+msgstr "Comum"
+
+#: src/Gui/CReporterAssistant.py:385
+msgid "Package"
+msgstr "Pacote"
+
+#: src/Gui/CReporterAssistant.py:386
+msgid "Executable"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:387
+msgid "Cmdline"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:389
+msgid "Architecture"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:390
+msgid "Kernel"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:391
+#, fuzzy
+msgid "Release"
+msgstr "Apagar"
+
+#: src/Gui/CReporterAssistant.py:392
+#, fuzzy
+msgid "Reason"
+msgstr "<b>Motivo:</b>"
+
+#: src/Gui/CReporterAssistant.py:406
+msgid "Click to view ..."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:417
+#, fuzzy
+msgid "<b>Steps to reporoduce:</b>"
+msgstr "<b>Hora (ou período)</b>"
+
+#: src/Gui/CReporterAssistant.py:435
+#, fuzzy
+msgid "<b>Comments:</b>"
+msgstr "<b>Comentário:</b>"
+
+#: src/Gui/CReporterAssistant.py:438
+msgid "This bug really sucks!"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:461
+msgid "Finish sending the bug report"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:462
+msgid ""
+"Thank you for your bug report. It has been succesfully submitted. You may "
+"view your bug report online using the web adress below:"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:470
+#, fuzzy
+msgid "<b>Bug reports:</b>"
+msgstr "<b>Relatórios de erros:</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -644,15 +793,15 @@ msgstr "A obter identificador único universal local"
 msgid "Generating backtrace"
 msgstr "A gerar backtrace"
 
-#: lib/Plugins/CCpp.cpp:325
+#: lib/Plugins/CCpp.cpp:327
 msgid "Starting debuginfo installation"
 msgstr "A iniciar a instalação debuginfo"
 
-#: lib/Plugins/CCpp.cpp:533
+#: lib/Plugins/CCpp.cpp:535
 msgid "Getting global universal unique identification..."
 msgstr "A obter identificador único universal global..."
 
-#: lib/Plugins/CCpp.cpp:699
+#: lib/Plugins/CCpp.cpp:701
 msgid "Skipping debuginfo installation"
 msgstr "A passar à frente a instalação do debuginfo"
 
@@ -715,17 +864,11 @@ msgstr "A execução do sosreport terminou"
 #~ "\t-v[vv]             \tnível de verbosidade\n"
 #~ "\t--report=<crashid>\treportar directamente crash com o crashid=<crashid>"
 
-#~ msgid "Delete"
-#~ msgstr "Apagar"
-
 #~ msgid "Not Reported"
 #~ msgstr "Não reportado"
 
 #~ msgid "Icon"
 #~ msgstr "Ícone"
-
-#~ msgid "Package"
-#~ msgstr "Pacote"
 
 #~ msgid "Date"
 #~ msgstr "Data"
@@ -976,9 +1119,6 @@ msgstr "A execução do sosreport terminou"
 
 #~ msgid "Executing RunApp plugin..."
 #~ msgstr "A executar plugin RunApp..."
-
-#~ msgid "gtk-refresh"
-#~ msgstr "gtk-refresh"
 
 #~ msgid "Binary file %s will not be reported."
 #~ msgstr "Ficheiro binário %s não será reportado."

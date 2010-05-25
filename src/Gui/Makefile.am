@@ -6,7 +6,7 @@ PYTHON_FILES = CCDBusBackend.py CCDumpList.py CCDump.py CC_gui_functions.py \
                CCReporterDialog.py abrt_utils.py \
                CCMainWindow.py CellRenderers.py ABRTExceptions.py \
                SettingsDialog.py ABRTPlugin.py PluginList.py PluginSettingsUI.py \
-               PluginsSettingsDialog.py ConfBackend.py
+               PluginsSettingsDialog.py ConfBackend.py CReporterAssistant.py
 
 GLADE_FILES = ccgui.glade report.glade settings.glade dialogs.glade settings_wizard.glade
 
