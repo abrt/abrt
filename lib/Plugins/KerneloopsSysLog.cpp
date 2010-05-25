@@ -240,8 +240,10 @@ next_line:
 				oopsstart = i;
 			else if (strstr(curline, "INFO: possible recursive locking detected"))
 				oopsstart = i;
-			else if (strstr(curline, "------------[ cut here ]------------"))
-				oopsstart = i;
+			// Not needed: "--[ cut here ]--" is always followed
+			// by "Badness at", "kernel BUG at", or "WARNING: at" string
+			//else if (strstr(curline, "------------[ cut here ]------------"))
+			//	oopsstart = i;
 			else if (strstr(curline, "list_del corruption."))
 				oopsstart = i;
 			else if (strstr(curline, "list_add corruption."))
