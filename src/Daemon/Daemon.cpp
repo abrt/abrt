@@ -810,6 +810,7 @@ int main(int argc, char** argv)
         int inotify_fd = inotify_init();
         if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
+        close_on_exec_on(inotify_fd);
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) == -1)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
 
