@@ -743,6 +743,8 @@ int main(int argc, char** argv)
     msg_prefix = "abrtd: "; /* for log(), error_msg() and such */
 
     xpipe(s_signal_pipe);
+    close_on_exec_on(s_signal_pipe[0]);
+    close_on_exec_on(s_signal_pipe[1]);
     signal(SIGTERM, handle_fatal_signal);
     signal(SIGINT,  handle_fatal_signal);
     if (s_timeout)
