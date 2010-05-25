@@ -1,5 +1,11 @@
 #!/bin/sh
 
+yum -y -C erase 'abrt*'
+yum -y -C --nogpgcheck localinstall *.rpm
+killall -HUP dbus-daemon
+
+exit
+
 while rpm -qa | grep abrt >/dev/null; do
     rpm -qa | grep abrt | while read package; do
 	echo "$package: rpm -e `basename "$package" .rpm`"
