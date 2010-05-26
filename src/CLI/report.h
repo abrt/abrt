@@ -19,6 +19,10 @@
 #define ABRT_CLI_REPORT_H
 
 /* Reports the crash with corresponding uuid over DBus. */
-int report(const char *uuid, bool always);
+enum {
+    CLI_REPORT_BATCH = 1 << 0,
+    CLI_REPORT_SILENT_IF_NOT_FOUND = 1 << 1,
+};
+int report(const char *uuid, int flags);
 
 #endif
