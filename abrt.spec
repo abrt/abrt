@@ -16,7 +16,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.1.3
+Version: 1.1.4
 Release: %{?pkg_release}
 License: GPLv2+
 Group: Applications/System
@@ -460,6 +460,12 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed May 26 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.4-1
+- added reporting wizard
+- fixed few leaked fds
+- fixed kerneloops --- cut here --- problem
+- updated translations
+
 * Fri May 21 2010 Denys Vlasenko <dvlasenk@redhat.com> 1.1.3-1
 - More fixes for /var/cache/abrt -> /var/spool/abrt conversion
 
