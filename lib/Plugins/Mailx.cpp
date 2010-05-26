@@ -66,6 +66,7 @@ std::string CMailx::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
+    SetSettings(pSettings);
     char **args = NULL;
     unsigned arg_size = 0;
     args = append_str_to_vector(args, arg_size, MAILX_COMMAND);
