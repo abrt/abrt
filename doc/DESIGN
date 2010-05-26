@@ -59,14 +59,14 @@ After this, abrt-hook-ccpp spawns "abrt-process -d /var/spool/abrt/DIR"
 and terminates.
 
 When python program crashes, it invokes internel python subroutine
-which dumps crash info into ~/abrt/cache/DIR.
+which dumps crash info into ~/abrt/spool/DIR.
 [this is a tentative plan, currently we dump in /var/spool/abrt/DIR]
-After this, it spawns "abrt-process -d ~/abrt/cache/DIR"
+After this, it spawns "abrt-process -d ~/abrt/spool/DIR"
 and terminates.
 
 [Problem: dumping to /var/spool/abrt/DIR needs world-writable
 /var/spool/abrt and allows user to go way over his
-disk quota. Dumping to ~/abrt/cache/DIR makes it difficult
+disk quota. Dumping to ~/abrt/spool/DIR makes it difficult
 to present a list of all crashes which happened on the machine -
 for example, root-owned processes cannot even access user data
 in ~user/* if /home is on NFS4...

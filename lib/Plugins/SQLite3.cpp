@@ -328,7 +328,7 @@ static bool check_table(sqlite3 *db)
 
 
 CSQLite3::CSQLite3() :
-    m_sDBPath(LOCALSTATEDIR "/cache/abrt/abrt-db"),
+    m_sDBPath(LOCALSTATEDIR "/spool/abrt/abrt-db"),
     m_pDB(NULL)
 {}
 
