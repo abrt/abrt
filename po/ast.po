@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ast\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-25 10:33+0200\n"
+"POT-Creation-Date: 2010-05-26 17:36+0200\n"
 "PO-Revision-Date: 2009-10-24 21:43+0100\n"
 "Last-Translator: Marcos Alvarez Costales <marcos.alvarez.costales@gmail."
 "com>\n"
@@ -232,15 +232,15 @@ msgid ""
 "crashid=%s"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:22
+#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:18
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Breve descripción de cómo reproducir esto o lo que ficisti..."
 
-#: src/Gui/CCReporterDialog.py:107
+#: src/Gui/CCReporterDialog.py:107 src/Gui/CReporterAssistant.py:256
 msgid "You must check backtrace for sensitive data"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:118
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:268
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -249,11 +249,11 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:120
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:270
 msgid "The backtrace is unusable, you can't report this!"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:124
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:274
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -267,13 +267,13 @@ msgstr ""
 msgid "Sends the report using selected plugin."
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:392
+#: src/Gui/CCReporterDialog.py:398
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:412
+#: src/Gui/CCReporterDialog.py:418 src/Gui/CReporterAssistant.py:176
 #, fuzzy, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -282,12 +282,12 @@ msgstr ""
 "Nun pudo amosase'l diálogu de configuración\n"
 "%s"
 
-#: src/Gui/CCReporterDialog.py:442
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:206
 #, fuzzy, python-format
 msgid "Configure %s options"
 msgstr "C_onfigurar Complementu"
 
-#: src/Gui/CCReporterDialog.py:492 src/Gui/CReporterAssistant.py:494
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:754
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -295,7 +295,7 @@ msgstr ""
 "Nun foi dable algamar l'informe!\n"
 "¿Falta la información de la depuración?"
 
-#: src/Gui/CCReporterDialog.py:521
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:346
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -304,8 +304,8 @@ msgstr ""
 "¡L'informe falló!\n"
 "%s"
 
-#: src/Gui/CCReporterDialog.py:547 src/Gui/CCReporterDialog.py:568
-#: src/Gui/CReporterAssistant.py:526
+#: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
+#: src/Gui/CReporterAssistant.py:786
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fallu al algamar l'informe: %s"
@@ -382,7 +382,7 @@ msgstr "<span color=\"white\">Descripción</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:403
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:664
 msgid "<b>Backtrace</b>"
 msgstr ""
 
@@ -432,7 +432,7 @@ msgstr ""
 msgid "Please wait.."
 msgstr "Por favor, espera..."
 
-#: src/Gui/report.glade:817 src/Gui/progress_window.glade:60
+#: src/Gui/report.glade:816 src/Gui/progress_window.glade:59
 #, fuzzy
 msgid "Details"
 msgstr "Detalles de Complementu"
@@ -539,7 +539,19 @@ msgstr "Analizadores, Aiciones, Informadores"
 msgid "GPG Keys"
 msgstr "Llaves GPG"
 
-#: src/Gui/CReporterAssistant.py:175
+#: src/Gui/CReporterAssistant.py:257
+msgid "You must agree with sending the backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:315
+msgid "You didn't provide any steps to reproduce."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:323
+msgid "You didn't provide any comments."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:395
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -554,11 +566,11 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:217
+#: src/Gui/CReporterAssistant.py:448
 msgid "Send a bug report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:228
+#: src/Gui/CReporterAssistant.py:471
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -569,122 +581,127 @@ msgid ""
 msgstr ""
 
 # NO TRADUCIR, hacen referencia al boton gkt
-#: src/Gui/CReporterAssistant.py:255
+#: src/Gui/CReporterAssistant.py:512
 #, fuzzy
 msgid "Refresh"
 msgstr "gtk-refresh"
 
-#: src/Gui/CReporterAssistant.py:257
+#: src/Gui/CReporterAssistant.py:514
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:262
+#: src/Gui/CReporterAssistant.py:520
 msgid "I agree with submitting the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:267
+#: src/Gui/CReporterAssistant.py:525
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:290
+#: src/Gui/CReporterAssistant.py:548
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:306
+#: src/Gui/CReporterAssistant.py:565
 msgid ""
 "Are there any comment you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:322
+#: src/Gui/CReporterAssistant.py:583
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:329
+#: src/Gui/CReporterAssistant.py:590
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:370
+#: src/Gui/CReporterAssistant.py:631
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:372
+#: src/Gui/CReporterAssistant.py:633
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:377
+#: src/Gui/CReporterAssistant.py:638
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>Complementu</b>"
 
-#: src/Gui/CReporterAssistant.py:384
+#: src/Gui/CReporterAssistant.py:645
 #, fuzzy
 msgid "Component"
 msgstr "Común"
 
-#: src/Gui/CReporterAssistant.py:385
+#: src/Gui/CReporterAssistant.py:646
 msgid "Package"
 msgstr "Paquete"
 
-#: src/Gui/CReporterAssistant.py:386
+#: src/Gui/CReporterAssistant.py:647
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:387
+#: src/Gui/CReporterAssistant.py:648
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:389
+#: src/Gui/CReporterAssistant.py:650
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:390
+#: src/Gui/CReporterAssistant.py:651
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:391
+#: src/Gui/CReporterAssistant.py:652
 #, fuzzy
 msgid "Release"
 msgstr "Desaniciar"
 
-#: src/Gui/CReporterAssistant.py:392
+#: src/Gui/CReporterAssistant.py:653
 msgid "Reason"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:406
+#: src/Gui/CReporterAssistant.py:667
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:417
+#: src/Gui/CReporterAssistant.py:679
 #, fuzzy
 msgid "<b>Steps to reporoduce:</b>"
 msgstr "<b>Tiempu (o periodu)</b>"
 
-#: src/Gui/CReporterAssistant.py:435
+#: src/Gui/CReporterAssistant.py:697
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "Comentariu"
 
-#: src/Gui/CReporterAssistant.py:438
-msgid "This bug really sucks!"
+#: src/Gui/CReporterAssistant.py:700
+msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:461
+#: src/Gui/CReporterAssistant.py:723
 msgid "Finish sending the bug report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:462
+#: src/Gui/CReporterAssistant.py:724
 msgid ""
 "Thank you for your bug report. It has been succesfully submitted. You may "
 "view your bug report online using the web adress below:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:470
+#: src/Gui/CReporterAssistant.py:732
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>¡Non informáu!</b>"
+
+#: src/Gui/CReporterAssistant.py:736
+#, fuzzy
+msgid "Not reported"
+msgstr "Informe"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -713,7 +730,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: src/Daemon/Daemon.cpp:476
+#: src/Daemon/Daemon.cpp:477
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -841,16 +858,16 @@ msgstr "CFileTransfer::Run(): nun pudo criase y unviase un ficheru: "
 msgid "Can't create and send an archive %s"
 msgstr "CFileTransfer::Run(): nun pudo criase y unviase un ficheru: "
 
-#: lib/Plugins/Mailx.cpp:134
+#: lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
 msgstr "Unviando un corréu..."
 
-#: lib/Plugins/SOSreport.cpp:101
+#: lib/Plugins/SOSreport.cpp:86
 #, fuzzy, c-format
 msgid "Running sosreport: %s"
 msgstr "llanzando sosreport:"
 
-#: lib/Plugins/SOSreport.cpp:107
+#: lib/Plugins/SOSreport.cpp:91
 #, fuzzy
 msgid "Done running sosreport"
 msgstr "Sosreport executándose"

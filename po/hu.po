@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-25 10:33+0200\n"
+"POT-Creation-Date: 2010-05-26 17:36+0200\n"
 "PO-Revision-Date: 2010-03-12 23:28+0100\n"
 "Last-Translator: Peter Bojtos <ptr@ulx.hu>\n"
 "Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat."
@@ -244,17 +244,17 @@ msgstr ""
 "Nincs ilyen összeomlás az adatbázisban, talán rossz az azonosító.\n"
 "Azonosító=%s"
 
-#: src/Gui/CCReporterDialog.py:22
+#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:18
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Rövid leírás angolul arról, hogyan lehet megismételni ezt, vagy mit tettek "
 "előtte..."
 
-#: src/Gui/CCReporterDialog.py:107
+#: src/Gui/CCReporterDialog.py:107 src/Gui/CReporterAssistant.py:256
 msgid "You must check backtrace for sensitive data"
 msgstr "Ellenőrizni kell a jelentést az érzékeny adatok miatt"
 
-#: src/Gui/CCReporterDialog.py:118
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:268
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -269,11 +269,11 @@ msgstr ""
 "majd használja a Frissítés gombot a nyomkövető információk ismételt "
 "elkészítéséhez."
 
-#: src/Gui/CCReporterDialog.py:120
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:270
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "A nyomkövetés haszontalan, ezt nem jelenthetik!"
 
-#: src/Gui/CCReporterDialog.py:124
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:274
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -290,7 +290,7 @@ msgstr "Jelentés letiltva, kérem javítsa ki a fent említett problémákat."
 msgid "Sends the report using selected plugin."
 msgstr "Elküldi a jelentést a kiválasztott beépülővel."
 
-#: src/Gui/CCReporterDialog.py:392
+#: src/Gui/CCReporterDialog.py:398
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -298,7 +298,7 @@ msgstr ""
 "Nem található jelentő kiegészítő ilyen típusú összeömláshoz\n"
 "Ellenőrizze az abrt.conf-ot."
 
-#: src/Gui/CCReporterDialog.py:412
+#: src/Gui/CCReporterDialog.py:418 src/Gui/CReporterAssistant.py:176
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -307,12 +307,12 @@ msgstr ""
 "Nem lehet a kiegészítő beállításait elmenteni:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:442
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:206
 #, fuzzy, python-format
 msgid "Configure %s options"
 msgstr "_Kiegészítő beállítása"
 
-#: src/Gui/CCReporterDialog.py:492 src/Gui/CReporterAssistant.py:494
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:754
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -320,7 +320,7 @@ msgstr ""
 "Jelentés összeállítása nem lehetséges!\n"
 "Debuginfo hiányzik?"
 
-#: src/Gui/CCReporterDialog.py:521
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:346
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -329,8 +329,8 @@ msgstr ""
 "Bejelentés nem sikerült!\n"
 "%s"
 
-#: src/Gui/CCReporterDialog.py:547 src/Gui/CCReporterDialog.py:568
-#: src/Gui/CReporterAssistant.py:526
+#: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
+#: src/Gui/CReporterAssistant.py:786
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Jelentés összeállítása nem sikerült: %s"
@@ -399,7 +399,7 @@ msgstr ""
 "Ellenőriztem a jelentést, és eltávolítottam minden érzékeny adatot "
 "(jelszavak, stb)"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:403
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:664
 msgid "<b>Backtrace</b>"
 msgstr "<b>Nyomkövetés</b>"
 
@@ -448,7 +448,7 @@ msgstr "<b>Hová szeretné bejelenteni az esetet?</b>"
 msgid "Please wait.."
 msgstr "Kérem várjon.."
 
-#: src/Gui/report.glade:817 src/Gui/progress_window.glade:60
+#: src/Gui/report.glade:816 src/Gui/progress_window.glade:59
 msgid "Details"
 msgstr "Részletek"
 
@@ -552,7 +552,20 @@ msgstr "Elemzők, Tettek, Jelentők"
 msgid "GPG Keys"
 msgstr "GPG Kulcsok"
 
-#: src/Gui/CReporterAssistant.py:175
+#: src/Gui/CReporterAssistant.py:257
+#, fuzzy
+msgid "You must agree with sending the backtrace"
+msgstr "El kell fogadnia a nyomkövetési információk beküldését."
+
+#: src/Gui/CReporterAssistant.py:315
+msgid "You didn't provide any steps to reproduce."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:323
+msgid "You didn't provide any comments."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:395
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -567,12 +580,12 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:217
+#: src/Gui/CReporterAssistant.py:448
 #, fuzzy
 msgid "Send a bug report"
 msgstr "Jelentést küld"
 
-#: src/Gui/CReporterAssistant.py:228
+#: src/Gui/CReporterAssistant.py:471
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -582,123 +595,128 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:255
+#: src/Gui/CReporterAssistant.py:512
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:257
+#: src/Gui/CReporterAssistant.py:514
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:262
+#: src/Gui/CReporterAssistant.py:520
 #, fuzzy
 msgid "I agree with submitting the backtrace"
 msgstr "El kell fogadnia a nyomkövetési információk beküldését."
 
-#: src/Gui/CReporterAssistant.py:267
+#: src/Gui/CReporterAssistant.py:525
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:290
+#: src/Gui/CReporterAssistant.py:548
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:306
+#: src/Gui/CReporterAssistant.py:565
 msgid ""
 "Are there any comment you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:322
+#: src/Gui/CReporterAssistant.py:583
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:329
+#: src/Gui/CReporterAssistant.py:590
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:370
+#: src/Gui/CReporterAssistant.py:631
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:372
+#: src/Gui/CReporterAssistant.py:633
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:377
+#: src/Gui/CReporterAssistant.py:638
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>kiegészítő részletei</b>"
 
-#: src/Gui/CReporterAssistant.py:384
+#: src/Gui/CReporterAssistant.py:645
 #, fuzzy
 msgid "Component"
 msgstr "Gyakori"
 
-#: src/Gui/CReporterAssistant.py:385
+#: src/Gui/CReporterAssistant.py:646
 msgid "Package"
 msgstr "Csomag"
 
-#: src/Gui/CReporterAssistant.py:386
+#: src/Gui/CReporterAssistant.py:647
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:387
+#: src/Gui/CReporterAssistant.py:648
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:389
+#: src/Gui/CReporterAssistant.py:650
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:390
+#: src/Gui/CReporterAssistant.py:651
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:391
+#: src/Gui/CReporterAssistant.py:652
 #, fuzzy
 msgid "Release"
 msgstr "Töröl"
 
-#: src/Gui/CReporterAssistant.py:392
+#: src/Gui/CReporterAssistant.py:653
 #, fuzzy
 msgid "Reason"
 msgstr "<b>Megjegyzés</b>"
 
-#: src/Gui/CReporterAssistant.py:406
+#: src/Gui/CReporterAssistant.py:667
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:417
+#: src/Gui/CReporterAssistant.py:679
 #, fuzzy
 msgid "<b>Steps to reporoduce:</b>"
 msgstr "<b>Időpont (vagy időszak)</b>"
 
-#: src/Gui/CReporterAssistant.py:435
+#: src/Gui/CReporterAssistant.py:697
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>Megjegyzés</b>"
 
-#: src/Gui/CReporterAssistant.py:438
-msgid "This bug really sucks!"
+#: src/Gui/CReporterAssistant.py:700
+msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:461
+#: src/Gui/CReporterAssistant.py:723
 msgid "Finish sending the bug report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:462
+#: src/Gui/CReporterAssistant.py:724
 msgid ""
 "Thank you for your bug report. It has been succesfully submitted. You may "
 "view your bug report online using the web adress below:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:470
+#: src/Gui/CReporterAssistant.py:732
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Nincs bejelentve!</b>"
+
+#: src/Gui/CReporterAssistant.py:736
+#, fuzzy
+msgid "Not reported"
+msgstr "Nincs bejelentve"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -726,7 +744,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: src/Daemon/Daemon.cpp:476
+#: src/Daemon/Daemon.cpp:477
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -853,16 +871,16 @@ msgstr "Nem lehet archívumot készíteni és küldeni: %s"
 msgid "Can't create and send an archive %s"
 msgstr "Nem lehet archívumot készíteni és küldeni %s"
 
-#: lib/Plugins/Mailx.cpp:134
+#: lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
 msgstr "Levél küldés..."
 
-#: lib/Plugins/SOSreport.cpp:101
+#: lib/Plugins/SOSreport.cpp:86
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "SOSreport futtatása: %s"
 
-#: lib/Plugins/SOSreport.cpp:107
+#: lib/Plugins/SOSreport.cpp:91
 msgid "Done running sosreport"
 msgstr "SOSreport lefutott"
 
@@ -877,9 +895,6 @@ msgstr "SOSreport lefutott"
 #~ "\t-v[vv]             \tbeszédességi szint\n"
 #~ "\t--report=<crashid>\tösszeomlás közvetlen jelentése crashid=<crashid> "
 #~ "azonosítóval"
-
-#~ msgid "Not Reported"
-#~ msgstr "Nincs bejelentve"
 
 #~ msgid "Icon"
 #~ msgstr "Ikon"
