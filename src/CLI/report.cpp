@@ -647,17 +647,21 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
 }
 
 /* Reports the crash with corresponding crash_id over DBus. */
-int report(const char *crash_id, bool always)
+int report(const char *crash_id, int flags)
 {
+  int old_logmode = logmode;
+  if (flags & CLI_REPORT_SILENT_IF_NOT_FOUND)
+    logmode = 0;
   // Ask for an initial report.
   map_crash_data_t cr = call_CreateReport(crash_id);
+  logmode = old_logmode;
   if (cr.size() == 0)
   {
     return -1;
   }
 
   /* Open text editor and give a chance to review the backtrace etc. */
-  if (!always)
+  if (!(flags & CLI_REPORT_BATCH))
   {
     int result = run_report_editor(cr);
     if (result != 0)
@@ -669,7 +673,7 @@ int report(const char *crash_id, bool always)
 
   int errors = 0;
   int plugins = 0;
-  if (always)
+  if (flags & CLI_REPORT_BATCH)
   {
     map_map_string_t reporters_settings; /* to be filled on the next line */
     get_reporter_plugin_settings(reporters, reporters_settings, false);

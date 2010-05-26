@@ -238,11 +238,11 @@ int main(int argc, char** argv)
         }
         case OPT_REPORT:
         case OPT_REPORT_ALWAYS:
-            exitcode = report(crash_id, op == OPT_REPORT_ALWAYS);
+            exitcode = report(crash_id, (op == OPT_REPORT_ALWAYS)*CLI_REPORT_BATCH + CLI_REPORT_SILENT_IF_NOT_FOUND);
             if (exitcode == -1) /* no such crash_id */
             {
                 crash_id = guess_crash_id(crash_id);
-                exitcode = report(crash_id, op == OPT_REPORT_ALWAYS);
+                exitcode = report(crash_id, (op == OPT_REPORT_ALWAYS) * CLI_REPORT_BATCH);
                 if (exitcode == -1)
                     error_msg_and_die("Crash '%s' not found", crash_id);
             }

@@ -102,7 +102,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
             {
                 error_msg_and_die("dbus Update message: arguments mismatch");
             }
-            printf(">! %s\n", warning_msg);
+            log(">! %s\n", warning_msg);
         }
         else
         if (tp == DBUS_MESSAGE_TYPE_METHOD_RETURN
