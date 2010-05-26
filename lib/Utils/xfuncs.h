@@ -76,12 +76,12 @@ extern char *last_char_is(const char *s, int c);
 
 extern bool string_to_bool(const char *s);
 
+extern void xseteuid(uid_t euid);
+extern void xsetegid(gid_t egid);
 extern void xsetreuid(uid_t ruid, uid_t euid);
 extern void xsetregid(gid_t rgid, gid_t egid);
 
-/* Do not pass the returned pointer to free().
-   Do not modify the contents of the returned string.
-   NULL is returned in the case of failure. */
+/* Returns getpwuid(uid)->pw_dir or NULL */
 extern const char *get_home_dir(uid_t uid);
 
 #ifdef __cplusplus
