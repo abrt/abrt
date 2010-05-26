@@ -62,6 +62,9 @@ class Dump():
         else:
             self.__dict__[name] = value
 
+    def __str__(self):
+        return "Dump instance"
+
     def getUUID(self):
         return self.UUID
 
@@ -129,3 +132,16 @@ class Dump():
 
     def get_kernel(self):
         return self.kernel
+
+    def get_backtrace(self):
+        try:
+            return self.backtrace
+        except KeyError:
+            return None
+
+    def get_rating(self):
+        try:
+            return self.rating
+        except KeyError:
+            return None
+

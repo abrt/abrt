@@ -22,6 +22,7 @@ from CC_gui_functions import *
 from CCDumpList import getDumpList
 from CCDump import *   # FILENAME_xxx, CD_xxx
 from CCReporterDialog import ReporterDialog, ReporterSelector
+from CReporterAssistant import ReporterAssistant
 from PluginsSettingsDialog import PluginsSettingsDialog
 from SettingsDialog import SettingsDialog
 from PluginList import getPluginInfoList
@@ -371,8 +372,11 @@ class MainWindow():
             return
         dump = dumpsListStore.get_value(dumpsListStore.get_iter(path[0]), dumpsListStore.get_n_columns()-1)
 
-        rs = ReporterSelector(dump, self.ccdaemon, parent=self.window)
-        rs.show()
+        # Do we want to let user decide which UI they want to use?
+        #rs = ReporterSelector(dump, self.ccdaemon, parent=self.window)
+        #rs.show()
+        assistant = ReporterAssistant(dump, self.ccdaemon, parent=self.window)
+        assistant.hydrate()
 
     def delete_event_cb(self, widget, event, data=None):
         gtk.main_quit()
@@ -437,8 +441,11 @@ if __name__ == "__main__":
             gui_error_message(_("No such crash in database, probably wrong crashid."
                                 "\ncrashid=%s" % crashid))
             sys.exit()
-        rs = ReporterSelector(crashdump, daemon, parent=None)
-        rs.show()
+        assistant = ReporterAssistant(crashdump, daemon, parent=None)
+        assistant.hydrate()
+        # Do we want to let the users to decide which UI to use?
+#        rs = ReporterSelector(crashdump, daemon, parent=None)
+#        rs.show()
     else:
         cc = MainWindow(daemon)
         cc.hydrate()

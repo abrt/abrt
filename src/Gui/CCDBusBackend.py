@@ -166,9 +166,9 @@ class DBusManager(gobject.GObject):
 
     def jobdone_cb(self):
         log1("Our job for crash_id %s is done", self.job_crash_id)
-        dump = self.daemon().CreateReport(self.job_crash_id)
-        if dump:
-            self.emit("analyze-complete", dump)
+        report = self.daemon().CreateReport(self.job_crash_id)
+        if report:
+            self.emit("analyze-complete", report)
         else:
             # FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
             self.emit("abrt-error", _("Daemon didn't return valid report info\nDebuginfo is missing?"))
