@@ -262,7 +262,7 @@ int main(int argc, char** argv)
          */
         dd.Close();
         char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
-        if (rename(path, newpath) != 0)
+        if (rename(path, newpath) == 0)
             strcpy(path, newpath);
         free(newpath);
 
