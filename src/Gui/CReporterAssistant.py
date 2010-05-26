@@ -74,15 +74,18 @@ class ReporterAssistant():
         viewer.set_default_size(600,500)
         viewer.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
         viewer.set_transient_for(self.assistant)
-        hbox = gtk.HBox()
-        viewer.add(hbox)
+        vbox = gtk.VBox()
+        viewer.add(vbox)
         bt_tev = gtk.TextView()
         backtrace_scroll_w = gtk.ScrolledWindow()
         backtrace_scroll_w.add(bt_tev)
         backtrace_scroll_w.set_policy(gtk.POLICY_AUTOMATIC,
                                       gtk.POLICY_AUTOMATIC)
         bt_tev.set_buffer(self.backtrace_buff)
-        hbox.pack_start(backtrace_scroll_w)
+        vbox.pack_start(backtrace_scroll_w)
+        b_close = gtk.Button(stock=gtk.STOCK_CLOSE)
+        b_close.connect("clicked",lambda *w: viewer.destroy())
+        vbox.pack_start(b_close, False)
         viewer.show_all()
 
     def on_report_done_cb(self, daemon, result):
