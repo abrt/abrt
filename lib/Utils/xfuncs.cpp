@@ -390,6 +390,18 @@ bool string_to_bool(const char *s)
     return false;
 }
 
+void xseteuid(uid_t euid)
+{
+    if (seteuid(euid) != 0)
+        perror_msg_and_die("can't set %cid %lu", 'u', (long)euid);
+}
+
+void xsetegid(gid_t egid)
+{
+    if (setegid(egid) != 0)
+        perror_msg_and_die("can't set %cid %lu", 'g', (long)egid);
+}
+
 void xsetreuid(uid_t ruid, uid_t euid)
 {
     if (setreuid(ruid, euid) != 0)
