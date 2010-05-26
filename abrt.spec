@@ -318,6 +318,7 @@ fi
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
 %{_initrddir}/%{name}d
+# /var/cache/%{name} is to be removed in 1.3.x timeframe
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
 %dir /var/run/%{name}
