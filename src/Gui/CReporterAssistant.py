@@ -26,7 +26,8 @@ class ReporterAssistant():
         self.pdict = {}
         self.report = report
         self.parent = parent
-        self.show_hint_comment = False
+        self.comment_changed = False
+        self.howto_changed = False
         self.selected_reporters = []
         """ create the assistant """
         self.assistant = gtk.Assistant()
@@ -289,41 +290,53 @@ class ReporterAssistant():
     def on_page_prepare(self, assistant, page):
         # this is where dehydrate happens
         if page == self.pdict_get_page(PAGE_EXTRA_INFO):
-            # howto
-            buff = gtk.TextBuffer()
-            try:
-                buff.set_text(self.result[FILENAME_REPRODUCE][CD_CONTENT])
-            except KeyError:
-                buff.set_text(HOW_TO_HINT_TEXT)
-            self.howto_tev.set_buffer(buff)
-
-            # comment
-            buff = gtk.TextBuffer()
-            try:
-                buff.set_text(self.result[FILENAME_COMMENT][CD_CONTENT])
-            except KeyError:
-                buff.set_text(COMMENT_HINT_TEXT)
-                self.show_hint_comment = True
-            self.comment_tev.set_buffer(buff)
+            if not self.howto_changed:
+                # howto
+                buff = gtk.TextBuffer()
+                try:
+                    buff.set_text(self.result[FILENAME_REPRODUCE][CD_CONTENT])
+                except KeyError:
+                    buff.set_text(HOW_TO_HINT_TEXT)
+                self.howto_tev.set_buffer(buff)
+            # don't refresh the comment if user changed it
+            if not self.comment_changed:
+                # comment
+                buff = gtk.TextBuffer()
+                try:
+                    buff.set_text(self.result[FILENAME_COMMENT][CD_CONTENT])
+                except KeyError:
+                    buff.set_text(COMMENT_HINT_TEXT)
+                self.comment_tev.set_buffer(buff)
         if page == self.pdict_get_page(PAGE_CONFIRM):
             # howto
-            howto_buff = self.howto_tev.get_buffer()
-            howto_text = howto_buff.get_text(howto_buff.get_start_iter(), howto_buff.get_end_iter())
-
-            if howto_text != HOW_TO_HINT_TEXT:
+            if self.howto_changed:
+                howto_buff = self.howto_tev.get_buffer()
+                howto_text = howto_buff.get_text(howto_buff.get_start_iter(), howto_buff.get_end_iter())
                 # user has changed the steps to reproduce
                 self.steps.set_text(howto_text)
                 self.result[FILENAME_REPRODUCE] = [CD_TXT, 'y', howto_text]
             else:
                 self.steps.set_text(_("You didn't provide any steps to reproduce."))
+                try:
+                    del self.result[FILENAME_REPRODUCE]
+                except KeyError:
+                    # if this is a first time, then we don't have key FILENAME_REPRODUCE
+                    pass
             #comment
-            comment_buff = self.comment_tev.get_buffer()
-            comment_text = comment_buff.get_text(comment_buff.get_start_iter(), comment_buff.get_end_iter())
-            if not self.show_hint_comment:
+            if self.comment_changed:
+                comment_buff = self.comment_tev.get_buffer()
+                comment_text = comment_buff.get_text(comment_buff.get_start_iter(), comment_buff.get_end_iter())
+                # user has changed the comment
                 self.comments.set_text(comment_text)
                 self.result[FILENAME_COMMENT] = [CD_TXT, 'y', comment_text]
             else:
                 self.comments.set_text(_("You didn't provide any comments."))
+                try:
+                    del self.result[FILENAME_COMMENT]
+                except KeyError:
+                    # if this is a first time, then we don't have key FILENAME_COMMENT
+                    pass
+
             # backtrace
             backtrace_text = self.backtrace_buff.get_text(self.backtrace_buff.get_start_iter(), self.backtrace_buff.get_end_iter())
             self.result[FILENAME_BACKTRACE] = [CD_TXT, 'y', backtrace_text]
@@ -457,11 +470,26 @@ class ReporterAssistant():
         clipboard = gtk.clipboard_get()
         clipboard.set_text(bt_text)
 
-    def on_comment_focus_cb(self, widget, event):
-        if self.show_hint_comment:
+    def tv_text_changed(self, textview, default_text):
+        buff = textview.get_buffer()
+        text = buff.get_text(buff.get_start_iter(), buff.get_end_iter())
+        if text:
+            if text and text != default_text:
+                return True
+            return False
+        else:
+            buff.set_text(default_text)
+
+    def on_howto_focusout_cb(self, textview, event):
+        self.howto_changed = self.tv_text_changed(textview, HOW_TO_HINT_TEXT)
+
+    def on_comment_focusin_cb(self, textview, event):
+        if not self.comment_changed:
             # clear "hint" text by supplying a fresh, empty TextBuffer
-            widget.set_buffer(gtk.TextBuffer())
-            self.show_hint_comment = True
+            textview.set_buffer(gtk.TextBuffer())
+
+    def on_comment_focusout_cb(self, textview, event):
+        self.comment_changed = self.tv_text_changed(textview, COMMENT_HINT_TEXT)
 
     def prepare_page_2(self):
         page = gtk.VBox(spacing=10)
@@ -554,6 +582,7 @@ class ReporterAssistant():
         howto_lbl.set_justify(gtk.JUSTIFY_FILL)
         self.howto_tev = gtk.TextView()
         self.howto_tev.set_accepts_tab(False)
+        self.howto_tev.connect("focus-out-event", self.on_howto_focusout_cb)
         howto_buff = gtk.TextBuffer()
         howto_buff.set_text(HOW_TO_HINT_TEXT)
         self.howto_tev.set_buffer(howto_buff)
@@ -571,7 +600,8 @@ class ReporterAssistant():
         comment_lbl.set_justify(gtk.JUSTIFY_FILL)
         self.comment_tev = gtk.TextView()
         self.comment_tev.set_accepts_tab(False)
-        self.comment_tev.connect("focus-in-event", self.on_comment_focus_cb)
+        self.comment_tev.connect("focus-in-event", self.on_comment_focusin_cb)
+        self.comment_tev.connect("focus-out-event", self.on_comment_focusout_cb)
         comment_scroll_w = gtk.ScrolledWindow()
         comment_scroll_w.add(self.comment_tev)
         comment_scroll_w.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
