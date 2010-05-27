@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-26 17:36+0200\n"
+"POT-Creation-Date: 2010-05-20 13:46+0000\n"
 "PO-Revision-Date: 2009-09-23 05:29+0200\n"
 "Last-Translator: Ondrej Šulek <feonsu@gmail.com>\n"
 "Language-Team: Slovak <fedora-trans-sk@redhat.com>\n"
@@ -16,65 +16,113 @@ msgstr ""
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: src/Gui/ABRTExceptions.py:6
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "Iný klient už beží, snažím sa ho prebudiť."
 
-#: src/Gui/ABRTExceptions.py:13
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr ""
 "Boli získané neočakávané dáta od démona (je správne aktualizovaná databáza?)."
 
-#: src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:62
 #, fuzzy
 msgid "Not loaded plugins"
 msgstr "Modul %s nemá žiadne UI"
 
-#: src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Analyzačné moduly"
 
-#: src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Akčné moduly"
 
-#: src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Reportovacie moduly"
 
-#: src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Databázové moduly"
 
-#: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 #, fuzzy
 msgid "Can't connect to system dbus"
 msgstr "Nedá sa pripojiť k dbus"
 
-#: src/Gui/CCDBusBackend.py:120 src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 #, fuzzy
 msgid "Please check if abrt daemon is running"
 msgstr "Prosím skontrolujte, či démon abrt beží."
 
-#: src/Gui/CCDBusBackend.py:174
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 #, fuzzy
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
 msgstr ""
 "Démon vrátil neplatné informácie o správe\n"
-"Chýba debuginfo?"
+"Nehýba debuginfo?"
 
-#: src/Gui/ccgui.glade:7
+#: ../src/Gui/ccgui.glade.h:1
+#, fuzzy
+msgid "(C) 2009, 2010 Red Hat, Inc."
+msgstr "(C) 2009, 2010 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:2
+#, fuzzy
+msgid "<b>Bug Reports:</b>"
+msgstr "<b>Nenahlásené!</b>"
+
+#: ../src/Gui/ccgui.glade.h:3
+msgid "<b>Command:</b>"
+msgstr "<b>Príkaz</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+#, fuzzy
+msgid "<b>Comment:</b>"
+msgstr "<b>Komentár</b>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "<b>Crash Count:</b>"
+msgstr "<b>Počet pádov:</b>"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "<b>Latest Crash:</b>"
+msgstr "<b>Posledný pád</b>"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "<b>Reason:</b>"
+msgstr "<b>Dôvod</b>"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "<b>User:</b>"
+msgstr "<b>Užívateľ:</b>"
+
+#: ../src/Gui/ccgui.glade.h:9
 msgid "About ABRT"
 msgstr "O programe ABRT"
 
-#: src/Gui/ccgui.glade:15
-#, fuzzy
-msgid "(C) 2009, 2010 Red Hat, Inc."
-msgstr "(C) 2009 Red Hat, Inc."
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
+msgid "Automatic Bug Reporting Tool"
+msgstr "Nástroj na automatické hlásenie chýb"
 
-#: src/Gui/ccgui.glade:17
+#: ../src/Gui/ccgui.glade.h:11
+msgid "Copy to Clipboard"
+msgstr "Skopírovať do schránky"
+
+#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
+msgid "Plugins"
+msgstr "Moduly"
+
+#: ../src/Gui/ccgui.glade.h:13 ../src/Applet/CCApplet.cpp:253
+msgid "Report"
+msgstr "Nahlásiť"
+
+#: ../src/Gui/ccgui.glade.h:14
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -101,95 +149,51 @@ msgstr ""
 "Kópiu GNU General Public License by ste mali obdržať spolu s týmto "
 "programom. Ak sa tak nestalo navštívte <http://www.gnu.org/licenses/>."
 
-#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:105
-msgid "translator-credits"
-msgstr ""
-
-#: src/Gui/ccgui.glade:58 src/Gui/CCMainWindow.py:8 src/Gui/report.glade:7
-msgid "Automatic Bug Reporting Tool"
-msgstr "Nástroj na automatické hlásenie chýb"
-
-#: src/Gui/ccgui.glade:71
-msgid "_File"
-msgstr "_Súbor"
-
-#: src/Gui/ccgui.glade:92
-msgid "_Edit"
-msgstr "_Upraviť"
-
-#: src/Gui/ccgui.glade:100 src/Gui/settings.glade:6
-msgid "Plugins"
-msgstr "Moduly"
-
-#: src/Gui/ccgui.glade:119
-msgid "_Help"
-msgstr "_Pomocník"
-
-#: src/Gui/ccgui.glade:126
+#: ../src/Gui/ccgui.glade.h:19
 msgid "View log"
 msgstr ""
 
-#: src/Gui/ccgui.glade:237
-#, fuzzy
-msgid "<b>Bug Reports:</b>"
-msgstr "<b>Nenahlásené!</b>"
+#: ../src/Gui/ccgui.glade.h:20
+msgid "_Edit"
+msgstr "_Upraviť"
 
-#: src/Gui/ccgui.glade:277
-msgid "<b>Latest Crash:</b>"
+#: ../src/Gui/ccgui.glade.h:21
+msgid "_File"
+msgstr "_Súbor"
+
+#: ../src/Gui/ccgui.glade.h:22
+msgid "_Help"
+msgstr "_Pomocník"
+
+#: ../src/Gui/ccgui.glade.h:23 ../src/Applet/CCApplet.cpp:105
+msgid "translator-credits"
 msgstr ""
 
-#: src/Gui/ccgui.glade:290
-msgid "<b>Command:</b>"
-msgstr ""
-
-#: src/Gui/ccgui.glade:305
-msgid "<b>User:</b>"
-msgstr ""
-
-#: src/Gui/ccgui.glade:320
-msgid "<b>Crash Count:</b>"
-msgstr ""
-
-#: src/Gui/ccgui.glade:436
-msgid "<b>Reason:</b>"
-msgstr ""
-
-#: src/Gui/ccgui.glade:462
-#, fuzzy
-msgid "<b>Comment:</b>"
-msgstr "Komentár"
-
-#: src/Gui/ccgui.glade:542
-msgid "Copy to Clipboard"
-msgstr ""
-
-#: src/Gui/ccgui.glade:554 src/Gui/ccgui.glade:682 src/Applet/CCApplet.cpp:253
-msgid "Report"
-msgstr "Správa"
-
-#: src/Gui/CCMainWindow.py:62
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:61
 #, fuzzy
 msgid "Reported"
-msgstr "Správa"
+msgstr "Nahlásený"
 
-#: src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:69
 msgid "Application"
 msgstr "Aplikácia"
 
-#: src/Gui/CCMainWindow.py:72
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Latest Crash"
-msgstr ""
+msgstr "Posledný pád"
 
-#: src/Gui/CCMainWindow.py:140
+#: ../src/Gui/CCMainWindow.py:139
 #, fuzzy, python-format
 msgid ""
 "Can't show the settings dialog\n"
 "%s"
 msgstr ""
-"Nie je možné uložiť nastavenie modulu:\n"
+"Nie je možné uložiť dialóg:\n"
 " %s"
+" s nastaveniami"
 
-#: src/Gui/CCMainWindow.py:145
+#: ../src/Gui/CCMainWindow.py:144
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -198,7 +202,8 @@ msgstr ""
 "Nepodarilo sa dokončiť aktuálnu úlohu!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:180
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:179
 #, fuzzy, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -207,42 +212,50 @@ msgstr ""
 "Chyba pri načítavaní dumplistu, prosím skontrolujte, či démon abrt beží\n"
 " %s"
 
-#: src/Gui/CCMainWindow.py:237
+#: ../src/Gui/CCMainWindow.py:236
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
 "%s"
 msgstr ""
+"<b>Pád %s</b>\n"
+"%s"
 
-#: src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:332
 msgid "You have to select a crash to copy."
-msgstr ""
+msgstr "Musíte zvoliť konkrétny pád, ktorý sa má skopírovať"
 
-#: src/Gui/CCMainWindow.py:418
+#: ../src/Gui/CCMainWindow.py:414
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 msgstr ""
+"Použitie: abrt-gui [VOĽBY]\n"
+"\t-v[vv]\t\t\tPodrobný\n"
+"\t--report=CRASH_ID\tReportovať pád priamo s CRASH_ID"
 
-#: src/Gui/CCMainWindow.py:441
+#: ../src/Gui/CCMainWindow.py:437
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
 "crashid=%s"
 msgstr ""
+"Žiaden pád v databáze, pravdepodobne chybné crashId.\n"
+"crashid=%s"
 
-#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:18
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:22
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Stručne opíšte, ako zopakovať túto chybu alebo čo ste urobili (v "
-"angličtine)..."
+"angličtine!)..."
 
-#: src/Gui/CCReporterDialog.py:107 src/Gui/CReporterAssistant.py:256
+#: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
-msgstr ""
+msgstr "Musíte skontrolovať backtrace (chybový výpis), či neobsahuje citlivé údaje"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:268
+#: ../src/Gui/CCReporterDialog.py:118
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -250,32 +263,40 @@ msgid ""
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
+"Nahlasovanie je zablokované, pretože backtrace (chybový výpis) je nepoužiteľný.\n"
+"Skúste prosím nainštalovať debuginfo ručne pomocou príkazu: <b>debuginfo-install "
+"%s</b> \n"
+"a potom skúste pomocou tlačítka Obnoviť opäť vygenerovať backtrace (chybový výpis)."
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:270
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you can't report this!"
-msgstr ""
+msgstr "Backtrace (chybový výpis) je nepoužiteľný, nemá zmysel ho nahlasovať!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:274
+#: ../src/Gui/CCReporterDialog.py:124
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr ""
+"Backtrace (chybový výpis) nie je kompletný, prosím skontrolujte či poskytujete aspoň"
+"podrobný popis krokov ako chybu zreprodukovať."
 
-#: src/Gui/CCReporterDialog.py:130
+#: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
+msgstr "Nahlasovanie je vypnuté, prosím vyriešte najprv problém zobrazený vyššie."
 
-#: src/Gui/CCReporterDialog.py:132
+#: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
-msgstr ""
+msgstr "Odoslať hlásenie pomocou zvoleného modulu."
 
-#: src/Gui/CCReporterDialog.py:398
+#: ../src/Gui/CCReporterDialog.py:392
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
 msgstr ""
+"Nie je k dispozícii žiaden modul pre nahlasovanie pre tento typ pádu\n"
+"Prosím skontrolujte abrt.conf."
 
-#: src/Gui/CCReporterDialog.py:418 src/Gui/CReporterAssistant.py:176
+#: ../src/Gui/CCReporterDialog.py:412
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -284,20 +305,20 @@ msgstr ""
 "Nie je možné uložiť nastavenie modulu:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:206
+#: ../src/Gui/CCReporterDialog.py:442
 #, fuzzy, python-format
 msgid "Configure %s options"
-msgstr "_Nastaviť modul"
+msgstr "Upraviť nastavenia pre %s"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:754
+#: ../src/Gui/CCReporterDialog.py:492
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
-"Nepodarilo sa získať správu!\n"
-"Chýba debuginfo?"
+"Nepodarilo sa získať hlásenie!\n"
+"Nechýba debuginfo?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:346
+#: ../src/Gui/CCReporterDialog.py:521
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -306,575 +327,422 @@ msgstr ""
 "Nahlásenie zlyhalo!\n"
 "%s"
 
-#: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:786
+#: ../src/Gui/CCReporterDialog.py:547 ../src/Gui/CCReporterDialog.py:568
 #, python-format
 msgid "Error getting the report: %s"
-msgstr "Chyba pri získavaní správy: %s"
+msgstr "Chyba pri získavaní hlásenia: %s"
 
-#: src/Gui/dialogs.glade:7
-msgid "Report done"
-msgstr "Nahlásenie hotové"
-
-#: src/Gui/dialogs.glade:79
+#: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
 msgstr ""
 
-#: src/Gui/PluginSettingsUI.py:17
+#: ../src/Gui/dialogs.glade.h:2
+msgid "Report done"
+msgstr "Úspešne nahlásené :)"
+
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Prvok PluginDialog nie je možné nájsť v popise UI!"
 
-#: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
+#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "combo box nie je implementovaný"
 
-#: src/Gui/PluginSettingsUI.py:63
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "Žiadne dáta na zobrazenie!"
 
-#: src/Gui/report.glade:54
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:65
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:76
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:87
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:111 src/Gui/report.glade:124 src/Gui/report.glade:137
-#: src/Gui/report.glade:150 src/Gui/report.glade:228 src/Gui/report.glade:241
-#: src/Gui/report.glade:254 src/Gui/report.glade:267
-msgid "N/A"
-msgstr ""
-
-#: src/Gui/report.glade:172
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:183
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:194
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:205
-#, fuzzy
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span color=\"white\">Popis</span>"
-
-#: src/Gui/report.glade:331
-msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:664
-msgid "<b>Backtrace</b>"
-msgstr ""
-
-#: src/Gui/report.glade:426
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr ""
-
-#: src/Gui/report.glade:464
-#, fuzzy
-msgid "<b>Comment</b>"
-msgstr "Komentár"
-
-#: src/Gui/report.glade:512
-msgid "<b>Attachments</b>"
-msgstr ""
-
-#: src/Gui/report.glade:561
-msgid "<b>Please fix the following problems</b>"
-msgstr ""
-
-#: src/Gui/report.glade:571
+#: ../src/Gui/report.glade.h:1
 msgid " "
 msgstr " "
 
-#: src/Gui/report.glade:622
-msgid "Show log"
-msgstr ""
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Prílohy</b>"
 
-#: src/Gui/report.glade:654
-msgid "Forces ABRT to regenerate the backtrace"
-msgstr ""
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>Backtrace (popis chyby)</b>"
 
-#: src/Gui/report.glade:665
-msgid "Send report"
-msgstr ""
-
-#: src/Gui/report.glade:693
+#: ../src/Gui/report.glade.h:4
 #, fuzzy
-msgid "Reporter Selector"
-msgstr "Reportovacie moduly"
+msgid "<b>Comment</b>"
+msgstr "<b>Komentár</b>"
 
-#: src/Gui/report.glade:706
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Ako chybu zreprodukovať (pár jednoduchých krokov)</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Prosím vyriešte nasledovné problémy</b>"
+
+#: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
-msgstr ""
+msgstr "<b>Kam chcete reportovať tento incident?</b>"
 
-#: src/Gui/report.glade:764 src/Gui/progress_window.glade:8
-msgid "Please wait.."
-msgstr "Prosím čakajte..."
+#: ../src/Gui/report.glade.h:8
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">Architektúra:</span>"
 
-#: src/Gui/report.glade:816 src/Gui/progress_window.glade:59
+#: ../src/Gui/report.glade.h:9
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Shell príkaz:</span>"
+
+#: ../src/Gui/report.glade.h:10
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Komponenta:</span>"
+
+#: ../src/Gui/report.glade.h:11
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Binárka:</span>"
+
+#: ../src/Gui/report.glade.h:12
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">Jadro:</span>"
+
+#: ../src/Gui/report.glade.h:13
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Balík:</span>"
+
+#: ../src/Gui/report.glade.h:14
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">Dôvod:</span>"
+
+#: ../src/Gui/report.glade.h:15
+#, fuzzy
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Vydanie:</span>"
+
+#: ../src/Gui/report.glade.h:17
 #, fuzzy
 msgid "Details"
 msgstr "Podrobnosti o module"
 
-#: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Vyzvať ABRT k opätovnému vygenrovaniu backtrace (chybového výpisu)"
+
+#: ../src/Gui/report.glade.h:19
+msgid "I checked backtrace and removed sensitive data (passwords, etc)"
+msgstr "Skontroloval som backtrace (cybový výpis) a odstránil som citlivé údaje (heslá a pod.)"
+
+#: ../src/Gui/report.glade.h:20
+msgid "N/A"
+msgstr "Nie je k dispozícii"
+
+#: ../src/Gui/report.glade.h:21
+msgid "Please wait.."
+msgstr "Prosím čakajte..."
+
+#: ../src/Gui/report.glade.h:22
+#, fuzzy
+msgid "Reporter Selector"
+msgstr "Reportovacie moduly"
+
+#: ../src/Gui/report.glade.h:23
+msgid "Send report"
+msgstr "Odoslať hlásenie"
+
+#: ../src/Gui/report.glade.h:24
+msgid "Show log"
+msgstr "Zobraziť log"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Výber modulu</b>"
 
-#: src/Gui/SettingsDialog.py:36
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Výber databázového backendu</b>"
 
-#: src/Gui/SettingsDialog.py:169
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Odstrániť túto úlohu"
 
-#: src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Odstrániť túto akciu"
 
-#: src/Gui/settings.glade:64
-msgid "Web Site:"
-msgstr "Web stránka:"
+#: ../src/Gui/settings.glade.h:1
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>Analyzačné moduly</b>"
 
-#: src/Gui/settings.glade:76
-msgid "Author:"
-msgstr "Autor:"
+#: ../src/Gui/settings.glade.h:2
+msgid "<b>Associated action</b>"
+msgstr "<b>Priradená akcia</b>"
 
-#: src/Gui/settings.glade:88
-msgid "Version:"
-msgstr "Verzia:"
-
-#: src/Gui/settings.glade:142
-#, fuzzy
-msgid "Description:"
-msgstr "Verzia:"
-
-#: src/Gui/settings.glade:154
-#, fuzzy
-msgid "Name:"
-msgstr "Názov"
-
-#: src/Gui/settings.glade:198
+#: ../src/Gui/settings.glade.h:3
 #, fuzzy
 msgid "<b>Plugin details</b>"
 msgstr "<b>Modul</b>"
 
-#: src/Gui/settings.glade:221
-msgid "C_onfigure plugin"
-msgstr "_Nastaviť modul"
-
-#: src/Gui/settings.glade:258
-msgid "Preferences"
-msgstr ""
-
-#: src/Gui/settings.glade:285
-msgid "Check package GPG signature"
-msgstr "Skontrolovať GPG podpis balíčka"
-
-#: src/Gui/settings.glade:301
-msgid "Database backend: "
-msgstr "Databázový backend:"
-
-#: src/Gui/settings.glade:327
-msgid "Blacklisted packages: "
-msgstr "Balíčky na čiernej listine: "
-
-#: src/Gui/settings.glade:341
-msgid "Max coredump storage size(MB):"
-msgstr "Maximálna veľkosť coredump (MB):"
-
-#: src/Gui/settings.glade:355
-msgid "GPG keys: "
-msgstr "GPG kľúče: "
-
-#: src/Gui/settings.glade:458
-msgid "Common"
-msgstr "Všeobecné"
-
-#: src/Gui/settings.glade:491
+#: ../src/Gui/settings.glade.h:4
 msgid "<b>Plugin</b>"
 msgstr "<b>Modul</b>"
 
-#: src/Gui/settings.glade:501
+#: ../src/Gui/settings.glade.h:5
 msgid "<b>Time (or period)</b>"
 msgstr "<b>Čas (alebo doba)</b>"
 
-#: src/Gui/settings.glade:569
-msgid "Cron"
-msgstr "Cron"
-
-#: src/Gui/settings.glade:603
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Analyzačné moduly</b>"
-
-#: src/Gui/settings.glade:613
-msgid "<b>Associated action</b>"
-msgstr "<b>Priradená akcia</b>"
-
-#: src/Gui/settings.glade:692
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "Analyzátory, akcie, reportéri"
 
-#: src/Gui/settings.glade:753
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "Autor:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "Balíčky na čiernej listine: "
+
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure plugin"
+msgstr "_Nastaviť modul"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "Skontrolovať GPG podpis balíčka"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "Všeobecné"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "Databázový backend:"
+
+#: ../src/Gui/settings.glade.h:14
+#, fuzzy
+msgid "Description:"
+msgstr "Verzia:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG kľúče"
 
-#: src/Gui/CReporterAssistant.py:257
-msgid "You must agree with sending the backtrace"
-msgstr ""
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "GPG kľúče: "
 
-#: src/Gui/CReporterAssistant.py:315
-msgid "You didn't provide any steps to reproduce."
-msgstr ""
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "Maximálna veľkosť coredump (MB):"
 
-#: src/Gui/CReporterAssistant.py:323
-msgid "You didn't provide any comments."
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:395
-#, python-format
-msgid ""
-"It looks like an application from the package <b>%s</b> has crashed on your "
-"system. It's a good idea to send a bug report about this issue. The report "
-"will provide software maintainers with information essential in figuring out "
-"how to provide a bug fix for you\n"
-"\n"
-"Please review the information that follows and modify it as needed to ensure "
-"your bug report does not contain any sensitive date you'd rather not share\n"
-"\n"
-"Select where you would like to report the bug, and press 'Forward' to "
-"continue."
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:448
-msgid "Send a bug report"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:471
-msgid ""
-"Below is the backtrace associated with your crash. A crash backtrace "
-"provides developers with details about how a crash happen, helping them "
-"track down the source of the problem\n"
-"\n"
-"Please review the backtrace below and modify it as needed to ensure your bug "
-"report does not contain any sensitive date you'd rather not share:"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:512
-msgid "Refresh"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:514
-msgid "Copy"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:520
-msgid "I agree with submitting the backtrace"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:525
-msgid "Approve backtrace"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:548
-msgid "How this crash happen, step-by-step? How would you reproduce it?"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:565
-msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:583
-msgid "Provide additional details"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:590
-msgid ""
-"<b>Tip:</b> Your comments are not private. Please monitor what you say "
-"accordingly"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:631
-msgid "Confirm and send report"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:633
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:638
+#: ../src/Gui/settings.glade.h:18
 #, fuzzy
-msgid "<b>Basic details</b>"
-msgstr "<b>Modul</b>"
+msgid "Name:"
+msgstr "Názov"
 
-#: src/Gui/CReporterAssistant.py:645
-#, fuzzy
-msgid "Component"
-msgstr "Všeobecné"
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "Predvoľby"
 
-#: src/Gui/CReporterAssistant.py:646
-msgid "Package"
-msgstr "Balíček"
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "Verzia:"
 
-#: src/Gui/CReporterAssistant.py:647
-msgid "Executable"
-msgstr ""
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "Web stránka:"
 
-#: src/Gui/CReporterAssistant.py:648
-msgid "Cmdline"
-msgstr ""
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Zobrazenie a nahlasovanie pádov aplikácií"
 
-#: src/Gui/CReporterAssistant.py:650
-msgid "Architecture"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:651
-msgid "Kernel"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:652
-#, fuzzy
-msgid "Release"
-msgstr "Odstrániť"
-
-#: src/Gui/CReporterAssistant.py:653
-msgid "Reason"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:667
-msgid "Click to view ..."
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:679
-#, fuzzy
-msgid "<b>Steps to reporoduce:</b>"
-msgstr "<b>Čas (alebo doba)</b>"
-
-#: src/Gui/CReporterAssistant.py:697
-#, fuzzy
-msgid "<b>Comments:</b>"
-msgstr "Komentár"
-
-#: src/Gui/CReporterAssistant.py:700
-msgid "No comment provided!"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:723
-msgid "Finish sending the bug report"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:724
-msgid ""
-"Thank you for your bug report. It has been succesfully submitted. You may "
-"view your bug report online using the web adress below:"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:732
-#, fuzzy
-msgid "<b>Bug reports:</b>"
-msgstr "<b>Nenahlásené!</b>"
-
-#: src/Gui/CReporterAssistant.py:736
-#, fuzzy
-msgid "Not reported"
-msgstr "Správa"
-
-#: src/Applet/Applet.cpp:88
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Bol zistený pád v balíčku %s"
 
-#: src/Applet/Applet.cpp:90
+#: ../src/Applet/Applet.cpp:90
 #, fuzzy
 msgid "A crash has been detected"
-msgstr "Bol zistený pád v balíčku %s"
+msgstr "Bol zaregistrovaný pád aplikácie."
 
-#: src/Applet/Applet.cpp:266
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "Služba ABRT nebeží"
 
-#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:260
-#: src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
+#: ../src/Applet/CCApplet.cpp:287
 msgid "Warning"
 msgstr "Upozornenie"
 
-#: src/Applet/CCApplet.cpp:89
+#: ../src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
-msgstr ""
+msgstr "Applet pre notifikácie o problémoch zistených ABRT-tom"
 
-#: src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:115
 msgid "Hide"
-msgstr ""
+msgstr "Skryť"
 
-#: src/Daemon/Daemon.cpp:477
+#: ../src/Daemon/Daemon.cpp:476
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
 msgstr ""
-"Veľkosť správy prekročila kvótu. Prosím skontrolujte systémovú hodnotu "
+"Veľkosť správy prekročila limit. Prosím skontrolujte systémovú hodnotu "
 "MaxCrashReportsSize v abrt.conf."
 
-#: lib/Plugins/Bugzilla.cpp:328
+#: ../lib/Plugins/Bugzilla.cpp:328
 #, fuzzy, c-format
 msgid "Bug is already reported: %i"
-msgstr "Táto chyba je už nahlásená: "
+msgstr "Táto chyba je už nahlásená pod číslom: %i"
 
-#: lib/Plugins/Bugzilla.cpp:409
+#: ../lib/Plugins/Bugzilla.cpp:409
 #, fuzzy, c-format
 msgid "New bug id: %i"
-msgstr "ID novej chyby: "
+msgstr "ID novej chyby: %i"
 
-#: lib/Plugins/Bugzilla.cpp:621
+#: ../lib/Plugins/Bugzilla.cpp:621
 #, fuzzy
 msgid ""
 "Empty login or password.\n"
 "Please check "
-msgstr "Login a heslo sú prázdne. Prosím skontrolujte Bugzilla.conf"
+msgstr "Login alebo heslo sú prázdne. Prosím skontrolujte Bugzilla.conf"
 
-#: lib/Plugins/Bugzilla.cpp:629
+#: ../lib/Plugins/Bugzilla.cpp:629
 msgid "Logging into bugzilla..."
 msgstr "Prihlasovanie do bugzilly..."
 
-#: lib/Plugins/Bugzilla.cpp:632
+#: ../lib/Plugins/Bugzilla.cpp:632
 msgid "Checking for duplicates..."
-msgstr "Kontrolovanie duplikátov..."
+msgstr "Kontrola na duplicitu..."
 
-#: lib/Plugins/Bugzilla.cpp:645
+#: ../lib/Plugins/Bugzilla.cpp:645
 msgid "Missing mandatory member 'bugs'"
-msgstr ""
+msgstr "Chýba povinná položka 'bugs'"
 
-#: lib/Plugins/Bugzilla.cpp:655
+#: ../lib/Plugins/Bugzilla.cpp:655
 msgid "Creating new bug..."
 msgstr "Vytváranie novej správy o chybe..."
 
-#: lib/Plugins/Bugzilla.cpp:660
+#: ../lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
-msgstr ""
+msgstr "Vytvorenie novej položky v Bugzille sa nepodarilo"
 
-#: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
+#: ../lib/Plugins/Bugzilla.cpp:668 ../lib/Plugins/Bugzilla.cpp:778
 msgid "Logging out..."
 msgstr "Odhlasovanie..."
 
-#: lib/Plugins/Bugzilla.cpp:700 lib/Plugins/Bugzilla.cpp:728
+#: ../lib/Plugins/Bugzilla.cpp:700 ../lib/Plugins/Bugzilla.cpp:728
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
+msgstr "Funkcia get_bug_info() bola neúspešná. Nie je možné zhromaždiť všetky povinné informácie"
 
-#: lib/Plugins/Bugzilla.cpp:712
+#: ../lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
-msgstr ""
+msgstr "Bugzilla nevie nájsť rodiča bugu (chyby) č. %d"
 
-#: lib/Plugins/Bugzilla.cpp:717
+#: ../lib/Plugins/Bugzilla.cpp:717
 #, c-format
 msgid "Jump to bug %d"
-msgstr ""
+msgstr "Presunúť sa na bug %d"
 
-#: lib/Plugins/Bugzilla.cpp:742 lib/Plugins/Bugzilla.cpp:743
+#: ../lib/Plugins/Bugzilla.cpp:742 ../lib/Plugins/Bugzilla.cpp:743
 #, c-format
 msgid "Add %s to CC list"
-msgstr ""
+msgstr "Pridať %s do zoznamu CC adresátov"
 
-#: lib/Plugins/Bugzilla.cpp:767
+#: ../lib/Plugins/Bugzilla.cpp:767
 #, c-format
 msgid "Add new comment into bug(%d)"
-msgstr ""
+msgstr "Pridať nový komentár k bugu (chybe) č. %d"
 
-#: lib/Plugins/Kerneloops.cpp:118
+#: ../lib/Plugins/Kerneloops.cpp:118
 msgid "Getting local universal unique identification"
 msgstr "Získavanie lokálneho univerzálneho unikátneho identifikátora"
 
-#: lib/Plugins/CCpp.cpp:159
+#: ../lib/Plugins/CCpp.cpp:159
 #, fuzzy
 msgid "Generating backtrace"
 msgstr "Získavanie backtrace..."
 
-#: lib/Plugins/CCpp.cpp:327
+#: ../lib/Plugins/CCpp.cpp:327
 #, fuzzy
 msgid "Starting debuginfo installation"
-msgstr "Preskakovanie inštalačného debuginfo"
+msgstr "Začína inštallácia debuginfo"
 
-#: lib/Plugins/CCpp.cpp:535
+#. Compatibility code.
+#. This whole block should be deleted for Fedora 14.
+#: ../lib/Plugins/CCpp.cpp:535
 msgid "Getting global universal unique identification..."
 msgstr "Získavanie globálneho univerzálneho unikátneho identifikátora..."
 
-#: lib/Plugins/CCpp.cpp:701
+#: ../lib/Plugins/CCpp.cpp:701
 msgid "Skipping debuginfo installation"
 msgstr "Preskakovanie inštalačného debuginfo"
 
-#: lib/Plugins/KerneloopsReporter.cpp:94
+#: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "Vytváranie a odosielanie správy..."
 
-#: lib/Plugins/Logger.cpp:73
+#: ../lib/Plugins/Logger.cpp:73
 #, fuzzy, c-format
 msgid "Writing report to '%s'"
-msgstr "Spúšťa sa vytváranie správy..."
+msgstr "Zapisujem hlásenie do '%s'"
 
-#: lib/Plugins/FileTransfer.cpp:53
+#: ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
-msgstr "Prenos súborov: nie je zadané URL"
+msgstr "Prenos súborov: nie je zadaná URL"
 
-#: lib/Plugins/FileTransfer.cpp:57
+#: ../lib/Plugins/FileTransfer.cpp:57
 #, fuzzy, c-format
 msgid "Sending archive %s to %s"
-msgstr "Odosielanie archívu %s cez %s"
+msgstr "Odosielanie archívu %s na %s"
 
-#: lib/Plugins/FileTransfer.cpp:288
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Prenos súborov: Vytváranie správy..."
 
-#: lib/Plugins/FileTransfer.cpp:322
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, fuzzy, c-format
 msgid "Can't create and send an archive: %s"
-msgstr "CFileTransfer::Run(): Nie je možné vytvoriť a odoslať archív: "
+msgstr "Nie je možné vytvoriť a odoslať archív: "
 
-#: lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, fuzzy, c-format
 msgid "Can't create and send an archive %s"
-msgstr "CFileTransfer::Run(): Nie je možné vytvoriť a odoslať archív: "
+msgstr "Nie je možné vytvoriť a odoslať archív: "
 
-#: lib/Plugins/Mailx.cpp:135
+#: ../lib/Plugins/Mailx.cpp:134
 msgid "Sending an email..."
 msgstr "Odosielanie e-mailu..."
 
-#: lib/Plugins/SOSreport.cpp:86
+#: ../lib/Plugins/SOSreport.cpp:101
 #, fuzzy, c-format
 msgid "Running sosreport: %s"
-msgstr "spúšťanie sosreport: "
+msgstr "Spúšťanie sosreport: "
 
-#: lib/Plugins/SOSreport.cpp:91
+#: ../lib/Plugins/SOSreport.cpp:107
 #, fuzzy
 msgid "Done running sosreport"
-msgstr "spúšťanie sosreport hotové"
+msgstr "Spúšťanie sosreport hotové"
+
+#~ msgid "Delete"
+#~ msgstr "Odstrániť"
 
 #~ msgid "Working..."
 #~ msgstr "Pracujem..."
 
 #~ msgid "Icon"
 #~ msgstr "Ikona"
+
+#~ msgid "Package"
+#~ msgstr "Balíček"
 
 #~ msgid "Date"
 #~ msgstr "Dátum"
