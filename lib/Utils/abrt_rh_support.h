@@ -34,8 +34,13 @@ void reportfile_add_binding_from_namedfile(reportfile_t* file,
 const char* reportfile_as_string(reportfile_t* file);
 
 char* post_signature(const char* baseURL, const char* signature);
-#if 0
-char* create_case(const char* baseURL, const char* description);
-#endif
+char*
+send_report_to_new_case(const char* baseURL,
+                const char* username,
+                const char* password,
+                const char* summary,
+                const char* description,
+                const char* component,
+                const char* report_file_name);
 
 #endif

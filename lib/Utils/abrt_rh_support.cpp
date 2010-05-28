@@ -90,14 +90,12 @@ xxmlTextWriterEndElement(xmlTextWriterPtr writer)
         die_xml_oom();
 }
 
-#if 0 //unused
 static void
 xxmlTextWriterWriteElement(xmlTextWriterPtr writer, const char *name, const char *content)
 {
     if (xmlTextWriterWriteElement(writer, (unsigned char*)name, (unsigned char*)content) < 0)
         die_xml_oom();
 }
-#endif
 
 static void
 xxmlTextWriterWriteAttribute(xmlTextWriterPtr writer, const char *name, const char *content)
@@ -218,6 +216,9 @@ reportfile_free(reportfile_t* file)
 }
 
 
+//
+// post_signature()
+//
 char*
 post_signature(const char* baseURL, const char* signature)
 {
@@ -274,42 +275,215 @@ post_signature(const char* baseURL, const char* signature)
     return retval;
 }
 
-#if 0
-const char*
-create_case(const char* baseURL, const char* description)
+
+//
+// send_report_to_new_case()
+//
+
+static char*
+make_case_data(const char* summary, const char* description,
+               const char* product, const char* version,
+               const char* component)
 {
-  const char* URL = concat_path_file(baseURL, "/cases");
-  const char* retval;
+    char* retval;
+    xmlTextWriterPtr writer;
+    xmlBufferPtr buf;
 
-  response_data_t* response_data = post(URL, description);
-  if (!response_data)
-    return NULL;
+    buf = xxmlBufferCreate();
+    writer = xxmlNewTextWriterMemory(buf);
 
-  switch (response_data->code) {
-  case 200:
-  case 201:
-    if (response_data->body && strlen(response_data->body) > 0) {
-      retval = response_data->body;
-      response_data->body = NULL;
+    xxmlTextWriterStartDocument(writer, NULL, "UTF-8", "yes");
+    xxmlTextWriterStartElement(writer, "case");
+    xxmlTextWriterWriteAttribute(writer, "xmlns",
+                                   "http://www.redhat.com/gss/strata");
+
+    xxmlTextWriterWriteElement(writer, "summary", summary);
+    xxmlTextWriterWriteElement(writer, "description", description);
+    if (product) {
+        xxmlTextWriterWriteElement(writer, "product", product);
     }
-    else
-      retval = ssprintf("Case Created: %s\n", response_data->location);
-    break;
-  default:
-    if (response_data->strata_message)
-      retval = ssprintf("Error: %s (http code %ld)",
-                        response_data->strata_message,
-                        response_data->code );
-    else
-      retval = ssprintf("Error: Response Code: %ld\nBody:\n%s", response_data->code, response_data->body);
-  }
-    free_abrt_post_state(state);
+    if (version) {
+        xxmlTextWriterWriteElement(writer, "version", version);
+    }
+    if (component) {
+        xxmlTextWriterWriteElement(writer, "component", component);
+    }
 
-  free((void*)response_data->strata_message);
-  free((void*)response_data->body);
-  free((void*)response_data->location);
-  free((void *)response_data);
-  free((void*)URL);
-  return retval;
+    xxmlTextWriterEndDocument(writer);
+    retval = xstrdup((const char*)buf->content);
+    xmlFreeTextWriter(writer);
+    xmlBufferFree(buf);
+    return retval;
 }
+
+#if 0 //unused
+static char*
+make_response(const char* title, const char* body,
+              const char* actualURL, const char* displayURL)
+{
+    char* retval;
+    xmlTextWriterPtr writer;
+    xmlBufferPtr buf;
+
+    buf = xxmlBufferCreate();
+    writer = xxmlNewTextWriterMemory(buf);
+
+    xxmlTextWriterStartDocument(writer, NULL, "UTF-8", "yes");
+    xxmlTextWriterStartElement(writer, "response");
+    if (title) {
+        xxmlTextWriterWriteElement(writer, "title", title);
+    }
+    if (body) {
+        xxmlTextWriterWriteElement(writer, "body", body);
+    }
+    if (actualURL || displayURL) {
+        xxmlTextWriterStartElement(writer, "URL");
+        if (actualURL) {
+            xxmlTextWriterWriteAttribute(writer, "href", actualURL);
+        }
+        if (displayURL) {
+            xxmlTextWriterWriteString(writer, displayURL);
+        }
+    }
+
+    xxmlTextWriterEndDocument(writer);
+    retval = xstrdup((const char*)buf->content);
+    xmlFreeTextWriter(writer);
+    xmlBufferFree(buf);
+    return retval;
+}
+//Example:
+//<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+//<response><title>Case Created and Report Attached</title><body></body><URL href="http://support-services-devel.gss.redhat.com:8080/Strata/cases/00005129/attachments/ccbf3e65-b941-3db7-a016-6a3831691a32">New Case URL</URL></response>
 #endif
+
+char*
+send_report_to_new_case(const char* baseURL,
+                const char* username,
+                const char* password,
+                const char* summary,
+                const char* description,
+                const char* component,
+                const char* report_file_name)
+{
+    string case_url = concat_path_file(baseURL, "/cases");
+
+    char *case_data = make_case_data(summary, description,
+                                         "Red Hat Enterprise Linux", "6.0",
+                                         component);
+
+    int redirect_count = 0;
+    char *errmsg;
+    char *allocated = NULL;
+    char* retval = NULL;
+    abrt_post_state *case_state;
+
+ redirect_case:
+    case_state = new_abrt_post_state(0
+            + ABRT_POST_WANT_HEADERS
+            + ABRT_POST_WANT_BODY
+            + ABRT_POST_WANT_ERROR_MSG);
+    case_state->username = username;
+    case_state->password = password;
+    abrt_post_string(case_state, case_url.c_str(), "application/xml", case_data);
+
+    char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
+    switch (case_state->http_resp_code)
+    {
+    case 305: /* "305 Use Proxy" */
+        if (++redirect_count < 10 && case_location) {
+            case_url = case_location;
+            free_abrt_post_state(case_state);
+            goto redirect_case;
+        }
+        /* fall through */
+
+    default:
+        errmsg = find_header_in_abrt_post_state(case_state, "Strata-Message:");
+        if (!errmsg && case_state->body && case_state->body[0])
+            errmsg = case_state->body;
+        if (errmsg)
+            retval = xasprintf("error in case creation, server says: '%s'", errmsg);
+        else
+            retval = xasprintf("error in case creation, HTTP code: %d",
+                    case_state->http_resp_code);
+        break;
+
+    case 200:
+    case 201:
+        if (!case_location) {
+            /* Case Creation returned valid code, but no location */
+            retval = xasprintf("error in case creation: no Location URL, HTTP code: %d",
+                    case_state->http_resp_code);
+            break;
+        }
+
+        string atch_url = concat_path_file(case_location, "/attachments");
+        abrt_post_state *atch_state;
+ redirect_attach:
+        atch_state = new_abrt_post_state(0
+                + ABRT_POST_WANT_HEADERS
+                + ABRT_POST_WANT_BODY
+                + ABRT_POST_WANT_ERROR_MSG);
+        atch_state->username = username;
+        atch_state->password = password;
+        abrt_post_file_as_form(atch_state, atch_url.c_str(), "application/binary", report_file_name);
+
+        char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
+        switch (atch_state->http_resp_code)
+        {
+        case 305: /* "305 Use Proxy" */
+            if (++redirect_count < 10 && atch_location) {
+                atch_url = atch_location;
+                free_abrt_post_state(atch_state);
+                goto redirect_attach;
+            }
+            /* fall through */
+
+        default:
+            /* Case Creation Succeeded, attachement FAILED */
+            errmsg = find_header_in_abrt_post_state(atch_state, "Strata-Message:");
+            if (!errmsg && atch_state->body && atch_state->body[0])
+                errmsg = atch_state->body;
+            if (case_state->body && case_state->body[0])
+            {
+                if (errmsg) /* both bodies are present */
+                    allocated = errmsg = xasprintf("%s. %s",
+                            case_state->body,
+                            errmsg);
+                else /* only ticket body exists */
+                    allocated = errmsg = xasprintf("%s. HTTP code %d",
+                            case_state->body,
+                            atch_state->http_resp_code);
+            } else { /* there were no body in ticket response */
+                if (!errmsg) /* ...and neither in attach response */
+                    allocated = errmsg = xasprintf(
+                            "HTTP code %d",
+                            atch_state->http_resp_code);
+                /* else: only attach body exists */
+            }
+            retval = xasprintf("Case created: %s, but report attachment failed: %s",
+                    case_location, errmsg);
+            break;
+
+        case 200:
+        case 201:
+            char *body = atch_state->body;
+            if (case_state->body && case_state->body[0])
+            {
+                body = case_state->body;
+                if (atch_state->body && atch_state->body[0])
+                    allocated = body = xasprintf("%s\n%s",
+                            case_state->body,
+                            atch_state->body);
+            }
+            retval = xasprintf("Case created: %s", /*body,*/ case_location);
+        } /* switch (attach HTTP code) */
+	free_abrt_post_state(atch_state);
+
+    } /* switch (ticket HTTP code) */
+
+    free_abrt_post_state(case_state);
+    free(allocated);
+    return retval;
+}

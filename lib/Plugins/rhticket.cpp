@@ -20,6 +20,7 @@
 #define _GNU_SOURCE 1    /* for stpcpy */
 #include "abrtlib.h"
 #include "abrt_curl.h"
+#include "abrt_rh_support.h"
 #include "CrashTypes.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
@@ -32,6 +33,7 @@
 using namespace std;
 
 
+#if 0 //unused
 static char *xml_escape(const char *str)
 {
     const char *s = str;
@@ -80,6 +82,7 @@ static char *xml_escape(const char *str)
     *d = '\0';
     return result;
 }
+#endif
 
 
 /*
@@ -104,55 +107,62 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
 //  const string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
 //  const string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
     const char *reason      = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
+    const char *function    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
 
-    string summary = "[abrt] crash in " + package;
-    if (reason != NULL)
+    string summary = "[abrt] " + package;
+    if (function && strlen(function) < 30)
+    {
+        summary += ": ";
+        summary += function;
+    }
+    if (reason)
     {
         summary += ": ";
         summary += reason;
     }
-//  string status_whiteboard = "abrt_hash:" + duphash;
 
-    string description = "abrt "VERSION" detected a crash.\n\n";
+    string description = "abrt version: "VERSION"\n";
     description += make_description_bz(pCrashData);
 
-//  string product;
-//  string version;
-//  parse_release(release.c_str(), product, version);
+    reportfile_t* file = new_reportfile();
 
-    char *xml_summary = xml_escape(summary.c_str());
-    char *xml_description = xml_escape(description.c_str());
-    string postdata = ssprintf(
-        "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>"
-        "<IssueTrackerCase xmlns=\"http://www.redhat.com/gss/strata\">"
-        "<name>%s</name>"
-        "<description>%s</description>"
-        // "<reference></reference><notes></notes><tags></tags>"
-        "</IssueTrackerCase>",
-        xml_summary,
-        xml_description
-    );
-    free(xml_summary);
-    free(xml_description);
-    string url = concat_path_file(m_sStrataURL.c_str(), "cases");
-
-    abrt_post_state *state = new_abrt_post_state(0
-                + ABRT_POST_WANT_HEADERS
-                + ABRT_POST_WANT_ERROR_MSG);
-    int http_resp_code = abrt_post_string(state, url.c_str(), "application/xml", postdata.c_str());
-
-    if (http_resp_code / 100 != 2)
+    // TODO: some files are totally useless:
+    // "Reported", "Message" (plugin's output), "DumpDir",
+    // "Description" (package description) - maybe skip those?
+    map_crash_data_t::const_iterator it = pCrashData.begin();
+    for (; it != pCrashData.end(); it++)
     {
-        /* not 2xx */
-        string errmsg = state->curl_error_msg ? state->curl_error_msg : "(none)";
-        free_abrt_post_state(state);
-        throw CABRTException(EXCEP_PLUGIN, _("server returned HTTP code %u, error message: %s"),
-                http_resp_code, errmsg.c_str());
+        const char *content = it->second[CD_CONTENT].c_str();
+        if (it->second[CD_TYPE] == CD_TXT)
+        {
+            reportfile_add_binding_from_string(file, it->first.c_str(), content);
+        }
+        else if (it->second[CD_TYPE] == CD_BIN)
+        {
+            reportfile_add_binding_from_namedfile(file, content, it->first.c_str(), content, /*binary:*/ 1);
+        }
     }
 
-    string result = find_header_in_abrt_post_state(state, "Location:") ? : "";
-    free_abrt_post_state(state);
-    return result;
+    update_client(_("Creating a new case..."));
+//    const char* filename = reportfile_as_file(file);
+    char* result = send_report_to_new_case(m_sStrataURL.c_str(),
+            m_sLogin.c_str(),
+            m_sPassword.c_str(),
+            summary.c_str(),
+            description.c_str(),
+            package.c_str(),
+            "/dev/null" //filename
+    );
+    VERB3 log("post result:'%s'", result);
+    string retval = result;
+    reportfile_free(file);
+    free(result);
+
+    if (strncasecmp(retval.c_str(), "error", 5) == 0)
+    {
+        throw CABRTException(EXCEP_PLUGIN, "%s", retval.c_str());
+    }
+    return retval;
 }
 
 void CReporterRHticket::SetSettings(const map_plugin_settings_t& pSettings)
