@@ -18,6 +18,7 @@
 */
 
 #define _GNU_SOURCE 1    /* for stpcpy */
+#include <libtar.h>
 #include "abrtlib.h"
 #include "abrt_curl.h"
 #include "abrt_rh_support.h"
@@ -101,6 +102,8 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
         const map_plugin_settings_t& pSettings,
         const char *pArgs)
 {
+    string retval;
+
     const string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
 //  const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
 //  const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
@@ -126,37 +129,119 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
 
     reportfile_t* file = new_reportfile();
 
-    // TODO: some files are totally useless:
-    // "Reported", "Message" (plugin's output), "DumpDir",
-    // "Description" (package description) - maybe skip those?
-    map_crash_data_t::const_iterator it = pCrashData.begin();
-    for (; it != pCrashData.end(); it++)
+    /* SELinux guys are not happy with /tmp, using /var/run/abrt */
+    char *tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu.tar.gz", (long)getpid(), (long)time(NULL));
+
+    int pipe_from_parent_to_child[2];
+    xpipe(pipe_from_parent_to_child);
+    pid_t child = fork();
+    if (child == 0)
     {
-        const char *content = it->second[CD_CONTENT].c_str();
-        if (it->second[CD_TYPE] == CD_TXT)
+        /* child */
+        close(pipe_from_parent_to_child[1]);
+        xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
+        xmove_fd(pipe_from_parent_to_child[0], 0);
+        execlp("gzip", "gzip", NULL);
+        perror_msg_and_die("can't execute '%s'", "gzip");
+    }
+    close(pipe_from_parent_to_child[0]);
+
+    TAR *tar = NULL;
+    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
+                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
+    {
+        retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+        goto ret;
+    }
+
+    {
+        map_crash_data_t::const_iterator it = pCrashData.begin();
+        for (; it != pCrashData.end(); it++)
         {
-            reportfile_add_binding_from_string(file, it->first.c_str(), content);
-        }
-        else if (it->second[CD_TYPE] == CD_BIN)
-        {
-            reportfile_add_binding_from_namedfile(file, content, it->first.c_str(), content, /*binary:*/ 1);
+            if (it->first == CD_COUNT) continue;
+            if (it->first == CD_DUMPDIR) continue;
+            if (it->first == CD_INFORMALL) continue;
+            if (it->first == CD_REPORTED) continue;
+            if (it->first == CD_MESSAGE) continue; // plugin's status message (if we already reported it yesterday)
+            if (it->first == FILENAME_DESCRIPTION) continue; // package description
+
+            const char *content = it->second[CD_CONTENT].c_str();
+            if (it->second[CD_TYPE] == CD_TXT)
+            {
+                reportfile_add_binding_from_string(file, it->first.c_str(), content);
+            }
+            else if (it->second[CD_TYPE] == CD_BIN)
+            {
+                const char *basename = strrchr(content, '/');
+                if (basename)
+                    basename++;
+                else
+                    basename = content;
+                string xml_name = concat_path_file("content", basename);
+                reportfile_add_binding_from_namedfile(file,
+                        /*on_disk_filename */ content,
+                        /*binding_name     */ it->first.c_str(),
+                        /*recorded_filename*/ xml_name.c_str(),
+                        /*binary           */ 1);
+                if (tar_append_file(tar, (char*)content, (char*)(xml_name.c_str())) != 0)
+                {
+                    retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+                    goto ret;
+                }
+            }
         }
     }
 
-    update_client(_("Creating a new case..."));
-//    const char* filename = reportfile_as_file(file);
-    char* result = send_report_to_new_case(m_sStrataURL.c_str(),
-            m_sLogin.c_str(),
-            m_sPassword.c_str(),
-            summary.c_str(),
-            description.c_str(),
-            package.c_str(),
-            "/dev/null" //filename
-    );
-    VERB3 log("post result:'%s'", result);
-    string retval = result;
+    /* Write out content.xml in the tarball's root */
+    {
+        const char *signature = reportfile_as_string(file);
+        unsigned len = strlen(signature);
+        unsigned len512 = (len + 511) & ~511;
+        char *block = (char*)memcpy(xzalloc(len512), signature, len);
+        th_set_type(tar, S_IFREG | 0644);
+        th_set_mode(tar, S_IFREG | 0644);
+      //th_set_link(tar, char *linkname);
+      //th_set_device(tar, dev_t device);
+      //th_set_user(tar, uid_t uid);
+      //th_set_group(tar, gid_t gid);
+      //th_set_mtime(tar, time_t fmtime);
+        th_set_path(tar, (char*)"content.xml");
+        th_set_size(tar, len);
+        th_finish(tar); /* caclulate and store th xsum etc */
+        if (th_write(tar) != 0
+         || full_write(tar_fd(tar), block, len512) != len512
+         || tar_close(tar) != 0
+        ) {
+            retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+            goto ret;
+        }
+        tar = NULL;
+    }
+
+    {
+        update_client(_("Creating a new case..."));
+        char* result = send_report_to_new_case(m_sStrataURL.c_str(),
+                m_sLogin.c_str(),
+                m_sPassword.c_str(),
+                summary.c_str(),
+                description.c_str(),
+                package.c_str(),
+                tempfile
+        );
+        VERB3 log("post result:'%s'", result);
+        retval = result;
+        free(result);
+    }
+
+ ret:
+    kill(child, SIGKILL); /* just in case */
+    waitpid(child, NULL, 0);
+    if (tar)
+	tar_close(tar);
+    //close(pipe_from_parent_to_child[1]); - tar_close() does it itself
+    unlink(tempfile);
+    free(tempfile);
     reportfile_free(file);
-    free(result);
 
     if (strncasecmp(retval.c_str(), "error", 5) == 0)
     {

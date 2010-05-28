@@ -47,12 +47,16 @@ string CReporterRHfastcheck::Report(const map_crash_data_t& pCrashData,
 {
     reportfile_t* file = new_reportfile();
 
-    // TODO: some files are totally useless:
-    // "Reported", "Message" (plugin's output), "DumpDir",
-    // "Description" (package description) - maybe skip those?
     map_crash_data_t::const_iterator it = pCrashData.begin();
     for (; it != pCrashData.end(); it++)
     {
+        if (it->first == CD_COUNT) continue;
+        if (it->first == CD_DUMPDIR) continue;
+        if (it->first == CD_INFORMALL) continue;
+        if (it->first == CD_REPORTED) continue;
+        if (it->first == CD_MESSAGE) continue; // plugin's status message (if we already reported it yesterday)
+        if (it->first == FILENAME_DESCRIPTION) continue; // package description
+
         const char *content = it->second[CD_CONTENT].c_str();
         if (it->second[CD_TYPE] == CD_TXT)
         {
