@@ -136,22 +136,22 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     free(xml_description);
     string url = concat_path_file(m_sStrataURL.c_str(), "cases");
 
-    curl_post_state *state = new_curl_post_state(0
-                + ABRT_CURL_POST_WANT_HEADERS
-                + ABRT_CURL_POST_WANT_ERROR_MSG);
-    int http_resp_code = curl_post(state, url.c_str(), postdata.c_str());
+    abrt_post_state *state = new_abrt_post_state(0
+                + ABRT_POST_WANT_HEADERS
+                + ABRT_POST_WANT_ERROR_MSG);
+    int http_resp_code = abrt_post_string(state, url.c_str(), "application/xml", postdata.c_str());
 
     if (http_resp_code / 100 != 2)
     {
         /* not 2xx */
         string errmsg = state->curl_error_msg ? state->curl_error_msg : "(none)";
-        free_curl_post_state(state);
+        free_abrt_post_state(state);
         throw CABRTException(EXCEP_PLUGIN, _("server returned HTTP code %u, error message: %s"),
                 http_resp_code, errmsg.c_str());
     }
 
-    string result = find_header_in_curl_post_state(state, "Location:") ? : "";
-    free_curl_post_state(state);
+    string result = find_header_in_abrt_post_state(state, "Location:") ? : "";
+    free_abrt_post_state(state);
     return result;
 }
 

@@ -34,19 +34,51 @@ struct reportfile {
     xmlBufferPtr     buf;
 };
 
-#define die_xml_oom() error_msg_and_die("can't create XML attribute (out of memory?)")
+static void __attribute__((__noreturn__))
+die_xml_oom(void)
+{
+    error_msg_and_die("can't create XML attribute (out of memory?)");
+}
+
+static xmlBufferPtr
+xxmlBufferCreate(void)
+{
+    xmlBufferPtr r = xmlBufferCreate();
+    if (!r)
+        die_xml_oom();
+    return r;
+}
+
+static xmlTextWriterPtr
+xxmlNewTextWriterMemory(xmlBufferPtr buf /*, int compression*/)
+{
+    xmlTextWriterPtr r = xmlNewTextWriterMemory(buf, /*compression:*/ 0);
+    if (!r)
+        die_xml_oom();
+    return r;
+}
 
 static void
-xxmlTextWriterWriteAttribute(xmlTextWriterPtr writer, const char *name, const char *content)
+xxmlTextWriterStartDocument(xmlTextWriterPtr writer,
+    const char * version,
+    const char * encoding,
+    const char * standalone)
 {
-    // these bright guys REDEFINED CHAR (!) to unsigned char...
-    if (xmlTextWriterWriteAttribute(writer, (unsigned char*)name, (unsigned char*)content) < 0)
+    if (xmlTextWriterStartDocument(writer, version, encoding, standalone) < 0)
+        die_xml_oom();
+}
+
+static void
+xxmlTextWriterEndDocument(xmlTextWriterPtr writer)
+{
+    if (xmlTextWriterEndDocument(writer) < 0)
         die_xml_oom();
 }
 
 static void
 xxmlTextWriterStartElement(xmlTextWriterPtr writer, const char *name)
 {
+    // these bright guys REDEFINED CHAR (!) to unsigned char...
     if (xmlTextWriterStartElement(writer, (unsigned char*)name) < 0)
         die_xml_oom();
 }
@@ -57,6 +89,31 @@ xxmlTextWriterEndElement(xmlTextWriterPtr writer)
     if (xmlTextWriterEndElement(writer) < 0)
         die_xml_oom();
 }
+
+#if 0 //unused
+static void
+xxmlTextWriterWriteElement(xmlTextWriterPtr writer, const char *name, const char *content)
+{
+    if (xmlTextWriterWriteElement(writer, (unsigned char*)name, (unsigned char*)content) < 0)
+        die_xml_oom();
+}
+#endif
+
+static void
+xxmlTextWriterWriteAttribute(xmlTextWriterPtr writer, const char *name, const char *content)
+{
+    if (xmlTextWriterWriteAttribute(writer, (unsigned char*)name, (unsigned char*)content) < 0)
+        die_xml_oom();
+}
+
+#if 0 //unused
+static void
+xxmlTextWriterWriteString(xmlTextWriterPtr writer, const char *content)
+{
+    if (xmlTextWriterWriteString(writer, (unsigned char*)content) < 0)
+        die_xml_oom();
+}
+#endif
 
 //
 // End the reportfile, and prepare it for delivery.
@@ -69,9 +126,7 @@ close_writer(reportfile_t* file)
         return;
 
     // close off the end of the xml file
-    int rc = xmlTextWriterEndDocument(file->writer);
-    if (rc < 0)
-        die_xml_oom();
+    xxmlTextWriterEndDocument(file->writer);
     xmlFreeTextWriter(file->writer);
     file->writer = NULL;
 }
@@ -86,18 +141,12 @@ new_reportfile(void)
     reportfile_t* file = (reportfile_t*)xmalloc(sizeof(*file));
 
     // set up a libxml 'buffer' and 'writer' to that buffer
-    file->buf = xmlBufferCreate();
-    if (file->buf == NULL)
-        die_xml_oom();
-    file->writer = xmlNewTextWriterMemory(file->buf, /*compression:*/ 0);
-    if (file->writer == NULL)
-        die_xml_oom();
+    file->buf = xxmlBufferCreate();
+    file->writer = xxmlNewTextWriterMemory(file->buf);
 
     // start a new xml document:
     // <report xmlns="http://www.redhat.com/gss/strata">...
-    int rc = xmlTextWriterStartDocument(file->writer, /*version:*/ NULL, /*encoding:*/ NULL, /*standalone:*/ NULL);
-    if (rc < 0)
-        die_xml_oom();
+    xxmlTextWriterStartDocument(file->writer, /*version:*/ NULL, /*encoding:*/ NULL, /*standalone:*/ NULL);
     xxmlTextWriterStartElement(file->writer, "report");
     xxmlTextWriterWriteAttribute(file->writer, "xmlns", "http://www.redhat.com/gss/strata");
 
@@ -174,11 +223,11 @@ post_signature(const char* baseURL, const char* signature)
 {
     string URL = concat_path_file(baseURL, "/signatures");
 
-    curl_post_state *state = new_curl_post_state(0
-                + ABRT_CURL_POST_WANT_HEADERS
-                + ABRT_CURL_POST_WANT_BODY
-                + ABRT_CURL_POST_WANT_ERROR_MSG);
-    int http_resp_code = curl_post(state, URL.c_str(), signature);
+    abrt_post_state *state = new_abrt_post_state(0
+                + ABRT_POST_WANT_HEADERS
+                + ABRT_POST_WANT_BODY
+                + ABRT_POST_WANT_ERROR_MSG);
+    int http_resp_code = abrt_post_string(state, URL.c_str(), "application/xml", signature);
 
     char *retval;
     const char *strata_msg;
@@ -192,7 +241,7 @@ post_signature(const char* baseURL, const char* signature)
             state->body = NULL;
             break;
         }
-        strata_msg = find_header_in_curl_post_state(state, "Strata-Message:");
+        strata_msg = find_header_in_abrt_post_state(state, "Strata-Message:");
         if (strata_msg && strcmp(strata_msg, "CREATED") != 0) {
             retval = xstrdup(strata_msg);
             break;
@@ -201,7 +250,7 @@ post_signature(const char* baseURL, const char* signature)
         break;
 
     default:
-        strata_msg = find_header_in_curl_post_state(state, "Strata-Message:");
+        strata_msg = find_header_in_abrt_post_state(state, "Strata-Message:");
         if (strata_msg)
         {
             retval = xasprintf("Error (HTTP response %d): %s",
@@ -221,7 +270,7 @@ post_signature(const char* baseURL, const char* signature)
         break;
     }
 
-    free_curl_post_state(state);
+    free_abrt_post_state(state);
     return retval;
 }
 
@@ -254,7 +303,7 @@ create_case(const char* baseURL, const char* description)
     else
       retval = ssprintf("Error: Response Code: %ld\nBody:\n%s", response_data->code, response_data->body);
   }
-    free_curl_post_state(state);
+    free_abrt_post_state(state);
 
   free((void*)response_data->strata_message);
   free((void*)response_data->body);

@@ -23,23 +23,64 @@
 
 CURL* xcurl_easy_init();
 
-typedef struct curl_post_state {
-    int      flags;
-    int      http_resp_code;
-    unsigned header_cnt;
-    char     **headers;
-    char     *curl_error_msg;
-    char     *body;
-    size_t   body_size;
-} curl_post_state_t;
+typedef struct abrt_post_state {
+    /* Supplied by caller: */
+    int         flags;
+    const char  *username;
+    const char  *password;
+    /* Results of POST transaction: */
+    int         http_resp_code;
+    unsigned    header_cnt;
+    char        **headers;
+    char        *curl_error_msg;
+    char        *body;
+    size_t      body_size;
+    char        errmsg[CURL_ERROR_SIZE];
+} abrt_post_state_t;
+
+abrt_post_state_t *new_abrt_post_state(int flags);
+void free_abrt_post_state(abrt_post_state_t *state);
+char *find_header_in_abrt_post_state(abrt_post_state_t *state, const char *str);
+
 enum {
-    ABRT_CURL_POST_WANT_HEADERS   = (1 << 0),
-    ABRT_CURL_POST_WANT_ERROR_MSG = (1 << 1),
-    ABRT_CURL_POST_WANT_BODY      = (1 << 2),
+    ABRT_POST_WANT_HEADERS   = (1 << 0),
+    ABRT_POST_WANT_ERROR_MSG = (1 << 1),
+    ABRT_POST_WANT_BODY      = (1 << 2),
 };
-curl_post_state_t *new_curl_post_state(int flags);
-void free_curl_post_state(curl_post_state_t *state);
-int curl_post(curl_post_state_t* state, const char* url, const char* data);
-char *find_header_in_curl_post_state(curl_post_state_t *state, const char *str);
+enum {
+    ABRT_POST_DATA_STRING = -1,
+    ABRT_POST_DATA_FROMFILE = -2,
+    ABRT_POST_DATA_FROMFILE_AS_FORM_DATA = -3,
+};
+int
+abrt_post(abrt_post_state_t *state,
+                const char *url,
+                const char *content_type,
+                const char *data,
+                off_t data_size);
+static inline int
+abrt_post_string(abrt_post_state_t *state,
+                const char *url,
+                const char *content_type,
+                const char *str)
+{
+    return abrt_post(state, url, content_type, str, ABRT_POST_DATA_STRING);
+}
+static inline int
+abrt_post_file(abrt_post_state_t *state,
+                const char *url,
+                const char *content_type,
+                const char *filename)
+{
+    return abrt_post(state, url, content_type, filename, ABRT_POST_DATA_FROMFILE);
+}
+static inline int
+abrt_post_file_as_form(abrt_post_state_t *state,
+                const char *url,
+                const char *content_type,
+                const char *filename)
+{
+    return abrt_post(state, url, content_type, filename, ABRT_POST_DATA_FROMFILE_AS_FORM_DATA);
+}
 
 #endif

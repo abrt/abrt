@@ -23,7 +23,7 @@
 using namespace std;
 
 /*
- * Utility function
+ * Utility functions
  */
 CURL* xcurl_easy_init()
 {
@@ -35,10 +35,6 @@ CURL* xcurl_easy_init()
     return curl;
 }
 
-
-/*
- * curl_post: perform HTTP POST transaction
- */
 static char*
 check_curl_error(CURLcode err, const char* msg)
 {
@@ -50,16 +46,77 @@ check_curl_error(CURLcode err, const char* msg)
 static void
 die_if_curl_error(CURLcode err)
 {
-    char *msg = check_curl_error(err, "curl");
-    if (msg)
+    if (err) {
+        char *msg = check_curl_error(err, "curl");
         error_msg_and_die("%s", msg);
+    }
 }
+
+static void
+xcurl_easy_setopt_ptr(CURL *handle, CURLoption option, const void *parameter)
+{
+    CURLcode err = curl_easy_setopt(handle, option, parameter);
+    if (err) {
+        char *msg = check_curl_error(err, "curl");
+        error_msg_and_die("%s", msg);
+    }
+}
+static inline void
+xcurl_easy_setopt_long(CURL *handle, CURLoption option, long parameter)
+{
+    xcurl_easy_setopt_ptr(handle, option, (void*)parameter);
+}
+
+/*
+ * post_state utility functions
+ */
+
+abrt_post_state_t *new_abrt_post_state(int flags)
+{
+    abrt_post_state_t *state = (abrt_post_state_t *)xzalloc(sizeof(*state));
+    state->flags = flags;
+    return state;
+}
+
+void free_abrt_post_state(abrt_post_state_t *state)
+{
+    char **headers = state->headers;
+    if (headers)
+    {
+        while (*headers)
+            free(*headers++);
+        free(state->headers);
+    }
+    free(state->curl_error_msg);
+    free(state->body);
+    free(state);
+}
+
+char *find_header_in_abrt_post_state(abrt_post_state_t *state, const char *str)
+{
+    char **headers = state->headers;
+    if (headers)
+    {
+        unsigned len = strlen(str);
+        while (*headers)
+        {
+            if (strncmp(*headers, str, len) == 0)
+                return skip_whitespace(*headers + len);
+            headers++;
+        }
+    }
+    return NULL;
+}
+
+/*
+ * abrt_post: perform HTTP POST transaction
+ */
 
 /* "save headers" callback */
 static size_t
 save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
 {
-    curl_post_state_t* state = (curl_post_state_t*)ptr;
+    abrt_post_state_t* state = (abrt_post_state_t*)ptr;
     size_t size = count * nmemb;
 
 
@@ -78,15 +135,17 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
 }
 
 int
-curl_post(curl_post_state_t* state, const char* url, const char* data)
+abrt_post(abrt_post_state_t *state,
+                const char *url,
+                const char *content_type,
+                const char *data,
+                off_t data_size)
 {
     CURLcode curl_err;
     long response_code;
-    struct curl_slist *httpheader_list = NULL;
-    FILE* body_stream = NULL;
-    curl_post_state_t localstate;
+    abrt_post_state_t localstate;
 
-    VERB3 log("curl_post('%s','%s')", url, data);
+    VERB3 log("abrt_post('%s','%s')", url, data);
 
     if (!state)
     {
@@ -98,45 +157,111 @@ curl_post(curl_post_state_t* state, const char* url, const char* data)
 
     CURL *handle = xcurl_easy_init();
 
-    curl_err = curl_easy_setopt(handle, CURLOPT_VERBOSE, 0);
-    die_if_curl_error(curl_err);
-    curl_err = curl_easy_setopt(handle, CURLOPT_NOPROGRESS, 1);
-    die_if_curl_error(curl_err);
-    curl_err = curl_easy_setopt(handle, CURLOPT_URL, url);
-    die_if_curl_error(curl_err);
-    curl_err = curl_easy_setopt(handle, CURLOPT_POST, 1);
-    die_if_curl_error(curl_err);
-    curl_err = curl_easy_setopt(handle, CURLOPT_POSTFIELDS, data);
-    die_if_curl_error(curl_err);
+    // Buffer[CURL_ERROR_SIZE] curl stores human readable error messages in.
+    // This may be more helpful than just return code from curl_easy_perform.
+    // curl will need it until curl_easy_cleanup.
+    state->errmsg[0] = '\0';
+    xcurl_easy_setopt_ptr(handle, CURLOPT_ERRORBUFFER, state->errmsg);
+    // "Display a lot of verbose information about its operations.
+    // Very useful for libcurl and/or protocol debugging and understanding.
+    // The verbose information will be sent to stderr, or the stream set
+    // with CURLOPT_STDERR"
+    //xcurl_easy_setopt_long(handle, CURLOPT_VERBOSE, 1);
+    // Shut off the built-in progress meter completely
+    xcurl_easy_setopt_long(handle, CURLOPT_NOPROGRESS, 1);
 
-    httpheader_list = curl_slist_append(httpheader_list, "Content-Type: application/xml");
-    curl_err = curl_easy_setopt(handle, CURLOPT_HTTPHEADER, httpheader_list);
-    die_if_curl_error(curl_err);
+    // TODO: do we need to check for CURLE_URL_MALFORMAT error *here*,
+    // not in curl_easy_perform?
+    xcurl_easy_setopt_ptr(handle, CURLOPT_URL, url);
 
-    if (state->flags & ABRT_CURL_POST_WANT_HEADERS)
-    {
-        curl_err = curl_easy_setopt(handle, CURLOPT_HEADERFUNCTION, save_headers);
-        die_if_curl_error(curl_err);
-        curl_err = curl_easy_setopt(handle, CURLOPT_WRITEHEADER, state);
-        die_if_curl_error(curl_err);
+    // Auth if configured
+    if (state->username) {
+        // bitmask of allowed auth methods
+        xcurl_easy_setopt_long(handle, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_USERNAME, state->username);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_PASSWORD, (state->password ? state->password : ""));
     }
-    if (state->flags & ABRT_CURL_POST_WANT_BODY)
+
+    // Do a regular HTTP post. This also makes curl use
+    // a "Content-Type: application/x-www-form-urlencoded" header.
+    // (This is by far the most commonly used POST method).
+    xcurl_easy_setopt_long(handle, CURLOPT_POST, 1);
+    // Supply POST data...
+    struct curl_httppost* post = NULL;
+    struct curl_httppost* last = NULL;
+    FILE* data_file = NULL;
+    if (data_size == ABRT_POST_DATA_FROMFILE) {
+        // ...from a file
+        data_file = fopen(data, "r");
+        if (!data_file)
+//FIXME:
+            perror_msg_and_die("can't open '%s'", data);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_READDATA, data_file);
+    } else if (data_size == ABRT_POST_DATA_FROMFILE_AS_FORM_DATA) {
+        // ...from a file, in multipart/formdata format
+        CURLFORMcode curlform_err = curl_formadd(&post, &last,
+                        CURLFORM_PTRNAME, "file",
+                        CURLFORM_FILE, data, // filename to read from
+                        CURLFORM_CONTENTTYPE, content_type,
+                        CURLFORM_FILENAME, data, // filename to put in the form
+                        CURLFORM_END);
+        if (curlform_err != 0)
+//FIXME:
+            error_msg_and_die("out of memory or read error");
+        xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
+    } else {
+        // .. from a blob in memory. If data_size == -1, curl will use strlen(data)
+        xcurl_easy_setopt_ptr(handle, CURLOPT_POSTFIELDS, data);
+        xcurl_easy_setopt_long(handle, CURLOPT_POSTFIELDSIZE_LARGE, data_size);
+    }
+    // Override "Content-Type:"
+    struct curl_slist *httpheader_list = NULL;
+    if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA) {
+        char *content_type_header = xasprintf("Content-Type: %s", content_type);
+        // Note: curl_slist_append() copies content_type_header
+        httpheader_list = curl_slist_append(httpheader_list, content_type_header);
+        if (!httpheader_list)
+            error_msg_and_die("out of memory");
+        free(content_type_header);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPHEADER, httpheader_list);
+    }
+
+    // Please handle 301/302 redirects for me
+    xcurl_easy_setopt_long(handle, CURLOPT_FOLLOWLOCATION, 1);
+    xcurl_easy_setopt_long(handle, CURLOPT_MAXREDIRS, 10);
+    // Bitmask to control how libcurl acts on redirects after POSTs.
+    // Bit 0 set (value CURL_REDIR_POST_301) makes libcurl
+    // not convert POST requests into GET requests when following
+    // a 301 redirection. Bit 1 (value CURL_REDIR_POST_302) makes libcurl
+    // maintain the request method after a 302 redirect.
+    // CURL_REDIR_POST_ALL is a convenience define that sets both bits.
+    // The non-RFC behaviour is ubiquitous in web browsers, so the library
+    // does the conversion by default to maintain consistency.
+    // However, a server may require a POST to remain a POST.
+    //xcurl_easy_setopt_long(CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
+
+    // Prepare for saving information
+    if (state->flags & ABRT_POST_WANT_HEADERS)
+    {
+        xcurl_easy_setopt_ptr(handle, CURLOPT_HEADERFUNCTION, (void*)save_headers);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_WRITEHEADER, state);
+    }
+    FILE* body_stream = NULL;
+    if (state->flags & ABRT_POST_WANT_BODY)
     {
         body_stream = open_memstream(&state->body, &state->body_size);
         if (!body_stream)
             error_msg_and_die("out of memory");
-        curl_err = curl_easy_setopt(handle, CURLOPT_WRITEDATA, body_stream);
-        die_if_curl_error(curl_err);
+        xcurl_easy_setopt_ptr(handle, CURLOPT_WRITEDATA, body_stream);
     }
 
-    /* This is the place where everything happens. Here errors
-     * are not limited to "out of memory", can't just die.
-     */
+    // This is the place where everything happens.
+    // Here errors are not limited to "out of memory", can't just die.
     curl_err = curl_easy_perform(handle);
     if (curl_err)
     {
         VERB2 log("curl_easy_perform: error %d", (int)curl_err);
-        if (state->flags & ABRT_CURL_POST_WANT_ERROR_MSG)
+        if (state->flags & ABRT_POST_WANT_ERROR_MSG)
         {
             state->curl_error_msg = check_curl_error(curl_err, "curl_easy_perform");
             VERB3 log("curl_easy_perform: error_msg: %s", state->curl_error_msg);
@@ -144,55 +269,22 @@ curl_post(curl_post_state_t* state, const char* url, const char* data)
         goto ret;
     }
 
+    // Headers/body are already saved (if requested), extract more info
     curl_err = curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &response_code);
     die_if_curl_error(curl_err);
     state->http_resp_code = response_code;
-
     VERB3 log("after curl_easy_perform: http code %ld body:'%s'", response_code, state->body);
 
  ret:
     curl_easy_cleanup(handle);
-    curl_slist_free_all(httpheader_list);
+    if (httpheader_list)
+        curl_slist_free_all(httpheader_list);
     if (body_stream)
         fclose(body_stream);
+    if (data_file)
+        fclose(data_file);
+    if (post)
+        curl_formfree(post);
 
     return response_code;
-}
-
-curl_post_state_t *new_curl_post_state(int flags)
-{
-    curl_post_state_t *state = (curl_post_state_t *)xzalloc(sizeof(*state));
-    state->flags = flags;
-    return state;
-}
-
-void free_curl_post_state(curl_post_state_t *state)
-{
-    char **headers = state->headers;
-    if (headers)
-    {
-        while (*headers)
-            free(*headers++);
-        free(state->headers);
-    }
-    free(state->curl_error_msg);
-    free(state->body);
-    free(state);
-
-}
-
-char *find_header_in_curl_post_state(curl_post_state_t *state, const char *str)
-{
-    char **headers = state->headers;
-    if (headers)
-    {
-        unsigned len = strlen(str);
-        while (*headers)
-        {
-            if (strncmp(*headers, str, len) == 0)
-                return skip_whitespace(*headers + len);
-            headers++;
-        }
-    }
-    return NULL;
 }
