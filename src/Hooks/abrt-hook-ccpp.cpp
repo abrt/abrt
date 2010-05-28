@@ -41,6 +41,97 @@ static char* malloc_readlink(const char *linkname)
     return NULL;
 }
 
+/* Custom version of copyfd_xyz,
+ * one which is able to write into two descriptors at once.
+ */
+#define CONFIG_FEATURE_COPYBUF_KB 4
+static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
+{
+	off_t total = 0;
+	int last_was_seek = 0;
+#if CONFIG_FEATURE_COPYBUF_KB <= 4
+	char buffer[CONFIG_FEATURE_COPYBUF_KB * 1024];
+	enum { buffer_size = sizeof(buffer) };
+#else
+	char *buffer;
+	int buffer_size;
+
+	/* We want page-aligned buffer, just in case kernel is clever
+	 * and can do page-aligned io more efficiently */
+	buffer = mmap(NULL, CONFIG_FEATURE_COPYBUF_KB * 1024,
+			PROT_READ | PROT_WRITE,
+			MAP_PRIVATE | MAP_ANON,
+			/* ignored: */ -1, 0);
+	buffer_size = CONFIG_FEATURE_COPYBUF_KB * 1024;
+	if (buffer == MAP_FAILED) {
+		buffer = alloca(4 * 1024);
+		buffer_size = 4 * 1024;
+	}
+#endif
+
+	while (1) {
+		ssize_t rd = safe_read(src_fd, buffer, buffer_size);
+		if (!rd) { /* eof */
+			if (last_was_seek) {
+				if (lseek(dst_fd1, -1, SEEK_CUR) < 0
+				 || safe_write(dst_fd1, "", 1) != 1
+				 || (dst_fd2 >= 0
+				     && (lseek(dst_fd2, -1, SEEK_CUR) < 0
+					 || safe_write(dst_fd2, "", 1) != 1
+				        )
+				    )
+				) {
+					perror_msg("write error");
+					total = -1;
+					goto out;
+				}
+			}
+			/* all done */
+			goto out;
+		}
+		if (rd < 0) {
+			perror_msg("read error");
+			total = -1;
+			goto out;
+		}
+
+		/* checking sparseness */
+		ssize_t cnt = rd;
+		while (--cnt >= 0) {
+			if (buffer[cnt] != 0) {
+				/* not sparse */
+				errno = 0;
+				ssize_t wr1 = full_write(dst_fd1, buffer, rd);
+				ssize_t wr2 = (dst_fd2 >= 0 ? full_write(dst_fd2, buffer, rd) : rd);
+				if (wr1 < rd || wr2 < rd) {
+					perror_msg("write error");
+					total = -1;
+					goto out;
+				}
+				last_was_seek = 0;
+				goto adv;
+			}
+		}
+		/* sparse */
+		xlseek(dst_fd1, rd, SEEK_CUR);
+		if (dst_fd2 >= 0)
+			xlseek(dst_fd2, rd, SEEK_CUR);
+		last_was_seek = 1;
+ adv:
+		total += rd;
+		size2 -= rd;
+		if (size2 < 0)
+			dst_fd2 = -1;
+	}
+ out:
+
+#if CONFIG_FEATURE_COPYBUF_KB > 4
+	if (buffer_size != 4 * 1024)
+		munmap(buffer, buffer_size);
+#endif
+	return total;
+}
+
 static char* get_executable(pid_t pid)
 {
     char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
@@ -57,260 +148,26 @@ static char* get_cwd(pid_t pid)
     return malloc_readlink(buf);
 }
 
-int main(int argc, char** argv)
+static char core_basename[sizeof("core.%lu") + sizeof(long)*3] = "core";
+
+static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
 {
-    int fd;
-    struct stat sb;
-
-    if (argc < 5)
-    {
-        const char* program_name = argv[0];
-        error_msg_and_die("Usage: %s: DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT", program_name);
-    }
-    openlog("abrt", LOG_PID, LOG_DAEMON);
-    logmode = LOGMODE_SYSLOG;
-
-    errno = 0;
-    const char* dddir = argv[1];
-    pid_t pid = xatoi_u(argv[2]);
-    const char* signal_str = argv[3];
-    int signal_no = xatoi_u(argv[3]);
-    uid_t uid = xatoi_u(argv[4]);
-    off_t ulimit_c = strtoull(argv[5], NULL, 10);
-    if (ulimit_c < 0) /* unlimited? */
-    {
-        /* set to max possible >0 value */
-        ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
-    }
-    if (errno || pid <= 0)
-    {
-        error_msg_and_die("pid '%s' or limit '%s' is bogus", argv[2], argv[5]);
-    }
-
-    char* executable = get_executable(pid);
-    if (executable == NULL)
-    {
-        error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
-    }
-    if (strstr(executable, "/abrt-hook-ccpp"))
-    {
-        error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
-                        (long)pid, executable);
-    }
-
-    char *user_pwd = get_cwd(pid); /* may be NULL on error */
-
-    /* Parse abrt.conf and plugins/CCpp.conf */
-    unsigned setting_MaxCrashReportsSize = 0;
-    bool setting_MakeCompatCore = false;
-    parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore);
-
-    int core_fd = STDIN_FILENO;
-    off_t core_size = 0;
-
-    const char *signame = NULL;
-    /* Tried to use array for this but C++ does not support v[] = { [IDX] = "str" } */
-    switch (signal_no)
-    {
-        case SIGILL : signame = "ILL" ; break;
-        case SIGFPE : signame = "FPE" ; break;
-        case SIGSEGV: signame = "SEGV"; break;
-        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
-        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
-      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
-      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
-      //case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
-      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
-      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
-    }
-    if (signame == NULL) {
-        /* not a signal we care about */
-        goto create_user_core;
-    }
-
-    if (!daemon_is_ok())
-    {
-        /* not an error, exit with exitcode 0 */
-        log("abrt daemon is not running. If it crashed, "
-            "/proc/sys/kernel/core_pattern contains a stale value, "
-            "consider resetting it to 'core'"
-        );
-        goto create_user_core;
-    }
-
-    try
-    {
-        if (setting_MaxCrashReportsSize > 0)
-        {
-            check_free_space(setting_MaxCrashReportsSize);
-        }
-
-        char path[PATH_MAX];
-
-        /* Check /var/spool/abrt/last-ccpp marker, do not dump repeated crashes
-         * if they happen too often. Else, write new marker value.
-         */
-        snprintf(path, sizeof(path), "%s/last-ccpp", dddir);
-        fd = open(path, O_RDWR | O_CREAT, 0600);
-        if (fd >= 0)
-        {
-            int sz;
-            fstat(fd, &sb); /* !paranoia. this can't fail. */
-
-            if (sb.st_size != 0 /* if it wasn't created by us just now... */
-	     && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
-            ) {
-                sz = read(fd, path, sizeof(path)-1); /* (ab)using path as scratch buf */
-                if (sz > 0)
-                {
-                    path[sz] = '\0';
-                    if (strcmp(executable, path) == 0)
-                    {
-                        error_msg("not dumping repeating crash in '%s'", executable);
-                        if (setting_MakeCompatCore)
-                            goto create_user_core;
-                        return 1;
-                    }
-                }
-                lseek(fd, 0, SEEK_SET);
-            }
-            sz = write(fd, executable, strlen(executable));
-            if (sz >= 0)
-                ftruncate(fd, sz);
-            close(fd);
-        }
-
-        if (strstr(executable, "/abrtd"))
-        {
-            /* If abrtd crashes, we don't want to create a _directory_,
-             * since that can make new copy of abrtd to process it,
-             * and maybe crash again...
-             * Unlike dirs, mere files are ignored by abrtd.
-             */
-            snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
-            core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            core_size = copyfd_eof(STDIN_FILENO, core_fd, COPYFD_SPARSE);
-            if (core_size < 0 || close(core_fd) != 0)
-            {
-                unlink(path);
-                /* copyfd_eof logs the error including errno string,
-                 * but it does not log file name */
-                error_msg_and_die("error saving coredump to %s", path);
-            }
-            log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-            return 0;
-        }
-
-        char* cmdline = get_cmdline(pid); /* never NULL */
-        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
-
-        unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu.new",
-                dddir, (long)time(NULL), (long)pid);
-        if (path_len >= sizeof(path))
-            exit(1);
-
-        CDebugDump dd;
-        dd.Create(path, uid);
-        dd.SaveText(FILENAME_ANALYZER, "CCpp");
-        dd.SaveText(FILENAME_EXECUTABLE, executable);
-        dd.SaveText(FILENAME_CMDLINE, cmdline);
-        dd.SaveText(FILENAME_REASON, reason);
-
-        int len = strlen(path);
-        snprintf(path + len, sizeof(path) - len, "/"FILENAME_COREDUMP);
-
-        /* We need coredumps to be readable by all, because
-         * when abrt daemon processes coredump,
-         * process producing backtrace is run under the same UID
-         * as the crashed process.
-         * Thus 644, not 600 */
-        core_fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
-        if (core_fd < 0)
-        {
-            int sv_errno = errno;
-            dd.Delete();
-            dd.Close();
-            errno = sv_errno;
-            perror_msg_and_die("can't open '%s'", path);
-        }
-//TODO: chown to uid:abrt?
-//Currently it is owned by 0:0 but is readable by anyone, so the owner
-//of the crashed binary still can access it, as he has
-//r-x access to the dump dir.
-        core_size = copyfd_eof(STDIN_FILENO, core_fd, COPYFD_SPARSE);
-        if (core_size < 0 || fsync(core_fd) != 0)
-        {
-            unlink(path);
-            dd.Delete();
-            dd.Close();
-            /* copyfd_eof logs the error including errno string,
-             * but it does not log file name */
-            error_msg_and_die("error saving coredump to %s", path);
-        }
-        lseek(core_fd, 0, SEEK_SET);
-        /* note: core_fd is still open, we may use it later to copy core to user's dir */
-        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-        free(executable);
-        free(cmdline);
-        path[len] = '\0'; /* path now contains directory name */
-
-        /* We close dumpdir before we start catering for crash storm case.
-         * Otherwise, delete_debug_dump_dir's from other concurrent
-         * CCpp's won't be able to delete our dump (their delete_debug_dump_dir
-         * will wait for us), and we won't be able to delete their dumps.
-         * Classic deadlock.
-         */
-        dd.Close();
-        char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
-        if (rename(path, newpath) == 0)
-            strcpy(path, newpath);
-        free(newpath);
-
-        /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
-        if (setting_MaxCrashReportsSize > 0)
-        {
-            trim_debug_dumps(setting_MaxCrashReportsSize, path);
-        }
-
-        /* fall through to creating user core */
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
-    catch (std::exception& e)
-    {
-        error_msg_and_die("%s", e.what());
-    }
-
-
- create_user_core:
-    if (!setting_MakeCompatCore)
-        return 0;
-
-    /* note: core_size may be == 0 ("unknown") */
-    if (core_size > ulimit_c || ulimit_c == 0)
-        return 0;
-
-    /* Write a core file for user */
-
     struct passwd* pw = getpwuid(uid);
     gid_t gid = pw ? pw->pw_gid : uid;
-    setgroups(1, &gid);
-    xsetregid(gid, gid);
-    xsetreuid(uid, uid);
+    xsetegid(gid);
+    xseteuid(uid);
 
     errno = 0;
     if (user_pwd == NULL
      || chdir(user_pwd) != 0
     ) {
-        perror_msg_and_die("can't cd to %s", user_pwd);
+        perror_msg("can't cd to %s", user_pwd);
+        return 0;
     }
 
     /* Mimic "core.PID" if requested */
-    char core_basename[sizeof("core.%lu") + sizeof(long)*3] = "core";
     char buf[] = "0\n";
-    fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
+    int fd = open("/proc/sys/kernel/core_uses_pid", O_RDONLY);
     if (fd >= 0)
     {
         read(fd, buf, sizeof(buf));
@@ -353,38 +210,295 @@ int main(int argc, char** argv)
      */
 
     /* Do not O_TRUNC: if later checks fail, we do not want to have file already modified here */
+    struct stat sb;
     errno = 0;
-    int usercore_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW, 0600); /* kernel makes 0600 too */
-    if (usercore_fd < 0
-     || fstat(usercore_fd, &sb) != 0
+    int user_core_fd = open(core_basename, O_WRONLY | O_CREAT | O_NOFOLLOW, 0600); /* kernel makes 0600 too */
+    xsetegid(0);
+    xseteuid(0);
+    if (user_core_fd < 0
+     || fstat(user_core_fd, &sb) != 0
      || !S_ISREG(sb.st_mode)
      || sb.st_nlink != 1
     /* kernel internal dumper checks this too: if (inode->i_uid != current->fsuid) <fail>, need to mimic? */
     ) {
-        perror_msg_and_die("%s/%s is not a regular file with link count 1", user_pwd, core_basename);
+        perror_msg("%s/%s is not a regular file with link count 1", user_pwd, core_basename);
+        return -1;
+    }
+    if (ftruncate(user_core_fd, 0) != 0) {
+        /* perror first, otherwise unlink may trash errno */
+        perror_msg("truncate %s/%s", user_pwd, core_basename);
+        return -1;
     }
 
-    /* Note: we do not copy more than ulimit_c */
-    off_t size;
-    if (ftruncate(usercore_fd, 0) != 0
-     || (size = copyfd_size(core_fd, usercore_fd, ulimit_c, COPYFD_SPARSE)) < 0
-     || close(usercore_fd) != 0
-    ) {
-        /* perror first, otherwise unlink may trash errno */
-        perror_msg("write error writing %s/%s", user_pwd, core_basename);
-        unlink(core_basename);
-        return 1;
-    }
-    if (size == ulimit_c && size != core_size)
+    return user_core_fd;
+}
+
+int main(int argc, char** argv)
+{
+    struct stat sb;
+
+    if (argc < 5)
     {
-        /* We copied exactly ulimit_c bytes (and it doesn't accidentally match
-         * core_size (imagine exactly 1MB coredump with "ulimit -c 1M" - that'd be ok)),
-         * it means that core is larger than ulimit_c. Abort and delete the dump.
+        error_msg_and_die("Usage: %s: DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT", argv[0]);
+    }
+
+    openlog("abrt", LOG_PID, LOG_DAEMON);
+    logmode = LOGMODE_SYSLOG;
+
+    errno = 0;
+    const char* dddir = argv[1];
+    pid_t pid = xatoi_u(argv[2]);
+    const char* signal_str = argv[3];
+    int signal_no = xatoi_u(argv[3]);
+    uid_t uid = xatoi_u(argv[4]);
+    off_t ulimit_c = strtoull(argv[5], NULL, 10);
+    if (ulimit_c < 0) /* unlimited? */
+    {
+        /* set to max possible >0 value */
+        ulimit_c = ~((off_t)1 << (sizeof(off_t)*8-1));
+    }
+    if (errno || pid <= 0)
+    {
+        error_msg_and_die("pid '%s' or limit '%s' is bogus", argv[2], argv[5]);
+    }
+
+    char* executable = get_executable(pid);
+    if (executable == NULL)
+    {
+        error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
+    }
+    if (strstr(executable, "/abrt-hook-ccpp"))
+    {
+        error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
+                        (long)pid, executable);
+    }
+
+    char *user_pwd = get_cwd(pid); /* may be NULL on error */
+
+    /* Parse abrt.conf and plugins/CCpp.conf */
+    unsigned setting_MaxCrashReportsSize = 0;
+    bool setting_MakeCompatCore = false;
+    parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore);
+
+    /* Open a fd to compat coredump, if requested and is possible */
+    int user_core_fd = -1;
+    if (setting_MakeCompatCore && ulimit_c != 0)
+        user_core_fd = open_user_core(user_pwd, uid, pid);
+
+    const char *signame = NULL;
+    /* Tried to use array for this but C++ does not support v[] = { [IDX] = "str" } */
+    switch (signal_no)
+    {
+        case SIGILL : signame = "ILL" ; break;
+        case SIGFPE : signame = "FPE" ; break;
+        case SIGSEGV: signame = "SEGV"; break;
+        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
+        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
+      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
+      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
+      //case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
+      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
+      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
+        default: goto create_user_core; // not a signal we care about
+    }
+
+    if (!daemon_is_ok())
+    {
+        /* not an error, exit with exitcode 0 */
+        log("abrt daemon is not running. If it crashed, "
+            "/proc/sys/kernel/core_pattern contains a stale value, "
+            "consider resetting it to 'core'"
+        );
+        goto create_user_core;
+    }
+
+    try
+    {
+        if (setting_MaxCrashReportsSize > 0)
+        {
+            check_free_space(setting_MaxCrashReportsSize);
+        }
+
+        char path[PATH_MAX];
+
+        /* Check /var/spool/abrt/last-ccpp marker, do not dump repeated crashes
+         * if they happen too often. Else, write new marker value.
          */
+        snprintf(path, sizeof(path), "%s/last-ccpp", dddir);
+        int fd = open(path, O_RDWR | O_CREAT, 0600);
+        if (fd >= 0)
+        {
+            int sz;
+            fstat(fd, &sb); /* !paranoia. this can't fail. */
+
+            if (sb.st_size != 0 /* if it wasn't created by us just now... */
+	     && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
+            ) {
+                sz = read(fd, path, sizeof(path)-1); /* (ab)using path as scratch buf */
+                if (sz > 0)
+                {
+                    path[sz] = '\0';
+                    if (strcmp(executable, path) == 0)
+                    {
+                        error_msg("not dumping repeating crash in '%s'", executable);
+                        if (setting_MakeCompatCore)
+                            goto create_user_core;
+                        return 1;
+                    }
+                }
+                lseek(fd, 0, SEEK_SET);
+            }
+            sz = write(fd, executable, strlen(executable));
+            if (sz >= 0)
+                ftruncate(fd, sz);
+            close(fd);
+        }
+
+        if (strstr(executable, "/abrtd"))
+        {
+            /* If abrtd crashes, we don't want to create a _directory_,
+             * since that can make new copy of abrtd to process it,
+             * and maybe crash again...
+             * Unlike dirs, mere files are ignored by abrtd.
+             */
+            snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
+            int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
+            if (core_size < 0 || fsync(abrt_core_fd) != 0)
+            {
+                unlink(path);
+                /* copyfd_eof logs the error including errno string,
+                 * but it does not log file name */
+                error_msg_and_die("error saving coredump to %s", path);
+            }
+            log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+            return 0;
+        }
+
+        unsigned path_len = snprintf(path, sizeof(path), "%s/ccpp-%ld-%lu.new",
+                dddir, (long)time(NULL), (long)pid);
+        if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
+            return 1;
+
+        CDebugDump dd;
+        char *cmdline = get_cmdline(pid); /* never NULL */
+        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
+        dd.Create(path, uid);
+        dd.SaveText(FILENAME_ANALYZER, "CCpp");
+        dd.SaveText(FILENAME_EXECUTABLE, executable);
+        dd.SaveText(FILENAME_CMDLINE, cmdline);
+        dd.SaveText(FILENAME_REASON, reason);
+        free(cmdline);
+        free(reason);
+
+        /* We need coredumps to be readable by all, because
+         * when abrt daemon processes coredump,
+         * process producing backtrace is run under the same UID
+         * as the crashed process.
+         * Thus 644, not 600 */
+        strcpy(path + path_len, "/"FILENAME_COREDUMP);
+        int abrt_core_fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
+        if (abrt_core_fd < 0)
+        {
+            int sv_errno = errno;
+            dd.Delete();
+            dd.Close();
+            if (user_core_fd >= 0)
+            {
+                xchdir(user_pwd);
+                unlink(core_basename);
+            }
+            errno = sv_errno;
+            perror_msg_and_die("can't open '%s'", path);
+        }
+
+        /* We write both coredumps at once.
+         * We can't write user coredump first, since it might be truncated
+         * and thus can't be copied and used as abrt coredump;
+         * and if we write abrt coredump first and then copy it as user one,
+         * then we have a race when process exits but coredump does not exist yet:
+         * $ echo -e '#include<signal.h>\nmain(){raise(SIGSEGV);}' | gcc -o test -x c -
+         * $ rm -f core*; ulimit -c unlimited; ./test; ls -l core*
+         * 21631 Segmentation fault (core dumped) ./test
+         * ls: cannot access core*: No such file or directory <=== BAD
+         */
+//TODO: fchown abrt_core_fd to uid:abrt?
+//Currently it is owned by 0:0 but is readable by anyone, so the owner
+//of the crashed binary still can access it, as he has
+//r-x access to the dump dir.
+        off_t core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
+        if (core_size < 0 || fsync(abrt_core_fd) != 0)
+        {
+            unlink(path);
+            dd.Delete();
+            dd.Close();
+            if (user_core_fd >= 0)
+            {
+                xchdir(user_pwd);
+                unlink(core_basename);
+            }
+            /* copyfd_sparse logs the error including errno string,
+             * but it does not log file name */
+            error_msg_and_die("error writing %s", path);
+        }
+        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+        if (user_core_fd >= 0 && core_size >= ulimit_c)
+        {
+            /* user coredump is too big, nuke it */
+            xchdir(user_pwd);
+            unlink(core_basename);
+        }
+
+        /* We close dumpdir before we start catering for crash storm case.
+         * Otherwise, delete_debug_dump_dir's from other concurrent
+         * CCpp's won't be able to delete our dump (their delete_debug_dump_dir
+         * will wait for us), and we won't be able to delete their dumps.
+         * Classic deadlock.
+         */
+        dd.Close();
+        path[path_len] = '\0'; /* path now contains only directory name */
+        char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
+        if (rename(path, newpath) == 0)
+            strcpy(path, newpath);
+        free(newpath);
+
+        /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
+        if (setting_MaxCrashReportsSize > 0)
+        {
+            trim_debug_dumps(setting_MaxCrashReportsSize, path);
+        }
+
+        return 0;
+    }
+    catch (CABRTException& e)
+    {
+        error_msg_and_die("%s", e.what());
+    }
+    catch (std::exception& e)
+    {
+        error_msg_and_die("%s", e.what());
+    }
+
+    /* We didn't create abrt dump, but may need to create compat coredump */
+ create_user_core:
+    if (user_core_fd < 0)
+        return 0;
+
+    off_t core_size = copyfd_size(STDIN_FILENO, user_core_fd, ulimit_c, COPYFD_SPARSE);
+    if (core_size < 0 || fsync(user_core_fd) != 0) {
+        /* perror first, otherwise unlink may trash errno */
+        perror_msg("error writing %s/%s", user_pwd, core_basename);
+        xchdir(user_pwd);
         unlink(core_basename);
         return 1;
     }
-    log("saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)size);
+    if (core_size >= ulimit_c)
+    {
+        xchdir(user_pwd);
+        unlink(core_basename);
+        return 1;
+    }
+    log("saved core dump of pid %lu to %s/%s (%llu bytes)", (long)pid, user_pwd, core_basename, (long long)core_size);
 
     return 0;
 }
