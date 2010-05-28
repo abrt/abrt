@@ -194,6 +194,7 @@ Summary: %{name}'s addon for catching and analyzing Python exceptions
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 Obsoletes: gnome-python2-bugbuddy
+Provides: gnome-python2-bugbuddy
 
 %description addon-python
 This package contains python hook and python analyzer plugin for handling
