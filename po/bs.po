@@ -17,34 +17,29 @@ msgstr ""
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr "Drugi klijent se već izvršava, pokušajte ga probuditi."
+msgstr "Drugi klijent se već izvršava, pokušavam ga probuditi."
 
 #: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Dobiveni neočekivani podaci od daemona (da li je baza podataka ispravno ažurisana?)."
+msgstr "Dobiveni neočekivani podaci od daemona (da li je baza podataka ispravno ažurirana?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
-#,fuzzy
 msgid "Not loaded plugins"
 msgstr "Dodaci nisu učitani"
 
 #: ../src/Gui/ABRTPlugin.py:63
-#,fuzzy
 msgid "Analyzer plugins"
 msgstr "Analizirajući dodaci"
 
 #: ../src/Gui/ABRTPlugin.py:64
-#,fuzzy
 msgid "Action plugins"
 msgstr "Akcijski dodaci"
 
 #: ../src/Gui/ABRTPlugin.py:65
-#,fuzzy
 msgid "Reporter plugins"
-msgstr "Reporter dodaci"
+msgstr "Obavjesni dodaci"
 
 #: ../src/Gui/ABRTPlugin.py:66
-#,fuzzy
 msgid "Database plugins"
 msgstr "Dodaci baze podataka"
 
@@ -99,11 +94,10 @@ msgstr "<b>Korisnik:</b>"
 
 #: ../src/Gui/ccgui.glade.h:9
 msgid "About ABRT"
-msgstr "O ABRT programu"
+msgstr "O ABRT-u"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
-#,fuzzy
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatski alat za izvještaj greški"
 
@@ -137,12 +131,12 @@ msgid ""
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
 "Ovaj program je slobodni softver; možete ga redistribuirati i/ili modificirati "
-"pod uslovima GNU Generalne javne licence objavljenim od strane Free Software "
-"Foundation; ili verzije 2 licence ili (na Vašu opciju) bilo koju noviju verziju.\n"
+"pod uslovima GNU Generalne Javne Licence objavljenim od strane Fondacije "
+"Slobodnog Softvera; ili verzije 2 licence ili (na Vašu opciju) bilo koju noviju verziju.\n"
 "\n"
 "Ovaj program je distribuiran u nadi da će biti koristan ali BEZ IKAKVE GARANCIJE; "
 "čak i bez implicirane garancije MERCHANTABILITY ili SPREMNOSTI ZA ODREĐENU SVRHU. "
-"Pogledajte GNU Generalnu javnu licencu za više detalja.\n"
+"Pogledajte GNU Generalnu Javnu Licencu za više detalja.\n"
 "\n"
 "Trebali biste dobiti kopiju GNU Generalne javne licence zajedno sa ovim "
 "programom. Ako niste pogledajte <http://www.gnu.org/licenses/>."
@@ -153,20 +147,19 @@ msgstr "Pogledaj dnevnik"
 
 #: ../src/Gui/ccgui.glade.h:20
 msgid "_Edit"
-msgstr "Uredi"
+msgstr "_Uredi"
 
 #: ../src/Gui/ccgui.glade.h:21
 msgid "_File"
-msgstr "Datoteka"
+msgstr "_Datoteka"
 
 #: ../src/Gui/ccgui.glade.h:22
 msgid "_Help"
-msgstr "Pomoć"
+msgstr "_Pomoć"
 
 #: ../src/Gui/ccgui.glade.h:23 ../src/Applet/CCApplet.cpp:105
-#,fuzzy
 msgid "translator-credits"
-msgstr "translator-credits"
+msgstr "Arnes Arnautović <arnes99@gmail.com>"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:62
@@ -201,12 +194,12 @@ msgstr ""
 
 #. there is something wrong with the daemon if we cant get the dumplist
 #: ../src/Gui/CCMainWindow.py:180
-#, python-format,fuzzy
+#, python-format
 msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
-"Greška pri učitavanju dumplist.\n"
+"Greška pri učitavanju dump liste.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:237
@@ -219,12 +212,10 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:333
-#,fuzzy
 msgid "You have to select a crash to copy."
 msgstr "Morate odabrati pad za kopiranje."
 
 #: ../src/Gui/CCMainWindow.py:418
-#,fuzzy
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -235,7 +226,7 @@ msgstr ""
 "\t--report=CRASH_ID\tDirektno izvijesti o padu sa CRASH_ID"
 
 #: ../src/Gui/CCMainWindow.py:441
-#, python-format,fuzzy
+#, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
 "crashid=%s"
@@ -284,7 +275,6 @@ msgid "Reporting disabled, please fix the problems shown above."
 msgstr "Izvješavanje isključeno. Molim popravite probleme prikazate iznad."
 
 #: ../src/Gui/CCReporterDialog.py:132
-#,fuzzy
 msgid "Sends the report using selected plugin."
 msgstr "Šalje izvještaj koristeći odabrani dodatak."
 
@@ -311,7 +301,6 @@ msgid "Configure %s options"
 msgstr "Podesi %s opcije"
 
 #: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:787
-#,fuzzy
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -343,9 +332,8 @@ msgid "Report done"
 msgstr "Izvještaj završen"
 
 #: ../src/Gui/PluginSettingsUI.py:17
-#,fuzzy
 msgid "Can't find PluginDialog widget in UI description!"
-msgstr "Nemogu naći PluginDialog widget u UI opisu."
+msgstr "Nemogu naći vizualne kontrole PluginDialog-a u opisu korisničkog sučelja."
 
 #: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
@@ -391,7 +379,6 @@ msgid "<span fgcolor=\"blue\">Architecture:</span>"
 msgstr "<span fgcolor=\"blue\">Arhitektura:</span>"
 
 #: ../src/Gui/report.glade.h:9
-#,fuzzy
 msgid "<span fgcolor=\"blue\">Cmdline:</span>"
 msgstr "<span fgcolor=\"blue\">Naredbena linija:</span>"
 
@@ -435,7 +422,6 @@ msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "Provjerio sam backtrace i odstranio osjetljive podatke (šifre, itd)"
 
 #: ../src/Gui/report.glade.h:20
-#,fuzzy
 msgid "N/A"
 msgstr "N/A"
 
@@ -444,7 +430,6 @@ msgid "Please wait.."
 msgstr "Molim trenutak..."
 
 #: ../src/Gui/report.glade.h:22
-#,fuzzy
 msgid "Reporter Selector"
 msgstr "Odabir izvještavača"
 
@@ -474,7 +459,6 @@ msgid "Remove this action"
 msgstr "Odstrani ovu akciju"
 
 #: ../src/Gui/settings.glade.h:1
-#,fuzzy
 msgid "<b>Analyzer plugin</b>"
 msgstr "<b>Analizirajući dodatak</b>"
 
@@ -495,7 +479,6 @@ msgid "<b>Time (or period)</b>"
 msgstr "<b>Vrijeme (ili period)</b>"
 
 #: ../src/Gui/settings.glade.h:6
-#,fuzzy
 msgid "Analyzers, Actions, Reporters"
 msgstr "Analizatori, akcije, izvještavači"
 
@@ -504,9 +487,8 @@ msgid "Author:"
 msgstr "Autor:"
 
 #: ../src/Gui/settings.glade.h:8
-#,fuzzy
 msgid "Blacklisted packages: "
-msgstr "Nedozvoljeni paketi:"
+msgstr "Paketi na crnoj listi:"
 
 #: ../src/Gui/settings.glade.h:9
 msgid "C_onfigure Plugin"
@@ -522,7 +504,6 @@ msgid "Common"
 msgstr "Obično"
 
 #: ../src/Gui/settings.glade.h:12
-#,fuzzy
 msgid "Cron"
 msgstr "Cron"
 
@@ -546,7 +527,7 @@ msgstr "GPG ključevi: "
 #: ../src/Gui/settings.glade.h:17
 #,fuzzy
 msgid "Max coredump storage size(MB):"
-msgstr "Maksimalni prostor coredump (MB):"
+msgstr "Maksimalni prostor dump jezgre (MB):"
 
 #: ../src/Gui/settings.glade.h:18
 msgid "Name:"
@@ -698,7 +679,6 @@ msgid "Executable"
 msgstr "Izvršivo"
 
 #: ../src/Gui/CReporterAssistant.py:681
-#,fuzzy
 msgid "Cmdline"
 msgstr "Naredbena linija"
 
@@ -720,7 +700,6 @@ msgid "Reason"
 msgstr "Razlog"
 
 #: ../src/Gui/CReporterAssistant.py:700
-#,fuzzy
 msgid "Click to view ..."
 msgstr "Kliknite da pogledate..."
 
@@ -741,7 +720,6 @@ msgid "Finish sending the bug report"
 msgstr "Završi sa slanjem izvještaja od grešci"
 
 #: ../src/Gui/CReporterAssistant.py:757
-#,fuzzy
 msgid ""
 "Thank you for your bug report. It has been succesfully submitted. You may "
 "view your bug report online using the web adress below:"
@@ -767,9 +745,8 @@ msgid "A crash has been detected"
 msgstr "Pad je otkriven"
 
 #: ../src/Applet/Applet.cpp:266
-#,fuzzy
 msgid "ABRT service is not running"
-msgstr "ABRT servis nije pokrenut"
+msgstr "ABRT servis se neizvodi"
 
 #: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
 #: ../src/Applet/CCApplet.cpp:287
@@ -799,7 +776,7 @@ msgid "Bug is already reported: %i"
 msgstr "Greška je već izviještena: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:409
-#, c-format,fuzzy
+#, c-format
 msgid "New bug id: %i"
 msgstr "Novi id greške: %i"
 
@@ -821,9 +798,8 @@ msgid "Checking for duplicates..."
 msgstr "Provjeravanje duplikata..."
 
 #: ../lib/Plugins/Bugzilla.cpp:645
-#,fuzzy
 msgid "Missing mandatory member 'bugs'"
-msgstr "Nedostaje obavezni član 'greške'"
+msgstr "Nedostaje obavezni član 'bugs'"
 
 #: ../lib/Plugins/Bugzilla.cpp:655
 msgid "Creating new bug..."
@@ -871,7 +847,6 @@ msgid "Generating backtrace"
 msgstr "Stvaram backtrace"
 
 #: ../lib/Plugins/CCpp.cpp:327
-#,fuzzy
 msgid "Starting debuginfo installation"
 msgstr "Započinjem debuginfo instalaciju"
 
@@ -882,7 +857,6 @@ msgid "Getting global universal unique identification..."
 msgstr "Uzimam globalnu univerzalnu jedinstvenu identifikaciju..."
 
 #: ../lib/Plugins/CCpp.cpp:701
-#,fuzzy
 msgid "Skipping debuginfo installation"
 msgstr "Preskačem debuginfo instalaciju"
 
@@ -896,12 +870,11 @@ msgid "Writing report to '%s'"
 msgstr "Zapisujem izvještaj u '%s'"
 
 #: ../lib/Plugins/FileTransfer.cpp:53
-#,fuzzy
 msgid "FileTransfer: URL not specified"
 msgstr "Prijenos datoteke: URL nije određen"
 
 #: ../lib/Plugins/FileTransfer.cpp:57
-#, c-format,fuzzy
+#, c-format
 msgid "Sending archive %s to %s"
 msgstr "Šaljem arhivu %s na %s"
 
@@ -924,11 +897,10 @@ msgid "Sending an email..."
 msgstr "Šaljem email..."
 
 #: ../lib/Plugins/SOSreport.cpp:86
-#, c-format,fuzzy
+#, c-format
 msgid "Running sosreport: %s"
 msgstr "Izvodim sosreport: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:91
-#,fuzzy
 msgid "Done running sosreport"
 msgstr "Završeno izvođenje sosreport"
