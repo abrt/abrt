@@ -103,22 +103,25 @@ msgstr "O ABRT programu"
 
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
 #: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
+#,fuzzy
 msgid "Automatic Bug Reporting Tool"
-msgstr ""
+msgstr "Automatski alat za izvještaj greški"
 
 #: ../src/Gui/ccgui.glade.h:11
+#,fuzy
 msgid "Copy to Clipboard"
-msgstr ""
+msgstr "Kopiraj u Clipboard"
 
 #: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
 msgid "Plugins"
-msgstr ""
+msgstr "Dodaci"
 
 #: ../src/Gui/ccgui.glade.h:13 ../src/Applet/CCApplet.cpp:253
 msgid "Report"
-msgstr ""
+msgstr "Izvještaj"
 
 #: ../src/Gui/ccgui.glade.h:14
+#,fuzzy
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -133,39 +136,50 @@ msgid ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 msgstr ""
+"Ovaj program je slobodni softver; možete ga redistribuirati i/ili modificirati "
+"pod uslovima GNU Generalne javne licence objavljenim od strane Free Software "
+"Foundation; ili verzije 2 licence ili (na Vašu opciju) bilo koju noviju verziju.\n"
+"\n"
+"Ovaj program je distribuiran u nadi da će biti koristan ali BEZ IKAKVE GARANCIJE; "
+"čak i bez implicirane garancije MERCHANTABILITY ili SPREMNOSTI ZA ODREĐENU SVRHU. "
+"Pogledajte GNU Generalnu javnu licencu za više detalja.\n"
+"\n"
+"Trebali biste dobiti kopiju GNU Generalne javne licence zajedno sa ovim "
+"programom. Ako niste pogledajte <http://www.gnu.org/licenses/>."
 
 #: ../src/Gui/ccgui.glade.h:19
 msgid "View log"
-msgstr ""
+msgstr "Pogledaj dnevnik"
 
 #: ../src/Gui/ccgui.glade.h:20
 msgid "_Edit"
-msgstr ""
+msgstr "Uredi"
 
 #: ../src/Gui/ccgui.glade.h:21
 msgid "_File"
-msgstr ""
+msgstr "Datoteka"
 
 #: ../src/Gui/ccgui.glade.h:22
 msgid "_Help"
-msgstr ""
+msgstr "Pomoć"
 
 #: ../src/Gui/ccgui.glade.h:23 ../src/Applet/CCApplet.cpp:105
+#,fuzzy
 msgid "translator-credits"
-msgstr ""
+msgstr "translator-credits"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:62
 msgid "Reported"
-msgstr ""
+msgstr "Izvješteno"
 
 #: ../src/Gui/CCMainWindow.py:70
 msgid "Application"
-msgstr ""
+msgstr "Aplikacija"
 
 #: ../src/Gui/CCMainWindow.py:72
 msgid "Latest Crash"
-msgstr ""
+msgstr "Najnoviji pad"
 
 #: ../src/Gui/CCMainWindow.py:140
 #, python-format
@@ -173,6 +187,8 @@ msgid ""
 "Can't show the settings dialog\n"
 "%s"
 msgstr ""
+"Nemogu prikazati dijalog postavki\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:145
 #, python-format
@@ -180,14 +196,18 @@ msgid ""
 "Unable to finish current task!\n"
 "%s"
 msgstr ""
+"Nisam u stanju da završim trenutni zadatak!\n"
+"%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
 #: ../src/Gui/CCMainWindow.py:180
-#, python-format
+#, python-format,fuzzy
 msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
+"Greška pri učitavanju dumplist.\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:237
 #, python-format
@@ -195,66 +215,86 @@ msgid ""
 "<b>%s Crash</b>\n"
 "%s"
 msgstr ""
+"<b>%s Pad</b>\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:333
+#,fuzzy
 msgid "You have to select a crash to copy."
-msgstr ""
+msgstr "Morate odabrati pad za kopiranje."
 
 #: ../src/Gui/CCMainWindow.py:418
+#,fuzzy
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 msgstr ""
+"Korištenje: abrt-gui [OPCIJE]\n"
+"\t-v[vv]\t\t\tVerbose\n"
+"\t--report=CRASH_ID\tDirektno izvijesti o padu sa CRASH_ID"
 
 #: ../src/Gui/CCMainWindow.py:441
-#, python-format
+#, python-format,fuzzy
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
 "crashid=%s"
 msgstr ""
+"Nepostoji takav pad u bazi podataka, vjerovatno pogrešan crashid.\n"
+"crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:18
 msgid "Brief description how to reproduce this or what you did..."
-msgstr ""
+msgstr "Kratak opis kako reproducirati ovo ili šta ste uradili..."
 
 #: ../src/Gui/CCReporterDialog.py:107 ../src/Gui/CReporterAssistant.py:260
+#,fuzzy
 msgid "You must check backtrace for sensitive data"
-msgstr ""
+msgstr "Morate provjeriti backtrace za osjetljive podatke"
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:272
-#, python-format
+#, python-format,fuzzy
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using command: <b>debuginfo-install "
 "%s</b> \n"
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
+"Izvještavanje isključeno zato što backtrace nije iskoristiv.\n"
+"Molim pokušajte instalirati debuginfo ručno koristeći naredbu: <b>debuginfo-install "
+"%s</b> \n"
+"a zatim pritisnite Osvježi dugme da bi ponovno stvorili backtrace."
 
 #: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:274
 msgid "The backtrace is unusable, you can't report this!"
-msgstr ""
+msgstr "Backtrace nije iskoristiv stoga nemožete ovo izvijestiti!"
 
 #: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:278
+#,fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
 msgstr ""
+"Backtrace nije potpun. Molim da se pobrinete da date dobre korake za "
+"reproduciranje."
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
+msgstr "Izvješavanje isključeno. Molim popravite probleme prikazate iznad."
 
 #: ../src/Gui/CCReporterDialog.py:132
+#,fuzzy
 msgid "Sends the report using selected plugin."
-msgstr ""
+msgstr "Šalje izvještaj koristeći odabrani dodatak."
 
 #: ../src/Gui/CCReporterDialog.py:398
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
 msgstr ""
+"Nema izvještavajućeg dodatka dostupnog za ovaj tip pada\n"
+"Molim provjerite abrt.conf."
 
 #: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:180
 #, python-format
