@@ -68,7 +68,7 @@ static char *sanitize_utf8(const char *src)
     {
         int bytes = 0;
 
-	unsigned c = (unsigned char) *src;
+        unsigned c = (unsigned char) *src;
         if (c <= 0x7f)
         {
             bytes = 1;
@@ -134,7 +134,7 @@ static char *sanitize_utf8(const char *src)
             sanitized_pos = src - initial_src;
             sanitized = xstrndup(initial_src, sanitized_pos);
         }
-	sanitized = (char*) xrealloc(sanitized, sanitized_pos + 5);
+        sanitized = (char*) xrealloc(sanitized, sanitized_pos + 5);
         sanitized[sanitized_pos++] = '[';
         c = (unsigned char) *src++;
         sanitized[sanitized_pos++] = "0123456789ABCDEF"[c >> 4];

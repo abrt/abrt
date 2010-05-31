@@ -479,7 +479,7 @@ send_report_to_new_case(const char* baseURL,
             }
             retval = xasprintf("Case created: %s", /*body,*/ case_location);
         } /* switch (attach HTTP code) */
-	free_abrt_post_state(atch_state);
+        free_abrt_post_state(atch_state);
 
     } /* switch (ticket HTTP code) */
 

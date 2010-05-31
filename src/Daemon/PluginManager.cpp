@@ -450,7 +450,7 @@ map_plugin_settings_t CPluginManager::GetPluginSettings(const char *pName)
     map_map_string_t::iterator it_settings = m_map_plugin_settings.find(pName);
     if (it_settings != m_map_plugin_settings.end())
     {
-	/* but it exists, its settings are available nevertheless */
+        /* but it exists, its settings are available nevertheless */
         VERB3 log("Returning settings for non-loaded plugin %s", pName);
         ret = it_settings->second;
         return ret;

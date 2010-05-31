@@ -165,7 +165,7 @@ static void usage(char *argv0)
         "	UID:UUID pair,\n"
         "	unique UUID prefix  - the crash with matching UUID will be acted upon\n"
         "	@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
-	),
+        ),
         name, name);
 }
 

@@ -81,7 +81,7 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
                 value += line[ii];
             }
         }
-	
+
 	/* Skip broken or empty lines. */
 	if (!valid)
 	  continue;

@@ -504,11 +504,11 @@ report_status_t Report(const map_crash_data_t& client_report,
         {
             const char *plugin_name = it_r->first.c_str();
 
-	    /* Check if the reporter is in the input list of allowed reporters. */
-	    if (reporters.end() == std::find(reporters.begin(), reporters.end(), plugin_name))
-	    {
-	        continue;
-	    }
+            /* Check if the reporter is in the input list of allowed reporters. */
+            if (reporters.end() == std::find(reporters.begin(), reporters.end(), plugin_name))
+            {
+                continue;
+            }
 
             try
             {

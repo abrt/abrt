@@ -316,7 +316,7 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
     if (chown(m_sDebugDumpDir.c_str(), m_uid, m_gid) == -1)
     {
         perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(),
-		   (long)m_uid, (long)m_gid);
+                   (long)m_uid, (long)m_gid);
     }
 
     SaveText(CD_UID, to_string(uid).c_str());

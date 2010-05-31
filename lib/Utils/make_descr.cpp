@@ -118,7 +118,7 @@ string make_description_bz(const map_crash_data_t& pCrashData)
                 string tmp;
                 add_content(was_multiline,
                         tmp,
-			/* "reproduce: blah" looks ugly, fixing: */
+                        /* "reproduce: blah" looks ugly, fixing: */
                         itemname == FILENAME_REPRODUCE ? "How to reproduce" : itemname.c_str(),
                         content.c_str()
                 );

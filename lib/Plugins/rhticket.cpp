@@ -237,7 +237,7 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     kill(child, SIGKILL); /* just in case */
     waitpid(child, NULL, 0);
     if (tar)
-	tar_close(tar);
+        tar_close(tar);
     //close(pipe_from_parent_to_child[1]); - tar_close() does it itself
     unlink(tempfile);
     free(tempfile);
