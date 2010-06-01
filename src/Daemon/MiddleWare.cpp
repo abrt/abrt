@@ -793,6 +793,17 @@ static mw_result_t SavePackageDescriptionToDebugDump(
     }
 
     std::string description = GetDescription(packageName.c_str());
+
+    // HOST_NAME_MAX is defined in limits.h
+    char host[HOST_NAME_MAX + 1];
+    int ret = gethostname(host, HOST_NAME_MAX);
+    host[HOST_NAME_MAX] = '\0';
+    if (ret < 0)
+    {
+        perror_msg("gethostname");
+        host[0] = '\0';
+    }
+
     try
     {
         CDebugDump dd;
@@ -800,6 +811,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         dd.SaveText(FILENAME_PACKAGE, package.c_str());
         dd.SaveText(FILENAME_DESCRIPTION, description.c_str());
         dd.SaveText(FILENAME_COMPONENT, component.c_str());
+        dd.SaveText(FILENAME_HOSTNAME, host);
     }
     catch (CABRTException& e)
     {

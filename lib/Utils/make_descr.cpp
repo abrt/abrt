@@ -74,6 +74,7 @@ static const char *const blacklisted_items_bz[] = {
     FILENAME_ANALYZER ,
     FILENAME_COREDUMP ,
     FILENAME_DESCRIPTION, /* package description - basically useless */
+    FILENAME_HOSTNAME ,
     CD_UID            ,
     CD_UUID           ,
     CD_INFORMALL      ,

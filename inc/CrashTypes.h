@@ -47,6 +47,7 @@
 #define FILENAME_COMMENT      "comment"
 #define FILENAME_REPRODUCE    "reproduce"
 #define FILENAME_RATING       "rating"
+#define FILENAME_HOSTNAME     "hostname"
 
 // Apart from CD_UID, which is also stored as a file in dump directory,
 // these items only exist in db. (CD_UID is also a file because
