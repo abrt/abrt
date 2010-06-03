@@ -295,6 +295,7 @@ class ReporterAssistant():
                 buff = gtk.TextBuffer()
                 try:
                     buff.set_text(self.result[FILENAME_REPRODUCE][CD_CONTENT])
+                    self.howto_changed = True
                 except KeyError:
                     buff.set_text(HOW_TO_HINT_TEXT)
                 self.howto_tev.set_buffer(buff)
@@ -304,6 +305,7 @@ class ReporterAssistant():
                 buff = gtk.TextBuffer()
                 try:
                     buff.set_text(self.result[FILENAME_COMMENT][CD_CONTENT])
+                    self.comment_changed = True
                 except KeyError:
                     buff.set_text(COMMENT_HINT_TEXT)
                 self.comment_tev.set_buffer(buff)
