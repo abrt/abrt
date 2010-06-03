@@ -137,12 +137,37 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
     int pipeout[2];
     pid_t child = fork_execv_on_steroids(flags, pArgs, pipeout, (char**)unsetenv_vec, /*dir:*/ NULL, uid);
 
-    int r;
-    char buff[1024];
-    while ((r = read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
+    /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
+     * coredumps were observed to cause gdb to enter infinite loop.
+     * Therefore we have a (largish) timeout, after which we kill the child.
+     */
+    int t = time(NULL); /* int is enough, no need to use time_t */
+    int endtime = t + 60;
+    while (1)
     {
+        int timeout = endtime - t;
+        if (timeout < 0)
+        {
+            kill(child, SIGKILL);
+            pOutput += "\nTimeout exceeded: 60 second, killing ";
+            pOutput += pArgs[0];
+            pOutput += "\n";
+            break;
+        }
+
+	/* We don't check poll result - checking read result is enough */
+        struct pollfd pfd;
+        pfd.fd = pipeout[0];
+        pfd.events = POLLIN;
+        poll(&pfd, 1, timeout * 1000);
+
+        char buff[1024];
+        int r = read(pipeout[0], buff, sizeof(buff) - 1);
+        if (r <= 0)
+            break;
         buff[r] = '\0';
         pOutput += buff;
+        t = time(NULL);
     }
     close(pipeout[0]);
 
