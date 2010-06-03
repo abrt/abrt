@@ -137,7 +137,15 @@ static char* get_executable(pid_t pid)
     char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
 
     sprintf(buf, "/proc/%lu/exe", (long)pid);
-    return malloc_readlink(buf);
+    char *executable = malloc_readlink(buf);
+    /* find and cut off " (deleted)" from the path */
+    char *deleted = executable + strlen(executable) - strlen(" (deleted)");
+    if (deleted > executable && strcmp(deleted, " (deleted)") == 0)
+    {
+        *deleted = '\0';
+        log("file %s seems to be deleted", executable);
+    }
+    return executable;
 }
 
 static char* get_cwd(pid_t pid)
