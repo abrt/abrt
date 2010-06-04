@@ -98,8 +98,16 @@ extern int g_verbose;
 
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 int prefixcmp(const char *str, const char *prefix);
 int suffixcmp(const char *str, const char *suffix);
+#ifdef __cplusplus
+}
+#endif
 
 
 unsigned xatou(const char *numstr);
