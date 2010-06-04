@@ -241,6 +241,7 @@ Virtual package to make easy default installation on desktop environments.
 %configure
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+CFLAGS="-fno-strict-aliasing"
 make %{?_smp_mflags}
 
 %install
