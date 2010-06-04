@@ -25,6 +25,25 @@
 #include <stdarg.h>
 #include "xfuncs.h"
 
+
+int prefixcmp(const char *str, const char *prefix)
+{
+    for (; ; str++, prefix++)
+        if (!*prefix)
+            return 0;
+        else if (*str != *prefix)
+            return (unsigned char)*prefix - (unsigned char)*str;
+}
+
+int suffixcmp(const char *str, const char *suffix)
+{
+    int len_minus_suflen = strlen(str) - strlen(suffix);
+    if (len_minus_suflen < 0)
+        return len_minus_suflen;
+    else
+        return strcmp(str + len_minus_suflen, suffix);
+}
+
 struct strbuf *strbuf_new()
 {
     struct strbuf *buf = xmalloc(sizeof(struct strbuf));
@@ -66,12 +85,7 @@ static void strbuf_grow(struct strbuf *strbuf, int num)
 	while (strbuf->len + num + 1 > strbuf->alloc)
 	    strbuf->alloc *= 2; /* huge grow = infinite loop */
 
-	strbuf->buf = realloc(strbuf->buf, strbuf->alloc);
-	if (!strbuf->buf)
-	{
-	    puts("Error while allocating memory for string buffer.");
-	    exit(5);
-	}
+	strbuf->buf = xrealloc(strbuf->buf, strbuf->alloc);
     }
 }
 
