@@ -88,6 +88,48 @@ static const char *const blacklisted_items[] = {
     NULL
 };
 
+char* make_dsc_mailx(const map_crash_data_t & crash_data)
+{
+    struct strbuf *buf_dsc = strbuf_new();
+    struct strbuf *buf_additional_files = strbuf_new();
+    struct strbuf *buf_duphash_file = strbuf_new();
+    struct strbuf *buf_common_files = strbuf_new();
+
+    map_crash_data_t::const_iterator it;
+    for (it = crash_data.begin(); it != crash_data.end(); it++)
+    {
+        if (it->second[CD_TYPE] == CD_TXT)
+        {
+            const char *itemname = it->first.c_str();
+            if ((strcmp(itemname, CD_DUPHASH) != 0)
+             && (strcmp(itemname, FILENAME_ARCHITECTURE) != 0)
+             && (strcmp(itemname, FILENAME_KERNEL) != 0)
+             && (strcmp(itemname, FILENAME_PACKAGE) != 0)
+            ) {
+                strbuf_append_strf(buf_additional_files, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
+            }
+            else if (strcmp(itemname, CD_DUPHASH) == 0)
+                strbuf_append_strf(buf_duphash_file, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
+            else
+                strbuf_append_strf(buf_common_files, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
+        }
+    }
+
+    char *common_files = strbuf_free_nobuf(buf_common_files);
+    char *duphash_file = strbuf_free_nobuf(buf_duphash_file);
+    char *additional_files = strbuf_free_nobuf(buf_additional_files);
+
+    strbuf_append_strf(buf_dsc, "Duplicate check\n=====\n%s\n\n", duphash_file);
+    strbuf_append_strf(buf_dsc, "Common information\n=====\n%s\n\n", common_files);
+    strbuf_append_strf(buf_dsc, "Additional information\n=====\n%s\n", additional_files);
+
+    free(common_files);
+    free(duphash_file);
+    free(additional_files);
+
+    return strbuf_free_nobuf(buf_dsc);
+}
+
 char* make_description_bz(const map_crash_data_t& pCrashData)
 {
     struct strbuf *buf_dsc = strbuf_new();

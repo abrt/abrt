@@ -122,6 +122,7 @@ typedef struct SPluginInfo
 char* make_description_bz(const map_crash_data_t& pCrashData);
 char* make_description_reproduce_comment(const map_crash_data_t& pCrashData);
 char* make_description_logger(const map_crash_data_t& pCrashData);
+char* make_dsc_mailx(const map_crash_data_t& pCrashData);
 
 /**
  * Loads settings and stores it in second parameter. On success it
