@@ -24,12 +24,14 @@
 #include "debug_dump.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
+#include "strbuf.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5
+
 
 /*
  *  TODO: npajkovs: better deallocation of xmlrpc value
@@ -389,46 +391,45 @@ int ctx::add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private)
 
 xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugno)
 {
-    const std::string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
-    const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
-    const std::string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
-    const std::string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
-    const std::string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
-    const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
-    const char *function         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
+    const char *package         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
+    const char *component       = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
+    const char *release         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
+    const char *arch            = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
+    const char *duphash         = get_crash_data_item_content_or_NULL(pCrashData, CD_DUPHASH);
+    const char *reason          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
+    const char *function        = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
 
-    std::string summary = "[abrt] " + package;
+    struct strbuf *buf_summary = strbuf_new();
+    strbuf_append_strf(buf_summary, "[abrt] %s", package);
+
     if (function != NULL && strlen(function) < 30)
-    {
-        summary += ": ";
-        summary += function;
-    }
+        strbuf_append_strf(buf_summary, ": %s", function);
 
     if (reason != NULL)
-    {
-        summary += ": ";
-        summary += reason;
-    }
-    std::string status_whiteboard = "abrt_hash:" + duphash;
+        strbuf_append_strf(buf_summary, ": %s", reason);
 
-    std::string description = "abrt version: "VERSION"\n";
-    description += make_description_bz(pCrashData);
+    char *status_whiteboard = xasprintf("abrt_hash:%s", duphash);
+
+    char *bz_dsc = make_description_bz(pCrashData);
+    char *full_dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
+    free(bz_dsc);
 
     char *product = NULL;
     char *version = NULL;
-    parse_release(release.c_str(), &product, &version);
+    parse_release(release, &product, &version);
 
     xmlrpc_value* result = NULL;
+    char *summary = strbuf_free_nobuf(buf_summary);
     if (depend_on_bugno > -1)
     {
         result = call("Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:i})",
                                 "product", product,
-                                "component", component.c_str(),
+                                "component", component,
                                 "version", version,
-                                "summary", summary.c_str(),
-                                "description", description.c_str(),
-                                "status_whiteboard", status_whiteboard.c_str(),
-                                "platform", arch.c_str(),
+                                "summary", summary,
+                                "description", full_dsc,
+                                "status_whiteboard", status_whiteboard,
+                                "platform", arch,
                                 "dependson", depend_on_bugno
                               );
     }
@@ -436,17 +437,19 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     {
         result = call("Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
                                 "product", product,
-                                "component", component.c_str(),
+                                "component", component,
                                 "version", version,
-                                "summary", summary.c_str(),
-                                "description", description.c_str(),
-                                "status_whiteboard", status_whiteboard.c_str(),
-                                "platform", arch.c_str()
+                                "summary", summary,
+                                "description", full_dsc,
+                                "status_whiteboard", status_whiteboard,
+                                "platform", arch
                               );
-
     }
+    free(status_whiteboard);
     free(product);
     free(version);
+    free(summary);
+    free(full_dsc);
 
     if (!result)
         return -1;
@@ -473,21 +476,23 @@ int ctx::add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashD
     map_crash_data_t::const_iterator it = pCrashData.begin();
     for (; it != pCrashData.end(); it++)
     {
-        const std::string &itemname = it->first;
-        const std::string &type = it->second[CD_TYPE];
-        const std::string &content = it->second[CD_CONTENT];
+        const char *itemname = it->first.c_str();
+        const char *type = it->second[CD_TYPE].c_str();
+        const char *content = it->second[CD_CONTENT].c_str();
 
-        if (type == CD_TXT
-         && (content.length() > CD_TEXT_ATT_SIZE || itemname == FILENAME_BACKTRACE)
+        if ((strcmp(type, CD_TXT) == 0)
+         && (strlen(content) > CD_TEXT_ATT_SIZE || (strcmp(itemname, FILENAME_BACKTRACE) == 0))
         ) {
-            char *encoded64 = encode_base64(content.c_str(), content.length());
+            char *encoded64 = encode_base64(content, strlen(content));
+            char *filename = xasprintf("File: %s", itemname);
             xmlrpc_value* result = call("bugzilla.addAttachment", "(s{s:s,s:s,s:s,s:s})", bug_id_str,
-                                        "description", ("File: " + itemname).c_str(),
-                                        "filename", itemname.c_str(),
+                                        "description", filename,
+                                        "filename", itemname,
                                         "contenttype", "text/plain",
                                         "data", encoded64
                                       );
             free(encoded64);
+            free(filename);
             if (!result)
                 return -1;
 
@@ -558,9 +563,11 @@ void ctx::login(const char* login, const char* passwd)
 
     if (!result)
     {
-        std::string errmsg = ssprintf(_("Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s"), env.fault_string);
-        error_msg("%s", errmsg.c_str()); // show error in daemon log
-        throw CABRTException(EXCEP_PLUGIN, "%s", errmsg.c_str());
+        char *errmsg = xasprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
+        error_msg("%s", errmsg); // show error in daemon log
+        CABRTException e(EXCEP_PLUGIN,  errmsg);
+        free(errmsg);
+        throw e;
     }
     xmlrpc_DECREF(result);
 }
@@ -636,59 +643,68 @@ static map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettin
     return plugin_settings;
 }
 
-CReporterBugzilla::CReporterBugzilla() :
-    m_bSSLVerify(true),
-    m_sBugzillaURL("https://bugzilla.redhat.com"),
-    m_sBugzillaXMLRPC("https://bugzilla.redhat.com"XML_RPC_SUFFIX),
-    m_bRatingRequired(true)
-{}
+CReporterBugzilla::CReporterBugzilla()
+{
+    m_ssl_verify = true;
+    m_rating_required = true;
+    m_login = NULL;
+    m_password = NULL;
+    m_bugzilla_url = xstrdup("https://bugzilla.redhat.com");
+    m_bugzilla_xmlrpc = xstrdup("https://bugzilla.redhat.com"XML_RPC_SUFFIX);
+}
 
 CReporterBugzilla::~CReporterBugzilla()
-{}
+{
+    free(m_login);
+    free(m_password);
+    free(m_bugzilla_url);
+    free(m_bugzilla_xmlrpc);
+}
 
 std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
                                       const map_plugin_settings_t& pSettings,
                                       const char *pArgs)
 {
     xmlrpc_int32 bug_id = -1;
-    std::string Login;
-    std::string Password;
-    std::string BugzillaXMLRPC;
-    std::string BugzillaURL;
-    bool SSLVerify;
+    const char *login = NULL;
+    const char *password = NULL;
+    const char *bugzilla_xmlrpc = NULL;
+    const char *bugzilla_url = NULL;
+    bool ssl_verify;
+
     map_plugin_settings_t settings = parse_settings(pSettings);
     /* if parse_settings fails it returns an empty map so we need to use defaults */
     if (!settings.empty())
     {
-        Login = settings["Login"];
-        Password = settings["Password"];
-        BugzillaXMLRPC = settings["BugzillaXMLRPC"];
-        BugzillaURL = settings["BugzillaURL"];
-        SSLVerify = string_to_bool(settings["SSLVerify"].c_str());
+        login = settings["Login"].c_str();
+        password = settings["Password"].c_str();
+        bugzilla_xmlrpc = settings["BugzillaXMLRPC"].c_str();
+        bugzilla_url = settings["BugzillaURL"].c_str();
+        ssl_verify = string_to_bool(settings["NoSSLVerify"].c_str());
     }
     else
     {
-        Login = m_sLogin;
-        Password = m_sPassword;
-        BugzillaXMLRPC = m_sBugzillaXMLRPC;
-        BugzillaURL = m_sBugzillaURL;
-        SSLVerify = m_bSSLVerify;
+        login = m_login;
+        password = m_password;
+        bugzilla_xmlrpc = m_bugzilla_xmlrpc;
+        bugzilla_url = m_bugzilla_url;
+        ssl_verify = m_ssl_verify;
     }
 
-    if ((Login == "") || (Password == ""))
+    if (!login[0] || !password[0])
     {
         VERB3 log("Empty login and password");
         throw CABRTException(EXCEP_PLUGIN, _("Empty login or password.\nPlease check "PLUGINS_CONF_DIR"/Bugzilla.conf."));
     }
 
-    const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
-    const std::string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
-    const char *release          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
+    const char *component = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
+    const char *duphash   = get_crash_data_item_content_or_NULL(pCrashData, CD_DUPHASH);
+    const char *release   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
 
-    ctx bz_server(BugzillaXMLRPC.c_str(), SSLVerify);
+    ctx bz_server(bugzilla_xmlrpc, ssl_verify);
 
     update_client(_("Logging into bugzilla..."));
-    bz_server.login(Login.c_str(), Password.c_str());
+    bz_server.login(login, password);
 
     update_client(_("Checking for duplicates..."));
 
@@ -698,9 +714,9 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
 
     xmlrpc_value *result;
     if (strcmp(product, "Fedora") == 0)
-        result  = bz_server.call_quicksearch_duphash(component.c_str(), product, duphash.c_str());
+        result  = bz_server.call_quicksearch_duphash(component, product, duphash);
     else
-        result  = bz_server.call_quicksearch_duphash(component.c_str(), NULL, duphash.c_str());
+        result  = bz_server.call_quicksearch_duphash(component, NULL, duphash);
 
     if (!result)
         throw_if_xml_fault_occurred(&bz_server.env);
@@ -736,7 +752,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         {
             depend_on_bugno = bug_id;
             bug_info_destroy(&bz);
-            result = bz_server.call_quicksearch_duphash(component.c_str(), release, duphash.c_str());
+            result = bz_server.call_quicksearch_duphash(component, release, duphash);
             if (!result)
                 throw_if_xml_fault_occurred(&bz_server.env);
 
@@ -799,7 +815,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         std::string bug_status = ssprintf(
                     "Status: NEW\n"
                     "%s/show_bug.cgi?id=%u",
-                    BugzillaURL.c_str(),
+                    bugzilla_url,
                     (int)bug_id
         );
         return bug_status;
@@ -808,7 +824,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     {
         // When someone clones bug it has same duphash, so we can find more than 1.
         // Need to be checked if component is same.
-        VERB3 log("Bugzilla has %u reports with same duphash '%s'", all_bugs_size, duphash.c_str());
+        VERB3 log("Bugzilla has %u reports with same duphash '%s'", all_bugs_size, duphash);
     }
 
     // decision based on state
@@ -850,11 +866,11 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     if (strcmp(bz.bug_status, "CLOSED") != 0)
     {
         int status = 0;
-        if ((strcmp(bz.bug_reporter, Login.c_str()) != 0) && (am_i_in_cc(&bz, Login.c_str())))
+        if ((strcmp(bz.bug_reporter, login) != 0) && (am_i_in_cc(&bz, login)))
         {
-            VERB2 log(_("Adding %s to CC list"), Login.c_str());
-            update_client(_("Adding %s to CC list"), Login.c_str());
-            status = bz_server.add_plus_one_cc(bug_id, Login.c_str());
+            VERB2 log(_("Add %s to CC list"), login);
+            update_client(_("Add %s to CC list"), login);
+            status = bz_server.add_plus_one_cc(bug_id, login);
         }
 
         if (status == -1)
@@ -863,28 +879,32 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             throw_if_xml_fault_occurred(&bz_server.env);
         }
 
-        std::string description = make_description_reproduce_comment(pCrashData);
-        if (!description.empty())
+        char *dsc = make_description_reproduce_comment(pCrashData);
+        if (dsc)
         {
             const char* package    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
             const char* release    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
             const char* arch       = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
             const char* is_private = get_crash_data_item_content_or_NULL(pCrashData, "is_private");
 
-            description = ssprintf("Package: %s\n"
+            char *full_dsc = xasprintf("Package: %s\n"
                                 "Architecture: %s\n"
                                 "OS Release: %s\n"
-                                "%s", package, arch, release, description.c_str()
+                                "%s", package, arch, release, dsc
             );
 
             update_client(_("Adding new comment to bug %d"), (int)bug_id);
 
+            free(dsc);
+
             bool is_priv = is_private && (is_private[0] == '1');
-            if (bz_server.add_comment(bug_id, description.c_str(), is_priv) == -1)
+            if (bz_server.add_comment(bug_id, full_dsc, is_priv) == -1)
             {
+                free(full_dsc);
                 bug_info_destroy(&bz);
                 throw_if_xml_fault_occurred(&bz_server.env);
             }
+            free(full_dsc);
         }
     }
 
@@ -897,7 +917,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
                 bz.bug_status,
                 bz.bug_resolution ? " " : "",
                 bz.bug_resolution ? bz.bug_resolution : "",
-                BugzillaURL.c_str(),
+                bugzilla_url,
                 (int)bug_id
     );
 
@@ -922,52 +942,48 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("BugzillaURL");
     if (it != end)
     {
-        m_sBugzillaURL = it->second;
-        //remove the /xmlrpc.cgi part from old settings
-        //FIXME: can be removed after users are informed about new config format
-        std::string::size_type pos = m_sBugzillaURL.find(XML_RPC_SUFFIX);
-        if (pos != std::string::npos)
-        {
-            m_sBugzillaURL.erase(pos);
-        }
-        //remove the trailing '/'
-        while (m_sBugzillaURL[m_sBugzillaURL.length() - 1] == '/')
-        {
-            m_sBugzillaURL.erase(m_sBugzillaURL.length() - 1);
-        }
-        /*
-        if (*(--m_sBugzillaURL.end()) == '/')
-        {
-            m_sBugzillaURL.erase(--m_sBugzillaURL.end());
-        }
-        */
-        m_sBugzillaXMLRPC = m_sBugzillaURL + XML_RPC_SUFFIX;
+        free(m_bugzilla_url);
+        free(m_bugzilla_xmlrpc);
+
+        m_bugzilla_url = xstrdup(it->second.c_str());
+
+        int cnt = strlen(m_bugzilla_url);
+        while (m_bugzilla_url[cnt--] == '/')
+            m_bugzilla_url[cnt] = '\0';
+
+        int ret = suffixcmp(m_bugzilla_url, XML_RPC_SUFFIX);
+        if (ret != 0)
+            m_bugzilla_xmlrpc = xasprintf("%s%s", m_bugzilla_url, XML_RPC_SUFFIX);
+        else
+            m_bugzilla_xmlrpc = xstrdup(m_bugzilla_url);
     }
     it = pSettings.find("Login");
     if (it != end)
     {
-        m_sLogin = it->second;
+        free(m_login);
+        m_login = xstrdup(it->second.c_str());
     }
     it = pSettings.find("Password");
     if (it != end)
     {
-        m_sPassword = it->second;
+        free(m_password);
+        m_password = xstrdup(it->second.c_str());
     }
     it = pSettings.find("SSLVerify");
     if (it != end)
     {
-        m_bSSLVerify = string_to_bool(it->second.c_str());
+        m_ssl_verify = string_to_bool(it->second.c_str());
     }
 }
 
 /* Should not be deleted (why?) */
 const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
-    m_pSettings["BugzillaURL"] = m_sBugzillaURL;
-    m_pSettings["Login"] = m_sLogin;
-    m_pSettings["Password"] = m_sPassword;
-    m_pSettings["SSLVerify"] = m_bSSLVerify ? "yes" : "no";
-    m_pSettings["RatingRequired"] = m_bRatingRequired ? "yes" : "no";
+    m_pSettings["BugzillaURL"] = m_bugzilla_url;
+    m_pSettings["Login"] = (m_login)? m_login: "";
+    m_pSettings["Password"] = (m_password)? m_password: "";
+    m_pSettings["SSLVerify"] = m_ssl_verify ? "yes" : "no";
+    m_pSettings["RatingRequired"] = m_rating_required ? "yes" : "no";
 
     return m_pSettings;
 }

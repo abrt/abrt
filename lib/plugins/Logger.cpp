@@ -60,7 +60,9 @@ std::string CLogger::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
-    std::string description = make_description_logger(pCrashData);
+    char *dsc = make_description_logger(pCrashData);
+    char *full_dsc = xasprintf("%s\n\n\n", dsc);
+    free(dsc);
 
     /* open, not fopen - want to set mode if we create the file, not just open */
     const char *fname = m_sLogPath.c_str();
@@ -71,9 +73,9 @@ std::string CLogger::Report(const map_crash_data_t& pCrashData,
         throw CABRTException(EXCEP_PLUGIN, "Can't open '%s'", fname);
 
     update_client(_("Writing report to '%s'"), fname);
-    description += "\n\n\n";
-    const char *desc = description.c_str();
-    full_write(fd, desc, strlen(desc));
+    full_write(fd, full_dsc, strlen(full_dsc));
+    free(full_dsc);
+
     close(fd);
 
     const char *format = m_bAppendLogs ? _("The report was appended to %s") : _("The report was stored to %s");

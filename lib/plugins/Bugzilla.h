@@ -25,12 +25,12 @@
 class CReporterBugzilla : public CReporter
 {
     private:
-        bool m_bSSLVerify;
-        std::string m_sBugzillaURL;
-        std::string m_sBugzillaXMLRPC;
-        std::string m_sLogin;
-        std::string m_sPassword;
-        bool m_bRatingRequired;
+        bool m_ssl_verify;
+        char *m_bugzilla_url;
+        char *m_bugzilla_xmlrpc;
+        char *m_login;
+        char *m_password;
+        bool m_rating_required;
 
     public:
         CReporterBugzilla();
