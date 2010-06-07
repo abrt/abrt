@@ -155,7 +155,7 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
             break;
         }
 
-	/* We don't check poll result - checking read result is enough */
+        /* We don't check poll result - checking read result is enough */
         struct pollfd pfd;
         pfd.fd = pipeout[0];
         pfd.events = POLLIN;
