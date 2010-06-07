@@ -132,11 +132,12 @@ static off_t copyfd_sparse(int src_fd, int dst_fd1, int dst_fd2, off_t size2)
 	return total;
 }
 
-static char* get_executable(pid_t pid)
+static char* get_executable(pid_t pid, int *fd_p)
 {
     char buf[sizeof("/proc/%lu/exe") + sizeof(long)*3];
 
     sprintf(buf, "/proc/%lu/exe", (long)pid);
+    *fd_p = open(buf, O_RDONLY); /* might fail and return -1, it's ok */
     char *executable = malloc_readlink(buf);
     /* find and cut off " (deleted)" from the path */
     char *deleted = executable + strlen(executable) - strlen(" (deleted)");
@@ -270,7 +271,8 @@ int main(int argc, char** argv)
         error_msg_and_die("pid '%s' or limit '%s' is bogus", argv[2], argv[5]);
     }
 
-    char* executable = get_executable(pid);
+    int src_fd_binary;
+    char* executable = get_executable(pid, &src_fd_binary);
     if (executable == NULL)
     {
         error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
@@ -286,7 +288,13 @@ int main(int argc, char** argv)
     /* Parse abrt.conf and plugins/CCpp.conf */
     unsigned setting_MaxCrashReportsSize = 0;
     bool setting_MakeCompatCore = false;
-    parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore);
+    bool setting_SaveBinaryImage = false;
+    parse_conf(CONF_DIR"/plugins/CCpp.conf", &setting_MaxCrashReportsSize, &setting_MakeCompatCore, &setting_SaveBinaryImage);
+    if (!setting_SaveBinaryImage && src_fd_binary >= 0)
+    {
+        close(src_fd_binary);
+        src_fd_binary = -1;
+    }
 
     /* Open a fd to compat coredump, if requested and is possible */
     int user_core_fd = -1;
@@ -340,7 +348,7 @@ int main(int argc, char** argv)
             fstat(fd, &sb); /* !paranoia. this can't fail. */
 
             if (sb.st_size != 0 /* if it wasn't created by us just now... */
-	     && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
+             && (unsigned)(time(NULL) - sb.st_mtime) < 20 /* and is relatively new [is 20 sec ok?] */
             ) {
                 sz = read(fd, path, sizeof(path)-1); /* (ab)using path as scratch buf */
                 if (sz > 0)
@@ -398,6 +406,20 @@ int main(int argc, char** argv)
         dd.SaveText(FILENAME_REASON, reason);
         free(cmdline);
         free(reason);
+
+        if (src_fd_binary > 0)
+        {
+            strcpy(path + path_len, "/"FILENAME_BINARY);
+            int dst_fd_binary = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+            off_t sz = copyfd_eof(src_fd_binary, dst_fd_binary, COPYFD_SPARSE);
+            if (sz < 0 || fsync(dst_fd_binary) != 0)
+            {
+                unlink(path);
+                error_msg_and_die("error saving binary image to %s", path);
+            }
+            close(dst_fd_binary);
+            close(src_fd_binary);
+        }
 
         /* We need coredumps to be readable by all, because
          * when abrt daemon processes coredump,

@@ -16,6 +16,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSize, bool *setting_MakeCompatCore);
+void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSize, bool *setting_MakeCompatCore, bool *setting_SaveBinaryImage);
 void check_free_space(unsigned setting_MaxCrashReportsSize);
 void trim_debug_dumps(unsigned setting_MaxCrashReportsSize, const char *exclude_path);

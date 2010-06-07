@@ -91,7 +91,7 @@ int main(int argc, char** argv)
     error_msg_and_die("daemon is not running, python crash dump aborted");
 
   unsigned setting_MaxCrashReportsSize = 0;
-  parse_conf(NULL, &setting_MaxCrashReportsSize, NULL);
+  parse_conf(NULL, &setting_MaxCrashReportsSize, NULL, NULL);
   if (setting_MaxCrashReportsSize > 0)
   {
     check_free_space(setting_MaxCrashReportsSize);

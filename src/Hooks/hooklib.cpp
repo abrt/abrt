@@ -22,7 +22,7 @@
 
 using namespace std;
 
-void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSize, bool *setting_MakeCompatCore)
+void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSize, bool *setting_MakeCompatCore, bool *setting_SaveBinaryImage)
 {
     FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
     if (!fp)
@@ -74,6 +74,17 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
                 continue;
             p = skip_whitespace(p + 1);
             *setting_MakeCompatCore = string_to_bool(p);
+            continue;
+        }
+#undef DIRECTIVE
+#define DIRECTIVE "SaveBinaryImage"
+        if (setting_SaveBinaryImage && strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)
+        {
+            p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
+            if (*p != '=')
+                continue;
+            p = skip_whitespace(p + 1);
+            *setting_SaveBinaryImage = string_to_bool(p);
             continue;
         }
 #undef DIRECTIVE

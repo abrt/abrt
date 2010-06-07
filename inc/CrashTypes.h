@@ -25,6 +25,7 @@
 // filled by a hook:
 #define FILENAME_ANALYZER     "analyzer"
 #define FILENAME_EXECUTABLE   "executable"
+#define FILENAME_BINARY       "binary"
 #define FILENAME_CMDLINE      "cmdline"
 #define FILENAME_REASON       "reason"
 #define FILENAME_COREDUMP     "coredump"
