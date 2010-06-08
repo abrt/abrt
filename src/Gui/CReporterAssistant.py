@@ -6,6 +6,7 @@ from PluginSettingsUI import PluginSettingsUI
 import sys
 import gobject
 from CC_gui_functions import *
+import pango
 
 # assistant pages
 PAGE_REPORTER_SELECTOR = 0
@@ -16,6 +17,9 @@ PAGE_REPORT_DONE = 4
 NO_PROBLEMS_DETECTED = -50
 HOW_TO_HINT_TEXT = "1.\n2.\n3.\n"
 COMMENT_HINT_TEXT = _("Brief description how to reproduce this or what you did...")
+
+DEFAULT_WIDTH = 800
+DEFAULT_HEIGHT = 500
 
 class ReporterAssistant():
     def __init__(self, report, daemon, log=None, parent=None):
@@ -32,7 +36,8 @@ class ReporterAssistant():
         """ create the assistant """
         self.assistant = gtk.Assistant()
         self.assistant.set_icon_name("abrt")
-        self.assistant.set_default_size(600,500)
+        self.assistant.set_default_size(DEFAULT_WIDTH,DEFAULT_HEIGHT)
+        self.assistant.set_size_request(DEFAULT_WIDTH,DEFAULT_HEIGHT)
         self.connect_signal(self.assistant, "prepare",self.on_page_prepare)
         self.connect_signal(self.assistant, "cancel",self.on_cancel_clicked)
         self.connect_signal(self.assistant, "close",self.on_close_clicked)
@@ -98,12 +103,20 @@ class ReporterAssistant():
         # this first one is actually a fallback to set at least
         # a raw text in case when set_markup() fails
         for plugin, res in result.iteritems():
-            self.bug_reports.set_text(result[plugin][MESSAGE])
-            self.bug_reports.set_markup("<span foreground='red'>%s</span>" % markup_escape_text(result[plugin][MESSAGE]))
+            bug_report = gtk.Label()
+            bug_report.set_line_wrap(True)
+            bug_report.set_alignment(0.0, 0.0)
+            bug_report.set_justify(gtk.JUSTIFY_LEFT)
+            bug_report.set_size_request(DEFAULT_WIDTH-50, -1)
+            bug_report.set_text(result[plugin][MESSAGE])
+            bug_report.set_markup("<span foreground='red'>%s</span>" % markup_escape_text(result[plugin][MESSAGE]))
             # if the report was not succesful then this won't pass so this runs only
             # if report succeds and gets overwriten by the status message
             if result[plugin][STATUS] == '1':
-                self.bug_reports.set_markup(tag_urls_in_text(result[plugin][MESSAGE]))
+                bug_report.set_markup(tag_urls_in_text(result[plugin][MESSAGE]))
+            self.bug_reports_vbox.pack_start(bug_report, expand=False)
+            bug_report.show()
+
 
             #if len(result[plugin][1]) > MAX_WIDTH:
             #    self.bug_reports.set_tooltip_text(result[plugin][1])
@@ -257,7 +270,7 @@ class ReporterAssistant():
         # if an backtrace has rating use it
         if not SendBacktrace:
             send = False
-            error_msgs.append(_("You must check backtrace for sensitive data"))
+            error_msgs.append(_("You should check backtrace for sensitive data"))
             error_msgs.append(_("You must agree with sending the backtrace"))
         # we have both SendBacktrace and rating
         if rating != None:
@@ -330,6 +343,7 @@ class ReporterAssistant():
                 comment_text = comment_buff.get_text(comment_buff.get_start_iter(), comment_buff.get_end_iter())
                 # user has changed the comment
                 self.comments.set_text(comment_text)
+                self.comments.queue_resize()
                 self.result[FILENAME_COMMENT] = [CD_TXT, 'y', comment_text]
             else:
                 self.comments.set_text(_("You didn't provide any comments."))
@@ -342,7 +356,6 @@ class ReporterAssistant():
             # backtrace
             backtrace_text = self.backtrace_buff.get_text(self.backtrace_buff.get_start_iter(), self.backtrace_buff.get_end_iter())
             self.result[FILENAME_BACKTRACE] = [CD_TXT, 'y', backtrace_text]
-
         if page == self.pdict_get_page(PAGE_BACKTRACE_APPROVAL):
             self.allow_send(self.backtrace_cb)
 
@@ -408,8 +421,8 @@ class ReporterAssistant():
         lbl_default_info = gtk.Label()
         lbl_default_info.set_line_wrap(True)
         lbl_default_info.set_alignment(0.0, 0.0)
-        lbl_default_info.set_justify(gtk.JUSTIFY_FILL)
-        lbl_default_info.set_size_request(600, -1)
+        lbl_default_info.set_justify(gtk.JUSTIFY_LEFT)
+        lbl_default_info.set_size_request(DEFAULT_WIDTH-50, -1)
         lbl_default_info.set_markup(_("It looks like an application from the "
                                     "package <b>%s</b> has crashed "
                                     "on your system. It's a good idea to send "
@@ -500,7 +513,7 @@ class ReporterAssistant():
         lbl_default_info.set_line_wrap(True)
         lbl_default_info.set_alignment(0.0, 0.0)
         lbl_default_info.set_justify(gtk.JUSTIFY_FILL)
-        lbl_default_info.set_size_request(600, -1)
+        lbl_default_info.set_size_request(DEFAULT_WIDTH-50, -1)
         lbl_default_info.set_text(_("Below is the backtrace associated with your "
             "crash. A crash backtrace provides developers with details about "
             "how a crash happen, helping them track down the source of the "
@@ -535,7 +548,7 @@ class ReporterAssistant():
         self.lbl_errors.set_line_wrap(True)
         #self.lbl_errors.set_alignment(0.0, 0.0)
         self.lbl_errors.set_justify(gtk.JUSTIFY_FILL)
-        self.lbl_errors.set_size_request(600, -1)
+        self.lbl_errors.set_size_request(DEFAULT_WIDTH-50, -1)
         self.errors_hbox.pack_start(self.warning_image, False, False)
         self.errors_hbox.pack_start(self.lbl_errors)
         ###
@@ -651,7 +664,7 @@ class ReporterAssistant():
             lbl.set_line_wrap(True)
             lbl.set_size_request(width/4, -1)
             lbl.set_alignment(0.0, 0.0)
-            lbl.set_justify(gtk.JUSTIFY_FILL)
+            lbl.set_justify(gtk.JUSTIFY_LEFT)
             table.attach(lbl, 1, 2, line, line+1,
                 xoptions=gtk.FILL, yoptions=gtk.EXPAND|gtk.FILL,
                 xpadding=5, ypadding=5)
@@ -711,20 +724,23 @@ class ReporterAssistant():
 
         # steps to reporoduce
         reproduce_lbl = gtk.Label()
-        reproduce_lbl.set_markup(_("<b>Steps to reporoduce:</b>"))
+        reproduce_lbl.set_markup(_("<b>Steps to reproduce:</b>"))
         reproduce_lbl.set_alignment(0.0, 0.0)
         reproduce_lbl.set_justify(gtk.JUSTIFY_LEFT)
         self.steps = gtk.Label()
         self.steps.set_alignment(0.0, 0.0)
         self.steps.set_justify(gtk.JUSTIFY_LEFT)
+        self.steps.set_line_wrap(True)
+        self.steps.set_line_wrap_mode(pango.WRAP_CHAR)
+        self.steps.set_size_request(int(DEFAULT_WIDTH*0.8), -1)
         #self.steps_lbl.set_text("1. Fill in information about step 1.\n"
         #                   "2. Fill in information about step 2.\n"
         #                   "3. Fill in information about step 3.\n")
         steps_aligned_hbox = gtk.HBox()
-        steps_hbox = gtk.HBox(spacing=10)
-        steps_hbox.pack_start(reproduce_lbl)
-        steps_hbox.pack_start(self.steps)
-        steps_aligned_hbox.pack_start(steps_hbox, expand=False)
+        self.steps_hbox = gtk.HBox(spacing=10)
+        self.steps_hbox.pack_start(reproduce_lbl)
+        self.steps_hbox.pack_start(self.steps)
+        steps_aligned_hbox.pack_start(self.steps_hbox, expand=False)
         steps_aligned_hbox.pack_start(gtk.Alignment())
 
         # comments
@@ -733,6 +749,9 @@ class ReporterAssistant():
         comments_lbl.set_alignment(0.0, 0.0)
         comments_lbl.set_justify(gtk.JUSTIFY_LEFT)
         self.comments = gtk.Label(_("No comment provided!"))
+        self.comments.set_line_wrap(True)
+        self.comments.set_line_wrap_mode(pango.WRAP_CHAR)
+        self.comments.set_size_request(int(DEFAULT_WIDTH*0.8), -1)
         comments_hbox = gtk.HBox(spacing=10)
         comments_hbox.pack_start(comments_lbl)
         comments_hbox.pack_start(self.comments)
@@ -741,12 +760,22 @@ class ReporterAssistant():
         comments_aligned_hbox.pack_start(gtk.Alignment())
 
         # pack all into the page
+
+        summary_vbox = gtk.VBox(spacing=20)
+        summary_vbox.pack_start(summary_hbox, expand=False)
+        summary_vbox.pack_start(backtrace_hbox, expand=False)
+        summary_vbox.pack_start(steps_aligned_hbox, expand=False)
+        summary_vbox.pack_start(comments_aligned_hbox, expand=False)
+        summary_scroll = gtk.ScrolledWindow()
+        summary_scroll.set_shadow_type(gtk.SHADOW_NONE)
+        summary_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
+        scroll_viewport = gtk.Viewport()
+        scroll_viewport.set_shadow_type(gtk.SHADOW_NONE)
+        scroll_viewport.add(summary_vbox)
+        summary_scroll.add(scroll_viewport)
         page.pack_start(summary_lbl, expand=False)
         page.pack_start(basic_details_lbl, expand=False)
-        page.pack_start(summary_hbox, expand=False)
-        page.pack_start(backtrace_hbox, expand=False)
-        page.pack_start(steps_aligned_hbox, expand=False)
-        page.pack_start(comments_aligned_hbox, expand=False)
+        page.pack_start(summary_scroll)
         page.show_all()
 
     def prepare_page_5(self):
@@ -755,25 +784,15 @@ class ReporterAssistant():
         self.assistant.insert_page(page, PAGE_REPORT_DONE)
         self.pdict_add_page(page, PAGE_REPORT_DONE)
         self.assistant.set_page_type(page, gtk.ASSISTANT_PAGE_SUMMARY)
-        self.assistant.set_page_title(page, _("Finish sending the bug report"))
-        report_done_lbl = gtk.Label(_("Thank you for your bug report. "
-            "It has been succesfully submitted. You may view your bug report "
-            "online using the web adress below:"))
-        report_done_lbl.set_alignment(0.0, 0.0)
-        report_done_lbl.set_justify(gtk.JUSTIFY_LEFT)
+        self.assistant.set_page_title(page, _("Finished sending the bug report"))
         bug_reports_lbl = gtk.Label()
         bug_reports_lbl.set_alignment(0.0, 0.0)
         bug_reports_lbl.set_justify(gtk.JUSTIFY_LEFT)
         bug_reports_lbl.set_markup(_("<b>Bug reports:</b>"))
-        self.bug_reports = gtk.Label()
-        self.bug_reports.set_alignment(0.0, 0.0)
-        self.bug_reports.set_justify(gtk.JUSTIFY_LEFT)
-        self.bug_reports.set_markup(_("Not reported"))
+        width, height = self.assistant.get_size()
         self.bug_reports_vbox = gtk.VBox(spacing=5)
-        self.bug_reports_vbox.pack_start(bug_reports_lbl)
-        self.bug_reports_vbox.pack_start(self.bug_reports)
-        page.pack_start(report_done_lbl, expand=False)
-        page.pack_start(self.bug_reports_vbox, expand=False)
+        self.bug_reports_vbox.pack_start(bug_reports_lbl, expand=False)
+        page.pack_start(self.bug_reports_vbox)
         page.show_all()
 
     def __del__(self):
