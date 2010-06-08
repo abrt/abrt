@@ -69,13 +69,11 @@ static void add_content(bool &was_multiline, string& description, const char *he
 }
 
 /* Items we don't want to include */
-static const char *const blacklisted_items_bz[] = {
-    FILENAME_TIME     ,
+static const char *const blacklisted_items[] = {
     FILENAME_ANALYZER ,
     FILENAME_COREDUMP ,
     FILENAME_DESCRIPTION, /* package description - basically useless */
     FILENAME_HOSTNAME ,
-    CD_UID            ,
     CD_UUID           ,
     CD_INFORMALL      ,
     CD_DUPHASH        ,
@@ -100,7 +98,7 @@ string make_description_bz(const map_crash_data_t& pCrashData)
         if (type == CD_TXT)
         {
             /* Skip items we are not interested in */
-            const char *const *bl = blacklisted_items_bz;
+            const char *const *bl = blacklisted_items;
             while (*bl)
             {
                 if (itemname == *bl)
@@ -166,6 +164,18 @@ string make_description_logger(const map_crash_data_t& pCrashData)
         if (type == CD_TXT
          || type == CD_BIN
         ) {
+            /* Skip items we are not interested in */
+            const char *const *bl = blacklisted_items;
+            while (*bl)
+            {
+                if (filename == *bl)
+                    break;
+                bl++;
+            }
+            if (*bl)
+                continue; /* blacklisted */
+            if (content == "1.\n2.\n3.\n")
+                continue; /* user did not change default "How to reproduce" */
             if (content == "1.\n2.\n3.\n")
                 continue; /* user did not change default "How to reproduce" */
 
