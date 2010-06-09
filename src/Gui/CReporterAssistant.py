@@ -343,7 +343,6 @@ class ReporterAssistant():
                 comment_text = comment_buff.get_text(comment_buff.get_start_iter(), comment_buff.get_end_iter())
                 # user has changed the comment
                 self.comments.set_text(comment_text)
-                self.comments.queue_resize()
                 self.result[FILENAME_COMMENT] = [CD_TXT, 'y', comment_text]
             else:
                 self.comments.set_text(_("You didn't provide any comments."))
