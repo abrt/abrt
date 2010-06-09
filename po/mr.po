@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-26 17:36+0200\n"
+"POT-Creation-Date: 2010-06-09 15:38+0200\n"
 "PO-Revision-Date: 2010-05-13 17:38+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
@@ -16,6 +16,252 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: lib/Plugins/Catcut.cpp:61
+#, fuzzy
+msgid "send_string: URL not specified"
+msgstr "FileTransfer: URL दिले नाही"
+
+#: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
+#, fuzzy, c-format
+msgid "Sending failed, try it again: %s"
+msgstr "आर्काइव्ह %s, याला %s करीता पाठवत आहे"
+
+#: lib/Plugins/Catcut.cpp:95
+#, fuzzy
+msgid "send_file: URL not specified"
+msgstr "FileTransfer: URL दिले नाही"
+
+#: lib/Plugins/Catcut.cpp:99
+#, fuzzy, c-format
+msgid "Sending file %s to %s"
+msgstr "आर्काइव्ह %s, याला %s करीता पाठवत आहे"
+
+#: lib/Plugins/Catcut.cpp:325
+#, fuzzy, c-format
+msgid "New bug id: %s"
+msgstr "नवीन बग id: %i"
+
+#: lib/Plugins/Catcut.cpp:366
+#, c-format
+msgid "error returned by requestUpload: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:371
+#, c-format
+msgid "error returned by requestUpload: %d"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:377
+msgid "no URL returned by requestUpload, and no errno"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:382
+#, c-format
+msgid "requestUpload returned URL: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:402
+#, c-format
+msgid "Attaching (text): %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
+#, c-format
+msgid "rebased URL: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:420
+#, c-format
+msgid "Attaching binary: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
+msgid "Creating new bug..."
+msgstr "नवीन बग निर्माण करत आहे..."
+
+#: lib/Plugins/TicketUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
+msgid "FileTransfer: URL not specified"
+msgstr "FileTransfer: URL दिले नाही"
+
+#: lib/Plugins/TicketUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "आर्काइव्ह %s, याला %s करीता पाठवत आहे"
+
+#: lib/Plugins/TicketUploader.cpp:130
+#, c-format
+msgid "Sending failed, trying again. %s"
+msgstr ""
+
+#: lib/Plugins/TicketUploader.cpp:192
+#, fuzzy
+msgid "Creating a TicketUploader report..."
+msgstr "अहवाल निर्माण व सादर करत आहे..."
+
+#: lib/Plugins/rhfastcheck.cpp:71
+#, fuzzy
+msgid "Creating a signature..."
+msgstr "अहवाल निर्माण व सादर करत आहे..."
+
+#: lib/Plugins/rhticket.cpp:222
+#, fuzzy
+msgid "Creating a new case..."
+msgstr "नवीन बग निर्माण करत आहे..."
+
+#: lib/Utils/make_descr.cpp:296
+#, c-format
+msgid "Binary file %s will not be reported"
+msgstr ""
+
+#: src/CLI/CLI.cpp:68
+#, c-format
+msgid ""
+"%u.\n"
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tPackage    : %s\n"
+"\tExecutable : %s\n"
+"\tCrash Time : %s\n"
+"\tCrash Count: %s\n"
+msgstr ""
+
+#: src/CLI/CLI.cpp:154
+#, c-format
+msgid ""
+"Usage: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t--get-list\t\tprint list of crashes which are not reported yet\n"
+"\t--get-list-full\t\tprint list of all crashes\n"
+"\t--report CRASH_ID\tcreate and send a report\n"
+"\t--report-always CRASH_ID create and send a report without asking\n"
+"\t--delete CRASH_ID\tremove crash\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
+msgstr ""
+
+#: src/CLI/CLI.cpp:198
+msgid "You must specify exactly one operation."
+msgstr ""
+
+#: src/CLI/report.cpp:179
+#, c-format
+msgid "# This field is read only.\n"
+msgstr ""
+
+#: src/CLI/report.cpp:199
+msgid "# Describe the circumstances of this crash below."
+msgstr ""
+
+#: src/CLI/report.cpp:201
+msgid "# How to reproduce the crash?"
+msgstr ""
+
+#: src/CLI/report.cpp:203
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data such as passwords."
+msgstr ""
+
+#: src/CLI/report.cpp:205
+msgid "# Architecture"
+msgstr ""
+
+#: src/CLI/report.cpp:206
+msgid "# Command line"
+msgstr ""
+
+#: src/CLI/report.cpp:207
+#, fuzzy
+msgid "# Component"
+msgstr "सामान्य"
+
+#: src/CLI/report.cpp:208
+msgid "# Core dump"
+msgstr ""
+
+#: src/CLI/report.cpp:209
+msgid "# Executable"
+msgstr ""
+
+#: src/CLI/report.cpp:210
+msgid "# Kernel version"
+msgstr ""
+
+#: src/CLI/report.cpp:211
+msgid "# Package"
+msgstr ""
+
+#: src/CLI/report.cpp:212
+msgid "# Reason of crash"
+msgstr ""
+
+#: src/CLI/report.cpp:213
+msgid "# Release string of the operating system"
+msgstr ""
+
+#: src/CLI/report.cpp:323
+msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
+msgstr ""
+
+#: src/CLI/report.cpp:411
+msgid ""
+"\n"
+"The report has been updated."
+msgstr ""
+
+#: src/CLI/report.cpp:413
+msgid ""
+"\n"
+"No changes were detected in the report."
+msgstr ""
+
+#: src/CLI/report.cpp:628
+#, c-format
+msgid "Wrong settings were detected for plugin %s.\n"
+msgstr ""
+
+#: src/CLI/report.cpp:632
+msgid "Enter your login: "
+msgstr ""
+
+#: src/CLI/report.cpp:638
+msgid "Enter your password: "
+msgstr ""
+
+#: src/CLI/report.cpp:681
+#, fuzzy
+msgid "Reporting..."
+msgstr "रिपोर्ट"
+
+#: src/CLI/report.cpp:700
+#, c-format
+msgid "Report using %s? [y/N]: "
+msgstr ""
+
+#: src/CLI/report.cpp:703
+msgid "Skipping..."
+msgstr ""
+
+#: src/CLI/report.cpp:720
+#, c-format
+msgid "Crash reported via %d plugins (%d errors)\n"
+msgstr ""
+
+#: src/Daemon/CommLayerServerDBus.cpp:234
+msgid "Comment is too long"
+msgstr ""
+
+#: src/Daemon/CommLayerServerDBus.cpp:238
+msgid "'How to reproduce' is too long"
+msgstr ""
 
 #: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -232,15 +478,15 @@ msgstr ""
 "डाटाबेसमध्ये या प्रकारचे क्रॅश आढळले नाही, सहसा चुकीचा क्रॅशआयडी असू शकतो.\n"
 "crashid=%s"
 
-#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:18
+#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:19
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "हे कसे निर्माण होते किंवा तुम्ही काय केले याचे थोडक्यात वर्णन..."
 
-#: src/Gui/CCReporterDialog.py:107 src/Gui/CReporterAssistant.py:256
+#: src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "संवेदनशील डाटाकरीता बॅकट्रेस तपासा"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:268
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -253,11 +499,11 @@ msgstr ""
 "करण्याचा प्रयत्न करा \n"
 "व त्यानंतर बॅकट्रेस पुनः निर्माण करण्यासाठी पुनः ताजे करा बटनचा वापर करा."
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:270
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "बॅकट्रेस वापरण्याजोगी नाही, यांस कळवू नका!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:274
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -279,7 +525,8 @@ msgstr ""
 "या प्रकारच्या क्रॅशकरीता रिपोर्टर प्लगइन उपलब्ध नाही\n"
 "कृपया abrt.conf तपासा."
 
-#: src/Gui/CCReporterDialog.py:418 src/Gui/CReporterAssistant.py:176
+#: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
+#: src/Gui/CReporterAssistant.py:193
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -288,12 +535,12 @@ msgstr ""
 "प्लगइन संरचना साठवणे अशक्य:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:206
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
 #, python-format
 msgid "Configure %s options"
 msgstr "%s पर्याय संरचीत करा"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:754
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -301,7 +548,7 @@ msgstr ""
 "रिपोर्ट प्राप्त करण्यास अशक्य!\n"
 "Debuginfo आढळले नाही?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:346
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -311,10 +558,34 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:786
+#: src/Gui/CReporterAssistant.py:839
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "अहवाल प्राप्त करतेवेळी त्रुटी: %s"
+
+#: src/Gui/ConfBackend.py:77
+#, fuzzy
+msgid "Can't connect to Gnome Keyring daemon"
+msgstr "प्रणाली dbus शी जुळवणी करण्यास अशक्य"
+
+#: src/Gui/ConfBackend.py:83
+msgid "Can't get default keyring"
+msgstr ""
+
+#: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings won't be saved."
+msgstr ""
+
+#: src/Gui/ConfBackend.py:152
+#, python-format
+msgid ""
+"Access to gnome-keyring has been denied, can't load the settings for %s!"
+msgstr ""
+
+#: src/Gui/ConfBackend.py:205
+msgid "Access to gnome-keyring has been denied, can't load settings"
+msgstr ""
 
 #: src/Gui/dialogs.glade:7
 msgid "Report done"
@@ -323,6 +594,29 @@ msgstr "तपशील पूर्ण झाले"
 #: src/Gui/dialogs.glade:79
 msgid "Log"
 msgstr "लॉग"
+
+#: src/Gui/PluginsSettingsDialog.py:24
+msgid "Can't load gui description for SettingsDialog!"
+msgstr ""
+
+#: src/Gui/PluginsSettingsDialog.py:41
+#, fuzzy
+msgid "Name"
+msgstr "नाव:"
+
+#: src/Gui/PluginsSettingsDialog.py:148
+msgid "Please select a plugin from the list to edit it's options."
+msgstr ""
+
+#: src/Gui/PluginsSettingsDialog.py:156
+#, fuzzy, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"डंपसूची लोड करतेवेळी त्रुटी आढळली.\n"
+"%s"
 
 #: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
@@ -378,7 +672,7 @@ msgstr "<span fgcolor=\"blue\">कारण:</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "बॅकट्रेस तपासले व संवेदनशील डाटा काढून टाकले (पासवर्डस्, इत्यादी)"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:664
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
 msgid "<b>Backtrace</b>"
 msgstr "<b>बॅकट्रेस</b>"
 
@@ -471,7 +765,8 @@ msgid "<b>Plugin details</b>"
 msgstr "<b>प्लगइन तपशील</b>"
 
 #: src/Gui/settings.glade:221
-msgid "C_onfigure plugin"
+#, fuzzy
+msgid "C_onfigure Plugin"
 msgstr "प्लगइन संरचीत करा (_o)"
 
 #: src/Gui/settings.glade:258
@@ -530,19 +825,24 @@ msgstr "अनलाइजर्स्, कृती, रिपोर्टर�
 msgid "GPG Keys"
 msgstr "GPG किज्"
 
-#: src/Gui/CReporterAssistant.py:257
+#: src/Gui/CReporterAssistant.py:273
+#, fuzzy
+msgid "You should check backtrace for sensitive data"
+msgstr "संवेदनशील डाटाकरीता बॅकट्रेस तपासा"
+
+#: src/Gui/CReporterAssistant.py:274
 msgid "You must agree with sending the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:315
+#: src/Gui/CReporterAssistant.py:334
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:323
+#: src/Gui/CReporterAssistant.py:348
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:395
+#: src/Gui/CReporterAssistant.py:425
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -557,12 +857,12 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:448
+#: src/Gui/CReporterAssistant.py:478
 #, fuzzy
 msgid "Send a bug report"
 msgstr "अहवाल पाठवा"
 
-#: src/Gui/CReporterAssistant.py:471
+#: src/Gui/CReporterAssistant.py:516
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -572,126 +872,132 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:512
+#: src/Gui/CReporterAssistant.py:557
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:514
+#: src/Gui/CReporterAssistant.py:559
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:520
+#: src/Gui/CReporterAssistant.py:565
 msgid "I agree with submitting the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:525
+#: src/Gui/CReporterAssistant.py:570
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:548
+#: src/Gui/CReporterAssistant.py:593
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:565
+#: src/Gui/CReporterAssistant.py:611
 msgid ""
 "Are there any comment you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:583
+#: src/Gui/CReporterAssistant.py:630
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:590
+#: src/Gui/CReporterAssistant.py:637
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:631
+#: src/Gui/CReporterAssistant.py:678
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:633
+#: src/Gui/CReporterAssistant.py:680
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:638
+#: src/Gui/CReporterAssistant.py:685
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>प्लगइन तपशील</b>"
 
-#: src/Gui/CReporterAssistant.py:645
+#: src/Gui/CReporterAssistant.py:692
 #, fuzzy
 msgid "Component"
 msgstr "सामान्य"
 
-#: src/Gui/CReporterAssistant.py:646
+#: src/Gui/CReporterAssistant.py:693
 msgid "Package"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:647
+#: src/Gui/CReporterAssistant.py:694
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:648
+#: src/Gui/CReporterAssistant.py:695
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:650
+#: src/Gui/CReporterAssistant.py:697
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:651
+#: src/Gui/CReporterAssistant.py:698
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:652
+#: src/Gui/CReporterAssistant.py:699
 msgid "Release"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:653
+#: src/Gui/CReporterAssistant.py:700
 #, fuzzy
 msgid "Reason"
 msgstr "<b>कारण:</b>"
 
-#: src/Gui/CReporterAssistant.py:667
+#: src/Gui/CReporterAssistant.py:714
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:679
+#: src/Gui/CReporterAssistant.py:726
 #, fuzzy
-msgid "<b>Steps to reporoduce:</b>"
+msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>वेळ (किंवा कार्यकाळ)</b>"
 
-#: src/Gui/CReporterAssistant.py:697
+#: src/Gui/CReporterAssistant.py:747
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>टिपण्णी:</b>"
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:750
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:723
-msgid "Finish sending the bug report"
-msgstr ""
+#: src/Gui/CReporterAssistant.py:786
+#, fuzzy
+msgid "Finished sending the bug report"
+msgstr "अहवाल पाठवा"
 
-#: src/Gui/CReporterAssistant.py:724
-msgid ""
-"Thank you for your bug report. It has been succesfully submitted. You may "
-"view your bug report online using the web adress below:"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:732
+#: src/Gui/CReporterAssistant.py:790
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>बग अहवाल:</b>"
 
-#: src/Gui/CReporterAssistant.py:736
+#: src/Gui/settings_wizard.glade:7
+msgid "Wrong Settings Detected"
+msgstr ""
+
+#: src/Gui/settings_wizard.glade:40
+msgid ""
+"Wrong settings detected for some of the enabled reporter plugins, please use "
+"the buttons below to open respective configuration and fix it before you "
+"proceed, otherwise the reporting process can fail.\n"
+msgstr ""
+
+#: src/Gui/settings_wizard.glade:71
 #, fuzzy
-msgid "Not reported"
-msgstr "कळवले"
+msgid "<b>Do you want to continue?</b>"
+msgstr "<b>ही घटना तुम्हाला कुठे कळवायची आहे?</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -757,10 +1063,6 @@ msgstr "हुबेहुब करीता तपासत आहे..."
 msgid "Missing mandatory member 'bugs'"
 msgstr "आवश्यक सदस्य 'bugs' आढळले नाही"
 
-#: lib/Plugins/Bugzilla.cpp:655
-msgid "Creating new bug..."
-msgstr "नवीन बग निर्माण करत आहे..."
-
 #: lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
 msgstr "बगजीला नोंदणी निर्माण अपयशी"
@@ -797,19 +1099,19 @@ msgstr "बग(%d) मध्ये नवीन टिपण्णी समा�
 msgid "Getting local universal unique identification"
 msgstr "स्थानीय यूनीवर्सल् ओळख प्राप्त करत आहे"
 
-#: lib/Plugins/CCpp.cpp:159
+#: lib/Plugins/CCpp.cpp:184
 msgid "Generating backtrace"
 msgstr "backtrace निर्माण करत आहे"
 
-#: lib/Plugins/CCpp.cpp:327
+#: lib/Plugins/CCpp.cpp:352
 msgid "Starting debuginfo installation"
 msgstr "debuginfo प्रतिष्ठापन सुरू करत आहे"
 
-#: lib/Plugins/CCpp.cpp:535
+#: lib/Plugins/CCpp.cpp:560
 msgid "Getting global universal unique identification..."
 msgstr "लोकल ग्लोबल एकमेव ओळख प्राप्त करत आहे..."
 
-#: lib/Plugins/CCpp.cpp:701
+#: lib/Plugins/CCpp.cpp:726
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo प्रतिष्ठापन वगळत आहे"
 
@@ -821,15 +1123,6 @@ msgstr "अहवाल निर्माण व सादर करत आह�
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "'%s' करीता अहवाल लिहत आहे"
-
-#: lib/Plugins/FileTransfer.cpp:53
-msgid "FileTransfer: URL not specified"
-msgstr "FileTransfer: URL दिले नाही"
-
-#: lib/Plugins/FileTransfer.cpp:57
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "आर्काइव्ह %s, याला %s करीता पाठवत आहे"
 
 #: lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
@@ -857,6 +1150,10 @@ msgstr "sosreport चालवत आहे: %s"
 #: lib/Plugins/SOSreport.cpp:91
 msgid "Done running sosreport"
 msgstr "sosreport चालवणे पूर्ण झाले"
+
+#, fuzzy
+#~ msgid "Not reported"
+#~ msgstr "कळवले"
 
 #~ msgid "View and report application crashes"
 #~ msgstr "ऍप्लिकेशन क्रॅश पहा व कळवा"

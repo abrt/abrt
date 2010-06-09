@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-26 17:36+0200\n"
+"POT-Creation-Date: 2010-06-09 15:38+0200\n"
 "PO-Revision-Date: 2010-03-12 23:28+0100\n"
 "Last-Translator: Peter Bojtos <ptr@ulx.hu>\n"
 "Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat."
@@ -21,6 +21,255 @@ msgstr ""
 "X-Poedit-Country: HUNGARY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+
+#: lib/Plugins/Catcut.cpp:61
+#, fuzzy
+msgid "send_string: URL not specified"
+msgstr "Fájlátvitel: URL nincs megadva"
+
+#: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
+#, fuzzy, c-format
+msgid "Sending failed, try it again: %s"
+msgstr "%s archívum küldése %s részére"
+
+#: lib/Plugins/Catcut.cpp:95
+#, fuzzy
+msgid "send_file: URL not specified"
+msgstr "Fájlátvitel: URL nincs megadva"
+
+#: lib/Plugins/Catcut.cpp:99
+#, fuzzy, c-format
+msgid "Sending file %s to %s"
+msgstr "%s archívum küldése %s részére"
+
+#: lib/Plugins/Catcut.cpp:325
+#, fuzzy, c-format
+msgid "New bug id: %s"
+msgstr "Új hiba azonosító: %i"
+
+#: lib/Plugins/Catcut.cpp:366
+#, c-format
+msgid "error returned by requestUpload: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:371
+#, c-format
+msgid "error returned by requestUpload: %d"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:377
+msgid "no URL returned by requestUpload, and no errno"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:382
+#, c-format
+msgid "requestUpload returned URL: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:402
+#, c-format
+msgid "Attaching (text): %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
+#, c-format
+msgid "rebased URL: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:420
+#, c-format
+msgid "Attaching binary: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
+msgid "Creating new bug..."
+msgstr "Új hiba készítése..."
+
+#: lib/Plugins/TicketUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
+msgid "FileTransfer: URL not specified"
+msgstr "Fájlátvitel: URL nincs megadva"
+
+#: lib/Plugins/TicketUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "%s archívum küldése %s részére"
+
+#: lib/Plugins/TicketUploader.cpp:130
+#, c-format
+msgid "Sending failed, trying again. %s"
+msgstr ""
+
+#: lib/Plugins/TicketUploader.cpp:192
+#, fuzzy
+msgid "Creating a TicketUploader report..."
+msgstr "Jelentés készítése..."
+
+#: lib/Plugins/rhfastcheck.cpp:71
+#, fuzzy
+msgid "Creating a signature..."
+msgstr "Archívum készítése..."
+
+#: lib/Plugins/rhticket.cpp:222
+#, fuzzy
+msgid "Creating a new case..."
+msgstr "Új hiba készítése..."
+
+#: lib/Utils/make_descr.cpp:296
+#, fuzzy, c-format
+msgid "Binary file %s will not be reported"
+msgstr "A %s bináris fájl nem kerül a jelentésbe."
+
+#: src/CLI/CLI.cpp:68
+#, c-format
+msgid ""
+"%u.\n"
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tPackage    : %s\n"
+"\tExecutable : %s\n"
+"\tCrash Time : %s\n"
+"\tCrash Count: %s\n"
+msgstr ""
+
+#: src/CLI/CLI.cpp:154
+#, c-format
+msgid ""
+"Usage: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t--get-list\t\tprint list of crashes which are not reported yet\n"
+"\t--get-list-full\t\tprint list of all crashes\n"
+"\t--report CRASH_ID\tcreate and send a report\n"
+"\t--report-always CRASH_ID create and send a report without asking\n"
+"\t--delete CRASH_ID\tremove crash\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
+msgstr ""
+
+#: src/CLI/CLI.cpp:198
+msgid "You must specify exactly one operation."
+msgstr ""
+
+#: src/CLI/report.cpp:179
+#, c-format
+msgid "# This field is read only.\n"
+msgstr ""
+
+#: src/CLI/report.cpp:199
+msgid "# Describe the circumstances of this crash below."
+msgstr ""
+
+#: src/CLI/report.cpp:201
+msgid "# How to reproduce the crash?"
+msgstr ""
+
+#: src/CLI/report.cpp:203
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data such as passwords."
+msgstr ""
+
+#: src/CLI/report.cpp:205
+msgid "# Architecture"
+msgstr ""
+
+#: src/CLI/report.cpp:206
+msgid "# Command line"
+msgstr ""
+
+#: src/CLI/report.cpp:207
+#, fuzzy
+msgid "# Component"
+msgstr "Gyakori"
+
+#: src/CLI/report.cpp:208
+msgid "# Core dump"
+msgstr ""
+
+#: src/CLI/report.cpp:209
+msgid "# Executable"
+msgstr ""
+
+#: src/CLI/report.cpp:210
+msgid "# Kernel version"
+msgstr ""
+
+#: src/CLI/report.cpp:211
+#, fuzzy
+msgid "# Package"
+msgstr "Csomag"
+
+#: src/CLI/report.cpp:212
+msgid "# Reason of crash"
+msgstr ""
+
+#: src/CLI/report.cpp:213
+msgid "# Release string of the operating system"
+msgstr ""
+
+#: src/CLI/report.cpp:323
+msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
+msgstr ""
+
+#: src/CLI/report.cpp:411
+#, fuzzy
+msgid ""
+"\n"
+"The report has been updated."
+msgstr "ABRT szolgáltatás elindult"
+
+#: src/CLI/report.cpp:413
+msgid ""
+"\n"
+"No changes were detected in the report."
+msgstr ""
+
+#: src/CLI/report.cpp:628
+#, c-format
+msgid "Wrong settings were detected for plugin %s.\n"
+msgstr ""
+
+#: src/CLI/report.cpp:632
+msgid "Enter your login: "
+msgstr ""
+
+#: src/CLI/report.cpp:638
+msgid "Enter your password: "
+msgstr ""
+
+#: src/CLI/report.cpp:681
+#, fuzzy
+msgid "Reporting..."
+msgstr "Feldolgozás..."
+
+#: src/CLI/report.cpp:700
+#, c-format
+msgid "Report using %s? [y/N]: "
+msgstr ""
+
+#: src/CLI/report.cpp:703
+#, fuzzy
+msgid "Skipping..."
+msgstr "Feldolgozás..."
+
+#: src/CLI/report.cpp:720
+#, c-format
+msgid "Crash reported via %d plugins (%d errors)\n"
+msgstr ""
+
+#: src/Daemon/CommLayerServerDBus.cpp:234
+msgid "Comment is too long"
+msgstr ""
+
+#: src/Daemon/CommLayerServerDBus.cpp:238
+msgid "'How to reproduce' is too long"
+msgstr ""
 
 #: src/Gui/ABRTExceptions.py:6
 #, fuzzy
@@ -244,17 +493,17 @@ msgstr ""
 "Nincs ilyen összeomlás az adatbázisban, talán rossz az azonosító.\n"
 "Azonosító=%s"
 
-#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:18
+#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:19
 msgid "Brief description how to reproduce this or what you did..."
 msgstr ""
 "Rövid leírás angolul arról, hogyan lehet megismételni ezt, vagy mit tettek "
 "előtte..."
 
-#: src/Gui/CCReporterDialog.py:107 src/Gui/CReporterAssistant.py:256
+#: src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "Ellenőrizni kell a jelentést az érzékeny adatok miatt"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:268
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -269,11 +518,11 @@ msgstr ""
 "majd használja a Frissítés gombot a nyomkövető információk ismételt "
 "elkészítéséhez."
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:270
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "A nyomkövetés haszontalan, ezt nem jelenthetik!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:274
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -298,7 +547,8 @@ msgstr ""
 "Nem található jelentő kiegészítő ilyen típusú összeömláshoz\n"
 "Ellenőrizze az abrt.conf-ot."
 
-#: src/Gui/CCReporterDialog.py:418 src/Gui/CReporterAssistant.py:176
+#: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
+#: src/Gui/CReporterAssistant.py:193
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -307,12 +557,12 @@ msgstr ""
 "Nem lehet a kiegészítő beállításait elmenteni:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:206
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
 #, fuzzy, python-format
 msgid "Configure %s options"
 msgstr "_Kiegészítő beállítása"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:754
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -320,7 +570,7 @@ msgstr ""
 "Jelentés összeállítása nem lehetséges!\n"
 "Debuginfo hiányzik?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:346
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -330,10 +580,37 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:786
+#: src/Gui/CReporterAssistant.py:839
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Jelentés összeállítása nem sikerült: %s"
+
+#: src/Gui/ConfBackend.py:77
+#, fuzzy
+msgid "Can't connect to Gnome Keyring daemon"
+msgstr "A rendszer dbus nem elérhető"
+
+#: src/Gui/ConfBackend.py:83
+#, fuzzy
+msgid "Can't get default keyring"
+msgstr ""
+"A plugin beállításainak mentése sikertelen:\n"
+" %s"
+
+#: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings won't be saved."
+msgstr ""
+
+#: src/Gui/ConfBackend.py:152
+#, python-format
+msgid ""
+"Access to gnome-keyring has been denied, can't load the settings for %s!"
+msgstr ""
+
+#: src/Gui/ConfBackend.py:205
+msgid "Access to gnome-keyring has been denied, can't load settings"
+msgstr ""
 
 #: src/Gui/dialogs.glade:7
 msgid "Report done"
@@ -342,6 +619,30 @@ msgstr "Jelentés kész"
 #: src/Gui/dialogs.glade:79
 msgid "Log"
 msgstr "Napló"
+
+#: src/Gui/PluginsSettingsDialog.py:24
+msgid "Can't load gui description for SettingsDialog!"
+msgstr "Nem tudom betölteni a GUI leírását a SettingsDialog-hoz!"
+
+#: src/Gui/PluginsSettingsDialog.py:41
+#, fuzzy
+msgid "Name"
+msgstr "Név:"
+
+#: src/Gui/PluginsSettingsDialog.py:148
+msgid "Please select a plugin from the list to edit it's options."
+msgstr ""
+
+#: src/Gui/PluginsSettingsDialog.py:156
+#, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"Hiba a plugin beállító UI betöltése közben: \n"
+"\n"
+"%s"
 
 #: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
@@ -399,7 +700,7 @@ msgstr ""
 "Ellenőriztem a jelentést, és eltávolítottam minden érzékeny adatot "
 "(jelszavak, stb)"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:664
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
 msgid "<b>Backtrace</b>"
 msgstr "<b>Nyomkövetés</b>"
 
@@ -493,7 +794,8 @@ msgid "<b>Plugin details</b>"
 msgstr "<b>kiegészítő részletei</b>"
 
 #: src/Gui/settings.glade:221
-msgid "C_onfigure plugin"
+#, fuzzy
+msgid "C_onfigure Plugin"
 msgstr "_Kiegészítő beállítása"
 
 #: src/Gui/settings.glade:258
@@ -552,20 +854,25 @@ msgstr "Elemzők, Tettek, Jelentők"
 msgid "GPG Keys"
 msgstr "GPG Kulcsok"
 
-#: src/Gui/CReporterAssistant.py:257
+#: src/Gui/CReporterAssistant.py:273
+#, fuzzy
+msgid "You should check backtrace for sensitive data"
+msgstr "Ellenőrizni kell a jelentést az érzékeny adatok miatt"
+
+#: src/Gui/CReporterAssistant.py:274
 #, fuzzy
 msgid "You must agree with sending the backtrace"
 msgstr "El kell fogadnia a nyomkövetési információk beküldését."
 
-#: src/Gui/CReporterAssistant.py:315
+#: src/Gui/CReporterAssistant.py:334
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:323
+#: src/Gui/CReporterAssistant.py:348
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:395
+#: src/Gui/CReporterAssistant.py:425
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -580,12 +887,12 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:448
+#: src/Gui/CReporterAssistant.py:478
 #, fuzzy
 msgid "Send a bug report"
 msgstr "Jelentést küld"
 
-#: src/Gui/CReporterAssistant.py:471
+#: src/Gui/CReporterAssistant.py:516
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -595,128 +902,135 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:512
+#: src/Gui/CReporterAssistant.py:557
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:514
+#: src/Gui/CReporterAssistant.py:559
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:520
+#: src/Gui/CReporterAssistant.py:565
 #, fuzzy
 msgid "I agree with submitting the backtrace"
 msgstr "El kell fogadnia a nyomkövetési információk beküldését."
 
-#: src/Gui/CReporterAssistant.py:525
+#: src/Gui/CReporterAssistant.py:570
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:548
+#: src/Gui/CReporterAssistant.py:593
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:565
+#: src/Gui/CReporterAssistant.py:611
 msgid ""
 "Are there any comment you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:583
+#: src/Gui/CReporterAssistant.py:630
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:590
+#: src/Gui/CReporterAssistant.py:637
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:631
+#: src/Gui/CReporterAssistant.py:678
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:633
+#: src/Gui/CReporterAssistant.py:680
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:638
+#: src/Gui/CReporterAssistant.py:685
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>kiegészítő részletei</b>"
 
-#: src/Gui/CReporterAssistant.py:645
+#: src/Gui/CReporterAssistant.py:692
 #, fuzzy
 msgid "Component"
 msgstr "Gyakori"
 
-#: src/Gui/CReporterAssistant.py:646
+#: src/Gui/CReporterAssistant.py:693
 msgid "Package"
 msgstr "Csomag"
 
-#: src/Gui/CReporterAssistant.py:647
+#: src/Gui/CReporterAssistant.py:694
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:648
+#: src/Gui/CReporterAssistant.py:695
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:650
+#: src/Gui/CReporterAssistant.py:697
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:651
+#: src/Gui/CReporterAssistant.py:698
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:652
+#: src/Gui/CReporterAssistant.py:699
 #, fuzzy
 msgid "Release"
 msgstr "Töröl"
 
-#: src/Gui/CReporterAssistant.py:653
+#: src/Gui/CReporterAssistant.py:700
 #, fuzzy
 msgid "Reason"
 msgstr "<b>Megjegyzés</b>"
 
-#: src/Gui/CReporterAssistant.py:667
+#: src/Gui/CReporterAssistant.py:714
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:679
+#: src/Gui/CReporterAssistant.py:726
 #, fuzzy
-msgid "<b>Steps to reporoduce:</b>"
+msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Időpont (vagy időszak)</b>"
 
-#: src/Gui/CReporterAssistant.py:697
+#: src/Gui/CReporterAssistant.py:747
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>Megjegyzés</b>"
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:750
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:723
-msgid "Finish sending the bug report"
-msgstr ""
+#: src/Gui/CReporterAssistant.py:786
+#, fuzzy
+msgid "Finished sending the bug report"
+msgstr "Jelentést küld"
 
-#: src/Gui/CReporterAssistant.py:724
-msgid ""
-"Thank you for your bug report. It has been succesfully submitted. You may "
-"view your bug report online using the web adress below:"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:732
+#: src/Gui/CReporterAssistant.py:790
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Nincs bejelentve!</b>"
 
-#: src/Gui/CReporterAssistant.py:736
+#: src/Gui/settings_wizard.glade:7
 #, fuzzy
-msgid "Not reported"
-msgstr "Nincs bejelentve"
+msgid "Wrong Settings Detected"
+msgstr "Semmi nincs kijelölve"
+
+#: src/Gui/settings_wizard.glade:40
+msgid ""
+"Wrong settings detected for some of the enabled reporter plugins, please use "
+"the buttons below to open respective configuration and fix it before you "
+"proceed, otherwise the reporting process can fail.\n"
+msgstr ""
+
+#: src/Gui/settings_wizard.glade:71
+#, fuzzy
+msgid "<b>Do you want to continue?</b>"
+msgstr "<b>Hová szeretné bejelenteni az esetet?</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -781,10 +1095,6 @@ msgstr "Többszörözés ellenőrzése..."
 msgid "Missing mandatory member 'bugs'"
 msgstr "Kötelező „bugs” címke hiányzik"
 
-#: lib/Plugins/Bugzilla.cpp:655
-msgid "Creating new bug..."
-msgstr "Új hiba készítése..."
-
 #: lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla bejegyzés létrehozása sikertelen"
@@ -823,19 +1133,19 @@ msgstr "Új megjegyzés hozzáadása (%d) hibához"
 msgid "Getting local universal unique identification"
 msgstr "Helyi egyetemes egyedi azonosító beszerzése"
 
-#: lib/Plugins/CCpp.cpp:159
+#: lib/Plugins/CCpp.cpp:184
 msgid "Generating backtrace"
 msgstr "Nyomkövetés készítése"
 
-#: lib/Plugins/CCpp.cpp:327
+#: lib/Plugins/CCpp.cpp:352
 msgid "Starting debuginfo installation"
 msgstr "Debuginfo telepítés indul"
 
-#: lib/Plugins/CCpp.cpp:535
+#: lib/Plugins/CCpp.cpp:560
 msgid "Getting global universal unique identification..."
 msgstr "Globális egyetemes egyedi azonosító beszerzése..."
 
-#: lib/Plugins/CCpp.cpp:701
+#: lib/Plugins/CCpp.cpp:726
 msgid "Skipping debuginfo installation"
 msgstr "Debuginfo telepítés kihagyása"
 
@@ -847,15 +1157,6 @@ msgstr "Jelentés elkészítése és beküldése..."
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Jelentés írása „%s” számára"
-
-#: lib/Plugins/FileTransfer.cpp:53
-msgid "FileTransfer: URL not specified"
-msgstr "Fájlátvitel: URL nincs megadva"
-
-#: lib/Plugins/FileTransfer.cpp:57
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "%s archívum küldése %s részére"
 
 #: lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
@@ -883,6 +1184,10 @@ msgstr "SOSreport futtatása: %s"
 #: lib/Plugins/SOSreport.cpp:91
 msgid "Done running sosreport"
 msgstr "SOSreport lefutott"
+
+#, fuzzy
+#~ msgid "Not reported"
+#~ msgstr "Nincs bejelentve"
 
 #~ msgid ""
 #~ "Usage: abrt-gui [OPTIONS]\n"
@@ -958,9 +1263,6 @@ msgstr "SOSreport lefutott"
 #~ msgid "Executing SOSreport plugin..."
 #~ msgstr "SOSreport modul végrehajtása..."
 
-#~ msgid "Working..."
-#~ msgstr "Feldolgozás..."
-
 #~ msgid "Can't get username for uid %s"
 #~ msgstr "Felhasználónév elérhetetlen a %s uid-hez"
 
@@ -972,9 +1274,6 @@ msgstr "SOSreport lefutott"
 #~ "<b>Figyelem</b>, ön adatokat szeretne küldeni, ami érzékeny információkat "
 #~ "is tartalmazhat.\n"
 #~ "Biztosan el kívánja küldeni ezt: <b>%s</b>?\n"
-
-#~ msgid "Nothing selected"
-#~ msgstr "Semmi nincs kijelölve"
 
 #, fuzzy
 #~ msgid "gtk-close"
@@ -995,12 +1294,6 @@ msgstr "SOSreport lefutott"
 #~ msgid "gtk-remove"
 #~ msgstr "Eltávolítás"
 
-#~ msgid "ABRT service has been started"
-#~ msgstr "ABRT szolgáltatás elindult"
-
-#~ msgid "Binary file %s will not be reported."
-#~ msgstr "A %s bináris fájl nem kerül a jelentésbe."
-
 #~ msgid "Check CC and add coment +1..."
 #~ msgstr "Ellenőrizze a CC-t és adjon egy megjegyzést hozzá..."
 
@@ -1009,9 +1302,6 @@ msgstr "SOSreport lefutott"
 
 #~ msgid "Downloading and installing debug-info packages..."
 #~ msgstr "Debug-info csomagok letöltése és telepítése..."
-
-#~ msgid "Creating a report..."
-#~ msgstr "Jelentés készítése..."
 
 #~ msgid "Executing RunApp plugin..."
 #~ msgstr "RunApp modul végrehajtása..."
@@ -1023,18 +1313,6 @@ msgstr "SOSreport lefutott"
 #~ msgstr ""
 #~ "A leírásból nem sikerült menüt készíteni, így előugó ablak nem lesz "
 #~ "elérhető!\n"
-
-#~ msgid "Creating an archive..."
-#~ msgstr "Archívum készítése..."
-
-#~ msgid ""
-#~ "Error while opening plugin settings UI: \n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Hiba a plugin beállító UI betöltése közben: \n"
-#~ "\n"
-#~ "%s"
 
 #~ msgid "unknown response from settings dialog"
 #~ msgstr "Ismeretlen válasz a beállítóablaktól"
@@ -1062,17 +1340,8 @@ msgstr "SOSreport lefutott"
 #~ msgid "Getting local/global universal unique identification..."
 #~ msgstr "Helyi/globális univerzális egyedi azonosító beszerzése..."
 
-#~ msgid "Can't load gui description for SettingsDialog!"
-#~ msgstr "Nem tudom betölteni a GUI leírását a SettingsDialog-hoz!"
-
 #~ msgid "Enabled"
 #~ msgstr "Engedélyezve"
-
-#, fuzzy
-#~ msgid "Can't get plugin description"
-#~ msgstr ""
-#~ "A plugin beállításainak mentése sikertelen:\n"
-#~ " %s"
 
 #~ msgid "Daemon is not running."
 #~ msgstr "A kiszolgáló nem fut."

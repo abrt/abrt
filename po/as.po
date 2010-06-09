@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-05-26 17:36+0200\n"
+"POT-Creation-Date: 2010-06-09 15:38+0200\n"
 "PO-Revision-Date: 2010-05-13 12:51+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@redhat.com>\n"
 "Language-Team: Assamese <fedora-trans-as@redhat.com>\n"
@@ -16,6 +16,255 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
+
+#: lib/Plugins/Catcut.cpp:61
+#, fuzzy
+msgid "send_string: URL not specified"
+msgstr "FileTransfer: URL উল্লিখিত নহয়"
+
+#: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
+#, fuzzy, c-format
+msgid "Sending failed, try it again: %s"
+msgstr "%s আৰ্কাইভক %s লৈ প্ৰেৰণ কৰা হৈছে"
+
+#: lib/Plugins/Catcut.cpp:95
+#, fuzzy
+msgid "send_file: URL not specified"
+msgstr "FileTransfer: URL উল্লিখিত নহয়"
+
+#: lib/Plugins/Catcut.cpp:99
+#, fuzzy, c-format
+msgid "Sending file %s to %s"
+msgstr "%s আৰ্কাইভক %s লৈ প্ৰেৰণ কৰা হৈছে"
+
+#: lib/Plugins/Catcut.cpp:325
+#, fuzzy, c-format
+msgid "New bug id: %s"
+msgstr "নতুন বাগ id: %i"
+
+#: lib/Plugins/Catcut.cpp:366
+#, c-format
+msgid "error returned by requestUpload: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:371
+#, c-format
+msgid "error returned by requestUpload: %d"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:377
+msgid "no URL returned by requestUpload, and no errno"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:382
+#, c-format
+msgid "requestUpload returned URL: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:402
+#, c-format
+msgid "Attaching (text): %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
+#, c-format
+msgid "rebased URL: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:420
+#, c-format
+msgid "Attaching binary: %s"
+msgstr ""
+
+#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
+msgid "Creating new bug..."
+msgstr "নতুন বাগ সৃষ্টি কৰা হৈছে..."
+
+#: lib/Plugins/TicketUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
+msgid "FileTransfer: URL not specified"
+msgstr "FileTransfer: URL উল্লিখিত নহয়"
+
+#: lib/Plugins/TicketUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "%s আৰ্কাইভক %s লৈ প্ৰেৰণ কৰা হৈছে"
+
+#: lib/Plugins/TicketUploader.cpp:130
+#, c-format
+msgid "Sending failed, trying again. %s"
+msgstr ""
+
+#: lib/Plugins/TicketUploader.cpp:192
+#, fuzzy
+msgid "Creating a TicketUploader report..."
+msgstr "প্ৰতিবেদন নিৰ্মাণ কৰক..."
+
+#: lib/Plugins/rhfastcheck.cpp:71
+#, fuzzy
+msgid "Creating a signature..."
+msgstr "এটা আৰ্কাইভ নিৰ্মাণ কৰক..."
+
+#: lib/Plugins/rhticket.cpp:222
+#, fuzzy
+msgid "Creating a new case..."
+msgstr "নতুন বাগ সৃষ্টি কৰা হৈছে..."
+
+#: lib/Utils/make_descr.cpp:296
+#, fuzzy, c-format
+msgid "Binary file %s will not be reported"
+msgstr "%s বাইনেৰি নথিপত্ৰৰ ৰিপোৰ্ট প্ৰতিবেদন কৰা ন'হ'ব ।"
+
+#: src/CLI/CLI.cpp:68
+#, c-format
+msgid ""
+"%u.\n"
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tPackage    : %s\n"
+"\tExecutable : %s\n"
+"\tCrash Time : %s\n"
+"\tCrash Count: %s\n"
+msgstr ""
+
+#: src/CLI/CLI.cpp:154
+#, c-format
+msgid ""
+"Usage: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t--get-list\t\tprint list of crashes which are not reported yet\n"
+"\t--get-list-full\t\tprint list of all crashes\n"
+"\t--report CRASH_ID\tcreate and send a report\n"
+"\t--report-always CRASH_ID create and send a report without asking\n"
+"\t--delete CRASH_ID\tremove crash\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
+msgstr ""
+
+#: src/CLI/CLI.cpp:198
+msgid "You must specify exactly one operation."
+msgstr ""
+
+#: src/CLI/report.cpp:179
+#, c-format
+msgid "# This field is read only.\n"
+msgstr ""
+
+#: src/CLI/report.cpp:199
+msgid "# Describe the circumstances of this crash below."
+msgstr ""
+
+#: src/CLI/report.cpp:201
+msgid "# How to reproduce the crash?"
+msgstr ""
+
+#: src/CLI/report.cpp:203
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data such as passwords."
+msgstr ""
+
+#: src/CLI/report.cpp:205
+msgid "# Architecture"
+msgstr ""
+
+#: src/CLI/report.cpp:206
+msgid "# Command line"
+msgstr ""
+
+#: src/CLI/report.cpp:207
+#, fuzzy
+msgid "# Component"
+msgstr "সাধাৰণ"
+
+#: src/CLI/report.cpp:208
+msgid "# Core dump"
+msgstr ""
+
+#: src/CLI/report.cpp:209
+msgid "# Executable"
+msgstr ""
+
+#: src/CLI/report.cpp:210
+msgid "# Kernel version"
+msgstr ""
+
+#: src/CLI/report.cpp:211
+#, fuzzy
+msgid "# Package"
+msgstr "সৰঞ্জাম"
+
+#: src/CLI/report.cpp:212
+msgid "# Reason of crash"
+msgstr ""
+
+#: src/CLI/report.cpp:213
+msgid "# Release string of the operating system"
+msgstr ""
+
+#: src/CLI/report.cpp:323
+msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
+msgstr ""
+
+#: src/CLI/report.cpp:411
+#, fuzzy
+msgid ""
+"\n"
+"The report has been updated."
+msgstr "ABRT সেৱ আৰম্ভ কৰা হৈছে"
+
+#: src/CLI/report.cpp:413
+msgid ""
+"\n"
+"No changes were detected in the report."
+msgstr ""
+
+#: src/CLI/report.cpp:628
+#, c-format
+msgid "Wrong settings were detected for plugin %s.\n"
+msgstr ""
+
+#: src/CLI/report.cpp:632
+msgid "Enter your login: "
+msgstr ""
+
+#: src/CLI/report.cpp:638
+msgid "Enter your password: "
+msgstr ""
+
+#: src/CLI/report.cpp:681
+#, fuzzy
+msgid "Reporting..."
+msgstr "কৰ্মৰত..."
+
+#: src/CLI/report.cpp:700
+#, c-format
+msgid "Report using %s? [y/N]: "
+msgstr ""
+
+#: src/CLI/report.cpp:703
+#, fuzzy
+msgid "Skipping..."
+msgstr "কৰ্মৰত..."
+
+#: src/CLI/report.cpp:720
+#, c-format
+msgid "Crash reported via %d plugins (%d errors)\n"
+msgstr ""
+
+#: src/Daemon/CommLayerServerDBus.cpp:234
+msgid "Comment is too long"
+msgstr ""
+
+#: src/Daemon/CommLayerServerDBus.cpp:238
+msgid "'How to reproduce' is too long"
+msgstr ""
 
 #: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -233,15 +482,15 @@ msgstr ""
 "তথ্যভঁৰালত এনে বিপৰ্যয় নাই, সম্ভৱতঃ ভুল crashid ।\n"
 "crashid=%s"
 
-#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:18
+#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:19
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "এইটো পুনঃ সঞ্চালনৰ সংক্ষিপ্ত বিৱৰণ অথবা আপোনাৰ সঞ্চালিত কামৰ তথ্য..."
 
-#: src/Gui/CCReporterDialog.py:107 src/Gui/CReporterAssistant.py:256
+#: src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
 msgstr "সংবেদনশীল তথ্যৰ কাৰণে আপুনি বেকট্ৰেচ পৰীক্ষা কৰিব লাগিব"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:268
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -254,11 +503,11 @@ msgstr ""
 "install  %s</b> \n"
 "আৰু Refresh বুটামৰ সহায়ত পুনঃ বেক-ট্ৰেছ উৎপন্ন কৰক ।"
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:270
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "বেক-ট্ৰেছ ব্যৱহাৰযোগ্য নহয়, ইয়াক আপুনি প্ৰতিবেদন কৰিব নালাগে !"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:274
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -282,7 +531,8 @@ msgstr ""
 "এনেধৰণৰ বিপৰ্যয়ৰ কাৰণে কোনো প্ৰতিবেদনকৰ্তাৰ প্লাগ-ইন নাই\n"
 "অনুগ্ৰহ কৰি abrt.conf চাওক ।"
 
-#: src/Gui/CCReporterDialog.py:418 src/Gui/CReporterAssistant.py:176
+#: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
+#: src/Gui/CReporterAssistant.py:193
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -291,12 +541,12 @@ msgstr ""
 "প্লাগ-ইনৰ বৈশিষ্ট্য সংৰক্ষণ কৰা সম্ভৱ নহয়:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:206
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
 #, python-format
 msgid "Configure %s options"
 msgstr "%s বিকল্পসমূহ বিন্যাস কৰক"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:754
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -304,7 +554,7 @@ msgstr ""
 "প্ৰতিবেদন প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ!\n"
 "Debuginfo চাবি অনুপস্থিত?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:346
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -314,10 +564,34 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:786
+#: src/Gui/CReporterAssistant.py:839
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "প্ৰতিবেদন প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ: %s"
+
+#: src/Gui/ConfBackend.py:77
+#, fuzzy
+msgid "Can't connect to Gnome Keyring daemon"
+msgstr "প্ৰণালী dbus-ৰ সৈতে সংযোগ স্থাপন কৰিবলৈ ব্যৰ্থ"
+
+#: src/Gui/ConfBackend.py:83
+msgid "Can't get default keyring"
+msgstr ""
+
+#: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings won't be saved."
+msgstr ""
+
+#: src/Gui/ConfBackend.py:152
+#, python-format
+msgid ""
+"Access to gnome-keyring has been denied, can't load the settings for %s!"
+msgstr ""
+
+#: src/Gui/ConfBackend.py:205
+msgid "Access to gnome-keyring has been denied, can't load settings"
+msgstr ""
 
 #: src/Gui/dialogs.glade:7
 msgid "Report done"
@@ -326,6 +600,29 @@ msgstr "প্ৰতিবেদন বনোৱা হ'ল"
 #: src/Gui/dialogs.glade:79
 msgid "Log"
 msgstr "লগ"
+
+#: src/Gui/PluginsSettingsDialog.py:24
+msgid "Can't load gui description for SettingsDialog!"
+msgstr ""
+
+#: src/Gui/PluginsSettingsDialog.py:41
+#, fuzzy
+msgid "Name"
+msgstr "নাম:"
+
+#: src/Gui/PluginsSettingsDialog.py:148
+msgid "Please select a plugin from the list to edit it's options."
+msgstr ""
+
+#: src/Gui/PluginsSettingsDialog.py:156
+#, fuzzy, python-format
+msgid ""
+"Error while opening plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"dumplist লোড কৰোঁতে সমস্যা ।\n"
+"  %s"
 
 #: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
@@ -382,7 +679,7 @@ msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "মই বেকট্ৰেচ পৰীক্ষা কৰিলো আৰু তাৰ পৰা সংবেদনশীল তথ্য (গুপ্তশব্দ, ইত্যাদি) আঁতৰালো"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:664
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
 msgid "<b>Backtrace</b>"
 msgstr "<b>বেকট্ৰেচ</b>"
 
@@ -475,7 +772,8 @@ msgid "<b>Plugin details</b>"
 msgstr "<b>প্লাগ-ইনৰ বিৱৰণ</b>"
 
 #: src/Gui/settings.glade:221
-msgid "C_onfigure plugin"
+#, fuzzy
+msgid "C_onfigure Plugin"
 msgstr "প্লাগ-ইন বিন্যাস কৰক (_o)"
 
 #: src/Gui/settings.glade:258
@@ -534,20 +832,25 @@ msgstr "বিশ্লেষণকৰ্তা, কাৰ্য্যসমূ�
 msgid "GPG Keys"
 msgstr "GPG চাবিসমূহ"
 
-#: src/Gui/CReporterAssistant.py:257
+#: src/Gui/CReporterAssistant.py:273
+#, fuzzy
+msgid "You should check backtrace for sensitive data"
+msgstr "সংবেদনশীল তথ্যৰ কাৰণে আপুনি বেকট্ৰেচ পৰীক্ষা কৰিব লাগিব"
+
+#: src/Gui/CReporterAssistant.py:274
 #, fuzzy
 msgid "You must agree with sending the backtrace"
 msgstr "এই বেক-ট্ৰেচৰ প্ৰতিবেদনত আপুনি সন্মত হ'ব লাগিব ।"
 
-#: src/Gui/CReporterAssistant.py:315
+#: src/Gui/CReporterAssistant.py:334
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:323
+#: src/Gui/CReporterAssistant.py:348
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:395
+#: src/Gui/CReporterAssistant.py:425
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -562,12 +865,12 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:448
+#: src/Gui/CReporterAssistant.py:478
 #, fuzzy
 msgid "Send a bug report"
 msgstr "প্ৰতিবেদন পঠিয়াওক"
 
-#: src/Gui/CReporterAssistant.py:471
+#: src/Gui/CReporterAssistant.py:516
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -577,128 +880,135 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:512
+#: src/Gui/CReporterAssistant.py:557
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:514
+#: src/Gui/CReporterAssistant.py:559
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:520
+#: src/Gui/CReporterAssistant.py:565
 #, fuzzy
 msgid "I agree with submitting the backtrace"
 msgstr "এই বেক-ট্ৰেচৰ প্ৰতিবেদনত আপুনি সন্মত হ'ব লাগিব ।"
 
-#: src/Gui/CReporterAssistant.py:525
+#: src/Gui/CReporterAssistant.py:570
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:548
+#: src/Gui/CReporterAssistant.py:593
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:565
+#: src/Gui/CReporterAssistant.py:611
 msgid ""
 "Are there any comment you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:583
+#: src/Gui/CReporterAssistant.py:630
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:590
+#: src/Gui/CReporterAssistant.py:637
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:631
+#: src/Gui/CReporterAssistant.py:678
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:633
+#: src/Gui/CReporterAssistant.py:680
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:638
+#: src/Gui/CReporterAssistant.py:685
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>প্লাগ-ইনৰ বিৱৰণ</b>"
 
-#: src/Gui/CReporterAssistant.py:645
+#: src/Gui/CReporterAssistant.py:692
 #, fuzzy
 msgid "Component"
 msgstr "সাধাৰণ"
 
-#: src/Gui/CReporterAssistant.py:646
+#: src/Gui/CReporterAssistant.py:693
 msgid "Package"
 msgstr "সৰঞ্জাম"
 
-#: src/Gui/CReporterAssistant.py:647
+#: src/Gui/CReporterAssistant.py:694
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:648
+#: src/Gui/CReporterAssistant.py:695
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:650
+#: src/Gui/CReporterAssistant.py:697
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:651
+#: src/Gui/CReporterAssistant.py:698
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:652
+#: src/Gui/CReporterAssistant.py:699
 #, fuzzy
 msgid "Release"
 msgstr "আঁতৰাওক"
 
-#: src/Gui/CReporterAssistant.py:653
+#: src/Gui/CReporterAssistant.py:700
 #, fuzzy
 msgid "Reason"
 msgstr "<b>কাৰণ:</b>"
 
-#: src/Gui/CReporterAssistant.py:667
+#: src/Gui/CReporterAssistant.py:714
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:679
+#: src/Gui/CReporterAssistant.py:726
 #, fuzzy
-msgid "<b>Steps to reporoduce:</b>"
+msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>সময় (বা সময়কাল)</b>"
 
-#: src/Gui/CReporterAssistant.py:697
+#: src/Gui/CReporterAssistant.py:747
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>মন্তব্য:</b>"
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:750
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:723
-msgid "Finish sending the bug report"
-msgstr ""
+#: src/Gui/CReporterAssistant.py:786
+#, fuzzy
+msgid "Finished sending the bug report"
+msgstr "প্ৰতিবেদন পঠিয়াওক"
 
-#: src/Gui/CReporterAssistant.py:724
-msgid ""
-"Thank you for your bug report. It has been succesfully submitted. You may "
-"view your bug report online using the web adress below:"
-msgstr ""
-
-#: src/Gui/CReporterAssistant.py:732
+#: src/Gui/CReporterAssistant.py:790
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>বাগ প্ৰতিবেদনবোৰ:</b>"
 
-#: src/Gui/CReporterAssistant.py:736
+#: src/Gui/settings_wizard.glade:7
 #, fuzzy
-msgid "Not reported"
-msgstr "প্ৰতিবেদন কৰা নহয়!</b>"
+msgid "Wrong Settings Detected"
+msgstr "একো নিৰ্বাচন কৰা হোৱা নাই"
+
+#: src/Gui/settings_wizard.glade:40
+msgid ""
+"Wrong settings detected for some of the enabled reporter plugins, please use "
+"the buttons below to open respective configuration and fix it before you "
+"proceed, otherwise the reporting process can fail.\n"
+msgstr ""
+
+#: src/Gui/settings_wizard.glade:71
+#, fuzzy
+msgid "<b>Do you want to continue?</b>"
+msgstr "<b>আপুনি এই ঘটনাৰ প্ৰতিবেদন ক'ত দিব বিচাৰে ?</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -764,10 +1074,6 @@ msgstr "প্ৰতিলিপি পৰীক্ষা কৰা হৈছে
 msgid "Missing mandatory member 'bugs'"
 msgstr "হেৰুৱা আৱশ্যক সদস্য 'bugs'"
 
-#: lib/Plugins/Bugzilla.cpp:655
-msgid "Creating new bug..."
-msgstr "নতুন বাগ সৃষ্টি কৰা হৈছে..."
-
 #: lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla নিবেশৰ নিৰ্মাণ বিফল"
@@ -804,19 +1110,19 @@ msgstr "bug(%d) ত নতুন মন্তব্য যোগ কৰক"
 msgid "Getting local universal unique identification"
 msgstr "স্থানীয় সৰ্ববেপী ইউনিক আইডেন্টিফিকেছন প্ৰাপ্ত কৰা হৈছে"
 
-#: lib/Plugins/CCpp.cpp:159
+#: lib/Plugins/CCpp.cpp:184
 msgid "Generating backtrace"
 msgstr "বেক-ট্ৰেচ সৃষ্টি কৰা হৈছে"
 
-#: lib/Plugins/CCpp.cpp:327
+#: lib/Plugins/CCpp.cpp:352
 msgid "Starting debuginfo installation"
 msgstr "debuginfo ৰ সংস্থাপন আৰম্ভ কৰা হৈছে"
 
-#: lib/Plugins/CCpp.cpp:535
+#: lib/Plugins/CCpp.cpp:560
 msgid "Getting global universal unique identification..."
 msgstr "গ্লোবেল সৰ্ববেপী ইউনিক আইডেন্টিফিকেছন প্ৰাপ্ত কৰা হৈছে..."
 
-#: lib/Plugins/CCpp.cpp:701
+#: lib/Plugins/CCpp.cpp:726
 msgid "Skipping debuginfo installation"
 msgstr "debuginfo ৰ সংস্থাপন উপেক্ষা কৰা হৈছে"
 
@@ -828,15 +1134,6 @@ msgstr "প্ৰতিবেদন নিৰ্মাণ কৰি প্ৰত
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "'%s' লৈ প্ৰতিবেদন লিখা হৈছে"
-
-#: lib/Plugins/FileTransfer.cpp:53
-msgid "FileTransfer: URL not specified"
-msgstr "FileTransfer: URL উল্লিখিত নহয়"
-
-#: lib/Plugins/FileTransfer.cpp:57
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "%s আৰ্কাইভক %s লৈ প্ৰেৰণ কৰা হৈছে"
 
 #: lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
@@ -864,6 +1161,10 @@ msgstr "sosreport চলোৱা হৈছে: %s"
 #: lib/Plugins/SOSreport.cpp:91
 msgid "Done running sosreport"
 msgstr "sosreport চলোৱা সমাপ্ত"
+
+#, fuzzy
+#~ msgid "Not reported"
+#~ msgstr "প্ৰতিবেদন কৰা নহয়!</b>"
 
 #~ msgid "View and report application crashes"
 #~ msgstr "এপ্লিকেছনৰ বিপৰ্যয় নিৰীক্ষণ কৰক আৰু প্ৰতিবেদন কৰক"
@@ -960,17 +1261,8 @@ msgstr "sosreport চলোৱা সমাপ্ত"
 #~ msgid "Starting report creation..."
 #~ msgstr "প্ৰতিবেদন নিৰ্মাণ আৰম্ভ কৰা হৈছে..."
 
-#~ msgid "Creating a report..."
-#~ msgstr "প্ৰতিবেদন নিৰ্মাণ কৰক..."
-
-#~ msgid "Working..."
-#~ msgstr "কৰ্মৰত..."
-
 #~ msgid "Can't get username for uid %s"
 #~ msgstr "%s ৰ কাৰণে uid পোৱা ন'গ'ল"
-
-#~ msgid "Nothing selected"
-#~ msgstr "একো নিৰ্বাচন কৰা হোৱা নাই"
 
 #~ msgid "gtk-close"
 #~ msgstr "gtk-close"
@@ -987,12 +1279,6 @@ msgstr "sosreport চলোৱা সমাপ্ত"
 #~ msgid "gtk-remove"
 #~ msgstr "gtk-remove"
 
-#~ msgid "ABRT service has been started"
-#~ msgstr "ABRT সেৱ আৰম্ভ কৰা হৈছে"
-
-#~ msgid "Binary file %s will not be reported."
-#~ msgstr "%s বাইনেৰি নথিপত্ৰৰ ৰিপোৰ্ট প্ৰতিবেদন কৰা ন'হ'ব ।"
-
 #~ msgid "Check CC and add coment +1..."
 #~ msgstr "প্ৰতিলিপি প্ৰাপ্ত পৰীক্ষা কৰক আৰু মন্তব্য ৰূপে +1 যোগ কৰক ..."
 
@@ -1004,9 +1290,6 @@ msgstr "sosreport চলোৱা সমাপ্ত"
 
 #~ msgid "Can't create menu from the description, popup won't be available!\n"
 #~ msgstr "বিৱৰণৰ তথ্য প্ৰয়োগ কৰি তালিকা সৃষ্টি কৰিবলৈ ব্যৰ্থ, পপ-আপ উপলব্ধ ন'হ'ব!\n"
-
-#~ msgid "Creating an archive..."
-#~ msgstr "এটা আৰ্কাইভ নিৰ্মাণ কৰক..."
 
 #~ msgid "Applet is already running."
 #~ msgstr "এপ্লেট বৰ্তমানে চলিছে ।"
