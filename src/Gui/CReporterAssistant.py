@@ -608,7 +608,7 @@ class ReporterAssistant():
 
         # comment
         comment_vbox = gtk.VBox(spacing=5)
-        comment_lbl = gtk.Label(_("Are there any comment you'd like to share "
+        comment_lbl = gtk.Label(_("Are there any comments you'd like to share "
             "with the software maintainers?"))
         comment_lbl.set_alignment(0.0, 0.0)
         comment_lbl.set_justify(gtk.JUSTIFY_FILL)
@@ -634,8 +634,8 @@ class ReporterAssistant():
         tip_lbl = gtk.Label("")
         tip_lbl.set_alignment(0.0, 0.0)
         tip_lbl.set_justify(gtk.JUSTIFY_FILL)
-        tip_lbl.set_markup(_("<b>Tip:</b> Your comments are not private. "
-            "Please monitor what you say accordingly"))
+        tip_lbl.set_markup(_("<b>Tip:</b> Your comments are not private.  "
+            "Please monitor what you say accordingly."))
         #tip_hbox.pack_start(tip_image)
         tip_hbox.pack_start(tip_lbl, expand=False)
         page.pack_start(details_hbox)
