@@ -176,8 +176,6 @@ string make_description_logger(const map_crash_data_t& pCrashData)
                 continue; /* blacklisted */
             if (content == "1.\n2.\n3.\n")
                 continue; /* user did not change default "How to reproduce" */
-            if (content == "1.\n2.\n3.\n")
-                continue; /* user did not change default "How to reproduce" */
 
             bool was_multiline = 0;
             string tmp;
