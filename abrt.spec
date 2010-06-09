@@ -16,7 +16,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.1.4
+Version: 1.1.5
 Release: %{?pkg_release}
 License: GPLv2+
 Group: Applications/System
@@ -463,6 +463,24 @@ fi
 %defattr(-,root,root,-)
 
 %changelog
+* Wed Jun 09 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.5-1
+- GUI: polished the reporter assistant (jmoskovc@redhat.com)
+- Logger reporter: do not store useless info (vda.linux@googlemail.com)
+- ccpp hook: add SaveBinaryImage option which saves of the crashed binary (vda.linux@googlemail.com)
+- SPEC: added CFLAGS="-fno-strict-aliasing" to fix the rpmdiff warnings rhbz#599364 (jmoskovc@redhat.com)
+- GUI: don't remove user comments when re-reporting the bug rhbz#601779 (jmoskovc@redhat.com)
+- remove "(deleted)" from executable path rhbz#593037 (jmoskovc@redhat.com)
+- CCpp analyzer: add 60 sec cap on gdb run time. (vda.linux@googlemail.com)
+- add new file *hostname* into debugdump directory (npajkovs@redhat.com)
+- rhticket: upload real tarball, not a bogus file (vda.linux@googlemail.com)
+- abrt-hook-ccpp: eliminate race between process exit and compat coredump creation rhbz#584554 (vda.linux@googlemail.com)
+- rhticket: actually do create ticket, using Gavin's lib code (vda.linux@googlemail.com)
+- properly obsolete gnome-python2-bugbuddy rhbz#579748 (jmoskovc@redhat.com)
+- GUI: remember comment and howto on backtrace refresh rhbz#545690 (jmoskovc@redhat.com)
+- use header case in button label rhbz#565812 (jmoskovc@redhat.com)
+- make log window resizable (vda.linux@googlemail.com)
+- rename a few remaining /var/cache/abrt -> /var/spool/abrt (vda.linux@googlemail.com)
+
 * Wed May 26 2010 Jiri Moskovcak <jmoskovc@redhat.com> 1.1.4-1
 - added reporting wizard
 - fixed few leaked fds
