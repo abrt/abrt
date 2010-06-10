@@ -4,14 +4,14 @@
 # Magnus Larsson <fedoratrans@gmail.com>, 2009.
 # Göran Uddeborg <goeran@uddeborg.se>, 2010.
 #
-# $Id: abrt.po,v 1.4 2010-03-16 10:04:57+01 göran Exp $
+# $Id: abrt.po,v 1.6 2010-06-10 21:23:42+02 göran Exp $
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-03-16 10:04+0100\n"
+"POT-Creation-Date: 2010-06-08 11:10+0000\n"
+"PO-Revision-Date: 2010-06-10 21:22+0200\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -19,291 +19,44 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: lib/Plugins/Catcut.cpp:61
-#, fuzzy
-msgid "send_string: URL not specified"
-msgstr "Filöverföring: URL ej angiven"
-
-#: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
-#, fuzzy, c-format
-msgid "Sending failed, try it again: %s"
-msgstr "Skickar arkiv %s till %s"
-
-#: lib/Plugins/Catcut.cpp:95
-#, fuzzy
-msgid "send_file: URL not specified"
-msgstr "Filöverföring: URL ej angiven"
-
-#: lib/Plugins/Catcut.cpp:99
-#, fuzzy, c-format
-msgid "Sending file %s to %s"
-msgstr "Skickar arkiv %s till %s"
-
-#: lib/Plugins/Catcut.cpp:325
-#, fuzzy, c-format
-msgid "New bug id: %s"
-msgstr "Nytt fel-id: %i"
-
-#: lib/Plugins/Catcut.cpp:366
-#, c-format
-msgid "error returned by requestUpload: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:371
-#, c-format
-msgid "error returned by requestUpload: %d"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:377
-msgid "no URL returned by requestUpload, and no errno"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:382
-#, c-format
-msgid "requestUpload returned URL: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:402
-#, c-format
-msgid "Attaching (text): %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
-#, c-format
-msgid "rebased URL: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:420
-#, c-format
-msgid "Attaching binary: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
-msgid "Creating new bug..."
-msgstr "Skapar ett nytt fel ..."
-
-#: lib/Plugins/TicketUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
-msgid "FileTransfer: URL not specified"
-msgstr "Filöverföring: URL ej angiven"
-
-#: lib/Plugins/TicketUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
-#, c-format
-msgid "Sending archive %s to %s"
-msgstr "Skickar arkiv %s till %s"
-
-#: lib/Plugins/TicketUploader.cpp:130
-#, c-format
-msgid "Sending failed, trying again. %s"
-msgstr ""
-
-#: lib/Plugins/TicketUploader.cpp:192
-#, fuzzy
-msgid "Creating a TicketUploader report..."
-msgstr "Skapar och skickar en rapport ..."
-
-#: lib/Plugins/rhfastcheck.cpp:71
-#, fuzzy
-msgid "Creating a signature..."
-msgstr "Skapar och skickar en rapport ..."
-
-#: lib/Plugins/rhticket.cpp:222
-#, fuzzy
-msgid "Creating a new case..."
-msgstr "Skapar ett nytt fel ..."
-
-#: lib/Utils/make_descr.cpp:296
-#, c-format
-msgid "Binary file %s will not be reported"
-msgstr ""
-
-#: src/CLI/CLI.cpp:68
-#, c-format
-msgid ""
-"%u.\n"
-"\tUID        : %s\n"
-"\tUUID       : %s\n"
-"\tPackage    : %s\n"
-"\tExecutable : %s\n"
-"\tCrash Time : %s\n"
-"\tCrash Count: %s\n"
-msgstr ""
-
-#: src/CLI/CLI.cpp:154
-#, c-format
-msgid ""
-"Usage: %s [OPTION]\n"
-"\n"
-"Startup:\n"
-"\t-V, --version\t\tdisplay the version of %s and exit\n"
-"\t-?, --help\t\tprint this help\n"
-"\n"
-"Actions:\n"
-"\t--get-list\t\tprint list of crashes which are not reported yet\n"
-"\t--get-list-full\t\tprint list of all crashes\n"
-"\t--report CRASH_ID\tcreate and send a report\n"
-"\t--report-always CRASH_ID create and send a report without asking\n"
-"\t--delete CRASH_ID\tremove crash\n"
-"CRASH_ID can be:\n"
-"\tUID:UUID pair,\n"
-"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
-"\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
-msgstr ""
-
-#: src/CLI/CLI.cpp:198
-msgid "You must specify exactly one operation."
-msgstr ""
-
-#: src/CLI/report.cpp:179
-#, c-format
-msgid "# This field is read only.\n"
-msgstr ""
-
-#: src/CLI/report.cpp:199
-msgid "# Describe the circumstances of this crash below."
-msgstr ""
-
-#: src/CLI/report.cpp:201
-msgid "# How to reproduce the crash?"
-msgstr ""
-
-#: src/CLI/report.cpp:203
-msgid ""
-"# Backtrace\n"
-"# Check that it does not contain any sensitive data such as passwords."
-msgstr ""
-
-#: src/CLI/report.cpp:205
-msgid "# Architecture"
-msgstr ""
-
-#: src/CLI/report.cpp:206
-msgid "# Command line"
-msgstr ""
-
-#: src/CLI/report.cpp:207
-#, fuzzy
-msgid "# Component"
-msgstr "Allmänt"
-
-#: src/CLI/report.cpp:208
-msgid "# Core dump"
-msgstr ""
-
-#: src/CLI/report.cpp:209
-msgid "# Executable"
-msgstr ""
-
-#: src/CLI/report.cpp:210
-msgid "# Kernel version"
-msgstr ""
-
-#: src/CLI/report.cpp:211
-#, fuzzy
-msgid "# Package"
-msgstr "Paket"
-
-#: src/CLI/report.cpp:212
-msgid "# Reason of crash"
-msgstr ""
-
-#: src/CLI/report.cpp:213
-msgid "# Release string of the operating system"
-msgstr ""
-
-#: src/CLI/report.cpp:323
-msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
-msgstr ""
-
-#: src/CLI/report.cpp:411
-#, fuzzy
-msgid ""
-"\n"
-"The report has been updated."
-msgstr "Denna krash har rapporterats:\n"
-
-#: src/CLI/report.cpp:413
-msgid ""
-"\n"
-"No changes were detected in the report."
-msgstr ""
-
-#: src/CLI/report.cpp:628
-#, c-format
-msgid "Wrong settings were detected for plugin %s.\n"
-msgstr ""
-
-#: src/CLI/report.cpp:632
-msgid "Enter your login: "
-msgstr ""
-
-#: src/CLI/report.cpp:638
-msgid "Enter your password: "
-msgstr ""
-
-#: src/CLI/report.cpp:681
-#, fuzzy
-msgid "Reporting..."
-msgstr "Rapport"
-
-#: src/CLI/report.cpp:700
-#, c-format
-msgid "Report using %s? [y/N]: "
-msgstr ""
-
-#: src/CLI/report.cpp:703
-msgid "Skipping..."
-msgstr ""
-
-#: src/CLI/report.cpp:720
-#, c-format
-msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr ""
-
-#: src/Daemon/CommLayerServerDBus.cpp:234
-msgid "Comment is too long"
-msgstr ""
-
-#: src/Daemon/CommLayerServerDBus.cpp:238
-msgid "'How to reproduce' is too long"
-msgstr ""
-
-#: src/Gui/ABRTExceptions.py:6
+#: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
 msgstr "En annan klient kör redan, försöker väcka den."
 
-#: src/Gui/ABRTExceptions.py:13
+#: ../src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
 msgstr "Fick oväntade data från demonen (är databasen korrekt uppdaterad?)."
 
-#: src/Gui/ABRTPlugin.py:62
+#: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "Ej inlästa insticksmoduler"
 
-#: src/Gui/ABRTPlugin.py:63
+#: ../src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Insticksmoduler för analys"
 
-#: src/Gui/ABRTPlugin.py:64
+#: ../src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Insticksmoduler för åtgärder"
 
-#: src/Gui/ABRTPlugin.py:65
+#: ../src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Insticksmoduler för rapporter"
 
-#: src/Gui/ABRTPlugin.py:66
+#: ../src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Insticksmoduler för databaser"
 
-#: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
+#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
 msgstr "Det går inte att ansluta till system-dbus:en"
 
-#: src/Gui/CCDBusBackend.py:120 src/Gui/CCDBusBackend.py:123
+#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
 msgid "Please check if abrt daemon is running"
 msgstr "Kontrollera om abrt-demonen kör"
 
-#: src/Gui/CCDBusBackend.py:174
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
 msgid ""
 "Daemon didn't return valid report info\n"
 "Debuginfo is missing?"
@@ -311,18 +64,60 @@ msgstr ""
 "Demonen returnerade inte giltig rapportinformation\n"
 "Felsökningsinformation saknas?"
 
-#: src/Gui/ccgui.glade:7
+#: ../src/Gui/ccgui.glade.h:1
+msgid "(C) 2009, 2010 Red Hat, Inc."
+msgstr "© 2009, 2010 Red Hat, Inc."
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "<b>Bug Reports:</b>"
+msgstr "<b>Felrapporter:</b>"
+
+#: ../src/Gui/ccgui.glade.h:3
+msgid "<b>Command:</b>"
+msgstr "<b>Kommando:</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<b>Comment:</b>"
+msgstr "<b>Kommentar:</b>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "<b>Crash Count:</b>"
+msgstr "<b>Kraschantal:</b>"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "<b>Latest Crash:</b>"
+msgstr "<b>Senaste krasch:</b>"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "<b>Reason:</b>"
+msgstr "<b>Anledning:</b>"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "<b>User:</b>"
+msgstr "<b>Användare:</b>"
+
+#: ../src/Gui/ccgui.glade.h:9
 msgid "About ABRT"
 msgstr "Om ABRT"
 
-#: src/Gui/ccgui.glade:15
-#, fuzzy
-msgid "(C) 2009, 2010 Red Hat, Inc."
-msgstr ""
-"© 2009 Red Hat, Inc.\n"
-"© 2010 Red Hat, Inc."
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16 ../src/Gui/abrt.desktop.in.h:1
+msgid "Automatic Bug Reporting Tool"
+msgstr "Automatiskt felrapporteringsverktyg"
 
-#: src/Gui/ccgui.glade:17
+#: ../src/Gui/ccgui.glade.h:11
+msgid "Copy to Clipboard"
+msgstr "Kopiera till urklipp"
+
+#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
+msgid "Plugins"
+msgstr "Insticksmoduler"
+
+#: ../src/Gui/ccgui.glade.h:13 ../src/Applet/CCApplet.cpp:253
+msgid "Report"
+msgstr "Rapport"
+
+#: ../src/Gui/ccgui.glade.h:14
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -350,92 +145,42 @@ msgstr ""
 "Du bör ha fått en kopia av GNU General Public License tillsammans med detta "
 "program. Om inte, se <http://www.gnu.org/licenses/>."
 
-#: src/Gui/ccgui.glade:28 src/Applet/CCApplet.cpp:105
-msgid "translator-credits"
-msgstr ""
-
-#: src/Gui/ccgui.glade:58 src/Gui/CCMainWindow.py:8 src/Gui/report.glade:7
-msgid "Automatic Bug Reporting Tool"
-msgstr "Automatiskt felrapporteringsverktyg"
-
-#: src/Gui/ccgui.glade:71
-msgid "_File"
-msgstr "_Fil"
-
-#: src/Gui/ccgui.glade:92
-msgid "_Edit"
-msgstr "_Redigera"
-
-#: src/Gui/ccgui.glade:100 src/Gui/settings.glade:6
-msgid "Plugins"
-msgstr "Insticksmoduler"
-
-#: src/Gui/ccgui.glade:119
-msgid "_Help"
-msgstr "_Hjälp"
-
-#: src/Gui/ccgui.glade:126
-#, fuzzy
+#: ../src/Gui/ccgui.glade.h:19
 msgid "View log"
 msgstr "Visa logg"
 
-#: src/Gui/ccgui.glade:237
-#, fuzzy
-msgid "<b>Bug Reports:</b>"
-msgstr "<b>Inte rapportarad!</b>"
+#: ../src/Gui/ccgui.glade.h:20
+msgid "_Edit"
+msgstr "_Redigera"
 
-#: src/Gui/ccgui.glade:277
-#, fuzzy
-msgid "<b>Latest Crash:</b>"
-msgstr "<b>Stackspår</b>"
+#: ../src/Gui/ccgui.glade.h:21
+msgid "_File"
+msgstr "_Fil"
 
-#: src/Gui/ccgui.glade:290
-#, fuzzy
-msgid "<b>Command:</b>"
-msgstr "<b>Kommentar</b>"
+#: ../src/Gui/ccgui.glade.h:22
+msgid "_Help"
+msgstr "_Hjälp"
 
-#: src/Gui/ccgui.glade:305
-#, fuzzy
-msgid "<b>User:</b>"
-msgstr "<b>Kommentar</b>"
-
-#: src/Gui/ccgui.glade:320
-#, fuzzy
-msgid "<b>Crash Count:</b>"
-msgstr "Kraschräknare"
-
-#: src/Gui/ccgui.glade:436
-#, fuzzy
-msgid "<b>Reason:</b>"
-msgstr "<b>Kommentar</b>"
-
-#: src/Gui/ccgui.glade:462
-#, fuzzy
-msgid "<b>Comment:</b>"
-msgstr "<b>Kommentar</b>"
-
-#: src/Gui/ccgui.glade:542
-msgid "Copy to Clipboard"
+#: ../src/Gui/ccgui.glade.h:23 ../src/Applet/CCApplet.cpp:105
+msgid "translator-credits"
 msgstr ""
+"Magnus Larsson <fedoratrans@gmail.com>\n"
+"Göran Uddeborg <goeran@uddeborg.se>"
 
-#: src/Gui/ccgui.glade:554 src/Gui/ccgui.glade:682 src/Applet/CCApplet.cpp:253
-msgid "Report"
-msgstr "Rapport"
-
-#: src/Gui/CCMainWindow.py:62
-#, fuzzy
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:62
 msgid "Reported"
-msgstr "Rapport"
+msgstr "Rapporterat"
 
-#: src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:70
 msgid "Application"
 msgstr "Applikation"
 
-#: src/Gui/CCMainWindow.py:72
+#: ../src/Gui/CCMainWindow.py:72
 msgid "Latest Crash"
-msgstr ""
+msgstr "Senaste krasch"
 
-#: src/Gui/CCMainWindow.py:140
+#: ../src/Gui/CCMainWindow.py:140
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -444,7 +189,7 @@ msgstr ""
 "Det går inte att visa inställningsdialogen\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:145
+#: ../src/Gui/CCMainWindow.py:145
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -453,7 +198,8 @@ msgstr ""
 "Det går inte att avsluta aktuell uppgift!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:180
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:180
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -462,25 +208,30 @@ msgstr ""
 "Fel när dumplistan lästes in.\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:237
+#: ../src/Gui/CCMainWindow.py:237
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
 "%s"
 msgstr ""
+"<b>%s-krash</b>\n"
+"%s"
 
-#: src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:333
 msgid "You have to select a crash to copy."
-msgstr ""
+msgstr "Du måste välja en krasch att kopiera."
 
-#: src/Gui/CCMainWindow.py:418
+#: ../src/Gui/CCMainWindow.py:418
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 msgstr ""
+"Usage: abrt-gui [FLAGGOR]\n"
+"\t-v[vv]\t\t\tUtförligt pratsam\n"
+"\t--report=KRASCH_ID\tRapportera direkt krash med KRASCH_ID"
 
-#: src/Gui/CCMainWindow.py:441
+#: ../src/Gui/CCMainWindow.py:441
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -489,16 +240,17 @@ msgstr ""
 "Ingen sådan krasch i databasen, förmodligen fel kraschid.\n"
 "krashid=%s"
 
-#: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:19
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:18
 msgid "Brief description how to reproduce this or what you did..."
 msgstr "Kort beskrivning hur man återskapar detta eller av vad du gjorde ..."
 
-#: src/Gui/CCReporterDialog.py:107
+#: ../src/Gui/CCReporterDialog.py:107 ../src/Gui/CReporterAssistant.py:260
 msgid "You must check backtrace for sensitive data"
 msgstr ""
 "Du måste kontrollera om stackspåret innehåller någon känslig information"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
+#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:272
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -507,15 +259,14 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "Rapporteringen avslagen för att stackspåret är oanvändbart.\n"
-"Försök installera felsökningsinformation manuellt med kommandot <b>debuginfo-"
-"install %s</b>\n"
-"och tryck sedan på Läs om-knappen för att återskapa stackspåret."
+"Försök installera felsökningsinformation manuellt med kommandot <b>debuginfo-install %s</b>\n"
+"och tryck sedan på Förnya-knappen för att återskapa stackspåret."
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
+#: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:274
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "Stackspåret är oanvändbart, du kan inte rapportera detta!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
+#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:278
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -523,16 +274,15 @@ msgstr ""
 "Stackspåret är ofullständigt, se till att du ger noggranna steg för att "
 "återskapa."
 
-#: src/Gui/CCReporterDialog.py:130
-#, fuzzy
+#: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
 msgstr "Rapportering avslagen, fixa problemen som visas ovan."
 
-#: src/Gui/CCReporterDialog.py:132
+#: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
 msgstr "Skickar rapporten med den valda insticksmodulen."
 
-#: src/Gui/CCReporterDialog.py:398
+#: ../src/Gui/CCReporterDialog.py:398
 msgid ""
 "No reporter plugin available for this type of crash\n"
 "Please check abrt.conf."
@@ -540,8 +290,7 @@ msgstr ""
 "Ingen insticksmodul för rapportering tillgänglig för denna slags krash\n"
 "Kontrollera abrt.conf."
 
-#: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
-#: src/Gui/CReporterAssistant.py:193
+#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:180
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -550,12 +299,12 @@ msgstr ""
 "Det går inte att spara inställningar för insticksmoduler:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
+#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:210
 #, python-format
 msgid "Configure %s options"
 msgstr "Konfigurera %s-alternativ"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
+#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:789
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -563,7 +312,7 @@ msgstr ""
 "Det går inte att rapportera!\n"
 "Saknas felsökningsinformation?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
+#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:364
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -572,295 +321,243 @@ msgstr ""
 "Rapporteringen misslyckades!\n"
 "%s"
 
-#: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:839
+#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
+#: ../src/Gui/CReporterAssistant.py:821
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fel när rapporten hämtades: %s"
 
-#: src/Gui/ConfBackend.py:77
-#, fuzzy
-msgid "Can't connect to Gnome Keyring daemon"
-msgstr "Det går inte att ansluta till system-dbus:en"
-
-#: src/Gui/ConfBackend.py:83
-msgid "Can't get default keyring"
-msgstr ""
-
-#: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings won't be saved."
-msgstr ""
-
-#: src/Gui/ConfBackend.py:152
-#, python-format
-msgid ""
-"Access to gnome-keyring has been denied, can't load the settings for %s!"
-msgstr ""
-
-#: src/Gui/ConfBackend.py:205
-msgid "Access to gnome-keyring has been denied, can't load settings"
-msgstr ""
-
-#: src/Gui/dialogs.glade:7
-msgid "Report done"
-msgstr "Rapport klar"
-
-#: src/Gui/dialogs.glade:79
+#: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
 msgstr "Logg"
 
-#: src/Gui/PluginsSettingsDialog.py:24
-msgid "Can't load gui description for SettingsDialog!"
-msgstr ""
+#: ../src/Gui/dialogs.glade.h:2
+msgid "Report done"
+msgstr "Rapport klar"
 
-#: src/Gui/PluginsSettingsDialog.py:41
-#, fuzzy
-msgid "Name"
-msgstr "Namn:"
-
-#: src/Gui/PluginsSettingsDialog.py:148
-msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
-
-#: src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
-msgid ""
-"Error while opening plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-"Fel när dumplistan lästes in.\n"
-"%s"
-
-#: src/Gui/PluginSettingsUI.py:17
+#: ../src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "Kan inte hitta Plugin-Dialogwidgeten i UI-beskrivningen!"
 
-#: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
+#: ../src/Gui/PluginSettingsUI.py:54 ../src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
 msgstr "combobox är inte implementerad"
 
-#: src/Gui/PluginSettingsUI.py:63
+#: ../src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
 msgstr "Inget att hydrera!"
 
-#: src/Gui/report.glade:54
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span fgcolor=\"blue\">Paket:</span>"
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
 
-#: src/Gui/report.glade:65
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">Komponent:</span>"
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>Bilagor</b>"
 
-#: src/Gui/report.glade:76
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">Program:</span>"
+#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:699
+msgid "<b>Backtrace</b>"
+msgstr "<b>Stackspår</b>"
 
-#: src/Gui/report.glade:87
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">Kommandorad:</span>"
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>Kommentar</b>"
 
-#: src/Gui/report.glade:111 src/Gui/report.glade:124 src/Gui/report.glade:137
-#: src/Gui/report.glade:150 src/Gui/report.glade:228 src/Gui/report.glade:241
-#: src/Gui/report.glade:254 src/Gui/report.glade:267
-msgid "N/A"
-msgstr "Ej tillämpligt"
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>Hur man återskapar (i några få enkla steg)</b>"
 
-#: src/Gui/report.glade:172
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems</b>"
+msgstr "<b>Rätta till följande problem</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>Vart vill du rapportera denna incident?</b>"
+
+#: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
 msgstr "<span fgcolor=\"blue\">Arkitektur:</span>"
 
-#: src/Gui/report.glade:183
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">Kommandorad:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">Komponent:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">Program:</span>"
+
+#: ../src/Gui/report.glade.h:12
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
 msgstr "<span fgcolor=\"blue\">Kärna:</span>"
 
-#: src/Gui/report.glade:194
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span fgcolor=\"blue\">Utgåva:</span>"
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">Paket:</span>"
 
-#: src/Gui/report.glade:205
+#: ../src/Gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Reason:</span>"
 msgstr "<span fgcolor=\"blue\">Anledning:</span>"
 
-#: src/Gui/report.glade:331
+#: ../src/Gui/report.glade.h:15
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">Utgåva:</span>"
+
+#: ../src/Gui/report.glade.h:17 ../src/Gui/progress_window.glade.h:1
+msgid "Details"
+msgstr "Detaljer"
+
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace"
+msgstr "Tvingar ABRT att generera om stackspåret"
+
+#: ../src/Gui/report.glade.h:19
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Jag kontrollerade stackspåret och tog bort känslig information (lösenord o."
 "dyl.)"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
-msgid "<b>Backtrace</b>"
-msgstr "<b>Stackspår</b>"
+#: ../src/Gui/report.glade.h:20
+msgid "N/A"
+msgstr "Ej tillämpligt"
 
-#: src/Gui/report.glade:426
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Hur man återskapar (i några få enkla steg)</b>"
-
-#: src/Gui/report.glade:464
-msgid "<b>Comment</b>"
-msgstr "<b>Kommentar</b>"
-
-#: src/Gui/report.glade:512
-msgid "<b>Attachments</b>"
-msgstr "<b>Bilagor</b>"
-
-#: src/Gui/report.glade:561
-msgid "<b>Please fix the following problems</b>"
-msgstr "<b>Rätta till följande problem</b>"
-
-#: src/Gui/report.glade:571
-msgid " "
-msgstr " "
-
-#: src/Gui/report.glade:622
-msgid "Show log"
-msgstr "Visa logg"
-
-#: src/Gui/report.glade:654
-msgid "Forces ABRT to regenerate the backtrace"
-msgstr "Tvingar ABRT att generera om stackspåret"
-
-#: src/Gui/report.glade:665
-msgid "Send report"
-msgstr "Skicka rapport"
-
-#: src/Gui/report.glade:693
-msgid "Reporter Selector"
-msgstr "Rapportörväljare"
-
-#: src/Gui/report.glade:706
-msgid "<b>Where do you want to report this incident?</b>"
-msgstr "<b>Vart vill du rapportera denna incident?</b>"
-
-#: src/Gui/report.glade:764 src/Gui/progress_window.glade:8
+#: ../src/Gui/report.glade.h:21 ../src/Gui/progress_window.glade.h:2
 msgid "Please wait.."
 msgstr "Var god vänta..."
 
-#: src/Gui/report.glade:816 src/Gui/progress_window.glade:59
-msgid "Details"
-msgstr "Detaljer"
+#: ../src/Gui/report.glade.h:22
+msgid "Reporter Selector"
+msgstr "Rapportörväljare"
 
-#: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
+#: ../src/Gui/report.glade.h:23
+msgid "Send report"
+msgstr "Skicka rapport"
+
+#: ../src/Gui/report.glade.h:24
+msgid "Show log"
+msgstr "Visa logg"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>Välj insticksmodul</b>"
 
-#: src/Gui/SettingsDialog.py:36
+#: ../src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>Välj databasbakände</b>"
 
-#: src/Gui/SettingsDialog.py:169
+#: ../src/Gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "Ta bort detta jobb"
 
-#: src/Gui/SettingsDialog.py:213
+#: ../src/Gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "Ta bort denna åtgärd"
 
-#: src/Gui/settings.glade:64
-msgid "Web Site:"
-msgstr "Webbplats:"
-
-#: src/Gui/settings.glade:76
-msgid "Author:"
-msgstr "Författare:"
-
-#: src/Gui/settings.glade:88
-msgid "Version:"
-msgstr "Version:"
-
-#: src/Gui/settings.glade:142
-msgid "Description:"
-msgstr "Beskrivning:"
-
-#: src/Gui/settings.glade:154
-msgid "Name:"
-msgstr "Namn:"
-
-#: src/Gui/settings.glade:198
-msgid "<b>Plugin details</b>"
-msgstr "<b>Detaljer om insticksmodul</b>"
-
-#: src/Gui/settings.glade:221
-#, fuzzy
-msgid "C_onfigure Plugin"
-msgstr "K_onfigurera insticksmodul"
-
-#: src/Gui/settings.glade:258
-msgid "Preferences"
-msgstr "Inställningar"
-
-#: src/Gui/settings.glade:285
-msgid "Check package GPG signature"
-msgstr "Kontrollera paket-GPG-signatur"
-
-#: src/Gui/settings.glade:301
-msgid "Database backend: "
-msgstr "Databasbakände: "
-
-#: src/Gui/settings.glade:327
-msgid "Blacklisted packages: "
-msgstr "Svartlistade paket: "
-
-#: src/Gui/settings.glade:341
-msgid "Max coredump storage size(MB):"
-msgstr "Maximal lagringsstorlek för coredump (MB):"
-
-#: src/Gui/settings.glade:355
-msgid "GPG keys: "
-msgstr "GPG-nycklar: "
-
-#: src/Gui/settings.glade:458
-msgid "Common"
-msgstr "Allmänt"
-
-#: src/Gui/settings.glade:491
-msgid "<b>Plugin</b>"
-msgstr "<b>Insticksmodul</b>"
-
-#: src/Gui/settings.glade:501
-msgid "<b>Time (or period)</b>"
-msgstr "<b>Tid (eller period)</b>"
-
-#: src/Gui/settings.glade:569
-msgid "Cron"
-msgstr "Cron"
-
-#: src/Gui/settings.glade:603
+#: ../src/Gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
 msgstr "<b>Insticksmodul för analys</b>"
 
-#: src/Gui/settings.glade:613
+#: ../src/Gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
 msgstr "<b>Tillhörande åtgärd</b>"
 
-#: src/Gui/settings.glade:692
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>Detaljer om insticksmodul</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Plugin</b>"
+msgstr "<b>Insticksmodul</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "<b>Time (or period)</b>"
+msgstr "<b>Tid (eller period)</b>"
+
+#: ../src/Gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "Analyserare, åtgärder, rapporterare"
 
-#: src/Gui/settings.glade:753
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "Författare:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "Svartlistade paket: "
+
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure Plugin"
+msgstr "K_onfigurera insticksmodul"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "Kontrollera paket-GPG-signatur"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "Allmänt"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "Databasbakände: "
+
+#: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "Beskrivning:"
+
+#: ../src/Gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG-nycklar"
 
-#: src/Gui/CReporterAssistant.py:273
-#, fuzzy
-msgid "You should check backtrace for sensitive data"
-msgstr ""
-"Du måste kontrollera om stackspåret innehåller någon känslig information"
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "GPG-nycklar: "
 
-#: src/Gui/CReporterAssistant.py:274
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size(MB):"
+msgstr "Maximal lagringsstorlek för coredump (MB):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Name:"
+msgstr "Namn:"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "Inställningar"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "Version:"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "Webbplats:"
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "Visa och rapportera programkrascher"
+
+#: ../src/Gui/CReporterAssistant.py:261
 msgid "You must agree with sending the backtrace"
-msgstr ""
+msgstr "Du måste godkänna att skicka stackspåret"
 
-#: src/Gui/CReporterAssistant.py:334
+#: ../src/Gui/CReporterAssistant.py:321
 msgid "You didn't provide any steps to reproduce."
-msgstr ""
+msgstr "Du angav inte några steg för att återskapa."
 
-#: src/Gui/CReporterAssistant.py:348
+#: ../src/Gui/CReporterAssistant.py:335
 msgid "You didn't provide any comments."
-msgstr ""
+msgstr "Du gav inga kommentarer."
 
-#: src/Gui/CReporterAssistant.py:425
+#: ../src/Gui/CReporterAssistant.py:413
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -874,13 +571,17 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
+"Det verkar som ett program från paketet <b>%s</b> har kraschat på ditt system.  Det är en bra idé att skicka en felrapport om denna händelse.  Rapporter ger dem som underhåller programmet viktig information för att kunna lista ut hur de kan åstadkomma en felrättning för dig\n"
+"\n"
+"Titta igenom informationen som följer och ändra den om nödvändigt för att se till att din felrapport inte innehåller någon känslig information du helst inte vill dela\n"
+"\n"
+"Välj var du vill rapportera felet, och tryck 'Framåt' för att fortsätta."
 
-#: src/Gui/CReporterAssistant.py:478
-#, fuzzy
+#: ../src/Gui/CReporterAssistant.py:466
 msgid "Send a bug report"
-msgstr "Skicka rapport"
+msgstr "Skicka en felrapport"
 
-#: src/Gui/CReporterAssistant.py:516
+#: ../src/Gui/CReporterAssistant.py:504
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -889,162 +590,153 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
+"Nedan är stackspåret som hör ihop med din krasch.  Ett kraschstackspår ger utvecklare detaljinformation om hur kraschen inträffade, och hjälper dem att spåra upp källan till problemet\n"
+"\n"
+"Titta igenom informationen som följer och ändra den om nödvändigt för att se till att din felrapport inte innehåller någon känslig information du helst inte vill dela:"
 
-#: src/Gui/CReporterAssistant.py:557
+#: ../src/Gui/CReporterAssistant.py:545
 msgid "Refresh"
-msgstr ""
+msgstr "Förnya"
 
-#: src/Gui/CReporterAssistant.py:559
+#: ../src/Gui/CReporterAssistant.py:547
 msgid "Copy"
-msgstr ""
+msgstr "Kopiera"
 
-#: src/Gui/CReporterAssistant.py:565
+#: ../src/Gui/CReporterAssistant.py:553
 msgid "I agree with submitting the backtrace"
-msgstr ""
+msgstr "Jag godkänner att skicka stackspåret"
 
-#: src/Gui/CReporterAssistant.py:570
+#: ../src/Gui/CReporterAssistant.py:558
 msgid "Approve backtrace"
-msgstr ""
+msgstr "Godkänn stackspår"
 
-#: src/Gui/CReporterAssistant.py:593
+#: ../src/Gui/CReporterAssistant.py:581
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
-msgstr ""
+msgstr "Hur inträffade den här kraschen, steg för steg?  Hur skulle du återskapa den?"
 
-#: src/Gui/CReporterAssistant.py:611
+#: ../src/Gui/CReporterAssistant.py:599
 msgid ""
 "Are there any comment you'd like to share with the software maintainers?"
-msgstr ""
+msgstr "Har du någon kommentar du vill meddela dem som underhåller programmet?"
 
-#: src/Gui/CReporterAssistant.py:630
+#: ../src/Gui/CReporterAssistant.py:618
 msgid "Provide additional details"
-msgstr ""
+msgstr "Ge ytterligare detaljer"
 
-#: src/Gui/CReporterAssistant.py:637
+#: ../src/Gui/CReporterAssistant.py:625
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
-msgstr ""
+msgstr "<b>Tips:</b> Dina kommentarer är inte privata.  Se över vad du säger med tanke på det"
 
-#: src/Gui/CReporterAssistant.py:678
+#: ../src/Gui/CReporterAssistant.py:666
 msgid "Confirm and send report"
-msgstr ""
+msgstr "Bekräfta och skicka rapporten"
 
-#: src/Gui/CReporterAssistant.py:680
+#: ../src/Gui/CReporterAssistant.py:668
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr ""
+msgstr "Nedan är en sammanfattning av din felrapport.  Klicka \"Verkställ\" för att skicka den.\""
 
-#: src/Gui/CReporterAssistant.py:685
-#, fuzzy
+#: ../src/Gui/CReporterAssistant.py:673
 msgid "<b>Basic details</b>"
-msgstr "<b>Detaljer om insticksmodul</b>"
+msgstr "<b>Grundläggande detaljer</b>"
 
-#: src/Gui/CReporterAssistant.py:692
-#, fuzzy
+#. left table
+#: ../src/Gui/CReporterAssistant.py:680
 msgid "Component"
-msgstr "Allmänt"
+msgstr "Komponent"
 
-#: src/Gui/CReporterAssistant.py:693
+#: ../src/Gui/CReporterAssistant.py:681
 msgid "Package"
 msgstr "Paket"
 
-#: src/Gui/CReporterAssistant.py:694
+#: ../src/Gui/CReporterAssistant.py:682
 msgid "Executable"
-msgstr ""
+msgstr "Körbart program"
 
-#: src/Gui/CReporterAssistant.py:695
+#: ../src/Gui/CReporterAssistant.py:683
 msgid "Cmdline"
-msgstr ""
+msgstr "Kommandorad"
 
-#: src/Gui/CReporterAssistant.py:697
+#. right table
+#: ../src/Gui/CReporterAssistant.py:685
 msgid "Architecture"
-msgstr ""
+msgstr "Arkitektur"
 
-#: src/Gui/CReporterAssistant.py:698
+#: ../src/Gui/CReporterAssistant.py:686
 msgid "Kernel"
-msgstr ""
+msgstr "Kärna"
 
-#: src/Gui/CReporterAssistant.py:699
-#, fuzzy
+#: ../src/Gui/CReporterAssistant.py:687
 msgid "Release"
-msgstr "Radera"
+msgstr "Utgåva"
 
-#: src/Gui/CReporterAssistant.py:700
-#, fuzzy
+#: ../src/Gui/CReporterAssistant.py:688
 msgid "Reason"
-msgstr "<b>Kommentar</b>"
+msgstr "Orsak"
 
-#: src/Gui/CReporterAssistant.py:714
+#: ../src/Gui/CReporterAssistant.py:702
 msgid "Click to view ..."
-msgstr ""
+msgstr "Klicka för att visa ..."
 
-#: src/Gui/CReporterAssistant.py:726
-#, fuzzy
-msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>Tid (eller period)</b>"
+#: ../src/Gui/CReporterAssistant.py:714
+msgid "<b>Steps to reporoduce:</b>"
+msgstr "<b>Steg för att återskapa:</b>"
 
-#: src/Gui/CReporterAssistant.py:747
-#, fuzzy
+#: ../src/Gui/CReporterAssistant.py:732
 msgid "<b>Comments:</b>"
-msgstr "<b>Kommentar</b>"
+msgstr "<b>Kommentarer:</b>"
 
-#: src/Gui/CReporterAssistant.py:750
+#: ../src/Gui/CReporterAssistant.py:735
 msgid "No comment provided!"
-msgstr ""
+msgstr "Inget kommando angivet!"
 
-#: src/Gui/CReporterAssistant.py:786
-#, fuzzy
-msgid "Finished sending the bug report"
-msgstr "Skicka rapport"
+#: ../src/Gui/CReporterAssistant.py:758
+msgid "Finish sending the bug report"
+msgstr "Avsluta skickandet av felrapporten"
 
-#: src/Gui/CReporterAssistant.py:790
-#, fuzzy
-msgid "<b>Bug reports:</b>"
-msgstr "<b>Inte rapportarad!</b>"
-
-#: src/Gui/settings_wizard.glade:7
-msgid "Wrong Settings Detected"
-msgstr ""
-
-#: src/Gui/settings_wizard.glade:40
+#: ../src/Gui/CReporterAssistant.py:759
 msgid ""
-"Wrong settings detected for some of the enabled reporter plugins, please use "
-"the buttons below to open respective configuration and fix it before you "
-"proceed, otherwise the reporting process can fail.\n"
-msgstr ""
+"Thank you for your bug report. It has been succesfully submitted. You may "
+"view your bug report online using the web adress below:"
+msgstr "Tack för din felrapport.  Den har skickats in.  Du kan se din felrapport på nätet med webbadressen nedan:"
 
-#: src/Gui/settings_wizard.glade:71
-#, fuzzy
-msgid "<b>Do you want to continue?</b>"
-msgstr "<b>Vart vill du rapportera denna incident?</b>"
+#: ../src/Gui/CReporterAssistant.py:767
+msgid "<b>Bug reports:</b>"
+msgstr "<b>Felrapporter:</b>"
 
-#: src/Applet/Applet.cpp:88
+#: ../src/Gui/CReporterAssistant.py:771
+msgid "Not reported"
+msgstr "Ej rapporterad"
+
+#: ../src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "En krash i paketet %s har upptäckts"
 
-#: src/Applet/Applet.cpp:90
+#: ../src/Applet/Applet.cpp:90
 msgid "A crash has been detected"
 msgstr "En krash har upptäckts"
 
-#: src/Applet/Applet.cpp:266
+#: ../src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
 msgstr "ABRT-tjänsten kör inte"
 
-#: src/Applet/CCApplet.cpp:39 src/Applet/CCApplet.cpp:260
-#: src/Applet/CCApplet.cpp:287
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
+#: ../src/Applet/CCApplet.cpp:287
 msgid "Warning"
 msgstr "Varning"
 
-#: src/Applet/CCApplet.cpp:89
+#: ../src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
-msgstr ""
+msgstr "Panelprogram för notifieringsområdet för att notifiera användaren om saker som upptäckts av ABRT"
 
-#: src/Applet/CCApplet.cpp:115
+#: ../src/Applet/CCApplet.cpp:115
 msgid "Hide"
-msgstr ""
+msgstr "Dölj"
 
-#: src/Daemon/Daemon.cpp:477
+#: ../src/Daemon/Daemon.cpp:477
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -1052,18 +744,17 @@ msgstr ""
 "Rapportstorleken överstiger kvoten.  Kontrollera systemets "
 "MaxCrashReportsSize-värde i abrt.conf."
 
-#: lib/Plugins/Bugzilla.cpp:328
+#: ../lib/Plugins/Bugzilla.cpp:328
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Felet är redan rapporterat: %i"
 
-#: lib/Plugins/Bugzilla.cpp:409
+#: ../lib/Plugins/Bugzilla.cpp:409
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nytt fel-id: %i"
 
-#: lib/Plugins/Bugzilla.cpp:621
-#, fuzzy
+#: ../lib/Plugins/Bugzilla.cpp:621
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -1071,285 +762,119 @@ msgstr ""
 "Tom inloggning och lösenord.\n"
 "Kontrollera "
 
-#: lib/Plugins/Bugzilla.cpp:629
+#: ../lib/Plugins/Bugzilla.cpp:629
 msgid "Logging into bugzilla..."
 msgstr "Loggar in i bugzilla ..."
 
-#: lib/Plugins/Bugzilla.cpp:632
+#: ../lib/Plugins/Bugzilla.cpp:632
 msgid "Checking for duplicates..."
 msgstr "Letar efter dubletter ..."
 
-#: lib/Plugins/Bugzilla.cpp:645
+#: ../lib/Plugins/Bugzilla.cpp:645
 msgid "Missing mandatory member 'bugs'"
 msgstr "Nödvändigt medlemskap i \"bugs\" saknas"
 
-#: lib/Plugins/Bugzilla.cpp:660
+#: ../lib/Plugins/Bugzilla.cpp:655
+msgid "Creating new bug..."
+msgstr "Skapar ett nytt fel ..."
+
+#: ../lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
 msgstr "Att skapa ett bugzillaärende misslyckades"
 
-#: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
+#: ../lib/Plugins/Bugzilla.cpp:668 ../lib/Plugins/Bugzilla.cpp:778
 msgid "Logging out..."
 msgstr "Loggar ut..."
 
-#: lib/Plugins/Bugzilla.cpp:700 lib/Plugins/Bugzilla.cpp:728
+#: ../lib/Plugins/Bugzilla.cpp:700 ../lib/Plugins/Bugzilla.cpp:728
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() misslyckades.  Det gick inte att samla all nödvändig "
 "information"
 
-#: lib/Plugins/Bugzilla.cpp:712
+#: ../lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla kunde inte hitta föräldern till felet(%d)"
 
-#: lib/Plugins/Bugzilla.cpp:717
+#: ../lib/Plugins/Bugzilla.cpp:717
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Hoppa till fel %d"
 
-#: lib/Plugins/Bugzilla.cpp:742 lib/Plugins/Bugzilla.cpp:743
+#: ../lib/Plugins/Bugzilla.cpp:742 ../lib/Plugins/Bugzilla.cpp:743
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Lägg till %s till CC-listan"
 
-#: lib/Plugins/Bugzilla.cpp:767
+#: ../lib/Plugins/Bugzilla.cpp:767
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Lägg till ny kommentar till fel(%d)"
 
-#: lib/Plugins/Kerneloops.cpp:118
+#: ../lib/Plugins/Kerneloops.cpp:118
 msgid "Getting local universal unique identification"
 msgstr "Hämtar lokal universellt unik identifikation"
 
-#: lib/Plugins/CCpp.cpp:184
+#: ../lib/Plugins/CCpp.cpp:184
 msgid "Generating backtrace"
 msgstr "Genererar stackspår"
 
-#: lib/Plugins/CCpp.cpp:352
+#: ../lib/Plugins/CCpp.cpp:352
 msgid "Starting debuginfo installation"
 msgstr "Startar installation av felsökningsinformation"
 
-#: lib/Plugins/CCpp.cpp:560
+#. Compatibility code.
+#. This whole block should be deleted for Fedora 14.
+#: ../lib/Plugins/CCpp.cpp:560
 msgid "Getting global universal unique identification..."
 msgstr "Hämtar global universellt unik identifikation ..."
 
-#: lib/Plugins/CCpp.cpp:726
+#: ../lib/Plugins/CCpp.cpp:726
 msgid "Skipping debuginfo installation"
 msgstr "Hoppar över installation av felsökningsinformation"
 
-#: lib/Plugins/KerneloopsReporter.cpp:94
+#: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "Skapar och skickar en rapport ..."
 
-#: lib/Plugins/Logger.cpp:73
+#: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Skriver rapport till \"%s\""
 
-#: lib/Plugins/FileTransfer.cpp:288
+#: ../lib/Plugins/FileTransfer.cpp:53
+msgid "FileTransfer: URL not specified"
+msgstr "Filöverföring: URL ej angiven"
+
+#: ../lib/Plugins/FileTransfer.cpp:57
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr "Skickar arkiv %s till %s"
+
+#: ../lib/Plugins/FileTransfer.cpp:288
 msgid "File Transfer: Creating a report..."
 msgstr "Filöverföring: Skapar en rapport ..."
 
-#: lib/Plugins/FileTransfer.cpp:322
+#: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
 msgid "Can't create and send an archive: %s"
 msgstr "Det går inte att skapa och skicka ett arkiv: %s"
 
-#: lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:351
 #, c-format
 msgid "Can't create and send an archive %s"
 msgstr "Det går inte att skapa och skicka ett arkiv %s"
 
-#: lib/Plugins/Mailx.cpp:135
+#: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
 msgstr "Skickar ett e-brev ..."
 
-#: lib/Plugins/SOSreport.cpp:86
+#: ../lib/Plugins/SOSreport.cpp:86
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Kör sosreport: %s"
 
-#: lib/Plugins/SOSreport.cpp:91
+#: ../lib/Plugins/SOSreport.cpp:91
 msgid "Done running sosreport"
 msgstr "Klar med att köra sosreport"
-
-#, fuzzy
-#~ msgid "Not reported"
-#~ msgstr "Ej rapporterad"
-
-#~ msgid ""
-#~ "aalam@fedoraproject.org\n"
-#~ "amitakhya@fedoraproject.org\n"
-#~ "andrealafauci@fedoraproject.org\n"
-#~ "anipeter@fedoraproject.org\n"
-#~ "astur@fedoraproject.org\n"
-#~ "beckerde@fedoraproject.org\n"
-#~ "bruce89@fedoraproject.org\n"
-#~ "charnik@fedoraproject.org\n"
-#~ "chenh@fedoraproject.org\n"
-#~ "cyrushmh@fedoraproject.org\n"
-#~ "dennistobar@fedoraproject.org\n"
-#~ "dheche@fedoraproject.org\n"
-#~ "diegobz@fedoraproject.org\n"
-#~ "dominiksandjaja@fedoraproject.org\n"
-#~ "elad@fedoraproject.org\n"
-#~ "elsupergomez@fedoraproject.org\n"
-#~ "eukim@fedoraproject.org\n"
-#~ "fab@fedoraproject.org\n"
-#~ "feonsu@fedoraproject.org\n"
-#~ "fgonz@fedoraproject.org\n"
-#~ "fvalen@fedoraproject.org\n"
-#~ "gcintra@fedoraproject.org\n"
-#~ "gguerrer@fedoraproject.org\n"
-#~ "goeran@fedoraproject.org\n"
-#~ "hedda@fedoraproject.org\n"
-#~ "hyuuga@fedoraproject.org\n"
-#~ "ifelix@fedoraproject.org\n"
-#~ "igorbounov@fedoraproject.org\n"
-#~ "igor@fedoraproject.org\n"
-#~ "jassy@fedoraproject.org\n"
-#~ "jensm@fedoraproject.org\n"
-#~ "jmoskovc@redhat.com\n"
-#~ "joe74@fedoraproject.org\n"
-#~ "jorgelopes@fedoraproject.org\n"
-#~ "kenda@fedoraproject.org\n"
-#~ "khasida@fedoraproject.org\n"
-#~ "kkrothap@fedoraproject.org\n"
-#~ "kmaraas@fedoraproject.org\n"
-#~ "kmilos@fedoraproject.org\n"
-#~ "kristho@fedoraproject.org\n"
-#~ "leahliu@fedoraproject.org\n"
-#~ "logan@fedoraproject.org\n"
-#~ "mgiri@fedoraproject.org\n"
-#~ "mideal@fedoraproject.org\n"
-#~ "nagyesta@fedoraproject.org\n"
-#~ "nippur@fedoraproject.org\n"
-#~ "perplex@fedoraproject.org\n"
-#~ "peti@fedoraproject.org\n"
-#~ "pkst@fedoraproject.org\n"
-#~ "ppapadeas@fedoraproject.org\n"
-#~ "ptr@fedoraproject.org\n"
-#~ "raada@fedoraproject.org\n"
-#~ "rajesh@fedoraproject.org\n"
-#~ "ratal@fedoraproject.org\n"
-#~ "raven@fedoraproject.org\n"
-#~ "ricardopinto@fedoraproject.org\n"
-#~ "ruigo@fedoraproject.org\n"
-#~ "runab@fedoraproject.org\n"
-#~ "samfreemanz@fedoraproject.org\n"
-#~ "sandeeps@fedoraproject.org\n"
-#~ "sergiomesquita@fedoraproject.org\n"
-#~ "shanky@fedoraproject.org\n"
-#~ "shnurapet@fedoraproject.org\n"
-#~ "snicore@fedoraproject.org\n"
-#~ "swkothar@fedoraproject.org\n"
-#~ "tch@fedoraproject.org\n"
-#~ "tchuang@fedoraproject.org\n"
-#~ "thalia@fedoraproject.org\n"
-#~ "tomchiukc@fedoraproject.org\n"
-#~ "vpv@fedoraproject.org\n"
-#~ "warrink@fedoraproject.org\n"
-#~ "xconde@fedoraproject.org\n"
-#~ "ypoyarko@fedoraproject.org\n"
-#~ "zoltanh721@fedoraproject.org"
-#~ msgstr ""
-#~ "aalam@fedoraproject.org\n"
-#~ "amitakhya@fedoraproject.org\n"
-#~ "andrealafauci@fedoraproject.org\n"
-#~ "anipeter@fedoraproject.org\n"
-#~ "astur@fedoraproject.org\n"
-#~ "beckerde@fedoraproject.org\n"
-#~ "bruce89@fedoraproject.org\n"
-#~ "charnik@fedoraproject.org\n"
-#~ "chenh@fedoraproject.org\n"
-#~ "cyrushmh@fedoraproject.org\n"
-#~ "dennistobar@fedoraproject.org\n"
-#~ "dheche@fedoraproject.org\n"
-#~ "diegobz@fedoraproject.org\n"
-#~ "dominiksandjaja@fedoraproject.org\n"
-#~ "elad@fedoraproject.org\n"
-#~ "elsupergomez@fedoraproject.org\n"
-#~ "eukim@fedoraproject.org\n"
-#~ "fab@fedoraproject.org\n"
-#~ "feonsu@fedoraproject.org\n"
-#~ "fgonz@fedoraproject.org\n"
-#~ "fvalen@fedoraproject.org\n"
-#~ "gcintra@fedoraproject.org\n"
-#~ "gguerrer@fedoraproject.org\n"
-#~ "goeran@fedoraproject.org\n"
-#~ "hedda@fedoraproject.org\n"
-#~ "hyuuga@fedoraproject.org\n"
-#~ "ifelix@fedoraproject.org\n"
-#~ "igorbounov@fedoraproject.org\n"
-#~ "igor@fedoraproject.org\n"
-#~ "jassy@fedoraproject.org\n"
-#~ "jensm@fedoraproject.org\n"
-#~ "jmoskovc@redhat.com\n"
-#~ "joe74@fedoraproject.org\n"
-#~ "jorgelopes@fedoraproject.org\n"
-#~ "kenda@fedoraproject.org\n"
-#~ "khasida@fedoraproject.org\n"
-#~ "kkrothap@fedoraproject.org\n"
-#~ "kmaraas@fedoraproject.org\n"
-#~ "kmilos@fedoraproject.org\n"
-#~ "kristho@fedoraproject.org\n"
-#~ "leahliu@fedoraproject.org\n"
-#~ "logan@fedoraproject.org\n"
-#~ "mgiri@fedoraproject.org\n"
-#~ "mideal@fedoraproject.org\n"
-#~ "nagyesta@fedoraproject.org\n"
-#~ "nippur@fedoraproject.org\n"
-#~ "perplex@fedoraproject.org\n"
-#~ "peti@fedoraproject.org\n"
-#~ "pkst@fedoraproject.org\n"
-#~ "ppapadeas@fedoraproject.org\n"
-#~ "ptr@fedoraproject.org\n"
-#~ "raada@fedoraproject.org\n"
-#~ "rajesh@fedoraproject.org\n"
-#~ "ratal@fedoraproject.org\n"
-#~ "raven@fedoraproject.org\n"
-#~ "ricardopinto@fedoraproject.org\n"
-#~ "ruigo@fedoraproject.org\n"
-#~ "runab@fedoraproject.org\n"
-#~ "samfreemanz@fedoraproject.org\n"
-#~ "sandeeps@fedoraproject.org\n"
-#~ "sergiomesquita@fedoraproject.org\n"
-#~ "shanky@fedoraproject.org\n"
-#~ "shnurapet@fedoraproject.org\n"
-#~ "snicore@fedoraproject.org\n"
-#~ "swkothar@fedoraproject.org\n"
-#~ "tch@fedoraproject.org\n"
-#~ "tchuang@fedoraproject.org\n"
-#~ "thalia@fedoraproject.org\n"
-#~ "tomchiukc@fedoraproject.org\n"
-#~ "vpv@fedoraproject.org\n"
-#~ "warrink@fedoraproject.org\n"
-#~ "xconde@fedoraproject.org\n"
-#~ "ypoyarko@fedoraproject.org\n"
-#~ "zoltanh721@fedoraproject.org"
-
-#~ msgid "Icon"
-#~ msgstr "Ikon"
-
-#~ msgid "Date"
-#~ msgstr "Datum"
-
-#~ msgid "User"
-#~ msgstr "Användare"
-
-#~ msgid "<b>This crash has been reported:</b>\n"
-#~ msgstr "<b>Denna krasch har rapporterats:</b>\n"
-
-#~ msgid ""
-#~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-h, --help         \tthis help message\n"
-#~ "\t-v[vv]             \tverbosity level\n"
-#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
-#~ msgstr ""
-#~ "Användning: abrt-gui [FLAGGOR]\n"
-#~ "\t-h, --help         \tdetta hjälpmeddelande\n"
-#~ "\t-v[vv]             \tnivå på mångordighet\n"
-#~ "\t--report=<krashid>\tdirektrapportera kraschen med krashid=<krashid>"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Visa och rapportera programkrascher"
