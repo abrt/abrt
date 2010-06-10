@@ -19,27 +19,34 @@
 ## Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 
 """
-Module for a userfriendly exception handling
+Module for the ABRT exception handling hook
 """
 
 import sys
 import os
 import syslog
 import subprocess
+import socket
 
 def write_dump(pid, tb):
     executable = "Exception raised from python shell"
     if sys.argv[0]:
         executable = os.path.abspath(sys.argv[0])
 
-    command = ["/usr/libexec/abrt-hook-python"]
-    command.append("--pid=%s" % pid)
-    command.append("--executable=%s" % executable)
-
-    helper = subprocess.Popen(command, stdin=subprocess.PIPE)
-    helper.communicate(tb)
-    helper.wait()
-
+    # Open ABRT daemon's socket and write data to it.
+    s = socket.socket(socket.AF_UNIX, socket.SOCK_STREAM)
+    s.connect(@VAR_RUN@ + "/abrt.socket")
+    s.sendall("PID=%s\0" % pid)
+    s.sendall("EXECUTABLE=%s\0" % executable)
+    s.sendall("ANALYZER=Python\0")
+    s.sendall("BASENAME=pyhook\0")
+    # This handler puts a short(er) crash descr in 1st line of the backtrace.
+    # Example:
+    # CCMainWindow.py:1:<module>:ZeroDivisionError: integer division or modulo by zero
+    s.sendall("REASON=%s\0" % tb.splitlines()[0])
+    s.sendall("BACKTRACE=%s\0" % tb)
+    s.sendall("DONE\0")
+    s.close()
 
 def handleMyException((etype, value, tb)):
     """
