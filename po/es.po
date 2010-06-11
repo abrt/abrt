@@ -1,18 +1,19 @@
+# translation of abrt.master.es.po to Spanish
 # Fedora Spanish translation of abrt.master
 # This file is distributed under the same license as the abrt.master package.
 #
-# Gladys Guerrero Lozano <gguerrer@redhat.com>, 2009.
+#
+# Gladys Guerrero Lozano <gguerrer@redhat.com>, 2009, 2010.
 # Fernando Gonzalez <fgonz@fedoraproject.org>, 2009.
 # Héctor Daniel Cabrera <logan@fedoraproject.org>, 2009, 2010.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-06-10 11:19-0300\n"
-"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
-"Language-Team: Fedora Spanish <trans-es@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2010-06-11 11:33+1000\n"
+"Last-Translator: Gladys Guerrero  <gguerrer@redhat.com>\n"
+"Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -21,7 +22,6 @@ msgstr ""
 "X-Poedit-Country: ARGENTINA\n"
 
 #: lib/Plugins/Catcut.cpp:61
-#, fuzzy
 msgid "send_string: URL not specified"
 msgstr "send_string: URL no especificada"
 
@@ -29,10 +29,9 @@ msgstr "send_string: URL no especificada"
 #: lib/Plugins/Catcut.cpp:114
 #, c-format
 msgid "Sending failed, try it again: %s"
-msgstr "Fallo el envió, intente de nuevo: %s"
+msgstr "Falló el envió, intente de nuevo: %s"
 
 #: lib/Plugins/Catcut.cpp:95
-#, fuzzy
 msgid "send_file: URL not specified"
 msgstr "send_file: URL no especificada"
 
@@ -54,7 +53,7 @@ msgstr "error devuelto por requestUpload: %s"
 #: lib/Plugins/Catcut.cpp:371
 #, c-format
 msgid "error returned by requestUpload: %d"
-msgstr "error returned by requestUpload: %d"
+msgstr "error devuelto por requestUpload: %d"
 
 #: lib/Plugins/Catcut.cpp:377
 msgid "no URL returned by requestUpload, and no errno"
@@ -72,9 +71,9 @@ msgstr "Adjuntando (texto): %s"
 
 #: lib/Plugins/Catcut.cpp:413
 #: lib/Plugins/Catcut.cpp:431
-#, fuzzy, c-format
+#, c-format
 msgid "rebased URL: %s"
-msgstr "Rebasada URL: %s"
+msgstr "URL rebasada: %s"
 
 #: lib/Plugins/Catcut.cpp:420
 #, c-format
@@ -100,7 +99,7 @@ msgstr "Enviando archivo %s a %s"
 #: lib/Plugins/TicketUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
-msgstr "Fallo el envió, intentado de nuevo. %s"
+msgstr "Falló el envió, intentado de nuevo. %s"
 
 #: lib/Plugins/TicketUploader.cpp:192
 msgid "Creating a TicketUploader report..."
@@ -167,13 +166,13 @@ msgstr ""
 "Acciones:\n"
 "\t--get-list\t\timprime la lista de caídas que no han sido reportadas todavía\n"
 "\t--get-list-full\t\timprime la lista de todas las caídas\n"
-"\t--report CRASH_ID\tcrea y enviá un informe\n"
-"\t--report-always CRASH_ID crea y enviá un informe sin preguntar\n"
+"\t--report CRASH_ID\tcrea y envía un informe\n"
+"\t--report-always CRASH_ID crea y envía un informe sin preguntar\n"
 "\t--delete CRASH_ID\telimina la caída\n"
 "CRASH_ID puede ser:\n"
 "\tpar UID:UUID,\n"
 "\túnico prefijo UUID - la caída que coincida con UUID, se actuará sobre ella\n"
-"\t@N  - N'esima caída (son mostrados por --get-list-full), se actuará sobre ellas\n"
+"\t@N  - N'ésima caída (son mostrados por --get-list-full), se actuará sobre ellas\n"
 
 #: src/CLI/CLI.cpp:198
 msgid "You must specify exactly one operation."
@@ -182,7 +181,7 @@ msgstr "Debe especificar exactamente una operación."
 #: src/CLI/report.cpp:179
 #, c-format
 msgid "# This field is read only.\n"
-msgstr "# Este campo es de solo lectura.\n"
+msgstr "# Este campo es de sólo lectura.\n"
 
 #: src/CLI/report.cpp:199
 msgid "# Describe the circumstances of this crash below."
@@ -214,7 +213,7 @@ msgstr "# Componente"
 
 #: src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr "# Volcado de nucleo"
+msgstr "# Volcado de núcleo"
 
 #: src/CLI/report.cpp:209
 msgid "# Executable"
@@ -246,7 +245,7 @@ msgid ""
 "The report has been updated."
 msgstr ""
 "\n"
-"El informe a sido actualizado."
+"El informe ha sido actualizado."
 
 #: src/CLI/report.cpp:413
 msgid ""
@@ -263,7 +262,7 @@ msgstr "Detectada configuración errónea para el complemento %s.\n"
 
 #: src/CLI/report.cpp:632
 msgid "Enter your login: "
-msgstr "Ingrese su usuario:"
+msgstr "Ingrese su nombre de usuario:"
 
 #: src/CLI/report.cpp:638
 msgid "Enter your password: "
@@ -293,15 +292,15 @@ msgstr "El comentario es demasiado largo"
 
 #: src/Daemon/CommLayerServerDBus.cpp:238
 msgid "'How to reproduce' is too long"
-msgstr "'Como reproducir' es demasiado largo"
+msgstr "'Cómo reproducir' es demasiado largo"
 
 #: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr "Otro cliente ya está siendo ejecutado, intentando despertarlo."
+msgstr "Otro cliente ya se está ejecutado, intentando despertarlo."
 
 #: src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr "Se obtienen datos inesperados desde el demonio (¿está la base de datos correctamente actualizada?)"
+msgstr "Se obtienen datos inesperados del demonio (¿está la base de datos correctamente actualizada?)"
 
 #: src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -360,9 +359,9 @@ msgstr ""
 "Este programa es software libre; puede redistribuirlo y/o modificarlo bajo los términos de la Licencia Pública General de Bibliotecas de GNU, como fueron publicadas por la Fundación de Software Libre; ya sea la versión 2 o (a su elección) alguna posterior.\n"
 "\n"
 "\n"
-"Este programa se distribuye con la esperanza de que será útil, pero SIN NINGUNA GARANTÍA; sin siquiera la garantía implícita de MERCANTIBILIDAD o AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de Bibliotecas de GNU para más detalles.\n"
+"Este programa se distribuye con la esperanza de que será útil, pero SIN NINGUNA GARANTÍA; sin siquiera la garantía mercantil implícita o AJUSTE A UN PROPÓSITO PARTICULAR. Vea la Licencia Pública General de Bibliotecas de GNU para más detalles.\n"
 "\n"
-"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas de GNU junto con este programa; sino, see <http://www.gnu.org/licenses/>."
+"Debe haber recibido una copia de la Licencia Pública General de Bibliotecas de GNU junto con este programa; sino, visite <http://www.gnu.org/licenses/>."
 
 #: src/Gui/ccgui.glade:28
 #: src/Applet/CCApplet.cpp:105
@@ -628,7 +627,7 @@ msgstr "Registro"
 
 #: src/Gui/PluginsSettingsDialog.py:24
 msgid "Can't load gui description for SettingsDialog!"
-msgstr "¡No se puede cargar descripción gui para SettingsDialog!"
+msgstr "¡No se puede cargar descripción GUI para SettingsDialog!"
 
 #: src/Gui/PluginsSettingsDialog.py:41
 msgid "Name"
@@ -699,7 +698,7 @@ msgstr "<span color=\"white\">Núcleo:</span>"
 
 #: src/Gui/report.glade:194
 msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span color=\"white\">Lazamiento:</span>"
+msgstr "<span color=\"white\">Lanzamiento:</span>"
 
 #: src/Gui/report.glade:205
 msgid "<span fgcolor=\"blue\">Reason:</span>"
@@ -716,7 +715,7 @@ msgstr "<b>Trazado</b>"
 
 #: src/Gui/report.glade:426
 msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Cómo reporoducir (en unos pocos y sencillos pasos)</b>"
+msgstr "<b>Cómo reproducir (en unos pocos y sencillos pasos)</b>"
 
 #: src/Gui/report.glade:464
 msgid "<b>Comment</b>"
@@ -831,7 +830,7 @@ msgstr "Capacidad máxima de almacenamiento del volcado del núcleo (MB):"
 
 #: src/Gui/settings.glade:355
 msgid "GPG keys: "
-msgstr "LLaves GPG:"
+msgstr "Llaves GPG:"
 
 #: src/Gui/settings.glade:458
 msgid "Common"
@@ -859,11 +858,11 @@ msgstr "<b>Acción asociada</b>"
 
 #: src/Gui/settings.glade:692
 msgid "Analyzers, Actions, Reporters"
-msgstr "Analizadores, Acciones, Informadores"
+msgstr "Analizadores, Acciones, Reporteros"
 
 #: src/Gui/settings.glade:753
 msgid "GPG Keys"
-msgstr "LLaves GPG"
+msgstr "Llaves GPG"
 
 #: src/Gui/CReporterAssistant.py:273
 msgid "You should check backtrace for sensitive data"
@@ -871,7 +870,7 @@ msgstr "Debe verificar el trazado en busca de datos sensibles"
 
 #: src/Gui/CReporterAssistant.py:274
 msgid "You must agree with sending the backtrace"
-msgstr "Debe estar de acuerdo con el envío del detalle"
+msgstr "Debe estar de acuerdo con el envío del trazado"
 
 #: src/Gui/CReporterAssistant.py:334
 msgid "You didn't provide any steps to reproduce."
@@ -879,7 +878,7 @@ msgstr "No ha indicado ningún paso que reproducir."
 
 #: src/Gui/CReporterAssistant.py:348
 msgid "You didn't provide any comments."
-msgstr "No ha ofecido ningún comnetario."
+msgstr "No ha ofrecido ningún comentario."
 
 #: src/Gui/CReporterAssistant.py:425
 #, python-format
@@ -906,7 +905,7 @@ msgid ""
 "\n"
 "Please review the backtrace below and modify it as needed to ensure your bug report does not contain any sensitive date you'd rather not share:"
 msgstr ""
-"Debajo esta el trazado asociado a su caída. El trazado de la caída provee a los desarrolladores detalle sobre como sucedió la caía, ayudándolos a localizar la fuente del problema\n"
+"Debajo está el trazado asociado a su caída. El trazado de la caída provee a los desarrolladores detalle sobre como sucedió la caía, ayudándolos a localizar la fuente del problema\n"
 "\n"
 "Por favor revise el trazado y modifíquelo si es necesario para estar seguro de que su informe no contiene ningún dato sensible que usted no quiera compartir."
 
@@ -940,7 +939,7 @@ msgstr "Provea detalles adicionales"
 
 #: src/Gui/CReporterAssistant.py:637
 msgid "<b>Tip:</b> Your comments are not private. Please monitor what you say accordingly"
-msgstr "<b>Tip:</b> Su comentario no es privado. Por favor, por tal motivo, revise lo que dice."
+msgstr "<b>Consejo:</b> Su comentario no es privado. Por favor, por tal motivo, revise lo que dice."
 
 #: src/Gui/CReporterAssistant.py:678
 msgid "Confirm and send report"
@@ -948,7 +947,7 @@ msgstr "Confirmar y enviar informe"
 
 #: src/Gui/CReporterAssistant.py:680
 msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "Debajo esta el resumen de su informe de error. Por favor clic en 'Aplicar' para enviarlo."
+msgstr "Debajo esta el resumen de su informe de error. Por favor haga clic en 'Aplicar' para enviarlo."
 
 #: src/Gui/CReporterAssistant.py:685
 msgid "<b>Basic details</b>"
@@ -968,7 +967,7 @@ msgstr "Ejecutable"
 
 #: src/Gui/CReporterAssistant.py:695
 msgid "Cmdline"
-msgstr "Linea de comando"
+msgstr "Cmdline"
 
 #: src/Gui/CReporterAssistant.py:697
 msgid "Architecture"
@@ -988,7 +987,7 @@ msgstr "Motivo"
 
 #: src/Gui/CReporterAssistant.py:714
 msgid "Click to view ..."
-msgstr "Clic para ver ..."
+msgstr "Haga clic para ver ..."
 
 #: src/Gui/CReporterAssistant.py:726
 msgid "<b>Steps to reproduce:</b>"
@@ -1000,7 +999,7 @@ msgstr "<b>Comentarios:</b>"
 
 #: src/Gui/CReporterAssistant.py:750
 msgid "No comment provided!"
-msgstr "¡No se han ofrecido comentarios!"
+msgstr "¡No se han proporcionado comentarios!"
 
 #: src/Gui/CReporterAssistant.py:786
 msgid "Finished sending the bug report"
@@ -1016,7 +1015,7 @@ msgstr "Detectada configuración errónea."
 
 #: src/Gui/settings_wizard.glade:40
 msgid "Wrong settings detected for some of the enabled reporter plugins, please use the buttons below to open respective configuration and fix it before you proceed, otherwise the reporting process can fail.\n"
-msgstr "Detectada configuración errónea para algunos complementos de informe habilitados, por favor use el botón de abajo para la respectiva configuración y corrijala antes de proceder, de otra forma el proceso de informe puede fallar.\n"
+msgstr "Detectada configuración errónea para algunos complementos de informe habilitados, por favor use el botón de abajo para la respectiva configuración y corríjala antes de proceder, de otra forma el proceso de informe puede fallar.\n"
 
 #: src/Gui/settings_wizard.glade:71
 msgid "<b>Do you want to continue?</b>"
@@ -1025,11 +1024,11 @@ msgstr "<b>¿Desea continuar?</b>"
 #: src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
-msgstr "Ha sido detectado una caída en el paquete %s."
+msgstr "Ha sido detectada una caída en el paquete %s."
 
 #: src/Applet/Applet.cpp:90
 msgid "A crash has been detected"
-msgstr "Ha sido detectado una caída"
+msgstr "Ha sido detectada una caída"
 
 #: src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
@@ -1039,11 +1038,11 @@ msgstr "El servicio ABRT no se está ejecutando"
 #: src/Applet/CCApplet.cpp:260
 #: src/Applet/CCApplet.cpp:287
 msgid "Warning"
-msgstr "Aviso"
+msgstr "Advertencia"
 
 #: src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
-msgstr "Icono del Área de Notificaciones para notificar al usuario los problemas detectados por ABRT"
+msgstr "Icono del área de notificaciones para informar al usuario los problemas detectados por ABRT"
 
 #: src/Applet/CCApplet.cpp:115
 msgid "Hide"
@@ -1095,7 +1094,7 @@ msgstr "Saliendo..."
 #: lib/Plugins/Bugzilla.cpp:700
 #: lib/Plugins/Bugzilla.cpp:728
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "Fallo get_bug_info(). No se ha podido reunir todas la información obligatoria"
+msgstr "Falló get_bug_info(). No se ha podido reunir toda la información obligatoria"
 
 #: lib/Plugins/Bugzilla.cpp:712
 #, c-format
@@ -1105,7 +1104,7 @@ msgstr "Bugzilla no pudo encontrar la causa del error (%d) "
 #: lib/Plugins/Bugzilla.cpp:717
 #, c-format
 msgid "Jump to bug %d"
-msgstr "Saltar al error %d"
+msgstr "Ir a error %d"
 
 #: lib/Plugins/Bugzilla.cpp:742
 #: lib/Plugins/Bugzilla.cpp:743
@@ -1168,37 +1167,9 @@ msgstr "Enviando un correo..."
 #: lib/Plugins/SOSreport.cpp:86
 #, c-format
 msgid "Running sosreport: %s"
-msgstr "Corriendo sosreport: %s"
+msgstr "Ejecutando sosreport: %s"
 
 #: lib/Plugins/SOSreport.cpp:91
 msgid "Done running sosreport"
-msgstr "Sosreport ya esta corriendo"
+msgstr "Sosreport ya está ejecutándose"
 
-#, fuzzy
-#~ msgid ""
-#~ "Thank you for your bug report. It has been successfully submitted. You "
-#~ "can see the results below."
-#~ msgstr ""
-#~ "Gracias por informar su error. Este a sido enviado exitosamente. Usted "
-#~ "puede ver su informe de error en línea usando la siguiente dirección web:"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "Ver y reportar las caídas de las aplicaciones"
-
-#~ msgid "Not reported"
-#~ msgstr "No informado"
-
-#~ msgid "This bug really sucks!"
-#~ msgstr "¡Este error realmente apesta!"
-
-#~ msgid ""
-#~ "Usage: abrt-gui [OPTIONS]\n"
-#~ "\t-h, --help         \tthis help message\n"
-#~ "\t-v[vv]             \tverbosity level\n"
-#~ "\t--report=<crashid>\tdirectly report crash with crashid=<crashid>"
-#~ msgstr ""
-#~ "Utilización: gui de abrt [OPCIONES]\n"
-#~ "\t-h, --help         \teste mensaje de ayuda\n"
-#~ "\t-v[vv]             \tnivel de detalle\n"
-#~ "\t--report=<crashid>\treporta la caída directamente con el id de la "
-#~ "caída=<crashid>"
