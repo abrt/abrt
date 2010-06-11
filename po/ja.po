@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-05-31 16:45+0900\n"
+"PO-Revision-Date: 2010-06-11 14:39+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 "\n"
 "\n"
@@ -32,63 +32,61 @@ msgstr ""
 "\n"
 
 #: lib/Plugins/Catcut.cpp:61
-#, fuzzy
 msgid "send_string: URL not specified"
-msgstr "ファイル転送: URL が示されていません"
+msgstr "文字列を送信 (_S): URL が指定されていません"
 
 #: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
-#, fuzzy, c-format
+#, c-format
 msgid "Sending failed, try it again: %s"
-msgstr "アーカイブ %s を %s に送信中"
+msgstr "送信に失敗。再試行して下さい: %s"
 
 #: lib/Plugins/Catcut.cpp:95
-#, fuzzy
 msgid "send_file: URL not specified"
-msgstr "ファイル転送: URL が示されていません"
+msgstr "ファイル送信 (_F): URL が指定されていません"
 
 #: lib/Plugins/Catcut.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Sending file %s to %s"
-msgstr "アーカイブ %s を %s に送信中"
+msgstr "ファイル %s を %s に送信中"
 
 #: lib/Plugins/Catcut.cpp:325
-#, fuzzy, c-format
+#, c-format
 msgid "New bug id: %s"
-msgstr "新しいバグ id: %i"
+msgstr "新しいバグ id: %s"
 
 #: lib/Plugins/Catcut.cpp:366
 #, c-format
 msgid "error returned by requestUpload: %s"
-msgstr ""
+msgstr "requestUpload でエラーが返されました: %s"
 
 #: lib/Plugins/Catcut.cpp:371
 #, c-format
 msgid "error returned by requestUpload: %d"
-msgstr ""
+msgstr "equestUpload でエラーが返されました: %d"
 
 #: lib/Plugins/Catcut.cpp:377
 msgid "no URL returned by requestUpload, and no errno"
-msgstr ""
+msgstr "requestUpload で URL が返されません。errno が有りません"
 
 #: lib/Plugins/Catcut.cpp:382
 #, c-format
 msgid "requestUpload returned URL: %s"
-msgstr ""
+msgstr "requestUpload が URL を返しました: %s"
 
 #: lib/Plugins/Catcut.cpp:402
 #, c-format
 msgid "Attaching (text): %s"
-msgstr ""
+msgstr "添付中 (テキスト): %s"
 
 #: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
 #, c-format
 msgid "rebased URL: %s"
-msgstr ""
+msgstr "リベースした URL: %s"
 
 #: lib/Plugins/Catcut.cpp:420
 #, c-format
 msgid "Attaching binary: %s"
-msgstr ""
+msgstr "バイナリを添付中: %s"
 
 #: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
 msgid "Creating new bug..."
@@ -106,27 +104,24 @@ msgstr "アーカイブ %s を %s に送信中"
 #: lib/Plugins/TicketUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
-msgstr ""
+msgstr "送信に失敗。再試行しています。%s"
 
 #: lib/Plugins/TicketUploader.cpp:192
-#, fuzzy
 msgid "Creating a TicketUploader report..."
-msgstr "報告の作成と提出をしています..."
+msgstr "TicketUploader 報告を作成しています..."
 
 #: lib/Plugins/rhfastcheck.cpp:71
-#, fuzzy
 msgid "Creating a signature..."
-msgstr "報告の作成と提出をしています..."
+msgstr "署名を作成しています..."
 
 #: lib/Plugins/rhticket.cpp:222
-#, fuzzy
 msgid "Creating a new case..."
-msgstr "新しいバグを作成中..."
+msgstr "新しいケースを作成中..."
 
 #: lib/Utils/make_descr.cpp:296
 #, c-format
 msgid "Binary file %s will not be reported"
-msgstr ""
+msgstr "バイナリファイル %s は報告されません"
 
 #: src/CLI/CLI.cpp:68
 #, c-format
@@ -139,6 +134,13 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"%u.\n"
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tパッケージ    : %s\n"
+"\t実行ファイル : %s\n"
+"\tクラッシュの時刻 : %s\n"
+"\tクラッシュ数: %s\n"
 
 #: src/CLI/CLI.cpp:154
 #, c-format
@@ -160,126 +162,142 @@ msgid ""
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
 msgstr ""
+"使用法: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t--get-list\t\tprint list of crashes which are not reported yet\n"
+"\t--get-list-full\t\tprint list of all crashes\n"
+"\t--report CRASH_ID\tcreate and send a report\n"
+"\t--report-always CRASH_ID create and send a report without asking\n"
+"\t--delete CRASH_ID\tremove crash\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
 
 #: src/CLI/CLI.cpp:198
 msgid "You must specify exactly one operation."
-msgstr ""
+msgstr "操作を１つだけ指定する必要があります。"
 
 #: src/CLI/report.cpp:179
 #, c-format
 msgid "# This field is read only.\n"
-msgstr ""
+msgstr "# このフィールドは読み込み専用です。\n"
 
 #: src/CLI/report.cpp:199
 msgid "# Describe the circumstances of this crash below."
-msgstr ""
+msgstr "# このクラッシュの状況を下に説明して下さい。"
 
 #: src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
-msgstr ""
+msgstr "# このクラッシュを再現する方法は ？"
 
 #: src/CLI/report.cpp:203
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data such as passwords."
 msgstr ""
+"# Backtrace\n"
+"# パスワードなどの内密情報がそこに入っていないことを確認して下さい。"
 
 #: src/CLI/report.cpp:205
-#, fuzzy
 msgid "# Architecture"
-msgstr "アーキテクチャ"
+msgstr "# アーキテクチャ"
 
 #: src/CLI/report.cpp:206
-#, fuzzy
 msgid "# Command line"
-msgstr "コマンドライン"
+msgstr "# コマンドライン"
 
 #: src/CLI/report.cpp:207
-#, fuzzy
 msgid "# Component"
-msgstr "コンポーネント"
+msgstr "# コンポーネント"
 
 #: src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr ""
+msgstr "# コアダンプ"
 
 #: src/CLI/report.cpp:209
-#, fuzzy
 msgid "# Executable"
-msgstr "実行可能ファイル"
+msgstr "# 実行可能ファイル"
 
 #: src/CLI/report.cpp:210
 msgid "# Kernel version"
-msgstr ""
+msgstr "# カーネルバージョン"
 
 #: src/CLI/report.cpp:211
-#, fuzzy
 msgid "# Package"
-msgstr "パッケージ"
+msgstr "# パッケージ"
 
 #: src/CLI/report.cpp:212
 msgid "# Reason of crash"
-msgstr ""
+msgstr "# クラッシュの理由"
 
 #: src/CLI/report.cpp:213
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# オペレーティングシステムのリリース文字列"
 
 #: src/CLI/report.cpp:323
 msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
-msgstr ""
+msgstr "ターミナルは無能で VISUAL も EDITOR も定義されていません。"
 
 #: src/CLI/report.cpp:411
 msgid ""
 "\n"
 "The report has been updated."
 msgstr ""
+"\n"
+"この報告は更新されました。"
 
 #: src/CLI/report.cpp:413
 msgid ""
 "\n"
 "No changes were detected in the report."
 msgstr ""
+"\n"
+"報告の中に変更は検出されませんでした。"
 
 #: src/CLI/report.cpp:628
 #, c-format
 msgid "Wrong settings were detected for plugin %s.\n"
-msgstr ""
+msgstr "プラグイン %s には不適切な設定が検出されました。\n"
 
 #: src/CLI/report.cpp:632
 msgid "Enter your login: "
-msgstr ""
+msgstr "ログインを入力:"
 
 #: src/CLI/report.cpp:638
 msgid "Enter your password: "
-msgstr ""
+msgstr "パスワードを入力:"
 
 #: src/CLI/report.cpp:681
-#, fuzzy
 msgid "Reporting..."
-msgstr "報告"
+msgstr "報告中..."
 
 #: src/CLI/report.cpp:700
 #, c-format
 msgid "Report using %s? [y/N]: "
-msgstr ""
+msgstr "%s を使用して報告しますか？[y/N]: "
 
 #: src/CLI/report.cpp:703
 msgid "Skipping..."
-msgstr ""
+msgstr "スキップ中..."
 
 #: src/CLI/report.cpp:720
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr ""
+msgstr "クラッシュは %d 個のプラグインを介して報告済み (%d エラー)\n"
 
 #: src/Daemon/CommLayerServerDBus.cpp:234
 msgid "Comment is too long"
-msgstr ""
+msgstr "コメントが長すぎます"
 
 #: src/Daemon/CommLayerServerDBus.cpp:238
 msgid "'How to reproduce' is too long"
-msgstr ""
+msgstr "「再現の方法」が長すぎます"
 
 #: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -527,8 +545,7 @@ msgstr "バックトレースが使用不可です。これを報告しないで
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
-msgstr ""
-"バックトレースが不完全です。再生するために確実に正しい手順に従って 下さい。 "
+msgstr "バックトレースが不完全です。再生するために確実に正しい手順に従って 下さい。 "
 
 #: src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -585,28 +602,25 @@ msgid "Error getting the report: %s"
 msgstr "報告の取得中にエラーです: %s"
 
 #: src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Can't connect to Gnome Keyring daemon"
-msgstr "システム dbus に接続できません。"
+msgstr "Gnome Keyring デーモンに接続できません。"
 
 #: src/Gui/ConfBackend.py:83
 msgid "Can't get default keyring"
-msgstr ""
+msgstr "デフォルトキーリングを取れません"
 
 #: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings won't be saved."
-msgstr ""
+msgid "Access to gnome-keyring has been denied, plugins settings won't be saved."
+msgstr "gnome-keyring へのアクセスが拒否されました。プラグインの設定は保存されません。"
 
 #: src/Gui/ConfBackend.py:152
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, can't load the settings for %s!"
-msgstr ""
+msgid "Access to gnome-keyring has been denied, can't load the settings for %s!"
+msgstr "gnome-keyring へのアクセスが拒否されました。%s の設定をロード出来ません !"
 
 #: src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, can't load settings"
-msgstr ""
+msgstr "gnome-keyring へのアクセスが拒否されました。設定をロードできません"
 
 #: src/Gui/dialogs.glade:7
 msgid "Report done"
@@ -618,26 +632,26 @@ msgstr "ログ"
 
 #: src/Gui/PluginsSettingsDialog.py:24
 msgid "Can't load gui description for SettingsDialog!"
-msgstr ""
+msgstr "SettingsDialog の gui 記述をロードできません !"
 
 #: src/Gui/PluginsSettingsDialog.py:41
-#, fuzzy
 msgid "Name"
-msgstr "名前:"
+msgstr "名前"
 
 #: src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
+msgstr "一覧からプラグインを選択してそのオプションを編集して下さい。"
 
 #: src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"dumplist のロード中にエラーが発生。\n"
-" %s"
+"プラグイン設定 UI を開く際にエラーが発生: \n"
+"\n"
+"%s"
 
 #: src/Gui/PluginSettingsUI.py:17
 msgid "Can't find PluginDialog widget in UI description!"
@@ -691,8 +705,7 @@ msgstr "<span fgcolor=\"blue\">理由:</span>"
 
 #: src/Gui/report.glade:331
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr ""
-"バックトレースをチェックして、内密のデータ（パスワードなど）を削除しました。"
+msgstr "バックトレースをチェックして、内密のデータ（パスワードなど）を削除しました。"
 
 #: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
 msgid "<b>Backtrace</b>"
@@ -847,7 +860,6 @@ msgid "GPG Keys"
 msgstr "GPG キー"
 
 #: src/Gui/CReporterAssistant.py:273
-#, fuzzy
 msgid "You should check backtrace for sensitive data"
 msgstr "バックトレースで内密データをチェックする必要があります"
 
@@ -925,12 +937,10 @@ msgstr "バックトレースを承認する"
 
 #: src/Gui/CReporterAssistant.py:593
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
-msgstr ""
-"どのような手順でこのクラッシュが発生しましたか? どのように再現できますか?"
+msgstr "どのような手順でこのクラッシュが発生しましたか? どのように再現できますか?"
 
 #: src/Gui/CReporterAssistant.py:611
-msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
+msgid "Are there any comment you'd like to share with the software maintainers?"
 msgstr "ソフトウェア管理者に提出すべきコメントがありますか ?"
 
 #: src/Gui/CReporterAssistant.py:630
@@ -941,16 +951,14 @@ msgstr "その他の情報を提供する"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
-msgstr ""
-"<b>ヒント:</b> コメントは公開されます。そのつもりで発言に注意して下さい"
+msgstr "<b>ヒント:</b> コメントは公開されます。そのつもりで発言に注意して下さい"
 
 #: src/Gui/CReporterAssistant.py:678
 msgid "Confirm and send report"
 msgstr "レポートを確認して送信する"
 
 #: src/Gui/CReporterAssistant.py:680
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "バグレポートの要約を以下に示します。提出するには「適用」をクリックして下さ"
 "い。"
@@ -996,7 +1004,6 @@ msgid "Click to view ..."
 msgstr "クリックして表示 ..."
 
 #: src/Gui/CReporterAssistant.py:726
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>再現するための手順:</b>"
 
@@ -1009,9 +1016,8 @@ msgid "No comment provided!"
 msgstr "コメントがありません!"
 
 #: src/Gui/CReporterAssistant.py:786
-#, fuzzy
 msgid "Finished sending the bug report"
-msgstr "バグレポートの送信を終了する"
+msgstr "バグレポート送信を終了しました"
 
 #: src/Gui/CReporterAssistant.py:790
 msgid "<b>Bug reports:</b>"
@@ -1019,7 +1025,7 @@ msgstr "<b>バグレポート:</b>"
 
 #: src/Gui/settings_wizard.glade:7
 msgid "Wrong Settings Detected"
-msgstr ""
+msgstr "不適切な設定を検出しました"
 
 #: src/Gui/settings_wizard.glade:40
 msgid ""
@@ -1027,11 +1033,13 @@ msgid ""
 "the buttons below to open respective configuration and fix it before you "
 "proceed, otherwise the reporting process can fail.\n"
 msgstr ""
+"有効になっているレポータープラグインの一部に不適切な設定が検出されました。 "
+"以下のボタンを使用して各設定を開き、それを修正してから進んで下さい。 "
+"そうしないと、報告のプロセスは失敗します。\n"
 
 #: src/Gui/settings_wizard.glade:71
-#, fuzzy
 msgid "<b>Do you want to continue?</b>"
-msgstr "<b>この発生をどこに報告したいですか ?</b>"
+msgstr "<b>継続したいですか ?</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -1187,16 +1195,3 @@ msgstr "sosreport を実行中: %s"
 msgid "Done running sosreport"
 msgstr "sosreport の実行終了"
 
-#, fuzzy
-#~ msgid ""
-#~ "Thank you for your bug report. It has been successfully submitted. You "
-#~ "can see the results below."
-#~ msgstr ""
-#~ "バグレポートを提出して下さってありがとうございました。正常に提出完了しまし"
-#~ "た。 以下のウェブアドレスを使用してご自分のバグレポートをご覧になれます:"
-
-#~ msgid "View and report application crashes"
-#~ msgstr "アプリケーションクラッシュを表示して報告"
-
-#~ msgid "Not reported"
-#~ msgstr "未報告です"
