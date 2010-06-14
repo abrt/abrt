@@ -157,12 +157,12 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-rhfastcheck
 Plugin to quickly check RH support DB for known solution.
 
-%package plugin-rhticket
-Summary: %{name}'s rhticket plugin
+%package plugin-rhtsupport
+Summary: %{name}'s RHTSupport plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
 
-%description plugin-rhticket
+%description plugin-rhtsupport
 Plugin to report bugs into RH support system.
 
 %package plugin-catcut
@@ -417,12 +417,12 @@ fi
 #%{_libdir}/%{name}/rhfastcheck.GTKBuilder
 #%{_mandir}/man7/%{name}-rhfastcheck.7.gz
 
-%files plugin-rhticket
+%files plugin-rhtsupport
 %defattr(-,root,root,-)
-#%config(noreplace) %{_sysconfdir}/%{name}/plugins/rhticket.conf
-%{_libdir}/%{name}/librhticket.so*
-#%{_libdir}/%{name}/rhticket.GTKBuilder
-#%{_mandir}/man7/%{name}-rhticket.7.gz
+#%config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
+%{_libdir}/%{name}/libRHTSupport.so*
+#%{_libdir}/%{name}/RHTSupport.GTKBuilder
+#%{_mandir}/man7/%{name}-RHTSupport.7.gz
 
 %files plugin-catcut
 %defattr(-,root,root,-)

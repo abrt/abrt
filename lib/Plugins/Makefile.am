@@ -12,7 +12,7 @@ pluginslib_LTLIBRARIES = \
     libSOSreport.la \
     libBugzilla.la \
     librhfastcheck.la \
-    librhticket.la \
+    libRHTSupport.la \
     libCatcut.la \
     libTicketUploader.la \
     libPython.la \
@@ -132,11 +132,11 @@ librhfastcheck_la_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
 
-# rhticket
-librhticket_la_SOURCES = rhticket.h rhticket.cpp
-librhticket_la_LIBADD =
-librhticket_la_LDFLAGS = -avoid-version -ltar
-librhticket_la_CPPFLAGS = \
+# RHTSupport
+libRHTSupport_la_SOURCES = RHTSupport.h RHTSupport.cpp
+libRHTSupport_la_LIBADD =
+libRHTSupport_la_LDFLAGS = -avoid-version -ltar
+libRHTSupport_la_CPPFLAGS = \
     -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
