@@ -2,9 +2,7 @@
 # abrt translation to Dutc.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-#
-#
-# Geert Warrink <geert.warrink@onsnet.nu>, 2009.
+# Geert Warrink <geert.warrink@onsnet.nu>, 2009, 2010.
 # Richard van der Luit <nippur@fedoraproject.org>, 2009.
 # Geert Warrink <geert.warrink@onsnet.nu>, 2009, 2010.
 msgid ""
@@ -12,73 +10,72 @@ msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-05-27 18:50+0200\n"
+"PO-Revision-Date: 2010-06-14 13:13+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
-"Language-Team: nl <fedora-trans-list@redhat.com>\n"
+"Language-Team: Fedora\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding:  \n"
-"X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.5.2\n"
 
 #: lib/Plugins/Catcut.cpp:61
-#, fuzzy
 msgid "send_string: URL not specified"
-msgstr "Bestandsoverdracht: URL niet opgegeven"
+msgstr "send_string: URL niet opgegeven"
 
 #: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
-#, fuzzy, c-format
+#, c-format
 msgid "Sending failed, try it again: %s"
-msgstr "Versturen van archief %s naar %s"
+msgstr "Versturen mislukte, probeer het opnieuw: %s"
 
 #: lib/Plugins/Catcut.cpp:95
-#, fuzzy
 msgid "send_file: URL not specified"
-msgstr "Bestandsoverdracht: URL niet opgegeven"
+msgstr "send_file: URL niet opgegeven"
 
 #: lib/Plugins/Catcut.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Sending file %s to %s"
-msgstr "Versturen van archief %s naar %s"
+msgstr "Bestand versturen van %s naar %s"
 
 #: lib/Plugins/Catcut.cpp:325
-#, fuzzy, c-format
+#, c-format
 msgid "New bug id: %s"
-msgstr "Nieuwe bug id: %i"
+msgstr "Nieuwe bug id: %s"
 
 #: lib/Plugins/Catcut.cpp:366
 #, c-format
 msgid "error returned by requestUpload: %s"
-msgstr ""
+msgstr "fout teruggegeven door requestUpload: %s"
 
 #: lib/Plugins/Catcut.cpp:371
 #, c-format
 msgid "error returned by requestUpload: %d"
-msgstr ""
+msgstr "fout teruggegeven door requestUpload: %d"
 
 #: lib/Plugins/Catcut.cpp:377
 msgid "no URL returned by requestUpload, and no errno"
-msgstr ""
+msgstr "geen URL teruggegeven door requestUpload, en geen errno"
 
 #: lib/Plugins/Catcut.cpp:382
 #, c-format
 msgid "requestUpload returned URL: %s"
-msgstr ""
+msgstr "requestUpload gaf URL terug: %s"
 
 #: lib/Plugins/Catcut.cpp:402
 #, c-format
 msgid "Attaching (text): %s"
-msgstr ""
+msgstr "Toegevoegd (tekst): %s"
 
 #: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
 #, c-format
 msgid "rebased URL: %s"
-msgstr ""
+msgstr "bevestigde URL: %s"
 
 #: lib/Plugins/Catcut.cpp:420
 #, c-format
 msgid "Attaching binary: %s"
-msgstr ""
+msgstr "Toegevoegd (binair bestand): %s"
 
 #: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
 msgid "Creating new bug..."
@@ -86,7 +83,7 @@ msgstr "Nieuwe bug aanmaken..."
 
 #: lib/Plugins/TicketUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
-msgstr "Bestandsoverdracht: URL niet opgegeven"
+msgstr "FileTransfer: URL niet opgegeven"
 
 #: lib/Plugins/TicketUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
 #, c-format
@@ -96,27 +93,24 @@ msgstr "Versturen van archief %s naar %s"
 #: lib/Plugins/TicketUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
-msgstr ""
+msgstr "Versturen mislukte, opnieuw proberen: %s"
 
 #: lib/Plugins/TicketUploader.cpp:192
-#, fuzzy
 msgid "Creating a TicketUploader report..."
-msgstr "Rapport aanmaken..."
+msgstr "Een TicketUploader rapport aanmaken..."
 
 #: lib/Plugins/rhfastcheck.cpp:71
-#, fuzzy
 msgid "Creating a signature..."
-msgstr "Rapport aanmaken..."
+msgstr "Een ondertekening aanmaken..."
 
-#: lib/Plugins/rhticket.cpp:222
-#, fuzzy
+#: lib/Plugins/RHTSupport.cpp:222
 msgid "Creating a new case..."
-msgstr "Nieuwe bug aanmaken..."
+msgstr "Een nieuwe zaak aanmaken..."
 
 #: lib/Utils/make_descr.cpp:296
 #, c-format
 msgid "Binary file %s will not be reported"
-msgstr ""
+msgstr "Binair bestand %s zal niet gerapporteerd worden"
 
 #: src/CLI/CLI.cpp:68
 #, c-format
@@ -129,6 +123,13 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"%u.\n"
+"\tUID            : %s\n"
+"\tUUID           : %s\n"
+"\tPakket         : %s\n"
+"\tUivoerbaar prog: %s\n"
+"\tCrash tijd     : %s\n"
+"\tCrash telling  : %s\n"
 
 #: src/CLI/CLI.cpp:154
 #, c-format
@@ -150,157 +151,173 @@ msgid ""
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
 msgstr ""
+"Gebruik: %s [OPTIE]\n"
+"\n"
+"Opstarten:\n"
+"\t-V, --version\t\tlaat de versie van %s en sluit af\n"
+"\t-?, --help\t\tlaat deze hulp zien\n"
+"\n"
+"Acties:\n"
+"\t--get-list\t\tlaat lijst van crashes die nog niet gerapporteerd zijn\n"
+"\t--get-list-full\t\tlaat lijst van alle crashes zien\n"
+"\t--report CRASH_ID\tmaak een rapport aan en verstuur deze\n"
+"\t--report-always CRASH_ID maak een rapport aan en verstuur deze zonder te "
+"vragen\n"
+"\t--delete CRASH_ID\tverwijder crash\n"
+"CRASH_ID kan zijn:\n"
+"\tUID:UUID paar,\n"
+"\tunieke UUID prefix  - de crash met bijpassende UUID waarop actie ondernomen "
+"zal worden\n"
+"\t@N  - N'de crash (zoals getoond door by --get-list-full) waarop actie "
+"ondernomen zal worden\n"
 
 #: src/CLI/CLI.cpp:198
 msgid "You must specify exactly one operation."
-msgstr ""
+msgstr "Je moet exact een bewerking specificeren."
 
 #: src/CLI/report.cpp:179
 #, c-format
 msgid "# This field is read only.\n"
-msgstr ""
+msgstr "# Dit veld is alleen-lezen.\n"
 
 #: src/CLI/report.cpp:199
 msgid "# Describe the circumstances of this crash below."
-msgstr ""
+msgstr "# Beschrijf hieronder de omstandigheden van deze crash."
 
 #: src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
-msgstr ""
+msgstr "# Hoe is deze crash te reproduceren?"
 
 #: src/CLI/report.cpp:203
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data such as passwords."
 msgstr ""
+"# Backtrace\n"
+"# Controleer dat deze geen gevoelige data bevat zoals wachtwoorden."
 
 #: src/CLI/report.cpp:205
-#, fuzzy
 msgid "# Architecture"
-msgstr "Architectuur"
+msgstr "# Architectuur"
 
 #: src/CLI/report.cpp:206
-#, fuzzy
 msgid "# Command line"
-msgstr "Commando-regel"
+msgstr "# Commando-regel"
 
 #: src/CLI/report.cpp:207
-#, fuzzy
 msgid "# Component"
-msgstr "Onderdeel"
+msgstr "# Onderdeel"
 
 #: src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr ""
+msgstr "# Core dump"
 
 #: src/CLI/report.cpp:209
-#, fuzzy
 msgid "# Executable"
-msgstr "Uitvoerbaar programma"
+msgstr "# Uitvoerbaar programma"
 
 #: src/CLI/report.cpp:210
 msgid "# Kernel version"
-msgstr ""
+msgstr "# Kernel versie"
 
 #: src/CLI/report.cpp:211
-#, fuzzy
 msgid "# Package"
-msgstr "Pakket"
+msgstr "# Pakket"
 
 #: src/CLI/report.cpp:212
 msgid "# Reason of crash"
-msgstr ""
+msgstr "# Reden van de crash"
 
 #: src/CLI/report.cpp:213
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# Vrijgave boodschap van het besturingssysteem"
 
 #: src/CLI/report.cpp:323
 msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
-msgstr ""
+msgstr "Terminal is eenvoudig maar VISUAL noch EDITOR zijn gedefinieerd."
 
 #: src/CLI/report.cpp:411
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated."
-msgstr "ABRT service is gestart"
+msgstr ""
+"\n"
+"Het rapport is vernieuwd."
 
 #: src/CLI/report.cpp:413
 msgid ""
 "\n"
 "No changes were detected in the report."
 msgstr ""
+"\n"
+"Er zijn geen veranderingen in het rapport ontdekt."
 
 #: src/CLI/report.cpp:628
 #, c-format
 msgid "Wrong settings were detected for plugin %s.\n"
-msgstr ""
+msgstr "Voor plug-in %s zijn verkeerde instellingen ontdekt.\n"
 
 #: src/CLI/report.cpp:632
 msgid "Enter your login: "
-msgstr ""
+msgstr "Voer jouw gebruikersnaam in:"
 
 #: src/CLI/report.cpp:638
 msgid "Enter your password: "
-msgstr ""
+msgstr "Voer jouw wachtwoord in:"
 
 #: src/CLI/report.cpp:681
-#, fuzzy
 msgid "Reporting..."
-msgstr "Ben bezig..."
+msgstr "Rapporteren..."
 
 #: src/CLI/report.cpp:700
 #, c-format
 msgid "Report using %s? [y/N]: "
-msgstr ""
+msgstr "Rapporteren met  %s? [y/N]: "
 
 #: src/CLI/report.cpp:703
-#, fuzzy
 msgid "Skipping..."
-msgstr "Ben bezig..."
+msgstr "Overslaan..."
 
 #: src/CLI/report.cpp:720
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr ""
+msgstr "Crash gerapporteerd met %d plug-ins (%d fouten)\n"
 
 #: src/Daemon/CommLayerServerDBus.cpp:234
 msgid "Comment is too long"
-msgstr ""
+msgstr "Commentaar is te lang"
 
 #: src/Daemon/CommLayerServerDBus.cpp:238
 msgid "'How to reproduce' is too long"
-msgstr ""
+msgstr "'Hoe te reproduceren' is te lang"
 
 #: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr "Andere client draait al, probeer het te wekken."
+msgstr "Andere cliënt draait al, probeer het te wekken."
 
 #: src/Gui/ABRTExceptions.py:13
 msgid "Got unexpected data from daemon (is the database properly updated?)."
-msgstr ""
-"Kreeg niet verwachte data van daemon (is de database correct vernieuwd?)."
+msgstr "Kreeg onverwachte data van daemon (is de database correct vernieuwd?)."
 
 #: src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
-msgstr "Niet geladen plugins"
+msgstr "Niet geladen plug-ins"
 
 #: src/Gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
-msgstr "Analyse plugins"
+msgstr "Analyse plug-ins"
 
 #: src/Gui/ABRTPlugin.py:64
 msgid "Action plugins"
-msgstr "Actie plugins"
+msgstr "Actie plug-ins"
 
 #: src/Gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
-msgstr "Aanmeld plugins"
+msgstr "Aanmeld plug-ins"
 
 #: src/Gui/ABRTPlugin.py:66
 msgid "Database plugins"
-msgstr "Databse plugins"
+msgstr "Database plu-gins"
 
 #: src/Gui/CCDBusBackend.py:74 src/Gui/CCDBusBackend.py:97
 msgid "Can't connect to system dbus"
@@ -372,7 +389,7 @@ msgstr "Be_werken"
 
 #: src/Gui/ccgui.glade:100 src/Gui/settings.glade:6
 msgid "Plugins"
-msgstr "Plugins"
+msgstr "Plug-ins"
 
 #: src/Gui/ccgui.glade:119
 msgid "_Help"
@@ -384,7 +401,7 @@ msgstr "Bekijk log"
 
 #: src/Gui/ccgui.glade:237
 msgid "<b>Bug Reports:</b>"
-msgstr "<b>Fout rapporten:</b>"
+msgstr "<b>Bug rapporten:</b>"
 
 #: src/Gui/ccgui.glade:277
 msgid "<b>Latest Crash:</b>"
@@ -454,7 +471,7 @@ msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
-"Fout tijdens het laden van de dumplijst.\n"
+"Fout tijdens het laden van de dump lijst.\n"
 "%s"
 
 #: src/Gui/CCMainWindow.py:237
@@ -507,8 +524,8 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 "Rapportage uitgeschakeld omdat de backtrace onbruikbaar is.\n"
-"Probeer a.u.b. debuginfo handmatig te installeren met het commando:"
-"<b>debuginfo-install %s</b> \n"
+"Probeer a.u.b. debuginfo handmatig te installeren met het commando: <b"
+">debuginfo-install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
 #: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
@@ -525,8 +542,7 @@ msgstr ""
 
 #: src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
-"Rapporteren is uitgezet, los a.u.b. de hierboven getoonde problemen op."
+msgstr "Rapporteren is uitgezet, los a.u.b. de hierboven getoonde problemen op."
 
 #: src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using selected plugin."
@@ -547,7 +563,7 @@ msgid ""
 "Can't save plugin settings:\n"
 " %s"
 msgstr ""
-"Kan de plugin instellingen niet opslaan:\n"
+"Kan de plug-in instellingen niet opslaan:\n"
 " %s"
 
 #: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
@@ -579,28 +595,33 @@ msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
 
 #: src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Can't connect to Gnome Keyring daemon"
-msgstr "Kan niet verbinden met systeem dbus"
+msgstr "Kan niet verbinden met de Gnome sleutelbos daemon"
 
 #: src/Gui/ConfBackend.py:83
 msgid "Can't get default keyring"
-msgstr ""
+msgstr "Kan standaard sleutelbos niet verkrijgen"
 
 #: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings won't be saved."
 msgstr ""
+"Toegang tot gnome-keyring werd niet toegestaan, plug-in instellingen worden "
+"niet opgeslagen."
 
 #: src/Gui/ConfBackend.py:152
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, can't load the settings for %s!"
 msgstr ""
+"Toegang tot gnome-keyring werd niet toegestaan, kan de instellingen voor %s "
+"niet laden!"
 
 #: src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, can't load settings"
 msgstr ""
+"Toegang tot gnome-keyring werd niet toegestaan, kan de instellingen niet "
+"laden!"
 
 #: src/Gui/dialogs.glade:7
 msgid "Report done"
@@ -612,25 +633,25 @@ msgstr "Log"
 
 #: src/Gui/PluginsSettingsDialog.py:24
 msgid "Can't load gui description for SettingsDialog!"
-msgstr ""
+msgstr "Kan de gui beschrijving voor SettingsDialog niet laden!"
 
 #: src/Gui/PluginsSettingsDialog.py:41
-#, fuzzy
 msgid "Name"
-msgstr "Naam:"
+msgstr "Naam"
 
 #: src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
+msgstr "Selecteer een plug-in in de list om de opties hiervan te bewerken."
 
 #: src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"Fout tijdens het laden van de dumplijst.\n"
+"Fout tijdens het openen van de plug-in instellingen UI: \n"
+"\n"
 "%s"
 
 #: src/Gui/PluginSettingsUI.py:17
@@ -639,7 +660,7 @@ msgstr "Kan geen PluginDialog widget in UI beschrijving vinden!"
 
 #: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
 msgid "combo box is not implemented"
-msgstr "combo box is niet geïmplementeertd"
+msgstr "combo box is niet geïmplementeerd"
 
 #: src/Gui/PluginSettingsUI.py:63
 msgid "Nothing to hydrate!"
@@ -695,7 +716,7 @@ msgstr "<b>Backtrace</b>"
 
 #: src/Gui/report.glade:426
 msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Hoe het te reproduceren (in een paar eenvoudige stappen)</b>"
+msgstr "<b>Hoe te reproduceren (in een paar eenvoudige stappen)</b>"
 
 #: src/Gui/report.glade:464
 msgid "<b>Comment</b>"
@@ -719,7 +740,7 @@ msgstr "Laat log zien"
 
 #: src/Gui/report.glade:654
 msgid "Forces ABRT to regenerate the backtrace"
-msgstr "Forceert ABRT om de backtrace opnieuw te genereren"
+msgstr "Forceer ABRT om de backtrace opnieuw te genereren"
 
 #: src/Gui/report.glade:665
 msgid "Send report"
@@ -743,7 +764,7 @@ msgstr "Details"
 
 #: src/Gui/SettingsDialog.py:33 src/Gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
-msgstr "<b>Selecteer een plugin</b>"
+msgstr "<b>Selecteer plug-in</b>"
 
 #: src/Gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
@@ -779,11 +800,11 @@ msgstr "Naam:"
 
 #: src/Gui/settings.glade:198
 msgid "<b>Plugin details</b>"
-msgstr "<b>Plugin details</b>"
+msgstr "<b>Plug-in details</b>"
 
 #: src/Gui/settings.glade:221
 msgid "C_onfigure Plugin"
-msgstr "C_onfigureer plugin"
+msgstr "C_onfigureer plug-in"
 
 #: src/Gui/settings.glade:258
 msgid "Preferences"
@@ -795,7 +816,7 @@ msgstr "Controleer GPG ondertekening van pakket"
 
 #: src/Gui/settings.glade:301
 msgid "Database backend: "
-msgstr "Batabase back-end: "
+msgstr "Database back-end: "
 
 #: src/Gui/settings.glade:327
 msgid "Blacklisted packages: "
@@ -815,7 +836,7 @@ msgstr "Algemeen"
 
 #: src/Gui/settings.glade:491
 msgid "<b>Plugin</b>"
-msgstr "<b>Plugin</b>"
+msgstr "<b>Plug-in</b>"
 
 #: src/Gui/settings.glade:501
 msgid "<b>Time (or period)</b>"
@@ -827,7 +848,7 @@ msgstr "Cron"
 
 #: src/Gui/settings.glade:603
 msgid "<b>Analyzer plugin</b>"
-msgstr "<b>Analyse plugin</b>"
+msgstr "<b>Analyse plug-in</b>"
 
 #: src/Gui/settings.glade:613
 msgid "<b>Associated action</b>"
@@ -842,7 +863,6 @@ msgid "GPG Keys"
 msgstr "GPG sleutels"
 
 #: src/Gui/CReporterAssistant.py:273
-#, fuzzy
 msgid "You should check backtrace for sensitive data"
 msgstr "Je moet de backtrace controleren op gevoelige data"
 
@@ -992,9 +1012,8 @@ msgid "Click to view ..."
 msgstr "Klik om te bekijken ..."
 
 #: src/Gui/CReporterAssistant.py:726
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>Stappen voor het reproduceren:</b>"
+msgstr "<b>Stappen om te reproduceren:</b>"
 
 #: src/Gui/CReporterAssistant.py:747
 msgid "<b>Comments:</b>"
@@ -1005,30 +1024,30 @@ msgid "No comment provided!"
 msgstr "Geen commentaar gegeven!"
 
 #: src/Gui/CReporterAssistant.py:786
-#, fuzzy
 msgid "Finished sending the bug report"
-msgstr "Beëindig het versturen van het bug rapport"
+msgstr "Het versturen van het bug rapport is klaar"
 
 #: src/Gui/CReporterAssistant.py:790
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Bug rapporten:</b>"
 
 #: src/Gui/settings_wizard.glade:7
-#, fuzzy
 msgid "Wrong Settings Detected"
-msgstr "Niets geselecteerd"
+msgstr "Verkeerde instellingen ontdekt"
 
 #: src/Gui/settings_wizard.glade:40
 msgid ""
 "Wrong settings detected for some of the enabled reporter plugins, please use "
 "the buttons below to open respective configuration and fix it before you "
 "proceed, otherwise the reporting process can fail.\n"
-msgstr ""
+msgstr "Er zijn verkeerde instellingen ontdekt voor de aangezette rapporteer plug-"
+"ins, gebruik de knoppen hieronder om hun respectievelijke configuratie te "
+"openen en te repareren voordat je verdergaat, omdat het rapporteer proces "
+"anders kan mislukken.\n"
 
 #: src/Gui/settings_wizard.glade:71
-#, fuzzy
 msgid "<b>Do you want to continue?</b>"
-msgstr "<b>Waar wil je dit incident rapporteren?</b>"
+msgstr "<b>Wil je verdergaan?</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -1051,7 +1070,7 @@ msgstr "Waarschuwing"
 #: src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
 msgstr ""
-"Medelings gebied applet om gebruiker te berichten over problemen ontdekt "
+"Mededelingen-gebied applet om gebruiker te berichten over problemen ontdekt "
 "door ABRT"
 
 #: src/Applet/CCApplet.cpp:115
@@ -1098,7 +1117,7 @@ msgstr "Verplicht onderdeel 'bugs' ontbreekt"
 
 #: lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
-msgstr "Het aanmaken van een Bugzilla ingang faalde"
+msgstr "Het aanmaken van een Bugzilla ingang mislukte"
 
 #: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
 msgid "Logging out..."
@@ -1127,7 +1146,7 @@ msgstr "Voeg %s toe aan CC lijst"
 #: lib/Plugins/Bugzilla.cpp:767
 #, c-format
 msgid "Add new comment into bug(%d)"
-msgstr "voeg nieuw commentaar toe aan bug(%d)"
+msgstr "Voeg nieuw commentaar toe aan bug(%d)"
 
 #: lib/Plugins/Kerneloops.cpp:118
 msgid "Getting local universal unique identification"
@@ -1135,7 +1154,7 @@ msgstr "Verkrijgen van locale universele unieke identificatie"
 
 #: lib/Plugins/CCpp.cpp:184
 msgid "Generating backtrace"
-msgstr "Aangemaakte backtrace"
+msgstr "Backtrace aanmaken"
 
 #: lib/Plugins/CCpp.cpp:352
 msgid "Starting debuginfo installation"
@@ -1143,7 +1162,7 @@ msgstr "Start debuginfo installatie"
 
 #: lib/Plugins/CCpp.cpp:560
 msgid "Getting global universal unique identification..."
-msgstr "Verkrijgen van golbale universele unieke identificatie..."
+msgstr "Verkrijgen van globale universele unieke identificatie..."
 
 #: lib/Plugins/CCpp.cpp:726
 msgid "Skipping debuginfo installation"
@@ -1151,7 +1170,7 @@ msgstr "Sla debuginfo installatie over"
 
 #: lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
-msgstr "Aanmaken en indienen van rapport..."
+msgstr "Aanmaken en indienen van een rapport..."
 
 #: lib/Plugins/Logger.cpp:73
 #, c-format

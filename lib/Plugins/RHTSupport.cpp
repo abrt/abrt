@@ -26,7 +26,7 @@
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
-#include "rhticket.h"
+#include "RHTSupport.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -296,4 +296,4 @@ PLUGIN_INFO(REPORTER,
     "Reports bugs to Red Hat support",
     "Denys Vlasenko <dvlasenk@redhat.com>",
     "https://fedorahosted.org/abrt/wiki",
-    "" /*PLUGINS_LIB_DIR"/rhticket.GTKBuilder"*/);
+    "" /*PLUGINS_LIB_DIR"/RHTSupport.GTKBuilder"*/);
