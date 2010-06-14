@@ -54,7 +54,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
     {
         CDebugDump dd;
         dd.Open(pActionDir);
-        bool bt_exists = dd.Exist("sosreport.tar.bz2");
+        bool bt_exists = dd.Exist("sosreport.tar.bz2") || dd.Exist("sosreport.tar.xz");
         if (bt_exists)
         {
             VERB3 log("%s already exists, not regenerating", "sosreport.tar.bz2");
@@ -62,13 +62,25 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
         }
     }
 
-    static const char command_default[] = "nice sosreport --batch"
-                                            " --only=anaconda --only=bootloader"
-                                            " --only=devicemapper --only=filesys --only=hardware --only=kernel"
-                                            " --only=libraries --only=memory --only=networking --only=nfsserver"
-                                            " --only=pam --only=process --only=rpm -k rpm.rpmva=off --only=ssh"
-                                            " --only=startup --only=yum 2>&1";
-    static const char command_prefix[] = "nice sosreport --batch --no-progressbar";
+    static const char command_default[] =
+        "cd -- '%s' || exit 1;"
+        "nice sosreport --tmp-dir . --batch"
+        " --only=anaconda --only=bootloader"
+        " --only=devicemapper --only=filesys --only=hardware --only=kernel"
+        " --only=libraries --only=memory --only=networking --only=nfsserver"
+        " --only=pam --only=process --only=rpm -k rpm.rpmva=off --only=ssh"
+        " --only=startup --only=yum 2>&1;"
+        "rm sosreport*.md5 2>/dev/null;"
+        "mv sosreport*.tar.bz2 sosreport.tar.bz2 2>/dev/null;"
+        "mv sosreport*.tar.xz  sosreport.tar.xz  2>/dev/null;"
+        ;
+    static const char command_prefix[] =
+        "cd -- '%s' || exit 1;"
+        "nice sosreport --tmp-dir . --batch %s 2>&1;"
+        "rm sosreport*.md5 2>/dev/null;"
+        "mv sosreport*.tar.bz2 sosreport.tar.bz2 2>/dev/null;"
+        "mv sosreport*.tar.xz  sosreport.tar.xz  2>/dev/null;"
+        ;
     string command;
 
     vector_string_t args;
@@ -76,11 +88,11 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
 
     if (args.size() == 0 || args[0] == "")
     {
-        command = command_default;
+        command = ssprintf(command_default, pActionDir);
     }
     else
     {
-        command = ssprintf("%s %s 2>&1", command_prefix, args[0].c_str());
+        command = ssprintf(command_prefix, pActionDir, args[0].c_str());
     }
 
     update_client(_("Running sosreport: %s"), command.c_str());
@@ -90,6 +102,9 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
     output += command_out;
     update_client(_("Done running sosreport"));
     VERB3 log("sosreport output:'%s'", output.c_str());
+
+// Not needed: now we use "sosreport --tmp-dir DUMPDIR"
+#if 0
     // Parse:
     // "Your sosreport has been generated and saved in:
     //  /tmp/sosreport-XXXX.tar.bz2"
@@ -134,6 +149,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
         throw e;
     }
     free(sosreport_filename);
+#endif
 }
 
 PLUGIN_INFO(ACTION,
