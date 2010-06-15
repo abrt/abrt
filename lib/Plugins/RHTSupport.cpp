@@ -104,6 +104,15 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
 {
     string retval;
 
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("URL");
+    string URL = (it == end ? m_sStrataURL : it->second);
+    it = pSettings.find("Login");
+    string login = (it == end ? m_sLogin : it->second);
+    it = pSettings.find("Password");
+    string password = (it == end ? m_sPassword : it->second);
+
     const string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
 //  const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
 //  const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
@@ -220,9 +229,9 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
 
     {
         update_client(_("Creating a new case..."));
-        char* result = send_report_to_new_case(m_sStrataURL.c_str(),
-                m_sLogin.c_str(),
-                m_sPassword.c_str(),
+        char* result = send_report_to_new_case(URL.c_str(),
+                login.c_str(),
+                password.c_str(),
                 summary.c_str(),
                 description.c_str(),
                 package.c_str(),
@@ -234,7 +243,8 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     }
 
  ret:
-    kill(child, SIGKILL); /* just in case */
+    // Damn, selinux does not allow SIGKILLing our own child! wtf??
+    //kill(child, SIGKILL); /* just in case */
     waitpid(child, NULL, 0);
     if (tar)
         tar_close(tar);

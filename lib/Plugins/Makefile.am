@@ -35,6 +35,7 @@ dist_pluginsconf_DATA = \
     Logger.conf \
     Kerneloops.conf \
     Bugzilla.conf \
+    RHTSupport.conf \
     Catcut.conf \
     TicketUploader.conf \
     FileTransfer.conf \
@@ -46,7 +47,8 @@ man_MANS = \
     abrt-Bugzilla.7 \
     abrt-KerneloopsScanner.7 \
     abrt-KerneloopsReporter.7 \
-    abrt-Logger.7 abrt-Mailx.7 \
+    abrt-Logger.7 \
+    abrt-Mailx.7 \
     abrt-plugins.7 \
     abrt-SQLite3.7 \
     abrt-RunApp.7 \

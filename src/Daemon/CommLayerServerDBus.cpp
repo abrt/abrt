@@ -275,14 +275,14 @@ static int handle_Report(DBusMessage* call, DBusMessage* reply)
         map_map_string_t::const_iterator it_user_conf_data = user_conf_data.begin();
         for (; it_user_conf_data != user_conf_data.end(); it_user_conf_data++)
         {
-            std::string PluginName = it_user_conf_data->first;
-            std::cout << "plugin name: " << it_user_conf_data->first;
+            //std::string PluginName = it_user_conf_data->first;
+            log("plugin:'%s'", it_user_conf_data->first.c_str());
             map_string_t::const_iterator it_plugin_config;
             for    (it_plugin_config = it_user_conf_data->second.begin();
                     it_plugin_config != it_user_conf_data->second.end();
                     it_plugin_config++)
             {
-                std::cout << " key: " << it_plugin_config->first << " value: " << it_plugin_config->second << std::endl;
+                log("key:'%s' val:'%s'", it_plugin_config->first.c_str(), it_plugin_config->second.c_str());
             }
             // this would overwrite the default settings
             //g_pPluginManager->SetPluginSettings(PluginName, sender, plugin_settings);
