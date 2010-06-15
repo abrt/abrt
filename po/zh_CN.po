@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-05-28 12:31+1000\n"
+"PO-Revision-Date: 2010-06-15 11:48+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Wei Liu\n"
 "MIME-Version: 1.0\n"
@@ -23,63 +23,61 @@ msgstr ""
 "X-Poedit-Country: CHINA\n"
 
 #: lib/Plugins/Catcut.cpp:61
-#, fuzzy
 msgid "send_string: URL not specified"
-msgstr "文件传送： URL 未指定"
+msgstr "send_string：未指定 URL"
 
 #: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
-#, fuzzy, c-format
+#, c-format
 msgid "Sending failed, try it again: %s"
-msgstr "正在传送归档 %s 至 %s"
+msgstr "发送失败，再试一次：%s"
 
 #: lib/Plugins/Catcut.cpp:95
-#, fuzzy
 msgid "send_file: URL not specified"
-msgstr "文件传送： URL 未指定"
+msgstr "send_file：未指定 URL"
 
 #: lib/Plugins/Catcut.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Sending file %s to %s"
-msgstr "正在传送归档 %s 至 %s"
+msgstr "正在发送 %s 至 %s"
 
 #: lib/Plugins/Catcut.cpp:325
-#, fuzzy, c-format
+#, c-format
 msgid "New bug id: %s"
-msgstr "新的错误 id：%i"
+msgstr "新的 bug id：%s"
 
 #: lib/Plugins/Catcut.cpp:366
 #, c-format
 msgid "error returned by requestUpload: %s"
-msgstr ""
+msgstr "requestUpload 返回的错误：%s"
 
 #: lib/Plugins/Catcut.cpp:371
 #, c-format
 msgid "error returned by requestUpload: %d"
-msgstr ""
+msgstr "requestUpload 返回的错误：%d"
 
 #: lib/Plugins/Catcut.cpp:377
 msgid "no URL returned by requestUpload, and no errno"
-msgstr ""
+msgstr "requestUpload 未返回 URL，且没有错误"
 
 #: lib/Plugins/Catcut.cpp:382
 #, c-format
 msgid "requestUpload returned URL: %s"
-msgstr ""
+msgstr "requestUpload 返回的 URL：%s"
 
 #: lib/Plugins/Catcut.cpp:402
 #, c-format
 msgid "Attaching (text): %s"
-msgstr ""
+msgstr "附加（文本）：%s"
 
 #: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
 #, c-format
 msgid "rebased URL: %s"
-msgstr ""
+msgstr "基底 URL：%s"
 
 #: lib/Plugins/Catcut.cpp:420
 #, c-format
 msgid "Attaching binary: %s"
-msgstr ""
+msgstr "附加二进制文件：%s"
 
 #: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
 msgid "Creating new bug..."
@@ -97,27 +95,24 @@ msgstr "正在传送归档 %s 至 %s"
 #: lib/Plugins/TicketUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
-msgstr ""
+msgstr "发送文件失败，再试一次。%s"
 
 #: lib/Plugins/TicketUploader.cpp:192
-#, fuzzy
 msgid "Creating a TicketUploader report..."
-msgstr "正在创建及传送报告……"
+msgstr "正在创建 TickUploader 报告......"
 
 #: lib/Plugins/rhfastcheck.cpp:71
-#, fuzzy
 msgid "Creating a signature..."
-msgstr "正在创建及传送报告……"
+msgstr "正在创建签名......"
 
 #: lib/Plugins/RHTSupport.cpp:222
-#, fuzzy
 msgid "Creating a new case..."
-msgstr "正在创建新的错误报告……"
+msgstr "正在创建新的案例......"
 
 #: lib/Utils/make_descr.cpp:296
 #, c-format
 msgid "Binary file %s will not be reported"
-msgstr ""
+msgstr "将不报告二进制文件 %s"
 
 #: src/CLI/CLI.cpp:68
 #, c-format
@@ -130,6 +125,13 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"%u.\n"
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tPackage    : %s\n"
+"\tExecutable : %s\n"
+"\tCrash Time : %s\n"
+"\tCrash Count: %s\n"
 
 #: src/CLI/CLI.cpp:154
 #, c-format
@@ -151,126 +153,142 @@ msgid ""
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
 msgstr ""
+"Usage: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t--get-list\t\tprint list of crashes which are not reported yet\n"
+"\t--get-list-full\t\tprint list of all crashes\n"
+"\t--report CRASH_ID\tcreate and send a report\n"
+"\t--report-always CRASH_ID create and send a report without asking\n"
+"\t--delete CRASH_ID\tremove crash\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
 
 #: src/CLI/CLI.cpp:198
 msgid "You must specify exactly one operation."
-msgstr ""
+msgstr "您必须指定确定要执行的操作。"
 
 #: src/CLI/report.cpp:179
 #, c-format
 msgid "# This field is read only.\n"
-msgstr ""
+msgstr "# 这个字段是只读的。\n"
 
 #: src/CLI/report.cpp:199
 msgid "# Describe the circumstances of this crash below."
-msgstr ""
+msgstr "# 在下面描述这个崩溃的情况。"
 
 #: src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
-msgstr ""
+msgstr "# 如何复制这个崩溃？"
 
 #: src/CLI/report.cpp:203
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data such as passwords."
 msgstr ""
+"# 回溯\n"
+"# 查看它是否包含任何敏感数据，比如密码。"
 
 #: src/CLI/report.cpp:205
-#, fuzzy
 msgid "# Architecture"
-msgstr "构架"
+msgstr "# 构架"
 
 #: src/CLI/report.cpp:206
-#, fuzzy
 msgid "# Command line"
-msgstr "命令行"
+msgstr "# 命令行"
 
 #: src/CLI/report.cpp:207
-#, fuzzy
 msgid "# Component"
-msgstr "组件"
+msgstr "# 组件"
 
 #: src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr ""
+msgstr "# 核转储"
 
 #: src/CLI/report.cpp:209
-#, fuzzy
 msgid "# Executable"
-msgstr "可执行"
+msgstr "# 可执行"
 
 #: src/CLI/report.cpp:210
 msgid "# Kernel version"
-msgstr ""
+msgstr "# 内核版本"
 
 #: src/CLI/report.cpp:211
-#, fuzzy
 msgid "# Package"
-msgstr "软件包"
+msgstr "# 软件包"
 
 #: src/CLI/report.cpp:212
 msgid "# Reason of crash"
-msgstr ""
+msgstr "# 崩溃原因"
 
 #: src/CLI/report.cpp:213
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# 操作系统的发布字符串"
 
 #: src/CLI/report.cpp:323
 msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
-msgstr ""
+msgstr "终端是无声的，但没有定义 VISUAL 或者 EDITOR。"
 
 #: src/CLI/report.cpp:411
 msgid ""
 "\n"
 "The report has been updated."
 msgstr ""
+"\n"
+"已更新此报告。"
 
 #: src/CLI/report.cpp:413
 msgid ""
 "\n"
 "No changes were detected in the report."
 msgstr ""
+"\n"
+"报告中没有探测到更改。"
 
 #: src/CLI/report.cpp:628
 #, c-format
 msgid "Wrong settings were detected for plugin %s.\n"
-msgstr ""
+msgstr "探测到插件 %s 的错误甚至。\n"
 
 #: src/CLI/report.cpp:632
 msgid "Enter your login: "
-msgstr ""
+msgstr "输入您的登录："
 
 #: src/CLI/report.cpp:638
 msgid "Enter your password: "
-msgstr ""
+msgstr "输入您的密码："
 
 #: src/CLI/report.cpp:681
-#, fuzzy
 msgid "Reporting..."
-msgstr "报告"
+msgstr "报告......"
 
 #: src/CLI/report.cpp:700
 #, c-format
 msgid "Report using %s? [y/N]: "
-msgstr ""
+msgstr "使用 %s 报告？[y/N]："
 
 #: src/CLI/report.cpp:703
 msgid "Skipping..."
-msgstr ""
+msgstr "跳过......"
 
 #: src/CLI/report.cpp:720
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr ""
+msgstr "使用插件 %d 报告的崩溃（%d 错误）\n"
 
 #: src/Daemon/CommLayerServerDBus.cpp:234
 msgid "Comment is too long"
-msgstr ""
+msgstr "注释过长"
 
 #: src/Daemon/CommLayerServerDBus.cpp:238
 msgid "'How to reproduce' is too long"
-msgstr ""
+msgstr "‘如何复制’过长"
 
 #: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -486,11 +504,11 @@ msgstr ""
 
 #: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:19
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "简述如何再现这个错误，或你做过什么……"
+msgstr "简述如何再现这个错误，或您做过什么……"
 
 #: src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
-msgstr "你必须检查回溯中是否包含敏感数据"
+msgstr "您必须检查回溯中是否包含敏感数据"
 
 #: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
 #, python-format
@@ -569,28 +587,25 @@ msgid "Error getting the report: %s"
 msgstr "取得报告时出错：%s"
 
 #: src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Can't connect to Gnome Keyring daemon"
-msgstr "不能连上系统 dbus"
+msgstr "无法连接到 Gnome 密钥环守护进程"
 
 #: src/Gui/ConfBackend.py:83
 msgid "Can't get default keyring"
-msgstr ""
+msgstr "无法获得默认密钥环"
 
 #: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings won't be saved."
-msgstr ""
+msgid "Access to gnome-keyring has been denied, plugins settings won't be saved."
+msgstr "对 gnome-keyring 的访问被拒绝，将不会保存插件设置。"
 
 #: src/Gui/ConfBackend.py:152
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, can't load the settings for %s!"
-msgstr ""
+msgid "Access to gnome-keyring has been denied, can't load the settings for %s!"
+msgstr "对 gnome-keyring 的访问被拒绝，无法为 %s 载入设置！"
 
 #: src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, can't load settings"
-msgstr ""
+msgstr "对 gnome-keyring 的访问被拒绝，无法载入设置"
 
 #: src/Gui/dialogs.glade:7
 msgid "Report done"
@@ -602,25 +617,25 @@ msgstr "日志"
 
 #: src/Gui/PluginsSettingsDialog.py:24
 msgid "Can't load gui description for SettingsDialog!"
-msgstr ""
+msgstr "无法为 SettingsDialog 载入 gui 描述！"
 
 #: src/Gui/PluginsSettingsDialog.py:41
-#, fuzzy
 msgid "Name"
-msgstr "名称："
+msgstr "名称"
 
 #: src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
+msgstr "请从以下列表中选择一个插件编辑其选项。"
 
 #: src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"载入 dumplist 时出错。\n"
+"打开创建设置 UI 时出错：\n"
+"\n"
 "%s"
 
 #: src/Gui/PluginSettingsUI.py:17
@@ -830,9 +845,8 @@ msgid "GPG Keys"
 msgstr "GPG 金钥"
 
 #: src/Gui/CReporterAssistant.py:273
-#, fuzzy
 msgid "You should check backtrace for sensitive data"
-msgstr "你必须检查回溯中是否包含敏感数据"
+msgstr "您必须检查回溯中是否包含敏感数据"
 
 #: src/Gui/CReporterAssistant.py:274
 msgid "You must agree with sending the backtrace"
@@ -908,8 +922,7 @@ msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr "这个崩溃是如何发生的，详细情况是什么？您是如何重复它的？"
 
 #: src/Gui/CReporterAssistant.py:611
-msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
+msgid "Are there any comment you'd like to share with the software maintainers?"
 msgstr "您有什么要与软件维护者分享的意见吗？"
 
 #: src/Gui/CReporterAssistant.py:630
@@ -927,8 +940,7 @@ msgid "Confirm and send report"
 msgstr "确认并发送报告"
 
 #: src/Gui/CReporterAssistant.py:680
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "下面是您的 bug 报告的概述。请点击‘应用’提交该报告。"
 
 #: src/Gui/CReporterAssistant.py:685
@@ -972,9 +984,8 @@ msgid "Click to view ..."
 msgstr "点击查看......"
 
 #: src/Gui/CReporterAssistant.py:726
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>重复的步骤：</b>"
+msgstr "<b>复制步骤：</b>"
 
 #: src/Gui/CReporterAssistant.py:747
 msgid "<b>Comments:</b>"
@@ -985,9 +996,8 @@ msgid "No comment provided!"
 msgstr "没有提供意见！"
 
 #: src/Gui/CReporterAssistant.py:786
-#, fuzzy
 msgid "Finished sending the bug report"
-msgstr "完成发送 bug 报告"
+msgstr "发送 bug 报告完毕"
 
 #: src/Gui/CReporterAssistant.py:790
 msgid "<b>Bug reports:</b>"
@@ -995,19 +1005,18 @@ msgstr "<b>Bug 报告：</b>"
 
 #: src/Gui/settings_wizard.glade:7
 msgid "Wrong Settings Detected"
-msgstr ""
+msgstr "探测到错误设置"
 
 #: src/Gui/settings_wizard.glade:40
 msgid ""
 "Wrong settings detected for some of the enabled reporter plugins, please use "
 "the buttons below to open respective configuration and fix it before you "
 "proceed, otherwise the reporting process can fail.\n"
-msgstr ""
+msgstr "探测到有些启用报告程序插件的错误设置，请使用以下按钮打开对应的配置并在执行前修复它，否则报告进程将失败。\n"
 
 #: src/Gui/settings_wizard.glade:71
-#, fuzzy
 msgid "<b>Do you want to continue?</b>"
-msgstr "<b>您要在哪里报告这个事故？</b>"
+msgstr "<b>您要继续吗？</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
@@ -1039,8 +1048,7 @@ msgstr "隐藏"
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
-msgstr ""
-"报告大小已超出配额。请检查在 abrt.conf 中系统的 MaxCrashReportsSize 值。"
+msgstr "报告大小已超出配额。请检查在 abrt.conf 中系统的 MaxCrashReportsSize 值。"
 
 #: lib/Plugins/Bugzilla.cpp:328
 #, c-format
@@ -1160,16 +1168,3 @@ msgstr "正在运行 sosreport：%s"
 msgid "Done running sosreport"
 msgstr "sosreport运行完毕"
 
-#, fuzzy
-#~ msgid ""
-#~ "Thank you for your bug report. It has been successfully submitted. You "
-#~ "can see the results below."
-#~ msgstr ""
-#~ "感谢您提交的 bug 报告。该报告已经成功提交。您可以使用下面的网址在线查看您"
-#~ "的 bug 报告："
-
-#~ msgid "View and report application crashes"
-#~ msgstr "查看和报告应用程序崩溃事件"
-
-#~ msgid "Not reported"
-#~ msgstr "没有报告的"
