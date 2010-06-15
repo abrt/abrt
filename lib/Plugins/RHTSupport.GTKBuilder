@@ -36,7 +36,7 @@
                       <object class="GtkLabel" id="lURL">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Bugzilla URL:</property>
+                        <property name="label" translatable="yes">RHTSupport URL:</property>
                       </object>
                       <packing>
                         <property name="x_options">GTK_FILL</property>
@@ -46,7 +46,7 @@
                       <object class="GtkLabel" id="lLogin">
                         <property name="visible">True</property>
                         <property name="xalign">0</property>
-                        <property name="label" translatable="yes">Login(email):</property>
+                        <property name="label" translatable="yes">Login:</property>
                       </object>
                       <packing>
                         <property name="top_attach">1</property>
@@ -152,7 +152,7 @@
             <child type="label">
               <object class="GtkLabel" id="label2">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">&lt;b&gt;Bugzilla plugin configuration&lt;/b&gt;</property>
+                <property name="label" translatable="yes">&lt;b&gt;RHTSupport plugin configuration&lt;/b&gt;</property>
                 <property name="use_markup">True</property>
               </object>
             </child>
@@ -161,39 +161,6 @@
             <property name="expand">False</property>
             <property name="fill">False</property>
             <property name="position">1</property>
-          </packing>
-        </child>
-        <child>
-          <object class="GtkHBox" id="hbox1">
-            <property name="visible">True</property>
-            <child>
-              <object class="GtkLabel" id="label1">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="xalign">0</property>
-                <property name="yalign">0</property>
-                <property name="label" translatable="yes">Don't have an account yet?</property>
-                <property name="use_markup">True</property>
-              </object>
-              <packing>
-                <property name="position">0</property>
-              </packing>
-            </child>
-            <child>
-              <object class="GtkLabel" id="label4">
-                <property name="visible">True</property>
-                <property name="xpad">5</property>
-                <property name="label" translatable="yes">You can create it &lt;a href="https://bugzilla.redhat.com/createaccount.cgi"&gt;here&lt;/a&gt;</property>
-                <property name="use_markup">True</property>
-                <property name="selectable">True</property>
-              </object>
-              <packing>
-                <property name="position">1</property>
-              </packing>
-            </child>
-          </object>
-          <packing>
-            <property name="position">2</property>
           </packing>
         </child>
         <child internal-child="action_area">

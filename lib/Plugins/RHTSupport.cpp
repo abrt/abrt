@@ -296,4 +296,4 @@ PLUGIN_INFO(REPORTER,
     "Reports bugs to Red Hat support",
     "Denys Vlasenko <dvlasenk@redhat.com>",
     "https://fedorahosted.org/abrt/wiki",
-    "" /*PLUGINS_LIB_DIR"/RHTSupport.GTKBuilder"*/);
+    PLUGINS_LIB_DIR"/RHTSupport.GTKBuilder");

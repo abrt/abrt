@@ -22,6 +22,7 @@ dist_pluginslib_DATA = \
     Logger.GTKBuilder \
     Mailx.GTKBuilder \
     Bugzilla.GTKBuilder \
+    RHTSupport.GTKBuilder \
     TicketUploader.GTKBuilder \
     Catcut.GTKBuilder \
     KerneloopsReporter.GTKBuilder

@@ -421,7 +421,7 @@ fi
 %defattr(-,root,root,-)
 #%config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_libdir}/%{name}/libRHTSupport.so*
-#%{_libdir}/%{name}/RHTSupport.GTKBuilder
+%{_libdir}/%{name}/RHTSupport.GTKBuilder
 #%{_mandir}/man7/%{name}-RHTSupport.7.gz
 
 %files plugin-catcut
