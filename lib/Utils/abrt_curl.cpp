@@ -210,9 +210,13 @@ abrt_post(abrt_post_state_t *state,
             error_msg_and_die("out of memory or read error");
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
     } else {
-        // .. from a blob in memory. If data_size == -1, curl will use strlen(data)
+        // .. from a blob in memory
         xcurl_easy_setopt_ptr(handle, CURLOPT_POSTFIELDS, data);
-        xcurl_easy_setopt_long(handle, CURLOPT_POSTFIELDSIZE_LARGE, data_size);
+        // note1: if data_size == ABRT_POST_DATA_STRING == -1, curl will use strlen(data)
+        xcurl_easy_setopt_long(handle, CURLOPT_POSTFIELDSIZE, data_size);
+        // note2: CURLOPT_POSTFIELDSIZE_LARGE can't be used: xcurl_easy_setopt_long()
+        // truncates data_size on 32-bit arch. Need xcurl_easy_setopt_long_long()?
+        // Also, I'm not sure CURLOPT_POSTFIELDSIZE_LARGE special-cases -1.
     }
     // Override "Content-Type:"
     struct curl_slist *httpheader_list = NULL;
