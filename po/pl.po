@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-16 14:23+0000\n"
-"PO-Revision-Date: 2010-06-16 16:39+0200\n"
+"POT-Creation-Date: 2010-06-16 14:42+0000\n"
+"PO-Revision-Date: 2010-06-16 16:43+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -587,7 +587,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Skonfiguruj opcje %s"
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:824
+#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:829
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -595,7 +595,7 @@ msgstr ""
 "Nie można uzyskać zgłoszenia.\n"
 "Brak pakietów debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:393
+#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:398
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -605,7 +605,7 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:856
+#: ../src/Gui/CReporterAssistant.py:861
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Błąd podczas uzyskiwania zgłoszenia: %s"
@@ -708,7 +708,7 @@ msgstr " "
 msgid "<b>Attachments</b>"
 msgstr "<b>Załączniki</b>"
 
-#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:728
+#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:733
 msgid "<b>Backtrace</b>"
 msgstr "<b>Wyjątek</b>"
 
@@ -915,15 +915,20 @@ msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane"
 msgid "You must agree with sending the backtrace"
 msgstr "Należy wyrazić zgodę na wysłanie wyjątku"
 
-#: ../src/Gui/CReporterAssistant.py:351
+#: ../src/Gui/CReporterAssistant.py:322
+msgid "Only one reporter plugin is configured, skipping the selection dialog"
+msgstr ""
+"Skonfigurowana jest tylko jedna wtyczka zgłaszania, pomijanie okna wyboru"
+
+#: ../src/Gui/CReporterAssistant.py:356
 msgid "You didn't provide any steps to reproduce."
 msgstr "Nie podano, jak powtórzyć awarię."
 
-#: ../src/Gui/CReporterAssistant.py:365
+#: ../src/Gui/CReporterAssistant.py:370
 msgid "You didn't provide any comments."
 msgstr "Nie podano żadnych komentarzy."
 
-#: ../src/Gui/CReporterAssistant.py:442
+#: ../src/Gui/CReporterAssistant.py:447
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -947,11 +952,11 @@ msgstr ""
 "Proszę wybrać, gdzie zgłosić błąd i nacisnąć przycisk \"Dalej\", aby "
 "kontynuować."
 
-#: ../src/Gui/CReporterAssistant.py:495
+#: ../src/Gui/CReporterAssistant.py:500
 msgid "Send a bug report"
 msgstr "Wyślij zgłoszenie błędu"
 
-#: ../src/Gui/CReporterAssistant.py:533
+#: ../src/Gui/CReporterAssistant.py:538
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -966,113 +971,113 @@ msgstr ""
 "Proszę przejrzeć wyjątek znajdujący się poniżej i zmodyfikować go, aby "
 "upewnić się, że zgłoszenie błędu nie zawiera prywatnych informacji:"
 
-#: ../src/Gui/CReporterAssistant.py:574
+#: ../src/Gui/CReporterAssistant.py:579
 msgid "Refresh"
 msgstr "Odśwież"
 
-#: ../src/Gui/CReporterAssistant.py:576
+#: ../src/Gui/CReporterAssistant.py:581
 msgid "Copy"
 msgstr "Skopiuj"
 
-#: ../src/Gui/CReporterAssistant.py:582
+#: ../src/Gui/CReporterAssistant.py:587
 msgid "I agree with submitting the backtrace"
 msgstr "Zgadzam się na wysłanie wyjątku"
 
-#: ../src/Gui/CReporterAssistant.py:587
+#: ../src/Gui/CReporterAssistant.py:592
 msgid "Approve backtrace"
 msgstr "Akceptuję wyjątek"
 
-#: ../src/Gui/CReporterAssistant.py:610
+#: ../src/Gui/CReporterAssistant.py:615
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 "Jak wydarzyła się ta awaria i jak można ją powtórzyć, opisane krok po kroku "
 "(w języku angielskim)."
 
-#: ../src/Gui/CReporterAssistant.py:628
+#: ../src/Gui/CReporterAssistant.py:633
 msgid ""
 "Are there any comments you'd like to share with the software maintainers?"
 msgstr "Komentarze dla opiekunów oprogramowania (w języku angielskim)."
 
-#: ../src/Gui/CReporterAssistant.py:647
+#: ../src/Gui/CReporterAssistant.py:652
 msgid "Provide additional details"
 msgstr "Podanie dodatkowych informacji"
 
-#: ../src/Gui/CReporterAssistant.py:654
+#: ../src/Gui/CReporterAssistant.py:659
 msgid ""
 "<b>Tip:</b> Your comments are not private.  Please monitor what you say "
 "accordingly."
 msgstr "<b>Wskazówka:</b> komentarze będą dostępne publicznie."
 
-#: ../src/Gui/CReporterAssistant.py:695
+#: ../src/Gui/CReporterAssistant.py:700
 msgid "Confirm and send report"
 msgstr "Potwierdź i wyślij zgłoszenie"
 
-#: ../src/Gui/CReporterAssistant.py:697
+#: ../src/Gui/CReporterAssistant.py:702
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Poniżej znajduje się zgłoszenie błędu. Proszę nacisnąć przycisk \"Zastosuj"
 "\", aby je wysłać."
 
-#: ../src/Gui/CReporterAssistant.py:702
+#: ../src/Gui/CReporterAssistant.py:707
 msgid "<b>Basic details</b>"
 msgstr "<b>Podstawowe informacje</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:709
+#: ../src/Gui/CReporterAssistant.py:714
 msgid "Component"
 msgstr "Składnik"
 
-#: ../src/Gui/CReporterAssistant.py:710
+#: ../src/Gui/CReporterAssistant.py:715
 msgid "Package"
 msgstr "Pakiet"
 
-#: ../src/Gui/CReporterAssistant.py:711
+#: ../src/Gui/CReporterAssistant.py:716
 msgid "Executable"
 msgstr "Plik wykonywalny"
 
-#: ../src/Gui/CReporterAssistant.py:712
+#: ../src/Gui/CReporterAssistant.py:717
 msgid "Cmdline"
 msgstr "Wiersz poleceń"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:714
+#: ../src/Gui/CReporterAssistant.py:719
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:720
 msgid "Kernel"
 msgstr "Jądro"
 
-#: ../src/Gui/CReporterAssistant.py:716
+#: ../src/Gui/CReporterAssistant.py:721
 msgid "Release"
 msgstr "Wydanie"
 
-#: ../src/Gui/CReporterAssistant.py:717
+#: ../src/Gui/CReporterAssistant.py:722
 msgid "Reason"
 msgstr "Przyczyna"
 
-#: ../src/Gui/CReporterAssistant.py:731
+#: ../src/Gui/CReporterAssistant.py:736
 msgid "Click to view ..."
 msgstr "Kliknięcie wyświetli..."
 
-#: ../src/Gui/CReporterAssistant.py:743
+#: ../src/Gui/CReporterAssistant.py:748
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Jak powtórzyć awarię (w języku angielskim):</b>"
 
-#: ../src/Gui/CReporterAssistant.py:764
+#: ../src/Gui/CReporterAssistant.py:769
 msgid "<b>Comments:</b>"
 msgstr "<b>Komentarze (w języku angielskim):</b>"
 
-#: ../src/Gui/CReporterAssistant.py:767
+#: ../src/Gui/CReporterAssistant.py:772
 msgid "No comment provided!"
 msgstr "Nie podano żadnego komentarza."
 
-#: ../src/Gui/CReporterAssistant.py:803
+#: ../src/Gui/CReporterAssistant.py:808
 msgid "Finished sending the bug report"
 msgstr "Ukończono wysyłanie zgłoszenia błędu"
 
-#: ../src/Gui/CReporterAssistant.py:807
+#: ../src/Gui/CReporterAssistant.py:812
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Zgłoszenia błędów:</b>"
 
