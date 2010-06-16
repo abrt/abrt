@@ -7,64 +7,62 @@ msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-06-05 22:40+0300\n"
+"PO-Revision-Date: 2010-06-13 14:30+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.0\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: lib/Plugins/Catcut.cpp:61
-#, fuzzy
 msgid "send_string: URL not specified"
-msgstr "FileTransfer: URL:ää ei ole määritelty"
+msgstr "send_string: URL:ää ei ole määritelty"
 
 #: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
-#, fuzzy, c-format
+#, c-format
 msgid "Sending failed, try it again: %s"
-msgstr "Lähetetään arkisto %s osoitteeseen %s"
+msgstr "Lähettäminen epäonnistui, yritä uudelleen: %s"
 
 #: lib/Plugins/Catcut.cpp:95
-#, fuzzy
 msgid "send_file: URL not specified"
-msgstr "FileTransfer: URL:ää ei ole määritelty"
+msgstr "send_file: URL:ää ei ole määritelty"
 
 #: lib/Plugins/Catcut.cpp:99
-#, fuzzy, c-format
+#, c-format
 msgid "Sending file %s to %s"
-msgstr "Lähetetään arkisto %s osoitteeseen %s"
+msgstr "Lähetetään tiedosto %s osoitteeseen %s"
 
 #: lib/Plugins/Catcut.cpp:325
-#, fuzzy, c-format
+#, c-format
 msgid "New bug id: %s"
-msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
+msgstr "Uuden ohjelmavirheilmoituksen tunnus: %s"
 
 #: lib/Plugins/Catcut.cpp:366
 #, c-format
 msgid "error returned by requestUpload: %s"
-msgstr ""
+msgstr "requestUpload palautti virheen: %s"
 
 #: lib/Plugins/Catcut.cpp:371
 #, c-format
 msgid "error returned by requestUpload: %d"
-msgstr ""
+msgstr "requestUpload palautti virheen: %d"
 
 #: lib/Plugins/Catcut.cpp:377
 msgid "no URL returned by requestUpload, and no errno"
-msgstr ""
+msgstr "requestUpload ei palauttanut URL:ää, ei errnoa"
 
 #: lib/Plugins/Catcut.cpp:382
 #, c-format
 msgid "requestUpload returned URL: %s"
-msgstr ""
+msgstr "requestUpload palautti URL:n: %s"
 
 #: lib/Plugins/Catcut.cpp:402
 #, c-format
 msgid "Attaching (text): %s"
-msgstr ""
+msgstr "Liitetään (teksti): %s"
 
 #: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
 #, c-format
@@ -74,7 +72,7 @@ msgstr ""
 #: lib/Plugins/Catcut.cpp:420
 #, c-format
 msgid "Attaching binary: %s"
-msgstr ""
+msgstr "Liitetään binääri: %s"
 
 #: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
 msgid "Creating new bug..."
@@ -92,25 +90,22 @@ msgstr "Lähetetään arkisto %s osoitteeseen %s"
 #: lib/Plugins/TicketUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
-msgstr ""
+msgstr "Lähettäminen epäonnistui, yritä uudelleen. %s"
 
 #: lib/Plugins/TicketUploader.cpp:192
-#, fuzzy
 msgid "Creating a TicketUploader report..."
-msgstr "Luodaan ilmoitus..."
+msgstr "Luodaan TicketUploader-raportti..."
 
 #: lib/Plugins/rhfastcheck.cpp:71
-#, fuzzy
 msgid "Creating a signature..."
-msgstr "Luodaan arkisto..."
+msgstr "Luodaan allekirjoitus..."
 
-#: lib/Plugins/RHTSupport.cpp:222
-#, fuzzy
+#: lib/Plugins/rhticket.cpp:222
 msgid "Creating a new case..."
-msgstr "Luodaan uusi ohjelmavirheilmoitus..."
+msgstr "Luodaan uusi tapaus..."
 
 #: lib/Utils/make_descr.cpp:296
-#, fuzzy, c-format
+#, c-format
 msgid "Binary file %s will not be reported"
 msgstr "Binääritiedostoa %s ei raportoida."
 
@@ -125,6 +120,13 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"%u.\n"
+"\tUID          : %s\n"
+"\tUUID         : %s\n"
+"\tPaketti      : %s\n"
+"\tSuoritettava : %s\n"
+"\tKaatumisaika : %s\n"
+"\tKaatumismäärä: %s\n"
 
 #: src/CLI/CLI.cpp:154
 #, c-format
@@ -149,125 +151,124 @@ msgstr ""
 
 #: src/CLI/CLI.cpp:198
 msgid "You must specify exactly one operation."
-msgstr ""
+msgstr "On määritettävä tasan yksi toiminto."
 
 #: src/CLI/report.cpp:179
 #, c-format
 msgid "# This field is read only.\n"
-msgstr ""
+msgstr "# Tämä kenttä on vain luku -tilassa.\n"
 
 #: src/CLI/report.cpp:199
 msgid "# Describe the circumstances of this crash below."
-msgstr ""
+msgstr "# Kuvaile alla kaatumistilannetta."
 
 #: src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
-msgstr ""
+msgstr "# Kuinka kaatumisen voi toistaa?"
 
 #: src/CLI/report.cpp:203
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data such as passwords."
 msgstr ""
+"# Pinolistaus\n"
+"# Tarkista, ettei tämä sisällä mitään luottamuksellisia tietoja, kuten "
+"salasanoja."
 
 #: src/CLI/report.cpp:205
-#, fuzzy
 msgid "# Architecture"
-msgstr "Arkkitehtuuri"
+msgstr "# Arkkitehtuuri"
 
 #: src/CLI/report.cpp:206
-#, fuzzy
 msgid "# Command line"
-msgstr "Komentorivi"
+msgstr "# Komentorivi"
 
 #: src/CLI/report.cpp:207
-#, fuzzy
 msgid "# Component"
-msgstr "Komponentti"
+msgstr "# Komponentti"
 
 #: src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr ""
+msgstr "# Muistivedos"
 
 #: src/CLI/report.cpp:209
-#, fuzzy
 msgid "# Executable"
-msgstr "Suoritettava tiedosto"
+msgstr "# Suoritettava tiedosto"
 
 #: src/CLI/report.cpp:210
 msgid "# Kernel version"
-msgstr ""
+msgstr "# Ytimen versio"
 
 #: src/CLI/report.cpp:211
-#, fuzzy
 msgid "# Package"
-msgstr "Paketti"
+msgstr "# Paketti"
 
 #: src/CLI/report.cpp:212
 msgid "# Reason of crash"
-msgstr ""
+msgstr "# Kaatumisen syy"
 
 #: src/CLI/report.cpp:213
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# Käyttöjärjestelmän julkaisutunnus"
 
 #: src/CLI/report.cpp:323
 msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
-msgstr ""
+msgstr "Pääte on yksinkertainen, mutta VISUALia tai EDITORia ei ole määritetty."
 
 #: src/CLI/report.cpp:411
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated."
-msgstr "ABRT-palvelu on käynnistetty"
+msgstr ""
+"\n"
+"Raportti on päivitetty."
 
 #: src/CLI/report.cpp:413
 msgid ""
 "\n"
 "No changes were detected in the report."
 msgstr ""
+"\n"
+"Raportissa ei havaittu muutoksia."
 
 #: src/CLI/report.cpp:628
 #, c-format
 msgid "Wrong settings were detected for plugin %s.\n"
-msgstr ""
+msgstr "Liitännäisellä %s havaittiin olevan väärät asetukset.\n"
 
 #: src/CLI/report.cpp:632
 msgid "Enter your login: "
-msgstr ""
+msgstr "Käyttäjätunnus: "
 
 #: src/CLI/report.cpp:638
 msgid "Enter your password: "
-msgstr ""
+msgstr "Salasana: "
 
 #: src/CLI/report.cpp:681
-#, fuzzy
 msgid "Reporting..."
-msgstr "Työskentelee..."
+msgstr "Raportoidaan..."
 
 #: src/CLI/report.cpp:700
 #, c-format
 msgid "Report using %s? [y/N]: "
-msgstr ""
+msgstr "Raportoidaanko käyttäen raportoijaa %s? [y/N]: "
 
 #: src/CLI/report.cpp:703
-#, fuzzy
 msgid "Skipping..."
-msgstr "Työskentelee..."
+msgstr "Ohitetaan..."
 
 #: src/CLI/report.cpp:720
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr ""
+msgstr "Kaatuminen on raportoitu %d liitännäisen kautta (%d virhettä)\n"
 
 #: src/Daemon/CommLayerServerDBus.cpp:234
 msgid "Comment is too long"
-msgstr ""
+msgstr "Kommentti on liian pitkä"
 
 #: src/Daemon/CommLayerServerDBus.cpp:238
 msgid "'How to reproduce' is too long"
-msgstr ""
+msgstr "Toisto-ohjeet ovat liian pitkät"
 
 #: src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
@@ -575,28 +576,31 @@ msgid "Error getting the report: %s"
 msgstr "Raportin noutaminen epäonnistui: %s"
 
 #: src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Can't connect to Gnome Keyring daemon"
-msgstr "Järjestelmäväylään ei saatu yhteyttä"
+msgstr "Gnomen avainnipun taustaprosessiin ei saatu yhteyttä"
 
 #: src/Gui/ConfBackend.py:83
 msgid "Can't get default keyring"
-msgstr ""
+msgstr "Oletusavainnipun hakeminen ei onnistu"
 
 #: src/Gui/ConfBackend.py:102 src/Gui/ConfBackend.py:118
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings won't be saved."
 msgstr ""
+"Gnomen avainnippuun on pääsy kielletty, liitännäisten asetuksia ei "
+"tallenneta."
 
 #: src/Gui/ConfBackend.py:152
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, can't load the settings for %s!"
 msgstr ""
+"Gnomen avainnippuun on pääsy kielletty, liitännäisen %s asetuksia ei voi "
+"ladata!"
 
 #: src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, can't load settings"
-msgstr ""
+msgstr "Gnomen avainnippuun on pääsy kielletty, asetuksia ei voi ladata"
 
 #: src/Gui/dialogs.glade:7
 msgid "Report done"
@@ -611,13 +615,12 @@ msgid "Can't load gui description for SettingsDialog!"
 msgstr "Ei voida ladata SettingsDialogin käyttöliittymäkuvausta!"
 
 #: src/Gui/PluginsSettingsDialog.py:41
-#, fuzzy
 msgid "Name"
-msgstr "Nimi:"
+msgstr "Nimi"
 
 #: src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
+msgstr "Valitse luettelosta liitännäinen, jonka asetuksia haluat muokata."
 
 #: src/Gui/PluginsSettingsDialog.py:156
 #, python-format
@@ -839,9 +842,8 @@ msgid "GPG Keys"
 msgstr "GPG-avaimet"
 
 #: src/Gui/CReporterAssistant.py:273
-#, fuzzy
 msgid "You should check backtrace for sensitive data"
-msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta"
+msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta"
 
 #: src/Gui/CReporterAssistant.py:274
 msgid "You must agree with sending the backtrace"
@@ -983,9 +985,8 @@ msgid "Click to view ..."
 msgstr "Näytä napsauttamalla..."
 
 #: src/Gui/CReporterAssistant.py:726
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>Ohjeet ongelman toistamiseen</b>"
+msgstr "<b>Ohjeet ongelman toistamiseen:</b>"
 
 #: src/Gui/CReporterAssistant.py:747
 msgid "<b>Comments:</b>"
@@ -996,18 +997,16 @@ msgid "No comment provided!"
 msgstr "Kommentteja ei ole annettu!"
 
 #: src/Gui/CReporterAssistant.py:786
-#, fuzzy
 msgid "Finished sending the bug report"
-msgstr "Viimeistele vikaraportin lähetys"
+msgstr "Vikaraportin lähetys valmistui"
 
 #: src/Gui/CReporterAssistant.py:790
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Vikaraportit:</b>"
 
 #: src/Gui/settings_wizard.glade:7
-#, fuzzy
 msgid "Wrong Settings Detected"
-msgstr "Mitään ei ole valittu"
+msgstr "Virheelliset asetukset on havaittu"
 
 #: src/Gui/settings_wizard.glade:40
 msgid ""
@@ -1015,11 +1014,13 @@ msgid ""
 "the buttons below to open respective configuration and fix it before you "
 "proceed, otherwise the reporting process can fail.\n"
 msgstr ""
+"Joidenkin käytössä olevien raportointiliitännäisten asetukset on tunnistettu "
+"virheellisiksi. Käytä alla olevia painikkeita liitännäisten asetusten "
+"avaamiseksi ja korjaa virheet tai raportointi saattaa epäonnistua.\n"
 
 #: src/Gui/settings_wizard.glade:71
-#, fuzzy
 msgid "<b>Do you want to continue?</b>"
-msgstr "<b>Mihin haluat raportoida tämän ongelman?</b>"
+msgstr "<b>Haluatko jatkaa?</b>"
 
 #: src/Applet/Applet.cpp:88
 #, c-format
