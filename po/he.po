@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-09 15:38+0200\n"
+"POT-Creation-Date: 2010-06-16 14:41+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <fedora-he-list@redhat.com>\n"
@@ -72,7 +72,7 @@ msgstr ""
 msgid "Attaching binary: %s"
 msgstr ""
 
-#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
+#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:656
 msgid "Creating new bug..."
 msgstr "יוצר באג חדש..."
 
@@ -100,7 +100,7 @@ msgstr "יוצר דיווח"
 msgid "Creating a signature..."
 msgstr "יוצר דיווח"
 
-#: lib/Plugins/RHTSupport.cpp:222
+#: lib/Plugins/RHTSupport.cpp:231
 #, fuzzy
 msgid "Creating a new case..."
 msgstr "יוצר באג חדש..."
@@ -490,7 +490,7 @@ msgstr ""
 msgid "You must check backtrace for sensitive data"
 msgstr "אתה חייב לבדוק אם יש מידע רגיש במידע הקריסה"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:302
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -503,11 +503,11 @@ msgstr ""
 "s <b>\n"
 "לאחר מכן השתמש  בכפתור \"רענן\" כדי ליצור מחדש את מידע הקריסה."
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:304
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "מידע הקריסה לא שמיש, אתה לא יכול לדווח על זה!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:308
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -530,7 +530,7 @@ msgstr ""
 "אנא בדוק את הקובץ abrt.conf"
 
 #: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
-#: src/Gui/CReporterAssistant.py:193
+#: src/Gui/CReporterAssistant.py:199
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -539,12 +539,12 @@ msgstr ""
 "לא ניתן לשמור את הגדרות התוסף\n"
 "%s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:229
 #, python-format
 msgid "Configure %s options"
 msgstr "אפשרויות %s"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:829
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -552,7 +552,7 @@ msgstr ""
 "לא ניתן להשיג דיווח\n"
 "מידע ניפוי שגיאות חסר?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:398
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -562,7 +562,7 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:839
+#: src/Gui/CReporterAssistant.py:861
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "שגיאה בקבלת הדיווח: %s"
@@ -626,13 +626,21 @@ msgstr ""
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "לא ניתן למצוא פריט PluginDialog בתיאור הממשק!"
 
-#: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
+#: src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid ""
+"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
+msgstr ""
+
+#: src/Gui/PluginSettingsUI.py:59 src/Gui/PluginSettingsUI.py:85
 msgid "combo box is not implemented"
 msgstr "תיבה משולבת לא מיושמת"
 
 # אין לי מושג איך לתרגם את זה. מה הקשר בין דיווח באגים לhydrate? זה בכלל משהו שקשור למים.
 # I have no idea how to translate this. What is the meaning of hydrate in this context?
-#: src/Gui/PluginSettingsUI.py:63
+#: src/Gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
 msgstr "Nothing to hydrate!"
 
@@ -678,7 +686,7 @@ msgstr "<span fgcolor=\"blue\">סיבה:</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "בדקתי את מידע הקריסה והסרתי מידע רגיש (ססמאות וכו')"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:733
 msgid "<b>Backtrace</b>"
 msgstr "<b>מידע קריסה</b>"
 
@@ -831,25 +839,38 @@ msgstr "מנתחים, פעולות, מדווחים"
 msgid "GPG Keys"
 msgstr "מפתחות GPG"
 
-#: src/Gui/CReporterAssistant.py:273
+#: src/Gui/CReporterAssistant.py:278
+#, python-format
+msgid "Rating is required by %s plugin"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:280
+msgid "Rating is not required by any plugin, skipping the check.."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:290
 #, fuzzy
 msgid "You should check backtrace for sensitive data"
 msgstr "אתה חייב לבדוק אם יש מידע רגיש במידע הקריסה"
 
-#: src/Gui/CReporterAssistant.py:274
+#: src/Gui/CReporterAssistant.py:291
 #, fuzzy
 msgid "You must agree with sending the backtrace"
 msgstr "אני מסכים לשלוח את מידע הקריסה."
 
-#: src/Gui/CReporterAssistant.py:334
+#: src/Gui/CReporterAssistant.py:322
+msgid "Only one reporter plugin is configured, skipping the selection dialog"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:356
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:348
+#: src/Gui/CReporterAssistant.py:370
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:425
+#: src/Gui/CReporterAssistant.py:447
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -872,11 +893,11 @@ msgstr ""
 "\n"
 "בחר איפה לדווח על הבאג ולחץ על 'הבא' כדי להמשיך."
 
-#: src/Gui/CReporterAssistant.py:478
+#: src/Gui/CReporterAssistant.py:500
 msgid "Send a bug report"
 msgstr "שלח דיווח באג"
 
-#: src/Gui/CReporterAssistant.py:516
+#: src/Gui/CReporterAssistant.py:538
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -891,109 +912,111 @@ msgstr ""
 "אנא קרא את מידע הקריסה שלהלן ושנה אותו כדי שלא יכיל מידע רגיש שאינך מעוניין "
 "לשתף:"
 
-#: src/Gui/CReporterAssistant.py:557
+#: src/Gui/CReporterAssistant.py:579
 msgid "Refresh"
 msgstr "רענן"
 
-#: src/Gui/CReporterAssistant.py:559
+#: src/Gui/CReporterAssistant.py:581
 msgid "Copy"
 msgstr "העתק"
 
-#: src/Gui/CReporterAssistant.py:565
+#: src/Gui/CReporterAssistant.py:587
 msgid "I agree with submitting the backtrace"
 msgstr "אני מסכים לשלוח את מידע הקריסה."
 
-#: src/Gui/CReporterAssistant.py:570
+#: src/Gui/CReporterAssistant.py:592
 msgid "Approve backtrace"
 msgstr "אשר את מידע הקריסה"
 
-#: src/Gui/CReporterAssistant.py:593
+#: src/Gui/CReporterAssistant.py:615
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr "איך הקריסה קוראת, שלב אחרי שלב? איך אתה היית גורם לה לקרות שוב?"
 
-#: src/Gui/CReporterAssistant.py:611
+#: src/Gui/CReporterAssistant.py:633
+#, fuzzy
 msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
+"Are there any comments you'd like to share with the software maintainers?"
 msgstr "האם יש לך הערות שברצונך לשתף עם מתחזקי התוכנה?"
 
-#: src/Gui/CReporterAssistant.py:630
+#: src/Gui/CReporterAssistant.py:652
 msgid "Provide additional details"
 msgstr "ספק פרטים נוספים"
 
-#: src/Gui/CReporterAssistant.py:637
+#: src/Gui/CReporterAssistant.py:659
+#, fuzzy
 msgid ""
-"<b>Tip:</b> Your comments are not private. Please monitor what you say "
-"accordingly"
+"<b>Tip:</b> Your comments are not private.  Please monitor what you say "
+"accordingly."
 msgstr "‏<b>עצה:</b> הערות שלך אינן פרטיות. אנא נסח את דבריך בהתאם."
 
-#: src/Gui/CReporterAssistant.py:678
+#: src/Gui/CReporterAssistant.py:700
 msgid "Confirm and send report"
 msgstr "אשר ושלח דיווח"
 
-#: src/Gui/CReporterAssistant.py:680
+#: src/Gui/CReporterAssistant.py:702
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "הנה תקציר של דיווח הבאג שלך. אנא לחץ על 'החל' כדי לשלוח אותו."
 
-#: src/Gui/CReporterAssistant.py:685
+#: src/Gui/CReporterAssistant.py:707
 msgid "<b>Basic details</b>"
 msgstr "<b>פרטים בסייסים:</b>"
 
-#: src/Gui/CReporterAssistant.py:692
+#: src/Gui/CReporterAssistant.py:714
 msgid "Component"
 msgstr "רכיב"
 
-#: src/Gui/CReporterAssistant.py:693
+#: src/Gui/CReporterAssistant.py:715
 msgid "Package"
 msgstr "חבילה"
 
-#: src/Gui/CReporterAssistant.py:694
+#: src/Gui/CReporterAssistant.py:716
 msgid "Executable"
 msgstr "קובץ הרצה"
 
-#: src/Gui/CReporterAssistant.py:695
+#: src/Gui/CReporterAssistant.py:717
 msgid "Cmdline"
 msgstr "שורת פקודה"
 
-#: src/Gui/CReporterAssistant.py:697
+#: src/Gui/CReporterAssistant.py:719
 msgid "Architecture"
 msgstr "ארכיטקטורה"
 
-#: src/Gui/CReporterAssistant.py:698
+#: src/Gui/CReporterAssistant.py:720
 msgid "Kernel"
 msgstr "ליבה"
 
-#: src/Gui/CReporterAssistant.py:699
+#: src/Gui/CReporterAssistant.py:721
 msgid "Release"
 msgstr "שחרור"
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:722
 msgid "Reason"
 msgstr "סיבה"
 
-#: src/Gui/CReporterAssistant.py:714
+#: src/Gui/CReporterAssistant.py:736
 msgid "Click to view ..."
 msgstr "לחץ להצגה..."
 
-#: src/Gui/CReporterAssistant.py:726
+#: src/Gui/CReporterAssistant.py:748
 #, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>צעדים שיגרמו לקריסה להתרחש בשנית</b>"
 
-#: src/Gui/CReporterAssistant.py:747
+#: src/Gui/CReporterAssistant.py:769
 msgid "<b>Comments:</b>"
 msgstr "<b>הערות:</b>"
 
-#: src/Gui/CReporterAssistant.py:750
+#: src/Gui/CReporterAssistant.py:772
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:786
+#: src/Gui/CReporterAssistant.py:808
 #, fuzzy
 msgid "Finished sending the bug report"
 msgstr "סיים לשלוח את דיווח הבאג"
 
-#: src/Gui/CReporterAssistant.py:790
+#: src/Gui/CReporterAssistant.py:812
 msgid "<b>Bug reports:</b>"
 msgstr "<b>דיווחי באגים:</b>"
 
@@ -1041,7 +1064,7 @@ msgstr ""
 msgid "Hide"
 msgstr "הסתר"
 
-#: src/Daemon/Daemon.cpp:477
+#: src/Daemon/Daemon.cpp:478
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -1059,7 +1082,7 @@ msgstr "הבאג דווח בעבר: %i"
 msgid "New bug id: %i"
 msgstr "מזהה באג חדש: %i"
 
-#: lib/Plugins/Bugzilla.cpp:621
+#: lib/Plugins/Bugzilla.cpp:622
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -1067,46 +1090,46 @@ msgstr ""
 "שם משתמש וסיסמה ריקים.\n"
 "בדוק בעיה זו בבקשה."
 
-#: lib/Plugins/Bugzilla.cpp:629
+#: lib/Plugins/Bugzilla.cpp:630
 msgid "Logging into bugzilla..."
 msgstr "מתחבר לבאגזילה..."
 
-#: lib/Plugins/Bugzilla.cpp:632
+#: lib/Plugins/Bugzilla.cpp:633
 msgid "Checking for duplicates..."
 msgstr "מחפש כפילויות..."
 
-#: lib/Plugins/Bugzilla.cpp:645
+#: lib/Plugins/Bugzilla.cpp:646
 msgid "Missing mandatory member 'bugs'"
 msgstr "חסר שדה חוסה 'bugs'"
 
-#: lib/Plugins/Bugzilla.cpp:660
+#: lib/Plugins/Bugzilla.cpp:661
 msgid "Bugzilla entry creation failed"
 msgstr "יצירת ערך בBugzilla נכשלה."
 
-#: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
+#: lib/Plugins/Bugzilla.cpp:669 lib/Plugins/Bugzilla.cpp:779
 msgid "Logging out..."
 msgstr "מתנתק..."
 
-#: lib/Plugins/Bugzilla.cpp:700 lib/Plugins/Bugzilla.cpp:728
+#: lib/Plugins/Bugzilla.cpp:701 lib/Plugins/Bugzilla.cpp:729
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() failed. Could not collect all mandatory information"
 
-#: lib/Plugins/Bugzilla.cpp:712
+#: lib/Plugins/Bugzilla.cpp:713
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "‏Bugzilla לא הצליחה למצוא את ההורה של הבאג(%d)"
 
-#: lib/Plugins/Bugzilla.cpp:717
+#: lib/Plugins/Bugzilla.cpp:718
 #, c-format
 msgid "Jump to bug %d"
 msgstr "עבור לבאג %d"
 
-#: lib/Plugins/Bugzilla.cpp:742 lib/Plugins/Bugzilla.cpp:743
+#: lib/Plugins/Bugzilla.cpp:743 lib/Plugins/Bugzilla.cpp:744
 #, c-format
 msgid "Add %s to CC list"
 msgstr "הוסף %s לרשימת הCC"
 
-#: lib/Plugins/Bugzilla.cpp:767
+#: lib/Plugins/Bugzilla.cpp:768
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "הוסף הערה חדשה לבאג(%d)"
@@ -1158,12 +1181,12 @@ msgstr "לא יכול ליצור ולשלוח ארכיון %s"
 msgid "Sending an email..."
 msgstr "שולח דוא\"ל"
 
-#: lib/Plugins/SOSreport.cpp:86
+#: lib/Plugins/SOSreport.cpp:98
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "מריץ sosreport: %s"
 
-#: lib/Plugins/SOSreport.cpp:91
+#: lib/Plugins/SOSreport.cpp:103
 msgid "Done running sosreport"
 msgstr "הרצת sosreport הסתיימה"
 

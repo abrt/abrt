@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ko.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-09 15:38+0200\n"
+"POT-Creation-Date: 2010-06-16 14:41+0200\n"
 "PO-Revision-Date: 2010-04-28 11:19+1000\n"
 "Last-Translator: Hyunsok Oh <hoh@redhat.com>\n"
 "Language-Team: Korean <ko@li.org>\n"
@@ -78,7 +78,7 @@ msgstr ""
 msgid "Attaching binary: %s"
 msgstr ""
 
-#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
+#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:656
 msgid "Creating new bug..."
 msgstr "새 버그 생성 중..."
 
@@ -106,7 +106,7 @@ msgstr "보고서 작성 및 제출 중..."
 msgid "Creating a signature..."
 msgstr "보고서 작성 및 제출 중..."
 
-#: lib/Plugins/RHTSupport.cpp:222
+#: lib/Plugins/RHTSupport.cpp:231
 #, fuzzy
 msgid "Creating a new case..."
 msgstr "새 버그 생성 중..."
@@ -492,7 +492,7 @@ msgstr "재현 방법 또는 실행한 내용에 대한 간단한 설명..."
 msgid "You must check backtrace for sensitive data"
 msgstr "민감한 정보를 위해서 역추적(backtrace)을 체크해야만 합니다."
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:302
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -505,11 +505,11 @@ msgstr ""
 "%s</b> \n"
 "그 후 새로고침 버튼을 사용하여 역추적 정보를 다시 생성합니다."
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:304
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "역추적 정보를 사용할 수 없습니다. 이를 보고할 수 없습니다!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:308
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -533,7 +533,7 @@ msgstr ""
 "abrt.conf를 체크해 주십시오."
 
 #: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
-#: src/Gui/CReporterAssistant.py:193
+#: src/Gui/CReporterAssistant.py:199
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -542,12 +542,12 @@ msgstr ""
 "플러그인 설정을 저장할 수 없음:\n"
 " %s "
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:229
 #, python-format
 msgid "Configure %s options"
 msgstr "%s 옵션 설정"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:829
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -555,7 +555,7 @@ msgstr ""
 "보고서를 가져올 수 없습니다!\n"
 "Debuginfo가 없습니까?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:398
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -565,7 +565,7 @@ msgstr ""
 "%s "
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:839
+#: src/Gui/CReporterAssistant.py:861
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "보고서를 가져오는 도중 오류 발생: %s"
@@ -629,11 +629,19 @@ msgstr ""
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "UI 설명에서 PluginDialog 위젯을 찾을 수 없습니다!  "
 
-#: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
+#: src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid ""
+"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
+msgstr ""
+
+#: src/Gui/PluginSettingsUI.py:59 src/Gui/PluginSettingsUI.py:85
 msgid "combo box is not implemented"
 msgstr "combo box가 구현되지 않았습니다  "
 
-#: src/Gui/PluginSettingsUI.py:63
+#: src/Gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
 msgstr "hydrate할 것이 없습니다!  "
 
@@ -679,7 +687,7 @@ msgstr "<span fgcolor=\"blue\">원인:</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "역추적을 선택했으며, 민감한 정보(암호 등)를 제거했습니다"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:733
 msgid "<b>Backtrace</b>"
 msgstr "<b>역추적(backtrace)</b>"
 
@@ -832,24 +840,37 @@ msgstr "Analyzer, Action, Reporter"
 msgid "GPG Keys"
 msgstr "GPG 키"
 
-#: src/Gui/CReporterAssistant.py:273
+#: src/Gui/CReporterAssistant.py:278
+#, python-format
+msgid "Rating is required by %s plugin"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:280
+msgid "Rating is not required by any plugin, skipping the check.."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:290
 #, fuzzy
 msgid "You should check backtrace for sensitive data"
 msgstr "민감한 정보를 위해서 역추적(backtrace)을 체크해야만 합니다."
 
-#: src/Gui/CReporterAssistant.py:274
+#: src/Gui/CReporterAssistant.py:291
 msgid "You must agree with sending the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:334
+#: src/Gui/CReporterAssistant.py:322
+msgid "Only one reporter plugin is configured, skipping the selection dialog"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:356
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:348
+#: src/Gui/CReporterAssistant.py:370
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:425
+#: src/Gui/CReporterAssistant.py:447
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -864,12 +885,12 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:478
+#: src/Gui/CReporterAssistant.py:500
 #, fuzzy
 msgid "Send a bug report"
 msgstr "보고 보내기"
 
-#: src/Gui/CReporterAssistant.py:516
+#: src/Gui/CReporterAssistant.py:538
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -879,113 +900,113 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:557
+#: src/Gui/CReporterAssistant.py:579
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:559
+#: src/Gui/CReporterAssistant.py:581
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:565
+#: src/Gui/CReporterAssistant.py:587
 msgid "I agree with submitting the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:570
+#: src/Gui/CReporterAssistant.py:592
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:593
+#: src/Gui/CReporterAssistant.py:615
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:611
+#: src/Gui/CReporterAssistant.py:633
 msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
+"Are there any comments you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:630
+#: src/Gui/CReporterAssistant.py:652
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:637
+#: src/Gui/CReporterAssistant.py:659
 msgid ""
-"<b>Tip:</b> Your comments are not private. Please monitor what you say "
-"accordingly"
+"<b>Tip:</b> Your comments are not private.  Please monitor what you say "
+"accordingly."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:678
+#: src/Gui/CReporterAssistant.py:700
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:680
+#: src/Gui/CReporterAssistant.py:702
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:685
+#: src/Gui/CReporterAssistant.py:707
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>플러그인 상세 정보</b>"
 
-#: src/Gui/CReporterAssistant.py:692
+#: src/Gui/CReporterAssistant.py:714
 #, fuzzy
 msgid "Component"
 msgstr "일반"
 
-#: src/Gui/CReporterAssistant.py:693
+#: src/Gui/CReporterAssistant.py:715
 msgid "Package"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:694
+#: src/Gui/CReporterAssistant.py:716
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:695
+#: src/Gui/CReporterAssistant.py:717
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:697
+#: src/Gui/CReporterAssistant.py:719
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:698
+#: src/Gui/CReporterAssistant.py:720
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:699
+#: src/Gui/CReporterAssistant.py:721
 msgid "Release"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:722
 #, fuzzy
 msgid "Reason"
 msgstr "<b>원인:</b>"
 
-#: src/Gui/CReporterAssistant.py:714
+#: src/Gui/CReporterAssistant.py:736
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:726
+#: src/Gui/CReporterAssistant.py:748
 #, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>시간 (또는 기간)</b>"
 
-#: src/Gui/CReporterAssistant.py:747
+#: src/Gui/CReporterAssistant.py:769
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>주석:</b>"
 
-#: src/Gui/CReporterAssistant.py:750
+#: src/Gui/CReporterAssistant.py:772
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:786
+#: src/Gui/CReporterAssistant.py:808
 #, fuzzy
 msgid "Finished sending the bug report"
 msgstr "보고 보내기"
 
-#: src/Gui/CReporterAssistant.py:790
+#: src/Gui/CReporterAssistant.py:812
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>버그 보고:</b>"
@@ -1032,7 +1053,7 @@ msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 �
 msgid "Hide"
 msgstr "숨기기"
 
-#: src/Daemon/Daemon.cpp:477
+#: src/Daemon/Daemon.cpp:478
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -1050,7 +1071,7 @@ msgstr "이미 버그를 보고하였습니다: %i"
 msgid "New bug id: %i"
 msgstr "새 버그 id: %i "
 
-#: lib/Plugins/Bugzilla.cpp:621
+#: lib/Plugins/Bugzilla.cpp:622
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -1058,46 +1079,46 @@ msgstr ""
 "로그인 및 암호가 없습니다.\n"
 "확인해 주십시오"
 
-#: lib/Plugins/Bugzilla.cpp:629
+#: lib/Plugins/Bugzilla.cpp:630
 msgid "Logging into bugzilla..."
 msgstr "bugzilla에 로그인 중..."
 
-#: lib/Plugins/Bugzilla.cpp:632
+#: lib/Plugins/Bugzilla.cpp:633
 msgid "Checking for duplicates..."
 msgstr "중복 확인 중..."
 
-#: lib/Plugins/Bugzilla.cpp:645
+#: lib/Plugins/Bugzilla.cpp:646
 msgid "Missing mandatory member 'bugs'"
 msgstr "필수 요소 'bugs'가 빠짐"
 
-#: lib/Plugins/Bugzilla.cpp:660
+#: lib/Plugins/Bugzilla.cpp:661
 msgid "Bugzilla entry creation failed"
 msgstr "버그질라 엔트리 생성에 실패했습니다"
 
-#: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
+#: lib/Plugins/Bugzilla.cpp:669 lib/Plugins/Bugzilla.cpp:779
 msgid "Logging out..."
 msgstr "로그아웃 중..."
 
-#: lib/Plugins/Bugzilla.cpp:700 lib/Plugins/Bugzilla.cpp:728
+#: lib/Plugins/Bugzilla.cpp:701 lib/Plugins/Bugzilla.cpp:729
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info()가 실패했습니다. 모든 필수 정보를 얻어올 수 없었습니다."
 
-#: lib/Plugins/Bugzilla.cpp:712
+#: lib/Plugins/Bugzilla.cpp:713
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "버그질라가 버그(%d)의 부모를 찾을 수 없습니다"
 
-#: lib/Plugins/Bugzilla.cpp:717
+#: lib/Plugins/Bugzilla.cpp:718
 #, c-format
 msgid "Jump to bug %d"
 msgstr "버그 %d로 점프합니다"
 
-#: lib/Plugins/Bugzilla.cpp:742 lib/Plugins/Bugzilla.cpp:743
+#: lib/Plugins/Bugzilla.cpp:743 lib/Plugins/Bugzilla.cpp:744
 #, c-format
 msgid "Add %s to CC list"
 msgstr "%s를 CC 목록에 추가합니다"
 
-#: lib/Plugins/Bugzilla.cpp:767
+#: lib/Plugins/Bugzilla.cpp:768
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "버그(%d)에 새로운 주석을 추가합니다"
@@ -1149,12 +1170,12 @@ msgstr "%s 아카이브를 작성하여 보낼 수 없습니다  "
 msgid "Sending an email..."
 msgstr "이메일 전송 중..."
 
-#: lib/Plugins/SOSreport.cpp:86
+#: lib/Plugins/SOSreport.cpp:98
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "sosreport 실행 중: %s"
 
-#: lib/Plugins/SOSreport.cpp:91
+#: lib/Plugins/SOSreport.cpp:103
 msgid "Done running sosreport"
 msgstr "sosreport 실행 완료"
 

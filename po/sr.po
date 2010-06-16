@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-09 15:38+0200\n"
+"POT-Creation-Date: 2010-06-16 14:41+0200\n"
 "PO-Revision-Date: 2009-09-01 20:41+0100\n"
 "Last-Translator: Miloš Komarčević <kmilos@gmail.com>\n"
 "Language-Team: Serbian (sr) <fedora-trans-sr@redhat.com>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "Attaching binary: %s"
 msgstr ""
 
-#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
+#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:656
 msgid "Creating new bug..."
 msgstr ""
 
@@ -100,7 +100,7 @@ msgstr ""
 msgid "Creating a signature..."
 msgstr ""
 
-#: lib/Plugins/RHTSupport.cpp:222
+#: lib/Plugins/RHTSupport.cpp:231
 msgid "Creating a new case..."
 msgstr ""
 
@@ -467,7 +467,7 @@ msgstr ""
 msgid "You must check backtrace for sensitive data"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:302
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -476,11 +476,11 @@ msgid ""
 "then use Refresh button to regenerate the backtrace."
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:304
 msgid "The backtrace is unusable, you can't report this!"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:308
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -501,25 +501,25 @@ msgid ""
 msgstr ""
 
 #: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
-#: src/Gui/CReporterAssistant.py:193
+#: src/Gui/CReporterAssistant.py:199
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
 " %s"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:229
 #, python-format
 msgid "Configure %s options"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:829
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
 msgstr ""
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:398
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -527,7 +527,7 @@ msgid ""
 msgstr ""
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:839
+#: src/Gui/CReporterAssistant.py:861
 #, python-format
 msgid "Error getting the report: %s"
 msgstr ""
@@ -588,11 +588,19 @@ msgstr ""
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr ""
 
-#: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
+#: src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid ""
+"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
+msgstr ""
+
+#: src/Gui/PluginSettingsUI.py:59 src/Gui/PluginSettingsUI.py:85
 msgid "combo box is not implemented"
 msgstr ""
 
-#: src/Gui/PluginSettingsUI.py:63
+#: src/Gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
 msgstr ""
 
@@ -646,7 +654,7 @@ msgstr "<span color=\"white\">Опис</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:733
 msgid "<b>Backtrace</b>"
 msgstr ""
 
@@ -798,23 +806,36 @@ msgstr ""
 msgid "GPG Keys"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:273
+#: src/Gui/CReporterAssistant.py:278
+#, python-format
+msgid "Rating is required by %s plugin"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:280
+msgid "Rating is not required by any plugin, skipping the check.."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:290
 msgid "You should check backtrace for sensitive data"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:274
+#: src/Gui/CReporterAssistant.py:291
 msgid "You must agree with sending the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:334
+#: src/Gui/CReporterAssistant.py:322
+msgid "Only one reporter plugin is configured, skipping the selection dialog"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:356
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:348
+#: src/Gui/CReporterAssistant.py:370
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:425
+#: src/Gui/CReporterAssistant.py:447
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -829,11 +850,11 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:478
+#: src/Gui/CReporterAssistant.py:500
 msgid "Send a bug report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:516
+#: src/Gui/CReporterAssistant.py:538
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -843,110 +864,110 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:557
+#: src/Gui/CReporterAssistant.py:579
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:559
+#: src/Gui/CReporterAssistant.py:581
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:565
+#: src/Gui/CReporterAssistant.py:587
 msgid "I agree with submitting the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:570
+#: src/Gui/CReporterAssistant.py:592
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:593
+#: src/Gui/CReporterAssistant.py:615
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:611
+#: src/Gui/CReporterAssistant.py:633
 msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
+"Are there any comments you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:630
+#: src/Gui/CReporterAssistant.py:652
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:637
+#: src/Gui/CReporterAssistant.py:659
 msgid ""
-"<b>Tip:</b> Your comments are not private. Please monitor what you say "
-"accordingly"
+"<b>Tip:</b> Your comments are not private.  Please monitor what you say "
+"accordingly."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:678
+#: src/Gui/CReporterAssistant.py:700
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:680
+#: src/Gui/CReporterAssistant.py:702
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:685
+#: src/Gui/CReporterAssistant.py:707
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>Није пријављено!</b>"
 
-#: src/Gui/CReporterAssistant.py:692
+#: src/Gui/CReporterAssistant.py:714
 msgid "Component"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:693
+#: src/Gui/CReporterAssistant.py:715
 msgid "Package"
 msgstr "Пакет"
 
-#: src/Gui/CReporterAssistant.py:694
+#: src/Gui/CReporterAssistant.py:716
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:695
+#: src/Gui/CReporterAssistant.py:717
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:697
+#: src/Gui/CReporterAssistant.py:719
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:698
+#: src/Gui/CReporterAssistant.py:720
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:699
+#: src/Gui/CReporterAssistant.py:721
 #, fuzzy
 msgid "Release"
 msgstr "Обриши"
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:722
 msgid "Reason"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:714
+#: src/Gui/CReporterAssistant.py:736
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:726
+#: src/Gui/CReporterAssistant.py:748
 msgid "<b>Steps to reproduce:</b>"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:747
+#: src/Gui/CReporterAssistant.py:769
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>Није пријављено!</b>"
 
-#: src/Gui/CReporterAssistant.py:750
+#: src/Gui/CReporterAssistant.py:772
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:786
+#: src/Gui/CReporterAssistant.py:808
 msgid "Finished sending the bug report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:790
+#: src/Gui/CReporterAssistant.py:812
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Није пријављено!</b>"
@@ -993,7 +1014,7 @@ msgstr ""
 msgid "Hide"
 msgstr ""
 
-#: src/Daemon/Daemon.cpp:477
+#: src/Daemon/Daemon.cpp:478
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -1009,52 +1030,52 @@ msgstr ""
 msgid "New bug id: %i"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:621
+#: lib/Plugins/Bugzilla.cpp:622
 msgid ""
 "Empty login or password.\n"
 "Please check "
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:629
+#: lib/Plugins/Bugzilla.cpp:630
 msgid "Logging into bugzilla..."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:632
+#: lib/Plugins/Bugzilla.cpp:633
 msgid "Checking for duplicates..."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:645
+#: lib/Plugins/Bugzilla.cpp:646
 msgid "Missing mandatory member 'bugs'"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:660
+#: lib/Plugins/Bugzilla.cpp:661
 msgid "Bugzilla entry creation failed"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
+#: lib/Plugins/Bugzilla.cpp:669 lib/Plugins/Bugzilla.cpp:779
 msgid "Logging out..."
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:700 lib/Plugins/Bugzilla.cpp:728
+#: lib/Plugins/Bugzilla.cpp:701 lib/Plugins/Bugzilla.cpp:729
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:712
+#: lib/Plugins/Bugzilla.cpp:713
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:717
+#: lib/Plugins/Bugzilla.cpp:718
 #, c-format
 msgid "Jump to bug %d"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:742 lib/Plugins/Bugzilla.cpp:743
+#: lib/Plugins/Bugzilla.cpp:743 lib/Plugins/Bugzilla.cpp:744
 #, c-format
 msgid "Add %s to CC list"
 msgstr ""
 
-#: lib/Plugins/Bugzilla.cpp:767
+#: lib/Plugins/Bugzilla.cpp:768
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr ""
@@ -1106,12 +1127,12 @@ msgstr ""
 msgid "Sending an email..."
 msgstr ""
 
-#: lib/Plugins/SOSreport.cpp:86
+#: lib/Plugins/SOSreport.cpp:98
 #, c-format
 msgid "Running sosreport: %s"
 msgstr ""
 
-#: lib/Plugins/SOSreport.cpp:91
+#: lib/Plugins/SOSreport.cpp:103
 msgid "Done running sosreport"
 msgstr ""
 

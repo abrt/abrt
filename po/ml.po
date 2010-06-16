@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ml\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-09 15:38+0200\n"
+"POT-Creation-Date: 2010-06-16 14:41+0200\n"
 "PO-Revision-Date: 2010-05-13 14:04+0530\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
@@ -77,7 +77,7 @@ msgstr ""
 msgid "Attaching binary: %s"
 msgstr ""
 
-#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:655
+#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:656
 msgid "Creating new bug..."
 msgstr "പുതിയ ബഗ് ഉണ്ടാക്കുന്നു..."
 
@@ -105,7 +105,7 @@ msgstr "ഒരു റിപോര്‍ട്ട് ഉണ്ടാക്കി 
 msgid "Creating a signature..."
 msgstr "ഒരു റിപോര്‍ട്ട് ഉണ്ടാക്കി സമര്‍പ്പിക്കുന്നു..."
 
-#: lib/Plugins/RHTSupport.cpp:222
+#: lib/Plugins/RHTSupport.cpp:231
 #, fuzzy
 msgid "Creating a new case..."
 msgstr "പുതിയ ബഗ് ഉണ്ടാക്കുന്നു..."
@@ -485,7 +485,7 @@ msgstr "ഇതെങ്ങനെ ഉണ്ടായി എന്നു് വി
 msgid "You must check backtrace for sensitive data"
 msgstr "സെന്‍സിറ്റീവ് ഡേറ്റയ്ക്കായി ബാക്ക്ട്രെയിസ് പരിശോധിക്കണം"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:285
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:302
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -498,11 +498,11 @@ msgstr ""
 "install %s</b> \n"
 "ശേഷം പുതുക്കുക ബട്ടണ്‍ ഉപയോഗിച്ചു് ബാക്ക്ട്രെയിസ് തയ്യാറാക്കുവാന്‍ ശ്രമിക്കുക."
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:287
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:304
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ബാക്ക്ട്രെയിസ് ഉപയോഗിക്കുവാന്‍ സാധ്യമല്ല, ഇതു് രേഖപ്പെടുത്തുവാന്‍ പാടില്ല!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:291
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:308
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -527,7 +527,7 @@ msgstr ""
 "ദയവായി abrt.conf പരിശോധിക്കുക."
 
 #: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
-#: src/Gui/CReporterAssistant.py:193
+#: src/Gui/CReporterAssistant.py:199
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -536,12 +536,12 @@ msgstr ""
 "പ്ലഗിന്‍ സജ്ജീകരണങ്ങള്‍ സൂക്ഷിക്കുവാന്‍ സാധ്യമല്ല:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:223
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:229
 #, python-format
 msgid "Configure %s options"
 msgstr "%s ഐഛികങ്ങള്‍ ക്രമീകരിക്കുക"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:807
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:829
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -549,7 +549,7 @@ msgstr ""
 "റിപോര്‍ട്ട് ലഭിക്കുവാന്‍ സാധിച്ചില്ല!\n"
 "Debuginfo ലഭ്യമല്ലേ?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:376
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:398
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -559,7 +559,7 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:839
+#: src/Gui/CReporterAssistant.py:861
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "റിപോര്‍ട്ട് ലഭിക്കുന്നതില്‍ പിശക്: %s"
@@ -623,11 +623,19 @@ msgstr ""
 msgid "Can't find PluginDialog widget in UI description!"
 msgstr "UI വിവരണത്തില്‍ PluginDialog വിഡ്ജറ്റ് ലഭ്യമല്ല!"
 
-#: src/Gui/PluginSettingsUI.py:54 src/Gui/PluginSettingsUI.py:80
+#: src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid ""
+"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
+msgstr ""
+
+#: src/Gui/PluginSettingsUI.py:59 src/Gui/PluginSettingsUI.py:85
 msgid "combo box is not implemented"
 msgstr "കോംബോ ബോക്സ് ലഭ്യമാക്കിയിട്ടില്ല"
 
-#: src/Gui/PluginSettingsUI.py:63
+#: src/Gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
 msgstr "ഹൈഡ്രേറ്റ് ചെയ്യുവാനൊന്നുമില്ല!"
 
@@ -674,7 +682,7 @@ msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "ബാക്ക്ട്രെയിസ് പരിശോധിച്ചു് സെന്‍സിറ്റീവ് ഡേറ്റാ നീക്കം ചെയ്തിരിക്കുന്നു (അടയാളവാക്കുകള്‍ എന്നിവ)"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:711
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:733
 msgid "<b>Backtrace</b>"
 msgstr "<b>ബാക്ക്ട്രെയിസ്</b>"
 
@@ -827,24 +835,37 @@ msgstr "അനലൈസറുകള്‍, പ്രവര്‍ത്തിക�
 msgid "GPG Keys"
 msgstr "GPG കീകള്‍"
 
-#: src/Gui/CReporterAssistant.py:273
+#: src/Gui/CReporterAssistant.py:278
+#, python-format
+msgid "Rating is required by %s plugin"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:280
+msgid "Rating is not required by any plugin, skipping the check.."
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:290
 #, fuzzy
 msgid "You should check backtrace for sensitive data"
 msgstr "സെന്‍സിറ്റീവ് ഡേറ്റയ്ക്കായി ബാക്ക്ട്രെയിസ് പരിശോധിക്കണം"
 
-#: src/Gui/CReporterAssistant.py:274
+#: src/Gui/CReporterAssistant.py:291
 msgid "You must agree with sending the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:334
+#: src/Gui/CReporterAssistant.py:322
+msgid "Only one reporter plugin is configured, skipping the selection dialog"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:356
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:348
+#: src/Gui/CReporterAssistant.py:370
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:425
+#: src/Gui/CReporterAssistant.py:447
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -859,12 +880,12 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:478
+#: src/Gui/CReporterAssistant.py:500
 #, fuzzy
 msgid "Send a bug report"
 msgstr "റിപോര്‍ട്ട് അയയ്ക്കുക"
 
-#: src/Gui/CReporterAssistant.py:516
+#: src/Gui/CReporterAssistant.py:538
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -874,113 +895,113 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:557
+#: src/Gui/CReporterAssistant.py:579
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:559
+#: src/Gui/CReporterAssistant.py:581
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:565
+#: src/Gui/CReporterAssistant.py:587
 msgid "I agree with submitting the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:570
+#: src/Gui/CReporterAssistant.py:592
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:593
+#: src/Gui/CReporterAssistant.py:615
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:611
+#: src/Gui/CReporterAssistant.py:633
 msgid ""
-"Are there any comment you'd like to share with the software maintainers?"
+"Are there any comments you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:630
+#: src/Gui/CReporterAssistant.py:652
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:637
+#: src/Gui/CReporterAssistant.py:659
 msgid ""
-"<b>Tip:</b> Your comments are not private. Please monitor what you say "
-"accordingly"
+"<b>Tip:</b> Your comments are not private.  Please monitor what you say "
+"accordingly."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:678
+#: src/Gui/CReporterAssistant.py:700
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:680
+#: src/Gui/CReporterAssistant.py:702
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:685
+#: src/Gui/CReporterAssistant.py:707
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>പ്ലഗിന്‍ വിശദാംശങ്ങള്‍</b>"
 
-#: src/Gui/CReporterAssistant.py:692
+#: src/Gui/CReporterAssistant.py:714
 #, fuzzy
 msgid "Component"
 msgstr "സാധാരണ"
 
-#: src/Gui/CReporterAssistant.py:693
+#: src/Gui/CReporterAssistant.py:715
 msgid "Package"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:694
+#: src/Gui/CReporterAssistant.py:716
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:695
+#: src/Gui/CReporterAssistant.py:717
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:697
+#: src/Gui/CReporterAssistant.py:719
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:698
+#: src/Gui/CReporterAssistant.py:720
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:699
+#: src/Gui/CReporterAssistant.py:721
 msgid "Release"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:722
 #, fuzzy
 msgid "Reason"
 msgstr "<b>കാരണം</b>"
 
-#: src/Gui/CReporterAssistant.py:714
+#: src/Gui/CReporterAssistant.py:736
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:726
+#: src/Gui/CReporterAssistant.py:748
 #, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>സമയം (അല്ലെങ്കില്‍ കാലാവധി)</b>"
 
-#: src/Gui/CReporterAssistant.py:747
+#: src/Gui/CReporterAssistant.py:769
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>അഭിപ്രായം:</b>"
 
-#: src/Gui/CReporterAssistant.py:750
+#: src/Gui/CReporterAssistant.py:772
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:786
+#: src/Gui/CReporterAssistant.py:808
 #, fuzzy
 msgid "Finished sending the bug report"
 msgstr "റിപോര്‍ട്ട് അയയ്ക്കുക"
 
-#: src/Gui/CReporterAssistant.py:790
+#: src/Gui/CReporterAssistant.py:812
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>ബഗ് റിപ്പോര്‍ട്ടുകള്‍:</b>"
@@ -1029,7 +1050,7 @@ msgstr ""
 msgid "Hide"
 msgstr "അദൃശ്യമാക്കുക"
 
-#: src/Daemon/Daemon.cpp:477
+#: src/Daemon/Daemon.cpp:478
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -1047,7 +1068,7 @@ msgstr "ബഗ് രേഖപ്പെടുത്തിയിട്ടുണ�
 msgid "New bug id: %i"
 msgstr "പുതിയ ബഗ് id: %i"
 
-#: lib/Plugins/Bugzilla.cpp:621
+#: lib/Plugins/Bugzilla.cpp:622
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -1055,48 +1076,48 @@ msgstr ""
 "ലോഗിനും അടയാളവാക്കും ശൂന്യം.\n"
 "ദയവായി പരിശോധിക്കുക "
 
-#: lib/Plugins/Bugzilla.cpp:629
+#: lib/Plugins/Bugzilla.cpp:630
 msgid "Logging into bugzilla..."
 msgstr "ബഗ്സിലയിലേക്ക് പ്രവേശിക്കുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:632
+#: lib/Plugins/Bugzilla.cpp:633
 msgid "Checking for duplicates..."
 msgstr "ഒരേപോലുള്ളവയ്ക്കായി തെരയുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:645
+#: lib/Plugins/Bugzilla.cpp:646
 msgid "Missing mandatory member 'bugs'"
 msgstr "നിര്‍ബന്ധമായും ആവശ്യമുള്ള 'ബഗുകള്‍' ലഭ്യമല്ല"
 
-#: lib/Plugins/Bugzilla.cpp:660
+#: lib/Plugins/Bugzilla.cpp:661
 msgid "Bugzilla entry creation failed"
 msgstr "ബഗ്സിലാ എന്‍ട്രി തയ്യാറാക്കല്‍ പരാജയപ്പെട്ടു"
 
-#: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
+#: lib/Plugins/Bugzilla.cpp:669 lib/Plugins/Bugzilla.cpp:779
 msgid "Logging out..."
 msgstr "ലോഗൌട്ട് ചെയ്യുന്നു..."
 
-#: lib/Plugins/Bugzilla.cpp:700 lib/Plugins/Bugzilla.cpp:728
+#: lib/Plugins/Bugzilla.cpp:701 lib/Plugins/Bugzilla.cpp:729
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() പരാജയപ്പെട്ടു. നിര്‍ബന്ധമായും ആവശ്യമുള്ള എല്ലാ വിവരങ്ങളും ശേഖരിക്കുവാന്‍ "
 "സാധ്യമായില്ല"
 
-#: lib/Plugins/Bugzilla.cpp:712
+#: lib/Plugins/Bugzilla.cpp:713
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "ബഗിന്റെ പേരന്റ് കണ്ടുപിടിക്കുവാന്‍ ബഗ്സിലയ്ക്കു് സാധ്യമായില്ല(%d)"
 
-#: lib/Plugins/Bugzilla.cpp:717
+#: lib/Plugins/Bugzilla.cpp:718
 #, c-format
 msgid "Jump to bug %d"
 msgstr "ബഗ് %d-ലേക്കു് നീങ്ങുക"
 
-#: lib/Plugins/Bugzilla.cpp:742 lib/Plugins/Bugzilla.cpp:743
+#: lib/Plugins/Bugzilla.cpp:743 lib/Plugins/Bugzilla.cpp:744
 #, c-format
 msgid "Add %s to CC list"
 msgstr "CC പട്ടികയിലേക്കു് %s ചേര്‍ക്കുക"
 
-#: lib/Plugins/Bugzilla.cpp:767
+#: lib/Plugins/Bugzilla.cpp:768
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "ബഗിലേക്കു് പുതിയ കമന്റ് ചേര്‍ക്കുക(%d)"
@@ -1148,12 +1169,12 @@ msgstr "ഒരു ആര്‍ക്കൈവ് %s ഉണ്ടാക്കി 
 msgid "Sending an email..."
 msgstr "ഒരു ഈമെയില്‍ അയയ്ക്കുന്നു..."
 
-#: lib/Plugins/SOSreport.cpp:86
+#: lib/Plugins/SOSreport.cpp:98
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "sosreport പ്രവര്‍ത്തിപ്പിക്കുന്നു: %s"
 
-#: lib/Plugins/SOSreport.cpp:91
+#: lib/Plugins/SOSreport.cpp:103
 msgid "Done running sosreport"
 msgstr "sosreport പ്രവര്‍ത്തനം പൂര്‍ത്തിയായി"
 
