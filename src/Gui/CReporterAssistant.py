@@ -311,13 +311,18 @@ class ReporterAssistant():
             self.warn_user(error_msgs)
         #bSend.set_sensitive(send)
         self.assistant.set_page_complete(self.pdict_get_page(PAGE_BACKTRACE_APPROVAL), send)
-        #self.assistant.set_page_complete(page, togglebutton.get_active())
-        #if not send:
-        #    bSend.set_tooltip_text(_("Reporting disabled, please fix the problems shown above."))
-        #else:
-        #    bSend.set_tooltip_text(_("Sends the report using selected plugin."))
 
     def on_page_prepare(self, assistant, page):
+        if page == self.pdict_get_page(PAGE_REPORTER_SELECTOR):
+        # skip the first page if we have only one reporter plugin
+            if len(self.reporters) == 1:
+                # we want to skip it only if the plugin is properly configured
+                if self.reporters[0].Settings.check():
+                    self.selected_reporters.append(self.reporters[0])
+                    log1(_("Only one reporter plugin is configured, "
+                       "skipping the selection dialog"))
+                    self.assistant.set_current_page(PAGE_BACKTRACE_APPROVAL)
+
         # this is where dehydrate happens
         if page == self.pdict_get_page(PAGE_EXTRA_INFO):
             if not self.howto_changed:
