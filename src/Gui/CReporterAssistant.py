@@ -267,6 +267,16 @@ class ReporterAssistant():
         SendBacktrace = send_toggle.get_active()
         send = True
         error_msgs = []
+        rating_required = False
+
+        for reporter in self.selected_reporters:
+            if "RatingRequired" in reporter.Settings.keys():
+                if reporter.Settings["RatingRequired"] == "yes":
+                    rating_required = True
+                    log1(_("Rating is required by %s plugin") % reporter)
+        if not rating_required:
+            log1(_("Rating is not required by any plugin, skipping the check.."))
+
         try:
             rating = int(self.report.get_rating())
         except Exception, ex:
@@ -278,7 +288,7 @@ class ReporterAssistant():
             error_msgs.append(_("You should check backtrace for sensitive data"))
             error_msgs.append(_("You must agree with sending the backtrace"))
         # we have both SendBacktrace and rating
-        if rating != None:
+        if rating_required and rating != None:
             try:
                 package = self.result[FILENAME_PACKAGE][CD_CONTENT]
             # if we don't have package for some reason
@@ -800,7 +810,7 @@ class ReporterAssistant():
         page.show_all()
 
     def __del__(self):
-        print "wizard: about to be deleted"
+        log1("wizard: about to be deleted")
 
     def on_analyze_complete_cb(self, daemon, result, pBarWindow):
         try:

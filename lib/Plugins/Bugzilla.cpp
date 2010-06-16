@@ -580,7 +580,8 @@ static map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettin
 CReporterBugzilla::CReporterBugzilla() :
     m_bNoSSLVerify(false),
     m_sBugzillaURL("https://bugzilla.redhat.com"),
-    m_sBugzillaXMLRPC("https://bugzilla.redhat.com"XML_RPC_SUFFIX)
+    m_sBugzillaXMLRPC("https://bugzilla.redhat.com"XML_RPC_SUFFIX),
+    m_bRatingRequired(true)
 {}
 
 CReporterBugzilla::~CReporterBugzilla()
@@ -854,6 +855,7 @@ const map_plugin_settings_t& CReporterBugzilla::GetSettings()
     m_pSettings["Login"] = m_sLogin;
     m_pSettings["Password"] = m_sPassword;
     m_pSettings["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
+    m_pSettings["RatingRequired"] = m_bRatingRequired ? "yes" : "no";
 
     return m_pSettings;
 }

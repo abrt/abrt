@@ -30,6 +30,7 @@ class CReporterBugzilla : public CReporter
         std::string m_sBugzillaXMLRPC;
         std::string m_sLogin;
         std::string m_sPassword;
+        bool m_bRatingRequired;
 
     public:
         CReporterBugzilla();
