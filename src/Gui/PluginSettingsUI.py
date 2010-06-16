@@ -21,6 +21,11 @@ class PluginSettingsUI():
         else:
             # we shouldn't get here, but just to be safe
             log1("No UI for plugin %s" % pluginfo)
+            raise Exception(_("No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+                              "Please report it at "
+                              "<a href=\"https://fedorahosted.org/abrt/newticket\">"
+                              "https://fedorahosted.org/abrt/newticket</a>") % pluginfo)
+            return
 
         if parent:
             self.dialog.set_position(gtk.WIN_POS_CENTER_ON_PARENT)

@@ -144,9 +144,8 @@ def gui_error_message ( message, parent_dialog=None,
 
     dialog = gtk.MessageDialog( parent_dialog,
                                gtk.DIALOG_MODAL|gtk.DIALOG_DESTROY_WITH_PARENT,
-                               message_type, gtk.BUTTONS_OK,
-                               message )
-
+                               message_type, gtk.BUTTONS_OK, message )
+    dialog.set_markup(message)
     if parent_dialog:
         dialog.set_position (gtk.WIN_POS_CENTER_ON_PARENT)
         dialog.set_transient_for(parent_dialog)

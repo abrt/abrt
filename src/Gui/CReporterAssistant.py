@@ -181,7 +181,12 @@ class ReporterAssistant():
         self.pBarWindow.hide()
 
     def on_config_plugin_clicked(self, button, parent, plugin, image):
-        ui = PluginSettingsUI(plugin, parent=parent)
+        try:
+            ui = PluginSettingsUI(plugin, parent=parent)
+        except Exception, ex:
+            gui_error_message(str(ex))
+            return
+
         ui.hydrate()
         response = ui.run()
         if response == gtk.RESPONSE_APPLY:
