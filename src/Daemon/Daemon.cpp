@@ -207,11 +207,11 @@ static int SetUpCron()
             nH = xatou(sH.c_str());
             nH = nH > 23 ? 23 : nH;
             nH = nH < 0 ? 0 : nH;
-            nM = nM > 59 ? 59 : nM;
-            nM = nM < 0 ? 0 : nM;
             timeout += nH * 60 * 60;
             sM = it_c->first.substr(pos + 1);
             nM = xatou(sM.c_str());
+            nM = nM > 59 ? 59 : nM;
+            nM = nM < 0 ? 0 : nM;
             timeout += nM * 60;
         }
         else
