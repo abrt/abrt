@@ -104,6 +104,7 @@ class ReporterAssistant():
         # a raw text in case when set_markup() fails
         for plugin, res in result.iteritems():
             bug_report = gtk.Label()
+            bug_report.set_selectable(True)
             bug_report.set_line_wrap(True)
             bug_report.set_alignment(0.0, 0.0)
             bug_report.set_justify(gtk.JUSTIFY_LEFT)
@@ -231,6 +232,7 @@ class ReporterAssistant():
                 hbox.pack_start(image, expand = False, fill = False)
                 vbWrongSettings.pack_start(hbox)
             vbWrongSettings.show_all()
+            dialog.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
             dialog.set_transient_for(self.assistant)
             dialog.set_modal(True)
             response = dialog.run()
@@ -240,9 +242,9 @@ class ReporterAssistant():
             else:
                 # user cancelled reporting
                 return False
-
         else:
             return NO_PROBLEMS_DETECTED
+
     def warn_user(self, warnings):
         # FIXME: show in lError
         #self.lErrors = self.builder.get_object("lErrors")
@@ -274,7 +276,7 @@ class ReporterAssistant():
                 if reporter.Settings["RatingRequired"] == "yes":
                     rating_required = True
                     log1(_("Rating is required by %s plugin") % reporter)
-        if not rating_required:
+        if self.selected_reporters and not rating_required:
             log1(_("Rating is not required by any plugin, skipping the check.."))
 
         try:
