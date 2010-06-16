@@ -103,14 +103,13 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
     VERB3 log(" ParseListWithArgs(%s)", pValue);
 
     vector_pair_string_string_t pluginsWithArgs;
-    unsigned int ii;
     std::string item;
     std::string action;
     bool is_quote = false;
     bool is_arg = false;
-    for (ii = 0; pValue[ii]; ii++)
+    for (int ii = 0; pValue[ii]; ii++)
     {
-        if (is_quote && pValue[ii] == '\\' && pValue[ii+1])
+        if (is_quote && pValue[ii] == '\\' && pValue[ii + 1])
         {
             ii++;
             item += pValue[ii];
@@ -129,18 +128,30 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
         }
         if (pValue[ii] == '(')
         {
-            action = item;
-            item = "";
-            is_arg = true;
+            if (!is_arg)
+            {
+                action = item;
+                item = "";
+                is_arg = true;
+            }
+            else
+                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
+
             continue;
         }
-        if (pValue[ii] == ')' && is_arg)
+        if (pValue[ii] == ')')
         {
-            VERB3 log(" adding (%s,%s)", action.c_str(), item.c_str());
-            pluginsWithArgs.push_back(make_pair(action, item));
-            item = "";
-            is_arg = false;
-            action = "";
+            if (is_arg)
+            {
+                VERB3 log(" adding (%s,%s)", action.c_str(), item.c_str());
+                pluginsWithArgs.push_back(make_pair(action, item));
+                item = "";
+                is_arg = false;
+                action = "";
+            }
+            else
+                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
+
             continue;
         }
         if (pValue[ii] == ',' && !is_arg)
@@ -155,7 +166,13 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
         }
         item += pValue[ii];
     }
-    if (item != "")
+
+    if (is_quote)
+        error_msg("Parser error: Unclosed quote in \"%s\"", pValue);
+
+    if (is_arg)
+        error_msg("Parser error: Unclosed argument in \"%s\"", pValue);
+    else if (item != "")
     {
         VERB3 log(" adding (%s,%s)", item.c_str(), "");
         pluginsWithArgs.push_back(make_pair(item, ""));
@@ -231,17 +248,30 @@ static set_string_t ParseKey(const char *Key)
             key = item;
             item = "";
         }
+        else if (isspace(Key[ii]) && !is_quote)
+        {
+            continue;
+        }
         else if ((Key[ii] == ',') && !is_quote)
         {
-            set.insert(key + ":" + item);
-            item = "";
+            if (!key.empty())
+            {
+                set.insert(key + ":" + item);
+                item = "";
+            }
+            else
+                error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, Key);
         }
         else
         {
             item += Key[ii];
         }
     }
-    if (item != "" && !is_quote)
+    if (is_quote)
+    {
+        error_msg("Parser error: Unclosed quote in \"%s\"", Key);
+    }
+    else if (item != "")
     {
         if (key == "")
         {
@@ -292,100 +322,130 @@ static void LoadGPGKeys()
     }
 }
 
+/**
+ * Reads configuration from file to s_mapSection* static variables.
+ * The file must be opened for reading.
+ */
+static void ReadConfigurationFromFile(FILE *fp)
+{
+    char line[512];
+    std::string section;
+    int lineno = 0;
+    while (fgets(line, sizeof(line), fp))
+    {
+        strchrnul(line, '\n')[0] = '\0';
+        ++lineno;
+        bool is_key = true;
+        bool is_section = false;
+        bool is_quote = false;
+        unsigned ii;
+        std::string key, value;
+        for (ii = 0; line[ii] != '\0'; ii++)
+        {
+            if (is_quote && line[ii] == '\\' && line[ii + 1])
+            {
+                value += line[ii];
+                ii++;
+                value += line[ii];
+                continue;
+            }
+            if (isspace(line[ii]) && !is_quote)
+            {
+                continue;
+            }
+            if (line[ii] == '#' && !is_quote && key == "")
+            {
+                break;
+            }
+            if (line[ii] == '[' && !is_quote)
+            {
+                is_section = true;
+                section = "";
+                continue;
+            }
+            if (line[ii] == '"')
+            {
+                is_quote = !is_quote;
+                value += line[ii];
+                continue;
+            }
+            if (is_section)
+            {
+                if (line[ii] == ']')
+                    break;
+                section += line[ii];
+                continue;
+            }
+            if (line[ii] == '=' && !is_quote)
+            {
+                is_key = false;
+                key = value;
+                value = "";
+                continue;
+            }
+            value += line[ii];
+        }
+
+        if (is_quote)
+        {
+            error_msg("abrt.conf: Invalid syntax on line %d", lineno);
+            continue;
+        }
+
+        if (is_section)
+        {
+            if (line[ii] != ']') /* section not closed */
+                error_msg("abrt.conf: Section not closed on line %d", lineno);
+            continue;
+        }
+
+        if (is_key)
+        {
+            if (!value.empty()) /* the key is stored in value */
+                error_msg("abrt.conf: Invalid syntax on line %d", lineno);
+            continue;
+        }
+        else if (key.empty()) /* A line without key: " = something" */
+        {
+            error_msg("abrt.conf: Invalid syntax on line %d", lineno);
+            continue;
+        }
+
+        if (section == SECTION_COMMON)
+        {
+            if (s_mapSectionCommon[key] != "")
+                s_mapSectionCommon[key] += ",";
+            s_mapSectionCommon[key] += value;
+        }
+        else if (section == SECTION_ANALYZER_ACTIONS_AND_REPORTERS)
+        {
+            if (s_mapSectionAnalyzerActionsAndReporters[key] != "")
+                s_mapSectionAnalyzerActionsAndReporters[key] += ",";
+            s_mapSectionAnalyzerActionsAndReporters[key] += value;
+        }
+        else if (section == SECTION_CRON)
+        {
+            if (s_mapSectionCron[key] != "")
+                s_mapSectionCron[key] += ",";
+            s_mapSectionCron[key] += value;
+        }
+        else
+            error_msg("abrt.conf: Ignoring entry in invalid section [%s]", section.c_str());
+    }
+}
+
 /* abrt daemon loads .conf file */
 void LoadSettings()
 {
     FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
     if (fp)
     {
-        char line[512];
-        std::string section;
-        while (fgets(line, sizeof(line), fp))
-        {
-            strchrnul(line, '\n')[0] = '\0';
-            unsigned ii;
-            bool is_key = true;
-            bool is_section = false;
-            bool is_quote = false;
-            std::string key;
-            std::string value;
-            for (ii = 0; line[ii] != '\0'; ii++)
-            {
-                if (is_quote && line[ii] == '\\' && line[ii+1] != '\0')
-                {
-                    value += line[ii];
-                    ii++;
-                    value += line[ii];
-                    continue;
-                }
-                if (isspace(line[ii]) && !is_quote)
-                {
-                    continue;
-                }
-                if (line[ii] == '#' && !is_quote && key == "")
-                {
-                    break;
-                }
-                if (line[ii] == '[' && !is_quote)
-                {
-                    is_section = true;
-                    section = "";
-                    continue;
-                }
-                if (line[ii] == '"')
-                {
-                    is_quote = !is_quote;
-                    value += line[ii];
-                    continue;
-                }
-                if (is_section)
-                {
-                    if (line[ii] == ']')
-                    {
-                        break;
-                    }
-                    section += line[ii];
-                    continue;
-                }
-                if (line[ii] == '=' && !is_quote)
-                {
-                    is_key = false;
-                    key = value;
-                    value = "";
-                    continue;
-                }
-                value += line[ii];
-            }
-            if (!is_key && !is_quote)
-            {
-                if (section == SECTION_COMMON)
-                {
-                    if (s_mapSectionCommon[key] != "")
-                    {
-                        s_mapSectionCommon[key] += ",";
-                    }
-                    s_mapSectionCommon[key] += value;
-                }
-                else if (section == SECTION_ANALYZER_ACTIONS_AND_REPORTERS)
-                {
-                    if (s_mapSectionAnalyzerActionsAndReporters[key] != "")
-                    {
-                        s_mapSectionAnalyzerActionsAndReporters[key] += ",";
-                    }
-                    s_mapSectionAnalyzerActionsAndReporters[key] += value;
-                }
-                else if (section == SECTION_CRON)
-                {
-                    if (s_mapSectionCron[key] != "")
-                    {
-                        s_mapSectionCron[key] += ",";
-                    }
-                    s_mapSectionCron[key] += value;
-                }
-            }
-        }
+        ReadConfigurationFromFile(fp);
         fclose(fp);
     }
+    else
+        error_msg("Unable to read configuration file %s", CONF_DIR"/abrt.conf");
+
     ParseCommon();
     ParseAnalyzerActionsAndReporters();
     ParseCron();
