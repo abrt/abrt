@@ -114,6 +114,7 @@ struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str)
     assert(strbuf->len + len < strbuf->alloc);
     memmove(strbuf->buf + len, strbuf->buf, strbuf->len + 1);
     memcpy(strbuf->buf, str, len);
+    strbuf->len += len;
     return strbuf;
 }
 
