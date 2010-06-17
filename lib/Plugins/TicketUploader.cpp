@@ -150,7 +150,7 @@ static void write_str_to_file(const char *str, const char *path, const char *fna
     {
         throw CABRTException(EXCEP_PLUGIN, "Can't open '%s'", ofile_name.c_str());
     }
-    fprintf(ofile, "%s\n", str);
+    fputs(str, ofile);
     fclose(ofile);
 }
 
