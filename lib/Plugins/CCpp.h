@@ -34,7 +34,6 @@ class CAnalyzerCCpp : public CAnalyzer
         bool m_bInstallDebugInfo;
         unsigned m_nDebugInfoCacheMB;
         std::string m_sOldCorePattern;
-        std::string m_sOldCorePipeLimit;
         std::string m_sDebugInfo;
         std::string m_sDebugInfoDirs;
 

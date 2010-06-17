@@ -396,9 +396,18 @@ send_report_to_new_case(const char* baseURL,
             free_abrt_post_state(case_state);
             goto redirect_case;
         }
-        /* fall through */
+        goto bad_resp_code;
+
+    case 404:
+        /* Not strictly necessary, but makes this typical error less cryptic:
+         * instead of returning html-encoded body, we show short concise message,
+         * and show offending URL (typos in which is a typical cause) */
+        retval = xasprintf("error in case creation, "
+                        "HTTP code: 404 (Not found), URL:'%s'", case_url.c_str());
+        break;
 
     default:
+ bad_resp_code:
         errmsg = case_state->curl_error_msg;
         if (errmsg)
             retval = xasprintf("error in case creation: %s", errmsg);
@@ -408,7 +417,8 @@ send_report_to_new_case(const char* baseURL,
             if ((!errmsg || !errmsg[0]) && case_state->body && case_state->body[0])
                 errmsg = case_state->body;
             if (errmsg)
-                retval = xasprintf("error in case creation, server says: '%s'", errmsg);
+                retval = xasprintf("error in case creation, HTTP code: %d, server says: '%s'",
+                        case_state->http_resp_code, errmsg);
             else
                 retval = xasprintf("error in case creation, HTTP code: %d",
                         case_state->http_resp_code);

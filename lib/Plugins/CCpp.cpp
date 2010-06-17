@@ -846,7 +846,7 @@ static int set_limits()
         if (!isdigit_str(ent->d_name))
             continue;
 
-        char limits_name[sizeof("/proc/%s/limits") + sizeof(int)];
+        char limits_name[sizeof("/proc/%s/limits") + sizeof(long)*3];
         snprintf(limits_name, sizeof(limits_name), "/proc/%s/limits", ent->d_name);
         FILE *limits_fp = fopen(limits_name, "r");
         if (!limits_fp) {
@@ -937,17 +937,17 @@ void CAnalyzerCCpp::Init()
     if (fp)
     {
         /* we care only about the first char, if it's
-            not '0' then we don't have to change it,
-            because it means that it's already != 0
-        */
+         * not '0' then we don't have to change it,
+         * because it means that it's already != 0
+         */
         char pipe_limit[2];
-        if (fgets(pipe_limit, sizeof(pipe_limit), fp))
-            m_sOldCorePipeLimit = pipe_limit;
+        if (!fgets(pipe_limit, sizeof(pipe_limit), fp))
+            pipe_limit[0] = '1'; /* not 0 */
         fclose(fp);
-        if(m_sOldCorePipeLimit[0] == '0')
+        if (pipe_limit[0] == '0')
         {
             fp = fopen(CORE_PIPE_LIMIT_IFACE, "w");
-            if(fp)
+            if (fp)
             {
                 fputs(CORE_PIPE_LIMIT, fp);
                 fclose(fp);
