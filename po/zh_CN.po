@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-06-20 15:30+0800\n"
+"PO-Revision-Date: 2010-06-20 16:56+0800\n"
 "Last-Translator: Huan Chen <chenhuan.gt at gmail.com>\n"
 "Language-Team: trans-zh_cn at lists.fedoraproject.com\n"
 "Language: zh_CN\n"
@@ -166,8 +166,8 @@ msgstr ""
 "\t--report-always 崩溃识别码\t无需询问即创建并发送报告\n"
 "\t--delete 崩溃识别码\t \t\t删除崩溃\n"
 "崩溃识别码可以是：\n"
-"\tUID:UUID对;\n"
-"\tUUID 唯一前缀——对带匹配通用唯一识别符（UUID）的崩溃起作用\n"
+"\t用户标识符:通用唯一识别符（UID:UUID）对;\n"
+"\t通用唯一识别符（UUID）唯一前缀——对带匹配通用唯一识别符（UUID）的崩溃起作用\n"
 "\t@N——对第N个（如同用 --get-list-full 显示）崩溃起作用 \n"
 
 #: src/CLI/CLI.cpp:198
@@ -249,12 +249,12 @@ msgid ""
 "No changes were detected in the report."
 msgstr ""
 "\n"
-"在报告中没有察觉出更改。"
+"没有发觉报告中有更改。"
 
 #: src/CLI/report.cpp:628
 #, c-format
 msgid "Wrong settings were detected for plugin %s.\n"
-msgstr "察觉出插件 %s 的错误设置。\n"
+msgstr "发觉插件 %s 的错误设置。\n"
 
 #: src/CLI/report.cpp:632
 msgid "Enter your login: "
@@ -855,7 +855,7 @@ msgstr "您未提供再现的步骤。"
 
 #: src/Gui/CReporterAssistant.py:348
 msgid "You didn't provide any comments."
-msgstr "您未提供注释。"
+msgstr "您未提供评论。"
 
 #: src/Gui/CReporterAssistant.py:425
 #, python-format
@@ -874,7 +874,7 @@ msgstr ""
 "看上去您的系统上来自软件包 <b>%s</b> "
 "的程序崩溃了。您可发送一个关于此事件的缺陷报告。该报告将为软件维护者提供帮您修复缺陷（bug）所需的必要信息\n"
 "\n"
-"请检查下列信息并在必要时对其修改以确保您的缺陷（bug）报告中不含任何您不愿共享的敏感数据。\n"
+"请检查下列信息并在必要时对其修改以确保您的缺陷（bug）报告中不含您不愿共享的敏感数据。\n"
 "\n"
 "选择您要在哪里报告这个缺陷（bug）并按<前进>继续。"
 
@@ -927,7 +927,7 @@ msgstr "提供附加细节"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please monitor what you say "
 "accordingly"
-msgstr "<b>提示：</b>您的意见不是私密的。请注意您的用词。"
+msgstr "<b>提示：</b>您的评论不是私密的。因此请监督您的言论。"
 
 #: src/Gui/CReporterAssistant.py:678
 msgid "Confirm and send report"
@@ -935,7 +935,7 @@ msgstr "确认并发送报告"
 
 #: src/Gui/CReporterAssistant.py:680
 msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "下面是您的 缺陷（bug）报告的摘要。请点击<应用>提交。"
+msgstr "下面是您的 缺陷报告的摘要。请点击 <应用> 提交。"
 
 #: src/Gui/CReporterAssistant.py:685
 msgid "<b>Basic details</b>"
@@ -991,22 +991,22 @@ msgstr "意见未提供！"
 
 #: src/Gui/CReporterAssistant.py:786
 msgid "Finished sending the bug report"
-msgstr "缺陷（bug）报告发送完了"
+msgstr "缺陷报告发送完了"
 
 #: src/Gui/CReporterAssistant.py:790
 msgid "<b>Bug reports:</b>"
-msgstr "<b>缺陷（Bug）报告：</b>"
+msgstr "<b>缺陷报告：</b>"
 
 #: src/Gui/settings_wizard.glade:7
 msgid "Wrong Settings Detected"
-msgstr "察觉出错误设置"
+msgstr "发觉错误设置"
 
 #: src/Gui/settings_wizard.glade:40
 msgid ""
 "Wrong settings detected for some of the enabled reporter plugins, please use "
 "the buttons below to open respective configuration and fix it before you "
 "proceed, otherwise the reporting process can fail.\n"
-msgstr "察觉出有些启用的报告器插件的错误设置，请使用以下按钮打开对应的配置对话框并在继续之前将它修复，否则报告过程会失败。\n"
+msgstr "发觉有些启用的报告器插件的错误设置，请使用以下按钮打开对应的配置对话框并在继续之前将它修复，否则报告过程会失败。\n"
 
 #: src/Gui/settings_wizard.glade:71
 msgid "<b>Do you want to continue?</b>"
@@ -1015,11 +1015,11 @@ msgstr "<b>您要继续吗？</b>"
 #: src/Applet/Applet.cpp:88
 #, c-format
 msgid "A crash in package %s has been detected"
-msgstr "检测到 %s 软件包中的崩溃！"
+msgstr "发觉 %s 软件包中的崩溃！"
 
 #: src/Applet/Applet.cpp:90
 msgid "A crash has been detected"
-msgstr "检测到崩溃"
+msgstr "发觉崩溃"
 
 #: src/Applet/Applet.cpp:266
 msgid "ABRT service is not running"
@@ -1032,7 +1032,7 @@ msgstr "警告"
 
 #: src/Applet/CCApplet.cpp:89
 msgid "Notification area applet to notify user about issues detected by ABRT"
-msgstr "用于通知用户有关自动缺陷报告工具（ABRT）察觉到的问题的通告区小应用"
+msgstr "用于通知用户有关自动缺陷报告工具（ABRT）发觉的问题的通告区小应用"
 
 #: src/Applet/CCApplet.cpp:115
 msgid "Hide"
@@ -1064,7 +1064,7 @@ msgstr ""
 
 #: lib/Plugins/Bugzilla.cpp:629
 msgid "Logging into bugzilla..."
-msgstr "正在登录缺陷终结者（bugzilla）……"
+msgstr "正在登录缺陷终结器（bugzilla）……"
 
 #: lib/Plugins/Bugzilla.cpp:632
 msgid "Checking for duplicates..."
@@ -1076,7 +1076,7 @@ msgstr "缺少必需成员\"缺陷（bugs）“"
 
 #: lib/Plugins/Bugzilla.cpp:660
 msgid "Bugzilla entry creation failed"
-msgstr "生成缺陷终结者条目失败"
+msgstr "生成缺陷终结器条目失败"
 
 #: lib/Plugins/Bugzilla.cpp:668 lib/Plugins/Bugzilla.cpp:778
 msgid "Logging out..."
@@ -1089,7 +1089,7 @@ msgstr "取得缺陷信息（get_bug_info()） 失败。不能收集所有必需
 #: lib/Plugins/Bugzilla.cpp:712
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
-msgstr "缺陷终结者（Bugzilla）不能找到缺陷（bug）的上级（%d）"
+msgstr "缺陷终结器（Bugzilla）不能找到缺陷（bug）的上级（%d）"
 
 #: lib/Plugins/Bugzilla.cpp:717
 #, c-format
@@ -1104,7 +1104,7 @@ msgstr "增加 %s 到转发列表"
 #: lib/Plugins/Bugzilla.cpp:767
 #, c-format
 msgid "Add new comment into bug(%d)"
-msgstr "为缺陷（bug）加进新的注释（%d）"
+msgstr "为缺陷（bug）加进新的评论（%d）"
 
 #: lib/Plugins/Kerneloops.cpp:118
 msgid "Getting local universal unique identification"
