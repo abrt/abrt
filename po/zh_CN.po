@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-06-09 15:38+0200\n"
-"PO-Revision-Date: 2010-06-20 15:10+0800\n"
+"PO-Revision-Date: 2010-06-20 15:30+0800\n"
 "Last-Translator: Huan Chen <chenhuan.gt at gmail.com>\n"
 "Language-Team: trans-zh_cn at lists.fedoraproject.com\n"
 "Language: zh_CN\n"
@@ -85,7 +85,7 @@ msgstr "正在创建新缺陷（bug）……"
 
 #: lib/Plugins/TicketUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
-msgstr "文件传送器： 统一资源定位符（URL）未指定"
+msgstr "文件传送器： 统一资源定位符（URL）)未指定"
 
 #: lib/Plugins/TicketUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
 #, c-format
@@ -232,9 +232,8 @@ msgid "# Release string of the operating system"
 msgstr "# 操作系统的发行号"
 
 #: src/CLI/report.cpp:323
-#, fuzzy
 msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
-msgstr "终端是哑的，但未定义可视（VISUAL）或者编者（EDITOR）。"
+msgstr "终端是哑的，但可视（VISUAL）或编辑器（EDITOR）未限定。"
 
 #: src/CLI/report.cpp:411
 msgid ""
@@ -498,7 +497,7 @@ msgid ""
 "crashid=%s"
 msgstr ""
 "数据库中无此崩溃，可能崩溃标识符错误。\n"
-"crashid=%s"
+"崩溃识别符=%s"
 
 #: src/Gui/CCReporterDialog.py:22 src/Gui/CReporterAssistant.py:19
 msgid "Brief description how to reproduce this or what you did..."
@@ -711,7 +710,6 @@ msgid "<b>Please fix the following problems</b>"
 msgstr "<b>请修复下列问题</b>"
 
 #: src/Gui/report.glade:571
-#, fuzzy
 msgid " "
 msgstr " "
 
