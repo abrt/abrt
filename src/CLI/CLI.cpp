@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2009, 2010  Red Hat, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -47,43 +47,54 @@ enum
     OPT_DELETE
 };
 
-static void print_crash_infos(vector_map_crash_data_t& pCrashInfos, int pMode)
+/** Prints basic information about a crash to stdout. */
+static void print_crash(const map_crash_data_t &crash)
 {
-    unsigned int ii;
-    for (ii = 0; ii < pCrashInfos.size(); ii++)
+    /* Create a localized string from crash time. */
+    const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
+    long time = xatou(timestr);
+    char timeloc[256];
+    int success = strftime(timeloc, 128, "%c", localtime(&time));
+    if (!success)
+        error_msg_and_die("Error while converting time to string.");
+
+    printf(_("\tUID        : %s\n"
+             "\tUUID       : %s\n"
+             "\tPackage    : %s\n"
+             "\tExecutable : %s\n"
+             "\tCrash Time : %s\n"
+             "\tCrash Count: %s\n"),
+           get_crash_data_item_content(crash, CD_UID).c_str(),
+           get_crash_data_item_content(crash, CD_UUID).c_str(),
+           get_crash_data_item_content(crash, FILENAME_PACKAGE).c_str(),
+           get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
+           timeloc,
+           get_crash_data_item_content(crash, CD_COUNT).c_str());
+}
+
+/**
+ * Prints a list containing "crashes" to stdout.
+ * @param include_reported
+ *   Do not skip entries marked as already reported.
+ */
+static void print_crash_list(const vector_map_crash_data_t& crash_list, bool include_reported)
+{
+    for (unsigned i = 0; i < crash_list.size(); ++i)
     {
-        map_crash_data_t& info = pCrashInfos[ii];
-        if (pMode == OPT_GET_LIST_FULL || get_crash_data_item_content(info, CD_REPORTED) != "1")
-        {
-            const char *timestr = get_crash_data_item_content(info, FILENAME_TIME).c_str();
-            long time = strtol(timestr, NULL, 10);
-            if (time == 0)
-                error_msg_and_die("Error while converting time string.");
+        const map_crash_data_t& crash = crash_list[i];
+        if (get_crash_data_item_content(crash, CD_REPORTED) == "1" && !include_reported)
+            continue;
 
-            char timeloc[256];
-            int success = strftime(timeloc, 128, "%c", localtime(&time));
-            if (!success)
-                error_msg_and_die("Error while converting time to string.");
-
-            printf(_("%u.\n"
-                   "\tUID        : %s\n"
-                   "\tUUID       : %s\n"
-                   "\tPackage    : %s\n"
-                   "\tExecutable : %s\n"
-                   "\tCrash Time : %s\n"
-                   "\tCrash Count: %s\n"),
-                ii,
-                get_crash_data_item_content(info, CD_UID).c_str(),
-                get_crash_data_item_content(info, CD_UUID).c_str(),
-                get_crash_data_item_content(info, FILENAME_PACKAGE).c_str(),
-                get_crash_data_item_content(info, FILENAME_EXECUTABLE).c_str(),
-                timeloc,
-                get_crash_data_item_content(info, CD_COUNT).c_str()
-            );
-        }
+        printf("%u.\n", i);
+        print_crash(crash);
     }
 }
 
+/**
+ * Converts crash reference from user's input to unique crash identification
+ * in form UID:UUID.
+ * The returned string must be released by caller.
+ */
 static char *guess_crash_id(const char *str)
 {
     vector_map_crash_data_t ci = call_GetCrashInfos();
@@ -233,7 +244,7 @@ int main(int argc, char** argv)
         case OPT_GET_LIST_FULL:
         {
             vector_map_crash_data_t ci = call_GetCrashInfos();
-            print_crash_infos(ci, op);
+            print_crash_list(ci, op == OPT_GET_LIST_FULL);
             break;
         }
         case OPT_REPORT:
