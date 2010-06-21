@@ -231,7 +231,7 @@ class MainWindow():
         if icon:
             i_package_icon.set_from_pixbuf(icon)
         else:
-            i_package_icon.set_from_stock(gtk.STOCK_MISSING_IMAGE, gtk.ICON_SIZE_DIALOG)
+            i_package_icon.set_from_icon_name("application-x-executable", gtk.ICON_SIZE_DIALOG)
 
         l_heading = self.wTree.get_widget("l_detail_heading")
         l_heading.set_markup(_("<b>%s Crash</b>\n%s") % (dump.getPackageName().title(),dump.getPackage()))

@@ -180,8 +180,9 @@ def gui_question_dialog ( message, parent_dialog=None,
 
 def get_icon_for_package(theme, package):
     log2("get_icon_for_package('%s')", package)
+    package_icon = None
     try:
-        return theme.load_icon(package, 48, gtk.ICON_LOOKUP_USE_BUILTIN)
+        package_icon = theme.load_icon(package, 48, gtk.ICON_LOOKUP_USE_BUILTIN)
     except:
         # try to find icon filename by manually
         if not rpm:
@@ -190,6 +191,7 @@ def get_icon_for_package(theme, package):
         mi = ts.dbMatch('name', package)
         possible_icons = []
         icon_filename = ""
+        icon_name = ""
         filenames = ""
         for h in mi:
             filenames = h['filenames']
@@ -204,29 +206,26 @@ def get_icon_for_package(theme, package):
                 for line in lines:
                     if line.find("Icon=") != -1:
                         log2("Icon='%s'", line[5:-1])
-                        icon_filename = line[5:-1]
+                        icon_name = line[5:-1]
                         break
                 desktop_file.close()
-                # .dektop file found
+        # .desktop file found
+        if icon_name:
+            try:
+                package_icon = theme.load_icon(icon_name, 48, gtk.ICON_LOOKUP_USE_BUILTIN)
+            except:
+                # we should get here only if the .desktop file is wrong..
                 for filename in h['filenames']:
-                    if filename.rfind("%s.png" % icon_filename) != -1:
-                        log2("png file:'%s'", filename)
+                    if filename.rfind("%s.png" % icon_name) != -1:
                         icon_filename = filename
-                        break
-            #we didn't find the .desktop file
-            else:
-                for filename in possible_icons:
-                    if filename.rfind("%s.png" % package):
-                        # return the first possible filename
-                        icon_filename = filename
-                        break
-            if icon_filename:
-                break
+                        # if we found size 48x48 we don't need to continue
+                        if "48x48" in icon_filename:
+                            log2("png file:'%s'", filename)
+                            break
         if icon_filename:
             log1("icon created from %s", icon_filename)
-            return gtk.gdk.pixbuf_new_from_file_at_size(icon_filename, 48, 48)
-        else:
-            return None
+            package_icon = gtk.gdk.pixbuf_new_from_file_at_size(icon_filename, 48, 48)
+    return package_icon
 
 def show_log(message_log, parent=None):
     builder = gtk.Builder()
