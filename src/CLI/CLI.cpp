@@ -197,30 +197,30 @@ int main(int argc, char** argv)
         int c = getopt_long_only(argc, argv, "?V", longopts, &option_index);
         switch (c)
         {
-            case OPT_REPORT:
-            case OPT_REPORT_ALWAYS:
-            case OPT_DELETE:
-                crash_id = optarg;
-                /* fall through */
-            case OPT_GET_LIST:
-            case OPT_GET_LIST_FULL:
-                if (op == -1)
-                    break;
-                error_msg(_("You must specify exactly one operation."));
-                return 1;
-            case -1: /* end of options */
-                if (op != -1) /* if some operation was specified... */
-                    break;
-                /* fall through */
-            default:
-            case '?':
-            case OPT_HELP:
-                usage(argv[0]);
-                return 1;
-            case 'V':
-            case OPT_VERSION:
-                printf("%s "VERSION"\n", progname(argv[0]));
-                return 0;
+        case OPT_REPORT:
+        case OPT_REPORT_ALWAYS:
+        case OPT_DELETE:
+            crash_id = optarg;
+            /* fall through */
+        case OPT_GET_LIST:
+        case OPT_GET_LIST_FULL:
+            if (op == -1)
+                break;
+            error_msg(_("You must specify exactly one operation."));
+            return 1;
+        case -1: /* end of options */
+            if (op != -1) /* if some operation was specified... */
+                break;
+            /* fall through */
+        default:
+        case '?':
+        case OPT_HELP:
+            usage(argv[0]);
+            return 1;
+        case 'V':
+        case OPT_VERSION:
+            printf("%s "VERSION"\n", progname(argv[0]));
+            return 0;
         }
         if (c == -1)
             break;
