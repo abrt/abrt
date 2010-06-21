@@ -35,18 +35,6 @@
 # define _(S) (S)
 #endif
 
-/* Program options */
-enum
-{
-    OPT_VERSION,
-    OPT_HELP,
-    OPT_GET_LIST,
-    OPT_GET_LIST_FULL,
-    OPT_REPORT,
-    OPT_REPORT_ALWAYS,
-    OPT_DELETE
-};
-
 /** Prints basic information about a crash to stdout. */
 static void print_crash(const map_crash_data_t &crash)
 {
@@ -133,16 +121,32 @@ static char *guess_crash_id(const char *str)
     return result;
 }
 
+/* Program options */
+enum
+{
+    OPT_GET_LIST,
+    OPT_REPORT,
+    OPT_DELETE
+};
+
+/**
+ * Long options.
+ * Do not use the has_arg field. Arguments are handled after parsing all options.
+ * The reason is that we want to use all the following combinations:
+ *   --report ID
+ *   --report ID --always
+ *   --report --always ID
+ */
 static const struct option longopts[] =
 {
     /* name, has_arg, flag, val */
-    { "help"         , no_argument      , NULL, OPT_HELP          },
-    { "version"      , no_argument      , NULL, OPT_VERSION       },
-    { "get-list"     , no_argument      , NULL, OPT_GET_LIST      },
-    { "get-list-full", no_argument      , NULL, OPT_GET_LIST_FULL },
-    { "report"       , required_argument, NULL, OPT_REPORT        },
-    { "report-always", required_argument, NULL, OPT_REPORT_ALWAYS },
-    { "delete"       , required_argument, NULL, OPT_DELETE        },
+    { "help"     , no_argument, NULL, '?' },
+    { "version"  , no_argument, NULL, 'V' },
+    { "get-list" , no_argument, NULL, 'l' },
+    { "full"     , no_argument, NULL, 'f' },
+    { "always"   , no_argument, NULL, 'y' },
+    { "report"   , no_argument, NULL, 'r' },
+    { "delete"   , no_argument, NULL, 'd' },
     { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
 };
 
@@ -155,7 +159,10 @@ static const char *progname(const char *argv0)
     return argv0;
 }
 
-/* Prints abrt-cli version and some help text. */
+/**
+ * Prints abrt-cli version and some help text.
+ * Then exits the program with return value 1.
+ */
 static void usage(char *argv0)
 {
     const char *name = progname(argv0);
@@ -167,23 +174,27 @@ static void usage(char *argv0)
         "	-V, --version		display the version of %s and exit\n"
         "	-?, --help		print this help\n\n"
         "Actions:\n"
-        "	--get-list		print list of crashes which are not reported yet\n"
-        "	--get-list-full		print list of all crashes\n"
-        "	--report CRASH_ID	create and send a report\n"
-        "	--report-always CRASH_ID create and send a report without asking\n"
-        "	--delete CRASH_ID	remove crash\n"
+        "	-l, --get-list		print list of crashes which are not reported yet\n"
+        "	      -f, --full	list all crashes, including already reported ones\n"
+        "	-r, --report CRASH_ID	create and send a report\n"
+        "	      -y, --always	create and send a report without asking\n"
+        "	-d, --delete CRASH_ID	remove crash\n"
         "CRASH_ID can be:\n"
         "	UID:UUID pair,\n"
         "	unique UUID prefix  - the crash with matching UUID will be acted upon\n"
         "	@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
         ),
         name, name);
+
+    exit(1);
 }
 
 int main(int argc, char** argv)
 {
     const char* crash_id = NULL;
     int op = -1;
+    bool full = false;
+    bool always = false;
 
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -194,37 +205,64 @@ int main(int argc, char** argv)
     while (1)
     {
         int option_index;
-        int c = getopt_long_only(argc, argv, "?V", longopts, &option_index);
+        /* Do not use colons, arguments are handled after parsing all options. */
+        int c = getopt_long_only(argc, argv, "?Vrdlfy",
+                                 longopts, &option_index);
+
+#define SET_OP(newop)                                                \
+        if (op != -1)                                                \
+        {                                                            \
+            error_msg(_("You must specify exactly one operation.")); \
+            return 1;                                                \
+        }                                                            \
+        op = newop;
+
         switch (c)
         {
-        case OPT_REPORT:
-        case OPT_REPORT_ALWAYS:
-        case OPT_DELETE:
-            crash_id = optarg;
-            /* fall through */
-        case OPT_GET_LIST:
-        case OPT_GET_LIST_FULL:
-            if (op == -1)
-                break;
-            error_msg(_("You must specify exactly one operation."));
-            return 1;
-        case -1: /* end of options */
-            if (op != -1) /* if some operation was specified... */
-                break;
-            /* fall through */
-        default:
+        case 'r': SET_OP(OPT_REPORT);   break;
+        case 'd': SET_OP(OPT_DELETE);   break;
+        case 'l': SET_OP(OPT_GET_LIST); break;
+        case 'f': full = true;          break;
+        case 'y': always = true;        break;
+        case -1: /* end of options */   break;
+        default: /* some error */
         case '?':
-        case OPT_HELP:
-            usage(argv[0]);
-            return 1;
+            usage(argv[0]); /* exits app */
         case 'V':
-        case OPT_VERSION:
             printf("%s "VERSION"\n", progname(argv[0]));
             return 0;
         }
+#undef SET_OP
         if (c == -1)
             break;
-        op = c;
+    }
+
+    /* Handle option arguments. */
+    int arg_count = argc - optind;
+    switch (arg_count)
+    {
+    case 0:
+        if (op == OPT_REPORT || op == OPT_DELETE)
+            usage(argv[0]);
+        break;
+    case 1:
+        if (op != OPT_REPORT && op != OPT_DELETE)
+            usage(argv[0]);
+        crash_id = argv[optind];
+        break;
+    default:
+        usage(argv[0]);
+    }
+
+    /* Check if we have an operation.
+     * Limit --full and --always to certain operations.
+     */
+    if ((full && op != OPT_GET_LIST) ||
+        (always && op != OPT_REPORT) ||
+        op == -1)
+    {
+        usage(argv[0]);
+        return 1;
     }
 
 #ifdef ENABLE_DBUS
@@ -237,27 +275,31 @@ int main(int argc, char** argv)
     ABRTDaemon.Connect(VAR_RUN"/abrt.socket");
 #endif
 
+    /* Do the selected operation. */
     int exitcode = 0;
     switch (op)
     {
         case OPT_GET_LIST:
-        case OPT_GET_LIST_FULL:
         {
             vector_map_crash_data_t ci = call_GetCrashInfos();
-            print_crash_list(ci, op == OPT_GET_LIST_FULL);
+            print_crash_list(ci, full);
             break;
         }
         case OPT_REPORT:
-        case OPT_REPORT_ALWAYS:
-            exitcode = report(crash_id, (op == OPT_REPORT_ALWAYS)*CLI_REPORT_BATCH + CLI_REPORT_SILENT_IF_NOT_FOUND);
+        {
+            int flags = CLI_REPORT_SILENT_IF_NOT_FOUND;
+            if (always)
+                flags |= CLI_REPORT_BATCH;
+            exitcode = report(crash_id, flags);
             if (exitcode == -1) /* no such crash_id */
             {
                 crash_id = guess_crash_id(crash_id);
-                exitcode = report(crash_id, (op == OPT_REPORT_ALWAYS) * CLI_REPORT_BATCH);
+                exitcode = report(crash_id, always ? CLI_REPORT_BATCH : 0);
                 if (exitcode == -1)
                     error_msg_and_die("Crash '%s' not found", crash_id);
             }
             break;
+        }
         case OPT_DELETE:
         {
             exitcode = call_DeleteDebugDump(crash_id);
@@ -266,14 +308,10 @@ int main(int argc, char** argv)
                 crash_id = guess_crash_id(crash_id);
                 exitcode = call_DeleteDebugDump(crash_id);
                 if (exitcode == ENOENT)
-                {
                     error_msg_and_die("Crash '%s' not found", crash_id);
-                }
             }
             if (exitcode != 0)
-            {
                 error_msg_and_die("Can't delete debug dump '%s'", crash_id);
-            }
             break;
         }
     }
