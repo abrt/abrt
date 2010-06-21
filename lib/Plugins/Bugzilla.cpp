@@ -44,6 +44,7 @@ struct bug_info {
     const char* bug_status;
     const char* bug_resolution;
     const char* bug_reporter;
+    const char* bug_product;
     xmlrpc_int32 bug_dup_id;
     std::vector<const char*> bug_cc;
 };
@@ -53,6 +54,7 @@ static void bug_info_init(struct bug_info* bz)
     bz->bug_status = NULL;
     bz->bug_resolution = NULL;
     bz->bug_reporter = NULL;
+    bz->bug_product = NULL;
     bz->bug_dup_id = -1;
 }
 
@@ -61,6 +63,7 @@ static void bug_info_destroy(struct bug_info* bz)
     free((void*)bz->bug_status);
     free((void*)bz->bug_resolution);
     free((void*)bz->bug_reporter);
+    free((void*)bz->bug_product);
 
     if (!bz->bug_cc.empty())
     {
@@ -105,8 +108,9 @@ struct ctx: public abrt_xmlrpc_conn {
     const char* get_bug_status(xmlrpc_value* result_xml);
     const char* get_bug_resolution(xmlrpc_value* result_xml);
     const char* get_bug_reporter(xmlrpc_value* result_xml);
+    const char* get_bug_product(xmlrpc_value* relult_xml);
 
-    xmlrpc_value* call_quicksearch_duphash(const char* component, const char* duphash);
+    xmlrpc_value* call_quicksearch_duphash(const char* component, const char* release, const char* duphash);
     xmlrpc_value* get_cc_member(xmlrpc_value* result_xml);
     xmlrpc_value* get_member(const char* member, xmlrpc_value* result_xml);
 
@@ -115,7 +119,7 @@ struct ctx: public abrt_xmlrpc_conn {
     xmlrpc_int32 get_bug_dup_id(xmlrpc_value* result_xml);
     void         get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz);
     int          add_plus_one_cc(xmlrpc_int32 bug_id, const char* login);
-    xmlrpc_int32 new_bug(const map_crash_data_t& pCrashData);
+    xmlrpc_int32 new_bug(const map_crash_data_t& pCrashData, int depend_on_bugno);
     int          add_attachments(const char* bug_id_str, const map_crash_data_t& pCrashData);
     int          get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id);
     int          add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private);
@@ -190,6 +194,28 @@ xmlrpc_int32 ctx::get_bug_dup_id(xmlrpc_value* result_xml)
 
     VERB3 log("got dup_id: %i", dup_id_int);
     return dup_id_int;
+}
+
+const char* ctx::get_bug_product(xmlrpc_value* result_xml)
+{
+    xmlrpc_value* product_member = get_member("product", result_xml);
+    if (!product_member) //should never happend. Each bug has to set up product
+        return NULL;
+
+    const char* product = NULL;
+    xmlrpc_read_string(&env, product_member, &product);
+    xmlrpc_DECREF(product_member);
+    if (env.fault_occurred)
+        return NULL;
+
+    if (*product != '\0')
+    {
+        VERB3 log("got bug product: %s", product);
+        return product;
+    }
+
+    free((void*)product);
+    return NULL;
 }
 
 const char* ctx::get_bug_reporter(xmlrpc_value* result_xml)
@@ -298,9 +324,24 @@ void ctx::get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz)
     return;
 }
 
-xmlrpc_value* ctx::call_quicksearch_duphash(const char* component, const char* duphash)
+xmlrpc_value* ctx::call_quicksearch_duphash(const char* component, const char* release, const char* duphash)
 {
-    char *query = xasprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, duphash);
+    char *query = NULL;
+    if (!release)
+        query = xasprintf("ALL component:\"%s\" statuswhiteboard:\"%s\"", component, duphash);
+    else
+    {
+        char *product = NULL;
+        char *version = NULL;
+        parse_release(release, &product, &version);
+        query = xasprintf("ALL component:\"%s\" statuswhiteboard:\"%s\" product:\"%s\"",
+                                                            component, duphash, product
+        );
+        free(product);
+        free(version);
+    }
+
+    VERB3 log("quicksearch for `%s'", query);
     xmlrpc_value *ret = call("Bug.search", "({s:s})", "quicksearch", query);
     free(query);
     return ret;
@@ -324,9 +365,7 @@ xmlrpc_int32 ctx::get_bug_id(xmlrpc_value* result_xml)
     if (env.fault_occurred)
         return -1;
 
-    log("Bug is already reported: %i", bug_id);
-    update_client(_("Bug is already reported: %i"), bug_id);
-
+    VERB3 log("got bug_id %d", (int)bug_id);
     return bug_id;
 }
 
@@ -348,7 +387,7 @@ int ctx::add_comment(xmlrpc_int32 bug_id, const char* comment, bool is_private)
     return result ? 0 : -1;
 }
 
-xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
+xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugno)
 {
     const std::string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
     const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
@@ -379,7 +418,23 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
     char *version = NULL;
     parse_release(release.c_str(), &product, &version);
 
-    xmlrpc_value* result = call("Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s})",
+    xmlrpc_value* result = NULL;
+    if (depend_on_bugno > 0)
+    {
+        result = call("Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:i})",
+                                "product", product,
+                                "component", component.c_str(),
+                                "version", version,
+                                "summary", summary.c_str(),
+                                "description", description.c_str(),
+                                "status_whiteboard", status_whiteboard.c_str(),
+                                "platform", arch.c_str(),
+                                "dependson", depend_on_bugno
+                              );
+    }
+    else
+    {
+        result = call("Bug.create", "({s:s,s:s,s:s,s:s,s:s,s:s,s:s,s:i})",
                                 "product", product,
                                 "component", component.c_str(),
                                 "version", version,
@@ -388,6 +443,8 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData)
                                 "status_whiteboard", status_whiteboard.c_str(),
                                 "platform", arch.c_str()
                               );
+
+    }
     free(product);
     free(version);
 
@@ -448,12 +505,14 @@ int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
 
     if (result)
     {
-        // mandatory
+        bz->bug_product = get_bug_product(result);
+        if (bz->bug_product == NULL)
+            return -1;
+
         bz->bug_status = get_bug_status(result);
         if (bz->bug_status == NULL)
             return -1;
 
-        // mandatory
         bz->bug_reporter = get_bug_reporter(result);
         if (bz->bug_reporter == NULL)
             return -1;
@@ -624,6 +683,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
 
     const std::string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
     const std::string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
+    const char *release          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
 
     ctx bz_server(BugzillaXMLRPC.c_str(), NoSSLVerify);
 
@@ -631,13 +691,12 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     bz_server.login(Login.c_str(), Password.c_str());
 
     update_client(_("Checking for duplicates..."));
-    xmlrpc_value* result = bz_server.call_quicksearch_duphash(component.c_str(), duphash.c_str());
-    if (!result)
-    {
-        throw_if_xml_fault_occurred(&bz_server.env);
-    }
 
-    xmlrpc_value* all_bugs = bz_server.get_member("bugs", result);
+    xmlrpc_value *result  = bz_server.call_quicksearch_duphash(component.c_str(), NULL, duphash.c_str());
+    if (!result)
+        throw_if_xml_fault_occurred(&bz_server.env);
+
+    xmlrpc_value *all_bugs = all_bugs = bz_server.get_member("bugs", result);
     xmlrpc_DECREF(result);
 
     if (!all_bugs)
@@ -646,7 +705,65 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
     }
 
-    int all_bugs_size = bz_server.get_array_size(all_bugs);
+    int all_bugs_size = all_bugs_size = bz_server.get_array_size(all_bugs);
+    bug_id = bz_server.get_bug_id(all_bugs);
+    xmlrpc_DECREF(all_bugs);
+    if (bug_id == -1)
+        throw_if_xml_fault_occurred(&bz_server.env);
+
+    struct bug_info bz;
+    bug_info_init(&bz);
+    if (bz_server.get_bug_info(&bz, bug_id) == -1)
+    {
+        bug_info_destroy(&bz);
+        throw_if_xml_fault_occurred(&bz_server.env);
+        throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+    }
+
+    int depend_on_bugno = -1;
+    char *product = NULL;
+    char *version = NULL;
+    parse_release(release, &product, &version);
+    if (strcmp(bz.bug_product, product) != 0)
+    {
+        depend_on_bugno = bug_id;
+        bug_info_destroy(&bz);
+        result = bz_server.call_quicksearch_duphash(component.c_str(), release, duphash.c_str());
+        if (!result)
+            throw_if_xml_fault_occurred(&bz_server.env);
+
+        all_bugs = bz_server.get_member("bugs", result);
+        xmlrpc_DECREF(result);
+
+        if (!all_bugs)
+        {
+            throw_if_xml_fault_occurred(&bz_server.env);
+            throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
+        }
+
+        all_bugs_size = bz_server.get_array_size(all_bugs);
+        if (all_bugs_size > 0)
+        {
+            bug_id = bz_server.get_bug_id(all_bugs);
+            xmlrpc_DECREF(all_bugs);
+            if (bug_id == -1)
+                throw_if_xml_fault_occurred(&bz_server.env);
+
+            bug_info_init(&bz);
+            if (bz_server.get_bug_info(&bz, bug_id) == -1)
+            {
+                bug_info_destroy(&bz);
+                throw_if_xml_fault_occurred(&bz_server.env);
+                throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
+            }
+        }
+        else
+            xmlrpc_DECREF(all_bugs);
+    }
+
+    free(product);
+    free(version);
+
     if (all_bugs_size < 0)
     {
         throw_if_xml_fault_occurred(&bz_server.env);
@@ -654,7 +771,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     else if (all_bugs_size == 0) // Create new bug
     {
         update_client(_("Creating new bug..."));
-        bug_id = bz_server.new_bug(pCrashData);
+        bug_id = bz_server.new_bug(pCrashData, depend_on_bugno);
         if (bug_id < 0)
         {
             throw_if_xml_fault_occurred(&bz_server.env);
@@ -685,21 +802,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     }
 
     // decision based on state
-    bug_id = bz_server.get_bug_id(all_bugs);
-    xmlrpc_DECREF(all_bugs);
-    if (bug_id == -1)
-    {
-        throw_if_xml_fault_occurred(&bz_server.env);
-    }
-
-    struct bug_info bz;
-    bug_info_init(&bz);
-    if (bz_server.get_bug_info(&bz, bug_id) == -1)
-    {
-        bug_info_destroy(&bz);
-        throw_if_xml_fault_occurred(&bz_server.env);
-        throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
-    }
+    update_client(_("Bug is already reported: %i"), bug_id);
 
     xmlrpc_int32 original_bug_id = bug_id;
     if ((strcmp(bz.bug_status, "CLOSED") == 0) && (strcmp(bz.bug_resolution, "DUPLICATE") == 0))
