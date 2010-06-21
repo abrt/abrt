@@ -162,7 +162,9 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
     string conf_fullname = ssprintf(PLUGINS_CONF_DIR"/%s."PLUGINS_CONF_EXTENSION, conf_name);
     LoadPluginSettings(conf_fullname.c_str(), pluginSettings);
     m_map_plugin_settings[pName] = pluginSettings;
-    VERB3 log("Loaded %s.conf", conf_name);
+    /* If settings are empty, most likely .conf file does not exist.
+     * Don't mislead the user: */
+    VERB3 if (!pluginSettings.empty()) log("Loaded %s.conf", conf_name);
 
     if (enabled_only)
     {
