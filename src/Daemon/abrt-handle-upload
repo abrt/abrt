@@ -9,10 +9,10 @@
 
 print_clean_and_die()
 {
-	printf "%s\n" "$*"
-	#echo delete_on_exit="$delete_on_exit"
-        test "$delete_on_exit" && rm -rf -- $delete_on_exit
-	exit $die_exitcode
+    printf "%s\n" "$*"
+    #echo delete_on_exit="$delete_on_exit"
+    test "$delete_on_exit" && rm -rf -- $delete_on_exit
+    exit $die_exitcode
 }
 
 die_exitcode=1
@@ -57,13 +57,13 @@ $unpacker <"$archive.working" | tar xf - -C "$tempdir" || print_clean_and_die "C
 # or one or more complete crashdump directories.
 # Checking second possibility first.
 if test -f "$tempdir/analyzer" && test -f "$tempdir/time" && test -f "$tempdir/uid"; then
-    echo 1 >"$tempdir/remote"
+    printf "1" >"$tempdir/remote"
     mv -- "$tempdir" "$abrt_dir"
 else
     for d in "$tempdir"/*; do
-	test -d "$d" || continue
-	echo 1 >"$tempdir/$d/remote"
-	mv -- "$d" "$abrt_dir"
+        test -d "$d" || continue
+        printf "1" >"$tempdir/$d/remote"
+        mv -- "$d" "$abrt_dir"
     done
 fi
 

@@ -434,7 +434,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 {
     /* Default size: 128 simultaneous actions (about 1/2 meg) */
 #define INOTIFY_BUF_SIZE ((sizeof(struct inotify_event) + FILENAME_MAX)*128)
-    /* Determine how much to read (it usualiiy is much smaller) */
+    /* Determine how much to read (it usually is much smaller) */
     /* NB: this variable _must_ be int-sized, ioctl expects that! */
     int inotify_bytes = INOTIFY_BUF_SIZE;
     if (ioctl(g_io_channel_unix_get_fd(gio), FIONREAD, &inotify_bytes) != 0
