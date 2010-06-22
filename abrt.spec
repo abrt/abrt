@@ -315,6 +315,7 @@ fi
 %doc README COPYING
 %{_sbindir}/%{name}d
 %{_bindir}/%{name}-debuginfo-install
+%{_bindir}/%{name}-handle-upload
 %{_bindir}/%{name}-backtrace
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys

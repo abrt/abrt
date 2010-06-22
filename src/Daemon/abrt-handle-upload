@@ -1,0 +1,71 @@
+#!/bin/sh
+# Called by abrtd when a new file is noticed in upload directory.
+# The task of this script is to unpack the file and move
+# crashdump(s) found in it to abrt's crashdump directory.
+#
+# Usage: abrt-handle-upload ABRT_DIR UPLOAD_DIR FILENAME
+
+#echo "Started: $0 $*"
+
+print_clean_and_die()
+{
+	printf "%s\n" "$*"
+	#echo delete_on_exit="$delete_on_exit"
+        test "$delete_on_exit" && rm -rf -- $delete_on_exit
+	exit $die_exitcode
+}
+
+die_exitcode=1
+delete_on_exit=""
+
+abrt_dir="$1"
+upload_dir="$2"
+archive="$3"
+
+test -d "$abrt_dir" || print_clean_and_die "Not a directory: '$abrt_dir'"
+test -d "$upload_dir" || print_clean_and_die "Not a directory: '$upload_dir'"
+test x"${archive%.working}" != x"$archive" && print_clean_and_die "Skipping: '$archive'"
+test x"${archive#/}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (starts with slash)"
+test x"${archive#.}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (starts with dot)"
+test x"${archive#*..}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (contains ..)"
+test x"${archive#* }" != x"$archive" && print_clean_and_die "Skipping: '$archive' (contains space)"
+# Note: next line has a tab!
+test x"${archive#*	}" != x"$archive" && print_clean_and_die "Skipping: '$archive' (contains tab)"
+
+cd -- "$upload_dir" || print_clean_and_die "Can't chdir to '$upload_dir'"
+
+unpacker=""
+test x"${archive%.tar.gz}" != x"$archive" && unpacker="gunzip"
+test x"${archive%.tar.bz2}" != x"$archive" && unpacker="bunzip2"
+test x"${archive%.tar.xz}" != x"$archive" && unpacker="unxz"
+
+test "$unpacker" || print_clean_and_die "Unknown file type: '$archive'"
+
+tempdir="remote.`date +%Y-%m-%d-%H:%M:%S.%N`.$$"
+
+mv -- "$archive" "$archive.working" || print_clean_and_die "Can't lock '$archive'"
+
+delete_on_exit="$archive.working"
+$unpacker -t -- "$archive.working" || print_clean_and_die "Verification error on '$archive'"
+
+echo "Unpacking '$archive'"
+mkdir "$tempdir" || print_clean_and_die "Can't create '$tempdir' directory"
+delete_on_exit="$archive.working $tempdir"
+$unpacker <"$archive.working" | tar xf - -C "$tempdir" || print_clean_and_die "Can't unpack '$archive'"
+
+# The archive can contain either plain dump files
+# or one or more complete crashdump directories.
+# Checking second possibility first.
+if test -f "$tempdir/analyzer" && test -f "$tempdir/time" && test -f "$tempdir/uid"; then
+    echo 1 >"$tempdir/remote"
+    mv -- "$tempdir" "$abrt_dir"
+else
+    for d in "$tempdir"/*; do
+	test -d "$d" || continue
+	echo 1 >"$tempdir/$d/remote"
+	mv -- "$d" "$abrt_dir"
+    done
+fi
+
+die_exitcode=0
+print_clean_and_die "'$archive' processed successfully"

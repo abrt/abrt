@@ -21,6 +21,7 @@
 #include <resolv.h> /* res_init */
 #include <string>
 #include <sys/inotify.h>
+#include <sys/ioctl.h> /* ioctl(FIONREAD) */
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 #include <glib.h>
@@ -111,6 +112,7 @@ typedef struct cron_callback_data_t
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
+static int s_upload_watch = -1;
 static unsigned s_timeout;
 static bool s_exiting;
 
@@ -430,41 +432,76 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
 /* Inotify handler */
 static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpointer ptr_unused)
 {
-    /* 128 simultaneous actions */
-//TODO: use ioctl(FIONREAD) to determine how much to read
-#define INOTIFY_BUFF_SIZE ((sizeof(struct inotify_event) + FILENAME_MAX)*128)
-    char *buf = (char*)xmalloc(INOTIFY_BUFF_SIZE);
-    gsize len;
-    gsize i = 0;
+    /* Default size: 128 simultaneous actions (about 1/2 meg) */
+#define INOTIFY_BUF_SIZE ((sizeof(struct inotify_event) + FILENAME_MAX)*128)
+    /* Determine how much to read (it usualiiy is much smaller) */
+    /* NB: this variable _must_ be int-sized, ioctl expects that! */
+    int inotify_bytes = INOTIFY_BUF_SIZE;
+    if (ioctl(g_io_channel_unix_get_fd(gio), FIONREAD, &inotify_bytes) != 0
+     || inotify_bytes < sizeof(struct inotify_event)
+     || inotify_bytes > INOTIFY_BUF_SIZE
+    ) {
+        inotify_bytes = INOTIFY_BUF_SIZE;
+    }
+    VERB3 log("FIONREAD:%d", inotify_bytes);
+
+    char *buf = (char*)xmalloc(inotify_bytes);
     errno = 0;
-    GIOError err = g_io_channel_read(gio, buf, INOTIFY_BUFF_SIZE, &len);
+    gsize len;
+    GIOError err = g_io_channel_read(gio, buf, inotify_bytes, &len);
     if (err != G_IO_ERROR_NONE)
     {
         perror_msg("Error reading inotify fd");
         free(buf);
         return FALSE;
     }
-    /* reconstruct each event and send message to the dbus */
+
+    /* Reconstruct each event and send message to the dbus */
+    gsize i = 0;
     while (i < len)
     {
+        struct inotify_event *event = (struct inotify_event *) &buf[i];
         const char *name = NULL;
-        struct inotify_event *event;
-
-        event = (struct inotify_event *) &buf[i];
         if (event->len)
-            name = &buf[i] + sizeof (*event);
-        i += sizeof (*event) + event->len;
+            name = event->name;
+        //log("i:%d len:%d event->mask:%x IN_ISDIR:%x IN_CLOSE_WRITE:%x event->len:%d",
+        //    i, len, event->mask, IN_ISDIR, IN_CLOSE_WRITE, event->len);
+        i += sizeof(*event) + event->len;
 
-        /* ignore lock files and such */
-        if (!(event->mask & IN_ISDIR))
+        if (event->wd == s_upload_watch)
         {
+            /* Was the (presumable newly created) file closed in upload dir,
+             * or a file moved to upload dir? */
+            if (!(event->mask & IN_ISDIR)
+             && event->mask & (IN_CLOSE_WRITE|IN_MOVED_TO)
+             && name
+            ) {
+                const char *ext = strrchr(name, '.');
+                if (ext && strcmp(ext + 1, "working") == 0)
+                    continue;
+
+                const char *dir = g_settings_sWatchCrashdumpArchiveDir.c_str();
+                log("Detected creation of file '%s' in upload directory '%s'", name, dir);
+                if (fork() == 0)
+                {
+                    xchdir(dir);
+                    execlp("abrt-handle-upload", "abrt-handle-upload", DEBUG_DUMPS_DIR, dir, name, (char*)NULL);
+                    error_msg_and_die("Can't execute '%s'", "abrt-handle-upload");
+                }
+            }
+            continue;
+        }
+
+        if (!(event->mask & IN_ISDIR) || !name)
+        {
+            /* ignore lock files and such */
             // Happens all the time during normal run
             //VERB3 log("File '%s' creation detected, ignoring", name);
             continue;
         }
         if (strcmp(strchrnul(name, '.'), ".new") == 0)
         {
-            VERB3 log("Directory '%s' creation detected, ignoring", name);
+            //VERB3 log("Directory '%s' creation detected, ignoring", name);
             continue;
         }
         log("Directory '%s' creation detected", name);
@@ -797,6 +834,9 @@ int main(int argc, char** argv)
     {
         init_daemon_logging(&watcher);
 
+        VERB1 log("Loading settings");
+        LoadSettings();
+
         VERB1 log("Initializing XML-RPC library");
         xmlrpc_env env;
         xmlrpc_env_init(&env);
@@ -815,26 +855,28 @@ int main(int argc, char** argv)
         if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
         close_on_exec_on(inotify_fd);
-        if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) == -1)
+        if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
+        if (!g_settings_sWatchCrashdumpArchiveDir.empty())
+        {
+            s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir.c_str(), IN_CLOSE_WRITE|IN_MOVED_TO);
+            if (s_upload_watch < 0)
+                perror_msg_and_die("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir.c_str());
+        }
+        VERB1 log("Adding inotify watch to glib main loop");
+        pGiochannel_inotify = g_io_channel_unix_new(inotify_fd);
+        g_io_add_watch(pGiochannel_inotify, G_IO_IN, handle_inotify_cb, NULL);
 
         VERB1 log("Loading plugins from "PLUGINS_LIB_DIR);
         g_pPluginManager = new CPluginManager();
         g_pPluginManager->LoadPlugins();
-
-        VERB1 log("Loading settings");
-        LoadSettings();
 
         if (SetUpMW() != 0) /* logging is inside */
             throw 1;
         if (SetUpCron() != 0)
             throw 1;
 
-        VERB1 log("Adding inotify watch to glib main loop");
-        pGiochannel_inotify = g_io_channel_unix_new(inotify_fd);
-        g_io_add_watch(pGiochannel_inotify, G_IO_IN, handle_inotify_cb, NULL);
         /* Add an event source which waits for INT/TERM signal */
-
         VERB1 log("Adding signal pipe watch to glib main loop");
         pGiochannel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
         g_io_add_watch(pGiochannel_signal, G_IO_IN, handle_signal_cb, NULL);
