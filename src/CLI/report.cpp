@@ -1,5 +1,5 @@
 /*
-    Copyright (C) 2009  RedHat inc.
+    Copyright (C) 2009, 2010  Red Hat, Inc.
 
     This program is free software; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -299,6 +299,19 @@ static int read_crash_report(map_crash_data_t &report, const char *text)
   result |= read_crash_report_field(text, report, FILENAME_REASON);
   result |= read_crash_report_field(text, report, FILENAME_RELEASE);
   return result;
+}
+
+/**
+ * Ensures that the fields needed for editor are present in the crash data.
+ * Fields: comments, how to reproduce.
+ */
+static void create_fields_for_editor(map_crash_data_t &crash_data)
+{
+    if (crash_data.find(FILENAME_COMMENT) == crash_data.end())
+        add_to_crash_data_ext(crash_data, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, "");
+
+    if (crash_data.find(FILENAME_REPRODUCE) == crash_data.end())
+        add_to_crash_data_ext(crash_data, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, "1. \n2. \n3. \n");
 }
 
 /**
@@ -663,6 +676,7 @@ int report(const char *crash_id, int flags)
   /* Open text editor and give a chance to review the backtrace etc. */
   if (!(flags & CLI_REPORT_BATCH))
   {
+    create_fields_for_editor(cr);
     int result = run_report_editor(cr);
     if (result != 0)
       return result;
