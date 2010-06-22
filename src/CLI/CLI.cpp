@@ -140,13 +140,13 @@ enum
 static const struct option longopts[] =
 {
     /* name, has_arg, flag, val */
-    { "help"     , no_argument, NULL, '?' },
-    { "version"  , no_argument, NULL, 'V' },
-    { "get-list" , no_argument, NULL, 'l' },
-    { "full"     , no_argument, NULL, 'f' },
-    { "always"   , no_argument, NULL, 'y' },
-    { "report"   , no_argument, NULL, 'r' },
-    { "delete"   , no_argument, NULL, 'd' },
+    { "help"   , no_argument, NULL, '?' },
+    { "version", no_argument, NULL, 'V' },
+    { "list"   , no_argument, NULL, 'l' },
+    { "full"   , no_argument, NULL, 'f' },
+    { "always" , no_argument, NULL, 'y' },
+    { "report" , no_argument, NULL, 'r' },
+    { "delete" , no_argument, NULL, 'd' },
     { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
 };
 
@@ -174,7 +174,7 @@ static void usage(char *argv0)
         "	-V, --version		display the version of %s and exit\n"
         "	-?, --help		print this help\n\n"
         "Actions:\n"
-        "	-l, --get-list		print list of crashes which are not reported yet\n"
+        "	-l, --list		print list of crashes which are not reported yet\n"
         "	      -f, --full	list all crashes, including already reported ones\n"
         "	-r, --report CRASH_ID	create and send a report\n"
         "	      -y, --always	create and send a report without asking\n"
@@ -182,7 +182,7 @@ static void usage(char *argv0)
         "CRASH_ID can be:\n"
         "	UID:UUID pair,\n"
         "	unique UUID prefix  - the crash with matching UUID will be acted upon\n"
-        "	@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
+        "	@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
         ),
         name, name);
 
