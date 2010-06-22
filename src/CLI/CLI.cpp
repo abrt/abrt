@@ -265,15 +265,10 @@ int main(int argc, char** argv)
         return 1;
     }
 
-#ifdef ENABLE_DBUS
     DBusError err;
     dbus_error_init(&err);
     s_dbus_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
     handle_dbus_err(s_dbus_conn == NULL, &err);
-#elif ENABLE_SOCKET
-    CABRTSocket ABRTDaemon;
-    ABRTDaemon.Connect(VAR_RUN"/abrt.socket");
-#endif
 
     /* Do the selected operation. */
     int exitcode = 0;
@@ -315,10 +310,6 @@ int main(int argc, char** argv)
             break;
         }
     }
-
-#if ENABLE_SOCKET
-    ABRTDaemon.Disconnect();
-#endif
 
     return exitcode;
 }
