@@ -49,6 +49,9 @@
 #define FILENAME_REPRODUCE    "reproduce"
 #define FILENAME_RATING       "rating"
 #define FILENAME_HOSTNAME     "hostname"
+// Optional. Set to "1" by abrt-handle-upload for every unpacked crashdump
+#define FILENAME_REMOTE       "remote"
+// TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
 
 // Apart from CD_UID, which is also stored as a file in dump directory,
 // these items only exist in db. (CD_UID is also a file because

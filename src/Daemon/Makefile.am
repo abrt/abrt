@@ -1,4 +1,4 @@
-bin_SCRIPTS = abrt-debuginfo-install
+bin_SCRIPTS = abrt-debuginfo-install abrt-handle-upload
 
 sbin_PROGRAMS = abrtd
 
@@ -52,7 +52,7 @@ dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 
 man_MANS = abrtd.8 abrt.conf.5
 
-EXTRA_DIST = $(man_MANS) abrt-debuginfo-install
+EXTRA_DIST = $(man_MANS) abrt-debuginfo-install abrt-handle-upload
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
