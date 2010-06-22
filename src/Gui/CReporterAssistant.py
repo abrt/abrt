@@ -481,9 +481,13 @@ class ReporterAssistant():
             # so don't overwrite it if it's set
             if not reporters:
                 reporters = AnalyzerActionsAndReporters[self.report.getAnalyzerName()]
+            # FIXME: split(',') doesn't work for RunApp("date", "date.txt")
+            # but since we don't have reporters with parameters, it will find
+            # the reporter plugins anyway, but it should be more clever...
             for reporter_name in reporters.split(','):
                 reporter = pluginlist.getReporterByName(reporter_name)
                 if reporter:
+                    log1("Adding >>%s<< to reporters", reporter)
                     self.reporters.append(reporter)
         except KeyError:
             # Analyzer has no associated reporters.

@@ -26,7 +26,7 @@ class PluginInfoList(list):
 
     def getReporterByName(self, name):
         try:
-            return [x for x in self if x["Name"] == name][0]
+            return [x for x in self if x["Name"] == name and x.Type == "Reporter" ][0]
         except:
             # if such reporter doesnt't exist return None
             return None
