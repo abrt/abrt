@@ -136,12 +136,17 @@ class Dump():
     def get_backtrace(self):
         try:
             return self.backtrace
-        except KeyError:
+        except AttributeError:
             return None
 
     def get_rating(self):
         try:
             return self.rating
-        except KeyError:
+        except AttributeError:
             return None
 
+    def get_hostname(self):
+        try:
+            return self.hostname
+        except AttributeError:
+            return None

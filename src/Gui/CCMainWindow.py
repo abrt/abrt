@@ -53,10 +53,11 @@ class MainWindow():
         STATUS_COL      = 0
         APP_NAME_COL    = 1
         TIME_STR_COL    = 2
-        UNIX_TIME_COL   = 3
-        DUMP_OBJECT_COL = 4
-        #is_reported, application_name, date, time_in_sec ?object?
-        self.dumpsListStore = gtk.ListStore(str, str, str, int, object)
+        HOSTNAME_COL    = 3
+        UNIX_TIME_COL   = 4
+        DUMP_OBJECT_COL = 5
+        #is_reported, application_name, hostname, date, time_in_sec ?object?
+        self.dumpsListStore = gtk.ListStore(str, str, str, str, int, object)
         self.dlist.set_model(self.dumpsListStore)
         # add pixbuff separatelly
         icon_column = gtk.TreeViewColumn(_("Reported"))
@@ -69,6 +70,8 @@ class MainWindow():
         columns = []
         columns.append(gtk.TreeViewColumn(_("Application")))
         columns[-1].set_sort_column_id(APP_NAME_COL)
+        columns.append(gtk.TreeViewColumn(_("Hostname")))
+        columns[-1].set_sort_column_id(HOSTNAME_COL)
         columns.append(gtk.TreeViewColumn(_("Latest Crash")))
         columns[-1].set_sort_column_id(UNIX_TIME_COL)
         # add cells to colums and bind cells to the liststore values
@@ -183,6 +186,7 @@ class MainWindow():
         for entry in dumplist[::-1]:
             n = self.dumpsListStore.append([["gtk-no","gtk-yes"][entry.isReported()],
                                             entry.getExecutable(),
+                                            entry.get_hostname(),
                                             entry.getTime("%c"),
                                             entry.getTime(),
                                             entry])
