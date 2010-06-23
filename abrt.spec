@@ -324,6 +324,7 @@ fi
 # /var/cache/%{name} is to be removed in 1.3.x timeframe
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/spool/%{name}
+%dir %attr(0700, abrt, abrt) %{_localstatedir}/spool/%{name}-upload
 %dir /var/run/%{name}
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
