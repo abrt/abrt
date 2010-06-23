@@ -696,7 +696,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     if (!result)
         throw_if_xml_fault_occurred(&bz_server.env);
 
-    xmlrpc_value *all_bugs = bz_server.get_member("bugs", result);
+    xmlrpc_value *all_bugs = all_bugs = bz_server.get_member("bugs", result);
     xmlrpc_DECREF(result);
 
     if (!all_bugs)
@@ -705,7 +705,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
     }
 
-    int all_bugs_size = bz_server.get_array_size(all_bugs);
+    int all_bugs_size = all_bugs_size = bz_server.get_array_size(all_bugs);
     bug_id = bz_server.get_bug_id(all_bugs);
     xmlrpc_DECREF(all_bugs);
     if (bug_id == -1)
