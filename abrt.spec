@@ -260,6 +260,7 @@ mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
 mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}-di
 mkdir -p $RPM_BUILD_ROOT/var/run/%{name}
 mkdir -p $RPM_BUILD_ROOT/var/spool/%{name}
+mkdir -p $RPM_BUILD_ROOT/var/spool/%{name}-upload
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
