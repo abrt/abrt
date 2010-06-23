@@ -74,6 +74,7 @@ static const char *const blacklisted_items[] = {
     FILENAME_COREDUMP ,
     FILENAME_DESCRIPTION, /* package description - basically useless */
     FILENAME_HOSTNAME ,
+    FILENAME_GLOBAL_UUID,
     CD_UUID           ,
     CD_INFORMALL      ,
     CD_DUPHASH        ,
