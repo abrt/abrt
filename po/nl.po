@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-16 16:59+0000\n"
-"PO-Revision-Date: 2010-06-17 11:48+0200\n"
+"POT-Creation-Date: 2010-06-24 08:33+0000\n"
+"PO-Revision-Date: 2010-06-24 15:00+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -107,7 +107,7 @@ msgstr "Een ondertekening aanmaken..."
 msgid "Creating a new case..."
 msgstr "Een nieuwe zaak aanmaken..."
 
-#: ../lib/Utils/make_descr.cpp:296
+#: ../lib/Utils/make_descr.cpp:297
 #, c-format
 msgid "Binary file %s will not be reported"
 msgstr "Binair bestand %s zal niet gerapporteerd worden"
@@ -445,19 +445,23 @@ msgid "translator-credits"
 msgstr "vertaling verdienste"
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:62
+#: ../src/Gui/CCMainWindow.py:63
 msgid "Reported"
 msgstr "Gerapporteerd"
 
-#: ../src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Application"
 msgstr "Toepassing"
 
-#: ../src/Gui/CCMainWindow.py:72
+#: ../src/Gui/CCMainWindow.py:73
+msgid "Hostname"
+msgstr "Host naam"
+
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "Laatste crash"
 
-#: ../src/Gui/CCMainWindow.py:140
+#: ../src/Gui/CCMainWindow.py:143
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -466,7 +470,7 @@ msgstr ""
 "Kan de instellingen dialoog niet tonen\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:145
+#: ../src/Gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -476,7 +480,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:180
+#: ../src/Gui/CCMainWindow.py:183
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -485,7 +489,7 @@ msgstr ""
 "Fout tijdens het laden van de dump lijst.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:237
+#: ../src/Gui/CCMainWindow.py:241
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -494,11 +498,11 @@ msgstr ""
 "<b>%s crash</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:337
 msgid "You have to select a crash to copy."
 msgstr "Je moet een crash selecteren om te kopiëren."
 
-#: ../src/Gui/CCMainWindow.py:418
+#: ../src/Gui/CCMainWindow.py:422
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -508,7 +512,7 @@ msgstr ""
 "\t-v[vv]\t\t\tBreedsprakig\n"
 "\t--report=CRASH_ID\tRapporteer crash direct met CRASH_ID"
 
-#: ../src/Gui/CCMainWindow.py:441
+#: ../src/Gui/CCMainWindow.py:445
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -584,7 +588,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Configureer %s opties"
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:829
+#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:833
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -602,7 +606,7 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:861
+#: ../src/Gui/CReporterAssistant.py:865
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -684,8 +688,8 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "Geen UI voor de plug-in <b>%s</b>, dit is waarschijnlijk een bug.\n"
-"Rapporteer dit a.u.b. op <a href=\"https://fedorahosted.org/abrt/newticket\">h"
-"ttps://fedorahosted.org/abrt/newticket</a>"
+"Rapporteer dit a.u.b. op <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
 msgid "combo box is not implemented"
@@ -703,7 +707,7 @@ msgstr " "
 msgid "<b>Attachments</b>"
 msgstr "<b>Bijlagen</b>"
 
-#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:733
+#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:737
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
@@ -950,11 +954,11 @@ msgstr ""
 "Selecteer waar je deze bug wil rapporteren, en druk op 'Vooruit' om verder "
 "te gaan."
 
-#: ../src/Gui/CReporterAssistant.py:500
+#: ../src/Gui/CReporterAssistant.py:504
 msgid "Send a bug report"
 msgstr "Verstuur een bug rapport"
 
-#: ../src/Gui/CReporterAssistant.py:538
+#: ../src/Gui/CReporterAssistant.py:542
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -971,111 +975,111 @@ msgstr ""
 "van te zijn dat jouw bug rapport geen gevoelige data bevat die je liever "
 "niet wilt delen:"
 
-#: ../src/Gui/CReporterAssistant.py:579
+#: ../src/Gui/CReporterAssistant.py:583
 msgid "Refresh"
 msgstr "Verversen"
 
-#: ../src/Gui/CReporterAssistant.py:581
+#: ../src/Gui/CReporterAssistant.py:585
 msgid "Copy"
 msgstr "Kopiëren"
 
-#: ../src/Gui/CReporterAssistant.py:587
+#: ../src/Gui/CReporterAssistant.py:591
 msgid "I agree with submitting the backtrace"
 msgstr "Ik stem in met het versturen van de backtrace"
 
-#: ../src/Gui/CReporterAssistant.py:592
+#: ../src/Gui/CReporterAssistant.py:596
 msgid "Approve backtrace"
 msgstr "De backtrace goedkeuren"
 
-#: ../src/Gui/CReporterAssistant.py:615
+#: ../src/Gui/CReporterAssistant.py:619
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr "Hoe ontstaat deze crash, stap-voor-stap? Hoe kun je het reproduceren?"
 
-#: ../src/Gui/CReporterAssistant.py:633
+#: ../src/Gui/CReporterAssistant.py:637
 msgid ""
 "Are there any comments you'd like to share with the software maintainers?"
 msgstr "Heb je commentaar die je wilt delen met de software onderhouders?"
 
-#: ../src/Gui/CReporterAssistant.py:652
+#: ../src/Gui/CReporterAssistant.py:656
 msgid "Provide additional details"
 msgstr "Bied extra details"
 
-#: ../src/Gui/CReporterAssistant.py:659
+#: ../src/Gui/CReporterAssistant.py:663
 msgid ""
 "<b>Tip:</b> Your comments are not private.  Please monitor what you say "
 "accordingly."
 msgstr "<b>Tip:</b> Jouw commentaar is niet privé. Let dus op wat je zegt"
 
-#: ../src/Gui/CReporterAssistant.py:700
+#: ../src/Gui/CReporterAssistant.py:704
 msgid "Confirm and send report"
 msgstr "Bevestig en verstuur het rapport"
 
-#: ../src/Gui/CReporterAssistant.py:702
+#: ../src/Gui/CReporterAssistant.py:706
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Hieronder is een samenvatting van jouw bug rapport. Klik op 'Toepassen' om "
 "het te versturen."
 
-#: ../src/Gui/CReporterAssistant.py:707
+#: ../src/Gui/CReporterAssistant.py:711
 msgid "<b>Basic details</b>"
 msgstr "<b>Bais details</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:714
+#: ../src/Gui/CReporterAssistant.py:718
 msgid "Component"
 msgstr "Onderdeel"
 
-#: ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:719
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/Gui/CReporterAssistant.py:716
+#: ../src/Gui/CReporterAssistant.py:720
 msgid "Executable"
 msgstr "Uitvoerbaar programma"
 
-#: ../src/Gui/CReporterAssistant.py:717
+#: ../src/Gui/CReporterAssistant.py:721
 msgid "Cmdline"
 msgstr "Commando-regel"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:719
+#: ../src/Gui/CReporterAssistant.py:723
 msgid "Architecture"
 msgstr "Architectuur"
 
-#: ../src/Gui/CReporterAssistant.py:720
+#: ../src/Gui/CReporterAssistant.py:724
 msgid "Kernel"
 msgstr "Kernel"
 
-#: ../src/Gui/CReporterAssistant.py:721
+#: ../src/Gui/CReporterAssistant.py:725
 msgid "Release"
 msgstr "Vrijgave"
 
-#: ../src/Gui/CReporterAssistant.py:722
+#: ../src/Gui/CReporterAssistant.py:726
 msgid "Reason"
 msgstr "Reden"
 
-#: ../src/Gui/CReporterAssistant.py:736
+#: ../src/Gui/CReporterAssistant.py:740
 msgid "Click to view ..."
 msgstr "Klik om te bekijken ..."
 
-#: ../src/Gui/CReporterAssistant.py:748
+#: ../src/Gui/CReporterAssistant.py:752
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Stappen om te reproduceren:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:769
+#: ../src/Gui/CReporterAssistant.py:773
 msgid "<b>Comments:</b>"
 msgstr "<b>Commentaar:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:772
+#: ../src/Gui/CReporterAssistant.py:776
 msgid "No comment provided!"
 msgstr "Geen commentaar gegeven!"
 
-#: ../src/Gui/CReporterAssistant.py:808
+#: ../src/Gui/CReporterAssistant.py:812
 msgid "Finished sending the bug report"
 msgstr "Het versturen van het bug rapport is klaar"
 
-#: ../src/Gui/CReporterAssistant.py:812
+#: ../src/Gui/CReporterAssistant.py:816
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Bug rapporten:</b>"
 
@@ -1126,7 +1130,7 @@ msgstr ""
 msgid "Hide"
 msgstr "Verbergen"
 
-#: ../src/Daemon/Daemon.cpp:478
+#: ../src/Daemon/Daemon.cpp:515
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
