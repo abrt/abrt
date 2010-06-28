@@ -682,6 +682,8 @@ static void run_main_loop(GMainLoop* loop)
         if (some_ready)
             g_main_context_dispatch(context);
     }
+
+    g_main_context_unref(context);
 }
 
 static void start_syslog_logging()
@@ -823,8 +825,10 @@ int main(int argc, char** argv)
     }
 
     GMainLoop* pMainloop = NULL;
-    GIOChannel* pGiochannel_inotify = NULL;
-    GIOChannel* pGiochannel_signal = NULL;
+    GIOChannel* channel_inotify = NULL;
+    guint channel_inotify_event_id = 0;
+    GIOChannel* channel_signal = NULL;
+    guint channel_signal_event_id = 0;
     bool lockfile_created = false;
     bool pidfile_created = false;
     CCrashWatcher watcher;
@@ -864,8 +868,11 @@ int main(int argc, char** argv)
                 perror_msg_and_die("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir.c_str());
         }
         VERB1 log("Adding inotify watch to glib main loop");
-        pGiochannel_inotify = g_io_channel_unix_new(inotify_fd);
-        g_io_add_watch(pGiochannel_inotify, G_IO_IN, handle_inotify_cb, NULL);
+        channel_inotify = g_io_channel_unix_new(inotify_fd);
+        channel_inotify_event_id = g_io_add_watch(channel_inotify,
+                                                  G_IO_IN,
+                                                  handle_inotify_cb,
+                                                  NULL);
 
         VERB1 log("Loading plugins from "PLUGINS_LIB_DIR);
         g_pPluginManager = new CPluginManager();
@@ -878,8 +885,11 @@ int main(int argc, char** argv)
 
         /* Add an event source which waits for INT/TERM signal */
         VERB1 log("Adding signal pipe watch to glib main loop");
-        pGiochannel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
-        g_io_add_watch(pGiochannel_signal, G_IO_IN, handle_signal_cb, NULL);
+        channel_signal = g_io_channel_unix_new(s_signal_pipe[0]);
+        channel_signal_event_id = g_io_add_watch(channel_signal,
+                                                 G_IO_IN,
+                                                 handle_signal_cb,
+                                                 NULL);
 
         /* Mark the territory */
         VERB1 log("Creating lock file");
@@ -951,10 +961,14 @@ int main(int argc, char** argv)
     if (lockfile_created)
         unlink(VAR_RUN_LOCK_FILE);
 
-    if (pGiochannel_signal)
-        g_io_channel_unref(pGiochannel_signal);
-    if (pGiochannel_inotify)
-        g_io_channel_unref(pGiochannel_inotify);
+    if (channel_signal_event_id > 0)
+        g_source_remove(channel_signal_event_id);
+    if (channel_signal)
+        g_io_channel_unref(channel_signal);
+    if (channel_inotify_event_id > 0)
+        g_source_remove(channel_inotify_event_id);
+    if (channel_inotify)
+        g_io_channel_unref(channel_inotify);
 
     delete g_pCommLayer;
     if (g_pPluginManager)

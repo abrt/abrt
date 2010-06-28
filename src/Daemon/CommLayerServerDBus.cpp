@@ -597,6 +597,7 @@ CCommLayerServerDBus::CCommLayerServerDBus()
     //
     // and need to code up handle_message to check for "Disconnected" dbus signal
 
+    /* Also sets g_dbus_conn to conn. */
     attach_dbus_conn_to_glib_main_loop(conn, "/com/redhat/abrt", message_received);
 
     VERB3 log("dbus_bus_request_name");
@@ -619,5 +620,5 @@ CCommLayerServerDBus::CCommLayerServerDBus()
 
 CCommLayerServerDBus::~CCommLayerServerDBus()
 {
-// do we need to do anything here?
+    dbus_connection_unref(g_dbus_conn);
 }
