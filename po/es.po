@@ -10,9 +10,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-18 07:27+0000\n"
-"PO-Revision-Date: 2010-06-18 08:45-0300\n"
-"Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
+"POT-Creation-Date: 2010-06-27 11:46+0000\n"
+"PO-Revision-Date: 2010-06-27 12:54-0300\n"
+"Last-Translator: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -81,7 +81,7 @@ msgid "Attaching binary: %s"
 msgstr "Adjuntando binario: %s"
 
 #: ../lib/Plugins/Catcut.cpp:460
-#: ../lib/Plugins/Bugzilla.cpp:656
+#: ../lib/Plugins/Bugzilla.cpp:775
 msgid "Creating new bug..."
 msgstr "Creando un nuevo informe..."
 
@@ -113,7 +113,7 @@ msgstr "Creando una firma..."
 msgid "Creating a new case..."
 msgstr "Creando un nuevo caso..."
 
-#: ../lib/Utils/make_descr.cpp:296
+#: ../lib/Utils/make_descr.cpp:297
 #, c-format
 msgid "Binary file %s will not be reported"
 msgstr "Archivo binario %s no será informado."
@@ -442,19 +442,23 @@ msgid "translator-credits"
 msgstr "traductores: Claudio Rodrigo Pereyra Diaz <claudio@pereyradiaz.com.ar>, Domingo Becker <domingobecker@gmail.com>, Héctor Daniel Cabrera <logan@fedoraproject.org>."
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:62
+#: ../src/Gui/CCMainWindow.py:63
 msgid "Reported"
 msgstr "Informada"
 
-#: ../src/Gui/CCMainWindow.py:70
+#: ../src/Gui/CCMainWindow.py:71
 msgid "Application"
 msgstr "Aplicación"
 
-#: ../src/Gui/CCMainWindow.py:72
+#: ../src/Gui/CCMainWindow.py:73
+msgid "Hostname"
+msgstr "Nombre de equipo"
+
+#: ../src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "Caída más reciente"
 
-#: ../src/Gui/CCMainWindow.py:140
+#: ../src/Gui/CCMainWindow.py:143
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -463,7 +467,7 @@ msgstr ""
 "No se puede mostrar el diálogo de configuración\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:145
+#: ../src/Gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -473,7 +477,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:180
+#: ../src/Gui/CCMainWindow.py:183
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -482,7 +486,7 @@ msgstr ""
 "Error intentando cargar la lista de volcado.\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:237
+#: ../src/Gui/CCMainWindow.py:241
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -491,11 +495,11 @@ msgstr ""
 "<b>%s Caída</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:333
+#: ../src/Gui/CCMainWindow.py:337
 msgid "You have to select a crash to copy."
 msgstr "Debe elegir una caída que copiar"
 
-#: ../src/Gui/CCMainWindow.py:418
+#: ../src/Gui/CCMainWindow.py:422
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -505,7 +509,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tInforma la caída directamente con el CRASH_ID"
 
-#: ../src/Gui/CCMainWindow.py:441
+#: ../src/Gui/CCMainWindow.py:445
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -581,7 +585,7 @@ msgid "Configure %s options"
 msgstr "Configurar %s opciones"
 
 #: ../src/Gui/CCReporterDialog.py:498
-#: ../src/Gui/CReporterAssistant.py:829
+#: ../src/Gui/CReporterAssistant.py:833
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -601,7 +605,7 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:553
 #: ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:861
+#: ../src/Gui/CReporterAssistant.py:865
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Error al obtener el informe: %s"
@@ -695,7 +699,7 @@ msgid "<b>Attachments</b>"
 msgstr "<b>Adjuntos</b>"
 
 #: ../src/Gui/report.glade.h:3
-#: ../src/Gui/CReporterAssistant.py:733
+#: ../src/Gui/CReporterAssistant.py:737
 msgid "<b>Backtrace</b>"
 msgstr "<b>Trazado</b>"
 
@@ -930,11 +934,11 @@ msgstr ""
 "\n"
 "Seleccione donde quiere informar el error, y presione 'Siguiente' para continuar"
 
-#: ../src/Gui/CReporterAssistant.py:500
+#: ../src/Gui/CReporterAssistant.py:504
 msgid "Send a bug report"
 msgstr "Enviar informe de error"
 
-#: ../src/Gui/CReporterAssistant.py:538
+#: ../src/Gui/CReporterAssistant.py:542
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace provides developers with details about how a crash happen, helping them track down the source of the problem\n"
 "\n"
@@ -944,105 +948,105 @@ msgstr ""
 "\n"
 "Por favor revise el trazado y modifíquelo si es necesario para estar seguro de que su informe no contiene ningún dato sensible que usted no quiera compartir."
 
-#: ../src/Gui/CReporterAssistant.py:579
+#: ../src/Gui/CReporterAssistant.py:583
 msgid "Refresh"
 msgstr "Actualizar"
 
-#: ../src/Gui/CReporterAssistant.py:581
+#: ../src/Gui/CReporterAssistant.py:585
 msgid "Copy"
 msgstr "Copiar"
 
-#: ../src/Gui/CReporterAssistant.py:587
+#: ../src/Gui/CReporterAssistant.py:591
 msgid "I agree with submitting the backtrace"
 msgstr "Estoy de acuerdo en enviar el trazado"
 
-#: ../src/Gui/CReporterAssistant.py:592
+#: ../src/Gui/CReporterAssistant.py:596
 msgid "Approve backtrace"
 msgstr "Aprobar el trazado"
 
-#: ../src/Gui/CReporterAssistant.py:615
+#: ../src/Gui/CReporterAssistant.py:619
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr "¿Cómo ocurrió esta caída, paso por paso? ¿Cómo puede ser reproducido?"
 
-#: ../src/Gui/CReporterAssistant.py:633
+#: ../src/Gui/CReporterAssistant.py:637
 msgid "Are there any comments you'd like to share with the software maintainers?"
 msgstr "¿Hay algún comentario que usted quiera compartir con los mantenedores del software?"
 
-#: ../src/Gui/CReporterAssistant.py:652
+#: ../src/Gui/CReporterAssistant.py:656
 msgid "Provide additional details"
 msgstr "Provea detalles adicionales"
 
-#: ../src/Gui/CReporterAssistant.py:659
+#: ../src/Gui/CReporterAssistant.py:663
 msgid "<b>Tip:</b> Your comments are not private.  Please monitor what you say accordingly."
 msgstr "<b>Consejo:</b> Sus comentarios no son privados. Por favor, revise lo que escriba."
 
-#: ../src/Gui/CReporterAssistant.py:700
+#: ../src/Gui/CReporterAssistant.py:704
 msgid "Confirm and send report"
 msgstr "Confirmar y enviar informe"
 
-#: ../src/Gui/CReporterAssistant.py:702
+#: ../src/Gui/CReporterAssistant.py:706
 msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "Debajo esta el resumen de su informe de error. Por favor haga clic en 'Aplicar' para enviarlo."
 
-#: ../src/Gui/CReporterAssistant.py:707
+#: ../src/Gui/CReporterAssistant.py:711
 msgid "<b>Basic details</b>"
 msgstr "<b>Detalles básicos</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:714
+#: ../src/Gui/CReporterAssistant.py:718
 msgid "Component"
 msgstr "Componente"
 
-#: ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:719
 msgid "Package"
 msgstr "Paquete"
 
-#: ../src/Gui/CReporterAssistant.py:716
+#: ../src/Gui/CReporterAssistant.py:720
 msgid "Executable"
 msgstr "Ejecutable"
 
-#: ../src/Gui/CReporterAssistant.py:717
+#: ../src/Gui/CReporterAssistant.py:721
 msgid "Cmdline"
 msgstr "Cmdline"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:719
+#: ../src/Gui/CReporterAssistant.py:723
 msgid "Architecture"
 msgstr "Arquitectura"
 
-#: ../src/Gui/CReporterAssistant.py:720
+#: ../src/Gui/CReporterAssistant.py:724
 msgid "Kernel"
 msgstr "Núcleo"
 
-#: ../src/Gui/CReporterAssistant.py:721
+#: ../src/Gui/CReporterAssistant.py:725
 msgid "Release"
 msgstr "Lanzamiento"
 
-#: ../src/Gui/CReporterAssistant.py:722
+#: ../src/Gui/CReporterAssistant.py:726
 msgid "Reason"
 msgstr "Motivo"
 
-#: ../src/Gui/CReporterAssistant.py:736
+#: ../src/Gui/CReporterAssistant.py:740
 msgid "Click to view ..."
 msgstr "Haga clic para ver ..."
 
-#: ../src/Gui/CReporterAssistant.py:748
+#: ../src/Gui/CReporterAssistant.py:752
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Pasos para reproducir:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:769
+#: ../src/Gui/CReporterAssistant.py:773
 msgid "<b>Comments:</b>"
 msgstr "<b>Comentarios:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:772
+#: ../src/Gui/CReporterAssistant.py:776
 msgid "No comment provided!"
 msgstr "¡No se han proporcionado comentarios!"
 
-#: ../src/Gui/CReporterAssistant.py:808
+#: ../src/Gui/CReporterAssistant.py:812
 msgid "Finished sending the bug report"
 msgstr "Finalizado el envío del informe de error."
 
-#: ../src/Gui/CReporterAssistant.py:812
+#: ../src/Gui/CReporterAssistant.py:816
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Informes de errores</b>"
 
@@ -1085,21 +1089,16 @@ msgstr "Icono del área de notificaciones para informar al usuario los problemas
 msgid "Hide"
 msgstr "Ocultar"
 
-#: ../src/Daemon/Daemon.cpp:478
+#: ../src/Daemon/Daemon.cpp:515
 msgid "Report size exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
 msgstr "El tamaño del informe excede la cuota. Por favor, verifique el valor de MaxCrashReportsSize del sistema en abrt.conf."
 
-#: ../lib/Plugins/Bugzilla.cpp:328
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "El error ya ha sido informado: %i"
-
-#: ../lib/Plugins/Bugzilla.cpp:409
+#: ../lib/Plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nuevo id del error: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:622
+#: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -1107,49 +1106,57 @@ msgstr ""
 "Usuario o contraseña vacíos.\n"
 "Por favor verificar"
 
-#: ../lib/Plugins/Bugzilla.cpp:630
+#: ../lib/Plugins/Bugzilla.cpp:690
 msgid "Logging into bugzilla..."
 msgstr "Ingresando a bugzilla..."
 
-#: ../lib/Plugins/Bugzilla.cpp:633
+#: ../lib/Plugins/Bugzilla.cpp:693
 msgid "Checking for duplicates..."
 msgstr "Chequeando si hay duplicados..."
 
-#: ../lib/Plugins/Bugzilla.cpp:646
+#: ../lib/Plugins/Bugzilla.cpp:705
+#: ../lib/Plugins/Bugzilla.cpp:743
 msgid "Missing mandatory member 'bugs'"
 msgstr "Falta miembro obligatorio 'bugs'"
 
-#: ../lib/Plugins/Bugzilla.cpp:661
-msgid "Bugzilla entry creation failed"
-msgstr "Falló la creación de entrada en Bugzilla"
-
-#: ../lib/Plugins/Bugzilla.cpp:669
-#: ../lib/Plugins/Bugzilla.cpp:779
-msgid "Logging out..."
-msgstr "Saliendo..."
-
-#: ../lib/Plugins/Bugzilla.cpp:701
-#: ../lib/Plugins/Bugzilla.cpp:729
+#: ../lib/Plugins/Bugzilla.cpp:725
+#: ../lib/Plugins/Bugzilla.cpp:759
+#: ../lib/Plugins/Bugzilla.cpp:836
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Falló get_bug_info(). No se ha podido reunir toda la información obligatoria"
 
-#: ../lib/Plugins/Bugzilla.cpp:713
+#: ../lib/Plugins/Bugzilla.cpp:780
+msgid "Bugzilla entry creation failed"
+msgstr "Falló la creación de entrada en Bugzilla"
+
+#: ../lib/Plugins/Bugzilla.cpp:790
+#: ../lib/Plugins/Bugzilla.cpp:886
+msgid "Logging out..."
+msgstr "Saliendo..."
+
+#. decision based on state
+#: ../lib/Plugins/Bugzilla.cpp:809
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "El error ya ha sido informado: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:820
 #, c-format
 msgid "Bugzilla couldn't find parent of bug(%d)"
 msgstr "Bugzilla no pudo encontrar la causa del error (%d) "
 
-#: ../lib/Plugins/Bugzilla.cpp:718
+#: ../lib/Plugins/Bugzilla.cpp:825
 #, c-format
 msgid "Jump to bug %d"
 msgstr "Ir a error %d"
 
-#: ../lib/Plugins/Bugzilla.cpp:743
-#: ../lib/Plugins/Bugzilla.cpp:744
+#: ../lib/Plugins/Bugzilla.cpp:850
+#: ../lib/Plugins/Bugzilla.cpp:851
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Agregar %s a la lista CC"
 
-#: ../lib/Plugins/Bugzilla.cpp:768
+#: ../lib/Plugins/Bugzilla.cpp:875
 #, c-format
 msgid "Add new comment into bug(%d)"
 msgstr "Agregar comentario en el error(%d)"
