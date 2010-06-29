@@ -480,7 +480,9 @@ send_report_to_new_case(const char* baseURL,
                             atch_state->http_resp_code);
                 /* else: only attach body exists */
             }
-            retval = xasprintf("Case created: %s, but report attachment failed: %s",
+            /* Note: to prevent URL misparsing, make sure to delimit
+             * case_location only using spaces */
+            retval = xasprintf("Case created: %s but report attachment failed: %s",
                     case_location, errmsg);
             break;
 
