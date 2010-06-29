@@ -210,7 +210,7 @@ int main(int argc, char** argv)
                                  longopts, &option_index);
 
 #define SET_OP(newop)                                                \
-        if (op != -1)                                                \
+        if (op != -1 && op != newop)                                 \
         {                                                            \
             error_msg(_("You must specify exactly one operation.")); \
             return 1;                                                \
