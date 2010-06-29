@@ -149,14 +149,6 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-bugzilla
 Plugin to report bugs into the bugzilla.
 
-%package plugin-rhfastcheck
-Summary: %{name}'s rhfastcheck plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-rhfastcheck
-Plugin to quickly check RH support DB for known solution.
-
 %package plugin-rhtsupport
 Summary: %{name}'s RHTSupport plugin
 Group: System Environment/Libraries
@@ -164,14 +156,6 @@ Requires: %{name} = %{version}-%{release}
 
 %description plugin-rhtsupport
 Plugin to report bugs into RH support system.
-
-%package plugin-catcut
-Summary: %{name}'s catcut plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-catcut
-Plugin to report bugs into the catcut.
 
 %package plugin-ticketuploader
 Summary: %{name}'s ticketuploader plugin
@@ -413,26 +397,12 @@ fi
 %{_libdir}/%{name}/Bugzilla.GTKBuilder
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
 
-%files plugin-rhfastcheck
-%defattr(-,root,root,-)
-#%config(noreplace) %{_sysconfdir}/%{name}/plugins/rhfastcheck.conf
-%{_libdir}/%{name}/librhfastcheck.so*
-#%{_libdir}/%{name}/rhfastcheck.GTKBuilder
-#%{_mandir}/man7/%{name}-rhfastcheck.7.gz
-
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_libdir}/%{name}/libRHTSupport.so*
 %{_libdir}/%{name}/RHTSupport.GTKBuilder
 #%{_mandir}/man7/%{name}-RHTSupport.7.gz
-
-%files plugin-catcut
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/Catcut.conf
-%{_libdir}/%{name}/libCatcut.so*
-%{_libdir}/%{name}/Catcut.GTKBuilder
-#%{_mandir}/man7/%{name}-Catcut.7.gz
 
 %files plugin-ticketuploader
 %defattr(-,root,root,-)

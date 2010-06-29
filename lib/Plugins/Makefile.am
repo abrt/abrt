@@ -11,9 +11,7 @@ pluginslib_LTLIBRARIES = \
     libRunApp.la \
     libSOSreport.la \
     libBugzilla.la \
-    librhfastcheck.la \
     libRHTSupport.la \
-    libCatcut.la \
     libTicketUploader.la \
     libPython.la \
     libFileTransfer.la
@@ -24,7 +22,6 @@ dist_pluginslib_DATA = \
     Bugzilla.GTKBuilder \
     RHTSupport.GTKBuilder \
     TicketUploader.GTKBuilder \
-    Catcut.GTKBuilder \
     KerneloopsReporter.GTKBuilder
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
@@ -36,7 +33,6 @@ dist_pluginsconf_DATA = \
     Kerneloops.conf \
     Bugzilla.conf \
     RHTSupport.conf \
-    Catcut.conf \
     TicketUploader.conf \
     FileTransfer.conf \
     Python.conf \
@@ -53,8 +49,6 @@ man_MANS = \
     abrt-SQLite3.7 \
     abrt-RunApp.7 \
     abrt-TicketUploader.7
-
-# + abrt-Catcut.7
 
 EXTRA_DIST = $(man_MANS)
 
@@ -126,15 +120,6 @@ libBugzilla_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
 
-# rhfastcheck
-librhfastcheck_la_SOURCES = rhfastcheck.h rhfastcheck.cpp
-librhfastcheck_la_LIBADD =
-librhfastcheck_la_LDFLAGS = -avoid-version
-librhfastcheck_la_CPPFLAGS = \
-    -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
-
 # RHTSupport
 libRHTSupport_la_SOURCES = RHTSupport.h RHTSupport.cpp
 libRHTSupport_la_LIBADD =
@@ -144,12 +129,6 @@ libRHTSupport_la_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"'
-
-# Catcut
-libCatcut_la_SOURCES = Catcut.h Catcut.cpp
-libCatcut_la_LIBADD = $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
-libCatcut_la_LDFLAGS = -avoid-version
-libCatcut_la_CPPFLAGS = $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) -I$(srcdir)/../../inc -I$(srcdir)/../Utils -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # TicketUploader
 libTicketUploader_la_SOURCES = TicketUploader.h TicketUploader.cpp
