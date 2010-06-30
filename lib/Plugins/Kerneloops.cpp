@@ -115,7 +115,7 @@ static unsigned hash_oops_str(const char *oops_ptr)
 
 std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
 {
-	log(_("Getting local universal unique identification"));
+	VERB3 log("Getting local universal unique identification");
 
 	std::string oops;
 	{

@@ -770,7 +770,7 @@ int main(int argc, char** argv)
             /* fall through to error */
         default:
             error_msg_and_die(
-                "Usage: abrtd [-dv]\n"
+                "Usage: abrtd [-dsv] [-t SEC]\n"
                 "\nOptions:"
                 "\n\t-d\tDo not daemonize"
                 "\n\t-s\tLog to syslog even with -d"
@@ -797,7 +797,7 @@ int main(int argc, char** argv)
         pid_t pid = fork();
         if (pid < 0)
         {
-            perror_msg_and_die("Can't fork");
+            perror_msg_and_die("fork");
         }
         if (pid > 0)
         {

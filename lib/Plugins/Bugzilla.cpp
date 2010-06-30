@@ -780,7 +780,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             throw CABRTException(EXCEP_PLUGIN, _("Bugzilla entry creation failed"));
         }
 
-        log("adding attachments to bug(%d)...", bug_id);
+        log("Adding attachments to bug %d...", bug_id);
         int ret = bz_server.add_attachments(to_string(bug_id).c_str(), pCrashData);
         if (ret == -1)
         {
@@ -815,14 +815,13 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         {
             if (ii == MAX_HOPS)
             {
-                VERB3 log("Bugzilla couldn't find parent of bug(%d)", (int)original_bug_id);
+                VERB3 log("Bugzilla couldn't find parent of bug %d", (int)original_bug_id);
                 bug_info_destroy(&bz);
-                throw CABRTException(EXCEP_PLUGIN, _("Bugzilla couldn't find parent of bug(%d)"), (int)original_bug_id);
+                throw CABRTException(EXCEP_PLUGIN, _("Bugzilla couldn't find parent of bug %d"), (int)original_bug_id);
             }
 
-            VERB3 log("Bugzilla(%d): Jump to bug %d", bug_id, (int)bz.bug_dup_id);
+            log("Bug %d is a duplicate, using parent bug %d", bug_id, (int)bz.bug_dup_id);
             bug_id = bz.bug_dup_id;
-            update_client(_("Jump to bug %d"), (int)bug_id);
             bug_info_destroy(&bz);
             bug_info_init(&bz);
 
@@ -847,8 +846,8 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         int status = 0;
         if ((strcmp(bz.bug_reporter, Login.c_str()) != 0) && (am_i_in_cc(&bz, Login.c_str())))
         {
-            VERB2 log(_("Add %s to CC list"), Login.c_str());
-            update_client(_("Add %s to CC list"), Login.c_str());
+            VERB2 log(_("Adding %s to CC list"), Login.c_str());
+            update_client(_("Adding %s to CC list"), Login.c_str());
             status = bz_server.add_plus_one_cc(bug_id, Login.c_str());
         }
 
@@ -872,7 +871,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
                                 "%s", package, arch, release, description.c_str()
             );
 
-            update_client(_("Add new comment into bug(%d)"), (int)bug_id);
+            update_client(_("Adding new comment to bug %d"), (int)bug_id);
 
             bool is_priv = is_private && (is_private[0] == '1');
             if (bz_server.add_comment(bug_id, description.c_str(), is_priv) == -1)

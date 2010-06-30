@@ -198,7 +198,7 @@ void CApplet::action_report(NotifyNotification *notification, gchar *action, gpo
             /* Did not find abrt-gui in installation directory. Oh well */
             /* Trying to find it in PATH */
             execlp("abrt-gui", "abrt-gui", buf, (char*) NULL);
-            perror_msg_and_die("Can't exec abrt-gui");
+            perror_msg_and_die("Can't execute abrt-gui");
         }
         GError *err = NULL;
         notify_notification_close(notification, &err);
@@ -227,7 +227,7 @@ void CApplet::action_open_gui(NotifyNotification *notification, gchar *action, g
             /* Did not find abrt-gui in installation directory. Oh well */
             /* Trying to find it in PATH */
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            perror_msg_and_die("Can't exec abrt-gui");
+            perror_msg_and_die("Can't execute abrt-gui");
         }
         GError *err = NULL;
         notify_notification_close(notification, &err);
@@ -310,7 +310,7 @@ void CApplet::OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data
             /* Did not find abrt-gui in installation directory. Oh well */
             /* Trying to find it in PATH */
             execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            perror_msg_and_die("Can't exec abrt-gui");
+            perror_msg_and_die("Can't execute abrt-gui");
         }
         gtk_status_icon_set_visible(applet->m_pStatusIcon, false);
         applet->stop_animate_icon();
@@ -383,16 +383,17 @@ void CApplet::Enable(const char *reason)
 gboolean CApplet::update_icon(void *user_data)
 {
     CApplet* applet = (CApplet*)user_data;
-    if (applet->m_pStatusIcon && applet->m_iAnimationStage < ICON_STAGE_LAST) {
+    if (applet->m_pStatusIcon && applet->m_iAnimationStage < ICON_STAGE_LAST)
+    {
         gtk_status_icon_set_from_pixbuf(applet->m_pStatusIcon,
                                         applet->icon_stages_buff[applet->m_iAnimationStage++]);
     }
-    else
-        error_msg("icon is null");
-    if (applet->m_iAnimationStage == ICON_STAGE_LAST) {
+    if (applet->m_iAnimationStage == ICON_STAGE_LAST)
+    {
         applet->m_iAnimationStage = 0;
     }
-    if (--applet->m_iAnimCountdown == 0) {
+    if (--applet->m_iAnimCountdown == 0)
+    {
         applet->stop_animate_icon();
     }
     return true;
@@ -410,7 +411,8 @@ void CApplet::animate_icon()
 void CApplet::stop_animate_icon()
 {
     /* animator should be 0 if icons are not loaded, so this should be safe */
-    if (m_iAnimator != 0) {
+    if (m_iAnimator != 0)
+    {
         g_source_remove(m_iAnimator);
         gtk_status_icon_set_from_pixbuf(m_pStatusIcon, icon_stages_buff[ICON_DEFAULT]);
         m_iAnimator = 0;
@@ -426,10 +428,12 @@ bool CApplet::load_icons()
     {
         char name[sizeof(ICON_DIR"/abrt%02d.png")];
         GError *error = NULL;
-        if (snprintf(name, sizeof(ICON_DIR"/abrt%02d.png"), ICON_DIR"/abrt%02d.png", stage) > 0) {
+        if (snprintf(name, sizeof(ICON_DIR"/abrt%02d.png"), ICON_DIR"/abrt%02d.png", stage) > 0)
+        {
             icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
-            if (error != NULL) {
-                error_msg("Can't load pixbuf from %s, animation is disabled!", name);
+            if (error != NULL)
+            {
+                error_msg("Can't load pixbuf from %s, animation is disabled", name);
                 return false;
             }
         }

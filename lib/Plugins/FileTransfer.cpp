@@ -285,8 +285,6 @@ static string DirBase(const char *pStr)
 
 void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
 {
-    update_client(_("File Transfer: Creating a report..."));
-
     if (strcmp(pArgs, "store") == 0)
     {
         /* Remember pActiveDir for later sending */
@@ -296,6 +294,8 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
         VERB3 log("Remembered '%s' for future file transfer", pActionDir);
         return;
     }
+
+    update_client(_("FileTransfer: Creating a report..."));
 
     char hostname[HBLEN];
     gethostname(hostname, HBLEN-1);

@@ -748,7 +748,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         if (crash_thread)
             backtrace_remove_threads_except_one(backtrace, crash_thread);
         else
-            log_msg("Detection of crash thread failed.\n");
+            log_msg("Detection of crash thread failed");
 
         /* Get the quality of the crash thread. */
         float q2 = backtrace_quality(backtrace);
