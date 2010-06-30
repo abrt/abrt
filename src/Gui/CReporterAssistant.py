@@ -17,6 +17,7 @@ PAGE_REPORT_DONE = 4
 NO_PROBLEMS_DETECTED = -50
 HOW_TO_HINT_TEXT = "1.\n2.\n3.\n"
 COMMENT_HINT_TEXT = _("Brief description how to reproduce this or what you did...")
+MISSING_BACKTRACE_TEXT = _("Crash info doesn't contain a backtrace")
 
 DEFAULT_WIDTH = 800
 DEFAULT_HEIGHT = 500
@@ -32,6 +33,7 @@ class ReporterAssistant():
         self.parent = parent
         self.comment_changed = False
         self.howto_changed = False
+        self.report_has_bt = False
         self.selected_reporters = []
         """ create the assistant """
         self.assistant = gtk.Assistant()
@@ -290,21 +292,21 @@ class ReporterAssistant():
             error_msgs.append(_("You should check backtrace for sensitive data"))
             error_msgs.append(_("You must agree with sending the backtrace"))
         # we have both SendBacktrace and rating
-        if rating_required and rating != None:
+        if rating_required:
             try:
                 package = self.result[FILENAME_PACKAGE][CD_CONTENT]
             # if we don't have package for some reason
             except:
                 package = None
             # not usable report
-            if int(self.result[FILENAME_RATING][CD_CONTENT]) < 3:
+            if rating < 3:
                 if package:
                     error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command: <b>debuginfo-install %s</b> \nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                 else:
                     error_msgs.append(_("The backtrace is unusable, you can't report this!"))
                 send = False
             # probably usable 3
-            elif int(self.result[FILENAME_RATING][CD_CONTENT]) < 4:
+            elif rating < 4:
                 error_msgs.append(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
 
         if error_msgs:
@@ -319,12 +321,11 @@ class ReporterAssistant():
                 # we want to skip it only if the plugin is properly configured
                 if self.reporters[0].Settings.check():
                     self.selected_reporters.append(self.reporters[0])
-                    log1(_("Only one reporter plugin is configured, "
-                       "skipping the selection dialog"))
-                    self.assistant.set_current_page(PAGE_BACKTRACE_APPROVAL)
+                    self.assistant.set_page_complete(page, True)
+                    log1(_("Only one reporter plugin is configured"))
 
         # this is where dehydrate happens
-        if page == self.pdict_get_page(PAGE_EXTRA_INFO):
+        elif page == self.pdict_get_page(PAGE_EXTRA_INFO):
             if not self.howto_changed:
                 # howto
                 buff = gtk.TextBuffer()
@@ -344,7 +345,7 @@ class ReporterAssistant():
                 except KeyError:
                     buff.set_text(COMMENT_HINT_TEXT)
                 self.comment_tev.set_buffer(buff)
-        if page == self.pdict_get_page(PAGE_CONFIRM):
+        elif page == self.pdict_get_page(PAGE_CONFIRM):
             # howto
             if self.howto_changed:
                 howto_buff = self.howto_tev.get_buffer()
@@ -376,7 +377,8 @@ class ReporterAssistant():
 
             # backtrace
             backtrace_text = self.backtrace_buff.get_text(self.backtrace_buff.get_start_iter(), self.backtrace_buff.get_end_iter())
-            self.result[FILENAME_BACKTRACE] = [CD_TXT, 'y', backtrace_text]
+            if self.report_has_bt:
+                self.result[FILENAME_BACKTRACE] = [CD_TXT, 'y', backtrace_text]
         if page == self.pdict_get_page(PAGE_BACKTRACE_APPROVAL):
             self.allow_send(self.backtrace_cb)
 
@@ -495,6 +497,8 @@ class ReporterAssistant():
             pass
         for reporter in self.reporters:
             cb = gtk.CheckButton(str(reporter))
+            if len(self.reporters) == 1:
+                cb.set_active(True)
             cb.connect("toggled", self.on_plugin_toggled, plugins_cb, reporter, page)
             plugins_cb.append(cb)
             vbox_plugins.pack_start(cb, fill=True, expand=False)
@@ -834,7 +838,14 @@ class ReporterAssistant():
             return
         self.result = result
         # set the backtrace text
-        self.backtrace_buff.set_text(self.result[FILENAME_BACKTRACE][CD_CONTENT])
+        try:
+            self.backtrace_buff.set_text(self.result[FILENAME_BACKTRACE][CD_CONTENT])
+            self.report_has_bt = True
+        except:
+            self.backtrace_buff.set_text(MISSING_BACKTRACE_TEXT)
+            self.backtrace_cb.set_active(True)
+            log1("Crash info doesn't contain a backtrace, is it disabled?")
+
         self.allow_send(self.backtrace_cb)
         self.show()
 
