@@ -28,7 +28,7 @@ class CAnalyzerPython : public CAnalyzer
     public:
         virtual std::string GetLocalUUID(const char *pDebugDumpDir);
         virtual std::string GetGlobalUUID(const char *pDebugDumpDir);
-        virtual void CreateReport(const char *pDebugDumpDir, int force) {}
+        virtual void CreateReport(const char *pDebugDumpDir, int force);
         virtual void Init();
         virtual void DeInit();
 };

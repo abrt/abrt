@@ -82,6 +82,14 @@ string CAnalyzerPython::GetGlobalUUID(const char *pDebugDumpDir)
 	return GetLocalUUID(pDebugDumpDir);
 }
 
+void CAnalyzerPython::CreateReport(const char *pDebugDumpDir, int force)
+{
+    CDebugDump dd;
+	dd.Open(pDebugDumpDir);
+    dd.SaveText(FILENAME_RATING, "4");
+    dd.Close();
+}
+
 void CAnalyzerPython::Init()
 {
 }
