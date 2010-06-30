@@ -30,6 +30,7 @@ class CAnalyzerCCpp : public CAnalyzer
 {
     private:
         bool m_bBacktrace;
+        bool m_bBacktraceRemotes;
         bool m_bMemoryMap;
         bool m_bInstallDebugInfo;
         unsigned m_nDebugInfoCacheMB;
