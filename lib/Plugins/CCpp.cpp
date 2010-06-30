@@ -50,6 +50,7 @@ crash at the same time? This value has been recommended by nhorman
 
 CAnalyzerCCpp::CAnalyzerCCpp() :
     m_bBacktrace(true),
+    m_bBacktraceRemotes(false),
     m_bMemoryMap(false),
     m_bInstallDebugInfo(true),
     m_nDebugInfoCacheMB(4000)
@@ -700,6 +701,16 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     CDebugDump dd;
     dd.Open(pDebugDumpDir);
 
+    /* Skip remote crashes. */
+    if (dd.Exist(FILENAME_REMOTE))
+    {
+        std::string remote_str;
+        dd.LoadText(FILENAME_REMOTE, remote_str);
+        bool remote = (remote_str.find('1') != std::string::npos);
+        if (remote && !m_bBacktraceRemotes)
+            return;
+    }
+
     if (!m_bBacktrace)
         return;
 
@@ -984,6 +995,11 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     if (it != end)
     {
         m_bBacktrace = string_to_bool(it->second.c_str());
+    }
+    it = pSettings.find("BacktraceRemotes");
+    if (it != end)
+    {
+        m_bBacktraceRemotes = string_to_bool(it->second.c_str());
     }
     it = pSettings.find("MemoryMap");
     if (it != end)
