@@ -157,12 +157,13 @@ Requires: %{name} = %{version}-%{release}
 %description plugin-rhtsupport
 Plugin to report bugs into RH support system.
 
-%package plugin-ticketuploader
-Summary: %{name}'s ticketuploader plugin
+%package plugin-reportuploader
+Summary: %{name}'s reportuploader plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Obsoletes: abrt-plugin-ticketuploader
 
-%description plugin-ticketuploader
+%description plugin-reportuploader
 Plugin to report bugs into anonymous FTP site associated with ticketing system.
 
 %package plugin-filetransfer
@@ -404,7 +405,7 @@ fi
 %{_libdir}/%{name}/RHTSupport.GTKBuilder
 #%{_mandir}/man7/%{name}-RHTSupport.7.gz
 
-%files plugin-ticketuploader
+%files plugin-reportuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/ReportUploader.conf
 %{_libdir}/%{name}/libReportUploader.so*
