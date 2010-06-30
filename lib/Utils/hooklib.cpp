@@ -107,7 +107,7 @@ void check_free_space(unsigned setting_MaxCrashReportsSize)
     unsigned long fs_free_mb_x4 = ((unsigned long long)vfs.f_bfree / (1024/4)) * vfs.f_bsize / 1024;
     if (fs_free_mb_x4 < setting_MaxCrashReportsSize)
     {
-        error_msg_and_die("aborting dump: only %luMiB is available on %s\n", fs_free_mb_x4 / 4, DEBUG_DUMPS_DIR);
+        error_msg_and_die("aborting dump: only %luMiB is available on %s", fs_free_mb_x4 / 4, DEBUG_DUMPS_DIR);
     }
 }
 

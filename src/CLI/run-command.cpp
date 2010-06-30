@@ -28,7 +28,7 @@ static pid_t start_command(char **argv)
   pid_t pid = vfork();
   if (pid < 0)
   {
-    perror_msg_and_die("Can't fork");
+    perror_msg_and_die("vfork");
   }
   if (pid == 0)
   { // new process

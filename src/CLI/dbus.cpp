@@ -46,7 +46,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
         if (!received)
         {
             if (FALSE == dbus_connection_read_write(s_dbus_conn, -1))
-                error_msg_and_die("DBus connection closed");
+                error_msg_and_die("dbus connection closed");
             continue;
         }
 
@@ -100,7 +100,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
                                    DBUS_TYPE_STRING, &warning_msg,
                                    DBUS_TYPE_INVALID))
             {
-                error_msg_and_die("dbus Update message: arguments mismatch");
+                error_msg_and_die("dbus Warning message: arguments mismatch");
             }
             log(">! %s\n", warning_msg);
         }
@@ -114,7 +114,7 @@ static DBusMessage* send_get_reply_and_unref(DBusMessage* msg)
         if (tp == DBUS_MESSAGE_TYPE_ERROR
          && dbus_message_get_reply_serial(received) == serial
         ) {
-            error_msg_and_die("Dbus call returned error: '%s'", error_str);
+            error_msg_and_die("dbus call returned error: '%s'", error_str);
         }
 
         dbus_message_unref(received);

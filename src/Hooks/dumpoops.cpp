@@ -57,7 +57,7 @@ int main(int argc, char **argv)
 		default:
  usage:
 			error_msg_and_die(
-				"Usage: %s [-ds] FILE\n\n"
+				"Usage: %s [-dsv] FILE\n\n"
 				"Options:\n"
 				"\t-d\tCreate ABRT dump for every oops found\n"
 				"\t-s\tPrint found oopses on standard output\n"

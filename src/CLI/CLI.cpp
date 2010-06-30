@@ -44,7 +44,7 @@ static void print_crash(const map_crash_data_t &crash)
     char timeloc[256];
     int success = strftime(timeloc, 128, "%c", localtime(&time));
     if (!success)
-        error_msg_and_die("Error while converting time to string.");
+        error_msg_and_die("Error while converting time to string");
 
     printf(_("\tUID        : %s\n"
              "\tUUID       : %s\n"
@@ -212,7 +212,7 @@ int main(int argc, char** argv)
 #define SET_OP(newop)                                                \
         if (op != -1 && op != newop)                                 \
         {                                                            \
-            error_msg(_("You must specify exactly one operation.")); \
+            error_msg(_("You must specify exactly one operation"));  \
             return 1;                                                \
         }                                                            \
         op = newop;

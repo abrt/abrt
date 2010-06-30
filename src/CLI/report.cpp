@@ -162,13 +162,13 @@ static void write_crash_report_field(FILE *fp, const map_crash_data_t &report,
   if (it == report.end())
   {
     // exit silently, all fields are optional for now
-    //error_msg("Field %s not found.\n", field);
+    //error_msg("Field %s not found", field);
     return;
   }
 
   if (it->second[CD_TYPE] == CD_SYS)
   {
-    error_msg("Cannot write field %s because it is a system value\n", field);
+    error_msg("Cannot update field %s because it is a system value", field);
     return;
   }
 
@@ -241,13 +241,13 @@ static int read_crash_report_field(const char *text, map_crash_data_t &report,
   const map_crash_data_t::iterator it = report.find(field);
   if (it == report.end())
   {
-    error_msg("Field %s not found.\n", field);
+    error_msg("Field %s not found", field);
     return 0;
   }
 
   if (it->second[CD_TYPE] == CD_SYS)
   {
-    error_msg("Cannot update field %s because it is a system value.\n", field);
+    error_msg("Cannot update field %s because it is a system value", field);
     return 0;
   }
 
@@ -331,9 +331,9 @@ static int launch_editor(const char *path)
     editor = getenv("EDITOR");
 
   terminal = getenv("TERM");
-  if (!editor && (!terminal || !strcmp(terminal, "dumb")))
+  if (!editor && (!terminal || strcmp(terminal, "dumb") == 0))
   {
-    error_msg(_("Terminal is dumb but no VISUAL nor EDITOR defined."));
+    error_msg(_("Can't run vi: $TERM, $VISUAL and $EDITOR are not set"));
     return 1;
   }
 
@@ -567,7 +567,7 @@ static bool set_echo(bool enabled)
         t.c_lflag &= ~ECHO;
 
     if (tcsetattr(STDIN_FILENO, TCSANOW, &t) < 0)
-        perror_msg_and_die("tcsetattr failed");
+        perror_msg_and_die("tcsetattr");
 
     return true;
 }
