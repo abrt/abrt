@@ -461,11 +461,9 @@ send_report_to_new_case(const char* baseURL,
             errmsg = find_header_in_abrt_post_state(atch_state, "Strata-Message:");
             if (!errmsg || !errmsg[0])
                 errmsg = atch_state->curl_error_msg;
-            if ((!errmsg || !errmsg[0]) && atch_state->body && atch_state->body[0])
-                errmsg = atch_state->body;
             if (atch_state->body && atch_state->body[0])
             {
-                if (errmsg
+                if (errmsg && errmsg[0]
                  && strcmp(errmsg, atch_state->body) != 0
                 ) /* both strata/curl error and body are present (and aren't the same) */
                     allocated = errmsg = xasprintf("%s. %s",

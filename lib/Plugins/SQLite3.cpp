@@ -52,7 +52,7 @@ static bool is_string_safe(const char *str)
 // it does not unescape escaped ones - I see lines ending with \ when I do it.
 // I wonder whether this is a bug in SQLite, and whether using unescaped
 // newlines is a danger with other SQL servers.
-// For now, I disabled newline escaping...
+// For now, I disabled newline escaping, and also allowed double quote.
     const char *p = str;
     while (*p)
     {
@@ -63,7 +63,7 @@ static bool is_string_safe(const char *str)
 //            continue;
 //        }
         if ((c < ' ' && c != '\n')
-         || strchr("\\\"\'", c)
+         || strchr("\\\'", c) //was: "\\\"\'"
         ) {
             error_msg("Probable SQL injection: '%s'", str);
             return false;
