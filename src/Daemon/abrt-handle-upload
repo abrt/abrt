@@ -63,7 +63,10 @@ else
     for d in "$tempdir"/*; do
         test -d "$d" || continue
         printf "1" >"$d/remote"
-        mv -- "$d" "$abrt_dir"
+        dst="$abrt_dir/$d"
+        test -e "$dst" && dst="$abrt_dir/$d.$$"
+        test -e "$dst" && continue
+        mv -- "$d" "$dst"
     done
 fi
 
