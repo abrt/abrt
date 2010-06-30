@@ -1,5 +1,5 @@
 /*
-    TicketUploader.cpp
+    ReportUploader.cpp
 
     Copyright (C) 2009  RedHat inc.
 
@@ -19,7 +19,7 @@
 */
 #include "abrtlib.h"
 #include "abrt_curl.h"
-#include "TicketUploader.h"
+#include "ReportUploader.h"
 #include "DebugDump.h"
 #include "ABRTException.h"
 #include "CommLayerInner.h"
@@ -27,14 +27,14 @@
 using namespace std;
 
 
-CTicketUploader::CTicketUploader() :
+CReportUploader::CReportUploader() :
     m_bEncrypt(false),
     m_bUpload(false),
     m_nRetryCount(3),
     m_nRetryDelay(20)
 {}
 
-CTicketUploader::~CTicketUploader()
+CReportUploader::~CReportUploader()
 {}
 
 
@@ -90,7 +90,7 @@ static void WriteCommand(const char *cmd, const char *input)
     }
 }
 
-void CTicketUploader::SendFile(const char *pURL, const char *pFilename, int retry_count, int retry_delay)
+void CReportUploader::SendFile(const char *pURL, const char *pFilename, int retry_count, int retry_delay)
 {
     if (pURL[0] == '\0')
     {
@@ -154,7 +154,7 @@ static void write_str_to_file(const char *str, const char *path, const char *fna
     fclose(ofile);
 }
 
-string CTicketUploader::Report(const map_crash_data_t& pCrashData,
+string CReportUploader::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
@@ -189,12 +189,12 @@ string CTicketUploader::Report(const map_crash_data_t& pCrashData,
         retry_count = m_nRetryCount;
         retry_delay = m_nRetryDelay;
     }
-    update_client(_("Creating a TicketUploader report..."));
+    update_client(_("Creating a ReportUploader report..."));
 
     bool have_ticket_name = (ticket_name != "");
     if (!have_ticket_name)
     {
-        ticket_name = "TicketUploader-newticket";
+        ticket_name = "ReportUploader-newticket";
     }
 
     // Format the time to add to the file name
@@ -368,7 +368,7 @@ static bool is_string_safe(const char *str)
     return true;
 }
 
-void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
+void CReportUploader::SetSettings(const map_plugin_settings_t& pSettings)
 {
     m_pSettings = pSettings;
 
@@ -414,7 +414,7 @@ void CTicketUploader::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-const map_plugin_settings_t& CTicketUploader::GetSettings()
+const map_plugin_settings_t& CReportUploader::GetSettings()
 {
     m_pSettings["Customer"] = m_sCustomer;
     m_pSettings["Ticket"] = m_sTicket;
@@ -428,7 +428,7 @@ const map_plugin_settings_t& CTicketUploader::GetSettings()
 }
 
 //todo: make static
-map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_t& pSettings)
+map_plugin_settings_t CReportUploader::parse_settings(const map_plugin_settings_t& pSettings)
 {
     map_plugin_settings_t plugin_settings;
 
@@ -496,10 +496,10 @@ map_plugin_settings_t CTicketUploader::parse_settings(const map_plugin_settings_
 }
 
 PLUGIN_INFO(REPORTER,
-            CTicketUploader,
-            "TicketUploader",
+            CReportUploader,
+            "ReportUploader",
             "0.0.1",
             "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc",
             "gavin@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/TicketUploader.GTKBuilder");
+            PLUGINS_LIB_DIR"/ReportUploader.GTKBuilder");

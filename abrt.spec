@@ -406,10 +406,10 @@ fi
 
 %files plugin-ticketuploader
 %defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/TicketUploader.conf
-%{_libdir}/%{name}/libTicketUploader.so*
-%{_libdir}/%{name}/TicketUploader.GTKBuilder
-%{_mandir}/man7/%{name}-TicketUploader.7.gz
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/ReportUploader.conf
+%{_libdir}/%{name}/libReportUploader.so*
+%{_libdir}/%{name}/ReportUploader.GTKBuilder
+%{_mandir}/man7/%{name}-ReportUploader.7.gz
 
 %files plugin-filetransfer
 %defattr(-,root,root,-)

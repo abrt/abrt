@@ -1,5 +1,5 @@
 /*
-    TicketUploader.h
+    ReportUploader.h
 
     Attach a configureable Ticket Number and Customer name to a report.
     Create a compressed, optionally encrypted, tarball.
@@ -21,13 +21,13 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef TICKETUPLOADER_H_
-#define TICKETUPLOADER_H_
+#ifndef REPORTUPLOADER_H_
+#define REPORTUPLAODER_H_
 
 #include "Plugin.h"
 #include "Reporter.h"
 
-class CTicketUploader : public CReporter
+class CReportUploader : public CReporter
 {
     private:
         std::string m_sCustomer;
@@ -42,8 +42,8 @@ class CTicketUploader : public CReporter
         map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettings);
 
     public:
-        CTicketUploader();
-        virtual ~CTicketUploader();
+        CReportUploader();
+        virtual ~CReportUploader();
         virtual const map_plugin_settings_t& GetSettings();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 

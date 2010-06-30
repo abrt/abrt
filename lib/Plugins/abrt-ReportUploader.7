@@ -1,12 +1,12 @@
 .TH abrt "7" "9 July 2009" ""
 .SH NAME
-TicketUploader plugin for abrt(8)
+ReportUploader plugin for abrt(8)
 .SH DESCRIPTION
 .P
 .I abrt
 is a daemon which watches for application crashes. When a crash occurs,
 it collects the crash data and performs some actions according to
-the configuration. This manual page describes the \fITicketUploader\fP plugin
+the configuration. This manual page describes the \fIReportUploader\fP plugin
 for \fIabrt\fP.
 .P
 This plugin will send a report to an anonymous FTP site.  It's intended
@@ -25,7 +25,7 @@ in the ticketing system.
 The plugin is invoked in the \fIabrt.conf\fP configuration file.
 No parameters are necessary.
 .SH CONFIGURATION
-The \fITicketUploader.conf\fP configuration file contains
+The \fIReportUploader.conf\fP configuration file contains
 entries in a format "Option = Value". The options are:
 .SS Customer
 This is the customer's name or other customer identifier.

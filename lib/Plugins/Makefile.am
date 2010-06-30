@@ -12,7 +12,7 @@ pluginslib_LTLIBRARIES = \
     libSOSreport.la \
     libBugzilla.la \
     libRHTSupport.la \
-    libTicketUploader.la \
+    libReportUploader.la \
     libPython.la \
     libFileTransfer.la
 
@@ -21,7 +21,7 @@ dist_pluginslib_DATA = \
     Mailx.GTKBuilder \
     Bugzilla.GTKBuilder \
     RHTSupport.GTKBuilder \
-    TicketUploader.GTKBuilder \
+    ReportUploader.GTKBuilder \
     KerneloopsReporter.GTKBuilder
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
@@ -33,7 +33,7 @@ dist_pluginsconf_DATA = \
     Kerneloops.conf \
     Bugzilla.conf \
     RHTSupport.conf \
-    TicketUploader.conf \
+    ReportUploader.conf \
     FileTransfer.conf \
     Python.conf \
     SOSreport.conf
@@ -48,7 +48,7 @@ man_MANS = \
     abrt-plugins.7 \
     abrt-SQLite3.7 \
     abrt-RunApp.7 \
-    abrt-TicketUploader.7
+    abrt-ReportUploader.7
 
 EXTRA_DIST = $(man_MANS)
 
@@ -130,11 +130,11 @@ libRHTSupport_la_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DLOCALSTATEDIR='"$(localstatedir)"'
 
-# TicketUploader
-libTicketUploader_la_SOURCES = TicketUploader.h TicketUploader.cpp
-libTicketUploader_la_LDFLAGS = -avoid-version
-libTicketUploader_la_LIBADD = $(CURL_LIBS)
-libTicketUploader_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+# ReportUploader
+libReportUploader_la_SOURCES = ReportUploader.h ReportUploader.cpp
+libReportUploader_la_LDFLAGS = -avoid-version
+libReportUploader_la_LIBADD = $(CURL_LIBS)
+libReportUploader_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # Python
 libPython_la_SOURCES = Python.h Python.cpp Python_hash.h Python_hash.cpp
