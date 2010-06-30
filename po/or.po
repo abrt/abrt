@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.or\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-06-16 14:41+0200\n"
+"POT-Creation-Date: 2010-06-30 17:40+0200\n"
 "PO-Revision-Date: 2010-05-13 12:57+0530\n"
 "Last-Translator: Manoj Kumar Giri <mgiri@redhat.com>\n"
 "Language-Team: Oriya <Translation-team-or@lists.sourceforge.net>\n"
@@ -39,91 +39,23 @@ msgstr ""
 "\n"
 "\n"
 
-#: lib/Plugins/Catcut.cpp:61
-#, fuzzy
-msgid "send_string: URL not specified"
-msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋଇନାହିଁ"
-
-#: lib/Plugins/Catcut.cpp:77 lib/Plugins/Catcut.cpp:114
-#, fuzzy, c-format
-msgid "Sending failed, try it again: %s"
-msgstr "ଅଭିଲେଖ %s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
-
-#: lib/Plugins/Catcut.cpp:95
-#, fuzzy
-msgid "send_file: URL not specified"
-msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋଇନାହିଁ"
-
-#: lib/Plugins/Catcut.cpp:99
-#, fuzzy, c-format
-msgid "Sending file %s to %s"
-msgstr "ଅଭିଲେଖ %s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
-
-#: lib/Plugins/Catcut.cpp:325
-#, fuzzy, c-format
-msgid "New bug id: %s"
-msgstr "ନୂତନ ତ୍ରୁଟି id: %i"
-
-#: lib/Plugins/Catcut.cpp:366
-#, c-format
-msgid "error returned by requestUpload: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:371
-#, c-format
-msgid "error returned by requestUpload: %d"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:377
-msgid "no URL returned by requestUpload, and no errno"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:382
-#, c-format
-msgid "requestUpload returned URL: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:402
-#, c-format
-msgid "Attaching (text): %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:413 lib/Plugins/Catcut.cpp:431
-#, c-format
-msgid "rebased URL: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:420
-#, c-format
-msgid "Attaching binary: %s"
-msgstr ""
-
-#: lib/Plugins/Catcut.cpp:460 lib/Plugins/Bugzilla.cpp:656
-msgid "Creating new bug..."
-msgstr "ନୂତନ ତ୍ରୁଟି ନିର୍ମାଣ କରୁଅଛି..."
-
-#: lib/Plugins/TicketUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
+#: lib/Plugins/ReportUploader.cpp:97 lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
 msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋଇନାହିଁ"
 
-#: lib/Plugins/TicketUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
+#: lib/Plugins/ReportUploader.cpp:101 lib/Plugins/FileTransfer.cpp:57
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "ଅଭିଲେଖ %s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
 
-#: lib/Plugins/TicketUploader.cpp:130
+#: lib/Plugins/ReportUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr ""
 
-#: lib/Plugins/TicketUploader.cpp:192
+#: lib/Plugins/ReportUploader.cpp:192
 #, fuzzy
-msgid "Creating a TicketUploader report..."
-msgstr "ବିବରଣୀ ନିର୍ମାଣ କରି ଦାଖଲ କରୁଅଛି..."
-
-#: lib/Plugins/rhfastcheck.cpp:71
-#, fuzzy
-msgid "Creating a signature..."
+msgid "Creating a ReportUploader report..."
 msgstr "ବିବରଣୀ ନିର୍ମାଣ କରି ଦାଖଲ କରୁଅଛି..."
 
 #: lib/Plugins/RHTSupport.cpp:231
@@ -131,15 +63,9 @@ msgstr "ବିବରଣୀ ନିର୍ମାଣ କରି ଦାଖଲ କର�
 msgid "Creating a new case..."
 msgstr "ନୂତନ ତ୍ରୁଟି ନିର୍ମାଣ କରୁଅଛି..."
 
-#: lib/Utils/make_descr.cpp:296
-#, c-format
-msgid "Binary file %s will not be reported"
-msgstr ""
-
-#: src/CLI/CLI.cpp:68
+#: src/CLI/CLI.cpp:49
 #, c-format
 msgid ""
-"%u.\n"
 "\tUID        : %s\n"
 "\tUUID       : %s\n"
 "\tPackage    : %s\n"
@@ -148,7 +74,7 @@ msgid ""
 "\tCrash Count: %s\n"
 msgstr ""
 
-#: src/CLI/CLI.cpp:154
+#: src/CLI/CLI.cpp:172
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -158,18 +84,18 @@ msgid ""
 "\t-?, --help\t\tprint this help\n"
 "\n"
 "Actions:\n"
-"\t--get-list\t\tprint list of crashes which are not reported yet\n"
-"\t--get-list-full\t\tprint list of all crashes\n"
-"\t--report CRASH_ID\tcreate and send a report\n"
-"\t--report-always CRASH_ID create and send a report without asking\n"
-"\t--delete CRASH_ID\tremove crash\n"
+"\t-l, --list\t\tprint list of crashes which are not reported yet\n"
+"\t      -f, --full\tlist all crashes, including already reported ones\n"
+"\t-r, --report CRASH_ID\tcreate and send a report\n"
+"\t      -y, --always\tcreate and send a report without asking\n"
+"\t-d, --delete CRASH_ID\tremove crash\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
-"\t@N  - N'th crash (as displayed by --get-list-full) will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
 
-#: src/CLI/CLI.cpp:198
+#: src/CLI/CLI.cpp:215
 msgid "You must specify exactly one operation"
 msgstr ""
 
@@ -229,50 +155,50 @@ msgstr ""
 msgid "# Release string of the operating system"
 msgstr ""
 
-#: src/CLI/report.cpp:323
+#: src/CLI/report.cpp:336
 msgid "Can't run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 
-#: src/CLI/report.cpp:411
+#: src/CLI/report.cpp:424
 msgid ""
 "\n"
 "The report has been updated."
 msgstr ""
 
-#: src/CLI/report.cpp:413
+#: src/CLI/report.cpp:426
 msgid ""
 "\n"
 "No changes were detected in the report."
 msgstr ""
 
-#: src/CLI/report.cpp:628
+#: src/CLI/report.cpp:646
 #, c-format
 msgid "Wrong settings were detected for plugin %s.\n"
 msgstr ""
 
-#: src/CLI/report.cpp:632
+#: src/CLI/report.cpp:650
 msgid "Enter your login: "
 msgstr ""
 
-#: src/CLI/report.cpp:638
+#: src/CLI/report.cpp:656
 msgid "Enter your password: "
 msgstr ""
 
-#: src/CLI/report.cpp:681
+#: src/CLI/report.cpp:700
 #, fuzzy
 msgid "Reporting..."
 msgstr "ରିପୋର୍ଟ"
 
-#: src/CLI/report.cpp:700
+#: src/CLI/report.cpp:719
 #, c-format
 msgid "Report using %s? [y/N]: "
 msgstr ""
 
-#: src/CLI/report.cpp:703
+#: src/CLI/report.cpp:722
 msgid "Skipping..."
 msgstr ""
 
-#: src/CLI/report.cpp:720
+#: src/CLI/report.cpp:739
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr ""
@@ -395,51 +321,55 @@ msgstr "ଲଗ ଦେଖନ୍ତୁ"
 msgid "<b>Bug Reports:</b>"
 msgstr "<b>ତ୍ରୁଟି ବିବରଣୀ:</b>"
 
-#: src/Gui/ccgui.glade:277
+#: src/Gui/ccgui.glade:278
 msgid "<b>Latest Crash:</b>"
 msgstr "<b>ନୂତନତମ କ୍ଷତି:</b>"
 
-#: src/Gui/ccgui.glade:290
+#: src/Gui/ccgui.glade:291
 msgid "<b>Command:</b>"
 msgstr "<b>ନିର୍ଦ୍ଦେଶ:</b>"
 
-#: src/Gui/ccgui.glade:305
+#: src/Gui/ccgui.glade:306
 msgid "<b>User:</b>"
 msgstr "<b>ଚାଳକ:</b>"
 
-#: src/Gui/ccgui.glade:320
+#: src/Gui/ccgui.glade:321
 msgid "<b>Crash Count:</b>"
 msgstr "<b>କ୍ଷତି ହାର:</b>"
 
-#: src/Gui/ccgui.glade:436
+#: src/Gui/ccgui.glade:437
 msgid "<b>Reason:</b>"
 msgstr "<b>କାରଣ:</b>"
 
-#: src/Gui/ccgui.glade:462
+#: src/Gui/ccgui.glade:463
 msgid "<b>Comment:</b>"
 msgstr "<b>ଟିପ୍ପଣୀ</b>"
 
-#: src/Gui/ccgui.glade:542
+#: src/Gui/ccgui.glade:543
 msgid "Copy to Clipboard"
 msgstr "କ୍ଲିପବୋର୍ଡରେ ନକଲ କରନ୍ତୁ"
 
-#: src/Gui/ccgui.glade:554 src/Gui/ccgui.glade:682 src/Applet/CCApplet.cpp:253
+#: src/Gui/ccgui.glade:555 src/Gui/ccgui.glade:683 src/Applet/CCApplet.cpp:253
 msgid "Report"
 msgstr "ରିପୋର୍ଟ"
 
-#: src/Gui/CCMainWindow.py:62
+#: src/Gui/CCMainWindow.py:63
 msgid "Reported"
 msgstr "ଖବର କରାଯାଇଛି"
 
-#: src/Gui/CCMainWindow.py:70
+#: src/Gui/CCMainWindow.py:71
 msgid "Application"
 msgstr "ପ୍ରୟୋଗ"
 
-#: src/Gui/CCMainWindow.py:72
+#: src/Gui/CCMainWindow.py:73
+msgid "Hostname"
+msgstr ""
+
+#: src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "ନୂତନତମ ନଷ୍ଟ"
 
-#: src/Gui/CCMainWindow.py:140
+#: src/Gui/CCMainWindow.py:143
 #, python-format
 msgid ""
 "Can't show the settings dialog\n"
@@ -448,7 +378,7 @@ msgstr ""
 "ସଂରଚନା ସଂଳାପକୁ ଦର୍ଶାଇପାରିବେ ନାହିଁ\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:145
+#: src/Gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Unable to finish current task!\n"
@@ -457,7 +387,7 @@ msgstr ""
 "ପ୍ରଚଳିତ କାର୍ଯ୍ୟକୁ ସମାପ୍ତ କରିବାରେ ଅସମର୍ଥ!\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:180
+#: src/Gui/CCMainWindow.py:183
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -466,7 +396,7 @@ msgstr ""
 "dumplist କୁ ଧାରଣ କରିବା ସମୟରେ ତ୍ରୁଟି।\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:237
+#: src/Gui/CCMainWindow.py:241
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -475,11 +405,11 @@ msgstr ""
 "<b>%s ନଷ୍ଟ</b>\n"
 "%s"
 
-#: src/Gui/CCMainWindow.py:333
+#: src/Gui/CCMainWindow.py:337
 msgid "You have to select a crash to copy."
 msgstr "ନକଲ କରିବା ପାଇଁ ଆପଣଙ୍କୁ ଗୋଟିଏ କ୍ଷତିକୁ ବାଛିବାକୁ ହେବ।"
 
-#: src/Gui/CCMainWindow.py:418
+#: src/Gui/CCMainWindow.py:422
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -489,7 +419,7 @@ msgstr ""
 "\t-v[vv]\t\t\tVerbose\n"
 "\t--report=CRASH_ID\tସିଧାସଳଖ CRASH_ID ସହିତ ବିବରଣୀ ନଷ୍ଟ ହୋଇଥାଏ"
 
-#: src/Gui/CCMainWindow.py:441
+#: src/Gui/CCMainWindow.py:445
 #, python-format
 msgid ""
 "No such crash in database, probably wrong crashid.\n"
@@ -507,7 +437,7 @@ msgstr ""
 msgid "You must check backtrace for sensitive data"
 msgstr "ସ୍ପର୍ଶକାତର ତଥ୍ୟ ପାଇଁ ଆପଣଙ୍କୁ ବ୍ୟାକଟ୍ରେସକୁ ଯାଞ୍ଚ କରିବା ଆବଶ୍ୟକ"
 
-#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:302
+#: src/Gui/CCReporterDialog.py:118 src/Gui/CReporterAssistant.py:304
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -520,11 +450,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "ତାପରେ ବ୍ୟାକଟ୍ରେସକୁ ପୁନଃନିର୍ମାଣ କରିବା ପାଇଁ ସତେଜନ କରିବା ବଟନକୁ ବ୍ୟବହାର କରନ୍ତୁ।"
 
-#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:304
+#: src/Gui/CCReporterDialog.py:120 src/Gui/CReporterAssistant.py:306
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "ବ୍ୟାକ ଟ୍ରେଶଟି ବ୍ୟବହାର ଉପଯୋଗୀ ନୁହଁ, ଆପଣ ଏହାକୁ ଖବର କରି ପାରିବେ ନାହିଁ!"
 
-#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:308
+#: src/Gui/CCReporterDialog.py:124 src/Gui/CReporterAssistant.py:310
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -550,7 +480,7 @@ msgstr ""
 "ଦୟାକରି abrt.conf କୁ ଯାଞ୍ଚ କରନ୍ତୁ।"
 
 #: src/Gui/CCReporterDialog.py:418 src/Gui/PluginsSettingsDialog.py:169
-#: src/Gui/CReporterAssistant.py:199
+#: src/Gui/CReporterAssistant.py:201
 #, python-format
 msgid ""
 "Can't save plugin settings:\n"
@@ -559,12 +489,12 @@ msgstr ""
 "ପ୍ଲଗଇନ ସଂରଚନାକୁ ସଂରକ୍ଷଣ କରାଯାଇପାରିବ ନାହିଁ:\n"
 " %s"
 
-#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:229
+#: src/Gui/CCReporterDialog.py:448 src/Gui/CReporterAssistant.py:231
 #, python-format
 msgid "Configure %s options"
 msgstr "%s ବିକଳ୍ପଗୁଡ଼ିକୁ ବିନ୍ୟାସ କରନ୍ତୁ"
 
-#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:829
+#: src/Gui/CCReporterDialog.py:498 src/Gui/CReporterAssistant.py:837
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -572,7 +502,7 @@ msgstr ""
 "ବିବରଣୀ ପ୍ରାପ୍ତ କରିବାରେ ଅସମର୍ଥ!\n"
 "ତ୍ରୁଟି ନିବରଣୀ ସୂଚନା ଅନୁପସ୍ଥିତ ଅଛି କି?"
 
-#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:398
+#: src/Gui/CCReporterDialog.py:527 src/Gui/CReporterAssistant.py:400
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -582,7 +512,7 @@ msgstr ""
 "%s"
 
 #: src/Gui/CCReporterDialog.py:553 src/Gui/CCReporterDialog.py:574
-#: src/Gui/CReporterAssistant.py:861
+#: src/Gui/CReporterAssistant.py:876
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "ବିବରଣୀ ପାଇବାରେ ତ୍ରୁଟି: %s"
@@ -704,7 +634,7 @@ msgstr "<span fgcolor=\"blue\">କାରଣ:</span>"
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
 msgstr "ମୁଁ ବ୍ୟାକଟ୍ରେସକୁ ଯାଞ୍ଚ କରିଛି ଏବଂ ସ୍ପର୍ଶକାତର ତଥ୍ୟକୁ କାଢ଼ିଦେଇଛି (ପ୍ରବେଶ ସଂକେତ, ଇତ୍ୟାଦି)"
 
-#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:733
+#: src/Gui/report.glade:369 src/Gui/CReporterAssistant.py:741
 msgid "<b>Backtrace</b>"
 msgstr "<b>ବ୍ୟାକଟ୍ରେସ</b>"
 
@@ -857,37 +787,41 @@ msgstr "ବିଶ୍ଳେଷକମାନେ, କାର୍ଯ୍ୟଗୁଡ଼�
 msgid "GPG Keys"
 msgstr "GPG କିଗୁଡ଼ିକ"
 
-#: src/Gui/CReporterAssistant.py:278
+#: src/Gui/CReporterAssistant.py:20
+msgid "Crash info doesn't contain a backtrace"
+msgstr ""
+
+#: src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by %s plugin"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:280
+#: src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check.."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:290
+#: src/Gui/CReporterAssistant.py:292
 #, fuzzy
 msgid "You should check backtrace for sensitive data"
 msgstr "ସ୍ପର୍ଶକାତର ତଥ୍ୟ ପାଇଁ ଆପଣଙ୍କୁ ବ୍ୟାକଟ୍ରେସକୁ ଯାଞ୍ଚ କରିବା ଆବଶ୍ୟକ"
 
-#: src/Gui/CReporterAssistant.py:291
+#: src/Gui/CReporterAssistant.py:293
 msgid "You must agree with sending the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:322
-msgid "Only one reporter plugin is configured, skipping the selection dialog"
+#: src/Gui/CReporterAssistant.py:325
+msgid "Only one reporter plugin is configured"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:356
+#: src/Gui/CReporterAssistant.py:357
 msgid "You didn't provide any steps to reproduce."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:370
+#: src/Gui/CReporterAssistant.py:371
 msgid "You didn't provide any comments."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:447
+#: src/Gui/CReporterAssistant.py:449
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -902,12 +836,12 @@ msgid ""
 "continue."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:500
+#: src/Gui/CReporterAssistant.py:508
 #, fuzzy
 msgid "Send a bug report"
 msgstr "ବିବରଣୀ ପଠାନ୍ତୁ"
 
-#: src/Gui/CReporterAssistant.py:538
+#: src/Gui/CReporterAssistant.py:546
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -917,113 +851,113 @@ msgid ""
 "report does not contain any sensitive date you'd rather not share:"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:579
+#: src/Gui/CReporterAssistant.py:587
 msgid "Refresh"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:581
+#: src/Gui/CReporterAssistant.py:589
 msgid "Copy"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:587
+#: src/Gui/CReporterAssistant.py:595
 msgid "I agree with submitting the backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:592
+#: src/Gui/CReporterAssistant.py:600
 msgid "Approve backtrace"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:615
+#: src/Gui/CReporterAssistant.py:623
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:633
+#: src/Gui/CReporterAssistant.py:641
 msgid ""
 "Are there any comments you'd like to share with the software maintainers?"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:652
+#: src/Gui/CReporterAssistant.py:660
 msgid "Provide additional details"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:659
+#: src/Gui/CReporterAssistant.py:667
 msgid ""
 "<b>Tip:</b> Your comments are not private.  Please monitor what you say "
 "accordingly."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:700
+#: src/Gui/CReporterAssistant.py:708
 msgid "Confirm and send report"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:702
+#: src/Gui/CReporterAssistant.py:710
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:707
+#: src/Gui/CReporterAssistant.py:715
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>ପ୍ଲଗଇନ ବିବରଣୀ</b>"
 
-#: src/Gui/CReporterAssistant.py:714
+#: src/Gui/CReporterAssistant.py:722
 #, fuzzy
 msgid "Component"
 msgstr "ସାଧାରଣ"
 
-#: src/Gui/CReporterAssistant.py:715
+#: src/Gui/CReporterAssistant.py:723
 msgid "Package"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:716
+#: src/Gui/CReporterAssistant.py:724
 msgid "Executable"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:717
+#: src/Gui/CReporterAssistant.py:725
 msgid "Cmdline"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:719
+#: src/Gui/CReporterAssistant.py:727
 msgid "Architecture"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:720
+#: src/Gui/CReporterAssistant.py:728
 msgid "Kernel"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:721
+#: src/Gui/CReporterAssistant.py:729
 msgid "Release"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:722
+#: src/Gui/CReporterAssistant.py:730
 #, fuzzy
 msgid "Reason"
 msgstr "<b>କାରଣ:</b>"
 
-#: src/Gui/CReporterAssistant.py:736
+#: src/Gui/CReporterAssistant.py:744
 msgid "Click to view ..."
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:748
+#: src/Gui/CReporterAssistant.py:756
 #, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>ସମୟ (ଅଥବା ଅବଧି)</b>"
 
-#: src/Gui/CReporterAssistant.py:769
+#: src/Gui/CReporterAssistant.py:777
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>ଟିପ୍ପଣୀ</b>"
 
-#: src/Gui/CReporterAssistant.py:772
+#: src/Gui/CReporterAssistant.py:780
 msgid "No comment provided!"
 msgstr ""
 
-#: src/Gui/CReporterAssistant.py:808
+#: src/Gui/CReporterAssistant.py:816
 #, fuzzy
 msgid "Finished sending the bug report"
 msgstr "ବିବରଣୀ ପଠାନ୍ତୁ"
 
-#: src/Gui/CReporterAssistant.py:812
+#: src/Gui/CReporterAssistant.py:820
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>ତ୍ରୁଟି ବିବରଣୀ:</b>"
@@ -1071,7 +1005,7 @@ msgstr ""
 msgid "Hide"
 msgstr "ଲୁଚାନ୍ତୁ"
 
-#: src/Daemon/Daemon.cpp:478
+#: src/Daemon/Daemon.cpp:517
 msgid ""
 "Report size exceeded the quota. Please check system's MaxCrashReportsSize "
 "value in abrt.conf."
@@ -1079,17 +1013,12 @@ msgstr ""
 "ବିବରଣୀ ଆକାର ସଂରକ୍ଷଣକୁ ଅତିକ୍ରମ କରିଛି। ଦୟାକରି ତନ୍ତ୍ରର MaxCrashReportsSize ମୂଲ୍ୟକୁ abrt.conf "
 "ରେ ଯାଞ୍ଚ କରନ୍ତୁ।"
 
-#: lib/Plugins/Bugzilla.cpp:328
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "ତ୍ରୁଟିକୁ ପୂର୍ବରୁ ଖବର କରାଯାଇଛି: %i"
-
-#: lib/Plugins/Bugzilla.cpp:409
+#: lib/Plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "ନୂତନ ତ୍ରୁଟି id: %i"
 
-#: lib/Plugins/Bugzilla.cpp:622
+#: lib/Plugins/Bugzilla.cpp:681
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -1097,67 +1026,68 @@ msgstr ""
 "ଖାଲି ଲଗଇନ କିମ୍ବା ପ୍ରବେଶ ସଂକେତ।\n"
 "ଦୟାକରି ଯାଞ୍ଚ କରନ୍ତୁ"
 
-#: lib/Plugins/Bugzilla.cpp:630
+#: lib/Plugins/Bugzilla.cpp:690
 msgid "Logging into bugzilla..."
 msgstr "ବଗଜିଲ୍ଲାରେ ଲଗଇନ କରୁଅଛି..."
 
-#: lib/Plugins/Bugzilla.cpp:633
+#: lib/Plugins/Bugzilla.cpp:693
 msgid "Checking for duplicates..."
 msgstr "ନକଲିଗୁଡ଼ିକୁ ଯାଞ୍ଚ କରୁଅଛି..."
 
-#: lib/Plugins/Bugzilla.cpp:646
+#: lib/Plugins/Bugzilla.cpp:705 lib/Plugins/Bugzilla.cpp:743
 msgid "Missing mandatory member 'bugs'"
 msgstr "ଆବଶ୍ୟକ ସଦସ୍ୟ 'bugs' ଅନୁପସ୍ଥିତ"
 
-#: lib/Plugins/Bugzilla.cpp:661
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla ଭରଣ ନିର୍ମାଣରେ ବିଫଳ ହୋଇଛି"
-
-#: lib/Plugins/Bugzilla.cpp:669 lib/Plugins/Bugzilla.cpp:779
-msgid "Logging out..."
-msgstr "ଲଗଆଉଟ କରୁଅଛି..."
-
-#: lib/Plugins/Bugzilla.cpp:701 lib/Plugins/Bugzilla.cpp:729
+#: lib/Plugins/Bugzilla.cpp:725 lib/Plugins/Bugzilla.cpp:759
+#: lib/Plugins/Bugzilla.cpp:835
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() ବିଫଳ ହୋଇଛି। ସମସ୍ୟ ଆବଶ୍ୟକୀୟ ସୂଚନାକୁ ସଂଗ୍ରହ କରିପାରିଲା ନାହିଁ"
 
-#: lib/Plugins/Bugzilla.cpp:713
+#: lib/Plugins/Bugzilla.cpp:775
+msgid "Creating new bug..."
+msgstr "ନୂତନ ତ୍ରୁଟି ନିର୍ମାଣ କରୁଅଛି..."
+
+#: lib/Plugins/Bugzilla.cpp:780
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla ଭରଣ ନିର୍ମାଣରେ ବିଫଳ ହୋଇଛି"
+
+#: lib/Plugins/Bugzilla.cpp:790 lib/Plugins/Bugzilla.cpp:885
+msgid "Logging out..."
+msgstr "ଲଗଆଉଟ କରୁଅଛି..."
+
+#: lib/Plugins/Bugzilla.cpp:809
 #, c-format
-msgid "Bugzilla couldn't find parent of bug(%d)"
+msgid "Bug is already reported: %i"
+msgstr "ତ୍ରୁଟିକୁ ପୂର୍ବରୁ ଖବର କରାଯାଇଛି: %i"
+
+#: lib/Plugins/Bugzilla.cpp:820
+#, fuzzy, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla ମୂଖ୍ୟ ତ୍ରୁଟି(%d) କୁ ଖୋଜିପାରିଲା ନାହିଁ"
 
-#: lib/Plugins/Bugzilla.cpp:718
-#, c-format
-msgid "Jump to bug %d"
-msgstr "ତ୍ରୁଟି %d କୁ ଯାଆନ୍ତୁ"
-
-#: lib/Plugins/Bugzilla.cpp:743 lib/Plugins/Bugzilla.cpp:744
+#: lib/Plugins/Bugzilla.cpp:849 lib/Plugins/Bugzilla.cpp:850
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "%s କୁ CC ତାଲିକାରେ ଯୋଗ କରନ୍ତୁ"
 
-#: lib/Plugins/Bugzilla.cpp:768
+#: lib/Plugins/Bugzilla.cpp:874
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "ତ୍ରୁଟି(%d) ରେ ନୂତନ ନିର୍ଦ୍ଦେଶ ଯୋଗ କରନ୍ତୁ"
 
-#: lib/Plugins/Kerneloops.cpp:118
-msgid "Getting local universal unique identification"
-msgstr "ସ୍ଥାନୀୟ ଜାଗତିକ ଅନନ୍ୟ ପରିଚୟକୁ ଗ୍ରହଣ କରୁଅଛି"
-
-#: lib/Plugins/CCpp.cpp:184
+#: lib/Plugins/CCpp.cpp:185
 msgid "Generating backtrace"
 msgstr "ପଛୁଆ ଯାଞ୍ଚ ବିବରଣୀ ଗ୍ରହଣ କରୁଅଛି"
 
-#: lib/Plugins/CCpp.cpp:352
+#: lib/Plugins/CCpp.cpp:353
 msgid "Starting debuginfo installation"
 msgstr "ତ୍ରୁଟିନିବାରଣ ସୂଚନା ସ୍ଥାପନକୁ ଆରମ୍ଭ କରୁଅଛି"
 
-#: lib/Plugins/CCpp.cpp:560
+#: lib/Plugins/CCpp.cpp:561
 msgid "Getting global universal unique identification..."
 msgstr "ସ୍ଥାନୀୟ ଜାଗତିକ ଅନନ୍ୟ ପରିଚୟକୁ ଗ୍ରହଣ କରୁଅଛି..."
 
-#: lib/Plugins/CCpp.cpp:726
+#: lib/Plugins/CCpp.cpp:737
 msgid "Skipping debuginfo installation"
 msgstr "ତ୍ରୁଟିନିବାରଣ ସୂଚନା ସ୍ଥାପନକୁ ଏଡ଼ାଇ ଦେଉଛି"
 
@@ -1170,7 +1100,7 @@ msgstr "ବିବରଣୀ ନିର୍ମାଣ କରି ଦାଖଲ କର�
 msgid "Writing report to '%s'"
 msgstr "'%s' କୁ ବିବରଣୀ ଲେଖୁଅଛି"
 
-#: lib/Plugins/FileTransfer.cpp:288
+#: lib/Plugins/FileTransfer.cpp:298
 msgid "FileTransfer: Creating a report..."
 msgstr "ଫାଇଲ ପରିବହନ: ଗୋଟିଏ ବିବରଣୀ ନିର୍ମାଣ କରୁଅଛି..."
 
@@ -1196,6 +1126,36 @@ msgstr "sosreport ଚାଲୁଅଛି: %s"
 #: lib/Plugins/SOSreport.cpp:103
 msgid "Done running sosreport"
 msgstr "sosreport ଚଲାଇବା ସମାପ୍ତ ହେଲା"
+
+#, fuzzy
+#~ msgid "send_string: URL not specified"
+#~ msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋଇନାହିଁ"
+
+#, fuzzy
+#~ msgid "Sending failed, try it again: %s"
+#~ msgstr "ଅଭିଲେଖ %s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
+
+#, fuzzy
+#~ msgid "send_file: URL not specified"
+#~ msgstr "ଫାଇଲ ପରିବହନ: URL ଉଲ୍ଲେଖ କରାହୋଇନାହିଁ"
+
+#, fuzzy
+#~ msgid "Sending file %s to %s"
+#~ msgstr "ଅଭିଲେଖ %s କୁ %s ମଧ୍ଯକୁ ପଠାଉଛି"
+
+#, fuzzy
+#~ msgid "New bug id: %s"
+#~ msgstr "ନୂତନ ତ୍ରୁଟି id: %i"
+
+#, fuzzy
+#~ msgid "Creating a signature..."
+#~ msgstr "ବିବରଣୀ ନିର୍ମାଣ କରି ଦାଖଲ କରୁଅଛି..."
+
+#~ msgid "Jump to bug %d"
+#~ msgstr "ତ୍ରୁଟି %d କୁ ଯାଆନ୍ତୁ"
+
+#~ msgid "Getting local universal unique identification"
+#~ msgstr "ସ୍ଥାନୀୟ ଜାଗତିକ ଅନନ୍ୟ ପରିଚୟକୁ ଗ୍ରହଣ କରୁଅଛି"
 
 #, fuzzy
 #~ msgid "Not reported"
