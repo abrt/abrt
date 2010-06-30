@@ -62,7 +62,7 @@ if test -f "$tempdir/analyzer" && test -f "$tempdir/time" && test -f "$tempdir/u
 else
     for d in "$tempdir"/*; do
         test -d "$d" || continue
-        printf "1" >"$tempdir/$d/remote"
+        printf "1" >"$d/remote"
         mv -- "$d" "$abrt_dir"
     done
 fi
