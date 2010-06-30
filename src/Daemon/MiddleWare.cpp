@@ -659,6 +659,7 @@ static bool is_path_blacklisted(const char *path)
 static mw_result_t SavePackageDescriptionToDebugDump(
                 const char *pExecutable,
                 const char *cmdline,
+                bool remote,
                 const char *pDebugDumpDir)
 {
     std::string package;
@@ -681,7 +682,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         char *rpm_pkg = GetPackage(pExecutable);
         if (rpm_pkg == NULL)
         {
-            if (g_settings_bProcessUnpackaged)
+            if (g_settings_bProcessUnpackaged || remote)
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", pExecutable);
                 try
@@ -750,7 +751,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                 free(script_name);
             }
 
-            if (!knownOrigin && !g_settings_bProcessUnpackaged)
+            if (!knownOrigin && !g_settings_bProcessUnpackaged && !remote)
             {
                 log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
                 return MW_PACKAGE_ERROR;
@@ -767,7 +768,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             log("Blacklisted package '%s'", packageName.c_str());
             return MW_BLACKLISTED;
         }
-        if (g_settings_bOpenGPGCheck)
+        if (g_settings_bOpenGPGCheck && !remote)
         {
             if (!s_RPM.CheckFingerprint(packageName.c_str()))
             {
@@ -961,6 +962,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     std::string analyzer;
     std::string executable;
     std::string cmdline;
+    bool remote = false;
     try
     {
         CDebugDump dd;
@@ -970,6 +972,12 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         dd.LoadText(FILENAME_ANALYZER, analyzer);
         dd.LoadText(FILENAME_EXECUTABLE, executable);
         dd.LoadText(FILENAME_CMDLINE, cmdline);
+        if (dd.Exist(FILENAME_REMOTE))
+        {
+            std:string remote_str;
+            dd.LoadText(FILENAME_REMOTE, remote_str);
+            remote = (remote_str.find('1') != std::string::npos);
+        }
     }
     catch (CABRTException& e)
     {
@@ -994,7 +1002,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         return MW_IN_DB;
     }
 
-    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), cmdline.c_str(), pDebugDumpDir);
+    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), cmdline.c_str(), remote, pDebugDumpDir);
     if (res != MW_OK)
     {
         return res;
