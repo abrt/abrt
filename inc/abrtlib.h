@@ -163,6 +163,10 @@ char *run_in_shell_and_save_output(int flags,
 		const char *dir,
 		size_t *size_p);
 
+/* cuts the name from the NVR format: foo-1.2.3-1.el6
+   returns a newly allocated string
+*/
+char * get_package_name_from_NVR_or_NULL(const char* package_NVR);
 
 unsigned long long monotonic_ns(void);
 unsigned long long monotonic_us(void);

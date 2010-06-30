@@ -27,6 +27,7 @@ libABRTUtils_la_SOURCES = \
     backtrace.h backtrace.c \
     backtrace_parser.y \
     strbuf.h strbuf.c \
+    abrt_packages.cpp \
     hooklib.h hooklib.cpp
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \

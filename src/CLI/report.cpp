@@ -494,12 +494,17 @@ static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
   const char *package_nvr = get_crash_data_item_content_or_NULL(crash_data, FILENAME_PACKAGE);
   if (!package_nvr)
     return result; /* No package name found in the crash data. */
-  std::string str_package_nvr(package_nvr);
-  std::string package_name = str_package_nvr.substr(0, str_package_nvr.rfind("-", str_package_nvr.rfind("-") - 1));
+  char * package_name = get_package_name_from_NVR_or_NULL(package_nvr);
   // analyzer with package name (CCpp:xorg-x11-app) has higher priority
-  std::string package_specific_analyzer = std::string(analyzer) + ":" + package_name;
+  map_string_t::const_iterator reporters_iter;
+  if(package_name != NULL)
+  {
+      char* package_specific_analyzer = xasprintf("%s:%s", analyzer, package_name);
+      reporters_iter = analyzer_to_reporters.find(package_specific_analyzer);
+      free(package_specific_analyzer);
+      free(package_name);
+  }
 
-  map_string_t::const_iterator reporters_iter = analyzer_to_reporters.find(package_specific_analyzer);
   if (analyzer_to_reporters.end() == reporters_iter)
   {
     reporters_iter = analyzer_to_reporters.find(analyzer);

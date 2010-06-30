@@ -59,7 +59,7 @@ static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
 static vector_pair_string_string_t s_vectorActionsAndReporters;
 
 
-static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir, int force);
+static void RunAnalyzerActions(const char *pAnalyzer, const char* pPackageName, const char *pDebugDumpDir, int force);
 
 
 static char* is_text_file(const char *name, ssize_t *sz)
@@ -285,6 +285,8 @@ mw_result_t CreateCrashReport(const char *crash_id,
         }
 
         std::string analyzer = get_crash_data_item_content(pCrashData, FILENAME_ANALYZER);
+        const char* package = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
+        char* package_name = get_package_name_from_NVR_or_NULL(package);
 
         // TODO: explain what run_analyser_CreateReport and RunAnalyzerActions are expected to do.
         // Do they potentially add more files to dump dir?
@@ -297,9 +299,9 @@ mw_result_t CreateCrashReport(const char *crash_id,
         std::string dup_hash = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
         VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
 
-        VERB3 log(" RunAnalyzerActions('%s','%s',force=%d)", analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
-        RunAnalyzerActions(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
-
+        VERB3 log(" RunAnalyzerActions('%s','%s','%s',force=%d)", analyzer.c_str(), package_name, row.m_sDebugDumpDir.c_str(), force);
+        RunAnalyzerActions(analyzer.c_str(), package_name, row.m_sDebugDumpDir.c_str(), force);
+        free(package_name);
         DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
         add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row.m_sUUID.c_str());
         add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
@@ -478,26 +480,27 @@ report_status_t Report(const map_crash_data_t& client_report,
 
     map_crash_data_t::const_iterator its_PACKAGE = stored_report.find(FILENAME_PACKAGE);
     std::string packageNVR = its_PACKAGE->second[CD_CONTENT];
-    std::string packageName = packageNVR.substr(0, packageNVR.rfind("-", packageNVR.rfind("-") - 1));
+    char * packageName = get_package_name_from_NVR_or_NULL(packageNVR.c_str());
 
     // analyzer with package name (CCpp:xorg-x11-app) has higher priority
-    std::string key = analyzer + ":" + packageName;
+    char* key = xasprintf("%s:%s",analyzer.c_str(),packageName);
+    free(packageName);
     map_analyzer_actions_and_reporters_t::iterator end = s_mapAnalyzerActionsAndReporters.end();
     map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
     if (keyPtr == end)
     {
-        VERB3 log("'%s' not found, looking for '%s'", key.c_str(), analyzer.c_str());
+        VERB3 log("'%s' not found, looking for '%s'", key, analyzer.c_str());
         // if there is no such settings, then try default analyzer
         keyPtr = s_mapAnalyzerActionsAndReporters.find(analyzer);
-        key = analyzer;
     }
+    free(key);
 
     bool at_least_one_reporter_succeeded = false;
     report_status_t ret;
     std::string message;
     if (keyPtr != end)
     {
-        VERB2 log("Found AnalyzerActionsAndReporters for '%s'", key.c_str());
+        VERB2 log("Found AnalyzerActionsAndReporters for '%s'", analyzer.c_str());
 
         vector_pair_string_string_t::iterator it_r = keyPtr->second.begin();
         for (; it_r != keyPtr->second.end(); it_r++)
@@ -663,13 +666,14 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                 const char *pDebugDumpDir)
 {
     std::string package;
-    std::string packageName;
+    char* packageName = NULL;
     std::string component;
     std::string scriptName; /* only if "interpreter /path/to/script" */
 
     if (strcmp(pExecutable, "kernel") == 0)
     {
-        component = packageName = package = "kernel";
+        component = package = "kernel";
+        packageName = xstrdup("kernel");
     }
     else
     {
@@ -759,20 +763,22 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         }
 
         package = rpm_pkg;
-        packageName = package.substr(0, package.rfind("-", package.rfind("-") - 1));
-        VERB2 log("Package:'%s' short:'%s'", rpm_pkg, packageName.c_str());
+        packageName = get_package_name_from_NVR_or_NULL(package.c_str());
+        VERB2 log("Package:'%s' short:'%s'", rpm_pkg, packageName);
         free(rpm_pkg);
 
         if (g_settings_setBlackListedPkgs.find(packageName) != g_settings_setBlackListedPkgs.end())
         {
-            log("Blacklisted package '%s'", packageName.c_str());
+            log("Blacklisted package '%s'", packageName);
+            free(packageName);
             return MW_BLACKLISTED;
         }
         if (g_settings_bOpenGPGCheck && !remote)
         {
-            if (!s_RPM.CheckFingerprint(packageName.c_str()))
+            if (!s_RPM.CheckFingerprint(packageName))
             {
-                log("Package '%s' isn't signed with proper key", packageName.c_str());
+                log("Package '%s' isn't signed with proper key", packageName);
+                free(packageName);
                 return MW_GPG_ERROR;
             }
             /*
@@ -793,7 +799,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         component = GetComponent(pExecutable);
     }
 
-    std::string description = GetDescription(packageName.c_str());
+    std::string description = GetDescription(packageName);
+    free(packageName);
 
     char host[HOST_NAME_MAX + 1];
     if (!remote)
@@ -887,9 +894,25 @@ void autoreport(const pair_string_string_t& reporter_options, const map_crash_da
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
  */
-static void RunAnalyzerActions(const char *pAnalyzer, const char *pDebugDumpDir, int force)
+static void RunAnalyzerActions(const char *pAnalyzer, const char *pPackageName, const char *pDebugDumpDir, int force)
 {
-    map_analyzer_actions_and_reporters_t::iterator analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
+    map_analyzer_actions_and_reporters_t::iterator analyzer;
+    if(pPackageName != NULL){
+        /*try to find analyzer:component first*/
+        char *analyzer_component = xasprintf("%s:%s", pAnalyzer, pPackageName);
+        analyzer = s_mapAnalyzerActionsAndReporters.find(analyzer_component);
+        /* if we didn't find an action for specific package, use the generic one */
+        if(analyzer == s_mapAnalyzerActionsAndReporters.end()){
+            VERB2 log("didn't find action for %s, trying just %s", analyzer_component, pAnalyzer);
+            map_analyzer_actions_and_reporters_t::iterator analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
+        }
+        free(analyzer_component);
+    }
+    else
+    {
+        VERB2 log("no package name specified, trying to find action for: %s", pAnalyzer);
+        analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
+    }
     if (analyzer != s_mapAnalyzerActionsAndReporters.end())
     {
         vector_pair_string_string_t::iterator it_a = analyzer->second.begin();

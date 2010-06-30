@@ -157,6 +157,7 @@ std::string GetDescription(const char* pPackage)
 std::string GetComponent(const char* pFileName)
 {
     std::string ret;
+    char *package_name;
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName, 0);
     Header header = rpmdbNextIterator(iter);
@@ -167,8 +168,9 @@ std::string GetComponent(const char* pFileName)
         const char * srpm = rpmtdGetString(td);
         if (srpm != NULL)
         {
-            std::string srcrpm(srpm);
-            ret = srcrpm.erase(srcrpm.rfind('-', srcrpm.rfind('-')-1));
+            package_name = get_package_name_from_NVR_or_NULL(srpm);
+            ret = std::string(package_name);
+            free(package_name);
         }
         rpmtdFree(td);
     }
