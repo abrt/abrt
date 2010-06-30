@@ -463,45 +463,44 @@ send_report_to_new_case(const char* baseURL,
                 errmsg = atch_state->curl_error_msg;
             if ((!errmsg || !errmsg[0]) && atch_state->body && atch_state->body[0])
                 errmsg = atch_state->body;
-            if (case_state->body && case_state->body[0])
+            if (atch_state->body && atch_state->body[0])
             {
-                if (errmsg) /* both bodies are present */
+                if (errmsg
+                 && strcmp(errmsg, atch_state->body) != 0
+                ) /* both strata/curl error and body are present (and aren't the same) */
                     allocated = errmsg = xasprintf("%s. %s",
-                            case_state->body,
+                            atch_state->body,
                             errmsg);
-                else /* only ticket body exists */
-                    allocated = errmsg = xasprintf("%s. HTTP code %d",
-                            case_state->body,
-                            atch_state->http_resp_code);
-            } else { /* there were no body in ticket response */
-                if (!errmsg) /* ...and neither in attach response */
-                    allocated = errmsg = xasprintf(
-                            "HTTP code %d",
-                            atch_state->http_resp_code);
-                /* else: only attach body exists */
+                else /* only body exists */
+                    errmsg = atch_state->body;
             }
             /* Note: to prevent URL misparsing, make sure to delimit
              * case_location only using spaces */
-            retval = xasprintf("Case created: %s but report attachment failed: %s",
-                    case_location, errmsg);
+            retval = xasprintf("Case created: %s but report attachment failed (HTTP code %d)%s%s",
+                    case_location,
+                    atch_state->http_resp_code,
+                    errmsg ? ": " : "",
+                    errmsg ? errmsg : ""
+	    );
             break;
 
         case 200:
         case 201:
-            char *body = atch_state->body;
-            if (case_state->body && case_state->body[0])
-            {
-                body = case_state->body;
-                if (atch_state->body && atch_state->body[0])
-                    allocated = body = xasprintf("%s\n%s",
-                            case_state->body,
-                            atch_state->body);
-            }
+            // unused
+            //char *body = atch_state->body;
+            //if (case_state->body && case_state->body[0])
+            //{
+            //    body = case_state->body;
+            //    if (atch_state->body && atch_state->body[0])
+            //        allocated = body = xasprintf("%s\n%s",
+            //                case_state->body,
+            //                atch_state->body);
+            //}
             retval = xasprintf("Case created: %s", /*body,*/ case_location);
         } /* switch (attach HTTP code) */
         free_abrt_post_state(atch_state);
 
-    } /* switch (ticket HTTP code) */
+    } /* switch (case HTTP code) */
 
     free_abrt_post_state(case_state);
     free(allocated);
