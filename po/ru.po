@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-07-02 07:29+0000\n"
-"PO-Revision-Date: 2010-07-02 21:11+0800\n"
+"PO-Revision-Date: 2010-07-04 18:47+0800\n"
 "Last-Translator: Misha Shnurapet <shnurapet@fedoraproject.org>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -36,14 +36,12 @@ msgid "Sending failed, trying again. %s"
 msgstr "Отправка не удалась, повтор. %s"
 
 #: ../lib/Plugins/ReportUploader.cpp:192
-#, fuzzy
 msgid "Creating a ReportUploader report..."
-msgstr "Создание и отправка отчета..."
+msgstr "Создание и отправка отчета…"
 
 #: ../lib/Plugins/RHTSupport.cpp:231
-#, fuzzy
 msgid "Creating a new case..."
-msgstr "Создается новый запрос..."
+msgstr "Создается новая запись…"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -130,9 +128,8 @@ msgid "# Command line"
 msgstr "# Команда"
 
 #: ../src/CLI/report.cpp:207
-#, fuzzy
 msgid "# Component"
-msgstr "Общие"
+msgstr "# Компонент"
 
 #: ../src/CLI/report.cpp:208
 msgid "# Core dump"
@@ -160,25 +157,29 @@ msgstr "# Выпуск операционной системы"
 
 #: ../src/CLI/report.cpp:336
 msgid "Can't run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
+msgstr "Нельзя запустить vi: $TERM, $VISUAL и $EDITOR не заданы"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
 "\n"
 "The report has been updated."
 msgstr ""
+"\n"
+"Отчет обновлен."
 
 #: ../src/CLI/report.cpp:426
 msgid ""
 "\n"
 "No changes were detected in the report."
 msgstr ""
+"\n"
+"Изменений в отчете не найдено."
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
 #, c-format
 msgid "Wrong settings were detected for plugin %s.\n"
-msgstr ""
+msgstr "Модуль %s настроен неправильно.\n"
 
 #: ../src/CLI/report.cpp:650
 msgid "Enter your login: "
@@ -189,14 +190,13 @@ msgid "Enter your password: "
 msgstr "Введите пароль:"
 
 #: ../src/CLI/report.cpp:700
-#, fuzzy
 msgid "Reporting..."
-msgstr "Сообщить"
+msgstr "Отправка…"
 
 #: ../src/CLI/report.cpp:719
 #, c-format
 msgid "Report using %s? [y/N]: "
-msgstr ""
+msgstr "Сообщить при помощи %s? [y/N]: "
 
 #: ../src/CLI/report.cpp:722
 msgid "Skipping..."
@@ -217,7 +217,7 @@ msgstr "Слишком много в секции «Как повторить»"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it."
-msgstr "Выполняется другая копия, попытка активировать..."
+msgstr "Выполняется другая копия, попытка активировать…"
 
 # «Daemon» не равно «demon».
 #: ../src/Gui/ABRTExceptions.py:13
@@ -433,7 +433,7 @@ msgstr ""
 #: ../src/Gui/CCReporterDialog.py:22
 #: ../src/Gui/CReporterAssistant.py:19
 msgid "Brief description how to reproduce this or what you did..."
-msgstr "Кратко опишите действия, которые привели к ошибке..."
+msgstr "Кратко опишите действия, которые привели к ошибке…"
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check backtrace for sensitive data"
@@ -569,13 +569,14 @@ msgid "Please select a plugin from the list to edit it's options."
 msgstr ""
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"Ошибка при загрузке dumplist. \n"
+"Не удалось открыть окно настройки модуля: \n"
+"\n"
 "%s"
 
 #: ../src/Gui/PluginSettingsUI.py:17
@@ -670,7 +671,7 @@ msgstr "Укажет регистратору повторно отследит�
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked backtrace and removed sensitive data (passwords, etc)"
-msgstr "Мной проверено, личная информация (пароли и т.п.) удалена"
+msgstr "Мной проверено, личной информации (паролей и т.п.) не содержит"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -679,7 +680,7 @@ msgstr "нет"
 #: ../src/Gui/report.glade.h:21
 #: ../src/Gui/progress_window.glade.h:2
 msgid "Please wait.."
-msgstr "Пожалуйста, подождите..."
+msgstr "Пожалуйста, подождите…"
 
 #: ../src/Gui/report.glade.h:22
 msgid "Reporter Selector"
@@ -812,9 +813,8 @@ msgid "Rating is not required by any plugin, skipping the check.."
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:292
-#, fuzzy
 msgid "You should check backtrace for sensitive data"
-msgstr "Проверьте, что в отслеженных данных нет личной информации"
+msgstr "Следует проверить отслеженные данные на предмет личной информации"
 
 #: ../src/Gui/CReporterAssistant.py:293
 msgid "You must agree with sending the backtrace"
@@ -894,9 +894,8 @@ msgid "Below is a summary of your bug report. Please click 'Apply' to submit it.
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:715
-#, fuzzy
 msgid "<b>Basic details</b>"
-msgstr "<b>Сведения о модуле</b>"
+msgstr "<b>Основные сведения</b>"
 
 #. left table
 #: ../src/Gui/CReporterAssistant.py:722
@@ -937,9 +936,8 @@ msgid "Click to view ..."
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:756
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>Время (период времени)</b>"
+msgstr "<b>Как повторить:</b>"
 
 #: ../src/Gui/CReporterAssistant.py:777
 msgid "<b>Comments:</b>"
@@ -1015,11 +1013,11 @@ msgstr ""
 
 #: ../lib/Plugins/Bugzilla.cpp:690
 msgid "Logging into bugzilla..."
-msgstr "Выполняется вход в Bugzilla..."
+msgstr "Выполняется вход в Bugzilla…"
 
 #: ../lib/Plugins/Bugzilla.cpp:693
 msgid "Checking for duplicates..."
-msgstr "Проверяется наличие дубликатов..."
+msgstr "Проверяется наличие дубликатов…"
 
 #: ../lib/Plugins/Bugzilla.cpp:705
 #: ../lib/Plugins/Bugzilla.cpp:743
@@ -1034,7 +1032,7 @@ msgstr "Сбой get_bug_info(). Не удалось собрать всю не�
 
 #: ../lib/Plugins/Bugzilla.cpp:775
 msgid "Creating new bug..."
-msgstr "Создается новый запрос..."
+msgstr "Создается новый запрос…"
 
 #: ../lib/Plugins/Bugzilla.cpp:780
 msgid "Bugzilla entry creation failed"
@@ -1043,7 +1041,7 @@ msgstr "Не удалось создать запись в Bugzilla"
 #: ../lib/Plugins/Bugzilla.cpp:790
 #: ../lib/Plugins/Bugzilla.cpp:885
 msgid "Logging out..."
-msgstr "Выполняется выход..."
+msgstr "Выполняется выход…"
 
 #. decision based on state
 #: ../lib/Plugins/Bugzilla.cpp:809
@@ -1052,9 +1050,9 @@ msgid "Bug is already reported: %i"
 msgstr "Запрос уже существует: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:820
-#, fuzzy, c-format
+#, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Не удалось найти родительский запрос для %d"
+msgstr "Первичный отчет о %d в Bugzilla не найден"
 
 #: ../lib/Plugins/Bugzilla.cpp:849
 #: ../lib/Plugins/Bugzilla.cpp:850
@@ -1080,7 +1078,7 @@ msgstr "Начало установки debuginfo"
 #. This whole block should be deleted for Fedora 14.
 #: ../lib/Plugins/CCpp.cpp:561
 msgid "Getting global universal unique identification..."
-msgstr "Глобальное назначение универсального кода..."
+msgstr "Глобальное назначение универсального кода…"
 
 #: ../lib/Plugins/CCpp.cpp:737
 msgid "Skipping debuginfo installation"
@@ -1088,7 +1086,7 @@ msgstr "Пропуск установки debuginfo"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
-msgstr "Создание и отправка отчета..."
+msgstr "Создание и отправка отчета…"
 
 #: ../lib/Plugins/Logger.cpp:73
 #, c-format
@@ -1097,7 +1095,7 @@ msgstr "Отчет записывается в «%s»"
 
 #: ../lib/Plugins/FileTransfer.cpp:298
 msgid "FileTransfer: Creating a report..."
-msgstr "Передача файлов: Создается отчет..."
+msgstr "Передача файлов: Создается отчет…"
 
 #: ../lib/Plugins/FileTransfer.cpp:322
 #, c-format
@@ -1111,7 +1109,7 @@ msgstr "Не удалось создать и отправить архив %s"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
-msgstr "Отправляется почтовое сообщение..."
+msgstr "Отправляется почтовое сообщение…"
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
