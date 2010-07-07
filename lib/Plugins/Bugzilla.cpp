@@ -692,7 +692,16 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
 
     update_client(_("Checking for duplicates..."));
 
-    xmlrpc_value *result  = bz_server.call_quicksearch_duphash(component.c_str(), NULL, duphash.c_str());
+    char *product = NULL;
+    char *version = NULL;
+    parse_release(release, &product, &version);
+
+    xmlrpc_value *result;
+    if (strcmp(product, "Fedora") == 0)
+        result  = bz_server.call_quicksearch_duphash(component.c_str(), product, duphash.c_str());
+    else
+        result  = bz_server.call_quicksearch_duphash(component.c_str(), NULL, duphash.c_str());
+
     if (!result)
         throw_if_xml_fault_occurred(&bz_server.env);
 
@@ -708,8 +717,6 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     int all_bugs_size = bz_server.get_array_size(all_bugs);
     struct bug_info bz;
     int depend_on_bugno = -1;
-    char *product = NULL;
-    char *version = NULL;
     if (all_bugs_size > 0)
     {
         bug_id = bz_server.get_bug_id(all_bugs);
@@ -725,7 +732,6 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             throw CABRTException(EXCEP_PLUGIN, _("get_bug_info() failed. Could not collect all mandatory information"));
         }
 
-        parse_release(release, &product, &version);
         if (strcmp(bz.bug_product, product) != 0)
         {
             depend_on_bugno = bug_id;
