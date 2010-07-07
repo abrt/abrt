@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-01 11:52+0000\n"
-"PO-Revision-Date: 2010-07-01 21:39+0200\n"
+"POT-Creation-Date: 2010-07-07 12:55+0000\n"
+"PO-Revision-Date: 2010-07-07 15:04+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -63,8 +63,13 @@ msgstr ""
 "\tCzas awarii     : %s\n"
 "\tLiczba awarii   : %s\n"
 
+#: ../src/CLI/CLI.cpp:65
+#, c-format
+msgid "\tHostname   : %s\n"
+msgstr "\tNazwa komputera : %s\n"
+
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:172
+#: ../src/CLI/CLI.cpp:177
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -103,7 +108,7 @@ msgstr ""
 "\t@N - zostanie użyta n-ta awaria (tak, jak wyświetlane przez --list --"
 "full)\n"
 
-#: ../src/CLI/CLI.cpp:215
+#: ../src/CLI/CLI.cpp:220
 msgid "You must specify exactly one operation"
 msgstr "Należy podać dokładnie jedne działanie"
 
