@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-03 05:31+0000\n"
-"PO-Revision-Date: 2010-07-03 12:43+0200\n"
+"POT-Creation-Date: 2010-07-07 12:55+0000\n"
+"PO-Revision-Date: 2010-07-07 17:27+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -69,8 +69,13 @@ msgstr ""
 "\tCrash tijd      : %s\n"
 "\tCrash telling   : %s\n"
 
+#: ../src/CLI/CLI.cpp:65
+#, c-format
+msgid "\tHostname   : %s\n"
+msgstr "\tHost naam   : %s\n"
+
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:172
+#: ../src/CLI/CLI.cpp:177
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -105,12 +110,12 @@ msgstr ""
 "\t-d, --delete CRASH_ID\tverwijder crash\n"
 "CRASH_ID kan zijn:\n"
 "\tUID:UUID paar,\n"
-"\tunieke UUID prefix  - de crash met bijpassende UUID waarop actie ondernomen "
-"zal worden\n"
-"\t@N  - N'de crash (zoals getoond door --list --full) waarop actie ondernomen "
-"zal worden\n"
+"\tunieke UUID prefix  - de crash met bijpassende UUID waarop actie "
+"ondernomen zal worden\n"
+"\t@N  - N'de crash (zoals getoond door --list --full) waarop actie "
+"ondernomen zal worden\n"
 
-#: ../src/CLI/CLI.cpp:215
+#: ../src/CLI/CLI.cpp:220
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
