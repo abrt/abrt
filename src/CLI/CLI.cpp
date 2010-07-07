@@ -58,6 +58,11 @@ static void print_crash(const map_crash_data_t &crash)
            get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
            timeloc,
            get_crash_data_item_content(crash, CD_COUNT).c_str());
+
+    /* Print the hostname if it's available. */
+    const char *hostname = get_crash_data_item_content_or_NULL(crash, FILENAME_HOSTNAME);
+    if (hostname)
+        printf(_("\tHostname   : %s\n"), hostname);
 }
 
 /**
