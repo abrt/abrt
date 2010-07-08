@@ -22,10 +22,10 @@
 #include "abrtlib.h"
 #include "abrt_curl.h"
 #include "abrt_rh_support.h"
-#include "CrashTypes.h"
-#include "DebugDump.h"
-#include "ABRTException.h"
-#include "CommLayerInner.h"
+#include "crash_types.h"
+#include "debug_dump.h"
+#include "abrt_exception.h"
+#include "comm_layer_inner.h"
 #include "RHTSupport.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>

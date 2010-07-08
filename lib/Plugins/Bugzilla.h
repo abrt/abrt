@@ -19,8 +19,8 @@
 #ifndef BUGZILLA_H_
 #define BUGZILLA_H_
 
-#include "Plugin.h"
-#include "Reporter.h"
+#include "plugin.h"
+#include "reporter.h"
 
 class CReporterBugzilla : public CReporter
 {

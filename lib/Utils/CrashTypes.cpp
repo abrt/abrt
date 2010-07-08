@@ -18,7 +18,7 @@
 */
 #include "abrt_types.h"
 #include "abrtlib.h"
-#include "CrashTypes.h"
+#include "crash_types.h"
 
 const char *const must_have_files[] = {
 	FILENAME_ARCHITECTURE,

@@ -17,8 +17,8 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "CrashTypes.h"
-#include "DebugDump.h" /* FILENAME_ARCHITECTURE etc */
+#include "crash_types.h"
+#include "debug_dump.h" /* FILENAME_ARCHITECTURE etc */
 #ifdef HAVE_CONFIG_H
 # include "config.h"
 #endif

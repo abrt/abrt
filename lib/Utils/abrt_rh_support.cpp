@@ -24,7 +24,7 @@
 #include "abrtlib.h"
 #include "abrt_curl.h"
 #include "abrt_xmlrpc.h"
-#include "ABRTException.h"
+#include "abrt_exception.h"
 #include "abrt_rh_support.h"
 
 using namespace std;

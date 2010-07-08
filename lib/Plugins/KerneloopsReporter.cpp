@@ -20,8 +20,8 @@
 #include "abrtlib.h"
 #include "abrt_curl.h"
 #include "KerneloopsReporter.h"
-#include "CommLayerInner.h"
-#include "ABRTException.h"
+#include "comm_layer_inner.h"
+#include "abrt_exception.h"
 
 /* helpers */
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)

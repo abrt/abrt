@@ -23,8 +23,8 @@
 #define MAILX_H_
 
 #include <string>
-#include "Plugin.h"
-#include "Reporter.h"
+#include "plugin.h"
+#include "reporter.h"
 
 class CMailx : public CReporter
 {

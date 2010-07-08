@@ -27,8 +27,8 @@
 #ifndef __INCLUDE_GUARD_KERNELOOPSREPORTER_H_
 #define __INCLUDE_GUARD_KERNELOOPSREPORTER_H_
 
-#include "Plugin.h"
-#include "Reporter.h"
+#include "plugin.h"
+#include "reporter.h"
 
 #include <string>
 

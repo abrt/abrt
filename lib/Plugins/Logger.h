@@ -22,8 +22,8 @@
 #ifndef LOGGER_H_
 #define LOGGER_H_
 
-#include "Plugin.h"
-#include "Reporter.h"
+#include "plugin.h"
+#include "reporter.h"
 
 class CLogger : public CReporter
 {

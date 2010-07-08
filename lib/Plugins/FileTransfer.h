@@ -23,8 +23,8 @@
 #define FILETRANSFER_H_
 
 #include <string>
-#include "Plugin.h"
-#include "Action.h"
+#include "plugin.h"
+#include "action.h"
 
 class CFileTransfer : public CAction
 {

@@ -23,7 +23,7 @@
 
 #include <string>
 #include <vector>
-#include "Plugin.h"
+#include "plugin.h"
 
 /**
  * Table

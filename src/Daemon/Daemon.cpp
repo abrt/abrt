@@ -38,9 +38,9 @@
     #define _(S) (S)
 #endif
 #include "abrtlib.h"
-#include "ABRTException.h"
+#include "abrt_exception.h"
 #include "CrashWatcher.h"
-#include "DebugDump.h"
+#include "debug_dump.h"
 #include "Daemon.h"
 #include "dumpsocket.h"
 

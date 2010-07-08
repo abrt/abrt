@@ -21,7 +21,7 @@
 #endif
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
-#include "ABRTException.h"
+#include "abrt_exception.h"
 
 void throw_xml_fault(xmlrpc_env *env)
 {

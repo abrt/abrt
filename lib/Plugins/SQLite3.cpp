@@ -21,7 +21,7 @@
 #include <sqlite3.h>
 #include "abrtlib.h"
 #include "SQLite3.h"
-#include "ABRTException.h"
+#include "abrt_exception.h"
 
 using namespace std;
 

@@ -19,7 +19,7 @@
 #include <dbus/dbus.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
-#include "ABRTException.h"
+#include "abrt_exception.h"
 #include "CrashWatcher.h"
 #include "Settings.h"
 #include "Daemon.h"

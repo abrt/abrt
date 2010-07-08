@@ -19,8 +19,8 @@
 #ifndef RHTICKET_H_
 #define RHTICKET_H_
 
-#include "Plugin.h"
-#include "Reporter.h"
+#include "plugin.h"
+#include "reporter.h"
 
 class CReporterRHticket: public CReporter
 {

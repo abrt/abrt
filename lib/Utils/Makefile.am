@@ -52,11 +52,11 @@ libABRTUtils_la_LIBADD = \
 libABRTdUtils_la_SOURCES = \
     parse_release.cpp \
     make_descr.cpp \
-    $(HEADER_DIR)/CommLayerInner.h CommLayerInner.cpp \
+    $(HEADER_DIR)/comm_layer_inner.h CommLayerInner.cpp \
     $(HEADER_DIR)/abrt_xmlrpc.h abrt_xmlrpc.cpp \
     abrt_rh_support.h abrt_rh_support.cpp \
     abrt_curl.h abrt_curl.cpp \
-    $(HEADER_DIR)/Plugin.h Plugin.cpp \
+    $(HEADER_DIR)/plugin.h Plugin.cpp \
     Polkit.h Polkit.cpp
 
 libABRTdUtils_la_CPPFLAGS = \

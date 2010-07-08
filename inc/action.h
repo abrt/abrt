@@ -21,7 +21,7 @@
 #ifndef ACTION_H_
 #define ACTION_H_
 
-#include "Plugin.h"
+#include "plugin.h"
 
 /**
  * An abstract class. The class defines an action plugin interface.

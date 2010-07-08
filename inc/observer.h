@@ -21,7 +21,7 @@
 
 #include <string>
 #include <stdint.h>
-#include "DBusCommon.h"
+#include "dbus_common.h"
 
 class CObserver {
     public:

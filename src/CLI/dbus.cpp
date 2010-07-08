@@ -16,7 +16,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "dbus.h"
-#include "DBusCommon.h"
+#include "dbus_common.h"
 
 DBusConnection* s_dbus_conn;
 

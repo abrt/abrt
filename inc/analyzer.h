@@ -22,7 +22,7 @@
 #define ANALYZER_H_
 
 #include <string>
-#include "Plugin.h"
+#include "plugin.h"
 
 /**
  * An abstract class. The class defines an analyzer plugin interface.

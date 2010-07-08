@@ -27,8 +27,8 @@
 #ifndef __INCLUDE_GUARD_KERNELOOPS_H_
 #define __INCLUDE_GUARD_KERNELOOPS_H_
 
-#include "Plugin.h"
-#include "Analyzer.h"
+#include "plugin.h"
+#include "analyzer.h"
 #include <string>
 
 class CAnalyzerKerneloops : public CAnalyzer

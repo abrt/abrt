@@ -18,7 +18,7 @@
 */
 #include "abrtlib.h"
 #include "RPM.h"
-#include "CommLayerInner.h"
+#include "comm_layer_inner.h"
 
 CRPM::CRPM()
 {
