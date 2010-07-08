@@ -285,6 +285,7 @@ class ReporterAssistant():
             rating = int(self.report.get_rating())
         except Exception, ex:
             rating = None
+        log1(_("Rating is %s" % rating))
         # active buttons acording to required fields
         # if an backtrace has rating use it
         if not SendBacktrace:
@@ -316,13 +317,7 @@ class ReporterAssistant():
 
     def on_page_prepare(self, assistant, page):
         if page == self.pdict_get_page(PAGE_REPORTER_SELECTOR):
-        # skip the first page if we have only one reporter plugin
-            if len(self.reporters) == 1:
-                # we want to skip it only if the plugin is properly configured
-                if self.reporters[0].Settings.check():
-                    self.selected_reporters.append(self.reporters[0])
-                    self.assistant.set_page_complete(page, True)
-                    log1(_("Only one reporter plugin is configured"))
+            pass
 
         # this is where dehydrate happens
         elif page == self.pdict_get_page(PAGE_EXTRA_INFO):
@@ -411,6 +406,8 @@ class ReporterAssistant():
                 page_n = self.assistant.get_current_page()
                 self.assistant.set_page_complete(page, True)
                 self.assistant.set_current_page(page_n+1)
+            else:
+                plugin.set_active(False)
         else:
             self.selected_reporters.remove(reporter)
             log1("Plugin >>%s<< de-activated" % reporter)
@@ -497,11 +494,19 @@ class ReporterAssistant():
             pass
         for reporter in self.reporters:
             cb = gtk.CheckButton(str(reporter))
-            if len(self.reporters) == 1:
-                cb.set_active(True)
             cb.connect("toggled", self.on_plugin_toggled, plugins_cb, reporter, page)
             plugins_cb.append(cb)
             vbox_plugins.pack_start(cb, fill=True, expand=False)
+        # automatically select the reporter if we have only one reporter plugin
+        if len(self.reporters) == 1:
+            # we want to skip it only if the plugin is properly configured
+            if self.reporters[0].Settings.check():
+                self.selected_reporters.append(self.reporters[0])
+                self.assistant.set_page_complete(page, True)
+                log1(_("Only one reporter plugin is configured"))
+                # this is safe, because in python the variable is visible even
+                # outside the for loop
+                cb.set_active(True)
         self.assistant.insert_page(page, PAGE_REPORTER_SELECTOR)
         self.pdict_add_page(page, PAGE_REPORTER_SELECTOR)
         self.assistant.set_page_type(page, gtk.ASSISTANT_PAGE_INTRO)
