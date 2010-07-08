@@ -1,7 +1,8 @@
 # ABRTUtils has small set of deps. This reduces deps of smaller abrt binaries
 # ABRTdUtils has much more. It is used by daemon and plugins only
 lib_LTLIBRARIES = libABRTUtils.la libABRTdUtils.la
-
+HEADER_DIR = $(srcdir)/../../inc
+AM_CPPFLAGS = -I$(HEADER_DIR)
 AM_YFLAGS = --verbose
 
 # Not used just yet:
@@ -9,7 +10,7 @@ AM_YFLAGS = --verbose
 # xconnect.cpp
 
 libABRTUtils_la_SOURCES = \
-    xfuncs.h xfuncs.cpp \
+    xfuncs.cpp \
     encbase64.cpp \
     read_write.cpp \
     logging.cpp \
@@ -20,7 +21,7 @@ libABRTUtils_la_SOURCES = \
     spawn.cpp \
     stringops.cpp \
     dirsize.cpp \
-    DebugDump.h DebugDump.cpp \
+    DebugDump.cpp \
     abrt_dbus.h abrt_dbus.cpp \
     CrashTypes.cpp \
     ABRTException.cpp \
@@ -51,15 +52,13 @@ libABRTUtils_la_LIBADD = \
 libABRTdUtils_la_SOURCES = \
     parse_release.cpp \
     make_descr.cpp \
-    CommLayerInner.h CommLayerInner.cpp \
-    abrt_xmlrpc.h abrt_xmlrpc.cpp \
+    $(HEADER_DIR)/CommLayerInner.h CommLayerInner.cpp \
+    $(HEADER_DIR)/abrt_xmlrpc.h abrt_xmlrpc.cpp \
     abrt_rh_support.h abrt_rh_support.cpp \
     abrt_curl.h abrt_curl.cpp \
-    Plugin.h Plugin.cpp \
-    Polkit.h Polkit.cpp \
-    Action.h Database.h Reporter.h Analyzer.h \
-    Observer.h \
-    DBusCommon.h
+    $(HEADER_DIR)/Plugin.h Plugin.cpp \
+    Polkit.h Polkit.cpp
+
 libABRTdUtils_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \
