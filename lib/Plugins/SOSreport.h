@@ -20,7 +20,7 @@
 #ifndef SOSREPORT_H_
 #define SOSREPORT_H_
 
-#include "Action.h"
+#include "action.h"
 
 class CActionSOSreport : public CAction
 {

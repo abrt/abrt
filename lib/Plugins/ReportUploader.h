@@ -24,8 +24,8 @@
 #ifndef REPORTUPLOADER_H_
 #define REPORTUPLAODER_H_
 
-#include "Plugin.h"
-#include "Reporter.h"
+#include "plugin.h"
+#include "reporter.h"
 
 class CReportUploader : public CReporter
 {

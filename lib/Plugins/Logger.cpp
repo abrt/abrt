@@ -20,9 +20,9 @@
 */
 #include "abrtlib.h"
 #include "Logger.h"
-#include "DebugDump.h"
-#include "CommLayerInner.h"
-#include "ABRTException.h"
+#include "debug_dump.h"
+#include "comm_layer_inner.h"
+#include "abrt_exception.h"
 
 CLogger::CLogger() :
     m_sLogPath("/var/log/abrt.log"),

@@ -23,11 +23,11 @@
 #define PLUGINMANAGER_H_
 
 #include "abrt_types.h"
-#include "Plugin.h"
-#include "Analyzer.h"
-#include "Reporter.h"
-#include "Database.h"
-#include "Action.h"
+#include "plugin.h"
+#include "analyzer.h"
+#include "reporter.h"
+#include "database.h"
+#include "action.h"
 
 class CLoadedModule; /* opaque */
 

@@ -20,8 +20,8 @@
 */
 #include <dlfcn.h>
 #include "abrtlib.h"
-#include "ABRTException.h"
-#include "CommLayerInner.h"
+#include "abrt_exception.h"
+#include "comm_layer_inner.h"
 #include "Polkit.h"
 #include "PluginManager.h"
 

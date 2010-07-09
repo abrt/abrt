@@ -21,9 +21,9 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <sys/un.h>
-#include "DebugDump.h"
-#include "CrashTypes.h"
-#include "ABRTException.h"
+#include "debug_dump.h"
+#include "crash_types.h"
+#include "abrt_exception.h"
 #include "hooklib.h"
 #include "strbuf.h"
 

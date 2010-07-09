@@ -16,10 +16,10 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <getopt.h>
-#include "ABRTException.h"
+#include "abrt_exception.h"
 #include "abrtlib.h"
 #include "abrt_dbus.h"
-#include "DBusCommon.h"
+#include "dbus_common.h"
 #include "report.h"
 #include "dbus.h"
 #if HAVE_CONFIG_H

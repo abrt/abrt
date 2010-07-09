@@ -18,8 +18,8 @@
 */
 #include "abrtlib.h"
 #include "Daemon.h"
-#include "ABRTException.h"
-#include "DebugDump.h"
+#include "abrt_exception.h"
+#include "debug_dump.h"
 #include "CrashWatcher.h"
 
 void CCrashWatcher::Status(const char *pMessage, const char* peer)

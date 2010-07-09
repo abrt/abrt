@@ -27,8 +27,8 @@
 #define KERNELOOPSSCANNER_H_
 
 #include "abrt_types.h"
-#include "Plugin.h"
-#include "Action.h"
+#include "plugin.h"
+#include "action.h"
 
 class CKerneloopsScanner : public CAction
 {

@@ -22,8 +22,8 @@
 #define REPORTER_H_
 
 #include <string>
-#include "Plugin.h"
-#include "CrashTypes.h"
+#include "plugin.h"
+#include "crash_types.h"
 
 /**
  * An abstract class. The class defines a reporter plugin interface.

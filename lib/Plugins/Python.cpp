@@ -18,8 +18,8 @@
 */
 #include "abrtlib.h"
 #include "Python.h"
-#include "DebugDump.h"
-#include "ABRTException.h"
+#include "debug_dump.h"
+#include "abrt_exception.h"
 #include "Python_hash.h"
 
 using namespace std;

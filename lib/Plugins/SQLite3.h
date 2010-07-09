@@ -21,8 +21,8 @@
 #ifndef SQLITE3_H_
 #define SQLITE3_H_
 
-#include "Plugin.h"
-#include "Database.h"
+#include "plugin.h"
+#include "database.h"
 
 class CSQLite3 : public CDatabase
 {

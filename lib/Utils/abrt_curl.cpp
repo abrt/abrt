@@ -18,7 +18,7 @@
 */
 #include "abrtlib.h"
 #include "abrt_curl.h"
-#include "CommLayerInner.h"
+#include "comm_layer_inner.h"
 
 using namespace std;
 

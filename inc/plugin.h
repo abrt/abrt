@@ -23,7 +23,7 @@
 #define PLUGIN_H_
 
 #include "abrt_types.h"
-#include "CrashTypes.h"
+#include "crash_types.h"
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif

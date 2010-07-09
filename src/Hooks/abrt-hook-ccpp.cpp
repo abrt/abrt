@@ -20,9 +20,9 @@
 */
 #include "abrtlib.h"
 #include "hooklib.h"
-#include "DebugDump.h"
-#include "CrashTypes.h"
-#include "ABRTException.h"
+#include "debug_dump.h"
+#include "crash_types.h"
+#include "abrt_exception.h"
 #include <syslog.h>
 
 using namespace std;

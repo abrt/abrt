@@ -20,9 +20,9 @@
 */
 #include <sys/utsname.h>
 #include "abrtlib.h"
-#include "DebugDump.h"
-#include "ABRTException.h"
-#include "CommLayerInner.h"
+#include "debug_dump.h"
+#include "abrt_exception.h"
+#include "comm_layer_inner.h"
 
 static bool isdigit_str(const char *str)
 {

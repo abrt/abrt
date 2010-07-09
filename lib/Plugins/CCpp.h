@@ -23,8 +23,8 @@
 #define CCPP_H_
 
 #include <string>
-#include "Plugin.h"
-#include "Analyzer.h"
+#include "plugin.h"
+#include "analyzer.h"
 
 class CAnalyzerCCpp : public CAnalyzer
 {

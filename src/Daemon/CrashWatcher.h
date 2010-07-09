@@ -27,7 +27,7 @@
 #include "Settings.h"
 
 #include "CommLayerServerDBus.h"
-#include "CommLayerInner.h"
+#include "comm_layer_inner.h"
 
 
 class CCrashWatcher

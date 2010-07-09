@@ -20,9 +20,9 @@
 */
 #include "abrtlib.h"
 #include "Mailx.h"
-#include "DebugDump.h"
-#include "ABRTException.h"
-#include "CommLayerInner.h"
+#include "debug_dump.h"
+#include "abrt_exception.h"
+#include "comm_layer_inner.h"
 
 #define MAILX_COMMAND "/bin/mailx"
 

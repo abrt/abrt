@@ -33,7 +33,7 @@
 #endif
 #include "abrtlib.h"
 #include "abrt_dbus.h"
-#include "DBusCommon.h"
+#include "dbus_common.h"
 #include "CCApplet.h"
 
 

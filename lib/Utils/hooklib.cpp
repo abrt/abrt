@@ -17,7 +17,7 @@
 */
 #include "abrtlib.h"
 #include "hooklib.h"
-#include "DebugDump.h"
+#include "debug_dump.h"
 #include <sys/statvfs.h>
 
 using namespace std;

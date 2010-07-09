@@ -19,11 +19,11 @@
 */
 #include "abrtlib.h"
 #include "abrt_types.h"
-#include "ABRTException.h"
+#include "abrt_exception.h"
 #include "SOSreport.h"
-#include "DebugDump.h"
-#include "ABRTException.h"
-#include "CommLayerInner.h"
+#include "debug_dump.h"
+#include "abrt_exception.h"
+#include "comm_layer_inner.h"
 
 using namespace std;
 

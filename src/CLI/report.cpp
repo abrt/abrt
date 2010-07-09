@@ -19,9 +19,9 @@
 #include "run-command.h"
 #include "dbus.h"
 #include "abrtlib.h"
-#include "DebugDump.h"
-#include "CrashTypes.h" // FILENAME_* defines
-#include "Plugin.h" // LoadPluginSettings
+#include "debug_dump.h"
+#include "crash_types.h" // FILENAME_* defines
+#include "plugin.h" // LoadPluginSettings
 #include <cassert>
 #include <algorithm>
 #include <termios.h>

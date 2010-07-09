@@ -332,7 +332,9 @@ fi
 
 %files devel
 %defattr(-,root,root,-)
+%{_includedir}/*
 %{_libdir}/lib*.so
+%{_libdir}/pkgconfig/*
 
 %files gui
 %defattr(-,root,root,-)

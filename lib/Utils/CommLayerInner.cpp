@@ -19,7 +19,7 @@
 #include <pthread.h>
 #include <map>
 #include "abrtlib.h"
-#include "CommLayerInner.h"
+#include "comm_layer_inner.h"
 
 static CObserver *s_pObs;
 
