@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-07 12:55+0000\n"
-"PO-Revision-Date: 2010-07-07 17:27+0200\n"
+"POT-Creation-Date: 2010-07-09 10:51+0000\n"
+"PO-Revision-Date: 2010-07-09 15:08+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -464,7 +464,7 @@ msgstr "Korte beschrijving hoe dit te reproduceren is of wat je deed..."
 msgid "You must check backtrace for sensitive data"
 msgstr "Je moet de backtrace controleren op gevoelige data"
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:304
+#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:305
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -477,11 +477,11 @@ msgstr ""
 "<b>debuginfo-install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:306
+#: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:307
 msgid "The backtrace is unusable, you can't report this!"
 msgstr "De backtrace in niet bruikbaar, je kunt dit niet rapporteren!"
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:310
+#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:311
 msgid ""
 "The backtrace is incomplete, please make sure you provide good steps to "
 "reproduce."
@@ -521,7 +521,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Configureer %s opties"
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:837
+#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:842
 msgid ""
 "Unable to get report!\n"
 "Debuginfo is missing?"
@@ -529,7 +529,7 @@ msgstr ""
 "Kan geen rapport krijgen!\n"
 "Mist debuginfo?"
 
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:400
+#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:395
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -539,7 +539,7 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:876
+#: ../src/Gui/CReporterAssistant.py:881
 #, python-format
 msgid "Error getting the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -640,7 +640,7 @@ msgstr " "
 msgid "<b>Attachments</b>"
 msgstr "<b>Bijlagen</b>"
 
-#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:741
+#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:746
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
@@ -843,27 +843,28 @@ msgstr "Kwalificatie wordt vereist door plug-in %s"
 msgid "Rating is not required by any plugin, skipping the check.."
 msgstr "Kwalificatie wordt niet vereist door een plug-in, de check overslaan.."
 
-#: ../src/Gui/CReporterAssistant.py:292
+#: ../src/Gui/CReporterAssistant.py:288
+#, python-format
+msgid "Rating is %s"
+msgstr "Kwalificatie is %s"
+
+#: ../src/Gui/CReporterAssistant.py:293
 msgid "You should check backtrace for sensitive data"
 msgstr "Je moet de backtrace controleren op gevoelige data"
 
-#: ../src/Gui/CReporterAssistant.py:293
+#: ../src/Gui/CReporterAssistant.py:294
 msgid "You must agree with sending the backtrace"
 msgstr "Je moet instemmen met het versturen van de backtrace"
 
-#: ../src/Gui/CReporterAssistant.py:325
-msgid "Only one reporter plugin is configured"
-msgstr "Er is slechts een rapporteer plug-in geconfigureerd"
-
-#: ../src/Gui/CReporterAssistant.py:357
+#: ../src/Gui/CReporterAssistant.py:352
 msgid "You didn't provide any steps to reproduce."
 msgstr "Je hebt geen stappen gegeven voor reproductie."
 
-#: ../src/Gui/CReporterAssistant.py:371
+#: ../src/Gui/CReporterAssistant.py:366
 msgid "You didn't provide any comments."
 msgstr "Je hebt geen commentaar gegeven."
 
-#: ../src/Gui/CReporterAssistant.py:449
+#: ../src/Gui/CReporterAssistant.py:446
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -889,11 +890,15 @@ msgstr ""
 "Selecteer waar je deze bug wil rapporteren, en druk op 'Vooruit' om verder "
 "te gaan."
 
-#: ../src/Gui/CReporterAssistant.py:508
+#: ../src/Gui/CReporterAssistant.py:506
+msgid "Only one reporter plugin is configured"
+msgstr "Er is slechts een rapporteer plug-in geconfigureerd"
+
+#: ../src/Gui/CReporterAssistant.py:513
 msgid "Send a bug report"
 msgstr "Verstuur een bug rapport"
 
-#: ../src/Gui/CReporterAssistant.py:546
+#: ../src/Gui/CReporterAssistant.py:551
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how a crash happen, helping them "
@@ -910,111 +915,111 @@ msgstr ""
 "van te zijn dat jouw bug rapport geen gevoelige data bevat die je liever "
 "niet wilt delen:"
 
-#: ../src/Gui/CReporterAssistant.py:587
+#: ../src/Gui/CReporterAssistant.py:592
 msgid "Refresh"
 msgstr "Verversen"
 
-#: ../src/Gui/CReporterAssistant.py:589
+#: ../src/Gui/CReporterAssistant.py:594
 msgid "Copy"
 msgstr "Kopiëren"
 
-#: ../src/Gui/CReporterAssistant.py:595
+#: ../src/Gui/CReporterAssistant.py:600
 msgid "I agree with submitting the backtrace"
 msgstr "Ik stem in met het versturen van de backtrace"
 
-#: ../src/Gui/CReporterAssistant.py:600
+#: ../src/Gui/CReporterAssistant.py:605
 msgid "Approve backtrace"
 msgstr "De backtrace goedkeuren"
 
-#: ../src/Gui/CReporterAssistant.py:623
+#: ../src/Gui/CReporterAssistant.py:628
 msgid "How this crash happen, step-by-step? How would you reproduce it?"
 msgstr "Hoe ontstaat deze crash, stap-voor-stap? Hoe kun je het reproduceren?"
 
-#: ../src/Gui/CReporterAssistant.py:641
+#: ../src/Gui/CReporterAssistant.py:646
 msgid ""
 "Are there any comments you'd like to share with the software maintainers?"
 msgstr "Heb je commentaar die je wilt delen met de software onderhouders?"
 
-#: ../src/Gui/CReporterAssistant.py:660
+#: ../src/Gui/CReporterAssistant.py:665
 msgid "Provide additional details"
 msgstr "Bied extra details"
 
-#: ../src/Gui/CReporterAssistant.py:667
+#: ../src/Gui/CReporterAssistant.py:672
 msgid ""
 "<b>Tip:</b> Your comments are not private.  Please monitor what you say "
 "accordingly."
 msgstr "<b>Tip:</b> Jouw commentaar is niet privé. Let dus op wat je zegt"
 
-#: ../src/Gui/CReporterAssistant.py:708
+#: ../src/Gui/CReporterAssistant.py:713
 msgid "Confirm and send report"
 msgstr "Bevestig en verstuur het rapport"
 
-#: ../src/Gui/CReporterAssistant.py:710
+#: ../src/Gui/CReporterAssistant.py:715
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Hieronder is een samenvatting van jouw bug rapport. Klik op 'Toepassen' om "
 "het te versturen."
 
-#: ../src/Gui/CReporterAssistant.py:715
+#: ../src/Gui/CReporterAssistant.py:720
 msgid "<b>Basic details</b>"
 msgstr "<b>Bais details</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:722
+#: ../src/Gui/CReporterAssistant.py:727
 msgid "Component"
 msgstr "Onderdeel"
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/Gui/CReporterAssistant.py:728
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/Gui/CReporterAssistant.py:724
+#: ../src/Gui/CReporterAssistant.py:729
 msgid "Executable"
 msgstr "Uitvoerbaar programma"
 
-#: ../src/Gui/CReporterAssistant.py:725
+#: ../src/Gui/CReporterAssistant.py:730
 msgid "Cmdline"
 msgstr "Commando-regel"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:727
+#: ../src/Gui/CReporterAssistant.py:732
 msgid "Architecture"
 msgstr "Architectuur"
 
-#: ../src/Gui/CReporterAssistant.py:728
+#: ../src/Gui/CReporterAssistant.py:733
 msgid "Kernel"
 msgstr "Kernel"
 
-#: ../src/Gui/CReporterAssistant.py:729
+#: ../src/Gui/CReporterAssistant.py:734
 msgid "Release"
 msgstr "Vrijgave"
 
-#: ../src/Gui/CReporterAssistant.py:730
+#: ../src/Gui/CReporterAssistant.py:735
 msgid "Reason"
 msgstr "Reden"
 
-#: ../src/Gui/CReporterAssistant.py:744
+#: ../src/Gui/CReporterAssistant.py:749
 msgid "Click to view ..."
 msgstr "Klik om te bekijken ..."
 
-#: ../src/Gui/CReporterAssistant.py:756
+#: ../src/Gui/CReporterAssistant.py:761
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Stappen om te reproduceren:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:777
+#: ../src/Gui/CReporterAssistant.py:782
 msgid "<b>Comments:</b>"
 msgstr "<b>Commentaar:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:780
+#: ../src/Gui/CReporterAssistant.py:785
 msgid "No comment provided!"
 msgstr "Geen commentaar gegeven!"
 
-#: ../src/Gui/CReporterAssistant.py:816
+#: ../src/Gui/CReporterAssistant.py:821
 msgid "Finished sending the bug report"
 msgstr "Het versturen van het bug rapport is klaar"
 
-#: ../src/Gui/CReporterAssistant.py:820
+#: ../src/Gui/CReporterAssistant.py:825
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Bug rapporten:</b>"
 
@@ -1094,45 +1099,45 @@ msgstr "Inloggen bij bugzilla..."
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../lib/Plugins/Bugzilla.cpp:705 ../lib/Plugins/Bugzilla.cpp:743
+#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
 msgid "Missing mandatory member 'bugs'"
 msgstr "Verplicht onderdeel 'bugs' ontbreekt"
 
-#: ../lib/Plugins/Bugzilla.cpp:725 ../lib/Plugins/Bugzilla.cpp:759
-#: ../lib/Plugins/Bugzilla.cpp:835
+#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
+#: ../lib/Plugins/Bugzilla.cpp:841
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
 
-#: ../lib/Plugins/Bugzilla.cpp:775
+#: ../lib/Plugins/Bugzilla.cpp:781
 msgid "Creating new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../lib/Plugins/Bugzilla.cpp:780
+#: ../lib/Plugins/Bugzilla.cpp:786
 msgid "Bugzilla entry creation failed"
 msgstr "Het aanmaken van een Bugzilla ingang mislukte"
 
-#: ../lib/Plugins/Bugzilla.cpp:790 ../lib/Plugins/Bugzilla.cpp:885
+#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:809
+#: ../lib/Plugins/Bugzilla.cpp:815
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:820
+#: ../lib/Plugins/Bugzilla.cpp:826
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
 
-#: ../lib/Plugins/Bugzilla.cpp:849 ../lib/Plugins/Bugzilla.cpp:850
+#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
 #, c-format
 msgid "Adding %s to CC list"
 msgstr "Voeg %s toe aan CC lijst"
 
-#: ../lib/Plugins/Bugzilla.cpp:874
+#: ../lib/Plugins/Bugzilla.cpp:880
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Voeg nieuw commentaar toe aan bug(%d)"
