@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-07-02 07:29+0000\n"
-"PO-Revision-Date: 2010-07-04 18:47+0800\n"
+"PO-Revision-Date: 2010-07-09 16:02+0800\n"
 "Last-Translator: Misha Shnurapet <shnurapet@fedoraproject.org>\n"
 "Language-Team: Russian\n"
 "MIME-Version: 1.0\n"
@@ -133,7 +133,7 @@ msgstr "# Компонент"
 
 #: ../src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr ""
+msgstr "# Дамп памяти"
 
 #: ../src/CLI/report.cpp:209
 msgid "# Executable"
@@ -521,15 +521,14 @@ msgid "Error getting the report: %s"
 msgstr "Ошибка при получении отчета: %s"
 
 #: ../src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Can't connect to Gnome Keyring daemon"
-msgstr "Не удалось подключиться к dbus"
+msgstr "Не удалось подключиться к диспетчеру брелоков"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
 #: ../src/Gui/ConfBackend.py:83
 msgid "Can't get default keyring"
-msgstr ""
+msgstr "Нет доступа к основному брелоку"
 
 #: ../src/Gui/ConfBackend.py:102
 #: ../src/Gui/ConfBackend.py:118
@@ -801,7 +800,7 @@ msgstr "Просмотреть сбои приложения и создать �
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
-msgstr ""
+msgstr "Отчет не содержит отслеженных данных"
 
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
@@ -822,7 +821,7 @@ msgstr "Нужно дать согласие на отправку отслеж�
 
 #: ../src/Gui/CReporterAssistant.py:325
 msgid "Only one reporter plugin is configured"
-msgstr ""
+msgstr "Настроен лишь один модуль для отправки отчетов"
 
 #: ../src/Gui/CReporterAssistant.py:357
 msgid "You didn't provide any steps to reproduce."
