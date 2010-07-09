@@ -65,8 +65,9 @@ The file with the main entry point of the application. Might be a JAR
 archive, a script file, a bytecode file, or the interpreter. It should
 be a real file on the filesystem, so ABRT can check the origin of the
 file (source package). If the file is not known, the most appropriate
-is to shortly describe the reason why it is not known in the field,
-e.g. "Exception raised from Python shell".
+is to shortly describe the reason why it is not known in the field.
+However, exceptions raised from interactive shell (a common reason 
+for unknown file) are hardly useful and should not be reported.
 
 ANALYZER
 The name of an analyzer plugin which should be run during the
