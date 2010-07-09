@@ -1,0 +1,112 @@
+This document describes the interaction between ABRT and interpreted
+languages.
+
+Interpreted language is a programming language where the programs
+written in that language are not translated into the machine code of
+the computer it is on, but interpreted by another software program
+known as an interpreter.
+
+In order to handle interpreted language correctly, ABRT needs a hook
+in the language's interpreter. The hook catches serious application
+misbehaviors (such as uncaught exceptions, invalid bytecode, missing
+library) inside the interpreter and reports the misbehaviors to
+ABRT. Hook is usually responsible for assembling the backtrace.
+
+Another issue are the crashes of the interpreter, which are catched by
+the CCpp plugin.  When the support for specific interpreter is missing
+all these crashes are reported to the interpreter component when
+submitting the crash using Bugzilla plugin, regardless of application
+executed by the interpreter. To change this, the interpreter should be
+handled in src/Daemon/MiddleWare.cpp (see how it is done for Python).
+
+ABRT currently support only CPython interpreter (the mainstream Python
+implementation). Perl, Java, Ruby, and Mono interpreter hooks are yet
+to be written. It might be necessary to modify ABRT to support a new
+interpreter (patches welcomed).
+
+Communication between ABRT and hooks
+====================================
+
+Hook might be a binary plugin plugged to the interpreter, or it might
+be interpreted by the interpreter in the same way as the applications
+When some event which should be catched by ABRT occurs and is detected
+by the hook, the hook reports it to ABRT using ABRT daemon's socket
+file.  ABRT then creates a new directory describing the crash in
+/var/spool/abrt.
+
+The ABRT's CCpp plugin does not use the socket file, but it creates
+crash data directory in /var/spool/abrt directly. Interpreted hooks
+must not report crashes this way, because SELinux blocks interpreter
+access to /var/spool/abrt and this access can not be granted due to
+security issues.
+
+ABRT socket file resides in /var/run/abrt.socket. Hooks should open
+this socket for writing, write the event information, and close the
+socket. If the hook leaves the socket opened for a long time without
+writing anything, the ABRT daemon which listens on the other side will
+close the connection. The maximum number of concurrently opened socket
+sessions is also limited.
+
+The event data are sent to the socket in a number of fields in format
+"FIELDNAME=VALUE\0". Various fields impose various restrictions on the
+format of VALUE, but generally the VALUE might contain all characters
+except \0. Hook sends "DONE\0" after the last field to finish the
+entry creation process in the daemon. All fields are mandatory. Field
+order does not matter.
+
+Fields
+======
+
+PID
+Process id of the running interpreter.
+
+EXECUTABLE
+The file with the main entry point of the application. Might be a JAR
+archive, a script file, a bytecode file, or the interpreter. It should
+be a real file on the filesystem, so ABRT can check the origin of the
+file (source package). If the file is not known, the most appropriate
+is to shortly describe the reason why it is not known in the field,
+e.g. "Exception raised from Python shell".
+
+ANALYZER
+The name of an analyzer plugin which should be run during the
+analysis. It is used to choose appropriate method of post processing
+for the crash dump. Sensible names are "python", "perl", "java" etc.
+
+BASENAME
+Short string indicating the origin of the event. It is used as a part
+of directory name: /var/spool/abrt/BASENAME-suffix. Use "python" for
+Python exceptions, "ruby" for ruby interpreter, "java" for JRE.
+
+REASON
+A short, one line string describing the event. For Python it is
+something like "CCMainWindow.py:1:<module>:ZeroDivisionError: integer
+division or modulo by zero".
+
+BACKTRACE
+The backtrace at the moment of the crash, if it is available.  May
+include other useful information.  For example, for ccpp crashes, it
+includes register dump. The backtrace should be in a format that is
+commonly used by the interpreter.
+
+Here is an example of a crash report from Python, as it is written to
+the socket:
+PID=563\0
+EXECUTABLE=/usr/bin/python\0
+ANALYZER=Python\0
+BASENAME=pyhook\0
+REASON=CReporterAssistant.py:415:on_plugin_toggled:ValueError: list.remove(x):
+x not in list\0
+BACKTRACE=Traceback (most recent call last):
+  File "/usr/share/abrt/CReporterAssistant.py", line 415, in on_plugin_toggled
+    self.selected_reporters.remove(reporter)
+ValueError: list.remove(x): x not in list
+
+Local variables in innermost frame:
+complete: False
+reporter: <ABRTPlugin.PluginInfo instance at 0x7fc7fb389050>
+self: <CReporterAssistant.ReporterAssistant instance at 0x7fc7fdc7acb0>
+plugin: <gtk.CheckButton object at 0x7fc7fdc8c9b0 (GtkCheckButton at 0x11d7ed0)>
+plugins: [<gtk.CheckButton object at 0x7fc7fdc8c9b0 (GtkCheckButton at 0x11d7ed0)>]
+page: <gtk.VBox object at 0x7fc7fdc8c460 (GtkVBox at 0x12f03b0)>\0
+DONE\0
