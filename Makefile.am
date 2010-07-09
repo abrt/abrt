@@ -1,10 +1,10 @@
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = lib src inc po icons
 
-EXTRA_DIST = doc/CodingStyle abrt.spec abrt-utils.pc.in
+EXTRA_DIST = doc/CodingStyle abrt.spec abrt.pc.in
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = abrt-utils.pc
+pkgconfig_DATA = abrt.pc
 
 RPM_DIRS = --define "_sourcedir `pwd`" \
 	   --define "_rpmdir `pwd`" \

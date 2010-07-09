@@ -3,9 +3,8 @@ exec_prefix=@exec_prefix@
 libdir=@libdir@
 includedir=@includedir@
 
-Name: abrt-utils
+Name: abrt
 Description: Library for writing ABRT plugins
-#Requires: dbus-1
 Version: @VERSION@
 Libs: -L${libdir} -lABRTUtils -lABRTdUtils
-Cflags: -I${includedir}/abrt -fPIC
+Cflags: -fPIC

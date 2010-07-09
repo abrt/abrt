@@ -99,7 +99,7 @@ AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_FILES([
 	Makefile
-	abrt-utils.pc
+	abrt.pc
 	lib/Makefile
 	lib/Utils/Makefile
 	lib/Plugins/Makefile
