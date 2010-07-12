@@ -319,7 +319,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
         }
         catch (CABRTException& e)
         {
-            error_msg(_("Can't create and send an archive: %s"), e.what());
+            error_msg(_("Cannot create and send an archive: %s"), e.what());
         }
         unlink(archivename.c_str());
     }
@@ -348,7 +348,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
             }
             catch (CABRTException& e)
             {
-                error_msg(_("Can't create and send an archive %s"), e.what());
+                error_msg(_("Cannot create and send an archive: %s"), e.what());
             }
             VERB3 log("Deleting archive '%s'", archivename.c_str());
             unlink(archivename.c_str());

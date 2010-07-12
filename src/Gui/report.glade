@@ -328,7 +328,7 @@
                                     <property name="visible">True</property>
                                     <child>
                                       <object class="GtkCheckButton" id="cbSendBacktrace">
-                                        <property name="label" translatable="yes">I checked backtrace and removed sensitive data (passwords, etc)</property>
+                                        <property name="label" translatable="yes">I checked the backtrace and removed sensitive data (passwords, etc)</property>
                                         <property name="visible">True</property>
                                         <property name="can_focus">True</property>
                                         <property name="receives_default">False</property>
@@ -558,7 +558,7 @@
                                 <child>
                                   <object class="GtkLabel" id="label12">
                                     <property name="visible">True</property>
-                                    <property name="label" translatable="yes">&lt;b&gt;Please fix the following problems&lt;/b&gt;</property>
+                                    <property name="label" translatable="yes">&lt;b&gt;Please fix the following problems:&lt;/b&gt;</property>
                                     <property name="use_markup">True</property>
                                   </object>
                                   <packing>
@@ -651,7 +651,7 @@
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
-                <property name="tooltip_text" translatable="yes">Forces ABRT to regenerate the backtrace</property>
+                <property name="tooltip_text" translatable="yes">Forces ABRT to regenerate the backtrace.</property>
                 <property name="use_stock">True</property>
               </object>
               <packing>
@@ -761,7 +761,7 @@
   <object class="GtkWindow" id="pBarWindow">
     <property name="width_request">500</property>
     <property name="border_width">12</property>
-    <property name="title" translatable="yes">Please wait..</property>
+    <property name="title" translatable="yes">Please wait...</property>
     <property name="modal">True</property>
     <property name="window_position">center-on-parent</property>
     <property name="icon_name">abrt</property>

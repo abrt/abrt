@@ -19,7 +19,7 @@ REFRESH = -50
 SHOW_LOG = -60
 
 # default texts
-COMMENT_HINT_TEXT = _("Brief description how to reproduce this or what you did...")
+COMMENT_HINT_TEXT = _("Brief description of how to reproduce this or what you did...")
 HOW_TO_HINT_TEXT = "1.\n2.\n3.\n"
 
 class ReporterDialog():
@@ -104,7 +104,7 @@ class ReporterDialog():
         # if an backtrace has rating use it
         if not SendBacktrace:
             send = False
-            error_msgs.append(_("You must check backtrace for sensitive data"))
+            error_msgs.append(_("You must check the backtrace for sensitive data."))
         # we have both SendBacktrace and rating
         if rating != None:
             try:
@@ -115,13 +115,13 @@ class ReporterDialog():
             # not usable report
             if int(self.report[FILENAME_RATING][CD_CONTENT]) < 3:
                 if package:
-                    error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command: <b>debuginfo-install %s</b> \nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
+                    error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using the command: <b>debuginfo-install %s</b> \nthen use the Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                 else:
-                    error_msgs.append(_("The backtrace is unusable, you can't report this!"))
+                    error_msgs.append(_("The backtrace is unusable, you cannot report this!"))
                 send = False
             # probably usable 3
             elif int(self.report[FILENAME_RATING][CD_CONTENT]) < 4:
-                error_msgs.append(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
+                error_msgs.append(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."))
 
         if error_msgs:
             self.warn_user(error_msgs)
@@ -129,7 +129,7 @@ class ReporterDialog():
         if not send:
             bSend.set_tooltip_text(_("Reporting disabled, please fix the problems shown above."))
         else:
-            bSend.set_tooltip_text(_("Sends the report using selected plugin."))
+            bSend.set_tooltip_text(_("Sends the report using the selected plugin."))
 
     def on_send_backtrace_toggled(self, toggle_button):
         self.allow_send()
@@ -395,7 +395,7 @@ class ReporterSelector():
 
     def show(self):
         if not self.reporters:
-            gui_error_message(_("No reporter plugin available for this type of crash\n"
+            gui_error_message(_("No reporter plugin available for this type of crash.\n"
                                  "Please check abrt.conf."))
         elif len(self.reporters) > 1:
             self.builder.get_object("vb_reporters").show_all()
@@ -415,7 +415,7 @@ class ReporterSelector():
                 try:
                     plugin.save_settings_on_client_side()
                 except Exception, e:
-                    gui_error_message(_("Can't save plugin settings:\n %s" % e))
+                    gui_error_message(_("Cannot save plugin settings:\n %s" % e))
                 box = image.get_parent()
                 im = gtk.Image()
                 im.set_from_stock(gtk.STOCK_APPLY, gtk.ICON_SIZE_MENU)
@@ -495,7 +495,7 @@ class ReporterSelector():
 #        except Exception, e:
 #            print e
         if not report:
-            gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
+            gui_error_message(_("Unable to get report!\nIs debuginfo missing?"))
             return
 
         # if we have only one reporter enabled, the window with
@@ -550,7 +550,7 @@ class ReporterSelector():
             if self.timer:
                 gobject.source_remove(self.timer)
             self.pBarWindow.hide()
-            gui_error_message(_("Error getting the report: %s" % ex))
+            gui_error_message(_("Error acquiring the report: %s" % ex))
         return
 
     def show_report(self):
@@ -571,7 +571,7 @@ class ReporterSelector():
             if self.timer:
                 gobject.source_remove(self.timer)
             self.pBarWindow.hide()
-            gui_error_message(_("Error getting the report: %s" % ex))
+            gui_error_message(_("Error acquiring the report: %s" % ex))
         return
 
     def __del__(self):

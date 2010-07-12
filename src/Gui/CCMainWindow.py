@@ -140,12 +140,12 @@ class MainWindow():
         try:
             dialog.hydrate()
         except Exception, ex:
-            gui_error_message(_("Can't show the settings dialog\n%s" % ex))
+            gui_error_message(_("Cannot show the settings dialog.\n%s" % ex))
             return
         dialog.show()
 
     def error_cb(self, daemon, message=None):
-        gui_error_message(_("Unable to finish current task!\n%s" % message), parent_dialog=self.window)
+        gui_error_message(_("Unable to finish the current task!\n%s" % message), parent_dialog=self.window)
 
     def update_cb(self, daemon, message):
         self.updates += message
@@ -442,7 +442,7 @@ if __name__ == "__main__":
         dumplist = getDumpList(daemon)
         crashdump = dumplist.getDumpByCrashID(crashid)
         if not crashdump:
-            gui_error_message(_("No such crash in database, probably wrong crashid."
+            gui_error_message(_("No such crash in the database, probably wrong crashid."
                                 "\ncrashid=%s" % crashid))
             sys.exit()
         assistant = ReporterAssistant(crashdump, daemon, parent=None)

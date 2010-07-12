@@ -778,7 +778,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     }
     else if (all_bugs_size == 0) // Create new bug
     {
-        update_client(_("Creating new bug..."));
+        update_client(_("Creating a new bug..."));
         bug_id = bz_server.new_bug(pCrashData, depend_on_bugno);
         if (bug_id < 0)
         {
@@ -821,7 +821,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         {
             if (ii == MAX_HOPS)
             {
-                VERB3 log("Bugzilla couldn't find parent of bug %d", (int)original_bug_id);
+                VERB3 log("Bugzilla could not find a parent of bug %d", (int)original_bug_id);
                 bug_info_destroy(&bz);
                 throw CABRTException(EXCEP_PLUGIN, _("Bugzilla couldn't find parent of bug %d"), (int)original_bug_id);
             }

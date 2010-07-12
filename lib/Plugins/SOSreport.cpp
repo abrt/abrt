@@ -100,7 +100,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
     output += '\n';
     char *command_out = run_in_shell_and_save_output(/*flags:*/ 0, command.c_str(), /*dir:*/ NULL, /*size_p:*/ NULL);
     output += command_out;
-    update_client(_("Done running sosreport"));
+    update_client(_("Finished running sosreport"));
     VERB3 log("sosreport output:'%s'", output.c_str());
 
 // Not needed: now we use "sosreport --tmp-dir DUMPDIR"

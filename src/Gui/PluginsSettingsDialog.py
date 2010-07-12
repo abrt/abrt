@@ -21,7 +21,7 @@ class PluginsSettingsDialog:
             print e
         self.window = self.builder.get_object("wPluginsSettings")
         if not self.window:
-            raise Exception(_("Can't load gui description for SettingsDialog!"))
+            raise Exception(_("Cannot load the GUI description for SettingsDialog!"))
 
         if parent:
             self.window.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
@@ -153,7 +153,7 @@ class PluginsSettingsDialog:
             try:
                 ui = PluginSettingsUI(pluginfo, parent=self.window)
             except Exception, e:
-                gui_error_message(_("Error while opening plugin settings UI: \n\n%s" % e))
+                gui_error_message(_("Error while opening the plugin settings UI: \n\n%s" % e))
                 return
             ui.hydrate()
             response = ui.run()
@@ -166,7 +166,7 @@ class PluginsSettingsDialog:
                         # when Report() is called
                         self.ccdaemon.setPluginSettings(pluginfo.getName(), pluginfo.Settings)
                     except Exception, e:
-                        gui_error_message(_("Can't save plugin settings:\n %s" % e))
+                        gui_error_message(_("Cannot save plugin settings:\n %s" % e))
                 #for key, val in pluginfo.Settings.iteritems():
                 #    print "%s:%s" % (key, val)
             elif response == gtk.RESPONSE_CANCEL:

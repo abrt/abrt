@@ -71,7 +71,7 @@ class DBusManager(gobject.GObject):
 
         self.bus = dbus.SystemBus()
         if not self.bus:
-            raise Exception(_("Can't connect to system dbus"))
+            raise Exception(_("Cannot connect to system dbus."))
         self.bus.add_signal_receiver(self.owner_changed_cb, "NameOwnerChanged", dbus_interface="org.freedesktop.DBus")
         # new crash notification
         self.bus.add_signal_receiver(self.crash_cb, "Crash", dbus_interface=ABRTD_DBUS_IFACE)
@@ -94,7 +94,7 @@ class DBusManager(gobject.GObject):
         if not self.bus:
             self.bus = dbus.SystemBus()
             if not self.bus:
-                raise Exception(_("Can't connect to system dbus"))
+                raise Exception(_("Cannot connect to system dbus."))
         # Autostart hack
         # Theoretically, this is not needed, the first dbus call
         # should autostart daemon if needed. In practice,
@@ -117,10 +117,10 @@ class DBusManager(gobject.GObject):
         except DBusException:
             raise Exception("Can't connect to abrt daemon")
         if not proxy:
-            raise Exception(_("Please check if abrt daemon is running"))
+            raise Exception(_("Please check if the abrt daemon is running."))
         daemon = dbus.Interface(proxy, dbus_interface=ABRTD_DBUS_IFACE)
         if not daemon:
-            raise Exception(_("Please check if abrt daemon is running"))
+            raise Exception(_("Please check if the abrt daemon is running."))
         return daemon
 
 #    # disconnect callback
@@ -171,7 +171,7 @@ class DBusManager(gobject.GObject):
             self.emit("analyze-complete", report)
         else:
             # FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-            self.emit("abrt-error", _("Daemon didn't return valid report info\nDebuginfo is missing?"))
+            self.emit("abrt-error", _("Daemon did not return a valid report info.\nIs debuginfo missing?"))
 
     def report_done(self, result):
         self.emit("report-done", result)

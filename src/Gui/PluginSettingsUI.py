@@ -14,7 +14,7 @@ class PluginSettingsUI():
             self.plugin_gui.add_from_file(pluginfo.getGUI())
             self.dialog = self.plugin_gui.get_object("PluginDialog")
             if not self.dialog:
-                raise Exception(_("Can't find PluginDialog widget in UI description!"))
+                raise Exception(_("Cannot find PluginDialog widget in the UI description!"))
             self.dialog.set_title("%s" % pluginfo.getName())
             if parent:
                 self.dialog.set_transient_for(parent)
@@ -56,7 +56,7 @@ class PluginSettingsUI():
                         elif type(widget) == gtk.CheckButton:
                             widget.set_active(value == "yes")
                         elif type(widget) == gtk.ComboBox:
-                            print _("combo box is not implemented")
+                            print _("Combo box is not implemented")
                 else:
                     #print "Plugin %s has no configuration." % self.plugin_name
                     pass
@@ -82,7 +82,7 @@ class PluginSettingsUI():
                     else:
                         self.Settings[key] = "no"
                 elif type(widget) == gtk.ComboBox:
-                    print _("combo box is not implemented")
+                    print _("Combo box is not implemented")
 
     def destroy(self):
         self.dialog.destroy()

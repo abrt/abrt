@@ -16,7 +16,7 @@ PAGE_CONFIRM = 3
 PAGE_REPORT_DONE = 4
 NO_PROBLEMS_DETECTED = -50
 HOW_TO_HINT_TEXT = "1.\n2.\n3.\n"
-COMMENT_HINT_TEXT = _("Brief description how to reproduce this or what you did...")
+COMMENT_HINT_TEXT = _("Brief description of how to reproduce this or what you did...")
 MISSING_BACKTRACE_TEXT = _("Crash info doesn't contain a backtrace")
 
 DEFAULT_WIDTH = 800
@@ -198,7 +198,7 @@ class ReporterAssistant():
                 try:
                     plugin.save_settings_on_client_side()
                 except Exception, e:
-                    gui_error_message(_("Can't save plugin settings:\n %s" % e))
+                    gui_error_message(_("Cannot save plugin settings:\n %s" % e))
                 box = image.get_parent()
                 im = gtk.Image()
                 im.set_from_stock(gtk.STOCK_APPLY, gtk.ICON_SIZE_MENU)
@@ -277,9 +277,9 @@ class ReporterAssistant():
             if "RatingRequired" in reporter.Settings.keys():
                 if reporter.Settings["RatingRequired"] == "yes":
                     rating_required = True
-                    log1(_("Rating is required by %s plugin") % reporter)
+                    log1(_("Rating is required by the %s plugin") % reporter)
         if self.selected_reporters and not rating_required:
-            log1(_("Rating is not required by any plugin, skipping the check.."))
+            log1(_("Rating is not required by any plugin, skipping the check..."))
 
         try:
             rating = int(self.report.get_rating())
@@ -290,8 +290,8 @@ class ReporterAssistant():
         # if an backtrace has rating use it
         if not SendBacktrace:
             send = False
-            error_msgs.append(_("You should check backtrace for sensitive data"))
-            error_msgs.append(_("You must agree with sending the backtrace"))
+            error_msgs.append(_("You should check the backtrace for sensitive data."))
+            error_msgs.append(_("You must agree with sending the backtrace."))
         # we have both SendBacktrace and rating
         if rating_required:
             try:
@@ -302,13 +302,13 @@ class ReporterAssistant():
             # not usable report
             if rating < 3:
                 if package:
-                    error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using command: <b>debuginfo-install %s</b> \nthen use Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
+                    error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using the command: <b>debuginfo-install %s</b> \nthen use the Refresh button to regenerate the backtrace." % package[0:package.rfind('-',0,package.rfind('-'))]))
                 else:
-                    error_msgs.append(_("The backtrace is unusable, you can't report this!"))
+                    error_msgs.append(_("The backtrace is unusable, you cannot report this!"))
                 send = False
             # probably usable 3
             elif rating < 4:
-                error_msgs.append(_("The backtrace is incomplete, please make sure you provide good steps to reproduce."))
+                error_msgs.append(_("The backtrace is incomplete, please make sure you provide the steps to reproduce."))
 
         if error_msgs:
             self.warn_user(error_msgs)
@@ -349,7 +349,7 @@ class ReporterAssistant():
                 self.steps.set_text(howto_text)
                 self.result[FILENAME_REPRODUCE] = [CD_TXT, 'y', howto_text]
             else:
-                self.steps.set_text(_("You didn't provide any steps to reproduce."))
+                self.steps.set_text(_("You did not provide any steps to reproduce."))
                 try:
                     del self.result[FILENAME_REPRODUCE]
                 except KeyError:
@@ -363,7 +363,7 @@ class ReporterAssistant():
                 self.comments.set_text(comment_text)
                 self.result[FILENAME_COMMENT] = [CD_TXT, 'y', comment_text]
             else:
-                self.comments.set_text(_("You didn't provide any comments."))
+                self.comments.set_text(_("You did not provide any comments."))
                 try:
                     del self.result[FILENAME_COMMENT]
                 except KeyError:
@@ -445,15 +445,15 @@ class ReporterAssistant():
         lbl_default_info.set_size_request(DEFAULT_WIDTH-50, -1)
         lbl_default_info.set_markup(_("It looks like an application from the "
                                     "package <b>%s</b> has crashed "
-                                    "on your system. It's a good idea to send "
+                                    "on your system. It is a good idea to send "
                                     "a bug report about this issue. The report "
                                     "will provide software maintainers with "
                                     "information essential in figuring out how "
-                                    "to provide a bug fix for you\n\n"
+                                    "to provide a bug fix for you.\n\n"
                                     "Please review the information that follows "
                                     "and modify it as needed to ensure your bug "
-                                    "report does not contain any sensitive date "
-                                    "you'd rather not share\n\n"
+                                    "report does not contain any sensitive data "
+                                    "you would rather not share.\n\n"
                                     "Select where you would like to report the "
                                     "bug, and press 'Forward' to continue.")
                                     % self.report.getPackageName())
@@ -503,7 +503,7 @@ class ReporterAssistant():
             if self.reporters[0].Settings.check():
                 self.selected_reporters.append(self.reporters[0])
                 self.assistant.set_page_complete(page, True)
-                log1(_("Only one reporter plugin is configured"))
+                log1(_("Only one reporter plugin is configured."))
                 # this is safe, because in python the variable is visible even
                 # outside the for loop
                 cb.set_active(True)
@@ -550,10 +550,10 @@ class ReporterAssistant():
         lbl_default_info.set_size_request(DEFAULT_WIDTH-50, -1)
         lbl_default_info.set_text(_("Below is the backtrace associated with your "
             "crash. A crash backtrace provides developers with details about "
-            "how a crash happen, helping them track down the source of the "
-            "problem\n\n"
+            "how the crash happened, helping them track down the source of the "
+            "problem.\n\n"
             "Please review the backtrace below and modify it as needed to "
-            "ensure your bug report does not contain any sensitive date you'd "
+            "ensure your bug report does not contain any sensitive data you would "
             "rather not share:")
             )
         page.pack_start(lbl_default_info, expand=False, fill=True)
@@ -602,7 +602,7 @@ class ReporterAssistant():
         self.assistant.insert_page(page, PAGE_BACKTRACE_APPROVAL)
         self.pdict_add_page(page, PAGE_BACKTRACE_APPROVAL)
         self.assistant.set_page_type(page, gtk.ASSISTANT_PAGE_CONTENT)
-        self.assistant.set_page_title(page, _("Approve backtrace"))
+        self.assistant.set_page_title(page, _("Approve the backtrace"))
         page.pack_start(hbox_bt)
         page.pack_start(self.backtrace_cb, expand=False, fill=False)
         page.show_all()
@@ -625,7 +625,7 @@ class ReporterAssistant():
 
         # how to reproduce
         howto_vbox = gtk.VBox(spacing=5)
-        howto_lbl = gtk.Label(_("How this crash happen, step-by-step? "
+        howto_lbl = gtk.Label(_("How did this crash happen (step-by-step)? "
                            "How would you reproduce it?"))
         howto_lbl.set_alignment(0.0, 0.0)
         howto_lbl.set_justify(gtk.JUSTIFY_FILL)
@@ -643,7 +643,7 @@ class ReporterAssistant():
 
         # comment
         comment_vbox = gtk.VBox(spacing=5)
-        comment_lbl = gtk.Label(_("Are there any comments you'd like to share "
+        comment_lbl = gtk.Label(_("Are there any comments you would like to share "
             "with the software maintainers?"))
         comment_lbl.set_alignment(0.0, 0.0)
         comment_lbl.set_justify(gtk.JUSTIFY_FILL)
@@ -669,8 +669,8 @@ class ReporterAssistant():
         tip_lbl = gtk.Label("")
         tip_lbl.set_alignment(0.0, 0.0)
         tip_lbl.set_justify(gtk.JUSTIFY_FILL)
-        tip_lbl.set_markup(_("<b>Tip:</b> Your comments are not private.  "
-            "Please monitor what you say accordingly."))
+        tip_lbl.set_markup(_("<b>Tip:</b> Your comments are not private. "
+            "Please watch what you say accordingly."))
         #tip_hbox.pack_start(tip_image)
         tip_hbox.pack_start(tip_lbl, expand=False)
         page.pack_start(details_hbox)
@@ -710,7 +710,7 @@ class ReporterAssistant():
         self.assistant.insert_page(page, PAGE_CONFIRM)
         self.pdict_add_page(page, PAGE_CONFIRM)
         self.assistant.set_page_type(page, gtk.ASSISTANT_PAGE_CONFIRM)
-        self.assistant.set_page_title(page, _("Confirm and send report"))
+        self.assistant.set_page_title(page, _("Confirm and send the report"))
         self.assistant.set_page_complete(page, True)
         summary_lbl = gtk.Label(_("Below is a summary of your bug report. "
             "Please click 'Apply' to submit it."))
@@ -746,7 +746,7 @@ class ReporterAssistant():
         backtrace_lbl.set_markup(_("<b>Backtrace</b>"))
         backtrace_lbl.set_alignment(0.0, 0.5)
         backtrace_lbl.set_justify(gtk.JUSTIFY_LEFT)
-        backtrace_show_btn = gtk.Button(_("Click to view ..."))
+        backtrace_show_btn = gtk.Button(_("Click to view..."))
         backtrace_show_btn.connect("clicked", self.on_show_bt_clicked)
         backtrace_hbox = gtk.HBox(homogeneous=True)
         hb = gtk.HBox()
@@ -839,7 +839,7 @@ class ReporterAssistant():
             pass
         self.pBarWindow.hide()
         if not result:
-            gui_error_message(_("Unable to get report!\nDebuginfo is missing?"))
+            gui_error_message(_("Unable to get report!\nIs debuginfo missing?"))
             return
         self.result = result
         # set the backtrace text
@@ -878,7 +878,7 @@ class ReporterAssistant():
             if self.timer:
                 gobject.source_remove(self.timer)
             self.pBarWindow.hide()
-            gui_error_message(_("Error getting the report: %s" % ex))
+            gui_error_message(_("Error acquiring the report: %s" % ex))
             return
 
     def show(self):

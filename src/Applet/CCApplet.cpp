@@ -86,7 +86,7 @@ static GtkWidget *create_about_dialog()
                              "Lapo Calamandrei",
                                 NULL};
 
-    const char *comments = _("Notification area applet to notify user about "
+    const char *comments = _("Notification area applet that notifies users about "
                                "issues detected by ABRT");
     GtkWidget *about_d = gtk_about_dialog_new();
     if (about_d)

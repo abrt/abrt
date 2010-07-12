@@ -176,7 +176,7 @@ static void write_crash_report_field(FILE *fp, const map_crash_data_t &report,
 
   fprintf(fp, "%s\n", description);
   if (it->second[CD_EDITABLE] != CD_ISEDITABLE)
-    fprintf(fp, _("# This field is read only.\n"));
+    fprintf(fp, _("# This field is read only\n"));
 
   char *escaped_content = escape(it->second[CD_CONTENT].c_str());
   fprintf(fp, "%s\n", escaped_content);
@@ -196,11 +196,11 @@ static void write_crash_report(const map_crash_data_t &report, FILE *fp)
 	  "# Lines starting with '%%----' separate fields, please do not delete them.\n\n");
 
   write_crash_report_field(fp, report, FILENAME_COMMENT,
-			   _("# Describe the circumstances of this crash below."));
+			   _("# Describe the circumstances of this crash below"));
   write_crash_report_field(fp, report, FILENAME_REPRODUCE,
 			   _("# How to reproduce the crash?"));
   write_crash_report_field(fp, report, FILENAME_BACKTRACE,
-			   _("# Backtrace\n# Check that it does not contain any sensitive data such as passwords."));
+			   _("# Backtrace\n# Check that it does not contain any sensitive data (passwords, etc.)"));
   write_crash_report_field(fp, report, CD_DUPHASH, "# DUPHASH");
   write_crash_report_field(fp, report, FILENAME_ARCHITECTURE, _("# Architecture"));
   write_crash_report_field(fp, report, FILENAME_CMDLINE, _("# Command line"));
@@ -333,7 +333,7 @@ static int launch_editor(const char *path)
   terminal = getenv("TERM");
   if (!editor && (!terminal || strcmp(terminal, "dumb") == 0))
   {
-    error_msg(_("Can't run vi: $TERM, $VISUAL and $EDITOR are not set"));
+    error_msg(_("Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"));
     return 1;
   }
 
@@ -421,9 +421,9 @@ static int run_report_editor(map_crash_data_t &cr)
   int report_changed = read_crash_report(cr, text);
   free(text);
   if (report_changed)
-    puts(_("\nThe report has been updated."));
+    puts(_("\nThe report has been updated"));
   else
-    puts(_("\nNo changes were detected in the report."));
+    puts(_("\nNo changes were detected in the report"));
 
   return 0;
 }
@@ -643,7 +643,7 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
       continue;
 
     // Read the missing information and push it to plugin settings.
-    printf(_("Wrong settings were detected for plugin %s.\n"), it->first.c_str());
+    printf(_("Wrong settings were detected for plugin %s\n"), it->first.c_str());
     char result[64];
     if (loginMissing)
     {

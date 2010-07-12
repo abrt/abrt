@@ -74,13 +74,13 @@ class ConfBackendGnomeKeyring(ConfBackend):
         if g_default_key_ring:
             return
         if not gkey or not gkey.is_available():
-            raise ConfBackendInitError(_("Can't connect to Gnome Keyring daemon"))
+            raise ConfBackendInitError(_("Cannot connect to the Gnome Keyring daemon."))
         try:
             g_default_key_ring = gkey.get_default_keyring_sync()
         except:
             # could happen if keyring daemon is running, but we run gui under
             # user who is not the owner of the running session - using su
-            raise ConfBackendInitError(_("Can't get default keyring"))
+            raise ConfBackendInitError(_("Cannot get the default keyring."))
 
     def save(self, name, settings):
         settings_tmp = settings.copy()
@@ -99,7 +99,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
             # nothing found
             pass
         except gkey.DeniedError:
-            raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings won't be saved."))
+            raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings will not be saved."))
         # if plugin has a "Password" setting, we handle it specially: in keyring,
         # it is stored as item.secret, not as one of attributes
         password = ""
@@ -115,7 +115,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
                                         password, # secret
                                         True)
         except gkey.DeniedError:
-            raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings won't be saved."))
+            raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings will not be saved."))
 
     def load(self, name):
         item_list = None
@@ -149,7 +149,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
                 log2("gk-authorization has failed %i time(s)", 2-attempts)
                 if attempts == 0:
                     # we tried 2 times, so giving up the authorization
-                    raise ConfBackendLoadError(_("Access to gnome-keyring has been denied, can't load the settings for %s!" % name))
+                    raise ConfBackendLoadError(_("Access to gnome-keyring has been denied, cannot load the settings for %s!" % name))
                 continue
             break
 
@@ -202,7 +202,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
             # nothing found
             pass
         except gkey.DeniedError:
-            raise ConfBackendLoadError(_("Access to gnome-keyring has been denied, can't load settings"))
+            raise ConfBackendLoadError(_("Access to gnome-keyring has been denied, cannot load settings."))
 
         for item in item_list:
             # gnome keyring is weeeeird. why display_name, type, mtime, ctime

@@ -350,7 +350,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
                               const char *debuginfo_dirs,
                               string& build_ids)
 {
-    update_client(_("Starting debuginfo installation"));
+    update_client(_("Starting the debuginfo installation"));
 
     int pipeout[2]; //TODO: can we use ExecVP?
     xpipe(pipeout);
@@ -734,7 +734,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         InstallDebugInfos(pDebugDumpDir, m_sDebugInfoDirs.c_str(), build_ids);
     }
     else
-        VERB1 log(_("Skipping debuginfo installation"));
+        VERB1 log(_("Skipping the debuginfo installation"));
 
     /* Create and store backtrace. */
     string backtrace_str;
