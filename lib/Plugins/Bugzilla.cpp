@@ -558,7 +558,7 @@ void ctx::login(const char* login, const char* passwd)
 
     if (!result)
     {
-        std::string errmsg = ssprintf("Can't login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s", env.fault_string);
+        std::string errmsg = ssprintf(_("Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s"), env.fault_string);
         error_msg("%s", errmsg.c_str()); // show error in daemon log
         throw CABRTException(EXCEP_PLUGIN, "%s", errmsg.c_str());
     }
