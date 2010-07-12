@@ -153,6 +153,9 @@ Plugin to report bugs into the bugzilla.
 Summary: %{name}'s RHTSupport plugin
 Group: System Environment/Libraries
 Requires: %{name} = %{version}-%{release}
+Obsoletes: abrt-plugin-catcut
+Obsoletes: abrt-plugin-rhfastcheck
+Obsoletes: abrt-plugin-rhticket
 
 %description plugin-rhtsupport
 Plugin to report bugs into RH support system.
