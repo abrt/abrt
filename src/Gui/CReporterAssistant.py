@@ -282,10 +282,11 @@ class ReporterAssistant():
             log1(_("Rating is not required by any plugin, skipping the check..."))
 
         try:
-            rating = int(self.report.get_rating())
+            rating = int(self.result[FILENAME_RATING][CD_CONTENT])
+            log1(_("Rating is %s" % rating))
         except Exception, ex:
             rating = None
-        log1(_("Rating is %s" % rating))
+            log1(_("Crashdump doesn't have rating => we suppose it's not required"))
         # active buttons acording to required fields
         # if an backtrace has rating use it
         if not SendBacktrace:
@@ -293,7 +294,9 @@ class ReporterAssistant():
             error_msgs.append(_("You should check the backtrace for sensitive data."))
             error_msgs.append(_("You must agree with sending the backtrace."))
         # we have both SendBacktrace and rating
-        if rating_required:
+        # if analyzer doesn't provide the rating, then we suppose that it's
+        # not required e.g.: kerneloops, python
+        if rating_required and rating != None:
             try:
                 package = self.result[FILENAME_PACKAGE][CD_CONTENT]
             # if we don't have package for some reason
@@ -438,6 +441,7 @@ class ReporterAssistant():
         plugins_cb = []
         page = gtk.VBox(spacing=10)
         page.set_border_width(10)
+        self.assistant.insert_page(page, PAGE_REPORTER_SELECTOR)
         lbl_default_info = gtk.Label()
         lbl_default_info.set_line_wrap(True)
         lbl_default_info.set_alignment(0.0, 0.0)
@@ -501,13 +505,12 @@ class ReporterAssistant():
         if len(self.reporters) == 1:
             # we want to skip it only if the plugin is properly configured
             if self.reporters[0].Settings.check():
-                self.selected_reporters.append(self.reporters[0])
+                #self.selected_reporters.append(self.reporters[0])
                 self.assistant.set_page_complete(page, True)
                 log1(_("Only one reporter plugin is configured."))
                 # this is safe, because in python the variable is visible even
                 # outside the for loop
                 cb.set_active(True)
-        self.assistant.insert_page(page, PAGE_REPORTER_SELECTOR)
         self.pdict_add_page(page, PAGE_REPORTER_SELECTOR)
         self.assistant.set_page_type(page, gtk.ASSISTANT_PAGE_INTRO)
         self.assistant.set_page_title(page, _("Send a bug report"))
