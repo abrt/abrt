@@ -658,7 +658,13 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 
             /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
         }
-        /* else: no backtrace, independent_backtrace == "" */
+        /* else: no backtrace, independent_backtrace == ""
+           no backtrace => rating = 0
+        */
+        else
+        {
+            dd.SaveText(FILENAME_RATING, "0");
+        }
 
         string hash_base = package + executable + independent_backtrace;
         return create_hash(hash_base.c_str());
