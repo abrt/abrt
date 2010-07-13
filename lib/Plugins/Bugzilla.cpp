@@ -98,7 +98,7 @@ namespace {
 struct ctx: public abrt_xmlrpc_conn {
     xmlrpc_env env;
 
-    ctx(const char* url, bool no_ssl_verify): abrt_xmlrpc_conn(url, no_ssl_verify)
+    ctx(const char* url, bool ssl_verify): abrt_xmlrpc_conn(url, ssl_verify)
                 { xmlrpc_env_init(&env); }
     ~ctx() { xmlrpc_env_clean(&env); }
 
@@ -624,20 +624,20 @@ static map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettin
     }
     plugin_settings["Password"] = it->second;
 
-    it = pSettings.find("NoSSLVerify");
+    it = pSettings.find("SSLVerify");
     if (it == end)
     {
         plugin_settings.clear();
         return plugin_settings;
     }
-    plugin_settings["NoSSLVerify"] = it->second;
+    plugin_settings["SSLVerify"] = it->second;
 
     VERB1 log("User settings ok, using them instead of defaults");
     return plugin_settings;
 }
 
 CReporterBugzilla::CReporterBugzilla() :
-    m_bNoSSLVerify(false),
+    m_bSSLVerify(true),
     m_sBugzillaURL("https://bugzilla.redhat.com"),
     m_sBugzillaXMLRPC("https://bugzilla.redhat.com"XML_RPC_SUFFIX),
     m_bRatingRequired(true)
@@ -655,7 +655,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     std::string Password;
     std::string BugzillaXMLRPC;
     std::string BugzillaURL;
-    bool NoSSLVerify;
+    bool SSLVerify;
     map_plugin_settings_t settings = parse_settings(pSettings);
     /* if parse_settings fails it returns an empty map so we need to use defaults */
     if (!settings.empty())
@@ -664,7 +664,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         Password = settings["Password"];
         BugzillaXMLRPC = settings["BugzillaXMLRPC"];
         BugzillaURL = settings["BugzillaURL"];
-        NoSSLVerify = string_to_bool(settings["NoSSLVerify"].c_str());
+        SSLVerify = string_to_bool(settings["SSLVerify"].c_str());
     }
     else
     {
@@ -672,7 +672,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         Password = m_sPassword;
         BugzillaXMLRPC = m_sBugzillaXMLRPC;
         BugzillaURL = m_sBugzillaURL;
-        NoSSLVerify = m_bNoSSLVerify;
+        SSLVerify = m_bSSLVerify;
     }
 
     if ((Login == "") || (Password == ""))
@@ -685,7 +685,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     const std::string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
     const char *release          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
 
-    ctx bz_server(BugzillaXMLRPC.c_str(), NoSSLVerify);
+    ctx bz_server(BugzillaXMLRPC.c_str(), SSLVerify);
 
     update_client(_("Logging into bugzilla..."));
     bz_server.login(Login.c_str(), Password.c_str());
@@ -953,10 +953,10 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     {
         m_sPassword = it->second;
     }
-    it = pSettings.find("NoSSLVerify");
+    it = pSettings.find("SSLVerify");
     if (it != end)
     {
-        m_bNoSSLVerify = string_to_bool(it->second.c_str());
+        m_bSSLVerify = string_to_bool(it->second.c_str());
     }
 }
 
@@ -966,7 +966,7 @@ const map_plugin_settings_t& CReporterBugzilla::GetSettings()
     m_pSettings["BugzillaURL"] = m_sBugzillaURL;
     m_pSettings["Login"] = m_sLogin;
     m_pSettings["Password"] = m_sPassword;
-    m_pSettings["NoSSLVerify"] = m_bNoSSLVerify ? "yes" : "no";
+    m_pSettings["SSLVerify"] = m_bSSLVerify ? "yes" : "no";
     m_pSettings["RatingRequired"] = m_bRatingRequired ? "yes" : "no";
 
     return m_pSettings;

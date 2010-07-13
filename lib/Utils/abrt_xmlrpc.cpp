@@ -40,7 +40,7 @@ void throw_if_xml_fault_occurred(xmlrpc_env *env)
     }
 }
 
-void abrt_xmlrpc_conn::new_xmlrpc_client(const char* url, bool no_ssl_verify)
+void abrt_xmlrpc_conn::new_xmlrpc_client(const char* url, bool ssl_verify)
 {
     m_pClient = NULL;
     m_pServer_info = NULL;
@@ -55,8 +55,8 @@ void abrt_xmlrpc_conn::new_xmlrpc_client(const char* url, bool no_ssl_verify)
     struct xmlrpc_curl_xportparms curlParms;
     memset(&curlParms, 0, sizeof(curlParms));
     /* curlParms.network_interface = NULL; - done by memset */
-    curlParms.no_ssl_verifypeer = no_ssl_verify;
-    curlParms.no_ssl_verifyhost = no_ssl_verify;
+    curlParms.no_ssl_verifypeer = !ssl_verify;
+    curlParms.no_ssl_verifyhost = !ssl_verify;
 #ifdef VERSION
     curlParms.user_agent        = PACKAGE_NAME"/"VERSION;
 #else

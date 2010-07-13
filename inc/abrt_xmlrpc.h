@@ -33,11 +33,11 @@ struct abrt_xmlrpc_conn {
     xmlrpc_client* m_pClient;
     xmlrpc_server_info* m_pServer_info;
 
-    abrt_xmlrpc_conn(const char* url, bool no_ssl_verify) { new_xmlrpc_client(url, no_ssl_verify); }
+    abrt_xmlrpc_conn(const char* url, bool ssl_verify) { new_xmlrpc_client(url, ssl_verify); }
     /* this never throws exceptions - calls C functions only */
     ~abrt_xmlrpc_conn() { destroy_xmlrpc_client(); }
 
-    void new_xmlrpc_client(const char* url, bool no_ssl_verify);
+    void new_xmlrpc_client(const char* url, bool ssl_verify);
     void destroy_xmlrpc_client();
 };
 
