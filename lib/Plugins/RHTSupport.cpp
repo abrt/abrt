@@ -92,7 +92,7 @@ static char *xml_escape(const char *str)
 
 CReporterRHticket::CReporterRHticket() :
     m_bSSLVerify(true),
-    m_sStrataURL("http://support-services-devel.gss.redhat.com:8080/Strata")
+    m_sStrataURL("http://api.access.redhat.com/rs")
 {}
 
 CReporterRHticket::~CReporterRHticket()
