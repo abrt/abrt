@@ -1,4 +1,4 @@
-AC_INIT([abrt], [1.1.8], [crash-catcher@fedorahosted.org])
+AC_INIT([abrt], [1.1.9], [crash-catcher@fedorahosted.org])
 AC_CONFIG_MACRO_DIR([m4])
 AM_INIT_AUTOMAKE([-Wall -Werror foreign])
 
