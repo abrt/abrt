@@ -99,7 +99,7 @@ static set_string_t ParseList(const char* pList)
 }
 
 /* Format: name, name(param),name("param with spaces \"and quotes\"") */
-static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
+static vector_pair_string_string_t ParseListWithArgs(const char *pValue, int *err)
 {
     VERB3 log(" ParseListWithArgs(%s)", pValue);
 
@@ -136,7 +136,10 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
                 is_arg = true;
             }
             else
+            {
+                *err = 1;
                 error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
+            }
 
             continue;
         }
@@ -151,7 +154,10 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
                 action = "";
             }
             else
+            {
+                *err = 1;
                 error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, pValue);
+            }
 
             continue;
         }
@@ -169,10 +175,16 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
     }
 
     if (is_quote)
+    {
+        *err = 1;
         error_msg("Parser error: Unclosed quote in \"%s\"", pValue);
+    }
 
     if (is_arg)
+    {
+        *err = 1;
         error_msg("Parser error: Unclosed argument in \"%s\"", pValue);
+    }
     else if (item != "")
     {
         VERB3 log(" adding (%s,%s)", item.c_str(), "");
@@ -181,7 +193,7 @@ static vector_pair_string_string_t ParseListWithArgs(const char *pValue)
     return pluginsWithArgs;
 }
 
-static void ParseCommon()
+static int ParseCommon()
 {
     map_string_t::const_iterator end = s_mapSectionCommon.end();
     map_string_t::const_iterator it = s_mapSectionCommon.find("OpenGPGCheck");
@@ -217,26 +229,34 @@ static void ParseCommon()
     it = s_mapSectionCommon.find("ActionsAndReporters");
     if (it != end)
     {
-        g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second.c_str());
+        int err = 0;
+        g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second.c_str(), &err);
+        if (err)
+            return err;
     }
     it = s_mapSectionCommon.find("ProcessUnpackaged");
     if (it != end)
     {
         g_settings_bProcessUnpackaged = string_to_bool(it->second.c_str());
     }
+    return 0; /* no error */
 }
 
-static void ParseCron()
+static int ParseCron()
 {
     map_string_t::iterator it = s_mapSectionCron.begin();
     for (; it != s_mapSectionCron.end(); it++)
     {
-        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str());
+        int err = 0;
+        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str(), &err);
+        if (err)
+            return err;
         g_settings_mapCron[it->first] = actionsAndReporters;
     }
+    return 0; /* no error */
 }
 
-static set_string_t ParseKey(const char *Key)
+static set_string_t ParseKey(const char *Key, int *err)
 {
     unsigned int ii;
     std::string item;
@@ -266,7 +286,10 @@ static set_string_t ParseKey(const char *Key)
                 item = "";
             }
             else
+            {
+                *err = 1;
                 error_msg("Parser error: Invalid syntax on column %d in \"%s\"", ii, Key);
+            }
         }
         else
         {
@@ -275,6 +298,7 @@ static set_string_t ParseKey(const char *Key)
     }
     if (is_quote)
     {
+        *err = 1;
         error_msg("Parser error: Unclosed quote in \"%s\"", Key);
     }
     else if (item != "")
@@ -291,13 +315,16 @@ static set_string_t ParseKey(const char *Key)
     return set;
 }
 
-static void ParseAnalyzerActionsAndReporters()
+static int ParseAnalyzerActionsAndReporters()
 {
     map_string_t::iterator it = s_mapSectionAnalyzerActionsAndReporters.begin();
     for (; it != s_mapSectionAnalyzerActionsAndReporters.end(); it++)
     {
-        set_string_t keys = ParseKey(it->first.c_str());
-        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str());
+        int err = 0;
+        set_string_t keys = ParseKey(it->first.c_str(), &err);
+        vector_pair_string_string_t actionsAndReporters = ParseListWithArgs(it->second.c_str(), &err);
+        if (err)
+            return err;
         set_string_t::iterator it_keys = keys.begin();
         for (; it_keys != keys.end(); it_keys++)
         {
@@ -305,6 +332,7 @@ static void ParseAnalyzerActionsAndReporters()
             g_settings_mapAnalyzerActionsAndReporters[*it_keys] = actionsAndReporters;
         }
     }
+    return 0; /* no error */
 }
 
 static void LoadGPGKeys()
@@ -332,7 +360,7 @@ static void LoadGPGKeys()
  * Reads configuration from file to s_mapSection* static variables.
  * The file must be opened for reading.
  */
-static void ReadConfigurationFromFile(FILE *fp)
+static int ReadConfigurationFromFile(FILE *fp)
 {
     char line[512];
     std::string section;
@@ -395,26 +423,32 @@ static void ReadConfigurationFromFile(FILE *fp)
         if (is_quote)
         {
             error_msg("abrt.conf: Invalid syntax on line %d", lineno);
-            continue;
+            return 1; /* error */
         }
 
         if (is_section)
         {
             if (line[ii] != ']') /* section not closed */
+            {
                 error_msg("abrt.conf: Section not closed on line %d", lineno);
+                return 1; /* error */
+            }
             continue;
         }
 
         if (is_key)
         {
             if (!value.empty()) /* the key is stored in value */
+            {
                 error_msg("abrt.conf: Invalid syntax on line %d", lineno);
+                return 1; /* error */
+            }
             continue;
         }
         else if (key.empty()) /* A line without key: " = something" */
         {
             error_msg("abrt.conf: Invalid syntax on line %d", lineno);
-            continue;
+            return 1; /* error */
         }
 
         if (section == SECTION_COMMON)
@@ -436,35 +470,48 @@ static void ReadConfigurationFromFile(FILE *fp)
             s_mapSectionCron[key] += value;
         }
         else
+        {
             error_msg("abrt.conf: Ignoring entry in invalid section [%s]", section.c_str());
+            return 1; /* error */
+        }
     }
+    return 0; /* success */
 }
 
 /* abrt daemon loads .conf file */
-void LoadSettings()
+int LoadSettings()
 {
+    int err = 0;
+
     FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
     if (fp)
     {
-        ReadConfigurationFromFile(fp);
+        err = ReadConfigurationFromFile(fp);
         fclose(fp);
     }
     else
         error_msg("Unable to read configuration file %s", CONF_DIR"/abrt.conf");
 
-    ParseCommon();
-    ParseAnalyzerActionsAndReporters();
-    ParseCron();
+    if (err == 0)
+        err = ParseCommon();
+    if (err == 0)
+        err = ParseAnalyzerActionsAndReporters();
+    if (err == 0)
+        err = ParseCron();
 
-    /*
-        loading gpg keys will invoke LoadOpenGPGPublicKey() from rpm.cpp
-        pgpReadPkts which makes nss to re-init and thus makes
-        bugzilla plugin work :-/
-    */
+    if (err == 0)
+    {
+        /*
+         * loading gpg keys will invoke LoadOpenGPGPublicKey() from rpm.cpp
+         * pgpReadPkts which makes nss to re-init and thus makes
+         * bugzilla plugin work :-/
+         */
+        //FIXME FIXME FIXME FIXME FIXME FIXME!!!
+        //if(g_settings_bOpenGPGCheck)
+        LoadGPGKeys();
+    }
 
-    //FIXME FIXME FIXME FIXME FIXME FIXME!!!
-    //if(g_settings_bOpenGPGCheck)
-    LoadGPGKeys();
+    return err;
 }
 
 /* dbus call to retrieve .conf file data from daemon */

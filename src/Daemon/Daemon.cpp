@@ -842,7 +842,8 @@ int main(int argc, char** argv)
         init_daemon_logging(&watcher);
 
         VERB1 log("Loading settings");
-        LoadSettings();
+        if (LoadSettings() != 0)
+            throw 1;
 
         VERB1 log("Initializing XML-RPC library");
         xmlrpc_env env;

@@ -37,7 +37,7 @@ extern map_cron_t    g_settings_mapCron;
 extern vector_pair_string_string_t g_settings_vectorActionsAndReporters;
 extern map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
 
-void LoadSettings();
+int LoadSettings();
 void SaveSettings();
 void SetSettings(const map_abrt_settings_t& pSettings, const char * dbus_sender);
 map_abrt_settings_t GetSettings();
