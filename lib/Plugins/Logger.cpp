@@ -65,8 +65,8 @@ std::string CLogger::Report(const map_crash_data_t& pCrashData,
     /* open, not fopen - want to set mode if we create the file, not just open */
     const char *fname = m_sLogPath.c_str();
     int fd = open(fname,
-                m_bAppendLogs ? O_WRONLY|O_CREAT|O_APPEND : O_WRONLY|O_CREAT|O_TRUNC,
-                0600);
+                  m_bAppendLogs ? O_WRONLY|O_CREAT|O_APPEND : O_WRONLY|O_CREAT|O_TRUNC,
+                  0600);
     if (fd < 0)
         throw CABRTException(EXCEP_PLUGIN, "Can't open '%s'", fname);
 
@@ -76,7 +76,8 @@ std::string CLogger::Report(const map_crash_data_t& pCrashData,
     full_write(fd, desc, strlen(desc));
     close(fd);
 
-    return "file://" + m_sLogPath;
+    const char *format = m_bAppendLogs ? _("The report was appended to %s") : _("The report was stored to %s");
+    return ssprintf(format, m_sLogPath.c_str());
 }
 
 PLUGIN_INFO(REPORTER,
