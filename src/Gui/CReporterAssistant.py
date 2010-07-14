@@ -307,7 +307,7 @@ class ReporterAssistant():
                 if package:
                     error_msgs.append(_("Reporting disabled because the backtrace is unusable.\nPlease try to install debuginfo manually using the command: <b>debuginfo-install %s</b> \nthen use the Refresh button to regenerate the backtrace." % self.report.getPackageName()))
                 else:
-                    error_msgs.append(_("The backtrace is unusable, you cannot report this!"))
+                    error_msgs.append(_("Reporting disabled because the backtrace is unusable."))
                 send = False
             # probably usable 3
             elif rating < 4:
