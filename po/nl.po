@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-14 11:45+0000\n"
-"PO-Revision-Date: 2010-07-14 13:58+0200\n"
+"POT-Creation-Date: 2010-07-14 15:37+0000\n"
+"PO-Revision-Date: 2010-07-14 20:05+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -1055,16 +1055,16 @@ msgstr ""
 "configuratie te openen en te repareren voordat je verdergaat, omdat het "
 "rapporteer proces anders kan mislukken.\n"
 
-#: ../src/Applet/Applet.cpp:88
+#: ../src/Applet/Applet.cpp:85
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Een crash in pakket %s is ontdekt"
 
-#: ../src/Applet/Applet.cpp:90
+#: ../src/Applet/Applet.cpp:87
 msgid "A crash has been detected"
 msgstr "Een crash is ontdekt"
 
-#: ../src/Applet/Applet.cpp:266
+#: ../src/Applet/Applet.cpp:283
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
@@ -1191,6 +1191,16 @@ msgstr "Aanmaken en indienen van een rapport..."
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Rapport schrijven naar: '%s'"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was appended to %s"
+msgstr "Het rapport werd toegevoegd aan %s"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was stored to %s"
+msgstr "Het rapport werd opgeslagen in %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:298
 msgid "FileTransfer: Creating a report..."
