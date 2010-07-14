@@ -396,7 +396,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
      * yet, having it truly unlimited is bad too,
      * therefore we are using LARGE, but still limited buffer.
      */
-    char *buff = xmalloc(64*1024);
+    char *buff = (char*) xmalloc(64*1024);
     while (fgets(buff, 64*1024, pipeout_fp))
     {
         strchrnul(buff, '\n')[0] = '\0';
