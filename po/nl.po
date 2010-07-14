@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-13 05:08+0000\n"
-"PO-Revision-Date: 2010-07-13 12:38+0200\n"
+"POT-Creation-Date: 2010-07-14 11:45+0000\n"
+"PO-Revision-Date: 2010-07-14 13:58+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -111,10 +111,10 @@ msgstr ""
 "\t-d, --delete CRASH_ID\tverwijder een crash\n"
 "CRASH_ID kan zijn:\n"
 "\tUID:UUID paar,\n"
-"\tunieke UUID prefix  - de crash met bijpassende UUID waarop actie ondernomen "
-"zal worden\n"
-"\t@N  - N-de crash (zoals getoond door --list --full) waarop actie ondernomen "
-"zal worden\n"
+"\tunieke UUID prefix  - de crash met bijpassende UUID waarop actie "
+"ondernomen zal worden\n"
+"\t@N  - N-de crash (zoals getoond door --list --full) waarop actie "
+"ondernomen zal worden\n"
 
 #: ../src/CLI/CLI.cpp:220
 msgid "You must specify exactly one operation"
@@ -479,7 +479,7 @@ msgstr ""
 "install %s</b> \n"
 "en gebruik dan de Verversen knop om de backtrace opnieuw te genereren."
 
-#: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:310
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "De backtrace in onbruikbaar, je kunt dit niet rapporteren!"
 
@@ -622,8 +622,8 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "Geen UI voor de plug-in <b>%s</b>, dit is waarschijnlijk een bug.\n"
-"Rapporteer dit op <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
-"fedorahosted.org/abrt/newticket</a>"
+"Rapporteer dit op <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
@@ -842,7 +842,8 @@ msgstr "Kwalificatie wordt vereist door de %s plug-in"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "Kwalificatie wordt niet vereist door een plug-in, de check overslaan..."
+msgstr ""
+"Kwalificatie wordt niet vereist door een plug-in, de check overslaan..."
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
@@ -862,6 +863,10 @@ msgstr "Je moet de backtrace controleren op gevoelige data."
 #: ../src/Gui/CReporterAssistant.py:295
 msgid "You must agree with sending the backtrace."
 msgstr "Je moet instemmen met het versturen van de backtrace."
+
+#: ../src/Gui/CReporterAssistant.py:310
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "Rapportage is uitgezet omdat de backtrace onbruikbaar is."
 
 #: ../src/Gui/CReporterAssistant.py:355
 msgid "You did not provide any steps to reproduce."
@@ -1044,7 +1049,8 @@ msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
-msgstr "Er zijn verkeerde instellingen ontdekt voor sommige van de aangezette "
+msgstr ""
+"Er zijn verkeerde instellingen ontdekt voor sommige van de aangezette "
 "rapporteer plug-ins. Gebruik de knoppen hieronder om hun respectievelijke "
 "configuratie te openen en te repareren voordat je verdergaat, omdat het "
 "rapporteer proces anders kan mislukken.\n"
@@ -1097,8 +1103,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
-"Kan niet inloggen. Controleer Bewerken->Plug-ins->Bugzilla en "
-"/etc/abrt/plugins/Bugzilla.conf. Server melde: %s"
+"Kan niet inloggen. Controleer Bewerken->Plug-ins->Bugzilla en /etc/abrt/"
+"plugins/Bugzilla.conf. Server melde: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -1169,11 +1175,11 @@ msgstr "Start de debuginfo installatie"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:561
+#: ../lib/Plugins/CCpp.cpp:566
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van globale universele unieke identificatie..."
 
-#: ../lib/Plugins/CCpp.cpp:743
+#: ../lib/Plugins/CCpp.cpp:748
 msgid "Skipping the debuginfo installation"
 msgstr "Sla de debuginfo installatie over"
 
