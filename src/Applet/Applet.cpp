@@ -45,19 +45,20 @@ static void Crash(DBusMessage* signal)
     int r;
     DBusMessageIter in_iter;
     dbus_message_iter_init(signal, &in_iter);
+
+    /* 1st param: package */
     const char* package_name;
     r = load_val(&in_iter, package_name);
+
     /* 2nd param: crash_id */
     const char* crash_id = NULL;
-    if (r == ABRT_DBUS_MORE_FIELDS)
-    {
-        r = load_val(&in_iter, crash_id);
-    }
-    else
+    if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
         return;
     }
+    r = load_val(&in_iter, crash_id);
+
     /* Optional 3rd param: uid */
     const char* uid_str = NULL;
     if (r == ABRT_DBUS_MORE_FIELDS)
@@ -69,10 +70,6 @@ static void Crash(DBusMessage* signal)
         error_msg("dbus signal %s: parameter type mismatch", __func__);
         return;
     }
-
-    //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
-    //    return;
-//    uid_t uid_num = atol(uid_str);
 
     if (uid_str != NULL)
     {
@@ -91,6 +88,26 @@ static void Crash(DBusMessage* signal)
     //applet->AddEvent(uid, package_name);
     applet->SetIconTooltip(message, package_name);
     applet->ShowIcon();
+
+    /* If this crash seems to be repeating, do not annoy user with popup dialog.
+     * (The icon in the tray is not suppressed)
+     */
+    static time_t last_time = 0;
+    static char* last_package_name = NULL;
+    static char* last_crash_id = NULL;
+    time_t cur_time = time(NULL);
+    if (last_package_name && strcmp(last_package_name, package_name) == 0
+     && last_crash_id && strcmp(last_crash_id, crash_id) == 0
+     && (unsigned)(cur_time - last_time) < 2 * 60 * 60
+    ) {
+        return;
+    }
+    last_time = cur_time;
+    free(last_package_name);
+    last_package_name = xstrdup(package_name);
+    free(last_crash_id);
+    last_crash_id = xstrdup(crash_id);
+
     applet->CrashNotify(crash_id, message, package_name);
 }
 
