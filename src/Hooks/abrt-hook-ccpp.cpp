@@ -146,6 +146,13 @@ static char* get_executable(pid_t pid, int *fd_p)
         *deleted = '\0';
         log("file %s seems to be deleted", executable);
     }
+    /* find and cut off prelink suffixes from the path */
+    char *prelink = executable + strlen(executable) - strlen(".#prelink#.XXXXXX");
+    if (prelink > executable && strncmp(prelink, ".#prelink#.", strlen(".#prelink#.")) == 0)
+    {
+        log("file %s seems to be a prelink temporary file", executable);
+        *prelink = '\0';
+    }
     return executable;
 }
 
