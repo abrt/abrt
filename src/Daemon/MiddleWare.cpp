@@ -563,15 +563,20 @@ report_status_t Report(const map_crash_data_t& client_report,
 /**
  * Check whether particular debugdump directory is saved
  * in database. This check is done together with an UID of an user.
- * @param pUID an UID of an user.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
- * @return It returns true if debugdump dir is already saved, otherwise
- * it returns false.
+ * @param uid
+ *  An UID of an user.
+ * @param debug_dump_dir
+ *  A debugdump dir containing all necessary data.
+ * @return
+ *  It returns true if debugdump dir is already saved, otherwise
+ *  it returns false.
+ * @todo
+ *  Use database query instead of dumping all rows and searching in them.
  */
-static bool IsDebugDumpSaved(long uid,
-                                   const char *pDebugDumpDir)
+static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
 {
-    /* TODO: use database query instead of dumping all rows and searching in them */
+    if (g_settings_sDatabase.empty())
+        error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
@@ -582,7 +587,7 @@ static bool IsDebugDumpSaved(long uid,
     bool found = false;
     for (ii = 0; ii < rows.size(); ii++)
     {
-        if (rows[ii].m_sDebugDumpDir == pDebugDumpDir)
+        if (0 == strcmp(rows[ii].m_sDebugDumpDir.c_str(), debug_dump_dir))
         {
             found = true;
             break;
@@ -982,7 +987,7 @@ static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
 }
 
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
-                map_crash_data_t& pCrashData)
+                          map_crash_data_t& pCrashData)
 {
     std::string UID;
     std::string time;
@@ -1024,16 +1029,12 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         return MW_ERROR;
     }
 
-    if (IsDebugDumpSaved(uid_num, pDebugDumpDir))
-    {
+    if (is_debug_dump_saved(uid_num, pDebugDumpDir))
         return MW_IN_DB;
-    }
 
     mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), cmdline.c_str(), remote, pDebugDumpDir);
     if (res != MW_OK)
-    {
         return res;
-    }
 
     std::string UUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
     std::string crash_id = ssprintf("%s:%s", UID.c_str(), UUID.c_str());
