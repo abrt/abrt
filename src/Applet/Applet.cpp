@@ -82,7 +82,7 @@ static void Crash(DBusMessage* signal)
         }
     }
 
-    const char* message = _("A crash in package %s has been detected");
+    const char* message = _("A crash in the %s package has been detected");
     if (package_name[0] == '\0')
         message = _("A crash has been detected");
     //applet->AddEvent(uid, package_name);
