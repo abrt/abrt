@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-13 05:08+0000\n"
-"PO-Revision-Date: 2010-07-13 20:45+0900\n"
+"POT-Creation-Date: 2010-07-14 22:20+0000\n"
+"PO-Revision-Date: 2010-07-15 13:30+0900\n"
 "Last-Translator: Makoto Mizukami <makoto@fedoraporject.org>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -478,7 +478,7 @@ msgstr ""
 "ルしてから\n"
 "リフレッシュボタンを使用してバックトレースを再生成して下さい。"
 
-#: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:310
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "バックトレースを使用できません。この問題を報告できません!"
 
@@ -853,6 +853,10 @@ msgstr "機密データがないかバックトレースを確認する必要が
 msgid "You must agree with sending the backtrace."
 msgstr "バックトレースの送信に同意する必要があります。"
 
+#: ../src/Gui/CReporterAssistant.py:310
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "バックトレースが利用できないため、レポート機能が無効になっています。"
+
 #: ../src/Gui/CReporterAssistant.py:355
 msgid "You did not provide any steps to reproduce."
 msgstr "再現する手順がまだ提供されていません。"
@@ -1039,16 +1043,16 @@ msgstr ""
 "下のボタンを使用して各設定を開き、それらを修正してから進んで下さい。このまま"
 "では報告のプロセスは失敗するでしょう。\n"
 
-#: ../src/Applet/Applet.cpp:88
+#: ../src/Applet/Applet.cpp:85
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "パッケージ %s のクラッシュが検出されました"
 
-#: ../src/Applet/Applet.cpp:90
+#: ../src/Applet/Applet.cpp:87
 msgid "A crash has been detected"
 msgstr "クラッシュが検出されました"
 
-#: ../src/Applet/Applet.cpp:266
+#: ../src/Applet/Applet.cpp:283
 msgid "ABRT service is not running"
 msgstr "ABRT サービスが稼働していません。"
 
@@ -1158,11 +1162,11 @@ msgstr "debuginfo のインストールを開始中"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:561
+#: ../lib/Plugins/CCpp.cpp:566
 msgid "Getting global universal unique identification..."
 msgstr "グローバルで普遍的な独自の識別を取得しています..."
 
-#: ../lib/Plugins/CCpp.cpp:743
+#: ../lib/Plugins/CCpp.cpp:748
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo のインストールをスキップします"
 
@@ -1174,6 +1178,16 @@ msgstr "報告の作成と提出をしています..."
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "'%s' へのレポートを書き込み中"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was appended to %s"
+msgstr "報告を %s に追加しました"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was stored to %s"
+msgstr "報告を %s に保存しました"
 
 #: ../lib/Plugins/FileTransfer.cpp:298
 msgid "FileTransfer: Creating a report..."
