@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-13 00:18+0000\n"
-"PO-Revision-Date: 2010-07-08 20:52+0200\n"
+"POT-Creation-Date: 2010-07-15 12:57+0000\n"
+"PO-Revision-Date: 2010-07-15 16:28+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
-"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: pl\n"
 
 #: ../lib/Plugins/ReportUploader.cpp:97 ../lib/Plugins/FileTransfer.cpp:53
 msgid "FileTransfer: URL not specified"
@@ -71,7 +71,7 @@ msgstr "\tNazwa komputera : %s\n"
 
 #. Message has embedded tabs.
 #: ../src/CLI/CLI.cpp:177
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
@@ -149,7 +149,7 @@ msgstr "# Składnik"
 
 #: ../src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr "# Zrzut core"
+msgstr "# Zrzut pamięci"
 
 #: ../src/CLI/report.cpp:209
 msgid "# Executable"
@@ -172,34 +172,32 @@ msgid "# Release string of the operating system"
 msgstr "# Ciąg wydania systemu operacyjnego"
 
 #: ../src/CLI/report.cpp:336
-#, fuzzy
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
-"Nie można wykonać programu vi: nie podano zmiennych VISUAL ani EDITOR."
+"Nie można uruchomić programu vi: nie ustawiono zmiennych $TERM, $VISUAL ani "
+"$EDITOR"
 
 #: ../src/CLI/report.cpp:424
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
 msgstr ""
 "\n"
-"Zgłoszenie zostało zaktualizowane."
+"Zgłoszenie zostało zaktualizowane"
 
 #: ../src/CLI/report.cpp:426
-#, fuzzy
 msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
 "\n"
-"Nie wykryto zmian w zgłoszeniu."
+"Nie wykryto zmian w zgłoszeniu"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
-#, fuzzy, c-format
+#, c-format
 msgid "Wrong settings were detected for plugin %s\n"
-msgstr "Wykryto błędne ustawienia dla wtyczki %s.\n"
+msgstr "Wykryto błędne ustawienia dla wtyczki %s\n"
 
 #: ../src/CLI/report.cpp:650
 msgid "Enter your login: "
@@ -236,12 +234,10 @@ msgid "'How to reproduce' is too long"
 msgstr "\"Jak powtórzyć awarię\" jest za długie"
 
 #: ../src/Gui/ABRTExceptions.py:6
-#, fuzzy
 msgid "Another client is already running, trying to wake it..."
-msgstr "Inny klient jest już uruchomiony, próba przebudzenia go."
+msgstr "Inny klient jest już uruchomiony. Próba przebudzenia go..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-#, fuzzy
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
@@ -269,23 +265,20 @@ msgid "Database plugins"
 msgstr "Wtyczki baz danych"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
-#, fuzzy
 msgid "Cannot connect to system dbus."
 msgstr "Nie można połączyć się z systemową magistralą D-Bus"
 
 #: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
-#, fuzzy
 msgid "Please check if the abrt daemon is running."
-msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony"
+msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/Gui/CCDBusBackend.py:174
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
 msgstr ""
-"Demon nie zwrócił prawidłowych informacji o raporcie\n"
+"Demon nie zwrócił prawidłowych informacji o raporcie.\n"
 "Brak pakietów debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
@@ -406,16 +399,16 @@ msgid "Latest Crash"
 msgstr "Ostatnia awaria"
 
 #: ../src/Gui/CCMainWindow.py:143
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
 "%s"
 msgstr ""
-"Nie można wyświetlić okna ustawień\n"
+"Nie można wyświetlić okna ustawień.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
@@ -458,7 +451,7 @@ msgstr ""
 "IDENTYFIKATOREM_AWARII"
 
 #: ../src/Gui/CCMainWindow.py:445
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
@@ -469,19 +462,17 @@ msgstr ""
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr ""
 "Krótki opis, jak ponownie wywołać tę awarię lub co robił użytkownik (w "
 "języku angielskim)..."
 
 #: ../src/Gui/CCReporterDialog.py:107
-#, fuzzy
 msgid "You must check the backtrace for sensitive data."
-msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane"
+msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using the command: <b>debuginfo-"
@@ -493,13 +484,11 @@ msgstr ""
 "<b>debuginfo-install %s</b>, \n"
 "a następnie nacisnąć przycisk Odśwież, aby ponownie utworzyć wyjątek."
 
-#: ../src/Gui/CCReporterDialog.py:120 ../src/Gui/CReporterAssistant.py:310
-#, fuzzy
+#: ../src/Gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Nie można użyć tego wyjątku, więc nie można tego zgłosić."
 
 #: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
-#, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -512,22 +501,20 @@ msgid "Reporting disabled, please fix the problems shown above."
 msgstr "Zgłaszanie jest wyłączone. Proszę naprawić powyższe problemy."
 
 #: ../src/Gui/CCReporterDialog.py:132
-#, fuzzy
 msgid "Sends the report using the selected plugin."
 msgstr "Wysyła zgłoszenie używając wybranej wtyczki."
 
 #: ../src/Gui/CCReporterDialog.py:398
-#, fuzzy
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
 msgstr ""
-"Brak dostępnej wtyczki zgłaszania dla tego typu awarii\n"
+"Brak dostępnej wtyczki zgłaszania dla tego typu awarii.\n"
 "Proszę sprawdzić plik abrt.conf."
 
 #: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/PluginsSettingsDialog.py:169
 #: ../src/Gui/CReporterAssistant.py:201
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
@@ -541,7 +528,6 @@ msgid "Configure %s options"
 msgstr "Skonfiguruj opcje %s"
 
 #: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -560,44 +546,40 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
 #: ../src/Gui/CReporterAssistant.py:884
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Błąd podczas uzyskiwania zgłoszenia: %s"
 
 #: ../src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "Nie można połączyć się z demonem bazy kluczy GNOME"
+msgstr "Nie można połączyć się z demonem bazy kluczy środowiska GNOME."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
 #: ../src/Gui/ConfBackend.py:83
-#, fuzzy
 msgid "Cannot get the default keyring."
-msgstr "Nie można uzyskać domyślnej bazy kluczy"
+msgstr "Nie można uzyskać domyślnej bazy kluczy."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-#, fuzzy
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
-"Dostęp do demona gnome-keyring został odrzucony, ustawienia wtyczek nie "
+"Dostęp do demona gnome-keyring został odrzucony. Ustawienia wtyczek nie "
 "zostaną zapisane."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
-"Dostęp do demona gnome-keyring został odrzucony, nie można wczytać ustawień "
+"Dostęp do demona gnome-keyring został odrzucony. Nie można wczytać ustawień "
 "wtyczki %s."
 
 #: ../src/Gui/ConfBackend.py:205
-#, fuzzy
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
-"Dostęp do demona gnome-keyring został odrzucony, nie można wczytać ustawień"
+"Dostęp do demona gnome-keyring został odrzucony. Nie można wczytać ustawień."
 
 #: ../src/Gui/dialogs.glade.h:1
 msgid "Log"
@@ -608,7 +590,6 @@ msgid "Report done"
 msgstr "Zgłoszenie zostało ukończone"
 
 #: ../src/Gui/PluginsSettingsDialog.py:24
-#, fuzzy
 msgid "Cannot load the GUI description for SettingsDialog!"
 msgstr ""
 "Nie można wczytać opisu graficznego interfejsu użytkownika dla okna ustawień."
@@ -624,7 +605,7 @@ msgid "Please select a plugin from the list to edit it's options."
 msgstr "Proszę wybrać wtyczkę z listy, aby zmodyfikować jej opcje."
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
@@ -635,7 +616,6 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/PluginSettingsUI.py:17
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr ""
 "Nie można odnaleźć widgetu okna wtyczek w opisie interfejsu użytkownika."
@@ -653,9 +633,8 @@ msgstr ""
 "newticket\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
-#, fuzzy
 msgid "Combo box is not implemented"
-msgstr "pole kombinowane nie jest zaimplementowane"
+msgstr "Pole kombinowane nie jest zaimplementowane"
 
 #: ../src/Gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
@@ -684,13 +663,12 @@ msgstr ""
 "angielskim)</b>"
 
 #: ../src/Gui/report.glade.h:6
-#, fuzzy
 msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>Proszę naprawić następujące problemy</b>"
+msgstr "<b>Proszę naprawić następujące problemy:</b>"
 
 #: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
-msgstr "<b>Gdzie zgłosić te zdarzenie?</b>"
+msgstr "<b>Gdzie zgłosić to zdarzenie?</b>"
 
 #: ../src/Gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
@@ -729,12 +707,10 @@ msgid "Details"
 msgstr "Szczegóły"
 
 #: ../src/Gui/report.glade.h:18
-#, fuzzy
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr "Wymusza ponowne utworzenie wyjątku przez program ABRT"
+msgstr "Wymusza ponowne utworzenie wyjątku przez program ABRT."
 
 #: ../src/Gui/report.glade.h:19
-#, fuzzy
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr "Sprawdzono wyjątek i usunięto prywatne dane (hasła itp.)"
 
@@ -743,7 +719,6 @@ msgid "N/A"
 msgstr "Nie dotyczy"
 
 #: ../src/Gui/report.glade.h:21 ../src/Gui/progress_window.glade.h:2
-#, fuzzy
 msgid "Please wait..."
 msgstr "Proszę czekać..."
 
@@ -840,7 +815,6 @@ msgid "GPG keys: "
 msgstr "Klucze GPG: "
 
 #: ../src/Gui/settings.glade.h:17
-#, fuzzy
 msgid "Max coredump storage size (MB):"
 msgstr "Ograniczenie miejsca na zrzuty pamięci (MB):"
 
@@ -869,14 +843,13 @@ msgid "Crash info doesn't contain a backtrace"
 msgstr "Informacje o awarii nie zawierają wyjątku"
 
 #: ../src/Gui/CReporterAssistant.py:280
-#, fuzzy, python-format
+#, python-format
 msgid "Rating is required by the %s plugin"
 msgstr "Ocena jest wymagana przez wtyczkę %s"
 
 #: ../src/Gui/CReporterAssistant.py:282
-#, fuzzy
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "Ocena nie jest wymagana przez żadną wtyczkę, pomijanie sprawdzania..."
+msgstr "Ocena nie jest wymagana przez żadną wtyczkę. Pomijanie sprawdzania..."
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
@@ -885,30 +858,30 @@ msgstr "Ocena wynosi %s"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
+msgstr "Zrzut pamięci nie posiada oceny => prawdopodobnie nie jest wymagana"
 
 #: ../src/Gui/CReporterAssistant.py:294
-#, fuzzy
 msgid "You should check the backtrace for sensitive data."
-msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane"
+msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane."
 
 #: ../src/Gui/CReporterAssistant.py:295
-#, fuzzy
 msgid "You must agree with sending the backtrace."
-msgstr "Należy wyrazić zgodę na wysłanie wyjątku"
+msgstr "Należy wyrazić zgodę na wysłanie wyjątku."
+
+#: ../src/Gui/CReporterAssistant.py:310
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku."
 
 #: ../src/Gui/CReporterAssistant.py:355
-#, fuzzy
 msgid "You did not provide any steps to reproduce."
 msgstr "Nie podano, jak powtórzyć awarię."
 
 #: ../src/Gui/CReporterAssistant.py:369
-#, fuzzy
 msgid "You did not provide any comments."
 msgstr "Nie podano żadnych komentarzy."
 
 #: ../src/Gui/CReporterAssistant.py:450
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
 "system. It is a good idea to send a bug report about this issue. The report "
@@ -922,8 +895,8 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"Wygląda na to, że pakiet <b>%s</b> się zawiesił. Dobrze jest wysłać "
-"zgłoszenie błędu. Dostarczy ono opiekunom oprogramowania niezbędne "
+"Wygląda na to, że aplikacja z pakietu <b>%s</b> się zawiesiła. Dobrze jest "
+"wysłać zgłoszenie błędu. Dostarczy ono opiekunom oprogramowania niezbędne "
 "informacje, aby go naprawić.\n"
 "\n"
 "Proszę przejrzeć poniższe informacje i zmodyfikować je, aby upewnić się, że "
@@ -933,16 +906,14 @@ msgstr ""
 "kontynuować."
 
 #: ../src/Gui/CReporterAssistant.py:510
-#, fuzzy
 msgid "Only one reporter plugin is configured."
-msgstr "Skonfigurowana jest tylko jedna wtyczka zgłaszania"
+msgstr "Skonfigurowana jest tylko jedna wtyczka zgłaszania."
 
 #: ../src/Gui/CReporterAssistant.py:516
 msgid "Send a bug report"
 msgstr "Wyślij zgłoszenie błędu"
 
 #: ../src/Gui/CReporterAssistant.py:554
-#, fuzzy
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -970,19 +941,16 @@ msgid "I agree with submitting the backtrace"
 msgstr "Zgadzam się na wysłanie wyjątku"
 
 #: ../src/Gui/CReporterAssistant.py:608
-#, fuzzy
 msgid "Approve the backtrace"
 msgstr "Akceptuję wyjątek"
 
 #: ../src/Gui/CReporterAssistant.py:631
-#, fuzzy
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 "Jak wydarzyła się ta awaria i jak można ją powtórzyć, opisane krok po kroku "
 "(w języku angielskim)."
 
 #: ../src/Gui/CReporterAssistant.py:649
-#, fuzzy
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Komentarze dla opiekunów oprogramowania (w języku angielskim)."
@@ -992,14 +960,12 @@ msgid "Provide additional details"
 msgstr "Podanie dodatkowych informacji"
 
 #: ../src/Gui/CReporterAssistant.py:675
-#, fuzzy
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Wskazówka:</b> komentarze będą dostępne publicznie."
 
 #: ../src/Gui/CReporterAssistant.py:716
-#, fuzzy
 msgid "Confirm and send the report"
 msgstr "Potwierdź i wyślij zgłoszenie"
 
@@ -1049,7 +1015,6 @@ msgid "Reason"
 msgstr "Przyczyna"
 
 #: ../src/Gui/CReporterAssistant.py:752
-#, fuzzy
 msgid "Click to view..."
 msgstr "Kliknięcie wyświetli..."
 
@@ -1082,7 +1047,6 @@ msgid "Wrong Settings Detected"
 msgstr "Wykryto błędne ustawienia"
 
 #: ../src/Gui/settings_wizard.glade.h:3
-#, fuzzy
 msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
@@ -1090,19 +1054,19 @@ msgid ""
 msgstr ""
 "Wykryto błędne ustawienia dla niektórych włączonych wtyczek zgłaszania. "
 "Proszę użyć poniższych przycisków, aby otworzyć odpowiednią konfigurację i "
-"naprawić ją przed kontynuowanie. W innym przypadku proces zgłoszenia się nie "
-"powiedzie.\n"
+"naprawić ją przed kontynuowaniem. W innym przypadku proces zgłoszenia się "
+"nie powiedzie.\n"
 
-#: ../src/Applet/Applet.cpp:88
+#: ../src/Applet/Applet.cpp:85
 #, c-format
 msgid "A crash in package %s has been detected"
 msgstr "Wykryto awarię pakietu %s"
 
-#: ../src/Applet/Applet.cpp:90
+#: ../src/Applet/Applet.cpp:87
 msgid "A crash has been detected"
 msgstr "Wykryto awarię"
 
-#: ../src/Applet/Applet.cpp:266
+#: ../src/Applet/Applet.cpp:283
 msgid "ABRT service is not running"
 msgstr "Usługa ABRT nie jest uruchomiona"
 
@@ -1112,7 +1076,6 @@ msgid "Warning"
 msgstr "Ostrzeżenie"
 
 #: ../src/Applet/CCApplet.cpp:89
-#, fuzzy
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
@@ -1124,7 +1087,6 @@ msgid "Hide"
 msgstr "Ukryj"
 
 #: ../src/Daemon/Daemon.cpp:517
-#, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -1143,6 +1105,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
+"Nie można się zalogować. Proszę sprawdzić Edycja->Wtyczki->Bugzilla oraz "
+"plik /etc/abrt/plugins/Bugzilla.conf. Komunikat od serwera: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -1172,9 +1136,8 @@ msgstr ""
 "wymaganych informacji"
 
 #: ../lib/Plugins/Bugzilla.cpp:781
-#, fuzzy
 msgid "Creating a new bug..."
-msgstr "Dodawanie nowego błędu..."
+msgstr "Tworzenie nowego błędu..."
 
 #: ../lib/Plugins/Bugzilla.cpp:786
 msgid "Bugzilla entry creation failed"
@@ -1210,20 +1173,18 @@ msgid "Generating backtrace"
 msgstr "Tworzenie wyjątku"
 
 #: ../lib/Plugins/CCpp.cpp:353
-#, fuzzy
 msgid "Starting the debuginfo installation"
 msgstr "Uruchamianie instalacji pakietów debuginfo"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:561
+#: ../lib/Plugins/CCpp.cpp:566
 msgid "Getting global universal unique identification..."
 msgstr "Uzyskiwanie globalnego UUID..."
 
-#: ../lib/Plugins/CCpp.cpp:743
-#, fuzzy
+#: ../lib/Plugins/CCpp.cpp:748
 msgid "Skipping the debuginfo installation"
-msgstr "Pomijanie instalacji pakietu debuginfo"
+msgstr "Pomijanie instalacji pakietów debuginfo"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
@@ -1233,6 +1194,16 @@ msgstr "Tworzenie i wysyłanie zgłoszenia..."
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Zapisywanie zgłoszenia do \"%s\""
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was appended to %s"
+msgstr "Zgłoszenie zostało dodane do %s"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was stored to %s"
+msgstr "Zgłoszenie zostało przechowane w %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:298
 msgid "FileTransfer: Creating a report..."
