@@ -118,13 +118,14 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
     unsigned countdown = 16; /* do not report hundreds of oopses */
     unsigned idx = oopsList.size();
     time_t t = time(NULL);
+    pid_t my_pid = getpid();
 
     VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
 
     while (idx != 0 && --countdown != 0)
     {
-        char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu") + 2 * sizeof(long)*3];
-        sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu", (long)t, (long)idx);
+        char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu") + 3 * sizeof(long)*3];
+        sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu", (long)t, (long)my_pid, (long)idx);
         try
         {
             std::string oops = oopsList.at(--idx);

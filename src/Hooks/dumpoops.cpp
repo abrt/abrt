@@ -23,6 +23,7 @@
 
 #include "abrtlib.h"
 #include "abrt_types.h"
+#include "abrt_exception.h"
 #include "KerneloopsScanner.h"
 #include <dlfcn.h>
 
@@ -109,7 +110,13 @@ int main(int argc, char **argv)
 		}
 		if (opt_d) {
 			log("dumping oopses");
-			save_oops_to_debug_dump(oopsList);
+			try {
+				save_oops_to_debug_dump(oopsList);
+			}
+			catch (CABRTException& e) {
+				fprintf(stderr, "Error: %s\n", e.what());
+				return 1;
+			}
 		}
 	}
 
