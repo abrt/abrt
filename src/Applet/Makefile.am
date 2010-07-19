@@ -31,12 +31,13 @@ abrt_applet_LDADD = \
 #    $(DL_LIBS)
 #    $(GTK_LIBS)
 
-EXTRA_DIST = abrt-applet.desktop
-
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
-autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = abrt-applet.desktop
+@INTLTOOL_DESKTOP_RULE@
 
-abrt-applet.desktop:
-	intltool-merge -d ../../po abrt-applet.desktop.in abrt-applet.desktop
+autostartdir = $(sysconfdir)/xdg/autostart
+autostart_in_files = abrt-applet.desktop.in
+
+autostart_DATA = $(autostart_in_files:.desktop.in=.desktop)
+
+EXTRA_DIST = $(autostart_in_files)

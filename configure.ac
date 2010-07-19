@@ -25,8 +25,17 @@ AC_CHECK_PROGS(YACC, 'bison -y', [no])
     [exit 1]
 [fi]
 
+dnl ****** INTERNATIONALIZATION **********************
+GETTEXT_PACKAGE=abrt
+AC_SUBST(GETTEXT_PACKAGE)
+AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE, "$GETTEXT_PACKAGE", [Package name for gettext])
+
 AM_GNU_GETTEXT([external])
 AM_GNU_GETTEXT_VERSION([0.17])
+
+IT_PROG_INTLTOOL([0.35.0])
+
+dnl ****** END ****************************************
 
 AM_PATH_PYTHON
 if test -z "$PYTHON"; then

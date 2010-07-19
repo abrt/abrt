@@ -1,5 +1,3 @@
-#SUBDIRS=gui tui plugins tests conf
-
 bin_SCRIPTS = abrt-gui
 
 PYTHON_FILES = CCDBusBackend.py CCDumpList.py CCDump.py CC_gui_functions.py \
@@ -11,20 +9,19 @@ PYTHON_FILES = CCDBusBackend.py CCDumpList.py CCDump.py CC_gui_functions.py \
 GLADE_FILES = ccgui.glade report.glade settings.glade dialogs.glade \
               settings_wizard.glade progress_window.glade
 
-EXTRA_DIST = $(PYTHON_FILES) $(GLADE_FILES) abrt-gui abrt.desktop
-
-#ccguidir = $(pkgdatadir)
-applicationsdir = $(datadir)/applications
-applications_DATA = abrt.desktop
 pkgdata_PYTHON = $(PYTHON_FILES)
 pkgdata_DATA = $(GLADE_FILES)
-#pixmapdir = $(datadir)/icons/hicolor/48x48/apps/
-#pixmap_DATA = abrt.png
+
+@INTLTOOL_DESKTOP_RULE@
+
+desktopdir = $(datadir)/applications
+desktop_in_files = abrt.desktop.in
+
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+
+EXTRA_DIST = $(PYTHON_FILES) $(GLADE_FILES) abrt-gui $(desktop_in_files)
 
 CLEANFILES := $(notdir $(wildcard *~)) $(notdir $(wildcard *\#)) $(notdir $(wildcard \.\#*)) $(notdir $(wildcard *.pyc))
-
-abrt.desktop:
-	intltool-merge -d ../../po abrt.desktop.in abrt.desktop
 
 install-exec-hook:
 	for b in $(bin_SCRIPTS); do \
