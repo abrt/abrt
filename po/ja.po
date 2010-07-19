@@ -1,7 +1,7 @@
 # translation of ja.po to Japanese
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Kiyoto Hashida <khashida@redhat.com>, 2009, 2010.
 # Hyu_gabaru Ryu_ichi <hyu_gabaru@yahoo.co.jp>, 2009.
 # Noriko Mizumoto <noriko@fedoraproject.org>, 2010.
@@ -10,24 +10,148 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-16 13:05+0000\n"
+"POT-Creation-Date: 2010-07-19 18:00+0200\n"
 "PO-Revision-Date: 2010-07-17 00:55+0900\n"
 "Last-Translator: Makoto Mizukami <makoto@fedoraporject.org>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=1; plural=0;\n"
 
-#: ../lib/Plugins/ReportUploader.cpp:97 ../lib/Plugins/FileTransfer.cpp:53
+#: ../lib/Plugins/Bugzilla.cpp:466
+#, c-format
+msgid "New bug id: %i"
+msgstr "新しいバグ id: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:561
+#, c-format
+msgid ""
+"Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
+"conf. Server said: %s"
+msgstr ""
+"ログインできません。編集->プラグイン->Bugzilla と /etc/abrt/plugins/Bugzilla."
+"conf を確認してください。サーバーからのメッセージ: %s"
+
+#: ../lib/Plugins/Bugzilla.cpp:681
+msgid ""
+"Empty login or password.\n"
+"Please check "
+msgstr ""
+"ログインかパスワードが空です。\n"
+"確認して下さい。"
+
+#: ../lib/Plugins/Bugzilla.cpp:690
+msgid "Logging into bugzilla..."
+msgstr "bugzilla にログインしています..."
+
+#: ../lib/Plugins/Bugzilla.cpp:693
+msgid "Checking for duplicates..."
+msgstr "重複をチェックしています..."
+
+#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+msgid "Missing mandatory member 'bugs'"
+msgstr "必須のメンバー「バグ」の欠如"
+
+#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
+#: ../lib/Plugins/Bugzilla.cpp:841
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
+
+#: ../lib/Plugins/Bugzilla.cpp:781
+msgid "Creating a new bug..."
+msgstr "新しいバグを作成中..."
+
+#: ../lib/Plugins/Bugzilla.cpp:786
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla エントリの作成に失敗しました"
+
+#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+msgid "Logging out..."
+msgstr "ログアウトしています..."
+
+#. decision based on state
+#: ../lib/Plugins/Bugzilla.cpp:815
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "バグは既に報告済みです: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:826
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla はバグ %d の親を見つけることが出来ませんでした"
+
+#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
+#, c-format
+msgid "Adding %s to CC list"
+msgstr "CC 一覧に %s を追加"
+
+#: ../lib/Plugins/Bugzilla.cpp:880
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "バグ (%d) に新しいコメントを追加"
+
+#: ../lib/Plugins/CCpp.cpp:185
+msgid "Generating backtrace"
+msgstr "バックトレース生成中"
+
+#: ../lib/Plugins/CCpp.cpp:353
+msgid "Starting the debuginfo installation"
+msgstr "debuginfo のインストールを開始中"
+
+#. Compatibility code.
+#. This whole block should be deleted for Fedora 14.
+#: ../lib/Plugins/CCpp.cpp:566
+msgid "Getting global universal unique identification..."
+msgstr "グローバルで普遍的な独自の識別を取得しています..."
+
+#: ../lib/Plugins/CCpp.cpp:748
+msgid "Skipping the debuginfo installation"
+msgstr "debuginfo のインストールをスキップします"
+
+#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "ファイル転送: URL が示されていません"
 
-#: ../lib/Plugins/ReportUploader.cpp:101 ../lib/Plugins/FileTransfer.cpp:57
+#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "アーカイブ %s を %s に送信中"
+
+#: ../lib/Plugins/FileTransfer.cpp:298
+msgid "FileTransfer: Creating a report..."
+msgstr "ファイル転送: 報告を作成中..."
+
+#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#, c-format
+msgid "Cannot create and send an archive: %s"
+msgstr "アーカイブの作成と送信ができません: %s"
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:94
+msgid "Creating and submitting a report..."
+msgstr "報告の作成と提出をしています..."
+
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "'%s' へのレポートを書き込み中"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was appended to %s"
+msgstr "報告を %s に追加しました"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was stored to %s"
+msgstr "報告を %s に保存しました"
+
+#: ../lib/Plugins/Mailx.cpp:135
+msgid "Sending an email..."
+msgstr "電子メールを送信中..."
 
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
@@ -42,15 +166,60 @@ msgstr "ReportUploader の報告を作成しています..."
 msgid "Creating a new case..."
 msgstr "新しいケースを作成中..."
 
+#: ../lib/Plugins/SOSreport.cpp:98
+#, c-format
+msgid "Running sosreport: %s"
+msgstr "sosreport を実行中: %s"
+
+#: ../lib/Plugins/SOSreport.cpp:103
+msgid "Finished running sosreport"
+msgstr "sosreport の実行終了"
+
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT 通知アプレット"
 
-#: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/ccgui.glade.h:10
-#: ../src/Gui/CCMainWindow.py:8 ../src/Gui/report.glade.h:16
-#: ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16
 msgid "Automatic Bug Reporting Tool"
 msgstr "自動バグ報告ツール（ABRT）"
+
+#: ../src/Applet/Applet.cpp:85
+#, c-format
+msgid "A crash in the %s package has been detected"
+msgstr "パッケージ %s のクラッシュが検出されました"
+
+#: ../src/Applet/Applet.cpp:87
+msgid "A crash has been detected"
+msgstr "クラッシュが検出されました"
+
+#: ../src/Applet/Applet.cpp:283
+msgid "ABRT service is not running"
+msgstr "ABRT サービスが稼働していません。"
+
+#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
+#: ../src/Applet/CCApplet.cpp:287
+msgid "Warning"
+msgstr "警告"
+
+#: ../src/Applet/CCApplet.cpp:89
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
+msgstr ""
+"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
+
+#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
+msgid "translator-credits"
+msgstr "翻訳者クレジット"
+
+#: ../src/Applet/CCApplet.cpp:115
+msgid "Hide"
+msgstr "隠す"
+
+#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
+msgid "Report"
+msgstr "報告"
 
 #: ../src/CLI/CLI.cpp:49
 #, c-format
@@ -234,6 +403,22 @@ msgstr "コメントが長すぎます"
 msgid "'How to reproduce' is too long"
 msgstr "「再現の方法」が長すぎます"
 
+#: ../src/Daemon/Daemon.cpp:517
+msgid ""
+"The size of the report exceeded the quota. Please check system's "
+"MaxCrashReportsSize value in abrt.conf."
+msgstr ""
+"報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize "
+"の値をチェックして下さい。"
+
+#: ../src/Daemon/MiddleWare.cpp:579
+msgid "Database plugin not specified. Please check abrtd settings."
+msgstr ""
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "アプリケーションクラッシュの表示とレポート"
+
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it..."
 msgstr "別のクライアントが稼働していますので、それを呼び出しています..."
@@ -326,10 +511,6 @@ msgstr "クリップボードにコピー"
 msgid "Plugins"
 msgstr "プラグイン"
 
-#: ../src/Gui/ccgui.glade.h:13 ../src/Applet/CCApplet.cpp:253
-msgid "Report"
-msgstr "報告"
-
 #: ../src/Gui/ccgui.glade.h:14
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
@@ -373,10 +554,6 @@ msgstr "ファイル（_F）"
 #: ../src/Gui/ccgui.glade.h:22
 msgid "_Help"
 msgstr "ヘルプ（_H）"
-
-#: ../src/Gui/ccgui.glade.h:23 ../src/Applet/CCApplet.cpp:105
-msgid "translator-credits"
-msgstr "翻訳者クレジット"
 
 #. add pixbuff separatelly
 #: ../src/Gui/CCMainWindow.py:63
@@ -505,8 +682,8 @@ msgstr ""
 "このタイプのクラッシュに使用できるレポータープラグインがありません。\n"
 "abrt.conf を確認して下さい。"
 
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/PluginsSettingsDialog.py:169
-#: ../src/Gui/CReporterAssistant.py:201
+#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
+#: ../src/Gui/PluginsSettingsDialog.py:169
 #, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -570,258 +747,6 @@ msgstr "gnome-keyring へのアクセスが拒否されました。%s の設定�
 #: ../src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "gnome-keyring へのアクセスが拒否されました。設定を読み込めません。"
-
-#: ../src/Gui/dialogs.glade.h:1
-msgid "Log"
-msgstr "ログ"
-
-#: ../src/Gui/dialogs.glade.h:2
-msgid "Report done"
-msgstr "報告完了"
-
-#: ../src/Gui/PluginsSettingsDialog.py:24
-msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr "SettingsDialog の GUI 記述を読み込めません!"
-
-#. Create/configure columns and add them to pluginlist
-#. column "name" has two kind of cells:
-#: ../src/Gui/PluginsSettingsDialog.py:41
-msgid "Name"
-msgstr "名前"
-
-#: ../src/Gui/PluginsSettingsDialog.py:148
-msgid "Please select a plugin from the list to edit it's options."
-msgstr "一覧からプラグインを選択してそのオプションを編集して下さい。"
-
-#: ../src/Gui/PluginsSettingsDialog.py:156
-#, python-format
-msgid ""
-"Error while opening the plugin settings UI: \n"
-"\n"
-"%s"
-msgstr ""
-"プラグイン設定 UI を開く際のエラー: \n"
-"\n"
-"%s"
-
-#: ../src/Gui/PluginSettingsUI.py:17
-msgid "Cannot find PluginDialog widget in the UI description!"
-msgstr "UI 記述中に PluginDialog ウィジェットが見つかりません!"
-
-#: ../src/Gui/PluginSettingsUI.py:24
-#, python-format
-msgid ""
-"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>"
-msgstr ""
-"プラグインの <b>%s</b> に UI がありません。これは恐らくバグです。\n"
-"<a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/"
-"abrt/newticket</a> で報告してください。"
-
-#: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
-msgid "Combo box is not implemented"
-msgstr "combo box が実装されていません"
-
-#: ../src/Gui/PluginSettingsUI.py:68
-msgid "Nothing to hydrate!"
-msgstr "表示するデータはありません!"
-
-#: ../src/Gui/report.glade.h:1
-msgid " "
-msgstr " "
-
-#: ../src/Gui/report.glade.h:2
-msgid "<b>Attachments</b>"
-msgstr "<b>アタッチメント</b>"
-
-#: ../src/Gui/report.glade.h:3 ../src/Gui/CReporterAssistant.py:749
-msgid "<b>Backtrace</b>"
-msgstr "<b>バックトレース</b>"
-
-#: ../src/Gui/report.glade.h:4
-msgid "<b>Comment</b>"
-msgstr "<b>コメント</b>"
-
-#: ../src/Gui/report.glade.h:5
-msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>（２、３の簡単なステップで）再生の方法</b>"
-
-#: ../src/Gui/report.glade.h:6
-msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>以下の問題を修復して下さい:</b>"
-
-#: ../src/Gui/report.glade.h:7
-msgid "<b>Where do you want to report this incident?</b>"
-msgstr "<b>この発生をどこに報告したいですか?</b>"
-
-#: ../src/Gui/report.glade.h:8
-msgid "<span fgcolor=\"blue\">Architecture:</span>"
-msgstr "<span fgcolor=\"blue\">アーキテクチャ:</span>"
-
-#: ../src/Gui/report.glade.h:9
-msgid "<span fgcolor=\"blue\">Cmdline:</span>"
-msgstr "<span fgcolor=\"blue\">コマンドライン:</span>"
-
-#: ../src/Gui/report.glade.h:10
-msgid "<span fgcolor=\"blue\">Component:</span>"
-msgstr "<span fgcolor=\"blue\">コンポーネント:</span>"
-
-#: ../src/Gui/report.glade.h:11
-msgid "<span fgcolor=\"blue\">Executable:</span>"
-msgstr "<span fgcolor=\"blue\">実行可能ファイル:</span>"
-
-#: ../src/Gui/report.glade.h:12
-msgid "<span fgcolor=\"blue\">Kernel:</span>"
-msgstr "<span fgcolor=\"blue\">カーネル:</span>"
-
-#: ../src/Gui/report.glade.h:13
-msgid "<span fgcolor=\"blue\">Package:</span>"
-msgstr "<span fgcolor=\"blue\">パッケージ:</span>"
-
-#: ../src/Gui/report.glade.h:14
-msgid "<span fgcolor=\"blue\">Reason:</span>"
-msgstr "<span fgcolor=\"blue\">理由:</span>"
-
-#: ../src/Gui/report.glade.h:15
-msgid "<span fgcolor=\"blue\">Release:</span>"
-msgstr "<span fgcolor=\"blue\">リリース:</span>"
-
-#: ../src/Gui/report.glade.h:17 ../src/Gui/progress_window.glade.h:1
-msgid "Details"
-msgstr "詳細"
-
-#: ../src/Gui/report.glade.h:18
-msgid "Forces ABRT to regenerate the backtrace."
-msgstr "ABRT を強制しバックトレースを再生成します。"
-
-#: ../src/Gui/report.glade.h:19
-msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr "バックトレースをチェックし機密データ(パスワードなど)を削除しました"
-
-#: ../src/Gui/report.glade.h:20
-msgid "N/A"
-msgstr "N/A"
-
-#: ../src/Gui/report.glade.h:21 ../src/Gui/progress_window.glade.h:2
-msgid "Please wait..."
-msgstr "お待ち下さい..."
-
-#: ../src/Gui/report.glade.h:22
-msgid "Reporter Selector"
-msgstr "レポーターセクター"
-
-#: ../src/Gui/report.glade.h:23
-msgid "Send report"
-msgstr "レポートを送信"
-
-#: ../src/Gui/report.glade.h:24
-msgid "Show log"
-msgstr "ログを表示"
-
-#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
-msgid "<b>Select plugin</b>"
-msgstr "<b>プラグインを選択</b>"
-
-#: ../src/Gui/SettingsDialog.py:36
-msgid "<b>Select database backend</b>"
-msgstr "<b>データベースバックエンドを選択</b>"
-
-#: ../src/Gui/SettingsDialog.py:169
-msgid "Remove this job"
-msgstr "このジョブを取り除く"
-
-#: ../src/Gui/SettingsDialog.py:213
-msgid "Remove this action"
-msgstr "このアクションを取り除く"
-
-#: ../src/Gui/settings.glade.h:1
-msgid "<b>Analyzer plugin</b>"
-msgstr "<b>アナライザープラグイン</b>"
-
-#: ../src/Gui/settings.glade.h:2
-msgid "<b>Associated action</b>"
-msgstr "<b>関連したアクション</b>"
-
-#: ../src/Gui/settings.glade.h:3
-msgid "<b>Plugin details</b>"
-msgstr "<b>プラグインの詳細</b>"
-
-#: ../src/Gui/settings.glade.h:4
-msgid "<b>Plugin</b>"
-msgstr "<b>プラグイン</b>"
-
-#: ../src/Gui/settings.glade.h:5
-msgid "<b>Time (or period)</b>"
-msgstr "<b>時間(又は、期間)</b>"
-
-#: ../src/Gui/settings.glade.h:6
-msgid "Analyzers, Actions, Reporters"
-msgstr "アナライザ、アクション、レポーター"
-
-#: ../src/Gui/settings.glade.h:7
-msgid "Author:"
-msgstr "著者:"
-
-#: ../src/Gui/settings.glade.h:8
-msgid "Blacklisted packages: "
-msgstr "ブラックリスト内のパッケージ:"
-
-#: ../src/Gui/settings.glade.h:9
-msgid "C_onfigure Plugin"
-msgstr "プラグインを設定(_O)"
-
-#: ../src/Gui/settings.glade.h:10
-msgid "Check package GPG signature"
-msgstr "パッケージの GPG 署名をチェック"
-
-#: ../src/Gui/settings.glade.h:11
-msgid "Common"
-msgstr "共通"
-
-#: ../src/Gui/settings.glade.h:12
-msgid "Cron"
-msgstr "Cron"
-
-#: ../src/Gui/settings.glade.h:13
-msgid "Database backend: "
-msgstr "データベースバックエンド:"
-
-#: ../src/Gui/settings.glade.h:14
-msgid "Description:"
-msgstr "説明:"
-
-#: ../src/Gui/settings.glade.h:15
-msgid "GPG Keys"
-msgstr "GPG キー"
-
-#: ../src/Gui/settings.glade.h:16
-msgid "GPG keys: "
-msgstr "GPG キー: "
-
-#: ../src/Gui/settings.glade.h:17
-msgid "Max coredump storage size (MB):"
-msgstr "コアダンプの最大格納サイズ (MB):"
-
-#: ../src/Gui/settings.glade.h:18
-msgid "Name:"
-msgstr "名前:"
-
-#: ../src/Gui/settings.glade.h:20
-msgid "Preferences"
-msgstr "個人設定"
-
-#: ../src/Gui/settings.glade.h:21
-msgid "Version:"
-msgstr "バージョン:"
-
-#: ../src/Gui/settings.glade.h:22
-msgid "Web Site:"
-msgstr "ウェブサイト:"
-
-#: ../src/Gui/abrt.desktop.in.h:2
-msgid "View and report application crashes"
-msgstr "アプリケーションクラッシュの表示とレポート"
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
@@ -1001,6 +926,10 @@ msgstr "リリース"
 msgid "Reason"
 msgstr "理由"
 
+#: ../src/Gui/CReporterAssistant.py:749 ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>バックトレース</b>"
+
 #: ../src/Gui/CReporterAssistant.py:752
 msgid "Click to view..."
 msgstr "クリックして表示..."
@@ -1025,6 +954,250 @@ msgstr "バグレポート送信を終了しました"
 msgid "<b>Bug reports:</b>"
 msgstr "<b>バグレポート:</b>"
 
+#: ../src/Gui/dialogs.glade.h:1
+msgid "Log"
+msgstr "ログ"
+
+#: ../src/Gui/dialogs.glade.h:2
+msgid "Report done"
+msgstr "報告完了"
+
+#: ../src/Gui/PluginSettingsUI.py:17
+msgid "Cannot find PluginDialog widget in the UI description!"
+msgstr "UI 記述中に PluginDialog ウィジェットが見つかりません!"
+
+#: ../src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid ""
+"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
+msgstr ""
+"プラグインの <b>%s</b> に UI がありません。これは恐らくバグです。\n"
+"<a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/"
+"abrt/newticket</a> で報告してください。"
+
+#: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
+msgid "Combo box is not implemented"
+msgstr "combo box が実装されていません"
+
+#: ../src/Gui/PluginSettingsUI.py:68
+msgid "Nothing to hydrate!"
+msgstr "表示するデータはありません!"
+
+#: ../src/Gui/PluginsSettingsDialog.py:24
+msgid "Cannot load the GUI description for SettingsDialog!"
+msgstr "SettingsDialog の GUI 記述を読み込めません!"
+
+#. Create/configure columns and add them to pluginlist
+#. column "name" has two kind of cells:
+#: ../src/Gui/PluginsSettingsDialog.py:41
+msgid "Name"
+msgstr "名前"
+
+#: ../src/Gui/PluginsSettingsDialog.py:148
+msgid "Please select a plugin from the list to edit it's options."
+msgstr "一覧からプラグインを選択してそのオプションを編集して下さい。"
+
+#: ../src/Gui/PluginsSettingsDialog.py:156
+#, python-format
+msgid ""
+"Error while opening the plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+"プラグイン設定 UI を開く際のエラー: \n"
+"\n"
+"%s"
+
+#: ../src/Gui/progress_window.glade.h:1 ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "詳細"
+
+#: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
+msgid "Please wait..."
+msgstr "お待ち下さい..."
+
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr " "
+
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>アタッチメント</b>"
+
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>コメント</b>"
+
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr "<b>（２、３の簡単なステップで）再生の方法</b>"
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems:</b>"
+msgstr "<b>以下の問題を修復して下さい:</b>"
+
+#: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr "<b>この発生をどこに報告したいですか?</b>"
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr "<span fgcolor=\"blue\">アーキテクチャ:</span>"
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr "<span fgcolor=\"blue\">コマンドライン:</span>"
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr "<span fgcolor=\"blue\">コンポーネント:</span>"
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr "<span fgcolor=\"blue\">実行可能ファイル:</span>"
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr "<span fgcolor=\"blue\">カーネル:</span>"
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr "<span fgcolor=\"blue\">パッケージ:</span>"
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr "<span fgcolor=\"blue\">理由:</span>"
+
+#: ../src/Gui/report.glade.h:15
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr "<span fgcolor=\"blue\">リリース:</span>"
+
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace."
+msgstr "ABRT を強制しバックトレースを再生成します。"
+
+#: ../src/Gui/report.glade.h:19
+msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
+msgstr "バックトレースをチェックし機密データ(パスワードなど)を削除しました"
+
+#: ../src/Gui/report.glade.h:20
+msgid "N/A"
+msgstr "N/A"
+
+#: ../src/Gui/report.glade.h:22
+msgid "Reporter Selector"
+msgstr "レポーターセクター"
+
+#: ../src/Gui/report.glade.h:23
+msgid "Send report"
+msgstr "レポートを送信"
+
+#: ../src/Gui/report.glade.h:24
+msgid "Show log"
+msgstr "ログを表示"
+
+#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+msgid "<b>Select plugin</b>"
+msgstr "<b>プラグインを選択</b>"
+
+#: ../src/Gui/SettingsDialog.py:36
+msgid "<b>Select database backend</b>"
+msgstr "<b>データベースバックエンドを選択</b>"
+
+#: ../src/Gui/SettingsDialog.py:169
+msgid "Remove this job"
+msgstr "このジョブを取り除く"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "このアクションを取り除く"
+
+#: ../src/Gui/settings.glade.h:1
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>アナライザープラグイン</b>"
+
+#: ../src/Gui/settings.glade.h:2
+msgid "<b>Associated action</b>"
+msgstr "<b>関連したアクション</b>"
+
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>プラグインの詳細</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Plugin</b>"
+msgstr "<b>プラグイン</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "<b>Time (or period)</b>"
+msgstr "<b>時間(又は、期間)</b>"
+
+#: ../src/Gui/settings.glade.h:6
+msgid "Analyzers, Actions, Reporters"
+msgstr "アナライザ、アクション、レポーター"
+
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "著者:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "ブラックリスト内のパッケージ:"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure Plugin"
+msgstr "プラグインを設定(_O)"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "パッケージの GPG 署名をチェック"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "共通"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "Cron"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "データベースバックエンド:"
+
+#: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "説明:"
+
+#: ../src/Gui/settings.glade.h:15
+msgid "GPG Keys"
+msgstr "GPG キー"
+
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "GPG キー: "
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size (MB):"
+msgstr "コアダンプの最大格納サイズ (MB):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Name:"
+msgstr "名前:"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "個人設定"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "バージョン:"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "ウェブサイト:"
+
 #: ../src/Gui/settings_wizard.glade.h:1
 msgid "<b>Do you want to continue?</b>"
 msgstr "<b>継続したいですか?</b>"
@@ -1042,174 +1215,6 @@ msgstr ""
 "有効になっているレポータープラグインの一部に不適切な設定が検出されました。以"
 "下のボタンを使用して各設定を開き、それらを修正してから進んで下さい。このまま"
 "では報告のプロセスは失敗するでしょう。\n"
-
-#: ../src/Applet/Applet.cpp:85
-#, c-format
-msgid "A crash in the %s package has been detected"
-msgstr "パッケージ %s のクラッシュが検出されました"
-
-#: ../src/Applet/Applet.cpp:87
-msgid "A crash has been detected"
-msgstr "クラッシュが検出されました"
-
-#: ../src/Applet/Applet.cpp:283
-msgid "ABRT service is not running"
-msgstr "ABRT サービスが稼働していません。"
-
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
-msgid "Warning"
-msgstr "警告"
-
-#: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
-
-#: ../src/Applet/CCApplet.cpp:115
-msgid "Hide"
-msgstr "隠す"
-
-#: ../src/Daemon/Daemon.cpp:517
-msgid ""
-"The size of the report exceeded the quota. Please check system's "
-"MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"報告のサイズが割り当てを超過しました。 abrt.conf の中で MaxCrashReportsSize "
-"の値をチェックして下さい。"
-
-#: ../lib/Plugins/Bugzilla.cpp:466
-#, c-format
-msgid "New bug id: %i"
-msgstr "新しいバグ id: %i"
-
-#: ../lib/Plugins/Bugzilla.cpp:561
-#, c-format
-msgid ""
-"Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
-"conf. Server said: %s"
-msgstr ""
-"ログインできません。編集->プラグイン->Bugzilla と /etc/abrt/plugins/Bugzilla."
-"conf を確認してください。サーバーからのメッセージ: %s"
-
-#: ../lib/Plugins/Bugzilla.cpp:681
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"ログインかパスワードが空です。\n"
-"確認して下さい。"
-
-#: ../lib/Plugins/Bugzilla.cpp:690
-msgid "Logging into bugzilla..."
-msgstr "bugzilla にログインしています..."
-
-#: ../lib/Plugins/Bugzilla.cpp:693
-msgid "Checking for duplicates..."
-msgstr "重複をチェックしています..."
-
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
-msgid "Missing mandatory member 'bugs'"
-msgstr "必須のメンバー「バグ」の欠如"
-
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
-
-#: ../lib/Plugins/Bugzilla.cpp:781
-msgid "Creating a new bug..."
-msgstr "新しいバグを作成中..."
-
-#: ../lib/Plugins/Bugzilla.cpp:786
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla エントリの作成に失敗しました"
-
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
-msgid "Logging out..."
-msgstr "ログアウトしています..."
-
-#. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "バグは既に報告済みです: %i"
-
-#: ../lib/Plugins/Bugzilla.cpp:826
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla はバグ %d の親を見つけることが出来ませんでした"
-
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
-#, c-format
-msgid "Adding %s to CC list"
-msgstr "CC 一覧に %s を追加"
-
-#: ../lib/Plugins/Bugzilla.cpp:880
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "バグ (%d) に新しいコメントを追加"
-
-#: ../lib/Plugins/CCpp.cpp:185
-msgid "Generating backtrace"
-msgstr "バックトレース生成中"
-
-#: ../lib/Plugins/CCpp.cpp:353
-msgid "Starting the debuginfo installation"
-msgstr "debuginfo のインストールを開始中"
-
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:566
-msgid "Getting global universal unique identification..."
-msgstr "グローバルで普遍的な独自の識別を取得しています..."
-
-#: ../lib/Plugins/CCpp.cpp:748
-msgid "Skipping the debuginfo installation"
-msgstr "debuginfo のインストールをスキップします"
-
-#: ../lib/Plugins/KerneloopsReporter.cpp:94
-msgid "Creating and submitting a report..."
-msgstr "報告の作成と提出をしています..."
-
-#: ../lib/Plugins/Logger.cpp:73
-#, c-format
-msgid "Writing report to '%s'"
-msgstr "'%s' へのレポートを書き込み中"
-
-#: ../lib/Plugins/Logger.cpp:79
-#, c-format
-msgid "The report was appended to %s"
-msgstr "報告を %s に追加しました"
-
-#: ../lib/Plugins/Logger.cpp:79
-#, c-format
-msgid "The report was stored to %s"
-msgstr "報告を %s に保存しました"
-
-#: ../lib/Plugins/FileTransfer.cpp:298
-msgid "FileTransfer: Creating a report..."
-msgstr "ファイル転送: 報告を作成中..."
-
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
-#, c-format
-msgid "Cannot create and send an archive: %s"
-msgstr "アーカイブの作成と送信ができません: %s"
-
-#: ../lib/Plugins/Mailx.cpp:135
-msgid "Sending an email..."
-msgstr "電子メールを送信中..."
-
-#: ../lib/Plugins/SOSreport.cpp:98
-#, c-format
-msgid "Running sosreport: %s"
-msgstr "sosreport を実行中: %s"
-
-#: ../lib/Plugins/SOSreport.cpp:103
-msgid "Finished running sosreport"
-msgstr "sosreport の実行終了"
 
 #~ msgid "Can't create and send an archive %s"
 #~ msgstr "アーカイブを作成して送信できません: %s"
