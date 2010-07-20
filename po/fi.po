@@ -6,16 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-19 18:00+0200\n"
-"PO-Revision-Date: 2010-06-13 14:30+0300\n"
+"POT-Creation-Date: 2010-07-20 15:40+0000\n"
+"PO-Revision-Date: 2010-07-20 23:59+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
 #, c-format
@@ -28,6 +26,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
+"Ei voida kirjautua sisään. Tarkista Muokkaa->Liitännäiset->Bugzilla ja "
+"tiedosto /etc/abrt/plugins/Bugzilla.conf. Palvelimen viesti: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -56,7 +56,6 @@ msgstr ""
 "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
 #: ../lib/Plugins/Bugzilla.cpp:781
-#, fuzzy
 msgid "Creating a new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
@@ -75,9 +74,9 @@ msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:826
-#, fuzzy, c-format
+#, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta (%d)"
+msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
 
 #: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
 #, c-format
@@ -94,7 +93,6 @@ msgid "Generating backtrace"
 msgstr "Luodaan pinolistausta"
 
 #: ../lib/Plugins/CCpp.cpp:353
-#, fuzzy
 msgid "Starting the debuginfo installation"
 msgstr "Aloitetaan debuginfon asennus"
 
@@ -105,7 +103,6 @@ msgid "Getting global universal unique identification..."
 msgstr "Haetaan yleinen ainutkertainen tunnus..."
 
 #: ../lib/Plugins/CCpp.cpp:748
-#, fuzzy
 msgid "Skipping the debuginfo installation"
 msgstr "Ohitetaan debuginfon asennus"
 
@@ -123,7 +120,7 @@ msgid "FileTransfer: Creating a report..."
 msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
 
 #: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
 
@@ -137,18 +134,14 @@ msgid "Writing report to '%s'"
 msgstr "Kirjoitetaan raportti kohteeseen ”%s”"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was appended to %s"
-msgstr ""
-"\n"
-"Raportti on päivitetty."
+msgstr "Raportti lisättiin kohteeseen %s"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was stored to %s"
-msgstr ""
-"\n"
-"Raportti on päivitetty."
+msgstr "Raportti tallennettiin kohteeseen %s"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -160,9 +153,8 @@ msgid "Sending failed, trying again. %s"
 msgstr "Lähettäminen epäonnistui, yritä uudelleen. %s"
 
 #: ../lib/Plugins/ReportUploader.cpp:192
-#, fuzzy
 msgid "Creating a ReportUploader report..."
-msgstr "Luodaan TicketUploader-raportti..."
+msgstr "Luodaan ReportUploader-raportti..."
 
 #: ../lib/Plugins/RHTSupport.cpp:231
 msgid "Creating a new case..."
@@ -174,13 +166,12 @@ msgid "Running sosreport: %s"
 msgstr "Suoritetaan sosreport: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:103
-#, fuzzy
 msgid "Finished running sosreport"
 msgstr "Sosreportin suoritus valmistui"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
-msgstr ""
+msgstr "ABRT-ilmoitussovelma"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
@@ -189,7 +180,7 @@ msgid "Automatic Bug Reporting Tool"
 msgstr "Automaattinen ohjelmavikojen raportointiohjelma"
 
 #: ../src/Applet/Applet.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Paketissa %s on huomattu kaatuminen"
 
@@ -207,7 +198,6 @@ msgid "Warning"
 msgstr "Varoitus"
 
 #: ../src/Applet/CCApplet.cpp:89
-#, fuzzy
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
@@ -226,7 +216,7 @@ msgid "Report"
 msgstr "Raportti"
 
 #: ../src/CLI/CLI.cpp:49
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\tUID        : %s\n"
 "\tUUID       : %s\n"
@@ -235,7 +225,6 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
-"%u.\n"
 "\tUID          : %s\n"
 "\tUUID         : %s\n"
 "\tPaketti      : %s\n"
@@ -246,7 +235,7 @@ msgstr ""
 #: ../src/CLI/CLI.cpp:65
 #, c-format
 msgid "\tHostname   : %s\n"
-msgstr ""
+msgstr "\tKonenimi     : %s\n"
 
 #. Message has embedded tabs.
 #: ../src/CLI/CLI.cpp:177
@@ -276,21 +265,19 @@ msgid "You must specify exactly one operation"
 msgstr "On määritettävä tasan yksi toiminto."
 
 #: ../src/CLI/report.cpp:179
-#, fuzzy, c-format
+#, c-format
 msgid "# This field is read only\n"
-msgstr "# Tämä kenttä on vain luku -tilassa.\n"
+msgstr "# Tämä kenttä on vain luku -tilassa\n"
 
 #: ../src/CLI/report.cpp:199
-#, fuzzy
 msgid "# Describe the circumstances of this crash below"
-msgstr "# Kuvaile alla kaatumistilannetta."
+msgstr "# Kuvaile alla kaatumistilannetta"
 
 #: ../src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
 msgstr "# Kuinka kaatumisen voi toistaa?"
 
 #: ../src/CLI/report.cpp:203
-#, fuzzy
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -336,34 +323,32 @@ msgid "# Release string of the operating system"
 msgstr "# Käyttöjärjestelmän julkaisutunnus"
 
 #: ../src/CLI/report.cpp:336
-#, fuzzy
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
-"Pääte on yksinkertainen, mutta VISUALia tai EDITORia ei ole määritetty."
+"Komentoa vi ei voida suorittaa: $TERM-, $VISUAL- tai $EDITOR -muuttujia ei "
+"ole määritetty."
 
 #: ../src/CLI/report.cpp:424
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
 msgstr ""
 "\n"
-"Raportti on päivitetty."
+"Raportti on päivitetty"
 
 #: ../src/CLI/report.cpp:426
-#, fuzzy
 msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
 "\n"
-"Raportissa ei havaittu muutoksia."
+"Raportissa ei havaittu muutoksia"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
-#, fuzzy, c-format
+#, c-format
 msgid "Wrong settings were detected for plugin %s\n"
-msgstr "Liitännäisellä %s havaittiin olevan väärät asetukset.\n"
+msgstr "Liitännäisellä %s havaittiin olevan väärät asetukset\n"
 
 #: ../src/CLI/report.cpp:650
 msgid "Enter your login: "
@@ -400,7 +385,6 @@ msgid "'How to reproduce' is too long"
 msgstr "Toisto-ohjeet ovat liian pitkät"
 
 #: ../src/Daemon/Daemon.cpp:517
-#, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -410,19 +394,17 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
+msgstr "Tietokantaliitännäistä ei ole määritetty. Tarkista abrtd:n asetukset."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Katsele ja raportoi ohjelmien kaatumisia"
 
 #: ../src/Gui/ABRTExceptions.py:6
-#, fuzzy
 msgid "Another client is already running, trying to wake it..."
-msgstr "Toinen asiakasohjelma on jo käynnissä, yritetään herättää sitä."
+msgstr "Toinen asiakasohjelma on jo käynnissä, yritetään herättää sitä..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-#, fuzzy
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
@@ -449,23 +431,20 @@ msgid "Database plugins"
 msgstr "Tietokantaliitännäiset"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
-#, fuzzy
 msgid "Cannot connect to system dbus."
-msgstr "Järjestelmäväylään ei saatu yhteyttä"
+msgstr "Järjestelmäväylään ei saatu yhteyttä."
 
 #: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
-#, fuzzy
 msgid "Please check if the abrt daemon is running."
-msgstr "Tarkista onko abrt-taustaprosessi käynnissä"
+msgstr "Tarkista onko abrt-taustaprosessi käynnissä."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/Gui/CCDBusBackend.py:174
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
 msgstr ""
-"Taustaprosessi ei palauttanut kelvollista raporttitietoa\n"
+"Taustaprosessi ei palauttanut kelvollista raporttitietoa.\n"
 "Puuttuuko debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
@@ -566,28 +545,28 @@ msgstr "Ohjelma"
 
 #: ../src/Gui/CCMainWindow.py:73
 msgid "Hostname"
-msgstr ""
+msgstr "Konenimi"
 
 #: ../src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "Viimeisin kaatuminen"
 
 #: ../src/Gui/CCMainWindow.py:143
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
 "%s"
 msgstr ""
-"Asetusikkunaa ei voida näyttää\n"
+"Asetusikkunaa ei voida näyttää.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
 msgstr ""
-"Nykyistä tehtävää ei saatu valmiiksi!\n"
+"Nykyistä tehtävää ei voida saada valmiiksi!\n"
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
@@ -624,7 +603,7 @@ msgstr ""
 "\t--report=KAATUMISTUNNISTE\tRaportoi kaatuminen suoraan KAATUMISTUNNISTEELLA"
 
 #: ../src/Gui/CCMainWindow.py:445
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
@@ -634,18 +613,16 @@ msgstr ""
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr ""
 "Lyhyt kuvaus siitä, miten tämän pystyy toistamaan tai mitä olit tekemässä..."
 
 #: ../src/Gui/CCReporterDialog.py:107
-#, fuzzy
 msgid "You must check the backtrace for sensitive data."
-msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta"
+msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using the command: <b>debuginfo-"
@@ -654,18 +631,16 @@ msgid ""
 msgstr ""
 "Raportointi on poistettu käytöstä, koska virheenjäljitystiedot ovat "
 "hyödyttömät.\n"
-"Yritä asentaa debuginfo manuaalisesti komennolla: <b>debuginfo-install %s</"
-"b>\n"
+"Yritä asentaa debuginfo manuaalisesti komennolla: <b>debuginfo-install %"
+"s</b>\n"
 "Käytä sitten Päivitä-painiketta virheenjäljitystietojen generoimiseksi "
 "uudelleen."
 
 #: ../src/Gui/CCReporterDialog.py:120
-#, fuzzy
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
 
 #: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
-#, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -678,12 +653,10 @@ msgid "Reporting disabled, please fix the problems shown above."
 msgstr "Raportointi on poistettu käytöstä, korjaa yllä mainitut ongelmat."
 
 #: ../src/Gui/CCReporterDialog.py:132
-#, fuzzy
 msgid "Sends the report using the selected plugin."
 msgstr "Lähettää raportin käyttäen valittua liitännäistä."
 
 #: ../src/Gui/CCReporterDialog.py:398
-#, fuzzy
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
@@ -693,7 +666,7 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
 #: ../src/Gui/PluginsSettingsDialog.py:169
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
@@ -707,7 +680,6 @@ msgid "Configure %s options"
 msgstr "Tee liitännäisen %s asetukset"
 
 #: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -726,24 +698,21 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
 #: ../src/Gui/CReporterAssistant.py:884
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
-msgstr "Raportin noutaminen epäonnistui: %s"
+msgstr "Raportin hankkiminen epäonnistui: %s"
 
 #: ../src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "Gnomen avainnipun taustaprosessiin ei saatu yhteyttä"
+msgstr "Gnomen avainnipun taustaprosessiin ei saatu yhteyttä."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
 #: ../src/Gui/ConfBackend.py:83
-#, fuzzy
 msgid "Cannot get the default keyring."
-msgstr "Oletusavainnipun hakeminen ei onnistu"
+msgstr "Oletusavainnipun hakeminen ei onnistu."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-#, fuzzy
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
@@ -752,7 +721,7 @@ msgstr ""
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
@@ -760,59 +729,53 @@ msgstr ""
 "ladata!"
 
 #: ../src/Gui/ConfBackend.py:205
-#, fuzzy
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr "Gnomen avainnippuun on pääsy kielletty, asetuksia ei voi ladata"
+msgstr "Gnomen avainnippuun on pääsy kielletty, asetuksia ei voi ladata."
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
-msgstr ""
+msgstr "Kaatumistiedot eivät sisällä pinolistausta"
 
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr ""
+msgstr "Liitännäinen %s vaatii arvostelun"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr ""
+msgstr "Mikään liitännäinen ei vaadi arvostelua, ohitetaan tarkistus..."
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
 msgid "Rating is %s"
-msgstr ""
+msgstr "Arvostelu on %s"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
+msgstr "Kaatumisella ei ole arvostelua, oletetaan ettei sitä vaadita"
 
 #: ../src/Gui/CReporterAssistant.py:294
-#, fuzzy
 msgid "You should check the backtrace for sensitive data."
-msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta"
+msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta."
 
 #: ../src/Gui/CReporterAssistant.py:295
-#, fuzzy
 msgid "You must agree with sending the backtrace."
-msgstr "Pinolistauksen lähettäminen on hyväksyttävä"
+msgstr "Pinolistauksen lähettäminen on hyväksyttävä."
 
 #: ../src/Gui/CReporterAssistant.py:310
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr "Raportointi on poistettu käytöstä, korjaa yllä mainitut ongelmat."
+msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
 
 #: ../src/Gui/CReporterAssistant.py:355
-#, fuzzy
 msgid "You did not provide any steps to reproduce."
 msgstr "Vian toistamiseksi tarvittavia vaiheita ei ole annettu."
 
 #: ../src/Gui/CReporterAssistant.py:369
-#, fuzzy
 msgid "You did not provide any comments."
 msgstr "Kommentteja ei ole annettu."
 
 #: ../src/Gui/CReporterAssistant.py:450
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
 "system. It is a good idea to send a bug report about this issue. The report "
@@ -837,14 +800,13 @@ msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
-msgstr ""
+msgstr "Vain yksi raportoijaliitännäinen on määritetty."
 
 #: ../src/Gui/CReporterAssistant.py:516
 msgid "Send a bug report"
 msgstr "Lähetä vikaraportti"
 
 #: ../src/Gui/CReporterAssistant.py:554
-#, fuzzy
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -872,17 +834,14 @@ msgid "I agree with submitting the backtrace"
 msgstr "Pinolistauksen saa lähettää"
 
 #: ../src/Gui/CReporterAssistant.py:608
-#, fuzzy
 msgid "Approve the backtrace"
 msgstr "Hyväksy pinolistaus"
 
 #: ../src/Gui/CReporterAssistant.py:631
-#, fuzzy
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Kuinka tämä kaatuminen tapahtui? Kuinka sen pystyy toistamaan?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-#, fuzzy
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Haluatko lähettää ohjelmistoylläpitäjille jotain kommentteja?"
@@ -892,14 +851,12 @@ msgid "Provide additional details"
 msgstr "Anna lisätietoja"
 
 #: ../src/Gui/CReporterAssistant.py:675
-#, fuzzy
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Vinkki:</b> Kommentit ovat julkisia."
 
 #: ../src/Gui/CReporterAssistant.py:716
-#, fuzzy
 msgid "Confirm and send the report"
 msgstr "Vahvista ja lähetä raportti"
 
@@ -952,7 +909,6 @@ msgid "<b>Backtrace</b>"
 msgstr "<b>Pinolistaus</b>"
 
 #: ../src/Gui/CReporterAssistant.py:752
-#, fuzzy
 msgid "Click to view..."
 msgstr "Näytä napsauttamalla..."
 
@@ -985,7 +941,6 @@ msgid "Report done"
 msgstr "Raportti on valmis"
 
 #: ../src/Gui/PluginSettingsUI.py:17
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "PluginDialog-elementtiä ei löydy käyttöliittymäkuvauksesta!"
 
@@ -996,18 +951,20 @@ msgid ""
 "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
+"Liitännäiselle <b>%s</b> ei ole käyttöliittymää, tämä on luultavasti "
+"ohjelmavirhe.\n"
+"Raportoi tämä osoitteeseen <a href=\"https://fedorahosted.org/abrt/newticket\""
+">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
-#, fuzzy
 msgid "Combo box is not implemented"
-msgstr "alasvetovalikkoa ei ole toteutettu"
+msgstr "Alasvetovalikkoa ei ole toteutettu"
 
 #: ../src/Gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
 msgstr "Graafista käyttöliittymää ei voi näyttää!"
 
 #: ../src/Gui/PluginsSettingsDialog.py:24
-#, fuzzy
 msgid "Cannot load the GUI description for SettingsDialog!"
 msgstr "Ei voida ladata SettingsDialogin käyttöliittymäkuvausta!"
 
@@ -1022,7 +979,7 @@ msgid "Please select a plugin from the list to edit it's options."
 msgstr "Valitse luettelosta liitännäinen, jonka asetuksia haluat muokata."
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
@@ -1037,7 +994,6 @@ msgid "Details"
 msgstr "Lisätietoja"
 
 #: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
-#, fuzzy
 msgid "Please wait..."
 msgstr "Odota hetki..."
 
@@ -1058,9 +1014,8 @@ msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>Kuinka tämän voi toistaa (muutamalla helpolla toimenpiteellä)</b>"
 
 #: ../src/Gui/report.glade.h:6
-#, fuzzy
 msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>Korjaa seuraavat ongelmat</b>"
+msgstr "<b>Korjaa seuraavat ongelmat:</b>"
 
 #: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
@@ -1099,12 +1054,10 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Julkaisu:</span>"
 
 #: ../src/Gui/report.glade.h:18
-#, fuzzy
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr "Pakottaa ABRT:n tekemään pinolistauksen uudelleen"
+msgstr "Pakottaa ABRT:n tekemään pinolistauksen uudelleen."
 
 #: ../src/Gui/report.glade.h:19
-#, fuzzy
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Pinolistaus on tarkistettu ja arkaluontoiset tiedot, kuten salasanat, on "
@@ -1207,7 +1160,6 @@ msgid "GPG keys: "
 msgstr "GPG-avaimet:"
 
 #: ../src/Gui/settings.glade.h:17
-#, fuzzy
 msgid "Max coredump storage size (MB):"
 msgstr "Muistivedoksen tallennustilan suurin koko (Mt):"
 
@@ -1236,13 +1188,11 @@ msgid "Wrong Settings Detected"
 msgstr "Virheelliset asetukset on havaittu"
 
 #: ../src/Gui/settings_wizard.glade.h:3
-#, fuzzy
 msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
-msgstr ""
-"Joidenkin käytössä olevien raportointiliitännäisten asetukset on tunnistettu "
+msgstr "Joidenkin käytössä olevien raportointiliitännäisten asetukset on tunnistettu "
 "virheellisiksi. Käytä alla olevia painikkeita liitännäisten asetusten "
 "avaamiseksi ja korjaa virheet tai raportointi saattaa epäonnistua.\n"
 
