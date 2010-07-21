@@ -43,9 +43,10 @@ void free_abrt_post_state(abrt_post_state_t *state);
 char *find_header_in_abrt_post_state(abrt_post_state_t *state, const char *str);
 
 enum {
-    ABRT_POST_WANT_HEADERS   = (1 << 0),
-    ABRT_POST_WANT_ERROR_MSG = (1 << 1),
-    ABRT_POST_WANT_BODY      = (1 << 2),
+    ABRT_POST_WANT_HEADERS    = (1 << 0),
+    ABRT_POST_WANT_ERROR_MSG  = (1 << 1),
+    ABRT_POST_WANT_BODY       = (1 << 2),
+    ABRT_POST_WANT_SSL_VERIFY = (1 << 3),
 };
 enum {
     /* Must be -1! CURLOPT_POSTFIELDSIZE interprets -1 as "use strlen" */

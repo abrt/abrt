@@ -220,14 +220,16 @@ reportfile_free(reportfile_t* file)
 // post_signature()
 //
 char*
-post_signature(const char* baseURL, const char* signature)
+post_signature(const char* baseURL, bool ssl_verify, const char* signature)
 {
     string URL = concat_path_file(baseURL, "/signatures");
 
     abrt_post_state *state = new_abrt_post_state(0
                 + ABRT_POST_WANT_HEADERS
                 + ABRT_POST_WANT_BODY
-                + ABRT_POST_WANT_ERROR_MSG);
+                + ABRT_POST_WANT_ERROR_MSG
+                + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+    );
     int http_resp_code = abrt_post_string(state, URL.c_str(), "application/xml", signature);
 
     char *retval;
@@ -361,6 +363,7 @@ char*
 send_report_to_new_case(const char* baseURL,
                 const char* username,
                 const char* password,
+                bool ssl_verify,
                 const char* summary,
                 const char* description,
                 const char* component,
@@ -382,7 +385,9 @@ send_report_to_new_case(const char* baseURL,
     case_state = new_abrt_post_state(0
             + ABRT_POST_WANT_HEADERS
             + ABRT_POST_WANT_BODY
-            + ABRT_POST_WANT_ERROR_MSG);
+            + ABRT_POST_WANT_ERROR_MSG
+            + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+    );
     case_state->username = username;
     case_state->password = password;
     abrt_post_string(case_state, case_url.c_str(), "application/xml", case_data);
@@ -440,7 +445,9 @@ send_report_to_new_case(const char* baseURL,
         atch_state = new_abrt_post_state(0
                 + ABRT_POST_WANT_HEADERS
                 + ABRT_POST_WANT_BODY
-                + ABRT_POST_WANT_ERROR_MSG);
+                + ABRT_POST_WANT_ERROR_MSG
+                + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
+        );
         atch_state->username = username;
         atch_state->password = password;
         abrt_post_file_as_form(atch_state, atch_url.c_str(), "application/binary", report_file_name);

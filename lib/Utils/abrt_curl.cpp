@@ -220,7 +220,8 @@ abrt_post(abrt_post_state_t *state,
     }
     // Override "Content-Type:"
     struct curl_slist *httpheader_list = NULL;
-    if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA) {
+    if (data_size != ABRT_POST_DATA_FROMFILE_AS_FORM_DATA)
+    {
         char *content_type_header = xasprintf("Content-Type: %s", content_type);
         // Note: curl_slist_append() copies content_type_header
         httpheader_list = curl_slist_append(httpheader_list, content_type_header);
@@ -257,6 +258,11 @@ abrt_post(abrt_post_state_t *state,
         if (!body_stream)
             error_msg_and_die("out of memory");
         xcurl_easy_setopt_ptr(handle, CURLOPT_WRITEDATA, body_stream);
+    }
+    if (!(state->flags & ABRT_POST_WANT_SSL_VERIFY))
+    {
+        xcurl_easy_setopt_long(handle, CURLOPT_SSL_VERIFYPEER, 0);
+        xcurl_easy_setopt_long(handle, CURLOPT_SSL_VERIFYHOST, 0);
     }
 
     // This is the place where everything happens.
