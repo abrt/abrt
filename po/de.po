@@ -6,7 +6,7 @@
 #
 #
 # Fabian Affolter <fab@fedoraproject.org>, 2009.
-# Hedda Peters <hpeters@redhat.com>, 2009.
+# Hedda Peters <hpeters@redhat.com>, 2009, 2010.
 # Marcus Nitzschke <kenda@fedoraproject.org>, 2009-2010.
 # Dominik Sandjaja <dominiksandjaja@fedoraproject.org>, 2009.
 # Jens Maucher <jensm@fedoraproject.org>, 2010.
@@ -16,14 +16,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-19 18:00+0200\n"
-"PO-Revision-Date: 2010-06-11 13:05+1000\n"
-"Last-Translator: sknirT omiT <moc.tahder@sknirtt>\n"
-"Language-Team:  <en@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2010-07-20 22:58+0000\n"
+"PO-Revision-Date: 2010-07-21 15:16+1000\n"
+"Last-Translator: Hedda Peters <hpeters@redhat.com>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Poedit-Language: German\n"
 "X-Generator: KBabel 1.11.4\n"
 
@@ -38,6 +38,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
+"Anmelden fehlgeschlagen. Überprüfen Sie Bearbeiten->Plugins->Bugzilla und /etc/abrt/plugins/Bugzilla."
+"conf. Server besagt: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -67,7 +69,6 @@ msgstr ""
 "Informationen gesammelt werden."
 
 #: ../lib/Plugins/Bugzilla.cpp:781
-#, fuzzy
 msgid "Creating a new bug..."
 msgstr "Neuen Fehlerbericht erstellen ..."
 
@@ -86,9 +87,9 @@ msgid "Bug is already reported: %i"
 msgstr "Fehler wurde bereits gemeldet: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:826
-#, fuzzy, c-format
+#, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla kann die Eltern des Fehlerberichts nicht finden(%d)"
+msgstr "Bugzilla kann die Eltern des Fehlerberichts nicht finden %d"
 
 #: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
 #, c-format
@@ -105,7 +106,6 @@ msgid "Generating backtrace"
 msgstr "Backtrace wird generiert"
 
 #: ../lib/Plugins/CCpp.cpp:353
-#, fuzzy
 msgid "Starting the debuginfo installation"
 msgstr "debuginfo-Installation wird gestartet"
 
@@ -116,7 +116,6 @@ msgid "Getting global universal unique identification..."
 msgstr "Globale, universelle, eindeutige Identifikation abrufen ..."
 
 #: ../lib/Plugins/CCpp.cpp:748
-#, fuzzy
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo-Installation wird übersprungen"
 
@@ -134,7 +133,7 @@ msgid "FileTransfer: Creating a report..."
 msgstr "Dateiübertragung: Einen Bericht erstellen ..."
 
 #: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Kann kein Archiv erzeugen und senden: %s"
 
@@ -148,18 +147,14 @@ msgid "Writing report to '%s'"
 msgstr "Bericht wird nach '%s' geschrieben"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was appended to %s"
-msgstr ""
-"\n"
-"Der Bericht wurde aktualisiert."
+msgstr "Der Bericht wurde an %s angefügt"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was stored to %s"
-msgstr ""
-"\n"
-"Der Bericht wurde aktualisiert."
+msgstr "Der Bericht wurde in %s gespeichert"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -171,9 +166,8 @@ msgid "Sending failed, trying again. %s"
 msgstr "Senden fehlgeschlagen, nochmal versuchen. %s"
 
 #: ../lib/Plugins/ReportUploader.cpp:192
-#, fuzzy
 msgid "Creating a ReportUploader report..."
-msgstr "Einen TicketUploader-Bericht erstellen..."
+msgstr "Einen ReportUploader-Bericht erstellen..."
 
 #: ../lib/Plugins/RHTSupport.cpp:231
 msgid "Creating a new case..."
@@ -185,13 +179,12 @@ msgid "Running sosreport: %s"
 msgstr "sosreport ausführen: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:103
-#, fuzzy
 msgid "Finished running sosreport"
 msgstr "Ausführung von sosreport abgeschlossen"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
-msgstr ""
+msgstr "ABRT-Benachrichtigungs-Applet"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
@@ -200,13 +193,13 @@ msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisches Bug-Reporting-Tool"
 
 #: ../src/Applet/Applet.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "A crash in the %s package has been detected"
-msgstr "In Paket %s wurde ein Absturz entdeckt!"
+msgstr "In Paket %s wurde ein Absturz entdeckt"
 
 #: ../src/Applet/Applet.cpp:87
 msgid "A crash has been detected"
-msgstr "Es wurde ein Absturz entdeckt!"
+msgstr "Es wurde ein Absturz entdeckt"
 
 #: ../src/Applet/Applet.cpp:283
 msgid "ABRT service is not running"
@@ -218,11 +211,8 @@ msgid "Warning"
 msgstr "Warnung"
 
 #: ../src/Applet/CCApplet.cpp:89
-#, fuzzy
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
-msgstr ""
-"Info-Applet zur Benutzer-Benachrichtigung über von ABRT entdeckte Probleme"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgstr "Info-Applet, das Benutzer über die von ABRT entdeckten Probleme benachrichtigt"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
 msgid "translator-credits"
@@ -237,7 +227,7 @@ msgid "Report"
 msgstr "Bericht"
 
 #: ../src/CLI/CLI.cpp:49
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\tUID        : %s\n"
 "\tUUID       : %s\n"
@@ -246,22 +236,21 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
-"%u.\n"
 "\tUID        : %s\n"
 "\tUUID       : %s\n"
 "\tPaket    : %s\n"
 "\tAusführbare Datei : %s\n"
-"\tAbsturz-Zeit : %s\n"
-"\tAbsturz-Anzahl: %s\n"
+"\tAbsturzzeit             : %s\n"
+"\tAbsturzanzahl        : %s\n"
 
 #: ../src/CLI/CLI.cpp:65
 #, c-format
 msgid "\tHostname   : %s\n"
-msgstr ""
+msgstr "\tHostname   : %s\n"
 
 #. Message has embedded tabs.
 #: ../src/CLI/CLI.cpp:177
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
@@ -288,43 +277,41 @@ msgstr ""
 "\t-?, --help\t\tDiese Hilfe anzeigen\n"
 "\n"
 "Aktionen:\n"
-"\t--get-list\t\tListe von noch nicht gemeldeten Abstürzen ausgeben\n"
-"\t--get-list-full\t\tListe aller Abstürze ausgeben\n"
-"\t--report CRASH_ID\tBericht erstellen und senden\n"
-"\t--report-always CRASH_ID Bericht erstellen und ohne Nachfrage senden\n"
-"\t--delete CRASH_ID\tAbsturz entfernen\n"
+"\t-l, --list\t\tListe von noch nicht gemeldeten Abstürzen ausgeben\n"
+"\t      -f, --full\tListe aller Abstürze ausgeben, inkl. bereits gemeldeter\n"
+"\t-r, --report CRASH_ID\tBericht erstellen und senden\n"
+"\t      -y, --always\tBericht erstellen und ohne Nachfrage senden\n"
+"\t-d, --delete CRASH_ID\tAbsturz entfernen\n"
 "CRASH_ID kann sein:\n"
-"\tUID:UUID Paar,\n"
-"\teindeutige UUID-Präfix  - der Absturz mit passender UUID wird behandelt\n"
-"\t@N  - X'ter Absturz (wie bei --get-list-full angezeigt) wird behandelt\n"
+"\tUID:UUID-Paar,\n"
+"\teindeutiges UUID-Präfix  - der Absturz mit passender UUID wird behandelt\n"
+"\t@N  - X'ter Absturz (wie bei --list --full angezeigt) wird behandelt\n"
+"CRASH_ID kann sein:\n"
 
 #: ../src/CLI/CLI.cpp:220
 msgid "You must specify exactly one operation"
 msgstr "Sie müssen exakt eine Operation angeben."
 
 #: ../src/CLI/report.cpp:179
-#, fuzzy, c-format
+#, c-format
 msgid "# This field is read only\n"
-msgstr "# Dieses Feld ist schreibgeschützt.\n"
+msgstr "# Dieses Feld ist schreibgeschützt\n"
 
 #: ../src/CLI/report.cpp:199
-#, fuzzy
 msgid "# Describe the circumstances of this crash below"
-msgstr "# Beschreiben Sie nachfolgend die Umstände dieses Absturzes."
+msgstr "# Beschreiben Sie nachfolgend die Umstände dieses Absturzes"
 
 #: ../src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
 msgstr "# Wie kann der Absturz reproduziert werden?"
 
 #: ../src/CLI/report.cpp:203
-#, fuzzy
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
 "# Backtrace\n"
-"# Stellen Sie sicher, dass keine sensiblen Daten wie Passwörter enthalten "
-"sind."
+"# Stellen Sie sicher, dass keine sensiblen Daten (Passwörter, usw.) enthalten sind"
 
 #: ../src/CLI/report.cpp:205
 msgid "# Architecture"
@@ -363,33 +350,30 @@ msgid "# Release string of the operating system"
 msgstr "# String des Betriebssystems freigeben"
 
 #: ../src/CLI/report.cpp:336
-#, fuzzy
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "Terminal ist stumm aber weder VISUAL noch EDITOR sind definiert."
+msgstr "vi kann nicht ausgeführt werden, $TERM, $VISUAL und $EDITOR sind nicht definiert"
 
 #: ../src/CLI/report.cpp:424
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
 msgstr ""
 "\n"
-"Der Bericht wurde aktualisiert."
+"Der Bericht wurde aktualisiert"
 
 #: ../src/CLI/report.cpp:426
-#, fuzzy
 msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
 "\n"
-"Es wurden keine Änderungen am Bericht festgestellt."
+"Es wurden keine Änderungen am Bericht festgestellt"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
-#, fuzzy, c-format
+#, c-format
 msgid "Wrong settings were detected for plugin %s\n"
-msgstr "Es wurden die falschen Einstellungen für Plugin %s ermittelt.\n"
+msgstr "Es wurden die falschen Einstellungen für Plugin %s ermittelt\n"
 
 #: ../src/CLI/report.cpp:650
 msgid "Enter your login: "
@@ -426,34 +410,30 @@ msgid "'How to reproduce' is too long"
 msgstr "'Schritte zur Reproduzierung' ist zu lange"
 
 #: ../src/Daemon/Daemon.cpp:517
-#, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
-"Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie Ihren "
+"Berichtgröße überschreitet die maximale Größe. Bitte überprüfen Sie den "
 "MaxCrashReportsSize-Wert in abrt.conf."
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
+msgstr "Datenbank-Plugin ist nicht spezifiziert. Bitte abrtd-Einstelllungen überprüfen."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "Applikationsabstürze ansehen und melden"
 
 #: ../src/Gui/ABRTExceptions.py:6
-#, fuzzy
 msgid "Another client is already running, trying to wake it..."
-msgstr "Ein anderer Client läuft bereits, versuche ihn zu wecken."
+msgstr "Ein anderer Client läuft bereits, versuche ihn zu wecken ..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-#, fuzzy
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "Unerwartete Daten vom Daemon erhalten (wurde die Datenbank richtig "
-"aktualisiert?)"
+"aktualisiert?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -476,23 +456,20 @@ msgid "Database plugins"
 msgstr "Datenbank-Plugins"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
-#, fuzzy
 msgid "Cannot connect to system dbus."
-msgstr "Verbindung mit System-Dbus fehlgeschlagen"
+msgstr "Verbindung mit System-Dbus fehlgeschlagen."
 
 #: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
-#, fuzzy
 msgid "Please check if the abrt daemon is running."
-msgstr "Bitte überprüfen Sie, ob der abrt-Daemon läuft"
+msgstr "Bitte überprüfen Sie, ob der abrt-Daemon läuft."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/Gui/CCDBusBackend.py:174
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
 msgstr ""
-"Daemon lieferte keine gültige Berichtsinfo\n"
+"Daemon lieferte keine gültige Berichtsinfo.\n"
 "Fehlt Debuginfo?"
 
 #: ../src/Gui/ccgui.glade.h:1
@@ -594,23 +571,23 @@ msgstr "Anwendung"
 
 #: ../src/Gui/CCMainWindow.py:73
 msgid "Hostname"
-msgstr ""
+msgstr "Hostname"
 
 #: ../src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "Letzter Absturz"
 
 #: ../src/Gui/CCMainWindow.py:143
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
 "%s"
 msgstr ""
-"Der Einstellungsdialog %s kann\n"
-"nicht angezeigt werden"
+"Der Einstellungsdialog kann nicht angezeigt werden.\n"
+"%s"
 
 #: ../src/Gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
@@ -652,28 +629,25 @@ msgstr ""
 "\t--report=CRASH_ID\tAbsturz direkt melden mit CRASH_ID"
 
 #: ../src/Gui/CCMainWindow.py:445
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
 msgstr ""
-"Kein derartiger Absturz in der Datenbank, falsche Crashid?\n"
+"Kein derartiger Absturz in der Datenbank, wahrscheinlich falsche Crashid.\n"
 "crashid=%s"
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
-msgstr ""
-"Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
+msgstr "Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
 
 #: ../src/Gui/CCReporterDialog.py:107
-#, fuzzy
 msgid "You must check the backtrace for sensitive data."
-msgstr "Überprüfen Sie den Backtrace auf sensible Daten"
+msgstr "Sie müssen den Backtrace auf sensible Daten überprüfen."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using the command: <b>debuginfo-"
@@ -681,24 +655,18 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "Berichterstellung deaktiviert, da der Backtrace unbrauchbar ist.\n"
-"Bitte versuchen Sie, Debuginfo mittels folgendem Befehl manuell zu "
-"installieren:<b>debuginfo-install %s</b> \n"
-"nutzen Sie dann die Aktualisieren-Schaltfläche, um den Backtrace erneut zu "
-"generieren."
+"Bitte versuchen Sie, Debuginfo mittels folgendem Befehl manuell zu installieren: <b>debuginfo-install %s</b> \n"
+"Nutzen Sie dann die Aktualisieren-Schaltfläche, um den Backtrace erneut zu generieren."
 
 #: ../src/Gui/CCReporterDialog.py:120
-#, fuzzy
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Der Backtrace ist unbrauchbar, Sie können dies nicht berichten!"
 
 #: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
-#, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"Der Backtrace ist unvollständig, bitte stellen Sie sicher, dass alle "
-"Schritte zum Reproduzieren vorhanden sind."
+msgstr "Der Backtrace ist unvollständig, bitte stellen Sie sicher, dass Sie alle Schritte zum Reproduzieren angeben."
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -707,27 +675,25 @@ msgstr ""
 "Probleme."
 
 #: ../src/Gui/CCReporterDialog.py:132
-#, fuzzy
 msgid "Sends the report using the selected plugin."
-msgstr "Sendet den Bericht unter Verwendung des ausgwählten Plugins."
+msgstr "Sendet den Bericht unter Verwendung des ausgewählten Plugins."
 
 #: ../src/Gui/CCReporterDialog.py:398
-#, fuzzy
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
 msgstr ""
-"Kein Plugin zur Berichterstellung für diesen Crash-Typ verfügbar\n"
+"Kein Plugin zur Berichterstellung für diesen Absturztyp verfügbar.\n"
 "Bitte überprüfen Sie abrt.conf."
 
 #: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
 #: ../src/Gui/PluginsSettingsDialog.py:169
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
 msgstr ""
-"Plugin-Einstellungen konnten nicht gesichert werden:\n"
+"Plugin-Einstellungen konnten nicht gespeichert werden:\n"
 " %s"
 
 #: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:231
@@ -736,7 +702,6 @@ msgid "Configure %s options"
 msgstr "%s Optionen konfigurieren"
 
 #: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -755,97 +720,84 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
 #: ../src/Gui/CReporterAssistant.py:884
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Fehler beim Abrufen des Berichts: %s"
 
 #: ../src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "Verbindung mit Gnome-Keyring-Daemon fehlgeschlagen"
+msgstr "Verbindung mit Gnome-Keyring-Daemon fehlgeschlagen."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
 #: ../src/Gui/ConfBackend.py:83
-#, fuzzy
 msgid "Cannot get the default keyring."
-msgstr "Kann Standard-Schlüsselbund nicht abrufen"
+msgstr "Kann Standard-Schlüsselbund nicht abrufen."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-#, fuzzy
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
-"Zugriff auf 'gnome-keyring' wurde verwehrt, die Plugin-Einstellungen werden "
+"Zugriff auf Gnome-Keyring wurde verwehrt, die Plugin-Einstellungen werden "
 "nicht gespeichert."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
-#, fuzzy, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+#, python-format
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
-"Zugriff auf 'gnome-keyring' wurde verwehrt, die Einstellungen für %s können "
+"Zugriff auf Gnome-Keyring wurde verwehrt, die Einstellungen für %s können "
 "nicht geladen werden!"
 
 #: ../src/Gui/ConfBackend.py:205
-#, fuzzy
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
-"Zugriff auf 'gnome-keyring' wurde verwehrt, die Einstellungen können nicht "
-"geladen werden"
+"Zugriff auf Gnome-Keyring wurde verwehrt, die Einstellungen können nicht "
+"geladen werden."
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
-msgstr ""
+msgstr "Absturzinformationen enthalten keinen Backtrace"
 
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr ""
+msgstr "Einstufung wird erfordert von %s Plugin"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr ""
+msgstr "Einstufung wird von keinem Plugin erfordert, Überprüfung wird übersprungen ..."
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
 msgid "Rating is %s"
-msgstr ""
+msgstr "Einstufung ist %s"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
+msgstr "Crashdump besitzt keine Einstufung => wir gehen davon aus, dies ist nicht nötig"
 
 #: ../src/Gui/CReporterAssistant.py:294
-#, fuzzy
 msgid "You should check the backtrace for sensitive data."
-msgstr "Überprüfen Sie den Backtrace auf sensible Daten"
+msgstr "Sie sollten den Backtrace auf sensible Daten überprüfen."
 
 #: ../src/Gui/CReporterAssistant.py:295
-#, fuzzy
 msgid "You must agree with sending the backtrace."
-msgstr "Sie müssen dem Senden der Ablaufverfolgung zustimmen"
+msgstr "Sie müssen dem Senden des Backtrace zustimmen."
 
 #: ../src/Gui/CReporterAssistant.py:310
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr ""
-"Berichterstellung deaktiviert, bitte beheben Sie die oben aufgeführten "
-"Probleme."
+msgstr "Berichterstellung deaktiviert, da der Backtrace unbrauchbar ist."
 
 #: ../src/Gui/CReporterAssistant.py:355
-#, fuzzy
 msgid "You did not provide any steps to reproduce."
 msgstr "Sie haben keine Schritte zur Reproduktion angegeben."
 
 #: ../src/Gui/CReporterAssistant.py:369
-#, fuzzy
 msgid "You did not provide any comments."
 msgstr "Sie haben keine Kommentare angegeben."
 
 #: ../src/Gui/CReporterAssistant.py:450
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
 "system. It is a good idea to send a bug report about this issue. The report "
@@ -860,12 +812,12 @@ msgid ""
 "continue."
 msgstr ""
 "Offensichtlich ist eine Anwendung aus dem Paket <b>%s</b> auf Ihrem System "
-"abgestürzt. Das Senden eines Fehlerberichts zu diesem Problem wird "
-"empfohlen. Der Bericht liefert Software-Maintainern Informationen, die für "
-"die Fehlerbehebung essentiell sind.\n"
+"abgestürzt. Es wird empfohlen, zu diesem Problem einen Fehlerbericht zu senden. "
+"Der Bericht liefert Software-Maintainern Informationen, die für "
+"die Fehlerbehebung unerlässlich sind.\n"
 "\n"
-"Bitte sehen Sie die nachfolgenden Informationen durch und passen sie je nach "
-"Bedarf an um sicherzustellen, dass Ihr Fehlerbericht keine sensiblen Daten "
+"Bitte sehen Sie die nachfolgenden Informationen durch und passen Sie diese je nach "
+"Bedarf an, um sicherzustellen, dass Ihr Fehlerbericht keine sensiblen Daten "
 "beinhaltet, die Sie nicht preisgeben möchten.\n"
 "\n"
 "Wählen Sie aus, wo Sie den Fehlerbericht einreichen möchten und drücken Sie "
@@ -873,14 +825,13 @@ msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
-msgstr ""
+msgstr "Nur ein Berichts-Plugin ist konfiguriert."
 
 #: ../src/Gui/CReporterAssistant.py:516
 msgid "Send a bug report"
 msgstr "Fehlerbericht abschicken"
 
 #: ../src/Gui/CReporterAssistant.py:554
-#, fuzzy
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -889,13 +840,13 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
-"Nachfolgend finden Sie eine Ablaufverfolgung, die mit Ihrem Absturz "
-"verknüpft ist. Eine Ablaufverfolgung des Absturzes liefert Entwicklern die "
+"Nachfolgend finden Sie einen Backtrace, der mit Ihrem Absturz "
+"verknüpft ist. Ein Backtrace des Absturzes liefert Entwicklern die "
 "Details, wie es zu dem Absturz kam und unterstützt sie so bei der "
 "Ursachenforschung.\n"
 "\n"
-"Bitte sehen Sie die nachfolgenden Informationen durch und passen sie je nach "
-"Bedarf an um sicherzustellen, dass Ihr Fehlerbericht keine sensiblen Daten "
+"Bitte sehen Sie die nachfolgenden Informationen durch und passen Sie diese je nach "
+"Bedarf an, um sicherzustellen, dass Ihr Fehlerbericht keine sensiblen Daten "
 "beinhaltet, die Sie nicht preisgeben möchten:"
 
 #: ../src/Gui/CReporterAssistant.py:595
@@ -911,30 +862,24 @@ msgid "I agree with submitting the backtrace"
 msgstr "Ich stimme dem Übermitteln der Ablaufverfolgung zu"
 
 #: ../src/Gui/CReporterAssistant.py:608
-#, fuzzy
 msgid "Approve the backtrace"
-msgstr "Ablaufverfolgung genehmigen"
+msgstr "Backtrace genehmigen"
 
 #: ../src/Gui/CReporterAssistant.py:631
-#, fuzzy
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 "Wie kam es zu diesem Absturz (Schritt-für-Schritt)? Wie würden Sie ihn "
 "reproduzieren?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-#, fuzzy
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
-msgstr ""
-"Möchten Sie irgendwelche Kommentare mit den Software-Maintainern teilen?"
+msgid "Are there any comments you would like to share with the software maintainers?"
+msgstr "Haben Sie sonstige Kommentare, die Sie für die Software-Maintainer hinzufügen möchten?"
 
 #: ../src/Gui/CReporterAssistant.py:668
 msgid "Provide additional details"
 msgstr "Zusätzliche Details angeben"
 
 #: ../src/Gui/CReporterAssistant.py:675
-#, fuzzy
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -943,13 +888,11 @@ msgstr ""
 "entsprechend, was Sie sagen"
 
 #: ../src/Gui/CReporterAssistant.py:716
-#, fuzzy
 msgid "Confirm and send the report"
 msgstr "Bericht bestätigen und senden"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Nachfolgend ist eine Zusammenfassung Ihres Fehlerberichts aufgeführt. Bitte "
 "klicken Sie auf 'Anwenden', um diesen zu übermitteln."
@@ -997,9 +940,8 @@ msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
 #: ../src/Gui/CReporterAssistant.py:752
-#, fuzzy
 msgid "Click to view..."
-msgstr "Zum Betrachten, klicken..."
+msgstr "Zum Ansehen klicken ..."
 
 #: ../src/Gui/CReporterAssistant.py:764
 msgid "<b>Steps to reproduce:</b>"
@@ -1030,7 +972,6 @@ msgid "Report done"
 msgstr "Bericht fertiggestellt"
 
 #: ../src/Gui/PluginSettingsUI.py:17
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "Kann PluginDialog-Widget nicht in UI-Beschreibung finden!"
 
@@ -1041,9 +982,11 @@ msgid ""
 "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
+"Kein UI für das Plugin <b>%s</b>, dies ist wahrscheinlich ein Fehler.\n"
+"Bitte berichten Sie diesen Fehler unter <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
-#, fuzzy
 msgid "Combo box is not implemented"
 msgstr "Combo-Box ist nicht implementiert"
 
@@ -1052,9 +995,8 @@ msgid "Nothing to hydrate!"
 msgstr "Nichts zum Hydrieren!"
 
 #: ../src/Gui/PluginsSettingsDialog.py:24
-#, fuzzy
 msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr "Kann GUI-Beschreibung für SettingsDialog nicht laden!"
+msgstr "Kann GUI-Beschreibung für Einstellungsdialog nicht laden!"
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
@@ -1064,11 +1006,10 @@ msgstr "Name"
 
 #: ../src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
-"Bitte ein Plugin aus der Liste auswählen, um dessen Optionen zu bearbeiten."
+msgstr "Bitte ein Plugin aus der Liste auswählen, um dessen Optionen zu bearbeiten."
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
@@ -1083,7 +1024,6 @@ msgid "Details"
 msgstr "Details"
 
 #: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
-#, fuzzy
 msgid "Please wait..."
 msgstr "Bitte warten ..."
 
@@ -1101,13 +1041,11 @@ msgstr "<b>Kommentar</b>"
 
 #: ../src/Gui/report.glade.h:5
 msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr ""
-"<b>Wie kann der Fehler wieder erzeugt werden (in einfachen Schritten)</b>"
+msgstr "<b>Wie kann der Fehler wieder erzeugt werden (in einfachen Schritten)</b>"
 
 #: ../src/Gui/report.glade.h:6
-#, fuzzy
 msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>Bitte beheben Sie folgende Probleme</b>"
+msgstr "<b>Bitte beheben Sie folgende Probleme:</b>"
 
 #: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
@@ -1146,15 +1084,13 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Version:</span>"
 
 #: ../src/Gui/report.glade.h:18
-#, fuzzy
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr "Zwingt ABRT zur erneuten Generierung des Backtrace"
+msgstr "Zwingt ABRT zur erneuten Generierung des Backtrace."
 
 #: ../src/Gui/report.glade.h:19
-#, fuzzy
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
-"Ich habe den Backtrace geprüft und alle sensitiven Daten (Passwörter, usw.) "
+"Ich habe den Backtrace geprüft und alle sensiblen Daten (Passwörter, usw.) "
 "entfernt"
 
 #: ../src/Gui/report.glade.h:20
@@ -1254,7 +1190,6 @@ msgid "GPG keys: "
 msgstr "GPG-Schlüssel: "
 
 #: ../src/Gui/settings.glade.h:17
-#, fuzzy
 msgid "Max coredump storage size (MB):"
 msgstr "Max. Speicherplatz für Coredumps (in MB):"
 
@@ -1283,64 +1218,13 @@ msgid "Wrong Settings Detected"
 msgstr "Falsche Einstellungen festgestellt"
 
 #: ../src/Gui/settings_wizard.glade.h:3
-#, fuzzy
 msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 msgstr ""
-"Falsche Einstellungen wurden für einige der aktivierten Melde-Plugins "
+"Falsche Einstellungen wurden für einige der aktivierten Berichts-Plugins "
 "festgestellt. Bitte verwenden Sie die nachfolgenden Schaltflächen, um die "
 "entsprechende Konfiguration zu öffnen und beheben Sie den Fehler, bevor Sie "
-"fortfahren. Ansonsten kann der Melde-Prozess fehlschlagen.\n"
+"fortfahren. Andernfalls kann der Berichtsprozess fehlschlagen.\n"
 
-#~ msgid "Can't create and send an archive %s"
-#~ msgstr "Kann kein Archiv erzeugen und senden %s"
-
-#~ msgid "send_string: URL not specified"
-#~ msgstr "send_string: URL nicht angegeben"
-
-#~ msgid "Sending failed, try it again: %s"
-#~ msgstr "Senden fehlgeschlagen, erneut versuchen: %s"
-
-#~ msgid "send_file: URL not specified"
-#~ msgstr "send_file: URL nicht angegeben"
-
-#~ msgid "Sending file %s to %s"
-#~ msgstr "Datei %s nach %s senden"
-
-#~ msgid "New bug id: %s"
-#~ msgstr "Neue Bug-ID: %s"
-
-#~ msgid "error returned by requestUpload: %s"
-#~ msgstr "Fehler bei requestUpload zurückgegeben: %s"
-
-#~ msgid "error returned by requestUpload: %d"
-#~ msgstr "Fehler bei requestUpload zurückgegeben: %d"
-
-#~ msgid "no URL returned by requestUpload, and no errno"
-#~ msgstr "keine URL bei requestUbload zurückgegeben und kein Fehler"
-
-#~ msgid "requestUpload returned URL: %s"
-#~ msgstr "requestUpload gab URL zurück: %s"
-
-#~ msgid "Attaching (text): %s"
-#~ msgstr "Anhang (Text): %s"
-
-#~ msgid "rebased URL: %s"
-#~ msgstr "rebasierte URL: %s"
-
-#~ msgid "Attaching binary: %s"
-#~ msgstr "Binärdatei anhängen: %s"
-
-#~ msgid "Creating a signature..."
-#~ msgstr "Eine Signatur erstellen..."
-
-#~ msgid "Binary file %s will not be reported"
-#~ msgstr "Die Binärdatei %s wird nicht gemeldet"
-
-#~ msgid "Jump to bug %d"
-#~ msgstr "Springe zu Bug %d"
-
-#~ msgid "Getting local universal unique identification"
-#~ msgstr "Rufe lokale, universelle, eindeutige Identifikation ab"
