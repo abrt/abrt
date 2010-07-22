@@ -338,6 +338,7 @@ fi
 %{_includedir}/*
 %{_libdir}/lib*.so
 %{_libdir}/pkgconfig/*
+%doc doc/abrt-plugin doc/howto-write-reporter
 
 %files gui
 %defattr(-,root,root,-)

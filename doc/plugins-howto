@@ -81,20 +81,6 @@ dump, or all debug dumps for periodic actions.
 The second argument is a string with arguments (specified in config file).
 
 
-Reporter Plugin
----------------
-This plugin receives the entire finished crash report and
-posts/reports it somewhere (e.g. logs it, mails it, posts
-it on some web tool...)
-
-You have to override this method:
-
-virtual void Report(const map_crash_data_t& pCrashData,
-                    const char *pArgs);
-- This method takes the report and presents it somewhere to the world.
-  The second argument is a string with arguments specified for the reporter.
-
-
 Database Plugin
 ---------------
 This plugin is used to store the metadata about the crash. The metadata

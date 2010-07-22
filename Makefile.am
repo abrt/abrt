@@ -1,7 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4
 SUBDIRS = lib src inc po icons
 
-EXTRA_DIST = doc/CodingStyle abrt.spec abrt.pc.in
+EXTRA_DIST = doc/coding-style abrt.spec abrt.pc.in doc/abrt-plugin/ doc/howto-write-reporter
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = abrt.pc
