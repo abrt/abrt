@@ -251,11 +251,23 @@ static int open_user_core(const char *user_pwd, uid_t uid, pid_t pid)
 
 int main(int argc, char** argv)
 {
+    int i;
     struct stat sb;
 
     if (argc < 5)
     {
         error_msg_and_die("Usage: %s: DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT", argv[0]);
+    }
+
+    /* Not needed on 2.6.30.
+     * At least 2.6.18 has a bug where
+     * argv[1] = "DUMPDIR PID SIGNO UID CORE_SIZE_LIMIT"
+     * argv[2] = "PID SIGNO UID CORE_SIZE_LIMIT"
+     * and so on. Fixing it:
+     */
+    for (i = 1; argv[i]; i++)
+    {
+        strchrnul(argv[i], ' ')[0] = '\0';
     }
 
     openlog("abrt", LOG_PID, LOG_DAEMON);
@@ -282,7 +294,7 @@ int main(int argc, char** argv)
     char* executable = get_executable(pid, &src_fd_binary);
     if (executable == NULL)
     {
-        error_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
+        perror_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
     }
     if (strstr(executable, "/abrt-hook-ccpp"))
     {
