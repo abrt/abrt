@@ -902,12 +902,14 @@ void autoreport(const pair_string_string_t& reporter_options, const map_crash_da
 static void RunAnalyzerActions(const char *pAnalyzer, const char *pPackageName, const char *pDebugDumpDir, int force)
 {
     map_analyzer_actions_and_reporters_t::iterator analyzer;
-    if(pPackageName != NULL){
+    if (pPackageName != NULL)
+    {
         /*try to find analyzer:component first*/
         char *analyzer_component = xasprintf("%s:%s", pAnalyzer, pPackageName);
         analyzer = s_mapAnalyzerActionsAndReporters.find(analyzer_component);
         /* if we didn't find an action for specific package, use the generic one */
-        if(analyzer == s_mapAnalyzerActionsAndReporters.end()){
+        if (analyzer == s_mapAnalyzerActionsAndReporters.end())
+        {
             VERB2 log("didn't find action for %s, trying just %s", analyzer_component, pAnalyzer);
             map_analyzer_actions_and_reporters_t::iterator analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
         }

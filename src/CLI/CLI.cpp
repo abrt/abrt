@@ -95,7 +95,8 @@ static void print_crash_list(const vector_map_crash_data_t& crash_list, bool inc
 /**
  * Prints full information about a crash
  */
-static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace){
+static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
+{
     const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
     const char *timeloc = localize_crash_time(timestr);
 
@@ -143,7 +144,8 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
     if (comment)
         printf(_("\nComment:\n%s\n"), comment);
 
-    if(show_backtrace){
+    if (show_backtrace)
+    {
         const char *backtrace = get_crash_data_item_content_or_NULL(crash, FILENAME_BACKTRACE);
         if (backtrace)
             printf(_("\nBacktrace:\n%s\n"), backtrace);
@@ -371,7 +373,8 @@ int main(int argc, char** argv)
             {
                 crash_id = guess_crash_id(crash_id);
                 exitcode = report(crash_id, always ? CLI_REPORT_BATCH : 0);
-                if (exitcode == -1){
+                if (exitcode == -1)
+                {
                     error_msg("Crash '%s' not found", crash_id);
                     free((void *)crash_id);
                     xfunc_die();
@@ -388,7 +391,8 @@ int main(int argc, char** argv)
             {
                 crash_id = guess_crash_id(crash_id);
                 exitcode = call_DeleteDebugDump(crash_id);
-                if (exitcode == ENOENT){
+                if (exitcode == ENOENT)
+                {
                     error_msg("Crash '%s' not found", crash_id);
                     free((void *)crash_id);
                     xfunc_die();
@@ -410,7 +414,8 @@ int main(int argc, char** argv)
             {
                 crash_id = guess_crash_id(crash_id);
                 crashData = call_CreateReport(crash_id);
-                if(crashData.empty()){
+                if (crashData.empty())
+                {
                     error_msg("Crash '%s' not found", crash_id);
                     free((void *)crash_id);
                     xfunc_die();

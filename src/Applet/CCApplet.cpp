@@ -118,7 +118,7 @@ static GtkWidget *create_menu(CApplet *applet)
     GtkWidget *about_dialog = create_about_dialog();
     g_signal_connect(b_about, "activate", G_CALLBACK(on_about_cb), about_dialog);
     GtkWidget *separator = gtk_separator_menu_item_new();
-    if(menu)
+    if (menu)
     {
         gtk_menu_shell_append(GTK_MENU_SHELL(menu),b_hide);
         gtk_widget_show(b_hide);

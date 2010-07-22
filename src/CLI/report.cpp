@@ -497,7 +497,7 @@ static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
   char * package_name = get_package_name_from_NVR_or_NULL(package_nvr);
   // analyzer with package name (CCpp:xorg-x11-app) has higher priority
   map_string_t::const_iterator reporters_iter;
-  if(package_name != NULL)
+  if (package_name != NULL)
   {
       char* package_specific_analyzer = xasprintf("%s:%s", analyzer, package_name);
       reporters_iter = analyzer_to_reporters.find(package_specific_analyzer);

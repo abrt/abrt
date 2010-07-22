@@ -7,16 +7,16 @@
 char* get_package_name_from_NVR_or_NULL(const char* packageNVR)
 {
     char* package_name = NULL;
-    if(packageNVR != NULL)
+    if (packageNVR != NULL)
     {
         VERB1 log("packageNVR %s", packageNVR);
         package_name = xstrdup(packageNVR);
         char *pos = strrchr(package_name, '-');
-        if(pos != NULL)
+        if (pos != NULL)
         {
             *pos = 0;
             pos = strrchr(package_name, '-');
-            if(pos != NULL)
+            if (pos != NULL)
             {
                 *pos = 0;
             }

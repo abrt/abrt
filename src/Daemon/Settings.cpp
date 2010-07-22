@@ -507,7 +507,7 @@ int LoadSettings()
          * bugzilla plugin work :-/
          */
         //FIXME FIXME FIXME FIXME FIXME FIXME!!!
-        //if(g_settings_bOpenGPGCheck)
+        //if (g_settings_bOpenGPGCheck)
         LoadGPGKeys();
     }
 
