@@ -35,16 +35,23 @@
 # define _(S) (S)
 #endif
 
-/** Prints basic information about a crash to stdout. */
-static void print_crash(const map_crash_data_t &crash)
+/** Creates a localized string from crash time. */
+static char *localize_crash_time(const char *timestr)
 {
-    /* Create a localized string from crash time. */
-    const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
     long time = xatou(timestr);
     char timeloc[256];
     int success = strftime(timeloc, 128, "%c", localtime(&time));
     if (!success)
         error_msg_and_die("Error while converting time to string");
+    return xasprintf("%s", timeloc);
+}
+
+/** Prints basic information about a crash to stdout. */
+static void print_crash(const map_crash_data_t &crash)
+{
+    /* Create a localized string from crash time. */
+    const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
+    const char *timeloc = localize_crash_time(timestr);
 
     printf(_("\tUID        : %s\n"
              "\tUUID       : %s\n"
@@ -58,6 +65,8 @@ static void print_crash(const map_crash_data_t &crash)
            get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
            timeloc,
            get_crash_data_item_content(crash, CD_COUNT).c_str());
+
+    free((void *)timeloc);
 
     /* Print the hostname if it's available. */
     const char *hostname = get_crash_data_item_content_or_NULL(crash, FILENAME_HOSTNAME);
@@ -80,6 +89,64 @@ static void print_crash_list(const vector_map_crash_data_t& crash_list, bool inc
 
         printf("%u.\n", i);
         print_crash(crash);
+    }
+}
+
+/**
+ * Prints full information about a crash
+ */
+static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace){
+    const char *timestr = get_crash_data_item_content(crash, FILENAME_TIME).c_str();
+    const char *timeloc = localize_crash_time(timestr);
+
+    printf(_("Crash ID:           %s:%s\n"
+             "Last crash:         %s\n"
+             "Analyzer:           %s\n"
+             "Component:          %s\n"
+             "Package:            %s\n"
+             "Command:            %s\n"
+             "Executable:         %s\n"
+             "System:             %s, kernel %s\n"
+             "Rating:             %s\n"
+             "Coredump file:      %s\n"
+             "Reason:             %s\n"),
+           get_crash_data_item_content(crash, CD_UID).c_str(),
+           get_crash_data_item_content(crash, CD_UUID).c_str(),
+           timeloc,
+           get_crash_data_item_content(crash, FILENAME_ANALYZER).c_str(),
+           get_crash_data_item_content(crash, FILENAME_COMPONENT).c_str(),
+           get_crash_data_item_content(crash, FILENAME_PACKAGE).c_str(),
+           get_crash_data_item_content(crash, FILENAME_CMDLINE).c_str(),
+           get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
+           get_crash_data_item_content(crash, FILENAME_RELEASE).c_str(),
+           get_crash_data_item_content(crash, FILENAME_KERNEL).c_str(),
+           get_crash_data_item_content(crash, FILENAME_RATING).c_str(),
+           get_crash_data_item_content(crash, FILENAME_COREDUMP).c_str(),
+           get_crash_data_item_content(crash, FILENAME_REASON).c_str());
+
+    free((void *)timeloc);
+
+    /* print only if available */
+    const char *crash_function = get_crash_data_item_content_or_NULL(crash, FILENAME_CRASH_FUNCTION);
+    if (crash_function)
+        printf(_("Crash function:     %s\n"), crash_function);
+
+    const char *hostname = get_crash_data_item_content_or_NULL(crash, FILENAME_HOSTNAME);
+    if (hostname)
+        printf(_("Hostname:           %s\n"), hostname);
+
+    const char *reproduce = get_crash_data_item_content_or_NULL(crash, FILENAME_REPRODUCE);
+    if (reproduce)
+        printf(_("\nHow to reproduce:\n%s\n"), reproduce);
+
+    const char *comment = get_crash_data_item_content_or_NULL(crash, FILENAME_COMMENT);
+    if (comment)
+        printf(_("\nComment:\n%s\n"), comment);
+
+    if(show_backtrace){
+        const char *backtrace = get_crash_data_item_content_or_NULL(crash, FILENAME_BACKTRACE);
+        if (backtrace)
+            printf(_("\nBacktrace:\n%s\n"), backtrace);
     }
 }
 
@@ -131,7 +198,8 @@ enum
 {
     OPT_GET_LIST,
     OPT_REPORT,
-    OPT_DELETE
+    OPT_DELETE,
+    OPT_INFO
 };
 
 /**
@@ -145,13 +213,15 @@ enum
 static const struct option longopts[] =
 {
     /* name, has_arg, flag, val */
-    { "help"   , no_argument, NULL, '?' },
-    { "version", no_argument, NULL, 'V' },
-    { "list"   , no_argument, NULL, 'l' },
-    { "full"   , no_argument, NULL, 'f' },
-    { "always" , no_argument, NULL, 'y' },
-    { "report" , no_argument, NULL, 'r' },
-    { "delete" , no_argument, NULL, 'd' },
+    { "help"     , no_argument, NULL, '?' },
+    { "version"  , no_argument, NULL, 'V' },
+    { "list"     , no_argument, NULL, 'l' },
+    { "full"     , no_argument, NULL, 'f' },
+    { "always"   , no_argument, NULL, 'y' },
+    { "report"   , no_argument, NULL, 'r' },
+    { "delete"   , no_argument, NULL, 'd' },
+    { "info"     , no_argument, NULL, 'i' },
+    { "backtrace", no_argument, NULL, 'b' },
     { 0, 0, 0, 0 } /* prevents crashes for unknown options*/
 };
 
@@ -184,6 +254,8 @@ static void usage(char *argv0)
         "	-r, --report CRASH_ID	create and send a report\n"
         "	      -y, --always	create and send a report without asking\n"
         "	-d, --delete CRASH_ID	remove a crash\n"
+        "	-i, --info CRASH_ID	print detailed information about a crash\n"
+        "	      -b, --backtrace	print detailed information about a crash including backtrace\n"
         "CRASH_ID can be:\n"
         "	UID:UUID pair,\n"
         "	unique UUID prefix  - the crash with matching UUID will be acted upon\n"
@@ -200,6 +272,7 @@ int main(int argc, char** argv)
     int op = -1;
     bool full = false;
     bool always = false;
+    bool backtrace = false;
 
     setlocale(LC_ALL, "");
 #if ENABLE_NLS
@@ -211,7 +284,7 @@ int main(int argc, char** argv)
     {
         int option_index;
         /* Do not use colons, arguments are handled after parsing all options. */
-        int c = getopt_long_only(argc, argv, "?Vrdlfy",
+        int c = getopt_long_only(argc, argv, "?Vrdlfyib",
                                  longopts, &option_index);
 
 #define SET_OP(newop)                                                \
@@ -227,8 +300,10 @@ int main(int argc, char** argv)
         case 'r': SET_OP(OPT_REPORT);   break;
         case 'd': SET_OP(OPT_DELETE);   break;
         case 'l': SET_OP(OPT_GET_LIST); break;
+        case 'i': SET_OP(OPT_INFO);     break;
         case 'f': full = true;          break;
         case 'y': always = true;        break;
+        case 'b': backtrace = true;     break;
         case -1: /* end of options */   break;
         default: /* some error */
         case '?':
@@ -247,11 +322,11 @@ int main(int argc, char** argv)
     switch (arg_count)
     {
     case 0:
-        if (op == OPT_REPORT || op == OPT_DELETE)
+        if (op == OPT_REPORT || op == OPT_DELETE || op == OPT_INFO)
             usage(argv[0]);
         break;
     case 1:
-        if (op != OPT_REPORT && op != OPT_DELETE)
+        if (op != OPT_REPORT && op != OPT_DELETE && op != OPT_INFO)
             usage(argv[0]);
         crash_id = argv[optind];
         break;
@@ -264,6 +339,7 @@ int main(int argc, char** argv)
      */
     if ((full && op != OPT_GET_LIST) ||
         (always && op != OPT_REPORT) ||
+        (backtrace && op != OPT_INFO) ||
         op == -1)
     {
         usage(argv[0]);
@@ -295,8 +371,13 @@ int main(int argc, char** argv)
             {
                 crash_id = guess_crash_id(crash_id);
                 exitcode = report(crash_id, always ? CLI_REPORT_BATCH : 0);
-                if (exitcode == -1)
-                    error_msg_and_die("Crash '%s' not found", crash_id);
+                if (exitcode == -1){
+                    error_msg("Crash '%s' not found", crash_id);
+                    free((void *)crash_id);
+                    xfunc_die();
+                }
+
+                free((void *)crash_id);
             }
             break;
         }
@@ -307,11 +388,41 @@ int main(int argc, char** argv)
             {
                 crash_id = guess_crash_id(crash_id);
                 exitcode = call_DeleteDebugDump(crash_id);
-                if (exitcode == ENOENT)
-                    error_msg_and_die("Crash '%s' not found", crash_id);
+                if (exitcode == ENOENT){
+                    error_msg("Crash '%s' not found", crash_id);
+                    free((void *)crash_id);
+                    xfunc_die();
+                }
+
+                free((void *)crash_id);
             }
             if (exitcode != 0)
                 error_msg_and_die("Can't delete debug dump '%s'", crash_id);
+            break;
+        }
+        case OPT_INFO:
+        {
+            int old_logmode = logmode;
+            logmode = 0;
+
+            map_crash_data_t crashData = call_CreateReport(crash_id);
+            if (crashData.empty()) /* no such crash_id */
+            {
+                crash_id = guess_crash_id(crash_id);
+                crashData = call_CreateReport(crash_id);
+                if(crashData.empty()){
+                    error_msg("Crash '%s' not found", crash_id);
+                    free((void *)crash_id);
+                    xfunc_die();
+                }
+
+                free((void *)crash_id);
+            }
+
+            logmode = old_logmode;
+
+            print_crash_info(crashData, backtrace);
+
             break;
         }
     }
