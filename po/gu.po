@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.gu\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-20 22:58+0000\n"
-"PO-Revision-Date: 2010-07-21 15:34+0530\n"
+"POT-Creation-Date: 2010-07-22 13:21+0000\n"
+"PO-Revision-Date: 2010-07-23 15:03+0530\n"
 "Last-Translator: Sweta Kothari <swkothar@redhat.com>\n"
 "Language-Team: Gujarati\n"
 "MIME-Version: 1.0\n"
@@ -30,7 +30,7 @@ msgstr "નવી ભૂલ id: %i"
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
-msgstr ""
+msgstr "લોગિન કરી શકાતુ નથી. ફેરફાર કરો->પ્લગઇન->Bugzilla અને etc/abrt/plugins/Bugzilla.conf ને ચકાસો. સર્વર કહે છે: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -58,7 +58,6 @@ msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() નિષ્ફળ. બધી ફરજિયાત જાણકારીને મેળવી શક્યા નહિં"
 
 #: ../lib/Plugins/Bugzilla.cpp:781
-#, fuzzy
 msgid "Creating a new bug..."
 msgstr "નવી ભૂલને બનાવી રહ્યા છે..."
 
@@ -77,9 +76,9 @@ msgid "Bug is already reported: %i"
 msgstr "ભૂલ પહેલેથી જ અહેવાલ થયેલ છે: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:826
-#, fuzzy, c-format
+#, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "બગઝીલાએ ભૂલ(%d) નાં મુખ્યને શોધી શક્યા નથી"
+msgstr "Bugzilla એ ભૂલ %d નાં મુખ્યને શોધી શક્યા નથી"
 
 #: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
 #, c-format
@@ -96,7 +95,6 @@ msgid "Generating backtrace"
 msgstr "બેકટ્રેસને ઉત્પન્ન કરી રહ્યા છે"
 
 #: ../lib/Plugins/CCpp.cpp:353
-#, fuzzy
 msgid "Starting the debuginfo installation"
 msgstr "ડિબગ જાણકારી સ્થાપન ને શરૂ કરી રહ્યા છે"
 
@@ -107,7 +105,6 @@ msgid "Getting global universal unique identification..."
 msgstr "વૈશ્ર્વિક વિશ્ર્વવ્યાપક અનન્ય ઓળખાણને મેળવી રહ્યા છે..."
 
 #: ../lib/Plugins/CCpp.cpp:748
-#, fuzzy
 msgid "Skipping the debuginfo installation"
 msgstr "ડિબગ જાણકારી સ્થાપન ને છોડી રહ્યા છે"
 
@@ -125,7 +122,7 @@ msgid "FileTransfer: Creating a report..."
 msgstr "ફાઇલ પરિવહન: અહેવાલને બનાવી રહ્યા છે..."
 
 #: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "બનાવી શકાતો નથી અને પેટીને મોકલો: %s"
 
@@ -141,7 +138,7 @@ msgstr "'%s' માં અહેવાલને લખી રહ્યા છે
 #: ../lib/Plugins/Logger.cpp:79
 #, c-format
 msgid "The report was appended to %s"
-msgstr ""
+msgstr "અહેવાલ %s સાથે જોડાયેલ હતુ"
 
 #: ../lib/Plugins/Logger.cpp:79
 #, c-format
@@ -158,14 +155,12 @@ msgid "Sending failed, trying again. %s"
 msgstr "મોકલવાનું નિષ્ફળ, ફરીથી પ્રયત્ન કરો. %s"
 
 #: ../lib/Plugins/ReportUploader.cpp:192
-#, fuzzy
 msgid "Creating a ReportUploader report..."
-msgstr "અહેવાલને બનાવી અને સોંપી રહ્યા છે..."
+msgstr "ReportUploader અહેવાલને બનાવી રહ્યા છે..."
 
 #: ../lib/Plugins/RHTSupport.cpp:231
-#, fuzzy
 msgid "Creating a new case..."
-msgstr "નવી ભૂલને બનાવી રહ્યા છે..."
+msgstr "નવી જોડણીને બનાવી રહ્યા છે..."
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
@@ -173,7 +168,6 @@ msgid "Running sosreport: %s"
 msgstr "sosreport ચાલી રહ્યુ છે: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:103
-#, fuzzy
 msgid "Finished running sosreport"
 msgstr "sosreport ચાલી રહ્યુ છે તે સમાપ્ત થયુ"
 
@@ -188,9 +182,9 @@ msgid "Automatic Bug Reporting Tool"
 msgstr "આપોઆપ ભૂલ અહેવાલીકરણ સાધન"
 
 #: ../src/Applet/Applet.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "A crash in the %s package has been detected"
-msgstr "પેકેજ %s માં ભંગાણ ને શોધી દેવામાં આવ્યો છે"
+msgstr "પેકેજ %s માં ભંગાણ ને શોધી દેવામાં આવ્યુ છે"
 
 #: ../src/Applet/Applet.cpp:87
 msgid "A crash has been detected"
@@ -206,9 +200,8 @@ msgid "Warning"
 msgstr "ચેતવણી"
 
 #: ../src/Applet/CCApplet.cpp:89
-#, fuzzy
 msgid "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "ABRT દ્દારા શોધેલ મુદ્દાઓ વિશે વપરાશકર્તાને સૂચિત કરવા માટે સૂચના વિસ્તાર એપલેટ"
+msgstr "સૂચના વિસ્તાર એપલેટ કે જે ABRT દ્દારા શોધેલ મુદ્દાઓ વિશે વપરાશકર્તાને સૂચિત કરે છે"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
 msgid "translator-credits"
@@ -222,7 +215,7 @@ msgstr "છુપાડો"
 msgid "Report"
 msgstr "અહેવાલ"
 
-#: ../src/CLI/CLI.cpp:49
+#: ../src/CLI/CLI.cpp:56
 #, c-format
 msgid ""
 "\tUID        : %s\n"
@@ -239,13 +232,83 @@ msgstr ""
 "\tભંગાણ સમય : %s\n"
 "\tભંગાણ ગણતરી: %s\n"
 
-#: ../src/CLI/CLI.cpp:65
+#: ../src/CLI/CLI.cpp:74
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tયજમાનનામ   : %s\n"
 
+#: ../src/CLI/CLI.cpp:103
+#, c-format
+msgid ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Rating:             %s\n"
+"Coredump file:      %s\n"
+"Reason:             %s\n"
+msgstr ""
+"ભંગાણ ID:           %s:%s\n"
+"છેલ્લુ ભંગાણ:         %s\n"
+"Analyzer:           %s\n"
+"ઘટક:          %s\n"
+"પેકેજ:            %s\n"
+"આદેશ:            %s\n"
+"એક્ઝિક્યુટેબલ:         %s\n"
+"સિસ્ટમ:             %s, કર્નલ %s\n"
+"રેટિંગ:             %s\n"
+"કોરડમ્પ ફાઇલ:      %s\n"
+"કારણ:             %s\n"
+
+#: ../src/CLI/CLI.cpp:133
+#, c-format
+msgid "Crash function:     %s\n"
+msgstr "ભંગાણ વિધેય:     %s\n"
+
+#: ../src/CLI/CLI.cpp:137
+#, c-format
+msgid "Hostname:           %s\n"
+msgstr "યજમાનનામ:           %s\n"
+
+#: ../src/CLI/CLI.cpp:141
+#, c-format
+msgid ""
+"\n"
+"How to reproduce:\n"
+"%s\n"
+msgstr ""
+"\n"
+"કેવી રીતે પુન:ઉત્પન્ન કરાય:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:145
+#, c-format
+msgid ""
+"\n"
+"Comment:\n"
+"%s\n"
+msgstr ""
+"\n"
+"ટિપ્પણી:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:151
+#, c-format
+msgid ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+"\n"
+"બેકટ્રેસ:\n"
+"%s\n"
+
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:177
+#: ../src/CLI/CLI.cpp:249
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -261,13 +324,34 @@ msgid ""
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including "
+"backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
+"વપરાશ: %s [OPTION]\n"
+"\n"
+"શરૂઆત:\n"
+"\t-V, --આવૃત્તિ\t\t%s ની આવૃત્તિને દર્શાવો અને બહાર નીકળો\n"
+"\t-?, --મદદ\t\tઆ મદદને છાપો\n"
+"\n"
+"Actions:\n"
+"\t-l, --યાદી\t\tબધા ભંગાણોની યાદીને છાપો કે જે હજુ અહેવાલ થયેલ નથી\n"
+"\t      -f, --સંપૂર્ણ\tબધા ભંગાણોની યાદીને છાપો, અહેવાલ થયેલ એકને પહેલેથી જ સમાવી રહ્યા છે\n"
+"\t-r, --CRASH_ID નો અહેવાલ કરો\tઅહેવાલને બનાવો અને મોકલો\n"
+"\t      -y, --હંમેશા\tપૂછ્યા વગર અહેવાલને બનાવો અને મોકલો\n"
+"\t-d, --CRASH_ID ને કાઢી નાંખો\tભંગાણને દૂર કરો\n"
+"\t-i, --CRASH_ID ની જાણકારી\tભંગાણ વિશે વિગત થયેલ જાણકારીને છાપો\n"
+"\t      -b, --બેકટ્રેસ\tબેકટ્રેસને સમાવી રહ્યા હોય તે ભંગાણ વિશે વિગત થયેલ જાણકારીને છાપો\n"
+"CRASH_ID હોઇ શકે છે:\n"
+"\tUID:UUID જોડણી,\n"
+"\tઅનન્ય UUID ઉપસર્ગ  - ભંગાણ એ બંધબેસતા UUID સાથે કાર્ય કરશે\n"
+"\t@N  - N નું ભંગાણ (--list --full દ્દારા દર્શાવેલ પ્રમાણે) કાર્ય કરશે\n"
 
-#: ../src/CLI/CLI.cpp:220
+#: ../src/CLI/CLI.cpp:295
 msgid "You must specify exactly one operation"
 msgstr "તમારે એક ક્રિયાને સ્પષ્ટ કરવી જ પડશે"
 
@@ -282,14 +366,15 @@ msgstr "# નીચે આ ભંગાણની પરિસ્થિતિઓ�
 
 #: ../src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
-msgstr ""
+msgstr "# ભંગાણને કેવી રીતે પુન:ઉત્પન્ન કરાય?"
 
 #: ../src/CLI/report.cpp:203
-#, fuzzy
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
-msgstr "મેં બેકટ્રેસને ચકાસેલ છે અને સંવેદનશીલ માહિતીને દૂર કરેલ છે (પાસવર્ડો, વગેરે)"
+msgstr ""
+"# બેકટ્રેસ\n"
+"# મેં બેકટ્રેસને ચકાસેલ છે કે જે તે કોઇપણ સંવેદનશીલ માહિતીને સમાવતુ નથી (પાસવર્ડો, વગેરે)"
 
 #: ../src/CLI/report.cpp:205
 msgid "# Architecture"
@@ -300,9 +385,8 @@ msgid "# Command line"
 msgstr "# આદેશ વાક્ય"
 
 #: ../src/CLI/report.cpp:207
-#, fuzzy
 msgid "# Component"
-msgstr "સામાન્ય"
+msgstr "# ઘટક"
 
 #: ../src/CLI/report.cpp:208
 msgid "# Core dump"
@@ -326,7 +410,7 @@ msgstr "# ભંગાણનુ કારણ"
 
 #: ../src/CLI/report.cpp:213
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# ઓપરેટીંગ સિસ્ટમની શબ્દમાળાને પ્રકાશિત કરો"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
@@ -369,7 +453,7 @@ msgstr "અહેવાલ કરી રહ્યા છે..."
 #: ../src/CLI/report.cpp:719
 #, c-format
 msgid "Report using %s? [y/N]: "
-msgstr ""
+msgstr "અહેવાલ %s ને વાપરી રહ્યુ છે? [y/N]: "
 
 #: ../src/CLI/report.cpp:722
 msgid "Skipping..."
@@ -378,7 +462,7 @@ msgstr "છોડી રહ્યા છે..."
 #: ../src/CLI/report.cpp:739
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr ""
+msgstr "%d પ્લગઇન મારફતે અહેવાલ થયેલ ભંગાણ (%d ભૂલો)\n"
 
 #: ../src/Daemon/CommLayerServerDBus.cpp:234
 msgid "Comment is too long"
@@ -386,32 +470,27 @@ msgstr "ટિપ્પણી ઘણી લાંબી છે"
 
 #: ../src/Daemon/CommLayerServerDBus.cpp:238
 msgid "'How to reproduce' is too long"
-msgstr ""
+msgstr "'કેવી રીતે પુન:ઉત્પન્ન કરાય' એ ઘણુ લાંબુ છે"
 
 #: ../src/Daemon/Daemon.cpp:517
-#, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"માપ વધારેલ ક્વોટા નો અહેવાલ કરોે. મહેરબાની કરીને abrt.conf માં તમારી "
-"MaxCrashReportsSize કિંમતને ચકાસો."
+msgstr "માપ વધારેલ ક્વોટાનાં અહેવાલનું માપ. મહેરબાની કરીને સિસ્ટમની MaxCrashReportsSize ને abrt.conf માં ચકાસો."
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
+msgstr "ડેટાબેઝ પ્લગઇન સ્પષ્ટ થયેલ નથી. મહેરબાની કરીને abrtd સુયોજનોને ચકાસો."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "કાર્યક્રમ તૂટવાનું દર્શાવો અને અહેવાલ કરો"
 
 #: ../src/Gui/ABRTExceptions.py:6
-#, fuzzy
 msgid "Another client is already running, trying to wake it..."
-msgstr "બીજો ક્લાઇન્ટ પહેલેથી જ ચાલી રહ્યો છે, તેને ઝગાડવા માટે પ્રયત્ન કરી રહ્યા છે."
+msgstr "બીજો ક્લાઇન્ટ પહેલેથી જ ચાલી રહ્યો છે, તેને ઝગાડવા માટે પ્રયત્ન કરી રહ્યા છે..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-#, fuzzy
 msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "ડિમન માંથી અનિચ્છનીય માહિતી મળી (શું યોગ્ય રીતે ડેટાબેઝ સુધારેલ છે?)."
 
@@ -436,24 +515,21 @@ msgid "Database plugins"
 msgstr "Database પ્લગઇનો"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
-#, fuzzy
 msgid "Cannot connect to system dbus."
-msgstr "સિસ્ટમ dbus નું જોડાણ કરી શકતા નથી"
+msgstr "સિસ્ટમ dbus નું જોડાણ કરી શકતા નથી."
 
 #: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
-#, fuzzy
 msgid "Please check if the abrt daemon is running."
-msgstr "મહેરબાની કરીને ચકાસો જો abrt ડિમન ચાલી રહ્યુ છે"
+msgstr "મહેરબાની કરીને ચકાસો જો abrt ડિમન ચાલી રહ્યુ છે."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/Gui/CCDBusBackend.py:174
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
 msgstr ""
 "ડિમનની યોગ્ય અહેવાલ જાણકારી પાછી મળતી નથી\n"
-"Debuginfo ગુમ થયેલ છે?"
+"debuginfo ગુમ થયેલ છે?"
 
 #: ../src/Gui/ccgui.glade.h:1
 msgid "(C) 2009, 2010 Red Hat, Inc."
@@ -561,16 +637,16 @@ msgid "Latest Crash"
 msgstr "તાજેતરનું ભંગાણ"
 
 #: ../src/Gui/CCMainWindow.py:143
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
 "%s"
 msgstr ""
-"સંવાદ સુયોજનોને બતાવી શકાતા નથી\n"
+"સંવાદ સુયોજનોને બતાવી શકાતા નથી.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
@@ -612,7 +688,7 @@ msgstr ""
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 
 #: ../src/Gui/CCMainWindow.py:445
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
@@ -622,36 +698,32 @@ msgstr ""
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "કેવી રીતે આનું પુન:ઉત્પાદન કરવુ અથવા તમે શુ કર્યુ હતુ તે માટે ટૂંકું વર્ણન..."
 
 #: ../src/Gui/CCReporterDialog.py:107
-#, fuzzy
 msgid "You must check the backtrace for sensitive data."
-msgstr "સંવેદનશીલ માહિતી માટે તમારે બેકટ્રેસને ચકાસવુ જ જોઇએ"
+msgstr "સંવેદનશીલ માહિતી માટે તમારે બેકટ્રેસને ચકાસવુ જ જોઇએ."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using the command: <b>debuginfo-"
 "install %s</b> \n"
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
-"નિષ્ક્રિય થયેલ છે તેનો અહેવાલ કરી રહ્યા છે કારણ કે બેકટ્રેસ નો ઉપયોગ કરી શકાય તેવો નથી.\n"
+"નિષ્ક્રિય થયેલ છે અહેવાલીકરણ કે બેકટ્રેસ નો ઉપયોગ કરી શકાય તેવો નથી.\n"
 "મહેરબાની કરીને આદેશની મદદથી જાતે જ debuginfo ને સ્થાપિત કરવા માટે પ્રયત્ન કરો:"
 "<b>debuginfo-install %s</b> \n"
 "\n"
-"પછી બેકટ્રેસ નો પુન: પ્રયત્ન કરવા માટે તાજુ કરો એ બટનને વાપરો."
+"પછી બેકટ્રેસ નો પુન:ઉત્પન્ન કરવા માટે તાજુ કરો એ બટનને વાપરો."
 
 #: ../src/Gui/CCReporterDialog.py:120
-#, fuzzy
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "બેકટ્રેસ નો ઉપયોગ કરી શકાય તેવું નથી, આનો તમે અહેવાલ કરી શકતા નથી!"
 
 #: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
-#, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -664,27 +736,25 @@ msgid "Reporting disabled, please fix the problems shown above."
 msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ, ઉપર બતાવેલ સમસ્યાઓને સુધારો."
 
 #: ../src/Gui/CCReporterDialog.py:132
-#, fuzzy
 msgid "Sends the report using the selected plugin."
 msgstr "પસંદ થયેલ પ્લગઇનની મદદથી અહેવાલને મોકલે છે."
 
 #: ../src/Gui/CCReporterDialog.py:398
-#, fuzzy
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
 msgstr ""
-"ભંગાણનાં આ પ્રકાર માટે અહેવાલ કરવાર પ્લગઇન ઉપલ્બધ નથી\n"
+"ભંગાણનાં આ પ્રકાર માટે અહેવાલ કરવાર પ્લગઇન ઉપલ્બધ નથી.\n"
 "મહેરબાની કરીને abrt.conf ને ચકાસો."
 
 #: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
 #: ../src/Gui/PluginsSettingsDialog.py:169
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
 msgstr ""
-"પ્લગઇન સુયોજનોને બતાવી શકાતા નથી:\n"
+"પ્લગઇન સુયોજનો સંગ્રહ કરી શકાતો નથી:\n"
 " %s"
 
 #: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:231
@@ -693,7 +763,6 @@ msgid "Configure %s options"
 msgstr "%s વિકલ્પોને રૂપરેખાંકિત કરો"
 
 #: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -712,14 +781,13 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
 #: ../src/Gui/CReporterAssistant.py:884
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
 msgstr "અહેવાલને મેળવી રહ્યા હોય ત્યારે ભૂલ: %s"
 
 #: ../src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "સિસ્ટમ dbus નું જોડાણ કરી શકતા નથી"
+msgstr "Gnome કિરીંગ ડિમનને જોડી શકાતુ નથી."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -729,17 +797,17 @@ msgstr "મૂળભૂત કિરીંગને મેળવી શકાત
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
 msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
+msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, પ્લગઇન સુયોજનો સંગ્રહ થયેલ હશે નહિં."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
 msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
+msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, %s માટે સુયોજનોને લાવી શકાતુ નથી!"
 
 #: ../src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
+msgstr "gnome-keyring નાં વપરાશને નામંજૂર કરી દેવામાં આવ્યુ છે, સુયોજનોને લાવી શકાતુ નથી."
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
@@ -748,38 +816,36 @@ msgstr "ભંગાણ જાણકારી બેકટ્રેસને સ
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr ""
+msgstr "રેટિંગ %s પ્લગઇન દ્દારા જરૂરી છે"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr ""
+msgstr "રેટિંગ કોઇપણ પ્લગઇન દ્દારા જરૂરી નથી, ચકાસવાનું છોડી રહ્યા છે..."
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
 msgid "Rating is %s"
-msgstr ""
+msgstr "રેટિંગ %s છે"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
+msgstr "Crashdump પાસે રેટિંગ નથી => અમે ધારીએ છીએ તે જરૂરી નથી"
 
 #: ../src/Gui/CReporterAssistant.py:294
-#, fuzzy
 msgid "You should check the backtrace for sensitive data."
-msgstr "સંવેદનશીલ માહિતી માટે તમારે બેકટ્રેસને ચકાસવુ જ જોઇએ"
+msgstr "સંવેદનશીલ માહિતી માટે તમારે બેકટ્રેસને ચકાસવુ જ જોઇએ."
 
 #: ../src/Gui/CReporterAssistant.py:295
 msgid "You must agree with sending the backtrace."
-msgstr ""
+msgstr "તમારે બેકટ્રેસને મોકલવા સાથે સંમત થવુ જ જોઇએ."
 
 #: ../src/Gui/CReporterAssistant.py:310
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ, ઉપર બતાવેલ સમસ્યાઓને સુધારો."
+msgstr "અહેવાલ કરવાનું નિષ્ક્રિય થયેલ છે કારણ કે બેકટ્રેસ ઉપયોગ કરી શકાય તેવુ નથી."
 
 #: ../src/Gui/CReporterAssistant.py:355
 msgid "You did not provide any steps to reproduce."
-msgstr ""
+msgstr "તમે પુન:ઉત્પન્ન કરવા માટે કોઇપણ પગલાંઓને પૂરા પાડ્યા નથી."
 
 #: ../src/Gui/CReporterAssistant.py:369
 msgid "You did not provide any comments."
@@ -800,15 +866,19 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
+"તે એવુ લાગે છે કે પેકેજ <b>%s</b> માંથી કાર્યક્રમ તમારી સિસ્ટમ પર ભાંગેલ છે. આ મુદ્દા વિશે ભૂલ અહેવાલને મોકલવાનો તે સારો વિચાર છે. અહેવાલ એ તમારી માટે ભૂલ સુધારો કેવી રીતે પૂરો પાડવો તેમાં જરૂરી જાણકારી સાથે સોફ્ટવેર સંચાલકને પૂરા પાડશે. \n"
+"\n"
+"મહેરબાની કરીને જાણકારીનું રિવ્યૂ કરો કે જે તમારો ભૂલ અહેવાલ કોઇ સંવેદનશીલ માહિતીને સમાવતુ નથી અને તમે વહેંચવા માગતા નથી તે ખાતરી કરવા માટે જરૂરિયાત પ્રમાણે બદલો અને અનૂસરો.\n"
+"\n"
+"ક્યાં તમારે ભૂલનો અહેવાલ કરવાનું ગમે છે તે પસંદ કરો, અને ચાલુ રાખવા માટે 'આગળ ધપાવો' બટનને દબાવો."
 
 #: ../src/Gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
 msgstr "ફક્ત એક રિપોર્ટર પ્લગઇન રૂપરેખાંકિત થયેલ છે."
 
 #: ../src/Gui/CReporterAssistant.py:516
-#, fuzzy
 msgid "Send a bug report"
-msgstr "અહેવાલ મોકલો"
+msgstr "ભૂલ અહેવાલને મોકલો"
 
 #: ../src/Gui/CReporterAssistant.py:554
 msgid ""
@@ -819,6 +889,9 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
+"નીચે તમારા ભંગાણ સાથે સંકળાયેલ બેકટ્રેસ છે. ભાંગેલ બેકટ્રેસ એ કેવી રીતે ભંગાણ થયુ તે વિશે વિગતો સાથે ડેવલપરોને પૂરા પાડે છે, સમસ્યાનાં સ્ત્રોતને શોધવા માટે તેઓને મદદ કરી રહ્યા છે.\n"
+"\n"
+"મહેરબાની કરીને નીચે બેકટ્રેસારીનું રિવ્યૂ કરો કે જે તમારો ભૂલ અહેવાલ કોઇ સંવેદનશીલ માહિતીને સમાવતુ નથી અને તમે વહેંચવા માગતા નથી તે ખાતરી કરવા માટે જરૂરિયાત પ્રમાણે બદલો અને અનૂસરો:"
 
 #: ../src/Gui/CReporterAssistant.py:595
 msgid "Refresh"
@@ -838,11 +911,11 @@ msgstr "બેકટ્રેસને મંજૂર કરો"
 
 #: ../src/Gui/CReporterAssistant.py:631
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr ""
+msgstr "કેવી રીતે આ ભંગાણ થયુ (એક પછી એક પગલાં)? કેવી રીતે તેને પુન:ઉત્પન્ન કર્યુ?"
 
 #: ../src/Gui/CReporterAssistant.py:649
 msgid "Are there any comments you would like to share with the software maintainers?"
-msgstr ""
+msgstr "શું તમે ત્યાં કોઇપણ ટિપ્પણીઓને સોફ્ટવેર સંચાલક સાથે વહેંચવા માંગો છો?"
 
 #: ../src/Gui/CReporterAssistant.py:668
 msgid "Provide additional details"
@@ -852,27 +925,26 @@ msgstr "વધારાની વિગતોને પૂરી પાડો"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
+msgstr "<b>મદદ:</b> તમારી ટિપ્પણીઓ ખાનગી નથી. મહેરબાની કરીને જુઓ તે અનુસાર તમે કહો."
 
 #: ../src/Gui/CReporterAssistant.py:716
-#, fuzzy
 msgid "Confirm and send the report"
-msgstr "અહેવાલ મોકલો"
+msgstr "ખાતરી કરો અને અહેવાલને મોકલો"
 
 #: ../src/Gui/CReporterAssistant.py:718
 msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "નીચે તમારા ભૂલ અહેવાલનું સારાંશ છે. મહેરબાની કરીને તેને જમા કરવા માટે 'લાગુ કરો' પર ક્લિક કરો."
+msgstr ""
+"નીચે તમારા ભૂલ અહેવાલનું સારાંશ છે. મહેરબાની કરીને તેને જમા કરવા માટે 'લાગુ કરો' પર ક્લિક "
+"કરો."
 
 #: ../src/Gui/CReporterAssistant.py:723
-#, fuzzy
 msgid "<b>Basic details</b>"
-msgstr "<b>પ્લગઇન વિગતો</b>"
+msgstr "<b>મૂળભૂત વિગતો</b>"
 
 #. left table
 #: ../src/Gui/CReporterAssistant.py:730
-#, fuzzy
 msgid "Component"
-msgstr "સામાન્ય"
+msgstr "ઘટક"
 
 #: ../src/Gui/CReporterAssistant.py:731
 msgid "Package"
@@ -900,9 +972,8 @@ msgid "Release"
 msgstr "પ્રકાશન"
 
 #: ../src/Gui/CReporterAssistant.py:738
-#, fuzzy
 msgid "Reason"
-msgstr "<b>કારણ:</b>"
+msgstr "કારણ"
 
 #: ../src/Gui/CReporterAssistant.py:749 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
@@ -913,26 +984,22 @@ msgid "Click to view..."
 msgstr "જોવા માટે ક્લિક કરો..."
 
 #: ../src/Gui/CReporterAssistant.py:764
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>સમય (અથવા સમયગાળો)</b>"
+msgstr "<b>પુન:ઉત્પન્ન કરવા માટે પગલાંઓ:</b>"
 
 #: ../src/Gui/CReporterAssistant.py:785
-#, fuzzy
 msgid "<b>Comments:</b>"
-msgstr "<b>ટિપ્પણી:</b>"
+msgstr "<b>ટિપ્પણીઓ:</b>"
 
 #: ../src/Gui/CReporterAssistant.py:788
 msgid "No comment provided!"
 msgstr "ટિપ્પણી પૂરી પાડેલ નથી!"
 
 #: ../src/Gui/CReporterAssistant.py:824
-#, fuzzy
 msgid "Finished sending the bug report"
-msgstr "અહેવાલ મોકલો"
+msgstr "ભૂલ અહેવાલને મોકલવાનું સમાપ્ત થયેલ છે"
 
 #: ../src/Gui/CReporterAssistant.py:828
-#, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>ભુલ અહેવાલ:</b>"
 
@@ -945,7 +1012,6 @@ msgid "Report done"
 msgstr "પૂરુ થઇ ગયુ છે તેનો અહેવાલ કરો"
 
 #: ../src/Gui/PluginSettingsUI.py:17
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "UI વર્ણનમાં PluginDialog વિજેટ શોધી શકાતી નથી!"
 
@@ -957,11 +1023,10 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "પ્લગઇન <b>%s</b> માટે UI નથી, આ કદાચ ભૂલ છે.\n"
-"મહેરબાની કરીને <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a> પર તેનો અહેવાલ કરો"
+"મહેરબાની કરીને <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
+"fedorahosted.org/abrt/newticket</a> પર તેનો અહેવાલ કરો"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
-#, fuzzy
 msgid "Combo box is not implemented"
 msgstr "કોમ્બો બોક્સ નું અમલીકરણ થયેલ નથી"
 
@@ -976,22 +1041,22 @@ msgstr "SettingsDialog માટે GUI વર્ણનને લાવી શ�
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
 #: ../src/Gui/PluginsSettingsDialog.py:41
-#, fuzzy
 msgid "Name"
-msgstr "નામ:"
+msgstr "નામ"
 
 #: ../src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
 msgstr "મહેરબાની કરીને તેનાં વિકલ્પોમાં ફેરફાર કરવા માટે યાદીમાંથી પ્લગઇનને પસંદ કરો."
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"જ્યારે ડમ્પયાદીને લાવી રહ્યા હોય ત્યારે ભૂલ.\n"
+"જ્યારે પ્લગઇન સુયોજનોને ખોલી રહ્યા હોય ત્યારે ભૂલ: \n"
+"\n"
 "%s"
 
 #: ../src/Gui/progress_window.glade.h:1 ../src/Gui/report.glade.h:17
@@ -999,9 +1064,8 @@ msgid "Details"
 msgstr "વિગતો"
 
 #: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
-#, fuzzy
 msgid "Please wait..."
-msgstr "મહેરબાની કરીને થોભો.."
+msgstr "મહેરબાની કરીને થોભો..."
 
 #: ../src/Gui/report.glade.h:1
 msgid " "
@@ -1020,9 +1084,8 @@ msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>કેવી રીતે પુન:ઉત્પન્ન કરાય (થોડાં સાદા પગલાઓમાં)</b>"
 
 #: ../src/Gui/report.glade.h:6
-#, fuzzy
 msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>મહેરબાની કરીને નીચેની સમસ્યાઓને સુધારો</b>"
+msgstr "<b>મહેરબાની કરીને નીચેની સમસ્યાઓને સુધારો:</b>"
 
 #: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
@@ -1061,12 +1124,10 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">પ્રકાશન:</span>"
 
 #: ../src/Gui/report.glade.h:18
-#, fuzzy
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr "બેકટ્રેસ ને પુન:ઉત્પન્ન કરવા માટે ABRT ને દબાણ કરે છે"
+msgstr "બેકટ્રેસ ને પુન:ઉત્પન્ન કરવા માટે ABRT ને દબાણ કરે છે."
 
 #: ../src/Gui/report.glade.h:19
-#, fuzzy
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr "મેં બેકટ્રેસને ચકાસેલ છે અને સંવેદનશીલ માહિતીને દૂર કરેલ છે (પાસવર્ડો, વગેરે)"
 
@@ -1135,7 +1196,6 @@ msgid "Blacklisted packages: "
 msgstr "બ્લેક યાદી થયેલ પેકેજો: "
 
 #: ../src/Gui/settings.glade.h:9
-#, fuzzy
 msgid "C_onfigure Plugin"
 msgstr "પ્લગઇનને રૂપરેખાંકિત કરો (_o)"
 
@@ -1168,9 +1228,8 @@ msgid "GPG keys: "
 msgstr "GPG કીઓ: "
 
 #: ../src/Gui/settings.glade.h:17
-#, fuzzy
 msgid "Max coredump storage size (MB):"
-msgstr "મહત્તમ કોરડમ્પ સંગ્રહ માપ(MB):"
+msgstr "મહત્તમ કોરડમ્પ સંગ્રહ માપ (MB):"
 
 #: ../src/Gui/settings.glade.h:18
 msgid "Name:"
@@ -1189,9 +1248,8 @@ msgid "Web Site:"
 msgstr "વેબ સાઇટ:"
 
 #: ../src/Gui/settings_wizard.glade.h:1
-#, fuzzy
 msgid "<b>Do you want to continue?</b>"
-msgstr "<b>ક્યાં તમે આ ઘટનાનો અહેવાલ કરવા માંગો છો?</b>"
+msgstr "<b>શું તમે ચાલુ રાખવા માંગો છો?</b>"
 
 #: ../src/Gui/settings_wizard.glade.h:2
 msgid "Wrong Settings Detected"
@@ -1202,5 +1260,5 @@ msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
-msgstr ""
+msgstr "ખોટા સુયોજનો સક્રિય થયેલ રિપોર્ટર પ્લગઇનોનાં અમુક માટે શોધાયેલ હતુ. મહેરબાની કરીને અનૂકુળ રૂપરેખાંકનને ખોલવા માટે નીચે બટનોને વાપરો અને તમે આગળ વધો તે પહેલાં તેને સુધારો, નહિં તો, અહેવાલીકરણ પ્રક્રિયા નિષ્ફળ જઇ શકે છે.\n"
 
