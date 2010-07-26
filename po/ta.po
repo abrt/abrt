@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-07-19 18:00+0200\n"
-"PO-Revision-Date: 2010-05-13 13:47+0530\n"
+"PO-Revision-Date: 2010-07-26 15:32+0530\n"
 "Last-Translator: I Felix <ifelix@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -17,7 +17,8 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Lokalize 1.0\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\\n\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\\n"
+"\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
 #, c-format
@@ -54,8 +55,7 @@ msgstr "விடுபட்ட அவசியமான உறுப்பி�
 #: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
 #: ../lib/Plugins/Bugzilla.cpp:841
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
+msgstr "get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
 
 #: ../lib/Plugins/Bugzilla.cpp:781
 #, fuzzy
@@ -144,9 +144,9 @@ msgid "The report was appended to %s"
 msgstr "ABRT சேவை துவக்கப்பட்டது"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was stored to %s"
-msgstr "ABRT சேவை துவக்கப்பட்டது"
+msgstr "அறிக்கை %sஇல் சேமிக்கப்பட்டது"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -155,17 +155,15 @@ msgstr "ஒரு மின்னஞ்சல் அனுப்புகிற�
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
-msgstr ""
+msgstr "அனுப்ப முடியவில்லை, மீண்டும் முயற்சிக்கிறது. %s"
 
 #: ../lib/Plugins/ReportUploader.cpp:192
-#, fuzzy
 msgid "Creating a ReportUploader report..."
-msgstr "ஒரு அறிக்கையை உருவாக்குகிறது..."
+msgstr "ஒரு ReportUploader அறிக்கையை உருவாக்குகிறது..."
 
 #: ../lib/Plugins/RHTSupport.cpp:231
-#, fuzzy
 msgid "Creating a new case..."
-msgstr "புதிய பிழையை உருவாக்குகிறது..."
+msgstr "ஒரு புதிய வழக்கை உருவாக்குகிறது..."
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
@@ -173,13 +171,12 @@ msgid "Running sosreport: %s"
 msgstr "sosreportஐ இயங்குகிறது: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:103
-#, fuzzy
 msgid "Finished running sosreport"
-msgstr "sosreportஐ இயக்கியது"
+msgstr "sosreport இயங்குதல் முடிக்கப்பட்டது"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
-msgstr ""
+msgstr "ABRT அறிவிப்பு ஆப்லெட்"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
@@ -207,8 +204,7 @@ msgstr "எச்சரிக்கை"
 
 #: ../src/Applet/CCApplet.cpp:89
 #, fuzzy
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "ABRT ஆல் கண்டுபிடிக்கப்பட்ட சிக்கல்களைப் பற்றி அப்லெட்டில் உள்ள அறிக்கைப் பகுதியில் பயனர் "
 "குறிப்பிட வேண்டும்"
@@ -235,11 +231,17 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tதொகுப்பு    : %s\n"
+"\tஇயங்கக்கூடியது : %s\n"
+"\tக்ரஷ் நேரம் : %s\n"
+"\tக்ரஷ் எண்ணிக்கை: %s\n"
 
 #: ../src/CLI/CLI.cpp:65
 #, c-format
 msgid "\tHostname   : %s\n"
-msgstr ""
+msgstr "\tபுரவலன் பெயர்   : %s\n"
 
 #. Message has embedded tabs.
 #: ../src/CLI/CLI.cpp:177
@@ -297,9 +299,8 @@ msgid "# Command line"
 msgstr ""
 
 #: ../src/CLI/report.cpp:207
-#, fuzzy
 msgid "# Component"
-msgstr "பொது"
+msgstr "# கூறு"
 
 #: ../src/CLI/report.cpp:208
 msgid "# Core dump"
@@ -314,9 +315,8 @@ msgid "# Kernel version"
 msgstr ""
 
 #: ../src/CLI/report.cpp:211
-#, fuzzy
 msgid "# Package"
-msgstr "தொகுப்பு"
+msgstr "# தொகுப்பு"
 
 #: ../src/CLI/report.cpp:212
 msgid "# Reason of crash"
@@ -331,11 +331,12 @@ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 
 #: ../src/CLI/report.cpp:424
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
-msgstr "ABRT சேவை துவக்கப்பட்டது"
+msgstr ""
+"\n"
+"அறிக்கை புதுப்பிக்கப்பட்டது"
 
 #: ../src/CLI/report.cpp:426
 msgid ""
@@ -345,17 +346,17 @@ msgstr ""
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
-#, fuzzy, c-format
+#, c-format
 msgid "Wrong settings were detected for plugin %s\n"
-msgstr "எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
+msgstr "கூடுதல் இணைப்பு %sக்கு தவறான அமைவு கண்டறியப்பட்டது\n"
 
 #: ../src/CLI/report.cpp:650
 msgid "Enter your login: "
-msgstr ""
+msgstr "உங்கள் புகுபதிவை உள்ளிடவும்: "
 
 #: ../src/CLI/report.cpp:656
 msgid "Enter your password: "
-msgstr ""
+msgstr "உங்கள் கடவுச்சொல்லை உள்ளிடுங்கள்: "
 
 #: ../src/CLI/report.cpp:700
 #, fuzzy
@@ -365,12 +366,11 @@ msgstr "வேலை செய்கிறது..."
 #: ../src/CLI/report.cpp:719
 #, c-format
 msgid "Report using %s? [y/N]: "
-msgstr ""
+msgstr "அறிக்கை %sஐ பயன்படுத்துகிறதா? [y/N]: "
 
 #: ../src/CLI/report.cpp:722
-#, fuzzy
 msgid "Skipping..."
-msgstr "வேலை செய்கிறது..."
+msgstr "தவிர்க்கிறது..."
 
 #: ../src/CLI/report.cpp:739
 #, c-format
@@ -379,11 +379,11 @@ msgstr ""
 
 #: ../src/Daemon/CommLayerServerDBus.cpp:234
 msgid "Comment is too long"
-msgstr ""
+msgstr "குறிப்பு மிக நீண்டது"
 
 #: ../src/Daemon/CommLayerServerDBus.cpp:238
 msgid "'How to reproduce' is too long"
-msgstr ""
+msgstr "'How to reproduce' மிக நீண்டது"
 
 #: ../src/Daemon/Daemon.cpp:517
 #, fuzzy
@@ -409,8 +409,7 @@ msgstr "வேறு கிளையன்ட் ஏற்கனவே இயங
 
 #: ../src/Gui/ABRTExceptions.py:13
 #, fuzzy
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "டீமானுக்கு எதிர்பாராத தரவு பெறப்பட்டது (தரவுத்தளம் சரியாக மேம்படுத்தப்பட்டதா?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
@@ -676,13 +675,13 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
 #: ../src/Gui/PluginsSettingsDialog.py:169
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
 msgstr ""
 "கூடுதல் இணைப்பு அமைவுகளை சேமிக்க முடியவில்லை:\n"
-"%s"
+" %s"
 
 #: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:231
 #, python-format
@@ -690,13 +689,12 @@ msgid "Configure %s options"
 msgstr "%s விருப்பங்களை கட்டமை"
 
 #: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
 msgstr ""
 "அறிக்கையை பெற முடியவில்லை!\n"
-"Debuginfo விடுபட்டுள்ளதா?"
+"debuginfo விடுபட்டுள்ளதா?"
 
 #: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:398
 #, python-format
@@ -709,14 +707,13 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
 #: ../src/Gui/CReporterAssistant.py:884
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
 msgstr "அறிக்கையை பெறும் போது பிழை: %s"
 
 #: ../src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "கணினி dbusஉடன் இணைக்க முடியவில்லை"
+msgstr "Gnome Keyring டீமானோடு இணைக்க முடியவில்லை."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -725,15 +722,13 @@ msgid "Cannot get the default keyring."
 msgstr ""
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 
 #: ../src/Gui/ConfBackend.py:205
@@ -805,9 +800,8 @@ msgid "Only one reporter plugin is configured."
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:516
-#, fuzzy
 msgid "Send a bug report"
-msgstr "அறிக்கை அனுப்பு"
+msgstr "ஒரு பிழை அறிக்கை அனுப்பு"
 
 #: ../src/Gui/CReporterAssistant.py:554
 msgid ""
@@ -821,11 +815,11 @@ msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:595
 msgid "Refresh"
-msgstr ""
+msgstr "புதுப்பி"
 
 #: ../src/Gui/CReporterAssistant.py:597
 msgid "Copy"
-msgstr ""
+msgstr "நகலெடு"
 
 #: ../src/Gui/CReporterAssistant.py:603
 msgid "I agree with submitting the backtrace"
@@ -840,8 +834,7 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:668
@@ -855,25 +848,21 @@ msgid ""
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:716
-#, fuzzy
 msgid "Confirm and send the report"
-msgstr "அறிக்கை அனுப்பு"
+msgstr "உறுதிப்படுத்தி அறிக்கையை அனுப்பு"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:723
-#, fuzzy
 msgid "<b>Basic details</b>"
-msgstr "<b>கூடுதல் இணைப்பு விவரங்கள்</b>"
+msgstr "<b>அடிப்படை விவரங்கள்</b>"
 
 #. left table
 #: ../src/Gui/CReporterAssistant.py:730
-#, fuzzy
 msgid "Component"
-msgstr "பொது"
+msgstr "கூறு"
 
 #: ../src/Gui/CReporterAssistant.py:731
 msgid "Package"
@@ -881,30 +870,28 @@ msgstr "தொகுப்பு"
 
 #: ../src/Gui/CReporterAssistant.py:732
 msgid "Executable"
-msgstr ""
+msgstr "இயங்கக்கூடியது"
 
 #: ../src/Gui/CReporterAssistant.py:733
 msgid "Cmdline"
-msgstr ""
+msgstr "Cmdline"
 
 #. right table
 #: ../src/Gui/CReporterAssistant.py:735
 msgid "Architecture"
-msgstr ""
+msgstr "கணினி"
 
 #: ../src/Gui/CReporterAssistant.py:736
 msgid "Kernel"
-msgstr ""
+msgstr "கர்னல்"
 
 #: ../src/Gui/CReporterAssistant.py:737
-#, fuzzy
 msgid "Release"
-msgstr "நீக்கு"
+msgstr "வெளியீடு"
 
 #: ../src/Gui/CReporterAssistant.py:738
-#, fuzzy
 msgid "Reason"
-msgstr "<b>காரணம்:</b>"
+msgstr "காரணம்"
 
 #: ../src/Gui/CReporterAssistant.py:749 ../src/Gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
@@ -912,21 +899,19 @@ msgstr "<b>பேக்ட்ரேஸ்</b>"
 
 #: ../src/Gui/CReporterAssistant.py:752
 msgid "Click to view..."
-msgstr ""
+msgstr "பார்க்க கிளிக் செய்"
 
 #: ../src/Gui/CReporterAssistant.py:764
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
-msgstr "<b>நேரம் (அல்லது காலம்)</b>"
+msgstr "<b>மறுஉற்பத்தி செய்வதற்கான படிகள்</b>"
 
 #: ../src/Gui/CReporterAssistant.py:785
-#, fuzzy
 msgid "<b>Comments:</b>"
-msgstr "<b>கருத்து:</b>"
+msgstr "<b>கருத்துக்கள்:</b>"
 
 #: ../src/Gui/CReporterAssistant.py:788
 msgid "No comment provided!"
-msgstr ""
+msgstr "குறிப்புரை வழங்கப்படவில்லை!"
 
 #: ../src/Gui/CReporterAssistant.py:824
 #, fuzzy
@@ -934,7 +919,6 @@ msgid "Finished sending the bug report"
 msgstr "அறிக்கை அனுப்பு"
 
 #: ../src/Gui/CReporterAssistant.py:828
-#, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>பிழை அறிக்கைகள்:</b>"
 
@@ -960,7 +944,6 @@ msgid ""
 msgstr ""
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
-#, fuzzy
 msgid "Combo box is not implemented"
 msgstr "காம்போ பெட்டி செயல்படுத்தப்படவில்லை"
 
@@ -975,9 +958,8 @@ msgstr ""
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
 #: ../src/Gui/PluginsSettingsDialog.py:41
-#, fuzzy
 msgid "Name"
-msgstr "பெயர்:"
+msgstr "பெயர்"
 
 #: ../src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
@@ -998,9 +980,8 @@ msgid "Details"
 msgstr "விவரங்கள்"
 
 #: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
-#, fuzzy
 msgid "Please wait..."
-msgstr "காத்திருக்கவும்.."
+msgstr "காத்திருக்கவும்..."
 
 #: ../src/Gui/report.glade.h:1
 msgid " "
@@ -1019,9 +1000,8 @@ msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>எவ்வாறு மறுஉற்பத்தி செய்வது (சில எளிய வழிமுறைகளில்)</b>"
 
 #: ../src/Gui/report.glade.h:6
-#, fuzzy
 msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>பின்வரும் சிக்கல்களை தீர்க்கவும்</b>"
+msgstr "<b>பின்வரும் சிக்கல்களை தீர்க்கவும்:</b>"
 
 #: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
@@ -1060,9 +1040,8 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">வெளியீடு:</span>"
 
 #: ../src/Gui/report.glade.h:18
-#, fuzzy
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr "ABRT வலியுறுத்தி பின்ட்ரேஸைப் மறுதுவக்குகிறது"
+msgstr "ABRT வலியுறுத்தி பின்ட்ரேஸைப் மறுதுவக்குகிறது."
 
 #: ../src/Gui/report.glade.h:19
 #, fuzzy
@@ -1134,9 +1113,8 @@ msgid "Blacklisted packages: "
 msgstr "நீக்கப்பட்ட தொகுப்புகள்:"
 
 #: ../src/Gui/settings.glade.h:9
-#, fuzzy
 msgid "C_onfigure Plugin"
-msgstr "கூடுதல் இணைப்பை கட்டமை (_o)"
+msgstr "செருகி வடிவமைப்பு (_o)"
 
 #: ../src/Gui/settings.glade.h:10
 msgid "Check package GPG signature"
