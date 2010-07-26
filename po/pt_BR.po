@@ -1,4 +1,4 @@
-# translation of abrt.master.pt_BR.po to Portuguese
+# translation of abrt.pt_BR.po to Portuguese
 # Brazilian Portuguese translation of ABRT.
 # This file is distributed under the same license as the ABRT package.
 #
@@ -7,10 +7,10 @@
 # Taylon Silmer <taylonsilva@gmail.com>, 2010.
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt.master.pt_BR\n"
+"Project-Id-Version: abrt.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-20 22:58+0000\n"
-"PO-Revision-Date: 2010-07-26 11:05+1000\n"
+"POT-Creation-Date: 2010-07-25 18:05+0000\n"
+"PO-Revision-Date: 2010-07-26 11:15+1000\n"
 "Last-Translator: Glaucia Cintra <gcintra@redhat.com>\n"
 "Language-Team: Portuguese <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -33,8 +33,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
-"Não foi possível fazer o login. Verifique Editar ->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
-"conf. Servidor informa: %s"
+"Não foi possível fazer o login. Verifique Editar ->Plugins->Bugzilla and /"
+"etc/abrt/plugins/Bugzilla.conf. Servidor informa: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -225,7 +225,7 @@ msgstr "Esconder"
 msgid "Report"
 msgstr "Relatar"
 
-#: ../src/CLI/CLI.cpp:49
+#: ../src/CLI/CLI.cpp:56
 #, c-format
 msgid ""
 "\tUID        : %s\n"
@@ -242,13 +242,83 @@ msgstr ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 
-#: ../src/CLI/CLI.cpp:65
+#: ../src/CLI/CLI.cpp:74
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
+#: ../src/CLI/CLI.cpp:103
+#, c-format
+msgid ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Rating:             %s\n"
+"Coredump file:      %s\n"
+"Reason:             %s\n"
+msgstr ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Rating:             %s\n"
+"Coredump file:      %s\n"
+"Reason:             %s\n"
+
+#: ../src/CLI/CLI.cpp:133
+#, c-format
+msgid "Crash function:     %s\n"
+msgstr "Função de travamento      %s\n"
+
+#: ../src/CLI/CLI.cpp:137
+#, c-format
+msgid "Hostname:           %s\n"
+msgstr "Hostname:           %s\n"
+
+#: ../src/CLI/CLI.cpp:141
+#, c-format
+msgid ""
+"\n"
+"How to reproduce:\n"
+"%s\n"
+msgstr ""
+"\n"
+"#Como reproduzir:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:145
+#, c-format
+msgid ""
+"\n"
+"Comment:\n"
+"%s\n"
+msgstr ""
+"\n"
+"Comentário:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:151
+#, c-format
+msgid ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:177
+#: ../src/CLI/CLI.cpp:249
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -264,6 +334,9 @@ msgid ""
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including "
+"backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
@@ -276,17 +349,21 @@ msgstr ""
 "\t-?, --help\t\timprime esta ajuda\n"
 "\n"
 "Ações:\n"
-"\t-l, --list\t\timprime uma lista de todos os travamentos que não são reportados ainda\n"
-"\t      -f, --full\timprime uma lista de todos os travamentos, incluindo os que já foram reportados\n"
+"\t-l, --list\t\timprime uma lista de todos os travamentos que não são "
+"reportados ainda\n"
+"\t      -f, --full\timprime uma lista de todos os travamentos, incluindo os "
+"que já foram reportados\n"
 "\t-r, --report CRASH_ID\tcria e envia um relatório\n"
 "\t      -y, --always\tcria e envia um relatório sem perguntar\n"
 "\t-d, --delete CRASH_ID\tremove um travamento\n"
+"\t-i, --info CRASH_ID\timprime informação detalhada sobre o travamento\n"
+"\t      -b, --backtrace\timprime informação detalhada sobre o travamento incluindo o backtrace\n"
 "CRASH_ID pode ser:\n"
 "\tUID:UUID par,\n"
 "\tunique UUID prefixo  - o travamento com o UUID conincidente será acionado\n"
 "\t@N  - N'th crash (como exibido por --list --full) será acionado\n"
 
-#: ../src/CLI/CLI.cpp:220
+#: ../src/CLI/CLI.cpp:295
 msgid "You must specify exactly one operation"
 msgstr "Você precisa especificar exatamente uma operação"
 
@@ -364,8 +441,8 @@ msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
-"\n "
-"Não foi detectada nenhuma mudança no relatório"
+"\n"
+" Não foi detectada nenhuma mudança no relatório"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
@@ -417,7 +494,9 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "O plugin do banco de dados não foi especificado. Por favor, verifique as configurações do abrtd."
+msgstr ""
+"O plugin do banco de dados não foi especificado. Por favor, verifique as "
+"configurações do abrtd."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -735,13 +814,17 @@ msgstr "Não foi possível obter o keyring padrão."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
 msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr "Acesso ao gnome-keyring foi negado, as configurações do plugins não foram salvas."
+msgstr ""
+"Acesso ao gnome-keyring foi negado, as configurações do plugins não foram "
+"salvas."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
 msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr "Acesso ao gnome-keyring foi negado, não foi possível carregar as configurações para %s!"
+msgstr ""
+"Acesso ao gnome-keyring foi negado, não foi possível carregar as "
+"configurações para %s!"
 
 #: ../src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
@@ -804,11 +887,17 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"Parece que um aplicativo do pacote <b>%s</b> foi travado em seu sistema. Seria uma boa idéia enviar um relatório sobre este problema. O relatório fornecerá informações essenciais para os mantedores de software para descobrir como fornecer um reparo de bug.\n"
+"Parece que um aplicativo do pacote <b>%s</b> foi travado em seu sistema. "
+"Seria uma boa idéia enviar um relatório sobre este problema. O relatório "
+"fornecerá informações essenciais para os mantedores de software para "
+"descobrir como fornecer um reparo de bug.\n"
 "\n"
-"Por favor, reveja as informações que se seguem e modifique-as se necessário para assegurar que seu relatório de erro não contém qualquer dado sensível que você prefere não compartilhar.\n"
+"Por favor, reveja as informações que se seguem e modifique-as se necessário "
+"para assegurar que seu relatório de erro não contém qualquer dado sensível "
+"que você prefere não compartilhar.\n"
 "\n"
-"Selecione onde você deseja reportar este erro, e pressione 'Próximo' para continuar."
+"Selecione onde você deseja reportar este erro, e pressione 'Próximo' para "
+"continuar."
 
 #: ../src/Gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
@@ -827,9 +916,13 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
-"Abaixo encontra-se o backtrace associado ao seu travamento. Um backtrace de travamento fornece detalhes sobre como o travamento aconteceu aos desenvolvedores, ajudando-os a rastrear a fonte do problema.\n"
+"Abaixo encontra-se o backtrace associado ao seu travamento. Um backtrace de "
+"travamento fornece detalhes sobre como o travamento aconteceu aos "
+"desenvolvedores, ajudando-os a rastrear a fonte do problema.\n"
 "\n"
-"Por favor, reveja o backtrace abaixo e modifique-a se necessário para certificar-se que seu relatório de erro não contém nenhum dado sensível que você prefira não compartilhar:"
+"Por favor, reveja o backtrace abaixo e modifique-a se necessário para "
+"certificar-se que seu relatório de erro não contém nenhum dado sensível que "
+"você prefira não compartilhar:"
 
 #: ../src/Gui/CReporterAssistant.py:595
 msgid "Refresh"
@@ -863,7 +956,9 @@ msgstr "Forneça detalhes adicionais."
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr "<b> Dica:</b> Seus comentários não são privados. Por favor, tenha cuidado ao utilizar as palavras."
+msgstr ""
+"<b> Dica:</b> Seus comentários não são privados. Por favor, tenha cuidado ao "
+"utilizar as palavras."
 
 #: ../src/Gui/CReporterAssistant.py:716
 msgid "Confirm and send the report"
@@ -871,7 +966,9 @@ msgstr "Confirmar e enviar o relatório"
 
 #: ../src/Gui/CReporterAssistant.py:718
 msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "Abaixo encontra-se o sumário de seu relatório de erro. Por favor, verifique o botão 'Aplicar' e submeta-o."
+msgstr ""
+"Abaixo encontra-se o sumário de seu relatório de erro. Por favor, verifique "
+"o botão 'Aplicar' e submeta-o."
 
 #: ../src/Gui/CReporterAssistant.py:723
 msgid "<b>Basic details</b>"
@@ -960,7 +1057,8 @@ msgid ""
 "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
-"Não foi encontrada uma UI para o plugin <b>%s</b>, este é provavelmente um erro.\n"
+"Não foi encontrada uma UI para o plugin <b>%s</b>, este é provavelmente um "
+"erro.\n"
 "Por favor, reporte-o em <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 
@@ -1198,5 +1296,9 @@ msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
-msgstr "Foram detectadas as configurações erradas para alguns plugins reporteres habilitados. Por favor, use os botões abaixo para abrir a configuração respectiva e repare-a antes de proceder, caso contrário o processo de reportagem pode falhar.\n"
+msgstr ""
+"Foram detectadas as configurações erradas para alguns plugins reporteres "
+"habilitados. Por favor, use os botões abaixo para abrir a configuração "
+"respectiva e repare-a antes de proceder, caso contrário o processo de "
+"reportagem pode falhar.\n"
 
