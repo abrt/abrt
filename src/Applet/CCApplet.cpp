@@ -361,7 +361,7 @@ void CApplet::Disable(const char *reason)
     if (pixbuf)
     {
         gray_scaled = gdk_pixbuf_copy(pixbuf);
-        gdk_pixbuf_saturate_and_pixelate(pixbuf, gray_scaled, 0.0, NULL);
+        gdk_pixbuf_saturate_and_pixelate(pixbuf, gray_scaled, 0.0, false);
         gtk_status_icon_set_from_pixbuf(m_pStatusIcon, gray_scaled);
 //do we need to free pixbufs nere?
     }

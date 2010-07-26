@@ -26,10 +26,10 @@ abrt_applet_LDADD = \
     -lglib-2.0 \
     -lgthread-2.0 \
     $(DBUS_LIBS) \
-    $(LIBNOTIFY_LIBS)
+    $(LIBNOTIFY_LIBS) \
+    $(GTK_LIBS)
 #    ../../lib/Utils/libABRTdUtils.la
 #    $(DL_LIBS)
-#    $(GTK_LIBS)
 
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
