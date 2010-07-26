@@ -27,6 +27,8 @@ report. When you are done with editing the report just exit the editor
 and then you will be asked if you want to send the report.
 .IP "\-d, \-\-delete \fIUUID\fR"
 Removes data about particular crash.
+.IP "\-i, \-\-info \fIUUID\fR"
+Prints detailed information about particular crash.
 
 .PP
 .B Listing options
@@ -39,11 +41,18 @@ List all crashes, including already reported.
 Creates and sends the crash report automatically, without asking
 any questions.
 
+.PP
+.B Info options
+.IP "\-b, \-\-backtrace"
+Includes the crash backtrace in the info output if the backtrace is
+available.
+
 .SH ENVIRONMENT VARIABLES
-The editor used to edit the crash report is chosen from the ABRT_EDITOR
-environment variable, the VISUAL environment variable, or the EDITOR
-environment variable, in that order.
-.SH "SEE ALSO"
+The editor used to edit the crash report is chosen from the
+ABRT_EDITOR environment variable, the VISUAL environment variable, or
+the EDITOR environment variable, in that order.
+
+.SH SEE ALSO
 .IR abrtd (8),
 .IR abrt.conf (5),
 .IR abrt-plugins (7)
