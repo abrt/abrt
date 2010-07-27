@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-07-26 08:36+0000\n"
-"PO-Revision-Date: 2010-07-26 18:57+0530\n"
+"PO-Revision-Date: 2010-07-27 12:22+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
 "MIME-Version: 1.0\n"
@@ -225,11 +225,17 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tसंकुल    : %s\n"
+"\tएक्जीक्यूटेबल : %s\n"
+"\tक्रॅश वेळ : %s\n"
+"\tक्रॅश प्रमाण: %s\n"
 
 #: ../src/CLI/CLI.cpp:74
 #, c-format
 msgid "\tHostname   : %s\n"
-msgstr ""
+msgstr "\tयजमाननाव   : %s\n"
 
 #: ../src/CLI/CLI.cpp:103
 #, c-format
@@ -246,16 +252,27 @@ msgid ""
 "Coredump file:      %s\n"
 "Reason:             %s\n"
 msgstr ""
+"क्रॅश ID:           %s:%s\n"
+"शेवटचे क्रॅश:         %s\n"
+"एनलाइजर:           %s\n"
+"घटक:          %s\n"
+"संकुल:            %s\n"
+"आदेश:            %s\n"
+"एक्जीक्यूटेबल:         %s\n"
+"प्रणाली:             %s, kernel %s\n"
+"गुणवत्ताश्रेणी:             %s\n"
+"कोरडम्प फाइल:      %s\n"
+"कारण:             %s\n"
 
 #: ../src/CLI/CLI.cpp:133
 #, c-format
 msgid "Crash function:     %s\n"
-msgstr ""
+msgstr "क्रॅश फंक्शन:     %s\n"
 
 #: ../src/CLI/CLI.cpp:137
 #, c-format
 msgid "Hostname:           %s\n"
-msgstr ""
+msgstr "यजमाननाव:           %s\n"
 
 #: ../src/CLI/CLI.cpp:141
 #, c-format
@@ -275,6 +292,9 @@ msgid ""
 "Comment:\n"
 "%s\n"
 msgstr ""
+"\n"
+"टिपण्णी:\n"
+"%s\n"
 
 #: ../src/CLI/CLI.cpp:151
 #, c-format
@@ -283,6 +303,9 @@ msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
+"\n"
+"बॅकट्रेस:\n"
+"%s\n"
 
 #. Message has embedded tabs.
 #: ../src/CLI/CLI.cpp:249
@@ -781,33 +804,33 @@ msgstr "gnome-keyring करीता प्रवेश नकारले, प
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
 msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
+msgstr "gnome-keyring करीता प्रवेश नकारले, %s करीता संरचना लोड करणे शक्य नाही!"
 
 #: ../src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
+msgstr "gnome-keyring करीता प्रवेश नकारले, संरचना लोड करणे अशक्य."
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
-msgstr ""
+msgstr "क्रॅश माहितीत बॅकट्रेस आढळले नाही"
 
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr ""
+msgstr "%s प्लगइन द्वारे गुणवत्ताश्रेणी आवश्यक आहे"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr ""
+msgstr "कुठल्याही प्लगइनकरीता गुणवत्ताश्रेणी आवश्यक नाही, तपास वगळत आहे..."
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
 msgid "Rating is %s"
-msgstr ""
+msgstr "गुणवत्ताश्रेणी %s आहे"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
+msgstr "क्रॅशडम्पमध्ये गुणवत्ताश्रेणी आढळले नाही => गुणवत्ताश्रेणीची आवश्यकता नाही"
 
 #: ../src/Gui/CReporterAssistant.py:294
 msgid "You should check the backtrace for sensitive data."
@@ -815,7 +838,7 @@ msgstr "संवेदनशील डाटाकरीता बॅकट्�
 
 #: ../src/Gui/CReporterAssistant.py:295
 msgid "You must agree with sending the backtrace."
-msgstr ""
+msgstr "बॅकट्रेस पाठण्याकरीता आपली मान्यता आवश्यक आहे."
 
 #: ../src/Gui/CReporterAssistant.py:310
 msgid "Reporting disabled because the backtrace is unusable."
@@ -823,11 +846,11 @@ msgstr "बॅकट्रेस् वापरण्याजोगी नस�
 
 #: ../src/Gui/CReporterAssistant.py:355
 msgid "You did not provide any steps to reproduce."
-msgstr ""
+msgstr "पुनःनिर्माणकरीता तुम्ही पद्धती पुरवले नाही."
 
 #: ../src/Gui/CReporterAssistant.py:369
 msgid "You did not provide any comments."
-msgstr ""
+msgstr "तुम्ही कुठलेही टिपण्णी पुरवले नाही."
 
 #: ../src/Gui/CReporterAssistant.py:450
 #, python-format
@@ -844,10 +867,18 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
+"संकुल <b>%s</b> पासून तुमच्या प्रणालीवर ऍप्लिकेशन क्रॅश झाले, असे आढळले. "
+"या अडचणीविषयी कळवण्यासाठी बग अहवाल सादर करणे चांगले पर्याय आहे. रिपोर्ट सॉफ्टवेअर "
+"मेइन्टेनर्सला बगचे निवारण पुरवण्याबाबत आवश्यक माहिती पुरवेल.\n"
+"\n"
+"कृपया माहितीचे पुनरावलोकन करा व त्यास आवश्यकता प्रमाणे संपादित करून तुमच्या बग अहवालात "
+"कुठल्याही प्रकारची सार्वजणीकपणे उघडकीस न करण्याजोगी संवेदनशील माहिती नाही याची खात्री करा.\n"
+"\n"
+"बग कुठे कळवायचे त्याची नीवड करा, व पुढे जाण्यासाठी 'पुढे' दाबा."
 
 #: ../src/Gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
-msgstr ""
+msgstr "फक्त एकच रिपोर्टर प्लगइन संरचीत केले."
 
 #: ../src/Gui/CReporterAssistant.py:516
 msgid "Send a bug report"
@@ -862,40 +893,47 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
+"खालील तुमच्या क्रॅशसह संबंधित बॅकट्रेश आहे. क्रॅश बॅकट्रेस् डेव्हलपर्स् यांना क्रॅश कसे झाले याविषयी तपशील पुरवतो, "
+"व अडचणीचे स्रोत शोधण्यास त्यांची मदत करतो.\n"
+"\n"
+"कृपया माहितीचे पुनरावलोकन करा व त्यास आवश्यकता प्रमाणे संपादित करून तुमच्या बग अहवालात "
+"कुठल्याही प्रकारची सार्वजणीकपणे उघडकीस न करण्याजोगी संवेदनशील माहिती नाही याची खात्री करा:"
 
 #: ../src/Gui/CReporterAssistant.py:595
 msgid "Refresh"
-msgstr ""
+msgstr "पुनः ताजे करा"
 
 #: ../src/Gui/CReporterAssistant.py:597
 msgid "Copy"
-msgstr ""
+msgstr "प्रत बनवा"
 
 #: ../src/Gui/CReporterAssistant.py:603
 msgid "I agree with submitting the backtrace"
-msgstr ""
+msgstr "बॅकट्रेस सादर करण्यासाठी माझी मान्यता आहे"
 
 #: ../src/Gui/CReporterAssistant.py:608
 msgid "Approve the backtrace"
-msgstr ""
+msgstr "बॅकट्रेस वैध करा"
 
 #: ../src/Gui/CReporterAssistant.py:631
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr ""
+msgstr "हे क्रॅश कसे झाले (प्रक्रिया)? पुनःनिर्माण कसे करायचे?"
 
 #: ../src/Gui/CReporterAssistant.py:649
 msgid "Are there any comments you would like to share with the software maintainers?"
-msgstr ""
+msgstr "सॉफ्टवेअर मेइन्टेनर्स् सह काहिक टिपण्णी तुम्हाला सहभाग करायला आवडेल?"
 
 #: ../src/Gui/CReporterAssistant.py:668
 msgid "Provide additional details"
-msgstr ""
+msgstr "अगाऊ तपशील पुरवा"
 
 #: ../src/Gui/CReporterAssistant.py:675
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr ""
+"<b>टिप:</b> आपल्या टिपण्णी व्यक्तिगत नाही. कृपया आपण काय बोलत आहात "
+"याची काळजीपूर्वक खात्री करा."
 
 #: ../src/Gui/CReporterAssistant.py:716
 msgid "Confirm and send the report"
@@ -903,7 +941,7 @@ msgstr "अहवाल निश्चित करा व पाठवा"
 
 #: ../src/Gui/CReporterAssistant.py:718
 msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr ""
+msgstr "खालील तुमच्या बग अहवालाचे सारांश आहे. कृपया सादर करण्यासाठी 'लागू करा' यावर क्लिक करा."
 
 #: ../src/Gui/CReporterAssistant.py:723
 msgid "<b>Basic details</b>"
@@ -916,28 +954,28 @@ msgstr "घटक"
 
 #: ../src/Gui/CReporterAssistant.py:731
 msgid "Package"
-msgstr ""
+msgstr "संकुल"
 
 #: ../src/Gui/CReporterAssistant.py:732
 msgid "Executable"
-msgstr ""
+msgstr "एक्जीक्यूटेबल"
 
 #: ../src/Gui/CReporterAssistant.py:733
 msgid "Cmdline"
-msgstr ""
+msgstr "आदेशओळ"
 
 #. right table
 #: ../src/Gui/CReporterAssistant.py:735
 msgid "Architecture"
-msgstr ""
+msgstr "आर्किटेक्चर"
 
 #: ../src/Gui/CReporterAssistant.py:736
 msgid "Kernel"
-msgstr ""
+msgstr "कर्नल"
 
 #: ../src/Gui/CReporterAssistant.py:737
 msgid "Release"
-msgstr ""
+msgstr "प्रकाशन"
 
 #: ../src/Gui/CReporterAssistant.py:738
 msgid "Reason"
@@ -949,7 +987,7 @@ msgstr "<b>बॅकट्रेस</b>"
 
 #: ../src/Gui/CReporterAssistant.py:752
 msgid "Click to view..."
-msgstr ""
+msgstr "पहाण्याकरीता क्लिक करा..."
 
 #: ../src/Gui/CReporterAssistant.py:764
 msgid "<b>Steps to reproduce:</b>"
@@ -961,7 +999,7 @@ msgstr "<b>टिपण्णी:</b>"
 
 #: ../src/Gui/CReporterAssistant.py:788
 msgid "No comment provided!"
-msgstr ""
+msgstr "टिपण्णी पुरवली नाही!"
 
 #: ../src/Gui/CReporterAssistant.py:824
 msgid "Finished sending the bug report"
@@ -990,6 +1028,9 @@ msgid ""
 "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
+"प्लगइन <b>%s</b> करीता UI आढळले नाही, हे संभाव्यतया बग आहे.\n"
+"यांस कृपया <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a> येथे कळवा"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
@@ -1001,7 +1042,7 @@ msgstr "hydrate करीता काहिच आढळले नाही!"
 
 #: ../src/Gui/PluginsSettingsDialog.py:24
 msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr ""
+msgstr "SettingsDialog करीता GUI वर्णन सुरू करणे शक्य नाही!"
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
@@ -1011,7 +1052,7 @@ msgstr "नाव"
 
 #: ../src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
+msgstr "पर्याय संपादीत करण्यासाठी कृपया सूचीतून प्लगइन नीवडा."
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
 #, python-format
@@ -1090,7 +1131,7 @@ msgstr "<span fgcolor=\"blue\">प्रकाशन:</span>"
 
 #: ../src/Gui/report.glade.h:18
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr ""
+msgstr "बॅकट्रेस पुनःनिर्माण करण्यासाठी ABRT ला जबरन विनंती करतो."
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
@@ -1218,7 +1259,7 @@ msgstr "<b>तुम्हाला पुढे जायचे?</b>"
 
 #: ../src/Gui/settings_wizard.glade.h:2
 msgid "Wrong Settings Detected"
-msgstr ""
+msgstr "चुकिच्या संरचना आढळल्या"
 
 #: ../src/Gui/settings_wizard.glade.h:3
 msgid ""
@@ -1226,4 +1267,6 @@ msgid ""
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 msgstr ""
+"काहिक सुरू असलेले रिपोर्टर प्लगइन्स् करीता चुकिच्या संरचना आढळले. "
+"ठराविक संयोजना उघडण्यासाठी कृपया खालील बटणांचा वापर करा व पुढे जाण्यापूर्वी त्यांस ठिक करा, नाहीतर, रिपोर्टिंग प्रक्रिया अपयशी ठरेल.\n"
 
