@@ -4,17 +4,24 @@
 # Petr Pisar <ppisar@redhat.com>, 2010.
 #
 # backtrace → výpis/zásobník volání
+# component → komponenta
 # crash → pád
+# dbus → D-Bus (toto je oficiální zápis názvu)
 # debuginfo → ladicí informace
 # plugin → modul
 # report → hlášení
 #
+# Názvosloví pro Bugzillu
+#   http://www.bugzilla.cz/index.html
+#   http://bugzilla.abclinuxu.cz/
+# bug → (obecně) požadavek, v případě druhu chyba připouštím chybové hlášení.
+#
 msgid ""
 msgstr ""
-"Project-Id-Version: abrt 0.0.8.5\n"
+"Project-Id-Version: abrt 1.1.1\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-19 18:00+0200\n"
-"PO-Revision-Date: 2010-06-10 09:49+0200\n"
+"POT-Creation-Date: 2010-07-26 18:14+0000\n"
+"PO-Revision-Date: 2010-07-27 19:16+0200\n"
 "Last-Translator: Petr Pisar <ppisar@redhat.com>\n"
 "Language-Team: Czech Fedora <diskuse@lists.l10n.cz>\n"
 "Language: \n"
@@ -33,6 +40,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
+"Nelze se přihlásit. Zkontrolujte Upravit→Moduly→Bugzilla a "
+"/etc/abrt/plugins/Bugzilla.conf. Server řekl: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -60,9 +69,8 @@ msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() selhalo. Nebylo možné získat všechny povinné údaje"
 
 #: ../lib/Plugins/Bugzilla.cpp:781
-#, fuzzy
 msgid "Creating a new bug..."
-msgstr "Vytváří se nové chybové hlášení…"
+msgstr "Vytváří se nový požadavek…"
 
 #: ../lib/Plugins/Bugzilla.cpp:786
 msgid "Bugzilla entry creation failed"
@@ -79,28 +87,27 @@ msgid "Bug is already reported: %i"
 msgstr "Tato chyba již je nahlášena: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:826
-#, fuzzy, c-format
+#, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla nedokázala najít rodiče chyby (%d)"
+msgstr "Bugzilla nedokázala najít rodiče chyby %d"
 
 #: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
 #, c-format
 msgid "Adding %s to CC list"
-msgstr "Přidat %s do seznamu CC"
+msgstr "Do seznamu CC se přidává %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:880
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "Přidat k chybě (%d) nový komentář"
+msgstr "K chybě %d se přidává nový komentář"
 
 #: ../lib/Plugins/CCpp.cpp:185
 msgid "Generating backtrace"
 msgstr "Vytváří se výpis volání"
 
 #: ../lib/Plugins/CCpp.cpp:353
-#, fuzzy
 msgid "Starting the debuginfo installation"
-msgstr "Zahajuje se instalaci ladicích informací"
+msgstr "Zahajuje se instalace ladicích informací"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
@@ -109,7 +116,6 @@ msgid "Getting global universal unique identification..."
 msgstr "Vytváří se celosvětově jedinečný identifikátor…"
 
 #: ../lib/Plugins/CCpp.cpp:748
-#, fuzzy
 msgid "Skipping the debuginfo installation"
 msgstr "Instalace ladicích informací se vynechá"
 
@@ -122,13 +128,12 @@ msgstr "FileTransfer: není zadáno žádné URL"
 msgid "Sending archive %s to %s"
 msgstr "Archiv %s se odesílá na %s"
 
-# XXX: "File Transfer" should be "FileTransfer"
 #: ../lib/Plugins/FileTransfer.cpp:298
 msgid "FileTransfer: Creating a report..."
 msgstr "FileTransfer: Vytváří se hlášení…"
 
 #: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Vytvoření a odeslání archivu selhalo: %s"
 
@@ -142,18 +147,14 @@ msgid "Writing report to '%s'"
 msgstr "Hlášení se zapisuje do „%s“"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was appended to %s"
-msgstr ""
-"\n"
-"Hlášení bylo aktualizováno."
+msgstr "Hlášení bylo připojeno k %s"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was stored to %s"
-msgstr ""
-"\n"
-"Hlášení bylo aktualizováno."
+msgstr "Hlášení bylo uloženo do %s"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -165,9 +166,8 @@ msgid "Sending failed, trying again. %s"
 msgstr "Odeslání se nezdařilo, zkusí se znovu. %s"
 
 #: ../lib/Plugins/ReportUploader.cpp:192
-#, fuzzy
 msgid "Creating a ReportUploader report..."
-msgstr "Vytváří se hlášení TicketUploaderu…"
+msgstr "Vytváří se hlášení ReportUploaderu…"
 
 #: ../lib/Plugins/RHTSupport.cpp:231
 msgid "Creating a new case..."
@@ -179,13 +179,12 @@ msgid "Running sosreport: %s"
 msgstr "Pouští se sosreport: %s"
 
 #: ../lib/Plugins/SOSreport.cpp:103
-#, fuzzy
 msgid "Finished running sosreport"
 msgstr "sosreport dokončen"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
-msgstr ""
+msgstr "Upozorňovací applet démonu ABRT"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
 #: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
@@ -194,7 +193,7 @@ msgid "Automatic Bug Reporting Tool"
 msgstr "Nástroj automatického hlášení chyb"
 
 #: ../src/Applet/Applet.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Zjištěn pád v balíčku %s"
 
@@ -212,10 +211,10 @@ msgid "Warning"
 msgstr "Upozornění"
 
 #: ../src/Applet/CCApplet.cpp:89
-#, fuzzy
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "Applet upozorňující uživatele na chyby nalezené démonem ABRT"
+msgstr ""
+"Applet upozorňující uživatele na chyby nalezené démonem ABRT"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
 msgid "translator-credits"
@@ -229,8 +228,9 @@ msgstr "Skrýt"
 msgid "Report"
 msgstr "Nahlásit"
 
-#: ../src/CLI/CLI.cpp:49
-#, fuzzy, c-format
+# Align collon to longest string (Hostname)
+#: ../src/CLI/CLI.cpp:56
+#, c-format
 msgid ""
 "\tUID        : %s\n"
 "\tUUID       : %s\n"
@@ -239,22 +239,91 @@ msgid ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 msgstr ""
-"%u.\n"
-"\tUID        : %s\n"
-"\tUUID       : %s\n"
-"\tBalík      : %s\n"
-"\tProgram    : %s\n"
-"\tDoba pádu  : %s\n"
-"\tPočet pádů : %s\n"
+"\tUID         : %s\n"
+"\tUUID        : %s\n"
+"\tBalík       : %s\n"
+"\tProgram     : %s\n"
+"\tDoba pádu   : %s\n"
+"\tPočet pádů  : %s\n"
 
-#: ../src/CLI/CLI.cpp:65
+#: ../src/CLI/CLI.cpp:74
 #, c-format
 msgid "\tHostname   : %s\n"
+msgstr "\tNázev stroje: %s\n"
+
+#: ../src/CLI/CLI.cpp:103
+#, c-format
+msgid ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Rating:             %s\n"
+"Coredump file:      %s\n"
+"Reason:             %s\n"
 msgstr ""
+"ID pádu:            %s:%s\n"
+"Poslední pád:       %s\n"
+"Analyzátor:         %s\n"
+"Komponenta:         %s\n"
+"Balík:              %s\n"
+"Příkaz:             %s\n"
+"Program:            %s\n"
+"Systém:             %s, jádro %s\n"
+"Hodnocení:          %s\n"
+"Obraz paměti:       %s\n"
+"Příčina:            %s\n"
+
+#: ../src/CLI/CLI.cpp:133
+#, c-format
+msgid "Crash function:     %s\n"
+msgstr "Padlá funkce:      %s\n"
+
+#: ../src/CLI/CLI.cpp:137
+#, c-format
+msgid "Hostname:           %s\n"
+msgstr "Název stroje:       %s\n"
+
+#: ../src/CLI/CLI.cpp:141
+#, c-format
+msgid ""
+"\n"
+"How to reproduce:\n"
+"%s\n"
+msgstr ""
+"\n"
+"Jak vyvolat pád:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:145
+#, c-format
+msgid ""
+"\n"
+"Comment:\n"
+"%s\n"
+msgstr ""
+"\n"
+"Komentář:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:151
+#, c-format
+msgid ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+"\n"
+"Výpis volání:\n"
+"%s\n"
 
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:177
-#, fuzzy, c-format
+#: ../src/CLI/CLI.cpp:249
+#, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
@@ -269,54 +338,58 @@ msgid ""
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including "
+"backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
-"Použití: %s [PŘEPÍNAČE]\n"
+"Použití: %s [PŘEPÍNAČ]\n"
 "\n"
 "Rozjezd:\n"
 "\t-V, --version\t\tzobrazí verzi %s a skončí\n"
 "\t-?, --help\t\tzobrazí tuto nápovědu\n"
 "\n"
 "Akce:\n"
-"\t--get-list\t\tvypíše seznam pádů, které ještě nebyly nahlášeny\n"
-"\t--get-list-full\t\tvypíše seznam všech pádů\n"
-"\t--report ID_PÁDU\tvytvoří a odešle hlášení\n"
-"\t--report-always ID_PÁDU  vytvoří a odešle hlášení bez ptaní\n"
-"\t--delete ID_PÁDU\todstraní záznam o pádu\n"
+"\t-l, --list\t\tvypíše seznam pádů, které ještě nebyly nahlášeny\n"
+"\t      -f, --full\tvypíše seznam všech pádů včetně již nahlášených\n"
+"\t-r, --report ID_PÁDU\tvytvoří a odešle hlášení\n"
+"\t      -y, --always\tvytvoří a odešle hlášení bez ptaní\n"
+"\t-d, --delete ID_PÁDU\todstraní záznam o pádu\n"
+"\t-i, --info ID_PÁDU\tvypíše podrobné údaje o pádu\n"
+"\t      -b, --backtrace\tvypíše podrobné údaje o pádu včetně zásobníku "
+"volání\n"
 "ID_PÁDU může být:\n"
 "\tdvojice UID:UUID,\n"
 "\tjednoznačná předpona UUID – zpracuje se pád s odpovídajícím UUID\n"
 "\t@N – zpracuje se N-tý pád (pořadí určeno výpisem --get-list-full)\n"
 
-#: ../src/CLI/CLI.cpp:220
+#: ../src/CLI/CLI.cpp:295
 msgid "You must specify exactly one operation"
-msgstr "Musíte zadat právě jednu operaci."
+msgstr "Musíte zadat právě jednu operaci"
 
 #: ../src/CLI/report.cpp:179
-#, fuzzy, c-format
+#, c-format
 msgid "# This field is read only\n"
-msgstr "# Tento údaj je jen pro čtení.\n"
+msgstr "# Tento údaj je jen pro čtení\n"
 
 #: ../src/CLI/report.cpp:199
-#, fuzzy
 msgid "# Describe the circumstances of this crash below"
-msgstr "# Okolnosti pádu popište níže."
+msgstr "# Okolnosti pádu popište níže"
 
 #: ../src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
 msgstr "# Jak vyvolat pád?"
 
 #: ../src/CLI/report.cpp:203
-#, fuzzy
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
 "# Výpis volání\n"
-"# Ujistěte se, že neobsahuje žádné citlivé údaje, jako jsou hesla."
+"# Ujistěte se, že neobsahuje žádné citlivé údaje (hesla atd.)"
 
 #: ../src/CLI/report.cpp:205
 msgid "# Architecture"
@@ -355,33 +428,31 @@ msgid "# Release string of the operating system"
 msgstr "# Název vydání operačního systému"
 
 #: ../src/CLI/report.cpp:336
-#, fuzzy
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "Terminál je „dump“ a není definován ani VISUAL ani EDITOR."
+msgstr ""
+"Nebylo možné spustit vi: Ani $TERM, ani $VISUAL, ani $EDITOR není nastavena"
 
 #: ../src/CLI/report.cpp:424
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
 msgstr ""
 "\n"
-"Hlášení bylo aktualizováno."
+"Hlášení bylo aktualizováno"
 
 #: ../src/CLI/report.cpp:426
-#, fuzzy
 msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
 "\n"
-"V hlášení nebyly nalezeny žádné změny."
+"V hlášení nebyly nalezeny žádné změny"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
-#, fuzzy, c-format
+#, c-format
 msgid "Wrong settings were detected for plugin %s\n"
-msgstr "Zjištěno chybné nastavení modulu %s.\n"
+msgstr "Zjištěno chybné nastavení modulu %s\n"
 
 #: ../src/CLI/report.cpp:650
 msgid "Enter your login: "
@@ -419,32 +490,30 @@ msgid "'How to reproduce' is too long"
 msgstr "Údaj „Jak vyvolat“ je příliš dlouhý"
 
 #: ../src/Daemon/Daemon.cpp:517
-#, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
 msgstr ""
 "Velikost zprávy překročena. Prosím, zkontrolujte systémovou hodnotu "
-"MaxCrashRepostsSize v abrt.conf."
+"MaxCrashReportsSize v abrt.conf."
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
+msgstr "Není určen databázový modul. Prosím, zkontrolujte nastavení abrtd."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "Prohlédni si a nahlas chyby v aplikacích"
 
 #: ../src/Gui/ABRTExceptions.py:6
-#, fuzzy
 msgid "Another client is already running, trying to wake it..."
-msgstr "Jiný klient již běží, bude probuzen."
+msgstr "Jiný klient již běží, bude probuzen…"
 
 #: ../src/Gui/ABRTExceptions.py:13
-#, fuzzy
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
-msgstr "Přijata neočekávaná data od démona. (Je databáze v pořádku?)"
+msgstr ""
+"Od démona přijata neočekávaná data (je databáze v pořádku?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -467,18 +536,15 @@ msgid "Database plugins"
 msgstr "Databázové moduly"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
-#, fuzzy
 msgid "Cannot connect to system dbus."
-msgstr "Nelze se připojit k systémové sběrnici D-Bus"
+msgstr "Nelze se připojit k systémové sběrnici D-Bus."
 
 #: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
-#, fuzzy
 msgid "Please check if the abrt daemon is running."
-msgstr "Zkontrolujte prosím, zda démon abrt běží"
+msgstr "Zkontrolujte prosím, zda démon abrt běží."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/Gui/CCDBusBackend.py:174
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -584,23 +650,23 @@ msgstr "Aplikace"
 
 #: ../src/Gui/CCMainWindow.py:73
 msgid "Hostname"
-msgstr ""
+msgstr "Název stroje"
 
 #: ../src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "Poslední pád"
 
 #: ../src/Gui/CCMainWindow.py:143
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
 "%s"
 msgstr ""
-"Nastavovací dialog nelze zobrazit\n"
+"Dialog s nastavením nelze zobrazit.\n"
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
@@ -642,7 +708,7 @@ msgstr ""
 "\t--report=ID_PÁDU\tNahlásit rovnou pád s ID_PÁDU"
 
 #: ../src/Gui/CCMainWindow.py:445
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
@@ -652,35 +718,31 @@ msgstr ""
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "Zde stručně popište, jak pád vyprovokovat nebo co jste dělali…"
 
 #: ../src/Gui/CCReporterDialog.py:107
-#, fuzzy
 msgid "You must check the backtrace for sensitive data."
-msgstr "Výpis volání je třeba zkontrolovat na citlivá data"
+msgstr "Výpis volání je třeba zkontrolovat na citlivá data."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using the command: <b>debuginfo-"
 "install %s</b> \n"
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
-"Není možné odeslat zprávu, protože výpis volání je nepoužitelný.\n"
-"Prosím, nainstalujte ladicí informace ručně pomocí příkazu: <b>debuginfo-"
-"install %s</b>\n"
+"Odeslání zprávy nepovoleno, protože výpis volání je nepoužitelný.\n"
+"Prosím, zkuste nainstalovat ladicí informace ručně pomocí příkazu: "
+"<b>debuginfo-install %s</b>\n"
 "a nakonec použijte tlačítko Obnovit pro přegenerování výpisu volání."
 
 #: ../src/Gui/CCReporterDialog.py:120
-#, fuzzy
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Výpis volání je nepoužitelný, toto nelze odeslat!"
 
 #: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
-#, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -693,27 +755,25 @@ msgid "Reporting disabled, please fix the problems shown above."
 msgstr "Odeslání nepovoleno, opravte výše uvedené problémy."
 
 #: ../src/Gui/CCReporterDialog.py:132
-#, fuzzy
 msgid "Sends the report using the selected plugin."
 msgstr "Odešle zprávu pomocí zvoleného modulu."
 
 #: ../src/Gui/CCReporterDialog.py:398
-#, fuzzy
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
 msgstr ""
 "Pro tento druh pádu není přiřazený žádný ohlašovací modul.\n"
-"Prosím, zkontrolujte nastavení v abrt.conf."
+"Prosím, zkontrolujte abrt.conf."
 
 #: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
 #: ../src/Gui/PluginsSettingsDialog.py:169
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
 msgstr ""
-"Nastavení modulu nelze uložit:\n"
+"Nastavení modulu se nepodařilo uložit:\n"
 " %s"
 
 #: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:231
@@ -722,13 +782,12 @@ msgid "Configure %s options"
 msgstr "Nastavit modul %s"
 
 #: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
 msgstr ""
 "Hlášení se nepodařilo se získat!\n"
-"Pravděpodobně chybí ladicí informace."
+"Nechybí ladicí informace?"
 
 #: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:398
 #, python-format
@@ -741,24 +800,22 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
 #: ../src/Gui/CReporterAssistant.py:884
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Chyba při získávání hlášení: %s"
 
+# Oficiální překlad „Gnome Keyring“ je Klíčenka GNOME“
 #: ../src/Gui/ConfBackend.py:77
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "Nelze se připojit k démonu Gnome Keyring"
+msgstr "Nelze se připojit k démonu Klíčenky GNOME."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
 #: ../src/Gui/ConfBackend.py:83
-#, fuzzy
 msgid "Cannot get the default keyring."
-msgstr "Nelze získat výchozí klíčenku"
+msgstr "Nelze získat výchozí klíčenku."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-#, fuzzy
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
@@ -766,65 +823,60 @@ msgstr ""
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr "Přístup ke gnome-keyring byl zamítnut. Nastavení pro %s nelze načíst!"
+msgstr ""
+"Přístup ke gnome-keyring byl zamítnut. Nastavení pro %s nelze načíst!"
 
 #: ../src/Gui/ConfBackend.py:205
-#, fuzzy
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr "Přístup ke gnome-ke byl zamítnut. Nastavení nelze načíst."
+msgstr "Přístup ke gnome-keyring byl zamítnut. Nastavení nelze načíst."
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
-msgstr ""
+msgstr "Údaje o pádu neobsahují výpis volání"
 
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr ""
+msgstr "Modul %s vyžaduje hodnocení"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr ""
+msgstr "Hodnocení není vyžadováno žádným modulem, kontrola se vynechá…"
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
 msgid "Rating is %s"
-msgstr ""
+msgstr "Hodnocení je %s"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
+msgstr "Výpis pádu neobsahuje hodnocení → předpokládá se, že nebude potřeba"
 
 #: ../src/Gui/CReporterAssistant.py:294
-#, fuzzy
 msgid "You should check the backtrace for sensitive data."
-msgstr "Ve výpisu volání byste měli zkontrolovat citlivá data"
+msgstr "Ve výpisu volání byste měli zkontrolovat citlivá data."
 
 #: ../src/Gui/CReporterAssistant.py:295
-#, fuzzy
 msgid "You must agree with sending the backtrace."
-msgstr "S odesláním výpisu volání musíte souhlasit"
+msgstr "S odesláním výpisu volání musíte souhlasit."
 
 #: ../src/Gui/CReporterAssistant.py:310
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr "Odeslání nepovoleno, opravte výše uvedené problémy."
+msgstr "Odeslání zakázáno, protože výpis volání není použitelný."
 
 #: ../src/Gui/CReporterAssistant.py:355
-#, fuzzy
 msgid "You did not provide any steps to reproduce."
-msgstr "Neposkytli jste žádné údaje, jak problém vyvolat."
+msgstr "Neposkytli jste žádný návod, jak problém vyvolat."
 
 #: ../src/Gui/CReporterAssistant.py:369
-#, fuzzy
 msgid "You did not provide any comments."
 msgstr "Neposkytli jste žádné komentáře."
 
 #: ../src/Gui/CReporterAssistant.py:450
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
 "system. It is a good idea to send a bug report about this issue. The report "
@@ -850,14 +902,13 @@ msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
-msgstr ""
+msgstr "Nastavený je pouze jeden ohlašovací modul."
 
 #: ../src/Gui/CReporterAssistant.py:516
 msgid "Send a bug report"
 msgstr "Odeslat chybové hlášení"
 
 #: ../src/Gui/CReporterAssistant.py:554
-#, fuzzy
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -886,27 +937,24 @@ msgid "I agree with submitting the backtrace"
 msgstr "Souhlasím s odesláním výpisu volání"
 
 #: ../src/Gui/CReporterAssistant.py:608
-#, fuzzy
 msgid "Approve the backtrace"
 msgstr "Schválit výpis volání"
 
 #: ../src/Gui/CReporterAssistant.py:631
-#, fuzzy
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Jak došlo k pádu (krok za krokem)? Je byste jej vyvolali?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-#, fuzzy
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
-msgstr "Máte nějaké připomínky, které byste rádi předali správcům programu?"
+msgstr ""
+"Máte nějaké připomínky, které byste rádi předali správcům programu?"
 
 #: ../src/Gui/CReporterAssistant.py:668
 msgid "Provide additional details"
 msgstr "Poskytnout dodatečné údaje"
 
 #: ../src/Gui/CReporterAssistant.py:675
-#, fuzzy
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -915,7 +963,6 @@ msgstr ""
 "co říkáte."
 
 #: ../src/Gui/CReporterAssistant.py:716
-#, fuzzy
 msgid "Confirm and send the report"
 msgstr "Potvrdit a odeslat hlášení"
 
@@ -969,9 +1016,8 @@ msgid "<b>Backtrace</b>"
 msgstr "<b>Výpis volání</b>"
 
 #: ../src/Gui/CReporterAssistant.py:752
-#, fuzzy
 msgid "Click to view..."
-msgstr "Zobrazíte kliknutím…"
+msgstr "Zobraz kliknutím…"
 
 #: ../src/Gui/CReporterAssistant.py:764
 msgid "<b>Steps to reproduce:</b>"
@@ -1002,7 +1048,6 @@ msgid "Report done"
 msgstr "Nahlášení dokončeno"
 
 #: ../src/Gui/PluginSettingsUI.py:17
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "Widget PluginDialog v popisu UI nenalezen!"
 
@@ -1013,20 +1058,21 @@ msgid ""
 "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
+"Pro modul <b>%s</b> neexistuje žádné UI. Zřejmě se jedná o chybu.\n"
+"Prosím, nahlaste to na <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
-#, fuzzy
 msgid "Combo box is not implemented"
-msgstr "combo box není implementován"
+msgstr "Combo box není implementován"
 
 #: ../src/Gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
 msgstr "Není co zavlažit!"
 
 #: ../src/Gui/PluginsSettingsDialog.py:24
-#, fuzzy
 msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr "Nelze načíst popis uživatelského rozhraní pro SettingsDialog!"
+msgstr "Pro SettingsDialog nelze načíst popis uživatelského rozhraní!"
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
@@ -1039,7 +1085,7 @@ msgid "Please select a plugin from the list to edit it's options."
 msgstr "Prosím, ze seznamu vyberte modul, jehož nastavení chcete upravit."
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
@@ -1054,7 +1100,6 @@ msgid "Details"
 msgstr "Podrobnosti"
 
 #: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
-#, fuzzy
 msgid "Please wait..."
 msgstr "Prosím, počkejte…"
 
@@ -1075,9 +1120,8 @@ msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>Jak problém vyvolat (v několika jednoduchých krocích)</b>"
 
 #: ../src/Gui/report.glade.h:6
-#, fuzzy
 msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>Opravte, prosím, následující problémy</b>"
+msgstr "<b>Opravte, prosím, následující problémy:</b>"
 
 #: ../src/Gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
@@ -1116,12 +1160,10 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Vydání:</span>"
 
 #: ../src/Gui/report.glade.h:18
-#, fuzzy
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr "Donutí ABRT znovu vytvořit výpis volání"
+msgstr "Donutí ABRT znovu vytvořit výpis volání."
 
 #: ../src/Gui/report.glade.h:19
-#, fuzzy
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr ""
 "Zkontroloval(a) jsem výpis volání a odstranil(a) citlivá data (hesla atd.)"
@@ -1223,7 +1265,6 @@ msgid "GPG keys: "
 msgstr "Klíče GPG: "
 
 #: ../src/Gui/settings.glade.h:17
-#, fuzzy
 msgid "Max coredump storage size (MB):"
 msgstr "Maximální velikost obrazu paměti (MB):"
 
@@ -1252,7 +1293,6 @@ msgid "Wrong Settings Detected"
 msgstr "Zjištěno chybné nastavení"
 
 #: ../src/Gui/settings_wizard.glade.h:3
-#, fuzzy
 msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
@@ -1374,3 +1414,6 @@ msgstr ""
 
 #~ msgid "This bug really sucks!"
 #~ msgstr "Tato chyba je fakt otravná!"
+
+#~ msgid "Terminal is dumb but no VISUAL nor EDITOR defined."
+#~ msgstr "Terminál je „dump“ a není definován ani VISUAL ani EDITOR."
