@@ -27,7 +27,7 @@
 #include "hooklib.h"
 #include "strbuf.h"
 
-#define SOCKET_FILE VAR_RUN"/abrt.socket"
+#define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
 #define SOCKET_PERMISSION 0666
 
 /* Maximal length of backtrace. */

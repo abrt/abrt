@@ -87,7 +87,7 @@ using namespace std;
  */
 
 
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrtd.lock"
+#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt/abrtd.lock"
 #define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
 
 
