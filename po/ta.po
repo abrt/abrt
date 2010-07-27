@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-07-19 18:00+0200\n"
-"PO-Revision-Date: 2010-07-26 15:32+0530\n"
+"PO-Revision-Date: 2010-07-27 16:01+0530\n"
 "Last-Translator: I Felix <ifelix@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -58,7 +58,6 @@ msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() செயலிழக்கப்பட்டது. அனைத்து அவசிய தகவலையும் சேகரிக்க முடியவில்லை"
 
 #: ../lib/Plugins/Bugzilla.cpp:781
-#, fuzzy
 msgid "Creating a new bug..."
 msgstr "புதிய பிழையை உருவாக்குகிறது..."
 
@@ -77,7 +76,7 @@ msgid "Bug is already reported: %i"
 msgstr "பிழை ஏற்கனவே அறிக்கையிடப்பட்டது: %i"
 
 #: ../lib/Plugins/Bugzilla.cpp:826
-#, fuzzy, c-format
+#, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla பிழை(%d) மூலத்தை அறிய முடியவில்லை"
 
@@ -96,7 +95,6 @@ msgid "Generating backtrace"
 msgstr "பேக்ட்ரேஸை உருவாக்குகிறது..."
 
 #: ../lib/Plugins/CCpp.cpp:353
-#, fuzzy
 msgid "Starting the debuginfo installation"
 msgstr "debuginfo நிறுவலை துவக்குகிறது"
 
@@ -107,7 +105,6 @@ msgid "Getting global universal unique identification..."
 msgstr "முழுமையான உலகளாவிய தனி அடையாளத்தை பெறுகிறது..."
 
 #: ../lib/Plugins/CCpp.cpp:748
-#, fuzzy
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo நிறுவலை தவிர்த்தது"
 
@@ -185,7 +182,7 @@ msgid "Automatic Bug Reporting Tool"
 msgstr "தானியக்க பிழை அறிக்கையிடும் கருவி"
 
 #: ../src/Applet/Applet.cpp:85
-#, fuzzy, c-format
+#, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "தொகுப்பு %s இல் ஒரு சேதம் கண்டறியப்பட்டது"
 
@@ -203,7 +200,6 @@ msgid "Warning"
 msgstr "எச்சரிக்கை"
 
 #: ../src/Applet/CCApplet.cpp:89
-#, fuzzy
 msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "ABRT ஆல் கண்டுபிடிக்கப்பட்ட சிக்கல்களைப் பற்றி அப்லெட்டில் உள்ள அறிக்கைப் பகுதியில் பயனர் "
@@ -265,6 +261,23 @@ msgid ""
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
+"Usage: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+"\t      -f, --full\tprint a list of all crashes, including the already "
+"reported ones\n"
+"\t-r, --report CRASH_ID\tcreate and send a report\n"
+"\t      -y, --always\tcreate and send a report without asking\n"
+"\t-d, --delete CRASH_ID\tremove a crash\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 
 #: ../src/CLI/CLI.cpp:220
 msgid "You must specify exactly one operation"
@@ -292,11 +305,11 @@ msgstr "நான் பேக்ட்ரேஸை சரிபார்த்�
 
 #: ../src/CLI/report.cpp:205
 msgid "# Architecture"
-msgstr ""
+msgstr "# கணினி"
 
 #: ../src/CLI/report.cpp:206
 msgid "# Command line"
-msgstr ""
+msgstr "# கட்டளை வரி"
 
 #: ../src/CLI/report.cpp:207
 msgid "# Component"
@@ -359,9 +372,8 @@ msgid "Enter your password: "
 msgstr "உங்கள் கடவுச்சொல்லை உள்ளிடுங்கள்: "
 
 #: ../src/CLI/report.cpp:700
-#, fuzzy
 msgid "Reporting..."
-msgstr "வேலை செய்கிறது..."
+msgstr "அறிக்கையிடுகிறது..."
 
 #: ../src/CLI/report.cpp:719
 #, c-format
@@ -375,7 +387,7 @@ msgstr "தவிர்க்கிறது..."
 #: ../src/CLI/report.cpp:739
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
-msgstr ""
+msgstr "க்ரஷ் %d கூடுதல் இணைப்புகள் வழியாக அறிக்கையிடப்பட்டது (%d பிழைகள்)\n"
 
 #: ../src/Daemon/CommLayerServerDBus.cpp:234
 msgid "Comment is too long"
@@ -386,7 +398,6 @@ msgid "'How to reproduce' is too long"
 msgstr "'How to reproduce' மிக நீண்டது"
 
 #: ../src/Daemon/Daemon.cpp:517
-#, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -396,19 +407,17 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
+msgstr "தரவுத்தள கூடுதல் இணைப்பு குறிப்பிடப்படவில்லை. abrtd அமைவுகளை சரி பார்க்கவும்."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "பயன்பாட்டு கிரஷ்களை பார்த்து அறிக்கையிடவும் "
 
 #: ../src/Gui/ABRTExceptions.py:6
-#, fuzzy
 msgid "Another client is already running, trying to wake it..."
-msgstr "வேறு கிளையன்ட் ஏற்கனவே இயங்கிக்கொண்டிருக்கிறது, அதனை எழுப்ப முயற்சிக்கிறது."
+msgstr "வேறு கிளையன்ட் ஏற்கனவே இயங்கிக்கொண்டிருக்கிறது, அதனை எழுப்ப முயற்சிக்கிறது..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-#, fuzzy
 msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "டீமானுக்கு எதிர்பாராத தரவு பெறப்பட்டது (தரவுத்தளம் சரியாக மேம்படுத்தப்பட்டதா?)."
 
@@ -433,18 +442,15 @@ msgid "Database plugins"
 msgstr "தரவுத்தள கூடுதல் இணைப்புகள்"
 
 #: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
-#, fuzzy
 msgid "Cannot connect to system dbus."
-msgstr "கணினி dbusஉடன் இணைக்க முடியவில்லை"
+msgstr "கணினி dbusஉடன் இணைக்க முடியவில்லை."
 
 #: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
-#, fuzzy
 msgid "Please check if the abrt daemon is running."
 msgstr "abrt டீமான் இயங்கினால் சோதிக்கவும்."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/Gui/CCDBusBackend.py:174
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -551,14 +557,14 @@ msgstr "பயன்பாடு"
 
 #: ../src/Gui/CCMainWindow.py:73
 msgid "Hostname"
-msgstr ""
+msgstr "புரவலன் பெயர்"
 
 #: ../src/Gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "கடைசி சேதம்"
 
 #: ../src/Gui/CCMainWindow.py:143
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
 "%s"
@@ -567,7 +573,7 @@ msgstr ""
 "%s"
 
 #: ../src/Gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
@@ -609,7 +615,7 @@ msgstr ""
 "\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
 
 #: ../src/Gui/CCMainWindow.py:445
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
@@ -619,17 +625,15 @@ msgstr ""
 
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "இதனை மீண்டும் உருவாக்குவதற்கான சுருக்க விளக்கம் அல்லது நீங்கள் என்ன செய்தீர்கள்..."
 
 #: ../src/Gui/CCReporterDialog.py:107
-#, fuzzy
 msgid "You must check the backtrace for sensitive data."
-msgstr "உணர்வுள்ள தரவுக்கு பேக்ட்ரேஸை சரி பார்க்க வேண்டும்"
+msgstr "உணர்வுள்ள தரவுக்கு பேக்ட்ரேஸை சரி பார்க்க வேண்டும்."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using the command: <b>debuginfo-"
@@ -642,17 +646,15 @@ msgstr ""
 " பின் backtraceஐ மீண்டும் உருவாக்க புதுப்பி பொத்தானை பயன்படுத்தவும்."
 
 #: ../src/Gui/CCReporterDialog.py:120
-#, fuzzy
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "பேக்ட்ரேஸ் பயன்படுத்தக்கூடியதுதல்ல, இதனை நீங்கள் அறிக்கையிட முடியாது!"
 
 #: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
-#, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
-"bactrace முடிக்கப்படாமல் உள்ளது, மறுஉற்பத்திக்கு நீங்கள் சரியான படிகளை செய்திருக்கிளீர்கள் "
+"bactrace முடிக்கப்படாமல் உள்ளது, மறுஉற்பத்திக்கு நீங்கள் சரியான படிகளை செய்திருக்கிறீர்கள் "
 "என உறுதிசெய்யவும்."
 
 #: ../src/Gui/CCReporterDialog.py:130
@@ -660,12 +662,10 @@ msgid "Reporting disabled, please fix the problems shown above."
 msgstr "அறிக்கை செயல்நீக்கப்பட்டது, மேலே காட்டப்பட்ட சிக்கல்களை பொருத்தவும்."
 
 #: ../src/Gui/CCReporterDialog.py:132
-#, fuzzy
 msgid "Sends the report using the selected plugin."
 msgstr "தேர்ந்தெடுக்கப்பட்ட கூடுதல் இணைப்பை பயன்படுத்தி முடிவை அனுப்புகிறது."
 
 #: ../src/Gui/CCReporterDialog.py:398
-#, fuzzy
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
@@ -719,7 +719,7 @@ msgstr "Gnome Keyring டீமானோடு இணைக்க முடி�
 #. user who is not the owner of the running session - using su
 #: ../src/Gui/ConfBackend.py:83
 msgid "Cannot get the default keyring."
-msgstr ""
+msgstr "முன்னிருப்பு கீரிங்கை பெற முடியவில்லை"
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
 msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
@@ -742,7 +742,7 @@ msgstr ""
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr ""
+msgstr "மதிப்பிதல் %s கூடுதல் இணைப்பால் தேவைப்படுகிறது"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
@@ -751,33 +751,31 @@ msgstr ""
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
 msgid "Rating is %s"
-msgstr ""
+msgstr "மதிப்பிடுதல் %s"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:294
-#, fuzzy
 msgid "You should check the backtrace for sensitive data."
-msgstr "உணர்வுள்ள தரவுக்கு பேக்ட்ரேஸை சரி பார்க்க வேண்டும்"
+msgstr "உணர்வுள்ள தரவுக்கு பேக்ட்ரேஸை சரி பார்க்க வேண்டும்."
 
 #: ../src/Gui/CReporterAssistant.py:295
 msgid "You must agree with sending the backtrace."
-msgstr ""
+msgstr "நீங்கள் பேக்ட்ரேஸுடன் அனுப்பும் போது ஏற்க வேண்டும்."
 
 #: ../src/Gui/CReporterAssistant.py:310
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "அறிக்கை செயல்நீக்கப்பட்டது, மேலே காட்டப்பட்ட சிக்கல்களை பொருத்தவும்."
 
 #: ../src/Gui/CReporterAssistant.py:355
 msgid "You did not provide any steps to reproduce."
-msgstr ""
+msgstr "நீங்கள் மறுஉற்பத்தி செய்ய படிகள் எதுவும் வழங்கவில்லை."
 
 #: ../src/Gui/CReporterAssistant.py:369
 msgid "You did not provide any comments."
-msgstr ""
+msgstr "நீங்கள் கருத்துக்கள் எதுவும் வழங்கவில்லை."
 
 #: ../src/Gui/CReporterAssistant.py:450
 #, python-format
@@ -794,10 +792,21 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
+"It looks like an application from the package <b>%s</b> has crashed on your "
+"system. It is a good idea to send a bug report about this issue. The report "
+"will provide software maintainers with information essential in figuring out "
+"how to provide a bug fix for you.\n"
+"\n"
+"Please review the information that follows and modify it as needed to ensure "
+"your bug report does not contain any sensitive data you would rather not "
+"share.\n"
+"\n"
+"Select where you would like to report the bug, and press 'Forward' to "
+"continue."
 
 #: ../src/Gui/CReporterAssistant.py:510
 msgid "Only one reporter plugin is configured."
-msgstr ""
+msgstr "ஒரே ஒரு அறிகையிடுபவர் கூடுதல் இணைப்பு மட்டுமே கட்டமைக்கப்பட்டுள்ளது."
 
 #: ../src/Gui/CReporterAssistant.py:516
 msgid "Send a bug report"
@@ -812,6 +821,12 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
+"Below is the backtrace associated with your crash. A crash backtrace "
+"provides developers with details about how the crash happened, helping them "
+"track down the source of the problem.\n"
+"\n"
+"Please review the backtrace below and modify it as needed to ensure your bug "
+"report does not contain any sensitive data you would rather not share:"
 
 #: ../src/Gui/CReporterAssistant.py:595
 msgid "Refresh"
@@ -823,11 +838,11 @@ msgstr "நகலெடு"
 
 #: ../src/Gui/CReporterAssistant.py:603
 msgid "I agree with submitting the backtrace"
-msgstr ""
+msgstr "நான் பேக்ட்ரேஸை சமர்ப்பிக்க ஒத்துக்கொள்கிறேன்"
 
 #: ../src/Gui/CReporterAssistant.py:608
 msgid "Approve the backtrace"
-msgstr ""
+msgstr "பேக்ட்ரேஸை அனுமதி"
 
 #: ../src/Gui/CReporterAssistant.py:631
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
@@ -839,7 +854,7 @@ msgstr ""
 
 #: ../src/Gui/CReporterAssistant.py:668
 msgid "Provide additional details"
-msgstr ""
+msgstr "கூடுதல் விவரங்களை கொடு"
 
 #: ../src/Gui/CReporterAssistant.py:675
 msgid ""
@@ -914,9 +929,8 @@ msgid "No comment provided!"
 msgstr "குறிப்புரை வழங்கப்படவில்லை!"
 
 #: ../src/Gui/CReporterAssistant.py:824
-#, fuzzy
 msgid "Finished sending the bug report"
-msgstr "அறிக்கை அனுப்பு"
+msgstr "பிழை அறிக்கை அனுப்பியாகிவிட்டது"
 
 #: ../src/Gui/CReporterAssistant.py:828
 msgid "<b>Bug reports:</b>"
@@ -931,7 +945,6 @@ msgid "Report done"
 msgstr "அறிக்கை முடிந்தது"
 
 #: ../src/Gui/PluginSettingsUI.py:17
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "PluginDialog விட்ஜெட்டை UI விளக்கத்தில் தேட முடியவில்லை!"
 
@@ -953,7 +966,7 @@ msgstr "hydrate செய்ய ஒன்றுமில்லை!"
 
 #: ../src/Gui/PluginsSettingsDialog.py:24
 msgid "Cannot load the GUI description for SettingsDialog!"
-msgstr ""
+msgstr "GUI விவரத்தை SettingsDialogக்கு ஏற்ற முடியவில்லை!"
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
@@ -1044,7 +1057,6 @@ msgid "Forces ABRT to regenerate the backtrace."
 msgstr "ABRT வலியுறுத்தி பின்ட்ரேஸைப் மறுதுவக்குகிறது."
 
 #: ../src/Gui/report.glade.h:19
-#, fuzzy
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr "நான் பேக்ட்ரேஸை சரிபார்த்து உணர்வுள்ள தரவை நீக்கினேன் (கடவுச்சொல் போன்றவை)"
 
@@ -1145,9 +1157,8 @@ msgid "GPG keys: "
 msgstr "GPG விசைகள்: "
 
 #: ../src/Gui/settings.glade.h:17
-#, fuzzy
 msgid "Max coredump storage size (MB):"
-msgstr "அதிகபட்ச coredump சேமிப்பக அளவு(MB):"
+msgstr "அதிகபட்ச coredump சேமிப்பக அளவு (MB):"
 
 #: ../src/Gui/settings.glade.h:18
 msgid "Name:"
@@ -1166,14 +1177,12 @@ msgid "Web Site:"
 msgstr "இணைய தளம்:"
 
 #: ../src/Gui/settings_wizard.glade.h:1
-#, fuzzy
 msgid "<b>Do you want to continue?</b>"
-msgstr "<b>இந்தச் செயலை எங்கே அறிக்கையிட விரும்புகிறீர்களா?</b>"
+msgstr "<b>தொடர வேண்டுமா?</b>"
 
 #: ../src/Gui/settings_wizard.glade.h:2
-#, fuzzy
 msgid "Wrong Settings Detected"
-msgstr "எதுவும் தேர்ந்தெடுக்கப்படவில்லை"
+msgstr "தவறான அமைவுகள் கண்டறியப்பட்டுள்ளது"
 
 #: ../src/Gui/settings_wizard.glade.h:3
 msgid ""
@@ -1181,6 +1190,9 @@ msgid ""
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 msgstr ""
+"Wrong settings were detected for some of the enabled reporter plugins. "
+"Please use the buttons below to open the respective configuration and fix it "
+"before you proceed, otherwise, the reporting process may fail.\n"
 
 #~ msgid "Can't create and send an archive %s"
 #~ msgstr "ஒரு காப்பு %s உருவாக்க மற்றும் அனுப்ப முடியவில்லை"
