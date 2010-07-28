@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ta\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-19 18:00+0200\n"
-"PO-Revision-Date: 2010-07-27 16:01+0530\n"
+"POT-Creation-Date: 2010-07-27 18:28+0000\n"
+"PO-Revision-Date: 2010-07-28 16:36+0530\n"
 "Last-Translator: I Felix <ifelix@redhat.com>\n"
 "Language-Team: American English <kde-i18n-doc@kde.org>\n"
 "Language: \n"
@@ -31,6 +31,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
+"புகுபதிவு செய்ய முடியவில்லை. திருத்து ->கூடுதல் இணைப்புகள்->Bugzilla மற்றும் /etc/"
+"abrt/plugins/Bugzilla.conf. சர்வர் சொன்னது: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -122,7 +124,7 @@ msgid "FileTransfer: Creating a report..."
 msgstr "கோப்பு இடமாற்றம்: ஒரு அறிக்கை உருவாக்குகிறது..."
 
 #: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "ஒரு காப்பு உருவாக்க மற்றும் அனுப்ப முடியவில்லை: %s"
 
@@ -136,9 +138,9 @@ msgid "Writing report to '%s'"
 msgstr "'%s'க்கு அறிக்கையை எழுதவும்"
 
 #: ../lib/Plugins/Logger.cpp:79
-#, fuzzy, c-format
+#, c-format
 msgid "The report was appended to %s"
-msgstr "ABRT சேவை துவக்கப்பட்டது"
+msgstr "சேவை %sக்கு சேர்க்கப்பட்டது"
 
 #: ../lib/Plugins/Logger.cpp:79
 #, c-format
@@ -217,7 +219,7 @@ msgstr "மறை"
 msgid "Report"
 msgstr "அறிக்கை"
 
-#: ../src/CLI/CLI.cpp:49
+#: ../src/CLI/CLI.cpp:56
 #, c-format
 msgid ""
 "\tUID        : %s\n"
@@ -234,13 +236,83 @@ msgstr ""
 "\tக்ரஷ் நேரம் : %s\n"
 "\tக்ரஷ் எண்ணிக்கை: %s\n"
 
-#: ../src/CLI/CLI.cpp:65
+#: ../src/CLI/CLI.cpp:74
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tபுரவலன் பெயர்   : %s\n"
 
+#: ../src/CLI/CLI.cpp:103
+#, c-format
+msgid ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Rating:             %s\n"
+"Coredump file:      %s\n"
+"Reason:             %s\n"
+msgstr ""
+"க்ராஷ் ID:           %s:%s\n"
+"கடைசி க்ராஷ்:         %s\n"
+"ஆய்வி:           %s\n"
+"கூறு:          %s\n"
+"தொகுப்பு:            %s\n"
+"கட்டளை:            %s\n"
+"இயங்கக்கூடியது:         %s\n"
+"கணினி:             %s, kernel %s\n"
+"மதிப்பீடு:             %s\n"
+"Coredump கோப்பு:      %s\n"
+"காரணம்:             %s\n"
+
+#: ../src/CLI/CLI.cpp:133
+#, c-format
+msgid "Crash function:     %s\n"
+msgstr "க்ராஷ் செயல்முறை:     %s\n"
+
+#: ../src/CLI/CLI.cpp:137
+#, c-format
+msgid "Hostname:           %s\n"
+msgstr "புரவலன் பெயர்:          %s\n"
+
+#: ../src/CLI/CLI.cpp:141
+#, c-format
+msgid ""
+"\n"
+"How to reproduce:\n"
+"%s\n"
+msgstr ""
+"\n"
+"எவ்வாறு மறுஉற்பத்தி செய்யவேண்டும்:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:145
+#, c-format
+msgid ""
+"\n"
+"Comment:\n"
+"%s\n"
+msgstr ""
+"\n"
+"கருத்து:\n"
+"%s\n"
+
+#: ../src/CLI/CLI.cpp:151
+#, c-format
+msgid ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+"\n"
+"பேஸ்ட்ராக்:\n"
+"%s\n"
+
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:177
+#: ../src/CLI/CLI.cpp:249
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -256,6 +328,9 @@ msgid ""
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including "
+"backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
@@ -274,34 +349,38 @@ msgstr ""
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including "
+"backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 
-#: ../src/CLI/CLI.cpp:220
+#: ../src/CLI/CLI.cpp:295
 msgid "You must specify exactly one operation"
-msgstr ""
+msgstr "நீங்கள் ஒரு செயல்முறையை சரியாக குறிப்பிட வேண்டும்"
 
 #: ../src/CLI/report.cpp:179
 #, c-format
 msgid "# This field is read only\n"
-msgstr ""
+msgstr "# இந்த புலம் வாசிக்க மட்டும்\n"
 
 #: ../src/CLI/report.cpp:199
 msgid "# Describe the circumstances of this crash below"
-msgstr ""
+msgstr "# இந்த க்ராஷிற்கான காரணத்தின் விவரம் கீழே"
 
 #: ../src/CLI/report.cpp:201
 msgid "# How to reproduce the crash?"
-msgstr ""
+msgstr "# க்ராஷை எவ்வாறு மறுஉற்பத்தி செய்யவேண்டும்?"
 
 #: ../src/CLI/report.cpp:203
-#, fuzzy
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
-msgstr "நான் பேக்ட்ரேஸை சரிபார்த்து உணர்வுள்ள தரவை நீக்கினேன் (கடவுச்சொல் போன்றவை)"
+msgstr ""
+"# பேக்ட்ரைஸ்\n"
+"# இது எந்த உணர்வான தரவை கொண்டிருக்கவில்லை என சரிபார்க்கவும் (கடவுச்சொல் போன்றவை)"
 
 #: ../src/CLI/report.cpp:205
 msgid "# Architecture"
@@ -317,15 +396,15 @@ msgstr "# கூறு"
 
 #: ../src/CLI/report.cpp:208
 msgid "# Core dump"
-msgstr ""
+msgstr "# கோர் டம்ப்"
 
 #: ../src/CLI/report.cpp:209
 msgid "# Executable"
-msgstr ""
+msgstr "# இயங்கக்கூடியது"
 
 #: ../src/CLI/report.cpp:210
 msgid "# Kernel version"
-msgstr ""
+msgstr "# கர்னல் பதிப்பு"
 
 #: ../src/CLI/report.cpp:211
 msgid "# Package"
@@ -333,15 +412,15 @@ msgstr "# தொகுப்பு"
 
 #: ../src/CLI/report.cpp:212
 msgid "# Reason of crash"
-msgstr ""
+msgstr "# க்ராஷிற்கான காரணம்"
 
 #: ../src/CLI/report.cpp:213
 msgid "# Release string of the operating system"
-msgstr ""
+msgstr "# வெளியீடு சரத்திற்கான இயங்க தளம்"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr ""
+msgstr "vi: $TERM, $VISUAL மற்றும் $EDITOR அமைக்கப்படவில்லை மற்றும் இயக்க முடியவில்லை"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -356,6 +435,8 @@ msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
+"\n"
+"அறிக்கையில் எந்த மாற்றங்களும் இல்லை"
 
 #. Read the missing information and push it to plugin settings.
 #: ../src/CLI/report.cpp:646
@@ -723,21 +804,21 @@ msgstr "முன்னிருப்பு கீரிங்கை பெற 
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
 msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
+msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, கூடுதல் இணைப்பு அமைவுகள் சேமிக்கப்படவில்லை."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
 msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
+msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, %s-க்கு அமைவுகளை ஏற்ற முடியவில்லை!"
 
 #: ../src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
+msgstr "gnome-keyringஐ அணுகுவது மறுக்கப்பட்டது, அமைவுகளை ஏற்ற முடியவில்லை."
 
 #: ../src/Gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
-msgstr ""
+msgstr "க்ராஷ் தகவல் ஒரு பேக்ட்ரேஸை கொண்டிருக்காது"
 
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
@@ -746,7 +827,7 @@ msgstr "மதிப்பிதல் %s கூடுதல் இணைப்�
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr ""
+msgstr "மதிப்பீடு எந்த கூடுதல் இணைப்பிற்கும் தேவைப்படாது, சரிபார்த்தலை தவிர்க்கிறது..."
 
 #: ../src/Gui/CReporterAssistant.py:286
 #, python-format
@@ -755,7 +836,7 @@ msgstr "மதிப்பிடுதல் %s"
 
 #: ../src/Gui/CReporterAssistant.py:289
 msgid "Crashdump doesn't have rating => we suppose it's not required"
-msgstr ""
+msgstr "Crashdump மதிப்பீட்டை கொண்டிருக்கவில்லை => அது தேவையில்லை"
 
 #: ../src/Gui/CReporterAssistant.py:294
 msgid "You should check the backtrace for sensitive data."
@@ -847,10 +928,11 @@ msgstr "பேக்ட்ரேஸை அனுமதி"
 #: ../src/Gui/CReporterAssistant.py:631
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
+"இந்த க்ராஷ் எவ்வாறு ஏற்பட்டது (படிப்படியாக)? நீங்கள் அதை எவ்வாறு மறு உற்பத்தி செய்தீர்கள்?"
 
 #: ../src/Gui/CReporterAssistant.py:649
 msgid "Are there any comments you would like to share with the software maintainers?"
-msgstr ""
+msgstr "மென்பொருள் பராமரிப்பவர்களிடம் ஏதாவது கருத்தங்களை பகிர்ந்து கொள்ள வேண்டுமா?"
 
 #: ../src/Gui/CReporterAssistant.py:668
 msgid "Provide additional details"
@@ -861,6 +943,7 @@ msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr ""
+"<b>துணுக்கு:</b> உங்கள் கருத்துக்கள் தனிப்பட்டவை அல்ல. நீங்கள் சொல்வதற்கு ஏற்ப பார்க்கவும்."
 
 #: ../src/Gui/CReporterAssistant.py:716
 msgid "Confirm and send the report"
@@ -869,6 +952,8 @@ msgstr "உறுதிப்படுத்தி அறிக்கையை �
 #: ../src/Gui/CReporterAssistant.py:718
 msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
+"கீழே உள்ளது உங்கள் பிழை அறிக்கையின் ஒரு சுருக்கம். 'செயல்படுத்து' என்பதை கிளிக் செய்து "
+"சமர்பிக்கவும்."
 
 #: ../src/Gui/CReporterAssistant.py:723
 msgid "<b>Basic details</b>"
@@ -955,6 +1040,9 @@ msgid ""
 "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
+"கூடுதல் இணைப்பு <b>%s</b>க்கு UI இல்லை, இது ஒரு பிழையாக இருக்கலாம்.\n"
+"அதை <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted."
+"org/abrt/newticket</a>இல் அறிக்கையிடவும்"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
@@ -976,17 +1064,18 @@ msgstr "பெயர்"
 
 #: ../src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
+msgstr "ஒரு கூடுதல் இணைப்பை பட்டியலிலிருந்து தேர்ந்தெடுத்து அதன் விருப்பங்களை திருத்தவும்"
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"இந்த dumplistஐ ஏற்றும் போது பிழை.\n"
-" %s"
+"கூடுதல் இணைப்பு அமைவுகள் UIஐ திறக்கும் போது பிழை: \n"
+"\n"
+"%s"
 
 #: ../src/Gui/progress_window.glade.h:1 ../src/Gui/report.glade.h:17
 msgid "Details"
