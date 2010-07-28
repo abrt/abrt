@@ -979,4 +979,4 @@ PLUGIN_INFO(REPORTER,
             "Reports bugs to bugzilla",
             "npajkovs@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/Bugzilla.GTKBuilder");
+            PLUGINS_LIB_DIR"/Bugzilla.glade");

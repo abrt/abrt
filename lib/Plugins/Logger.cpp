@@ -87,4 +87,4 @@ PLUGIN_INFO(REPORTER,
             "Writes report to a file",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/Logger.GTKBuilder");
+            PLUGINS_LIB_DIR"/Logger.glade");

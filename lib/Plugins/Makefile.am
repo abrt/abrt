@@ -17,12 +17,12 @@ pluginslib_LTLIBRARIES = \
     libFileTransfer.la
 
 dist_pluginslib_DATA = \
-    Logger.GTKBuilder \
-    Mailx.GTKBuilder \
-    Bugzilla.GTKBuilder \
-    RHTSupport.GTKBuilder \
-    ReportUploader.GTKBuilder \
-    KerneloopsReporter.GTKBuilder
+    Logger.glade \
+    Mailx.glade \
+    Bugzilla.glade \
+    RHTSupport.glade \
+    ReportUploader.glade \
+    KerneloopsReporter.glade
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = \

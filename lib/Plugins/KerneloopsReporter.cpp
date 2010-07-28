@@ -142,4 +142,4 @@ PLUGIN_INFO(REPORTER,
             "Sends kernel oops information to kerneloops.org",
             "anton@redhat.com",
             "http://people.redhat.com/aarapov",
-            PLUGINS_LIB_DIR"/KerneloopsReporter.GTKBuilder");
+            PLUGINS_LIB_DIR"/KerneloopsReporter.glade");

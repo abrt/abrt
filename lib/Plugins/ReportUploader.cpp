@@ -502,4 +502,4 @@ PLUGIN_INFO(REPORTER,
             "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc",
             "gavin@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/ReportUploader.GTKBuilder");
+            PLUGINS_LIB_DIR"/ReportUploader.glade");

@@ -192,4 +192,4 @@ PLUGIN_INFO(REPORTER,
             "Sends an email with a report (via mailx command)",
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/Mailx.GTKBuilder");
+            PLUGINS_LIB_DIR"/Mailx.glade");

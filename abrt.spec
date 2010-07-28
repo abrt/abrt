@@ -368,21 +368,21 @@ fi
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
 %{_libdir}/%{name}/libKerneloopsReporter.so*
-%{_libdir}/%{name}/KerneloopsReporter.GTKBuilder
+%{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
 
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_libdir}/%{name}/libLogger.so*
-%{_libdir}/%{name}/Logger.GTKBuilder
+%{_libdir}/%{name}/Logger.glade
 %{_mandir}/man7/%{name}-Logger.7.gz
 
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_libdir}/%{name}/libMailx.so*
-%{_libdir}/%{name}/Mailx.GTKBuilder
+%{_libdir}/%{name}/Mailx.glade
 %{_mandir}/man7/%{name}-Mailx.7.gz
 
 %files plugin-runapp
@@ -400,21 +400,21 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_libdir}/%{name}/libBugzilla.so*
-%{_libdir}/%{name}/Bugzilla.GTKBuilder
+%{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/%{name}-Bugzilla.7.gz
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_libdir}/%{name}/libRHTSupport.so*
-%{_libdir}/%{name}/RHTSupport.GTKBuilder
+%{_libdir}/%{name}/RHTSupport.glade
 #%{_mandir}/man7/%{name}-RHTSupport.7.gz
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/ReportUploader.conf
 %{_libdir}/%{name}/libReportUploader.so*
-%{_libdir}/%{name}/ReportUploader.GTKBuilder
+%{_libdir}/%{name}/ReportUploader.glade
 %{_mandir}/man7/%{name}-ReportUploader.7.gz
 
 %files plugin-filetransfer
