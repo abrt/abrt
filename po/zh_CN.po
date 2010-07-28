@@ -12,14 +12,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-20 08:14+0000\n"
+"POT-Creation-Date: 2010-07-28 13:10+0200\n"
 "PO-Revision-Date: 2010-07-20 21:59+1000\n"
 "Last-Translator: Leah Liu <lliu@redhat.com>\n"
 "Language-Team: Wei Liu\n"
+"Language: zh_CN\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 "X-Generator: KBabel 1.11.4\n"
 
@@ -33,7 +33,9 @@ msgstr "新的 bug id：%i"
 msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
-msgstr "无法登录。请检查 编辑->插件->Bugzilla 和 /etc/abrt/plugins/Bugzilla.conf。服务器回复：%s"
+msgstr ""
+"无法登录。请检查 编辑->插件->Bugzilla 和 /etc/abrt/plugins/Bugzilla.conf。服"
+"务器回复：%s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -193,7 +195,7 @@ msgstr "已探测到 %s 软件包中的一个崩溃"
 msgid "A crash has been detected"
 msgstr "已发觉一个崩溃"
 
-#: ../src/Applet/Applet.cpp:283
+#: ../src/Applet/Applet.cpp:284
 msgid "ABRT service is not running"
 msgstr "ABRT 服务不在运行"
 
@@ -203,7 +205,8 @@ msgid "Warning"
 msgstr "警告"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "用来通知用户 ABRT 所探测到问题的通告区小应用程序"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -218,7 +221,7 @@ msgstr "隐藏"
 msgid "Report"
 msgstr "报告"
 
-#: ../src/CLI/CLI.cpp:49
+#: ../src/CLI/CLI.cpp:56
 #, c-format
 msgid ""
 "\tUID        : %s\n"
@@ -235,14 +238,64 @@ msgstr ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 
-#: ../src/CLI/CLI.cpp:65
+#: ../src/CLI/CLI.cpp:74
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
-#. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:177
+#: ../src/CLI/CLI.cpp:103
 #, c-format
+msgid ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Rating:             %s\n"
+"Coredump file:      %s\n"
+"Reason:             %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:133
+#, c-format
+msgid "Crash function:     %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:137
+#, fuzzy, c-format
+msgid "Hostname:           %s\n"
+msgstr "\tHostname   : %s\n"
+
+#: ../src/CLI/CLI.cpp:141
+#, fuzzy, c-format
+msgid ""
+"\n"
+"How to reproduce:\n"
+"%s\n"
+msgstr "# 如何再现该崩溃？"
+
+#: ../src/CLI/CLI.cpp:145
+#, c-format
+msgid ""
+"\n"
+"Comment:\n"
+"%s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:151
+#, c-format
+msgid ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+
+#. Message has embedded tabs.
+#: ../src/CLI/CLI.cpp:249
+#, fuzzy, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
@@ -257,6 +310,9 @@ msgid ""
 "\t-r, --report CRASH_ID\tcreate and send a report\n"
 "\t      -y, --always\tcreate and send a report without asking\n"
 "\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including "
+"backtrace\n"
 "CRASH_ID can be:\n"
 "\tUID:UUID pair,\n"
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
@@ -280,7 +336,7 @@ msgstr ""
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 
-#: ../src/CLI/CLI.cpp:220
+#: ../src/CLI/CLI.cpp:295
 msgid "You must specify exactly one operation"
 msgstr "您必须指定具体的操作"
 
@@ -405,7 +461,8 @@ msgstr "“如何再现”过长"
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr "报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
+msgstr ""
+"报告大小已超出配额。请检查在 abrt.conf 文件中系统的 MaxCrashReportsSize 值。"
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
@@ -420,7 +477,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "另一客户端已经在运行，正在尝试唤醒它......"
 
 #: ../src/Gui/ABRTExceptions.py:13
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "从守护进程得到意外数据（数据库是否正常更新？）。"
 
 #: ../src/Gui/ABRTPlugin.py:62
@@ -717,13 +775,15 @@ msgid "Cannot get the default keyring."
 msgstr "不能获取默认密钥环。"
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "对 gnome 密钥环的访问被拒绝，插件设置将不会被保存。"
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "对 gnome 密钥环的访问被拒绝，无法载入 %s 的设置！"
 
 #: ../src/Gui/ConfBackend.py:205
@@ -787,8 +847,8 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"看来您系统中来自软件包 <b>%s</b> 的应用程序已崩溃。您可发送关于这个问题的 bug "
-"报告。该报告将提供软件维护者找出 bug 修复方法的必要信息。\n"
+"看来您系统中来自软件包 <b>%s</b> 的应用程序已崩溃。您可发送关于这个问题的 "
+"bug 报告。该报告将提供软件维护者找出 bug 修复方法的必要信息。\n"
 "\n"
 "请检查下列信息并在必要时修改之以确保您的 bug 报告中不含您不愿意共享的敏感数"
 "据。\n"
@@ -839,7 +899,8 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "此崩溃是如何发生的（具体步骤）？您如何重复它？"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "您有什么要与软件维护者分享的评论吗？"
 
 #: ../src/Gui/CReporterAssistant.py:668
@@ -857,7 +918,8 @@ msgid "Confirm and send the report"
 msgstr "确认并发送报告"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "下面是您的 bug 报告的摘要。请点击‘应用’提交。"
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -946,7 +1008,8 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "没有用于插件 <b>%s</b> 的 UI，这可能是个 bug。\n"
-"请在 <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a> 提交报告。"
+"请在 <a href=\"https://fedorahosted.org/abrt/newticket\">https://"
+"fedorahosted.org/abrt/newticket</a> 提交报告。"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
@@ -1183,6 +1246,5 @@ msgid ""
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 msgstr ""
-"探测到有些启用的报告程序插件有错误设置。请使用以下按钮打开对应的配置并在继"
-"续报告前修复它，否则报告过程会失败。\n"
-
+"探测到有些启用的报告程序插件有错误设置。请使用以下按钮打开对应的配置并在继续"
+"报告前修复它，否则报告过程会失败。\n"

@@ -16,14 +16,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-27 18:28+0000\n"
+"POT-Creation-Date: 2010-07-28 13:10+0200\n"
 "PO-Revision-Date: 2010-07-28 09:44+1000\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Poedit-Language: German\n"
 "X-Generator: KBabel 1.11.4\n"
 
@@ -201,7 +201,7 @@ msgstr "In Paket %s wurde ein Absturz entdeckt"
 msgid "A crash has been detected"
 msgstr "Es wurde ein Absturz entdeckt"
 
-#: ../src/Applet/Applet.cpp:283
+#: ../src/Applet/Applet.cpp:284
 msgid "ABRT service is not running"
 msgstr "ABRT-Dienst wird nicht ausgeführt."
 
@@ -211,7 +211,8 @@ msgid "Warning"
 msgstr "Warnung"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Info-Applet, das Benutzer über die von ABRT entdeckten Probleme "
 "benachrichtigt"
@@ -358,7 +359,8 @@ msgstr ""
 "\t      -y, --always\tBericht erstellen und ohne Nachfrage senden\n"
 "\t-d, --delete CRASH_ID\tAbsturz entfernen\n"
 "\t-i, --info CRASH_ID\tdetaillierte Informationen zu Absturz anzeigen\n"
-"\t      -b, --backtrace\tdetaillierte Informationen zu Absturz, inklusive Rückverfolgung anzeigen\n"
+"\t      -b, --backtrace\tdetaillierte Informationen zu Absturz, inklusive "
+"Rückverfolgung anzeigen\n"
 "CRASH_ID kann sein:\n"
 "\tUID:UUID-Paar,\n"
 "\teindeutiges UUID-Präfix  - der Absturz mit passender UUID wird behandelt\n"
@@ -511,7 +513,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "Ein anderer Client läuft bereits, versuche ihn zu wecken ..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "Unerwartete Daten vom Daemon erhalten (wurde die Datenbank richtig "
 "aktualisiert?)."
@@ -721,7 +724,8 @@ msgstr ""
 #. default texts
 #: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
 msgid "Brief description of how to reproduce this or what you did..."
-msgstr "Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
+msgstr ""
+"Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
@@ -820,7 +824,8 @@ msgid "Cannot get the default keyring."
 msgstr "Kann Standard-Schlüsselbund nicht abrufen."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "Zugriff auf Gnome-Keyring wurde verwehrt, die Plugin-Einstellungen werden "
 "nicht gespeichert."
@@ -828,7 +833,8 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "Zugriff auf Gnome-Keyring wurde verwehrt, die Einstellungen für %s können "
 "nicht geladen werden!"
@@ -960,7 +966,8 @@ msgstr ""
 "reproduzieren?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "Haben Sie sonstige Kommentare, die Sie für die Software-Maintainer "
 "hinzufügen möchten?"
@@ -982,7 +989,8 @@ msgid "Confirm and send the report"
 msgstr "Bericht bestätigen und senden"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Nachfolgend ist eine Zusammenfassung Ihres Fehlerberichts aufgeführt. Bitte "
 "klicken Sie auf 'Anwenden', um diesen zu übermitteln."
@@ -1096,7 +1104,8 @@ msgstr "Name"
 
 #: ../src/Gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr "Bitte ein Plugin aus der Liste auswählen, um dessen Optionen zu bearbeiten."
+msgstr ""
+"Bitte ein Plugin aus der Liste auswählen, um dessen Optionen zu bearbeiten."
 
 #: ../src/Gui/PluginsSettingsDialog.py:156
 #, python-format
@@ -1131,7 +1140,8 @@ msgstr "<b>Kommentar</b>"
 
 #: ../src/Gui/report.glade.h:5
 msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr "<b>Wie kann der Fehler wieder erzeugt werden (in einfachen Schritten)</b>"
+msgstr ""
+"<b>Wie kann der Fehler wieder erzeugt werden (in einfachen Schritten)</b>"
 
 #: ../src/Gui/report.glade.h:6
 msgid "<b>Please fix the following problems:</b>"
@@ -1317,4 +1327,3 @@ msgstr ""
 "festgestellt. Bitte verwenden Sie die nachfolgenden Schaltflächen, um die "
 "entsprechende Konfiguration zu öffnen und beheben Sie den Fehler, bevor Sie "
 "fortfahren. Andernfalls kann der Berichtsprozess fehlschlagen.\n"
-
