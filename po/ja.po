@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-28 13:10+0200\n"
+"POT-Creation-Date: 2010-07-28 15:39+0200\n"
 "PO-Revision-Date: 2010-07-24 21:45+0900\n"
 "Last-Translator: Makoto Mizukami <makoto@fedoraporject.org>\n"
 "Language-Team: Japanese <trans-ja@lists.fedoraproject.org>\n"
@@ -94,6 +94,10 @@ msgstr "CC 一覧に %s を追加"
 msgid "Adding new comment to bug %d"
 msgstr "バグ (%d) に新しいコメントを追加"
 
+#: ../lib/Plugins/Bugzilla.cpp:979
+msgid "Reports bugs to bugzilla"
+msgstr ""
+
 #: ../lib/Plugins/CCpp.cpp:185
 msgid "Generating backtrace"
 msgstr "バックトレース生成中"
@@ -111,6 +115,10 @@ msgstr "グローバルで普遍的な独自の識別を取得しています...
 #: ../lib/Plugins/CCpp.cpp:748
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo のインストールをスキップします"
+
+#: ../lib/Plugins/CCpp.cpp:1061
+msgid "Analyzes crashes in C/C++ programs"
+msgstr ""
 
 #: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
@@ -130,9 +138,25 @@ msgstr "ファイル転送: 報告を作成中..."
 msgid "Cannot create and send an archive: %s"
 msgstr "アーカイブの作成と送信ができません: %s"
 
+#: ../lib/Plugins/FileTransfer.cpp:418
+msgid "Sends a report via FTP or SCTP"
+msgstr ""
+
+#: ../lib/Plugins/Kerneloops.cpp:142
+msgid "Analyzes kernel oopses"
+msgstr ""
+
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
 msgstr "報告の作成と提出をしています..."
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:142
+msgid "Sends kernel oops information to kerneloops.org"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:200
+msgid "Periodically scans for and saves kernel oopses"
+msgstr ""
 
 #: ../lib/Plugins/Logger.cpp:73
 #, c-format
@@ -149,9 +173,22 @@ msgstr "報告を %s に追加しました"
 msgid "The report was stored to %s"
 msgstr "報告を %s に保存しました"
 
+#: ../lib/Plugins/Logger.cpp:87
+#, fuzzy
+msgid "Writes report to a file"
+msgstr "'%s' へのレポートを書き込み中"
+
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
 msgstr "電子メールを送信中..."
+
+#: ../lib/Plugins/Mailx.cpp:192
+msgid "Sends an email with a report (via mailx command)"
+msgstr ""
+
+#: ../lib/Plugins/Python.cpp:97
+msgid "Analyzes crashes in Python programs"
+msgstr ""
 
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
@@ -162,9 +199,18 @@ msgstr "送信に失敗。再試行しています。 %s"
 msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader の報告を作成しています..."
 
+#: ../lib/Plugins/ReportUploader.cpp:502
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+
 #: ../lib/Plugins/RHTSupport.cpp:231
 msgid "Creating a new case..."
 msgstr "新しいケースを作成中..."
+
+#: ../lib/Plugins/RunApp.cpp:73
+msgid "Runs a command, saves its output"
+msgstr ""
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
@@ -174,6 +220,134 @@ msgstr "sosreport を実行中: %s"
 #: ../lib/Plugins/SOSreport.cpp:103
 msgid "Finished running sosreport"
 msgstr "sosreport の実行終了"
+
+#: ../lib/Plugins/SOSreport.cpp:159
+msgid "Runs sosreport, saves the output"
+msgstr ""
+
+#: ../lib/Plugins/SQLite3.cpp:678
+msgid "Keeps SQLite3 database about all crashes"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:1
+msgid "<b>Bugzilla plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:2
+msgid "Bugzilla URL:"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:3
+msgid "Don't have an account yet?"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:4
+msgid "Login(email):"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
+msgid "Password:"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:6 ../lib/Plugins/RHTSupport.glade.h:5
+msgid "SSL verify"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:7 ../lib/Plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:8
+msgid ""
+"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">here</a>"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsReporter.glade.h:1
+#, fuzzy
+msgid "<b>Kerneloops Reporter plugin configuration</b>"
+msgstr "レポータープラグインが一つだけ設定されています"
+
+#: ../lib/Plugins/KerneloopsReporter.glade.h:2
+msgid "Submit URL:"
+msgstr ""
+
+#: ../lib/Plugins/Logger.glade.h:1
+msgid "<b>Logger plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Logger.glade.h:2
+msgid "Append new logs"
+msgstr ""
+
+#: ../lib/Plugins/Logger.glade.h:3
+msgid "Logger file:"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:1
+msgid "<b>Mailx plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:2
+msgid "Recipient's Email:"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:3
+msgid "Send Binary Data"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:4
+msgid "Subject:"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:5
+msgid "Your Email:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:1
+msgid "<b>Ticket Uploader plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:2
+msgid "Customer:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:3
+msgid "Retry count:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:4
+msgid "Retry delay:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:5
+msgid "Ticket:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:6
+msgid "URL:"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:7
+msgid "Upload"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.glade.h:8
+#, fuzzy
+msgid "Use encryption"
+msgstr "説明:"
+
+#: ../lib/Plugins/RHTSupport.glade.h:1
+msgid "<b>RHTSupport plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.glade.h:2
+msgid "Login:"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.glade.h:4
+msgid "RHTSupport URL:"
+msgstr ""
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
