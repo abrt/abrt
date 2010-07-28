@@ -112,6 +112,8 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     string login = (it == end ? m_sLogin : it->second);
     it = pSettings.find("Password");
     string password = (it == end ? m_sPassword : it->second);
+    it = pSettings.find("SSLVerify");
+    bool ssl_verify = (it == end ? m_bSSLVerify : string_to_bool(it->second.c_str()));
 
     const string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
 //  const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
@@ -232,7 +234,7 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
         char* result = send_report_to_new_case(URL.c_str(),
                 login.c_str(),
                 password.c_str(),
-                m_bSSLVerify,
+                ssl_verify,
                 summary.c_str(),
                 description.c_str(),
                 package.c_str(),
