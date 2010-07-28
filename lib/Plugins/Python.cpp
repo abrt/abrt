@@ -94,7 +94,7 @@ PLUGIN_INFO(ANALYZER,
             CAnalyzerPython,
             "Python",
             "0.0.1",
-            "Analyzes crashes in Python programs",
+            _("Analyzes crashes in Python programs"),
             "zprikryl@redhat.com, jmoskovc@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

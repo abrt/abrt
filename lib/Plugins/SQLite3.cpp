@@ -675,7 +675,7 @@ PLUGIN_INFO(DATABASE,
             CSQLite3,
             "SQLite3",
             "0.0.2",
-            "Keeps SQLite3 database about all crashes",
+            _("Keeps SQLite3 database about all crashes"),
             "zprikryl@redhat.com,jmoskovc@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

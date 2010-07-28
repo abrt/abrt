@@ -197,7 +197,7 @@ PLUGIN_INFO(ACTION,
             CKerneloopsScanner,
             "KerneloopsScanner",
             "0.0.1",
-            "Periodically scans for and saves kernel oopses",
+            _("Periodically scans for and saves kernel oopses"),
             "anton@redhat.com",
             "http://people.redhat.com/aarapov",
             "");

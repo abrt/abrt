@@ -156,7 +156,7 @@ PLUGIN_INFO(ACTION,
             CActionSOSreport,
             "SOSreport",
             "0.0.2",
-            "Runs sosreport, saves the output",
+            _("Runs sosreport, saves the output"),
             "gavin@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

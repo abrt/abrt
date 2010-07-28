@@ -1058,7 +1058,7 @@ PLUGIN_INFO(ANALYZER,
             CAnalyzerCCpp,
             "CCpp",
             "0.0.1",
-            "Analyzes crashes in C/C++ programs",
+            _("Analyzes crashes in C/C++ programs"),
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

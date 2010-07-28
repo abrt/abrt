@@ -139,7 +139,7 @@ PLUGIN_INFO(ANALYZER,
             CAnalyzerKerneloops,
             "Kerneloops",
             "0.0.2",
-            "Analyzes kernel oopses",
+            _("Analyzes kernel oopses"),
             "anton@redhat.com",
             "https://people.redhat.com/aarapov",
             "");

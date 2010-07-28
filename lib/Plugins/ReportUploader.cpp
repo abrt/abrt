@@ -499,7 +499,7 @@ PLUGIN_INFO(REPORTER,
             CReportUploader,
             "ReportUploader",
             "0.0.1",
-            "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc",
+            _("Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"),
             "gavin@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/ReportUploader.glade");

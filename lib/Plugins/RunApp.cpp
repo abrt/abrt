@@ -70,7 +70,7 @@ PLUGIN_INFO(ACTION,
             CActionRunApp,
             "RunApp",
             "0.0.1",
-            "Runs a command, saves its output",
+            _("Runs a command, saves its output"),
             "zprikryl@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

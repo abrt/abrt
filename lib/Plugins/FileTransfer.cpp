@@ -415,7 +415,7 @@ PLUGIN_INFO(ACTION,
             CFileTransfer,
             "FileTransfer",
             "0.0.6",
-            "Sends a report via FTP or SCTP",
+            _("Sends a report via FTP or SCTP"),
             "dnovotny@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             "");

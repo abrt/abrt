@@ -139,7 +139,7 @@ PLUGIN_INFO(REPORTER,
             CKerneloopsReporter,
             "KerneloopsReporter",
             "0.0.1",
-            "Sends kernel oops information to kerneloops.org",
+            _("Sends kernel oops information to kerneloops.org"),
             "anton@redhat.com",
             "http://people.redhat.com/aarapov",
             PLUGINS_LIB_DIR"/KerneloopsReporter.glade");

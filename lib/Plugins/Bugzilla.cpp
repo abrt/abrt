@@ -976,7 +976,7 @@ PLUGIN_INFO(REPORTER,
             CReporterBugzilla,
             "Bugzilla",
             "0.0.4",
-            "Reports bugs to bugzilla",
+            _("Reports bugs to bugzilla"),
             "npajkovs@redhat.com",
             "https://fedorahosted.org/abrt/wiki",
             PLUGINS_LIB_DIR"/Bugzilla.glade");
