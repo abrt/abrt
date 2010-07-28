@@ -100,6 +100,7 @@ static void Crash(DBusMessage* signal)
      && last_crash_id && strcmp(last_crash_id, crash_id) == 0
      && (unsigned)(cur_time - last_time) < 2 * 60 * 60
     ) {
+        log_msg("repeated crash in %s, not showing the notification", package_name);
         return;
     }
     last_time = cur_time;
