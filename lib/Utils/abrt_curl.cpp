@@ -119,14 +119,34 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
     abrt_post_state_t* state = (abrt_post_state_t*)ptr;
     size_t size = count * nmemb;
 
-
-    unsigned cnt = state->header_cnt;
-    state->headers = (char**)xrealloc(state->headers, (cnt+2) * sizeof(state->headers[0]));
-
     char *h = xstrndup((char*)buffer_pv, size);
     strchrnul(h, '\r')[0] = '\0';
     strchrnul(h, '\n')[0] = '\0';
+
+    unsigned cnt = state->header_cnt;
+
+    /* Check for the case when curl follows a redirect:
+     * header 0: 'HTTP/1.1 301 Moved Permanently'
+     * header 1: 'Connection: close'
+     * header 2: 'Location: NEW_URL'
+     * header 3: ''
+     * header 0: 'HTTP/1.1 200 OK' <-- we need to forget all hdrs and start anew
+     */
+    if (cnt != 0
+     && strncmp(h, "HTTP/", 5) == 0
+     && state->headers[cnt-1][0] == '\0' /* prev header is an empty string */
+    ) {
+        char **headers = state->headers;
+        if (headers)
+        {
+            while (*headers)
+                free(*headers++);
+        }
+        cnt = 0;
+    }
+
     VERB3 log("save_headers: header %d: '%s'", cnt, h);
+    state->headers = (char**)xrealloc(state->headers, (cnt+2) * sizeof(state->headers[0]));
     state->headers[cnt] = h;
     state->header_cnt = ++cnt;
     state->headers[cnt] = NULL;
