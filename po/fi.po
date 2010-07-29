@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-28 15:39+0200\n"
-"PO-Revision-Date: 2010-07-20 23:59+0300\n"
+"POT-Creation-Date: 2010-07-29 13:47+0000\n"
+"PO-Revision-Date: 2010-07-30 00:36+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -15,6 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Virtaal 0.6.1\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
 #, c-format
@@ -91,7 +92,7 @@ msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
 
 #: ../lib/Plugins/Bugzilla.cpp:979
 msgid "Reports bugs to bugzilla"
-msgstr ""
+msgstr "Raportoi ohjelmavirheitä Bugzillaan"
 
 #: ../lib/Plugins/CCpp.cpp:185
 msgid "Generating backtrace"
@@ -113,7 +114,7 @@ msgstr "Ohitetaan debuginfon asennus"
 
 #: ../lib/Plugins/CCpp.cpp:1061
 msgid "Analyzes crashes in C/C++ programs"
-msgstr ""
+msgstr "Analysoi C/C++-ohjelmien kaatumisia"
 
 #: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
@@ -135,11 +136,11 @@ msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:418
 msgid "Sends a report via FTP or SCTP"
-msgstr ""
+msgstr "Lähettää raportin FTP:llä tai SCTP:llä"
 
 #: ../lib/Plugins/Kerneloops.cpp:142
 msgid "Analyzes kernel oopses"
-msgstr ""
+msgstr "Analysoi ytimen oopseja"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
@@ -147,11 +148,11 @@ msgstr "Luodaan ja lähetetään ilmoitus..."
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:142
 msgid "Sends kernel oops information to kerneloops.org"
-msgstr ""
+msgstr "Lähettää ytimen oops-tiedot kerneloops.org-sivustolle"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:200
 msgid "Periodically scans for and saves kernel oopses"
-msgstr ""
+msgstr "Etsii ja tallentaa ytimen oopsit säännöllisesti"
 
 #: ../lib/Plugins/Logger.cpp:73
 #, c-format
@@ -169,9 +170,8 @@ msgid "The report was stored to %s"
 msgstr "Raportti tallennettiin kohteeseen %s"
 
 #: ../lib/Plugins/Logger.cpp:87
-#, fuzzy
 msgid "Writes report to a file"
-msgstr "Kirjoitetaan raportti kohteeseen ”%s”"
+msgstr "Kirjoittaa raportin tiedostoon"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -179,11 +179,11 @@ msgstr "Lähetetään sähköpostia..."
 
 #: ../lib/Plugins/Mailx.cpp:192
 msgid "Sends an email with a report (via mailx command)"
-msgstr ""
+msgstr "Lähettää raportin sähköpostilla (mailx-komentoa käyttäen)"
 
 #: ../lib/Plugins/Python.cpp:97
 msgid "Analyzes crashes in Python programs"
-msgstr ""
+msgstr "Analysoi Python-ohjelmien kaatumisia"
 
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
@@ -198,14 +198,16 @@ msgstr "Luodaan ReportUploader-raportti..."
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
+"Pakkaa kaatumistiedot .tar.gz-tiedostoon ja valinnaisesti lähettää tiedoston "
+"FTP:llä/SCP:llä/tms."
 
-#: ../lib/Plugins/RHTSupport.cpp:231
+#: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
 msgstr "Luodaan uusi tapaus..."
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
-msgstr ""
+msgstr "Suorittaa komennon ja tallentaa sen tulosteen"
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
@@ -218,131 +220,131 @@ msgstr "Sosreportin suoritus valmistui"
 
 #: ../lib/Plugins/SOSreport.cpp:159
 msgid "Runs sosreport, saves the output"
-msgstr ""
+msgstr "Suorittaa sosreportin ja tallentaa sen tulosteen"
 
 #: ../lib/Plugins/SQLite3.cpp:678
 msgid "Keeps SQLite3 database about all crashes"
-msgstr ""
+msgstr "Pitää SQLite3-tietokantaa kaikista kaatumisista"
 
 #: ../lib/Plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
-msgstr ""
+msgstr "<b>Bugzilla-liitännäisen asetukset</b>"
 
 #: ../lib/Plugins/Bugzilla.glade.h:2
 msgid "Bugzilla URL:"
-msgstr ""
+msgstr "Bugzillan URL:"
 
 #: ../lib/Plugins/Bugzilla.glade.h:3
 msgid "Don't have an account yet?"
-msgstr ""
+msgstr "Eikö sinulla ole vielä tiliä?"
 
 #: ../lib/Plugins/Bugzilla.glade.h:4
 msgid "Login(email):"
-msgstr ""
+msgstr "Käyttäjätunnus (sähköpostiosoite):"
 
 #: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
 msgid "Password:"
-msgstr ""
+msgstr "Salasana:"
 
 #: ../lib/Plugins/Bugzilla.glade.h:6 ../lib/Plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
-msgstr ""
+msgstr "SSL-varmennus"
 
 #: ../lib/Plugins/Bugzilla.glade.h:7 ../lib/Plugins/RHTSupport.glade.h:6
 msgid "Show password"
-msgstr ""
+msgstr "Näytä salasana"
 
 #: ../lib/Plugins/Bugzilla.glade.h:8
 msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
 msgstr ""
+"Voit luoda sen <a "
+"href=\"https://bugzilla.redhat.com/createaccount.cgi\">täällä</a>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
-#, fuzzy
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "Vain yksi raportoijaliitännäinen on määritetty."
+msgstr "<b>Kerneloops-raportoijaliitännäisen asetukset</b>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
-msgstr ""
+msgstr "Lähetysosoite:"
 
 #: ../lib/Plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
-msgstr ""
+msgstr "<b>Lokikirjoitusliitännäisen asetukset</b>"
 
 #: ../lib/Plugins/Logger.glade.h:2
 msgid "Append new logs"
-msgstr ""
+msgstr "Lisää uudet lokit vanhoihin tiedostoihin"
 
 #: ../lib/Plugins/Logger.glade.h:3
 msgid "Logger file:"
-msgstr ""
+msgstr "Lokitiedosto:"
 
 #: ../lib/Plugins/Mailx.glade.h:1
 msgid "<b>Mailx plugin configuration</b>"
-msgstr ""
+msgstr "<b>Mailx-liitännäisen asetukset</b>"
 
 #: ../lib/Plugins/Mailx.glade.h:2
 msgid "Recipient's Email:"
-msgstr ""
+msgstr "Vastaanottajan sähköpostiosoite:"
 
 #: ../lib/Plugins/Mailx.glade.h:3
 msgid "Send Binary Data"
-msgstr ""
+msgstr "Lähetä binääridata"
 
 #: ../lib/Plugins/Mailx.glade.h:4
 msgid "Subject:"
-msgstr ""
+msgstr "Aihe:"
 
 #: ../lib/Plugins/Mailx.glade.h:5
 msgid "Your Email:"
-msgstr ""
+msgstr "Sinun sähköpostiosoitteesi:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
 msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr ""
+msgstr "<b>Tiketinlähettäjäliitännäisen asetukset</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
-msgstr ""
+msgstr "Asiakas:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:3
 msgid "Retry count:"
-msgstr ""
+msgstr "Uudelleenyritysten määrä:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:4
 msgid "Retry delay:"
-msgstr ""
+msgstr "Uudelleenyritysten viive:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:5
 msgid "Ticket:"
-msgstr ""
+msgstr "Tiketti:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:6
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:7
 msgid "Upload"
-msgstr ""
+msgstr "Lähetä"
 
 #: ../lib/Plugins/ReportUploader.glade.h:8
-#, fuzzy
 msgid "Use encryption"
-msgstr "Kuvaus:"
+msgstr "Käytä salausta"
 
 #: ../lib/Plugins/RHTSupport.glade.h:1
 msgid "<b>RHTSupport plugin configuration</b>"
-msgstr ""
+msgstr "<b>RHTSupport-liitännäisen asetukset</b>"
 
 #: ../lib/Plugins/RHTSupport.glade.h:2
 msgid "Login:"
-msgstr ""
+msgstr "Käyttäjätunnus:"
 
 #: ../lib/Plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
-msgstr ""
+msgstr "RHTSupport URL:"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -389,6 +391,10 @@ msgstr "Piilota"
 #: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
 msgid "Report"
 msgstr "Raportti"
+
+#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+msgid "Open ABRT"
+msgstr "Avaa ABRT"
 
 #: ../src/CLI/CLI.cpp:56
 #, c-format
