@@ -253,7 +253,7 @@ void CApplet::CrashNotify(const char* crash_id, const char *format, ...)
     notify_notification_add_action(notification, "REPORT", _("Report"),
                                     NOTIFY_ACTION_CALLBACK(CApplet::action_report),
                                     this, NULL);
-    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", "Open ABRT",
+    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", _("Open ABRT"),
                                     NOTIFY_ACTION_CALLBACK(CApplet::action_open_gui),
                                     this, NULL);
 
@@ -281,7 +281,7 @@ void CApplet::MessageNotify(const char *format, ...)
        like >>Clear old dumps<< for quota exceeded
    */
     NotifyNotification *notification = new_warn_notification();
-    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", "Open ABRT",
+    notify_notification_add_action(notification, "OPEN_MAIN_WINDOW", _("Open ABRT"),
                                     NOTIFY_ACTION_CALLBACK(CApplet::action_open_gui),
                                     this, NULL);
     notify_notification_update(notification, _("Warning"), buf, NULL);
