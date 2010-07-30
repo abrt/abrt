@@ -7,16 +7,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.te\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-28 15:39+0200\n"
-"PO-Revision-Date: 2010-07-23 16:26+0530\n"
+"POT-Creation-Date: 2010-07-30 00:40+0000\n"
+"PO-Revision-Date: 2010-07-30 14:44+0530\n"
 "Last-Translator: Krishna Babu K <kkrothap@redhat.com>\n"
 "Language-Team: Telugu <en@li.org>\n"
-"Language: te\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: te\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
 "\n"
 "\n"
 "\n"
@@ -108,7 +108,7 @@ msgstr "కొత్త వ్యాఖ్యను బగ్(%d)నకు జ�
 
 #: ../lib/Plugins/Bugzilla.cpp:979
 msgid "Reports bugs to bugzilla"
-msgstr ""
+msgstr "బగ్‌లను బగ్‌జిల్లాకు నివేదించును"
 
 #: ../lib/Plugins/CCpp.cpp:185
 msgid "Generating backtrace"
@@ -130,7 +130,7 @@ msgstr "డీబగ్‌సమాచార సంస్థాపనను ద�
 
 #: ../lib/Plugins/CCpp.cpp:1061
 msgid "Analyzes crashes in C/C++ programs"
-msgstr ""
+msgstr "C/C++ ప్రోగ్రాములనందలి క్రాష్‌లను విశ్లేషించుము"
 
 #: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
@@ -152,11 +152,11 @@ msgstr "ఆర్చివును సృష్టించలేదు మర�
 
 #: ../lib/Plugins/FileTransfer.cpp:418
 msgid "Sends a report via FTP or SCTP"
-msgstr ""
+msgstr "FTP లేదా SCTP ద్వారా నివేదికను పంపును"
 
 #: ../lib/Plugins/Kerneloops.cpp:142
 msgid "Analyzes kernel oopses"
-msgstr ""
+msgstr "కెర్నల్ oopsలను విశ్లేషించును"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
@@ -164,11 +164,11 @@ msgstr "నివేదికను సృష్టించుచున్న�
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:142
 msgid "Sends kernel oops information to kerneloops.org"
-msgstr ""
+msgstr "కెర్నల్ oops సమాచారమును kerneloops.orgకు పంపును"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:200
 msgid "Periodically scans for and saves kernel oopses"
-msgstr ""
+msgstr "కెర్నల్ oops కొరకు సమయానుసారం స్కాన్ చేసి మరియు దాయును"
 
 #: ../lib/Plugins/Logger.cpp:73
 #, c-format
@@ -186,9 +186,8 @@ msgid "The report was stored to %s"
 msgstr "నివేదిక %sకు నిల్వవుంచబడింది"
 
 #: ../lib/Plugins/Logger.cpp:87
-#, fuzzy
 msgid "Writes report to a file"
-msgstr "నివేదికను '%s'కు వ్రాయుచున్నది"
+msgstr "నివేదికను ఫైలునకు వ్రాయును"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -196,11 +195,11 @@ msgstr "ఈమెయిల్ పంపుచున్నది..."
 
 #: ../lib/Plugins/Mailx.cpp:192
 msgid "Sends an email with a report (via mailx command)"
-msgstr ""
+msgstr "ఒక నివేదికతో ఈమెయిల్ పంపును (mailx ఆదేశము ద్వారా)"
 
 #: ../lib/Plugins/Python.cpp:97
 msgid "Analyzes crashes in Python programs"
-msgstr ""
+msgstr "పైథాన్ ప్రోగ్రాముల నందలి క్రాష్‌లను విశ్లేషించును"
 
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
@@ -212,17 +211,16 @@ msgid "Creating a ReportUploader report..."
 msgstr "రిపోర్ట్అప్‌లోడర్ నివేదికను సృష్టించుచున్నది..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr "క్రాష్ డాటాను .tar.gz ఫైలునకు పాక్ చేయును, ఐచ్చికంగా దానిని FTP/SCP/etc ద్వారా అప్‌లోడ్ చేయును"
 
-#: ../lib/Plugins/RHTSupport.cpp:231
+#: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
 msgstr "కొత్త కేస్‌ను సృష్టించుచున్నది..."
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
-msgstr ""
+msgstr "ఒక ఆదేశమును నడుపును, మరియు దాని అవుట్పుట్‌ను దాయును"
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
@@ -235,131 +233,131 @@ msgstr "sosreport నడుపుట అయినది"
 
 #: ../lib/Plugins/SOSreport.cpp:159
 msgid "Runs sosreport, saves the output"
-msgstr ""
+msgstr "sosreport నడుపును, దాని అవుట్పుట్‌ను దాయును"
 
 #: ../lib/Plugins/SQLite3.cpp:678
 msgid "Keeps SQLite3 database about all crashes"
-msgstr ""
+msgstr "అన్ని క్రాష్‌ల గురించి SQLite3 డాటాబేస్‌ను కలిగివుండును"
 
 #: ../lib/Plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
-msgstr ""
+msgstr "<b>బగ్‌జిల్లా ప్లగిన్ ఆకృతీకరణ</b>"
 
 #: ../lib/Plugins/Bugzilla.glade.h:2
 msgid "Bugzilla URL:"
-msgstr ""
+msgstr "బగ్‌జిల్లా URL:"
 
 #: ../lib/Plugins/Bugzilla.glade.h:3
 msgid "Don't have an account yet?"
-msgstr ""
+msgstr "ఇంకా ఖాతాను కలిగిలేరా?"
 
 #: ../lib/Plugins/Bugzilla.glade.h:4
 msgid "Login(email):"
-msgstr ""
+msgstr "లాగిన్(ఈమెయిల్):"
 
 #: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
 msgid "Password:"
-msgstr ""
+msgstr "సంకేతపదము:"
 
 #: ../lib/Plugins/Bugzilla.glade.h:6 ../lib/Plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
-msgstr ""
+msgstr "SSL నిర్ధారణ"
 
 #: ../lib/Plugins/Bugzilla.glade.h:7 ../lib/Plugins/RHTSupport.glade.h:6
 msgid "Show password"
-msgstr ""
+msgstr "సంకేతపదమును చూపుము"
 
 #: ../lib/Plugins/Bugzilla.glade.h:8
 msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
 msgstr ""
+"మీరు దీనిని <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">ఇచట</a> సృష్టించగలరు"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
-#, fuzzy
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "ఒక నివేదిక ప్లగిన్ మాత్రమే ఆకృతీకరించబడింది."
+msgstr "<b>Kerneloops నివేదకి ప్లగిన్ ఆకృతీకరణ</b>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
-msgstr ""
+msgstr "URL అప్పచెప్పుము:"
 
 #: ../lib/Plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
-msgstr ""
+msgstr "<b>లాగర్ ప్లగిన్ ఆకృతీకరణ</b>"
 
 #: ../lib/Plugins/Logger.glade.h:2
 msgid "Append new logs"
-msgstr ""
+msgstr "కొత్త లాగ్‌లను చేర్చుము"
 
 #: ../lib/Plugins/Logger.glade.h:3
 msgid "Logger file:"
-msgstr ""
+msgstr "లాగర్ ఫైల్:"
 
 #: ../lib/Plugins/Mailx.glade.h:1
 msgid "<b>Mailx plugin configuration</b>"
-msgstr ""
+msgstr "<b>Mailx ప్లగిన్ ఆకృతీకరణ</b>"
 
 #: ../lib/Plugins/Mailx.glade.h:2
 msgid "Recipient's Email:"
-msgstr ""
+msgstr "స్వీకరణదారుని ఈమెయిల్:"
 
 #: ../lib/Plugins/Mailx.glade.h:3
 msgid "Send Binary Data"
-msgstr ""
+msgstr "బైనరీ డాటాను పంపుము"
 
 #: ../lib/Plugins/Mailx.glade.h:4
 msgid "Subject:"
-msgstr ""
+msgstr "సంగతి:"
 
 #: ../lib/Plugins/Mailx.glade.h:5
 msgid "Your Email:"
-msgstr ""
+msgstr "మీ ఈమెయిల్:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
 msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr ""
+msgstr "<b>టికెట్‌ను అప్‌లోడ్ చేయుదాని ప్లగిన్ ఆకృతీకరణ</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
-msgstr ""
+msgstr "వినియోగదారి:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:3
 msgid "Retry count:"
-msgstr ""
+msgstr "పునఃప్రయత్నముల లెక్క:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:4
 msgid "Retry delay:"
-msgstr ""
+msgstr "పునఃప్రయత్నం ఆలస్యం:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:5
 msgid "Ticket:"
-msgstr ""
+msgstr "టికెట్:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:6
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:7
 msgid "Upload"
-msgstr ""
+msgstr "అప్‌లోడ్"
 
 #: ../lib/Plugins/ReportUploader.glade.h:8
-#, fuzzy
 msgid "Use encryption"
-msgstr "వివరణ:"
+msgstr "ఎన్క్రిప్షన్ వుపయోగించుము"
 
 #: ../lib/Plugins/RHTSupport.glade.h:1
 msgid "<b>RHTSupport plugin configuration</b>"
-msgstr ""
+msgstr "<b>RHTమద్దతు ప్లగిన్ ఆకృతీకరణ</b>"
 
 #: ../lib/Plugins/RHTSupport.glade.h:2
 msgid "Login:"
-msgstr ""
+msgstr "లాగిన్:"
 
 #: ../lib/Plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
-msgstr ""
+msgstr "RHTమద్దతు URL:"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -390,8 +388,7 @@ msgid "Warning"
 msgstr "హెచ్చరిక"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT చేత గుర్తించబడిన సమస్యల గురించి వినియోగదారికి తెలుపుటకు నోటిఫికేషన్ ప్రాంతపు ఆప్లెట్"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -405,6 +402,10 @@ msgstr "మరుగునవుంచుము"
 #: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
 msgid "Report"
 msgstr "నివేదించు"
+
+#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+msgid "Open ABRT"
+msgstr "ABRT తెరువుము"
 
 #: ../src/CLI/CLI.cpp:56
 #, c-format
@@ -687,8 +688,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "వేరొక క్లైంటు యిప్పటికే నడుచుచున్నది, దానిని మేల్కొలుపుటకు యత్నించుచున్నది..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "డెమోన్‌నుండి అనుకోని డాటా పొందినది (డాటాబేస్ సరిగా నవీకరించబడిందా?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
@@ -909,8 +909,8 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "నివేదీకరణ అచేతనము చేయబడింది యెంచేతంటే బాక్‌ట్రేస్ నిరుపయోగమైంది.\n"
-"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install "
-"%s</b> \n"
+"ఈ ఆదేశాన్ని వుపయోగించి డీబగ్‌యిన్ఫోను మానవీయంగా సంస్థాపించుటకు ప్రయత్నించండి: <b>debuginfo-install %"
+"s</b> \n"
 "అప్పుడు బాక్‌ట్రేస్‌ను తిరిగి వుద్భవింపచేయుటకు రీఫ్రెష్ బటన్ వుపయోగించండి."
 
 #: ../src/Gui/CCReporterDialog.py:120
@@ -921,8 +921,7 @@ msgstr "బాక్‌ట్రేస్ వుపయోగించుటక�
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు స్టెప్సును యిచ్చునట్లు చూచుకోండి."
+msgstr "బాక్‌ట్రేస్ అసంపూర్తిగా వుంది, దానిని తిరిగివుత్పన్నం చేయుటకు దయచేసి మీరు స్టెప్సును యిచ్చునట్లు చూచుకోండి."
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -989,15 +988,13 @@ msgid "Cannot get the default keyring."
 msgstr "అప్రమేయ కీరింగ్‌ను పొందలేక పోయింది."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, ప్లగిన్ల అమరికలు దాయబడవు."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyringకు యాక్సెస్ తిరస్కరించబడింది, %s కొరకు అమరికలను లోడు చేయలేక పోయింది!"
 
 #: ../src/Gui/ConfBackend.py:205
@@ -1114,8 +1111,7 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "ఈ క్రాష్ యెలా సంభవించినది (అంచెలంచెలుగా)? మీరు దానిని తిరిగి యెలా రాబట్టుతారు?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr "మీరు సాఫ్టువేరు నిర్వాహకులతో పంచుకొవాలని అనుకొనుచున్న వ్యాఖ్యలు యేమైనా వున్నాయా?"
 
 #: ../src/Gui/CReporterAssistant.py:668
@@ -1126,16 +1122,14 @@ msgstr "అదనపు వివరములను అందించుము"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
-"<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
+msgstr "<b>చిట్కా:</b> మీ వ్యాఖ్యలు గోప్యం కావు. దయచేసి తదనుగుణంగా మీరు యేమి మాట్లాడుచున్నారో గమనించుకోండి."
 
 #: ../src/Gui/CReporterAssistant.py:716
 msgid "Confirm and send the report"
 msgstr "ఖాయపరచుము మరియు నివేదికను పంపుము"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "కిందిది మీ బగ్ నివేదిక యొక్క సంక్షిప్తసమాచారము. దానిని అప్పచెప్పుటకు దయచేసి 'ఆపాదించు' నొక్కుము."
 
 #: ../src/Gui/CReporterAssistant.py:723
@@ -1465,3 +1459,4 @@ msgstr ""
 "చేతనము చేయబడిన కొన్ని నివేదకి ప్లగిన్ల కొరకు తప్పుడు అమరికలు గుర్తించబడినవి. మీరు కొనసాగుటకు "
 "ముందుగా తత్సంభందిత ఆకృతీకరణను తెరిచి మరియు దానిని పరిష్కరించుటకు దయచేసి కింది బటన్లను "
 "వుపయోగించుము, లేదంటే, నివేదీకరణ కార్యక్రమము విఫలం కావచ్చును.\n"
+
