@@ -1008,7 +1008,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         dd.LoadText(FILENAME_CMDLINE, cmdline);
         if (dd.Exist(FILENAME_REMOTE))
         {
-            std:string remote_str;
+            std::string remote_str;
             dd.LoadText(FILENAME_REMOTE, remote_str);
             remote = (remote_str.find('1') != std::string::npos);
         }
