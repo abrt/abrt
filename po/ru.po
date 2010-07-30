@@ -2,24 +2,23 @@
 # Copyright © 2010 Red Hat, Inc.
 # This file is distributed under the same license as the ABRT package.
 #
+#
 # Yulia <ypoyarko@redhat.com>, 2009, 2010.
 # Misha Shnurapet <shnurapet@fedoraproject.org>, 2010.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: ru\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-28 15:39+0200\n"
-"PO-Revision-Date: 2010-07-21 14:19+1000\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2010-07-30 00:40+0000\n"
+"PO-Revision-Date: 2010-07-30 12:50\n"
+"Last-Translator: Yulia <ypoyarko@redhat.com>\n"
 "Language-Team: Russian\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n"
-"%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms:  nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
 #, c-format
@@ -32,8 +31,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
-"Не удалось авторизоваться. Выберите в меню «Правка» -> «Модули» ->«Bugzilla» "
-"и проверьте наличие «/etc/abrt/plugins/Bugzilla.conf». Сообщение сервера: %s"
+"Не удалось авторизоваться. Выберите в меню «Правка» -> «Модули» ->«Bugzilla» и "
+"проверьте наличие «/etc/abrt/plugins/Bugzilla.conf». Сообщение сервера: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -86,16 +85,16 @@ msgstr "Первичный отчет о %d в Bugzilla не найден"
 #: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
 #, c-format
 msgid "Adding %s to CC list"
-msgstr "Добавить %s в список CC"
+msgstr "Добавление %s в список CC"
 
 #: ../lib/Plugins/Bugzilla.cpp:880
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr "Добавить комментарий к запросу (%d)"
+msgstr "Добавление комментария к запросу (%d)"
 
 #: ../lib/Plugins/Bugzilla.cpp:979
 msgid "Reports bugs to bugzilla"
-msgstr ""
+msgstr "Отправляет отчёт в Bugzilla"
 
 # https://bugzilla.redhat.com/show_bug.cgi?id=572132
 #: ../lib/Plugins/CCpp.cpp:185
@@ -118,7 +117,7 @@ msgstr "Пропуск установки debuginfo"
 
 #: ../lib/Plugins/CCpp.cpp:1061
 msgid "Analyzes crashes in C/C++ programs"
-msgstr ""
+msgstr "Анализирует сбои в коде C/C++"
 
 #: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
@@ -140,11 +139,11 @@ msgstr "Не удалось создать и отправить архив: %s"
 
 #: ../lib/Plugins/FileTransfer.cpp:418
 msgid "Sends a report via FTP or SCTP"
-msgstr ""
+msgstr "Отправляет отчёт через FTP или SCTP"
 
 #: ../lib/Plugins/Kerneloops.cpp:142
 msgid "Analyzes kernel oopses"
-msgstr ""
+msgstr "Анализирует сбои ядра"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
@@ -152,16 +151,16 @@ msgstr "Создание и отправка отчета…"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:142
 msgid "Sends kernel oops information to kerneloops.org"
-msgstr ""
+msgstr "Отправляет информацию о сбоях ядра на kerneloops.org"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:200
 msgid "Periodically scans for and saves kernel oopses"
-msgstr ""
+msgstr "Периодически проверяет наличие сбоев ядра и сохраняет полученную информацию"
 
 #: ../lib/Plugins/Logger.cpp:73
 #, c-format
 msgid "Writing report to '%s'"
-msgstr "Отчет записывается в «%s»"
+msgstr "Отчёт записывается в «%s»"
 
 #: ../lib/Plugins/Logger.cpp:79
 #, c-format
@@ -174,9 +173,8 @@ msgid "The report was stored to %s"
 msgstr "Отчёт сохранён в %s"
 
 #: ../lib/Plugins/Logger.cpp:87
-#, fuzzy
 msgid "Writes report to a file"
-msgstr "Отчет записывается в «%s»"
+msgstr "Сохраняет отчёт в файл"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -184,11 +182,11 @@ msgstr "Отправляется почтовое сообщение…"
 
 #: ../lib/Plugins/Mailx.cpp:192
 msgid "Sends an email with a report (via mailx command)"
-msgstr ""
+msgstr "Отправляет отчёт в почтовом сообщении (с помощью команды mailx)"
 
 #: ../lib/Plugins/Python.cpp:97
 msgid "Analyzes crashes in Python programs"
-msgstr ""
+msgstr "Анализирует сбои в программах Python"
 
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
@@ -200,17 +198,16 @@ msgid "Creating a ReportUploader report..."
 msgstr "Создание и отправка отчета…"
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr "Сохраняет архив сбоя в файл «.tar.gz» и дополнительно осуществляет его передачу через FTP/SCP и пр."
 
-#: ../lib/Plugins/RHTSupport.cpp:231
+#: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
-msgstr "Создается новая запись…"
+msgstr "Создаётся новая запись…"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
-msgstr ""
+msgstr "Выполняет команду с сохранением её вывода"
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
@@ -223,131 +220,129 @@ msgstr "Выполнение sosreport завершено"
 
 #: ../lib/Plugins/SOSreport.cpp:159
 msgid "Runs sosreport, saves the output"
-msgstr ""
+msgstr "Выполняет sosreport с сохранением вывода"
 
 #: ../lib/Plugins/SQLite3.cpp:678
 msgid "Keeps SQLite3 database about all crashes"
-msgstr ""
+msgstr "Сохраняет информацию о сбоях в базе данных SQLite3"
 
 #: ../lib/Plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
-msgstr ""
+msgstr "<b>Настройка модулей Bugzilla</b>"
 
 #: ../lib/Plugins/Bugzilla.glade.h:2
 msgid "Bugzilla URL:"
-msgstr ""
+msgstr "Адрес Bugzilla:"
 
 #: ../lib/Plugins/Bugzilla.glade.h:3
 msgid "Don't have an account yet?"
-msgstr ""
+msgstr "Нет учётной записи?"
 
 #: ../lib/Plugins/Bugzilla.glade.h:4
 msgid "Login(email):"
-msgstr ""
+msgstr "Имя входа (эл.адрес):"
 
 #: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
 msgid "Password:"
-msgstr ""
+msgstr "Пароль:"
 
 #: ../lib/Plugins/Bugzilla.glade.h:6 ../lib/Plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
-msgstr ""
+msgstr "SSL"
 
 #: ../lib/Plugins/Bugzilla.glade.h:7 ../lib/Plugins/RHTSupport.glade.h:6
 msgid "Show password"
-msgstr ""
+msgstr "Показать пароль"
 
 #: ../lib/Plugins/Bugzilla.glade.h:8
 msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
-msgstr ""
+msgstr "Создайте её <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">здесь</a>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
-#, fuzzy
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "Настроен лишь один модуль для отправки отчётов."
+msgstr "<b>Настройка модуля Kerneloops Reporter</b>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
-msgstr ""
+msgstr "Адрес отправки:"
 
 #: ../lib/Plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
-msgstr ""
+msgstr "<b>Настройка модуля Logger</b>"
 
 #: ../lib/Plugins/Logger.glade.h:2
 msgid "Append new logs"
-msgstr ""
+msgstr "Присоединить новые протоколы"
 
 #: ../lib/Plugins/Logger.glade.h:3
 msgid "Logger file:"
-msgstr ""
+msgstr "Файл Logger:"
 
 #: ../lib/Plugins/Mailx.glade.h:1
 msgid "<b>Mailx plugin configuration</b>"
-msgstr ""
+msgstr "<b>Настройка модуля mailx</b>"
 
 #: ../lib/Plugins/Mailx.glade.h:2
 msgid "Recipient's Email:"
-msgstr ""
+msgstr "Адрес получателя:"
 
 #: ../lib/Plugins/Mailx.glade.h:3
 msgid "Send Binary Data"
-msgstr ""
+msgstr "Отправлять двоичные данные"
 
 #: ../lib/Plugins/Mailx.glade.h:4
 msgid "Subject:"
-msgstr ""
+msgstr "Тема:"
 
 #: ../lib/Plugins/Mailx.glade.h:5
 msgid "Your Email:"
-msgstr ""
+msgstr "Ваш эл.адрес:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
 msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr ""
+msgstr "<b>Настройка модуля TicketUploader</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
-msgstr ""
+msgstr "Пользователь:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:3
 msgid "Retry count:"
-msgstr ""
+msgstr "Счётчик повторов:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:4
 msgid "Retry delay:"
-msgstr ""
+msgstr "Задержка повтора:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:5
 msgid "Ticket:"
-msgstr ""
+msgstr "Запрос:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:6
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:7
 msgid "Upload"
-msgstr ""
+msgstr "Отправить"
 
 #: ../lib/Plugins/ReportUploader.glade.h:8
-#, fuzzy
 msgid "Use encryption"
-msgstr "Описание:"
+msgstr "Зашифровать"
 
 #: ../lib/Plugins/RHTSupport.glade.h:1
 msgid "<b>RHTSupport plugin configuration</b>"
-msgstr ""
+msgstr "<b>Настройка модуля RHTSupport</b>"
 
 #: ../lib/Plugins/RHTSupport.glade.h:2
 msgid "Login:"
-msgstr ""
+msgstr "Имя входа:"
 
 #: ../lib/Plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
-msgstr ""
+msgstr "Адрес RHTSupport:"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -378,8 +373,7 @@ msgid "Warning"
 msgstr "Предупреждение"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "Значок в области уведомления сообщает об обнаруженных сбоях"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -396,6 +390,10 @@ msgstr "Спрятать"
 msgid "Report"
 msgstr "Сообщить"
 
+#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+msgid "Open ABRT"
+msgstr "Открыть ABRT"
+
 #: ../src/CLI/CLI.cpp:56
 #, c-format
 msgid ""
@@ -409,7 +407,7 @@ msgstr ""
 "\tUID        : %s\n"
 "\tUUID       : %s\n"
 "\tПакет    : %s\n"
-"\tExecutable : %s\n"
+"\tПрограмма : %s\n"
 "\tВремя сбоя : %s\n"
 "\tКоличество: %s\n"
 
@@ -433,24 +431,38 @@ msgid ""
 "Coredump file:      %s\n"
 "Reason:             %s\n"
 msgstr ""
+"ID сбоя:           %s:%s\n"
+"Последний сбой:         %s\n"
+"Анализатор:           %s\n"
+"Компонент:          %s\n"
+"Пакет:            %s\n"
+"Команда:            %s\n"
+"Программа:         %s\n"
+"Система:             %s, ядро %s\n"
+"Рейтинг:             %s\n"
+"Файл дампа ядра:      %s\n"
+"Причина:             %s\n"
 
 #: ../src/CLI/CLI.cpp:133
 #, c-format
 msgid "Crash function:     %s\n"
-msgstr ""
+msgstr "Функция сбоя:     %s\n"
 
 #: ../src/CLI/CLI.cpp:137
-#, fuzzy, c-format
+#, c-format
 msgid "Hostname:           %s\n"
-msgstr "\tИмя узла   : %s\n"
+msgstr "Имя узла:           %s\n"
 
 #: ../src/CLI/CLI.cpp:141
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "How to reproduce:\n"
 "%s\n"
-msgstr "# Как повторить сбой?"
+msgstr ""
+"\n"
+"Как повторить:\n"
+"%s\n"
 
 #: ../src/CLI/CLI.cpp:145
 #, c-format
@@ -459,6 +471,9 @@ msgid ""
 "Comment:\n"
 "%s\n"
 msgstr ""
+"\n"
+"Комментарий:\n"
+"%s\n"
 
 #: ../src/CLI/CLI.cpp:151
 #, c-format
@@ -467,10 +482,13 @@ msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
+"\n"
+"Протокол сбоя:\n"
+"%s\n"
 
 #. Message has embedded tabs.
 #: ../src/CLI/CLI.cpp:249
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
@@ -496,7 +514,7 @@ msgstr ""
 "Формат: %s [ПАРАМЕТР]\n"
 "\n"
 "Запуск:\n"
-"\t-V, --version\t\tвывод версии %s;\n"
+"\t-V, --version\t\tвывод версии %s и завершение работы;\n"
 "\t-?, --help\t\tпросмотр этого экрана помощи.\n"
 "\n"
 "Действия:\n"
@@ -507,13 +525,15 @@ msgstr ""
 "созданы отчёты;\n"
 "\t-r, --report CRASH_ID\tсоздать и отправить отчёт;\n"
 "\t      -y, --always\tсоздать и отправить отчёт без подтверждения;\n"
-"\t-d, --delete CRASH_ID\tудалить сбой;\n"
+"\t-d, --delete CRASH_ID\tудалить запрос;\n"
+"\t-i, --info CRASH_ID\tвывод подробной информации о сбое;\n"
+"\t      -b, --backtrace\tвывод подробной информации о сбое, включая протокол сбоя.\n"
 "В качестве значения CRASH_ID может выступать:\n"
 "\tпара UID:UUID;\n"
-"\tуникальный префикс UUID &mdash; будет создан отчёт для сбоя с совпадающим "
+"\tуникальный префикс UUID &mdash; будет создан отчёт для сбоя с заданным "
 "UUID;\n"
 "\t@номер &mdash; будет создан отчёт для сбоя с заданным номером. Номер можно "
-"узнать из списка, полученного с помощью --list --full.\n"
+"узнать из списка, полученного с помощью аргументов --list --full.\n"
 
 #: ../src/CLI/CLI.cpp:295
 msgid "You must specify exactly one operation"
@@ -658,8 +678,7 @@ msgstr "Другая копия уже выполняется. Попытка а
 
 # «Daemon» не равно «demon».
 #: ../src/Gui/ABRTExceptions.py:13
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "Служба вернула непредусмотренные данные (убедитесь, что база данных "
 "обновлена корректно)"
@@ -900,8 +919,7 @@ msgstr "Неполный протокол сбоя. Укажите действ�
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
-msgstr ""
-"Отправка отчёта отключена, исправьте, пожалуйста, вышеуказанные недостатки."
+msgstr "Отправка отчёта отключена, исправьте, пожалуйста, вышеуказанные недостатки."
 
 #: ../src/Gui/CCReporterDialog.py:132
 msgid "Sends the report using the selected plugin."
@@ -964,18 +982,14 @@ msgid "Cannot get the default keyring."
 msgstr "Не удалось получить основной набор ключей."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
-"Отказано в доступе к gnome-keyring. Настройки модулей не будут сохранены."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr "Отказано в доступе к gnome-keyring. Настройки модулей не будут сохранены."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
-"Отказано в доступе к gnome-keyring. Настройки %s не могут быть загружены."
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr "Отказано в доступе к gnome-keyring. Настройки %s не могут быть загружены."
 
 #: ../src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
@@ -1087,12 +1101,10 @@ msgstr "Подтвердить отчёт"
 
 #: ../src/Gui/CReporterAssistant.py:631
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr ""
-"Какие действия привели к этому сбою? Какие шаги помогут это воспроизвести?"
+msgstr "Какие действия привели к этому сбою? Какие шаги помогут это воспроизвести?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "Добавьте любую другую информацию, которая по вашему мнению поможет "
 "разработчикам."
@@ -1105,18 +1117,15 @@ msgstr "Дополнительные сведения"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
-"<b>Подсказка:</b> Ваши комментарии будут опубликованы. Будьте корректны."
+msgstr "<b>Подсказка:</b> Ваши комментарии будут опубликованы. Будьте корректны."
 
 #: ../src/Gui/CReporterAssistant.py:716
 msgid "Confirm and send the report"
 msgstr "Подтвердить и отправить отчёт"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr ""
-"Ниже можно просмотреть ваш отчёт. Чтобы его отправить, нажмите «Применить»."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr "Ниже можно просмотреть ваш отчёт. Чтобы его отправить, нажмите «Применить»."
 
 #: ../src/Gui/CReporterAssistant.py:723
 msgid "<b>Basic details</b>"
@@ -1445,3 +1454,4 @@ msgstr ""
 "Обнаружены неверные настройки модулей отчётов. Показанные ниже кнопки "
 "помогут открыть и исправить их конфигурацию. В противном случае процесс "
 "отправки протокола сбоя может завершиться неудачей.\n"
+
