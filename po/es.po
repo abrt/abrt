@@ -1,18 +1,19 @@
+# translation of abrt.master.es.po to Spanish
 # Fedora Spanish translation of abrt.master
 # This file is distributed under the same license as the abrt.master package.
+#
 #
 # Fernando Gonzalez <fgonz@fedoraproject.org>, 2009.
 # Gladys Guerrero Lozano <gguerrer@redhat.com>, 2009, 2010.
 # Héctor Daniel Cabrera <logan@fedoraproject.org>, 2009, 2010.
-#
 msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.es\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-08-02 08:20+0000\n"
-"PO-Revision-Date: 2010-08-02 08:09-0300\n"
-"Last-Translator: Domingo Becker <domingobecker@gmail.com>\n"
-"Language-Team: Fedora Spanish <trans-es@lists.fedoraproject.org>\n"
+"PO-Revision-Date: 2010-08-03 11:12+1000\n"
+"Last-Translator: Gladys Guerrero <gguerrer@redhat.com>\n"
+"Language-Team: Spanish <en@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -146,7 +147,7 @@ msgstr "Envía un informe vía FTP o SCTP"
 
 #: ../lib/Plugins/Kerneloops.cpp:142
 msgid "Analyzes kernel oopses"
-msgstr "Analiza los ups del kernel"
+msgstr "Analiza los oops del kernel"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
@@ -154,11 +155,11 @@ msgstr "Creando y enviando un informe..."
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:142
 msgid "Sends kernel oops information to kerneloops.org"
-msgstr "Envía la información sobre los ups del kernel a kerneloops.org"
+msgstr "Envía la información sobre los oops del kernel a kerneloops.org"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:200
 msgid "Periodically scans for and saves kernel oopses"
-msgstr "Periódicamente examina y guarda los ups del kernel"
+msgstr "Periódicamente examina y guarda los oops del kernel"
 
 #: ../lib/Plugins/Logger.cpp:73
 #, c-format
@@ -185,11 +186,11 @@ msgstr "Enviando un correo..."
 
 #: ../lib/Plugins/Mailx.cpp:192
 msgid "Sends an email with a report (via mailx command)"
-msgstr "Envia un email con un informe (usando mailx)"
+msgstr "Envía un correo-e con un informe (usando mailx)"
 
 #: ../lib/Plugins/Python.cpp:97
 msgid "Analyzes crashes in Python programs"
-msgstr "Analiza los cuelgues en programas Python"
+msgstr "Analiza las caídas en programas Python"
 
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
@@ -202,7 +203,7 @@ msgstr "Creando un informe ReportUploader..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
 msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr "Empaqueta los datos del cuelgue en un archivo .tar.gz, y opcionalmente lo sube vía FTP/SCP/etc"
+msgstr "Empaqueta los datos de la caída en un archivo .tar.gz, y opcionalmente lo sube vía FTP/SCP/etc"
 
 #: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
@@ -227,7 +228,7 @@ msgstr "Ejecuta sosreport, guarda la salida"
 
 #: ../lib/Plugins/SQLite3.cpp:678
 msgid "Keeps SQLite3 database about all crashes"
-msgstr "Mantiene una base de datos SQLite3 sobre todos los cuelgues"
+msgstr "Mantiene una base de datos SQLite3 sobre todas las caídas"
 
 #: ../lib/Plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -266,11 +267,11 @@ msgstr "La puede crear <a href=\"https://bugzilla.redhat.com/createaccount.cgi\"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "<b>Complemento del configuración del Informador de Kernel ups</b>"
+msgstr "<b>Configuración del complemento del Informador de Kerneloops</b>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
-msgstr "URL para subir:"
+msgstr "URL a enviar:"
 
 #: ../lib/Plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
@@ -278,7 +279,7 @@ msgstr "<b>Configuración del complemento Logger</b>"
 
 #: ../lib/Plugins/Logger.glade.h:2
 msgid "Append new logs"
-msgstr "Agregar logs nuevos"
+msgstr "Agregar registros nuevos"
 
 #: ../lib/Plugins/Logger.glade.h:3
 msgid "Logger file:"
@@ -290,7 +291,7 @@ msgstr "<b>Configuración del complemento mailx</b>"
 
 #: ../lib/Plugins/Mailx.glade.h:2
 msgid "Recipient's Email:"
-msgstr "Email del receptor:"
+msgstr "Correo-e del destinatario:"
 
 #: ../lib/Plugins/Mailx.glade.h:3
 msgid "Send Binary Data"
@@ -306,7 +307,7 @@ msgstr "Su email:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
 msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr "<b>Configuración del complemento de enviador de Tiques</b>"
+msgstr "<b>Configuración del complemento de remitente de Tiques</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
@@ -667,7 +668,7 @@ msgstr "El complemento de base de datos no fue especificado. Por favor, verifiqu
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr "Ver e informar el cuelque de la aplicación"
+msgstr "Ver e informar sobre la caída de la aplicación"
 
 #: ../src/Gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it..."
@@ -898,7 +899,7 @@ msgstr "¡El trazado es inútil, no se puede informar esto!"
 #: ../src/Gui/CCReporterDialog.py:124
 #: ../src/Gui/CReporterAssistant.py:314
 msgid "The backtrace is incomplete, please make sure you provide the steps to reproduce."
-msgstr "uEl trazado está incompleto, por favor, asegúrese de proveer bien los pasos para reproducir el error."
+msgstr "El trazado está incompleto, por favor, asegúrese de proveer bien los pasos para reproducir el error."
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -991,7 +992,7 @@ msgstr "El informe de la caída no contiene un detalle"
 #: ../src/Gui/CReporterAssistant.py:280
 #, python-format
 msgid "Rating is required by the %s plugin"
-msgstr "La valoración (rating) es necesario para el complemento %s"
+msgstr "La valoración (rating) es necesaria para el complemento %s"
 
 #: ../src/Gui/CReporterAssistant.py:282
 msgid "Rating is not required by any plugin, skipping the check..."
@@ -1185,7 +1186,7 @@ msgid ""
 "Please report it at <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "No hay interfaz de usuario para el complemento <b>%s</b>, esto se debe probablemente a un error.\n"
-"Por favor, infórmelo en <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a>"
+"Por favor, repórtelo en <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59
 #: ../src/Gui/PluginSettingsUI.py:85
@@ -1424,53 +1425,3 @@ msgstr "Detectada configuración errónea."
 msgid "Wrong settings were detected for some of the enabled reporter plugins. Please use the buttons below to open the respective configuration and fix it before you proceed, otherwise, the reporting process may fail.\n"
 msgstr "Se ha detectado una configuración errónea para algunos complementos de informe habilitados. Por favor, use los botones de abajo para la respectiva configuración y corríjala antes de continuar, sino el proceso de informe puede fallar.\n"
 
-#~ msgid "Can't create and send an archive %s"
-#~ msgstr "No se puede crear y enviar un archivo %s"
-
-#~ msgid "send_string: URL not specified"
-#~ msgstr "send_string: URL no especificada"
-
-#~ msgid "Sending failed, try it again: %s"
-#~ msgstr "Falló el envió, intente de nuevo: %s"
-
-#~ msgid "send_file: URL not specified"
-#~ msgstr "send_file: URL no especificada"
-
-#~ msgid "Sending file %s to %s"
-#~ msgstr "Enviando archivo %s a %s"
-
-#~ msgid "New bug id: %s"
-#~ msgstr "Nuevo id del error: %s"
-
-#~ msgid "error returned by requestUpload: %s"
-#~ msgstr "error devuelto por requestUpload: %s"
-
-#~ msgid "error returned by requestUpload: %d"
-#~ msgstr "error devuelto por requestUpload: %d"
-
-#~ msgid "no URL returned by requestUpload, and no errno"
-#~ msgstr "sin URL retornada por requestUpload, y sin error"
-
-#~ msgid "requestUpload returned URL: %s"
-#~ msgstr "requestUpload retorno la URL: %s"
-
-#~ msgid "Attaching (text): %s"
-#~ msgstr "Adjuntando (texto): %s"
-
-#~ msgid "rebased URL: %s"
-#~ msgstr "URL rebasada: %s"
-
-#~ msgid "Attaching binary: %s"
-#~ msgstr "Adjuntando binario: %s"
-
-#~ msgid "Creating a signature..."
-#~ msgstr "Creando una firma..."
-
-#~ msgid "Binary file %s will not be reported"
-#~ msgstr "Archivo binario %s no será informado."
-
-#~ msgid "Jump to bug %d"
-#~ msgstr "Ir a error %d"
-
-#~ msgid "Getting local universal unique identification"
-#~ msgstr "Obteniendo la identificación única universal local"
