@@ -38,7 +38,7 @@ BuildRequires: python-devel
 BuildRequires: gettext
 BuildRequires: libxml2-devel
 BuildRequires: polkit-devel
-BuildRequires: libzip-devel, libtar-devel, bzip2-devel, zlib-devel
+BuildRequires: libtar-devel, bzip2-devel, zlib-devel
 BuildRequires: intltool
 BuildRequires: bison
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)

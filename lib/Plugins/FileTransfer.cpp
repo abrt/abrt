@@ -21,7 +21,6 @@
 #ifndef _GNU_SOURCE
 # define _GNU_SOURCE
 #endif
-#include <zip.h>
 #include <libtar.h>
 #include <bzlib.h>
 #include <zlib.h>
@@ -89,60 +88,6 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         /* retry the upload if not succesful, wait a bit before next try */
         sleep(m_nRetryDelay);
     }
-}
-
-/*
- * Walks through the directory and applies a function with one
- * parameter "something" to each filename.
- */
-static void traverse_directory(const char *directory, void *something,
-                               void (*func)(void *, const char *))
-{
-    DIR *dp;
-    struct dirent *dirp;
-
-    dp = opendir(directory);
-    if (dp == NULL)
-    {
-        return;
-    }
-    while ((dirp = readdir(dp)) != NULL)
-    {
-        if (is_regular_file(dirp, directory))
-        {
-            string complete_name = concat_path_file(directory, dirp->d_name);
-            func(something, complete_name.c_str());
-        }
-    }
-    closedir(dp);
-}
-
-static void add_to_zip(void *z, const char *filename)
-{
-    struct zip_source *s;
-
-    s = zip_source_file((struct zip *)z, filename, /*start:*/ 0, /*len:*/ 0);
-    if (s)
-    {
-        if (zip_add((struct zip *)z, filename, s) == -1)
-        {
-            zip_source_free(s);
-        }
-        /* else: don't call zip_source_free(s), successful zip_add consumes it */
-    }
-}
-
-static void create_zip(const char *archive_name, const char *directory)
-{
-    struct zip *z;
-
-    z = zip_open(archive_name, ZIP_CREATE, /*errorp:*/ NULL);
-    if (z == NULL)
-    {
-        return;
-    }
-    traverse_directory(directory, z, add_to_zip);
-    zip_close(z);
 }
 
 static void create_tar(const char *archive_name, const char *directory)
@@ -254,10 +199,6 @@ void CFileTransfer::CreateArchive(const char *pArchiveName, const char *pDir)
     else if (m_sArchiveType == ".tar.bz2")
     {
         create_tarbz2(pArchiveName, pDir);
-    }
-    else if (m_sArchiveType == ".zip")
-    {
-        create_zip(pArchiveName, pDir);
     }
     else
     {
