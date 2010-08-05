@@ -25,72 +25,56 @@
 #include <rpm/rpmcli.h>
 #include <rpm/rpmts.h>
 #include <rpm/rpmdb.h>
+#include <rpm/rpmpgp.h>
 #include "abrt_types.h"
-
-/**
- * A class. It is used for additional checks of package, which contains
- * crashed application.
- */
-class CRPM
-{
-    private:
-        /**
-         * A context for librpm library.
-         */
-        poptContext m_poptContext;
-        /**
-         * A set, which contains finger prints.
-         */
-        set_string_t m_setFingerprints;
-
-    public:
-        /**
-         * A constructior.
-         */
-        CRPM();
-        /**
-         * A destructor.
-         */
-        ~CRPM();
-        /**
-         * A method, which loads one GPG public key.
-         * @param pFileName A path to the public key.
-         */
-        void LoadOpenGPGPublicKey(const char* pFileName);
-        /**
-         * A method, which checks if package's finger print is valid.
-         * @param pPackage A package name.
-         */
-        bool CheckFingerprint(const char* pPackage);
-};
 
 /**
  * Checks if an application is modified by third party.
  * @param pPackage A package name. The package contains the application.
  * @param pPath A path to the application.
+ *
+ * Not used. Delete?
  */
-bool CheckHash(const char* pPackage, const char* pPath);
+//bool CheckHash(const char* pPackage, const char* pPath);
+
+
+void rpm_init();
+
+void rpm_destroy();
+
+/**
+ * A function, which loads one GPG public key.
+ * @param filename A path to the public key.
+ */
+void rpm_load_gpgkey(const char* filename);
+
+/**
+ * A function, which checks if package's finger print is valid.
+ * @param pkg A package name.
+ */
+bool rpm_chk_fingerprint(const char* pkg);
+
 /**
  * Gets a package description.
- * @param pPackage A package name.
+ * @param pkg A package name.
  * @return A package description.
  */
-std::string GetDescription(const char* pPackage);
+char* rpm_get_description(const char* pkg);
 /**
  * Gets a package name. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
  * returned.
- * @param pFileName A file name.
- * @return A package name (malloced string)
+ * @param filename A file name.
+ * @return A package name (malloc'ed string)
  */
-char* GetPackage(const char* pFileName);
+char* rpm_get_package_nvr(const char* filename);
 /**
  * Finds a main package for given file. This package contains particular
  * file. If the file doesn't belong to any package, empty string is
  * returned.
- * @param pFileName A file name.
- * @return A package name.
+ * @param filename A file name.
+ * @return a malloc'ed package name. Need to be freed.
  */
-std::string GetComponent(const char* pFileName);
+char* rpm_get_component(const char* filename);
 
 #endif

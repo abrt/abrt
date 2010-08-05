@@ -38,12 +38,6 @@ using namespace std;
  * @see PluginManager.h
  */
 CPluginManager* g_pPluginManager;
-/**
- * An instance of CRPM used for package checking.
- * @see RPM.h
- */
-static CRPM s_RPM;
-
 
 /**
  * A map, which associates particular analyzer to one or more
@@ -600,7 +594,7 @@ static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
 void LoadOpenGPGPublicKey(const char* key)
 {
     VERB1 log("Loading GPG key '%s'", key);
-    s_RPM.LoadOpenGPGPublicKey(key);
+    rpm_load_gpgkey(key);
 }
 
 /**
@@ -670,14 +664,15 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                 bool remote,
                 const char *pDebugDumpDir)
 {
-    std::string package;
+    char* rpm_pkg = NULL;
     char* packageName = NULL;
-    std::string component;
+    char* component = NULL;
     std::string scriptName; /* only if "interpreter /path/to/script" */
 
     if (strcmp(pExecutable, "kernel") == 0)
     {
-        component = package = "kernel";
+        component = xstrdup("kenel");
+        rpm_pkg = xstrdup("kernel");
         packageName = xstrdup("kernel");
     }
     else
@@ -688,7 +683,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             return MW_BLACKLISTED;
         }
 
-        char *rpm_pkg = GetPackage(pExecutable);
+        rpm_pkg = rpm_get_package_nvr(pExecutable);
         if (rpm_pkg == NULL)
         {
             if (g_settings_bProcessUnpackaged || remote)
@@ -737,7 +732,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             char *script_name = get_argv1_if_full_path(cmdline);
             if (script_name)
             {
-                char *script_pkg = GetPackage(script_name);
+                char *script_pkg = rpm_get_package_nvr(script_name);
                 if (script_pkg)
                 {
                     /* There is a well-formed script name in argv[1],
@@ -767,10 +762,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             }
         }
 
-        package = rpm_pkg;
-        packageName = get_package_name_from_NVR_or_NULL(package.c_str());
+        packageName = get_package_name_from_NVR_or_NULL(rpm_pkg);
         VERB2 log("Package:'%s' short:'%s'", rpm_pkg, packageName);
-        free(rpm_pkg);
 
         if (g_settings_setBlackListedPkgs.find(packageName) != g_settings_setBlackListedPkgs.end())
         {
@@ -780,7 +773,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         }
         if (g_settings_bOpenGPGCheck && !remote)
         {
-            if (!s_RPM.CheckFingerprint(packageName))
+            if (rpm_chk_fingerprint(packageName))
             {
                 log("Package '%s' isn't signed with proper key", packageName);
                 free(packageName);
@@ -790,6 +783,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(
               Checking the MD5 sum requires to run prelink to "un-prelink" the
               binaries - this is considered potential security risk so we don't
               use it, until we find some non-intrusive way
+
+              Delete?
             */
             /*
             if (!CheckHash(packageName.c_str(), pExecutable))
@@ -801,10 +796,10 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             }
             */
         }
-        component = GetComponent(pExecutable);
+        component = rpm_get_component(pExecutable);
     }
 
-    std::string description = GetDescription(packageName);
+    char *dsc = rpm_get_description(packageName);
     free(packageName);
 
     char host[HOST_NAME_MAX + 1];
@@ -824,9 +819,24 @@ static mw_result_t SavePackageDescriptionToDebugDump(
     {
         CDebugDump dd;
         dd.Open(pDebugDumpDir);
-        dd.SaveText(FILENAME_PACKAGE, package.c_str());
-        dd.SaveText(FILENAME_DESCRIPTION, description.c_str());
-        dd.SaveText(FILENAME_COMPONENT, component.c_str());
+        if (rpm_pkg)
+        {
+            dd.SaveText(FILENAME_PACKAGE, rpm_pkg);
+            free(rpm_pkg);
+        }
+
+        if (dsc)
+        {
+            dd.SaveText(FILENAME_DESCRIPTION, dsc);
+            free(dsc);
+        }
+
+        if (component)
+        {
+            dd.SaveText(FILENAME_COMPONENT, component);
+            free(component);
+        }
+
         if (!remote)
             dd.SaveText(FILENAME_HOSTNAME, host);
     }

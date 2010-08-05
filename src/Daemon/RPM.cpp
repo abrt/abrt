@@ -18,180 +18,206 @@
 */
 #include "abrtlib.h"
 #include "RPM.h"
+#include <rpm/header.h>
+#include <rpm/rpmts.h>
 #include "comm_layer_inner.h"
+#include <glib.h>
 
-CRPM::CRPM()
+/**
+* A set, which contains finger prints.
+*/
+
+static GList *list_fingerprints = NULL;
+
+void rpm_init()
 {
-    static const char *const argv[] = { "", NULL };
-    m_poptContext = rpmcliInit(1, (char**)argv, NULL);
+    int status = rpmReadConfigFiles((const char*)NULL, (const char*)NULL);
+    if (status != 0)
+        error_msg("error reading rc files");
+
+    list_fingerprints = g_list_alloc();
 }
 
-CRPM::~CRPM()
+static void list_free(gpointer data, gpointer user_data)
 {
-    rpmFreeCrypto();
+    free(data);
+}
+
+void rpm_destroy()
+{
     rpmFreeRpmrc();
-    rpmcliFini(m_poptContext);
+    rpmFreeCrypto();
+
+    g_list_foreach(list_fingerprints, list_free, NULL);
+    g_list_free(list_fingerprints);
 }
 
-void CRPM::LoadOpenGPGPublicKey(const char* pFileName)
+void rpm_load_gpgkey(const char* filename)
 {
-    uint8_t* pkt = NULL;
+    uint8_t *pkt = NULL;
     size_t pklen;
-    pgpKeyID_t keyID;
-    if (pgpReadPkts(pFileName, &pkt, &pklen) != PGPARMOR_PUBKEY)
+    if (pgpReadPkts(filename, &pkt, &pklen) != PGPARMOR_PUBKEY)
     {
         free(pkt);
-        error_msg("Can't load public GPG key %s", pFileName);
+        error_msg("Can't load public GPG key %s", filename);
         return;
     }
+
+    uint8_t keyID[8];
     if (pgpPubkeyFingerprint(pkt, pklen, keyID) == 0)
     {
-        char* fedoraFingerprint = pgpHexStr(keyID, sizeof(keyID));
-        if (fedoraFingerprint != NULL)
-        {
-            m_setFingerprints.insert(fedoraFingerprint);
-            free(fedoraFingerprint);
-        }
+        char *fingerprint = pgpHexStr(keyID, sizeof(keyID));
+        if (fingerprint != NULL)
+            g_list_append(list_fingerprints, fingerprint);
     }
     free(pkt);
 }
 
-bool CRPM::CheckFingerprint(const char* pPackage)
+bool rpm_chk_fingerprint(const char* pkg)
 {
     bool ret = false;
+    char *pgpsig = NULL;
+    const char *errmsg = NULL;
+
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage, 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pkg, 0);
     Header header = rpmdbNextIterator(iter);
 
-    if (header != NULL)
+    if (!header)
+        goto error;
+
+    pgpsig = headerFormat(header, "%{SIGGPG:pgpsig}", &errmsg);
+    if (!pgpsig && errmsg)
     {
-        rpmTag rpmTags[] = { RPMTAG_DSAHEADER, RPMTAG_RSAHEADER, RPMTAG_SHA1HEADER };
-        int ii;
-        for (ii = 0; ii < 3; ii++)
+        VERB1 log("cannot get siggpg:pgpsig. reason: %s", errmsg);
+        goto error;
+    }
+
+    {
+        char *pgpsig_tmp = strstr(pgpsig, " Key ID ");
+        if (pgpsig_tmp)
         {
-            if (headerIsEntry(header, rpmTags[ii]))
-            {
-                rpmtd td = rpmtdNew();
-                headerGet(header, rpmTags[ii] , td, HEADERGET_DEFAULT);
-                char* pgpsig = rpmtdFormat(td, RPMTD_FORMAT_PGPSIG , NULL);
-                rpmtdFree(td);
-                if (pgpsig)
-                {
-                    std::string PGPSignatureText = pgpsig;
-                    free(pgpsig);
-
-                    size_t Key_ID_pos = PGPSignatureText.find(" Key ID ");
-                    if (Key_ID_pos != std::string::npos)
-                    {
-                        std::string headerFingerprint = PGPSignatureText.substr(Key_ID_pos + sizeof (" Key ID ") - 1);
-
-                        if (headerFingerprint != "")
-                        {
-                            if (m_setFingerprints.find(headerFingerprint) != m_setFingerprints.end())
-                            {
-                                ret = true;
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
+            pgpsig_tmp += sizeof(" Key ID ") - 1;
+            ret = g_list_find(list_fingerprints, pgpsig_tmp) != NULL;
         }
     }
+
+error:
+    free(pgpsig);
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
     return ret;
 }
 
+/*
+  Checking the MD5 sum requires to run prelink to "un-prelink" the
+  binaries - this is considered potential security risk so we don't
+  use it, until we find some non-intrusive way
+*/
+
+/*
+ * Not woking, need to be rewriten
+ *
 bool CheckHash(const char* pPackage, const char* pPath)
 {
-    bool ret = false;
+    bool ret = true;
     rpmts ts = rpmtsCreate();
     rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage, 0);
     Header header = rpmdbNextIterator(iter);
-    if (header != NULL)
-    {
-        rpmfi fi = rpmfiNew(ts, header, RPMTAG_BASENAMES, RPMFI_NOHEADER);
-        pgpHashAlgo hashAlgo;
-        std::string headerHash;
-        char computedHash[1024] = "";
+    if (header == NULL)
+        goto error;
 
-        while (rpmfiNext(fi) != -1)
+    rpmfi fi = rpmfiNew(ts, header, RPMTAG_BASENAMES, RPMFI_NOHEADER);
+    pgpHashAlgo hashAlgo;
+    std::string headerHash;
+    char computedHash[1024] = "";
+
+    while (rpmfiNext(fi) != -1)
+    {
+        if (strcmp(pPath, rpmfiFN(fi)) == 0)
         {
-            if (strcmp(pPath, rpmfiFN(fi)) == 0)
-            {
-                headerHash = rpmfiFDigestHex(fi, &hashAlgo);
-                rpmDoDigest(hashAlgo, pPath, 1, (unsigned char*) computedHash, NULL);
-                ret = (headerHash != "" && headerHash == computedHash);
-                break;
-            }
+            headerHash = rpmfiFDigestHex(fi, &hashAlgo);
+            rpmDoDigest(hashAlgo, pPath, 1, (unsigned char*) computedHash, NULL);
+            ret = (headerHash != "" && headerHash == computedHash);
+            break;
         }
-        rpmfiFree(fi);
     }
+    rpmfiFree(fi);
+error:
+    rpmdbFreeIterator(iter);
+    rpmtsFree(ts);
+    return ret;
+}
+*/
+
+char* rpm_get_description(const char* pkg)
+{
+    char *dsc = NULL;
+    const char *errmsg = NULL;
+    rpmts ts = rpmtsCreate();
+
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pkg, 0);
+    Header header = rpmdbNextIterator(iter);
+    if (!header)
+        goto error;
+
+    dsc = headerFormat(header, "%{SUMMARY}\n\n%{DESCRIPTION}", &errmsg);
+    if (!dsc && errmsg)
+        error_msg("cannot get summary and description. reason: %s", errmsg);
+
+error:
+    rpmdbFreeIterator(iter);
+    rpmtsFree(ts);
+    return dsc;
+}
+
+char* rpm_get_component(const char* filename)
+{
+    char *ret = NULL;
+    char *srpm = NULL;
+    const char *errmsg = NULL;
+
+    rpmts ts = rpmtsCreate();
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
+    Header header = rpmdbNextIterator(iter);
+    if (!header)
+        goto error;
+
+    srpm = headerFormat(header, "%{SOURCERPM}", &errmsg);
+    if (!srpm && errmsg)
+    {
+        error_msg("cannot get srpm. reason: %s", errmsg);
+        goto error;
+    }
+
+    ret = get_package_name_from_NVR_or_NULL(srpm);
+    free(srpm);
+
+error:
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
     return ret;
 }
 
-std::string GetDescription(const char* pPackage)
+// caller is responsible to free returned value
+char* rpm_get_package_nvr(const char* filename)
 {
-    std::string pDescription;
+    char* nvr = NULL;
+    const char *errmsg = NULL;
+
     rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_NAME, pPackage, 0);
+    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, filename, 0);
     Header header = rpmdbNextIterator(iter);
-    if (header != NULL)
-    {
-        rpmtd td = rpmtdNew();
-        headerGet(header, RPMTAG_SUMMARY, td, HEADERGET_DEFAULT);
-        const char* summary = rpmtdGetString(td);
-        headerGet(header, RPMTAG_DESCRIPTION, td, HEADERGET_DEFAULT);
-        const char* description = rpmtdGetString(td);
-        pDescription = summary + std::string("\n\n") + description;
-        rpmtdFree(td);
-    }
+
+    if (!header)
+        goto error;
+
+    nvr = headerFormat(header, "%{NAME}-%{VERSION}-%{RELEASE}", &errmsg);
+    if (!nvr && errmsg)
+        error_msg("cannot get nvr. reason: %s", errmsg);
+
+error:
     rpmdbFreeIterator(iter);
     rpmtsFree(ts);
-    return pDescription;
-}
-
-std::string GetComponent(const char* pFileName)
-{
-    std::string ret;
-    char *package_name;
-    rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName, 0);
-    Header header = rpmdbNextIterator(iter);
-    if (header != NULL)
-    {
-        rpmtd td = rpmtdNew();
-        headerGet(header, RPMTAG_SOURCERPM, td, HEADERGET_DEFAULT);
-        const char * srpm = rpmtdGetString(td);
-        if (srpm != NULL)
-        {
-            package_name = get_package_name_from_NVR_or_NULL(srpm);
-            ret = std::string(package_name);
-            free(package_name);
-        }
-        rpmtdFree(td);
-    }
-
-    rpmdbFreeIterator(iter);
-    rpmtsFree(ts);
-    return ret;
-}
-
-char* GetPackage(const char* pFileName)
-{
-    char* ret = NULL;
-    rpmts ts = rpmtsCreate();
-    rpmdbMatchIterator iter = rpmtsInitIterator(ts, RPMTAG_BASENAMES, pFileName, 0);
-    Header header = rpmdbNextIterator(iter);
-    if (header != NULL)
-    {
-        ret = headerGetNEVR(header, NULL);
-    }
-
-    rpmdbFreeIterator(iter);
-    rpmtsFree(ts);
-    return ret;
+    return nvr;
 }

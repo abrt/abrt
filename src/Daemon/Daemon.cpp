@@ -43,6 +43,7 @@
 #include "debug_dump.h"
 #include "Daemon.h"
 #include "dumpsocket.h"
+#include "RPM.h"
 
 using namespace std;
 
@@ -852,6 +853,9 @@ int main(int argc, char** argv)
         if (env.fault_occurred)
             error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
 
+        VERB1 log("Initializing rpm library");
+        rpm_init();
+
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
         /* Watching DEBUG_DUMPS_DIR for new files... */
@@ -960,6 +964,7 @@ int main(int argc, char** argv)
      * Take care to not undo things we did not do.
      */
     dumpsocket_shutdown();
+    rpm_destroy();
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);
     if (lockfile_created)
