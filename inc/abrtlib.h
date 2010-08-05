@@ -56,45 +56,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
-
-/* Logging */
-enum {
-	LOGMODE_NONE = 0,
-	LOGMODE_STDIO = (1 << 0),
-	LOGMODE_SYSLOG = (1 << 1),
-	LOGMODE_BOTH = LOGMODE_SYSLOG + LOGMODE_STDIO,
-	LOGMODE_CUSTOM = (1 << 2),
-};
-extern void (*g_custom_logger)(const char*);
-extern const char *msg_prefix;
-extern const char *msg_eol;
-extern int logmode;
-extern int xfunc_error_retval;
-void xfunc_die(void) NORETURN;
-void log_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
-/* It's a macro, not function, since it collides with log() from math.h */
-#undef log
-#define log(...) log_msg(__VA_ARGS__)
-/* error_msg family will use g_custom_logger. log_msg does not. */
-void error_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
-void error_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
-/* Reports error message with libc's errno error description attached. */
-void perror_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
-void perror_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
-void perror_nomsg_and_die(void) NORETURN;
-void perror_nomsg(void);
-void verror_msg(const char *s, va_list p, const char *strerr);
-void die_out_of_memory(void) NORETURN;
-
-/* Verbosity level */
-extern int g_verbose;
-/* VERB1 log("what you sometimes want to see, even on a production box") */
-#define VERB1 if (g_verbose >= 1)
-/* VERB2 log("debug message, not going into insanely small details") */
-#define VERB2 if (g_verbose >= 2)
-/* VERB3 log("lots and lots of details") */
-#define VERB3 if (g_verbose >= 3)
-/* there is no level > 3 */
+#include "logging.h"
 
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);
@@ -118,16 +80,7 @@ int xatoi(const char *numstr);
  * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc */
 int xatoi_u(const char *numstr);
 
-
-extern ssize_t safe_read(int fd, void *buf, size_t count);
-// NB: will return short read on error, not -1,
-// if some data was read before error occurred
-extern ssize_t full_read(int fd, void *buf, size_t count);
-extern void xread(int fd, void *buf, size_t count);
-extern ssize_t safe_write(int fd, const void *buf, size_t count);
-// NB: will return short write on error, not -1,
-// if some data was written before error occurred
-extern ssize_t full_write(int fd, const void *buf, size_t count);
+#include "read_write.h"
 
 /* copyfd_XX print read/write errors and return -1 if they occur */
 enum {
@@ -247,4 +200,28 @@ std::string to_string(T x)
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
 void parse_release(const char *pRelease, char **product, char **version);
 
+// TODO: npajkovs: full rewrite ssprintf -> xasprintf
+static inline std::string ssprintf(const char *format, ...)
+{
+    va_list p;
+    char *string_ptr;
+
+    va_start(p, format);
+    string_ptr = xvasprintf(format, p);
+    va_end(p);
+
+    std::string res = string_ptr;
+    free(string_ptr);
+    return res;
+}
+
+static inline std::string concat_path_file(const char *path, const char *filename)
+{
+    char *lc;
+
+    while (*filename == '/')
+            filename++;
+    lc = last_char_is(path, '/');
+    return ssprintf("%s%s%s", path, (lc==NULL ? "/" : ""), filename);
+}
 #endif

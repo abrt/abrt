@@ -22,8 +22,7 @@
  *
  */
 
-#include "abrtlib.h"
-#include <syslog.h>
+#include "logging.h"
 
 int xfunc_error_retval = EXIT_FAILURE;
 int g_verbose;

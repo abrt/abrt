@@ -22,7 +22,7 @@
  *
  */
 
-#include "abrtlib.h"
+#include "xfuncs.h"
 
 /* Turn on nonblocking I/O on a fd */
 int ndelay_on(int fd)
@@ -204,20 +204,6 @@ char* xasprintf(const char *format, ...)
     return string_ptr;
 }
 
-std::string ssprintf(const char *format, ...)
-{
-    va_list p;
-    char *string_ptr;
-
-    va_start(p, format);
-    string_ptr = xvasprintf(format, p);
-    va_end(p);
-
-    std::string res = string_ptr;
-    free(string_ptr);
-    return res;
-}
-
 void xsetenv(const char *key, const char *value)
 {
     if (setenv(key, value, 1))
@@ -365,16 +351,6 @@ char *last_char_is(const char *s, int c)
             return (char*)s;
     }
     return NULL;
-}
-
-std::string concat_path_file(const char *path, const char *filename)
-{
-    char *lc;
-
-    while (*filename == '/')
-            filename++;
-    lc = last_char_is(path, '/');
-    return ssprintf("%s%s%s", path, (lc==NULL ? "/" : ""), filename);
 }
 
 bool string_to_bool(const char *s)

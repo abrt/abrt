@@ -3,7 +3,8 @@
  *
  * Licensed under GPLv2 or later, see file COPYING in this tarball for details.
  */
-#include "abrtlib.h"
+
+#include "read_write.h"
 
 ssize_t safe_read(int fd, void *buf, size_t count)
 {

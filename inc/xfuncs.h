@@ -19,10 +19,17 @@
 #ifndef ABRT_XFUNCS_H
 #define ABRT_XFUNCS_H
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <stdbool.h>
+#include <fcntl.h>
+#include <pwd.h>
+
+#include "logging.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -86,11 +93,6 @@ extern const char *get_home_dir(uid_t uid);
 
 #ifdef __cplusplus
 }
-#endif
-
-#ifdef __cplusplus
-std::string ssprintf(const char *format, ...);
-std::string concat_path_file(const char *path, const char *filename);
 #endif
 
 #endif

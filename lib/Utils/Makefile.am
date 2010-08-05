@@ -10,10 +10,10 @@ AM_YFLAGS = --verbose
 # xconnect.cpp
 
 libABRTUtils_la_SOURCES = \
-    xfuncs.cpp \
+    xfuncs.c \
     encbase64.cpp \
-    read_write.cpp \
-    logging.cpp \
+    read_write.c read_write.h \
+    logging.c logging.h \
     copyfd.cpp \
     daemon.cpp \
     skip_whitespace.cpp \
