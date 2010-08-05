@@ -1,0 +1,1334 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 1\n"
+"Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
+"POT-Creation-Date: 2010-08-03 01:19+0000\n"
+"PO-Revision-Date: 2010-08-05 16:45+0330\n"
+"Last-Translator: Mostafa <info@mostafadaneshvar.com>\n"
+"Language-Team: Persian <trans-fa@lists.fedoraproject.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-Language: Persian\n"
+"X-Poedit-Country: IRAN, ISLAMIC REPUBLIC OF\n"
+"X-Poedit-SourceCharset: utf-8\n"
+
+#: ../lib/Plugins/Bugzilla.cpp:466
+#, c-format
+msgid "New bug id: %i"
+msgstr "شناسه جدید باگ: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:561
+#, c-format
+msgid "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla.conf. Server said: %s"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:681
+msgid ""
+"Empty login or password.\n"
+"Please check "
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:690
+msgid "Logging into bugzilla..."
+msgstr "درحال واردشدن به باگزیلا..."
+
+#: ../lib/Plugins/Bugzilla.cpp:693
+msgid "Checking for duplicates..."
+msgstr "برای چک کردن تکراری..."
+
+#: ../lib/Plugins/Bugzilla.cpp:714
+#: ../lib/Plugins/Bugzilla.cpp:749
+msgid "Missing mandatory member 'bugs'"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:732
+#: ../lib/Plugins/Bugzilla.cpp:765
+#: ../lib/Plugins/Bugzilla.cpp:841
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:781
+msgid "Creating a new bug..."
+msgstr "درحال ساختن یک باگ جدید..."
+
+#: ../lib/Plugins/Bugzilla.cpp:786
+msgid "Bugzilla entry creation failed"
+msgstr "ساختن باگ جدید با خطا مواجه شد"
+
+#: ../lib/Plugins/Bugzilla.cpp:796
+#: ../lib/Plugins/Bugzilla.cpp:891
+msgid "Logging out..."
+msgstr "درحال خروج..."
+
+#. decision based on state
+#: ../lib/Plugins/Bugzilla.cpp:815
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "خطا قبلا گزارش شده است: %i"
+
+#: ../lib/Plugins/Bugzilla.cpp:826
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.cpp:855
+#: ../lib/Plugins/Bugzilla.cpp:856
+#, c-format
+msgid "Adding %s to CC list"
+msgstr "افزودن %s به لیست CC"
+
+#: ../lib/Plugins/Bugzilla.cpp:880
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "افزودن اظهارنظر جدید به باگ %d"
+
+#: ../lib/Plugins/Bugzilla.cpp:979
+msgid "Reports bugs to bugzilla"
+msgstr "گزارش باگهابه باگزیلا"
+
+#: ../lib/Plugins/CCpp.cpp:185
+msgid "Generating backtrace"
+msgstr "درحال ساختن ردگیری"
+
+#: ../lib/Plugins/CCpp.cpp:353
+msgid "Starting the debuginfo installation"
+msgstr "شروع نصب اطلاعات خطاگیری"
+
+#. Compatibility code.
+#. This whole block should be deleted for Fedora 14.
+#: ../lib/Plugins/CCpp.cpp:566
+msgid "Getting global universal unique identification..."
+msgstr ""
+
+#: ../lib/Plugins/CCpp.cpp:748
+msgid "Skipping the debuginfo installation"
+msgstr ""
+
+#: ../lib/Plugins/CCpp.cpp:1061
+msgid "Analyzes crashes in C/C++ programs"
+msgstr ""
+
+#: ../lib/Plugins/FileTransfer.cpp:53
+#: ../lib/Plugins/ReportUploader.cpp:97
+msgid "FileTransfer: URL not specified"
+msgstr ""
+
+#: ../lib/Plugins/FileTransfer.cpp:57
+#: ../lib/Plugins/ReportUploader.cpp:101
+#, c-format
+msgid "Sending archive %s to %s"
+msgstr ""
+
+#: ../lib/Plugins/FileTransfer.cpp:298
+msgid "FileTransfer: Creating a report..."
+msgstr "ارسال‌فایل: درحال ساخت گزارش..."
+
+#: ../lib/Plugins/FileTransfer.cpp:322
+#: ../lib/Plugins/FileTransfer.cpp:351
+#, c-format
+msgid "Cannot create and send an archive: %s"
+msgstr ""
+
+#: ../lib/Plugins/FileTransfer.cpp:418
+msgid "Sends a report via FTP or SCTP"
+msgstr "ارسال گزارش از طریق اف‌تی‌پی یا اس‌سی‌تی‌پی"
+
+#: ../lib/Plugins/Kerneloops.cpp:142
+msgid "Analyzes kernel oopses"
+msgstr "تحلیل خطاهای هسته"
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:94
+msgid "Creating and submitting a report..."
+msgstr "درحال  ساخت و ارسال گزارش..."
+
+#: ../lib/Plugins/KerneloopsReporter.cpp:142
+msgid "Sends kernel oops information to kerneloops.org"
+msgstr "ارسال خطاهای هسته به kerneloops.org"
+
+#: ../lib/Plugins/KerneloopsScanner.cpp:200
+msgid "Periodically scans for and saves kernel oopses"
+msgstr ""
+
+#: ../lib/Plugins/Logger.cpp:73
+#, c-format
+msgid "Writing report to '%s'"
+msgstr "نوشتن گزارش به  '%s'"
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was appended to %s"
+msgstr ""
+
+#: ../lib/Plugins/Logger.cpp:79
+#, c-format
+msgid "The report was stored to %s"
+msgstr ""
+
+#: ../lib/Plugins/Logger.cpp:87
+msgid "Writes report to a file"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.cpp:135
+msgid "Sending an email..."
+msgstr "درحال ارسال ایمیل..."
+
+#: ../lib/Plugins/Mailx.cpp:192
+msgid "Sends an email with a report (via mailx command)"
+msgstr ""
+
+#: ../lib/Plugins/Python.cpp:97
+msgid "Analyzes crashes in Python programs"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.cpp:130
+#, c-format
+msgid "Sending failed, trying again. %s"
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.cpp:192
+msgid "Creating a ReportUploader report..."
+msgstr ""
+
+#: ../lib/Plugins/ReportUploader.cpp:502
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.cpp:233
+msgid "Creating a new case..."
+msgstr "درحال ساخت یک مورد جدید..."
+
+#: ../lib/Plugins/RunApp.cpp:73
+msgid "Runs a command, saves its output"
+msgstr ""
+
+#: ../lib/Plugins/SOSreport.cpp:98
+#, c-format
+msgid "Running sosreport: %s"
+msgstr ""
+
+#: ../lib/Plugins/SOSreport.cpp:103
+msgid "Finished running sosreport"
+msgstr ""
+
+#: ../lib/Plugins/SOSreport.cpp:159
+msgid "Runs sosreport, saves the output"
+msgstr ""
+
+#: ../lib/Plugins/SQLite3.cpp:678
+msgid "Keeps SQLite3 database about all crashes"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:1
+msgid "<b>Bugzilla plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Bugzilla.glade.h:2
+msgid "Bugzilla URL:"
+msgstr "آدرس باگزیلا:"
+
+#: ../lib/Plugins/Bugzilla.glade.h:3
+msgid "Don't have an account yet?"
+msgstr "هنوز حسابی ندارید؟"
+
+#: ../lib/Plugins/Bugzilla.glade.h:4
+msgid "Login(email):"
+msgstr "ورود(ایمیل):"
+
+#: ../lib/Plugins/Bugzilla.glade.h:5
+#: ../lib/Plugins/RHTSupport.glade.h:3
+msgid "Password:"
+msgstr "کلمه عبور:"
+
+#: ../lib/Plugins/Bugzilla.glade.h:6
+#: ../lib/Plugins/RHTSupport.glade.h:5
+msgid "SSL verify"
+msgstr "تایید اس‌اس‌ال"
+
+#: ../lib/Plugins/Bugzilla.glade.h:7
+#: ../lib/Plugins/RHTSupport.glade.h:6
+msgid "Show password"
+msgstr "نمایش کلمه عبور"
+
+#: ../lib/Plugins/Bugzilla.glade.h:8
+msgid "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">here</a>"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsReporter.glade.h:1
+msgid "<b>Kerneloops Reporter plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/KerneloopsReporter.glade.h:2
+msgid "Submit URL:"
+msgstr "ارسال آدرس:"
+
+#: ../lib/Plugins/Logger.glade.h:1
+msgid "<b>Logger plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Logger.glade.h:2
+msgid "Append new logs"
+msgstr "افزودن سیاهه های جدید"
+
+#: ../lib/Plugins/Logger.glade.h:3
+msgid "Logger file:"
+msgstr "فایل سیاهه:"
+
+#: ../lib/Plugins/Mailx.glade.h:1
+msgid "<b>Mailx plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/Mailx.glade.h:2
+msgid "Recipient's Email:"
+msgstr "ایمیل دریافت کننده :"
+
+#: ../lib/Plugins/Mailx.glade.h:3
+msgid "Send Binary Data"
+msgstr "ارسال داده های باینری"
+
+#: ../lib/Plugins/Mailx.glade.h:4
+msgid "Subject:"
+msgstr "موضوع:"
+
+#: ../lib/Plugins/Mailx.glade.h:5
+msgid "Your Email:"
+msgstr "ایمیل شما:"
+
+#: ../lib/Plugins/ReportUploader.glade.h:1
+msgid "<b>Ticket Uploader plugin configuration</b>"
+msgstr "<b>تنظیم افزونه ی آپلود کننده ی آگهی</b>"
+
+#: ../lib/Plugins/ReportUploader.glade.h:2
+msgid "Customer:"
+msgstr "مشتری:"
+
+#: ../lib/Plugins/ReportUploader.glade.h:3
+msgid "Retry count:"
+msgstr "شمار سعی:"
+
+#: ../lib/Plugins/ReportUploader.glade.h:4
+msgid "Retry delay:"
+msgstr "تاخیر سعی:"
+
+#: ../lib/Plugins/ReportUploader.glade.h:5
+msgid "Ticket:"
+msgstr "آگهی:"
+
+#: ../lib/Plugins/ReportUploader.glade.h:6
+msgid "URL:"
+msgstr "یو‌ار‌ال:"
+
+#: ../lib/Plugins/ReportUploader.glade.h:7
+msgid "Upload"
+msgstr "آپلود"
+
+#: ../lib/Plugins/ReportUploader.glade.h:8
+msgid "Use encryption"
+msgstr "استفاده از کدگذاری"
+
+#: ../lib/Plugins/RHTSupport.glade.h:1
+msgid "<b>RHTSupport plugin configuration</b>"
+msgstr ""
+
+#: ../lib/Plugins/RHTSupport.glade.h:2
+msgid "Login:"
+msgstr "ورود:"
+
+#: ../lib/Plugins/RHTSupport.glade.h:4
+msgid "RHTSupport URL:"
+msgstr ""
+
+#: ../src/Applet/abrt-applet.desktop.in.h:1
+msgid "ABRT notification applet"
+msgstr ""
+
+#: ../src/Applet/abrt-applet.desktop.in.h:2
+#: ../src/Gui/abrt.desktop.in.h:1
+#: ../src/Gui/ccgui.glade.h:10
+#: ../src/Gui/CCMainWindow.py:8
+#: ../src/Gui/report.glade.h:16
+msgid "Automatic Bug Reporting Tool"
+msgstr "ابزار گزارش خودکار خطا"
+
+#: ../src/Applet/Applet.cpp:85
+#, c-format
+msgid "A crash in the %s package has been detected"
+msgstr ""
+
+#: ../src/Applet/Applet.cpp:87
+msgid "A crash has been detected"
+msgstr ""
+
+#: ../src/Applet/Applet.cpp:284
+msgid "ABRT service is not running"
+msgstr ""
+
+#: ../src/Applet/CCApplet.cpp:39
+#: ../src/Applet/CCApplet.cpp:260
+#: ../src/Applet/CCApplet.cpp:287
+msgid "Warning"
+msgstr "اخطار"
+
+#: ../src/Applet/CCApplet.cpp:89
+msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgstr ""
+
+#: ../src/Applet/CCApplet.cpp:105
+#: ../src/Gui/ccgui.glade.h:23
+msgid "translator-credits"
+msgstr "مترجمین"
+
+#: ../src/Applet/CCApplet.cpp:115
+msgid "Hide"
+msgstr "پنهان"
+
+#: ../src/Applet/CCApplet.cpp:253
+#: ../src/Gui/ccgui.glade.h:13
+msgid "Report"
+msgstr "گزارش"
+
+#: ../src/Applet/CCApplet.cpp:256
+#: ../src/Applet/CCApplet.cpp:284
+msgid "Open ABRT"
+msgstr "بازکردن ABRT"
+
+#: ../src/CLI/CLI.cpp:56
+#, c-format
+msgid ""
+"\tUID        : %s\n"
+"\tUUID       : %s\n"
+"\tPackage    : %s\n"
+"\tExecutable : %s\n"
+"\tCrash Time : %s\n"
+"\tCrash Count: %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:74
+#, c-format
+msgid "\tHostname   : %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:103
+#, c-format
+msgid ""
+"Crash ID:           %s:%s\n"
+"Last crash:         %s\n"
+"Analyzer:           %s\n"
+"Component:          %s\n"
+"Package:            %s\n"
+"Command:            %s\n"
+"Executable:         %s\n"
+"System:             %s, kernel %s\n"
+"Rating:             %s\n"
+"Coredump file:      %s\n"
+"Reason:             %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:133
+#, c-format
+msgid "Crash function:     %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:137
+#, c-format
+msgid "Hostname:           %s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:141
+#, c-format
+msgid ""
+"\n"
+"How to reproduce:\n"
+"%s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:145
+#, c-format
+msgid ""
+"\n"
+"Comment:\n"
+"%s\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:151
+#, c-format
+msgid ""
+"\n"
+"Backtrace:\n"
+"%s\n"
+msgstr ""
+
+#. Message has embedded tabs.
+#: ../src/CLI/CLI.cpp:249
+#, c-format
+msgid ""
+"Usage: %s [OPTION]\n"
+"\n"
+"Startup:\n"
+"\t-V, --version\t\tdisplay the version of %s and exit\n"
+"\t-?, --help\t\tprint this help\n"
+"\n"
+"Actions:\n"
+"\t-l, --list\t\tprint a list of all crashes which are not yet reported\n"
+"\t      -f, --full\tprint a list of all crashes, including the already reported ones\n"
+"\t-r, --report CRASH_ID\tcreate and send a report\n"
+"\t      -y, --always\tcreate and send a report without asking\n"
+"\t-d, --delete CRASH_ID\tremove a crash\n"
+"\t-i, --info CRASH_ID\tprint detailed information about a crash\n"
+"\t      -b, --backtrace\tprint detailed information about a crash including backtrace\n"
+"CRASH_ID can be:\n"
+"\tUID:UUID pair,\n"
+"\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
+"\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
+msgstr ""
+
+#: ../src/CLI/CLI.cpp:295
+msgid "You must specify exactly one operation"
+msgstr ""
+
+#: ../src/CLI/report.cpp:179
+#, c-format
+msgid "# This field is read only\n"
+msgstr ""
+
+#: ../src/CLI/report.cpp:199
+msgid "# Describe the circumstances of this crash below"
+msgstr ""
+
+#: ../src/CLI/report.cpp:201
+msgid "# How to reproduce the crash?"
+msgstr ""
+
+#: ../src/CLI/report.cpp:203
+msgid ""
+"# Backtrace\n"
+"# Check that it does not contain any sensitive data (passwords, etc.)"
+msgstr ""
+
+#: ../src/CLI/report.cpp:205
+msgid "# Architecture"
+msgstr "# معماری"
+
+#: ../src/CLI/report.cpp:206
+msgid "# Command line"
+msgstr "# خط فرمان"
+
+#: ../src/CLI/report.cpp:207
+msgid "# Component"
+msgstr "# جز"
+
+#: ../src/CLI/report.cpp:208
+msgid "# Core dump"
+msgstr "# هسته روگرفت"
+
+#: ../src/CLI/report.cpp:209
+msgid "# Executable"
+msgstr "# قابل اجرا"
+
+#: ../src/CLI/report.cpp:210
+msgid "# Kernel version"
+msgstr "# نسخه هسته"
+
+#: ../src/CLI/report.cpp:211
+msgid "# Package"
+msgstr "# بسته"
+
+#: ../src/CLI/report.cpp:212
+msgid "# Reason of crash"
+msgstr "# دلیل شکست"
+
+#: ../src/CLI/report.cpp:213
+msgid "# Release string of the operating system"
+msgstr ""
+
+#: ../src/CLI/report.cpp:336
+msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
+msgstr ""
+
+#: ../src/CLI/report.cpp:424
+msgid ""
+"\n"
+"The report has been updated"
+msgstr ""
+
+#: ../src/CLI/report.cpp:426
+msgid ""
+"\n"
+"No changes were detected in the report"
+msgstr ""
+
+#. Read the missing information and push it to plugin settings.
+#: ../src/CLI/report.cpp:646
+#, c-format
+msgid "Wrong settings were detected for plugin %s\n"
+msgstr ""
+
+#: ../src/CLI/report.cpp:650
+msgid "Enter your login: "
+msgstr ""
+
+#: ../src/CLI/report.cpp:656
+msgid "Enter your password: "
+msgstr ""
+
+#: ../src/CLI/report.cpp:700
+msgid "Reporting..."
+msgstr "درحال گزارش..."
+
+#: ../src/CLI/report.cpp:719
+#, c-format
+msgid "Report using %s? [y/N]: "
+msgstr ""
+
+#: ../src/CLI/report.cpp:722
+msgid "Skipping..."
+msgstr "لغوکردن..."
+
+#: ../src/CLI/report.cpp:739
+#, c-format
+msgid "Crash reported via %d plugins (%d errors)\n"
+msgstr ""
+
+#: ../src/Daemon/CommLayerServerDBus.cpp:234
+msgid "Comment is too long"
+msgstr "اظهارنظر طولانی است"
+
+#: ../src/Daemon/CommLayerServerDBus.cpp:238
+msgid "'How to reproduce' is too long"
+msgstr "'نحوه ی بازتولید' بسیار طولانی است"
+
+#: ../src/Daemon/Daemon.cpp:517
+msgid "The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."
+msgstr ""
+
+#: ../src/Daemon/MiddleWare.cpp:579
+msgid "Database plugin not specified. Please check abrtd settings."
+msgstr ""
+
+#: ../src/Gui/abrt.desktop.in.h:2
+msgid "View and report application crashes"
+msgstr "دیدن و گزارش شکستهای برنامه"
+
+#: ../src/Gui/ABRTExceptions.py:6
+msgid "Another client is already running, trying to wake it..."
+msgstr ""
+
+#: ../src/Gui/ABRTExceptions.py:13
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgstr ""
+
+#: ../src/Gui/ABRTPlugin.py:62
+msgid "Not loaded plugins"
+msgstr "افزونه ها بارگذاری نشده اند"
+
+#: ../src/Gui/ABRTPlugin.py:63
+msgid "Analyzer plugins"
+msgstr "افزونه های آنالیزکننده"
+
+#: ../src/Gui/ABRTPlugin.py:64
+msgid "Action plugins"
+msgstr "افزونه های کار"
+
+#: ../src/Gui/ABRTPlugin.py:65
+msgid "Reporter plugins"
+msgstr "افزونه های گزارشگر"
+
+#: ../src/Gui/ABRTPlugin.py:66
+msgid "Database plugins"
+msgstr "پایگاه داده افزونه ها"
+
+#: ../src/Gui/CCDBusBackend.py:74
+#: ../src/Gui/CCDBusBackend.py:97
+msgid "Cannot connect to system dbus."
+msgstr ""
+
+#: ../src/Gui/CCDBusBackend.py:120
+#: ../src/Gui/CCDBusBackend.py:123
+msgid "Please check if the abrt daemon is running."
+msgstr ""
+
+#. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
+#: ../src/Gui/CCDBusBackend.py:174
+msgid ""
+"Daemon did not return a valid report info.\n"
+"Is debuginfo missing?"
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:1
+msgid "(C) 2009, 2010 Red Hat, Inc."
+msgstr "(C) ۲۰۰۹, ۲۰۱۰ ردهت."
+
+#: ../src/Gui/ccgui.glade.h:2
+msgid "<b>Bug Reports:</b>"
+msgstr "<b>گزارشهای خطا:</b>"
+
+#: ../src/Gui/ccgui.glade.h:3
+msgid "<b>Command:</b>"
+msgstr "<b>دستور:</b>"
+
+#: ../src/Gui/ccgui.glade.h:4
+msgid "<b>Comment:</b>"
+msgstr "<b>نظر:</b>"
+
+#: ../src/Gui/ccgui.glade.h:5
+msgid "<b>Crash Count:</b>"
+msgstr "<b>شمار شکست:</b>"
+
+#: ../src/Gui/ccgui.glade.h:6
+msgid "<b>Latest Crash:</b>"
+msgstr "<b>آخرین شکست:</b>"
+
+#: ../src/Gui/ccgui.glade.h:7
+msgid "<b>Reason:</b>"
+msgstr "<b>دلیل:</b>"
+
+#: ../src/Gui/ccgui.glade.h:8
+msgid "<b>User:</b>"
+msgstr "<b>کاربر:</b>"
+
+#: ../src/Gui/ccgui.glade.h:9
+msgid "About ABRT"
+msgstr "درباره ای‌بی‌ار‌تی"
+
+#: ../src/Gui/ccgui.glade.h:11
+msgid "Copy to Clipboard"
+msgstr "کپی بر کلپبرد"
+
+#: ../src/Gui/ccgui.glade.h:12
+#: ../src/Gui/settings.glade.h:19
+msgid "Plugins"
+msgstr "افزونه ها"
+
+#: ../src/Gui/ccgui.glade.h:14
+msgid ""
+"This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation; either version 2 of the License, or (at your option) any later version.\n"
+"\n"
+"This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details.\n"
+"\n"
+"You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>."
+msgstr ""
+
+#: ../src/Gui/ccgui.glade.h:19
+msgid "View log"
+msgstr "دیدن سیاهه"
+
+#: ../src/Gui/ccgui.glade.h:20
+msgid "_Edit"
+msgstr "ـاصلاح"
+
+#: ../src/Gui/ccgui.glade.h:21
+msgid "_File"
+msgstr "ـفایل"
+
+#: ../src/Gui/ccgui.glade.h:22
+msgid "_Help"
+msgstr "ـکمک"
+
+#. add pixbuff separatelly
+#: ../src/Gui/CCMainWindow.py:63
+msgid "Reported"
+msgstr "گزارش شده"
+
+#: ../src/Gui/CCMainWindow.py:71
+msgid "Application"
+msgstr "برنامه"
+
+#: ../src/Gui/CCMainWindow.py:73
+msgid "Hostname"
+msgstr "نام میزبان"
+
+#: ../src/Gui/CCMainWindow.py:75
+msgid "Latest Crash"
+msgstr "آخرین شکست"
+
+#: ../src/Gui/CCMainWindow.py:143
+#, python-format
+msgid ""
+"Cannot show the settings dialog.\n"
+"%s"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:148
+#, python-format
+msgid ""
+"Unable to finish the current task!\n"
+"%s"
+msgstr ""
+"قادر به اتمام وظیفه کنونی نیست!\n"
+"%s"
+
+#. there is something wrong with the daemon if we cant get the dumplist
+#: ../src/Gui/CCMainWindow.py:183
+#, python-format
+msgid ""
+"Error while loading the dumplist.\n"
+"%s"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:241
+#, python-format
+msgid ""
+"<b>%s Crash</b>\n"
+"%s"
+msgstr ""
+"<b>%s شکست</b>\n"
+"%s"
+
+#: ../src/Gui/CCMainWindow.py:337
+msgid "You have to select a crash to copy."
+msgstr "باید یک شکست برای کپی کردن انتخاب کنی."
+
+#: ../src/Gui/CCMainWindow.py:422
+msgid ""
+"Usage: abrt-gui [OPTIONS]\n"
+"\t-v[vv]\t\t\tVerbose\n"
+"\t--report=CRASH_ID\tDirectly report crash with CRASH_ID"
+msgstr ""
+
+#: ../src/Gui/CCMainWindow.py:445
+#, python-format
+msgid ""
+"No such crash in the database, probably wrong crashid.\n"
+"crashid=%s"
+msgstr ""
+
+#. default texts
+#: ../src/Gui/CCReporterDialog.py:22
+#: ../src/Gui/CReporterAssistant.py:19
+msgid "Brief description of how to reproduce this or what you did..."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:107
+msgid "You must check the backtrace for sensitive data."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:118
+#: ../src/Gui/CReporterAssistant.py:308
+#, python-format
+msgid ""
+"Reporting disabled because the backtrace is unusable.\n"
+"Please try to install debuginfo manually using the command: <b>debuginfo-install %s</b> \n"
+"then use the Refresh button to regenerate the backtrace."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:120
+msgid "The backtrace is unusable, you cannot report this!"
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:124
+#: ../src/Gui/CReporterAssistant.py:314
+msgid "The backtrace is incomplete, please make sure you provide the steps to reproduce."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:130
+msgid "Reporting disabled, please fix the problems shown above."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:132
+msgid "Sends the report using the selected plugin."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:398
+msgid ""
+"No reporter plugin available for this type of crash.\n"
+"Please check abrt.conf."
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:418
+#: ../src/Gui/CReporterAssistant.py:201
+#: ../src/Gui/PluginsSettingsDialog.py:169
+#, python-format
+msgid ""
+"Cannot save plugin settings:\n"
+" %s"
+msgstr ""
+"نمی تواند تنظیمات افزونه را ذخیره کند:\n"
+" %s"
+
+#: ../src/Gui/CCReporterDialog.py:448
+#: ../src/Gui/CReporterAssistant.py:231
+#, python-format
+msgid "Configure %s options"
+msgstr "تنظیم %s گزینه ها"
+
+#: ../src/Gui/CCReporterDialog.py:498
+#: ../src/Gui/CReporterAssistant.py:845
+msgid ""
+"Unable to get report!\n"
+"Is debuginfo missing?"
+msgstr ""
+
+#: ../src/Gui/CCReporterDialog.py:527
+#: ../src/Gui/CReporterAssistant.py:398
+#, python-format
+msgid ""
+"Reporting failed!\n"
+"%s"
+msgstr ""
+"گزارش باخطا مواجه است!\n"
+"%s"
+
+#: ../src/Gui/CCReporterDialog.py:553
+#: ../src/Gui/CCReporterDialog.py:574
+#: ../src/Gui/CReporterAssistant.py:884
+#, python-format
+msgid "Error acquiring the report: %s"
+msgstr "خطا در یافتن گزارش: %s"
+
+#: ../src/Gui/ConfBackend.py:77
+msgid "Cannot connect to the Gnome Keyring daemon."
+msgstr ""
+
+#. could happen if keyring daemon is running, but we run gui under
+#. user who is not the owner of the running session - using su
+#: ../src/Gui/ConfBackend.py:83
+msgid "Cannot get the default keyring."
+msgstr ""
+
+#: ../src/Gui/ConfBackend.py:102
+#: ../src/Gui/ConfBackend.py:118
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr ""
+
+#. we tried 2 times, so giving up the authorization
+#: ../src/Gui/ConfBackend.py:152
+#, python-format
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr ""
+
+#: ../src/Gui/ConfBackend.py:205
+msgid "Access to gnome-keyring has been denied, cannot load settings."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:20
+msgid "Crash info doesn't contain a backtrace"
+msgstr "اطلاعات شکست دربردارنده ی ردگیری نیست"
+
+#: ../src/Gui/CReporterAssistant.py:280
+#, python-format
+msgid "Rating is required by the %s plugin"
+msgstr "رده بندی به وسیله ی افزونه ی %s نیاز است"
+
+#: ../src/Gui/CReporterAssistant.py:282
+msgid "Rating is not required by any plugin, skipping the check..."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:286
+#, python-format
+msgid "Rating is %s"
+msgstr "درجه بندی %s"
+
+#: ../src/Gui/CReporterAssistant.py:289
+msgid "Crashdump doesn't have rating => we suppose it's not required"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:294
+msgid "You should check the backtrace for sensitive data."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:295
+msgid "You must agree with sending the backtrace."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:310
+msgid "Reporting disabled because the backtrace is unusable."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:355
+msgid "You did not provide any steps to reproduce."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:369
+msgid "You did not provide any comments."
+msgstr "هیچ نظری داده نشده است."
+
+#: ../src/Gui/CReporterAssistant.py:450
+#, python-format
+msgid ""
+"It looks like an application from the package <b>%s</b> has crashed on your system. It is a good idea to send a bug report about this issue. The report will provide software maintainers with information essential in figuring out how to provide a bug fix for you.\n"
+"\n"
+"Please review the information that follows and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share.\n"
+"\n"
+"Select where you would like to report the bug, and press 'Forward' to continue."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:510
+msgid "Only one reporter plugin is configured."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:516
+msgid "Send a bug report"
+msgstr "ارسال یک گزارش خطا"
+
+#: ../src/Gui/CReporterAssistant.py:554
+msgid ""
+"Below is the backtrace associated with your crash. A crash backtrace provides developers with details about how the crash happened, helping them track down the source of the problem.\n"
+"\n"
+"Please review the backtrace below and modify it as needed to ensure your bug report does not contain any sensitive data you would rather not share:"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:595
+msgid "Refresh"
+msgstr "بازآوری"
+
+#: ../src/Gui/CReporterAssistant.py:597
+msgid "Copy"
+msgstr "کپی"
+
+#: ../src/Gui/CReporterAssistant.py:603
+msgid "I agree with submitting the backtrace"
+msgstr "من با ارسال ردگیری موافقم"
+
+#: ../src/Gui/CReporterAssistant.py:608
+msgid "Approve the backtrace"
+msgstr "تایید ردگیری"
+
+#: ../src/Gui/CReporterAssistant.py:631
+msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:649
+msgid "Are there any comments you would like to share with the software maintainers?"
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:668
+msgid "Provide additional details"
+msgstr "دادن جزییات بیشتر"
+
+#: ../src/Gui/CReporterAssistant.py:675
+msgid "<b>Tip:</b> Your comments are not private. Please watch what you say accordingly."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:716
+msgid "Confirm and send the report"
+msgstr "تایید و ارسال گزارش"
+
+#: ../src/Gui/CReporterAssistant.py:718
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+
+#: ../src/Gui/CReporterAssistant.py:723
+msgid "<b>Basic details</b>"
+msgstr "<b>جزییات اولیه</b>"
+
+#. left table
+#: ../src/Gui/CReporterAssistant.py:730
+msgid "Component"
+msgstr "جزٔ"
+
+#: ../src/Gui/CReporterAssistant.py:731
+msgid "Package"
+msgstr "بسته"
+
+#: ../src/Gui/CReporterAssistant.py:732
+msgid "Executable"
+msgstr "قابل اجرا"
+
+#: ../src/Gui/CReporterAssistant.py:733
+msgid "Cmdline"
+msgstr "خطفرمان"
+
+#. right table
+#: ../src/Gui/CReporterAssistant.py:735
+msgid "Architecture"
+msgstr "معماری"
+
+#: ../src/Gui/CReporterAssistant.py:736
+msgid "Kernel"
+msgstr "هشته"
+
+#: ../src/Gui/CReporterAssistant.py:737
+msgid "Release"
+msgstr "انتشار"
+
+#: ../src/Gui/CReporterAssistant.py:738
+msgid "Reason"
+msgstr "دلیل"
+
+#: ../src/Gui/CReporterAssistant.py:749
+#: ../src/Gui/report.glade.h:3
+msgid "<b>Backtrace</b>"
+msgstr "<b>ردگیری</b>"
+
+#: ../src/Gui/CReporterAssistant.py:752
+msgid "Click to view..."
+msgstr "کلیک برای دیدن..."
+
+#: ../src/Gui/CReporterAssistant.py:764
+msgid "<b>Steps to reproduce:</b>"
+msgstr "<b>مراحل بازتولید:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:785
+msgid "<b>Comments:</b>"
+msgstr "<b>نظرات:</b>"
+
+#: ../src/Gui/CReporterAssistant.py:788
+msgid "No comment provided!"
+msgstr "هیچ نظری داده نشده است!"
+
+#: ../src/Gui/CReporterAssistant.py:824
+msgid "Finished sending the bug report"
+msgstr "ارسال گزارش خطا به پایان رسید"
+
+#: ../src/Gui/CReporterAssistant.py:828
+msgid "<b>Bug reports:</b>"
+msgstr "<b>گزارشهای خطا:</b>"
+
+#: ../src/Gui/dialogs.glade.h:1
+msgid "Log"
+msgstr "سیاهه"
+
+#: ../src/Gui/dialogs.glade.h:2
+msgid "Report done"
+msgstr "گزارش انجام شد"
+
+#: ../src/Gui/PluginSettingsUI.py:17
+msgid "Cannot find PluginDialog widget in the UI description!"
+msgstr ""
+
+#: ../src/Gui/PluginSettingsUI.py:24
+#, python-format
+msgid ""
+"No UI for the plugin <b>%s</b>, this is probably a bug.\n"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a>"
+msgstr ""
+
+#: ../src/Gui/PluginSettingsUI.py:59
+#: ../src/Gui/PluginSettingsUI.py:85
+msgid "Combo box is not implemented"
+msgstr ""
+
+#: ../src/Gui/PluginSettingsUI.py:68
+msgid "Nothing to hydrate!"
+msgstr ""
+
+#: ../src/Gui/PluginsSettingsDialog.py:24
+msgid "Cannot load the GUI description for SettingsDialog!"
+msgstr ""
+
+#. Create/configure columns and add them to pluginlist
+#. column "name" has two kind of cells:
+#: ../src/Gui/PluginsSettingsDialog.py:41
+msgid "Name"
+msgstr "نام"
+
+#: ../src/Gui/PluginsSettingsDialog.py:148
+msgid "Please select a plugin from the list to edit it's options."
+msgstr ""
+
+#: ../src/Gui/PluginsSettingsDialog.py:156
+#, python-format
+msgid ""
+"Error while opening the plugin settings UI: \n"
+"\n"
+"%s"
+msgstr ""
+
+#: ../src/Gui/progress_window.glade.h:1
+#: ../src/Gui/report.glade.h:17
+msgid "Details"
+msgstr "جزییات"
+
+#: ../src/Gui/progress_window.glade.h:2
+#: ../src/Gui/report.glade.h:21
+msgid "Please wait..."
+msgstr "لطفا صبرکنید..."
+
+#: ../src/Gui/report.glade.h:1
+msgid " "
+msgstr ""
+
+#: ../src/Gui/report.glade.h:2
+msgid "<b>Attachments</b>"
+msgstr "<b>الصاقها</b>"
+
+#: ../src/Gui/report.glade.h:4
+msgid "<b>Comment</b>"
+msgstr "<b>نظر</b>"
+
+#: ../src/Gui/report.glade.h:5
+msgid "<b>How to reproduce (in a few simple steps)</b>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:6
+msgid "<b>Please fix the following problems:</b>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:7
+msgid "<b>Where do you want to report this incident?</b>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:8
+msgid "<span fgcolor=\"blue\">Architecture:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:9
+msgid "<span fgcolor=\"blue\">Cmdline:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:10
+msgid "<span fgcolor=\"blue\">Component:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:11
+msgid "<span fgcolor=\"blue\">Executable:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:12
+msgid "<span fgcolor=\"blue\">Kernel:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:13
+msgid "<span fgcolor=\"blue\">Package:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:14
+msgid "<span fgcolor=\"blue\">Reason:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:15
+msgid "<span fgcolor=\"blue\">Release:</span>"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:18
+msgid "Forces ABRT to regenerate the backtrace."
+msgstr ""
+
+#: ../src/Gui/report.glade.h:19
+msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
+msgstr ""
+
+#: ../src/Gui/report.glade.h:20
+msgid "N/A"
+msgstr "ناشناس"
+
+#: ../src/Gui/report.glade.h:22
+msgid "Reporter Selector"
+msgstr "انتخاب کننده ی گزارش کننده"
+
+#: ../src/Gui/report.glade.h:23
+msgid "Send report"
+msgstr "ارسال گزارش"
+
+#: ../src/Gui/report.glade.h:24
+msgid "Show log"
+msgstr "نمایش سیاهه"
+
+#: ../src/Gui/SettingsDialog.py:33
+#: ../src/Gui/SettingsDialog.py:50
+msgid "<b>Select plugin</b>"
+msgstr "<b>انتخاب افزونه</b>"
+
+#: ../src/Gui/SettingsDialog.py:36
+msgid "<b>Select database backend</b>"
+msgstr ""
+
+#: ../src/Gui/SettingsDialog.py:169
+msgid "Remove this job"
+msgstr "حذف اینکار"
+
+#: ../src/Gui/SettingsDialog.py:213
+msgid "Remove this action"
+msgstr "حذف این عمل"
+
+#: ../src/Gui/settings.glade.h:1
+msgid "<b>Analyzer plugin</b>"
+msgstr "<b>افزونه تحلیلگر</b>"
+
+#: ../src/Gui/settings.glade.h:2
+msgid "<b>Associated action</b>"
+msgstr "<b>کار همراه</b>"
+
+#: ../src/Gui/settings.glade.h:3
+msgid "<b>Plugin details</b>"
+msgstr "<b>جزییات افزونه</b>"
+
+#: ../src/Gui/settings.glade.h:4
+msgid "<b>Plugin</b>"
+msgstr "<b>افزونه</b>"
+
+#: ../src/Gui/settings.glade.h:5
+msgid "<b>Time (or period)</b>"
+msgstr "<b>زمان (یا دوره)</b>"
+
+#: ../src/Gui/settings.glade.h:6
+msgid "Analyzers, Actions, Reporters"
+msgstr "تحلیلگرها، کارها، گزارش کننده ها"
+
+#: ../src/Gui/settings.glade.h:7
+msgid "Author:"
+msgstr "نویسنده:"
+
+#: ../src/Gui/settings.glade.h:8
+msgid "Blacklisted packages: "
+msgstr "بسته های تحریم شده:"
+
+#: ../src/Gui/settings.glade.h:9
+msgid "C_onfigure Plugin"
+msgstr "تـنظیم افزونه"
+
+#: ../src/Gui/settings.glade.h:10
+msgid "Check package GPG signature"
+msgstr "کنترل کردن امضای GPG بسته"
+
+#: ../src/Gui/settings.glade.h:11
+msgid "Common"
+msgstr "متداول"
+
+#: ../src/Gui/settings.glade.h:12
+msgid "Cron"
+msgstr "مداوم"
+
+#: ../src/Gui/settings.glade.h:13
+msgid "Database backend: "
+msgstr "پایگاه داده بخش مدیریت:"
+
+#: ../src/Gui/settings.glade.h:14
+msgid "Description:"
+msgstr "توضیح:"
+
+#: ../src/Gui/settings.glade.h:15
+msgid "GPG Keys"
+msgstr "کلیدهای GPG"
+
+#: ../src/Gui/settings.glade.h:16
+msgid "GPG keys: "
+msgstr "کلیدهای GPG:"
+
+#: ../src/Gui/settings.glade.h:17
+msgid "Max coredump storage size (MB):"
+msgstr "حداکثر اندازه coredump ذخیره سازی (مگابایت):"
+
+#: ../src/Gui/settings.glade.h:18
+msgid "Name:"
+msgstr "نام:"
+
+#: ../src/Gui/settings.glade.h:20
+msgid "Preferences"
+msgstr "ترجیحات:"
+
+#: ../src/Gui/settings.glade.h:21
+msgid "Version:"
+msgstr "نسخه:"
+
+#: ../src/Gui/settings.glade.h:22
+msgid "Web Site:"
+msgstr "وبسایت:"
+
+#: ../src/Gui/settings_wizard.glade.h:1
+msgid "<b>Do you want to continue?</b>"
+msgstr "<b>آیا می خواهید ادامه دهید؟</b>"
+
+#: ../src/Gui/settings_wizard.glade.h:2
+msgid "Wrong Settings Detected"
+msgstr "تنظیمات اشتباه یافت شد"
+
+#: ../src/Gui/settings_wizard.glade.h:3
+msgid "Wrong settings were detected for some of the enabled reporter plugins. Please use the buttons below to open the respective configuration and fix it before you proceed, otherwise, the reporting process may fail.\n"
+msgstr "تنظیمات غلط برای بعضی از پلاگین ها گزارش کننده فعال تشخیص داده شد. لطفا از دکمه های زیر را پیکربندی مربوطه برای باز کردن و تعمیر آن قبل از ادامه دادن استفاده کنید ، در غیر این صورت ، فرآیند گزارش ممکن است شکست بخورند.\n"
+
