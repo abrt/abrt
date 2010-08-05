@@ -43,7 +43,7 @@
 #include "debug_dump.h"
 #include "Daemon.h"
 #include "dumpsocket.h"
-#include "RPM.h"
+#include "rpm.h"
 
 using namespace std;
 

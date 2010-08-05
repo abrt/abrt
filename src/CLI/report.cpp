@@ -35,6 +35,8 @@
 # define _(S) (S)
 #endif
 
+#include "abrt_packages.h"
+
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"
 

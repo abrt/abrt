@@ -22,11 +22,18 @@
 #ifndef RPM_H_
 #define RPM_H_
 
-#include <rpm/rpmcli.h>
 #include <rpm/rpmts.h>
+#include <glib.h>
+#include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
 #include <rpm/rpmpgp.h>
-#include "abrt_types.h"
+#include <stdbool.h>
+
+#include "xfuncs.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /**
  * Checks if an application is modified by third party.
@@ -36,7 +43,6 @@
  * Not used. Delete?
  */
 //bool CheckHash(const char* pPackage, const char* pPath);
-
 
 void rpm_init();
 
@@ -76,5 +82,9 @@ char* rpm_get_package_nvr(const char* filename);
  * @return a malloc'ed package name. Need to be freed.
  */
 char* rpm_get_component(const char* filename);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

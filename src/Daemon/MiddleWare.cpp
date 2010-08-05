@@ -24,9 +24,10 @@
 #include "abrt_types.h"
 #include "Daemon.h"
 #include "Settings.h"
-#include "RPM.h"
+#include "rpm.h"
 #include "debug_dump.h"
 #include "abrt_exception.h"
+#include "abrt_packages.h"
 #include "comm_layer_inner.h"
 #include "MiddleWare.h"
 

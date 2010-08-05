@@ -4,7 +4,7 @@ sbin_PROGRAMS = abrtd
 
 abrtd_SOURCES = \
     PluginManager.h PluginManager.cpp \
-    RPM.h RPM.cpp \
+    rpm.h rpm.c \
     MiddleWare.h MiddleWare.cpp \
     CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \
