@@ -56,7 +56,6 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 	$(mkdir_p) '$@'
 
 install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
-	chmod 0600 $(DESTDIR)$(sysconfdir)/abrt/plugins/Bugzilla.conf
 	sed 's: = /var/: = $(localstatedir)/:g' -i \
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf \
 	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
