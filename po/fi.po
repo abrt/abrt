@@ -6,16 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-29 13:47+0000\n"
-"PO-Revision-Date: 2010-07-30 00:36+0300\n"
+"POT-Creation-Date: 2010-08-05 12:19+0000\n"
+"PO-Revision-Date: 2010-08-06 22:54+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Virtaal 0.6.1\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
 #, c-format
@@ -116,25 +114,25 @@ msgstr "Ohitetaan debuginfon asennus"
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analysoi C/C++-ohjelmien kaatumisia"
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL:ää ei ole määritelty"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Lähetetään arkisto %s osoitteeseen %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
 msgstr "Lähettää raportin FTP:llä tai SCTP:llä"
 
@@ -259,8 +257,8 @@ msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
 msgstr ""
-"Voit luoda sen <a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\">täällä</a>"
+"Voit luoda sen <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">täällä</a>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -433,24 +431,37 @@ msgid ""
 "Coredump file:      %s\n"
 "Reason:             %s\n"
 msgstr ""
+"Kaatumistunniste:   %s:%s\n"
+"Edell. kaatuminen:  %s\n"
+"Analysoija:         %s\n"
+"Komponentti:        %s\n"
+"Paketti:            %s\n"
+"Komento:            %s\n"
+"Suoritettava:       %s\n"
+"Järjestelmä:        %s, ydin %s\n"
+"Arvostelu:          %s\n"
+"Muistivedostied.:   %s\n"
+"Syy:                %s\n"
 
 #: ../src/CLI/CLI.cpp:133
 #, c-format
 msgid "Crash function:     %s\n"
-msgstr ""
+msgstr "Kaatumisfunktio:   %s\n"
 
 #: ../src/CLI/CLI.cpp:137
-#, fuzzy, c-format
+#, c-format
 msgid "Hostname:           %s\n"
-msgstr "\tKonenimi     : %s\n"
+msgstr "Konenimi:          %s\n"
 
 #: ../src/CLI/CLI.cpp:141
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "\n"
 "How to reproduce:\n"
 "%s\n"
-msgstr "# Kuinka kaatumisen voi toistaa?"
+msgstr "\n"
+"Kuinka kaatumisen voi toistaa:\n"
+"%s\n"
 
 #: ../src/CLI/CLI.cpp:145
 #, c-format
@@ -459,6 +470,9 @@ msgid ""
 "Comment:\n"
 "%s\n"
 msgstr ""
+"\n"
+"Kommentti:\n"
+"%s\n"
 
 #: ../src/CLI/CLI.cpp:151
 #, c-format
@@ -467,6 +481,9 @@ msgid ""
 "Backtrace:\n"
 "%s\n"
 msgstr ""
+"\n"
+"Pinolistaus:\n"
+"%s\n"
 
 #. Message has embedded tabs.
 #: ../src/CLI/CLI.cpp:249
@@ -493,6 +510,24 @@ msgid ""
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
+"Käyttö: %s [VALITSIN]\n"
+"\n"
+"Käynnistys:\n"
+"\t-V, --version\t\tnäytä %s:n versio ja poistu\n"
+"\t-?, --help\t\ttulosta tämä ohje\n"
+"\n"
+"Toiminnot:\n"
+"\t-l, --list\t\ttulosta luettelo kaikista kaatumisista, joita ei ole vielä raportoitu\n"
+"\t      -f, --full\ttulosta luettelo kaikista kaatumisista, myös raportoiduista\n"
+"\t-r, --report KAATUMISTUNNUS\tluo ja lähetä raportti\n"
+"\t      -y, --always\tluo ja lähetä raportti kysymättä\n"
+"\t-d, --delete KAATUMISTUNNUS\tpoista kaatuminen\n"
+"\t-i, --info KAATUMISTUNNUS\ttulosta tiedot kaatumisesta\n"
+"\t      -b, --backtrace\ttulosta tiedot kaatumisesta, mukaan lukien pinovedos\n"
+"KAATUMISTUNNUS voi olla:\n"
+"\tUID:UUID-pari,\n"
+"\tuniikki UUID-etuliite  - käytetään kaatumista, jonka tunnus vastaa UUID:tä\n"
+"\t@N  - käytetään N:ttä kaatumista (järjestys näkyy --list --full -valitsimilla)\n"
 
 #: ../src/CLI/CLI.cpp:295
 msgid "You must specify exactly one operation"
