@@ -144,5 +144,5 @@ libPython_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils
 # FileTrasfer
 libFileTransfer_la_SOURCES = FileTransfer.cpp FileTransfer.h
 libFileTransfer_la_LDFLAGS = -avoid-version -ltar -lbz2 -lz
-libFileTransfer_la_LIBADD = $(CURL_LIBS) $(ZIP_LIBS)
+libFileTransfer_la_LIBADD = $(CURL_LIBS)
 libFileTransfer_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils $(CURL_CFLAGS) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"
