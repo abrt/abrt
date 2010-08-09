@@ -20,9 +20,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt 1.1.1\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-28 15:39+0200\n"
+"POT-Creation-Date: 2010-08-06 18:38+0200\n"
 "PO-Revision-Date: 2010-07-27 19:16+0200\n"
-"Last-Translator: Petr Pisar <ppisar@redhat.com>\n"
+"Last-Translator: Jiří Moskovčák <jmoskovc@redhat.com>\n"
 "Language-Team: Czech Fedora <diskuse@lists.l10n.cz>\n"
 "Language: \n"
 "MIME-Version: 1.0\n"
@@ -125,33 +125,33 @@ msgstr "Instalace ladicích informací se vynechá"
 
 #: ../lib/Plugins/CCpp.cpp:1061
 msgid "Analyzes crashes in C/C++ programs"
-msgstr ""
+msgstr "Analyzuje pády v C/C++ programech"
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: není zadáno žádné URL"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Archiv %s se odesílá na %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "FileTransfer: Vytváří se hlášení…"
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Vytvoření a odeslání archivu selhalo: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
-msgstr ""
+msgstr "Posílá hlášení přes FTP nebo SFTP"
 
 #: ../lib/Plugins/Kerneloops.cpp:142
 msgid "Analyzes kernel oopses"
-msgstr ""
+msgstr "Analyzuje problémy v kernelu"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:94
 msgid "Creating and submitting a report..."
@@ -159,11 +159,11 @@ msgstr "Vytváří se a odesílá hlášení…"
 
 #: ../lib/Plugins/KerneloopsReporter.cpp:142
 msgid "Sends kernel oops information to kerneloops.org"
-msgstr ""
+msgstr "Posílá hlášení o problémech v kernelu na kerneloops.org"
 
 #: ../lib/Plugins/KerneloopsScanner.cpp:200
 msgid "Periodically scans for and saves kernel oopses"
-msgstr ""
+msgstr "Periodicky vyhledává a hlásí problémy v kernelu"
 
 #: ../lib/Plugins/Logger.cpp:73
 #, c-format
@@ -181,9 +181,8 @@ msgid "The report was stored to %s"
 msgstr "Hlášení bylo uloženo do %s"
 
 #: ../lib/Plugins/Logger.cpp:87
-#, fuzzy
 msgid "Writes report to a file"
-msgstr "Hlášení se zapisuje do „%s“"
+msgstr "Zapisuje hlášení do souboru"
 
 #: ../lib/Plugins/Mailx.cpp:135
 msgid "Sending an email..."
@@ -191,11 +190,11 @@ msgstr "Odesílá se e-mail…"
 
 #: ../lib/Plugins/Mailx.cpp:192
 msgid "Sends an email with a report (via mailx command)"
-msgstr ""
+msgstr "Posílá hlášení o chybách emailem (přes program mailx)"
 
 #: ../lib/Plugins/Python.cpp:97
 msgid "Analyzes crashes in Python programs"
-msgstr ""
+msgstr "Analyzuje pády v programech napsaných v Pythonu"
 
 #: ../lib/Plugins/ReportUploader.cpp:130
 #, c-format
@@ -210,14 +209,16 @@ msgstr "Vytváří se hlášení ReportUploaderu…"
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
+"Komprimuje informace o pádu do tar.gz a volitelně odesílá archiv přes FTP/"
+"SCP/etc"
 
-#: ../lib/Plugins/RHTSupport.cpp:231
+#: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
 msgstr "Vytváří se nový případ…"
 
 #: ../lib/Plugins/RunApp.cpp:73
 msgid "Runs a command, saves its output"
-msgstr ""
+msgstr "Spustí příkaz a uloží jeho výstup"
 
 #: ../lib/Plugins/SOSreport.cpp:98
 #, c-format
@@ -230,11 +231,11 @@ msgstr "sosreport dokončen"
 
 #: ../lib/Plugins/SOSreport.cpp:159
 msgid "Runs sosreport, saves the output"
-msgstr ""
+msgstr "Spustí sosreport a uloží jeho výstup"
 
 #: ../lib/Plugins/SQLite3.cpp:678
 msgid "Keeps SQLite3 database about all crashes"
-msgstr ""
+msgstr "Ukládá informace o pádech do SQLite3 databáze"
 
 #: ../lib/Plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -242,15 +243,15 @@ msgstr "<b>Nastavení pluginu Bugzilla</b>"
 
 #: ../lib/Plugins/Bugzilla.glade.h:2
 msgid "Bugzilla URL:"
-msgstr ""
+msgstr "Bugzilla URL:"
 
 #: ../lib/Plugins/Bugzilla.glade.h:3
 msgid "Don't have an account yet?"
-msgstr ""
+msgstr "Nemáte účet?"
 
 #: ../lib/Plugins/Bugzilla.glade.h:4
 msgid "Login(email):"
-msgstr ""
+msgstr "Login(email)"
 
 #: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
 msgid "Password:"
@@ -269,92 +270,92 @@ msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
 msgstr ""
+"<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">Zde</a> si ho "
+"můžete vytvořit."
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
-#, fuzzy
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr "Nastavený je pouze jeden ohlašovací modul."
+msgstr "<b>Konfigurace pluginu Kerneloops Reporter</b>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
-msgstr ""
+msgstr "Kerneloops URL:"
 
 #: ../lib/Plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
-msgstr ""
+msgstr "<b>Konfigurace pluginu Logger</b>"
 
 #: ../lib/Plugins/Logger.glade.h:2
 msgid "Append new logs"
-msgstr ""
+msgstr "Připojovat nové záznamy"
 
 #: ../lib/Plugins/Logger.glade.h:3
 msgid "Logger file:"
-msgstr ""
+msgstr "Log soubor:"
 
 #: ../lib/Plugins/Mailx.glade.h:1
 msgid "<b>Mailx plugin configuration</b>"
-msgstr ""
+msgstr "<b>Konfigure pluginu Mailx</b>"
 
 #: ../lib/Plugins/Mailx.glade.h:2
 msgid "Recipient's Email:"
-msgstr ""
+msgstr "Adresát:"
 
 #: ../lib/Plugins/Mailx.glade.h:3
 msgid "Send Binary Data"
-msgstr ""
+msgstr "Posílat binární data"
 
 #: ../lib/Plugins/Mailx.glade.h:4
 msgid "Subject:"
-msgstr ""
+msgstr "Předmět:"
 
 #: ../lib/Plugins/Mailx.glade.h:5
 msgid "Your Email:"
-msgstr ""
+msgstr "Odesílatel:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
 msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr ""
+msgstr "<b>Konfigurace pluginu Ticket Uploader</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
-msgstr ""
+msgstr "Zákazník:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:3
 msgid "Retry count:"
-msgstr ""
+msgstr "Pokusů:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:4
 msgid "Retry delay:"
-msgstr ""
+msgstr "Počkat (s)"
 
 #: ../lib/Plugins/ReportUploader.glade.h:5
 msgid "Ticket:"
-msgstr ""
+msgstr "Záznam:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:6
 msgid "URL:"
-msgstr ""
+msgstr "URL:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:7
 msgid "Upload"
-msgstr ""
+msgstr "Odeslat"
 
 #: ../lib/Plugins/ReportUploader.glade.h:8
-#, fuzzy
 msgid "Use encryption"
-msgstr "Popis:"
+msgstr "Použít šifrování"
 
 #: ../lib/Plugins/RHTSupport.glade.h:1
 msgid "<b>RHTSupport plugin configuration</b>"
-msgstr ""
+msgstr "<b>Konfigurace pluginu RHTSupport</b>"
 
 #: ../lib/Plugins/RHTSupport.glade.h:2
 msgid "Login:"
-msgstr ""
+msgstr "Login:"
 
 #: ../lib/Plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
-msgstr ""
+msgstr "RHTSupport URL:"
 
 #: ../src/Applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -391,7 +392,9 @@ msgstr "Applet upozorňující uživatele na chyby nalezené démonem ABRT"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
 msgid "translator-credits"
-msgstr "přeložili"
+msgstr ""
+"Jiří Moskovčák <jmoskovc@redhat.com>Radek Vokál <rvokal@redhat.com>Nikola "
+"Pajkovsky <npajkovs@redhat.com>Petr Pisar <ppisar@redhat.com>"
 
 #: ../src/Applet/CCApplet.cpp:115
 msgid "Hide"
@@ -400,6 +403,10 @@ msgstr "Skrýt"
 #: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
 msgid "Report"
 msgstr "Nahlásit"
+
+#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+msgid "Open ABRT"
+msgstr "Spustit ABRT"
 
 # Align collon to longest string (Hostname)
 #: ../src/CLI/CLI.cpp:56
@@ -454,7 +461,7 @@ msgstr ""
 #: ../src/CLI/CLI.cpp:133
 #, c-format
 msgid "Crash function:     %s\n"
-msgstr "Padlá funkce:      %s\n"
+msgstr "Místo pádu:      %s\n"
 
 #: ../src/CLI/CLI.cpp:137
 #, c-format
