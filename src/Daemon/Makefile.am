@@ -54,6 +54,11 @@ man_MANS = abrtd.8 abrt.conf.5
 
 EXTRA_DIST = $(man_MANS) abrt-debuginfo-install abrt-handle-upload
 
+if HAVE_SYSTEMD
+dist_systemdsystemunit_DATA = \
+        abrtd.service
+endif
+
 DEFS = -DLOCALEDIR=\"$(localedir)\" @DEFS@
 
 install-data-local:

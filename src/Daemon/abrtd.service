@@ -1,0 +1,11 @@
+[Unit]
+Description=ABRT Automated Bug Reporting Tool
+After=syslog.target
+
+[Service]
+Type=dbus
+BusName=com.redhat.abrt
+ExecStart=/usr/sbin/abrtd -d -s
+
+[Install]
+WantedBy=multi-user.target

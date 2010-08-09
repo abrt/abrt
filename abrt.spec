@@ -1,7 +1,11 @@
 %{!?python_site: %define python_site %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(0)")}
 # platform-dependent
 %{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
-
+%if 0%{?fedora} >= 14
+    %define with_systemd 1
+%else
+    %define with_systemd 0
+%endif
 # please modify the "_buildid" define in a way that identifies
 # that the built package isn't the stock distribution package,
 # for example, by setting the define to ".local" or ".bz123456"
@@ -41,6 +45,9 @@ BuildRequires: polkit-devel
 BuildRequires: libtar-devel, bzip2-devel, zlib-devel
 BuildRequires: intltool
 BuildRequires: bison
+%if %{?with_systemd}
+Requires: systemd-units
+%endif
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires(pre): shadow-utils
@@ -270,7 +277,38 @@ getent passwd abrt >/dev/null || useradd --system -g abrt -d /etc/abrt -s /sbin/
 exit 0
 
 %post
+if [ $1 -eq 1 ]; then
 /sbin/chkconfig --add %{name}d
+fi
+#systemd
+%if %{?with_systemd}
+#if [ $1 -eq 1 ]; then
+# Enable (but don't start) the units by default
+  /bin/systemctl enable %{name}d.service >/dev/null 2>&1 || :
+#fi
+%endif
+
+%preun
+if [ "$1" -eq "0" ] ; then
+  service %{name}d stop >/dev/null 2>&1
+  /sbin/chkconfig --del %{name}d
+fi
+#systemd
+%if %{?with_systemd}
+if [ "$1" -eq "0" ] ; then
+  /bin/systemctl stop %{name}d.service >/dev/null 2>&1 || :
+  /bin/systemctl disable %{name}d.service >/dev/null 2>&1 || :
+fi
+%endif
+
+%postun
+#systemd
+%if %{?with_systemd}
+if [ $1 -ge 1 ] ; then
+# On upgrade, reload init system configuration if we changed unit files
+  /bin/systemctl daemon-reload >/dev/null 2>&1 || :
+fi
+%endif
 
 %post gui
 # update icon cache
@@ -280,12 +318,6 @@ if [ -x %{_bindir}/gtk-update-icon-cache ]; then
 fi
 
 %post libs -p /sbin/ldconfig
-
-%preun
-if [ "$1" -eq "0" ] ; then
-  service %{name}d stop >/dev/null 2>&1
-  /sbin/chkconfig --del %{name}d
-fi
 
 %postun libs -p /sbin/ldconfig
 
@@ -299,10 +331,21 @@ fi
 if [ "$1" -eq "0" ]; then
     service %{name}d condrestart >/dev/null 2>&1 || :
 fi
+#systemd
+%if %{?with_systemd}
+if [ "$1" -eq "0" ]; then
+    /bin/systemctl try-restart %{name}d.service >/dev/null 2>&1 || :
+fi
+%endif
+
 
 %files -f %{name}.lang
 %defattr(-,root,root,-)
 %doc README COPYING
+#systemd
+%if %{?with_systemd}
+/lib/systemd/system/%{name}d.service
+%endif
 %{_sbindir}/%{name}d
 %{_bindir}/%{name}-debuginfo-install
 %{_bindir}/%{name}-handle-upload
