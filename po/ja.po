@@ -10,16 +10,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ja\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-30 00:40+0000\n"
+"POT-Creation-Date: 2010-08-06 18:38+0200\n"
 "PO-Revision-Date: 2010-07-30 09:47+0900\n"
 "Last-Translator: Kiyoto Hashida <khashida@redhat.com>\n"
 "Language-Team: Japanese <jp@li.org>\n"
+"Language: ja\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
 "X-Generator: KBabel 1.11.4\n"
-"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n\n"
+"Plural-Forms: Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"\n"
 "\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
@@ -59,7 +60,8 @@ msgstr "必須のメンバー「バグ」の欠如"
 #: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
 #: ../lib/Plugins/Bugzilla.cpp:841
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
+msgstr ""
+"get_bug_info() の実行に失敗しました。全ての必須情報を収集できませんでした"
 
 #: ../lib/Plugins/Bugzilla.cpp:781
 msgid "Creating a new bug..."
@@ -120,25 +122,25 @@ msgstr "debuginfo のインストールをスキップします"
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyzes は C/C++ プログラムでクラッシュします"
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "ファイル転送: URL が示されていません"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "アーカイブ %s を %s に送信中"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "ファイル転送: 報告を作成中..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "アーカイブの作成と送信ができません: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
 msgstr "FTP か SCTP を介してレポートを送信します"
 
@@ -199,7 +201,8 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader の報告を作成しています..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "クラッシュデータを .tar.gz ファイルに圧縮します。オプションとして FTP/SCP/"
 "etc 経由でアップロードします"
@@ -306,8 +309,8 @@ msgid "Your Email:"
 msgstr "自分の電子メール:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
-msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr "<b>Ticket Uploader プラグインの設定</b>"
+msgid "<b>Report Uploader plugin configuration</b>"
+msgstr "<b>Report Uploader プラグインの設定</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
@@ -378,8 +381,10 @@ msgid "Warning"
 msgstr "警告"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
-msgstr "ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
+msgstr ""
+"ABRT によって検出された問題をユーザーに通知するための通知エリアアプレット"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
 msgid "translator-credits"
@@ -664,7 +669,8 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "データベースプラグインが指定されていません。 abrtd の設定を確認してください。"
+msgstr ""
+"データベースプラグインが指定されていません。 abrtd の設定を確認してください。"
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -675,7 +681,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "別のクライアントが稼働していますので、それを呼び出しています..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "デーモンから予想外のデータを受け取りました(データベースは正常に更新されていま"
 "すか?)。"
@@ -913,7 +920,8 @@ msgstr "バックトレースを使用できません。この問題を報告で
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr "バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
+msgstr ""
+"バックトレースが不完全です。再現手順が書かれているかどうか確認してください。"
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -980,7 +988,8 @@ msgid "Cannot get the default keyring."
 msgstr "デフォルトキーリングを取得できません。"
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "gnome-keyring へのアクセスが拒否されました。プラグインの設定は保存されませ"
 "ん。"
@@ -988,7 +997,8 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyring へのアクセスが拒否されました。%s の設定を読み込めません!"
 
 #: ../src/Gui/ConfBackend.py:205
@@ -1109,7 +1119,8 @@ msgstr ""
 "できますか?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "ソフトウェア管理者と共有したいコメントがありますか?"
 
 #: ../src/Gui/CReporterAssistant.py:668
@@ -1120,14 +1131,16 @@ msgstr "その他の情報を提供する"
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr "<b>ヒント:</b> コメントは公開されます。そのつもりで発言には注意して下さい。"
+msgstr ""
+"<b>ヒント:</b> コメントは公開されます。そのつもりで発言には注意して下さい。"
 
 #: ../src/Gui/CReporterAssistant.py:716
 msgid "Confirm and send the report"
 msgstr "レポートを確認して送信する"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "バグレポートの要約を以下に示します。提出するには「適用」をクリックして下さ"
 "い。"
@@ -1459,4 +1472,3 @@ msgstr ""
 "有効になっているレポータープラグインの一部に不適切な設定が検出されました。以"
 "下のボタンを使用して各設定を開き、それらを修正してから進んで下さい。このまま"
 "では報告のプロセスは失敗するでしょう。\n"
-

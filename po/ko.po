@@ -8,14 +8,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ko\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-03 01:19+0000\n"
+"POT-Creation-Date: 2010-08-06 18:38+0200\n"
 "PO-Revision-Date: 2010-08-03 16:26+1000\n"
 "Last-Translator: \n"
 "Language-Team: Korean <en@li.org>\n"
+"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ko\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=1; plural=0;\n"
 "\n"
@@ -31,8 +31,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
-"로그인할 수 없습니다. 편집->플러그인->Bugzilla와 /etc/abrt/plugins/Bugzilla.conf를 "
-"살펴보십시오. 서버 응답: %s"
+"로그인할 수 없습니다. 편집->플러그인->Bugzilla와 /etc/abrt/plugins/Bugzilla."
+"conf를 살펴보십시오. 서버 응답: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -60,7 +60,6 @@ msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info()가 실패했습니다. 모든 필수 정보를 얻어올 수 없었습니다."
 
 #: ../lib/Plugins/Bugzilla.cpp:781
-#,
 msgid "Creating a new bug..."
 msgstr "새 버그 생성 중..."
 
@@ -101,8 +100,8 @@ msgstr "버그를 Bugzilla에 보고"
 msgid "Generating backtrace"
 msgstr "역추적 생성중"
 
-#: ../lib/Plugins/CCpp.cpp:353
 #
+#: ../lib/Plugins/CCpp.cpp:353
 msgid "Starting the debuginfo installation"
 msgstr "debuginfo 설치 시작"
 
@@ -112,8 +111,8 @@ msgstr "debuginfo 설치 시작"
 msgid "Getting global universal unique identification..."
 msgstr "글로벌 UUID를 가져오는 중..."
 
-#: ../lib/Plugins/CCpp.cpp:748
 #
+#: ../lib/Plugins/CCpp.cpp:748
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo 설치 생략"
 
@@ -121,25 +120,25 @@ msgstr "debuginfo 설치 생략"
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ 프로그램의 크래시 분석"
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "파일 전송: URL이 지정되지 않음"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "%s 아카이브를 %s에 전송"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "파일 전송: 보고서 작성 중..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "아카이브를 작성하여 보낼 수 없습니다: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
 msgstr "보고서를 FTP나 SCTP로 전송"
 
@@ -174,8 +173,8 @@ msgstr "보고서가 %s에 추가되었습니다"
 msgid "The report was stored to %s"
 msgstr "보고서가 %s에 저장되었습니다"
 
-#: ../lib/Plugins/Logger.cpp:87
 #
+#: ../lib/Plugins/Logger.cpp:87
 msgid "Writes report to a file"
 msgstr "보고서 '%s'에 쓰기"
 
@@ -201,8 +200,11 @@ msgid "Creating a ReportUploader report..."
 msgstr "보고서 작성 및 제출 중..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr "크래시 정보를 .tar.gz파일로 압축하고, 원하면 FTP/SCP/등을 사용해 업로드합니다."
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+"크래시 정보를 .tar.gz파일로 압축하고, 원하면 FTP/SCP/등을 사용해 업로드합니"
+"다."
 
 #: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
@@ -262,8 +264,8 @@ msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
 msgstr ""
-"<a href=\"https://bugzilla.redhat.com/createaccount.cgi"
-"\">여기</a>에서 만들 수 있습니다"
+"<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">여기</a>에서 만들 "
+"수 있습니다"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -306,7 +308,7 @@ msgid "Your Email:"
 msgstr "당신의 주소:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
-msgid "<b>Ticket Uploader plugin configuration</b>"
+msgid "<b>Report Uploader plugin configuration</b>"
 msgstr "<b>티켓 올리기 플러그인 설정</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
@@ -378,7 +380,8 @@ msgid "Warning"
 msgstr "경고"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -598,7 +601,8 @@ msgstr "# 운영 체제 릴리즈 문자열"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
+msgstr ""
+"vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -666,7 +670,8 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "데이터베이스 플러그인이 지정되지 않았습니다. abrtd 설정을 살펴보십시오."
+msgstr ""
+"데이터베이스 플러그인이 지정되지 않았습니다. abrtd 설정을 살펴보십시오."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -677,7 +682,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "다른 클라이언트가 이미 실행되고 있으므로 이를 호출합니다."
 
 #: ../src/Gui/ABRTExceptions.py:13
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "데몬에서 예기치 못한 데이터를 수신했습니다 (데이터베이스가 올바르게 업데이트"
 "되었습니까?).  "
@@ -891,7 +897,8 @@ msgstr "재현 방법 또는 여러분이 실행한 내용에 대한 간단한 �
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
-msgstr "민감한 정보가 들어있지 않은지 역추적(backtrace)을 검토해 보셔야 합니다."
+msgstr ""
+"민감한 정보가 들어있지 않은지 역추적(backtrace)을 검토해 보셔야 합니다."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
 #, python-format
@@ -914,7 +921,8 @@ msgstr "역추적 정보를 사용할 수 없습니다. 이를 보고할 수 없
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr "역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
+msgstr ""
+"역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
 
 #: ../src/Gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
@@ -981,14 +989,19 @@ msgid "Cannot get the default keyring."
 msgstr "디폴트 키링을 가져올 수 없음."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr "gnome-keyring에 대한 억세스가 거부되었습니다. 플러그인 설정이 저장되지 않을 것입니다."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgstr ""
+"gnome-keyring에 대한 억세스가 거부되었습니다. 플러그인 설정이 저장되지 않을 "
+"것입니다."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr "gnome-keyring에 대한 억세스가 거부되었습니다. %s의 설정을 가져올 수 없습니다!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgstr ""
+"gnome-keyring에 대한 억세스가 거부되었습니다. %s의 설정을 가져올 수 없습니다!"
 
 #: ../src/Gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
@@ -1018,7 +1031,8 @@ msgstr "크래스덤프에 점수가 없습니다 => 점수가 필요하지 않�
 
 #: ../src/Gui/CReporterAssistant.py:294
 msgid "You should check the backtrace for sensitive data."
-msgstr "민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
+msgstr ""
+"민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
 
 #: ../src/Gui/CReporterAssistant.py:295
 msgid "You must agree with sending the backtrace."
@@ -1051,13 +1065,13 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"패키지 <b>%s</b>의 프로그램이 시스템에서 크래시한것 같습니다. "
-"이 문제에 대해 버그 보고를 보내는 것이 좋습니다. 버그 보고서는 "
-"소프트웨어 관리자들이 여러분에게 버그 수정을 어떻게 제공할 수 "
-"있을지를 알아내도록 돕는 데 필수적인 정보를 제공합니다.\n"
+"패키지 <b>%s</b>의 프로그램이 시스템에서 크래시한것 같습니다. 이 문제에 대해 "
+"버그 보고를 보내는 것이 좋습니다. 버그 보고서는 소프트웨어 관리자들이 여러분"
+"에게 버그 수정을 어떻게 제공할 수 있을지를 알아내도록 돕는 데 필수적인 정보"
+"를 제공합니다.\n"
 "\n"
-"다음의 정보를 검토하시고, 여러분의 버그 보고서에 공유해서는 안되는 "
-"민감한 정보들이 포함되지나 않았는지 확인해 주십시오.\n"
+"다음의 정보를 검토하시고, 여러분의 버그 보고서에 공유해서는 안되는 민감한 정"
+"보들이 포함되지나 않았는지 확인해 주십시오.\n"
 "\n"
 "버그를 보고하고 싶은 곳을 선택하고, 계속하려면 '다음' 버튼을 눌러주십시오.."
 
@@ -1078,12 +1092,12 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
-"다음은 크래시와 관련된 역추적 정보입니다. 크래시 역추적정보는 개발자들에게 "
-"어떻게 크래시가 일어났는가에 대한 자세한 정보를 제공하며, 이를 이용해 "
-"문제의 근원을 파고 들 수 있습니다.\n"
+"다음은 크래시와 관련된 역추적 정보입니다. 크래시 역추적정보는 개발자들에게 어"
+"떻게 크래시가 일어났는가에 대한 자세한 정보를 제공하며, 이를 이용해 문제의 근"
+"원을 파고 들 수 있습니다.\n"
 "\n"
-"다음의 역추적 정보를 검토하시고, 여러분의 버그 보고서에 공유해서는 안되는 "
-"민감한 정보들이 포함되지나 않았는지 확인해 주십시오:"
+"다음의 역추적 정보를 검토하시고, 여러분의 버그 보고서에 공유해서는 안되는 민"
+"감한 정보들이 포함되지나 않았는지 확인해 주십시오:"
 
 #: ../src/Gui/CReporterAssistant.py:595
 msgid "Refresh"
@@ -1103,10 +1117,12 @@ msgstr "역추적 정보 승인"
 
 #: ../src/Gui/CReporterAssistant.py:631
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr "어떻게 이 크래시가 발생했습니까(단계별)? 어떻게 다시 재현할 수 있습니까?"
+msgstr ""
+"어떻게 이 크래시가 발생했습니까(단계별)? 어떻게 다시 재현할 수 있습니까?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "소프트웨어 관리자들에게 말씀하고 싶은 내용이 있습니까?"
 
 #: ../src/Gui/CReporterAssistant.py:668
@@ -1126,8 +1142,11 @@ msgid "Confirm and send the report"
 msgstr "확인 및 보고 보내기"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "다음은 여러분의 버그 보고서의 요약입니다. 전송하기 위해서는 '적용' 버튼을 누르십시오."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+"다음은 여러분의 버그 보고서의 요약입니다. 전송하기 위해서는 '적용' 버튼을 누"
+"르십시오."
 
 #: ../src/Gui/CReporterAssistant.py:723
 msgid "<b>Basic details</b>"
@@ -1215,8 +1234,8 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "플러그인 <b>%s</b>에 대한 UI가 없습니다. 이것은 버그일 수 있습니다.\n"
-" <a href=\"https://fedorahosted.org/abrt/newticket"
-"\">https://fedorahosted.org/abrt/newticket</a>에 보고해 주십시오."
+" <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted."
+"org/abrt/newticket</a>에 보고해 주십시오."
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
@@ -1453,7 +1472,6 @@ msgid ""
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 msgstr ""
-"활성화된 reporter 플러그인 중 일부에 잘못된 설정이 감지되었습니다. "
-"더 진행하기 전에 아래의 버튼을 사용해 해당 설정을 열고, 문제를 수정해 주십시오. "
-"그렇지 않으면 보고서를 작성해 전송하는 데 실패할 수 있습니다.\n"
-
+"활성화된 reporter 플러그인 중 일부에 잘못된 설정이 감지되었습니다. 더 진행하"
+"기 전에 아래의 버튼을 사용해 해당 설정을 열고, 문제를 수정해 주십시오. 그렇"
+"지 않으면 보고서를 작성해 전송하는 데 실패할 수 있습니다.\n"

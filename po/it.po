@@ -13,14 +13,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt-master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-29 13:47+0000\n"
+"POT-Creation-Date: 2010-08-06 18:38+0200\n"
 "PO-Revision-Date: 2010-07-30 09:35+1000\n"
 "Last-Translator: \n"
 "Language-Team:  <it@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 
 #: ../lib/Plugins/Bugzilla.cpp:466
@@ -123,25 +123,25 @@ msgstr "Omissione installazione debuginfo in corso"
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analizza i crash nei programmi C/C++"
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL non specificato"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Invio archivio %s su %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "FileTransfer: Creazione di un report in corso..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Impossibile creare ed inviare un archivio: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
 msgstr "Invia le notifiche tramite FTP o SCTP"
 
@@ -202,8 +202,11 @@ msgid "Creating a ReportUploader report..."
 msgstr "Creazione di una notifica ReportUploader in corso..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr "Raggruppa i dati relativi al crash in un file .tar.gz, e facoltativamente li carica tramite FTP/SCP/etc"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+"Raggruppa i dati relativi al crash in un file .tar.gz, e facoltativamente li "
+"carica tramite FTP/SCP/etc"
 
 #: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
@@ -307,8 +310,8 @@ msgid "Your Email:"
 msgstr "La tua email:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
-msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr "<b>Configurazione plugin Ticket Uploader</b>"
+msgid "<b>Report Uploader plugin configuration</b>"
+msgstr "<b>Configurazione plugin Report Uploader</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
@@ -379,7 +382,8 @@ msgid "Warning"
 msgstr "Attenzione"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Applet area di notifica che informa gli utenti sulla presenza di "
 "problematiche rilevate da ABRT"
@@ -531,11 +535,12 @@ msgstr ""
 "\t      -y, --always\tcrea ed invia una notifica senza chiederlo\n"
 "\t-d, --delete CRASH_ID\trimuovi un crash\n"
 "\t-i, --info CRASH_ID\tstampa le informazioni dettagliate di un crash\n"
-"\t      -b, --backtrace\tstampa le informazioni dettagliate di un crash incluso "
-"il messaggio di backtrace\n"
+"\t      -b, --backtrace\tstampa le informazioni dettagliate di un crash "
+"incluso il messaggio di backtrace\n"
 "CRASH_ID possono essere:\n"
 "\tUID:UUID pair,\n"
-"\tprefisso UUID unico  - il crash con un UUID corrispondente verrà esaminato\n"
+"\tprefisso UUID unico  - il crash con un UUID corrispondente verrà "
+"esaminato\n"
 "\t@N  - N'th crash (come mostrato da --list --full) verrà esaminato\n"
 
 #: ../src/CLI/CLI.cpp:295
@@ -601,7 +606,8 @@ msgstr "# Stringa della release del sistema operativo"
 
 #: ../src/CLI/report.cpp:336
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
-msgstr "Impossibile eseguire vi: $TERM, $VISUAL e $EDITOR non sono stati impostati"
+msgstr ""
+"Impossibile eseguire vi: $TERM, $VISUAL e $EDITOR non sono stati impostati"
 
 #: ../src/CLI/report.cpp:424
 msgid ""
@@ -669,7 +675,8 @@ msgstr ""
 
 #: ../src/Daemon/MiddleWare.cpp:579
 msgid "Database plugin not specified. Please check abrtd settings."
-msgstr "Plugin del database non specificato. Controllare le impostazioni di abrtd."
+msgstr ""
+"Plugin del database non specificato. Controllare le impostazioni di abrtd."
 
 #: ../src/Gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -680,8 +687,10 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "Un altro client è già in esecuzione, tento il ripristino..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
-msgstr "Ricevuti dati inattesi dal demone (il database è aggiornato correttamente?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
+msgstr ""
+"Ricevuti dati inattesi dal demone (il database è aggiornato correttamente?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
@@ -894,7 +903,8 @@ msgstr ""
 
 #: ../src/Gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
-msgstr "E' necessario verificare il backtrace per la presenza di dati sensibili."
+msgstr ""
+"E' necessario verificare il backtrace per la presenza di dati sensibili."
 
 #: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
 #, python-format
@@ -986,7 +996,8 @@ msgid "Cannot get the default keyring."
 msgstr "Impossibile acquisire il keyring predefinito."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "L'accesso al gnome-keyring è stato negato, le impostazioni dei plugin non "
 "saranno salvati."
@@ -994,7 +1005,8 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "L'accesso al gnome-keyring è stato negato, impossibile caricare le "
 "impostazioni per %s!"
@@ -1029,7 +1041,8 @@ msgstr "Crashdump non ha alcuna valutazione => si suppone non sia necessaria"
 
 #: ../src/Gui/CReporterAssistant.py:294
 msgid "You should check the backtrace for sensitive data."
-msgstr "È consigliato verificare il backtrace per la presenza di dati sensibili."
+msgstr ""
+"È consigliato verificare il backtrace per la presenza di dati sensibili."
 
 #: ../src/Gui/CReporterAssistant.py:295
 msgid "You must agree with sending the backtrace."
@@ -1062,8 +1075,8 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"Sembra che si sia verificato un crash di una applicazione del pacchetto <b>%"
-"s</b> sul sistema. È consigliato inviare un bug report relativo a questo "
+"Sembra che si sia verificato un crash di una applicazione del pacchetto <b>"
+"%s</b> sul sistema. È consigliato inviare un bug report relativo a questo "
 "problema. La notifica fornirà le informazioni necessarie ai manutentori "
 "software in modo da fornire il bug fix necessario\n"
 "\n"
@@ -1121,7 +1134,8 @@ msgstr ""
 "questo problema?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "Condividere alcun commento con i manutentori software?"
 
 #: ../src/Gui/CReporterAssistant.py:668
@@ -1141,7 +1155,8 @@ msgid "Confirm and send the report"
 msgstr "Conferma ed invia la notifica"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Di seguito viene riportato un sommario del bug report. Fare clic su "
 "'Applica' per inviarlo."
@@ -1338,7 +1353,8 @@ msgstr "Forza ABRT alla rigenerazione del backtrace."
 
 #: ../src/Gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
-msgstr "Ho controllato il backtrace ed ho rimosso i dati sensibili (password, ecc)"
+msgstr ""
+"Ho controllato il backtrace ed ho rimosso i dati sensibili (password, ecc)"
 
 #: ../src/Gui/report.glade.h:20
 msgid "N/A"
@@ -1474,4 +1490,3 @@ msgstr ""
 "i pulsanti sotto riportati per aprire la rispettiva configurazione e "
 "correggerla prima di procedere, in caso contrario il processo di notifica "
 "potrà fallire.\n"
-

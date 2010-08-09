@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-03 01:19+0000\n"
+"POT-Creation-Date: 2010-08-06 18:38+0200\n"
 "PO-Revision-Date: 2010-08-04 11:47+0100\n"
 "Last-Translator: Bruce Cowan <bruce@bcowan.me.uk>\n"
 "Language-Team: British English <en@li.org>\n"
@@ -28,8 +28,8 @@ msgid ""
 "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
 "conf. Server said: %s"
 msgstr ""
-"Cannot log in. Check Edit->Plugins->Bugzilla and "
-"/etc/abrt/plugins/Bugzilla.conf. Server said: %s"
+"Cannot log in. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
+"conf. Server said: %s"
 
 #: ../lib/Plugins/Bugzilla.cpp:681
 msgid ""
@@ -115,25 +115,25 @@ msgstr "Skipping the debuginfo installation"
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyses crashes in C/C++ programs"
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL not specified"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Sending archive %s to %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "FileTransfer: Creating a report..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Cannot create and send an archive: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
 msgstr "Sends a report via FTP or SCTP"
 
@@ -257,8 +257,8 @@ msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
 msgstr ""
-"You can create it <a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\">here</a>"
+"You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">here</a>"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -301,8 +301,8 @@ msgid "Your Email:"
 msgstr "Your E-mail:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
-msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr "<b>Ticket Uploader plugin configuration</b>"
+msgid "<b>Report Uploader plugin configuration</b>"
+msgstr "<b>Report Uploader plugin configuration</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
@@ -1114,8 +1114,7 @@ msgstr "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
-"Are there any comments you would like to share with the software "
-"maintainers?"
+"Are there any comments you would like to share with the software maintainers?"
 
 #: ../src/Gui/CReporterAssistant.py:668
 msgid "Provide additional details"
@@ -1225,8 +1224,8 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
-"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket\">https:"
-"//fedorahosted.org/abrt/newticket</a>"
+"Please report it at <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
@@ -1462,7 +1461,8 @@ msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
-msgstr "Wrong settings were detected for some of the enabled reporter plugins. "
+msgstr ""
+"Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
 

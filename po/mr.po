@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-30 00:40+0000\n"
+"POT-Creation-Date: 2010-08-06 18:38+0200\n"
 "PO-Revision-Date: 2010-07-30 09:25+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
+"Language: mr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: mr\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
@@ -116,25 +116,25 @@ msgstr "debuginfo प्रतिष्ठापन वगळत आहे"
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ प्रोग्राम्स् मधील क्रॅशचे विश्लेषण करतो"
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL दिले नाही"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "आर्काइव्ह %s, याला %s करीता पाठवत आहे"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "फाइल स्थानांतरन: अहवाल निर्माण करत आहे..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "आर्काइव्हचे निर्माण व त्यांस पाठवणे अशक्य: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
 msgstr "FTP किंवा SCTP द्वारे अहवाल कळवतो"
 
@@ -195,8 +195,11 @@ msgid "Creating a ReportUploader report..."
 msgstr "ReportUploader अहवाल निर्माण करत आहे..."
 
 #: ../lib/Plugins/ReportUploader.cpp:502
-msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr "डाटा क्रॅशला .tar.gz फाइलमध्ये पॅक करतो, वैकल्पिकरित्या FTP/SCP/etc चा वापर करून अपलोड करतो"
+msgid ""
+"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgstr ""
+"डाटा क्रॅशला .tar.gz फाइलमध्ये पॅक करतो, वैकल्पिकरित्या FTP/SCP/etc चा वापर करून "
+"अपलोड करतो"
 
 #: ../lib/Plugins/RHTSupport.cpp:233
 msgid "Creating a new case..."
@@ -255,7 +258,9 @@ msgstr "पासवर्ड दाखवा"
 msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
-msgstr "तुम्ही <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">येथे</a> निर्माण करू शकता"
+msgstr ""
+"तुम्ही <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">येथे</a> निर्माण "
+"करू शकता"
 
 #: ../lib/Plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -298,8 +303,8 @@ msgid "Your Email:"
 msgstr "आपले ईमेल:"
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
-msgid "<b>Ticket Uploader plugin configuration</b>"
-msgstr "<b>Ticket Uploader प्लगइन संरचना</b>"
+msgid "<b>Report Uploader plugin configuration</b>"
+msgstr "<b>Report Uploader प्लगइन संरचना</b>"
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
 msgid "Customer:"
@@ -370,7 +375,8 @@ msgid "Warning"
 msgstr "सावधानता"
 
 #: ../src/Applet/CCApplet.cpp:89
-msgid "Notification area applet that notifies users about issues detected by ABRT"
+msgid ""
+"Notification area applet that notifies users about issues detected by ABRT"
 msgstr "सूचना क्षेत्र ऍप्लेट जे वापरकर्त्याला ABRT द्वारे आढळलेल्या अडचणींविषयी अवगत करते"
 
 #: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
@@ -669,7 +675,8 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "इतर क्लाएंट आधिपासूनच कार्यरत आहे, सक्रिय करण्याचा प्रयत्न करत आहे..."
 
 #: ../src/Gui/ABRTExceptions.py:13
-msgid "Got unexpected data from the daemon (is the database properly updated?)."
+msgid ""
+"Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "डिमनपासून अनपेक्षीत डाटा प्राप्त झाले (माहितीकोष योग्यरित्या सुधारीत केले?)."
 
 #: ../src/Gui/ABRTPlugin.py:62
@@ -971,13 +978,15 @@ msgid "Cannot get the default keyring."
 msgstr "पूर्वनिर्धारीत किरींग प्राप्त करणे अशक्य."
 
 #: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
-msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid ""
+"Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr "gnome-keyring करीता प्रवेश नकारले, प्लगइंस् संरचना साठवणे अशक्य."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/Gui/ConfBackend.py:152
 #, python-format
-msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid ""
+"Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr "gnome-keyring करीता प्रवेश नकारले, %s करीता संरचना लोड करणे शक्य नाही!"
 
 #: ../src/Gui/ConfBackend.py:205
@@ -1096,7 +1105,8 @@ msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "हे क्रॅश कसे झाले (प्रक्रिया)? पुनःनिर्माण कसे करायचे?"
 
 #: ../src/Gui/CReporterAssistant.py:649
-msgid "Are there any comments you would like to share with the software maintainers?"
+msgid ""
+"Are there any comments you would like to share with the software maintainers?"
 msgstr "सॉफ्टवेअर मेइन्टेनर्स् सह काहिक टिपण्णी तुम्हाला सहभाग करायला आवडेल?"
 
 #: ../src/Gui/CReporterAssistant.py:668
@@ -1116,8 +1126,10 @@ msgid "Confirm and send the report"
 msgstr "अहवाल निश्चित करा व पाठवा"
 
 #: ../src/Gui/CReporterAssistant.py:718
-msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
-msgstr "खालील तुमच्या बग अहवालाचे सारांश आहे. कृपया सादर करण्यासाठी 'लागू करा' यावर क्लिक करा."
+msgid ""
+"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgstr ""
+"खालील तुमच्या बग अहवालाचे सारांश आहे. कृपया सादर करण्यासाठी 'लागू करा' यावर क्लिक करा."
 
 #: ../src/Gui/CReporterAssistant.py:723
 msgid "<b>Basic details</b>"
@@ -1446,4 +1458,3 @@ msgstr ""
 "काहिक सुरू असलेले रिपोर्टर प्लगइन्स् करीता चुकिच्या संरचना आढळले. ठराविक संयोजना "
 "उघडण्यासाठी कृपया खालील बटणांचा वापर करा व पुढे जाण्यापूर्वी त्यांस ठिक करा, नाहीतर, "
 "रिपोर्टिंग प्रक्रिया अपयशी ठरेल.\n"
-

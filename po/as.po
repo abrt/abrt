@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-07-28 15:39+0200\n"
+"POT-Creation-Date: 2010-08-06 18:38+0200\n"
 "PO-Revision-Date: 2010-05-13 12:51+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@redhat.com>\n"
 "Language-Team: Assamese <fedora-trans-as@redhat.com>\n"
@@ -117,25 +117,25 @@ msgstr "debuginfo ৰ সংস্থাপন উপেক্ষা কৰা �
 msgid "Analyzes crashes in C/C++ programs"
 msgstr ""
 
-#: ../lib/Plugins/FileTransfer.cpp:53 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL উল্লিখিত নহয়"
 
-#: ../lib/Plugins/FileTransfer.cpp:57 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "%s আৰ্কাইভক %s লৈ প্ৰেৰণ কৰা হৈছে"
 
-#: ../lib/Plugins/FileTransfer.cpp:298
+#: ../lib/Plugins/FileTransfer.cpp:239
 msgid "FileTransfer: Creating a report..."
 msgstr "নথিপত্ৰ পৰিবহণ: প্ৰতিবেদন নিৰ্মাণ কৰক..."
 
-#: ../lib/Plugins/FileTransfer.cpp:322 ../lib/Plugins/FileTransfer.cpp:351
+#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
 #, fuzzy, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "আৰ্কাইভ নিৰ্মাণ কৰি প্ৰেৰণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:418
+#: ../lib/Plugins/FileTransfer.cpp:359
 msgid "Sends a report via FTP or SCTP"
 msgstr ""
 
@@ -202,7 +202,7 @@ msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 
-#: ../lib/Plugins/RHTSupport.cpp:231
+#: ../lib/Plugins/RHTSupport.cpp:233
 #, fuzzy
 msgid "Creating a new case..."
 msgstr "নতুন বাগ সৃষ্টি কৰা হৈছে..."
@@ -304,7 +304,7 @@ msgid "Your Email:"
 msgstr ""
 
 #: ../lib/Plugins/ReportUploader.glade.h:1
-msgid "<b>Ticket Uploader plugin configuration</b>"
+msgid "<b>Report Uploader plugin configuration</b>"
 msgstr ""
 
 #: ../lib/Plugins/ReportUploader.glade.h:2
@@ -393,6 +393,10 @@ msgstr "লুকাওক"
 #: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
 msgid "Report"
 msgstr "প্ৰতিবেদন"
+
+#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+msgid "Open ABRT"
+msgstr ""
 
 #: ../src/CLI/CLI.cpp:56
 #, c-format
