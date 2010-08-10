@@ -266,7 +266,7 @@ desktop-file-install \
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
-        src/Applet/%{name}-applet.desktop
+        src/applet/%{name}-applet.desktop
 
 %clean
 rm -rf $RPM_BUILD_ROOT

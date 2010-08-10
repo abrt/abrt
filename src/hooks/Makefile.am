@@ -5,20 +5,20 @@ bin_PROGRAMS = dumpoops
 abrt_hook_ccpp_SOURCES = abrt-hook-ccpp.cpp
 abrt_hook_ccpp_CPPFLAGS = \
     -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/Utils \
+    -I$(srcdir)/../../lib/utils \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -D_GNU_SOURCE
 abrt_hook_ccpp_LDADD = \
-    ../../lib/Utils/libABRTUtils.la
+    ../../lib/utils/libABRTUtils.la
 
 # dumpoops
 dumpoops_SOURCES = dumpoops.cpp
 dumpoops_CPPFLAGS = \
     -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/Utils \
-    -I$(srcdir)/../../lib/Plugins \
+    -I$(srcdir)/../../lib/utils \
+    -I$(srcdir)/../../lib/plugins \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
@@ -27,8 +27,8 @@ dumpoops_CPPFLAGS = \
     -D_GNU_SOURCE
 # build will succeed, but at runtime plugins do need ABRT*d*Utils
 dumpoops_LDADD = \
-    ../../lib/Utils/libABRTUtils.la \
-    ../../lib/Utils/libABRTdUtils.la
+    ../../lib/utils/libABRTUtils.la \
+    ../../lib/utils/libABRTdUtils.la
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)

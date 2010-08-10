@@ -117,14 +117,14 @@ AC_CONFIG_FILES([
 	Makefile
 	abrt.pc
 	lib/Makefile
-	lib/Utils/Makefile
-	lib/Plugins/Makefile
+	lib/utils/Makefile
+	lib/plugins/Makefile
 	src/Makefile
-	src/Daemon/Makefile
-	src/Hooks/Makefile
-	src/Applet/Makefile
-	src/Gui/Makefile
-	src/CLI/Makefile
+	src/daemon/Makefile
+	src/hooks/Makefile
+	src/applet/Makefile
+	src/gui/Makefile
+	src/cli/Makefile
 	src/utils/Makefile
 	inc/Makefile
 	po/Makefile.in

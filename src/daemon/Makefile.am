@@ -14,7 +14,7 @@ abrtd_SOURCES = \
     dumpsocket.h dumpsocket.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../../inc \
-    -I$(srcdir)/../../lib/Utils \
+    -I$(srcdir)/../../lib/utils \
     -DBIN_DIR=\"$(bindir)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
@@ -29,8 +29,8 @@ abrtd_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall
 abrtd_LDADD = \
-    ../../lib/Utils/libABRTUtils.la \
-    ../../lib/Utils/libABRTdUtils.la \
+    ../../lib/utils/libABRTUtils.la \
+    ../../lib/utils/libABRTdUtils.la \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
     $(RPM_LIBS) \
