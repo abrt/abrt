@@ -85,6 +85,8 @@ class ReporterAssistant():
         vbox = gtk.VBox()
         viewer.add(vbox)
         bt_tev = gtk.TextView()
+        # rhbz#621871
+        bt_tev.set_editable(False)
         backtrace_scroll_w = gtk.ScrolledWindow()
         backtrace_scroll_w.add(bt_tev)
         backtrace_scroll_w.set_policy(gtk.POLICY_AUTOMATIC,
