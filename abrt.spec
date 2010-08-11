@@ -20,7 +20,7 @@
 
 Summary: Automatic bug detection and reporting tool
 Name: abrt
-Version: 1.1.13
+Version: 1.1.14
 Release: %{?pkg_release}
 License: GPLv2+
 Group: Applications/System
