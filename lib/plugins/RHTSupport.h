@@ -25,10 +25,10 @@
 class CReporterRHticket: public CReporter
 {
 	private:
-		bool m_bSSLVerify;
-		std::string m_sStrataURL;
-		std::string m_sLogin;
-		std::string m_sPassword;
+		bool m_ssl_verify;
+		char *m_strata_url;
+		char *m_login;
+		char *m_password;
 
 	public:
 		CReporterRHticket();
