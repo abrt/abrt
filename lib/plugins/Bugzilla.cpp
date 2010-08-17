@@ -902,7 +902,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             {
                 free(full_dsc);
                 bug_info_destroy(&bz);
-                throw_if_xml_fault_occurred(&bz_server.env);
+                throw_xml_fault(&bz_server.env);
             }
             free(full_dsc);
         }
