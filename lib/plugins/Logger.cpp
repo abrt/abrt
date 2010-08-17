@@ -24,10 +24,16 @@
 #include "comm_layer_inner.h"
 #include "abrt_exception.h"
 
-CLogger::CLogger() :
-    m_sLogPath("/var/log/abrt.log"),
-    m_bAppendLogs(true)
-{}
+CLogger::CLogger()
+{
+    m_log_path = xstrdup("/var/log/abrt.log");
+    m_append_logs = true;
+}
+
+CLogger::~CLogger()
+{
+    free(m_log_path);
+}
 
 void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
 {
@@ -38,46 +44,36 @@ void CLogger::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("LogPath");
     if (it != end)
     {
-        m_sLogPath = it->second;
+        free(m_log_path);
+        m_log_path = xstrdup(it->second.c_str());
     }
     it = pSettings.find("AppendLogs");
     if (it != end)
-    {
-        m_bAppendLogs = string_to_bool(it->second.c_str());
-    }
+        m_append_logs = string_to_bool(it->second.c_str());
 }
-
-//ok to delete?
-//const map_plugin_settings_t& CLogger::GetSettings()
-//{
-//    m_pSettings["LogPath"] = m_sLogPath;
-//    m_pSettings["AppendLogs"] = m_bAppendLogs ? "yes" : "no";
-//
-//    return m_pSettings;
-//}
 
 std::string CLogger::Report(const map_crash_data_t& pCrashData,
                 const map_plugin_settings_t& pSettings,
                 const char *pArgs)
 {
-    std::string description = make_description_logger(pCrashData);
+    char *dsc = make_description_logger(pCrashData);
+    char *full_dsc = xasprintf("%s\n\n\n", dsc);
+    free(dsc);
 
     /* open, not fopen - want to set mode if we create the file, not just open */
-    const char *fname = m_sLogPath.c_str();
-    int fd = open(fname,
-                  m_bAppendLogs ? O_WRONLY|O_CREAT|O_APPEND : O_WRONLY|O_CREAT|O_TRUNC,
-                  0600);
+    const char *fname = m_log_path;
+    int fd = open(fname, m_append_logs ? O_WRONLY|O_CREAT|O_APPEND : O_WRONLY|O_CREAT|O_TRUNC, 0600);
     if (fd < 0)
         throw CABRTException(EXCEP_PLUGIN, "Can't open '%s'", fname);
 
     update_client(_("Writing report to '%s'"), fname);
-    description += "\n\n\n";
-    const char *desc = description.c_str();
-    full_write(fd, desc, strlen(desc));
+    full_write(fd, full_dsc, strlen(full_dsc));
+    free(full_dsc);
+
     close(fd);
 
-    const char *format = m_bAppendLogs ? _("The report was appended to %s") : _("The report was stored to %s");
-    return ssprintf(format, m_sLogPath.c_str());
+    const char *format = m_append_logs ? _("The report was appended to %s") : _("The report was stored to %s");
+    return ssprintf(format, m_log_path);
 }
 
 PLUGIN_INFO(REPORTER,

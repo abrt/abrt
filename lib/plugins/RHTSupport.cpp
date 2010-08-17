@@ -27,6 +27,7 @@
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "RHTSupport.h"
+#include "strbuf.h"
 #ifdef HAVE_CONFIG_H
 # include <config.h>
 #endif
@@ -90,13 +91,20 @@ static char *xml_escape(const char *str)
  * CReporterRHticket
  */
 
-CReporterRHticket::CReporterRHticket() :
-    m_bSSLVerify(true),
-    m_sStrataURL("https://api.access.redhat.com/rs")
-{}
+CReporterRHticket::CReporterRHticket()
+{
+    m_login = NULL;
+    m_password = NULL;
+    m_ssl_verify = true;
+    m_strata_url = xstrdup("https://api.access.redhat.com/rs");
+}
 
 CReporterRHticket::~CReporterRHticket()
-{}
+{
+    free(m_login);
+    free(m_password);
+    free(m_strata_url);
+}
 
 string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
         const map_plugin_settings_t& pSettings,
@@ -107,15 +115,18 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     map_plugin_settings_t::const_iterator end = pSettings.end();
     map_plugin_settings_t::const_iterator it;
     it = pSettings.find("URL");
-    string URL = (it == end ? m_sStrataURL : it->second);
-    it = pSettings.find("Login");
-    string login = (it == end ? m_sLogin : it->second);
-    it = pSettings.find("Password");
-    string password = (it == end ? m_sPassword : it->second);
-    it = pSettings.find("SSLVerify");
-    bool ssl_verify = (it == end ? m_bSSLVerify : string_to_bool(it->second.c_str()));
+    char *url = (it == end ? m_strata_url : xstrdup(it->second.c_str()));
 
-    const string& package   = get_crash_data_item_content(pCrashData, FILENAME_PACKAGE);
+    it = pSettings.find("Login");
+    char *login = (it == end ? m_login : xstrdup(it->second.c_str()));
+
+    it = pSettings.find("Password");
+    char *password = (it == end ? m_password : xstrdup(it->second.c_str()));
+
+    it = pSettings.find("SSLVerify");
+    bool ssl_verify = (it == end ? m_ssl_verify : string_to_bool(it->second.c_str()));
+
+    const char *package   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
 //  const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
 //  const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
 //  const string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
@@ -123,20 +134,20 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     const char *reason      = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
     const char *function    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
 
-    string summary = "[abrt] " + package;
-    if (function && strlen(function) < 30)
-    {
-        summary += ": ";
-        summary += function;
-    }
-    if (reason)
-    {
-        summary += ": ";
-        summary += reason;
-    }
+    struct strbuf *buf_summary = strbuf_new();
+    strbuf_append_strf(buf_summary, "[abrt] %s", package);
 
-    string description = "abrt version: "VERSION"\n";
-    description += make_description_bz(pCrashData);
+    if (function && strlen(function) < 30)
+        strbuf_append_strf(buf_summary, ": %s", function);
+
+    if (reason)
+        strbuf_append_strf(buf_summary, ": %s", reason);
+
+    char *summary = strbuf_free_nobuf(buf_summary);
+
+    char *bz_dsc = make_description_bz(pCrashData);
+    char *dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
+    free(bz_dsc);
 
     reportfile_t* file = new_reportfile();
 
@@ -231,13 +242,13 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
 
     {
         update_client(_("Creating a new case..."));
-        char* result = send_report_to_new_case(URL.c_str(),
-                login.c_str(),
-                password.c_str(),
+        char* result = send_report_to_new_case(url,
+                login,
+                password,
                 ssl_verify,
-                summary.c_str(),
-                description.c_str(),
-                package.c_str(),
+                summary,
+                dsc,
+                package,
                 tempfile
         );
         VERB3 log("post result:'%s'", result);
@@ -256,6 +267,9 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
     free(tempfile);
     reportfile_free(file);
 
+    free(summary);
+    free(dsc);
+
     if (strncasecmp(retval.c_str(), "error", 5) == 0)
     {
         throw CABRTException(EXCEP_PLUGIN, "%s", retval.c_str());
@@ -272,22 +286,25 @@ void CReporterRHticket::SetSettings(const map_plugin_settings_t& pSettings)
     it = pSettings.find("URL");
     if (it != end)
     {
-        m_sStrataURL = it->second;
+        free(m_strata_url);
+        m_strata_url = xstrdup(it->second.c_str());
     }
     it = pSettings.find("Login");
     if (it != end)
     {
-        m_sLogin = it->second;
+        free(m_login);
+        m_login = xstrdup(it->second.c_str());
     }
     it = pSettings.find("Password");
     if (it != end)
     {
-        m_sPassword = it->second;
+        free(m_password);
+        m_password = xstrdup(it->second.c_str());
     }
     it = pSettings.find("SSLVerify");
     if (it != end)
     {
-        m_bSSLVerify = string_to_bool(it->second.c_str());
+        m_ssl_verify = string_to_bool(it->second.c_str());
     }
 }
 

@@ -28,14 +28,14 @@
 class CLogger : public CReporter
 {
     private:
-        std::string m_sLogPath;
-        bool m_bAppendLogs;
+        char *m_log_path;
+        bool m_append_logs;
     public:
         CLogger();
+        ~CLogger();
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-//ok to delete?
-//        virtual const map_plugin_settings_t& GetSettings();
+
         virtual std::string Report(const map_crash_data_t& pCrashData,
                                    const map_plugin_settings_t& pSettings,
                                    const char *pArgs);

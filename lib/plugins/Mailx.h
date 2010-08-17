@@ -29,17 +29,17 @@
 class CMailx : public CReporter
 {
     private:
-        std::string m_sEmailFrom;
-        std::string m_sEmailTo;
-        std::string m_sSubject;
-        bool m_bSendBinaryData;
+        char *m_email_from;
+        char *m_email_to;
+        char *m_subject;
+        bool m_send_binary_data;
 
     public:
         CMailx();
+        ~CMailx();
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-//ok to delete?
-//        virtual const map_plugin_settings_t& GetSettings();
+
         virtual std::string Report(const map_crash_data_t& pCrashData,
                                    const map_plugin_settings_t& pSettings,
                                    const char *pArgs);
