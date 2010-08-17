@@ -227,7 +227,7 @@ abrt_post(abrt_post_state_t *state,
                         CURLFORM_END);
         if (curlform_err != 0)
 //FIXME:
-            error_msg_and_die("out of memory or read error");
+            error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
     } else {
         // .. from a blob in memory
