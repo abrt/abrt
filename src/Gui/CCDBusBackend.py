@@ -185,10 +185,12 @@ class DBusManager(gobject.GObject):
         # map < Plugin_name vec <status, message> >
         # daemon expects plugin names, not the objects
         reporters_names = [str(reporter) for reporter in reporters]
+        # Timeout needs to be BIG: some reporters upload stuff over Internet,
+        # and uploading of, say, 200meg+ file can easily take ten minutes or more.
         if reporters_settings:
-            self.daemon().Report(report, reporters_names, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+            self.daemon().Report(report, reporters_names, reporters_settings, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=3600)
         else:
-            self.daemon().Report(report, reporters_names, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=60)
+            self.daemon().Report(report, reporters_names, reply_handler=self.report_done, error_handler=self.error_handler_cb, timeout=3600)
 
     def DeleteDebugDump(self, crash_id):
         return self.daemon().DeleteDebugDump(crash_id)
