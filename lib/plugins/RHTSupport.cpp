@@ -110,6 +110,9 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
         const map_plugin_settings_t& pSettings,
         const char *pArgs)
 {
+    /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
+    update_client(_("Compressing data"));
+
     string retval;
 
     map_plugin_settings_t::const_iterator end = pSettings.end();
