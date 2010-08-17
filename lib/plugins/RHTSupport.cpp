@@ -311,10 +311,10 @@ void CReporterRHticket::SetSettings(const map_plugin_settings_t& pSettings)
 /* Should not be deleted (why?) */
 const map_plugin_settings_t& CReporterRHticket::GetSettings()
 {
-    m_pSettings["URL"] = m_sStrataURL;
-    m_pSettings["Login"] = m_sLogin;
-    m_pSettings["Password"] = m_sPassword;
-    m_pSettings["SSLVerify"] = m_bSSLVerify ? "yes" : "no";
+    m_pSettings["URL"] = m_strata_url;
+    m_pSettings["Login"] = m_login;
+    m_pSettings["Password"] = m_password;
+    m_pSettings["SSLVerify"] = m_ssl_verify ? "yes" : "no";
 
     return m_pSettings;
 }
