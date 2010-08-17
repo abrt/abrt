@@ -19,12 +19,6 @@
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-#if ENABLE_NLS
-# include <libintl.h>
-# define _(S) gettext(S)
-#else
-# define _(S) (S)
-#endif
 #include "abrtlib.h"
 #include "CCApplet.h"
 

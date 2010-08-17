@@ -17,6 +17,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
 #include "Bugzilla.h"
@@ -25,9 +28,6 @@
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "strbuf.h"
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5

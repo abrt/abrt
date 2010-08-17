@@ -15,6 +15,12 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <cassert>
+#include <algorithm>
+#include <termios.h>
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
 #include "report.h"
 #include "run-command.h"
 #include "dbus.h"
@@ -22,18 +28,6 @@
 #include "debug_dump.h"
 #include "crash_types.h" // FILENAME_* defines
 #include "plugin.h" // LoadPluginSettings
-#include <cassert>
-#include <algorithm>
-#include <termios.h>
-#if HAVE_CONFIG_H
-# include <config.h>
-#endif
-#if ENABLE_NLS
-# include <libintl.h>
-# define _(S) gettext(S)
-#else
-# define _(S) (S)
-#endif
 
 #include "abrt_packages.h"
 

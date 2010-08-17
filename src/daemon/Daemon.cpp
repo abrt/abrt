@@ -16,6 +16,12 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#if HAVE_CONFIG_H
+# include <config.h>
+#endif
+#if HAVE_LOCALE_H
+# include <locale.h>
+#endif
 #include <syslog.h>
 #include <pthread.h>
 #include <resolv.h> /* res_init */
@@ -25,18 +31,6 @@
 #include <xmlrpc-c/base.h>
 #include <xmlrpc-c/client.h>
 #include <glib.h>
-#if HAVE_CONFIG_H
-    #include <config.h>
-#endif
-#if HAVE_LOCALE_H
-    #include <locale.h>
-#endif
-#if ENABLE_NLS
-    #include <libintl.h>
-    #define _(S) gettext(S)
-#else
-    #define _(S) (S)
-#endif
 #include "abrtlib.h"
 #include "abrt_exception.h"
 #include "CrashWatcher.h"
