@@ -68,6 +68,19 @@ static char* is_text_file(const char *name, ssize_t *sz)
     if (fd < 0)
         return NULL; /* it's not text (because it does not exist! :) */
 
+    /* Maybe 64k limit is small. But _some_ limit is necessary:
+     * fields declared "text" may end up in editing fields and such.
+     * We don't want to accidentally end up with 100meg text in a textbox!
+     * So, don't remove this. If you really need to, raise the limit.
+     */
+    off_t size = lseek(fd, 0, SEEK_END);
+    if (size < 0 || size > 64*1024)
+    {
+        close(fd);
+        return NULL; /* it's not a SMALL text */
+    }
+    lseek(fd, 0, SEEK_SET);
+
     char *buf = (char*)xmalloc(*sz);
     ssize_t r = *sz = full_read(fd, buf, *sz);
     close(fd);
