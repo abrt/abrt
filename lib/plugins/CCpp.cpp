@@ -178,7 +178,7 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
     return status;
 }
 
-static void GetBacktrace(const char *pDebugDumpDir,
+static bool GetBacktrace(const char *pDebugDumpDir,
                          const char *pDebugInfoDirs,
                          string& pBacktrace)
 {
@@ -186,12 +186,16 @@ static void GetBacktrace(const char *pDebugDumpDir,
 
     string UID;
     string executable;
+    CDebugDump dd;
+    if (!dd.Open(pDebugDumpDir))
     {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
-        dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(CD_UID, UID);
+        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        return false;
     }
+
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
+    dd.LoadText(CD_UID, UID);
+    dd.Close();
 
     // Workaround for
     // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
@@ -276,7 +280,7 @@ static void GetBacktrace(const char *pDebugDumpDir,
         pBacktrace = "";
         ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
         if (bt_depth <= 64 || pBacktrace.size() < 256*1024)
-            return;
+            return true;
         bt_depth /= 2;
         if (bt_depth <= 64 && thread_apply_all[0] != '\0')
         {
@@ -323,11 +327,15 @@ static void GetIndependentBuildIdPC(const char *unstrip_n_output,
 static string run_unstrip_n(const char *pDebugDumpDir)
 {
     string UID;
+    CDebugDump dd;
+    if (!dd.Open(pDebugDumpDir))
     {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
-        dd.LoadText(CD_UID, UID);
+        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        return string("");
     }
+
+    dd.LoadText(CD_UID, UID);
+    dd.Close();
 
     char* args[4];
     args[0] = (char*)"eu-unstrip";
@@ -506,12 +514,16 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
     string executable;
     string package;
+    CDebugDump dd;
+    if (!dd.Open(pDebugDumpDir))
     {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
-        dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_PACKAGE, package);
+        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        return string("");
     }
+
+    dd.LoadText(FILENAME_EXECUTABLE, executable);
+    dd.LoadText(FILENAME_PACKAGE, package);
+    dd.Close();
 
     string unstrip_n_output = run_unstrip_n(pDebugDumpDir);
     string independentBuildIdPC;
@@ -552,11 +564,17 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     CDebugDump dd;
-    dd.Open(pDebugDumpDir);
+    if (!dd.Open(pDebugDumpDir))
+    {
+        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        return string("");
+    }
+
     if (dd.Exist(FILENAME_GLOBAL_UUID))
     {
         string uuid;
         dd.LoadText(FILENAME_GLOBAL_UUID, uuid);
+        dd.Close();
         return uuid;
     }
     else
@@ -670,6 +688,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         {
             dd.SaveText(FILENAME_RATING, "0");
         }
+        dd.Close();
 
         string hash_base = package + executable + independent_backtrace;
         return create_hash(hash_base.c_str());
@@ -710,7 +729,11 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     string package, executable, UID;
 
     CDebugDump dd;
-    dd.Open(pDebugDumpDir);
+    if (!dd.Open(pDebugDumpDir))
+    {
+        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        return;
+    }
 
     /* Skip remote crashes. */
     if (dd.Exist(FILENAME_REMOTE))
@@ -750,7 +773,12 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     /* Create and store backtrace. */
     string backtrace_str;
     GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace_str);
-    dd.Open(pDebugDumpDir);
+    if (!dd.Open(pDebugDumpDir))
+    {
+        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        return;
+    }
+
     dd.SaveText(FILENAME_BACKTRACE, (backtrace_str + build_ids).c_str());
 
     if (m_bMemoryMap)

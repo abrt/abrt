@@ -77,7 +77,7 @@ int main(int argc, char **argv)
 //	const plugin_info_t *plugin_info;
 	CPlugin* (*plugin_newf)(void);
 	int (*scan_syslog_file)(vector_string_t& oopsList, const char *filename, time_t *last_changed_p);
-	void (*save_oops_to_debug_dump)(const vector_string_t& oopsList);
+	int (*save_oops_to_debug_dump)(const vector_string_t& oopsList);
 	void *handle;
 
 	errno = 0;
@@ -110,11 +110,10 @@ int main(int argc, char **argv)
 		}
 		if (opt_d) {
 			log("dumping oopses");
-			try {
-				save_oops_to_debug_dump(oopsList);
-			}
-			catch (CABRTException& e) {
-				fprintf(stderr, "Error: %s\n", e.what());
+			int errors = save_oops_to_debug_dump(oopsList);
+			if (errors > 0)
+			{
+				log("%d errors while dumping oopses", errors);
 				return 1;
 			}
 		}

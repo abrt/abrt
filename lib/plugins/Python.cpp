@@ -27,9 +27,15 @@ using namespace std;
 string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 {
 	CDebugDump dd;
-	dd.Open(pDebugDumpDir);
+	if (!dd.Open(pDebugDumpDir))
+	{
+		VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+		return string("");
+	}
+
 	string bt;
 	dd.LoadText(FILENAME_BACKTRACE, bt);
+	dd.Close();
 
 	const char *bt_str = bt.c_str();
 	const char *bt_end = strchrnul(bt_str, '\n');

@@ -167,24 +167,30 @@ static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& da
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @param pCrashData A created crash report.
  */
-static void DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& pCrashData)
+static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& pCrashData)
 {
     VERB3 log(" DebugDumpToCrashReport('%s')", pDebugDumpDir);
 
     CDebugDump dd;
-    dd.Open(pDebugDumpDir);
-
-    const char *const *v = must_have_files;
-    while (*v)
+    if (dd.Open(pDebugDumpDir))
     {
-        if (!dd.Exist(*v))
+        const char *const *v = must_have_files;
+        while (*v)
         {
-            throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): important file '%s' is missing", *v);
+            if (!dd.Exist(*v))
+            {
+                throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): important file '%s' is missing", *v);
+            }
+            v++;
         }
-        v++;
+
+        load_crash_data_from_debug_dump(dd, pCrashData);
+        dd.Close();
+
+        return true;
     }
 
-    load_crash_data_from_debug_dump(dd, pCrashData);
+    return false;
 }
 
 /**
@@ -273,11 +279,14 @@ mw_result_t CreateCrashReport(const char *crash_id,
     mw_result_t r = MW_OK;
     try
     {
+        CDebugDump dd;
+        if (dd.Open(row.m_sDebugDumpDir.c_str()))
         {
-            CDebugDump dd;
-            dd.Open(row.m_sDebugDumpDir.c_str());
             load_crash_data_from_debug_dump(dd, pCrashData);
+            dd.Close();
         }
+        else
+            return MW_ERROR;
 
         std::string analyzer = get_crash_data_item_content(pCrashData, FILENAME_ANALYZER);
         const char* package = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
@@ -297,23 +306,22 @@ mw_result_t CreateCrashReport(const char *crash_id,
         VERB3 log(" RunAnalyzerActions('%s','%s','%s',force=%d)", analyzer.c_str(), package_name, row.m_sDebugDumpDir.c_str(), force);
         RunAnalyzerActions(analyzer.c_str(), package_name, row.m_sDebugDumpDir.c_str(), force);
         free(package_name);
-        DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData);
-        add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row.m_sUUID.c_str());
-        add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
+        if (DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData))
+        {
+            add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row.m_sUUID.c_str());
+            add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
+        }
+        else
+        {
+            error_msg("Error loading crash data");
+            return MW_ERROR;
+        }
     }
     catch (CABRTException& e)
     {
         r = MW_CORRUPTED;
         error_msg("%s", e.what());
-        if (e.type() == EXCEP_DD_OPEN)
-        {
-            r = MW_ERROR;
-        }
-        else if (e.type() == EXCEP_DD_LOAD)
-        {
-            r = MW_FILE_ERROR;
-        }
-        else if (e.type() == EXCEP_PLUGIN)
+        if (e.type() == EXCEP_PLUGIN)
         {
             r = MW_PLUGIN_ERROR;
         }
@@ -358,9 +366,13 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
             {
                 CReporter* reporter = g_pPluginManager->GetReporter(plugin_name); /* can't be NULL */
                 map_crash_data_t crashReport;
-                DebugDumpToCrashReport(pDebugDumpDir, crashReport);
-                VERB2 log("%s.Report(...)", plugin_name);
-                reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
+                if (DebugDumpToCrashReport(pDebugDumpDir, crashReport))
+                {
+                    VERB2 log("%s.Report(...)", plugin_name);
+                    reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
+                }
+                else
+                    error_msg("Activation of plugin '%s' was not successful: Error converting crash data", plugin_name);
             }
             else if (tp == ACTION)
             {
@@ -421,21 +433,25 @@ report_status_t Report(const map_crash_data_t& client_report,
     if (comment || reproduce || backtrace)
     {
         CDebugDump dd;
-        dd.Open(pDumpDir.c_str());
-        if (comment)
+        if (dd.Open(pDumpDir.c_str()))
         {
-            dd.SaveText(FILENAME_COMMENT, comment);
-            add_to_crash_data_ext(stored_report, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
-        }
-        if (reproduce)
-        {
-            dd.SaveText(FILENAME_REPRODUCE, reproduce);
-            add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
-        }
-        if (backtrace)
-        {
-            dd.SaveText(FILENAME_BACKTRACE, backtrace);
-            add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
+            if (comment)
+            {
+                dd.SaveText(FILENAME_COMMENT, comment);
+                add_to_crash_data_ext(stored_report, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
+            }
+            if (reproduce)
+            {
+                dd.SaveText(FILENAME_REPRODUCE, reproduce);
+                add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
+            }
+            if (backtrace)
+            {
+                dd.SaveText(FILENAME_BACKTRACE, backtrace);
+                add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
+            }
+
+            dd.Close();
         }
     }
 
@@ -690,20 +706,19 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             if (g_settings_bProcessUnpackaged || remote)
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", pExecutable);
-                try
+
+                CDebugDump dd;
+                if (dd.Open(pDebugDumpDir))
                 {
-                    CDebugDump dd;
-                    dd.Open(pDebugDumpDir);
                     dd.SaveText(FILENAME_PACKAGE, "");
                     dd.SaveText(FILENAME_COMPONENT, "");
                     dd.SaveText(FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
+
+                    dd.Close();
                     return MW_OK;
                 }
-                catch (CABRTException& e)
-                {
-                    error_msg("%s", e.what());
+                else
                     return MW_ERROR;
-                }
             }
             else
             {
@@ -816,10 +831,9 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         }
     }
 
-    try
+    CDebugDump dd;
+    if (dd.Open(pDebugDumpDir))
     {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
         if (rpm_pkg)
         {
             dd.SaveText(FILENAME_PACKAGE, rpm_pkg);
@@ -840,14 +854,11 @@ static mw_result_t SavePackageDescriptionToDebugDump(
 
         if (!remote)
             dd.SaveText(FILENAME_HOSTNAME, host);
-    }
-    catch (CABRTException& e)
-    {
-        error_msg("%s", e.what());
-        return MW_ERROR;
+
+        return MW_OK;
     }
 
-    return MW_OK;
+    return MW_ERROR;
 }
 
 bool analyzer_has_InformAllUsers(const char *analyzer_name)
@@ -1008,10 +1019,10 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     std::string executable;
     std::string cmdline;
     bool remote = false;
-    try
+
+    CDebugDump dd;
+    if (dd.Open(pDebugDumpDir))
     {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
         dd.LoadText(FILENAME_TIME, time);
         dd.LoadText(CD_UID, UID);
         dd.LoadText(FILENAME_ANALYZER, analyzer);
@@ -1023,12 +1034,11 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
             dd.LoadText(FILENAME_REMOTE, remote_str);
             remote = (remote_str.find('1') != std::string::npos);
         }
+
+        dd.Close();
     }
-    catch (CABRTException& e)
-    {
-        error_msg("%s", e.what());
+    else
         return MW_ERROR;
-    }
 
     /* Convert UID string to number uid_num. The UID string can be modified by user or
        wrongly saved (empty or non-numeric), so xatou() cannot be used here,
@@ -1077,17 +1087,15 @@ mw_result_t FillCrashInfo(const char *crash_id,
     std::string executable;
     std::string description;
     std::string analyzer;
-    try
+
+    CDebugDump dd;
+    if (dd.Open(row.m_sDebugDumpDir.c_str()))
     {
-        CDebugDump dd;
-        dd.Open(row.m_sDebugDumpDir.c_str());
         load_crash_data_from_debug_dump(dd, pCrashData);
+        dd.Close();
     }
-    catch (CABRTException& e)
-    {
-        error_msg("%s", e.what());
+    else
         return MW_ERROR;
-    }
 
     add_to_crash_data(pCrashData, CD_UID              , row.m_sUID.c_str()         );
     add_to_crash_data(pCrashData, CD_UUID             , row.m_sUUID.c_str()        );
