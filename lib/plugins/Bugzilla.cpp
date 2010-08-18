@@ -979,7 +979,7 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 /* Should not be deleted (why?) */
 const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
-    m_pSettings["BugzillaURL"] = m_bugzilla_url;
+    m_pSettings["BugzillaURL"] = (m_bugzilla_url)? m_bugzilla_url: "";
     m_pSettings["Login"] = (m_login)? m_login: "";
     m_pSettings["Password"] = (m_password)? m_password: "";
     m_pSettings["SSLVerify"] = m_ssl_verify ? "yes" : "no";
