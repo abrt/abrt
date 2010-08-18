@@ -31,6 +31,7 @@
 #include "Polkit.h"
 #include "backtrace.h"
 #include "CCpp_sha1.h"
+#include "strbuf.h"
 
 using namespace std;
 
@@ -112,8 +113,12 @@ static string create_hash(const char *pInput)
     return hash_str;
 }
 
-/* Returns status. See `man 2 wait` for status information. */
-static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
+/**
+ *
+ * @param[out] status See `man 2 wait` for status information.
+ * @return Malloc'ed string
+ */
+static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
 {
     /* Nuke everything which may make setlocale() switch to non-POSIX locale:
      * we need to avoid having gdb output in some obscure language.
@@ -136,7 +141,7 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
     VERB1 flags &= ~EXECFLG_QUIET;
 
     int pipeout[2];
-    pid_t child = fork_execv_on_steroids(flags, pArgs, pipeout, (char**)unsetenv_vec, /*dir:*/ NULL, uid);
+    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)unsetenv_vec, /*dir:*/ NULL, uid);
 
     /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
      * coredumps were observed to cause gdb to enter infinite loop.
@@ -144,15 +149,16 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
      */
     int t = time(NULL); /* int is enough, no need to use time_t */
     int endtime = t + 60;
+
+    struct strbuf *buf_out = strbuf_new();
+
     while (1)
     {
         int timeout = endtime - t;
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            pOutput += "\nTimeout exceeded: 60 second, killing ";
-            pOutput += pArgs[0];
-            pOutput += "\n";
+            strbuf_append_strf(buf_out, "\nTimeout exceeded: 60 second, killing %s\n", args[0]);
             break;
         }
 
@@ -167,20 +173,20 @@ static int ExecVP(char **pArgs, uid_t uid, int redirect_stderr, string& pOutput)
         if (r <= 0)
             break;
         buff[r] = '\0';
-        pOutput += buff;
+        strbuf_append_str(buf_out, buff);
         t = time(NULL);
     }
     close(pipeout[0]);
 
-    int status;
-    waitpid(child, &status, 0); /* prevent having zombie child process */
+    int st;
+    waitpid(child, &st, 0); /* prevent having zombie child process */
+    if (status)
+        *status = st;
 
-    return status;
+    return strbuf_free_nobuf(buf_out);
 }
 
-static bool GetBacktrace(const char *pDebugDumpDir,
-                         const char *pDebugInfoDirs,
-                         string& pBacktrace)
+static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs)
 {
     update_client(_("Generating backtrace"));
 
@@ -246,12 +252,10 @@ static bool GetBacktrace(const char *pDebugDumpDir,
      * BINARY_FILE if it is newer (to at least avoid gdb complaining).
      */
     args[4] = (char*)"-ex";
-    string file = ssprintf("file %s", executable.c_str());
-    args[5] = (char*)file.c_str();
+    args[5] = xasprintf("file %s", executable.c_str());
 
     args[6] = (char*)"-ex";
-    string corefile = ssprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
-    args[7] = (char*)corefile.c_str();
+    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
 
     args[8] = (char*)"-ex";
     /*args[9] = ... see below */
@@ -271,16 +275,19 @@ static bool GetBacktrace(const char *pDebugDumpDir,
     /* Get the backtrace, but try to cap its size */
     /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
     unsigned bt_depth = 2048;
-    const char *thread_apply_all = "thread apply all ";
+    const char *thread_apply_all = "thread apply all";
     const char *full = " full";
+    char *bt = NULL;
     while (1)
     {
-        string cmd = ssprintf("%sbacktrace %u%s", thread_apply_all, bt_depth, full);
-        args[9] = (char*)cmd.c_str();
-        pBacktrace = "";
-        ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, pBacktrace);
-        if (bt_depth <= 64 || pBacktrace.size() < 256*1024)
-            return true;
+        args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
+        bt = exec_vp(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, NULL);
+        if (bt && (bt_depth <= 64 || strlen(bt) < 256*1024))
+        {
+            free(args[9]);
+            break;
+        }
+
         bt_depth /= 2;
         if (bt_depth <= 64 && thread_apply_all[0] != '\0')
         {
@@ -294,7 +301,12 @@ static bool GetBacktrace(const char *pDebugDumpDir,
             bt_depth = 256;
             full = "";
         }
+        free(bt);
+        free(args[9]);
     }
+    free(args[5]);
+    free(args[7]);
+    return bt;
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output,
@@ -324,14 +336,14 @@ static void GetIndependentBuildIdPC(const char *unstrip_n_output,
     }
 }
 
-static string run_unstrip_n(const char *pDebugDumpDir)
+static char* run_unstrip_n(const char *pDebugDumpDir)
 {
     string UID;
     CDebugDump dd;
     if (!dd.Open(pDebugDumpDir))
     {
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
-        return string("");
+        return NULL;
     }
 
     dd.LoadText(CD_UID, UID);
@@ -343,20 +355,19 @@ static string run_unstrip_n(const char *pDebugDumpDir)
     args[2] = (char*)"-n";
     args[3] = NULL;
 
-    string output;
-    ExecVP(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 0, output);
+    char *out = exec_vp(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 0, NULL);
 
     free(args[1]);
 
-    return output;
+    return out;
 }
 
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
+ *
+ * returened value must be freed
  */
-static void InstallDebugInfos(const char *pDebugDumpDir,
-                              const char *debuginfo_dirs,
-                              string& build_ids)
+static char *install_debug_infos(const char *pDebugDumpDir, const char *debuginfo_dirs)
 {
     update_client(_("Starting the debuginfo installation"));
 
@@ -397,7 +408,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     {
         close(pipeout[0]);
         waitpid(child, NULL, 0);
-        return;
+        return NULL;
     }
 
     /* With 126 debuginfos I've seen lines 9k+ chars long...
@@ -405,15 +416,16 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
      * therefore we are using LARGE, but still limited buffer.
      */
     char *buff = (char*) xmalloc(64*1024);
+
+    struct strbuf *buf_build_ids = strbuf_new();
+
     while (fgets(buff, 64*1024, pipeout_fp))
     {
         strchrnul(buff, '\n')[0] = '\0';
 
         if (strncmp(buff, "MISSING:", 8) == 0)
         {
-            build_ids += "Debuginfo absent: ";
-            build_ids += buff + 8;
-            build_ids += "\n";
+            strbuf_append_strf(buf_build_ids, "Debuginfo absent: %s\n", buff + 8);
             continue;
         }
 
@@ -422,6 +434,7 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
         {
             p++;
         }
+
         if (*p)
         {
             VERB1 log("%s", buff);
@@ -443,6 +456,8 @@ static void InstallDebugInfos(const char *pDebugDumpDir,
     {
         error_msg("%s killed by signal %u", "abrt-debuginfo-install", (int)WTERMSIG(status));
     }
+
+    return strbuf_free_nobuf(buf_build_ids);
 }
 
 static double get_dir_size(const char *dirname,
@@ -525,9 +540,14 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
     dd.LoadText(FILENAME_PACKAGE, package);
     dd.Close();
 
-    string unstrip_n_output = run_unstrip_n(pDebugDumpDir);
     string independentBuildIdPC;
-    GetIndependentBuildIdPC(unstrip_n_output.c_str(), independentBuildIdPC);
+    char *unstrip_n_output = run_unstrip_n(pDebugDumpDir);
+    if (unstrip_n_output)
+        GetIndependentBuildIdPC(unstrip_n_output, independentBuildIdPC);
+    else
+        VERB3 error_msg("run_unstrip_n() returns `NULL', broken coredump/eu-unstrip?");
+
+    free(unstrip_n_output);
 
     /* package variable has "firefox-3.5.6-1.fc11[.1]" format */
     /* Remove distro suffix and maybe least significant version number */
@@ -703,6 +723,7 @@ static bool DebuginfoCheckPolkit(uid_t uid)
     {
         perror_msg_and_die("fork");
     }
+
     if (child_pid == 0)
     {
         //child
@@ -760,32 +781,42 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.LoadText(CD_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
-    string build_ids;
+    char *build_ids;
     if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str())))
     {
         if (m_nDebugInfoCacheMB > 0)
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
-        InstallDebugInfos(pDebugDumpDir, m_sDebugInfoDirs.c_str(), build_ids);
+        build_ids = install_debug_infos(pDebugDumpDir, m_sDebugInfoDirs.c_str());
     }
     else
         VERB1 log(_("Skipping the debuginfo installation"));
 
     /* Create and store backtrace. */
-    string backtrace_str;
-    GetBacktrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), backtrace_str);
+    char *backtrace_str = get_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str());
+
+    if (!backtrace_str)
+    {
+        backtrace_str = "";
+        VERB3 log("get_backtrace() retruns `NULL', broken core/gdb?");
+    }
+
+    char *bt_build_ids = xasprintf("%s%s", backtrace_str, (build_ids) ? build_ids : "");
+    free(build_ids);
+
     if (!dd.Open(pDebugDumpDir))
     {
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return;
     }
-
-    dd.SaveText(FILENAME_BACKTRACE, (backtrace_str + build_ids).c_str());
+    dd.SaveText(FILENAME_BACKTRACE, bt_build_ids);
+    free(bt_build_ids);
 
     if (m_bMemoryMap)
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
 
     /* Compute and store UUID from the backtrace. */
-    char *backtrace_cpy = xstrdup(backtrace_str.c_str());
+    char *backtrace_cpy = xstrdup(backtrace_str);
+
     struct backtrace *backtrace = backtrace_parse(backtrace_cpy, false, false);
     free(backtrace_cpy);
     if (backtrace)
@@ -854,7 +885,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         /* If we write and use a hand-written parser instead of the bison one,
            the parser never fails, and it will be possible to get rid of
            the independent_backtrace and backtrace_rate_old. */
-        struct strbuf *ibt = independent_backtrace(backtrace_str.c_str());
+        struct strbuf *ibt = independent_backtrace(backtrace_str);
         strbuf_prepend_str(ibt, executable.c_str());
         strbuf_prepend_str(ibt, package.c_str());
         dd.SaveText(FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
@@ -862,9 +893,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 
         /* Compute and store backtrace rating. */
         /* Crash frame is not known so store nothing. */
-        dd.SaveText(FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str.c_str())).c_str());
+        dd.SaveText(FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str)).c_str());
     }
-
+    free(backtrace_str);
     dd.Close();
 }
 
