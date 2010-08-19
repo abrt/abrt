@@ -154,6 +154,30 @@ save_headers(void *buffer_pv, size_t count, size_t nmemb, void *ptr)
     return size;
 }
 
+/* "read local data from a file" callback */
+static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *userdata)
+{
+    static time_t last_t; // hack
+
+    FILE *fp = (FILE*)userdata;
+    time_t t = time(NULL);
+
+    // Report current file position every 16 seconds
+    if (!(t & 0xf) && last_t != t)
+    {
+        last_t = t;
+        off_t cur_pos = ftello(fp);
+        fseeko(fp, 0, SEEK_END);
+        off_t sz = ftello(fp);
+        fseeko(fp, cur_pos, SEEK_SET);
+        update_client(_("Uploaded: %llu of %llu kbytes"),
+                (unsigned long long)cur_pos / 1024,
+                (unsigned long long)sz / 1024);
+    }
+
+    return fread(ptr, size, nmemb, fp);
+}
+
 int
 abrt_post(abrt_post_state_t *state,
                 const char *url,
@@ -217,17 +241,45 @@ abrt_post(abrt_post_state_t *state,
 //FIXME:
             perror_msg_and_die("can't open '%s'", data);
         xcurl_easy_setopt_ptr(handle, CURLOPT_READDATA, data_file);
+        // Want to use custom read function
+        xcurl_easy_setopt_ptr(handle, CURLOPT_READFUNCTION, (const void*)fread_with_reporting);
     } else if (data_size == ABRT_POST_DATA_FROMFILE_AS_FORM_DATA) {
         // ...from a file, in multipart/formdata format
+        const char *basename = strrchr(data, '/');
+        if (basename) basename++;
+        else basename = data;
+#if 0
+	// Simple way, without custom reader function
         CURLFORMcode curlform_err = curl_formadd(&post, &last,
-                        CURLFORM_PTRNAME, "file",
+                        CURLFORM_PTRNAME, "file", // element name
                         CURLFORM_FILE, data, // filename to read from
                         CURLFORM_CONTENTTYPE, content_type,
-                        CURLFORM_FILENAME, data, // filename to put in the form
+                        CURLFORM_FILENAME, basename, // filename to put in the form
                         CURLFORM_END);
+#else
+        data_file = fopen(data, "r");
+        if (!data_file)
+//FIXME:
+            perror_msg_and_die("can't open '%s'", data);
+        // Want to use custom read function
+        xcurl_easy_setopt_ptr(handle, CURLOPT_READFUNCTION, (const void*)fread_with_reporting);
+        // Need to know file size
+        fseeko(data_file, 0, SEEK_END);
+        off_t sz = ftello(data_file);
+        fseeko(data_file, 0, SEEK_SET);
+        // Create formdata
+        CURLFORMcode curlform_err = curl_formadd(&post, &last,
+                        CURLFORM_PTRNAME, "file", // element name
+                        // use CURLOPT_READFUNCTION for reading, pass data_file as its last param:
+                        CURLFORM_STREAM, data_file,
+                        CURLFORM_CONTENTSLENGTH, (long)sz, // a must if we use CURLFORM_STREAM option
+                        CURLFORM_CONTENTTYPE, content_type,
+                        CURLFORM_FILENAME, basename, // filename to put in the form
+                        CURLFORM_END);
+#endif
         if (curlform_err != 0)
 //FIXME:
-            error_msg_and_die("out of memory or read error");
+            error_msg_and_die("out of memory or read error (curl_formadd error code: %d)", (int)curlform_err);
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPPOST, post);
     } else {
         // .. from a blob in memory

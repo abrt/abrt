@@ -113,7 +113,8 @@ int scan_syslog_file(vector_string_t& oopsList, const char *filename, time_t *la
     return cnt_FoundOopses;
 }
 
-void save_oops_to_debug_dump(const vector_string_t& oopsList)
+/* returns number of errors */
+int save_oops_to_debug_dump(const vector_string_t& oopsList)
 {
     unsigned countdown = 16; /* do not report hundreds of oopses */
     unsigned idx = oopsList.size();
@@ -122,19 +123,21 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
 
     VERB1 log("Saving %u oopses as crash dump dirs", idx >= countdown ? countdown-1 : idx);
 
+    int errors = 0;
+
     while (idx != 0 && --countdown != 0)
     {
         char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu") + 3 * sizeof(long)*3];
         sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu", (long)t, (long)my_pid, (long)idx);
-        try
-        {
-            std::string oops = oopsList.at(--idx);
-            const char *first_line = oops.c_str();
-            char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
-            *second_line++ = '\0';
 
-            CDebugDump dd;
-            dd.Create(path, /*uid:*/ 0);
+        std::string oops = oopsList.at(--idx);
+        const char *first_line = oops.c_str();
+        char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
+        *second_line++ = '\0';
+
+        CDebugDump dd;
+        if (dd.Create(path, /*uid:*/ 0))
+        {
             dd.SaveText(FILENAME_ANALYZER, "Kerneloops");
             dd.SaveText(FILENAME_EXECUTABLE, "kernel");
             dd.SaveText(FILENAME_KERNEL, first_line);
@@ -143,12 +146,13 @@ void save_oops_to_debug_dump(const vector_string_t& oopsList)
             /* Optional, makes generated bz more informative */
             strchrnul(second_line, '\n')[0] = '\0';
             dd.SaveText(FILENAME_REASON, second_line);
+            dd.Close();
         }
-        catch (CABRTException& e)
-        {
-            throw CABRTException(EXCEP_PLUGIN, "%s: %s", __func__, e.what());
-        }
+        else
+            errors++;
     }
+
+    return errors;
 }
 
 } /* extern "C" */
@@ -163,7 +167,11 @@ CKerneloopsScanner::CKerneloopsScanner()
     vector_string_t oopsList;
     cnt_FoundOopses = scan_dmesg(oopsList);
     if (cnt_FoundOopses > 0)
-        save_oops_to_debug_dump(oopsList);
+    {
+        int errors = save_oops_to_debug_dump(oopsList);
+        if (errors > 0)
+            log("%d errors while dumping oopses", errors);
+    }
 }
 
 void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs, int force)
@@ -177,7 +185,9 @@ void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs, int forc
     int cnt_FoundOopses = scan_syslog_file(oopsList, syslog_file, &m_syslog_last_change);
     if (cnt_FoundOopses > 0)
     {
-        save_oops_to_debug_dump(oopsList);
+        int errors = save_oops_to_debug_dump(oopsList);
+        if (errors > 0)
+            log("%d errors while dumping oopses", errors);
         /*
          * This marker in syslog file prevents us from
          * re-parsing old oopses (any oops before it is

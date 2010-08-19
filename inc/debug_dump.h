@@ -41,8 +41,8 @@ class CDebugDump
         CDebugDump();
         ~CDebugDump();
 
-        void Open(const char *pDir);
-        void Create(const char *pDir, uid_t uid);
+        bool Open(const char *pDir);
+        bool Create(const char *pDir, uid_t uid);
         void Delete();
         void Close();
 
@@ -53,7 +53,7 @@ class CDebugDump
         void SaveText(const char* pName, const char *pData);
         void SaveBinary(const char* pName, const char* pData, unsigned pSize);
 
-        void InitGetNextFile();
+        bool InitGetNextFile();
         /* Pointers may be NULL */
         bool GetNextFile(std::string *short_name, std::string *full_name);
 };

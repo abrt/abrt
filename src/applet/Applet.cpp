@@ -16,21 +16,15 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <dbus/dbus-shared.h>
-#include <dbus/dbus-glib.h>
-#include <dbus/dbus-glib-lowlevel.h>
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
-#if ENABLE_NLS
-# include <libintl.h>
-# define _(S) gettext(S)
-#else
-# define _(S) (S)
-#endif
+#include <dbus/dbus-shared.h>
+#include <dbus/dbus-glib.h>
+#include <dbus/dbus-glib-lowlevel.h>
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "dbus_common.h"

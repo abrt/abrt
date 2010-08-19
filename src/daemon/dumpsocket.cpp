@@ -177,12 +177,11 @@ static void create_debug_dump(struct client *client)
        fails if the path is too long. */
 
     CDebugDump dd;
-    try {
-        dd.Create(path, client->uid);
-    } catch (CABRTException &e) {
+    if (!dd.Create(path, client->uid))
+    {
         dd.Delete();
         dd.Close();
-        error_msg_and_die("dumpsocket: Error while creating crash dump %s: %s", path, e.what());
+        error_msg_and_die("dumpsocket: Error while creating crash dump %s", path);
     }
 
     dd.SaveText(FILENAME_ANALYZER, client->analyzer);

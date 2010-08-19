@@ -40,23 +40,29 @@
 /* C++ bits */
 #include <string>
 
-#include "abrt_types.h"
-#include "xfuncs.h"
-
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
 #if defined(__GLIBC__) && __GLIBC__ < 2
 int vdprintf(int d, const char *format, va_list ap);
 #endif
 
-
 #define NORETURN __attribute__ ((noreturn))
-
 
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
+#if ENABLE_NLS
+# include <libintl.h>
+# define _(S) gettext(S)
+#else
+# define _(S) (S)
+#endif
+
+
+#include "abrt_types.h"
+#include "xfuncs.h"
 #include "logging.h"
+
 
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);

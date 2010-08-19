@@ -416,112 +416,112 @@ int main(int argc, char** argv)
             return 1;
 
         CDebugDump dd;
-        char *cmdline = get_cmdline(pid); /* never NULL */
-        char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
-        dd.Create(path, uid);
-        dd.SaveText(FILENAME_ANALYZER, "CCpp");
-        dd.SaveText(FILENAME_EXECUTABLE, executable);
-        dd.SaveText(FILENAME_CMDLINE, cmdline);
-        dd.SaveText(FILENAME_REASON, reason);
-        free(cmdline);
-        free(reason);
-
-        if (src_fd_binary > 0)
+        if (dd.Create(path, uid))
         {
-            strcpy(path + path_len, "/"FILENAME_BINARY);
-            int dst_fd_binary = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
-            off_t sz = copyfd_eof(src_fd_binary, dst_fd_binary, COPYFD_SPARSE);
-            if (sz < 0 || fsync(dst_fd_binary) != 0)
-            {
-                unlink(path);
-                error_msg_and_die("error saving binary image to %s", path);
-            }
-            close(dst_fd_binary);
-            close(src_fd_binary);
-        }
+            char *cmdline = get_cmdline(pid); /* never NULL */
+            char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
+            dd.SaveText(FILENAME_ANALYZER, "CCpp");
+            dd.SaveText(FILENAME_EXECUTABLE, executable);
+            dd.SaveText(FILENAME_CMDLINE, cmdline);
+            dd.SaveText(FILENAME_REASON, reason);
+            free(cmdline);
+            free(reason);
 
-        /* We need coredumps to be readable by all, because
-         * when abrt daemon processes coredump,
-         * process producing backtrace is run under the same UID
-         * as the crashed process.
-         * Thus 644, not 600 */
-        strcpy(path + path_len, "/"FILENAME_COREDUMP);
-        int abrt_core_fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
-        if (abrt_core_fd < 0)
-        {
-            int sv_errno = errno;
-            dd.Delete();
-            dd.Close();
-            if (user_core_fd >= 0)
+            if (src_fd_binary > 0)
             {
-                xchdir(user_pwd);
-                unlink(core_basename);
+                strcpy(path + path_len, "/"FILENAME_BINARY);
+                int dst_fd_binary = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0600);
+                off_t sz = copyfd_eof(src_fd_binary, dst_fd_binary, COPYFD_SPARSE);
+                if (sz < 0 || fsync(dst_fd_binary) != 0)
+                {
+                    unlink(path);
+                    error_msg_and_die("error saving binary image to %s", path);
+                }
+                close(dst_fd_binary);
+                close(src_fd_binary);
             }
-            errno = sv_errno;
-            perror_msg_and_die("can't open '%s'", path);
-        }
 
-        /* We write both coredumps at once.
-         * We can't write user coredump first, since it might be truncated
-         * and thus can't be copied and used as abrt coredump;
-         * and if we write abrt coredump first and then copy it as user one,
-         * then we have a race when process exits but coredump does not exist yet:
-         * $ echo -e '#include<signal.h>\nmain(){raise(SIGSEGV);}' | gcc -o test -x c -
-         * $ rm -f core*; ulimit -c unlimited; ./test; ls -l core*
-         * 21631 Segmentation fault (core dumped) ./test
-         * ls: cannot access core*: No such file or directory <=== BAD
-         */
+            /* We need coredumps to be readable by all, because
+             * when abrt daemon processes coredump,
+             * process producing backtrace is run under the same UID
+             * as the crashed process.
+             * Thus 644, not 600 */
+            strcpy(path + path_len, "/"FILENAME_COREDUMP);
+            int abrt_core_fd = open(path, O_RDWR | O_CREAT | O_TRUNC, 0644);
+            if (abrt_core_fd < 0)
+            {
+                int sv_errno = errno;
+                dd.Delete();
+                dd.Close();
+                if (user_core_fd >= 0)
+                {
+                    xchdir(user_pwd);
+                    unlink(core_basename);
+                }
+                errno = sv_errno;
+                perror_msg_and_die("can't open '%s'", path);
+            }
+
+            /* We write both coredumps at once.
+             * We can't write user coredump first, since it might be truncated
+             * and thus can't be copied and used as abrt coredump;
+             * and if we write abrt coredump first and then copy it as user one,
+             * then we have a race when process exits but coredump does not exist yet:
+             * $ echo -e '#include<signal.h>\nmain(){raise(SIGSEGV);}' | gcc -o test -x c -
+             * $ rm -f core*; ulimit -c unlimited; ./test; ls -l core*
+             * 21631 Segmentation fault (core dumped) ./test
+             * ls: cannot access core*: No such file or directory <=== BAD
+             */
 //TODO: fchown abrt_core_fd to uid:abrt?
 //Currently it is owned by 0:0 but is readable by anyone, so the owner
 //of the crashed binary still can access it, as he has
 //r-x access to the dump dir.
-        off_t core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
-        if (core_size < 0 || fsync(abrt_core_fd) != 0)
-        {
-            unlink(path);
-            dd.Delete();
-            dd.Close();
-            if (user_core_fd >= 0)
+            off_t core_size = copyfd_sparse(STDIN_FILENO, abrt_core_fd, user_core_fd, ulimit_c);
+            if (core_size < 0 || fsync(abrt_core_fd) != 0)
             {
+                unlink(path);
+                dd.Delete();
+                dd.Close();
+                if (user_core_fd >= 0)
+                {
+                    xchdir(user_pwd);
+                    unlink(core_basename);
+                }
+                /* copyfd_sparse logs the error including errno string,
+                 * but it does not log file name */
+                error_msg_and_die("error writing %s", path);
+            }
+            log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
+            if (user_core_fd >= 0 && core_size >= ulimit_c)
+            {
+                /* user coredump is too big, nuke it */
                 xchdir(user_pwd);
                 unlink(core_basename);
             }
-            /* copyfd_sparse logs the error including errno string,
-             * but it does not log file name */
-            error_msg_and_die("error writing %s", path);
-        }
-        log("saved core dump of pid %lu (%s) to %s (%llu bytes)", (long)pid, executable, path, (long long)core_size);
-        if (user_core_fd >= 0 && core_size >= ulimit_c)
-        {
-            /* user coredump is too big, nuke it */
-            xchdir(user_pwd);
-            unlink(core_basename);
-        }
 
-        /* We close dumpdir before we start catering for crash storm case.
-         * Otherwise, delete_debug_dump_dir's from other concurrent
-         * CCpp's won't be able to delete our dump (their delete_debug_dump_dir
-         * will wait for us), and we won't be able to delete their dumps.
-         * Classic deadlock.
-         */
-        dd.Close();
-        path[path_len] = '\0'; /* path now contains only directory name */
-        char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
-        if (rename(path, newpath) == 0)
-            strcpy(path, newpath);
-        free(newpath);
+            /* We close dumpdir before we start catering for crash storm case.
+             * Otherwise, delete_debug_dump_dir's from other concurrent
+             * CCpp's won't be able to delete our dump (their delete_debug_dump_dir
+             * will wait for us), and we won't be able to delete their dumps.
+             * Classic deadlock.
+             */
+            dd.Close();
+            path[path_len] = '\0'; /* path now contains only directory name */
+            char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
+            if (rename(path, newpath) == 0)
+                strcpy(path, newpath);
+            free(newpath);
 
-        /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
-        if (setting_MaxCrashReportsSize > 0)
-        {
-            trim_debug_dumps(setting_MaxCrashReportsSize, path);
+            /* rhbz#539551: "abrt going crazy when crashing process is respawned" */
+            if (setting_MaxCrashReportsSize > 0)
+            {
+                trim_debug_dumps(setting_MaxCrashReportsSize, path);
+            }
+
+            return 0;
         }
-
-        return 0;
-    }
-    catch (CABRTException& e)
-    {
-        error_msg_and_die("%s", e.what());
+        else
+            xfunc_die();
     }
     catch (std::exception& e)
     {

@@ -17,6 +17,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
 #include "Bugzilla.h"
@@ -25,9 +28,6 @@
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "strbuf.h"
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5
@@ -979,7 +979,7 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
 /* Should not be deleted (why?) */
 const map_plugin_settings_t& CReporterBugzilla::GetSettings()
 {
-    m_pSettings["BugzillaURL"] = m_bugzilla_url;
+    m_pSettings["BugzillaURL"] = (m_bugzilla_url)? m_bugzilla_url: "";
     m_pSettings["Login"] = (m_login)? m_login: "";
     m_pSettings["Password"] = (m_password)? m_password: "";
     m_pSettings["SSLVerify"] = m_ssl_verify ? "yes" : "no";

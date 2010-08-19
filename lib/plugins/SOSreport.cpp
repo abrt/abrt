@@ -53,13 +53,19 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
     if (!force)
     {
         CDebugDump dd;
-        dd.Open(pActionDir);
+        if (!dd.Open(pActionDir))
+        {
+            VERB1 log(_("Unable to open debug dump '%s'"), pActionDir);
+            return;
+        }
+
         bool bt_exists = dd.Exist("sosreport.tar.bz2") || dd.Exist("sosreport.tar.xz");
         if (bt_exists)
         {
             VERB3 log("%s already exists, not regenerating", "sosreport.tar.bz2");
             return;
         }
+        dd.Close();
     }
 
     static const char command_default[] =
@@ -125,7 +131,11 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
         sosreport_dd_filename += ext;
     }
     CDebugDump dd;
-    dd.Open(pActionDir);
+    if (!dd.Open(pActionDir))
+    {
+        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        return;
+    }
     //Not useful: dd.SaveText("sosreportoutput", output);
     off_t sz = copy_file(sosreport_filename, sosreport_dd_filename.c_str(), 0644);
 

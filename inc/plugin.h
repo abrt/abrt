@@ -22,17 +22,11 @@
 #ifndef PLUGIN_H_
 #define PLUGIN_H_
 
-#include "abrt_types.h"
-#include "crash_types.h"
 #if HAVE_CONFIG_H
 # include <config.h>
 #endif
-#if ENABLE_NLS
-# include <libintl.h>
-# define _(S) gettext(S)
-#else
-# define _(S) (S)
-#endif
+#include "abrt_types.h"
+#include "crash_types.h"
 
 #define PLUGINS_MAGIC_NUMBER 6
 

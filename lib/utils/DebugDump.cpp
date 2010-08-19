@@ -55,7 +55,7 @@ static bool ExistFileDir(const char *pPath)
     return false;
 }
 
-static void LoadTextFile(const char *pPath, std::string& pData);
+static bool LoadTextFile(const char *pPath, std::string& pData);
 
 CDebugDump::CDebugDump() :
     m_sDebugDumpDir(""),
@@ -82,16 +82,16 @@ CDebugDump::~CDebugDump()
     }
 }
 
-void CDebugDump::Open(const char *pDir)
+bool CDebugDump::Open(const char *pDir)
 {
     if (m_bOpened)
-    {
-        throw CABRTException(EXCEP_ERROR, "CDebugDump is already opened");
-    }
+        error_msg_and_die("CDebugDump is already opened");
+
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
     if (!ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "'%s' does not exist", m_sDebugDumpDir.c_str());
+        error_msg("'%s' does not exist", m_sDebugDumpDir.c_str());
+        return false;
     }
     Lock();
     m_bOpened = true;
@@ -104,6 +104,7 @@ void CDebugDump::Open(const char *pDir)
         m_uid = stat_buf.st_uid;
         m_gid = stat_buf.st_gid;
     }
+    return true;
 }
 
 bool CDebugDump::Exist(const char* pPath)
@@ -262,17 +263,16 @@ void CDebugDump::UnLock()
  * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
  * abrt's user id. We do not allow write access to group.
  */
-void CDebugDump::Create(const char *pDir, uid_t uid)
+bool CDebugDump::Create(const char *pDir, uid_t uid)
 {
     if (m_bOpened)
-    {
-        throw CABRTException(EXCEP_ERROR, "DebugDump is already opened");
-    }
+        error_msg_and_die("DebugDump is already opened");
 
     m_sDebugDumpDir = RemoveBackSlashes(pDir);
     if (ExistFileDir(m_sDebugDumpDir.c_str()))
     {
-        throw CABRTException(EXCEP_DD_OPEN, "'%s' already exists", m_sDebugDumpDir.c_str());
+        error_msg("'%s' already exists", m_sDebugDumpDir.c_str());
+        return false;
     }
 
     Lock();
@@ -286,7 +286,8 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
     {
         UnLock();
         m_bOpened = false;
-        throw CABRTException(EXCEP_DD_OPEN, "Can't create dir '%s'", pDir);
+        error_msg("Can't create dir '%s'", pDir);
+        return false;
     }
 
     /* mkdir's mode (above) can be affected by umask, fix it */
@@ -294,7 +295,8 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
     {
         UnLock();
         m_bOpened = false;
-        throw CABRTException(EXCEP_DD_OPEN, "Can't change mode of '%s'", pDir);
+        error_msg("Can't change mode of '%s'", pDir);
+        return false;
     }
 
     /* Get ABRT's user id */
@@ -339,13 +341,21 @@ void CDebugDump::Create(const char *pDir, uid_t uid)
 
     time_t t = time(NULL);
     SaveText(FILENAME_TIME, to_string(t).c_str());
+
+    return true;
 }
 
-static void DeleteFileDir(const char *pDir)
+static bool DeleteFileDir(const char *pDir)
 {
+    if (!ExistFileDir(pDir))
+        return true;
+
     DIR *dir = opendir(pDir);
     if (!dir)
-        return;
+    {
+        error_msg("Can't open dir '%s'", pDir);
+        return false;
+    }
 
     struct dirent *dent;
     while ((dent = readdir(dir)) != NULL)
@@ -358,7 +368,8 @@ static void DeleteFileDir(const char *pDir)
             if (errno != EISDIR)
             {
                 closedir(dir);
-                throw CABRTException(EXCEP_DD_DELETE, "Can't remove dir %s", fullPath.c_str());
+                error_msg("Can't remove dir '%s'", fullPath.c_str());
+                return false;
             }
             DeleteFileDir(fullPath.c_str());
         }
@@ -366,8 +377,11 @@ static void DeleteFileDir(const char *pDir)
     closedir(dir);
     if (rmdir(pDir) == -1)
     {
-        throw CABRTException(EXCEP_DD_DELETE, "Can't remove dir %s", pDir);
+        error_msg("Can't remove dir %s", pDir);
+        return false;
     }
+
+    return true;
 }
 
 void CDebugDump::Delete()
@@ -390,12 +404,13 @@ void CDebugDump::Close()
     m_bOpened = false;
 }
 
-static void LoadTextFile(const char *pPath, std::string& pData)
+static bool LoadTextFile(const char *pPath, std::string& pData)
 {
     FILE *fp = fopen(pPath, "r");
     if (!fp)
     {
-        throw CABRTException(EXCEP_DD_LOAD, "Can't open file '%s'", pPath);
+        error_msg("Can't open file '%s'", pPath);
+        return false;
     }
     pData = "";
     int ch;
@@ -411,16 +426,18 @@ static void LoadTextFile(const char *pPath, std::string& pData)
         }
     }
     fclose(fp);
+    return true;
 }
 
-static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize, uid_t uid, gid_t gid)
+static bool SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize, uid_t uid, gid_t gid)
 {
     /* "Why 0640?!" See ::Create() for security analysis */
     unlink(pPath);
     int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0640);
     if (fd < 0)
     {
-        throw CABRTException(EXCEP_DD_SAVE, "Can't open file '%s': %s", pPath, errno ? strerror(errno) : "errno == 0");
+        error_msg("Can't open file '%s': %s", pPath, errno ? strerror(errno) : "errno == 0");
+        return false;
     }
     if (fchown(fd, uid, gid) == -1)
     {
@@ -430,16 +447,18 @@ static void SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize,
     close(fd);
     if (r != pSize)
     {
-        throw CABRTException(EXCEP_DD_SAVE, "Can't save file '%s'", pPath);
+        error_msg("Can't save file '%s'", pPath);
+        return false;
     }
+
+    return true;
 }
 
 void CDebugDump::LoadText(const char* pName, std::string& pData)
 {
     if (!m_bOpened)
-    {
-        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
-    }
+        error_msg_and_die("DebugDump is not opened");
+
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
     LoadTextFile(fullPath.c_str(), pData);
 }
@@ -447,9 +466,8 @@ void CDebugDump::LoadText(const char* pName, std::string& pData)
 void CDebugDump::SaveText(const char* pName, const char* pData)
 {
     if (!m_bOpened)
-    {
-        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
-    }
+        error_msg_and_die("DebugDump is not opened");
+
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
     SaveBinaryFile(fullPath.c_str(), pData, strlen(pData), m_uid, m_gid);
 }
@@ -457,19 +475,16 @@ void CDebugDump::SaveText(const char* pName, const char* pData)
 void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize)
 {
     if (!m_bOpened)
-    {
-        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
-    }
+        error_msg_and_die("DebugDump is not opened");
     std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
     SaveBinaryFile(fullPath.c_str(), pData, pSize, m_uid, m_gid);
 }
 
-void CDebugDump::InitGetNextFile()
+bool CDebugDump::InitGetNextFile()
 {
     if (!m_bOpened)
-    {
-        throw CABRTException(EXCEP_DD_OPEN, "DebugDump is not opened");
-    }
+        error_msg_and_die("DebugDump is not opened");
+
     if (m_pGetNextFileDir != NULL)
     {
         closedir(m_pGetNextFileDir);
@@ -477,16 +492,17 @@ void CDebugDump::InitGetNextFile()
     m_pGetNextFileDir = opendir(m_sDebugDumpDir.c_str());
     if (m_pGetNextFileDir == NULL)
     {
-        throw CABRTException(EXCEP_DD_OPEN, "Can't open dir '%s'", m_sDebugDumpDir.c_str());
+        error_msg("Can't open dir '%s'", m_sDebugDumpDir.c_str());
+        return false;
     }
+
+    return true;
 }
 
 bool CDebugDump::GetNextFile(std::string *short_name, std::string *full_name)
 {
     if (m_pGetNextFileDir == NULL)
-    {
         return false;
-    }
 
     struct dirent *dent;
     while ((dent = readdir(m_pGetNextFileDir)) != NULL)
@@ -508,14 +524,12 @@ bool CDebugDump::GetNextFile(std::string *short_name, std::string *full_name)
 /* Utility function */
 void delete_debug_dump_dir(const char *pDebugDumpDir)
 {
-    try
+    CDebugDump dd;
+    if (dd.Open(pDebugDumpDir))
     {
-        CDebugDump dd;
-        dd.Open(pDebugDumpDir);
         dd.Delete();
+        dd.Close();
     }
-    catch (CABRTException& e)
-    {
-        /* Ignoring "directory already deleted" and such */
-    }
+    else
+        VERB1 log("Unable to open debug dump '%s'", pDebugDumpDir);
 }

@@ -18,6 +18,9 @@
 */
 
 #define _GNU_SOURCE 1    /* for stpcpy */
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
 #include <libtar.h>
 #include "abrtlib.h"
 #include "abrt_curl.h"
@@ -28,9 +31,6 @@
 #include "comm_layer_inner.h"
 #include "RHTSupport.h"
 #include "strbuf.h"
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 
 using namespace std;
 
@@ -110,6 +110,9 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
         const map_plugin_settings_t& pSettings,
         const char *pArgs)
 {
+    /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
+    update_client(_("Compressing data"));
+
     string retval;
 
     map_plugin_settings_t::const_iterator end = pSettings.end();
@@ -311,9 +314,9 @@ void CReporterRHticket::SetSettings(const map_plugin_settings_t& pSettings)
 /* Should not be deleted (why?) */
 const map_plugin_settings_t& CReporterRHticket::GetSettings()
 {
-    m_pSettings["URL"] = m_strata_url;
-    m_pSettings["Login"] = m_login;
-    m_pSettings["Password"] = m_password;
+    m_pSettings["URL"] = (m_strata_url)? m_strata_url: "";
+    m_pSettings["Login"] = (m_login)? m_login: "";
+    m_pSettings["Password"] = (m_password)? m_password: "";
     m_pSettings["SSLVerify"] = m_ssl_verify ? "yes" : "no";
 
     return m_pSettings;
