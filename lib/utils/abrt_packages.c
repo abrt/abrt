@@ -18,6 +18,8 @@
 */
 
 #include "abrt_packages.h"
+#include "logging.h"
+#include "xfuncs.h"
 
 /* cuts the name from the NVR format: foo-1.2.3-1.el6
    returns a newly allocated string

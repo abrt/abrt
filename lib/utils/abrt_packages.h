@@ -20,8 +20,6 @@
 #ifndef ABRT_PACKAGES_H
 #define ABRT_PACKAGES_H
 
-#include "xfuncs.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
