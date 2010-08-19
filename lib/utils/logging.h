@@ -27,15 +27,19 @@
 #include <stdarg.h>
 #include <sys/syslog.h>
 
-#include "read_write.h"
-#include "xfuncs.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 #define NORETURN __attribute__ ((noreturn))
 
+/* VERB1 log("what you sometimes want to see, even on a production box") */
+#define VERB1 if (g_verbose >= 1)
+/* VERB2 log("debug message, not going into insanely small details") */
+#define VERB2 if (g_verbose >= 2)
+/* VERB3 log("lots and lots of details") */
+#define VERB3 if (g_verbose >= 3)
+/* there is no level > 3 */
 
 enum {
     LOGMODE_NONE = 0,
@@ -50,6 +54,10 @@ extern const char *msg_prefix;
 extern const char *msg_eol;
 extern int logmode;
 extern int xfunc_error_retval;
+
+/* Verbosity level */
+extern int g_verbose;
+
 void xfunc_die(void) NORETURN;
 void log_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 /* It's a macro, not function, since it collides with log() from math.h */
@@ -61,20 +69,7 @@ void error_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (pri
 /* Reports error message with libc's errno error description attached. */
 void perror_msg(const char *s, ...) __attribute__ ((format (printf, 1, 2)));
 void perror_msg_and_die(const char *s, ...) __attribute__ ((noreturn, format (printf, 1, 2)));
-void perror_nomsg_and_die(void) NORETURN;
-void perror_nomsg(void);
-void verror_msg(const char *s, va_list p, const char *strerr);
 void die_out_of_memory(void) NORETURN;
-
-/* Verbosity level */
-extern int g_verbose;
-/* VERB1 log("what you sometimes want to see, even on a production box") */
-#define VERB1 if (g_verbose >= 1)
-/* VERB2 log("debug message, not going into insanely small details") */
-#define VERB2 if (g_verbose >= 2)
-/* VERB3 log("lots and lots of details") */
-#define VERB3 if (g_verbose >= 3)
-/* there is no level > 3 */
 
 #ifdef __cplusplus
 }
