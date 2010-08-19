@@ -32,11 +32,11 @@
 
 class CKerneloopsScanner : public CAction
 {
-private:
-    time_t m_syslog_last_change;
-public:
-    CKerneloopsScanner();
-    virtual void Run(const char *pActionDir, const char *pArgs, int force);
+    private:
+        time_t m_syslog_last_change;
+    public:
+        CKerneloopsScanner();
+        virtual void Run(const char *pActionDir, const char *pArgs, int force);
 };
 
 #endif

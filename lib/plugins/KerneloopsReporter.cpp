@@ -26,105 +26,107 @@
 /* helpers */
 static size_t writefunction(void *ptr, size_t size, size_t nmemb, void *stream)
 {
-	size *= nmemb;
+    size *= nmemb;
 /*
-	char *c, *c1, *c2;
+    char *c, *c1, *c2;
 
-	log("received: '%*.*s'\n", (int)size, (int)size, (char*)ptr);
-	c = (char*)xzalloc(size + 1);
-	memcpy(c, ptr, size);
-	c1 = strstr(c, "201 ");
-	if (c1) {
-		c1 += 4;
-		c2 = strchr(c1, '\n');
-		if (c2)
-			*c2 = 0;
-	}
-	free(c);
+    log("received: '%*.*s'\n", (int)size, (int)size, (char*)ptr);
+    c = (char*)xzalloc(size + 1);
+    memcpy(c, ptr, size);
+    c1 = strstr(c, "201 ");
+    if (c1)
+    {
+        c1 += 4;
+        c2 = strchr(c1, '\n');
+        if (c2)
+            *c2 = 0;
+    }
+    free(c);
 */
 
-	return size;
+    return size;
 }
 
 /* Send oops data to kerneloops.org-style site, using HTTP POST */
 /* Returns 0 on success */
 static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsdata)
 {
-	CURLcode ret;
-	CURL *handle;
-	struct curl_httppost *post = NULL;
-	struct curl_httppost *last = NULL;
+    CURLcode ret;
+    CURL *handle;
+    struct curl_httppost *post = NULL;
+    struct curl_httppost *last = NULL;
 
-	handle = xcurl_easy_init();
-	curl_easy_setopt(handle, CURLOPT_URL, url);
+    handle = xcurl_easy_init();
+    curl_easy_setopt(handle, CURLOPT_URL, url);
 
-	curl_formadd(&post, &last,
-		CURLFORM_COPYNAME, "oopsdata",
-		CURLFORM_COPYCONTENTS, oopsdata,
-		CURLFORM_END);
-	curl_formadd(&post, &last,
-		CURLFORM_COPYNAME, "pass_on_allowed",
-		CURLFORM_COPYCONTENTS, "yes",
-		CURLFORM_END);
+    curl_formadd(&post, &last,
+            CURLFORM_COPYNAME, "oopsdata",
+            CURLFORM_COPYCONTENTS, oopsdata,
+            CURLFORM_END);
+    curl_formadd(&post, &last,
+            CURLFORM_COPYNAME, "pass_on_allowed",
+            CURLFORM_COPYCONTENTS, "yes",
+            CURLFORM_END);
 
 
-	curl_easy_setopt(handle, CURLOPT_HTTPPOST, post);
-	curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, writefunction);
+    curl_easy_setopt(handle, CURLOPT_HTTPPOST, post);
+    curl_easy_setopt(handle, CURLOPT_WRITEFUNCTION, writefunction);
 
-	ret = curl_easy_perform(handle);
+    ret = curl_easy_perform(handle);
 
-	curl_formfree(post);
-	curl_easy_cleanup(handle);
+    curl_formfree(post);
+    curl_easy_cleanup(handle);
 
-	return ret;
+    return ret;
 }
 
 
 /* class CKerneloopsReporter */
 CKerneloopsReporter::CKerneloopsReporter() :
-	m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
+    m_sSubmitURL("http://submit.kerneloops.org/submitoops.php")
 {}
 
 std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
                                         const map_plugin_settings_t& pSettings,
                                         const char *pArgs)
 {
-	CURLcode ret;
+    CURLcode ret;
 
-	update_client(_("Creating and submitting a report..."));
+    update_client(_("Creating and submitting a report..."));
 
-	map_crash_data_t::const_iterator it = pCrashData.find(FILENAME_BACKTRACE);
-	if (it != pCrashData.end()) {
-		ret = http_post_to_kerneloops_site(
-			m_sSubmitURL.c_str(),
-			it->second[CD_CONTENT].c_str()
-		);
-	}
+    map_crash_data_t::const_iterator it = pCrashData.find(FILENAME_BACKTRACE);
+    if (it != pCrashData.end())
+    {
+        ret = http_post_to_kerneloops_site(
+                m_sSubmitURL.c_str(),
+                it->second[CD_CONTENT].c_str()
+        );
+    }
 
-	if (ret != CURLE_OK) {
-                char* err_str = xasprintf("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
-                CABRTException e(EXCEP_PLUGIN, err_str);
-                free(err_str);
-		throw e;
-	}
-        /* Server replies with:
-         * 200 thank you for submitting the kernel oops information
-         * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
-         * - no URL or bug ID apparently...
-         */
-	return "Kernel oops report was uploaded";
+    if (ret != CURLE_OK)
+    {
+        char* err_str = xasprintf("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
+        CABRTException e(EXCEP_PLUGIN, err_str);
+        free(err_str);
+        throw e;
+    }
+    /* Server replies with:
+     * 200 thank you for submitting the kernel oops information
+     * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
+     * - no URL or bug ID apparently...
+     */
+    return "Kernel oops report was uploaded";
 }
 
 void CKerneloopsReporter::SetSettings(const map_plugin_settings_t& pSettings)
 {
-	m_pSettings = pSettings;
+    m_pSettings = pSettings;
 
-	map_plugin_settings_t::const_iterator end = pSettings.end();
-	map_plugin_settings_t::const_iterator it;
-	it = pSettings.find("SubmitURL");
-	if (it != end) {
-		m_sSubmitURL = it->second;
-	}
+    map_plugin_settings_t::const_iterator end = pSettings.end();
+    map_plugin_settings_t::const_iterator it;
+    it = pSettings.find("SubmitURL");
+    if (it != end)
+        m_sSubmitURL = it->second;
 }
 
 //ok to delete?
