@@ -56,6 +56,8 @@ class CDebugDump
         bool InitGetNextFile();
         /* Pointers may be NULL */
         bool GetNextFile(std::string *short_name, std::string *full_name);
+
+        const char *Directory() const { return m_sDebugDumpDir.c_str(); }
 };
 
 /**
