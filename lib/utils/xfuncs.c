@@ -23,6 +23,12 @@
  */
 
 #include "xfuncs.h"
+#include "logging.h"
+#include "read_write.h"
+#include <fcntl.h>
+#include <pwd.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 /* Turn on nonblocking I/O on a fd */
 int ndelay_on(int fd)
@@ -262,13 +268,6 @@ void xstat(const char *name, struct stat *stat_buf)
         perror_msg_and_die("can't stat '%s'", name);
 }
 
-const char *get_home_dir(uid_t uid)
-{
-    struct passwd* pw = getpwuid(uid);
-    // TODO: handle errno
-    return pw ? pw->pw_dir : NULL;
-}
-
 // Die if we can't open a file and return a fd
 int xopen3(const char *pathname, int flags, int mode)
 {
@@ -283,6 +282,12 @@ int xopen3(const char *pathname, int flags, int mode)
 int xopen(const char *pathname, int flags)
 {
     return xopen3(pathname, flags, 0666);
+}
+
+void xunlink(const char *pathname)
+{
+    if (unlink(pathname))
+        perror_msg_and_die("can't remove file '%s'", pathname);
 }
 
 #if 0 //UNUSED
@@ -302,12 +307,6 @@ int open_or_warn(const char *pathname, int flags)
     return open3_or_warn(pathname, flags, 0666);
 }
 #endif
-
-void xunlink(const char *pathname)
-{
-    if (unlink(pathname))
-        perror_msg_and_die("can't remove file '%s'", pathname);
-}
 
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
@@ -388,4 +387,11 @@ void xsetregid(gid_t rgid, gid_t egid)
 {
     if (setregid(rgid, egid) != 0)
         perror_msg_and_die("can't set %cid %lu", 'g', (long)rgid);
+}
+
+const char *get_home_dir(uid_t uid)
+{
+    struct passwd* pw = getpwuid(uid);
+    // TODO: handle errno
+    return pw ? pw->pw_dir : NULL;
 }
