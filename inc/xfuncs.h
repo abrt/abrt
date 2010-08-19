@@ -19,17 +19,11 @@
 #ifndef ABRT_XFUNCS_H
 #define ABRT_XFUNCS_H
 
-#include <stdio.h>
-#include <stdlib.h>
-
 #include <sys/socket.h>
 #include <sys/stat.h>
 #include <dirent.h>
 #include <stdbool.h>
-#include <fcntl.h>
-#include <pwd.h>
-
-#include "logging.h"
+#include <stdarg.h>
 
 #ifdef __cplusplus
 extern "C" {
