@@ -102,8 +102,6 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
              "Command:            %s\n"
              "Executable:         %s\n"
              "System:             %s, kernel %s\n"
-             "Rating:             %s\n"
-             "Coredump file:      %s\n"
              "Reason:             %s\n"),
            get_crash_data_item_content(crash, CD_UID).c_str(),
            get_crash_data_item_content(crash, CD_UUID).c_str(),
@@ -115,13 +113,22 @@ static void print_crash_info(const map_crash_data_t& crash, bool show_backtrace)
            get_crash_data_item_content(crash, FILENAME_EXECUTABLE).c_str(),
            get_crash_data_item_content(crash, FILENAME_RELEASE).c_str(),
            get_crash_data_item_content(crash, FILENAME_KERNEL).c_str(),
-           get_crash_data_item_content(crash, FILENAME_RATING).c_str(),
-           get_crash_data_item_content(crash, FILENAME_COREDUMP).c_str(),
            get_crash_data_item_content(crash, FILENAME_REASON).c_str());
 
     free((void *)timeloc);
 
-    /* print only if available */
+    /* Print optional fields only if they are available */
+
+    /* Coredump is not present in kerneloopses and Python exceptions. */
+    const char *coredump = get_crash_data_item_content_or_NULL(crash, FILENAME_COREDUMP);
+    if (coredump)
+        printf(_("Coredump file:      %s\n"), coredump);
+
+    const char *rating = get_crash_data_item_content_or_NULL(crash, FILENAME_RATING);
+    if (rating)
+        printf(_("Rating:             %s\n"), rating);
+
+    /* Crash function is not present in kerneloopses, and before the full report is created.*/
     const char *crash_function = get_crash_data_item_content_or_NULL(crash, FILENAME_CRASH_FUNCTION);
     if (crash_function)
         printf(_("Crash function:     %s\n"), crash_function);
