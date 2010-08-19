@@ -133,12 +133,14 @@ static char* is_text_file(const char *name, ssize_t *sz)
 
 static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& data)
 {
+    VERB3 log("load_crash_data_from_debug_dump: directory %s", dd.Directory());
     std::string short_name;
     std::string full_name;
 
     dd.InitGetNextFile();
     while (dd.GetNextFile(&short_name, &full_name))
     {
+        VERB3 log("load_crash_data_from_debug_dump: file '%s', '%s'", short_name.c_str(), full_name.c_str());
         ssize_t sz = 4*1024;
         char *text = NULL;
         bool editable = is_editable_file(short_name.c_str());
@@ -1089,7 +1091,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
 }
 
 mw_result_t FillCrashInfo(const char *crash_id,
-                map_crash_data_t& pCrashData)
+                          map_crash_data_t& pCrashData)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
