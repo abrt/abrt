@@ -25,8 +25,6 @@
 #include <stdlib.h>
 #include <errno.h>
 
-#include "logging.h"
-
 #ifdef __cplusplus
 extern "C" {
 #endif
