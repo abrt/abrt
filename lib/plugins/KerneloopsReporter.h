@@ -34,18 +34,18 @@
 
 class CKerneloopsReporter : public CReporter
 {
-	private:
-		std::string m_sSubmitURL;
+    private:
+        std::string m_sSubmitURL;
 
-	public:
-		CKerneloopsReporter();
+    public:
+        CKerneloopsReporter();
 
-		virtual void SetSettings(const map_plugin_settings_t& pSettings);
+        virtual void SetSettings(const map_plugin_settings_t& pSettings);
 //ok to delete?
-//		virtual const map_plugin_settings_t& GetSettings();
-		virtual std::string Report(const map_crash_data_t& pCrashData,
-                                const map_plugin_settings_t& pSettings,
-				const char *pArgs);
+//	virtual const map_plugin_settings_t& GetSettings();
+        virtual std::string Report(const map_crash_data_t& pCrashData,
+                        const map_plugin_settings_t& pSettings,
+                        const char *pArgs);
 };
 
 #endif
