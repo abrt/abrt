@@ -75,7 +75,15 @@ class Dump():
         return int(self.Count)
 
     def getExecutable(self):
-        return self.executable
+        try:
+            return self.executable
+        except AttributeError, err:
+            # try to rethrow the exception with the directory path, as
+            # it's useful to know it in this case
+            if "DumpDir" in self.__dict__:
+                raise AttributeError("{0} (dump directory: {1})".format(str(err), self.DumpDir))
+            else:
+                raise
 
     def getPackage(self):
         return self.package
