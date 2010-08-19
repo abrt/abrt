@@ -703,7 +703,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
 
     if (strcmp(pExecutable, "kernel") == 0)
     {
-        component = xstrdup("kenel");
+        component = xstrdup("kernel");
         rpm_pkg = xstrdup("kernel");
         packageName = xstrdup("kernel");
     }
