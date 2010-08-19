@@ -19,6 +19,7 @@
 //#include "abrtlib.h"
 #include "rpm.h"
 #include "abrt_packages.h"
+#include "logging.h"
 
 /**
 * A set, which contains finger prints.
