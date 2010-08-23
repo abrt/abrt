@@ -45,6 +45,7 @@ void rpm_destroy()
 {
     rpmFreeRpmrc();
     rpmFreeCrypto();
+    rpmFreeMacros(NULL);
 
     g_list_foreach(list_fingerprints, list_free, NULL);
     g_list_free(list_fingerprints);
