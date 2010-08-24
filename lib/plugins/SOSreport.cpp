@@ -123,42 +123,44 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
         throw CABRTException(EXCEP_PLUGIN, "Can't find filename in sosreport output");
     }
 
-    string sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar");
+    char *sosreport_dd_filename = concat_path_file(pActionDir, "sosreport.tar");
     char *ext = strrchr(sosreport_filename, '.');
     if (ext && strcmp(ext, ".tar") != 0)
     {
         // Assuming it's .bz2, .gz or some such
-        sosreport_dd_filename += ext;
+        sosreport_dd_filename = append_to_malloced_string(sosreport_dd_filename, ext);
     }
+
     CDebugDump dd;
     if (!dd.Open(pActionDir))
     {
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+        free(sosreport_filename);
+        free(sosreport_dd_filename);
         return;
     }
     //Not useful: dd.SaveText("sosreportoutput", output);
-    off_t sz = copy_file(sosreport_filename, sosreport_dd_filename.c_str(), 0644);
+    off_t sz = copy_file(sosreport_filename, sosreport_dd_filename, 0644);
 
     // don't want to leave sosreport-XXXX.tar.bz2 in /tmp
     unlink(sosreport_filename);
     // sosreport-XXXX.tar.bz2.md5 too
-    unsigned len = strlen(sosreport_filename);
-    sosreport_filename = (char*)xrealloc(sosreport_filename, len + sizeof(".md5")-1 + 1);
-    strcpy(sosreport_filename + len, ".md5");
+    sosreport_filename = append_to_malloced_string(sosreport_filename, ".md5");
     unlink(sosreport_filename);
 
+    dd.Close();
     if (sz < 0)
     {
-        dd.Close();
         CABRTException e(EXCEP_PLUGIN,
                 "Can't copy '%s' to '%s'",
-                sosreport_filename,
-                sosreport_dd_filename.c_str()
+                sosreport_filename, sosreport_dd_filename
         );
         free(sosreport_filename);
+        free(sosreport_dd_filename);
         throw e;
     }
     free(sosreport_filename);
+    free(sosreport_dd_filename);
 #endif
 }
 

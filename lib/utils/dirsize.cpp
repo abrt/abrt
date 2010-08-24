@@ -33,17 +33,21 @@ double get_dirsize(const char *pPath)
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
-        string dname = concat_path_file(pPath, ep->d_name);
-        if (lstat(dname.c_str(), &statbuf) != 0)
+        char *dname = concat_path_file(pPath, ep->d_name);
+        if (lstat(dname, &statbuf) != 0)
+        {
+            free(dname);
             continue;
+        }
         if (S_ISDIR(statbuf.st_mode))
         {
-            size += get_dirsize(dname.c_str());
+            size += get_dirsize(dname);
         }
         else if (S_ISREG(statbuf.st_mode))
         {
             size += statbuf.st_size;
         }
+        free(dname);
     }
     closedir(dp);
     return size;
@@ -66,12 +70,15 @@ double get_dirsize_find_largest_dir(
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
-        string dname = concat_path_file(pPath, ep->d_name);
-        if (lstat(dname.c_str(), &statbuf) != 0)
+        char *dname = concat_path_file(pPath, ep->d_name);
+        if (lstat(dname, &statbuf) != 0)
+        {
+            free(dname);
             continue;
+        }
         if (S_ISDIR(statbuf.st_mode))
         {
-            double sz = get_dirsize(dname.c_str());
+            double sz = get_dirsize(dname);
             size += sz;
 
             if (worst_dir && (!excluded || strcmp(excluded, ep->d_name) != 0))
@@ -94,6 +101,7 @@ double get_dirsize_find_largest_dir(
         {
             size += statbuf.st_size;
         }
+        free(dname);
     }
     closedir(dp);
     return size;

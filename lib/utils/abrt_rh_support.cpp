@@ -190,8 +190,9 @@ reportfile_add_binding_from_namedfile(reportfile_t* file,
     // <binding name=NAME fileName=FILENAME type=text/binary...
     internal_reportfile_start_binding(file, binding_name, isbinary, recorded_filename);
     // ... href=content/NAME>
-    string href_name = concat_path_file("content", binding_name);
-    xxmlTextWriterWriteAttribute(file->writer, "href", href_name.c_str());
+    char *href_name = concat_path_file("content", binding_name);
+    xxmlTextWriterWriteAttribute(file->writer, "href", href_name);
+    free(href_name);
 }
 
 //
@@ -222,7 +223,7 @@ reportfile_free(reportfile_t* file)
 char*
 post_signature(const char* baseURL, bool ssl_verify, const char* signature)
 {
-    string URL = concat_path_file(baseURL, "/signatures");
+    char *URL = concat_path_file(baseURL, "/signatures");
 
     abrt_post_state *state = new_abrt_post_state(0
                 + ABRT_POST_WANT_HEADERS
@@ -230,7 +231,8 @@ post_signature(const char* baseURL, bool ssl_verify, const char* signature)
                 + ABRT_POST_WANT_ERROR_MSG
                 + (ssl_verify ? ABRT_POST_WANT_SSL_VERIFY : 0)
     );
-    int http_resp_code = abrt_post_string(state, URL.c_str(), "application/xml", signature);
+    int http_resp_code = abrt_post_string(state, URL, "application/xml", signature);
+    free(URL);
 
     char *retval;
     const char *strata_msg;
@@ -369,7 +371,7 @@ send_report_to_new_case(const char* baseURL,
                 const char* component,
                 const char* report_file_name)
 {
-    string case_url = concat_path_file(baseURL, "/cases");
+    char *case_url = concat_path_file(baseURL, "/cases");
 
     char *case_data = make_case_data(summary, description,
                                          "Red Hat Enterprise Linux", "6.0",
@@ -390,14 +392,16 @@ send_report_to_new_case(const char* baseURL,
     );
     case_state->username = username;
     case_state->password = password;
-    abrt_post_string(case_state, case_url.c_str(), "application/xml", case_data);
+    abrt_post_string(case_state, case_url, "application/xml", case_data);
 
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
     switch (case_state->http_resp_code)
     {
     case 305: /* "305 Use Proxy" */
-        if (++redirect_count < 10 && case_location) {
-            case_url = case_location;
+        if (++redirect_count < 10 && case_location)
+        {
+            free(case_url);
+            case_url = xstrdup(case_location);
             free_abrt_post_state(case_state);
             goto redirect_case;
         }
@@ -408,7 +412,7 @@ send_report_to_new_case(const char* baseURL,
          * instead of returning html-encoded body, we show short concise message,
          * and show offending URL (typos in which is a typical cause) */
         retval = xasprintf("error in case creation, "
-                        "HTTP code: 404 (Not found), URL:'%s'", case_url.c_str());
+                        "HTTP code: 404 (Not found), URL:'%s'", case_url);
         break;
 
     default:
@@ -431,7 +435,7 @@ send_report_to_new_case(const char* baseURL,
         break;
 
     case 200:
-    case 201:
+    case 201: {
         if (!case_location) {
             /* Case Creation returned valid code, but no location */
             retval = xasprintf("error in case creation: no Location URL, HTTP code: %d",
@@ -439,7 +443,7 @@ send_report_to_new_case(const char* baseURL,
             break;
         }
 
-        string atch_url = concat_path_file(case_location, "/attachments");
+        char *atch_url = concat_path_file(case_location, "/attachments");
         abrt_post_state *atch_state;
  redirect_attach:
         atch_state = new_abrt_post_state(0
@@ -450,14 +454,16 @@ send_report_to_new_case(const char* baseURL,
         );
         atch_state->username = username;
         atch_state->password = password;
-        abrt_post_file_as_form(atch_state, atch_url.c_str(), "application/binary", report_file_name);
+        abrt_post_file_as_form(atch_state, atch_url, "application/binary", report_file_name);
 
         char *atch_location = find_header_in_abrt_post_state(atch_state, "Location:");
         switch (atch_state->http_resp_code)
         {
         case 305: /* "305 Use Proxy" */
-            if (++redirect_count < 10 && atch_location) {
-                atch_url = atch_location;
+            if (++redirect_count < 10 && atch_location)
+            {
+                free(atch_url);
+                atch_url = xstrdup(atch_location);
                 free_abrt_post_state(atch_state);
                 goto redirect_attach;
             }
@@ -503,11 +509,15 @@ send_report_to_new_case(const char* baseURL,
             //}
             retval = xasprintf("Case created: %s", /*body,*/ case_location);
         } /* switch (attach HTTP code) */
+
         free_abrt_post_state(atch_state);
+        free(atch_url);
+    } /* case 200/201 */
 
     } /* switch (case HTTP code) */
 
     free_abrt_post_state(case_state);
     free(allocated);
+    free(case_url);
     return retval;
 }

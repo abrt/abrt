@@ -55,7 +55,7 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
 
     update_client(_("Sending archive %s to %s"), pFilename, pURL);
 
-    string wholeURL = concat_path_file(pURL, strrchr(pFilename, '/') ? : pFilename);
+    char *whole_url = concat_path_file(pURL, strrchr(pFilename, '/') ? : pFilename);
 
     int count = m_nRetryCount;
     while (1)
@@ -63,6 +63,7 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         FILE *f = fopen(pFilename, "r");
         if (!f)
         {
+            free(whole_url);
             throw CABRTException(EXCEP_PLUGIN, "Can't open archive file '%s'", pFilename);
         }
 
@@ -73,7 +74,7 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         /* enable uploading */
         curl_easy_setopt(curl, CURLOPT_UPLOAD, 1L);
         /* specify target */
-        curl_easy_setopt(curl, CURLOPT_URL, wholeURL.c_str());
+        curl_easy_setopt(curl, CURLOPT_URL, whole_url);
         /* FILE handle: passed to the default callback, it will fread() it */
         curl_easy_setopt(curl, CURLOPT_READDATA, f);
         curl_easy_setopt(curl, CURLOPT_INFILESIZE_LARGE, (curl_off_t)buf.st_size);
@@ -88,6 +89,7 @@ void CFileTransfer::SendFile(const char *pURL, const char *pFilename)
         /* retry the upload if not succesful, wait a bit before next try */
         sleep(m_nRetryDelay);
     }
+    free(whole_url);
 }
 
 static void create_tar(const char *archive_name, const char *directory)

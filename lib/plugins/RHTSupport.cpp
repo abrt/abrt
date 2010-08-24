@@ -202,17 +202,19 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
                     basename++;
                 else
                     basename = content;
-                string xml_name = concat_path_file("content", basename);
+                char *xml_name = concat_path_file("content", basename);
                 reportfile_add_binding_from_namedfile(file,
                         /*on_disk_filename */ content,
                         /*binding_name     */ it->first.c_str(),
-                        /*recorded_filename*/ xml_name.c_str(),
+                        /*recorded_filename*/ xml_name,
                         /*binary           */ 1);
-                if (tar_append_file(tar, (char*)content, (char*)(xml_name.c_str())) != 0)
+                if (tar_append_file(tar, (char*)content, xml_name) != 0)
                 {
                     retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
+                    free(xml_name);
                     goto ret;
                 }
+                free(xml_name);
             }
         }
     }

@@ -64,6 +64,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "abrt_types.h"
 #include "xfuncs.h"
 #include "logging.h"
+#include "read_write.h"
 
 
 char* skip_whitespace(const char *s);
@@ -73,9 +74,10 @@ char* skip_non_whitespace(const char *s);
 #ifdef __cplusplus
 extern "C" {
 #endif
-
 int prefixcmp(const char *str, const char *prefix);
 int suffixcmp(const char *str, const char *suffix);
+char *concat_path_file(const char *path, const char *filename);
+char *append_to_malloced_string(char *mstr, const char *append);
 #ifdef __cplusplus
 }
 #endif
@@ -89,7 +91,6 @@ int xatoi(const char *numstr);
  * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc */
 int xatoi_u(const char *numstr);
 
-#include "read_write.h"
 
 /* copyfd_XX print read/write errors and return -1 if they occur */
 enum {
@@ -204,7 +205,6 @@ std::string to_string(T x)
 
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
 void parse_release(const char *pRelease, char **product, char **version);
-#endif
 
 // TODO: npajkovs: full rewrite ssprintf -> xasprintf
 static inline std::string ssprintf(const char *format, ...)
@@ -220,14 +220,6 @@ static inline std::string ssprintf(const char *format, ...)
     free(string_ptr);
     return res;
 }
+#endif
 
-static inline std::string concat_path_file(const char *path, const char *filename)
-{
-    char *lc;
-
-    while (*filename == '/')
-            filename++;
-    lc = last_char_is(path, '/');
-    return ssprintf("%s%s%s", path, (lc==NULL ? "/" : ""), filename);
-}
 #endif

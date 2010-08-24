@@ -475,12 +475,15 @@ static double get_dir_size(const char *dirname,
     {
         if (dot_or_dotdot(ep->d_name))
             continue;
-        string dname = concat_path_file(dirname, ep->d_name);
-        if (lstat(dname.c_str(), &stats) != 0)
+        char *dname = concat_path_file(dirname, ep->d_name);
+        if (lstat(dname, &stats) != 0)
+        {
+            free(dname);
             continue;
+        }
         if (S_ISDIR(stats.st_mode))
         {
-            double sz = get_dir_size(dname.c_str(), worst_file, maxsz);
+            double sz = get_dir_size(dname, worst_file, maxsz);
             size += sz;
         }
         else if (S_ISREG(stats.st_mode))
@@ -504,6 +507,7 @@ static double get_dir_size(const char *dirname,
                 }
             }
         }
+        free(dname);
     }
     closedir(dp);
     return size;
@@ -603,7 +607,6 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         // This whole block should be deleted for Fedora 14.
         log(_("Getting global universal unique identification..."));
 
-        string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
         string executable;
         string package;
         string uid_str;
@@ -617,13 +620,14 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         {
             /* Run abrt-backtrace to get independent backtrace suitable
                to UUID calculation. */
+            char *backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
             char *args[7];
             args[0] = (char*)"abrt-backtrace";
             args[1] = (char*)"--single-thread";
             args[2] = (char*)"--remove-exit-handlers";
             args[3] = (char*)"--frame-depth=5";
             args[4] = (char*)"--remove-noncrash-frames";
-            args[5] = (char*)backtrace_path.c_str();
+            args[5] = backtrace_path;
             args[6] = NULL;
 
             int pipeout[2];
@@ -653,6 +657,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
                 exit(1);
             }
 
+            free(backtrace_path);
             close(pipeout[1]); /* write side of the pipe */
 
             /* Read the result from abrt-backtrace. */

@@ -109,8 +109,10 @@ bool CDebugDump::Open(const char *pDir)
 
 bool CDebugDump::Exist(const char* pPath)
 {
-    std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pPath);
-    return ExistFileDir(fullPath.c_str());
+    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pPath);
+    bool r = ExistFileDir(full_path);
+    free(full_path);
+    return r;
 }
 
 static bool GetAndSetLock(const char* pLockFile, const char* pPID)
@@ -362,17 +364,19 @@ static bool DeleteFileDir(const char *pDir)
     {
         if (dot_or_dotdot(dent->d_name))
             continue;
-        std::string fullPath = concat_path_file(pDir, dent->d_name);
-        if (unlink(fullPath.c_str()) == -1)
+        char *full_path = concat_path_file(pDir, dent->d_name);
+        if (unlink(full_path) == -1)
         {
             if (errno != EISDIR)
             {
                 closedir(dir);
-                error_msg("Can't remove dir '%s'", fullPath.c_str());
+                error_msg("Can't remove dir '%s'", full_path);
+                free(full_path);
                 return false;
             }
-            DeleteFileDir(fullPath.c_str());
+            DeleteFileDir(full_path);
         }
+        free(full_path);
     }
     closedir(dir);
     if (rmdir(pDir) == -1)
@@ -459,8 +463,9 @@ void CDebugDump::LoadText(const char* pName, std::string& pData)
     if (!m_bOpened)
         error_msg_and_die("DebugDump is not opened");
 
-    std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    LoadTextFile(fullPath.c_str(), pData);
+    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pName);
+    LoadTextFile(full_path, pData);
+    free(full_path);
 }
 
 void CDebugDump::SaveText(const char* pName, const char* pData)
@@ -468,16 +473,18 @@ void CDebugDump::SaveText(const char* pName, const char* pData)
     if (!m_bOpened)
         error_msg_and_die("DebugDump is not opened");
 
-    std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    SaveBinaryFile(fullPath.c_str(), pData, strlen(pData), m_uid, m_gid);
+    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pName);
+    SaveBinaryFile(full_path, pData, strlen(pData), m_uid, m_gid);
+    free(full_path);
 }
 
 void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize)
 {
     if (!m_bOpened)
         error_msg_and_die("DebugDump is not opened");
-    std::string fullPath = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    SaveBinaryFile(fullPath.c_str(), pData, pSize, m_uid, m_gid);
+    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pName);
+    SaveBinaryFile(full_path, pData, pSize, m_uid, m_gid);
+    free(full_path);
 }
 
 bool CDebugDump::InitGetNextFile()

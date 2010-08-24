@@ -127,7 +127,9 @@ void trim_debug_dumps(unsigned setting_MaxCrashReportsSize, const char *exclude_
         if (dirsize / (1024*1024) < setting_MaxCrashReportsSize || worst_dir == "")
             break;
         log("size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir.c_str());
-        delete_debug_dump_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
+        char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str());
+        delete_debug_dump_dir(d);
+        free(d);
         worst_dir = "";
     }
 }

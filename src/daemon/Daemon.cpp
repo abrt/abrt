@@ -293,9 +293,9 @@ static void FindNewDumps(const char* pPath)
     {
         if (dot_or_dotdot(ep->d_name))
             continue; /* skip "." and ".." */
-        std::string dname = concat_path_file(pPath, ep->d_name);
+        char *dname = concat_path_file(pPath, ep->d_name);
         struct stat stats;
-        if (lstat(dname.c_str(), &stats) == 0)
+        if (lstat(dname, &stats) == 0)
         {
             if (S_ISDIR(stats.st_mode))
             {
@@ -303,6 +303,7 @@ static void FindNewDumps(const char* pPath)
                 dirs.push_back(dname);
             }
         }
+        free(dname);
     }
     closedir(dp);
 
@@ -511,23 +512,26 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir.c_str());
                 g_pCommLayer->QuotaExceed(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
                 /* deletes both directory and DB record */
-                DeleteDebugDump_by_dir(concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str()).c_str());
+                char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str());
+                DeleteDebugDump_by_dir(d);
+                free(d);
                 worst_dir = "";
             }
         }
 
+        char *fullname = NULL;
         try
         {
-            std::string fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
+            fullname = concat_path_file(DEBUG_DUMPS_DIR, name);
             /* Note: SaveDebugDump does not save crashinfo, it _fetches_ crashinfo */
             map_crash_data_t crashinfo;
-            mw_result_t res = SaveDebugDump(fullname.c_str(), crashinfo);
+            mw_result_t res = SaveDebugDump(fullname, crashinfo);
             switch (res)
             {
                 case MW_OK:
-                    log("New crash %s, processing", fullname.c_str());
+                    log("New crash %s, processing", fullname);
                     /* Run automatic actions and reporters on it (if we have them configured) */
-                    RunActionsAndReporters(fullname.c_str());
+                    RunActionsAndReporters(fullname);
                     /* Fall through */
 
                 case MW_REPORTED: /* already reported dup */
@@ -537,9 +541,9 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     {
                         const char *first = get_crash_data_item_content(crashinfo, CD_DUMPDIR).c_str();
                         log("Deleting crash %s (dup of %s), sending dbus signal",
-                                strrchr(fullname.c_str(), '/') + 1,
+                                strrchr(fullname, '/') + 1,
                                 strrchr(first, '/') + 1);
-                        delete_debug_dump_dir(fullname.c_str());
+                        delete_debug_dump_dir(fullname);
                     }
 #define fullname fullname_should_not_be_used_here
 
@@ -597,8 +601,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 case MW_GPG_ERROR:
                 case MW_FILE_ERROR:
                 default:
-                    log("Corrupted or bad crash %s (res:%d), deleting", fullname.c_str(), (int)res);
-                    delete_debug_dump_dir(fullname.c_str());
+                    log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
+                    delete_debug_dump_dir(fullname);
                     break;
             }
         }
@@ -608,9 +612,11 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
         }
         catch (...)
         {
+            free(fullname);
             free(buf);
             throw;
         }
+        free(fullname);
     } /* while */
 
     free(buf);
