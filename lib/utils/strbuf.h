@@ -28,21 +28,73 @@ struct strbuf
 {
     /* Size of the allocated buffer. Always > 0. */
     int alloc;
-    /* Length of the message, without the ending \0. */
+    /* Length of the string, without the ending \0. */
     int len;
     char *buf;
 };
 
-extern struct strbuf *strbuf_new();
-extern void strbuf_free(struct strbuf *strbuf);
-/* Releases strbuf, but not the internal buffer. */
-extern char* strbuf_free_nobuf(struct strbuf *strbuf);
-extern void strbuf_clear(struct strbuf *strbuf);
-extern struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c);
-extern struct strbuf *strbuf_append_str(struct strbuf *strbuf, const char *str);
-extern struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str);
-extern struct strbuf *strbuf_append_strf(struct strbuf *strbuf, const char *format, ...);
-extern struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf, const char *format, ...);
+/**
+ * Creates and initializes a new string buffer.
+ * @returns
+ * It never returns NULL. The returned pointer must be released by
+ * calling the function strbuf_free().
+ */
+struct strbuf *strbuf_new();
+
+/**
+ * Releases the memory held by the string buffer.
+ * @param strbuf
+ * If the strbuf is NULL, no operation is performed.
+ */
+void strbuf_free(struct strbuf *strbuf);
+
+/**
+ * Releases the strbuf, but not the internal buffer.  The internal
+ * string buffer is returned.  Caller is responsible to release the
+ * returned memory using free().
+ */
+char* strbuf_free_nobuf(struct strbuf *strbuf);
+
+/**
+ * The string content is set to an empty string, erasing any previous
+ * content and leaving its length at 0 characters.
+ */
+void strbuf_clear(struct strbuf *strbuf);
+
+/**
+ * The current content of the string buffer is extended by adding a
+ * character c at its end.
+ */
+struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c);
+
+/**
+ * The current content of the string buffer is extended by adding a
+ * string str at its end.
+ */
+struct strbuf *strbuf_append_str(struct strbuf *strbuf,
+                                 const char *str);
+
+/**
+ * The current content of the string buffer is extended by inserting a
+ * string str at its beginning.
+ */
+struct strbuf *strbuf_prepend_str(struct strbuf *strbuf,
+                                  const char *str);
+
+/**
+ * The current content of the string buffer is extended by adding a
+ * sequence of data formatted as the format argument specifies.
+ */
+struct strbuf *strbuf_append_strf(struct strbuf *strbuf,
+                                  const char *format, ...);
+
+/**
+ * The current content of the string buffer is extended by inserting a
+ * sequence of data formatted as the format argument specifies at the
+ * buffer beginning.
+ */
+struct strbuf *strbuf_prepend_strf(struct strbuf *strbuf,
+                                   const char *format, ...);
 
 #ifdef __cplusplus
 }
