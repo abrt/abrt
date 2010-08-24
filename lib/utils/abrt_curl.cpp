@@ -303,6 +303,11 @@ abrt_post(abrt_post_state_t *state,
         xcurl_easy_setopt_ptr(handle, CURLOPT_HTTPHEADER, httpheader_list);
     }
 
+// Disabled: was observed to also handle "305 Use proxy" redirect,
+// apparently with POST->GET remapping - which server didn't like at all.
+// Attempted to suppress remapping on 305 using CURLOPT_POSTREDIR of -1,
+// but it still did not work.
+#if 0
     // Please handle 301/302 redirects for me
     xcurl_easy_setopt_long(handle, CURLOPT_FOLLOWLOCATION, 1);
     xcurl_easy_setopt_long(handle, CURLOPT_MAXREDIRS, 10);
@@ -315,7 +320,8 @@ abrt_post(abrt_post_state_t *state,
     // The non-RFC behaviour is ubiquitous in web browsers, so the library
     // does the conversion by default to maintain consistency.
     // However, a server may require a POST to remain a POST.
-    //xcurl_easy_setopt_long(CURLOPT_POSTREDIR, CURL_REDIR_POST_ALL);
+    xcurl_easy_setopt_long(handle, CURLOPT_POSTREDIR, -1L /*CURL_REDIR_POST_ALL*/ );
+#endif
 
     // Prepare for saving information
     if (state->flags & ABRT_POST_WANT_HEADERS)

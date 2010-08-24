@@ -397,6 +397,8 @@ send_report_to_new_case(const char* baseURL,
     char *case_location = find_header_in_abrt_post_state(case_state, "Location:");
     switch (case_state->http_resp_code)
     {
+    case 301: /* "301 Moved Permanently" (for example, used to move http:// to https://) */
+    case 302: /* "302 Found" (just in case) */
     case 305: /* "305 Use Proxy" */
         if (++redirect_count < 10 && case_location)
         {
