@@ -56,6 +56,9 @@ struct strbuf *strbuf_new()
 
 void strbuf_free(struct strbuf *strbuf)
 {
+    if (!strbuf)
+        return;
+
     free(strbuf->buf);
     free(strbuf);
 }
