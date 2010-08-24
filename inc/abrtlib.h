@@ -38,7 +38,9 @@
 #include <pwd.h>
 #include <grp.h>
 /* C++ bits */
-#include <string>
+#ifdef __cplusplus
+# include <string>
+#endif
 
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
@@ -93,8 +95,8 @@ int xatoi_u(const char *numstr);
 enum {
 	COPYFD_SPARSE = 1 << 0,
 };
-off_t copyfd_eof(int src_fd, int dst_fd, int flags = 0);
-off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags = 0);
+off_t copyfd_eof(int src_fd, int dst_fd, int flags);
+off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
 off_t copy_file(const char *src_name, const char *dst_name, int mode);
 
@@ -183,6 +185,7 @@ int daemon_is_ok();
 char *encode_base64(const void *src, int length);
 
 /* C++ style stuff */
+#ifdef __cplusplus
 double get_dirsize(const char *pPath);
 double get_dirsize_find_largest_dir(
                 const char *pPath,
@@ -201,6 +204,7 @@ std::string to_string(T x)
 
 void parse_args(const char *psArgs, vector_string_t& pArgs, int quote = -1);
 void parse_release(const char *pRelease, char **product, char **version);
+#endif
 
 // TODO: npajkovs: full rewrite ssprintf -> xasprintf
 static inline std::string ssprintf(const char *format, ...)
