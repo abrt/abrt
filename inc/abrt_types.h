@@ -19,6 +19,8 @@
 #ifndef ABRT_TYPES_H_
 #define ABRT_TYPES_H_
 
+#ifdef __cplusplus
+
 #include <map>
 #include <set>
 #include <vector>
@@ -42,5 +44,7 @@ typedef map_vector_string_t report_status_t;
 #define REPORT_STATUS_IDX_MSG  1
 /* Holds result of .conf file section parsing: map["name"] = "value" */
 typedef map_string_t map_plugin_settings_t;
+
+#endif /* __cplusplus */
 
 #endif

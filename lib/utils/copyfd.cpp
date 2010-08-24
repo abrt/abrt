@@ -134,7 +134,7 @@ off_t copyfd_size(int fd1, int fd2, off_t size, int flags)
 
 void copyfd_exact_size(int fd1, int fd2, off_t size)
 {
-	off_t sz = copyfd_size(fd1, fd2, size);
+	off_t sz = copyfd_size(fd1, fd2, size, /*flags:*/ 0);
 	if (sz == size)
 		return;
 	if (sz != -1)
@@ -164,7 +164,7 @@ off_t copy_file(const char *src_name, const char *dst_name, int mode)
         perror_msg("Can't open '%s'", dst_name);
         return -1;
     }
-    r = copyfd_eof(src, dst);
+    r = copyfd_eof(src, dst, /*flags:*/ 0);
     close(src);
     close(dst);
     return r;
