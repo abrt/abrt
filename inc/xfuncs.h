@@ -29,41 +29,43 @@
 extern "C" {
 #endif
 
-extern int ndelay_on(int fd);
-extern int ndelay_off(int fd);
-extern int close_on_exec_on(int fd);
+int ndelay_on(int fd);
+int ndelay_off(int fd);
+int close_on_exec_on(int fd);
 
-extern void* xmalloc(size_t size);
-extern void* xrealloc(void *ptr, size_t size);
-extern void* xzalloc(size_t size);
-extern char* xstrdup(const char *s);
-extern char* xstrndup(const char *s, int n);
+void* xmalloc(size_t size);
+void* xrealloc(void *ptr, size_t size);
+void* xzalloc(size_t size);
+char* xstrdup(const char *s);
+char* xstrndup(const char *s, int n);
 
-extern void xpipe(int filedes[2]);
-extern void xdup(int from);
-extern void xdup2(int from, int to);
-extern void xmove_fd(int from, int to);
+void xpipe(int filedes[2]);
+void xdup(int from);
+void xdup2(int from, int to);
+void xmove_fd(int from, int to);
 
-extern void xwrite(int fd, const void *buf, size_t count);
-extern void xwrite_str(int fd, const char *str);
+void xwrite(int fd, const void *buf, size_t count);
+void xwrite_str(int fd, const char *str);
 
-extern off_t xlseek(int fd, off_t offset, int whence);
+off_t xlseek(int fd, off_t offset, int whence);
 
-extern void xchdir(const char *path);
+void xchdir(const char *path);
 
-extern char* xvasprintf(const char *format, va_list p);
-extern char* xasprintf(const char *format, ...);
+char* xvasprintf(const char *format, va_list p);
+char* xasprintf(const char *format, ...);
 
-extern void xsetenv(const char *key, const char *value);
-extern int xsocket(int domain, int type, int protocol);
-extern void xbind(int sockfd, struct sockaddr *my_addr, socklen_t addrlen);
-extern void xlisten(int s, int backlog);
-extern ssize_t xsendto(int s, const void *buf, size_t len, const struct sockaddr *to, socklen_t tolen);
-extern void xstat(const char *name, struct stat *stat_buf);
+void xsetenv(const char *key, const char *value);
+int xsocket(int domain, int type, int protocol);
+void xbind(int sockfd, struct sockaddr *my_addr, socklen_t addrlen);
+void xlisten(int s, int backlog);
+ssize_t xsendto(int s, const void *buf, size_t len,
+                const struct sockaddr *to, socklen_t tolen);
 
-extern int xopen3(const char *pathname, int flags, int mode);
-extern int xopen(const char *pathname, int flags);
-extern void xunlink(const char *pathname);
+void xstat(const char *name, struct stat *stat_buf);
+
+int xopen3(const char *pathname, int flags, int mode);
+int xopen(const char *pathname, int flags);
+void xunlink(const char *pathname);
 
 /* Just testing dent->d_type == DT_REG is wrong: some filesystems
  * do not report the type, they report DT_UNKNOWN for every dirent
@@ -71,19 +73,19 @@ extern void xunlink(const char *pathname);
  * This function handles this case. Note: it returns 0 on symlinks
  * even if they point to regular files.
  */
-extern int is_regular_file(struct dirent *dent, const char *dirname);
-extern bool dot_or_dotdot(const char *filename);
-extern char *last_char_is(const char *s, int c);
+int is_regular_file(struct dirent *dent, const char *dirname);
+bool dot_or_dotdot(const char *filename);
+char *last_char_is(const char *s, int c);
 
-extern bool string_to_bool(const char *s);
+bool string_to_bool(const char *s);
 
-extern void xseteuid(uid_t euid);
-extern void xsetegid(gid_t egid);
-extern void xsetreuid(uid_t ruid, uid_t euid);
-extern void xsetregid(gid_t rgid, gid_t egid);
+void xseteuid(uid_t euid);
+void xsetegid(gid_t egid);
+void xsetreuid(uid_t ruid, uid_t euid);
+void xsetregid(gid_t rgid, gid_t egid);
 
 /* Returns getpwuid(uid)->pw_dir or NULL */
-extern const char *get_home_dir(uid_t uid);
+const char *get_home_dir(uid_t uid);
 
 #ifdef __cplusplus
 }
