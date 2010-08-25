@@ -16,7 +16,7 @@ libABRTUtils_la_SOURCES = \
     encbase64.cpp \
     read_write.c read_write.h \
     logging.c logging.h \
-    copyfd.cpp \
+    copyfd.c \
     daemon.cpp \
     skip_whitespace.c \
     xatonum.cpp numtoa.cpp \

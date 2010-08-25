@@ -23,13 +23,14 @@
  */
 
 #include "abrtlib.h"
+#include "read_write.h"
 
 #define CONFIG_FEATURE_COPYBUF_KB 4
 
 static const char msg_write_error[] = "write error";
 static const char msg_read_error[] = "read error";
 
-static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags = 0)
+static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags)
 {
 	int status = -1;
 	off_t total = 0;
@@ -97,12 +98,14 @@ static off_t full_fd_action(int src_fd, int dst_fd, off_t size, int flags = 0)
 				last_was_seek = 1;
 			} else {
  need2write:
-				ssize_t wr = full_write(dst_fd, buffer, rd);
-				if (wr < rd) {
-					perror_msg("%s", msg_write_error);
-					break;
-				}
-				last_was_seek = 0;
+                                {
+				    ssize_t wr = full_write(dst_fd, buffer, rd);
+				    if (wr < rd) {
+				        perror_msg("%s", msg_write_error);
+				        break;
+				    }
+				    last_was_seek = 0;
+                                }
 			}
 		}
 		total += rd;

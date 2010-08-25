@@ -67,6 +67,10 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "read_write.h"
 
 
+/* copyfd_XX print read/write errors and return -1 if they occur */
+enum {
+	COPYFD_SPARSE = 1 << 0,
+};
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -76,6 +80,10 @@ char *concat_path_file(const char *path, const char *filename);
 char *append_to_malloced_string(char *mstr, const char *append);
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);
+off_t copyfd_eof(int src_fd, int dst_fd, int flags);
+off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
+void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
+off_t copy_file(const char *src_name, const char *dst_name, int mode);
 #ifdef __cplusplus
 }
 #endif
@@ -89,15 +97,6 @@ int xatoi(const char *numstr);
  * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc */
 int xatoi_u(const char *numstr);
 
-
-/* copyfd_XX print read/write errors and return -1 if they occur */
-enum {
-	COPYFD_SPARSE = 1 << 0,
-};
-off_t copyfd_eof(int src_fd, int dst_fd, int flags);
-off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
-void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
-off_t copy_file(const char *src_name, const char *dst_name, int mode);
 
 enum {
 	EXECFLG_INPUT      = 1 << 0,
