@@ -46,6 +46,7 @@ class ReporterAssistant():
         self.connect_signal(self.assistant, "cancel",self.on_cancel_clicked)
         self.connect_signal(self.assistant, "close",self.on_close_clicked)
         self.connect_signal(self.assistant, "apply",self.on_apply_clicked)
+        self.parent = parent
         if parent:
             self.assistant.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
             self.assistant.set_transient_for(parent)
@@ -60,14 +61,6 @@ class ReporterAssistant():
         self.pBarWindow = self.builder.get_object("pBarWindow")
         if self.pBarWindow:
             self.connect_signal(self.pBarWindow, "delete_event", self.sw_delete_event_cb)
-            if parent:
-                self.pBarWindow.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
-                self.pBarWindow.set_transient_for(parent)
-            else:
-                self.pBarWindow.set_position(gtk.WIN_POS_CENTER)
-            self.pBar = self.builder.get_object("pBar")
-        else:
-            log1("Couldn't create the progressbar window")
 
         self.connect_signal(daemon, "analyze-complete", self.on_analyze_complete_cb, self.pBarWindow)
         self.connect_signal(daemon, "report-done", self.on_report_done_cb)
@@ -179,6 +172,27 @@ class ReporterAssistant():
 
     def on_apply_clicked(self, assistant, user_data=None):
         self.send_report(self.result)
+
+    def show_progress(self):
+        if not self.pBarWindow:
+            log1("couldn't create the progressbar window")
+            return
+        if self.assistant.get_property("visible"):
+            parent = self.assistant
+            log1("progress bar parent is self.assistant")
+        else:
+            log1("progress bar parent is main window")
+            parent = self.parent
+
+        if parent:
+            self.pBarWindow.set_position(gtk.WIN_POS_CENTER_ON_PARENT)
+            self.pBarWindow.set_transient_for(parent)
+        else:
+            self.pBarWindow.set_position(gtk.WIN_POS_CENTER)
+        self.pBar = self.builder.get_object("pBar")
+
+        self.pBarWindow.show_all()
+
 
     def hide_progress(self):
         try:
@@ -387,7 +401,7 @@ class ReporterAssistant():
 
     def send_report(self, report):
         try:
-            self.pBarWindow.show_all()
+            self.show_progress()
             self.timer = gobject.timeout_add(100, self.progress_update_cb)
             pluginlist = getPluginInfoList(self.daemon)
             reporters_settings = pluginlist.getReporterPluginsSettings()
@@ -1063,7 +1077,7 @@ class ReporterAssistant():
         self.updates = ""
         # FIXME don't duplicate the code, move to function
         #self.pBar.show()
-        self.pBarWindow.show_all()
+        self.show_progress()
         self.timer = gobject.timeout_add(100, self.progress_update_cb)
 
         # show the report window with selected report
