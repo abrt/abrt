@@ -17,7 +17,7 @@ libABRTUtils_la_SOURCES = \
     read_write.c read_write.h \
     logging.c logging.h \
     copyfd.c \
-    daemon.cpp \
+    daemon.c \
     skip_whitespace.c \
     xatonum.cpp numtoa.cpp \
     spawn.cpp \
