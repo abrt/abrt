@@ -67,10 +67,6 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "read_write.h"
 
 
-char* skip_whitespace(const char *s);
-char* skip_non_whitespace(const char *s);
-
-
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -78,6 +74,8 @@ int prefixcmp(const char *str, const char *prefix);
 int suffixcmp(const char *str, const char *suffix);
 char *concat_path_file(const char *path, const char *filename);
 char *append_to_malloced_string(char *mstr, const char *append);
+char* skip_whitespace(const char *s);
+char* skip_non_whitespace(const char *s);
 #ifdef __cplusplus
 }
 #endif
