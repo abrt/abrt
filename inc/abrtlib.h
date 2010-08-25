@@ -98,11 +98,6 @@ char* get_cmdline(pid_t pid);
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 int daemon_is_ok();
 
-#ifdef __cplusplus
-}
-#endif
-
-
 unsigned xatou(const char *numstr);
 int xatoi(const char *numstr);
 /* Using xatoi() instead of naive atoi() is not always convenient -
@@ -110,6 +105,10 @@ int xatoi(const char *numstr);
  * in signed int. Therefore we need this one:
  * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc */
 int xatoi_u(const char *numstr);
+
+#ifdef __cplusplus
+}
+#endif
 
 
 enum {

@@ -19,7 +19,7 @@ libABRTUtils_la_SOURCES = \
     copyfd.c \
     daemon.c \
     skip_whitespace.c \
-    xatonum.cpp numtoa.cpp \
+    xatonum.c numtoa.cpp \
     spawn.cpp \
     stringops.cpp \
     dirsize.cpp \
