@@ -84,6 +84,8 @@ off_t copyfd_eof(int src_fd, int dst_fd, int flags);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
 off_t copy_file(const char *src_name, const char *dst_name, int mode);
+/* Returns malloc'ed block */
+char *encode_base64(const void *src, int length);
 #ifdef __cplusplus
 }
 #endif
@@ -178,9 +180,6 @@ char* get_cmdline(pid_t pid);
 
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 int daemon_is_ok();
-
-/* Returns malloc'ed block */
-char *encode_base64(const void *src, int length);
 
 /* C++ style stuff */
 #ifdef __cplusplus
