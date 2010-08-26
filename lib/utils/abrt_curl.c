@@ -20,8 +20,6 @@
 #include "abrt_curl.h"
 #include "comm_layer_inner.h"
 
-using namespace std;
-
 /*
  * Utility functions
  */

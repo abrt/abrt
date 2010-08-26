@@ -19,6 +19,10 @@
 #ifndef ABRT_RH_SUPPORT_H_
 #define ABRT_RH_SUPPORT_H_ 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct reportfile reportfile_t;
 
 reportfile_t *new_reportfile(void);
@@ -43,5 +47,9 @@ send_report_to_new_case(const char* baseURL,
                 const char* description,
                 const char* component,
                 const char* report_file_name);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

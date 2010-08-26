@@ -21,6 +21,10 @@
 
 #include <curl/curl.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 CURL* xcurl_easy_init();
 
 typedef struct abrt_post_state {
@@ -84,5 +88,9 @@ abrt_post_file_as_form(abrt_post_state_t *state,
 {
     return abrt_post(state, url, content_type, filename, ABRT_POST_DATA_FROMFILE_AS_FORM_DATA);
 }
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

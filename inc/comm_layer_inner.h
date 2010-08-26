@@ -19,9 +19,18 @@
 #ifndef COMMLAYERINNER_H_
 #define COMMLAYERINNER_H_
 
+#ifdef __cplusplus
+
 #include "observer.h"
 
 void init_daemon_logging(CObserver *pObs);
+
+#endif
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 /*
  * Set client's name (dbus ID). NULL unsets it.
@@ -41,5 +50,9 @@ void set_client_name(const char* name);
  * or as a new message line in CLI.
  */
 void update_client(const char *fmt, ...);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

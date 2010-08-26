@@ -20,7 +20,7 @@ libABRTUtils_la_SOURCES = \
     daemon.c \
     skip_whitespace.c \
     xatonum.c numtoa.cpp \
-    spawn.cpp \
+    spawn.c \
     stringops.cpp \
     dirsize.cpp \
     DebugDump.cpp \
@@ -56,8 +56,8 @@ libABRTdUtils_la_SOURCES = \
     make_descr.cpp \
     $(HEADER_DIR)/comm_layer_inner.h CommLayerInner.cpp \
     $(HEADER_DIR)/abrt_xmlrpc.h abrt_xmlrpc.cpp \
-    abrt_rh_support.h abrt_rh_support.cpp \
-    abrt_curl.h abrt_curl.cpp \
+    abrt_rh_support.h abrt_rh_support.c \
+    abrt_curl.h abrt_curl.c \
     $(HEADER_DIR)/plugin.h Plugin.cpp \
     Polkit.h Polkit.cpp
 
