@@ -836,6 +836,7 @@ int main(int argc, char** argv)
     bool lockfile_created = false;
     bool pidfile_created = false;
     CCrashWatcher watcher;
+    xmlrpc_env env;
 
     /* Initialization */
     try
@@ -847,7 +848,6 @@ int main(int argc, char** argv)
             throw 1;
 
         VERB1 log("Initializing XML-RPC library");
-        xmlrpc_env env;
         xmlrpc_env_init(&env);
         xmlrpc_client_setup_global_const(&env);
         if (env.fault_occurred)
@@ -963,6 +963,8 @@ int main(int argc, char** argv)
     /* Error or INT/TERM. Clean up, in reverse order.
      * Take care to not undo things we did not do.
      */
+    xmlrpc_env_clean(&env);
+    xmlrpc_client_teardown_global_const();
     dumpsocket_shutdown();
     rpm_destroy();
     if (pidfile_created)
