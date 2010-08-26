@@ -5,16 +5,26 @@
  */
 #include "abrtlib.h"
 
-using namespace std;
-
-static string concat_str_vector(char **strings)
+static char *concat_str_vector(char **strings)
 {
-	string result;
-	while (*strings) {
-	        result += *strings++;
-		if (*strings)
-			result += ' ';
+	if (!strings[0])
+		return xzalloc(1); // returns ""
+
+	unsigned len = 0;
+	char **spp = strings;
+	while (*spp)
+		len += strlen(*spp++) + 1;
+
+	char *result = xmalloc(len);
+
+	char *r = result;
+	spp = strings;
+	while (*spp) {
+		r = stpcpy(r, *spp++);
+		*r++ = ' ';
 	}
+	*--r = '\0';
+
 	return result;
 }
 
@@ -79,7 +89,11 @@ pid_t fork_execv_on_steroids(int flags,
 		}
 
 		/* This should be done BEFORE stderr redirect */
-		VERB1 log("Executing: %s", concat_str_vector(argv).c_str());
+		VERB1 {
+			char *r = concat_str_vector(argv);
+			log("Executing: %s", r);
+			free(r);
+		}
 
 		if (flags & EXECFLG_ERR2OUT) {
 			/* Want parent to see errors in the same stream */

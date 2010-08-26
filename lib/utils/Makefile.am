@@ -20,7 +20,7 @@ libABRTUtils_la_SOURCES = \
     daemon.c \
     skip_whitespace.c \
     xatonum.c numtoa.cpp \
-    spawn.cpp \
+    spawn.c \
     stringops.cpp \
     dirsize.cpp \
     DebugDump.cpp \

@@ -106,11 +106,6 @@ int xatoi(const char *numstr);
  * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc */
 int xatoi_u(const char *numstr);
 
-#ifdef __cplusplus
-}
-#endif
-
-
 enum {
 	EXECFLG_INPUT      = 1 << 0,
 	EXECFLG_OUTPUT     = 1 << 1,
@@ -135,6 +130,10 @@ char *run_in_shell_and_save_output(int flags,
 		const char *cmd,
 		const char *dir,
 		size_t *size_p);
+#ifdef __cplusplus
+}
+#endif
+
 
 unsigned long long monotonic_ns(void);
 unsigned long long monotonic_us(void);
