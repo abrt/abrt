@@ -16,18 +16,12 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-//#define _GNU_SOURCE
-
 #include <libxml/encoding.h>
 #include <libxml/xmlwriter.h>
 #include <curl/curl.h>
 #include "abrtlib.h"
 #include "abrt_curl.h"
-#include "abrt_xmlrpc.h"
-#include "abrt_exception.h"
 #include "abrt_rh_support.h"
-
-using namespace std;
 
 struct reportfile {
     xmlTextWriterPtr writer;
@@ -225,7 +219,7 @@ post_signature(const char* baseURL, bool ssl_verify, const char* signature)
 {
     char *URL = concat_path_file(baseURL, "/signatures");
 
-    abrt_post_state *state = new_abrt_post_state(0
+    abrt_post_state_t *state = new_abrt_post_state(0
                 + ABRT_POST_WANT_HEADERS
                 + ABRT_POST_WANT_BODY
                 + ABRT_POST_WANT_ERROR_MSG
@@ -381,7 +375,7 @@ send_report_to_new_case(const char* baseURL,
     char *errmsg;
     char *allocated = NULL;
     char* retval = NULL;
-    abrt_post_state *case_state;
+    abrt_post_state_t *case_state;
 
  redirect_case:
     case_state = new_abrt_post_state(0
@@ -446,7 +440,7 @@ send_report_to_new_case(const char* baseURL,
         }
 
         char *atch_url = concat_path_file(case_location, "/attachments");
-        abrt_post_state *atch_state;
+        abrt_post_state_t *atch_state;
  redirect_attach:
         atch_state = new_abrt_post_state(0
                 + ABRT_POST_WANT_HEADERS

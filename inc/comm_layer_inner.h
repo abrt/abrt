@@ -19,9 +19,13 @@
 #ifndef COMMLAYERINNER_H_
 #define COMMLAYERINNER_H_
 
+#ifdef __cplusplus
+
 #include "observer.h"
 
 void init_daemon_logging(CObserver *pObs);
+
+#endif
 
 /*
  * Set client's name (dbus ID). NULL unsets it.
