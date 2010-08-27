@@ -37,38 +37,38 @@ enum ICON_STAGES
 };
 
 struct applet {
-    GtkStatusIcon* m_pStatusIcon;
-    GtkWidget *m_pMenu;
+    GtkStatusIcon *ap_status_icon;
+    GtkWidget *ap_menu;
 
 //        std::map<int, std::string> m_mapEvents;
-    bool m_bDaemonRunning;
-    int m_iAnimationStage;
-    guint m_iAnimator;
-    unsigned m_iAnimCountdown;
-    bool m_bIconsLoaded;
-    const char *m_pLastCrashID;
+    bool ap_daemon_running;
+    int ap_animation_stage;
+    guint ap_animator;
+    unsigned ap_anim_countdown;
+    bool ap_icons_loaded;
+    const char *ap_last_crash_id;
 
-    GdkPixbuf *icon_stages_buff[ICON_STAGE_LAST];
+    GdkPixbuf *ap_icon_stages_buff[ICON_STAGE_LAST];
 };
 
 struct applet* applet_new(const char *app_name);
 void applet_destroy(struct applet *applet);
 
-void ShowIcon(struct applet *applet);
-void HideIcon(struct applet *applet);
-void SetIconTooltip(struct applet *applet, const char *format, ...);
-void CrashNotify(struct applet *applet, const char* crash_id, const char *format, ...);
-void MessageNotify(struct applet *applet, const char *format, ...);
-void Disable(struct applet *applet, const char *reason);
-void Enable(struct applet *applet, const char *reason);
+void show_icon(struct applet *applet);
+void hide_icon(struct applet *applet);
+void set_icon_tooltip(struct applet *applet, const char *format, ...);
+void show_crash_notification(struct applet *applet, const char* crash_id, const char *format, ...);
+void show_msg_notification(struct applet *applet, const char *format, ...);
+void disable(struct applet *applet, const char *reason);
+void enable(struct applet *applet, const char *reason);
 
 // static in next patch
-void OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data);
+void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data);
 //this action should open the reporter dialog directly, without showing the main window
 void action_report(NotifyNotification *notification, gchar *action, gpointer user_data);
 //this action should open the main window
 void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data);
-void OnMenuPopup_cb(GtkStatusIcon *status_icon,
+void on_menu_popup_cb(GtkStatusIcon *status_icon,
                     guint          button,
                     guint          activate_time,
                     gpointer       user_data);

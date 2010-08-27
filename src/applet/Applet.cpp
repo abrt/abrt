@@ -80,8 +80,8 @@ static void Crash(DBusMessage* signal)
     if (package_name[0] == '\0')
         message = _("A crash has been detected");
     //applet->AddEvent(uid, package_name);
-    SetIconTooltip(applet, message, package_name);
-    ShowIcon(applet);
+    set_icon_tooltip(applet, message, package_name);
+    show_icon(applet);
 
     /* If this crash seems to be repeating, do not annoy user with popup dialog.
      * (The icon in the tray is not suppressed)
@@ -103,7 +103,7 @@ static void Crash(DBusMessage* signal)
     free(last_crash_id);
     last_crash_id = xstrdup(crash_id);
 
-    CrashNotify(applet, crash_id, message, package_name);
+    show_crash_notification(applet, crash_id, message, package_name);
 }
 
 static void QuotaExceed(DBusMessage* signal)
@@ -121,8 +121,8 @@ static void QuotaExceed(DBusMessage* signal)
 
     //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
     //    return;
-    ShowIcon(applet);
-    MessageNotify(applet, "%s", str);
+    show_icon(applet);
+    show_msg_notification(applet, "%s", str);
 }
 
 static void NameOwnerChanged(DBusMessage* signal)
@@ -159,7 +159,7 @@ static void NameOwnerChanged(DBusMessage* signal)
 
 // hide icon if it's visible - as NM and don't show it, if it's not
     if (!new_owner[0])
-        HideIcon(applet);
+        hide_icon(applet);
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
