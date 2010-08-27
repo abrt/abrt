@@ -22,6 +22,149 @@
 #include "abrtlib.h"
 #include "CCApplet.h"
 
+static bool load_icons(struct applet *applet)
+{
+    //FIXME: just a tmp workaround
+    return false;
+    int stage;
+    for (stage = ICON_DEFAULT; stage < ICON_STAGE_LAST; stage++)
+    {
+        char name[sizeof(ICON_DIR"/abrt%02d.png")];
+        GError *error = NULL;
+        if (snprintf(name, sizeof(ICON_DIR"/abrt%02d.png"), ICON_DIR"/abrt%02d.png", stage) > 0)
+        {
+            applet->ap_icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
+            if (error != NULL)
+            {
+                error_msg("Can't load pixbuf from %s, animation is disabled", name);
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+static void stop_animate_icon(struct applet *applet)
+{
+    /* applet->ap_animator should be 0 if icons are not loaded, so this should be safe */
+    if (applet->ap_animator != 0)
+    {
+        g_source_remove(applet->ap_animator);
+        gtk_status_icon_set_from_pixbuf(applet->ap_status_icon,
+                                        applet->ap_icon_stages_buff[ICON_DEFAULT]
+        );
+        applet->ap_animator = 0;
+    }
+}
+
+//this action should open the reporter dialog directly, without showing the main window
+static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
+{
+    struct applet *applet = (struct applet *)user_data;
+    if (applet->ap_daemon_running)
+    {
+        pid_t pid = vfork();
+        if (pid < 0)
+            perror_msg("vfork");
+        if (pid == 0)
+        { /* child */
+            char *buf = xasprintf("--report=%s", applet->ap_last_crash_id);
+            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
+            execl(BIN_DIR"/abrt-gui", "abrt-gui", buf, (char*) NULL);
+            /* Did not find abrt-gui in installation directory. Oh well */
+            /* Trying to find it in PATH */
+            execlp("abrt-gui", "abrt-gui", buf, (char*) NULL);
+            perror_msg_and_die("Can't execute abrt-gui");
+        }
+        GError *err = NULL;
+        notify_notification_close(notification, &err);
+        if (err != NULL)
+        {
+            error_msg("%s", err->message);
+            g_error_free(err);
+        }
+        gtk_status_icon_set_visible(applet->ap_status_icon, false);
+        stop_animate_icon(applet);
+    }
+}
+
+//this action should open the main window
+static void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data)
+{
+    struct applet *applet = (struct applet*)user_data;
+    if (applet->ap_daemon_running)
+    {
+        pid_t pid = vfork();
+        if (pid < 0)
+            perror_msg("vfork");
+        if (pid == 0)
+        { /* child */
+            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
+            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
+            /* Did not find abrt-gui in installation directory. Oh well */
+            /* Trying to find it in PATH */
+            execlp("abrt-gui", "abrt-gui", (char*) NULL);
+            perror_msg_and_die("Can't execute abrt-gui");
+        }
+        GError *err = NULL;
+        notify_notification_close(notification, &err);
+        if (err != NULL)
+        {
+            error_msg("%s", err->message);
+            g_error_free(err);
+        }
+        gtk_status_icon_set_visible(applet->ap_status_icon, false);
+        stop_animate_icon(applet);
+    }
+}
+
+static void on_menu_popup_cb(GtkStatusIcon *status_icon,
+                        guint          button,
+                        guint          activate_time,
+                        gpointer       user_data)
+{
+    struct applet *applet = (struct applet*)user_data;
+    /* stop the animation */
+    stop_animate_icon(applet);
+
+    if (applet->ap_menu != NULL)
+    {
+        gtk_menu_popup(GTK_MENU(applet->ap_menu),
+                NULL, NULL,
+                gtk_status_icon_position_menu,
+                status_icon, button, activate_time);
+    }
+}
+
+// why it is not named with suffix _cb when it is callback for g_timeout_add?
+static gboolean update_icon(void *user_data)
+{
+    struct applet *applet = (struct applet*)user_data;
+    if (applet->ap_status_icon && applet->ap_animation_stage < ICON_STAGE_LAST)
+    {
+        gtk_status_icon_set_from_pixbuf(applet->ap_status_icon,
+                                        applet->ap_icon_stages_buff[applet->ap_animation_stage++]);
+    }
+    if (applet->ap_animation_stage == ICON_STAGE_LAST)
+    {
+        applet->ap_animation_stage = 0;
+    }
+    if (--applet->ap_anim_countdown == 0)
+    {
+        stop_animate_icon(applet);
+    }
+    return true;
+}
+
+static void animate_icon(struct applet* applet)
+{
+    if (applet->ap_animator == 0)
+    {
+        applet->ap_animator = g_timeout_add(100, update_icon, applet);
+        applet->ap_anim_countdown = 10 * 3; /* 3 sec */
+    }
+}
+
 static void on_notify_close(NotifyNotification *notification, gpointer user_data)
 {
     g_object_unref(notification);
@@ -126,6 +269,28 @@ static GtkWidget *create_menu(struct applet *applet)
     return menu;
 }
 
+static void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data)
+{
+    struct applet *applet = (struct applet*)user_data;
+    if (applet->ap_daemon_running)
+    {
+        pid_t pid = vfork();
+        if (pid < 0)
+            perror_msg("vfork");
+        if (pid == 0)
+        { /* child */
+            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
+            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
+            /* Did not find abrt-gui in installation directory. Oh well */
+            /* Trying to find it in PATH */
+            execlp("abrt-gui", "abrt-gui", (char*) NULL);
+            perror_msg_and_die("Can't execute abrt-gui");
+        }
+        gtk_status_icon_set_visible(applet->ap_status_icon, false);
+        stop_animate_icon(applet);
+    }
+}
+
 struct applet *applet_new(const char* app_name)
 {
     struct applet *applet = (struct applet*)xzalloc(sizeof(struct applet));
@@ -179,65 +344,6 @@ void set_icon_tooltip(struct applet *applet, const char *format, ...)
 
     gtk_status_icon_set_tooltip_text(applet->ap_status_icon, (n >= 0 && buf) ? buf : "");
     free(buf);
-}
-
-void action_report(NotifyNotification *notification, gchar *action, gpointer user_data)
-{
-    struct applet *applet = (struct applet *)user_data;
-    if (applet->ap_daemon_running)
-    {
-        pid_t pid = vfork();
-        if (pid < 0)
-            perror_msg("vfork");
-        if (pid == 0)
-        { /* child */
-            char *buf = xasprintf("--report=%s", applet->ap_last_crash_id);
-            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-            execl(BIN_DIR"/abrt-gui", "abrt-gui", buf, (char*) NULL);
-            /* Did not find abrt-gui in installation directory. Oh well */
-            /* Trying to find it in PATH */
-            execlp("abrt-gui", "abrt-gui", buf, (char*) NULL);
-            perror_msg_and_die("Can't execute abrt-gui");
-        }
-        GError *err = NULL;
-        notify_notification_close(notification, &err);
-        if (err != NULL)
-        {
-            error_msg("%s", err->message);
-            g_error_free(err);
-        }
-        gtk_status_icon_set_visible(applet->ap_status_icon, false);
-        stop_animate_icon(applet);
-    }
-}
-
-void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data)
-{
-    struct applet *applet = (struct applet*)user_data;
-    if (applet->ap_daemon_running)
-    {
-        pid_t pid = vfork();
-        if (pid < 0)
-            perror_msg("vfork");
-        if (pid == 0)
-        { /* child */
-            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
-            /* Did not find abrt-gui in installation directory. Oh well */
-            /* Trying to find it in PATH */
-            execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            perror_msg_and_die("Can't execute abrt-gui");
-        }
-        GError *err = NULL;
-        notify_notification_close(notification, &err);
-        if (err != NULL)
-        {
-            error_msg("%s", err->message);
-            g_error_free(err);
-        }
-        gtk_status_icon_set_visible(applet->ap_status_icon, false);
-        stop_animate_icon(applet);
-    }
 }
 
 void show_crash_notification(struct applet *applet, const char* crash_id, const char *format, ...)
@@ -294,46 +400,6 @@ void show_msg_notification(struct applet *applet, const char *format, ...)
     }
 }
 
-void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data)
-{
-    struct applet *applet = (struct applet*)user_data;
-    if (applet->ap_daemon_running)
-    {
-        pid_t pid = vfork();
-        if (pid < 0)
-            perror_msg("vfork");
-        if (pid == 0)
-        { /* child */
-            signal(SIGCHLD, SIG_DFL); /* undo SIG_IGN in abrt-applet */
-            execl(BIN_DIR"/abrt-gui", "abrt-gui", (char*) NULL);
-            /* Did not find abrt-gui in installation directory. Oh well */
-            /* Trying to find it in PATH */
-            execlp("abrt-gui", "abrt-gui", (char*) NULL);
-            perror_msg_and_die("Can't execute abrt-gui");
-        }
-        gtk_status_icon_set_visible(applet->ap_status_icon, false);
-        stop_animate_icon(applet);
-    }
-}
-
-void on_menu_popup_cb(GtkStatusIcon *status_icon,
-                        guint          button,
-                        guint          activate_time,
-                        gpointer       user_data)
-{
-    struct applet *applet = (struct applet*)user_data;
-    /* stop the animation */
-    stop_animate_icon(applet);
-
-    if (applet->ap_menu != NULL)
-    {
-        gtk_menu_popup(GTK_MENU(applet->ap_menu),
-                NULL, NULL,
-                gtk_status_icon_position_menu,
-                status_icon, button, activate_time);
-    }
-}
-
 void show_icon(struct applet *applet)
 {
     gtk_status_icon_set_visible(applet->ap_status_icon, true);
@@ -378,71 +444,6 @@ void enable(struct applet *applet, const char *reason)
     gtk_status_icon_set_from_stock(applet->ap_status_icon, GTK_STOCK_DIALOG_WARNING);
     show_icon(applet);
 }
-
-// why it is not named with suffix _cb when it is callback for g_timeout_add?
-gboolean update_icon(void *user_data)
-{
-    struct applet *applet = (struct applet*)user_data;
-    if (applet->ap_status_icon && applet->ap_animation_stage < ICON_STAGE_LAST)
-    {
-        gtk_status_icon_set_from_pixbuf(applet->ap_status_icon,
-                                        applet->ap_icon_stages_buff[applet->ap_animation_stage++]);
-    }
-    if (applet->ap_animation_stage == ICON_STAGE_LAST)
-    {
-        applet->ap_animation_stage = 0;
-    }
-    if (--applet->ap_anim_countdown == 0)
-    {
-        stop_animate_icon(applet);
-    }
-    return true;
-}
-
-void animate_icon(struct applet* applet)
-{
-    if (applet->ap_animator == 0)
-    {
-        applet->ap_animator = g_timeout_add(100, update_icon, applet);
-        applet->ap_anim_countdown = 10 * 3; /* 3 sec */
-    }
-}
-
-void stop_animate_icon(struct applet *applet)
-{
-    /* ap_animator should be 0 if icons are not loaded, so this should be safe */
-    if (applet->ap_animator != 0)
-    {
-        g_source_remove(applet->ap_animator);
-        gtk_status_icon_set_from_pixbuf(applet->ap_status_icon,
-                                        applet->ap_icon_stages_buff[ICON_DEFAULT]
-        );
-        applet->ap_animator = 0;
-    }
-}
-
-bool load_icons(struct applet *applet)
-{
-    //FIXME: just a tmp workaround
-    return false;
-    int stage;
-    for (stage = ICON_DEFAULT; stage < ICON_STAGE_LAST; stage++)
-    {
-        char name[sizeof(ICON_DIR"/abrt%02d.png")];
-        GError *error = NULL;
-        if (snprintf(name, sizeof(ICON_DIR"/abrt%02d.png"), ICON_DIR"/abrt%02d.png", stage) > 0)
-        {
-            applet->ap_icon_stages_buff[stage] = gdk_pixbuf_new_from_file(name, &error);
-            if (error != NULL)
-            {
-                error_msg("Can't load pixbuf from %s, animation is disabled", name);
-                return false;
-            }
-        }
-    }
-    return true;
-}
-
 
 //int CApplet::AddEvent(int pUUID, const char *pProgname)
 //{

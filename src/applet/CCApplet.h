@@ -62,19 +62,4 @@ void show_msg_notification(struct applet *applet, const char *format, ...);
 void disable(struct applet *applet, const char *reason);
 void enable(struct applet *applet, const char *reason);
 
-// static in next patch
-void on_applet_activate_cb(GtkStatusIcon *status_icon, gpointer user_data);
-//this action should open the reporter dialog directly, without showing the main window
-void action_report(NotifyNotification *notification, gchar *action, gpointer user_data);
-//this action should open the main window
-void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data);
-void on_menu_popup_cb(GtkStatusIcon *status_icon,
-                    guint          button,
-                    guint          activate_time,
-                    gpointer       user_data);
-gboolean update_icon(void *data);
-void animate_icon(struct applet *applet);
-void stop_animate_icon(struct applet *applet);
-bool load_icons(struct applet *applet);
-
 #endif
