@@ -590,13 +590,9 @@ static bool set_echo(bool enabled)
  *   List of reporter names. Settings of these reporters are handled.
  * @param settings
  *   A structure filled with reporter plugin settings.
- * @param ask_user
- *   If it's set to true and some reporter plugin settings are found to be missing
- *   (like login name or password), user is asked to provide the missing parts.
  */
 static void get_reporter_plugin_settings(const vector_string_t& reporters,
-					 map_map_string_t &settings,
-					 bool ask_user)
+					 map_map_string_t &settings)
 {
   /* First of all, load system-wide report plugin settings. */
   for (vector_string_t::const_iterator it = reporters.begin(); it != reporters.end(); ++it)
@@ -619,55 +615,52 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
     {
       map_string_t single_plugin_settings;
       std::string path = std::string(homedir) + "/.abrt/"
-	+ it->first + "."PLUGINS_CONF_EXTENSION;
+       + it->first + "."PLUGINS_CONF_EXTENSION;
       /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
          because user may want to override password from /etc/abrt/plugins/\*.conf, but he prefers to
          enter it every time he reports. */
       bool success = LoadPluginSettings(path.c_str(), single_plugin_settings, false);
       if (!success)
-	continue;
+        continue;
       // Merge user's plugin settings into already loaded settings.
       map_string_t::const_iterator valit, valitend = single_plugin_settings.end();
       for (valit = single_plugin_settings.begin(); valit != valitend; ++valit)
-	it->second[valit->first] = valit->second;
+        it->second[valit->first] = valit->second;
     }
   }
+}
 
-  if (!ask_user)
+/**
+ *  Asks user for missing login information
+ */
+static void ask_for_missing_settings(const char *plugin_name, map_string_t &single_plugin_settings)
+{
+  // Login information is missing.
+  bool loginMissing = single_plugin_settings.find("Login") != single_plugin_settings.end()
+    && 0 == strcmp(single_plugin_settings["Login"].c_str(), "");
+  bool passwordMissing = single_plugin_settings.find("Password") != single_plugin_settings.end()
+    && 0 == strcmp(single_plugin_settings["Password"].c_str(), "");
+  if (!loginMissing && !passwordMissing)
     return;
 
-  /* Third, check if a login or password is missing, and ask for it. */
-  map_map_string_t::const_iterator itend = settings.end();
-  for (map_map_string_t::iterator it = settings.begin(); it != itend; ++it)
+  // Read the missing information and push it to plugin settings.
+  printf(_("Wrong settings were detected for plugin %s\n"), plugin_name);
+  char result[64];
+  if (loginMissing)
   {
-    map_string_t &single_plugin_settings = it->second;
-    // Login information is missing.
-    bool loginMissing = single_plugin_settings.find("Login") != single_plugin_settings.end()
-      && 0 == strcmp(single_plugin_settings["Login"].c_str(), "");
-    bool passwordMissing = single_plugin_settings.find("Password") != single_plugin_settings.end()
-      && 0 == strcmp(single_plugin_settings["Password"].c_str(), "");
-    if (!loginMissing && !passwordMissing)
-      continue;
+    read_from_stdin(_("Enter your login: "), result, 64);
+    single_plugin_settings["Login"] = std::string(result);
+  }
+  if (passwordMissing)
+  {
+    bool changed = set_echo(false);
+    read_from_stdin(_("Enter your password: "), result, 64);
+    if (changed)
+        set_echo(true);
 
-    // Read the missing information and push it to plugin settings.
-    printf(_("Wrong settings were detected for plugin %s\n"), it->first.c_str());
-    char result[64];
-    if (loginMissing)
-    {
-      read_from_stdin(_("Enter your login: "), result, 64);
-      single_plugin_settings["Login"] = std::string(result);
-    }
-    if (passwordMissing)
-    {
-      bool changed = set_echo(false);
-      read_from_stdin(_("Enter your password: "), result, 64);
-      if (changed)
-          set_echo(true);
-
-      // Newline was not added by pressing Enter because ECHO was disabled, so add it now.
-      puts("");
-      single_plugin_settings["Password"] = std::string(result);
-    }
+    // Newline was not added by pressing Enter because ECHO was disabled, so add it now.
+    puts("");
+    single_plugin_settings["Password"] = std::string(result);
   }
 }
 
@@ -685,6 +678,9 @@ int report(const char *crash_id, int flags)
     return -1;
   }
 
+  const char *rating_str = get_crash_data_item_content_or_NULL(cr, FILENAME_RATING);
+  unsigned rating = rating_str ? xatou(rating_str) : 4;
+
   /* Open text editor and give a chance to review the backtrace etc. */
   if (!(flags & CLI_REPORT_BATCH))
   {
@@ -696,14 +692,13 @@ int report(const char *crash_id, int flags)
 
   /* Get enabled reporters associated with this particular crash. */
   vector_string_t reporters = get_enabled_reporters(cr);
+  map_map_string_t reporters_settings; /* to be filled on the next line */
+  get_reporter_plugin_settings(reporters, reporters_settings);
 
   int errors = 0;
   int plugins = 0;
   if (flags & CLI_REPORT_BATCH)
   {
-    map_map_string_t reporters_settings; /* to be filled on the next line */
-    get_reporter_plugin_settings(reporters, reporters_settings, false);
-
     puts(_("Reporting..."));
     report_status_t r = call_Report(cr, reporters, reporters_settings);
     report_status_t::iterator it = r.begin();
@@ -713,7 +708,7 @@ int report(const char *crash_id, int flags)
       printf("%s: %s\n", it->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
       plugins++;
       if (v[REPORT_STATUS_IDX_FLAG] == "0")
-	errors++;
+        errors++;
       it++;
     }
   }
@@ -726,20 +721,47 @@ int report(const char *crash_id, int flags)
       snprintf(question, 255, _("Report using %s?"), it->c_str());
       if (!ask_yesno(question))
       {
-	puts(_("Skipping..."));
-	continue;
+        puts(_("Skipping..."));
+        continue;
       }
 
+      map_map_string_t::iterator settings = reporters_settings.find(it->c_str());
+      if (settings != reporters_settings.end())
+      {
+        map_string_t::iterator rating_setting = settings->second.find("RatingRequired");
+        if (rating_setting != settings->second.end()
+            && string_to_bool(rating_setting->second.c_str())
+            && rating < 3)
+        {
+          puts(_("Reporting disabled because the backtrace is unusable"));
+
+          const char *package = get_crash_data_item_content_or_NULL(cr, FILENAME_PACKAGE);
+          if (package[0])
+            printf(_("Please try to install debuginfo manually using the command: \"debuginfo-install %s\" and try again\n"), package);
+
+          plugins++;
+          errors++;
+          continue;
+        }
+      }
+      else
+      {
+        puts(_("Error loading reporter settings"));
+        plugins++;
+        errors++;
+        continue;
+      }
+
+      ask_for_missing_settings(it->c_str(), settings->second);
+
       vector_string_t cur_reporter(1, *it);
-      map_map_string_t reporters_settings; /* to be filled on the next line */
-      get_reporter_plugin_settings(cur_reporter, reporters_settings, true);
       report_status_t r = call_Report(cr, cur_reporter, reporters_settings);
       assert(r.size() == 1); /* one reporter --> one report status */
       vector_string_t &v = r.begin()->second;
       printf("%s: %s\n", r.begin()->first.c_str(), v[REPORT_STATUS_IDX_MSG].c_str());
       plugins++;
       if (v[REPORT_STATUS_IDX_FLAG] == "0")
-	errors++;
+        errors++;
     }
   }
 
