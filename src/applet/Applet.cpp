@@ -28,7 +28,7 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "dbus_common.h"
-#include "CCApplet.h"
+#include "applet_gtk.h"
 
 
 static struct applet* applet = NULL;

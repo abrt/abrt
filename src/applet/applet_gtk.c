@@ -20,7 +20,7 @@
 # include <config.h>
 #endif
 #include "abrtlib.h"
-#include "CCApplet.h"
+#include "applet_gtk.h"
 
 static bool load_icons(struct applet *applet)
 {

@@ -34,6 +34,10 @@ enum ICON_STAGES
     ICON_STAGE_LAST
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct applet {
     GtkStatusIcon *ap_status_icon;
     GtkWidget *ap_menu;
@@ -56,5 +60,9 @@ void show_crash_notification(struct applet *applet, const char* crash_id, const 
 void show_msg_notification(struct applet *applet, const char *format, ...);
 void disable(struct applet *applet, const char *reason);
 void enable(struct applet *applet, const char *reason);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
