@@ -42,6 +42,11 @@
 # include <string>
 #endif
 
+#ifdef HAVE_CONFIG_H
+# include <config.h>
+#endif
+
+
 /* Some libc's forget to declare these, do it ourself */
 extern char **environ;
 #if defined(__GLIBC__) && __GLIBC__ < 2

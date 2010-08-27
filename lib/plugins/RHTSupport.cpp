@@ -18,9 +18,6 @@
 */
 
 #define _GNU_SOURCE 1    /* for stpcpy */
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
 #include <libtar.h>
 #include "abrtlib.h"
 #include "abrt_curl.h"
