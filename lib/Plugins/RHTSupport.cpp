@@ -306,7 +306,7 @@ PLUGIN_INFO(REPORTER,
     CReporterRHticket,
     "RHticket",
     "0.0.4",
-    "Reports bugs to Red Hat support",
+    _("Reports bugs to Red Hat support"),
     "Denys Vlasenko <dvlasenk@redhat.com>",
     "https://fedorahosted.org/abrt/wiki",
     PLUGINS_LIB_DIR"/RHTSupport.glade");
