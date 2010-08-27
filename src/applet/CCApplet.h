@@ -20,8 +20,6 @@
 #define CC_APPLET_H_
 
 #include <gtk/gtk.h>
-#include <map>
-#include <string>
 #include <libnotify/notify.h>
 
 enum ICON_STAGES
@@ -39,15 +37,12 @@ enum ICON_STAGES
 struct applet {
     GtkStatusIcon *ap_status_icon;
     GtkWidget *ap_menu;
-
-//        std::map<int, std::string> m_mapEvents;
     bool ap_daemon_running;
     int ap_animation_stage;
     guint ap_animator;
     unsigned ap_anim_countdown;
     bool ap_icons_loaded;
     const char *ap_last_crash_id;
-
     GdkPixbuf *ap_icon_stages_buff[ICON_STAGE_LAST];
 };
 

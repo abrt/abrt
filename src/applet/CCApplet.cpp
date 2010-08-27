@@ -316,8 +316,6 @@ struct applet *applet_new(const char* app_name)
     g_signal_connect(G_OBJECT(applet->ap_status_icon), "activate", GTK_SIGNAL_FUNC(on_applet_activate_cb), applet);
     g_signal_connect(G_OBJECT(applet->ap_status_icon), "popup_menu", GTK_SIGNAL_FUNC(on_menu_popup_cb), applet);
 
-//    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
-
     applet->ap_menu = create_menu(applet);
     return applet;
 }
@@ -444,16 +442,3 @@ void enable(struct applet *applet, const char *reason)
     gtk_status_icon_set_from_stock(applet->ap_status_icon, GTK_STOCK_DIALOG_WARNING);
     show_icon(applet);
 }
-
-//int CApplet::AddEvent(int pUUID, const char *pProgname)
-//{
-//    m_mapEvents[pUUID] = "pProgname";
-//    SetIconTooltip(_("Pending events: %i"), m_mapEvents.size());
-//    return 0;
-//}
-//
-//int CApplet::RemoveEvent(int pUUID)
-//{
-//     m_mapEvents.erase(pUUID);
-//     return 0;
-//}
