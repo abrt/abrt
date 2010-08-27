@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-24 04:52+0000\n"
+"POT-Creation-Date: 2010-08-27 16:40+0200\n"
 "PO-Revision-Date: 2010-08-24 14:48+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
-"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
@@ -90,11 +90,11 @@ msgid "Generating backtrace"
 msgstr "Luodaan pinolistausta"
 
 #: ../lib/plugins/CCpp.cpp:198 ../lib/plugins/CCpp.cpp:345
-#: ../lib/plugins/CCpp.cpp:535 ../lib/plugins/CCpp.cpp:589
-#: ../lib/plugins/CCpp.cpp:755 ../lib/plugins/CCpp.cpp:808
+#: ../lib/plugins/CCpp.cpp:539 ../lib/plugins/CCpp.cpp:593
+#: ../lib/plugins/CCpp.cpp:760 ../lib/plugins/CCpp.cpp:812
 #: ../lib/plugins/Kerneloops.cpp:133 ../lib/plugins/Python.cpp:32
 #: ../lib/plugins/RunApp.cpp:64 ../lib/plugins/SOSreport.cpp:58
-#: ../lib/plugins/SOSreport.cpp:136
+#: ../lib/plugins/SOSreport.cpp:137
 #, c-format
 msgid "Unable to open debug dump '%s'"
 msgstr "Virheenjäljitysvedosta ”%s” ei voida avata"
@@ -105,15 +105,15 @@ msgstr "Aloitetaan debuginfon asennus"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:604
+#: ../lib/plugins/CCpp.cpp:608
 msgid "Getting global universal unique identification..."
 msgstr "Haetaan yleinen ainutkertainen tunnus..."
 
-#: ../lib/plugins/CCpp.cpp:792
+#: ../lib/plugins/CCpp.cpp:797
 msgid "Skipping the debuginfo installation"
 msgstr "Ohitetaan debuginfon asennus"
 
-#: ../lib/plugins/CCpp.cpp:1120
+#: ../lib/plugins/CCpp.cpp:1124
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analysoi C/C++-ohjelmien kaatumisia"
 
@@ -126,16 +126,16 @@ msgstr "FileTransfer: URL:ää ei ole määritelty"
 msgid "Sending archive %s to %s"
 msgstr "Lähetetään arkisto %s osoitteeseen %s"
 
-#: ../lib/plugins/FileTransfer.cpp:239
+#: ../lib/plugins/FileTransfer.cpp:241
 msgid "FileTransfer: Creating a report..."
 msgstr "Tiedostonsiirto: Luodaan ilmoitusta..."
 
-#: ../lib/plugins/FileTransfer.cpp:263 ../lib/plugins/FileTransfer.cpp:292
+#: ../lib/plugins/FileTransfer.cpp:265 ../lib/plugins/FileTransfer.cpp:294
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Ei voitu luoda ja lähettää arkistoa: %s"
 
-#: ../lib/plugins/FileTransfer.cpp:359
+#: ../lib/plugins/FileTransfer.cpp:361
 msgid "Sends a report via FTP or SCTP"
 msgstr "Lähettää raportin FTP:llä tai SCTP:llä"
 
@@ -186,16 +186,16 @@ msgstr "Lähettää raportin sähköpostilla (mailx-komentoa käyttäen)"
 msgid "Analyzes crashes in Python programs"
 msgstr "Analysoi Python-ohjelmien kaatumisia"
 
-#: ../lib/plugins/ReportUploader.cpp:130
+#: ../lib/plugins/ReportUploader.cpp:131
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr "Lähettäminen epäonnistui, yritä uudelleen. %s"
 
-#: ../lib/plugins/ReportUploader.cpp:192
+#: ../lib/plugins/ReportUploader.cpp:197
 msgid "Creating a ReportUploader report..."
 msgstr "Luodaan ReportUploader-raportti..."
 
-#: ../lib/plugins/ReportUploader.cpp:502
+#: ../lib/plugins/ReportUploader.cpp:515
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
@@ -207,7 +207,7 @@ msgstr ""
 msgid "Compressing data"
 msgstr "Pakataan tietoja"
 
-#: ../lib/plugins/RHTSupport.cpp:247
+#: ../lib/plugins/RHTSupport.cpp:249
 msgid "Creating a new case..."
 msgstr "Luodaan uusi tapaus..."
 
@@ -224,7 +224,7 @@ msgstr "Suoritetaan sosreport: %s"
 msgid "Finished running sosreport"
 msgstr "Sosreportin suoritus valmistui"
 
-#: ../lib/plugins/SOSreport.cpp:169
+#: ../lib/plugins/SOSreport.cpp:171
 msgid "Runs sosreport, saves the output"
 msgstr "Suorittaa sosreportin ja tallentaa sen tulosteen"
 
@@ -352,7 +352,7 @@ msgstr "Käyttäjätunnus:"
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
-#: ../lib/utils/abrt_curl.cpp:173
+#: ../lib/utils/abrt_curl.c:171
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Lähetetty: %llu/%llu kilotavua"
@@ -638,34 +638,43 @@ msgstr ""
 "\n"
 "Raportissa ei havaittu muutoksia"
 
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/cli/report.cpp:541
+msgid "y"
+msgstr ""
+
+#: ../src/cli/report.cpp:542
+msgid "N"
+msgstr ""
+
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:642
+#: ../src/cli/report.cpp:649
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Liitännäisellä %s havaittiin olevan väärät asetukset\n"
 
-#: ../src/cli/report.cpp:646
+#: ../src/cli/report.cpp:653
 msgid "Enter your login: "
 msgstr "Käyttäjätunnus: "
 
-#: ../src/cli/report.cpp:652
+#: ../src/cli/report.cpp:659
 msgid "Enter your password: "
 msgstr "Salasana: "
 
-#: ../src/cli/report.cpp:696
+#: ../src/cli/report.cpp:703
 msgid "Reporting..."
 msgstr "Raportoidaan..."
 
-#: ../src/cli/report.cpp:715
-#, c-format
-msgid "Report using %s? [y/N]: "
+#: ../src/cli/report.cpp:722
+#, fuzzy, c-format
+msgid "Report using %s?"
 msgstr "Raportoidaanko käyttäen raportoijaa %s? [y/N]: "
 
-#: ../src/cli/report.cpp:718
+#: ../src/cli/report.cpp:725
 msgid "Skipping..."
 msgstr "Ohitetaan..."
 
-#: ../src/cli/report.cpp:735
+#: ../src/cli/report.cpp:742
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Kaatuminen on raportoitu %d liitännäisen kautta (%d virhettä)\n"
@@ -678,7 +687,7 @@ msgstr "Kommentti on liian pitkä"
 msgid "'How to reproduce' is too long"
 msgstr "Toisto-ohjeet ovat liian pitkät"
 
-#: ../src/daemon/Daemon.cpp:512
+#: ../src/daemon/Daemon.cpp:513
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -915,7 +924,7 @@ msgstr ""
 msgid "You must check the backtrace for sensitive data."
 msgstr "Tarkista pinolistaus arkaluontoisten tietojen varalta."
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:310
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:324
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -934,7 +943,7 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Virheenjäljitystiedot ovat hyödyttömät, tätä ei voi raportoida!"
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:316
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:330
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -958,7 +967,7 @@ msgstr ""
 "Tämäntyyppiselle kaatumiselle ei ole saatavilla raportoijaliitännäistä.\n"
 "Tarkista abrt.conf."
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:203
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:217
 #: ../src/gui/PluginsSettingsDialog.py:169
 #, python-format
 msgid ""
@@ -968,12 +977,12 @@ msgstr ""
 "Liitännäisen asetuksia ei voida tallentaa:\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:233
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:247
 #, python-format
 msgid "Configure %s options"
 msgstr "Tee liitännäisen %s asetukset"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:847
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:861
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -981,7 +990,7 @@ msgstr ""
 "Raporttia ei saatu!\n"
 "Puuttuuko debuginfo?"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:400
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:414
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -991,7 +1000,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:886
+#: ../src/gui/CReporterAssistant.py:900
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Raportin hankkiminen epäonnistui: %s"
@@ -1030,45 +1039,45 @@ msgstr "Gnomen avainnippuun on pääsy kielletty, asetuksia ei voi ladata."
 msgid "Crash info doesn't contain a backtrace"
 msgstr "Kaatumistiedot eivät sisällä pinolistausta"
 
-#: ../src/gui/CReporterAssistant.py:282
+#: ../src/gui/CReporterAssistant.py:296
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr "Liitännäinen %s vaatii arvostelun"
 
-#: ../src/gui/CReporterAssistant.py:284
+#: ../src/gui/CReporterAssistant.py:298
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr "Mikään liitännäinen ei vaadi arvostelua, ohitetaan tarkistus..."
 
-#: ../src/gui/CReporterAssistant.py:288
+#: ../src/gui/CReporterAssistant.py:302
 #, python-format
 msgid "Rating is %s"
 msgstr "Arvostelu on %s"
 
-#: ../src/gui/CReporterAssistant.py:291
+#: ../src/gui/CReporterAssistant.py:305
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Kaatumisella ei ole arvostelua, oletetaan ettei sitä vaadita"
 
-#: ../src/gui/CReporterAssistant.py:296
+#: ../src/gui/CReporterAssistant.py:310
 msgid "You should check the backtrace for sensitive data."
 msgstr "Tarkista pinolistaus luottamuksellisien tietojen varalta."
 
-#: ../src/gui/CReporterAssistant.py:297
+#: ../src/gui/CReporterAssistant.py:311
 msgid "You must agree with sending the backtrace."
 msgstr "Pinolistauksen lähettäminen on hyväksyttävä."
 
-#: ../src/gui/CReporterAssistant.py:312
+#: ../src/gui/CReporterAssistant.py:326
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön."
 
-#: ../src/gui/CReporterAssistant.py:357
+#: ../src/gui/CReporterAssistant.py:371
 msgid "You did not provide any steps to reproduce."
 msgstr "Vian toistamiseksi tarvittavia vaiheita ei ole annettu."
 
-#: ../src/gui/CReporterAssistant.py:371
+#: ../src/gui/CReporterAssistant.py:385
 msgid "You did not provide any comments."
 msgstr "Kommentteja ei ole annettu."
 
-#: ../src/gui/CReporterAssistant.py:452
+#: ../src/gui/CReporterAssistant.py:466
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1092,15 +1101,15 @@ msgstr ""
 "\n"
 "Valitse minne vikailmoitus tehdään ja napsauta ”Eteenpäin”."
 
-#: ../src/gui/CReporterAssistant.py:512
+#: ../src/gui/CReporterAssistant.py:526
 msgid "Only one reporter plugin is configured."
 msgstr "Vain yksi raportoijaliitännäinen on määritetty."
 
-#: ../src/gui/CReporterAssistant.py:518
+#: ../src/gui/CReporterAssistant.py:532
 msgid "Send a bug report"
 msgstr "Lähetä vikaraportti"
 
-#: ../src/gui/CReporterAssistant.py:556
+#: ../src/gui/CReporterAssistant.py:570
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1115,114 +1124,114 @@ msgstr ""
 "Tarkista pinolistaus ja muokkaa sitä tarvittaessa siten, että raportissa ei "
 "ole mitään yksityistä tietoa, mitä et halua jakaa:"
 
-#: ../src/gui/CReporterAssistant.py:597
+#: ../src/gui/CReporterAssistant.py:611
 msgid "Refresh"
 msgstr "Päivitä"
 
-#: ../src/gui/CReporterAssistant.py:599
+#: ../src/gui/CReporterAssistant.py:613
 msgid "Copy"
 msgstr "Kopioi"
 
-#: ../src/gui/CReporterAssistant.py:605
+#: ../src/gui/CReporterAssistant.py:619
 msgid "I agree with submitting the backtrace"
 msgstr "Pinolistauksen saa lähettää"
 
-#: ../src/gui/CReporterAssistant.py:610
+#: ../src/gui/CReporterAssistant.py:624
 msgid "Approve the backtrace"
 msgstr "Hyväksy pinolistaus"
 
-#: ../src/gui/CReporterAssistant.py:633
+#: ../src/gui/CReporterAssistant.py:647
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Kuinka tämä kaatuminen tapahtui? Kuinka sen pystyy toistamaan?"
 
-#: ../src/gui/CReporterAssistant.py:651
+#: ../src/gui/CReporterAssistant.py:665
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Haluatko lähettää ohjelmistoylläpitäjille jotain kommentteja?"
 
-#: ../src/gui/CReporterAssistant.py:670
+#: ../src/gui/CReporterAssistant.py:684
 msgid "Provide additional details"
 msgstr "Anna lisätietoja"
 
-#: ../src/gui/CReporterAssistant.py:677
+#: ../src/gui/CReporterAssistant.py:691
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Vinkki:</b> Kommentit ovat julkisia."
 
-#: ../src/gui/CReporterAssistant.py:718
+#: ../src/gui/CReporterAssistant.py:732
 msgid "Confirm and send the report"
 msgstr "Vahvista ja lähetä raportti"
 
-#: ../src/gui/CReporterAssistant.py:720
+#: ../src/gui/CReporterAssistant.py:734
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Alla on yhteenveto vikaraportista. Napsauta ”Käytä” sen lähettämiseksi."
 
-#: ../src/gui/CReporterAssistant.py:725
+#: ../src/gui/CReporterAssistant.py:739
 msgid "<b>Basic details</b>"
 msgstr "<b>Perustiedot</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:732
+#: ../src/gui/CReporterAssistant.py:746
 msgid "Component"
 msgstr "Komponentti"
 
-#: ../src/gui/CReporterAssistant.py:733
+#: ../src/gui/CReporterAssistant.py:747
 msgid "Package"
 msgstr "Paketti"
 
-#: ../src/gui/CReporterAssistant.py:734
+#: ../src/gui/CReporterAssistant.py:748
 msgid "Executable"
 msgstr "Suoritettava tiedosto"
 
-#: ../src/gui/CReporterAssistant.py:735
+#: ../src/gui/CReporterAssistant.py:749
 msgid "Cmdline"
 msgstr "Komentorivi"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:751
 msgid "Architecture"
 msgstr "Arkkitehtuuri"
 
-#: ../src/gui/CReporterAssistant.py:738
+#: ../src/gui/CReporterAssistant.py:752
 msgid "Kernel"
 msgstr "Ydin"
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:753
 msgid "Release"
 msgstr "Julkaisu"
 
-#: ../src/gui/CReporterAssistant.py:740
+#: ../src/gui/CReporterAssistant.py:754
 msgid "Reason"
 msgstr "Syy"
 
-#: ../src/gui/CReporterAssistant.py:751 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:765 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Pinolistaus</b>"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:768
 msgid "Click to view..."
 msgstr "Näytä napsauttamalla..."
 
-#: ../src/gui/CReporterAssistant.py:766
+#: ../src/gui/CReporterAssistant.py:780
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Ohjeet ongelman toistamiseen:</b>"
 
-#: ../src/gui/CReporterAssistant.py:787
+#: ../src/gui/CReporterAssistant.py:801
 msgid "<b>Comments:</b>"
 msgstr "<b>Kommentit:</b>"
 
-#: ../src/gui/CReporterAssistant.py:790
+#: ../src/gui/CReporterAssistant.py:804
 msgid "No comment provided!"
 msgstr "Kommentteja ei ole annettu!"
 
-#: ../src/gui/CReporterAssistant.py:826
+#: ../src/gui/CReporterAssistant.py:840
 msgid "Finished sending the bug report"
 msgstr "Vikaraportin lähetys valmistui"
 
-#: ../src/gui/CReporterAssistant.py:830
+#: ../src/gui/CReporterAssistant.py:844
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Vikaraportit:</b>"
 

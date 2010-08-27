@@ -8,33 +8,24 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.ko\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-06 18:38+0200\n"
+"POT-Creation-Date: 2010-08-27 16:40+0200\n"
 "PO-Revision-Date: 2010-08-03 16:26+1000\n"
 "Last-Translator: \n"
 "Language-Team: Korean <en@li.org>\n"
-"Language: ko\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ko\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms:  nplurals=1; plural=0;\n"
 "\n"
 
-#: ../lib/Plugins/Bugzilla.cpp:466
+#: ../lib/plugins/Bugzilla.cpp:469
 #, c-format
 msgid "New bug id: %i"
 msgstr "새 버그 id: %i "
 
-#: ../lib/Plugins/Bugzilla.cpp:561
-#, c-format
-msgid ""
-"Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/Bugzilla."
-"conf. Server said: %s"
-msgstr ""
-"로그인할 수 없습니다. 편집->플러그인->Bugzilla와 /etc/abrt/plugins/Bugzilla."
-"conf를 살펴보십시오. 서버 응답: %s"
-
-#: ../lib/Plugins/Bugzilla.cpp:681
+#: ../lib/plugins/Bugzilla.cpp:697
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -42,224 +33,239 @@ msgstr ""
 "로그인 및 암호가 없습니다.\n"
 "확인해 주십시오"
 
-#: ../lib/Plugins/Bugzilla.cpp:690
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Logging into bugzilla..."
 msgstr "bugzilla에 로그인 중..."
 
-#: ../lib/Plugins/Bugzilla.cpp:693
+#: ../lib/plugins/Bugzilla.cpp:709
 msgid "Checking for duplicates..."
 msgstr "중복 확인 중..."
 
-#: ../lib/Plugins/Bugzilla.cpp:714 ../lib/Plugins/Bugzilla.cpp:749
+#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
 msgid "Missing mandatory member 'bugs'"
 msgstr "필수 요소 'bugs'가 빠짐"
 
-#: ../lib/Plugins/Bugzilla.cpp:732 ../lib/Plugins/Bugzilla.cpp:765
-#: ../lib/Plugins/Bugzilla.cpp:841
+#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
+#: ../lib/plugins/Bugzilla.cpp:857
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info()가 실패했습니다. 모든 필수 정보를 얻어올 수 없었습니다."
 
-#: ../lib/Plugins/Bugzilla.cpp:781
+#: ../lib/plugins/Bugzilla.cpp:797
 msgid "Creating a new bug..."
 msgstr "새 버그 생성 중..."
 
-#: ../lib/Plugins/Bugzilla.cpp:786
+#: ../lib/plugins/Bugzilla.cpp:802
 msgid "Bugzilla entry creation failed"
 msgstr "버그질라 엔트리 생성에 실패했습니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:796 ../lib/Plugins/Bugzilla.cpp:891
+#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
 msgid "Logging out..."
 msgstr "로그아웃 중..."
 
 #. decision based on state
-#: ../lib/Plugins/Bugzilla.cpp:815
+#: ../lib/plugins/Bugzilla.cpp:831
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "이미 버그를 보고하였습니다: %i"
 
-#: ../lib/Plugins/Bugzilla.cpp:826
+#: ../lib/plugins/Bugzilla.cpp:842
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "버그질라가 버그(%d)의 부모를 찾을 수 없습니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:855 ../lib/Plugins/Bugzilla.cpp:856
-#, c-format
-msgid "Adding %s to CC list"
+#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#, fuzzy, c-format
+msgid "Add %s to CC list"
 msgstr "%s를 CC 목록에 추가합니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:880
+#: ../lib/plugins/Bugzilla.cpp:896
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "버그(%d)에 새로운 주석을 추가합니다"
 
-#: ../lib/Plugins/Bugzilla.cpp:979
+#: ../lib/plugins/Bugzilla.cpp:995
 msgid "Reports bugs to bugzilla"
 msgstr "버그를 Bugzilla에 보고"
 
-#: ../lib/Plugins/CCpp.cpp:185
+#: ../lib/plugins/CCpp.cpp:191
 msgid "Generating backtrace"
 msgstr "역추적 생성중"
 
+#: ../lib/plugins/CCpp.cpp:198 ../lib/plugins/CCpp.cpp:345
+#: ../lib/plugins/CCpp.cpp:539 ../lib/plugins/CCpp.cpp:593
+#: ../lib/plugins/CCpp.cpp:760 ../lib/plugins/CCpp.cpp:812
+#: ../lib/plugins/Kerneloops.cpp:133 ../lib/plugins/Python.cpp:32
+#: ../lib/plugins/RunApp.cpp:64 ../lib/plugins/SOSreport.cpp:58
+#: ../lib/plugins/SOSreport.cpp:137
+#, c-format
+msgid "Unable to open debug dump '%s'"
+msgstr ""
+
 #
-#: ../lib/Plugins/CCpp.cpp:353
+#: ../lib/plugins/CCpp.cpp:372
 msgid "Starting the debuginfo installation"
 msgstr "debuginfo 설치 시작"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/Plugins/CCpp.cpp:566
+#: ../lib/plugins/CCpp.cpp:608
 msgid "Getting global universal unique identification..."
 msgstr "글로벌 UUID를 가져오는 중..."
 
 #
-#: ../lib/Plugins/CCpp.cpp:748
+#: ../lib/plugins/CCpp.cpp:797
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo 설치 생략"
 
-#: ../lib/Plugins/CCpp.cpp:1061
+#: ../lib/plugins/CCpp.cpp:1124
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "C/C++ 프로그램의 크래시 분석"
 
-#: ../lib/Plugins/FileTransfer.cpp:52 ../lib/Plugins/ReportUploader.cpp:97
+#: ../lib/plugins/FileTransfer.cpp:52 ../lib/plugins/ReportUploader.cpp:97
 msgid "FileTransfer: URL not specified"
 msgstr "파일 전송: URL이 지정되지 않음"
 
-#: ../lib/Plugins/FileTransfer.cpp:56 ../lib/Plugins/ReportUploader.cpp:101
+#: ../lib/plugins/FileTransfer.cpp:56 ../lib/plugins/ReportUploader.cpp:101
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "%s 아카이브를 %s에 전송"
 
-#: ../lib/Plugins/FileTransfer.cpp:239
+#: ../lib/plugins/FileTransfer.cpp:241
 msgid "FileTransfer: Creating a report..."
 msgstr "파일 전송: 보고서 작성 중..."
 
-#: ../lib/Plugins/FileTransfer.cpp:263 ../lib/Plugins/FileTransfer.cpp:292
+#: ../lib/plugins/FileTransfer.cpp:265 ../lib/plugins/FileTransfer.cpp:294
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "아카이브를 작성하여 보낼 수 없습니다: %s"
 
-#: ../lib/Plugins/FileTransfer.cpp:359
+#: ../lib/plugins/FileTransfer.cpp:361
 msgid "Sends a report via FTP or SCTP"
 msgstr "보고서를 FTP나 SCTP로 전송"
 
-#: ../lib/Plugins/Kerneloops.cpp:142
+#: ../lib/plugins/Kerneloops.cpp:154
 msgid "Analyzes kernel oopses"
 msgstr "커널 웁스 분석"
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:94
+#: ../lib/plugins/KerneloopsReporter.cpp:95
 msgid "Creating and submitting a report..."
 msgstr "보고서 작성 및 제출 중..."
 
-#: ../lib/Plugins/KerneloopsReporter.cpp:142
+#: ../lib/plugins/KerneloopsReporter.cpp:144
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "커널 웁스 정보를 kerneloops.org로 전송"
 
-#: ../lib/Plugins/KerneloopsScanner.cpp:200
+#: ../lib/plugins/KerneloopsScanner.cpp:210
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "주기적으로 커널 웁스를 스캔하고, 저장합니다"
 
-#: ../lib/Plugins/Logger.cpp:73
+#: ../lib/plugins/Logger.cpp:69
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "보고서 '%s'에 쓰기"
 
-#: ../lib/Plugins/Logger.cpp:79
+#: ../lib/plugins/Logger.cpp:75
 #, c-format
 msgid "The report was appended to %s"
 msgstr "보고서가 %s에 추가되었습니다"
 
-#: ../lib/Plugins/Logger.cpp:79
+#: ../lib/plugins/Logger.cpp:75
 #, c-format
 msgid "The report was stored to %s"
 msgstr "보고서가 %s에 저장되었습니다"
 
 #
-#: ../lib/Plugins/Logger.cpp:87
+#: ../lib/plugins/Logger.cpp:83
 msgid "Writes report to a file"
 msgstr "보고서 '%s'에 쓰기"
 
-#: ../lib/Plugins/Mailx.cpp:135
+#: ../lib/plugins/Mailx.cpp:100
 msgid "Sending an email..."
 msgstr "이메일 전송 중..."
 
-#: ../lib/Plugins/Mailx.cpp:192
+#: ../lib/plugins/Mailx.cpp:151
 msgid "Sends an email with a report (via mailx command)"
 msgstr "보고서를 포함한 이메일을 보냄(mailx 명령 사용)"
 
-#: ../lib/Plugins/Python.cpp:97
+#: ../lib/plugins/Python.cpp:105
 msgid "Analyzes crashes in Python programs"
 msgstr "파이썬 프로그램에서 발생한 크래시 분석"
 
-#: ../lib/Plugins/ReportUploader.cpp:130
+#: ../lib/plugins/ReportUploader.cpp:131
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr "전송이 실패했습니다. 다시 시도합니다. %s"
 
-#: ../lib/Plugins/ReportUploader.cpp:192
+#: ../lib/plugins/ReportUploader.cpp:197
 msgid "Creating a ReportUploader report..."
 msgstr "보고서 작성 및 제출 중..."
 
-#: ../lib/Plugins/ReportUploader.cpp:502
+#: ../lib/plugins/ReportUploader.cpp:515
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "크래시 정보를 .tar.gz파일로 압축하고, 원하면 FTP/SCP/등을 사용해 업로드합니"
 "다."
 
-#: ../lib/Plugins/RHTSupport.cpp:233
+#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
+#: ../lib/plugins/RHTSupport.cpp:114
+msgid "Compressing data"
+msgstr ""
+
+#: ../lib/plugins/RHTSupport.cpp:249
 msgid "Creating a new case..."
 msgstr "새 버그 생성 중..."
 
-#: ../lib/Plugins/RunApp.cpp:73
+#: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
 msgstr "명령을 실행하고, 출력을 저장합니다."
 
-#: ../lib/Plugins/SOSreport.cpp:98
+#: ../lib/plugins/SOSreport.cpp:104
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "sosreport 실행 중: %s"
 
-#: ../lib/Plugins/SOSreport.cpp:103
+#: ../lib/plugins/SOSreport.cpp:109
 msgid "Finished running sosreport"
 msgstr "sosreport 실행 완료"
 
-#: ../lib/Plugins/SOSreport.cpp:159
+#: ../lib/plugins/SOSreport.cpp:171
 msgid "Runs sosreport, saves the output"
 msgstr "sosreport를 실행하고, 출력을 저장합니다"
 
-#: ../lib/Plugins/SQLite3.cpp:678
+#: ../lib/plugins/SQLite3.cpp:678
 msgid "Keeps SQLite3 database about all crashes"
 msgstr "모든 크래시에 대한 SQLite3 데이터베이스를 보존합니다"
 
-#: ../lib/Plugins/Bugzilla.glade.h:1
+#: ../lib/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
 msgstr "<b>Bugzilla 플로그인 설정</b>"
 
-#: ../lib/Plugins/Bugzilla.glade.h:2
+#: ../lib/plugins/Bugzilla.glade.h:2
 msgid "Bugzilla URL:"
 msgstr "Bugzilla URL:"
 
-#: ../lib/Plugins/Bugzilla.glade.h:3
+#: ../lib/plugins/Bugzilla.glade.h:3
 msgid "Don't have an account yet?"
 msgstr "계정이 없습니까?"
 
-#: ../lib/Plugins/Bugzilla.glade.h:4
+#: ../lib/plugins/Bugzilla.glade.h:4
 msgid "Login(email):"
 msgstr "로그인(전자우편):"
 
-#: ../lib/Plugins/Bugzilla.glade.h:5 ../lib/Plugins/RHTSupport.glade.h:3
+#: ../lib/plugins/Bugzilla.glade.h:5 ../lib/plugins/RHTSupport.glade.h:3
 msgid "Password:"
 msgstr "암호:"
 
-#: ../lib/Plugins/Bugzilla.glade.h:6 ../lib/Plugins/RHTSupport.glade.h:5
+#: ../lib/plugins/Bugzilla.glade.h:6 ../lib/plugins/RHTSupport.glade.h:5
 msgid "SSL verify"
 msgstr "SSL 검증"
 
-#: ../lib/Plugins/Bugzilla.glade.h:7 ../lib/Plugins/RHTSupport.glade.h:6
+#: ../lib/plugins/Bugzilla.glade.h:7 ../lib/plugins/RHTSupport.glade.h:6
 msgid "Show password"
 msgstr "암호 보여주기"
 
-#: ../lib/Plugins/Bugzilla.glade.h:8
+#: ../lib/plugins/Bugzilla.glade.h:8
 msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
@@ -267,142 +273,147 @@ msgstr ""
 "<a href=\"https://bugzilla.redhat.com/createaccount.cgi\">여기</a>에서 만들 "
 "수 있습니다"
 
-#: ../lib/Plugins/KerneloopsReporter.glade.h:1
+#: ../lib/plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
 msgstr "<b>커널 웁스 보고 플러그인 설정</b>"
 
-#: ../lib/Plugins/KerneloopsReporter.glade.h:2
+#: ../lib/plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
 msgstr "전송 URL:"
 
-#: ../lib/Plugins/Logger.glade.h:1
+#: ../lib/plugins/Logger.glade.h:1
 msgid "<b>Logger plugin configuration</b>"
 msgstr "<b>로거 플러그인 설정</b>"
 
-#: ../lib/Plugins/Logger.glade.h:2
+#: ../lib/plugins/Logger.glade.h:2
 msgid "Append new logs"
 msgstr "새로운 로그를 덧붙이기"
 
-#: ../lib/Plugins/Logger.glade.h:3
+#: ../lib/plugins/Logger.glade.h:3
 msgid "Logger file:"
 msgstr "로거 파일:"
 
-#: ../lib/Plugins/Mailx.glade.h:1
+#: ../lib/plugins/Mailx.glade.h:1
 msgid "<b>Mailx plugin configuration</b>"
 msgstr "<b>Mailx 플러그인 설정</b>"
 
-#: ../lib/Plugins/Mailx.glade.h:2
+#: ../lib/plugins/Mailx.glade.h:2
 msgid "Recipient's Email:"
 msgstr "수신자 주소:"
 
-#: ../lib/Plugins/Mailx.glade.h:3
+#: ../lib/plugins/Mailx.glade.h:3
 msgid "Send Binary Data"
 msgstr "바이너리 정보 전송"
 
-#: ../lib/Plugins/Mailx.glade.h:4
+#: ../lib/plugins/Mailx.glade.h:4
 msgid "Subject:"
 msgstr "제목:"
 
-#: ../lib/Plugins/Mailx.glade.h:5
+#: ../lib/plugins/Mailx.glade.h:5
 msgid "Your Email:"
 msgstr "당신의 주소:"
 
-#: ../lib/Plugins/ReportUploader.glade.h:1
+#: ../lib/plugins/ReportUploader.glade.h:1
 msgid "<b>Report Uploader plugin configuration</b>"
 msgstr "<b>티켓 올리기 플러그인 설정</b>"
 
-#: ../lib/Plugins/ReportUploader.glade.h:2
+#: ../lib/plugins/ReportUploader.glade.h:2
 msgid "Customer:"
 msgstr "고객:"
 
-#: ../lib/Plugins/ReportUploader.glade.h:3
+#: ../lib/plugins/ReportUploader.glade.h:3
 msgid "Retry count:"
 msgstr "재시도 횟수:"
 
-#: ../lib/Plugins/ReportUploader.glade.h:4
+#: ../lib/plugins/ReportUploader.glade.h:4
 msgid "Retry delay:"
 msgstr "재시도 지연:"
 
-#: ../lib/Plugins/ReportUploader.glade.h:5
+#: ../lib/plugins/ReportUploader.glade.h:5
 msgid "Ticket:"
 msgstr "티켓:"
 
-#: ../lib/Plugins/ReportUploader.glade.h:6
+#: ../lib/plugins/ReportUploader.glade.h:6
 msgid "URL:"
 msgstr "URL:"
 
-#: ../lib/Plugins/ReportUploader.glade.h:7
+#: ../lib/plugins/ReportUploader.glade.h:7
 msgid "Upload"
 msgstr "올리기"
 
-#: ../lib/Plugins/ReportUploader.glade.h:8
+#: ../lib/plugins/ReportUploader.glade.h:8
 msgid "Use encryption"
 msgstr "암호화 사용"
 
-#: ../lib/Plugins/RHTSupport.glade.h:1
+#: ../lib/plugins/RHTSupport.glade.h:1
 msgid "<b>RHTSupport plugin configuration</b>"
 msgstr "<b>RHTSupport 플러그인 설정</b>"
 
-#: ../lib/Plugins/RHTSupport.glade.h:2
+#: ../lib/plugins/RHTSupport.glade.h:2
 msgid "Login:"
 msgstr "로그인:"
 
-#: ../lib/Plugins/RHTSupport.glade.h:4
+#: ../lib/plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
-#: ../src/Applet/abrt-applet.desktop.in.h:1
+#: ../lib/utils/abrt_curl.c:171
+#, c-format
+msgid "Uploaded: %llu of %llu kbytes"
+msgstr ""
+
+#: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "ABRT 알림 애플릿"
 
-#: ../src/Applet/abrt-applet.desktop.in.h:2 ../src/Gui/abrt.desktop.in.h:1
-#: ../src/Gui/ccgui.glade.h:10 ../src/Gui/CCMainWindow.py:8
-#: ../src/Gui/report.glade.h:16
+#: ../src/applet/abrt-applet.desktop.in.h:2 ../src/gui/abrt.desktop.in.h:1
+#: ../src/gui/ccgui.glade.h:10 ../src/gui/CCMainWindow.py:8
+#: ../src/gui/report.glade.h:16
 msgid "Automatic Bug Reporting Tool"
 msgstr "자동 버그 보고 도구 (ABRT) "
 
-#: ../src/Applet/Applet.cpp:85
+#: ../src/applet/Applet.cpp:79
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "%s 패키지에 있는 크래시가 감지되었습니다"
 
-#: ../src/Applet/Applet.cpp:87
+#: ../src/applet/Applet.cpp:81
 msgid "A crash has been detected"
 msgstr "크래시가 감지되었습니다"
 
-#: ../src/Applet/Applet.cpp:284
+#: ../src/applet/Applet.cpp:278
 msgid "ABRT service is not running"
 msgstr "ABRT 서비스가 실행되고 있지 않습니다"
 
-#: ../src/Applet/CCApplet.cpp:39 ../src/Applet/CCApplet.cpp:260
-#: ../src/Applet/CCApplet.cpp:287
+#: ../src/applet/CCApplet.cpp:33 ../src/applet/CCApplet.cpp:254
+#: ../src/applet/CCApplet.cpp:281
 msgid "Warning"
 msgstr "경고"
 
-#: ../src/Applet/CCApplet.cpp:89
+#: ../src/applet/CCApplet.cpp:83
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "ABRT가 감지한 문제를 사용자에게 통지하기 위한 통지 영역 애플릿"
 
-#: ../src/Applet/CCApplet.cpp:105 ../src/Gui/ccgui.glade.h:23
+#: ../src/applet/CCApplet.cpp:99 ../src/gui/ccgui.glade.h:23
 msgid "translator-credits"
 msgstr ""
 "김은주<eukim@redhat.com>\n"
 "오현석<hoh@redhat.com>"
 
-#: ../src/Applet/CCApplet.cpp:115
+#: ../src/applet/CCApplet.cpp:109
 msgid "Hide"
 msgstr "숨기기"
 
-#: ../src/Applet/CCApplet.cpp:253 ../src/Gui/ccgui.glade.h:13
+#: ../src/applet/CCApplet.cpp:247 ../src/gui/ccgui.glade.h:13
 msgid "Report"
 msgstr "보고  "
 
-#: ../src/Applet/CCApplet.cpp:256 ../src/Applet/CCApplet.cpp:284
+#: ../src/applet/CCApplet.cpp:250 ../src/applet/CCApplet.cpp:278
 msgid "Open ABRT"
 msgstr "ABRT 열기"
 
-#: ../src/CLI/CLI.cpp:56
+#: ../src/cli/CLI.cpp:50
 #, c-format
 msgid ""
 "\tUID        : %s\n"
@@ -419,13 +430,13 @@ msgstr ""
 "\tCrash Time : %s\n"
 "\tCrash Count: %s\n"
 
-#: ../src/CLI/CLI.cpp:74
+#: ../src/cli/CLI.cpp:68
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr "\tHostname   : %s\n"
 
-#: ../src/CLI/CLI.cpp:103
-#, c-format
+#: ../src/cli/CLI.cpp:97
+#, fuzzy, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
 "Last crash:         %s\n"
@@ -435,8 +446,6 @@ msgid ""
 "Command:            %s\n"
 "Executable:         %s\n"
 "System:             %s, kernel %s\n"
-"Rating:             %s\n"
-"Coredump file:      %s\n"
 "Reason:             %s\n"
 msgstr ""
 "Crash ID:           %s:%s\n"
@@ -451,17 +460,27 @@ msgstr ""
 "Coredump file:      %s\n"
 "Reason:             %s\n"
 
-#: ../src/CLI/CLI.cpp:133
+#: ../src/cli/CLI.cpp:125
+#, fuzzy, c-format
+msgid "Coredump file:      %s\n"
+msgstr "Crash function:     %s\n"
+
+#: ../src/cli/CLI.cpp:129
+#, fuzzy, c-format
+msgid "Rating:             %s\n"
+msgstr "Hostname:           %s\n"
+
+#: ../src/cli/CLI.cpp:134
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr "Crash function:     %s\n"
 
-#: ../src/CLI/CLI.cpp:137
+#: ../src/cli/CLI.cpp:138
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr "Hostname:           %s\n"
 
-#: ../src/CLI/CLI.cpp:141
+#: ../src/cli/CLI.cpp:142
 #, c-format
 msgid ""
 "\n"
@@ -472,7 +491,7 @@ msgstr ""
 "How to reproduce:\n"
 "%s\n"
 
-#: ../src/CLI/CLI.cpp:145
+#: ../src/cli/CLI.cpp:146
 #, c-format
 msgid ""
 "\n"
@@ -483,7 +502,7 @@ msgstr ""
 "Comment:\n"
 "%s\n"
 
-#: ../src/CLI/CLI.cpp:151
+#: ../src/cli/CLI.cpp:152
 #, c-format
 msgid ""
 "\n"
@@ -495,7 +514,7 @@ msgstr ""
 "%s\n"
 
 #. Message has embedded tabs.
-#: ../src/CLI/CLI.cpp:249
+#: ../src/cli/CLI.cpp:250
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -538,24 +557,24 @@ msgstr ""
 "\t유일한 UUID 접두사 - UUID가 일치하는 크래시에 동작 수행\n"
 "\t@N  - N 번째 크래시(--list --full에서 볼 수 있음)에 동작 수행\n"
 
-#: ../src/CLI/CLI.cpp:295
+#: ../src/cli/CLI.cpp:296
 msgid "You must specify exactly one operation"
 msgstr "동작을 하나만 지정해야 합니다"
 
-#: ../src/CLI/report.cpp:179
+#: ../src/cli/report.cpp:175
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# 읽기 전용 필드입니다\n"
 
-#: ../src/CLI/report.cpp:199
+#: ../src/cli/report.cpp:195
 msgid "# Describe the circumstances of this crash below"
 msgstr "# 이번 크래시가 발생한 환경을 아래에 설명하십시오."
 
-#: ../src/CLI/report.cpp:201
+#: ../src/cli/report.cpp:197
 msgid "# How to reproduce the crash?"
 msgstr "# 재현 방법은 무엇입니까?"
 
-#: ../src/CLI/report.cpp:203
+#: ../src/cli/report.cpp:199
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -563,48 +582,48 @@ msgstr ""
 "# 역추적\n"
 "# 개인에게 민감한 정보를 포함하지는 않았는지 검토하십시오(암호 등)"
 
-#: ../src/CLI/report.cpp:205
+#: ../src/cli/report.cpp:201
 msgid "# Architecture"
 msgstr "# 아키텍처"
 
-#: ../src/CLI/report.cpp:206
+#: ../src/cli/report.cpp:202
 msgid "# Command line"
 msgstr "# 명령 행"
 
-#: ../src/CLI/report.cpp:207
+#: ../src/cli/report.cpp:203
 msgid "# Component"
 msgstr "# 구성요소"
 
-#: ../src/CLI/report.cpp:208
+#: ../src/cli/report.cpp:204
 msgid "# Core dump"
 msgstr "# 코어 덤프"
 
-#: ../src/CLI/report.cpp:209
+#: ../src/cli/report.cpp:205
 msgid "# Executable"
 msgstr "# 실행파일"
 
-#: ../src/CLI/report.cpp:210
+#: ../src/cli/report.cpp:206
 msgid "# Kernel version"
 msgstr "# 커널 버전"
 
-#: ../src/CLI/report.cpp:211
+#: ../src/cli/report.cpp:207
 msgid "# Package"
 msgstr "# 패키지"
 
-#: ../src/CLI/report.cpp:212
+#: ../src/cli/report.cpp:208
 msgid "# Reason of crash"
 msgstr "# 크래시 원인"
 
-#: ../src/CLI/report.cpp:213
+#: ../src/cli/report.cpp:209
 msgid "# Release string of the operating system"
 msgstr "# 운영 체제 릴리즈 문자열"
 
-#: ../src/CLI/report.cpp:336
+#: ../src/cli/report.cpp:332
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "vi를 실행할 수 없습니다: $TERM, $VISUAL, $EDITOR등이 설정되지 않았습니다"
 
-#: ../src/CLI/report.cpp:424
+#: ../src/cli/report.cpp:420
 msgid ""
 "\n"
 "The report has been updated"
@@ -612,7 +631,7 @@ msgstr ""
 "\n"
 "보고서가 변경되었습니다"
 
-#: ../src/CLI/report.cpp:426
+#: ../src/cli/report.cpp:422
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -620,47 +639,56 @@ msgstr ""
 "\n"
 "보고서에서 변경 사항을 감지하지 못했습니다"
 
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/cli/report.cpp:541
+msgid "y"
+msgstr ""
+
+#: ../src/cli/report.cpp:542
+msgid "N"
+msgstr ""
+
 #. Read the missing information and push it to plugin settings.
-#: ../src/CLI/report.cpp:646
+#: ../src/cli/report.cpp:649
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "플러그인 %s에서 잘못된 설정을 감지했습니다\n"
 
-#: ../src/CLI/report.cpp:650
+#: ../src/cli/report.cpp:653
 msgid "Enter your login: "
 msgstr "로그인을 입력하십시오:"
 
-#: ../src/CLI/report.cpp:656
+#: ../src/cli/report.cpp:659
 msgid "Enter your password: "
 msgstr "암호를 입력하십시오:"
 
-#: ../src/CLI/report.cpp:700
+#: ../src/cli/report.cpp:703
 msgid "Reporting..."
 msgstr "보고..."
 
-#: ../src/CLI/report.cpp:719
-#, c-format
-msgid "Report using %s? [y/N]: "
+#: ../src/cli/report.cpp:722
+#, fuzzy, c-format
+msgid "Report using %s?"
 msgstr "%s로 보고하겠습니까? [y/N]:"
 
-#: ../src/CLI/report.cpp:722
+#: ../src/cli/report.cpp:725
 msgid "Skipping..."
 msgstr "건너뜀..."
 
-#: ../src/CLI/report.cpp:739
+#: ../src/cli/report.cpp:742
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "%d 플러그인을 사용해 크래시를 보고했습니다(%d개 오류)\n"
 
-#: ../src/Daemon/CommLayerServerDBus.cpp:234
+#: ../src/daemon/CommLayerServerDBus.cpp:227
 msgid "Comment is too long"
 msgstr "설명이 너무 깁니다"
 
-#: ../src/Daemon/CommLayerServerDBus.cpp:238
+#: ../src/daemon/CommLayerServerDBus.cpp:231
 msgid "'How to reproduce' is too long"
 msgstr "'재현 방법'이 너무 깁니다"
 
-#: ../src/Daemon/Daemon.cpp:517
+#: ../src/daemon/Daemon.cpp:513
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -668,56 +696,56 @@ msgstr ""
 "보고된 크기가 쿼터를 초과하였습니다. abrt.conf에서 시스템의 "
 "MaxCrashReportsSize 값을 확인하십시오."
 
-#: ../src/Daemon/MiddleWare.cpp:579
+#: ../src/daemon/MiddleWare.cpp:605
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr ""
 "데이터베이스 플러그인이 지정되지 않았습니다. abrtd 설정을 살펴보십시오."
 
-#: ../src/Gui/abrt.desktop.in.h:2
+#: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
 msgstr "어플리케이션 크래시를 확인 및 보고함"
 
-#: ../src/Gui/ABRTExceptions.py:6
+#: ../src/gui/ABRTExceptions.py:6
 msgid "Another client is already running, trying to wake it..."
 msgstr "다른 클라이언트가 이미 실행되고 있으므로 이를 호출합니다."
 
-#: ../src/Gui/ABRTExceptions.py:13
+#: ../src/gui/ABRTExceptions.py:13
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "데몬에서 예기치 못한 데이터를 수신했습니다 (데이터베이스가 올바르게 업데이트"
 "되었습니까?).  "
 
-#: ../src/Gui/ABRTPlugin.py:62
+#: ../src/gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
 msgstr "로딩된 플러그인이 없습니다"
 
-#: ../src/Gui/ABRTPlugin.py:63
+#: ../src/gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
 msgstr "Analyzer 플러그인  "
 
-#: ../src/Gui/ABRTPlugin.py:64
+#: ../src/gui/ABRTPlugin.py:64
 msgid "Action plugins"
 msgstr "Action 플러그인  "
 
-#: ../src/Gui/ABRTPlugin.py:65
+#: ../src/gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
 msgstr "Reporter 플러그인  "
 
-#: ../src/Gui/ABRTPlugin.py:66
+#: ../src/gui/ABRTPlugin.py:66
 msgid "Database plugins"
 msgstr "Database 플러그인 "
 
-#: ../src/Gui/CCDBusBackend.py:74 ../src/Gui/CCDBusBackend.py:97
+#: ../src/gui/CCDBusBackend.py:74 ../src/gui/CCDBusBackend.py:97
 msgid "Cannot connect to system dbus."
 msgstr "시스템 dbus에 연결할 수 없음 "
 
-#: ../src/Gui/CCDBusBackend.py:120 ../src/Gui/CCDBusBackend.py:123
+#: ../src/gui/CCDBusBackend.py:120 ../src/gui/CCDBusBackend.py:123
 msgid "Please check if the abrt daemon is running."
 msgstr "abrt 데몬이 실행되고 있는지 확인하십시오."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/Gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:174
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -725,51 +753,51 @@ msgstr ""
 "데몬이 유효한 보고 내용을 반환하지 않습니다\n"
 "디버그 정보가 없습니까?   "
 
-#: ../src/Gui/ccgui.glade.h:1
+#: ../src/gui/ccgui.glade.h:1
 msgid "(C) 2009, 2010 Red Hat, Inc."
 msgstr "(C) 2009, 2010 Red Hat, Inc."
 
-#: ../src/Gui/ccgui.glade.h:2
+#: ../src/gui/ccgui.glade.h:2
 msgid "<b>Bug Reports:</b>"
 msgstr "<b>버그 보고:</b>"
 
-#: ../src/Gui/ccgui.glade.h:3
+#: ../src/gui/ccgui.glade.h:3
 msgid "<b>Command:</b>"
 msgstr "<b>명령:</b>"
 
-#: ../src/Gui/ccgui.glade.h:4
+#: ../src/gui/ccgui.glade.h:4
 msgid "<b>Comment:</b>"
 msgstr "<b>주석:</b>"
 
-#: ../src/Gui/ccgui.glade.h:5
+#: ../src/gui/ccgui.glade.h:5
 msgid "<b>Crash Count:</b>"
 msgstr "<b>크래시 횟수:</b>"
 
-#: ../src/Gui/ccgui.glade.h:6
+#: ../src/gui/ccgui.glade.h:6
 msgid "<b>Latest Crash:</b>"
 msgstr "<b>최종 크래시:</b>"
 
-#: ../src/Gui/ccgui.glade.h:7
+#: ../src/gui/ccgui.glade.h:7
 msgid "<b>Reason:</b>"
 msgstr "<b>원인:</b>"
 
-#: ../src/Gui/ccgui.glade.h:8
+#: ../src/gui/ccgui.glade.h:8
 msgid "<b>User:</b>"
 msgstr "<b>사용자</b>"
 
-#: ../src/Gui/ccgui.glade.h:9
+#: ../src/gui/ccgui.glade.h:9
 msgid "About ABRT"
 msgstr "ABRT에 대해"
 
-#: ../src/Gui/ccgui.glade.h:11
+#: ../src/gui/ccgui.glade.h:11
 msgid "Copy to Clipboard"
 msgstr "클립보드에 복사"
 
-#: ../src/Gui/ccgui.glade.h:12 ../src/Gui/settings.glade.h:19
+#: ../src/gui/ccgui.glade.h:12 ../src/gui/settings.glade.h:19
 msgid "Plugins"
 msgstr "플러그인  "
 
-#: ../src/Gui/ccgui.glade.h:14
+#: ../src/gui/ccgui.glade.h:14
 msgid ""
 "This program is free software; you can redistribute it and/or modify it "
 "under the terms of the GNU General Public License as published by the Free "
@@ -797,40 +825,40 @@ msgstr ""
 "You should have received a copy of the GNU General Public License along with "
 "this program.  If not, see <http://www.gnu.org/licenses/>."
 
-#: ../src/Gui/ccgui.glade.h:19
+#: ../src/gui/ccgui.glade.h:19
 msgid "View log"
 msgstr "로그 보기"
 
-#: ../src/Gui/ccgui.glade.h:20
+#: ../src/gui/ccgui.glade.h:20
 msgid "_Edit"
 msgstr "편집(_E)  "
 
-#: ../src/Gui/ccgui.glade.h:21
+#: ../src/gui/ccgui.glade.h:21
 msgid "_File"
 msgstr "파일(_F)  "
 
-#: ../src/Gui/ccgui.glade.h:22
+#: ../src/gui/ccgui.glade.h:22
 msgid "_Help"
 msgstr "도움말(_H)  "
 
 #. add pixbuff separatelly
-#: ../src/Gui/CCMainWindow.py:63
+#: ../src/gui/CCMainWindow.py:63
 msgid "Reported"
 msgstr "보고됨"
 
-#: ../src/Gui/CCMainWindow.py:71
+#: ../src/gui/CCMainWindow.py:71
 msgid "Application"
 msgstr "응용 프로그램  "
 
-#: ../src/Gui/CCMainWindow.py:73
+#: ../src/gui/CCMainWindow.py:73
 msgid "Hostname"
 msgstr "호스트이름"
 
-#: ../src/Gui/CCMainWindow.py:75
+#: ../src/gui/CCMainWindow.py:75
 msgid "Latest Crash"
 msgstr "마지막 크래시"
 
-#: ../src/Gui/CCMainWindow.py:143
+#: ../src/gui/CCMainWindow.py:143
 #, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
@@ -839,7 +867,7 @@ msgstr ""
 "설정 대화 상자를 표시할 수 없습니다\n"
 "%s  "
 
-#: ../src/Gui/CCMainWindow.py:148
+#: ../src/gui/CCMainWindow.py:148
 #, python-format
 msgid ""
 "Unable to finish the current task!\n"
@@ -849,7 +877,7 @@ msgstr ""
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
-#: ../src/Gui/CCMainWindow.py:183
+#: ../src/gui/CCMainWindow.py:183
 #, python-format
 msgid ""
 "Error while loading the dumplist.\n"
@@ -858,7 +886,7 @@ msgstr ""
 "dumplist를 불러오는 도중 오류가 발생했습니다.\n"
 "%s   "
 
-#: ../src/Gui/CCMainWindow.py:241
+#: ../src/gui/CCMainWindow.py:241
 #, python-format
 msgid ""
 "<b>%s Crash</b>\n"
@@ -867,11 +895,11 @@ msgstr ""
 "<b>%s 크래시</b>\n"
 "%s"
 
-#: ../src/Gui/CCMainWindow.py:337
+#: ../src/gui/CCMainWindow.py:337
 msgid "You have to select a crash to copy."
 msgstr "복사할 크래시를 선택해야만 합니다."
 
-#: ../src/Gui/CCMainWindow.py:422
+#: ../src/gui/CCMainWindow.py:422
 msgid ""
 "Usage: abrt-gui [OPTIONS]\n"
 "\t-v[vv]\t\t\tVerbose\n"
@@ -881,7 +909,7 @@ msgstr ""
 "\t-v[vv]\t\t\t자세한 출력을 보여줍니다\n"
 "\t--report=CRASH_ID\t크래시를 CRASH_ID와 함께 직접 보고합니다"
 
-#: ../src/Gui/CCMainWindow.py:445
+#: ../src/gui/CCMainWindow.py:445
 #, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
@@ -891,16 +919,16 @@ msgstr ""
 "crashid=%s"
 
 #. default texts
-#: ../src/Gui/CCReporterDialog.py:22 ../src/Gui/CReporterAssistant.py:19
+#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:19
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "재현 방법 또는 여러분이 실행한 내용에 대한 간단한 설명..."
 
-#: ../src/Gui/CCReporterDialog.py:107
+#: ../src/gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
 msgstr ""
 "민감한 정보가 들어있지 않은지 역추적(backtrace)을 검토해 보셔야 합니다."
 
-#: ../src/Gui/CCReporterDialog.py:118 ../src/Gui/CReporterAssistant.py:308
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:324
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -913,26 +941,26 @@ msgstr ""
 "%s</b> \n"
 "그 후 새로고침 버튼을 사용하여 역추적 정보를 다시 생성합니다."
 
-#: ../src/Gui/CCReporterDialog.py:120
+#: ../src/gui/CCReporterDialog.py:120
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "역추적 정보를 사용할 수 없습니다. 이를 보고할 수 없습니다!"
 
-#: ../src/Gui/CCReporterDialog.py:124 ../src/Gui/CReporterAssistant.py:314
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:330
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
 msgstr ""
 "역추적이 불완전합니다. 재현을 위한 올바른 단계를 제공했는지 확인하십시오.  "
 
-#: ../src/Gui/CCReporterDialog.py:130
+#: ../src/gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
 msgstr "보고가 비활성화 되어있습니다. 위에 표시된 문제들을 해결해 주십시오."
 
-#: ../src/Gui/CCReporterDialog.py:132
+#: ../src/gui/CCReporterDialog.py:132
 msgid "Sends the report using the selected plugin."
 msgstr "선택된 플러그인을 사용해 보고 보내기."
 
-#: ../src/Gui/CCReporterDialog.py:398
+#: ../src/gui/CCReporterDialog.py:398
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
@@ -940,8 +968,8 @@ msgstr ""
 "이런 종류의 크래시에 사용 가능한 reporter 플러그인이 없습니다\n"
 "abrt.conf를 체크해 주십시오."
 
-#: ../src/Gui/CCReporterDialog.py:418 ../src/Gui/CReporterAssistant.py:201
-#: ../src/Gui/PluginsSettingsDialog.py:169
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:217
+#: ../src/gui/PluginsSettingsDialog.py:169
 #, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -950,12 +978,12 @@ msgstr ""
 "플러그인 설정을 저장할 수 없음:\n"
 " %s "
 
-#: ../src/Gui/CCReporterDialog.py:448 ../src/Gui/CReporterAssistant.py:231
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:247
 #, python-format
 msgid "Configure %s options"
 msgstr "%s 옵션 설정"
 
-#: ../src/Gui/CCReporterDialog.py:498 ../src/Gui/CReporterAssistant.py:845
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:861
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -963,7 +991,7 @@ msgstr ""
 "보고서를 가져올 수 없습니다!\n"
 "Debuginfo가 없습니까?"
 
-#: ../src/Gui/CCReporterDialog.py:527 ../src/Gui/CReporterAssistant.py:398
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:414
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -972,23 +1000,23 @@ msgstr ""
 "보고 실패했습니다!\n"
 "%s "
 
-#: ../src/Gui/CCReporterDialog.py:553 ../src/Gui/CCReporterDialog.py:574
-#: ../src/Gui/CReporterAssistant.py:884
+#: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
+#: ../src/gui/CReporterAssistant.py:900
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "보고서를 가져오는 도중 오류 발생: %s"
 
-#: ../src/Gui/ConfBackend.py:77
+#: ../src/gui/ConfBackend.py:77
 msgid "Cannot connect to the Gnome Keyring daemon."
 msgstr "그놈 키링 데몬에 연결할 수 없음."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/Gui/ConfBackend.py:83
+#: ../src/gui/ConfBackend.py:83
 msgid "Cannot get the default keyring."
 msgstr "디폴트 키링을 가져올 수 없음."
 
-#: ../src/Gui/ConfBackend.py:102 ../src/Gui/ConfBackend.py:118
+#: ../src/gui/ConfBackend.py:102 ../src/gui/ConfBackend.py:118
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
@@ -996,61 +1024,61 @@ msgstr ""
 "것입니다."
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/Gui/ConfBackend.py:152
+#: ../src/gui/ConfBackend.py:152
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "gnome-keyring에 대한 억세스가 거부되었습니다. %s의 설정을 가져올 수 없습니다!"
 
-#: ../src/Gui/ConfBackend.py:205
+#: ../src/gui/ConfBackend.py:205
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr "gnome-keyring에 대한 억세스가 거부되었습니다. 설정을 읽을 수 없습니다."
 
-#: ../src/Gui/CReporterAssistant.py:20
+#: ../src/gui/CReporterAssistant.py:20
 msgid "Crash info doesn't contain a backtrace"
 msgstr "크래시 정보에 역추적이 들어있지 않습니다"
 
-#: ../src/Gui/CReporterAssistant.py:280
+#: ../src/gui/CReporterAssistant.py:296
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr "%s 플러그인은 점수를 메길것을 요구합니다"
 
-#: ../src/Gui/CReporterAssistant.py:282
+#: ../src/gui/CReporterAssistant.py:298
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr "점수메기기를 필요로 하는 플러그인이 없습니다. 검사를 생략합니다..."
 
-#: ../src/Gui/CReporterAssistant.py:286
+#: ../src/gui/CReporterAssistant.py:302
 #, python-format
 msgid "Rating is %s"
 msgstr "점수는 %s입니다"
 
-#: ../src/Gui/CReporterAssistant.py:289
+#: ../src/gui/CReporterAssistant.py:305
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "크래스덤프에 점수가 없습니다 => 점수가 필요하지 않은 것으로 간주합니다"
 
-#: ../src/Gui/CReporterAssistant.py:294
+#: ../src/gui/CReporterAssistant.py:310
 msgid "You should check the backtrace for sensitive data."
 msgstr ""
 "민감한 정보가 포함되지는 않았는지 역추적(backtrace)을 검토하셔야 합니다."
 
-#: ../src/Gui/CReporterAssistant.py:295
+#: ../src/gui/CReporterAssistant.py:311
 msgid "You must agree with sending the backtrace."
 msgstr "역추적을 전송하는 것에 동의하셔야 합니다."
 
-#: ../src/Gui/CReporterAssistant.py:310
+#: ../src/gui/CReporterAssistant.py:326
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "역추적이 비활성화되었기 때문에 보고가 비활성화 되었습니다."
 
-#: ../src/Gui/CReporterAssistant.py:355
+#: ../src/gui/CReporterAssistant.py:371
 msgid "You did not provide any steps to reproduce."
 msgstr "재현을 위한 방법을 제공하지 않으셨습니다."
 
-#: ../src/Gui/CReporterAssistant.py:369
+#: ../src/gui/CReporterAssistant.py:385
 msgid "You did not provide any comments."
 msgstr "설명을 제공하지 않으셨습니다."
 
-#: ../src/Gui/CReporterAssistant.py:450
+#: ../src/gui/CReporterAssistant.py:466
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1075,15 +1103,15 @@ msgstr ""
 "\n"
 "버그를 보고하고 싶은 곳을 선택하고, 계속하려면 '다음' 버튼을 눌러주십시오.."
 
-#: ../src/Gui/CReporterAssistant.py:510
+#: ../src/gui/CReporterAssistant.py:526
 msgid "Only one reporter plugin is configured."
 msgstr "하나의 reporter 플러그인만 설정되었습니다."
 
-#: ../src/Gui/CReporterAssistant.py:516
+#: ../src/gui/CReporterAssistant.py:532
 msgid "Send a bug report"
 msgstr "보고 보내기"
 
-#: ../src/Gui/CReporterAssistant.py:554
+#: ../src/gui/CReporterAssistant.py:570
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1099,37 +1127,37 @@ msgstr ""
 "다음의 역추적 정보를 검토하시고, 여러분의 버그 보고서에 공유해서는 안되는 민"
 "감한 정보들이 포함되지나 않았는지 확인해 주십시오:"
 
-#: ../src/Gui/CReporterAssistant.py:595
+#: ../src/gui/CReporterAssistant.py:611
 msgid "Refresh"
 msgstr "새로고침"
 
-#: ../src/Gui/CReporterAssistant.py:597
+#: ../src/gui/CReporterAssistant.py:613
 msgid "Copy"
 msgstr "복사"
 
-#: ../src/Gui/CReporterAssistant.py:603
+#: ../src/gui/CReporterAssistant.py:619
 msgid "I agree with submitting the backtrace"
 msgstr "이 역추적 정보를 전송하는데 동의합니다"
 
-#: ../src/Gui/CReporterAssistant.py:608
+#: ../src/gui/CReporterAssistant.py:624
 msgid "Approve the backtrace"
 msgstr "역추적 정보 승인"
 
-#: ../src/Gui/CReporterAssistant.py:631
+#: ../src/gui/CReporterAssistant.py:647
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 "어떻게 이 크래시가 발생했습니까(단계별)? 어떻게 다시 재현할 수 있습니까?"
 
-#: ../src/Gui/CReporterAssistant.py:649
+#: ../src/gui/CReporterAssistant.py:665
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "소프트웨어 관리자들에게 말씀하고 싶은 내용이 있습니까?"
 
-#: ../src/Gui/CReporterAssistant.py:668
+#: ../src/gui/CReporterAssistant.py:684
 msgid "Provide additional details"
 msgstr "추가 상세 정보 제공"
 
-#: ../src/Gui/CReporterAssistant.py:675
+#: ../src/gui/CReporterAssistant.py:691
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -1137,96 +1165,96 @@ msgstr ""
 "<b>도움말:</b> 여러분의 설명을 외부에서 볼 수 있습니다. 여러분이 적은 내용이 "
 "적절한지 검토하십시오."
 
-#: ../src/Gui/CReporterAssistant.py:716
+#: ../src/gui/CReporterAssistant.py:732
 msgid "Confirm and send the report"
 msgstr "확인 및 보고 보내기"
 
-#: ../src/Gui/CReporterAssistant.py:718
+#: ../src/gui/CReporterAssistant.py:734
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "다음은 여러분의 버그 보고서의 요약입니다. 전송하기 위해서는 '적용' 버튼을 누"
 "르십시오."
 
-#: ../src/Gui/CReporterAssistant.py:723
+#: ../src/gui/CReporterAssistant.py:739
 msgid "<b>Basic details</b>"
 msgstr "<b>상세 정보</b>"
 
 #. left table
-#: ../src/Gui/CReporterAssistant.py:730
+#: ../src/gui/CReporterAssistant.py:746
 msgid "Component"
 msgstr "구성 요소"
 
-#: ../src/Gui/CReporterAssistant.py:731
+#: ../src/gui/CReporterAssistant.py:747
 msgid "Package"
 msgstr "패키지"
 
-#: ../src/Gui/CReporterAssistant.py:732
+#: ../src/gui/CReporterAssistant.py:748
 msgid "Executable"
 msgstr "실행파일"
 
-#: ../src/Gui/CReporterAssistant.py:733
+#: ../src/gui/CReporterAssistant.py:749
 msgid "Cmdline"
 msgstr "명령행"
 
 #. right table
-#: ../src/Gui/CReporterAssistant.py:735
+#: ../src/gui/CReporterAssistant.py:751
 msgid "Architecture"
 msgstr "아키텍쳐"
 
-#: ../src/Gui/CReporterAssistant.py:736
+#: ../src/gui/CReporterAssistant.py:752
 msgid "Kernel"
 msgstr "커널"
 
-#: ../src/Gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:753
 msgid "Release"
 msgstr "릴리즈"
 
-#: ../src/Gui/CReporterAssistant.py:738
+#: ../src/gui/CReporterAssistant.py:754
 msgid "Reason"
 msgstr "원인"
 
-#: ../src/Gui/CReporterAssistant.py:749 ../src/Gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:765 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>역추적(backtrace)</b>"
 
-#: ../src/Gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:768
 msgid "Click to view..."
 msgstr "보시려면 클릭하십시오..."
 
-#: ../src/Gui/CReporterAssistant.py:764
+#: ../src/gui/CReporterAssistant.py:780
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>재현하기 위한 세부 단계</b>"
 
-#: ../src/Gui/CReporterAssistant.py:785
+#: ../src/gui/CReporterAssistant.py:801
 msgid "<b>Comments:</b>"
 msgstr "<b>설명:</b>"
 
-#: ../src/Gui/CReporterAssistant.py:788
+#: ../src/gui/CReporterAssistant.py:804
 msgid "No comment provided!"
 msgstr "설명이 없습니다!"
 
-#: ../src/Gui/CReporterAssistant.py:824
+#: ../src/gui/CReporterAssistant.py:840
 msgid "Finished sending the bug report"
 msgstr "보고 보내기가 끝났습니다"
 
-#: ../src/Gui/CReporterAssistant.py:828
+#: ../src/gui/CReporterAssistant.py:844
 msgid "<b>Bug reports:</b>"
 msgstr "<b>버그 보고:</b>"
 
-#: ../src/Gui/dialogs.glade.h:1
+#: ../src/gui/dialogs.glade.h:1
 msgid "Log"
 msgstr "로그  "
 
-#: ../src/Gui/dialogs.glade.h:2
+#: ../src/gui/dialogs.glade.h:2
 msgid "Report done"
 msgstr "보고 완료  "
 
-#: ../src/Gui/PluginSettingsUI.py:17
+#: ../src/gui/PluginSettingsUI.py:17
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "UI 설명에서 PluginDialog 위젯을 찾을 수 없습니다!  "
 
-#: ../src/Gui/PluginSettingsUI.py:24
+#: ../src/gui/PluginSettingsUI.py:24
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1237,29 +1265,29 @@ msgstr ""
 " <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted."
 "org/abrt/newticket</a>에 보고해 주십시오."
 
-#: ../src/Gui/PluginSettingsUI.py:59 ../src/Gui/PluginSettingsUI.py:85
+#: ../src/gui/PluginSettingsUI.py:59 ../src/gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
 msgstr "Combo box가 구현되지 않았습니다  "
 
-#: ../src/Gui/PluginSettingsUI.py:68
+#: ../src/gui/PluginSettingsUI.py:68
 msgid "Nothing to hydrate!"
 msgstr "hydrate할 것이 없습니다!  "
 
-#: ../src/Gui/PluginsSettingsDialog.py:24
+#: ../src/gui/PluginsSettingsDialog.py:24
 msgid "Cannot load the GUI description for SettingsDialog!"
 msgstr "SettingsDialog에 대한 GUI설명을 읽을 수 없습니다!"
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
-#: ../src/Gui/PluginsSettingsDialog.py:41
+#: ../src/gui/PluginsSettingsDialog.py:41
 msgid "Name"
 msgstr "이름"
 
-#: ../src/Gui/PluginsSettingsDialog.py:148
+#: ../src/gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
 msgstr "옵션을 변경할 플러그인을 목록에서 선택하십시오."
 
-#: ../src/Gui/PluginsSettingsDialog.py:156
+#: ../src/gui/PluginsSettingsDialog.py:156
 #, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
@@ -1270,203 +1298,203 @@ msgstr ""
 "\n"
 "%s"
 
-#: ../src/Gui/progress_window.glade.h:1 ../src/Gui/report.glade.h:17
+#: ../src/gui/progress_window.glade.h:1 ../src/gui/report.glade.h:17
 msgid "Details"
 msgstr "상세 정보"
 
-#: ../src/Gui/progress_window.glade.h:2 ../src/Gui/report.glade.h:21
+#: ../src/gui/progress_window.glade.h:2 ../src/gui/report.glade.h:21
 msgid "Please wait..."
 msgstr "잠시만 기다려 주십시오.."
 
-#: ../src/Gui/report.glade.h:1
+#: ../src/gui/report.glade.h:1
 msgid " "
 msgstr " "
 
-#: ../src/Gui/report.glade.h:2
+#: ../src/gui/report.glade.h:2
 msgid "<b>Attachments</b>"
 msgstr "<b>첨부</b>"
 
-#: ../src/Gui/report.glade.h:4
+#: ../src/gui/report.glade.h:4
 msgid "<b>Comment</b>"
 msgstr "<b>설명</b>"
 
-#: ../src/Gui/report.glade.h:5
+#: ../src/gui/report.glade.h:5
 msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>재현 방법 (몇 가지 간단한 단계)</b> "
 
-#: ../src/Gui/report.glade.h:6
+#: ../src/gui/report.glade.h:6
 msgid "<b>Please fix the following problems:</b>"
 msgstr "<b>다음 문제를 해결해 주십시오:</b>"
 
-#: ../src/Gui/report.glade.h:7
+#: ../src/gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
 msgstr "<b>이 사고를 어디에 보고하겠습니까?</b>"
 
-#: ../src/Gui/report.glade.h:8
+#: ../src/gui/report.glade.h:8
 msgid "<span fgcolor=\"blue\">Architecture:</span>"
 msgstr "<span fgcolor=\"blue\">아키텍쳐:</span>"
 
-#: ../src/Gui/report.glade.h:9
+#: ../src/gui/report.glade.h:9
 msgid "<span fgcolor=\"blue\">Cmdline:</span>"
 msgstr "<span fgcolor=\"blue\">명령행:</span>"
 
-#: ../src/Gui/report.glade.h:10
+#: ../src/gui/report.glade.h:10
 msgid "<span fgcolor=\"blue\">Component:</span>"
 msgstr "<span fgcolor=\"blue\">콤포넌트:</span>"
 
-#: ../src/Gui/report.glade.h:11
+#: ../src/gui/report.glade.h:11
 msgid "<span fgcolor=\"blue\">Executable:</span>"
 msgstr "<span fgcolor=\"blue\">실행파일:</span>"
 
-#: ../src/Gui/report.glade.h:12
+#: ../src/gui/report.glade.h:12
 msgid "<span fgcolor=\"blue\">Kernel:</span>"
 msgstr "<span fgcolor=\"blue\">커널:</span>"
 
-#: ../src/Gui/report.glade.h:13
+#: ../src/gui/report.glade.h:13
 msgid "<span fgcolor=\"blue\">Package:</span>"
 msgstr "<span fgcolor=\"blue\">패키지:</span>"
 
-#: ../src/Gui/report.glade.h:14
+#: ../src/gui/report.glade.h:14
 msgid "<span fgcolor=\"blue\">Reason:</span>"
 msgstr "<span fgcolor=\"blue\">원인:</span>"
 
-#: ../src/Gui/report.glade.h:15
+#: ../src/gui/report.glade.h:15
 msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">릴리즈:</span>"
 
-#: ../src/Gui/report.glade.h:18
+#: ../src/gui/report.glade.h:18
 msgid "Forces ABRT to regenerate the backtrace."
 msgstr "ABRT가 역추적 정보를 강제로 만들도록 합니다."
 
-#: ../src/Gui/report.glade.h:19
+#: ../src/gui/report.glade.h:19
 msgid "I checked the backtrace and removed sensitive data (passwords, etc)"
 msgstr "역추적을 선택했으며, 민감한 정보(암호 등)를 제거했습니다"
 
-#: ../src/Gui/report.glade.h:20
+#: ../src/gui/report.glade.h:20
 msgid "N/A"
 msgstr "N/A"
 
-#: ../src/Gui/report.glade.h:22
+#: ../src/gui/report.glade.h:22
 msgid "Reporter Selector"
 msgstr "Reporter 선택자"
 
-#: ../src/Gui/report.glade.h:23
+#: ../src/gui/report.glade.h:23
 msgid "Send report"
 msgstr "보고 보내기"
 
-#: ../src/Gui/report.glade.h:24
+#: ../src/gui/report.glade.h:24
 msgid "Show log"
 msgstr "로그 보기"
 
-#: ../src/Gui/SettingsDialog.py:33 ../src/Gui/SettingsDialog.py:50
+#: ../src/gui/SettingsDialog.py:33 ../src/gui/SettingsDialog.py:50
 msgid "<b>Select plugin</b>"
 msgstr "<b>플러그인 선택</b>  "
 
-#: ../src/Gui/SettingsDialog.py:36
+#: ../src/gui/SettingsDialog.py:36
 msgid "<b>Select database backend</b>"
 msgstr "<b>데이터베이스 백엔드 선택</b>  "
 
-#: ../src/Gui/SettingsDialog.py:169
+#: ../src/gui/SettingsDialog.py:169
 msgid "Remove this job"
 msgstr "이 작업 삭제"
 
-#: ../src/Gui/SettingsDialog.py:213
+#: ../src/gui/SettingsDialog.py:213
 msgid "Remove this action"
 msgstr "이 동작 삭제"
 
-#: ../src/Gui/settings.glade.h:1
+#: ../src/gui/settings.glade.h:1
 msgid "<b>Analyzer plugin</b>"
 msgstr "<b>Analyzer 플러그인</b>  "
 
-#: ../src/Gui/settings.glade.h:2
+#: ../src/gui/settings.glade.h:2
 msgid "<b>Associated action</b>"
 msgstr "<b>관련 동작</b>"
 
-#: ../src/Gui/settings.glade.h:3
+#: ../src/gui/settings.glade.h:3
 msgid "<b>Plugin details</b>"
 msgstr "<b>플러그인 상세 정보</b>"
 
-#: ../src/Gui/settings.glade.h:4
+#: ../src/gui/settings.glade.h:4
 msgid "<b>Plugin</b>"
 msgstr "<b>플러그인</b>"
 
-#: ../src/Gui/settings.glade.h:5
+#: ../src/gui/settings.glade.h:5
 msgid "<b>Time (or period)</b>"
 msgstr "<b>시간 (또는 기간)</b>"
 
-#: ../src/Gui/settings.glade.h:6
+#: ../src/gui/settings.glade.h:6
 msgid "Analyzers, Actions, Reporters"
 msgstr "Analyzer, Action, Reporter"
 
-#: ../src/Gui/settings.glade.h:7
+#: ../src/gui/settings.glade.h:7
 msgid "Author:"
 msgstr "저자:"
 
-#: ../src/Gui/settings.glade.h:8
+#: ../src/gui/settings.glade.h:8
 msgid "Blacklisted packages: "
 msgstr "블랙리스트에 포함된 패키지:"
 
-#: ../src/Gui/settings.glade.h:9
+#: ../src/gui/settings.glade.h:9
 msgid "C_onfigure Plugin"
 msgstr "플러그인 설정(_O)"
 
-#: ../src/Gui/settings.glade.h:10
+#: ../src/gui/settings.glade.h:10
 msgid "Check package GPG signature"
 msgstr "패키지의 GPG 서명 확인"
 
-#: ../src/Gui/settings.glade.h:11
+#: ../src/gui/settings.glade.h:11
 msgid "Common"
 msgstr "일반"
 
-#: ../src/Gui/settings.glade.h:12
+#: ../src/gui/settings.glade.h:12
 msgid "Cron"
 msgstr "크론"
 
-#: ../src/Gui/settings.glade.h:13
+#: ../src/gui/settings.glade.h:13
 msgid "Database backend: "
 msgstr "데이터베이스 백엔드:"
 
-#: ../src/Gui/settings.glade.h:14
+#: ../src/gui/settings.glade.h:14
 msgid "Description:"
 msgstr "설명:"
 
-#: ../src/Gui/settings.glade.h:15
+#: ../src/gui/settings.glade.h:15
 msgid "GPG Keys"
 msgstr "GPG 키"
 
-#: ../src/Gui/settings.glade.h:16
+#: ../src/gui/settings.glade.h:16
 msgid "GPG keys: "
 msgstr "GPG 키:"
 
-#: ../src/Gui/settings.glade.h:17
+#: ../src/gui/settings.glade.h:17
 msgid "Max coredump storage size (MB):"
 msgstr "최대 코어 덤프 저장 크기 (MB):"
 
-#: ../src/Gui/settings.glade.h:18
+#: ../src/gui/settings.glade.h:18
 msgid "Name:"
 msgstr "이름:"
 
-#: ../src/Gui/settings.glade.h:20
+#: ../src/gui/settings.glade.h:20
 msgid "Preferences"
 msgstr "환경설정"
 
-#: ../src/Gui/settings.glade.h:21
+#: ../src/gui/settings.glade.h:21
 msgid "Version:"
 msgstr "버전:"
 
-#: ../src/Gui/settings.glade.h:22
+#: ../src/gui/settings.glade.h:22
 msgid "Web Site:"
 msgstr "웹사이트:"
 
-#: ../src/Gui/settings_wizard.glade.h:1
+#: ../src/gui/settings_wizard.glade.h:1
 msgid "<b>Do you want to continue?</b>"
 msgstr "<b>계속 하겠습니까?</b>"
 
-#: ../src/Gui/settings_wizard.glade.h:2
+#: ../src/gui/settings_wizard.glade.h:2
 msgid "Wrong Settings Detected"
 msgstr "잘못된 설정 감지됨"
 
-#: ../src/Gui/settings_wizard.glade.h:3
+#: ../src/gui/settings_wizard.glade.h:3
 msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
@@ -1475,3 +1503,10 @@ msgstr ""
 "활성화된 reporter 플러그인 중 일부에 잘못된 설정이 감지되었습니다. 더 진행하"
 "기 전에 아래의 버튼을 사용해 해당 설정을 열고, 문제를 수정해 주십시오. 그렇"
 "지 않으면 보고서를 작성해 전송하는 데 실패할 수 있습니다.\n"
+
+#~ msgid ""
+#~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
+#~ "Bugzilla.conf. Server said: %s"
+#~ msgstr ""
+#~ "로그인할 수 없습니다. 편집->플러그인->Bugzilla와 /etc/abrt/plugins/"
+#~ "Bugzilla.conf를 살펴보십시오. 서버 응답: %s"

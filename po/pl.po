@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-23 13:02+0000\n"
+"POT-Creation-Date: 2010-08-27 16:40+0200\n"
 "PO-Revision-Date: 2010-08-23 15:07+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
@@ -84,35 +84,35 @@ msgstr "Dodawanie nowego komentarza do błędu %d"
 msgid "Reports bugs to bugzilla"
 msgstr "Zgłasza błędy w Bugzilli"
 
-#: ../lib/plugins/CCpp.cpp:185
+#: ../lib/plugins/CCpp.cpp:191
 msgid "Generating backtrace"
 msgstr "Tworzenie wyjątku"
 
-#: ../lib/plugins/CCpp.cpp:192 ../lib/plugins/CCpp.cpp:333
-#: ../lib/plugins/CCpp.cpp:520 ../lib/plugins/CCpp.cpp:569
-#: ../lib/plugins/CCpp.cpp:734 ../lib/plugins/CCpp.cpp:778
+#: ../lib/plugins/CCpp.cpp:198 ../lib/plugins/CCpp.cpp:345
+#: ../lib/plugins/CCpp.cpp:539 ../lib/plugins/CCpp.cpp:593
+#: ../lib/plugins/CCpp.cpp:760 ../lib/plugins/CCpp.cpp:812
 #: ../lib/plugins/Kerneloops.cpp:133 ../lib/plugins/Python.cpp:32
 #: ../lib/plugins/RunApp.cpp:64 ../lib/plugins/SOSreport.cpp:58
-#: ../lib/plugins/SOSreport.cpp:136
+#: ../lib/plugins/SOSreport.cpp:137
 #, c-format
 msgid "Unable to open debug dump '%s'"
 msgstr "Nie można otworzyć zrzutu debugowania \"%s\""
 
-#: ../lib/plugins/CCpp.cpp:361
+#: ../lib/plugins/CCpp.cpp:372
 msgid "Starting the debuginfo installation"
 msgstr "Uruchamianie instalacji pakietów debuginfo"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:584
+#: ../lib/plugins/CCpp.cpp:608
 msgid "Getting global universal unique identification..."
 msgstr "Uzyskiwanie globalnego UUID..."
 
-#: ../lib/plugins/CCpp.cpp:771
+#: ../lib/plugins/CCpp.cpp:797
 msgid "Skipping the debuginfo installation"
 msgstr "Pomijanie instalacji pakietów debuginfo"
 
-#: ../lib/plugins/CCpp.cpp:1089
+#: ../lib/plugins/CCpp.cpp:1124
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analizuje awarie w programach w językach C/C++"
 
@@ -125,16 +125,16 @@ msgstr "Wtyczka przesyłania plików: nie podano adresu URL"
 msgid "Sending archive %s to %s"
 msgstr "Wysyłanie archiwum %s do %s"
 
-#: ../lib/plugins/FileTransfer.cpp:239
+#: ../lib/plugins/FileTransfer.cpp:241
 msgid "FileTransfer: Creating a report..."
 msgstr "Wtyczka przesyłania plików: tworzenie zgłoszenia..."
 
-#: ../lib/plugins/FileTransfer.cpp:263 ../lib/plugins/FileTransfer.cpp:292
+#: ../lib/plugins/FileTransfer.cpp:265 ../lib/plugins/FileTransfer.cpp:294
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Nie można utworzyć i wysłać archiwum: %s"
 
-#: ../lib/plugins/FileTransfer.cpp:359
+#: ../lib/plugins/FileTransfer.cpp:361
 msgid "Sends a report via FTP or SCTP"
 msgstr "Wysyła zgłoszenie przez FTP lub SCTP"
 
@@ -185,16 +185,16 @@ msgstr "Wysyła wiadomość e-mail ze zgłoszeniem (przez polecenie mailx)"
 msgid "Analyzes crashes in Python programs"
 msgstr "Analizuje awarie w programach w języku Python"
 
-#: ../lib/plugins/ReportUploader.cpp:130
+#: ../lib/plugins/ReportUploader.cpp:131
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr "Wysyłanie nie powiodło się, próbowanie ponownie. %s"
 
-#: ../lib/plugins/ReportUploader.cpp:192
+#: ../lib/plugins/ReportUploader.cpp:197
 msgid "Creating a ReportUploader report..."
 msgstr "Tworzenie zgłoszenia wtyczki wysyłania zgłoszeń..."
 
-#: ../lib/plugins/ReportUploader.cpp:502
+#: ../lib/plugins/ReportUploader.cpp:515
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
@@ -205,7 +205,7 @@ msgstr ""
 msgid "Compressing data"
 msgstr "Kompresowanie danych"
 
-#: ../lib/plugins/RHTSupport.cpp:247
+#: ../lib/plugins/RHTSupport.cpp:249
 msgid "Creating a new case..."
 msgstr "Dodawanie nowego przypadku..."
 
@@ -222,7 +222,7 @@ msgstr "Wykonywanie sosreport: %s"
 msgid "Finished running sosreport"
 msgstr "Ukończono wykonywanie sosreport"
 
-#: ../lib/plugins/SOSreport.cpp:169
+#: ../lib/plugins/SOSreport.cpp:171
 msgid "Runs sosreport, saves the output"
 msgstr "Wykonuje polecenie sosreport, zapisuje wyjście"
 
@@ -350,7 +350,7 @@ msgstr "Login:"
 msgid "RHTSupport URL:"
 msgstr "Adres URL usługi RHTSupport:"
 
-#: ../lib/utils/abrt_curl.cpp:173
+#: ../lib/utils/abrt_curl.c:171
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Wysłano: %llu z %llu kilobajtów"
@@ -637,34 +637,43 @@ msgstr ""
 "\n"
 "Nie wykryto zmian w zgłoszeniu"
 
+#. The response might take more than 1 char in non-latin scripts.
+#: ../src/cli/report.cpp:541
+msgid "y"
+msgstr ""
+
+#: ../src/cli/report.cpp:542
+msgid "N"
+msgstr ""
+
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:642
+#: ../src/cli/report.cpp:649
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Wykryto błędne ustawienia dla wtyczki %s\n"
 
-#: ../src/cli/report.cpp:646
+#: ../src/cli/report.cpp:653
 msgid "Enter your login: "
 msgstr "Proszę podać login: "
 
-#: ../src/cli/report.cpp:652
+#: ../src/cli/report.cpp:659
 msgid "Enter your password: "
 msgstr "Proszę podać hasło: "
 
-#: ../src/cli/report.cpp:696
+#: ../src/cli/report.cpp:703
 msgid "Reporting..."
 msgstr "Zgłaszanie..."
 
-#: ../src/cli/report.cpp:715
-#, c-format
-msgid "Report using %s? [y/N]: "
+#: ../src/cli/report.cpp:722
+#, fuzzy, c-format
+msgid "Report using %s?"
 msgstr "Zgłosić używając %s? [t/N]: "
 
-#: ../src/cli/report.cpp:718
+#: ../src/cli/report.cpp:725
 msgid "Skipping..."
 msgstr "Pomijanie..."
 
-#: ../src/cli/report.cpp:735
+#: ../src/cli/report.cpp:742
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Zgłoszono awarię przez %d wtyczki (%d błędów)\n"
@@ -677,7 +686,7 @@ msgstr "Komentarz jest za długi"
 msgid "'How to reproduce' is too long"
 msgstr "\"Jak powtórzyć awarię\" jest za długie"
 
-#: ../src/daemon/Daemon.cpp:512
+#: ../src/daemon/Daemon.cpp:513
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -922,7 +931,7 @@ msgstr ""
 msgid "You must check the backtrace for sensitive data."
 msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane."
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:310
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:324
 #, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -939,7 +948,7 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Nie można użyć tego wyjątku, więc nie można tego zgłosić."
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:316
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:330
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
@@ -963,7 +972,7 @@ msgstr ""
 "Brak dostępnej wtyczki zgłaszania dla tego typu awarii.\n"
 "Proszę sprawdzić plik abrt.conf."
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:203
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:217
 #: ../src/gui/PluginsSettingsDialog.py:169
 #, python-format
 msgid ""
@@ -973,12 +982,12 @@ msgstr ""
 "Nie można zapisać ustawień wtyczki:\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:233
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:247
 #, python-format
 msgid "Configure %s options"
 msgstr "Skonfiguruj opcje %s"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:847
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:861
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -986,7 +995,7 @@ msgstr ""
 "Nie można uzyskać zgłoszenia.\n"
 "Brak pakietów debuginfo?"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:400
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:414
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -996,7 +1005,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:886
+#: ../src/gui/CReporterAssistant.py:900
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Błąd podczas uzyskiwania zgłoszenia: %s"
@@ -1036,45 +1045,45 @@ msgstr ""
 msgid "Crash info doesn't contain a backtrace"
 msgstr "Informacje o awarii nie zawierają wyjątku"
 
-#: ../src/gui/CReporterAssistant.py:282
+#: ../src/gui/CReporterAssistant.py:296
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr "Ocena jest wymagana przez wtyczkę %s"
 
-#: ../src/gui/CReporterAssistant.py:284
+#: ../src/gui/CReporterAssistant.py:298
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr "Ocena nie jest wymagana przez żadną wtyczkę. Pomijanie sprawdzania..."
 
-#: ../src/gui/CReporterAssistant.py:288
+#: ../src/gui/CReporterAssistant.py:302
 #, python-format
 msgid "Rating is %s"
 msgstr "Ocena wynosi %s"
 
-#: ../src/gui/CReporterAssistant.py:291
+#: ../src/gui/CReporterAssistant.py:305
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Zrzut pamięci nie posiada oceny => prawdopodobnie nie jest wymagana"
 
-#: ../src/gui/CReporterAssistant.py:296
+#: ../src/gui/CReporterAssistant.py:310
 msgid "You should check the backtrace for sensitive data."
 msgstr "Należy sprawdzić, czy wyjątek zawiera prywatne dane."
 
-#: ../src/gui/CReporterAssistant.py:297
+#: ../src/gui/CReporterAssistant.py:311
 msgid "You must agree with sending the backtrace."
 msgstr "Należy wyrazić zgodę na wysłanie wyjątku."
 
-#: ../src/gui/CReporterAssistant.py:312
+#: ../src/gui/CReporterAssistant.py:326
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku."
 
-#: ../src/gui/CReporterAssistant.py:357
+#: ../src/gui/CReporterAssistant.py:371
 msgid "You did not provide any steps to reproduce."
 msgstr "Nie podano, jak powtórzyć awarię."
 
-#: ../src/gui/CReporterAssistant.py:371
+#: ../src/gui/CReporterAssistant.py:385
 msgid "You did not provide any comments."
 msgstr "Nie podano żadnych komentarzy."
 
-#: ../src/gui/CReporterAssistant.py:452
+#: ../src/gui/CReporterAssistant.py:466
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1099,15 +1108,15 @@ msgstr ""
 "Proszę wybrać, gdzie zgłosić błąd i nacisnąć przycisk \"Dalej\", aby "
 "kontynuować."
 
-#: ../src/gui/CReporterAssistant.py:512
+#: ../src/gui/CReporterAssistant.py:526
 msgid "Only one reporter plugin is configured."
 msgstr "Skonfigurowana jest tylko jedna wtyczka zgłaszania."
 
-#: ../src/gui/CReporterAssistant.py:518
+#: ../src/gui/CReporterAssistant.py:532
 msgid "Send a bug report"
 msgstr "Wyślij zgłoszenie błędu"
 
-#: ../src/gui/CReporterAssistant.py:556
+#: ../src/gui/CReporterAssistant.py:570
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1122,117 +1131,117 @@ msgstr ""
 "Proszę przejrzeć wyjątek znajdujący się poniżej i zmodyfikować go, aby "
 "upewnić się, że zgłoszenie błędu nie zawiera prywatnych informacji:"
 
-#: ../src/gui/CReporterAssistant.py:597
+#: ../src/gui/CReporterAssistant.py:611
 msgid "Refresh"
 msgstr "Odśwież"
 
-#: ../src/gui/CReporterAssistant.py:599
+#: ../src/gui/CReporterAssistant.py:613
 msgid "Copy"
 msgstr "Skopiuj"
 
-#: ../src/gui/CReporterAssistant.py:605
+#: ../src/gui/CReporterAssistant.py:619
 msgid "I agree with submitting the backtrace"
 msgstr "Zgadzam się na wysłanie wyjątku"
 
-#: ../src/gui/CReporterAssistant.py:610
+#: ../src/gui/CReporterAssistant.py:624
 msgid "Approve the backtrace"
 msgstr "Akceptuję wyjątek"
 
-#: ../src/gui/CReporterAssistant.py:633
+#: ../src/gui/CReporterAssistant.py:647
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 "Jak wydarzyła się ta awaria i jak można ją powtórzyć, opisane krok po kroku "
 "(w języku angielskim)."
 
-#: ../src/gui/CReporterAssistant.py:651
+#: ../src/gui/CReporterAssistant.py:665
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Komentarze dla opiekunów oprogramowania (w języku angielskim)."
 
-#: ../src/gui/CReporterAssistant.py:670
+#: ../src/gui/CReporterAssistant.py:684
 msgid "Provide additional details"
 msgstr "Podanie dodatkowych informacji"
 
-#: ../src/gui/CReporterAssistant.py:677
+#: ../src/gui/CReporterAssistant.py:691
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Wskazówka:</b> komentarze będą dostępne publicznie."
 
-#: ../src/gui/CReporterAssistant.py:718
+#: ../src/gui/CReporterAssistant.py:732
 msgid "Confirm and send the report"
 msgstr "Potwierdź i wyślij zgłoszenie"
 
-#: ../src/gui/CReporterAssistant.py:720
+#: ../src/gui/CReporterAssistant.py:734
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Poniżej znajduje się zgłoszenie błędu. Proszę nacisnąć przycisk \"Zastosuj"
 "\", aby je wysłać."
 
-#: ../src/gui/CReporterAssistant.py:725
+#: ../src/gui/CReporterAssistant.py:739
 msgid "<b>Basic details</b>"
 msgstr "<b>Podstawowe informacje</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:732
+#: ../src/gui/CReporterAssistant.py:746
 msgid "Component"
 msgstr "Składnik"
 
-#: ../src/gui/CReporterAssistant.py:733
+#: ../src/gui/CReporterAssistant.py:747
 msgid "Package"
 msgstr "Pakiet"
 
-#: ../src/gui/CReporterAssistant.py:734
+#: ../src/gui/CReporterAssistant.py:748
 msgid "Executable"
 msgstr "Plik wykonywalny"
 
-#: ../src/gui/CReporterAssistant.py:735
+#: ../src/gui/CReporterAssistant.py:749
 msgid "Cmdline"
 msgstr "Wiersz poleceń"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:751
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../src/gui/CReporterAssistant.py:738
+#: ../src/gui/CReporterAssistant.py:752
 msgid "Kernel"
 msgstr "Jądro"
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:753
 msgid "Release"
 msgstr "Wydanie"
 
-#: ../src/gui/CReporterAssistant.py:740
+#: ../src/gui/CReporterAssistant.py:754
 msgid "Reason"
 msgstr "Przyczyna"
 
-#: ../src/gui/CReporterAssistant.py:751 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:765 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Wyjątek</b>"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:768
 msgid "Click to view..."
 msgstr "Kliknięcie wyświetli..."
 
-#: ../src/gui/CReporterAssistant.py:766
+#: ../src/gui/CReporterAssistant.py:780
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Jak powtórzyć awarię (w języku angielskim):</b>"
 
-#: ../src/gui/CReporterAssistant.py:787
+#: ../src/gui/CReporterAssistant.py:801
 msgid "<b>Comments:</b>"
 msgstr "<b>Komentarze (w języku angielskim):</b>"
 
-#: ../src/gui/CReporterAssistant.py:790
+#: ../src/gui/CReporterAssistant.py:804
 msgid "No comment provided!"
 msgstr "Nie podano żadnego komentarza."
 
-#: ../src/gui/CReporterAssistant.py:826
+#: ../src/gui/CReporterAssistant.py:840
 msgid "Finished sending the bug report"
 msgstr "Ukończono wysyłanie zgłoszenia błędu"
 
-#: ../src/gui/CReporterAssistant.py:830
+#: ../src/gui/CReporterAssistant.py:844
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Zgłoszenia błędów:</b>"
 
