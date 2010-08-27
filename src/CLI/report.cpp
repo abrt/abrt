@@ -535,17 +535,24 @@ static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
   return result;
 }
 
-/* Asks a [y/n] question on stdin/stdout.
+/**
+ * Asks a [y/n] question on stdin/stdout.
  * Returns true if the answer is yes, false otherwise.
  */
 static bool ask_yesno(const char *question)
 {
-  printf(question);
+  /* The response might take more than 1 char in non-latin scripts. */
+  const char *yes = _("y");
+  const char *no = _("N");
+  char *full_question = xasprintf("%s [%s/%s]: ", question, yes, no);
+  printf(full_question);
+  free(full_question);
   fflush(NULL);
-  char answer[16] = "n";
+  char answer[16];
   fgets(answer, sizeof(answer), stdin);
-  /* TODO: localize 'y' */
-  return ((answer[0] | 0x20) == 'y');
+  /* Use strncmp here because the answer might contain a newline as
+     the last char. */
+  return 0 == strncmp(answer, yes, strlen(yes));
 }
 
 /* Returns true if echo has been changed from another state. */
@@ -716,7 +723,7 @@ int report(const char *crash_id, int flags)
     for (vector_string_t::const_iterator it = reporters.begin(); it != reporters.end(); ++it)
     {
       char question[255];
-      snprintf(question, 255, _("Report using %s? [y/N]: "), it->c_str());
+      snprintf(question, 255, _("Report using %s?"), it->c_str());
       if (!ask_yesno(question))
       {
 	puts(_("Skipping..."));
