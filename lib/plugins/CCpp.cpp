@@ -549,7 +549,7 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
     if (unstrip_n_output)
         GetIndependentBuildIdPC(unstrip_n_output, independentBuildIdPC);
     else
-        VERB3 error_msg("run_unstrip_n() returns `NULL', broken coredump/eu-unstrip?");
+        VERB3 error_msg("run_unstrip_n() returns NULL, broken coredump/eu-unstrip?");
 
     free(unstrip_n_output);
 
@@ -786,7 +786,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.LoadText(CD_UID, UID);
     dd.Close(); /* do not keep dir locked longer than needed */
 
-    char *build_ids;
+    char *build_ids = NULL;
     if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str())))
     {
         if (m_nDebugInfoCacheMB > 0)
@@ -798,11 +798,10 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 
     /* Create and store backtrace. */
     char *backtrace_str = get_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str());
-
     if (!backtrace_str)
     {
-        backtrace_str = "";
-        VERB3 log("get_backtrace() retruns `NULL', broken core/gdb?");
+        backtrace_str = xstrdup("");
+        VERB3 log("get_backtrace() returns NULL, broken core/gdb?");
     }
 
     char *bt_build_ids = xasprintf("%s%s", backtrace_str, (build_ids) ? build_ids : "");
