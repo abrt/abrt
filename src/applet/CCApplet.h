@@ -24,65 +24,57 @@
 #include <string>
 #include <libnotify/notify.h>
 
-class CApplet
+enum ICON_STAGES
 {
-    private:
-        GtkStatusIcon* m_pStatusIcon;
-        GtkWidget *m_pMenu;
+    ICON_DEFAULT,
+    ICON_STAGE1,
+    ICON_STAGE2,
+    ICON_STAGE3,
+    ICON_STAGE4,
+    ICON_STAGE5,
+    /* this must be always the last */
+    ICON_STAGE_LAST
+};
+
+struct applet {
+    GtkStatusIcon* m_pStatusIcon;
+    GtkWidget *m_pMenu;
 
 //        std::map<int, std::string> m_mapEvents;
-        bool m_bDaemonRunning;
-        int m_iAnimationStage;
-        guint m_iAnimator;
-        unsigned m_iAnimCountdown;
-        bool m_bIconsLoaded;
-        const char *m_pLastCrashID;
+    bool m_bDaemonRunning;
+    int m_iAnimationStage;
+    guint m_iAnimator;
+    unsigned m_iAnimCountdown;
+    bool m_bIconsLoaded;
+    const char *m_pLastCrashID;
 
-        enum ICON_STAGES
-        {
-            ICON_DEFAULT,
-            ICON_STAGE1,
-            ICON_STAGE2,
-            ICON_STAGE3,
-            ICON_STAGE4,
-            ICON_STAGE5,
-            /* this must be always the last */
-            ICON_STAGE_LAST
-        } icon_stages;
-        GdkPixbuf *icon_stages_buff[ICON_STAGE_LAST];
-
-    public:
-        CApplet(const char* app_name);
-        ~CApplet();
-        void ShowIcon();
-        void HideIcon();
-        void SetIconTooltip(const char *format, ...);
-        void CrashNotify(const char* crash_id, const char *format, ...);
-        void MessageNotify(const char *format, ...);
-        void Disable(const char *reason);
-        void Enable(const char *reason);
-        // create some event storage, to let user choose
-        // or ask the daemon every time?
-        // maybe just events which occured during current session
-        // map::
-//        int AddEvent(int pUUID, const char *pProgname);
-//        int RemoveEvent(int pUUID);
-
-    protected:
-        //@@TODO applet menus
-        static void OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data);
-        //this action should open the reporter dialog directly, without showing the main window
-        static void action_report(NotifyNotification *notification, gchar *action, gpointer user_data);
-        //this action should open the main window
-        static void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data);
-        static void OnMenuPopup_cb(GtkStatusIcon *status_icon,
-                            guint          button,
-                            guint          activate_time,
-                            gpointer       user_data);
-        static gboolean update_icon(void *data);
-        void animate_icon();
-        void stop_animate_icon();
-        bool load_icons();
+    GdkPixbuf *icon_stages_buff[ICON_STAGE_LAST];
 };
+
+struct applet* applet_new(const char *app_name);
+void applet_destroy(struct applet *applet);
+
+void ShowIcon(struct applet *applet);
+void HideIcon(struct applet *applet);
+void SetIconTooltip(struct applet *applet, const char *format, ...);
+void CrashNotify(struct applet *applet, const char* crash_id, const char *format, ...);
+void MessageNotify(struct applet *applet, const char *format, ...);
+void Disable(struct applet *applet, const char *reason);
+void Enable(struct applet *applet, const char *reason);
+
+// static in next patch
+void OnAppletActivate_CB(GtkStatusIcon *status_icon, gpointer user_data);
+//this action should open the reporter dialog directly, without showing the main window
+void action_report(NotifyNotification *notification, gchar *action, gpointer user_data);
+//this action should open the main window
+void action_open_gui(NotifyNotification *notification, gchar *action, gpointer user_data);
+void OnMenuPopup_cb(GtkStatusIcon *status_icon,
+                    guint          button,
+                    guint          activate_time,
+                    gpointer       user_data);
+gboolean update_icon(void *data);
+void animate_icon(struct applet *applet);
+void stop_animate_icon(struct applet *applet);
+bool load_icons(struct applet *applet);
 
 #endif
