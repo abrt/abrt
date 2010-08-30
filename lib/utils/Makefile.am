@@ -22,7 +22,7 @@ libABRTUtils_la_SOURCES = \
     xatonum.c numtoa.cpp \
     spawn.c \
     stringops.cpp \
-    dirsize.cpp \
+    dirsize.c \
     DebugDump.cpp \
     abrt_dbus.h abrt_dbus.c \
     CrashTypes.cpp \
