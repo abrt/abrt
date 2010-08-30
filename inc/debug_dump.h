@@ -22,6 +22,8 @@
 #ifndef DEBUGDUMP_H_
 #define DEBUGDUMP_H_
 
+#ifdef __cplusplus
+
 #include <string>
 
 class CDebugDump
@@ -60,10 +62,21 @@ class CDebugDump
         const char *Directory() const { return m_sDebugDumpDir.c_str(); }
 };
 
+#endif /* __cplusplus */
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * Deletes particular debugdump directory.
  * @param pDebugDumpDir A debugdump directory.
  */
 void delete_debug_dump_dir(const char *pDebugDumpDir);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

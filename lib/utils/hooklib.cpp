@@ -20,8 +20,6 @@
 #include "debug_dump.h"
 #include <sys/statvfs.h>
 
-using namespace std;
-
 void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSize, bool *setting_MakeCompatCore, bool *setting_SaveBinaryImage)
 {
     FILE *fp = fopen(CONF_DIR"/abrt.conf", "r");
