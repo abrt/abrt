@@ -16,13 +16,16 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifndef ABRT_UTIL_DBUS_H
-#define ABRT_UTIL_DBUS_H
+#ifndef ABRT_DBUS_H
+#define ABRT_DBUS_H
 
 #include <dbus/dbus.h>
-#include <map>
-#include <vector>
 #include "abrtlib.h"
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 extern DBusConnection* g_dbus_conn;
 
@@ -41,7 +44,7 @@ extern DBusConnection* g_dbus_conn;
  * - client which does not receive signals (only makes calls and emits signals):
  *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
  *  // needed only if you need to use async dbus calls (not shown below):
- *  attach_dbus_conn_to_glib_main_loop(conn);
+ *  attach_dbus_conn_to_glib_main_loop(conn, NULL, NULL);
  *  // syncronous method call:
  *  msg = dbus_message_new_method_call("some.serv", "/path/on/serv", "optional.iface.on.serv", "method_name");
  *  reply = dbus_connection_send_with_reply_and_block(conn, msg, timeout, &err);
@@ -53,7 +56,7 @@ extern DBusConnection* g_dbus_conn;
  *
  * - client which receives and processes signals:
  *  conn = dbus_bus_get(DBUS_BUS_SYSTEM/SESSION, &err);
- *  attach_dbus_conn_to_glib_main_loop(conn);
+ *  attach_dbus_conn_to_glib_main_loop(conn, NULL, NULL);
  *  dbus_connection_add_filter(conn, handle_message, NULL, NULL)
  *  dbus_bus_add_match(system_conn, "type='signal',...", &err);
  *  // signal is a dbus message which looks like this:
@@ -65,22 +68,56 @@ extern DBusConnection* g_dbus_conn;
  */
 void attach_dbus_conn_to_glib_main_loop(DBusConnection* conn,
     /* NULL if you are just a client */
-    const char* object_path_to_register = NULL,
+    const char* object_path_to_register,
     /* makes sense only if you use object_path_to_register: */
-    DBusHandlerResult (*message_received_func)(DBusConnection *conn, DBusMessage *msg, void* data) = NULL
+    DBusHandlerResult (*message_received_func)(DBusConnection *conn, DBusMessage *msg, void* data)
 );
-
 
 /*
  * Helpers for building DBus messages
  */
-
 //void store_bool(DBusMessageIter* iter, bool val);
 void store_int32(DBusMessageIter* iter, int32_t val);
 void store_uint32(DBusMessageIter* iter, uint32_t val);
 void store_int64(DBusMessageIter* iter, int64_t val);
 void store_uint64(DBusMessageIter* iter, uint64_t val);
 void store_string(DBusMessageIter* iter, const char* val);
+
+/*
+ * Helpers for parsing DBus messages
+ */
+enum {
+    ABRT_DBUS_ERROR = -1,
+    ABRT_DBUS_LAST_FIELD = 0,
+    ABRT_DBUS_MORE_FIELDS = 1,
+    /* note that dbus_message_iter_next() returns FALSE on last field
+     * and TRUE if there are more fields.
+     * It maps exactly on the above constants. */
+};
+/* Checks type, loads data, advances to the next arg.
+ * Returns TRUE if next arg exists.
+ */
+//int load_bool(DBusMessageIter* iter, bool& val);
+int load_int32(DBusMessageIter* iter, int32_t *val);
+int load_uint32(DBusMessageIter* iter, uint32_t *val);
+int load_int64(DBusMessageIter* iter, int64_t *val);
+int load_uint64(DBusMessageIter* iter, uint64_t *val);
+int load_charp(DBusMessageIter* iter, const char **val);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+/* C++ style stuff */
+#ifdef __cplusplus
+
+#include <map>
+#include <vector>
+
+/*
+ * Helpers for building DBus messages
+ */
 
 //static inline void store_val(DBusMessageIter* iter, bool val)               { store_bool(iter, val); }
 static inline void store_val(DBusMessageIter* iter, int32_t val)            { store_int32(iter, val); }
@@ -168,33 +205,16 @@ static inline void store_val(DBusMessageIter* iter, const std::map<K,V>& val)  {
  * Helpers for parsing DBus messages
  */
 
-enum {
-    ABRT_DBUS_ERROR = -1,
-    ABRT_DBUS_LAST_FIELD = 0,
-    ABRT_DBUS_MORE_FIELDS = 1,
-    /* note that dbus_message_iter_next() returns FALSE on last field
-     * and TRUE if there are more fields.
-     * It maps exactly on the above constants. */
-};
-/* Checks type, loads data, advances to the next arg.
- * Returns TRUE if next arg exists.
- */
-//int load_bool(DBusMessageIter* iter, bool& val);
-int load_int32(DBusMessageIter* iter, int32_t &val);
-int load_uint32(DBusMessageIter* iter, uint32_t &val);
-int load_int64(DBusMessageIter* iter, int64_t &val);
-int load_uint64(DBusMessageIter* iter, uint64_t &val);
-int load_charp(DBusMessageIter* iter, const char*& val);
-//static inline int load_val(DBusMessageIter* iter, bool &val)        { return load_bool(iter, val); }
-static inline int load_val(DBusMessageIter* iter, int32_t &val)     { return load_int32(iter, val); }
-static inline int load_val(DBusMessageIter* iter, uint32_t &val)    { return load_uint32(iter, val); }
-static inline int load_val(DBusMessageIter* iter, int64_t &val)     { return load_int64(iter, val); }
-static inline int load_val(DBusMessageIter* iter, uint64_t &val)    { return load_uint64(iter, val); }
-static inline int load_val(DBusMessageIter* iter, const char*& val) { return load_charp(iter, val); }
+//static inline int load_val(DBusMessageIter* iter, bool &val)        { return load_bool(iter, &val); }
+static inline int load_val(DBusMessageIter* iter, int32_t &val)     { return load_int32(iter, &val); }
+static inline int load_val(DBusMessageIter* iter, uint32_t &val)    { return load_uint32(iter, &val); }
+static inline int load_val(DBusMessageIter* iter, int64_t &val)     { return load_int64(iter, &val); }
+static inline int load_val(DBusMessageIter* iter, uint64_t &val)    { return load_uint64(iter, &val); }
+static inline int load_val(DBusMessageIter* iter, const char*& val) { return load_charp(iter, &val); }
 static inline int load_val(DBusMessageIter* iter, std::string& val)
 {
     const char* str;
-    int r = load_charp(iter, str);
+    int r = load_charp(iter, &str);
     val = str;
     return r;
 }
@@ -298,5 +318,7 @@ template<typename E>
 static inline int load_val(DBusMessageIter* iter, std::vector<E>& val) { return load_vector(iter, val); }
 template<typename K, typename V>
 static inline int load_val(DBusMessageIter* iter, std::map<K,V>& val)  { return load_map(iter, val); }
+
+#endif /* __cplusplus */
 
 #endif

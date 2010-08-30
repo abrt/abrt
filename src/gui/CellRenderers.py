@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gtk
 
 class CellTextView(gtk.TextView, gtk.CellEditable):

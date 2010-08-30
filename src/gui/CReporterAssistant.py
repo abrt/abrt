@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gtk
 from PluginList import getPluginInfoList
 from abrt_utils import _, log, log1, log2, get_verbose_level, g_verbose, warn
@@ -269,9 +270,9 @@ class ReporterAssistant():
         warning_lbl = None
         for warning in warnings:
             if warning_lbl:
-                warning_lbl += "\n* %s" % warning
+                warning_lbl += "\n• %s" % warning
             else:
-                warning_lbl = "* %s" % warning
+                warning_lbl = "• %s" % warning
         # fallback
         self.lbl_errors.set_label(warning_lbl)
         self.lbl_errors.set_markup(warning_lbl)
@@ -577,13 +578,15 @@ class ReporterAssistant():
             )
         page.pack_start(lbl_default_info, expand=False, fill=True)
         self.backtrace_tev = gtk.TextView()
+        self.backtrace_tev.set_wrap_mode(gtk.WRAP_WORD)
         # global?
         self.backtrace_buff = gtk.TextBuffer()
         #self.backtrace_buff.set_text(self.report[FILENAME_BACKTRACE][CD_CONTENT])
         self.backtrace_tev.set_buffer(self.backtrace_buff)
+
         backtrace_scroll_w = gtk.ScrolledWindow()
         backtrace_scroll_w.add(self.backtrace_tev)
-        backtrace_scroll_w.set_policy(gtk.POLICY_AUTOMATIC,
+        backtrace_scroll_w.set_policy(gtk.POLICY_NEVER,
                                       gtk.POLICY_AUTOMATIC)
         # backtrace
         hbox_bt = gtk.HBox()
@@ -821,7 +824,7 @@ class ReporterAssistant():
         summary_vbox.pack_start(comments_aligned_hbox, expand=False)
         summary_scroll = gtk.ScrolledWindow()
         summary_scroll.set_shadow_type(gtk.SHADOW_NONE)
-        summary_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
+        summary_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll_viewport = gtk.Viewport()
         scroll_viewport.set_shadow_type(gtk.SHADOW_NONE)
         scroll_viewport.add(summary_vbox)

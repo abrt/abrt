@@ -2,7 +2,7 @@ bin_PROGRAMS = abrt-applet
 
 abrt_applet_SOURCES = \
     Applet.cpp \
-    CCApplet.h CCApplet.cpp
+    applet_gtk.h applet_gtk.c
 abrt_applet_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \

@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gtk
 from abrt_utils import _, log, log1, log2
 

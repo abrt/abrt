@@ -46,18 +46,6 @@
 # include <config.h>
 #endif
 
-
-/* Some libc's forget to declare these, do it ourself */
-extern char **environ;
-#if defined(__GLIBC__) && __GLIBC__ < 2
-int vdprintf(int d, const char *format, va_list ap);
-#endif
-
-#define NORETURN __attribute__ ((noreturn))
-
-#undef ARRAY_SIZE
-#define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
-
 #if ENABLE_NLS
 # include <libintl.h>
 # define _(S) gettext(S)
@@ -65,6 +53,17 @@ int vdprintf(int d, const char *format, va_list ap);
 # define _(S) (S)
 #endif
 
+/* Some libc's forget to declare these, do it ourself */
+extern char **environ;
+#if defined(__GLIBC__) && __GLIBC__ < 2
+int vdprintf(int d, const char *format, va_list ap);
+#endif
+
+#undef NORETURN
+#define NORETURN __attribute__ ((noreturn))
+
+#undef ARRAY_SIZE
+#define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
 #include "abrt_types.h"
 #include "xfuncs.h"
@@ -72,19 +71,21 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "read_write.h"
 
 
-/* copyfd_XX print read/write errors and return -1 if they occur */
-enum {
-	COPYFD_SPARSE = 1 << 0,
-};
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 int prefixcmp(const char *str, const char *prefix);
 int suffixcmp(const char *str, const char *suffix);
 char *concat_path_file(const char *path, const char *filename);
 char *append_to_malloced_string(char *mstr, const char *append);
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);
+
+/* On error, copyfd_XX prints error messages and returns -1 */
+enum {
+	COPYFD_SPARSE = 1 << 0,
+};
 off_t copyfd_eof(int src_fd, int dst_fd, int flags);
 off_t copyfd_size(int src_fd, int dst_fd, off_t size, int flags);
 void copyfd_exact_size(int src_fd, int dst_fd, off_t size);
@@ -93,16 +94,6 @@ off_t copy_file(const char *src_name, const char *dst_name, int mode);
 /* Returns malloc'ed block */
 char *encode_base64(const void *src, int length);
 
-/* Returns command line of running program.
- * Caller is responsible to free() the returned value.
- * If the pid is not valid or command line can not be obtained,
- * empty string is returned.
- */
-char* get_cmdline(pid_t pid);
-
-/* Returns 1 if abrtd daemon is running, 0 otherwise. */
-int daemon_is_ok();
-
 unsigned xatou(const char *numstr);
 int xatoi(const char *numstr);
 /* Using xatoi() instead of naive atoi() is not always convenient -
@@ -110,6 +101,10 @@ int xatoi(const char *numstr);
  * in signed int. Therefore we need this one:
  * dies if input is not in [0, INT_MAX] range. Also will reject '-0' etc */
 int xatoi_u(const char *numstr);
+
+unsigned long long monotonic_ns(void);
+unsigned long long monotonic_us(void);
+unsigned monotonic_sec(void);
 
 enum {
 	EXECFLG_INPUT      = 1 << 0,
@@ -135,16 +130,8 @@ char *run_in_shell_and_save_output(int flags,
 		const char *cmd,
 		const char *dir,
 		size_t *size_p);
-#ifdef __cplusplus
-}
-#endif
 
-
-unsigned long long monotonic_ns(void);
-unsigned long long monotonic_us(void);
-unsigned monotonic_sec(void);
-
-/* networking helpers */
+/* Networking helpers */
 typedef struct len_and_sockaddr {
 	socklen_t len;
 	union {
@@ -183,8 +170,22 @@ char* xmalloc_sockaddr2hostonly_noport(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted(const struct sockaddr *sa);
 char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 
-
 /* Random utility functions */
+
+/* Returns command line of running program.
+ * Caller is responsible to free() the returned value.
+ * If the pid is not valid or command line can not be obtained,
+ * empty string is returned.
+ */
+char* get_cmdline(pid_t pid);
+
+/* Returns 1 if abrtd daemon is running, 0 otherwise. */
+int daemon_is_ok();
+
+#ifdef __cplusplus
+}
+#endif
+
 
 /* C++ style stuff */
 #ifdef __cplusplus
