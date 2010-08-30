@@ -242,7 +242,7 @@ int main(int argc, char** argv)
     dbus_error_init(&err);
     DBusConnection* system_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
     die_if_dbus_error(system_conn == NULL, &err, "Can't connect to system dbus");
-    attach_dbus_conn_to_glib_main_loop(system_conn);
+    attach_dbus_conn_to_glib_main_loop(system_conn, NULL, NULL);
     if (!dbus_connection_add_filter(system_conn, handle_message, NULL, NULL))
         error_msg_and_die("Can't add dbus filter");
     /* which messages do we want to be fed to handle_message()? */
