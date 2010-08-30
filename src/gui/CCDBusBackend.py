@@ -51,7 +51,7 @@ class DBusManager(gobject.GObject):
 
         gobject.GObject.__init__(self)
         # signal emited when new crash is detected
-        gobject.signal_new("crash", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, ())
+        gobject.signal_new("crash", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_STRING, gobject.TYPE_STRING, gobject.TYPE_STRING,))
         # signal emited when new analyze is complete
         gobject.signal_new("analyze-complete", self, gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_PYOBJECT,))
         # signal emited when smth fails
@@ -141,13 +141,9 @@ class DBusManager(gobject.GObject):
         # dummy function for async method call to workaround the timeout
         pass
 
-    def crash_cb(self,*args):
-        #FIXME "got another crash, gui should reload!"
-        #for arg in args:
-        #    print arg
-        #emit a signal
-        #print "crash"
-        self.emit("crash")
+    def crash_cb(self, package, uuid, uid):
+        #print package, uuid, uid
+        self.emit("crash", package, uuid, uid)
 
     def update_cb(self, message):
         log1("Update:%s", message)
@@ -231,3 +227,6 @@ class DBusManager(gobject.GObject):
         log1("setSettings stub")
         retval = self.daemon().SetSettings(self.daemon().GetSettings())
         print ">>>", retval
+
+    def __del__(self):
+        log1("CCDBusBackend is about to be deleted")
