@@ -21,8 +21,8 @@
 #include <sys/utsname.h>
 #include "abrtlib.h"
 #include "debug_dump.h"
-#include "abrt_exception.h"
 #include "comm_layer_inner.h"
+#include "strbuf.h"
 
 static bool isdigit_str(const char *str)
 {
@@ -34,12 +34,12 @@ static bool isdigit_str(const char *str)
     return true;
 }
 
-static std::string RemoveBackSlashes(const char *pDir)
+static char* RemoveBackSlashes(const char *pDir)
 {
     unsigned len = strlen(pDir);
     while (len != 0 && pDir[len-1] == '/')
         len--;
-    return std::string(pDir, len);
+    return xstrndup(pDir, len);
 }
 
 static bool ExistFileDir(const char *pPath)
@@ -55,64 +55,63 @@ static bool ExistFileDir(const char *pPath)
     return false;
 }
 
-static bool LoadTextFile(const char *pPath, std::string& pData);
+static char *LoadTextFile(const char *path);
+static void dd_lock(dump_dir_t *dd);
+static void dd_unlock(dump_dir_t *dd);
 
-CDebugDump::CDebugDump() :
-    m_sDebugDumpDir(""),
-    m_pGetNextFileDir(NULL),
-    m_bOpened(false),
-    m_bLocked(false),
-    m_uid(0),
-    m_gid(0)
-{}
-
-CDebugDump::~CDebugDump()
+dump_dir_t* dd_init(void)
 {
-    /* Paranoia. In C++, destructor will abort() if it was called while unwinding
-     * the stack and it throws an exception.
-     */
-    try
-    {
-        Close();
-        m_sDebugDumpDir.clear();
-    }
-    catch (...)
-    {
-        error_msg_and_die("Internal error");
-    }
+    return (dump_dir_t*)xzalloc(sizeof(dump_dir_t));
 }
 
-bool CDebugDump::Open(const char *pDir)
+void dd_close(dump_dir_t *dd)
 {
-    if (m_bOpened)
+    if (!dd)
+        return;
+
+    dd_unlock(dd);
+    if (dd->next_dir)
+    {
+        closedir(dd->next_dir);
+        free(dd->next_dir);
+    }
+
+    free(dd->dd_dir);
+    free(dd);
+}
+
+int dd_opendir(dump_dir_t *dd, const char *dir)
+{
+    if (dd->opened)
         error_msg_and_die("CDebugDump is already opened");
 
-    m_sDebugDumpDir = RemoveBackSlashes(pDir);
-    if (!ExistFileDir(m_sDebugDumpDir.c_str()))
+    dd->dd_dir = RemoveBackSlashes(dir);
+    if (!dd->dd_dir || !ExistFileDir(dd->dd_dir))
     {
-        error_msg("'%s' does not exist", m_sDebugDumpDir.c_str());
-        return false;
+        error_msg("'%s' does not exist", dd->dd_dir);
+        return 0;
     }
-    Lock();
-    m_bOpened = true;
+
+    dd_lock(dd);
+    dd->opened = 1;
+
     /* In case caller would want to create more files, he'll need uid:gid */
-    m_uid = 0;
-    m_gid = 0;
     struct stat stat_buf;
-    if (stat(m_sDebugDumpDir.c_str(), &stat_buf) == 0)
+    if (stat(dd->dd_dir, &stat_buf) == 0)
     {
-        m_uid = stat_buf.st_uid;
-        m_gid = stat_buf.st_gid;
+        dd->uid = stat_buf.st_uid;
+        dd->gid = stat_buf.st_gid;
     }
-    return true;
+
+    return 1;
 }
 
-bool CDebugDump::Exist(const char* pPath)
+int dd_exist(dump_dir_t *dd, const char *path)
 {
-    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pPath);
-    bool r = ExistFileDir(full_path);
+    char *full_path = concat_path_file(dd->dd_dir, path);
+    int ret = ExistFileDir(full_path);
     free(full_path);
-    return r;
+    return ret;
 }
 
 static bool GetAndSetLock(const char* pLockFile, const char* pPID)
@@ -143,7 +142,9 @@ static bool GetAndSetLock(const char* pLockFile, const char* pPID)
         }
         if (isdigit_str(pid_buf))
         {
-            if (access(ssprintf("/proc/%s", pid_buf).c_str(), F_OK) == 0)
+            char pid_str[sizeof("/proc/") + strlen(pid_buf)];
+            sprintf(pid_str, "/proc/%s", pid_buf);
+            if (access(pid_str, F_OK) == 0)
             {
                 log("Lock file '%s' is locked by process %s", pLockFile, pid_buf);
                 return false;
@@ -221,28 +222,30 @@ static bool GetAndSetLock(const char* pLockFile, const char* pPID)
 #endif
 }
 
-void CDebugDump::Lock()
+static void dd_lock(dump_dir_t *dd)
 {
-    if (m_bLocked)
-        error_msg_and_die("Locking bug on '%s'", m_sDebugDumpDir.c_str());
+    if (dd->locked)
+        error_msg_and_die("Locking bug on '%s'", dd->dd_dir);
 
-    std::string lockFile = m_sDebugDumpDir + ".lock";
+    char lock_buf[strlen(dd->dd_dir) + sizeof(".lock")];
+    sprintf(lock_buf, "%s.lock", dd->dd_dir);
+
     char pid_buf[sizeof(long)*3 + 2];
     sprintf(pid_buf, "%lu", (long)getpid());
-    while ((m_bLocked = GetAndSetLock(lockFile.c_str(), pid_buf)) != true)
+    while ((dd->locked = GetAndSetLock(lock_buf, pid_buf)) != true)
     {
         sleep(1); /* was 0.5 seconds */
     }
 }
 
-void CDebugDump::UnLock()
+static void dd_unlock(dump_dir_t *dd)
 {
-    if (m_bLocked)
+    if (dd->locked)
     {
-        m_bLocked = false;
-        std::string lockFile = m_sDebugDumpDir + ".lock";
-        xunlink(lockFile.c_str());
-        VERB1 log("UnLocked '%s'", lockFile.c_str());
+        char lock_buf[strlen(dd->dd_dir) + sizeof(".lock")];
+        sprintf(lock_buf, "%s.lock", dd->dd_dir);
+        xunlink(lock_buf);
+        VERB1 log("Unlocked '%s'", lock_buf);
     }
 }
 
@@ -265,65 +268,67 @@ void CDebugDump::UnLock()
  * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
  * abrt's user id. We do not allow write access to group.
  */
-bool CDebugDump::Create(const char *pDir, uid_t uid)
+int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
 {
-    if (m_bOpened)
+    if (dd->opened)
         error_msg_and_die("DebugDump is already opened");
 
-    m_sDebugDumpDir = RemoveBackSlashes(pDir);
-    if (ExistFileDir(m_sDebugDumpDir.c_str()))
+    dd->dd_dir = RemoveBackSlashes(dir);
+    if (ExistFileDir(dd->dd_dir))
     {
-        error_msg("'%s' already exists", m_sDebugDumpDir.c_str());
-        return false;
+        error_msg("'%s' already exists", dd->dd_dir);
+        return 0;
     }
 
-    Lock();
-    m_bOpened = true;
+    dd_lock(dd);
+    dd->opened = 1;
 
     /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (mkdir(m_sDebugDumpDir.c_str(), 0750) == -1)
+    if (mkdir(dd->dd_dir, 0750) == -1)
     {
-        UnLock();
-        m_bOpened = false;
-        error_msg("Can't create dir '%s'", pDir);
-        return false;
+        dd_unlock(dd);
+        dd->opened = 0;
+        error_msg("Can't create dir '%s'", dir);
+        return 0;
     }
 
     /* mkdir's mode (above) can be affected by umask, fix it */
-    if (chmod(m_sDebugDumpDir.c_str(), 0750) == -1)
+    if (chmod(dd->dd_dir, 0750) == -1)
     {
-        UnLock();
-        m_bOpened = false;
-        error_msg("Can't change mode of '%s'", pDir);
+        dd_unlock(dd);
+        dd->opened = false;
+        error_msg("Can't change mode of '%s'", dir);
         return false;
     }
 
     /* Get ABRT's user id */
-    m_uid = 0;
+    dd->uid = 0;
     struct passwd *pw = getpwnam("abrt");
     if (pw)
-        m_uid = pw->pw_uid;
+        dd->uid = pw->pw_uid;
     else
         error_msg("User 'abrt' does not exist, using uid 0");
 
     /* Get crashed application's group id */
-    m_gid = 0;
+    dd->gid = 0;
     pw = getpwuid(uid);
     if (pw)
-        m_gid = pw->pw_gid;
+        dd->gid = pw->pw_gid;
     else
-      error_msg("User %lu does not exist, using gid 0", (long)uid);
+        error_msg("User %lu does not exist, using gid 0", (long)uid);
 
-    if (chown(m_sDebugDumpDir.c_str(), m_uid, m_gid) == -1)
+    if (chown(dd->dd_dir, dd->uid, dd->gid) == -1)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", m_sDebugDumpDir.c_str(),
-                   (long)m_uid, (long)m_gid);
+        perror_msg("can't change '%s' ownership to %lu:%lu", dd->dd_dir,
+                   (long)dd->uid, (long)dd->gid);
     }
 
-    SaveText(CD_UID, to_string(uid).c_str());
+    char uid_str[sizeof(long) * 3 + 2];
+    sprintf(uid_str, "%lu", (long)uid);
+    dd_savetxt(dd, CD_UID, uid_str);
 
     {
         struct utsname buf;
@@ -331,20 +336,20 @@ bool CDebugDump::Create(const char *pDir, uid_t uid)
         {
             perror_msg_and_die("uname");
         }
-        SaveText(FILENAME_KERNEL, buf.release);
-        SaveText(FILENAME_ARCHITECTURE, buf.machine);
-        std::string release;
-        LoadTextFile("/etc/redhat-release", release);
-        const char *release_ptr = release.c_str();
-        unsigned len_1st_str = strchrnul(release_ptr, '\n') - release_ptr;
-        release.erase(len_1st_str); /* usually simply removes trailing '\n' */
-        SaveText(FILENAME_RELEASE, release.c_str());
+        dd_savetxt(dd, FILENAME_KERNEL, buf.release);
+        dd_savetxt(dd, FILENAME_ARCHITECTURE, buf.machine);
+        char *release = LoadTextFile("/etc/redhat-release");
+        strchrnul(release, '\n')[0] = '\0';
+        dd_savetxt(dd, FILENAME_RELEASE, release);
+        free(release);
     }
 
     time_t t = time(NULL);
-    SaveText(FILENAME_TIME, to_string(t).c_str());
+    char t_str[sizeof(time_t) * 3 + 2];
+    sprintf(t_str, "%lu", (time_t)t);
+    dd_savetxt(dd, FILENAME_TIME, t_str);
 
-    return true;
+    return 1;
 }
 
 static bool DeleteFileDir(const char *pDir)
@@ -352,15 +357,15 @@ static bool DeleteFileDir(const char *pDir)
     if (!ExistFileDir(pDir))
         return true;
 
-    DIR *dir = opendir(pDir);
-    if (!dir)
+    DIR *d = opendir(pDir);
+    if (!d)
     {
         error_msg("Can't open dir '%s'", pDir);
         return false;
     }
 
     struct dirent *dent;
-    while ((dent = readdir(dir)) != NULL)
+    while ((dent = readdir(d)) != NULL)
     {
         if (dot_or_dotdot(dent->d_name))
             continue;
@@ -369,7 +374,7 @@ static bool DeleteFileDir(const char *pDir)
         {
             if (errno != EISDIR)
             {
-                closedir(dir);
+                closedir(d);
                 error_msg("Can't remove dir '%s'", full_path);
                 free(full_path);
                 return false;
@@ -378,7 +383,7 @@ static bool DeleteFileDir(const char *pDir)
         }
         free(full_path);
     }
-    closedir(dir);
+    closedir(d);
     if (rmdir(pDir) == -1)
     {
         error_msg("Can't remove dir %s", pDir);
@@ -388,52 +393,40 @@ static bool DeleteFileDir(const char *pDir)
     return true;
 }
 
-void CDebugDump::Delete()
+void dd_delete(dump_dir_t *dd)
 {
-    if (!ExistFileDir(m_sDebugDumpDir.c_str()))
+    if (!ExistFileDir(dd->dd_dir))
     {
         return;
     }
-    DeleteFileDir(m_sDebugDumpDir.c_str());
+
+    DeleteFileDir(dd->dd_dir);
 }
 
-void CDebugDump::Close()
-{
-    UnLock();
-    if (m_pGetNextFileDir != NULL)
-    {
-        closedir(m_pGetNextFileDir);
-        m_pGetNextFileDir = NULL;
-    }
-    m_bOpened = false;
-}
-
-static bool LoadTextFile(const char *pPath, std::string& pData)
+static char *LoadTextFile(const char *pPath)
 {
     FILE *fp = fopen(pPath, "r");
     if (!fp)
     {
-        error_msg("Can't open file '%s'", pPath);
-        return false;
+        perror_msg("Can't open file '%s'", pPath);
+        return xstrdup("");
     }
-    pData = "";
+
+    struct strbuf *buf_content = strbuf_new();
     int ch;
     while ((ch = fgetc(fp)) != EOF)
     {
         if (ch == '\0')
-        {
-            pData += ' ';
-        }
+            strbuf_append_char(buf_content, ' ');
         else if (isspace(ch) || (isascii(ch) && !iscntrl(ch)))
-        {
-            pData += ch;
-        }
+            strbuf_append_char(buf_content, ch);
     }
     fclose(fp);
-    return true;
+
+    return strbuf_free_nobuf(buf_content);
 }
 
-static bool SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize, uid_t uid, gid_t gid)
+static bool SaveBinaryFile(const char *pPath, const char* pData, unsigned size, uid_t uid, gid_t gid)
 {
     /* "Why 0640?!" See ::Create() for security analysis */
     unlink(pPath);
@@ -447,9 +440,9 @@ static bool SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize,
     {
         perror_msg("can't change '%s' ownership to %lu:%lu", pPath, (long)uid, (long)gid);
     }
-    unsigned r = full_write(fd, pData, pSize);
+    unsigned r = full_write(fd, pData, size);
     close(fd);
-    if (r != pSize)
+    if (r != size)
     {
         error_msg("Can't save file '%s'", pPath);
         return false;
@@ -458,85 +451,86 @@ static bool SaveBinaryFile(const char *pPath, const char* pData, unsigned pSize,
     return true;
 }
 
-void CDebugDump::LoadText(const char* pName, std::string& pData)
+char* dd_loadtxt(const dump_dir_t *dd, const char *name)
 {
-    if (!m_bOpened)
+    if (!dd->opened)
         error_msg_and_die("DebugDump is not opened");
 
-    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    LoadTextFile(full_path, pData);
+    char *full_path = concat_path_file(dd->dd_dir, name);
+    char *ret = LoadTextFile(full_path);
+    free(full_path);
+
+    return ret;
+}
+
+void dd_savetxt(dump_dir_t *dd, const char *name, const char *data)
+{
+    if (!dd->opened)
+        error_msg_and_die("DebugDump is not opened");
+
+    char *full_path = concat_path_file(dd->dd_dir, name);
+    SaveBinaryFile(full_path, data, strlen(data), dd->uid, dd->gid);
     free(full_path);
 }
 
-void CDebugDump::SaveText(const char* pName, const char* pData)
+void dd_savebin(dump_dir_t* dd, const char* name, const char* data, unsigned size)
 {
-    if (!m_bOpened)
+    if (dd->opened)
         error_msg_and_die("DebugDump is not opened");
 
-    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    SaveBinaryFile(full_path, pData, strlen(pData), m_uid, m_gid);
+    char *full_path = concat_path_file(dd->dd_dir, name);
+    SaveBinaryFile(full_path, data, size, dd->uid, dd->gid);
     free(full_path);
 }
 
-void CDebugDump::SaveBinary(const char* pName, const char* pData, unsigned pSize)
+int dd_init_next_file(dump_dir_t *dd)
 {
-    if (!m_bOpened)
-        error_msg_and_die("DebugDump is not opened");
-    char *full_path = concat_path_file(m_sDebugDumpDir.c_str(), pName);
-    SaveBinaryFile(full_path, pData, pSize, m_uid, m_gid);
-    free(full_path);
-}
-
-bool CDebugDump::InitGetNextFile()
-{
-    if (!m_bOpened)
+    if (!dd->opened)
         error_msg_and_die("DebugDump is not opened");
 
-    if (m_pGetNextFileDir != NULL)
+    if (dd->next_dir)
+        closedir(dd->next_dir);
+
+    dd->next_dir = opendir(dd->dd_dir);
+    if (!dd->next_dir)
     {
-        closedir(m_pGetNextFileDir);
-    }
-    m_pGetNextFileDir = opendir(m_sDebugDumpDir.c_str());
-    if (m_pGetNextFileDir == NULL)
-    {
-        error_msg("Can't open dir '%s'", m_sDebugDumpDir.c_str());
-        return false;
+        error_msg("Can't open dir '%s'", dd->dd_dir);
+        return 0;
     }
 
-    return true;
+    return 1;
 }
 
-bool CDebugDump::GetNextFile(std::string *short_name, std::string *full_name)
+int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name)
 {
-    if (m_pGetNextFileDir == NULL)
-        return false;
+    if (dd->next_dir == NULL)
+        return 0;
 
     struct dirent *dent;
-    while ((dent = readdir(m_pGetNextFileDir)) != NULL)
+    while ((dent = readdir(dd->next_dir)) != NULL)
     {
-        if (is_regular_file(dent, m_sDebugDumpDir.c_str()))
+        if (is_regular_file(dent, dd->dd_dir))
         {
             if (short_name)
-                *short_name = dent->d_name;
+                *short_name = xstrdup(dent->d_name);
             if (full_name)
-                *full_name = concat_path_file(m_sDebugDumpDir.c_str(), dent->d_name);
-            return true;
+                *full_name = concat_path_file(dd->dd_dir, dent->d_name);
+            return 1;
         }
     }
-    closedir(m_pGetNextFileDir);
-    m_pGetNextFileDir = NULL;
-    return false;
+
+    closedir(dd->next_dir);
+    dd->next_dir = NULL;
+    return 0;
 }
 
 /* Utility function */
-void delete_debug_dump_dir(const char *pDebugDumpDir)
+void delete_debug_dump_dir(const char *dd_dir)
 {
-    CDebugDump dd;
-    if (dd.Open(pDebugDumpDir))
-    {
-        dd.Delete();
-        dd.Close();
-    }
+    dump_dir_t *dd = dd_init();
+    if (dd_opendir(dd, dd_dir))
+        dd_delete(dd);
     else
-        VERB1 log("Unable to open debug dump '%s'", pDebugDumpDir);
+        VERB1 log("Unable to open debug dump '%s'", dd_dir);
+    dd_close(dd);
 }

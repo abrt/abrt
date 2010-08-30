@@ -26,19 +26,18 @@ using namespace std;
 
 string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 {
-    CDebugDump dd;
-    if (!dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return string("");
     }
 
-    string bt;
-    dd.LoadText(FILENAME_BACKTRACE, bt);
-    dd.Close();
+    char *bt = dd_loadtxt(dd, FILENAME_BACKTRACE);
+    dd_close(dd);
 
-    const char *bt_str = bt.c_str();
-    const char *bt_end = strchrnul(bt_str, '\n');
+    const char *bt_end = strchrnul(bt, '\n');
 
     char hash_str[MD5_RESULT_LEN*2 + 1];
     unsigned char hash2[MD5_RESULT_LEN];
@@ -49,7 +48,8 @@ string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
     //md5_hash(bt_str, bt_end - bt_str, &md5ctx);
     // For now using compat version:
     {
-        char *copy = xstrndup(bt_str, bt_end - bt_str);
+        char *copy = xstrndup(bt, bt_end - bt);
+        free(bt);
         char *s = copy;
         char *d = copy;
         unsigned colon_cnt = 0;

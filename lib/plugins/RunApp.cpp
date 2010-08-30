@@ -58,15 +58,16 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs, int force)
 
     if (args.size() > FILENAME)
     {
-        CDebugDump dd;
-        if (!dd.Open(pActionDir))
+        dump_dir_t *dd = dd_init();
+        if (!dd_opendir(dd, pActionDir))
         {
+            dd_close(dd);
             VERB1 log(_("Unable to open debug dump '%s'"), pActionDir);
             return;
         }
 
-        dd.SaveBinary(args[FILENAME].c_str(), cmd_out, cmd_out_size);
-        dd.Close();
+        dd_savebin(dd, args[FILENAME].c_str(), cmd_out, cmd_out_size);
+        dd_close(dd);
     }
 
     free(cmd_out);

@@ -415,15 +415,15 @@ int main(int argc, char** argv)
         if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
             return 1;
 
-        CDebugDump dd;
-        if (dd.Create(path, uid))
+        dump_dir_t *dd = dd_init();
+        if (dd_create(dd, path, uid))
         {
             char *cmdline = get_cmdline(pid); /* never NULL */
             char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
-            dd.SaveText(FILENAME_ANALYZER, "CCpp");
-            dd.SaveText(FILENAME_EXECUTABLE, executable);
-            dd.SaveText(FILENAME_CMDLINE, cmdline);
-            dd.SaveText(FILENAME_REASON, reason);
+            dd_savetxt(dd, FILENAME_ANALYZER, "CCpp");
+            dd_savetxt(dd, FILENAME_EXECUTABLE, executable);
+            dd_savetxt(dd, FILENAME_CMDLINE, cmdline);
+            dd_savetxt(dd, FILENAME_REASON, reason);
             free(cmdline);
             free(reason);
 
@@ -451,8 +451,8 @@ int main(int argc, char** argv)
             if (abrt_core_fd < 0)
             {
                 int sv_errno = errno;
-                dd.Delete();
-                dd.Close();
+                dd_delete(dd);
+                dd_close(dd);
                 if (user_core_fd >= 0)
                 {
                     xchdir(user_pwd);
@@ -480,8 +480,8 @@ int main(int argc, char** argv)
             if (core_size < 0 || fsync(abrt_core_fd) != 0)
             {
                 unlink(path);
-                dd.Delete();
-                dd.Close();
+                dd_delete(dd);
+                dd_close(dd);
                 if (user_core_fd >= 0)
                 {
                     xchdir(user_pwd);
@@ -505,7 +505,7 @@ int main(int argc, char** argv)
              * will wait for us), and we won't be able to delete their dumps.
              * Classic deadlock.
              */
-            dd.Close();
+            dd_close(dd);
             path[path_len] = '\0'; /* path now contains only directory name */
             char *newpath = xstrndup(path, path_len - (sizeof(".new")-1));
             if (rename(path, newpath) == 0)
