@@ -578,13 +578,15 @@ class ReporterAssistant():
             )
         page.pack_start(lbl_default_info, expand=False, fill=True)
         self.backtrace_tev = gtk.TextView()
+        self.backtrace_tev.set_wrap_mode(gtk.WRAP_WORD)
         # global?
         self.backtrace_buff = gtk.TextBuffer()
         #self.backtrace_buff.set_text(self.report[FILENAME_BACKTRACE][CD_CONTENT])
         self.backtrace_tev.set_buffer(self.backtrace_buff)
+
         backtrace_scroll_w = gtk.ScrolledWindow()
         backtrace_scroll_w.add(self.backtrace_tev)
-        backtrace_scroll_w.set_policy(gtk.POLICY_AUTOMATIC,
+        backtrace_scroll_w.set_policy(gtk.POLICY_NEVER,
                                       gtk.POLICY_AUTOMATIC)
         # backtrace
         hbox_bt = gtk.HBox()
