@@ -270,9 +270,9 @@ class ReporterAssistant():
         warning_lbl = None
         for warning in warnings:
             if warning_lbl:
-                warning_lbl += "\n* %s" % warning
+                warning_lbl += "\n• %s" % warning
             else:
-                warning_lbl = "* %s" % warning
+                warning_lbl = "• %s" % warning
         # fallback
         self.lbl_errors.set_label(warning_lbl)
         self.lbl_errors.set_markup(warning_lbl)
