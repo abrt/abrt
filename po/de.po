@@ -16,8 +16,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.de\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
-"PO-Revision-Date: 2010-08-24 01:15+1000\n"
+"POT-Creation-Date: 2010-08-29 09:15+0000\n"
+"PO-Revision-Date: 2010-08-30 09:44+1000\n"
 "Last-Translator: \n"
 "Language-Team:  <en@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -207,8 +207,7 @@ msgid "Creating a ReportUploader report..."
 msgstr "Einen ReportUploader-Bericht erstellen..."
 
 #: ../lib/plugins/ReportUploader.cpp:515
-msgid ""
-"Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
+msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 "Fasst Absturz-Daten in einer .tar.gz-Datei zusammen und lädt sie via FTP/SCP/"
 "etc hoch"
@@ -397,8 +396,7 @@ msgid "Warning"
 msgstr "Warnung"
 
 #: ../src/applet/CCApplet.cpp:83
-msgid ""
-"Notification area applet that notifies users about issues detected by ABRT"
+msgid "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 "Info-Applet, das Benutzer über die von ABRT entdeckten Probleme "
 "benachrichtigt"
@@ -649,40 +647,57 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/cli/report.cpp:541
 msgid "y"
-msgstr ""
+msgstr "j"
 
 #: ../src/cli/report.cpp:542
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Es wurden die falschen Einstellungen für Plugin %s ermittelt\n"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr "Geben Sie Ihr Login ein: "
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr "Geben Sie Ihr Passwort ein: "
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 msgid "Reporting..."
 msgstr "Berichten..."
 
-#: ../src/cli/report.cpp:722
-#, fuzzy, c-format
+#: ../src/cli/report.cpp:717
+#, c-format
 msgid "Report using %s?"
-msgstr "Unter Verwendung von %s melden? [j/N]:"
+msgstr "Unter Verwendung von %s melden?"
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 msgid "Skipping..."
 msgstr "Überspringen..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "Berichterstellung deaktiviert, da Backtrace unbrauchbar"
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+"Bitte versuchen Sie, debuginfo manuell mit dem Befehl: \"debuginfo-"
+"install %s\" zu installieren und versuchen Sie es erneut\n"
+
+#: ../src/cli/report.cpp:745
+msgid "Error loading reporter settings"
+msgstr "Fehler beim Laden der Reporter-Einstellungen"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Absturz via %d Plugins gemeldet (%d Fehler)\n"
@@ -718,8 +733,7 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "Ein anderer Client läuft bereits, versuche ihn zu wecken ..."
 
 #: ../src/gui/ABRTExceptions.py:13
-msgid ""
-"Got unexpected data from the daemon (is the database properly updated?)."
+msgid "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "Unerwartete Daten vom Daemon erhalten (wurde die Datenbank richtig "
 "aktualisiert?)."
@@ -929,8 +943,7 @@ msgstr ""
 #. default texts
 #: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:19
 msgid "Brief description of how to reproduce this or what you did..."
-msgstr ""
-"Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
+msgstr "Kurze Beschreibung, wie dies reproduziert werden kann bzw. was Sie taten ..."
 
 #: ../src/gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
@@ -1029,8 +1042,7 @@ msgid "Cannot get the default keyring."
 msgstr "Kann Standard-Schlüsselbund nicht abrufen."
 
 #: ../src/gui/ConfBackend.py:102 ../src/gui/ConfBackend.py:118
-msgid ""
-"Access to gnome-keyring has been denied, plugins settings will not be saved."
+msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "Zugriff auf Gnome-Keyring wurde verwehrt, die Plugin-Einstellungen werden "
 "nicht gespeichert."
@@ -1038,8 +1050,7 @@ msgstr ""
 #. we tried 2 times, so giving up the authorization
 #: ../src/gui/ConfBackend.py:152
 #, python-format
-msgid ""
-"Access to gnome-keyring has been denied, cannot load the settings for %s!"
+msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 "Zugriff auf Gnome-Keyring wurde verwehrt, die Einstellungen für %s können "
 "nicht geladen werden!"
@@ -1171,8 +1182,7 @@ msgstr ""
 "reproduzieren?"
 
 #: ../src/gui/CReporterAssistant.py:665
-msgid ""
-"Are there any comments you would like to share with the software maintainers?"
+msgid "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "Haben Sie sonstige Kommentare, die Sie für die Software-Maintainer "
 "hinzufügen möchten?"
@@ -1194,8 +1204,7 @@ msgid "Confirm and send the report"
 msgstr "Bericht bestätigen und senden"
 
 #: ../src/gui/CReporterAssistant.py:734
-msgid ""
-"Below is a summary of your bug report. Please click 'Apply' to submit it."
+msgid "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Nachfolgend ist eine Zusammenfassung Ihres Fehlerberichts aufgeführt. Bitte "
 "klicken Sie auf 'Anwenden', um diesen zu übermitteln."
@@ -1309,8 +1318,7 @@ msgstr "Name"
 
 #: ../src/gui/PluginsSettingsDialog.py:148
 msgid "Please select a plugin from the list to edit it's options."
-msgstr ""
-"Bitte ein Plugin aus der Liste auswählen, um dessen Optionen zu bearbeiten."
+msgstr "Bitte ein Plugin aus der Liste auswählen, um dessen Optionen zu bearbeiten."
 
 #: ../src/gui/PluginsSettingsDialog.py:156
 #, python-format
@@ -1345,8 +1353,7 @@ msgstr "<b>Kommentar</b>"
 
 #: ../src/gui/report.glade.h:5
 msgid "<b>How to reproduce (in a few simple steps)</b>"
-msgstr ""
-"<b>Wie kann der Fehler wieder erzeugt werden (in einfachen Schritten)</b>"
+msgstr "<b>Wie kann der Fehler wieder erzeugt werden (in einfachen Schritten)</b>"
 
 #: ../src/gui/report.glade.h:6
 msgid "<b>Please fix the following problems:</b>"
@@ -1532,3 +1539,4 @@ msgstr ""
 "festgestellt. Bitte verwenden Sie die nachfolgenden Schaltflächen, um die "
 "entsprechende Konfiguration zu öffnen und beheben Sie den Fehler, bevor Sie "
 "fortfahren. Andernfalls kann der Berichtsprozess fehlschlagen.\n"
+
