@@ -24,7 +24,7 @@ libABRTUtils_la_SOURCES = \
     stringops.cpp \
     dirsize.cpp \
     DebugDump.cpp \
-    abrt_dbus.h abrt_dbus.cpp \
+    abrt_dbus.h abrt_dbus.c \
     CrashTypes.cpp \
     ABRTException.cpp \
     backtrace.h backtrace.c \
