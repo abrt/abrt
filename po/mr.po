@@ -7,23 +7,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mr\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
+"POT-Creation-Date: 2010-08-30 13:08+0200\n"
 "PO-Revision-Date: 2010-07-30 09:25+0530\n"
 "Last-Translator: Sandeep Shedmake <sshedmak@redhat.com>\n"
 "Language-Team: Marathi <fedora-trans-mr@redhat.com>\n"
+"Language: mr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: mr\n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../lib/plugins/Bugzilla.cpp:469
+#: ../lib/plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "नवीन बग id: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:697
+#: ../lib/plugins/Bugzilla.cpp:694
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -31,57 +31,57 @@ msgstr ""
 "रिकामे लॉगीन किंवा पासवर्ड.\n"
 "कृपया तपासणी करा "
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:703
 msgid "Logging into bugzilla..."
 msgstr "बगझीलामध्ये प्रवेश करत आहे..."
 
-#: ../lib/plugins/Bugzilla.cpp:709
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Checking for duplicates..."
 msgstr "हुबेहुब करीता तपासत आहे..."
 
-#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
+#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
 msgid "Missing mandatory member 'bugs'"
 msgstr "आवश्यक सदस्य 'bugs' आढळले नाही"
 
-#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
-#: ../lib/plugins/Bugzilla.cpp:857
+#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
+#: ../lib/plugins/Bugzilla.cpp:854
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() अपयशी. सर्व आवश्यक माहिती एकत्र करण्यास अशक्य"
 
-#: ../lib/plugins/Bugzilla.cpp:797
+#: ../lib/plugins/Bugzilla.cpp:794
 msgid "Creating a new bug..."
 msgstr "नवीन बग निर्माण करत आहे..."
 
-#: ../lib/plugins/Bugzilla.cpp:802
+#: ../lib/plugins/Bugzilla.cpp:799
 msgid "Bugzilla entry creation failed"
 msgstr "बगजीला नोंदणी निर्माण अपयशी"
 
-#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
+#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
 msgid "Logging out..."
 msgstr "बाहेर पडत आहे..."
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:831
+#: ../lib/plugins/Bugzilla.cpp:828
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "बग आधिपासूनच कळवले: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:842
+#: ../lib/plugins/Bugzilla.cpp:839
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "बग %d चे पॅरेंट शोधण्यास बगजीला अशक्य"
 
-#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
 #, fuzzy, c-format
 msgid "Add %s to CC list"
 msgstr "CC सूचीत %s समावेश करा"
 
-#: ../lib/plugins/Bugzilla.cpp:896
+#: ../lib/plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "बग(%d) मध्ये नवीन टिपण्णी समावेश करा"
 
-#: ../lib/plugins/Bugzilla.cpp:995
+#: ../lib/plugins/Bugzilla.cpp:992
 msgid "Reports bugs to bugzilla"
 msgstr "बगजीला करीता बग्स् कळवतो"
 
@@ -203,13 +203,18 @@ msgstr ""
 "अपलोड करतो"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:114
+#: ../lib/plugins/RHTSupport.cpp:111
 msgid "Compressing data"
 msgstr ""
 
-#: ../lib/plugins/RHTSupport.cpp:249
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "नवीन केस निर्माण करत आहे..."
+
+#: ../lib/plugins/RHTSupport.cpp:328
+#, fuzzy
+msgid "Reports bugs to Red Hat support"
+msgstr "बगजीला करीता बग्स् कळवतो"
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -643,33 +648,50 @@ msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "प्लगइन %s करीता चुकिची संरचना आढळली\n"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr "प्रवेशक करा: "
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr "पासवर्ड द्या: "
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 msgid "Reporting..."
 msgstr "कळवत आहे..."
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:717
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "%s चा वापर करून कळवायचे? [y/N]: "
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 msgid "Skipping..."
 msgstr "वगळत आहे..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "बॅकट्रेस् वापरण्याजोगी नसल्यामुळे रिपोर्टिंग बंद केले."
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/cli/report.cpp:745
+#, fuzzy
+msgid "Error loading reporter settings"
+msgstr "अहवाल प्राप्त करतेवेळी त्रुटी: %s"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "%d प्लगइन्स् (%d त्रुटी) द्वारे क्रॅश कळवले\n"
@@ -736,7 +758,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "कृपया abrt डीमन कार्यरत आहे याची तपासणी करा."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"

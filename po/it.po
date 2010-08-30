@@ -13,22 +13,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt-master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
+"POT-Creation-Date: 2010-08-30 13:08+0200\n"
 "PO-Revision-Date: 2010-07-30 09:35+1000\n"
 "Last-Translator: \n"
 "Language-Team:  <it@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: ../lib/plugins/Bugzilla.cpp:469
+#: ../lib/plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nuovo id del bug: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:697
+#: ../lib/plugins/Bugzilla.cpp:694
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -36,59 +36,59 @@ msgstr ""
 "Login e password vuote.\n"
 "Si prega di controllare "
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:703
 msgid "Logging into bugzilla..."
 msgstr "Accesso in bugzilla in corso..."
 
-#: ../lib/plugins/Bugzilla.cpp:709
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Checking for duplicates..."
 msgstr "Controllo di duplicati..."
 
-#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
+#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
 msgid "Missing mandatory member 'bugs'"
 msgstr "Elemento obbligatorio 'bugs' non presente"
 
-#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
-#: ../lib/plugins/Bugzilla.cpp:857
+#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
+#: ../lib/plugins/Bugzilla.cpp:854
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() fallito. Impossibile raccogliere tutte le informazioni "
 "obbligatorie"
 
-#: ../lib/plugins/Bugzilla.cpp:797
+#: ../lib/plugins/Bugzilla.cpp:794
 msgid "Creating a new bug..."
 msgstr "Creazione di un nuovo bug..."
 
-#: ../lib/plugins/Bugzilla.cpp:802
+#: ../lib/plugins/Bugzilla.cpp:799
 msgid "Bugzilla entry creation failed"
 msgstr "Creazione della entry su Bugzilla fallita"
 
-#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
+#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
 msgid "Logging out..."
 msgstr "Disconnessione..."
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:831
+#: ../lib/plugins/Bugzilla.cpp:828
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Il bug è già riportato: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:842
+#: ../lib/plugins/Bugzilla.cpp:839
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla non ha trovato il genitore del bug (%d)"
 
-#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
 #, fuzzy, c-format
 msgid "Add %s to CC list"
 msgstr "Aggiungi %s in copia"
 
-#: ../lib/plugins/Bugzilla.cpp:896
+#: ../lib/plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Aggiungi un nuovo commento al bug(%d)"
 
-#: ../lib/plugins/Bugzilla.cpp:995
+#: ../lib/plugins/Bugzilla.cpp:992
 msgid "Reports bugs to bugzilla"
 msgstr "Notifica bug a bugzilla"
 
@@ -210,13 +210,18 @@ msgstr ""
 "carica tramite FTP/SCP/etc"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:114
+#: ../lib/plugins/RHTSupport.cpp:111
 msgid "Compressing data"
 msgstr ""
 
-#: ../lib/plugins/RHTSupport.cpp:249
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "Creazione di un nuovo caso..."
+
+#: ../lib/plugins/RHTSupport.cpp:328
+#, fuzzy
+msgid "Reports bugs to Red Hat support"
+msgstr "Notifica bug a bugzilla"
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -654,33 +659,50 @@ msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Rilevate impostazioni errate per il plugin %s\n"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr "Inserire il login:"
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr "Inserire la password:"
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 msgid "Reporting..."
 msgstr "Notifica in corso..."
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:717
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "Notifica utilizzando %s? [s/N]: "
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 msgid "Skipping..."
 msgstr "Omissione in corso..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "Notifiche disabilitate poichè il backtrace non è utilizzabile."
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/cli/report.cpp:745
+#, fuzzy
+msgid "Error loading reporter settings"
+msgstr "Errore durante l'acquisizione del report: %s"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Crash notificato tramite %d plugin (%d errori)\n"
@@ -749,7 +771,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Prego controllare se il demone abrt è in esecuzione."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -1103,8 +1125,8 @@ msgid ""
 "Select where you would like to report the bug, and press 'Forward' to "
 "continue."
 msgstr ""
-"Sembra che si sia verificato un crash di una applicazione del pacchetto <b>%"
-"s</b> sul sistema. È consigliato inviare un bug report relativo a questo "
+"Sembra che si sia verificato un crash di una applicazione del pacchetto <b>"
+"%s</b> sul sistema. È consigliato inviare un bug report relativo a questo "
 "problema. La notifica fornirà le informazioni necessarie ai manutentori "
 "software in modo da fornire il bug fix necessario\n"
 "\n"

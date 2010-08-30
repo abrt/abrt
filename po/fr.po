@@ -10,23 +10,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.fr\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
+"POT-Creation-Date: 2010-08-30 13:08+0200\n"
 "PO-Revision-Date: 2010-08-04 11:39+1000\n"
 "Last-Translator: Sam Friedmann <sam.friedmann@redhat.com>\n"
 "Language-Team: French <French fedora-trans-fr@fedoraproject.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../lib/plugins/Bugzilla.cpp:469
+#: ../lib/plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nouvel ID de bogue : %i"
 
-#: ../lib/plugins/Bugzilla.cpp:697
+#: ../lib/plugins/Bugzilla.cpp:694
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -34,59 +34,59 @@ msgstr ""
 "Pas d'identifiant ni de mot de passe.\n"
 "Veuillez vérifier "
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:703
 msgid "Logging into bugzilla..."
 msgstr "Connexion à bugzilla..."
 
-#: ../lib/plugins/Bugzilla.cpp:709
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Checking for duplicates..."
 msgstr "Recherche de doublons..."
 
-#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
+#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
 msgid "Missing mandatory member 'bugs'"
 msgstr "Le membre nécessaire «bugs» est manquant"
 
-#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
-#: ../lib/plugins/Bugzilla.cpp:857
+#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
+#: ../lib/plugins/Bugzilla.cpp:854
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() a échoué. N'a pas pu collecter toutes les informations "
 "nécessaires"
 
-#: ../lib/plugins/Bugzilla.cpp:797
+#: ../lib/plugins/Bugzilla.cpp:794
 msgid "Creating a new bug..."
 msgstr "Création d'un nouveau bogue..."
 
-#: ../lib/plugins/Bugzilla.cpp:802
+#: ../lib/plugins/Bugzilla.cpp:799
 msgid "Bugzilla entry creation failed"
 msgstr "Impossible de créer l'entrée dans Bugzilla"
 
-#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
+#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
 msgid "Logging out..."
 msgstr "Déconnexion..."
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:831
+#: ../lib/plugins/Bugzilla.cpp:828
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Le bogue est déjà signalé : %i"
 
-#: ../lib/plugins/Bugzilla.cpp:842
+#: ../lib/plugins/Bugzilla.cpp:839
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla n'a pas trouvé le parent du bogue %d"
 
-#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
 #, fuzzy, c-format
 msgid "Add %s to CC list"
 msgstr "Ajout de %s à la liste CC"
 
-#: ../lib/plugins/Bugzilla.cpp:896
+#: ../lib/plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Ajouter un nouveau commentaire au bogue (%d)"
 
-#: ../lib/plugins/Bugzilla.cpp:995
+#: ../lib/plugins/Bugzilla.cpp:992
 msgid "Reports bugs to bugzilla"
 msgstr "Rapporte les bogues sur Bugzilla"
 
@@ -208,13 +208,18 @@ msgstr ""
 "optionnellement via FTP/SCP/etc"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:114
+#: ../lib/plugins/RHTSupport.cpp:111
 msgid "Compressing data"
 msgstr ""
 
-#: ../lib/plugins/RHTSupport.cpp:249
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "Création d'un nouveau cas..."
+
+#: ../lib/plugins/RHTSupport.cpp:328
+#, fuzzy
+msgid "Reports bugs to Red Hat support"
+msgstr "Rapporte les bogues sur Bugzilla"
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -657,33 +662,50 @@ msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Des paramètres erronés ont été détectés sur le plugin %s\n"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr "Entrez votre nom d'accès :"
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr "Entrez votre mot de passe :"
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 msgid "Reporting..."
 msgstr "Envoi du rapport..."
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:717
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "Rapporter en utilisant %s ? [y/N] : "
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 msgid "Skipping..."
 msgstr "Ignorer..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "L'envoi du rapport est désactivé car le backtrace est inutilisable."
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/cli/report.cpp:745
+#, fuzzy
+msgid "Error loading reporter settings"
+msgstr "Erreur lors de l'acquisition du rapport : %s"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Incident rapporté via %d plugins (%d erreurs)\n"
@@ -754,7 +776,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Veuillez vérifier que le démon abrt est en cours d'exécution."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"

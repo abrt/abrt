@@ -4,7 +4,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 22:12+0000\n"
+"POT-Creation-Date: 2010-08-30 13:08+0200\n"
 "PO-Revision-Date: 2010-08-28 15:51+0100\n"
 "Last-Translator: Rui Gouveia <rui.gouveia@gmail.com>\n"
 "Language-Team: trans-pt@lists.fedoraproject.org\n"
@@ -17,12 +17,12 @@ msgstr ""
 "X-Poedit-Language: Portuguese\n"
 "X-Poedit-Country: PORTUGAL\n"
 
-#: ../lib/plugins/Bugzilla.cpp:469
+#: ../lib/plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "Novo ID de erro: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:697
+#: ../lib/plugins/Bugzilla.cpp:694
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -30,59 +30,59 @@ msgstr ""
 "Nome de utilizador e senha vazios.\n"
 "Por favor, verifique"
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:703
 msgid "Logging into bugzilla..."
 msgstr "A iniciar sessão no bugzilla..."
 
-#: ../lib/plugins/Bugzilla.cpp:709
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Checking for duplicates..."
 msgstr "A procurar por duplicados..."
 
-#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
+#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
 msgid "Missing mandatory member 'bugs'"
 msgstr "Falta membro obrigatório 'erros'"
 
-#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
-#: ../lib/plugins/Bugzilla.cpp:857
+#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
+#: ../lib/plugins/Bugzilla.cpp:854
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "Falhou get_bug_info(). Não foi possível recolher todas as informações "
 "obrigatórias"
 
-#: ../lib/plugins/Bugzilla.cpp:797
+#: ../lib/plugins/Bugzilla.cpp:794
 msgid "Creating a new bug..."
 msgstr "A criar novo relatório de erro..."
 
-#: ../lib/plugins/Bugzilla.cpp:802
+#: ../lib/plugins/Bugzilla.cpp:799
 msgid "Bugzilla entry creation failed"
 msgstr "Criação de entrada no Bugzilla falhou"
 
-#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
+#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
 msgid "Logging out..."
 msgstr "A Terminar Sessão..."
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:831
+#: ../lib/plugins/Bugzilla.cpp:828
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Erro já foi reportado: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:842
+#: ../lib/plugins/Bugzilla.cpp:839
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla não encontra o pai do erro %d"
 
-#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Adicionar %s à lista CC"
 
-#: ../lib/plugins/Bugzilla.cpp:896
+#: ../lib/plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Adicionar novo comentário no erro (%d)"
 
-#: ../lib/plugins/Bugzilla.cpp:995
+#: ../lib/plugins/Bugzilla.cpp:992
 msgid "Reports bugs to bugzilla"
 msgstr "Reportar erros para o bugzilla"
 
@@ -204,13 +204,18 @@ msgstr ""
 "via FTP/SCP/etc"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:114
+#: ../lib/plugins/RHTSupport.cpp:111
 msgid "Compressing data"
 msgstr "A comprimir dados"
 
-#: ../lib/plugins/RHTSupport.cpp:249
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "A criar um novo caso..."
+
+#: ../lib/plugins/RHTSupport.cpp:328
+#, fuzzy
+msgid "Reports bugs to Red Hat support"
+msgstr "Reportar erros para o bugzilla"
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -266,8 +271,8 @@ msgid ""
 "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
 "\">here</a>"
 msgstr ""
-"Você pode criá-la <a "
-"href=\"https://bugzilla.redhat.com/createaccount.cgi\">aqui</a>"
+"Você pode criá-la <a href=\"https://bugzilla.redhat.com/createaccount.cgi"
+"\">aqui</a>"
 
 #: ../lib/plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
@@ -497,7 +502,7 @@ msgstr ""
 "%s\n"
 
 #: ../src/cli/CLI.cpp:152
-#, c-format, 
+#, c-format
 msgid ""
 "\n"
 "Backtrace:\n"
@@ -509,7 +514,7 @@ msgstr ""
 
 #. Message has embedded tabs.
 #: ../src/cli/CLI.cpp:250
-#, c-format, 
+#, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
 "\n"
@@ -541,14 +546,14 @@ msgstr ""
 "Acções:\n"
 "\t-l, --list\t\tapresenta a lista de todas as falhas que ainda não foram  "
 "reportadas\n"
-"\t-f, --full\t\tapresenta a lista de todas as falhas, incluindo as que já foram "
-"reportadas\n"
+"\t-f, --full\t\tapresenta a lista de todas as falhas, incluindo as que já "
+"foram reportadas\n"
 "\t-r, --report CRASH_ID\tcria e envia um relatório\n"
 "\t-y, --always\tcria e envia um relatório sem perguntar\n"
 "\t-d, --delete CRASH_ID\tremove uma falha\n"
 "\t-i, --info CRASH_ID\tapresenta informações detalhadas sobre uma falha\n"
-"\t-b, --backtrace\tapresenta informações detalhadas sobre uma falha incluindo "
-"a traçagem\n"
+"\t-b, --backtrace\tapresenta informações detalhadas sobre uma falha "
+"incluindo a traçagem\n"
 "CRASH_ID pode ser:\n"
 "\tUID:UUID par,\n"
 "\tprefixo UUID único  - a acção será efectuada sobre a falha com o UUID "
@@ -682,7 +687,8 @@ msgstr "Relatório desactivado porque a traçagem não é utilizável"
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr "Por favor, tente instalar o debuginfo manualmente utilizando o comando: "
+msgstr ""
+"Por favor, tente instalar o debuginfo manualmente utilizando o comando: "
 "\"debuginfo-install %s\" e tente novamente\n"
 
 #: ../src/cli/report.cpp:745
@@ -759,7 +765,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Por favor, verifique se o serviço abrt está a correr."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -949,8 +955,8 @@ msgid ""
 "then use the Refresh button to regenerate the backtrace."
 msgstr ""
 "Relatórios desactivados porque a traçagem não é usável!\n"
-"Por favor, tente instalar o debuginfo manualmente utilizando o comando:<b"
-">debuginfo-install %s </b> \n"
+"Por favor, tente instalar o debuginfo manualmente utilizando o comando:"
+"<b>debuginfo-install %s </b> \n"
 "depois utilize o botão Recarregar para gerar uma nova traçagem."
 
 #: ../src/gui/CCReporterDialog.py:120
@@ -1282,8 +1288,8 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "No UI para o plugin <b>%s</b>, isto é provavelmente um erro.\n"
-"Por favor, reporte-o em <a href=\"https://fedorahosted.org/abrt/newticket\">ht"
-"tps://fedorahosted.org/abrt/newticket</a>"
+"Por favor, reporte-o em <a href=\"https://fedorahosted.org/abrt/newticket"
+"\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/gui/PluginSettingsUI.py:59 ../src/gui/PluginSettingsUI.py:85
 msgid "Combo box is not implemented"
@@ -1519,7 +1525,8 @@ msgid ""
 "Wrong settings were detected for some of the enabled reporter plugins. "
 "Please use the buttons below to open the respective configuration and fix it "
 "before you proceed, otherwise, the reporting process may fail.\n"
-msgstr "Foram detectadas configurações erradas para alguns dos plugins repórter "
+msgstr ""
+"Foram detectadas configurações erradas para alguns dos plugins repórter "
 "activos. Por favor, utilize os botões abaixo para abrir a configuração "
 "respectiva e corrigi-los antes de continuar, caso contrário, o processo pode "
 "falhar.\n"

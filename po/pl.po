@@ -6,21 +6,21 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-29 09:15+0000\n"
+"POT-Creation-Date: 2010-08-30 13:08+0200\n"
 "PO-Revision-Date: 2010-08-29 20:08+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: pl\n"
 
-#: ../lib/plugins/Bugzilla.cpp:469
+#: ../lib/plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "Identyfikator nowego błędu: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:697
+#: ../lib/plugins/Bugzilla.cpp:694
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -28,59 +28,59 @@ msgstr ""
 "Pola login lub hasło są puste.\n"
 "Proszę sprawdzić plik "
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:703
 msgid "Logging into bugzilla..."
 msgstr "Logowanie do Bugzilli..."
 
-#: ../lib/plugins/Bugzilla.cpp:709
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Checking for duplicates..."
 msgstr "Sprawdzanie duplikatów..."
 
-#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
+#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
 msgid "Missing mandatory member 'bugs'"
 msgstr "Brak wymaganego elementu \"bugs\""
 
-#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
-#: ../lib/plugins/Bugzilla.cpp:857
+#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
+#: ../lib/plugins/Bugzilla.cpp:854
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "Funkcja get_bug_info() nie powiodła się. Nie można zebrać wszystkich "
 "wymaganych informacji"
 
-#: ../lib/plugins/Bugzilla.cpp:797
+#: ../lib/plugins/Bugzilla.cpp:794
 msgid "Creating a new bug..."
 msgstr "Tworzenie nowego błędu..."
 
-#: ../lib/plugins/Bugzilla.cpp:802
+#: ../lib/plugins/Bugzilla.cpp:799
 msgid "Bugzilla entry creation failed"
 msgstr "Utworzenie wpisu Bugzilli nie powiodło się"
 
-#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
+#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
 msgid "Logging out..."
 msgstr "Wylogowywanie..."
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:831
+#: ../lib/plugins/Bugzilla.cpp:828
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Błąd został już wcześniej zgłoszony: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:842
+#: ../lib/plugins/Bugzilla.cpp:839
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla nie może odnaleźć błędu nadrzędnego błędu %d"
 
-#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Dodawanie %s do listy obserwujących"
 
-#: ../lib/plugins/Bugzilla.cpp:896
+#: ../lib/plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Dodawanie nowego komentarza do błędu %d"
 
-#: ../lib/plugins/Bugzilla.cpp:995
+#: ../lib/plugins/Bugzilla.cpp:992
 msgid "Reports bugs to bugzilla"
 msgstr "Zgłasza błędy w Bugzilli"
 
@@ -201,13 +201,18 @@ msgstr ""
 "Pakuje dane awarii do pliku .tar.gz, opcjonalnie wysyła je przez FTP/SCP/itp."
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:114
+#: ../lib/plugins/RHTSupport.cpp:111
 msgid "Compressing data"
 msgstr "Kompresowanie danych"
 
-#: ../lib/plugins/RHTSupport.cpp:249
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "Dodawanie nowego przypadku..."
+
+#: ../lib/plugins/RHTSupport.cpp:328
+#, fuzzy
+msgid "Reports bugs to Red Hat support"
+msgstr "Zgłasza błędy w Bugzilli"
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -760,7 +765,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Proszę sprawdzić, czy demon abrt jest uruchomiony."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"

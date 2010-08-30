@@ -9,86 +9,86 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
+"POT-Creation-Date: 2010-08-30 13:08+0200\n"
 "PO-Revision-Date: 2010-03-12 23:28+0100\n"
 "Last-Translator: Peter Bojtos <ptr@ulx.hu>\n"
 "Language-Team: Hungarian Fedora Translation Team <fedora-trans-hu@redhat."
 "com>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Poedit-Language: Hungarian\n"
 "X-Poedit-Country: HUNGARY\n"
 "X-Poedit-SourceCharset: utf-8\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
-#: ../lib/plugins/Bugzilla.cpp:469
+#: ../lib/plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "Új hiba azonosító: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:697
+#: ../lib/plugins/Bugzilla.cpp:694
 #, fuzzy
 msgid ""
 "Empty login or password.\n"
 "Please check "
 msgstr "Üres bejelentkező név és jelszó. Ellenőrizze a Bugzilla.conf-ot"
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:703
 msgid "Logging into bugzilla..."
 msgstr "Bejelentkezés a bugzillába..."
 
-#: ../lib/plugins/Bugzilla.cpp:709
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Checking for duplicates..."
 msgstr "Többszörözés ellenőrzése..."
 
-#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
+#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
 msgid "Missing mandatory member 'bugs'"
 msgstr "Kötelező „bugs” címke hiányzik"
 
-#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
-#: ../lib/plugins/Bugzilla.cpp:857
+#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
+#: ../lib/plugins/Bugzilla.cpp:854
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() sikertelen. Nem lehet összegyűjteni minden kötelező "
 "információt"
 
-#: ../lib/plugins/Bugzilla.cpp:797
+#: ../lib/plugins/Bugzilla.cpp:794
 #, fuzzy
 msgid "Creating a new bug..."
 msgstr "Új hiba készítése..."
 
-#: ../lib/plugins/Bugzilla.cpp:802
+#: ../lib/plugins/Bugzilla.cpp:799
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla bejegyzés létrehozása sikertelen"
 
-#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
+#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
 msgid "Logging out..."
 msgstr "Kijelentkezés..."
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:831
+#: ../lib/plugins/Bugzilla.cpp:828
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "A hibát már bejelentették: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:842
+#: ../lib/plugins/Bugzilla.cpp:839
 #, fuzzy, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla nem találta (%d) hiba szülőjét."
 
-#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
 #, fuzzy, c-format
 msgid "Add %s to CC list"
 msgstr "%s hozzáadása a CC listához"
 
-#: ../lib/plugins/Bugzilla.cpp:896
+#: ../lib/plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Új megjegyzés hozzáadása (%d) hibához"
 
-#: ../lib/plugins/Bugzilla.cpp:995
+#: ../lib/plugins/Bugzilla.cpp:992
 msgid "Reports bugs to bugzilla"
 msgstr ""
 
@@ -212,14 +212,18 @@ msgid ""
 msgstr ""
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:114
+#: ../lib/plugins/RHTSupport.cpp:111
 msgid "Compressing data"
 msgstr ""
 
-#: ../lib/plugins/RHTSupport.cpp:249
+#: ../lib/plugins/RHTSupport.cpp:246
 #, fuzzy
 msgid "Creating a new case..."
 msgstr "Új hiba készítése..."
+
+#: ../lib/plugins/RHTSupport.cpp:328
+msgid "Reports bugs to Red Hat support"
+msgstr ""
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -607,35 +611,52 @@ msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, fuzzy, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Semmi nincs kijelölve"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr ""
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr ""
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 #, fuzzy
 msgid "Reporting..."
 msgstr "Feldolgozás..."
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:717
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "Jelentő kiegészítők"
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 #, fuzzy
 msgid "Skipping..."
 msgstr "Feldolgozás..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "Jelentés letiltva, kérem javítsa ki a fent említett problémákat."
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/cli/report.cpp:745
+#, fuzzy
+msgid "Error loading reporter settings"
+msgstr "Jelentés összeállítása nem sikerült: %s"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr ""
@@ -708,7 +729,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Kérem ellenőrizze, hogy ABRT szolgáltatás működik-e"
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:170
 #, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"

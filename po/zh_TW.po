@@ -9,23 +9,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
+"POT-Creation-Date: 2010-08-30 13:08+0200\n"
 "PO-Revision-Date: 2010-07-30 15:55+1000\n"
 "Last-Translator: Terry Chuang <tchuang@redhat.com>\n"
 "Language-Team: Traditional Chinese <zh_TW@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: \n"
 "X-Generator: KBabel 1.11.4\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../lib/plugins/Bugzilla.cpp:469
+#: ../lib/plugins/Bugzilla.cpp:466
 #, c-format
 msgid "New bug id: %i"
 msgstr "新的錯誤 id：%i"
 
-#: ../lib/plugins/Bugzilla.cpp:697
+#: ../lib/plugins/Bugzilla.cpp:694
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -33,57 +33,57 @@ msgstr ""
 "登錄帳號與密碼是空的。\n"
 "請檢查"
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:703
 msgid "Logging into bugzilla..."
 msgstr "正在登入 bugzilla…"
 
-#: ../lib/plugins/Bugzilla.cpp:709
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Checking for duplicates..."
 msgstr "正在檢查是否有重覆…"
 
-#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
+#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
 msgid "Missing mandatory member 'bugs'"
 msgstr "必要的成員 'bugs' 遺失"
 
-#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
-#: ../lib/plugins/Bugzilla.cpp:857
+#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
+#: ../lib/plugins/Bugzilla.cpp:854
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "get_bug_info() 失敗。無法蒐集所有必要的資訊"
 
-#: ../lib/plugins/Bugzilla.cpp:797
+#: ../lib/plugins/Bugzilla.cpp:794
 msgid "Creating a new bug..."
 msgstr "正在建立新的 bug…"
 
-#: ../lib/plugins/Bugzilla.cpp:802
+#: ../lib/plugins/Bugzilla.cpp:799
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla 項目建立失敗"
 
-#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
+#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
 msgid "Logging out..."
 msgstr "正在登出…"
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:831
+#: ../lib/plugins/Bugzilla.cpp:828
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "錯誤已回報：%i"
 
-#: ../lib/plugins/Bugzilla.cpp:842
+#: ../lib/plugins/Bugzilla.cpp:839
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla 找不到錯誤 %d 的 parent"
 
-#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
+#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
 #, fuzzy, c-format
 msgid "Add %s to CC list"
 msgstr "將 %s 新增至 CC 清單中"
 
-#: ../lib/plugins/Bugzilla.cpp:896
+#: ../lib/plugins/Bugzilla.cpp:893
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "在錯誤（%d）中新增註釋"
 
-#: ../lib/plugins/Bugzilla.cpp:995
+#: ../lib/plugins/Bugzilla.cpp:992
 msgid "Reports bugs to bugzilla"
 msgstr "將錯誤回報至 bugzilla"
 
@@ -203,13 +203,18 @@ msgid ""
 msgstr "將當機資料整理入 .tar.gz 檔案中，選用性的透過 FTP/SCP/etc 來上傳它"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:114
+#: ../lib/plugins/RHTSupport.cpp:111
 msgid "Compressing data"
 msgstr ""
 
-#: ../lib/plugins/RHTSupport.cpp:249
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "正在建立新的案例…"
+
+#: ../lib/plugins/RHTSupport.cpp:328
+#, fuzzy
+msgid "Reports bugs to Red Hat support"
+msgstr "將錯誤回報至 bugzilla"
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -642,33 +647,50 @@ msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "偵測到了外掛 %s 含有錯誤設定\n"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr "輸入您的登入帳號："
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr "輸入您的密碼："
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 msgid "Reporting..."
 msgstr "正在回報..."
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:717
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "使用 %s? [y/N] 來回報："
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 msgid "Skipping..."
 msgstr "跳過..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+#, fuzzy
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "已停用回報，因為無法使用 backtrace。"
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+
+#: ../src/cli/report.cpp:745
+#, fuzzy
+msgid "Error loading reporter settings"
+msgstr "嘗試取得報告時發生了錯誤：%s"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "當機已透過 %d 外掛回報（%d 項錯誤）\n"
@@ -734,7 +756,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "請檢查 abrt daemon 是否運作中。"
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:174
+#: ../src/gui/CCDBusBackend.py:170
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
