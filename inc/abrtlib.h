@@ -173,6 +173,13 @@ char* xmalloc_sockaddr2dotted_noport(const struct sockaddr *sa);
 
 /* Random utility functions */
 
+double get_dirsize(const char *pPath);
+double get_dirsize_find_largest_dir(
+                const char *pPath,
+                char **worst_dir, /* can be NULL */
+                const char *excluded /* can be NULL */
+);
+
 /* Returns command line of running program.
  * Caller is responsible to free() the returned value.
  * If the pid is not valid or command line can not be obtained,
@@ -190,12 +197,6 @@ int daemon_is_ok();
 
 /* C++ style stuff */
 #ifdef __cplusplus
-double get_dirsize(const char *pPath);
-double get_dirsize_find_largest_dir(
-                const char *pPath,
-                std::string *worst_dir = NULL,
-                const char *excluded = NULL);
-
 std::string unsigned_to_string(unsigned long long x);
 std::string signed_to_string(long long x);
 template <class T> inline
