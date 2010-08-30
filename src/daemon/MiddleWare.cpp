@@ -21,7 +21,6 @@
 #include <fnmatch.h>
 #include <algorithm>
 #include "abrtlib.h"
-#include "abrt_types.h"
 #include "Daemon.h"
 #include "Settings.h"
 #include "rpm.h"

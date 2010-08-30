@@ -6,6 +6,7 @@
 #ifndef ABRTLIB_H_
 #define ABRTLIB_H_
 
+#include <assert.h>
 #include <ctype.h>
 #include <dirent.h>
 #include <errno.h>
@@ -70,6 +71,7 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "xfuncs.h"
 #include "logging.h"
 #include "read_write.h"
+#include "strbuf.h"
 
 
 #ifdef __cplusplus

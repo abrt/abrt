@@ -19,7 +19,6 @@
 #include "abrtlib.h"
 #include "crash_types.h"
 #include "debug_dump.h" /* FILENAME_ARCHITECTURE etc */
-#include "strbuf.h"
 
 
 using namespace std;

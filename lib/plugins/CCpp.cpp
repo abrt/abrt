@@ -20,10 +20,7 @@
 */
 #include <set>
 #include <iomanip>
-//#include <nss.h>
-//#include <sechash.h>
 #include "abrtlib.h"
-#include "strbuf.h"
 #include "CCpp.h"
 #include "abrt_exception.h"
 #include "debug_dump.h"
@@ -31,7 +28,6 @@
 #include "Polkit.h"
 #include "backtrace.h"
 #include "CCpp_sha1.h"
-#include "strbuf.h"
 
 using namespace std;
 

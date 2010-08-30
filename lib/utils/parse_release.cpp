@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "strbuf.h"
 
 // caller is reposible for freeing *product* and *version*
 void parse_release(const char *release, char** product, char** version)

@@ -27,7 +27,6 @@
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "RHTSupport.h"
-#include "strbuf.h"
 
 using namespace std;
 

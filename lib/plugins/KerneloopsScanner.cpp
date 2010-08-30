@@ -20,8 +20,6 @@
     Anton Arapov <anton@redhat.com>
     Arjan van de Ven <arjan@linux.intel.com>
 */
-
-#include <assert.h>
 #include <syslog.h>
 #include <asm/unistd.h> /* __NR_syslog */
 #include "abrtlib.h"

@@ -15,17 +15,14 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "dumpsocket.h"
-#include "abrtlib.h"
 #include <glib.h>
-#include <sys/socket.h>
-#include <sys/types.h>
 #include <sys/un.h>
+#include "abrtlib.h"
+#include "dumpsocket.h"
 #include "debug_dump.h"
 #include "crash_types.h"
 #include "abrt_exception.h"
 #include "hooklib.h"
-#include "strbuf.h"
 
 #define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
 #define SOCKET_PERMISSION 0666

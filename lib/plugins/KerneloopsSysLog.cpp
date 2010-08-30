@@ -16,10 +16,8 @@
        Anton Arapov <anton@redhat.com>
        Arjan van de Ven <arjan@linux.intel.com>
  */
-
 #include "abrtlib.h"
 #include "KerneloopsSysLog.h"
-#include <assert.h>
 
 static void queue_oops(vector_string_t &vec, const char *data, const char *version)
 {

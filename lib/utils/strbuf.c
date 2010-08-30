@@ -17,14 +17,7 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "strbuf.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <assert.h>
-#include <string.h>
-#include <stdarg.h>
-#include "xfuncs.h"
-
+#include "abrtlib.h"
 
 int prefixcmp(const char *str, const char *prefix)
 {
