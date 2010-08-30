@@ -572,7 +572,7 @@ class ReporterAssistant():
 
         backtrace_scroll_w = gtk.ScrolledWindow()
         backtrace_scroll_w.add(self.backtrace_tev)
-        backtrace_scroll_w.set_policy(gtk.POLICY_NEVER,
+        backtrace_scroll_w.set_policy(gtk.POLICY_AUTOMATIC,
                                       gtk.POLICY_AUTOMATIC)
         # backtrace
         hbox_bt = gtk.HBox()
