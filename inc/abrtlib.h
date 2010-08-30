@@ -42,10 +42,6 @@
 # include <string>
 #endif
 
-#ifdef HAVE_CONFIG_H
-# include <config.h>
-#endif
-
 #if ENABLE_NLS
 # include <libintl.h>
 # define _(S) gettext(S)
@@ -64,6 +60,10 @@ int vdprintf(int d, const char *format, va_list ap);
 
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
+
+#ifdef HAVE_CONFIG_H
+# include "config.h"
+#endif
 
 #include "abrt_types.h"
 #include "xfuncs.h"

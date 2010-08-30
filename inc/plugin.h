@@ -22,9 +22,6 @@
 #ifndef PLUGIN_H_
 #define PLUGIN_H_
 
-#if HAVE_CONFIG_H
-# include <config.h>
-#endif
 #include "abrt_types.h"
 #include "crash_types.h"
 
