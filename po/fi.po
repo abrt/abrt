@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
-"PO-Revision-Date: 2010-08-24 14:48+0300\n"
+"POT-Creation-Date: 2010-08-29 09:15+0000\n"
+"PO-Revision-Date: 2010-08-29 20:25+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
+"Language: fi\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
@@ -641,40 +641,56 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/cli/report.cpp:541
 msgid "y"
-msgstr ""
+msgstr "k"
 
 #: ../src/cli/report.cpp:542
 msgid "N"
-msgstr ""
+msgstr "E"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Liitännäisellä %s havaittiin olevan väärät asetukset\n"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr "Käyttäjätunnus: "
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr "Salasana: "
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 msgid "Reporting..."
 msgstr "Raportoidaan..."
 
-#: ../src/cli/report.cpp:722
-#, fuzzy, c-format
+#: ../src/cli/report.cpp:717
+#, c-format
 msgid "Report using %s?"
-msgstr "Raportoidaanko käyttäen raportoijaa %s? [y/N]: "
+msgstr "Raportoidaanko käyttäen raportoijaa %s?: "
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 msgid "Skipping..."
 msgstr "Ohitetaan..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön"
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr "Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install %"
+"s” ja kokeile sitten uudelleen\n"
+
+#: ../src/cli/report.cpp:745
+msgid "Error loading reporter settings"
+msgstr "Virhe ladattaessa raportoijan asetuksia"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Kaatuminen on raportoitu %d liitännäisen kautta (%d virhettä)\n"
@@ -1167,7 +1183,7 @@ msgstr "Vahvista ja lähetä raportti"
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
-"Alla on yhteenveto vikaraportista. Napsauta ”Käytä” sen lähettämiseksi."
+"Alla on yhteenveto vikaraportista. Napsauta ”Toteuta” sen lähettämiseksi."
 
 #: ../src/gui/CReporterAssistant.py:739
 msgid "<b>Basic details</b>"

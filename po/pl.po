@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-27 16:40+0200\n"
-"PO-Revision-Date: 2010-08-23 15:07+0200\n"
+"POT-Creation-Date: 2010-08-29 09:15+0000\n"
+"PO-Revision-Date: 2010-08-29 20:08+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -640,40 +640,57 @@ msgstr ""
 #. The response might take more than 1 char in non-latin scripts.
 #: ../src/cli/report.cpp:541
 msgid "y"
-msgstr ""
+msgstr "t"
 
 #: ../src/cli/report.cpp:542
 msgid "N"
-msgstr ""
+msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:643
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Wykryto błędne ustawienia dla wtyczki %s\n"
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:647
 msgid "Enter your login: "
 msgstr "Proszę podać login: "
 
-#: ../src/cli/report.cpp:659
+#: ../src/cli/report.cpp:653
 msgid "Enter your password: "
 msgstr "Proszę podać hasło: "
 
-#: ../src/cli/report.cpp:703
+#: ../src/cli/report.cpp:698
 msgid "Reporting..."
 msgstr "Zgłaszanie..."
 
-#: ../src/cli/report.cpp:722
-#, fuzzy, c-format
+#: ../src/cli/report.cpp:717
+#, c-format
 msgid "Report using %s?"
-msgstr "Zgłosić używając %s? [t/N]: "
+msgstr "Zgłosić używając %s?"
 
-#: ../src/cli/report.cpp:725
+#: ../src/cli/report.cpp:720
 msgid "Skipping..."
 msgstr "Pomijanie..."
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:732
+msgid "Reporting disabled because the backtrace is unusable"
+msgstr "Zgłaszanie jest wyłączone, ponieważ nie można użyć wyjątku"
+
+#: ../src/cli/report.cpp:736
+#, c-format
+msgid ""
+"Please try to install debuginfo manually using the command: \"debuginfo-"
+"install %s\" and try again\n"
+msgstr ""
+"Proszę spróbować zainstalować pakiet debuginfo ręcznie, używając polecenia: "
+"\"debuginfo-install %s\" i spróbować ponownie\n"
+
+#: ../src/cli/report.cpp:745
+msgid "Error loading reporter settings"
+msgstr "Błąd podczas wczytywania ustawień zgłaszania"
+
+#: ../src/cli/report.cpp:764
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Zgłoszono awarię przez %d wtyczki (%d błędów)\n"
