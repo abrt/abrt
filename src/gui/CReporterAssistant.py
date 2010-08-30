@@ -821,7 +821,7 @@ class ReporterAssistant():
         summary_vbox.pack_start(comments_aligned_hbox, expand=False)
         summary_scroll = gtk.ScrolledWindow()
         summary_scroll.set_shadow_type(gtk.SHADOW_NONE)
-        summary_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_ALWAYS)
+        summary_scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
         scroll_viewport = gtk.Viewport()
         scroll_viewport.set_shadow_type(gtk.SHADOW_NONE)
         scroll_viewport.add(summary_vbox)
