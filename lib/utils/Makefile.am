@@ -14,8 +14,8 @@ libABRTUtils_la_SOURCES = \
     concat_path_file.c \
     append_to_malloced_string.c \
     encbase64.c \
-    read_write.c read_write.h \
-    logging.c logging.h \
+    read_write.c \
+    logging.c \
     copyfd.c \
     daemon.c \
     skip_whitespace.c \

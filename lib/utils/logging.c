@@ -21,10 +21,7 @@
  * Utility routines.
  *
  */
-
-#include "logging.h"
-#include "read_write.h"
-#include "xfuncs.h"
+#include "abrtlib.h"
 
 void (*g_custom_logger)(const char*);
 const char *msg_prefix = "";
