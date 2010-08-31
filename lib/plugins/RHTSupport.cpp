@@ -235,10 +235,12 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
          || full_write(tar_fd(tar), block, len512) != len512
          || tar_close(tar) != 0
         ) {
+            free(block);
             retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
             goto ret;
         }
         tar = NULL;
+        free(block);
     }
 
     {

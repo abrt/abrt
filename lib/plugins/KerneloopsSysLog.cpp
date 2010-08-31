@@ -27,11 +27,8 @@ static void queue_oops(vector_string_t &vec, const char *data, const char *versi
 /*
  * extract_version tries to find the kernel version in given data
  */
-static int extract_version(const char *linepointer, char *version)
+static char *extract_version(const char *linepointer)
 {
-    int ret;
-
-    ret = 0;
     if (strstr(linepointer, "Pid")
      || strstr(linepointer, "comm")
      || strstr(linepointer, "CPU")
@@ -47,15 +44,11 @@ static int extract_version(const char *linepointer, char *version)
             end = strchr(start, ')');
             if (!end)
                 end = strchrnul(start, ' ');
-            strncpy(version, start, end-start);
-            ret = 1;
+            return xstrndup(start, end-start);
         }
     }
 
-    if (!ret)
-        strncpy(version, "undefined", 9);
-
-    return ret;
+    return NULL;
 }
 
 /*
@@ -70,7 +63,6 @@ static int record_oops(vector_string_t &oopses, struct line_info* lines_info, in
 {
     int q;
     int len;
-    int is_version;
     char *oops;
     char *version;
 
@@ -79,13 +71,12 @@ static int record_oops(vector_string_t &oopses, struct line_info* lines_info, in
             len += strlen(lines_info[q].ptr) + 1;
 
     oops = (char*)xzalloc(len);
-    version = (char*)xzalloc(len);
 
-    is_version = 0;
+    version = NULL;
     for (q = oopsstart; q <= oopsend; q++)
     {
-        if (!is_version)
-            is_version = extract_version(lines_info[q].ptr, version);
+        if (!version)
+            version = extract_version(lines_info[q].ptr);
 
         if (lines_info[q].ptr[0])
         {
@@ -96,7 +87,7 @@ static int record_oops(vector_string_t &oopses, struct line_info* lines_info, in
     int rv = 1;
     /* too short oopses are invalid */
     if (strlen(oops) > 100)
-        queue_oops(oopses, oops, version);
+        queue_oops(oopses, oops, version ? version : "undefined");
     else
     {
         VERB3 log("Dropped oops: too short");

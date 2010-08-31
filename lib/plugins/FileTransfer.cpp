@@ -232,6 +232,10 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
     {
         /* Remember pActiveDir for later sending */
         FILE *dirlist = fopen(FILETRANSFER_DIRLIST, "a");
+        if (!dirlist)
+        {
+            throw CABRTException(EXCEP_PLUGIN, "Can't open "FILETRANSFER_DIRLIST);
+        }
         fprintf(dirlist, "%s\n", pActionDir);
         fclose(dirlist);
         VERB3 log("Remembered '%s' for future file transfer", pActionDir);
