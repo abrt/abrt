@@ -101,15 +101,15 @@ std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
                 m_sSubmitURL.c_str(),
                 it->second[CD_CONTENT].c_str()
         );
+        if (ret != CURLE_OK)
+        {
+            char* err_str = xasprintf("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
+            CABRTException e(EXCEP_PLUGIN, err_str);
+            free(err_str);
+            throw e;
+        }
     }
 
-    if (ret != CURLE_OK)
-    {
-        char* err_str = xasprintf("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
-        CABRTException e(EXCEP_PLUGIN, err_str);
-        free(err_str);
-        throw e;
-    }
     /* Server replies with:
      * 200 thank you for submitting the kernel oops information
      * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
