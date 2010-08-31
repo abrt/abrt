@@ -20,10 +20,7 @@
 */
 #include <set>
 #include <iomanip>
-//#include <nss.h>
-//#include <sechash.h>
 #include "abrtlib.h"
-#include "strbuf.h"
 #include "CCpp.h"
 #include "abrt_exception.h"
 #include "debug_dump.h"
@@ -31,7 +28,6 @@
 #include "Polkit.h"
 #include "backtrace.h"
 #include "CCpp_sha1.h"
-#include "strbuf.h"
 
 using namespace std;
 
@@ -190,18 +186,17 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
 {
     update_client(_("Generating backtrace"));
 
-    string UID;
-    string executable;
-    CDebugDump dd;
-    if (!dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
-        return false;
+        return NULL;
     }
 
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
-    dd.LoadText(CD_UID, UID);
-    dd.Close();
+    char *uid = dd_loadtxt(dd, CD_UID);
+    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
+    dd_close(dd);
 
     // Workaround for
     // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
@@ -252,7 +247,8 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
      * BINARY_FILE if it is newer (to at least avoid gdb complaining).
      */
     args[4] = (char*)"-ex";
-    args[5] = xasprintf("file %s", executable.c_str());
+    args[5] = xasprintf("file %s", executable);
+    free(executable);
 
     args[6] = (char*)"-ex";
     args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
@@ -281,7 +277,7 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
     while (1)
     {
         args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 1, NULL);
+        bt = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 1, NULL);
         if (bt && (bt_depth <= 64 || strlen(bt) < 256*1024))
         {
             free(args[9]);
@@ -304,6 +300,7 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
         free(bt);
         free(args[9]);
     }
+    free(uid);
     free(args[5]);
     free(args[7]);
     return bt;
@@ -338,16 +335,16 @@ static void GetIndependentBuildIdPC(const char *unstrip_n_output,
 
 static char* run_unstrip_n(const char *pDebugDumpDir)
 {
-    string UID;
-    CDebugDump dd;
-    if (!dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return NULL;
     }
 
-    dd.LoadText(CD_UID, UID);
-    dd.Close();
+    char *uid = dd_loadtxt(dd, CD_UID);
+    dd_close(dd);
 
     char* args[4];
     args[0] = (char*)"eu-unstrip";
@@ -355,7 +352,8 @@ static char* run_unstrip_n(const char *pDebugDumpDir)
     args[2] = (char*)"-n";
     args[3] = NULL;
 
-    char *out = exec_vp(args, xatoi_u(UID.c_str()), /*redirect_stderr:*/ 0, NULL);
+    char *out = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 0, NULL);
+    free(uid);
 
     free(args[1]);
 
@@ -531,18 +529,17 @@ static void trim_debuginfo_cache(unsigned max_mb)
 
 string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
-    string executable;
-    string package;
-    CDebugDump dd;
-    if (!dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return string("");
     }
 
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
-    dd.LoadText(FILENAME_PACKAGE, package);
-    dd.Close();
+    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
+    char *package = dd_loadtxt(dd, FILENAME_PACKAGE);
+    dd_close(dd);
 
     string independentBuildIdPC;
     char *unstrip_n_output = run_unstrip_n(pDebugDumpDir);
@@ -555,8 +552,7 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 
     /* package variable has "firefox-3.5.6-1.fc11[.1]" format */
     /* Remove distro suffix and maybe least significant version number */
-    char *trimmed_package = xstrdup(package.c_str());
-    char *p = trimmed_package;
+    char *p = package;
     while (*p)
     {
         if (*p == '.' && (p[1] < '0' || p[1] > '9'))
@@ -567,7 +563,7 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
         }
         p++;
     }
-    char *first_dot = strchr(trimmed_package, '.');
+    char *first_dot = strchr(package, '.');
     if (first_dot)
     {
         char *last_dot = strrchr(first_dot, '.');
@@ -580,26 +576,34 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
             *last_dot = '\0';
         }
     }
-    string hash_str = trimmed_package + executable + independentBuildIdPC;
-    free(trimmed_package);
-    return create_hash(hash_str.c_str());
+
+    char *hash_str = xasprintf("%s%s%s", package, executable, independentBuildIdPC.c_str());
+    free(package);
+    free(executable);
+
+    string hash = create_hash(hash_str);
+    free(hash_str);
+
+    return hash;
 }
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
-    CDebugDump dd;
-    if (!dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return string("");
     }
 
-    if (dd.Exist(FILENAME_GLOBAL_UUID))
+    if (dd_exist(dd, FILENAME_GLOBAL_UUID))
     {
-        string uuid;
-        dd.LoadText(FILENAME_GLOBAL_UUID, uuid);
-        dd.Close();
-        return uuid;
+        char *uuid = dd_loadtxt(dd, FILENAME_GLOBAL_UUID);
+        dd_close(dd);
+        string ret = uuid;
+        free(uuid);
+        return ret;
     }
     else
     {
@@ -607,13 +611,10 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         // This whole block should be deleted for Fedora 14.
         log(_("Getting global universal unique identification..."));
 
-        string executable;
-        string package;
-        string uid_str;
-        dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_PACKAGE, package);
-        if (m_bBacktrace)
-            dd.LoadText(CD_UID, uid_str);
+        string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
+        char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
+        char *package = dd_loadtxt(dd, FILENAME_PACKAGE);
+        char *uid_str = m_bBacktrace ? dd_loadtxt(dd, CD_UID) : xstrdup("");
 
         string independent_backtrace;
         if (m_bBacktrace)
@@ -645,7 +646,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
                 close(pipeout[0]); /* read side of the pipe */
 
                 /* abrt-backtrace is executed under the user's uid and gid. */
-                uid_t uid = xatoi_u(uid_str.c_str());
+                uid_t uid = xatoi_u(uid_str);
                 struct passwd* pw = getpwuid(uid);
                 gid_t gid = pw ? pw->pw_gid : uid;
                 setgroups(1, &gid);
@@ -711,12 +712,18 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         */
         else
         {
-            dd.SaveText(FILENAME_RATING, "0");
+            dd_savetxt(dd, FILENAME_RATING, "0");
         }
-        dd.Close();
+        dd_close(dd);
 
-        string hash_base = package + executable + independent_backtrace;
-        return create_hash(hash_base.c_str());
+        char *hash_str = xasprintf("%s%s%s", package, executable, independent_backtrace.c_str());
+        free(package);
+        free(executable);
+
+        string hash = create_hash(hash_str);
+        free(hash_str);
+
+        return hash;
     }
 }
 
@@ -752,42 +759,50 @@ static bool DebuginfoCheckPolkit(uid_t uid)
 
 void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
-    string package, executable, UID;
-
-    CDebugDump dd;
-    if (!dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return;
     }
 
     /* Skip remote crashes. */
-    if (dd.Exist(FILENAME_REMOTE))
+    if (dd_exist(dd, FILENAME_REMOTE))
     {
-        std::string remote_str;
-        dd.LoadText(FILENAME_REMOTE, remote_str);
-        bool remote = (remote_str.find('1') != std::string::npos);
+        char *remote_str = dd_loadtxt(dd, FILENAME_REMOTE);
+        bool remote = (remote_str[0] != '1');
+        free(remote_str);
         if (remote && !m_bBacktraceRemotes)
+        {
+            dd_close(dd);
             return;
+        }
     }
 
     if (!m_bBacktrace)
+    {
+        dd_close(dd);
         return;
+    }
 
     if (!force)
     {
-        bool bt_exists = dd.Exist(FILENAME_BACKTRACE);
+        int bt_exists = dd_exist(dd, FILENAME_BACKTRACE);
         if (bt_exists)
+        {
+            dd_close(dd);
             return; /* backtrace already exists */
+        }
     }
 
-    dd.LoadText(FILENAME_PACKAGE, package);
-    dd.LoadText(FILENAME_EXECUTABLE, executable);
-    dd.LoadText(CD_UID, UID);
-    dd.Close(); /* do not keep dir locked longer than needed */
+    char *package = dd_loadtxt(dd, FILENAME_PACKAGE);
+    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
+    char *uid = dd_loadtxt(dd, CD_UID);
+    dd_close(dd); /* do not keep dir locked longer than needed */
 
     char *build_ids = NULL;
-    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str())))
+    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(uid)))
     {
         if (m_nDebugInfoCacheMB > 0)
             trim_debuginfo_cache(m_nDebugInfoCacheMB);
@@ -807,22 +822,25 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     char *bt_build_ids = xasprintf("%s%s", backtrace_str, (build_ids) ? build_ids : "");
     free(build_ids);
 
-    if (!dd.Open(pDebugDumpDir))
+    dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return;
     }
-    dd.SaveText(FILENAME_BACKTRACE, bt_build_ids);
+    dd_savetxt(dd, FILENAME_BACKTRACE, bt_build_ids);
     free(bt_build_ids);
 
     if (m_bMemoryMap)
-        dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
+        dd_savetxt(dd, FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
 
     /* Compute and store UUID from the backtrace. */
     char *backtrace_cpy = xstrdup(backtrace_str);
 
     struct backtrace *backtrace = backtrace_parse(backtrace_cpy, false, false);
     free(backtrace_cpy);
+
     if (backtrace)
     {
         /* Get the quality of the full backtrace. */
@@ -850,9 +868,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 
         /* Compute UUID. */
         struct strbuf *bt = backtrace_tree_as_str(backtrace, false);
-        strbuf_prepend_str(bt, executable.c_str());
-        strbuf_prepend_str(bt, package.c_str());
-        dd.SaveText(FILENAME_GLOBAL_UUID, create_hash(bt->buf).c_str());
+        strbuf_prepend_str(bt, executable);
+        strbuf_prepend_str(bt, package);
+        dd_savetxt(dd, FILENAME_GLOBAL_UUID, create_hash(bt->buf).c_str());
         strbuf_free(bt);
 
         /* Compute and store backtrace rating. */
@@ -868,7 +886,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         else if (qtot < 0.8f) rating = "2";
         else if (qtot < 0.9f) rating = "3";
         else                  rating = "4";
-        dd.SaveText(FILENAME_RATING, rating);
+        dd_savetxt(dd, FILENAME_RATING, rating);
 
         /* Get the function name from the crash frame. */
         if (crash_thread)
@@ -878,7 +896,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
             if (abort_frame)
                 crash_frame = abort_frame->next;
             if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
-                dd.SaveText(FILENAME_CRASH_FUNCTION, crash_frame->function);
+                dd_savetxt(dd, FILENAME_CRASH_FUNCTION, crash_frame->function);
         }
 
         backtrace_free(backtrace);
@@ -890,17 +908,19 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
            the parser never fails, and it will be possible to get rid of
            the independent_backtrace and backtrace_rate_old. */
         struct strbuf *ibt = independent_backtrace(backtrace_str);
-        strbuf_prepend_str(ibt, executable.c_str());
-        strbuf_prepend_str(ibt, package.c_str());
-        dd.SaveText(FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
+        strbuf_prepend_str(ibt, executable);
+        strbuf_prepend_str(ibt, package);
+        dd_savetxt(dd, FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
         strbuf_free(ibt);
 
         /* Compute and store backtrace rating. */
         /* Crash frame is not known so store nothing. */
-        dd.SaveText(FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str)).c_str());
+        dd_savetxt(dd, FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str)).c_str());
     }
+    free(executable);
+    free(package);
     free(backtrace_str);
-    dd.Close();
+    dd_close(dd);
 }
 
 /*

@@ -16,9 +16,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#if HAVE_CONFIG_H
-# include <config.h>
-#endif
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
@@ -504,18 +501,19 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 
         if (g_settings_nMaxCrashReportsSize > 0)
         {
-            std::string worst_dir;
+            char *worst_dir = NULL;
             while (g_settings_nMaxCrashReportsSize > 0
              && get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, name) / (1024*1024) >= g_settings_nMaxCrashReportsSize
-             && worst_dir != ""
+             && worst_dir
             ) {
-                log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir.c_str());
+                log("Size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, g_settings_nMaxCrashReportsSize, worst_dir);
                 g_pCommLayer->QuotaExceed(_("The size of the report exceeded the quota. Please check system's MaxCrashReportsSize value in abrt.conf."));
                 /* deletes both directory and DB record */
-                char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir.c_str());
+                char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
+                free(worst_dir);
+                worst_dir = NULL;
                 DeleteDebugDump_by_dir(d);
                 free(d);
-                worst_dir = "";
             }
         }
 

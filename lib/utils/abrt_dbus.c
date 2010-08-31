@@ -171,7 +171,7 @@ void store_string(DBusMessageIter* iter, const char* val)
 //    val = db;
 //    return dbus_message_iter_next(iter);
 //}
-int load_int32(DBusMessageIter* iter, int32_t& val)
+int load_int32(DBusMessageIter* iter, int32_t *val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_INT32)
@@ -179,10 +179,10 @@ int load_int32(DBusMessageIter* iter, int32_t& val)
         error_msg("%s expected in dbus message, but not found ('%c')", "int32", type);
         return -1;
     }
-    dbus_message_iter_get_basic(iter, &val);
+    dbus_message_iter_get_basic(iter, val);
     return dbus_message_iter_next(iter);
 }
-int load_uint32(DBusMessageIter* iter, uint32_t& val)
+int load_uint32(DBusMessageIter* iter, uint32_t *val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_UINT32)
@@ -190,10 +190,10 @@ int load_uint32(DBusMessageIter* iter, uint32_t& val)
         error_msg("%s expected in dbus message, but not found ('%c')", "uint32", type);
         return -1;
     }
-    dbus_message_iter_get_basic(iter, &val);
+    dbus_message_iter_get_basic(iter, val);
     return dbus_message_iter_next(iter);
 }
-int load_int64(DBusMessageIter* iter, int64_t& val)
+int load_int64(DBusMessageIter* iter, int64_t *val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_INT64)
@@ -201,10 +201,10 @@ int load_int64(DBusMessageIter* iter, int64_t& val)
         error_msg("%s expected in dbus message, but not found ('%c')", "int64", type);
         return -1;
     }
-    dbus_message_iter_get_basic(iter, &val);
+    dbus_message_iter_get_basic(iter, val);
     return dbus_message_iter_next(iter);
 }
-int load_uint64(DBusMessageIter* iter, uint64_t& val)
+int load_uint64(DBusMessageIter* iter, uint64_t *val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_UINT64)
@@ -212,10 +212,10 @@ int load_uint64(DBusMessageIter* iter, uint64_t& val)
         error_msg("%s expected in dbus message, but not found ('%c')", "uint64", type);
         return -1;
     }
-    dbus_message_iter_get_basic(iter, &val);
+    dbus_message_iter_get_basic(iter, val);
     return dbus_message_iter_next(iter);
 }
-int load_charp(DBusMessageIter* iter, const char*& val)
+int load_charp(DBusMessageIter* iter, const char** val)
 {
     int type = dbus_message_iter_get_arg_type(iter);
     if (type != DBUS_TYPE_STRING)
@@ -223,8 +223,8 @@ int load_charp(DBusMessageIter* iter, const char*& val)
         error_msg("%s expected in dbus message, but not found ('%c')", "string", type);
         return -1;
     }
-    dbus_message_iter_get_basic(iter, &val);
-//log("load_charp:'%s'", val);
+    dbus_message_iter_get_basic(iter, val);
+//log("load_charp:'%s'", *val);
     return dbus_message_iter_next(iter);
 }
 
@@ -238,12 +238,12 @@ static gboolean handle_dbus_fd(GIOChannel *gio, GIOCondition condition, gpointer
 {
     DBusWatch *watch = (DBusWatch*)data;
 
-    VERB3 log("%s(gio, condition:%x [bits:IN/PRI/OUT/ERR/HUP...], data)", __func__, int(condition));
+    VERB3 log("%s(gio, condition:%x [bits:IN/PRI/OUT/ERR/HUP...], data)", __func__, (int)condition);
 
     /* Notify the D-Bus library when a previously-added watch
      * is ready for reading or writing, or has an exception such as a hangup.
      */
-    int glib_flags = int(condition);
+    int glib_flags = (int)condition;
     int dbus_flags = 0;
     if (glib_flags & G_IO_IN)  dbus_flags |= DBUS_WATCH_READABLE;
     if (glib_flags & G_IO_OUT) dbus_flags |= DBUS_WATCH_WRITABLE;
@@ -265,12 +265,12 @@ static gboolean handle_dbus_fd(GIOChannel *gio, GIOCondition condition, gpointer
     return TRUE; /* "glib, do not remove this event source!" */
 }
 
-struct watch_app_info_t
+typedef struct watch_app_info_t
 {
     GIOChannel *channel;
     guint event_source_id;
     bool watch_enabled;
-};
+} watch_app_info_t;
 /* Callback: "dbus_watch_get_enabled() may return a different value than it did before" */
 static void toggled_watch(DBusWatch *watch, void* data)
 {
@@ -287,7 +287,7 @@ static void toggled_watch(DBusWatch *watch, void* data)
             if (dbus_flags & DBUS_WATCH_READABLE) glib_flags |= G_IO_IN;
             if (dbus_flags & DBUS_WATCH_WRITABLE) glib_flags |= G_IO_OUT;
             VERB3 log(" adding watch to glib main loop. dbus_flags:%x glib_flags:%x", dbus_flags, glib_flags);
-            app_info->event_source_id = g_io_add_watch(app_info->channel, GIOCondition(glib_flags), handle_dbus_fd, watch);
+            app_info->event_source_id = g_io_add_watch(app_info->channel, (GIOCondition)glib_flags, handle_dbus_fd, watch);
         }
         /* else: it was already enabled */
     } else {

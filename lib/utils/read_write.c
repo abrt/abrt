@@ -3,9 +3,7 @@
  *
  * Licensed under GPLv2 or later, see file COPYING in this tarball for details.
  */
-
-#include "read_write.h"
-#include "logging.h"
+#include "abrtlib.h"
 
 /* Die with an error message if we can't read the entire buffer. */
 void xread(int fd, void *buf, size_t count)

@@ -14,24 +14,24 @@ libABRTUtils_la_SOURCES = \
     concat_path_file.c \
     append_to_malloced_string.c \
     encbase64.c \
-    read_write.c read_write.h \
-    logging.c logging.h \
+    read_write.c \
+    logging.c \
     copyfd.c \
     daemon.c \
     skip_whitespace.c \
     xatonum.c numtoa.cpp \
     spawn.c \
     stringops.cpp \
-    dirsize.cpp \
+    dirsize.c \
     DebugDump.cpp \
-    abrt_dbus.h abrt_dbus.cpp \
+    abrt_dbus.h abrt_dbus.c \
     CrashTypes.cpp \
     ABRTException.cpp \
     backtrace.h backtrace.c \
     backtrace_parser.y \
-    strbuf.h strbuf.c \
+    strbuf.c \
     abrt_packages.c abrt_packages.h \
-    hooklib.h hooklib.cpp
+    hooklib.c hooklib.h
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \

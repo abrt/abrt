@@ -24,7 +24,6 @@
 #include "debug_dump.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
-#include "strbuf.h"
 
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5

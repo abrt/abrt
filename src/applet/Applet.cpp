@@ -16,9 +16,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#if HAVE_CONFIG_H
-# include <config.h>
-#endif
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
@@ -28,10 +25,10 @@
 #include "abrtlib.h"
 #include "abrt_dbus.h"
 #include "dbus_common.h"
-#include "CCApplet.h"
+#include "applet_gtk.h"
 
 
-static CApplet* applet;
+static struct applet* applet = NULL;
 
 
 static void Crash(DBusMessage* signal)
@@ -80,8 +77,8 @@ static void Crash(DBusMessage* signal)
     if (package_name[0] == '\0')
         message = _("A crash has been detected");
     //applet->AddEvent(uid, package_name);
-    applet->SetIconTooltip(message, package_name);
-    applet->ShowIcon();
+    set_icon_tooltip(applet, message, package_name);
+    show_icon(applet);
 
     /* If this crash seems to be repeating, do not annoy user with popup dialog.
      * (The icon in the tray is not suppressed)
@@ -103,7 +100,7 @@ static void Crash(DBusMessage* signal)
     free(last_crash_id);
     last_crash_id = xstrdup(crash_id);
 
-    applet->CrashNotify(crash_id, message, package_name);
+    show_crash_notification(applet, crash_id, message, package_name);
 }
 
 static void QuotaExceed(DBusMessage* signal)
@@ -121,8 +118,8 @@ static void QuotaExceed(DBusMessage* signal)
 
     //if (m_pSessionDBus->has_name("com.redhat.abrt.gui"))
     //    return;
-    applet->ShowIcon();
-    applet->MessageNotify("%s", str);
+    show_icon(applet);
+    show_msg_notification(applet, "%s", str);
 }
 
 static void NameOwnerChanged(DBusMessage* signal)
@@ -159,7 +156,7 @@ static void NameOwnerChanged(DBusMessage* signal)
 
 // hide icon if it's visible - as NM and don't show it, if it's not
     if (!new_owner[0])
-        applet->HideIcon();
+        hide_icon(applet);
 }
 
 static DBusHandlerResult handle_message(DBusConnection* conn, DBusMessage* msg, void* user_data)
@@ -242,7 +239,7 @@ int main(int argc, char** argv)
     dbus_error_init(&err);
     DBusConnection* system_conn = dbus_bus_get(DBUS_BUS_SYSTEM, &err);
     die_if_dbus_error(system_conn == NULL, &err, "Can't connect to system dbus");
-    attach_dbus_conn_to_glib_main_loop(system_conn);
+    attach_dbus_conn_to_glib_main_loop(system_conn, NULL, NULL);
     if (!dbus_connection_add_filter(system_conn, handle_message, NULL, NULL))
         error_msg_and_die("Can't add dbus filter");
     /* which messages do we want to be fed to handle_message()? */
@@ -261,7 +258,7 @@ int main(int argc, char** argv)
     /* Initialize GUI stuff.
      * Note: inside CApplet ctor, libnotify hooks session dbus
      * to glib main loop */
-    applet = new CApplet(app_name);
+    applet = applet_new(app_name);
     /* dbus_abrt cannot handle more than one bus, and we don't really need to.
      * The only thing we want to do is to announce ourself on session dbus */
     DBusConnection* session_conn = dbus_bus_get(DBUS_BUS_SESSION, &err);
@@ -291,6 +288,6 @@ int main(int argc, char** argv)
     gtk_main();
 
     gdk_threads_leave();
-    delete applet;
+    applet_destroy(applet);
     return 0;
 }

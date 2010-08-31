@@ -18,8 +18,6 @@
 */
 #include "abrtlib.h"
 
-using namespace std;
-
 double get_dirsize(const char *pPath)
 {
     DIR *dp = opendir(pPath);
@@ -55,9 +53,12 @@ double get_dirsize(const char *pPath)
 
 double get_dirsize_find_largest_dir(
 		const char *pPath,
-		string *worst_dir,
+		char **worst_dir,
 		const char *excluded)
 {
+    if (worst_dir)
+        *worst_dir = NULL;
+
     DIR *dp = opendir(pPath);
     if (dp == NULL)
         return 0;
@@ -93,7 +94,8 @@ double get_dirsize_find_largest_dir(
                 if (sz > maxsz)
                 {
                     maxsz = sz;
-                    *worst_dir = ep->d_name;
+                    free(*worst_dir);
+                    *worst_dir = xstrdup(ep->d_name);
                 }
             }
         }

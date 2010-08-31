@@ -21,7 +21,6 @@
 #include <fnmatch.h>
 #include <algorithm>
 #include "abrtlib.h"
-#include "abrt_types.h"
 #include "Daemon.h"
 #include "Settings.h"
 #include "rpm.h"
@@ -131,48 +130,52 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-static void load_crash_data_from_debug_dump(CDebugDump& dd, map_crash_data_t& data)
+static void load_crash_data_from_debug_dump(dump_dir_t *dd, map_crash_data_t& data)
 {
-    VERB3 log("load_crash_data_from_debug_dump: directory %s", dd.Directory());
-    std::string short_name;
-    std::string full_name;
+    char *short_name;
+    char *full_name;
 
-    dd.InitGetNextFile();
-    while (dd.GetNextFile(&short_name, &full_name))
+    dd_init_next_file(dd);
+    while (dd_get_next_file(dd, &short_name, &full_name))
     {
-        VERB3 log("load_crash_data_from_debug_dump: file '%s', '%s'", short_name.c_str(), full_name.c_str());
         ssize_t sz = 4*1024;
         char *text = NULL;
-        bool editable = is_editable_file(short_name.c_str());
+        bool editable = is_editable_file(short_name);
 
         if (!editable)
         {
-            text = is_text_file(full_name.c_str(), &sz);
+            text = is_text_file(full_name, &sz);
             if (!text)
             {
                 add_to_crash_data_ext(data,
-                        short_name.c_str(),
+                        short_name,
                         CD_BIN,
                         CD_ISNOTEDITABLE,
-                        full_name.c_str()
+                        full_name
                 );
+
+                free(short_name);
+                free(full_name);
                 continue;
             }
         }
 
-        std::string content;
+        char *content;
         if (sz < 4*1024) /* is_text_file did read entire file */
-            content.assign(text, sz);
+            content = xstrndup(text, sz); //TODO: can avoid this copying if is_text_file() adds NUL
         else /* no, need to read it all */
-            dd.LoadText(short_name.c_str(), content);
+            content = dd_loadtxt(dd, short_name);
         free(text);
 
         add_to_crash_data_ext(data,
-                short_name.c_str(),
+                short_name,
                 CD_TXT,
                 editable ? CD_ISEDITABLE : CD_ISNOTEDITABLE,
-                content.c_str()
+                content
         );
+        free(short_name);
+        free(full_name);
+        free(content);
     }
 }
 
@@ -186,25 +189,28 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
 {
     VERB3 log(" DebugDumpToCrashReport('%s')", pDebugDumpDir);
 
-    CDebugDump dd;
-    if (dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (dd_opendir(dd, pDebugDumpDir))
     {
         const char *const *v = must_have_files;
         while (*v)
         {
-            if (!dd.Exist(*v))
+            if (!dd_exist(dd, *v))
             {
+                dd_close(dd);
                 throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): important file '%s' is missing", *v);
             }
+
             v++;
         }
 
         load_crash_data_from_debug_dump(dd, pCrashData);
-        dd.Close();
+        dd_close(dd);
 
         return true;
     }
 
+    dd_close(dd);
     return false;
 }
 
@@ -294,14 +300,15 @@ mw_result_t CreateCrashReport(const char *crash_id,
     mw_result_t r = MW_OK;
     try
     {
-        CDebugDump dd;
-        if (dd.Open(row.m_sDebugDumpDir.c_str()))
+        dump_dir_t *dd = dd_init();
+        if (!dd_opendir(dd, row.m_sDebugDumpDir.c_str()))
         {
-            load_crash_data_from_debug_dump(dd, pCrashData);
-            dd.Close();
-        }
-        else
+            dd_close(dd);
             return MW_ERROR;
+        }
+
+        load_crash_data_from_debug_dump(dd, pCrashData);
+        dd_close(dd);
 
         std::string analyzer = get_crash_data_item_content(pCrashData, FILENAME_ANALYZER);
         const char* package = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
@@ -447,27 +454,26 @@ report_status_t Report(const map_crash_data_t& client_report,
     const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
     if (comment || reproduce || backtrace)
     {
-        CDebugDump dd;
-        if (dd.Open(pDumpDir.c_str()))
+        dump_dir_t *dd = dd_init();
+        if (dd_opendir(dd, pDumpDir.c_str()))
         {
             if (comment)
             {
-                dd.SaveText(FILENAME_COMMENT, comment);
+                dd_savetxt(dd, FILENAME_COMMENT, comment);
                 add_to_crash_data_ext(stored_report, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
             }
             if (reproduce)
             {
-                dd.SaveText(FILENAME_REPRODUCE, reproduce);
+                dd_savetxt(dd, FILENAME_REPRODUCE, reproduce);
                 add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
             }
             if (backtrace)
             {
-                dd.SaveText(FILENAME_BACKTRACE, backtrace);
+                dd_savetxt(dd, FILENAME_BACKTRACE, backtrace);
                 add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
             }
-
-            dd.Close();
         }
+        dd_close(dd);
     }
 
     /* Remove BIN filenames from stored_report if they are not present in client's data */
@@ -722,18 +728,19 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", pExecutable);
 
-                CDebugDump dd;
-                if (dd.Open(pDebugDumpDir))
+                dump_dir_t *dd = dd_init();
+                if (!dd_opendir(dd, pDebugDumpDir))
                 {
-                    dd.SaveText(FILENAME_PACKAGE, "");
-                    dd.SaveText(FILENAME_COMPONENT, "");
-                    dd.SaveText(FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
-
-                    dd.Close();
-                    return MW_OK;
-                }
-                else
+                    dd_close(dd);
                     return MW_ERROR;
+                }
+
+                dd_savetxt(dd, FILENAME_PACKAGE, "");
+                dd_savetxt(dd, FILENAME_COMPONENT, "");
+                dd_savetxt(dd, FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
+
+                dd_close(dd);
+                return MW_OK;
             }
             else
             {
@@ -846,32 +853,34 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         }
     }
 
-    CDebugDump dd;
-    if (dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (dd_opendir(dd, pDebugDumpDir))
     {
         if (rpm_pkg)
         {
-            dd.SaveText(FILENAME_PACKAGE, rpm_pkg);
+            dd_savetxt(dd, FILENAME_PACKAGE, rpm_pkg);
             free(rpm_pkg);
         }
 
         if (dsc)
         {
-            dd.SaveText(FILENAME_DESCRIPTION, dsc);
+            dd_savetxt(dd, FILENAME_DESCRIPTION, dsc);
             free(dsc);
         }
 
         if (component)
         {
-            dd.SaveText(FILENAME_COMPONENT, component);
+            dd_savetxt(dd, FILENAME_COMPONENT, component);
             free(component);
         }
 
         if (!remote)
-            dd.SaveText(FILENAME_HOSTNAME, host);
+            dd_savetxt(dd, FILENAME_HOSTNAME, host);
 
+        dd_close(dd);
         return MW_OK;
     }
+    dd_close(dd);
 
     return MW_ERROR;
 }
@@ -1028,66 +1037,85 @@ static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                           map_crash_data_t& pCrashData)
 {
-    std::string UID;
-    std::string time;
-    std::string analyzer;
-    std::string executable;
-    std::string cmdline;
-    bool remote = false;
+    mw_result_t res;
+    int remote = 0;
 
-    CDebugDump dd;
-    if (dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
-        dd.LoadText(FILENAME_TIME, time);
-        dd.LoadText(CD_UID, UID);
-        dd.LoadText(FILENAME_ANALYZER, analyzer);
-        dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_CMDLINE, cmdline);
-        if (dd.Exist(FILENAME_REMOTE))
-        {
-            std::string remote_str;
-            dd.LoadText(FILENAME_REMOTE, remote_str);
-            remote = (remote_str.find('1') != std::string::npos);
-        }
-
-        dd.Close();
-    }
-    else
+        dd_close(dd);
         return MW_ERROR;
+    }
+
+    char *time = dd_loadtxt(dd, FILENAME_TIME);
+    char *uid = dd_loadtxt(dd, CD_UID);
+    char *analyzer = dd_loadtxt(dd, FILENAME_ANALYZER);
+    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
+    char *cmdline = dd_loadtxt(dd, FILENAME_CMDLINE);
+
+    char *remote_str = xstrdup("");
+    if (dd_exist(dd, FILENAME_REMOTE))
+        remote_str = dd_loadtxt(dd, FILENAME_REMOTE);
+
+    dd_close(dd);
 
     /* Convert UID string to number uid_num. The UID string can be modified by user or
        wrongly saved (empty or non-numeric), so xatou() cannot be used here,
        because it would kill the daemon. */
     char *endptr;
     errno = 0;
-    unsigned long uid_num = strtoul(UID.c_str(), &endptr, 10);
-    if (errno || UID.c_str() == endptr || *endptr != '\0' || uid_num > UINT_MAX)
+    unsigned long uid_num = strtoul(uid, &endptr, 10);
+    if (errno || uid == endptr || *endptr != '\0' || uid_num > UINT_MAX)
     {
-        error_msg("Invalid UID '%s' loaded from %s", UID.c_str(), pDebugDumpDir);
-        return MW_ERROR;
+        error_msg("Invalid UID '%s' loaded from %s", uid, pDebugDumpDir);
+        res = MW_ERROR;
+        goto error;
     }
 
     if (is_debug_dump_saved(uid_num, pDebugDumpDir))
-        return MW_IN_DB;
+    {
+        res = MW_IN_DB;
+        goto error;
+    }
 
-    mw_result_t res = SavePackageDescriptionToDebugDump(executable.c_str(), cmdline.c_str(), remote, pDebugDumpDir);
+    if (remote_str[0])
+        remote = remote_str[0] != '1';
+
+    res = SavePackageDescriptionToDebugDump(executable,
+                                            cmdline,
+                                            remote,
+                                            pDebugDumpDir
+    );
     if (res != MW_OK)
-        return res;
+        goto error;
 
-    std::string UUID = GetLocalUUID(analyzer.c_str(), pDebugDumpDir);
-    std::string crash_id = ssprintf("%s:%s", UID.c_str(), UUID.c_str());
-    /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
-     * Returns:
-     * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
-     * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
-     * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
-     * else: an error code
-     */
-    return SaveDebugDumpToDatabase(crash_id.c_str(),
-                analyzer_has_InformAllUsers(analyzer.c_str()),
-                time.c_str(),
-                pDebugDumpDir,
-                pCrashData);
+    {
+        std::string UUID = GetLocalUUID((analyzer) ? analyzer : "", pDebugDumpDir);
+        std::string crash_id = ssprintf("%s:%s", uid, UUID.c_str());
+        /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
+         * Returns:
+         * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
+         * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
+         * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
+         * else: an error code
+         */
+
+        res = SaveDebugDumpToDatabase(crash_id.c_str(),
+                    analyzer_has_InformAllUsers(analyzer),
+                    time,
+                    pDebugDumpDir,
+                    pCrashData);
+    }
+
+error:
+    free(remote_str);
+    free(time);
+    free(executable);
+    free(cmdline);
+    free(uid);
+    free(analyzer);
+
+    return res;
 }
 
 mw_result_t FillCrashInfo(const char *crash_id,
@@ -1103,14 +1131,15 @@ mw_result_t FillCrashInfo(const char *crash_id,
     std::string description;
     std::string analyzer;
 
-    CDebugDump dd;
-    if (dd.Open(row.m_sDebugDumpDir.c_str()))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, row.m_sDebugDumpDir.c_str()))
     {
-        load_crash_data_from_debug_dump(dd, pCrashData);
-        dd.Close();
-    }
-    else
+        dd_close(dd);
         return MW_ERROR;
+    }
+
+    load_crash_data_from_debug_dump(dd, pCrashData);
+    dd_close(dd);
 
     add_to_crash_data(pCrashData, CD_UID              , row.m_sUID.c_str()         );
     add_to_crash_data(pCrashData, CD_UUID             , row.m_sUUID.c_str()        );

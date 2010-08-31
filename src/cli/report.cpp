@@ -18,9 +18,6 @@
 #include <cassert>
 #include <algorithm>
 #include <termios.h>
-#if HAVE_CONFIG_H
-# include <config.h>
-#endif
 #include "report.h"
 #include "run-command.h"
 #include "dbus.h"

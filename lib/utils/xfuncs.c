@@ -21,14 +21,7 @@
  * Utility routines.
  *
  */
-
-#include "xfuncs.h"
-#include "logging.h"
-#include "read_write.h"
-#include <fcntl.h>
-#include <pwd.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include "abrtlib.h"
 
 /* Turn on nonblocking I/O on a fd */
 int ndelay_on(int fd)

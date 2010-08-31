@@ -15,17 +15,14 @@
   with this program; if not, write to the Free Software Foundation, Inc.,
   51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include "dumpsocket.h"
-#include "abrtlib.h"
 #include <glib.h>
-#include <sys/socket.h>
-#include <sys/types.h>
 #include <sys/un.h>
+#include "abrtlib.h"
+#include "dumpsocket.h"
 #include "debug_dump.h"
 #include "crash_types.h"
 #include "abrt_exception.h"
 #include "hooklib.h"
-#include "strbuf.h"
 
 #define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
 #define SOCKET_PERMISSION 0666
@@ -173,33 +170,33 @@ static void create_debug_dump(struct client *client)
                            client->basename,
                            (long)time(NULL),
                            client->pid);
-    /* No need to check the path length, as all variables used are limited, and dd.Create()
+    /* No need to check the path length, as all variables used are limited, and dd_create()
        fails if the path is too long. */
 
-    CDebugDump dd;
-    if (!dd.Create(path, client->uid))
+    dump_dir_t *dd = dd_init();;
+    if (!dd_create(dd, path, client->uid))
     {
-        dd.Delete();
-        dd.Close();
+        dd_delete(dd);
+        dd_close(dd);
         error_msg_and_die("dumpsocket: Error while creating crash dump %s", path);
     }
 
-    dd.SaveText(FILENAME_ANALYZER, client->analyzer);
-    dd.SaveText(FILENAME_EXECUTABLE, client->executable);
-    dd.SaveText(FILENAME_BACKTRACE, client->backtrace);
-    dd.SaveText(FILENAME_REASON, client->reason);
+    dd_savetxt(dd, FILENAME_ANALYZER, client->analyzer);
+    dd_savetxt(dd, FILENAME_EXECUTABLE, client->executable);
+    dd_savetxt(dd, FILENAME_BACKTRACE, client->backtrace);
+    dd_savetxt(dd, FILENAME_REASON, client->reason);
 
     /* Obtain and save the command line. */
     char *cmdline = get_cmdline(client->pid); // never NULL
-    dd.SaveText(FILENAME_CMDLINE, cmdline);
+    dd_savetxt(dd, FILENAME_CMDLINE, cmdline);
     free(cmdline);
 
     /* Store id of the user whose application crashed. */
     char uid_str[sizeof(long) * 3 + 2];
     sprintf(uid_str, "%lu", (long)client->uid);
-    dd.SaveText(CD_UID, uid_str);
+    dd_savetxt(dd, CD_UID, uid_str);
 
-    dd.Close();
+    dd_close(dd);
 
     /* Move the completely created debug dump to
        final directory. */

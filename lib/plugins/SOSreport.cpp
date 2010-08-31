@@ -18,7 +18,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_types.h"
 #include "abrt_exception.h"
 #include "SOSreport.h"
 #include "debug_dump.h"
@@ -52,20 +51,21 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
 {
     if (!force)
     {
-        CDebugDump dd;
-        if (!dd.Open(pActionDir))
+        dump_dir_t *dd = dd_init();
+        if (!dd_opendir(dd, pActionDir))
         {
+            dd_close(dd);
             VERB1 log(_("Unable to open debug dump '%s'"), pActionDir);
             return;
         }
 
-        bool bt_exists = dd.Exist("sosreport.tar.bz2") || dd.Exist("sosreport.tar.xz");
+        bool bt_exists = dd_exist(dd, "sosreport.tar.bz2") || dd_exist(dd, "sosreport.tar.xz");
         if (bt_exists)
         {
             VERB3 log("%s already exists, not regenerating", "sosreport.tar.bz2");
             return;
         }
-        dd.Close();
+        dd_close(dd);
     }
 
     static const char command_default[] =

@@ -126,17 +126,18 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
 {
     VERB3 log("Getting local universal unique identification");
 
-    std::string oops;
-    CDebugDump dd;
-    if (!dd.Open(pDebugDumpDir))
+    dump_dir_t *dd = dd_init();
+    if (!dd_opendir(dd, pDebugDumpDir))
     {
+        dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return std::string("");
     }
 
-    dd.LoadText(FILENAME_BACKTRACE, oops);
+    char *oops = dd_loadtxt(dd, FILENAME_BACKTRACE);
+    unsigned hash = hash_oops_str(oops);
+    free(oops);
 
-    unsigned hash = hash_oops_str(oops.c_str());
     hash &= 0x7FFFFFFF;
 
     return to_string(hash);

@@ -22,48 +22,37 @@
 #ifndef DEBUGDUMP_H_
 #define DEBUGDUMP_H_
 
-#include <string>
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-class CDebugDump
-{
-    private:
-        std::string m_sDebugDumpDir;
-        DIR* m_pGetNextFileDir;
-        bool m_bOpened;
-        bool m_bLocked;
-        uid_t m_uid;
-        gid_t m_gid;
+typedef struct dump_dir {
+    char *dd_dir;
+    DIR *next_dir;
+    int opened;
+    int locked;
+    uid_t uid;
+    gid_t gid;
+} dump_dir_t;
 
-        void Lock();
-        void UnLock();
+dump_dir_t* dd_init(void);
+void dd_close(dump_dir_t *dd);
 
-    public:
-        CDebugDump();
-        ~CDebugDump();
+int dd_opendir(dump_dir_t *dd, const char *dir);
+int dd_exist(dump_dir_t *dd, const char *path);
+int dd_create(dump_dir_t *dd, const char *dir, uid_t uid);
+int dd_init_next_file(dump_dir_t *dd);
+int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name);
 
-        bool Open(const char *pDir);
-        bool Create(const char *pDir, uid_t uid);
-        void Delete();
-        void Close();
+char* dd_loadtxt(const dump_dir_t *dd, const char* name);
+void dd_savetxt(dump_dir_t *dd, const char *name, const char *data);
+void dd_savebin(dump_dir_t* dd, const char* name, const char* data, unsigned size);
+void dd_delete(dump_dir_t *dd);
 
-        bool Exist(const char* pFileName);
+void delete_debug_dump_dir(const char *dd_dir);
 
-        void LoadText(const char* pName, std::string& pData);
-
-        void SaveText(const char* pName, const char *pData);
-        void SaveBinary(const char* pName, const char* pData, unsigned pSize);
-
-        bool InitGetNextFile();
-        /* Pointers may be NULL */
-        bool GetNextFile(std::string *short_name, std::string *full_name);
-
-        const char *Directory() const { return m_sDebugDumpDir.c_str(); }
-};
-
-/**
- * Deletes particular debugdump directory.
- * @param pDebugDumpDir A debugdump directory.
- */
-void delete_debug_dump_dir(const char *pDebugDumpDir);
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -16,13 +16,9 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#ifdef HAVE_CONFIG_H
-# include "config.h"
-#endif
 #include "abrtlib.h"
 #include "crash_types.h"
 #include "debug_dump.h" /* FILENAME_ARCHITECTURE etc */
-#include "strbuf.h"
 
 
 using namespace std;

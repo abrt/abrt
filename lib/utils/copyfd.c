@@ -21,9 +21,7 @@
  * Utility routines.
  *
  */
-
 #include "abrtlib.h"
-#include "read_write.h"
 
 #define CONFIG_FEATURE_COPYBUF_KB 4
 
