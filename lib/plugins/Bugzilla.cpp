@@ -504,45 +504,41 @@ int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
     if (!result)
         return -1;
 
-    if (result)
+    bz->bug_product = get_bug_product(result);
+    if (bz->bug_product == NULL)
+        return -1;
+
+    bz->bug_status = get_bug_status(result);
+    if (bz->bug_status == NULL)
+        return -1;
+
+    bz->bug_reporter = get_bug_reporter(result);
+    if (bz->bug_reporter == NULL)
+        return -1;
+
+    // mandatory when bug status is CLOSED
+    if (strcmp(bz->bug_status, "CLOSED") == 0)
     {
-        bz->bug_product = get_bug_product(result);
-        if (bz->bug_product == NULL)
+        bz->bug_resolution = get_bug_resolution(result);
+        if ((env.fault_occurred) && (bz->bug_resolution == NULL))
             return -1;
+    }
 
-        bz->bug_status = get_bug_status(result);
-        if (bz->bug_status == NULL)
-            return -1;
-
-        bz->bug_reporter = get_bug_reporter(result);
-        if (bz->bug_reporter == NULL)
-            return -1;
-
-        // mandatory when bug status is CLOSED
-        if (strcmp(bz->bug_status, "CLOSED") == 0)
-        {
-            bz->bug_resolution = get_bug_resolution(result);
-            if ((env.fault_occurred) && (bz->bug_resolution == NULL))
-                return -1;
-        }
-
-        // mandatory when bug status is CLOSED and resolution is DUPLICATE
-        if ((strcmp(bz->bug_status, "CLOSED") == 0)
-         && (strcmp(bz->bug_resolution, "DUPLICATE") == 0)
-        ) {
-            bz->bug_dup_id = get_bug_dup_id(result);
-            if (env.fault_occurred)
-                return -1;
-        }
-
-        get_bug_cc(result, bz);
+    // mandatory when bug status is CLOSED and resolution is DUPLICATE
+    if ((strcmp(bz->bug_status, "CLOSED") == 0)
+     && (strcmp(bz->bug_resolution, "DUPLICATE") == 0)
+    ) {
+        bz->bug_dup_id = get_bug_dup_id(result);
         if (env.fault_occurred)
             return -1;
+    }
 
-        xmlrpc_DECREF(result);
-        return 0;
-     }
-     return -1;
+    get_bug_cc(result, bz);
+    if (env.fault_occurred)
+        return -1;
+
+    xmlrpc_DECREF(result);
+    return 0;
 }
 
 //-------------------------------------------------------------------
