@@ -80,30 +80,6 @@ static const char *const plugin_type_str[] = {
 };
 
 
-/**
- * A function. It saves settings. On success it returns true, otherwise returns false.
- * @param path A path of config file.
- * @param settings Plugin's settings.
- * @return if it success it returns true, otherwise it returns false.
- */
-static bool SavePluginSettings(const char *pPath, const map_plugin_settings_t& pSettings)
-{
-    FILE* fOut = fopen(pPath, "w");
-    if (fOut)
-    {
-        fprintf(fOut, "# Settings were written by abrt\n");
-        map_plugin_settings_t::const_iterator it = pSettings.begin();
-        for (; it != pSettings.end(); it++)
-        {
-            fprintf(fOut, "%s = %s\n", it->first.c_str(), it->second.c_str());
-        }
-        fclose(fOut);
-        return true;
-    }
-    return false;
-}
-
-
 CPluginManager::CPluginManager()
 {}
 
