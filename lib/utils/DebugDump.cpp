@@ -34,18 +34,18 @@ static bool isdigit_str(const char *str)
     return true;
 }
 
-static char* rm_trailing_slashes(const char *pDir)
+static char* rm_trailing_slashes(const char *dir)
 {
-    unsigned len = strlen(pDir);
-    while (len != 0 && pDir[len-1] == '/')
+    unsigned len = strlen(dir);
+    while (len != 0 && dir[len-1] == '/')
         len--;
-    return xstrndup(pDir, len);
+    return xstrndup(dir, len);
 }
 
-static bool exist_file_dir(const char *pPath)
+static bool exist_file_dir(const char *path)
 {
     struct stat buf;
-    if (stat(pPath, &buf) == 0)
+    if (stat(path, &buf) == 0)
     {
         if (S_ISDIR(buf.st_mode) || S_ISREG(buf.st_mode))
         {
@@ -114,30 +114,30 @@ int dd_exist(dump_dir_t *dd, const char *path)
     return ret;
 }
 
-static bool get_and_set_lock(const char* pLockFile, const char* pPID)
+static bool get_and_set_lock(const char* lock_file, const char* pid)
 {
-    while (symlink(pPID, pLockFile) != 0)
+    while (symlink(pid, lock_file) != 0)
     {
         if (errno != EEXIST)
-            perror_msg_and_die("Can't create lock file '%s'", pLockFile);
+            perror_msg_and_die("Can't create lock file '%s'", lock_file);
 
         char pid_buf[sizeof(pid_t)*3 + 4];
-        ssize_t r = readlink(pLockFile, pid_buf, sizeof(pid_buf) - 1);
+        ssize_t r = readlink(lock_file, pid_buf, sizeof(pid_buf) - 1);
         if (r < 0)
         {
             if (errno == ENOENT)
             {
-                /* Looks like pLockFile was deleted */
+                /* Looks like lock_file was deleted */
                 usleep(10 * 1000); /* avoid CPU eating loop */
                 continue;
             }
-            perror_msg_and_die("Can't read lock file '%s'", pLockFile);
+            perror_msg_and_die("Can't read lock file '%s'", lock_file);
         }
         pid_buf[r] = '\0';
 
-        if (strcmp(pid_buf, pPID) == 0)
+        if (strcmp(pid_buf, pid) == 0)
         {
-            log("Lock file '%s' is already locked by us", pLockFile);
+            log("Lock file '%s' is already locked by us", lock_file);
             return false;
         }
         if (isdigit_str(pid_buf))
@@ -146,19 +146,19 @@ static bool get_and_set_lock(const char* pLockFile, const char* pPID)
             sprintf(pid_str, "/proc/%s", pid_buf);
             if (access(pid_str, F_OK) == 0)
             {
-                log("Lock file '%s' is locked by process %s", pLockFile, pid_buf);
+                log("Lock file '%s' is locked by process %s", lock_file, pid_buf);
                 return false;
             }
-            log("Lock file '%s' was locked by process %s, but it crashed?", pLockFile, pid_buf);
+            log("Lock file '%s' was locked by process %s, but it crashed?", lock_file, pid_buf);
         }
         /* The file may be deleted by now by other process. Ignore ENOENT */
-        if (unlink(pLockFile) != 0 && errno != ENOENT)
+        if (unlink(lock_file) != 0 && errno != ENOENT)
         {
-            perror_msg_and_die("Can't remove stale lock file '%s'", pLockFile);
+            perror_msg_and_die("Can't remove stale lock file '%s'", lock_file);
         }
     }
 
-    VERB1 log("Locked '%s'", pLockFile);
+    VERB1 log("Locked '%s'", lock_file);
     return true;
 
 #if 0
@@ -352,15 +352,15 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
     return 1;
 }
 
-static bool delete_file_dir(const char *pDir)
+static bool delete_file_dir(const char *dir)
 {
-    if (!exist_file_dir(pDir))
+    if (!exist_file_dir(dir))
         return true;
 
-    DIR *d = opendir(pDir);
+    DIR *d = opendir(dir);
     if (!d)
     {
-        error_msg("Can't open dir '%s'", pDir);
+        error_msg("Can't open dir '%s'", dir);
         return false;
     }
 
@@ -369,7 +369,7 @@ static bool delete_file_dir(const char *pDir)
     {
         if (dot_or_dotdot(dent->d_name))
             continue;
-        char *full_path = concat_path_file(pDir, dent->d_name);
+        char *full_path = concat_path_file(dir, dent->d_name);
         if (unlink(full_path) == -1)
         {
             if (errno != EISDIR)
@@ -384,9 +384,9 @@ static bool delete_file_dir(const char *pDir)
         free(full_path);
     }
     closedir(d);
-    if (rmdir(pDir) == -1)
+    if (rmdir(dir) == -1)
     {
-        error_msg("Can't remove dir %s", pDir);
+        error_msg("Can't remove dir %s", dir);
         return false;
     }
 
@@ -403,12 +403,12 @@ void dd_delete(dump_dir_t *dd)
     delete_file_dir(dd->dd_dir);
 }
 
-static char *load_text_file(const char *pPath)
+static char *load_text_file(const char *path)
 {
-    FILE *fp = fopen(pPath, "r");
+    FILE *fp = fopen(path, "r");
     if (!fp)
     {
-        perror_msg("Can't open file '%s'", pPath);
+        perror_msg("Can't open file '%s'", path);
         return xstrdup("");
     }
 
@@ -426,25 +426,25 @@ static char *load_text_file(const char *pPath)
     return strbuf_free_nobuf(buf_content);
 }
 
-static bool save_binary_file(const char *pPath, const char* pData, unsigned size, uid_t uid, gid_t gid)
+static bool save_binary_file(const char *path, const char* data, unsigned size, uid_t uid, gid_t gid)
 {
     /* "Why 0640?!" See ::Create() for security analysis */
-    unlink(pPath);
-    int fd = open(pPath, O_WRONLY | O_TRUNC | O_CREAT, 0640);
+    unlink(path);
+    int fd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0640);
     if (fd < 0)
     {
-        error_msg("Can't open file '%s': %s", pPath, errno ? strerror(errno) : "errno == 0");
+        error_msg("Can't open file '%s': %s", path, errno ? strerror(errno) : "errno == 0");
         return false;
     }
     if (fchown(fd, uid, gid) == -1)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", pPath, (long)uid, (long)gid);
+        perror_msg("can't change '%s' ownership to %lu:%lu", path, (long)uid, (long)gid);
     }
-    unsigned r = full_write(fd, pData, size);
+    unsigned r = full_write(fd, data, size);
     close(fd);
     if (r != size)
     {
-        error_msg("Can't save file '%s'", pPath);
+        error_msg("Can't save file '%s'", path);
         return false;
     }
 
