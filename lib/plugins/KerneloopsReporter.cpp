@@ -90,24 +90,24 @@ std::string CKerneloopsReporter::Report(const map_crash_data_t& pCrashData,
                                         const map_plugin_settings_t& pSettings,
                                         const char *pArgs)
 {
-    CURLcode ret;
+    CURLcode ret = CURLE_OK;
 
     update_client(_("Creating and submitting a report..."));
 
     map_crash_data_t::const_iterator it = pCrashData.find(FILENAME_BACKTRACE);
-    if (it != pCrashData.end())
+    if (it == pCrashData.end())
+        throw CABRTException(EXCEP_PLUGIN, "Error sending kernel oops due to missing backtrace");
+
+    ret = http_post_to_kerneloops_site(
+            m_sSubmitURL.c_str(),
+            it->second[CD_CONTENT].c_str()
+    );
+    if (ret != CURLE_OK)
     {
-        ret = http_post_to_kerneloops_site(
-                m_sSubmitURL.c_str(),
-                it->second[CD_CONTENT].c_str()
-        );
-        if (ret != CURLE_OK)
-        {
-            char* err_str = xasprintf("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
-            CABRTException e(EXCEP_PLUGIN, err_str);
-            free(err_str);
-            throw e;
-        }
+        char* err_str = xasprintf("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
+        CABRTException e(EXCEP_PLUGIN, err_str);
+        free(err_str);
+        throw e;
     }
 
     /* Server replies with:
