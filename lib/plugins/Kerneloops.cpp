@@ -139,7 +139,7 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
     free(oops);
 
     hash &= 0x7FFFFFFF;
-
+    dd_close(dd);
     return to_string(hash);
 }
 
