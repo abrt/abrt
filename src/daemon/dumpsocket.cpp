@@ -181,20 +181,20 @@ static void create_debug_dump(struct client *client)
         error_msg_and_die("dumpsocket: Error while creating crash dump %s", path);
     }
 
-    dd_savetxt(dd, FILENAME_ANALYZER, client->analyzer);
-    dd_savetxt(dd, FILENAME_EXECUTABLE, client->executable);
-    dd_savetxt(dd, FILENAME_BACKTRACE, client->backtrace);
-    dd_savetxt(dd, FILENAME_REASON, client->reason);
+    dd_save_text(dd, FILENAME_ANALYZER, client->analyzer);
+    dd_save_text(dd, FILENAME_EXECUTABLE, client->executable);
+    dd_save_text(dd, FILENAME_BACKTRACE, client->backtrace);
+    dd_save_text(dd, FILENAME_REASON, client->reason);
 
     /* Obtain and save the command line. */
     char *cmdline = get_cmdline(client->pid); // never NULL
-    dd_savetxt(dd, FILENAME_CMDLINE, cmdline);
+    dd_save_text(dd, FILENAME_CMDLINE, cmdline);
     free(cmdline);
 
     /* Store id of the user whose application crashed. */
     char uid_str[sizeof(long) * 3 + 2];
     sprintf(uid_str, "%lu", (long)client->uid);
-    dd_savetxt(dd, CD_UID, uid_str);
+    dd_save_text(dd, CD_UID, uid_str);
 
     dd_close(dd);
 

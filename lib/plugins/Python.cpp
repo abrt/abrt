@@ -34,7 +34,7 @@ string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
         return string("");
     }
 
-    char *bt = dd_loadtxt(dd, FILENAME_BACKTRACE);
+    char *bt = dd_load_text(dd, FILENAME_BACKTRACE);
     dd_close(dd);
 
     const char *bt_end = strchrnul(bt, '\n');

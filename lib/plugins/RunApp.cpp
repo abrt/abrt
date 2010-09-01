@@ -66,7 +66,7 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs, int force)
             return;
         }
 
-        dd_savebin(dd, args[FILENAME].c_str(), cmd_out, cmd_out_size);
+        dd_save_binary(dd, args[FILENAME].c_str(), cmd_out, cmd_out_size);
         dd_close(dd);
     }
 

@@ -134,7 +134,7 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
         return std::string("");
     }
 
-    char *oops = dd_loadtxt(dd, FILENAME_BACKTRACE);
+    char *oops = dd_load_text(dd, FILENAME_BACKTRACE);
     unsigned hash = hash_oops_str(oops);
     free(oops);
 

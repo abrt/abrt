@@ -44,9 +44,9 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid);
 int dd_init_next_file(dump_dir_t *dd);
 int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name);
 
-char* dd_loadtxt(const dump_dir_t *dd, const char* name);
-void dd_savetxt(dump_dir_t *dd, const char *name, const char *data);
-void dd_savebin(dump_dir_t* dd, const char* name, const char* data, unsigned size);
+char* dd_load_text(const dump_dir_t *dd, const char* name);
+void dd_save_text(dump_dir_t *dd, const char *name, const char *data);
+void dd_save_binary(dump_dir_t* dd, const char* name, const char* data, unsigned size);
 void dd_delete(dump_dir_t *dd);
 
 void delete_debug_dump_dir(const char *dd_dir);

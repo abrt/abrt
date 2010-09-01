@@ -164,7 +164,7 @@ static void load_crash_data_from_debug_dump(dump_dir_t *dd, map_crash_data_t& da
         if (sz < 4*1024) /* is_text_file did read entire file */
             content = xstrndup(text, sz); //TODO: can avoid this copying if is_text_file() adds NUL
         else /* no, need to read it all */
-            content = dd_loadtxt(dd, short_name);
+            content = dd_load_text(dd, short_name);
         free(text);
 
         add_to_crash_data_ext(data,
@@ -459,17 +459,17 @@ report_status_t Report(const map_crash_data_t& client_report,
         {
             if (comment)
             {
-                dd_savetxt(dd, FILENAME_COMMENT, comment);
+                dd_save_text(dd, FILENAME_COMMENT, comment);
                 add_to_crash_data_ext(stored_report, FILENAME_COMMENT, CD_TXT, CD_ISEDITABLE, comment);
             }
             if (reproduce)
             {
-                dd_savetxt(dd, FILENAME_REPRODUCE, reproduce);
+                dd_save_text(dd, FILENAME_REPRODUCE, reproduce);
                 add_to_crash_data_ext(stored_report, FILENAME_REPRODUCE, CD_TXT, CD_ISEDITABLE, reproduce);
             }
             if (backtrace)
             {
-                dd_savetxt(dd, FILENAME_BACKTRACE, backtrace);
+                dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
                 add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
             }
         }
@@ -735,9 +735,9 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                     return MW_ERROR;
                 }
 
-                dd_savetxt(dd, FILENAME_PACKAGE, "");
-                dd_savetxt(dd, FILENAME_COMPONENT, "");
-                dd_savetxt(dd, FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
+                dd_save_text(dd, FILENAME_PACKAGE, "");
+                dd_save_text(dd, FILENAME_COMPONENT, "");
+                dd_save_text(dd, FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
 
                 dd_close(dd);
                 return MW_OK;
@@ -858,24 +858,24 @@ static mw_result_t SavePackageDescriptionToDebugDump(
     {
         if (rpm_pkg)
         {
-            dd_savetxt(dd, FILENAME_PACKAGE, rpm_pkg);
+            dd_save_text(dd, FILENAME_PACKAGE, rpm_pkg);
             free(rpm_pkg);
         }
 
         if (dsc)
         {
-            dd_savetxt(dd, FILENAME_DESCRIPTION, dsc);
+            dd_save_text(dd, FILENAME_DESCRIPTION, dsc);
             free(dsc);
         }
 
         if (component)
         {
-            dd_savetxt(dd, FILENAME_COMPONENT, component);
+            dd_save_text(dd, FILENAME_COMPONENT, component);
             free(component);
         }
 
         if (!remote)
-            dd_savetxt(dd, FILENAME_HOSTNAME, host);
+            dd_save_text(dd, FILENAME_HOSTNAME, host);
 
         dd_close(dd);
         return MW_OK;
@@ -1047,15 +1047,15 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         return MW_ERROR;
     }
 
-    char *time = dd_loadtxt(dd, FILENAME_TIME);
-    char *uid = dd_loadtxt(dd, CD_UID);
-    char *analyzer = dd_loadtxt(dd, FILENAME_ANALYZER);
-    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
-    char *cmdline = dd_loadtxt(dd, FILENAME_CMDLINE);
+    char *time = dd_load_text(dd, FILENAME_TIME);
+    char *uid = dd_load_text(dd, CD_UID);
+    char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
+    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    char *cmdline = dd_load_text(dd, FILENAME_CMDLINE);
 
     char *remote_str = xstrdup("");
     if (dd_exist(dd, FILENAME_REMOTE))
-        remote_str = dd_loadtxt(dd, FILENAME_REMOTE);
+        remote_str = dd_load_text(dd, FILENAME_REMOTE);
 
     dd_close(dd);
 

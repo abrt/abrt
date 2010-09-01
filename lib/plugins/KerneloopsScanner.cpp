@@ -136,14 +136,14 @@ int save_oops_to_debug_dump(const vector_string_t& oopsList)
         dump_dir_t *dd = dd_init();
         if (dd_create(dd, path, /*uid:*/ 0))
         {
-            dd_savetxt(dd, FILENAME_ANALYZER, "Kerneloops");
-            dd_savetxt(dd, FILENAME_EXECUTABLE, "kernel");
-            dd_savetxt(dd, FILENAME_KERNEL, first_line);
-            dd_savetxt(dd, FILENAME_CMDLINE, "not_applicable");
-            dd_savetxt(dd, FILENAME_BACKTRACE, second_line);
+            dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
+            dd_save_text(dd, FILENAME_EXECUTABLE, "kernel");
+            dd_save_text(dd, FILENAME_KERNEL, first_line);
+            dd_save_text(dd, FILENAME_CMDLINE, "not_applicable");
+            dd_save_text(dd, FILENAME_BACKTRACE, second_line);
             /* Optional, makes generated bz more informative */
             strchrnul(second_line, '\n')[0] = '\0';
-            dd_savetxt(dd, FILENAME_REASON, second_line);
+            dd_save_text(dd, FILENAME_REASON, second_line);
             dd_close(dd);
         }
         else

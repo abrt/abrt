@@ -420,10 +420,10 @@ int main(int argc, char** argv)
         {
             char *cmdline = get_cmdline(pid); /* never NULL */
             char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);
-            dd_savetxt(dd, FILENAME_ANALYZER, "CCpp");
-            dd_savetxt(dd, FILENAME_EXECUTABLE, executable);
-            dd_savetxt(dd, FILENAME_CMDLINE, cmdline);
-            dd_savetxt(dd, FILENAME_REASON, reason);
+            dd_save_text(dd, FILENAME_ANALYZER, "CCpp");
+            dd_save_text(dd, FILENAME_EXECUTABLE, executable);
+            dd_save_text(dd, FILENAME_CMDLINE, cmdline);
+            dd_save_text(dd, FILENAME_REASON, reason);
             free(cmdline);
             free(reason);
 

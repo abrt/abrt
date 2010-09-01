@@ -194,8 +194,8 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
         return NULL;
     }
 
-    char *uid = dd_loadtxt(dd, CD_UID);
-    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
+    char *uid = dd_load_text(dd, CD_UID);
+    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
 
     // Workaround for
@@ -343,7 +343,7 @@ static char* run_unstrip_n(const char *pDebugDumpDir)
         return NULL;
     }
 
-    char *uid = dd_loadtxt(dd, CD_UID);
+    char *uid = dd_load_text(dd, CD_UID);
     dd_close(dd);
 
     char* args[4];
@@ -537,8 +537,8 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
         return string("");
     }
 
-    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
-    char *package = dd_loadtxt(dd, FILENAME_PACKAGE);
+    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    char *package = dd_load_text(dd, FILENAME_PACKAGE);
     dd_close(dd);
 
     string independentBuildIdPC;
@@ -599,7 +599,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 
     if (dd_exist(dd, FILENAME_GLOBAL_UUID))
     {
-        char *uuid = dd_loadtxt(dd, FILENAME_GLOBAL_UUID);
+        char *uuid = dd_load_text(dd, FILENAME_GLOBAL_UUID);
         dd_close(dd);
         string ret = uuid;
         free(uuid);
@@ -612,9 +612,9 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         log(_("Getting global universal unique identification..."));
 
         string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
-        char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
-        char *package = dd_loadtxt(dd, FILENAME_PACKAGE);
-        char *uid_str = m_bBacktrace ? dd_loadtxt(dd, CD_UID) : xstrdup("");
+        char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+        char *package = dd_load_text(dd, FILENAME_PACKAGE);
+        char *uid_str = m_bBacktrace ? dd_load_text(dd, CD_UID) : xstrdup("");
 
         string independent_backtrace;
         if (m_bBacktrace)
@@ -712,7 +712,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         */
         else
         {
-            dd_savetxt(dd, FILENAME_RATING, "0");
+            dd_save_text(dd, FILENAME_RATING, "0");
         }
         dd_close(dd);
 
@@ -770,7 +770,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     /* Skip remote crashes. */
     if (dd_exist(dd, FILENAME_REMOTE))
     {
-        char *remote_str = dd_loadtxt(dd, FILENAME_REMOTE);
+        char *remote_str = dd_load_text(dd, FILENAME_REMOTE);
         bool remote = (remote_str[0] != '1');
         free(remote_str);
         if (remote && !m_bBacktraceRemotes)
@@ -796,9 +796,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         }
     }
 
-    char *package = dd_loadtxt(dd, FILENAME_PACKAGE);
-    char *executable = dd_loadtxt(dd, FILENAME_EXECUTABLE);
-    char *uid = dd_loadtxt(dd, CD_UID);
+    char *package = dd_load_text(dd, FILENAME_PACKAGE);
+    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
+    char *uid = dd_load_text(dd, CD_UID);
     dd_close(dd); /* do not keep dir locked longer than needed */
 
     char *build_ids = NULL;
@@ -829,11 +829,11 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return;
     }
-    dd_savetxt(dd, FILENAME_BACKTRACE, bt_build_ids);
+    dd_save_text(dd, FILENAME_BACKTRACE, bt_build_ids);
     free(bt_build_ids);
 
     if (m_bMemoryMap)
-        dd_savetxt(dd, FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
+        dd_save_text(dd, FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
 
     /* Compute and store UUID from the backtrace. */
     char *backtrace_cpy = xstrdup(backtrace_str);
@@ -870,7 +870,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         struct strbuf *bt = backtrace_tree_as_str(backtrace, false);
         strbuf_prepend_str(bt, executable);
         strbuf_prepend_str(bt, package);
-        dd_savetxt(dd, FILENAME_GLOBAL_UUID, create_hash(bt->buf).c_str());
+        dd_save_text(dd, FILENAME_GLOBAL_UUID, create_hash(bt->buf).c_str());
         strbuf_free(bt);
 
         /* Compute and store backtrace rating. */
@@ -886,7 +886,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         else if (qtot < 0.8f) rating = "2";
         else if (qtot < 0.9f) rating = "3";
         else                  rating = "4";
-        dd_savetxt(dd, FILENAME_RATING, rating);
+        dd_save_text(dd, FILENAME_RATING, rating);
 
         /* Get the function name from the crash frame. */
         if (crash_thread)
@@ -896,7 +896,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
             if (abort_frame)
                 crash_frame = abort_frame->next;
             if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
-                dd_savetxt(dd, FILENAME_CRASH_FUNCTION, crash_frame->function);
+                dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function);
         }
 
         backtrace_free(backtrace);
@@ -910,12 +910,12 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         struct strbuf *ibt = independent_backtrace(backtrace_str);
         strbuf_prepend_str(ibt, executable);
         strbuf_prepend_str(ibt, package);
-        dd_savetxt(dd, FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
+        dd_save_text(dd, FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
         strbuf_free(ibt);
 
         /* Compute and store backtrace rating. */
         /* Crash frame is not known so store nothing. */
-        dd_savetxt(dd, FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str)).c_str());
+        dd_save_text(dd, FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str)).c_str());
     }
     free(executable);
     free(package);

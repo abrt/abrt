@@ -34,7 +34,7 @@ static bool isdigit_str(const char *str)
     return true;
 }
 
-static char* RemoveBackSlashes(const char *pDir)
+static char* rm_trailing_slashes(const char *pDir)
 {
     unsigned len = strlen(pDir);
     while (len != 0 && pDir[len-1] == '/')
@@ -42,7 +42,7 @@ static char* RemoveBackSlashes(const char *pDir)
     return xstrndup(pDir, len);
 }
 
-static bool ExistFileDir(const char *pPath)
+static bool exist_file_dir(const char *pPath)
 {
     struct stat buf;
     if (stat(pPath, &buf) == 0)
@@ -55,7 +55,7 @@ static bool ExistFileDir(const char *pPath)
     return false;
 }
 
-static char *LoadTextFile(const char *path);
+static char *load_text_file(const char *path);
 static void dd_lock(dump_dir_t *dd);
 static void dd_unlock(dump_dir_t *dd);
 
@@ -85,8 +85,8 @@ int dd_opendir(dump_dir_t *dd, const char *dir)
     if (dd->opened)
         error_msg_and_die("CDebugDump is already opened");
 
-    dd->dd_dir = RemoveBackSlashes(dir);
-    if (!dd->dd_dir || !ExistFileDir(dd->dd_dir))
+    dd->dd_dir = rm_trailing_slashes(dir);
+    if (!dd->dd_dir || !exist_file_dir(dd->dd_dir))
     {
         error_msg("'%s' does not exist", dd->dd_dir);
         return 0;
@@ -109,12 +109,12 @@ int dd_opendir(dump_dir_t *dd, const char *dir)
 int dd_exist(dump_dir_t *dd, const char *path)
 {
     char *full_path = concat_path_file(dd->dd_dir, path);
-    int ret = ExistFileDir(full_path);
+    int ret = exist_file_dir(full_path);
     free(full_path);
     return ret;
 }
 
-static bool GetAndSetLock(const char* pLockFile, const char* pPID)
+static bool get_and_set_lock(const char* pLockFile, const char* pPID)
 {
     while (symlink(pPID, pLockFile) != 0)
     {
@@ -232,7 +232,7 @@ static void dd_lock(dump_dir_t *dd)
 
     char pid_buf[sizeof(long)*3 + 2];
     sprintf(pid_buf, "%lu", (long)getpid());
-    while ((dd->locked = GetAndSetLock(lock_buf, pid_buf)) != true)
+    while ((dd->locked = get_and_set_lock(lock_buf, pid_buf)) != true)
     {
         sleep(1); /* was 0.5 seconds */
     }
@@ -273,8 +273,8 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
     if (dd->opened)
         error_msg_and_die("DebugDump is already opened");
 
-    dd->dd_dir = RemoveBackSlashes(dir);
-    if (ExistFileDir(dd->dd_dir))
+    dd->dd_dir = rm_trailing_slashes(dir);
+    if (exist_file_dir(dd->dd_dir))
     {
         error_msg("'%s' already exists", dd->dd_dir);
         return 0;
@@ -328,7 +328,7 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
 
     char uid_str[sizeof(long) * 3 + 2];
     sprintf(uid_str, "%lu", (long)uid);
-    dd_savetxt(dd, CD_UID, uid_str);
+    dd_save_text(dd, CD_UID, uid_str);
 
     {
         struct utsname buf;
@@ -336,25 +336,25 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
         {
             perror_msg_and_die("uname");
         }
-        dd_savetxt(dd, FILENAME_KERNEL, buf.release);
-        dd_savetxt(dd, FILENAME_ARCHITECTURE, buf.machine);
-        char *release = LoadTextFile("/etc/redhat-release");
+        dd_save_text(dd, FILENAME_KERNEL, buf.release);
+        dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
+        char *release = load_text_file("/etc/redhat-release");
         strchrnul(release, '\n')[0] = '\0';
-        dd_savetxt(dd, FILENAME_RELEASE, release);
+        dd_save_text(dd, FILENAME_RELEASE, release);
         free(release);
     }
 
     time_t t = time(NULL);
     char t_str[sizeof(time_t) * 3 + 2];
     sprintf(t_str, "%lu", (time_t)t);
-    dd_savetxt(dd, FILENAME_TIME, t_str);
+    dd_save_text(dd, FILENAME_TIME, t_str);
 
     return 1;
 }
 
-static bool DeleteFileDir(const char *pDir)
+static bool delete_file_dir(const char *pDir)
 {
-    if (!ExistFileDir(pDir))
+    if (!exist_file_dir(pDir))
         return true;
 
     DIR *d = opendir(pDir);
@@ -379,7 +379,7 @@ static bool DeleteFileDir(const char *pDir)
                 free(full_path);
                 return false;
             }
-            DeleteFileDir(full_path);
+            delete_file_dir(full_path);
         }
         free(full_path);
     }
@@ -395,15 +395,15 @@ static bool DeleteFileDir(const char *pDir)
 
 void dd_delete(dump_dir_t *dd)
 {
-    if (!ExistFileDir(dd->dd_dir))
+    if (!exist_file_dir(dd->dd_dir))
     {
         return;
     }
 
-    DeleteFileDir(dd->dd_dir);
+    delete_file_dir(dd->dd_dir);
 }
 
-static char *LoadTextFile(const char *pPath)
+static char *load_text_file(const char *pPath)
 {
     FILE *fp = fopen(pPath, "r");
     if (!fp)
@@ -426,7 +426,7 @@ static char *LoadTextFile(const char *pPath)
     return strbuf_free_nobuf(buf_content);
 }
 
-static bool SaveBinaryFile(const char *pPath, const char* pData, unsigned size, uid_t uid, gid_t gid)
+static bool save_binary_file(const char *pPath, const char* pData, unsigned size, uid_t uid, gid_t gid)
 {
     /* "Why 0640?!" See ::Create() for security analysis */
     unlink(pPath);
@@ -451,35 +451,35 @@ static bool SaveBinaryFile(const char *pPath, const char* pData, unsigned size, 
     return true;
 }
 
-char* dd_loadtxt(const dump_dir_t *dd, const char *name)
+char* dd_load_text(const dump_dir_t *dd, const char *name)
 {
     if (!dd->opened)
         error_msg_and_die("DebugDump is not opened");
 
     char *full_path = concat_path_file(dd->dd_dir, name);
-    char *ret = LoadTextFile(full_path);
+    char *ret = load_text_file(full_path);
     free(full_path);
 
     return ret;
 }
 
-void dd_savetxt(dump_dir_t *dd, const char *name, const char *data)
+void dd_save_text(dump_dir_t *dd, const char *name, const char *data)
 {
     if (!dd->opened)
         error_msg_and_die("DebugDump is not opened");
 
     char *full_path = concat_path_file(dd->dd_dir, name);
-    SaveBinaryFile(full_path, data, strlen(data), dd->uid, dd->gid);
+    save_binary_file(full_path, data, strlen(data), dd->uid, dd->gid);
     free(full_path);
 }
 
-void dd_savebin(dump_dir_t* dd, const char* name, const char* data, unsigned size)
+void dd_save_binary(dump_dir_t* dd, const char* name, const char* data, unsigned size)
 {
     if (dd->opened)
         error_msg_and_die("DebugDump is not opened");
 
     char *full_path = concat_path_file(dd->dd_dir, name);
-    SaveBinaryFile(full_path, data, size, dd->uid, dd->gid);
+    save_binary_file(full_path, data, size, dd->uid, dd->gid);
     free(full_path);
 }
 
