@@ -6,14 +6,15 @@
 %else
     %define with_systemd 0
 %endif
+
+%define git 0
+%if %{git}
 # please modify the "_buildid" define in a way that identifies
 # that the built package isn't the stock distribution package,
-# for example, by setting the define to ".local" or ".bz123456"
+# for example, by setting abbreviation sha1 hash "238f49f"
 #
-# % define _buildid .local
-
-%if 0%{?_buildid}
-%define pkg_release 0.%{?_buildid}%{?dist}
+%define _buildid .git238f49f
+%define pkg_release 0%{?_buildid}%{?dist}
 %else
 %define pkg_release 1%{?dist}
 %endif
