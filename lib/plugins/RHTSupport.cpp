@@ -23,7 +23,6 @@
 #include "abrt_curl.h"
 #include "abrt_rh_support.h"
 #include "crash_types.h"
-#include "debug_dump.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "RHTSupport.h"

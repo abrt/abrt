@@ -17,7 +17,6 @@
 */
 #include "abrtlib.h"
 #include "hooklib.h"
-#include "debug_dump.h"
 #include <sys/statvfs.h>
 
 void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSize, bool *setting_MakeCompatCore, bool *setting_SaveBinaryImage)

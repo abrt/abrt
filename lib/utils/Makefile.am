@@ -23,7 +23,7 @@ libABRTUtils_la_SOURCES = \
     spawn.c \
     stringops.cpp \
     dirsize.c \
-    DebugDump.cpp \
+    dump_dir.c \
     abrt_dbus.c abrt_dbus.h \
     CrashTypes.cpp \
     ABRTException.cpp \

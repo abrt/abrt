@@ -20,7 +20,6 @@
 */
 #include "abrtlib.h"
 #include "Logger.h"
-#include "debug_dump.h"
 #include "comm_layer_inner.h"
 #include "abrt_exception.h"
 

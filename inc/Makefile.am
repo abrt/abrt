@@ -9,7 +9,7 @@ HEADER_FILES = \
     crash_types.h \
     database.h \
     dbus_common.h \
-    debug_dump.h \
+    dump_dir.h \
     observer.h \
     plugin.h \
     reporter.h \

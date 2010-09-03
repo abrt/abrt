@@ -22,7 +22,6 @@
 #include "run-command.h"
 #include "dbus.h"
 #include "abrtlib.h"
-#include "debug_dump.h"
 #include "crash_types.h" // FILENAME_* defines
 #include "plugin.h" // LoadPluginSettings
 

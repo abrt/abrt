@@ -19,7 +19,6 @@
 #include <sys/un.h>
 #include "abrtlib.h"
 #include "dumpsocket.h"
-#include "debug_dump.h"
 #include "crash_types.h"
 //#include "abrt_exception.h"
 #include "hooklib.h"

@@ -31,7 +31,6 @@
 #include "abrtlib.h"
 #include "abrt_exception.h"
 #include "CrashWatcher.h"
-#include "debug_dump.h"
 #include "Daemon.h"
 #include "dumpsocket.h"
 #include "rpm.h"

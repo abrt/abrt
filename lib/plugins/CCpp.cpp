@@ -23,7 +23,6 @@
 #include "abrtlib.h"
 #include "CCpp.h"
 #include "abrt_exception.h"
-#include "debug_dump.h"
 #include "comm_layer_inner.h"
 #include "Polkit.h"
 #include "backtrace.h"

@@ -72,6 +72,8 @@ int vdprintf(int d, const char *format, va_list ap);
 #include "logging.h"
 #include "read_write.h"
 #include "strbuf.h"
+#include "crash_types.h"
+#include "dump_dir.h"
 
 
 #ifdef __cplusplus

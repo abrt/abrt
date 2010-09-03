@@ -20,7 +20,6 @@
 */
 #include "abrtlib.h"
 #include "RunApp.h"
-#include "debug_dump.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "abrtlib.h"
