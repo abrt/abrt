@@ -629,23 +629,28 @@ static void run_main_loop(GMainLoop* loop)
     GMainContext *context = g_main_loop_get_context(loop);
     time_t old_time = 0;
     time_t dns_conf_hash = 0;
+    int fds_size = 0;
+    GPollFD *fds = NULL;
 
     while (!s_exiting)
     {
-        /* we have just a handful of sources, 32 should be ample */
-        const unsigned NUM_POLLFDS = 32;
-        GPollFD fds[NUM_POLLFDS];
         gboolean some_ready;
         gint max_priority;
         gint timeout;
+        gint nfds;
 
         some_ready = g_main_context_prepare(context, &max_priority);
         if (some_ready)
             g_main_context_dispatch(context);
 
-        gint nfds = g_main_context_query(context, max_priority, &timeout, fds, NUM_POLLFDS);
-        if (nfds > NUM_POLLFDS)
-            error_msg_and_die("Internal error");
+        while (1)
+        {
+            nfds = g_main_context_query(context, max_priority, &timeout, fds, fds_size);
+            if (nfds <= fds_size)
+                break;
+            fds_size = nfds + 16; /* +16: optimizing realloc frequency */
+            fds = (GPollFD *)xrealloc(fds, fds_size * sizeof(fds[0]));
+        }
 
         if (s_timeout)
             alarm(s_timeout);
@@ -685,6 +690,7 @@ static void run_main_loop(GMainLoop* loop)
             g_main_context_dispatch(context);
     }
 
+    free(fds);
     g_main_context_unref(context);
 }
 
