@@ -86,9 +86,20 @@
 #define CD_ISNOTEDITABLE "n"
 
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const char *const must_have_files[];
 
 bool is_editable_file(const char *file_name);
+
+#ifdef __cplusplus
+}
+#endif
+
+
+#ifdef __cplusplus
 
 // <key, data>
 typedef map_vector_string_t map_crash_data_t;
@@ -109,5 +120,8 @@ const char *get_crash_data_item_content_or_NULL(const map_crash_data_t& crash_da
 const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key);
 
 void log_map_crash_data(const map_crash_data_t& data, const char *name);
+
+#endif /* __cplusplus */
+
 
 #endif
