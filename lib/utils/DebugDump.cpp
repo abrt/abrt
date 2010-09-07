@@ -433,7 +433,7 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
     int fd = open(path, O_WRONLY | O_TRUNC | O_CREAT, 0640);
     if (fd < 0)
     {
-        error_msg("Can't open file '%s': %s", path, errno ? strerror(errno) : "errno == 0");
+        perror_msg("Can't open file '%s'", path);
         return false;
     }
     if (fchown(fd, uid, gid) == -1)
