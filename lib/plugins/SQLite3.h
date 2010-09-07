@@ -47,10 +47,11 @@ class CSQLite3 : public CDatabase
         virtual void SetReportedPerReporter(const char *crash_id,
                                  const char *reporter,
                                  const char *pMessage);
-        virtual vector_database_rows_t GetUIDData(long caller_uid);
-        virtual database_row_t GetRow(const char *crash_id);
+        virtual GList *GetUIDData(long caller_uid);
+        virtual struct db_row *GetRow(const char *crash_id);
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 };
+
 
 #endif

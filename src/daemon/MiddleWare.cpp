@@ -278,21 +278,26 @@ mw_result_t CreateCrashReport(const char *crash_id,
 {
     VERB2 log("CreateCrashReport('%s',%ld,result)", crash_id, caller_uid);
 
-    database_row_t row;
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    row = database->GetRow(crash_id);
+
+    struct db_row *row = database->GetRow(crash_id);
     database->DisConnect();
-    if (row.m_sUUID == "")
+    if (!row)
     {
         error_msg("crash '%s' is not in database", crash_id);
         return MW_IN_DB_ERROR;
     }
+
+    char caller_uid_str[sizeof(long) * 3 + 2];
+    sprintf(caller_uid_str, "%li", caller_uid);
+
     if (caller_uid != 0 /* not called by root */
-     && row.m_sInformAll != "1"
-     && to_string(caller_uid) != row.m_sUID
+     && row->db_inform_all[0] != '1'
+     && strcmp(caller_uid_str, row->db_uid) != 0
     ) {
         error_msg("crash '%s' can't be accessed by user with uid %ld", crash_id, caller_uid);
+        db_row_free(row);
         return MW_IN_DB_ERROR;
     }
 
@@ -300,9 +305,10 @@ mw_result_t CreateCrashReport(const char *crash_id,
     try
     {
         dump_dir_t *dd = dd_init();
-        if (!dd_opendir(dd, row.m_sDebugDumpDir.c_str()))
+        if (!dd_opendir(dd, row->db_dump_dir))
         {
             dd_close(dd);
+            db_row_free(row);
             return MW_ERROR;
         }
 
@@ -319,24 +325,26 @@ mw_result_t CreateCrashReport(const char *crash_id,
         // Why do we reload dump dir's data via DebugDumpToCrashReport?
 
         VERB3 log(" run_analyser_CreateReport('%s')", analyzer.c_str());
-        run_analyser_CreateReport(analyzer.c_str(), row.m_sDebugDumpDir.c_str(), force);
+        run_analyser_CreateReport(analyzer.c_str(), row->db_dump_dir, force);
 
-        std::string dup_hash = GetGlobalUUID(analyzer.c_str(), row.m_sDebugDumpDir.c_str());
+        std::string dup_hash = GetGlobalUUID(analyzer.c_str(), row->db_dump_dir);
         VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
 
-        VERB3 log(" RunAnalyzerActions('%s','%s','%s',force=%d)", analyzer.c_str(), package_name, row.m_sDebugDumpDir.c_str(), force);
-        RunAnalyzerActions(analyzer.c_str(), package_name, row.m_sDebugDumpDir.c_str(), force);
+        VERB3 log(" RunAnalyzerActions('%s','%s','%s',force=%d)", analyzer.c_str(), package_name, row->db_dump_dir, force);
+        RunAnalyzerActions(analyzer.c_str(), package_name, row->db_dump_dir, force);
         free(package_name);
-        if (DebugDumpToCrashReport(row.m_sDebugDumpDir.c_str(), pCrashData))
+        if (DebugDumpToCrashReport(row->db_dump_dir, pCrashData))
         {
-            add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row.m_sUUID.c_str());
+            add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row->db_uuid);
             add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
         }
         else
         {
+            db_row_free(row);
             error_msg("Error loading crash data");
             return MW_ERROR;
         }
+        db_row_free(row);
     }
     catch (CABRTException& e)
     {
@@ -611,19 +619,22 @@ static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    vector_database_rows_t rows = database->GetUIDData(uid);
+    GList *table = database->GetUIDData(uid);
     database->DisConnect();
 
-    size_t ii;
     bool found = false;
-    for (ii = 0; ii < rows.size(); ii++)
+    struct db_row *row = NULL;
+    for (GList *li = table; li != NULL; li = g_list_next(li))
     {
-        if (0 == strcmp(rows[ii].m_sDebugDumpDir.c_str(), debug_dump_dir))
+        row = (struct db_row*)li->data;
+        if (0 == strcmp(row->db_dump_dir, debug_dump_dir))
         {
             found = true;
             break;
         }
     }
+
+    db_list_free(table);
 
     return found;
 }
@@ -1012,24 +1023,28 @@ static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
     database->Connect();
     /* note: if [UUID,UID] record exists, pDebugDumpDir is not updated in the record */
     database->Insert_or_Update(crash_id, inform_all_users, pDebugDumpDir, pTime);
-    database_row_t row = database->GetRow(crash_id);
+
+    struct db_row *row = database->GetRow(crash_id);
     database->DisConnect();
 
     mw_result_t res = FillCrashInfo(crash_id, pCrashData);
     if (res == MW_OK)
     {
         const char *first = get_crash_data_item_content(pCrashData, CD_DUMPDIR).c_str();
-        if (row.m_sReported == "1")
+        if (row && row->db_reported[0] == '1')
         {
             log("Crash is in database already (dup of %s) and is reported", first);
+            db_row_free(row);
             return MW_REPORTED;
         }
-        if (row.m_sCount != "1")
+        if (row && xatou(row->db_count) > 1)
         {
+            db_row_free(row);
             log("Crash is in database already (dup of %s)", first);
             return MW_OCCURRED;
         }
     }
+    db_row_free(row);
     return res;
 }
 
@@ -1122,7 +1137,11 @@ mw_result_t FillCrashInfo(const char *crash_id,
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-    database_row_t row = database->GetRow(crash_id);
+
+    struct db_row *row = database->GetRow(crash_id);
+    if (!row)
+        return MW_ERROR;
+
     database->DisConnect();
 
     std::string package;
@@ -1131,23 +1150,26 @@ mw_result_t FillCrashInfo(const char *crash_id,
     std::string analyzer;
 
     dump_dir_t *dd = dd_init();
-    if (!dd_opendir(dd, row.m_sDebugDumpDir.c_str()))
+    if (!dd_opendir(dd, row->db_dump_dir))
     {
         dd_close(dd);
+        db_row_free(row);
         return MW_ERROR;
     }
 
     load_crash_data_from_debug_dump(dd, pCrashData);
     dd_close(dd);
 
-    add_to_crash_data(pCrashData, CD_UID              , row.m_sUID.c_str()         );
-    add_to_crash_data(pCrashData, CD_UUID             , row.m_sUUID.c_str()        );
-    add_to_crash_data(pCrashData, CD_INFORMALL        , row.m_sInformAll.c_str()   );
-    add_to_crash_data(pCrashData, CD_COUNT            , row.m_sCount.c_str()       );
-    add_to_crash_data(pCrashData, CD_REPORTED         , row.m_sReported.c_str()    );
-    add_to_crash_data(pCrashData, CD_MESSAGE          , row.m_sMessage.c_str()     );
-    add_to_crash_data(pCrashData, CD_DUMPDIR          , row.m_sDebugDumpDir.c_str());
-    add_to_crash_data(pCrashData, FILENAME_TIME       , row.m_sTime.c_str()        );
+    add_to_crash_data(pCrashData, CD_UID              , row->db_uid        );
+    add_to_crash_data(pCrashData, CD_UUID             , row->db_uuid       );
+    add_to_crash_data(pCrashData, CD_INFORMALL        , row->db_inform_all );
+    add_to_crash_data(pCrashData, CD_COUNT            , row->db_count      );
+    add_to_crash_data(pCrashData, CD_REPORTED         , row->db_reported   );
+    add_to_crash_data(pCrashData, CD_MESSAGE          , row->db_message    );
+    add_to_crash_data(pCrashData, CD_DUMPDIR          , row->db_dump_dir   );
+    add_to_crash_data(pCrashData, FILENAME_TIME       , row->db_time       );
+
+    db_row_free(row);
 
     return MW_OK;
 }
@@ -1155,17 +1177,20 @@ mw_result_t FillCrashInfo(const char *crash_id,
 void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
-    vector_database_rows_t rows;
     database->Connect();
-    rows = database->GetUIDData(caller_uid);
+    GList *rows = database->GetUIDData(caller_uid);
     database->DisConnect();
 
-    unsigned ii;
-    for (ii = 0; ii < rows.size(); ii++)
+    struct db_row *row = NULL;
+    for (GList *li = rows; li != NULL; li = g_list_next(li))
     {
-        string crash_id = ssprintf("%s:%s", rows[ii].m_sUID.c_str(), rows[ii].m_sUUID.c_str());
+        row = (struct db_row*)li->data;
+        string crash_id = ssprintf("%s:%s", row->db_uid, row->db_uuid);
         result.push_back(crash_id);
     }
+
+    // TODO: return GList
+    db_list_free(rows);
 }
 
 void AddAnalyzerActionOrReporter(const char *pAnalyzer,

@@ -188,27 +188,33 @@ int DeleteDebugDump(const char *crash_id, long caller_uid)
     {
         CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
         database->Connect();
-        database_row_t row = database->GetRow(crash_id);
-        if (row.m_sUUID == "")
+        struct db_row *row = database->GetRow(crash_id);
+        if (!row)
         {
             database->DisConnect();
             return ENOENT;
         }
+
+        char caller_uid_str[sizeof(long) * 3 + 2];
+        sprintf(caller_uid_str, "%li", caller_uid);
+
         if (caller_uid != 0 /* not called by root */
-         && row.m_sInformAll != "1"
-         && to_string(caller_uid) != row.m_sUID
+         && row->db_inform_all[0] != '1'
+         && strcmp(caller_uid_str, row->db_uid) != 0
         ) {
             database->DisConnect();
+            db_row_free(row);
             return EPERM;
         }
         database->DeleteRow(crash_id);
         database->DisConnect();
-        const char *dump_dir = row.m_sDebugDumpDir.c_str();
-        if (dump_dir[0] != '\0')
+        if (row->db_dump_dir[0] != '\0')
         {
-            delete_debug_dump_dir(dump_dir);
+            delete_debug_dump_dir(row->db_dump_dir);
+            db_row_free(row);
             return 0; /* success */
         }
+        db_row_free(row);
     }
     catch (CABRTException& e)
     {

@@ -21,9 +21,7 @@
 #ifndef DATABASE_H_
 #define DATABASE_H_
 
-#include <string>
-#include <vector>
-#include "plugin.h"
+#include <glib.h>
 
 /**
  * Table
@@ -33,25 +31,39 @@
  * primary key (UUID, UID)
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * A struct contains one database row.
  */
-typedef struct database_row_t
+struct db_row
 {
-    std::string m_sUUID; /**< A local UUID.*/
-    std::string m_sUID; /**< An UID of an user.*/
-    std::string m_sInformAll;
-    std::string m_sDebugDumpDir; /**< A debugdump directory of a crash.*/
-    std::string m_sCount; /**< Crash rate.*/
-    std::string m_sReported; /**< Is a row reported?*/
-    std::string m_sMessage; /**< if a row is reported, then there can be store message abotu that*/
-    std::string m_sTime; /**< Time of last occurred crash with same local UUID*/
-} database_row_t;
+    char *db_uuid; /**< A local UUID.*/
+    char *db_uid; /**< An UID of an user.*/
+    char *db_inform_all;
+    char *db_dump_dir; /**< A debugdump directory of a crash.*/
+    char *db_count; /**< Crash rate.*/
+    char *db_reported; /**< Is a row reported?*/
+    char *db_message; /**< if a row is reported, then there can be store message abotu that*/
+    char *db_time; /**< Time of last occurred crash with same local UUID*/
+};
 
-/**
- * A vector contains one or more database rows.
- */
-typedef std::vector<database_row_t> vector_database_rows_t;
+void db_row_free(struct db_row *row);
+
+void db_list_free(GList *list);
+
+#ifdef __cplusplus
+}
+#endif
+
+#ifdef __cplusplus
+
+#include <string>
+#include <vector>
+
+#include "plugin.h"
 
 /**
  * An abstract class. The class defines a database plugin interface.
@@ -104,7 +116,7 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A vector of matched rows.
          */
-        virtual vector_database_rows_t GetUIDData(long caller_uid) = 0;
+        virtual GList *GetUIDData(long caller_uid) = 0;
         /**
          * A method, which returns one row accordind to UUID of a crash and
          * UID of an user. If there are no row, empty row is returned.
@@ -112,7 +124,8 @@ class CDatabase : public CPlugin
          * @param pUID An UID of an user.
          * @return A matched row.
          */
-        virtual database_row_t GetRow(const char *crash_id) = 0;
+        virtual struct db_row *GetRow(const char *crash_id) = 0;
 };
+#endif
 
 #endif

@@ -42,6 +42,8 @@ using namespace std;
 
 #define COL_REPORTER           "Reporter"
 
+#define NUM_COL                8
+
 /* Is this string safe wrt SQL injection?
  * PHP's mysql_real_escape_string() treats \, ', ", \x00, \n, \r, and \x1a as special.
  * We are a bit more paranoid and disallow any control chars.
@@ -103,13 +105,9 @@ static string sql_escape(const char *str)
 /* Note:
  * expects "SELECT * FROM ...", not "SELECT <only some fields> FROM ..."
  */
-static void get_table(vector_database_rows_t& pTable,
-                sqlite3 *db, const char *fmt, ...)
+static GList *vget_table(sqlite3 *db, const char *fmt, va_list p)
 {
-    va_list p;
-    va_start(p, fmt);
     char *sql = xvasprintf(fmt, p);
-    va_end(p);
 
     char **table;
     int ncol, nrow;
@@ -117,39 +115,57 @@ static void get_table(vector_database_rows_t& pTable,
     int ret = sqlite3_get_table(db, sql, &table, &nrow, &ncol, &err);
     if (ret != SQLITE_OK)
     {
-        string errstr = ssprintf("Error in SQL:'%s' error: %s", sql, err);
+        error_msg("Error in SQL:'%s' error: %s", sql, err);
         free(sql);
         sqlite3_free(err);
-        throw CABRTException(EXCEP_PLUGIN, errstr.c_str());
+        return (GList*)ERR_PTR;
     }
-    VERB2 log("%d rows returned by SQL:%s", nrow, sql);
+    VERB2 log("%s: %d rows returned by SQL:%s", __func__, nrow, sql);
     free(sql);
 
-    pTable.clear();
+    if (ncol < NUM_COL)
+        error_msg_and_die("Unexpected number of columns: %d", ncol);
+
+    GList *rows = NULL;
     int ii;
     for (ii = 0; ii < nrow; ii++)
     {
         int jj;
-        database_row_t row;
+        struct db_row *row = (struct db_row*)xzalloc(sizeof(struct db_row));
         for (jj = 0; jj < ncol; jj++)
         {
             char *val = table[jj + (ncol*ii) + ncol];
             switch (jj)
             {
-                case 0: row.m_sUUID         = val; break;
-                case 1: row.m_sUID          = val; break;
-                case 2: row.m_sInformAll    = val; break;
-                case 3: row.m_sDebugDumpDir = val; break;
-                case 4: row.m_sCount        = val; break;
-                case 5: row.m_sReported     = val; break;
-                case 6: row.m_sTime         = val; break;
-                case 7: row.m_sMessage      = val; break;
+                case 0: row->db_uuid       = xstrdup(val); break;
+                case 1: row->db_uid        = xstrdup(val); break;
+                case 2: row->db_inform_all = xstrdup(val); break;
+                case 3: row->db_dump_dir   = xstrdup(val); break;
+                case 4: row->db_count      = xstrdup(val); break;
+                case 5: row->db_reported   = xstrdup(val); break;
+                case 6: row->db_time       = xstrdup(val); break;
+                case 7: row->db_message    = xstrdup(val); break;
             }
         }
-        pTable.push_back(row);
+        rows = g_list_append(rows, row);
 
     }
     sqlite3_free_table(table);
+
+    return rows;
+}
+
+static GList *get_table_or_die(sqlite3 *db, const char *fmt, ...)
+{
+    va_list p;
+    va_start(p, fmt);
+    GList *table = vget_table(db, fmt, p);
+    va_end(p);
+
+    if (table == (GList*)ERR_PTR)
+        xfunc_die();
+
+    return table;
 }
 
 static int execute_sql(sqlite3 *db, const char *fmt, ...)
@@ -177,13 +193,17 @@ static int execute_sql(sqlite3 *db, const char *fmt, ...)
 
 static bool exists_uuid_uid(sqlite3 *db, const char *UUID, const char *UID)
 {
-    vector_database_rows_t table;
-    get_table(table, db,
-                "SELECT * FROM "ABRT_TABLE
-                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
-                UUID, UID
+    GList *table =  get_table_or_die(db, "SELECT * FROM "ABRT_TABLE
+                                         " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                                         UUID, UID
     );
-    return !table.empty();
+
+    if (!table)
+        return false;
+
+    db_list_free(table);
+
+    return true;
 }
 
 static void update_from_old_ver(sqlite3 *db, int old_version)
@@ -496,27 +516,26 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
     }
 
     /* Get UID:UUID pair(s) to delete */
-    vector_database_rows_t table;
-    get_table(table, m_pDB,
-                "SELECT * FROM "ABRT_TABLE
-                " WHERE "COL_DEBUG_DUMP_PATH"='%s';",
-                dump_dir
+    GList *table = get_table_or_die(m_pDB, "SELECT * FROM "ABRT_TABLE
+                                           " WHERE "COL_DEBUG_DUMP_PATH"='%s';",
+                                           dump_dir
     );
-    if (table.empty())
+
+    if (!table)
     {
         return;
     }
 
+    struct db_row *row = NULL;
     /* Delete from both tables */
-    vector_database_rows_t::iterator it = table.begin();
-    while (it != table.end())
+    for (GList *li = table; li != NULL; li = g_list_next(li))
     {
+        row = (struct db_row*)li->data;
         execute_sql(m_pDB,
                 "DELETE FROM "ABRT_REPRESULT_TABLE
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
-                it->m_sUUID.c_str(), it->m_sUID.c_str()
+                row->db_uuid, row->db_uid
         );
-        it++;
     }
     execute_sql(m_pDB,
                 "DELETE FROM "ABRT_TABLE
@@ -601,32 +620,31 @@ void CSQLite3::SetReportedPerReporter(const char *crash_id,
     }
 }
 
-vector_database_rows_t CSQLite3::GetUIDData(long caller_uid)
+GList *CSQLite3::GetUIDData(long caller_uid)
 {
-    vector_database_rows_t table;
+    GList *table = NULL;
 
     if (caller_uid == 0)
     {
-        get_table(table, m_pDB, "SELECT * FROM "ABRT_TABLE";");
+        table = get_table_or_die(m_pDB, "SELECT * FROM "ABRT_TABLE";");
     }
     else
     {
-        get_table(table, m_pDB,
-                "SELECT * FROM "ABRT_TABLE
-                " WHERE "COL_UID"='%ld' OR "COL_INFORMALL"=1;",
-                caller_uid
+        table = get_table_or_die(m_pDB, "SELECT * FROM "ABRT_TABLE
+                                        " WHERE "COL_UID"='%ld' OR "COL_INFORMALL"=1;",
+                                         caller_uid
         );
     }
     return table;
 }
 
-database_row_t CSQLite3::GetRow(const char *crash_id)
+struct db_row *CSQLite3::GetRow(const char *crash_id)
 {
     const char *UUID = strchr(crash_id, ':');
     if (!UUID
      || !is_string_safe(crash_id)
     ) {
-        return database_row_t();
+        return NULL;
     }
 
     /* Split crash_id into UID:UUID */
@@ -636,18 +654,23 @@ database_row_t CSQLite3::GetRow(const char *crash_id)
     strncpy(UID, crash_id, uid_len);
     UID[uid_len] = '\0';
 
-    vector_database_rows_t table;
-    get_table(table, m_pDB,
-                "SELECT * FROM "ABRT_TABLE
-                " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
-                UUID, UID
+    GList *table = get_table_or_die(m_pDB, "SELECT * FROM "ABRT_TABLE
+                                    " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
+                                    UUID, UID
     );
 
-    if (table.size() == 0)
+    if (!table)
     {
-        return database_row_t();
+        return NULL;
     }
-    return table[0];
+
+    GList *first = g_list_first(table);
+    struct db_row *row = (struct db_row*)xzalloc(sizeof(struct db_row));
+    memcpy(row, first->data, sizeof(struct db_row));
+
+    db_list_free(table);
+
+    return row;
 }
 
 void CSQLite3::SetSettings(const map_plugin_settings_t& pSettings)

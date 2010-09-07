@@ -64,6 +64,9 @@ int vdprintf(int d, const char *format, va_list ap);
 #undef NORETURN
 #define NORETURN __attribute__ ((noreturn))
 
+#undef ERR_PTR
+#define ERR_PTR ((void*)(uintptr_t)1)
+
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 

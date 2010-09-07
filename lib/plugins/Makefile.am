@@ -98,8 +98,8 @@ libMailx_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DPLUGINS_LIB_DIR=\"$(PLUGI
 # SQLite3
 libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
 libSQLite3_la_LDFLAGS = -avoid-version
-libSQLite3_la_LIBADD = $(SQLITE3_LIBS)
-libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"'
+libSQLite3_la_LIBADD = $(SQLITE3_LIBS) $(GLIB_LIBS)
+libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"' $(GLIB_CFLAGS)
 
 # Logger
 libLogger_la_SOURCES = Logger.cpp Logger.h

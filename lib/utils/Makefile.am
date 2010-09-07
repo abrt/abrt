@@ -31,7 +31,8 @@ libABRTUtils_la_SOURCES = \
     backtrace_parser.y \
     strbuf.c strbuf.h \
     abrt_packages.c abrt_packages.h \
-    hooklib.c hooklib.h
+    hooklib.c hooklib.h \
+    database.c
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \

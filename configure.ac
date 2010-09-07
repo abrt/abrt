@@ -16,7 +16,7 @@ AC_SYS_LARGEFILE
 CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing "
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
-          -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing "
+          -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
 
 AC_CHECK_PROGS(YACC, 'bison -y', [no])
 [if test "$YACC" = "no"]
