@@ -21,7 +21,7 @@
 #include "dumpsocket.h"
 #include "debug_dump.h"
 #include "crash_types.h"
-#include "abrt_exception.h"
+//#include "abrt_exception.h"
 #include "hooklib.h"
 
 #define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
@@ -209,6 +209,7 @@ static void create_debug_dump(struct client *client)
         client->analyzer, client->pid, path);
 
     /* Handle free space checking. */
+//FIXME! needs to use globals, like the rest of daemon does!
     unsigned maxCrashReportsSize = 0;
     parse_conf(NULL, &maxCrashReportsSize, NULL, NULL);
     if (maxCrashReportsSize > 0)
@@ -454,7 +455,7 @@ static struct client *client_new(int socket)
     if (0 != getsockopt(socket, SOL_SOCKET, SO_PEERCRED, &cr, &crlen))
         perror_msg_and_die("dumpsocket: Failed to get client uid");
     if (crlen != sizeof(struct ucred))
-        perror_msg_and_die("dumpsocket: Failed to get client uid (crlen)");
+        error_msg_and_die("dumpsocket: Failed to get client uid (crlen)");
     client->uid = cr.uid;
 
     client->messagebuf = g_byte_array_new();
@@ -484,7 +485,7 @@ static struct client *client_new(int socket)
     /* Register client callback. */
     client->socket_id = g_io_add_watch(client->channel,
                                        (GIOCondition)(G_IO_IN | G_IO_PRI | G_IO_ERR | G_IO_HUP | G_IO_NVAL),
-                                       (GIOFunc)client_socket_cb,
+                                       client_socket_cb,
                                        client);
     if (!client->socket_id)
         error_msg_and_die("dumpsocket: Can't add client socket watch");
@@ -510,10 +511,7 @@ static gboolean server_socket_cb(GIOChannel *source,
         return TRUE;
     }
 
-    struct sockaddr_un remote;
-    socklen_t len = sizeof(remote);
-    int socket = accept(g_io_channel_unix_get_fd(source),
-                        (struct sockaddr*)&remote, &len);
+    int socket = accept(g_io_channel_unix_get_fd(source), NULL, NULL);
     if (socket == -1)
     {
         perror_msg("dumpsocket: Server can not accept client");
@@ -547,7 +545,7 @@ void dumpsocket_init()
     g_io_channel_set_close_on_unref(channel, TRUE);
     channel_cb_id = g_io_add_watch(channel,
                                    (GIOCondition)(G_IO_IN | G_IO_PRI),
-                                   (GIOFunc)server_socket_cb,
+                                   server_socket_cb,
                                    NULL);
     if (!channel_cb_id)
         perror_msg_and_die("dumpsocket: Can't add socket watch");

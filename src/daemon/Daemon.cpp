@@ -856,7 +856,6 @@ int main(int argc, char** argv)
 
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
-        /* Watching DEBUG_DUMPS_DIR for new files... */
 
         VERB1 log("Initializing inotify");
         sanitize_dump_dir_rights();
@@ -865,6 +864,7 @@ int main(int argc, char** argv)
         if (inotify_fd == -1)
             perror_msg_and_die("inotify_init failed");
         close_on_exec_on(inotify_fd);
+        /* Watching DEBUG_DUMPS_DIR for new files... */
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
         if (!g_settings_sWatchCrashdumpArchiveDir.empty())

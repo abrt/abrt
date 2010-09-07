@@ -22,7 +22,7 @@
 Unix socket in ABRT daemon for creating new dump directories.
 
 Why to use socket for creating dump dirs? Security. When a Python
-script throwns unexpected exception, ABRT handler catches it, running
+script throws unexpected exception, ABRT handler catches it, running
 as a part of that broken Python application. The application is running
 with certain SELinux privileges, for example it can not execute other
 programs, or to create files in /var/cache or anything else required
