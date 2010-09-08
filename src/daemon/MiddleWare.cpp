@@ -1142,11 +1142,6 @@ mw_result_t FillCrashInfo(const char *crash_id,
     if (!row)
         return MW_ERROR;
 
-    std::string package;
-    std::string executable;
-    std::string description;
-    std::string analyzer;
-
     dump_dir_t *dd = dd_init();
     if (!dd_opendir(dd, row->db_dump_dir))
     {
