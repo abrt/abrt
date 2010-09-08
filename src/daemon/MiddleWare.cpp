@@ -623,10 +623,9 @@ static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
     database->DisConnect();
 
     bool found = false;
-    struct db_row *row = NULL;
     for (GList *li = table; li != NULL; li = g_list_next(li))
     {
-        row = (struct db_row*)li->data;
+        struct db_row *row = (struct db_row*)li->data;
         if (0 == strcmp(row->db_dump_dir, debug_dump_dir))
         {
             found = true;
@@ -1137,12 +1136,11 @@ mw_result_t FillCrashInfo(const char *crash_id,
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
     database->Connect();
-
     struct db_row *row = database->GetRow(crash_id);
+    database->DisConnect();
+
     if (!row)
         return MW_ERROR;
-
-    database->DisConnect();
 
     std::string package;
     std::string executable;
@@ -1181,10 +1179,9 @@ void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
     GList *rows = database->GetUIDData(caller_uid);
     database->DisConnect();
 
-    struct db_row *row = NULL;
     for (GList *li = rows; li != NULL; li = g_list_next(li))
     {
-        row = (struct db_row*)li->data;
+        struct db_row *row = (struct db_row*)li->data;
         string crash_id = ssprintf("%s:%s", row->db_uid, row->db_uuid);
         result.push_back(crash_id);
     }
