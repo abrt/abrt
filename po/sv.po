@@ -1,4 +1,4 @@
-# Svenska translation of ABRT.
+# Swedish translation of ABRT.
 # Copyright © 2009-2010 Free Software Foundation, Inc.
 # This file is distributed under the same license as the ABRT package.
 # Magnus Larsson <fedoratrans@gmail.com>, 2009.
@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-09-03 16:06+0000\n"
-"PO-Revision-Date: 2010-09-07 13:35+0200\n"
+"PO-Revision-Date: 2010-09-08 21:05+0200\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -34,11 +34,11 @@ msgstr ""
 
 #: ../lib/plugins/Bugzilla.cpp:698
 msgid "Logging into bugzilla..."
-msgstr "Loggar in i bugzilla ..."
+msgstr "Loggar in i bugzilla …"
 
 #: ../lib/plugins/Bugzilla.cpp:701
 msgid "Checking for duplicates..."
-msgstr "Letar efter dubletter ..."
+msgstr "Letar efter dubletter …"
 
 #: ../lib/plugins/Bugzilla.cpp:722 ../lib/plugins/Bugzilla.cpp:757
 msgid "Missing mandatory member 'bugs'"
@@ -61,7 +61,7 @@ msgstr "Att skapa ett bugzillaärende misslyckades"
 
 #: ../lib/plugins/Bugzilla.cpp:804 ../lib/plugins/Bugzilla.cpp:903
 msgid "Logging out..."
-msgstr "Loggar ut..."
+msgstr "Loggar ut …"
 
 #. decision based on state
 #: ../lib/plugins/Bugzilla.cpp:823
@@ -110,7 +110,7 @@ msgstr "Startar installation av felsökningsinformation"
 #. This whole block should be deleted for Fedora 14.
 #: ../lib/plugins/CCpp.cpp:612
 msgid "Getting global universal unique identification..."
-msgstr "Hämtar global universellt unik identifikation ..."
+msgstr "Hämtar global universellt unik identifikation …"
 
 #: ../lib/plugins/CCpp.cpp:812
 msgid "Skipping the debuginfo installation"
@@ -131,7 +131,7 @@ msgstr "Skickar arkiv %s till %s"
 
 #: ../lib/plugins/FileTransfer.cpp:245
 msgid "FileTransfer: Creating a report..."
-msgstr "Filöverföring: Skapar en rapport ..."
+msgstr "Filöverföring: Skapar en rapport …"
 
 #: ../lib/plugins/FileTransfer.cpp:269 ../lib/plugins/FileTransfer.cpp:298
 #, c-format
@@ -148,7 +148,7 @@ msgstr "Analyserar kärn-oops:ar"
 
 #: ../lib/plugins/KerneloopsReporter.cpp:95
 msgid "Creating and submitting a report..."
-msgstr "Skapar och skickar en rapport ..."
+msgstr "Skapar och skickar en rapport …"
 
 #: ../lib/plugins/KerneloopsReporter.cpp:144
 msgid "Sends kernel oops information to kerneloops.org"
@@ -174,13 +174,12 @@ msgid "The report was stored to %s"
 msgstr "Rapporten lagrades i %s"
 
 #: ../lib/plugins/Logger.cpp:83
-#, fuzzy
 msgid "Writes report to a file"
-msgstr "Skriver rapport till \"%s\""
+msgstr "Skriver rapport till en fil"
 
 #: ../lib/plugins/Mailx.cpp:100
 msgid "Sending an email..."
-msgstr "Skickar ett e-brev ..."
+msgstr "Skickar ett e-brev …"
 
 #: ../lib/plugins/Mailx.cpp:151
 msgid "Sends an email with a report (via mailx command)"
@@ -196,9 +195,8 @@ msgid "Sending failed, trying again. %s"
 msgstr "Misslyckades at skicka, försöker igen. %s"
 
 #: ../lib/plugins/ReportUploader.cpp:197
-#, fuzzy
 msgid "Creating a ReportUploader report..."
-msgstr "Skapar och skickar en rapport ..."
+msgstr "Skapar och ReportUploader-rapport …"
 
 #: ../lib/plugins/ReportUploader.cpp:515
 msgid ""
@@ -211,9 +209,8 @@ msgid "Compressing data"
 msgstr "Komprimerar data"
 
 #: ../lib/plugins/RHTSupport.cpp:247
-#, fuzzy
 msgid "Creating a new case..."
-msgstr "Skapar ett nytt fel ..."
+msgstr "Skapar ett nytt ärende …"
 
 #: ../lib/plugins/RHTSupport.cpp:329
 msgid "Reports bugs to Red Hat support"
@@ -229,7 +226,6 @@ msgid "Running sosreport: %s"
 msgstr "Kör sosreport: %s"
 
 #: ../lib/plugins/SOSreport.cpp:109
-#, fuzzy
 msgid "Finished running sosreport"
 msgstr "Klar med att köra sosreport"
 
@@ -344,9 +340,8 @@ msgid "Upload"
 msgstr "Skicka"
 
 #: ../lib/plugins/ReportUploader.glade.h:8
-#, fuzzy
 msgid "Use encryption"
-msgstr "Beskrivning:"
+msgstr "Använd kryptering"
 
 #: ../lib/plugins/RHTSupport.glade.h:1
 msgid "<b>RHTSupport plugin configuration</b>"
@@ -376,7 +371,7 @@ msgid "Automatic Bug Reporting Tool"
 msgstr "Automatiskt felrapporteringsverktyg"
 
 #: ../src/applet/Applet.cpp:76
-#, fuzzy, c-format
+#, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "En krash i paketet %s har upptäckts"
 
@@ -394,7 +389,6 @@ msgid "Warning"
 msgstr "Varning"
 
 #: ../src/applet/applet_gtk.c:223
-#, fuzzy
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
@@ -579,46 +573,40 @@ msgid "# How to reproduce the crash?"
 msgstr "# Hur man återupprepar kraschen?"
 
 #: ../src/cli/report.cpp:196
-#, fuzzy
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 msgstr ""
-"Jag kontrollerade stackspåret och tog bort känslig information (lösenord o."
-"dyl.)"
+"# Stackspår\n"
+"# Kontrollera att det inte innehåller någon känslig information (lösenord o.dyl.)"
 
 #: ../src/cli/report.cpp:198
-#, fuzzy
 msgid "# Architecture"
-msgstr "Arkitektur"
+msgstr "# Arkitektur"
 
 #: ../src/cli/report.cpp:199
-#, fuzzy
 msgid "# Command line"
-msgstr "Kommandorad"
+msgstr "# Kommandorad"
 
 #: ../src/cli/report.cpp:200
-#, fuzzy
 msgid "# Component"
-msgstr "Komponent"
+msgstr "# Komponent"
 
 #: ../src/cli/report.cpp:201
 msgid "# Core dump"
 msgstr "# Kärndump"
 
 #: ../src/cli/report.cpp:202
-#, fuzzy
 msgid "# Executable"
-msgstr "Körbart program"
+msgstr "# Körbart program"
 
 #: ../src/cli/report.cpp:203
 msgid "# Kernel version"
 msgstr "# Kärnversion"
 
 #: ../src/cli/report.cpp:204
-#, fuzzy
 msgid "# Package"
-msgstr "Paket"
+msgstr "# Paket"
 
 #: ../src/cli/report.cpp:205
 msgid "# Reason of crash"
@@ -633,11 +621,10 @@ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "Kan inte köra vi: $TERM, $VISUAL och $EDITOR är inte satta"
 
 #: ../src/cli/report.cpp:417
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
-msgstr "En krash har upptäckts"
+msgstr "\nRapporten har uppdaterats"
 
 #: ../src/cli/report.cpp:419
 msgid ""
@@ -669,23 +656,21 @@ msgid "Enter your password: "
 msgstr "Ange ditt lösenord: "
 
 #: ../src/cli/report.cpp:695
-#, fuzzy
 msgid "Reporting..."
-msgstr "Rapport"
+msgstr "Rapporterar …"
 
 #: ../src/cli/report.cpp:714
-#, fuzzy, c-format
+#, c-format
 msgid "Report using %s?"
-msgstr "Insticksmoduler för rapporter"
+msgstr "Rapportera med %s?"
 
 #: ../src/cli/report.cpp:717
 msgid "Skipping..."
 msgstr "Hoppar över…"
 
 #: ../src/cli/report.cpp:729
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
-msgstr "Rapportering avslagen, fixa problemen som visas ovan."
+msgstr "Rapportering avslagen för att stackspåret är oanvändbart"
 
 #: ../src/cli/report.cpp:733
 #, c-format
@@ -697,9 +682,8 @@ msgstr ""
 "”debuginfo-install %s” och försök igen\n"
 
 #: ../src/cli/report.cpp:742
-#, fuzzy
 msgid "Error loading reporter settings"
-msgstr "Fel när rapporten hämtades: %s"
+msgstr "Fel när rapporteringsinställningar lästes in"
 
 #: ../src/cli/report.cpp:761
 #, c-format
@@ -715,13 +699,10 @@ msgid "'How to reproduce' is too long"
 msgstr "”Hur man återupprepar” är för långt"
 
 #: ../src/daemon/Daemon.cpp:510
-#, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
-msgstr ""
-"Rapportstorleken överstiger kvoten.  Kontrollera systemets "
-"MaxCrashReportsSize-värde i abrt.conf."
+msgstr "Storleken på rapporten överstiger kvoten.  Kontrollera systemets MaxCrashReportsSize-värde i abrt.conf."
 
 #: ../src/daemon/MiddleWare.cpp:611
 msgid "Database plugin not specified. Please check abrtd settings."
@@ -732,9 +713,8 @@ msgid "View and report application crashes"
 msgstr "Visa och rapportera programkrascher"
 
 #: ../src/gui/ABRTExceptions.py:7
-#, fuzzy
 msgid "Another client is already running, trying to wake it..."
-msgstr "En annan klient kör redan, försöker väcka den."
+msgstr "En annan klient kör redan, försöker väcka den …"
 
 #: ../src/gui/ABRTExceptions.py:14
 #, fuzzy
@@ -1081,7 +1061,7 @@ msgstr "Gradering krävs av insticksmodulen %s"
 
 #: ../src/gui/CReporterAssistant.py:299
 msgid "Rating is not required by any plugin, skipping the check..."
-msgstr "Gradering krävs inte av någon insticksmodul, hoppar över kontrollen…"
+msgstr "Gradering krävs inte av någon insticksmodul, hoppar över kontrollen …"
 
 #: ../src/gui/CReporterAssistant.py:303
 #, python-format
@@ -1563,30 +1543,6 @@ msgstr "Felaktiga inställningar upptäcktes för några av de aktiverade rappor
 
 #~ msgid "Can't create and send an archive %s"
 #~ msgstr "Det går inte att skapa och skicka ett arkiv %s"
-
-#, fuzzy
-#~ msgid "send_string: URL not specified"
-#~ msgstr "Filöverföring: URL ej angiven"
-
-#, fuzzy
-#~ msgid "Sending failed, try it again: %s"
-#~ msgstr "Skickar arkiv %s till %s"
-
-#, fuzzy
-#~ msgid "send_file: URL not specified"
-#~ msgstr "Filöverföring: URL ej angiven"
-
-#, fuzzy
-#~ msgid "Sending file %s to %s"
-#~ msgstr "Skickar arkiv %s till %s"
-
-#, fuzzy
-#~ msgid "New bug id: %s"
-#~ msgstr "Nytt fel-id: %i"
-
-#, fuzzy
-#~ msgid "Creating a signature..."
-#~ msgstr "Skapar och skickar en rapport ..."
 
 #~ msgid "Jump to bug %d"
 #~ msgstr "Hoppa till fel %d"
