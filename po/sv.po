@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-09-03 16:06+0000\n"
-"PO-Revision-Date: 2010-09-08 21:05+0200\n"
+"PO-Revision-Date: 2010-09-09 22:14+0200\n"
 "Last-Translator: Göran Uddeborg <goeran@uddeborg.se>\n"
 "Language-Team: Swedish <tp-sv@listor.tp-sv.se>\n"
 "MIME-Version: 1.0\n"
@@ -717,7 +717,6 @@ msgid "Another client is already running, trying to wake it..."
 msgstr "En annan klient kör redan, försöker väcka den …"
 
 #: ../src/gui/ABRTExceptions.py:14
-#, fuzzy
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "Fick oväntade data från demonen (är databasen korrekt uppdaterad?)."
@@ -743,24 +742,21 @@ msgid "Database plugins"
 msgstr "Insticksmoduler för databaser"
 
 #: ../src/gui/CCDBusBackend.py:74 ../src/gui/CCDBusBackend.py:97
-#, fuzzy
 msgid "Cannot connect to system dbus."
 msgstr "Det går inte att ansluta till system-dbus:en"
 
 #: ../src/gui/CCDBusBackend.py:120 ../src/gui/CCDBusBackend.py:123
-#, fuzzy
 msgid "Please check if the abrt daemon is running."
-msgstr "Kontrollera om abrt-demonen kör"
+msgstr "Kontrollera om abrt-demonen kör."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/gui/CCDBusBackend.py:170
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
 msgstr ""
-"Demonen returnerade inte giltig rapportinformation\n"
-"Felsökningsinformation saknas?"
+"Demonen returnerade inte giltig rapportinformation.\n"
+"Saknas felsökningsinformation?"
 
 #: ../src/gui/ccgui.glade.h:1
 msgid "(C) 2009, 2010 Red Hat, Inc."
@@ -868,16 +864,16 @@ msgid "Latest Crash"
 msgstr "Senaste krasch"
 
 #: ../src/gui/CCMainWindow.py:143
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot show the settings dialog.\n"
 "%s"
 msgstr ""
-"Det går inte att visa inställningsdialogen\n"
+"Det går inte att visa inställningsdialogen.\n"
 "%s"
 
 #: ../src/gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
@@ -919,7 +915,7 @@ msgstr ""
 "\t--report=KRASCH_ID\tRapportera direkt krash med KRASCH_ID"
 
 #: ../src/gui/CCMainWindow.py:445
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "No such crash in the database, probably wrong crashid.\n"
 "crashid=%s"
@@ -929,18 +925,15 @@ msgstr ""
 
 #. default texts
 #: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:20
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
-msgstr "Kort beskrivning hur man återskapar detta eller av vad du gjorde ..."
+msgstr "Kort beskrivning hur man återskapar detta eller av vad du gjorde …"
 
 #: ../src/gui/CCReporterDialog.py:107
-#, fuzzy
 msgid "You must check the backtrace for sensitive data."
-msgstr ""
-"Du måste kontrollera om stackspåret innehåller någon känslig information"
+msgstr "Du måste kontrollera om stackspåret innehåller någon känslig information."
 
 #: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:325
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
 "Please try to install debuginfo manually using the command: <b>debuginfo-"
@@ -953,40 +946,34 @@ msgstr ""
 "och tryck sedan på Förnya-knappen för att återskapa stackspåret."
 
 #: ../src/gui/CCReporterDialog.py:120
-#, fuzzy
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Stackspåret är oanvändbart, du kan inte rapportera detta!"
 
 #: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:331
-#, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
 "reproduce."
-msgstr ""
-"Stackspåret är ofullständigt, se till att du ger noggranna steg för att "
-"återskapa."
+msgstr "Stackspåret är ofullständigt, se till att du ger steg för att återskapa."
 
 #: ../src/gui/CCReporterDialog.py:130
 msgid "Reporting disabled, please fix the problems shown above."
 msgstr "Rapportering avslagen, fixa problemen som visas ovan."
 
 #: ../src/gui/CCReporterDialog.py:132
-#, fuzzy
 msgid "Sends the report using the selected plugin."
 msgstr "Skickar rapporten med den valda insticksmodulen."
 
 #: ../src/gui/CCReporterDialog.py:398
-#, fuzzy
 msgid ""
 "No reporter plugin available for this type of crash.\n"
 "Please check abrt.conf."
 msgstr ""
-"Ingen insticksmodul för rapportering tillgänglig för denna slags krash\n"
+"Ingen insticksmodul för rapportering tillgänglig för denna slags krash.\n"
 "Kontrollera abrt.conf."
 
 #: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:218
 #: ../src/gui/PluginsSettingsDialog.py:170
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
@@ -1000,7 +987,6 @@ msgid "Configure %s options"
 msgstr "Konfigurera %s-alternativ"
 
 #: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:866
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1019,14 +1005,13 @@ msgstr ""
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
 #: ../src/gui/CReporterAssistant.py:905
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Fel när rapporten hämtades: %s"
 
 #: ../src/gui/ConfBackend.py:78
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "Det går inte att ansluta till system-dbus:en"
+msgstr " Det går inte att ansluta till Gnomes nyckelringdemon."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
@@ -1073,33 +1058,27 @@ msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr "Kraschdumpen har inte någon gradering ⇒ vi antar att det inte behövs"
 
 #: ../src/gui/CReporterAssistant.py:311
-#, fuzzy
 msgid "You should check the backtrace for sensitive data."
-msgstr ""
-"Du måste kontrollera om stackspåret innehåller någon känslig information"
+msgstr "Du måste kontrollera om stackspåret innehåller någon känslig information."
 
 #: ../src/gui/CReporterAssistant.py:312
-#, fuzzy
 msgid "You must agree with sending the backtrace."
-msgstr "Du måste godkänna att skicka stackspåret"
+msgstr "Du måste godkänna att skicka stackspåret."
 
 #: ../src/gui/CReporterAssistant.py:327
-#, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr "Rapportering avslagen, fixa problemen som visas ovan."
+msgstr "Rapportering avslagen för att stackspåret är oanvändbart."
 
 #: ../src/gui/CReporterAssistant.py:372
-#, fuzzy
 msgid "You did not provide any steps to reproduce."
 msgstr "Du angav inte några steg för att återskapa."
 
 #: ../src/gui/CReporterAssistant.py:386
-#, fuzzy
 msgid "You did not provide any comments."
 msgstr "Du gav inga kommentarer."
 
 #: ../src/gui/CReporterAssistant.py:467
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
 "system. It is a good idea to send a bug report about this issue. The report "
@@ -1133,7 +1112,6 @@ msgid "Send a bug report"
 msgstr "Skicka en felrapport"
 
 #: ../src/gui/CReporterAssistant.py:571
-#, fuzzy
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1142,13 +1120,9 @@ msgid ""
 "Please review the backtrace below and modify it as needed to ensure your bug "
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
-"Nedan är stackspåret som hör ihop med din krasch.  Ett kraschstackspår ger "
-"utvecklare detaljinformation om hur kraschen inträffade, och hjälper dem att "
-"spåra upp källan till problemet\n"
+"Nedan är stackspåret som hör ihop med din krasch.  Ett kraschstackspår ger utvecklare detaljinformation om hur kraschen inträffade, och hjälper dem att spåra upp källan till problemet.\n"
 "\n"
-"Titta igenom informationen som följer och ändra den om nödvändigt för att se "
-"till att din felrapport inte innehåller någon känslig information du helst "
-"inte vill dela:"
+"Titta igenom stackspåret nedan och ändra den om nödvändigt för att se till att din felrapport inte innehåller någon känslig information du helst inte vill dela:"
 
 #: ../src/gui/CReporterAssistant.py:614
 msgid "Refresh"
@@ -1163,37 +1137,29 @@ msgid "I agree with submitting the backtrace"
 msgstr "Jag godkänner att skicka stackspåret"
 
 #: ../src/gui/CReporterAssistant.py:627
-#, fuzzy
 msgid "Approve the backtrace"
-msgstr "Godkänn stackspår"
+msgstr "Godkänn stackspåret"
 
 #: ../src/gui/CReporterAssistant.py:650
-#, fuzzy
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
-msgstr ""
-"Hur inträffade den här kraschen, steg för steg?  Hur skulle du återskapa den?"
+msgstr "Hur inträffade den här kraschen (steg för steg)?  Hur skulle du återskapa den?"
 
 #: ../src/gui/CReporterAssistant.py:669
-#, fuzzy
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
-msgstr "Har du någon kommentar du vill meddela dem som underhåller programmet?"
+msgstr "Har du någora kommentarer du vill meddela dem som underhåller programmet?"
 
 #: ../src/gui/CReporterAssistant.py:689
 msgid "Provide additional details"
 msgstr "Ge ytterligare detaljer"
 
 #: ../src/gui/CReporterAssistant.py:696
-#, fuzzy
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
-msgstr ""
-"<b>Tips:</b> Dina kommentarer är inte privata.  Se över vad du säger med "
-"tanke på det"
+msgstr "<b>Tips:</b> Dina kommentarer är inte privata.  Se över vad du säger med tanke på det."
 
 #: ../src/gui/CReporterAssistant.py:737
-#, fuzzy
 msgid "Confirm and send the report"
 msgstr "Bekräfta och skicka rapporten"
 
@@ -1247,12 +1213,10 @@ msgid "<b>Backtrace</b>"
 msgstr "<b>Stackspår</b>"
 
 #: ../src/gui/CReporterAssistant.py:773
-#, fuzzy
 msgid "Click to view..."
-msgstr "Klicka för att visa ..."
+msgstr "Klicka för att visa …"
 
 #: ../src/gui/CReporterAssistant.py:785
-#, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Steg för att återskapa:</b>"
 
@@ -1265,9 +1229,8 @@ msgid "No comment provided!"
 msgstr "Inget kommando angivet!"
 
 #: ../src/gui/CReporterAssistant.py:845
-#, fuzzy
 msgid "Finished sending the bug report"
-msgstr "Avsluta skickandet av felrapporten"
+msgstr "Felrapporten är skickad"
 
 #: ../src/gui/CReporterAssistant.py:849
 msgid "<b>Bug reports:</b>"
@@ -1282,9 +1245,8 @@ msgid "Report done"
 msgstr "Rapport klar"
 
 #: ../src/gui/PluginSettingsUI.py:18
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
-msgstr "Kan inte hitta Plugin-Dialogwidgeten i UI-beskrivningen!"
+msgstr "Det går inte att hitta inte hitta PluginDialog-widgeten i gränssnittsbeskrivningen!"
 
 #: ../src/gui/PluginSettingsUI.py:25
 #, python-format
@@ -1297,9 +1259,8 @@ msgstr ""
 "Rapportera det på <a href=\"https://fedorahosted.org/abrt/newticket\">https://fedorahosted.org/abrt/newticket</a>"
 
 #: ../src/gui/PluginSettingsUI.py:60 ../src/gui/PluginSettingsUI.py:86
-#, fuzzy
 msgid "Combo box is not implemented"
-msgstr "combobox är inte implementerad"
+msgstr "Combobox är inte implementerad"
 
 #: ../src/gui/PluginSettingsUI.py:69
 msgid "Nothing to hydrate!"
@@ -1312,22 +1273,22 @@ msgstr "Det går inte att läsa in beskrivningen för det grafiska gränssnittet
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
 #: ../src/gui/PluginsSettingsDialog.py:42
-#, fuzzy
 msgid "Name"
-msgstr "Namn:"
+msgstr "Namn"
 
 #: ../src/gui/PluginsSettingsDialog.py:149
 msgid "Please select a plugin from the list to edit it's options."
 msgstr "Välj en insticksmodul från listan för att redigera dess alternativ."
 
 #: ../src/gui/PluginsSettingsDialog.py:157
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"Fel när dumplistan lästes in.\n"
+"Fel när gränssnittet för inställningar av insticksmodulen öppnades: \n"
+"\n"
 "%s"
 
 #: ../src/gui/progress_window.glade.h:1 ../src/gui/report.glade.h:17
@@ -1335,9 +1296,8 @@ msgid "Details"
 msgstr "Detaljer"
 
 #: ../src/gui/progress_window.glade.h:2 ../src/gui/report.glade.h:21
-#, fuzzy
 msgid "Please wait..."
-msgstr "Var god vänta..."
+msgstr "Var god vänta …"
 
 #: ../src/gui/report.glade.h:1
 msgid " "
@@ -1356,9 +1316,8 @@ msgid "<b>How to reproduce (in a few simple steps)</b>"
 msgstr "<b>Hur man återskapar (i några få enkla steg)</b>"
 
 #: ../src/gui/report.glade.h:6
-#, fuzzy
 msgid "<b>Please fix the following problems:</b>"
-msgstr "<b>Rätta till följande problem</b>"
+msgstr "<b>Rätta till följande problem:</b>"
 
 #: ../src/gui/report.glade.h:7
 msgid "<b>Where do you want to report this incident?</b>"
@@ -1397,9 +1356,8 @@ msgid "<span fgcolor=\"blue\">Release:</span>"
 msgstr "<span fgcolor=\"blue\">Utgåva:</span>"
 
 #: ../src/gui/report.glade.h:18
-#, fuzzy
 msgid "Forces ABRT to regenerate the backtrace."
-msgstr "Tvingar ABRT att generera om stackspåret"
+msgstr "Tvingar ABRT att generera om stackspåret."
 
 #: ../src/gui/report.glade.h:19
 #, fuzzy
