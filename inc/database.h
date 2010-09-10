@@ -54,6 +54,8 @@ void db_row_free(struct db_row *row);
 
 void db_list_free(GList *list);
 
+struct db_row *db_rowcpy_from_list(GList* list);
+
 #ifdef __cplusplus
 }
 #endif

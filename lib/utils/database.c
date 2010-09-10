@@ -20,6 +20,27 @@
 #include "abrtlib.h"
 #include "database.h"
 
+struct db_row *db_rowcpy_from_list(GList* list)
+{
+    GList *first = g_list_first(list);
+    struct db_row *row = (struct db_row*)xzalloc(sizeof(struct db_row));
+    struct db_row *src_row = (struct db_row*)first->data;
+    /* All fields are initialized below, copying is not needed
+     * memcpy(row, (struct db_row*)first->data, sizeof(struct db_row));
+     */
+
+    row->db_uuid = xstrdup(src_row->db_uuid);
+    row->db_uid = xstrdup(src_row->db_uid);
+    row->db_inform_all = xstrdup(src_row->db_inform_all);
+    row->db_dump_dir = xstrdup(src_row->db_dump_dir);
+    row->db_count = xstrdup(src_row->db_count);
+    row->db_reported = xstrdup(src_row->db_reported);
+    row->db_message = xstrdup(src_row->db_message);
+    row->db_time = xstrdup(src_row->db_time);
+
+    return row;
+}
+
 void db_row_free(struct db_row *row)
 {
     if (!row)

@@ -123,7 +123,7 @@ static GList *vget_table(sqlite3 *db, const char *fmt, va_list p)
     VERB2 log("%s: %d rows returned by SQL:%s", __func__, nrow, sql);
     free(sql);
 
-    if (ncol < NUM_COL)
+    if (nrow > 0 && ncol < NUM_COL)
         error_msg_and_die("Unexpected number of columns: %d", ncol);
 
     GList *rows = NULL;
@@ -147,6 +147,15 @@ static GList *vget_table(sqlite3 *db, const char *fmt, va_list p)
                 case 7: row->db_message    = xstrdup(val); break;
             }
         }
+
+        VERB3 log("%s: row->db_uuid = '%s'", __func__, row->db_uuid);
+        VERB3 log("%s: row->db_uid = '%s'", __func__, row->db_uid);
+        VERB3 log("%s: row->db_inform_all = '%s'", __func__, row->db_inform_all);
+        VERB3 log("%s: row->db_dump_dir = '%s'", __func__, row->db_dump_dir);
+        VERB3 log("%s: row->db_count = '%s'", __func__, row->db_count);
+        VERB3 log("%s: row->db_reported = '%s'", __func__, row->db_reported);
+        VERB3 log("%s: row->db_time = '%s'", __func__, row->db_time);
+        VERB3 log("%s: row->db_message = '%s'", __func__, row->db_message);
         rows = g_list_append(rows, row);
 
     }
@@ -665,8 +674,7 @@ struct db_row *CSQLite3::GetRow(const char *crash_id)
     }
 
     GList *first = g_list_first(table);
-    struct db_row *row = (struct db_row*)xzalloc(sizeof(struct db_row));
-    memcpy(row, first->data, sizeof(struct db_row));
+    struct db_row *row = db_rowcpy_from_list(first);
 
     db_list_free(table);
 
