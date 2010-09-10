@@ -122,7 +122,10 @@ void trim_debug_dumps(unsigned setting_MaxCrashReportsSize, const char *exclude_
         char *worst_dir = NULL;
         double dirsize = get_dirsize_find_largest_dir(DEBUG_DUMPS_DIR, &worst_dir, base_dirname);
         if (dirsize / (1024*1024) < setting_MaxCrashReportsSize || !worst_dir)
+        {
+            free(worst_dir);
             break;
+        }
         log("size of '%s' >= %u MB, deleting '%s'", DEBUG_DUMPS_DIR, setting_MaxCrashReportsSize, worst_dir);
         char *d = concat_path_file(DEBUG_DUMPS_DIR, worst_dir);
         free(worst_dir);
