@@ -21,7 +21,6 @@
 #include <sqlite3.h>
 #include "abrtlib.h"
 #include "SQLite3.h"
-#include "abrt_exception.h"
 
 using namespace std;
 
@@ -177,27 +176,37 @@ static GList *get_table_or_die(sqlite3 *db, const char *fmt, ...)
     return table;
 }
 
-static int execute_sql(sqlite3 *db, const char *fmt, ...)
+static int vexecute_sql(sqlite3 *db, const char *fmt, va_list p)
 {
-    va_list p;
-    va_start(p, fmt);
     char *sql = xvasprintf(fmt, p);
-    va_end(p);
 
     char *err = NULL;
     int ret = sqlite3_exec(db, sql, /*callback:*/ NULL, /*callback param:*/ NULL, &err);
     if (ret != SQLITE_OK)
     {
-        string errstr = ssprintf("Error in SQL:'%s' error: %s", sql, err);
+        error_msg("Error in SQL:'%s' error: %s", sql, err);
         free(sql);
         sqlite3_free(err);
-        throw CABRTException(EXCEP_PLUGIN, errstr.c_str());
+        return -1;
     }
     int affected = sqlite3_changes(db);
     VERB2 log("%d rows affected by SQL:%s", affected, sql);
     free(sql);
 
     return affected;
+}
+
+static int execute_sql_or_die(sqlite3 *db, const char *fmt, ...)
+{
+    va_list p;
+    va_start(p, fmt);
+    int ret = vexecute_sql(db, fmt, p);
+    va_end(p);
+
+    if (ret < 0)
+        xfunc_die();
+
+    return ret;
 }
 
 static bool exists_uuid_uid(sqlite3 *db, const char *UUID, const char *UID)
@@ -310,7 +319,7 @@ static void update_from_old_ver(sqlite3 *db, int old_version)
 
     while (old_version < ABRT_TABLE_VERSION)
     {
-        execute_sql(db, update_sql_commands[old_version]);
+        execute_sql_or_die(db, update_sql_commands[old_version]);
         old_version++;
     }
 }
@@ -398,7 +407,7 @@ void CSQLite3::Connect()
     {
         if (ret != SQLITE_CANTOPEN)
         {
-            throw CABRTException(EXCEP_PLUGIN, "Can't open database '%s': %s", m_sDBPath.c_str(), sqlite3_errmsg(m_pDB));
+            error_msg_and_die("Can't open database '%s': %s", m_sDBPath.c_str(), sqlite3_errmsg(m_pDB));
         }
 
         ret = sqlite3_open_v2(m_sDBPath.c_str(),
@@ -408,13 +417,13 @@ void CSQLite3::Connect()
         );
         if (ret != SQLITE_OK)
         {
-            throw CABRTException(EXCEP_PLUGIN, "Can't create database '%s': %s", m_sDBPath.c_str(), sqlite3_errmsg(m_pDB));
+            error_msg_and_die("Can't create database '%s': %s", m_sDBPath.c_str(), sqlite3_errmsg(m_pDB));
         }
     }
 
     if (!check_table(m_pDB))
     {
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "CREATE TABLE "ABRT_TABLE" ("
                 COL_UUID" VARCHAR NOT NULL,"
                 COL_UID" VARCHAR NOT NULL,"
@@ -426,7 +435,7 @@ void CSQLite3::Connect()
                 COL_MESSAGE" VARCHAR NOT NULL DEFAULT '',"
                 "PRIMARY KEY ("COL_UUID","COL_UID"));"
         );
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "CREATE TABLE "ABRT_REPRESULT_TABLE" ("
                 COL_UUID" VARCHAR NOT NULL,"
                 COL_UID" VARCHAR NOT NULL,"
@@ -460,7 +469,7 @@ void CSQLite3::Insert_or_Update(const char *crash_id,
 
     if (!exists_uuid_uid(m_pDB, UUID, UID))
     {
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "INSERT INTO "ABRT_TABLE" ("
                 COL_UUID","
                 COL_UID","
@@ -474,7 +483,7 @@ void CSQLite3::Insert_or_Update(const char *crash_id,
     }
     else
     {
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "UPDATE "ABRT_TABLE
                 " SET "COL_COUNT"="COL_COUNT"+1,"COL_TIME"='%s'"
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
@@ -502,11 +511,11 @@ void CSQLite3::DeleteRow(const char *crash_id)
 
     if (exists_uuid_uid(m_pDB, UUID, UID))
     {
-        execute_sql(m_pDB, "DELETE FROM "ABRT_TABLE
+        execute_sql_or_die(m_pDB, "DELETE FROM "ABRT_TABLE
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
                 UUID, UID
         );
-        execute_sql(m_pDB, "DELETE FROM "ABRT_REPRESULT_TABLE
+        execute_sql_or_die(m_pDB, "DELETE FROM "ABRT_REPRESULT_TABLE
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
                 UUID, UID
         );
@@ -540,13 +549,13 @@ void CSQLite3::DeleteRows_by_dir(const char *dump_dir)
     for (GList *li = table; li != NULL; li = g_list_next(li))
     {
         row = (struct db_row*)li->data;
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "DELETE FROM "ABRT_REPRESULT_TABLE
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
                 row->db_uuid, row->db_uid
         );
     }
-    execute_sql(m_pDB,
+    execute_sql_or_die(m_pDB,
                 "DELETE FROM "ABRT_TABLE
                 " WHERE "COL_DEBUG_DUMP_PATH"='%s'",
                 dump_dir
@@ -572,13 +581,13 @@ void CSQLite3::SetReported(const char *crash_id, const char *pMessage)
 
     if (exists_uuid_uid(m_pDB, UUID, UID))
     {
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "UPDATE "ABRT_TABLE
                 " SET "COL_REPORTED"=1"
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
                 UUID, UID
         );
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "UPDATE "ABRT_TABLE
                 " SET "COL_MESSAGE"='%s'"
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s';",
@@ -611,7 +620,7 @@ void CSQLite3::SetReportedPerReporter(const char *crash_id,
     strncpy(UID, crash_id, uid_len);
     UID[uid_len] = '\0';
 
-    int affected_rows = execute_sql(m_pDB,
+    int affected_rows = execute_sql_or_die(m_pDB,
                 "UPDATE "ABRT_REPRESULT_TABLE
                 " SET "COL_MESSAGE"='%s'"
                 " WHERE "COL_UUID"='%s' AND "COL_UID"='%s' AND "COL_REPORTER"='%s'",
@@ -620,7 +629,7 @@ void CSQLite3::SetReportedPerReporter(const char *crash_id,
     );
     if (!affected_rows)
     {
-        execute_sql(m_pDB,
+        execute_sql_or_die(m_pDB,
                 "INSERT INTO "ABRT_REPRESULT_TABLE
                 " ("COL_UUID","COL_UID","COL_REPORTER","COL_MESSAGE")"
                 " VALUES ('%s','%s','%s','%s');",
