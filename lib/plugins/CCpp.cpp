@@ -49,7 +49,8 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
     m_bBacktraceRemotes(false),
     m_bMemoryMap(false),
     m_bInstallDebugInfo(true),
-    m_nDebugInfoCacheMB(4000)
+    m_nDebugInfoCacheMB(4000),
+    m_nGdbTimeoutSec(60)
 {}
 
 static string create_hash(const char *pInput)
@@ -113,7 +114,7 @@ static string create_hash(const char *pInput)
  * @param[out] status See `man 2 wait` for status information.
  * @return Malloc'ed string
  */
-static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
+static char* exec_vp(char **args, uid_t uid, int redirect_stderr, unsigned timeout_sec, int *status)
 {
     /* Nuke everything which may make setlocale() switch to non-POSIX locale:
      * we need to avoid having gdb output in some obscure language.
@@ -143,7 +144,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
      * Therefore we have a (largish) timeout, after which we kill the child.
      */
     int t = time(NULL); /* int is enough, no need to use time_t */
-    int endtime = t + 60;
+    int endtime = t + timeout_sec;
 
     struct strbuf *buf_out = strbuf_new();
 
@@ -181,7 +182,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, int *status)
     return strbuf_free_nobuf(buf_out);
 }
 
-static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs)
+static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, unsigned timeout_sec)
 {
     update_client(_("Generating backtrace"));
 
@@ -201,7 +202,7 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
     // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
     unsetenv("TERM");
     // This is not necessary, and was observed to cause
-    // environmant corruption (because we run in a thread?):
+    // environment corruption (because we run in a thread?):
     //putenv((char*)"TERM=dumb");
 
     char *args[21];
@@ -276,7 +277,7 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
     while (1)
     {
         args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 1, NULL);
+        bt = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 1, timeout_sec, NULL);
         if (bt && (bt_depth <= 64 || strlen(bt) < 256*1024))
         {
             free(args[9]);
@@ -332,7 +333,7 @@ static void GetIndependentBuildIdPC(const char *unstrip_n_output,
     }
 }
 
-static char* run_unstrip_n(const char *pDebugDumpDir)
+static char* run_unstrip_n(const char *pDebugDumpDir, unsigned timeout_sec)
 {
     dump_dir_t *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
@@ -351,7 +352,7 @@ static char* run_unstrip_n(const char *pDebugDumpDir)
     args[2] = (char*)"-n";
     args[3] = NULL;
 
-    char *out = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 0, NULL);
+    char *out = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 0, timeout_sec, NULL);
     free(uid);
 
     free(args[1]);
@@ -541,7 +542,7 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
     dd_close(dd);
 
     string independentBuildIdPC;
-    char *unstrip_n_output = run_unstrip_n(pDebugDumpDir);
+    char *unstrip_n_output = run_unstrip_n(pDebugDumpDir, m_nGdbTimeoutSec);
     if (unstrip_n_output)
         GetIndependentBuildIdPC(unstrip_n_output, independentBuildIdPC);
     else
@@ -811,7 +812,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         VERB1 log(_("Skipping the debuginfo installation"));
 
     /* Create and store backtrace. */
-    char *backtrace_str = get_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str());
+    char *backtrace_str = get_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), m_nGdbTimeoutSec);
     if (!backtrace_str)
     {
         backtrace_str = xstrdup("");
@@ -1108,6 +1109,11 @@ void CAnalyzerCCpp::SetSettings(const map_plugin_settings_t& pSettings)
     if (it != end)
     {
         m_nDebugInfoCacheMB = xatou(it->second.c_str());
+    }
+    it = pSettings.find("GdbTimeoutSec");
+    if (it != end)
+    {
+        m_nGdbTimeoutSec = xatoi_u(it->second.c_str());
     }
     it = pSettings.find("InstallDebugInfo");
     if (it == end) //compat, remove after 0.0.11
