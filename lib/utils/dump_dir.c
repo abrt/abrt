@@ -72,7 +72,7 @@ void dd_close(dump_dir_t *dd)
     if (dd->next_dir)
     {
         closedir(dd->next_dir);
-        free(dd->next_dir);
+        /* free(dd->next_dir); - WRONG! */
     }
 
     free(dd->dd_dir);
