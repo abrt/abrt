@@ -30,8 +30,8 @@ typedef struct dump_dir {
     char *dd_dir;
     DIR *next_dir;
     int locked;
-    uid_t uid;
-    gid_t gid;
+    uid_t dd_uid;
+    gid_t dd_gid;
 } dump_dir_t;
 
 dump_dir_t* dd_init(void);

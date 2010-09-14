@@ -98,8 +98,8 @@ int dd_opendir(dump_dir_t *dd, const char *dir)
     struct stat stat_buf;
     if (stat(dd->dd_dir, &stat_buf) == 0)
     {
-        dd->uid = stat_buf.st_uid;
-        dd->gid = stat_buf.st_gid;
+        dd->dd_uid = stat_buf.st_uid;
+        dd->dd_gid = stat_buf.st_gid;
     }
 
     return 1;
@@ -243,10 +243,10 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
     }
 
     /* Get ABRT's user id */
-    dd->uid = 0;
+    dd->dd_uid = 0;
     struct passwd *pw = getpwnam("abrt");
     if (pw)
-        dd->uid = pw->pw_uid;
+        dd->dd_uid = pw->pw_uid;
     else
         error_msg("User 'abrt' does not exist, using uid 0");
 
@@ -258,10 +258,10 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
     else
         error_msg("User %lu does not exist, using gid 0", (long)uid);
 
-    if (chown(dd->dd_dir, dd->uid, dd->gid) == -1)
+    if (chown(dd->dd_dir, dd->dd_uid, dd->dd_gid) == -1)
     {
         perror_msg("can't change '%s' ownership to %lu:%lu", dd->dd_dir,
-                   (long)dd->uid, (long)dd->gid);
+                   (long)dd->dd_uid, (long)dd->dd_gid);
     }
 
     char uid_str[sizeof(long) * 3 + 2];
@@ -407,7 +407,7 @@ void dd_save_text(dump_dir_t *dd, const char *name, const char *data)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dir, name);
-    save_binary_file(full_path, data, strlen(data), dd->uid, dd->gid);
+    save_binary_file(full_path, data, strlen(data), dd->dd_uid, dd->dd_gid);
     free(full_path);
 }
 
@@ -417,7 +417,7 @@ void dd_save_binary(dump_dir_t* dd, const char* name, const char* data, unsigned
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dir, name);
-    save_binary_file(full_path, data, size, dd->uid, dd->gid);
+    save_binary_file(full_path, data, size, dd->dd_uid, dd->dd_gid);
     free(full_path);
 }
 
