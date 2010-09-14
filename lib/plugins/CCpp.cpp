@@ -26,7 +26,6 @@
 #include "comm_layer_inner.h"
 #include "Polkit.h"
 #include "backtrace.h"
-#include "CCpp_sha1.h"
 
 using namespace std;
 
@@ -53,42 +52,12 @@ CAnalyzerCCpp::CAnalyzerCCpp() :
     m_nGdbTimeoutSec(60)
 {}
 
-static string create_hash(const char *pInput)
+static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
 {
-    unsigned int len;
-
-#if 0
-{
-    char hash_str[SHA1_LENGTH*2 + 1];
-    unsigned char hash[SHA1_LENGTH];
-    HASHContext *hc;
-    hc = HASH_Create(HASH_AlgSHA1);
-    if (!hc)
-    {
-        error_msg_and_die("HASH_Create(HASH_AlgSHA1) failed"); /* paranoia */
-    }
-    HASH_Begin(hc);
-    HASH_Update(hc, (const unsigned char*)pInput, strlen(pInput));
-    HASH_End(hc, hash, &len, sizeof(hash));
-    HASH_Destroy(hc);
-
-    char *d = hash_str;
-    unsigned char *s = hash;
-    while (len)
-    {
-        *d++ = "0123456789abcdef"[*s >> 4];
-        *d++ = "0123456789abcdef"[*s & 0xf];
-        s++;
-        len--;
-    }
-    *d = '\0';
-//log("hash1:%s str:'%s'", hash_str, pInput);
-}
-#endif
-
-    char hash_str[SHA1_RESULT_LEN*2 + 1];
+    unsigned len;
     unsigned char hash2[SHA1_RESULT_LEN];
     sha1_ctx_t sha1ctx;
+
     sha1_begin(&sha1ctx);
     sha1_hash(pInput, strlen(pInput), &sha1ctx);
     sha1_end(hash2, &sha1ctx);
@@ -104,9 +73,7 @@ static string create_hash(const char *pInput)
         len--;
     }
     *d = '\0';
-//log("hash2:%s str:'%s'", hash_str, pInput);
-
-    return hash_str;
+    //log("hash2:%s str:'%s'", hash_str, pInput);
 }
 
 /**
@@ -297,8 +264,6 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
             bt_depth = 256;
             full = "";
         }
-        free(bt);
-        free(args[9]);
     }
     free(uid);
     free(args[5]);
@@ -363,7 +328,7 @@ static char* run_unstrip_n(const char *pDebugDumpDir, unsigned timeout_sec)
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
  * It is slated to be in F12/RHEL6.
  *
- * returened value must be freed
+ * returned value must be freed
  */
 static char *install_debug_infos(const char *pDebugDumpDir, const char *debuginfo_dirs)
 {
@@ -581,10 +546,11 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
     free(package);
     free(executable);
 
-    string hash = create_hash(hash_str);
+    char hash_str2[SHA1_RESULT_LEN*2 + 1];
+    create_hash(hash_str2, hash_str);
     free(hash_str);
 
-    return hash;
+    return hash_str2;
 }
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
@@ -720,10 +686,11 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         free(package);
         free(executable);
 
-        string hash = create_hash(hash_str);
+        char hash_str2[SHA1_RESULT_LEN*2 + 1];
+        create_hash(hash_str2, hash_str);
         free(hash_str);
 
-        return hash;
+        return hash_str2;
     }
 }
 
@@ -870,10 +837,11 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         struct strbuf *bt = backtrace_tree_as_str(backtrace, false);
         strbuf_prepend_str(bt, executable);
         strbuf_prepend_str(bt, package);
-        dd_save_text(dd, FILENAME_GLOBAL_UUID, create_hash(bt->buf).c_str());
+        char hash_str[SHA1_RESULT_LEN*2 + 1];
+        create_hash(hash_str, bt->buf);
+        dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
         strbuf_free(bt);
 
-        /* Compute and store backtrace rating. */
         /* Compute and store backtrace rating. The crash frame
            is more important that the others. The frames around
            the crash are more important than the rest.  */
@@ -910,7 +878,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         struct strbuf *ibt = independent_backtrace(backtrace_str);
         strbuf_prepend_str(ibt, executable);
         strbuf_prepend_str(ibt, package);
-        dd_save_text(dd, FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
+        char hash_str[SHA1_RESULT_LEN*2 + 1];
+        create_hash(hash_str, ibt->buf);
+        dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
         strbuf_free(ibt);
 
         /* Compute and store backtrace rating. */

@@ -18,6 +18,10 @@
  * ---------------------------------------------------------------------------
  */
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define SHA1_RESULT_LEN (5 * 4)
 
 typedef struct sha1_ctx_t {
@@ -30,3 +34,7 @@ typedef struct sha1_ctx_t {
 void sha1_begin(sha1_ctx_t *ctx);
 void sha1_hash(const void *buffer, size_t len, sha1_ctx_t *ctx);
 void sha1_end(void *resbuf, sha1_ctx_t *ctx);
+
+#ifdef __cplusplus
+}
+#endif

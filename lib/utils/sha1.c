@@ -18,7 +18,6 @@
  * ---------------------------------------------------------------------------
  */
 #include "abrtlib.h"
-#include "CCpp_sha1.h"
 
 #if defined(__BIG_ENDIAN__) && __BIG_ENDIAN__
 # define SHA1_BIG_ENDIAN 1

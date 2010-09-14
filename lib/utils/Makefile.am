@@ -32,6 +32,7 @@ libABRTUtils_la_SOURCES = \
     strbuf.c strbuf.h \
     abrt_packages.c abrt_packages.h \
     hooklib.c hooklib.h \
+    sha1.c sha1.h \
     database.c
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
