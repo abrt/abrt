@@ -347,7 +347,7 @@ fi
 %if %{?with_systemd}
 /lib/systemd/system/%{name}d.service
 %endif
-%{_sbindir}/%{name}d
+%{_sbindir}/abrtd
 %{_bindir}/%{name}-debuginfo-install
 %{_bindir}/%{name}-handle-upload
 %{_bindir}/%{name}-backtrace
