@@ -121,7 +121,7 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, unsigned timeo
         if (timeout < 0)
         {
             kill(child, SIGKILL);
-            strbuf_append_strf(buf_out, "\nTimeout exceeded: 60 second, killing %s\n", args[0]);
+            strbuf_append_strf(buf_out, "\nTimeout exceeded: %u seconds, killing %s\n", timeout_sec, args[0]);
             break;
         }
 
@@ -245,12 +245,13 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
     {
         args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
         bt = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 1, timeout_sec, NULL);
+        free(args[9]);
         if (bt && (bt_depth <= 64 || strlen(bt) < 256*1024))
         {
-            free(args[9]);
             break;
         }
 
+        free(bt);
         bt_depth /= 2;
         if (bt_depth <= 64 && thread_apply_all[0] != '\0')
         {
@@ -726,12 +727,27 @@ static bool DebuginfoCheckPolkit(uid_t uid)
 
 void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
+    if (!m_bBacktrace)
+    {
+        return;
+    }
+
     dump_dir_t *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return;
+    }
+
+    if (!force)
+    {
+        int bt_exists = dd_exist(dd, FILENAME_BACKTRACE);
+        if (bt_exists)
+        {
+            dd_close(dd);
+            return; /* backtrace already exists */
+        }
     }
 
     /* Skip remote crashes. */
@@ -744,22 +760,6 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         {
             dd_close(dd);
             return;
-        }
-    }
-
-    if (!m_bBacktrace)
-    {
-        dd_close(dd);
-        return;
-    }
-
-    if (!force)
-    {
-        int bt_exists = dd_exist(dd, FILENAME_BACKTRACE);
-        if (bt_exists)
-        {
-            dd_close(dd);
-            return; /* backtrace already exists */
         }
     }
 
