@@ -671,7 +671,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         password = settings["Password"].c_str();
         bugzilla_xmlrpc = settings["BugzillaXMLRPC"].c_str();
         bugzilla_url = settings["BugzillaURL"].c_str();
-        ssl_verify = string_to_bool(settings["NoSSLVerify"].c_str());
+        ssl_verify = string_to_bool(settings["SSLVerify"].c_str());
     }
     else
     {
