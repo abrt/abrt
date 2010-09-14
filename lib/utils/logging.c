@@ -55,16 +55,19 @@ static void verror_msg_helper(const char *s,
      * This is needed for e.g. when multiple children
      * can produce log messages simultaneously. */
 
-    prefix_len = strlen(msg_prefix);
+    prefix_len = msg_prefix[0] ? strlen(msg_prefix) + 2 : 0;
     strerr_len = strerr ? strlen(strerr) : 0;
     msgeol_len = strlen(msg_eol);
     /* +3 is for ": " before strerr and for terminating NUL */
     msg = (char*) xrealloc(msg, prefix_len + used + strerr_len + msgeol_len + 3);
     /* TODO: maybe use writev instead of memmoving? Need full_writev? */
     if (prefix_len) {
+        char *p;
         memmove(msg + prefix_len, msg, used);
         used += prefix_len;
-        memcpy(msg, msg_prefix, prefix_len);
+        p = stpcpy(msg, msg_prefix);
+        p[0] = ':';
+        p[1] = ' ';
     }
     if (strerr) {
         if (s[0]) {

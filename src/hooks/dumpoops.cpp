@@ -70,7 +70,7 @@ int main(int argc, char **argv)
 	if (!argv[0])
 		goto usage;
 
-	msg_prefix = xasprintf("%s: ", program_name);
+	msg_prefix = program_name;
 
 	/* Load KerneloopsScanner plugin */
 //	const plugin_info_t *plugin_info;

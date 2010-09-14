@@ -9,9 +9,9 @@ abrtd_SOURCES = \
     CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
-    Daemon.h Daemon.cpp \
     Settings.h Settings.cpp \
-    dumpsocket.h dumpsocket.cpp
+    dumpsocket.h dumpsocket.cpp \
+    Daemon.h Daemon.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/utils \
