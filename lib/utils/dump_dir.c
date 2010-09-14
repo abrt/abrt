@@ -251,10 +251,10 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
         error_msg("User 'abrt' does not exist, using uid 0");
 
     /* Get crashed application's group id */
-    dd->gid = 0;
+    dd->dd_gid = 0;
     pw = getpwuid(uid);
     if (pw)
-        dd->gid = pw->pw_gid;
+        dd->dd_gid = pw->pw_gid;
     else
         error_msg("User %lu does not exist, using gid 0", (long)uid);
 
