@@ -81,18 +81,18 @@ void dd_close(dump_dir_t *dd)
 
 int dd_opendir(dump_dir_t *dd, const char *dir)
 {
-    if (dd->opened)
-        error_msg_and_die("CDebugDump is already opened");
+    if (dd->locked)
+        error_msg_and_die("dump_dir is already opened"); /* bug */
 
     dd->dd_dir = rm_trailing_slashes(dir);
-    if (!dd->dd_dir || !exist_file_dir(dd->dd_dir))
+    if (!exist_file_dir(dd->dd_dir))
     {
         error_msg("'%s' does not exist", dd->dd_dir);
+        free(dd->dd_dir);
         return 0;
     }
 
     dd_lock(dd);
-    dd->opened = 1;
 
     /* In case caller would want to create more files, he'll need uid:gid */
     struct stat stat_buf;
@@ -159,66 +159,6 @@ static bool get_and_set_lock(const char* lock_file, const char* pid)
 
     VERB1 log("Locked '%s'", lock_file);
     return true;
-
-#if 0
-/* Old code was using ordinary files instead of symlinks,
- * but it had a race window between open and write, during which file was
- * empty. It was seen to happen in practice.
- */
-    int fd;
-    while ((fd = open(pLockFile, O_WRONLY | O_CREAT | O_EXCL, 0640)) < 0)
-    {
-        if (errno != EEXIST)
-            perror_msg_and_die("Can't create lock file '%s'", pLockFile);
-        fd = open(pLockFile, O_RDONLY);
-        if (fd < 0)
-        {
-            if (errno == ENOENT)
-                continue; /* someone else deleted the file */
-            perror_msg_and_die("Can't open lock file '%s'", pLockFile);
-        }
-        char pid_buf[sizeof(pid_t)*3 + 4];
-        int r = read(fd, pid_buf, sizeof(pid_buf) - 1);
-        if (r < 0)
-            perror_msg_and_die("Can't read lock file '%s'", pLockFile);
-        close(fd);
-        if (r == 0)
-        {
-            /* Other process did not write out PID yet.
-             * We HOPE it did not crash... */
-            continue;
-        }
-        pid_buf[r] = '\0';
-        if (strcmp(pid_buf, pPID) == 0)
-        {
-            log("Lock file '%s' is already locked by us", pLockFile);
-            return -1;
-        }
-        if (isdigit_str(pid_buf))
-        {
-            if (access(ssprintf("/proc/%s", pid_buf).c_str(), F_OK) == 0)
-            {
-                log("Lock file '%s' is locked by process %s", pLockFile, pid_buf);
-                return -1;
-            }
-            log("Lock file '%s' was locked by process %s, but it crashed?", pLockFile, pid_buf);
-        }
-        /* The file may be deleted by now by other process. Ignore errors */
-        unlink(pLockFile);
-    }
-
-    int len = strlen(pPID);
-    if (write(fd, pPID, len) != len)
-    {
-        unlink(pLockFile);
-        /* close(fd); - not needed, exiting does it too */
-        perror_msg_and_die("Can't write lock file '%s'", pLockFile);
-    }
-    close(fd);
-
-    VERB1 log("Locked '%s'", pLockFile);
-    return true;
-#endif
 }
 
 static void dd_lock(dump_dir_t *dd)
@@ -241,6 +181,7 @@ static void dd_unlock(dump_dir_t *dd)
 {
     if (dd->locked)
     {
+        dd->locked = 0;
         char lock_buf[strlen(dd->dd_dir) + sizeof(".lock")];
         sprintf(lock_buf, "%s.lock", dd->dd_dir);
         xunlink(lock_buf);
@@ -269,18 +210,18 @@ static void dd_unlock(dump_dir_t *dd)
  */
 int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
 {
-    if (dd->opened)
-        error_msg_and_die("DebugDump is already opened");
+    if (dd->locked)
+        error_msg_and_die("dump_dir is already opened"); /* bug */
 
     dd->dd_dir = rm_trailing_slashes(dir);
     if (exist_file_dir(dd->dd_dir))
     {
         error_msg("'%s' already exists", dd->dd_dir);
+        free(dd->dd_dir);
         return 0;
     }
 
     dd_lock(dd);
-    dd->opened = 1;
 
     /* Was creating it with mode 0700 and user as the owner, but this allows
      * the user to replace any file in the directory, changing security-sensitive data
@@ -289,7 +230,6 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
     if (mkdir(dd->dd_dir, 0750) == -1)
     {
         dd_unlock(dd);
-        dd->opened = 0;
         error_msg("Can't create dir '%s'", dir);
         return 0;
     }
@@ -298,7 +238,6 @@ int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
     if (chmod(dd->dd_dir, 0750) == -1)
     {
         dd_unlock(dd);
-        dd->opened = false;
         error_msg("Can't change mode of '%s'", dir);
         return false;
     }
@@ -452,8 +391,8 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
 
 char* dd_load_text(const dump_dir_t *dd, const char *name)
 {
-    if (!dd->opened)
-        error_msg_and_die("DebugDump is not opened");
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dir, name);
     char *ret = load_text_file(full_path);
@@ -464,8 +403,8 @@ char* dd_load_text(const dump_dir_t *dd, const char *name)
 
 void dd_save_text(dump_dir_t *dd, const char *name, const char *data)
 {
-    if (!dd->opened)
-        error_msg_and_die("DebugDump is not opened");
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dir, name);
     save_binary_file(full_path, data, strlen(data), dd->uid, dd->gid);
@@ -474,18 +413,18 @@ void dd_save_text(dump_dir_t *dd, const char *name, const char *data)
 
 void dd_save_binary(dump_dir_t* dd, const char* name, const char* data, unsigned size)
 {
-    if (dd->opened)
-        error_msg_and_die("DebugDump is not opened");
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dir, name);
     save_binary_file(full_path, data, size, dd->uid, dd->gid);
     free(full_path);
 }
 
-int dd_init_next_file(dump_dir_t *dd)
+DIR *dd_init_next_file(dump_dir_t *dd)
 {
-    if (!dd->opened)
-        error_msg_and_die("DebugDump is not opened");
+    if (!dd->locked)
+        error_msg_and_die("dump_dir is not opened"); /* bug */
 
     if (dd->next_dir)
         closedir(dd->next_dir);
@@ -494,10 +433,9 @@ int dd_init_next_file(dump_dir_t *dd)
     if (!dd->next_dir)
     {
         error_msg("Can't open dir '%s'", dd->dd_dir);
-        return 0;
     }
 
-    return 1;
+    return dd->next_dir;
 }
 
 int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name)

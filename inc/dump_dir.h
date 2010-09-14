@@ -29,7 +29,6 @@ extern "C" {
 typedef struct dump_dir {
     char *dd_dir;
     DIR *next_dir;
-    int opened;
     int locked;
     uid_t uid;
     gid_t gid;
@@ -41,7 +40,7 @@ void dd_close(dump_dir_t *dd);
 int dd_opendir(dump_dir_t *dd, const char *dir);
 int dd_exist(dump_dir_t *dd, const char *path);
 int dd_create(dump_dir_t *dd, const char *dir, uid_t uid);
-int dd_init_next_file(dump_dir_t *dd);
+DIR *dd_init_next_file(dump_dir_t *dd);
 int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name);
 
 char* dd_load_text(const dump_dir_t *dd, const char* name);
