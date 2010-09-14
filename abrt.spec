@@ -348,6 +348,7 @@ fi
 /lib/systemd/system/%{name}d.service
 %endif
 %{_sbindir}/abrtd
+%{_sbindir}/abrt-server
 %{_bindir}/%{name}-debuginfo-install
 %{_bindir}/%{name}-handle-upload
 %{_bindir}/%{name}-backtrace

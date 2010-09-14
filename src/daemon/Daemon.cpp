@@ -19,6 +19,7 @@
 #if HAVE_LOCALE_H
 # include <locale.h>
 #endif
+#include <sys/un.h>
 #include <syslog.h>
 #include <pthread.h>
 #include <resolv.h> /* res_init */
@@ -32,10 +33,18 @@
 #include "abrt_exception.h"
 #include "CrashWatcher.h"
 #include "Daemon.h"
-#include "dumpsocket.h"
 #include "rpm.h"
 
 using namespace std;
+
+
+#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt/abrtd.lock"
+#define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
+
+#define SOCKET_FILE VAR_RUN"/abrt/abrt.socket"
+#define SOCKET_PERMISSION 0666
+/* Maximum number of simultaneously opened client connections. */
+#define MAX_CLIENT_COUNT 10
 
 
 /* Daemon initializes, then sits in glib main loop, waiting for events.
@@ -77,12 +86,129 @@ using namespace std;
  *      If set_client_name(NULL) was done, they are not sent.
  */
 
+CCommLayerServer* g_pCommLayer;
 
-#define VAR_RUN_LOCK_FILE   VAR_RUN"/abrt/abrtd.lock"
-#define VAR_RUN_PIDFILE     VAR_RUN"/abrtd.pid"
+static bool daemonize = true;
+
+static volatile sig_atomic_t s_sig_caught;
+static int s_signal_pipe[2];
+static int s_signal_pipe_write = -1;
+static int s_upload_watch = -1;
+static unsigned s_timeout;
+static bool s_exiting;
+
+static GIOChannel *socket_channel = NULL;
+static guint socket_channel_cb_id = 0;
+static int socket_client_count = 0;
 
 
-//FIXME: add some struct to be able to join all threads!
+/* Helpers */
+
+static guint add_watch_or_die(GIOChannel *channel, unsigned condition, GIOFunc func)
+{
+    errno = 0;
+    guint r = g_io_add_watch(channel, (GIOCondition)condition, func, NULL);
+    if (!r)
+        perror_msg_and_die("g_io_add_watch failed");
+    return r;
+}
+
+
+/* Socket handling */
+
+/* Callback called by glib main loop when a client connects to ABRT's socket. */
+static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpointer ptr_unused)
+{
+    /* Check the limit for number of simultaneously attached clients. */
+    if (socket_client_count >= MAX_CLIENT_COUNT)
+    {
+        error_msg("Too many clients, refusing connections to '%s'", SOCKET_FILE);
+        /* To avoid infinite loop caused by the descriptor in "ready" state,
+         * the callback must be disabled.
+         * It is added back in client_free(). */
+        g_source_remove(socket_channel_cb_id);
+        socket_channel_cb_id = 0;
+        return TRUE;
+    }
+
+    int socket = accept(g_io_channel_unix_get_fd(source), NULL, NULL);
+    if (socket == -1)
+    {
+        perror_msg("accept");
+        return TRUE;
+    }
+
+    log("New client connected");
+    pid_t pid = fork();
+    if (pid < 0)
+    {
+        close(socket);
+        perror_msg("fork");
+        return TRUE;
+    }
+    if (pid == 0) /* child */
+    {
+        xmove_fd(socket, 0);
+        xdup2(0, 1);
+
+        char *argv[3];  /* abrt-server [-s] NULL */
+        char **pp = argv;
+        *pp++ = (char*)"abrt-server";
+        if (logmode & LOGMODE_SYSLOG)
+            *pp++ = (char*)"-s";
+        *pp = NULL;
+
+        execvp(argv[0], argv);
+        perror_msg_and_die("Can't execute '%s'", argv[0]);
+    }
+    /* parent */
+    socket_client_count++;
+    close(socket);
+    return TRUE;
+}
+
+/* Initializes the dump socket, usually in /var/run directory
+ * (the path depends on compile-time configuration).
+ */
+static void dumpsocket_init()
+{
+    unlink(SOCKET_FILE); /* not caring about the result */
+
+    int socketfd = xsocket(AF_UNIX, SOCK_STREAM, 0);
+    close_on_exec_on(socketfd);
+
+    struct sockaddr_un local;
+    memset(&local, 0, sizeof(local));
+    local.sun_family = AF_UNIX;
+    strcpy(local.sun_path, SOCKET_FILE);
+    xbind(socketfd, (struct sockaddr*)&local, sizeof(local));
+    xlisten(socketfd, MAX_CLIENT_COUNT);
+
+    if (chmod(SOCKET_FILE, SOCKET_PERMISSION) != 0)
+        perror_msg_and_die("chmod '%s'", SOCKET_FILE);
+
+    socket_channel = g_io_channel_unix_new(socketfd);
+    g_io_channel_set_close_on_unref(socket_channel, TRUE);
+    socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+}
+
+/* Releases all resources used by dumpsocket. */
+static void dumpsocket_shutdown()
+{
+    /* Set everything to pre-initialization state. */
+    if (socket_channel)
+    {
+        /* Undo add_watch_or_die */
+        g_source_remove(socket_channel_cb_id);
+        /* Undo g_io_channel_unix_new */
+        g_io_channel_unref(socket_channel);
+        socket_channel = NULL;
+    }
+}
+
+
+/* Cron handling */
+
 typedef struct cron_callback_data_t
 {
     std::string m_sPluginName;
@@ -98,17 +224,6 @@ typedef struct cron_callback_data_t
         m_nTimeout(pTimeout)
     {}
 } cron_callback_data_t;
-
-
-static volatile sig_atomic_t s_sig_caught;
-static int s_signal_pipe[2];
-static int s_signal_pipe_write = -1;
-static int s_upload_watch = -1;
-static unsigned s_timeout;
-static bool s_exiting;
-
-CCommLayerServer* g_pCommLayer;
-
 
 static void cron_delete_callback_data_cb(gpointer data)
 {
@@ -392,7 +507,7 @@ static int Lock()
     /* we leak opened lfd intentionally */
 }
 
-static void handle_fatal_signal(int signo)
+static void handle_signal(int signo)
 {
     // Enable for debugging only, malloc/printf are unsafe in signal handlers
     //VERB3 log("Got signal %d", signo);
@@ -415,7 +530,18 @@ static gboolean handle_signal_cb(GIOChannel *gio, GIOCondition condition, gpoint
     {
         /* we did receive a signal */
         VERB3 log("Got signal %d through signal pipe", signo);
-        s_exiting = 1;
+        if (signo != SIGCHLD)
+            s_exiting = 1;
+        else
+        {
+            if (socket_client_count)
+                socket_client_count--;
+            if (!socket_channel_cb_id)
+            {
+                log("Accepting connections on '%s'", SOCKET_FILE);
+                socket_channel_cb_id = add_watch_or_die(socket_channel, G_IO_IN | G_IO_PRI, server_socket_cb);
+            }
+        }
         return TRUE;
     }
     return FALSE;
@@ -739,7 +865,6 @@ static void sanitize_dump_dir_rights()
 
 int main(int argc, char** argv)
 {
-    bool daemonize = true;
     int opt;
     int parent_pid = getpid();
 
@@ -752,6 +877,10 @@ int main(int argc, char** argv)
 
     if (getuid() != 0)
         error_msg_and_die("ABRT daemon must be run as root");
+
+    char *env_verbose = getenv("ABRT_VERBOSE");
+    if (env_verbose)
+        g_verbose = atoi(env_verbose);
 
     while ((opt = getopt(argc, argv, "dsvt:")) != -1)
     {
@@ -787,15 +916,18 @@ int main(int argc, char** argv)
         }
     }
 
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+
     msg_prefix = "abrtd"; /* for log(), error_msg() and such */
 
     xpipe(s_signal_pipe);
     close_on_exec_on(s_signal_pipe[0]);
     close_on_exec_on(s_signal_pipe[1]);
-    signal(SIGTERM, handle_fatal_signal);
-    signal(SIGINT,  handle_fatal_signal);
+    signal(SIGTERM, handle_signal);
+    signal(SIGINT,  handle_signal);
+    signal(SIGCHLD, handle_signal);
     if (s_timeout)
-        signal(SIGALRM, handle_fatal_signal);
+        signal(SIGALRM, handle_signal);
 
     /* Daemonize unless -d */
     if (daemonize)
@@ -995,7 +1127,7 @@ int main(int argc, char** argv)
         g_main_loop_unref(pMainloop);
 
     /* Exiting */
-    if (s_sig_caught && s_sig_caught != SIGALRM)
+    if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
     {
         error_msg_and_die("Got signal %d, exiting", s_sig_caught);
         signal(s_sig_caught, SIG_DFL);

@@ -1,6 +1,6 @@
 bin_SCRIPTS = abrt-debuginfo-install abrt-handle-upload
 
-sbin_PROGRAMS = abrtd
+sbin_PROGRAMS = abrtd abrt-server
 
 abrtd_SOURCES = \
     PluginManager.h PluginManager.cpp \
@@ -10,7 +10,6 @@ abrtd_SOURCES = \
     CommLayerServer.h CommLayerServer.cpp \
     CommLayerServerDBus.h CommLayerServerDBus.cpp \
     Settings.h Settings.cpp \
-    dumpsocket.h dumpsocket.cpp \
     Daemon.h Daemon.cpp
 abrtd_CPPFLAGS = \
     -I$(srcdir)/../../inc \
@@ -35,6 +34,23 @@ abrtd_LDADD = \
     $(DBUS_LIBS) \
     $(RPM_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
+
+abrt_server_SOURCES = \
+    abrt-server.c
+abrt_server_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_server_LDADD = \
+    ../../lib/utils/libABRTUtils.la
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/
 dist_dbusabrtconf_DATA = dbus-abrt.conf
