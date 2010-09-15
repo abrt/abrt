@@ -23,6 +23,26 @@
 #include "comm_layer_inner.h"
 #include "strbuf.h"
 
+// TODO:
+//
+// dd_opendir needs a bit flags parameter, with bits for
+// "auto-close on error" and "log error message on error".
+// This will simplify a ton of places which do this:
+//    if (!dd_opendir(dd, dirname))
+//    {
+//        dd_close(dd);
+//        VERB1 log(_("Unable to open debug dump '%s'"), dirname);
+//        return ........;
+//    }
+//
+// Perhaps dd_opendir should do some sanity checking like
+// "if there is no "uid" file in the directory, it's not a crash dump",
+// and fail.
+//
+// Locking is broken wrt "funny" directory names.
+// dd_opendir(dd, ".") will create "..lock" istead of proper "../DIRNAME.lock"
+// Similarly for dd_opendir(dd, "DIRNAME/."), dd_opendir(dd, "..") etc.
+
 static bool isdigit_str(const char *str)
 {
     do
