@@ -777,6 +777,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     }
     else
         VERB1 log(_("Skipping the debuginfo installation"));
+    free(uid);
 
     /* Create and store backtrace. */
     char *backtrace_str = get_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), m_nGdbTimeoutSec);
