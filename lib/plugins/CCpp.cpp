@@ -161,7 +161,9 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
         return NULL;
     }
 
-    char *uid = dd_load_text(dd, CD_UID);
+    char *uid_str = dd_load_text(dd, CD_UID);
+    uid_t uid = xatoi_u(uid_str);
+    free(uid_str);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     dd_close(dd);
 
@@ -176,7 +178,7 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
     args[0] = (char*)"gdb";
     args[1] = (char*)"-batch";
 
-    // when/if gdb supports it:
+    // when/if gdb supports "set debug-file-directory DIR1:DIR2":
     // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
     args[2] = (char*)"-ex";
     string dfd = "set debug-file-directory /usr/lib/debug";
@@ -244,9 +246,9 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
     while (1)
     {
         args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 1, timeout_sec, NULL);
+        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, timeout_sec, NULL);
         free(args[9]);
-        if (bt && (bt_depth <= 64 || strlen(bt) < 256*1024))
+        if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
         {
             break;
         }
@@ -266,7 +268,6 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
             full = "";
         }
     }
-    free(uid);
     free(args[5]);
     free(args[7]);
     return bt;
