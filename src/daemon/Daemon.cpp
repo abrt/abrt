@@ -142,8 +142,8 @@ static gboolean server_socket_cb(GIOChannel *source, GIOCondition condition, gpo
     pid_t pid = fork();
     if (pid < 0)
     {
-        close(socket);
         perror_msg("fork");
+        close(socket);
         return TRUE;
     }
     if (pid == 0) /* child */
