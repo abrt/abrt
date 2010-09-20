@@ -115,7 +115,7 @@ static void create_debug_dump()
     /* No need to check the path length, as all variables used are limited, and dd_create()
        fails if the path is too long. */
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_create(dd, path, client_uid))
     {
         dd_delete(dd);

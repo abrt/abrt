@@ -125,7 +125,7 @@ std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
 {
     VERB3 log("Getting local universal unique identification");
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);

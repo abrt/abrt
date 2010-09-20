@@ -153,7 +153,7 @@ static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs
 {
     update_client(_("Generating backtrace"));
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);
@@ -302,7 +302,7 @@ static void GetIndependentBuildIdPC(const char *unstrip_n_output,
 
 static char* run_unstrip_n(const char *pDebugDumpDir, unsigned timeout_sec)
 {
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);
@@ -496,7 +496,7 @@ static void trim_debuginfo_cache(unsigned max_mb)
 
 string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);
@@ -557,7 +557,7 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);
@@ -733,7 +733,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         return;
     }
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);

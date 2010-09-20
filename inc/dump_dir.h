@@ -26,27 +26,27 @@
 extern "C" {
 #endif
 
-typedef struct dump_dir {
+struct dump_dir {
     char *dd_dir;
     DIR *next_dir;
     int locked;
     uid_t dd_uid;
     gid_t dd_gid;
-} dump_dir_t;
+};
 
-dump_dir_t* dd_init(void);
-void dd_close(dump_dir_t *dd);
+struct dump_dir *dd_init(void);
+void dd_close(struct dump_dir *dd);
 
-int dd_opendir(dump_dir_t *dd, const char *dir);
-int dd_exist(dump_dir_t *dd, const char *path);
-int dd_create(dump_dir_t *dd, const char *dir, uid_t uid);
-DIR *dd_init_next_file(dump_dir_t *dd);
-int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name);
+int dd_opendir(struct dump_dir *dd, const char *dir);
+int dd_exist(struct dump_dir *dd, const char *path);
+int dd_create(struct dump_dir *dd, const char *dir, uid_t uid);
+DIR *dd_init_next_file(struct dump_dir *dd);
+int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 
-char* dd_load_text(const dump_dir_t *dd, const char* name);
-void dd_save_text(dump_dir_t *dd, const char *name, const char *data);
-void dd_save_binary(dump_dir_t* dd, const char* name, const char* data, unsigned size);
-void dd_delete(dump_dir_t *dd);
+char* dd_load_text(const struct dump_dir *dd, const char* name);
+void dd_save_text(struct dump_dir *dd, const char *name, const char *data);
+void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, unsigned size);
+void dd_delete(struct dump_dir *dd);
 
 void delete_debug_dump_dir(const char *dd_dir);
 

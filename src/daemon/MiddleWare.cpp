@@ -129,7 +129,7 @@ static char* is_text_file(const char *name, ssize_t *sz)
     return NULL; /* it's binary */
 }
 
-static void load_crash_data_from_debug_dump(dump_dir_t *dd, map_crash_data_t& data)
+static void load_crash_data_from_debug_dump(struct dump_dir *dd, map_crash_data_t& data)
 {
     char *short_name;
     char *full_name;
@@ -188,7 +188,7 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
 {
     VERB3 log(" DebugDumpToCrashReport('%s')", pDebugDumpDir);
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (dd_opendir(dd, pDebugDumpDir))
     {
         const char *const *v = must_have_files;
@@ -304,7 +304,7 @@ mw_result_t CreateCrashReport(const char *crash_id,
     mw_result_t r = MW_OK;
     try
     {
-        dump_dir_t *dd = dd_init();
+        struct dump_dir *dd = dd_init();
         if (!dd_opendir(dd, row->db_dump_dir))
         {
             dd_close(dd);
@@ -461,7 +461,7 @@ report_status_t Report(const map_crash_data_t& client_report,
     const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
     if (comment || reproduce || backtrace)
     {
-        dump_dir_t *dd = dd_init();
+        struct dump_dir *dd = dd_init();
         if (dd_opendir(dd, pDumpDir.c_str()))
         {
             if (comment)
@@ -737,7 +737,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", pExecutable);
 
-                dump_dir_t *dd = dd_init();
+                struct dump_dir *dd = dd_init();
                 if (!dd_opendir(dd, pDebugDumpDir))
                 {
                     dd_close(dd);
@@ -862,7 +862,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
         }
     }
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (dd_opendir(dd, pDebugDumpDir))
     {
         if (rpm_pkg)
@@ -1053,7 +1053,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     mw_result_t res;
     int remote = 0;
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);
@@ -1142,7 +1142,7 @@ mw_result_t FillCrashInfo(const char *crash_id,
     if (!row)
         return MW_ERROR;
 
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, row->db_dump_dir))
     {
         dd_close(dd);

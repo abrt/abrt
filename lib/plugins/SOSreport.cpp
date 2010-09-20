@@ -50,7 +50,7 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
 {
     if (!force)
     {
-        dump_dir_t *dd = dd_init();
+        struct dump_dir *dd = dd_init();
         if (!dd_opendir(dd, pActionDir))
         {
             dd_close(dd);

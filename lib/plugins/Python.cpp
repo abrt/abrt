@@ -25,7 +25,7 @@ using namespace std;
 
 string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 {
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);

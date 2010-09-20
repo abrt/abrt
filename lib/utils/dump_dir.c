@@ -75,15 +75,15 @@ static bool exist_file_dir(const char *path)
 }
 
 static char *load_text_file(const char *path);
-static void dd_lock(dump_dir_t *dd);
-static void dd_unlock(dump_dir_t *dd);
+static void dd_lock(struct dump_dir *dd);
+static void dd_unlock(struct dump_dir *dd);
 
-dump_dir_t* dd_init(void)
+struct dump_dir *dd_init(void)
 {
-    return (dump_dir_t*)xzalloc(sizeof(dump_dir_t));
+    return (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
 }
 
-void dd_close(dump_dir_t *dd)
+void dd_close(struct dump_dir *dd)
 {
     if (!dd)
         return;
@@ -99,7 +99,7 @@ void dd_close(dump_dir_t *dd)
     free(dd);
 }
 
-int dd_opendir(dump_dir_t *dd, const char *dir)
+int dd_opendir(struct dump_dir *dd, const char *dir)
 {
     if (dd->locked)
         error_msg_and_die("dump_dir is already opened"); /* bug */
@@ -125,7 +125,7 @@ int dd_opendir(dump_dir_t *dd, const char *dir)
     return 1;
 }
 
-int dd_exist(dump_dir_t *dd, const char *path)
+int dd_exist(struct dump_dir *dd, const char *path)
 {
     char *full_path = concat_path_file(dd->dd_dir, path);
     int ret = exist_file_dir(full_path);
@@ -181,7 +181,7 @@ static bool get_and_set_lock(const char* lock_file, const char* pid)
     return true;
 }
 
-static void dd_lock(dump_dir_t *dd)
+static void dd_lock(struct dump_dir *dd)
 {
     if (dd->locked)
         error_msg_and_die("Locking bug on '%s'", dd->dd_dir);
@@ -197,7 +197,7 @@ static void dd_lock(dump_dir_t *dd)
     }
 }
 
-static void dd_unlock(dump_dir_t *dd)
+static void dd_unlock(struct dump_dir *dd)
 {
     if (dd->locked)
     {
@@ -228,7 +228,7 @@ static void dd_unlock(dump_dir_t *dd)
  * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
  * abrt's user id. We do not allow write access to group.
  */
-int dd_create(dump_dir_t *dd, const char *dir, uid_t uid)
+int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
 {
     if (dd->locked)
         error_msg_and_die("dump_dir is already opened"); /* bug */
@@ -351,7 +351,7 @@ static bool delete_file_dir(const char *dir)
     return true;
 }
 
-void dd_delete(dump_dir_t *dd)
+void dd_delete(struct dump_dir *dd)
 {
     if (!exist_file_dir(dd->dd_dir))
     {
@@ -409,7 +409,7 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
     return true;
 }
 
-char* dd_load_text(const dump_dir_t *dd, const char *name)
+char* dd_load_text(const struct dump_dir *dd, const char *name)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
@@ -421,7 +421,7 @@ char* dd_load_text(const dump_dir_t *dd, const char *name)
     return ret;
 }
 
-void dd_save_text(dump_dir_t *dd, const char *name, const char *data)
+void dd_save_text(struct dump_dir *dd, const char *name, const char *data)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
@@ -431,7 +431,7 @@ void dd_save_text(dump_dir_t *dd, const char *name, const char *data)
     free(full_path);
 }
 
-void dd_save_binary(dump_dir_t* dd, const char* name, const char* data, unsigned size)
+void dd_save_binary(struct dump_dir* dd, const char* name, const char* data, unsigned size)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
@@ -441,7 +441,7 @@ void dd_save_binary(dump_dir_t* dd, const char* name, const char* data, unsigned
     free(full_path);
 }
 
-DIR *dd_init_next_file(dump_dir_t *dd)
+DIR *dd_init_next_file(struct dump_dir *dd)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
@@ -458,7 +458,7 @@ DIR *dd_init_next_file(dump_dir_t *dd)
     return dd->next_dir;
 }
 
-int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name)
+int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 {
     if (dd->next_dir == NULL)
         return 0;
@@ -484,7 +484,7 @@ int dd_get_next_file(dump_dir_t *dd, char **short_name, char **full_name)
 /* Utility function */
 void delete_debug_dump_dir(const char *dd_dir)
 {
-    dump_dir_t *dd = dd_init();
+    struct dump_dir *dd = dd_init();
     if (dd_opendir(dd, dd_dir))
         dd_delete(dd);
     else

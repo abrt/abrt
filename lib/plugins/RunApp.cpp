@@ -57,7 +57,7 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs, int force)
 
     if (args.size() > FILENAME)
     {
-        dump_dir_t *dd = dd_init();
+        struct dump_dir *dd = dd_init();
         if (!dd_opendir(dd, pActionDir))
         {
             dd_close(dd);

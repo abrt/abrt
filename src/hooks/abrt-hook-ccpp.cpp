@@ -414,7 +414,7 @@ int main(int argc, char** argv)
         if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
             return 1;
 
-        dump_dir_t *dd = dd_init();
+        struct dump_dir *dd = dd_init();
         if (dd_create(dd, path, uid))
         {
             char *cmdline = get_cmdline(pid); /* never NULL */

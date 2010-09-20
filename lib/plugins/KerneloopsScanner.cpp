@@ -132,7 +132,7 @@ int save_oops_to_debug_dump(const vector_string_t& oopsList)
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
         *second_line++ = '\0';
 
-        dump_dir_t *dd = dd_init();
+        struct dump_dir *dd = dd_init();
         if (dd_create(dd, path, /*uid:*/ 0))
         {
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
