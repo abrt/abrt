@@ -141,136 +141,42 @@ static char* exec_vp(char **args, uid_t uid, int redirect_stderr, unsigned timeo
     }
     close(pipeout[0]);
 
-    int st;
-    waitpid(child, &st, 0); /* prevent having zombie child process */
-    if (status)
-        *status = st;
+    /* Prevent having zombie child process, and maybe collect status
+     * (note that status == NULL is ok too) */
+    waitpid(child, status, 0);
 
     return strbuf_free_nobuf(buf_out);
 }
 
-static char *get_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, unsigned timeout_sec)
+static void gen_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, unsigned timeout_sec)
 {
     update_client(_("Generating backtrace"));
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
+    pid_t pid = fork();
+    if (pid < 0)
     {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
-        return NULL;
+        perror_msg("fork");
+        return;
     }
-
-    char *uid_str = dd_load_text(dd, CD_UID);
-    uid_t uid = xatoi_u(uid_str);
-    free(uid_str);
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    dd_close(dd);
-
-    // Workaround for
-    // http://sourceware.org/bugzilla/show_bug.cgi?id=9622
-    unsetenv("TERM");
-    // This is not necessary, and was observed to cause
-    // environment corruption (because we run in a thread?):
-    //putenv((char*)"TERM=dumb");
-
-    char *args[21];
-    args[0] = (char*)"gdb";
-    args[1] = (char*)"-batch";
-
-    // when/if gdb supports "set debug-file-directory DIR1:DIR2":
-    // (https://bugzilla.redhat.com/show_bug.cgi?id=528668):
-    args[2] = (char*)"-ex";
-    string dfd = "set debug-file-directory /usr/lib/debug";
-    const char *p = pDebugInfoDirs;
-    while (1)
+    if (pid == 0) /* child */
     {
-        const char *colon_or_nul = strchrnul(p, ':');
-        dfd += ':';
-        dfd.append(p, colon_or_nul - p);
-        dfd += "/usr/lib/debug";
-        if (*colon_or_nul != ':')
-            break;
-        p = colon_or_nul + 1;
+        char *argv[8];  /* abrt-action-generate-backtrace [-s] -tSEC -d DIR -i DIR1:DIR2 NULL */
+        char **pp = argv;
+        *pp++ = (char*)"abrt-action-generate-backtrace";
+        if (logmode & LOGMODE_SYSLOG)
+            *pp++ = (char*)"-s";
+        *pp++ = xasprintf("-t%u", timeout_sec);
+        *pp++ = (char*)"-d";
+        *pp++ = (char*)pDebugDumpDir;
+        *pp++ = (char*)"-i";
+        *pp++ = (char*)pDebugInfoDirs;
+        *pp = NULL;
+
+        execvp(argv[0], argv);
+        perror_msg_and_die("Can't execute '%s'", argv[0]);
     }
-    args[3] = (char*)dfd.c_str();
-
-    /* "file BINARY_FILE" is needed, without it gdb cannot properly
-     * unwind the stack. Currently the unwind information is located
-     * in .eh_frame which is stored only in binary, not in coredump
-     * or debuginfo.
-     *
-     * Fedora GDB does not strictly need it, it will find the binary
-     * by its build-id.  But for binaries either without build-id
-     * (= built on non-Fedora GCC) or which do not have
-     * their debuginfo rpm installed gdb would not find BINARY_FILE
-     * so it is still makes sense to supply "file BINARY_FILE".
-     *
-     * Unfortunately, "file BINARY_FILE" doesn't work well if BINARY_FILE
-     * was deleted (as often happens during system updates):
-     * gdb uses specified BINARY_FILE
-     * even if it is completely unrelated to the coredump.
-     * See https://bugzilla.redhat.com/show_bug.cgi?id=525721
-     *
-     * TODO: check mtimes on COREFILE and BINARY_FILE and not supply
-     * BINARY_FILE if it is newer (to at least avoid gdb complaining).
-     */
-    args[4] = (char*)"-ex";
-    args[5] = xasprintf("file %s", executable);
-    free(executable);
-
-    args[6] = (char*)"-ex";
-    args[7] = xasprintf("core-file %s/"FILENAME_COREDUMP, pDebugDumpDir);
-
-    args[8] = (char*)"-ex";
-    /*args[9] = ... see below */
-    args[10] = (char*)"-ex";
-    args[11] = (char*)"info sharedlib";
-    /* glibc's abort() stores its message in __abort_msg variable */
-    args[12] = (char*)"-ex";
-    args[13] = (char*)"print (char*)__abort_msg";
-    args[14] = (char*)"-ex";
-    args[15] = (char*)"print (char*)__glib_assert_msg";
-    args[16] = (char*)"-ex";
-    args[17] = (char*)"info registers";
-    args[18] = (char*)"-ex";
-    args[19] = (char*)"disassemble";
-    args[20] = NULL;
-
-    /* Get the backtrace, but try to cap its size */
-    /* Limit bt depth. With no limit, gdb sometimes OOMs the machine */
-    unsigned bt_depth = 2048;
-    const char *thread_apply_all = "thread apply all";
-    const char *full = " full";
-    char *bt = NULL;
-    while (1)
-    {
-        args[9] = xasprintf("%s backtrace %u%s", thread_apply_all, bt_depth, full);
-        bt = exec_vp(args, uid, /*redirect_stderr:*/ 1, timeout_sec, NULL);
-        free(args[9]);
-        if ((bt && strnlen(bt, 256*1024) < 256*1024) || bt_depth <= 32)
-        {
-            break;
-        }
-
-        free(bt);
-        bt_depth /= 2;
-        if (bt_depth <= 64 && thread_apply_all[0] != '\0')
-        {
-            /* This program likely has gazillion threads, dont try to bt them all */
-            bt_depth = 256;
-            thread_apply_all = "";
-        }
-        if (bt_depth <= 64 && full[0] != '\0')
-        {
-            /* Looks like there are gigantic local structures or arrays, disable "full" bt */
-            bt_depth = 256;
-            full = "";
-        }
-    }
-    free(args[5]);
-    free(args[7]);
-    return bt;
+    /* parent */
+    waitpid(pid, NULL, 0);
 }
 
 static void GetIndependentBuildIdPC(const char *unstrip_n_output,
@@ -764,8 +670,6 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         }
     }
 
-    char *package = dd_load_text(dd, FILENAME_PACKAGE);
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     char *uid = dd_load_text(dd, CD_UID);
     dd_close(dd); /* do not keep dir locked longer than needed */
 
@@ -780,118 +684,30 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         VERB1 log(_("Skipping the debuginfo installation"));
     free(uid);
 
-    /* Create and store backtrace. */
-    char *backtrace_str = get_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), m_nGdbTimeoutSec);
-    if (!backtrace_str)
-    {
-        backtrace_str = xstrdup("");
-        VERB3 log("get_backtrace() returns NULL, broken core/gdb?");
-    }
-
-    char *bt_build_ids = xasprintf("%s%s", backtrace_str, (build_ids) ? build_ids : "");
-    free(build_ids);
+    /* Create and store backtrace and its hash. */
+    gen_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), m_nGdbTimeoutSec);
 
     dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir))
     {
         dd_close(dd);
+        free(build_ids);
         VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return;
     }
-    dd_save_text(dd, FILENAME_BACKTRACE, bt_build_ids);
-    free(bt_build_ids);
 
+    /* Add build_ids to backtrace */
+    char *backtrace_str = dd_load_text(dd, FILENAME_BACKTRACE);
+    char *bt_build_ids = xasprintf("%s%s", backtrace_str, (build_ids) ? build_ids : "");
+    dd_save_text(dd, FILENAME_BACKTRACE, bt_build_ids);
+    free(build_ids);
+    free(bt_build_ids);
+    free(backtrace_str);
+
+    /* TODO: remove, it's much easier to collect in the coredump helper */
     if (m_bMemoryMap)
         dd_save_text(dd, FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
 
-    /* Compute and store UUID from the backtrace. */
-    char *backtrace_cpy = xstrdup(backtrace_str);
-
-    struct backtrace *backtrace = backtrace_parse(backtrace_cpy, false, false);
-    free(backtrace_cpy);
-
-    if (backtrace)
-    {
-        /* Get the quality of the full backtrace. */
-        float q1 = backtrace_quality(backtrace);
-
-        /* Remove all the other threads except the crash thread. */
-        struct thread *crash_thread = backtrace_find_crash_thread(backtrace);
-        if (crash_thread)
-            backtrace_remove_threads_except_one(backtrace, crash_thread);
-        else
-            log_msg("Detection of crash thread failed");
-
-        /* Get the quality of the crash thread. */
-        float q2 = backtrace_quality(backtrace);
-
-        backtrace_remove_noncrash_frames(backtrace);
-
-        /* Do the frame removal now. */
-        backtrace_limit_frame_depth(backtrace, 5);
-        /* Frame removal can be done before removing exit handlers. */
-        backtrace_remove_exit_handlers(backtrace);
-
-        /* Get the quality of frames around the crash. */
-        float q3 = backtrace_quality(backtrace);
-
-        /* Compute UUID. */
-        struct strbuf *bt = backtrace_tree_as_str(backtrace, false);
-        strbuf_prepend_str(bt, executable);
-        strbuf_prepend_str(bt, package);
-        char hash_str[SHA1_RESULT_LEN*2 + 1];
-        create_hash(hash_str, bt->buf);
-        dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
-        strbuf_free(bt);
-
-        /* Compute and store backtrace rating. The crash frame
-           is more important that the others. The frames around
-           the crash are more important than the rest.  */
-        float qtot = 0.25f * q1 + 0.35f * q2 + 0.4f * q3;
-
-        /* Turn the quality to rating. */
-        const char *rating;
-        if (qtot < 0.6f)      rating = "0";
-        else if (qtot < 0.7f) rating = "1";
-        else if (qtot < 0.8f) rating = "2";
-        else if (qtot < 0.9f) rating = "3";
-        else                  rating = "4";
-        dd_save_text(dd, FILENAME_RATING, rating);
-
-        /* Get the function name from the crash frame. */
-        if (crash_thread)
-        {
-            struct frame *crash_frame = crash_thread->frames;
-            struct frame *abort_frame = thread_find_abort_frame(crash_thread);
-            if (abort_frame)
-                crash_frame = abort_frame->next;
-            if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
-                dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function);
-        }
-
-        backtrace_free(backtrace);
-    }
-    else
-    {
-        /* If the parser failed fall back to the independent backtrace. */
-        /* If we write and use a hand-written parser instead of the bison one,
-           the parser never fails, and it will be possible to get rid of
-           the independent_backtrace and backtrace_rate_old. */
-        struct strbuf *ibt = independent_backtrace(backtrace_str);
-        strbuf_prepend_str(ibt, executable);
-        strbuf_prepend_str(ibt, package);
-        char hash_str[SHA1_RESULT_LEN*2 + 1];
-        create_hash(hash_str, ibt->buf);
-        dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
-        strbuf_free(ibt);
-
-        /* Compute and store backtrace rating. */
-        /* Crash frame is not known so store nothing. */
-        dd_save_text(dd, FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str)).c_str());
-    }
-    free(executable);
-    free(package);
-    free(backtrace_str);
     dd_close(dd);
 }
 
