@@ -1066,9 +1066,11 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     char *cmdline = dd_load_text(dd, FILENAME_CMDLINE);
 
-    char *remote_str = xstrdup("");
+    char *remote_str;
     if (dd_exist(dd, FILENAME_REMOTE))
         remote_str = dd_load_text(dd, FILENAME_REMOTE);
+    else
+        remote_str = xstrdup("");
 
     dd_close(dd);
 
