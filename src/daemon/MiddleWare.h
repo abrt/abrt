@@ -50,8 +50,6 @@ typedef enum {
 } report_status_items_t;
 
 
-void LoadOpenGPGPublicKey(const char* key);
-
 /**
  * Takes care of getting all additional data needed
  * for computing UUIDs and creating a report for particular analyzer

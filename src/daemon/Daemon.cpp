@@ -272,7 +272,8 @@ static int SetUpMW()
     set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
     for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
     {
-        LoadOpenGPGPublicKey(it_k->c_str());
+        VERB1 log("Loading GPG key '%s'", it_k->c_str());
+        rpm_load_gpgkey(it_k->c_str());
     }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();

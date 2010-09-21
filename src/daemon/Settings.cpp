@@ -501,7 +501,7 @@ int LoadSettings()
     if (err == 0)
     {
         /*
-         * loading gpg keys will invoke LoadOpenGPGPublicKey() from rpm.cpp
+         * loading gpg keys will invoke rpm_load_gpgkey() from rpm.cpp
          * pgpReadPkts which makes nss to re-init and thus makes
          * bugzilla plugin work :-/
          */

@@ -19,7 +19,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <fnmatch.h>
-#include <algorithm>
+#include <algorithm>  /* for std::find */
 #include "abrtlib.h"
 #include "Daemon.h"
 #include "Settings.h"
@@ -636,12 +636,6 @@ static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
     db_list_free(table);
 
     return found;
-}
-
-void LoadOpenGPGPublicKey(const char* key)
-{
-    VERB1 log("Loading GPG key '%s'", key);
-    rpm_load_gpgkey(key);
 }
 
 /**
