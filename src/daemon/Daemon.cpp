@@ -719,11 +719,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 case MW_IN_DB:
                     log("Huh, this crash is already in db?! Nothing to do");
                     break;
-                case MW_BLACKLISTED:
                 case MW_CORRUPTED:
-                case MW_PACKAGE_ERROR:
                 case MW_GPG_ERROR:
-                case MW_FILE_ERROR:
                 default:
                     log("Corrupted or bad crash %s (res:%d), deleting", fullname, (int)res);
                     delete_debug_dump_dir(fullname);

@@ -1,6 +1,9 @@
 bin_SCRIPTS = abrt-debuginfo-install abrt-handle-upload
 
-sbin_PROGRAMS = abrtd abrt-server abrt-action-generate-backtrace
+sbin_PROGRAMS = abrtd \
+    abrt-server \
+    abrt-action-generate-backtrace \
+    abrt-action-save-package-data
 
 abrtd_SOURCES = \
     PluginManager.h PluginManager.cpp \
@@ -68,6 +71,30 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_generate_backtrace_LDADD = \
+    ../../lib/utils/libABRTUtils.la
+
+abrt_action_save_package_data_SOURCES = \
+    rpm.h rpm.c \
+    Settings.h Settings.cpp \
+    abrt-action-save-package-data.cpp
+abrt_action_save_package_data_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+# polkit_check_authorization is in libABRTdUtils
+abrt_action_save_package_data_LDADD = \
+    $(RPM_LIBS) \
+    ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 
 dbusabrtconfdir = ${sysconfdir}/dbus-1/system.d/

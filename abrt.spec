@@ -350,6 +350,7 @@ fi
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
 %{_sbindir}/abrt-action-generate-backtrace
+%{_sbindir}/abrt-action-save-package-data
 %{_bindir}/%{name}-debuginfo-install
 %{_bindir}/%{name}-handle-upload
 %{_bindir}/%{name}-backtrace

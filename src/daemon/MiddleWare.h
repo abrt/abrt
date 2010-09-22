@@ -30,18 +30,14 @@
  */
 typedef enum {
     MW_OK,               /**< No error.*/
+    MW_OCCURRED,         /**< A not-yet-reported dup.*/
+    MW_REPORTED,         /**< A reported dup.*/
     MW_ERROR,            /**< Common error.*/
-    MW_BLACKLISTED,      /**< Package is blacklisted.*/
     MW_CORRUPTED,        /**< Debugdump directory is corrupted.*/
-    MW_PACKAGE_ERROR,    /**< Cannot determine package name.*/
     MW_GPG_ERROR,        /**< Package is not signed properly.*/
-    MW_REPORTED,         /**< Crash is already reported.*/
-    MW_OCCURRED,         /**< Crash occurred in the past, but it is not reported yet.*/
     MW_IN_DB,            /**< Debugdump directory is already saved in a database.*/
     MW_IN_DB_ERROR,      /**< Error while working with a database.*/
     MW_PLUGIN_ERROR,     /**< plugin wasn't found or error within plugin*/
-    MW_FILE_ERROR        /**< Error when trying open debugdump directory or
-                              when trying open file in debug dump directory..*/
 } mw_result_t;
 
 typedef enum {

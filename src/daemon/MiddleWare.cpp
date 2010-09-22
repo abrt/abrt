@@ -18,7 +18,6 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <fnmatch.h>
 #include <algorithm>  /* for std::find */
 #include "abrtlib.h"
 #include "Daemon.h"
@@ -635,250 +634,38 @@ static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
 }
 
 /**
- * Returns the first full path argument in the command line or NULL.
- * Skips options are in form "-XXX".
- * Caller must delete the returned string using free().
- */
-static char *get_argv1_if_full_path(const char* cmdline)
-{
-    const char *argv1 = strpbrk(cmdline, " \t");
-    while (argv1 != NULL)
-    {
-        /* we found space in cmdline, so it might contain
-         * path to some script like:
-         * /usr/bin/python [-XXX] /usr/bin/system-control-network
-         */
-        argv1++; /* skip the space */
-        if (*argv1 == '-') /* skip arguments */
-        {
-            /* looks like -XXX in "perl -XXX /usr/bin/script.pl", skip */
-            argv1 = strpbrk(argv1, " \t");
-            continue;
-        }
-        else if (*argv1 == ' ' || *argv1 == '\t') /* skip multiple spaces */
-            continue;
-        else if (*argv1 != '/')
-        {
-            /* if the string following the space doesn't start
-             * with '/' it's probably not a full path to script
-             * and we can't use it to determine the package name
-             */
-            break;
-        }
-
-        /* cut the rest of cmdline arguments */
-        int len = strchrnul(argv1, ' ') - argv1;
-        return xstrndup(argv1, len);
-    }
-    return NULL;
-}
-
-static bool is_path_blacklisted(const char *path)
-{
-    set_string_t::iterator it = g_settings_setBlackListedPaths.begin();
-    while (it != g_settings_setBlackListedPaths.end())
-    {
-        if (fnmatch(it->c_str(), path, /*flags:*/ 0) == 0)
-        {
-            return true;
-        }
-        it++;
-    }
-    return false;
-}
-
-
-/**
  * Get a package name from executable name and save
  * package description to particular debugdump directory of a crash.
  * @param pExecutable A name of crashed application.
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
  * @return It return results of operation. See mw_result_t.
  */
-static mw_result_t SavePackageDescriptionToDebugDump(
-                const char *pExecutable,
-                const char *cmdline,
-                bool remote,
-                const char *pDebugDumpDir)
+static mw_result_t SavePackageDescriptionToDebugDump(const char *pDebugDumpDir)
 {
-    char* rpm_pkg = NULL;
-    char* packageName = NULL;
-    char* component = NULL;
-    std::string scriptName; /* only if "interpreter /path/to/script" */
-
-    if (strcmp(pExecutable, "kernel") == 0)
+    pid_t pid = fork();
+    if (pid < 0)
     {
-        component = xstrdup("kernel");
-        rpm_pkg = xstrdup("kernel");
-        packageName = xstrdup("kernel");
+        perror_msg("fork");
+        return MW_ERROR;
     }
-    else
+    if (pid == 0) /* child */
     {
-        if (is_path_blacklisted(pExecutable))
-        {
-            log("Blacklisted executable '%s'", pExecutable);
-            return MW_BLACKLISTED;
-        }
+        char *argv[5];  /* abrt-action-save-package-data [-s] -d DIR NULL */
+        char **pp = argv;
+        *pp++ = (char*)"abrt-action-save-package-data";
+        if (logmode & LOGMODE_SYSLOG)
+            *pp++ = (char*)"-s";
+        *pp++ = (char*)"-d";
+        *pp++ = (char*)pDebugDumpDir;
+        *pp = NULL;
 
-        rpm_pkg = rpm_get_package_nvr(pExecutable);
-        if (rpm_pkg == NULL)
-        {
-            if (g_settings_bProcessUnpackaged || remote)
-            {
-                VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", pExecutable);
-
-                struct dump_dir *dd = dd_init();
-                if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
-                    return MW_ERROR;
-
-                dd_save_text(dd, FILENAME_PACKAGE, "");
-                dd_save_text(dd, FILENAME_COMPONENT, "");
-                dd_save_text(dd, FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
-
-                dd_close(dd);
-                return MW_OK;
-            }
-            else
-            {
-                log("Executable '%s' doesn't belong to any package", pExecutable);
-                return MW_PACKAGE_ERROR;
-            }
-        }
-
-        /* Check well-known interpreter names */
-
-        const char *basename = strrchr(pExecutable, '/');
-        if (basename) basename++; else basename = pExecutable;
-
-        /* Add more interpreters as needed */
-        if (strcmp(basename, "python") == 0
-         || strcmp(basename, "perl") == 0
-        ) {
-// TODO: we don't verify that python executable is not modified
-// or that python package is properly signed
-// (see CheckFingerprint/CheckHash below)
-
-            /* Try to find package for the script by looking at argv[1].
-             * This will work only if the cmdline contains the whole path.
-             * Example: python /usr/bin/system-control-network
-             */
-            bool knownOrigin = false;
-            char *script_name = get_argv1_if_full_path(cmdline);
-            if (script_name)
-            {
-                char *script_pkg = rpm_get_package_nvr(script_name);
-                if (script_pkg)
-                {
-                    /* There is a well-formed script name in argv[1],
-                     * and it does belong to some package.
-                     * Replace interpreter's rpm_pkg and pExecutable
-                     * with data pertaining to the script.
-                     */
-                    free(rpm_pkg);
-                    rpm_pkg = script_pkg;
-                    scriptName = script_name;
-                    pExecutable = scriptName.c_str();
-                    knownOrigin = true;
-                    /* pExecutable has changed, check it again */
-                    if (is_path_blacklisted(pExecutable))
-                    {
-                        log("Blacklisted executable '%s'", pExecutable);
-                        return MW_BLACKLISTED;
-                    }
-                }
-                free(script_name);
-            }
-
-            if (!knownOrigin && !g_settings_bProcessUnpackaged && !remote)
-            {
-                log("Interpreter crashed, but no packaged script detected: '%s'", cmdline);
-                return MW_PACKAGE_ERROR;
-            }
-        }
-
-        packageName = get_package_name_from_NVR_or_NULL(rpm_pkg);
-        VERB2 log("Package:'%s' short:'%s'", rpm_pkg, packageName);
-
-        if (g_settings_setBlackListedPkgs.find(packageName) != g_settings_setBlackListedPkgs.end())
-        {
-            log("Blacklisted package '%s'", packageName);
-            free(packageName);
-            return MW_BLACKLISTED;
-        }
-        if (g_settings_bOpenGPGCheck && !remote)
-        {
-            if (rpm_chk_fingerprint(packageName))
-            {
-                log("Package '%s' isn't signed with proper key", packageName);
-                free(packageName);
-                return MW_GPG_ERROR;
-            }
-            /*
-              Checking the MD5 sum requires to run prelink to "un-prelink" the
-              binaries - this is considered potential security risk so we don't
-              use it, until we find some non-intrusive way
-
-              Delete?
-            */
-            /*
-            if (!CheckHash(packageName.c_str(), pExecutable))
-            {
-                error_msg("Executable '%s' seems to be modified, "
-                                "doesn't match one from package '%s'",
-                                pExecutable, packageName.c_str());
-                return MW_GPG_ERROR;
-            }
-            */
-        }
-        component = rpm_get_component(pExecutable);
+        execvp(argv[0], argv);
+        perror_msg_and_die("Can't execute '%s'", argv[0]);
     }
-
-    char *dsc = rpm_get_description(packageName);
-    free(packageName);
-
-    char host[HOST_NAME_MAX + 1];
-    if (!remote)
-    {
-        // HOST_NAME_MAX is defined in limits.h
-        int ret = gethostname(host, HOST_NAME_MAX);
-        host[HOST_NAME_MAX] = '\0';
-        if (ret < 0)
-        {
-            perror_msg("gethostname");
-            host[0] = '\0';
-        }
-    }
-
-    struct dump_dir *dd = dd_init();
-    if (dd_opendir(dd, pDebugDumpDir, 0))
-    {
-        if (rpm_pkg)
-        {
-            dd_save_text(dd, FILENAME_PACKAGE, rpm_pkg);
-            free(rpm_pkg);
-        }
-
-        if (dsc)
-        {
-            dd_save_text(dd, FILENAME_DESCRIPTION, dsc);
-            free(dsc);
-        }
-
-        if (component)
-        {
-            dd_save_text(dd, FILENAME_COMPONENT, component);
-            free(component);
-        }
-
-        if (!remote)
-            dd_save_text(dd, FILENAME_HOSTNAME, host);
-
-        dd_close(dd);
-        return MW_OK;
-    }
-    dd_close(dd);
-
-    return MW_ERROR;
+    /* parent */
+    int status;
+    waitpid(pid, &status, 0);
+    return (WIFEXITED(status) && WEXITSTATUS(status) == 0) ? MW_OK : MW_ERROR;
 }
 
 bool analyzer_has_InformAllUsers(const char *analyzer_name)
@@ -1038,7 +825,6 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                           map_crash_data_t& pCrashData)
 {
     mw_result_t res;
-    int remote = 0;
 
     struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
@@ -1047,14 +833,6 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     char *time = dd_load_text(dd, FILENAME_TIME);
     char *uid = dd_load_text(dd, CD_UID);
     char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    char *cmdline = dd_load_text(dd, FILENAME_CMDLINE);
-
-    char *remote_str;
-    if (dd_exist(dd, FILENAME_REMOTE))
-        remote_str = dd_load_text(dd, FILENAME_REMOTE);
-    else
-        remote_str = xstrdup("");
 
     dd_close(dd);
 
@@ -1077,14 +855,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
         goto error;
     }
 
-    if (remote_str[0])
-        remote = remote_str[0] != '1';
-
-    res = SavePackageDescriptionToDebugDump(executable,
-                                            cmdline,
-                                            remote,
-                                            pDebugDumpDir
-    );
+    res = SavePackageDescriptionToDebugDump(pDebugDumpDir);
     if (res != MW_OK)
         goto error;
 
@@ -1107,10 +878,7 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     }
 
 error:
-    free(remote_str);
     free(time);
-    free(executable);
-    free(cmdline);
     free(uid);
     free(analyzer);
 
