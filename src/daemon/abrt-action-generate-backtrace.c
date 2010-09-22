@@ -303,12 +303,8 @@ int main(int argc, char **argv)
     }
 
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name))
-    {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), dump_dir_name);
+    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
         return 1;
-    }
 
     char *package = dd_load_text(dd, FILENAME_PACKAGE);
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
@@ -323,12 +319,9 @@ int main(int argc, char **argv)
     }
 
     dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name))
-    {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), dump_dir_name);
+    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
         return 1;
-    }
+
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);
 
     /* Compute and store backtrace hash. */

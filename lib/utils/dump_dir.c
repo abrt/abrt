@@ -25,16 +25,6 @@
 
 // TODO:
 //
-// dd_opendir needs a bit flags parameter, with bits for
-// "auto-close on error" and "log error message on error".
-// This will simplify a ton of places which do this:
-//    if (!dd_opendir(dd, dirname))
-//    {
-//        dd_close(dd);
-//        VERB1 log(_("Unable to open debug dump '%s'"), dirname);
-//        return ........;
-//    }
-//
 // Perhaps dd_opendir should do some sanity checking like
 // "if there is no "uid" file in the directory, it's not a crash dump",
 // and fail.
@@ -99,7 +89,7 @@ void dd_close(struct dump_dir *dd)
     free(dd);
 }
 
-int dd_opendir(struct dump_dir *dd, const char *dir)
+int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
 {
     if (dd->locked)
         error_msg_and_die("dump_dir is already opened"); /* bug */
@@ -107,8 +97,13 @@ int dd_opendir(struct dump_dir *dd, const char *dir)
     dd->dd_dir = rm_trailing_slashes(dir);
     if (!exist_file_dir(dd->dd_dir))
     {
-        error_msg("'%s' does not exist", dd->dd_dir);
-        free(dd->dd_dir);
+
+        if (!(flags & DD_FAIL_QUIETLY))
+            error_msg("'%s' does not exist", dd->dd_dir);
+
+        if (flags & DD_CLOSE_ON_OPEN_ERR)
+            dd_close(dd);
+
         return 0;
     }
 
@@ -485,9 +480,8 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 void delete_debug_dump_dir(const char *dd_dir)
 {
     struct dump_dir *dd = dd_init();
-    if (dd_opendir(dd, dd_dir))
+    if (dd_opendir(dd, dd_dir, 0))
         dd_delete(dd);
-    else
-        VERB1 log("Unable to open debug dump '%s'", dd_dir);
+
     dd_close(dd);
 }

@@ -51,12 +51,8 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
     if (!force)
     {
         struct dump_dir *dd = dd_init();
-        if (!dd_opendir(dd, pActionDir))
-        {
-            dd_close(dd);
-            VERB1 log(_("Unable to open debug dump '%s'"), pActionDir);
+        if (!dd_opendir(dd, pActionDir, DD_CLOSE_ON_OPEN_ERR))
             return;
-        }
 
         bool bt_exists = dd_exist(dd, "sosreport.tar.bz2") || dd_exist(dd, "sosreport.tar.xz");
         if (bt_exists)

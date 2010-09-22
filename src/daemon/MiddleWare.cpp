@@ -189,28 +189,25 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
     VERB3 log(" DebugDumpToCrashReport('%s')", pDebugDumpDir);
 
     struct dump_dir *dd = dd_init();
-    if (dd_opendir(dd, pDebugDumpDir))
-    {
-        const char *const *v = must_have_files;
-        while (*v)
-        {
-            if (!dd_exist(dd, *v))
-            {
-                dd_close(dd);
-                throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): important file '%s' is missing", *v);
-            }
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+        return false;
 
-            v++;
+    const char *const *v = must_have_files;
+    while (*v)
+    {
+        if (!dd_exist(dd, *v))
+        {
+            dd_close(dd);
+            throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): important file '%s' is missing", *v);
         }
 
-        load_crash_data_from_debug_dump(dd, pCrashData);
-        dd_close(dd);
-
-        return true;
+        v++;
     }
 
+    load_crash_data_from_debug_dump(dd, pCrashData);
     dd_close(dd);
-    return false;
+
+    return true;
 }
 
 /**
@@ -305,9 +302,8 @@ mw_result_t CreateCrashReport(const char *crash_id,
     try
     {
         struct dump_dir *dd = dd_init();
-        if (!dd_opendir(dd, row->db_dump_dir))
+        if (!dd_opendir(dd, row->db_dump_dir, DD_CLOSE_ON_OPEN_ERR))
         {
-            dd_close(dd);
             db_row_free(row);
             return MW_ERROR;
         }
@@ -462,7 +458,7 @@ report_status_t Report(const map_crash_data_t& client_report,
     if (comment || reproduce || backtrace)
     {
         struct dump_dir *dd = dd_init();
-        if (dd_opendir(dd, pDumpDir.c_str()))
+        if (dd_opendir(dd, pDumpDir.c_str(), 0))
         {
             if (comment)
             {
@@ -732,11 +728,8 @@ static mw_result_t SavePackageDescriptionToDebugDump(
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", pExecutable);
 
                 struct dump_dir *dd = dd_init();
-                if (!dd_opendir(dd, pDebugDumpDir))
-                {
-                    dd_close(dd);
+                if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
                     return MW_ERROR;
-                }
 
                 dd_save_text(dd, FILENAME_PACKAGE, "");
                 dd_save_text(dd, FILENAME_COMPONENT, "");
@@ -857,7 +850,7 @@ static mw_result_t SavePackageDescriptionToDebugDump(
     }
 
     struct dump_dir *dd = dd_init();
-    if (dd_opendir(dd, pDebugDumpDir))
+    if (dd_opendir(dd, pDebugDumpDir, 0))
     {
         if (rpm_pkg)
         {
@@ -1048,11 +1041,8 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
     int remote = 0;
 
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
-    {
-        dd_close(dd);
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
         return MW_ERROR;
-    }
 
     char *time = dd_load_text(dd, FILENAME_TIME);
     char *uid = dd_load_text(dd, CD_UID);
@@ -1139,9 +1129,8 @@ mw_result_t FillCrashInfo(const char *crash_id,
         return MW_ERROR;
 
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, row->db_dump_dir))
+    if (!dd_opendir(dd, row->db_dump_dir, DD_CLOSE_ON_OPEN_ERR))
     {
-        dd_close(dd);
         db_row_free(row);
         return MW_ERROR;
     }

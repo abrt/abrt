@@ -26,12 +26,8 @@ using namespace std;
 string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 {
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
-    {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
         return string("");
-    }
 
     char *bt = dd_load_text(dd, FILENAME_BACKTRACE);
     dd_close(dd);

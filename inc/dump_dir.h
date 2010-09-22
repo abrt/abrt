@@ -26,6 +26,11 @@
 extern "C" {
 #endif
 
+enum {
+    DD_CLOSE_ON_OPEN_ERR    = (1 << 0),
+    DD_FAIL_QUIETLY         = (1 << 1),
+};
+
 struct dump_dir {
     char *dd_dir;
     DIR *next_dir;
@@ -37,7 +42,7 @@ struct dump_dir {
 struct dump_dir *dd_init(void);
 void dd_close(struct dump_dir *dd);
 
-int dd_opendir(struct dump_dir *dd, const char *dir);
+int dd_opendir(struct dump_dir *dd, const char *dir, int flags);
 int dd_exist(struct dump_dir *dd, const char *path);
 int dd_create(struct dump_dir *dd, const char *dir, uid_t uid);
 DIR *dd_init_next_file(struct dump_dir *dd);

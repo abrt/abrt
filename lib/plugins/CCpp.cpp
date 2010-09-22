@@ -209,12 +209,8 @@ static void GetIndependentBuildIdPC(const char *unstrip_n_output,
 static char* run_unstrip_n(const char *pDebugDumpDir, unsigned timeout_sec)
 {
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
-    {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
         return NULL;
-    }
 
     char *uid = dd_load_text(dd, CD_UID);
     dd_close(dd);
@@ -403,12 +399,8 @@ static void trim_debuginfo_cache(unsigned max_mb)
 string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
-    {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
         return string("");
-    }
 
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
     char *package = dd_load_text(dd, FILENAME_PACKAGE);
@@ -464,12 +456,8 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
-    {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
         return string("");
-    }
 
     if (dd_exist(dd, FILENAME_GLOBAL_UUID))
     {
@@ -640,12 +628,8 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     }
 
     struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
-    {
-        dd_close(dd);
-        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
         return;
-    }
 
     if (!force)
     {
@@ -688,11 +672,9 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     gen_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), m_nGdbTimeoutSec);
 
     dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir))
+    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
     {
-        dd_close(dd);
         free(build_ids);
-        VERB1 log(_("Unable to open debug dump '%s'"), pDebugDumpDir);
         return;
     }
 

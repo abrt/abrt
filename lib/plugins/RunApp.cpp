@@ -58,12 +58,8 @@ void CActionRunApp::Run(const char *pActionDir, const char *pArgs, int force)
     if (args.size() > FILENAME)
     {
         struct dump_dir *dd = dd_init();
-        if (!dd_opendir(dd, pActionDir))
-        {
-            dd_close(dd);
-            VERB1 log(_("Unable to open debug dump '%s'"), pActionDir);
+        if (!dd_opendir(dd, pActionDir, DD_CLOSE_ON_OPEN_ERR))
             return;
-        }
 
         dd_save_binary(dd, args[FILENAME].c_str(), cmd_out, cmd_out_size);
         dd_close(dd);
