@@ -7,7 +7,6 @@ sbin_PROGRAMS = abrtd \
 
 abrtd_SOURCES = \
     PluginManager.h PluginManager.cpp \
-    rpm.h rpm.c \
     MiddleWare.h MiddleWare.cpp \
     CrashWatcher.h CrashWatcher.cpp \
     CommLayerServer.h CommLayerServer.cpp \
@@ -35,7 +34,6 @@ abrtd_LDADD = \
     ../../lib/utils/libABRTdUtils.la \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
-    $(RPM_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
 
 abrt_server_SOURCES = \

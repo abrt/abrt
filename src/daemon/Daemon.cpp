@@ -269,12 +269,6 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
 
 static int SetUpMW()
 {
-    set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
-    for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
-    {
-        VERB1 log("Loading GPG key '%s'", it_k->c_str());
-        rpm_load_gpgkey(it_k->c_str());
-    }
     VERB1 log("Adding actions or reporters");
     vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
     for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
@@ -987,9 +981,6 @@ int main(int argc, char** argv)
             error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
         xmlrpc_env_clean(&env);
 
-        VERB1 log("Initializing rpm library");
-        rpm_init();
-
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
 
@@ -1099,7 +1090,6 @@ int main(int argc, char** argv)
      */
     xmlrpc_client_teardown_global_const();
     dumpsocket_shutdown();
-    rpm_destroy();
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);
     if (lockfile_created)
