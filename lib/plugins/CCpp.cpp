@@ -259,11 +259,11 @@ static char *install_debug_infos(const char *pDebugDumpDir, const char *debuginf
         /* SELinux guys are not happy with /tmp, using /var/run/abrt */
         char *tempdir = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu", (long)getpid(), (long)time(NULL));
         /* log() goes to stderr/syslog, it's ok to use it here */
-        VERB1 log("Executing: %s %s %s %s", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs);
+        VERB1 log("Executing: %s %s %s %s", "abrt-action-install-debuginfo", coredump, tempdir, debuginfo_dirs);
         /* We want parent to see errors in the same stream */
         xdup2(STDOUT_FILENO, STDERR_FILENO);
-        execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
-        perror_msg("Can't execute '%s'", "abrt-debuginfo-install");
+        execlp("abrt-action-install-debuginfo", "abrt-action-install-debuginfo", coredump, tempdir, debuginfo_dirs, NULL);
+        perror_msg("Can't execute '%s'", "abrt-action-install-debuginfo");
         /* Serious error (1 means "some debuginfos not found") */
         exit(2);
     }
@@ -317,11 +317,11 @@ static char *install_debug_infos(const char *pDebugDumpDir, const char *debuginf
     if (WIFEXITED(status))
     {
         if (WEXITSTATUS(status) > 1)
-            error_msg("%s exited with %u", "abrt-debuginfo-install", (int)WEXITSTATUS(status));
+            error_msg("%s exited with %u", "abrt-action-install-debuginfo", (int)WEXITSTATUS(status));
     }
     else
     {
-        error_msg("%s killed by signal %u", "abrt-debuginfo-install", (int)WTERMSIG(status));
+        error_msg("%s killed by signal %u", "abrt-action-install-debuginfo", (int)WTERMSIG(status));
     }
 
     return strbuf_free_nobuf(buf_build_ids);

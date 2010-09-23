@@ -72,11 +72,11 @@ getReport(UUID) method or automatically if admin sets it in /etc/abrt/abrt.conf
     if it does then:
     b) daemon tries to install the debuginfo issuing this command:
 
-execlp("abrt-debuginfo-install", "abrt-debuginfo-install", coredump, tempdir, debuginfo_dirs, NULL);
+execlp("abrt-action-install-debuginfo", "abrt-action-install-debuginfo", coredump, tempdir, debuginfo_dirs, NULL);
 
-abrt-debuginfo-install is a shell script using elfutils to get build-ids from coredump and the use
+abrt-action-install-debuginfo is a shell script using elfutils to get build-ids from coredump and the use
 "yum provides" and "yumdownloader" to determine and download the missing debuginfo packages
-* script source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Daemon/abrt-debuginfo-install
+* script source code: http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=src/Daemon/abrt-action-install-debuginfo
     c) run gdb and get backtrace from coredump:
     see http://git.fedorahosted.org/git/abrt.git?p=abrt.git;a=blob_plain;f=lib/Plugins/CCpp.cpp line 260
     - gdb is run with the same privileges as the crashed app (setregid, setreuid)

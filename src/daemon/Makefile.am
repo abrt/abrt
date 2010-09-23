@@ -1,4 +1,6 @@
-bin_SCRIPTS = abrt-debuginfo-install abrt-handle-upload
+bin_SCRIPTS = \
+    abrt-action-install-debuginfo \
+    abrt-handle-upload
 
 sbin_PROGRAMS = abrtd \
     abrt-server \
@@ -111,7 +113,7 @@ dist_comredhatabrtservice_DATA = com.redhat.abrt.service
 
 man_MANS = abrtd.8 abrt.conf.5
 
-EXTRA_DIST = $(man_MANS) abrt-debuginfo-install abrt-handle-upload
+EXTRA_DIST = $(man_MANS) abrt-action-install-debuginfo abrt-handle-upload
 
 if HAVE_SYSTEMD
 dist_systemdsystemunit_DATA = \

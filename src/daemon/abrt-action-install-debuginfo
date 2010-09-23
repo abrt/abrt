@@ -9,7 +9,7 @@
 # - debuginfo-install aborts if yum lock is busy
 # - pk-debuginfo-install was observed to hang
 #
-# Usage: abrt-debuginfo-install CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]]
+# Usage: abrt-action-install-debuginfo CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR1:DEBUGINFODIR2...]]
 # If CACHEDIR is specified, debuginfos should be installed there.
 # If not, debuginfos should be installed into TEMPDIR.
 #
@@ -63,7 +63,7 @@ else
     if test $# -lt 2 || test x"$1" = x"--help"; then
 	echo "Usage:"
 	echo
-	echo "abrt-debuginfo-install [-v] CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR...]]"
+	echo "abrt-action-install-debuginfo [-v] CORE TEMPDIR [CACHEDIR[:DEBUGINFODIR...]]"
 	echo
 	echo "TEMPDIR must be a name of a new temporary directory. It must not exist."
 	echo "If CACHEDIR is specified, debuginfos are installed in CACHEDIR,"
