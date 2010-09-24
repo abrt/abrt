@@ -274,7 +274,7 @@ mw_result_t CreateCrashReport(const char *crash_id,
 {
     VERB2 log("CreateCrashReport('%s',%ld,result)", crash_id, caller_uid);
 
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
 
     struct db_row *row = database->GetRow(crash_id);
@@ -573,7 +573,7 @@ report_status_t Report(const map_crash_data_t& client_report,
 
     if (at_least_one_reporter_succeeded)
     {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
         database->Connect();
         report_status_t::iterator ret_it = ret.begin();
         while (ret_it != ret.end())
@@ -609,10 +609,7 @@ report_status_t Report(const map_crash_data_t& client_report,
  */
 static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
 {
-    if (g_settings_sDatabase.empty())
-        error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
-
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
     GList *table = database->GetUIDData(uid);
     database->DisConnect();
@@ -792,7 +789,7 @@ static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
                 const char *pDebugDumpDir,
                 map_crash_data_t& pCrashData)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
     /* note: if [UUID,UID] record exists, pDebugDumpDir is not updated in the record */
     database->Insert_or_Update(crash_id, inform_all_users, pDebugDumpDir, pTime);
@@ -888,7 +885,7 @@ error:
 mw_result_t FillCrashInfo(const char *crash_id,
                           map_crash_data_t& pCrashData)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
     struct db_row *row = database->GetRow(crash_id);
     database->DisConnect();
@@ -922,7 +919,7 @@ mw_result_t FillCrashInfo(const char *crash_id,
 
 void GetUUIDsOfCrash(long caller_uid, vector_string_t &result)
 {
-    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
     GList *rows = database->GetUIDData(caller_uid);
     database->DisConnect();

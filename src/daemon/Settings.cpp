@@ -53,9 +53,9 @@ bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
 GList *g_settings_setOpenGPGPublicKeys = NULL;
 GList *g_settings_setBlackListedPkgs = NULL;
-std::string   g_settings_sDatabase;
 GList *g_settings_setBlackListedPaths = NULL;
 std::string   g_settings_sWatchCrashdumpArchiveDir;
+char *g_settings_sDatabase = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
 
@@ -212,8 +212,14 @@ static int ParseCommon()
     it = s_mapSectionCommon.find("Database");
     if (it != end)
     {
-        g_settings_sDatabase = it->second;
+        if (it->second.empty())
+            error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
+
+        g_settings_sDatabase = xstrdup(it->second.c_str());
     }
+    else
+        error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
+
     it = s_mapSectionCommon.find("WatchCrashdumpArchiveDir");
     if (it != end)
     {
@@ -575,4 +581,6 @@ void settings_free()
         free((char*)li->data);
 
     g_list_free(g_settings_setBlackListedPaths);
+
+    free(g_settings_sDatabase);
 }
