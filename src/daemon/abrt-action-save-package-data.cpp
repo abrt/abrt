@@ -197,11 +197,15 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         package_short_name = get_package_name_from_NVR_or_NULL(package_full_name);
         VERB2 log("Package:'%s' short:'%s'", package_full_name, package_short_name);
 
-        if (g_settings_setBlackListedPkgs.find(package_short_name) != g_settings_setBlackListedPkgs.end())
+        for (GList *li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
         {
-            log("Blacklisted package '%s'", package_short_name);
-            goto ret; /* return 1 (failure) */
+            if (strcmp((char*)li->data, package_short_name) == 0)
+            {
+                log("Blacklisted package '%s'", package_short_name);
+                goto ret; /* return 1 (failure) */
+            }
         }
+
         if (g_settings_bOpenGPGCheck && !remote)
         {
             if (rpm_chk_fingerprint(package_short_name))
