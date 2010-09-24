@@ -64,14 +64,12 @@ static char *get_argv1_if_full_path(const char* cmdline)
 
 static bool is_path_blacklisted(const char *path)
 {
-    set_string_t::iterator it = g_settings_setBlackListedPaths.begin();
-    while (it != g_settings_setBlackListedPaths.end())
+    for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
     {
-        if (fnmatch(it->c_str(), path, /*flags:*/ 0) == 0)
+        if (fnmatch((char*)li->data, path, /*flags:*/ 0) == 0)
         {
             return true;
         }
-        it++;
     }
     return false;
 }

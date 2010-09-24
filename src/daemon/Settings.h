@@ -28,7 +28,7 @@ typedef map_map_string_t map_abrt_settings_t;
 
 extern GList *g_settings_setOpenGPGPublicKeys;
 extern GList *g_settings_setBlackListedPkgs;
-extern set_string_t  g_settings_setBlackListedPaths;
+extern GList *g_settings_setBlackListedPaths;
 extern unsigned int  g_settings_nMaxCrashReportsSize;
 extern bool          g_settings_bOpenGPGCheck;
 extern bool          g_settings_bProcessUnpackaged;

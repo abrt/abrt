@@ -53,8 +53,8 @@ bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
 GList *g_settings_setOpenGPGPublicKeys = NULL;
 GList *g_settings_setBlackListedPkgs = NULL;
-set_string_t  g_settings_setBlackListedPaths;
 std::string   g_settings_sDatabase;
+GList *g_settings_setBlackListedPaths = NULL;
 std::string   g_settings_sWatchCrashdumpArchiveDir;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
@@ -94,32 +94,6 @@ static GList *parse_list(const char* list)
 
     strbuf_free(item);
     return l;
-}
-
-
-// function will be removed
-static set_string_t ParseList(const char* pList)
-{
-    unsigned ii;
-    std::string item;
-    set_string_t set;
-    for (ii = 0; pList[ii]; ii++)
-    {
-        if (pList[ii] == ',')
-        {
-            set.insert(item);
-            item = "";
-        }
-        else
-        {
-            item += pList[ii];
-        }
-    }
-    if (item != "")
-    {
-        set.insert(item);
-    }
-    return set;
 }
 
 /* Format: name, name(param),name("param with spaces \"and quotes\"") */
@@ -233,7 +207,7 @@ static int ParseCommon()
     it = s_mapSectionCommon.find("BlackListedPaths");
     if (it != end)
     {
-        g_settings_setBlackListedPaths = ParseList(it->second.c_str());
+        g_settings_setBlackListedPaths = parse_list(it->second.c_str());
     }
     it = s_mapSectionCommon.find("Database");
     if (it != end)
@@ -596,4 +570,9 @@ void settings_free()
         free((char*)li->data);
 
     g_list_free(g_settings_setBlackListedPkgs);
+
+    for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+
+    g_list_free(g_settings_setBlackListedPaths);
 }
