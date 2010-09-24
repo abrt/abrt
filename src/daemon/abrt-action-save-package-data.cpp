@@ -320,11 +320,10 @@ int main(int argc, char **argv)
     VERB1 log("Initializing rpm library");
     rpm_init();
 
-    set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
-    for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
+    for (GList *li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
     {
-        VERB1 log("Loading GPG key '%s'", it_k->c_str());
-        rpm_load_gpgkey(it_k->c_str());
+        VERB1 log("Loading GPG key '%s'", (char*)li->data);
+        rpm_load_gpgkey((char*)li->data);
     }
 
     return SavePackageDescriptionToDebugDump(dump_dir_name);

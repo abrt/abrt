@@ -51,7 +51,7 @@ static map_string_t s_mapSectionCron;
 /* one line: "OpenGPGCheck = value" */
 bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
-set_string_t  g_settings_setOpenGPGPublicKeys;
+GList *g_settings_setOpenGPGPublicKeys = NULL;
 set_string_t  g_settings_setBlackListedPkgs;
 set_string_t  g_settings_setBlackListedPaths;
 std::string   g_settings_sDatabase;
@@ -348,7 +348,7 @@ static void LoadGPGKeys()
             if (line[0] == '/') // probably the begining of path, so let's handle it as a key
             {
                 strchrnul(line, '\n')[0] = '\0';
-                g_settings_setOpenGPGPublicKeys.insert(line);
+                g_settings_setOpenGPGPublicKeys = g_list_append(g_settings_setOpenGPGPublicKeys, xstrdup(line));
             }
         }
         fclose(fp);
@@ -558,4 +558,13 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
         s_mapSectionCron = it->second;
         ParseCron();
     }
+}
+
+void settings_free()
+{
+    for (GList *li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+
+    g_list_free(g_settings_setOpenGPGPublicKeys);
+
 }

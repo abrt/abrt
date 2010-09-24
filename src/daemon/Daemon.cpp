@@ -1114,6 +1114,7 @@ int main(int argc, char** argv)
     if (pMainloop)
         g_main_loop_unref(pMainloop);
 
+    settings_free();
     /* Exiting */
     if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
     {
