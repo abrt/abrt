@@ -54,8 +54,8 @@ bool          g_settings_bOpenGPGCheck = false;
 GList *g_settings_setOpenGPGPublicKeys = NULL;
 GList *g_settings_setBlackListedPkgs = NULL;
 GList *g_settings_setBlackListedPaths = NULL;
-std::string   g_settings_sWatchCrashdumpArchiveDir;
 char *g_settings_sDatabase = NULL;
+char *g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
 
@@ -223,7 +223,7 @@ static int ParseCommon()
     it = s_mapSectionCommon.find("WatchCrashdumpArchiveDir");
     if (it != end)
     {
-        g_settings_sWatchCrashdumpArchiveDir = it->second;
+        g_settings_sWatchCrashdumpArchiveDir = xstrdup(it->second.c_str());
     }
     it = s_mapSectionCommon.find("MaxCrashReportsSize");
     if (it != end)
@@ -583,4 +583,6 @@ void settings_free()
     g_list_free(g_settings_setBlackListedPaths);
 
     free(g_settings_sDatabase);
+
+    free(g_settings_sWatchCrashdumpArchiveDir);
 }
