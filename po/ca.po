@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-09-27 07:13+0000\n"
-"PO-Revision-Date: 2010-09-27 18:37+0100\n"
+"PO-Revision-Date: 2010-09-27 19:59+0100\n"
 "Last-Translator: Robert Antoni Buj Gelonch <robert.buj@gmail.com>\n"
 "Language-Team: Catalan <fedora@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -38,11 +38,12 @@ msgid "New bug id: %i"
 msgstr "ID del nou error: %i"
 
 #: ../lib/plugins/Bugzilla.cpp:688
-#, fuzzy
 msgid ""
 "Empty login or password.\n"
 "Please check "
-msgstr "Les dades d'usuari i contrasenya són buides. Si us plau reviseu Bugzilla.conf"
+msgstr ""
+"Les dades de l'usuari i de la contrasenya estan buides.\n"
+"Reviseu "
 
 #: ../lib/plugins/Bugzilla.cpp:697
 msgid "Logging into bugzilla..."
@@ -55,13 +56,13 @@ msgstr "S'estan revisant els duplicats..."
 #: ../lib/plugins/Bugzilla.cpp:721
 #: ../lib/plugins/Bugzilla.cpp:756
 msgid "Missing mandatory member 'bugs'"
-msgstr ""
+msgstr "Falta el membre obligatori 'bugs'"
 
 #: ../lib/plugins/Bugzilla.cpp:739
 #: ../lib/plugins/Bugzilla.cpp:772
 #: ../lib/plugins/Bugzilla.cpp:848
 msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
+msgstr "get_bug_info() sense èxit. No s'ha pogut recollir tota la informació obligatoria"
 
 #: ../lib/plugins/Bugzilla.cpp:788
 msgid "Creating a new bug..."
@@ -69,7 +70,7 @@ msgstr "S'està creant un nou error..."
 
 #: ../lib/plugins/Bugzilla.cpp:793
 msgid "Bugzilla entry creation failed"
-msgstr ""
+msgstr "Creació sense èxit de l'entrada a Bugzilla"
 
 #: ../lib/plugins/Bugzilla.cpp:803
 #: ../lib/plugins/Bugzilla.cpp:902
@@ -141,9 +142,9 @@ msgstr "FileTransfer: S'està creant un informe..."
 
 #: ../lib/plugins/FileTransfer.cpp:268
 #: ../lib/plugins/FileTransfer.cpp:297
-#, fuzzy, c-format
+#, c-format
 msgid "Cannot create and send an archive: %s"
-msgstr "CFileTransfer::Run(): No es pot crear i enviar l'arxiu: "
+msgstr "No es pot crear ni enviar cap fitxer: %s"
 
 #: ../lib/plugins/FileTransfer.cpp:364
 msgid "Sends a report via FTP or SCTP"
@@ -357,7 +358,7 @@ msgstr "Utilitza encriptació"
 
 #: ../lib/plugins/RHTSupport.glade.h:1
 msgid "<b>RHTSupport plugin configuration</b>"
-msgstr ""
+msgstr "<b>Configuració del connector RHTSupport</b>"
 
 #: ../lib/plugins/RHTSupport.glade.h:2
 msgid "Login:"
@@ -365,7 +366,7 @@ msgstr "Inici de sessió:"
 
 #: ../lib/plugins/RHTSupport.glade.h:4
 msgid "RHTSupport URL:"
-msgstr ""
+msgstr "URL d'RHTSupport:"
 
 #: ../lib/utils/abrt_curl.c:171
 #, c-format
@@ -390,9 +391,8 @@ msgid "A crash in the %s package has been detected"
 msgstr "S'ha detectat una fallada en el paquet %s"
 
 #: ../src/applet/Applet.cpp:78
-#, fuzzy
 msgid "A crash has been detected"
-msgstr "S'ha detectat una fallada en el paquet %s"
+msgstr "S'ha detectat una fallida"
 
 #: ../src/applet/Applet.cpp:275
 msgid "ABRT service is not running"
@@ -606,11 +606,12 @@ msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "No es pot executar vi: $TERM, $VISUAL i $EDITOR no estan esablerts"
 
 #: ../src/cli/report.cpp:416
-#, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
-msgstr "S'ha iniciat el servei ABRT"
+msgstr ""
+"\n"
+"S'ha actualitzat l'informe"
 
 #: ../src/cli/report.cpp:418
 msgid ""
@@ -693,7 +694,7 @@ msgstr ""
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
-msgstr ""
+msgstr "Visualitzeu i informeu les fallides de les aplicacions"
 
 #: ../src/gui/ABRTExceptions.py:7
 #, fuzzy
@@ -737,13 +738,12 @@ msgstr "Comproveu que el dimoni abrt s'estigui executant."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
 #: ../src/gui/CCDBusBackend.py:170
-#, fuzzy
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
 msgstr ""
 "El dimoni no ha retornat un informe vàlid\n"
-"Us manca la informació de depuració?"
+"Us falta el debuginfo?"
 
 #: ../src/gui/ccgui.glade.h:1
 msgid "(C) 2009, 2010 Red Hat, Inc."
@@ -847,22 +847,22 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCMainWindow.py:148
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Unable to finish the current task!\n"
 "%s"
 msgstr ""
-"No s'ha pogut acabar la tasca actual\n"
+"No s'ha pogut finalitzar la tasca actual!\n"
 "%s"
 
 #. there is something wrong with the daemon if we cant get the dumplist
 #: ../src/gui/CCMainWindow.py:183
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while loading the dumplist.\n"
 "%s"
 msgstr ""
-"S'ha produït un error en carregar la llista de bolcats, si us plau reviseu que el dimoni abrt s'estigui executant\n"
+"S'ha produït un error mentre es carregava el llistat dels bolcats.\n"
 " %s"
 
 #: ../src/gui/CCMainWindow.py:241
@@ -893,9 +893,8 @@ msgstr ""
 #. default texts
 #: ../src/gui/CCReporterDialog.py:22
 #: ../src/gui/CReporterAssistant.py:20
-#, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
-msgstr "Descripció breu de com es produeix, o què heu fet..."
+msgstr "Descripció breu de com reproduir-ho o del que heu fet..."
 
 #: ../src/gui/CCReporterDialog.py:107
 msgid "You must check the backtrace for sensitive data."
@@ -936,12 +935,12 @@ msgstr ""
 #: ../src/gui/CCReporterDialog.py:418
 #: ../src/gui/CReporterAssistant.py:218
 #: ../src/gui/PluginsSettingsDialog.py:170
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Cannot save plugin settings:\n"
 " %s"
 msgstr ""
-"S'ha produït un error en carregar la llista de bolcats, si us plau reviseu que el dimoni abrt s'estigui executant\n"
+"No s'ha pogut desar les preferències del complement:\n"
 " %s"
 
 #: ../src/gui/CCReporterDialog.py:448
@@ -952,13 +951,12 @@ msgstr ""
 
 #: ../src/gui/CCReporterDialog.py:498
 #: ../src/gui/CReporterAssistant.py:866
-#, fuzzy
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
 msgstr ""
-"No s'ha pogut reportar.\n"
-"Us manca la informació de depuració?"
+"No s'ha pogut obtenir l'informe.\n"
+"Us falta la informació de depuració?"
 
 #: ../src/gui/CCReporterDialog.py:527
 #: ../src/gui/CReporterAssistant.py:415
@@ -973,39 +971,38 @@ msgstr ""
 #: ../src/gui/CCReporterDialog.py:553
 #: ../src/gui/CCReporterDialog.py:574
 #: ../src/gui/CReporterAssistant.py:905
-#, fuzzy, python-format
+#, python-format
 msgid "Error acquiring the report: %s"
-msgstr "S'ha produït un error en obtenir l'informe: %s"
+msgstr "S'ha produït un error en adquirir l'informe: %s"
 
 #: ../src/gui/ConfBackend.py:78
-#, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
-msgstr "No es pot connectar al dbus"
+msgstr "No s'ha pogut connectar a l'anell de claus de Gnome."
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
 #: ../src/gui/ConfBackend.py:84
 msgid "Cannot get the default keyring."
-msgstr ""
+msgstr "No es pot obtenir l'anell de claus predeterminat."
 
 #: ../src/gui/ConfBackend.py:103
 #: ../src/gui/ConfBackend.py:119
 msgid "Access to gnome-keyring has been denied, plugins settings will not be saved."
-msgstr ""
+msgstr "S'ha denegat l'accés a l'anell de claus de gnome, no es desaran les preferències dels complements."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/gui/ConfBackend.py:153
 #, python-format
 msgid "Access to gnome-keyring has been denied, cannot load the settings for %s!"
-msgstr ""
+msgstr "S'ha denegat l'accés a l'anell de claus de gnome, no es poden carregar les preferències per a %s!"
 
 #: ../src/gui/ConfBackend.py:206
 msgid "Access to gnome-keyring has been denied, cannot load settings."
-msgstr ""
+msgstr "S'ha denegat l'accés a l'anell de claus de gnome, no es poden carregar les preferències."
 
 #: ../src/gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
-msgstr ""
+msgstr "La informació de la fallida no conté cap traça inversa"
 
 #: ../src/gui/CReporterAssistant.py:297
 #, python-format
@@ -1031,19 +1028,19 @@ msgstr ""
 
 #: ../src/gui/CReporterAssistant.py:312
 msgid "You must agree with sending the backtrace."
-msgstr ""
+msgstr "Heu d'estar d'acord amb l'enviament de la traça inversa."
 
 #: ../src/gui/CReporterAssistant.py:327
 msgid "Reporting disabled because the backtrace is unusable."
-msgstr ""
+msgstr "Els informes estan deshabilitats perquè no es pot utilitzar la traça inversa."
 
 #: ../src/gui/CReporterAssistant.py:372
 msgid "You did not provide any steps to reproduce."
-msgstr ""
+msgstr "No heu proporcionat els passos per a reproduir-ho."
 
 #: ../src/gui/CReporterAssistant.py:386
 msgid "You did not provide any comments."
-msgstr ""
+msgstr "No heu proporcionat cap comentari."
 
 #: ../src/gui/CReporterAssistant.py:467
 #, python-format
@@ -1057,7 +1054,7 @@ msgstr ""
 
 #: ../src/gui/CReporterAssistant.py:527
 msgid "Only one reporter plugin is configured."
-msgstr ""
+msgstr "Únicament està configurat un connector informador."
 
 #: ../src/gui/CReporterAssistant.py:533
 msgid "Send a bug report"
@@ -1186,9 +1183,8 @@ msgid "Report done"
 msgstr "Informe realitzat"
 
 #: ../src/gui/PluginSettingsUI.py:18
-#, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
-msgstr "No es pot trobar el giny PluginDialog a la descripció de la interfície"
+msgstr "No s'ha pogut trobar l'enginy PluginDialog a la descripció de la interfície gràfica!"
 
 #: ../src/gui/PluginSettingsUI.py:25
 #, python-format
@@ -1199,9 +1195,8 @@ msgstr ""
 
 #: ../src/gui/PluginSettingsUI.py:60
 #: ../src/gui/PluginSettingsUI.py:86
-#, fuzzy
 msgid "Combo box is not implemented"
-msgstr "El quadre combinat no està implementat"
+msgstr "El quadre desplegable no està implementat"
 
 #: ../src/gui/PluginSettingsUI.py:69
 msgid "Nothing to hydrate!"
@@ -1222,14 +1217,15 @@ msgid "Please select a plugin from the list to edit it's options."
 msgstr ""
 
 #: ../src/gui/PluginsSettingsDialog.py:157
-#, fuzzy, python-format
+#, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
 "\n"
 "%s"
 msgstr ""
-"S'ha produït un error en carregar la llista de bolcats, si us plau reviseu que el dimoni abrt s'estigui executant\n"
-" %s"
+"S'ha produït un error mentre s'obria les preferències gràfiques del connector: \n"
+"\n"
+"%s"
 
 #: ../src/gui/progress_window.glade.h:1
 #: ../src/gui/report.glade.h:17
