@@ -23,7 +23,7 @@ msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
 "POT-Creation-Date: 2010-09-27 07:13+0000\n"
-"PO-Revision-Date: 2010-09-27 17:22+0100\n"
+"PO-Revision-Date: 2010-09-27 17:37+0100\n"
 "Last-Translator: Robert Antoni Buj Gelonch <robert.buj@gmail.com>\n"
 "Language-Team: Catalan <fedora@softcatala.net>\n"
 "MIME-Version: 1.0\n"
@@ -96,7 +96,7 @@ msgstr "Afegeix %s al llistat CC"
 #: ../lib/plugins/Bugzilla.cpp:887
 #, c-format
 msgid "Adding new comment to bug %d"
-msgstr ""
+msgstr "S'està afegint un nou comentari a l'error %d"
 
 #: ../lib/plugins/Bugzilla.cpp:986
 msgid "Reports bugs to bugzilla"
@@ -151,7 +151,7 @@ msgstr "Envia un informe a través d'FTP o d'SCTP"
 
 #: ../lib/plugins/Kerneloops.cpp:150
 msgid "Analyzes kernel oopses"
-msgstr ""
+msgstr "Analitza els bucles del nucli de Linux"
 
 #: ../lib/plugins/KerneloopsReporter.cpp:95
 msgid "Creating and submitting a report..."
@@ -159,11 +159,11 @@ msgstr "S'està creant i enviant un informe..."
 
 #: ../lib/plugins/KerneloopsReporter.cpp:144
 msgid "Sends kernel oops information to kerneloops.org"
-msgstr ""
+msgstr "Envia la informació del bucles del nucli de Linux a kerneloops.org"
 
 #: ../lib/plugins/KerneloopsScanner.cpp:207
 msgid "Periodically scans for and saves kernel oopses"
-msgstr ""
+msgstr "Escaneja periòdicament per a bucles en el nucli de Linux i els desa"
 
 #: ../lib/plugins/Logger.cpp:68
 #, c-format
@@ -190,11 +190,11 @@ msgstr "S'està enviant un correu electrònic..."
 
 #: ../lib/plugins/Mailx.cpp:150
 msgid "Sends an email with a report (via mailx command)"
-msgstr ""
+msgstr "Envia un emal amb un informe (mitjançant la comanda mailx)"
 
 #: ../lib/plugins/Python.cpp:100
 msgid "Analyzes crashes in Python programs"
-msgstr ""
+msgstr "Analitza les fallides als programes de Python"
 
 #: ../lib/plugins/ReportUploader.cpp:130
 #, c-format
@@ -207,7 +207,7 @@ msgstr "S'està creant un informe ReportUploader..."
 
 #: ../lib/plugins/ReportUploader.cpp:514
 msgid "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
-msgstr ""
+msgstr "Empaqueta les dades de la fallida a un fitxer .tar.gz, de gorma opcional ho envia a través d'FTP/SCP/etc"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
 #: ../lib/plugins/RHTSupport.cpp:109
@@ -246,7 +246,7 @@ msgstr "Executa sosreport, desa la sortida"
 
 #: ../lib/plugins/SQLite3.cpp:718
 msgid "Keeps SQLite3 database about all crashes"
-msgstr ""
+msgstr "Manté una base de dades SQLite amb totes les fallides"
 
 #: ../lib/plugins/Bugzilla.glade.h:1
 msgid "<b>Bugzilla plugin configuration</b>"
@@ -281,11 +281,11 @@ msgstr "Mostra la contrasenya"
 
 #: ../lib/plugins/Bugzilla.glade.h:8
 msgid "You can create it <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">here</a>"
-msgstr ""
+msgstr "Ho podeu crear <a href=\"https://bugzilla.redhat.com/createaccount.cgi\">aquí</a>"
 
 #: ../lib/plugins/KerneloopsReporter.glade.h:1
 msgid "<b>Kerneloops Reporter plugin configuration</b>"
-msgstr ""
+msgstr "<b>Configuració del connector de l'informador Kerneloops</b>"
 
 #: ../lib/plugins/KerneloopsReporter.glade.h:2
 msgid "Submit URL:"
@@ -325,7 +325,7 @@ msgstr "El vostre email:"
 
 #: ../lib/plugins/ReportUploader.glade.h:1
 msgid "<b>Report Uploader plugin configuration</b>"
-msgstr ""
+msgstr "<b>Configuració del complement d'enviament d'informes</b>"
 
 #: ../lib/plugins/ReportUploader.glade.h:2
 msgid "Customer:"
@@ -707,23 +707,23 @@ msgstr "S'han rebut dades inesperades del dimoni (la base de dades està actuali
 
 #: ../src/gui/ABRTPlugin.py:62
 msgid "Not loaded plugins"
-msgstr "Sense connectors carregats"
+msgstr "Connectors no carregats"
 
 #: ../src/gui/ABRTPlugin.py:63
 msgid "Analyzer plugins"
-msgstr "Connectors de l'analitzador"
+msgstr "Connectors d'analitzadors"
 
 #: ../src/gui/ABRTPlugin.py:64
 msgid "Action plugins"
-msgstr "Connectors de l'acció"
+msgstr "Connectors d'accions"
 
 #: ../src/gui/ABRTPlugin.py:65
 msgid "Reporter plugins"
-msgstr "Connectors de l'informador"
+msgstr "Connectors d'informadors"
 
 #: ../src/gui/ABRTPlugin.py:66
 msgid "Database plugins"
-msgstr "Connectors de la base de dades"
+msgstr "Connectors de bases de dades"
 
 #: ../src/gui/CCDBusBackend.py:74
 #: ../src/gui/CCDBusBackend.py:97
