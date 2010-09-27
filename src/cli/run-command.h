@@ -18,6 +18,14 @@
 #ifndef ABRT_CLI_RUN_COMMAND_H
 #define ABRT_CLI_RUN_COMMAND_H
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int run_command(char **argv);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
