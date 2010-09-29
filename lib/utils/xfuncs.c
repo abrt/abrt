@@ -39,6 +39,14 @@ int close_on_exec_on(int fd)
     return fcntl(fd, F_SETFD, FD_CLOEXEC);
 }
 
+void *xcalloc(size_t nmemb, size_t size)
+{
+    void *ptr = calloc(nmemb, size);
+    if (!ptr && nmemb && size)
+        die_out_of_memory();
+    return ptr;
+}
+
 // Die if we can't allocate size bytes of memory.
 void* xmalloc(size_t size)
 {
