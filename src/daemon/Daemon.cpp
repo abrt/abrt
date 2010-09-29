@@ -33,6 +33,7 @@
 #include "abrt_exception.h"
 #include "CrashWatcher.h"
 #include "Daemon.h"
+#include "parse_options.h"
 
 using namespace std;
 
@@ -84,6 +85,10 @@ using namespace std;
  *      Both are sent as unicast to last client set by set_client_name(name).
  *      If set_client_name(NULL) was done, they are not sent.
  */
+static const char * const abrtd_usage[] = {
+    _("abrtd [options]"),
+    NULL
+};
 
 CCommLayerServer* g_pCommLayer;
 
@@ -854,9 +859,20 @@ static void sanitize_dump_dir_rights()
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
 
+static int daemonize_opt, syslog_opt, help_opt;
+static char *timeout_opt;
+
+static struct options abrtd_options[] = {
+    OPT_BOOL( 'h' , "help", &help_opt, _("Show this help message")),
+    OPT_BOOL( 'd' , 0, &daemonize_opt, _("Do not daemonize")),
+    OPT_BOOL( 's' , 0, &syslog_opt, _("Log to syslog even with -d")),
+    OPT_STRING( 't' , 0, &timeout_opt, _("Exit after SEC seconds of inactivity")),
+    OPT_BOOL( 'v' , 0, &g_verbose, _("Verbose")),
+    OPT_END()
+};
+
 int main(int argc, char** argv)
 {
-    int opt;
     int parent_pid = getpid();
 
     setlocale(LC_ALL, "");
@@ -873,38 +889,25 @@ int main(int argc, char** argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    while ((opt = getopt(argc, argv, "dsvt:")) != -1)
+    parse_opts(argc, argv, abrtd_options, abrtd_usage);
+
+    if (help_opt)
+        parse_usage_and_die(abrtd_usage, abrtd_options);
+
+    if (daemonize_opt)
+        daemonize = false;
+
+    if (syslog_opt)
+        start_syslog_logging();
+
+    if (timeout_opt)
     {
         unsigned long ul;
-
-        switch (opt)
-        {
-        case 'd':
-            daemonize = false;
-            break;
-        case 's':
-            start_syslog_logging();
-            break;
-        case 'v':
-            g_verbose++;
-            break;
-        case 't':
-            char *end;
-            errno = 0;
-            s_timeout = ul = strtoul(optarg, &end, 0);
-            if (errno == 0 && *end == '\0' && ul <= INT_MAX)
-                break;
-            /* fall through to error */
-        default:
-            error_msg_and_die(
-                "Usage: abrtd [-dsv] [-t SEC]\n"
-                "\nOptions:"
-                "\n\t-d\tDo not daemonize"
-                "\n\t-s\tLog to syslog even with -d"
-                "\n\t-t SEC\tExit after SEC seconds of inactivity"
-                "\n\t-v\tVerbose"
-            );
-        }
+        char *end;
+        errno = 0;
+        s_timeout = ul = strtoul(timeout_opt, &end, 0);
+        if (!(errno == 0 && *end == '\0' && ul <= INT_MAX))
+            parse_usage_and_die(abrtd_usage, abrtd_options);
     }
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
