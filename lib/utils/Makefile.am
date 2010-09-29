@@ -33,7 +33,8 @@ libABRTUtils_la_SOURCES = \
     abrt_packages.c abrt_packages.h \
     hooklib.c hooklib.h \
     sha1.c sha1.h \
-    database.c
+    database.c \
+    parse_options.c parse_options.h
 libABRTUtils_la_CPPFLAGS = \
     -Wall -Werror \
     -I$(srcdir)/../../inc \
