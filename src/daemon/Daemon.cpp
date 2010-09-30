@@ -391,7 +391,7 @@ static int SetUpCron()
 static void FindNewDumps(const char* pPath)
 {
     /* Get all debugdump directories in the pPath directory */
-    vector_string_t dirs;
+    GList *dirs = NULL;
     DIR *dp = opendir(pPath);
     if (dp == NULL)
     {
@@ -410,25 +410,25 @@ static void FindNewDumps(const char* pPath)
             if (S_ISDIR(stats.st_mode))
             {
                 VERB1 log("Will check directory '%s'", ep->d_name);
-                dirs.push_back(dname);
+                dirs = g_list_append(dirs, dname);
+                continue;
             }
         }
         free(dname);
     }
     closedir(dp);
 
-    unsigned size = dirs.size();
+    unsigned size = g_list_length(dirs);
     if (size == 0)
         return;
     log("Checking for unsaved crashes (dirs to check:%u)", size);
 
     /* Get potentially non-processed debugdumps */
-    vector_string_t::iterator itt = dirs.begin();
-    for (; itt != dirs.end(); ++itt)
+    for (GList *li = dirs; li != NULL; li = g_list_next(li))
     {
         try
         {
-            const char *dir_name = itt->c_str();
+            const char *dir_name = (char*)dirs->data;
             map_crash_data_t crashinfo;
             mw_result_t res = SaveDebugDump(dir_name, crashinfo);
             switch (res)
@@ -461,6 +461,12 @@ static void FindNewDumps(const char* pPath)
             error_msg("%s", e.what());
         }
     }
+
+    for (GList *li = dirs; li != NULL; li = g_list_next(li))
+        free(li->data);
+
+    g_list_free(dirs);
+
     log("Done checking for unsaved crashes");
 }
 
