@@ -25,6 +25,7 @@
 #include "abrt_exception.h"
 #include "KerneloopsScanner.h"
 #include <dlfcn.h>
+#include <glib.h>
 
 #define LOADSYM(fp, name) \
 do { \
@@ -75,8 +76,8 @@ usage:
     /* Load KerneloopsScanner plugin */
     //	const plugin_info_t *plugin_info;
     CPlugin* (*plugin_newf)(void);
-    int (*scan_syslog_file)(vector_string_t& oopsList, const char *filename, time_t *last_changed_p);
-    int (*save_oops_to_debug_dump)(const vector_string_t& oopsList);
+    int (*scan_syslog_file)(GList **oopsList, const char *filename, time_t *last_changed_p);
+    int (*save_oops_to_debug_dump)(GList **oopsList);
     void *handle;
 
     errno = 0;
@@ -95,21 +96,22 @@ usage:
     //	scanner->LoadSettings(path);
 
     /* Use it: parse and dump the oops */
-    vector_string_t oopsList;
-    int cnt = scan_syslog_file(oopsList, argv[0], NULL);
+    GList *oopsList = NULL;
+    int cnt = scan_syslog_file(&oopsList, argv[0], NULL);
     log("found oopses: %d", cnt);
 
     if (cnt > 0) {
         if (opt_s) {
             int i = 0;
-            while (i < oopsList.size()) {
-                printf("\nVersion: %s", oopsList[i].c_str());
+            int length = g_list_length(oopsList);
+            while (i < length) {
+                printf("\nVersion: %s", (char*)g_list_nth_data(oopsList, i));
                 i++;
             }
         }
         if (opt_d) {
             log("dumping oopses");
-            int errors = save_oops_to_debug_dump(oopsList);
+            int errors = save_oops_to_debug_dump(&oopsList);
             if (errors > 0)
             {
                 log("%d errors while dumping oopses", errors);
@@ -118,6 +120,12 @@ usage:
         }
     }
 
-    /*dlclose(handle); - why bother? */
+    for (GList *li = oopsList; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+
+    g_list_free(oopsList);
+    /*dlclose(handle); - why bother?
+     * cos we are handsome and good lookin' guys :D
+     */
     return 0;
 }

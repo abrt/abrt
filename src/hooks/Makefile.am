@@ -24,11 +24,13 @@ dumpoops_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     -DCONF_DIR=\"$(CONF_DIR)\" \
     -DVAR_RUN=\"$(VAR_RUN)\" \
+    $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 # build will succeed, but at runtime plugins do need ABRT*d*Utils
 dumpoops_LDADD = \
     ../../lib/utils/libABRTUtils.la \
-    ../../lib/utils/libABRTdUtils.la
+    ../../lib/utils/libABRTdUtils.la \
+    $(GLIB_FLAGS)
 
 python_PYTHON = abrt.pth abrt_exception_handler.py
 EXTRA_DIST = abrt_exception_handler.py.in $(man_MANS)

@@ -22,6 +22,7 @@
 */
 #include <syslog.h>
 #include <asm/unistd.h> /* __NR_syslog */
+#include <glib.h>
 #include "abrtlib.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
@@ -30,7 +31,7 @@
 
 // TODO: https://fedorahosted.org/abrt/ticket/78
 
-static int scan_dmesg(vector_string_t& oopsList)
+static int scan_dmesg(GList **oopsList)
 {
     VERB1 log("Scanning dmesg");
 
@@ -51,7 +52,7 @@ static int scan_dmesg(vector_string_t& oopsList)
 /* "dumpoops" tool uses these two functions too */
 extern "C" {
 
-int scan_syslog_file(vector_string_t& oopsList, const char *filename, time_t *last_changed_p)
+int scan_syslog_file(GList **oopsList, const char *filename, time_t *last_changed_p)
 {
     VERB1 log("Scanning syslog file '%s'", filename);
 
@@ -111,10 +112,10 @@ int scan_syslog_file(vector_string_t& oopsList, const char *filename, time_t *la
 }
 
 /* returns number of errors */
-int save_oops_to_debug_dump(const vector_string_t& oopsList)
+int save_oops_to_debug_dump(GList **oopsList)
 {
     unsigned countdown = 16; /* do not report hundreds of oopses */
-    unsigned idx = oopsList.size();
+    unsigned idx = g_list_length(*oopsList);
     time_t t = time(NULL);
     pid_t my_pid = getpid();
 
@@ -127,8 +128,7 @@ int save_oops_to_debug_dump(const vector_string_t& oopsList)
         char path[sizeof(DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu") + 3 * sizeof(long)*3];
         sprintf(path, DEBUG_DUMPS_DIR"/kerneloops-%lu-%lu-%lu", (long)t, (long)my_pid, (long)idx);
 
-        std::string oops = oopsList.at(--idx);
-        const char *first_line = oops.c_str();
+        char *first_line = (char*)g_list_nth_data(*oopsList,--idx);
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
         *second_line++ = '\0';
 
@@ -161,11 +161,11 @@ CKerneloopsScanner::CKerneloopsScanner()
     m_syslog_last_change = 0;
 
     /* Scan dmesg, on first call only */
-    vector_string_t oopsList;
-    cnt_FoundOopses = scan_dmesg(oopsList);
+    GList *oopsList = NULL;
+    cnt_FoundOopses = scan_dmesg(&oopsList);
     if (cnt_FoundOopses > 0)
     {
-        int errors = save_oops_to_debug_dump(oopsList);
+        int errors = save_oops_to_debug_dump(&oopsList);
         if (errors > 0)
             log("%d errors while dumping oopses", errors);
     }
@@ -178,11 +178,11 @@ void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs, int forc
     if (it != m_pSettings.end())
         syslog_file = it->second.c_str();
 
-    vector_string_t oopsList;
-    int cnt_FoundOopses = scan_syslog_file(oopsList, syslog_file, &m_syslog_last_change);
+    GList *oopsList = NULL;
+    int cnt_FoundOopses = scan_syslog_file(&oopsList, syslog_file, &m_syslog_last_change);
     if (cnt_FoundOopses > 0)
     {
-        int errors = save_oops_to_debug_dump(oopsList);
+        int errors = save_oops_to_debug_dump(&oopsList);
         if (errors > 0)
             log("%d errors while dumping oopses", errors);
         /*
@@ -198,6 +198,10 @@ void CKerneloopsScanner::Run(const char *pActionDir, const char *pArgs, int forc
                cnt_FoundOopses);
         closelog();
     }
+
+    for (GList *li = oopsList; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+    g_list_free(oopsList);
 }
 
 PLUGIN_INFO(ACTION,

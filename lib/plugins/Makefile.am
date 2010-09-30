@@ -87,8 +87,8 @@ libKerneloopsReporter_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(CURL_CFLAGS)
 
 # KerneloopsScanner
 libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h
-libKerneloopsScanner_la_LDFLAGS = -avoid-version
-libKerneloopsScanner_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"
+libKerneloopsScanner_la_LDFLAGS = -avoid-version $(GLIB_LIBS)
+libKerneloopsScanner_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(GLIB_CFLAGS)
 
 # Mailx
 libMailx_la_SOURCES = Mailx.cpp Mailx.h

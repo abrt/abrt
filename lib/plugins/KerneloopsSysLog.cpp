@@ -18,10 +18,12 @@
  */
 #include "abrtlib.h"
 #include "KerneloopsSysLog.h"
+#include <glib.h>
 
-static void queue_oops(vector_string_t &vec, const char *data, const char *version)
+static void queue_oops(GList **vec, const char *data, const char *version)
 {
-    vec.push_back(ssprintf("%s\n%s", version, data));
+    char *ver_data = xasprintf("%s\n%s", version, data);
+    *vec = g_list_append(*vec, ver_data);
 }
 
 /*
@@ -59,7 +61,7 @@ struct line_info {
     char level;
 };
 
-static int record_oops(vector_string_t &oopses, struct line_info* lines_info, int oopsstart, int oopsend)
+static int record_oops(GList **oopses, struct line_info* lines_info, int oopsstart, int oopsend)
 {
     int q;
     int len;
@@ -98,7 +100,7 @@ static int record_oops(vector_string_t &oopses, struct line_info* lines_info, in
     return rv;
 }
 #define REALLOC_CHUNK 1000
-int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen)
+int extract_oopses(GList **oopses, char *buffer, size_t buflen)
 {
     char *c;
     int linecount = 0;
