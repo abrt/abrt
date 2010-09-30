@@ -33,7 +33,6 @@
 #include "abrt_exception.h"
 #include "CrashWatcher.h"
 #include "Daemon.h"
-#include "rpm.h"
 
 using namespace std;
 
