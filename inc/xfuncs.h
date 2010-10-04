@@ -33,6 +33,7 @@ int ndelay_on(int fd);
 int ndelay_off(int fd);
 int close_on_exec_on(int fd);
 
+void* xcalloc(size_t nmemb, size_t size);
 void* xmalloc(size_t size);
 void* xrealloc(void *ptr, size_t size);
 void* xzalloc(size_t size);
