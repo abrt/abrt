@@ -19,6 +19,7 @@
 #include "dump_dir.h"
 #include "crash_types.h" /* FILENAME_foo */
 #include "hooklib.h"
+#include "parse_options.h"
 
 
 /* Maximal length of backtrace. */
@@ -75,6 +76,10 @@ Finalizing dump creation:
    \0
 */
 
+static const char * const abrt_server_usage[] = {
+    "abrt-server [options]",
+    NULL
+};
 
 /* Buffer for incomplete incoming messages. */
 static char *messagebuf_data = NULL;
@@ -277,45 +282,33 @@ static void process_message(const char *message)
 
 static void dummy_handler(int sig_unused) {}
 
+static int s_opt, help_opt;
+
+static struct options abrt_server_options[] = {
+    OPT_BOOL( 'h' , "help", &help_opt, "Show this help message"),
+    OPT_INTEGER( 'u' , 0, &client_uid, "Use UID as client uid"),
+    OPT_BOOL( 'v' , 0, &g_verbose, "Verbose"),
+    OPT_BOOL( 's' , 0, &s_opt, "Log to syslog"),
+    OPT_END()
+};
+
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    enum {
-        OPT_s = (1 << 0),
-    };
-    int optflags = 0;
-    int opt;
-    while ((opt = getopt(argc, argv, "u:vs")) != -1)
-    {
-        switch (opt)
-        {
-        case 'u':
-            client_uid = xatoi_u(optarg);
-            break;
-        case 'v':
-            g_verbose++;
-            break;
-        case 's':
-            optflags |= OPT_s;
-            break;
-        default:
-            error_msg_and_die(
-                "Usage: abrt-server [-v] [-u UID]\n"
-                "\n(So far only) creates crash dumps"
-                "\nOptions:"
-                "\n\t-v\tVerbose"
-                "\n\t-s\tLog to syslog"
-                "\n\t-u UID\tUse UID as client uid"
-            );
-        }
-    }
+
+    parse_opts(argc, argv, abrt_server_options,
+                           abrt_server_usage);
+
+    if (help_opt)
+        parse_usage_and_die(abrt_server_usage,
+                            abrt_server_options);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf("abrt-server[%u]", getpid());
-    if (optflags & OPT_s)
+    if (s_opt)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
