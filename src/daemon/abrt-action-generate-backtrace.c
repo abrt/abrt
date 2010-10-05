@@ -18,14 +18,19 @@
 */
 #include "abrtlib.h"
 #include "backtrace.h"
+#include "parse_options.h"
 
 
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
+static const char * const abrt_action_generage_backtrace_usage[] = {
+    "abrt-action-generate-backtrace [options] -d DIR",
+    NULL
+};
 
 static const char *dump_dir_name = ".";
 static char *debuginfo_dirs;
-static unsigned exec_timeout_sec = 60;
+static int exec_timeout_sec = 60;
 
 
 static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput)
@@ -240,63 +245,45 @@ static char *get_backtrace(struct dump_dir *dd)
     return bt;
 }
 
+static char *d_opt, *i_opt;
+static int s_opt, help_opt;
+
+static struct options abrt_action_generate_backtrace_options[] = {
+    OPT_BOOL( 'h' , "help", &help_opt, "Show this help message"),
+    OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
+    OPT_STRING( 'i' , 0, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
+    OPT_INTEGER( 't' , 0, &exec_timeout_sec, "Kill gdb if it runs for more than SECONDS"),
+    OPT_BOOL( 'v' , 0, &g_verbose, "Verbose"),
+    OPT_BOOL( 's' , 0, &s_opt, "Log to syslog even with -d"),
+    OPT_END()
+};
+
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    debuginfo_dirs = xstrdup(DEBUGINFO_CACHE_DIR);
-    enum {
-        OPT_s = (1 << 0),
-    };
-    int optflags = 0;
-    int opt;
-    while ((opt = getopt(argc, argv, "d:i:t:vs")) != -1)
+    parse_opts(argc, argv, abrt_action_generate_backtrace_options,
+                           abrt_action_generage_backtrace_usage);
+
+    if (help_opt || !d_opt)
+        parse_usage_and_die(abrt_action_generage_backtrace_usage,
+                            abrt_action_generate_backtrace_options);
+
+    dump_dir_name = d_opt;
+
+    debuginfo_dirs = xstrdup("");
+    if (i_opt)
     {
-        switch (opt)
-        {
-        case 'd':
-            dump_dir_name = optarg;
-            break;
-        case 'i': {
-            char *old = debuginfo_dirs;
-            if (optarg[0])
-                debuginfo_dirs = xasprintf("%s:%s", debuginfo_dirs, optarg);
-            else
-                debuginfo_dirs = xstrdup("");
-            free(old);
-            break;
-        }
-        case 't':
-            exec_timeout_sec = xatoi_u(optarg);
-            break;
-        case 'v':
-            g_verbose++;
-            break;
-        case 's':
-            optflags |= OPT_s;
-            break;
-        default:
-            /* Careful: the string below contains tabs, dont replace with spaces */
-            error_msg_and_die(
-                "Usage: abrt-action-generate-backtrace -d DIR [-i DIR1:DIR2] [-t SECONDS] [-vs]"
-                "\n"
-                "\nGenerate backtrace, its quality rating, hash, and crashed function"
-                "\n"
-                "\nOptions:"
-                "\n	-d DIR		Crash dump directory"
-                "\n	-i DIR1:DIR2	Additional debuginfo directories"
-                "\n	-t SECONDS	Kill gdb if it runs for more than SECONDS"
-                "\n	-v		Verbose"
-                "\n	-s		Log to syslog"
-            );
-        }
+        free(debuginfo_dirs);
+        debuginfo_dirs = xasprintf("%s:%s", DEBUGINFO_CACHE_DIR, i_opt);
     }
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf("abrt-action-generate-backtrace[%u]", getpid());
-    if (optflags & OPT_s)
+
+    if (s_opt)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
