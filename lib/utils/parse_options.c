@@ -82,6 +82,8 @@ void parse_opts(int argc, char **argv, const struct options *opt,
                 break;
             case OPTION_END:
                 break;
+            case OPTION_INTEGER:
+                break;
         }
         longopts[ii].flag = 0;
         longopts[ii].val = opt[ii].short_name;
@@ -116,6 +118,9 @@ void parse_opts(int argc, char **argv, const struct options *opt,
                 {
                     case OPTION_BOOL:
                         *(int*)opt[ii].value += 1;
+                        break;
+                    case OPTION_INTEGER:
+                        *(int*)opt[ii].value = xatoi(optarg);
                         break;
                     case OPTION_STRING:
                         if (optarg)
