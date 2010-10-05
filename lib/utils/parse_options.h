@@ -35,6 +35,8 @@ struct options {
 #define OPT_INTEGER(s, l, v, h)     { OPTION_INTEGER, (s), (l), (v), "n", (h) }
 #define OPT_STRING(s, l, v, a, h)   { OPTION_STRING, (s), (l), (v), (a), (h) }
 
+#define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), "be verbose")
+
 void parse_opts(int argc, char **argv, const struct options *opt,
                 const char * const usage[]);
 
