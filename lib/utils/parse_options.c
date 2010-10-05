@@ -75,14 +75,13 @@ void parse_opts(int argc, char **argv, const struct options *opt,
                 if (opt[ii].short_name)
                     strbuf_append_char(shortopts, opt[ii].short_name);
                 break;
+            case OPTION_INTEGER:
             case OPTION_STRING:
                 longopts[ii].has_arg = required_argument;
                 if (opt[ii].short_name)
                     strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
                 break;
             case OPTION_END:
-                break;
-            case OPTION_INTEGER:
                 break;
         }
         longopts[ii].flag = 0;
