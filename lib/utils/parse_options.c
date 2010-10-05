@@ -39,6 +39,9 @@ void parse_usage_and_die(const char * const * usage, const struct options *opt)
         if (opt->long_name)
             pos += fprintf(stderr, "--%s", opt->long_name);
 
+        if (opt->argh)
+            pos += fprintf(stderr, " <%s>", opt->argh);
+
         if (pos <= USAGE_OPTS_WIDTH)
             pad = USAGE_OPTS_WIDTH - pos;
         else

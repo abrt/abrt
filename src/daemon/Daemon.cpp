@@ -866,7 +866,7 @@ static struct options abrtd_options[] = {
     OPT_BOOL( 'h' , "help", &help_opt, _("Show this help message")),
     OPT_BOOL( 'd' , 0, &daemonize_opt, _("Do not daemonize")),
     OPT_BOOL( 's' , 0, &syslog_opt, _("Log to syslog even with -d")),
-    OPT_STRING( 't' , 0, &timeout_opt, _("Exit after SEC seconds of inactivity")),
+    OPT_STRING( 't' , 0, &timeout_opt, "sec",  _("Exit after SEC seconds of inactivity")),
     OPT_BOOL( 'v' , 0, &g_verbose, _("Verbose")),
     OPT_END()
 };
