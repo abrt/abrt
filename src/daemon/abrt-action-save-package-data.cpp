@@ -21,7 +21,12 @@
 #include "abrt_packages.h"
 #include "Settings.h"
 #include "rpm.h"
+#include "parse_options.h"
 
+static const char * const abrt_action_save_package_data_usage[] = {
+    "abrt-action-save-package-data [options] -d DIR",
+    NULL
+};
 
 /**
  * Returns the first full path argument in the command line or NULL.
@@ -267,6 +272,17 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     return error;
 }
 
+static char *d_opt;
+static int s_opt, help_opt;
+
+static struct options abrt_action_save_package_data_options[] = {
+    OPT_BOOL( 'h' , "help", &help_opt, "Show this help message"),
+    OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
+    OPT_BOOL( 'v' , 0, &g_verbose, "Verbose"),
+    OPT_BOOL( 's' , 0, &s_opt, "Log to syslog"),
+    OPT_END()
+};
+
 int main(int argc, char **argv)
 {
     char *env_verbose = getenv("ABRT_VERBOSE");
@@ -274,42 +290,19 @@ int main(int argc, char **argv)
         g_verbose = atoi(env_verbose);
 
     const char *dump_dir_name = ".";
-    enum {
-        OPT_s = (1 << 0),
-    };
-    int optflags = 0;
-    int opt;
-    while ((opt = getopt(argc, argv, "d:i:t:vs")) != -1)
-    {
-        switch (opt)
-        {
-        case 'd':
-            dump_dir_name = optarg;
-            break;
-        case 'v':
-            g_verbose++;
-            break;
-        case 's':
-            optflags |= OPT_s;
-            break;
-        default:
-            /* Careful: the string below contains tabs, dont replace with spaces */
-            error_msg_and_die(
-                "Usage: abrt-action-save-package-data -d DIR [-vs]"
-                "\n"
-                "\nQuery package database and save package name, component, and description"
-                "\n"
-                "\nOptions:"
-                "\n	-d DIR	Crash dump directory"
-                "\n	-v	Verbose"
-                "\n	-s	Log to syslog"
-            );
-        }
-    }
+
+    parse_opts(argc, argv, abrt_action_save_package_data_options,
+                           abrt_action_save_package_data_usage);
+
+    if (help_opt || !d_opt)
+        parse_usage_and_die(abrt_action_save_package_data_usage,
+                            abrt_action_save_package_data_options);
+
+    dump_dir_name = d_opt;
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf("abrt-action-save-package-data[%u]", getpid());
-    if (optflags & OPT_s)
+    if (s_opt)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
