@@ -9,6 +9,7 @@ extern "C" {
 
 enum parse_opt_type {
     OPTION_BOOL,
+    OPTION_GROUP,
     OPTION_STRING,
     OPTION_INTEGER,
     OPTION_END,
@@ -32,6 +33,7 @@ struct options {
  */
 #define OPT_END()                   { OPTION_END }
 #define OPT_BOOL(s, l, v, h)        { OPTION_BOOL, (s), (l), (v), NULL, (h) }
+#define OPT_GROUP(h)                { OPTION_GROUP, 0, NULL, NULL, NULL, (h) }
 #define OPT_INTEGER(s, l, v, h)     { OPTION_INTEGER, (s), (l), (v), "n", (h) }
 #define OPT_STRING(s, l, v, a, h)   { OPTION_STRING, (s), (l), (v), (a), (h) }
 
