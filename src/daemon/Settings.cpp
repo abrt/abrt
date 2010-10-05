@@ -51,11 +51,11 @@ static map_string_t s_mapSectionCron;
 /* one line: "OpenGPGCheck = value" */
 bool          g_settings_bOpenGPGCheck = false;
 /* one line: "OpenGPGPublicKeys = value1,value2" */
-set_string_t  g_settings_setOpenGPGPublicKeys;
-set_string_t  g_settings_setBlackListedPkgs;
-set_string_t  g_settings_setBlackListedPaths;
-std::string   g_settings_sDatabase;
-std::string   g_settings_sWatchCrashdumpArchiveDir;
+GList *g_settings_setOpenGPGPublicKeys = NULL;
+GList *g_settings_setBlackListedPkgs = NULL;
+GList *g_settings_setBlackListedPaths = NULL;
+char *g_settings_sDatabase = NULL;
+char *g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
 
@@ -73,28 +73,27 @@ map_cron_t    g_settings_mapCron;
  * Loading
  */
 
-static set_string_t ParseList(const char* pList)
+static GList *parse_list(const char* list)
 {
-    unsigned ii;
-    std::string item;
-    set_string_t set;
-    for (ii = 0; pList[ii]; ii++)
+    struct strbuf *item = strbuf_new();
+    GList *l = NULL;
+
+    for (unsigned ii = 0; list[ii]; ii++)
     {
-        if (pList[ii] == ',')
+        if (list[ii] == ',')
         {
-            set.insert(item);
-            item = "";
+            l = g_list_append(l, xstrdup(item->buf));
+            strbuf_clear(item);
         }
         else
-        {
-            item += pList[ii];
-        }
+            strbuf_append_char(item, list[ii]);
     }
-    if (item != "")
-    {
-        set.insert(item);
-    }
-    return set;
+
+    if (item->len > 0)
+            l = g_list_append(l, xstrdup(item->buf));
+
+    strbuf_free(item);
+    return l;
 }
 
 /* Format: name, name(param),name("param with spaces \"and quotes\"") */
@@ -203,22 +202,28 @@ static int ParseCommon()
     it = s_mapSectionCommon.find("BlackList");
     if (it != end)
     {
-        g_settings_setBlackListedPkgs = ParseList(it->second.c_str());
+        g_settings_setBlackListedPkgs = parse_list(it->second.c_str());
     }
     it = s_mapSectionCommon.find("BlackListedPaths");
     if (it != end)
     {
-        g_settings_setBlackListedPaths = ParseList(it->second.c_str());
+        g_settings_setBlackListedPaths = parse_list(it->second.c_str());
     }
     it = s_mapSectionCommon.find("Database");
     if (it != end)
     {
-        g_settings_sDatabase = it->second;
+        if (it->second.empty())
+            error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
+
+        g_settings_sDatabase = xstrdup(it->second.c_str());
     }
+    else
+        error_msg_and_die(_("Database plugin not specified. Please check abrtd settings."));
+
     it = s_mapSectionCommon.find("WatchCrashdumpArchiveDir");
     if (it != end)
     {
-        g_settings_sWatchCrashdumpArchiveDir = it->second;
+        g_settings_sWatchCrashdumpArchiveDir = xstrdup(it->second.c_str());
     }
     it = s_mapSectionCommon.find("MaxCrashReportsSize");
     if (it != end)
@@ -348,7 +353,7 @@ static void LoadGPGKeys()
             if (line[0] == '/') // probably the begining of path, so let's handle it as a key
             {
                 strchrnul(line, '\n')[0] = '\0';
-                g_settings_setOpenGPGPublicKeys.insert(line);
+                g_settings_setOpenGPGPublicKeys = g_list_append(g_settings_setOpenGPGPublicKeys, xstrdup(line));
             }
         }
         fclose(fp);
@@ -558,4 +563,26 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
         s_mapSectionCron = it->second;
         ParseCron();
     }
+}
+
+void settings_free()
+{
+    for (GList *li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+
+    g_list_free(g_settings_setOpenGPGPublicKeys);
+
+    for (GList *li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+
+    g_list_free(g_settings_setBlackListedPkgs);
+
+    for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+
+    g_list_free(g_settings_setBlackListedPaths);
+
+    free(g_settings_sDatabase);
+
+    free(g_settings_sWatchCrashdumpArchiveDir);
 }

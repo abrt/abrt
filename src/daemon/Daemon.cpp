@@ -597,7 +597,7 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                 if (ext && strcmp(ext + 1, "working") == 0)
                     continue;
 
-                const char *dir = g_settings_sWatchCrashdumpArchiveDir.c_str();
+                const char *dir = g_settings_sWatchCrashdumpArchiveDir;
                 log("Detected creation of file '%s' in upload directory '%s'", name, dir);
                 if (fork() == 0)
                 {
@@ -996,11 +996,11 @@ int main(int argc, char** argv)
         /* Watching DEBUG_DUMPS_DIR for new files... */
         if (inotify_add_watch(inotify_fd, DEBUG_DUMPS_DIR, IN_CREATE | IN_MOVED_TO) < 0)
             perror_msg_and_die("inotify_add_watch failed on '%s'", DEBUG_DUMPS_DIR);
-        if (!g_settings_sWatchCrashdumpArchiveDir.empty())
+        if (g_settings_sWatchCrashdumpArchiveDir)
         {
-            s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir.c_str(), IN_CLOSE_WRITE|IN_MOVED_TO);
+            s_upload_watch = inotify_add_watch(inotify_fd, g_settings_sWatchCrashdumpArchiveDir, IN_CLOSE_WRITE|IN_MOVED_TO);
             if (s_upload_watch < 0)
-                perror_msg_and_die("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir.c_str());
+                perror_msg_and_die("inotify_add_watch failed on '%s'", g_settings_sWatchCrashdumpArchiveDir);
         }
         VERB1 log("Adding inotify watch to glib main loop");
         channel_inotify = g_io_channel_unix_new(inotify_fd);
@@ -1116,6 +1116,7 @@ int main(int argc, char** argv)
     if (pMainloop)
         g_main_loop_unref(pMainloop);
 
+    settings_free();
     /* Exiting */
     if (s_sig_caught && s_sig_caught != SIGALRM && s_sig_caught != SIGCHLD)
     {

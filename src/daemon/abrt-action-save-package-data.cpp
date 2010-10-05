@@ -64,14 +64,12 @@ static char *get_argv1_if_full_path(const char* cmdline)
 
 static bool is_path_blacklisted(const char *path)
 {
-    set_string_t::iterator it = g_settings_setBlackListedPaths.begin();
-    while (it != g_settings_setBlackListedPaths.end())
+    for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
     {
-        if (fnmatch(it->c_str(), path, /*flags:*/ 0) == 0)
+        if (fnmatch((char*)li->data, path, /*flags:*/ 0) == 0)
         {
             return true;
         }
-        it++;
     }
     return false;
 }
@@ -197,11 +195,15 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         package_short_name = get_package_name_from_NVR_or_NULL(package_full_name);
         VERB2 log("Package:'%s' short:'%s'", package_full_name, package_short_name);
 
-        if (g_settings_setBlackListedPkgs.find(package_short_name) != g_settings_setBlackListedPkgs.end())
+        for (GList *li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
         {
-            log("Blacklisted package '%s'", package_short_name);
-            goto ret; /* return 1 (failure) */
+            if (strcmp((char*)li->data, package_short_name) == 0)
+            {
+                log("Blacklisted package '%s'", package_short_name);
+                goto ret; /* return 1 (failure) */
+            }
         }
+
         if (g_settings_bOpenGPGCheck && !remote)
         {
             if (rpm_chk_fingerprint(package_short_name))
@@ -320,11 +322,10 @@ int main(int argc, char **argv)
     VERB1 log("Initializing rpm library");
     rpm_init();
 
-    set_string_t::iterator it_k = g_settings_setOpenGPGPublicKeys.begin();
-    for (; it_k != g_settings_setOpenGPGPublicKeys.end(); it_k++)
+    for (GList *li = g_settings_setOpenGPGPublicKeys; li != NULL; li = g_list_next(li))
     {
-        VERB1 log("Loading GPG key '%s'", it_k->c_str());
-        rpm_load_gpgkey(it_k->c_str());
+        VERB1 log("Loading GPG key '%s'", (char*)li->data);
+        rpm_load_gpgkey((char*)li->data);
     }
 
     return SavePackageDescriptionToDebugDump(dump_dir_name);

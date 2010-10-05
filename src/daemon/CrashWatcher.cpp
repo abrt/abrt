@@ -94,7 +94,7 @@ void CreateReport(const char* crash_id, long caller_uid, int force, map_crash_da
 {
     /* FIXME: starting from here, any shared data must be protected with a mutex.
      * For example, CreateCrashReport does:
-     * g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+     * g_pPluginManager->GetDatabase(g_settings_sDatabase);
      * which is unsafe wrt concurrent updates to g_pPluginManager state.
      */
     mw_result_t res = CreateCrashReport(crash_id, caller_uid, force, crashReport);
@@ -186,7 +186,7 @@ int DeleteDebugDump(const char *crash_id, long caller_uid)
 {
     try
     {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
         database->Connect();
         struct db_row *row = database->GetRow(crash_id);
         if (!row)
@@ -227,7 +227,7 @@ void DeleteDebugDump_by_dir(const char *dump_dir)
 {
     try
     {
-        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase.c_str());
+        CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
         database->Connect();
         database->DeleteRows_by_dir(dump_dir);
         database->DisConnect();
