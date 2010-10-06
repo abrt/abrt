@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-30 22:07+0000\n"
-"PO-Revision-Date: 2010-08-31 18:29+0300\n"
+"POT-Creation-Date: 2010-10-06 10:54+0000\n"
+"PO-Revision-Date: 2010-10-06 22:12+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,12 +19,12 @@ msgstr ""
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: ../lib/plugins/Bugzilla.cpp:465
+#: ../lib/plugins/Bugzilla.cpp:464
 #, c-format
 msgid "New bug id: %i"
 msgstr "Новий ідентифікатор запиту: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:693
+#: ../lib/plugins/Bugzilla.cpp:688
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -32,115 +32,105 @@ msgstr ""
 "Порожнє ім'я або пароль.\n"
 "Перевірте "
 
-#: ../lib/plugins/Bugzilla.cpp:702
+#: ../lib/plugins/Bugzilla.cpp:697
 msgid "Logging into bugzilla..."
 msgstr "Триває вхід до Bugzilla…"
 
-#: ../lib/plugins/Bugzilla.cpp:705
+#: ../lib/plugins/Bugzilla.cpp:700
 msgid "Checking for duplicates..."
 msgstr "Пошук дублікатів…"
 
-#: ../lib/plugins/Bugzilla.cpp:726 ../lib/plugins/Bugzilla.cpp:761
+#: ../lib/plugins/Bugzilla.cpp:721 ../lib/plugins/Bugzilla.cpp:756
 msgid "Missing mandatory member 'bugs'"
 msgstr "Не вказано обов’язкового учасника «bugs»"
 
-#: ../lib/plugins/Bugzilla.cpp:744 ../lib/plugins/Bugzilla.cpp:777
-#: ../lib/plugins/Bugzilla.cpp:853
+#: ../lib/plugins/Bugzilla.cpp:739 ../lib/plugins/Bugzilla.cpp:772
+#: ../lib/plugins/Bugzilla.cpp:848
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
 
-#: ../lib/plugins/Bugzilla.cpp:793
+#: ../lib/plugins/Bugzilla.cpp:788
 msgid "Creating a new bug..."
 msgstr "Створення нового повідомлення про ваду…"
 
-#: ../lib/plugins/Bugzilla.cpp:798
+#: ../lib/plugins/Bugzilla.cpp:793
 msgid "Bugzilla entry creation failed"
 msgstr "Не вдалося створити запис у Bugzilla"
 
-#: ../lib/plugins/Bugzilla.cpp:808 ../lib/plugins/Bugzilla.cpp:907
+#: ../lib/plugins/Bugzilla.cpp:803 ../lib/plugins/Bugzilla.cpp:902
 msgid "Logging out..."
 msgstr "Виконується вихід…"
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:827
+#: ../lib/plugins/Bugzilla.cpp:822
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Запит вже існує: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:838
+#: ../lib/plugins/Bugzilla.cpp:833
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
 
-#: ../lib/plugins/Bugzilla.cpp:867 ../lib/plugins/Bugzilla.cpp:868
+#: ../lib/plugins/Bugzilla.cpp:862 ../lib/plugins/Bugzilla.cpp:863
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Додати %s до списку CC"
 
-#: ../lib/plugins/Bugzilla.cpp:892
+#: ../lib/plugins/Bugzilla.cpp:887
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Додавання коментаря до запиту (%d)"
 
-#: ../lib/plugins/Bugzilla.cpp:991
+#: ../lib/plugins/Bugzilla.cpp:986
 msgid "Reports bugs to bugzilla"
 msgstr "Повідомляє про вади до Bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:187
+#: ../lib/plugins/CCpp.cpp:153
 msgid "Generating backtrace"
 msgstr "Створюється трасування"
 
-#: ../lib/plugins/CCpp.cpp:193 ../lib/plugins/CCpp.cpp:342
-#: ../lib/plugins/CCpp.cpp:536 ../lib/plugins/CCpp.cpp:596
-#: ../lib/plugins/CCpp.cpp:766 ../lib/plugins/CCpp.cpp:829
-#: ../lib/plugins/Kerneloops.cpp:133 ../lib/plugins/Python.cpp:33
-#: ../lib/plugins/RunApp.cpp:65 ../lib/plugins/SOSreport.cpp:58
-#: ../lib/plugins/SOSreport.cpp:137
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr "Не вдалося відкрити файл зневаджування «%s»"
-
-#: ../lib/plugins/CCpp.cpp:370
+#: ../lib/plugins/CCpp.cpp:239
 msgid "Starting the debuginfo installation"
 msgstr "Запускається встановлення debuginfo"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:612
+#: ../lib/plugins/CCpp.cpp:474
 msgid "Getting global universal unique identification..."
 msgstr "Отримання загальних даних ідентифікації…"
 
-#: ../lib/plugins/CCpp.cpp:812
+#: ../lib/plugins/CCpp.cpp:668
 msgid "Skipping the debuginfo installation"
 msgstr "Пропускається встановлення debuginfo"
 
-#: ../lib/plugins/CCpp.cpp:1144
+#: ../lib/plugins/CCpp.cpp:919
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Аналізує аварійні завершення роботи програм C/C++"
 
-#: ../lib/plugins/FileTransfer.cpp:52 ../lib/plugins/ReportUploader.cpp:97
+#: ../lib/plugins/FileTransfer.cpp:51 ../lib/plugins/ReportUploader.cpp:96
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: Не вказано URL"
 
-#: ../lib/plugins/FileTransfer.cpp:56 ../lib/plugins/ReportUploader.cpp:101
+#: ../lib/plugins/FileTransfer.cpp:55 ../lib/plugins/ReportUploader.cpp:100
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Архів %s надсилається до %s"
 
-#: ../lib/plugins/FileTransfer.cpp:241
+#: ../lib/plugins/FileTransfer.cpp:244
 msgid "FileTransfer: Creating a report..."
 msgstr "FileTransfer: Створюється звіт…"
 
-#: ../lib/plugins/FileTransfer.cpp:265 ../lib/plugins/FileTransfer.cpp:294
+#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Не вдається створити та надіслати архів: %s"
 
-#: ../lib/plugins/FileTransfer.cpp:361
+#: ../lib/plugins/FileTransfer.cpp:364
 msgid "Sends a report via FTP or SCTP"
 msgstr "Надсилає звіт за допомогою FTP або SCTP"
 
-#: ../lib/plugins/Kerneloops.cpp:155
+#: ../lib/plugins/Kerneloops.cpp:150
 msgid "Analyzes kernel oopses"
 msgstr "Аналізує помилки ядра"
 
@@ -152,51 +142,51 @@ msgstr "Створення та надсилання звіту…"
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Надсилає відомості щодо помилок у ядрі на kerneloops.org"
 
-#: ../lib/plugins/KerneloopsScanner.cpp:208
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Виконує періодичні сканування і зберігає дані щодо помилок у ядрі"
 
-#: ../lib/plugins/Logger.cpp:69
+#: ../lib/plugins/Logger.cpp:68
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Звіт записується у «%s»"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Звіт було долучено до %s"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Звіт було збережено до %s"
 
-#: ../lib/plugins/Logger.cpp:83
+#: ../lib/plugins/Logger.cpp:82
 msgid "Writes report to a file"
 msgstr "Записує звіт до файла"
 
-#: ../lib/plugins/Mailx.cpp:100
+#: ../lib/plugins/Mailx.cpp:99
 msgid "Sending an email..."
 msgstr "Надсилання пошти…"
 
-#: ../lib/plugins/Mailx.cpp:151
+#: ../lib/plugins/Mailx.cpp:150
 msgid "Sends an email with a report (via mailx command)"
 msgstr "Надсилає електронного листа зі звітом (за допомогою програми mailx)"
 
-#: ../lib/plugins/Python.cpp:105
+#: ../lib/plugins/Python.cpp:100
 msgid "Analyzes crashes in Python programs"
 msgstr "Аналізує аварійні завершення програм мовою Python"
 
-#: ../lib/plugins/ReportUploader.cpp:131
+#: ../lib/plugins/ReportUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr "Спроба надсилання зазнала невдачі, повторна спроба. %s"
 
-#: ../lib/plugins/ReportUploader.cpp:197
+#: ../lib/plugins/ReportUploader.cpp:196
 msgid "Creating a ReportUploader report..."
 msgstr "Створення звіту ReportUploader…"
 
-#: ../lib/plugins/ReportUploader.cpp:515
+#: ../lib/plugins/ReportUploader.cpp:514
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
@@ -204,36 +194,41 @@ msgstr ""
 "вказано, вивантажує файл за допомогою FTP/SCP тощо"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:110
+#: ../lib/plugins/RHTSupport.cpp:109
 msgid "Compressing data"
 msgstr "Стискання даних"
 
-#: ../lib/plugins/RHTSupport.cpp:245
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "Створення нового випадку…"
 
-#: ../lib/plugins/RHTSupport.cpp:327
+#: ../lib/plugins/RHTSupport.cpp:328
 msgid "Reports bugs to Red Hat support"
 msgstr "Повідомляє про вади до служби підтримки Red Hat"
 
-#: ../lib/plugins/RunApp.cpp:80
+#: ../lib/plugins/RunApp.cpp:75
 msgid "Runs a command, saves its output"
 msgstr "Запускає команду і зберігає виведені нею дані"
 
-#: ../lib/plugins/SOSreport.cpp:104
+#: ../lib/plugins/SOSreport.cpp:99
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Виконується sosreport: %s"
 
-#: ../lib/plugins/SOSreport.cpp:109
+#: ../lib/plugins/SOSreport.cpp:104
 msgid "Finished running sosreport"
 msgstr "Роботу sosreport завершено"
 
-#: ../lib/plugins/SOSreport.cpp:171
+#: ../lib/plugins/SOSreport.cpp:132
+#, c-format
+msgid "Unable to open debug dump '%s'"
+msgstr "Не вдалося відкрити файл зневаджування «%s»"
+
+#: ../lib/plugins/SOSreport.cpp:166
 msgid "Runs sosreport, saves the output"
 msgstr "Запускає sosreport, зберігає виведені дані"
 
-#: ../lib/plugins/SQLite3.cpp:678
+#: ../lib/plugins/SQLite3.cpp:718
 msgid "Keeps SQLite3 database about all crashes"
 msgstr ""
 "Зберігає всі дані щодо аварійних завершень роботи до бази даних SQLite3"
@@ -566,20 +561,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "Вам слід вказати точно одну дію"
 
-#: ../src/cli/report.cpp:172
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Значення у цьому полі не можна змінювати\n"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Опишіть обставини цього збою нижче"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr "# Як можна відтворити збій?"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:194
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -587,49 +582,49 @@ msgstr ""
 "# Зворотне трасування\n"
 "# Не забудьте вилучити з цих даних будь-які конфіденційні дані (паролі тощо)"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr "# Архітектура"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr "# Командний рядок"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:198
 msgid "# Component"
 msgstr "# Компонент"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr "# Дамп ядра"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr "# Виконуваний файл"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr "# Версія ядра"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:202
 msgid "# Package"
 msgstr "# Пакунок"
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr "# Причина збою"
 
-#: ../src/cli/report.cpp:206
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr "# Рядок з даними щодо випуску операційної системи"
 
-#: ../src/cli/report.cpp:329
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Не вдалося запустити vi: не встановлено значень змінних $TERM, $VISUAL і "
 "$EDITOR"
 
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.cpp:415
 msgid ""
 "\n"
 "The report has been updated"
@@ -637,7 +632,7 @@ msgstr ""
 "\n"
 "Звіт було оновлено"
 
-#: ../src/cli/report.cpp:419
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -646,46 +641,46 @@ msgstr ""
 "Не виявлено жодних змін у звіті"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:538
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:539
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:640
+#: ../src/cli/report.cpp:645
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Виявлено помилкові параметри модуля %s\n"
 
-#: ../src/cli/report.cpp:644
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr "Введіть ваше ім’я користувача: "
 
-#: ../src/cli/report.cpp:650
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr "Введіть ваш пароль: "
 
-#: ../src/cli/report.cpp:695
+#: ../src/cli/report.cpp:700
 msgid "Reporting..."
 msgstr "Звітування…"
 
-#: ../src/cli/report.cpp:714
+#: ../src/cli/report.cpp:719
 #, c-format
 msgid "Report using %s?"
 msgstr "Створити звіт за допомогою %s?"
 
-#: ../src/cli/report.cpp:717
+#: ../src/cli/report.cpp:722
 msgid "Skipping..."
 msgstr "Пропускаємо…"
 
-#: ../src/cli/report.cpp:729
+#: ../src/cli/report.cpp:734
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Звітування вимкнено, оскільки зворотне трасування є непридатним"
 
-#: ../src/cli/report.cpp:733
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -694,11 +689,11 @@ msgstr ""
 "Спробуйте встановити debuginfo вручну: «debuginfo-install %s», потім "
 "повторіть спробу\n"
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:747
 msgid "Error loading reporter settings"
 msgstr "Помилка при завантаженні параметрів звітування"
 
-#: ../src/cli/report.cpp:761
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Повідомлення щодо збою створено за допомогою %d модулів (%d помилок)\n"
@@ -711,7 +706,11 @@ msgstr "Занадто довгий коментар"
 msgid "'How to reproduce' is too long"
 msgstr "Занадто довгий запис «Спосіб відтворення»"
 
-#: ../src/daemon/Daemon.cpp:510
+#: ../src/daemon/Daemon.cpp:89
+msgid "abrtd [options]"
+msgstr "abrtd [параметри]"
+
+#: ../src/daemon/Daemon.cpp:640
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -719,10 +718,25 @@ msgstr ""
 "Розмір звіту перевищує припустимий. Змініть значення MaxCrashReportsSize у "
 "файлі abrt.conf"
 
-#: ../src/daemon/MiddleWare.cpp:611
-msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"Не вказано модуля роботи з базою даних. Будь ласка, змініть параметри abrtd."
+#: ../src/daemon/Daemon.cpp:872
+msgid "Show this help message"
+msgstr "Показати цю довідку"
+
+#: ../src/daemon/Daemon.cpp:873
+msgid "Do not daemonize"
+msgstr "Не запускати фонової служби"
+
+#: ../src/daemon/Daemon.cpp:874
+msgid "Log to syslog even with -d"
+msgstr "Записувати до журналу syslog навіть з параметром -d"
+
+#: ../src/daemon/Daemon.cpp:875
+msgid "Exit after SEC seconds of inactivity"
+msgstr "Завершувати роботу після SEC секунд бездіяльності"
+
+#: ../src/daemon/Daemon.cpp:876
+msgid "Verbose"
+msgstr "Докладний режим"
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1005,7 +1019,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Налаштувати параметри %s"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:864
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:866
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1023,7 +1037,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:903
+#: ../src/gui/CReporterAssistant.py:905
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Помилка при отриманні звіту: %s"
@@ -1172,18 +1186,18 @@ msgstr "Згода з надсиланням зворотного трасува
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Покрокові дії, які призвели до збою. Як відтворити збій?"
 
-#: ../src/gui/CReporterAssistant.py:668
+#: ../src/gui/CReporterAssistant.py:669
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "Чи маєте ви якісь коментарі, про які варто знати розробникам програмного "
 "забезпечення?"
 
-#: ../src/gui/CReporterAssistant.py:687
+#: ../src/gui/CReporterAssistant.py:689
 msgid "Provide additional details"
 msgstr "Надати додаткові дані"
 
-#: ../src/gui/CReporterAssistant.py:694
+#: ../src/gui/CReporterAssistant.py:696
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -1191,80 +1205,80 @@ msgstr ""
 "<b>Підказка:</b> доступ до ваших коментарів є відкритим. Будь ласка, будьте "
 "стримані у висловлюваннях."
 
-#: ../src/gui/CReporterAssistant.py:735
+#: ../src/gui/CReporterAssistant.py:737
 msgid "Confirm and send the report"
 msgstr "Підтвердити і надіслати звіт"
 
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:739
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Нижче наведено резюме вашого звіту про ваду. Натисніть кнопку «Застосувати», "
 "щоб надіслати його."
 
-#: ../src/gui/CReporterAssistant.py:742
+#: ../src/gui/CReporterAssistant.py:744
 msgid "<b>Basic details</b>"
 msgstr "<b>Основні дані</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:749
+#: ../src/gui/CReporterAssistant.py:751
 msgid "Component"
 msgstr "Компонент"
 
-#: ../src/gui/CReporterAssistant.py:750
+#: ../src/gui/CReporterAssistant.py:752
 msgid "Package"
 msgstr "Пакунок"
 
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:753
 msgid "Executable"
 msgstr "Виконуваний файл"
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:754
 msgid "Cmdline"
 msgstr "Командний рядок"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:756
 msgid "Architecture"
 msgstr "Архітектура"
 
-#: ../src/gui/CReporterAssistant.py:755
+#: ../src/gui/CReporterAssistant.py:757
 msgid "Kernel"
 msgstr "Ядро"
 
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Release"
 msgstr "Випуск"
 
-#: ../src/gui/CReporterAssistant.py:757
+#: ../src/gui/CReporterAssistant.py:759
 msgid "Reason"
 msgstr "Причина"
 
-#: ../src/gui/CReporterAssistant.py:768 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:770 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Зворотне трасування</b>"
 
-#: ../src/gui/CReporterAssistant.py:771
+#: ../src/gui/CReporterAssistant.py:773
 msgid "Click to view..."
 msgstr "Натисніть, щоб переглянути…"
 
-#: ../src/gui/CReporterAssistant.py:783
+#: ../src/gui/CReporterAssistant.py:785
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Кроки з відтворення:</b>"
 
-#: ../src/gui/CReporterAssistant.py:804
+#: ../src/gui/CReporterAssistant.py:806
 msgid "<b>Comments:</b>"
 msgstr "<b>Коментарі:</b>"
 
-#: ../src/gui/CReporterAssistant.py:807
+#: ../src/gui/CReporterAssistant.py:809
 msgid "No comment provided!"
 msgstr "Не надано жодних коментарів!"
 
-#: ../src/gui/CReporterAssistant.py:843
+#: ../src/gui/CReporterAssistant.py:845
 msgid "Finished sending the bug report"
 msgstr "Надсилання звіту про ваду завершено"
 
-#: ../src/gui/CReporterAssistant.py:847
+#: ../src/gui/CReporterAssistant.py:849
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Звіти про вади:</b>"
 
@@ -1534,6 +1548,11 @@ msgstr ""
 "відкрити вікно налаштування відповідного модуля і виправити параметри. Якщо "
 "виправлень не буде внесено, у процесі звітування про ваду можуть виникнути "
 "помилки.\n"
+
+#~ msgid "Database plugin not specified. Please check abrtd settings."
+#~ msgstr ""
+#~ "Не вказано модуля роботи з базою даних. Будь ласка, змініть параметри "
+#~ "abrtd."
 
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
