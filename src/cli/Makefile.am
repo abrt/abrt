@@ -11,13 +11,14 @@ abrt_cli_CPPFLAGS = \
     -I$(srcdir)/../../lib/utils \
     -DVAR_RUN=\"$(VAR_RUN)\" \
     $(ENABLE_SOCKET_OR_DBUS) \
-    $(DBUS_CFLAGS) \
+    $(DBUS_CFLAGS) $(GLIB_CFLAGS) \
     -D_GNU_SOURCE
 #    $(GTK_CFLAGS)
 
 abrt_cli_LDADD = \
     ../../lib/utils/libABRTUtils.la \
-    ../../lib/utils/libABRTdUtils.la
+    ../../lib/utils/libABRTdUtils.la \
+    $(GLIB_LIBS)
 
 man_MANS = abrt-cli.1
 EXTRA_DIST = $(man_MANS)

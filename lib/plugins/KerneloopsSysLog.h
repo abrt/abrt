@@ -28,7 +28,8 @@
 #define __INCLUDE_GUARD_KERNELOOPSSYSLOG_H_
 
 #include "abrt_types.h"
+#include <glib.h>
 
-int extract_oopses(vector_string_t &oopses, char *buffer, size_t buflen);
+int extract_oopses(GList **oopses, char *buffer, size_t buflen);
 
 #endif

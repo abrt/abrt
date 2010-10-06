@@ -15,9 +15,8 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <cassert>
-#include <algorithm>
 #include <termios.h>
+#include <glib.h>
 #include "report.h"
 #include "run-command.h"
 #include "dbus.h"
@@ -445,13 +444,13 @@ static void read_from_stdin(const char *question, char *result, int result_size)
  *  Specifies a set of characters that delimit the
  *  tokens in the parsed string
  */
-static vector_string_t split(const char *s, const char delim)
+static GList *split(const char *s, const char delim)
 {
-    std::vector<std::string> elems;
+    GList *elems = NULL;
     while (1)
     {
         const char *end = strchrnul(s, delim);
-        elems.push_back(std::string(s, end - s));
+        elems = g_list_append(elems, xstrndup(s, end - s));
         if (*end == '\0')
             break;
         s = end + 1;
@@ -505,7 +504,7 @@ static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
     }
 
     /* Reporters found, now parse the list. */
-    vector_string_t reporter_vec = split(reporters_iter->second.c_str(), ',');
+    GList *reporter_list = split(reporters_iter->second.c_str(), ',');
 
     // Get informations about all plugins.
     map_map_string_t plugins = call_GetPluginsInfo();
@@ -520,10 +519,17 @@ static vector_string_t get_enabled_reporters(map_crash_data_t &crash_data)
         if (0 != strcmp(it->second["Type"].c_str(), "Reporter"))
             continue;
         // Skip plugins not used in this particular crash.
-        if (reporter_vec.end() == std::find(reporter_vec.begin(), reporter_vec.end(), std::string(it->first)))
-            continue;
-        result.push_back(it->first);
+        for (GList *li = reporter_list; li != NULL; li = g_list_next(li))
+        {
+            if (strcmp((char*)li->data, it->first.c_str()) == 0)
+                result.push_back(it->first);
+        }
     }
+
+    for (GList *li = reporter_list; li != NULL; li = g_list_next(li))
+        free((char*)li->data);
+    g_list_free(reporter_list);
+
     return result;
 }
 
