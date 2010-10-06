@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.pt_BR\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-09-08 12:00+0000\n"
-"PO-Revision-Date: 2010-09-08 09:07-0300\n"
+"POT-Creation-Date: 2010-10-06 10:54+0000\n"
+"PO-Revision-Date: 2010-10-06 09:12-0300\n"
 "Last-Translator: Taylon <taylon@taylon.eti.br>\n"
 "Language-Team: Brazilian Portuguese <trans-pt_br@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -91,35 +91,25 @@ msgstr "Adicionar novo comentário ao bug (%d)"
 msgid "Reports bugs to bugzilla"
 msgstr "Relatos de erros no bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:186
+#: ../lib/plugins/CCpp.cpp:153
 msgid "Generating backtrace"
 msgstr "Obtendo backtrace... "
 
-#: ../lib/plugins/CCpp.cpp:192 ../lib/plugins/CCpp.cpp:341
-#: ../lib/plugins/CCpp.cpp:535 ../lib/plugins/CCpp.cpp:595
-#: ../lib/plugins/CCpp.cpp:765 ../lib/plugins/CCpp.cpp:828
-#: ../lib/plugins/Kerneloops.cpp:132 ../lib/plugins/Python.cpp:32
-#: ../lib/plugins/RunApp.cpp:64 ../lib/plugins/SOSreport.cpp:57
-#: ../lib/plugins/SOSreport.cpp:136
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr "Não foi possível abrir o debug dump '%s'"
-
-#: ../lib/plugins/CCpp.cpp:369
+#: ../lib/plugins/CCpp.cpp:239
 msgid "Starting the debuginfo installation"
 msgstr "Iniciando instalação do debuginfo "
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:611
+#: ../lib/plugins/CCpp.cpp:474
 msgid "Getting global universal unique identification..."
 msgstr "Obtendo identificação global universal única..."
 
-#: ../lib/plugins/CCpp.cpp:811
+#: ../lib/plugins/CCpp.cpp:668
 msgid "Skipping the debuginfo installation"
 msgstr "Pulando instalação do debuginfo "
 
-#: ../lib/plugins/CCpp.cpp:1143
+#: ../lib/plugins/CCpp.cpp:919
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Análise de travamentos nos programas C/C++"
 
@@ -145,7 +135,7 @@ msgstr "Não foi possível criar e enviar um arquivo: %s"
 msgid "Sends a report via FTP or SCTP"
 msgstr "Envia um relato via FTP ou SCTP"
 
-#: ../lib/plugins/Kerneloops.cpp:154
+#: ../lib/plugins/Kerneloops.cpp:150
 msgid "Analyzes kernel oopses"
 msgstr "Analiza oopses do kernel"
 
@@ -157,7 +147,7 @@ msgstr "Criando e enviando um relatório..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Envia informações de oops do kernel para kerneloops.org"
 
-#: ../lib/plugins/KerneloopsScanner.cpp:207
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Copia periodicamente e salva para os oopses do kernel"
 
@@ -188,7 +178,7 @@ msgstr "Enviando email..."
 msgid "Sends an email with a report (via mailx command)"
 msgstr "Envia um email com um relato (via comando mailx)"
 
-#: ../lib/plugins/Python.cpp:104
+#: ../lib/plugins/Python.cpp:100
 msgid "Analyzes crashes in Python programs"
 msgstr "Analisa travamentos nos programas do Python"
 
@@ -221,24 +211,29 @@ msgstr "Criando novo caso..."
 msgid "Reports bugs to Red Hat support"
 msgstr "Relata erros para o suporte da Red Hat"
 
-#: ../lib/plugins/RunApp.cpp:79
+#: ../lib/plugins/RunApp.cpp:75
 msgid "Runs a command, saves its output"
 msgstr "Executa um comando, salva seu resultado"
 
-#: ../lib/plugins/SOSreport.cpp:103
+#: ../lib/plugins/SOSreport.cpp:99
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Executando o sosreport: %s"
 
-#: ../lib/plugins/SOSreport.cpp:108
+#: ../lib/plugins/SOSreport.cpp:104
 msgid "Finished running sosreport"
 msgstr "Execução do sosreport realizada  "
 
-#: ../lib/plugins/SOSreport.cpp:170
+#: ../lib/plugins/SOSreport.cpp:132
+#, c-format
+msgid "Unable to open debug dump '%s'"
+msgstr "Não foi possível abrir o debug dump '%s'"
+
+#: ../lib/plugins/SOSreport.cpp:166
 msgid "Runs sosreport, saves the output"
 msgstr "Executa sosreport, salva seu resultado"
 
-#: ../lib/plugins/SQLite3.cpp:678
+#: ../lib/plugins/SQLite3.cpp:718
 msgid "Keeps SQLite3 database about all crashes"
 msgstr "Mantém o banco de dados do SQLite3 sobre todos os travamentos"
 
@@ -406,7 +401,7 @@ msgstr ""
 msgid "translator-credits"
 msgstr ""
 "Glaucia Cintra\n"
-"Taylon Silmer <taylonsilva@gmail.com>"
+"Taylon Silmer <taylon@taylon.eti.br>"
 
 #: ../src/applet/applet_gtk.c:249
 msgid "Hide"
@@ -569,20 +564,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "Você precisa especificar exatamente uma operação"
 
-#: ../src/cli/report.cpp:171
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr "#Este campo é somente leitura\n"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr "#Descreva as circunstâncias deste travamento abaixo"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr "#Como reproduzir o travamento?"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:194
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -590,48 +585,48 @@ msgstr ""
 "# Backtrace\n"
 "# Verificar se não contém algum dado sensível (senhas, etc)"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr "#Arquitetura"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr "# Linha de Comando"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:198
 msgid "# Component"
 msgstr "#Componente"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr "#Despejo de Núcleo"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr "#Executável"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr "#Versão do Kernel"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:202
 msgid "# Package"
 msgstr "#Pacote"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr "#Razão para o travamento"
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr "#Faixa de lançamento do sistema operacional"
 
-#: ../src/cli/report.cpp:328
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Não foi possível executar  vi: $TERM, $VISUAL e $EDITOR não está configurado "
 
-#: ../src/cli/report.cpp:416
+#: ../src/cli/report.cpp:415
 msgid ""
 "\n"
 "The report has been updated"
@@ -639,7 +634,7 @@ msgstr ""
 "\n"
 "Um relatório foi atualizado"
 
-#: ../src/cli/report.cpp:418
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -648,46 +643,46 @@ msgstr ""
 " Não foi detectada nenhuma mudança no relatório"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:537
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:538
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:639
+#: ../src/cli/report.cpp:645
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Configurações erradas foram detectadas no plugin %s\n"
 
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr "Insira seu login:"
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr "Insira sua senha:"
 
-#: ../src/cli/report.cpp:694
+#: ../src/cli/report.cpp:700
 msgid "Reporting..."
 msgstr "Relatando..."
 
-#: ../src/cli/report.cpp:713
+#: ../src/cli/report.cpp:719
 #, c-format
 msgid "Report using %s?"
 msgstr "Relatar utilizando o %s?"
 
-#: ../src/cli/report.cpp:716
+#: ../src/cli/report.cpp:722
 msgid "Skipping..."
 msgstr "Pulando..."
 
-#: ../src/cli/report.cpp:728
+#: ../src/cli/report.cpp:734
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Relatório desabilitado porque o backtrace está inutilizado"
 
-#: ../src/cli/report.cpp:732
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -696,11 +691,11 @@ msgstr ""
 "Por favor, tente instalar o debuginfo manualmente usando o comando: "
 "\"debuginfo-install %s\" e tente novamente\n"
 
-#: ../src/cli/report.cpp:741
+#: ../src/cli/report.cpp:747
 msgid "Error loading reporter settings"
 msgstr "Erro ao carregar as configurações do relator"
 
-#: ../src/cli/report.cpp:760
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Travamento reportado via %d plugins (%d erros)\n"
@@ -713,7 +708,11 @@ msgstr "Comentário muito longo"
 msgid "'How to reproduce' is too long"
 msgstr "'Como reproduzir' está muito longo"
 
-#: ../src/daemon/Daemon.cpp:509
+#: ../src/daemon/Daemon.cpp:89
+msgid "abrtd [options]"
+msgstr "abrtd [opções]"
+
+#: ../src/daemon/Daemon.cpp:640
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -721,11 +720,25 @@ msgstr ""
 "O tamanho do relatório excedeu a cota. Por favor, verifique o valor "
 "MaxCrashReportsSize do sistema no abrt.conf. "
 
-#: ../src/daemon/MiddleWare.cpp:610
-msgid "Database plugin not specified. Please check abrtd settings."
-msgstr ""
-"O plugin do banco de dados não foi especificado. Por favor, verifique as "
-"configurações do abrtd."
+#: ../src/daemon/Daemon.cpp:872
+msgid "Show this help message"
+msgstr "Exibir essa mensagem de ajuda"
+
+#: ../src/daemon/Daemon.cpp:873
+msgid "Do not daemonize"
+msgstr "Não criar um daemon"
+
+#: ../src/daemon/Daemon.cpp:874
+msgid "Log to syslog even with -d"
+msgstr "Registrar no syslog mesmo com o -d"
+
+#: ../src/daemon/Daemon.cpp:875
+msgid "Exit after SEC seconds of inactivity"
+msgstr "Sair depois de SEC segundos de inatividade"
+
+#: ../src/daemon/Daemon.cpp:876
+msgid "Verbose"
+msgstr "Detalhado"
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1540,6 +1553,11 @@ msgstr ""
 "habilitados. Por favor, use os botões abaixo para abrir a configuração "
 "respectiva e repare-a antes de proceder, caso contrário o processo de "
 "reportagem pode falhar.\n"
+
+#~ msgid "Database plugin not specified. Please check abrtd settings."
+#~ msgstr ""
+#~ "O plugin do banco de dados não foi especificado. Por favor, verifique as "
+#~ "configurações do abrtd."
 
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
