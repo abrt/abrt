@@ -36,88 +36,88 @@ do { \
 
 int main(int argc, char **argv)
 {
-	char *program_name = strrchr(argv[0], '/');
-	program_name = program_name ? program_name + 1 : argv[0];
+    char *program_name = strrchr(argv[0], '/');
+    program_name = program_name ? program_name + 1 : argv[0];
 
-	/* Parse options */
-	bool opt_d = 0, opt_s = 0;
-	int opt;
-	while ((opt = getopt(argc, argv, "dsv")) != -1) {
-		switch (opt) {
-		case 'd':
-			opt_d = 1;
-			break;
-		case 's':
-			opt_s = 1;
-			break;
-		case 'v':
-			/* Kerneloops code uses VERB3, thus: */
-			g_verbose = 3;
-			break;
-		default:
- usage:
-			error_msg_and_die(
-				"Usage: %s [-dsv] FILE\n\n"
-				"Options:\n"
-				"\t-d\tCreate ABRT dump for every oops found\n"
-				"\t-s\tPrint found oopses on standard output\n"
-				"\t-v\tVerbose\n"
-				, program_name
-			);
-		}
-	}
-	argv += optind;
-	if (!argv[0])
-		goto usage;
+    /* Parse options */
+    bool opt_d = 0, opt_s = 0;
+    int opt;
+    while ((opt = getopt(argc, argv, "dsv")) != -1) {
+        switch (opt) {
+            case 'd':
+                opt_d = 1;
+                break;
+            case 's':
+                opt_s = 1;
+                break;
+            case 'v':
+                /* Kerneloops code uses VERB3, thus: */
+                g_verbose = 3;
+                break;
+            default:
+usage:
+                error_msg_and_die(
+                        "Usage: %s [-dsv] FILE\n\n"
+                        "Options:\n"
+                        "\t-d\tCreate ABRT dump for every oops found\n"
+                        "\t-s\tPrint found oopses on standard output\n"
+                        "\t-v\tVerbose\n"
+                        , program_name
+                        );
+        }
+    }
+    argv += optind;
+    if (!argv[0])
+        goto usage;
 
-	msg_prefix = program_name;
+    msg_prefix = program_name;
 
-	/* Load KerneloopsScanner plugin */
-//	const plugin_info_t *plugin_info;
-	CPlugin* (*plugin_newf)(void);
-	int (*scan_syslog_file)(vector_string_t& oopsList, const char *filename, time_t *last_changed_p);
-	int (*save_oops_to_debug_dump)(const vector_string_t& oopsList);
-	void *handle;
+    /* Load KerneloopsScanner plugin */
+    //	const plugin_info_t *plugin_info;
+    CPlugin* (*plugin_newf)(void);
+    int (*scan_syslog_file)(vector_string_t& oopsList, const char *filename, time_t *last_changed_p);
+    int (*save_oops_to_debug_dump)(const vector_string_t& oopsList);
+    void *handle;
 
-	errno = 0;
-//TODO: use it directly, not via dlopen?
-	handle = dlopen(PLUGINS_LIB_DIR"/libKerneloopsScanner.so", RTLD_NOW);
-	if (!handle)
-		perror_msg_and_die("can't load %s", PLUGINS_LIB_DIR"/libKerneloopsScanner.so");
+    errno = 0;
+    //TODO: use it directly, not via dlopen?
+    handle = dlopen(PLUGINS_LIB_DIR"/libKerneloopsScanner.so", RTLD_NOW);
+    if (!handle)
+        perror_msg_and_die("can't load %s", PLUGINS_LIB_DIR"/libKerneloopsScanner.so");
 
-//	LOADSYM(plugin_info, "plugin_info");
-	LOADSYM(plugin_newf, "plugin_new");
-	LOADSYM(scan_syslog_file, "scan_syslog_file");
-	LOADSYM(save_oops_to_debug_dump, "save_oops_to_debug_dump");
+    //	LOADSYM(plugin_info, "plugin_info");
+    LOADSYM(plugin_newf, "plugin_new");
+    LOADSYM(scan_syslog_file, "scan_syslog_file");
+    LOADSYM(save_oops_to_debug_dump, "save_oops_to_debug_dump");
 
-//	CKerneloopsScanner* scanner = (CKerneloopsScanner*) plugin_newf();
-//	scanner->Init();
-//	scanner->LoadSettings(path);
+    //	CKerneloopsScanner* scanner = (CKerneloopsScanner*) plugin_newf();
+    //	scanner->Init();
+    //	scanner->LoadSettings(path);
 
-	/* Use it: parse and dump the oops */
-	vector_string_t oopsList;
-	int cnt = scan_syslog_file(oopsList, argv[0], NULL);
-	log("found oopses: %d", cnt);
+    /* Use it: parse and dump the oops */
+    vector_string_t oopsList;
+    int cnt = scan_syslog_file(oopsList, argv[0], NULL);
+    log("found oopses: %d", cnt);
 
-	if (cnt > 0) {
-		if (opt_s) {
-			int i = 0;
-			while (i < oopsList.size()) {
-				printf("\nVersion: %s", oopsList[i].c_str());
-				i++;
-			}
-		}
-		if (opt_d) {
-			log("dumping oopses");
-			int errors = save_oops_to_debug_dump(oopsList);
-			if (errors > 0)
-			{
-				log("%d errors while dumping oopses", errors);
-				return 1;
-			}
-		}
-	}
+    if (cnt > 0) {
+        if (opt_s) {
+            int i = 0;
+            while (i < oopsList.size()) {
+                printf("\nVersion: %s", oopsList[i].c_str());
+                i++;
+            }
+        }
+        if (opt_d) {
+            log("dumping oopses");
+            int errors = save_oops_to_debug_dump(oopsList);
+            if (errors > 0)
+            {
+                log("%d errors while dumping oopses", errors);
+                return 1;
+            }
+        }
+    }
 
-	/*dlclose(handle); - why bother? */
-	return 0;
+    /*dlclose(handle); - why bother? */
+    return 0;
 }
