@@ -571,18 +571,23 @@ void settings_free()
         free((char*)li->data);
 
     g_list_free(g_settings_setOpenGPGPublicKeys);
+    g_settings_setOpenGPGPublicKeys = NULL;
 
     for (GList *li = g_settings_setBlackListedPkgs; li != NULL; li = g_list_next(li))
         free((char*)li->data);
 
     g_list_free(g_settings_setBlackListedPkgs);
+    g_settings_setBlackListedPkgs = NULL;
 
     for (GList *li = g_settings_setBlackListedPaths; li != NULL; li = g_list_next(li))
         free((char*)li->data);
 
     g_list_free(g_settings_setBlackListedPaths);
+    g_settings_setBlackListedPaths = NULL;
 
     free(g_settings_sDatabase);
+    g_settings_sDatabase = NULL;
 
     free(g_settings_sWatchCrashdumpArchiveDir);
+    g_settings_sWatchCrashdumpArchiveDir = NULL;
 }
