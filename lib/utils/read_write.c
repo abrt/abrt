@@ -98,3 +98,8 @@ ssize_t full_write(int fd, const void *buf, size_t len)
 
     return total;
 }
+
+ssize_t full_write_str(int fd, const char *buf)
+{
+    return full_write(fd, buf, strlen(buf));
+}
