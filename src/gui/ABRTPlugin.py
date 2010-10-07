@@ -35,11 +35,12 @@ class PluginSettings(dict):
     def load_daemon_settings(self, name, daemon_settings):
         # load settings from daemon
         for key in daemon_settings.keys():
+            log2("daemon-side setting: %s[%s]='%s'", name, key, daemon_settings[key])
             self[str(key)] = str(daemon_settings[key])
 
         if self.client_side_conf:
-            # FIXME: this fails when gk-authoriaztion fails
-            # we need to show a dialog to user and let him know
+            # FIXME: this fails when gk-authorization fails.
+            # We need to show a dialog to user and let him know
             # for now just silently ignore it to avoid rhbz#559342
             settings = {}
             try:
@@ -51,6 +52,7 @@ class PluginSettings(dict):
                 # only rewrite keys which exist in plugin's keys.
                 # e.g. we don't want a password field for logger plugin
                 if key in daemon_settings.keys():
+                    log2("client-side override: %s[%s]='%s'", name, key, settings[key])
                     self[str(key)] = str(settings[key])
 
     def save_on_client_side(self, name):

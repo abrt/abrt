@@ -116,12 +116,21 @@ unsigned long long monotonic_us(void);
 unsigned monotonic_sec(void);
 
 enum {
+	/* on return, pipefds[1] is fd to which parent may write
+	 * and deliver data to child's stdin: */
 	EXECFLG_INPUT      = 1 << 0,
+	/* on return, pipefds[0] is fd from which parent may read
+	 * child's stdout: */
 	EXECFLG_OUTPUT     = 1 << 1,
+	/* open child's stdin to /dev/null: */
 	EXECFLG_INPUT_NUL  = 1 << 2,
+	/* open child's stdout to /dev/null: */
 	EXECFLG_OUTPUT_NUL = 1 << 3,
+	/* redirect child's stderr to stdout: */
 	EXECFLG_ERR2OUT    = 1 << 4,
+	/* open child's stderr to /dev/null: */
 	EXECFLG_ERR_NUL    = 1 << 5,
+	/* suppress perror_msg("Can't execute 'foo'") if exec fails */
 	EXECFLG_QUIET      = 1 << 6,
 	EXECFLG_SETGUID    = 1 << 7,
 	EXECFLG_SETSID     = 1 << 8,

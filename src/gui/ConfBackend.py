@@ -88,7 +88,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
         settings_tmp["Application"] = "abrt"
         settings_tmp["AbrtPluginInfo"] = name
 
-        # delete all keyring items containg "AbrtPluginInfo":"<plugin_name>",
+        # delete all keyring items containing "AbrtPluginInfo":"<plugin_name>",
         # so we always have only 1 item per plugin
         try:
             item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, { "AbrtPluginInfo": str(name) })
