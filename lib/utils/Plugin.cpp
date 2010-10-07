@@ -28,19 +28,43 @@ void CPlugin::DeInit() {}
 void CPlugin::SetSettings(const map_plugin_settings_t& pSettings)
 {
     m_pSettings = pSettings;
+    VERB3
+    {
+        log("SetSettings:");
+        map_plugin_settings_t::const_iterator it = m_pSettings.begin();
+        while (it != m_pSettings.end())
+        {
+            log(" settings[%s]='%s'", it->first.c_str(), it->second.c_str());
+            it++;
+        }
+    }
 }
 
 const map_plugin_settings_t& CPlugin::GetSettings()
 {
+    VERB3
+    {
+        log("GetSettings:");
+        map_plugin_settings_t::const_iterator it = m_pSettings.begin();
+        while (it != m_pSettings.end())
+        {
+            log(" settings[%s]:'%s'", it->first.c_str(), it->second.c_str());
+            it++;
+        }
+    }
     return m_pSettings;
 }
 
 bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
 			bool skipKeysWithoutValue /*= true*/)
 {
-    FILE *fp = fopen(pPath, "r");
-    if (!fp)
-        return false;
+    FILE *fp = stdin;
+    if (strcmp(pPath, "-") != 0)
+    {
+        fp = fopen(pPath, "r");
+        if (!fp)
+            return false;
+    }
 
     char line[512];
     while (fgets(line, sizeof(line), fp))
@@ -99,6 +123,7 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
 
 	pSettings[key] = value;
     }
-    fclose(fp);
+    if (fp != stdin)
+        fclose(fp);
     return true;
 }
