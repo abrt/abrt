@@ -23,11 +23,6 @@
 #include "rpm.h"
 #include "parse_options.h"
 
-static const char * const abrt_action_save_package_data_usage[] = {
-    "abrt-action-save-package-data [options] -d DIR",
-    NULL
-};
-
 /**
  * Returns the first full path argument in the command line or NULL.
  * Skips options are in form "-XXX".
@@ -273,10 +268,14 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 }
 
 static char *d_opt;
-static int s_opt, help_opt;
+static int s_opt;
+
+static const char * const abrt_action_save_package_data_usage[] = {
+    "abrt-action-save-package-data [options] -d DIR",
+    NULL
+};
 
 static struct options abrt_action_save_package_data_options[] = {
-    OPT__HELP(&help_opt),
     OPT__VERBOSE(&g_verbose),
     OPT_GROUP(""),
     OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
@@ -295,7 +294,7 @@ int main(int argc, char **argv)
     parse_opts(argc, argv, abrt_action_save_package_data_options,
                            abrt_action_save_package_data_usage);
 
-    if (help_opt || !d_opt)
+    if (!d_opt)
         parse_usage_and_die(abrt_action_save_package_data_usage,
                             abrt_action_save_package_data_options);
 

@@ -85,11 +85,6 @@ using namespace std;
  *      Both are sent as unicast to last client set by set_client_name(name).
  *      If set_client_name(NULL) was done, they are not sent.
  */
-static const char * const abrtd_usage[] = {
-    _("abrtd [options]"),
-    NULL
-};
-
 CCommLayerServer* g_pCommLayer;
 
 static bool daemonize = true;
@@ -865,11 +860,15 @@ static void sanitize_dump_dir_rights()
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
 
-static int daemonize_opt, syslog_opt, help_opt;
+static int daemonize_opt, syslog_opt;
 static char *timeout_opt;
 
+static const char * const abrtd_usage[] = {
+    _("abrtd [options]"),
+    NULL
+};
+
 static struct options abrtd_options[] = {
-    OPT__HELP(&help_opt),
     OPT__VERBOSE(&g_verbose),
     OPT_GROUP(""),
     OPT_BOOL( 'd' , 0, &daemonize_opt, _("Do not daemonize")),
@@ -897,9 +896,6 @@ int main(int argc, char** argv)
         g_verbose = atoi(env_verbose);
 
     parse_opts(argc, argv, abrtd_options, abrtd_usage);
-
-    if (help_opt)
-        parse_usage_and_die(abrtd_usage, abrtd_options);
 
     if (daemonize_opt)
         daemonize = false;

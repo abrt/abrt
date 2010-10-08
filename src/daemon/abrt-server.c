@@ -76,11 +76,6 @@ Finalizing dump creation:
    \0
 */
 
-static const char * const abrt_server_usage[] = {
-    "abrt-server [options]",
-    NULL
-};
-
 /* Buffer for incomplete incoming messages. */
 static char *messagebuf_data = NULL;
 static unsigned messagebuf_len = 0;
@@ -282,10 +277,14 @@ static void process_message(const char *message)
 
 static void dummy_handler(int sig_unused) {}
 
-static int s_opt, help_opt;
+static int s_opt;
+
+static const char * const abrt_server_usage[] = {
+    "abrt-server [options]",
+    NULL
+};
 
 static struct options abrt_server_options[] = {
-    OPT__HELP(&help_opt),
     OPT__VERBOSE(&g_verbose),
     OPT_GROUP(""),
     OPT_INTEGER( 'u' , 0, &client_uid, "Use UID as client uid"),
@@ -299,13 +298,8 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-
     parse_opts(argc, argv, abrt_server_options,
                            abrt_server_usage);
-
-    if (help_opt)
-        parse_usage_and_die(abrt_server_usage,
-                            abrt_server_options);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf("abrt-server[%u]", getpid());

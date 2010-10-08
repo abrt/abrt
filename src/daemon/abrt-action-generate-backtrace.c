@@ -23,11 +23,6 @@
 
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
-static const char * const abrt_action_generage_backtrace_usage[] = {
-    "abrt-action-generate-backtrace [options] -d DIR",
-    NULL
-};
-
 static const char *dump_dir_name = ".";
 static char *debuginfo_dirs;
 static int exec_timeout_sec = 60;
@@ -246,10 +241,14 @@ static char *get_backtrace(struct dump_dir *dd)
 }
 
 static char *d_opt, *i_opt;
-static int s_opt, help_opt;
+static int s_opt;
+
+static const char * const abrt_action_generage_backtrace_usage[] = {
+    "abrt-action-generate-backtrace [options] -d DIR",
+    NULL
+};
 
 static struct options abrt_action_generate_backtrace_options[] = {
-    OPT__HELP(&help_opt),
     OPT__VERBOSE(&g_verbose),
     OPT_GROUP(""),
     OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
@@ -268,7 +267,7 @@ int main(int argc, char **argv)
     parse_opts(argc, argv, abrt_action_generate_backtrace_options,
                            abrt_action_generage_backtrace_usage);
 
-    if (help_opt || !d_opt)
+    if (!d_opt)
         parse_usage_and_die(abrt_action_generage_backtrace_usage,
                             abrt_action_generate_backtrace_options);
 

@@ -3,15 +3,6 @@
 #include "abrtlib.h"
 #include "parse_options.h"
 
-static int parse_opt_size(const struct options *opt)
-{
-    unsigned size = 1;
-    for (; opt->type != OPTION_END; opt++)
-        size++;
-
-    return size;
-}
-
 #define USAGE_OPTS_WIDTH 24
 #define USAGE_GAP         2
 
@@ -64,16 +55,26 @@ void parse_usage_and_die(const char * const * usage, const struct options *opt)
     exit(1);
 }
 
+static int parse_opt_size(const struct options *opt)
+{
+    unsigned size = 0;
+    for (; opt->type != OPTION_END; opt++)
+        size++;
+
+    return size;
+}
+
 void parse_opts(int argc, char **argv, const struct options *opt,
                 const char * const usage[])
 {
+    int help = 0;
     int size = parse_opt_size(opt);
 
     struct strbuf *shortopts = strbuf_new();
 
-    struct option *longopts = xcalloc(sizeof(struct options), size);
+    struct option *longopts = xzalloc(sizeof(longopts[0]) * (size+2));
     int ii;
-    for (ii = 0; ii < size - 1; ++ii)
+    for (ii = 0; ii < size; ++ii)
     {
         longopts[ii].name = opt[ii].long_name;
 
@@ -94,14 +95,20 @@ void parse_opts(int argc, char **argv, const struct options *opt,
             case OPTION_END:
                 break;
         }
-        longopts[ii].flag = 0;
+        /*longopts[ii].flag = 0; - xzalloc did it */
         longopts[ii].val = opt[ii].short_name;
     }
-
-    longopts[ii].name = 0;
+    longopts[ii].name = "help";
+    /*longopts[ii].has_arg = 0; - xzalloc did it */
+    longopts[ii].flag = &help;
+    longopts[ii].val = 1;
+    /* xzalloc did it already:
+    ii++;
+    longopts[ii].name = NULL;
     longopts[ii].has_arg = 0;
-    longopts[ii].flag = 0;
+    longopts[ii].flag = NULL;
     longopts[ii].val = 0;
+    */
 
     int option_index = 0;
     while (1)
@@ -111,14 +118,14 @@ void parse_opts(int argc, char **argv, const struct options *opt,
         if (c == -1)
             break;
 
-        if (c == '?')
+        if (c == '?' || help)
         {
             free(longopts);
             strbuf_free(shortopts);
             parse_usage_and_die(usage, opt);
         }
 
-        for (ii = 0; ii < size - 1; ++ii)
+        for (ii = 0; ii < size; ++ii)
         {
             if (opt[ii].short_name == c)
             {
