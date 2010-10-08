@@ -6,12 +6,9 @@
 #define USAGE_OPTS_WIDTH 24
 #define USAGE_GAP         2
 
-void parse_usage_and_die(const char * const * usage, const struct options *opt)
+void parse_usage_and_die(const char *usage, const struct options *opt)
 {
-    fprintf(stderr, _("usage: %s\n"), *usage++);
-
-    while (*usage && **usage)
-        fprintf(stderr, _("   or: %s\n"), *usage++);
+    fprintf(stderr, _("Usage: %s\n"), usage);
 
     if (opt->type != OPTION_GROUP)
         fputc('\n', stderr);
@@ -65,7 +62,7 @@ static int parse_opt_size(const struct options *opt)
 }
 
 void parse_opts(int argc, char **argv, const struct options *opt,
-                const char * const usage[])
+                const char *usage)
 {
     int help = 0;
     int size = parse_opt_size(opt);
@@ -129,7 +126,6 @@ void parse_opts(int argc, char **argv, const struct options *opt,
         {
             if (opt[ii].short_name == c)
             {
-
                 switch (opt[ii].type)
                 {
                     case OPTION_BOOL:

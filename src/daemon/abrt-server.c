@@ -279,10 +279,7 @@ static void dummy_handler(int sig_unused) {}
 
 static int s_opt;
 
-static const char * const abrt_server_usage[] = {
-    "abrt-server [options]",
-    NULL
-};
+static const char abrt_server_usage[] = "abrt-server [options]";
 
 static struct options abrt_server_options[] = {
     OPT__VERBOSE(&g_verbose),

@@ -243,10 +243,7 @@ static char *get_backtrace(struct dump_dir *dd)
 static char *d_opt, *i_opt;
 static int s_opt;
 
-static const char * const abrt_action_generage_backtrace_usage[] = {
-    "abrt-action-generate-backtrace [options] -d DIR",
-    NULL
-};
+static const char abrt_action_generage_backtrace_usage[] = "abrt-action-generate-backtrace [options] -d DIR";
 
 static struct options abrt_action_generate_backtrace_options[] = {
     OPT__VERBOSE(&g_verbose),

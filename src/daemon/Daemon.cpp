@@ -863,10 +863,7 @@ static void sanitize_dump_dir_rights()
 static int daemonize_opt, syslog_opt;
 static char *timeout_opt;
 
-static const char * const abrtd_usage[] = {
-    _("abrtd [options]"),
-    NULL
-};
+static const char* abrtd_usage = _("abrtd [options]");
 
 static struct options abrtd_options[] = {
     OPT__VERBOSE(&g_verbose),

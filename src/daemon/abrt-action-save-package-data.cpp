@@ -270,10 +270,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 static char *d_opt;
 static int s_opt;
 
-static const char * const abrt_action_save_package_data_usage[] = {
-    "abrt-action-save-package-data [options] -d DIR",
-    NULL
-};
+static const char abrt_action_save_package_data_usage[] = "abrt-action-save-package-data [options] -d DIR";
 
 static struct options abrt_action_save_package_data_options[] = {
     OPT__VERBOSE(&g_verbose),
