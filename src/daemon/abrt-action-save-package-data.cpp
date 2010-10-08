@@ -277,8 +277,8 @@ static int s_opt, help_opt;
 
 static struct options abrt_action_save_package_data_options[] = {
     OPT__HELP(&help_opt),
+    OPT__VERBOSE(&g_verbose),
     OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
-    OPT_BOOL( 'v' , 0, &g_verbose, "Verbose"),
     OPT_BOOL( 's' , 0, &s_opt, "Log to syslog"),
     OPT_END()
 };
