@@ -270,7 +270,7 @@ int main(int argc, char **argv)
 
     dump_dir_name = d_opt;
 
-    debuginfo_dirs = xstrdup("");
+    debuginfo_dirs = xstrdup(DEBUGINFO_CACHE_DIR);
     if (i_opt)
     {
         free(debuginfo_dirs);
