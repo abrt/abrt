@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-06 06:38+0000\n"
-"PO-Revision-Date: 2010-10-06 11:23+0200\n"
+"POT-Creation-Date: 2010-10-07 23:36+0000\n"
+"PO-Revision-Date: 2010-10-08 15:24+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -144,7 +144,7 @@ msgstr "Aanmaken en indienen van een rapport..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Stuurt kernel oops informatie naar kerneloops.org"
 
-#: ../lib/plugins/KerneloopsScanner.cpp:207
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Regelmatig scannen en opslaan van kernel oopses"
 
@@ -560,20 +560,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
-#: ../src/cli/report.cpp:171
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Dit veld is alleen-lezen.\n"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Beschrijf hieronder de omstandigheden van deze crash."
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr "# Hoe is deze crash te reproduceren?"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:194
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -581,47 +581,47 @@ msgstr ""
 "# Backtrace\n"
 "# Controleer of deze geen gevoelige data bevat (wachtwoorden, enz.)"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr "# Architectuur"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr "# Commando-regel"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:198
 msgid "# Component"
 msgstr "# Onderdeel"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr "# Core dump"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr "# Uitvoerbaar programma"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr "# Kernel versie"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:202
 msgid "# Package"
 msgstr "# Pakket"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr "# Reden van de crash"
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr "# Vrijgave boodschap van het besturingssysteem"
 
-#: ../src/cli/report.cpp:328
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "Kan vi niet draaien: $TERM, $VISUAL en $EDITOR zijn niet ingesteld"
 
-#: ../src/cli/report.cpp:416
+#: ../src/cli/report.cpp:415
 msgid ""
 "\n"
 "The report has been updated"
@@ -629,7 +629,7 @@ msgstr ""
 "\n"
 "Het rapport is vernieuwd"
 
-#: ../src/cli/report.cpp:418
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -638,46 +638,46 @@ msgstr ""
 "Er zijn geen veranderingen in het rapport ontdekt"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:537
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr "j"
 
-#: ../src/cli/report.cpp:538
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:639
+#: ../src/cli/report.cpp:645
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Voor plug-in %s zijn verkeerde instellingen ontdekt\n"
 
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr "Voer jouw gebruikersnaam in:"
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr "Voer jouw wachtwoord in:"
 
-#: ../src/cli/report.cpp:694
+#: ../src/cli/report.cpp:700
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
-#: ../src/cli/report.cpp:713
+#: ../src/cli/report.cpp:719
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapporteren met gebruik van %s? "
 
-#: ../src/cli/report.cpp:716
+#: ../src/cli/report.cpp:722
 msgid "Skipping..."
 msgstr "Overslaan..."
 
-#: ../src/cli/report.cpp:728
+#: ../src/cli/report.cpp:734
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Rapporteren is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/cli/report.cpp:732
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -686,11 +686,11 @@ msgstr ""
 "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
 "install %s\" en probeer het opnieuw\n"
 
-#: ../src/cli/report.cpp:741
+#: ../src/cli/report.cpp:747
 msgid "Error loading reporter settings"
 msgstr "Fout tijdens het laden van rapporteer instellingen"
 
-#: ../src/cli/report.cpp:760
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Crash gerapporteerd met %d plug-ins (%d fouten)\n"
@@ -707,7 +707,7 @@ msgstr "'Hoe te reproduceren' is te lang"
 msgid "abrtd [options]"
 msgstr "abrtd [opties]"
 
-#: ../src/daemon/Daemon.cpp:634
+#: ../src/daemon/Daemon.cpp:640
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -715,23 +715,23 @@ msgstr ""
 "De grootte van het rapport overschreed de quota. Controleer de "
 "MaxCrashReportsSize waarde van het systeem in abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:866
+#: ../src/daemon/Daemon.cpp:872
 msgid "Show this help message"
 msgstr "Deze hulp boodschap tonen"
 
-#: ../src/daemon/Daemon.cpp:867
+#: ../src/daemon/Daemon.cpp:873
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/Daemon.cpp:868
+#: ../src/daemon/Daemon.cpp:874
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/Daemon.cpp:869
+#: ../src/daemon/Daemon.cpp:875
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
-#: ../src/daemon/Daemon.cpp:870
+#: ../src/daemon/Daemon.cpp:876
 msgid "Verbose"
 msgstr "Breedsprakig"
 
@@ -749,23 +749,23 @@ msgid ""
 msgstr ""
 "Kreeg onverwachte data van de daemon (is de database correct vernieuwd?)."
 
-#: ../src/gui/ABRTPlugin.py:62
+#: ../src/gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "Niet geladen plug-ins"
 
-#: ../src/gui/ABRTPlugin.py:63
+#: ../src/gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "Analyse plug-ins"
 
-#: ../src/gui/ABRTPlugin.py:64
+#: ../src/gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "Actie plug-ins"
 
-#: ../src/gui/ABRTPlugin.py:65
+#: ../src/gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
 msgstr "Aanmeld plug-ins"
 
-#: ../src/gui/ABRTPlugin.py:66
+#: ../src/gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "Database plug-ins"
 
@@ -1322,7 +1322,7 @@ msgid "Name"
 msgstr "Naam"
 
 #: ../src/gui/PluginsSettingsDialog.py:149
-msgid "Please select a plugin from the list to edit it's options."
+msgid "Please select a plugin from the list to edit its options."
 msgstr "Selecteer een plug-in in de list om de opties hiervan te bewerken."
 
 #: ../src/gui/PluginsSettingsDialog.py:157
