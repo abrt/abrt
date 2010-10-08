@@ -249,7 +249,7 @@ static char *d_opt, *i_opt;
 static int s_opt, help_opt;
 
 static struct options abrt_action_generate_backtrace_options[] = {
-    OPT_BOOL( 'h' , "help", &help_opt, "Show this help message"),
+    OPT__HELP(&help_opt),
     OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
     OPT_STRING( 'i' , 0, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
     OPT_INTEGER( 't' , 0, &exec_timeout_sec, "Kill gdb if it runs for more than SECONDS"),

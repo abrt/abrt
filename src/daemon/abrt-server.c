@@ -285,7 +285,7 @@ static void dummy_handler(int sig_unused) {}
 static int s_opt, help_opt;
 
 static struct options abrt_server_options[] = {
-    OPT_BOOL( 'h' , "help", &help_opt, "Show this help message"),
+    OPT__HELP(&help_opt),
     OPT_INTEGER( 'u' , 0, &client_uid, "Use UID as client uid"),
     OPT_BOOL( 'v' , 0, &g_verbose, "Verbose"),
     OPT_BOOL( 's' , 0, &s_opt, "Log to syslog"),

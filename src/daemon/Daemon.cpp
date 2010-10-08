@@ -869,7 +869,7 @@ static int daemonize_opt, syslog_opt, help_opt;
 static char *timeout_opt;
 
 static struct options abrtd_options[] = {
-    OPT_BOOL( 'h' , "help", &help_opt, _("Show this help message")),
+    OPT__HELP(&help_opt),
     OPT_BOOL( 'd' , 0, &daemonize_opt, _("Do not daemonize")),
     OPT_BOOL( 's' , 0, &syslog_opt, _("Log to syslog even with -d")),
     OPT_INTEGER( 't' , 0, &timeout_opt, _("Exit after SEC seconds of inactivity")),
