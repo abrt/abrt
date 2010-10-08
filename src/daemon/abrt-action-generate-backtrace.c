@@ -251,6 +251,7 @@ static int s_opt, help_opt;
 static struct options abrt_action_generate_backtrace_options[] = {
     OPT__HELP(&help_opt),
     OPT__VERBOSE(&g_verbose),
+    OPT_GROUP(""),
     OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
     OPT_STRING( 'i' , 0, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
     OPT_INTEGER( 't' , 0, &exec_timeout_sec, "Kill gdb if it runs for more than SECONDS"),

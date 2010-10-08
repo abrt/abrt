@@ -287,6 +287,7 @@ static int s_opt, help_opt;
 static struct options abrt_server_options[] = {
     OPT__HELP(&help_opt),
     OPT__VERBOSE(&g_verbose),
+    OPT_GROUP(""),
     OPT_INTEGER( 'u' , 0, &client_uid, "Use UID as client uid"),
     OPT_BOOL( 's' , 0, &s_opt, "Log to syslog"),
     OPT_END()
