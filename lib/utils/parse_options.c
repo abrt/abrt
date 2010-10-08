@@ -107,10 +107,9 @@ void parse_opts(int argc, char **argv, const struct options *opt,
     longopts[ii].val = 0;
     */
 
-    int option_index = 0;
     while (1)
     {
-        int c = getopt_long(argc, argv, shortopts->buf, longopts, &option_index);
+        int c = getopt_long(argc, argv, shortopts->buf, longopts, NULL);
 
         if (c == -1)
             break;

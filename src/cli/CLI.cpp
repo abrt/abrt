@@ -282,10 +282,9 @@ int main(int argc, char** argv)
 
     while (1)
     {
-        int option_index;
         /* Do not use colons, arguments are handled after parsing all options. */
         int c = getopt_long_only(argc, argv, "?Vrdlfyib",
-                                 longopts, &option_index);
+                                 longopts, NULL);
 
 #define SET_OP(newop)                                                \
         if (op != -1 && op != newop)                                 \
