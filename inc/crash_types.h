@@ -118,6 +118,8 @@ void add_to_crash_data(map_crash_data_t& pCrashData,
 		const char *pItem,
 		const char *pContent);
 
+void load_crash_data_from_debug_dump(struct dump_dir *dd, map_crash_data_t& data);
+
 const char *get_crash_data_item_content_or_NULL(const map_crash_data_t& crash_data, const char *key);
 // Aborts if key is not found:
 const std::string& get_crash_data_item_content(const map_crash_data_t& crash_data, const char *key);
