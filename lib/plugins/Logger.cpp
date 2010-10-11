@@ -66,7 +66,7 @@ std::string CLogger::Report(const map_crash_data_t& pCrashData,
         throw CABRTException(EXCEP_PLUGIN, "Can't open '%s'", fname);
 
     update_client(_("Writing report to '%s'"), fname);
-    full_write(fd, full_dsc, strlen(full_dsc));
+    full_write_str(fd, full_dsc);
     free(full_dsc);
 
     close(fd);

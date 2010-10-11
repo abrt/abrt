@@ -43,7 +43,7 @@ struct bug_info {
     const char* bug_reporter;
     const char* bug_product;
     xmlrpc_int32 bug_dup_id;
-    std::vector<const char*> bug_cc;
+    std::vector<char*> bug_cc;
 };
 
 static void bug_info_init(struct bug_info* bz)
@@ -64,8 +64,8 @@ static void bug_info_destroy(struct bug_info* bz)
 
     if (!bz->bug_cc.empty())
     {
-        for (int ii = 0; ii < bz->bug_cc.size(); ii++)
-            free((void*)bz->bug_cc[ii]);
+        for (unsigned ii = 0; ii < bz->bug_cc.size(); ii++)
+            free(bz->bug_cc[ii]);
 
         bz->bug_cc.clear();
     }
@@ -310,11 +310,11 @@ void ctx::get_bug_cc(xmlrpc_value* result_xml, struct bug_info* bz)
 
             if (*cc != '\0')
             {
-                bz->bug_cc.push_back(cc);
+                bz->bug_cc.push_back((char*)cc);
                 VERB3 log("member on cc is %s", cc);
                 continue;
             }
-            free((void*)cc);
+            free((char*)cc);
         }
     }
     xmlrpc_DECREF(cc_member);

@@ -52,7 +52,7 @@ static void exec_and_feed_input(uid_t uid, const char* text, char **args)
                 /*dir:*/ NULL,
                 uid);
 
-    full_write(pipein[1], text, strlen(text));
+    full_write_str(pipein[1], text);
     close(pipein[1]);
 
     waitpid(child, NULL, 0); /* wait for command completion */
