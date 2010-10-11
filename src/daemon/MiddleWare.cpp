@@ -331,7 +331,7 @@ mw_result_t CreateCrashReport(const char *crash_id,
         if (DebugDumpToCrashReport(row->db_dump_dir, pCrashData))
         {
             add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row->db_uuid);
-            add_to_crash_data_ext(pCrashData, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
+            add_to_crash_data_ext(pCrashData, FILENAME_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
         }
         else
         {
@@ -501,7 +501,7 @@ report_status_t Report(const map_crash_data_t& client_report,
 
     std::string dup_hash = GetGlobalUUID(analyzer.c_str(), pDumpDir.c_str());
     VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
-    add_to_crash_data_ext(stored_report, CD_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
+    add_to_crash_data_ext(stored_report, FILENAME_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
 
     // Run reporters
 

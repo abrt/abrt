@@ -390,7 +390,7 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     const char *component       = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
     const char *release         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
     const char *arch            = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ARCHITECTURE);
-    const char *duphash         = get_crash_data_item_content_or_NULL(pCrashData, CD_DUPHASH);
+    const char *duphash         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_DUPHASH);
     const char *reason          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
     const char *function        = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
 
@@ -689,7 +689,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     }
 
     const char *component = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
-    const char *duphash   = get_crash_data_item_content_or_NULL(pCrashData, CD_DUPHASH);
+    const char *duphash   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_DUPHASH);
     const char *release   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_RELEASE);
 
     ctx bz_server(bugzilla_xmlrpc, ssl_verify);

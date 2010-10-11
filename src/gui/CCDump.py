@@ -3,7 +3,7 @@ from datetime import datetime
 
 from abrt_utils import _, init_logging, log, log1, log2
 
-# Should match CrashTypes.h!
+# Keep in sync with crash_types.h!
 CD_TYPE     = 0
 CD_EDITABLE = 1
 CD_CONTENT  = 2
@@ -12,28 +12,32 @@ CD_SYS = "s"
 CD_BIN = "b"
 CD_TXT = "t"
 
-FILENAME_ARCHITECTURE = "architecture"
-FILENAME_KERNEL       = "kernel"
-FILENAME_TIME         = "time"
-FILENAME_PACKAGE      = "package"
-FILENAME_COMPONENT    = "component"
-FILENAME_DESCRIPTION  = "description"
 FILENAME_ANALYZER     = "analyzer"
-FILENAME_RELEASE      = "release"
 FILENAME_EXECUTABLE   = "executable"
-FILENAME_REASON       = "reason"
-FILENAME_COMMENT      = "comment"
-FILENAME_REPRODUCE    = "reproduce"
-FILENAME_RATING       = "rating"
+FILENAME_BINARY       = "binary"
 FILENAME_CMDLINE      = "cmdline"
+FILENAME_REASON       = "reason"
 FILENAME_COREDUMP     = "coredump"
 FILENAME_BACKTRACE    = "backtrace"
 FILENAME_MEMORYMAP    = "memorymap"
+FILENAME_DUPHASH      = "global_uuid"
+FILENAME_CRASH_FUNCTION = "crash_function"
+FILENAME_ARCHITECTURE = "architecture"
+FILENAME_KERNEL       = "kernel"
+FILENAME_TIME         = "time"
+FILENAME_RELEASE      = "release"
+FILENAME_PACKAGE      = "package"
+FILENAME_COMPONENT    = "component"
+FILENAME_DESCRIPTION  = "description"
+FILENAME_COMMENT      = "comment"
+FILENAME_REPRODUCE    = "reproduce"
+FILENAME_RATING       = "rating"
+FILENAME_HOSTNAME     = "hostname"
+FILENAME_REMOTE       = "remote"
 
 CD_UID          = "uid"
 CD_UUID         = "UUID"
 CD_INFORMALL    = "InformAll"
-CD_DUPHASH      = "DUPHASH"
 CD_DUMPDIR      = "DumpDir"
 CD_COUNT        = "Count"
 CD_REPORTED     = "Reported"

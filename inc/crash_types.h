@@ -21,6 +21,8 @@
 
 #include "abrt_types.h"
 
+// Keep in sync with CCDump.py:
+
 // Filenames in dump directory:
 // filled by a hook:
 #define FILENAME_ANALYZER     "analyzer"
@@ -32,7 +34,9 @@
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MEMORYMAP    "memorymap"
 // Used by CCpp analyzer to cache GetGlobalUUID() calls.
-#define FILENAME_GLOBAL_UUID    "global_uuid"
+// FIXME! make ALL analyzers to save it as a file!
+// Now, Python and kerneloops do not!
+#define FILENAME_DUPHASH      "global_uuid" /* name is compat, to be renamed to "duphash" */
 // Name of the function where the application crashed.
 // Optional.
 #define FILENAME_CRASH_FUNCTION "crash_function"
@@ -61,7 +65,6 @@
 #define CD_UID          "uid"   /* lowercase: compat with older versions */
 #define CD_UUID         "UUID"
 #define CD_INFORMALL    "InformAll"
-#define CD_DUPHASH      "DUPHASH"
 #define CD_DUMPDIR      "DumpDir"
 #define CD_COUNT        "Count"
 #define CD_REPORTED     "Reported"

@@ -128,7 +128,7 @@ string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
 //  const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
 //  const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
 //  const string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
-//  const string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
+//  const string& duphash   = get_crash_data_item_content(pCrashData, FILENAME_DUPHASH);
     const char *reason      = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
     const char *function    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
 

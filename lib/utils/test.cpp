@@ -91,7 +91,7 @@ int main(int argc, char** argv)
              * If we do not want user interaction, just send data immediately
              */
             map_crash_data_t crashReport;
-            middleWare.CreateCrashReport(crashInfo[CD_DUPHASH][CD_CONTENT],
+            middleWare.CreateCrashReport(crashInfo[FILENAME_DUPHASH][CD_CONTENT],
                                          crashInfo[CD_UID][CD_CONTENT],
                                          crashReport);
             /* Report crash */

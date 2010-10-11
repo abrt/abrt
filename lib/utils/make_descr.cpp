@@ -66,10 +66,10 @@ static const char *const blacklisted_items[] = {
     FILENAME_COREDUMP ,
     FILENAME_DESCRIPTION, /* package description - basically useless */
     FILENAME_HOSTNAME ,
-    FILENAME_GLOBAL_UUID,
+    FILENAME_DUPHASH  ,
     CD_UUID           ,
     CD_INFORMALL      ,
-    CD_DUPHASH        ,
+    FILENAME_DUPHASH        ,
     CD_DUMPDIR        ,
     CD_COUNT          ,
     CD_REPORTED       ,
@@ -90,14 +90,14 @@ char* make_dsc_mailx(const map_crash_data_t & crash_data)
         if (it->second[CD_TYPE] == CD_TXT)
         {
             const char *itemname = it->first.c_str();
-            if ((strcmp(itemname, CD_DUPHASH) != 0)
+            if ((strcmp(itemname, FILENAME_DUPHASH) != 0)
              && (strcmp(itemname, FILENAME_ARCHITECTURE) != 0)
              && (strcmp(itemname, FILENAME_KERNEL) != 0)
              && (strcmp(itemname, FILENAME_PACKAGE) != 0)
             ) {
                 strbuf_append_strf(buf_additional_files, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
             }
-            else if (strcmp(itemname, CD_DUPHASH) == 0)
+            else if (strcmp(itemname, FILENAME_DUPHASH) == 0)
                 strbuf_append_strf(buf_duphash_file, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());
             else
                 strbuf_append_strf(buf_common_files, "%s\n-----\n%s\n\n", itemname, it->second[CD_CONTENT].c_str());

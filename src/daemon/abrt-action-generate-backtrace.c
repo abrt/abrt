@@ -343,7 +343,7 @@ int main(int argc, char **argv)
         strbuf_prepend_str(bt, package);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         create_hash(hash_str, bt->buf);
-        dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
+        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
         strbuf_free(bt);
 
         /* Compute and store backtrace rating. The crash frame
@@ -384,7 +384,7 @@ int main(int argc, char **argv)
         strbuf_prepend_str(ibt, package);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
         create_hash(hash_str, ibt->buf);
-        dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
+        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
         strbuf_free(ibt);
 
         /* Compute and store backtrace rating. */

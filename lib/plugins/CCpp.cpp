@@ -459,9 +459,9 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
     if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
         return string("");
 
-    if (dd_exist(dd, FILENAME_GLOBAL_UUID))
+    if (dd_exist(dd, FILENAME_DUPHASH))
     {
-        char *uuid = dd_load_text(dd, FILENAME_GLOBAL_UUID);
+        char *uuid = dd_load_text(dd, FILENAME_DUPHASH);
         dd_close(dd);
         string ret = uuid;
         free(uuid);
