@@ -16,17 +16,16 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-
 #include "abrtlib.h"
 #include "abrt_xmlrpc.h"
-#include "Bugzilla.h"
 #include "crash_types.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 
+#include "plugin.h" /* make_description_bz */
+
 #define XML_RPC_SUFFIX      "/xmlrpc.cgi"
 #define MAX_HOPS            5
-
 
 /*
  *  TODO: npajkovs: better deallocation of xmlrpc value
@@ -460,8 +459,7 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     if (env.fault_occurred)
         return -1;
 
-    log("New bug id: %i", (int)bug_id);
-    update_client(_("New bug id: %i"), (int)bug_id);
+    log(_("New bug id: %i"), (int)bug_id);
 
     return bug_id;
 }
@@ -540,14 +538,6 @@ int ctx::get_bug_info(struct bug_info* bz, xmlrpc_int32 bug_id)
     return 0;
 }
 
-//-------------------------------------------------------------------
-//                           ^
-//                           |  nice
-// -------------------------------------------------------------------
-//                           |  BAD
-//                           v
-//-------------------------------------------------------------------
-//TODO: need to rewrite
 void ctx::login(const char* login, const char* passwd)
 {
     xmlrpc_value* result = call("User.login", "({s:s,s:s})", "login", login, "password", passwd);
@@ -575,117 +565,39 @@ void ctx::logout()
 } /* namespace */
 
 
-/*
- * CReporterBugzilla
- */
-
-static map_plugin_settings_t parse_settings(const map_plugin_settings_t& pSettings)
+static void report_to_bugzilla(
+                const char *dump_dir_name,
+                /*const*/ map_plugin_settings_t& settings)
 {
-    map_plugin_settings_t plugin_settings;
-
-    map_plugin_settings_t::const_iterator end = pSettings.end();
-    map_plugin_settings_t::const_iterator it;
-    it = pSettings.find("BugzillaURL");
-    if (it != end)
+    struct dump_dir *dd = dd_init();
+    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
     {
-        std::string BugzillaURL = it->second;
-        //remove the /xmlrpc.cgi part from old settings
-        //FIXME: can be removed after users are informed about new config format
-        std::string::size_type pos = BugzillaURL.find(XML_RPC_SUFFIX);
-        if (pos != std::string::npos)
-        {
-            BugzillaURL.erase(pos);
-        }
-        //remove the trailing '/'
-        while (BugzillaURL[BugzillaURL.length() - 1] == '/')
-        {
-            BugzillaURL.erase(BugzillaURL.length() - 1);
-        }
-        plugin_settings["BugzillaXMLRPC"] = BugzillaURL + XML_RPC_SUFFIX;
-        plugin_settings["BugzillaURL"] = BugzillaURL;
+        throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
     }
+    map_crash_data_t pCrashData;
+    load_crash_data_from_debug_dump(dd, pCrashData);
+    dd_close(dd);
 
-    it = pSettings.find("Login");
-    if (it == end)
-    {
-        /* if any of the option is not set we use the defaults for everything */
-        plugin_settings.clear();
-        return plugin_settings;
-    }
-    plugin_settings["Login"] = it->second;
-
-    it = pSettings.find("Password");
-    if (it == end)
-    {
-        plugin_settings.clear();
-        return plugin_settings;
-    }
-    plugin_settings["Password"] = it->second;
-
-    it = pSettings.find("SSLVerify");
-    if (it == end)
-    {
-        plugin_settings.clear();
-        return plugin_settings;
-    }
-    plugin_settings["SSLVerify"] = it->second;
-
-    VERB1 log("User settings ok, using them instead of defaults");
-    return plugin_settings;
-}
-
-CReporterBugzilla::CReporterBugzilla()
-{
-    m_ssl_verify = true;
-    m_rating_required = true;
-    m_login = NULL;
-    m_password = NULL;
-    m_bugzilla_url = xstrdup("https://bugzilla.redhat.com");
-    m_bugzilla_xmlrpc = xstrdup("https://bugzilla.redhat.com"XML_RPC_SUFFIX);
-}
-
-CReporterBugzilla::~CReporterBugzilla()
-{
-    free(m_login);
-    free(m_password);
-    free(m_bugzilla_url);
-    free(m_bugzilla_xmlrpc);
-}
-
-std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
-                                      const map_plugin_settings_t& pSettings,
-                                      const char *pArgs)
-{
-    xmlrpc_int32 bug_id = -1;
-    const char *login = NULL;
-    const char *password = NULL;
-    const char *bugzilla_xmlrpc = NULL;
-    const char *bugzilla_url = NULL;
+    const char *login;
+    const char *password;
+    const char *bugzilla_xmlrpc;
+    const char *bugzilla_url;
     bool ssl_verify;
 
-    map_plugin_settings_t settings = parse_settings(pSettings);
-    /* if parse_settings fails it returns an empty map so we need to use defaults */
-    if (!settings.empty())
-    {
-        login = settings["Login"].c_str();
-        password = settings["Password"].c_str();
-        bugzilla_xmlrpc = settings["BugzillaXMLRPC"].c_str();
-        bugzilla_url = settings["BugzillaURL"].c_str();
-        ssl_verify = string_to_bool(settings["SSLVerify"].c_str());
-    }
-    else
-    {
-        login = m_login;
-        password = m_password;
-        bugzilla_xmlrpc = m_bugzilla_xmlrpc;
-        bugzilla_url = m_bugzilla_url;
-        ssl_verify = m_ssl_verify;
-    }
+    login = settings["Login"].c_str();
+    password = settings["Password"].c_str();
+    bugzilla_url = settings["BugzillaURL"].c_str();
+    if (!bugzilla_url[0])
+        bugzilla_url = "https://bugzilla.redhat.com";
+    bugzilla_xmlrpc = settings["BugzillaXMLRPC"].c_str();
+    if (!bugzilla_xmlrpc[0])
+        bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
+    ssl_verify = string_to_bool(settings["SSLVerify"].c_str());
 
     if (!login[0] || !password[0])
     {
         VERB3 log("Empty login and password");
-        throw CABRTException(EXCEP_PLUGIN, _("Empty login or password.\nPlease check "PLUGINS_CONF_DIR"/Bugzilla.conf."));
+        throw CABRTException(EXCEP_PLUGIN, _("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
     }
 
     const char *component = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
@@ -694,10 +606,10 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
 
     ctx bz_server(bugzilla_xmlrpc, ssl_verify);
 
-    update_client(_("Logging into bugzilla..."));
+    log(_("Logging into bugzilla..."));
     bz_server.login(login, password);
 
-    update_client(_("Checking for duplicates..."));
+    log(_("Checking for duplicates..."));
 
     char *product = NULL;
     char *version = NULL;
@@ -721,6 +633,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         throw CABRTException(EXCEP_PLUGIN, _("Missing mandatory member 'bugs'"));
     }
 
+    xmlrpc_int32 bug_id = -1;
     int all_bugs_size = bz_server.get_array_size(all_bugs);
     struct bug_info bz;
     int depend_on_bugno = -1;
@@ -785,7 +698,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     }
     else if (all_bugs_size == 0) // Create new bug
     {
-        update_client(_("Creating a new bug..."));
+        log(_("Creating a new bug..."));
         bug_id = bz_server.new_bug(pCrashData, depend_on_bugno);
         if (bug_id < 0)
         {
@@ -800,18 +713,17 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
             throw_if_xml_fault_occurred(&bz_server.env);
         }
 
-        update_client(_("Logging out..."));
+        log(_("Logging out..."));
         bz_server.logout();
 
-        std::string bug_status = ssprintf(
-                    "Status: NEW\n"
-                    "%s/show_bug.cgi?id=%u",
+        printf("STATUS:Status: NEW %s/show_bug.cgi?id=%u\n",
                     bugzilla_url,
                     (int)bug_id
         );
-        return bug_status;
+        return;
     }
-    else if (all_bugs_size > 1)
+
+    if (all_bugs_size > 1)
     {
         // When someone clones bug it has same duphash, so we can find more than 1.
         // Need to be checked if component is same.
@@ -819,7 +731,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     }
 
     // decision based on state
-    update_client(_("Bug is already reported: %i"), bug_id);
+    log(_("Bug is already reported: %i"), bug_id);
 
     xmlrpc_int32 original_bug_id = bug_id;
     if ((strcmp(bz.bug_status, "CLOSED") == 0) && (strcmp(bz.bug_resolution, "DUPLICATE") == 0))
@@ -859,8 +771,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         int status = 0;
         if ((strcmp(bz.bug_reporter, login) != 0) && (am_i_in_cc(&bz, login)))
         {
-            VERB2 log(_("Add %s to CC list"), login);
-            update_client(_("Add %s to CC list"), login);
+            log(_("Add %s to CC list"), login);
             status = bz_server.add_plus_one_cc(bug_id, login);
         }
 
@@ -884,7 +795,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
                                 "%s", package, arch, release, dsc
             );
 
-            update_client(_("Adding new comment to bug %d"), (int)bug_id);
+            log(_("Adding new comment to bug %d"), (int)bug_id);
 
             free(dsc);
 
@@ -899,12 +810,10 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
         }
     }
 
-    update_client(_("Logging out..."));
+    log(_("Logging out..."));
     bz_server.logout();
 
-    std::string bug_status = ssprintf(
-                "Status: %s%s%s\n"
-                "%s/show_bug.cgi?id=%u",
+    printf("STATUS:Status: %s%s%s %s/show_bug.cgi?id=%u\n",
                 bz.bug_status,
                 bz.bug_resolution ? " " : "",
                 bz.bug_resolution ? bz.bug_resolution : "",
@@ -913,77 +822,85 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& pCrashData,
     );
 
     bug_info_destroy(&bz);
-
-    return bug_status;
 }
 
-void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
+int main(int argc, char **argv)
 {
-    m_pSettings = pSettings;
+    char *env_verbose = getenv("ABRT_VERBOSE");
+    if (env_verbose)
+        g_verbose = atoi(env_verbose);
 
-//BUG! This gets called when user's keyring contains login data,
-//then it takes precedence over /etc/abrt/plugins/Bugzilla.conf.
-//I got a case when keyring had a STALE password, and there was no way
-//for me to know that it is being used. Moreover, when I discovered it
-//(by hacking abrt source!), I don't know how to purge it from the keyring.
-//At the very least, log("SOMETHING") here.
+    map_plugin_settings_t settings;
 
-    map_plugin_settings_t::const_iterator end = pSettings.end();
-    map_plugin_settings_t::const_iterator it;
-    it = pSettings.find("BugzillaURL");
-    if (it != end)
+    const char *dump_dir_name = ".";
+    enum {
+        OPT_s = (1 << 0),
+    };
+    int optflags = 0;
+    int opt;
+    while ((opt = getopt(argc, argv, "c:d:vs")) != -1)
     {
-        free(m_bugzilla_url);
-        free(m_bugzilla_xmlrpc);
+        switch (opt)
+        {
+        case 'c':
+            dump_dir_name = optarg;
+            VERB1 log("Loading settings from '%s'", optarg);
+            LoadPluginSettings(optarg, settings);
+            VERB3 log("Loaded '%s'", optarg);
+            break;
+        case 'd':
+            dump_dir_name = optarg;
+            break;
+        case 'v':
+            g_verbose++;
+            break;
+        case 's':
+            optflags |= OPT_s;
+            break;
+        default:
+            /* Careful: the string below contains tabs, dont replace with spaces */
+            error_msg_and_die(
+                "Usage: abrt-action-bugzilla -c CONFFILE -d DIR [-vs]"
+                "\n"
+                "\nReport a crash to Bugzilla"
+                "\n"
+                "\nOptions:"
+                "\n	-c FILE	Configuration file (may be given many times)"
+                "\n	-d DIR	Crash dump directory"
+                "\n	-v	Verbose"
+                "\n	-s	Log to syslog"
+            );
+        }
+    }
 
-        m_bugzilla_url = xstrdup(it->second.c_str());
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 
-        int cnt = strlen(m_bugzilla_url);
-        while (m_bugzilla_url[cnt--] == '/')
-            m_bugzilla_url[cnt] = '\0';
+//DONT! our stdout/stderr goes directly to daemon, don't want to have prefix there.
+//    msg_prefix = xasprintf("abrt-action-bugzilla[%u]", getpid());
 
-        int ret = suffixcmp(m_bugzilla_url, XML_RPC_SUFFIX);
-        if (ret != 0)
-            m_bugzilla_xmlrpc = xasprintf("%s%s", m_bugzilla_url, XML_RPC_SUFFIX);
-        else
-            m_bugzilla_xmlrpc = xstrdup(m_bugzilla_url);
-    }
-    it = pSettings.find("Login");
-    if (it != end)
+    if (optflags & OPT_s)
     {
-        free(m_login);
-        m_login = xstrdup(it->second.c_str());
+        openlog(msg_prefix, 0, LOG_DAEMON);
+        logmode = LOGMODE_SYSLOG;
     }
-    it = pSettings.find("Password");
-    if (it != end)
+
+    VERB1 log("Initializing XML-RPC library");
+    xmlrpc_env env;
+    xmlrpc_env_init(&env);
+    xmlrpc_client_setup_global_const(&env);
+    if (env.fault_occurred)
+        error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
+    xmlrpc_env_clean(&env);
+
+    try
     {
-        free(m_password);
-        m_password = xstrdup(it->second.c_str());
+        report_to_bugzilla(dump_dir_name, settings);
     }
-    it = pSettings.find("SSLVerify");
-    if (it != end)
+    catch (CABRTException& e)
     {
-        m_ssl_verify = string_to_bool(it->second.c_str());
+        printf("EXCEPT:%s\n", e.what());
+        return 1;
     }
+
+    return 0;
 }
-
-/* Should not be deleted (why?) */
-const map_plugin_settings_t& CReporterBugzilla::GetSettings()
-{
-    m_pSettings["BugzillaURL"] = (m_bugzilla_url)? m_bugzilla_url: "";
-    m_pSettings["Login"] = (m_login)? m_login: "";
-    m_pSettings["Password"] = (m_password)? m_password: "";
-    m_pSettings["SSLVerify"] = m_ssl_verify ? "yes" : "no";
-    m_pSettings["RatingRequired"] = m_rating_required ? "yes" : "no";
-
-    return m_pSettings;
-}
-
-PLUGIN_INFO(REPORTER,
-            CReporterBugzilla,
-            "Bugzilla",
-            "0.0.4",
-            _("Reports bugs to bugzilla"),
-            "npajkovs@redhat.com",
-            "https://fedorahosted.org/abrt/wiki",
-            PLUGINS_LIB_DIR"/Bugzilla.glade");

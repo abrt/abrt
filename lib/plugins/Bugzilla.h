@@ -24,14 +24,6 @@
 
 class CReporterBugzilla : public CReporter
 {
-    private:
-        bool m_ssl_verify;
-        char *m_bugzilla_url;
-        char *m_bugzilla_xmlrpc;
-        char *m_login;
-        char *m_password;
-        bool m_rating_required;
-
     public:
         CReporterBugzilla();
         virtual ~CReporterBugzilla();
@@ -39,9 +31,7 @@ class CReporterBugzilla : public CReporter
         virtual std::string Report(const map_crash_data_t& pCrashData,
                                    const map_plugin_settings_t& pSettings,
                                    const char *pArgs);
-
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-        virtual const map_plugin_settings_t& GetSettings();
 };
 
 #endif /* BUGZILLA_H_ */
