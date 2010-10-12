@@ -70,21 +70,24 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
     struct strbuf *shortopts = strbuf_new();
 
     struct option *longopts = xzalloc(sizeof(longopts[0]) * (size+2));
+    struct option *curopt = longopts;
     int ii;
     for (ii = 0; ii < size; ++ii)
     {
-        longopts[ii].name = opt[ii].long_name;
+        curopt->name = opt[ii].long_name;
+        /*curopt->flag = 0; - xzalloc did it */
+        curopt->val = opt[ii].short_name;
 
         switch (opt[ii].type)
         {
             case OPTION_BOOL:
-                longopts[ii].has_arg = no_argument;
+                curopt->has_arg = no_argument;
                 if (opt[ii].short_name)
                     strbuf_append_char(shortopts, opt[ii].short_name);
                 break;
             case OPTION_INTEGER:
             case OPTION_STRING:
-                longopts[ii].has_arg = required_argument;
+                curopt->has_arg = required_argument;
                 if (opt[ii].short_name)
                     strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
                 break;
@@ -92,19 +95,31 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
             case OPTION_END:
                 break;
         }
-        /*longopts[ii].flag = 0; - xzalloc did it */
-        longopts[ii].val = opt[ii].short_name;
+        //log("curopt[%d].name:'%s' .has_arg:%d .flag:%p .val:%d", (int)(curopt-longopts),
+        //      curopt->name, curopt->has_arg, curopt->flag, curopt->val);
+        /*
+         * getopt_long() thinks that NULL name marks the end of longopts.
+         * Example:
+         * [0] name:'verbose' val:'v'
+         * [1] name:NULL      val:'c'
+         * [2] name:'force'   val:'f'
+         * ... ... ...
+         * In this case, --force won't be accepted!
+         * Therefore we can only advance if name is not NULL.
+         */
+        if (curopt->name)
+            curopt++;
     }
-    longopts[ii].name = "help";
-    /*longopts[ii].has_arg = 0; - xzalloc did it */
-    longopts[ii].flag = &help;
-    longopts[ii].val = 1;
+    curopt->name = "help";
+    curopt->has_arg = no_argument;
+    curopt->flag = &help;
+    curopt->val = 1;
     /* xzalloc did it already:
-    ii++;
-    longopts[ii].name = NULL;
-    longopts[ii].has_arg = 0;
-    longopts[ii].flag = NULL;
-    longopts[ii].val = 0;
+    curopt++;
+    curopt->name = NULL;
+    curopt->has_arg = 0;
+    curopt->flag = NULL;
+    curopt->val = 0;
     */
 
     unsigned retval = 0;
