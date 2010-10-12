@@ -240,6 +240,8 @@ static char *get_backtrace(struct dump_dir *dd)
     return bt;
 }
 
+static char *i_opt;
+static const char abrt_action_generage_backtrace_usage[] = "abrt-action-generate-backtrace [options] -d DIR";
 enum {
     OPT_v = 1 << 0,
     OPT_d = 1 << 1,
@@ -247,11 +249,7 @@ enum {
     OPT_t = 1 << 3,
     OPT_s = 1 << 4,
 };
-
-static char *i_opt;
-
-static const char abrt_action_generage_backtrace_usage[] = "abrt-action-generate-backtrace [options] -d DIR";
-
+/* Keep enum above and order of options below in sync! */
 static struct options abrt_action_generate_backtrace_options[] = {
     OPT__VERBOSE(&g_verbose),
     OPT_STRING( 'd' , 0, &dump_dir_name, "dir", "Crash dump directory"),

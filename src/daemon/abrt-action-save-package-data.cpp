@@ -267,16 +267,14 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     return error;
 }
 
+static const char *dump_dir_name = ".";
+static const char abrt_action_save_package_data_usage[] = "abrt-action-save-package-data [options] -d DIR";
 enum {
     OPT_v = 1 << 0,
     OPT_d = 1 << 1,
     OPT_s = 1 << 2,
 };
-
-static const char *dump_dir_name = ".";
-
-static const char abrt_action_save_package_data_usage[] = "abrt-action-save-package-data [options] -d DIR";
-
+/* Keep enum above and order of options below in sync! */
 static struct options abrt_action_save_package_data_options[] = {
     OPT__VERBOSE(&g_verbose),
     OPT_STRING( 'd' , 0, &dump_dir_name, "dir", "Crash dump directory"),

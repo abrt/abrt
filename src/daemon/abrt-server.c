@@ -277,14 +277,13 @@ static void process_message(const char *message)
 
 static void dummy_handler(int sig_unused) {}
 
+static const char abrt_server_usage[] = "abrt-server [options]";
 enum {
     OPT_v = 1 << 0,
     OPT_u = 1 << 1,
     OPT_s = 1 << 2,
 };
-
-static const char abrt_server_usage[] = "abrt-server [options]";
-
+/* Keep enum above and order of options below in sync! */
 static struct options abrt_server_options[] = {
     OPT__VERBOSE(&g_verbose),
     OPT_INTEGER( 'u' , 0, &client_uid, "Use UID as client uid"),

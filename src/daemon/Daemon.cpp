@@ -858,17 +858,15 @@ static void sanitize_dump_dir_rights()
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
 
+static char *timeout_opt;
+static const char* abrtd_usage = _("abrtd [options]");
 enum {
     OPT_v = 1 << 0,
     OPT_d = 1 << 1,
     OPT_s = 1 << 2,
     OPT_t = 1 << 3,
 };
-
-static char *timeout_opt;
-
-static const char* abrtd_usage = _("abrtd [options]");
-
+/* Keep enum above and order of options below in sync! */
 static struct options abrtd_options[] = {
     OPT__VERBOSE(&g_verbose),
     OPT_BOOL( 'd' , 0, NULL, _("Do not daemonize")),
