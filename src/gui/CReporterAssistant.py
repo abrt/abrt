@@ -581,6 +581,11 @@ class ReporterAssistant():
         self.backtrace_tev.set_wrap_mode(gtk.WRAP_WORD)
         # global?
         self.backtrace_buff = gtk.TextBuffer()
+        # a tag to highlight searched word
+        # OPTION search background
+        self.backtrace_buff.create_tag("search_result_bg", background="red")
+        # OPTION current possiotion bg
+        self.backtrace_buff.create_tag("current_pos_bg", background="yellow")
         #self.backtrace_buff.set_text(self.report[FILENAME_BACKTRACE][CD_CONTENT])
         self.backtrace_tev.set_buffer(self.backtrace_buff)
 
@@ -594,8 +599,145 @@ class ReporterAssistant():
         hbox_bt.pack_start(vbox_bt)
         backtrace_alignment = gtk.Alignment()
         hbox_bt.pack_start(backtrace_alignment, expand=False, padding=10)
-        # bad backtrace, reporting disabled
         vbox_bt.pack_start(backtrace_scroll_w)
+
+        self.last_highlighted_text = []
+        self.last_search = 0
+
+        # highlights the arrow (or any other widget)
+        def highlight(widget, event):
+            widget.drag_highlight()
+
+        def unhighlight(widget, event):
+            widget.drag_unhighlight()
+
+        # highlights the current possition with yellow
+        def highlight_current():
+            start_it = self.backtrace_buff.get_iter_at_mark(self.last_highlighted_text[self.last_search][0])
+            end_it = self.backtrace_buff.get_iter_at_mark(self.last_highlighted_text[self.last_search][1])
+            self.backtrace_buff.apply_tag_by_name("current_pos_bg", start_it, end_it)
+            self.backtrace_buff.place_cursor(start_it)
+            self.backtrace_tev.scroll_to_iter(
+                        start_it, 0, use_align=False,
+                        xalign=0.5, yalign=0.5)
+
+        # remove the yellow highlighting from last position
+        def unhighlight_last():
+            start_it = self.backtrace_buff.get_iter_at_mark(self.last_highlighted_text[self.last_search][0])
+            end_it = self.backtrace_buff.get_iter_at_mark(self.last_highlighted_text[self.last_search][1])
+            self.backtrace_buff.remove_tag_by_name("current_pos_bg", start_it, end_it)
+
+        def highlight_result(position_mark):
+            start_it = self.backtrace_buff.get_iter_at_mark(position_mark[0])
+            end_it = self.backtrace_buff.get_iter_at_mark(position_mark[1])
+            self.backtrace_buff.apply_tag_by_name("search_result_bg", start_it, end_it)
+
+        def search_down(widget, event):
+            if event.button == 1:
+                if self.last_search+1 < len(self.last_highlighted_text):
+                    unhighlight_last()
+                    self.last_search += 1
+                    # mark current possition yellow
+                    highlight_current()
+                    self.lbl_occur.set_text(_("Found %i occurence(s) [at: %i of %i]" %
+                                      (len(self.last_highlighted_text),
+                                       self.last_search+1,
+                                       len(self.last_highlighted_text)
+                                       )))
+
+        def search_up(widget, event):
+            if event.button == 1:
+                if self.last_highlighted_text and (self.last_search-1 >= 0):
+                    unhighlight_last()
+                    self.last_search -= 1
+                    # mark current possition yellow
+                    highlight_current()
+                    self.lbl_occur.set_text(_("Found %i occurence(s) [at: %i of %i]" %
+                                      (len(self.last_highlighted_text),
+                                       self.last_search+1,
+                                       len(self.last_highlighted_text)
+                                       )))
+
+        def highlight_search(entry):
+            if self.last_highlighted_text:
+                # clear the search
+                self.last_highlighted_text = []
+                self.last_search = 0
+            # clears everything
+            # this will remove even tags, that might be added from a different
+            # place
+            start_iter = self.backtrace_buff.get_start_iter()
+            end_iter = self.backtrace_buff.get_end_iter()
+            self.backtrace_buff.remove_all_tags(start_iter, end_iter)
+            search_start_iter = start_iter
+            search_text = entry.get_text()
+            self.lbl_occur.set_text("")
+            if search_text:
+                while True:
+                    match = search_start_iter.forward_search(search_text,
+                        gtk.TEXT_SEARCH_TEXT_ONLY, limit=None)
+                    if not match:
+                        break
+                    start_mark = self.backtrace_buff.create_mark(None, match[0])
+                    end_mark = self.backtrace_buff.create_mark(None, match[1])
+                    self.last_highlighted_text.append((start_mark, end_mark))
+                    highlight_result(self.last_highlighted_text[-1])
+                    search_start_iter = match[1]
+
+                if self.last_highlighted_text:
+                    highlight_current()
+                    self.lbl_occur.set_text(_("Found %i occurence(s) [at: %i of %i]" %
+                                      (len(self.last_highlighted_text),
+                                       self.last_search+1,
+                                       len(self.last_highlighted_text)
+                                       )))
+
+
+        self.s_timeout = 0
+        def search_timeout(entry):
+            if self.s_timeout:
+                gobject.source_remove(self.s_timeout)
+            self.s_timeout = gobject.timeout_add(500, highlight_search, entry)
+
+        #arrows vbox
+        vbox_arrows = gtk.VBox()
+        # up arrow
+        arrow_up = gtk.Arrow(gtk.ARROW_UP, gtk.SHADOW_NONE)
+        event_up = gtk.EventBox()
+        event_up.add(arrow_up)
+        event_up.connect("enter-notify-event", highlight)
+        event_up.connect("leave-notify-event", unhighlight)
+        event_up.connect("button-press-event", search_up)
+        # down arrow
+        event_down = gtk.EventBox()
+        arrow_down = gtk.Arrow(gtk.ARROW_DOWN, gtk.SHADOW_NONE)
+        event_down.add(arrow_down)
+        event_down.connect("enter-notify-event", highlight)
+        event_down.connect("leave-notify-event", unhighlight)
+        event_down.connect("button-press-event", search_down)
+        vbox_arrows.pack_start(event_up)
+        vbox_arrows.pack_start(event_down)
+        # search box
+        hbox_search_wrap = gtk.HBox()
+        search_entry = gtk.Entry()
+        search_entry.set_icon_from_stock(gtk.ENTRY_ICON_SECONDARY, gtk.STOCK_FIND)
+        search_entry.set_icon_activatable(gtk.ENTRY_ICON_SECONDARY, False)
+        search_entry.connect("changed", search_timeout)
+        lbl_search = gtk.Label(_("Search:"))
+        hbox_search_wrap.pack_start(lbl_search, False, False)
+        hbox_search_wrap.pack_start(search_entry)
+        hbox_search_wrap.pack_start(vbox_arrows, False, False)
+        # the big hbox
+        align_search = gtk.Alignment()
+        hbox_search = gtk.HBox(homogeneous=True)
+        hbox_search.pack_start(align_search)
+        vb = gtk.VBox()
+        self.lbl_occur = gtk.Label()
+        vb.pack_start(hbox_search_wrap)
+        vb.pack_start(self.lbl_occur)
+        hbox_search.pack_start(vb)
+        vbox_bt.pack_start(hbox_search, False, False)
+        # bad backtrace, reporting disabled
         # warnings about wrong bt
         self.errors_hbox = gtk.HBox()
         self.warning_image = gtk.Image()
