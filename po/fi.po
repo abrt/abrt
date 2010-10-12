@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-30 13:08+0200\n"
+"POT-Creation-Date: 2010-08-29 09:15+0000\n"
 "PO-Revision-Date: 2010-08-29 20:25+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
-#: ../lib/plugins/Bugzilla.cpp:466
+#: ../lib/plugins/Bugzilla.cpp:469
 #, c-format
 msgid "New bug id: %i"
 msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:694
+#: ../lib/plugins/Bugzilla.cpp:697
 msgid ""
 "Empty login or password.\n"
 "Please check "
@@ -30,58 +30,58 @@ msgstr ""
 "Käyttäjätunnus tai salasana on tyhjä.\n"
 "Tarkista "
 
-#: ../lib/plugins/Bugzilla.cpp:703
+#: ../lib/plugins/Bugzilla.cpp:706
 msgid "Logging into bugzilla..."
 msgstr "Kirjaudutaan bugzillaan..."
 
-#: ../lib/plugins/Bugzilla.cpp:706
+#: ../lib/plugins/Bugzilla.cpp:709
 msgid "Checking for duplicates..."
 msgstr "Etsitään samanlaisia..."
 
-#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
+#: ../lib/plugins/Bugzilla.cpp:730 ../lib/plugins/Bugzilla.cpp:765
 msgid "Missing mandatory member 'bugs'"
 msgstr "Puuttuva pakollinen osa ”bugs”"
 
-#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
-#: ../lib/plugins/Bugzilla.cpp:854
+#: ../lib/plugins/Bugzilla.cpp:748 ../lib/plugins/Bugzilla.cpp:781
+#: ../lib/plugins/Bugzilla.cpp:857
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
 
-#: ../lib/plugins/Bugzilla.cpp:794
+#: ../lib/plugins/Bugzilla.cpp:797
 msgid "Creating a new bug..."
 msgstr "Luodaan uusi ohjelmavirheilmoitus..."
 
-#: ../lib/plugins/Bugzilla.cpp:799
+#: ../lib/plugins/Bugzilla.cpp:802
 msgid "Bugzilla entry creation failed"
 msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
 
-#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
+#: ../lib/plugins/Bugzilla.cpp:812 ../lib/plugins/Bugzilla.cpp:911
 msgid "Logging out..."
 msgstr "Kirjaudutaan ulos..."
 
 #. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:828
+#: ../lib/plugins/Bugzilla.cpp:831
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
 
-#: ../lib/plugins/Bugzilla.cpp:839
+#: ../lib/plugins/Bugzilla.cpp:842
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
 
-#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
+#: ../lib/plugins/Bugzilla.cpp:871 ../lib/plugins/Bugzilla.cpp:872
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Lisää %s CC-luetteloon"
 
-#: ../lib/plugins/Bugzilla.cpp:893
+#: ../lib/plugins/Bugzilla.cpp:896
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
 
-#: ../lib/plugins/Bugzilla.cpp:992
+#: ../lib/plugins/Bugzilla.cpp:995
 msgid "Reports bugs to bugzilla"
 msgstr "Raportoi ohjelmavirheitä Bugzillaan"
 
@@ -203,18 +203,13 @@ msgstr ""
 "FTP:llä/SCP:llä/tms."
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:111
+#: ../lib/plugins/RHTSupport.cpp:114
 msgid "Compressing data"
 msgstr "Pakataan tietoja"
 
-#: ../lib/plugins/RHTSupport.cpp:246
+#: ../lib/plugins/RHTSupport.cpp:249
 msgid "Creating a new case..."
 msgstr "Luodaan uusi tapaus..."
-
-#: ../lib/plugins/RHTSupport.cpp:328
-#, fuzzy
-msgid "Reports bugs to Red Hat support"
-msgstr "Raportoi ohjelmavirheitä Bugzillaan"
 
 #: ../lib/plugins/RunApp.cpp:79
 msgid "Runs a command, saves its output"
@@ -688,9 +683,8 @@ msgstr "Raportointi on poistettu käytöstä, koska pinolistaus on hyödytön"
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
-msgstr ""
-"Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install "
-"%s” ja kokeile sitten uudelleen\n"
+msgstr "Yritä asentaa debuginfo manuaalisesti käyttäen komentoa ”debuginfo-install %"
+"s” ja kokeile sitten uudelleen\n"
 
 #: ../src/cli/report.cpp:745
 msgid "Error loading reporter settings"
@@ -764,7 +758,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Tarkista onko abrt-taustaprosessi käynnissä."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
+#: ../src/gui/CCDBusBackend.py:174
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
