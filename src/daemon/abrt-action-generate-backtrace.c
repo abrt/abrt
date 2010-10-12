@@ -24,7 +24,7 @@
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 static const char *dump_dir_name = ".";
-static char *debuginfo_dirs;
+static const char *debuginfo_dirs;
 static int exec_timeout_sec = 60;
 
 
@@ -240,18 +240,24 @@ static char *get_backtrace(struct dump_dir *dd)
     return bt;
 }
 
-static char *d_opt, *i_opt;
-static int s_opt;
+enum {
+    OPT_v = 1 << 0,
+    OPT_d = 1 << 1,
+    OPT_i = 1 << 2,
+    OPT_t = 1 << 3,
+    OPT_s = 1 << 4,
+};
+
+static char *i_opt;
 
 static const char abrt_action_generage_backtrace_usage[] = "abrt-action-generate-backtrace [options] -d DIR";
 
 static struct options abrt_action_generate_backtrace_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_GROUP(""),
-    OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
+    OPT_STRING( 'd' , 0, &dump_dir_name, "dir", "Crash dump directory"),
     OPT_STRING( 'i' , 0, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
     OPT_INTEGER( 't' , 0, &exec_timeout_sec, "Kill gdb if it runs for more than SECONDS"),
-    OPT_BOOL( 's' , 0, &s_opt, "Log to syslog even with -d"),
+    OPT_BOOL( 's' , 0, NULL, "Log to syslog even with -d"),
     OPT_END()
 };
 
@@ -261,26 +267,19 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    parse_opts(argc, argv, abrt_action_generate_backtrace_options,
+    unsigned opts = parse_opts(argc, argv, abrt_action_generate_backtrace_options,
                            abrt_action_generage_backtrace_usage);
 
-    if (!d_opt)
-        parse_usage_and_die(abrt_action_generage_backtrace_usage,
-                            abrt_action_generate_backtrace_options);
-
-    dump_dir_name = d_opt;
-
-    debuginfo_dirs = xstrdup(DEBUGINFO_CACHE_DIR);
+    debuginfo_dirs = DEBUGINFO_CACHE_DIR;
     if (i_opt)
     {
-        free(debuginfo_dirs);
         debuginfo_dirs = xasprintf("%s:%s", DEBUGINFO_CACHE_DIR, i_opt);
     }
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf("abrt-action-generate-backtrace[%u]", getpid());
 
-    if (s_opt)
+    if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;

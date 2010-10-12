@@ -61,7 +61,7 @@ static int parse_opt_size(const struct options *opt)
     return size;
 }
 
-void parse_opts(int argc, char **argv, const struct options *opt,
+unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 const char *usage)
 {
     int help = 0;
@@ -107,6 +107,7 @@ void parse_opts(int argc, char **argv, const struct options *opt,
     longopts[ii].val = 0;
     */
 
+    unsigned retval = 0;
     while (1)
     {
         int c = getopt_long(argc, argv, shortopts->buf, longopts, NULL);
@@ -125,7 +126,10 @@ void parse_opts(int argc, char **argv, const struct options *opt,
         {
             if (opt[ii].short_name == c)
             {
-                switch (opt[ii].type)
+                if (ii < sizeof(retval)*8)
+                    retval |= (1 << ii);
+
+                if (opt[ii].value != NULL) switch (opt[ii].type)
                 {
                     case OPTION_BOOL:
                         *(int*)opt[ii].value += 1;
@@ -147,4 +151,6 @@ void parse_opts(int argc, char **argv, const struct options *opt,
 
     free(longopts);
     strbuf_free(shortopts);
+
+    return retval;
 }

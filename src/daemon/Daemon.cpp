@@ -87,8 +87,6 @@ using namespace std;
  */
 CCommLayerServer* g_pCommLayer;
 
-static bool daemonize = true;
-
 static volatile sig_atomic_t s_sig_caught;
 static int s_signal_pipe[2];
 static int s_signal_pipe_write = -1;
@@ -860,16 +858,21 @@ static void sanitize_dump_dir_rights()
     ensure_writable_dir(VAR_RUN"/abrt", 0755, "root");
 }
 
-static int daemonize_opt, syslog_opt;
+enum {
+    OPT_v = 1 << 0,
+    OPT_d = 1 << 1,
+    OPT_s = 1 << 2,
+    OPT_t = 1 << 3,
+};
+
 static char *timeout_opt;
 
 static const char* abrtd_usage = _("abrtd [options]");
 
 static struct options abrtd_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_GROUP(""),
-    OPT_BOOL( 'd' , 0, &daemonize_opt, _("Do not daemonize")),
-    OPT_BOOL( 's' , 0, &syslog_opt, _("Log to syslog even with -d")),
+    OPT_BOOL( 'd' , 0, NULL, _("Do not daemonize")),
+    OPT_BOOL( 's' , 0, NULL, _("Log to syslog even with -d")),
     OPT_INTEGER( 't' , 0, &timeout_opt, _("Exit after SEC seconds of inactivity")),
     OPT_END()
 };
@@ -892,12 +895,9 @@ int main(int argc, char** argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    parse_opts(argc, argv, abrtd_options, abrtd_usage);
+    unsigned opts = parse_opts(argc, argv, abrtd_options, abrtd_usage);
 
-    if (daemonize_opt)
-        daemonize = false;
-
-    if (syslog_opt)
+    if (opts & OPT_s)
         start_syslog_logging();
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
@@ -914,7 +914,7 @@ int main(int argc, char** argv)
         signal(SIGALRM, handle_signal);
 
     /* Daemonize unless -d */
-    if (daemonize)
+    if (!(opts & OPT_d))
     {
         /* forking to background */
         pid_t pid = fork();
@@ -1042,13 +1042,13 @@ int main(int argc, char** argv)
         /* Initialization error */
         error_msg("Error while initializing daemon");
         /* Inform parent that initialization failed */
-        if (daemonize)
+        if (!(opts & OPT_d))
             kill(parent_pid, SIGINT);
         goto cleanup;
     }
 
     /* Inform parent that we initialized ok */
-    if (daemonize)
+    if (!(opts & OPT_d))
     {
         VERB1 log("Signalling parent");
         kill(parent_pid, SIGTERM);

@@ -277,15 +277,18 @@ static void process_message(const char *message)
 
 static void dummy_handler(int sig_unused) {}
 
-static int s_opt;
+enum {
+    OPT_v = 1 << 0,
+    OPT_u = 1 << 1,
+    OPT_s = 1 << 2,
+};
 
 static const char abrt_server_usage[] = "abrt-server [options]";
 
 static struct options abrt_server_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_GROUP(""),
     OPT_INTEGER( 'u' , 0, &client_uid, "Use UID as client uid"),
-    OPT_BOOL( 's' , 0, &s_opt, "Log to syslog"),
+    OPT_BOOL( 's' , 0, NULL, "Log to syslog"),
     OPT_END()
 };
 
@@ -295,12 +298,12 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    parse_opts(argc, argv, abrt_server_options,
+    unsigned opts = parse_opts(argc, argv, abrt_server_options,
                            abrt_server_usage);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf("abrt-server[%u]", getpid());
-    if (s_opt)
+    if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;

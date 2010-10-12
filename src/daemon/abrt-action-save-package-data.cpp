@@ -267,16 +267,20 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
     return error;
 }
 
-static char *d_opt;
-static int s_opt;
+enum {
+    OPT_v = 1 << 0,
+    OPT_d = 1 << 1,
+    OPT_s = 1 << 2,
+};
+
+static const char *dump_dir_name = ".";
 
 static const char abrt_action_save_package_data_usage[] = "abrt-action-save-package-data [options] -d DIR";
 
 static struct options abrt_action_save_package_data_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_GROUP(""),
-    OPT_STRING( 'd' , 0, &d_opt, "dir", "Crash dump directory"),
-    OPT_BOOL( 's' , 0, &s_opt, "Log to syslog"),
+    OPT_STRING( 'd' , 0, &dump_dir_name, "dir", "Crash dump directory"),
+    OPT_BOOL( 's' , 0, NULL, "Log to syslog"),
     OPT_END()
 };
 
@@ -286,20 +290,13 @@ int main(int argc, char **argv)
     if (env_verbose)
         g_verbose = atoi(env_verbose);
 
-    const char *dump_dir_name = ".";
-
-    parse_opts(argc, argv, abrt_action_save_package_data_options,
+    unsigned opts = parse_opts(argc, argv, abrt_action_save_package_data_options,
                            abrt_action_save_package_data_usage);
-
-    if (!d_opt)
-        parse_usage_and_die(abrt_action_save_package_data_usage,
-                            abrt_action_save_package_data_options);
-
-    dump_dir_name = d_opt;
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     msg_prefix = xasprintf("abrt-action-save-package-data[%u]", getpid());
-    if (s_opt)
+
+    if (opts & OPT_s)
     {
         openlog(msg_prefix, 0, LOG_DAEMON);
         logmode = LOGMODE_SYSLOG;
