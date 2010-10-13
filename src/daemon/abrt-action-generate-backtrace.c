@@ -252,10 +252,10 @@ enum {
 /* Keep enum above and order of options below in sync! */
 static struct options abrt_action_generate_backtrace_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_STRING( 'd' , 0, &dump_dir_name, "dir", "Crash dump directory"),
-    OPT_STRING( 'i' , 0, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
-    OPT_INTEGER( 't' , 0, &exec_timeout_sec, "Kill gdb if it runs for more than SECONDS"),
-    OPT_BOOL( 's' , 0, NULL, "Log to syslog even with -d"),
+    OPT_STRING( 'd', NULL, &dump_dir_name, "DIR", "Crash dump directory"),
+    OPT_STRING( 'i', NULL, &i_opt, "dir1[:dir2]...", "Additional debuginfo directories"),
+    OPT_INTEGER('t', NULL, &exec_timeout_sec, "Kill gdb if it runs for more than N seconds"),
+    OPT_BOOL(   's', NULL, NULL, "Log to syslog"),
     OPT_END()
 };
 

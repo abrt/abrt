@@ -19,7 +19,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include <set>
-#include <iomanip>
 #include "abrtlib.h"
 #include "CCpp.h"
 #include "abrt_exception.h"
