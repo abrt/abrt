@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-07 23:36+0000\n"
-"PO-Revision-Date: 2010-10-08 15:24+0200\n"
+"POT-Creation-Date: 2010-10-13 15:16+0000\n"
+"PO-Revision-Date: 2010-10-13 19:18+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -20,93 +20,29 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
-#: ../lib/plugins/Bugzilla.cpp:464
-#, c-format
-msgid "New bug id: %i"
-msgstr "Nieuwe bug id: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:688
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"Leeg inlog of wachtwoord.\n"
-"Controleren a.u.b. "
-
-#: ../lib/plugins/Bugzilla.cpp:697
-msgid "Logging into bugzilla..."
-msgstr "Inloggen bij bugzilla..."
-
-#: ../lib/plugins/Bugzilla.cpp:700
-msgid "Checking for duplicates..."
-msgstr "Controleren voor dubbele..."
-
-#: ../lib/plugins/Bugzilla.cpp:721 ../lib/plugins/Bugzilla.cpp:756
-msgid "Missing mandatory member 'bugs'"
-msgstr "Verplicht onderdeel 'bugs' ontbreekt"
-
-#: ../lib/plugins/Bugzilla.cpp:739 ../lib/plugins/Bugzilla.cpp:772
-#: ../lib/plugins/Bugzilla.cpp:848
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
-
-#: ../lib/plugins/Bugzilla.cpp:788
-msgid "Creating a new bug..."
-msgstr "Nieuwe bug aanmaken..."
-
-#: ../lib/plugins/Bugzilla.cpp:793
-msgid "Bugzilla entry creation failed"
-msgstr "Het aanmaken van een Bugzilla ingang mislukte"
-
-#: ../lib/plugins/Bugzilla.cpp:803 ../lib/plugins/Bugzilla.cpp:902
-msgid "Logging out..."
-msgstr "Uitloggen..."
-
-#. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:822
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Bug is al aangemeld: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:833
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
-
-#: ../lib/plugins/Bugzilla.cpp:862 ../lib/plugins/Bugzilla.cpp:863
-#, c-format
-msgid "Add %s to CC list"
-msgstr "Voeg %s toe aan CC lijst"
-
-#: ../lib/plugins/Bugzilla.cpp:887
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "Voeg nieuw commentaar toe aan bug(%d)"
-
-#: ../lib/plugins/Bugzilla.cpp:986
+#: ../lib/plugins/Bugzilla.cpp:149
 msgid "Reports bugs to bugzilla"
 msgstr "Bugs rapporteren aan bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:153
+#: ../lib/plugins/CCpp.cpp:152
 msgid "Generating backtrace"
 msgstr "Backtrace aanmaken"
 
-#: ../lib/plugins/CCpp.cpp:239
+#: ../lib/plugins/CCpp.cpp:238
 msgid "Starting the debuginfo installation"
 msgstr "Start de debuginfo installatie"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:474
+#: ../lib/plugins/CCpp.cpp:473
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van globale universele unieke identificatie..."
 
-#: ../lib/plugins/CCpp.cpp:668
+#: ../lib/plugins/CCpp.cpp:667
 msgid "Skipping the debuginfo installation"
 msgstr "Sla de debuginfo installatie over"
 
-#: ../lib/plugins/CCpp.cpp:919
+#: ../lib/plugins/CCpp.cpp:918
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyseert crashes in C/C++ programma's"
 
@@ -556,7 +492,7 @@ msgstr ""
 "\t@N  - N-de crash (zoals getoond door --list --full) waarop actie "
 "ondernomen zal worden\n"
 
-#: ../src/cli/CLI.cpp:293
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
@@ -703,11 +639,7 @@ msgstr "Commentaar is te lang"
 msgid "'How to reproduce' is too long"
 msgstr "'Hoe te reproduceren' is te lang"
 
-#: ../src/daemon/Daemon.cpp:89
-msgid "abrtd [options]"
-msgstr "abrtd [opties]"
-
-#: ../src/daemon/Daemon.cpp:640
+#: ../src/daemon/Daemon.cpp:633
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -715,25 +647,21 @@ msgstr ""
 "De grootte van het rapport overschreed de quota. Controleer de "
 "MaxCrashReportsSize waarde van het systeem in abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:872
-msgid "Show this help message"
-msgstr "Deze hulp boodschap tonen"
+#: ../src/daemon/Daemon.cpp:862
+msgid "abrtd [options]"
+msgstr "abrtd [opties]"
 
-#: ../src/daemon/Daemon.cpp:873
+#: ../src/daemon/Daemon.cpp:872
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/Daemon.cpp:874
+#: ../src/daemon/Daemon.cpp:873
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/Daemon.cpp:875
+#: ../src/daemon/Daemon.cpp:874
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
-
-#: ../src/daemon/Daemon.cpp:876
-msgid "Verbose"
-msgstr "Breedsprakig"
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1016,7 +944,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Configureer %s opties"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:866
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1034,7 +962,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui/CReporterAssistant.py:1047
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -1168,115 +1096,125 @@ msgstr ""
 "zijn dat jouw bug rapport geen gevoelige data bevat die je liever niet wilt "
 "delen:"
 
-#: ../src/gui/CReporterAssistant.py:614
+#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
+#: ../src/gui/CReporterAssistant.py:689
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr "Vond %i voorval(len) [bij: %i of %i]"
+
+#: ../src/gui/CReporterAssistant.py:726
+msgid "Search:"
+msgstr "Zoeken:"
+
+#: ../src/gui/CReporterAssistant.py:756
 msgid "Refresh"
 msgstr "Verversen"
 
-#: ../src/gui/CReporterAssistant.py:616
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Copy"
 msgstr "Kopiëren"
 
-#: ../src/gui/CReporterAssistant.py:622
+#: ../src/gui/CReporterAssistant.py:764
 msgid "I agree with submitting the backtrace"
 msgstr "Ik stem in met het versturen van de backtrace"
 
-#: ../src/gui/CReporterAssistant.py:627
+#: ../src/gui/CReporterAssistant.py:769
 msgid "Approve the backtrace"
 msgstr "De backtrace goedkeuren"
 
-#: ../src/gui/CReporterAssistant.py:650
+#: ../src/gui/CReporterAssistant.py:792
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Hoe ontstaat deze crash (stap-voor-stap)? Hoe kun je het reproduceren?"
 
-#: ../src/gui/CReporterAssistant.py:669
+#: ../src/gui/CReporterAssistant.py:811
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Heb je commentaar die je wilt delen met de software onderhouders?"
 
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:831
 msgid "Provide additional details"
 msgstr "Bied extra details"
 
-#: ../src/gui/CReporterAssistant.py:696
+#: ../src/gui/CReporterAssistant.py:838
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Tip:</b> Jouw commentaar is niet privé. Let dus op wat je zegt."
 
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:879
 msgid "Confirm and send the report"
 msgstr "Bevestig en verstuur het rapport"
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:881
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Hieronder is een samenvatting van jouw bug rapport. Klik op 'Toepassen' om "
 "het te versturen."
 
-#: ../src/gui/CReporterAssistant.py:744
+#: ../src/gui/CReporterAssistant.py:886
 msgid "<b>Basic details</b>"
 msgstr "<b>Bais details</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:893
 msgid "Component"
 msgstr "Onderdeel"
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/gui/CReporterAssistant.py:753
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Executable"
 msgstr "Uitvoerbaar programma"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Cmdline"
 msgstr "Commando-regel"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:898
 msgid "Architecture"
 msgstr "Architectuur"
 
-#: ../src/gui/CReporterAssistant.py:757
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Kernel"
 msgstr "Kernel"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:900
 msgid "Release"
 msgstr "Vrijgave"
 
-#: ../src/gui/CReporterAssistant.py:759
+#: ../src/gui/CReporterAssistant.py:901
 msgid "Reason"
 msgstr "Reden"
 
-#: ../src/gui/CReporterAssistant.py:770 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
-#: ../src/gui/CReporterAssistant.py:773
+#: ../src/gui/CReporterAssistant.py:915
 msgid "Click to view..."
 msgstr "Klik om te bekijken..."
 
-#: ../src/gui/CReporterAssistant.py:785
+#: ../src/gui/CReporterAssistant.py:927
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Stappen om te reproduceren:</b>"
 
-#: ../src/gui/CReporterAssistant.py:806
+#: ../src/gui/CReporterAssistant.py:948
 msgid "<b>Comments:</b>"
 msgstr "<b>Commentaar:</b>"
 
-#: ../src/gui/CReporterAssistant.py:809
+#: ../src/gui/CReporterAssistant.py:951
 msgid "No comment provided!"
 msgstr "Geen commentaar gegeven!"
 
-#: ../src/gui/CReporterAssistant.py:845
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Finished sending the bug report"
 msgstr "Het versturen van het bug rapport is klaar"
 
-#: ../src/gui/CReporterAssistant.py:849
+#: ../src/gui/CReporterAssistant.py:991
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Bug rapporten:</b>"
 
@@ -1544,6 +1482,56 @@ msgstr ""
 "rapporteer plug-ins. Gebruik de knoppen hieronder om hun respectievelijke "
 "configuratie te openen en te repareren voordat je verdergaat, omdat het "
 "rapporteer proces anders kan mislukken.\n"
+
+#~ msgid "New bug id: %i"
+#~ msgstr "Nieuwe bug id: %i"
+
+#~ msgid ""
+#~ "Empty login or password.\n"
+#~ "Please check "
+#~ msgstr ""
+#~ "Leeg inlog of wachtwoord.\n"
+#~ "Controleren a.u.b. "
+
+#~ msgid "Logging into bugzilla..."
+#~ msgstr "Inloggen bij bugzilla..."
+
+#~ msgid "Checking for duplicates..."
+#~ msgstr "Controleren voor dubbele..."
+
+#~ msgid "Missing mandatory member 'bugs'"
+#~ msgstr "Verplicht onderdeel 'bugs' ontbreekt"
+
+#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
+#~ msgstr ""
+#~ "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
+
+#~ msgid "Creating a new bug..."
+#~ msgstr "Nieuwe bug aanmaken..."
+
+#~ msgid "Bugzilla entry creation failed"
+#~ msgstr "Het aanmaken van een Bugzilla ingang mislukte"
+
+#~ msgid "Logging out..."
+#~ msgstr "Uitloggen..."
+
+#~ msgid "Bug is already reported: %i"
+#~ msgstr "Bug is al aangemeld: %i"
+
+#~ msgid "Bugzilla couldn't find parent of bug %d"
+#~ msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
+
+#~ msgid "Add %s to CC list"
+#~ msgstr "Voeg %s toe aan CC lijst"
+
+#~ msgid "Adding new comment to bug %d"
+#~ msgstr "Voeg nieuw commentaar toe aan bug(%d)"
+
+#~ msgid "Show this help message"
+#~ msgstr "Deze hulp boodschap tonen"
+
+#~ msgid "Verbose"
+#~ msgstr "Breedsprakig"
 
 #~ msgid "Database plugin not specified. Please check abrtd settings."
 #~ msgstr ""
