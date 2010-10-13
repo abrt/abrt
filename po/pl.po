@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-07 23:36+0000\n"
-"PO-Revision-Date: 2010-10-08 09:20+0200\n"
+"POT-Creation-Date: 2010-10-13 15:16+0000\n"
+"PO-Revision-Date: 2010-10-13 17:17+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <trans-pl@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -15,94 +15,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: pl\n"
 
-#: ../lib/plugins/Bugzilla.cpp:464
-#, c-format
-msgid "New bug id: %i"
-msgstr "Identyfikator nowego błędu: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:688
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"Pola login lub hasło są puste.\n"
-"Proszę sprawdzić plik "
-
-#: ../lib/plugins/Bugzilla.cpp:697
-msgid "Logging into bugzilla..."
-msgstr "Logowanie do Bugzilli..."
-
-#: ../lib/plugins/Bugzilla.cpp:700
-msgid "Checking for duplicates..."
-msgstr "Sprawdzanie duplikatów..."
-
-#: ../lib/plugins/Bugzilla.cpp:721 ../lib/plugins/Bugzilla.cpp:756
-msgid "Missing mandatory member 'bugs'"
-msgstr "Brak wymaganego elementu \"bugs\""
-
-#: ../lib/plugins/Bugzilla.cpp:739 ../lib/plugins/Bugzilla.cpp:772
-#: ../lib/plugins/Bugzilla.cpp:848
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"Funkcja get_bug_info() nie powiodła się. Nie można zebrać wszystkich "
-"wymaganych informacji"
-
-#: ../lib/plugins/Bugzilla.cpp:788
-msgid "Creating a new bug..."
-msgstr "Tworzenie nowego błędu..."
-
-#: ../lib/plugins/Bugzilla.cpp:793
-msgid "Bugzilla entry creation failed"
-msgstr "Utworzenie wpisu Bugzilli nie powiodło się"
-
-#: ../lib/plugins/Bugzilla.cpp:803 ../lib/plugins/Bugzilla.cpp:902
-msgid "Logging out..."
-msgstr "Wylogowywanie..."
-
-#. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:822
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Błąd został już wcześniej zgłoszony: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:833
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla nie może odnaleźć błędu nadrzędnego błędu %d"
-
-#: ../lib/plugins/Bugzilla.cpp:862 ../lib/plugins/Bugzilla.cpp:863
-#, c-format
-msgid "Add %s to CC list"
-msgstr "Dodawanie %s do listy obserwujących"
-
-#: ../lib/plugins/Bugzilla.cpp:887
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "Dodawanie nowego komentarza do błędu %d"
-
-#: ../lib/plugins/Bugzilla.cpp:986
+#: ../lib/plugins/Bugzilla.cpp:149
 msgid "Reports bugs to bugzilla"
 msgstr "Zgłasza błędy w Bugzilli"
 
-#: ../lib/plugins/CCpp.cpp:153
+#: ../lib/plugins/CCpp.cpp:152
 msgid "Generating backtrace"
 msgstr "Tworzenie wyjątku"
 
-#: ../lib/plugins/CCpp.cpp:239
+#: ../lib/plugins/CCpp.cpp:238
 msgid "Starting the debuginfo installation"
 msgstr "Uruchamianie instalacji pakietów debuginfo"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:474
+#: ../lib/plugins/CCpp.cpp:473
 msgid "Getting global universal unique identification..."
 msgstr "Uzyskiwanie globalnego UUID..."
 
-#: ../lib/plugins/CCpp.cpp:668
+#: ../lib/plugins/CCpp.cpp:667
 msgid "Skipping the debuginfo installation"
 msgstr "Pomijanie instalacji pakietów debuginfo"
 
-#: ../lib/plugins/CCpp.cpp:919
+#: ../lib/plugins/CCpp.cpp:918
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analizuje awarie w programach w językach C/C++"
 
@@ -553,7 +488,7 @@ msgstr ""
 "\t@N - zostanie użyta n-ta awaria (tak, jak wyświetlane przez --list --"
 "full)\n"
 
-#: ../src/cli/CLI.cpp:293
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr "Należy podać dokładnie jedne działanie"
 
@@ -702,11 +637,7 @@ msgstr "Komentarz jest za długi"
 msgid "'How to reproduce' is too long"
 msgstr "\"Jak powtórzyć awarię\" jest za długie"
 
-#: ../src/daemon/Daemon.cpp:89
-msgid "abrtd [options]"
-msgstr "abrtd [opcje]"
-
-#: ../src/daemon/Daemon.cpp:640
+#: ../src/daemon/Daemon.cpp:633
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -714,26 +645,22 @@ msgstr ""
 "Wielkość zgłoszenia przekroczyła dozwolone ograniczenie. Proszę sprawdzić "
 "wartość zmiennej MaxCrashReportsSize w pliku abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:872
-msgid "Show this help message"
-msgstr "Wyświetla ten komunikat pomocy"
+#: ../src/daemon/Daemon.cpp:862
+msgid "abrtd [options]"
+msgstr "abrtd [opcje]"
 
-#: ../src/daemon/Daemon.cpp:873
+#: ../src/daemon/Daemon.cpp:872
 msgid "Do not daemonize"
 msgstr "Bez tworzenia demona"
 
-#: ../src/daemon/Daemon.cpp:874
+#: ../src/daemon/Daemon.cpp:873
 msgid "Log to syslog even with -d"
 msgstr ""
 "Przekazuje komunikaty do dziennika systemowego, nawet jeśli podano opcję -d"
 
-#: ../src/daemon/Daemon.cpp:875
+#: ../src/daemon/Daemon.cpp:874
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Kończy działanie po SEKUNDACH nieaktywności"
-
-#: ../src/daemon/Daemon.cpp:876
-msgid "Verbose"
-msgstr "Więcej komunikatów"
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1023,7 +950,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Skonfiguruj opcje %s"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:866
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1041,7 +968,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui/CReporterAssistant.py:1047
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Błąd podczas uzyskiwania zgłoszenia: %s"
@@ -1167,117 +1094,127 @@ msgstr ""
 "Proszę przejrzeć wyjątek znajdujący się poniżej i zmodyfikować go, aby "
 "upewnić się, że zgłoszenie błędu nie zawiera prywatnych informacji:"
 
-#: ../src/gui/CReporterAssistant.py:614
+#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
+#: ../src/gui/CReporterAssistant.py:689
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr "Odnaleziono %i wystąpień [w: %i z %i]"
+
+#: ../src/gui/CReporterAssistant.py:726
+msgid "Search:"
+msgstr "Wyszukiwanie:"
+
+#: ../src/gui/CReporterAssistant.py:756
 msgid "Refresh"
 msgstr "Odśwież"
 
-#: ../src/gui/CReporterAssistant.py:616
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Copy"
 msgstr "Skopiuj"
 
-#: ../src/gui/CReporterAssistant.py:622
+#: ../src/gui/CReporterAssistant.py:764
 msgid "I agree with submitting the backtrace"
 msgstr "Zgadzam się na wysłanie wyjątku"
 
-#: ../src/gui/CReporterAssistant.py:627
+#: ../src/gui/CReporterAssistant.py:769
 msgid "Approve the backtrace"
 msgstr "Akceptuję wyjątek"
 
-#: ../src/gui/CReporterAssistant.py:650
+#: ../src/gui/CReporterAssistant.py:792
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 "Jak wydarzyła się ta awaria i jak można ją powtórzyć, opisane krok po kroku "
 "(w języku angielskim)."
 
-#: ../src/gui/CReporterAssistant.py:669
+#: ../src/gui/CReporterAssistant.py:811
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Komentarze dla opiekunów oprogramowania (w języku angielskim)."
 
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:831
 msgid "Provide additional details"
 msgstr "Podanie dodatkowych informacji"
 
-#: ../src/gui/CReporterAssistant.py:696
+#: ../src/gui/CReporterAssistant.py:838
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Wskazówka:</b> komentarze będą dostępne publicznie."
 
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:879
 msgid "Confirm and send the report"
 msgstr "Potwierdź i wyślij zgłoszenie"
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:881
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Poniżej znajduje się zgłoszenie błędu. Proszę nacisnąć przycisk \"Zastosuj"
 "\", aby je wysłać."
 
-#: ../src/gui/CReporterAssistant.py:744
+#: ../src/gui/CReporterAssistant.py:886
 msgid "<b>Basic details</b>"
 msgstr "<b>Podstawowe informacje</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:893
 msgid "Component"
 msgstr "Składnik"
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Package"
 msgstr "Pakiet"
 
-#: ../src/gui/CReporterAssistant.py:753
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Executable"
 msgstr "Plik wykonywalny"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Cmdline"
 msgstr "Wiersz poleceń"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:898
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../src/gui/CReporterAssistant.py:757
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Kernel"
 msgstr "Jądro"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:900
 msgid "Release"
 msgstr "Wydanie"
 
-#: ../src/gui/CReporterAssistant.py:759
+#: ../src/gui/CReporterAssistant.py:901
 msgid "Reason"
 msgstr "Przyczyna"
 
-#: ../src/gui/CReporterAssistant.py:770 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Wyjątek</b>"
 
-#: ../src/gui/CReporterAssistant.py:773
+#: ../src/gui/CReporterAssistant.py:915
 msgid "Click to view..."
 msgstr "Kliknięcie wyświetli..."
 
-#: ../src/gui/CReporterAssistant.py:785
+#: ../src/gui/CReporterAssistant.py:927
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Jak powtórzyć awarię (w języku angielskim):</b>"
 
-#: ../src/gui/CReporterAssistant.py:806
+#: ../src/gui/CReporterAssistant.py:948
 msgid "<b>Comments:</b>"
 msgstr "<b>Komentarze (w języku angielskim):</b>"
 
-#: ../src/gui/CReporterAssistant.py:809
+#: ../src/gui/CReporterAssistant.py:951
 msgid "No comment provided!"
 msgstr "Nie podano żadnego komentarza."
 
-#: ../src/gui/CReporterAssistant.py:845
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Finished sending the bug report"
 msgstr "Ukończono wysyłanie zgłoszenia błędu"
 
-#: ../src/gui/CReporterAssistant.py:849
+#: ../src/gui/CReporterAssistant.py:991
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Zgłoszenia błędów:</b>"
 
