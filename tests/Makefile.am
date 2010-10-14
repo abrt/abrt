@@ -50,6 +50,6 @@ clean-local:
 	test ! -f '$(TESTSUITE)' || $(SHELL) '$(TESTSUITE)' --clean
 
 AUTOTEST = $(AUTOM4TE) --language=autotest
-$(TESTSUITE): $(TESTSUITE_AT) $(srcdir)/package.m4
+$(TESTSUITE): $(TESTSUITE_AT) $(srcdir)/package.m4 btparser/*.at
 	$(AUTOTEST) -I '$(srcdir)' -o $@.tmp $@.at
 	mv $@.tmp $@

@@ -8,8 +8,8 @@ AT_BANNER([Frames])
 
 AT_TESTFUN([btp_frame_dup],
 [[
-#include <lib/frame.h>
-#include <lib/utils.h>
+#include <frame.h>
+#include <utils.h>
 #include <assert.h>
 
 int main(void)
@@ -63,7 +63,7 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parse_frame_start],
 [[
-#include <lib/frame.h>
+#include <frame.h>
 #include <assert.h>
 
 /**
@@ -111,8 +111,8 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parseadd_operator],
 [[
-#include <lib/frame.h>
-#include <lib/strbuf.h>
+#include <frame.h>
+#include <strbuf.h>
 #include <assert.h>
 #include <string.h>
 
@@ -155,9 +155,9 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parse_function_name],
 [[
-#include <lib/frame.h>
-#include <lib/utils.h>
-#include <lib/location.h>
+#include <frame.h>
+#include <utils.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>
@@ -217,8 +217,8 @@ int main(void)
 
 AT_TESTFUN([btp_frame_skip_function_args],
 [[
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 
 void check(bool success, char *input)
@@ -261,8 +261,8 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parse_function_call],
 [[
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 void check(bool success,
@@ -366,8 +366,8 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parse_address_in_function],
 [[
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 void check(bool success,
@@ -420,8 +420,8 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parse_file_location],
 [[
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 void check(bool success,
@@ -482,8 +482,8 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parse_header],
 [[
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -564,8 +564,8 @@ int main(void)
 
 AT_TESTFUN([btp_frame_parse],
 [[
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <string.h>

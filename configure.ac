@@ -129,6 +129,7 @@ AC_CONFIG_FILES([
 	inc/Makefile
 	po/Makefile.in
 	icons/Makefile
+	tests/btparser/Makefile
 ])
 
 AC_OUTPUT

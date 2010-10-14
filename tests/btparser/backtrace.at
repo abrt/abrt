@@ -7,8 +7,8 @@ AT_BANNER([Backtraces])
 ## --------------------------------------- ##
 AT_TESTFUN([btp_backtrace_remove_threads_except_one],
 [[
-#include <lib/backtrace.h>
-#include <lib/thread.h>
+#include <backtrace.h>
+#include <thread.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -59,12 +59,12 @@ int main(void)
 ## btp_backtrace_find_crash_thread ##
 ## ------------------------------- ##
 AT_TESTFUN([btp_backtrace_find_crash_thread],
-[
-#include <lib/backtrace.h>
-#include <lib/thread.h>
-#include <lib/frame.h>
-#include <lib/location.h>
-#include <lib/utils.h>
+[[
+#include <backtrace.h>
+#include <thread.h>
+#include <frame.h>
+#include <location.h>
+#include <utils.h>
 #include <assert.h>
 
 int main(void)
@@ -72,7 +72,7 @@ int main(void)
   /* Load the backtrace from Red Hat Bugzilla bug #621492. */
   struct btp_location location;
   btp_location_init(&location);
-  char *full_input = btp_file_to_string("../../backtraces/621492.bt");
+  char *full_input = btp_file_to_string("../../btparser/backtraces/621492.bt");
   assert(full_input);
   char *input = full_input;
   struct btp_backtrace *backtrace = btp_backtrace_parse(&input, &location);
@@ -85,17 +85,17 @@ int main(void)
   btp_backtrace_free(backtrace);
   return 0;
 }
-])
+]])
 
 ## ------------------------------- ##
 ## btp_backtrace_limit_frame_depth ##
 ## ------------------------------- ##
 AT_TESTFUN([btp_backtrace_limit_frame_depth],
 [[
-#include <lib/backtrace.h>
-#include <lib/thread.h>
-#include <lib/location.h>
-#include <lib/utils.h>
+#include <backtrace.h>
+#include <thread.h>
+#include <location.h>
+#include <utils.h>
 #include <assert.h>
 
 int main(void)
@@ -103,7 +103,7 @@ int main(void)
   /* Load the backtrace from Red Hat Bugzilla bug #621492. */
   struct btp_location location;
   btp_location_init(&location);
-  char *full_input = btp_file_to_string("../../backtraces/621492.bt");
+  char *full_input = btp_file_to_string("../../btparser/backtraces/621492.bt");
   assert(full_input);
   char *input = full_input;
   struct btp_backtrace *backtrace = btp_backtrace_parse(&input, &location);
@@ -129,10 +129,10 @@ int main(void)
 ## ----------------------------- ##
 AT_TESTFUN([btp_backtrace_quality_complex],
 [[
-#include <lib/backtrace.h>
-#include <lib/thread.h>
-#include <lib/location.h>
-#include <lib/utils.h>
+#include <backtrace.h>
+#include <thread.h>
+#include <location.h>
+#include <utils.h>
 #include <assert.h>
 
 int main(void)
@@ -140,7 +140,7 @@ int main(void)
   /* Load the backtrace from Red Hat Bugzilla bug #621492. */
   struct btp_location location;
   btp_location_init(&location);
-  char *full_input = btp_file_to_string("../../backtraces/621492.bt");
+  char *full_input = btp_file_to_string("../../btparser/backtraces/621492.bt");
   assert(full_input);
   char *input = full_input;
   struct btp_backtrace *backtrace = btp_backtrace_parse(&input, &location);

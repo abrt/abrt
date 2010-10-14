@@ -8,7 +8,7 @@ AT_BANNER([Utils])
 
 AT_TESTFUN([btp_strcmp0],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -28,7 +28,7 @@ int main(void)
 
 AT_TESTFUN([btp_strchr_location],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -64,7 +64,7 @@ int main(void)
 
 AT_TESTFUN([btp_strstr_location],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -104,7 +104,7 @@ int main(void)
 
 AT_TESTFUN([btp_strspn_location],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -137,7 +137,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_char],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -154,7 +154,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_char_limited],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -172,7 +172,7 @@ int main(void)
 
 AT_TESTFUN([btp_parse_char_limited],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -209,7 +209,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_char_sequence],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -227,7 +227,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_char_span],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -249,7 +249,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_char_span_location],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -283,7 +283,7 @@ int main(void)
 
 AT_TESTFUN([btp_parse_char_span],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -307,7 +307,7 @@ int main(void)
 
 AT_TESTFUN([btp_parse_char_cspan],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -331,7 +331,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_string],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -351,7 +351,7 @@ int main(void)
 
 AT_TESTFUN([btp_parse_string],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -371,7 +371,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_unsigned_integer],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -388,7 +388,7 @@ int main(void)
 
 AT_TESTFUN([btp_parse_unsigned_integer],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -407,7 +407,7 @@ int main(void)
 
 AT_TESTFUN([btp_skip_hexadecimal_number],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {
@@ -424,7 +424,7 @@ int main(void)
 
 AT_TESTFUN([btp_parse_hexadecimal_number],
 [[
-#include <lib/utils.h>
+#include <utils.h>
 #include <assert.h>
 int main(void)
 {

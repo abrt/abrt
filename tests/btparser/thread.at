@@ -7,10 +7,10 @@ AT_BANNER([Threads])
 ## ----------------------- ##
 AT_TESTFUN([btp_thread_remove_frame],
 [[
-#include <lib/thread.h>
-#include <lib/frame.h>
-#include <lib/location.h>
-#include <lib/utils.h>
+#include <thread.h>
+#include <frame.h>
+#include <location.h>
+#include <utils.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -71,10 +71,10 @@ int main(void)
 ## ------------------------------ ##
 AT_TESTFUN([btp_thread_remove_frames_above],
 [[
-#include <lib/thread.h>
-#include <lib/frame.h>
-#include <lib/location.h>
-#include <lib/utils.h>
+#include <thread.h>
+#include <frame.h>
+#include <location.h>
+#include <utils.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -136,10 +136,10 @@ int main(void)
 ## -------------------------------- ##
 AT_TESTFUN([btp_thread_remove_frames_below_n],
 [[
-#include <lib/thread.h>
-#include <lib/frame.h>
-#include <lib/location.h>
-#include <lib/utils.h>
+#include <thread.h>
+#include <frame.h>
+#include <location.h>
+#include <utils.h>
 #include <assert.h>
 #include <stdlib.h>
 
@@ -203,9 +203,9 @@ int main(void)
 
 AT_TESTFUN([btp_thread_parse],
 [[
-#include <lib/thread.h>
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <thread.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -285,9 +285,9 @@ int main(void)
 
 AT_TESTFUN([btp_thread_parse-locations],
 [[
-#include <lib/thread.h>
-#include <lib/frame.h>
-#include <lib/location.h>
+#include <thread.h>
+#include <frame.h>
+#include <location.h>
 #include <assert.h>
 #include <stdlib.h>
 
