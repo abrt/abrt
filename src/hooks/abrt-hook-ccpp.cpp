@@ -389,7 +389,7 @@ int main(int argc, char** argv)
         }
 
         const char *last_slash = strrchr(executable, '/');
-        if (last_slash && strncmp(++last_slash, "abrt", 4))
+        if (last_slash && strncmp(++last_slash, "abrt", 4) == 0)
         {
             /* If abrtd/abrt-foo crashes, we don't want to create a _directory_,
              * since that can make new copy of abrtd to process it,
