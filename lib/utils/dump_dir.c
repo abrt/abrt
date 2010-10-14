@@ -177,26 +177,23 @@ int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
         error_msg_and_die("dump_dir is already opened"); /* bug */
 
     dd->dd_dir = rm_trailing_slashes(dir);
-    if (!exist_file_dir(dd->dd_dir))
-    {
-        if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dd->dd_dir);
-
-        if (flags & DD_CLOSE_ON_OPEN_ERR)
-            dd_close(dd);
-
-        return 0;
-    }
 
     dd_lock(dd);
 
-    /* In case caller would want to create more files, he'll need uid:gid */
     struct stat stat_buf;
-    if (stat(dd->dd_dir, &stat_buf) == 0)
-    {
-        dd->dd_uid = stat_buf.st_uid;
-        dd->dd_gid = stat_buf.st_gid;
+    if (stat(dd->dd_dir, &stat_buf) != 0
+     || !S_ISDIR(stat_buf.st_mode)
+    ) {
+        if (!(flags & DD_FAIL_QUIETLY))
+            error_msg("'%s' does not exist", dd->dd_dir);
+        if (flags & DD_CLOSE_ON_OPEN_ERR)
+            dd_close(dd);
+        return 0;
     }
+
+    /* In case caller would want to create more files, he'll need uid:gid */
+    dd->dd_uid = stat_buf.st_uid;
+    dd->dd_gid = stat_buf.st_gid;
 
     return 1;
 }
@@ -226,12 +223,6 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
         error_msg_and_die("dump_dir is already opened"); /* bug */
 
     dd->dd_dir = rm_trailing_slashes(dir);
-    if (exist_file_dir(dd->dd_dir))
-    {
-        error_msg("'%s' already exists", dd->dd_dir);
-        free(dd->dd_dir);
-        return 0;
-    }
 
     dd_lock(dd);
 
@@ -241,17 +232,17 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
      */
     if (mkdir(dd->dd_dir, 0750) == -1)
     {
+        perror_msg("Can't create dir '%s'", dir);
         dd_unlock(dd);
-        error_msg("Can't create dir '%s'", dir);
         return 0;
     }
 
     /* mkdir's mode (above) can be affected by umask, fix it */
     if (chmod(dd->dd_dir, 0750) == -1)
     {
+        perror_msg("Can't change mode of '%s'", dd->dd_dir);
         dd_unlock(dd);
-        error_msg("Can't change mode of '%s'", dir);
-        return false;
+        return 0;
     }
 
     /* Get ABRT's user id */
@@ -272,13 +263,14 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
 
     if (chown(dd->dd_dir, dd->dd_uid, dd->dd_gid) == -1)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", dd->dd_dir,
+        perror_msg("Can't change '%s' ownership to %lu:%lu", dd->dd_dir,
                    (long)dd->dd_uid, (long)dd->dd_gid);
     }
 
-    char uid_str[sizeof(long) * 3 + 2];
-    sprintf(uid_str, "%lu", (long)uid);
-    dd_save_text(dd, CD_UID, uid_str);
+    char long_str[sizeof(long) * 3 + 2];
+
+    sprintf(long_str, "%lu", (long)uid);
+    dd_save_text(dd, CD_UID, long_str);
 
     {
         struct utsname buf;
@@ -295,24 +287,17 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
     }
 
     time_t t = time(NULL);
-    char t_str[sizeof(time_t) * 3 + 2];
-    sprintf(t_str, "%lu", (time_t)t);
-    dd_save_text(dd, FILENAME_TIME, t_str);
+    sprintf(long_str, "%lu", (long)t);
+    dd_save_text(dd, FILENAME_TIME, long_str);
 
     return 1;
 }
 
-static bool delete_file_dir(const char *dir)
+static void delete_file_dir(const char *dir)
 {
-    if (!exist_file_dir(dir))
-        return true;
-
     DIR *d = opendir(dir);
     if (!d)
-    {
-        error_msg("Can't open dir '%s'", dir);
-        return false;
-    }
+        return;
 
     struct dirent *dent;
     while ((dent = readdir(d)) != NULL)
@@ -320,14 +305,14 @@ static bool delete_file_dir(const char *dir)
         if (dot_or_dotdot(dent->d_name))
             continue;
         char *full_path = concat_path_file(dir, dent->d_name);
-        if (unlink(full_path) == -1)
+        if (unlink(full_path) == -1 && errno != ENOENT)
         {
             if (errno != EISDIR)
             {
-                closedir(d);
-                error_msg("Can't remove dir '%s'", full_path);
+                error_msg("Can't remove '%s'", full_path);
                 free(full_path);
-                return false;
+                closedir(d);
+                return;
             }
             delete_file_dir(full_path);
         }
@@ -336,20 +321,12 @@ static bool delete_file_dir(const char *dir)
     closedir(d);
     if (rmdir(dir) == -1)
     {
-        error_msg("Can't remove dir %s", dir);
-        return false;
+        error_msg("Can't remove dir '%s'", dir);
     }
-
-    return true;
 }
 
 void dd_delete(struct dump_dir *dd)
 {
-    if (!exist_file_dir(dd->dd_dir))
-    {
-        return;
-    }
-
     delete_file_dir(dd->dd_dir);
 }
 

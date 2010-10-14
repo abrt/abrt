@@ -143,10 +143,10 @@ int save_oops_to_debug_dump(GList **oopsList)
             /* Optional, makes generated bz more informative */
             strchrnul(second_line, '\n')[0] = '\0';
             dd_save_text(dd, FILENAME_REASON, second_line);
-            dd_close(dd);
         }
         else
             errors++;
+        dd_close(dd);
     }
 
     return errors;
