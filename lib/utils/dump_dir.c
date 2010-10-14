@@ -33,6 +33,8 @@
 // dd_opendir(dd, ".") will create "..lock" istead of proper "../DIRNAME.lock"
 // Similarly for dd_opendir(dd, "DIRNAME/."), dd_opendir(dd, "..") etc.
 
+static char *load_text_file(const char *path);
+
 static bool isdigit_str(const char *str)
 {
     do
@@ -62,70 +64,6 @@ static bool exist_file_dir(const char *path)
         }
     }
     return false;
-}
-
-static char *load_text_file(const char *path);
-static void dd_lock(struct dump_dir *dd);
-static void dd_unlock(struct dump_dir *dd);
-
-struct dump_dir *dd_init(void)
-{
-    return (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
-}
-
-void dd_close(struct dump_dir *dd)
-{
-    if (!dd)
-        return;
-
-    dd_unlock(dd);
-    if (dd->next_dir)
-    {
-        closedir(dd->next_dir);
-        /* free(dd->next_dir); - WRONG! */
-    }
-
-    free(dd->dd_dir);
-    free(dd);
-}
-
-int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
-{
-    if (dd->locked)
-        error_msg_and_die("dump_dir is already opened"); /* bug */
-
-    dd->dd_dir = rm_trailing_slashes(dir);
-    if (!exist_file_dir(dd->dd_dir))
-    {
-
-        if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dd->dd_dir);
-
-        if (flags & DD_CLOSE_ON_OPEN_ERR)
-            dd_close(dd);
-
-        return 0;
-    }
-
-    dd_lock(dd);
-
-    /* In case caller would want to create more files, he'll need uid:gid */
-    struct stat stat_buf;
-    if (stat(dd->dd_dir, &stat_buf) == 0)
-    {
-        dd->dd_uid = stat_buf.st_uid;
-        dd->dd_gid = stat_buf.st_gid;
-    }
-
-    return 1;
-}
-
-int dd_exist(struct dump_dir *dd, const char *path)
-{
-    char *full_path = concat_path_file(dd->dd_dir, path);
-    int ret = exist_file_dir(full_path);
-    free(full_path);
-    return ret;
 }
 
 static bool get_and_set_lock(const char* lock_file, const char* pid)
@@ -202,6 +140,65 @@ static void dd_unlock(struct dump_dir *dd)
         xunlink(lock_buf);
         VERB1 log("Unlocked '%s'", lock_buf);
     }
+}
+
+struct dump_dir *dd_init(void)
+{
+    return (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
+}
+
+int dd_exist(struct dump_dir *dd, const char *path)
+{
+    char *full_path = concat_path_file(dd->dd_dir, path);
+    int ret = exist_file_dir(full_path);
+    free(full_path);
+    return ret;
+}
+
+void dd_close(struct dump_dir *dd)
+{
+    if (!dd)
+        return;
+
+    dd_unlock(dd);
+    if (dd->next_dir)
+    {
+        closedir(dd->next_dir);
+        /* free(dd->next_dir); - WRONG! */
+    }
+
+    free(dd->dd_dir);
+    free(dd);
+}
+
+int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
+{
+    if (dd->locked)
+        error_msg_and_die("dump_dir is already opened"); /* bug */
+
+    dd->dd_dir = rm_trailing_slashes(dir);
+    if (!exist_file_dir(dd->dd_dir))
+    {
+        if (!(flags & DD_FAIL_QUIETLY))
+            error_msg("'%s' does not exist", dd->dd_dir);
+
+        if (flags & DD_CLOSE_ON_OPEN_ERR)
+            dd_close(dd);
+
+        return 0;
+    }
+
+    dd_lock(dd);
+
+    /* In case caller would want to create more files, he'll need uid:gid */
+    struct stat stat_buf;
+    if (stat(dd->dd_dir, &stat_buf) == 0)
+    {
+        dd->dd_uid = stat_buf.st_uid;
+        dd->dd_gid = stat_buf.st_gid;
+    }
+
+    return 1;
 }
 
 /* Create a fresh empty debug dump dir.
