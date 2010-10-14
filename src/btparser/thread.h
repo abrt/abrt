@@ -27,7 +27,7 @@ extern "C" {
 #endif
 
 struct btp_frame;
-struct btp_strbuf;
+struct strbuf;
 struct btp_location;
 
 /**
@@ -175,7 +175,7 @@ btp_thread_remove_frames_below_n(struct btp_thread *thread,
  */
 void
 btp_thread_append_to_str(struct btp_thread *thread,
-                         struct btp_strbuf *str,
+                         struct strbuf *str,
                          bool verbose);
 
 /**

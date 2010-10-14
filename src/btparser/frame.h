@@ -27,7 +27,7 @@
 extern "C" {
 #endif
 
-struct btp_strbuf;
+struct strbuf;
 struct btp_location;
 
 /**
@@ -234,7 +234,7 @@ btp_frame_add_sibling(struct btp_frame *a,
  */
 void
 btp_frame_append_to_str(struct btp_frame *frame,
-                        struct btp_strbuf *str,
+                        struct strbuf *str,
                         bool verbose);
 
 /**
@@ -285,7 +285,7 @@ btp_frame_parse_frame_start(char **input, unsigned *number);
  */
 int
 btp_frame_parseadd_operator(char **input,
-                            struct btp_strbuf *target);
+                            struct strbuf *target);
 
 /**
  * Parses a part of function name from the input.

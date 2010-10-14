@@ -112,7 +112,7 @@ int main(void)
 AT_TESTFUN([btp_frame_parseadd_operator],
 [[
 #include <frame.h>
-#include <strbuf.h>
+#include "strbuf.h"
 #include <assert.h>
 #include <string.h>
 
@@ -120,7 +120,7 @@ void check(char *input, int parsed_length)
 {
   printf("Testing '%s' -> %d\n", input, parsed_length);
   char *old_input = input;
-  struct btp_strbuf *strbuf = btp_strbuf_new();
+  struct strbuf *strbuf = strbuf_new();
   assert(parsed_length == btp_frame_parseadd_operator(&input, strbuf));
   printf("  input = '%s', old_input = '%s'\n", input, old_input);
 
@@ -131,7 +131,7 @@ void check(char *input, int parsed_length)
   assert(0 == strncmp(strbuf->buf, old_input, parsed_length));
   assert(strbuf->len == parsed_length);
 
-  btp_strbuf_free(strbuf);
+  strbuf_free(strbuf);
 }
 
 int main(void)

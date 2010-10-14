@@ -267,16 +267,16 @@ btp_backtrace_quality_complex(struct btp_backtrace *backtrace)
 char *
 btp_backtrace_to_text(struct btp_backtrace *backtrace, bool verbose)
 {
-    struct btp_strbuf *str = btp_strbuf_new();
+    struct strbuf *str = strbuf_new();
     if (verbose)
     {
-        btp_strbuf_append_strf(str, "Thread count: %d\n",
+        strbuf_append_strf(str, "Thread count: %d\n",
                                btp_backtrace_get_thread_count(backtrace));
     }
 
     if (backtrace->crash && verbose)
     {
-        btp_strbuf_append_str(str, "Crash frame: ");
+        strbuf_append_str(str, "Crash frame: ");
         btp_frame_append_to_str(backtrace->crash, str, verbose);
     }
 
@@ -287,7 +287,7 @@ btp_backtrace_to_text(struct btp_backtrace *backtrace, bool verbose)
         thread = thread->next;
     }
 
-    return btp_strbuf_free_nobuf(str);
+    return strbuf_free_nobuf(str);
 }
 
 struct btp_frame *

@@ -238,17 +238,17 @@ btp_thread_remove_frames_below_n(struct btp_thread *thread,
 
 void
 btp_thread_append_to_str(struct btp_thread *thread,
-                         struct btp_strbuf *str,
+                         struct strbuf *str,
                          bool verbose)
 {
     int framecount = btp_thread_get_frame_count(thread);
     if (verbose)
     {
-        btp_strbuf_append_strf(str, "Thread no. %d (%d frames)\n",
+        strbuf_append_strf(str, "Thread no. %d (%d frames)\n",
                                thread->number, framecount);
     }
     else
-        btp_strbuf_append_str(str, "Thread\n");
+        strbuf_append_str(str, "Thread\n");
 
     struct btp_frame *frame = thread->frames;
     while (frame)

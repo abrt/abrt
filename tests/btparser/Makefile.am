@@ -6,7 +6,6 @@ EXTRA_DIST = backtraces
 
 TESTSUITE_AT = 	\
   utils.at 	\
-  strbuf.at 	\
   frame.at 	\
   thread.at 	\
   backtrace.at

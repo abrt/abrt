@@ -209,29 +209,29 @@ btp_frame_add_sibling(struct btp_frame *a, struct btp_frame *b)
 
 void
 btp_frame_append_to_str(struct btp_frame *frame,
-                        struct btp_strbuf *str,
+                        struct strbuf *str,
                         bool verbose)
 {
     if (verbose)
-        btp_strbuf_append_strf(str, " #%d", frame->number);
+        strbuf_append_strf(str, " #%d", frame->number);
     else
-        btp_strbuf_append_str(str, " ");
+        strbuf_append_str(str, " ");
 
     if (frame->function_type)
-        btp_strbuf_append_strf(str, " %s", frame->function_type);
+        strbuf_append_strf(str, " %s", frame->function_type);
     if (frame->function_name)
-        btp_strbuf_append_strf(str, " %s", frame->function_name);
+        strbuf_append_strf(str, " %s", frame->function_name);
     if (verbose && frame->source_file)
     {
         if (frame->function_name)
-            btp_strbuf_append_str(str, " at");
-        btp_strbuf_append_strf(str, " %s", frame->source_file);
+            strbuf_append_str(str, " at");
+        strbuf_append_strf(str, " %s", frame->source_file);
     }
 
     if (frame->signal_handler_called)
-        btp_strbuf_append_str(str, " <signal handler called>");
+        strbuf_append_str(str, " <signal handler called>");
 
-    btp_strbuf_append_str(str, "\n");
+    strbuf_append_str(str, "\n");
 }
 
 /**
@@ -308,7 +308,7 @@ btp_frame_parse_frame_start(char **input, unsigned *number)
 }
 
 int
-btp_frame_parseadd_operator(char **input, struct btp_strbuf *target)
+btp_frame_parseadd_operator(char **input, struct strbuf *target)
 {
     char *local_input = *input;
     if (0 == btp_skip_string(&local_input, "operator"))
@@ -317,8 +317,8 @@ btp_frame_parseadd_operator(char **input, struct btp_strbuf *target)
 #define OP(x) \
     if (0 < btp_skip_string(&local_input, x))      \
     {                                              \
-        btp_strbuf_append_str(target, "operator"); \
-        btp_strbuf_append_str(target, x);          \
+        strbuf_append_str(target, "operator"); \
+        strbuf_append_str(target, x);          \
         int length = local_input - *input;         \
         *input = local_input;                      \
         return length;                             \
@@ -357,7 +357,7 @@ btp_frame_parse_function_name_chunk(char **input,
                                     char **target)
 {
     char *local_input = *input;
-    struct btp_strbuf *buf = btp_strbuf_new();
+    struct strbuf *buf = strbuf_new();
     while (*local_input)
     {
         if (0 < btp_frame_parseadd_operator(&local_input, buf))
@@ -373,7 +373,7 @@ btp_frame_parse_function_name_chunk(char **input,
                     local_input -= 2;
                 }
                 else
-                    btp_strbuf_append_char(buf, ' ');
+                    strbuf_append_char(buf, ' ');
             }
         }
 
@@ -383,17 +383,17 @@ btp_frame_parse_function_name_chunk(char **input,
                 break;
         }
 
-        btp_strbuf_append_char(buf, *local_input);
+        strbuf_append_char(buf, *local_input);
         ++local_input;
     }
 
     if (buf->len == 0)
     {
-        btp_strbuf_free(buf);
+        strbuf_free(buf);
         return 0;
     }
 
-    *target = btp_strbuf_free_nobuf(buf);
+    *target = strbuf_free_nobuf(buf);
     int total_char_count = local_input - *input;
     *input = local_input;
     return total_char_count;
@@ -406,8 +406,8 @@ btp_frame_parse_function_name_braces(char **input, char **target)
     if (!btp_skip_char(&local_input, '('))
         return 0;
 
-    struct btp_strbuf *buf = btp_strbuf_new();
-    btp_strbuf_append_char(buf, '(');
+    struct strbuf *buf = strbuf_new();
+    strbuf_append_char(buf, '(');
     while (true)
     {
         char *namechunk = NULL;
@@ -415,7 +415,7 @@ btp_frame_parse_function_name_braces(char **input, char **target)
             0 < btp_frame_parse_function_name_braces(&local_input, &namechunk) ||
             0 < btp_frame_parse_function_name_template(&local_input, &namechunk))
         {
-            btp_strbuf_append_str(buf, namechunk);
+            strbuf_append_str(buf, namechunk);
             free(namechunk);
         }
         else
@@ -424,12 +424,12 @@ btp_frame_parse_function_name_braces(char **input, char **target)
 
     if (!btp_skip_char(&local_input, ')'))
     {
-        btp_strbuf_free(buf);
+        strbuf_free(buf);
         return 0;
     }
 
-    btp_strbuf_append_char(buf, ')');
-    *target = btp_strbuf_free_nobuf(buf);
+    strbuf_append_char(buf, ')');
+    *target = strbuf_free_nobuf(buf);
     int total_char_count = local_input - *input;
     *input = local_input;
     return total_char_count;
@@ -442,8 +442,8 @@ btp_frame_parse_function_name_template(char **input, char **target)
     if (!btp_skip_char(&local_input, '<'))
         return 0;
 
-    struct btp_strbuf *buf = btp_strbuf_new();
-    btp_strbuf_append_char(buf, '<');
+    struct strbuf *buf = strbuf_new();
+    strbuf_append_char(buf, '<');
     while (true)
     {
         char *namechunk = NULL;
@@ -451,7 +451,7 @@ btp_frame_parse_function_name_template(char **input, char **target)
             0 < btp_frame_parse_function_name_braces(&local_input, &namechunk) ||
             0 < btp_frame_parse_function_name_template(&local_input, &namechunk))
         {
-            btp_strbuf_append_str(buf, namechunk);
+            strbuf_append_str(buf, namechunk);
             free(namechunk);
         }
         else
@@ -460,12 +460,12 @@ btp_frame_parse_function_name_template(char **input, char **target)
 
     if (!btp_skip_char(&local_input, '>'))
     {
-        btp_strbuf_free(buf);
+        strbuf_free(buf);
         return 0;
     }
 
-    btp_strbuf_append_char(buf, '>');
-    *target = btp_strbuf_free_nobuf(buf);
+    strbuf_append_char(buf, '>');
+    *target = strbuf_free_nobuf(buf);
     int total_char_count = local_input - *input;
     *input = local_input;
     return total_char_count;
@@ -488,7 +488,7 @@ btp_frame_parse_function_name(char **input,
 
     char *local_input = *input;
     /* Up to three parts of function name. */
-    struct btp_strbuf *buf0 = btp_strbuf_new(), *buf1 = NULL;
+    struct strbuf *buf0 = strbuf_new(), *buf1 = NULL;
 
     /* First character:
        '~' for destructor
@@ -505,7 +505,7 @@ btp_frame_parse_function_name(char **input,
             --local_input;
         else
         {
-            btp_strbuf_append_char(buf0, first);
+            strbuf_append_char(buf0, first);
             ++location->column;
         }
     }
@@ -515,14 +515,14 @@ btp_frame_parse_function_name(char **input,
                                                          &namechunk);
         if (0 < chars)
         {
-            btp_strbuf_append_str(buf0, namechunk);
+            strbuf_append_str(buf0, namechunk);
             free(namechunk);
             location->column += chars;
         }
         else
         {
             location->message = "Expected function name.";
-            btp_strbuf_free(buf0);
+            strbuf_free(buf0);
             return false;
         }
     }
@@ -550,7 +550,7 @@ btp_frame_parse_function_name(char **input,
         if (0 == chars)
             break;
 
-        btp_strbuf_append_str(buf0, namechunk);
+        strbuf_append_str(buf0, namechunk);
         free(namechunk);
         location->column += chars;
     }
@@ -559,7 +559,7 @@ btp_frame_parse_function_name(char **input,
     char space;
     if (!btp_parse_char_limited(&local_input, BTP_space, &space))
     {
-        btp_strbuf_free(buf0);
+        strbuf_free(buf0);
         location->message = "Space or newline expected after function name.";
         return false;
     }
@@ -569,16 +569,16 @@ btp_frame_parse_function_name(char **input,
     int chars = btp_skip_string(&local_input, "const");
     if (0 < chars)
     {
-        btp_strbuf_append_char(buf0, space);
+        strbuf_append_char(buf0, space);
         btp_location_eat_char(location, space);
-        btp_strbuf_append_str(buf0, "const");
+        strbuf_append_str(buf0, "const");
         location->column += chars;
 
         /* Check the empty space after function name again.*/
         if (!btp_parse_char_limited(&local_input, BTP_space, &space))
         {
             /* Function name MUST be ended by empty space. */
-            btp_strbuf_free(buf0);
+            strbuf_free(buf0);
             location->message = "Space or newline expected after function name.";
             return false;
         }
@@ -595,8 +595,8 @@ btp_frame_parse_function_name(char **input,
         /* Eat the space separator first. */
         btp_location_eat_char(location, space);
 
-        buf1 = btp_strbuf_new();
-        btp_strbuf_append_str(buf1, namechunk);
+        buf1 = strbuf_new();
+        strbuf_append_str(buf1, namechunk);
         free(namechunk);
         location->column += chars;
 
@@ -620,7 +620,7 @@ btp_frame_parse_function_name(char **input,
             if (0 == chars)
                 break;
 
-            btp_strbuf_append_str(buf1, namechunk);
+            strbuf_append_str(buf1, namechunk);
             free(namechunk);
             location->column += chars;
         }
@@ -628,8 +628,8 @@ btp_frame_parse_function_name(char **input,
         /* Function name MUST be ended by empty space. */
         if (!btp_parse_char_limited(&local_input, BTP_space, &space))
         {
-            btp_strbuf_free(buf0);
-            btp_strbuf_free(buf1);
+            strbuf_free(buf0);
+            strbuf_free(buf1);
             location->message = "Space or newline expected after function name.";
             return false;
         }
@@ -639,18 +639,18 @@ btp_frame_parse_function_name(char **input,
     chars = btp_skip_string(&local_input, "const");
     if (0 < chars)
     {
-        struct btp_strbuf *buf = buf1 ? buf1 : buf0;
-        btp_strbuf_append_char(buf, space);
+        struct strbuf *buf = buf1 ? buf1 : buf0;
+        strbuf_append_char(buf, space);
         btp_location_eat_char(location, space);
-        btp_strbuf_append_str(buf, "const");
+        strbuf_append_str(buf, "const");
         location->column += chars;
 
         /* Check the empty space after function name again.*/
         if (!btp_skip_char_limited(&local_input, BTP_space))
         {
             /* Function name MUST be ended by empty space. */
-            btp_strbuf_free(buf0);
-            btp_strbuf_free(buf1);
+            strbuf_free(buf0);
+            strbuf_free(buf1);
             location->message = "Space or newline expected after function name.";
             return false;
         }
@@ -661,12 +661,12 @@ btp_frame_parse_function_name(char **input,
 
     if (buf1)
     {
-        *function_name = btp_strbuf_free_nobuf(buf1);
-        *function_type = btp_strbuf_free_nobuf(buf0);
+        *function_name = strbuf_free_nobuf(buf1);
+        *function_type = strbuf_free_nobuf(buf0);
     }
     else
     {
-        *function_name = btp_strbuf_free_nobuf(buf0);
+        *function_name = strbuf_free_nobuf(buf0);
         *function_type = NULL;
     }
 
