@@ -75,78 +75,6 @@ static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput
     //log("hash2:%s str:'%s'", hash_str, pInput);
 }
 
-/**
- *
- * @param[out] status See `man 2 wait` for status information.
- * @return Malloc'ed string
- */
-static char* exec_vp(char **args, uid_t uid, int redirect_stderr, unsigned timeout_sec, int *status)
-{
-    /* Nuke everything which may make setlocale() switch to non-POSIX locale:
-     * we need to avoid having gdb output in some obscure language.
-     */
-    static const char *const unsetenv_vec[] = {
-        "LANG",
-        "LC_ALL",
-        "LC_COLLATE",
-        "LC_CTYPE",
-        "LC_MESSAGES",
-        "LC_MONETARY",
-        "LC_NUMERIC",
-        "LC_TIME",
-        NULL
-    };
-
-    int flags = EXECFLG_INPUT_NUL | EXECFLG_OUTPUT | EXECFLG_SETGUID | EXECFLG_SETSID | EXECFLG_QUIET;
-    if (redirect_stderr)
-        flags |= EXECFLG_ERR2OUT;
-    VERB1 flags &= ~EXECFLG_QUIET;
-
-    int pipeout[2];
-    pid_t child = fork_execv_on_steroids(flags, args, pipeout, (char**)unsetenv_vec, /*dir:*/ NULL, uid);
-
-    /* We use this function to run gdb and unstrip. Bugs in gdb or corrupted
-     * coredumps were observed to cause gdb to enter infinite loop.
-     * Therefore we have a (largish) timeout, after which we kill the child.
-     */
-    int t = time(NULL); /* int is enough, no need to use time_t */
-    int endtime = t + timeout_sec;
-
-    struct strbuf *buf_out = strbuf_new();
-
-    while (1)
-    {
-        int timeout = endtime - t;
-        if (timeout < 0)
-        {
-            kill(child, SIGKILL);
-            strbuf_append_strf(buf_out, "\nTimeout exceeded: %u seconds, killing %s\n", timeout_sec, args[0]);
-            break;
-        }
-
-        /* We don't check poll result - checking read result is enough */
-        struct pollfd pfd;
-        pfd.fd = pipeout[0];
-        pfd.events = POLLIN;
-        poll(&pfd, 1, timeout * 1000);
-
-        char buff[1024];
-        int r = read(pipeout[0], buff, sizeof(buff) - 1);
-        if (r <= 0)
-            break;
-        buff[r] = '\0';
-        strbuf_append_str(buf_out, buff);
-        t = time(NULL);
-    }
-    close(pipeout[0]);
-
-    /* Prevent having zombie child process, and maybe collect status
-     * (note that status == NULL is ok too) */
-    waitpid(child, status, 0);
-
-    return strbuf_free_nobuf(buf_out);
-}
-
 static void gen_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs, unsigned timeout_sec)
 {
     update_client(_("Generating backtrace"));
@@ -176,56 +104,6 @@ static void gen_backtrace(const char *pDebugDumpDir, const char *pDebugInfoDirs,
     }
     /* parent */
     waitpid(pid, NULL, 0);
-}
-
-static void GetIndependentBuildIdPC(const char *unstrip_n_output,
-                                    string& pIndependentBuildIdPC)
-{
-    // lines look like this:
-    // 0x400000+0x209000 23c77451cf6adff77fc1f5ee2a01d75de6511dda@0x40024c - - [exe]
-    // 0x400000+0x209000 ab3c8286aac6c043fd1bb1cc2a0b88ec29517d3e@0x40024c /bin/sleep /usr/lib/debug/bin/sleep.debug [exe]
-    // 0x7fff313ff000+0x1000 389c7475e3d5401c55953a425a2042ef62c4c7df@0x7fff313ff2f8 . - linux-vdso.so.1
-    const char *line = unstrip_n_output;
-    while (*line)
-    {
-        const char *eol = strchrnul(line, '\n');
-        const char *plus = (char*)memchr(line, '+', eol - line);
-        if (plus)
-        {
-            while (++plus < eol && *plus != '@')
-            {
-                if (!isspace(*plus))
-                {
-                    pIndependentBuildIdPC += *plus;
-                }
-            }
-        }
-        if (*eol != '\n') break;
-        line = eol + 1;
-    }
-}
-
-static char* run_unstrip_n(const char *pDebugDumpDir, unsigned timeout_sec)
-{
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
-        return NULL;
-
-    char *uid = dd_load_text(dd, CD_UID);
-    dd_close(dd);
-
-    char* args[4];
-    args[0] = (char*)"eu-unstrip";
-    args[1] = xasprintf("--core=%s/"FILENAME_COREDUMP, pDebugDumpDir);
-    args[2] = (char*)"-n";
-    args[3] = NULL;
-
-    char *out = exec_vp(args, xatoi_u(uid), /*redirect_stderr:*/ 0, timeout_sec, NULL);
-    free(uid);
-
-    free(args[1]);
-
-    return out;
 }
 
 /* Needs gdb feature from here: https://bugzilla.redhat.com/show_bug.cgi?id=528668
@@ -397,59 +275,47 @@ static void trim_debuginfo_cache(unsigned max_mb)
 
 string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
+    string ret;
+
     struct dump_dir *dd = dd_init();
     if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
-        return string("");
+        return ret; /* "" */
 
-    char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
-    char *package = dd_load_text(dd, FILENAME_PACKAGE);
+    if (!dd_exist(dd, CD_UUID))
+    {
+        dd_close(dd);
+
+        pid_t pid = fork();
+        if (pid < 0)
+        {
+            perror_msg("fork");
+            return ret; /* "" */
+        }
+        if (pid == 0) /* child */
+        {
+            char *argv[4];  /* abrt-action-analyze-c -d DIR <NULL> */
+            char **pp = argv;
+            *pp++ = (char*)"abrt-action-analyze-c";
+            *pp++ = (char*)"-d";
+            *pp++ = (char*)pDebugDumpDir;
+            *pp = NULL;
+
+            execvp(argv[0], argv);
+            perror_msg_and_die("Can't execute '%s'", argv[0]);
+        }
+        /* parent */
+        waitpid(pid, NULL, 0);
+
+        dd = dd_init();
+        if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+            return ret; /* "" */
+    }
+
+    char *uuid = dd_load_text(dd, CD_UUID);
     dd_close(dd);
-
-    string independentBuildIdPC;
-    char *unstrip_n_output = run_unstrip_n(pDebugDumpDir, m_nGdbTimeoutSec);
-    if (unstrip_n_output)
-        GetIndependentBuildIdPC(unstrip_n_output, independentBuildIdPC);
-    else
-        VERB3 error_msg("run_unstrip_n() returns NULL, broken coredump/eu-unstrip?");
-
-    free(unstrip_n_output);
-
-    /* package variable has "firefox-3.5.6-1.fc11[.1]" format */
-    /* Remove distro suffix and maybe least significant version number */
-    char *p = package;
-    while (*p)
-    {
-        if (*p == '.' && (p[1] < '0' || p[1] > '9'))
-        {
-            /* We found "XXXX.nondigitXXXX", trim this part */
-            *p = '\0';
-            break;
-        }
-        p++;
-    }
-    char *first_dot = strchr(package, '.');
-    if (first_dot)
-    {
-        char *last_dot = strrchr(first_dot, '.');
-        if (last_dot != first_dot)
-        {
-            /* There are more than one dot: "1.2.3"
-             * Strip last part, we don't want to distinquish crashes
-             * in packages which differ only by minor release number.
-             */
-            *last_dot = '\0';
-        }
-    }
-
-    char *hash_str = xasprintf("%s%s%s", package, executable, independentBuildIdPC.c_str());
-    free(package);
-    free(executable);
-
-    char hash_str2[SHA1_RESULT_LEN*2 + 1];
-    create_hash(hash_str2, hash_str);
-    free(hash_str);
-
-    return hash_str2;
+    ret = uuid;
+    free(uuid);
+    return ret;
 }
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
