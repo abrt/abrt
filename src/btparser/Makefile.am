@@ -1,12 +1,3 @@
-pkginclude_HEADERS = \
-	backtrace.h \
-	frame.h \
-	location.h
-	normalize.h \
-	strbuf.h \
-	thread.h \
-	utils.h
-
 lib_LTLIBRARIES = libbtparser.la
 libbtparser_la_SOURCES = \
 	backtrace.h backtrace.c \

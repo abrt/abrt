@@ -9,7 +9,7 @@ LIBTOOL="$abs_top_builddir/libtool"
 CFLAGS="@O0CFLAGS@ -I$abs_top_builddir -D_GNU_SOURCE"
 
 # Are special link options needed?
-LDFLAGS="@LDFLAGS@ $abs_top_builddir/lib/libbtparser.la"
+LDFLAGS="@LDFLAGS@ $abs_top_builddir/src/libbtparser.la"
 
 # Are special libraries needed?
 LIBS="@LIBS@"

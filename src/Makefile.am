@@ -1,1 +1,1 @@
-SUBDIRS = hooks daemon applet gui cli
+SUBDIRS = hooks btparser daemon applet gui cli

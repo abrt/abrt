@@ -104,6 +104,13 @@ AC_SUBST(DEBUG_DUMPS_DIR)
 AC_SUBST(DEBUG_INFO_DIR)
 AC_SUBST(DL_LIBS, -ldl)
 
+# Initialize the test suite.
+AC_CONFIG_TESTDIR(tests)
+AC_CONFIG_FILES([tests/Makefile tests/atlocal])
+AM_MISSING_PROG([AUTOM4TE], [autom4te])
+# Needed by tests/atlocal.in.
+AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//'`])
+
 AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_FILES([
@@ -113,6 +120,7 @@ AC_CONFIG_FILES([
 	lib/utils/Makefile
 	lib/plugins/Makefile
 	src/Makefile
+	src/btparser/Makefile
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile
@@ -123,5 +131,4 @@ AC_CONFIG_FILES([
 	icons/Makefile
 ])
 
-AC_CONFIG_SUBDIRS([btparser])
 AC_OUTPUT

@@ -1,4 +1,4 @@
-EXTRA_DIST = backtraces
+SUBDIRS = btparser
 
 ## ------------ ##
 ## package.m4.  ##
@@ -20,7 +20,7 @@ package.m4: Makefile.in
              echo 'm4_define([AT_PACKAGE_URL],' && \
              echo '  [@PACKAGE_URL@])'; \
 	} >'package.m4'
-EXTRA_DIST += package.m4
+EXTRA_DIST = package.m4
 
 ## ------------ ##
 ## Test suite.  ##
@@ -28,12 +28,7 @@ EXTRA_DIST += package.m4
 
 TESTSUITE_AT = 	\
   local.at 	\
-  testsuite.at 	\
-  utils.at 	\
-  strbuf.at 	\
-  frame.at 	\
-  thread.at 	\
-  backtrace.at
+  testsuite.at
 
 EXTRA_DIST += $(TESTSUITE_AT)
 TESTSUITE = $(srcdir)/testsuite
