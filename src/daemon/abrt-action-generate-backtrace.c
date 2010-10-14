@@ -336,7 +336,7 @@ int main(int argc, char **argv)
     }
     free(backtrace_str);
 
-    /* Compute UUID. */
+    /* Compute duplication hash. */
     char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
     struct strbuf *str_hash = strbuf_new();
     strbuf_append_str(str_hash, package);
@@ -344,7 +344,7 @@ int main(int argc, char **argv)
     strbuf_append_str(str_hash, str_hash_core);
     char hash_str[SHA1_RESULT_LEN*2 + 1];
     create_hash(hash_str, str_hash->buf);
-    dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
+    dd_save_text(dd, FILENAME_DUPHASH, hash_str);
     strbuf_free(str_hash);
     free(str_hash_core);
 
