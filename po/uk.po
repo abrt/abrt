@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-13 15:16+0000\n"
+"POT-Creation-Date: 2010-10-14 20:16+0200\n"
 "PO-Revision-Date: 2010-10-13 18:43+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
@@ -23,25 +23,25 @@ msgstr ""
 msgid "Reports bugs to bugzilla"
 msgstr "Повідомляє про вади до Bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:152
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "Створюється трасування"
 
-#: ../lib/plugins/CCpp.cpp:238
+#: ../lib/plugins/CCpp.cpp:115
 msgid "Starting the debuginfo installation"
 msgstr "Запускається встановлення debuginfo"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:473
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "Отримання загальних даних ідентифікації…"
 
-#: ../lib/plugins/CCpp.cpp:667
+#: ../lib/plugins/CCpp.cpp:532
 msgid "Skipping the debuginfo installation"
 msgstr "Пропускається встановлення debuginfo"
 
-#: ../lib/plugins/CCpp.cpp:918
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Аналізує аварійні завершення роботи програм C/C++"
 
@@ -294,6 +294,11 @@ msgstr "Адреса RHTSupport:"
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Вивантажено: %llu з %llu кілобайтів"
+
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -635,6 +640,97 @@ msgstr "Помилка при завантаженні параметрів зв
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Повідомлення щодо збою створено за допомогою %d модулів (%d помилок)\n"
 
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+#, fuzzy
+msgid "Log to syslog"
+msgstr "Записувати до журналу syslog навіть з параметром -d"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "Новий ідентифікатор запиту: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"Порожнє ім'я або пароль.\n"
+"Перевірте "
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "Триває вхід до Bugzilla…"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "Пошук дублікатів…"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "Не вказано обов’язкового учасника «bugs»"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+msgid "Creating a new bug..."
+msgstr "Створення нового повідомлення про ваду…"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "Не вдалося створити запис у Bugzilla"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "Виконується вихід…"
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Запит вже існує: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Додати %s до списку CC"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "Додавання коментаря до запиту (%d)"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
 #: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
 msgstr "Занадто довгий коментар"
@@ -666,6 +762,11 @@ msgstr "Записувати до журналу syslog навіть з пара
 #: ../src/daemon/Daemon.cpp:874
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Завершувати роботу після SEC секунд бездіяльності"
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
+msgid "Database plugin not specified. Please check abrtd settings."
+msgstr ""
+"Не вказано модуля роботи з базою даних. Будь ласка, змініть параметри abrtd."
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1488,59 +1589,11 @@ msgstr ""
 "виправлень не буде внесено, у процесі звітування про ваду можуть виникнути "
 "помилки.\n"
 
-#~ msgid "New bug id: %i"
-#~ msgstr "Новий ідентифікатор запиту: %i"
-
-#~ msgid ""
-#~ "Empty login or password.\n"
-#~ "Please check "
-#~ msgstr ""
-#~ "Порожнє ім'я або пароль.\n"
-#~ "Перевірте "
-
-#~ msgid "Logging into bugzilla..."
-#~ msgstr "Триває вхід до Bugzilla…"
-
-#~ msgid "Checking for duplicates..."
-#~ msgstr "Пошук дублікатів…"
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Не вказано обов’язкового учасника «bugs»"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr "Збій get_bug_info(). Не вдалося зібрати потрібну інформацію."
-
-#~ msgid "Creating a new bug..."
-#~ msgstr "Створення нового повідомлення про ваду…"
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Не вдалося створити запис у Bugzilla"
-
-#~ msgid "Logging out..."
-#~ msgstr "Виконується вихід…"
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Запит вже існує: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla не вдалося знайти батьківський запит для %d"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Додати %s до списку CC"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "Додавання коментаря до запиту (%d)"
-
 #~ msgid "Show this help message"
 #~ msgstr "Показати цю довідку"
 
 #~ msgid "Verbose"
 #~ msgstr "Докладний режим"
-
-#~ msgid "Database plugin not specified. Please check abrtd settings."
-#~ msgstr ""
-#~ "Не вказано модуля роботи з базою даних. Будь ласка, змініть параметри "
-#~ "abrtd."
 
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"

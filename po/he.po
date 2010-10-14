@@ -3,105 +3,42 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ABRT\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-09-28 07:19+0000\n"
+"POT-Creation-Date: 2010-10-14 20:16+0200\n"
 "PO-Revision-Date: 2010-09-30 11:55+0300\n"
 "Last-Translator: elad <el.il@doom.co.il>\n"
 "Language-Team: Hebrew <he-users@lists.fedoraproject.org>\n"
-"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: he\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 "X-Poedit-Language: Hebrew\n"
 "X-Poedit-Country: ISRAEL\n"
 
-#: ../lib/plugins/Bugzilla.cpp:464
-#, c-format
-msgid "New bug id: %i"
-msgstr "מזהה באג חדש: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:688
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"שם משתמש וסיסמה ריקים.\n"
-"בדוק בעיה זו בבקשה."
-
-#: ../lib/plugins/Bugzilla.cpp:697
-msgid "Logging into bugzilla..."
-msgstr "מתחבר לבאגזילה..."
-
-#: ../lib/plugins/Bugzilla.cpp:700
-msgid "Checking for duplicates..."
-msgstr "מחפש כפילויות..."
-
-#: ../lib/plugins/Bugzilla.cpp:721 ../lib/plugins/Bugzilla.cpp:756
-msgid "Missing mandatory member 'bugs'"
-msgstr "חסר שדה חוסה 'bugs'"
-
-#: ../lib/plugins/Bugzilla.cpp:739 ../lib/plugins/Bugzilla.cpp:772
-#: ../lib/plugins/Bugzilla.cpp:848
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() failed. Could not collect all mandatory information"
-
-#: ../lib/plugins/Bugzilla.cpp:788
-msgid "Creating a new bug..."
-msgstr "יוצר באג חדש..."
-
-#: ../lib/plugins/Bugzilla.cpp:793
-msgid "Bugzilla entry creation failed"
-msgstr "יצירת ערך בBugzilla נכשלה."
-
-#: ../lib/plugins/Bugzilla.cpp:803 ../lib/plugins/Bugzilla.cpp:902
-msgid "Logging out..."
-msgstr "מתנתק..."
-
-#. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:822
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "הבאג דווח בעבר: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:833
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "‏Bugzilla לא הצליחה למצוא את ההורה של באג %d"
-
-#: ../lib/plugins/Bugzilla.cpp:862 ../lib/plugins/Bugzilla.cpp:863
-#, c-format
-msgid "Add %s to CC list"
-msgstr "הוסף %s לרשימת ה־CC (העתק)"
-
-#: ../lib/plugins/Bugzilla.cpp:887
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "הוסף הערה חדשה לבאג(%d)"
-
-#: ../lib/plugins/Bugzilla.cpp:986
+#: ../lib/plugins/Bugzilla.cpp:149
 msgid "Reports bugs to bugzilla"
 msgstr "מדווח על באגים ל־Bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:153
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "יוצר מידע קריסה"
 
-#: ../lib/plugins/CCpp.cpp:239
+#: ../lib/plugins/CCpp.cpp:115
 msgid "Starting the debuginfo installation"
 msgstr "מתחיל התקנת מידע ניפוי שגיאות"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:474
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "מקבל זהות גלובלית ייחודית..."
 
-#: ../lib/plugins/CCpp.cpp:668
+#: ../lib/plugins/CCpp.cpp:532
 msgid "Skipping the debuginfo installation"
 msgstr "מדלג על התקנת מידע ניפוי שגיאות"
 
-#: ../lib/plugins/CCpp.cpp:919
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "מנתח קריסות בישומי C או C++."
 
@@ -139,7 +76,7 @@ msgstr "יוצר ושולח דיווח..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "שולח שגיאות ליבה ל־kerneloops.org"
 
-#: ../lib/plugins/KerneloopsScanner.cpp:207
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "סורק בתקופתיות עבור שגיאות ליבה ושומר אותן"
 
@@ -352,6 +289,11 @@ msgstr "כתובת RHTSupport:"
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "הועלו %llu מתוך %llu קילו־בתים"
 
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
+
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr "יישום ההתראה של ABRT"
@@ -547,24 +489,24 @@ msgstr ""
 "\tunique UUID prefix  - the crash with matching UUID will be acted upon\n"
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 
-#: ../src/cli/CLI.cpp:293
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr "You must specify exactly one operation"
 
-#: ../src/cli/report.cpp:171
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# This field is read only\n"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Describe the circumstances of this crash below"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr "# How to reproduce the crash?"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:194
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -572,47 +514,47 @@ msgstr ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr "# Architecture"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr "# Command line"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:198
 msgid "# Component"
 msgstr "# Component"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr "# Core dump"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr "# Executable"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr "# Kernel version"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:202
 msgid "# Package"
 msgstr "# Package"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr "# Reason of crash"
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr "# Release string of the operating system"
 
-#: ../src/cli/report.cpp:328
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 
-#: ../src/cli/report.cpp:416
+#: ../src/cli/report.cpp:415
 msgid ""
 "\n"
 "The report has been updated"
@@ -620,7 +562,7 @@ msgstr ""
 "\n"
 "The report has been updated"
 
-#: ../src/cli/report.cpp:418
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -629,46 +571,46 @@ msgstr ""
 "No changes were detected in the report"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:537
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:538
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:639
+#: ../src/cli/report.cpp:645
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Wrong settings were detected for plugin %s\n"
 
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr "Enter your login: "
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr "Enter your password: "
 
-#: ../src/cli/report.cpp:694
+#: ../src/cli/report.cpp:700
 msgid "Reporting..."
 msgstr "Reporting..."
 
-#: ../src/cli/report.cpp:713
+#: ../src/cli/report.cpp:719
 #, c-format
 msgid "Report using %s?"
 msgstr "Report using %s?"
 
-#: ../src/cli/report.cpp:716
+#: ../src/cli/report.cpp:722
 msgid "Skipping..."
 msgstr "Skipping..."
 
-#: ../src/cli/report.cpp:728
+#: ../src/cli/report.cpp:734
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "הדיווח מנוטרל מכיוון שמידע הקריסה אינו שמיש"
 
-#: ../src/cli/report.cpp:732
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -677,14 +619,104 @@ msgstr ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 
-#: ../src/cli/report.cpp:741
+#: ../src/cli/report.cpp:747
 msgid "Error loading reporter settings"
 msgstr "שגיאה בטעינת הגדרות המדווח"
 
-#: ../src/cli/report.cpp:760
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "הקריסה דווחה באמצעות %d תוספים (%d שגיאות)\n"
+
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+msgid "Log to syslog"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "מזהה באג חדש: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"שם משתמש וסיסמה ריקים.\n"
+"בדוק בעיה זו בבקשה."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "מתחבר לבאגזילה..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "מחפש כפילויות..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "חסר שדה חוסה 'bugs'"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() failed. Could not collect all mandatory information"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+msgid "Creating a new bug..."
+msgstr "יוצר באג חדש..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "יצירת ערך בBugzilla נכשלה."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "מתנתק..."
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "הבאג דווח בעבר: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "‏Bugzilla לא הצליחה למצוא את ההורה של באג %d"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, c-format
+msgid "Add %s to CC list"
+msgstr "הוסף %s לרשימת ה־CC (העתק)"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "הוסף הערה חדשה לבאג(%d)"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
 
 #: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
@@ -694,7 +726,7 @@ msgstr "ההערה ארוכה מדי"
 msgid "'How to reproduce' is too long"
 msgstr "\"איך לשחזר\" ארוך מדי"
 
-#: ../src/daemon/Daemon.cpp:630
+#: ../src/daemon/Daemon.cpp:633
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -702,7 +734,23 @@ msgstr ""
 "גודל הדיווח חרג מהמכסה. אנא בדוק את ערך ההגדרה MaxCrashReportsSize בקובץ "
 "abrt.conf"
 
-#: ../src/daemon/MiddleWare.cpp:613
+#: ../src/daemon/Daemon.cpp:862
+msgid "abrtd [options]"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:872
+msgid "Do not daemonize"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:873
+msgid "Log to syslog even with -d"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:874
+msgid "Exit after SEC seconds of inactivity"
+msgstr ""
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "לא צויין תוסף מסד נתונים. אנא בדוק את ההגדרות של abrtd."
 
@@ -719,23 +767,23 @@ msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "מידע לא צפוי הוחזר מתהליך הרקע (האם מסד הנתונים מעודכן כראוי?)."
 
-#: ../src/gui/ABRTPlugin.py:62
+#: ../src/gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "תוספים לא טעונים"
 
-#: ../src/gui/ABRTPlugin.py:63
+#: ../src/gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "תוספי ניתוח"
 
-#: ../src/gui/ABRTPlugin.py:64
+#: ../src/gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "תוספי פעולות"
 
-#: ../src/gui/ABRTPlugin.py:65
+#: ../src/gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
 msgstr "תוספי דיווח"
 
-#: ../src/gui/ABRTPlugin.py:66
+#: ../src/gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "תוספי מסד-נתונים"
 
@@ -987,7 +1035,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "אפשרויות %s"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:866
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1005,7 +1053,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui/CReporterAssistant.py:1047
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "שגיאה בקבלת הדיווח: %s"
@@ -1125,113 +1173,123 @@ msgstr ""
 "אנא קרא את מידע הקריסה שלהלן ושנה אותו כדי שלא יכיל מידע רגיש שאינך מעוניין "
 "לשתף:"
 
-#: ../src/gui/CReporterAssistant.py:614
+#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
+#: ../src/gui/CReporterAssistant.py:689
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:726
+msgid "Search:"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:756
 msgid "Refresh"
 msgstr "רענן"
 
-#: ../src/gui/CReporterAssistant.py:616
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Copy"
 msgstr "העתק"
 
-#: ../src/gui/CReporterAssistant.py:622
+#: ../src/gui/CReporterAssistant.py:764
 msgid "I agree with submitting the backtrace"
 msgstr "אני מסכים לשלוח את מידע הקריסה."
 
-#: ../src/gui/CReporterAssistant.py:627
+#: ../src/gui/CReporterAssistant.py:769
 msgid "Approve the backtrace"
 msgstr "אשר את מידע הקריסה"
 
-#: ../src/gui/CReporterAssistant.py:650
+#: ../src/gui/CReporterAssistant.py:792
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "איך הקריסה קורת, שלב אחרי שלב? איך אתה היית גורם לה לקרות שוב?"
 
-#: ../src/gui/CReporterAssistant.py:669
+#: ../src/gui/CReporterAssistant.py:811
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "האם יש לך הערות שברצונך לשתף עם מתחזקי התוכנה?"
 
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:831
 msgid "Provide additional details"
 msgstr "ספק פרטים נוספים"
 
-#: ../src/gui/CReporterAssistant.py:696
+#: ../src/gui/CReporterAssistant.py:838
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "‏<b>עצה:</b> הערות שלך אינן פרטיות. אנא נסח את דבריך בהתאם."
 
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:879
 msgid "Confirm and send the report"
 msgstr "אשר ושלח דיווח"
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:881
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr "הנה תקציר של דיווח הבאג שלך. אנא לחץ על 'החל' כדי לשלוח אותו."
 
-#: ../src/gui/CReporterAssistant.py:744
+#: ../src/gui/CReporterAssistant.py:886
 msgid "<b>Basic details</b>"
 msgstr "<b>פרטים בסייסים:</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:893
 msgid "Component"
 msgstr "רכיב"
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Package"
 msgstr "חבילה"
 
-#: ../src/gui/CReporterAssistant.py:753
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Executable"
 msgstr "קובץ הרצה"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Cmdline"
 msgstr "שורת פקודה"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:898
 msgid "Architecture"
 msgstr "ארכיטקטורה"
 
-#: ../src/gui/CReporterAssistant.py:757
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Kernel"
 msgstr "ליבה"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:900
 msgid "Release"
 msgstr "שחרור"
 
-#: ../src/gui/CReporterAssistant.py:759
+#: ../src/gui/CReporterAssistant.py:901
 msgid "Reason"
 msgstr "סיבה"
 
-#: ../src/gui/CReporterAssistant.py:770 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>מידע קריסה</b>"
 
-#: ../src/gui/CReporterAssistant.py:773
+#: ../src/gui/CReporterAssistant.py:915
 msgid "Click to view..."
 msgstr "לחץ להצגה..."
 
-#: ../src/gui/CReporterAssistant.py:785
+#: ../src/gui/CReporterAssistant.py:927
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>צעדים שיגרמו לקריסה להתרחש בשנית</b>"
 
-#: ../src/gui/CReporterAssistant.py:806
+#: ../src/gui/CReporterAssistant.py:948
 msgid "<b>Comments:</b>"
 msgstr "<b>הערות:</b>"
 
-#: ../src/gui/CReporterAssistant.py:809
+#: ../src/gui/CReporterAssistant.py:951
 msgid "No comment provided!"
 msgstr "אין מי שמספק את ההערה!"
 
-#: ../src/gui/CReporterAssistant.py:845
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Finished sending the bug report"
 msgstr "סיים לשלוח את הדיווח על הבאג"
 
-#: ../src/gui/CReporterAssistant.py:849
+#: ../src/gui/CReporterAssistant.py:991
 msgid "<b>Bug reports:</b>"
 msgstr "<b>דיווחי באגים:</b>"
 
@@ -1279,7 +1337,8 @@ msgid "Name"
 msgstr "שם"
 
 #: ../src/gui/PluginsSettingsDialog.py:149
-msgid "Please select a plugin from the list to edit it's options."
+#, fuzzy
+msgid "Please select a plugin from the list to edit its options."
 msgstr "יש לבחור תוסף מהרשימה לעריכת אפשרויותיו"
 
 #: ../src/gui/PluginsSettingsDialog.py:157

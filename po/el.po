@@ -8,141 +8,67 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-30 13:08+0200\n"
+"POT-Creation-Date: 2010-10-14 20:16+0200\n"
 "PO-Revision-Date: 2010-03-13 16:33+0200\n"
 "Last-Translator: Pierros Papadeas <pierros@papadeas.gr>\n"
 "Language-Team: Greek Fedora team <fedora-trans-el@redhat.com>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 "X-Poedit-Language: Greek\n"
 
-#: ../lib/plugins/Bugzilla.cpp:466
-#, c-format
-msgid "New bug id: %i"
-msgstr "Νέο id σφάλματος;%i"
-
-#: ../lib/plugins/Bugzilla.cpp:694
-#, fuzzy
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr "Κενό όνομα χρήστη και κωδικός. Παρακαλώ ελέγξτε το  Bugzilla.conf"
-
-#: ../lib/plugins/Bugzilla.cpp:703
-msgid "Logging into bugzilla..."
-msgstr "Σύνδεση στον bugzilla..."
-
-#: ../lib/plugins/Bugzilla.cpp:706
-msgid "Checking for duplicates..."
-msgstr "Έλεγχος για ίδια σφάλματα"
-
-#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
-msgid "Missing mandatory member 'bugs'"
-msgstr "Λείπει το υποχρεωτικό member 'bugs'"
-
-#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
-#: ../lib/plugins/Bugzilla.cpp:854
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"Αποτυχία get_bug_info(). Αδυναμία συλλογής όλων των απαραίτητων πληροφοριών"
-
-#: ../lib/plugins/Bugzilla.cpp:794
-#, fuzzy
-msgid "Creating a new bug..."
-msgstr "Δημιουργία νέας αναφοράς σφάλματος..."
-
-#: ../lib/plugins/Bugzilla.cpp:799
-msgid "Bugzilla entry creation failed"
-msgstr "Αποτυχία δημιουργίας καταχώρισης στο Bugzilla"
-
-#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
-msgid "Logging out..."
-msgstr "Αποσύνδεση..."
-
-#. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:828
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Το σφάλμα έχει ήδη αναφερθεί %i"
-
-#: ../lib/plugins/Bugzilla.cpp:839
-#, fuzzy, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Ο Bugzilla δεν μπόρεσε να βρει το γονικό του σφάλματος (%d)"
-
-#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
-#, fuzzy, c-format
-msgid "Add %s to CC list"
-msgstr "Προσθήκη του %s στη λίστα CC"
-
-#: ../lib/plugins/Bugzilla.cpp:893
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "Προσθήκη σχολίου στο σφάλμα (%d)"
-
-#: ../lib/plugins/Bugzilla.cpp:992
+#: ../lib/plugins/Bugzilla.cpp:149
 msgid "Reports bugs to bugzilla"
 msgstr ""
 
-#: ../lib/plugins/CCpp.cpp:191
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "Δημιουργία backtrace"
 
-#: ../lib/plugins/CCpp.cpp:198 ../lib/plugins/CCpp.cpp:345
-#: ../lib/plugins/CCpp.cpp:539 ../lib/plugins/CCpp.cpp:593
-#: ../lib/plugins/CCpp.cpp:760 ../lib/plugins/CCpp.cpp:812
-#: ../lib/plugins/Kerneloops.cpp:133 ../lib/plugins/Python.cpp:32
-#: ../lib/plugins/RunApp.cpp:64 ../lib/plugins/SOSreport.cpp:58
-#: ../lib/plugins/SOSreport.cpp:137
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr ""
-
-#: ../lib/plugins/CCpp.cpp:372
+#: ../lib/plugins/CCpp.cpp:115
 #, fuzzy
 msgid "Starting the debuginfo installation"
 msgstr "Εκκίνηση εγκατάστασης debuginfo "
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:608
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "Λήψη καθολικού μοναδικού αναγνωριστικού..."
 
-#: ../lib/plugins/CCpp.cpp:797
+#: ../lib/plugins/CCpp.cpp:532
 #, fuzzy
 msgid "Skipping the debuginfo installation"
 msgstr "Παράκαμψη εγκατάστασης debuginfo "
 
-#: ../lib/plugins/CCpp.cpp:1124
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr ""
 
-#: ../lib/plugins/FileTransfer.cpp:52 ../lib/plugins/ReportUploader.cpp:97
+#: ../lib/plugins/FileTransfer.cpp:51 ../lib/plugins/ReportUploader.cpp:96
 msgid "FileTransfer: URL not specified"
 msgstr "Μεταφορά αρχείου: Δεν έχει καθοριστεί URL"
 
-#: ../lib/plugins/FileTransfer.cpp:56 ../lib/plugins/ReportUploader.cpp:101
+#: ../lib/plugins/FileTransfer.cpp:55 ../lib/plugins/ReportUploader.cpp:100
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Αποστολή αρχείου %s στο %s"
 
-#: ../lib/plugins/FileTransfer.cpp:241
+#: ../lib/plugins/FileTransfer.cpp:244
 msgid "FileTransfer: Creating a report..."
 msgstr "Μεταφορά αρχείου: Δημιουργία αναφοράς..."
 
-#: ../lib/plugins/FileTransfer.cpp:265 ../lib/plugins/FileTransfer.cpp:294
+#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
 #, fuzzy, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Αδυναμία δημιουργίας και αποστολής αρχείου: %s "
 
-#: ../lib/plugins/FileTransfer.cpp:361
+#: ../lib/plugins/FileTransfer.cpp:364
 msgid "Sends a report via FTP or SCTP"
 msgstr ""
 
-#: ../lib/plugins/Kerneloops.cpp:154
+#: ../lib/plugins/Kerneloops.cpp:150
 msgid "Analyzes kernel oopses"
 msgstr ""
 
@@ -154,59 +80,59 @@ msgstr "Δημιουργία και υποβολή αναφοράς..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr ""
 
-#: ../lib/plugins/KerneloopsScanner.cpp:210
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr ""
 
-#: ../lib/plugins/Logger.cpp:69
+#: ../lib/plugins/Logger.cpp:68
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Γίνεται εγγραφή αναφοράς στο '%s'"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, fuzzy, c-format
 msgid "The report was appended to %s"
 msgstr "Η υπηρεσία ABRT έχει ξεκινήσει"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, fuzzy, c-format
 msgid "The report was stored to %s"
 msgstr "Η υπηρεσία ABRT έχει ξεκινήσει"
 
-#: ../lib/plugins/Logger.cpp:83
+#: ../lib/plugins/Logger.cpp:82
 #, fuzzy
 msgid "Writes report to a file"
 msgstr "Γίνεται εγγραφή αναφοράς στο '%s'"
 
-#: ../lib/plugins/Mailx.cpp:100
+#: ../lib/plugins/Mailx.cpp:99
 msgid "Sending an email..."
 msgstr "Αποστολή ενός email..."
 
-#: ../lib/plugins/Mailx.cpp:151
+#: ../lib/plugins/Mailx.cpp:150
 msgid "Sends an email with a report (via mailx command)"
 msgstr ""
 
-#: ../lib/plugins/Python.cpp:105
+#: ../lib/plugins/Python.cpp:100
 msgid "Analyzes crashes in Python programs"
 msgstr ""
 
-#: ../lib/plugins/ReportUploader.cpp:131
+#: ../lib/plugins/ReportUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr ""
 
-#: ../lib/plugins/ReportUploader.cpp:197
+#: ../lib/plugins/ReportUploader.cpp:196
 #, fuzzy
 msgid "Creating a ReportUploader report..."
 msgstr "Δημιουργία αναφοράς..."
 
-#: ../lib/plugins/ReportUploader.cpp:515
+#: ../lib/plugins/ReportUploader.cpp:514
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:111
+#: ../lib/plugins/RHTSupport.cpp:109
 msgid "Compressing data"
 msgstr ""
 
@@ -219,25 +145,30 @@ msgstr "Δημιουργία νέας αναφοράς σφάλματος..."
 msgid "Reports bugs to Red Hat support"
 msgstr ""
 
-#: ../lib/plugins/RunApp.cpp:79
+#: ../lib/plugins/RunApp.cpp:75
 msgid "Runs a command, saves its output"
 msgstr ""
 
-#: ../lib/plugins/SOSreport.cpp:104
+#: ../lib/plugins/SOSreport.cpp:99
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Εκτέλεση sosreport: %s "
 
-#: ../lib/plugins/SOSreport.cpp:109
+#: ../lib/plugins/SOSreport.cpp:104
 #, fuzzy
 msgid "Finished running sosreport"
 msgstr "Ολοκληρώθηκε η εκτέλεση του sosreport"
 
-#: ../lib/plugins/SOSreport.cpp:171
+#: ../lib/plugins/SOSreport.cpp:132
+#, c-format
+msgid "Unable to open debug dump '%s'"
+msgstr ""
+
+#: ../lib/plugins/SOSreport.cpp:166
 msgid "Runs sosreport, saves the output"
 msgstr ""
 
-#: ../lib/plugins/SQLite3.cpp:678
+#: ../lib/plugins/SQLite3.cpp:718
 msgid "Keeps SQLite3 database about all crashes"
 msgstr ""
 
@@ -365,6 +296,11 @@ msgstr ""
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr ""
 
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
+
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr ""
@@ -375,46 +311,46 @@ msgstr ""
 msgid "Automatic Bug Reporting Tool"
 msgstr "Εργαλείο αυτόματης αναφοράς σφαλμάτων"
 
-#: ../src/applet/Applet.cpp:79
+#: ../src/applet/Applet.cpp:76
 #, fuzzy, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Εντοπίστηκε μια κατάρρευση στην εφαρμογή %s"
 
-#: ../src/applet/Applet.cpp:81
+#: ../src/applet/Applet.cpp:78
 msgid "A crash has been detected"
 msgstr "Εντοπίστηκε μια κατάρρευση"
 
-#: ../src/applet/Applet.cpp:278
+#: ../src/applet/Applet.cpp:275
 msgid "ABRT service is not running"
 msgstr "Η υπηρεσία ABRT δεν εκτελείται"
 
-#: ../src/applet/CCApplet.cpp:33 ../src/applet/CCApplet.cpp:254
-#: ../src/applet/CCApplet.cpp:281
+#: ../src/applet/applet_gtk.c:173 ../src/applet/applet_gtk.c:360
+#: ../src/applet/applet_gtk.c:387
 msgid "Warning"
 msgstr "Προειδοποίηση"
 
-#: ../src/applet/CCApplet.cpp:83
+#: ../src/applet/applet_gtk.c:223
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr ""
 
-#: ../src/applet/CCApplet.cpp:99 ../src/gui/ccgui.glade.h:23
+#: ../src/applet/applet_gtk.c:239 ../src/gui/ccgui.glade.h:23
 msgid "translator-credits"
 msgstr ""
 
-#: ../src/applet/CCApplet.cpp:109
+#: ../src/applet/applet_gtk.c:249
 msgid "Hide"
 msgstr ""
 
-#: ../src/applet/CCApplet.cpp:247 ../src/gui/ccgui.glade.h:13
+#: ../src/applet/applet_gtk.c:353 ../src/gui/ccgui.glade.h:13
 msgid "Report"
 msgstr "Αναφορά"
 
-#: ../src/applet/CCApplet.cpp:250 ../src/applet/CCApplet.cpp:278
+#: ../src/applet/applet_gtk.c:356 ../src/applet/applet_gtk.c:384
 msgid "Open ABRT"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:50
+#: ../src/cli/CLI.cpp:47
 #, c-format
 msgid ""
 "\tUID        : %s\n"
@@ -425,12 +361,12 @@ msgid ""
 "\tCrash Count: %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:68
+#: ../src/cli/CLI.cpp:65
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:97
+#: ../src/cli/CLI.cpp:94
 #, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
@@ -444,27 +380,27 @@ msgid ""
 "Reason:             %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:125
+#: ../src/cli/CLI.cpp:122
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:129
+#: ../src/cli/CLI.cpp:126
 #, c-format
 msgid "Rating:             %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:134
+#: ../src/cli/CLI.cpp:131
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:138
+#: ../src/cli/CLI.cpp:135
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:142
+#: ../src/cli/CLI.cpp:139
 #, c-format
 msgid ""
 "\n"
@@ -472,7 +408,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:146
+#: ../src/cli/CLI.cpp:143
 #, c-format
 msgid ""
 "\n"
@@ -480,7 +416,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:152
+#: ../src/cli/CLI.cpp:149
 #, c-format
 msgid ""
 "\n"
@@ -489,7 +425,7 @@ msgid ""
 msgstr ""
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:250
+#: ../src/cli/CLI.cpp:247
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -514,24 +450,24 @@ msgid ""
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:296
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr ""
 
-#: ../src/cli/report.cpp:175
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr ""
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr ""
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr ""
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:194
 #, fuzzy
 msgid ""
 "# Backtrace\n"
@@ -539,132 +475,222 @@ msgid ""
 msgstr ""
 "Ελέγχθηκε το backtrace  και απομακρύνθηκαν ευαίσθητα δεδομένα (κωδικοί κτλ)"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr ""
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr ""
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:198
 #, fuzzy
 msgid "# Component"
 msgstr "Κοινά"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr ""
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr ""
 
-#: ../src/cli/report.cpp:206
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr ""
 
-#: ../src/cli/report.cpp:207
+#: ../src/cli/report.cpp:202
 #, fuzzy
 msgid "# Package"
 msgstr "Πακέτο"
 
-#: ../src/cli/report.cpp:208
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr ""
 
-#: ../src/cli/report.cpp:209
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr ""
 
-#: ../src/cli/report.cpp:332
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 
-#: ../src/cli/report.cpp:420
+#: ../src/cli/report.cpp:415
 #, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
 msgstr "Η υπηρεσία ABRT έχει ξεκινήσει"
 
-#: ../src/cli/report.cpp:422
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:541
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr ""
 
-#: ../src/cli/report.cpp:542
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:645
 #, fuzzy, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Καμία επιλογή"
 
-#: ../src/cli/report.cpp:647
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr ""
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr ""
 
-#: ../src/cli/report.cpp:698
+#: ../src/cli/report.cpp:700
 #, fuzzy
 msgid "Reporting..."
 msgstr "Σε λειτουργία..."
 
-#: ../src/cli/report.cpp:717
+#: ../src/cli/report.cpp:719
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "Πρόσθετες λειτουργίες αναφοράς"
 
-#: ../src/cli/report.cpp:720
+#: ../src/cli/report.cpp:722
 #, fuzzy
 msgid "Skipping..."
 msgstr "Σε λειτουργία..."
 
-#: ../src/cli/report.cpp:732
+#: ../src/cli/report.cpp:734
 #, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr ""
 "Η αποστολή αναφορών απενεργοποιήθηκε, παρακαλώ διορθώστε τα παραπάνω "
 "προβλήματα."
 
-#: ../src/cli/report.cpp:736
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
 
-#: ../src/cli/report.cpp:745
+#: ../src/cli/report.cpp:747
 #, fuzzy
 msgid "Error loading reporter settings"
 msgstr "Σφάλμα λήψης της αναφοράς: %s"
 
-#: ../src/cli/report.cpp:764
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr ""
 
-#: ../src/daemon/CommLayerServerDBus.cpp:227
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+msgid "Log to syslog"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "Νέο id σφάλματος;%i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr "Κενό όνομα χρήστη και κωδικός. Παρακαλώ ελέγξτε το  Bugzilla.conf"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "Σύνδεση στον bugzilla..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "Έλεγχος για ίδια σφάλματα"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "Λείπει το υποχρεωτικό member 'bugs'"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"Αποτυχία get_bug_info(). Αδυναμία συλλογής όλων των απαραίτητων πληροφοριών"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+#, fuzzy
+msgid "Creating a new bug..."
+msgstr "Δημιουργία νέας αναφοράς σφάλματος..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "Αποτυχία δημιουργίας καταχώρισης στο Bugzilla"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "Αποσύνδεση..."
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Το σφάλμα έχει ήδη αναφερθεί %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, fuzzy, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Ο Bugzilla δεν μπόρεσε να βρει το γονικό του σφάλματος (%d)"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, fuzzy, c-format
+msgid "Add %s to CC list"
+msgstr "Προσθήκη του %s στη λίστα CC"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "Προσθήκη σχολίου στο σφάλμα (%d)"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
+#: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
 msgstr ""
 
-#: ../src/daemon/CommLayerServerDBus.cpp:231
+#: ../src/daemon/CommLayerServerDBus.cpp:228
 msgid "'How to reproduce' is too long"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:513
+#: ../src/daemon/Daemon.cpp:633
 #, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
@@ -673,7 +699,23 @@ msgstr ""
 "Το μέγεθος της αναφοράς έχει υπερβεί το όριο, Παρακαλώ ελέγξτε την τιμή του  "
 "MaxCrashReportsSize στο abrt.conf."
 
-#: ../src/daemon/MiddleWare.cpp:605
+#: ../src/daemon/Daemon.cpp:862
+msgid "abrtd [options]"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:872
+msgid "Do not daemonize"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:873
+msgid "Log to syslog even with -d"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:874
+msgid "Exit after SEC seconds of inactivity"
+msgstr ""
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr ""
 
@@ -681,12 +723,12 @@ msgstr ""
 msgid "View and report application crashes"
 msgstr "Προβολή και αναφορά κατάρρευσης εφαρμογών"
 
-#: ../src/gui/ABRTExceptions.py:6
+#: ../src/gui/ABRTExceptions.py:7
 #, fuzzy
 msgid "Another client is already running, trying to wake it..."
 msgstr "Εκτελείται μια άλλη διεργασία, γίνεται προσπάθεια αφύπνισης της."
 
-#: ../src/gui/ABRTExceptions.py:13
+#: ../src/gui/ABRTExceptions.py:14
 #, fuzzy
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
@@ -694,23 +736,23 @@ msgstr ""
 "Έγινε λήψη απρόσμενων δεδομένων από την υπηρεσία (είναι η βάση δεδομένων "
 "σωστά ενημερωμένη;)"
 
-#: ../src/gui/ABRTPlugin.py:62
+#: ../src/gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "Δεν φορτώθηκαν πρόσθετες λειτουργίες"
 
-#: ../src/gui/ABRTPlugin.py:63
+#: ../src/gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "Πρόσθετες λειτουργίες αναλυτή"
 
-#: ../src/gui/ABRTPlugin.py:64
+#: ../src/gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "Πρόσθετες λειτουργίες ενέργειας"
 
-#: ../src/gui/ABRTPlugin.py:65
+#: ../src/gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
 msgstr "Πρόσθετες λειτουργίες αναφοράς"
 
-#: ../src/gui/ABRTPlugin.py:66
+#: ../src/gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "Πρόσθετες λειτουργίες βάσης δεδομένων"
 
@@ -907,7 +949,7 @@ msgstr ""
 "crashid=%s"
 
 #. default texts
-#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:19
+#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:20
 #, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr ""
@@ -919,7 +961,7 @@ msgstr ""
 msgid "You must check the backtrace for sensitive data."
 msgstr "Θα πρέπει να ελέγξετε το backtrace για ευαίσθητα δεδομένα"
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:324
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:325
 #, fuzzy, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -938,7 +980,7 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "Το backtrace δεν μπορεί χρησιμοποιηθεί, δεν μπορείτε να το στείλετε!"
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:330
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:331
 #, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
@@ -970,8 +1012,8 @@ msgstr ""
 "κατάρρευσησ.\n"
 "Παρακαλώ ελέγξτε το abrt.conf."
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:217
-#: ../src/gui/PluginsSettingsDialog.py:169
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:218
+#: ../src/gui/PluginsSettingsDialog.py:170
 #, fuzzy, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -980,12 +1022,12 @@ msgstr ""
 "Αδυναμία αποθήκευσης ρυθμίσεων πρόσθετων λειτουργιών:\n"
 " %s "
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:247
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:248
 #, python-format
 msgid "Configure %s options"
 msgstr "Ρύ_θμιση %s επιλογών"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:861
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
 #, fuzzy
 msgid ""
 "Unable to get report!\n"
@@ -994,7 +1036,7 @@ msgstr ""
 "Αδυναμία λήψης αναφοράς!\n"
 "Μήπως λείπει το Debuginfo;"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:414
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:415
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -1004,85 +1046,85 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:900
+#: ../src/gui/CReporterAssistant.py:1047
 #, fuzzy, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Σφάλμα λήψης της αναφοράς: %s"
 
-#: ../src/gui/ConfBackend.py:77
+#: ../src/gui/ConfBackend.py:78
 #, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
 msgstr "Αδυναμία σύνδεσης με το dbus συστήματος"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/gui/ConfBackend.py:83
+#: ../src/gui/ConfBackend.py:84
 msgid "Cannot get the default keyring."
 msgstr ""
 
-#: ../src/gui/ConfBackend.py:102 ../src/gui/ConfBackend.py:118
+#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:119
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:152
+#: ../src/gui/ConfBackend.py:153
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 
-#: ../src/gui/ConfBackend.py:205
+#: ../src/gui/ConfBackend.py:206
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:20
+#: ../src/gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:296
+#: ../src/gui/CReporterAssistant.py:297
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:298
+#: ../src/gui/CReporterAssistant.py:299
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:302
+#: ../src/gui/CReporterAssistant.py:303
 #, python-format
 msgid "Rating is %s"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:305
+#: ../src/gui/CReporterAssistant.py:306
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:310
+#: ../src/gui/CReporterAssistant.py:311
 #, fuzzy
 msgid "You should check the backtrace for sensitive data."
 msgstr "Θα πρέπει να ελέγξετε το backtrace για ευαίσθητα δεδομένα"
 
-#: ../src/gui/CReporterAssistant.py:311
+#: ../src/gui/CReporterAssistant.py:312
 msgid "You must agree with sending the backtrace."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:326
+#: ../src/gui/CReporterAssistant.py:327
 #, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr ""
 "Η αποστολή αναφορών απενεργοποιήθηκε, παρακαλώ διορθώστε τα παραπάνω "
 "προβλήματα."
 
-#: ../src/gui/CReporterAssistant.py:371
+#: ../src/gui/CReporterAssistant.py:372
 msgid "You did not provide any steps to reproduce."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:385
+#: ../src/gui/CReporterAssistant.py:386
 msgid "You did not provide any comments."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:466
+#: ../src/gui/CReporterAssistant.py:467
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1098,16 +1140,16 @@ msgid ""
 "continue."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:526
+#: ../src/gui/CReporterAssistant.py:527
 msgid "Only one reporter plugin is configured."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:532
+#: ../src/gui/CReporterAssistant.py:533
 #, fuzzy
 msgid "Send a bug report"
 msgstr "Αποστολή αναφοράς"
 
-#: ../src/gui/CReporterAssistant.py:570
+#: ../src/gui/CReporterAssistant.py:571
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1117,122 +1159,132 @@ msgid ""
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:611
+#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
+#: ../src/gui/CReporterAssistant.py:689
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:726
+msgid "Search:"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:756
 #, fuzzy
 msgid "Refresh"
 msgstr "gtk-refresh"
 
-#: ../src/gui/CReporterAssistant.py:613
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Copy"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:619
+#: ../src/gui/CReporterAssistant.py:764
 msgid "I agree with submitting the backtrace"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:624
+#: ../src/gui/CReporterAssistant.py:769
 msgid "Approve the backtrace"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:647
+#: ../src/gui/CReporterAssistant.py:792
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:665
+#: ../src/gui/CReporterAssistant.py:811
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:684
+#: ../src/gui/CReporterAssistant.py:831
 msgid "Provide additional details"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:691
+#: ../src/gui/CReporterAssistant.py:838
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:732
+#: ../src/gui/CReporterAssistant.py:879
 #, fuzzy
 msgid "Confirm and send the report"
 msgstr "Αποστολή αναφοράς"
 
-#: ../src/gui/CReporterAssistant.py:734
+#: ../src/gui/CReporterAssistant.py:881
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:886
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>Λεπτομέρειες πρόσθετων λειτουργιών</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:746
+#: ../src/gui/CReporterAssistant.py:893
 #, fuzzy
 msgid "Component"
 msgstr "Κοινά"
 
-#: ../src/gui/CReporterAssistant.py:747
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Package"
 msgstr "Πακέτο"
 
-#: ../src/gui/CReporterAssistant.py:748
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Executable"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:749
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Cmdline"
 msgstr ""
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:898
 msgid "Architecture"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Kernel"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:753
+#: ../src/gui/CReporterAssistant.py:900
 #, fuzzy
 msgid "Release"
 msgstr "Διαγραφή"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:901
 #, fuzzy
 msgid "Reason"
 msgstr "<b>Σχόλιο</b>"
 
-#: ../src/gui/CReporterAssistant.py:765 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
-#: ../src/gui/CReporterAssistant.py:768
+#: ../src/gui/CReporterAssistant.py:915
 msgid "Click to view..."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:780
+#: ../src/gui/CReporterAssistant.py:927
 #, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Χρόνος (ή περίοδος)</b>"
 
-#: ../src/gui/CReporterAssistant.py:801
+#: ../src/gui/CReporterAssistant.py:948
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>Σχόλιο</b>"
 
-#: ../src/gui/CReporterAssistant.py:804
+#: ../src/gui/CReporterAssistant.py:951
 msgid "No comment provided!"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:840
+#: ../src/gui/CReporterAssistant.py:987
 #, fuzzy
 msgid "Finished sending the bug report"
 msgstr "Αποστολή αναφοράς"
 
-#: ../src/gui/CReporterAssistant.py:844
+#: ../src/gui/CReporterAssistant.py:991
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Δεν έγινε αναφορά!</b>"
@@ -1245,12 +1297,12 @@ msgstr "Καταγραφή"
 msgid "Report done"
 msgstr "Η αναφορά ολοκληρώθηκε"
 
-#: ../src/gui/PluginSettingsUI.py:17
+#: ../src/gui/PluginSettingsUI.py:18
 #, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "Αδυναμία εύρεσης γραφικού συστατικού PluginDialog στην περιγραφή UI!"
 
-#: ../src/gui/PluginSettingsUI.py:24
+#: ../src/gui/PluginSettingsUI.py:25
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1258,31 +1310,31 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 
-#: ../src/gui/PluginSettingsUI.py:59 ../src/gui/PluginSettingsUI.py:85
+#: ../src/gui/PluginSettingsUI.py:60 ../src/gui/PluginSettingsUI.py:86
 #, fuzzy
 msgid "Combo box is not implemented"
 msgstr "το πεδίο συνδυασμού combo δεν έχει εφαρμοστεί"
 
-#: ../src/gui/PluginSettingsUI.py:68
+#: ../src/gui/PluginSettingsUI.py:69
 msgid "Nothing to hydrate!"
 msgstr "Δεν υπάρχουν δεδομένα για εμφάνιση!"
 
-#: ../src/gui/PluginsSettingsDialog.py:24
+#: ../src/gui/PluginsSettingsDialog.py:25
 msgid "Cannot load the GUI description for SettingsDialog!"
 msgstr ""
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
-#: ../src/gui/PluginsSettingsDialog.py:41
+#: ../src/gui/PluginsSettingsDialog.py:42
 #, fuzzy
 msgid "Name"
 msgstr "Όνομα:"
 
-#: ../src/gui/PluginsSettingsDialog.py:148
-msgid "Please select a plugin from the list to edit it's options."
+#: ../src/gui/PluginsSettingsDialog.py:149
+msgid "Please select a plugin from the list to edit its options."
 msgstr ""
 
-#: ../src/gui/PluginsSettingsDialog.py:156
+#: ../src/gui/PluginsSettingsDialog.py:157
 #, fuzzy, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
@@ -1385,19 +1437,19 @@ msgstr "Αποστολή αναφοράς"
 msgid "Show log"
 msgstr "Προβολή καταγραφής"
 
-#: ../src/gui/SettingsDialog.py:33 ../src/gui/SettingsDialog.py:50
+#: ../src/gui/SettingsDialog.py:34 ../src/gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>Επιλογή πρόσθετης λειτουργίας</b>"
 
-#: ../src/gui/SettingsDialog.py:36
+#: ../src/gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>Επιλογή backend βάσης δεδομένων</b>"
 
-#: ../src/gui/SettingsDialog.py:169
+#: ../src/gui/SettingsDialog.py:170
 msgid "Remove this job"
 msgstr "Απομάκρυνση αυτής της εργασίας"
 
-#: ../src/gui/SettingsDialog.py:213
+#: ../src/gui/SettingsDialog.py:214
 msgid "Remove this action"
 msgstr "Απομάκρυνση αυτής της ενέργειας"
 

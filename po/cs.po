@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt 1.1.13\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-09-09 06:54+0000\n"
+"POT-Creation-Date: 2010-10-14 20:16+0200\n"
 "PO-Revision-Date: 2010-09-10 10:59+0200\n"
 "Last-Translator: Milan Kerslager <milan@kerslager.cz>\n"
 "Language-Team: Czech <Czech <cs-users@lists.fedoraproject.org>>\n"
@@ -30,102 +30,29 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Language: \n"
 
-#: ../lib/plugins/Bugzilla.cpp:464
-#, c-format
-msgid "New bug id: %i"
-msgstr "Číslo nové chyby: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:688
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"Prázdné přihlašovací jméno nebo heslo.\n"
-"Zkontrolujte správnost "
-
-#: ../lib/plugins/Bugzilla.cpp:697
-msgid "Logging into bugzilla..."
-msgstr "Přihlašuje se do bugzilly…"
-
-#: ../lib/plugins/Bugzilla.cpp:700
-msgid "Checking for duplicates..."
-msgstr "Hledají se duplikáty…"
-
-#: ../lib/plugins/Bugzilla.cpp:721 ../lib/plugins/Bugzilla.cpp:756
-msgid "Missing mandatory member 'bugs'"
-msgstr "Povinný prvek „bugs“ chybí"
-
-#: ../lib/plugins/Bugzilla.cpp:739 ../lib/plugins/Bugzilla.cpp:772
-#: ../lib/plugins/Bugzilla.cpp:848
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() selhalo. Nebylo možné získat všechny povinné údaje"
-
-#: ../lib/plugins/Bugzilla.cpp:788
-msgid "Creating a new bug..."
-msgstr "Vytváří se nový požadavek…"
-
-#: ../lib/plugins/Bugzilla.cpp:793
-msgid "Bugzilla entry creation failed"
-msgstr "Záznam v bugzille se nepodařilo vytvořit"
-
-#: ../lib/plugins/Bugzilla.cpp:803 ../lib/plugins/Bugzilla.cpp:902
-msgid "Logging out..."
-msgstr "Odhlašování…"
-
-#. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:822
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "Tato chyba již je nahlášena: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:833
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla nedokázala najít rodiče chyby %d"
-
-#: ../lib/plugins/Bugzilla.cpp:862 ../lib/plugins/Bugzilla.cpp:863
-#, c-format
-msgid "Add %s to CC list"
-msgstr "Do seznamu CC přidat %s"
-
-#: ../lib/plugins/Bugzilla.cpp:887
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "K chybě %d se přidává nový komentář"
-
-#: ../lib/plugins/Bugzilla.cpp:986
+#: ../lib/plugins/Bugzilla.cpp:149
 msgid "Reports bugs to bugzilla"
 msgstr "Nahlášení chyb do bugzilly"
 
-#: ../lib/plugins/CCpp.cpp:186
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "Vytváří se výpis volání"
 
-#: ../lib/plugins/CCpp.cpp:192 ../lib/plugins/CCpp.cpp:341
-#: ../lib/plugins/CCpp.cpp:535 ../lib/plugins/CCpp.cpp:595
-#: ../lib/plugins/CCpp.cpp:765 ../lib/plugins/CCpp.cpp:828
-#: ../lib/plugins/Kerneloops.cpp:132 ../lib/plugins/Python.cpp:32
-#: ../lib/plugins/RunApp.cpp:64 ../lib/plugins/SOSreport.cpp:57
-#: ../lib/plugins/SOSreport.cpp:136
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr "Ladicí výpis „%s“ nelze otevřít"
-
-#: ../lib/plugins/CCpp.cpp:369
+#: ../lib/plugins/CCpp.cpp:115
 msgid "Starting the debuginfo installation"
 msgstr "Zahajuje se instalace ladicích informací"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:611
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "Vytváří se celosvětově jedinečný identifikátor…"
 
-#: ../lib/plugins/CCpp.cpp:811
+#: ../lib/plugins/CCpp.cpp:532
 msgid "Skipping the debuginfo installation"
 msgstr "Instalace ladicích informací se vynechá"
 
-#: ../lib/plugins/CCpp.cpp:1143
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyzuje pády v C/C++ programech"
 
@@ -151,7 +78,7 @@ msgstr "Vytvoření a odeslání archivu selhalo: %s"
 msgid "Sends a report via FTP or SCTP"
 msgstr "Posílá hlášení přes FTP nebo SFTP"
 
-#: ../lib/plugins/Kerneloops.cpp:154
+#: ../lib/plugins/Kerneloops.cpp:150
 msgid "Analyzes kernel oopses"
 msgstr "Analyzuje problémy v kernelu"
 
@@ -163,7 +90,7 @@ msgstr "Vytváří se a odesílá hlášení…"
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Posílá hlášení o problémech v kernelu na kerneloops.org"
 
-#: ../lib/plugins/KerneloopsScanner.cpp:207
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Periodicky vyhledává a hlásí problémy v kernelu"
 
@@ -194,7 +121,7 @@ msgstr "Odesílá se e-mail…"
 msgid "Sends an email with a report (via mailx command)"
 msgstr "Posílá hlášení o chybách emailem (přes program mailx)"
 
-#: ../lib/plugins/Python.cpp:104
+#: ../lib/plugins/Python.cpp:100
 msgid "Analyzes crashes in Python programs"
 msgstr "Analyzuje pády v programech napsaných v Pythonu"
 
@@ -227,24 +154,29 @@ msgstr "Vytváří se nový případ…"
 msgid "Reports bugs to Red Hat support"
 msgstr "Nahlášení chyb podpoře Red Hatu"
 
-#: ../lib/plugins/RunApp.cpp:79
+#: ../lib/plugins/RunApp.cpp:75
 msgid "Runs a command, saves its output"
 msgstr "Spustí příkaz a uloží jeho výstup"
 
-#: ../lib/plugins/SOSreport.cpp:103
+#: ../lib/plugins/SOSreport.cpp:99
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Pouští se sosreport: %s"
 
-#: ../lib/plugins/SOSreport.cpp:108
+#: ../lib/plugins/SOSreport.cpp:104
 msgid "Finished running sosreport"
 msgstr "sosreport dokončen"
 
-#: ../lib/plugins/SOSreport.cpp:170
+#: ../lib/plugins/SOSreport.cpp:132
+#, c-format
+msgid "Unable to open debug dump '%s'"
+msgstr "Ladicí výpis „%s“ nelze otevřít"
+
+#: ../lib/plugins/SOSreport.cpp:166
 msgid "Runs sosreport, saves the output"
 msgstr "Spustí sosreport a uloží jeho výstup"
 
-#: ../lib/plugins/SQLite3.cpp:701
+#: ../lib/plugins/SQLite3.cpp:718
 msgid "Keeps SQLite3 database about all crashes"
 msgstr "Ukládá informace o pádech do SQLite3 databáze"
 
@@ -373,6 +305,11 @@ msgstr "RHTSupport URL:"
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Nahráno: %'llu z %'llu kilobajtů"
+
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -571,24 +508,24 @@ msgstr ""
 "\tjednoznačná předpona UUID – zpracuje se pád s odpovídajícím UUID\n"
 "\t@N – zpracuje se N-tý pád (pořadí určeno výpisem --get-list-full)\n"
 
-#: ../src/cli/CLI.cpp:293
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr "Musíte zadat právě jednu operaci"
 
-#: ../src/cli/report.cpp:171
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Tento údaj je jen pro čtení\n"
 
-#: ../src/cli/report.cpp:191
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Okolnosti pádu popište níže"
 
-#: ../src/cli/report.cpp:193
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr "# Jak vyvolat pád?"
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:194
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -596,48 +533,48 @@ msgstr ""
 "# Výpis volání\n"
 "# Ujistěte se, že neobsahuje žádné citlivé údaje (hesla atd.)"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr "# Architektura"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr "# Příkaz"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:198
 msgid "# Component"
 msgstr "# Komponenta"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr "# Obraz paměti"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr "# Program"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr "# Verze jádra"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:202
 msgid "# Package"
 msgstr "# Balíček"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr "# Příčina pádu"
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr "# Název vydání operačního systému"
 
-#: ../src/cli/report.cpp:328
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Nebylo možné spustit vi: Ani $TERM, ani $VISUAL, ani $EDITOR není nastavena"
 
-#: ../src/cli/report.cpp:416
+#: ../src/cli/report.cpp:415
 msgid ""
 "\n"
 "The report has been updated"
@@ -645,7 +582,7 @@ msgstr ""
 "\n"
 "Hlášení bylo aktualizováno"
 
-#: ../src/cli/report.cpp:418
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -654,46 +591,46 @@ msgstr ""
 "V hlášení nebyly nalezeny žádné změny"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:537
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr "a"
 
-#: ../src/cli/report.cpp:538
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:639
+#: ../src/cli/report.cpp:645
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Zjištěno chybné nastavení modulu %s\n"
 
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr "Zadejte vaše přihlašovací jméno: "
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr "Zadejte vaše heslo: "
 
-#: ../src/cli/report.cpp:694
+#: ../src/cli/report.cpp:700
 msgid "Reporting..."
 msgstr "Nahlašuje se…"
 
-#: ../src/cli/report.cpp:713
+#: ../src/cli/report.cpp:719
 #, c-format
 msgid "Report using %s?"
 msgstr "Nahlásit prostřednictvím %s?"
 
-#: ../src/cli/report.cpp:716
+#: ../src/cli/report.cpp:722
 msgid "Skipping..."
 msgstr "Vynecháno…"
 
-#: ../src/cli/report.cpp:728
+#: ../src/cli/report.cpp:734
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Nahlašování zakázáno, protože výpis volání není použitelný"
 
-#: ../src/cli/report.cpp:732
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -702,15 +639,105 @@ msgstr ""
 "Zkuste nainstalovat debuginfo balíčky ručně pomocí \"debuginfo-install %s\" "
 "a zkuste to znovu\n"
 
-#: ../src/cli/report.cpp:741
+#: ../src/cli/report.cpp:747
 msgid "Error loading reporter settings"
 msgstr "Chyba při nahrávání údajů ohlašovatele"
 
 # FIXME: Plurals
-#: ../src/cli/report.cpp:760
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Pád nahlášen prostřednictvím %d modulů (%d chyb)\n"
+
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+msgid "Log to syslog"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "Číslo nové chyby: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"Prázdné přihlašovací jméno nebo heslo.\n"
+"Zkontrolujte správnost "
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "Přihlašuje se do bugzilly…"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "Hledají se duplikáty…"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "Povinný prvek „bugs“ chybí"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() selhalo. Nebylo možné získat všechny povinné údaje"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+msgid "Creating a new bug..."
+msgstr "Vytváří se nový požadavek…"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "Záznam v bugzille se nepodařilo vytvořit"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "Odhlašování…"
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Tato chyba již je nahlášena: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla nedokázala najít rodiče chyby %d"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Do seznamu CC přidat %s"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "K chybě %d se přidává nový komentář"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
 
 #: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
@@ -720,7 +747,7 @@ msgstr "Komentář je příliš dlouhý"
 msgid "'How to reproduce' is too long"
 msgstr "Údaj „Jak vyvolat“ je příliš dlouhý"
 
-#: ../src/daemon/Daemon.cpp:509
+#: ../src/daemon/Daemon.cpp:633
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -728,7 +755,23 @@ msgstr ""
 "Velikost zprávy překročena. Prosím, zkontrolujte systémovou hodnotu "
 "MaxCrashReportsSize v abrt.conf."
 
-#: ../src/daemon/MiddleWare.cpp:618
+#: ../src/daemon/Daemon.cpp:862
+msgid "abrtd [options]"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:872
+msgid "Do not daemonize"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:873
+msgid "Log to syslog even with -d"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:874
+msgid "Exit after SEC seconds of inactivity"
+msgstr ""
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr "Není určen databázový modul. Prosím, zkontrolujte nastavení abrtd."
 
@@ -745,23 +788,23 @@ msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr "Od démona přijata neočekávaná data (je databáze v pořádku?)."
 
-#: ../src/gui/ABRTPlugin.py:62
+#: ../src/gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "Nezavedené moduly"
 
-#: ../src/gui/ABRTPlugin.py:63
+#: ../src/gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "Moduly pro analýzu"
 
-#: ../src/gui/ABRTPlugin.py:64
+#: ../src/gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "Moduly akcí"
 
-#: ../src/gui/ABRTPlugin.py:65
+#: ../src/gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
 msgstr "Nahlašovací moduly"
 
-#: ../src/gui/ABRTPlugin.py:66
+#: ../src/gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "Databázové moduly"
 
@@ -1011,7 +1054,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Nastavit modul %s"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:866
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1029,7 +1072,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui/CReporterAssistant.py:1047
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Chyba při získávání hlášení: %s"
@@ -1155,36 +1198,46 @@ msgstr ""
 "Prosím, prohlédněte si následující výpis a případně je upravte tak, aby "
 "neobsahoval citlivé údaje, které si chcete uchovat v soukromí:"
 
-#: ../src/gui/CReporterAssistant.py:614
+#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
+#: ../src/gui/CReporterAssistant.py:689
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:726
+msgid "Search:"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:756
 msgid "Refresh"
 msgstr "Obnovit"
 
-#: ../src/gui/CReporterAssistant.py:616
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Copy"
 msgstr "Kopírovat"
 
-#: ../src/gui/CReporterAssistant.py:622
+#: ../src/gui/CReporterAssistant.py:764
 msgid "I agree with submitting the backtrace"
 msgstr "Souhlasím s odesláním výpisu volání"
 
-#: ../src/gui/CReporterAssistant.py:627
+#: ../src/gui/CReporterAssistant.py:769
 msgid "Approve the backtrace"
 msgstr "Schválit výpis volání"
 
-#: ../src/gui/CReporterAssistant.py:650
+#: ../src/gui/CReporterAssistant.py:792
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Jak došlo k pádu (krok za krokem)? Je byste jej vyvolali?"
 
-#: ../src/gui/CReporterAssistant.py:669
+#: ../src/gui/CReporterAssistant.py:811
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Máte nějaké připomínky, které byste rádi předali správcům programu?"
 
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:831
 msgid "Provide additional details"
 msgstr "Poskytnout dodatečné údaje"
 
-#: ../src/gui/CReporterAssistant.py:696
+#: ../src/gui/CReporterAssistant.py:838
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -1192,80 +1245,80 @@ msgstr ""
 "<b>Připomínka:</b> Komentář nebude soukromý. Prosím, dejte si pozor na to, "
 "co říkáte."
 
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:879
 msgid "Confirm and send the report"
 msgstr "Potvrdit a odeslat hlášení"
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:881
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Níže je shrnuto vaše chybového hlášení. Prosím, hlášení odešlete klikněte na "
 "„Použít“."
 
-#: ../src/gui/CReporterAssistant.py:744
+#: ../src/gui/CReporterAssistant.py:886
 msgid "<b>Basic details</b>"
 msgstr "<b>Základní údaje</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:893
 msgid "Component"
 msgstr "Komponenta"
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Package"
 msgstr "Balíček"
 
-#: ../src/gui/CReporterAssistant.py:753
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Executable"
 msgstr "Program"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Cmdline"
 msgstr "Příkaz"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:898
 msgid "Architecture"
 msgstr "Architektura"
 
-#: ../src/gui/CReporterAssistant.py:757
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Kernel"
 msgstr "Jádro"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:900
 msgid "Release"
 msgstr "Vydání"
 
-#: ../src/gui/CReporterAssistant.py:759
+#: ../src/gui/CReporterAssistant.py:901
 msgid "Reason"
 msgstr "Důvod"
 
-#: ../src/gui/CReporterAssistant.py:770 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Výpis volání</b>"
 
-#: ../src/gui/CReporterAssistant.py:773
+#: ../src/gui/CReporterAssistant.py:915
 msgid "Click to view..."
 msgstr "Zobraz kliknutím…"
 
-#: ../src/gui/CReporterAssistant.py:785
+#: ../src/gui/CReporterAssistant.py:927
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Jak vyvolat:</b>"
 
-#: ../src/gui/CReporterAssistant.py:806
+#: ../src/gui/CReporterAssistant.py:948
 msgid "<b>Comments:</b>"
 msgstr "<b>Komentáře:</b>"
 
-#: ../src/gui/CReporterAssistant.py:809
+#: ../src/gui/CReporterAssistant.py:951
 msgid "No comment provided!"
 msgstr "Žádné komentáře nepřipojeny!"
 
-#: ../src/gui/CReporterAssistant.py:845
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Finished sending the bug report"
 msgstr "Odesílání chybového hlášení dokončeno"
 
-#: ../src/gui/CReporterAssistant.py:849
+#: ../src/gui/CReporterAssistant.py:991
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Chybová hlášení:</b>"
 
@@ -1311,7 +1364,8 @@ msgid "Name"
 msgstr "Název"
 
 #: ../src/gui/PluginsSettingsDialog.py:149
-msgid "Please select a plugin from the list to edit it's options."
+#, fuzzy
+msgid "Please select a plugin from the list to edit its options."
 msgstr "Prosím, ze seznamu vyberte modul, jehož nastavení chcete upravit."
 
 #: ../src/gui/PluginsSettingsDialog.py:157

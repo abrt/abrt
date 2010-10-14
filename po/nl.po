@@ -9,14 +9,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-13 15:16+0000\n"
+"POT-Creation-Date: 2010-10-14 20:16+0200\n"
 "PO-Revision-Date: 2010-10-13 19:18+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
-"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
+"Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
@@ -24,25 +24,25 @@ msgstr ""
 msgid "Reports bugs to bugzilla"
 msgstr "Bugs rapporteren aan bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:152
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "Backtrace aanmaken"
 
-#: ../lib/plugins/CCpp.cpp:238
+#: ../lib/plugins/CCpp.cpp:115
 msgid "Starting the debuginfo installation"
 msgstr "Start de debuginfo installatie"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:473
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "Verkrijgen van globale universele unieke identificatie..."
 
-#: ../lib/plugins/CCpp.cpp:667
+#: ../lib/plugins/CCpp.cpp:532
 msgid "Skipping the debuginfo installation"
 msgstr "Sla de debuginfo installatie over"
 
-#: ../lib/plugins/CCpp.cpp:918
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyseert crashes in C/C++ programma's"
 
@@ -294,6 +294,11 @@ msgstr "RHTSupport URL:"
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Upload: %llu van %llu KB"
+
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -631,6 +636,98 @@ msgstr "Fout tijdens het laden van rapporteer instellingen"
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Crash gerapporteerd met %d plug-ins (%d fouten)\n"
 
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+#, fuzzy
+msgid "Log to syslog"
+msgstr "Loggen naar syslog zelfs met -d"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "Nieuwe bug id: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"Leeg inlog of wachtwoord.\n"
+"Controleren a.u.b. "
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "Inloggen bij bugzilla..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "Controleren voor dubbele..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "Verplicht onderdeel 'bugs' ontbreekt"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+msgid "Creating a new bug..."
+msgstr "Nieuwe bug aanmaken..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "Het aanmaken van een Bugzilla ingang mislukte"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "Uitloggen..."
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Bug is al aangemeld: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Voeg %s toe aan CC lijst"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "Voeg nieuw commentaar toe aan bug(%d)"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
 #: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
 msgstr "Commentaar is te lang"
@@ -662,6 +759,10 @@ msgstr "Loggen naar syslog zelfs met -d"
 #: ../src/daemon/Daemon.cpp:874
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
+msgid "Database plugin not specified. Please check abrtd settings."
+msgstr "Database plug-in niet gespecificeerd. Controleer de artd instellingen."
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1483,59 +1584,11 @@ msgstr ""
 "configuratie te openen en te repareren voordat je verdergaat, omdat het "
 "rapporteer proces anders kan mislukken.\n"
 
-#~ msgid "New bug id: %i"
-#~ msgstr "Nieuwe bug id: %i"
-
-#~ msgid ""
-#~ "Empty login or password.\n"
-#~ "Please check "
-#~ msgstr ""
-#~ "Leeg inlog of wachtwoord.\n"
-#~ "Controleren a.u.b. "
-
-#~ msgid "Logging into bugzilla..."
-#~ msgstr "Inloggen bij bugzilla..."
-
-#~ msgid "Checking for duplicates..."
-#~ msgstr "Controleren voor dubbele..."
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Verplicht onderdeel 'bugs' ontbreekt"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
-
-#~ msgid "Creating a new bug..."
-#~ msgstr "Nieuwe bug aanmaken..."
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Het aanmaken van een Bugzilla ingang mislukte"
-
-#~ msgid "Logging out..."
-#~ msgstr "Uitloggen..."
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Bug is al aangemeld: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Voeg %s toe aan CC lijst"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "Voeg nieuw commentaar toe aan bug(%d)"
-
 #~ msgid "Show this help message"
 #~ msgstr "Deze hulp boodschap tonen"
 
 #~ msgid "Verbose"
 #~ msgstr "Breedsprakig"
-
-#~ msgid "Database plugin not specified. Please check abrtd settings."
-#~ msgstr ""
-#~ "Database plug-in niet gespecificeerd. Controleer de artd instellingen."
 
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"

@@ -7,142 +7,68 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-08-30 13:08+0200\n"
+"POT-Creation-Date: 2010-10-14 20:16+0200\n"
 "PO-Revision-Date: 2010-05-13 12:51+0530\n"
 "Last-Translator: Amitakhya Phukan <aphukan@redhat.com>\n"
 "Language-Team: Assamese <fedora-trans-as@redhat.com>\n"
-"Language: as\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: as\n"
 "X-Generator: Lokalize 1.0\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 
-#: ../lib/plugins/Bugzilla.cpp:466
-#, c-format
-msgid "New bug id: %i"
-msgstr "নতুন বাগ id: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:694
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"প্ৰৱেশ বা গুপ্তশব্দ লিখা নহয় ।\n"
-"অনুগ্ৰহ কৰি পৰীক্ষা কৰক"
-
-#: ../lib/plugins/Bugzilla.cpp:703
-msgid "Logging into bugzilla..."
-msgstr "bugzilla ত প্ৰৱেশ কৰা হৈছে..."
-
-#: ../lib/plugins/Bugzilla.cpp:706
-msgid "Checking for duplicates..."
-msgstr "প্ৰতিলিপি পৰীক্ষা কৰা হৈছে..."
-
-#: ../lib/plugins/Bugzilla.cpp:727 ../lib/plugins/Bugzilla.cpp:762
-msgid "Missing mandatory member 'bugs'"
-msgstr "হেৰুৱা আৱশ্যক সদস্য 'bugs'"
-
-#: ../lib/plugins/Bugzilla.cpp:745 ../lib/plugins/Bugzilla.cpp:778
-#: ../lib/plugins/Bugzilla.cpp:854
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr "get_bug_info() বিফল । সকলো আৱশ্যকীয় তথ্য সংগ্ৰহ কৰিব পৰা ন'গ'ল"
-
-#: ../lib/plugins/Bugzilla.cpp:794
-#, fuzzy
-msgid "Creating a new bug..."
-msgstr "নতুন বাগ সৃষ্টি কৰা হৈছে..."
-
-#: ../lib/plugins/Bugzilla.cpp:799
-msgid "Bugzilla entry creation failed"
-msgstr "Bugzilla নিবেশৰ নিৰ্মাণ বিফল"
-
-#: ../lib/plugins/Bugzilla.cpp:809 ../lib/plugins/Bugzilla.cpp:908
-msgid "Logging out..."
-msgstr "প্ৰস্থান কৰা হৈছে..."
-
-#. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:828
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "বাগ আগতে প্ৰতিবেদন কৰা হৈছে: %i"
-
-#: ../lib/plugins/Bugzilla.cpp:839
-#, fuzzy, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla ই bug(%d) ৰ পেৰেন্ট নাপালে"
-
-#: ../lib/plugins/Bugzilla.cpp:868 ../lib/plugins/Bugzilla.cpp:869
-#, fuzzy, c-format
-msgid "Add %s to CC list"
-msgstr "%s ক CC তালিকাত যোগ দিয়ক"
-
-#: ../lib/plugins/Bugzilla.cpp:893
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "bug(%d) ত নতুন মন্তব্য যোগ কৰক"
-
-#: ../lib/plugins/Bugzilla.cpp:992
+#: ../lib/plugins/Bugzilla.cpp:149
 msgid "Reports bugs to bugzilla"
 msgstr ""
 
-#: ../lib/plugins/CCpp.cpp:191
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "বেক-ট্ৰেচ সৃষ্টি কৰা হৈছে"
 
-#: ../lib/plugins/CCpp.cpp:198 ../lib/plugins/CCpp.cpp:345
-#: ../lib/plugins/CCpp.cpp:539 ../lib/plugins/CCpp.cpp:593
-#: ../lib/plugins/CCpp.cpp:760 ../lib/plugins/CCpp.cpp:812
-#: ../lib/plugins/Kerneloops.cpp:133 ../lib/plugins/Python.cpp:32
-#: ../lib/plugins/RunApp.cpp:64 ../lib/plugins/SOSreport.cpp:58
-#: ../lib/plugins/SOSreport.cpp:137
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr ""
-
-#: ../lib/plugins/CCpp.cpp:372
+#: ../lib/plugins/CCpp.cpp:115
 #, fuzzy
 msgid "Starting the debuginfo installation"
 msgstr "debuginfo ৰ সংস্থাপন আৰম্ভ কৰা হৈছে"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:608
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "গ্লোবেল সৰ্ববেপী ইউনিক আইডেন্টিফিকেছন প্ৰাপ্ত কৰা হৈছে..."
 
-#: ../lib/plugins/CCpp.cpp:797
+#: ../lib/plugins/CCpp.cpp:532
 #, fuzzy
 msgid "Skipping the debuginfo installation"
 msgstr "debuginfo ৰ সংস্থাপন উপেক্ষা কৰা হৈছে"
 
-#: ../lib/plugins/CCpp.cpp:1124
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr ""
 
-#: ../lib/plugins/FileTransfer.cpp:52 ../lib/plugins/ReportUploader.cpp:97
+#: ../lib/plugins/FileTransfer.cpp:51 ../lib/plugins/ReportUploader.cpp:96
 msgid "FileTransfer: URL not specified"
 msgstr "FileTransfer: URL উল্লিখিত নহয়"
 
-#: ../lib/plugins/FileTransfer.cpp:56 ../lib/plugins/ReportUploader.cpp:101
+#: ../lib/plugins/FileTransfer.cpp:55 ../lib/plugins/ReportUploader.cpp:100
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "%s আৰ্কাইভক %s লৈ প্ৰেৰণ কৰা হৈছে"
 
-#: ../lib/plugins/FileTransfer.cpp:241
+#: ../lib/plugins/FileTransfer.cpp:244
 msgid "FileTransfer: Creating a report..."
 msgstr "নথিপত্ৰ পৰিবহণ: প্ৰতিবেদন নিৰ্মাণ কৰক..."
 
-#: ../lib/plugins/FileTransfer.cpp:265 ../lib/plugins/FileTransfer.cpp:294
+#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
 #, fuzzy, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "আৰ্কাইভ নিৰ্মাণ কৰি প্ৰেৰণ কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../lib/plugins/FileTransfer.cpp:361
+#: ../lib/plugins/FileTransfer.cpp:364
 msgid "Sends a report via FTP or SCTP"
 msgstr ""
 
-#: ../lib/plugins/Kerneloops.cpp:154
+#: ../lib/plugins/Kerneloops.cpp:150
 msgid "Analyzes kernel oopses"
 msgstr ""
 
@@ -154,59 +80,59 @@ msgstr "প্ৰতিবেদন নিৰ্মাণ কৰি প্ৰত
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr ""
 
-#: ../lib/plugins/KerneloopsScanner.cpp:210
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr ""
 
-#: ../lib/plugins/Logger.cpp:69
+#: ../lib/plugins/Logger.cpp:68
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "'%s' লৈ প্ৰতিবেদন লিখা হৈছে"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, fuzzy, c-format
 msgid "The report was appended to %s"
 msgstr "ABRT সেৱ আৰম্ভ কৰা হৈছে"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, fuzzy, c-format
 msgid "The report was stored to %s"
 msgstr "ABRT সেৱ আৰম্ভ কৰা হৈছে"
 
-#: ../lib/plugins/Logger.cpp:83
+#: ../lib/plugins/Logger.cpp:82
 #, fuzzy
 msgid "Writes report to a file"
 msgstr "'%s' লৈ প্ৰতিবেদন লিখা হৈছে"
 
-#: ../lib/plugins/Mailx.cpp:100
+#: ../lib/plugins/Mailx.cpp:99
 msgid "Sending an email..."
 msgstr "ই-মেইল পঠিওৱা হৈছে..."
 
-#: ../lib/plugins/Mailx.cpp:151
+#: ../lib/plugins/Mailx.cpp:150
 msgid "Sends an email with a report (via mailx command)"
 msgstr ""
 
-#: ../lib/plugins/Python.cpp:105
+#: ../lib/plugins/Python.cpp:100
 msgid "Analyzes crashes in Python programs"
 msgstr ""
 
-#: ../lib/plugins/ReportUploader.cpp:131
+#: ../lib/plugins/ReportUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr ""
 
-#: ../lib/plugins/ReportUploader.cpp:197
+#: ../lib/plugins/ReportUploader.cpp:196
 #, fuzzy
 msgid "Creating a ReportUploader report..."
 msgstr "প্ৰতিবেদন নিৰ্মাণ কৰক..."
 
-#: ../lib/plugins/ReportUploader.cpp:515
+#: ../lib/plugins/ReportUploader.cpp:514
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:111
+#: ../lib/plugins/RHTSupport.cpp:109
 msgid "Compressing data"
 msgstr ""
 
@@ -219,25 +145,30 @@ msgstr "নতুন বাগ সৃষ্টি কৰা হৈছে..."
 msgid "Reports bugs to Red Hat support"
 msgstr ""
 
-#: ../lib/plugins/RunApp.cpp:79
+#: ../lib/plugins/RunApp.cpp:75
 msgid "Runs a command, saves its output"
 msgstr ""
 
-#: ../lib/plugins/SOSreport.cpp:104
+#: ../lib/plugins/SOSreport.cpp:99
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "sosreport চলোৱা হৈছে: %s"
 
-#: ../lib/plugins/SOSreport.cpp:109
+#: ../lib/plugins/SOSreport.cpp:104
 #, fuzzy
 msgid "Finished running sosreport"
 msgstr "sosreport চলোৱা সমাপ্ত"
 
-#: ../lib/plugins/SOSreport.cpp:171
+#: ../lib/plugins/SOSreport.cpp:132
+#, c-format
+msgid "Unable to open debug dump '%s'"
+msgstr ""
+
+#: ../lib/plugins/SOSreport.cpp:166
 msgid "Runs sosreport, saves the output"
 msgstr ""
 
-#: ../lib/plugins/SQLite3.cpp:678
+#: ../lib/plugins/SQLite3.cpp:718
 msgid "Keeps SQLite3 database about all crashes"
 msgstr ""
 
@@ -365,6 +296,11 @@ msgstr ""
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr ""
 
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
+
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
 msgstr ""
@@ -375,47 +311,47 @@ msgstr ""
 msgid "Automatic Bug Reporting Tool"
 msgstr "স্বয়ংক্ৰিয় বাগ প্ৰতিবেদনিং ব্যৱস্থা"
 
-#: ../src/applet/Applet.cpp:79
+#: ../src/applet/Applet.cpp:76
 #, fuzzy, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "%s সৰঞ্জামত এটা বিপৰ্যয় চিনাক্ত কৰা হৈছে"
 
-#: ../src/applet/Applet.cpp:81
+#: ../src/applet/Applet.cpp:78
 msgid "A crash has been detected"
 msgstr "এটা বিপৰ্যয় চিনাক্ত কৰা হৈছে"
 
-#: ../src/applet/Applet.cpp:278
+#: ../src/applet/Applet.cpp:275
 msgid "ABRT service is not running"
 msgstr "ABRT সেৱা বৰ্তমানে নাই চলা"
 
-#: ../src/applet/CCApplet.cpp:33 ../src/applet/CCApplet.cpp:254
-#: ../src/applet/CCApplet.cpp:281
+#: ../src/applet/applet_gtk.c:173 ../src/applet/applet_gtk.c:360
+#: ../src/applet/applet_gtk.c:387
 msgid "Warning"
 msgstr "সতৰ্কবাণী"
 
-#: ../src/applet/CCApplet.cpp:83
+#: ../src/applet/applet_gtk.c:223
 #, fuzzy
 msgid ""
 "Notification area applet that notifies users about issues detected by ABRT"
 msgstr "জাননী ক্ষেত্ৰৰ এপ্লেট ব্যৱহাৰকৰ্তাক ABRT ই সন্ধান পোৱা সমস্যাৰ বিষয়ে জনাবলৈ"
 
-#: ../src/applet/CCApplet.cpp:99 ../src/gui/ccgui.glade.h:23
+#: ../src/applet/applet_gtk.c:239 ../src/gui/ccgui.glade.h:23
 msgid "translator-credits"
 msgstr "অমিতাক্ষ ফুকন (aphukan@fedoraproject.org)"
 
-#: ../src/applet/CCApplet.cpp:109
+#: ../src/applet/applet_gtk.c:249
 msgid "Hide"
 msgstr "লুকাওক"
 
-#: ../src/applet/CCApplet.cpp:247 ../src/gui/ccgui.glade.h:13
+#: ../src/applet/applet_gtk.c:353 ../src/gui/ccgui.glade.h:13
 msgid "Report"
 msgstr "প্ৰতিবেদন"
 
-#: ../src/applet/CCApplet.cpp:250 ../src/applet/CCApplet.cpp:278
+#: ../src/applet/applet_gtk.c:356 ../src/applet/applet_gtk.c:384
 msgid "Open ABRT"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:50
+#: ../src/cli/CLI.cpp:47
 #, c-format
 msgid ""
 "\tUID        : %s\n"
@@ -426,12 +362,12 @@ msgid ""
 "\tCrash Count: %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:68
+#: ../src/cli/CLI.cpp:65
 #, c-format
 msgid "\tHostname   : %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:97
+#: ../src/cli/CLI.cpp:94
 #, c-format
 msgid ""
 "Crash ID:           %s:%s\n"
@@ -445,27 +381,27 @@ msgid ""
 "Reason:             %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:125
+#: ../src/cli/CLI.cpp:122
 #, c-format
 msgid "Coredump file:      %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:129
+#: ../src/cli/CLI.cpp:126
 #, c-format
 msgid "Rating:             %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:134
+#: ../src/cli/CLI.cpp:131
 #, c-format
 msgid "Crash function:     %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:138
+#: ../src/cli/CLI.cpp:135
 #, c-format
 msgid "Hostname:           %s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:142
+#: ../src/cli/CLI.cpp:139
 #, c-format
 msgid ""
 "\n"
@@ -473,7 +409,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:146
+#: ../src/cli/CLI.cpp:143
 #, c-format
 msgid ""
 "\n"
@@ -481,7 +417,7 @@ msgid ""
 "%s\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:152
+#: ../src/cli/CLI.cpp:149
 #, c-format
 msgid ""
 "\n"
@@ -490,7 +426,7 @@ msgid ""
 msgstr ""
 
 #. Message has embedded tabs.
-#: ../src/cli/CLI.cpp:250
+#: ../src/cli/CLI.cpp:247
 #, c-format
 msgid ""
 "Usage: %s [OPTION]\n"
@@ -515,24 +451,24 @@ msgid ""
 "\t@N  - N'th crash (as displayed by --list --full) will be acted upon\n"
 msgstr ""
 
-#: ../src/cli/CLI.cpp:296
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr ""
 
-#: ../src/cli/report.cpp:175
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr ""
 
-#: ../src/cli/report.cpp:195
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr ""
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr ""
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:194
 #, fuzzy
 msgid ""
 "# Backtrace\n"
@@ -540,130 +476,221 @@ msgid ""
 msgstr ""
 "মই বেকট্ৰেচ পৰীক্ষা কৰিলো আৰু তাৰ পৰা সংবেদনশীল তথ্য (গুপ্তশব্দ, ইত্যাদি) আঁতৰালো"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr ""
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr ""
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:198
 #, fuzzy
 msgid "# Component"
 msgstr "সাধাৰণ"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr ""
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr ""
 
-#: ../src/cli/report.cpp:206
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr ""
 
-#: ../src/cli/report.cpp:207
+#: ../src/cli/report.cpp:202
 #, fuzzy
 msgid "# Package"
 msgstr "সৰঞ্জাম"
 
-#: ../src/cli/report.cpp:208
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr ""
 
-#: ../src/cli/report.cpp:209
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr ""
 
-#: ../src/cli/report.cpp:332
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 
-#: ../src/cli/report.cpp:420
+#: ../src/cli/report.cpp:415
 #, fuzzy
 msgid ""
 "\n"
 "The report has been updated"
 msgstr "ABRT সেৱ আৰম্ভ কৰা হৈছে"
 
-#: ../src/cli/report.cpp:422
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
 msgstr ""
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:541
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr ""
 
-#: ../src/cli/report.cpp:542
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr ""
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:643
+#: ../src/cli/report.cpp:645
 #, fuzzy, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "একো নিৰ্বাচন কৰা হোৱা নাই"
 
-#: ../src/cli/report.cpp:647
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr ""
 
-#: ../src/cli/report.cpp:653
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr ""
 
-#: ../src/cli/report.cpp:698
+#: ../src/cli/report.cpp:700
 #, fuzzy
 msgid "Reporting..."
 msgstr "কৰ্মৰত..."
 
-#: ../src/cli/report.cpp:717
+#: ../src/cli/report.cpp:719
 #, fuzzy, c-format
 msgid "Report using %s?"
 msgstr "প্ৰতিবেদনাৰ প্লাগ-ইন"
 
-#: ../src/cli/report.cpp:720
+#: ../src/cli/report.cpp:722
 #, fuzzy
 msgid "Skipping..."
 msgstr "কৰ্মৰত..."
 
-#: ../src/cli/report.cpp:732
+#: ../src/cli/report.cpp:734
 #, fuzzy
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "প্ৰতিবেদন কৰা নিষ্ক্ৰিয়, ওপৰত দিয়া সমস্যাৰ সমাধান কৰক ।"
 
-#: ../src/cli/report.cpp:736
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
 "install %s\" and try again\n"
 msgstr ""
 
-#: ../src/cli/report.cpp:745
+#: ../src/cli/report.cpp:747
 #, fuzzy
 msgid "Error loading reporter settings"
 msgstr "প্ৰতিবেদন প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../src/cli/report.cpp:764
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr ""
 
-#: ../src/daemon/CommLayerServerDBus.cpp:227
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+msgid "Log to syslog"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "নতুন বাগ id: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"প্ৰৱেশ বা গুপ্তশব্দ লিখা নহয় ।\n"
+"অনুগ্ৰহ কৰি পৰীক্ষা কৰক"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "bugzilla ত প্ৰৱেশ কৰা হৈছে..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "প্ৰতিলিপি পৰীক্ষা কৰা হৈছে..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "হেৰুৱা আৱশ্যক সদস্য 'bugs'"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr "get_bug_info() বিফল । সকলো আৱশ্যকীয় তথ্য সংগ্ৰহ কৰিব পৰা ন'গ'ল"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+#, fuzzy
+msgid "Creating a new bug..."
+msgstr "নতুন বাগ সৃষ্টি কৰা হৈছে..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla নিবেশৰ নিৰ্মাণ বিফল"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "প্ৰস্থান কৰা হৈছে..."
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "বাগ আগতে প্ৰতিবেদন কৰা হৈছে: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, fuzzy, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla ই bug(%d) ৰ পেৰেন্ট নাপালে"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, fuzzy, c-format
+msgid "Add %s to CC list"
+msgstr "%s ক CC তালিকাত যোগ দিয়ক"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "bug(%d) ত নতুন মন্তব্য যোগ কৰক"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
+
+#: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
 msgstr ""
 
-#: ../src/daemon/CommLayerServerDBus.cpp:231
+#: ../src/daemon/CommLayerServerDBus.cpp:228
 msgid "'How to reproduce' is too long"
 msgstr ""
 
-#: ../src/daemon/Daemon.cpp:513
+#: ../src/daemon/Daemon.cpp:633
 #, fuzzy
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
@@ -672,7 +699,23 @@ msgstr ""
 "ক'টাতকৈ আকাৰ অধিক হোৱা প্ৰতিবেদন কৰক । অনুগ্ৰহ কৰি abrt.conf ত প্ৰণালীৰ "
 "MaxCrashReportsSize ৰ মান চাওক ।"
 
-#: ../src/daemon/MiddleWare.cpp:605
+#: ../src/daemon/Daemon.cpp:862
+msgid "abrtd [options]"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:872
+msgid "Do not daemonize"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:873
+msgid "Log to syslog even with -d"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:874
+msgid "Exit after SEC seconds of inactivity"
+msgstr ""
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr ""
 
@@ -680,35 +723,35 @@ msgstr ""
 msgid "View and report application crashes"
 msgstr "এপ্লিকেছনৰ বিপৰ্যয় নিৰীক্ষণ কৰক আৰু প্ৰতিবেদন কৰক"
 
-#: ../src/gui/ABRTExceptions.py:6
+#: ../src/gui/ABRTExceptions.py:7
 #, fuzzy
 msgid "Another client is already running, trying to wake it..."
 msgstr "এটা ভিন্ন গ্ৰাহক বৰ্তমানে চলিছে, তাৰ জগোৱাৰ প্ৰচেষ্টা কৰা হৈছে ।"
 
-#: ../src/gui/ABRTExceptions.py:13
+#: ../src/gui/ABRTExceptions.py:14
 #, fuzzy
 msgid ""
 "Got unexpected data from the daemon (is the database properly updated?)."
 msgstr ""
 "ডেমনৰ পৰা অপ্ৰত্যাশিত তথ্য পোৱা গৈছে (তথ্যভঁৰাল চাবি সঠিকভাবে উন্নত কৰা হৈছে?) ।"
 
-#: ../src/gui/ABRTPlugin.py:62
+#: ../src/gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "প্লাগ-ইনসমূহক তুলি লোৱা হোৱা নাই"
 
-#: ../src/gui/ABRTPlugin.py:63
+#: ../src/gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "বিশ্লেষণৰ প্লাগ-ইন"
 
-#: ../src/gui/ABRTPlugin.py:64
+#: ../src/gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "কামৰ প্লাগ-ইন"
 
-#: ../src/gui/ABRTPlugin.py:65
+#: ../src/gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
 msgstr "প্ৰতিবেদনাৰ প্লাগ-ইন"
 
-#: ../src/gui/ABRTPlugin.py:66
+#: ../src/gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "তথ্যভঁৰাল প্লাগ-ইন"
 
@@ -898,7 +941,7 @@ msgstr ""
 "crashid=%s"
 
 #. default texts
-#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:19
+#: ../src/gui/CCReporterDialog.py:22 ../src/gui/CReporterAssistant.py:20
 #, fuzzy
 msgid "Brief description of how to reproduce this or what you did..."
 msgstr "এইটো পুনঃ সঞ্চালনৰ সংক্ষিপ্ত বিৱৰণ অথবা আপোনাৰ সঞ্চালিত কামৰ তথ্য..."
@@ -908,7 +951,7 @@ msgstr "এইটো পুনঃ সঞ্চালনৰ সংক্ষিপ
 msgid "You must check the backtrace for sensitive data."
 msgstr "সংবেদনশীল তথ্যৰ কাৰণে আপুনি বেকট্ৰেচ পৰীক্ষা কৰিব লাগিব"
 
-#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:324
+#: ../src/gui/CCReporterDialog.py:118 ../src/gui/CReporterAssistant.py:325
 #, fuzzy, python-format
 msgid ""
 "Reporting disabled because the backtrace is unusable.\n"
@@ -926,7 +969,7 @@ msgstr ""
 msgid "The backtrace is unusable, you cannot report this!"
 msgstr "বেক-ট্ৰেছ ব্যৱহাৰযোগ্য নহয়, ইয়াক আপুনি প্ৰতিবেদন কৰিব নালাগে !"
 
-#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:330
+#: ../src/gui/CCReporterDialog.py:124 ../src/gui/CReporterAssistant.py:331
 #, fuzzy
 msgid ""
 "The backtrace is incomplete, please make sure you provide the steps to "
@@ -953,8 +996,8 @@ msgstr ""
 "এনেধৰণৰ বিপৰ্যয়ৰ কাৰণে কোনো প্ৰতিবেদনকৰ্তাৰ প্লাগ-ইন নাই\n"
 "অনুগ্ৰহ কৰি abrt.conf চাওক ।"
 
-#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:217
-#: ../src/gui/PluginsSettingsDialog.py:169
+#: ../src/gui/CCReporterDialog.py:418 ../src/gui/CReporterAssistant.py:218
+#: ../src/gui/PluginsSettingsDialog.py:170
 #, fuzzy, python-format
 msgid ""
 "Cannot save plugin settings:\n"
@@ -963,12 +1006,12 @@ msgstr ""
 "প্লাগ-ইনৰ বৈশিষ্ট্য সংৰক্ষণ কৰা সম্ভৱ নহয়:\n"
 " %s"
 
-#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:247
+#: ../src/gui/CCReporterDialog.py:448 ../src/gui/CReporterAssistant.py:248
 #, python-format
 msgid "Configure %s options"
 msgstr "%s বিকল্পসমূহ বিন্যাস কৰক"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:861
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
 #, fuzzy
 msgid ""
 "Unable to get report!\n"
@@ -977,7 +1020,7 @@ msgstr ""
 "প্ৰতিবেদন প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ!\n"
 "Debuginfo চাবি অনুপস্থিত?"
 
-#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:414
+#: ../src/gui/CCReporterDialog.py:527 ../src/gui/CReporterAssistant.py:415
 #, python-format
 msgid ""
 "Reporting failed!\n"
@@ -987,84 +1030,84 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:900
+#: ../src/gui/CReporterAssistant.py:1047
 #, fuzzy, python-format
 msgid "Error acquiring the report: %s"
 msgstr "প্ৰতিবেদন প্ৰাপ্ত কৰিবলৈ ব্যৰ্থ: %s"
 
-#: ../src/gui/ConfBackend.py:77
+#: ../src/gui/ConfBackend.py:78
 #, fuzzy
 msgid "Cannot connect to the Gnome Keyring daemon."
 msgstr "প্ৰণালী dbus-ৰ সৈতে সংযোগ স্থাপন কৰিবলৈ ব্যৰ্থ"
 
 #. could happen if keyring daemon is running, but we run gui under
 #. user who is not the owner of the running session - using su
-#: ../src/gui/ConfBackend.py:83
+#: ../src/gui/ConfBackend.py:84
 msgid "Cannot get the default keyring."
 msgstr ""
 
-#: ../src/gui/ConfBackend.py:102 ../src/gui/ConfBackend.py:118
+#: ../src/gui/ConfBackend.py:103 ../src/gui/ConfBackend.py:119
 msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 
 #. we tried 2 times, so giving up the authorization
-#: ../src/gui/ConfBackend.py:152
+#: ../src/gui/ConfBackend.py:153
 #, python-format
 msgid ""
 "Access to gnome-keyring has been denied, cannot load the settings for %s!"
 msgstr ""
 
-#: ../src/gui/ConfBackend.py:205
+#: ../src/gui/ConfBackend.py:206
 msgid "Access to gnome-keyring has been denied, cannot load settings."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:20
+#: ../src/gui/CReporterAssistant.py:21
 msgid "Crash info doesn't contain a backtrace"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:296
+#: ../src/gui/CReporterAssistant.py:297
 #, python-format
 msgid "Rating is required by the %s plugin"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:298
+#: ../src/gui/CReporterAssistant.py:299
 msgid "Rating is not required by any plugin, skipping the check..."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:302
+#: ../src/gui/CReporterAssistant.py:303
 #, python-format
 msgid "Rating is %s"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:305
+#: ../src/gui/CReporterAssistant.py:306
 msgid "Crashdump doesn't have rating => we suppose it's not required"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:310
+#: ../src/gui/CReporterAssistant.py:311
 #, fuzzy
 msgid "You should check the backtrace for sensitive data."
 msgstr "সংবেদনশীল তথ্যৰ কাৰণে আপুনি বেকট্ৰেচ পৰীক্ষা কৰিব লাগিব"
 
-#: ../src/gui/CReporterAssistant.py:311
+#: ../src/gui/CReporterAssistant.py:312
 #, fuzzy
 msgid "You must agree with sending the backtrace."
 msgstr "এই বেক-ট্ৰেচৰ প্ৰতিবেদনত আপুনি সন্মত হ'ব লাগিব ।"
 
-#: ../src/gui/CReporterAssistant.py:326
+#: ../src/gui/CReporterAssistant.py:327
 #, fuzzy
 msgid "Reporting disabled because the backtrace is unusable."
 msgstr "প্ৰতিবেদন কৰা নিষ্ক্ৰিয়, ওপৰত দিয়া সমস্যাৰ সমাধান কৰক ।"
 
-#: ../src/gui/CReporterAssistant.py:371
+#: ../src/gui/CReporterAssistant.py:372
 msgid "You did not provide any steps to reproduce."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:385
+#: ../src/gui/CReporterAssistant.py:386
 msgid "You did not provide any comments."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:466
+#: ../src/gui/CReporterAssistant.py:467
 #, python-format
 msgid ""
 "It looks like an application from the package <b>%s</b> has crashed on your "
@@ -1080,16 +1123,16 @@ msgid ""
 "continue."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:526
+#: ../src/gui/CReporterAssistant.py:527
 msgid "Only one reporter plugin is configured."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:532
+#: ../src/gui/CReporterAssistant.py:533
 #, fuzzy
 msgid "Send a bug report"
 msgstr "প্ৰতিবেদন পঠিয়াওক"
 
-#: ../src/gui/CReporterAssistant.py:570
+#: ../src/gui/CReporterAssistant.py:571
 msgid ""
 "Below is the backtrace associated with your crash. A crash backtrace "
 "provides developers with details about how the crash happened, helping them "
@@ -1099,122 +1142,132 @@ msgid ""
 "report does not contain any sensitive data you would rather not share:"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:611
+#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
+#: ../src/gui/CReporterAssistant.py:689
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:726
+msgid "Search:"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:756
 msgid "Refresh"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:613
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Copy"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:619
+#: ../src/gui/CReporterAssistant.py:764
 #, fuzzy
 msgid "I agree with submitting the backtrace"
 msgstr "এই বেক-ট্ৰেচৰ প্ৰতিবেদনত আপুনি সন্মত হ'ব লাগিব ।"
 
-#: ../src/gui/CReporterAssistant.py:624
+#: ../src/gui/CReporterAssistant.py:769
 msgid "Approve the backtrace"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:647
+#: ../src/gui/CReporterAssistant.py:792
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:665
+#: ../src/gui/CReporterAssistant.py:811
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:684
+#: ../src/gui/CReporterAssistant.py:831
 msgid "Provide additional details"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:691
+#: ../src/gui/CReporterAssistant.py:838
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:732
+#: ../src/gui/CReporterAssistant.py:879
 #, fuzzy
 msgid "Confirm and send the report"
 msgstr "প্ৰতিবেদন পঠিয়াওক"
 
-#: ../src/gui/CReporterAssistant.py:734
+#: ../src/gui/CReporterAssistant.py:881
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:886
 #, fuzzy
 msgid "<b>Basic details</b>"
 msgstr "<b>প্লাগ-ইনৰ বিৱৰণ</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:746
+#: ../src/gui/CReporterAssistant.py:893
 #, fuzzy
 msgid "Component"
 msgstr "সাধাৰণ"
 
-#: ../src/gui/CReporterAssistant.py:747
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Package"
 msgstr "সৰঞ্জাম"
 
-#: ../src/gui/CReporterAssistant.py:748
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Executable"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:749
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Cmdline"
 msgstr ""
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:898
 msgid "Architecture"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Kernel"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:753
+#: ../src/gui/CReporterAssistant.py:900
 #, fuzzy
 msgid "Release"
 msgstr "আঁতৰাওক"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:901
 #, fuzzy
 msgid "Reason"
 msgstr "<b>কাৰণ:</b>"
 
-#: ../src/gui/CReporterAssistant.py:765 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>বেকট্ৰেচ</b>"
 
-#: ../src/gui/CReporterAssistant.py:768
+#: ../src/gui/CReporterAssistant.py:915
 msgid "Click to view..."
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:780
+#: ../src/gui/CReporterAssistant.py:927
 #, fuzzy
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>সময় (বা সময়কাল)</b>"
 
-#: ../src/gui/CReporterAssistant.py:801
+#: ../src/gui/CReporterAssistant.py:948
 #, fuzzy
 msgid "<b>Comments:</b>"
 msgstr "<b>মন্তব্য:</b>"
 
-#: ../src/gui/CReporterAssistant.py:804
+#: ../src/gui/CReporterAssistant.py:951
 msgid "No comment provided!"
 msgstr ""
 
-#: ../src/gui/CReporterAssistant.py:840
+#: ../src/gui/CReporterAssistant.py:987
 #, fuzzy
 msgid "Finished sending the bug report"
 msgstr "প্ৰতিবেদন পঠিয়াওক"
 
-#: ../src/gui/CReporterAssistant.py:844
+#: ../src/gui/CReporterAssistant.py:991
 #, fuzzy
 msgid "<b>Bug reports:</b>"
 msgstr "<b>বাগ প্ৰতিবেদনবোৰ:</b>"
@@ -1227,12 +1280,12 @@ msgstr "লগ"
 msgid "Report done"
 msgstr "প্ৰতিবেদন বনোৱা হ'ল"
 
-#: ../src/gui/PluginSettingsUI.py:17
+#: ../src/gui/PluginSettingsUI.py:18
 #, fuzzy
 msgid "Cannot find PluginDialog widget in the UI description!"
 msgstr "ব্যৱহাৰকৰ্তাৰ সংযোগমাধ্যমৰ বিৱৰণত PluginDialog উইজেট পোৱা নাযায়!"
 
-#: ../src/gui/PluginSettingsUI.py:24
+#: ../src/gui/PluginSettingsUI.py:25
 #, python-format
 msgid ""
 "No UI for the plugin <b>%s</b>, this is probably a bug.\n"
@@ -1240,31 +1293,31 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 
-#: ../src/gui/PluginSettingsUI.py:59 ../src/gui/PluginSettingsUI.py:85
+#: ../src/gui/PluginSettingsUI.py:60 ../src/gui/PluginSettingsUI.py:86
 #, fuzzy
 msgid "Combo box is not implemented"
 msgstr "কম্বো-বক্স বাস্তবায়িত নহয়"
 
-#: ../src/gui/PluginSettingsUI.py:68
+#: ../src/gui/PluginSettingsUI.py:69
 msgid "Nothing to hydrate!"
 msgstr "প্ৰদৰ্শনযোগ্য কোনো বস্তু উপস্থিত নাই!"
 
-#: ../src/gui/PluginsSettingsDialog.py:24
+#: ../src/gui/PluginsSettingsDialog.py:25
 msgid "Cannot load the GUI description for SettingsDialog!"
 msgstr ""
 
 #. Create/configure columns and add them to pluginlist
 #. column "name" has two kind of cells:
-#: ../src/gui/PluginsSettingsDialog.py:41
+#: ../src/gui/PluginsSettingsDialog.py:42
 #, fuzzy
 msgid "Name"
 msgstr "নাম:"
 
-#: ../src/gui/PluginsSettingsDialog.py:148
-msgid "Please select a plugin from the list to edit it's options."
+#: ../src/gui/PluginsSettingsDialog.py:149
+msgid "Please select a plugin from the list to edit its options."
 msgstr ""
 
-#: ../src/gui/PluginsSettingsDialog.py:156
+#: ../src/gui/PluginsSettingsDialog.py:157
 #, fuzzy, python-format
 msgid ""
 "Error while opening the plugin settings UI: \n"
@@ -1367,19 +1420,19 @@ msgstr "প্ৰতিবেদন পঠিয়াওক"
 msgid "Show log"
 msgstr "লগ দেখুৱাওক"
 
-#: ../src/gui/SettingsDialog.py:33 ../src/gui/SettingsDialog.py:50
+#: ../src/gui/SettingsDialog.py:34 ../src/gui/SettingsDialog.py:51
 msgid "<b>Select plugin</b>"
 msgstr "<b>প্লাগ-ইন বাচক</b>"
 
-#: ../src/gui/SettingsDialog.py:36
+#: ../src/gui/SettingsDialog.py:37
 msgid "<b>Select database backend</b>"
 msgstr "<b>তথ্যভঁৰালৰ বেক-এন্ড নিৰ্ব্বাচন কৰক</b>"
 
-#: ../src/gui/SettingsDialog.py:169
+#: ../src/gui/SettingsDialog.py:170
 msgid "Remove this job"
 msgstr "এই কাম আঁতৰাওক"
 
-#: ../src/gui/SettingsDialog.py:213
+#: ../src/gui/SettingsDialog.py:214
 msgid "Remove this action"
 msgstr "এই কাৰ্য্য আঁতৰাওক"
 
