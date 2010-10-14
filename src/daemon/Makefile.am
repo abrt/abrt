@@ -93,7 +93,8 @@ abrt_action_generate_backtrace_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_generate_backtrace_LDADD = \
-    ../../lib/utils/libABRTUtils.la
+    ../../lib/utils/libABRTUtils.la \
+    ../../btparser/lib/libbtparser.la
 
 abrt_action_save_package_data_SOURCES = \
     rpm.h rpm.c \

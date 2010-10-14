@@ -66,7 +66,6 @@ UTILS_PATH=$(srcdir)/../utils
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h
 libCCpp_la_LDFLAGS = -avoid-version
-#libCCpp_la_LIBADD =
 libCCpp_la_CPPFLAGS = -Wall -Werror \
     -I$(INC_PATH) -I$(UTILS_PATH) \
     -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \

@@ -17,7 +17,9 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "backtrace.h"
+#include "btparser/lib/backtrace.h"
+#include "btparser/lib/frame.h"
+#include "btparser/lib/location.h"
 #include "parse_options.h"
 
 
@@ -306,97 +308,77 @@ int main(int argc, char **argv)
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);
 
     /* Compute and store backtrace hash. */
-    char *backtrace_cpy = xstrdup(backtrace_str);
-    struct backtrace *backtrace = backtrace_parse(backtrace_cpy, false, false);
-    free(backtrace_cpy);
-    if (backtrace)
+    struct btp_location location;
+    btp_location_init(&location);
+    char *backtrace_str_ptr = backtrace_str;
+    struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
+    if (!backtrace)
     {
-        /* Get the quality of the full backtrace. */
-        float q1 = backtrace_quality(backtrace);
-
-        /* Remove all the other threads except the crash thread. */
-        struct thread *crash_thread = backtrace_find_crash_thread(backtrace);
-        if (crash_thread)
-            backtrace_remove_threads_except_one(backtrace, crash_thread);
-        else
-            log_msg("Detection of crash thread failed");
-
-        /* Get the quality of the crash thread. */
-        float q2 = backtrace_quality(backtrace);
-
-        backtrace_remove_noncrash_frames(backtrace);
-
-        /* Do the frame removal now. */
-        backtrace_limit_frame_depth(backtrace, 5);
-        /* Frame removal can be done before removing exit handlers. */
-        backtrace_remove_exit_handlers(backtrace);
-
-        /* Get the quality of frames around the crash. */
-        float q3 = backtrace_quality(backtrace);
-
-        /* Compute UUID. */
-        struct strbuf *bt = backtrace_tree_as_str(backtrace, false);
-        strbuf_prepend_str(bt, executable);
-        strbuf_prepend_str(bt, package);
+        VERB1 log(_("Backtrace parsing failed for %s"), dump_dir_name);
+        VERB1 log("%d:%d: %s", location.line, location.column, location.message);
+        /* If the parser failed compute the UUID from the executable
+           and package only.  This is not supposed to happen often.
+           Do not store the rating, as we do not know how good the
+           backtrace is. */
+        struct strbuf *emptybt = strbuf_new();
+        strbuf_prepend_str(emptybt, executable);
+        strbuf_prepend_str(emptybt, package);
         char hash_str[SHA1_RESULT_LEN*2 + 1];
-        create_hash(hash_str, bt->buf);
+        create_hash(hash_str, emptybt->buf);
         dd_save_text(dd, FILENAME_DUPHASH, hash_str);
-        strbuf_free(bt);
 
-        /* Compute and store backtrace rating. The crash frame
-           is more important that the others. The frames around
-           the crash are more important than the rest.  */
-        float qtot = 0.25f * q1 + 0.35f * q2 + 0.4f * q3;
-
-        /* Turn the quality to rating. */
-        const char *rating;
-        if (qtot < 0.6f)      rating = "0";
-        else if (qtot < 0.7f) rating = "1";
-        else if (qtot < 0.8f) rating = "2";
-        else if (qtot < 0.9f) rating = "3";
-        else                  rating = "4";
-        dd_save_text(dd, FILENAME_RATING, rating);
-
-        /* Get the function name from the crash frame. */
-        if (crash_thread)
-        {
-            struct frame *crash_frame = crash_thread->frames;
-            struct frame *abort_frame = thread_find_abort_frame(crash_thread);
-            if (abort_frame)
-                crash_frame = abort_frame->next;
-            if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
-                dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function);
-        }
-
-        backtrace_free(backtrace);
+        strbuf_free(emptybt);
+        free(backtrace_str);
+        free(package);
+        free(executable);
+        dd_close(dd);
+        return 2;
     }
+    free(backtrace_str);
+
+    /* Compute UUID. */
+    char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
+    struct strbuf *str_hash = strbuf_new();
+    strbuf_append_str(str_hash, package);
+    strbuf_append_str(str_hash, executable);
+    strbuf_append_str(str_hash, str_hash_core);
+    char hash_str[SHA1_RESULT_LEN*2 + 1];
+    create_hash(hash_str, str_hash->buf);
+    dd_save_text(dd, FILENAME_GLOBAL_UUID, hash_str);
+    strbuf_free(str_hash);
+    free(str_hash_core);
+
+    /* Compute the backtrace rating. */
+    float quality = btp_backtrace_quality_complex(backtrace);
+    const char *rating;
+    if (quality < 0.6f)
+        rating = "0";
+    else if (quality < 0.7f)
+        rating = "1";
+    else if (quality < 0.8f)
+        rating = "2";
+    else if (quality < 0.9f)
+        rating = "3";
     else
-    {
-        /* If the parser failed fall back to the independent backtrace. */
-        /* If we write and use a hand-written parser instead of the bison one,
-           the parser never fails, and it will be possible to get rid of
-           the independent_backtrace and backtrace_rate_old. */
-        struct strbuf *ibt = independent_backtrace(backtrace_str);
-        strbuf_prepend_str(ibt, executable);
-        strbuf_prepend_str(ibt, package);
-        char hash_str[SHA1_RESULT_LEN*2 + 1];
-        create_hash(hash_str, ibt->buf);
-        dd_save_text(dd, FILENAME_DUPHASH, hash_str);
-        strbuf_free(ibt);
+        rating = "4";
+    dd_save_text(dd, FILENAME_RATING, rating);
 
-        /* Compute and store backtrace rating. */
-        /* Crash frame is not known so store nothing. */
-        int rate = backtrace_rate_old(backtrace_str);
-        char rate_buf[sizeof(rate)*3 + 2];
-        sprintf(rate_buf, "%d", rate);
-        dd_save_text(dd, FILENAME_RATING, rate_buf);
-    }
-
+    /* Get the function name from the crash frame. */
+    struct btp_frame *crash_frame = btp_backtrace_get_crash_frame(backtrace);
+    if (crash_frame)
+     {
+        if (crash_frame->function_name &&
+            0 != strcmp(crash_frame->function_name, "??"))
+        {
+            dd_save_text(dd, FILENAME_CRASH_FUNCTION, crash_frame->function_name);
+        }
+        btp_frame_free(crash_frame);
+     }
+    btp_backtrace_free(backtrace);
     dd_close(dd);
 
     free(executable);
     free(package);
-    free(backtrace_str);
 
     return 0;
 }

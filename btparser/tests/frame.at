@@ -1,0 +1,615 @@
+# Checking the btparser. -*- Autotest -*-
+
+AT_BANNER([Frames])
+
+## ------------- ##
+## btp_frame_dup ##
+## ------------- ##
+
+AT_TESTFUN([btp_frame_dup],
+[[
+#include <lib/frame.h>
+#include <lib/utils.h>
+#include <assert.h>
+
+int main(void)
+{
+  struct btp_frame *frame1 = btp_frame_new();;
+  frame1->function_name = btp_strdup("test1");
+  frame1->function_type = btp_strdup("type1");
+  frame1->number = 10;
+  frame1->source_file = btp_strdup("file1");
+  frame1->source_line = 11;
+  frame1->address = 12;
+
+  struct btp_frame *frame0 = btp_frame_new();;
+  frame0->function_name = btp_strdup("test0");
+  frame0->function_type = btp_strdup("type0");
+  frame0->number = 13;
+  frame0->source_file = btp_strdup("file0");
+  frame0->source_line = 14;
+  frame0->address = 15;
+  frame0->next = frame1;
+
+  /* Test the duplication without siblings. */
+  struct btp_frame *frame = btp_frame_dup(frame0, false);
+  assert(NULL == frame->next);
+  assert(frame->function_name != frame0->function_name);
+  assert(frame->function_type != frame0->function_type);
+  assert(frame->source_file != frame0->source_file);
+  assert(0 == btp_frame_cmp(frame, frame0, true));
+  btp_frame_free(frame);
+
+  /* Test the duplication with the siblings. */
+  frame = btp_frame_dup(frame0, true);
+  assert(frame->function_name != frame0->function_name);
+  assert(frame->function_type != frame0->function_type);
+  assert(frame->source_file != frame0->source_file);
+  assert(0 == btp_frame_cmp(frame, frame0, true));
+  assert(frame->next != frame1);
+  assert(0 == btp_frame_cmp(frame->next, frame1, true));
+  btp_frame_free(frame->next);
+  btp_frame_free(frame);
+
+  btp_frame_free(frame1);
+  btp_frame_free(frame0);
+  return 0;
+}
+]])
+
+## --------------------------- ##
+## btp_frame_parse_frame_start ##
+## --------------------------- ##
+
+AT_TESTFUN([btp_frame_parse_frame_start],
+[[
+#include <lib/frame.h>
+#include <assert.h>
+
+/**
+ * @param input
+ * The input text stream.
+ * @param parsed_char_count
+ * The expected number of characters parsed (taken) from input.
+ * @param expected_frame_number
+ * The expected parsed frame number.
+ */
+void check(char *input,
+           int parsed_char_count,
+           unsigned expected_frame_number)
+{
+  int number;
+  char *old_input = input;
+  assert(parsed_char_count == btp_frame_parse_frame_start(&input, &number));
+  if (0 < parsed_char_count)
+  {
+    assert(number == expected_frame_number);
+    assert(*input == '\0');
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+  }
+}
+
+int main(void)
+{
+  check("#10 "    , 4, 10);
+  check("#0  "    , 4, 0);
+  check("#99999  ", 8, 99999);
+  check("ab "     , 0, 0);
+  check("#ab "    , 0, 0);
+  check("#-9999 " , 0, 9999);
+  return 0;
+}
+]])
+
+## --------------------------- ##
+## btp_frame_parseadd_operator ##
+## --------------------------- ##
+
+AT_TESTFUN([btp_frame_parseadd_operator],
+[[
+#include <lib/frame.h>
+#include <lib/strbuf.h>
+#include <assert.h>
+#include <string.h>
+
+void check(char *input, int parsed_length)
+{
+  printf("Testing '%s' -> %d\n", input, parsed_length);
+  char *old_input = input;
+  struct btp_strbuf *strbuf = btp_strbuf_new();
+  assert(parsed_length == btp_frame_parseadd_operator(&input, strbuf));
+  printf("  input = '%s', old_input = '%s'\n", input, old_input);
+
+  /* Check that the input pointer was updated properly. */
+  assert(*input == old_input[parsed_length]);
+
+  /* Check that the strbuf has been modified accordingly to what was parsed. */
+  assert(0 == strncmp(strbuf->buf, old_input, parsed_length));
+  assert(strbuf->len == parsed_length);
+
+  btp_strbuf_free(strbuf);
+}
+
+int main(void)
+{
+  check("operator>", strlen("operator>"));
+  check("operator->", strlen("operator->"));
+  check("operator new", strlen("operator new"));
+  check("operator new[]", strlen("operator new[]"));
+  check("operator delete", strlen("operator delete"));
+  check("operator del", 0);
+  check("operator delete[] (test)", strlen("operator delete[]"));
+  /* Red Hat Bugzilla bug #542445 */
+  check("cairo_add_operator (test)", 0);
+  return 0;
+}
+]])
+
+## ----------------------------- ##
+## btp_frame_parse_function_name ##
+## ----------------------------- ##
+
+AT_TESTFUN([btp_frame_parse_function_name],
+[[
+#include <lib/frame.h>
+#include <lib/utils.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+
+void check(bool success, char *input)
+{
+  /* Function name must be ended with a space. */
+  char *input_with_space = btp_malloc(strlen(input) + 2);
+  strcpy(input_with_space, input);
+  input_with_space[strlen(input)] = ' ';
+  input_with_space[strlen(input) + 1] = '\0';
+
+  char *function_name = NULL, *function_type = NULL;
+  char *old_input_with_space = input_with_space;
+  printf("Parsing '%s'\n", input);
+  struct btp_location location;
+  btp_location_init(&location);
+  assert(success == btp_frame_parse_function_name(&input_with_space,
+						  &function_name,
+						  &function_type,
+						  &location));
+
+  if (success)
+  {
+    assert(function_name);
+    printf("Function name '%s'\n", function_name);
+    assert(strcmp(function_name, input) == 0);
+    assert(function_type == NULL);
+    free(function_name);
+    assert(*input_with_space == ' ');
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input_with_space == input_with_space);
+  }
+
+  free(old_input_with_space);
+}
+
+int main(void)
+{
+  check(true, "??");
+  check(true, "IA__g_bookmark_file_to_file");
+  check(true, "pthread_cond_timedwait@@GLIBC_2.3.2");
+  check(true, "_pixman_walk_composite_region");
+  check(true, "CairoOutputDev::tilingPatternFill");
+  check(true, "sdr::(anonymous namespace)::ViewContact::~ViewContact");
+  check(true, "operator==<nsIAtom, nsICSSPseudoClass>");
+  return 0;
+}
+]])
+
+## ---------------------------- ##
+## btp_frame_skip_function_args ##
+## ---------------------------- ##
+
+AT_TESTFUN([btp_frame_skip_function_args],
+[[
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+
+void check(bool success, char *input)
+{
+  char *old_input = input;
+  struct btp_location location;
+  btp_location_init(&location);
+  assert(success == btp_frame_skip_function_args(&input, &location));
+  if (success)
+  {
+    assert(*input == '\0');
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+  }
+}
+
+int main(void)
+{
+  /* minimal */
+  check(true, "()");
+  /* newline */
+  check(true, "(\n"
+              "page=0x7f186003e280, \n"
+	      "cairo=0x7f18600efd10, printing=0)");
+  /* value optimized out */
+  check(true, "(this=0x7f1860023400, DPI=<value optimized out>)");
+  /* string */
+  check(true, "(filename=0x18971b0 \"/home/jfclere/.recently-used.xbel\")");
+  /* TODO: parentesis balance */
+  return 0;
+}
+]])
+
+## ----------------------------- ##
+## btp_frame_parse_function_call ##
+## ----------------------------- ##
+
+AT_TESTFUN([btp_frame_parse_function_call],
+[[
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+void check(bool success,
+     	   char *input,
+           char *expected_function_name,
+	   char *expected_function_type)
+{
+  char *old_input = input;
+  char *function_name, *function_type;
+  struct btp_location location;
+  btp_location_init(&location);
+  assert(success == btp_frame_parse_function_call(&input,
+                                                  &function_name,
+						  &function_type,
+                                                  &location));
+  if (success)
+  {
+    printf("Expected: '%s', got '%s'\n", expected_function_name, function_name);
+    assert(0 == strcmp(expected_function_name, function_name));
+    assert((!expected_function_type && !function_type) ||
+           0 == strcmp(expected_function_type, function_type));
+    assert(*input == '\0');
+    free(function_name);
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+  }
+}
+
+int main(void)
+{
+  /* minimal */
+  check(true, "?? ()", "??", NULL);
+  check(true, "fsync ()", "fsync", NULL);
+  /* newlines */
+  check(true,
+    "write_to_temp_file (\n"
+      "filename=0x18971b0 \"/home/jfclere/.recently-used.xbel\", \n"
+      "contents=<value optimized out>, length=29917, error=0x7fff3cbe4110)",
+    "write_to_temp_file",
+    NULL);
+  /* C++ */
+  check(true,
+        "osgText::Font::GlyphTexture::apply(osg::State&) const ()",
+  	"osgText::Font::GlyphTexture::apply(osg::State&) const",
+        NULL);
+  check(true,
+        "osgUtil::RenderStage::drawInner(osg::RenderInfo&, osgUtil::RenderLeaf*&, bool&) ()",
+        "osgUtil::RenderStage::drawInner(osg::RenderInfo&, osgUtil::RenderLeaf*&, bool&)",
+	NULL);
+  check(true,
+        "nsRegion::RgnRect::operator new ()",
+        "nsRegion::RgnRect::operator new",
+        NULL);
+  check(true,
+        "sigc::internal::slot_call0<sigc::bound_mem_functor0<void, Driver>, void>::call_it (this=0x6c)",
+        "sigc::internal::slot_call0<sigc::bound_mem_functor0<void, Driver>, void>::call_it",
+        NULL);
+  check(true,
+        "sigc::internal::slot_call0<sigc::bound_mem_functor0<void, GameWindow>, void>::call_it(sigc::internal::slot_rep*) ()",
+        "sigc::internal::slot_call0<sigc::bound_mem_functor0<void, GameWindow>, void>::call_it(sigc::internal::slot_rep*)",
+        NULL);
+  /* C++ operator< and templates */
+  check(true,
+	"operator< <char, std::char_traits<char>, std::allocator<char> > (__s1=<value optimized out>)",
+        "operator< <char, std::char_traits<char>, std::allocator<char> >",
+	NULL);
+  /* C++ plain operator-> */
+  check(true, "operator-> ()", "operator->", NULL);
+  /* Not an operator, but includes the keyword 'operator' (Red Hat Bugzilla bug #542445) */
+  check(true,
+	"cairo_set_operator (cr=0x0, op=CAIRO_OPERATOR_OVER)",
+	"cairo_set_operator",
+	NULL);
+  /* type included */
+  #define TYPE "void"
+  #define FUNCTION "boost::throw_exception<"                          \
+  	  	   "boost::filesystem::basic_filesystem_error<"       \
+		   "boost::filesystem::basic_path<"                   \
+		   "std::basic_string<"                               \
+		   "char, std::char_traits<char>, "                   \
+		   "std::allocator<char> >, "                         \
+		   "boost::filesystem::path_traits> > >"              \
+		   "(boost::filesystem::basic_filesystem_error<"      \
+		   "boost::filesystem::basic_path<"                   \
+		   "std::basic_string<char, std::char_traits<char>, " \
+	           "std::allocator<char> >, "                         \
+		   "boost::filesystem::path_traits> > const&)"
+  #define ARGS "()"
+  #define FUNCALL TYPE " " FUNCTION " " ARGS
+  check(true, FUNCALL, FUNCTION, TYPE);
+  return 0;
+}
+]])
+
+## ----------------------------------- ##
+## btp_frame_parse_address_in_function ##
+## ----------------------------------- ##
+
+AT_TESTFUN([btp_frame_parse_address_in_function],
+[[
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+void check(bool success,
+           char *input,
+           uint64_t expected_address,
+           char *expected_function)
+{
+  char *old_input = input;
+  char *function;
+  char *type;
+  uint64_t address;
+  struct btp_location location;
+  btp_location_init(&location);
+  assert(success == btp_frame_parse_address_in_function(&input,
+						        &address,
+							&function,
+							&type,
+							&location));
+  if (success)
+  {
+    assert(strcmp(function, expected_function) == 0);
+    assert(address == expected_address);
+    assert(*input == '\0');
+    free(function);
+    free(type);
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+  }
+}
+
+int main(void)
+{
+  /* minimal */
+  check(true, "0x00ad0a91 in raise (sig=6)", 0xad0a91, "raise");
+  /* longnum */
+  check(true, "0xf00000322221730e in IA__g_bookmark_file_to_file (\n"
+    "filename=0x18971b0 \"/home/jfclere/.recently-used.xbel\", \n"
+    "error=0x7fff3cbe4160)", 0xf00000322221730eULL,
+    "IA__g_bookmark_file_to_file");
+  return 0;
+}
+]])
+
+## ----------------------------- ##
+## btp_frame_parse_file_location ##
+## ----------------------------- ##
+
+AT_TESTFUN([btp_frame_parse_file_location],
+[[
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+void check(bool success,
+           char *input,
+	   char *expected_file,
+	   unsigned expected_line)
+{
+  char *old_input = input;
+  char *file;
+  unsigned line;
+  struct btp_location location;
+  btp_location_init(&location);
+  assert(success == btp_frame_parse_file_location(&input,
+					          &file,
+                                                  &line,
+						  &location));
+  if (success)
+  {
+    assert(strcmp(file, expected_file) == 0);
+    assert(line == expected_line);
+    assert(*input == '\0');
+    free(file);
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+  }
+}
+
+int main(void)
+{
+  /* Test with a newline and without a line number. */
+  check(true, "\n at gtkrecentmanager.c", "gtkrecentmanager.c", -1);
+
+  /* Test with a newline and with a line number.  */
+  check(true, "\n at gtkrecentmanager.c:1377", "gtkrecentmanager.c", 1377);
+
+  /* Test without a newline and a file name with a dash and an upper letter. */
+  check(true,
+        " at ../sysdeps/unix/syscall-template.S:82",
+        "../sysdeps/unix/syscall-template.S",
+	82);
+
+  /* A file name starting with an underscore: Red Hat Bugzilla bug #530678. */
+  check(true,
+        " at _polkitauthenticationagent.c:885",
+        "_polkitauthenticationagent.c",
+	885);
+
+  return 0;
+}
+]])
+
+## ---------------------- ##
+## btp_frame_parse_header ##
+## ---------------------- ##
+
+AT_TESTFUN([btp_frame_parse_header],
+[[
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+void check(char *input,
+           struct btp_frame *expected_frame)
+{
+  printf("=================================================\n"
+         "Testing %s\n",
+	 input);
+
+  char *old_input = input;
+  struct btp_location location;
+  btp_location_init(&location);
+  struct btp_frame *frame = btp_frame_parse_header(&input, &location);
+  if (frame)
+  {
+    assert(*input == '\0');
+    assert(btp_frame_cmp(frame, expected_frame, true) == 0);
+    btp_frame_free(frame);
+  }
+  else
+  {
+    printf(" - parsing failed: %d:%d %s\n", location.line, location.column, location.message);
+
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+    assert(!expected_frame);
+  }
+}
+
+int main(void)
+{
+  /* basic */
+  struct btp_frame frame;
+  btp_frame_init(&frame);
+  frame.function_name = "fsync";
+  frame.number = 1;
+  frame.source_file = "../sysdeps/unix/syscall-template.S";
+  frame.source_line = 82;
+  frame.address = 0x322160e7fdULL;
+  check("#1  0x000000322160e7fd in fsync () at ../sysdeps/unix/syscall-template.S:82", &frame);
+
+  /* C++ */
+  btp_frame_init(&frame);
+  frame.function_name = "nsRegion::RgnRect::operator new";
+  frame.number = 4;
+  frame.source_file = "nsRegion.cpp";
+  frame.source_line = 214;
+  frame.address = 0x3f96d71056ULL;
+  check("#4  0x0000003f96d71056 in nsRegion::RgnRect::operator new ()\n"
+        "    at nsRegion.cpp:214", &frame);
+
+  /* Templates and no filename. */
+  btp_frame_init(&frame);
+  frame.function_name = "sigc::internal::slot_call0<sigc::bound_mem_functor0<void, GameWindow>, void>::call_it(sigc::internal::slot_rep*)";
+  frame.number = 15;
+  frame.address = 0x08201bdfULL;
+  check("#15 0x08201bdf in sigc::internal::slot_call0<sigc::bound_mem_functor0<void, GameWindow>,"
+        " void>::call_it(sigc::internal::slot_rep*) ()", &frame);
+
+  /* No address, just the function call. Red Hat Bugzilla bug #530678 */
+  btp_frame_init(&frame);
+  frame.function_name = "handle_message";
+  frame.number = 30;
+  frame.source_file = "_polkitauthenticationagent.c";
+  frame.source_line = 885;
+  check("#30 handle_message (message=<value optimized out>,\n"
+        "interface=<value optimized out>) at _polkitauthenticationagent.c:885", &frame);
+
+  return 0;
+}
+]])
+
+## --------------- ##
+## btp_frame_parse ##
+## --------------- ##
+
+AT_TESTFUN([btp_frame_parse],
+[[
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <string.h>
+void check(char *input,
+           struct btp_frame *expected_frame,
+	   char *expected_input)
+{
+  char *old_input = input;
+  struct btp_location location;
+  btp_location_init(&location);
+  struct btp_frame *frame = btp_frame_parse(&input, &location);
+  assert(input == expected_input);
+  if (frame)
+  {
+    assert(btp_frame_cmp(frame, expected_frame, true) == 0);
+    btp_frame_free(frame);
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+    assert(!expected_frame);
+  }
+}
+
+int main(void)
+{
+  /* basic */
+  struct btp_frame frame;
+  btp_frame_init(&frame);
+  frame.function_name = "fsync";
+  frame.number = 1;
+  frame.source_file = "../sysdeps/unix/syscall-template.S";
+  frame.source_line = 82;
+  frame.address = 0x322160e7fdULL;
+  char *c = "#1  0x000000322160e7fd in fsync () at ../sysdeps/unix/syscall-template.S:82\n"
+            "No locals.";
+  check(c, &frame, c + strlen(c));
+  c = "#1  0x000000322160e7fd in fsync () at ../sysdeps/unix/syscall-template.S:82\n"
+      "No locals.\n"
+      "#2  0x003f4f3f in IA__g_main_loop_run (loop=0x90e2c50) at gmain.c:2799\n"
+      "        self = 0x8b80038\n"
+      "  __PRETTY_FUNCTION__ = \"IA__g_main_loop_run\"\n";
+  check(c, &frame, strstr(c, "#2"));
+  return 0;
+}
+]])

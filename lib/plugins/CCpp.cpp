@@ -24,7 +24,6 @@
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
 #include "Polkit.h"
-#include "backtrace.h"
 
 using namespace std;
 

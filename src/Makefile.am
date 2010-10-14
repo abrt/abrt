@@ -1,1 +1,1 @@
-SUBDIRS = hooks daemon applet gui cli utils
+SUBDIRS = hooks daemon applet gui cli

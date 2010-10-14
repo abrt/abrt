@@ -1,0 +1,544 @@
+2010-10-14  Karel Klíč  <kklic@redhat.com>
+
+	* configure.ac: Increase version to 0.7.
+
+	* tests/strbuf.at: New file, includes tests for
+	btp_strbuf_append_char and btp_strbuf_append_str.
+
+	* README: Fixed a typo.
+
+	* TODO: Updated. Includes list of functions which need a test in
+	the testsuite.
+
+	* lib/Makefile.am (libbtparser_la_LDFLAGS): Increase current
+	interface version.
+
+	* lib/utils.c (btp_file_to_string): Use open, lseek, read, close
+	instead of fopen, fseek, fread, fclose.
+
+	* lib/normalize_dbus.c (btp_normalize_dbus_thread):
+	* lib/normalize_gdk.c (btp_normalize_gdk_thread):
+	* lib/normalize_glib.c (btp_normalize_glib_thread):
+	* lib/normalize_glibc.c (btp_normalize_glibc_thread):
+	* lib/normalize_libstdcpp.c (btp_normalize_libstdcpp_thread):
+	* lib/normalize_linux.c (btp_normalize_linux_thread):
+	* lib/normalize_xorg.c (btp_normalize_xorg_thread): Store
+	next_frame at the beginning of block to simplify the code a
+	bit.
+
+2010-09-23  Karel Klíč  <kklic@redhat.com>
+
+	* Makefile.am (EXTRA_DIST): Added autogen.sh.
+
+2010-09-22  Karel Klíč  <kklic@redhat.com>
+
+	* Released as btparser-0.6.
+
+	* NEWS (Changes): Document recent changes.
+
+	* lib/frame.h, lib/frame.c (btp_frame_parse_header): Simplified
+	the function interface. Now it returns a pointer to frame or NULL
+	in the case of failure. The frame argument was removed.
+	* lib/frame.c (btp_frame_parse):
+	* tests/frame.at (btp_frame_parse_header): Keep up with the
+	btp_frame_parse_header interface change.
+
+	* lib/backtrace.h, lib/backtrace.c (btp_backtrace_parse):
+	Simplified the function interface. Now it returns a pointer to
+	backtrace or NULL in the case of failure. The backtrace argument
+	was removed.
+	* btparser.c (main):
+	* tests/backtrace.at (btp_backtrace_find_crash_thread)
+	(btp_backtrace_limit_frame_depth, btp_backtrace_quality_complex):
+	Keep up with the btp_backtrace_parse interface change.
+
+	* lib/thread.h, lib/thread.c (btp_thread_parse): Simplified the
+	function interface. Now it returns a pointer to thread or NULL in
+	the case of failure. The thread argument was removed.
+	* tests/thread.at (btp_thread_parse, btp_thread_parse-locations):
+	* lib/backtrace.c (btp_backtrace_parse): Keep up with the
+	btp_thread_parse interface change.
+
+	* tests/frame.at (btp_frame_parse): Check whether the expected_frame is
+	NULL when the frame is also NULL.
+
+2010-09-21  Karel Klíč  <kklic@redhat.com>
+
+	* lib/frame.h, lib/frame.c (btp_frame_parse): Simplified the
+	function interface. Now it returns a pointer to frame or NULL in
+	the case of failure. The frame argument was removed.
+	* tests/frame.at (btp_frame_parse):
+	* lib/backtrace.c (btp_backtrace_parse_header):
+	* lib/thread.c (btp_thread_parse): Keep up with the
+	btp_frame_parse interface change.
+
+	* lib/utils.h, lib/utils.c: Removed unused function
+	btp_parse_regexp.
+
+	* tests/utils.at: Removed a test for btp_parser_regexp.
+
+2010-09-20  Karel Klíč  <kklic@redhat.com>
+
+	* lib/normalize_dbus.h, lib/normalize_gdk.h, normalize_glib.h:
+	* normalize_glibc.h, normalize_libstdcpp.h, normalize_linux.h:
+	* normalize_xorg.h: Function definitions were moved to
+	normalize.h, and these header files were removed.
+
+	* lib/Makefile.am, lib/backtrace.c, lib/normalize.c:
+	* lib/normalize.h, lib/normalize_dbus.c, lib/normalize_gdk.c:
+	* lib/normalize_glib.c, lib/normalize_glibc.c:
+	* lib/normalize_libstdcpp.c, lib/normalize_libstdcpp.c:
+	* lib/normalize_xorg.c: Keep up with the normalize_*.h removal.
+
+	* lib/normalize_glib.c (btp_normalize_glib_thread): Optimized and
+	simplified the IA__ prefix removal code.
+
+	* lib/normalize_glibc.c (btp_normalize_glibc_thread): Used strcpy
+	instead of free and strdup functions in the
+	NORMALIZE_ARCH_SPECIFIC macro.
+
+	* tests/backtrace.at (btp_backtrace_remove_threads_except_one):
+	Include required stdlib.h header.
+
+	* lib/backtrace.h, lib/frame.h, lib/thread.h, lib/utils.h: Moved includes
+	section out of extern "C" section.
+
+	* lib/backtrace.h, lib/frame.h, lib/normalize.h:
+	* lib/normalize_dbus.h, lib/normalize_gdk.h, lib/normalize_glib.h:
+	* lib/normalize_glibc.h, lib/normalize_libstdcpp.h:
+	* lib/normalize_linux.h, lib/normalize_xorg.h, lib/thread.h:
+	Removed /* Declarations */ comment.
+
+	* lib/backtrace.h, lib/frame.h, lib/thread.h: Removed superfluous
+	stdio.h include.
+
+	* lib/backtrace.c, lib/frame.c: Include required header stdio.h.
+
+	* NEWS: Document recent changes.
+
+	* lib/backtrace.h, lib/backtrace.c (btp_backtrace_dup):
+	* lib/frame.h, lib/frame.c (btp_frame_dup):
+	* lib/thread.h, lib/thread.c (btp_thread_dup): Remove the shallow
+	parameter to simplify the interface.
+
+	* tests/frame.at (btp_frame_dup):
+	* lib/backtrace.c (btp_backtrace_quality_complex)
+	(btp_backtrace_get_crash_frame)
+	(btp_backtrace_get_duplication_hash, btp_backtrace_parse):
+	* lib/frame.c (btp_frame_parse_header):
+	* lib/thread.c (btp_thread_parse): Keep up with the shallow
+	parameter removal.
+
+	* configure.ac: Increase version to 0.6.
+
+	* lib/frame.h, lib/frame.c: Function btp_frame_eq0 was renamed to
+	btp_frame_calls_func, btp_frame_eq1 was renamed to
+	btp_frame_calls_func_in_file, btp_frame_eq2 was renamed to
+	btp_frame_calls_func_in_file2, btp_frame_eq3 was renamed to
+	btp_frame_calls_func_in_file3, btp_frame_eq4 was renamed to
+	btp_frame_calls_func_in_file4.
+
+	* lib/normalize_dbus.c, lib/normalize_gdk.c, lib/normalize_glib.c:
+	Keep up with the renames.
+	* lib/normalize_glibc.c, lib/normalize_libstdcpp.c: Likewise.
+	* lib/normalize_linux.c, lib/normalize_xorg.c: Likewise.
+
+2010-09-02  Nikola Pajkovský  <npajkovsk@redhat.com>
+
+	* lib/utils.c (btp_file_to_string): Use %zd instead of %d in a
+	fprintf call to allow compilation on 64-bit architectures.
+
+2010-08-31  Karel Klíč  <kklic@redhat.com>
+
+	* Released as btparser-0.5.
+
+	* NEWS: Document the fix of rhbz#592523.
+
+	* configure.ac: Changed version to 0.5.
+
+	* lib/normalize.c (btp_normalize_thread): If the last frame has
+	address 0x0000 and its name is '??', remove it. This frame is not
+	really invalid, and it affects backtrace quality rating. See Red
+	Hat Bugzilla bug #592523.
+
+2010-08-30  Karel Klíč  <kklic@redhat.com>
+
+	* Released as btparser-0.4.
+
+	* NEWS: RPM spec news.
+
+	* Makefile.am: Added 'rpm' and 'srpm' targets.
+
+	* btparser.spec.in: Newly created RPM spec file.
+
+	* Released as btparser-0.3.
+
+	* configure.ac, Makefile.am: Generate and distribute btparser.pc.
+
+	* btparser.pc.in: New file - template for pkg-config metadata file
+	btparser.pc.
+
+	* tests/Makefile.am (package.m4): Do not depend on configure.ac,
+	but depend on the Makefile.in directly.  Removed $srcdir prefix as
+	it's superfluous.
+
+	* tests/frame.at: Added a test for btp_frame_dup function.
+
+	* README: Added a "what is btparser" section.
+
+	* lib/frame.h: Added documentation to functions btp_frame_eq0,
+	btp_frame_eq1, btp_frame_eq2, and btp_frame_eq3.
+
+	* configure.ac: Increase version to 0.3.
+
+2010-08-28  Karel Klíč  <kklic@redhat.com>
+
+	* Released as btparser-0.2.
+
+	* tests/Makefile.am (EXTRA_DIST): Added backtrace subdirectory to
+	EXTRA_DIST, as it should be a part of the distribution.
+
+2010-08-27  Karel Klíč  <kklic@redhat.com>
+
+	* NEWS: Add duplication hash quality comparison of various
+	versions of btparser.  Add parser precision comparison with
+	abrt-backtrace utility.
+
+	* README:  Removed older parser precision comparison.
+
+	* TODO: Remove finished tasks.
+
+	* btparser.1: Synchronize with btparser interface changes.  Old
+	options removed, new options documented.
+
+	* btparser.c: --debug short option changed from -p to -d.
+	Fixed a typo in an error message.
+
+	* lib/backtrace.c
+	(btp_backtrace_find_crash_thread_from_crash_frame): Display
+	debugging information when btp_debug_parser is enabled.
+	(btp_backtrace_quality_complex): Use btp_normalize_backtrace so
+	that the quality is measured on the normalized backtrace.  The
+	quality near the crash frame now includes the top 5 frames of the
+	normalized thread.
+	(btp_backtrace_get_crash_frame): Use btp_normalize_backtrace to
+	find the crash frame. A disadvantage of backtrace normalization is
+	that the frame returned is a duplicate and must be released by the
+	function caller.
+	(btp_backtrace_get_duplication_hash): Use btp_normalize_backtrace,
+	and the limit the frame depth to 3 frames to get the duplication
+	hash.
+
+	* lib/backtrace.h ( btp_backtrace_get_crash_frame): Document the
+	need to release the returned frame by btp_frame_free().
+
+	* lib/frame.c, lib/frame.h: New functions btp_frame_eq0,
+	btp_frame_eq1, btp_frame_eq2, btp_frame_eq3, and btp_frame_eq4.
+
+	* lib/normalize.c, lib/normalize.h: New functions
+	btp_normalize_thread and btp_normalize_backtrace.
+
+	* lib/ops.c: Renamed to normalize.c.
+	* lib/ops.h: Renamed to normalize.h.
+	* lib/ops-dbus.h, lib/ops-dbus.c, lib/ops-gdk.c,
+	lib/ops-gdk.h:Renamed to normalize_xxx.[ch].
+	* lib/ops-glib.c, lib/ops-glib.h, lib/ops-glibc.c: Likewise.
+	* lib/ops-glibc.h, lib/ops-libstdcpp.c, lib/ops-libstdcpp.h:
+	Likewise.
+	* lib/ops-linux.c, lib/ops-linux.h, lib/ops-xorg.c: Likewise.
+	* lib/ops-xorg.h: Likewise.
+
+	* lib/Makefile.am: Synchronize with the file renaming.
+
+	* scripts/btparser-bz-downloader: Rewritten to get the search
+	results first, then sort the bugs depending on last update time,
+	then fetch the data. Added more progress logging output.
+
+	* scripts/btparser-cache-dupchecker: Simplified data
+	structures. Added more logging, and change existing output to be
+	clearer. Only include Fedora bugs in dupclosecount.
+
+	* scripts/btparser-cache-improvetips: Use the new btparser command
+	line interface instead of the now-defunct old one.
+
+2010-08-25  Karel Klíč  <kklic@redhat.com>
+
+	* lib/ops-glibc.c (btp_glibc_frame_is_exit): raise() might be in
+	libpthread.so.
+
+	* btparser.c (main): Fixed a typo in an error message.
+
+	* scripts/btparser-compare: Removed.
+
+	* scripts/btparser-compare-all: Renamed to btparser-cache-compare.
+
+	* lib/frame.c (btp_frame_parse_file_location): Added an underscore
+	to supported file name characters.
+	(btp_frame_parseadd_operator): Do not modify the parameter target
+	unless the operator is really detected.
+
+	* lib/frame.h (btp_frame_parseadd_operator): Mention that the
+	target buffer is not modified if no operator is found.
+
+	* tests/frame.at: Several tests were extended to catch more cases.
+
+	* scripts/btparser-cache-dupchecker: Adapted to the new btparser
+	command line interface.
+	* scripts/btparser-cache-improvetips: Likewise.
+
+	* scripts/btparser-compare-all: Read the backtraces from the cache
+	subdirectory, where they usually resides, not from the current
+	directory.
+
+	* TODO: New file.
+
+	* configure.ac: Increase version to 0.2.
+
+	* tests/backtrace.at: New file. Added tests of
+	btp_backtrace_remove_threads_except_one,
+	btp_backtrace_find_crash_thread, btp_backtrace_limit_frame_depth,
+	btp_backtrace_quality_complex.
+
+	* lib/backtrace.c (btp_backtrace_get_duplication_hash): Do not
+	free the backtrace before creating a textual representation of it.
+
+	* lib/frame.c (btp_frame_dup): Fix the duplication crash when run
+	with siblings parameter set to true.
+
+	* lib/thread.c (btp_thread_dup): Fix the duplication crash when
+	run with siblings parameter set to true.
+	(btp_thread_get_frame_count): Rename variable 'f' to 'frame' to
+	improve code readability.
+
+2010-08-24  Karel Klíč  <kklic@redhat.com>
+
+	* btparser.c: Rewritten to use the new functions
+	btp_backtrace_quality_complex, btp_backtrace_get_crash_frame,
+	btp_backtrace_get_duplication_hash.  New user interface.
+
+	* lib/backtrace.h: Extended the documentation of most
+	functions. Fixed the documentation alignment. Removed extern
+	keyword from function declarations.
+
+	* lib/backtrace.h, lib/backtrace.c: Renamed function
+	btp_backtrace_quality to btp_backtrace_quality_simple. Implemented
+	new functions btp_backtrace_quality_complex,
+	btp_backtrace_get_crash_frame, btp_backtrace_get_duplication_hash.
+
+	* lib/backtrace.c (btp_backtrace_limit_frame_depth): Reimplemented
+	using the new function btp_thread_remove_frames_below_n.
+	(btp_backtrace_find_crash_thread_from_crash_frame): Marked as
+	'static'.  Made the code more readable.
+	(btp_backtrace_remove_threads_except_one): Renamed parameter 'one'
+	to 'thread'. Renamed 'rm' to 'delete_thread'.
+
+	* lib/ops.h, lib/ops.c: Implement new functions
+	btp_ops_backtrace_remove_redundant_frames and
+	btp_ops_frame_is_redundant.
+	(tp_ops_thread_remove_redundant_frames): Use
+	btp_ops_frame_is_redundant.
+
+	* tests/thread.at (btp_thread_parse-locations)
+	(btp_thread_remove_frames_below_n, btp_thread_remove_frames_above)
+	(btp_thread_remove_frame): New tests.
+
+	* lib/thread.h: Removed extern keyword from function
+	declarations. Extended the documentation of all functions.
+
+	* lib/thread.h, lib/thread.c: Renamed the function
+	btp_thread_rating to btp_thread_quality_counts.  Implemented new
+	functions btp_thread_quality, btp_thread_remove_frame,
+	btp_thread_remove_frames_above, btp_thread_remove_frames_below_n.
+
+	* lib/thread.c (btp_thread_append_to_str): More precise error
+	messages.  Fixed adding a line to the location for the just-parsed
+	thread header line.
+
+	* lib/frame.c (btp_frame_add_sibling): Do not return a value.
+	(btp_frame_parse_frame_start): Do not modify input if the parsing
+	failed and the function is returning 0.  Calculate the returned
+	value more efficiently in the case of parsing success.
+
+	* lib/frame.h: Massively extended documentation of all functions.
+	Removed extern keyword from function declarations.
+
+	* lib/ops-gdk.h, lib/ops-glib.h, lib/ops-libstdcpp.h: Remove
+	extern keyword from function declarations.
+	* lib/ops-linux.h, lib/ops-xorg.h, lib/location.h: Likewise.
+	* lib/ops-glibc.h: Likewise.  Plus the documentation has been
+	extended.
+
+	* lib/utils.h: Remove extern keyword from function
+	declarations. Fix the documentation indentation.
+
+	* lib/strbuf.c (btp_strbuf_free): Do not crash if the provided
+	pointer is NULL.
+
+	* lib/strbuf.h: Properly document all functions and the struct
+	strbuf.
+
+	* tests/local.at (AT_TESTFUN): Autotest ignores the stdout and
+	stderr of the testing C program.
+
+	* tests/frame.at (btp_frame_parseadd_operator): Check the parsed
+	length.  Output helper data to stdout.  Added a check for an
+	invalid operator.
+	(btp_frame_parse_function_name, btp_frame_parse_function_call):
+	Output helper data to stdout.
+
+2010-08-23  Karel Klíč  <kklic@redhat.com>
+
+	* lib/frame.h: Small documentation fixes.
+
+	* lib/location.h (btp_location_add, btp_location_add_ext)
+	(btp_location): Add a documentation.
+	(btp_location_eat_char, btp_location_eat_char_ext): Fixed the
+	documentation grammar, and extended.
+
+2010-08-20  Karel Klíč  <kklic@redhat.com>
+
+	* lib/location.h, lib/location.c (btp_location_eat_char): New
+	function.
+
+	* lib/frame.c (btp_frame_parseadd_operator)
+	(btp_frame_parse_function_name_chunk)
+	(btp_frame_parse_function_name_braces)
+	(btp_frame_parse_function_name_template): Return an integer
+	representing the number of parsed characters, instead of a boolean
+	indicating success.
+	(btp_frame_parse_function_name)
+	(btp_frame_skip_function_args): Added a location parameter, and
+	implemented the location support.
+
+	* lib/frame.h (btp_frame_parseadd_operator)
+	(btp_frame_parse_function_name)
+	(btp_frame_parse_function_name_template)
+	(btp_frame_parse_function_name_braces)
+	(btp_frame_parse_function_name_chunk): Added documentation.
+
+	* tests/frame.at (btp_frame_parse_frame_start): Added comments and
+	made the code more readable.
+	(btp_frame_parseadd_operator): Update the test to check for the
+	returned integer value.
+	(btp_frame_parse_function_name, btp_frame_skip_function_args):
+	Update the test to use location parameter. The value returned in
+	this parameter is not checked for correctness yet.
+
+2010-08-16  Karel Klíč  <kklic@redhat.com>
+
+	* tests/frame.at, tests/thread.at: Keep up with the function
+	interface changes.
+
+	* tests/utils.at: Keep up with interface changes.  Added new tests
+	for functions btp_strspn_location, btp_skip_char,
+	btp_skip_char_limited, btp_skip_char_sequence, btp_skip_char_span,
+	btp_skip_char_span_location, btp_parse_char_span, btp_skip_string,
+	btp_skip_unsigned_integer, btp_parse_unsigned_integer.
+
+	* lib/utils.h: New functions btp_strspn_location and
+	btp_skip_char_span_location.  Functions btp_skip_char_sequence,
+	btp_skip_char_span, btp_parse_char_span, btp_skip_string,
+	btp_skip_unsigned_integer, btp_parse_unsigned_integer,
+	btp_skip_hexadecimal_number, and btp_parse_hexadecimal_number
+	return an integer (indicating the number of characters processed)
+	instead of a boolean (indicating success/failure). This change is
+	neccessary for implementing proper error reporting with
+	line/column error location.
+
+	* lib/thread.c (btp_thread_parse): Added the location parameter,
+	and implemented its usage.
+
+	* lib/thread.h: Added the location parameter to the function
+	btp_thread_parse.
+
+	* lib/frame.c (btp_frame_parse, btp_frame_parse_function_call):
+	Added the location parameter, but the location feature has not
+	been fully implemented yet.
+	(btp_frame_parse_frame_start): Returns the number of characters
+	parsed from input.
+	(btp_frame_parseadd_operator, btp_frame_parse_function_name):
+	Adapted to the changes of other functions.
+	(btp_frame_parse_address_in_function)
+	(btp_frame_parse_file_location, btp_frame_parse_header): Added the
+	location parameter, and implemented its usage.
+
+	* lib/frame.h: Add the location parameter to functions
+	btp_frame_parse, btp_frame_parse_function_call,
+	btp_frame_parse_address_in_function,
+	btp_frame_parse_file_location, btp_frame_parse_header.  Function
+	btp_frame_parse_frame_start returns int instead of bool. It
+	returns the number of characters parsed from input.
+
+	* lib/backtrace.c (btp_backtrace_parse): Use the newly added
+	location parameter of btp_thread_parse and btp_frame_parse
+	functions.
+
+2010-08-05  Karel Klíč  <kklic@redhat.com>
+
+	* tests/utils.at: Added btp_strcmp0, btp_strchr_location, and
+	btp_strstr_location tests.
+
+	* lib/utils.c (btp_strcmp0): Changed it so that NULL value is
+	considered to be "less" than an existing string.
+
+	* tests/utils.at: Renamed parser_elements.at to utils.at.
+
+	* tests/frame.at: Renamed parser_frame.at to frame.at.
+
+	* tests/thread.at: Renamed parser_thread.at to thread.at.
+
+	* lib/utils.h: Extended the interface documentation.  Added new
+	functions btp_strchr_location and btp_strstr_location.
+
+	* lib/utils.c: Implemented new functions added to lib/utils.h.
+
+	* lib/backtrace.h: Extended the interface documentation.  Added
+	location parameter to functions btp_backtrace_parse and
+	btp_backtrace_parse_header.
+
+	* lib/backtrace.c (btp_backtrace_parse)
+	(btp_backtrace_parse_header): Added location support.
+
+	* btparser.c: Updated to use the new location feature.
+
+	* lib/location.h, lib/location.c: New struct btp_location and
+	associated helper functions.
+
+	* lib/Makefile.am (libbtparser_la_SOURCES): Added location.h and
+	location.c.
+	(pkginclude_HEADERS): Added location.h.
+
+	* scripts/btparser-bz-downloader: Skip bug downloading when
+	bug.info file already exists.  Ask server for component owner only
+	if it's not already available.
+	(getbug): New method, repeats Bugzilla XML/RPC request if Bugzilla
+	fails to answer.
+
+	* scripts/btparser-cache-dupchecker: Put back --verbose option.
+	Fixed an exception when adding a bug to component-bugs hash.
+
+	* btparser.c (main): Added a newline to an error message.
+
+2010-07-29  Karel Klíč  <kklic@redhat.com>
+
+	* scripts/btparser-bz-downloader: Properly serialize duplicates.
+
+	* scripts/btparser-bz-improvetips: btparser trims the backtrace
+	output like ABRT does.  Properly deserialize duplicates from the
+	input file.
+
+2010-07-28  Karel Klíč  <kklic@redhat.com>
+
+	* scripts/btparser-bz-improvetips: New script. It checks that the
+	bugs marked as duplicates in Bugzilla are recognized as duplicates
+	by btparser.
+
+	* scripts/btparser-bz-downloader: New script. Downloads
+	ABRT-reported backtraces from Bugzilla.
+
+	* scripts/btparser-compare-all: Added some comments.
+
+2010-06-21  Karel Klíč  <kklic@redhat.com>
+
+	* configure.ac: Added AM_MAINTAINER_MODE.
+	* Makefile.am: Add 'upload' target to .PHONY.

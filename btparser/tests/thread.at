@@ -1,0 +1,349 @@
+# Checking the btparser. -*- Autotest -*-
+
+AT_BANNER([Threads])
+
+## ----------------------- ##
+## btp_thread_remove_frame ##
+## ----------------------- ##
+AT_TESTFUN([btp_thread_remove_frame],
+[[
+#include <lib/thread.h>
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <lib/utils.h>
+#include <assert.h>
+#include <stdlib.h>
+
+int main(void)
+{
+  struct btp_frame *frame2 = btp_frame_new();
+  frame2->function_name = btp_strdup("write");
+  frame2->number = 2;
+  frame2->source_file = btp_strdup("gfileutils.c");
+  frame2->source_line = 120;
+  frame2->address = 0x322160e7fdULL;
+
+  struct btp_frame *frame1 = btp_frame_new();
+  frame1->function_name = btp_strdup("write_to_temp_file");
+  frame1->number = 1;
+  frame1->source_file = btp_strdup("gfileutils.c");
+  frame1->source_line = 980;
+  frame1->address = 0x322160e7fdULL;
+  frame1->next = frame2;
+
+  struct btp_frame *frame0 = btp_frame_new();
+  frame0->function_name = btp_strdup("fsync");
+  frame0->number = 0;
+  frame0->source_file = btp_strdup("../sysdeps/unix/syscall-template.S");
+  frame0->source_line = 82;
+  frame0->address = 0x322160e7fdULL;
+  frame0->next = frame1;
+
+  struct btp_thread thread;
+  btp_thread_init(&thread);
+  thread.number = 3;
+  thread.frames = frame0;
+
+  /* Remove the frame from the top of the stack. */
+  assert(btp_thread_remove_frame(&thread, frame0));
+  assert(frame1 == thread.frames);
+  assert(frame2 == thread.frames->next);
+
+  /* Remove the frame from the bottom of the stack. */
+  assert(btp_thread_remove_frame(&thread, frame2));
+  assert(frame1 == thread.frames);
+  assert(NULL == thread.frames->next);
+
+  /* Remove the last remaining frame. */
+  assert(btp_thread_remove_frame(&thread, frame1));
+  assert(NULL == thread.frames);
+
+  /* Remove nonexistant frame -> should return false. */
+  assert(!btp_thread_remove_frame(&thread, frame0));
+  assert(NULL == thread.frames);
+
+  return 0;
+}
+]])
+
+## ------------------------------ ##
+## btp_thread_remove_frames_above ##
+## ------------------------------ ##
+AT_TESTFUN([btp_thread_remove_frames_above],
+[[
+#include <lib/thread.h>
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <lib/utils.h>
+#include <assert.h>
+#include <stdlib.h>
+
+int main(void)
+{
+  struct btp_frame *frame2 = btp_frame_new();
+  frame2->function_name = btp_strdup("write");
+  frame2->number = 2;
+  frame2->source_file = btp_strdup("gfileutils.c");
+  frame2->source_line = 120;
+  frame2->address = 0x322160e7fdULL;
+
+  struct btp_frame *frame1 = btp_frame_new();
+  frame1->function_name = btp_strdup("write_to_temp_file");
+  frame1->number = 1;
+  frame1->source_file = btp_strdup("gfileutils.c");
+  frame1->source_line = 980;
+  frame1->address = 0x322160e7fdULL;
+  frame1->next = frame2;
+
+  struct btp_frame *frame0 = btp_frame_new();
+  frame0->function_name = btp_strdup("fsync");
+  frame0->number = 0;
+  frame0->source_file = btp_strdup("../sysdeps/unix/syscall-template.S");
+  frame0->source_line = 82;
+  frame0->address = 0x322160e7fdULL;
+  frame0->next = frame1;
+
+  struct btp_thread thread;
+  btp_thread_init(&thread);
+  thread.number = 3;
+  thread.frames = frame0;
+
+  /* Remove the frames above the top of the stack. */
+  assert(btp_thread_remove_frames_above(&thread, frame0));
+  assert(frame0 == thread.frames);
+  assert(frame1 == thread.frames->next);
+
+  /* Remove the frames above the second frame from the top of the stack. */
+  assert(btp_thread_remove_frames_above(&thread, frame1));
+  assert(frame1 == thread.frames);
+  assert(frame2 == thread.frames->next);
+
+  /* Remove the frames above the bottom of the stack. */
+  assert(btp_thread_remove_frames_above(&thread, frame2));
+  assert(frame2 == thread.frames);
+  assert(NULL == thread.frames->next);
+
+  /* Remove frames above a nonexistant frame -> should return false. */
+  assert(!btp_thread_remove_frames_above(&thread, frame0));
+  assert(frame2 == thread.frames);
+
+  return 0;
+}
+]])
+
+## -------------------------------- ##
+## btp_thread_remove_frames_below_n ##
+## -------------------------------- ##
+AT_TESTFUN([btp_thread_remove_frames_below_n],
+[[
+#include <lib/thread.h>
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <lib/utils.h>
+#include <assert.h>
+#include <stdlib.h>
+
+int main(void)
+{
+  struct btp_frame *frame2 = btp_frame_new();
+  frame2->function_name = btp_strdup("write");
+  frame2->number = 2;
+  frame2->source_file = btp_strdup("gfileutils.c");
+  frame2->source_line = 120;
+  frame2->address = 0x322160e7fdULL;
+
+  struct btp_frame *frame1 = btp_frame_new();
+  frame1->function_name = btp_strdup("write_to_temp_file");
+  frame1->number = 1;
+  frame1->source_file = btp_strdup("gfileutils.c");
+  frame1->source_line = 980;
+  frame1->address = 0x322160e7fdULL;
+  frame1->next = frame2;
+
+  struct btp_frame *frame0 = btp_frame_new();
+  frame0->function_name = btp_strdup("fsync");
+  frame0->number = 0;
+  frame0->source_file = btp_strdup("../sysdeps/unix/syscall-template.S");
+  frame0->source_line = 82;
+  frame0->address = 0x322160e7fdULL;
+  frame0->next = frame1;
+
+  struct btp_thread thread;
+  btp_thread_init(&thread);
+  thread.number = 3;
+  thread.frames = frame0;
+
+  /* Remove no frame as n is too large. */
+  btp_thread_remove_frames_below_n(&thread, 5);
+  assert(frame0 == thread.frames);
+  assert(frame1 == thread.frames->next);
+  assert(frame2 == thread.frames->next->next);
+  assert(NULL == thread.frames->next->next->next);
+
+  /* Remove the frames below 1. */
+  btp_thread_remove_frames_below_n(&thread, 1);
+  assert(frame0 == thread.frames);
+  assert(NULL == thread.frames->next);
+
+  /* Remove the frames below 0. */
+  btp_thread_remove_frames_below_n(&thread, 0);
+  assert(NULL == thread.frames);
+
+  /* Try to remove frames when no frame is present. */
+  btp_thread_remove_frames_below_n(&thread, 4);
+  assert(NULL == thread.frames);
+
+  return 0;
+}
+]])
+
+## ---------------- ##
+## btp_thread_parse ##
+## ---------------- ##
+
+AT_TESTFUN([btp_thread_parse],
+[[
+#include <lib/thread.h>
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+void check(char *input,
+           struct btp_thread *expected_thread)
+{
+  printf("===============================================\n"
+         "Testing input: %s",
+	 input);
+
+  char *old_input = input;
+  struct btp_location location;
+  btp_location_init(&location);
+  struct btp_thread *thread = btp_thread_parse(&input, &location);
+  assert(!expected_thread || thread);
+  if (thread)
+  {
+    assert(*input == '\0');
+    assert(btp_thread_cmp(thread, expected_thread) == 0);
+    btp_thread_free(thread);
+  }
+  else
+  {
+    /* Check that the pointer is not moved. */
+    assert(old_input == input);
+    assert(!expected_thread);
+  }
+}
+
+int main(void)
+{
+  /* Basic test. */
+  struct btp_frame frame0, frame1;
+  btp_frame_init(&frame0);
+  frame0.function_name = "fsync";
+  frame0.number = 0;
+  frame0.source_file = "../sysdeps/unix/syscall-template.S";
+  frame0.source_line = 82;
+  frame0.address = 0x322160e7fdULL;
+  frame0.next = &frame1;
+
+  btp_frame_init(&frame1);
+  frame1.function_name = "write_to_temp_file";
+  frame1.number = 1;
+  frame1.source_file = "gfileutils.c";
+  frame1.source_line = 980;
+  frame1.address = 0x322160e7fdULL;
+
+  struct btp_thread thread;
+  btp_thread_init(&thread);
+  thread.number = 3;
+  thread.frames = &frame0;
+
+  check("Thread 3 (Thread 11917):\n"
+	"#0  0x000000322160e7fd in fsync () at ../sysdeps/unix/syscall-template.S:82\n"
+	"No locals.\n"
+	"#1  0x000000322222987a in write_to_temp_file (\n"
+	"    filename=0x18971b0 \"/home/jfclere/.recently-used.xbel\", \n"
+	"    contents=<value optimized out>, length=29917, error=0x7fff3cbe4110)\n"
+	"    at gfileutils.c:980\n"
+	"        statbuf = {st_dev = 64768, st_ino = 13709, st_nlink = 1, \n"
+	"          st_mode = 33152, st_uid = 500, st_gid = 500, __pad0 = 0, \n"
+	"          st_rdev = 0, st_size = 29917, st_blksize = 4096, st_blocks = 64, \n"
+	"          st_atim = {tv_sec = 1273231242, tv_nsec = 73521863}, st_mtim = {\n"
+	"            tv_sec = 1273231242, tv_nsec = 82521015}, st_ctim = {\n"
+	"            tv_sec = 1273231242, tv_nsec = 190522021}, __unused = {0, 0, 0}}\n",
+	&thread);
+
+  return 0;
+}
+]])
+
+## -------------------------- ##
+## btp_thread_parse-locations ##
+## -------------------------- ##
+
+AT_TESTFUN([btp_thread_parse-locations],
+[[
+#include <lib/thread.h>
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <assert.h>
+#include <stdlib.h>
+
+/**
+ * Checks that the thread parser fails on ceratin location
+ * (line and column), with an error message.
+ */
+void check(char *input,
+           int expected_line,
+	   int expected_column)
+{
+  char *old_input = input;
+  struct btp_location location;
+  btp_location_init(&location);
+  assert(NULL == btp_thread_parse(&input, &location));
+
+  /* Check that the pointer is not moved. */
+  assert(old_input == input);
+
+  /* Check the location. */
+  printf("location %d:%d '%s', expected %d:%d\n",
+         location.line, location.column, location.message,
+	 expected_line, expected_column);
+
+  assert(location.line == expected_line);
+  assert(location.column == expected_column);
+  assert(location.message);
+  assert(location.message[0] != '\0');
+}
+
+int main(void)
+{
+  /* Thread keyword */
+  check("Thraed 3 (Thread 11917):\n", 1, 0);
+
+  /* Spaces after the thread keyword. */
+  check("Thread3 (Thread 11917):\n", 1, 6);
+
+  /* Thread number. */
+  check("Thread  a (Thread 11917):\n", 1, 8);
+
+  /* Spaces after the thread number. */
+  check("Thread 8(Thread 11917):\n", 1, 8);
+
+  /* A parenthesis. */
+  check("Thread 8 (11917):\n", 1, 9);
+
+  /* Second number. */
+  check("Thread 8 (Thread ffff):\n", 1, 17);
+
+  /* Semicolon missing. */
+  check("Thread 8 (Thread 1)\n", 1, 18);
+
+  /* Not a single frame. */
+  check("Thread 3 (Thread 11917):\n\n", 2, 0);
+
+  return 0;
+}
+]])

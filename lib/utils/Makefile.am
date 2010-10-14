@@ -3,7 +3,6 @@
 lib_LTLIBRARIES = libABRTUtils.la libABRTdUtils.la
 HEADER_DIR = $(srcdir)/../../inc
 AM_CPPFLAGS = -I$(HEADER_DIR)
-AM_YFLAGS = --verbose
 
 # Not used just yet:
 # time.cpp
@@ -27,8 +26,6 @@ libABRTUtils_la_SOURCES = \
     abrt_dbus.c abrt_dbus.h \
     CrashTypes.cpp \
     ABRTException.cpp \
-    backtrace.c backtrace.h \
-    backtrace_parser.y \
     strbuf.c strbuf.h \
     abrt_packages.c abrt_packages.h \
     hooklib.c hooklib.h \
@@ -52,7 +49,6 @@ libABRTUtils_la_LIBADD = \
     $(GLIB_LIBS) \
     $(DBUS_LIBS) \
     -ldl
-
 
 libABRTdUtils_la_SOURCES = \
     parse_release.cpp \

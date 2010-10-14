@@ -1,0 +1,152 @@
+# Checking the btparser. -*- Autotest -*-
+
+AT_BANNER([Backtraces])
+
+## --------------------------------------- ##
+## btp_backtrace_remove_threads_except_one ##
+## --------------------------------------- ##
+AT_TESTFUN([btp_backtrace_remove_threads_except_one],
+[[
+#include <lib/backtrace.h>
+#include <lib/thread.h>
+#include <assert.h>
+#include <stdlib.h>
+
+int main(void)
+{
+  /* Delete the thread except the middle one. */
+  struct btp_thread *thread2 = btp_thread_new();
+  struct btp_thread *thread1 = btp_thread_new();
+  thread1->next = thread2;
+  struct btp_thread *thread0 = btp_thread_new();
+  thread0->next = thread1;
+  struct btp_backtrace *backtrace = btp_backtrace_new();
+  backtrace->threads = thread0;
+  btp_backtrace_remove_threads_except_one(backtrace, thread1);
+  assert(backtrace->threads == thread1);
+  assert(NULL == backtrace->threads->next);
+
+  /* Delete all threads except one when there is only one. */
+  btp_backtrace_remove_threads_except_one(backtrace, thread1);
+  assert(backtrace->threads == thread1);
+  assert(NULL == backtrace->threads->next);
+
+  /* Delete all threads except the first one. */
+  thread0 = btp_thread_new();
+  backtrace->threads = thread0;
+  thread0->next = thread1; // already exists
+  thread2 = btp_thread_new();
+  thread1->next = thread2;
+  btp_backtrace_remove_threads_except_one(backtrace, thread0);
+  assert(backtrace->threads == thread0);
+  assert(NULL == backtrace->threads->next);
+
+  /* Delete all threads except the last one. */
+  thread1 = btp_thread_new();
+  thread0->next = thread1;
+  thread2 = btp_thread_new();
+  thread1->next = thread2;
+  btp_backtrace_remove_threads_except_one(backtrace, thread2);
+  assert(backtrace->threads == thread2);
+  assert(NULL == backtrace->threads->next);
+
+  btp_backtrace_free(backtrace);
+  return 0;
+}
+]])
+
+## ------------------------------- ##
+## btp_backtrace_find_crash_thread ##
+## ------------------------------- ##
+AT_TESTFUN([btp_backtrace_find_crash_thread],
+[
+#include <lib/backtrace.h>
+#include <lib/thread.h>
+#include <lib/frame.h>
+#include <lib/location.h>
+#include <lib/utils.h>
+#include <assert.h>
+
+int main(void)
+{
+  /* Load the backtrace from Red Hat Bugzilla bug #621492. */
+  struct btp_location location;
+  btp_location_init(&location);
+  char *full_input = btp_file_to_string("../../backtraces/621492.bt");
+  assert(full_input);
+  char *input = full_input;
+  struct btp_backtrace *backtrace = btp_backtrace_parse(&input, &location);
+  assert(backtrace);
+
+  /* Check that the crash thread is found. */
+  struct btp_thread *crash_thread = btp_backtrace_find_crash_thread(backtrace);
+  assert(crash_thread);
+  assert(0 == strcmp(crash_thread->frames->function_name, "raise"));
+  btp_backtrace_free(backtrace);
+  return 0;
+}
+])
+
+## ------------------------------- ##
+## btp_backtrace_limit_frame_depth ##
+## ------------------------------- ##
+AT_TESTFUN([btp_backtrace_limit_frame_depth],
+[[
+#include <lib/backtrace.h>
+#include <lib/thread.h>
+#include <lib/location.h>
+#include <lib/utils.h>
+#include <assert.h>
+
+int main(void)
+{
+  /* Load the backtrace from Red Hat Bugzilla bug #621492. */
+  struct btp_location location;
+  btp_location_init(&location);
+  char *full_input = btp_file_to_string("../../backtraces/621492.bt");
+  assert(full_input);
+  char *input = full_input;
+  struct btp_backtrace *backtrace = btp_backtrace_parse(&input, &location);
+  assert(backtrace);
+
+  /* Check the frame depth limit. */
+  btp_backtrace_limit_frame_depth(backtrace, 5);
+  assert(11 == btp_backtrace_get_thread_count(backtrace));
+  struct btp_thread *thread = backtrace->threads;
+  while (thread)
+  {
+    assert(5 == btp_thread_get_frame_count(thread));
+    thread = thread->next;
+  }
+
+  btp_backtrace_free(backtrace);
+  return 0;
+}
+]])
+
+## ----------------------------- ##
+## btp_backtrace_quality_complex ##
+## ----------------------------- ##
+AT_TESTFUN([btp_backtrace_quality_complex],
+[[
+#include <lib/backtrace.h>
+#include <lib/thread.h>
+#include <lib/location.h>
+#include <lib/utils.h>
+#include <assert.h>
+
+int main(void)
+{
+  /* Load the backtrace from Red Hat Bugzilla bug #621492. */
+  struct btp_location location;
+  btp_location_init(&location);
+  char *full_input = btp_file_to_string("../../backtraces/621492.bt");
+  assert(full_input);
+  char *input = full_input;
+  struct btp_backtrace *backtrace = btp_backtrace_parse(&input, &location);
+  assert(backtrace);
+  assert(1.0f == btp_backtrace_quality_complex(backtrace));
+  btp_backtrace_free(backtrace);
+  return 0;
+}
+]])

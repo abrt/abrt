@@ -1,0 +1,73 @@
+# Checking the btparser. -*- Autotest -*-
+
+AT_BANNER([strbuf])
+
+## ---------------------- ##
+## btp_strbuf_append_char ##
+## ---------------------- ##
+
+AT_TESTFUN([btp_strbuf_append_char],
+[[
+#include <lib/strbuf.h>
+#include <assert.h>
+int main(void)
+{
+  int i;
+  struct btp_strbuf *strbuf = btp_strbuf_new();
+  for (i = 0; i < 100; ++i)
+  {
+    assert(strbuf->len == i);
+    assert(strbuf->alloc > strbuf->len);
+    assert(strbuf->buf[i] == '\0');
+    btp_strbuf_append_char(strbuf, 'a');
+    assert(strbuf->buf[i] == 'a');
+    assert(strbuf->buf[i+1] == '\0');
+    assert(strbuf->len == i + 1);
+    assert(strbuf->alloc > strbuf->len);
+  }
+  btp_strbuf_free(strbuf);
+  return 0;
+}
+]])
+
+## --------------------- ##
+## btp_strbuf_append_str ##
+## --------------------- ##
+
+AT_TESTFUN([btp_strbuf_append_str],
+[[
+#include <lib/strbuf.h>
+#include <assert.h>
+
+/* Test appending strings of certain length. 'len' must be < 50. */
+void test(int len)
+{
+  int i;
+  char str[50];
+  for (i = 0; i < len; ++i)
+    str[i] = 'a';
+  str[i] = '\0';
+
+  struct btp_strbuf *strbuf = btp_strbuf_new();
+  for (i = 0; i < 100; ++i)
+  {
+    assert(strbuf->len == i*len);
+    assert(strbuf->alloc > strbuf->len);
+    assert(strbuf->buf[i*len] == '\0');
+    btp_strbuf_append_str(strbuf, str);
+    assert(strbuf->buf[i*len] == str[0]);
+    assert(strbuf->buf[i*len+len] == '\0');
+    assert(strbuf->len == i*len + len);
+    assert(strbuf->alloc > strbuf->len);
+  }
+  btp_strbuf_free(strbuf);
+}
+
+int main(void)
+{
+  int i;
+  for (i = 0; i < 50; ++i)
+    test(i);
+  return 0;
+}
+]])

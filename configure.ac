@@ -18,15 +18,6 @@ CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
 
-AC_CHECK_PROGS(YACC, 'bison -y', [no])
-[if test "$YACC" = "no"]
-[then]
-    [echo "bison not found in the search path. Please ensure that it is"]
-    [echo "installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
-    [exit 1]
-[fi]
-
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=abrt
 AC_SUBST(GETTEXT_PACKAGE)
@@ -56,7 +47,7 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 #PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
-PKG_CHECK_MODULES([POLKIT],[polkit-gobject-1])
+PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
@@ -127,10 +118,10 @@ AC_CONFIG_FILES([
 	src/applet/Makefile
 	src/gui/Makefile
 	src/cli/Makefile
-	src/utils/Makefile
 	inc/Makefile
 	po/Makefile.in
 	icons/Makefile
 ])
 
+AC_CONFIG_SUBDIRS([btparser])
 AC_OUTPUT

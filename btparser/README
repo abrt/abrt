@@ -1,0 +1,38 @@
+What is btparser?
+
+btparser is a backtrace parser and analyzer, which works with
+backtraces produced by the GNU Project Debugger. It can parse a text
+file with a backtrace to a tree of C structures, allowing to analyze
+the threads and frames of the backtrace and work with them.
+
+btparser also contains some backtrace manipulation and extraction
+routines:
+- it can find a frame in the crash-time backtrace where the program
+  most likely crashed (a chance is that the function described in that
+  frame is buggy)
+- it can produce a duplication hash of the backtrace, which helps to
+  discover that two crash-time backtraces are duplicates, triggered by
+  the same flaw of the code
+- it can "rate" the backtrace quality, which depends on the number of
+  frames with and without the function name known (missing function
+  name is caused by missing debugging symbols)
+
+== Speed measurement
+
+For speed measurment the best backtrace is 547367.bt.
+Valgrind is very useful to see where the time is spent:
+$ valgrind --tool=callgrind btparser 547367.bt
+$ kcachegrind callgrind.out.11555
+
+=== Do not use regexps!
+$ time btparser --debug 547367.bt
+
+With single regexp in btp_frame_parse_file_location:
+real	5m41.857s
+user	5m29.894s
+sys	0m0.573s
+
+Without it:
+real	0m7.753s
+user	0m0.761s
+sys	0m0.173s

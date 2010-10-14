@@ -1,0 +1,442 @@
+# Checking the btparser. -*- Autotest -*-
+
+AT_BANNER([Utils])
+
+## ------------ ##
+## btp_strcmp0  ##
+## ------------ ##
+
+AT_TESTFUN([btp_strcmp0],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  assert(0 == btp_strcmp0(NULL, NULL));
+  assert(0 == btp_strcmp0("abab", "abab"));
+  assert(0 > btp_strcmp0("aba", "abab"));
+  assert(0 > btp_strcmp0(NULL, "abab"));
+  assert(0 < btp_strcmp0("abab", NULL));
+  assert(0 < btp_strcmp0("abab", "aba"));
+  return 0;
+}
+]])
+
+## ------------------- ##
+## btp_strchr_location ##
+## ------------------- ##
+
+AT_TESTFUN([btp_strchr_location],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  /* The character is on the first line.*/
+  int line, column;
+  char *result = btp_strchr_location("test string", 'r', &line, &column);
+  assert(0 == strcmp(result, "ring"));
+  assert(1 == line);
+  assert(7 == column);
+
+  /* The character is on the third line. */
+  result = btp_strchr_location("\ntest\n string", 'r', &line, &column);
+  assert(0 == strcmp(result, "ring"));
+  assert(3 == line);
+  assert(3 == column);
+
+  /* The character is not found. */
+  result = btp_strchr_location("\ntest\n string", 'z', &line, &column);
+  assert(!result);
+
+  /* The character _is_ a newline. */
+  result = btp_strchr_location("abcd\nefgh", '\n', &line, &column);
+  assert(0 == strcmp(result, "\nefgh"));
+  assert(1 == line);
+  assert(4 == column);
+  return 0;
+}
+]])
+
+## ------------------- ##
+## btp_strstr_location ##
+## ------------------- ##
+
+AT_TESTFUN([btp_strstr_location],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  /* The substring is on the first line.*/
+  int line, column;
+  char *result = btp_strstr_location("test string", "ri", &line, &column);
+  assert(0 == strcmp(result, "ring"));
+  assert(1 == line);
+  assert(7 == column);
+
+  /* The substring is on the third line. */
+  result = btp_strstr_location("\ntest\n string", "ri", &line, &column);
+  assert(0 == strcmp(result, "ring"));
+  assert(3 == line);
+  assert(3 == column);
+
+  /* The substring is not found, but the first char is. */
+  result = btp_strstr_location("\ntest\n string", "rz", &line, &column);
+  assert(!result);
+
+  /* The substring is not found. */
+  result = btp_strstr_location("\ntest\n string", "zr", &line, &column);
+  assert(!result);
+
+  /* The substring _is_ a newline. */
+  result = btp_strstr_location("abcd\nefgh", "\n", &line, &column);
+  assert(0 == strcmp(result, "\nefgh"));
+  assert(1 == line);
+  assert(4 == column);
+  return 0;
+}
+]])
+
+## ------------------- ##
+## btp_strspn_location ##
+## ------------------- ##
+
+AT_TESTFUN([btp_strspn_location],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  /* No newline in the input.*/
+  int line, column;
+  size_t count = btp_strspn_location("test string",
+                                     "tes ",
+				     &line,
+				     &column);
+  assert(7 == count);
+  assert(1 == line);
+  assert(7 == column);
+
+  /* With some newlines. */
+  count = btp_strspn_location("te\nst \nstring",
+                              "tes \n",
+			      &line,
+			      &column);
+  assert(9 == count);
+  assert(3 == line);
+  assert(2 == column);
+
+  return 0;
+}
+]])
+
+## ------------- ##
+## btp_skip_char ##
+## ------------- ##
+
+AT_TESTFUN([btp_skip_char],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "abc";
+  assert(btp_skip_char(&input, 'a'));
+  assert(!btp_skip_char(&input, 'c'));
+  return 0;
+}
+]])
+
+## --------------------- ##
+## btp_skip_char_limited ##
+## --------------------- ##
+
+AT_TESTFUN([btp_skip_char_limited],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "abc";
+  assert(btp_skip_char_limited(&input, "ab"));
+  assert(btp_skip_char_limited(&input, "ab"));
+  assert(!btp_skip_char_limited(&input, "ab"));
+  return 0;
+}
+]])
+
+## ---------------------- ##
+## btp_parse_char_limited ##
+## ---------------------- ##
+
+AT_TESTFUN([btp_parse_char_limited],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "abc";
+  char result;
+
+  /* First char in allowed is used. */
+  assert(btp_parse_char_limited(&input, "ab", &result));
+  assert(*input == 'b' && result == 'a');
+
+  /* No char in allowed is used. */
+  assert(!btp_parse_char_limited(&input, "cd", &result));
+  assert(*input == 'b' && result == 'a');
+
+  /* Second char in allowed is used. */
+  assert(btp_parse_char_limited(&input, "ab", &result));
+  assert(*input == 'c' && result == 'b');
+
+  /* Empty set of allowed chars. */
+  assert(!btp_parse_char_limited(&input, "", &result));
+  assert(*input == 'c' && result == 'b');
+
+  /* Char is multiple times in allowed. */
+  assert(btp_parse_char_limited(&input, "cdc", &result));
+  assert(*input == '\0' && result == 'c');
+
+  return 0;
+}
+]])
+
+## ---------------------- ##
+## btp_skip_char_sequence ##
+## ---------------------- ##
+
+AT_TESTFUN([btp_skip_char_sequence],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "aaaaabc";
+  assert(5 == btp_skip_char_sequence(&input, 'a'));
+  assert(1 == btp_skip_char_sequence(&input, 'b'));
+  assert(0 == btp_skip_char_sequence(&input, 'b'));
+  return 0;
+}
+]])
+
+## ------------------ ##
+## btp_skip_char_span ##
+## ------------------ ##
+
+AT_TESTFUN([btp_skip_char_span],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "aabaabc";
+  assert(6 == btp_skip_char_span(&input, "ba"));
+  assert(0 == btp_skip_char_span(&input, "b"));
+  assert(1 == btp_skip_char_span(&input, "bc"));
+
+  /* Test that it can parse empty string. */
+  assert(0 == btp_skip_char_span(&input, "abc"));
+
+  return 0;
+}
+]])
+
+## --------------------------- ##
+## btp_skip_char_span_location ##
+## --------------------------- ##
+
+AT_TESTFUN([btp_skip_char_span_location],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "aab\naabc";
+  int line, column;
+
+  assert(7 == btp_skip_char_span_location(&input, "ba\n", &line, &column));
+  assert(2 == line);
+  assert(3 == column);
+
+  assert(0 == btp_skip_char_span_location(&input, "b", &line, &column));
+  assert(1 == line);
+  assert(0 == column);
+
+  assert(1 == btp_skip_char_span_location(&input, "bc", &line, &column));
+  assert(1 == line);
+  assert(1 == column);
+
+  /* Test that it can parse empty string. */
+  assert(0 == btp_skip_char_span_location(&input, "abc", &line, &column));
+  assert(1 == line);
+  assert(0 == column);
+
+  return 0;
+}
+]])
+
+## ------------------- ##
+## btp_parse_char_span ##
+## ------------------- ##
+
+AT_TESTFUN([btp_parse_char_span],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "abcd";
+  char *result;
+  assert(2 == btp_parse_char_span(&input, "ba", &result));
+  assert(*input == 'c' && strcmp(result, "ab") == 0);
+  assert(0 == btp_parse_char_span(&input, "ba", &result));
+  assert(*input == 'c' && strcmp(result, "ab") == 0);
+  free(result);
+  assert(2 == btp_parse_char_span(&input, "ecfd", &result));
+  assert(*input == '\0' && strcmp(result, "cd") == 0);
+  free(result);
+  return 0;
+}
+]])
+
+## -------------------- ##
+## btp_parse_char_cspan ##
+## -------------------- ##
+
+AT_TESTFUN([btp_parse_char_cspan],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "abcd";
+  char *result;
+  assert(btp_parse_char_cspan(&input, "c", &result));
+  assert(*input == 'c' && strcmp(result, "ab") == 0);
+  assert(!btp_parse_char_cspan(&input, "c", &result));
+  assert(*input == 'c' && strcmp(result, "ab") == 0);
+  free(result);
+  assert(btp_parse_char_cspan(&input, "e", &result));
+  assert(*input == '\0' && strcmp(result, "cd") == 0);
+  free(result);
+  return 0;
+}
+]])
+
+## --------------- ##
+## btp_skip_string ##
+## --------------- ##
+
+AT_TESTFUN([btp_skip_string],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "abcd";
+  assert(2 == btp_skip_string(&input, "ab"));
+  assert(*input == 'c');
+  assert(0 == btp_skip_string(&input, "cde"));
+  assert(2 == btp_skip_string(&input, "cd"));
+  assert(0 == btp_skip_string(&input, "cd"));
+  return 0;
+}
+]])
+
+## ---------------- ##
+## btp_parse_string ##
+## ---------------- ##
+
+AT_TESTFUN([btp_parse_string],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "abcd";
+  char *result;
+  assert(btp_parse_string(&input, "ab", &result));
+  assert(0 == strcmp(result, "ab"));
+  assert(*input == 'c');
+  free(result);
+  return 0;
+}
+]])
+
+## ------------------------- ##
+## btp_skip_unsigned_integer ##
+## ------------------------- ##
+
+AT_TESTFUN([btp_skip_unsigned_integer],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "10";
+  assert(2 == btp_skip_unsigned_integer(&input));
+  assert(*input == '\0');
+  return 0;
+}
+]])
+
+## ------------------------- ##
+## btp_parse_unsigned_integer ##
+## ------------------------- ##
+
+AT_TESTFUN([btp_parse_unsigned_integer],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "10";
+  unsigned result;
+  assert(2 == btp_parse_unsigned_integer(&input, &result));
+  assert('\0' == *input);
+  assert(10 == result);
+  return 0;
+}
+]])
+
+## --------------------------- ##
+## btp_skip_hexadecimal_number ##
+## --------------------------- ##
+
+AT_TESTFUN([btp_skip_hexadecimal_number],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "0xffddffddff";
+  assert(12 == btp_skip_hexadecimal_number(&input));
+  assert(*input == '\0');
+  return 0;
+}
+]])
+
+## ---------------------------- ##
+## btp_parse_hexadecimal_number ##
+## ---------------------------- ##
+
+AT_TESTFUN([btp_parse_hexadecimal_number],
+[[
+#include <lib/utils.h>
+#include <assert.h>
+int main(void)
+{
+  char *input = "0x0fafaffff 0x2badf00dbaadf00d";
+  uint64_t num;
+  assert(11 == btp_parse_hexadecimal_number(&input, &num));
+  assert(*input == ' ');
+  assert(num == 0xfafaffff);
+  *input++;
+  assert(18 == btp_parse_hexadecimal_number(&input, &num));
+  assert(*input == '\0');
+  assert(num == 0x2badf00dbaadf00d);
+  return 0;
+}
+]])
