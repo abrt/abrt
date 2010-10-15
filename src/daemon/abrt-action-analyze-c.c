@@ -152,7 +152,7 @@ int main(int argc, char **argv)
     /* Can't keep these strings/structs static: _() doesn't support that */
     const char *program_usage_string = _(
         PROGNAME" [-vs] -d DIR\n\n"
-        "Calculates and saves UUID"
+        "Calculates and saves UUID of coredumps"
         );
     const char *dump_dir_name = ".";
     enum {
