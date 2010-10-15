@@ -28,10 +28,6 @@
 // Perhaps dd_opendir should do some sanity checking like
 // "if there is no "uid" file in the directory, it's not a crash dump",
 // and fail.
-//
-// Locking is broken wrt "funny" directory names.
-// dd_opendir(dd, ".") will create "..lock" istead of proper "../DIRNAME.lock"
-// Similarly for dd_opendir(dd, "DIRNAME/."), dd_opendir(dd, "..") etc.
 
 static char *load_text_file(const char *path);
 
@@ -43,14 +39,6 @@ static bool isdigit_str(const char *str)
         str++;
     } while (*str);
     return true;
-}
-
-static char* rm_trailing_slashes(const char *dir)
-{
-    unsigned len = strlen(dir);
-    while (len != 0 && dir[len-1] == '/')
-        len--;
-    return xstrndup(dir, len);
 }
 
 static bool exist_file_dir(const char *path)
@@ -171,12 +159,33 @@ void dd_close(struct dump_dir *dd)
     free(dd);
 }
 
+static char* rm_trailing_slashes(const char *dir)
+{
+    unsigned len = strlen(dir);
+    while (len != 0 && dir[len-1] == '/')
+        len--;
+    return xstrndup(dir, len);
+}
+
 int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
 {
     if (dd->locked)
         error_msg_and_die("dump_dir is already opened"); /* bug */
 
-    dd->dd_dir = rm_trailing_slashes(dir);
+    /* Used to use rm_trailing_slashes(dir) here, but with dir = "."
+     * or "..", or if the last component is a symlink,
+     * then lock file is created in the wrong place.
+     * IOW: this breaks locking.
+     */
+    dd->dd_dir = realpath(dir, NULL);
+    if (!dd->dd_dir)
+    {
+        if (!(flags & DD_FAIL_QUIETLY))
+            error_msg("'%s' does not exist", dir);
+        if (flags & DD_CLOSE_ON_OPEN_ERR)
+            dd_close(dd);
+        return 0;
+    }
 
     dd_lock(dd);
 
@@ -222,7 +231,25 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
     if (dd->locked)
         error_msg_and_die("dump_dir is already opened"); /* bug */
 
+    /* Unlike dd_opendir, can't use realpath: the directory doesn't exist yet,
+     * realpath will always return NULL. We don't really have to:
+     * dd_opendir(".") makes sense, dd_create(".") does not.
+     */
     dd->dd_dir = rm_trailing_slashes(dir);
+
+    char *last_component = strrchr(dd->dd_dir, '/');
+    if (last_component)
+        last_component++;
+    else
+        last_component = dd->dd_dir;
+    if (dot_or_dotdot(last_component))
+    {
+        /* dd_create("."), dd_create(".."), dd_create("dir/."),
+         * dd_create("dir/..") and similar are madness, refuse them.
+         */
+        error_msg("Bad dir name '%s'", dd->dd_dir);
+        return 0;
+    }
 
     dd_lock(dd);
 
