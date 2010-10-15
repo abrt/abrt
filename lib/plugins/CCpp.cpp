@@ -276,8 +276,8 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 {
     string ret;
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    if (!dd)
         return ret; /* "" */
 
     if (!dd_exist(dd, CD_UUID))
@@ -305,8 +305,8 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
         /* parent */
         waitpid(pid, NULL, 0);
 
-        dd = dd_init();
-        if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+        dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+        if (!dd)
             return ret; /* "" */
     }
 
@@ -319,8 +319,8 @@ string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
 
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    if (!dd)
         return string("");
 
     if (dd_exist(dd, FILENAME_DUPHASH))
@@ -491,8 +491,8 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
         return;
     }
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    if (!dd)
         return;
 
     if (!force)
@@ -535,8 +535,8 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     /* Create and store backtrace and its hash. */
     gen_backtrace(pDebugDumpDir, m_sDebugInfoDirs.c_str(), m_nGdbTimeoutSec);
 
-    dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+    dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    if (!dd)
     {
         free(build_ids);
         return;

@@ -50,8 +50,8 @@ void CActionSOSreport::Run(const char *pActionDir, const char *pArgs, int force)
 {
     if (!force)
     {
-        struct dump_dir *dd = dd_init();
-        if (!dd_opendir(dd, pActionDir, DD_CLOSE_ON_OPEN_ERR))
+        struct dump_dir *dd = dd_opendir(pActionDir, /*flags:*/ 0);
+        if (!dd)
             return;
 
         bool bt_exists = dd_exist(dd, "sosreport.tar.bz2") || dd_exist(dd, "sosreport.tar.xz");

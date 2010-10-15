@@ -130,7 +130,7 @@ static void dd_unlock(struct dump_dir *dd)
     }
 }
 
-struct dump_dir *dd_init(void)
+static inline struct dump_dir *dd_init(void)
 {
     return (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
 }
@@ -167,10 +167,9 @@ static char* rm_trailing_slashes(const char *dir)
     return xstrndup(dir, len);
 }
 
-int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
+struct dump_dir *dd_opendir(const char *dir, int flags)
 {
-    if (dd->locked)
-        error_msg_and_die("dump_dir is already opened"); /* bug */
+    struct dump_dir *dd = dd_init();
 
     /* Used to use rm_trailing_slashes(dir) here, but with dir = "."
      * or "..", or if the last component is a symlink,
@@ -181,30 +180,29 @@ int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
     if (!dd->dd_dir)
     {
         if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dd_dir);
-        if (flags & DD_CLOSE_ON_OPEN_ERR)
-            dd_close(dd);
-        return 0;
+            error_msg("'%s' does not exist", dir);
+        dd_close(dd);
+        return NULL;
     }
+    dir = dd->dd_dir;
 
     dd_lock(dd);
 
     struct stat stat_buf;
-    if (stat(dd->dd_dir, &stat_buf) != 0
+    if (stat(dir, &stat_buf) != 0
      || !S_ISDIR(stat_buf.st_mode)
     ) {
         if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dd->dd_dir);
-        if (flags & DD_CLOSE_ON_OPEN_ERR)
-            dd_close(dd);
-        return 0;
+            error_msg("'%s' does not exist", dir);
+        dd_close(dd);
+        return NULL;
     }
 
     /* In case caller would want to create more files, he'll need uid:gid */
     dd->dd_uid = stat_buf.st_uid;
     dd->dd_gid = stat_buf.st_gid;
 
-    return 1;
+    return dd;
 }
 
 /* Create a fresh empty debug dump dir.
@@ -234,19 +232,19 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
      * realpath will always return NULL. We don't really have to:
      * dd_opendir(".") makes sense, dd_create(".") does not.
      */
-    dd->dd_dir = rm_trailing_slashes(dir);
+    dir = dd->dd_dir = rm_trailing_slashes(dir);
 
-    char *last_component = strrchr(dd->dd_dir, '/');
+    const char *last_component = strrchr(dir, '/');
     if (last_component)
         last_component++;
     else
-        last_component = dd->dd_dir;
+        last_component = dir;
     if (dot_or_dotdot(last_component))
     {
         /* dd_create("."), dd_create(".."), dd_create("dir/."),
          * dd_create("dir/..") and similar are madness, refuse them.
          */
-        error_msg("Bad dir name '%s'", dd->dd_dir);
+        error_msg("Bad dir name '%s'", dir);
         dd_close(dd);
         return NULL;
     }
@@ -257,17 +255,17 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (mkdir(dd->dd_dir, 0750) == -1)
+    if (mkdir(dir, 0750) == -1)
     {
-        perror_msg("Can't create dir '%s'", dd->dd_dir);
+        perror_msg("Can't create dir '%s'", dir);
         dd_close(dd);
         return NULL;
     }
 
     /* mkdir's mode (above) can be affected by umask, fix it */
-    if (chmod(dd->dd_dir, 0750) == -1)
+    if (chmod(dir, 0750) == -1)
     {
-        perror_msg("Can't change mode of '%s'", dd->dd_dir);
+        perror_msg("Can't change mode of '%s'", dir);
         dd_close(dd);
         return NULL;
     }
@@ -288,9 +286,9 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     else
         error_msg("User %lu does not exist, using gid 0", (long)uid);
 
-    if (chown(dd->dd_dir, dd->dd_uid, dd->dd_gid) == -1)
+    if (chown(dir, dd->dd_uid, dd->dd_gid) == -1)
     {
-        perror_msg("Can't change '%s' ownership to %lu:%lu", dd->dd_dir,
+        perror_msg("Can't change '%s' ownership to %lu:%lu", dir,
                    (long)dd->dd_uid, (long)dd->dd_gid);
     }
 
@@ -475,9 +473,10 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 /* Utility function */
 void delete_debug_dump_dir(const char *dd_dir)
 {
-    struct dump_dir *dd = dd_init();
-    if (dd_opendir(dd, dd_dir, 0))
+    struct dump_dir *dd = dd_opendir(dd_dir, /*flags:*/ 0);
+    if (dd)
+    {
         dd_delete(dd);
-
-    dd_close(dd);
+        dd_close(dd);
+    }
 }

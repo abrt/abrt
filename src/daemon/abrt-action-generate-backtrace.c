@@ -285,8 +285,8 @@ int main(int argc, char **argv)
         logmode = LOGMODE_SYSLOG;
     }
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
         return 1;
 
     char *package = dd_load_text(dd, FILENAME_PACKAGE);
@@ -301,8 +301,8 @@ int main(int argc, char **argv)
         VERB3 log("get_backtrace() returns NULL, broken core/gdb?");
     }
 
-    dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
         return 1;
 
     dd_save_text(dd, FILENAME_BACKTRACE, backtrace_str);

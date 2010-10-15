@@ -78,8 +78,8 @@ static bool is_path_blacklisted(const char *path)
 
 static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 {
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
         return 1;
 
     char *remote_str = dd_load_text(dd, FILENAME_REMOTE);
@@ -122,8 +122,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
             if (g_settings_bProcessUnpackaged || remote)
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", executable);
-                dd = dd_init();
-                if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+                dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                if (!dd)
                     goto ret; /* return 1 (failure) */
                 dd_save_text(dd, FILENAME_PACKAGE, "");
                 dd_save_text(dd, FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
@@ -224,8 +224,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         component = rpm_get_component(executable);
         dsc = rpm_get_description(package_short_name);
 
-        dd = dd_init();
-        if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (!dd)
             goto ret; /* return 1 (failure) */
     }
 

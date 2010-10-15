@@ -47,8 +47,8 @@ static void create_hash(char hash_str[SHA1_RESULT_LEN*2 + 1], const char *pInput
 
 static char *run_unstrip_n(const char *dump_dir_name, unsigned timeout_sec)
 {
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
         return NULL;
     char *uid_str = dd_load_text(dd, CD_UID);
     dd_close(dd);
@@ -189,8 +189,8 @@ int main(int argc, char **argv)
 
     /* Hash package + executable + unstrip_n_output and save it as UUID */
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
         return 1;
 
     char *executable = dd_load_text(dd, FILENAME_EXECUTABLE);
