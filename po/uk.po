@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-14 20:16+0200\n"
-"PO-Revision-Date: 2010-10-13 18:43+0300\n"
+"POT-Creation-Date: 2010-10-15 15:44+0000\n"
+"PO-Revision-Date: 2010-10-15 18:47+0300\n"
 "Last-Translator: Yuri Chornoivan <yurchor@ukr.net>\n"
 "Language-Team: Ukrainian <trans-uk@lists.fedoraproject.org>\n"
 "MIME-Version: 1.0\n"
@@ -110,7 +110,7 @@ msgstr "Надсилання пошти…"
 msgid "Sends an email with a report (via mailx command)"
 msgstr "Надсилає електронного листа зі звітом (за допомогою програми mailx)"
 
-#: ../lib/plugins/Python.cpp:100
+#: ../lib/plugins/Python.cpp:99
 msgid "Analyzes crashes in Python programs"
 msgstr "Аналізує аварійні завершення програм мовою Python"
 
@@ -298,7 +298,7 @@ msgstr "Вивантажено: %llu з %llu кілобайтів"
 #: ../lib/utils/parse_options.c:11
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "Використання: %s\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -641,20 +641,26 @@ msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Повідомлення щодо збою створено за допомогою %d модулів (%d помилок)\n"
 
 #: ../src/daemon/abrt-action-analyze-c.c:154
+#| msgid ""
+#| " [-vs] -d DIR\n"
+#| "\n"
+#| "Calculates and saves UUID"
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
-"Calculates and saves UUID"
+"Calculates and saves UUID of coredumps"
 msgstr ""
+" [-vs] -d КАТАЛОГ\n"
+"\n"
+"Обчислює і зберігає UUID дампів ядра"
 
 #: ../src/daemon/abrt-action-analyze-c.c:166
 msgid "Crash dump directory"
-msgstr ""
+msgstr "Каталог дампу аварійного завершення"
 
 #: ../src/daemon/abrt-action-analyze-c.c:167
-#, fuzzy
 msgid "Log to syslog"
-msgstr "Записувати до журналу syslog навіть з параметром -d"
+msgstr "Записувати до журналу syslog"
 
 #: ../src/daemon/abrt-action-bugzilla.cpp:462
 #, c-format
@@ -664,14 +670,12 @@ msgstr "Новий ідентифікатор запиту: %i"
 #: ../src/daemon/abrt-action-bugzilla.cpp:575
 #, c-format
 msgid "Can't open '%s'"
-msgstr ""
+msgstr "Не вдалося відкрити «%s»"
 
 #: ../src/daemon/abrt-action-bugzilla.cpp:600
-#, fuzzy, c-format
+#, c-format
 msgid "Empty login or password, please check %s"
-msgstr ""
-"Порожнє ім'я або пароль.\n"
-"Перевірте "
+msgstr "Порожнє ім'я або пароль. Перевірте %s"
 
 #: ../src/daemon/abrt-action-bugzilla.cpp:609
 msgid "Logging into bugzilla..."
@@ -729,7 +733,7 @@ msgstr "Додавання коментаря до запиту (%d)"
 #: ../src/daemon/abrt-action-generate-backtrace.c:317
 #, c-format
 msgid "Backtrace parsing failed for %s"
-msgstr ""
+msgstr "Не вдалося обробити дані зворотного трасування для %s"
 
 #: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
