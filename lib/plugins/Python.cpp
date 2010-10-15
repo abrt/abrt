@@ -19,7 +19,6 @@
 #include "abrtlib.h"
 #include "Python.h"
 #include "abrt_exception.h"
-#include "Python_hash.h"
 
 using namespace std;
 

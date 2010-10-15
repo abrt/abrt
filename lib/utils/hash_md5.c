@@ -13,7 +13,6 @@
  *  Licensed under the GPL v2 or later, see the file LICENSE in this tarball.
  */
 #include "abrtlib.h"
-#include "Python_hash.h"
 #include <byteswap.h>
 
 #if defined(__BIG_ENDIAN__) && __BIG_ENDIAN__
