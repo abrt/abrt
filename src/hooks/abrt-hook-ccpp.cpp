@@ -415,8 +415,8 @@ int main(int argc, char** argv)
         if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
             return 1;
 
-        struct dump_dir *dd = dd_init();
-        if (dd_create(dd, path, uid))
+        struct dump_dir *dd = dd_create(path, uid);
+        if (dd)
         {
             char *cmdline = get_cmdline(pid); /* never NULL */
             char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);

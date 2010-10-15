@@ -43,8 +43,8 @@ struct dump_dir *dd_init(void);
 void dd_close(struct dump_dir *dd);
 
 int dd_opendir(struct dump_dir *dd, const char *dir, int flags);
+struct dump_dir *dd_create(const char *dir, uid_t uid);
 int dd_exist(struct dump_dir *dd, const char *path);
-int dd_create(struct dump_dir *dd, const char *dir, uid_t uid);
 DIR *dd_init_next_file(struct dump_dir *dd);
 int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name);
 

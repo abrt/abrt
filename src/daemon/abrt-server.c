@@ -115,11 +115,9 @@ static void create_debug_dump()
     /* No need to check the path length, as all variables used are limited, and dd_create()
        fails if the path is too long. */
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_create(dd, path, client_uid))
+    struct dump_dir *dd = dd_create(path, client_uid);
+    if (!dd)
     {
-        dd_delete(dd);
-        dd_close(dd);
         error_msg_and_die("Error creating crash dump %s", path);
     }
 

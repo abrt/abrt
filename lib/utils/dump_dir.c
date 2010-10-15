@@ -181,7 +181,7 @@ int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
     if (!dd->dd_dir)
     {
         if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dir);
+            error_msg("'%s' does not exist", dd_dir);
         if (flags & DD_CLOSE_ON_OPEN_ERR)
             dd_close(dd);
         return 0;
@@ -226,10 +226,9 @@ int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
  * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
  * abrt's user id. We do not allow write access to group.
  */
-int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
+struct dump_dir *dd_create(const char *dir, uid_t uid)
 {
-    if (dd->locked)
-        error_msg_and_die("dump_dir is already opened"); /* bug */
+    struct dump_dir *dd = dd_init();
 
     /* Unlike dd_opendir, can't use realpath: the directory doesn't exist yet,
      * realpath will always return NULL. We don't really have to:
@@ -248,7 +247,8 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
          * dd_create("dir/..") and similar are madness, refuse them.
          */
         error_msg("Bad dir name '%s'", dd->dd_dir);
-        return 0;
+        dd_close(dd);
+        return NULL;
     }
 
     dd_lock(dd);
@@ -259,21 +259,21 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
      */
     if (mkdir(dd->dd_dir, 0750) == -1)
     {
-        perror_msg("Can't create dir '%s'", dir);
-        dd_unlock(dd);
-        return 0;
+        perror_msg("Can't create dir '%s'", dd->dd_dir);
+        dd_close(dd);
+        return NULL;
     }
 
     /* mkdir's mode (above) can be affected by umask, fix it */
     if (chmod(dd->dd_dir, 0750) == -1)
     {
         perror_msg("Can't change mode of '%s'", dd->dd_dir);
-        dd_unlock(dd);
-        return 0;
+        dd_close(dd);
+        return NULL;
     }
 
     /* Get ABRT's user id */
-    dd->dd_uid = 0;
+    /*dd->dd_uid = 0; - dd_init did this already */
     struct passwd *pw = getpwnam("abrt");
     if (pw)
         dd->dd_uid = pw->pw_uid;
@@ -281,7 +281,7 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
         error_msg("User 'abrt' does not exist, using uid 0");
 
     /* Get crashed application's group id */
-    dd->dd_gid = 0;
+    /*dd->dd_gid = 0; - dd_init did this already */
     pw = getpwuid(uid);
     if (pw)
         dd->dd_gid = pw->pw_gid;
@@ -299,25 +299,20 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
     sprintf(long_str, "%lu", (long)uid);
     dd_save_text(dd, CD_UID, long_str);
 
-    {
-        struct utsname buf;
-        if (uname(&buf) != 0)
-        {
-            perror_msg_and_die("uname");
-        }
-        dd_save_text(dd, FILENAME_KERNEL, buf.release);
-        dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
-        char *release = load_text_file("/etc/redhat-release");
-        strchrnul(release, '\n')[0] = '\0';
-        dd_save_text(dd, FILENAME_RELEASE, release);
-        free(release);
-    }
+    struct utsname buf;
+    uname(&buf); /* never fails */
+    dd_save_text(dd, FILENAME_KERNEL, buf.release);
+    dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
+    char *release = load_text_file("/etc/redhat-release");
+    strchrnul(release, '\n')[0] = '\0';
+    dd_save_text(dd, FILENAME_RELEASE, release);
+    free(release);
 
     time_t t = time(NULL);
     sprintf(long_str, "%lu", (long)t);
     dd_save_text(dd, FILENAME_TIME, long_str);
 
-    return 1;
+    return dd;
 }
 
 static void delete_file_dir(const char *dir)
