@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-13 15:16+0000\n"
-"PO-Revision-Date: 2010-10-14 02:26+0300\n"
+"POT-Creation-Date: 2010-10-18 13:21+0000\n"
+"PO-Revision-Date: 2010-10-18 16:28+0300\n"
 "Last-Translator: Ville-Pekka Vainio <vpivaini@cs.helsinki.fi>\n"
 "Language-Team: Finnish <gnome-fi-laatu@lists.sourceforge.net>\n"
 "Language: fi\n"
@@ -21,25 +21,25 @@ msgstr ""
 msgid "Reports bugs to bugzilla"
 msgstr "Raportoi ohjelmavirheitä Bugzillaan"
 
-#: ../lib/plugins/CCpp.cpp:152
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "Luodaan pinolistausta"
 
-#: ../lib/plugins/CCpp.cpp:238
+#: ../lib/plugins/CCpp.cpp:115
 msgid "Starting the debuginfo installation"
 msgstr "Aloitetaan debuginfon asennus"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:473
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "Haetaan yleinen ainutkertainen tunnus..."
 
-#: ../lib/plugins/CCpp.cpp:667
+#: ../lib/plugins/CCpp.cpp:532
 msgid "Skipping the debuginfo installation"
 msgstr "Ohitetaan debuginfon asennus"
 
-#: ../lib/plugins/CCpp.cpp:918
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analysoi C/C++-ohjelmien kaatumisia"
 
@@ -108,7 +108,7 @@ msgstr "Lähetetään sähköpostia..."
 msgid "Sends an email with a report (via mailx command)"
 msgstr "Lähettää raportin sähköpostilla (mailx-komentoa käyttäen)"
 
-#: ../lib/plugins/Python.cpp:100
+#: ../lib/plugins/Python.cpp:99
 msgid "Analyzes crashes in Python programs"
 msgstr "Analysoi Python-ohjelmien kaatumisia"
 
@@ -291,6 +291,11 @@ msgstr "RHTSupport URL:"
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Lähetetty: %llu/%llu kilotavua"
+
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Käyttö: %s\n"
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -631,6 +636,98 @@ msgstr "Virhe ladattaessa raportoijan asetuksia"
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Kaatuminen on raportoitu %d liitännäisen kautta (%d virhettä)\n"
 
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID of coredumps"
+msgstr ""
+" [-vs] -d DIR\n"
+"\n"
+"Laskee ja tallentaa muistivedosten UUID:t"
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr "Muistivedoshakemisto"
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+msgid "Log to syslog"
+msgstr "Kirjoita lokia syslogiin"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr "Hakemiston ”%s” avaaminen ei onnistu"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, c-format
+msgid "Empty login or password, please check %s"
+msgstr "Käyttäjätunnus tai salasana on tyhjä, tarkista %s"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "Kirjaudutaan bugzillaan..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "Etsitään samanlaisia..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "Puuttuva pakollinen osa ”bugs”"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+msgid "Creating a new bug..."
+msgstr "Luodaan uusi ohjelmavirheilmoitus..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "Kirjaudutaan ulos..."
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Lisää %s CC-luetteloon"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr "Kohteen %s pinolistauksen jäsentäminen epäonnistui"
+
 #: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
 msgstr "Kommentti on liian pitkä"
@@ -662,6 +759,10 @@ msgstr "Kirjoita lokia syslogiin myös valitsimen -d kanssa"
 #: ../src/daemon/Daemon.cpp:874
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Lopeta SEK sekunnin toimettomuuden jälkeen"
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
+msgid "Database plugin not specified. Please check abrtd settings."
+msgstr "Tietokantaliitännäistä ei ole määritetty. Tarkista abrtd:n asetukset."
 
 #: ../src/gui/abrt.desktop.in.h:2
 msgid "View and report application crashes"
@@ -1092,7 +1193,7 @@ msgstr ""
 #: ../src/gui/CReporterAssistant.py:689
 #, python-format
 msgid "Found %i occurence(s) [at: %i of %i]"
-msgstr ""
+msgstr "Löytyi %i esiintymää [nykyinen: %i / %i]"
 
 #: ../src/gui/CReporterAssistant.py:726
 msgid "Search:"
@@ -1473,54 +1574,6 @@ msgstr ""
 "Joidenkin käytössä olevien raportointiliitännäisten asetukset on tunnistettu "
 "virheellisiksi. Käytä alla olevia painikkeita liitännäisten asetusten "
 "avaamiseksi ja korjaa virheet tai raportointi saattaa epäonnistua.\n"
-
-#~ msgid "New bug id: %i"
-#~ msgstr "Uuden ohjelmavirheilmoituksen tunnus: %i"
-
-#~ msgid ""
-#~ "Empty login or password.\n"
-#~ "Please check "
-#~ msgstr ""
-#~ "Käyttäjätunnus tai salasana on tyhjä.\n"
-#~ "Tarkista "
-
-#~ msgid "Logging into bugzilla..."
-#~ msgstr "Kirjaudutaan bugzillaan..."
-
-#~ msgid "Checking for duplicates..."
-#~ msgstr "Etsitään samanlaisia..."
-
-#~ msgid "Missing mandatory member 'bugs'"
-#~ msgstr "Puuttuva pakollinen osa ”bugs”"
-
-#~ msgid "get_bug_info() failed. Could not collect all mandatory information"
-#~ msgstr ""
-#~ "get_bug_info() epäonnistui. Kaikkia pakollisia tietoja ei voitu kerätä."
-
-#~ msgid "Creating a new bug..."
-#~ msgstr "Luodaan uusi ohjelmavirheilmoitus..."
-
-#~ msgid "Bugzilla entry creation failed"
-#~ msgstr "Bugzilla-ilmoituksen luominen epäonnistui"
-
-#~ msgid "Logging out..."
-#~ msgstr "Kirjaudutaan ulos..."
-
-#~ msgid "Bug is already reported: %i"
-#~ msgstr "Ohjelmavirheestä on jo tehty ilmoitus: %i"
-
-#~ msgid "Bugzilla couldn't find parent of bug %d"
-#~ msgstr "Bugzilla ei löytänyt ylemmän tason vikailmoitusta ilmoitukselle %d"
-
-#~ msgid "Add %s to CC list"
-#~ msgstr "Lisää %s CC-luetteloon"
-
-#~ msgid "Adding new comment to bug %d"
-#~ msgstr "﻿Lisää uusi kommentti vikailmoitukseen (%d)"
-
-#~ msgid "Database plugin not specified. Please check abrtd settings."
-#~ msgstr ""
-#~ "Tietokantaliitännäistä ei ole määritetty. Tarkista abrtd:n asetukset."
 
 #~ msgid ""
 #~ "Cannot login. Check Edit->Plugins->Bugzilla and /etc/abrt/plugins/"
