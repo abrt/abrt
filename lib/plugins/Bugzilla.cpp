@@ -18,10 +18,12 @@
 */
 
 #include "abrtlib.h"
-#include "Bugzilla.h"
 #include "crash_types.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
+#include "Bugzilla.h"
+
+using namespace std;
 
 CReporterBugzilla::CReporterBugzilla()
 {
@@ -70,7 +72,7 @@ void CReporterBugzilla::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-std::string CReporterBugzilla::Report(const map_crash_data_t& crash_data,
+string CReporterBugzilla::Report(const map_crash_data_t& crash_data,
                                       const map_plugin_settings_t& settings,
                                       const char *args)
 {
@@ -117,7 +119,7 @@ std::string CReporterBugzilla::Report(const map_crash_data_t& crash_data,
         die_out_of_memory();
 
     /* Consume log from stdout */
-    std::string bug_status;
+    string bug_status;
     char buf[512];
     while (fgets(buf, sizeof(buf), fp))
     {
