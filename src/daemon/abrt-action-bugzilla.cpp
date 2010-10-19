@@ -20,7 +20,6 @@
 #include "abrt_xmlrpc.h"
 #include "crash_types.h"
 #include "abrt_exception.h"
-#include "comm_layer_inner.h"
 
 #include "plugin.h" /* make_description_bz */
 

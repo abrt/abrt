@@ -63,7 +63,7 @@
 // CD_UID from _somewhere_ in order to be able to store it in DB record,
 // right?)
 #define CD_UID          "uid"
-/* CCpp is converted to save uuid as a file (python and oops aren't yet): */
+// Now uuid also is saved as a file (but is still stored in database too):
 #define CD_UUID         "uuid"
 #define CD_INFORMALL    "InformAll"
 #define CD_DUMPDIR      "DumpDir"
