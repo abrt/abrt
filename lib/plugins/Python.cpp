@@ -22,66 +22,61 @@
 
 using namespace std;
 
-string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
+static string load(const char *dirname, const char *filename)
 {
-    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
-    if (!dd)
-        return string("");
+    string ret;
 
-    char *bt = dd_load_text(dd, FILENAME_BACKTRACE);
+    struct dump_dir *dd = dd_opendir(dirname, /*flags:*/ 0);
+    if (!dd)
+        return ret; /* "" */
+    char *s = dd_load_text(dd, filename);
     dd_close(dd);
 
-    const char *bt_end = strchrnul(bt, '\n');
-
-    char hash_str[MD5_RESULT_LEN*2 + 1];
-    unsigned char hash2[MD5_RESULT_LEN];
-    md5_ctx_t md5ctx;
-    md5_begin(&md5ctx);
-    // Better:
-    // "example.py:1:<module>:ZeroDivisionError: integer division or modulo by zero"
-    //md5_hash(bt_str, bt_end - bt_str, &md5ctx);
-    // For now using compat version:
+    if (!s[0])
     {
-        char *copy = xstrndup(bt, bt_end - bt);
-        free(bt);
-        char *s = copy;
-        char *d = copy;
-        unsigned colon_cnt = 0;
-        while (*s && colon_cnt < 3)
+        free(s);
+
+        pid_t pid = fork();
+        if (pid < 0)
         {
-            if (*s != ':')
-                *d++ = *s;
-            else
-                colon_cnt++;
-            s++;
+            perror_msg("fork");
+            return ret; /* "" */
         }
-        // "example.py1<module>"
-        md5_hash(copy, d - copy, &md5ctx);
-//*d = '\0'; log("str:'%s'", copy);
-        free(copy);
-    }
-    md5_end(hash2, &md5ctx);
+        if (pid == 0) /* child */
+        {
+            char *argv[4];  /* abrt-action-analyze-python -d DIR <NULL> */
+            char **pp = argv;
+            *pp++ = (char*)"abrt-action-analyze-python";
+            *pp++ = (char*)"-d";
+            *pp++ = (char*)dirname;
+            *pp = NULL;
 
-    // Hash is MD5_RESULT_LEN bytes long, but we use only first 4
-    // (I don't know why old Python code was using only 4, I mimic that)
-    unsigned len = 4;
-    char *d = hash_str;
-    unsigned char *s = hash2;
-    while (len)
-    {
-        *d++ = "0123456789abcdef"[*s >> 4];
-        *d++ = "0123456789abcdef"[*s & 0xf];
-        s++;
-        len--;
-    }
-    *d = '\0';
-//log("hash2:%s str:'%.*s'", hash_str, (int)(bt_end - bt_str), bt_str);
+            execvp(argv[0], argv);
+            perror_msg_and_die("Can't execute '%s'", argv[0]);
+        }
+        /* parent */
+        waitpid(pid, NULL, 0);
 
-    return hash_str;
+        dd = dd_opendir(dirname, /*flags:*/ 0);
+        if (!dd)
+            return ret; /* "" */
+        s = dd_load_text(dd, filename);
+        dd_close(dd);
+    }
+
+    ret = s;
+    free(s);
+    return ret;
 }
+
+string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
+{
+    return load(pDebugDumpDir, CD_UUID);
+}
+
 string CAnalyzerPython::GetGlobalUUID(const char *pDebugDumpDir)
 {
-    return GetLocalUUID(pDebugDumpDir);
+    return load(pDebugDumpDir, FILENAME_DUPHASH);
 }
 
 void CAnalyzerPython::Init()

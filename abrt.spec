@@ -350,6 +350,7 @@ fi
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
 %{_sbindir}/abrt-action-analyze-c
+%{_sbindir}/abrt-action-analyze-python
 %{_sbindir}/abrt-action-generate-backtrace
 %{_sbindir}/abrt-action-save-package-data
 %{_bindir}/abrt-action-bugzilla
