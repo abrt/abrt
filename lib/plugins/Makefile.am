@@ -66,7 +66,6 @@ UTILS_PATH=$(srcdir)/../utils
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h
 libCCpp_la_LDFLAGS = -avoid-version
-#libCCpp_la_LIBADD =
 libCCpp_la_CPPFLAGS = -Wall -Werror \
     -I$(INC_PATH) -I$(UTILS_PATH) \
     -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
@@ -140,7 +139,7 @@ libReportUploader_la_LIBADD = $(CURL_LIBS)
 libReportUploader_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # Python
-libPython_la_SOURCES = Python.h Python.cpp Python_hash.h Python_hash.cpp
+libPython_la_SOURCES = Python.h Python.cpp
 #libPython_la_LIBADD = $(NSS_LIBS)
 libPython_la_LDFLAGS = -avoid-version
 libPython_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH)

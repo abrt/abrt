@@ -36,7 +36,7 @@ FILENAME_HOSTNAME     = "hostname"
 FILENAME_REMOTE       = "remote"
 
 CD_UID          = "uid"
-CD_UUID         = "UUID"
+CD_UUID         = "uuid"
 CD_INFORMALL    = "InformAll"
 CD_DUMPDIR      = "DumpDir"
 CD_COUNT        = "Count"
@@ -70,7 +70,7 @@ class Dump():
         return "Dump instance"
 
     def getUUID(self):
-        return self.UUID
+        return self.uuid
 
     def getUID(self):
         return self.uid

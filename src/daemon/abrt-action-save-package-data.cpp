@@ -23,6 +23,8 @@
 #include "rpm.h"
 #include "parse_options.h"
 
+#define PROGNAME "abrt-action-save-package-data"
+
 /**
  * Returns the first full path argument in the command line or NULL.
  * Skips options are in form "-XXX".
@@ -76,8 +78,8 @@ static bool is_path_blacklisted(const char *path)
 
 static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 {
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
         return 1;
 
     char *remote_str = dd_load_text(dd, FILENAME_REMOTE);
@@ -120,8 +122,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
             if (g_settings_bProcessUnpackaged || remote)
             {
                 VERB2 log("Crash in unpackaged executable '%s', proceeding without packaging information", executable);
-                dd = dd_init();
-                if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+                dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                if (!dd)
                     goto ret; /* return 1 (failure) */
                 dd_save_text(dd, FILENAME_PACKAGE, "");
                 dd_save_text(dd, FILENAME_DESCRIPTION, "Crashed executable does not belong to any installed package");
@@ -222,8 +224,8 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
         component = rpm_get_component(executable);
         dsc = rpm_get_description(package_short_name);
 
-        dd = dd_init();
-        if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+        dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (!dd)
             goto ret; /* return 1 (failure) */
     }
 
@@ -268,7 +270,10 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
 }
 
 static const char *dump_dir_name = ".";
-static const char abrt_action_save_package_data_usage[] = "abrt-action-save-package-data [options] -d DIR";
+static const char abrt_action_save_package_data_usage[] =
+    PROGNAME" [options] -d DIR\n"
+    "\n"
+    "Query package database and save package name, component, and description";
 enum {
     OPT_v = 1 << 0,
     OPT_d = 1 << 1,
@@ -277,8 +282,8 @@ enum {
 /* Keep enum above and order of options below in sync! */
 static struct options abrt_action_save_package_data_options[] = {
     OPT__VERBOSE(&g_verbose),
-    OPT_STRING( 'd' , 0, &dump_dir_name, "dir", "Crash dump directory"),
-    OPT_BOOL( 's' , 0, NULL, "Log to syslog"),
+    OPT_STRING('d', NULL, &dump_dir_name, "DIR", "Crash dump directory"),
+    OPT_BOOL(  's', NULL, NULL, "Log to syslog"),
     OPT_END()
 };
 
@@ -292,7 +297,7 @@ int main(int argc, char **argv)
                            abrt_action_save_package_data_usage);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = xasprintf("abrt-action-save-package-data[%u]", getpid());
+    msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
 
     if (opts & OPT_s)
     {

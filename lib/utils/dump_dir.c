@@ -28,10 +28,8 @@
 // Perhaps dd_opendir should do some sanity checking like
 // "if there is no "uid" file in the directory, it's not a crash dump",
 // and fail.
-//
-// Locking is broken wrt "funny" directory names.
-// dd_opendir(dd, ".") will create "..lock" istead of proper "../DIRNAME.lock"
-// Similarly for dd_opendir(dd, "DIRNAME/."), dd_opendir(dd, "..") etc.
+
+static char *load_text_file(const char *path);
 
 static bool isdigit_str(const char *str)
 {
@@ -41,14 +39,6 @@ static bool isdigit_str(const char *str)
         str++;
     } while (*str);
     return true;
-}
-
-static char* rm_trailing_slashes(const char *dir)
-{
-    unsigned len = strlen(dir);
-    while (len != 0 && dir[len-1] == '/')
-        len--;
-    return xstrndup(dir, len);
 }
 
 static bool exist_file_dir(const char *path)
@@ -62,70 +52,6 @@ static bool exist_file_dir(const char *path)
         }
     }
     return false;
-}
-
-static char *load_text_file(const char *path);
-static void dd_lock(struct dump_dir *dd);
-static void dd_unlock(struct dump_dir *dd);
-
-struct dump_dir *dd_init(void)
-{
-    return (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
-}
-
-void dd_close(struct dump_dir *dd)
-{
-    if (!dd)
-        return;
-
-    dd_unlock(dd);
-    if (dd->next_dir)
-    {
-        closedir(dd->next_dir);
-        /* free(dd->next_dir); - WRONG! */
-    }
-
-    free(dd->dd_dir);
-    free(dd);
-}
-
-int dd_opendir(struct dump_dir *dd, const char *dir, int flags)
-{
-    if (dd->locked)
-        error_msg_and_die("dump_dir is already opened"); /* bug */
-
-    dd->dd_dir = rm_trailing_slashes(dir);
-    if (!exist_file_dir(dd->dd_dir))
-    {
-
-        if (!(flags & DD_FAIL_QUIETLY))
-            error_msg("'%s' does not exist", dd->dd_dir);
-
-        if (flags & DD_CLOSE_ON_OPEN_ERR)
-            dd_close(dd);
-
-        return 0;
-    }
-
-    dd_lock(dd);
-
-    /* In case caller would want to create more files, he'll need uid:gid */
-    struct stat stat_buf;
-    if (stat(dd->dd_dir, &stat_buf) == 0)
-    {
-        dd->dd_uid = stat_buf.st_uid;
-        dd->dd_gid = stat_buf.st_gid;
-    }
-
-    return 1;
-}
-
-int dd_exist(struct dump_dir *dd, const char *path)
-{
-    char *full_path = concat_path_file(dd->dd_dir, path);
-    int ret = exist_file_dir(full_path);
-    free(full_path);
-    return ret;
 }
 
 static bool get_and_set_lock(const char* lock_file, const char* pid)
@@ -204,6 +130,81 @@ static void dd_unlock(struct dump_dir *dd)
     }
 }
 
+static inline struct dump_dir *dd_init(void)
+{
+    return (struct dump_dir*)xzalloc(sizeof(struct dump_dir));
+}
+
+int dd_exist(struct dump_dir *dd, const char *path)
+{
+    char *full_path = concat_path_file(dd->dd_dir, path);
+    int ret = exist_file_dir(full_path);
+    free(full_path);
+    return ret;
+}
+
+void dd_close(struct dump_dir *dd)
+{
+    if (!dd)
+        return;
+
+    dd_unlock(dd);
+    if (dd->next_dir)
+    {
+        closedir(dd->next_dir);
+        /* free(dd->next_dir); - WRONG! */
+    }
+
+    free(dd->dd_dir);
+    free(dd);
+}
+
+static char* rm_trailing_slashes(const char *dir)
+{
+    unsigned len = strlen(dir);
+    while (len != 0 && dir[len-1] == '/')
+        len--;
+    return xstrndup(dir, len);
+}
+
+struct dump_dir *dd_opendir(const char *dir, int flags)
+{
+    struct dump_dir *dd = dd_init();
+
+    /* Used to use rm_trailing_slashes(dir) here, but with dir = "."
+     * or "..", or if the last component is a symlink,
+     * then lock file is created in the wrong place.
+     * IOW: this breaks locking.
+     */
+    dd->dd_dir = realpath(dir, NULL);
+    if (!dd->dd_dir)
+    {
+        if (!(flags & DD_FAIL_QUIETLY))
+            error_msg("'%s' does not exist", dir);
+        dd_close(dd);
+        return NULL;
+    }
+    dir = dd->dd_dir;
+
+    dd_lock(dd);
+
+    struct stat stat_buf;
+    if (stat(dir, &stat_buf) != 0
+     || !S_ISDIR(stat_buf.st_mode)
+    ) {
+        if (!(flags & DD_FAIL_QUIETLY))
+            error_msg("'%s' does not exist", dir);
+        dd_close(dd);
+        return NULL;
+    }
+
+    /* In case caller would want to create more files, he'll need uid:gid */
+    dd->dd_uid = stat_buf.st_uid;
+    dd->dd_gid = stat_buf.st_gid;
+
+    return dd;
+}
+
 /* Create a fresh empty debug dump dir.
  *
  * Security: we should not allow users to write new files or write
@@ -223,17 +224,29 @@ static void dd_unlock(struct dump_dir *dd)
  * Currently, we set dir's gid to passwd(uid)->pw_gid parameter, and we set uid to
  * abrt's user id. We do not allow write access to group.
  */
-int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
+struct dump_dir *dd_create(const char *dir, uid_t uid)
 {
-    if (dd->locked)
-        error_msg_and_die("dump_dir is already opened"); /* bug */
+    struct dump_dir *dd = dd_init();
 
-    dd->dd_dir = rm_trailing_slashes(dir);
-    if (exist_file_dir(dd->dd_dir))
+    /* Unlike dd_opendir, can't use realpath: the directory doesn't exist yet,
+     * realpath will always return NULL. We don't really have to:
+     * dd_opendir(".") makes sense, dd_create(".") does not.
+     */
+    dir = dd->dd_dir = rm_trailing_slashes(dir);
+
+    const char *last_component = strrchr(dir, '/');
+    if (last_component)
+        last_component++;
+    else
+        last_component = dir;
+    if (dot_or_dotdot(last_component))
     {
-        error_msg("'%s' already exists", dd->dd_dir);
-        free(dd->dd_dir);
-        return 0;
+        /* dd_create("."), dd_create(".."), dd_create("dir/."),
+         * dd_create("dir/..") and similar are madness, refuse them.
+         */
+        error_msg("Bad dir name '%s'", dir);
+        dd_close(dd);
+        return NULL;
     }
 
     dd_lock(dd);
@@ -242,23 +255,23 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
      * the user to replace any file in the directory, changing security-sensitive data
      * (e.g. "uid", "analyzer", "executable")
      */
-    if (mkdir(dd->dd_dir, 0750) == -1)
+    if (mkdir(dir, 0750) == -1)
     {
-        dd_unlock(dd);
-        error_msg("Can't create dir '%s'", dir);
-        return 0;
+        perror_msg("Can't create dir '%s'", dir);
+        dd_close(dd);
+        return NULL;
     }
 
     /* mkdir's mode (above) can be affected by umask, fix it */
-    if (chmod(dd->dd_dir, 0750) == -1)
+    if (chmod(dir, 0750) == -1)
     {
-        dd_unlock(dd);
-        error_msg("Can't change mode of '%s'", dir);
-        return false;
+        perror_msg("Can't change mode of '%s'", dir);
+        dd_close(dd);
+        return NULL;
     }
 
     /* Get ABRT's user id */
-    dd->dd_uid = 0;
+    /*dd->dd_uid = 0; - dd_init did this already */
     struct passwd *pw = getpwnam("abrt");
     if (pw)
         dd->dd_uid = pw->pw_uid;
@@ -266,56 +279,45 @@ int dd_create(struct dump_dir *dd, const char *dir, uid_t uid)
         error_msg("User 'abrt' does not exist, using uid 0");
 
     /* Get crashed application's group id */
-    dd->dd_gid = 0;
+    /*dd->dd_gid = 0; - dd_init did this already */
     pw = getpwuid(uid);
     if (pw)
         dd->dd_gid = pw->pw_gid;
     else
         error_msg("User %lu does not exist, using gid 0", (long)uid);
 
-    if (chown(dd->dd_dir, dd->dd_uid, dd->dd_gid) == -1)
+    if (chown(dir, dd->dd_uid, dd->dd_gid) == -1)
     {
-        perror_msg("can't change '%s' ownership to %lu:%lu", dd->dd_dir,
+        perror_msg("Can't change '%s' ownership to %lu:%lu", dir,
                    (long)dd->dd_uid, (long)dd->dd_gid);
     }
 
-    char uid_str[sizeof(long) * 3 + 2];
-    sprintf(uid_str, "%lu", (long)uid);
-    dd_save_text(dd, CD_UID, uid_str);
+    char long_str[sizeof(long) * 3 + 2];
 
-    {
-        struct utsname buf;
-        if (uname(&buf) != 0)
-        {
-            perror_msg_and_die("uname");
-        }
-        dd_save_text(dd, FILENAME_KERNEL, buf.release);
-        dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
-        char *release = load_text_file("/etc/redhat-release");
-        strchrnul(release, '\n')[0] = '\0';
-        dd_save_text(dd, FILENAME_RELEASE, release);
-        free(release);
-    }
+    sprintf(long_str, "%lu", (long)uid);
+    dd_save_text(dd, CD_UID, long_str);
+
+    struct utsname buf;
+    uname(&buf); /* never fails */
+    dd_save_text(dd, FILENAME_KERNEL, buf.release);
+    dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
+    char *release = load_text_file("/etc/redhat-release");
+    strchrnul(release, '\n')[0] = '\0';
+    dd_save_text(dd, FILENAME_RELEASE, release);
+    free(release);
 
     time_t t = time(NULL);
-    char t_str[sizeof(time_t) * 3 + 2];
-    sprintf(t_str, "%lu", (time_t)t);
-    dd_save_text(dd, FILENAME_TIME, t_str);
+    sprintf(long_str, "%lu", (long)t);
+    dd_save_text(dd, FILENAME_TIME, long_str);
 
-    return 1;
+    return dd;
 }
 
-static bool delete_file_dir(const char *dir)
+static void delete_file_dir(const char *dir)
 {
-    if (!exist_file_dir(dir))
-        return true;
-
     DIR *d = opendir(dir);
     if (!d)
-    {
-        error_msg("Can't open dir '%s'", dir);
-        return false;
-    }
+        return;
 
     struct dirent *dent;
     while ((dent = readdir(d)) != NULL)
@@ -323,14 +325,14 @@ static bool delete_file_dir(const char *dir)
         if (dot_or_dotdot(dent->d_name))
             continue;
         char *full_path = concat_path_file(dir, dent->d_name);
-        if (unlink(full_path) == -1)
+        if (unlink(full_path) == -1 && errno != ENOENT)
         {
             if (errno != EISDIR)
             {
-                closedir(d);
-                error_msg("Can't remove dir '%s'", full_path);
+                error_msg("Can't remove '%s'", full_path);
                 free(full_path);
-                return false;
+                closedir(d);
+                return;
             }
             delete_file_dir(full_path);
         }
@@ -339,20 +341,12 @@ static bool delete_file_dir(const char *dir)
     closedir(d);
     if (rmdir(dir) == -1)
     {
-        error_msg("Can't remove dir %s", dir);
-        return false;
+        error_msg("Can't remove dir '%s'", dir);
     }
-
-    return true;
 }
 
 void dd_delete(struct dump_dir *dd)
 {
-    if (!exist_file_dir(dd->dd_dir))
-    {
-        return;
-    }
-
     delete_file_dir(dd->dd_dir);
 }
 
@@ -479,9 +473,10 @@ int dd_get_next_file(struct dump_dir *dd, char **short_name, char **full_name)
 /* Utility function */
 void delete_debug_dump_dir(const char *dd_dir)
 {
-    struct dump_dir *dd = dd_init();
-    if (dd_opendir(dd, dd_dir, 0))
+    struct dump_dir *dd = dd_opendir(dd_dir, /*flags:*/ 0);
+    if (dd)
+    {
         dd_delete(dd);
-
-    dd_close(dd);
+        dd_close(dd);
+    }
 }

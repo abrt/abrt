@@ -569,8 +569,8 @@ static void report_to_bugzilla(
                 const char *dump_dir_name,
                 /*const*/ map_plugin_settings_t& settings)
 {
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, dump_dir_name, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
     {
         throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
     }

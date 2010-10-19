@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master.fr\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-09-05 04:06+0000\n"
+"POT-Creation-Date: 2010-10-14 20:16+0200\n"
 "PO-Revision-Date: 2010-09-06 21:21+0200\n"
 "Last-Translator: Thomas Canniot <mrtom@fedoraproject.org>\n"
 "Language-Team: French <French fedora-trans-fr@fedoraproject.org>\n"
@@ -21,130 +21,55 @@ msgstr ""
 "X-Generator: Lokalize 1.1\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: ../lib/plugins/Bugzilla.cpp:465
-#, c-format
-msgid "New bug id: %i"
-msgstr "Nouvel ID d'anomalie : %i"
-
-#: ../lib/plugins/Bugzilla.cpp:689
-msgid ""
-"Empty login or password.\n"
-"Please check "
-msgstr ""
-"Pas d'identifiant ni de mot de passe.\n"
-"Veuillez vérifier "
-
-#: ../lib/plugins/Bugzilla.cpp:698
-msgid "Logging into bugzilla..."
-msgstr "Connexion à bugzilla..."
-
-#: ../lib/plugins/Bugzilla.cpp:701
-msgid "Checking for duplicates..."
-msgstr "Recherche de doublons..."
-
-#: ../lib/plugins/Bugzilla.cpp:722 ../lib/plugins/Bugzilla.cpp:757
-msgid "Missing mandatory member 'bugs'"
-msgstr "Le membre nécessaire «bugs» est manquant"
-
-#: ../lib/plugins/Bugzilla.cpp:740 ../lib/plugins/Bugzilla.cpp:773
-#: ../lib/plugins/Bugzilla.cpp:849
-msgid "get_bug_info() failed. Could not collect all mandatory information"
-msgstr ""
-"get_bug_info() a échoué. N'a pas pu collecter toutes les informations "
-"nécessaires"
-
-#: ../lib/plugins/Bugzilla.cpp:789
-msgid "Creating a new bug..."
-msgstr "Création d'une nouvelle anomalie..."
-
-#: ../lib/plugins/Bugzilla.cpp:794
-msgid "Bugzilla entry creation failed"
-msgstr "Impossible de créer l'entrée dans Bugzilla"
-
-#: ../lib/plugins/Bugzilla.cpp:804 ../lib/plugins/Bugzilla.cpp:903
-msgid "Logging out..."
-msgstr "Déconnexion..."
-
-#. decision based on state
-#: ../lib/plugins/Bugzilla.cpp:823
-#, c-format
-msgid "Bug is already reported: %i"
-msgstr "L'anomalie est déjà signalée : %i"
-
-#: ../lib/plugins/Bugzilla.cpp:834
-#, c-format
-msgid "Bugzilla couldn't find parent of bug %d"
-msgstr "Bugzilla n'a pas trouvé le parent de l'anomalie %d"
-
-#: ../lib/plugins/Bugzilla.cpp:863 ../lib/plugins/Bugzilla.cpp:864
-#, c-format
-msgid "Add %s to CC list"
-msgstr "Ajouter %s à la liste CC"
-
-#: ../lib/plugins/Bugzilla.cpp:888
-#, c-format
-msgid "Adding new comment to bug %d"
-msgstr "Ajouter un nouveau commentaire à l'anomalie (%d)"
-
-#: ../lib/plugins/Bugzilla.cpp:987
+#: ../lib/plugins/Bugzilla.cpp:149
 msgid "Reports bugs to bugzilla"
 msgstr "Rapporte les anomalies sur Bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:187
+#: ../lib/plugins/CCpp.cpp:79
 msgid "Generating backtrace"
 msgstr "Génération du parcours arrière..."
 
-#: ../lib/plugins/CCpp.cpp:193 ../lib/plugins/CCpp.cpp:342
-#: ../lib/plugins/CCpp.cpp:536 ../lib/plugins/CCpp.cpp:596
-#: ../lib/plugins/CCpp.cpp:766 ../lib/plugins/CCpp.cpp:829
-#: ../lib/plugins/Kerneloops.cpp:133 ../lib/plugins/Python.cpp:33
-#: ../lib/plugins/RunApp.cpp:65 ../lib/plugins/SOSreport.cpp:58
-#: ../lib/plugins/SOSreport.cpp:137
-#, c-format
-msgid "Unable to open debug dump '%s'"
-msgstr "Impossible d'ouvrir le dump de deboggage « %s »"
-
-#: ../lib/plugins/CCpp.cpp:370
+#: ../lib/plugins/CCpp.cpp:115
 msgid "Starting the debuginfo installation"
 msgstr "Démarrage de l'installation de debuginfo"
 
 #. Compatibility code.
 #. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:612
+#: ../lib/plugins/CCpp.cpp:338
 msgid "Getting global universal unique identification..."
 msgstr "Obtention de l'UUID globale..."
 
-#: ../lib/plugins/CCpp.cpp:812
+#: ../lib/plugins/CCpp.cpp:532
 msgid "Skipping the debuginfo installation"
 msgstr "Ignorer l'installation de debuginfo"
 
-#: ../lib/plugins/CCpp.cpp:1144
+#: ../lib/plugins/CCpp.cpp:783
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyse les incidents dans les programmes C/C++"
 
-#: ../lib/plugins/FileTransfer.cpp:52 ../lib/plugins/ReportUploader.cpp:97
+#: ../lib/plugins/FileTransfer.cpp:51 ../lib/plugins/ReportUploader.cpp:96
 msgid "FileTransfer: URL not specified"
 msgstr "Transfert de fichier : URL non spécifié"
 
-#: ../lib/plugins/FileTransfer.cpp:56 ../lib/plugins/ReportUploader.cpp:101
+#: ../lib/plugins/FileTransfer.cpp:55 ../lib/plugins/ReportUploader.cpp:100
 #, c-format
 msgid "Sending archive %s to %s"
 msgstr "Envoi de l'archive %s vers %s"
 
-#: ../lib/plugins/FileTransfer.cpp:245
+#: ../lib/plugins/FileTransfer.cpp:244
 msgid "FileTransfer: Creating a report..."
 msgstr "Transfert de fichier : Création d'un rapport"
 
-#: ../lib/plugins/FileTransfer.cpp:269 ../lib/plugins/FileTransfer.cpp:298
+#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Impossible de créer et d'envoyer une archive : %s"
 
-#: ../lib/plugins/FileTransfer.cpp:365
+#: ../lib/plugins/FileTransfer.cpp:364
 msgid "Sends a report via FTP or SCTP"
 msgstr "Envoie un rapport via FTP ou SCTP"
 
-#: ../lib/plugins/Kerneloops.cpp:155
+#: ../lib/plugins/Kerneloops.cpp:150
 msgid "Analyzes kernel oopses"
 msgstr "Analyse les oops de noyau"
 
@@ -156,51 +81,51 @@ msgstr "Création et envoi d'un rapport..."
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Envoie des informations sur les oops de noyau à kerneloops.org"
 
-#: ../lib/plugins/KerneloopsScanner.cpp:208
+#: ../lib/plugins/KerneloopsScanner.cpp:211
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Scanne périodiquement et enregistre les oops de noyau"
 
-#: ../lib/plugins/Logger.cpp:69
+#: ../lib/plugins/Logger.cpp:68
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Écriture du rapport  à « %s »"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Le rapport a été ajouté à %s"
 
-#: ../lib/plugins/Logger.cpp:75
+#: ../lib/plugins/Logger.cpp:74
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Le rapport a été stocké sur %s"
 
-#: ../lib/plugins/Logger.cpp:83
+#: ../lib/plugins/Logger.cpp:82
 msgid "Writes report to a file"
 msgstr "Écrit un rapport sur un fichier"
 
-#: ../lib/plugins/Mailx.cpp:100
+#: ../lib/plugins/Mailx.cpp:99
 msgid "Sending an email..."
 msgstr "Envoi d'un email..."
 
-#: ../lib/plugins/Mailx.cpp:151
+#: ../lib/plugins/Mailx.cpp:150
 msgid "Sends an email with a report (via mailx command)"
 msgstr "Envoie un email avec un rapport (via la commande mailx)"
 
-#: ../lib/plugins/Python.cpp:105
+#: ../lib/plugins/Python.cpp:100
 msgid "Analyzes crashes in Python programs"
 msgstr "Analyse les incidents dans les programmes Python"
 
-#: ../lib/plugins/ReportUploader.cpp:131
+#: ../lib/plugins/ReportUploader.cpp:130
 #, c-format
 msgid "Sending failed, trying again. %s"
 msgstr "Échec de l'envoi, nouvelle tentative. %s"
 
-#: ../lib/plugins/ReportUploader.cpp:197
+#: ../lib/plugins/ReportUploader.cpp:196
 msgid "Creating a ReportUploader report..."
 msgstr "Création d'un rapport ReportUploader..."
 
-#: ../lib/plugins/ReportUploader.cpp:515
+#: ../lib/plugins/ReportUploader.cpp:514
 msgid ""
 "Packs crash data into .tar.gz file, optionally uploads it via FTP/SCP/etc"
 msgstr ""
@@ -208,36 +133,41 @@ msgstr ""
 "optionnellement via FTP/SCP/etc"
 
 #. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:110
+#: ../lib/plugins/RHTSupport.cpp:109
 msgid "Compressing data"
 msgstr "Compression des données"
 
-#: ../lib/plugins/RHTSupport.cpp:247
+#: ../lib/plugins/RHTSupport.cpp:246
 msgid "Creating a new case..."
 msgstr "Création d'un nouveau cas..."
 
-#: ../lib/plugins/RHTSupport.cpp:329
+#: ../lib/plugins/RHTSupport.cpp:328
 msgid "Reports bugs to Red Hat support"
 msgstr "Rapporte les anomalies au support de RedHat"
 
-#: ../lib/plugins/RunApp.cpp:80
+#: ../lib/plugins/RunApp.cpp:75
 msgid "Runs a command, saves its output"
 msgstr "Exécute une commande, enregistre sa sortie"
 
-#: ../lib/plugins/SOSreport.cpp:104
+#: ../lib/plugins/SOSreport.cpp:99
 #, c-format
 msgid "Running sosreport: %s"
 msgstr "Exécution de sosreport : %s"
 
-#: ../lib/plugins/SOSreport.cpp:109
+#: ../lib/plugins/SOSreport.cpp:104
 msgid "Finished running sosreport"
 msgstr "Exécution de sosreport terminée"
 
-#: ../lib/plugins/SOSreport.cpp:171
+#: ../lib/plugins/SOSreport.cpp:132
+#, c-format
+msgid "Unable to open debug dump '%s'"
+msgstr "Impossible d'ouvrir le dump de deboggage « %s »"
+
+#: ../lib/plugins/SOSreport.cpp:166
 msgid "Runs sosreport, saves the output"
 msgstr "Exécute sosreport, enregistre la sortie"
 
-#: ../lib/plugins/SQLite3.cpp:678
+#: ../lib/plugins/SQLite3.cpp:718
 msgid "Keeps SQLite3 database about all crashes"
 msgstr "Conserve la base de données SQLite3 à propos de tous les incidents"
 
@@ -365,6 +295,11 @@ msgstr "URL RHTSupport :"
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Envoi vers le serveur : %llu de %llu kio"
+
+#: ../lib/utils/parse_options.c:11
+#, c-format
+msgid "Usage: %s\n"
+msgstr ""
 
 #: ../src/applet/abrt-applet.desktop.in.h:1
 msgid "ABRT notification applet"
@@ -567,24 +502,24 @@ msgstr ""
 "\t@N  - N'th l'intervention portera sur l'incident (comme affiché par --list "
 "--full)\n"
 
-#: ../src/cli/CLI.cpp:293
+#: ../src/cli/CLI.cpp:292
 msgid "You must specify exactly one operation"
 msgstr "Vous devez spécifier une seule opération"
 
-#: ../src/cli/report.cpp:172
+#: ../src/cli/report.cpp:170
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Ce champ est en lecture seule uniquement\n"
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:190
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Décrivez les circonstances de l'incident ci-dessous"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:192
 msgid "# How to reproduce the crash?"
 msgstr "# Comment reproduire l'incident ?"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:194
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -592,48 +527,48 @@ msgstr ""
 "# Backtrace\n"
 "# Vérifiez qu'il ne contient aucune donnée sensible (mots de passe, etc.)"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:196
 msgid "# Architecture"
 msgstr "# Architecture"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:197
 msgid "# Command line"
 msgstr "# Ligne de commande"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:198
 msgid "# Component"
 msgstr "# Composant"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:199
 msgid "# Core dump"
 msgstr "# Core dump"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:200
 msgid "# Executable"
 msgstr "# Exécutable"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:201
 msgid "# Kernel version"
 msgstr "# Version du noyau"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:202
 msgid "# Package"
 msgstr "# Paquet"
 
-#: ../src/cli/report.cpp:205
+#: ../src/cli/report.cpp:203
 msgid "# Reason of crash"
 msgstr "# Raison de l'incident"
 
-#: ../src/cli/report.cpp:206
+#: ../src/cli/report.cpp:204
 msgid "# Release string of the operating system"
 msgstr "# Version du système d'exploitation"
 
-#: ../src/cli/report.cpp:329
+#: ../src/cli/report.cpp:327
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr ""
 "Exécution de vi impossible : $TERM, $VISUAL et $EDITOR ne sont pas définis"
 
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.cpp:415
 msgid ""
 "\n"
 "The report has been updated"
@@ -641,7 +576,7 @@ msgstr ""
 "\n"
 "Le rapport a été mis à jour"
 
-#: ../src/cli/report.cpp:419
+#: ../src/cli/report.cpp:417
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -650,46 +585,46 @@ msgstr ""
 "Aucun changement n'a été détecté dans le rapport"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:538
+#: ../src/cli/report.cpp:543
 msgid "y"
 msgstr "y"
 
-#: ../src/cli/report.cpp:539
+#: ../src/cli/report.cpp:544
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:640
+#: ../src/cli/report.cpp:645
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Des paramètres erronés ont été détectés sur l'extension %s\n"
 
-#: ../src/cli/report.cpp:644
+#: ../src/cli/report.cpp:649
 msgid "Enter your login: "
 msgstr "Entrez votre nom d'accès :"
 
-#: ../src/cli/report.cpp:650
+#: ../src/cli/report.cpp:655
 msgid "Enter your password: "
 msgstr "Entrez votre mot de passe :"
 
-#: ../src/cli/report.cpp:695
+#: ../src/cli/report.cpp:700
 msgid "Reporting..."
 msgstr "Envoi du rapport..."
 
-#: ../src/cli/report.cpp:714
+#: ../src/cli/report.cpp:719
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapporter en utilisant %s ?"
 
-#: ../src/cli/report.cpp:717
+#: ../src/cli/report.cpp:722
 msgid "Skipping..."
 msgstr "Ignorer..."
 
-#: ../src/cli/report.cpp:729
+#: ../src/cli/report.cpp:734
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "L'envoi du rapport est désactivé car le backtrace est inutilisable"
 
-#: ../src/cli/report.cpp:733
+#: ../src/cli/report.cpp:738
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -698,14 +633,106 @@ msgstr ""
 "Veuillez essayer d'installer debuginfo manuellement en utilisant la "
 "commande : « debuginfo-install %s » puis essayez à nouveau\n"
 
-#: ../src/cli/report.cpp:742
+#: ../src/cli/report.cpp:747
 msgid "Error loading reporter settings"
 msgstr "Erreur lors du chargement des paramètres du rapporteur"
 
-#: ../src/cli/report.cpp:761
+#: ../src/cli/report.cpp:766
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Incident rapporté via l'extension %d (erreurs %d)\n"
+
+#: ../src/daemon/abrt-action-analyze-c.c:154
+msgid ""
+" [-vs] -d DIR\n"
+"\n"
+"Calculates and saves UUID"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:166
+msgid "Crash dump directory"
+msgstr ""
+
+#: ../src/daemon/abrt-action-analyze-c.c:167
+msgid "Log to syslog"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#, c-format
+msgid "New bug id: %i"
+msgstr "Nouvel ID d'anomalie : %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#, c-format
+msgid "Can't open '%s'"
+msgstr ""
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#, fuzzy, c-format
+msgid "Empty login or password, please check %s"
+msgstr ""
+"Pas d'identifiant ni de mot de passe.\n"
+"Veuillez vérifier "
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:609
+msgid "Logging into bugzilla..."
+msgstr "Connexion à bugzilla..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
+msgid "Checking for duplicates..."
+msgstr "Recherche de doublons..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:633
+#: ../src/daemon/abrt-action-bugzilla.cpp:669
+msgid "Missing mandatory member 'bugs'"
+msgstr "Le membre nécessaire «bugs» est manquant"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:652
+#: ../src/daemon/abrt-action-bugzilla.cpp:685
+#: ../src/daemon/abrt-action-bugzilla.cpp:760
+msgid "get_bug_info() failed. Could not collect all mandatory information"
+msgstr ""
+"get_bug_info() a échoué. N'a pas pu collecter toutes les informations "
+"nécessaires"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:701
+msgid "Creating a new bug..."
+msgstr "Création d'une nouvelle anomalie..."
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:706
+msgid "Bugzilla entry creation failed"
+msgstr "Impossible de créer l'entrée dans Bugzilla"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:716
+#: ../src/daemon/abrt-action-bugzilla.cpp:813
+msgid "Logging out..."
+msgstr "Déconnexion..."
+
+#. decision based on state
+#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#, c-format
+msgid "Bug is already reported: %i"
+msgstr "L'anomalie est déjà signalée : %i"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#, c-format
+msgid "Bugzilla couldn't find parent of bug %d"
+msgstr "Bugzilla n'a pas trouvé le parent de l'anomalie %d"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#, c-format
+msgid "Add %s to CC list"
+msgstr "Ajouter %s à la liste CC"
+
+#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#, c-format
+msgid "Adding new comment to bug %d"
+msgstr "Ajouter un nouveau commentaire à l'anomalie (%d)"
+
+#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#, c-format
+msgid "Backtrace parsing failed for %s"
+msgstr ""
 
 #: ../src/daemon/CommLayerServerDBus.cpp:224
 msgid "Comment is too long"
@@ -715,7 +742,7 @@ msgstr "Commentaire trop long"
 msgid "'How to reproduce' is too long"
 msgstr "« Comment reproduire » est trop long"
 
-#: ../src/daemon/Daemon.cpp:510
+#: ../src/daemon/Daemon.cpp:633
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -723,7 +750,23 @@ msgstr ""
 "La taille du rapport dépasse le quota. Veuillez vérifier la valeur "
 "MaxCrashReportsSize du système dans abrt.conf."
 
-#: ../src/daemon/MiddleWare.cpp:611
+#: ../src/daemon/Daemon.cpp:862
+msgid "abrtd [options]"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:872
+msgid "Do not daemonize"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:873
+msgid "Log to syslog even with -d"
+msgstr ""
+
+#: ../src/daemon/Daemon.cpp:874
+msgid "Exit after SEC seconds of inactivity"
+msgstr ""
+
+#: ../src/daemon/Settings.cpp:216 ../src/daemon/Settings.cpp:221
 msgid "Database plugin not specified. Please check abrtd settings."
 msgstr ""
 "L'extension de la base de données n'est pas spécifiée. Veuillez vérifier les "
@@ -744,23 +787,23 @@ msgstr ""
 "Données inattendues reçues du démon (La base de données a-t-elle été mise à "
 "jour correctement ?)."
 
-#: ../src/gui/ABRTPlugin.py:62
+#: ../src/gui/ABRTPlugin.py:64
 msgid "Not loaded plugins"
 msgstr "Les extensions ne sont pas chargées"
 
-#: ../src/gui/ABRTPlugin.py:63
+#: ../src/gui/ABRTPlugin.py:65
 msgid "Analyzer plugins"
 msgstr "Extensions d'analyse"
 
-#: ../src/gui/ABRTPlugin.py:64
+#: ../src/gui/ABRTPlugin.py:66
 msgid "Action plugins"
 msgstr "Extensions d'action"
 
-#: ../src/gui/ABRTPlugin.py:65
+#: ../src/gui/ABRTPlugin.py:67
 msgid "Reporter plugins"
 msgstr "Extensions du rapporteur"
 
-#: ../src/gui/ABRTPlugin.py:66
+#: ../src/gui/ABRTPlugin.py:68
 msgid "Database plugins"
 msgstr "Extensions de base de données"
 
@@ -1016,7 +1059,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Configurer les %s options"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:866
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1034,7 +1077,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:905
+#: ../src/gui/CReporterAssistant.py:1047
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Erreur lors de l'acquisition du rapport : %s"
@@ -1054,8 +1097,7 @@ msgid ""
 "Access to gnome-keyring has been denied, plugins settings will not be saved."
 msgstr ""
 "L'accès à gnome-keyring a été refusé, les paramètres des extensions ne "
-"seront "
-"pas enregistrés."
+"seront pas enregistrés."
 
 #. we tried 2 times, so giving up the authorization
 #: ../src/gui/ConfBackend.py:153
@@ -1132,17 +1174,15 @@ msgid ""
 msgstr ""
 "Il semble qu'une application du paquet <b>%s</b> se soit bloquée sur le "
 "système. Il serait sage d'envoyer un rapport d'anomalie à ce sujet. Le "
-"rapport "
-"fournira aux responsables de la maintenance du logiciel des informations "
-"essentielles à la découverte d'un correctif d'anomalie.\n"
+"rapport fournira aux responsables de la maintenance du logiciel des "
+"informations essentielles à la découverte d'un correctif d'anomalie.\n"
 "\n"
 "Veuillez vérifier les informations qui suivent et les modifier si nécessaire "
 "afin de vous assurer que le rapport d'anomalie ne contienne pas de données "
 "sensibles que vous ne souhaiteriez pas partager.\n"
 "\n"
 "Sélectionnez l'endroit où vous voudriez rapporter l'anomalie, puis cliquez "
-"sur "
-"« Suivant » pour continuer."
+"sur « Suivant » pour continuer."
 
 #: ../src/gui/CReporterAssistant.py:527
 msgid "Only one reporter plugin is configured."
@@ -1170,40 +1210,50 @@ msgstr ""
 "de vous assurer que votre rapport d'anomalie ne contienne pas de données "
 "sensibles que vous ne souhaiteriez pas partager :"
 
-#: ../src/gui/CReporterAssistant.py:614
+#: ../src/gui/CReporterAssistant.py:642 ../src/gui/CReporterAssistant.py:655
+#: ../src/gui/CReporterAssistant.py:689
+#, python-format
+msgid "Found %i occurence(s) [at: %i of %i]"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:726
+msgid "Search:"
+msgstr ""
+
+#: ../src/gui/CReporterAssistant.py:756
 msgid "Refresh"
 msgstr "Rafraîchir"
 
-#: ../src/gui/CReporterAssistant.py:616
+#: ../src/gui/CReporterAssistant.py:758
 msgid "Copy"
 msgstr "Copier"
 
-#: ../src/gui/CReporterAssistant.py:622
+#: ../src/gui/CReporterAssistant.py:764
 msgid "I agree with submitting the backtrace"
 msgstr "J'accepte de soumettre le backtrace"
 
-#: ../src/gui/CReporterAssistant.py:627
+#: ../src/gui/CReporterAssistant.py:769
 msgid "Approve the backtrace"
 msgstr "Approuver le backtrace"
 
-#: ../src/gui/CReporterAssistant.py:650
+#: ../src/gui/CReporterAssistant.py:792
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr ""
 "Comment s'est produit cet incident (étape par étape) ? Comment le "
 "reproduiriez-vous ?"
 
-#: ../src/gui/CReporterAssistant.py:669
+#: ../src/gui/CReporterAssistant.py:811
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr ""
 "Avez-vous des commentaires dont vous souhaiteriez faire part aux "
 "responsables de la maintenance du logiciel ?"
 
-#: ../src/gui/CReporterAssistant.py:689
+#: ../src/gui/CReporterAssistant.py:831
 msgid "Provide additional details"
 msgstr "Fournir des détails supplémentaires"
 
-#: ../src/gui/CReporterAssistant.py:696
+#: ../src/gui/CReporterAssistant.py:838
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
@@ -1211,81 +1261,80 @@ msgstr ""
 "<b>Astuce :</b> vos commentaires ne sont pas privés. Par conséquent, "
 "veuillez porter attention à ce que vous dites."
 
-#: ../src/gui/CReporterAssistant.py:737
+#: ../src/gui/CReporterAssistant.py:879
 msgid "Confirm and send the report"
 msgstr "Confirmer et envoyer le rapport"
 
-#: ../src/gui/CReporterAssistant.py:739
+#: ../src/gui/CReporterAssistant.py:881
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Ci-dessous figure un résumé de votre rapport d'anomalie. Veuillez cliquer "
-"sur "
-"« Appliquer » pour le soumettre."
+"sur « Appliquer » pour le soumettre."
 
-#: ../src/gui/CReporterAssistant.py:744
+#: ../src/gui/CReporterAssistant.py:886
 msgid "<b>Basic details</b>"
 msgstr "<b>Détails de base</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:751
+#: ../src/gui/CReporterAssistant.py:893
 msgid "Component"
 msgstr "Composant"
 
-#: ../src/gui/CReporterAssistant.py:752
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Package"
 msgstr "Paquet"
 
-#: ../src/gui/CReporterAssistant.py:753
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Executable"
 msgstr "Exécutable"
 
-#: ../src/gui/CReporterAssistant.py:754
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Cmdline"
 msgstr "Cmdline"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:898
 msgid "Architecture"
 msgstr "Architecture"
 
-#: ../src/gui/CReporterAssistant.py:757
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Kernel"
 msgstr "Noyau"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:900
 msgid "Release"
 msgstr "Version"
 
-#: ../src/gui/CReporterAssistant.py:759
+#: ../src/gui/CReporterAssistant.py:901
 msgid "Reason"
 msgstr "Raison"
 
-#: ../src/gui/CReporterAssistant.py:770 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
-#: ../src/gui/CReporterAssistant.py:773
+#: ../src/gui/CReporterAssistant.py:915
 msgid "Click to view..."
 msgstr "Cliquer pour voir..."
 
-#: ../src/gui/CReporterAssistant.py:785
+#: ../src/gui/CReporterAssistant.py:927
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Étapes à reproduire :</b>"
 
-#: ../src/gui/CReporterAssistant.py:806
+#: ../src/gui/CReporterAssistant.py:948
 msgid "<b>Comments:</b>"
 msgstr "<b>Commentaires :</b>"
 
-#: ../src/gui/CReporterAssistant.py:809
+#: ../src/gui/CReporterAssistant.py:951
 msgid "No comment provided!"
 msgstr "Aucun commentaire n'est fourni !"
 
-#: ../src/gui/CReporterAssistant.py:845
+#: ../src/gui/CReporterAssistant.py:987
 msgid "Finished sending the bug report"
 msgstr "Rapport d'anomalie envoyé"
 
-#: ../src/gui/CReporterAssistant.py:849
+#: ../src/gui/CReporterAssistant.py:991
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Rapports d'anomalie :</b>"
 
@@ -1311,8 +1360,7 @@ msgid ""
 "\">https://fedorahosted.org/abrt/newticket</a>"
 msgstr ""
 "Pas d'interface utilisateur pour l'extension <b>%s</b>, il s'agit "
-"probablement "
-"d'une anomalie.\n"
+"probablement d'une anomalie.\n"
 "Veuillez le rappporter sur <a href=\"https://fedorahosted.org/abrt/newticket"
 "\">https://fedorahosted.org/abrt/newticket</a>"
 
@@ -1337,11 +1385,11 @@ msgid "Name"
 msgstr "Nom"
 
 #: ../src/gui/PluginsSettingsDialog.py:149
-msgid "Please select a plugin from the list to edit it's options."
+#, fuzzy
+msgid "Please select a plugin from the list to edit its options."
 msgstr ""
 "Veuillez sélectionner une extension à partir de la liste afin de modifier "
-"ses "
-"options."
+"ses options."
 
 #: ../src/gui/PluginsSettingsDialog.py:157
 #, python-format

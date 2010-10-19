@@ -349,12 +349,12 @@ fi
 %endif
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
+%{_sbindir}/abrt-action-analyze-c
 %{_sbindir}/abrt-action-generate-backtrace
 %{_sbindir}/abrt-action-save-package-data
 %{_bindir}/abrt-action-bugzilla
 %{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/%{name}-handle-upload
-%{_bindir}/%{name}-backtrace
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
@@ -367,7 +367,6 @@ fi
 %dir %{_sysconfdir}/%{name}
 %dir %{_sysconfdir}/%{name}/plugins
 %dir %{_libdir}/%{name}
-%{_mandir}/man1/%{name}-backtrace.1.gz
 %{_mandir}/man8/abrtd.8.gz
 %{_mandir}/man5/%{name}.conf.5.gz
 #%{_mandir}/man5/pyhook.conf.5.gz

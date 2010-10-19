@@ -64,8 +64,8 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
 {
     VERB3 log(" DebugDumpToCrashReport('%s')", pDebugDumpDir);
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    if (!dd)
         return false;
 
     const char *const *v = must_have_files;
@@ -177,8 +177,8 @@ mw_result_t CreateCrashReport(const char *crash_id,
     mw_result_t r = MW_OK;
     try
     {
-        struct dump_dir *dd = dd_init();
-        if (!dd_opendir(dd, row->db_dump_dir, DD_CLOSE_ON_OPEN_ERR))
+        struct dump_dir *dd = dd_opendir(row->db_dump_dir, /*flags:*/ 0);
+        if (!dd)
         {
             db_row_free(row);
             return MW_ERROR;
@@ -333,8 +333,8 @@ report_status_t Report(const map_crash_data_t& client_report,
     const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
     if (comment || reproduce || backtrace)
     {
-        struct dump_dir *dd = dd_init();
-        if (dd_opendir(dd, pDumpDir.c_str(), 0))
+        struct dump_dir *dd = dd_opendir(pDumpDir.c_str(), /*flags:*/ 0);
+        if (dd)
         {
             if (comment)
             {
@@ -351,8 +351,8 @@ report_status_t Report(const map_crash_data_t& client_report,
                 dd_save_text(dd, FILENAME_BACKTRACE, backtrace);
                 add_to_crash_data_ext(stored_report, FILENAME_BACKTRACE, CD_TXT, CD_ISEDITABLE, backtrace);
             }
+            dd_close(dd);
         }
-        dd_close(dd);
     }
 
     /* Remove BIN filenames from stored_report if they are not present in client's data */
@@ -700,8 +700,8 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
 {
     mw_result_t res;
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    if (!dd)
         return MW_ERROR;
 
     char *time = dd_load_text(dd, FILENAME_TIME);
@@ -770,8 +770,8 @@ mw_result_t FillCrashInfo(const char *crash_id,
     if (!row)
         return MW_ERROR;
 
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, row->db_dump_dir, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(row->db_dump_dir, /*flags:*/ 0);
+    if (!dd)
     {
         db_row_free(row);
         return MW_ERROR;

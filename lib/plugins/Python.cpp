@@ -19,14 +19,13 @@
 #include "abrtlib.h"
 #include "Python.h"
 #include "abrt_exception.h"
-#include "Python_hash.h"
 
 using namespace std;
 
 string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
 {
-    struct dump_dir *dd = dd_init();
-    if (!dd_opendir(dd, pDebugDumpDir, DD_CLOSE_ON_OPEN_ERR))
+    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    if (!dd)
         return string("");
 
     char *bt = dd_load_text(dd, FILENAME_BACKTRACE);

@@ -898,6 +898,13 @@ int main(int argc, char** argv)
     if (opts & OPT_s)
         start_syslog_logging();
 
+    /* When dbus daemon starts us, it doesn't set PATH
+     * (I saw it set only DBUS_STARTER_ADDRESS and DBUS_STARTER_BUS_TYPE).
+     * In this case, set something sane:
+     */
+    if (!getenv("PATH"))
+        putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
+
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 
     msg_prefix = "abrtd"; /* for log(), error_msg() and such */

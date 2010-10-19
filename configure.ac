@@ -18,15 +18,6 @@ CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
 CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE \
           -D_FILE_OFFSET_BITS=64 -fno-strict-aliasing -std=gnu99 -Wall"
 
-AC_CHECK_PROGS(YACC, 'bison -y', [no])
-[if test "$YACC" = "no"]
-[then]
-    [echo "bison not found in the search path. Please ensure that it is"]
-    [echo "installed and its directory is included in the search path."]
-    [echo "Then run configure again before attempting to build ABRT."]
-    [exit 1]
-[fi]
-
 dnl ****** INTERNATIONALIZATION **********************
 GETTEXT_PACKAGE=abrt
 AC_SUBST(GETTEXT_PACKAGE)
@@ -56,7 +47,7 @@ PKG_CHECK_MODULES([LIBNOTIFY], [libnotify])
 #PKG_CHECK_MODULES([NSS], [nss])
 PKG_CHECK_MODULES([XMLRPC], [xmlrpc])
 PKG_CHECK_MODULES([XMLRPC_CLIENT], [xmlrpc_client])
-PKG_CHECK_MODULES([POLKIT],[polkit-gobject-1])
+PKG_CHECK_MODULES([POLKIT], [polkit-gobject-1])
 
 PKG_PROG_PKG_CONFIG
 AC_ARG_WITH([systemdsystemunitdir],
@@ -113,6 +104,13 @@ AC_SUBST(DEBUG_DUMPS_DIR)
 AC_SUBST(DEBUG_INFO_DIR)
 AC_SUBST(DL_LIBS, -ldl)
 
+# Initialize the test suite.
+AC_CONFIG_TESTDIR(tests)
+AC_CONFIG_FILES([tests/Makefile tests/atlocal])
+AM_MISSING_PROG([AUTOM4TE], [autom4te])
+# Needed by tests/atlocal.in.
+AC_SUBST([O0CFLAGS], [`echo $CFLAGS   | sed 's/-O[[0-9]] *//'`])
+
 AC_CONFIG_HEADERS([config.h])
 
 AC_CONFIG_FILES([
@@ -122,15 +120,16 @@ AC_CONFIG_FILES([
 	lib/utils/Makefile
 	lib/plugins/Makefile
 	src/Makefile
+	src/btparser/Makefile
 	src/daemon/Makefile
 	src/hooks/Makefile
 	src/applet/Makefile
 	src/gui/Makefile
 	src/cli/Makefile
-	src/utils/Makefile
 	inc/Makefile
 	po/Makefile.in
 	icons/Makefile
+	tests/btparser/Makefile
 ])
 
 AC_OUTPUT

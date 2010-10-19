@@ -3,7 +3,6 @@
 lib_LTLIBRARIES = libABRTUtils.la libABRTdUtils.la
 HEADER_DIR = $(srcdir)/../../inc
 AM_CPPFLAGS = -I$(HEADER_DIR)
-AM_YFLAGS = --verbose
 
 # Not used just yet:
 # time.cpp
@@ -14,6 +13,8 @@ libABRTUtils_la_SOURCES = \
     concat_path_file.c \
     append_to_malloced_string.c \
     encbase64.c \
+    hash_md5.c hash_md5.h \
+    hash_sha1.c hash_sha1.h \
     read_write.c read_write.h \
     logging.c logging.h \
     copyfd.c \
@@ -27,12 +28,9 @@ libABRTUtils_la_SOURCES = \
     abrt_dbus.c abrt_dbus.h \
     CrashTypes.cpp \
     ABRTException.cpp \
-    backtrace.c backtrace.h \
-    backtrace_parser.y \
     strbuf.c strbuf.h \
     abrt_packages.c abrt_packages.h \
     hooklib.c hooklib.h \
-    sha1.c sha1.h \
     database.c \
     parse_options.c parse_options.h
 libABRTUtils_la_CPPFLAGS = \
@@ -52,7 +50,6 @@ libABRTUtils_la_LIBADD = \
     $(GLIB_LIBS) \
     $(DBUS_LIBS) \
     -ldl
-
 
 libABRTdUtils_la_SOURCES = \
     parse_release.cpp \

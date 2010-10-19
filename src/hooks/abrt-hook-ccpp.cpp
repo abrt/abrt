@@ -388,14 +388,15 @@ int main(int argc, char** argv)
             close(fd);
         }
 
-        if (strstr(executable, "/abrtd"))
+        const char *last_slash = strrchr(executable, '/');
+        if (last_slash && strncmp(++last_slash, "abrt", 4) == 0)
         {
-            /* If abrtd crashes, we don't want to create a _directory_,
+            /* If abrtd/abrt-foo crashes, we don't want to create a _directory_,
              * since that can make new copy of abrtd to process it,
              * and maybe crash again...
              * Unlike dirs, mere files are ignored by abrtd.
              */
-            snprintf(path, sizeof(path), "%s/abrtd-coredump", dddir);
+            snprintf(path, sizeof(path), "%s/%s-coredump", dddir, last_slash);
             int abrt_core_fd = xopen3(path, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             off_t core_size = copyfd_eof(STDIN_FILENO, abrt_core_fd, COPYFD_SPARSE);
             if (core_size < 0 || fsync(abrt_core_fd) != 0)
@@ -414,8 +415,8 @@ int main(int argc, char** argv)
         if (path_len >= (sizeof(path) - sizeof("/"FILENAME_COREDUMP)))
             return 1;
 
-        struct dump_dir *dd = dd_init();
-        if (dd_create(dd, path, uid))
+        struct dump_dir *dd = dd_create(path, uid);
+        if (dd)
         {
             char *cmdline = get_cmdline(pid); /* never NULL */
             char *reason = xasprintf("Process %s was killed by signal %s (SIG%s)", executable, signal_str, signame ? signame : signal_str);

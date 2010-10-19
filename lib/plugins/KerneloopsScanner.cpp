@@ -132,8 +132,8 @@ int save_oops_to_debug_dump(GList **oopsList)
         char *second_line = (char*)strchr(first_line, '\n'); /* never NULL */
         *second_line++ = '\0';
 
-        struct dump_dir *dd = dd_init();
-        if (dd_create(dd, path, /*uid:*/ 0))
+        struct dump_dir *dd = dd_create(path, /*uid:*/ 0);
+        if (dd)
         {
             dd_save_text(dd, FILENAME_ANALYZER, "Kerneloops");
             dd_save_text(dd, FILENAME_EXECUTABLE, "kernel");
