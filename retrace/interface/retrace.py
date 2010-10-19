@@ -2,6 +2,8 @@
 import os
 import re
 import ConfigParser
+import random
+import time
 from webob import Request
 from subprocess import *
 
@@ -9,9 +11,13 @@ REQUIRED_FILES = ["architecture", "coredump", "package"] #, "packages"]
 
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
 XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)[ \t]+([0-9]+)$")
+URL_PARSER = re.compile("^/([a-zA-Z0-9]+)/")
+
+TASKID_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 CONFIG_FILE = "/etc/abrt/retrace.conf"
 CONFIG = {
+    "TaskIdLength": 40,
     "MaxParallelTasks": 2,
     "MaxPackedSize": 30,
     "MaxUnpackedSize": 600,
@@ -60,18 +66,23 @@ def unpacked_size(archive):
     pipe.close()
     return None
 
-def new_crash():
-    i = 1
-    newdir = CONFIG["WorkDir"] + "/0"
-    while os.path.exists(newdir):
+def new_task():
+    i = 0
+    newdir = CONFIG["WorkDir"]
+    while os.path.exists(newdir) and i < 50:
         i += 1
-        newdir = CONFIG["WorkDir"] + "/" + str(i)
+        taskid = ""
+        for j in xrange(CONFIG["TaskIdLength"]):
+            taskid += random.choice(TASKID_ALPHABET)
+        newdir = CONFIG["WorkDir"] + "/" + taskid
 
-    try:
-        os.mkdir(newdir)
-        return i, newdir
-    except:
-        return None, None
+        try:
+            os.mkdir(newdir)
+            return taskid, newdir
+        except:
+            pass
+
+    return None, None
 
 def unpack(archive):
     pipe = Popen(["tar", "xJf", archive])
@@ -87,3 +98,6 @@ def get_task_est_time(crashdir):
 def response(start_response, status, body="", extra_headers=[]):
     start_response(status, [("Content-Type", "text/plain"), ("Content-Length", str(len(body)))] + extra_headers)
     return [body]
+
+if __name__ == "__main__":
+    print new_crash()

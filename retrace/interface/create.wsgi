@@ -1,4 +1,7 @@
 #!/usr/bin/python
+
+# /usr/share/abrt-retrace/create.wsgi
+
 import sys
 sys.path = ["/usr/share/abrt-retrace"] + sys.path
 
@@ -49,17 +52,20 @@ def application(environ, start_response):
         os.unlink(archive.name)
         return response(start_response, "507 Insufficient Storage")
 
-    crashid, crashdir = new_crash()
-    if not crashid or not crashdir:
-        return response(start_response, "500 Internal Server Error", "Unable to create new crash")
+    taskid, taskdir = new_task()
+    if not taskid or not taskdir:
+        return response(start_response, "500 Internal Server Error", "Unable to create new task")
 
-    os.chdir(crashdir)
-    unpack_retcode = unpack(archive.name)
-    os.unlink(archive.name)
+    try:
+        os.chdir(taskdir)
+        unpack_retcode = unpack(archive.name)
+        os.unlink(archive.name)
 
-    if unpack_retcode != 0:
+        if unpack_retcode != 0:
+            raise
+    except:
         os.chdir("/")
-        os.system("rm -rf " + crashdir)
+        os.system("rm -rf " + taksdir)
         return response(start_response, "500 Internal Server Error", "Unable to unpack archive")
 
     files = os.listdir(".")
@@ -67,7 +73,7 @@ def application(environ, start_response):
     for required_file in REQUIRED_FILES:
         if not required_file in files:
             os.chdir("/")
-            os.system("rm -rf " + crashdir)
+            os.system("rm -rf " + taskdir)
             return response(start_response, "403 Forbidden")
 
-    return response(start_response, "201 Created", "", [("X-Task-Id", str(crashid)), ("X-Task-Password", get_task_password(crashdir)), ("X-Task-Est-Time", str(get_task_est_time(crashdir)))])
+    return response(start_response, "201 Created", "", [("X-Task-Id", taskid), ("X-Task-Est-Time", str(get_task_est_time(taskdir)))])
