@@ -20,127 +20,64 @@
 #include "abrtlib.h"
 #include "Kerneloops.h"
 #include "abrt_exception.h"
-#include "comm_layer_inner.h"
 
-static unsigned hash_oops_str(const char *oops_ptr)
+using namespace std;
+
+static string load(const char *dirname, const char *filename)
 {
-    unsigned char old_c;
-    unsigned char c = 0;
-    unsigned hash = 0;
+    string ret;
 
-    /* Special-case: if the first line is of form:
-     * WARNING: at net/wireless/core.c:614 wdev_cleanup_work+0xe9/0x120 [cfg80211]() (Not tainted)
-     * then hash only "file:line func+ofs/len" part.
-     */
-    if (strncmp(oops_ptr, "WARNING: at ", sizeof("WARNING: at ")-1) == 0)
-    {
-        const char *p = oops_ptr + sizeof("WARNING: at ")-1;
-        p = strchr(p, ' '); /* skip filename:NNN */
-        if (p)
-        {
-            p = strchrnul(p + 1, ' '); /* skip function_name+0xNN/0xNNN */
-            oops_ptr += sizeof("WARNING: at ")-1;
-            while (oops_ptr < p)
-            {
-                c = *oops_ptr++;
-                hash = ((hash << 5) ^ (hash >> 27)) ^ c;
-            }
-            return hash;
-        }
-    }
-
-    while (1)
-    {
-        old_c = c;
-        c = *oops_ptr++;
-        if (!c)
-            break;
-        if (c == '\n')
-        {
-            // Exclude some lines which have process name - in some oops classes
-            // process name is irrelevant and changes with every oops.
-            // Lines we filter out:
-            // Pid: 8003, comm: Xorg Not tainted (2.6.27.9-159.fc10.i686 #1)
-            // Process Xorg (pid: 8003, ti=f0a0c000 task=f2380000 task.ti=f0a0c000)
-            if (strncmp(oops_ptr, "Pid: ", 5) == 0
-             || strncmp(oops_ptr, "Process ", 8) == 0
-            ) {
-                while (*oops_ptr && *oops_ptr != '\n')
-                    oops_ptr++;
-                continue;
-            }
-        }
-        if (!isalnum(old_c))
-        {
-            if (c >= '0' && c <= '9')
-            {
-                // Convert all (possibly hex) numbers to just one '0'
-                if (c == '0' && *oops_ptr == 'x') // "0xSOMETHING"
-                    oops_ptr++;
-                while (isxdigit(*oops_ptr))
-                    oops_ptr++;
-                c = '0';
-            }
-            else if ((c|0x20) >= 'a' && (c|0x20) <= 'f')
-            {
-                // This *may be* a hex number without 0x prefix: "f0a0c000"
-                // Check that it indeed is, and replace with '0'
-                const char *oops_ptr2 = oops_ptr;
-                while (isxdigit(*oops_ptr2))
-                    oops_ptr2++;
-                // Does it end in a letter which is not a hex digit?
-                // (Example: "abcw" is not a hex number, "abc " is)
-                if (!isalpha(*oops_ptr2))
-                {
-                    // It's "abc " case. Skip the "abc" string
-                    oops_ptr = oops_ptr2;
-                    c = '0';
-                }
-                // else: hash the string as-is
-            }
-        }
-        // TODO: Drop call trace tail - in interrupt-driven oopses,
-        // everything before interrupt is irrelevant.
-        // Example of call trace part of oops:
-        // Call Trace:
-        // [<f88e11c7>] ? radeon_cp_resume+0x7d/0xbc [radeon]
-        // [<f88745f8>] ? drm_ioctl+0x1b0/0x225 [drm]
-        // [<f88e114a>] ? radeon_cp_resume+0x0/0xbc [radeon]
-        // [<c049b1c0>] ? vfs_ioctl+0x50/0x69
-        // [<c049b414>] ? do_vfs_ioctl+0x23b/0x247
-        // [<c0460a56>] ? audit_syscall_entry+0xf9/0x123
-        // [<c049b460>] ? sys_ioctl+0x40/0x5c
-        // [<c0403c76>] ? syscall_call+0x7/0xb
-
-        /* An algorithm proposed by Donald E. Knuth in The Art Of Computer
-         * Programming Volume 3, under the topic of sorting and search
-         * chapter 6.4.
-         */
-        hash = ((hash << 5) ^ (hash >> 27)) ^ c;
-    }
-    return hash;
-}
-
-std::string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
-{
-    VERB3 log("Getting local universal unique identification");
-
-    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dirname, /*flags:*/ 0);
     if (!dd)
-        return std::string("");
-
-    char *oops = dd_load_text(dd, FILENAME_BACKTRACE);
-    unsigned hash = hash_oops_str(oops);
-    free(oops);
-
-    hash &= 0x7FFFFFFF;
+        return ret; /* "" */
+    char *s = dd_load_text(dd, filename);
     dd_close(dd);
-    return to_string(hash);
+
+    if (!s[0])
+    {
+        free(s);
+
+        pid_t pid = fork();
+        if (pid < 0)
+        {
+            perror_msg("fork");
+            return ret; /* "" */
+        }
+        if (pid == 0) /* child */
+        {
+            char *argv[4];  /* abrt-action-analyze-python -d DIR <NULL> */
+            char **pp = argv;
+            *pp++ = (char*)"abrt-action-analyze-python";
+            *pp++ = (char*)"-d";
+            *pp++ = (char*)dirname;
+            *pp = NULL;
+
+            execvp(argv[0], argv);
+            perror_msg_and_die("Can't execute '%s'", argv[0]);
+        }
+        /* parent */
+        waitpid(pid, NULL, 0);
+
+        dd = dd_opendir(dirname, /*flags:*/ 0);
+        if (!dd)
+            return ret; /* "" */
+        s = dd_load_text(dd, filename);
+        dd_close(dd);
+    }
+
+    ret = s;
+    free(s);
+    return ret;
 }
 
-std::string CAnalyzerKerneloops::GetGlobalUUID(const char *pDebugDumpDir)
+string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
 {
-    return GetLocalUUID(pDebugDumpDir);
+    return load(pDebugDumpDir, CD_UUID);
+}
+
+string CAnalyzerKerneloops::GetGlobalUUID(const char *pDebugDumpDir)
+{
+    return load(pDebugDumpDir, FILENAME_DUPHASH);
 }
 
 PLUGIN_INFO(ANALYZER,
