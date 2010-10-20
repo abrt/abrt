@@ -403,11 +403,10 @@ fi
 %dir %{_localstatedir}/cache/abrt-di
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
-%{_bindir}/abrt-backtrace
 %{_sbindir}/abrt-action-analyze-c
+%{_sbindir}/abrt-action-save-package-data
 %{_bindir}/abrt-action-install-debuginfo
 %{_sbindir}/abrt-action-generate-backtrace
-%{_sbindir}/abrt-action-save-package-data
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
