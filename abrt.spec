@@ -69,7 +69,7 @@ Libraries for %{name}.
 %package devel
 Summary: Development libraries for %{name}
 Group: Development/Libraries
-Requires: %{name}-libs = %{version}-%{release}
+Requires: abrt-libs = %{version}-%{release}
 
 %description devel
 Development libraries and headers for %{name}.
@@ -201,9 +201,9 @@ uncaught exception in python programs.
 Summary: %{name}'s command line interface
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-addon-kerneloops
-Requires: %{name}-addon-ccpp, %{name}-addon-python
-Requires: %{name}-plugin-bugzilla, %{name}-plugin-logger, %{name}-plugin-runapp
+Requires: abrt-addon-kerneloops
+Requires: abrt-addon-ccpp, abrt-addon-python
+Requires: abrt-plugin-bugzilla, abrt-plugin-logger, abrt-plugin-runapp
 
 %description cli
 This package contains simple command line client for controlling abrt daemon over
@@ -218,13 +218,13 @@ Group: User Interface/Desktops
 # Installing abrt-desktop should result in the abrt which works without
 # any tweaking in abrt.conf (IOW: all plugins mentioned there must be installed)
 Requires: %{name} = %{version}-%{release}
-Requires: %{name}-addon-kerneloops
-Requires: %{name}-addon-ccpp, %{name}-addon-python
+Requires: abrt-addon-kerneloops
+Requires: abrt-addon-ccpp, abrt-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
-Requires: %{name}-gui
-Requires: %{name}-plugin-logger, %{name}-plugin-bugzilla, %{name}-plugin-runapp
-#Requires: %{name}-plugin-firefox
+Requires: abrt-gui
+Requires: abrt-plugin-logger, abrt-plugin-bugzilla, abrt-plugin-runapp
+#Requires: abrt-plugin-firefox
 Obsoletes: bug-buddy
 Provides: bug-buddy
 
@@ -252,12 +252,12 @@ make install DESTDIR=$RPM_BUILD_ROOT mandir=%{_mandir}
 find $RPM_BUILD_ROOT -name '*.la' -or -name '*.a' | xargs rm -f
 mkdir -p ${RPM_BUILD_ROOT}/%{_initrddir}
 install -m 755 %SOURCE1 ${RPM_BUILD_ROOT}/%{_initrddir}/abrtd
-# /var/cache/%{name} is to be removed in 1.3.x timeframe
-mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}
-mkdir -p $RPM_BUILD_ROOT/var/cache/%{name}-di
-mkdir -p $RPM_BUILD_ROOT/var/run/%{name}
-mkdir -p $RPM_BUILD_ROOT/var/spool/%{name}
-mkdir -p $RPM_BUILD_ROOT/var/spool/%{name}-upload
+# /var/cache/abrt is to be removed in 1.3.x timeframe
+mkdir -p $RPM_BUILD_ROOT/var/cache/abrt
+mkdir -p $RPM_BUILD_ROOT/var/cache/abrt-di
+mkdir -p $RPM_BUILD_ROOT/var/run/abrt
+mkdir -p $RPM_BUILD_ROOT/var/spool/abrt
+mkdir -p $RPM_BUILD_ROOT/var/spool/abrt-upload
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_datadir}/applications \
@@ -267,7 +267,7 @@ desktop-file-install \
 
 desktop-file-install \
         --dir ${RPM_BUILD_ROOT}%{_sysconfdir}/xdg/autostart \
-        src/applet/%{name}-applet.desktop
+        src/applet/abrt-applet.desktop
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -345,23 +345,14 @@ fi
 %doc README COPYING
 #systemd
 %if %{?with_systemd}
-/lib/systemd/system/%{name}d.service
+/lib/systemd/system/abrtd.service
 %endif
 %{_sbindir}/abrtd
 %{_sbindir}/abrt-server
-%{_sbindir}/abrt-action-analyze-c
-%{_sbindir}/abrt-action-analyze-python
-%{_sbindir}/abrt-action-analyze-oops
-%{_sbindir}/abrt-action-generate-backtrace
-%{_sbindir}/abrt-action-save-package-data
-%{_bindir}/abrt-action-bugzilla
-%{_bindir}/abrt-action-rhtsupport
-%{_bindir}/abrt-action-print
-%{_bindir}/abrt-action-install-debuginfo
-%{_bindir}/%{name}-handle-upload
-%config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf
+%{_bindir}/abrt-handle-upload
+%config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
-%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-%{name}.conf
+%config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_initrddir}/%{name}d
 # /var/cache/%{name} is to be removed in 1.3.x timeframe
 %dir %attr(0755, abrt, abrt) %{_localstatedir}/cache/%{name}
@@ -394,7 +385,7 @@ fi
 
 %files gui
 %defattr(-,root,root,-)
-%{_bindir}/%{name}-gui
+%{_bindir}/abrt-gui
 %dir %{_datadir}/%{name}
 # all glade, gtkbuilder and py files for gui
 %{_datadir}/%{name}/*.py*
@@ -403,15 +394,20 @@ fi
 %{_datadir}/icons/hicolor/*/apps/*
 %{_datadir}/icons/hicolor/*/status/*
 %{_datadir}/%{name}/icons/hicolor/*/status/*
-%{_bindir}/%{name}-applet
-%{_sysconfdir}/xdg/autostart/%{name}-applet.desktop
+%{_bindir}/abrt-applet
+%{_sysconfdir}/xdg/autostart/abrt-applet.desktop
 
 %files addon-ccpp
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/CCpp.conf
-%dir %{_localstatedir}/cache/%{name}-di
+%dir %{_localstatedir}/cache/abrt-di
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
+%{_bindir}/abrt-backtrace
+%{_sbindir}/abrt-action-analyze-c
+%{_bindir}/abrt-action-install-debuginfo
+%{_sbindir}/abrt-action-generate-backtrace
+%{_sbindir}/abrt-action-save-package-data
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
@@ -419,67 +415,71 @@ fi
 %{_bindir}/dumpoops
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
-%{_mandir}/man7/%{name}-KerneloopsScanner.7.gz
+%{_mandir}/man7/abrt-KerneloopsScanner.7.gz
 %{_libdir}/%{name}/libKerneloopsReporter.so*
 %{_libdir}/%{name}/KerneloopsReporter.glade
-%{_mandir}/man7/%{name}-KerneloopsReporter.7.gz
+%{_mandir}/man7/abrt-KerneloopsReporter.7.gz
+%{_sbindir}/abrt-action-analyze-oops
 
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_libdir}/%{name}/libLogger.so*
 %{_libdir}/%{name}/Logger.glade
-%{_mandir}/man7/%{name}-Logger.7.gz
+%{_mandir}/man7/abrt-Logger.7.gz
+%{_bindir}/abrt-action-print
 
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
 %{_libdir}/%{name}/libMailx.so*
 %{_libdir}/%{name}/Mailx.glade
-%{_mandir}/man7/%{name}-Mailx.7.gz
+%{_mandir}/man7/abrt-Mailx.7.gz
 
 %files plugin-runapp
 %defattr(-,root,root,-)
 %{_libdir}/%{name}/libRunApp.so*
-%{_mandir}/man7/%{name}-RunApp.7.gz
+%{_mandir}/man7/abrt-RunApp.7.gz
 
 %files plugin-sosreport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/SOSreport.conf
 %{_libdir}/%{name}/libSOSreport.so*
 
-
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
 %{_libdir}/%{name}/libBugzilla.so*
 %{_libdir}/%{name}/Bugzilla.glade
-%{_mandir}/man7/%{name}-Bugzilla.7.gz
+%{_mandir}/man7/abrt-Bugzilla.7.gz
+%{_bindir}/abrt-action-bugzilla
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
 %{_libdir}/%{name}/libRHTSupport.so*
 %{_libdir}/%{name}/RHTSupport.glade
-#%{_mandir}/man7/%{name}-RHTSupport.7.gz
+#%{_mandir}/man7/abrt-RHTSupport.7.gz
+%{_bindir}/abrt-action-rhtsupport
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/ReportUploader.conf
 %{_libdir}/%{name}/libReportUploader.so*
 %{_libdir}/%{name}/ReportUploader.glade
-%{_mandir}/man7/%{name}-ReportUploader.7.gz
+%{_mandir}/man7/abrt-ReportUploader.7.gz
 
 %files plugin-filetransfer
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/FileTransfer.conf
 %{_libdir}/%{name}/libFileTransfer.so*
-%{_mandir}/man7/%{name}-FileTransfer.7.gz
+%{_mandir}/man7/abrt-FileTransfer.7.gz
 
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
 %{_libdir}/%{name}/libPython.so*
+%{_sbindir}/abrt-action-analyze-python
 %{python_site}/*.py*
 %{python_site}/abrt.pth
 
