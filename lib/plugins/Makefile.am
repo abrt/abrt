@@ -125,7 +125,7 @@ libBugzilla_la_CPPFLAGS = \
 # RHTSupport
 libRHTSupport_la_SOURCES = RHTSupport.h RHTSupport.cpp
 libRHTSupport_la_LIBADD =
-libRHTSupport_la_LDFLAGS = -avoid-version -ltar
+libRHTSupport_la_LDFLAGS = -avoid-version
 libRHTSupport_la_CPPFLAGS = \
     -I$(INC_PATH) -I$(UTILS_PATH) \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \

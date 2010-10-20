@@ -355,6 +355,7 @@ fi
 %{_sbindir}/abrt-action-generate-backtrace
 %{_sbindir}/abrt-action-save-package-data
 %{_bindir}/abrt-action-bugzilla
+%{_bindir}/abrt-action-rhtsupport
 %{_bindir}/abrt-action-install-debuginfo
 %{_bindir}/%{name}-handle-upload
 %config(noreplace) %{_sysconfdir}/%{name}/%{name}.conf

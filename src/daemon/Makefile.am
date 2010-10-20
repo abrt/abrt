@@ -11,7 +11,8 @@ sbin_PROGRAMS = abrtd \
     abrt-action-save-package-data
 
 bin_PROGRAMS = \
-    abrt-action-bugzilla
+    abrt-action-bugzilla \
+    abrt-action-rhtsupport
 
 abrtd_SOURCES = \
     PluginManager.h PluginManager.cpp \
@@ -175,6 +176,27 @@ abrt_action_bugzilla_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_bugzilla_LDADD = \
+    ../../lib/utils/libABRTdUtils.la \
+    ../../lib/utils/libABRTUtils.la
+
+abrt_action_rhtsupport_SOURCES = \
+    abrt-action-rhtsupport.cpp
+abrt_action_rhtsupport_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_action_rhtsupport_LDFLAGS = -ltar
+abrt_action_rhtsupport_LDADD = \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 

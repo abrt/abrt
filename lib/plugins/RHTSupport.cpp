@@ -17,11 +17,7 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#define _GNU_SOURCE 1    /* for stpcpy */
-#include <libtar.h>
 #include "abrtlib.h"
-#include "abrt_curl.h"
-#include "abrt_rh_support.h"
 #include "crash_types.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
@@ -29,296 +25,115 @@
 
 using namespace std;
 
-
-#if 0 //unused
-static char *xml_escape(const char *str)
-{
-    const char *s = str;
-    unsigned count = 1; /* for NUL */
-    while (*s)
-    {
-        if (*s == '&')
-            count += sizeof("&amp;")-2;
-        if (*s == '<')
-            count += sizeof("&lt;")-2;
-        if (*s == '>')
-            count += sizeof("&gt;")-2;
-        if ((unsigned char)*s > 126 || (unsigned char)*s < ' ')
-            count += sizeof("\\x00")-2;
-        count++;
-        s++;
-    }
-    char *result = (char*)xmalloc(count);
-    char *d = result;
-    s = str;
-    while (*s)
-    {
-        if (*s == '&')
-            d = stpcpy(d, "&amp;");
-        else if (*s == '<')
-            d = stpcpy(d, "&lt;");
-        else if (*s == '>')
-            d = stpcpy(d, "&gt;");
-        else
-        if ((unsigned char)*s > 126
-         || (  (unsigned char)*s < ' '
-            && *s != '\t'
-            && *s != '\n'
-            && *s != '\r'
-            )
-        ) {
-            *d++ = '\\';
-            *d++ = 'x';
-            *d++ = "0123456789abcdef"[(unsigned char)*s >> 4];
-            *d++ = "0123456789abcdef"[(unsigned char)*s & 0xf];
-        }
-        else
-            *d++ = *s;
-        s++;
-    }
-    *d = '\0';
-    return result;
-}
-#endif
-
-
-/*
- * CReporterRHticket
- */
-
 CReporterRHticket::CReporterRHticket()
 {
-    m_login = NULL;
-    m_password = NULL;
-    m_ssl_verify = true;
-    m_strata_url = xstrdup("https://api.access.redhat.com/rs");
+    m_pSettings["URL"] = "https://api.access.redhat.com/rs";
+    m_pSettings["Login"] = "";
+    m_pSettings["Password"] = "";
+    m_pSettings["SSLVerify"] = "yes";
 }
 
 CReporterRHticket::~CReporterRHticket()
 {
-    free(m_login);
-    free(m_password);
-    free(m_strata_url);
-}
-
-string CReporterRHticket::Report(const map_crash_data_t& pCrashData,
-        const map_plugin_settings_t& pSettings,
-        const char *pArgs)
-{
-    /* Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing */
-    update_client(_("Compressing data"));
-
-    string retval;
-
-    map_plugin_settings_t::const_iterator end = pSettings.end();
-    map_plugin_settings_t::const_iterator it;
-    it = pSettings.find("URL");
-    char *url = (it == end ? m_strata_url : xstrdup(it->second.c_str()));
-
-    it = pSettings.find("Login");
-    char *login = (it == end ? m_login : xstrdup(it->second.c_str()));
-
-    it = pSettings.find("Password");
-    char *password = (it == end ? m_password : xstrdup(it->second.c_str()));
-
-    it = pSettings.find("SSLVerify");
-    bool ssl_verify = (it == end ? m_ssl_verify : string_to_bool(it->second.c_str()));
-
-    const char *package   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
-//  const string& component = get_crash_data_item_content(pCrashData, FILENAME_COMPONENT);
-//  const string& release   = get_crash_data_item_content(pCrashData, FILENAME_RELEASE);
-//  const string& arch      = get_crash_data_item_content(pCrashData, FILENAME_ARCHITECTURE);
-//  const string& duphash   = get_crash_data_item_content(pCrashData, FILENAME_DUPHASH);
-    const char *reason      = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
-    const char *function    = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
-
-    struct strbuf *buf_summary = strbuf_new();
-    strbuf_append_strf(buf_summary, "[abrt] %s", package);
-
-    if (function && strlen(function) < 30)
-        strbuf_append_strf(buf_summary, ": %s", function);
-
-    if (reason)
-        strbuf_append_strf(buf_summary, ": %s", reason);
-
-    char *summary = strbuf_free_nobuf(buf_summary);
-
-    char *bz_dsc = make_description_bz(pCrashData);
-    char *dsc = xasprintf("abrt version: "VERSION"\n%s", bz_dsc);
-    free(bz_dsc);
-
-    reportfile_t* file = new_reportfile();
-
-    /* SELinux guys are not happy with /tmp, using /var/run/abrt */
-    char *tempfile = xasprintf(LOCALSTATEDIR"/run/abrt/tmp-%lu-%lu.tar.gz", (long)getpid(), (long)time(NULL));
-
-    int pipe_from_parent_to_child[2];
-    xpipe(pipe_from_parent_to_child);
-    pid_t child = fork();
-    if (child == 0)
-    {
-        /* child */
-        close(pipe_from_parent_to_child[1]);
-        xmove_fd(xopen3(tempfile, O_WRONLY | O_CREAT | O_EXCL, 0600), 1);
-        xmove_fd(pipe_from_parent_to_child[0], 0);
-        execlp("gzip", "gzip", NULL);
-        perror_msg_and_die("can't execute '%s'", "gzip");
-    }
-    close(pipe_from_parent_to_child[0]);
-
-    TAR *tar = NULL;
-    if (tar_fdopen(&tar, pipe_from_parent_to_child[1], tempfile,
-                /*fileops:(standard)*/ NULL, O_WRONLY | O_CREAT, 0644, TAR_GNU) != 0)
-    {
-        retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
-        goto ret;
-    }
-
-    {
-        map_crash_data_t::const_iterator it = pCrashData.begin();
-        for (; it != pCrashData.end(); it++)
-        {
-            if (it->first == CD_COUNT) continue;
-            if (it->first == CD_DUMPDIR) continue;
-            if (it->first == CD_INFORMALL) continue;
-            if (it->first == CD_REPORTED) continue;
-            if (it->first == CD_MESSAGE) continue; // plugin's status message (if we already reported it yesterday)
-            if (it->first == FILENAME_DESCRIPTION) continue; // package description
-
-            const char *content = it->second[CD_CONTENT].c_str();
-            if (it->second[CD_TYPE] == CD_TXT)
-            {
-                reportfile_add_binding_from_string(file, it->first.c_str(), content);
-            }
-            else if (it->second[CD_TYPE] == CD_BIN)
-            {
-                const char *basename = strrchr(content, '/');
-                if (basename)
-                    basename++;
-                else
-                    basename = content;
-                char *xml_name = concat_path_file("content", basename);
-                reportfile_add_binding_from_namedfile(file,
-                        /*on_disk_filename */ content,
-                        /*binding_name     */ it->first.c_str(),
-                        /*recorded_filename*/ xml_name,
-                        /*binary           */ 1);
-                if (tar_append_file(tar, (char*)content, xml_name) != 0)
-                {
-                    retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
-                    free(xml_name);
-                    goto ret;
-                }
-                free(xml_name);
-            }
-        }
-    }
-
-    /* Write out content.xml in the tarball's root */
-    {
-        const char *signature = reportfile_as_string(file);
-        unsigned len = strlen(signature);
-        unsigned len512 = (len + 511) & ~511;
-        char *block = (char*)memcpy(xzalloc(len512), signature, len);
-        th_set_type(tar, S_IFREG | 0644);
-        th_set_mode(tar, S_IFREG | 0644);
-      //th_set_link(tar, char *linkname);
-      //th_set_device(tar, dev_t device);
-      //th_set_user(tar, uid_t uid);
-      //th_set_group(tar, gid_t gid);
-      //th_set_mtime(tar, time_t fmtime);
-        th_set_path(tar, (char*)"content.xml");
-        th_set_size(tar, len);
-        th_finish(tar); /* caclulate and store th xsum etc */
-        if (th_write(tar) != 0
-         || full_write(tar_fd(tar), block, len512) != len512
-         || tar_close(tar) != 0
-        ) {
-            free(block);
-            retval = "can't create temporary file in "LOCALSTATEDIR"/run/abrt";
-            goto ret;
-        }
-        tar = NULL;
-        free(block);
-    }
-
-    {
-        update_client(_("Creating a new case..."));
-        char* result = send_report_to_new_case(url,
-                login,
-                password,
-                ssl_verify,
-                summary,
-                dsc,
-                package,
-                tempfile
-        );
-        VERB3 log("post result:'%s'", result);
-        retval = result;
-        free(result);
-    }
-
- ret:
-    // Damn, selinux does not allow SIGKILLing our own child! wtf??
-    //kill(child, SIGKILL); /* just in case */
-    waitpid(child, NULL, 0);
-    if (tar)
-        tar_close(tar);
-    //close(pipe_from_parent_to_child[1]); - tar_close() does it itself
-    unlink(tempfile);
-    free(tempfile);
-    reportfile_free(file);
-
-    free(summary);
-    free(dsc);
-
-    if (strncasecmp(retval.c_str(), "error", 5) == 0)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "%s", retval.c_str());
-    }
-    return retval;
 }
 
 void CReporterRHticket::SetSettings(const map_plugin_settings_t& pSettings)
 {
+    /* Can't simply do this:
+
     m_pSettings = pSettings;
 
-    map_plugin_settings_t::const_iterator end = pSettings.end();
-    map_plugin_settings_t::const_iterator it;
-    it = pSettings.find("URL");
-    if (it != end)
+     * - it will erase keys which aren't present in pSettings.
+     * Example: if Bugzilla.conf doesn't have "Login = foo",
+     * then there's no pSettings["Login"] and m_pSettings = pSettings
+     * will nuke default m_pSettings["Login"] = "",
+     * making GUI think that we have no "Login" key at all
+     * and thus never overriding it - even if it *has* an override!
+     */
+
+    map_plugin_settings_t::iterator it = m_pSettings.begin();
+    while (it != m_pSettings.end())
     {
-        free(m_strata_url);
-        m_strata_url = xstrdup(it->second.c_str());
-    }
-    it = pSettings.find("Login");
-    if (it != end)
-    {
-        free(m_login);
-        m_login = xstrdup(it->second.c_str());
-    }
-    it = pSettings.find("Password");
-    if (it != end)
-    {
-        free(m_password);
-        m_password = xstrdup(it->second.c_str());
-    }
-    it = pSettings.find("SSLVerify");
-    if (it != end)
-    {
-        m_ssl_verify = string_to_bool(it->second.c_str());
+        map_plugin_settings_t::const_iterator override = pSettings.find(it->first);
+        if (override != pSettings.end())
+        {
+            VERB3 log(" rhtsupport settings[%s]='%s'", it->first.c_str(), it->second.c_str());
+            it->second = override->second;
+        }
+        it++;
     }
 }
 
-/* Should not be deleted (why?) */
-const map_plugin_settings_t& CReporterRHticket::GetSettings()
+string CReporterRHticket::Report(const map_crash_data_t& crash_data,
+                                      const map_plugin_settings_t& settings,
+                                      const char *args)
 {
-    m_pSettings["URL"] = (m_strata_url)? m_strata_url: "";
-    m_pSettings["Login"] = (m_login)? m_login: "";
-    m_pSettings["Password"] = (m_password)? m_password: "";
-    m_pSettings["SSLVerify"] = m_ssl_verify ? "yes" : "no";
+    /* abrt-action-bugzilla [-s] -c /etc/arbt/Bugzilla.conf -c - -d pCrashData.dir NULL */
+    char *argv[9];
+    char **pp = argv;
+    *pp++ = (char*)"abrt-action-rhtsupport";
 
-    return m_pSettings;
+//We want to consume output, so don't redirect to syslog.
+//    if (logmode & LOGMODE_SYSLOG)
+//        *pp++ = (char*)"-s";
+//TODO: the actions<->daemon interaction will be changed anyway...
+
+    *pp++ = (char*)"-c";
+    *pp++ = (char*)(PLUGINS_CONF_DIR"/RHTSupport."PLUGINS_CONF_EXTENSION);
+    *pp++ = (char*)"-c";
+    *pp++ = (char*)"-";
+    *pp++ = (char*)"-d";
+    *pp++ = (char*)get_crash_data_item_content_or_NULL(crash_data, CD_DUMPDIR);
+    *pp = NULL;
+    int pipefds[2];
+    pid_t pid = fork_execv_on_steroids(EXECFLG_INPUT + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
+                argv,
+                pipefds,
+                /* unsetenv_vec: */ NULL,
+                /* dir: */ NULL,
+                /* uid(unused): */ 0
+    );
+
+    /* Write the configuration to stdin */
+    map_plugin_settings_t::const_iterator it = settings.begin();
+    while (it != settings.end())
+    {
+        full_write_str(pipefds[1], it->first.c_str());
+        full_write_str(pipefds[1], "=");
+        full_write_str(pipefds[1], it->second.c_str());
+        full_write_str(pipefds[1], "\n");
+        it++;
+    }
+    close(pipefds[1]);
+
+    FILE *fp = fdopen(pipefds[0], "r");
+    if (!fp)
+        die_out_of_memory();
+
+    /* Consume log from stdout */
+    std::string bug_status;
+    char buf[512];
+    while (fgets(buf, sizeof(buf), fp))
+    {
+        strchrnul(buf, '\n')[0] = '\0';
+        if (strncmp(buf, "STATUS:", 7) == 0)
+            bug_status = buf + 7;
+        else
+        if (strncmp(buf, "EXCEPT:", 7) == 0)
+        {
+            fclose(fp);
+            waitpid(pid, NULL, 0);
+            throw CABRTException(EXCEP_PLUGIN, "%s", buf + 7);
+        }
+        else
+            update_client("%s", buf);
+    }
+
+    fclose(fp); /* this also closes pipefds[0] */
+    /* wait for child to actually exit, and prevent leaving a zombie behind */
+    waitpid(pid, NULL, 0);
+
+    return bug_status;
 }
 
 PLUGIN_INFO(REPORTER,

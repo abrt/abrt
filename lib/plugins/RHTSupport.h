@@ -24,12 +24,6 @@
 
 class CReporterRHticket: public CReporter
 {
-	private:
-		bool m_ssl_verify;
-		char *m_strata_url;
-		char *m_login;
-		char *m_password;
-
 	public:
 		CReporterRHticket();
 		virtual ~CReporterRHticket();
@@ -39,7 +33,6 @@ class CReporterRHticket: public CReporter
 				const char *pArgs);
 
 		virtual void SetSettings(const map_plugin_settings_t& pSettings);
-		virtual const map_plugin_settings_t& GetSettings();
 };
 
 #endif
