@@ -27,9 +27,6 @@
 
 class CLogger : public CReporter
 {
-    private:
-        char *m_log_path;
-        bool m_append_logs;
     public:
         CLogger();
         ~CLogger();
