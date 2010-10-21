@@ -45,9 +45,9 @@ static string load(const char *dirname, const char *filename)
         }
         if (pid == 0) /* child */
         {
-            char *argv[4];  /* abrt-action-analyze-python -d DIR <NULL> */
+            char *argv[4];  /* abrt-action-analyze-oops -d DIR <NULL> */
             char **pp = argv;
-            *pp++ = (char*)"abrt-action-analyze-python";
+            *pp++ = (char*)"abrt-action-analyze-oops";
             *pp++ = (char*)"-d";
             *pp++ = (char*)dirname;
             *pp = NULL;
