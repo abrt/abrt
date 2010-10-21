@@ -747,6 +747,7 @@ class ReporterAssistant():
         #self.lbl_errors.set_alignment(0.0, 0.0)
         self.lbl_errors.set_justify(gtk.JUSTIFY_FILL)
         self.lbl_errors.set_size_request(DEFAULT_WIDTH-50, -1)
+        self.lbl_errors.set_selectable(True)
         self.errors_hbox.pack_start(self.warning_image, False, False)
         self.errors_hbox.pack_start(self.lbl_errors)
         ###
