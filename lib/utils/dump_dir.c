@@ -189,9 +189,8 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     dd_lock(dd);
 
     struct stat stat_buf;
-    if (stat(dir, &stat_buf) != 0
-     || !S_ISDIR(stat_buf.st_mode)
-    ) {
+    if (stat(dir, &stat_buf) != 0 || !S_ISDIR(stat_buf.st_mode))
+    {
         if (!(flags & DD_FAIL_QUIETLY))
             error_msg("'%s' does not exist", dir);
         dd_close(dd);
@@ -201,6 +200,24 @@ struct dump_dir *dd_opendir(const char *dir, int flags)
     /* In case caller would want to create more files, he'll need uid:gid */
     dd->dd_uid = stat_buf.st_uid;
     dd->dd_gid = stat_buf.st_gid;
+
+    /* Without this check, e.g. abrt-action-print happily prints any current
+     * directory when run without arguments, because its option -d DIR
+     * defaults to "."! Let's require that at least some crash dump dir
+     * specific files exist before we declare open successful:
+     */
+    char *name = concat_path_file(dir, FILENAME_ANALYZER);
+    int bad = (lstat(name, &stat_buf) != 0 || !S_ISREG(stat_buf.st_mode));
+    free(name);
+    if (bad)
+    {
+        /*if (!(flags & DD_FAIL_QUIETLY))... - no, DD_FAIL_QUIETLY only means
+         * "it's ok if it doesn exist", not "ok if contents is bogus"!
+         */
+        error_msg("'%s' is not a crash dump directory", dir);
+        dd_close(dd);
+        return NULL;
+    }
 
     return dd;
 }

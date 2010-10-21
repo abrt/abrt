@@ -26,22 +26,6 @@
 
 #define PROGNAME "abrt-action-print"
 
-static void report_to_stdout(const char *dump_dir_name)
-{
-    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-    if (!dd)
-    {
-        throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
-    }
-    map_crash_data_t pCrashData;
-    load_crash_data_from_debug_dump(dd, pCrashData);
-    dd_close(dd);
-
-    char *dsc = make_description_logger(pCrashData);
-    fputs(dsc, stdout);
-    free(dsc);
-}
-
 static const char *dump_dir_name = ".";
 
 int main(int argc, char **argv)
@@ -51,7 +35,7 @@ int main(int argc, char **argv)
         g_verbose = atoi(env_verbose);
 
     const char *program_usage = _(
-        PROGNAME" [v] -d DIR\n"
+        PROGNAME" [-v] -d DIR\n"
         "\n"
         "Print information about the crash to standard output");
     enum {
@@ -71,7 +55,17 @@ int main(int argc, char **argv)
 
     try
     {
-        report_to_stdout(dump_dir_name);
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+        if (!dd)
+            return 1; /* error message is already logged */
+
+        map_crash_data_t pCrashData;
+        load_crash_data_from_debug_dump(dd, pCrashData);
+        dd_close(dd);
+
+        char *dsc = make_description_logger(pCrashData);
+        fputs(dsc, stdout);
+        free(dsc);
     }
     catch (CABRTException& e)
     {
