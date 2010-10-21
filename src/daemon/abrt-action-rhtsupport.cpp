@@ -201,8 +201,35 @@ static void report_to_rhtsupport(
                 package,
                 tempfile
         );
-        VERB3 log("post result:'%s'", result);
-        printf("STATUS:%s", result);
+        /* Temporary hackish detection of errors. Ideally,
+         * send_report_to_new_case needs to have better error reporting.
+         */
+        if (strncasecmp(result, "error", 5) == 0)
+        {
+            /*
+             * result can contain "...server says: 'multi-line <html> text'"
+             * Replace all '\n' with spaces:
+             * we want this message to be, logically, one log entry.
+             * IOW: one line, not many lines.
+             */
+            char *src, *dst;
+            dst = src = result;
+            while (1)
+            {
+                unsigned char c = *src++;
+                if (c == '\n')
+                    c = ' ';
+                dst++ = c;
+                if (c == '\0')
+                    break;
+            }
+            /* Use sanitized string as error message */
+            CABRTException e(EXCEP_PLUGIN, "%s", result);
+            free(result);
+            throw e;
+        }
+        /* No error */
+        printf("STATUS:%s\n", result);
         free(result);
     }
 
