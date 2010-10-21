@@ -219,7 +219,7 @@ static void report_to_rhtsupport(
                 unsigned char c = *src++;
                 if (c == '\n')
                     c = ' ';
-                dst++ = c;
+                *dst++ = c;
                 if (c == '\0')
                     break;
             }
