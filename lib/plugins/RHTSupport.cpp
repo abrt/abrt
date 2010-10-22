@@ -111,22 +111,23 @@ string CReporterRHticket::Report(const map_crash_data_t& crash_data,
         die_out_of_memory();
 
     /* Consume log from stdout */
-    std::string bug_status;
-    char buf[512];
-    while (fgets(buf, sizeof(buf), fp))
+    string bug_status;
+    char *buf;
+    while ((buf = xmalloc_fgetline(fp)) != NULL)
     {
-        strchrnul(buf, '\n')[0] = '\0';
         if (strncmp(buf, "STATUS:", 7) == 0)
             bug_status = buf + 7;
         else
         if (strncmp(buf, "EXCEPT:", 7) == 0)
         {
+            CABRTException e(EXCEP_PLUGIN, "%s", buf + 7);
+            free(buf);
             fclose(fp);
             waitpid(pid, NULL, 0);
-            throw CABRTException(EXCEP_PLUGIN, "%s", buf + 7);
+            throw e;
         }
-        else
-            update_client("%s", buf);
+        update_client("%s", buf);
+        free(buf);
     }
 
     fclose(fp); /* this also closes pipefds[0] */

@@ -105,10 +105,10 @@ string CLogger::Report(const map_crash_data_t& crash_data,
     FILE *fp = fdopen(pipefds[0], "r");
     if (!fp)
         die_out_of_memory();
-    char buf[512];
-    while (fgets(buf, sizeof(buf), fp))
+    char *buf;
+    while ((buf = xmalloc_fgets(fp)) != NULL)
     {
-	full_write_str(fd, buf);
+        full_write_str(fd, buf);
     }
     fclose(fp); /* this also closes pipefds[0] */
     /* wait for child to actually exit, and prevent leaving a zombie behind */

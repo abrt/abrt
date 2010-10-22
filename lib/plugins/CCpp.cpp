@@ -154,21 +154,14 @@ static char *install_debug_infos(const char *pDebugDumpDir, const char *debuginf
         return NULL;
     }
 
-    /* With 126 debuginfos I've seen lines 9k+ chars long...
-     * yet, having it truly unlimited is bad too,
-     * therefore we are using LARGE, but still limited buffer.
-     */
-    char *buff = (char*) xmalloc(64*1024);
-
+    char *buff;
     struct strbuf *buf_build_ids = strbuf_new();
-
-    while (fgets(buff, 64*1024, pipeout_fp))
+    while ((buff = xmalloc_fgetline(pipeout_fp)) != NULL)
     {
-        strchrnul(buff, '\n')[0] = '\0';
-
         if (strncmp(buff, "MISSING:", 8) == 0)
         {
             strbuf_append_strf(buf_build_ids, "Debuginfo absent: %s\n", buff + 8);
+            free(buff);
             continue;
         }
 
@@ -183,8 +176,8 @@ static char *install_debug_infos(const char *pDebugDumpDir, const char *debuginf
             VERB1 log("%s", buff);
             update_client("%s", buff);
         }
+        free(buff);
     }
-    free(buff);
     fclose(pipeout_fp);
 
     int status = 0;

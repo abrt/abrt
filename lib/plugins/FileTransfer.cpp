@@ -280,14 +280,13 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
             goto del_tmp_dir;
         }
 
-        char dirname[PATH_MAX];
-        while (fgets(dirname, sizeof(dirname), dirlist) != NULL)
+        char *dirname;
+        while ((dirname = xmalloc_fgetline(dirlist)) != NULL)
         {
-            strchrnul(dirname, '\n')[0] = '\0';
             string archivename = ssprintf("%s/%s-%s%s", tmpdir_name, hostname, DirBase(dirname).c_str(), m_sArchiveType.c_str());
             try
             {
-        	VERB3 log("Creating archive '%s' of dir '%s'", archivename.c_str(), dirname);
+                VERB3 log("Creating archive '%s' of dir '%s'", archivename.c_str(), dirname);
                 CreateArchive(archivename.c_str(), dirname);
                 VERB3 log("Sending archive to '%s'", m_sURL.c_str());
                 SendFile(m_sURL.c_str(), archivename.c_str());
@@ -298,6 +297,7 @@ void CFileTransfer::Run(const char *pActionDir, const char *pArgs, int force)
             }
             VERB3 log("Deleting archive '%s'", archivename.c_str());
             unlink(archivename.c_str());
+            free(dirname);
         }
 
         fclose(dirlist);

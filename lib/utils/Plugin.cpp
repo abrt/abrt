@@ -56,7 +56,7 @@ const map_plugin_settings_t& CPlugin::GetSettings()
 }
 
 bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
-			bool skipKeysWithoutValue /*= true*/)
+                        bool skipKeysWithoutValue /*= true*/)
 {
     FILE *fp = stdin;
     if (strcmp(pPath, "-") != 0)
@@ -66,16 +66,15 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
             return false;
     }
 
-    char line[512];
-    while (fgets(line, sizeof(line), fp))
+    char *line;
+    while ((line = xmalloc_fgetline(fp)) != NULL)
     {
-        strchrnul(line, '\n')[0] = '\0';
         unsigned ii;
         bool is_value = false;
         bool valid = false;
         bool in_quote = false;
-	std::string key;
-	std::string value;
+        std::string key;
+        std::string value;
         for (ii = 0; line[ii] != '\0'; ii++)
         {
             if (line[ii] == '"')
@@ -106,23 +105,26 @@ bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
             }
         }
 
-	/* Skip broken or empty lines. */
-	if (!valid)
-	  continue;
+        /* Skip broken or empty lines. */
+        if (!valid)
+            goto free_line;
 
-	/* Skip lines with empty key. */
-	if (key.length() == 0)
-	  continue;
+        /* Skip lines with empty key. */
+        if (key.length() == 0)
+            goto free_line;
 
-	if (skipKeysWithoutValue && value.length() == 0)
-	  continue;
+        if (skipKeysWithoutValue && value.length() == 0)
+            goto free_line;
 
-	/* Skip lines with unclosed quotes. */
+        /* Skip lines with unclosed quotes. */
         if (in_quote)
-	  continue;
+            goto free_line;
 
-	pSettings[key] = value;
+        pSettings[key] = value;
+ free_line:
+        free(line);
     }
+
     if (fp != stdin)
         fclose(fp);
     return true;

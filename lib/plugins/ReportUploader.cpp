@@ -55,11 +55,11 @@ static string ReadCommand(const char *cmd)
     }
 
     string result;
-    char buff[1024];
-    while (fgets(buff, sizeof(buff), fp) != NULL)
+    char *buff;
+    while ((buff = xmalloc_fgetline(fp)) != NULL)
     {
-        strchrnul(buff, '\n')[0] = '\0';
         result += buff;
+        free(buff);
     }
 
     int retcode = pclose(fp);

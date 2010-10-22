@@ -25,10 +25,10 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
     if (!fp)
         return;
 
-    char line[256];
     while (1)
     {
-        if (fgets(line, sizeof(line), fp) == NULL)
+        char *line = xmalloc_fgetline(fp);
+        if (!line)
         {
             fclose(fp);
             if (additional_conf)
@@ -44,7 +44,6 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
             break;
         }
 
-        strchrnul(line, '\n')[0] = '\0';
         const char *p = skip_whitespace(line);
 #undef DIRECTIVE
 #define DIRECTIVE "MaxCrashReportsSize"
@@ -52,7 +51,7 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
         {
             p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
             if (*p != '=')
-                continue;
+                goto free_line;
             p = skip_whitespace(p + 1);
             if (isdigit(*p))
             {
@@ -60,7 +59,7 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
                  * kicks in first, and we don't "fight" with it. */
                 *setting_MaxCrashReportsSize = (unsigned long)xatou(p) * 5 / 4;
             }
-            continue;
+            goto free_line;
         }
 #undef DIRECTIVE
 #define DIRECTIVE "MakeCompatCore"
@@ -68,10 +67,10 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
         {
             p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
             if (*p != '=')
-                continue;
+                goto free_line;
             p = skip_whitespace(p + 1);
             *setting_MakeCompatCore = string_to_bool(p);
-            continue;
+            goto free_line;
         }
 #undef DIRECTIVE
 #define DIRECTIVE "SaveBinaryImage"
@@ -79,13 +78,16 @@ void parse_conf(const char *additional_conf, unsigned *setting_MaxCrashReportsSi
         {
             p = skip_whitespace(p + sizeof(DIRECTIVE)-1);
             if (*p != '=')
-                continue;
+                goto free_line;
             p = skip_whitespace(p + 1);
             *setting_SaveBinaryImage = string_to_bool(p);
-            continue;
+            goto free_line;
         }
 #undef DIRECTIVE
         /* add more 'if (strncmp(p, DIRECTIVE, sizeof(DIRECTIVE)-1) == 0)' here... */
+
+ free_line:
+        free(line);
     }
 }
 

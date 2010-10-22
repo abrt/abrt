@@ -542,10 +542,9 @@ static bool ask_yesno(const char *question)
     /* The response might take more than 1 char in non-latin scripts. */
     const char *yes = _("y");
     const char *no = _("N");
-    char *full_question = xasprintf("%s [%s/%s]: ", question, yes, no);
-    printf(full_question);
-    free(full_question);
+    printf("%s [%s/%s]: ", question, yes, no);
     fflush(NULL);
+
     char answer[16];
     fgets(answer, sizeof(answer), stdin);
     /* Use strncmp here because the answer might contain a newline as

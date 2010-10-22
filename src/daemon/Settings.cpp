@@ -347,14 +347,13 @@ static void LoadGPGKeys()
         /* every line is one key
          * FIXME: make it more robust, it doesn't handle comments
          */
-        char line[512];
-        while (fgets(line, sizeof(line), fp))
+        char *line;
+        while ((line = xmalloc_fgetline(fp)) != NULL)
         {
             if (line[0] == '/') // probably the begining of path, so let's handle it as a key
-            {
-                strchrnul(line, '\n')[0] = '\0';
-                g_settings_setOpenGPGPublicKeys = g_list_append(g_settings_setOpenGPGPublicKeys, xstrdup(line));
-            }
+                g_settings_setOpenGPGPublicKeys = g_list_append(g_settings_setOpenGPGPublicKeys, line);
+            else
+                free(line);
         }
         fclose(fp);
     }
@@ -366,12 +365,11 @@ static void LoadGPGKeys()
  */
 static int ReadConfigurationFromFile(FILE *fp)
 {
-    char line[512];
+    char *line;
     std::string section;
     int lineno = 0;
-    while (fgets(line, sizeof(line), fp))
+    while ((line = xmalloc_fgetline(fp)) != NULL)
     {
-        strchrnul(line, '\n')[0] = '\0';
         ++lineno;
         bool is_key = true;
         bool is_section = false;
@@ -422,12 +420,12 @@ static int ReadConfigurationFromFile(FILE *fp)
                 continue;
             }
             value += line[ii];
-        }
+        } /* for */
 
         if (is_quote)
         {
             error_msg("abrt.conf: Invalid syntax on line %d", lineno);
-            return 1; /* error */
+            goto return_error;
         }
 
         if (is_section)
@@ -435,9 +433,9 @@ static int ReadConfigurationFromFile(FILE *fp)
             if (line[ii] != ']') /* section not closed */
             {
                 error_msg("abrt.conf: Section not closed on line %d", lineno);
-                return 1; /* error */
+                goto return_error;
             }
-            continue;
+            goto free_line;
         }
 
         if (is_key)
@@ -445,14 +443,14 @@ static int ReadConfigurationFromFile(FILE *fp)
             if (!value.empty()) /* the key is stored in value */
             {
                 error_msg("abrt.conf: Invalid syntax on line %d", lineno);
-                return 1; /* error */
+                goto return_error;
             }
-            continue;
+            goto free_line;
         }
-        else if (key.empty()) /* A line without key: " = something" */
+        if (key.empty()) /* A line without key: " = something" */
         {
             error_msg("abrt.conf: Invalid syntax on line %d", lineno);
-            return 1; /* error */
+            goto return_error;
         }
 
         if (section == SECTION_COMMON)
@@ -476,9 +474,14 @@ static int ReadConfigurationFromFile(FILE *fp)
         else
         {
             error_msg("abrt.conf: Ignoring entry in invalid section [%s]", section.c_str());
+ return_error:
+            free(line);
             return 1; /* error */
         }
-    }
+ free_line:
+        free(line);
+    } /* while */
+
     return 0; /* success */
 }
 
