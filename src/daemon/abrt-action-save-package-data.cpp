@@ -27,12 +27,15 @@
 
 /**
  * Returns the first full path argument in the command line or NULL.
- * Skips options are in form "-XXX".
- * Caller must delete the returned string using free().
+ * Skips options (params of the form "-XXX").
+ * Returns malloc'ed string.
+ * NB: the cmdline is delimited by (single, not multiple) spaces, not tabs!
+ * "abc def\t123" means there are two params: "abc", "def\t123".
+ * "abc  def" means there are three params: "abc", "", "def".
  */
 static char *get_argv1_if_full_path(const char* cmdline)
 {
-    const char *argv1 = strpbrk(cmdline, " \t");
+    const char *argv1 = strchr(cmdline, ' ');
     while (argv1 != NULL)
     {
         /* we found space in cmdline, so it might contain
@@ -40,28 +43,22 @@ static char *get_argv1_if_full_path(const char* cmdline)
          * /usr/bin/python [-XXX] /usr/bin/system-control-network
          */
         argv1++; /* skip the space */
-        if (*argv1 == '-')
-        {
-            /* looks like -XXX in "perl -XXX /usr/bin/script.pl", skip */
-            argv1 = strpbrk(argv1, " \t");
-            continue;
-        }
-        if (*argv1 == ' ' || *argv1 == '\t') /* skip multiple spaces */
-            continue;
-        if (*argv1 != '/')
-        {
-            /* if the string following the space doesn't start
-             * with '/' it's probably not a full path to script
-             * and we can't use it to determine the package name
-             */
+        if (*argv1 != '-')
             break;
-        }
-
-        /* cut the rest of cmdline arguments */
-        int len = strchrnul(argv1, ' ') - argv1;
-        return xstrndup(argv1, len);
+        /* looks like -XXX in "perl -XXX /usr/bin/script.pl", skipping */
+        argv1 = strchr(argv1, ' ');
     }
-    return NULL;
+
+    /* if the string following the space doesn't start
+     * with '/', it is not a full path to script
+     * and we can't use it to determine the package name
+     */
+    if (*argv1 != '/')
+        return NULL;
+
+    /* good, it has "/foo/bar" form, return it */
+    int len = strchrnul(argv1, ' ') - argv1;
+    return xstrndup(argv1, len);
 }
 
 static bool is_path_blacklisted(const char *path)
@@ -141,7 +138,7 @@ static int SavePackageDescriptionToDebugDump(const char *dump_dir_name)
                     host[HOST_NAME_MAX] = '\0';
                     dd_save_text(dd, FILENAME_HOSTNAME, host);
                 }
-		goto ret0; /* no error */
+                goto ret0; /* no error */
             }
             log("Executable '%s' doesn't belong to any package", executable);
             goto ret; /* return 1 (failure) */
