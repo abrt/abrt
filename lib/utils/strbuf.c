@@ -39,11 +39,10 @@ int suffixcmp(const char *str, const char *suffix)
 
 struct strbuf *strbuf_new()
 {
-    struct strbuf *buf = xmalloc(sizeof(struct strbuf));
+    struct strbuf *buf = xzalloc(sizeof(*buf));
+    /*buf->len = 0; - done by xzalloc */
     buf->alloc = 8;
-    buf->len = 0;
-    buf->buf = xmalloc(buf->alloc);
-    buf->buf[buf->len] = '\0';
+    buf->buf = xzalloc(8);
     return buf;
 }
 
@@ -51,12 +50,11 @@ void strbuf_free(struct strbuf *strbuf)
 {
     if (!strbuf)
         return;
-
     free(strbuf->buf);
     free(strbuf);
 }
 
-char* strbuf_free_nobuf(struct strbuf *strbuf)
+char *strbuf_free_nobuf(struct strbuf *strbuf)
 {
     char *ret = strbuf->buf;
     free(strbuf);
@@ -71,46 +69,52 @@ void strbuf_clear(struct strbuf *strbuf)
     strbuf->buf[0] = '\0';
 }
 
-/* Ensures that the buffer can be extended by num characters
+/* Ensures that the buffer can be extended by N+1 characters
  * without touching malloc/realloc.
+ * Returns pointer where appended chars can be stored by the caller;
+ * increments ->len by N (therefore callers don't need to do it).
  */
-static void strbuf_grow(struct strbuf *strbuf, int num)
+static char *strbuf_grow(struct strbuf *strbuf, unsigned increment)
 {
-    if (strbuf->len + num + 1 > strbuf->alloc)
+    unsigned len = strbuf->len;
+    unsigned need = strbuf->len = len + increment;
+    unsigned cur_size = strbuf->alloc;
+    if (cur_size <= need)
     {
-	while (strbuf->len + num + 1 > strbuf->alloc)
-	    strbuf->alloc *= 2; /* huge grow = infinite loop */
-
-	strbuf->buf = xrealloc(strbuf->buf, strbuf->alloc);
+        while (cur_size <= need)
+            cur_size += 64 + cur_size / 8;
+        strbuf->alloc = cur_size;
+        strbuf->buf = xrealloc(strbuf->buf, cur_size);
     }
+    char *p = strbuf->buf + len;
+    return p;
 }
 
 struct strbuf *strbuf_append_char(struct strbuf *strbuf, char c)
 {
-    strbuf_grow(strbuf, 1);
-    strbuf->buf[strbuf->len++] = c;
-    strbuf->buf[strbuf->len] = '\0';
+    char *p = strbuf_grow(strbuf, 1);
+    *p++ = c;
+    *p = '\0';
     return strbuf;
 }
 
 struct strbuf *strbuf_append_str(struct strbuf *strbuf, const char *str)
 {
-    int len = strlen(str);
-    strbuf_grow(strbuf, len);
-    assert(strbuf->len + len < strbuf->alloc);
-    strcpy(strbuf->buf + strbuf->len, str);
-    strbuf->len += len;
+    unsigned len = strlen(str);
+    char *p = strbuf_grow(strbuf, len);
+    assert(strbuf->len < strbuf->alloc);
+    strcpy(p, str);
     return strbuf;
 }
 
 struct strbuf *strbuf_prepend_str(struct strbuf *strbuf, const char *str)
 {
-    int len = strlen(str);
-    strbuf_grow(strbuf, len);
-    assert(strbuf->len + len < strbuf->alloc);
-    memmove(strbuf->buf + len, strbuf->buf, strbuf->len + 1);
-    memcpy(strbuf->buf, str, len);
-    strbuf->len += len;
+    unsigned cur_len = strbuf->len;
+    unsigned inc_len = strlen(str);
+    strbuf_grow(strbuf, inc_len);
+    assert(strbuf->len < strbuf->alloc);
+    memmove(strbuf->buf + inc_len, strbuf->buf, cur_len);
+    memcpy(strbuf->buf, str, inc_len);
     return strbuf;
 }
 
