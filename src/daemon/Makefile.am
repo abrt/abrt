@@ -36,16 +36,14 @@ abrtd_CPPFLAGS = \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
     $(DBUS_CFLAGS) \
-    $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     $(ENABLE_SOCKET_OR_DBUS) \
     -D_GNU_SOURCE \
     -Wall
 abrtd_LDADD = \
-    ../../lib/utils/libABRTUtils.la \
-    ../../lib/utils/libABRTdUtils.la \
     $(DL_LIBS) \
     $(DBUS_LIBS) \
-    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS)
+    ../../lib/utils/libABRTUtils.la \
+    ../../lib/utils/libABRTdUtils.la
 
 abrt_server_SOURCES = \
     abrt-server.c
@@ -178,10 +176,13 @@ abrt_action_bugzilla_CPPFLAGS = \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_bugzilla_LDADD = \
+    $(GLIB_LIBS) \
+    ../../lib/utils/libABRT_web_utils.la \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 
 abrt_action_rhtsupport_SOURCES = \
+    abrt_rh_support.h abrt_rh_support.c \
     abrt-action-rhtsupport.cpp
 abrt_action_rhtsupport_CPPFLAGS = \
     -I$(srcdir)/../../inc \
@@ -195,10 +196,14 @@ abrt_action_rhtsupport_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
+    $(XMLRPC_CFLAGS) $(XMLRPC_CLIENT_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_rhtsupport_LDFLAGS = -ltar
 abrt_action_rhtsupport_LDADD = \
+    $(GLIB_LIBS) \
+    $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
+    ../../lib/utils/libABRT_web_utils.la \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 
@@ -216,11 +221,10 @@ abrt_action_kerneloops_CPPFLAGS = \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
     $(GLIB_CFLAGS) \
-    $(CURL_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
 abrt_action_kerneloops_LDADD = \
-    $(CURL_LIBS) \
+    ../../lib/utils/libABRT_web_utils.la \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 

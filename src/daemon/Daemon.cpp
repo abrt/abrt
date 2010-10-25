@@ -26,8 +26,6 @@
 #include <string>
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
-#include <xmlrpc-c/base.h>
-#include <xmlrpc-c/client.h>
 #include <glib.h>
 #include "abrtlib.h"
 #include "abrt_exception.h"
@@ -970,14 +968,6 @@ int main(int argc, char** argv)
         if (LoadSettings() != 0)
             throw 1;
 
-        VERB1 log("Initializing XML-RPC library");
-        xmlrpc_env env;
-        xmlrpc_env_init(&env);
-        xmlrpc_client_setup_global_const(&env);
-        if (env.fault_occurred)
-            error_msg_and_die("XML-RPC Fault: %s(%d)", env.fault_string, env.fault_code);
-        xmlrpc_env_clean(&env);
-
         VERB1 log("Creating glib main loop");
         pMainloop = g_main_loop_new(NULL, FALSE);
 
@@ -1085,7 +1075,6 @@ int main(int argc, char** argv)
     /* Error or INT/TERM. Clean up, in reverse order.
      * Take care to not undo things we did not do.
      */
-    xmlrpc_client_teardown_global_const();
     dumpsocket_shutdown();
     if (pidfile_created)
         unlink(VAR_RUN_PIDFILE);

@@ -2,7 +2,6 @@ HEADER_FILES = \
     abrt_exception.h \
     abrtlib.h \
     abrt_types.h \
-    abrt_xmlrpc.h \
     action.h \
     analyzer.h \
     comm_layer_inner.h \
