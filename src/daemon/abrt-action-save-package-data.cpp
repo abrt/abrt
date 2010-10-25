@@ -25,6 +25,8 @@
 
 #define PROGNAME "abrt-action-save-package-data"
 
+// TODO: convert g_settings_foo usage to command-line switches
+
 /**
  * Returns the first full path argument in the command line or NULL.
  * Skips options (params of the form "-XXX").

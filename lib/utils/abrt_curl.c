@@ -18,7 +18,6 @@
 */
 #include "abrtlib.h"
 #include "abrt_curl.h"
-#include "comm_layer_inner.h"
 
 /*
  * Utility functions
@@ -168,7 +167,7 @@ static size_t fread_with_reporting(void *ptr, size_t size, size_t nmemb, void *u
         fseeko(fp, 0, SEEK_END);
         off_t sz = ftello(fp);
         fseeko(fp, cur_pos, SEEK_SET);
-        update_client(_("Uploaded: %llu of %llu kbytes"),
+        log(_("Uploaded: %llu of %llu kbytes"),
                 (unsigned long long)cur_pos / 1024,
                 (unsigned long long)sz / 1024);
     }

@@ -20,7 +20,6 @@
 */
 #include <sys/utsname.h>
 #include "abrtlib.h"
-#include "comm_layer_inner.h"
 #include "strbuf.h"
 
 // TODO:

@@ -29,7 +29,6 @@ dumpoops_CPPFLAGS = \
 # build will succeed, but at runtime plugins do need ABRT*d*Utils
 dumpoops_LDADD = \
     ../../lib/utils/libABRTUtils.la \
-    ../../lib/utils/libABRTdUtils.la \
     $(GLIB_FLAGS)
 
 python_PYTHON = abrt.pth abrt_exception_handler.py

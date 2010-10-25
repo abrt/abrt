@@ -223,6 +223,7 @@ abrt_action_kerneloops_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
+# libABRTdUtils is used only because of LoadPluginSettings:
 abrt_action_kerneloops_LDADD = \
     ../../lib/utils/libABRT_web_utils.la \
     ../../lib/utils/libABRTdUtils.la \
@@ -244,6 +245,7 @@ abrt_action_print_CPPFLAGS = \
     $(GLIB_CFLAGS) \
     -D_GNU_SOURCE \
     -Wall -Werror
+# libABRTdUtils is used only because of make_description_logger:
 abrt_action_print_LDADD = \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
