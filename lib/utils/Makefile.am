@@ -13,6 +13,7 @@ libABRTUtils_la_SOURCES = \
     concat_path_file.c \
     append_to_malloced_string.c \
     encbase64.c \
+    stdio_helpers.c \
     hash_md5.c hash_md5.h \
     hash_sha1.c hash_sha1.h \
     read_write.c read_write.h \
