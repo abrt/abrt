@@ -68,7 +68,7 @@ string CReporterRHticket::Report(const map_crash_data_t& crash_data,
                                       const map_plugin_settings_t& settings,
                                       const char *args)
 {
-    /* abrt-action-bugzilla [-s] -c /etc/arbt/Bugzilla.conf -c - -d pCrashData.dir NULL */
+    /* abrt-action-rhtsupport [-s] -c /etc/arbt/RHTSupport.conf -c - -d pCrashData.dir NULL */
     char *argv[9];
     char **pp = argv;
     *pp++ = (char*)"abrt-action-rhtsupport";

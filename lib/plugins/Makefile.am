@@ -81,8 +81,7 @@ libKerneloops_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH)
 # KerneloopsReporter
 libKerneloopsReporter_la_SOURCES = KerneloopsReporter.cpp KerneloopsReporter.h
 libKerneloopsReporter_la_LDFLAGS = -avoid-version
-libKerneloopsReporter_la_LIBADD = $(CURL_LIBS)
-libKerneloopsReporter_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
+libKerneloopsReporter_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
 
 # KerneloopsScanner
 libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h

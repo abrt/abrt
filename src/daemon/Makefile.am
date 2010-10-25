@@ -13,6 +13,7 @@ sbin_PROGRAMS = abrtd \
 bin_PROGRAMS = \
     abrt-action-bugzilla \
     abrt-action-rhtsupport \
+    abrt-action-kerneloops \
     abrt-action-print
 
 abrtd_SOURCES = \
@@ -198,6 +199,28 @@ abrt_action_rhtsupport_CPPFLAGS = \
     -Wall -Werror
 abrt_action_rhtsupport_LDFLAGS = -ltar
 abrt_action_rhtsupport_LDADD = \
+    ../../lib/utils/libABRTdUtils.la \
+    ../../lib/utils/libABRTUtils.la
+
+abrt_action_kerneloops_SOURCES = \
+    abrt-action-kerneloops.cpp
+abrt_action_kerneloops_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    $(CURL_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_action_kerneloops_LDADD = \
+    $(CURL_LIBS) \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 

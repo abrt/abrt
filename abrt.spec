@@ -419,6 +419,7 @@ fi
 %{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
 %{_sbindir}/abrt-action-analyze-oops
+%{_bindir}/abrt-action-kerneloops
 
 %files plugin-logger
 %defattr(-,root,root,-)
