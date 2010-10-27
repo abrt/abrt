@@ -17,7 +17,7 @@ function usage()
 {
   global $argv;
   echo "Usage: " . $argv[0] . " crash_directory\n"
-    . "    Crash directory must contain coredump and package files.\n"
+    . "    Crash directory must contain architecture, coredump, package and release files.\n"
     . "    You must run the script with root permissions.\n";
 }
 
@@ -39,7 +39,11 @@ if (!is_dir($argv[1]))
   exit(3);
 }
 
-if (!file_exists($argv[1] . "/coredump") || !file_exists($argv[1] . "/package") || !file_exists("./packages.py"))
+if (!file_exists($argv[1] . "/architecture")
+ || !file_exists($argv[1] . "/coredump")
+ || !file_exists($argv[1] . "/package")
+ || !file_exists($argv[1] . "/release")
+ || !file_exists("./packages.py"))
 {
   usage();
   exit(4);
@@ -54,7 +58,7 @@ echo "Done\n";
 if (chdir($argv[1]))
 {
   echo "Compressing files into .tar.xz archive... ";
-  system("tar -cJf crash.tar.xz coredump packages");
+  system("tar -cJf crash.tar.xz architecture coredump packages release");
   echo "Done\n";
 }
 else

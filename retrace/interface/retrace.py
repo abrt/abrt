@@ -6,7 +6,7 @@ import random
 from webob import Request
 from subprocess import *
 
-REQUIRED_FILES = ["coredump", "packages"]
+REQUIRED_FILES = ["architecture", "coredump", "packages", "release"]
 
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
 XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)[ \t]+([0-9]+)$")
