@@ -472,39 +472,22 @@ report_status_t Report(const map_crash_data_t& client_report,
 }
 
 /**
- * Check whether particular debugdump directory is saved
- * in database. This check is done together with an UID of an user.
- * @param uid
- *  An UID of an user.
+ * Check whether particular debugdump directory is saved in database.
  * @param debug_dump_dir
  *  A debugdump dir containing all necessary data.
  * @return
  *  It returns true if debugdump dir is already saved, otherwise
  *  it returns false.
- * @todo
- *  Use database query instead of dumping all rows and searching in them.
  */
-static bool is_debug_dump_saved(long uid, const char *debug_dump_dir)
+static bool is_debug_dump_saved(const char *debug_dump_dir)
 {
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
-    GList *table = database->GetUIDData(uid);
+    struct db_row *row = database->GetRow_by_dir(debug_dump_dir);
     database->DisConnect();
 
-    bool found = false;
-    for (GList *li = table; li != NULL; li = g_list_next(li))
-    {
-        struct db_row *row = (struct db_row*)li->data;
-        if (0 == strcmp(row->db_dump_dir, debug_dump_dir))
-        {
-            found = true;
-            break;
-        }
-    }
-
-    db_list_free(table);
-
-    return found;
+    db_row_free(row);
+    return row != NULL;
 }
 
 /**
@@ -698,60 +681,37 @@ static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
 mw_result_t SaveDebugDump(const char *pDebugDumpDir,
                           map_crash_data_t& pCrashData)
 {
-    mw_result_t res;
+    if (is_debug_dump_saved(pDebugDumpDir))
+        return MW_IN_DB;
+
+    mw_result_t res = SavePackageDescriptionToDebugDump(pDebugDumpDir);
+    if (res != MW_OK)
+        return res;
 
     struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
     if (!dd)
         return MW_ERROR;
-
     char *time = dd_load_text(dd, FILENAME_TIME);
     char *uid = dd_load_text(dd, CD_UID);
     char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
-
     dd_close(dd);
 
-    /* Convert UID string to number uid_num. The UID string can be modified by user or
-       wrongly saved (empty or non-numeric), so xatou() cannot be used here,
-       because it would kill the daemon. */
-    char *endptr;
-    errno = 0;
-    unsigned long uid_num = strtoul(uid, &endptr, 10);
-    if (errno || uid == endptr || *endptr != '\0' || uid_num > UINT_MAX)
-    {
-        error_msg("Invalid UID '%s' loaded from %s", uid, pDebugDumpDir);
-        res = MW_ERROR;
-        goto error;
-    }
+    std::string UUID = GetLocalUUID((analyzer) ? analyzer : "", pDebugDumpDir);
+    std::string crash_id = ssprintf("%s:%s", uid, UUID.c_str());
+    /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
+     * Returns:
+     * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
+     * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
+     * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
+     * else: an error code
+     */
 
-    if (is_debug_dump_saved(uid_num, pDebugDumpDir))
-    {
-        res = MW_IN_DB;
-        goto error;
-    }
-
-    res = SavePackageDescriptionToDebugDump(pDebugDumpDir);
-    if (res != MW_OK)
-        goto error;
-
-    {
-        std::string UUID = GetLocalUUID((analyzer) ? analyzer : "", pDebugDumpDir);
-        std::string crash_id = ssprintf("%s:%s", uid, UUID.c_str());
-        /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
-         * Returns:
-         * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
-         * MW_OCCURRED: "crash count is != 1" (iow: it is > 1 - dup)
-         * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
-         * else: an error code
-         */
-
-        res = SaveDebugDumpToDatabase(crash_id.c_str(),
+    res = SaveDebugDumpToDatabase(crash_id.c_str(),
                     analyzer_has_InformAllUsers(analyzer),
                     time,
                     pDebugDumpDir,
                     pCrashData);
-    }
 
-error:
     free(time);
     free(uid);
     free(analyzer);

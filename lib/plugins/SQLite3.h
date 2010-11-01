@@ -49,6 +49,7 @@ class CSQLite3 : public CDatabase
                                  const char *pMessage);
         virtual GList *GetUIDData(long caller_uid);
         virtual struct db_row *GetRow(const char *crash_id);
+        virtual struct db_row *GetRow_by_dir(const char *dir);
 
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
 };

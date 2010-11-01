@@ -127,6 +127,7 @@ class CDatabase : public CPlugin
          * @return A matched row.
          */
         virtual struct db_row *GetRow(const char *crash_id) = 0;
+        virtual struct db_row *GetRow_by_dir(const char *dir) = 0;
 };
 #endif
 

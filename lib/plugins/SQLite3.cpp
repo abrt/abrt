@@ -690,6 +690,27 @@ struct db_row *CSQLite3::GetRow(const char *crash_id)
     return row;
 }
 
+struct db_row *CSQLite3::GetRow_by_dir(const char *dir)
+{
+    if (!is_string_safe(dir))
+        return NULL;
+
+    GList *table = get_table_or_die(m_pDB, "SELECT * FROM "ABRT_TABLE
+                                    " WHERE "COL_DEBUG_DUMP_PATH"='%s';",
+                                    dir
+    );
+
+    if (!table)
+        return NULL;
+
+    GList *first = g_list_first(table);
+    struct db_row *row = db_rowcpy_from_list(first);
+
+    db_list_free(table);
+
+    return row;
+}
+
 void CSQLite3::SetSettings(const map_plugin_settings_t& pSettings)
 {
     m_pSettings = pSettings;
