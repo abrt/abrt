@@ -296,7 +296,7 @@ int main(int argc, char **argv)
                            abrt_action_save_package_data_usage);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
+    msg_prefix = PROGNAME;
 
     if (opts & OPT_s)
     {

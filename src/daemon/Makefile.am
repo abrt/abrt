@@ -256,6 +256,7 @@ dist_dbusabrtconf_DATA = dbus-abrt.conf
 daemonconfdir = $(CONF_DIR)
 dist_daemonconf_DATA = \
     abrt.conf \
+    abrt_action.conf \
     gpg_keys
 
 polkitconfdir = ${datadir}/polkit-1/actions

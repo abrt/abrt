@@ -69,11 +69,6 @@ static string load(const char *dirname, const char *filename)
     return ret;
 }
 
-string CAnalyzerPython::GetLocalUUID(const char *pDebugDumpDir)
-{
-    return load(pDebugDumpDir, CD_UUID);
-}
-
 string CAnalyzerPython::GetGlobalUUID(const char *pDebugDumpDir)
 {
     return load(pDebugDumpDir, FILENAME_DUPHASH);

@@ -171,8 +171,8 @@ int main(int argc, char **argv)
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 
+    msg_prefix = PROGNAME;
 //Maybe we will want this... later
-//    msg_prefix = xasprintf(PROGNAME"[%u]", getpid());
 //    if (opts & OPT_s)
 //    {
 //        openlog(msg_prefix, 0, LOG_DAEMON);

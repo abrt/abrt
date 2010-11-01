@@ -265,51 +265,6 @@ static void trim_debuginfo_cache(unsigned max_mb)
     }
 }
 
-string CAnalyzerCCpp::GetLocalUUID(const char *pDebugDumpDir)
-{
-    string ret;
-
-    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
-    if (!dd)
-        return ret; /* "" */
-
-    if (!dd_exist(dd, CD_UUID))
-    {
-        dd_close(dd);
-
-        pid_t pid = fork();
-        if (pid < 0)
-        {
-            perror_msg("fork");
-            return ret; /* "" */
-        }
-        if (pid == 0) /* child */
-        {
-            char *argv[4];  /* abrt-action-analyze-c -d DIR <NULL> */
-            char **pp = argv;
-            *pp++ = (char*)"abrt-action-analyze-c";
-            *pp++ = (char*)"-d";
-            *pp++ = (char*)pDebugDumpDir;
-            *pp = NULL;
-
-            execvp(argv[0], argv);
-            perror_msg_and_die("Can't execute '%s'", argv[0]);
-        }
-        /* parent */
-        waitpid(pid, NULL, 0);
-
-        dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
-        if (!dd)
-            return ret; /* "" */
-    }
-
-    char *uuid = dd_load_text(dd, CD_UUID);
-    dd_close(dd);
-    ret = uuid;
-    free(uuid);
-    return ret;
-}
-
 string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
 {
     struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);

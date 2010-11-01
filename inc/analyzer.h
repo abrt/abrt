@@ -31,13 +31,6 @@ class CAnalyzer : public CPlugin
 {
     public:
         /**
-         * A method, which gets a local UUID of particular crash. The local
-         * UUID is usualy computed from data which are stored in debugdump dir.
-         * @param pDebugDumpPath A debugdump dir containing all necessary data.
-         * @return A local UUID.
-         */
-        virtual std::string GetLocalUUID(const char *pDebugDumpDir) = 0;
-        /**
          * A method, which gets a global UUID of particular crash.
          * @param pDebugDumpPath A debugdump dir containing all necessary data.
          * @return A global UUID.

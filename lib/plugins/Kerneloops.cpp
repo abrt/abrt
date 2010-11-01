@@ -70,11 +70,6 @@ static string load(const char *dirname, const char *filename)
     return ret;
 }
 
-string CAnalyzerKerneloops::GetLocalUUID(const char *pDebugDumpDir)
-{
-    return load(pDebugDumpDir, CD_UUID);
-}
-
 string CAnalyzerKerneloops::GetGlobalUUID(const char *pDebugDumpDir)
 {
     return load(pDebugDumpDir, FILENAME_DUPHASH);

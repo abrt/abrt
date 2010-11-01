@@ -351,6 +351,7 @@ fi
 %{_sbindir}/abrt-server
 %{_bindir}/abrt-handle-upload
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
+%config(noreplace) %{_sysconfdir}/%{name}/abrt_action.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_initrddir}/%{name}d

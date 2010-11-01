@@ -87,22 +87,6 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
 }
 
 /**
- * Get a local UUID from particular analyzer plugin.
- * @param pAnalyzer A name of an analyzer plugin.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
- * @return A local UUID.
- */
-static std::string GetLocalUUID(const char *pAnalyzer, const char *pDebugDumpDir)
-{
-    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
-    if (analyzer)
-    {
-        return analyzer->GetLocalUUID(pDebugDumpDir);
-    }
-    throw CABRTException(EXCEP_PLUGIN, "Error running '%s'", pAnalyzer);
-}
-
-/**
  * Get a global UUID from particular analyzer plugin.
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpDir A debugdump dir containing all necessary data.
@@ -632,6 +616,152 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pPackageName, 
     }
 }
 
+int run_event(char **last_log_msg_pp,
+                const char *dump_dir_name,
+                const char *event,
+                int (*callback)(const char *dump_dir_name, void *param),
+                void *param
+) {
+    FILE *conffile = fopen(CONF_DIR"/abrt_action.conf", "r");
+    if (!conffile)
+    {
+        error_msg("Can't open '%s'", CONF_DIR"/abrt_action.conf");
+        return 1;
+    }
+    close_on_exec_on(fileno(conffile));
+
+    /* Read, match, and execute lines from abrt_action.conf */
+    int retval = 0;
+    struct dump_dir *dd = NULL;
+    char *line;
+    while ((line = xmalloc_fgetline(conffile)) != NULL)
+    {
+        /* Line has form: [VAR=VAL]... PROG [ARGS] */
+        char *p = skip_whitespace(line);
+        if (*p == '\0' || *p == '#')
+            goto next_line; /* empty or comment line, skip */
+
+        VERB3 log("line '%s'", p);
+
+        while (1) /* word loop */
+        {
+            /* If there is no '=' in this word... */
+            char *next_word = skip_whitespace(skip_non_whitespace(p));
+            char *needed_val = strchr(p, '=');
+            if (!needed_val || needed_val >= next_word)
+                break; /* ...we found the start of a command */
+
+            /* Current word has VAR=VAL form. needed_val => VAL */
+            *needed_val++ = '\0';
+
+            const char *real_val;
+            char *malloced_val = NULL;
+
+            /* Is it EVENT? */
+            if (strcmp(p, "EVENT") == 0)
+                real_val = event;
+            else
+            {
+                /* Get this name from dump dir */
+                if (!dd)
+                {
+                    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                    if (!dd) goto stop;
+                }
+                real_val = malloced_val = dd_load_text(dd, p);
+            }
+
+            /* Does VAL match? */
+            unsigned len = strlen(real_val);
+            bool match = (strncmp(real_val, needed_val, len) == 0
+                         && (needed_val[len] == ' ' || needed_val[len] == '\t'));
+            if (!match)
+            {
+                VERB3 log("var '%s': '%s'!='%s', skipping line", p, real_val, needed_val);
+                free(malloced_val);
+                goto next_line; /* no */
+            }
+            free(malloced_val);
+
+            /* Go to next word */
+            p = next_word;
+        } /* end of word loop */
+
+        dd_close(dd);
+        dd = NULL;
+
+        /* We found matching line, execute its command(s) in shell */
+        {
+            VERB1 log("Executing '%s'", p);
+
+            /* /bin/sh -c 'cmd [args]' NULL */
+            char *argv[4];
+            char **pp = argv;
+            *pp++ = (char*)"/bin/sh";
+            *pp++ = (char*)"-c";
+            *pp++ = (char*)p;
+            *pp = NULL;
+            int pipefds[2];
+            pid_t pid = fork_execv_on_steroids(EXECFLG_INPUT_NUL + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
+                        argv,
+                        pipefds,
+                        /* unsetenv_vec: */ NULL,
+                        /* dir: */ dump_dir_name,
+                        /* uid(unused): */ 0
+            );
+            free(line);
+            line = NULL;
+
+            /* Consume log from stdout */
+            FILE *fp = fdopen(pipefds[0], "r");
+            if (!fp)
+                die_out_of_memory();
+            char *buf;
+            while ((buf = xmalloc_fgetline(fp)) != NULL)
+            {
+                VERB1 log("%s", buf);
+                update_client("%s", buf);
+
+                char *to_free = buf;
+                if (last_log_msg_pp)
+                {
+                    to_free = *last_log_msg_pp;
+                    *last_log_msg_pp = buf;
+                }
+                free(to_free);
+            }
+            fclose(fp); /* Got EOF, close. This also closes pipefds[0] */
+            /* Wait for child to actually exit, collect status */
+            int status;
+            waitpid(pid, &status, 0);
+
+            if (status != 0)
+            {
+                retval = WEXITSTATUS(status);
+                if (WIFSIGNALED(status))
+                    retval = WTERMSIG(status) + 128;
+                break;
+            }
+        }
+
+        if (callback)
+        {
+            retval = callback(dump_dir_name, param);
+            if (retval != 0)
+                break;
+        }
+
+ next_line:
+        free(line);
+    } /* end of line loop */
+
+ stop:
+    dd_close(dd);
+    fclose(conffile);
+
+    return retval;
+}
+
 /**
  * Save a debugdump into database. If saving is
  * successful, then crash info is filled. Otherwise the crash info is
@@ -678,26 +808,92 @@ static mw_result_t SaveDebugDumpToDatabase(const char *crash_id,
     return res;
 }
 
-mw_result_t SaveDebugDump(const char *pDebugDumpDir,
+/* We need to share some data between SaveDebugDump and is_crash_id_in_db: */
+struct cdump_state {
+    char *uid;             /* filled by SaveDebugDump */
+    char *crash_id;        /* filled by is_crash_id_in_db */
+    int crash_id_is_in_db; /* filled by is_crash_id_in_db */
+};
+
+static int is_crash_id_in_db(const char *dump_dir_name, void *param)
+{
+    struct cdump_state *state = (struct cdump_state *)param;
+
+    if (state->crash_id)
+        return 0; /* we already checked it, don't do it again */
+
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+    if (!dd)
+        return 0; /* wtf? (error, but will be handled elsewhere later) */
+    char *uuid = dd_load_text(dd, CD_UUID);
+    dd_close(dd);
+//TODO: want flag to dd_load_text: "please return NULL if not found"
+    if (!uuid[0])
+    {
+        free(uuid);
+        return 0; /* no uuid (yet), "run_event, please continue iterating" */
+    }
+    state->crash_id = xasprintf("%s:%s", state->uid, uuid);
+    free(uuid);
+
+    CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
+    database->Connect();
+    struct db_row *row = database->GetRow(state->crash_id);
+    database->DisConnect();
+
+    if (!row) /* Crash id is not in db - this crash wasn't seen before */
+        return 0; /* "run_event, please continue iterating" */
+
+    /* Crash id is in db */
+    db_row_free(row);
+    state->crash_id_is_in_db = 1;
+    /* "run_event, please stop iterating": */
+    return 1;
+}
+
+mw_result_t SaveDebugDump(const char *dump_dir_name,
                           map_crash_data_t& pCrashData)
 {
-    if (is_debug_dump_saved(pDebugDumpDir))
+    mw_result_t res;
+
+    if (is_debug_dump_saved(dump_dir_name))
         return MW_IN_DB;
 
-    mw_result_t res = SavePackageDescriptionToDebugDump(pDebugDumpDir);
-    if (res != MW_OK)
-        return res;
-
-    struct dump_dir *dd = dd_opendir(pDebugDumpDir, /*flags:*/ 0);
+    struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return MW_ERROR;
+    struct cdump_state state = { NULL, NULL, false }; /* uid, crash_id, crash_id_is_in_db */
+    state.uid = dd_load_text(dd, CD_UID);
     char *time = dd_load_text(dd, FILENAME_TIME);
-    char *uid = dd_load_text(dd, CD_UID);
     char *analyzer = dd_load_text(dd, FILENAME_ANALYZER);
     dd_close(dd);
 
-    std::string UUID = GetLocalUUID((analyzer) ? analyzer : "", pDebugDumpDir);
-    std::string crash_id = ssprintf("%s:%s", uid, UUID.c_str());
+    res = MW_ERROR;
+
+    int r = run_event(NULL, dump_dir_name, "post-create", &is_crash_id_in_db, &state);
+
+    /* Is crash id in db? (In this case, is_crash_id_in_db() should have
+     * aborted "post-create" event processing as soon as it saw uuid
+     * such that uid:uuid (=crash_id) is in database, and set
+     * the state.crash_id_is_in_db flag)
+     */
+    if (!state.crash_id_is_in_db)
+    {
+        /* No. Was there error on one of processing steps in run_event? */
+        if (r != 0)
+            goto ret; /* yes */
+
+        /* Was uuid created after all? (In this case, is_crash_id_in_db()
+         * should have fetched it and created state.crash_id)
+         */
+        if (!state.crash_id)
+        {
+            /* no */
+            log("Dump directory '%s' has no UUID element", dump_dir_name);
+            goto ret;
+        }
+    }
+
     /* Loads pCrashData (from the *first debugdump dir* if this one is a dup)
      * Returns:
      * MW_REPORTED: "the crash is flagged as reported in DB" (which also means it's a dup)
@@ -705,15 +901,15 @@ mw_result_t SaveDebugDump(const char *pDebugDumpDir,
      * MW_OK: "crash count is 1" (iow: this is a new crash, not a dup)
      * else: an error code
      */
-
-    res = SaveDebugDumpToDatabase(crash_id.c_str(),
+    res = SaveDebugDumpToDatabase(state.crash_id,
                     analyzer_has_InformAllUsers(analyzer),
                     time,
-                    pDebugDumpDir,
+                    dump_dir_name,
                     pCrashData);
-
+ ret:
+    free(state.crash_id);
+    free(state.uid);
     free(time);
-    free(uid);
     free(analyzer);
 
     return res;
