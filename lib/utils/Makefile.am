@@ -30,10 +30,11 @@ libABRTUtils_la_SOURCES = \
     stringops.cpp \
     dirsize.c \
     dump_dir.c \
+    strbuf.c strbuf.h \
     abrt_dbus.c abrt_dbus.h \
     CrashTypes.cpp \
     ABRTException.cpp \
-    strbuf.c strbuf.h \
+    run_event.c \
     abrt_packages.c abrt_packages.h \
     hooklib.c hooklib.h \
     database.c \

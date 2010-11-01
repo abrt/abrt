@@ -213,6 +213,18 @@ char* get_cmdline(pid_t pid);
 /* Returns 1 if abrtd daemon is running, 0 otherwise. */
 int daemon_is_ok();
 
+struct run_event_state {
+    int (*post_run_callback)(const char *dump_dir_name, void *param);
+    void *post_run_param;
+    char* (*logging_callback)(char *log_line, void *param);
+    void *logging_param;
+};
+static inline struct run_event_state *new_run_event_state()
+    { return (struct run_event_state*)xzalloc(sizeof(struct run_event_state)); }
+static inline void free_run_event_state(struct run_event_state *state)
+    { free(state); }
+int run_event(struct run_event_state *state, const char *dump_dir_name, const char *event);
+
 #ifdef __cplusplus
 }
 #endif

@@ -616,152 +616,6 @@ static void RunAnalyzerActions(const char *pAnalyzer, const char *pPackageName, 
     }
 }
 
-int run_event(char **last_log_msg_pp,
-                const char *dump_dir_name,
-                const char *event,
-                int (*callback)(const char *dump_dir_name, void *param),
-                void *param
-) {
-    FILE *conffile = fopen(CONF_DIR"/abrt_action.conf", "r");
-    if (!conffile)
-    {
-        error_msg("Can't open '%s'", CONF_DIR"/abrt_action.conf");
-        return 1;
-    }
-    close_on_exec_on(fileno(conffile));
-
-    /* Read, match, and execute lines from abrt_action.conf */
-    int retval = 0;
-    struct dump_dir *dd = NULL;
-    char *line;
-    while ((line = xmalloc_fgetline(conffile)) != NULL)
-    {
-        /* Line has form: [VAR=VAL]... PROG [ARGS] */
-        char *p = skip_whitespace(line);
-        if (*p == '\0' || *p == '#')
-            goto next_line; /* empty or comment line, skip */
-
-        VERB3 log("line '%s'", p);
-
-        while (1) /* word loop */
-        {
-            /* If there is no '=' in this word... */
-            char *next_word = skip_whitespace(skip_non_whitespace(p));
-            char *needed_val = strchr(p, '=');
-            if (!needed_val || needed_val >= next_word)
-                break; /* ...we found the start of a command */
-
-            /* Current word has VAR=VAL form. needed_val => VAL */
-            *needed_val++ = '\0';
-
-            const char *real_val;
-            char *malloced_val = NULL;
-
-            /* Is it EVENT? */
-            if (strcmp(p, "EVENT") == 0)
-                real_val = event;
-            else
-            {
-                /* Get this name from dump dir */
-                if (!dd)
-                {
-                    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
-                    if (!dd) goto stop;
-                }
-                real_val = malloced_val = dd_load_text(dd, p);
-            }
-
-            /* Does VAL match? */
-            unsigned len = strlen(real_val);
-            bool match = (strncmp(real_val, needed_val, len) == 0
-                         && (needed_val[len] == ' ' || needed_val[len] == '\t'));
-            if (!match)
-            {
-                VERB3 log("var '%s': '%s'!='%s', skipping line", p, real_val, needed_val);
-                free(malloced_val);
-                goto next_line; /* no */
-            }
-            free(malloced_val);
-
-            /* Go to next word */
-            p = next_word;
-        } /* end of word loop */
-
-        dd_close(dd);
-        dd = NULL;
-
-        /* We found matching line, execute its command(s) in shell */
-        {
-            VERB1 log("Executing '%s'", p);
-
-            /* /bin/sh -c 'cmd [args]' NULL */
-            char *argv[4];
-            char **pp = argv;
-            *pp++ = (char*)"/bin/sh";
-            *pp++ = (char*)"-c";
-            *pp++ = (char*)p;
-            *pp = NULL;
-            int pipefds[2];
-            pid_t pid = fork_execv_on_steroids(EXECFLG_INPUT_NUL + EXECFLG_OUTPUT + EXECFLG_ERR2OUT,
-                        argv,
-                        pipefds,
-                        /* unsetenv_vec: */ NULL,
-                        /* dir: */ dump_dir_name,
-                        /* uid(unused): */ 0
-            );
-            free(line);
-            line = NULL;
-
-            /* Consume log from stdout */
-            FILE *fp = fdopen(pipefds[0], "r");
-            if (!fp)
-                die_out_of_memory();
-            char *buf;
-            while ((buf = xmalloc_fgetline(fp)) != NULL)
-            {
-                VERB1 log("%s", buf);
-                update_client("%s", buf);
-
-                char *to_free = buf;
-                if (last_log_msg_pp)
-                {
-                    to_free = *last_log_msg_pp;
-                    *last_log_msg_pp = buf;
-                }
-                free(to_free);
-            }
-            fclose(fp); /* Got EOF, close. This also closes pipefds[0] */
-            /* Wait for child to actually exit, collect status */
-            int status;
-            waitpid(pid, &status, 0);
-
-            if (status != 0)
-            {
-                retval = WEXITSTATUS(status);
-                if (WIFSIGNALED(status))
-                    retval = WTERMSIG(status) + 128;
-                break;
-            }
-        }
-
-        if (callback)
-        {
-            retval = callback(dump_dir_name, param);
-            if (retval != 0)
-                break;
-        }
-
- next_line:
-        free(line);
-    } /* end of line loop */
-
- stop:
-    dd_close(dd);
-    fclose(conffile);
-
-    return retval;
-}
-
 /**
  * Save a debugdump into database. If saving is
  * successful, then crash info is filled. Otherwise the crash info is
@@ -851,6 +705,13 @@ static int is_crash_id_in_db(const char *dump_dir_name, void *param)
     return 1;
 }
 
+static char *do_log(char *log_line, void *param)
+{
+    VERB1 log("%s", log_line);
+    //update_client("%s", log_line);
+    return log_line;
+}
+
 mw_result_t SaveDebugDump(const char *dump_dir_name,
                           map_crash_data_t& pCrashData)
 {
@@ -870,7 +731,12 @@ mw_result_t SaveDebugDump(const char *dump_dir_name,
 
     res = MW_ERROR;
 
-    int r = run_event(NULL, dump_dir_name, "post-create", &is_crash_id_in_db, &state);
+    struct run_event_state *run_state = new_run_event_state();
+    run_state->post_run_callback = is_crash_id_in_db;
+    run_state->post_run_param = &state;
+    run_state->logging_callback = do_log;
+    int r = run_event(run_state, dump_dir_name, "post-create");
+    free_run_event_state(run_state);
 
     /* Is crash id in db? (In this case, is_crash_id_in_db() should have
      * aborted "post-create" event processing as soon as it saw uuid

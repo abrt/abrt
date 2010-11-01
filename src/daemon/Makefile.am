@@ -11,6 +11,7 @@ sbin_PROGRAMS = abrtd \
     abrt-action-save-package-data
 
 bin_PROGRAMS = \
+    abrt-handle-crashdump \
     abrt-action-bugzilla \
     abrt-action-rhtsupport \
     abrt-action-kerneloops \
@@ -157,6 +158,24 @@ abrt_action_save_package_data_CPPFLAGS = \
 abrt_action_save_package_data_LDADD = \
     $(RPM_LIBS) \
     ../../lib/utils/libABRTdUtils.la \
+    ../../lib/utils/libABRTUtils.la
+
+abrt_handle_crashdump_SOURCES = \
+    abrt-handle-crashdump.c
+abrt_handle_crashdump_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_handle_crashdump_LDADD = \
     ../../lib/utils/libABRTUtils.la
 
 abrt_action_bugzilla_SOURCES = \
