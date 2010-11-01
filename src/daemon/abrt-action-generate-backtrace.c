@@ -23,6 +23,8 @@
 #include "parse_options.h"
 
 
+#define PROGNAME "abrt-action-generate-backtrace"
+
 #define DEBUGINFO_CACHE_DIR     LOCALSTATEDIR"/cache/abrt-di"
 
 static const char *dump_dir_name = ".";
@@ -243,7 +245,7 @@ static char *get_backtrace(struct dump_dir *dd)
 }
 
 static char *i_opt;
-static const char abrt_action_generage_backtrace_usage[] = "abrt-action-generate-backtrace [options] -d DIR";
+static const char abrt_action_generage_backtrace_usage[] = PROGNAME" [options] -d DIR";
 enum {
     OPT_v = 1 << 0,
     OPT_d = 1 << 1,
@@ -277,7 +279,7 @@ int main(int argc, char **argv)
     }
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
-    msg_prefix = xasprintf("abrt-action-generate-backtrace[%u]", getpid());
+    msg_prefix = PROGNAME;
 
     if (opts & OPT_s)
     {
