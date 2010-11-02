@@ -110,7 +110,7 @@ static std::string GetGlobalUUID(const char *pAnalyzer,
  * @param pAnalyzer A name of an analyzer plugin.
  * @param pDebugDumpPath A debugdump dir containing all necessary data.
  */
-static void run_analyser_CreateReport(const char *pAnalyzer,
+static void run_analyzer_CreateReport(const char *pAnalyzer,
                 const char *pDebugDumpDir,
                 int force)
 {
@@ -123,7 +123,7 @@ static void run_analyser_CreateReport(const char *pAnalyzer,
 }
 
 /*
- * Called in three cases:
+ * Called in two cases:
  * (1) by StartJob dbus call -> CreateReportThread(), in the thread
  * (2) by CreateReport dbus call
  */
@@ -136,7 +136,6 @@ mw_result_t CreateCrashReport(const char *crash_id,
 
     CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);
     database->Connect();
-
     struct db_row *row = database->GetRow(crash_id);
     database->DisConnect();
     if (!row)
@@ -145,26 +144,26 @@ mw_result_t CreateCrashReport(const char *crash_id,
         return MW_IN_DB_ERROR;
     }
 
+    mw_result_t r = MW_OK;
+
     char caller_uid_str[sizeof(long) * 3 + 2];
     sprintf(caller_uid_str, "%li", caller_uid);
-
     if (caller_uid != 0 /* not called by root */
      && row->db_inform_all[0] != '1'
      && strcmp(caller_uid_str, row->db_uid) != 0
     ) {
         error_msg("crash '%s' can't be accessed by user with uid %ld", crash_id, caller_uid);
-        db_row_free(row);
-        return MW_IN_DB_ERROR;
+        r = MW_IN_DB_ERROR;
+        goto ret;
     }
 
-    mw_result_t r = MW_OK;
     try
     {
         struct dump_dir *dd = dd_opendir(row->db_dump_dir, /*flags:*/ 0);
         if (!dd)
         {
-            db_row_free(row);
-            return MW_ERROR;
+            r = MW_ERROR;
+            goto ret;
         }
 
         load_crash_data_from_debug_dump(dd, pCrashData);
@@ -174,32 +173,27 @@ mw_result_t CreateCrashReport(const char *crash_id,
         const char* package = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
         char* package_name = get_package_name_from_NVR_or_NULL(package);
 
-        // TODO: explain what run_analyser_CreateReport and RunAnalyzerActions are expected to do.
-        // Do they potentially add more files to dump dir?
-        // Why we calculate dup_hash after run_analyser_CreateReport but before RunAnalyzerActions?
-        // Why do we reload dump dir's data via DebugDumpToCrashReport?
+        /* Run analyzer's CreateReport() method */
+        VERB3 log(" run_analyzer_CreateReport('%s')", analyzer.c_str());
+        run_analyzer_CreateReport(analyzer.c_str(), row->db_dump_dir, force);
 
-        VERB3 log(" run_analyser_CreateReport('%s')", analyzer.c_str());
-        run_analyser_CreateReport(analyzer.c_str(), row->db_dump_dir, force);
-
-        std::string dup_hash = GetGlobalUUID(analyzer.c_str(), row->db_dump_dir);
-        VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
-
+        /* Run actions (only actions, not reporters!) from
+         * "ANALYZER[:COMPONENT] = ACTION1, REPORTER1, REPORTER2, ACTION2..." line
+         * in abrt.conf
+         */
         VERB3 log(" RunAnalyzerActions('%s','%s','%s',force=%d)", analyzer.c_str(), package_name, row->db_dump_dir, force);
         RunAnalyzerActions(analyzer.c_str(), package_name, row->db_dump_dir, force);
         free(package_name);
-        if (DebugDumpToCrashReport(row->db_dump_dir, pCrashData))
+
+        /* Do a load_crash_data_from_debug_dump from (possibly updated)
+         * crash dump dir
+         */
+        if (!DebugDumpToCrashReport(row->db_dump_dir, pCrashData))
         {
-            add_to_crash_data_ext(pCrashData, CD_UUID   , CD_SYS, CD_ISNOTEDITABLE, row->db_uuid);
-            add_to_crash_data_ext(pCrashData, FILENAME_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
-        }
-        else
-        {
-            db_row_free(row);
             error_msg("Error loading crash data");
-            return MW_ERROR;
+            r = MW_ERROR;
+            goto ret;
         }
-        db_row_free(row);
     }
     catch (CABRTException& e)
     {
@@ -211,6 +205,8 @@ mw_result_t CreateCrashReport(const char *crash_id,
         }
     }
 
+ ret:
+    db_row_free(row);
     VERB3 log("CreateCrashReport() returns %d", r);
     return r;
 }
