@@ -22,7 +22,6 @@
 #include <sys/un.h>
 #include <syslog.h>
 #include <pthread.h>
-#include <resolv.h> /* res_init */
 #include <string>
 #include <sys/inotify.h>
 #include <sys/ioctl.h> /* ioctl(FIONREAD) */
@@ -745,8 +744,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
 static void run_main_loop(GMainLoop* loop)
 {
     GMainContext *context = g_main_loop_get_context(loop);
-    time_t old_time = 0;
-    time_t dns_conf_hash = 0;
     int fds_size = 0;
     GPollFD *fds = NULL;
 
@@ -775,33 +772,6 @@ static void run_main_loop(GMainLoop* loop)
         g_poll(fds, nfds, timeout);
         if (s_timeout)
             alarm(0);
-
-        /* res_init() makes glibc reread /etc/resolv.conf.
-         * I'd think libc should be clever enough to do it itself
-         * at every name resolution attempt, but no...
-         * We need to guess ourself whether we want to do it.
-         */
-        time_t now = time(NULL) >> 2;
-        if (old_time != now) /* check once in 4 seconds */
-        {
-            old_time = now;
-
-            time_t hash = 0;
-            struct stat sb;
-            if (stat("/etc/resolv.conf", &sb) == 0)
-                hash = sb.st_mtime;
-            if (stat("/etc/host.conf", &sb) == 0)
-                hash += sb.st_mtime;
-            if (stat("/etc/hosts", &sb) == 0)
-                hash += sb.st_mtime;
-            if (stat("/etc/nsswitch.conf", &sb) == 0)
-                hash += sb.st_mtime;
-            if (dns_conf_hash != hash)
-            {
-                dns_conf_hash = hash;
-                res_init();
-            }
-        }
 
         some_ready = g_main_context_check(context, max_priority, fds, nfds);
         if (some_ready)
