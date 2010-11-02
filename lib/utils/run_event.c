@@ -51,7 +51,7 @@ int run_event(struct run_event_state *state,
         if (*p == '\0' || *p == '#')
             goto next_line; /* empty or comment line, skip */
 
-        VERB3 log("line '%s'", p);
+        VERB3 log("%s: line '%s'", __func__, p);
 
         while (1) /* word loop */
         {
@@ -165,4 +165,68 @@ int run_event(struct run_event_state *state,
     fclose(conffile);
 
     return retval;
+}
+
+char *list_possible_events(const char *pfx)
+{
+    FILE *conffile = fopen(CONF_DIR"/abrt_action.conf", "r");
+    if (!conffile)
+    {
+        error_msg("Can't open '%s'", CONF_DIR"/abrt_action.conf");
+        return NULL;
+    }
+
+    unsigned pfx_len = strlen(pfx);
+    struct strbuf *result = strbuf_new();
+    char *line;
+    while ((line = xmalloc_fgetline(conffile)) != NULL)
+    {
+        /* Line has form: [VAR=VAL]... PROG [ARGS] */
+        char *p = skip_whitespace(line);
+        if (*p == '\0' || *p == '#')
+            goto next_line; /* empty or comment line, skip */
+
+        VERB3 log("%s: line '%s'", __func__, p);
+
+        while (1) /* word loop */
+        {
+            /* If there is no '=' in this word... */
+            char *end_of_word = skip_non_whitespace(p);
+            char *next_word = skip_whitespace(end_of_word);
+            char *val = strchr(p, '=');
+            if (!val || val >= next_word)
+                break; /* ...we found the start of a command */
+
+            /* Current word has VAR=VAL form */
+            *val++ = '\0';
+            if (strcmp(p, "EVENT") == 0)
+            {
+                /* EVENT=VAL */
+                *end_of_word = '\0';
+                if (strncmp(pfx, val, pfx_len) == 0)
+                {
+                    /* VAL starts with pfx */
+                    unsigned val_len_p2 = sprintf(line, "\n%s\n", val);  /* line = "\nVAL\n" */
+
+                    /* Do we already have VAL in the result? */
+                    if (!strstr(result->buf, line)
+                     && strncmp(result->buf, line + 1, val_len_p2 - 1) != 0
+                    ) {
+                        /* No, add VAL\n */
+                        strbuf_append_str(result, line + 1);
+                    }
+                }
+                /* We don't check for more EVENT=foo words on the line */
+                break;
+            }
+
+            p = next_word;
+        } /* end of word loop */
+
+ next_line:
+        free(line);
+    } /* end of line loop */
+    fclose(conffile);
+
+    return strbuf_free_nobuf(result);
 }

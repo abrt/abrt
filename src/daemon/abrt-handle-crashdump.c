@@ -18,13 +18,13 @@
 */
 #include "abrtlib.h"
 #include "parse_options.h"
-//#include "crash_types.h"
 
 #define PROGNAME "abrt-handle-crashdump"
 
 static const char *dump_dir_name = ".";
 //static const char *conf_filename = CONF_DIR"/abrt_action.conf";
 static const char *event;
+static const char *pfx = "";
 
 static char *do_log(char *log_line, void *param)
 {
@@ -40,6 +40,7 @@ int main(int argc, char **argv)
 
     const char *program_usage = _(
         PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -d DIR -e EVENT\n"
+        "   or: "PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -l[PFX]\n"
         "\n"
         "Handle crash dump according to rules in abrt_action.conf");
     enum {
@@ -47,20 +48,22 @@ int main(int argc, char **argv)
         OPT_s = 1 << 1,
         OPT_d = 1 << 2,
         OPT_e = 1 << 3,
-//      OPT_c = 1 << 4,
+        OPT_l = 1 << 4,
+//      OPT_c = 1 << ?,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_BOOL(  's', NULL, NULL          ,             _("Log to syslog"       )),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR"     , _("Crash dump directory")),
-        OPT_STRING('e', NULL, &event        , "EVENT"   , _("Event"               )),
-//      OPT_STRING('c', NULL, &conf_filename, "CONFFILE", _("Configuration file"  )),
+        OPT_BOOL(     's', NULL, NULL          ,             _("Log to syslog"       )),
+        OPT_STRING(   'd', NULL, &dump_dir_name, "DIR"     , _("Crash dump directory")),
+        OPT_STRING(   'e', NULL, &event        , "EVENT"   , _("Handle EVENT"        )),
+        OPT_OPTSTRING('l', NULL, &pfx          , "PFX"     , _("List possible events [which start with PFX]")),
+//      OPT_STRING(   'c', NULL, &conf_filename, "CONFFILE", _("Configuration file"  )),
         OPT_END()
     };
 
     unsigned opts = parse_opts(argc, argv, program_options, program_usage);
-    if (!(opts & OPT_e))
+    if (!(opts & (OPT_e|OPT_l)))
         parse_usage_and_die(program_usage, program_options);
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
     if (opts & OPT_s)
@@ -69,6 +72,17 @@ int main(int argc, char **argv)
         logmode = LOGMODE_SYSLOG;
     }
 
+    if (opts & OPT_l)
+    {
+        char *events = list_possible_events(pfx);
+        if (!events)
+            return 1; /* error msg is already logged */
+        fputs(events, stdout);
+        free(events);
+        return 0;
+    }
+
+    /* -e EVENT: run event */
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
     int r = run_event(run_state, dump_dir_name, event);

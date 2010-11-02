@@ -37,7 +37,12 @@ void parse_usage_and_die(const char *usage, const struct options *opt)
             pos += fprintf(stderr, "--%s", opt->long_name);
 
         if (opt->argh)
-            pos += fprintf(stderr, " %s", opt->argh);
+        {
+            const char *fmt = " %s";
+            if (opt->type == OPTION_OPTSTRING)
+                fmt = "[%s]";
+            pos += fprintf(stderr, fmt, opt->argh);
+        }
 
         if (pos <= USAGE_OPTS_WIDTH)
             pad = USAGE_OPTS_WIDTH - pos;
@@ -90,6 +95,11 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                 curopt->has_arg = required_argument;
                 if (opt[ii].short_name)
                     strbuf_append_strf(shortopts, "%c:", opt[ii].short_name);
+                break;
+            case OPTION_OPTSTRING:
+                curopt->has_arg = optional_argument;
+                if (opt[ii].short_name)
+                    strbuf_append_strf(shortopts, "%c::", opt[ii].short_name);
                 break;
             case OPTION_GROUP:
             case OPTION_END:
@@ -153,6 +163,7 @@ unsigned parse_opts(int argc, char **argv, const struct options *opt,
                         *(int*)opt[ii].value = xatoi(optarg);
                         break;
                     case OPTION_STRING:
+                    case OPTION_OPTSTRING:
                         if (optarg)
                             *(char**)opt[ii].value = (char*)optarg;
                         break;

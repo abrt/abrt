@@ -12,6 +12,7 @@ enum parse_opt_type {
     OPTION_GROUP,
     OPTION_STRING,
     OPTION_INTEGER,
+    OPTION_OPTSTRING,
     OPTION_END,
 };
 
@@ -31,11 +32,12 @@ struct options {
  * a - argh argument help
  * h - help
  */
-#define OPT_END()                   { OPTION_END }
-#define OPT_BOOL(s, l, v, h)        { OPTION_BOOL, (s), (l), (v), NULL, (h) }
-#define OPT_GROUP(h)                { OPTION_GROUP, 0, NULL, NULL, NULL, (h) }
-#define OPT_INTEGER(s, l, v, h)     { OPTION_INTEGER, (s), (l), (v), "n", (h) }
-#define OPT_STRING(s, l, v, a, h)   { OPTION_STRING, (s), (l), (v), (a), (h) }
+#define OPT_END()                    { OPTION_END }
+#define OPT_BOOL(s, l, v, h)         { OPTION_BOOL, (s), (l), (v), NULL, (h) }
+#define OPT_GROUP(h)                 { OPTION_GROUP, 0, NULL, NULL, NULL, (h) }
+#define OPT_INTEGER(s, l, v, h)      { OPTION_INTEGER, (s), (l), (v), "n", (h) }
+#define OPT_STRING(s, l, v, a, h)    { OPTION_STRING, (s), (l), (v), (a), (h) }
+#define OPT_OPTSTRING(s, l, v, a, h) { OPTION_OPTSTRING, (s), (l), (v), (a), (h) }
 
 #define OPT__VERBOSE(v)     OPT_BOOL('v', "verbose", (v), "be verbose")
 
