@@ -668,34 +668,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     const char *analyzer = get_crash_data_item_content(crashinfo, FILENAME_ANALYZER).c_str();
                     const char *uid_str = get_crash_data_item_content(crashinfo, CD_UID).c_str();
 
-                    /* Autoreport it if configured to do so */
-                    if (res != MW_REPORTED
-                     && analyzer_has_AutoReportUIDs(analyzer, uid_str)
-                    ) {
-                        VERB1 log("Reporting the crash automatically");
-                        map_crash_data_t crash_report;
-                        string crash_id = ssprintf("%s:%s", uid_str, get_crash_data_item_content(crashinfo, CD_UUID).c_str());
-                        mw_result_t crash_result = CreateCrashReport(
-                                        crash_id.c_str(),
-                                        /*caller_uid:*/ 0,
-                                        /*force:*/ 0,
-                                        crash_report
-                        );
-                        if (crash_result == MW_OK)
-                        {
-                            map_analyzer_actions_and_reporters_t::const_iterator it = g_settings_mapAnalyzerActionsAndReporters.find(analyzer);
-                            map_analyzer_actions_and_reporters_t::const_iterator end = g_settings_mapAnalyzerActionsAndReporters.end();
-                            if (it != end)
-                            {
-                                vector_pair_string_string_t keys = it->second;
-                                unsigned size = keys.size();
-                                for (unsigned ii = 0; ii < size; ii++)
-                                {
-                                    autoreport(keys[ii], crash_report);
-                                }
-                            }
-                        }
-                    }
                     /* Send dbus signal */
                     if (analyzer_has_InformAllUsers(analyzer))
                         uid_str = NULL;

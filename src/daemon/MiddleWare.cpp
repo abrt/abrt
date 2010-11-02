@@ -126,7 +126,6 @@ static void run_analyser_CreateReport(const char *pAnalyzer,
  * Called in three cases:
  * (1) by StartJob dbus call -> CreateReportThread(), in the thread
  * (2) by CreateReport dbus call
- * (3) by daemon if AutoReportUID is set for this user's crashes
  */
 mw_result_t CreateCrashReport(const char *crash_id,
                 long caller_uid,
@@ -521,46 +520,6 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name)
     if (it == settings.end())
         return false;
     return string_to_bool(it->second.c_str());
-}
-
-bool analyzer_has_AutoReportUIDs(const char *analyzer_name, const char *uid_str)
-{
-    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
-    if (!analyzer)
-    {
-        return false;
-    }
-    map_plugin_settings_t settings = analyzer->GetSettings();
-    map_plugin_settings_t::const_iterator it = settings.find("AutoReportUIDs");
-    if (it == settings.end())
-        return false;
-
-    vector_string_t logins;
-    parse_args(it->second.c_str(), logins);
-
-    uid_t uid = xatoi_u(uid_str);
-    unsigned size = logins.size();
-    for (unsigned ii = 0; ii < size; ii++)
-    {
-        struct passwd* pw = getpwnam(logins[ii].c_str());
-        if (!pw)
-            continue;
-        if (pw->pw_uid == uid)
-            return true;
-    }
-
-    return false;
-}
-
-void autoreport(const pair_string_string_t& reporter_options, const map_crash_data_t& crash_report)
-{
-    CReporter* reporter = g_pPluginManager->GetReporter(reporter_options.first.c_str());
-    if (!reporter)
-    {
-        return;
-    }
-    map_plugin_settings_t plugin_settings;
-    /*std::string res =*/ reporter->Report(crash_report, plugin_settings, reporter_options.second.c_str());
 }
 
 /**
