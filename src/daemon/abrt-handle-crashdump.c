@@ -22,7 +22,7 @@
 #define PROGNAME "abrt-handle-crashdump"
 
 static const char *dump_dir_name = ".";
-//static const char *conf_filename = CONF_DIR"/abrt_action.conf";
+//static const char *conf_filename = CONF_DIR"/abrt_event.conf";
 static const char *event;
 static const char *pfx = "";
 
@@ -42,7 +42,7 @@ int main(int argc, char **argv)
         PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -d DIR -e EVENT\n"
         "   or: "PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -l[PFX]\n"
         "\n"
-        "Handle crash dump according to rules in abrt_action.conf");
+        "Handle crash dump according to rules in abrt_event.conf");
     enum {
         OPT_v = 1 << 0,
         OPT_s = 1 << 1,

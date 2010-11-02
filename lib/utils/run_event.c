@@ -22,10 +22,10 @@ int run_event(struct run_event_state *state,
                 const char *dump_dir_name,
                 const char *event
 ) {
-    FILE *conffile = fopen(CONF_DIR"/abrt_action.conf", "r");
+    FILE *conffile = fopen(CONF_DIR"/abrt_event.conf", "r");
     if (!conffile)
     {
-        error_msg("Can't open '%s'", CONF_DIR"/abrt_action.conf");
+        error_msg("Can't open '%s'", CONF_DIR"/abrt_event.conf");
         return 1;
     }
     close_on_exec_on(fileno(conffile));
@@ -40,7 +40,7 @@ int run_event(struct run_event_state *state,
     free(full_name);
     /*setenv("EVENT", event, 1); - is this useful for children to know? */
 
-    /* Read, match, and execute lines from abrt_action.conf */
+    /* Read, match, and execute lines from abrt_event.conf */
     int retval = 0;
     struct dump_dir *dd = NULL;
     char *line;
@@ -169,10 +169,10 @@ int run_event(struct run_event_state *state,
 
 char *list_possible_events(const char *pfx)
 {
-    FILE *conffile = fopen(CONF_DIR"/abrt_action.conf", "r");
+    FILE *conffile = fopen(CONF_DIR"/abrt_event.conf", "r");
     if (!conffile)
     {
-        error_msg("Can't open '%s'", CONF_DIR"/abrt_action.conf");
+        error_msg("Can't open '%s'", CONF_DIR"/abrt_event.conf");
         return NULL;
     }
 
