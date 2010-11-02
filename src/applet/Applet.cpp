@@ -42,15 +42,25 @@ static void Crash(DBusMessage* signal)
     r = load_val(&in_iter, package_name);
 
     /* 2nd param: crash_id */
-    const char* crash_id = NULL;
     if (r != ABRT_DBUS_MORE_FIELDS)
     {
         error_msg("dbus signal %s: parameter type mismatch", __func__);
         return;
     }
+    const char* crash_id = NULL;
     r = load_val(&in_iter, crash_id);
 
-    /* Optional 3rd param: uid */
+    /* 3rd param: dir */
+//dir parameter is not used for now, use is planned in the future
+    if (r != ABRT_DBUS_MORE_FIELDS)
+    {
+        error_msg("dbus signal %s: parameter type mismatch", __func__);
+        return;
+    }
+    const char* dir = NULL;
+    r = load_val(&in_iter, dir);
+
+    /* Optional 4th param: uid */
     const char* uid_str = NULL;
     if (r == ABRT_DBUS_MORE_FIELDS)
     {

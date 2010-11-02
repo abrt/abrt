@@ -74,7 +74,7 @@ using namespace std;
  * - SetSettings(map_abrt_settings_t): returns void
  *
  * DBus signals we emit:
- * - Crash(progname, crash_id, uid) - a new crash occurred (new /var/spool/abrt/DIR is found)
+ * - Crash(progname, crash_id, dir, uid) - a new crash occurred (new /var/spool/abrt/DIR is found)
  * - JobDone(client_dbus_ID) - see StartJob above.
  *      Sent as unicast to the client which did StartJob.
  * - Warning(msg)
@@ -663,7 +663,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                                 strrchr(first, '/') + 1);
                         delete_debug_dump_dir(fullname);
                     }
-#define fullname fullname_should_not_be_used_here
 
                     const char *analyzer = get_crash_data_item_content(crashinfo, FILENAME_ANALYZER).c_str();
                     const char *uid_str = get_crash_data_item_content(crashinfo, CD_UID).c_str();
@@ -676,11 +675,12 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                                     get_crash_data_item_content(crashinfo, CD_UUID).c_str()
                     );
                     g_pCommLayer->Crash(get_crash_data_item_content(crashinfo, FILENAME_PACKAGE).c_str(),
-                                        crash_id,
-                                        uid_str);
+                                    crash_id,
+                                    fullname,
+                                    uid_str
+                    );
                     free(crash_id);
                     break;
-#undef fullname
                 }
                 case MW_IN_DB:
                     log("Huh, this crash is already in db?! Nothing to do");
