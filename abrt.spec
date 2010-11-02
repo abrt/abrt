@@ -352,7 +352,7 @@ fi
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-handle-crashdump
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
-%config(noreplace) %{_sysconfdir}/%{name}/abrt_action.conf
+%config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
 %config(noreplace) %{_sysconfdir}/dbus-1/system.d/dbus-abrt.conf
 %{_initrddir}/%{name}d
