@@ -98,6 +98,7 @@ int run_event(struct run_event_state *state,
             p = next_word;
         } /* end of word loop */
 
+        /* Don't keep dump dir locked across program runs */
         dd_close(dd);
         dd = NULL;
 
@@ -217,9 +218,9 @@ char *list_possible_events(const char *dump_dir_name, const char *pfx)
                 /* Get this name from dump dir */
                 if (!dd)
                 {
-                    /* Without dir name to match, we assume match */
+                    /* Without dir name to match, we assume match for this expr */
                     if (!dump_dir_name)
-                        goto matched;
+                        goto next_word;
                     dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
                     if (!dd)
                         goto stop; /* error (note: dd_opendir logged error msg) */
@@ -235,13 +236,10 @@ char *list_possible_events(const char *dump_dir_name, const char *pfx)
                 free(real_val);
             }
 
+ next_word:
             /* Go to next word */
             p = next_word;
         } /* end of word loop */
-
- matched:
-        dd_close(dd);
-        dd = NULL;
 
         if (line[0] == '\n' /* do we *have* saved matched "\nEVENT_VAL\n"? */
          /* and does result->buf NOT yet have VAL? */
@@ -258,6 +256,7 @@ char *list_possible_events(const char *dump_dir_name, const char *pfx)
 
  stop:
     free(line);
+    dd_close(dd);
     fclose(conffile);
 
     return strbuf_free_nobuf(result);
