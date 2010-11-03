@@ -51,9 +51,6 @@ static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
 static vector_pair_string_string_t s_vectorActionsAndReporters;
 
 
-static void RunAnalyzerActions(const char *pAnalyzer, const char* pPackageName, const char *pDebugDumpDir, int force);
-
-
 /**
  * Transforms a debugdump directory to inner crash
  * report form. This form is used for later reporting.
@@ -103,23 +100,11 @@ static std::string GetGlobalUUID(const char *pAnalyzer,
     throw CABRTException(EXCEP_PLUGIN, "Error running '%s'", pAnalyzer);
 }
 
-/**
- * Take care of getting all additional data needed
- * for computing UUIDs and creating a report for particular analyzer
- * plugin. This report could be send somewhere afterwards.
- * @param pAnalyzer A name of an analyzer plugin.
- * @param pDebugDumpPath A debugdump dir containing all necessary data.
- */
-static void run_analyzer_CreateReport(const char *pAnalyzer,
-                const char *pDebugDumpDir,
-                int force)
+static char *do_log_and_update_client(char *log_line, void *param)
 {
-    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
-    if (analyzer)
-    {
-        analyzer->CreateReport(pDebugDumpDir, force);
-    }
-    /* else: GetAnalyzer() already complained, no need to handle it here */
+    VERB1 log("%s", log_line);
+    update_client("%s", log_line);
+    return log_line;
 }
 
 /*
@@ -159,31 +144,15 @@ mw_result_t CreateCrashReport(const char *crash_id,
 
     try
     {
-        struct dump_dir *dd = dd_opendir(row->db_dump_dir, /*flags:*/ 0);
-        if (!dd)
+        struct run_event_state *run_state = new_run_event_state();
+        run_state->logging_callback = do_log_and_update_client;
+        int res = run_event(run_state, row->db_dump_dir, "analyze");
+        free_run_event_state(run_state);
+        if (res != 0)
         {
-            r = MW_ERROR;
+            r = MW_PLUGIN_ERROR;
             goto ret;
         }
-
-        load_crash_data_from_debug_dump(dd, pCrashData);
-        dd_close(dd);
-
-        std::string analyzer = get_crash_data_item_content(pCrashData, FILENAME_ANALYZER);
-        const char* package = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_PACKAGE);
-        char* package_name = get_package_name_from_NVR_or_NULL(package);
-
-        /* Run analyzer's CreateReport() method */
-        VERB3 log(" run_analyzer_CreateReport('%s')", analyzer.c_str());
-        run_analyzer_CreateReport(analyzer.c_str(), row->db_dump_dir, force);
-
-        /* Run actions (only actions, not reporters!) from
-         * "ANALYZER[:COMPONENT] = ACTION1, REPORTER1, REPORTER2, ACTION2..." line
-         * in abrt.conf
-         */
-        VERB3 log(" RunAnalyzerActions('%s','%s','%s',force=%d)", analyzer.c_str(), package_name, row->db_dump_dir, force);
-        RunAnalyzerActions(analyzer.c_str(), package_name, row->db_dump_dir, force);
-        free(package_name);
 
         /* Do a load_crash_data_from_debug_dump from (possibly updated)
          * crash dump dir
@@ -469,41 +438,6 @@ static bool is_debug_dump_saved(const char *debug_dump_dir)
     return row != NULL;
 }
 
-/**
- * Get a package name from executable name and save
- * package description to particular debugdump directory of a crash.
- * @param pExecutable A name of crashed application.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
- * @return It return results of operation. See mw_result_t.
- */
-static mw_result_t SavePackageDescriptionToDebugDump(const char *pDebugDumpDir)
-{
-    pid_t pid = fork();
-    if (pid < 0)
-    {
-        perror_msg("fork");
-        return MW_ERROR;
-    }
-    if (pid == 0) /* child */
-    {
-        char *argv[5];  /* abrt-action-save-package-data [-s] -d DIR NULL */
-        char **pp = argv;
-        *pp++ = (char*)"abrt-action-save-package-data";
-        if (logmode & LOGMODE_SYSLOG)
-            *pp++ = (char*)"-s";
-        *pp++ = (char*)"-d";
-        *pp++ = (char*)pDebugDumpDir;
-        *pp = NULL;
-
-        execvp(argv[0], argv);
-        perror_msg_and_die("Can't execute '%s'", argv[0]);
-    }
-    /* parent */
-    int status;
-    waitpid(pid, &status, 0);
-    return (WIFEXITED(status) && WEXITSTATUS(status) == 0) ? MW_OK : MW_ERROR;
-}
-
 bool analyzer_has_InformAllUsers(const char *analyzer_name)
 {
     CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
@@ -516,59 +450,6 @@ bool analyzer_has_InformAllUsers(const char *analyzer_name)
     if (it == settings.end())
         return false;
     return string_to_bool(it->second.c_str());
-}
-
-/**
- * Execute all action plugins, which are associated to
- * particular analyzer plugin.
- * @param pAnalyzer A name of an analyzer plugin.
- * @param pDebugDumpPath A debugdump dir containing all necessary data.
- */
-static void RunAnalyzerActions(const char *pAnalyzer, const char *pPackageName, const char *pDebugDumpDir, int force)
-{
-    map_analyzer_actions_and_reporters_t::iterator analyzer;
-    if (pPackageName != NULL)
-    {
-        /*try to find analyzer:component first*/
-        char *analyzer_component = xasprintf("%s:%s", pAnalyzer, pPackageName);
-        analyzer = s_mapAnalyzerActionsAndReporters.find(analyzer_component);
-        /* if we didn't find an action for specific package, use the generic one */
-        if (analyzer == s_mapAnalyzerActionsAndReporters.end())
-        {
-            VERB2 log("didn't find action for %s, trying just %s", analyzer_component, pAnalyzer);
-            map_analyzer_actions_and_reporters_t::iterator analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
-        }
-        free(analyzer_component);
-    }
-    else
-    {
-        VERB2 log("no package name specified, trying to find action for: %s", pAnalyzer);
-        analyzer = s_mapAnalyzerActionsAndReporters.find(pAnalyzer);
-    }
-    if (analyzer != s_mapAnalyzerActionsAndReporters.end())
-    {
-        vector_pair_string_string_t::iterator it_a = analyzer->second.begin();
-        for (; it_a != analyzer->second.end(); it_a++)
-        {
-            const char *plugin_name = it_a->first.c_str();
-            CAction* action = g_pPluginManager->GetAction(plugin_name, /*silent:*/ true);
-            if (!action)
-            {
-                /* GetAction() already complained if no such plugin.
-                 * If plugin exists but isn't an Action, it's not an error.
-                 */
-                continue;
-            }
-            try
-            {
-                action->Run(pDebugDumpDir, it_a->second.c_str(), force);
-            }
-            catch (CABRTException& e)
-            {
-                update_client("Action performed by '%s' was not successful: %s", plugin_name, e.what());
-            }
-        }
-    }
 }
 
 /**

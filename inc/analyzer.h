@@ -36,13 +36,6 @@ class CAnalyzer : public CPlugin
          * @return A global UUID.
          */
         virtual std::string GetGlobalUUID(const char *pDebugDumpDir) = 0;
-        /**
-         * A method, which takes care of getting all additional data needed
-         * for computing UUIDs and creating a report. This report could be send
-         * somewhere afterwards.
-         * @param pDebugDumpPath A debugdump dir containing all necessary data.
-         */
-        virtual void CreateReport(const char *pDebugDumpDir, int force) = 0;
 };
 
 #endif /*ANALYZER_H_*/

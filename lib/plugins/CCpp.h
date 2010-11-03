@@ -42,7 +42,6 @@ class CAnalyzerCCpp : public CAnalyzer
     public:
         CAnalyzerCCpp();
         virtual std::string GetGlobalUUID(const char *pDebugDumpDir);
-        virtual void CreateReport(const char *pDebugDumpDir, int force);
         virtual void Init();
         virtual void DeInit();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);

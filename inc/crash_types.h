@@ -33,9 +33,7 @@
 #define FILENAME_COREDUMP     "coredump"
 #define FILENAME_BACKTRACE    "backtrace"
 #define FILENAME_MEMORYMAP    "memorymap"
-// Used by CCpp analyzer to cache GetGlobalUUID() calls.
-// FIXME! make ALL analyzers to save it as a file!
-// Now, Python and kerneloops do not!
+// Used to cache GetGlobalUUID() calls
 #define FILENAME_DUPHASH      "global_uuid" /* name is compat, to be renamed to "duphash" */
 // Name of the function where the application crashed.
 // Optional.
