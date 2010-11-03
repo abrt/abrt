@@ -25,10 +25,6 @@
 
 class CAnalyzerPython : public CAnalyzer
 {
-    public:
-        virtual std::string GetGlobalUUID(const char *pDebugDumpDir);
-        virtual void Init();
-        virtual void DeInit();
 };
 
 #endif /* PYTHON_H_ */

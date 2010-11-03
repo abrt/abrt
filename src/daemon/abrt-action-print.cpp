@@ -27,6 +27,7 @@
 #define PROGNAME "abrt-action-print"
 
 static const char *dump_dir_name = ".";
+static const char *output_file = NULL;
 
 int main(int argc, char **argv)
 {
@@ -35,23 +36,37 @@ int main(int argc, char **argv)
         g_verbose = atoi(env_verbose);
 
     const char *program_usage = _(
-        PROGNAME" [-v] -d DIR\n"
+        PROGNAME" [-v] [-o FILE] -d DIR\n"
         "\n"
         "Print information about the crash to standard output");
     enum {
         OPT_v = 1 << 0,
         OPT_d = 1 << 1,
+        OPT_o = 1 << 2,
     };
     /* Keep enum above and order of options below in sync! */
     struct options program_options[] = {
         OPT__VERBOSE(&g_verbose),
-        OPT_STRING('d', NULL, &dump_dir_name, "DIR", _("Crash dump directory")),
+        OPT_STRING('d', NULL, &dump_dir_name, "DIR" , _("Crash dump directory")),
+        OPT_STRING('o', NULL, &output_file  , "FILE", _("Output file")),
         OPT_END()
     };
+
+//BITROT: restore handling of:
+// $Logger_AppendLogs=yes
+// $Logger_LogPath=/var/log/abrt.log
 
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage);
 
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+
+    if (output_file)
+    {
+        if (!freopen(output_file, "w", stdout))
+        {
+            perror_msg_and_die("Can't open '%s'", output_file);
+        }
+    }
 
     try
     {
@@ -73,5 +88,7 @@ int main(int argc, char **argv)
         return 1;
     }
 
+    if (output_file)
+        log("The report was stored to %s", output_file);
     return 0;
 }

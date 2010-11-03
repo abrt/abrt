@@ -33,8 +33,6 @@
 
 class CAnalyzerKerneloops : public CAnalyzer
 {
-    public:
-        virtual std::string GetGlobalUUID(const char *pDebugDumpDir);
 };
 
 #endif

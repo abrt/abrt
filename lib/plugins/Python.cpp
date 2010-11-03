@@ -20,68 +20,6 @@
 #include "Python.h"
 #include "abrt_exception.h"
 
-using namespace std;
-
-static string load(const char *dirname, const char *filename)
-{
-    string ret;
-
-    struct dump_dir *dd = dd_opendir(dirname, /*flags:*/ 0);
-    if (!dd)
-        return ret; /* "" */
-    char *s = dd_load_text(dd, filename);
-    dd_close(dd);
-
-    if (!s[0])
-    {
-        free(s);
-
-        pid_t pid = fork();
-        if (pid < 0)
-        {
-            perror_msg("fork");
-            return ret; /* "" */
-        }
-        if (pid == 0) /* child */
-        {
-            char *argv[4];  /* abrt-action-analyze-python -d DIR <NULL> */
-            char **pp = argv;
-            *pp++ = (char*)"abrt-action-analyze-python";
-            *pp++ = (char*)"-d";
-            *pp++ = (char*)dirname;
-            *pp = NULL;
-
-            execvp(argv[0], argv);
-            perror_msg_and_die("Can't execute '%s'", argv[0]);
-        }
-        /* parent */
-        waitpid(pid, NULL, 0);
-
-        dd = dd_opendir(dirname, /*flags:*/ 0);
-        if (!dd)
-            return ret; /* "" */
-        s = dd_load_text(dd, filename);
-        dd_close(dd);
-    }
-
-    ret = s;
-    free(s);
-    return ret;
-}
-
-string CAnalyzerPython::GetGlobalUUID(const char *pDebugDumpDir)
-{
-    return load(pDebugDumpDir, FILENAME_DUPHASH);
-}
-
-void CAnalyzerPython::Init()
-{
-}
-
-void CAnalyzerPython::DeInit()
-{
-}
-
 PLUGIN_INFO(ANALYZER,
             CAnalyzerPython,
             "Python",

@@ -87,21 +87,26 @@ static CURLcode http_post_to_kerneloops_site(const char *url, const char *oopsda
 
 static void report_to_kerneloops(
                 const char *dump_dir_name,
-                /*const*/ map_plugin_settings_t& settings)
+                const map_plugin_settings_t& settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-        throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
+        exit(1); /* error msg is already logged */
+
     map_crash_data_t pCrashData;
     load_crash_data_from_debug_dump(dd, pCrashData);
     dd_close(dd);
 
     const char *backtrace = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_BACKTRACE);
     if (!backtrace)
-        throw CABRTException(EXCEP_PLUGIN, "Error sending kernel oops due to missing backtrace");
-//TODO: check that analyzer == "oops" too?
+        error_msg_and_die("Error sending kernel oops due to missing backtrace");
 
-    const char *submitURL = settings["SubmitURL"].c_str();
+    map_plugin_settings_t::const_iterator end = settings.end();
+    map_plugin_settings_t::const_iterator it;
+
+    const char *env = getenv("KerneloopsReporter_SubmitURL");
+    it = settings.find("SubmitURL");
+    const char *submitURL = (env ? env : it == end ? "" : it->second.c_str());
     if (!submitURL[0])
         submitURL = "http://submit.kerneloops.org/submitoops.php";
 
@@ -109,14 +114,14 @@ static void report_to_kerneloops(
 
     CURLcode ret = http_post_to_kerneloops_site(submitURL, backtrace);
     if (ret != CURLE_OK)
-        throw CABRTException(EXCEP_PLUGIN, "Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
+        error_msg_and_die("Kernel oops has not been sent due to %s", curl_easy_strerror(ret));
 
     /* Server replies with:
      * 200 thank you for submitting the kernel oops information
      * RemoteIP: 34192fd15e34bf60fac6a5f01bba04ddbd3f0558
      * - no URL or bug ID apparently...
      */
-    printf("STATUS:Kernel oops report was uploaded\n");
+    log("Kernel oops report was uploaded");
 }
 
 int main(int argc, char **argv)
@@ -185,8 +190,7 @@ int main(int argc, char **argv)
     }
     catch (CABRTException& e)
     {
-        printf("EXCEPT:%s\n", e.what());
-        return 1;
+        error_msg_and_die("%s", e.what());
     }
 
     return 0;

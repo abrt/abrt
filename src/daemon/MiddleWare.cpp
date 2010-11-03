@@ -18,11 +18,9 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
-#include <algorithm>  /* for std::find */
 #include "abrtlib.h"
 #include "Daemon.h"
 #include "Settings.h"
-#include "rpm.h"
 #include "abrt_exception.h"
 #include "abrt_packages.h"
 #include "comm_layer_inner.h"
@@ -81,23 +79,6 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
     dd_close(dd);
 
     return true;
-}
-
-/**
- * Get a global UUID from particular analyzer plugin.
- * @param pAnalyzer A name of an analyzer plugin.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
- * @return A global UUID.
- */
-static std::string GetGlobalUUID(const char *pAnalyzer,
-                                       const char *pDebugDumpDir)
-{
-    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(pAnalyzer);
-    if (analyzer)
-    {
-        return analyzer->GetGlobalUUID(pDebugDumpDir);
-    }
-    throw CABRTException(EXCEP_PLUGIN, "Error running '%s'", pAnalyzer);
 }
 
 static char *do_log_and_update_client(char *log_line, void *param)
@@ -237,12 +218,26 @@ void RunActionsAndReporters(const char *pDebugDumpDir)
     }
 }
 
+struct logging_state {
+    char *last_line;
+};
+
+static char *do_log_and_save_line(char *log_line, void *param)
+{
+    struct logging_state *l_state = (struct logging_state *)param;
+
+    VERB1 log("%s", log_line);
+    update_client("%s", log_line);
+    free(l_state->last_line);
+    l_state->last_line = log_line;
+    return NULL;
+}
 
 // Do not trust client_report here!
 // dbus handler passes it from user without checking
 report_status_t Report(const map_crash_data_t& client_report,
                        const vector_string_t &reporters,
-                       map_map_string_t& settings,
+                       const map_map_string_t& settings,
                        long caller_uid)
 {
     // Get ID fields
@@ -271,7 +266,7 @@ report_status_t Report(const map_crash_data_t& client_report,
                         caller_uid, crash_id.c_str());
     }
 
-    const std::string& pDumpDir = get_crash_data_item_content(stored_report, CD_DUMPDIR);
+    const char *dump_dir_name = get_crash_data_item_content_or_NULL(stored_report, CD_DUMPDIR);
 
     // Save comment, "how to reproduce", backtrace
 //TODO: we should iterate through stored_report and modify all
@@ -281,7 +276,7 @@ report_status_t Report(const map_crash_data_t& client_report,
     const char *backtrace = get_crash_data_item_content_or_NULL(client_report, FILENAME_BACKTRACE);
     if (comment || reproduce || backtrace)
     {
-        struct dump_dir *dd = dd_opendir(pDumpDir.c_str(), /*flags:*/ 0);
+        struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
         if (dd)
         {
             if (comment)
@@ -322,14 +317,6 @@ report_status_t Report(const map_crash_data_t& client_report,
         its++;
     }
 
-    const std::string& analyzer = get_crash_data_item_content(stored_report, FILENAME_ANALYZER);
-
-    std::string dup_hash = GetGlobalUUID(analyzer.c_str(), pDumpDir.c_str());
-    VERB3 log(" DUPHASH:'%s'", dup_hash.c_str());
-    add_to_crash_data_ext(stored_report, FILENAME_DUPHASH, CD_TXT, CD_ISNOTEDITABLE, dup_hash.c_str());
-
-    // Run reporters
-
     VERB3 {
         log("Run reporters");
         log_map_crash_data(client_report, " client_report");
@@ -337,65 +324,77 @@ report_status_t Report(const map_crash_data_t& client_report,
     }
 #define client_report client_report_must_not_be_used_below
 
-    map_crash_data_t::const_iterator its_PACKAGE = stored_report.find(FILENAME_PACKAGE);
-    std::string packageNVR = its_PACKAGE->second[CD_CONTENT];
-    char * packageName = get_package_name_from_NVR_or_NULL(packageNVR.c_str());
-
-    // analyzer with package name (CCpp:xorg-x11-app) has higher priority
-    char* key = xasprintf("%s:%s",analyzer.c_str(),packageName);
-    free(packageName);
-    map_analyzer_actions_and_reporters_t::iterator end = s_mapAnalyzerActionsAndReporters.end();
-    map_analyzer_actions_and_reporters_t::iterator keyPtr = s_mapAnalyzerActionsAndReporters.find(key);
-    if (keyPtr == end)
+    // Export overridden settings as environment variables
+    GList *env_list = NULL;
+    map_map_string_t::const_iterator reporter_settings = settings.begin();
+    while (reporter_settings != settings.end())
     {
-        VERB3 log("'%s' not found, looking for '%s'", key, analyzer.c_str());
-        // if there is no such settings, then try default analyzer
-        keyPtr = s_mapAnalyzerActionsAndReporters.find(analyzer);
+        map_string_t::const_iterator var = reporter_settings->second.begin();
+        while (var != reporter_settings->second.end())
+        {
+            char *s = xasprintf("%s_%s=%s", reporter_settings->first.c_str(), var->first.c_str(), var->second.c_str());
+            VERB3 log("Exporting '%s'", s);
+            putenv(s);
+            env_list = g_list_append(env_list, s);
+            var++;
+        }
+        reporter_settings++;
     }
-    free(key);
 
+    // Run reporters
     bool at_least_one_reporter_succeeded = false;
     report_status_t ret;
     std::string message;
-    if (keyPtr != end)
+    struct logging_state l_state;
+    struct run_event_state *run_state = new_run_event_state();
+    run_state->logging_callback = do_log_and_save_line;
+    run_state->logging_param = &l_state;
+    for (unsigned i = 0; i < reporters.size(); i++)
     {
-        VERB2 log("Found AnalyzerActionsAndReporters for '%s'", analyzer.c_str());
+        std::string plugin_name = "report_" + reporters[i];
 
-        vector_pair_string_string_t::iterator it_r = keyPtr->second.begin();
-        for (; it_r != keyPtr->second.end(); it_r++)
+        l_state.last_line = NULL;
+        int r = run_event(run_state, dump_dir_name, plugin_name.c_str());
+        if (r == 0)
         {
-            const char *plugin_name = it_r->first.c_str();
+            at_least_one_reporter_succeeded = true;
+            ret[plugin_name].push_back("1"); // REPORT_STATUS_IDX_FLAG
+            ret[plugin_name].push_back(l_state.last_line ? : "Reporting succeeded"); // REPORT_STATUS_IDX_MSG
+            if (message != "")
+                message += ";";
+            message += (l_state.last_line ? : "Reporting succeeded");
+        }
+        else
+        {
+            ret[plugin_name].push_back("0");      // REPORT_STATUS_IDX_FLAG
+            ret[plugin_name].push_back(l_state.last_line ? : "Error in reporting"); // REPORT_STATUS_IDX_MSG
+            update_client("Reporting via '%s' was not successful%s%s",
+                    plugin_name.c_str(),
+                    l_state.last_line ? ": " : "",
+                    l_state.last_line ? l_state.last_line : ""
+            );
+        }
+        free(l_state.last_line);
+    }
+    free_run_event_state(run_state);
 
-            /* Check if the reporter is in the input list of allowed reporters. */
-            if (reporters.end() == std::find(reporters.begin(), reporters.end(), plugin_name))
-            {
-                continue;
-            }
+    // Unexport overridden settings
+    for (GList *li = env_list; li; li = g_list_next(li))
+    {
+        char *s = (char*)li->data;
+        /* Need to make a copy: just cutting s at '=' and unsetenv'ing
+	 * the result would be a bug! s _itself_ is in environment now,
+	 * we must not modify it there!
+	 */
+        char *name = xstrndup(s, strchrnul(s, '=') - s);
+        VERB3 log("Unexporting '%s'", name);
+        unsetenv(name);
+        free(name);
+        free(s);
+    }
+    g_list_free(env_list);
 
-            try
-            {
-                if (g_pPluginManager->GetPluginType(plugin_name) == REPORTER)
-                {
-                    CReporter* reporter = g_pPluginManager->GetReporter(plugin_name); /* can't be NULL */
-                    map_plugin_settings_t plugin_settings = settings[plugin_name];
-                    std::string res = reporter->Report(stored_report, plugin_settings, it_r->second.c_str());
-                    ret[plugin_name].push_back("1"); // REPORT_STATUS_IDX_FLAG
-                    ret[plugin_name].push_back(res); // REPORT_STATUS_IDX_MSG
-                    if (message != "")
-                        message += ";";
-                    message += res;
-                    at_least_one_reporter_succeeded = true;
-                }
-            }
-            catch (CABRTException& e)
-            {
-                ret[plugin_name].push_back("0");      // REPORT_STATUS_IDX_FLAG
-                ret[plugin_name].push_back(e.what()); // REPORT_STATUS_IDX_MSG
-                update_client("Reporting via '%s' was not successful: %s", plugin_name, e.what());
-            }
-        } // for
-    } // if
-
+    // Save reporting results to database
     if (at_least_one_reporter_succeeded)
     {
         CDatabase* database = g_pPluginManager->GetDatabase(g_settings_sDatabase);

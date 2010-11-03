@@ -577,27 +577,31 @@ static void report_to_bugzilla(
     load_crash_data_from_debug_dump(dd, pCrashData);
     dd_close(dd);
 
+    const char *env;
     const char *login;
     const char *password;
     const char *bugzilla_xmlrpc;
     const char *bugzilla_url;
     bool ssl_verify;
 
-    login = settings["Login"].c_str();
-    password = settings["Password"].c_str();
-    bugzilla_url = settings["BugzillaURL"].c_str();
-    if (!bugzilla_url[0])
-        bugzilla_url = "https://bugzilla.redhat.com";
-    bugzilla_xmlrpc = settings["BugzillaXMLRPC"].c_str();
-    if (!bugzilla_xmlrpc[0])
-        bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
-    ssl_verify = string_to_bool(settings["SSLVerify"].c_str());
-
+    env = getenv("Bugzilla_Login");
+    login = env ? env : settings["Login"].c_str();
+    env = getenv("Bugzilla_Password");
+    password = env ? env : settings["Password"].c_str();
     if (!login[0] || !password[0])
     {
         VERB3 log("Empty login and password");
         throw CABRTException(EXCEP_PLUGIN, _("Empty login or password, please check %s"), PLUGINS_CONF_DIR"/Bugzilla.conf");
     }
+
+    env = getenv("Bugzilla_BugzillaURL");
+    bugzilla_url = env ? env : settings["BugzillaURL"].c_str();
+    if (!bugzilla_url[0])
+        bugzilla_url = "https://bugzilla.redhat.com";
+    bugzilla_xmlrpc = xasprintf("%s"XML_RPC_SUFFIX, bugzilla_url);
+
+    env = getenv("Bugzilla_SSLVerify");
+    ssl_verify = string_to_bool(env ? env : settings["SSLVerify"].c_str());
 
     const char *component = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_COMPONENT);
     const char *duphash   = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_DUPHASH);
@@ -715,7 +719,7 @@ static void report_to_bugzilla(
         log(_("Logging out..."));
         bz_server.logout();
 
-        printf("STATUS:Status: NEW %s/show_bug.cgi?id=%u\n",
+        log("Status: NEW %s/show_bug.cgi?id=%u",
                     bugzilla_url,
                     (int)bug_id
         );
@@ -812,7 +816,7 @@ static void report_to_bugzilla(
     log(_("Logging out..."));
     bz_server.logout();
 
-    printf("STATUS:Status: %s%s%s %s/show_bug.cgi?id=%u\n",
+    log("Status: %s%s%s %s/show_bug.cgi?id=%u",
                 bz.bug_status,
                 bz.bug_resolution ? " " : "",
                 bz.bug_resolution ? bz.bug_resolution : "",
@@ -897,8 +901,7 @@ int main(int argc, char **argv)
     }
     catch (CABRTException& e)
     {
-        printf("EXCEPT:%s\n", e.what());
-        return 1;
+        error_msg_and_die("%s", e.what());
     }
 
     return 0;

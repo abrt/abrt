@@ -94,7 +94,7 @@ void RunActionsAndReporters(const char *pDebugDumpDir);
  */
 report_status_t Report(const map_crash_data_t& crash_data,
                        const vector_string_t& reporters,
-                       map_map_string_t& settings,
+                       const map_map_string_t& settings,
                        long caller_uid);
 /**
  * Adds package name and description to debugdump dir.

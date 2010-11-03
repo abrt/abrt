@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 
-#define _GNU_SOURCE 1    /* for stpcpy */
 #include <libtar.h>
 #include "abrtlib.h"
 #include "abrt_curl.h"
@@ -33,13 +32,12 @@
 
 static void report_to_rhtsupport(
                 const char *dump_dir_name,
-                /*const*/ map_plugin_settings_t& pSettings)
+                const map_plugin_settings_t& settings)
 {
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
-    {
-        throw CABRTException(EXCEP_PLUGIN, _("Can't open '%s'"), dump_dir_name);
-    }
+        exit(1); /* error msg is already logged by dd_opendir */
+
     map_crash_data_t pCrashData;
     load_crash_data_from_debug_dump(dd, pCrashData);
     dd_close(dd);
@@ -58,19 +56,25 @@ static void report_to_rhtsupport(
     const char* reason;
     const char* package;
 
-    map_plugin_settings_t::const_iterator end = pSettings.end();
+    char* env;
+    map_plugin_settings_t::const_iterator end = settings.end();
     map_plugin_settings_t::const_iterator it;
-    it = pSettings.find("URL");
-    char *url = xstrdup(it == end ? "https://api.access.redhat.com/rs" : it->second.c_str());
 
-    it = pSettings.find("Login");
-    char *login = xstrdup(it == end ? "" : it->second.c_str());
+    env = getenv("RHTSupport_URL");
+    it = settings.find("URL");
+    char *url = xstrdup(env ? env : it == end ? "https://api.access.redhat.com/rs" : it->second.c_str());
 
-    it = pSettings.find("Password");
-    char *password = xstrdup(it == end ? "" : it->second.c_str());
+    env = getenv("RHTSupport_Login");
+    it = settings.find("Login");
+    char *login = xstrdup(env ? env : it == end ? "" : it->second.c_str());
 
-    it = pSettings.find("SSLVerify");
-    bool ssl_verify = (it == end ? true : string_to_bool(it->second.c_str()));
+    env = getenv("RHTSupport_Password");
+    it = settings.find("Password");
+    char *password = xstrdup(env ? env : it == end ? "" : it->second.c_str());
+
+    env = getenv("RHTSupport_SSLVerify");
+    it = settings.find("SSLVerify");
+    bool ssl_verify = string_to_bool(env ? env : it == end ? "1" : it->second.c_str());
 
     if (!login[0] || !password[0])
     {
@@ -224,12 +228,10 @@ static void report_to_rhtsupport(
                     break;
             }
             /* Use sanitized string as error message */
-            CABRTException e(EXCEP_PLUGIN, "%s", result);
-            free(result);
-            throw e;
+            error_msg_and_die("%s", result);
         }
         /* No error */
-        printf("STATUS:%s\n", result);
+        log("%s", result);
         free(result);
     }
 
@@ -252,9 +254,7 @@ static void report_to_rhtsupport(
     free(password);
 
     if (errmsg)
-    {
-        throw CABRTException(EXCEP_PLUGIN, "%s", errmsg);
-    }
+        error_msg_and_die("%s", errmsg);
 }
 
 int main(int argc, char **argv)
@@ -331,8 +331,7 @@ int main(int argc, char **argv)
     }
     catch (CABRTException& e)
     {
-        printf("EXCEPT:%s\n", e.what());
-        return 1;
+        error_msg_and_die("%s", e.what());
     }
 
     return 0;
