@@ -224,7 +224,7 @@ static inline struct run_event_state *new_run_event_state()
 static inline void free_run_event_state(struct run_event_state *state)
     { free(state); }
 int run_event(struct run_event_state *state, const char *dump_dir_name, const char *event);
-char *list_possible_events(const char *pfx);
+char *list_possible_events(const char *dump_dir_name, const char *pfx);
 
 #ifdef __cplusplus
 }

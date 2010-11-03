@@ -21,7 +21,7 @@
 
 #define PROGNAME "abrt-handle-crashdump"
 
-static const char *dump_dir_name = ".";
+static const char *dump_dir_name = NULL;
 //static const char *conf_filename = CONF_DIR"/abrt_event.conf";
 static const char *event;
 static const char *pfx = "";
@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 
     const char *program_usage = _(
         PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -d DIR -e EVENT\n"
-        "   or: "PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " -l[PFX]\n"
+        "   or: "PROGNAME" [-vs]" /*" [-c CONFFILE]"*/ " [-d DIR] -l[PFX]\n"
         "\n"
         "Handle crash dump according to rules in abrt_event.conf");
     enum {
@@ -74,7 +74,10 @@ int main(int argc, char **argv)
 
     if (opts & OPT_l)
     {
-        char *events = list_possible_events(pfx);
+        /* Note that dump_dir_name may be NULL here, it means "show all
+         * possible events regardless of dir"
+         */
+        char *events = list_possible_events(dump_dir_name, pfx);
         if (!events)
             return 1; /* error msg is already logged */
         fputs(events, stdout);
@@ -85,7 +88,7 @@ int main(int argc, char **argv)
     /* -e EVENT: run event */
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
-    int r = run_event(run_state, dump_dir_name, event);
+    int r = run_event(run_state, dump_dir_name ? dump_dir_name : ".", event);
     free_run_event_state(run_state);
 
     return r;

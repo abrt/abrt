@@ -38,7 +38,7 @@ int run_event(struct run_event_state *state,
     char *full_name = realpath(dump_dir_name, NULL);
     setenv("DUMP_DIR", (full_name ? full_name : dump_dir_name), 1);
     free(full_name);
-    /*setenv("EVENT", event, 1); - is this useful for children to know? */
+    setenv("EVENT", event, 1);
 
     /* Read, match, and execute lines from abrt_event.conf */
     int retval = 0;
@@ -55,14 +55,17 @@ int run_event(struct run_event_state *state,
 
         while (1) /* word loop */
         {
+            char *end_word = skip_non_whitespace(p);
+            char *next_word = skip_whitespace(end_word);
+            *end_word = '\0';
+
             /* If there is no '=' in this word... */
-            char *next_word = skip_whitespace(skip_non_whitespace(p));
-            char *needed_val = strchr(p, '=');
-            if (!needed_val || needed_val >= next_word)
+            char *line_val = strchr(p, '=');
+            if (!line_val)
                 break; /* ...we found the start of a command */
 
-            /* Current word has VAR=VAL form. needed_val => VAL */
-            *needed_val++ = '\0';
+            /* Current word has VAR=VAL form. line_val => VAL */
+            *line_val++ = '\0';
 
             const char *real_val;
             char *malloced_val = NULL;
@@ -83,12 +86,9 @@ int run_event(struct run_event_state *state,
             }
 
             /* Does VAL match? */
-            unsigned len = strlen(real_val);
-            bool match = (strncmp(real_val, needed_val, len) == 0
-                         && (needed_val[len] == ' ' || needed_val[len] == '\t'));
-            if (!match)
+            if (strcmp(real_val, line_val) != 0)
             {
-                VERB3 log("var '%s': '%s'!='%s', skipping line", p, real_val, needed_val);
+                VERB3 log("var '%s': '%s'!='%s', skipping line", p, real_val, line_val);
                 free(malloced_val);
                 goto next_line; /* no */
             }
@@ -135,6 +135,7 @@ int run_event(struct run_event_state *state,
                 free(buf);
             }
             fclose(fp); /* Got EOF, close. This also closes pipefds[0] */
+
             /* Wait for child to actually exit, collect status */
             int status;
             waitpid(pid, &status, 0);
@@ -167,7 +168,7 @@ int run_event(struct run_event_state *state,
     return retval;
 }
 
-char *list_possible_events(const char *pfx)
+char *list_possible_events(const char *dump_dir_name, const char *pfx)
 {
     FILE *conffile = fopen(CONF_DIR"/abrt_event.conf", "r");
     if (!conffile)
@@ -176,6 +177,7 @@ char *list_possible_events(const char *pfx)
         return NULL;
     }
 
+    struct dump_dir *dd = NULL;
     unsigned pfx_len = strlen(pfx);
     struct strbuf *result = strbuf_new();
     char *line;
@@ -190,42 +192,72 @@ char *list_possible_events(const char *pfx)
 
         while (1) /* word loop */
         {
+            char *end_word = skip_non_whitespace(p);
+            char *next_word = skip_whitespace(end_word);
+            *end_word = '\0';
+
             /* If there is no '=' in this word... */
-            char *end_of_word = skip_non_whitespace(p);
-            char *next_word = skip_whitespace(end_of_word);
-            char *val = strchr(p, '=');
-            if (!val || val >= next_word)
+            char *line_val = strchr(p, '=');
+            if (!line_val)
                 break; /* ...we found the start of a command */
 
-            /* Current word has VAR=VAL form */
-            *val++ = '\0';
+            /* Current word has VAR=VAL form. line_val => VAL */
+            *line_val++ = '\0';
+
+            /* Is it EVENT? */
             if (strcmp(p, "EVENT") == 0)
             {
-                /* EVENT=VAL */
-                *end_of_word = '\0';
-                if (strncmp(pfx, val, pfx_len) == 0)
+                if (strncmp(line_val, pfx, pfx_len) != 0)
+                    goto next_line; /* prefix doesn't match */
+                /* (Ab)use line to save matching "\nEVENT_VAL\n" */
+                sprintf(line, "\n%s\n", line_val);
+            }
+            else
+            {
+                /* Get this name from dump dir */
+                if (!dd)
                 {
-                    /* VAL starts with pfx */
-                    unsigned val_len_p2 = sprintf(line, "\n%s\n", val);  /* line = "\nVAL\n" */
-
-                    /* Do we already have VAL in the result? */
-                    if (!strstr(result->buf, line)
-                     && strncmp(result->buf, line + 1, val_len_p2 - 1) != 0
-                    ) {
-                        /* No, add VAL\n */
-                        strbuf_append_str(result, line + 1);
-                    }
+                    /* Without dir name to match, we assume match */
+                    if (!dump_dir_name)
+                        goto matched;
+                    dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
+                    if (!dd)
+                        goto stop; /* error (note: dd_opendir logged error msg) */
                 }
-                /* We don't check for more EVENT=foo words on the line */
-                break;
+                char *real_val = dd_load_text(dd, p);
+                /* Does VAL match? */
+                if (strcmp(real_val, line_val) != 0)
+                {
+                    VERB3 log("var '%s': '%s'!='%s', skipping line", p, real_val, line_val);
+                    free(real_val);
+                    goto next_line; /* no */
+                }
+                free(real_val);
             }
 
+            /* Go to next word */
             p = next_word;
         } /* end of word loop */
+
+ matched:
+        dd_close(dd);
+        dd = NULL;
+
+        if (line[0] == '\n' /* do we *have* saved matched "\nEVENT_VAL\n"? */
+         /* and does result->buf NOT yet have VAL? */
+         && strncmp(result->buf, line + 1, strlen(line + 1)) != 0
+         && !strstr(result->buf, line)
+        ) {
+            /* Add "EVENT_VAL\n" */
+            strbuf_append_str(result, line + 1);
+        }
 
  next_line:
         free(line);
     } /* end of line loop */
+
+ stop:
+    free(line);
     fclose(conffile);
 
     return strbuf_free_nobuf(result);
