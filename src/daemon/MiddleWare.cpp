@@ -146,7 +146,7 @@ mw_result_t CreateCrashReport(const char *crash_id,
     {
         struct run_event_state *run_state = new_run_event_state();
         run_state->logging_callback = do_log_and_update_client;
-        int res = run_event(run_state, row->db_dump_dir, "analyze");
+        int res = run_event(run_state, row->db_dump_dir, force ? "reanalyze" : "analyze");
         free_run_event_state(run_state);
         if (res != 0)
         {
