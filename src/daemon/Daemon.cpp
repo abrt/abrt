@@ -504,6 +504,8 @@ static int Lock()
 
 static void handle_signal(int signo)
 {
+    int save_errno = errno;
+
     // Enable for debugging only, malloc/printf are unsafe in signal handlers
     //VERB3 log("Got signal %d", signo);
 
@@ -513,6 +515,8 @@ static void handle_signal(int signo)
      * won't change it under us */
     if (s_signal_pipe_write >= 0)
         write(s_signal_pipe_write, &l_sig_caught, 1);
+
+    errno = save_errno;
 }
 
 /* Signal pipe handler */
