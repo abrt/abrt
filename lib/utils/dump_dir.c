@@ -28,7 +28,7 @@
 // "if there is no "uid" file in the directory, it's not a crash dump",
 // and fail.
 
-static char *load_text_file(const char *path);
+static char *load_text_file(const char *path, unsigned flags);
 
 static bool isdigit_str(const char *str)
 {
@@ -317,7 +317,7 @@ struct dump_dir *dd_create(const char *dir, uid_t uid)
     uname(&buf); /* never fails */
     dd_save_text(dd, FILENAME_KERNEL, buf.release);
     dd_save_text(dd, FILENAME_ARCHITECTURE, buf.machine);
-    char *release = load_text_file("/etc/redhat-release");
+    char *release = load_text_file("/etc/redhat-release", /*flags:*/ 0);
     strchrnul(release, '\n')[0] = '\0';
     dd_save_text(dd, FILENAME_RELEASE, release);
     free(release);
@@ -366,13 +366,14 @@ void dd_delete(struct dump_dir *dd)
     delete_file_dir(dd->dd_dir);
 }
 
-static char *load_text_file(const char *path)
+static char *load_text_file(const char *path, unsigned flags)
 {
     FILE *fp = fopen(path, "r");
     if (!fp)
     {
-        perror_msg("Can't open file '%s'", path);
-        return xstrdup("");
+        if (!(flags & DD_FAIL_QUIETLY))
+            perror_msg("Can't open file '%s'", path);
+        return (flags & DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE ? NULL : xstrdup(""));
     }
 
     struct strbuf *buf_content = strbuf_new();
@@ -414,16 +415,21 @@ static bool save_binary_file(const char *path, const char* data, unsigned size, 
     return true;
 }
 
-char* dd_load_text(const struct dump_dir *dd, const char *name)
+char* dd_load_text_ext(const struct dump_dir *dd, const char *name, unsigned flags)
 {
     if (!dd->locked)
         error_msg_and_die("dump_dir is not opened"); /* bug */
 
     char *full_path = concat_path_file(dd->dd_dir, name);
-    char *ret = load_text_file(full_path);
+    char *ret = load_text_file(full_path, flags);
     free(full_path);
 
     return ret;
+}
+
+char* dd_load_text(const struct dump_dir *dd, const char *name)
+{
+    return dd_load_text_ext(dd, name, /*flags:*/ 0);
 }
 
 void dd_save_text(struct dump_dir *dd, const char *name, const char *data)

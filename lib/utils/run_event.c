@@ -85,13 +85,16 @@ int run_event(struct run_event_state *state,
                     if (!dd)
                         goto stop; /* error (note: dd_opendir logged error msg) */
                 }
-                real_val = malloced_val = dd_load_text(dd, p);
+                real_val = malloced_val = dd_load_text_ext(dd, p, DD_FAIL_QUIETLY);
             }
 
             /* Does VAL match? */
             if (strcmp(real_val, line_val) != 0)
             {
-                VERB3 log("var '%s': '%s'!='%s', skipping line", p, real_val, line_val);
+                VERB3 log("var '%s': '%.*s'!='%s', skipping line",
+                        p,
+                        (int)(strchrnul(real_val, '\n') - real_val), real_val,
+                        line_val);
                 free(malloced_val);
                 goto next_line; /* no */
             }
