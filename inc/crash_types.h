@@ -67,6 +67,9 @@
 #define CD_COUNT        "Count"
 #define CD_REPORTED     "Reported"
 #define CD_MESSAGE      "Message"
+// "Which events are possible (make sense) on this crash dump?"
+// (a string with "\n" terminated event names)
+#define CD_EVENTS       "Events"
 
 
 // Crash data is a map of 3-element vectors of strings: type, editable, content

@@ -77,7 +77,7 @@ int main(int argc, char **argv)
         /* Note that dump_dir_name may be NULL here, it means "show all
          * possible events regardless of dir"
          */
-        char *events = list_possible_events(dump_dir_name, pfx);
+        char *events = list_possible_events(NULL, dump_dir_name, pfx);
         if (!events)
             return 1; /* error msg is already logged */
         fputs(events, stdout);

@@ -57,15 +57,12 @@ int run_event(struct run_event_state *state,
         {
             char *end_word = skip_non_whitespace(p);
             char *next_word = skip_whitespace(end_word);
-
-            /* *end_word = '\0'; - BUG, truncates command */
+            *end_word = '\0';
 
             /* If there is no '=' in this word... */
             char *line_val = strchr(p, '=');
-            if (!line_val || line_val >= end_word)
+            if (!line_val)
                 break; /* ...we found the start of a command */
-
-            *end_word = '\0';
 
             /* Current word has VAR=VAL form. line_val => VAL */
             *line_val++ = '\0';
@@ -172,7 +169,7 @@ int run_event(struct run_event_state *state,
     return retval;
 }
 
-char *list_possible_events(const char *dump_dir_name, const char *pfx)
+char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx)
 {
     FILE *conffile = fopen(CONF_DIR"/abrt_event.conf", "r");
     if (!conffile)
@@ -181,7 +178,13 @@ char *list_possible_events(const char *dump_dir_name, const char *pfx)
         return NULL;
     }
 
-    struct dump_dir *dd = NULL;
+    /* We check "dump_dir_name == NULL" later.
+     * Prevent the possibility that both dump_dir_name
+     * and dd are non-NULL (which does not make sense)
+     */
+    if (dd)
+        dump_dir_name = NULL;
+
     unsigned pfx_len = strlen(pfx);
     struct strbuf *result = strbuf_new();
     char *line;
@@ -259,7 +262,8 @@ char *list_possible_events(const char *dump_dir_name, const char *pfx)
 
  stop:
     free(line);
-    dd_close(dd);
+    if (dump_dir_name != NULL)
+        dd_close(dd);
     fclose(conffile);
 
     return strbuf_free_nobuf(result);

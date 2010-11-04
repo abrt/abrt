@@ -635,8 +635,13 @@ mw_result_t FillCrashInfo(const char *crash_id,
     }
 
     load_crash_data_from_debug_dump(dd, pCrashData);
+    char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
 
+    add_to_crash_data_ext(pCrashData, CD_EVENTS, CD_SYS, CD_ISNOTEDITABLE, events);
+    free(events);
+
+//TODO: we _never_ use CD_SYS, perhaps we should use it here?
     add_to_crash_data(pCrashData, CD_UID              , row->db_uid        );
     add_to_crash_data(pCrashData, CD_UUID             , row->db_uuid       );
     add_to_crash_data(pCrashData, CD_INFORMALL        , row->db_inform_all );

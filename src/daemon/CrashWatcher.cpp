@@ -50,6 +50,9 @@ vector_map_crash_data_t GetCrashInfos(long caller_uid)
     try
     {
         vector_string_t crash_ids;
+//TODO: it looks strange that we select UUIDs
+//olny in order to find which directories to read!
+//Should we simply retrieve list of *directories*, not *uuids*?
         GetUUIDsOfCrash(caller_uid, crash_ids);
 
         unsigned int ii;

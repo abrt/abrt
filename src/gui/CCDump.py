@@ -42,6 +42,7 @@ CD_DUMPDIR      = "DumpDir"
 CD_COUNT        = "Count"
 CD_REPORTED     = "Reported"
 CD_MESSAGE      = "Message"
+CD_EVENTS       = "Events"
 
 # FIXME - create method or smth that returns type|editable|content
 
