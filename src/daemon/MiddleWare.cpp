@@ -514,12 +514,12 @@ static int is_crash_id_in_db(const char *dump_dir_name, void *param)
     struct dump_dir *dd = dd_opendir(dump_dir_name, /*flags:*/ 0);
     if (!dd)
         return 0; /* wtf? (error, but will be handled elsewhere later) */
-    char *uuid = dd_load_text(dd, CD_UUID);
+    char *uuid = dd_load_text_ext(dd, CD_UUID,
+                DD_FAIL_QUIETLY + DD_LOAD_TEXT_RETURN_NULL_ON_FAILURE
+    );
     dd_close(dd);
-//TODO: want flag to dd_load_text: "please return NULL if not found"
-    if (!uuid[0])
+    if (!uuid)
     {
-        free(uuid);
         return 0; /* no uuid (yet), "run_event, please continue iterating" */
     }
     state->crash_id = xasprintf("%s:%s", state->uid, uuid);
