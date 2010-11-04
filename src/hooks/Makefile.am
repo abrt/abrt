@@ -2,7 +2,8 @@ libexec_PROGRAMS = abrt-hook-ccpp
 bin_PROGRAMS = dumpoops
 
 # abrt-hook-ccpp
-abrt_hook_ccpp_SOURCES = abrt-hook-ccpp.cpp
+abrt_hook_ccpp_SOURCES = \
+    abrt-hook-ccpp.c
 abrt_hook_ccpp_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/utils \
@@ -14,7 +15,8 @@ abrt_hook_ccpp_LDADD = \
     ../../lib/utils/libABRTUtils.la
 
 # dumpoops
-dumpoops_SOURCES = dumpoops.cpp
+dumpoops_SOURCES = \
+    dumpoops.cpp
 dumpoops_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/utils \
