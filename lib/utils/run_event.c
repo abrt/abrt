@@ -57,12 +57,15 @@ int run_event(struct run_event_state *state,
         {
             char *end_word = skip_non_whitespace(p);
             char *next_word = skip_whitespace(end_word);
-            *end_word = '\0';
+
+            /* *end_word = '\0'; - BUG, truncates command */
 
             /* If there is no '=' in this word... */
             char *line_val = strchr(p, '=');
-            if (!line_val)
+            if (!line_val || line_val >= end_word)
                 break; /* ...we found the start of a command */
+
+            *end_word = '\0';
 
             /* Current word has VAR=VAL form. line_val => VAL */
             *line_val++ = '\0';
