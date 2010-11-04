@@ -138,6 +138,8 @@ static char* get_executable(pid_t pid, int *fd_p)
     sprintf(buf, "/proc/%lu/exe", (long)pid);
     *fd_p = open(buf, O_RDONLY); /* might fail and return -1, it's ok */
     char *executable = malloc_readlink(buf);
+    if (!executable)
+        return NULL;
     /* find and cut off " (deleted)" from the path */
     char *deleted = executable + strlen(executable) - strlen(" (deleted)");
     if (deleted > executable && strcmp(deleted, " (deleted)") == 0)
@@ -290,12 +292,8 @@ int main(int argc, char** argv)
     }
 
     int src_fd_binary;
-    char* executable = get_executable(pid, &src_fd_binary);
-    if (executable == NULL)
-    {
-        perror_msg_and_die("can't read /proc/%lu/exe link", (long)pid);
-    }
-    if (strstr(executable, "/abrt-hook-ccpp"))
+    char *executable = get_executable(pid, &src_fd_binary);
+    if (executable && strstr(executable, "/abrt-hook-ccpp"))
     {
         error_msg_and_die("pid %lu is '%s', not dumping it to avoid recursion",
                         (long)pid, executable);
@@ -317,37 +315,45 @@ int main(int argc, char** argv)
     /* Open a fd to compat coredump, if requested and is possible */
     int user_core_fd = -1;
     if (setting_MakeCompatCore && ulimit_c != 0)
+        /* note: checks "user_pwd == NULL" inside */
         user_core_fd = open_user_core(user_pwd, uid, pid);
 
-    const char *signame = NULL;
-    /* Tried to use array for this but C++ does not support v[] = { [IDX] = "str" } */
-    switch (signal_no)
+    if (executable == NULL)
     {
-        case SIGILL : signame = "ILL" ; break;
-        case SIGFPE : signame = "FPE" ; break;
-        case SIGSEGV: signame = "SEGV"; break;
-        case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
-        case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
-      //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
-      //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
-      //case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
-      //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
-      //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
-        default: goto create_user_core; // not a signal we care about
-    }
-
-    if (!daemon_is_ok())
-    {
-        /* not an error, exit with exitcode 0 */
-        log("abrt daemon is not running. If it crashed, "
-            "/proc/sys/kernel/core_pattern contains a stale value, "
-            "consider resetting it to 'core'"
-        );
+        /* readlink on /proc/$PID/exe failed, don't create abrt dump dir */
+        error_msg("can't read /proc/%lu/exe link", (long)pid);
         goto create_user_core;
     }
 
     try
     {
+        const char *signame = NULL;
+        /* Tried to use array for this but C++ does not support v[] = { [IDX] = "str" } */
+        switch (signal_no)
+        {
+            case SIGILL : signame = "ILL" ; break;
+            case SIGFPE : signame = "FPE" ; break;
+            case SIGSEGV: signame = "SEGV"; break;
+            case SIGBUS : signame = "BUS" ; break; //Bus error (bad memory access)
+            case SIGABRT: signame = "ABRT"; break; //usually when abort() was called
+          //case SIGQUIT: signame = "QUIT"; break; //Quit from keyboard
+          //case SIGSYS : signame = "SYS" ; break; //Bad argument to routine (SVr4)
+          //case SIGTRAP: signame = "TRAP"; break; //Trace/breakpoint trap
+          //case SIGXCPU: signame = "XCPU"; break; //CPU time limit exceeded (4.2BSD)
+          //case SIGXFSZ: signame = "XFSZ"; break; //File size limit exceeded (4.2BSD)
+            default: goto create_user_core; // not a signal we care about
+        }
+
+        if (!daemon_is_ok())
+        {
+            /* not an error, exit with exitcode 0 */
+            log("abrt daemon is not running. If it crashed, "
+                "/proc/sys/kernel/core_pattern contains a stale value, "
+                "consider resetting it to 'core'"
+            );
+            goto create_user_core;
+        }
+
         if (setting_MaxCrashReportsSize > 0)
         {
             check_free_space(setting_MaxCrashReportsSize);
