@@ -21,10 +21,7 @@
 #include "run-command.h"
 #include "dbus.h"
 #include "abrtlib.h"
-#include "crash_types.h" // FILENAME_* defines
 #include "plugin.h" // LoadPluginSettings
-
-#include "abrt_packages.h"
 
 /* Field separator for the crash report file that is edited by user. */
 #define FIELD_SEP "%----"

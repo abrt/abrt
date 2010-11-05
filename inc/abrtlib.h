@@ -70,15 +70,17 @@ int vdprintf(int d, const char *format, va_list ap);
 #undef ARRAY_SIZE
 #define ARRAY_SIZE(x) ((unsigned)(sizeof(x) / sizeof((x)[0])))
 
-#include "abrt_types.h"
 #include "xfuncs.h"
 #include "logging.h"
 #include "read_write.h"
 #include "strbuf.h"
-#include "crash_types.h"
-#include "dump_dir.h"
 #include "hash_sha1.h"
 #include "hash_md5.h"
+
+#include "crash_types.h"
+#include "dump_dir.h"
+#include "abrt_types.h"
+#include "abrt_packages.h"
 
 
 #ifdef __cplusplus

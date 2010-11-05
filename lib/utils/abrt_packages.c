@@ -17,7 +17,6 @@
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
 #include "abrtlib.h"
-#include "abrt_packages.h"
 
 /* cuts the name from the NVR format: foo-1.2.3-1.el6
    returns a newly allocated string

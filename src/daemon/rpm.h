@@ -23,13 +23,9 @@
 #define RPM_H_
 
 #include <rpm/rpmts.h>
-#include <glib.h>
 #include <rpm/rpmcli.h>
 #include <rpm/rpmdb.h>
 #include <rpm/rpmpgp.h>
-#include <stdbool.h>
-
-#include "xfuncs.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -57,8 +53,9 @@ void rpm_load_gpgkey(const char* filename);
 /**
  * A function, which checks if package's finger print is valid.
  * @param pkg A package name.
+ * @return 1 if valid, otherwise (invalid, or error) 0
  */
-bool rpm_chk_fingerprint(const char* pkg);
+int rpm_chk_fingerprint(const char* pkg);
 
 /**
  * Gets a package description.

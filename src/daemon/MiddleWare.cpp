@@ -22,7 +22,6 @@
 #include "Daemon.h"
 #include "Settings.h"
 #include "abrt_exception.h"
-#include "abrt_packages.h"
 #include "comm_layer_inner.h"
 #include "MiddleWare.h"
 

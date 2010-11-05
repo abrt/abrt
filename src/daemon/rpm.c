@@ -16,9 +16,9 @@
     with this program; if not, write to the Free Software Foundation, Inc.,
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 */
+#include <glib.h>
 #include "abrtlib.h"
 #include "rpm.h"
-#include "abrt_packages.h"
 
 /**
 * A set, which contains finger prints.
@@ -71,9 +71,9 @@ void rpm_load_gpgkey(const char* filename)
     free(pkt);
 }
 
-bool rpm_chk_fingerprint(const char* pkg)
+int rpm_chk_fingerprint(const char* pkg)
 {
-    bool ret = false;
+    int ret = 0;
     char *pgpsig = NULL;
     const char *errmsg = NULL;
 
@@ -96,7 +96,7 @@ bool rpm_chk_fingerprint(const char* pkg)
         if (pgpsig_tmp)
         {
             pgpsig_tmp += sizeof(" Key ID ") - 1;
-            ret = g_list_find(list_fingerprints, pgpsig_tmp) != NULL;
+            ret = (g_list_find(list_fingerprints, pgpsig_tmp) != NULL);
         }
     }
 
