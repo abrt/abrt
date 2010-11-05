@@ -69,14 +69,18 @@ static bool DebugDumpToCrashReport(const char *pDebugDumpDir, map_crash_data_t& 
         if (!dd_exist(dd, *v))
         {
             dd_close(dd);
-            throw CABRTException(EXCEP_ERROR, "DebugDumpToCrashReport(): important file '%s' is missing", *v);
+            log("Important file '%s/%s' is missing", pDebugDumpDir, *v);
+            return false;
         }
-
         v++;
     }
 
     load_crash_data_from_debug_dump(dd, pCrashData);
+    char *events = list_possible_events(dd, NULL, "");
     dd_close(dd);
+
+    add_to_crash_data_ext(pCrashData, CD_EVENTS, CD_SYS, CD_ISNOTEDITABLE, events);
+    free(events);
 
     return true;
 }
@@ -112,15 +116,17 @@ mw_result_t CreateCrashReport(const char *crash_id,
 
     mw_result_t r = MW_OK;
 
-    char caller_uid_str[sizeof(long) * 3 + 2];
-    sprintf(caller_uid_str, "%li", caller_uid);
     if (caller_uid != 0 /* not called by root */
      && row->db_inform_all[0] != '1'
-     && strcmp(caller_uid_str, row->db_uid) != 0
     ) {
-        error_msg("crash '%s' can't be accessed by user with uid %ld", crash_id, caller_uid);
-        r = MW_IN_DB_ERROR;
-        goto ret;
+        char caller_uid_str[sizeof(long) * 3 + 2];
+        sprintf(caller_uid_str, "%ld", caller_uid);
+        if (strcmp(caller_uid_str, row->db_uid) != 0)
+        {
+            error_msg("crash '%s' can't be accessed by user with uid %ld", crash_id, caller_uid);
+            r = MW_IN_DB_ERROR;
+            goto ret;
+        }
     }
 
     try
