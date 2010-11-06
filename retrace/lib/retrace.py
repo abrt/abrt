@@ -9,7 +9,7 @@ from subprocess import *
 REQUIRED_FILES = ["architecture", "coredump", "packages", "release"]
 
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
-XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)[ \t]+([0-9]+)$")
+XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)$")
 URL_PARSER = re.compile("^/([a-zA-Z0-9]+)/")
 
 TASKID_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -55,7 +55,7 @@ def free_space(path):
     return None
 
 def unpacked_size(archive):
-    pipe = Popen(["/usr/local/bin/xz", "--list", "--robot", archive], stdout=PIPE).stdout
+    pipe = Popen(["/usr/bin/xz", "--list", "--robot", archive], stdout=PIPE).stdout
     for line in pipe.readlines():
         match = XZ_OUTPUT_PARSER.match(line)
         if match:
