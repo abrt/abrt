@@ -35,7 +35,6 @@ extern bool          g_settings_bProcessUnpackaged;
 extern char *g_settings_sDatabase;
 extern char *g_settings_sWatchCrashdumpArchiveDir;
 extern map_cron_t    g_settings_mapCron;
-extern vector_pair_string_string_t g_settings_vectorActionsAndReporters;
 extern map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
 
 int LoadSettings();

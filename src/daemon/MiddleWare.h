@@ -70,12 +70,6 @@ void RunAction(const char *pActionDir,
                const char *pPluginName,
                const char *pPluginArgs);
 /**
- * Activates all action and reporter plugins when any
- * crash occurs.
- * @param pDebugDumpDir A debugdump dir containing all necessary data.
- */
-void RunActionsAndReporters(const char *pDebugDumpDir);
-/**
  * Reports a crash report to particular receiver. It
  * takes an user uid, tries to find user config file and load it. If it
  * fails, then default config is used. If pUID is emply string, default
@@ -135,14 +129,6 @@ void GetUUIDsOfCrash(long caller_uid, vector_string_t &result);
 void AddAnalyzerActionOrReporter(const char *pAnalyzer,
                                  const char *pActionOrReporter,
                                  const char *pArgs);
-/**
- * Add action and reporter plugins, which are activated
- * when any crash occurs.
- * @param pActionOrReporter A name of an action or reporter plugin.
- * @param pArgs An arguments for action or reporter plugin.
- */
-void AddActionOrReporter(const char *pActionOrReporter,
-                         const char *pArgs);
 
 bool analyzer_has_InformAllUsers(const char *analyzer_name);
 #endif /*MIDDLEWARE_H_*/

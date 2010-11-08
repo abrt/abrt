@@ -59,8 +59,6 @@ char *g_settings_sWatchCrashdumpArchiveDir = NULL;
 unsigned int  g_settings_nMaxCrashReportsSize = 1000;
 bool          g_settings_bProcessUnpackaged = false;
 
-/* one line: "ActionsAndReporters = aa_first,bb_first(bb_second),cc_first" */
-vector_pair_string_string_t g_settings_vectorActionsAndReporters;
 /* [ AnalyzerActionsAndReporters ] */
 /* many lines, one per key: "map_key = aa_first,bb_first(bb_second),cc_first" */
 map_analyzer_actions_and_reporters_t g_settings_mapAnalyzerActionsAndReporters;
@@ -229,14 +227,6 @@ static int ParseCommon()
     if (it != end)
     {
         g_settings_nMaxCrashReportsSize = xatoi_u(it->second.c_str());
-    }
-    it = s_mapSectionCommon.find("ActionsAndReporters");
-    if (it != end)
-    {
-        int err = 0;
-        g_settings_vectorActionsAndReporters = ParseListWithArgs(it->second.c_str(), &err);
-        if (err)
-            return err;
     }
     it = s_mapSectionCommon.find("ProcessUnpackaged");
     if (it != end)

@@ -41,11 +41,6 @@ CPluginManager* g_pPluginManager;
  */
 typedef std::map<std::string, vector_pair_string_string_t> map_analyzer_actions_and_reporters_t;
 static map_analyzer_actions_and_reporters_t s_mapAnalyzerActionsAndReporters;
-/**
- * A vector of one or more action or reporter plugins. These are
- * activated when any crash occurs.
- */
-static vector_pair_string_string_t s_vectorActionsAndReporters;
 
 
 /**
@@ -183,43 +178,6 @@ void RunAction(const char *pActionDir,
     catch (CABRTException& e)
     {
         error_msg("Execution of '%s' was not successful: %s", pPluginName, e.what());
-    }
-}
-
-void RunActionsAndReporters(const char *pDebugDumpDir)
-{
-    vector_pair_string_string_t::iterator it_ar = s_vectorActionsAndReporters.begin();
-    map_plugin_settings_t plugin_settings;
-    for (; it_ar != s_vectorActionsAndReporters.end(); it_ar++)
-    {
-        const char *plugin_name = it_ar->first.c_str();
-        try
-        {
-            VERB3 log("RunActionsAndReporters: checking %s", plugin_name);
-            plugin_type_t tp = g_pPluginManager->GetPluginType(plugin_name);
-            if (tp == REPORTER)
-            {
-                CReporter* reporter = g_pPluginManager->GetReporter(plugin_name); /* can't be NULL */
-                map_crash_data_t crashReport;
-                if (DebugDumpToCrashReport(pDebugDumpDir, crashReport))
-                {
-                    VERB2 log("%s.Report(...)", plugin_name);
-                    reporter->Report(crashReport, plugin_settings, it_ar->second.c_str());
-                }
-                else
-                    error_msg("Activation of plugin '%s' was not successful: Error converting crash data", plugin_name);
-            }
-            else if (tp == ACTION)
-            {
-                CAction* action = g_pPluginManager->GetAction(plugin_name); /* can't be NULL */
-                VERB2 log("%s.Run('%s','%s')", plugin_name, pDebugDumpDir, it_ar->second.c_str());
-                action->Run(pDebugDumpDir, it_ar->second.c_str(), /*force:*/ 0);
-            }
-        }
-        catch (CABRTException& e)
-        {
-            error_msg("Activation of plugin '%s' was not successful: %s", plugin_name, e.what());
-        }
     }
 }
 
@@ -684,11 +642,4 @@ void AddAnalyzerActionOrReporter(const char *pAnalyzer,
                                               const char *pArgs)
 {
     s_mapAnalyzerActionsAndReporters[pAnalyzer].push_back(make_pair(std::string(pAnalyzerOrReporter), std::string(pArgs)));
-}
-
-void AddActionOrReporter(const char *pActionOrReporter,
-                                      const char *pArgs)
-{
-    VERB3 log("AddActionOrReporter('%s','%s')", pActionOrReporter, pArgs);
-    s_vectorActionsAndReporters.push_back(make_pair(std::string(pActionOrReporter), std::string(pArgs)));
 }

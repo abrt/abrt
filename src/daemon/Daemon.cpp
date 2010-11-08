@@ -263,12 +263,6 @@ static gboolean cron_activation_reshedule_cb(gpointer data)
 
 static int SetUpMW()
 {
-    VERB1 log("Adding actions or reporters");
-    vector_pair_string_string_t::iterator it_ar = g_settings_vectorActionsAndReporters.begin();
-    for (; it_ar != g_settings_vectorActionsAndReporters.end(); it_ar++)
-    {
-        AddActionOrReporter(it_ar->first.c_str(), it_ar->second.c_str());
-    }
     VERB1 log("Adding analyzers, actions or reporters");
     map_analyzer_actions_and_reporters_t::iterator it_aar = g_settings_mapAnalyzerActionsAndReporters.begin();
     for (; it_aar != g_settings_mapAnalyzerActionsAndReporters.end(); it_aar++)
@@ -427,8 +421,6 @@ static void FindNewDumps(const char* pPath)
                     /* Not VERB1: this is new, unprocessed crash dump.
                      * Last abrtd somehow missed it - need to inform user */
                     log("Non-processed crash in %s, saving into database", dir_name);
-                    /* Run automatic actions and reporters on it (if we have them configured) */
-                    RunActionsAndReporters(dir_name);
                     break;
                 case MW_IN_DB:
                     /* This debugdump was found in DB, nothing else was done
@@ -652,8 +644,6 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
             {
                 case MW_OK:
                     log("New crash %s, processing", fullname);
-                    /* Run automatic actions and reporters on it (if we have them configured) */
-                    RunActionsAndReporters(fullname);
                     /* Fall through */
 
                 case MW_REPORTED: /* already reported dup */
