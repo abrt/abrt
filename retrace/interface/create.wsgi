@@ -16,7 +16,7 @@ def application(environ, start_response):
     if request.method != "POST":
         return response(start_response, "405 Method Not Allowed")
 
-    if not request.content_type in ["application/x-xz", "application/x-xz-compressed-tar"]:
+    if not request.content_type in ["application/x-xz", "application/x-xz-compressed-tar", "application/x-gzip", "application/x-tar"]:
         return response(start_response, "415 Unsupported Media Type")
 
     if not request.content_length:
@@ -52,12 +52,13 @@ def application(environ, start_response):
         os.unlink(archive.name)
         return response(start_response, "507 Insufficient Storage")
 
-    taskid, taskdir = new_task()
-    if not taskid or not taskdir:
+    taskid, taskpass, taskdir = new_task()
+    if not taskid or not taskpass or not taskdir:
         return response(start_response, "500 Internal Server Error", "Unable to create new task")
 
     try:
-        os.chdir(taskdir)
+        os.mkdir(taskdir + "/crash/")
+        os.chdir(taskdir + "/crash/")
         unpack_retcode = unpack(archive.name)
         os.unlink(archive.name)
 
@@ -76,4 +77,6 @@ def application(environ, start_response):
             os.system("rm -rf " + taskdir)
             return response(start_response, "403 Forbidden")
 
-    return response(start_response, "201 Created", "", [("X-Task-Id", taskid), ("X-Task-Est-Time", str(get_task_est_time(taskdir)))])
+    # ToDo Spawn worker
+
+    return response(start_response, "201 Created", "", [("X-Task-Id", str(taskid)), ("X-Task-Password", taskpass), ("X-Task-Est-Time", str(get_task_est_time(taskdir)))])
