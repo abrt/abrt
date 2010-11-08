@@ -10,13 +10,13 @@ REQUIRED_FILES = ["architecture", "coredump", "packages", "release"]
 
 DF_OUTPUT_PARSER = re.compile("^([^ ^\t]*)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+%)[ \t]+(.*)$")
 XZ_OUTPUT_PARSER = re.compile("^totals[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+)[ \t]+([0-9]+\.[0-9]+)[ \t]+([^ ^\t]+)[ \t]+([0-9]+)$")
-URL_PARSER = re.compile("^/([a-zA-Z0-9]+)/")
+URL_PARSER = re.compile("^/([0-9]+)/")
 
-TASKID_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+TASKPASS_ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 CONFIG_FILE = "/etc/abrt/retrace.conf"
 CONFIG = {
-    "TaskIdLength": 64,
+    "TaskPassLength": 32,
     "MaxParallelTasks": 2,
     "MaxPackedSize": 30,
     "MaxUnpackedSize": 600,
@@ -65,34 +65,46 @@ def unpacked_size(archive):
     pipe.close()
     return None
 
+def gen_task_password(taskdir):
+    taskpass = ""
+    for j in xrange(CONFIG["TaskPassLength"]):
+        taskpass += random.choice(TASKPASS_ALPHABET)
+
+    try:
+        passfile = open(taskdir + "/password", "w")
+        passfile.write(taskpass)
+        passfile.close()
+    except:
+        return None
+
+    return taskpass
+
 def new_task():
     i = 0
     newdir = CONFIG["WorkDir"]
     while os.path.exists(newdir) and i < 50:
         i += 1
-        taskid = ""
-        for j in xrange(CONFIG["TaskIdLength"]):
-            taskid += random.choice(TASKID_ALPHABET)
-        newdir = CONFIG["WorkDir"] + "/" + taskid
+        taskid = random.randint(100000000, 999999999)
+        newdir = CONFIG["WorkDir"] + "/" + str(taskid)
 
-        try:
-            os.mkdir(newdir)
-            return taskid, newdir
-        except:
-            pass
+    try:
+        os.mkdir(newdir)
+        taskpass = gen_task_password(newdir)
+        if not taskpass:
+            os.system("rm -rf " + newdir)
+            raise
 
-    return None, None
+        return taskid, taskpass, newdir
+    except:
+        return None, None, None
 
 def unpack(archive):
     pipe = Popen(["tar", "xJf", archive])
     pipe.wait()
     return pipe.returncode
 
-def get_task_password(crashdir):
-    return "Password for " + crashdir
-
 def get_task_est_time(crashdir):
-    return 10
+    return 180
 
 def response(start_response, status, body="", extra_headers=[]):
     start_response(status, [("Content-Type", "text/plain"), ("Content-Length", str(len(body)))] + extra_headers)

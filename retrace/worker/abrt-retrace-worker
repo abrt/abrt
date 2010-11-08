@@ -20,16 +20,29 @@ then
     export PYTHONPATH="/usr/share/abrt-retrace"
     LOG="$1/log"
     echo "Starting retrace" > $LOG
-    exec /usr/bin/python /usr/share/abrt-retrace/worker.py "$1" >> $LOG
+    /usr/bin/python /usr/share/abrt-retrace/worker.py "$1" >> $LOG
     RET=$?
+
     if [ $RET -eq "0" ]
     then
         echo "Retrace successful" >> $LOG
         mv "$1/backtrace" "$1/retrace_backtrace"
+        chown "apache" "$1/retrace_backtrace"
     else
         echo "Retrace failed" >> $LOG
     fi
+
     mv "$1/log" "$1/retrace_log"
+    chown "apache" "$1/retrace_log"
+
+    for DEL in $1/*
+    do
+        if [ $DEL != "$1/retrace_log" ] && [ $DEL != "$1/retrace_backtrace" ] && [ $DEL != "$1/password" ]
+        then
+            rm -rf $DEL
+        fi
+    done
+
     exit $RET
 else
     echo "Usage: '$0 retrace_directory'"
