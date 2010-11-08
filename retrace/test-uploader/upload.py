@@ -6,7 +6,7 @@ import sys
 
 from subprocess import *
 
-REQUIRED_FILES = ["analyzer", "architecture", "coredump", "executable", "package", "release"]
+REQUIRED_FILES = ["analyzer", "architecture", "coredump", "executable", "package", "release", "uid"]
 ARCHIVE_NAME = "crash.tar.xz"
 ARCHIVE_CMD = ["tar", "cJf", ARCHIVE_NAME, "packages"] + REQUIRED_FILES
 CONTENT_TYPE = "application/x-xz-compressed-tar"
@@ -18,7 +18,7 @@ if __name__ == "__main__":
         print "For test purposes only"
         print "Usage: '" + sys.argv[0] + " crash_directory [server_address]'"
         print "  Crash directory is the directory created by ABRT (default /var/spool/abrt/crash_directory/)."
-        print "  Crash directory must contain analyzer, architecture, coredump, executable, package and release files."
+        print "  Crash directory must contain analyzer, architecture, coredump, executable, package, release and uid files."
         print "  If no server address is specified, default testing machine is used."
         print "  Only binary crashes (caught by CCpp) need retrace."
         print "  Only i?86 architecture is supported at the moment."
