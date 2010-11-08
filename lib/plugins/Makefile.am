@@ -4,7 +4,6 @@ pluginslib_LTLIBRARIES = \
     libCCpp.la \
     libMailx.la \
     libSQLite3.la \
-    libLogger.la \
     libKerneloopsScanner.la\
     libKerneloops.la \
     libKerneloopsReporter.la \
@@ -28,7 +27,6 @@ dist_pluginsconf_DATA = \
     CCpp.conf \
     Mailx.conf \
     SQLite3.conf \
-    Logger.conf \
     Kerneloops.conf \
     Bugzilla.conf \
     RHTSupport.conf \
@@ -55,8 +53,7 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 
 install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	sed 's: = /var/: = $(localstatedir)/:g' -i \
-	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf \
-	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
+	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf
 
 INC_PATH=$(srcdir)/../../inc
 UTILS_PATH=$(srcdir)/../utils
@@ -96,11 +93,6 @@ libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
 libSQLite3_la_LDFLAGS = -avoid-version
 libSQLite3_la_LIBADD = $(SQLITE3_LIBS) $(GLIB_LIBS)
 libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"' $(GLIB_CFLAGS)
-
-# Logger
-libLogger_la_SOURCES = Logger.cpp Logger.h
-libLogger_la_LDFLAGS = -avoid-version
-libLogger_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
 
 # SOSreport
 libSOSreport_la_SOURCES = SOSreport.cpp SOSreport.h

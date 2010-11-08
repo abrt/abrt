@@ -28,6 +28,7 @@
 
 static const char *dump_dir_name = ".";
 static const char *output_file = NULL;
+static const char *open_mode = "w";
 
 int main(int argc, char **argv)
 {
@@ -52,9 +53,13 @@ int main(int argc, char **argv)
         OPT_END()
     };
 
-//BITROT: restore handling of:
-// $Logger_AppendLogs=yes
-// $Logger_LogPath=/var/log/abrt.log
+    char *env = getenv("Logger_LogPath");
+    if (env)
+        output_file = env;
+
+    env = getenv("Logger_AppendLogs");
+    if (env && string_to_bool(env))
+        open_mode = "a";
 
     /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage);
 
@@ -62,7 +67,7 @@ int main(int argc, char **argv)
 
     if (output_file)
     {
-        if (!freopen(output_file, "w", stdout))
+        if (!freopen(output_file, open_mode, stdout))
         {
             perror_msg_and_die("Can't open '%s'", output_file);
         }
@@ -89,6 +94,10 @@ int main(int argc, char **argv)
     }
 
     if (output_file)
-        log("The report was stored to %s", output_file);
+    {
+        const char *format = (open_mode[0] == 'a' ? _("The report was appended to %s") : _("The report was stored to %s"));
+        log(format, output_file);
+    }
+
     return 0;
 }
