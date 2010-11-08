@@ -213,11 +213,4 @@ if __name__ == "__main__":
     retrace_run(15, ["cp", workdir + "/" + chroot + "/root/var/spool/abrt/crash/backtrace", workdir])
 
     print "OK"
-    print "Cleaning virtual root and crash directory...",
-    sys.stdout.flush()
-
-    retrace_run(16, ["mock", "clean", "-r", mockr])
-    retrace_run(17, ["rm", "-rf", workdir + "/crash", workdir + "/mock.cfg"])
-
-    print "OK"
     print "Retrace took " + str(time.time() - starttime) + " seconds"
