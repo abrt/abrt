@@ -43,13 +43,11 @@ int main(int argc, char** argv)
         middleWare.RegisterPlugin("CCpp");
         middleWare.RegisterPlugin("Mailx");
         middleWare.RegisterPlugin("Logger");
-        middleWare.RegisterPlugin("RunApp");
         middleWare.RegisterPlugin("SQLite3");
         middleWare.SetDatabase("SQLite3");
         middleWare.SetOpenGPGCheck(false);
         middleWare.AddActionOrReporter("Logger", "");
         middleWare.AddAnalyzerActionOrReporter("CCpp", "Mailx", "");
-        middleWare.AddAnalyzerActionOrReporter("CCpp", "RunApp", "date");
 
         loaded_plugins = middleWare.GetPluginsInfo();
         std::cout << "Loaded plugins" << std::endl;

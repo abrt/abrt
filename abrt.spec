@@ -133,14 +133,6 @@ Requires: mailx
 The simple reporter plugin which sends a report via mailx to a specified
 email address.
 
-%package plugin-runapp
-Summary: %{name}'s runapp plugin
-Group: System Environment/Libraries
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-runapp
-Plugin to run external programs.
-
 %package plugin-sosreport
 Summary: %{name}'s sosreport plugin
 Group: System Environment/Libraries
@@ -203,7 +195,7 @@ Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: abrt-addon-kerneloops
 Requires: abrt-addon-ccpp, abrt-addon-python
-Requires: abrt-plugin-bugzilla, abrt-plugin-logger, abrt-plugin-runapp
+Requires: abrt-plugin-bugzilla, abrt-plugin-logger
 
 %description cli
 This package contains simple command line client for controlling abrt daemon over
@@ -223,7 +215,7 @@ Requires: abrt-addon-ccpp, abrt-addon-python
 # Default config of addon-ccpp requires gdb
 Requires: gdb >= 7.0-3
 Requires: abrt-gui
-Requires: abrt-plugin-logger, abrt-plugin-bugzilla, abrt-plugin-runapp
+Requires: abrt-plugin-logger, abrt-plugin-bugzilla
 #Requires: abrt-plugin-firefox
 Obsoletes: bug-buddy
 Provides: bug-buddy
@@ -437,11 +429,6 @@ fi
 %{_libdir}/%{name}/libMailx.so*
 %{_libdir}/%{name}/Mailx.glade
 %{_mandir}/man7/abrt-Mailx.7.gz
-
-%files plugin-runapp
-%defattr(-,root,root,-)
-%{_libdir}/%{name}/libRunApp.so*
-%{_mandir}/man7/abrt-RunApp.7.gz
 
 %files plugin-sosreport
 %defattr(-,root,root,-)

@@ -8,7 +8,6 @@ pluginslib_LTLIBRARIES = \
     libKerneloopsScanner.la\
     libKerneloops.la \
     libKerneloopsReporter.la \
-    libRunApp.la \
     libSOSreport.la \
     libBugzilla.la \
     libRHTSupport.la \
@@ -47,7 +46,6 @@ man_MANS = \
     abrt-Mailx.7 \
     abrt-plugins.7 \
     abrt-SQLite3.7 \
-    abrt-RunApp.7 \
     abrt-ReportUploader.7
 
 EXTRA_DIST = $(man_MANS)
@@ -103,10 +101,6 @@ libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCAL
 libLogger_la_SOURCES = Logger.cpp Logger.h
 libLogger_la_LDFLAGS = -avoid-version
 libLogger_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
-
-# RunApp
-libRunApp_la_SOURCES = RunApp.h RunApp.cpp
-libRunApp_la_LDFLAGS = -avoid-version
 
 # SOSreport
 libSOSreport_la_SOURCES = SOSreport.cpp SOSreport.h
