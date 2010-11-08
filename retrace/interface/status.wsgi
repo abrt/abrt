@@ -38,10 +38,10 @@ def application(environ, start_response):
         return response(start_response, "500 Internal Server Error", "Unable to generate new password")
 
     status = "PENDING"
-    if os.path.isfile(CONFIG["WorkDir"] + "/" + task + "/retrace_log"):
-        if os.path.isfile(CONFIG["WorkDir"] + "/" + task + "/retrace_backtrace"):
+    if os.path.isfile(taskdir + "/retrace_log"):
+        if os.path.isfile(taskdir + "/retrace_backtrace"):
             status = "FINISHED_SUCCESS"
         else:
             status = "FINISHED_FAILURE"
 
-    return response(start_response, "200 OK", status, [("X-Task-Status", status)])
+    return response(start_response, "200 OK", status, [("X-Task-Status", status), ("X-Task-Password", newpass)])

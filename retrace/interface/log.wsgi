@@ -48,4 +48,4 @@ def application(environ, start_response):
     except:
         return response(start_response, "500 Internal Server Error", "Unable to read log file at server")
 
-    return response(start_response, "200 OK", output)
+    return response(start_response, "200 OK", output, [("X-Task-Password", newpass)])
