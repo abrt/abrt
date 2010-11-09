@@ -154,7 +154,6 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
             plugin_info["Email"] = empty;
             plugin_info["WWW"] = empty;
             plugin_info["GTKBuilder"] = empty;
-            m_map_plugin_info[pName] = plugin_info;
             VERB3 log("Plugin %s: 'Enabled' is not set, not loading it (yet)", pName);
             return NULL; /* error */
         }
@@ -208,7 +207,6 @@ CPlugin* CPluginManager::LoadPlugin(const char *pName, bool enabled_only)
     plugin_info["WWW"] = module->GetWWW();
     plugin_info["GTKBuilder"] = module->GetGTKBuilder();
 
-    m_map_plugin_info[pName] = plugin_info;
     m_mapLoadedModules[pName] = module;
     m_mapPlugins[pName] = plugin;
     log("Registered %s plugin '%s'", plugin_type_str[module->GetType()], pName);
@@ -406,33 +404,4 @@ void CPluginManager::SetPluginSettings(const char *pName,
     }
     */
 #endif
-}
-
-map_plugin_settings_t CPluginManager::GetPluginSettings(const char *pName)
-{
-    map_plugin_settings_t ret;
-
-    map_loaded_module_t::iterator it_module = m_mapLoadedModules.find(pName);
-    if (it_module != m_mapLoadedModules.end())
-    {
-        map_plugin_t::iterator it_plugin = m_mapPlugins.find(pName);
-        if (it_plugin != m_mapPlugins.end())
-        {
-            VERB3 log("Returning settings for loaded plugin %s", pName);
-            ret = it_plugin->second->GetSettings();
-            return ret;
-        }
-    }
-    /* else: module is not loaded */
-    map_map_string_t::iterator it_settings = m_map_plugin_settings.find(pName);
-    if (it_settings != m_map_plugin_settings.end())
-    {
-        /* but it exists, its settings are available nevertheless */
-        VERB3 log("Returning settings for non-loaded plugin %s", pName);
-        ret = it_settings->second;
-        return ret;
-    }
-
-    VERB3 log("Request for settings of unknown plugin %s, returning null result", pName);
-    return ret;
 }

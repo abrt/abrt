@@ -27,6 +27,7 @@ dist_pluginsconf_DATA = \
     CCpp.conf \
     Mailx.conf \
     SQLite3.conf \
+    Logger.conf \
     Kerneloops.conf \
     Bugzilla.conf \
     RHTSupport.conf \
@@ -53,7 +54,8 @@ $(DESTDIR)/$(DEBUG_INFO_DIR):
 
 install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 	sed 's: = /var/: = $(localstatedir)/:g' -i \
-	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf
+	    $(DESTDIR)$(sysconfdir)/abrt/plugins/SQLite3.conf \
+	    $(DESTDIR)$(sysconfdir)/abrt/plugins/Logger.conf
 
 INC_PATH=$(srcdir)/../../inc
 UTILS_PATH=$(srcdir)/../utils

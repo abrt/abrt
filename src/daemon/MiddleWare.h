@@ -130,12 +130,15 @@ void AddAnalyzerActionOrReporter(const char *pAnalyzer,
                                  const char *pActionOrReporter,
                                  const char *pArgs);
 
-bool analyzer_has_InformAllUsers(const char *analyzer_name);
+//bool analyzer_has_InformAllUsers(const char *analyzer_name);
 
 vector_map_crash_data_t GetCrashInfos(long caller_uid);
 int  CreateReportThread(const char* crash_id, long caller_uid, int force, const char* pSender);
 void CreateReport(const char* crash_id, long caller_uid, int force, map_crash_data_t&);
 int  DeleteDebugDump(const char *crash_id, long caller_uid);
 void DeleteDebugDump_by_dir(const char *dump_dir);
+
+void GetPluginsInfo(map_map_string_t &map_of_plugin_info);
+void GetPluginSettings(const char *plugin_name, map_plugin_settings_t &plugin_settings);
 
 #endif /*MIDDLEWARE_H_*/

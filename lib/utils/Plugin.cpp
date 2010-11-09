@@ -40,21 +40,6 @@ void CPlugin::SetSettings(const map_plugin_settings_t& pSettings)
     }
 }
 
-const map_plugin_settings_t& CPlugin::GetSettings()
-{
-    VERB3
-    {
-        log("GetSettings:");
-        map_plugin_settings_t::const_iterator it = m_pSettings.begin();
-        while (it != m_pSettings.end())
-        {
-            log(" settings[%s]:'%s'", it->first.c_str(), it->second.c_str());
-            it++;
-        }
-    }
-    return m_pSettings;
-}
-
 bool LoadPluginSettings(const char *pPath, map_plugin_settings_t& pSettings,
                         bool skipKeysWithoutValue /*= true*/)
 {

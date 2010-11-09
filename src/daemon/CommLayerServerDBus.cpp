@@ -337,7 +337,10 @@ static int handle_GetPluginsInfo(DBusMessage* call, DBusMessage* reply)
 {
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);
-    store_val(&out_iter, g_pPluginManager->GetPluginsInfo());
+
+    map_map_string_t map_of_plugin_info;
+    GetPluginsInfo(map_of_plugin_info);
+    store_val(&out_iter, map_of_plugin_info);
 
     send_flush_and_unref(reply);
     return 0;
@@ -358,7 +361,8 @@ static int handle_GetPluginSettings(DBusMessage* call, DBusMessage* reply)
 
     //long unix_uid = get_remote_uid(call);
     //VERB1 log("got %s('%s') call from uid %ld", "GetPluginSettings", PluginName, unix_uid);
-    map_plugin_settings_t plugin_settings = g_pPluginManager->GetPluginSettings(PluginName); //, to_string(unix_uid).c_str());
+    map_plugin_settings_t plugin_settings;
+    GetPluginSettings(PluginName, plugin_settings);
 
     DBusMessageIter out_iter;
     dbus_message_iter_init_append(reply, &out_iter);

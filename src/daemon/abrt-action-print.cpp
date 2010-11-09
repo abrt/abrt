@@ -53,17 +53,20 @@ int main(int argc, char **argv)
         OPT_END()
     };
 
+    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage);
+
+    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
+    //msg_prefix = PROGNAME;
+
     char *env = getenv("Logger_LogPath");
+    VERB3 log("output_file:'%s' Logger_LogPath env:'%s'", output_file, env);
     if (env)
         output_file = env;
 
     env = getenv("Logger_AppendLogs");
+    VERB3 log("Logger_AppendLogs env:'%s'", env);
     if (env && string_to_bool(env))
         open_mode = "a";
-
-    /*unsigned opts =*/ parse_opts(argc, argv, program_options, program_usage);
-
-    putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 
     if (output_file)
     {

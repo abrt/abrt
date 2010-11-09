@@ -16,6 +16,7 @@ libABRTUtils_la_SOURCES = \
     xfuncs.c \
     concat_path_file.c \
     append_to_malloced_string.c \
+    overlapping_strcpy.c \
     encbase64.c \
     stdio_helpers.c \
     hash_md5.c hash_md5.h \

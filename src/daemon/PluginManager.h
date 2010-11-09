@@ -53,7 +53,6 @@ class CPluginManager
         /**
          * List of all possible plugins (loaded or not), with some attributes.
          */
-	map_map_string_t m_map_plugin_info;
         map_map_string_t m_map_plugin_settings;
 
     public:
@@ -130,13 +129,6 @@ class CPluginManager
          */
         plugin_type_t GetPluginType(const char *pName);
         /**
-         * A method, which gets all plugins info (even those plugins which are
-         * disabled). It can be sent via DBus to GUI and displayed to an user.
-         * Then user can fill all needed informations like URLs etc.
-         * @return A vector of maps <key, value>
-         */
-        const map_map_string_t& GetPluginsInfo() { return m_map_plugin_info; }
-        /**
          * A method, which sets up a plugin. The settings are also saved in home
          * directory of an user.
          * @param pName A plugin name.
@@ -146,12 +138,6 @@ class CPluginManager
         void SetPluginSettings(const char *pName,
                                const char *pUID,
                                const map_plugin_settings_t& pSettings);
-        /**
-         * A method, which returns plugin's settings according to user.
-         * @param pName A plugin name.
-         * @return Plugin's settings.
-         */
-        map_plugin_settings_t GetPluginSettings(const char *pName);
 };
 
 #endif /*PLUGINMANAGER_H_*/

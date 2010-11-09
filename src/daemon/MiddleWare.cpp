@@ -401,20 +401,6 @@ static bool is_debug_dump_saved(const char *debug_dump_dir)
     return row != NULL;
 }
 
-bool analyzer_has_InformAllUsers(const char *analyzer_name)
-{
-    CAnalyzer* analyzer = g_pPluginManager->GetAnalyzer(analyzer_name);
-    if (!analyzer)
-    {
-        return false;
-    }
-    map_plugin_settings_t settings = analyzer->GetSettings();
-    map_plugin_settings_t::const_iterator it = settings.find("InformAllUsers");
-    if (it == settings.end())
-        return false;
-    return string_to_bool(it->second.c_str());
-}
-
 /**
  * Save a debugdump into database. If saving is
  * successful, then crash info is filled. Otherwise the crash info is
@@ -567,7 +553,7 @@ mw_result_t SaveDebugDump(const char *dump_dir_name,
      * else: an error code
      */
     res = SaveDebugDumpToDatabase(state.crash_id,
-                    analyzer_has_InformAllUsers(analyzer),
+                    true, /*analyzer_has_InformAllUsers(analyzer),*/
                     time,
                     dump_dir_name,
                     pCrashData);
@@ -843,4 +829,71 @@ void DeleteDebugDump_by_dir(const char *dump_dir)
     {
         error_msg("%s", e.what());
     }
+}
+
+void GetPluginsInfo(map_map_string_t &map_of_plugin_info)
+{
+    DIR *dir = opendir(PLUGINS_CONF_DIR);
+    if (!dir)
+        return;
+
+    struct dirent *dent;
+    while ((dent = readdir(dir)) != NULL)
+    {
+        if (!is_regular_file(dent, PLUGINS_CONF_DIR))
+            continue;
+        char *ext = strrchr(dent->d_name, '.');
+        if (!ext || strcmp(ext + 1, PLUGINS_CONF_EXTENSION) != 0)
+            continue;
+        VERB3 log("Found %s", dent->d_name);
+        *ext = '\0';
+
+        char *glade_file = xasprintf(PLUGINS_LIB_DIR"/%s.glade", dent->d_name);
+        if (access(glade_file, F_OK) == 0)
+        {
+            *ext = '.';
+            char *conf_file = concat_path_file(PLUGINS_CONF_DIR, dent->d_name);
+            *ext = '\0';
+            FILE *fp = fopen(conf_file, "r");
+            free(conf_file);
+
+            char *descr = NULL;
+            if (fp)
+            {
+                descr = xmalloc_fgetline(fp);
+                fclose(fp);
+                if (descr && strncmp("# Description:", descr, strlen("# Description:")) == 0)
+                    overlapping_strcpy(descr, skip_whitespace(descr + strlen("# Description:")));
+                else
+                {
+                    free(descr);
+                    descr = NULL;
+                }
+            }
+            map_string_t plugin_info;
+            plugin_info["Name"] = dent->d_name;
+            plugin_info["Enabled"] = "yes";
+            plugin_info["Type"] = "Reporter";       //was: plugin_type_str[module->GetType()]; field to be removed
+            plugin_info["Version"] = VERSION;       //was: module->GetVersion(); field to be removed?
+            plugin_info["Description"] = descr ? descr : ""; //was: module->GetDescription();
+            plugin_info["Email"] = "";              //was: module->GetEmail(); field to be removed
+            plugin_info["WWW"] = "";                //was: module->GetWWW(); field to be removed
+            plugin_info["GTKBuilder"] = glade_file; //was: module->GetGTKBuilder();
+            free(descr);
+            map_of_plugin_info[dent->d_name] = plugin_info;
+        }
+        free(glade_file);
+
+    }
+    closedir(dir);
+}
+
+void GetPluginSettings(const char *plugin_name, map_plugin_settings_t &plugin_settings)
+{
+    char *conf_file = xasprintf(PLUGINS_CONF_DIR"/%s.conf", plugin_name);
+    LoadPluginSettings(conf_file, plugin_settings);
+    free(conf_file);
+    /* If settings are empty, most likely .conf file does not exist.
+     * Don't mislead the user: */
+    VERB3 if (!plugin_settings.empty()) log("Loaded %s.conf", plugin_name);
 }

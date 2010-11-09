@@ -666,8 +666,8 @@ static gboolean handle_inotify_cb(GIOChannel *gio, GIOCondition condition, gpoin
                     const char *uid_str = get_crash_data_item_content(crashinfo, CD_UID).c_str();
 
                     /* Send dbus signal */
-                    if (analyzer_has_InformAllUsers(analyzer))
-                        uid_str = NULL;
+                    //if (analyzer_has_InformAllUsers(analyzer))
+                    //    uid_str = NULL;
                     char *crash_id = xasprintf("%s:%s",
                                     get_crash_data_item_content(crashinfo, CD_UID).c_str(),
                                     get_crash_data_item_content(crashinfo, CD_UUID).c_str()

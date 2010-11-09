@@ -93,6 +93,8 @@ char *concat_path_file(const char *path, const char *filename);
 char *append_to_malloced_string(char *mstr, const char *append);
 char* skip_whitespace(const char *s);
 char* skip_non_whitespace(const char *s);
+/* Like strcpy but can copy overlapping strings. */
+void overlapping_strcpy(char *dst, const char *src);
 
 /* A-la fgets, but malloced and of unlimited size */
 char *xmalloc_fgets(FILE *file);

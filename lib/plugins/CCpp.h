@@ -44,8 +44,6 @@ class CAnalyzerCCpp : public CAnalyzer
         virtual void Init();
         virtual void DeInit();
         virtual void SetSettings(const map_plugin_settings_t& pSettings);
-//ok to delete?
-//      virtual const map_plugin_settings_t& GetSettings();
 };
 
 #endif /* CCPP */
