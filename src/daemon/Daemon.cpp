@@ -28,7 +28,11 @@
 #include <glib.h>
 #include "abrtlib.h"
 #include "abrt_exception.h"
+#include "comm_layer_inner.h"
+#include "Settings.h"
+#include "CommLayerServerDBus.h"
 #include "CrashWatcher.h"
+#include "MiddleWare.h"
 #include "Daemon.h"
 #include "parse_options.h"
 

@@ -19,15 +19,7 @@
 #ifndef CRASHWATCHER_H_
 #define CRASHWATCHER_H_
 
-#include <string>
-#include <sys/inotify.h>
-#include <glib.h>
-#include <pthread.h>
-#include "MiddleWare.h"
-#include "Settings.h"
-
-#include "CommLayerServerDBus.h"
-#include "comm_layer_inner.h"
+#include "observer.h"
 
 
 class CCrashWatcher
@@ -42,11 +34,5 @@ class CCrashWatcher
         virtual void Status(const char *pMessage, const char* peer);
         virtual void Warning(const char *pMessage, const char* peer);
 };
-
-vector_map_crash_data_t GetCrashInfos(long caller_uid);
-int  CreateReportThread(const char* crash_id, long caller_uid, int force, const char* pSender);
-void CreateReport(const char* crash_id, long caller_uid, int force, map_crash_data_t&);
-int  DeleteDebugDump(const char *crash_id, long caller_uid);
-void DeleteDebugDump_by_dir(const char *dump_dir);
 
 #endif

@@ -20,7 +20,6 @@
 #define OBSERVER_H_
 
 #include <string>
-#include <stdint.h>
 #include "dbus_common.h"
 
 class CObserver {

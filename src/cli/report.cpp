@@ -611,7 +611,7 @@ static void get_reporter_plugin_settings(const vector_string_t& reporters,
             std::string path = std::string(homedir) + "/.abrt/"
                 + it->first + "."PLUGINS_CONF_EXTENSION;
             /* Load plugin config in the home dir. Do not skip lines with empty value (but containing a "key="),
-               because user may want to override password from /etc/abrt/plugins/\*.conf, but he prefers to
+               because user may want to override password from /etc/abrt/plugins/*.conf, but he prefers to
                enter it every time he reports. */
             bool success = LoadPluginSettings(path.c_str(), single_plugin_settings, false);
             if (!success)
