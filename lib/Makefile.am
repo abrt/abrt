@@ -1,1 +1,1 @@
-SUBDIRS = utils plugins
+SUBDIRS = utils

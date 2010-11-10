@@ -70,6 +70,7 @@ VAR_RUN='${localstatedir}/run'
 PLUGINS_CONF_DIR='${sysconfdir}/${PACKAGE_NAME}/plugins'
 PLUGINS_LIB_DIR='${libdir}/${PACKAGE_NAME}'
 ENABLE_SOCKET_OR_DBUS='-DENABLE_DBUS=1'
+LIBEXEC_DIR='${libexecdir}'
 
 DEBUG_DUMPS_DIR='${localstatedir}/spool/${PACKAGE_NAME}'
 DEBUG_INFO_DIR='${localstatedir}/cache/${PACKAGE_NAME}-di'
@@ -103,6 +104,7 @@ AC_SUBST(PLUGINS_LIB_DIR)
 AC_SUBST(DEBUG_DUMPS_DIR)
 AC_SUBST(DEBUG_INFO_DIR)
 AC_SUBST(DL_LIBS, -ldl)
+AC_SUBST(LIBEXEC_DIR)
 
 # Initialize the test suite.
 AC_CONFIG_TESTDIR(tests)
@@ -118,7 +120,7 @@ AC_CONFIG_FILES([
 	abrt.pc
 	lib/Makefile
 	lib/utils/Makefile
-	lib/plugins/Makefile
+	src/plugins/Makefile
 	src/Makefile
 	src/btparser/Makefile
 	src/daemon/Makefile

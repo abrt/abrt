@@ -843,6 +843,11 @@ int main(int argc, char** argv)
     if (!getenv("PATH"))
         putenv((char*)"PATH=/usr/sbin:/usr/bin:/sbin:/bin");
 
+    /* need to add LIBEXEC_DIR to PATH, because otherwise abrt-action-*
+     * is not found by exec()
+     */
+    putenv(xasprintf("PATH=%s:%s", LIBEXEC_DIR, getenv("PATH")));
+
     putenv(xasprintf("ABRT_VERBOSE=%u", g_verbose));
 
     msg_prefix = "abrtd"; /* for log(), error_msg() and such */

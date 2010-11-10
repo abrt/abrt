@@ -343,6 +343,7 @@ fi
 %{_sbindir}/abrt-server
 %{_bindir}/abrt-handle-upload
 %{_bindir}/abrt-handle-crashdump
+%{_libexecdir}/abrt-action-save-package-data
 %config(noreplace) %{_sysconfdir}/%{name}/abrt.conf
 %config(noreplace) %{_sysconfdir}/%{name}/abrt_event.conf
 %config(noreplace) %{_sysconfdir}/%{name}/gpg_keys
@@ -397,10 +398,9 @@ fi
 %dir %{_localstatedir}/cache/abrt-di
 %{_libdir}/%{name}/libCCpp.so*
 %{_libexecdir}/abrt-hook-ccpp
-%{_sbindir}/abrt-action-analyze-c
-%{_sbindir}/abrt-action-save-package-data
-%{_bindir}/abrt-action-install-debuginfo
-%{_sbindir}/abrt-action-generate-backtrace
+%{_libexecdir}/abrt-action-analyze-c
+%{_libexecdir}/abrt-action-install-debuginfo
+%{_libexecdir}/abrt-action-generate-backtrace
 
 %files addon-kerneloops
 %defattr(-,root,root,-)
@@ -412,15 +412,15 @@ fi
 %{_libdir}/%{name}/libKerneloopsReporter.so*
 %{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
-%{_sbindir}/abrt-action-analyze-oops
-%{_bindir}/abrt-action-kerneloops
+%{_libexecdir}/abrt-action-analyze-oops
+%{_libexecdir}/abrt-action-kerneloops
 
 %files plugin-logger
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Logger.conf
 %{_libdir}/%{name}/Logger.glade
 %{_mandir}/man7/abrt-Logger.7.gz
-%{_bindir}/abrt-action-print
+%{_libexecdir}/abrt-action-print
 
 %files plugin-mailx
 %defattr(-,root,root,-)
@@ -440,7 +440,7 @@ fi
 %{_libdir}/%{name}/libBugzilla.so*
 %{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
-%{_bindir}/abrt-action-bugzilla
+%{_libexecdir}/abrt-action-bugzilla
 
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
@@ -448,7 +448,7 @@ fi
 %{_libdir}/%{name}/libRHTSupport.so*
 %{_libdir}/%{name}/RHTSupport.glade
 #%{_mandir}/man7/abrt-RHTSupport.7.gz
-%{_bindir}/abrt-action-rhtsupport
+%{_libexecdir}/abrt-action-rhtsupport
 
 %files plugin-reportuploader
 %defattr(-,root,root,-)
@@ -467,7 +467,7 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
 %{_libdir}/%{name}/libPython.so*
-%{_sbindir}/abrt-action-analyze-python
+%{_libexecdir}/abrt-action-analyze-python
 %{python_site}/*.py*
 %{python_site}/abrt.pth
 

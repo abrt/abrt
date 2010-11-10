@@ -20,7 +20,7 @@ dumpoops_SOURCES = \
 dumpoops_CPPFLAGS = \
     -I$(srcdir)/../../inc \
     -I$(srcdir)/../../lib/utils \
-    -I$(srcdir)/../../lib/plugins \
+    -I$(srcdir)/../plugins \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
     -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
     -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
