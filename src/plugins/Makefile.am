@@ -22,6 +22,7 @@ dist_pluginslib_DATA = \
     Bugzilla.glade \
     RHTSupport.glade \
     ReportUploader.glade \
+    Upload.glade \
     KerneloopsReporter.glade
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
@@ -33,6 +34,7 @@ dist_pluginsconf_DATA = \
     Kerneloops.conf \
     Bugzilla.conf \
     RHTSupport.conf \
+    Upload.conf \
     ReportUploader.conf \
     FileTransfer.conf \
     Python.conf \
@@ -120,6 +122,7 @@ libexec_PROGRAMS = \
     abrt-action-bugzilla \
     abrt-action-rhtsupport \
     abrt-action-kerneloops \
+    abrt-action-upload \
     abrt-action-print
 
 abrt_action_analyze_c_SOURCES = \
@@ -240,6 +243,31 @@ abrt_action_rhtsupport_LDADD = \
     $(GLIB_LIBS) \
     $(XMLRPC_LIBS) $(XMLRPC_CLIENT_LIBS) \
     ../../lib/utils/libABRT_web_utils.la \
+    ../../lib/utils/libABRTdUtils.la \
+    ../../lib/utils/libABRTUtils.la
+
+abrt_action_upload_SOURCES = \
+    abrt-action-upload.cpp
+abrt_action_upload_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    $(CURL_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_action_upload_LDFLAGS = -ltar
+# Needs libABRTdUtils only for LoadPluginSettings
+abrt_action_upload_LDADD = \
+    $(GLIB_LIBS) \
+    $(CURL_LIBS) \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 

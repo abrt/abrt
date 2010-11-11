@@ -450,9 +450,12 @@ fi
 %files plugin-reportuploader
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/ReportUploader.conf
+%config(noreplace) %{_sysconfdir}/%{name}/plugins/Upload.conf
 %{_libdir}/%{name}/libReportUploader.so*
 %{_libdir}/%{name}/ReportUploader.glade
+%{_libdir}/%{name}/Upload.glade
 %{_mandir}/man7/abrt-ReportUploader.7.gz
+%{_libexecdir}/abrt-action-upload
 
 %files plugin-filetransfer
 %defattr(-,root,root,-)
