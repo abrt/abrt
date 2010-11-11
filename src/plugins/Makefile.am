@@ -13,8 +13,6 @@ pluginslib_LTLIBRARIES = \
     libKerneloops.la \
     libKerneloopsReporter.la \
     libSOSreport.la \
-    libBugzilla.la \
-    libRHTSupport.la \
     libReportUploader.la \
     libPython.la \
     libFileTransfer.la
@@ -101,25 +99,6 @@ libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCAL
 # SOSreport
 libSOSreport_la_SOURCES = SOSreport.cpp SOSreport.h
 libSOSreport_la_LDFLAGS = -avoid-version
-
-# Bugzilla
-libBugzilla_la_SOURCES = Bugzilla.h Bugzilla.cpp
-libBugzilla_la_LIBADD =
-libBugzilla_la_LDFLAGS = -avoid-version
-libBugzilla_la_CPPFLAGS = \
-    -I$(INC_PATH) -I$(UTILS_PATH) \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\"
-
-# RHTSupport
-libRHTSupport_la_SOURCES = RHTSupport.h RHTSupport.cpp
-libRHTSupport_la_LIBADD =
-libRHTSupport_la_LDFLAGS = -avoid-version
-libRHTSupport_la_CPPFLAGS = \
-    -I$(INC_PATH) -I$(UTILS_PATH) \
-    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
-    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
-    -DLOCALSTATEDIR='"$(localstatedir)"'
 
 # ReportUploader
 libReportUploader_la_SOURCES = ReportUploader.h ReportUploader.cpp

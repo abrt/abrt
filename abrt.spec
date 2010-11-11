@@ -437,7 +437,6 @@ fi
 %files plugin-bugzilla
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Bugzilla.conf
-%{_libdir}/%{name}/libBugzilla.so*
 %{_libdir}/%{name}/Bugzilla.glade
 %{_mandir}/man7/abrt-Bugzilla.7.gz
 %{_libexecdir}/abrt-action-bugzilla
@@ -445,7 +444,6 @@ fi
 %files plugin-rhtsupport
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/RHTSupport.conf
-%{_libdir}/%{name}/libRHTSupport.so*
 %{_libdir}/%{name}/RHTSupport.glade
 #%{_mandir}/man7/abrt-RHTSupport.7.gz
 %{_libexecdir}/abrt-action-rhtsupport

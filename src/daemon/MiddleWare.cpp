@@ -891,9 +891,7 @@ void GetPluginsInfo(map_map_string_t &map_of_plugin_info)
 void GetPluginSettings(const char *plugin_name, map_plugin_settings_t &plugin_settings)
 {
     char *conf_file = xasprintf(PLUGINS_CONF_DIR"/%s.conf", plugin_name);
-    LoadPluginSettings(conf_file, plugin_settings);
+    if (LoadPluginSettings(conf_file, plugin_settings, /*skip w/o value:*/ false))
+        VERB3 log("Loaded %s.conf", plugin_name);
     free(conf_file);
-    /* If settings are empty, most likely .conf file does not exist.
-     * Don't mislead the user: */
-    VERB3 if (!plugin_settings.empty()) log("Loaded %s.conf", plugin_name);
 }

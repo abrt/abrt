@@ -93,9 +93,9 @@ class ConfBackendGnomeKeyring(ConfBackend):
         try:
             item_list = gkey.find_items_sync(gkey.ITEM_GENERIC_SECRET, { "AbrtPluginInfo": str(name) })
             for item in item_list:
-               log2("found old keyring item: ring:'%s' item_id:%s attrs:%s", item.keyring, item.item_id, str(item.attributes))
-               log2("deleting it from keyring '%s'", g_default_key_ring)
-               gkey.item_delete_sync(g_default_key_ring, item.item_id)
+                log2("found old keyring item: ring:'%s' item_id:%s attrs:%s", item.keyring, item.item_id, str(item.attributes))
+                log2("deleting it from keyring '%s'", g_default_key_ring)
+                gkey.item_delete_sync(g_default_key_ring, item.item_id)
         except gkey.NoMatchError:
             # nothing found
             pass
@@ -115,6 +115,7 @@ class ConfBackendGnomeKeyring(ConfBackend):
                                         settings_tmp, # attrs
                                         password, # secret
                                         True)
+            log2("saved new keyring item:%s", str(settings_tmp))
         except gkey.DeniedError:
             raise ConfBackendSaveError(_("Access to gnome-keyring has been denied, plugins settings will not be saved."))
 
