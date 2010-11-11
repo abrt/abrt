@@ -409,7 +409,6 @@ fi
 %{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/abrt-KerneloopsScanner.7.gz
-%{_libdir}/%{name}/libKerneloopsReporter.so*
 %{_libdir}/%{name}/KerneloopsReporter.glade
 %{_mandir}/man7/abrt-KerneloopsReporter.7.gz
 %{_libexecdir}/abrt-action-analyze-oops
