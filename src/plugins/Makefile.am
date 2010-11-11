@@ -7,49 +7,43 @@ libexec_SCRIPTS = \
 
 pluginslib_LTLIBRARIES = \
     libCCpp.la \
+    libPython.la \
     libMailx.la \
-    libSQLite3.la \
-    libKerneloopsScanner.la\
+    libKerneloopsScanner.la \
     libKerneloops.la \
     libSOSreport.la \
-    libReportUploader.la \
-    libPython.la \
-    libFileTransfer.la
+    libSQLite3.la
 
 dist_pluginslib_DATA = \
     Logger.glade \
     Mailx.glade \
     Bugzilla.glade \
     RHTSupport.glade \
-    ReportUploader.glade \
     Upload.glade \
     KerneloopsReporter.glade
 
 pluginsconfdir = $(PLUGINS_CONF_DIR)
 dist_pluginsconf_DATA = \
     CCpp.conf \
+    Python.conf \
     Mailx.conf \
-    SQLite3.conf \
     Logger.conf \
     Kerneloops.conf \
     Bugzilla.conf \
     RHTSupport.conf \
     Upload.conf \
-    ReportUploader.conf \
-    FileTransfer.conf \
-    Python.conf \
-    SOSreport.conf
+    SOSreport.conf \
+    SQLite3.conf
 
 man_MANS = \
-    abrt-FileTransfer.7 \
     abrt-Bugzilla.7 \
     abrt-KerneloopsScanner.7 \
     abrt-KerneloopsReporter.7 \
     abrt-Logger.7 \
     abrt-Mailx.7 \
     abrt-plugins.7 \
-    abrt-SQLite3.7 \
-    abrt-ReportUploader.7
+    abrt-Upload.7 \
+    abrt-SQLite3.7
 
 EXTRA_DIST = $(man_MANS) abrt-action-install-debuginfo
 
@@ -96,23 +90,11 @@ libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCAL
 libSOSreport_la_SOURCES = SOSreport.cpp SOSreport.h
 libSOSreport_la_LDFLAGS = -avoid-version
 
-# ReportUploader
-libReportUploader_la_SOURCES = ReportUploader.h ReportUploader.cpp
-libReportUploader_la_LDFLAGS = -avoid-version
-libReportUploader_la_LIBADD = $(CURL_LIBS)
-libReportUploader_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(CURL_CFLAGS) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\"
-
 # Python
 libPython_la_SOURCES = Python.h Python.cpp
 #libPython_la_LIBADD = $(NSS_LIBS)
 libPython_la_LDFLAGS = -avoid-version
 libPython_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH)
-
-# FileTrasfer
-libFileTransfer_la_SOURCES = FileTransfer.cpp FileTransfer.h
-libFileTransfer_la_LDFLAGS = -avoid-version -ltar -lbz2 -lz
-libFileTransfer_la_LIBADD = $(CURL_LIBS)
-libFileTransfer_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(CURL_CFLAGS) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\"
 
 libexec_PROGRAMS = \
     abrt-action-analyze-c \
