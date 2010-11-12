@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: abrt.master\n"
 "Report-Msgid-Bugs-To: jmoskovc@redhat.com\n"
-"POT-Creation-Date: 2010-10-14 18:28+0000\n"
-"PO-Revision-Date: 2010-10-15 13:34+0200\n"
+"POT-Creation-Date: 2010-11-05 15:26+0000\n"
+"PO-Revision-Date: 2010-11-12 16:38+0200\n"
 "Last-Translator: Geert Warrink <geert.warrink@onsnet.nu>\n"
 "Language-Team: Fedora\n"
 "Language: nl\n"
@@ -20,29 +20,11 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Virtaal 0.6.1\n"
 
-#: ../lib/plugins/Bugzilla.cpp:149
+#: ../lib/plugins/Bugzilla.cpp:152
 msgid "Reports bugs to bugzilla"
 msgstr "Bugs rapporteren aan bugzilla"
 
-#: ../lib/plugins/CCpp.cpp:79
-msgid "Generating backtrace"
-msgstr "Backtrace aanmaken"
-
-#: ../lib/plugins/CCpp.cpp:115
-msgid "Starting the debuginfo installation"
-msgstr "Start de debuginfo installatie"
-
-#. Compatibility code.
-#. This whole block should be deleted for Fedora 14.
-#: ../lib/plugins/CCpp.cpp:338
-msgid "Getting global universal unique identification..."
-msgstr "Verkrijgen van globale universele unieke identificatie..."
-
-#: ../lib/plugins/CCpp.cpp:532
-msgid "Skipping the debuginfo installation"
-msgstr "Sla de debuginfo installatie over"
-
-#: ../lib/plugins/CCpp.cpp:783
+#: ../lib/plugins/CCpp.cpp:276
 msgid "Analyzes crashes in C/C++ programs"
 msgstr "Analyseert crashes in C/C++ programma's"
 
@@ -59,7 +41,7 @@ msgstr "Versturen van archief %s naar %s"
 msgid "FileTransfer: Creating a report..."
 msgstr "FileTransfer: Een rapport maken..."
 
-#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:297
+#: ../lib/plugins/FileTransfer.cpp:268 ../lib/plugins/FileTransfer.cpp:296
 #, c-format
 msgid "Cannot create and send an archive: %s"
 msgstr "Kan geen archief aanmaken en versturen: %s"
@@ -68,15 +50,11 @@ msgstr "Kan geen archief aanmaken en versturen: %s"
 msgid "Sends a report via FTP or SCTP"
 msgstr "Stuurt een rapport via FTP of SCTP"
 
-#: ../lib/plugins/Kerneloops.cpp:150
+#: ../lib/plugins/Kerneloops.cpp:28
 msgid "Analyzes kernel oopses"
 msgstr "Analyseert kernel oopses"
 
-#: ../lib/plugins/KerneloopsReporter.cpp:95
-msgid "Creating and submitting a report..."
-msgstr "Aanmaken en indienen van een rapport..."
-
-#: ../lib/plugins/KerneloopsReporter.cpp:144
+#: ../lib/plugins/KerneloopsReporter.cpp:140
 msgid "Sends kernel oops information to kerneloops.org"
 msgstr "Stuurt kernel oops informatie naar kerneloops.org"
 
@@ -84,22 +62,22 @@ msgstr "Stuurt kernel oops informatie naar kerneloops.org"
 msgid "Periodically scans for and saves kernel oopses"
 msgstr "Regelmatig scannen en opslaan van kernel oopses"
 
-#: ../lib/plugins/Logger.cpp:68
+#: ../lib/plugins/Logger.cpp:86
 #, c-format
 msgid "Writing report to '%s'"
 msgstr "Rapport schrijven naar: '%s'"
 
-#: ../lib/plugins/Logger.cpp:74
+#: ../lib/plugins/Logger.cpp:121
 #, c-format
 msgid "The report was appended to %s"
 msgstr "Het rapport werd toegevoegd aan %s"
 
-#: ../lib/plugins/Logger.cpp:74
+#: ../lib/plugins/Logger.cpp:121
 #, c-format
 msgid "The report was stored to %s"
 msgstr "Het rapport werd opgeslagen in %s"
 
-#: ../lib/plugins/Logger.cpp:82
+#: ../lib/plugins/Logger.cpp:129
 msgid "Writes report to a file"
 msgstr "Rapport rapport naar een bestand"
 
@@ -111,7 +89,7 @@ msgstr "Versturen van een email..."
 msgid "Sends an email with a report (via mailx command)"
 msgstr "Stuurt een email met een rapport (via mailx commando)"
 
-#: ../lib/plugins/Python.cpp:100
+#: ../lib/plugins/Python.cpp:27
 msgid "Analyzes crashes in Python programs"
 msgstr "Analyseert crashes in Python programma's"
 
@@ -131,16 +109,7 @@ msgstr ""
 "Verpakt crash data in een .tar.gz bestand, en uploadt het optioneel via FTP/"
 "SCP/enz."
 
-#. Gzipping e.g. 0.5gig coredump takes a while. Let client know what we are doing
-#: ../lib/plugins/RHTSupport.cpp:109
-msgid "Compressing data"
-msgstr "Data comprimeren"
-
-#: ../lib/plugins/RHTSupport.cpp:246
-msgid "Creating a new case..."
-msgstr "Een nieuwe zaak aanmaken..."
-
-#: ../lib/plugins/RHTSupport.cpp:328
+#: ../lib/plugins/RHTSupport.cpp:144
 msgid "Reports bugs to Red Hat support"
 msgstr "Bugs rapporteren aan Red Hat ondersteuning"
 
@@ -166,7 +135,7 @@ msgstr "Kan debug dump '%s' niet openen"
 msgid "Runs sosreport, saves the output"
 msgstr "Draait sosreport, slaat de output op"
 
-#: ../lib/plugins/SQLite3.cpp:718
+#: ../lib/plugins/SQLite3.cpp:739
 msgid "Keeps SQLite3 database about all crashes"
 msgstr "Bewaart SQLite3 database over alle crashes"
 
@@ -290,7 +259,7 @@ msgstr "Inlog:"
 msgid "RHTSupport URL:"
 msgstr "RHTSupport URL:"
 
-#: ../lib/utils/abrt_curl.c:171
+#: ../lib/utils/abrt_curl.c:170
 #, c-format
 msgid "Uploaded: %llu of %llu kbytes"
 msgstr "Upload: %llu van %llu KB"
@@ -310,16 +279,16 @@ msgstr "ABRT bericht applet "
 msgid "Automatic Bug Reporting Tool"
 msgstr "Automatisch bug rapporteer gereedschap"
 
-#: ../src/applet/Applet.cpp:76
+#: ../src/applet/Applet.cpp:86
 #, c-format
 msgid "A crash in the %s package has been detected"
 msgstr "Een crash in het %s pakket is ontdekt"
 
-#: ../src/applet/Applet.cpp:78
+#: ../src/applet/Applet.cpp:88
 msgid "A crash has been detected"
 msgstr "Een crash is ontdekt"
 
-#: ../src/applet/Applet.cpp:275
+#: ../src/applet/Applet.cpp:285
 msgid "ABRT service is not running"
 msgstr "ABRT service draait niet"
 
@@ -501,20 +470,20 @@ msgstr ""
 msgid "You must specify exactly one operation"
 msgstr "Je moet exact een bewerking specificeren."
 
-#: ../src/cli/report.cpp:170
+#: ../src/cli/report.cpp:167
 #, c-format
 msgid "# This field is read only\n"
 msgstr "# Dit veld is alleen-lezen.\n"
 
-#: ../src/cli/report.cpp:190
+#: ../src/cli/report.cpp:187
 msgid "# Describe the circumstances of this crash below"
 msgstr "# Beschrijf hieronder de omstandigheden van deze crash."
 
-#: ../src/cli/report.cpp:192
+#: ../src/cli/report.cpp:189
 msgid "# How to reproduce the crash?"
 msgstr "# Hoe is deze crash te reproduceren?"
 
-#: ../src/cli/report.cpp:194
+#: ../src/cli/report.cpp:191
 msgid ""
 "# Backtrace\n"
 "# Check that it does not contain any sensitive data (passwords, etc.)"
@@ -522,47 +491,47 @@ msgstr ""
 "# Backtrace\n"
 "# Controleer of deze geen gevoelige data bevat (wachtwoorden, enz.)"
 
-#: ../src/cli/report.cpp:196
+#: ../src/cli/report.cpp:193
 msgid "# Architecture"
 msgstr "# Architectuur"
 
-#: ../src/cli/report.cpp:197
+#: ../src/cli/report.cpp:194
 msgid "# Command line"
 msgstr "# Commando-regel"
 
-#: ../src/cli/report.cpp:198
+#: ../src/cli/report.cpp:195
 msgid "# Component"
 msgstr "# Onderdeel"
 
-#: ../src/cli/report.cpp:199
+#: ../src/cli/report.cpp:196
 msgid "# Core dump"
 msgstr "# Core dump"
 
-#: ../src/cli/report.cpp:200
+#: ../src/cli/report.cpp:197
 msgid "# Executable"
 msgstr "# Uitvoerbaar programma"
 
-#: ../src/cli/report.cpp:201
+#: ../src/cli/report.cpp:198
 msgid "# Kernel version"
 msgstr "# Kernel versie"
 
-#: ../src/cli/report.cpp:202
+#: ../src/cli/report.cpp:199
 msgid "# Package"
 msgstr "# Pakket"
 
-#: ../src/cli/report.cpp:203
+#: ../src/cli/report.cpp:200
 msgid "# Reason of crash"
 msgstr "# Reden van de crash"
 
-#: ../src/cli/report.cpp:204
+#: ../src/cli/report.cpp:201
 msgid "# Release string of the operating system"
 msgstr "# Vrijgave boodschap van het besturingssysteem"
 
-#: ../src/cli/report.cpp:327
+#: ../src/cli/report.cpp:324
 msgid "Cannot run vi: $TERM, $VISUAL and $EDITOR are not set"
 msgstr "Kan vi niet draaien: $TERM, $VISUAL en $EDITOR zijn niet ingesteld"
 
-#: ../src/cli/report.cpp:415
+#: ../src/cli/report.cpp:412
 msgid ""
 "\n"
 "The report has been updated"
@@ -570,7 +539,7 @@ msgstr ""
 "\n"
 "Het rapport is vernieuwd"
 
-#: ../src/cli/report.cpp:417
+#: ../src/cli/report.cpp:414
 msgid ""
 "\n"
 "No changes were detected in the report"
@@ -579,46 +548,46 @@ msgstr ""
 "Er zijn geen veranderingen in het rapport ontdekt"
 
 #. The response might take more than 1 char in non-latin scripts.
-#: ../src/cli/report.cpp:543
+#: ../src/cli/report.cpp:540
 msgid "y"
 msgstr "j"
 
-#: ../src/cli/report.cpp:544
+#: ../src/cli/report.cpp:541
 msgid "N"
 msgstr "N"
 
 #. Read the missing information and push it to plugin settings.
-#: ../src/cli/report.cpp:645
+#: ../src/cli/report.cpp:641
 #, c-format
 msgid "Wrong settings were detected for plugin %s\n"
 msgstr "Voor plug-in %s zijn verkeerde instellingen ontdekt\n"
 
-#: ../src/cli/report.cpp:649
+#: ../src/cli/report.cpp:645
 msgid "Enter your login: "
 msgstr "Voer jouw gebruikersnaam in:"
 
-#: ../src/cli/report.cpp:655
+#: ../src/cli/report.cpp:651
 msgid "Enter your password: "
 msgstr "Voer jouw wachtwoord in:"
 
-#: ../src/cli/report.cpp:700
+#: ../src/cli/report.cpp:696
 msgid "Reporting..."
 msgstr "Rapporteren..."
 
-#: ../src/cli/report.cpp:719
+#: ../src/cli/report.cpp:715
 #, c-format
 msgid "Report using %s?"
 msgstr "Rapporteren met gebruik van %s? "
 
-#: ../src/cli/report.cpp:722
+#: ../src/cli/report.cpp:718
 msgid "Skipping..."
 msgstr "Overslaan..."
 
-#: ../src/cli/report.cpp:734
+#: ../src/cli/report.cpp:730
 msgid "Reporting disabled because the backtrace is unusable"
 msgstr "Rapporteren is uitgezet omdat de backtrace onbruikbaar is."
 
-#: ../src/cli/report.cpp:738
+#: ../src/cli/report.cpp:734
 #, c-format
 msgid ""
 "Please try to install debuginfo manually using the command: \"debuginfo-"
@@ -627,11 +596,11 @@ msgstr ""
 "Probeer debuginfo handmatig te installeren met het commando: \"debuginfo-"
 "install %s\" en probeer het opnieuw\n"
 
-#: ../src/cli/report.cpp:747
+#: ../src/cli/report.cpp:743
 msgid "Error loading reporter settings"
 msgstr "Fout tijdens het laden van rapporteer instellingen"
 
-#: ../src/cli/report.cpp:766
+#: ../src/cli/report.cpp:762
 #, c-format
 msgid "Crash reported via %d plugins (%d errors)\n"
 msgstr "Crash gerapporteerd met %d plug-ins (%d fouten)\n"
@@ -640,11 +609,11 @@ msgstr "Crash gerapporteerd met %d plug-ins (%d fouten)\n"
 msgid ""
 " [-vs] -d DIR\n"
 "\n"
-"Calculates and saves UUID"
+"Calculates and saves UUID of coredumps"
 msgstr ""
 " [-vs] -d DIR\n"
 "\n"
-"Berekent en slaat UUID op"
+"Berekent en slaat UUID van coredumps op"
 
 #: ../src/daemon/abrt-action-analyze-c.c:166
 msgid "Crash dump directory"
@@ -654,89 +623,89 @@ msgstr "Crash dump map"
 msgid "Log to syslog"
 msgstr "Loggen naar syslog"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:462
+#: ../src/daemon/abrt-action-bugzilla.cpp:461
 #, c-format
 msgid "New bug id: %i"
 msgstr "Nieuwe bug id: %i"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:575
+#: ../src/daemon/abrt-action-bugzilla.cpp:574
 #, c-format
 msgid "Can't open '%s'"
 msgstr "Kan '%s' niet openen"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:600
+#: ../src/daemon/abrt-action-bugzilla.cpp:594
 #, c-format
 msgid "Empty login or password, please check %s"
 msgstr "Lege inlog of wachtwoord, controleer %s "
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:609
+#: ../src/daemon/abrt-action-bugzilla.cpp:612
 msgid "Logging into bugzilla..."
 msgstr "Inloggen bij bugzilla..."
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:612
+#: ../src/daemon/abrt-action-bugzilla.cpp:615
 msgid "Checking for duplicates..."
 msgstr "Controleren voor dubbele..."
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:633
-#: ../src/daemon/abrt-action-bugzilla.cpp:669
+#: ../src/daemon/abrt-action-bugzilla.cpp:636
+#: ../src/daemon/abrt-action-bugzilla.cpp:672
 msgid "Missing mandatory member 'bugs'"
 msgstr "Verplicht onderdeel 'bugs' ontbreekt"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:652
-#: ../src/daemon/abrt-action-bugzilla.cpp:685
-#: ../src/daemon/abrt-action-bugzilla.cpp:760
+#: ../src/daemon/abrt-action-bugzilla.cpp:655
+#: ../src/daemon/abrt-action-bugzilla.cpp:688
+#: ../src/daemon/abrt-action-bugzilla.cpp:763
 msgid "get_bug_info() failed. Could not collect all mandatory information"
 msgstr ""
 "get_bug_info() faalde. Kon alle noodzakelijke informatie niet verzamelen"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:701
+#: ../src/daemon/abrt-action-bugzilla.cpp:704
 msgid "Creating a new bug..."
 msgstr "Nieuwe bug aanmaken..."
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:706
+#: ../src/daemon/abrt-action-bugzilla.cpp:709
 msgid "Bugzilla entry creation failed"
 msgstr "Het aanmaken van een Bugzilla ingang mislukte"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:716
-#: ../src/daemon/abrt-action-bugzilla.cpp:813
+#: ../src/daemon/abrt-action-bugzilla.cpp:719
+#: ../src/daemon/abrt-action-bugzilla.cpp:816
 msgid "Logging out..."
 msgstr "Uitloggen..."
 
 #. decision based on state
-#: ../src/daemon/abrt-action-bugzilla.cpp:734
+#: ../src/daemon/abrt-action-bugzilla.cpp:737
 #, c-format
 msgid "Bug is already reported: %i"
 msgstr "Bug is al aangemeld: %i"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:745
+#: ../src/daemon/abrt-action-bugzilla.cpp:748
 #, c-format
 msgid "Bugzilla couldn't find parent of bug %d"
 msgstr "Bugzilla kon de ouder van bug %d  niet vinden"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:774
+#: ../src/daemon/abrt-action-bugzilla.cpp:777
 #, c-format
 msgid "Add %s to CC list"
 msgstr "Voeg %s toe aan CC lijst"
 
-#: ../src/daemon/abrt-action-bugzilla.cpp:798
+#: ../src/daemon/abrt-action-bugzilla.cpp:801
 #, c-format
 msgid "Adding new comment to bug %d"
 msgstr "Voeg nieuw commentaar toe aan bug(%d)"
 
-#: ../src/daemon/abrt-action-generate-backtrace.c:317
+#: ../src/daemon/abrt-action-generate-backtrace.c:319
 #, c-format
 msgid "Backtrace parsing failed for %s"
 msgstr "Backtrace ontleden mislukte voor %s"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:224
+#: ../src/daemon/CommLayerServerDBus.cpp:227
 msgid "Comment is too long"
 msgstr "Commentaar is te lang"
 
-#: ../src/daemon/CommLayerServerDBus.cpp:228
+#: ../src/daemon/CommLayerServerDBus.cpp:231
 msgid "'How to reproduce' is too long"
 msgstr "'Hoe te reproduceren' is te lang"
 
-#: ../src/daemon/Daemon.cpp:633
+#: ../src/daemon/Daemon.cpp:634
 msgid ""
 "The size of the report exceeded the quota. Please check system's "
 "MaxCrashReportsSize value in abrt.conf."
@@ -744,19 +713,19 @@ msgstr ""
 "De grootte van het rapport overschreed de quota. Controleer de "
 "MaxCrashReportsSize waarde van het systeem in abrt.conf."
 
-#: ../src/daemon/Daemon.cpp:862
+#: ../src/daemon/Daemon.cpp:806
 msgid "abrtd [options]"
 msgstr "abrtd [opties]"
 
-#: ../src/daemon/Daemon.cpp:872
+#: ../src/daemon/Daemon.cpp:816
 msgid "Do not daemonize"
 msgstr "Niet instellen als daemon"
 
-#: ../src/daemon/Daemon.cpp:873
+#: ../src/daemon/Daemon.cpp:817
 msgid "Log to syslog even with -d"
 msgstr "Loggen naar syslog zelfs met -d"
 
-#: ../src/daemon/Daemon.cpp:874
+#: ../src/daemon/Daemon.cpp:818
 msgid "Exit after SEC seconds of inactivity"
 msgstr "Afsluiten na SEC seconden van inactiviteit"
 
@@ -807,7 +776,7 @@ msgid "Please check if the abrt daemon is running."
 msgstr "Controleer of de abrt daemon draait."
 
 #. FIXME: BUG: BarWindow remains. (how2reproduce: delete "component" in a dump dir and try to report it)
-#: ../src/gui/CCDBusBackend.py:170
+#: ../src/gui/CCDBusBackend.py:169
 msgid ""
 "Daemon did not return a valid report info.\n"
 "Is debuginfo missing?"
@@ -1045,7 +1014,7 @@ msgstr ""
 msgid "Configure %s options"
 msgstr "Configureer %s opties"
 
-#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1008
+#: ../src/gui/CCReporterDialog.py:498 ../src/gui/CReporterAssistant.py:1009
 msgid ""
 "Unable to get report!\n"
 "Is debuginfo missing?"
@@ -1063,7 +1032,7 @@ msgstr ""
 "%s"
 
 #: ../src/gui/CCReporterDialog.py:553 ../src/gui/CCReporterDialog.py:574
-#: ../src/gui/CReporterAssistant.py:1047
+#: ../src/gui/CReporterAssistant.py:1048
 #, python-format
 msgid "Error acquiring the report: %s"
 msgstr "Fout tijdens het verkrijgen van het rapport: %s"
@@ -1207,115 +1176,115 @@ msgstr "Vond %i voorval(len) [bij: %i of %i]"
 msgid "Search:"
 msgstr "Zoeken:"
 
-#: ../src/gui/CReporterAssistant.py:756
+#: ../src/gui/CReporterAssistant.py:757
 msgid "Refresh"
 msgstr "Verversen"
 
-#: ../src/gui/CReporterAssistant.py:758
+#: ../src/gui/CReporterAssistant.py:759
 msgid "Copy"
 msgstr "Kopiëren"
 
-#: ../src/gui/CReporterAssistant.py:764
+#: ../src/gui/CReporterAssistant.py:765
 msgid "I agree with submitting the backtrace"
 msgstr "Ik stem in met het versturen van de backtrace"
 
-#: ../src/gui/CReporterAssistant.py:769
+#: ../src/gui/CReporterAssistant.py:770
 msgid "Approve the backtrace"
 msgstr "De backtrace goedkeuren"
 
-#: ../src/gui/CReporterAssistant.py:792
+#: ../src/gui/CReporterAssistant.py:793
 msgid "How did this crash happen (step-by-step)? How would you reproduce it?"
 msgstr "Hoe ontstaat deze crash (stap-voor-stap)? Hoe kun je het reproduceren?"
 
-#: ../src/gui/CReporterAssistant.py:811
+#: ../src/gui/CReporterAssistant.py:812
 msgid ""
 "Are there any comments you would like to share with the software maintainers?"
 msgstr "Heb je commentaar die je wilt delen met de software onderhouders?"
 
-#: ../src/gui/CReporterAssistant.py:831
+#: ../src/gui/CReporterAssistant.py:832
 msgid "Provide additional details"
 msgstr "Bied extra details"
 
-#: ../src/gui/CReporterAssistant.py:838
+#: ../src/gui/CReporterAssistant.py:839
 msgid ""
 "<b>Tip:</b> Your comments are not private. Please watch what you say "
 "accordingly."
 msgstr "<b>Tip:</b> Jouw commentaar is niet privé. Let dus op wat je zegt."
 
-#: ../src/gui/CReporterAssistant.py:879
+#: ../src/gui/CReporterAssistant.py:880
 msgid "Confirm and send the report"
 msgstr "Bevestig en verstuur het rapport"
 
-#: ../src/gui/CReporterAssistant.py:881
+#: ../src/gui/CReporterAssistant.py:882
 msgid ""
 "Below is a summary of your bug report. Please click 'Apply' to submit it."
 msgstr ""
 "Hieronder is een samenvatting van jouw bug rapport. Klik op 'Toepassen' om "
 "het te versturen."
 
-#: ../src/gui/CReporterAssistant.py:886
+#: ../src/gui/CReporterAssistant.py:887
 msgid "<b>Basic details</b>"
 msgstr "<b>Bais details</b>"
 
 #. left table
-#: ../src/gui/CReporterAssistant.py:893
+#: ../src/gui/CReporterAssistant.py:894
 msgid "Component"
 msgstr "Onderdeel"
 
-#: ../src/gui/CReporterAssistant.py:894
+#: ../src/gui/CReporterAssistant.py:895
 msgid "Package"
 msgstr "Pakket"
 
-#: ../src/gui/CReporterAssistant.py:895
+#: ../src/gui/CReporterAssistant.py:896
 msgid "Executable"
 msgstr "Uitvoerbaar programma"
 
-#: ../src/gui/CReporterAssistant.py:896
+#: ../src/gui/CReporterAssistant.py:897
 msgid "Cmdline"
 msgstr "Commando-regel"
 
 #. right table
-#: ../src/gui/CReporterAssistant.py:898
+#: ../src/gui/CReporterAssistant.py:899
 msgid "Architecture"
 msgstr "Architectuur"
 
-#: ../src/gui/CReporterAssistant.py:899
+#: ../src/gui/CReporterAssistant.py:900
 msgid "Kernel"
 msgstr "Kernel"
 
-#: ../src/gui/CReporterAssistant.py:900
+#: ../src/gui/CReporterAssistant.py:901
 msgid "Release"
 msgstr "Vrijgave"
 
-#: ../src/gui/CReporterAssistant.py:901
+#: ../src/gui/CReporterAssistant.py:902
 msgid "Reason"
 msgstr "Reden"
 
-#: ../src/gui/CReporterAssistant.py:912 ../src/gui/report.glade.h:3
+#: ../src/gui/CReporterAssistant.py:913 ../src/gui/report.glade.h:3
 msgid "<b>Backtrace</b>"
 msgstr "<b>Backtrace</b>"
 
-#: ../src/gui/CReporterAssistant.py:915
+#: ../src/gui/CReporterAssistant.py:916
 msgid "Click to view..."
 msgstr "Klik om te bekijken..."
 
-#: ../src/gui/CReporterAssistant.py:927
+#: ../src/gui/CReporterAssistant.py:928
 msgid "<b>Steps to reproduce:</b>"
 msgstr "<b>Stappen om te reproduceren:</b>"
 
-#: ../src/gui/CReporterAssistant.py:948
+#: ../src/gui/CReporterAssistant.py:949
 msgid "<b>Comments:</b>"
 msgstr "<b>Commentaar:</b>"
 
-#: ../src/gui/CReporterAssistant.py:951
+#: ../src/gui/CReporterAssistant.py:952
 msgid "No comment provided!"
 msgstr "Geen commentaar gegeven!"
 
-#: ../src/gui/CReporterAssistant.py:987
+#: ../src/gui/CReporterAssistant.py:988
 msgid "Finished sending the bug report"
 msgstr "Het versturen van het bug rapport is klaar"
 
-#: ../src/gui/CReporterAssistant.py:991
+#: ../src/gui/CReporterAssistant.py:992
 msgid "<b>Bug reports:</b>"
 msgstr "<b>Bug rapporten:</b>"
 
@@ -1583,6 +1552,27 @@ msgstr ""
 "rapporteer plug-ins. Gebruik de knoppen hieronder om hun respectievelijke "
 "configuratie te openen en te repareren voordat je verdergaat, omdat het "
 "rapporteer proces anders kan mislukken.\n"
+
+#~ msgid "Generating backtrace"
+#~ msgstr "Backtrace aanmaken"
+
+#~ msgid "Starting the debuginfo installation"
+#~ msgstr "Start de debuginfo installatie"
+
+#~ msgid "Getting global universal unique identification..."
+#~ msgstr "Verkrijgen van globale universele unieke identificatie..."
+
+#~ msgid "Skipping the debuginfo installation"
+#~ msgstr "Sla de debuginfo installatie over"
+
+#~ msgid "Creating and submitting a report..."
+#~ msgstr "Aanmaken en indienen van een rapport..."
+
+#~ msgid "Compressing data"
+#~ msgstr "Data comprimeren"
+
+#~ msgid "Creating a new case..."
+#~ msgstr "Een nieuwe zaak aanmaken..."
 
 #~ msgid "Show this help message"
 #~ msgstr "Deze hulp boodschap tonen"
