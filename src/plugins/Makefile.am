@@ -7,9 +7,7 @@ libexec_SCRIPTS = \
 
 pluginslib_LTLIBRARIES = \
     libCCpp.la \
-    libPython.la \
     libKerneloopsScanner.la \
-    libKerneloops.la \
     libSQLite3.la
 
 dist_pluginslib_DATA = \
@@ -38,9 +36,9 @@ man_MANS = \
     abrt-KerneloopsReporter.7 \
     abrt-Logger.7 \
     abrt-Mailx.7 \
-    abrt-plugins.7 \
     abrt-Upload.7 \
-    abrt-SQLite3.7
+    abrt-SQLite3.7 \
+    abrt-plugins.7
 
 EXTRA_DIST = $(man_MANS) abrt-action-install-debuginfo
 
@@ -62,11 +60,6 @@ libCCpp_la_CPPFLAGS = -Wall -Werror \
     -DLOCALSTATEDIR='"$(localstatedir)"'
 #    -DHOSTILE_KERNEL
 
-# Kerneloops
-libKerneloops_la_SOURCES = Kerneloops.cpp Kerneloops.h
-libKerneloops_la_LDFLAGS = -avoid-version
-libKerneloops_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH)
-
 # KerneloopsScanner
 libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h KerneloopsSysLog.cpp KerneloopsSysLog.h
 libKerneloopsScanner_la_LDFLAGS = -avoid-version $(GLIB_LIBS)
@@ -77,12 +70,6 @@ libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
 libSQLite3_la_LDFLAGS = -avoid-version
 libSQLite3_la_LIBADD = $(SQLITE3_LIBS) $(GLIB_LIBS)
 libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"' $(GLIB_CFLAGS)
-
-# Python
-libPython_la_SOURCES = Python.h Python.cpp
-#libPython_la_LIBADD = $(NSS_LIBS)
-libPython_la_LDFLAGS = -avoid-version
-libPython_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH)
 
 libexec_PROGRAMS = \
     abrt-action-analyze-c \

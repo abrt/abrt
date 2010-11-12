@@ -389,7 +389,6 @@ fi
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Kerneloops.conf
 %{_bindir}/dumpoops
-%{_libdir}/%{name}/libKerneloops.so*
 %{_libdir}/%{name}/libKerneloopsScanner.so*
 %{_mandir}/man7/abrt-KerneloopsScanner.7.gz
 %{_libdir}/%{name}/KerneloopsReporter.glade
@@ -435,7 +434,6 @@ fi
 %files addon-python
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Python.conf
-%{_libdir}/%{name}/libPython.so*
 %{_libexecdir}/abrt-action-analyze-python
 %{python_site}/*.py*
 %{python_site}/abrt.pth
