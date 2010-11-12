@@ -8,7 +8,6 @@ libexec_SCRIPTS = \
 pluginslib_LTLIBRARIES = \
     libCCpp.la \
     libPython.la \
-    libMailx.la \
     libKerneloopsScanner.la \
     libKerneloops.la \
     libSQLite3.la
@@ -73,11 +72,6 @@ libKerneloopsScanner_la_SOURCES = KerneloopsScanner.cpp KerneloopsScanner.h Kern
 libKerneloopsScanner_la_LDFLAGS = -avoid-version $(GLIB_LIBS)
 libKerneloopsScanner_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" $(GLIB_CFLAGS)
 
-# Mailx
-libMailx_la_SOURCES = Mailx.cpp Mailx.h
-libMailx_la_LDFLAGS = -avoid-version
-libMailx_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" -DLOCALSTATEDIR='"$(localstatedir)"'
-
 # SQLite3
 libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
 libSQLite3_la_LDFLAGS = -avoid-version
@@ -99,6 +93,7 @@ libexec_PROGRAMS = \
     abrt-action-rhtsupport \
     abrt-action-kerneloops \
     abrt-action-upload \
+    abrt-action-mailx \
     abrt-action-print
 
 abrt_action_analyze_c_SOURCES = \
@@ -266,6 +261,26 @@ abrt_action_kerneloops_CPPFLAGS = \
 # libABRTdUtils is used only because of LoadPluginSettings:
 abrt_action_kerneloops_LDADD = \
     ../../lib/utils/libABRT_web_utils.la \
+    ../../lib/utils/libABRTdUtils.la \
+    ../../lib/utils/libABRTUtils.la
+
+abrt_action_mailx_SOURCES = \
+    abrt-action-mailx.cpp
+abrt_action_mailx_CPPFLAGS = \
+    -I$(srcdir)/../../inc \
+    -I$(srcdir)/../../lib/utils \
+    -DBIN_DIR=\"$(bindir)\" \
+    -DVAR_RUN=\"$(VAR_RUN)\" \
+    -DCONF_DIR=\"$(CONF_DIR)\" \
+    -DLOCALSTATEDIR='"$(localstatedir)"' \
+    -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
+    -DDEBUG_INFO_DIR=\"$(DEBUG_INFO_DIR)\" \
+    -DPLUGINS_LIB_DIR=\"$(PLUGINS_LIB_DIR)\" \
+    -DPLUGINS_CONF_DIR=\"$(PLUGINS_CONF_DIR)\" \
+    $(GLIB_CFLAGS) \
+    -D_GNU_SOURCE \
+    -Wall -Werror
+abrt_action_mailx_LDADD = \
     ../../lib/utils/libABRTdUtils.la \
     ../../lib/utils/libABRTUtils.la
 

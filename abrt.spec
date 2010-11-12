@@ -407,9 +407,9 @@ fi
 %files plugin-mailx
 %defattr(-,root,root,-)
 %config(noreplace) %{_sysconfdir}/%{name}/plugins/Mailx.conf
-%{_libdir}/%{name}/libMailx.so*
 %{_libdir}/%{name}/Mailx.glade
 %{_mandir}/man7/abrt-Mailx.7.gz
+%{_libexecdir}/abrt-action-mailx
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)
