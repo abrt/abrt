@@ -133,15 +133,6 @@ Requires: mailx
 The simple reporter plugin which sends a report via mailx to a specified
 email address.
 
-%package plugin-sosreport
-Summary: %{name}'s sosreport plugin
-Group: System Environment/Libraries
-Requires: sos
-Requires: %{name} = %{version}-%{release}
-
-%description plugin-sosreport
-Plugin to include an sosreport in an abrt report.
-
 %package plugin-bugzilla
 Summary: %{name}'s bugzilla plugin
 Group: System Environment/Libraries
@@ -419,11 +410,6 @@ fi
 %{_libdir}/%{name}/libMailx.so*
 %{_libdir}/%{name}/Mailx.glade
 %{_mandir}/man7/abrt-Mailx.7.gz
-
-%files plugin-sosreport
-%defattr(-,root,root,-)
-%config(noreplace) %{_sysconfdir}/%{name}/plugins/SOSreport.conf
-%{_libdir}/%{name}/libSOSreport.so*
 
 %files plugin-bugzilla
 %defattr(-,root,root,-)

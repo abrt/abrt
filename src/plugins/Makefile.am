@@ -11,7 +11,6 @@ pluginslib_LTLIBRARIES = \
     libMailx.la \
     libKerneloopsScanner.la \
     libKerneloops.la \
-    libSOSreport.la \
     libSQLite3.la
 
 dist_pluginslib_DATA = \
@@ -32,7 +31,6 @@ dist_pluginsconf_DATA = \
     Bugzilla.conf \
     RHTSupport.conf \
     Upload.conf \
-    SOSreport.conf \
     SQLite3.conf
 
 man_MANS = \
@@ -85,10 +83,6 @@ libSQLite3_la_SOURCES = SQLite3.cpp SQLite3.h
 libSQLite3_la_LDFLAGS = -avoid-version
 libSQLite3_la_LIBADD = $(SQLITE3_LIBS) $(GLIB_LIBS)
 libSQLite3_la_CPPFLAGS = -I$(INC_PATH) -I$(UTILS_PATH) $(SQLITE3_CFLAGS) -DLOCALSTATEDIR='"$(localstatedir)"' $(GLIB_CFLAGS)
-
-# SOSreport
-libSOSreport_la_SOURCES = SOSreport.cpp SOSreport.h
-libSOSreport_la_LDFLAGS = -avoid-version
 
 # Python
 libPython_la_SOURCES = Python.h Python.cpp
