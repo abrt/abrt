@@ -53,6 +53,10 @@ BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires: %{name}-libs = %{version}-%{release}
 Requires(pre): shadow-utils
 Obsoletes: abrt-plugin-sqlite3
+# required for transition from 1.1.13, can be removed after some time
+Obsoletes: abrt-plugin-runapp <= 1.1.13
+Obsoletes: abrt-plugin-filetransfer <= 1.1.13
+Obsoletes: abrt-plugin-sosreport <= 1.1.13
 
 %description
 %{name} is a tool to help users to detect defects in applications and
