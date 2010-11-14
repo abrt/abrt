@@ -79,7 +79,7 @@ Summary: %{name}'s gui
 Group: User Interface/Desktops
 Requires: %{name} = %{version}-%{release}
 Requires: dbus-python, pygtk2, pygtk2-libglade,
-Requires: gnome-python2-gnomevfs, gnome-python2-gnomekeyring
+Requires: gnome-python2-gnomekeyring
 # only if gtk2 version < 2.17:
 #Requires: python-sexy
 # we used to have abrt-applet, now abrt-gui includes it:
