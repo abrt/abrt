@@ -28,7 +28,9 @@
 #include "abrt_exception.h"
 #include "debug_dump.h"
 #include "comm_layer_inner.h"
-#include "Polkit.h"
+#if 0
+    #include "Polkit.h"
+#endif
 #include "backtrace.h"
 #include "CCpp_sha1.h"
 
@@ -675,7 +677,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         return create_hash(hash_base.c_str());
     }
 }
-
+#if 0
 static bool DebuginfoCheckPolkit(uid_t uid)
 {
     fflush(NULL);
@@ -704,6 +706,7 @@ static bool DebuginfoCheckPolkit(uid_t uid)
     log("UID %d is not authorized to install debuginfos", uid);
     return false;
 }
+#endif
 
 void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
 {
@@ -738,7 +741,7 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     dd.Close(); /* do not keep dir locked longer than needed */
 
     string build_ids;
-    if (m_bInstallDebugInfo && DebuginfoCheckPolkit(xatoi_u(UID.c_str())))
+    if (m_bInstallDebugInfo)
     {
         if (m_nDebugInfoCacheMB > 0)
             trim_debuginfo_cache(m_nDebugInfoCacheMB);

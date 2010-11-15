@@ -22,7 +22,9 @@
 #include "abrtlib.h"
 #include "abrt_exception.h"
 #include "comm_layer_inner.h"
-#include "Polkit.h"
+#ifdef PLUGIN_DYNAMIC_LOAD_UNLOAD
+    #include "Polkit.h"
+#endif
 #include "PluginManager.h"
 
 using namespace std;

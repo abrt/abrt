@@ -56,8 +56,7 @@ libABRTdUtils_la_SOURCES = \
     $(HEADER_DIR)/abrt_xmlrpc.h abrt_xmlrpc.cpp \
     abrt_rh_support.h abrt_rh_support.cpp \
     abrt_curl.h abrt_curl.cpp \
-    $(HEADER_DIR)/plugin.h Plugin.cpp \
-    Polkit.h Polkit.cpp
+    $(HEADER_DIR)/plugin.h Plugin.cpp
 
 libABRTdUtils_la_CPPFLAGS = \
     -Wall -Werror \

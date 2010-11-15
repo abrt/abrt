@@ -19,7 +19,10 @@
 #include "Settings.h"
 #include "abrtlib.h"
 #include "abrt_types.h"
-#include "Polkit.h"
+
+#if 0
+    #include "Polkit.h"
+#endif
 
 #define SECTION_COMMON      "Common"
 #define SECTION_ANALYZER_ACTIONS_AND_REPORTERS   "AnalyzerActionsAndReporters"
@@ -525,10 +528,10 @@ map_abrt_settings_t GetSettings()
 
     return ABRTSettings;
 }
-
 /* dbus call to change some .conf file data */
 void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
 {
+#if 0
     int polkit_result;
 
     polkit_result = polkit_check_authorization(dbus_sender,
@@ -539,7 +542,7 @@ void SetSettings(const map_abrt_settings_t& pSettings, const char *dbus_sender)
         return;
     }
     log("user %s succesfully authorized", dbus_sender);
-
+#endif
     map_abrt_settings_t::const_iterator it = pSettings.find(SECTION_COMMON);
     map_abrt_settings_t::const_iterator end = pSettings.end();
     if (it != end)
