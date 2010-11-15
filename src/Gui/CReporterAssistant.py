@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import gtk
 from PluginList import getPluginInfoList
 from abrt_utils import _, log, log1, log2, get_verbose_level, g_verbose, warn
