@@ -130,7 +130,7 @@ mw_result_t CreateCrashReport(const char *crash_id,
         run_state->logging_callback = do_log_and_update_client;
         int res = run_event(run_state, row->db_dump_dir, force ? "reanalyze" : "analyze");
         free_run_event_state(run_state);
-        if (res != 0)
+        if (res != 0 && res != -1) /* -1 is "nothing was done", here it is ok */
         {
             r = MW_PLUGIN_ERROR;
             goto ret;
