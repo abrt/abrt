@@ -396,6 +396,8 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
     const std::string& duphash   = get_crash_data_item_content(pCrashData, CD_DUPHASH);
     const char *reason           = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_REASON);
     const char *function         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_CRASH_FUNCTION);
+    const char *analyzer         = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_ANALYZER);
+    const char *tainted          = get_crash_data_item_content_or_NULL(pCrashData, FILENAME_TAINTED);
 
     std::string summary = "[abrt] " + package;
     if (function != NULL && strlen(function) < 30)
@@ -409,6 +411,15 @@ xmlrpc_int32 ctx::new_bug(const map_crash_data_t& pCrashData, int depend_on_bugn
         summary += ": ";
         summary += reason;
     }
+
+    if (tainted && analyzer
+        && (tainted[0] == '1')
+        && (strcmp(analyzer, "Kerneloops") == 0)
+    ) {
+        summary += ": ";
+        summary += "TAINTED";
+    }
+
     std::string status_whiteboard = "abrt_hash:" + duphash;
 
     std::string description = "abrt version: "VERSION"\n";

@@ -49,6 +49,7 @@
 #define FILENAME_REPRODUCE    "reproduce"
 #define FILENAME_RATING       "rating"
 #define FILENAME_HOSTNAME     "hostname"
+#define FILENAME_TAINTED      "tainted"
 // Optional. Set to "1" by abrt-handle-upload for every unpacked crashdump
 #define FILENAME_REMOTE       "remote"
 // TODO: TicketUploader also has open-coded "TICKET", "CUSTOMER" files
