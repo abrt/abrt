@@ -319,6 +319,10 @@ report_status_t Report(const map_crash_data_t& client_report,
 
         l_state.last_line = NULL;
         int r = run_event(run_state, dump_dir_name, plugin_name.c_str());
+        if (r == -1)
+        {
+            l_state.last_line = xasprintf("Error: no processing is specified for event '%s'", plugin_name.c_str());
+        }
         if (r == 0)
         {
             at_least_one_reporter_succeeded = true;
@@ -347,9 +351,9 @@ report_status_t Report(const map_crash_data_t& client_report,
     {
         char *s = (char*)li->data;
         /* Need to make a copy: just cutting s at '=' and unsetenv'ing
-	 * the result would be a bug! s _itself_ is in environment now,
-	 * we must not modify it there!
-	 */
+         * the result would be a bug! s _itself_ is in environment now,
+         * we must not modify it there!
+         */
         char *name = xstrndup(s, strchrnul(s, '=') - s);
         VERB3 log("Unexporting '%s'", name);
         unsetenv(name);

@@ -227,6 +227,10 @@ static inline struct run_event_state *new_run_event_state()
     { return (struct run_event_state*)xzalloc(sizeof(struct run_event_state)); }
 static inline void free_run_event_state(struct run_event_state *state)
     { free(state); }
+/* Returns exitcode of first failed action, or first nonzero return value
+ * of post_run_callback. If all actions are successful, returns 0.
+ * If no actions were run for the event, returns -1.
+ */
 int run_event(struct run_event_state *state, const char *dump_dir_name, const char *event);
 char *list_possible_events(struct dump_dir *dd, const char *dump_dir_name, const char *pfx);
 

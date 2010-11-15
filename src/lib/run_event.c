@@ -41,7 +41,7 @@ int run_event(struct run_event_state *state,
     setenv("EVENT", event, 1);
 
     /* Read, match, and execute lines from abrt_event.conf */
-    int retval = 0;
+    int retval = -1;
     struct dump_dir *dd = NULL;
     char *line;
     while ((line = xmalloc_fgetline(conffile)) != NULL)
@@ -147,13 +147,11 @@ int run_event(struct run_event_state *state,
             int status;
             waitpid(pid, &status, 0);
 
-            if (status != 0)
-            {
-                retval = WEXITSTATUS(status);
-                if (WIFSIGNALED(status))
-                    retval = WTERMSIG(status) + 128;
+            retval = WEXITSTATUS(status);
+            if (WIFSIGNALED(status))
+                retval = WTERMSIG(status) + 128;
+            if (retval != 0)
                 break;
-            }
         }
 
         if (state->post_run_callback)

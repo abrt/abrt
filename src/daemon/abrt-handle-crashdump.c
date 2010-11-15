@@ -89,6 +89,8 @@ int main(int argc, char **argv)
     struct run_event_state *run_state = new_run_event_state();
     run_state->logging_callback = do_log;
     int r = run_event(run_state, dump_dir_name ? dump_dir_name : ".", event);
+    if (r == -1)
+        error_msg_and_die("No actions are found for event '%s'", event);
     free_run_event_state(run_state);
 
     return r;
