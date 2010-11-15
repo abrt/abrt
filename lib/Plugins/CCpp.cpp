@@ -31,8 +31,10 @@
 #if 0
     #include "Polkit.h"
 #endif
-#include "backtrace.h"
 #include "CCpp_sha1.h"
+#include "../btparser/backtrace.h"
+#include "../btparser/frame.h"
+#include "../btparser/location.h"
 
 using namespace std;
 
@@ -562,120 +564,7 @@ string CAnalyzerCCpp::GetGlobalUUID(const char *pDebugDumpDir)
         return uuid;
     }
     else
-    {
-        // Compatibility code.
-        // This whole block should be deleted for Fedora 14.
-        log(_("Getting global universal unique identification..."));
-
-        string backtrace_path = concat_path_file(pDebugDumpDir, FILENAME_BACKTRACE);
-        string executable;
-        string package;
-        string uid_str;
-        dd.LoadText(FILENAME_EXECUTABLE, executable);
-        dd.LoadText(FILENAME_PACKAGE, package);
-        if (m_bBacktrace)
-            dd.LoadText(CD_UID, uid_str);
-
-        string independent_backtrace;
-        if (m_bBacktrace)
-        {
-            /* Run abrt-backtrace to get independent backtrace suitable
-               to UUID calculation. */
-            char *args[7];
-            args[0] = (char*)"abrt-backtrace";
-            args[1] = (char*)"--single-thread";
-            args[2] = (char*)"--remove-exit-handlers";
-            args[3] = (char*)"--frame-depth=5";
-            args[4] = (char*)"--remove-noncrash-frames";
-            args[5] = (char*)backtrace_path.c_str();
-            args[6] = NULL;
-
-            int pipeout[2];
-            xpipe(pipeout); /* stdout of abrt-backtrace */
-
-            fflush(NULL);
-            pid_t child = fork();
-            if (child == -1)
-                perror_msg_and_die("fork");
-            if (child == 0)
-            {
-                VERB1 log("Executing %s", args[0]);
-
-                xmove_fd(pipeout[1], STDOUT_FILENO);
-                close(pipeout[0]); /* read side of the pipe */
-
-                /* abrt-backtrace is executed under the user's uid and gid. */
-                uid_t uid = xatoi_u(uid_str.c_str());
-                struct passwd* pw = getpwuid(uid);
-                gid_t gid = pw ? pw->pw_gid : uid;
-                setgroups(1, &gid);
-                xsetregid(gid, gid);
-                xsetreuid(uid, uid);
-
-                execvp(args[0], args);
-                VERB1 perror_msg("Can't execute '%s'", args[0]);
-                exit(1);
-            }
-
-            close(pipeout[1]); /* write side of the pipe */
-
-            /* Read the result from abrt-backtrace. */
-            int r;
-            char buff[1024];
-            while ((r = safe_read(pipeout[0], buff, sizeof(buff) - 1)) > 0)
-            {
-                buff[r] = '\0';
-                independent_backtrace += buff;
-            }
-            close(pipeout[0]);
-
-            /* Wait until it exits, and check the exit status. */
-            errno = 0;
-            int status;
-            waitpid(child, &status, 0);
-            if (!WIFEXITED(status))
-            {
-                perror_msg("abrt-backtrace not executed properly, "
-                           "status: %x signal: %d", status, WIFSIGNALED(status));
-            }
-            else
-            {
-                int exit_status = WEXITSTATUS(status);
-                if (exit_status == 79) /* EX_PARSINGFAILED */
-                {
-                    /* abrt-backtrace returns alternative backtrace
-                       representation in this case, so everything will work
-                       as expected except worse duplication detection */
-                    log_msg("abrt-backtrace failed to parse the backtrace");
-                }
-                else if (exit_status == 80) /* EX_THREADDETECTIONFAILED */
-                {
-                    /* abrt-backtrace returns backtrace with all threads
-                       in this case, so everything will work as expected
-                       except worse duplication detection */
-                    log_msg("abrt-backtrace failed to determine crash frame");
-                }
-                else if (exit_status != 0)
-                {
-                    /* this is unexpected problem and it should be investigated */
-                    error_msg("abrt-backtrace run failed, exit value: %d",
-                              exit_status);
-                }
-            }
-
-            /*VERB1 log("abrt-backtrace result: %s", independent_backtrace.c_str());*/
-        }
-        /* else: no backtrace, independent_backtrace == ""
-           no backtrace => rating = 0
-        */
-        else
-        {
-            dd.SaveText(FILENAME_RATING, "0");
-        }
-
-        string hash_base = package + executable + independent_backtrace;
-        return create_hash(hash_base.c_str());
-    }
+        return "";
 }
 #if 0
 static bool DebuginfoCheckPolkit(uid_t uid)
@@ -759,87 +648,68 @@ void CAnalyzerCCpp::CreateReport(const char *pDebugDumpDir, int force)
     if (m_bMemoryMap)
         dd.SaveText(FILENAME_MEMORYMAP, "memory map of the crashed C/C++ application, not implemented yet");
 
-    /* Compute and store UUID from the backtrace. */
-    char *backtrace_cpy = xstrdup(backtrace_str.c_str());
-    struct backtrace *backtrace = backtrace_parse(backtrace_cpy, false, false);
-    free(backtrace_cpy);
-    if (backtrace)
+    /* Compute and store backtrace hash. */
+    struct btp_location location;
+    btp_location_init(&location);
+    char *backtrace_str_ptr = (char*)backtrace_str.c_str();
+    struct btp_backtrace *backtrace = btp_backtrace_parse(&backtrace_str_ptr, &location);
+    if (!backtrace)
     {
-        /* Get the quality of the full backtrace. */
-        float q1 = backtrace_quality(backtrace);
+        VERB1 log(_("Backtrace parsing failed for %s"), pDebugDumpDir);
+        VERB1 log("%d:%d: %s", location.line, location.column, location.message);
+        /* If the parser failed compute the UUID from the executable
+           and package only.  This is not supposed to happen often.
+           Do not store the rating, as we do not know how good the
+           backtrace is. */
+        struct strbuf *emptybt = strbuf_new();
+        strbuf_prepend_str(emptybt, executable.c_str());
+        strbuf_prepend_str(emptybt, package.c_str());
+        string hash_str = create_hash(emptybt->buf);
+        dd.SaveText(FILENAME_GLOBAL_UUID, hash_str.c_str());
 
-        /* Remove all the other threads except the crash thread. */
-        struct thread *crash_thread = backtrace_find_crash_thread(backtrace);
-        if (crash_thread)
-            backtrace_remove_threads_except_one(backtrace, crash_thread);
-        else
-            log_msg("Detection of crash thread failed");
-
-        /* Get the quality of the crash thread. */
-        float q2 = backtrace_quality(backtrace);
-
-        backtrace_remove_noncrash_frames(backtrace);
-
-        /* Do the frame removal now. */
-        backtrace_limit_frame_depth(backtrace, 5);
-        /* Frame removal can be done before removing exit handlers. */
-        backtrace_remove_exit_handlers(backtrace);
-
-        /* Get the quality of frames around the crash. */
-        float q3 = backtrace_quality(backtrace);
-
-        /* Compute UUID. */
-        struct strbuf *bt = backtrace_tree_as_str(backtrace, false);
-        strbuf_prepend_str(bt, executable.c_str());
-        strbuf_prepend_str(bt, package.c_str());
-        dd.SaveText(FILENAME_GLOBAL_UUID, create_hash(bt->buf).c_str());
-        strbuf_free(bt);
-
-        /* Compute and store backtrace rating. */
-        /* Compute and store backtrace rating. The crash frame
-           is more important that the others. The frames around
-           the crash are more important than the rest.  */
-        float qtot = 0.25f * q1 + 0.35f * q2 + 0.4f * q3;
-
-        /* Turn the quality to rating. */
-        const char *rating;
-        if (qtot < 0.6f)      rating = "0";
-        else if (qtot < 0.7f) rating = "1";
-        else if (qtot < 0.8f) rating = "2";
-        else if (qtot < 0.9f) rating = "3";
-        else                  rating = "4";
-        dd.SaveText(FILENAME_RATING, rating);
-
-        /* Get the function name from the crash frame. */
-        if (crash_thread)
-        {
-            struct frame *crash_frame = crash_thread->frames;
-            struct frame *abort_frame = thread_find_abort_frame(crash_thread);
-            if (abort_frame)
-                crash_frame = abort_frame->next;
-            if (crash_frame && crash_frame->function && 0 != strcmp(crash_frame->function, "??"))
-                dd.SaveText(FILENAME_CRASH_FUNCTION, crash_frame->function);
-        }
-
-        backtrace_free(backtrace);
+        strbuf_free(emptybt);
+        dd.Close();
+        return;
     }
+
+    /* Compute duplication hash. */
+    char *str_hash_core = btp_backtrace_get_duplication_hash(backtrace);
+    struct strbuf *str_hash = strbuf_new();
+    strbuf_append_str(str_hash, package.c_str());
+    strbuf_append_str(str_hash, executable.c_str());
+    strbuf_append_str(str_hash, str_hash_core);
+    string hash_str = create_hash(str_hash->buf);
+    dd.SaveText(FILENAME_GLOBAL_UUID, hash_str.c_str());
+    strbuf_free(str_hash);
+    free(str_hash_core);
+
+    /* Compute the backtrace rating. */
+    float quality = btp_backtrace_quality_complex(backtrace);
+    const char *rating;
+    if (quality < 0.6f)
+        rating = "0";
+    else if (quality < 0.7f)
+        rating = "1";
+    else if (quality < 0.8f)
+        rating = "2";
+    else if (quality < 0.9f)
+        rating = "3";
     else
-    {
-        /* If the parser failed fall back to the independent backtrace. */
-        /* If we write and use a hand-written parser instead of the bison one,
-           the parser never fails, and it will be possible to get rid of
-           the independent_backtrace and backtrace_rate_old. */
-        struct strbuf *ibt = independent_backtrace(backtrace_str.c_str());
-        strbuf_prepend_str(ibt, executable.c_str());
-        strbuf_prepend_str(ibt, package.c_str());
-        dd.SaveText(FILENAME_GLOBAL_UUID, create_hash(ibt->buf).c_str());
-        strbuf_free(ibt);
+        rating = "4";
+    dd.SaveText(FILENAME_RATING, rating);
 
-        /* Compute and store backtrace rating. */
-        /* Crash frame is not known so store nothing. */
-        dd.SaveText(FILENAME_RATING, to_string(backtrace_rate_old(backtrace_str.c_str())).c_str());
-    }
-
+    /* Get the function name from the crash frame. */
+    struct btp_frame *crash_frame = btp_backtrace_get_crash_frame(backtrace);
+    if (crash_frame)
+     {
+        if (crash_frame->function_name &&
+            0 != strcmp(crash_frame->function_name, "??"))
+        {
+	  dd.SaveText(FILENAME_CRASH_FUNCTION, crash_frame->function_name);
+        }
+        btp_frame_free(crash_frame);
+     }
+    btp_backtrace_free(backtrace);
     dd.Close();
 }
 

@@ -119,6 +119,7 @@ AC_CONFIG_FILES([
 	lib/Makefile
 	lib/Utils/Makefile
 	lib/Plugins/Makefile
+  	lib/btparser/Makefile
 	src/Makefile
 	src/Daemon/Makefile
 	src/Hooks/Makefile

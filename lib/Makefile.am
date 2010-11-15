@@ -1,1 +1,1 @@
-SUBDIRS = Utils Plugins
+SUBDIRS = Utils btparser Plugins

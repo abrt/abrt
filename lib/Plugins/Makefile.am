@@ -63,7 +63,7 @@ install-data-hook: $(DESTDIR)/$(DEBUG_INFO_DIR)
 # CCpp
 libCCpp_la_SOURCES = CCpp.cpp CCpp.h CCpp_sha1.cpp CCpp_sha1.h
 libCCpp_la_LDFLAGS = -avoid-version
-#libCCpp_la_LIBADD =
+libCCpp_la_LIBADD = ../btparser/libbtparser.la
 libCCpp_la_CPPFLAGS = -I$(srcdir)/../../inc -I$(srcdir)/../Utils \
     -DCCPP_HOOK_PATH=\"${libexecdir}/abrt-hook-ccpp\" \
     -DDEBUG_DUMPS_DIR=\"$(DEBUG_DUMPS_DIR)\" \
